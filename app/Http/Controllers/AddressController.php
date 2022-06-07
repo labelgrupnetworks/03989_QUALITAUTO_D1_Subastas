@@ -9,7 +9,7 @@ use App;
 use DB;
 use Request;
 use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
 use Routing;

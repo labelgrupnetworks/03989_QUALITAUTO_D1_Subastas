@@ -1,16 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use Redirect;
 use Config;
-use Response;
 use View;
-use Route;
-use Input;
 use Request;
-use App\Models\Content;
-use App\Models\AucIndex;
-use App\Models\User;
 use App\Http\Controllers\V5\AutoFormulariosController;
 
 class ServicesController extends Controller
@@ -26,17 +19,17 @@ class ServicesController extends Controller
         return View::make('pages.servicios.encapsulacion');
 
     }
-    
+
     public function nuevaEncapsulacion(){
-        
+
         $key = "encapsulacion_" . strtoupper(Config::get('app.locale'));
         $html = "{html}";
         $content = \Tools::slider($key, $html);
         $title = trans(\Config::get('app.theme').'-app.services.encapsulacion');
-        
+
         $autoFormulario = new AutoFormulariosController();
         return $autoFormulario->AutoFormularioEncapsulado("nomApell, direccion, cp, poblacion, provincia, pais, telefono, email, servicio, descripcion, precio", $title, $content, "top");
-        
+
     }
 
     public function valoracionFotografia(Request $request, $lang){
@@ -184,5 +177,5 @@ class ServicesController extends Controller
         }
 
     }
-    
+
 }

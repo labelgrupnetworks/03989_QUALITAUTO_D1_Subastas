@@ -2,17 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Request;
-use Requests;
-use Session;
-use Routing;
-use Route;
-use Input;
-use Config;
-use Mail;
-use View;
-use Redirect;
-
 use App\Models\Enterprise;
 use App\Models\V5\FgOrtsec0;
 

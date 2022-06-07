@@ -1,25 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\V5;
-use View;
-use Route;
-use Config;
-use Input;
 
+use Config;
 use Session;
 use App\Http\Controllers\Controller;
 
 # Modelos
-
-use App\Models\Subasta;
 use App\Models\V5\FgAsigl0;
 
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
 
-
-use App\libs\SeoLib;
-use stdClass;
 
 class GaleriaArte extends Controller
 {
@@ -53,7 +45,7 @@ class GaleriaArte extends Controller
 					$idArtists[$lot->idvalue_caracteristicas_hces1]=$lot->idvalue_caracteristicas_hces1;
 				}
 			}
-			
+
 
 
 

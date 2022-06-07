@@ -3,19 +3,11 @@
 namespace App\Http\Controllers\admin\configuracion;
 
 use Illuminate\Support\Facades\DB;
-use View;
-use Session;
-use Route;
-use Input;
-use App\libs\MessageLib;
+use Illuminate\Support\Facades\Request as Input;
 use App\libs\FormLib;
 use App\Models\V5\FsEmail;
 
 use App\Http\Controllers\Controller;
-
-use App\Models\WebNewbannerModel;
-use App\Models\WebNewbannerItemModel;
-use App\Models\WebNewbannerTipoModel;
 
 
 class EmailController extends Controller

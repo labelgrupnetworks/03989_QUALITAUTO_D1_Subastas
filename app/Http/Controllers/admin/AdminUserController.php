@@ -8,7 +8,7 @@ use View;
 use Session;
 use Redirect;
 use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use App\Models\User;
 use Config;
 

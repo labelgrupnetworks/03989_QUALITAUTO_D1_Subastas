@@ -5,9 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Imports\ExcelImport;
 use App\Models\V5\FxCli;
-use App\Providers\ToolsServiceProvider;
 use Controller;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Maatwebsite\Excel\Facades\Excel;
 
 

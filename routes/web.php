@@ -303,7 +303,7 @@ View::addNamespace('admin', realpath(base_path('resources/views/admin/'.Config::
         require __DIR__ . '/user_panel.php';
 
         /* nuevas version V3 */
-         Route::get(\Routing::slugSeo('info-subasta',true).'/{cod}-{name}', 'SubastaController@auction_info')->name('urlAuctionInfo')->where(array('cod' => '[0-9a-zA-Z]+'));
+         Route::get(\Routing::slugSeo('info-subasta',true).'/{cod}-{texto}', 'SubastaController@auction_info')->name('urlAuctionInfo')->where(array('cod' => '[0-9a-zA-Z]+'));
 
          Route::get('/lot/getfechafin', 'SubastaController@getFechaFin');
     // SE ha modificado el routes

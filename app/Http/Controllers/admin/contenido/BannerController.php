@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin\contenido;
 
 use View;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use App\libs\FormLib;
 use App\libs\BannerLib;
 use App\libs\MessageLib;

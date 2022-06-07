@@ -1,13 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\admin\usuario;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use View;
-use Session;
-use Route;
-use Input;
 
+use App\Http\Controllers\Controller;
 use App\Models\V5\Web_Favorites;
 
 
@@ -15,15 +10,15 @@ class FavoritosController extends Controller
 {
 
     // Administrar la información de las casas de subastas
-    
+
     /*
      * Pendiente mirar de guardar en alguna variable el idioma actual
      */
-    
+
     public function index()
-    {   
+    {
         $data = array('menu' => 3);
-        
+
         #solo subastas activas
         $fav_db = Web_Favorites::joinCliWebFavorites()->
                 joinSubFavorites()->
@@ -38,27 +33,27 @@ class FavoritosController extends Controller
             if(empty($favorites[$fav->cod_sub][$fav->ref_asigl0])){
                 $favorites[$fav->cod_sub][$fav->ref_asigl0] = array();
             }
-         
+
             $favorites[$fav->cod_sub][$fav->ref_asigl0][$fav->cod_cliweb] = $fav->toarray();
-            
-                
+
+
         }
-        
+
       foreach($favorites as $cod_sub => $auction){
          #ordenamos los lotes
         ksort($favorites[$cod_sub]);
       }
-        
-      
+
+
         $data['favorites'] = $favorites;
-        
+
         return \View::make('admin::pages.usuario.favoritos.favoritos',$data);
-        
-      
-        
+
+
+
     }
-    
-    
- 
-  
+
+
+
+
 }

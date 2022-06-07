@@ -1,15 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-use DB;
 use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
-use Config;
 
 use App\Models\Banners;
 
@@ -17,9 +10,9 @@ class BannerController extends Controller
 {
 
     //Ver todos los Recursos que hay
-    
+
     public function index()
-    {   
+    {
         $content = new Banners();
         if(!empty($_GET["see"]) && $_GET["see"] == 'N'){
             $value = $_GET["see"];
@@ -29,7 +22,7 @@ class BannerController extends Controller
             $value = 'B';
         }
         $cbs =!empty($_GET["cbs"])? $_GET["cbs"] : null;
-       
+
         $data['inf'] = $content->tableBanners($value,$cbs);
         $data['banner_section_name'] = "";
         if(!empty($cbs)){
@@ -38,11 +31,11 @@ class BannerController extends Controller
                 $data['banner_section_name'] = $banner_section->des_banner_section;
             }
         }
-       
-        
+
+
         return \View::make('admin::pages.banner',array('data' => $data));
     }
-    
+
     public  function SeeBanner($id = NULL){
         $data['BannerResources'] = array();
         $content = new Banners();
@@ -52,21 +45,21 @@ class BannerController extends Controller
         foreach($data['BannerResources'] as $value){
             $data['resourcechecked'][] = $value->id_web_resource;
         }
-        
+
         $cod_banner_sec =!empty($_GET["cbs"])? $_GET["cbs"] : null;
         if (!empty($data['infBanner'])){
-            $cod_banner_sec = $data['infBanner']->cod_sec_web_banner; 
+            $cod_banner_sec = $data['infBanner']->cod_sec_web_banner;
         }
-        
+
         $data['Resources'] = $content->GetResourceActivated($cod_banner_sec);
 
         return \View::make('admin::pages.editBanner',array('data' => $data));
     }
-    
+
     public  function EditBanner(){
         $enabled_temp="";
         $orden = 1;
-        
+
         $content = new Banners();
         $id=Request::input('id');
         $name=Request::input('name');
@@ -75,13 +68,13 @@ class BannerController extends Controller
         $enabled_temp=Request::input('enabled');
         $type = Request::input('type');
         $cod_sec=Request::input('cod_sec');
-        
+
         if($enabled_temp === 'on'){
             $enabled = 1;
         }else{
             $enabled = 0;
         }
-        
+
 
         #El id es 0  es un nuevo Banner si no es que se tiene que modificar uno
         $id_max = $content->maxBannerResouce();
@@ -96,7 +89,7 @@ class BannerController extends Controller
             $content->deleteBannersResources($id);
             \Artisan::call('cache:clear');
         }
-        
+
         #Bucle updatear las relaciones
         if(isset($resources)){
             foreach($resources as $value){
@@ -107,13 +100,13 @@ class BannerController extends Controller
 
             }
         }
-        
+
         return $id;
-        
-        
-        
+
+
+
     }
-    
-    
+
+
 
 }

@@ -10,7 +10,6 @@ use App\Http\Controllers\V5\LotListController;
 use DB;
 use Request;
 use Validator;
-use Input;
 use Session;
 use View;
 use Routing;

@@ -3,20 +3,9 @@
 namespace App\Http\Controllers\V5;
 
 use Redirect;
-use App;
-use Cookie;
 use Config;
-use Input;
-use Log;
-use Response;
-use Route;
-use Routing;
-use Request;
-use Session;
-use Storage;
-use Validator;
 use View;
-use Db;
+
 use App\Http\Controllers\Controller;
 
 # Cargamos librerias
@@ -43,7 +32,7 @@ class UserAccessController extends Controller {
 
     //
     //  LOGIN - Función para loguearse en la aplicación como usuario normal.
-    // 
+    //
     //	@request 	-	post con la información de logueo (email, password)
     //
     /*     * ************************************************************************************************* */
@@ -162,7 +151,7 @@ class UserAccessController extends Controller {
     /*     * ************************************************************************************************* */
     //
     //  REGISTER - Función para crear el formulario de registro
-    // 
+    //
     //	@gemp 	-	Codigo de empresa (opcional) - Parámetros para afiliados
     //	@cod_cliweb - Codigo de cliente (opcional) - Parámetros para afiliados
     //	@type - Via de entrada (email, ...) (opcional) - Parámetros para afiliados
@@ -234,7 +223,7 @@ class UserAccessController extends Controller {
 
 
             // Preparamos para el futuro, cuando nos pidan que podamos poner la dirección de envío
-            
+
             if (empty(\Config::get('app.delivery_address')) || !\Config::get('app.delivery_address')) {
 
                 $data['formulario']->clid = FormLib::Hidden("clid", 1, 1);
@@ -244,9 +233,9 @@ class UserAccessController extends Controller {
                 $data['formulario']->clid_provincia = FormLib::Hidden("texto__0__clid_provincia", 1);
                 $data['formulario']->clid_codigoVia = FormLib::Hidden("select__0__clid_codigoVia", 1);
                 $data['formulario']->clid_direccion = FormLib::Hidden("texto__0__clid_direccion", 1);
-                
+
             } else {
-                
+
                 $data['formulario']->clid = FormLib::Hidden("clid", 1, 1);
                 $data['formulario']->clid_pais = FormLib::Select("clid_pais", 0, $country_selected, $countries, 0, trans(\Config::get('app.theme') . '-app.login_register.pais'));
                 $data['formulario']->clid_cpostal = FormLib::Text("clid_cpostal", 0, "", 0);

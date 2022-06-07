@@ -3,22 +3,13 @@ namespace App\Http\Controllers;
 
 use Redirect;
 
-//opcional
-use App;
-use DB;
 use Request;
-use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Session;
-use View;
 use Routing;
 use Config;
-use Route;
-use File;
 
 # Cargamos el modelo
-use App\Models\Content;
-use App\Models\AucIndex;
 use App\Models\User;
 
 class ValoracionController extends Controller

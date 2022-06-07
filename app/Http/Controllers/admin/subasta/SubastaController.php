@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\apilabel\LotController;
 use App\Http\Controllers\apilabel\ImgController;
 
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 
 use App\libs\FormLib;
 use App\libs\Currency;

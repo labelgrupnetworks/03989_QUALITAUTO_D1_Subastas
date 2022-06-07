@@ -1,15 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-use DB;
 use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
-use Config;
 
 use App\Models\Resources;
 
@@ -18,8 +11,8 @@ class ResourceController extends Controller
 
     //Ver todos los Recursos que hay
     public function index()
-    {   
-        
+    {
+
         $content = new Resources();
         if(!empty($_GET["see"]) && $_GET["see"] == 'A'){
             $value_where = "and WEB_RESOURCE.type IN ('A')";
@@ -31,11 +24,11 @@ class ResourceController extends Controller
         if(!empty($_GET["crs"])){
             $value_where .= " and COD_BANNER_SEC = '".$_GET["crs"]."'";
         }
-        
+
         $data['inf'] = $content->tableResource($value_where);
         return \View::make('admin::pages.resource',array('data' => $data));
     }
-    
+
      //Ver la informacion del bloque si no existe todo vacio
     public function SeeResources($id = NULL){
 
@@ -44,11 +37,11 @@ class ResourceController extends Controller
         $bloque = $content->infResource($id);
         if(!count($bloque)>0){
             $bloque =null;
-            
+
         }
         return \View::make('admin::pages.editResource',array('bloque' => $bloque[0]));
     }
-    
+
     public function EditResources(){
 
         $content = new Resources();
@@ -63,19 +56,19 @@ class ResourceController extends Controller
         $file_url=Request::input('file_url');
         $cache=Request::input('cache');
         $cod_sec=Request::input('cod_sec');
-        
+
         if($type=='H' || $type=='A'){
             $html=Request::input('html');
         }elseif($type=='C'){
             $html=Request::input('fecha');
         }else{
             $html=Request::input('text_html');
-            
+
         }
         if(empty($cache)){
             $cache = 0;
         }
-       
+
         if($enabled_temp == 'on'){
             $enabled = 1;
         }else{
@@ -86,7 +79,7 @@ class ResourceController extends Controller
         }else{
             $new_windows = 0;
         }
-        
+
         if(empty($url_link)){
             $url_link = null;
         }
@@ -100,7 +93,7 @@ class ResourceController extends Controller
             return $id;
         }
     }
-    
+
     public function DeleteResource(){
         $content = new Resources();
         $id_delete=Request::input('id_resource');

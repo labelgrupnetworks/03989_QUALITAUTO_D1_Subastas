@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Request;
 use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Config;
 use App\Models\V5\FxCliWeb;
 use App\libs\EmailLib;

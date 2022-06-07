@@ -8,7 +8,7 @@ use App;
 use DB;
 use Request;
 use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
 use Routing;
@@ -20,13 +20,13 @@ use App\Models\Chat;
 use App\Models\User;
 
 class ChatController extends Controller
-{   
+{
     public $lang;
     public $cod;
 
     # Devolvemos todos los mensajes de X subasta sergún su idioma
     public function getChat()
-    {	
+    {
     	$chat 		= new Chat();
     	$chat->lang = Route::current()->parameter('lang');
     	$chat->cod  = Route::current()->parameter('cod');
@@ -40,12 +40,12 @@ class ChatController extends Controller
         $cod_sub = Input::get('cod_sub');
         $mensaje = Input::get('mensaje');
         $cod_licit = Input::get('cod_licit');
-        $hash_user      = Input::get('hash');        
-       
-        
+        $hash_user      = Input::get('hash');
+
+
         $gestor = new User();
-        $gestor->cod = $cod_sub; 
-        $gestor->licit = $cod_licit; 
+        $gestor->cod = $cod_sub;
+        $gestor->licit = $cod_licit;
         $g = $gestor->getUserByLicit();
          //si no se encuentra el licitador o el licitador no es gestor
         if(count($g) == 0 || $g[0]->tipacceso_cliweb != 'S'){
@@ -54,10 +54,10 @@ class ChatController extends Controller
                 'status'            => 'error',
                 'msg'               => trans(\Config::get('app.theme').'-app.msg_error.generic')
             );
-            
+
         }
-        $hash = hash_hmac("sha256",$mensaje['ES']['msg']." ".$cod_sub." ". $cod_licit, $g[0]->tk_cliweb); 
-        
+        $hash = hash_hmac("sha256",$mensaje['ES']['msg']." ".$cod_sub." ". $cod_licit, $g[0]->tk_cliweb);
+
         if ($hash != $hash_user)
         {
             \Log::error("$hash == $hash_user" );
@@ -66,8 +66,8 @@ class ChatController extends Controller
                 'msg'               => trans(\Config::get('app.theme').'-app.msg_error.generic')
             );
         }
-        
-      
+
+
         $primer_item = head($mensaje);
 
         # Insertamos la cabecera de linea
@@ -89,16 +89,16 @@ class ChatController extends Controller
     }
 
     public function deleteChat()
-    {   
+    {
         $cod_sub = Input::get('cod_sub');
         $id_mensaje = Input::get('id_mensaje');
         $cod_licit = Input::get('cod_licit');
-        $hash_user      = Input::get('hash');        
-       
-        
+        $hash_user      = Input::get('hash');
+
+
         $gestor = new User();
-        $gestor->cod = $cod_sub; 
-        $gestor->licit = $cod_licit; 
+        $gestor->cod = $cod_sub;
+        $gestor->licit = $cod_licit;
         $g = $gestor->getUserByLicit();
          //si no se encuentra el licitador o el licitador no es gestor
         if(count($g) == 0 || $g[0]->tipacceso_cliweb != 'S'){
@@ -106,10 +106,10 @@ class ChatController extends Controller
                 'status'            => 'error',
                 'msg'               => trans(\Config::get('app.theme').'-app.msg_error.generic')
             );
-            
+
         }
-        $hash = hash_hmac("sha256",$id_mensaje." ".$cod_sub." ". $cod_licit, $g[0]->tk_cliweb); 
-        
+        $hash = hash_hmac("sha256",$id_mensaje." ".$cod_sub." ". $cod_licit, $g[0]->tk_cliweb);
+
         if ($hash != $hash_user)
         {
             \Log::info("$hash == $hash_user" );
@@ -118,19 +118,19 @@ class ChatController extends Controller
                 'msg'               => trans(\Config::get('app.theme').'-app.msg_error.generic')
             );
         }
-        
-        
-        
-        
-        
-         
-        
+
+
+
+
+
+
+
         $cod_sub = $cod_sub;
-        $predefinido = Input::get('predefinido');        
+        $predefinido = Input::get('predefinido');
         $chat                 = new Chat();
         $chat->cod            = $cod_sub;
         $chat->deleteChat($id_mensaje);
-        
+
         return array(
             'status'            => 'success',
             'msg'               => trans(\Config::get('app.theme').'-app.sheet_tr.chat-msg_sent'),

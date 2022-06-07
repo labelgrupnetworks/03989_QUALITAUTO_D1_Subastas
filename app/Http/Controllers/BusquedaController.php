@@ -7,7 +7,6 @@ use Requests;
 use Session;
 use Routing;
 use Route;
-use Input;
 use Config;
 use Mail;
 use View;

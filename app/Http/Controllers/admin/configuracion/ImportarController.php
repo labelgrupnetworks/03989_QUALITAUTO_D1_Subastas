@@ -6,11 +6,9 @@ use Request;
 use App\Http\Controllers\Controller;
 use Session;
 use Config;
-use Illuminate\Support\Facades\DB;
 use App\Models\Translate;
-use App\libs\TradLib;
 use App\libs\FormLib;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 
 class ImportarController extends Controller {
 

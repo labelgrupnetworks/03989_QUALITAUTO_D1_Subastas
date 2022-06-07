@@ -1,40 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-use DB;
-use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
 use Config;
 
 use App\Models\AucIndexMenu;
 
 class AucIndexMenuController extends Controller
 {
-    
+
         public $emp ;
         public $content ;
-        
+
         public function __construct()
         {
             $this->emp = Config::get('app.emp');
             $this->content = new AucIndexMenu();
-        } 
+        }
 
-    
+
     //Mostramos Menu Orden
     public function index()
-    {   
-        
+    {
+
         $data['Parent'] = $this->content->getAucMenu();
         $data['FamiliaSession'] = $this->content->getAucMenuNotParent();
         return \View::make('admin::pages.aucIndexMenu',array('data' => $data));
     }
-    
+
      public function save(){
          $i = 1;
          /*Recibimos Orden del Menu i vamos guardando*/
@@ -66,10 +59,10 @@ class AucIndexMenuController extends Controller
                  }else{
                      return '2' ;
                  }
-            $i++;     
+            $i++;
             }
          }
          return '0' ;
      }
-    
+
 }

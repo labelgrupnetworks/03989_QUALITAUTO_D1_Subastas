@@ -2,18 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Redirect;
-
-//opcional
-use App;
-use DB;
-use Request;
-use Validator;
-use Input;
-use Session;
-use Routing;
 use Config;
-use Route;
 use SimpleXMLElement;
 
 use App\libs\PrestaShopWebservice;

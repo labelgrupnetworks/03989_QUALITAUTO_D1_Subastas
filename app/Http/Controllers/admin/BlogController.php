@@ -4,11 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
 use Config;
 use Illuminate\Support\Facades\DB;
 

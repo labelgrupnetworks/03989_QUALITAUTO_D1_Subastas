@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\configuracion;
 
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use App\libs\FormLib;
 use App\Http\Controllers\Controller;
 use App\Models\V5\FgPujas;

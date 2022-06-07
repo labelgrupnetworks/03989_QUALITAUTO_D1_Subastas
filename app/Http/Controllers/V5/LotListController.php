@@ -4,7 +4,8 @@ namespace App\Http\Controllers\V5;
 use View;
 use Route;
 use Config;
-use Input;
+
+use Illuminate\Support\Facades\Request as Input;
 
 use Session;
 use App\Http\Controllers\Controller;

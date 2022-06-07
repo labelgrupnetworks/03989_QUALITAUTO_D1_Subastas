@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\admin\V5;
 
-use Illuminate\Support\Facades\DB;
 use Controller;
-use View;
-use Session;
-use Route;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 
 use App\Models\V5\Web_Faq;
 use App\Models\V5\Web_FaqCat;

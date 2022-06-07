@@ -6,7 +6,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Config;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 
 
 # Modelos

@@ -7,7 +7,7 @@ use Requests;
 use View;
 use Routing;
 use Route;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 
 use Config;
 use Session;

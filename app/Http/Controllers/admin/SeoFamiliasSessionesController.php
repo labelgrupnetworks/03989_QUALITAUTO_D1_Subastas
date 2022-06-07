@@ -4,11 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
 use Config;
 
 use App\Models\SeoFamiliasSessiones;
@@ -26,15 +21,15 @@ class SeoFamiliasSessionesController extends Controller
         $this->language = Config::get('app.locales');
         $this->lang = Config::get('app.locale');
         $this->content = new SeoFamiliasSessiones();
-    } 
-    
+    }
+
     //Mostramos Todas las sessiones y familias
     public function index()
-    {   
+    {
         $data = $this->content->getSeoFamilySession($this->emp);
         return \View::make('admin::pages.seo_family_sessions', array('data' => $data));
     }
-    
+
     //Mostramos informacion de la informacion que tendra session y la familia
     public function SeeFamilySessionsSeo($id){
         $data['lang'] = $this->lang;
@@ -44,10 +39,10 @@ class SeoFamiliasSessionesController extends Controller
 
         return \View::make('admin::pages.editseo_family_session', array('data' => $data));
     }
-    
+
     #updateamos o hacemos un insert
   public function SavedFamilySessionsSeo(){
-      
+
       $content = $this->content;
       //Vamos mirando por idioma los imputs
       foreach($this->language as $lang => $idiom){
@@ -61,21 +56,21 @@ class SeoFamiliasSessionesController extends Controller
             $content->webmetad=Request::input('webmetad_'.$lang);
             $content->webmetat=Request::input('webmetat_'.$lang);
             $content->webcont=Request::input('webcont_'.$lang);
-            
+
             if(!empty($content->id)){
                 $this->content->updateSeo($content);
             }else{
                 $id_temp = $this->content->maxSeo();
                 $content->id = $id_temp+1;
                 $this->content->insertSeo($content);
-               
+
             }
              $id[''.strtoupper($lang).''] = $content->id;
-            
-            
+
+
          }
-         
+
          return($id);
   }
-	
+
 }

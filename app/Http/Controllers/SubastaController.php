@@ -4,21 +4,18 @@ namespace App\Http\Controllers;
 
 
 use Request;
-use Requests;
 //use Controller;
 //use View;
 use Session;
 use Routing;
 use Route;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Config;
-use Mail;
 use Log;
 use DB;
 use App\Models\Subasta;
 use App\Models\Enterprise;
 use App\Models\Filters;
-use App\Models\SubastaTiempoReal;
 use App\Models\User;
 use App\Models\Favorites;
 use App\Models\SeoFamiliasSessiones;
@@ -26,7 +23,6 @@ use App\Models\SeoFamiliasSessiones;
 use App\Models\AucIndex;
 use App\libs\StrLib;
 use App\libs\ImageGenerate;
-use App\libs\MobileDetect;
 use App\libs\Currency;
 
 use App\libs\EmailLib;
@@ -38,7 +34,6 @@ use App\Http\Controllers\PaymentsController;
 use App\libs\FormLib;
 use App\libs\TradLib;
 use App\Models\Payments;
-use App\Providers\ToolsServiceProvider;
 use App\Http\Controllers\V5\LotListController;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgDeposito;
@@ -2530,5 +2525,5 @@ class SubastaController extends Controller
 		return response()->download($file->storage_path);
 	}
 
-	
+
 }

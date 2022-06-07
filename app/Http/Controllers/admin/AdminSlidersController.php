@@ -5,12 +5,9 @@ namespace App\Http\Controllers\admin;
 use Request;
 use Controller;
 use View;
-use Session;
-use Redirect;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use File;
 use Config;
-use Log;
 use App\Models\Content;
 
 class AdminSlidersController extends Controller

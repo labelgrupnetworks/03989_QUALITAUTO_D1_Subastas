@@ -6,11 +6,10 @@ use Redirect;
 //use Controller;
 
 //opcional
-use App;
 use DB;
 use Request;
 use Validator;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
 use Routing;
@@ -20,12 +19,9 @@ use Route;
 use Cookie;
 use Paginator;
 use Log;
-use Response;
-use Storage;
 # ODBC Service Provider
 //use TCK\Odbc\OdbcServiceProvider;
 use App\Http\Controllers\PaymentsController;
-use App\Http\Controllers\DeliveryController;
 # Cargamos el modelo
 use App\Models\User;
 use App\Models\Subasta;
@@ -55,12 +51,10 @@ use App\Models\V5\FxCliObcta;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0Seg;
 use App\Models\V5\FgAsigl1_Aux;
-use App\Models\V5\FxCli2;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -349,7 +343,7 @@ class UserController extends Controller
 					}
 
 
-                
+
 
                     if($ajax){
                         $res = array(

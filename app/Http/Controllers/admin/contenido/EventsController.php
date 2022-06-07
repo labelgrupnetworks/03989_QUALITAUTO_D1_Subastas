@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin\contenido;
 
 use Illuminate\Support\Facades\DB;
 use View;
-use Input;
+use Illuminate\Support\Facades\Request as Input;
 use App\libs\FormLib;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

@@ -4,12 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use Request;
 use Controller;
-use View;
-use Session;
-use Redirect;
-use Input;
-use File;
-use Config;
 
 use App\Models\MailQueries;
 use App\Models\V5\Web_Email_Logs;

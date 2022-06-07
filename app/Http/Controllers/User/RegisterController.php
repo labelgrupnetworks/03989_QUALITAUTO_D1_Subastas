@@ -2,35 +2,18 @@
 namespace App\Http\Controllers\User;
 
 use Redirect;
-use App;
-use Cookie;
 use Config;
-use Input;
-use Log;
-use Response;
-use Route;
-use Routing;
-use Request;
-use Session;
-use Storage;
-use Validator;
-use View;
 use Db;
 
 use App\Http\Controllers\Controller;
 
 # Cargamos librerias
-use Tools;
-use App\libs\MessageLib;
-use App\libs\EmailLib;
 use App\libs\FormLib;
 
 # Cargamos los modelos
-use App\Models\V5\FxCli;			// Clientes
 use App\Models\V5\FxCliWeb;		// Clientes web
 use App\Models\V5\FsPaises;		// Paises
 use App\Models\V5\FgSg;			// Tipos de via
-use App\Models\V5\FsParams;		// Parametros de la empresa
 use App\Models\V5\SubAuchouse; //Casas de subastas
 use App\Http\Controllers\User\SubaliaController;
 use App\Models\V5\FsIdioma;
