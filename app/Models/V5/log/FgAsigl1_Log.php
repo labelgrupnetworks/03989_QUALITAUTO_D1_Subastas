@@ -34,4 +34,18 @@ class FgAsigl1_Log extends Model
         });
     }
 
+	public function scopeLeftJoinCli($query){
+        return $query->join("FGLICIT", "EMP_LICIT = EMP_ASIGL1 AND SUB_LICIT = SUB_ASIGL1 AND COD_LICIT = LICIT_ASIGL1 ")
+                     ->leftjoin("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
+
+    }
+
+	public function scopelog($query){
+        return $query->joinUsr()->LeftJoinCli()->select("FXCLI.NOM_CLI, FXCLI.CIF_CLI,FSUSR.NOM_USR, FGASIGL1_LOG.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGASIGL1_LOG.USR_UPDATE_ASIGL1");
+	}
+
 }

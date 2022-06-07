@@ -7,6 +7,7 @@ use View;
 use Session;
 use Route;
 use Input;
+use Illuminate\Http\Request;
 
 use App\libs\FormLib;
 use App\Models\FxCli;   // Clientes
@@ -249,9 +250,8 @@ class ClienteController extends Controller
 	}
 
 
-	function export(){
-		return (new ClientsExport())->download("clientes" . "_" . date("Ymd") . ".xlsx");
+	function export(Request $request){
+		return (new ClientsExport($request))->download("clientes" . "_" . date("Ymd") . ".xlsx");
 	}
-
 
 }

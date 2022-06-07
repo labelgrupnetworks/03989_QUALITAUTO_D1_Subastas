@@ -81,6 +81,7 @@ use stdClass;
 use App\Models\V5\FxCli;
 
 use App\Models\V5\FxCliWeb;
+
 use App\Models\V5\FxCli2;
 use App\Models\V5\FxClid;
 use App\Models\V5\FgHces0;
@@ -114,14 +115,6 @@ use App\Http\Controllers\apilabel\ApiLabelException;
 use App\libs\PayPalV2API;
 use App\Models\V5\AucSessions;
 use App\Models\V5\FgCreditoSub;
-use App\Models\V5\Web_Config;
-use App\Models\V5\FgPedc0;
-use App\Models\V5\FgPujas;
-use App\Models\V5\FgPujasSub;
-use App\Models\V5\FgHcesmt;
-use App\Models\V5\FxAlm;
-use App\Models\articles\FgArt0;
-use App\Models\articles\FgArt;
 use Cookie;
 use Illuminate\Http\Request as HttpRequest;
 use SoapFault;
@@ -129,6 +122,7 @@ use App\Models\V5\Web_Faq;
 use App\Models\V5\Web_FaqCat;
 use App\Http\Controllers\V5\FaqController;
 use App\Models\V5\Web_Artist;
+use App\Models\V5\FgNft;
 use App\Http\Controllers\V5\GaleriaArte;
 
 use Illuminate\Support\Facades\Storage;
@@ -142,6 +136,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\admin\facturacion\AdminPedidosController;
 
+
 use App\Http\Controllers\V5\CarlandiaPayController;
 
 use App\Models\V5\FgCaracteristicas_Hces1;
@@ -150,47 +145,45 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp\Client;
 use App\Http\Controllers\externalws\vottun\VottunController;
 use GuzzleHttp\Psr7;
+use App\Http\Controllers\webservice\LogChangesController;
+use App\Http\Controllers\admin\subasta\AdminLotcontroller;
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-        $test = [
-            'name' => 'test',
-            'lastname' => 'test',
-            'age' => 'test',
-            'profession' => 'test',
-            'description' => 'test',
-            'image' => 'test',
-        ];
+	
 
-        //array to string
-        $test = json_encode($test);
-
-        $test_encode = base64_encode($test);
-
-        dump($test_encode);
-
-        $test_decode = base64_decode($test_encode);
-
-        $test_decode = json_decode($test_decode, true);
-
-        dd($test_decode);
 
 
 	}
+	public function TestVottun(){
+		$num = 8;
+		$lin=6;
+		$vottun = new VottunController();
 
+		//$response = $vottun->uploadFile($num, $lin);
+		//$response = $vottun->uploadMetadata($num, $lin);
+
+		//$response = $vottun->mint($num, $lin);
+		$response = $vottun->requestStateMint($num, $lin);
+		//$response = $vottun->transferNFT($num, $lin);
+		//$response = $vottun->requestStateTransfer($num, $lin);
+		//$response =$vottun->requestHistorictransactions($num, $lin);
+
+		//$operation = $vottun->getTransferOpperation($num, $lin);
+		//$response = $vottun->getTransaction($operation->transactionHash, $operation->networkId);
+		print_r($response);
+	}
 
 
 /* carga motorflash */
 public function cargaMotorflash(){
-	$url = \Config::get("app.urlMotorflash");
-	$cod_cli= "000025";
 
-	$xml = simplexml_load_file($url."/".$cod_cli);
-	$loadFileLib = new	LoadLotFileLib($cod_cli);
-	$loadFileLib->loadMotorFlash($xml);
-	\Log::info("<br> cedente $cod_cli cargado ");
+	$cron = new  App\Http\Controllers\CronController();
+	$cod_cli= "000025";
+	$cron->loadCarsCedente($cod_cli);
+
 }
 
 

@@ -17,8 +17,11 @@ class PujaTelefonicaController extends DuranController
 
 		#el usuario debe estra logeado si no, no se hace nada
 		if(empty($codCli)){
+			#No quiero enviar los emails ni que se llene el log si hay un ataque, si hay un ataque Sistemas ya se entera
+			/*
 			$textEmail = "No se ha podido realizar la orden telefónica, El usuario no está logeado  ";
 			$this->sendEmailError("createOrdertelefónica", $textEmail,""  );
+			*/
 			return ["status"=> "error" ];
 		}
 		$codSub = request("cod_sub");

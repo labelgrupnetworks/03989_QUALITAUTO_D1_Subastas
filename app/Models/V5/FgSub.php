@@ -103,7 +103,7 @@ class FgSub extends Model
         ->GetInfoSession($refSession)
         ->where("FGSUB.COD_SUB",$cod_sub)
         ->addSelect("FGSUB.SUBC_SUB")
-        ->addSelect("FGSUB.DFEC_SUB", "FGSUB.HFEC_SUB")
+        ->addSelect("FGSUB.DFEC_SUB, FGSUB.HFEC_SUB")
         ->addSelect("NVL(FGSUB_LANG.WEBMETAT_SUB_LANG,FGSUB.WEBMETAT_SUB) as WEBMETAT_SUB")
         ->addSelect("NVL(FGSUB_LANG.WEBMETAD_SUB_LANG,FGSUB.WEBMETAD_SUB) as WEBMETAD_SUB")
         ->addSelect("NVL(FGSUB_LANG.EXPOFECHAS_SUB_LANG,FGSUB.EXPOFECHAS_SUB) as EXPOFECHAS_SUB")
@@ -120,16 +120,16 @@ class FgSub extends Model
 
 	public function scopeJoinLangSub($query){
 		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
-		$query->selectRaw("nvl(FGSUB_LANG.DES_SUB_LANG,FGSUB.DES_SUB) DES_SUB");
+		$query->addSelect("nvl(FGSUB_LANG.DES_SUB_LANG,FGSUB.DES_SUB) DES_SUB");
 
 		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
 		if ( \Config::get("app.clobToVarchar")) {
-			$query->selectRaw("dbms_lob.substr(NVL(FGSUB_LANG.DESCDET_SUB_LANG,FGSUB.DESCDET_SUB), 2000, 1 ) DESCDET_SUB");
+			$query->addSelect("dbms_lob.substr(NVL(FGSUB_LANG.DESCDET_SUB_LANG,FGSUB.DESCDET_SUB), 2000, 1 ) DESCDET_SUB");
 		}else{
-			$query->selectRaw("NVL(FGSUB_LANG.DESCDET_SUB_LANG,FGSUB.DESCDET_SUB) DESCDET_SUB");
+			$query->addSelect("NVL(FGSUB_LANG.DESCDET_SUB_LANG,FGSUB.DESCDET_SUB) DESCDET_SUB");
 		}
 
-        $query->leftJoin('FGSUB_LANG', DB::raw("FGSUB.COD_SUB = FGSUB_LANG.COD_SUB_LANG AND FGSUB_LANG.LANG_SUB_LANG = '$lang' AND FGSUB.EMP_SUB = FGSUB_LANG.EMP_SUB_LANG"));
+        $query->leftJoin('FGSUB_LANG', "FGSUB.COD_SUB = FGSUB_LANG.COD_SUB_LANG AND FGSUB_LANG.LANG_SUB_LANG = '".$lang."' AND FGSUB.EMP_SUB = FGSUB_LANG.EMP_SUB_LANG");
         return  $query;
 
 	}
@@ -137,24 +137,24 @@ class FgSub extends Model
 		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
 
 
-        $query  ->selectRaw("FGSUB.COD_SUB")
-                ->selectRaw("FGSUB.AGRSUB_SUB")
-                ->selectRaw('"auc_sessions"."orders_start"')
-                ->selectRaw('"auc_sessions"."orders_end"')
+        $query  ->addSelect("FGSUB.COD_SUB")
+                ->addSelect("FGSUB.AGRSUB_SUB")
+                ->addSelect('"auc_sessions"."orders_start"')
+                ->addSelect('"auc_sessions"."orders_end"')
                 ->addSelect("FGSUB.TIPO_SUB")
-                ->selectRaw('"auc_sessions"."reference"')
-                ->selectRaw('NVL("auc_sessions_lang"."name_lang","auc_sessions"."name")as name')
-                ->selectRaw('NVL("auc_sessions_lang"."description_lang","auc_sessions"."description") as description')
-                ->selectRaw('"auc_sessions"."id_auc_sessions"')
-                ->selectRaw('"auc_sessions"."start" as session_start')
-                ->selectRaw('"auc_sessions"."end" as session_end')
+                ->addSelect('"auc_sessions"."reference"')
+                ->addSelect('NVL("auc_sessions_lang"."name_lang","auc_sessions"."name")as name')
+                ->addSelect('NVL("auc_sessions_lang"."description_lang","auc_sessions"."description") as description')
+                ->addSelect('"auc_sessions"."id_auc_sessions"')
+                ->addSelect('"auc_sessions"."start" as session_start')
+                ->addSelect('"auc_sessions"."end" as session_end')
                 ->addSelect("FGSUB.EMP_SUB")
 				;
 
-                $query->join('"auc_sessions"','"auc_sessions"."company" = FGSUB.EMP_SUB AND "auc_sessions"."auction" = FGSUB.COD_SUB');
-                $query->leftJoin('"auc_sessions_lang"','"auc_sessions"."company" = "auc_sessions_lang"."company_lang" AND "auc_sessions"."auction" = "auc_sessions_lang"."auction_lang" AND "auc_sessions_lang"."lang_auc_sessions_lang" = \''.$lang.'\'');
+        $query->join('"auc_sessions"','"auc_sessions"."company" = FGSUB.EMP_SUB AND "auc_sessions"."auction" = FGSUB.COD_SUB');
+        $query->leftJoin('"auc_sessions_lang"','"auc_sessions"."company" = "auc_sessions_lang"."company_lang" AND "auc_sessions"."auction" = "auc_sessions_lang"."auction_lang" AND "auc_sessions_lang"."lang_auc_sessions_lang" = \''.$lang.'\'');
 
-                return $query;
+        return $query;
     }
 
 
@@ -278,6 +278,13 @@ class FgSub extends Model
 	}
 
 
+	public function scopelog($query){
+        return $query->joinUsr()->select("FSUSR.NOM_USR, FGSUB.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGSUB.USR_UPDATE_SUB");
+	}
 
 }
 

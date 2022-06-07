@@ -38,6 +38,18 @@ class LogController  extends WebServiceController
 
    }
 
+   public function logUsr($startDate,$endDate){
+
+		return  LogLib::getLog("FsUsr", "usr", $startDate, $endDate);
+
+	}
+
+	public function logCliweb($startDate,$endDate){
+
+		return  LogLib::getLog("FxCliWeb", "cliweb", $startDate, $endDate);
+
+	}
+
    # FIN LOGS QUE SE OPTIENEN DE LA TABLA DE LOGS Y DE LA ORIGINAL
 
 }

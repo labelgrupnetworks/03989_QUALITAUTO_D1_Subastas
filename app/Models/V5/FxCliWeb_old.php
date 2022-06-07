@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FxCliWeb extends Model
 {
-
+   
 
 	// Variables propias de Eloquent para poder usar el ORM de forma correcta.
 

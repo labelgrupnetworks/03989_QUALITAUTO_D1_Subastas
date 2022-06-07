@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V5;
 use View;
 use Route;
 use Config;
-
+use Input;
 
 use Session;
 use App\Http\Controllers\Controller;
@@ -25,7 +25,6 @@ use App\Models\V5\FgCaracteristicas;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\libs\SeoLib;
-use Illuminate\Support\Facades\Request;
 use stdClass;
 
 class LotListController extends Controller
@@ -125,7 +124,7 @@ class LotListController extends Controller
 				$url = route("urlAuction",["texto" => \Str::slug($auction->des_sub), "cod" => $codSub, "session" => '001']);
 
 			}else{
-				$url = route("urlAuction", ["texto" => \Str::slug($auction->name), "cod" => $codSub, "session" => $refSession]);
+				$url = route("urlAuction",["texto" => \Str::slug($auction->name), "cod" => $codSub, "session" => $refSession]);
 			}
 
 			/* genera licitador */
@@ -203,7 +202,7 @@ class LotListController extends Controller
 
 
 			$paginator = new LengthAwarePaginator(range(1,$this->totalLots), $this->totalLots, $this->lotsPerPage, $this->actualPage,["path" => $url]);
-			$paginator->appends(Request::except('page'));
+			$paginator->appends(Input::except('page'));
 		}else{
 			$paginator = NULL;
 			$lots = NULL;
@@ -466,7 +465,7 @@ class LotListController extends Controller
 	private function generateBreadCrumb($auction, $infoOrtsec, $infoSec, $infoSubSec){
 		$bread = array();
 		if (isset($auction) && isset($auction->name)) {
-			$urlInfo =  route("urlAuctionInfo", ["texto" => \Str::slug($auction->des_sub), "cod" => $auction->cod_sub, "lang" => \Config::get("app.locale")]);
+			$urlInfo =  route("urlAuctionInfo",["texto" => \Str::slug($auction->des_sub), "cod" => $auction->cod_sub, "lang" => \Config::get("app.locale")]);
 			$bread[] = array("url" =>$urlInfo, "name" =>$auction->des_sub  );
 		}else{
 			$urlAllCategories =  route("allCategories");
@@ -872,7 +871,11 @@ class LotListController extends Controller
 						$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
 					}else{
 						$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1_lang,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
-						$fgasigl0 = $fgasigl0->JoinFghces1LangAsigl0();
+						$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+						#OJO debe ser Join no left Join
+						$fgasigl0 =  $fgasigl0->join('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
+
+					//	$fgasigl0 = $fgasigl0->JoinFghces1LangAsigl0();
 					}
 
                 }else{

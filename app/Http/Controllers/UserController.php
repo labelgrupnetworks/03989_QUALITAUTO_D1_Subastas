@@ -38,6 +38,7 @@ use App\Models\Address;
 Use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
+use App\Http\Controllers\externalws\vottun\VottunController;
 use App\libs\EmailLib;
 use App\Models\V5\SubAuchouse;
 use App\libs\FormLib;
@@ -221,11 +222,9 @@ class UserController extends Controller
 	{
 
 		$dataValues = $request->valoresPresta ?? null;
-		//$dataToTest = '"rUqswijjRBRNq6bKmw34tFFITA8gGdlB02rEA03b+eF8W37Ii0phH6h+4P1P+/JJeFRTQf4f59A6jITuZB7SslEHOrcVGuFGgw9DSfqnJ5JQI6rZW24YiPKl9EThADrT"';
-		//$dataToTest2 = '"rUqswijjRBRNq6bKmw34tFFITA8gGdlB02rEA03b+eF8W37Ii0phH6h+4P1P+/JJeFRTQf4f59A6jITuZB7SsnePs9tP5UkVwn9OHNbTtuGTrrj0uj8gTKs26PaY/HFj"';
+		//$dataValues = '"rUqswijjRBRNq6bKmw34tFFITA8gGdlB02rEA03b+eGJo5UgXq7qQlHu7NwQAH6/firwGow569jGUbg9i5s7UrGRYA++cXzCxgGeOhCyjmXaZ0CXPm/O9/Y3UqW753s+gfFme4FlrijD0l9RMJLZJXn7/aZgdMCy0ZGOV8Scr0q1c2CuAt3TqdYybJlIWluB"';
 
 		$data = ToolsServiceProvider::descrypt($dataValues, Config::get('app.ps_sb_auth_key'));
-		//$data2 = ToolsServiceProvider::descrypt($dataToTest2, Config::get('app.ps_sb_auth_key'));
 
 		/** [email, password, back, submitLogin] : la útlima era para presta */
 		$user = json_decode($data, true);
@@ -237,15 +236,11 @@ class UserController extends Controller
 		if(!$userCliWeb){
 
 			try {
-
 				DB::beginTransaction();
-
 				$userCliWeb = $this->duplicateWebUser($user['email'], config('app.gemp'), config('app.emp'));
-
 				DB::commit();
 
 			} catch (\Throwable $th) {
-
 				DB::rollBack();
 				return response($th->getMessage(), 500);
 			}
@@ -296,7 +291,7 @@ class UserController extends Controller
 		);
          $ip = $this->getUserIP();
         // run the validation rules on the inputs from the form
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(Input::all(), $rules);
         if ($validator->fails()) {
             //Log::info('LOGIN_NO_VALIDO no existe EMAIL: "'.Request::input('email').'" PASSWORD: "'.Request::input('password').'"' );
             if($ajax){
@@ -333,7 +328,8 @@ class UserController extends Controller
             if(!empty($login)) {
                 # Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
                 if($login->tipacceso_cliweb != 'X') {
-                    if(!empty(Request::input('remember_me'))){
+
+					if(!empty(Request::input('remember_me'))){
                         $password=Request::input('password');
                         Cookie::queue('user', ''.$email.'%'.$password.'','525600');
                     }
@@ -341,23 +337,25 @@ class UserController extends Controller
                     $this->SaveSession($login);
 					$user->logLogin($login->cod_cliweb,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
 
-					$datosPresta = "";
-                    if(!empty(Config::get('app.ps_activate'))){
-                        $datosPresta = array(
-                          'email' => Request::input('email'),
-						  'password' => Request::input('password'),
-						  'back' => Request::input('back') ?? '',
-                          'submitLogin' => '1'
-                        );
+					$externalLoginData = null;
 
-                        $datosPresta = \Tools::encrypt(json_encode($datosPresta), Config::get('app.ps_sb_auth_key'));
-                    }
+					if(config('app.ps_activate', false)){
+						$externalLoginData = [
+							'email' => $email,
+							'password' => $password,
+							'back' => request('back', '')
+						];
+						$externalEncryptDate = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
+					}
+
+
+                
 
                     if($ajax){
                         $res = array(
 						 'status' => 'success',
-						 'data' => $datosPresta
-
+						 'data' => $externalEncryptDate,
+						 'context_url' => request('context_url', ''),
                       );
 
                       return $res;
@@ -544,19 +542,22 @@ class UserController extends Controller
 
 	}
 
-	public function loginLanding(){
+	public function loginLanding()
+	{
+
+		$back = request('back', '');
+
+		if(Session::has("user") && !empty($back)){
+			Session::flush();
+		}
 
 		if (\Session::has("user")) {
 			return Redirect::to('/');
 		}
 
-		$back = '';
-		if(!empty(request('back'))){
-			$back = request('back');
-		}
+		request()->session()->flash('backUrl', url()->previous());
 
 		return view('pages.user.login_landing', ['back' => $back]);
-
 	}
 
     # Registrar un usuario
@@ -862,6 +863,12 @@ class UserController extends Controller
 
 					}
                     $rsoc = $name;
+					//En carlandia guardamos rsoc también en los usuarios F
+					if(config('app.rsoc_in_user_f', false)){
+						$rsoc = $rsoc_empresa ?? $name;
+					}
+
+
 					$tipv_cli ="";
                     //emppresa
                     if($emp == 'J'){
@@ -1412,6 +1419,7 @@ class UserController extends Controller
                     $response = array(
                         "err"       => 0,
                         "msg"       => '/'.(\Routing::slugSeo('usuario-registrado')),
+						"backTo" => request('backUrl', false)
                     );
                 }
 
@@ -2610,6 +2618,7 @@ class UserController extends Controller
 
         $iva = $pago_controller->getIva(\Config::get('app.emp'),date ("Y-m-d"));
         $tipo_iva = $pago_controller->user_has_Iva(\Config::get('app.gemp'),Session::get('user.cod'));
+		$iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo,$iva);
 
         //parametros de subasta, lo utilizamos por precio de seguro y de licencia exportacion
         $parametrosSub= $sub->getParametersSub();
@@ -2623,6 +2632,7 @@ class UserController extends Controller
             $price_lot->himp= (float) $puj->himp_csub;
             $price_lot->base= (float) number_format($puj->base_csub, 2, '.', '');
             $price_lot->iva= (float) number_format($puj->base_csub_iva, 2, '.', '');
+			$price_lot->tipo_sub = $puj->tipo_sub;
 
             //Nos dice si la direccion de envio que nos pone el cliente se puede mandar el lote
             $price_lot->transporte_lot = false;
@@ -2664,7 +2674,8 @@ class UserController extends Controller
 
         }
 
-        $iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo,$iva);
+		$iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo,$iva);
+
 
 
         //tenemos iva del cliente
@@ -3907,4 +3918,52 @@ class UserController extends Controller
         return View::make('front::pages.panel.adjudicaciones_subasta_pagar', array('data' => $data));
 	}
 
+	public function updateWallet(HttpRequest $request)
+	{
+		if(!session()->has('user')){
+			return response(['message' => 'No estas logueado'], 401);
+		}
+
+		$user = session('user');
+		FxCli::where('cod_cli', $user['cod'])->update(['wallet_cli' => $request->wallet_dir]);
+
+		return response(['status' => 'success', 'message' => 'wallet save'], 200);
+	}
+
+	public function createWallet(HttpRequest $request)
+	{
+		if(!session()->has('user')){
+			return response(['message' => 'No estas logueado'], 401);
+		}
+
+		$vottunController = new VottunController();
+		$hash = $vottunController->vottunPowTicket();
+		$hash = $hash->walletRequestTicket;
+
+		$urlBack = route('wallet.back');
+		$url = "https://powuat.vottun.tech/connect?h=$hash&r=$urlBack";
+
+		return response()->json(['status' => 'success', 'message' => 'hash obtained', 'url' => $url]);
+	}
+
+	/**
+	 * @todo posibles respuestas
+	 * 1. ?success=false&error=user_cancel
+	 * 2. ?success=true&walletAddress={walletAddress}
+	 */
+	public function backVottumWallet(HttpRequest $request)
+	{
+		Log::info('backVottumWallet', ['request' => $request->all()]);
+
+		if(!session()->has('user') || !$request->get('success') || !$request->has('walletAddress')){
+			//redirigir a pagina de error
+		}
+
+		$request->request->add(['wallet_dir' => $request->walletAddress]);
+
+		$this->updateWallet($request);
+
+		return redirect()->route('panel.account_info', ['lang' => config('app.locale')]);
+	}
 }
+

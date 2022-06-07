@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\libs\FormLib;
-use App\Models\V5\FgArt0;
+use App\Models\articles\FgArt0;
+
+
 
 class AdminArticlesController extends Controller
 {
@@ -20,13 +22,14 @@ class AdminArticlesController extends Controller
 	{
 
 		$emp = config('app.emp');
+		$gemp = config('app.gemp');
 
-		$articles = FgArt0::select('id_art0', 'sec_art0', 'title_art0', 'des_art0')
+		$articles = FgArt0::select('id_art0', 'des_sec as sec_art0', 'title_art0', 'des_art0')
 			->when($request->id_art0, function ($query, $id_art0) {
 				return $query->where('id_art0', 'like', "%{$id_art0}%");
 			})
 			->when($request->sec_art0, function ($query, $sec_art0) {
-				return $query->where('upper(sec_art0)', 'like', "%" . mb_strtoupper($sec_art0) . "%");
+				return $query->where('upper(des_sec)', 'like', "%" . mb_strtoupper($sec_art0) . "%");
 			})
 			->when($request->title_art0, function ($query, $title_art0) {
 				return $query->where('upper(title_art0)', 'like', "%" . mb_strtoupper($title_art0) . "%");
@@ -34,7 +37,7 @@ class AdminArticlesController extends Controller
 			->when($request->des_art0, function ($query, $des_art0) {
 				return $query->where('des_art0', 'like', "%{$des_art0}%");
 			})
-			->joinArtArt0()->where('WEB_ART', 'S')->orderBy($request->filled('orden') ? $request->order : 'id_art0', $request->filled('orden_art0') ? $request->orden_art0 : 'asc')
+			->joinArt()->joinSec()->artActivo()->orderBy($request->filled('orden') ? $request->order : 'id_art0', $request->filled('orden_art0') ? $request->orden_art0 : 'asc')
 			->paginate(30);
 
 		$tableParams = ['id_art0' => 1, 'sec_art0' => 1, 'title_art0' => 1, 'des_art0' => 1];
@@ -51,19 +54,25 @@ class AdminArticlesController extends Controller
 
 	public function getOrder()
 	{
+		$gemp = config('app.gemp');
+		$sections = FgArt0::select('cod_sec', 'des_sec', 'orden_ortsec1')->distinct()
+		->joinArt()->joinSec()->joinOrtsec1()->artActivo()->orderBy('orden_ortsec1', 'asc')->get();
 
-		$articles = FgArt0::select('id_art0', 'sec_art0', 'title_art0', 'des_art0', 'orden_art0')
-		->joinArtArt0()->where('WEB_ART', 'S')->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
+		foreach ($sections as $section) {
+			$articles = FgArt0::select('id_art0', 'sec_art0', 'title_art0', 'des_art0', 'orden_art0')
+			->joinArt()->joinSec()->artActivo()->where('sec_art0', $section->cod_sec)
+			->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
+			$section->articles = $articles;
+		}
 
-		return view('admin::pages.articles.order', compact('articles'));
+		return view('admin::pages.articles.order', compact('sections'));
 
 	}
 
 	public function saveOrder(Request $request)
 	{
-
-		$articles = FgArt0::select('id_art0', 'sec_art0', 'orden_art0')
-		->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
+		$articles = FgArt0::select('id_art0', 'sec_art0', 'des_sec', 'title_art0', 'des_art0', 'orden_art0')
+		->joinArt()->joinSec()->artActivo()->where('sec_art0', collect($request->sec))->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
 		$order = collect($request->ref)->flip();
 
 		foreach ($articles as $article) {
@@ -81,7 +90,6 @@ class AdminArticlesController extends Controller
 			 }
 		}
 
-		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
 }

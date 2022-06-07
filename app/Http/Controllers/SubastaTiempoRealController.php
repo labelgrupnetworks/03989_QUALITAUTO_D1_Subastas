@@ -31,6 +31,7 @@ use App\libs\StrLib;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
+use App\Models\V5\FgHces1;
 use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FgCreditoSub;
@@ -605,6 +606,85 @@ class subastaTiempoRealController extends Controller
         return $subasta->escalado();
     }
 
+	/**
+	 * Si no se ha realizado el login, miramos el resultado de la contrapuja para las siguientes acciones.
+	 */
+	public function preContraOfertar()
+	{
+		$cod_sub = request("cod_sub");
+		$ref_asigl0 = request("ref");
+		$counterOffer = request("imp", false);
+		$theme = config('app.theme');
+
+		$subasta = new subasta();
+        $subasta->cod = $cod_sub;
+		$subasta->lote = $ref_asigl0;
+        $lote_temp = $subasta->getLote();
+
+		$lote = head($lote_temp);
+
+		// si no es de venta directa o esta cerrado o no tiene precio minimo para realizar contraoferta
+		$notCounterOfferPermision = ($lote->imptas_asigl0 ?? 0) <= 0;
+		if($lote->tipo_sub != FgSub::TIPO_SUB_VENTA_DIRECTA || $lote->cerrado_asigl0 == 'S' || $notCounterOfferPermision){
+            return response()->json([
+				'status' => 'error',
+				'message' => trans("$theme-app.msg_error.counteroffer")
+			]);
+        }
+
+		//Con último desarrollo en el que ya no esta el botón comprar esto deja de tener sentido
+		//El valor de la contraoferta es superior al precio de salida
+		/* if($counterOffer >= $lote->impsalhces_asigl0){
+			return response()->json([
+				'status' => 'error',
+				'message' => trans("$theme-app.msg_error.counteroffer_toobig")
+			]);
+		} */
+
+		$subasta->imp = $counterOffer;
+		$subasta->ref = $ref_asigl0;
+
+		$urlSimilar = (new EmailLib(''))->getUrlGridLots($lote->num_hces1, $lote->lin_hces1, 'V', 0, $counterOffer * 1.25);
+
+		$response = [
+			'status' => 'success',
+			'message' => '¡Enhorabuena! El Vendedor ha aceptado tu Oferta. Por favor, danos tus datos para tramitarla.',
+			'messageToCancel' => '¿Estás seguro de que no quieres tramitar tu Oferta?',
+			'counterofferType' => FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA,
+			'amountOverOriginalValue' => true,
+			'counterofferValue' => $counterOffer,
+			'urlSimilar' => $urlSimilar,
+		];
+
+		if($counterOffer < $lote->imptas_asigl0){
+
+			#recuperamos el % por el cual esta dispuesto a recibir email, por ejemplo todas las ofertas por que esten por encima de un 10% menos del precio
+			$owner = FgHces1::select('dtoc_cli')->getOwner()->where([
+				['num_hces1',$lote->num_hces1],
+				['lin_hces1',$lote->lin_hces1]
+			])->first();
+
+			//por defecto Si el valor de la contraoferta, llega al 90% del importe minimo, enviamos email al vendedor
+			$percentMinOffer = 0.9;
+			#si tenemos datos del concesionario calculamos el % que debe alcanzar
+			if(!empty($owner) && !empty($owner->dtoc_cli) &&  $owner->dtoc_cli > 0){
+				$percentMinOffer = (100 - $owner->dtoc_cli) /100;
+			}
+
+			//Si el valor de la contraoferta, llega al 90% del importe minimo, debemos saverlo de alguna manera
+			$amountOverOriginalValue = $counterOffer / $lote->imptas_asigl0;
+
+			$isAmountOverOriginalValue = $amountOverOriginalValue >= $percentMinOffer;
+
+			$response['message'] = "Gracias por tu Oferta. Por favor, danos tus datos para tramitarla.";
+			$response['messageToCancel'] = '¿Seguro que no quieres tramitar tu Oferta?';
+			$response['counterofferType'] = FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA;
+			$response['amountOverOriginalValue'] = $isAmountOverOriginalValue;
+		}
+
+		return response()->json($response);
+	}
+
 	public function contraOfertar()
 	{
 		$cod_sub = request("cod_sub");
@@ -638,10 +718,11 @@ class subastaTiempoRealController extends Controller
             return $this->error_puja(trans("$theme-app.msg_error.counteroffer"), NULL, FALSE);
         }
 
+		//Con último desarrollo en el que ya no esta el botón comprar esto deja de tener sentido
 		//El valor de la contraoferta es superior al precio de salida
-		if($counterOffer >= $lote->impsalhces_asigl0){
+		/* if($counterOffer >= $lote->impsalhces_asigl0){
 			return $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.counteroffer_toobig'), NULL, FALSE);
-		}
+		} */
 
 		$subasta->licit = $cod_licit;
 		$subasta->imp = $counterOffer;
@@ -656,14 +737,37 @@ class subastaTiempoRealController extends Controller
 			}
 
 			//$mailController->sendCounterofferRejected($cod_licit, $cod_sub, $ref_asigl0, $counterOffer);
+			#recuperamos el % por el cual esta dispuesto a recibir email, por ejemplo todas las ofertas por que esten por encima de un 10% menos del precio
+			$owner = FgHces1::select('dtoc_cli')->getOwner()->where([
+				['num_hces1',$lote->num_hces1],
+				['lin_hces1',$lote->lin_hces1]
+			])->first();
+
+			$result['amountOver'] = false;
+
+			//por defecto Si el valor de la contraoferta, llega al 90% del importe minimo, enviamos email al vendedor
+			$percentMinOffer = 0.9;
+			#si tenemos datos del concesionario calculamos el % que debe alcanzar
+			if(!empty($owner) && !empty($owner->dtoc_cli) &&  $owner->dtoc_cli > 0){
+				$percentMinOffer = (100 - $owner->dtoc_cli) /100;
+			}
 
 			//Si el valor de la contraoferta, llega al 90% del importe minimo, enviamos email al vendedor
 			$amountOverOriginalValue = $counterOffer / $lote->imptas_asigl0;
-			if($amountOverOriginalValue >= 0.9){
-				$mailController->sendCounterofferToOwner($cod_user, $cod_sub, $ref_asigl0, $counterOffer, $lote->num_hces1, $lote->lin_hces1, false);
+			if($amountOverOriginalValue >= $percentMinOffer){
+
+				$mailController->sendCounterofferToOwner($cod_user, $cod_sub, $ref_asigl0, $counterOffer, $lote->num_hces1, $lote->lin_hces1, false, $result['bid']->lin_asigl1, $result['bid']->licit_asigl1, $lote->imptas_asigl0);
+
+				$mailController->sendCounterofferAmountOverToLicit($cod_user, $cod_sub, $ref_asigl0, $counterOffer);
+
+				$result['amountOver'] = true;
+				$result['msg'] = 'Tu Oferta está cerca del precio solicitado por el Vendedor y la está considerando. Para evitar que se venda a otro comprador, asegura su compra al precio indicado o incrementa tu oferta.';
+
 			}
 
-			return $this->error_puja($result['msg'], NULL, FALSE);
+			$mailController->sendCounterofferToAdmin($cod_user, $cod_sub, $ref_asigl0, $counterOffer, $lote->imptas_asigl0);
+
+			return $result;
 		}
 
 		//El valor es correcto
@@ -709,6 +813,8 @@ class subastaTiempoRealController extends Controller
 		$data["pay_link"] = $email->getAtribute("PAY_LINK");
 		$result["msg"] =   View::make('front::pages.pagarVehiculo', $data)->render();
 
+		$result["payLink"] = $link;
+		$result["messageToCancel"] = "¿Seguro que no quieres depositar la señal para reservar tu vehículo?";
 		//mail a propietario con copia a admin
 
 		//como se envía email de pago de señal, ya no hace falta enviar email de contraoferta acepatada ni a vendedor ni a admin
@@ -839,6 +945,9 @@ class subastaTiempoRealController extends Controller
 		$data["prop_email"] = $email->getAtribute("PROP_EMAIL");
 		$data["pay_link"] = $email->getAtribute("PAY_LINK");
 		$result["msg"] =   View::make('front::pages.pagarVehiculo', $data)->render();
+
+		$result["messageToCancel"] = "¿Seguro que no quieres depositar la señal para reservar tu vehículo?";
+		$result["payLink"] = $link;
 
 		return $result;
 
@@ -1024,7 +1133,7 @@ class subastaTiempoRealController extends Controller
         $aux_user = DB::table("FXCLI")->addSelect("ries_cli,blockpuj_cli")->where("GEMP_CLI",\Config::get("app.gemp"))->where("COD_CLI",$cod_user)->first();
 
 		if ( $aux_user->blockpuj_cli == "S") {
-			$res = $this->error_puja('usuario_pendiente_revision', NULL, False);
+			$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.usuario_pendiente_revision'), NULL, False);
 			return $res;
 		}
 
@@ -1057,7 +1166,12 @@ class subastaTiempoRealController extends Controller
 		$subasta->tel2 = $tel2;
 
 		if ( $ortherphone || !empty($tel1) || !empty($tel2) ) {
-			$subasta->type_bid = "T";
+			if(\Config::get('app.diferenciarOrdenTelefonicaWeb')){
+				$subasta->type_bid = "X";
+			}else{
+				$subasta->type_bid = "T";
+			}
+
 		}
         $checklicit = $subasta->checkLicitador();
         //si no ha devuelto ningun codigo de licitador
@@ -3153,8 +3267,11 @@ class subastaTiempoRealController extends Controller
         $admin_user = Session::get('user.admin');
 
         if (empty($cod_user) || empty($admin_user) ){
-            $res = $this->error_puja('mustLogin',NULL, FALSE);
-            return $res;
+			$res = array(
+				'status' => 'error',
+				'msg' => 'session_end'
+				);
+				return $res;
         }
         $SubastaTR           = new SubastaTiempoReal();
         $SubastaTR->cod      = Input::get('cod_sub');

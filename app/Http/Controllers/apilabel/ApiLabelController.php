@@ -133,10 +133,13 @@ class ApiLabelController extends BaseController
        $this->index = null;
        foreach($itemsRename as $key=>$item){
 			if(empty($item)){
-				$pos=$key+1;
+
+				$messageBag = new MessageBag();
+				$messageBag->add("Error",trans('apilabel-app.errors.no_params') );
+                $errorsItem["item_".($key +1)] =$messageBag;
                 #guardamos en un array los errores provocados
-                $errors["item_$pos"]=trans('apilabel-app.errors.no_params');
-				throw new ApiLabelException(trans('apilabel-app.errors.updating'),$errors);
+
+				throw new ApiLabelException(trans('apilabel-app.errors.updating'),$errorsItem);
 			}
 
             $this->index = $key;
@@ -170,7 +173,12 @@ class ApiLabelController extends BaseController
 		$res = $model->delete();
 		#generamos excepción si no hay elementos, se puede evitar enviando false en $errorNotdelete
         if($res==0 && $errorNotdelete){
-            throw new ApiLabelException(trans('apilabel-app.errors.delete'));
+			$campos=" FIELDS: ";
+			foreach($whereVars as $key=> $vars){
+				$campos.=" $key = $vars ";
+			}
+
+            throw new ApiLabelException(trans('apilabel-app.errors.delete'). $campos);
         }
 
     }
@@ -282,9 +290,9 @@ class ApiLabelController extends BaseController
     #si pasan un array de parametros
     protected function renameArray($items, $names){
         $newitems = array();
-        foreach($items as $item){
-
-            $newitems[]=$this->rename($item, $names);
+        foreach($items as $key => $item){
+			#hay que mantener las keys para notificar bien los errores
+            $newitems[$key]=$this->rename($item, $names);
         }
 
         return $newitems;
@@ -323,8 +331,6 @@ class ApiLabelController extends BaseController
             return $this->responseError($message, $items);
 
         }elseif ($e instanceof ApiLabelException){
-
-
 
             return $this->responseError($e->getMessage(),$e->getItems());
         }
@@ -389,7 +395,9 @@ class ApiLabelController extends BaseController
 
             #si no existe el cliente devolvemos error
             if(empty($client)){
-                $errorsItem["item_".($key +1)] = array("idoriginclient" => $item["idoriginclient"]);
+				$messageBag = new MessageBag();
+				$messageBag->add("idoriginclient",trans('apilabel-app.errors.no_match') );
+                $errorsItem["item_".($key +1)] =$messageBag;
                 throw new ApiLabelException(trans('apilabel-app.errors.no_match'), $errorsItem);
             }
             #sumamos uno al maximo que habia para usar el siguiente
@@ -416,13 +424,11 @@ class ApiLabelController extends BaseController
 
     protected function responseError( $message="", $items = null) {
 
-
 		#si existe el array items de la petición
 		if( !empty($this->request["items"])  ){
 
 			#recorremos los items que han dado error
 			foreach($items as $key => $item){
-
 				#con el indice del item del errorpodemos obtener el indice real, solo hay que extraer el numero y restarle 1
 				$indexExplode = explode("_", $key);
 
@@ -431,7 +437,11 @@ class ApiLabelController extends BaseController
 					$index = $indexExplode[1] -1;
 					# si existe el indice en la petición, podemos recuperar la petición que se hizo
 					if(!empty($this->request["items"][$index])){
-						$items[$key]->add("request", $this->request["items"][$index]);
+						#esta dando error al ser array
+						if(!is_array($items[$key])){
+							$items[$key]->add("request", $this->request["items"][$index]);
+						}
+
 					}
 				}
 			}
@@ -487,10 +497,17 @@ class ApiLabelController extends BaseController
 
 				#FORMATEAR LOS TEXTOS DEL MENSAJE DE ERROR
 				$body="";
+
 				if(is_array($items)){
 					foreach($items as $key => $item){
 						$body.="<br> ". strtoupper($key)." <br>";
-						foreach($item->toArray() as $field => $arrayValues){
+						#esta dando error al ser array, revisar problema con la llamada lot/put {"idorigin": "", "idauction": "0", "warehouse": "3"}
+						if(!is_array($item)){
+							$itemArray = $item->toArray();
+						}else{
+							$itemArray = $item;
+						}
+						foreach($itemArray as $field => $arrayValues){
 							$body.="<br> <b>$field:</b> <br>";
 							foreach($arrayValues as  $element){
 
@@ -521,11 +538,12 @@ class ApiLabelController extends BaseController
 				$email->setAtribute("MESSAGE", $message);
 				$email->setAtribute("BODY", $body ); //nl2br(print_r($items,JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))
 				$email->send_email();
-				return;
+				#lo comento para que se guarden siempre los logs
+				//return;
 			}
 		}
 		# si estamos en pruebas, lo escribimos en log
-		\Log::error($message . " ".print_r($items,true));
+		\Log::channel('api')->error($message . " ".print_r($items,true));
 
 
 	}

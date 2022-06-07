@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class FgSub_Log extends Model
 {
-    protected $table = 'FgSub';
+    protected $table = 'FGSUB_LOG';
     protected $primaryKey = 'emp_sub,cod_sub';
 
     public $timestamps = false;
@@ -38,6 +38,14 @@ class FgSub_Log extends Model
 
             $builder->where('emp_sub', \Config::get("app.emp"));
         });
+	}
+
+	public function scopelog($query){
+        return $query->joinUsr()->select("FSUSR.NOM_USR, FGSUB_LOG.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGSUB_LOG.USR_UPDATE_SUB");
 	}
 
 }

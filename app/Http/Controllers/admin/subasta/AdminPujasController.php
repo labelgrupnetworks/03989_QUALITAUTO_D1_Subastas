@@ -23,9 +23,13 @@ class AdminPujasController extends Controller
 	function index(Request $request, $cod_sub, $resource_name)
 	{
 		$pujas = $this->pujasInstance();
+		# he añadido el campo asigl0_aux para que se sepa si viene de una puja auxiliar o de una normal y así pdoer borrar la que toca
+		$pujas = $pujas->select("ref_asigl1", "lin_asigl1", 'pujrep_asigl1', 'type_asigl1', "licit_asigl1", "imp_asigl1", "fec_asigl1", "hora_asigl1", "FXCLI.nom_cli", "FGHCES1.descweb_hces1", "cod2_cli", "fgasigl0.idorigen_asigl0", "fgasigl0.retirado_asigl0", "fgasigl0.ffin_asigl0", "fgasigl0.hfin_asigl0");
+		if (Config::get('app.lower_bids', false) || config('app.auxiliar_bids', false)){
+			$pujas =$pujas->addselect( "asigl0_aux");
 
-		$pujas = $pujas->select("ref_asigl1", "lin_asigl1", 'pujrep_asigl1', 'type_asigl1', "licit_asigl1", "imp_asigl1", "fec_asigl1", "hora_asigl1", "FXCLI.nom_cli", "FGHCES1.descweb_hces1", "cod2_cli", "fgasigl0.idorigen_asigl0", "fgasigl0.retirado_asigl0", "fgasigl0.ffin_asigl0", "fgasigl0.hfin_asigl0")
-					->where('sub_asigl1', $cod_sub)
+		}
+		$pujas = $pujas->where('sub_asigl1', $cod_sub)
 
 					->when($request->ref_asigl1, function($query, $ref_asigl1){
 						$query->where('ref_asigl1', $ref_asigl1);
@@ -109,8 +113,8 @@ class AdminPujasController extends Controller
 	private function pujasInstance()
 	{
 		if (Config::get('app.lower_bids', false) || config('app.auxiliar_bids', false)){
-			$asigl1_aux = FgAsigl1_Aux::withoutGlobalScopes(['emp']);
-			$asigl1 = FgAsigl1::withoutGlobalScopes(['emp']);
+			$asigl1_aux = FgAsigl1_Aux::withoutGlobalScopes(['emp'])->select('emp_asigl1', 'sub_asigl1', 'ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'pujrep_asigl1', 'hora_asigl1', 'type_asigl1', 'usr_update_asigl1', 'date_update_asigl1', 'type_update_asigl1', "'SI' as asigl0_aux");
+			$asigl1 = FgAsigl1::withoutGlobalScopes(['emp'])->select('emp_asigl1', 'sub_asigl1', 'ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'pujrep_asigl1', 'hora_asigl1', 'type_asigl1', 'usr_update_asigl1', 'date_update_asigl1', 'type_update_asigl1', "'NO' as asigl0_aux");
 
 			$pujasSql = $asigl1->unionAll($asigl1_aux)->toSql();
 

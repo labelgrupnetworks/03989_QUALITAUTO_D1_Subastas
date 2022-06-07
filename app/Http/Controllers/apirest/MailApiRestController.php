@@ -7,7 +7,9 @@ use Illuminate\Http\Request as Request;
 use App\libs\EmailLib;
 use App\Models\Subasta;
 use App\Models\User;
+use App\Models\V5\FgDeposito;
 use App\Models\V5\FxCliWeb;
+use Illuminate\Database\Eloquent\Builder;
 
 class MailApiRestController extends ApiRestController {
 
@@ -384,6 +386,46 @@ class MailApiRestController extends ApiRestController {
     }
 
 
+	/**
+	 * Sende email to users with deposit in lot
+	 */
+	public function sendToUsersWithDepositWhenChangeFiles()
+	{
+		$cod_sub = request('cod_sub');
+		$ref = request('ref');
 
+		try {
+			$usersWithDeposit = FgDeposito::where('estado_deposito', FgDeposito::ESTADO_VALIDO)
+				->where(function (Builder $query) use ($cod_sub, $ref) {
+
+					$query->where('SUB_DEPOSITO', $cod_sub)
+					->where(function (Builder $query) use ($ref) {
+						$query->where('REF_DEPOSITO', $ref)
+							->orWhereNull('REF_DEPOSITO');
+					});
+				})->get();
+
+			if (!$usersWithDeposit) {
+				return $this->responseNotFound("No existen usuarios con deposito");
+			}
+
+			$email = new EmailLib('DEPOSIT_CHANGE_FILES');
+			if (empty($email->email)) {
+				return $this->responseNotFound("No existe el email");
+			}
+
+			$usersWithDepositArray = $usersWithDeposit->unique('cli_deposito')->pluck('cli_deposito');
+
+			foreach ($usersWithDepositArray as $user) {
+				$email->setUserByCod($user, true);
+				$email->setLot($cod_sub, $ref);
+				$email->send_email();
+			}
+
+			return $this->responder(true, trans(config('app.theme') . '-app.emails.api_email_send'), "", 200);
+		} catch (\Throwable $th) {
+			return $this->responseNotFound($th->getMessage());
+		}
+	}
 
 }

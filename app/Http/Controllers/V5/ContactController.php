@@ -98,9 +98,7 @@ class ContactController extends Controller
 
 			$email->send_email();
 		}
-		else {
-			return MessageLib::errorMessage("Error Sending Mail","Error");
-		}
+
 
 		// Enviamos el email de confirmación al usuario
 
@@ -113,9 +111,8 @@ class ContactController extends Controller
 			$email->setTo($data['email']);
 			$email->send_email();
 		}
-		else {
-			return MessageLib::errorMessage("Error Sending Mail","Error");
-		}
+
+		
 
 		return MessageLib::successMessage("mensaje_enviado");
 

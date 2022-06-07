@@ -426,61 +426,34 @@ class AdminAwardController extends Controller
 		}
 
 		# Si está activado el config lo que hace es añadir el campo 'afral_csub' al select de la query
-		if (\Config::get('app.payAwards')) {
-			$adjudicaciones = FgAsigl0::select('sub_asigl0', 'ref_asigl0', 'descweb_hces1', 'himp_csub', 'base_csub', 'impsalhces_asigl0', 'fecha_csub', 'licit_csub','afral_csub')
-			->addSelect('nom_cli', 'rsoc_cli', 'email_cli', 'cod_cli')
-			->addSelect($personalizedFields)
-				->joinFghces1Asigl0()
-				->joinCSubAsigl0()
-				->leftJoinCliWithCsub()
-				->leftjoin('FXCLID', "FXCLID.GEMP_CLID = FXCLI.GEMP_CLI AND FXCLID.CLI_CLID = FXCLI.COD_CLI AND CODD_CLID = 'W1'")
-				->whereNotNull('clifac_csub')
+		$adjudicaciones = FgAsigl0::select('sub_asigl0', 'ref_asigl0', 'descweb_hces1', 'himp_csub', 'base_csub', 'impsalhces_asigl0', 'fecha_csub', 'licit_csub')
+		->addSelect('nom_cli', 'rsoc_cli', 'email_cli', 'cod_cli')
+		->addSelect($personalizedFields)
+			->joinFghces1Asigl0()
+			->joinCSubAsigl0()
+			->leftJoinCliWithCsub()
+			->leftjoin('FXCLID', "FXCLID.GEMP_CLID = FXCLI.GEMP_CLI AND FXCLID.CLI_CLID = FXCLI.COD_CLI AND CODD_CLID = 'W1'")
+			->whereNotNull('clifac_csub')
 
-				->when(config('app.featuresInAdmin', false), function($query, $features){
-					return $query->addSelect('name_caracteristicas', 'value_caracteristicas_hces1', 'value_caracteristicas_value')
-						->leftJoinCaracteristicasAsigl0()
-						->whereIn('id_caracteristicas', explode(',', $features));
-				})
-				->when($idauction, function($query, $cod_sub){
-					return $query->where('sub_asigl0', $cod_sub);
-				})
-				->when($request->from_fecha_csub, function($query, $fecha){
-					return $query->where('fecha_csub', '>=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-				})
-				->when($request->to_fecha_csub, function($query, $fecha){
-					return $query->where('fecha_csub', '<=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 23:59:59');
-				})
-				->whenFilters($request, $filters)->orderBy(request('order_awards', 'sub_asigl0'), request('order_awards_dir', 'desc'));
+			->when(\Config::get('app.payAwards'), function($query){
+				return $query->addSelect('afral_csub');
+			})
 
-		} else {
-			# En esta query no está añadido el campo 'afral_csub'
-			$adjudicaciones = FgAsigl0::select('sub_asigl0', 'ref_asigl0', 'descweb_hces1', 'himp_csub', 'base_csub', 'impsalhces_asigl0', 'fecha_csub', 'licit_csub')
-				->addSelect('nom_cli', 'rsoc_cli', 'email_cli', 'cod_cli')
-				->addSelect($personalizedFields)
-				->joinFghces1Asigl0()
-				->joinCSubAsigl0()
-				->leftJoinCliWithCsub()
-				->leftjoin('FXCLID', "FXCLID.GEMP_CLID = FXCLI.GEMP_CLI AND FXCLID.CLI_CLID = FXCLI.COD_CLI AND CODD_CLID = 'W1'")
-				->whereNotNull('clifac_csub')
-
-				->when(config('app.featuresInAdmin', false), function($query, $features){
-					return $query->addSelect('name_caracteristicas', 'value_caracteristicas_hces1', 'value_caracteristicas_value')
-						->leftJoinCaracteristicasAsigl0()
-						->whereIn('id_caracteristicas', explode(',', $features));
-				})
-				->when($idauction, function($query, $cod_sub){
-					return $query->where('sub_asigl0', $cod_sub);
-				})
-				->when($request->from_fecha_csub, function($query, $fecha){
-					return $query->where('fecha_csub', '>=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-				})
-				->when($request->to_fecha_csub, function($query, $fecha){
-					return $query->where('fecha_csub', '<=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 23:59:59');
-				})
-
-				->whenFilters($request, $filters)->orderBy(request('order_awards', 'sub_asigl0'), request('order_awards_dir', 'desc'));
-
-		}
+			->when(config('app.featuresInAdmin', false), function($query, $features){
+				return $query->addSelect('name_caracteristicas', 'value_caracteristicas_hces1', 'value_caracteristicas_value')
+					->leftJoinCaracteristicasAsigl0()
+					->whereIn('id_caracteristicas', explode(',', $features));
+			})
+			->when($idauction, function($query, $cod_sub){
+				return $query->where('sub_asigl0', $cod_sub);
+			})
+			->when($request->from_fecha_csub, function($query, $fecha){
+				return $query->where('fecha_csub', '>=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+			})
+			->when($request->to_fecha_csub, function($query, $fecha){
+				return $query->where('fecha_csub', '<=', ToolsServiceProvider::getDateFormat($fecha, 'Y-m-d', 'Y/m/d') . ' 23:59:59');
+			})
+			->whenFilters($request, $filters)->orderBy(request('order_awards', 'sub_asigl0'), request('order_awards_dir', 'desc'));
 
 			return $adjudicaciones;
 	}

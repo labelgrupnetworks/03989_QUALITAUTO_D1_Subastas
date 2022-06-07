@@ -27,6 +27,7 @@ use App\libs\EmailLib;
 use Illuminate\Support\Facades\Validator;
 use \App\Http\Controllers\UserController;
 use App\Models\V5\FgHces1;
+use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Providers\ToolsServiceProvider as Tools;
@@ -222,7 +223,6 @@ class MailController extends Controller
 
 
             $hoy = date("Y-m-d");
-            $lot_relacionados_lang;
             $lotes_relacionado_final = '';
             $relacionados = array();
             $licit = '';
@@ -1254,6 +1254,23 @@ class MailController extends Controller
 			if(!$email->send_email()){
 				return;
 			};
+
+			if(Config::get('app.email_bid_to_notiemails')){
+				$notiEmailsSub = FgSub::select("NOTIEMAILS_SUB")->where("COD_SUB", $info->cod_sub)->first();
+
+				if(!empty($notiEmailsSub) && !empty($notiEmailsSub->notiemails_sub)){
+					$emailsNotario = explode(";",$notiEmailsSub->notiemails_sub);
+					$email->attachments = $pdfController->getPathsPdfs([$reportTitleBidsReport]);
+
+					foreach($emailsNotario as $emailNotario) {
+						$email->setTo($emailNotario);
+						if(!$email->send_email()){
+							return;
+						};
+					}
+				}
+			}
+
 			$mailquery->updateWebEmailCloseAuction($emp, $cod_sub, 'AUCTION_REPORT', 'S');
 
 		} catch (\Exception $e) {
@@ -1369,11 +1386,12 @@ class MailController extends Controller
                 }
 			}
 
+			$propietary = null;
+			if(!empty($inf_lot->prop_hces1)){
+				$propietary = FxCli::select('RSOC_CLI')->where('COD_CLI', $inf_lot->prop_hces1)->first();
+			}
 
 			if(Config::get('app.informes_pdf_user', 0) || Config::get('app.informes_pdf', 0)){
-				if(!empty($inf_lot->prop_hces1)){
-					$propietary = FxCli::select('RSOC_CLI')->where('COD_CLI', $inf_lot->prop_hces1)->first();
-				}
 
 				$tableInfo = [
 					trans(\Config::get('app.theme').'-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
@@ -1391,12 +1409,20 @@ class MailController extends Controller
 
 				$pdfController->generateBidsPdf();
 				$pdfController->generateClientsPdf();
-				$pdfController->generateAwardLotPdf($propietary->rsoc_cli, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
+				$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? '', $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
 
 				$pdfController->savePdfs($inf_subasta->cod_sub, $inf_lot->ref_asigl0);
 			}
 
             $email = new EmailLib('LOT_AWARD');
+			//si tienen config de emial por propietario cargamos template según este
+			if(config('app.email_by_propietary') && $propietary){
+				$theme = config('app.theme');
+				$email->get_design('LOT_AWARD_PROPIETARY');
+				$email->setAtribute('texto_personalizado', trans("$theme-app.emails.section_$propietary->cod_cli"));
+			}
+
+
             if (!empty($email->email)) {
 
 				$email->setUserByLicit($cod_sub, $adjudicado->licit_csub, true);
@@ -1444,6 +1470,7 @@ class MailController extends Controller
                     $email->setAuction_code($cod_sub);
                     $email->setLot_ref($ref);
                     $email->setAtribute('DESCDET_HCES1', $inf_lot_translate[strtoupper(Config::get('app.locale'))]->descdet_hces1);
+					$email->setCloseDate($inf_lot->close_at);
 					$email->setTo($admin_email);
 
 					if(Config::get('app.informes_pdf', 0)){
@@ -2252,7 +2279,7 @@ class MailController extends Controller
 
             $email->send_email();
         }
-		
+
 		$email = new EmailLib('ASK_LOT');
 		if (!empty($email->email) && $cod_user) {
 			$email->setAtribute("AUCTION_NAME", $auction);
@@ -2310,7 +2337,7 @@ class MailController extends Controller
 	}
 
 
-	public function sendCounterofferToOwner($cod_cli, $cod_sub, $ref, $imp, $num_hces1, $lin_hces1, $aboveMinPrice)
+	public function sendCounterofferToOwner($cod_cli, $cod_sub, $ref, $imp, $num_hces1, $lin_hces1, $aboveMinPrice, $lin_asigl1 = null, $licit_asigl1 = null, $imp_min)
 	{
 		$emailOwner = FgHces1::select('email_cli')->getOwner()->where([
 			['num_hces1', $num_hces1],
@@ -2321,7 +2348,7 @@ class MailController extends Controller
 			return false;
 		}
 
-		$email = new EmailLib('COUNTEROFFER_OWNER');
+		$email = new EmailLib('COUNTEROFFER_OWNER_LINK');
 
 		if(!empty($email->email)){
 			$email->setUserByCod($cod_cli, false);
@@ -2331,11 +2358,26 @@ class MailController extends Controller
 				$email->subtractCommissionToAttributes();
 				$comision = 1 + config('app.carlandiaCommission');
 				$imp = $imp / $comision;
+				$imp_min = $imp_min / $comision;
 			}
+
+			//diferencias
+			$differenceInEuros = $imp - $imp_min;
+			$differenceInPercent = ($differenceInEuros / $imp_min) * 100;
+			$color = $differenceInEuros < 0 ? 'red' : 'green';
+
+			$email->setAtribute('COLOR', $color);
+        	$email->setAtribute('DIFF_IN_MONEY', Tools::moneyFormat($differenceInEuros, '', 0));
+        	$email->setAtribute('DIFF_IN_PERCENT', Tools::moneyFormat($differenceInPercent, '', 2));
+
+			$email->setAtribute('DATE', \Carbon\Carbon::now()->format('d/m/Y'));
+			$email->setAtribute('TIME', \Carbon\Carbon::now()->format('H:i'));
 
 			$email->setAtribute('PRICE_COUNTEROFFER', Tools::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros'), 2));
 			$email->setTo($emailOwner->email_cli);
-			$email->setCc(config('app.admin_email'));
+			//ya les llega una copia de email para admin
+			/* $email->setCc(config('app.admin_email')); */
+			$email->setAtribute('LINK_ACEPTAR_CONTRAOFERTA',route("aceptacion-contraoferta")."?sku=$ref-$lin_asigl1-$licit_asigl1");
 
 			//en principio siempre llega false, pero lo mantego por si acaso
 			$email->setAtribute('SUBJECT', $aboveMinPrice ? trans(config('app.theme').'-app.emails.counteroffer_owner_accept') : trans(config('app.theme').'-app.emails.counteroffer_owner_min_price'));
@@ -2345,6 +2387,64 @@ class MailController extends Controller
 			}
 		}
 		return false;
+	}
+
+	public function sendCounterofferAmountOverToLicit($cod_cli, $cod_sub, $ref, $imp)
+	{
+		$email = new EmailLib('COUNTEROFFER_LICIT_REJECTED');
+		if(empty($email->email)){
+			return false;
+		}
+
+		$email->setUserByCod($cod_cli, true);
+		$email->setLot($cod_sub, $ref);
+		$email->setAtribute('PRICE_COUNTEROFFER', Tools::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros')));
+		$email->send_email();
+		return true;
+	}
+
+	public function sendCounterofferToAdmin($cod_cli, $cod_sub, $ref, $imp, $imp_min)
+	{
+		$email = new EmailLib('COUNTEROFFER_ADMIN');
+		if(empty($email->email)){
+			return false;
+		}
+
+		$theme = config('app.theme');
+
+		$email->setUserByCod($cod_cli, false);
+		$email->setLot($cod_sub, $ref);
+		$email->setPropInfo($cod_sub, $ref);
+
+		//Para quitar la comision de Carlandia.
+		/* $email->subtractCommissionToAttributes(); */
+
+		//importe total, lo pongo con € y sin decimales
+		$email->setPrice(\Tools::moneyFormat($imp, trans("$theme-app.subastas.euros")));
+
+		//precio sin comisión
+		$carlandiaCommission = config("app.carlandiaCommission", 0);
+		$impToOwner = ($imp / (1 + $carlandiaCommission));
+		$email->setAtribute('PRICE_TO_OWNER', Tools::moneyFormat($impToOwner, trans("$theme-app.subastas.euros")));
+
+
+		//diferencias
+		$differenceInEuros = $impToOwner - $imp_min;
+        $differenceInPercent = ($differenceInEuros / $imp_min) * 100;
+
+		$color = $differenceInEuros < 0 ? 'red' : 'green';
+
+		$email->setAtribute('COLOR', $color);
+        $email->setAtribute('DIFF_IN_MONEY', Tools::moneyFormat($differenceInEuros, '', 0));
+        $email->setAtribute('DIFF_IN_PERCENT', Tools::moneyFormat($differenceInPercent, '', 2));
+
+		$email->setAtribute('DATE', \Carbon\Carbon::now()->format('d/m/Y'));
+		$email->setAtribute('TIME', \Carbon\Carbon::now()->format('H:i'));
+
+        $email->setTo(config('app.admin_email'));
+        $email->send_email();
+        return true;
+
 	}
 
 	/**

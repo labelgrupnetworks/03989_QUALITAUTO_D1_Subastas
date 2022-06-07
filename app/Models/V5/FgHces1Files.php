@@ -1,0 +1,200 @@
+<?php
+
+# Ubicacion del modelo
+namespace App\Models\V5;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
+
+class FgHces1Files extends Model
+{
+    protected $table = 'FGHCES1_FILES';
+    protected $primaryKey = 'ID_HCES1_FILES';
+
+    public $timestamps = false;
+
+    //permitimos crear un elemento apartir de todos los campos
+    protected $guarded = [];
+
+	const ROOT_DIRECTORY = 'files';
+
+    #definimos la variable emp para no tener que indicarla cada vez
+    public function __construct(array $vars = []){
+        $this->attributes=[
+            'emp_hces1_files' => Config::get("app.emp")
+        ];
+        parent::__construct($vars);
+	}
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('emp', function(Builder $builder) {
+            $builder->where('emp_hces1_files', Config::get("app.emp"));
+        });
+    }
+
+
+	/***
+	 * Atributos
+	 */
+	public function getStoragePathAttribute()
+	{
+		$path = str_replace("\\", "/", $this->attributes['path_hces1_files']);
+
+		if(config('app.storage_path_active', false)){
+			return storage_path('app/' . self::ROOT_DIRECTORY . $path);
+		}
+		else{
+			return public_path('/'. self::ROOT_DIRECTORY . $path);
+		}
+
+
+	}
+
+	public function getDownloadPathAttribute()
+	{
+		return route('lot_file_download', ['lang' => config('app.locale'),'file' => $this->id_hces1_files, 'numhces' => $this->numhces_hces1_files, 'linhces' => $this->linhces_hces1_files]);
+	}
+
+
+
+	/***
+	 * Recursos
+	 */
+	public static function getAllFilesByLot($num_hces1, $lin_hces1)
+	{
+		return self::where('numhces_hces1_files', $num_hces1)
+					->where('linhces_hces1_files', $lin_hces1)
+					->orderBy('order_hces1_files')
+					->get();
+	}
+
+	public static function getAllFilesByLotCanViewUser($userSession, $num_hces1, $lin_hces1, $validDeposit = false)
+	{
+		return self::withNumhcesAndLinhces($num_hces1, $lin_hces1)
+					->withPermissions($userSession, $validDeposit)
+					->active()
+					->orderBy('order_hces1_files')
+					->get();
+	}
+
+	public static function getFileByIdCanViewUser($userSession, $idFile, $validDeposit = false)
+	{
+		return self::where('id_hces1_files', $idFile)
+					->withPermissions($userSession, $validDeposit)
+					->active()
+					->first();
+	}
+
+	/***
+	 * Scopes y where's
+	 */
+	public function scopeWithPermissions($query, $userSession, $validDeposit)
+	{
+
+		$permissions = ['N'];
+
+		//si no es usuario se obtienen los que no tienen permisos
+		if(!$userSession){
+			return $query->where('permission_hces1_files', 'N');
+		}
+
+		//si el usuario es un administrador, no se filtra por permisos (se obtienen todos)
+		if(array_key_exists('admin', $userSession)){
+			return $query;
+		}
+
+		//si el usuario no tiene un depostio valido añadimos solo los de usuario
+		if(!$validDeposit){
+			array_push($permissions, 'U');
+		}
+		//si el usuario si tiene un depostio valido añadimos los de usuario
+		else{
+			array_push($permissions, 'U', 'D');
+		}
+
+		return $query->whereIn('permission_hces1_files', $permissions);
+	}
+
+
+	public function scopeWithNumhcesAndLinhces($query, $num_hces1, $lin_hces1)
+	{
+		return $query->where('numhces_hces1_files', $num_hces1)
+					->where('linhces_hces1_files', $lin_hces1);
+	}
+
+	public function scopeActive($query)
+	{
+		return $query->where('is_active_hces1_files', 'S');
+	}
+
+	private function whereNotUser($query)
+	{
+		return $query->where('permission_hces1_files', 'N');
+	}
+
+	private function whereIsUser($query)
+	{
+		return $query->whereIn('permission_hces1_files', ['U', 'N']);
+	}
+
+
+
+
+	public function actulizarTablaFgHces1_FilesConArchivosDelServidor()
+	{
+		$empresa = config('app.emp');
+		$rootPath = "app/files/$empresa";
+
+		$numDirectories = $this->pathWithouDot(scandir(storage_path($rootPath)));
+
+		foreach ($numDirectories as $num) {
+
+			$linDirectories = $this->pathWithouDot(scandir(storage_path("$rootPath/$num")));
+
+			foreach ($linDirectories as $lin) {
+
+				if(!is_dir(storage_path("$rootPath/$num/$lin"))){
+					continue;
+				}
+
+				$files = $this->pathWithouDot(scandir(storage_path("$rootPath/$num/$lin/files")));
+
+				foreach ($files as $file) {
+
+
+					$nameFile = explode('.', $file)[0];
+					$nameFile = str_replace('-', ' ', $nameFile);
+
+					$routeFile = "\\$empresa\\$num\\$lin\\files\\$file";
+
+					self::create([
+						'numhces_hces1_files' => $num,
+						'linhces_hces1_files' => $lin,
+						'lang_hces1_files' => null,
+						'path_hces1_files' => $routeFile,
+						'external_url_hces1_files' => null,
+						'name_hces1_files' => $nameFile,
+						'description_hces1_files' => null,
+						'order_hces1_files' => 1,
+						'image_hces1_files' => null,
+						'is_active_hces1_files' => 'S',
+						'permission_hces1_files' => 'N',
+					]);
+
+				}
+
+			}
+
+		}
+	}
+
+	private function pathWithouDot($path)
+	{
+		return array_diff($path, ['.', '..']);
+	}
+
+}

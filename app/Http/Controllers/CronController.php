@@ -1008,31 +1008,34 @@ class CronController extends Controller
 		 public function dynamicAds()
 		 {
 			# Lanza la query para coger los datos
-			$queryForExport = FgAsigl0::select(
-				" SUB_ASIGL0  || '-' || REF_ASIGL0 as id",
-				"DESCWEB_HCES1 as description",
-				"'PONER LINK IMAGEN' as image_link",
-				"'PONER LINK' as link",
-				"DESC_HCES1 as title",
-				"IMPSALHCES_ASIGL0 as price",
-				"'PONER TIPO DE SUBASTA' as custom_label_0",
-                "WEBFRIEND_HCES1",
-                "WEBMETAT_HCES1",
-                "TITULO_HCES1",
-				"NUM_HCES1",
-				"LIN_HCES1",
-				'"id_auc_sessions"',
-				'"name"',
-				"COD_SUB",
-				"IMGFRIENDLY_HCES1",
-				"REF_ASIGL0"
-			)->joinFghces1Asigl0()->joinSubastaAsigl0()->joinSessionAsigl0()
+			$queryForExport = FgAsigl0::selectRaw("
+				 SUB_ASIGL0  || '-' || REF_ASIGL0 as id,
+				DESCWEB_HCES1 as description,
+				DESC_HCES1 as title,
+				IMPSALHCES_ASIGL0 as price,
+                WEBFRIEND_HCES1,
+                WEBMETAT_HCES1,
+                TITULO_HCES1,
+				NUM_HCES1,
+				LIN_HCES1,
+				\"id_auc_sessions\",
+				TIPO_SUB,
+				COD_SUB,
+				IMGFRIENDLY_HCES1,
+				REF_ASIGL0,
+				FECALTA_ASIGL0,
+				nvl((SELECT VALUE_CARACTERISTICAS_HCES1 FROM FGCARACTERISTICAS_HCES1  WHERE EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0  AND IDCAR_CARACTERISTICAS_HCES1 = 62)
+				, IMPSALHCES_ASIGL0   )precio_min,
+				nvl((SELECT VALUE_CARACTERISTICAS_HCES1 FROM FGCARACTERISTICAS_HCES1  WHERE EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0  AND IDCAR_CARACTERISTICAS_HCES1 = 61)
+				, IMPSALHCES_ASIGL0   )precio_max")
+				->joinFghces1Asigl0()->joinSubastaAsigl0()->joinSessionAsigl0()
 			->whereIn('SUB_ASIGL0', ['MOTORO','MOTORV'])
 			->where('CERRADO_ASIGL0','N')
 			->where('RETIRADO_ASIGL0','N')
 			->where('OCULTO_ASIGL0', 'N')
 			->orderBy('REF_ASIGL0', 'asc')
 			->get();
+
 
 			# Itera sobre la query para poner los datos en un array
             foreach ($queryForExport as $key => $inf_lot) {
@@ -1043,8 +1046,12 @@ class CronController extends Controller
 				$splittedString = explode(' ', $inf_lot->description);
 				$brand = $splittedString[0];
 				$priceFormated = ToolsServiceProvider::moneyFormat($inf_lot->price,"EUR",0);
+				#no pueden ser iguales por que provocarian division por 0, loscampos no vienen vacios por que se les pone el preci ode venta si no tienen valor
+				if($inf_lot->precio_min == $inf_lot->precio_max){
+					$inf_lot->precio_min = $inf_lot->precio_max * 0.85;
+				}
 
-                $arrayForExport[] = [
+				$export= [
                     "id" => $inf_lot->id,
                     "availability" => 'in stock',
                     "condition" => 'used',
@@ -1056,8 +1063,36 @@ class CronController extends Controller
                     "brand" => $brand,
                     "google_product_category" => '916',
                     "product_type" => 'VO',
-                    "custom_label_0" => $inf_lot->name
+
                 ];
+
+				if($inf_lot->tipo_sub == "V"){
+					$export["custom_label_0"] = "VENTA";
+				}else{
+					$export["custom_label_0"] = "SUBASTA";
+				}
+				$export["custom_label_1"] =(int)( ($inf_lot->price - $inf_lot->precio_min) /( $inf_lot->precio_max - $inf_lot->precio_min) * 100);
+
+
+/*
+•	muy bueno: todos los valores menores o iguales a 25
+•	bueno: todos los valores mayores a 25 y menor o iguales a 40
+•	regular: todos los valores mayores a 40 y menor o iguales a 50
+•	malo: todos los valores mayores a 50
+*/
+
+				if($export["custom_label_1"]<=25){
+					$export["custom_label_3"] ="muy bueno";
+				}elseif($export["custom_label_1"]<=40){
+					$export["custom_label_3"] ="bueno";
+				}elseif($export["custom_label_1"]<=50){
+					$export["custom_label_3"] ="regular";
+				}else{
+					$export["custom_label_3"] ="malo";
+				}
+
+
+				$arrayForExport[] = $export;
             }
 
 			#Transforma el Array en collection y lo exporta

@@ -20,6 +20,7 @@ class FgAsigl1_Aux extends Model
 	const PUJREP_ASIGL1_INFERIOR = 'L';
 	const PUJREP_ASIGL1_CONTRAOFERTA = 'C';
 	const PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA = 'K';
+	const PUJREP_ASIGL1_CONTRAOFERTA_ACEPTADA = 'A';#contrapuja que fue rechazada pero que el concesionario ha aceptado
 	const PUJREP_ASIGL1_COMPRAR_ONLINE = 'Y';
 	const PUJREP_ASIGL1_COMPRAR_VD = 'B';
 

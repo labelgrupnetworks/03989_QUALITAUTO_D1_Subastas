@@ -31,6 +31,7 @@ class ClientController extends ApiLabelController
 
 
     public function postClient(){
+
         $items =  request("items");
 
        return $this->createClient( $items );
@@ -38,6 +39,7 @@ class ClientController extends ApiLabelController
 
     public function createClient($items){
         try {
+
             DB::beginTransaction();
 
                 if(empty($items) || empty($items[0])){
@@ -74,9 +76,11 @@ class ClientController extends ApiLabelController
 
 					#si no indican nada o no lo ponen en positivo crearemos el usuario web
 					if(empty($item["notwebuser"]) || $item["notwebuser"] != "S" ){
-						$itemsWeb[] =$items[$key];
+						#debe llevar el key para que el indice sea el mismo que el del request para cuando hay que recuperara el error
+						$itemsWeb[$key] =$items[$key];
 					}
                 }
+
 
                 #Creamos FxCli
                 $this->cliRename = array_merge($this->cliRename, array( "codcli" => "cod_cli" ));
@@ -190,7 +194,7 @@ class ClientController extends ApiLabelController
 
 				#si no indican nada o no lo ponen en positivo crearemos el usuario web
 				if(empty($item["notwebuser"]) || $item["notwebuser"] != "S" ){
-					$itemsWeb[] =$items[$key];
+					$itemsWeb[$key] =$items[$key];
 				}
 			}
 			if(!empty($itemsChangeIdOrigin)){
@@ -208,12 +212,15 @@ class ClientController extends ApiLabelController
 
 			if(!empty($itemsWeb)){
 				#vamos a revisar todos los usuario s por si alguno n oexistía en cliweb
-				foreach($itemsWeb as $item){
-
-					$cliweb = FxCliweb::where('cod2_cliweb', $item["idorigincli"])->first();
-					#crea usuario por que no existe
-					if(empty($cliweb)){
-						$this->create([$item], $rules, $this->cliWebRename, new FxCliWeb());
+				foreach($itemsWeb as $key => $item){
+					#no se debe hacer para la API , si para el admin por eso comprobamos el codcli
+					if(!empty($item["codcli"])){
+						$cliweb = FxCliweb::where('cod2_cliweb', $item["idorigincli"])->first();
+						#crea usuario por que no existe
+						if(empty($cliweb)){
+							#debe mantener el indice para controlar errores
+							$this->create([$key =>$item], $rules, $this->cliWebRename, new FxCliWeb());
+						}
 					}
 				}
 

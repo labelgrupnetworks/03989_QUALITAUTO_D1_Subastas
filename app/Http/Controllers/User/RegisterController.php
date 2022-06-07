@@ -51,7 +51,7 @@ class RegisterController extends Controller
 
 	public function index($gemp = null, $cod_cliweb = null, $type = null,  $postUser = null, $datosEnviar = null) {
 
-		if (!\Session::has("user")) {
+		if (!\Session::has("user") || \Config::get('app.no_redirect_register')) {
 
 			// Miramos si se ha pasado por get algun codigo de ambassador
 
@@ -250,6 +250,8 @@ class RegisterController extends Controller
 				$data['seo']->meta_title = trans(\Config::get('app.theme').'-app.metas.title_register');
 				$data['seo']->meta_description = trans(\Config::get('app.theme').'-app.metas.description_register');
 			}
+
+			$data['backUrl'] = session('backUrl') ?? url()->previous();
 
 			return view('pages.user.register', $data);
 

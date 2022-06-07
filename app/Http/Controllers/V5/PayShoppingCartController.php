@@ -220,15 +220,7 @@ class PayShoppingCartController extends Controller
 		#MARCAMOS EL PEDIDO COMO PAGAGO
 		WebPayCart::where("IDTRANS_PAYCART", $idTrans)->update(["PAID_PAYCART" => "S"]);
 
-		if(Config::get('app.WebServicePaidInvoice')){
 
-			$theme  = Config::get('app.theme');
-			$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
-
-			$paidController = new $rutaPaidController();
-
-			$paidController->informPaid($idTrans);
-		}
 
 		$info = json_decode($transaccion->info_paycart);
 
@@ -288,6 +280,16 @@ class PayShoppingCartController extends Controller
 		if($updateInfo){
 			WebPayCart::where("IDTRANS_PAYCART", $idTrans)->update(["info_paycart" =>  json_encode($info)]);
 
+		}
+
+		if(Config::get('app.WebServicePaidInvoice')){
+
+			$theme  = Config::get('app.theme');
+			$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
+
+			$paidController = new $rutaPaidController();
+
+			$paidController->informPaid($idTrans);
 		}
 
 

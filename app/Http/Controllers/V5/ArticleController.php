@@ -77,7 +77,7 @@ class ArticleController extends Controller
 			$article->url = \Routing::translateSeo('articulo',"/{$article->id_art0}-{$slug}");
 
 			$imp = round($article->pvp_art0 + ($article->pvp_art0 * $iva),2);
-			
+
 			$article->pvpFormat = \Tools::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros'),0 );
 
 			$articles[$key] = $article;
@@ -271,11 +271,22 @@ class ArticleController extends Controller
 
 		Config::set('app.locale', $lang);
 
-		$order = request('order', 'ID_ART0');
+
+
+
+		$fgArt0 = FgArt0::select("ID_ART0,   max(MODEL_ART0) MODEL_ART0, max(PVP_ART0) PVP_ART0")->ArtActivo()->JoinArt();
+
+
+		$order = request('order', 'id_art0');
 		$orderDirection = request('order_dir', 'desc');
+		if($order == 'id_art0' ){
+			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1")->orderBy("ORDEN_ART0")->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, ID_ART0");
+		}else{
+			$fgArt0 = $fgArt0->orderBy(request('order'), $orderDirection)->groupby(" ID_ART0");
+		}
 
-		$fgArt0 = FgArt0::select("ID_ART0,   max(MODEL_ART0) MODEL_ART0, max(PVP_ART0) PVP_ART0")->ArtActivo()->JoinArt()->groupby("ID_ART0")->orderBy($order, $orderDirection);
-
+		#necesitamos ortsec1 para el orden
+		$fgArt0 = $fgArt0->join("FGORTSEC1 ORDEN_ORTSEC", "ORDEN_ORTSEC.EMP_ORTSEC1 = FGART0.EMP_ART0 AND ORDEN_ORTSEC.SEC_ORTSEC1 = FGART0.SEC_ART0")->where("ORDEN_ORTSEC.SUB_ORTSEC1",  0);
 		$fgArt0 = $this->setFilters($fgArt0);
 
 		$articles = $fgArt0->paginate($this->numElements);
@@ -297,7 +308,7 @@ class ArticleController extends Controller
 			$fgArt0 = $fgArt0->where("SEC_ART0",  request("sec"));
 			#no tiene sentido buscar por ortsec si ya se hace una busqueda más restrictiva
 		}elseif(request("ortsec") && !in_array("ortsec", $omitir)){
-			$fgArt0 = $fgArt0->JoinOrtsec1()->where("SUB_ORTSEC1",  0)->where("LIN_ORTSEC1",  request("ortsec"));
+			$fgArt0 = $fgArt0->JoinOrtsec1()->where("FGORTSEC1.SUB_ORTSEC1",  0)->where("FGORTSEC1.LIN_ORTSEC1",  request("ortsec"));
 		}
 
 		if(request("marca") && !in_array("marca", $omitir)){

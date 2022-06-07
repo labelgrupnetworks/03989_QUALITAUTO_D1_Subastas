@@ -27,7 +27,7 @@ class Facturas extends Model
 
         $gemp = Config::get('app.gemp');
         $sql = DB::table('FXPCOB')
-                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB')
+                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
                 ->Join('FXCLI',function($join) use($gemp){
                     $join->on('FXPCOB.COD_PCOB','=','FXCLI.COD_CLI')
                     ->where('GEMP_CLI','=',$gemp);
@@ -54,6 +54,7 @@ class Facturas extends Model
                 if(!empty($this->numero)){
                     $sql->where('num_pcob',$this->numero);
                 }
+				$sql->orderBy('fecha_dvc0', 'desc');
 
                 if($all){
                     $value = $sql->get();

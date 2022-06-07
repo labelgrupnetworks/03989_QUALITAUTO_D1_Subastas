@@ -119,6 +119,8 @@ class CarlandiaPayController extends Controller
 						if($lote->tipo_sub == 'V' && $bid->pujrep_asigl1=='C' && $bid->imp_asigl1 < $lote->imptas_asigl0){
 							return $this->error("Precio 'CONTRAOFERTA MINIMA' ". \Tools::moneyFormat($lote->impsalhces_asigl0,"€")."   en Venta directa es superior a la puja aux ". \Tools::moneyFormat($bid->imp_asigl1,"€"),  $info );
 						}
+
+						#para casos de contraoferta aceptada por el concesionario, tipo A , no se comprueba nada
 					}
 
 
@@ -494,6 +496,77 @@ class CarlandiaPayController extends Controller
 		#debemos asignar la adjudicación como pagada, lo haremos indicando el campo AFRAL_CSUB con valor  'L00', como si fuera una factura de texto
 		FgCsub::where("SUB_CSUB", $info->codSub)->where("REF_CSUB", $info->ref)->update(["AFRAL_CSUB" => "L00"]);
 
+	}
+
+
+	public function aceptarContraoferta(){
+		#sku =$ref-$imp-$licit
+		$sku = explode("-",request("sku"));
+
+		$ref = $sku[0];
+		$lin =$sku[1];
+		$licit = $sku[2];
+
+		# LA SUBASTA SIEMPRE SERA MOTORV Y EL TIPO DE PUJA K
+		$asigAux = FgAsigl1_Aux::where("SUB_ASIGL1", "MOTORV")->where("REF_ASIGL1", $ref)->where("PUJREP_ASIGL1", "K")->where("LICIT_ASIGL1", $licit)->where("LIN_ASIGL1", $lin)->first();
+
+		#mensaje de que ya ha sido aceptada con anterioridad
+		if(empty($asigAux)){
+			$estado ="no_existe";
+			return \View::make('front::pages.panel.contraofertaAceptada',compact( "estado"));
+		}
+
+		$lot = FgAsigl0::select("REF_ASIGL0, DESCWEB_HCES1, IMPTAS_ASIGL0, PROP_HCES1")->joinFghces1Asigl0()->where("SUB_ASIGL0","MOTORV")->where("REF_ASIGL0", $ref)->first();
+
+		return \View::make('front::pages.panel.aceptarContraoferta',compact( "asigAux","lot"));
+
+
+	}
+
+	public function contraofertaAceptada(){
+		try{
+			$sku = explode("-",request("sku"));
+			# LA SUBASTA SIEMPRE SERA MOTORV Y EL TIPO DE PUJA K
+			$cod_sub = "MOTORV";
+			$ref_asigl0 = $sku[0];
+			$lin =$sku[1];
+			$cod_licit = $sku[2];
+			$aceptada = false;
+			$estado ="";
+			$asigAux = FgAsigl1_Aux::where("SUB_ASIGL1", $cod_sub)->where("REF_ASIGL1", $ref_asigl0)->where("PUJREP_ASIGL1", "K")->where("LICIT_ASIGL1", $cod_licit)->where("LIN_ASIGL1", $lin)->first();
+			if(empty($asigAux)){
+				$estado ="no_existe";
+				return \View::make('front::pages.panel.contraofertaAceptada',compact( "estado"));
+			}
+
+			FgAsigl1_Aux::where("SUB_ASIGL1", $cod_sub)->where("REF_ASIGL1", $ref_asigl0)->where("LICIT_ASIGL1", $cod_licit)->where("LIN_ASIGL1", $lin)->update(["PUJREP_ASIGL1" => FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_ACEPTADA]);
+
+			$link = (new CarlandiaPayController())->getPayLink("MOTORV", $ref_asigl0, $cod_licit, $asigAux->lin_asigl1, 'A');
+
+			//mail a usuario confirmando el envio de la contraoferta
+			$counterOffer = $asigAux->imp_asigl1;
+			$email = new EmailLib('COUNTEROFFER_LICIT');
+			if(!empty($email->email)){
+				$email->setUserByLicit($cod_sub, $cod_licit, true);
+				$email->setLot($cod_sub, $ref_asigl0);
+				$email->setAtribute('PRICE_COUNTEROFFER', \Tools::moneyFormat($counterOffer, trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+				$carlandiaCommission = \Config::get("app.carlandiaCommission");
+				$impreserva = $counterOffer - ($counterOffer / (1 + $carlandiaCommission));
+				$email->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat($impreserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+				$email->setAtribute('PAY_LINK', $link);
+
+				if(config('app.emailOwnerInformation', 0)){
+					$email->setPropInfo($cod_sub, $ref_asigl0);
+				}
+				$email->send_email();
+
+			}
+			$estado ="aceptada";
+			return \View::make('front::pages.panel.contraofertaAceptada',compact( "estado"));
+		}
+		catch(exception $e){
+			return \View::make('front::pages.panel.contraofertaAceptada',["estado" => "aceptada" ]);
+		}
 	}
 
 

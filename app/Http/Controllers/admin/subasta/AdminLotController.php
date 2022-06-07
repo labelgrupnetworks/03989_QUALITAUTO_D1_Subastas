@@ -31,7 +31,12 @@ use App\Models\V5\FxPro;
 
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomControllers;
+use App\Models\V5\FgHces1Files;
+use App\Models\V5\FgNft;
+use App\Models\V5\FgNftNetwork;
 use App\Models\V5\FxAlm;
+
+use App\Http\Controllers\externalws\vottun\VottunController;
 
 class AdminLotController extends Controller
 {
@@ -310,6 +315,10 @@ class AdminLotController extends Controller
 			$this->addExtrasToForm($formulario, $fgAsigl0);
 		}
 
+		if(config('app.useNft', false) && $fgAsigl0->es_nft_asigl0 == 'S'){
+			$this->addNftToForm($formulario, $fgAsigl0);
+		}
+
 		$features = FgCaracteristicas::getAllFeatures();
 
 		$featuresValues = FgCaracteristicas_Value::SelectAllForInput();
@@ -349,6 +358,11 @@ class AdminLotController extends Controller
 
 		if ($result->status == 'ERROR') {
 			return back()->withErrors(['errors' => [$json]])->withInput();
+		}
+
+		//Nft
+		if($request->has('es_nft_asigl0')) {
+			$this->nftProcess($request, $fgAsigl0);
 		}
 
 		//files
@@ -407,6 +421,21 @@ class AdminLotController extends Controller
 		}
 
 		return redirect(route("$this->parent_name.show", ['cod_sub' => $cod_sub]))->with(['success' => array(trans('admin-app.title.deleted_ok'))]);
+	}
+
+	public function publishNft($cod_sub, $ref_asigl0)
+	{
+
+		$lote = FgAsigl0::select("NUMHCES_ASIGL0, LINHCES_ASIGL0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0", $ref_asigl0)->first();
+
+		$vottun = new VottunController();
+		$res =$vottun->uploadFile($lote->numhces_asigl0, $lote->linhces_asigl0);
+
+		if($res->status == "success"){
+			$res = $vottun->uploadMetadata($lote->numhces_asigl0, $lote->linhces_asigl0);
+		}
+
+		return response()->json($res);
 	}
 
 	public function getOrder($cod_sub)
@@ -508,6 +537,115 @@ class AdminLotController extends Controller
 		return $languages;
 	}
 
+	private function nftProcess(Request $request, FgAsigl0 $fgAsigl0)
+	{
+		$nft = FgNft::where([
+			['numhces_nft', $fgAsigl0->num_hces1],
+			['linhces_nft', $fgAsigl0->lin_hces1]
+		])->first();
+
+		//Si ya tiene hash no debemos hacer nada
+		if($nft && !empty($nft->hashfile_nft)){
+			return false;
+		}
+
+		$path_nft = '';
+		if($request->hasFile('file_nft')){
+			$emp = config('app.emp');
+			$webPath = "nft/$emp/";
+			$path = str_replace('/', '\\', public_path($webPath));
+			$file = $request->file('file_nft');
+			$nameFile = $emp."_".$fgAsigl0->num_hces1."_".$fgAsigl0->lin_hces1.".".$file->getClientOriginalExtension();
+
+			$path_nft = $webPath.$nameFile;
+
+			$file->move($path, $nameFile);
+		}
+
+		//Si existe y viene el valor a N eliminamos info de NFT
+		if($nft && $request->get('es_nft_asigl0', 'N') == 'N'){
+			$this->deleteNft($request, $fgAsigl0);
+			return true;
+		}
+
+		//Si existe realizamos update
+		if($nft){
+			$this->updateNft($request, $fgAsigl0, $path_nft);
+			return true;
+		}
+
+		//Si no existe y es nft viene a S lo creamos
+		if($request->get('es_nft_asigl0', 'N') == 'S'){
+			$this->createNft($request, $fgAsigl0, $path_nft);
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function updateNft(Request $request, FgAsigl0 $fgAsigl0, $path_nft)
+	{
+		FgAsigl0::where([['ref_asigl0', $fgAsigl0->ref_asigl0], ['sub_asigl0', $fgAsigl0->sub_asigl0]])
+				->update([
+					'es_nft_asigl0' => $request->es_nft_asigl0
+				]);
+
+		FgNft::where([
+			['numhces_nft', $fgAsigl0->num_hces1],
+			['linhces_nft', $fgAsigl0->lin_hces1]
+		])->update([
+			'name_nft' => $request->name_nft,
+			'description_nft' => $request->description_nft,
+			'created_nft' => $request->created_nft,
+			'path_nft' => $path_nft,
+			'media_type_nft' => $request->media_type_nft,
+			'network_nft' => $request->network_nft,
+			'total_tokens_nft' => $request->total_tokens_nft,
+			'n_of_token_nft' => $request->n_of_token_nft,
+			'artista_nft' => $request->artista_nft,
+		]);
+	}
+
+	/**
+	 * Crear Nft
+	 * Al crear un nft el lote se debe dejar como oculto por defecto
+	 */
+	protected function createNft(Request $request, FgAsigl0 $fgAsigl0, $path_nft)
+	{
+		FgAsigl0::where([['ref_asigl0', $fgAsigl0->ref_asigl0], ['sub_asigl0', $fgAsigl0->sub_asigl0]])
+				->update([
+					'es_nft_asigl0' => $request->es_nft_asigl0,
+					'oculto_asigl0' => 'S'
+				]);
+
+		FgNft::create([
+			'numhces_nft' => $fgAsigl0->num_hces1,
+			'linhces_nft' => $fgAsigl0->lin_hces1,
+			'name_nft' => $request->name_nft,
+			'description_nft' => $request->description_nft,
+			'created_nft' => $request->created_nft,
+			'path_nft' => $path_nft,
+			'media_type_nft' => $request->media_type_nft,
+			'network_nft' => $request->network_nft,
+			'total_tokens_nft' => $request->total_tokens_nft,
+			'n_of_token_nft' => $request->n_of_token_nft,
+			'artista_nft' => $request->artista_nft,
+		]);
+	}
+
+	protected function deleteNft(Request $request, FgAsigl0 $fgAsigl0)
+	{
+		FgAsigl0::where([['ref_asigl0', $fgAsigl0->ref_asigl0], ['sub_asigl0', $fgAsigl0->sub_asigl0]])
+				->update([
+					'es_nft_asigl0' => $request->es_nft_asigl0,
+				]);
+
+		FgNft::where([
+			['numhces_nft', $fgAsigl0->num_hces1],
+			['linhces_nft', $fgAsigl0->lin_hces1]
+		])->delete();
+	}
+
 	protected function saveImages($images, $idorigin, $isEncode = false)
 	{
 		$itemImages = [];
@@ -562,16 +700,31 @@ class AdminLotController extends Controller
 
 	protected function saveFiles($fgAsigl0, UploadedFile ...$files)
 	{
-		$path = getcwd() . "/files/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
+		$relativePath = "/files/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
+		$path = getcwd() . $relativePath;
 
 		if (!is_dir(str_replace("\\", "/", $path))) {
 			mkdir(str_replace("\\", "/", $path), 0775, true);
 		}
 
 		foreach ($files as $file) {
-
 			$newfile = str_replace("\\", "/", $path . '/' . $file->getClientOriginalName());
+
 			copy($file->getPathname(), $newfile);
+
+			/* FgHces1Files::create([
+				'numhces_hces1_files' => $fgAsigl0->num_hces1,
+				'linhces_hces1_files' => $fgAsigl0->lin_hces1,
+				'lang_hces1_files' => null,
+				'path_hces1_files' => $relativePath . $file->getClientOriginalName(),
+				'external_url_hces1_files' => null,
+				'name_hces1_files' => $file->getClientOriginalName(),
+				'description_hces1_files' => 'test',
+				'order_hces1_files' => 1,
+				'image_hces1_files' => null,
+				'is_active_hces1_files' => 'S',
+				'permission_hces1_files' => 'N',
+			]); */
 		}
 	}
 
@@ -605,12 +758,12 @@ class AdminLotController extends Controller
 	{
 		$propietario = null;
 		$withProvider = config('app.useProviders', 0);
+		$withNft = config('app.useNft', 0);
 
 		#cojemos por defecto el de la subasta
 		if( $withProvider && empty($fgAsigl0->prop_hces1) ){
 			$fxsub = FgSub::select("agrsub_sub")->where("COD_SUB", $cod_sub)->first();
 			$fgAsigl0->prop_hces1 = $fxsub->agrsub_sub;
-
 		}
 
 		if (!empty($fgAsigl0->prop_hces1) && !$withProvider) {
@@ -630,8 +783,6 @@ class AdminLotController extends Controller
 		if($withProvider){
 			$ownerForm = FormLib::Select2WithAjax('owner', 0, old('owner', $fgAsigl0->prop_hces1), (!empty($propietario)) ? $propietario->nom_pro : '', route('provider.list'), trans('admin-app.placeholder.owner'));
 		}
-
-
 
 		$basicForm =
 		[
@@ -699,7 +850,18 @@ class AdminLotController extends Controller
 			$basicForm["info"]["warehouse"] = FormLib::Select('warehouse', 0, old('warehouse', $fgAsigl0->alm_hces1 ?? null), $almacenes, '', '', true);
 		}
 
+		if($withNft) {
 
+			$basicForm['estados'] =  ['es_nft_asigl0' => FormLib::Select('es_nft_asigl0', 0, old('es_nft_asigl0', $fgAsigl0->es_nft_asigl0), ['S' => 'Si', 'N' => 'No'], '', '', false)] + $basicForm['estados'];
+
+			//Si ya esta publicado y es nft, no se puede cambiar el estado
+			if($fgAsigl0->es_nft_asigl0 == 'S'){
+				$nftInfo = FgNft::where([['numhces_nft', $fgAsigl0->num_hces1],['linhces_nft', $fgAsigl0->lin_hces1]])->first() ?? new FgNft();
+				if($nftInfo->hashfile_nft){
+					$basicForm['estados']['es_nft_asigl0'] = FormLib::Readonly('es_nft_asigl0', 0, 'Publicado');
+				}
+			}
+		}
 
 		return $basicForm;
 	}
@@ -754,6 +916,62 @@ class AdminLotController extends Controller
 
 		unset($formulario->info['extrainfo']);
 		unset($formulario->info['warehouse']);
+
+		return $formulario;
+	}
+
+	protected function addNftToForm($formulario, $fgAsigl0)
+	{
+		$nftInfo = FgNft::where([
+			['numhces_nft', $fgAsigl0->num_hces1],
+			['linhces_nft', $fgAsigl0->lin_hces1]
+		])->first() ?? new FgNft();
+
+		$nftNetworks = FgNftNetwork::pluck('name_nft_network', 'id_nft_network');
+
+		$mediaTpes = [
+			'png' => 'png',
+			'jpg' => 'jpg',
+			'gif' => 'gif',
+			'svg' => 'svg',
+			'mp4' => 'mp4',
+			'webm' => 'webm',
+			'mp3' => 'mp3',
+			'ogg' => 'ogg',
+			'glb' => 'glb',
+			'gltf' => 'gltf',
+		];
+
+		//Para controlar el poder o no publicar el nft
+		$formulario->publish_nft = $fgAsigl0->es_nft_asigl0 == 'S' && empty($nftInfo->hashfile_nft);
+
+		if(!empty($nftInfo->hashfile_nft)) {
+			$formulario->nft = [
+				//'es_nft_asigl0' => FormLib::Readonly('es_nft_asigl0', 0, 'Publicado'),
+				'name_nft' => FormLib::Readonly('name_nft', 0, $nftInfo->name_nft),
+				'description_nft' => FormLib::Readonly('description_nft', 0, $nftInfo->description_nft),
+				'created_nft' => FormLib::Readonly('created_nft', 0, $nftInfo->created_nft),
+				'artista_nft' => FormLib::Readonly('artista_nft', 0, $nftInfo->artista_nft),
+				'media_type_nft' => FormLib::Readonly('media_type_nft', 0, $nftInfo->media_type_nft),
+				'network_nft' => FormLib::Readonly('network_nft', 0, $nftNetworks[$nftInfo->network_nft]),
+				'total_tokens_nft' => FormLib::Readonly('total_tokens_nft', 0, $nftInfo->total_tokens_nft),
+				'n_of_token_nft' => FormLib::Readonly('n_of_token_nft', 0, $nftInfo->n_of_token_nft),
+			];
+			return $formulario;
+		}
+
+		$formulario->nft = [
+			//'es_nft_asigl0' => FormLib::Select('es_nft_asigl0', 0, old('es_nft_asigl0', $fgAsigl0->es_nft_asigl0), ['N' => 'No', 'S' => 'Si'], '', '', false),
+			'name_nft' => FormLib::Text('name_nft', 1, old('name_nft', $nftInfo->name_nft), 'maxlength="255"'),
+			'description_nft' => FormLib::Textarea('description_nft', 0, old('description_nft', $nftInfo->description_nft), 'maxlength="4000"', '', '3'),
+			'created_nft' => FormLib::Date("created_nft", 0, old('created_nft', $nftInfo->created_nft)),
+			'artista_nft' => FormLib::Text('artista_nft', 0, old('artista_nft', $nftInfo->artista_nft), 'maxlength="255"'),
+			'file_nft' => FormLib::File('file_nft'),
+			'media_type_nft' => FormLib::Select('media_type_nft', 0, old('media_type_nft', $nftInfo->media_type_nft), $mediaTpes),
+			'network_nft' => FormLib::Select('network_nft', 1, old('network_nft', $nftInfo->network_nft), $nftNetworks),
+			'total_tokens_nft' => FormLib::Int('total_tokens_nft', 0, old('total_tokens_nft', $nftInfo->total_tokens_nft)),
+			'n_of_token_nft' => FormLib::Int('n_of_token_nft', 0, old('n_of_token_nft', $nftInfo->n_of_token_nft)),
+		];
 
 		return $formulario;
 	}
@@ -975,5 +1193,22 @@ class AdminLotController extends Controller
 		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
+	public function listadoImagenesSubasta($cod_sub){
+
+		$lotes = FgAsigl0::select("num_hces1,lin_hces1, ref_asigl0, totalfotos_hces1")->JoinFghces1Asigl0()
+		->JoinSubastaAsigl0()->JoinSessionAsigl0()->where("sub_asigl0",$cod_sub)->orderby("ref_asigl0")->get();
+		$subasta = new \App\Models\Subasta();
+		foreach($lotes as $key => $lote){
+			$lotes[$key]->images = $subasta->getLoteImages($lote);
+			echo "<div style='float:left;text-align:center; margin:10px'> Lote: ".$lote->ref_asigl0 ."<br>";
+			if($lotes[$key]->totalfotos_hces1 > 0) {
+				foreach($lotes[$key]->images as $keyImage => $image){
+					echo '<img src="'. \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1, $keyImage) . '" height="100px" >';
+				}
+			}
+			echo "</div>";
+
+		}
+	}
 
 }

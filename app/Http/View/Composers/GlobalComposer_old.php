@@ -25,9 +25,13 @@ class GlobalComposer
 			return $view->with('global', ['subastas' => static::$subastas]);
 		}
 
-		$subastasQuery = FgSub::joinLangSub()->joinSessionSub()
+		$subastasQuery = FgSub::
+            //joinLangSub()
+            joinSessionSub()
 			->addSelect('subc_sub')
 			->where('subc_sub', '!=', 'N');
+
+
 
 		if (!\Session::get('user.admin')) {
 			$subastasQuery->where('subc_sub', '!=', 'A');
@@ -35,9 +39,9 @@ class GlobalComposer
 
 
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
-		if(\Config::get("app.restrictVisibility")){
+		/* if(\Config::get("app.restrictVisibility")){
 			$subastasQuery =	$subastasQuery->Visibilidadsubastas(\Session::get('user.cod'));
-		}
+		} */
 
 
 		$subastasQuery = $subastasQuery->orderBy('session_start', 'asc')->get();

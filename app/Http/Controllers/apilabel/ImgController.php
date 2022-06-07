@@ -82,7 +82,10 @@ class ImgController extends ApiLabelController
 
             $this->validator($whereVars, $this->rules);
             $lot = FgHces1::select("EMP_HCES1, NUM_HCES1, LIN_HCES1, nvl(TOTALFOTOS_HCES1,0) TOTALFOTOS_HCES1")->WHERE("IDORIGEN_HCES1", $whereVars["idoriginlot"] )->first();
-            $order = $whereVars["order"] ;
+            if(empty($lot)){
+				return $this->responseError("The lot does exist");
+			}
+			$order = $whereVars["order"] ;
             #si eliminan la "ultima imagen", actualizamos el contador
             if($whereVars["order"]  > 0 && $whereVars["order"] == $lot->totalfotos_hces1){
                 $hces1 = new FgHces1();

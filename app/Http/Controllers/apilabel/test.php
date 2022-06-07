@@ -498,7 +498,7 @@ class test extends BaseController
         }
         #http://www.newsubastas.test/apilabel/test?function=getOrder&testmode=CONTROLLER
         public function getOrder(){
-            $parameters=array("idauction" => "00000901", "type" =>"O", "min_date" => "2021-05-10 00:00"); #"min_date" => "2021-05-10 00:00:00"
+            $parameters=array("idauction" => "LABELP"); #, "type" =>"O", "min_date" => "2021-05-10 00:00"
             #, "idoriginlot" => "Origen5", "idoriginclient" => 45964
             $this->excuteMode($parameters,"GET","order", new OrderController(false),"showOrder");
         }#Y-m-d H:i:s
@@ -608,7 +608,7 @@ class test extends BaseController
         }
 
         public function deleteImg(){
-            $parameters=array("idoriginlot" => "Origen6", "order" => "0");
+            $parameters=array("idoriginlot" => "Origesfsdferfen6", "order" => "0");
             $this->excuteMode($parameters,"DELETE","img", new ImgController(false),"eraseImg");
         }
  #http://www.newsubastas.test/apilabel/test?function=deleteAllImg&testmode=CONTROLLER

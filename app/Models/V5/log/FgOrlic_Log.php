@@ -37,6 +37,20 @@ class FgOrlic_Log extends Model
         });
     }
 
+	public function scopeleftJoinCli($query){
+        return $query->join("FGLICIT", "EMP_LICIT = EMP_ORLIC AND SUB_LICIT = SUB_ORLIC AND COD_LICIT = LICIT_ORLIC ")
+                     ->leftjoin("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT");
+
+    }
+
+	public function scopelog($query){
+        return $query->joinUsr()->LeftJoinCli()->select("FXCLI.NOM_CLI, FXCLI.CIF_CLI,FSUSR.NOM_USR, FGORLIC_LOG.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGORLIC_LOG.USR_UPDATE_ORLIC");
+	}
+
 
 
 }

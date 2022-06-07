@@ -49,7 +49,7 @@ class CarlandiaSalesController extends Controller
 	{
 		if($this->isAdmin) {
 			$this->cedente = new FxCli();
-			$this->cedente->cod_cli = '000025';
+			$this->cedente->cod_cli = null;
 		}
 
 		$isActive = $request->active;
@@ -61,6 +61,20 @@ class CarlandiaSalesController extends Controller
 		$name = $isActive ? 'Ofertas_vigentes' : 'Ventas_cerradas';
 
 		return Excel::download($export, $name .'_'. $this->cedente->cod_cli . '.xlsx');
+	}
+
+	private function formatPricesWithCommission($lots)
+	{
+		$comision = 1 + config('app.carlandiaCommission');
+
+		foreach($lots as $lot) {
+			$lot->reserva = $lot->reserva / $comision;
+			$lot->comprar = $lot->comprar / $comision;
+			$lot->implic_hces1 = $lot->implic_hces1 / $comision;
+			$lot->max_imp_asigl1 = $lot->max_imp_asigl1 / $comision;
+		}
+
+		return $lots;
 	}
 
 	private function checkCedenteUser()
@@ -91,7 +105,7 @@ class CarlandiaSalesController extends Controller
 	{
 		$idMatricula = '55';
 
-		return FgAsigl0::select('ref_asigl0', 'sub_asigl0', 'cerrado_asigl0', 'impsalhces_asigl0', 'fecalta_asigl0', 'ffin_asigl0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0')
+		$lots = FgAsigl0::select('ref_asigl0', 'sub_asigl0', 'cerrado_asigl0', 'impsalhces_asigl0', 'fecalta_asigl0', 'ffin_asigl0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0')
 			->addSelect('num_hces1', 'lin_hces1', 'pc_hces1', 'implic_hces1', 'descweb_hces1', 'webfriend_hces1', 'tipo_sub', 'cod_sub', '"id_auc_sessions"', '"name"', 'value_caracteristicas_hces1 as matricula')
 			->addSelect('fxcli.rsoc_cli')
 
@@ -156,6 +170,8 @@ class CarlandiaSalesController extends Controller
 			})
 			->orderBy('ref_asigl0')
 			->get();
+
+			return $this->formatPricesWithCommission($lots);
 	}
 
 }

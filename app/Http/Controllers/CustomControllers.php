@@ -6,10 +6,12 @@ use App\Exports\ViewExcelExport;
 use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FgAsigl0;
 use App\Http\Controllers\V5\GaleriaArte;
+use App\libs\FormLib;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
+use App\Models\Subasta;
 
 class CustomControllers extends Controller
 {
@@ -141,6 +143,42 @@ class CustomControllers extends Controller
 
 		$export = new ViewExcelExport($artists,$caracteristicas,$lots,$auction);
     	return Excel::download($export, "$fileName.xlsx");
+
+	}
+
+	public function videoAuctions () {
+
+		$subastaReciente = FgSub::select('des_sub', 'dfec_sub')
+			->joinSessionSub()
+			->where('SUBC_SUB', 'S')
+			//orden ascendente solo para probar subasta, dejar en desc cuando este en producción
+			//->orderby("session_start", "asc")
+			->orderby("session_start", "desc")
+			->first();
+
+		if (!$subastaReciente) {
+			return view('front::pages.video_auction', ['videos' => [], 'subastaReciente' => new FgSub()]);
+		}
+
+
+		$lots = FgAsigl0::select("SUB_ASIGL0", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1")
+			->joinFghces1Asigl0()
+			->where("EMP_ASIGL0", \Config::get('app.emp'))
+			->where("SUB_ASIGL0", $subastaReciente->cod_sub)
+			->get();
+
+
+		$subasta = new Subasta();
+		$videos = [];
+
+		foreach ($lots as $lot) {
+			$video = $subasta->getLoteVideos($lot);
+			if (!empty($video)) {
+				$videos[] = $video;
+			}
+		}
+
+		return view('front::pages.video_auction', compact('videos', 'subastaReciente'));
 
 	}
 }

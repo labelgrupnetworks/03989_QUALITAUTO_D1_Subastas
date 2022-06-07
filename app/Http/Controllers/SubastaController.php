@@ -40,7 +40,9 @@ use App\libs\TradLib;
 use App\Models\Payments;
 use App\Providers\ToolsServiceProvider;
 use App\Http\Controllers\V5\LotListController;
-
+use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgDeposito;
+use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FxCli;
 
@@ -1039,7 +1041,9 @@ class SubastaController extends Controller
 		$urlsinparametros= explode('?', $_SERVER['REQUEST_URI']);
 		$url_actual = $urlsinparametros[0];
 
-		$webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($lote[0]->titulo_hces1);
+		$titulo = $lote[0]->titulo_hces1?? $lote[0]->descweb_hces1;
+		$webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
+
 		$url_buena = \Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
 
 		if ($url_buena != $url_actual) {
@@ -2505,4 +2509,26 @@ class SubastaController extends Controller
 		return view('front::includes.grid._modal_images_mobile', compact('imagesUrl', 'page'))->render();
 	}
 
+
+	public function getDownloadLotFile($lang, $idFile, $num_hces1, $lin_hces1)
+	{
+
+		$user = session('user');
+		$lot = FgAsigl0::select('sub_asigl0', 'ref_asigl0')->where([
+			['numhces_asigl0', $num_hces1],
+			['linhces_asigl0', $lin_hces1]
+		])->first();
+
+		$deposit = (new FgDeposito())->isValid($user['cod'], $lot->sub_asigl0, $lot->ref_asigl0);
+
+		$file = FgHces1Files::getFileByIdCanViewUser($user, $idFile, $deposit);
+
+		if(!$file){
+			abort(404);
+		}
+
+		return response()->download($file->storage_path);
+	}
+
+	
 }

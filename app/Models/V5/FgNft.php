@@ -6,10 +6,10 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class FgArt0 extends Model
+class FgNft extends Model
 {
-    protected $table = 'FGART0';
-    protected $primaryKey = 'ID_ART0, EMP_ART0, REFASIN_ART0';
+    protected $table = 'FGNFT';
+    protected $primaryKey = ' EMP_NFT, NUMHCES_NFT, LINHCES_NFT';
 
     public $timestamps = false;
     public $incrementing = false;
@@ -20,7 +20,7 @@ class FgArt0 extends Model
     #definimos la variable emp para no tener que indicarla cada vez
     public function __construct(array $vars = []){
         $this->attributes=[
-            'emp_art0' => \Config::get("app.emp")
+            'emp_nft' => \Config::get("app.emp")
         ];
         parent::__construct($vars);
     }
@@ -31,13 +31,9 @@ class FgArt0 extends Model
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-            $builder->where('emp_art0', \Config::get("app.emp"));
+            $builder->where('emp_nft', \Config::get("app.emp"));
         });
 	}
-
-	public function scopeJoinArtArt0($query){
-        return $query->join('FGART', 'FGART.EMP_ART = FGART0.EMP_ART0 AND FGART.IDART0_ART = FGART0.ID_ART0');
-    }
 
 }
 

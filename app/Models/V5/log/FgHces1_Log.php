@@ -18,5 +18,13 @@ class FgHces1_Log extends Model
     protected $guarded = [];
 
 
+	public function scopelog($query){
+        return $query->joinUsr()->select("FSUSR.NOM_USR, FGHCES1_LOG.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGHCES1_LOG.USR_UPDATE_HCES1");
+	}
+
 
 }

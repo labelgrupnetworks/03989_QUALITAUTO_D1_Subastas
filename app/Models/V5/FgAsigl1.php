@@ -135,4 +135,13 @@ class FgAsigl1 extends Model
 			self::TYPE_AWARD => trans('admin-app.values.type_asigl1_Z'),
 		];
 	}
+
+	public function scopelog($query){
+        return $query->joinUsr()->LeftJoinCli()->select("FXCLI.NOM_CLI, FXCLI.CIF_CLI,FSUSR.NOM_USR, FGASIGL1.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGASIGL1.USR_UPDATE_ASIGL1");
+	}
+
 }

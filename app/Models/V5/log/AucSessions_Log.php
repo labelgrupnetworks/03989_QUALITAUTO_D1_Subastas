@@ -39,6 +39,13 @@ class AucSessions_Log extends Model
 	}
 
 
+	public function scopelog($query){
+        return $query->joinUsr()->select('FSUSR.NOM_USR, "auc_sessions_log".*');
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR",'FSUSR.COD_USR = "auc_sessions_log"."usr_update_sessions"');
+	}
 
 }
 

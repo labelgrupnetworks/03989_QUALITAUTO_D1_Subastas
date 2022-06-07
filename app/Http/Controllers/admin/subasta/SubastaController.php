@@ -65,8 +65,8 @@ class SubastaController extends Controller
 		if (!empty($id)) {
 
 			$info = DB::table("fgsub")->where("COD_SUB", $id)->where("EMP_SUB", Config::get("app.emp"))->first();
-			foreach (\Config::get("app.locales") as $k => $lang) {
-				$info_{$k} = DB::table("FGSUB_LANG")->where("COD_SUB_LANG", $id)->where("LANG_SUB_LANG", $language_complete[mb_strtolower($k)])->where("EMP_SUB_LANG", \Config::get("app.emp"))->first();
+			foreach (array_keys(config('app.locales')) as $keyLang) {
+				${"info_{$keyLang}"} = DB::table("FGSUB_LANG")->where("COD_SUB_LANG", $id)->where("LANG_SUB_LANG", $language_complete[mb_strtolower($keyLang)])->where("EMP_SUB_LANG", \Config::get("app.emp"))->first();
 			}
 			$info_ES = $info;
 		}
@@ -155,19 +155,20 @@ class SubastaController extends Controller
 			$data['formularioTextos']['es']['Meta título'] = FormLib::Text("WEBMETAT_SUB", 0, isset($info->webmetat_sub) ? $info->webmetat_sub : '');
 			$data['formularioTextos']['es']['Meta descripción'] = FormLib::Text("WEBMETAD_SUB", 0, isset($info->webmetad_sub) ? $info->webmetad_sub : '');
 
-			foreach (\Config::get("app.locales") as $k => $lang) {
+			foreach (array_keys(config('app.locales')) as $keyLang) {
 
-				if ($k != "es") {
-					$data['formularioTextos'][$k]['titulo'] = FormLib::Text("DES_SUB_" . $k, 0, isset($info_{$k}->des_sub_lang) ? $info_{$k}->des_sub_lang : '');
-					$data['formularioTextos'][$k]['descripción'] = FormLib::Textarea("DESCDET_SUB_" . $k, 0, isset($info_{$k}->descdet_sub_lang) ? $info_{$k}->descdet_sub_lang : '');
-					//$data['formularioTextos'][$k]['notas'] = FormLib::Textarea("DESCCONTR_SUB_".$k, 0, isset($info_{$k}->desccontr_sub_lang)?$info_{$k}->descontr_sub_lang:'');
-					$data['formularioTextos'][$k]['url'] = FormLib::Text("WEBFRIEND_SUB_" . $k, 0, isset($info_{$k}->webfriend_sub_lang) ? $info_{$k}->webfriend_sub_lang : '');
-					$data['formularioTextos'][$k]['Meta título'] = FormLib::Text("WEBMETAT_SUB_" . $k, 0, isset($info_{
-						$k}->webmetat_sub_lang) ? $info_{
-						$k}->webmetat_sub_lang : '');
-					$data['formularioTextos'][$k]['Meta descripción'] = FormLib::Text("WEBMETAD_SUB_" . $k, 0, isset($info_{
-						$k}->webmetad_sub_lang) ? $info_{
-						$k}->webmetad_sub_lang : '');
+				if ($keyLang != "es") {
+
+					$variableName = "info_{$keyLang}";
+
+					$data['formularioTextos'][$keyLang] =
+					[
+						'titulo' => FormLib::Text("DES_SUB_$keyLang", 0, ${"$variableName"}->des_sub_lang ?? ''),
+						'descripción' => FormLib::Textarea("DESCDET_SUB_$keyLang", 0, ${"$variableName"}->descdet_sub_lang ?? ''),
+						'url' => FormLib::Text("WEBFRIEND_SUB_$keyLang", 0, ${"$variableName"}->webfriend_sub_lang ?? ''),
+						'Meta título' => FormLib::Text("WEBMETAT_SUB_$keyLang", 0, ${"$variableName"}->webmetat_sub_lang ?? ''),
+						'Meta descripción' => FormLib::Text("WEBMETAD_SUB_$keyLang", 0, ${"$variableName"}->webmetad_sub_lang ?? ''),
+					];
 				}
 			}
 
@@ -179,18 +180,20 @@ class SubastaController extends Controller
 			 * Para poder realizar una union con las pujas inferiores, las columnas de esta primera deben tener el mismo nombre
 			 * Y para poder ordenar, se debe hacer por el numero de columna y no por el nombre
 			 */
-
+			# he añadido el campo asigl0_aux para diferenciar entre puja auxiliar y la que no lo es
 			if (Config::get('app.lower_bids', false)) {
-				$pujasInferiores = FgAsigl1_Aux::select('emp_asigl1', 'sub_asigl1', 'ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'pujrep_asigl1', 'hora_asigl1', 'type_asigl1', 'usr_update_asigl1', 'date_update_asigl1')
+				$pujasInferiores = FgAsigl1_Aux::select('emp_asigl1', 'sub_asigl1', 'ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'pujrep_asigl1', 'hora_asigl1', 'type_asigl1', 'usr_update_asigl1', 'date_update_asigl1', 'type_update_asigl1', "'SI' as asigl0_aux")
 				->where("SUB_ASIGL1", $id);
 
 
-				$data['pujas'] = FgAsigl1::union($pujasInferiores)
+				$data['pujas'] = FgAsigl1::select('emp_asigl1', 'sub_asigl1', 'ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'pujrep_asigl1', 'hora_asigl1', 'type_asigl1', 'usr_update_asigl1', 'date_update_asigl1', 'type_update_asigl1', "'NO' as asigl0_aux")
+				->union($pujasInferiores)
 				->where("SUB_ASIGL1", $id)
 				->orderBy(4, "desc")
 				->orderBy(7, "desc")
 				->orderBy(9, "desc")
 				->get();
+
 			}
 			else{
 
@@ -1841,25 +1844,33 @@ class SubastaController extends Controller
 	{
 
 		$info = Input::all();
+		#si el tipo de puja es de la tabla auxiliar
+
 
 		$asigl0 = DB::table("FGASIGL0")->where("EMP_ASIGL0", \Config::get("app.emp"))->where("SUB_ASIGL0", $info['subasta'])->where("ref_asigl0", $info['ref'])->first();
+		# si es una puja auxiliar borramos la puja auxiliar
+		if($info['asigl0Aux']=="SI"){
+			DB::table("FGASIGL1_AUX")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
 
-		DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
+		}else{ # si es una puja normal, borramos la puja normal y actualizamos el implic
+			DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
 
-		$pujaMasAlta = DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info["ref"])->orderBy("lin_asigl1", "desc")->first();
+			$pujaMasAlta = DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info["ref"])->orderBy("lin_asigl1", "desc")->first();
 
 
-		if (!empty($pujaMasAlta)) {
-			$nuevo_importe = $pujaMasAlta->imp_asigl1;
-			$lic_hces1 = "S";
-		} else {
-			$nuevo_importe = 0;
-			$lic_hces1 = "N";
+			if (!empty($pujaMasAlta)) {
+				$nuevo_importe = $pujaMasAlta->imp_asigl1;
+				$lic_hces1 = "S";
+			} else {
+				$nuevo_importe = 0;
+				$lic_hces1 = "N";
+			}
+			DB::table("FGHCES1")->where("emp_hces1", \Config::get("app.emp"))->where("num_hces1", $asigl0->numhces_asigl0)->where("lin_hces1", $asigl0->linhces_asigl0)->update([
+				"implic_hces1" => $nuevo_importe,
+				"lic_hces1" => $lic_hces1
+			]);
+
 		}
-		DB::table("FGHCES1")->where("emp_hces1", \Config::get("app.emp"))->where("num_hces1", $asigl0->numhces_asigl0)->where("lin_hces1", $asigl0->linhces_asigl0)->update([
-			"implic_hces1" => $nuevo_importe,
-			"lic_hces1" => $lic_hces1
-		]);
 
 
 
@@ -1968,7 +1979,7 @@ class SubastaController extends Controller
 
 		return response($lots, 200);
 	}
-
+#se usa para mirar los lotes que se pueden facturar
 	function getSelectLotesFondoGaleria()
 	{
 		$query = request('q');
@@ -1980,18 +1991,22 @@ class SubastaController extends Controller
 						->joinFgCaracteristicasAsigl0()
 						->joinFgCaracteristicasHces1Asigl0()
 						->joinFgCaracteristicasValueAsigl0()
+						#debemos comprobar que el lote no esta facturado
+						->leftjoin('FGART',"FGART.EMP_ART = FGASIGL0.EMP_ASIGL0  AND FGART.NEWREF_ART = CONCAT(CONCAT(SUB_ASIGL0,'-'), REF_ASIGL0)" )
+						->leftjoin('FGPEDC1',"FGPEDC1.EMP_PEDC1 = FGASIGL0.EMP_ASIGL0  AND FGPEDC1.ART_PEDC1 = FGART.COD_ART")
+						#QUEREMOS EVITAR LOS LOTES EN PEDIDOS
+						->whereraw("LIN_PEDC1 IS NULL")
+
 						->where("IDCAR_CARACTERISTICAS_VALUE", \Config::get("app.ArtistCode"))
 						->whereRaw("( (upper(descweb_hces1) like ?)  OR (upper(value_caracteristicas_value) like ?) )",["%".mb_strtoupper($query)."%","%".mb_strtoupper($query)."%"])
-
-						->where("pc_hces1",">",0)
-
 						->where("impsalhces_asigl0",">",0)
+						->where("pc_hces1",">",0)
 
 						->get();
 
-
+			#habra duplicados por que hemos tenido que poner el join con articulos, pero al meterlo en el array nos cargamso los duplicadosp or que tendrabn el mism oindice
 			foreach($fgasigl0 as $lot){
-				$lots[] = [
+				$lots[$lot->sub_asigl0."-".$lot->ref_asigl0] = [
 					'id' => $lot->sub_asigl0."-".$lot->ref_asigl0,
 					'html' =>   $lot->descweb_hces1." - ".$lot->value_caracteristicas_value . " - ". \Tools::moneyFormat($lot->impsalhces_asigl0,"€")
 				];

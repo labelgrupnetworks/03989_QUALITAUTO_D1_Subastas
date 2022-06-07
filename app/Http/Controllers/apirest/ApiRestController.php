@@ -33,7 +33,7 @@ class ApiRestController extends BaseController
         $required = array('apikey','user','passw');
         $this->validatorRequired($required);
 
-        if(Request::input('apikey') != Config::get('app.apikey')){
+		if(request('apikey') != Config::get('app.apikey')){
             exit(json_encode('Error apikey'));
         }
     }
@@ -47,7 +47,7 @@ class ApiRestController extends BaseController
     //Validamos que vengan los campos obligatorios
     public function validatorRequired($required){
 
-        $input = $_POST;
+        $input = request()->all();
 
         //Bucle campos obligatiros, si no existe error.
         foreach($required as $require){

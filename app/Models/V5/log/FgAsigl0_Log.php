@@ -38,5 +38,13 @@ class FgAsigl0_Log extends Model
 		});
 	}
 
+	public function scopelog($query){
+        return $query->joinUsr()->select("FSUSR.NOM_USR, FGASIGL0_LOG.*");
+	}
+
+	public function scopeJoinUsr($query){
+        return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGASIGL0_LOG.USR_UPDATE_ASIGL0");
+	}
+
 }
 

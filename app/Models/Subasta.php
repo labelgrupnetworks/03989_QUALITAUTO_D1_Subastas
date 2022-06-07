@@ -924,6 +924,7 @@ class Subasta extends Model
             $pujas[$key]->imagen = $this->getLoteImg($value);
             $pujas[$key]->date = \Tools::formatDate($value->fec_asigl1, $value->hora_asigl1);
             $pujas[$key]->titulo_hces1 = $strLib->CleanStr($value->titulo_hces1);
+            $pujas[$key]->rsoc_licit = $strLib->CleanStr($value->rsoc_licit);
         }
 
         return $pujas;
@@ -1473,6 +1474,7 @@ class Subasta extends Model
         }  else{
             $auction = $this->id_auc_sessions;
         }
+
         $where_order = "AND p.REF_ASIGL0 = :lote";
 
         //Si hay seteado el atributo orden
@@ -2282,8 +2284,9 @@ class Subasta extends Model
 			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => \Tools::moneyFormat($this->imp)]);
 		}
 		elseif($typePuja == FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA){
-			$urlSimilar = (new EmailLib(''))->getUrlGridLots($lot->num_hces1, $lot->lin_hces1, 'V', 0, $lot->impsalhces_asigl0 * 1.25);
-			$message = trans(config('app.theme') . '-app.msg_error.counteroffer_rejected', ['imp' => \Tools::moneyFormat($this->imp), 'url' => $urlSimilar]);
+			$urlSimilar = (new EmailLib(''))->getUrlGridLots($lot->num_hces1, $lot->lin_hces1, 'V', 0, $this->imp * 1.25);
+			//$message = trans(config('app.theme') . '-app.msg_error.counteroffer_rejected', ['imp' => \Tools::moneyFormat($this->imp), 'url' => $urlSimilar]);
+			$message = 'El Vendedor no ha aceptado tu Oferta. Puedes asegurar la Compra al precio indicado, hacer otra Oferta superior o consultar otros Vehiculos Similares acordes a tu presupuesto.';
 		}
 		/* if (in_array($typePuja, [FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA, FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA])) {
 			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => \Tools::moneyFormat($this->imp)]);
@@ -2296,6 +2299,9 @@ class Subasta extends Model
 			'imp' => $this->imp,
 			'ref' => $this->ref,
 			'bid' => $bid,
+			'buy_price' => $lot->impsalhces_asigl0,
+			'pujarep' => $typePuja,
+			'similar_lots' => $urlSimilar ?? false
 		];
 	}
 
@@ -3232,6 +3238,12 @@ class Subasta extends Model
                 $lotes[$key]->desadju_asigl0 = 'N';
             }
 
+			if (isset($value->es_nft_asigl0)){
+                $lotes[$key]->es_nft_asigl0 = $value->es_nft_asigl0;
+            }else{
+                $lotes[$key]->es_nft_asigl0 = 'N';
+            }
+
             $lotes[$key]->lin_hces1         = $value->lin_hces1;
             $lotes[$key]->num_hces1         = $value->num_hces1;
             $lotes[$key]->tipo_sub          = $value->tipo_sub;
@@ -3406,6 +3418,8 @@ class Subasta extends Model
             }else{
                  $lotes[$key]->impadj_asigl0  = 0;
             }
+
+			$lotes[$key]->ocultarps_asigl0 = $value->ocultarps_asigl0 ?? 'N';
 
              $this->CleanStrLote($lotes[$key]);
 
