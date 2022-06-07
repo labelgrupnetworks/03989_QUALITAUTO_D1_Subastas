@@ -1,0 +1,192 @@
+.rating-title h1, .rating-title span{
+	color: #283747;
+    font-weight: bold;
+	margin: 0;
+	font-size: 36px;
+}
+
+.rating-reviews{
+	flex-wrap: wrap;
+}
+
+.rating-reviews .rate{
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.rating-reviews .rate img{
+	max-width: 28px;
+}
+
+.rating-reviews h1{
+	color: #283747;
+    font-weight: bold;
+	margin: 0;
+	font-size: 36px;
+
+}
+
+.rating-reviews span{
+	font-weight: 600;
+    font-size: 12px;
+    color: #747474ad;
+}
+
+.rating-reviews a{
+	margin-left: auto;
+}
+
+.btn-google-review{
+	background-color: rgb(28, 145, 255);
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+    color: rgb(255, 255, 255);
+    display: inline-flex;
+    text-transform: uppercase;
+    user-select: none;
+    cursor: pointer;
+    -webkit-box-pack: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 9px 20px;
+    border-radius: 16px;
+    transition: all 0.1s ease 0s;
+	text-decoration: none !important;
+	transition: 0.5s;
+}
+
+.btn-google-review:hover {
+	color: rgb(255, 255, 255);
+	background-color: #155693;
+    text-decoration: none !important;
+}
+
+
+
+
+
+.google-card{
+	position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+
+	padding: 5px;
+
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+	   transition: 0.3s;
+
+
+}
+
+.google-card:hover {
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.7);
+}
+
+.google-card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+.google-card-header{
+	padding: .75rem 1.25rem;
+	margin-bottom: 0;
+	overflow: hidden;
+}
+
+.google-card-header .author{
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+    overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.google-card-header .rate img{
+	max-width: 20px;
+}
+
+.google-card-header .time_ago{
+	color: rgba(0, 0, 0, 0.54);
+    font-size: 14px;
+    letter-spacing: 0.01428571em;
+    font-family: Roboto, Arial,sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.google-card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+	padding: 1.25rem;
+
+
+}
+
+.google-card-body .google-card-text{
+	height: 135px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 14px;
+    font-weight: 600;
+}
+
+.google-card-title {
+    margin-bottom: .75rem;
+}
+
+.google-card-footer:last-child {
+    border-radius: 0 0 calc(.25rem - 1px) calc(.25rem - 1px);
+}
+
+.google-card-footer {
+    padding: .75rem 1.25rem;
+    border-top: 1px solid rgba(0,0,0,.125);
+}
+
+.google-card-footer p{
+	margin: 0;
+}
+
+
+@media (max-width: 770px) {
+
+	.rating-title h1, .rating-title span{
+		font-size: 30px;
+	}
+
+	.rating-reviews h1{
+		font-size: 30px;
+	}
+
+}
+
+@media (max-width: 480px) {
+	.rating-title h1, .rating-title span{
+		font-size: 25px;
+	}
+
+	.rating-reviews h1{
+		font-size: 25px;
+	}
+
+	.rating-reviews a{
+		margin-top: 5px;
+
+	}
+}

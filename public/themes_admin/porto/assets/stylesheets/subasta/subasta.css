@@ -1,0 +1,66 @@
+.image-wrapper{
+	min-height: 250px;
+}
+
+.image-wrapper img{
+	margin: auto;
+	max-width: 100%;
+    height: auto;
+	max-height: 300px;
+}
+
+.image-wrapper a{
+cursor: pointer;
+}
+
+
+.input-table input, .input-table textarea {
+    display: block !important;
+    /*padding: 0 !important;*/
+    margin: 0 !important;
+    border: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    line-height: 1 !important;
+    padding-left: 15px !important;
+}
+.input-table td {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.input-table > tbody > tr > td:nth-child(1){
+	padding: 8px !important;
+}
+.input-table .vertical-middle{
+    vertical-align: middle;
+    min-width: 140px;
+}
+
+/*darle colores a la tabla
+.input-table tbody tr:nth-child(2n) input, #tbodyespai tr:nth-child(2n) td{
+    background-color: #ff00001a;
+}
+.input-table tbody tr:nth-child(2n+1) input, #tbodyespai tr:nth-child(2n+1) td{
+    background-color: #ff00000f;
+}
+*/
+
+.table-files > tbody > tr > td{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.log {
+	text-align: left;
+	background-color: #d1d1d1;
+	border: 1px solid gainsboro;
+	border-radius: 10px;
+	min-height: 400px;
+	max-height: 400px;
+	overflow-y: auto;
+	margin-bottom: 10px;
+}
+
+.sr-only{
+	position: relative;
+}

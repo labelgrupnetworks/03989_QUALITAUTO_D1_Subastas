@@ -1,0 +1,1 @@
+const translates = {"test_js":{"test_1":"Texto de pruebas","test_2":"Texto de pruebas con variable dinamica: :var"}}

@@ -1,0 +1,518 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+  --primary-color: #018ccc;
+}
+
+body{ 
+    background: white;
+}
+
+.d-flex{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+#registerForm .datos_contacto {width: 66%;}
+
+.justify-content-space-between{
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+.justify-content-space-around{
+    -ms-flex-pack: distribute;
+     justify-content: space-around;
+}
+.justify-content-flex-end{
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.d-block{
+    display: block;
+}
+.flex-wrap{
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+
+.align-self-center{
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+}
+.text-input__loading--line {
+    height: 100%;
+    -webkit-animation: pulse 1s infinite ease-in-out;
+            animation: pulse 1s infinite ease-in-out;
+    width: 100%;
+    position: absolute;
+}
+
+.flex-direction-column{
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.has-error {border-color:#C00;}
+
+.create-account-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+input:checked ~ .input-check-custom{
+    -webkit-animation-name: explotion;
+            animation-name: explotion;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+    -webkit-animation-duration: .1s;
+            animation-duration: .1s;
+    color: #101010;
+    opacity: 1;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+.input-check-custom{
+    padding: 5px 10px;
+    opacity: .3;
+    font-size: 12px;
+    font-weight: 100;
+    cursor: pointer;
+    -webkit-transition: .3s linear all;
+    -o-transition: .3s linear all;
+    transition: .3s linear all;
+    backgound: white;
+    border: none;
+}
+
+.inputs-type-person .form-group{
+    margin-bottom: 0;
+}
+
+/****CREATE ACCOUNT****/
+.create-account-container{
+    position: relative;
+    border: 1px solid black;
+    padding: 20px 18px 40px 18px;
+    overflow: hidden;
+
+}
+.create-account{
+    padding: 100px 0px 0px 0px;
+}
+
+
+.inputs-type-person .form-group{
+    margin-bottom: 0;
+}
+
+.input-check-custom{
+    padding: 5px 10px;
+    opacity: .3;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-transition: .3s linear all;
+    -o-transition: .3s linear all;
+    transition: .3s linear all;
+}
+
+.inputs-custom-group{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.inputs-custom-group .form-group{
+    padding: 0 5px;
+    position: relative;
+}
+.inputs-custom-group .form-group label{
+    left: 14px;
+    color: gray;
+    z-index: 10;
+    font-size: 15px;
+    font-weight: 100;
+    min-width: 100px;
+}
+
+.inputs-custom-group .form-group input:focus + label{
+    -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+    display: block;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+    -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.button-up{
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    height: 40px;
+    width: 40px;
+    background: black;
+    color: white;
+    z-index: 99999;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    opacity: .5;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding-top: 9px;
+    text-align: center;
+    cursor: pointer;
+}
+.button-up:hover{
+    opacity: 1;
+}
+
+
+.inputs-custom-group input,
+.inputs-custom-group select,
+.free-valuations textarea{
+    background: rgba(0,0,0,.05);
+    border: 1px solid white;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+
+.free-valuations textarea{
+    height: 133px;
+}
+
+.inputs-account{
+    margin: 0px 0;
+    padding: 30px 30px 0px 30px;
+}
+
+.new-user-title{
+    font-weight: 500;
+    font-size: 25px;
+    color: black;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 20px 0;
+}
+
+
+
+
+
+.create-account-stepper{
+    margin: 20px 0;
+}
+
+.stepper-container{
+    position: relative;
+    z-index: 10;
+}
+.create-account-stepper .number{
+    background: lightgray;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    color: white;
+    position: relative;
+    z-index: 10;
+}
+.buttons- .principal-button{
+    position: relative;
+    z-index: 10;
+}
+.create-account-stepper .number.actual{
+    background: #82C1FF;
+}
+
+
+.divider-stepper{
+    height: 1px;
+    width: 200px;
+    background: white;
+    border-bottom: 3px dotted var(--primary-color);
+}
+
+.input-gener label{
+    font-weight: bold;
+}
+
+.create-account-address{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: white;
+    z-index: 2;
+    left: 101%;
+    background: transparent;
+}
+.create-account-address-container{
+    padding: 10px;
+}
+
+
+
+.create-account-address-container{
+    background: white;
+    height: 100%;
+    width: 100%;
+}
+
+.input-accept{
+    font-weight: 100;
+    font-size: 12px;
+    margin-bottom: 20px;
+
+}
+
+.input-accept input{
+    display: inline-block;
+    width: auto;
+    height: auto;
+}
+
+.buttons{
+    position: relative;
+    z-index: 10;
+    height: 50px;;
+}
+
+.buttons-next-back{
+position: relative;
+z-index: 10;
+}
+
+.gener-group{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between
+}
+
+.date input{
+    text-align: right;
+    font-size: 10px;
+    padding: 0;
+    width: 145px !important;
+    background: rgba(0,0,0,.05);
+    border: 1px solid white;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+
+}
+.date label{
+    text-align: right;
+    font-size: 14px;
+    margin: 0;
+    display: block;
+    width: 100%;
+    margin-right: 13px;
+}
+
+.date{
+    margin: 0;
+}
+
+.create-account-second-address{
+    padding: 20px 0;
+}
+.create-account-second-address input,
+.create-account-second-address select{
+    font-size: 12px;
+    height: 28px;
+}
+
+.title-second-address{
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0 10px
+}
+
+.second-address input{
+    margin: 0
+}
+.second-address span{
+    font-size: 10px;
+    font-weight: 100;
+    margin-left: 20px;
+}
+
+.button-back{
+    position: absolute;
+    background: #414145;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    z-index: 10;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+    -webkit-box-shadow: 0px 0px 13px rgba(0,0,0,.5);
+            box-shadow: 0px 0px 13px rgba(0,0,0,.5);
+    top: 50%;
+    left: -8px;
+}
+
+.error-confirm,
+.erroremail{
+    font-size: 10px;
+    font-weight: 100;
+    padding: 0 8px;
+}
+
+.buttons a.button-principal {
+    padding: 6px 45px;
+    cursor: pointer;
+}
+
+.free-valuations .info{
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.content-form-valuations{
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#dropzone{
+    border: 3px dashed #D2E2F2 !important;
+    padding: 20px 24px 50px;
+    position: relative;
+    -webkit-transition: .2s linear all;
+    -o-transition: .2s linear all;
+    transition: .2s linear all;
+}
+
+
+.calendar-page{
+    margin: 70px auto;
+}
+
+.lang-selection{
+    padding: 6px 0;
+    border-bottom: 1px solid #DBDBDB;
+    background: #CBB997;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="text"]{
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    background: rgb(242, 242, 242);
+    border-radius: 0;
+    position: relative;
+    padding: 0 10px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+form input[type="date"],form input[type="hour"] {
+    border:0;
+    background: rgb(242, 242, 242);
+    font-size:14px;
+    border-bottom:#CCC 1px solid ;
+}
+
+.input-login-group img.eye-password{
+    top: 8px;
+}
+
+.eye-password {
+    top: 34px;
+}
+
+.submitButton{
+    padding: 3px 55px;
+    border: 0;
+    border-radius: 0;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: #018ccc;
+    margin-top: 2rem;
+}
+
+.check_term div{
+    padding: 0px;
+    margin: 0px 0px 5px 0px;
+}
+
+.check_term div span{
+    float: right;
+}
+
+.check_term label{
+    font-size: 16px;
+    font-weight: 100 !important;
+    padding: 0px;
+    margin: 0px;
+}

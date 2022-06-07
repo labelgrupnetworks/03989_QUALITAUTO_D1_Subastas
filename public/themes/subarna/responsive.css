@@ -1,0 +1,442 @@
+
+@media (min-width: 1800px) {
+	div.blog_home div.item_img img{
+		width: 100%;
+		height: fit-content;
+		max-height: 100%;
+	}
+}
+
+@media (max-width: 1424px) {
+
+	.navbar-nav>li>a{
+		padding-left: 14px;
+		padding-right: 14px;
+	}
+	.navbar-nav>li{
+		font-size: 12px;
+	}
+
+}
+
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+    visible-lg-custom{
+        display: inline-block;
+    }
+    div.item_subasta img {
+       margin-bottom: 10px;
+        min-height: 150px;
+    }
+    .lot-count{
+        position: relative;
+    }
+
+    .timeLeft{
+        margin-left: 6px;
+    }
+    header{
+        padding: 0;
+    }
+
+
+}
+@media (max-width: 1024px) {
+	div.lotes_destacados div.item_home{
+		padding: 60px 20px;
+	}
+	div.blog_home div.item_home{
+		padding: 60px 20px;
+	}
+
+	div.blog_home div.item_img{
+		height: 400px;
+	}
+}
+
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+        .capaOculta{
+            visibility: hidden;
+        }
+
+
+}
+@media  (min-width: 992px){
+	.banner-home-row-departamentos .column_banner{
+		width: 16.66666667%;
+		/*width: 50%;*/
+	}
+}
+
+@media  (max-width: 992px){
+	.navbar-responsive ul.items_top_responsive{
+		text-align: center;
+		display: flex;
+		align-items: center;
+	}
+}
+
+
+
+@media (min-width: 900px) {
+	.form-group-custom {
+	    margin-bottom: 15px;
+	    float: left;
+	    margin-right: 20px;
+	    width: 46%;
+	}
+        header ul.items_top_responsive, .navbar-responsive ul.items_top_responsive{
+            text-align: right;
+        }
+        .table-responsive>.table>tbody>tr>td{
+            max-width: 200px;
+        }
+            .search{
+        display: flex;
+        justify-content: flex-start;
+    }
+
+
+
+
+}
+/* Portrait tablets and small desktops */
+@media (min-width: 769px) and (max-width: 991px) {
+
+	.text-sm-center{
+		text-align: center;
+	}
+
+    .lot-grid{
+        margin-bottom: 20px;
+    }
+    .lot-grid a{
+        color: #707B7C;
+        -webkit-transition: .2s color linear;
+        -o-transition: .2s color linear;
+        transition: .2s color linear;
+        text-decoration: none;
+    }
+            .logo img{
+        margin: 0;
+    }
+        .control{
+            display: block;
+            opacity: 1;
+        }
+        .item_lot_large .img_lot{
+            height: 160px;
+        }
+        .info_single div.pre,
+        .precio_minimo_no_alcanzado,
+        .precio_minimo_alcanzado,
+        .ficha_V .info_single_button{
+            width: 200px;
+        }
+        .capaOculta{
+            visibility: hidden;
+        }
+        div.item_subasta img {
+            margin-bottom: 10px;
+            min-height: 126px;
+        }
+        .menu-nab-top{
+            justify-content: center;
+        }
+    .logo{
+        position: relative;
+    }
+    .search{
+        display: flex;
+        justify-content: flex-start;
+	}
+
+
+
+}
+
+
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 768px) {
+
+	footer, div.copy{
+		font-size: 12px;
+	}
+
+	footer .footer-title{
+		font-size: 14px;
+	}
+
+	.bann-parallax{
+		background-attachment: scroll;
+    	min-width: auto;
+    	width: 100%;
+    	/* min-height: auto !important; */
+    	/* min-height: 500px; */
+    	min-height: 450px !important;
+    	margin: auto;
+
+	}
+
+	div.separator {
+		margin: 10px 0px;
+	}
+
+	.text-sm-center{
+		text-align: center;
+	}
+
+	.text-xs-center{
+		text-align: center;
+	}
+
+    .lot-grid{
+        margin-bottom: 20px;
+    }
+    .lot-grid a{
+        color: #707B7C;
+        -webkit-transition: .2s color linear;
+        -o-transition: .2s color linear;
+        transition: .2s color linear;
+        text-decoration: none;
+    }
+    .logo{
+        position: relative;
+    }
+    .logo img{
+        width: 200px;
+        margin: 0 auto;
+    }
+    .menu-nab-top{
+        justify-content: center;
+    }
+        .capaOculta{
+            visibility: hidden;
+        }
+        .menu-nab-top{
+            justify-content: center;
+        }
+	.navbar-nav>li:nth-child(1) a {
+		border-left: none;
+	}
+	.mt_re {
+		margin-top: 35px;
+	}
+        #pujar_ordenes_w{
+            font-size: 15px;
+            min-height: 46px;
+        }
+	#owl-carousel-responsive {
+		margin-bottom: 40px;
+	}
+	.change_row {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-flex-wrap: wrap;
+		-ms-flex-wrap: wrap;
+		flex-wrap: wrap;
+		display: table-header-group;
+	}
+	.left_row {
+	    -webkit-order: 2;
+	    -ms-order: 2;
+	    order: 2;
+	}
+	.right_row {
+		-webkit-order: 1;
+		-ms-order: 1;
+		order: 1;
+	}
+        .item_lot_mini{
+            position:relative;
+
+        }
+        .item_lot_mini .data_container{
+            height: 40px;
+        }
+        .timeLeft{
+            font-size: 14px;
+            padding-top: 10px;
+            text-align: right;
+
+        }
+        h1.titlePage,
+        .title-head-grid .lot-count,
+        .title-head-grid .lot-grid,
+        .lot-detail h1.titlePage{
+
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            font-size: 30px;
+    }
+
+    .it_ro h1.titleSingle{
+        font-size:25px;
+    }
+
+    .info_single div.pre,
+    .precio_minimo_no_alcanzado,
+    .precio_minimo_alcanzado,
+    .ficha_V .info_single_button{
+        width: 200px;
+    }
+
+    .item_lot_large .img_lot{
+        min-height: 160px;
+        }
+    div.item_subasta img {
+        margin-bottom: 10px;
+        min-height: 126px;
+    }
+
+    .refresh{
+        margin: 0;
+    }
+    .menu-nab-top{
+        flex-direction: column;
+        align-items: center;
+    }
+
+	.info_single .actual-bid-container{
+		padding: 0;
+		margin-top: 10px;
+	}
+
+}
+
+
+@media (max-width:600px){
+
+	div.blog_home div.item_img{
+		height: 300px;
+	}
+
+.search-item img {
+    padding: 0 3px;
+}
+    .len{
+        justify-content: center;
+        width: 100%;
+        padding: 10px 0;
+    }
+        header ul.items_top_responsive, .navbar-responsive ul.items_top_responsive{
+        text-align: center;
+        display: flex;
+        align-items: center;
+    }
+    .cortar{
+        text-align: center;
+    }
+
+        div.logo {
+		text-align: center;
+		width: 100%;
+		margin: auto;
+		min-height: 90px;
+	}
+        .tabs-custom ul li{
+            margin-bottom: 15px;
+            flex-basis: 100%;
+        }
+        #add_fav.btn,
+        #del_fav.btn{
+            top: 10px;
+            left: 45px;
+            z-index: 2;
+            font-size: 5px;
+            height: 35px;
+            width: 44px;
+    }
+        .button-follow-responsive {
+            opacity: 1;
+            background: transparent;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            top: -20px;
+            left: -3px;
+
+
+        }
+        #add_fav.btn i,
+        #del_fav.btn i{
+            font-size: 20px;
+        }
+        div.module_footer{
+            text-align: center;
+        }
+        .form-search-header .input-search-custom {
+            border-radius: 0;
+            font-size: 12px;
+
+        }
+
+        .save_orders span.text-uppercase {
+
+            font-size: 30px;
+        }
+        .group-pujar-custom{
+            display: block;
+        }
+        .group-pujar-custom .input-group-btn #pujar_ordenes_w,
+
+        .group-pujar-custom #bid_modal_pujar{
+            border-radius: 0;
+        }
+
+}
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+
+
+	div.form-group-custom label {
+		padding-top: 24px;
+		padding-bottom: 8px;
+	}
+
+	#owl-carousel div.owl-prev {
+		left: 0;
+		position: absolute;
+		top: 30px;
+	}
+	#owl-carousel div.owl-next {
+		right: 0;
+		position: absolute;
+		top: 30px;
+	}
+	#owl-carousel div.owl-prev, #owl-carousel div.owl-next {
+		font-size: 40px;
+		border-radius: 0;
+		background-color: transparent;
+	}
+	div.module_footer {
+		margin-bottom: 80px;
+	}
+	.btn-registro {
+		width: 100%
+	}
+        /*.sub-o{
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                    justify-content: center;
+        }
+		*/
+		.sub-o .clock .timer{
+			font-size: 15px;
+		}
+        .content_item_mini a .retired{
+            font-size: 10px;
+            right: 14px;
+        }
+
+}

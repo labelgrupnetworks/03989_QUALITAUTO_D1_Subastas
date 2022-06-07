@@ -1,0 +1,12 @@
+@media (max-width: 1200px) {
+
+	.menu-principal{
+		background: var(--btn-primary-background);
+	}
+
+	.menu-principal-content li, .menu-principal-content li a{
+		color: var(--btn-secondary-text);
+	}
+
+
+}

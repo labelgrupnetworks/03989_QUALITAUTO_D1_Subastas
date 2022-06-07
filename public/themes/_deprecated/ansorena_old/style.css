@@ -1,0 +1,285 @@
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #BF9814;
+    --complement-color: #414145;
+    --extra-color: #7d9396;
+    --primary-color-text: #707070;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background:  #7d9396;;
+	--btn-primary-background-hover: #414145;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #D2E2F2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #414145;
+	--newsletter-input-text: #414145;
+
+	--footer-background: white;
+	--footer-titles-color: #707070;
+	--footer-links-color: #707070;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: white;
+	--footer-sociallinks-textcolor: #707070;
+
+	--filter-background: #414145;
+}
+
+
+
+/* GENERAL */
+body{
+	text-transform: uppercase;
+}
+
+.info-auction-info-content{
+	text-transform: initial;
+}
+
+.menu-principal.open{
+	padding: 60px 10px;
+    background: white;
+}
+/* FIN GENERAL */
+
+
+/* HEADER */
+.header-height{
+	height: 170px !important;
+}
+header.fixed {
+	z-index: 100;
+	width:100%;
+	left: 0;
+	top:0;
+    background: white;
+	border-bottom: 1px solid #f3f3f3;
+	box-shadow: 0 0 0;
+}
+
+.home-top-banner img {
+    filter: opacity(0.75);
+}
+
+.lang-selection{
+
+	background: #ababab;
+	color: #fff;
+	padding: 2px 0;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 300;
+	padding: 3px 0px 3px 0px;
+}
+.logo-company {
+    max-width: 158px;
+    transition: 0.2s linear all;
+}
+
+.link-lang {
+    margin: 0 0 0 5px;
+}
+
+.rss-head li{
+float:right;
+margin-left: 2px
+}
+
+.user-account {
+	text-align: right;
+	padding: 3px 0 0 0;
+}
+/*
+.ico-user-account-login {
+	padding-left: 16px !important;
+	background: url("/themes/ansorena/assets/img/head/login.png") no-repeat;
+}
+*/
+.user-account-login a {
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
+	padding-top: 2px;
+	margin-left: 5px;
+}
+.ico-logout {
+	margin-top: -4px;
+
+	width: 15px !important;;
+}
+.ico-login {
+
+	width: 13px !important;
+	margin-right: 2px;
+	margin-top: -7px;
+}
+
+
+.logo-header{
+	padding-top: 10px;
+}
+a.link-header {
+	font-weight: 300;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+header, nav {
+    height: auto;
+}
+header.fixed nav {
+    border-bottom: 0px ;
+}
+
+/* FIN HEADER */
+
+body{
+	font-family: "proxima-nova",sans-serif;
+}
+
+
+/* FOOTER */
+
+footer{
+	padding: 80px 0 20px 0;
+	border-bottom: 0px solid #b3b3b3;
+
+
+}
+
+.footer-title{
+	font-size:18px;
+	text-transform: uppercase;
+	font-weight: normal;
+	margin: 0;
+}
+
+footer .logo-company{
+	max-width: 200px;
+}
+
+.signature{
+	color: var(--primary-color-text);
+}
+
+.signature hr{
+	background-color: var(--footer-links-color);
+}
+
+.footer-ul li{
+	float: right;
+	margin: 0 10px;
+}
+
+
+/* FIN FOOTER */
+
+
+/* GRID DE LOTES */
+
+.item_lot{
+	min-height: 570px;
+}
+
+.item_lot .data-container .data-price{
+	font-weight: 600;
+}
+
+.fondo_sesiones{
+	background: #f2f2f2;
+	margin: 30px 0 30px 0;
+}
+.fondo_sesiones .sesiones{
+
+	margin: 15px;
+	border:1px solid #b3b3b3;
+	text-align:center;
+	padding: 5px;
+
+}
+.fondo_sesiones .sesiones:hover{
+	background: #FFF;
+
+}
+
+.fondo_sesiones  a{
+	color: #000000;
+
+
+}
+.fondo_sesiones  a:hover{
+	color: #000000;
+	text-decoration: none;
+
+}
+
+.banner_grid{
+	margin-top: 30px;
+}
+/* FIN GRID DE LOTES */
+
+
+/* FICHA LOTE*/
+#img_main{
+	border: none;
+}
+
+.mas-pujados-title span:before{
+	content: none;
+}
+
+.lotes_destacados .owl-nav{
+	display: none;
+}
+
+.item-titulo, .ficha-title{
+	text-transform: initial;
+	font-weight: 600;
+}
+
+.item-tecnica, .item-medidas, .ficha-tecnica, .ficha-medidas, .ficha-info-content{
+	text-transform: initial;
+}
+
+.ficha-content .pre .pre-title{
+	font-weight: 600;
+}
+
+.sesiones{
+	color: var(--primary-color-text);
+}
+.desc-lot-profile-content {
+	text-transform: none;
+
+}
+
+
+/* FIN FICHA LOTE*/
+
+
+/* ESTATICAS */
+
+.contenido-web{
+	text-align: justify;
+}
+
+.contenido-web a{
+	word-break: break-all;
+}
+
+.contenido-web .region.region-content{
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+/* FIN ESTATICAS */

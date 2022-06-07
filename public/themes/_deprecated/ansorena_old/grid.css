@@ -1,0 +1,16 @@
+.filters-auction-content{
+	background: #7d9396;
+}
+
+#form_lotlist input[type="text"]::placeholder{
+	color: rgb(209, 209, 209);
+}
+
+.pagination{
+	margin: 10px 0px;
+}
+
+.item_lot .item-info-lot{
+	height: 185px;
+	overflow: hidden;
+}

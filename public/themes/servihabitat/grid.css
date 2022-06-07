@@ -1,0 +1,69 @@
+.filters-auction-content {
+    background: var(--btn-secondary-background);
+    color: var(--btn-secondary-text);
+}
+
+.filters-auction-title, .filter-auction-input{
+	color: var(--secondary-color);
+}
+
+#form_lotlist .btn-filter, .btn-bid-lotlist{
+    border: none;
+    background: var(--btn-primary-background);
+    color: var(--btn-primary-text);
+	transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+         -o-transition: 0.3s linear all;
+}
+
+#form_lotlist .btn-filter:hover, .btn-bid-lotlist:hover{
+	background: var(--btn-primary-background-hover);
+    color: var(--btn-primary-text-hover);
+}
+
+#form_lotlist input[type="text"]{
+	border-bottom: var(--secondary-color) 1px solid;
+}
+
+#form_lotlist input[type="text"]::placeholder{
+	color: var(--secondary-color);
+	opacity: 0.75;
+}
+
+.RightlabelGrid{
+	letter-spacing: 0.5px;
+}
+
+.item_lot{
+	min-height: 370px;
+}
+
+.item_lot .salida-price{
+	float: right;
+}
+
+.item_lot .data-container .data-price{
+	height: auto;
+}
+
+.grid-results{
+	display: inline-block;
+}
+
+.order-auction-lot{
+	float: right;
+}
+
+.lot-subsec{
+	border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    padding: 3px 15px;
+    color: var(--btn-secondary-text);
+    border: 1px solid var(--btn-secondary-text);
+    /*display: inline-block;*/
+}
+
+

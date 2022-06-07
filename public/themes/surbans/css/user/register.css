@@ -1,0 +1,7 @@
+#registerForm .tipo_usuario div.selected {
+    border-top: 5px solid #282828;
+}
+
+#registerForm .tipo_sexo div.selected {
+    border-top: 5px solid #282828;
+}

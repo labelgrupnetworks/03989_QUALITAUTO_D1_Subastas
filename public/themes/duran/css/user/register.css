@@ -1,0 +1,12 @@
+
+#registerForm .idioma {display:none;}
+
+#registerForm .movil {display:block;}
+
+
+@media (max-width: 375px){
+	.g-recaptcha {
+		position: relative;
+		left: initial;
+	}
+}

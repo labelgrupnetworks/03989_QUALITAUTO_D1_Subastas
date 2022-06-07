@@ -1,0 +1,44 @@
+
+
+:root{
+
+	--secondary-color: #00664F!important;
+}
+.user_info_items{
+	font-size: 20px;
+}
+
+.pactual, .precioSalida{
+	padding: 5px;
+}
+
+.precioSalida p, .pactual p{
+	min-width: initial;
+}
+
+.precioSalida > span:nth-child(2), .pactual > span:nth-child(2){
+	margin-left: auto;
+}
+
+.tr_user_streaming > div{
+	overflow: hidden;
+}
+
+
+.button, .btn-primary{
+	background-color: #00664F!important;
+	border-color: #888!important;
+}
+
+
+
+.button:hover, .btn-primary:hover{
+	background-color: #FFF!important;
+	color: #00664F!important;
+	border-color: #888!important;
+}
+
+.bid_amount_gestor{
+	padding-right: 55px;
+}
+

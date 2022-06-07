@@ -1,0 +1,68 @@
+
+#registerForm .tipo_usuario div.selected {border-top: 5px solid #015BA9;}
+#registerForm .tipo_sexo div.selected {border-top: 5px solid #015BA9;}
+
+#registerForm .movil {display:block;}
+#registerForm .well{
+	width: 80%;
+}
+
+#registerForm .card-expired-wrapper .card-expired-separator{
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.card-expired-wrapper .card-expired-separator span, .card-expired-wrapper input[name=card-expired-month]{
+	border-right: 0;
+	border-radius: 0;
+}
+
+.card-expired-wrapper .card-expired-separator span, .card-expired-wrapper input[name=card-expired-year]{
+	border-left: 0;
+	border-radius: 0;
+}
+
+.card-expired-wrapper input[name=card-expired-month]:focus, .card-expired-wrapper input[name=card-expired-year]:focus{
+	border: 1px solid #66afe9;
+}
+
+
+
+.without-arrow{
+	-moz-appearance: textfield;
+}
+
+.without-arrow::-webkit-outer-spin-button,
+.without-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px){
+	#registerForm .well{
+		width: 100%;
+	}
+}
+
+.form-row {
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.form-row>.col, .form-row>[class*=col-] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}

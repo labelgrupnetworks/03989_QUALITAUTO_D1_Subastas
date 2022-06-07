@@ -1,0 +1,6 @@
+
+/* ejemplo de como ocultar la opcion de todas las categorias, y una categoria en concreto por si que remos que solo aparezcan las subcategorias,
+#ortsec_all, #label_ortsec_all, #ortsec_12, #label_ortsec_12{
+	display:none;
+}
+*/

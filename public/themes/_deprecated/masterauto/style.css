@@ -1,0 +1,286 @@
+
+:root {
+    --primary-color: #2C2C2C;
+    --secondary-color: white;
+    --complement-color: #2C2C2C;
+    --extra-color: #202553;
+    --newsletter-background: #D2E2F2;
+    --primary-color-text: #2C2C2C;
+	--secondary-color-text: #46494f;
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| GENERAL
+|--------------------------------------------------------------------------
+*/
+
+.button-principal{
+	border: 2px solid var(--primary-color);
+	font-size: 16px;
+}
+
+.button-principal:hover{
+	color: var(--primary-color-text);
+
+}
+
+.secondary-button{
+	border: 2px solid var(--primary-color);
+	color: var(--primary-color-text);
+	font-size: 16px;
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| HEADER
+|--------------------------------------------------------------------------
+*/
+
+.logo-company {
+    max-width: 145px;
+}
+
+.lang-selection{
+	display: none;
+}
+
+.menu-header, .menu-header *{
+	border: 0px !important;
+	font-size: 16px;
+}
+
+.menu-header .color-letter{
+	color: var(--extra-color);
+}
+
+.mega-menu a:hover {
+    background: var(--extra-color);
+    color: #ffffff;
+}
+
+.user-account{
+	/*flex: 0.25;*/
+}
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| BANNER HOME
+|--------------------------------------------------------------------------
+*/
+
+.home-top-banner .button-principal{
+	background-color: #2C2C2C;
+	border: 2px solid #2C2C2C;
+
+	transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+
+}
+
+.home-slider-btn {
+    left: -250px;
+}
+
+
+.home-top-banner .button-principal:hover, .home-top-banner:hover .button-principal{
+	background-color: transparent;
+	border: 2px solid white;
+	color: white;
+}
+
+.home-top-banner:hover img{
+	filter:brightness(50%);
+}
+
+
+
+.home-top-banner img{
+	filter: none;
+
+	transition: 0.3s filter linear, 0.3s -webkit-filter linear;
+    -webkit-transition: 0.3s -webkit-filter linear;
+}
+
+
+.home-slide-title {
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+}
+
+.home-slide-subtitle {
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+}
+
+/*
+|--------------------------------------------------------------------------
+| DESTACADOS CARROUSEL
+|--------------------------------------------------------------------------
+*/
+.lotes-destacados-tittle{
+	font-size: 36px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| DESTACADOS CARROUSEL
+|--------------------------------------------------------------------------
+*/
+.owl-theme .owl-nav{
+    text-align: right;
+    margin-top: 0px;
+    padding-right: 10px;
+}
+
+.owl-theme .owl-nav [class*="owl-"]{
+    border-radius: 0;
+    padding: 5px 10px 2px 10px;
+    color: #B3B3B7;
+	cursor: pointer;
+
+	transition: 0.2s linear all;
+    -webkit-transition: 0.2s linear all;
+
+}
+.owl-theme .owl-nav [class*="owl-"] i{
+    font-size: 26px;
+}
+
+.owl-theme .owl-nav [class*=owl-]:hover {
+    background: transparent;
+    color: black;
+    padding: 4px 9px 1px 9px;
+    border: 1px solid var(--extra-color);
+    cursor: pointer;
+}
+
+.item_home{
+	margin: 5px 0px;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| FOOTER
+|--------------------------------------------------------------------------
+*/
+footer, .copy{
+    background-color: #202553;
+    color: white;
+}
+
+footer a{
+    text-decoration: none;
+}
+
+.copy .fab{
+	color: transparent;
+    /* -webkit-text-fill-color: black; */
+    -webkit-text-stroke-color: #eee;
+	-webkit-text-stroke-width: 1px;
+	opacity: 1;
+}
+
+.copy .fab.fa-instagram{
+	color: white;
+    /* -webkit-text-fill-color: black; */
+    -webkit-text-stroke-color: none;
+    -webkit-text-stroke-width: 0px;
+}
+
+.copy .social-link{
+	margin-left: 10px;
+}
+
+.footer-link, .copy .color-letter{
+	color: white;
+}
+
+.copy p,.copy .develop-for{
+	opacity: 0.5;
+}
+
+.copy.color-letter:hover{
+	color: white;
+}
+
+
+
+/*lote*/
+.item_lot .data-container .data-price {
+    text-align: center;
+}
+
+
+/*
+Map
+*/
+
+.home-map-banner, .map-container{
+	background-color: #e5e5e5;
+}
+
+.text-primary-size{
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.text-small-size{
+	font-size: 13px;
+	font-weight: initial;
+}
+
+.info-map{
+	padding: 0 15px;
+}
+
+.grid.col4{
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+}
+
+.grid-center{
+	justify-self: center;
+	text-align: center;
+	width: 100%;
+}
+
+.text-title-size{
+	font-size: 40px;
+    font-weight: 500;
+}
+
+.mbr{
+	border-right: 1px solid black;
+}
+
+.center-button{
+	text-align: center;
+}
+
+.button-principal.howtobuy{
+	text-transform: uppercase;
+	padding: 12px 120px;
+}
+
+
+
+
+
+
+
+
+
+/*Contacto*/
+

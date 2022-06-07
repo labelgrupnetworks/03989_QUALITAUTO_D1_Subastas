@@ -1,0 +1,28 @@
+@media (max-width: 1200px){
+	.menu-principal {
+		background: #deeef4;
+	}
+
+	.menu-principal-content li, .menu-principal-content li a {
+		color: #43778c;
+	}
+}
+
+
+@media (max-width: 992px){
+
+	.container .column_banner .HOME_TWO_CARDS{
+		margin-bottom: 2rem;
+	}
+
+	.container .column_banner:first-of-type .HOME_TWO_CARDS{
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+
+	.container .column_banner:nth-of-type(2) .HOME_TWO_CARDS{
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+}

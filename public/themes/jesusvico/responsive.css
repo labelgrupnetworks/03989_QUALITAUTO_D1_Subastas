@@ -1,0 +1,593 @@
+@media screen and (max-width: 1330px){
+
+	.footer-title{
+		font-size: 14px;
+	}
+
+
+	.single-lot-desc-content {
+		font-size: 14px;
+	}
+
+	a.link-header {
+		font-size: 18px;
+	}
+
+	/*
+	.menu-header .logo-header {
+		width: 150px;
+    	min-width: 150px;
+	}
+	*/
+
+	.ficha-content .col-image{
+		/*width: 50%;*/
+	}
+
+}
+
+
+@media screen and (max-width: 1205px){
+
+	.menu_desp{
+
+		display: none;
+    	position: relative;
+    	width: initial;
+    	top: initial;
+    	margin-left: initial;
+    	border-left: 0px;
+    	-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+    	box-shadow: none;
+    	z-index: initial;
+		background: none;
+		text-align: center;
+	}
+
+
+	.menu_desp a {
+		font-size: 20px !important;
+		padding: 10px 0px 10px 60px;
+		text-align: left;
+		border-top: none;
+	}
+
+	.link-header span::before {
+		background: none;
+	}
+
+	.btn_login {
+		font-size: 20px;
+	}
+
+	.menu-principal {
+		background-color: var(--primary-color);
+	}
+	.menu-principal-content li, .menu-principal-content li a{
+		color:white;
+	}
+
+	.mt-xs-10{
+		margin-top:10px;
+	}
+
+	.grid-flex{
+		display: -webkit-box;
+    	display: -ms-flexbox;
+		display: flex;
+
+		-webkit-box-direction: reverse;
+		-ms-flex-direction: column-reverse;
+		flex-direction: column-reverse;
+
+		padding: 0px 20px;
+	}
+
+	.footer-title .image {
+		border-top: 0;
+	}
+
+	.footer-title .enterprise {
+		text-align: center;
+		border-top: 0;
+	}
+
+	.mt-xs-10{
+		margin-top:10px;
+	}
+
+	.grid-flex{
+		display: -webkit-box;
+    	display: -ms-flexbox;
+		display: flex;
+
+		-webkit-box-direction: reverse;
+		-ms-flex-direction: column-reverse;
+		flex-direction: column-reverse;
+
+		padding: 0px 20px;
+	}
+
+	.ficha-time{
+		font-size: 12px;
+	}
+
+	.menu-header {
+		grid-template-columns: 2fr 7fr auto;
+	}
+
+	a.link-header:hover, a.link-header:focus {
+		background: transparent;
+		transition: none;
+		-webkit-animation: none;
+		-moz-animation: none;
+		-o-animation: none;
+		animation: none;
+
+	}
+
+}
+
+@media (max-width: 992px) {
+
+	.events-banner .column_banner{
+		width: 50%;
+	}
+
+	.panel-user{
+		padding: 0px 0px 150px 0px;
+	}
+
+	.account-user #user-account-ul{
+		display: none;
+	}
+
+	.account-user .tabs-custom.filters-auction-content .ul-format{
+		display: block;
+	}
+
+	/*******------------------------------********
+                FICHA LIST
+	/*******------------------------------********/
+	.grid-block{
+		grid-template-columns: 1fr;
+		grid-template-rows: auto;
+		grid-template-areas:
+			"grid-admin"
+			"grid-precio-salida"
+			"grid-puja-actual"
+			"grid-puja-maxima"
+			"grid-insert-string"
+			"grid-input"
+			"grid-btn-pujar"
+			;
+
+	}
+
+	.ficha-info-title{
+		flex-direction: column-reverse;
+	}
+
+
+
+	.filters-auction-texts{
+		height: initial;
+	}
+
+
+
+	.ficha-price-actual{
+		order: 3;
+	}
+
+	.btn_login {
+		font-size: 20px;
+	}
+
+	.lotes-destacados-tittle {
+		width: 230px;
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+		height: auto;
+		position: relative;
+		font-size: 18px;
+		top: 0px;
+		text-align: initial;
+		/* left: 0; */
+	}
+
+	.slider-blog{
+		margin-top: 2rem;
+		padding: 20px;
+	}
+
+	.blog_banner img{
+		max-height: initial;
+		width: 100%;
+		height: auto;
+	}
+
+}
+
+@media (max-width: 768px){
+
+	.ficha-time {
+		margin-bottom: 3rem;
+	}
+
+	.events-container{
+		grid-template-columns: repeat(auto-fill, 80%);
+	}
+
+	.footer-title .image {
+		border-top: 0;
+	}
+
+	.content-right-ficha{
+		/*margin-top: 20px;*/
+	}
+
+	.lang-selection .social-links {
+		margin-bottom: 0;
+		text-align: center;
+	}
+
+	.filters-auction-texts {
+		height: initial;
+	}
+
+	.auction-lots-view{
+		margin-bottom: 20px;
+	}
+
+	/*para modificar banner de tienda-online*/
+	.content-page-banner .col-md-3{
+		width: 80%;
+		margin-top: 2rem;
+		flex: initial;
+	}
+	/*para modificar banner de tienda-online*/
+
+
+}
+
+@media (max-width: 576px){
+
+	.account-user #user-account-ul{
+		display: none;
+	}
+
+	.account-user .tabs-custom.filters-auction-content .ul-format{
+		display: block;
+	}
+
+	.grid-block{
+		grid-template-columns: 1fr;
+		grid-template-rows: auto;
+		grid-template-areas:
+			"grid-admin"
+			"grid-precio-salida"
+			"grid-puja-actual"
+			"grid-puja-maxima"
+			"."
+			"."
+			"."
+			;
+	}
+
+	.grid-input, .grid-btn-pujar{
+		position: fixed;
+		bottom: 10px;
+		width: 50vw;
+		z-index: 99;
+	}
+
+	.grid-insert-string{
+		position: fixed;
+		bottom: 50px;
+		left: 10px;
+
+		z-index: 100;
+	}
+
+	.grid-input{
+		left: 10px;
+
+		-webkit-box-shadow: -30px 0px 0px 30px var(--primary-color);
+		-moz-box-shadow: -30px 0px 0px 30px var(--primary-color);
+		box-shadow: -30px 0px 0px 30px var(--primary-color);
+	}
+
+	.grid-btn-pujar{
+		right: 10px;
+
+		-webkit-box-shadow: 30px 0px 0px 30px var(--primary-color);
+		-moz-box-shadow: 30px 0px 0px 30px var(--primary-color);
+		box-shadow: 30px 0px 0px 30px var(--primary-color);
+	}
+
+	.button-principal{
+		background: var(--extra-color);
+	}
+
+	.grid-insert-string{
+		color: white;
+	}
+
+	.puj-btn-container span{
+		z-index: 999;
+	}
+
+
+
+
+
+	.menu-principal-content li, .menu-principal-content li a{
+		font-size: 30px;
+	}
+
+	.effect-16 ~ label{
+		width: initial;
+	}
+
+	/*******------------------------------********
+                LOT LIST
+	/*******------------------------------********/
+
+
+	.views {
+		justify-content: flex-end;
+    	-webkit-box-pack: end;
+    	-ms-flex-pack: end;
+
+		-webkit-box-orient: initial;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: initial;
+		flex-direction: initial;
+
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.widgets-auction .widget {
+		margin-bottom: 0px;
+	}
+
+	.views.widgets-auction > div{
+		flex-grow: initial;
+		margin: 5px;
+	}
+
+	.full-screen a {
+		padding: 9px 14px 9px 14px;
+	}
+
+	.square .desc_lot {
+		height: 37px;
+	}
+
+	/*******------------------------------********
+                FICHA LOTE
+	/*******------------------------------********/
+
+	.bread-container-custom .button-principal, .bread-content .button-principal{
+		padding: 5px 20px;
+	}
+
+	.bread-content{
+		height: auto;
+		padding-top: initial;
+	}
+
+	.bread-content ul li{
+		margin-top: 5px;
+	}
+
+	.info-type-auction {
+		margin-left: 0px;
+	}
+
+	.ficha-info-clock {
+		margin: 5px 0;
+	}
+
+	.ficha-content .pre .pre-price {
+		font-size: 17px;
+	}
+
+	.ficha-content .pre .pre-title {
+		font-size: 17px;
+	}
+
+	#actual_max_bid, .siguiente_puja {
+		font-size: 17px;
+	}
+
+	.follow{
+		margin: 10px 0;
+	}
+
+	.zone-share-social{
+		align-items: baseline;
+	}
+
+	/*******------------------------------********
+                HEADER
+	/*******------------------------------********/
+
+	.d-flex.social-lang-selection{
+		display: -webkit-box;
+	}
+
+	.menu_desp{
+
+		display: none;
+    	position: relative;
+    	width: initial;
+    	top: initial;
+    	margin-left: initial;
+    	border-left: 0px;
+    	-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+    	box-shadow: none;
+    	z-index: initial;
+		background: none;
+		text-align: center;
+	}
+
+	.menu_desp a {
+		display: block;
+		border-top: 0;
+		font-size: 20px !important;
+		padding: 10px 0px 10px 60px;
+		text-align: left;
+	}
+
+	.mega-menu {
+		left: -15px;
+		width: 100%;
+		min-width: 100px;
+	}
+
+	.user-acount-panel{
+		font-size: 15px;
+	}
+
+	.btn_login_desktop{
+		font-size: 15px;
+	}
+
+	.menu-text{
+		font-size: 15px;
+	}
+
+	/*******------------------------------********
+                HOME
+	/*******------------------------------********/
+
+	.slider-blog{
+		padding: 0 15px;
+	}
+
+	.column_banner.col-md-12{
+		padding: 0px 15px;
+	}
+
+	.lotes-destacados-tittle:after{
+		border-bottom: 0;
+	}
+
+
+	.g-recaptcha {
+		transform: scale(0.65);
+		-webkit-transform: scale(0.65);
+		transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
+		/* position: absolute; */
+		/* left: -35px; */
+	}
+
+	.titlepage-contenidoweb{
+		margin-bottom: 10px;
+	}
+
+	.content-page-banner .column_banner{
+		margin: 15px 0;
+	}
+
+	.page-contact {
+		margin-top: 60px;
+	}
+
+	.contact-page-form{
+		margin-bottom: 0px;
+	}
+
+	.page-contact{
+		margin-top: 0;
+	}
+
+	/*******------------------------------********
+                FOOTER
+	/*******------------------------------********/
+
+	.col-xs-12.col-sm-4.social-links{
+		margin-top: 15px;
+	}
+
+	/*******------------------------------********
+                ESTATICAS
+	/*******------------------------------********/
+	.contenido-web *{
+		text-align: center !important;
+	}
+
+	.contenido-web hr{
+		margin: auto;
+	}
+
+	.contenido-web h3{
+		/*font-size: 16px;*/
+		font-size: 24px;
+	}
+
+	.contenido-web h4{
+		/*font-size: 15px;*/
+		overflow: hidden;
+	}
+
+	.como-comprar-static h3{
+		font-size: 24px;
+		text-align: center;
+	}
+	.como-comprar-static h2, .como-comprar-static h4{
+		text-align: center;
+	}
+
+	.modal-mosaic-content {
+		width: 75vw;
+		height: auto;
+		max-width: 100%;
+	  }
+
+	 .mosaic-container{
+		grid-template-columns: repeat(auto-fill, 90%);
+	}
+
+	/*******------------------------------********
+                EVENTOS
+	/*******------------------------------********/
+
+	.event-popup-img {
+		width: 100px;
+		height: 100px;
+		object-fit: cover;
+	}
+
+
+}
+
+
+@media (max-width: 340px){
+	.logo-header{
+		min-width: 120px !important;
+	}
+
+	.mosaic-container{
+		grid-template-columns: repeat(auto-fill, 21em);
+	}
+
+	.numismatic-logo {
+		max-height: 75px;
+	}
+
+}
+
+
+@media (min-width: 600px) and (max-width: 992px) {
+	.social-links {
+		font-size: 30px;
+	}
+}

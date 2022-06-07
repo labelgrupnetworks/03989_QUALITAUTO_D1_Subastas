@@ -1,0 +1,29 @@
+#registerForm .observaciones {display:block;}
+#registerForm .condiciones2 {display:block;}
+
+.condiciones2 label{
+	inset-block: initial;
+}
+
+.well {
+	width: 70%;
+}
+
+@media (max-width: 375px){
+   .g-recaptcha {
+
+        position: relative;
+        left: 0px;
+	}
+
+	.container.register{
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.well {
+		width: 90%;
+	}
+
+}
+

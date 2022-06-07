@@ -1,0 +1,74 @@
+:root {
+
+	/**
+	Colores web:
+	**/
+	--color-dark: #111820;
+	--color-white: #f8fafa;
+	--color-gold: #be8f57;
+	--color-gray: #7d7882;
+	--color-gray2: #dad6d7;
+
+    --primary-color: var(--color-gold);
+	--secondary-color: var(--color-gold);
+}
+
+html, body {
+    font-family: 'Work Sans', sans-serif;
+	background: var(--color-white);
+}
+
+.header_title .auction_number{
+	font-family: 'Prompt', sans-serif;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: var(--color-gold);
+}
+
+	/* background: var(--color-white); */
+
+.nav_tr{
+    background-color: var(--color-dark);
+    color: var(--color-white);
+}
+
+.header_logo img {
+    max-height: 60px;
+}
+
+.menu {
+    background-color: var(--color-dark);
+}
+
+.pactual, .nav-tabs>li>a{
+	background-color: var(--color-gray2);
+}
+
+.bid_amount_gestor{
+	padding-right: 60px;
+}
+
+.user_info_items {
+	grid-template-rows: 1fr 2fr 2fr 2.5fr 2fr 4fr 1fr;
+}
+
+.reserv-price {
+	padding: 0 10px;
+}
+
+.reserv-price p {
+	font-size: 18px;
+}
+
+.reserv-price p{
+	font-weight: bold;
+}
+
+.reserv-price .mine{
+	color: #5cb85c;
+}
+.reserv-price .other{
+	color: #c30e16;
+}
+
+

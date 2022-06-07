@@ -1,0 +1,29 @@
+
+.form-control {background:#FFF;}
+#registerForm .tipo_usuario div {width:200px;height:50px;background:#FFF;}
+#registerForm .tipo_usuario div.selected {background: #72b2cc;border:0;color:#FFF;}
+
+#registerForm .tipo_sexo div {width:200px;height:30px;background:#FFF;}
+#registerForm .tipo_sexo div.selected {background: #72b2cc;border:0;color:#FFF;}
+
+#registerForm .datos_newsletter {padding:10px 0 0 0;}
+#registerForm .datos_condiciones {padding:10px 0;}
+
+#registerForm input[type="checkbox"] {width:30px;height:30px;position:relative;top:8px;}
+#registerForm .btn-primary {background:#FD8700}
+#registerForm .btn-primary:hover {background:#000}
+
+.well {
+  background:transparent;border-radius:0;
+  border:0;
+  width: 100%;
+}
+.tit {font-size:18px;font-weight:bold;padding:0 0 20px 0;display: block;text-transform: uppercase;}
+
+#registerForm {padding:20px;border:#CCC 1px solid;background:#e7e6e4;width:60%;margin:auto;}
+
+@media screen and (max-width: 768px){
+
+
+}
+

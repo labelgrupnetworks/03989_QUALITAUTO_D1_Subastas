@@ -1,0 +1,169 @@
+@media(max-width: 1024px) {
+	/*****************************/
+	/********** HEADER ***********/
+	/*****************************/
+
+	.tablet-header a {
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 992px) {
+	.ultimas-obras-buttons {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row-reverse;
+	}
+
+	.ultimas-obras-buttons > div {
+		margin: 0;
+	}
+
+
+	.artist-page .artist-content {
+		position: absolute;
+		background: #ffffffab;
+		padding: 15px;
+		bottom: 0;
+		left: 0;
+		top: inherit;
+	}
+
+	.artist-page .name_artist {
+		margin-bottom: 1rem;
+		font-size: 20px;
+	}
+
+	.artist-page .bio_artist {
+		font-size: 18px;
+	}
+
+	.ficha_Shopping .prices-wrapper {
+		flex-wrap: wrap;
+	}
+
+}
+
+
+@media(max-width: 768px) {
+
+	.mobilepl-3 {
+		padding-left: 3rem;
+	}
+
+	.menu-principal-search {
+		top: 0px;
+	}
+
+	.contenido-web tr {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.contenido-web td {
+		width: 100% !important;
+	}
+
+	.navbar-default .navbar-header::before, .navbar-default .container::after{
+		content: none;
+	}
+
+	.navbar-default .navbar-header {
+		display: flex;
+		align-items: center;
+	}
+
+	.navbar-default .navbar-toggle {
+		margin-left: 15px;
+	}
+
+	.navbar-default .icons-band a{
+		color: var(--color-white);
+		text-decoration: none;
+	}
+	.navbar-default .icons-band a:hover{
+		color: var(--color-white);
+		text-decoration: none;
+	}
+
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:focus, .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+		color: #E1E1E1;
+		background-color: transparent;
+	}
+
+	/*****************************/
+	/********* CONTACTO **********/
+	/*****************************/
+
+	.contanct-data {
+		padding: 4rem 10px;
+	}
+
+
+	.contanct-data h1 {
+		font-size: 40pt;
+	}
+
+	.contact-form h1 {
+		font-size: 36pt;
+	}
+
+	.contact-form h2,
+	.contanct-data h2 {
+		font-size: 25pt;
+	}
+
+	.contanct-data p {
+		font-size: 15pt;
+	}
+
+	.contact-form {
+		padding: 4rem 10px 15px 10px;
+	}
+
+	/*****************************/
+	/******* GRID DE LOTES *******/
+	/*****************************/
+
+	.list_lot {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+
+@media (max-width: 512px){
+    .list_lot {
+		grid-template-columns: 1fr;
+	}
+
+	.ultimas-obras-texts {
+		text-align: center;
+	}
+
+	.ultimas-obras-buttons {
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	.artists-block {
+		text-align: center;
+	}
+
+	.artists-block-buttons{
+		justify-content: center;
+	}
+}
+
+@media (max-width: 480px){
+    .artists-block .custom-arrows-wrapper, .ultimas-obras-container .custom-arrows-wrapper {
+		display: none;
+	}
+}
+
+
+@media (max-width: 360px){
+    .navbar-default .icons-band {
+		padding: 15px 0px;
+	}
+}
+

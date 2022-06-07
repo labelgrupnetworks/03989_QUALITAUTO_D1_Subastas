@@ -1,0 +1,990 @@
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #BF9814;
+    --complement-color: #414145;
+    --extra-color: #7d9396;
+    --primary-color-text: #707070;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background:  #7d9396;;
+	--btn-primary-background-hover: #414145;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #D2E2F2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #414145;
+	--newsletter-input-text: #414145;
+
+	--footer-background: white;
+	--footer-titles-color: #707070;
+	--footer-links-color: #707070;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: white;
+	--footer-sociallinks-textcolor: #707070;
+
+	--filter-background: #414145;
+}
+
+
+
+/* GENERAL */
+
+
+.cart-icon svg {
+    width: 16px;
+    height: 16px;
+	fill: white;
+}
+.info-auction-info-content{
+	text-transform: initial;
+}
+
+.menu-principal.open{
+	padding: 60px 10px;
+    background: white;
+}
+/* FIN GENERAL */
+
+
+/* HEADER */
+.header-height{
+	height: 170px !important;
+}
+header.fixed {
+	z-index: 100;
+	width:100%;
+	left: 0;
+	top:0;
+    background: white;
+	border-bottom: 1px solid #f3f3f3;
+	box-shadow: 0 0 0;
+}
+
+.home-top-banner img {
+    filter: opacity(0.75);
+}
+
+.lang-selection{
+
+	background: #ababab;
+	color: #fff;
+	padding: 2px 0;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 300;
+	padding: 3px 0px 3px 0px;
+}
+.logo-company {
+    max-width: 158px;
+    transition: 0.2s linear all;
+}
+
+.link-lang {
+    margin: 0 0 0 5px;
+}
+
+.rss-head li{
+float:right;
+margin-left: 2px
+}
+
+.user-account {
+	text-align: right;
+	padding: 3px 0 0 0;
+}
+/*
+.ico-user-account-login {
+	padding-left: 16px !important;
+	background: url("/themes/ansorena/assets/img/head/login.png") no-repeat;
+}
+*/
+.user-account-login a {
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 600;
+	padding-top: 2px;
+	margin-left: 5px;
+}
+.ico-logout {
+	margin-top: -4px;
+
+	width: 15px !important;;
+}
+.ico-login {
+
+	width: 13px !important;
+	margin-right: 2px;
+	margin-top: -7px;
+}
+
+
+.logo-header{
+	padding-top: 10px;
+}
+a.link-header {
+	font-weight: 300;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+header, nav {
+    height: auto;
+}
+header.fixed nav {
+    border-bottom: 0px ;
+	height: auto;
+}
+
+/* FIN HEADER */
+
+body{
+	font-family: "proxima-nova",sans-serif;
+	color: var(--primary-color-text);
+	font-size:14px;
+}
+
+
+/* FOOTER */
+
+footer{
+	padding: 80px 0 20px 0;
+	border-bottom: 0px solid #b3b3b3;
+
+
+}
+
+.footer-title{
+	font-size:18px;
+	text-transform: uppercase;
+	font-weight: normal;
+	margin: 0;
+}
+
+footer .logo-company{
+	max-width: 200px;
+}
+
+.signature{
+	color: var(--primary-color-text);
+}
+
+.signature hr{
+	background-color: var(--footer-links-color);
+}
+
+.footer-ul li{
+	float: right;
+	margin: 0 10px;
+}
+
+
+/* FIN FOOTER */
+
+
+/* GRID DE LOTES */
+
+.item_lot{
+	min-height: 570px;
+}
+
+.item_lot .data-container .data-price{
+	font-weight: 600;
+}
+
+.fondo_sesiones{
+	background: #f2f2f2;
+	margin: 30px 0 30px 0;
+}
+.fondo_sesiones .sesiones{
+
+	margin: 15px;
+	border:1px solid #b3b3b3;
+	text-align:center;
+	padding: 5px;
+
+}
+.fondo_sesiones .sesiones:hover{
+	background: #FFF;
+
+}
+
+.fondo_sesiones  a{
+	color: #000000;
+
+
+}
+.fondo_sesiones  a:hover{
+	color: #000000;
+	text-decoration: none;
+
+}
+
+.banner_grid{
+	margin-top: 30px;
+}
+/* FIN GRID DE LOTES */
+
+
+/* FICHA LOTE*/
+#img_main{
+	border: none;
+}
+
+.mas-pujados-title span:before{
+	content: none;
+}
+
+.lotes_destacados .owl-nav{
+	display: none;
+}
+
+.item-titulo, .ficha-title{
+	text-transform: initial;
+	font-weight: 600;
+}
+
+.ficha-title .technical_description {
+	font-weight: 400;
+}
+
+.item-tecnica, .item-medidas, .ficha-tecnica, .ficha-medidas, .ficha-info-content{
+	text-transform: initial;
+}
+
+.ficha-content .pre .pre-title{
+	font-weight: 600;
+}
+
+.sesiones{
+	color: var(--primary-color-text);
+}
+.desc-lot-profile-content {
+	text-transform: none;
+	font-size: 14px;
+}
+
+
+/* FIN FICHA LOTE*/
+
+
+/* ESTATICAS */
+
+.contenido-web{
+	text-align: justify;
+}
+
+.contenido-web a{
+	word-break: break-all;
+	text-decoration: none;
+}
+
+.contenido-web .region.region-content{
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.contenido-web .destacado {
+    text-align: center;
+   /* monica ha pedido que todo tnga elmismo color y mismo tamaño
+    color: #7d9396;
+    font-size: 105%;
+	*/
+    position: relative;
+    padding: 50px 0;
+    margin: 20px 0;
+}
+
+.contenido-web .img-cabecera{
+	margin: 20px 0;
+}
+
+
+
+.contenido-web .punteado {
+    border: 1px solid #d5d5d5;
+    padding: 30px;
+    margin: 60px 0 0;
+}
+
+
+
+
+.destacado::before {
+
+    display: inline-block;
+    background: #7d9396;
+    width: 72px;
+    height: 4px;
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translate(-50%,0);
+
+}
+
+.contenido-web  h1{
+	text-align: left;
+	text-transform: uppercase;
+    font-weight: 600;
+
+    color:  var(--primary-color-text);
+}
+.contenido-web  h2 {
+
+    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+	font-weight: 600;
+
+color:  var(--primary-color-text);
+}
+.contenido-web .punteado  h2 {
+	text-align: center;
+}
+.contenido-web  h3 {
+
+	text-align: left;
+    font-size: 20px;
+    margin: 40px 0 15px;
+    font-weight: normal;
+    letter-spacing: 1px;
+	color:  var(--primary-color-text);
+}
+.contenido-web  h4 {
+  color:  var(--primary-color-text);
+}
+
+.contenido-web  .separador:before {
+    display: inline-block;
+    background: #3b444d;
+    width: 72px;
+    height: 4px;
+    margin: 60px auto 30px;
+    content: "";
+}
+
+.contenido-web .zone-share-social{
+	padding: 25px 0px;
+
+}
+
+
+/* FIN ESTATICAS */
+
+/* PAGINA ESTATICA DE CONDECORACIONES */
+.titlePage{
+font-size:30px;
+}
+.condecoracion-iframe{
+	max-width: 100%;
+}
+
+.condecoracion-contacto{
+	padding: 20px;
+	line-height: normal;
+}
+.container-contacto{
+	font-size: 14px;
+	border: 1px solid #7d9396;
+	padding:0;
+	color: var(--primary-color-text);
+
+}
+.container-contacto .col-sm-6{
+	padding:0;
+}
+
+.container-contacto i {
+	font-size: 20px;
+}
+.container-contacto h2 {
+	font-size: 25px;
+	margin-top:0px;
+	font-weight: normal;
+}
+
+.condecoracion-img{
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+.cat-menustatico{
+	text-align: center;
+}
+.cat-menustatico li{
+	display: inline-block;
+	margin: 9px;
+	padding: 9px;
+
+}
+.cat-menustatico li a{
+	text-decoration: none;
+}
+
+.cat-menustatico li:hover{
+    background-color: #eee;
+
+}
+
+.BANNER_CONDE-ACADEMIAS h2, .BANNER_CONDE-AYUNTAMIENTOS  h2,  .BANNER_CONDE-INSIGNIAS   h2,  .BANNER_CONDE-JUSTICIA   h2,  .BANNER_CONDE-UNIVERSIDADES   h2,  .BANNER_CONDE-ORDENESCIVILES   h2 {
+   margin-top: 15px;
+   text-align:center;
+   color:var(--primary-color-text);
+   font-size: 18px;
+   font-weight: normal;
+}
+
+
+
+.column_banner .mini-button{
+	float: right;
+	background-color: #fff;
+	color: #7d9396;
+	text-decoration: none;
+	border: 1px solid #7d9396;
+	padding: 8px 30px;
+	text-transform: uppercase;
+}
+
+.column_banner .mini-button{
+
+	background-color: #7d9396;
+	color: #fff;
+	text-decoration: none;
+
+}
+/* FIN PAGINA ESTATICA DE CONDECORACIONES */
+/* PÁGINAS ESTÁTICAS COMO COMPRAR Y VENDER*/
+.wrapper-cuadros-explicativos{
+	text-align: center;
+}
+.explicativo .wrapper {
+    background: #f2f2f2;
+    text-align: center;
+    padding: 15px 20px 20px;
+    margin-bottom: 30px;
+}
+.explicativo .wrapper .img-responsive{
+   display:initial;
+}
+.explicativo .wrapper h3{
+	text-align: center;
+}
+.explicativo .wrapper p{
+	text-align: justify;
+}
+/* FIN PÁGINAS ESTÁTICAS COMO COMPRAR Y VENDER*/
+
+
+
+/* MENU */
+.menu-galery {
+	text-align:center;
+}
+.menu-galery li{
+	display: inline-block;
+	margin: 10px;
+	padding: 10px;
+	color:var(--galBackgroundColor);
+}
+.menu-galery li a{
+text-decoration: none;
+}
+.menu-galery li:hover{
+    background-color: #eee;
+
+}
+
+
+/* FIN MENU */
+
+/* FAQS */
+
+#faq {
+    text-align: left;
+}
+#faq h3 {
+    text-align: center;
+
+	font-weight: 600;
+	margin-top: 40px;
+
+}
+
+#faq  .parentFaq {
+    margin: 5px 0px 0px 15px;
+	display: block;
+	border-bottom: #333 1px solid;
+	padding: 15px 0;
+}
+#faq  .parentFaq a{
+	color: var(--primary-color-text);
+
+
+}
+
+#faq a {
+    text-decoration: none !important;
+}
+
+.parentFaq a {
+	color: var(--primary-color-text);
+}
+#faq .faq {
+    padding: 10px;
+    margin-left: 10px;
+    display: none;
+	border-bottom: 0px ;
+}
+
+/* FAQS */
+
+
+/* BLOG */
+
+/* relacionadas */
+.img-related-post{
+	text-align:center;
+}
+.img-related-post .img-responsive{
+	display: inline;
+	max-width:100%;
+}
+
+.entradas-relacionadas-lista .button-post{
+	text-align: center;
+}
+/* fin relacionadas */
+
+
+
+/* FIN BLOG */
+
+/* AUTOFORMULARIO */
+.autoformulario ul{
+	padding-left: 30px;
+}
+.candidatura {
+	margin-top: 30px;
+}
+
+.candidatura td{
+	padding: 10px 15px;
+}
+
+.candidatura .titulo{
+	border-right: 1px solid #fff;
+	min-width: 225px
+}
+
+.candidatura .impar{
+	background: #f2f2f2;
+}
+
+.candidatura .par{
+	background: #e6e6e6;
+}
+
+.zone-share-social .fa-share-alt{
+	color: grey;
+	font-size: 18px;
+}
+.zone-share-social ul{
+	height:35px;
+}
+/* efecto de mostrar redes sociales */
+.zone-share-social ul  .social-link {
+
+	display:none;
+}
+.zone-share-social:hover ul .social-link{
+
+	display:flex;
+}
+
+.zone-share-social ul li a {
+
+    border-radius: 50%;
+	background: white;
+    color: grey;
+	font-size: 18px
+    /*
+	border: 1px solid #DBDBDB;
+    background: grey;
+    color: black;
+	*/
+}
+
+.button-secondary{
+	position: relative;
+z-index: 10;
+width: 132px;
+height: 44px;
+padding: 0 0;
+border: 0;
+background: var(--btn-primary-text);
+color: var(--btn-primary-background);
+border: 1px solid var(--btn-primary-background);
+font-weight: 500;
+text-decoration: none;
+transition: 0.3s linear all;
+-webkit-transition: 0.3s linear all;
+-o-transition: 0.3s linear all;
+}
+
+.button-secondary:hover {
+	background: var(--btn-primary-background) ;
+	color: var(--btn-primary-text);
+}
+
+.auctions-list {
+    padding: 40px 0;
+}
+
+.account-user .sub_menu_adj a:hover{
+	color: white;
+}
+
+/* LISTADO SUBASTAS */
+.imgAuctionList{
+	text-align: center;
+	border: 1px solid #b3b3b3;
+	position: relative;
+	overflow: hidden;
+	height: 260px;
+	padding: 20px;
+	background: white;
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+}
+
+.imgAuctionList > a {
+	display: flex;
+	align-items: center;
+}
+
+.imgAuctionList img{
+	max-height: 100%;
+	margin: auto;
+}
+
+.textAuctionList {
+	text-align: center;
+	height: 140px;
+	margin-top:1rem;
+	text-transform: uppercase;
+	color: #3B444D;
+}
+
+.textAuctionList p.textAuctionList-auction {
+    font-size: 19px;
+    font-weight: bold;
+	letter-spacing: 2px;
+}
+
+.textAuctionList p.textAuctionList-date {
+	font-size: 12px;
+}
+
+.year_auctions_list {
+    border-bottom: 1px solid #7b7b7b;
+    font-size: 18px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.RightlabelGrid {
+
+    padding: 7px;
+	width: 95px;
+}
+
+/* FIN LISTADO SUBASTAS */
+
+
+/*--------------------------------
+-------INICIO HOME ANSORENA-------
+----------------------------------*/
+
+.home-img-and-text-1 .item_texto,
+.home-img-and-text-1 .item_imagen {
+	margin-top: 6rem;
+}
+
+.home-img-and-text-1 .item_imagen {
+	margin-right: 150px;
+	margin-left: 30px;
+}
+
+.home-img-and-text-1 .item_texto,
+.home-img-and-text-2 .item_texto {
+	padding-right: 70px;
+	padding-left: 70px;
+}
+
+.home-img-and-text-2 .item_imagen {
+	padding-left: 80px;
+	padding-right: 15px;
+}
+
+.banner-img-and-text-2 .rowBanner {
+	display: flex;
+}
+
+.banner-img-and-text-2 .rowBanner > *{
+	order: 0;
+}
+
+.banner-img-and-text-2 div.column_banner:nth-child(1) {
+	order: 1;
+}
+
+.home-compromiso {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.container-img {
+	width: 96%;
+	max-width: 620px;
+	margin: 0 auto;
+}
+
+.home-compromiso .img-config {
+	width: 100%;
+	height: auto;
+}
+
+.img-trabaja {
+	max-width: 100%;
+}
+
+.banner-home-bottom img {
+	max-height: 370px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+/* Estilos de fuente */
+
+.home-img-and-text-1,
+.home-img-and-text-2 {
+	font-family: "proxima-nova",sans-serif;
+}
+
+.info-home-content .text-banner {
+	color: #7d9396;
+	font-size: 15px;
+}
+
+
+.info-home-content p {
+	text-align: justify;
+	margin: 0 0 30px;
+}
+
+.text-home {
+	font-weight: 400;
+	font-size: 17px;
+	line-height: 1.42857143;
+	color: #333;
+
+}
+
+.color333 {
+	color: #333;
+}
+
+.title-home {
+	color: #3B444D;
+	font-size: 21px;
+	font-weight: bold;
+	font-family: "proxima-nova",sans-serif;
+	letter-spacing: 2px;
+	text-transform: none;
+}
+
+.info-home-content .title-banner {
+	text-align: left;
+	color: #3B444D;
+	font-size: 19px;
+	font-weight: bold;
+	margin: 0 0 20px;
+	text-transform: none;
+	letter-spacing: 0;
+	font-family: "proxima-nova",sans-serif;
+}
+
+.textAuctionList .mini-button,
+.home-trabaja .mini-button,
+.home-compromiso .mini-button,
+.info-home-content .mini-button {
+  	color: #7d9396;
+  	font-weight: normal;
+  	border: solid #7d9396 1px;
+  	padding: 7px 20px;
+  	background: transparent;
+  	text-decoration: none;
+  	font-size: 12px;
+}
+
+.home-trabaja .mini-button,
+.home-compromiso .mini-button,
+.info-home-content .mini-button {
+	margin-top: 20px;
+}
+
+.info-home-content .mini-button {
+	float: left;
+}
+
+.textAuctionList .mini-button:hover,
+.home-trabaja .mini-button:hover,
+.home-compromiso .mini-button:hover,
+.info-home-content .mini-button:hover {
+	background-color: #7d9396;
+	color: #fff;
+}
+
+.info-home-content .a-link {
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.info-home-content .a-link:hover,
+.info-home-content .a-link:focus {
+	color: #23527c;
+}
+
+.home-trabaja .title-home {
+	color: #7e9396;
+	text-align: left;
+	border-bottom: 2px solid;
+	padding-bottom: 10px;
+	margin-top: 60px;
+	font-size: 24px;
+	margin-bottom: 30px;
+	text-transform: uppercase;
+	font-weight: 600;
+	letter-spacing: 2.5px;
+	display: inline-block;
+}
+
+.home-trabaja .text-home {
+	color: #444444;
+	clear: left;
+	text-align: justify;
+	margin: 0 0 30px;
+	font-size: 17px;
+}
+
+.home-bottom .title-home {
+	text-align: center;
+	letter-spacing: 7px;
+	font-size: 26px;
+	margin-bottom: 40px;
+	color: #fff;
+	font-weight: 300;
+}
+
+
+/* Fin de estilos de fuente */
+
+
+/*--------------------------------
+--------FINAL HOME ANSORENA-------
+----------------------------------*/
+
+.realTimeButton {
+	color: #FFF;
+	font-weight: normal;
+	border: solid #7d9396 1px;
+	padding: 7px 20px;
+	background: #b31010;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+
+.realTimeButton:hover {
+	background-color: #800B0B;
+	color: #fff;
+}
+
+
+.contact-page-info-house-auction-desc p
+{
+	font-size: 14px;
+}
+
+/*--------------------------------
+---------VENTAS DESTACADAS--------
+----------------------------------*/
+
+.item_lot_venta_destacada {
+	min-height: 525px;
+}
+
+.ventas-destacadas-container {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.data-ventas-destacadas p {
+	margin: 0;
+}
+
+.item_lot_venta_destacada .item-info-lot-venta-destacada {
+	height: 160px;
+	overflow: hidden;
+  }
+
+
+/*--------------------------------
+------FINAL VENTAS DESTACADAS-----
+----------------------------------*/
+
+/* video pantalla completa home */
+.buttonVideo{
+
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100% !important;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 10;
+}
+
+.buttonVideo a {
+	color: #fff;
+
+	padding: 5px 10px 5px 10px;
+	border: 2px solid white;
+	letter-spacing: 2px;
+	font-size: 20px;
+	
+  }
+
+  .buttonVideo a:hover {
+	color: #fff;
+	background: rgba(0,0,0,.5);
+	text-decoration: none;
+  }

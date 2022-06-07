@@ -1,0 +1,464 @@
+/*******------------------------------********
+                OLD GRID
+/*******------------------------------********/
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    border-color: var(--extra-color);
+    background-color: var(--extra-color);
+}
+
+.large_square .btn-filter, .item_lot .btn-filter{
+	max-width: 218px;
+}
+
+.filters-auction-select:focus{
+    color: grey;
+}
+
+.filters-auction-label {
+    font-size: 14px;
+}
+
+.filters-auction-texts input[type="text"], .filters-auction-texts select.form-control{
+	border-bottom: 0;
+	background: rgba(255,255,255,0.5);
+	color: black;
+}
+
+.filters-auction-texts .order-auction-lot select.form-control{
+	border-bottom: 1px solid #cccccc;
+	background: white;
+	color: #555;
+	border-radius: 15px !important;
+}
+
+.filters-auction-texts input[type="text"]::placeholder{
+	color: black;
+}
+
+.filters-auction-title:first-child {
+    text-align: center;
+}
+
+.filters-auction-selects ul{
+	padding: 0 10px;
+}
+
+.filters-auction-selects ul li{
+	margin: 5px 0px;
+}
+
+.filters-auction-selects ul li a{
+	text-decoration: none;
+	color: white;
+	font-size: 15px;
+}
+
+.filters-auction-selects ul li a.selected{
+	color: var(--btn-primary-background);
+}
+
+.submit_on_change{
+	background: rgba(255,255,255,0.1);
+	color: white;
+}
+
+.submit_on_change option{
+	color: black;
+}
+
+
+.filter-auction-input::placeholder {
+    color: white;
+}
+
+#form_lotlist .btn-filter {
+	color: var(--btn-primary-text);
+    border: 0;
+	background: var(--extra-color);
+    font-weight: 700;
+	text-transform: uppercase;
+	transition: 0.3s linear all;
+	margin-bottom: 5px;
+	width: 50%;
+	height: 35px;
+}
+
+#form_lotlist .btn-filter:hover{
+	background: var(--btn-primary-background-hover);
+    color: var(--btn-primary-text-hover);
+}
+
+
+/*******------------------------------********
+                NEW GRID
+/*******------------------------------********/
+:root{
+	--background-filters: #ddd;
+}
+
+.info-auction-tab-contet hr{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.item_lot{
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--extra-color);
+	box-shadow: 0 3px 18px rgba(205,164,52,0.2);
+    -webkit-box-shadow: 0 3px 18px rgba(205,164,52,0.2);
+	padding: 5px 15px 5px 15px;
+	height: 100%;
+	min-height: initial;
+}
+
+#form_lotlist{
+	margin-top: 20px;
+	gap: 20px;
+}
+
+.item_lot .item_img{
+	height: 210px;
+}
+
+.extras{
+	gap: 5px;
+	position: absolute;
+	bottom: 5px;
+}
+
+.banner-lotes-container .container-fluid{
+	/*padding: 0;*/
+}
+
+.info-auction{
+	margin-bottom: 20px;
+}
+
+.info-button{
+	padding: 9px 100px;
+}
+
+.content-extra{
+	background-color: transparent;
+    padding: 5px 7px;
+	color: var(--secondary-color-text);
+	border-radius: 3px;
+	border: 1px solid var(--secondary-color-text);
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.content-extra i.fa-youtube-play {
+	font-size: 1.5em;
+}
+
+.square {
+	margin-bottom: 0;
+}
+
+.square .title_item, .large_square .title_item{
+    height: 40px;
+    font-size: 14px;
+    text-align: justify;
+    font-weight: initial;
+}
+
+.filters-auction-content{
+	/*background-color: white;*/
+	background-color: var(--background-filters);
+	padding: 0px 20px 0px 20px;
+	text-align: center;
+	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);*/
+	border: 1px solid lightgray;
+	color: var(--secondary-color-text);
+}
+
+#form_lotlist input[type="text"]{
+	background: rgba(255,255,255,1);
+	border: 1px solid #cccccc;
+    border-radius: 15px;
+}
+
+#form_lotlist input[type="text"]::placeholder{
+	color: var(--complement-color);
+}
+
+.input-group-search .btn-search-filter{
+	background: var(--primary-color);
+    color: white;
+    position: absolute;
+    border-radius: 50% !important;
+    right: 3px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    top: 2px;
+}
+
+.filters-auction-title {
+    color: var(--secondary-color-text);;
+	font-weight: 500;
+	text-transform: uppercase;
+    margin: 0px -20px 0px -20px;
+	/*background: var(--primary-color);*/
+	/*background: white;*/
+	background: var(--background-filters);
+	padding: 10px 15px;
+	font-size: 19px;
+}
+
+/*
+.auction__filters-categories, .auction__filters-estado-lote{
+	border-top: 1px solid #46494f61;
+}
+*/
+.input-category .fas{
+	color: var(--background-filters);
+}
+
+.auction__filters-collapse-title{
+	margin: 0px -20px;
+    /*background-color: white;*/
+	background-color: var(--background-filters);
+    color: var(--secondary-color-text);
+    font-size: 19px;
+    font-weight: 500;
+	padding: 10px 15px;
+	text-transform: uppercase;
+}
+
+.filters-auction-content .form-group{
+	margin-bottom: 0;
+}
+
+.filters-auction-content .radio input[type="radio"]{
+	/*display: none;*/
+}
+
+.category_level_01 > .radio label{
+	font-weight: 800;
+}
+
+.filters-auction-content .radio label{
+	/*margin-left: 0;*/
+	font-size: 16px;
+	color: var(--secondary-color-text);
+}
+
+.input-category.auction__filters-collapse{
+	/*display: none;*/
+}
+
+.filters-auction-content .radio {
+    margin: 5px 0px;
+}
+
+.auction__filters-type-list{
+	padding: 15px 5px;
+}
+
+.auction__filters-type-list > .auction__filters-collapse{
+	padding-left: 0rem;
+}
+
+.auction__filters-estado-lote > .auction__filters-collapse{
+	border-bottom: 1px solid var(--extra-color);
+}
+
+.auction__filters-estado-lote > .auction__filters-collapse > div{
+	margin: auto;
+}
+
+
+.info-filter, .info-filter:active, .info-filter:focus, .info-filter::selection, .info-filter:hover {
+	text-decoration: none;
+	background: var(--primary-color);
+    color: white;
+}
+
+.filters-auction-content .radio label{
+	text-align: left;
+}
+
+.lot_title {
+	font-weight: bold;
+	font-size: 24px;
+	padding-bottom: 7px;
+	text-align: center;
+}
+
+.auction-lots-view{
+	height: 95vh;
+	position: sticky;
+	top: 15px;
+	overflow: auto;
+	padding-right: 5px;
+}
+.auction-lots-view::-webkit-scrollbar{
+    width: 10px;
+}
+.auction-lots-view::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 56px whitesmoke;
+}
+.auction-lots-view::-webkit-scrollbar-thumb{
+    background-color: var(--primary-color);
+    outline: 1px solid slategrey;
+}
+
+footer{
+	margin-top: 50px;
+}
+
+.RightlabelGrid{
+	top: 28px;
+}
+
+
+.grid-lots {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 15px;
+}
+
+
+
+.item_image_cover {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	height: 150px;
+	overflow: hidden;
+}
+
+.item_image_cover img {
+	object-fit: contain;
+	width: 100%;
+	height: 100%;
+}
+
+.lote-destacado-link {
+	height: 100%;
+}
+
+.item_lot .data-container .data-price {
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.awarded-wrapper {
+	margin: 0 -15px;
+	padding: 5px 15px;
+	background-color: #cda4343d;
+	/* color: var(--primary-color); */
+	font-weight: 800;
+}
+
+.btn-bid-lotlist {
+	margin-top: auto;
+	margin-bottom: 10px;
+}
+
+.content-extra-wrapper {
+	display: flex;
+	align-items: stretch;
+	gap: 5px;
+}
+
+.extra-buttons-wrapper {
+	align-items: stretch;
+	margin-top: auto;
+	height: 30px;
+}
+
+.extra-buttons-wrapper p {
+	margin: 0;
+}
+
+.extra-buttons-wrapper .icons-lot {
+	gap: 15px;
+}
+
+.extra-buttons-wrapper .bids-icons {
+	align-items: center;
+	gap: 3px;
+}
+
+.bids-icons img{
+	filter: contrast(0.6);
+}
+
+
+/*
+li.page-item {
+	display: none;
+}
+
+.page-item:first-child,
+.page-item:nth-child( 2 ),
+.page-item:nth-child( 3 ),
+.page-item:nth-last-child( 2 ),
+.page-item:last-child,
+.page-item.active,
+.page-item.disabled,
+.page-item.disabled:first-of-type + .page-item
+ {
+	display: contents;
+}
+*/
+
+@media (max-width: 1200px) {
+	.grid-lots {
+		grid-template-columns: 1fr 1fr;
+	}
+
+}
+
+@media (max-width: 992px){
+	.auction-lots-view{
+		display: none;
+		position: relative;
+		top: initial;
+		overflow: initial;
+		padding-right: initial;
+		height: auto;
+
+	}
+	.pagination-container{
+		text-align: center;
+	}
+
+}
+
+
+
+@media (max-width: 768px){
+	.filters-auction-texts {
+		height: 145px;
+	}
+
+	.auction-lots-view{
+		display: none;
+	}
+}
+
+@media (max-width: 576px){
+	.RightlabelGrid{
+		right: -17px;
+	}
+
+	.grid-lots {
+		grid-template-columns: 1fr;
+	}
+
+	.banner-lotes-container .column_banner.col-md-12{
+		padding: 0px;
+	}
+}
+
+@media (max-width: 340px){
+	.info-button{
+		padding: 7px 75px;
+	}
+
+}

@@ -1,0 +1,86 @@
+.p-0{
+	padding: 0px;
+}
+
+.has-error {
+    border-bottom: #cc0000 1px solid !important;
+    color: #b21416;
+}
+
+#registerForm .observaciones {
+	display:block;
+}
+
+#registerForm .tipo_usuario div.selected, #registerForm .tipo_sexo div.selected {
+    border-top: 5px solid #E88D21;
+}
+
+.datos_newsletter .newsletter-title{
+	text-align: center;
+}
+
+.button-principal {
+	cursor: pointer;
+	user-select: none;
+	background-image: none;
+	text-decoration: none;
+	position: relative;
+
+    z-index: 10;
+    height: 44px;
+	padding: 8px 84px;
+	margin-top: 36px;
+	font-size: 18px;
+
+    font-weight: 500;
+
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #fff;
+	background-color: #E88D21;
+
+    transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+	-o-transition: 0.3s linear all;
+
+}
+
+
+.button-principal:hover{
+	background-color: #E57200;
+}
+
+.button-principal:focus{
+	background-color: #b56c15;
+}
+
+.condiciones2 label{
+	inset-block: initial;
+}
+
+.well {
+	width: 70%;
+}
+
+#registerForm .datos_newsletter div label{
+	top: 0px;
+	font-size: 14px;
+}
+
+@media (max-width: 375px){
+   .g-recaptcha {
+
+        position: relative;
+        left: 0px;
+	}
+
+	.container.register{
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	.well {
+		width: 90%;
+	}
+
+}

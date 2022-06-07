@@ -1,0 +1,16 @@
+@extends('errors.layout_errors')
+
+@section('http_error')
+@php
+http_response_code(500);
+@endphp
+@endsection
+
+@section('error_code')
+ {{ trans("$theme-app.msg_error.code_500") }}
+@endsection
+
+@section('error_message')
+<h2>{{ trans("$theme-app.msg_error.title_500") }}</h2>
+<p>{{ trans("$theme-app.msg_error.message_500") }}</p>
+@endsection

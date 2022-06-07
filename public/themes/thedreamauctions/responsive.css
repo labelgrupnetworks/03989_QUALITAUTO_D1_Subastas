@@ -1,0 +1,50 @@
+@media (max-width: 1200px) {
+
+	.menu-principal{
+		background-color: #111820;
+		color: #f8fafa;
+	}
+
+	.menu-principal-content li, .menu-principal-content li a{
+		color: #f8fafa;
+		font-size: 24px;
+	}
+
+	.menu-principal-content{
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 768px) {
+
+	.favoritos{
+		text-align: left;
+	}
+
+	.ficha-content .owl-dots{
+		float: left;
+	}
+	.ficha-content .owl-theme .owl-nav{
+		float: right;
+		position: relative;
+	}
+
+	.ficha-btn-bid{
+		width: 100%;
+	}
+
+}
+
+@media (max-width: 576px) {
+
+	.logo-company{
+		max-width: 105px;
+	}
+}
+
+@media (max-width: 368px){
+
+    .ficha-info-close-lot{
+        font-size: 16px;
+    }
+}

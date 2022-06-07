@@ -1,0 +1,8 @@
+@media (max-width: 768px) { 
+    .logo-company {
+        max-width: 80px;
+    }
+    .info-auction-info {
+        position: inherit;
+    }
+}

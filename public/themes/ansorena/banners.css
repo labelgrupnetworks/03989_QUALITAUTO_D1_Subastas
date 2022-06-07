@@ -1,0 +1,88 @@
+.BANNER_CONDECORACIONES, .BANNER_CONDECORACIONES-2{
+	margin: 0px;
+}
+
+.TEXT_CONDECORACIONES{
+    position: absolute;
+    top: 165px;
+    width: 360px;
+    text-align: center;
+	color: #7d9396;
+	text-transform: uppercase;
+	font-size: 20px;
+	font-weight: 900;
+	white-space: nowrap;
+	display: none;
+	text-decoration: none;
+	letter-spacing: 5px;
+}
+.TEXT_CONDECORACIONES :hover{
+	text-decoration: none;
+}
+a, a:hover{
+	color: #7d9396;
+}
+.BANNER_CONDECORACIONES :hover .TEXT_CONDECORACIONES, .BANNER_CONDECORACIONES-2 :hover .TEXT_CONDECORACIONES{
+	display: block;
+}
+.BANNER_CONDECORACIONES :hover img, .BANNER_CONDECORACIONES-2 :hover img {
+    filter: opacity(40%);
+    -webkit-filter: opacity(30%);
+}
+.slick-dots{
+	display: none;
+}
+.column_banner {
+	padding: 0px;
+}
+.slick-dotted.slick-slider{
+	margin: 0px;
+}
+.slick-prev:before, .slick-next:before{
+	color: rgb(112, 112, 112);
+}
+
+.BANNER_VALORACION img{
+	padding: 10px;
+}
+.BANNER_VALORACION .item_imagen {
+height: 250px;
+}
+.sliderBlog img{
+    max-height: 500px;
+	max-width: 100%;
+    width: auto;
+    margin: auto;
+}
+
+
+.BANNER_CATALOGO_JOYAS_2,.BANNER_CATALOGO_JOYAS_3,.BANNER_CATALOGO_JOYAS_4,.BANNER_CATALOGO_JOYAS_5,.BANNER_CATALOGO_JOYAS_6,.BANNER_CATALOGO_JOYAS_7 {
+	padding-top:20px;
+	padding-left:10px;
+	padding-right:20px;
+}
+
+
+.BANNER_JOYAS-CAT-COL-COM img{
+	padding:20px;
+}
+.BANNER_JOYAS-CAT-COL-COM span{
+	text-align: center;
+	font-weight: bold;
+}
+
+.BANNER_COLECCIONES_JOYAS_1,.BANNER_COLECCIONES_JOYAS_2,.BANNER_COLECCIONES_JOYAS_3,.BANNER_COLECCIONES_JOYAS_4,.BANNER_COLECCIONES_JOYAS_5{
+	padding-top:20px;
+	padding-left:10px;
+	padding-right:20px;
+}
+
+.BANNER_COMPROMISO_JOYAS img {
+	padding-top:20px;
+	padding-left:10px;
+	padding-right:20px;
+}
+
+
+
+

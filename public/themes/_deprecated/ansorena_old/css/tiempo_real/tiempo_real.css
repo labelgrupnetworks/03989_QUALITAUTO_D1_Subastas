@@ -1,0 +1,43 @@
+:root {
+    --primary-color: white;
+    --secondary-color: #7d9396;
+}
+
+/*
+.nav_tr{
+    background-color: white;
+    color: #fff;
+}
+*/
+html, body{
+	font-size: 20px;
+	font-family: "proxima-nova",sans-serif;
+}
+
+.header_logo img {
+    max-height: 60px;
+}
+
+.menu {
+    background-color: white;
+}
+
+.nav-tabs>li>a, .pactual{
+	background-color: #dedede;
+}
+
+.actual_descripcion{
+	overflow: initial;
+}
+
+/* Tamaño de pantalla*/
+.tiempo_real_content{
+	grid-gap: 0px;
+}
+
+
+@media (max-width: 1550px){
+ 	.ficha_tr{
+		height: 89%;
+	}
+}

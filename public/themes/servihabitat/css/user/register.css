@@ -1,0 +1,5 @@
+
+
+#registerForm .tipo_usuario div.selected, #registerForm .tipo_sexo div.selected{
+	border-top-color: var(--secondary-color);
+}

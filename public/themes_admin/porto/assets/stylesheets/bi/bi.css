@@ -1,0 +1,12 @@
+.sidebar-right{
+	top: 110px;
+	transition: 0.6s;
+}
+
+.sidebar-right.opened{
+	margin-right: 0;
+}
+
+.sidebar-left, .page-header, .content-body{
+	transition: 0.6s;
+}

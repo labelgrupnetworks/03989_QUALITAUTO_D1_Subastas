@@ -1,0 +1,23 @@
+.item_lot .item_img img {
+	padding-top: initial;
+	position: relative;
+	top: initial;
+	display: block !important;
+	width: 100% !important;
+	max-width: 100%;
+	height: 100%;
+	max-height: 100%;
+	margin: auto !important;
+	-webkit-transform: none;
+	-ms-transform: none;
+
+	object-fit: contain;
+}
+
+.filters-auction-content {
+	background: var(--filter-background);
+}
+
+.item_lot {
+	min-height: 460px;
+}

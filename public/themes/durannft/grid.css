@@ -1,0 +1,190 @@
+/************+FILTROS**********/
+.filters-auction-content {
+	background-color: black;
+	color: var(--color-white);
+}
+
+
+#form_lotlist .btn-filter{
+	background: var(--color-pink);
+	border-color: var(--color-pink);
+	color: #fff;
+}
+
+
+[type="radio"]::before { /* create pseudoelement */
+    border: 2px solid var(--color-pink); /* thickness, style, color */
+    height: .9em; /* height adjusts with font */
+    width: .9em; /* width adjusts with font */
+    border-radius: 50%; /* make it round */
+    display: block; /* or flex or inline-block */
+    content: " "; /* won't display without this */
+    cursor: pointer; /* appears clickable to mouse users */
+    visibility: visible; /* reverse the 'hidden' above */
+}
+
+[type="radio"]:checked::before { /* selected */
+  /* add middle dot when selected */
+  /* slightly bigger second value makes it smooth */
+  /* even more (e.g., 20% 50%) would make it fuzzy */
+    background: radial-gradient(var(--color-pink) 32%, transparent 50%);;
+}
+
+.filters-auction-content .filters_titles{
+	color: #666;
+    font-size: 23px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.filters-auction-content {
+	padding: 0;
+}
+
+.filters-auction-content .radio label {
+	font-size: 15px;
+}
+
+/************ GRID LOTES **********/
+#lots select.form-control{
+	font-size: 17px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px !important;
+    padding: 5px 15px;
+    -webkit-appearance: none;
+    appearance: none;
+	width: auto;
+	max-width: 100%;
+
+	background: url(./assets/img/fa-angle-down.png) no-repeat;
+    background-position: right center;
+	background-size: 20px;
+}
+
+.cantidad-res {
+	padding: 5px;
+	border: 0;
+}
+
+#filters-control {
+	background-color: black;
+    border: 1px solid;
+    padding: 5px 15px;
+    margin: 5px 0px;
+}
+
+.list_lot {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-auto-rows: minmax(auto, 500px);
+	align-items: stretch;
+	gap: 50px;
+}
+
+.square {
+	margin-bottom: 0;
+	position: relative;
+	/* margin-bottom: 2rem; */
+	/* max-width: 370px; */
+}
+
+.item_lot a, .item_lot a:hover, .item_lot a:focus{
+	text-decoration: none;
+
+}
+
+.item_lot {
+	height: 100%;
+	padding: 0;
+	padding-bottom: 10px;
+	display: flex;
+	flex-direction: column;
+	color: #707070;
+}
+
+.item_lot .item_img {
+    position: relative;
+    overflow: hidden;
+    height: auto;
+    text-align: initial;
+	margin: auto 0;
+}
+
+.item_lot .item_img img {
+    padding-top: 0;
+    top: 0;
+    display: inherit !important;
+    width: 100% !important;
+    max-width: 100%;
+    max-height: none;
+    margin: 0 auto !important;
+    transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
+}
+
+.square .title_item {
+    font-size: 22px;
+    font-weight: 400;
+	height: auto;
+	padding-bottom: 15px;
+	border-bottom: none;
+}
+
+.container-item-lot {
+	height: 340px;
+}
+
+.item_lot .data-container{
+	position: relative;
+	padding: 5px 10px 0 10px;
+	margin-top: auto;
+}
+
+.item_lot .description_item{
+	font-weight: bold;
+    color: var(--primary-color-text);
+    font-size: 18px;
+}
+
+.item_lot .data-container .data-price{
+	height: auto;
+	margin-top: 0;
+	display: block;
+}
+
+.item_lot .salida-price{
+	float: left;
+	font-size: inherit;
+	font-weight: inherit;
+	height: initial;
+}
+
+.RightlabelGrid {
+    position: absolute;
+    top: -65px;
+	left: 0;
+	right: 0;
+
+    width: 100%;
+	height: auto;
+    padding: 10px 0;
+    z-index: 3;
+
+    font-size: 26px;
+    text-align: center;
+    color: var(--color-black);
+    background: #ffffffcc;
+
+	-webkit-transform: initial;
+    transform: initial;
+}
+
+@media (max-width: 768px) {
+
+	.list_lot {
+		grid-template-columns: 1fr;
+	}
+
+}

@@ -1,0 +1,264 @@
+:root {
+
+	--galBackgroundColor: #7d9396;
+}
+
+
+
+
+/* GRID */
+.galBanner{
+	background: var(--galBackgroundColor);
+	margin-bottom: 15px;
+}
+
+.titlePage-custom{
+	text-align:center;
+	margin-top: 40px;
+	color: var(--galBackgroundColor);
+}
+.textPage-custom{
+	text-align:justify;
+	font-size: 16px;
+}
+
+.galBannerText{
+
+	color: #FFF;
+	font-size: 16px;
+	text-transform: uppercase;
+	text-align: center;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	width: 85%;
+}
+.galDesSub {
+	font-size: 20px;
+	font-weight:bold;
+}
+
+.galNameArtist{
+
+	font-size: 27px;
+	margin: 20px 0px;
+
+}
+.galeryBannerImage {
+	padding:0px;
+	overflow: hidden;
+	height: 360px;
+
+}
+
+
+.galeryBannerImage img{
+
+	width:100%;
+
+}
+
+
+/* FIN GRID */
+/* LOT GRID */
+.gridGal{
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns:repeat(auto-fill, minmax(375px, 1fr));
+}
+.gridGal::before {
+	position: absolute;
+
+}
+
+
+.galLot{
+	padding:5px;
+	margin-top: 5px;
+}
+/*
+.galImgLot{
+	overflow: hidden;
+
+}
+*/
+.galImgLot a:hover{
+	text-decoration: none;
+}
+
+.galImgLot img {
+	width:100%;
+}
+
+.galImgLot:hover img {
+	opacity : 0.6;
+    transition:opacity 1s;
+}
+
+.galLotArtist .galImgLot img{
+	width:100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* FIN LOT GRID */
+
+/* FICHA */
+.imgFichaGal img{
+	width:100%;
+}
+.tituloFichaGal{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+
+/* FIN FICHA */
+
+
+/* EXHIBITIONS GRID */
+
+.searchExhibitions{
+	text-align:center;
+	margin: 40px 0;
+}
+.searchExhibitions i{
+	color: var(--galBackgroundColor);
+	font-size: 18px;
+}
+.searchExhibitions button{
+	border: 0px;
+	background: #FFF;
+
+}
+
+.searchExhibitions input[type="text"]{
+ border: 1px solid  var(--galBackgroundColor);
+}
+
+.gridExhibitions{
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+}
+.gridExhibitions::before {
+	position: absolute;
+
+}
+
+.exhibitionGridItem {
+color: var(--galBackgroundColor);
+text-align:center;
+
+}
+.exhibitionGridItem img {
+	width:100%;
+	}
+
+.exhibitionGridItem:hover img {
+	opacity : 0.6;
+		transition:opacity 1s;
+}
+.exhibitionGridTitle{
+	font-weight:bold;
+}
+
+
+.exhibitionGridDate{
+	font-size: 12px;
+	color:#000;
+}
+
+.yearExhibition{
+	margin: 5em 0 2em 0;
+
+	text-align: center;
+	font-size:18px;
+
+	color: var(--galBackgroundColor);
+
+}
+.yearExhibition span{
+	padding: 10px 15px;
+	border: 1px solid;
+	margin-top:20px;
+}
+
+.GalTitleArtist{
+	font-size: 24px;
+	font-weight: bold;
+	text-transform:uppercase;
+}
+
+.GalTitleNameSub{
+	font-size: 20px;
+	text-transform:uppercase;
+}
+
+.GalTitleExhibition{
+	font-size: 20px;
+	text-transform:uppercase;
+}
+
+#biographyView{
+	cursor:pointer;
+}
+
+
+
+
+
+.gridArtists{
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));
+	text-align: center;
+}
+
+a .artistGridTitle ,a  .artistGridTitle:hover {
+	color:var(--primary-color-text);
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+
+
+/* END EXHIBITIONS GRID */
+
+/* Fondo galeria */
+.sliderMainFondoGaleria img{
+	max-width: 900px;
+	width: 100%;
+	margin:auto;
+
+}
+.sliderthumbGaleria{
+	margin-top:20px;
+	text-align: center;
+}
+.sliderthumbGaleria:before{
+	width: 100%;
+    max-width: 555px;
+    background: #d5d5d5;
+    height: 1px;
+    display: inline-block;
+    content: "";
+    margin: 0 auto 30px;
+}
+
+.sliderObraGaleria{
+	padding:10px;
+}
+.sliderObraGaleria img{
+	width: 100%;
+}
+
+.infoLotFondoGaleria{
+
+	text-transform: uppercase;
+
+    font-size: 14px;
+}
+
+/* Fin fondo galeria */

@@ -1,0 +1,23 @@
+#category {background:#FFF;border:#CCC 1px solid;padding:15px;width: 100%;text-align:center}
+#category .row {padding:5px;margin:0 10px;width: 100%;}
+#category .items {border-top:#CCC 1px solid;}
+
+#editcategory {}
+#editcategory .category_items .row {border-top:#CCC 1px solid;padding:10px 0;}
+.has-error {border:#C00 1px solid;}
+.well {background: #FFF}
+
+.bloquecategory {border:#CCC 1px solid;background:#EEE;padding:15px;}
+.bloquecategory .btn {float:right;margin-left:10px;}
+.categoryItems .row {padding:10px 0;}
+
+
+#categorys .well {border:#CCC 1px solid;padding:20px;cursor:pointer;}
+
+.categoryItems ul {
+    list-style: none;
+}
+
+.categoryItems ul li {
+	position:relative;min-height:100px;border:#CCC 1px solid;background:#f0f0f0;padding:10px;margin-bottom:10px;cursor:pointer;
+}

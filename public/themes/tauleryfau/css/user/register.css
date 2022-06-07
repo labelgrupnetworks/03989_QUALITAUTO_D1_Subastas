@@ -1,0 +1,193 @@
+
+#registerForm {color:#464646;}
+
+#registerForm .tipo_usuario div.selected {border:0;background:#101010;color:#FFF;}
+#registerForm .tipo_sexo {display:none;}
+
+.eye-password {
+    position:absolute;
+    top:34px !important;
+    right:10px;
+    cursor:pointer;
+}
+
+
+.well {border:0;border-top:1px solid #b79d81;width:100%;}
+.tit {color: #283747;font-weight: 900;margin: 10px 0;font-size:24px;}
+
+#registerForm .form-control {
+    color:#555;
+    line-height: 1.42857143;
+    border: 1px solid #5555;
+    background: #f1ece6;
+    padding: 0 10px;
+}
+
+#registerForm .observaciones {display:block;}
+#registerForm .idioma {display:block;}
+#registerForm .moneda {display:block;}
+#textogrande__0__obscli {height:100px;}
+#registerForm .datos_contacto {
+    width: 25%;
+    margin: 0 0 0 15%;
+}
+#registerForm .datos_direccion {
+    width: 25%;
+    margin: 0 15% 0 0;
+}
+
+
+#registerForm .tipo_usuario div {
+    height: 20px;
+    border: 0;
+    margin: 0 10px 15px 15px;
+    width:108px;
+}
+#registerForm .tipo_usuario .modern-button {
+    border:#CCC 1px solid;
+    width:20px !important;
+    height:20px !important;
+}
+.has-error {color:#C00 !important; border:#C00 1px solid !important;}
+
+#registerForm .datos_cuenta div{
+    width: 46%;
+    float: left;
+    padding: 0 0 10px 0;
+    margin-right: 0px;
+    position: relative;
+}
+
+#registerForm .datos_cuenta div.right{
+    float: right;
+}
+
+
+.datos_cuenta, .datos_condiciones, .datos_newsletter {width:60%;margin:auto;}
+
+#registerForm .datos_newsletter {padding:20px 0 0 0;}
+#registerForm .datos_condiciones {
+    padding: 10px 0 10px 0;
+    width: 60%;
+    text-align: center;
+    border: 1px solid #b79d81;
+    border-radius: 5px;
+}
+
+#registerForm .datos_condiciones div input, #registerForm .datos_newsletter div input {
+
+    opacity: 0;
+
+}
+
+#registerForm .apellidos {display:block;}
+
+#registerForm input[name='prefix'] {
+	text-align: left;
+}
+
+.shipping_address_required{
+    width: 25%;
+    margin: 0 15% 0 0;
+    float: right;
+}
+
+.has-error{
+    border: #C00 2px solid !important;
+}
+
+.btn-primary {color:#FFF;background:#b79d81;border-radius:0;border:0;padding:10px 40px;font-size:18px;}
+
+#registerForm #collapse_d div.phone_address{
+	display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+#registerForm #collapse_d div.phone_address div{
+	width: 100%;
+}
+#registerForm #collapse_d div.phone_address div input{
+	text-align: left;
+}
+
+#registerForm #collapse_d .form-group > div{
+	margin-top: 1rem;
+}
+
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked{
+	position: relative;
+	width: 0px;
+	margin: 0px;
+}
+
+@media (max-width: 1100px) {
+    .shipping_address_required{
+        width: 100%;
+        margin: 10px 0 0 0;
+        float: none;
+	}
+
+	#registerForm .datos_contacto, #registerForm .datos_direccion{
+		width: 33% ;
+	}
+
+	#registerForm .datos_contacto{
+		float: left;
+	}
+
+	#registerForm .datos_direccion{
+		float: right;
+	}
+
+}
+
+@media (max-width: 996px){
+	#registerForm .datos_contacto{
+		float: left;
+		margin: 0 0 0 10%;
+	}
+
+	#registerForm .datos_direccion{
+		float: right;
+		margin: 0 10% 0 0%;
+	}
+	#registerForm .datos_contacto, #registerForm .datos_direccion{
+		width: 35%;
+	}
+}
+
+
+@media (max-width: 768px) {
+
+
+    .error-form-validation {margin:20px auto 50px auto;}
+	#registerForm .datos_direccion, #registerForm .datos_contacto {
+        width: 100%;
+        margin: 0;
+    }
+    #registerForm #collapse_direccion div, #registerForm .datos_newsletter div,#registerForm .datos_condiciones div {width:100%;}
+
+    #registerForm .datos_condiciones div input, #registerForm .datos_newsletter div input {margin:0 10px 0 0;}
+
+    #registerForm .datos_condiciones div label {
+        width:87%;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .datos_cuenta, .datos_condiciones, .datos_newsletter {width:100%;}
+    .btn-primary {margin-top:50px;}
+
+
+    #registerForm .datos_cuenta div{
+        width: 100%;
+    }
+
+    #registerForm .datos_condiciones{
+        width: 100%;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+
+}

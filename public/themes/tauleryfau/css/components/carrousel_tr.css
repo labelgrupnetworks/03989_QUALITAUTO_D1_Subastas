@@ -1,0 +1,169 @@
+/*
+|--------------------------------------------------------------------------
+| Carrousel lotes
+|--------------------------------------------------------------------------
+ */
+
+ .carrousel-lots-wrapper{
+
+	height: 150px;
+	border: 1px solid #ebebeb;
+	background-color: #fff;
+	margin-bottom: 10px;
+	padding: 0px 15px;
+}
+
+.arrow-carrousel{
+	font-size: 50px;
+    background: lightgray;
+    line-height: 1;
+	width: 50%;
+	min-width: 40px;
+	text-align: center;
+	color: #337ab7;
+	border: 1px solid lightgray;
+
+	cursor: pointer;
+}
+
+.arrow-carrousel:hover{
+	border-color: #eee #eee #ddd;
+}
+
+.carrousel-lots-wrapper .loader{
+	border-top: 8px solid #337ab7;
+}
+
+.carrousel-lots-options{
+	padding-right: 10px;
+	position: absolute;
+    top: 5px;
+	right: 30px;
+	z-index: 1;
+}
+
+.carrousel-lots-container{
+	height: 100%;
+}
+
+.lots-carrousel{
+	/*
+	flex-wrap: wrap;
+	overflow: hidden;
+	*/
+}
+
+.lots-carrousel .lots{
+
+	background-size: contain !important;
+
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: 5px 10px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-origin: content-box;
+	border: 1px solid #ddd;
+	transition: all 0.5s;
+}
+
+.lots-carrousel .lots.j-active-info {
+	justify-content: flex-end;
+}
+
+.lots-carrousel .lots .lots-content{
+	font-size: 16px;
+	font-weight: bold;
+	color: black;
+}
+
+.lots-carrousel .lots.j-active-info:hover .j-lots-data{
+	display: flex;
+}
+
+.lots-btn{
+	background-color: #337ab7;
+    border-radius: 15px;
+    padding: 4px 30px;
+    border-color: #337ab7;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.lots-carrousel .lots .j-lots-data{
+	display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #000000b5;
+}
+
+.lots.actual-lot{
+	box-shadow:inset 0px 0px 0px 2px #337ab7;
+}
+
+.j-lots-data .j-loader{
+	border-color: #00000000;
+	border-top-color: #fff;
+	animation: spin 0.7s linear infinite;
+}
+
+.j-lots-data .j-lots-data-load{
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+	padding: 5px;
+	gap: 5px;
+}
+
+.m-0{
+	margin: 0;
+}
+
+.carrousel-lots-check input[type=checkbox]{
+	display: none;
+}
+
+.carrousel-lots-check input[type=checkbox] + label:before,
+.carrousel-lots-check input[type=checkbox] + label:before
+{
+/* unchecked checkbox */
+content: " ";
+background: #fff;
+border: 1px solid gray;
+height: 13px;
+width: 13px;
+display:inline-block;
+padding: 0 0 0 0px;
+cursor: pointer;
+}
+
+.carrousel-lots-check input[type=checkbox]:checked + label:before,
+.carrousel-lots-check input[type=checkbox]:checked + label:before
+{
+content: " ";
+background:#337ab7;
+cursor: pointer;
+}
+
+.carrousel-lots-check .check-label{
+	cursor: pointer;
+}
+
+.slick-list, .slick-track, .slick-slide > div{
+	height: 100%;
+}
+
+
+@media (min-width: 992px){
+
+	.lots-carrousel .lots{
+		/*background-size: 70% !important;*/
+	}
+
+}
+

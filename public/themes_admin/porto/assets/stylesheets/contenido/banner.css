@@ -1,0 +1,31 @@
+#newbanner {background:#FFF;border:#CCC 1px solid;padding:15px;width: 100%;}
+#newbanner .row {padding:5px;margin:0 10px;width: 100%;}
+#newbanner .items {border-top:#CCC 1px solid; background-color: #FFF;}
+
+#editbanner {}
+#editbanner .banner_items .row {border-top:#CCC 1px solid;padding:10px 0;}
+.has-error {border:#C00 1px solid;}
+.well {background: #FFF}
+
+.bloqueBanner {border:#CCC 1px solid;background:#EEE;padding:15px;}
+.bloqueBanner .btn {float:right;margin-left:10px;}
+.bannerItems .row {padding:10px 0;}
+
+@media (min-width: 576px) {
+	.modal-dialog {
+		min-width: 80%;
+		width:80%;
+	}
+
+}
+
+#banners .well {border:#CCC 1px solid;padding:20px;cursor:pointer;}
+
+.bannerItems ul {
+    list-style: none;
+}
+
+.bannerItems ul li {
+	position:relative;min-height:100px;border:#CCC 1px solid;background:#f0f0f0;padding:10px;margin-bottom:10px;cursor:pointer;
+}
+

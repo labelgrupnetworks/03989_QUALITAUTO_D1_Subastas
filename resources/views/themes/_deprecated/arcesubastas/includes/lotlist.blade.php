@@ -1,0 +1,126 @@
+<div class="{{$class_square}} square">
+        <div class="item_lot">
+                <div class="border_img_lot">
+                    <a title="{{ $titulo }}" <?= $url?> >
+                        <div class="img_lot">
+                            <img class="img-responsive lazy" data-src="{{Tools::url_img('lote_medium',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
+
+                        </div>
+                        @if( $item->retirado_asigl0 !='N')
+                            <div class="retired ">
+                                {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+                            </div>
+                        @elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
+                             <div class="retired" style ="background:#0B5345;text-transform: lowercase;">
+                                {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                            </div>
+        @elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta) || $item->desadju_asigl0 =='S' || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)) ))
+                            <div class="retired" style ="background:#0B5345;text-transform: lowercase;">
+                                {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                            </div>
+                        @endif
+                    </a>
+                </div>
+            <div class="data-container">
+                @if(!empty($titulo))
+                    <div class="title_lot">
+                        <a title="{{ $titulo }}" <?= $url?>  >
+                            <h4>{{ $titulo }}</h4>
+                        </a>
+                    </div>
+                @endif
+                @if( ( \Config::get( 'app.descweb_hces1' ) ) ||  ( \Config::get( 'app.desc_hces1' )))
+                    <div class="desc_lot">
+                            @if( \Config::get('app.descweb_hces1'))
+                                <?= $item->descweb_hces1 ?>
+                            @elseif ( \Config::get('app.desc_hces1' ))
+                                <?= $item->desc_hces1 ?>
+                            @endif
+                    </div>
+                @endif
+                <div class="data-price">
+                    @if( $item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')
+
+                        @if($item->tipo_sub != 'V')
+
+                           @if( \Config::get('app.estimacion'))
+                               <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span> {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
+                           @elseif( \Config::get('app.impsalhces_asigl0'))
+                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span> {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+                           @endif
+
+                        @else
+                            <p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}
+                                <span>
+                                     {{$item->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                               </span>
+                            </p>
+                        @endif
+
+                        @if( ($item->tipo_sub== 'P' || $item->tipo_sub== 'O') && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
+                            <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}<span>  {{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
+                        @elseif ($item->tipo_sub== 'P' || $item->tipo_sub== 'O')
+                             <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </p>
+                        @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'S' && $item->cerrado_asigl0 == 'N'  )
+                            <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
+                                 <span class="{{$winner}}">  {{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                                </span>
+                            </p>
+                            @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'S' && $item->cerrado_asigl0 != 'N'  )<?php //ponemos el espacio para que no descuadre ?>
+                            <p class="salida"></p>
+                        @endif
+                        @if( \Config::get('app.awarded'))
+                            <p class="salida">
+                                @if($item->cerrado_asigl0 == 'D')
+                                    {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                                 @elseif($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 =='S' && (!empty($precio_venta) ) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))  )
+                        @if($item->subc_sub == 'H' && !empty($item->impadj_asigl0))
+                            @php($precio_venta = $item->impadj_asigl0)
+                        @endif
+                                    {{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}: <span >{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                                @elseif($item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta) || $item->desadju_asigl0 =='S' ))
+                                    {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                                @elseif($item->cerrado_asigl0 == 'S' &&  empty($precio_venta))
+                                    {{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}
+                                @endif
+                            </p>
+                        @endif
+                        @if(($item->tipo_sub == 'P' || $item->tipo_sub == 'O') && $item->cerrado_asigl0=='N')
+                            <p class="salida">
+                                <i class="fa fa-clock-o"></i>
+                                <span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
+                            </p>
+                        @elseif($item->tipo_sub == 'P' || $item->tipo_sub == 'O')
+                            <p class="salida"> </p>
+                        @endif
+
+                    @else
+                        @if($item->tipo_sub != 'V')
+
+                           @if( \Config::get('app.estimacion'))
+                               <p class="salida"><span></span></p>
+                           @elseif( \Config::get('app.impsalhces_asigl0'))
+                                <p class="salida"><span></span></p>
+                           @endif
+
+                        @else
+                            <p class="salida"><span></span></p>
+                        @endif
+                        <?php // si son tipo P o O tienen dos lineas mas, la puja y el reloj ?>
+                        @if( ($item->tipo_sub== 'P' || $item->tipo_sub== 'O') )
+                            <p class="salida"></p>
+                             <p class="salida"></p>
+                        @endif
+                        @if( \Config::get('app.awarded'))
+                         <p class="salida"></p>
+                        @endif
+
+
+                    @endif
+
+                </div>
+
+            </div>
+
+        </div>
+</div>

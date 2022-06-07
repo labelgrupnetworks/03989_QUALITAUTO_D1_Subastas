@@ -1,0 +1,212 @@
+:root {
+    --primary-color: #0d5257;
+    --secondary-color: #e28a0a;
+    --complement-color: #6E6D6D;
+    --extra-color: #26272B;
+    --newsletter-background: #6aaf82;
+    --primary-color-text: #46494f;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background: #4199AD;
+	--btn-primary-background-hover: #26272B;
+
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #26272B;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #46494f;
+	--newsletter-text: #ffffffc7;
+	--newsletter-placeholder: #ffffffc7;
+	--newsletter-input-border: #ffffffc7;
+	--newsletter-input-text: #ffffffc7;
+
+	--footer-background: white;
+	--footer-titles-color: #4199AD;
+	--footer-links-color: black;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: #4199AD;
+	--footer-sociallinks-textcolor: #ffffffc7;
+
+	--filter-background: #6aaf82;
+}
+
+.menu-header{
+	background-color: #4199AD;
+}
+header.fixed nav .logo-company {
+	max-width: 140px;
+}
+
+.btn_login_desktop,.color-letter-header{
+	color: white;
+}
+
+.btn_login_desktop:hover, .color-letter-header:hover{
+	color: #BBBBBB;
+}
+
+a.link-header, a.link-header {
+    color: white;
+}
+
+a.link-header:hover, a.link-header:focus {
+    color: white;
+}
+.menu-principal-search {
+height:80px;
+}
+
+.my-account img{
+	filter: invert(1);
+}
+
+.item_lot .salida-price{
+	float: right;
+}
+
+header.fixed{
+	height: 100px;
+}
+
+header.fixed nav{
+	height: 100%;
+}
+
+
+
+/****************************************************/
+/*****               Categorias             *********/
+/*****                 Header               *********/
+/****************************************************/
+
+.header_categories {
+    padding: 30px;
+    display: none;
+    border: #CCC 1px solid;
+	position: absolute;
+	left: -100%;
+    background: #FAFAFA;
+    width: 20%;
+    z-index: 1000;
+}
+
+.header_categories.open{
+	left: 0;
+}
+
+.header_categories a {
+	display:block;
+}
+.header_categories b {
+	color:#000;
+	margin-bottom:10px;
+	display: block;
+}
+.header_categories .row {
+	margin-bottom:20px;
+	text-transform: capitalize
+}
+
+.header_categories p {
+	margin-bottom:20px;
+}
+
+.header_categories a{
+	color: var(--btn-primary-background);
+}
+
+/****************************************************/
+/*****               Categorias             *********/
+/****************************************************/
+
+.categories-home{
+    margin: 40px 0;
+}
+
+.categories-title-container{
+	padding: 0 0 0 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.categories-title{
+	/*font-style: italic;*/
+	font-size: 30px;
+    font-weight: 500;
+	color: var(--primary-color-text);
+	text-decoration: none;
+}
+
+.category-block-home {
+    width: 33%;
+    float: left;
+    margin-top: 20px;
+    padding: 0 0 0 45px;
+    display: block;
+}
+
+.category-block-home .title {
+    font-size: 1.4em;
+    color: #464646;
+    border-bottom: #CCC 1px solid;
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.category-block-home img {
+    width: auto;
+    height: 70px;
+	margin: 0px 5px 5px;
+}
+
+.newsletter-legalinfo{
+	font-size: 10px;
+}
+
+#modalPujarFicha{
+	max-width: 800px;
+}
+
+/****************************************************/
+/*****              Imagen Lote             *********/
+/****************************************************/
+.item_home .item_img img,.item_lot .item_img img{
+	max-height: 150px;
+	height: 150px;
+    width: auto;
+	max-width: auto;
+}
+
+
+/****************************************************/
+/*****              Ficha Lote              *********/
+/****************************************************/
+.info-ficha-prices > div:first-child, .info-ficha-percents > div:first-child{
+	flex: 2;
+}
+
+.info-ficha-prices > div:last-child, .info-ficha-percents > div:last-child{
+	flex: 3;
+}
+
+/****************************************************/
+/*****              Grid Subastas           *********/
+/****************************************************/
+.estado-subasta {
+	padding: 6px;
+	text-transform: uppercase;
+    color: white;
+    font-weight: 500;
+    border-radius: 5px;
+    line-height: 1;
+	font-size: 15px;
+	background-color: var(--btn-primary-background);
+}
+
+

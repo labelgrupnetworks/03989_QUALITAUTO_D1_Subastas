@@ -1,0 +1,157 @@
+@media screen and (max-width: 1205px) {
+
+	.footer-title .image {
+        border-top: none;
+	}
+
+}
+
+
+@media (max-width: 1200px) {
+	.logo-header{
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.header-height {
+		height: 120px !important;
+	}
+
+	.menu-principal-content{
+		align-items: flex-start;
+		justify-content: flex-start !important;
+	}
+
+	.menu-principal-content li, .menu-principal-content li a{
+		width: 100%;
+	}
+
+	.menu-principal-content li{
+		border-top: 1px solid #bebebe;
+	}
+	.menu-principal-content li a{
+		margin: 10px 0px;
+		font-size: 20px;
+		color: #7d7d7d;
+		justify-content: flex-start !important;
+	}
+
+	.close-menu-reponsive {
+		font-size: initial;
+	}
+}
+
+
+@media (max-width: 992px) {
+
+	.well {
+		width: 80%;
+	}
+
+	footer .img-container{
+		text-align: center;
+	}
+
+	.footer-ul li{
+		float: initial;
+		text-align: center;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+
+	.signature-container{
+		display: flex;
+    	flex-direction: column-reverse;
+    	text-align: center;
+    	gap: 10px;
+	}
+
+	.home-img-and-text-1 .item_imagen {
+		margin-right: 0;
+		margin-left: 0;
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+
+	.home-img-and-text-1 .item_texto,
+	.home-img-and-text-2 .item_texto {
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.home-img-and-text-2 .item_imagen {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+
+	.banner-img-and-text-2 div.column_banner:nth-child(1) {
+		order: -1;
+	}
+
+	.home-img-and-text-1 .item_texto {
+		margin-top: 1.5rem;
+	}
+
+	.textAuctionList .mini-button,
+	.realTimeButton {
+		padding: 10px 70px;
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 768px) {
+
+	.grid-auction-wrapper {
+		flex-direction: column
+	}
+
+	.gridTitleAuction {
+		display: block;
+	}
+
+	.gridTitleAuction h1 {
+		font-size: 25px;
+	}
+
+	.gridTitleAuction h2 {
+		font-size: 20px;
+	}
+
+	.buttons-auction {
+		display: flex;
+		justify-content: space-evenly;
+	}
+
+	.gridTextTitleAuction p {
+		padding: 0;
+	}
+
+	.gridTextTitleAuction a, .gridTextTitleAuction .realTime a {
+		display: block;
+		padding: 8px;
+	}
+
+
+}
+
+@media (max-width: 576px) {
+
+	.logo-company {
+		max-width: 140px;
+	}
+
+	.ventas-destacadas-container {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+}
+
+@media (max-width: 368px){
+    .logo-company {
+		max-width: 130px;
+	}
+	.logo-header {
+		padding-left: 15px;
+	}
+}

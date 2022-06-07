@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19-nov-2019, 12:23:24
+    Author     : enadal
+*/
+
+.faq-category{
+    color: #018ccc;
+    font-size: 20px;
+    margin-bottom: 3rem;
+}
+
+#faq .block .cat, #faq .block .subcat, #faq .block .question, #faq .faq {
+    border-bottom: 1px solid #018ccc;
+    text-align: justify;
+    font-size: 16px;
+}
+

@@ -1,0 +1,101 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 18-nov-2019, 17:28:26
+    Author     : enadal
+*/
+.content-items{
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.content-img{
+    width: 40px;
+    margin-right: 10px;
+}
+
+.content-item{
+    width: 300px;
+    font-size: 15px;
+}
+
+.accept_new, .condicines {
+    display: block;
+    position: relative;
+    font-weight: 100;
+    font-size: small;
+}
+
+.effect-16{
+    border-bottom: 2px solid #018ccc;
+    margin-left: 0px !important;
+    padding: 0px !important;
+}
+.effect-16 ~ label{
+    font-size: 20px;
+    top: 0px;
+    color: black;
+    margin-left: 5px
+}
+.contact-page-form form .input-effect label{
+    font-weight: bold;
+}
+
+.contact-page-form form {
+    margin-top: 0px;
+}
+
+.contact-page-form form .input-effect textarea{
+    border-bottom: 2px solid #018ccc;
+}
+
+.contact-submit a{
+    font-size: 25px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 13px;
+    text-transform: uppercase;
+}
+
+body > div.container.mt-3 > div.row > div.col-xs-12.col-md-5 > div > iframe{
+
+    min-width: 100%;
+    height: 495px;
+    border:0;
+}
+
+@media screen and (max-width: 991px){
+
+    body > div.container.mt-3 > div.row > div.col-xs-12.col-md-5 > div > iframe{
+        height: 300px;
+    }
+    .content-items{
+        flex-direction: column;
+    }
+    .content-item{
+        margin: 10px 2px;
+    }
+
+}
+
+.map_contact{
+    margin-top: 5rem;
+
+}
+
+.newsletter{
+    margin-top: 20px;
+}
+
+.link-condiciones{
+
+}
+#contactForm > div.form-group > div:nth-child(6) > label > strong > span > a{
+    color:black !important;
+}
+
+

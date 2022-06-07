@@ -1,0 +1,59 @@
+.filters-auction-content{
+	background: #7d9396;
+}
+
+#form_lotlist input[type="text"]::placeholder{
+	color: rgb(209, 209, 209);
+}
+
+.pagination{
+	margin: 10px 0px;
+}
+
+.item_lot .item-info-lot{
+	height: 185px;
+	overflow: hidden;
+}
+
+.gridTitleAuction{
+	background: #7d9396;
+	flex:1;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	color: #FFFFFF;
+
+}
+
+.gridTextTitleAuction{
+	color: #FFFFFF;
+	text-align:center;
+
+}
+
+.gridTextTitleAuction p{
+	padding: 10px;
+
+}
+.gridTextTitleAuction a {
+	border: 1px solid #FFF;
+	color: #FFF;
+	padding: 11px;
+	text-decoration: none;
+}
+.gridTextTitleAuction .realTime a{
+	background-color: #b31010;
+	padding: 11px 14px;
+}
+.gridTextTitleAuction a:hover {
+	background: #FFF;
+}
+
+.gridImgAuction{
+	flex:2;
+
+}
+
+.gridImgAuction img{
+	width:100%;
+}

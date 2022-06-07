@@ -1,0 +1,14 @@
+
+#registerForm {color:#464646;}
+
+#registerForm .tipo_usuario div.selected {border:0;background:#101010;color:#FFF;}
+#registerForm .tipo_sexo div.selected {border:0;background:#101010;color:#FFF;}
+
+.eye-password {
+    position:absolute;
+    top:34px !important;
+    right:10px;
+    cursor:pointer;
+}
+
+.apellidos, .idioma {display:block;}

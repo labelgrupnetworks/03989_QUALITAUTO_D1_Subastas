@@ -1,0 +1,8 @@
+.datos_newsletter{
+	display: none;
+}
+
+#registerForm .tipo_usuario div.selected, #registerForm .tipo_sexo div.selected{
+	border-top: 5px solid #202553;
+}
+

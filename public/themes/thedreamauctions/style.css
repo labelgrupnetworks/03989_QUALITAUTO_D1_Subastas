@@ -1,0 +1,408 @@
+:root {
+
+	/**
+	Colores web:
+	**/
+	--color-dark: #111820;
+	--color-white: #f8fafa;
+	--color-gold: #be8f57;
+	--color-gray: #7d7882;
+	--color-gray2: #dad6d7;
+
+	/**fuentes
+	titulos: prompt bold / uppercase
+	textos: work sans
+	*/
+
+    --primary-color: #414145;
+    --secondary-color: var(--color-gold);
+    --complement-color: #414145;
+    --extra-color: var(--color-gold);
+    --primary-color-text: #666;
+	--secondary-color-text: #666;
+
+	--btn-primary-background: var(--color-gold);
+	--btn-primary-background-hover: #b5915e;
+	--btn-primary-text: var(--color-white);
+	--btn-primary-text-hover: var(--color-white);
+
+	--btn-secondary-background: var(--color-white);
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: var(--color-white);
+
+	--header-links-color-hover: #9a9a9a;
+
+	--newsletter-background: var(--color-dark);
+	--newsletter-text: var(--color-white);
+	--newsletter-placeholder: var(--color-white);
+	--newsletter-input-border: var(--color-white);
+	--newsletter-input-text: var(--color-white);
+
+	--footer-background: var(--color-dark);
+	--footer-titles-color: var(--color-gold);
+	--footer-links-color: var(--color-white);
+	--footer-links-color-hover: var(--color-white);
+
+	--footer-sociallinks-background: var(--color-dark);
+	--footer-sociallinks-textcolor: var(--color-white);
+
+	--filter-background: var(--color-dark);
+}
+
+body {
+    /* font-family: 'Prompt', sans-serif; */
+	font-family: 'Work Sans', sans-serif;
+	background: var(--color-white);
+}
+
+header{
+	background:var(--color-dark);
+	box-shadow: 0px 6px 5px #ccc;
+}
+
+header.fixed{
+	background:var(--color-dark);
+}
+
+header.fixed nav {
+	background: var(--color-dark);
+	border-bottom: 0;
+}
+
+.logo-company{
+	max-width: 172px;
+}
+
+.menu-principal-content{
+	justify-content: flex-end;
+}
+
+.search-header-container{
+	-webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.search-header svg, .search-header-close svg{
+	width: 17px;
+}
+
+a.link-header{
+	padding: 0 11px;
+}
+
+.link-header span{
+	transition: 0.4s;
+}
+
+.link-header:hover span{
+	opacity: 0.7;
+}
+
+.link-header:hover span:before{
+	left: -100%;
+}
+
+a.link-header, a.link-header:hover, .btn_login_desktop, .btn_login_desktop:hover{
+	color:var(--color-white);
+	font-weight: 400;
+}
+
+.menu-principal-search{
+	background:var(--color-dark);
+	font-weight: 400;
+}
+
+.my-account {
+      color: var(--color-white);
+	  padding: 0;
+}
+
+#formsearchResponsive .btn-custom-search{
+	background: var(--extra-color);
+	color: var(--color-white);
+}
+
+#formsearchResponsive .form-group .input-custom{
+	border-radius: 0 22px 22px 0;
+}
+
+.menu-responsive .color-letter, .menu-responsive  .color-letter:hover {
+	color:var(--color-white);
+}
+
+.menu-principal-content li.color-brand, .menu-principal-content li a.color-brand{
+	color: var(--extra-color);
+}
+
+
+.menu-header,
+.newsletter-tittle,
+.filters-auction-title,
+.title_item,
+.titleficha,
+.desc-lot-profile-title,
+.mas-pujados-title,
+.lotes-destacados-tittle{
+	font-family: 'Prompt', sans-serif;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+div.footer-title{
+	font-family: 'Prompt', sans-serif;
+	text-transform: uppercase;
+}
+
+.lang-selection{
+	background-color: var(--color-dark);
+	border-bottom: 0;
+}
+
+a.link-lang, a.link-lang:hover{
+	color: var(--color-white);
+}
+
+.close-menu-reponsive{
+	color: var(--color-white);
+}
+
+.titlePage-custom, h1.titlePage{
+	display: none;
+}
+
+.bread, .titleSingle{
+	text-align: left;
+}
+
+.create-account-link a{
+	background-color: var(--color-dark);
+}
+
+.my-account img{
+	filter: invert(100%);
+	max-width: 22px;
+}
+
+.mega-menu{
+	top: 59px;
+	left: inherit;
+}
+
+.mega-menu a:hover{
+	background: var(--extra-color);
+}
+
+.ficha-content .pre .pre-title-principal, .ficha-content .pre .pre-title, header.fixed a.link-header, form#password_recovery label{
+	font-weight: 400;
+}
+
+.newsletter{
+	padding: 0;
+}
+
+.newsletter > .container{
+	border-bottom: 1px solid var(--color-white);
+	padding-top: calc(100px - 2rem);
+	padding-bottom: 100px;
+}
+
+.newsletter-tittle{
+	color: var(--color-gold);
+}
+
+.newsletter-button{
+	height: auto;
+	width: auto;
+	font-size: 28px;
+	font-family: 'Prompt', sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.item_lot .salida-time{
+	background: var(--color-gray);
+}
+
+div.single div.img_single_border.video_single_border{
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+img.img-openDragon{
+	width: auto;
+	max-width: 100%;
+	height: 90px;
+}
+
+.info-type-auction{
+	background-color: var(--color-dark);
+    color: var(--color-white);
+    text-transform: uppercase;
+    font-size: 18px;
+	font-weight: 700;
+	padding: 5px 20px;
+    margin-left: 0;
+}
+
+.ficha-info-close-lot{
+	font-size: 18px;
+}
+
+.ficha-info-clock{
+	color: var(--color-gold);
+	font-size: 22px;
+}
+
+#img_main{
+	border: 2px solid var(--color-gold);
+}
+
+.content-right-ficha{
+	border: 1px solid var(--color-gray2);
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-top: 42px;
+}
+
+.titleficha{
+	color: var(--color-dark);
+	margin-bottom: 0;
+	font-size: 22px;
+}
+
+.ficha-content .ficha-separator{
+	height: 1px;
+	background-color: var(--color-gray2);
+	/* margin-top: 15px;
+	margin-bottom: 15px; */
+}
+
+.ficha-content .pre-title{
+	font-size: 18px;
+	color: var(--color-dark);
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.ficha-content .next-bid, .ficha-content .siguiente_puja{
+	font-weight: 700;
+	font-size: 18px;
+	color: var(--color-gold);
+	margin: 0;
+}
+
+#actual_max_bid, .starting_price {
+	font-weight: 700;
+	font-size: 28px;
+	color: var(--color-gold);
+}
+
+.ficha-content .precio_minimo{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.ficha-content .precio_minimo_alcanzado{
+	background-color: #00870d;
+}
+.ficha-content .precio_minimo_no_alcanzado {
+	background-color: #ff4040;
+}
+
+.ficha-content .precio_minimo .pre-title {
+	color: white;
+	font-size: 16px;
+}
+
+.insert-max-bid{
+	font-size: 18px;
+	color: var(--color-dark);
+	text-transform: uppercase;
+}
+
+.ficha-content .estimate-wrapper .pre-title{
+	font-size: 18px;
+}
+
+.ficha-content .estimate-wrapper .pre-price{
+	color: var(--color-gold);
+	font-size: 22px;
+}
+
+.zone-share-social a{
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 18px;
+	font-weight: 700;
+	color: black;
+}
+
+.zone-share-social i{
+	color: var(--color-gold);
+}
+
+.zone-share-social a:hover, .zone-share-social a:focus{
+	text-decoration: underline;
+}
+
+.next > *{
+	flex: 1;
+}
+
+.next > a{
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--color-gold);
+}
+
+.next > a:hover, .next > a:focus{
+	color: var(--color-gold);
+}
+
+.next > p{
+	font-size: 28px;
+	font-weight: 700;
+	color: var(--color-dark);
+	margin: 0;
+}
+
+.favoritos{
+	text-align: right;
+	margin: 0 0 10px 0;
+}
+
+.favoritos a{
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--color-dark);
+	text-transform: uppercase;
+}
+
+.favoritos i{
+	color: var(--color-gold);
+	font-size: 18px;
+}
+
+.popover{
+	border: #eeeeee 1px solid;
+    white-space: initial;
+    color: initial;
+    background: white;
+}
+
+.contenido.contenido-web{
+	text-align: justify;
+}
+
+.inputs-custom-group .form-group label{
+	font-weight: 400;
+}
+
+.popover-content{
+	text-align: justify;
+}

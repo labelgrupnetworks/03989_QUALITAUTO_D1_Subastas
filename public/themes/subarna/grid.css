@@ -1,0 +1,148 @@
+#lots a{
+	text-decoration: none;
+    color: black;
+}
+
+#lots a:hover, #lots a:focus{
+	text-decoration: none;
+    color: black;
+}
+
+#lots .item_lot{
+	border-bottom: 4px solid #101010;
+    padding-bottom: 15px;
+	margin-bottom: 40px;
+	min-height: 456px;
+}
+
+#lots .RightlabelGrid{
+	background: #777777;
+	text-transform: lowercase;
+	top: 5px;
+	right: 24px;
+	position: absolute;
+    padding: 2px 5px;
+    color: white;
+    z-index: 100;
+}
+
+#lots .item_img{
+	text-align: center;
+    position: relative;
+    height: 240px;
+	overflow: hidden;
+    border: 1px solid #ccc;
+    min-height: 156px;
+    margin-bottom: 12px;
+}
+
+#lots .item_img img{
+	max-width: 100%;
+    max-height: 215px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    position: relative;
+    width: auto !important;
+    margin: 0 auto !important;
+    display: inherit !important;
+}
+
+#lots .title_item{
+	color: black;
+    font-size: 17px;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 20px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    max-height: 53px;
+}
+
+
+#lots .title_item .seo_h4{
+	font-weight: bold;
+    min-height: 33px;
+    font-size: 13px;
+    overflow: hidden;
+    display: -webkit-box;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 20px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+	height: 38px;
+}
+
+#lots .data-price p{
+	font-size: 13px;
+    height: 18px;
+}
+
+#lots .filters-auction-content{
+	border: 1px solid #ccc;
+    padding: 20px 15px;
+	margin-bottom: 30px;
+	background: #fff;
+    color: #333;
+}
+
+#lots .filters-auction-title{
+	border-bottom: 1px solid #ccc;
+    font-size: 17px;
+    font-weight: bold;
+    padding-bottom: 15px;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+#lots .filters-auction-label{
+	font-size: initial;
+	font-weight: bold;
+}
+
+#lots .auction__filters-collapse > div{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+#form_lotlist .btn-filter{
+	background-color: #9E9E9E;
+    width: 100%;
+    color: #fff;
+    border-radius: 0;
+    -webkit-transition: .3s background linear;
+    -o-transition: .3s background linear;
+    transition: .3s background linear;
+    border: initial;
+    text-transform: capitalize;
+    font-weight: initial;
+}
+
+
+#form_lotlist .btn-filter:hover{
+	background-color: #747474;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+#lots .filter-auction-input{
+	color: initial;
+}
+
+#lots .pagination-wrapper{
+	gap: 20px;
+}
+
+#lots .pagination{
+	margin: 0;
+}

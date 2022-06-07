@@ -1,0 +1,20 @@
+
+.item {margin:0;}
+.item.item_imagen {position:relative;}
+.item.item_imagen span {position:absolute;top:4%;left:35%;color:#FFF;width:30%;height:92%;background: rgba(0,0,0,0.5);padding:15px;text-align:center;}
+.item.item_texto {position:relative;}
+.item.item_texto span {padding:15px;}
+
+.slick-slide img {max-height:400px;}
+
+.slider-one .container {width:100% !important;padding:0 !important;}
+.banner_home img {width:100% !important;margin-bottom:15px;display:block;}
+.banner_home span {position:relative;}
+
+.slider-two .container {width:100% !important;padding:0 !important;}
+.banner_home2 img {width:100% !important;margin-bottom:15px;display:block;}
+.banner_home2 span {position:relative;}
+
+.slider-three .container {width:100% !important;padding:0 !important;}
+.banner_home3 img {width:100% !important;margin-bottom:15px;display:block;}
+.banner_home3 span {position:relative;}

@@ -1,0 +1,233 @@
+.auction-lots-view::-webkit-scrollbar{
+    width: 5px;
+}
+.auction-lots-view::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 56px whitesmoke;
+	box-shadow: inset 0 0 56px whitesmoke;
+}
+.auction-lots-view::-webkit-scrollbar-thumb{
+    background-color: #a0a0a0;
+    outline: 1px solid #a0a0a0;
+}
+
+.checkbox-inline, .radio-inline{
+	margin-left: 0px;
+}
+
+.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{
+	margin-left: 0px;
+}
+
+.radio-wrapper > label{
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+	width: 100%;
+}
+
+.filters-auction-label{
+	font-size: var(--font-size-text);
+	font-weight: 500;
+}
+
+.filters-auction-content .radio{
+	margin-bottom: 2px;
+}
+
+.filters-auction-content .radio label{
+	font-size: var(--font-size-text);
+}
+
+form#form_lotlist{
+	font-size: var(--font-size-text);
+}
+
+.auction__filters-type-list{
+	font-size: var(--font-size-text);
+}
+
+form#form_lotlist .radio-wrapper{
+	font-size: var(--font-size-text);
+}
+
+form#form_lotlist select, form#form_lotlist select option{
+	font-size: var(--font-size-text);
+}
+
+.del_filter{
+	font-size: var(--font-size-text);
+}
+
+#form_lotlist input[type="text"]{
+	font-size: var(--font-size-text);
+	color: var(--primary-color-text);
+}
+
+.filters-auction-title{
+	margin: 0;
+	font-size: var(--font-size-text);
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.filters-auction-content{
+	margin-bottom: 1rem;
+	padding: 5px 10px 5px 10px;
+	background: var(--gray-color);
+}
+
+#collapse_filter{
+	margin-top: 20px;
+}
+
+.collapse-js{
+	margin-top: 1rem;
+}
+
+.badge{
+	margin-bottom: 3px;
+}
+
+.btn-bid-lotlist{
+	padding: 0;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.item_lot .data-price > p{
+	font-weight: bold;
+}
+
+.pagination > li > a, .pagination > li > span{
+	color: #000;
+}
+
+.auction-lots-view{
+	position: sticky;
+	top: 80px;
+	height: 90vh;
+	padding-right: 0;
+	overflow-y: auto;
+}
+
+.filters-searching > div{
+	height: 30px;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.filters-searching .form-group{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+}
+
+.filters-searching input#description, .filters-searching input#reference{
+	border-bottom: 1px solid var(--extra-color);
+	height: 100%;
+	background: transparent;
+	padding: 0px;
+}
+
+.filters-searching input::placeholder{
+	color: var(--primary-color-text);
+}
+
+.filters-searching button{
+	text-transform: uppercase;
+	position: absolute;
+	height: 100%;
+	right: 0;
+	top: 0;
+	font-size: 15px;
+	border-radius: 5px;
+    color: var(--btn-primary-text);
+    background: var(--btn-primary-background);
+    font-weight: 400;
+	padding: 0 10px;
+}
+
+.filters-searching button:focus, .filters-searching button:hover{
+	color: var(--primary-color-text);
+}
+
+.filters-pagination{
+	display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.filters-pagination .pagination{
+	margin: 0;
+}
+
+.filters-pagination .pagination > li > a, .filters-pagination .pagination > li > span{
+	padding: 3px 8px;
+}
+
+.order_filter_group{
+	margin-bottom: 1rem;
+	text-transform: uppercase;
+}
+
+.checkbox-inline, .radio-inline {
+	align-items: center;
+	padding-left: 0;
+	line-height: 1;
+}
+
+.radio-inline input[type=radio] {
+	margin: 0;
+	position: relative;
+}
+
+input[type=radio].m-0 {
+	margin: 0;
+}
+
+.order_filter_group .collapse-options > div {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin-bottom: 15px;
+}
+
+.order_filter_group .collapse-options input {
+	margin: 0;
+}
+
+.order_filter_group .collapse-options label {
+	line-height: 1;
+	margin: 0;
+}
+
+.fa.fa-sort-down {
+	font-size: 14px;
+}
+
+.item_lot a.button-principal {
+	font-weight: bold;
+	color: #000;
+	max-height: 50px;
+	height: 50px;
+	font-size: 17px;
+}
+
+@media (max-width: 992px) {
+	.auction-lots-view{
+		position: relative;
+		top: initial;
+		height: auto;
+		padding-right: 15px;
+		overflow-y: auto;
+	}
+
+	.filters-auction-content{
+		margin-bottom: 1rem;
+	}
+}
+

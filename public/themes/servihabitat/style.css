@@ -1,0 +1,211 @@
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #43778c;
+    --complement-color: #414145;
+    --extra-color: #43778c;
+    --primary-color-text: #000;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background: #43778c;
+	--btn-primary-background-hover: #224e60;
+	--btn-primary-text: #fff;
+	--btn-primary-text-hover: #fff;
+
+	--btn-secondary-background: #deeef4;
+	--btn-secondary-background-hover: #43778c;
+	--btn-secondary-text: #43778c;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #D2E2F2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #224e60;
+	--newsletter-input-text: #414145;
+
+	--footer-background: #43778c;
+	--footer-titles-color: #fff;
+	--footer-links-color: #fff;
+	--footer-links-color-hover: #fff;
+
+	--footer-sociallinks-background: #71a9c4;
+	--footer-sociallinks-textcolor: white;
+
+	--filter-background: #414145;
+}
+
+
+body{
+	font-family: opensans,Arial,sans-serif;
+    font-weight: lighter;
+	background: #f7f7f7;
+}
+
+.close-menu-reponsive{
+	color: var(--btn-secondary-text);
+}
+
+a.link-header:hover, a.link-header:focus{
+	color: var(--secondary-color);
+}
+
+a.link-header{
+	font-size: 16px;
+}
+
+.lotes-destacados-tittle, .titlePage, .titlePage-custom, .titleSingle, .mas-pujados-title , .tabs-custom ul li a, .account-user .panel .panel-heading a, .desc-lot-profile-title{
+	color: var(--secondary-color);
+}
+
+:is(.lotes-destacados-tittle, .titlePage, .titlePage-custom, .titleSingle, .mas-pujados-title , .tabs-custom ul li a, .account-user .panel .panel-heading a, .desc-lot-profile-title):hover{
+	color: var(--secondary-color);
+}
+
+.column_banner{
+	padding: 0;
+}
+
+.container .rowBanner{
+	margin-top: 3rem;
+	margin-bottom: 3rem;
+}
+.container .column_banner:first-of-type .HOME_TWO_CARDS{
+	padding-right: 50px;
+	padding-left: 0px;
+}
+
+.container .column_banner:nth-of-type(2) .HOME_TWO_CARDS{
+	padding-left: 50px;
+	padding-right: 0px;
+}
+
+.column_banner .HOME_TWO_CARDS .item > span{
+	display: block;
+	padding: 25px;
+	background: white;
+	border-color: #ccc #262626;
+    border: solid #ccc;
+    border-width: 0 0 5px 0;
+}
+
+.column_banner .HOME_TWO_CARDS .item > span > h4{
+	margin-top: 20px;
+}
+
+.desc-lot-profile-content {
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+#user-account-ul li.tab-active a{
+	background: var(--secondary-color);
+	color: white;
+}
+
+.user-account-heading{
+	background: var(--btn-secondary-background);
+    color: var(--btn-secondary-text);
+}
+
+footer {
+    border-bottom: none;
+    font-size: 16px;
+}
+
+footer .fa, footer .fab{
+	color: #fff;
+}
+
+.footer-title{
+	margin: 0px 0 15px 0;
+	color: var(--footer-sociallinks-background);
+}
+
+.sub_menu_adj a{
+	color: var(--secondary-color);
+}
+
+.lot-action_info_lot{
+	width: 100%;
+}
+
+.custom-modal .modal-content{
+	padding: 30px;
+}
+
+.custom-modal button.close{
+    border: 0;
+    position: absolute;
+    right: 15px;
+    top: 20px;
+    z-index: 125;
+}
+
+.custom-modal .modal-dialog-centered{
+	min-height: calc(100% - (1.75rem * 2));
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    min-height: calc(100% - (.5rem * 2));
+}
+
+
+.custom-modal button.close > span{
+	font-size: 30px;
+}
+
+.custom-modal .modal-header{
+	border-bottom: 0;
+	padding: 0px 15px;
+}
+
+.lot-conditions a, .lot-conditions a:hover{
+	color: var(--btn-secondary-text);
+	text-decoration: none;
+}
+
+.files-container a, .files-container a:hover{
+	color: var(--btn-secondary-text);
+	text-decoration: none;
+}
+
+.item_lot .data-container .data-price{
+	min-height: 50px;
+}
+
+.init-time-container > p, .finish-time-container > p, .propery-container > p{
+	display: inline-block;
+}
+
+.init-time-container > .time-text, .finish-time-container > .time-text{
+	margin-right: 10px;
+}
+
+.sales-page td.title-sub-list {
+	cursor: pointer;
+}
+
+.sales-page .table .table {
+	background-color: transparent;
+}
+
+.sales-page thead {
+	background-color: var(--secondary-color);
+	color: #fff;
+}
+
+.td-desciption {
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    line-height: 1.5;
+    margin: 0;
+}

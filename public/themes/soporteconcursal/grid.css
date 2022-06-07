@@ -1,0 +1,8 @@
+.btn-bid-lotlist{
+	background: var(--btn-primary-background);
+	transition: 0.5s;
+}
+
+.btn-bid-lotlist:hover{
+	background: var(--btn-primary-background-hover);
+}

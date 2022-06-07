@@ -1,0 +1,33 @@
+@media (max-width: 1200px){
+	.logo-header {
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.logo-header .logo-company {
+		max-width: 200px;
+	}
+
+	.menu-header .menu-principal-content{
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 768px){
+	.menu-principal-search{
+		z-index: initial;
+	}
+
+	.mega-menu{
+		left: initial;
+	}
+}
+
+
+@media (max-width: 768px){
+	.btn_login_desktop {
+		text-transform: initial;
+	}
+
+}
+

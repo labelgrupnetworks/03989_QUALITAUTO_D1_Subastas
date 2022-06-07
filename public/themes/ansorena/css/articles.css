@@ -1,0 +1,93 @@
+#order-container, #filter-container{
+	display: none;
+}
+
+
+/* En ansorena solo tendrán la categoria joyas asi que entramos directos en esa categoria y ocultamos el todas y el joyas */
+.ortsec_rcomponent{
+	display: none;
+}
+
+.filtersArticles, .orderArticles{
+	background: #f3f3f3;
+	color: var(--articlePrimarycolor);
+}
+
+.filtersArticles h1{
+	display: none;
+	color: var(--articlePrimarycolor);
+}
+
+.filtersArticles input{
+	border: 1px solid #d1d1d1;
+}
+
+.filtersArticles .filtrarBtn{
+	border: 1px solid #d1d1d1;
+}
+
+.filtersArticles .filter-counter{
+	display: none;
+}
+
+.article-element{
+	overflow: hidden;
+
+	border: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.article-foto{
+	/*ocupando 100% con hover*/
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	aspect-ratio: initial;
+	background-size: contain;
+
+	transition: transform 0.75s;
+
+}
+
+.article-content {
+	/* Con hover */
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	background-color: white;
+	transition: all 0.5s;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+    gap: 20px;
+}
+
+.article-element:hover .article-foto{
+	/* background-size: 200%; */
+	transform:scale(1.5);
+
+}
+
+.article-element:hover .article-content{
+	opacity: 0.8;
+}
+
+
+.pagination-top{
+	display:none;
+}
+
+.descriptionArticlePage {
+	margin: 1rem 0 1rem 0;
+	font-size: 12px;
+}
+
+.titleReatedArticles {
+	font-size: 25px;
+}
+

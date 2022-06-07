@@ -1,0 +1,16 @@
+#registerForm .datos_left{
+    margin: 0px 5px;
+}
+
+#registerForm .datos_right{
+	margin: 0px 5px;
+	float: left;
+}
+
+#registerForm .apellidos {display:none;}
+
+@media (max-width: 576px) {
+	#registerForm .datos_left, #registerForm .datos_right{
+		width: 100%;
+	}
+}

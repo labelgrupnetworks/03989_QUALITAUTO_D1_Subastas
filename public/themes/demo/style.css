@@ -1,0 +1,33 @@
+.home-top-banner img {
+    filter: opacity(0.75);
+}
+
+.home-top-banner span{
+	bottom: 0px;
+	text-align: center;
+}
+
+.home-top-banner span a{
+	position: absolute;
+	bottom: 20px;
+	left: calc(50% - 65px);
+}
+
+.home-top-banner span h2, .home-top-banner span p{
+	text-align: center;
+}
+
+.home-top-banner .slick-current{
+	position: relative;
+}
+
+
+@media (max-width: 576px) {
+	.home-top-banner span a {
+		padding: 12px 45px;
+	}
+}
+
+
+
+

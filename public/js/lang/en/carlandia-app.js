@@ -1,0 +1,1 @@
+const translates = {"test_js":{"test_1":"tests bd","test_2":"Text test with param: :var","test_3":"Created from admin"},"articles_js":{"all":"Al","filters":"FILTERS","brands":"BRANDS","collections":"COLLECTIONS","catalogue":"CATALOGUE","search":"SEARCH","search_text":"Search by text"}}

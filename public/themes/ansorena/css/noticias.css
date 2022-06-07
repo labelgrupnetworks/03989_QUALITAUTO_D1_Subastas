@@ -1,0 +1,22 @@
+
+
+.title-post-principal {
+    font-size: 20px;
+    color: var(--primary-color-text);
+
+}
+
+.resumen-principal {
+    font-size: 16px !important;
+	text-align: justify;
+    color: var(--primary-color-text) !important;
+
+}
+
+.titlePage {
+	font-size: 30px;
+}
+
+.article-categoria-titulo {
+	font-size: 18px;
+}

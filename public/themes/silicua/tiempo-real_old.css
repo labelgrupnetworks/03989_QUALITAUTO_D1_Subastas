@@ -1,0 +1,14 @@
+#ficha #main_image_box #count_down_msg {
+    height: 100%;
+    top: 45%;
+}
+
+#ficha #clock {
+    height: 100%;
+    top: 0%;
+}
+
+.nav-content{
+    justify-content: space-around;
+    padding: 0;
+}

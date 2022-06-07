@@ -1,0 +1,76 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 08-nov-2019, 12:03:25
+    Author     : enadal
+*/
+
+
+section{
+    color: #283747;
+    font-size: 15px;
+}
+
+.container-fluid{
+    padding: 0px;
+}
+
+h1, h2, h3{
+    border-bottom: none;
+}
+
+.custom-bar-title{
+    padding: 0px;
+}
+
+.titles-border{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 10px 0;
+    text-align: center;
+    margin-bottom: 2rem;
+    /*margin-top: 2rem;*/
+}
+
+
+.title-b-container{
+    margin-top: 3rem;
+    /*margin-bottom: 3rem;*/
+}
+
+hr{
+    margin-block-start: -1em;
+    margin-block-end: -1em;
+    border: 1px solid lightslategray;
+}
+
+.tarjeta{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.elements{
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+}
+
+#accept_cookies{
+    padding: 3px;
+    background-color: #283747;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  li {
+      text-align: center;
+  }
+  
+}

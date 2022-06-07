@@ -1,0 +1,1 @@
+{{$emailOptions['content']}}

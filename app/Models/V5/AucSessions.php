@@ -1,0 +1,65 @@
+<?php
+
+# Ubicacion del modelo
+namespace App\Models\V5;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
+use App\Providers\ToolsServiceProvider;
+//use App\Override\RelationCollection;
+class AucSessions extends Model
+{
+    protected $table = '"auc_sessions"';
+    protected $primaryKey = '"company", "auction", "reference"';
+
+    public $timestamps = false;
+    public $incrementing = false;
+
+    protected $guarded = [];
+
+	protected $appends = [
+		'start_format',
+		'end_format'
+	];
+
+
+    #definimos la variable emp para no tener que indicarla cada vez
+    public function __construct(array $vars = []){
+        $this->attributes=[
+            '"company"' => Config::get("app.emp")
+        ];
+        parent::__construct($vars);
+    }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('emp', function(Builder $builder) {
+            $builder->where('"company"', Config::get("app.emp"));
+        });
+	}
+
+	/* public function newCollection(array $models = [])
+	{
+		return new RelationCollection($models);
+	} */
+
+	public function scopeWhereUpdateApi($query, $item){
+		return $query->where('"auction"', $item['"auction"'])
+				->where('"reference"', $item['"reference"']);
+    }
+
+	public function getStartFormatAttribute()
+	{
+		return ToolsServiceProvider::getDateFormat($this->start, 'Y-m-d H:i:s', 'd/m/Y H:i');
+	}
+
+	public function getEndFormatAttribute()
+	{
+		return ToolsServiceProvider::getDateFormat($this->end, 'Y-m-d H:i:s', 'd/m/Y H:i');
+	}
+
+}
+

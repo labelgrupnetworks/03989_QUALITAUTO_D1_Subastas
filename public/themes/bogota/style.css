@@ -1,0 +1,146 @@
+
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #00664F;
+    --complement-color: #414145;
+
+    --extra-color: #00664F;
+    --primary-color-text: #707070;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background: #414145;
+	--btn-primary-background-hover: #00664F;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #D2F2E2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #414145;
+	--newsletter-input-text: #414145;
+
+	--footer-background: white;
+	--footer-titles-color: #707070;
+	--footer-links-color: #707070;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: white;
+	--footer-sociallinks-textcolor: #707070;
+
+	--filter-background: #414145;
+
+}
+
+
+header{
+	background:#000;
+	box-shadow: 0px 0px 15px #ccc;
+}
+
+header.fixed nav {
+	background: #000;
+  }
+
+
+a.link-header, a.link-header:hover, .btn_login_desktop, .btn_login_desktop:hover{
+	color:#FFF;
+}
+
+
+.link-header span:before {
+/* para que no aparezca */
+    opacity:0;
+
+}
+.menu-principal-search{
+	background:#FFF;
+}
+
+.my-account {
+      color: #FFF;
+}
+
+#formsearchResponsive .btn-custom-search{
+	background: var(--primary-color);
+	color: #FFF;
+}
+
+.menu-responsive .color-letter, .menu-responsive  .color-letter:hover {
+	color:#FFF;
+}
+
+.item_lot {
+	min-height: 400px;
+
+}
+
+.item_lot .salida-time {
+	background: var(--secondary-color);
+}
+
+.titleVendidasHome {
+	font-size: 19px;
+	color: #54595f;
+	font-weight: bold;
+	margin: 30px;
+}
+.vendidosHomeBanner {
+	text-align: center;
+}
+
+.menu-principal-search.active {
+
+    height: 80px;
+}
+
+.links-sections {
+	display: block;
+    font-size: 12px;
+    margin: 10px;
+    text-align: center;
+}
+
+.column_banner  {
+padding:0;
+}
+
+
+.close-menu-reponsive {
+color: #DDD;
+}
+
+
+
+
+#formsearchResponsive .form-group .input-custom {
+	color:black;
+}
+
+.menu-principal-content li .submenuDefault {
+	border: 5px;
+	background-color: black;
+}
+
+.submenuDefault a {
+	color: white;
+}
+
+.cantidad-res {
+    margin-left: 10px;
+    border: 1px solid #bdbcbc;
+    padding: 10px;
+}
+.gridFilterHistoric {
+    color: var(--secondary-color);
+    margin-left: 20px;
+    cursor: pointer;
+    border: 1px solid #bdbcbc;
+    padding: 10px;
+    background: #DBDBDB;
+}

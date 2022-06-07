@@ -1,0 +1,29 @@
+.filters-auction-content{
+	background: var(--color-dark);
+}
+
+.item_lot .title_item{
+	color: #11181F;
+	height: 65px;
+}
+
+.item_lot .salida-price{
+	float: right;
+}
+
+.paginator-container{
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.auction-life{
+	padding: 10px 20px;
+    text-transform: uppercase;
+}
+
+
+@media (max-width: 768px) {
+	.paginator-container .bid-life{
+		text-align: center;
+	}
+}

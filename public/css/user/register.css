@@ -1,0 +1,117 @@
+
+.registerEnterprise {display:none;}
+.form-control {background:#EEE;}
+#registerForm .tipo_usuario {display:flex;justify-content: center;align-items: center;}
+#registerForm .tipo_usuario div {width:100px;height:100px;border: #CCC 1px solid;display:flex;justify-content: center;align-items: center;margin:10px;font-weight:bold;cursor:pointer;}
+#registerForm .tipo_usuario div.selected {border-top: 5px solid #A00;}
+
+#registerForm .tipo_sexo {display:flex;justify-content: center;align-items: center;}
+#registerForm .tipo_sexo div {width:100px;height:30px;border: #CCC 1px solid;display:flex;justify-content: center;align-items: center;margin:10px;font-weight:bold;cursor:pointer;}
+#registerForm .tipo_sexo div.selected {border-top: 5px solid #A00;}
+
+.well {
+  border: 1px solid #ccc; padding-bottom:20px;
+  width:60%;margin:20px auto;
+  background:#FFF;border-radius:0;
+}
+
+#registerForm .datos_contacto {width:48%;float:left;}
+#registerForm .datos_direccion {width:48%;float:right;}
+
+#registerForm .datos_left {width:48%;float:left;padding:0 0 10px 0; }
+#registerForm .datos_right {width:48%;float:right;padding:0 0 10px 0;}
+
+#registerForm .datos_contacto div {padding:0 0 10px 0;}
+#registerForm .datos_direccion div {padding:0 0 10px 0;}
+
+#registerForm #collapse_direccion {padding-top: 20px;}
+#registerForm #collapse_direccion div {padding:0 0 10px 0;width:46%;float:left;margin-right:25px;}
+
+#registerForm .datos_newsletter {padding:40px 0 20px 0;}
+#registerForm .datos_newsletter div {width:49%;float:left;}
+#registerForm .datos_newsletter div input {margin:0 10px 0 0;}
+#registerForm .datos_newsletter div label {position: relative;top:-2px;cursor:pointer;font-weight: normal;}
+
+#registerForm .datos_condiciones {padding-top:30px;}
+#registerForm .datos_condiciones div input {margin:0 10px 0 0;}
+#registerForm .datos_condiciones div label {position: relative;top:-2px;cursor:pointer;font-weight: normal;}
+
+#registerForm .datos_cuenta div {width:46%;float:left;padding:0 0 10px 0;margin-right:20px;position:relative;}
+
+.g-recaptcha {margin:auto;position:relative;float:none;display:inline-block;text-align:center;}
+
+/*#registerForm .apellidos {display:none;}*/
+#registerForm .movil {display:none;}
+/*#registerForm .idioma {display:none;}*/
+#registerForm .moneda {display:none;}
+#registerForm .observaciones {display:none;}
+#registerForm .condiciones2 {display:none;}
+
+
+.g-recaptcha{
+	margin-top: 20px;
+}
+
+.newsletter-input{
+    background: transparent;
+}
+
+
+form input[type="checkbox"] {
+    position: relative;
+    top: 5px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 996px){
+	label{
+		display: initial;
+	}
+
+	#registerForm .datos_contacto {width:100%;float:none;}
+	#registerForm .datos_direccion {width:100%;float:none;}
+	#registerForm .datos_cuenta div {width:100%;float:none;}
+	#registerForm .datos_newsletter div {width:100%;float:none;}
+
+	#registerForm .datos_condiciones {
+		padding-top: 5px;
+	}
+
+}
+
+
+@media screen and (max-width: 768px){
+
+	#registerForm .datos_condiciones div input {margin:0 10px 0 0;}
+	#registerForm .datos_newsletter div input {margin:0 10px 0 0;}
+	.well {
+	  width:100%;
+	}
+
+	#registerForm .datos_contacto {width:100%;float:none;}
+	#registerForm .datos_direccion {width:100%;float:none;}
+	#registerForm .datos_cuenta div {width:100%;float:none;}
+
+	label{
+		display: initial;
+	}
+
+
+
+}
+
+@media (max-width: 375px){
+   .g-recaptcha {
+        transform:scale(0.65);-webkit-transform:scale(0.65);
+        transform-origin: 0 0;-webkit-transform-origin: 0 0;
+	}
+
+	label{
+		display: initial;
+	}
+
+}
+

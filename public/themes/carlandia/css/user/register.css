@@ -1,0 +1,120 @@
+.register h3 {
+	color: var(--primary-color);
+	font-weight: 600;
+}
+
+.register p:first-of-type{
+	font-weight: 600;
+}
+
+.register .tit{
+	font-weight: 600;
+}
+
+#registerForm .datos_condiciones div label{
+	top: 0px;
+}
+
+#registerForm .datos_newsletter{
+	padding: 20px 0 0 0;
+}
+
+#registerForm .tipo_usuario {
+	justify-content: start;
+	gap: 20px;
+}
+
+#registerForm .tipo_usuario div {
+	margin: 0;
+	height: 45px;
+}
+
+#registerForm .tipo_usuario div.selected, #registerForm .tipo_sexo div.selected{
+	border-top-color: var(--extra-color);
+}
+
+.well{
+	background: #F1F1F1;
+	width: 100%;
+}
+
+.create-account .form-control{
+	/*color: var(--extra-color);*/
+	background: rgba(255,255,255,0.1);
+	color: #333;
+	z-index: 1;
+	/*border-bottom: var(--extra-color) 1px solid;*/
+}
+
+.create-account .form-control.has-error{
+	color: #cc0000;
+}
+
+select option {
+	background:	white;
+	color: #333;
+  }
+
+/* form input[type="email"], form input[type="password"], form input[type="text"]{
+	border-bottom: var(--extra-color) 1px solid;
+} */
+
+
+label:not(.not-required):after {
+	content:" *";
+	color: red;
+  }
+
+#registerForm .effect-16 ~ label {
+	position: absolute;
+	bottom: 5px;
+	height: fit-content;
+	left: 15px;
+}
+
+#registerForm .has-content.effect-16 ~ label, #registerForm .effect-16:focus ~ label, #registerForm .withfocus label{
+	position: absolute;
+	top: -15px;
+	left: 15px;
+    font-size: 13px;
+    bottom: auto;
+	height: fit-content;
+	color: var(--primary-color-text);
+}
+
+.eye-password {
+	z-index: 2;
+}
+
+a, a:hover, a
+:focus {
+	text-decoration: underline;
+}
+
+
+.well-buyer {
+	border: 1px solid lightgray;
+	background: #E6F0FE;
+	padding: 20px 15px;
+}
+
+.well-buyer h1 {
+	margin: 0;
+	color: #000;
+}
+
+.create-account.create-account-buyer .form-control {
+	border: 1px solid #ccc;
+}
+
+.create-account.create-account-buyer #registerForm .effect-16 ~ label {
+	display: none;
+}
+
+.create-account.create-account-buyer .eye-password {
+	right: 25px;
+}
+
+.checkbox-container.condiciones a {
+	color: initial;
+}

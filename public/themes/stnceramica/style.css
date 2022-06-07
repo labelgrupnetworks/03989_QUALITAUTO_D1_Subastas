@@ -1,0 +1,169 @@
+:root {
+    --primary-color: #414145;
+    --secondary-color: #3D0859;
+    --complement-color: #414145;
+    --extra-color: #3D0859;
+    --primary-color-text: #646567;
+    --secondary-color-text: #46494f;
+    --btn-primary-background: #414145;
+    --btn-primary-background-hover: #3D0859;
+    --btn-primary-text: white;
+    --btn-primary-text-hover: white;
+    --btn-secondary-background: white;
+    --btn-secondary-background-hover: #414145;
+    --btn-secondary-text: #46494f;
+    --btn-secondary-text-hover: white;
+    --newsletter-background: #afafaf;
+    --newsletter-text: #414145;
+    --newsletter-placeholder: #414145;
+    --newsletter-input-border: #414145;
+    --newsletter-input-text: #414145;
+    --footer-background: white;
+    --footer-titles-color: #646567;
+    --footer-links-color: #646567;
+    --footer-links-color-hover: #b4b4b4;
+    --footer-sociallinks-background: white;
+    --footer-sociallinks-textcolor: #646567;
+	--footer-social-network-background: #e6e6e6;
+    --filter-background: #4a4a4a;
+}
+
+/* #4a4a4a */
+
+body {
+    background: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.gray-background {
+	background: var(--footer-social-network-background);
+}
+
+/* --------------------------------------
+---------------- HEADER -----------------
+-------------------------------------- */
+
+.logo-company {
+	max-width: 150px;
+}
+
+a.link-header {
+	font-weight: 400;
+}
+
+.link-header span:before {
+	height: 2px;
+}
+
+/* --------------------------------------
+----------------- HOME ------------------
+-------------------------------------- */
+
+.home-top-banner img {
+    filter: opacity(0.75);
+}
+
+.home-top-banner span {
+    bottom: 0px;
+    text-align: center;
+}
+
+.home-top-banner span a {
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 65px);
+}
+
+.home-top-banner span h2,
+.home-top-banner span p {
+    text-align: center;
+    color: #fff;
+}
+
+.home-top-banner .slick-current {
+    position: relative;
+}
+
+.home-category-banner img {
+	padding-left: 3rem;
+	padding-right: 3rem;
+}
+
+/* --------------------------------------
+---------------- FOOTER -----------------
+-------------------------------------- */
+
+.sn-footer {
+	align-items: center;
+	justify-content: center;
+}
+
+.footer-sn-icon {
+	font-size: 30px;
+	margin-right: 10px;
+	margin-left: 10px;
+	color: var(--primary-color);
+}
+
+.footer-sn-icon:hover {
+	color: var(--complement-color);
+}
+
+footer {
+	padding: 80px 0 20px 0;
+}
+
+
+/* --------------------------------------
+---------------- FICHA ------------------
+-------------------------------------- */
+.titleficha {
+	margin-bottom: 0;
+}
+
+.ficha-size-lot {
+	color: #ff0000;
+	font-size: 17px;
+	font-weight: 500;
+}
+
+.info-ficha-buy-info-price {
+	font-size: 25px;
+	justify-content: space-between;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	margin-top: 1rem;
+	border-bottom: 1px solid lightgray;
+}
+
+.info-ficha-buy-info-price .pre {
+	margin-right: 0;
+}
+
+.ficha-content .pre .pre-title {
+	font-size: 14px;
+}
+
+.insert-max-bid {
+	font-size: 12px;
+}
+
+.insert-bid-input {
+	padding: 1rem 0 1rem;
+}
+
+
+.size-item {
+	line-height: 20px;
+	height: 20px;
+}
+
+.pre .pre-price.lotprice {
+	font-size: 16px;
+	padding-top: 6px;
+}
+
+.lower-case {
+	text-transform: lowercase;
+}
+

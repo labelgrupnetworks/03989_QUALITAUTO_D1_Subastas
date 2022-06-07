@@ -1,0 +1,1 @@
+<div id="cookie_law" token="{{ csrf_token() }}"><span id="text_cookie_law"></span></div>

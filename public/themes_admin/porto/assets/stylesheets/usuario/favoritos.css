@@ -1,0 +1,43 @@
+
+#CSSchildfav{
+    color: #403B3B;
+}
+#CSSchildfav .nav-children
+{
+    background:#FFF;
+    box-shadow: none;
+    color: #403B3B;
+    border:#DDD 1px solid;
+    margin-bottom:20px;
+    padding:10px;
+
+}
+#CSSchildfav ul.nav-main li a
+{
+    background: #DDD;
+    color: #000;
+    padding:20px;
+}
+
+#CSSchildfav > a:hover,#CSSchildfav  > a:focus , #CSSchildfav  > a:after  {
+    background-color: #FF0000;
+}
+#CSSchildfav  a:hover,#CSSchildfav a:focus , #CSSchildfav   a:after {
+
+}
+
+.contenedorLotes, .contenedorSubasta, .contenedorUsuarios{
+    display: flex;
+    flex-direction: column;
+}
+
+.linkLotes{
+    display: block;
+    margin-top:5px;
+}
+
+.linkLotes span{
+    float: right;
+}
+.contenedorSubasta {margin-bottom:60px;margin-top:20px;}
+

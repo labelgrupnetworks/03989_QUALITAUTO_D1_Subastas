@@ -1,0 +1,14 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#83715e" id="pin" d="m12.669143,0.037175c-5,0 -9,4 -9,9c0,6.2 5.444605,10.287364 8.5,14.9c0.3,0.2 0.7,0.2 1.1,0c3.06692,-4.786985 8.4,-8.7 8.4,-14.9c0,-5 -4,-9 -9,-9zm0,13c-2.2,0 -4,-1.8 -4,-4c0,-2.2 1.8,-4 4,-4s4,1.8 4,4c0,2.2 -1.8,4 -4,4z"/>
+  <ellipse stroke="null" ry="4.163558" rx="3.977685" id="svg_2" cy="8.893596" cx="12.055762" stroke-opacity="null" stroke-width="null" fill="#5ea7c1"/>
+  <ellipse stroke="null" ry="4.070621" rx="3.587351" id="svg_4" cy="8.986532" cx="11.591079" stroke-opacity="null" stroke-width="null" fill="#85c4db"/>
+  <path fill="#b79d81" id="svg_5" d="m12,0.03717c-5,0 -9,4 -9,9c0,6.2 5.630478,10.101491 8.5,14.9c0.3,0.2 0.662825,0.423048 1.1,0c3.624539,-5.158731 8.4,-8.7 8.4,-14.9c0,-5 -4,-9 -9,-9zm0,13c-2.2,0 -4,-1.8 -4,-4c0,-2.2 1.8,-4 4,-4s4,1.8 4,4c0,2.2 -1.8,4 -4,4z"/>
+ </g>
+</svg>

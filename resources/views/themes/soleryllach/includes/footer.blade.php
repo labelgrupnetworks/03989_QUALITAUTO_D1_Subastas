@@ -1,0 +1,232 @@
+<?php
+   $empre= new \App\Models\Enterprise;
+   $empresa = $empre->getEmpre();
+?>
+
+
+<section class="prefooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <?php /*<div class="prefooterlogo-bk">
+                        <span style="font-size: 45px;">#</span><img
+
+                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
+                        alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
+                        class="img-responsive"
+                        style="max-width: 80%;"
+                    />
+                        */?>
+                </div>
+                <div class="prefooter-title">{{ trans(\Config::get('app.theme').'-app.foot.followus') }}</div>
+                <div class="prefooter-social">
+                    <a target="_blank" href="https://www.instagram.com/soleryllach">
+                    <i class="fa fa-instagram"></i>
+                    </a>
+                    <a  target="_blank" href="https://twitter.com/soleryllach">
+                    <i class="fa fa-twitter-square"></i>
+                    </a>
+                    <a  target="_blank" href="https://www.facebook.com/soleryllach">
+                    <i class="fa fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="principal-color">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 no-padding">
+                <div class="col-xs-12 col-md-3 logo">
+                    <img
+                        height="60"
+                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.png?a=1"
+                        alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
+                        class="img-responsive"
+                        style="height:auto;"
+                    />
+                    <ul class="module_wrapper">
+                            <address>
+                                    <?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?> <br>
+                                    <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
+                                    <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> </br>
+                                    <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?>  <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>
+                           </address>
+                        </ul>
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+                    <ul class="module_wrapper">
+                        <li class="module_title secondary-color">{{ trans(\Config::get('app.theme').'-app.foot.schedule_title') }}<li>
+                        <li class="li-color" style="color: white; font-size: 12px;">{!! trans(\Config::get('app.theme').'-app.foot.schedule_content') !!}</li>
+                    </ul>
+
+
+                </div>
+
+                <div class="col-xs-12 col-md-2">
+                    <ul class="module_wrapper">
+                        <li class="module_title secondary-color">{{ trans(\Config::get('app.theme').'-app.foot.enterprise') }}<li>
+                        <li><a href="{{ \Routing::translateSeo('todas-subastas') }}?finished=false">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
+                        @if(!empty($has_subasta) && $finished)
+                            <li class="li-color"><a href="{{ \Routing::translateSeo('todas-subastas') }}?finished=true">{{ trans(\Config::get('app.theme').'-app.foot.auctions-finished')}}</a></li>
+                        @endif
+                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.historico') }}" href="<?php echo Routing::translateSeo('subastas-historicas') ?>">{{ trans(\Config::get('app.theme').'-app.foot.historico') }}</a></li>
+                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}</a></li>
+                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact') ?>">{{ trans(\Config::get('app.theme').'-app.foot.contact') }}</a></li>
+                        <li><a  href="<?=\Routing::translateSeo('especialistas')?>"> {{ trans(\Config::get('app.theme').'-app.home.specialist-contact') }}</a></li>
+                        <li><a  href="<?=\Routing::translateSeo('valoracion-articulos')?>"> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</a></li>
+                    </ul>
+
+
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <ul class="module_wrapper">
+                        <li class="module_title secondary-color">{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}<li>
+                        <li><a href="<?= Routing::translateSeo('preguntas-frecuentes') ?>">{{ trans(\Config::get('app.theme').'-app.foot.faq') }}</a></li>
+                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')?>">{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}</a></li>
+                        <?php
+                            /*<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>">{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}</a></li>
+                        */?>
+                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}</a></li>
+                    </ul>
+
+
+                </div>
+                <?php /*
+                <div class="col-xs-12 col-md-3">
+                        <ul class="module_wrapper">
+                            <li class="module_title secondary-color">{{ trans(\Config::get('app.theme').'-app.foot.followus') }}<li>
+                            <li>
+                                    <a target="_blank" href="https://www.instagram.com/soleryllach">
+                                        <i class="fa fa-instagram"></i> {{ trans(\Config::get('app.theme').'-app.foot.instagram') }}
+                                        </a>
+
+                            </li>
+                            <li>
+                                    <a  target="_blank" href="https://twitter.com/soleryllach">
+                                        <i class="fa fa-twitter-square"></i> {{ trans(\Config::get('app.theme').'-app.foot.twitter') }}
+                                        </a>
+
+                            </li>
+
+                                /*<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>">{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}</a></li>
+
+                            <li>
+                                    <a  target="_blank" href="https://www.facebook.com/soleryllach">
+                                        <i class="fa fa-facebook"></i> {{ trans(\Config::get('app.theme').'-app.foot.facebook') }}
+                                        </a>
+                            </li>
+                        </ul>
+                    </div>
+            */?>
+            </div>
+        </div>
+    </div>
+
+
+
+<div class="container" style="display:none">
+        <div class="row">
+                <div class="col-xs-12 col-sm-3">
+                        <div class="module_footer text-left">
+                                 <?php
+                                    $empre= new \App\Models\Enterprise;
+                                    $empresa = $empre->getEmpre();
+                                 ?>
+                                <img
+                                    height="60"
+                                    src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.png?a=1"
+                                    alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
+                                    class="img-responsive"
+                                    style="height:auto;"
+                                />
+                                <address>
+                                         <?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?> <br>
+                                         <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
+                                         <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> </br>
+                                         <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?> - <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>
+                                </address>
+                                <ul class="redes">
+                                        <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a title="Google Plus" href="<?= Config::get('app.googleplus') ?>"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                        <div class="module_footer">
+                                <div class="tit_links">
+                                        {{ trans(\Config::get('app.theme').'-app.foot.enterprise') }}
+                                </div>
+                                <ul class="links">
+                                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}</a></li>
+                                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact') ?>">{{ trans(\Config::get('app.theme').'-app.foot.contact') }}</a></li>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 ">
+                        <div class="module_footer">
+                                <div class="tit_links">
+                                        {{ trans(\Config::get('app.theme').'-app.foot.auctions') }}
+                                </div>
+                                <ul class="links">
+                                        <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
+                                        @if(!Session::has('user'))
+                                            <li><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
+                                        @endif
+                                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy') ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a></li>
+
+                                        <?php /*
+                                        <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
+                                        <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
+                                        <li><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
+                                         *
+                                         */
+                                        ?>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-xs-12 col-sm-3">
+                        <div class="module_footer">
+                                <div class="tit_links">
+                                      {{ trans(\Config::get('app.theme').'-app.foot.term_condition')}}
+                                </div>
+                                <ul class="links">
+
+                                   <li><a href="<?= Routing::translateSeo('preguntas-frecuentes') ?>">{{ trans(\Config::get('app.theme').'-app.foot.faq') }}</a></li>
+                                    <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')?>">{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}</a></li>
+                                    <?php
+                                        /*<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>">{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}</a></li>
+                                    */?>
+                                     <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}</a></li>
+                                     <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}</a></li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+</div>
+    </footer>
+<div class="copy">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12" style="display: flex; flex-wrap: wrap">
+				<p style="margin: 5px auto 5px 0px;">
+					<span>&copy; <?= trans(\Config::get('app.theme').'-app.foot.rights') ?></span>
+				</p>
+				<p style="margin: 5px 0px;"><a class="color-letter" role="button" title="{{ trans(\Config::get('app.theme').'-app.foot.developedSoftware') }}" href="{{ trans(\Config::get('app.theme').'-app.foot.developed_url') }}" target="no_blank">{{ trans(\Config::get('app.theme').'-app.foot.developedBy') }}</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="overbox3">
+    <div id="infobox3">
+        <p><?= trans(\Config::get('app.theme').'-app.foot.msg_cookies') ?>
+        <a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>"  target="_blank">{{trans(\Config::get('app.theme').'-app.foot.more_information')}}</a>
+        <a class="btn btn-sm btn-default" onclick="aceptar_cookies();" style="cursor:pointer;"><?= trans(\Config::get('app.theme').'-app.home.confirm') ?></a></p>
+    </div>
+</div>
+

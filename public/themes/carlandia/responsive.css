@@ -1,0 +1,609 @@
+@media (max-width: 1200px) {
+
+	.call-icons {
+		position: absolute;
+		right: 0;
+		top: 100px;
+		flex-direction: column-reverse;
+		gap: 15px;
+		padding: 0 10px;
+	}
+
+	.table-sales {
+		margin-top: 5px;
+	}
+
+	.table-sales tr:first-child {
+		height: 30px;
+	}
+
+	.table-sales tr {
+		line-height: normal;
+	}
+
+	.table-sales td.title {
+		width: 50%;
+	}
+
+	.table-sales td:not(.title) {
+		text-align: right;
+	}
+
+	.home-banner-pers {
+		flex-direction: column;
+	}
+
+	.banner-img {
+		margin-bottom: 2rem;
+		padding: 15px;
+	}
+
+	.banner-img img{
+		max-width: 690px;
+	}
+
+	.banner-content {
+		max-width: 100ch;
+		gap: 10px;
+	}
+
+	.banner-content h2, .banner-content h2.banner-title {
+		line-height: 1.2;
+	}
+
+	.home-banner-pers img {
+		/* margin: auto; */
+	}
+
+	.home-banner-pers.home-baner-auctions {
+		flex-direction: column-reverse;
+	}
+
+
+
+	.home-top-banner span {
+		bottom: 380px;
+	}
+
+	.menu-principal{
+		background: var(--gray-color);
+		color: #fff;
+	}
+
+	.menu-principal *{
+		color: white;
+	}
+
+	.menu-principal.open .menu-principal-content{
+		justify-content: initial;
+		align-items: flex-start;
+		padding-left: 40px;
+		gap: 10px;
+	}
+
+	.menu-principal-content li, .menu-principal-content li a {
+		font-size: var(--font-size-text);
+	}
+
+	li:first-of-type a.link-header{
+		padding: 0px 7px;
+	}
+
+	.menu-responsive{
+		flex: 2;
+	}
+
+	.menu-responsive .menu-text{
+		justify-content: start;
+	}
+
+	.logo-header{
+		flex: 4;
+	}
+
+	.logo-header .subtitle-logo{
+		left: initial;
+		bottom: -18px;
+		font-size: 30px;
+	}
+
+	.search-header-container{
+		flex: 1;
+	}
+
+	.search-header-container.init-sesion{
+		flex: 0.5;
+	}
+
+	.user-account{
+		flex: 1;
+	}
+	.user-account.init-sesion{
+		flex: 1.5;
+	}
+
+	.my-account{
+		padding: 26px 0px;
+	}
+
+	.btn_login_desktop{
+		padding: 0;
+	}
+
+	.close-menu-reponsive{
+		font-size: var(--font-size-text);
+		color: var(--extra-color);
+	}
+
+	.home-banner-marcas div.item_imagen{
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+
+}
+
+@media (max-width: 992px) {
+
+	.contact-return-button .bread {
+		padding-left: 0;
+	}
+
+	.home-top-banner span {
+		bottom: 290px;
+	}
+
+	.home-banner-content-text .text-banner {
+		font-size: 20px;
+	}
+
+	.contact-image-wrapper {
+		height: auto;
+		margin-bottom: 25px;
+	}
+
+	.logo-header .subtitle-logo{
+		left: initial;
+		bottom: -5px;
+		font-size: 22px;
+	}
+
+	.tabs-custom.filters-auction-content .ul-format {
+		display: block;
+	}
+
+	.contact-page-form {
+		margin-left: 0;
+	}
+
+	.home-container-content {
+		padding: 0 15px;
+	}
+
+	.home-ventaja-padding {
+		padding-bottom: 0;
+	}
+
+	.home-text-and-image-1,
+	.home-text-and-image-2 {
+		margin-left: -15px;
+	}
+
+	.home-grid-car div.item_imagen.pos_item_6 {
+		/* border-right: 2px #00A4FF solid; */
+	}
+
+	.home-grid-car div.item_imagen.pos_item_4,
+	.home-grid-car div.item_imagen.pos_item_9 {
+		border-right: none;
+	}
+
+	.home-text-and-image-2 div.column_banner:nth-child(1) {
+		order: -1;
+	}
+
+	.home-banner-marcas div.item_imagen{
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	.contact-page > div {
+		padding-left: 0;
+	}
+
+	.lot-sale-content {
+		flex-direction: column;
+	}
+
+	.lot-sale-title {
+		flex-direction: column-reverse;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.lot-sale-image {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+		align-self: center;
+	}
+
+	/*select first row inside dicha_v_price_financiado*/
+	.ficha_v_price_financiado .row:first-child {
+		margin-bottom: 10px;
+	}
+
+
+}
+
+@media (max-width: 768px) {
+
+	.custom-modal-block .modal-buttons-list {
+		justify-content: center;
+	}
+
+	.ficha_V {
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.header-info-ficha-prices > .pre.pre-impsal {
+		border: 0;
+		border-bottom: 1px solid #fff;
+	}
+
+	.bread-faq {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.home-top-banner span {
+		bottom: 205px;
+	}
+
+	.contenido-web, .faq-page {
+		width: 100%;
+		max-width: 100%;
+		margin-left: 0;
+	}
+
+	header{
+		/*buscador esta a 50*/
+		z-index: 51;
+	}
+
+	.menu-responsive{
+		flex: 1;
+	}
+
+	.user-account{
+		flex: 1;
+	}
+
+	.user-account .col-xs-3.text-center{
+		width: 100%;
+		text-align: right;
+	}
+
+	.ul-format.footer-ul{
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		text-align: left;
+	}
+
+	.menu-principal-search{
+		display: none !important;
+		top: 0px;
+		margin: 0px;
+	}
+
+
+	#formsearchResponsive .form-group .input-custom{
+		font-size: var(--font-size-text);
+		border-bottom: 1px solid var(--extra-color);
+		color: var(--primary-color-text);
+	}
+
+	#formsearchResponsive .form-group .input-custom::placeholder{
+		color: var(--primary-color-text);
+	}
+
+	#formsearchResponsive .btn-custom-search{
+		/* font-size: var(--font-size-text); */
+		width: auto;
+	}
+
+	.my-panel{
+		font-size: 16px;
+	}
+
+	.content-right-ficha{
+		position: relative;
+		max-height: initial;
+    	overflow: visible;
+    	border: 0;
+		top: 0;
+	}
+
+	#lots .pagination{
+		margin: 5px 0px;
+	}
+
+	#lots .pagination > li > a, #lots .pagination > li > span{
+		padding: 4px 10px;
+	}
+
+	.info-type-auction {
+		font-size: 18px;
+	}
+
+	.newsletter{
+		padding: 50px 0;
+	}
+
+	.user-account-item-title, .user-account-item-date, .user-account-item-price, .user-account-item-auction, .user-account-item-lot, .user-account-item-text, .user-account-menu-title.extra-account {
+		font-size: 18px;
+	}
+
+	.inputs-custom-group .form-group label {
+		font-size: 16px;
+	}
+
+	.home-container-row-reverse {
+		display: flex;
+		flex-direction: column-reverse;
+	}
+
+	.home-content-image {
+		padding-bottom: 20px;
+	}
+
+	.home-content-image-pr-0 {
+		padding-right: 15px;
+	}
+
+	.home-content-image-pl-0 {
+		padding-left: 15px;
+	}
+
+	.account-item-description {
+		text-align: center;
+		font-weight: 500;
+		text-transform: initial;
+	}
+
+	.user-account-item-title {
+		text-transform: initial;
+	}
+
+	.home-grid-car div.item_imagen.pos_item_4,
+	.home-grid-car div.item_imagen.pos_item_9 {
+		/* border-right: 2px #00A4FF solid; */
+	}
+
+	.home-grid-car div.item_imagen.pos_item_3,
+	.home-grid-car div.item_imagen.pos_item_7,
+	.home-grid-car div.item_imagen.pos_item_11 {
+		border-right: none;
+	}
+
+	.home-text-and-image-1,
+	.home-text-and-image-2 {
+		margin-left: 0;
+	}
+
+
+	.home-text-and-image-1 div.item_texto,
+	.home-text-and-image-2 div.item_texto,
+	.home-text-and-image-1 div.column_banner,
+	.home-text-and-image-2 div.column_banner {
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.home-banner-marcas div.item_imagen{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.search-container button.home-button-padding {
+		width: 75%;
+		margin-top: 2rem;
+	}
+
+	.banner-ventajas {
+		background-size: cover;
+	}
+
+}
+
+
+@media (max-width: 576px) {
+
+	.ficha_login_desktop .login_desktop_content {
+		height: 100%;
+	}
+
+	.ficha_login_desktop .login-content-form {
+		padding: 15px;
+	}
+
+	.ficha_login_desktop .login_desktop_title, .ficha_login_desktop form {
+		padding: 15px 15px;
+		font-size: 14px;
+	}
+
+	.closedd_fichalogin {
+		left: 20px;
+	}
+
+	.home-top-banner span {
+		bottom: 110px;
+	}
+
+	:is(.contact-banner, .page-static-banner, .grid-banner, .register-landing-banner, .faq-banner-container) img {
+		height: 150px;
+	}
+
+	.home-title-text-last-line.text-white {
+		font-size: 16px;
+	}
+
+	.search-container select.form-control {
+		font-size: 16px;
+	}
+
+	.features-wrapper {
+		justify-content: center;
+	}
+
+	.features-wrapper p {
+		font-size: 17px;
+	}
+
+	.wrapper {
+		gap: 30px;
+	}
+
+	.login-landing-button-text {
+		font-size: 12px;
+	}
+
+	.btn.btn-vendor, .btn.btn-client {
+		width: 130px;
+		height: 130px;
+	}
+
+	.home-banner-content-text .text-banner {
+		font-size: 18px;
+		width: 75%;
+		margin: auto;
+	}
+
+	.home-banner-content-text .subtitle-banner {
+		height: 35px;
+	}
+
+	.home-banner-content-text .title-banner {
+		font-size: 30px;
+	}
+
+	.home-banner img {
+		height: auto;
+		object-fit: initial;
+		object-position: initial;
+	}
+
+	.lotes_destacados{
+		padding: 50px 15px;
+	}
+
+	.logo-header .subtitle-logo{
+		left: initial;
+		bottom: 11px;
+    	font-size: 14px;
+	}
+
+	.footer2 .ul-format{
+		flex-direction: column;
+	}
+
+	.tabs-custom.filters-auction-content .ul-format {
+		display: block;
+	}
+
+	.create-account .container .row .general-container {
+		padding: 0 15px;
+	}
+
+	.home-grid-car div.item_imagen.pos_item_1,
+	.home-grid-car div.item_imagen.pos_item_5,
+	.home-grid-car div.item_imagen.pos_item_9 {
+		border-right: none;
+	}
+
+
+
+	.home-banner-marcas div.item_imagen{
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+}
+
+@media (max-width: 360px) {
+
+	.counteroffer-input-wrapper {
+		flex-wrap: wrap;
+	}
+
+	.counteroffer-input-wrapper .input-group-btn, .counteroffer-input-wrapper .btn-contraofertar{
+		width: 100%;
+	}
+
+	.home-top-banner span {
+		bottom: 110px;
+	}
+
+	.home-banner-content-text .title-banner {
+		font-size: 30px;
+	}
+
+	.home-banner-content-text .subtitle-banner {
+		font-size: 35px;
+	}
+
+	.copy{
+		font-size: 10px;
+	}
+
+	:is(.contact-banner, .page-static-banner, .grid-banner, .register-landing-banner, .faq-banner-container) img {
+		height: 100px;
+	}
+}
+
+
+
+/***********************************/
+/***********************************/
+/* 		Fuentes Responsive 			*/
+/***********************************/
+/***********************************/
+
+/* tamaño minimo + diferencia max - min * ((100vw - 360px) / 680) */
+@media screen and (min-width: 360px) {
+
+
+
+	.h1, h1, .user-account-menu-title {
+	  font-size: calc(var(--font-size-titles-small) + 5 * ((100vw - 360px) / 680));
+	}
+
+	.faq-page .question, .titleficha, .faq-page .link {
+		font-size: calc(19px + 7 * ((100vw - 360px) / 680));
+	}
+
+	/* .faq-page .response{
+		font-size: calc(var(--font-size-text) + 4 * ((100vw - 360px) / 680));
+	} */
+
+}
+
+/* Tamaño maximo de fuente */
+@media screen and (min-width: 1000px) {
+	.h1, h1 {
+		font-size: var(--font-size-titles-big);
+	}
+
+	.user-account-menu-title {
+		font-size: var(--font-size-titles-panel);
+	}
+
+	.faq-page .question {
+		font-size: var(--font-size-titles-small);
+	}
+
+	.faq-page .response, .titleficha, .faq-page .link{
+		font-size: 18px;
+	}
+
+}

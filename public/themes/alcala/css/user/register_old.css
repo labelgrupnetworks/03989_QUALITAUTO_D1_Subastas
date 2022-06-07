@@ -1,0 +1,59 @@
+
+#registerForm {color:#464646;}
+
+#registerForm .tipo_usuario div.selected {border-top: 5px solid #AB7E07;}
+#registerForm .tipo_sexo div.selected {border-top: 5px solid #AB7E07;}
+
+.well {
+  border: 0;
+  width:100%;
+  box-shadow:inset 0 1px 1px transparent;
+}
+
+hr {border:0;background: transparent;}
+
+.tit {
+    margin: 20px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    font-weight: lighter;
+    padding-bottom:10px;
+    display:block;
+    color:#AB7E07;
+}
+
+.btn-default {
+    position: relative;
+    height: 44px;
+    width: 132px;
+    z-index: 10;
+    border: 0;
+    background: #414145;
+    padding: 0px 0px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    -webkit-transition: .3s linear all;
+    -o-transition: .3s linear all;
+    transition: .3s linear all;
+}
+
+.btn-default:hover {
+    background: #AB7E07;
+    color:#FFF;
+}
+
+.tipo_sexo {padding-top:20px;}
+#registerForm .datos_contacto {width:100%;}
+#registerForm .datos_contacto div {width:46%;float:left;margin:15px 20px 0 0;}
+#registerForm .datos_direccion {width:100%;}
+#registerForm .datos_direccion div {width:46%;float:left;margin:15px 20px 0 0;}
+
+form input[type="checkbox"] {top:3px !important;}
+.datos_condiciones input[type="checkbox"] {top:0 !important;}
+input, select {border:#CCC 1px solid !important;}
+.popover {display:none !important;}
+
+.eye-password {
+  top:34px !important;
+}

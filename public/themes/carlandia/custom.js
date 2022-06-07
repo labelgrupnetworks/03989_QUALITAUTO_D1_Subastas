@@ -1,0 +1,572 @@
+let sidebar = document.createElement("div");
+
+$(document).ready(function () {
+
+	$("#wahtsappEvent_JS").on('click',function(){
+		eventGa("Compartir Whatsapp");
+	});
+
+	$("#facebookEvent_JS").on('click',function(){
+		eventGa("Compartir Facebook");
+	});
+
+	$("#emailEvent_JS").on('click',function(){
+		eventGa("Compartir Email");
+	});
+
+	$("#carfaxEvent_JS").on('click',function(){
+		eventGa("Solicitar informe Carfax");
+	});
+
+	$("#comprarYaEvent_JS").on('click',function(){
+		eventGa("Comprar ya inicio");
+	});
+	$("#comprarYaModalEvent_JS").on('click',function(){
+		eventGa("Comprar ya inicio");
+	});
+
+	$("#contraofertarEvent_JS").on('click',function(){
+		if($("#counteroffer-input").val() !=""){
+			eventGa("Contraofertar inicio");
+		}
+
+	});
+
+	$("#pujaAutomaticaEvent_JS").on('click',function(){
+		eventGa("Puja automática inicio");
+	});
+
+	$("#pujaEvent_JS").on('click',function(){
+		eventGa("Puja manual inicio");
+	});
+
+	$("#emailEventProfesionales_JS").on('click',function(){
+		ga('send','event','ACCIONES NO LEADS PROFESIONALES','Clic Email');
+
+	});
+
+	$("#buscadorHomeEvent_JS").on('click',function(){
+		ga('send','event','ACCIONES NO LEADS HOME','Buscador Home');
+
+	});
+
+	$("#stockVentadirectaEvent_JS").on('click',function(){
+		ga('send','event','ACCIONES NO LEADS HOME','Botón stock Venta Directa');
+	});
+
+	$("#stockSubastaEvent_JS").on('click',function(){
+		ga('send','event','ACCIONES NO LEADS HOME',' Botón stock Subasta');
+	});
+
+
+	$('.lot-action_comprar_lot').off('click');
+	$('.lot-action_comprar_lot').on('click', lotActionComprar);
+	$('.closedd_fichalogin').on('click', cerrarFichaLogin);
+
+	$("#accerder-user-ficha-form input[name='password']").on('keyup', function (e) {
+		if (e.keyCode == 13) {
+			$("#accerder-user").click()
+		}
+	});
+	$("#accerder-ficha-user").click(function () {
+		$(this).addClass('loadbtn')
+		$('.login-content-form').removeClass('animationShaker')
+		$.ajax({
+			type: "POST",
+			url: '/login_post_ajax',
+			data: $('#accerder-user-ficha-form').serialize(),
+			success: function (response) {
+				if (response.status == 'success') {
+					location.reload();
+				} else {
+					$(".message-error-log").text('').append(messages.error[response.msg]);
+					$("#accerder-ficha-user").removeClass('loadbtn')
+					$('.login-content-form').addClass('animationShaker')
+				}
+			}
+		});
+	});
+
+	$(document).off('scroll');
+	$(document).on('scroll', function (e) {
+
+		//Por el momento elminamos el menu en scroll
+		/* if ($(document).scrollTop() > 33) {
+			$('header').addClass('fixed w-100 top-0 left-0')
+
+		}
+		if ($(document).scrollTop() <= 33) {
+			$('header').removeClass('fixed w-100 top-0 left-0')
+
+		} */
+		if ($(document).scrollTop() > 100) {
+			$('.button-up').show(500);		}
+		if ($(document).scrollTop() <= 100) {
+			$('.button-up').hide(500)
+		}
+
+		/**
+		 * Comportamiento de navs de features en ficha lote
+		 *  */
+		if ($(document).scrollTop() > 780) {
+			document.getElementById('data-container')?.prepend(document.getElementById('nav-positions'));
+		}
+		if ($(document).scrollTop() <= 780) {
+			document.getElementById('galery-container')?.insertBefore(document.getElementById('nav-positions'), document.getElementById('thumnail-container'));
+		}
+	});
+
+	//Filtros cerrados en mobile y tablet, abiertos en desktop
+	if ($('#collapse_filter').length > 0 && (window.innerWidth >= 992 || Boolean(getQueryParams('category')))){
+		$('#collapse_filter').collapse('show');
+		$('[data-target="#collapse_filter"] i').removeClass('fa-plus').addClass('fa-minus');
+	}
+
+
+	/**
+	 * Obtiene la úlitma posicion del slider guardada, y en caso de abrirse situa
+	 * esa posición en él
+	 */
+	sidebar = document.querySelector(".auction-lots-view");
+	$('#collapse_filter').on('shown.bs.collapse', function (e){
+
+		if(e.target.id != 'collapse_filter'){
+			return;
+		}
+
+		let top = localStorage.getItem("sidebar-scroll");
+		if (top !== null) {
+			sidebar.scrollTop = parseInt(top, 10);
+		}
+	})
+
+	$('.collapse-js').on('show.bs.collapse', function (e) {
+
+		const element = e.target.closest('.filters-auction-content').querySelector('#js-collapse_simbol > i');
+		if(element){
+			$(element).removeClass('fa-plus').addClass('fa-minus');
+		}
+
+	});
+
+	$('.collapse-js').on('hide.bs.collapse', function (e) {
+		const element = e.target.closest('.filters-auction-content').querySelector('#js-collapse_simbol > i');
+
+		if(!e.target.classList.contains('collapse-js') || e.target.classList.contains('auction__filters-type-list') || e.target.classList.contains('order_filter_group')){
+			return;
+		}
+
+		if(element){
+			$(element).removeClass('fa-minus').addClass('fa-plus');
+		}
+	});
+
+	$('i.js-info-modal').on('click', (e) => openModal(e));
+
+	$('i.js-grid-modal, i.js-modal').on('click', (e) => openGridModal(e));
+
+	$('.lot-action_contraofertar').on('click', (e) => contraOfertar(e));
+
+	$('select[name="category"]').on('change', e => changeSubCategoriesSelect(e));
+
+	$('.custom_btn_login').on('click', contraofertarLogin);
+
+	$('.btn_login').off('click')
+	$('.btn_login').on('click', function () {
+		$('.login_desktop').fadeToggle("fast");
+		$('.login_desktop [name=email]').focus();
+		$('.login-register-block').show();
+	});
+
+	//Solo estamos utilizando el history.state en la ficha, si se llega a utilizar en otro lugar deberemos checkear condiciones
+	if(Boolean(history.state)){
+		$("#counteroffer-input").val(history.state.counterofferValue);
+		history.replaceState(null, '');
+		window.contraofertarLoteFicha();
+	}
+
+	$('.focus-counteroffer').on('click', function (e) {
+		const element = document.getElementById("counteroffer-input");
+		element.setAttribute("tabindex", "1");
+		$.magnificPopup.close();
+		element.focus();
+	});
+
+});
+
+function getQueryParams(paramName){
+	const query = location.search;
+	const params = new URLSearchParams(query);
+	return params.get(paramName);
+}
+
+
+function cerrarFichaLogin() {
+	$('.ficha_login_desktop').fadeToggle("fast");
+}
+
+function licitIsLogin(){
+	if (typeof cod_licit == 'undefined' || cod_licit == null){
+		return null;
+	}
+
+	return cod_licit;
+}
+
+function lotActionComprar(e) {
+	e.stopPropagation();
+	$.magnificPopup.close();
+
+	if (!licitIsLogin()){
+
+		$('.ficha_login_desktop').fadeToggle("fast");
+		$('.ficha_login_desktop [name=email]').trigger('focus');
+		return;
+	}
+
+	$.magnificPopup.open({ items: { src: '#modalComprarFicha' }, type: 'inline' }, 0);
+	return;
+}
+
+function openGridModal(event){
+	const title = event.target.dataset.title;
+	const content = event.target.dataset.content;
+	const modal = document.getElementById('modalAjax');
+
+	modal.querySelector('.modal-title').textContent = title;
+	modal.querySelector('.modal-body').innerHTML = content;
+
+	$(modal).modal('show');
+}
+
+/**
+ * En caso de existir el slider, antes de abandonar la página guardamos el estado
+ * del slider
+*/
+window.addEventListener("beforeunload", () => {
+	localStorage.setItem("sidebar-scroll", sidebar?.scrollTop);
+});
+
+window.contraofertarLoteFicha = function() {
+
+	const imp = $("#counteroffer-input").val();
+	const ruta = '/es/api/contraofertar/subasta';
+
+	$.ajax({
+        type: "POST",
+        url:  ruta + '-' + cod_sub,
+        data: {cod_sub, ref, imp, cod_licit},
+        success: function( data ) {
+
+            $("#insert_msg").html("");
+
+            if (data.status == 'error'){
+
+                $("#insert_msg").html(data.msg_1);
+				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
+
+            }else if(data.status == 'success'){
+
+				//añadir eventos compra ya venta directa
+				matricula = $("#matricula_JS").val();
+				precio =$("#price_compra_ya_JS").val();
+				coche = $("#nombre_coche_JS").val();
+				ga('send','event','FORMULARIO VENTA DIRECTA CONTRAOFERTAR',coche  + "/" +  matricula,precio);
+				//evento fbq
+				fbq('track', 'Lead', {value: 1,  });
+
+				//Si la contraoferta ha sido rechazada
+				if(data.pujarep == 'K') {
+					$("#modalContraofertaRechazada .insert_msg").html(data.msg);
+
+					const btnSimiliarLots = document.getElementById('btn-similares-modal');
+					btnSimiliarLots.classList.toggle('modal-dismiss', data.amountOver);
+					btnSimiliarLots.href = data.amountOver ? '' : data.similar_lots;
+					btnSimiliarLots.textContent = data.amountOver ? 'ESPERAR RESPUESTA' : 'VEHÍCULOS SIMILARES';
+
+					const btnFocusCounteroffer = document.getElementById('btn-focus-counteroffer');
+					btnFocusCounteroffer.textContent = data.amountOver ? 'INCREMENTAR OFERTA' : 'HACER NUEVA OFRETA';
+
+					$.magnificPopup.open({items: {src: '#modalContraofertaRechazada'}, type: 'inline'}, 0);
+					return;
+				}
+
+
+                $("#insert_msg").html(data.msg);
+                $.magnificPopup.open({
+					items: {src: '#modalMensaje'},
+					type: 'inline',
+					callbacks: {
+						afterClose: () => reatryPayDeposit(data),
+					}
+				}, 0);
+            }
+        },
+		error: function(error){
+			$("#insert_msg").html(messages.error.counteroffer);
+			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+		}
+
+    });
+}
+
+window.comprarLoteFichaCarlandia = function()
+{
+	const typePuja = document.querySelector('.lot-action_comprar_lot').dataset.typePuja;
+	const ruta = '/es/api/comprar-aux/subasta';
+
+    $.ajax({
+        type: "POST",
+        url: `${ruta}-${cod_sub}`,
+        data: { cod_sub: cod_sub, ref: ref, 'type-puja': typePuja},
+        success: function( data ) {
+
+            $("#insert_msg").html("");
+
+            if (data.status == 'error'){
+				$("#insert_msg").html(data.msg_1);
+				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
+				return;
+            }
+			//añadir eventos compra ya venta directa
+				matricula = $("#matricula_JS").val();
+				precio =$("#price_compra_ya_JS").val();
+				coche = $("#nombre_coche_JS").val();
+				if(typePuja=='B'){
+					ga('send','event','FORMULARIO VENTA DIRECTA COMPRAR YA',coche  + "/" +  matricula,precio);
+				}else if(typePuja=='Y'){
+					ga('send','event','FORMULARIO SUBASTA COMPRAR YA',coche  + "/" +  matricula,precio);
+				}
+			//evento fbq
+				fbq('track', 'Lead', {value: 1,  });
+
+			$("#insert_msg").html(data.msg);
+			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+			return;
+
+        },
+		error: function (e) {
+			$("#insert_msg").html(messages.error.buying);
+			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
+		}
+    });
+};
+
+function contraOfertar(event){
+	event.stopPropagation();
+	$.magnificPopup.close();
+
+	if (typeof cod_licit == 'undefined' || cod_licit == null) {
+		sendCounterofferWithNotUser();
+		return;
+	}
+
+	$('#counteroffer_value').html($('#counteroffer-input').val());
+	$.magnificPopup.open({ items: { src: '#modalContraofertarFicha' }, type: 'inline' }, 0);
+	return;
+}
+
+function sendCounterofferWithNotUser(){
+	const counterofferValue = parseInt($('#counteroffer-input').val());
+
+	if(isNaN(counterofferValue) || counterofferValue <= 0){
+		$('#insert_msg').html(messages.error.counteroffer);
+		$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+		return;
+	}
+
+	fetchWrapper(`/es/api/check-contraofertar/subasta-${cod_sub}`, 'POST', {cod_sub, ref, imp: counterofferValue})
+		.then(data => {
+			if (data.status == 'error') {
+				$('#insert_msg').html(data.message);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				return;
+			}
+			//la url marca en que url se podran recuperar los datos, si no pongo nada los recuperaremos al volver aquí
+			//history.pushState(state, '', e.target.href);
+			history.pushState(data, '');
+
+			$('#modalContraofertarSinLicitador .insert_msg').html(data.message);
+
+			$.magnificPopup.open(
+				{
+					items: { src: '#modalContraofertarSinLicitador' },
+					type: 'inline',
+					callbacks: {afterClose: () => reatryCounteroffer(data)}
+				}, 0);
+			return;
+		})
+		.catch(error => {
+			$('#insert_msg').html(messages.error.counteroffer);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			return;
+		});
+}
+
+function reatryCounteroffer({amountOverOriginalValue, messageToCancel, urlSimilar}){
+	//Si se muestra el login, aunque se cierre el modal no debemos mostrar el segundo modal
+	if(document.querySelector('.login_desktop')?.style.display != 'none'){
+		return;
+	}
+
+	$('#modalCerrarContraofertar .insert_msg').html(messageToCancel);
+	$('#modalLinkRegister').show();
+	$('#modalLinkDeposit').hide();
+
+	const similarLotsBlock = document.querySelector('.similiar-lots');
+
+	similarLotsBlock.classList.toggle('hidden', !amountOverOriginalValue);
+	similarLotsBlock.querySelector('a').setAttribute('href', urlSimilar);
+
+	$.magnificPopup.open({
+		items: { src: '#modalCerrarContraofertar' },
+		type: 'inline',
+	}, 0);
+}
+
+function reatryPayDeposit({messageToCancel, payLink}){
+
+	$('#modalLinkRegister').hide();
+	$('#modalLinkDeposit').attr('href', payLink).show();
+	$('.similiar-lots').hide();
+	$('#modalCerrarContraofertar .insert_msg').html(messageToCancel);
+	$.magnificPopup.open({
+		items: { src: '#modalCerrarContraofertar' },
+		type: 'inline',
+	}, 0);
+}
+
+function contraofertarLogin(e){
+	e.stopPropagation();
+	$('.login-register-block').hide();
+	$('.login_desktop').fadeToggle("fast");
+	$('.login_desktop [name=email]').trigger('focus');
+	$.magnificPopup.close();
+}
+
+function fetchWrapper(url, method, body) {
+	return fetch(url, {
+		method: method,
+		body: body ? JSON.stringify(body) : null,
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+	})
+	.then(response => {
+		if (response.status >= 400 || !response.ok) {
+			throw new Error(response.statusText);
+		}
+		return response.json();
+	});
+}
+
+
+
+function openModal(event){
+
+	const element = event.target;
+	const idModal = element.dataset.modal;
+
+	$.magnificPopup.open({ items: { src: `#${idModal}` }, type: 'inline' }, 0);
+}
+
+function showGif(force) {
+
+	if ( (!window.localStorage || localStorage.getItem('firstTime') === 'false') && !force) {
+		return;
+	}
+
+	if(force){
+		const image_url = '/themes/carlandia/assets/img/anim_one.gif';
+		$('#gif-container img').attr('src', '');
+		$('#gif-container img').attr('src', image_url);
+	}
+
+	$('#gif-container').fadeIn('fast').delay(4000).fadeOut('fast');
+	localStorage.setItem('firstTime', 'false');
+}
+
+
+function changeSubCategoriesSelect(event) {
+
+	const linOrtsec = event.target.value;
+
+	const subCategorySelect = document.querySelector("[name='section']");
+
+	deleteSelect(subCategorySelect, true);
+
+	if (linOrtsec == '') {
+		return false;
+	}
+
+	subCategories.filter(subCatergory => subCatergory.lin_ortsec1 == linOrtsec)
+		.forEach(subCatergory => {
+			const option = new Option(subCatergory.des_sec, subCatergory.cod_sec);
+			subCategorySelect.add(option, undefined);
+		});
+
+	return true;
+}
+
+function deleteSelect(select, saveFirst) {
+	while (select.options.length > saveFirst ? 1 : 0) {
+        select.remove(saveFirst ? 1 : 0);
+    }
+}
+
+function sendContactCarlandia() {
+
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+
+	response = $("#g-recaptcha-response").val();
+
+	if (response) {
+		$.ajax({
+			type: "POST",
+			url: "/contactSendmail",
+			data: $(contactForm).serialize(),
+			success: function (response) {
+				if (response.status == "error") {
+					showMessage(response.message);
+				} else {
+					//evento ga
+						ga('send','event','FORMULARIO GENERAL','Formulario general');
+					//evento fbq
+						fbq('track', 'Lead', {value: 1,  });
+					showMessage(response, "");
+					setTimeout("location.reload()", 4000);
+				}
+			},
+			error: function (response) {
+				showMessage("Error");
+			}
+		});
+	} else {
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+		showMessage(messages.error.hasErrors);
+	}
+}
+
+/* function sendBuyOnlineLot() {
+
+	//abre directamente la ventana emergente de login
+	if (typeof cod_licit == 'undefined' || cod_licit == null) {
+		$('.login_desktop').fadeToggle("fast");
+		$('.login_desktop [name=email]').trigger('focus');
+		return;
+	}
+
+	$.ajax({
+		type: "POST",
+		data: $("#buyLotForm").serialize(),
+		url: '/es/make-offer',
+		success: function (res) {
+			showMessage(messages.success.thanks);
+		},
+		error: function (e) {
+			showMessage(messages.error.makeoffer_error);
+		}
+	});
+
+} */

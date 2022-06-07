@@ -1,0 +1,94 @@
+:root {
+
+    --extra-color: #dc9814;
+    --primary-color-text: #282828;
+
+	--btn-primary-background: #282828;
+	--btn-primary-background-hover: #dc9814;
+	--btn-primary-text: #fff;
+	--btn-primary-text-hover: #fff;
+
+	--newsletter-background: #fff;
+
+	--footer-background: #282828;
+
+	--footer-sociallinks-background: #282828;
+}
+
+
+.button-principal:hover{
+	opacity: 0.82;
+}
+
+.logo-company {
+    max-width: 170px;
+}
+
+.free-valuations .info{
+	text-align: justify;
+}
+
+
+header{
+	position: sticky;
+    top: 0px;
+    z-index: 11;
+	background-color: #fff;
+	padding: 15px 0px;
+}
+
+header, nav{
+	height: auto;
+}
+
+.menu-header{
+	align-items: center;
+    gap: 20px;
+}
+
+.menu-header .menu-principal-content{
+	margin-bottom: 0;
+}
+
+.logo-header {
+	padding-top: 10px;
+    /* padding: 0px;
+    width: 262.5px;
+    min-width: 262.5px; */
+}
+
+.logo-header .logo-company {
+    /* max-width: 100%; */
+	max-width: 260px;
+}
+
+.user-account{
+	display: flex;
+	align-items: center;
+}
+
+.my-account{
+	padding: initial;
+	height: fit-content;
+}
+
+header.fixed {
+    z-index: 100;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid #f3f3f3;
+    box-shadow: 0 0 0;
+	height: auto;
+	position: sticky;
+}
+
+header.fixed nav{
+	border-bottom: 0px;
+	height: auto;
+}
+
+header.fixed a.link-header{
+	font-weight: 700;
+}
+
+
