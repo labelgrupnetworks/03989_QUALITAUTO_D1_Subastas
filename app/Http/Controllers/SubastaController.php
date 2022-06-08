@@ -2241,7 +2241,7 @@ class SubastaController extends Controller
 
 			//Precio Actual
 			$inf_lot = $subasta->getLoteLight();
-			$lot_relacionados_lang;
+			$lot_relacionados_lang = [];
 			$lotes_relacionado_final = '';
 			$relacionados = array();
 			$key = "recomendados_email";

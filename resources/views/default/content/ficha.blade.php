@@ -29,7 +29,7 @@ $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 $userSession = session('user');
-$deposito = (new FgDeposito())->isValid($userSession['cod'], $lote_actual->cod_sub, $lote_actual->ref_asigl0);
+$deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
 $files = FgHces1Files::getAllFilesByLotCanViewUser($userSession, $lote_actual->num_hces1, $lote_actual->lin_hces1, $deposito);
 
 ?>

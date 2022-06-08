@@ -1016,15 +1016,10 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
         if(!empty(Config::get('app.password_MD5'))){
                  $hash_string =   Config::get('app.password_MD5').$hash_string;
         }
-        $token = hash("sha256",$hash_string)  ;
-        $sql = "UPDATE FXCLIWEB SET TK_CLIWEB = :token WHERE GEMP_CLIWEB = :gemp AND  EMP_CLIWEB = :emp AND COD_CLIWEB = :cod_cliweb";
-        $bindings = array(
-                        'emp'           => Config::get('app.emp'),
-                        'gemp'       =>Config::get('app.gemp'),
-                        'cod_cliweb' => $this->cod,
-                        'token'     => $token
-                        );
-        DB::select($sql, $bindings);
+        $token = hash("sha256", $hash_string);
+
+        FxCliWeb::where('COD_CLIWEB', $this->cod)
+            ->update(['TK_CLIWEB' => $token]);
 
         return $token;
     }

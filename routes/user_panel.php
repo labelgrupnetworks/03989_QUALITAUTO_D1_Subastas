@@ -42,10 +42,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
     Route::post('api-ajax/client/update', 'UserController@updateClientInfo');
     Route::post('api-ajax/client/update/password', 'UserController@updatePassword');
-    #seo CATEGORIES
-    Route::get('/seo-categories', 'SeoCategoriesController@index');
-    Route::get('/seo-categories/name/{cod_sec?}', 'SeoCategoriesController@InfCategSeo');
-    Route::post('/seo-categories/edit', 'SeoCategoriesController@SavedCategSeo');
 
     Route::get('/factura/{afral}-{nfral}', 'UserController@bills');
     Route::get('/prefactura/{cod_sub}', 'UserController@proformaInvoiceFile');

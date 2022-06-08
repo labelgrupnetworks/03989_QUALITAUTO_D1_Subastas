@@ -405,7 +405,7 @@ class PaidController extends DuranController
 		$pago = FxPcob::select("IMP_PCOB, COD2_CLI, ANUM_PCOB, NUM_PCOB")->where("IDTRANS_PCOB0", $idTransaction)->joincli()->joinpcob1()->joinpcob0()->get();
 #Falta conseguir la informacion de que metodo de pago usan
 #pueden venir varios pagos
-		dd($pago);
+
 
 		#no hay pago
 		if(empty($pago)){

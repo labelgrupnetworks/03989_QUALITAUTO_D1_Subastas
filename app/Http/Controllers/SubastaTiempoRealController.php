@@ -1357,24 +1357,24 @@ class subastaTiempoRealController extends Controller
     {
 
         $subasta = new subasta();
-        $subasta->cod            = Input::get('params.cod_sub');
-        $subasta->ref            = Input::get('params.ref');
+        $subasta->cod            = request('params.cod_sub');
+        $subasta->ref            = request('params.ref');
         $subasta->lote = $subasta->ref;
-        $subasta->licit          = Input::get('params.cod_licit');
+        $subasta->licit          = request('params.cod_licit');
         //si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
-		$cod_original_licit      = Input::get('params.cod_original_licit');
-		$this->cod_original_licit = Input::get('params.cod_original_licit');
+		$cod_original_licit      = request('params.cod_original_licit');
+		$this->cod_original_licit = request('params.cod_original_licit');
 		//08-04-2021: forzamos que el valor recibido no tenga decimales
-		$subasta->imp            = intval(Input::get('params.imp'));
-        $subasta->type_bid       = Input::get('params.type_bid');
+		$subasta->imp            = intval(request('params.imp'));
+        $subasta->type_bid       = request('params.type_bid');
         //2017-10-10 lo cojemos del lote directamente
         //$subasta->impsal         = Input::get('params.impsal');
 
         // //comprobamos que sea gestor, no nos fiamos de que venga en una variable
         //$is_gestor               = Input::get('params.is_gestor');
-        $can_do                  = Input::get('params.can_do');
-        $hash_user               = Input::get('params.hash');
-        $tipo_puja_gestor        = Input::get('params.tipo_puja_gestor');
+        $can_do                  = request('params.can_do');
+        $hash_user               = request('params.hash');
+        $tipo_puja_gestor        = request('params.tipo_puja_gestor');
 
 
         $is_gestor = false;
@@ -3653,7 +3653,7 @@ class subastaTiempoRealController extends Controller
          $lote_tmp = $subasta->getLote();
         //comprobamos que exista un lote con esos datos
         if (count($lote_tmp) == 0){
-            $res = $this->error_puja('generic', $subasta->licit, $is_gestor);
+            $res = $this->error_puja('generic', $subasta->licit, $subasta->is_gestor);
             return $res;
         }
         //cogemos el precio inicial del lote

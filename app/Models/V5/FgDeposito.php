@@ -55,6 +55,10 @@ class FgDeposito extends Model
 	 */
 	public function isValid($cli_deposito, $sub_deposito, $ref_deposito)
 	{
+        if(!$cli_deposito){
+            return false;
+        }
+
 		$deposit = self::
 			where([
 				['CLI_DEPOSITO', $cli_deposito],

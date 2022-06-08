@@ -118,7 +118,7 @@ class PaidController extends DuranGalleryController
 		 #pongo el valor 100 por que al multiplicarlo por el iva, devuelve el iva en %, HAY QUE TENER EN CUENTA QUE LUEGO HAY QUE RESTARLO YA QUE LA FUNCION DEVUEVE EL PRECIO CON IVA Y NO SOLO EL IVA
 		$iva = \Tools::PriceWithTaxForEuropean(100,$cli->cod_cli) -100;
 		foreach($lots as $lot){
-			
+
 			#no hay que tener en cuenta el iva de la comisión,
 			$caracteristicas = FgCaracteristicas_Hces1::getByLot( $lot->num_hces1, $lot->lin_hces1);
 			$idAutor="";
@@ -352,7 +352,7 @@ class PaidController extends DuranGalleryController
 		$pago = FxPcob::select("IMP_PCOB, COD2_CLI, ANUM_PCOB, NUM_PCOB")->where("IDTRANS_PCOB0", $idTransaction)->joincli()->joinpcob1()->joinpcob0()->get();
 #Falta conseguir la informacion de que metodo de pago usan
 #pueden venir varios pagos
-		dd($pago);
+
 
 		#no hay pago
 		if(empty($pago)){

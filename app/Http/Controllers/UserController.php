@@ -332,6 +332,7 @@ class UserController extends Controller
 					$user->logLogin($login->cod_cliweb,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
 
 					$externalLoginData = null;
+                    $externalEncryptDate = null;
 
 					if(config('app.ps_activate', false)){
 						$externalLoginData = [
@@ -414,7 +415,7 @@ class UserController extends Controller
 
             # Redirigimos en caso de error
 
-            return Redirect::to(Routing::slug('login'))->withErrors($data);
+            return Redirect::to(Routing::slug('login'))->withErrors([]);
 
         }
 	}
@@ -1699,8 +1700,8 @@ class UserController extends Controller
 
 		if ($response->getStatusCode() != 200) {
 			\Log::error("error en la api de certificados");
-			\Log::error($th);
-			return response($th, 500);
+			\Log::error($response->getStatusCode());
+			return response($response->getStatusCode(), 500);
 		}
 
 		if($response->getBody()){

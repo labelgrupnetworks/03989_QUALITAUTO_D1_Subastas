@@ -228,7 +228,7 @@ class ToolsServiceProvider extends ServiceProvider
 		} else {
 			$start  = $itemsPerPage;
 
-			if ($page > 2) {
+			if (is_int($page) && $page > 2) {
 				$start = (($itemsPerPage * $page) + 1) - $itemsPerPage;
 			} else {
 				$start = ($itemsPerPage) + 1;
