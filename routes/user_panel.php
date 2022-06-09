@@ -57,7 +57,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
 	Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
 });
-Route::get('{lang}/user/panel/info', 'UserController@accountInfo');
+Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
 
 # Lista de Ordenes de licitacion
 Route::get('{lang}/user/panel/orders', 'UserController@orderbidsList');

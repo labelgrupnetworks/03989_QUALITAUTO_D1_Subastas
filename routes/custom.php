@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\V5\CarlandiaPayController;
 #ALCALA
 // Comprar catálogo
+
+
 
 Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCatalogo');
 //Route::post('/catalogoSendmail', 'ComprarCatalogoController@Sendmail');
@@ -11,6 +14,7 @@ Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCat
 // DEPARTAMENTOS
 Route::get(\Routing::slugSeo('departamentos', true), 'PageController@getDepartment');
 Route::get(\Routing::translateSeo('departamento') . '{text}', 'EnterpriseController@department')->name('department');
+Route::get(\Routing::translateSeo('video-subastas'), 'CustomControllers@videoAuctions');
 
 
 #TAULER
@@ -60,3 +64,10 @@ Route::get('/dynamicAds', 'CronController@dynamicAds');
 Route::get('/carlandia/generatePayment/{payLink}', 'V5\CarlandiaPayController@generatePay')->name('carlandiaGeneratePay');
 #recibimos la confirmación de redsys
 Route::post('/carlandia/confirmPayment', 'V5\CarlandiaPayController@confirmPayment');
+
+Route::get(\Routing::slugSeo('coches-contraoferta'), 'V5\LotListController@getLotsListAllCategories');
+Route::get(\Routing::slugSeo('coches-subasta'), 'V5\LotListController@getLotsListAllCategories');
+
+#aceptar contraofertas por el concesionario
+Route::get('aceptacion-contraoferta', 'V5\CarlandiaPayController@aceptarContraoferta')->name('aceptacion-contraoferta');
+Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAceptada');

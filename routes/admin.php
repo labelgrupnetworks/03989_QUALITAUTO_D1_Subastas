@@ -45,8 +45,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/traducciones/search', 'TraduccionesController@search');
 
-		Route::get('/translates', 'configuracion\AdminTraduccionController@index');
-
 		Route::get('/content', 'ContentController@index');
 		Route::get('/content/name/{id}', 'ContentController@getPage');
 		Route::get('/email_clients', 'AdminEmailsController@index');
@@ -283,8 +281,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('artist/deletearticle', 'V5\AdminArtistController@deleteArticle');
 
 		Route::post('subastas/update/image', 'subasta\AdminSubastaGenericController@updateImage')->name('subastas.update.image');
-
 		Route::resource('subastas', 'subasta\AdminSubastaGenericController');
+
+		Route::post('subastas_concursales/update/image', 'subasta\AdminSubastaConcursalController@updateImage')->name('subastas_concursales.update.image');
 		Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController');
 
 		Route::resource('subastas.sesiones', 'subasta\AdminAucSessionsController');
@@ -306,6 +305,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/lotes/order/destacados', 'subasta\AdminLotController@saveOrderDestacada')->name('subastas.lotes.order_destacadas_store');
 
 		Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
+
+		Route::get('nfts/', 'subasta\AdminNftController@index')->name('nft.index');
+		Route::post('nfts/mint', 'subasta\AdminNftController@mint')->name('nft.mint');
+		Route::post('nfts/transfer', 'subasta\AdminNftController@transfer')->name('nft.transfer');
+		Route::post('nfts/state', 'subasta\AdminNftController@state')->name('nft.state');
+
 		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
 
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
@@ -334,6 +339,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/genericImport', 'CmsConfigController@getImportFile');
 		Route::post('/genericImport', 'CmsConfigController@ImportFile');
+
+		#ver imagenes de lotes de la subasta para comprobar que no faltam
+		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
+
+		Route::resource('emails', 'contenido\AdminEmailsController')->only(['index', 'edit', 'update']);
 	});
 
 
