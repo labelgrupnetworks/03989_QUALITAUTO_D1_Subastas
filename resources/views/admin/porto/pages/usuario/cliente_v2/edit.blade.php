@@ -19,7 +19,7 @@
 		@csrf
 
 		<div class="row well">
-			@include('admin::pages.usuario.cliente_v2._form', compact('formulario', 'fxCli'))
+			@include('admin::pages.usuario.cliente_v2._form', compact('formulario', 'clienteFxCli'))
 		</div>
 
 		<div class="row">
