@@ -199,7 +199,7 @@
 					<td class="imp_asigl1">{!! \Tools::moneyFormat($item->imp_asigl1, trans(\Config::get('app.theme').'-app.subastas.euros'), 2) !!}</td>
 					<td class="retirado_asigl0" >{{$item->retirado_asigl0}}</td>
 					<td class="ffin_asigl0" > {!! \Tools::Construir_fecha($item->ffin_asigl0) !!} {!! $item->hfin_asigl0 !!} </td>
-					<td><a href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!!$cod_sub!!}');"
+					<td><a href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!!$cod_sub!!}---{!!$item->asigl0_aux??'NO'!!}');"
 							class="btn btn-danger">Borrar</a></td>
 
 				</tr>

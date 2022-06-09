@@ -184,11 +184,21 @@ $idiomes = \Config::get('app.locales');
 						</ul>
 						@endif
 
-						@if(in_array('dev', $config_menu_admin) || config('app.restrictVisibility'))
+						@if(config('app.restrictVisibility'))
 						<ul class="nav nav-children">
 							<li>
 								<a href="{{ route('visibilidad.index') }}">
 									<span>{{ trans('admin-app.title.visibility') }}</span>
+								</a>
+							</li>
+						</ul>
+						@endif
+
+						@if(config('app.useNft', false))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('nft.index') }}">
+									<span>{{ trans("admin-app.title.nfts") }}</span>
 								</a>
 							</li>
 						</ul>
@@ -310,12 +320,13 @@ $idiomes = \Config::get('app.locales');
 					</li>
 					@endif
 
-					@if(in_array('contenido',$config_menu_admin))
-					<li class="nav-parent @if(request('menu', '') == 'contenido' ) nav-expanded @endif" style="">
+					@if(in_array('contenido',$config_menu_admin) || in_array('dev', $config_menu_admin) || in_array('edit_emails', $config_menu_admin))
+					<li class="nav-parent @if(request('menu', '') == 'contenido' || (!empty($menu) && $menu == 'contenido') ) nav-expanded @endif" style="">
 						<a href="#">
 							<i class="fa fa-user" aria-hidden="true"></i>
 							<span>Contenido</span>
 						</a>
+						@if(in_array('contenido',$config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
 								<a href="{{ route('event.index', ['ubicacion' => \App\Models\WebNewbannerModel::UBICACION_MUSEO, 'menu' => 'contenido'])}}">
@@ -323,6 +334,7 @@ $idiomes = \Config::get('app.locales');
 								</a>
 							</li>
 						</ul>
+
 						<ul class="nav nav-children">
 							<li>
 								<a href="{{ route('event.index', ['ubicacion' => \App\Models\WebNewbannerModel::UBICACION_EVENTO, 'menu' => 'contenido'])}}">
@@ -330,12 +342,23 @@ $idiomes = \Config::get('app.locales');
 								</a>
 							</li>
 						</ul>
-						@if (in_array('dev', $config_menu_admin))
+						@endif
 
+						@if (in_array('dev', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
 								<a href="/admin/static_pages">
 									<span>Páginas Estáticas</span>
+								</a>
+							</li>
+						</ul>
+						@endif
+
+						@if (in_array('edit_emails', $config_menu_admin))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('emails.index') }}">
+									<span>Edición de Emails</span>
 								</a>
 							</li>
 						</ul>

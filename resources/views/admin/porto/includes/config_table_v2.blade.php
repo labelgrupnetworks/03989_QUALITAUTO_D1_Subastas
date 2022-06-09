@@ -21,7 +21,7 @@
 	</button>
 	<ul class="dropdown-menu custom-dropdown" id="midropdown">
 
-
+		@if(!empty($formulario))
 		<li class="dropdown-header">Filtros</li>
 		<form class="form-group" action="">
 
@@ -42,6 +42,9 @@
 		</form>
 
 		<li role="separator" class="divider"></li>
+		@endif
+
+
 
 		<li class="dropdown-header">Columnas</li>
 		<div id="modal_config_{{$id}}">

@@ -51,7 +51,7 @@
 				@csrf
 
 				<input type="hidden" name="tab" value="">
-				<input type="hidden" name="route.update.image" value="{{ route('subastas.update.image') }}">
+				<input type="hidden" name="route.update.image" value="{{ route('subastas_concursales.update.image') }}">
 
 				<div class="row">
 

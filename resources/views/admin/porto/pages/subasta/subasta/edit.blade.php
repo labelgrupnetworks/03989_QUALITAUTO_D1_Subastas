@@ -139,7 +139,7 @@
 							@endif
 							<td>{!! \Tools::Construir_fecha($item->fec_asigl1) !!} {!! $item->hora_asigl1 !!}</td>
 							<td>{!! $item->imp_asigl1 !!}</td>
-							<td><a href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!!$id!!}');"
+							<td><a href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!!$id!!}---{!!$item->asigl0_aux??'NO'!!}');"
 									class="btn btn-danger">Borrar</a></td>
 						</tr>
 						@endforeach
