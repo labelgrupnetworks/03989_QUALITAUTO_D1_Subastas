@@ -9,361 +9,361 @@
 Route::get('/admin', 'AdminHomeController@index');
 Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
-    Route::group(['middleware' => ['adminAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
-
-        Route::get('/', 'AdminHomeController@index');
-        Route::get('/sliders/{tab?}', 'AdminSlidersController@index');
-
-        //lo comento por que antes estaba así pero jaume lo tiene diferente 2017_09_18
-        //Routes: Route::get('/config', 'AdminConfigController@index');
-
-        Route::get('/config', 'AdminConfigController@index');
-        Route::get('/cms', 'CmsConfigController@index');
-
-        Route::get('/bloque', 'BloqueConfigController@index');
-        Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
-
-        Route::get('/resources', 'ResourceController@index');
-        Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
-
-        Route::get('/banner', 'BannerController@index');
-        Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
-
-        Route::get('/auc-index', 'AucIndexController@index');
-        Route::get('/auc-index/name/{id?}', 'AucIndexController@SeeAuxIndex');
-
-        Route::get('/auc-index-menu', 'AucIndexMenuController@index');
-
-        Route::get('/seo-familias-sessiones', 'SeoFamiliasSessionesController@index');
-        Route::get('/seo-familias-sessiones/name/{id?}', 'SeoFamiliasSessionesController@SeeFamilySessionsSeo');
-
-        Route::get('/seo-categories', 'SeoCategoriesController@index');
-        Route::get('/seo-categories/name/{cod_sec?}', 'SeoCategoriesController@InfCategSeo');
-
-        Route::get('/traducciones/{head}/{lang}', 'TraduccionesController@index');
-        Route::get('/traducciones', 'TraduccionesController@getTraducciones');
-
-        Route::get('/traducciones/search', 'TraduccionesController@search');
-
-        Route::get('/translates', 'configuracion\AdminTraduccionController@index');
-
-        Route::get('/content', 'ContentController@index');
-        Route::get('/content/name/{id}', 'ContentController@getPage');
-        Route::get('/email_clients', 'AdminEmailsController@index');
-        Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
-
-        Route::get('/blog-admin', 'BlogController@getBlogs');
-        Route::get('/blog-admin/name/{id?}', 'BlogController@index');
-        Route::get('/category-blog', 'BlogController@getCategoryBlog');
-        Route::get('/category-blog/name/{id?}', 'BlogController@seeCategoryBlog');
-
-        Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-
-        //TODO: V5
-        Route::group(['namespace' => 'V5'], function () {
-
-            Route::group(['prefix' => 'faqs'], function () {
-                Route::get('/{lang}/edit/{cod_faq?}', 'AdminFaqController@edit');
-                Route::post('/{lang}/editRun', 'AdminFaqController@editRun');
-                Route::post('/delete', 'AdminFaqController@delete');
-                Route::post('/{lang}/order', 'AdminFaqController@saveOrder');
-                Route::get('/{lang?}/', 'AdminFaqController@index');
-                Route::post('/{lang}/categories/newRun', 'AdminFaqController@categoriesNewRun');
-                Route::post('/categories/delete', 'AdminFaqController@categoriesDelete');
-                Route::get('/{lang}/categories/edit/{cod}', 'AdminFaqController@categoriesEdit');
-                Route::post('/{lang}/categories/editRun', 'AdminFaqController@categoriesEditRun');
-            });
-            Route::get('/enable_register', 'AdminEnableRegisterController@index');
-            Route::post('/enable_register', 'AdminEnableRegisterController@save');
-            Route::get('/favorites', 'AdminFavoritesControler@index');
-        });
-
-        Route::group(['prefix' => 'newbanner'], function () {
-            Route::get('/', "contenido\BannerController@index");
-            Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
-            Route::get('/nuevo', "contenido\BannerController@nuevo");
-            Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
-            Route::get('/editar/{id}', "contenido\BannerController@editar");
-            Route::get('/borrar/{id}', "contenido\BannerController@borrar");
-            Route::post('/activar', "contenido\BannerController@activar");
-            Route::post('/editar_run', "contenido\BannerController@editar_run");
-            Route::post('/listaItemsBloque', "contenido\BannerController@listaItemsBloque");
-            Route::post('/nuevoItemBloque', "contenido\BannerController@nuevoItemBloque");
-            Route::post('/editaItemBloque', "contenido\BannerController@editaItemBloque");
-            Route::post('/guardaItemBloque', "contenido\BannerController@guardaItemBloque");
-            Route::post('/borraItemBloque', "contenido\BannerController@borraItemBloque");
-            Route::post('/estadoItemBloque', "contenido\BannerController@estadoItemBloque");
-            Route::post('/vistaPrevia', "contenido\BannerController@vistaPrevia");
-            Route::post('/ordenaBloque', "contenido\BannerController@ordenaBloque");
-            Route::post('/orderbanner', "contenido\BannerController@orderBanner");
-        });
-
-        Route::resource('event', 'contenido\EventsController')->except(['show', 'destroy']);
-
-        Route::post('/static-pages/images', 'contenido\AdminPagesController@uploadImage')->name('static-pages.upload_image');
-        Route::resource('static-pages', 'contenido\AdminPagesController');
-
-        /**Deshabilitado hasta que este arreglado y testeado 100% */
-        Route::group(['prefix' => 'email'], function () {
-            Route::get('/', 'configuracion\EmailController@index');
-            Route::get('/editar/{cod}', 'configuracion\EmailController@edit');
-            Route::post('/guardar', 'configuracion\EmailController@guardar');
-            Route::post('/guardarEmail', 'configuracion\EmailController@guardarEmail');
-            Route::get('/plantilla', 'configuracion\EmailController@plantilla');
-            Route::post('/guardarPlantilla', 'configuracion\EmailController@guardarPlantilla');
-        });
-
-        Route::get('/email', 'EmailController@index');
-        Route::get('/email/ver/{cod_email}', 'EmailController@getEmail');
-
-        Route::group(['prefix' => 'escalado'], function () {
-            Route::get('/', 'configuracion\EscaladoController@index');
-            Route::post('/save', 'configuracion\EscaladoController@save');
-        });
-
-        Route::group(['prefix' => 'configuracion'], function () {
-            Route::get('/', 'configuracion\GeneralController@index');
-            Route::post('/save', 'configuracion\GeneralController@save');
-
-            Route::get('credito/export', 'configuracion\AdminCreditoController@export')->name('credito.export');
-            Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
-            Route::resource('credito', 'configuracion\AdminCreditoController')->except(['show']);
-
-
-            //Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
-        });
-
-        #CONTENIDO
-        Route::group(['prefix' => 'calendar'], function () {
-            Route::get('/', 'contenido\AdminCalendarController@index');
-            #Route::get('/show', 'contenido\AdminCalendarController@show');
-            #Route::get('/create', 'contenido\AdminCalendarController@create');
-            #Route::post('/store', 'contenido\AdminCalendarController@store');
-            Route::get('/edit', 'contenido\AdminCalendarController@edit');
-            Route::post('/update', 'contenido\AdminCalendarController@update');
-            Route::post('/delete', 'contenido\AdminCalendarController@destroy');
-        });
-
-
-        // CLIENTES
-        Route::group(['prefix' => 'favoritos'], function () {
-            Route::get('/', "usuario\FavoritosController@index");
-        });
-        Route::group(['prefix' => 'cliente'], function () {
-            Route::get('/', 'usuario\ClienteController@index');
-            Route::get('/nuevo', 'usuario\ClienteController@edit');
-            Route::get('/edit/{id}', 'usuario\ClienteController@edit');
-            Route::post('/edit_run', 'usuario\ClienteController@edit_run');
-            Route::post('/bajaCliente', 'usuario\ClienteController@bajaCliente');
-            Route::post('/reactivarCliente', 'usuario\ClienteController@reactivarCliente');
-            Route::get('/export', 'usuario\ClienteController@export')->name('cliente.export');
-        });
-
-
-        // SUBASTAS
-
-        Route::group(['prefix' => 'subasta'], function () {
-            Route::get('/', "subasta\SubastaController@index");
-            Route::get('/nuevo', 'subasta\SubastaController@edit');
-            Route::get('/edit/{id}', 'subasta\SubastaController@edit')->name('subasta.edit');
-            Route::post('/edit_run', 'subasta\SubastaController@edit_run');
-            Route::post('/borrarSubasta', 'subasta\SubastaController@borrarSubasta');
-            Route::post('/ficherosSubasta/{subasta}', 'subasta\SubastaController@ficherosSubasta');
-            Route::post('/borrarFicherosSubasta', 'subasta\SubastaController@borrarFicherosSubasta');
-            Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja');
-            Route::post('/borrarOrden', 'subasta\SubastaController@borrarOrden');
-            Route::post('/guardaEscalado', 'subasta\SubastaController@guardaEscalado')->name('guardarEscaladoSubastas');
-            Route::get('/list', 'subasta\SubastaController@getSelectSubastas');
-            Route::get('/select2list', 'subasta\SubastaController@getSelect2List')->name('subastas.select2');
-        });
-        Route::group(['prefix' => 'lote'], function () {
-            Route::get('/nuevo/{id}', 'subasta\SubastaController@editLote');
-            Route::get('/edit/{subasta}/{id}', 'subasta\SubastaController@editLote');
-            Route::post('/borrar/{subasta}/{id}', 'subasta\SubastaController@borrarLote');
-            Route::post('/edit_run', 'subasta\SubastaController@editLote_run');
-            Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote');
-            Route::get('/file/{id}', 'subasta\SubastaController@lotFile');
-            Route::post('/excelRun', 'subasta\SubastaController@subirExcel');
-            Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport');
-            Route::post('/excelImg', 'subasta\SubastaController@createExcelImage');
-            Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage');
-            Route::get('/list', 'subasta\SubastaController@getSelectLotes');
-            Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
-            Route::post('/addfile', 'subasta\SubastaController@addLoteFile');
-            Route::post('/addvideo', 'subasta\SubastaController@addLoteVideo');
-            Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
-            Route::post('/deletevideo', 'subasta\SubastaController@deleteLoteVideo');
-            Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export');
-        });
-        Route::group(['prefix' => 'sesion'], function () {
-            Route::get('/nuevo/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-            Route::get('/edit/{subasta}/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-            Route::post('/borrar/{cod_sub}/{reference}', 'subasta\AdminAucSessionsController@destroy');
-            Route::post('/update', 'subasta\AdminAucSessionsController@oldUpdate');
-            Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store');
-            Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy');
-        });
-
-        Route::group(['prefix' => 'orders'], function () {
-            Route::get('/excel/{idAuction}', 'subasta\AdminOrderController@excel')->name('orders.excel');
-            Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
-            Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
-        });
-        Route::resource('orders', 'subasta\AdminOrderController')->except(['show']);
-
-        Route::group(['prefix' => 'award'], function () {
-            Route::get('/', 'subasta\AdminAwardController@index')->name('award.index');
-            Route::get('/show', 'subasta\AdminAwardController@show');
-            Route::get('/create/{idAuction?}', 'subasta\AdminAwardController@create')->name('award.create');
-            Route::post('/store', 'subasta\AdminAwardController@store');
-            Route::get('/edit', 'subasta\AdminAwardController@edit')->name('award.edit');
-            Route::post('/update', 'subasta\AdminAwardController@update');
-            Route::post('/delete', 'subasta\AdminAwardController@destroy');
-            Route::post('/export/{idAuction?}', 'subasta\AdminAwardController@export')->name('award.export');
-        });
-
-        Route::group(['prefix' => 'not-award'], function () {
-            Route::get('/', 'subasta\AdminNotAwardController@index')->name('not_award.index');
-            Route::post('/export/{idAuction?}', 'subasta\AdminNotAwardController@export')->name('not_award.export');
-        });
-
-
-        Route::group(['prefix' => 'client'], function () {
-            Route::get('/list', 'subasta\SubastaController@getSelectClients');
-            Route::get('/select2list', 'subasta\SubastaController@getSelect2ClientList')->name('client.list');
-        });
-        Route::group(['prefix' => 'licit'], function () {
-            Route::get('/', 'subasta\AdminLicitController@index');
-            Route::get('/show', 'subasta\AdminLicitController@show');
-            Route::get('/create', 'subasta\AdminLicitController@create');
-            Route::post('/store', 'subasta\AdminLicitController@store');
-            Route::get('/edit', 'subasta\AdminLicitController@edit');
-            Route::post('/update', 'subasta\AdminLicitController@update');
-            Route::get('/list', 'subasta\SubastaController@getSelectLicits');
-        });
-
-
-        Route::group(['prefix' => 'category'], function () {
-            Route::get('/', 'subasta\AdminCategoryController@index');
-            #Route::get('/show', 'subasta\AdminCategoryController@show');
-            #Route::get('/create', 'subasta\AdminCategoryController@create');
-            #Route::post('/store', 'subasta\AdminCategoryController@store');
-            Route::get('/edit', 'subasta\AdminCategoryController@edit');
-            Route::post('/update', 'subasta\AdminCategoryController@update');
-            Route::post('/delete', 'subasta\AdminCategoryController@destroy');
-        });
-
-        Route::group(['prefix' => 'subcategory'], function () {
-            Route::get('/', 'subasta\AdminSubCategoryController@index');
-            #Route::get('/show', 'subasta\AdminSubCategoryController@show');
-            #Route::get('/create', 'subasta\AdminSubCategoryController@create');
-            #Route::post('/store', 'subasta\AdminSubCategoryController@store');
-            Route::get('/edit', 'subasta\AdminSubCategoryController@edit');
-            Route::post('/update', 'subasta\AdminSubCategoryController@update');
-            Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
-        });
-
-        Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
-        Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'destroy']);
-
-
-        Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
-        Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
-        Route::resource('clientes', 'usuario\AdminClienteController');
-
-        Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
-        Route::resource('visibilidad', 'subasta\AdminVisibilidadController')->except(['show']);
-
-        Route::get('winners/export/{cod_sub}', 'subasta\AdminWinnerController@winnersExport')->name('winners.export');
-        Route::resource('artist', 'V5\AdminArtistController')->except(['show']);
-        Route::post('artist/activar', 'V5\AdminArtistController@activar');
-        Route::post('artist/updatearticles', 'V5\AdminArtistController@updateArticles');
-        Route::post('artist/loadarticles', 'V5\AdminArtistController@loadArticles');
-        Route::post('artist/createarticle', 'V5\AdminArtistController@createArticle');
-        Route::post('artist/deletearticle', 'V5\AdminArtistController@deleteArticle');
-
-        Route::post('subastas/update/image', 'subasta\AdminSubastaGenericController@updateImage')->name('subastas.update.image');
-
-        Route::resource('subastas', 'subasta\AdminSubastaGenericController');
-        Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController');
-
-        Route::resource('subastas.sesiones', 'subasta\AdminAucSessionsController');
-
-        Route::get('subastas/{cod_sub}/lotes/select2list/', 'subasta\AdminLotController@getSelect2List')->name('subastas.lotes.select2');
-        Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
-
-        Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
-        Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features');
-
-
-        Route::get('subastas/lotes/printPdf/{codSub}', 'subasta\AdminLotController@pdfExhibition')->name('subastas.lotes.printPdf');
-        Route::get('subastas/lotes/printExcel/{codSub}', 'subasta\AdminLotController@excelExhibition')->name('subastas.lotes.printExcel');
-        Route::get('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@getOrder')->name('subastas.lotes.order_edit');
-        Route::post('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@saveOrder')->name('subastas.lotes.order_store');
-
-
-        Route::get('subastas/lotes/order/destacados', 'subasta\AdminLotController@getOrderDestacada')->name('subastas.lotes.order_destacadas_edit');
-        Route::post('subastas/lotes/order/destacados', 'subasta\AdminLotController@saveOrderDestacada')->name('subastas.lotes.order_destacadas_store');
-
-        Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
-        Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
-
-        Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
-        Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
-        Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show']);
-
-        Route::post('bi/ajax', 'bi\AdminBiController@lotsInfo')->name('bi.reload');
-        Route::post('bi/allcategories', 'bi\AdminBiController@lotsAwardForCategory');
-        Route::post('bi/auction-modal-info', 'bi\AdminBiController@getAuctionInfo');
-        Route::resource('bi', 'bi\AdminBiController')->only(['index']);
-
-        Route::get('bi/cedentes/{cod_cli}', 'bi\AdminBiCedentesController@show')->name('bi_cedentes.show');
-        Route::get('bi/cedentes/{cod_cli}/json', 'bi\AdminBiCedentesController@getShow')->name('bi_cedentes.show_data');
-        Route::get('bi/cedentes', 'bi\AdminBiCedentesController@index')->name('bi_cedentes.index');
-
-        Route::get('providers/list', 'facturacion\AdminProviderController@getSelectProviders')->name('provider.list');
-        Route::resource('providers', 'facturacion\AdminProviderController')->except(['show']);
-
-        Route::resource('bills', 'facturacion\AdminBillController')->except(['show']);
-        Route::resource('pedidos', 'facturacion\AdminPedidosController')->except(['show']);
-        Route::post('pedidos/importeBasePedido', 'facturacion\AdminPedidosController@importeBasePedido');
-
-        Route::get('articulos', 'AdminArticlesController@index')->name('articles.index');
-        Route::get('articles/order', 'AdminArticlesController@getOrder')->name('articles.order_edit');
-        Route::post('articles/order', 'AdminArticlesController@saveOrder')->name('articles.order_store');
-
-        Route::get('/genericImport', 'CmsConfigController@getImportFile');
-        Route::post('/genericImport', 'CmsConfigController@ImportFile');
-    });
-
-
-    Route::post('/sliders/upload', 'AdminSlidersController@uploadFile');
-    Route::post('/sliders/save', 'AdminSlidersController@save');
-    Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
-    Route::post('/config/save', 'AdminConfigController@save');
-    Route::post('/content/save', 'ContentController@savedPage');
-    Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
-    Route::post('/seo-categories/edit', 'SeoCategoriesController@SavedCategSeo');
-    Route::post('/seo-familias-sessiones/edit', 'SeoFamiliasSessionesController@SavedFamilySessionsSeo');
-    Route::post('/auc-index-menu/save', 'AucIndexMenuController@save');
-    Route::post('/traducciones/new', 'TraduccionesController@NewTrans');
-    Route::post('/bloque/edit', 'BloqueConfigController@EditBloque');
-    Route::post('/auc-index/edit', 'AucIndexController@EditAuIndex');
-    Route::post('/banner/edit', 'BannerController@EditBanner');
-    Route::post('/resources/edit', 'ResourceController@EditResources');
-    Route::post('/resources/delete', 'ResourceController@DeleteResource');
-    Route::post('/category-blog/edit', 'BlogController@EditBlogCategory');
-    Route::post('/blog/edit', 'BlogController@EditBlog');
-
-
-
-
-
-
-    Route::group(['middleware' => ['web']], function () {
-
-        Route::get('/login', 'AdminUserController@login');
-        Route::post('/login', 'AdminUserController@login_post');
-        Route::get('/logout', 'AdminUserController@logout');
-    });
+	Route::group(['middleware' => ['adminAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
+
+		Route::get('/', 'AdminHomeController@index');
+		Route::get('/sliders/{tab?}', 'AdminSlidersController@index');
+
+		//lo comento por que antes estaba así pero jaume lo tiene diferente 2017_09_18
+		//Routes: Route::get('/config', 'AdminConfigController@index');
+
+		Route::get('/config', 'AdminConfigController@index');
+		Route::get('/cms', 'CmsConfigController@index');
+
+		Route::get('/bloque', 'BloqueConfigController@index');
+		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
+
+		Route::get('/resources', 'ResourceController@index');
+		Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
+
+		Route::get('/banner', 'BannerController@index');
+		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
+
+		Route::get('/auc-index', 'AucIndexController@index');
+		Route::get('/auc-index/name/{id?}', 'AucIndexController@SeeAuxIndex');
+
+		Route::get('/auc-index-menu', 'AucIndexMenuController@index');
+
+		Route::get('/seo-familias-sessiones', 'SeoFamiliasSessionesController@index');
+		Route::get('/seo-familias-sessiones/name/{id?}', 'SeoFamiliasSessionesController@SeeFamilySessionsSeo');
+
+		Route::get('/seo-categories', 'SeoCategoriesController@index');
+		Route::get('/seo-categories/name/{cod_sec?}', 'SeoCategoriesController@InfCategSeo');
+
+		Route::get('/traducciones/{head}/{lang}', 'TraduccionesController@index');
+		Route::get('/traducciones', 'TraduccionesController@getTraducciones');
+
+		Route::get('/traducciones/search', 'TraduccionesController@search');
+
+		Route::get('/translates', 'configuracion\AdminTraduccionController@index');
+
+		Route::get('/content', 'ContentController@index');
+		Route::get('/content/name/{id}', 'ContentController@getPage');
+		Route::get('/email_clients', 'AdminEmailsController@index');
+		Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
+
+		Route::get('/blog-admin', 'BlogController@getBlogs');
+		Route::get('/blog-admin/name/{id?}', 'BlogController@index');
+		Route::get('/category-blog', 'BlogController@getCategoryBlog');
+		Route::get('/category-blog/name/{id?}', 'BlogController@seeCategoryBlog');
+
+		Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+		//TODO: V5
+		Route::group(['namespace' => 'V5'], function () {
+
+			Route::group(['prefix' => 'faqs'], function () {
+				Route::get('/{lang}/edit/{cod_faq?}', 'AdminFaqController@edit');
+				Route::post('/{lang}/editRun', 'AdminFaqController@editRun');
+				Route::post('/delete', 'AdminFaqController@delete');
+				Route::post('/{lang}/order', 'AdminFaqController@saveOrder');
+				Route::get('/{lang?}/', 'AdminFaqController@index');
+				Route::post('/{lang}/categories/newRun', 'AdminFaqController@categoriesNewRun');
+				Route::post('/categories/delete', 'AdminFaqController@categoriesDelete');
+				Route::get('/{lang}/categories/edit/{cod}', 'AdminFaqController@categoriesEdit');
+				Route::post('/{lang}/categories/editRun', 'AdminFaqController@categoriesEditRun');
+			});
+			Route::get('/enable_register', 'AdminEnableRegisterController@index');
+			Route::post('/enable_register', 'AdminEnableRegisterController@save');
+			Route::get('/favorites', 'AdminFavoritesControler@index');
+		});
+
+		Route::group(['prefix' => 'newbanner'], function () {
+			Route::get('/', "contenido\BannerController@index");
+			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
+			Route::get('/nuevo', "contenido\BannerController@nuevo");
+			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
+			Route::get('/editar/{id}', "contenido\BannerController@editar");
+			Route::get('/borrar/{id}', "contenido\BannerController@borrar");
+			Route::post('/activar', "contenido\BannerController@activar");
+			Route::post('/editar_run', "contenido\BannerController@editar_run");
+			Route::post('/listaItemsBloque', "contenido\BannerController@listaItemsBloque");
+			Route::post('/nuevoItemBloque', "contenido\BannerController@nuevoItemBloque");
+			Route::post('/editaItemBloque', "contenido\BannerController@editaItemBloque");
+			Route::post('/guardaItemBloque', "contenido\BannerController@guardaItemBloque");
+			Route::post('/borraItemBloque', "contenido\BannerController@borraItemBloque");
+			Route::post('/estadoItemBloque', "contenido\BannerController@estadoItemBloque");
+			Route::post('/vistaPrevia', "contenido\BannerController@vistaPrevia");
+			Route::post('/ordenaBloque', "contenido\BannerController@ordenaBloque");
+			Route::post('/orderbanner', "contenido\BannerController@orderBanner");
+		});
+
+		Route::resource('event', 'contenido\EventsController')->except(['show', 'destroy']);
+
+		Route::post('/static-pages/images', 'contenido\AdminPagesController@uploadImage')->name('static-pages.upload_image');
+		Route::resource('static-pages', 'contenido\AdminPagesController');
+
+		/**Deshabilitado hasta que este arreglado y testeado 100% */
+		Route::group(['prefix' => 'email'], function () {
+			Route::get('/', 'configuracion\EmailController@index');
+			Route::get('/editar/{cod}', 'configuracion\EmailController@edit');
+			Route::post('/guardar', 'configuracion\EmailController@guardar');
+			Route::post('/guardarEmail', 'configuracion\EmailController@guardarEmail');
+			Route::get('/plantilla', 'configuracion\EmailController@plantilla');
+			Route::post('/guardarPlantilla', 'configuracion\EmailController@guardarPlantilla');
+		});
+
+		Route::get('/email', 'EmailController@index');
+		Route::get('/email/ver/{cod_email}', 'EmailController@getEmail');
+
+		Route::group(['prefix' => 'escalado'], function () {
+			Route::get('/', 'configuracion\EscaladoController@index');
+			Route::post('/save', 'configuracion\EscaladoController@save');
+		});
+
+		Route::group(['prefix' => 'configuracion'], function () {
+			Route::get('/', 'configuracion\GeneralController@index');
+			Route::post('/save', 'configuracion\GeneralController@save');
+
+			Route::get('credito/export', 'configuracion\AdminCreditoController@export')->name('credito.export');
+			Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
+			Route::resource('credito', 'configuracion\AdminCreditoController')->except(['show']);
+
+
+			//Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
+		});
+
+		#CONTENIDO
+		Route::group(['prefix' => 'calendar'], function () {
+			Route::get('/', 'contenido\AdminCalendarController@index');
+			#Route::get('/show', 'contenido\AdminCalendarController@show');
+			#Route::get('/create', 'contenido\AdminCalendarController@create');
+			#Route::post('/store', 'contenido\AdminCalendarController@store');
+			Route::get('/edit', 'contenido\AdminCalendarController@edit');
+			Route::post('/update', 'contenido\AdminCalendarController@update');
+			Route::post('/delete', 'contenido\AdminCalendarController@destroy');
+		});
+
+
+		// CLIENTES
+		Route::group(['prefix' => 'favoritos'], function () {
+			Route::get('/', "usuario\FavoritosController@index");
+		});
+		Route::group(['prefix' => 'cliente'], function () {
+			Route::get('/', 'usuario\ClienteController@index');
+			Route::get('/nuevo', 'usuario\ClienteController@edit');
+			Route::get('/edit/{id}', 'usuario\ClienteController@edit');
+			Route::post('/edit_run', 'usuario\ClienteController@edit_run');
+			Route::post('/bajaCliente', 'usuario\ClienteController@bajaCliente');
+			Route::post('/reactivarCliente', 'usuario\ClienteController@reactivarCliente');
+			Route::get('/export', 'usuario\ClienteController@export')->name('cliente.export');
+		});
+
+
+		// SUBASTAS
+
+		Route::group(['prefix' => 'subasta'], function () {
+			Route::get('/', "subasta\SubastaController@index");
+			Route::get('/nuevo', 'subasta\SubastaController@edit');
+			Route::get('/edit/{id}', 'subasta\SubastaController@edit')->name('subasta.edit');
+			Route::post('/edit_run', 'subasta\SubastaController@edit_run');
+			Route::post('/borrarSubasta', 'subasta\SubastaController@borrarSubasta');
+			Route::post('/ficherosSubasta/{subasta}', 'subasta\SubastaController@ficherosSubasta');
+			Route::post('/borrarFicherosSubasta', 'subasta\SubastaController@borrarFicherosSubasta');
+			Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja');
+			Route::post('/borrarOrden', 'subasta\SubastaController@borrarOrden');
+			Route::post('/guardaEscalado', 'subasta\SubastaController@guardaEscalado')->name('guardarEscaladoSubastas');
+			Route::get('/list', 'subasta\SubastaController@getSelectSubastas');
+			Route::get('/select2list', 'subasta\SubastaController@getSelect2List')->name('subastas.select2');
+		});
+		Route::group(['prefix' => 'lote'], function () {
+			Route::get('/nuevo/{id}', 'subasta\SubastaController@editLote');
+			Route::get('/edit/{subasta}/{id}', 'subasta\SubastaController@editLote');
+			Route::post('/borrar/{subasta}/{id}', 'subasta\SubastaController@borrarLote');
+			Route::post('/edit_run', 'subasta\SubastaController@editLote_run');
+			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote');
+			Route::get('/file/{id}', 'subasta\SubastaController@lotFile');
+			Route::post('/excelRun', 'subasta\SubastaController@subirExcel');
+			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport');
+			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage');
+			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage');
+			Route::get('/list', 'subasta\SubastaController@getSelectLotes');
+			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
+			Route::post('/addfile', 'subasta\SubastaController@addLoteFile');
+			Route::post('/addvideo', 'subasta\SubastaController@addLoteVideo');
+			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
+			Route::post('/deletevideo', 'subasta\SubastaController@deleteLoteVideo');
+			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export');
+		});
+		Route::group(['prefix' => 'sesion'], function () {
+			Route::get('/nuevo/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
+			Route::get('/edit/{subasta}/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
+			Route::post('/borrar/{cod_sub}/{reference}', 'subasta\AdminAucSessionsController@destroy');
+			Route::post('/update', 'subasta\AdminAucSessionsController@oldUpdate');
+			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store');
+			Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy');
+		});
+
+		Route::group(['prefix' => 'orders'], function () {
+			Route::get('/excel/{idAuction}', 'subasta\AdminOrderController@excel')->name('orders.excel');
+			Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
+			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
+		});
+		Route::resource('orders', 'subasta\AdminOrderController')->except(['show']);
+
+		Route::group(['prefix' => 'award'], function () {
+			Route::get('/', 'subasta\AdminAwardController@index')->name('award.index');
+			Route::get('/show', 'subasta\AdminAwardController@show');
+			Route::get('/create/{idAuction?}', 'subasta\AdminAwardController@create')->name('award.create');
+			Route::post('/store', 'subasta\AdminAwardController@store');
+			Route::get('/edit', 'subasta\AdminAwardController@edit')->name('award.edit');
+			Route::post('/update', 'subasta\AdminAwardController@update');
+			Route::post('/delete', 'subasta\AdminAwardController@destroy');
+			Route::post('/export/{idAuction?}', 'subasta\AdminAwardController@export')->name('award.export');
+		});
+
+		Route::group(['prefix' => 'not-award'], function () {
+			Route::get('/', 'subasta\AdminNotAwardController@index')->name('not_award.index');
+			Route::post('/export/{idAuction?}', 'subasta\AdminNotAwardController@export')->name('not_award.export');
+		});
+
+
+		Route::group(['prefix' => 'client'], function () {
+			Route::get('/list', 'subasta\SubastaController@getSelectClients');
+			Route::get('/select2list', 'subasta\SubastaController@getSelect2ClientList')->name('client.list');
+		});
+		Route::group(['prefix' => 'licit'], function () {
+			Route::get('/', 'subasta\AdminLicitController@index');
+			Route::get('/show', 'subasta\AdminLicitController@show');
+			Route::get('/create', 'subasta\AdminLicitController@create');
+			Route::post('/store', 'subasta\AdminLicitController@store');
+			Route::get('/edit', 'subasta\AdminLicitController@edit');
+			Route::post('/update', 'subasta\AdminLicitController@update');
+			Route::get('/list', 'subasta\SubastaController@getSelectLicits');
+		});
+
+
+		Route::group(['prefix' => 'category'], function () {
+			Route::get('/', 'subasta\AdminCategoryController@index');
+			#Route::get('/show', 'subasta\AdminCategoryController@show');
+			#Route::get('/create', 'subasta\AdminCategoryController@create');
+			#Route::post('/store', 'subasta\AdminCategoryController@store');
+			Route::get('/edit', 'subasta\AdminCategoryController@edit');
+			Route::post('/update', 'subasta\AdminCategoryController@update');
+			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
+		});
+
+		Route::group(['prefix' => 'subcategory'], function () {
+			Route::get('/', 'subasta\AdminSubCategoryController@index');
+			#Route::get('/show', 'subasta\AdminSubCategoryController@show');
+			#Route::get('/create', 'subasta\AdminSubCategoryController@create');
+			#Route::post('/store', 'subasta\AdminSubCategoryController@store');
+			Route::get('/edit', 'subasta\AdminSubCategoryController@edit');
+			Route::post('/update', 'subasta\AdminSubCategoryController@update');
+			Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
+		});
+
+		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
+		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'destroy']);
+
+
+		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
+		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
+		Route::resource('clientes', 'usuario\AdminClienteController');
+
+		Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
+		Route::resource('visibilidad', 'subasta\AdminVisibilidadController')->except(['show']);
+
+		Route::get('winners/export/{cod_sub}', 'subasta\AdminWinnerController@winnersExport')->name('winners.export');
+		Route::resource('artist', 'V5\AdminArtistController')->except(['show']);
+		Route::post('artist/activar', 'V5\AdminArtistController@activar');
+		Route::post('artist/updatearticles', 'V5\AdminArtistController@updateArticles');
+		Route::post('artist/loadarticles', 'V5\AdminArtistController@loadArticles');
+		Route::post('artist/createarticle', 'V5\AdminArtistController@createArticle');
+		Route::post('artist/deletearticle', 'V5\AdminArtistController@deleteArticle');
+
+		Route::post('subastas/update/image', 'subasta\AdminSubastaGenericController@updateImage')->name('subastas.update.image');
+
+		Route::resource('subastas', 'subasta\AdminSubastaGenericController');
+		Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController');
+
+		Route::resource('subastas.sesiones', 'subasta\AdminAucSessionsController');
+
+		Route::get('subastas/{cod_sub}/lotes/select2list/', 'subasta\AdminLotController@getSelect2List')->name('subastas.lotes.select2');
+		Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
+
+		Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
+		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features');
+
+
+		Route::get('subastas/lotes/printPdf/{codSub}', 'subasta\AdminLotController@pdfExhibition')->name('subastas.lotes.printPdf');
+		Route::get('subastas/lotes/printExcel/{codSub}', 'subasta\AdminLotController@excelExhibition')->name('subastas.lotes.printExcel');
+		Route::get('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@getOrder')->name('subastas.lotes.order_edit');
+		Route::post('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@saveOrder')->name('subastas.lotes.order_store');
+
+
+		Route::get('subastas/lotes/order/destacados', 'subasta\AdminLotController@getOrderDestacada')->name('subastas.lotes.order_destacadas_edit');
+		Route::post('subastas/lotes/order/destacados', 'subasta\AdminLotController@saveOrderDestacada')->name('subastas.lotes.order_destacadas_store');
+
+		Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
+		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
+
+		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
+		Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
+		Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show']);
+
+		Route::post('bi/ajax', 'bi\AdminBiController@lotsInfo')->name('bi.reload');
+		Route::post('bi/allcategories', 'bi\AdminBiController@lotsAwardForCategory');
+		Route::post('bi/auction-modal-info', 'bi\AdminBiController@getAuctionInfo');
+		Route::resource('bi', 'bi\AdminBiController')->only(['index']);
+
+		Route::get('bi/cedentes/{cod_cli}', 'bi\AdminBiCedentesController@show')->name('bi_cedentes.show');
+		Route::get('bi/cedentes/{cod_cli}/json', 'bi\AdminBiCedentesController@getShow')->name('bi_cedentes.show_data');
+		Route::get('bi/cedentes', 'bi\AdminBiCedentesController@index')->name('bi_cedentes.index');
+
+		Route::get('providers/list', 'facturacion\AdminProviderController@getSelectProviders')->name('provider.list');
+		Route::resource('providers', 'facturacion\AdminProviderController')->except(['show']);
+
+		Route::resource('bills', 'facturacion\AdminBillController')->except(['show']);
+		Route::resource('pedidos', 'facturacion\AdminPedidosController')->except(['show']);
+		Route::post('pedidos/importeBasePedido', 'facturacion\AdminPedidosController@importeBasePedido');
+
+		Route::get('articulos', 'AdminArticlesController@index')->name('articles.index');
+		Route::get('articles/order', 'AdminArticlesController@getOrder')->name('articles.order_edit');
+		Route::post('articles/order', 'AdminArticlesController@saveOrder')->name('articles.order_store');
+
+		Route::get('/genericImport', 'CmsConfigController@getImportFile');
+		Route::post('/genericImport', 'CmsConfigController@ImportFile');
+	});
+
+
+	Route::post('/sliders/upload', 'AdminSlidersController@uploadFile');
+	Route::post('/sliders/save', 'AdminSlidersController@save');
+	Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
+	Route::post('/config/save', 'AdminConfigController@save');
+	Route::post('/content/save', 'ContentController@savedPage');
+	Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
+	Route::post('/seo-categories/edit', 'SeoCategoriesController@SavedCategSeo');
+	Route::post('/seo-familias-sessiones/edit', 'SeoFamiliasSessionesController@SavedFamilySessionsSeo');
+	Route::post('/auc-index-menu/save', 'AucIndexMenuController@save');
+	Route::post('/traducciones/new', 'TraduccionesController@NewTrans');
+	Route::post('/bloque/edit', 'BloqueConfigController@EditBloque');
+	Route::post('/auc-index/edit', 'AucIndexController@EditAuIndex');
+	Route::post('/banner/edit', 'BannerController@EditBanner');
+	Route::post('/resources/edit', 'ResourceController@EditResources');
+	Route::post('/resources/delete', 'ResourceController@DeleteResource');
+	Route::post('/category-blog/edit', 'BlogController@EditBlogCategory');
+	Route::post('/blog/edit', 'BlogController@EditBlog');
+
+
+
+
+
+
+	Route::group(['middleware' => ['web']], function () {
+
+		Route::get('/login', 'AdminUserController@login');
+		Route::post('/login', 'AdminUserController@login_post');
+		Route::get('/logout', 'AdminUserController@logout');
+	});
 });

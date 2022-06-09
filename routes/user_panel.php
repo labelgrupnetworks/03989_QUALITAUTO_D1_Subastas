@@ -2,60 +2,60 @@
 # Obligatorio estar registrado.
 Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
-    # Panel de usuario
-    #Deprecated revisar
-    //Route::get('{lang}/user/panel', 'UserController@panel');
+	# Panel de usuario
+	#Deprecated revisar
+	//Route::get('{lang}/user/panel', 'UserController@panel');
 
-    # Lista de pujas
-    #Deprecated revisar
-    /*Route::get('{lang}/user/panel/bids', 'UserController@bidsList');
+	# Lista de pujas
+	#Deprecated revisar
+	/*Route::get('{lang}/user/panel/bids', 'UserController@bidsList');
 		Route::get('{lang}/user/panel/bids'.'/page/{page}', 'UserController@bidsList');*/
 
-    # Lista de Adjudicaciones
-    # Deprecated revisar
-    //Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
-    //Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
+	# Lista de Adjudicaciones
+	# Deprecated revisar
+	//Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
+	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
-    # Lista de Favoritos
-    Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos');
-    Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
+	# Lista de Favoritos
+	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos');
+	Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
 
-    # Lista de Ventas cedente
-    Route::get('{lang}/user/panel/sales', 'UserController@getSales');
-    Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
-    Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
-    #CARLANDIA
-    //Mis vehiculos en venta
-    Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');
-    Route::get('{lang}/user/panel/my-sales', 'V5\CarlandiaSalesController@getAwardSales')->name('panel.award-sales');
-    Route::get('{lang}/user/panel/my-sales-download', 'V5\CarlandiaSalesController@getDownloadSales')->name('panel.download-sales');
-
-
-    #Lista de Temas Favoritos
-    Route::get('{lang}/user/panel/themesfavorites', 'UserController@getTemaFavoritos');
-    Route::post('/panel/save/favorites', 'UserController@savedTemaFavoritos');
+	# Lista de Ventas cedente
+	Route::get('{lang}/user/panel/sales', 'UserController@getSales');
+	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
+	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
+	#CARLANDIA
+	//Mis vehiculos en venta
+	Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');
+	Route::get('{lang}/user/panel/my-sales', 'V5\CarlandiaSalesController@getAwardSales')->name('panel.award-sales');
+	Route::get('{lang}/user/panel/my-sales-download', 'V5\CarlandiaSalesController@getDownloadSales')->name('panel.download-sales');
 
 
-    Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
+	#Lista de Temas Favoritos
+	Route::get('{lang}/user/panel/themesfavorites', 'UserController@getTemaFavoritos');
+	Route::post('/panel/save/favorites', 'UserController@savedTemaFavoritos');
 
-    # Informacion de usuario
 
-    Route::post('api-ajax/client/update', 'UserController@updateClientInfo');
-    Route::post('api-ajax/client/update/password', 'UserController@updatePassword');
+	Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
 
-    Route::get('/factura/{afral}-{nfral}', 'UserController@bills');
-    Route::get('/prefactura/{cod_sub}', 'UserController@proformaInvoiceFile');
+	# Informacion de usuario
 
-    Route::get('/{lang}/user/panel/modification-orders', 'UserController@ordersClient');
+	Route::post('api-ajax/client/update', 'UserController@updateClientInfo');
+	Route::post('api-ajax/client/update/password', 'UserController@updatePassword');
 
-    Route::post('api-ajax/shipping_costs', 'PaymentsController@shippingCosts');
+	Route::get('/factura/{afral}-{nfral}', 'UserController@bills');
+	Route::get('/prefactura/{cod_sub}', 'UserController@proformaInvoiceFile');
 
-    #Lista de Temas Favoritos
-    Route::get('{lang}/user/panel/pending_bills', 'UserController@getPendingBills');
+	Route::get('/{lang}/user/panel/modification-orders', 'UserController@ordersClient');
 
-    # Para Carlandia
-    Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
-    Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
+	Route::post('api-ajax/shipping_costs', 'PaymentsController@shippingCosts');
+
+	#Lista de Temas Favoritos
+	Route::get('{lang}/user/panel/pending_bills', 'UserController@getPendingBills');
+
+	# Para Carlandia
+	Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
+	Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
 });
 Route::get('{lang}/user/panel/info', 'UserController@accountInfo');
 
@@ -89,7 +89,7 @@ Route::get('{lang}/user/panel/showShoppingOrders', 'V5\ArticleController@showSho
 #pago por transferencia
 
 Route::get('{lang}/user/panel/transferpayment', function () {
-    exit(\View::make('front::pages.panel.transferpayment'));
+	exit(\View::make('front::pages.panel.transferpayment'));
 })->name("transferpayment");
 
 #dejar esto al final, no se quien lo puso ni que  sentido tiene que coja cualquier valor

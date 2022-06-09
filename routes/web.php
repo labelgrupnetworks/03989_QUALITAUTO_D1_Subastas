@@ -17,14 +17,14 @@ Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController
 
 # Nombres de espacios
 View::addNamespace('front', [
-    resource_path('/views/themes/' . App('config')['app']['theme']),
-    resource_path('/views/default'),
+	resource_path('/views/themes/' . App('config')['app']['theme']),
+	resource_path('/views/default'),
 ]);
 View::addNamespace('admin', realpath(base_path('resources/views/admin/' . Config::get('app.admin_theme'))));
 
 //redireccionamos de la raiz al idioma principal
 Route::get('', function () {
-    return redirect("/" . \App::getLocale(), 301);
+	return redirect("/" . \App::getLocale(), 301);
 });
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(\Routing::is_home(), 'HomeController@index')->name('home');
@@ -162,8 +162,8 @@ Route::post('/api-ajax/open_lot', 'SubastaTiempoRealController@openLot');
 # Lotes API Service
 # Subastas en Tiempo Real
 if (!empty(intval(Config::get('app.enable_tr_auctions')))) {
-    Route::get(\Routing::translateSeo('api/subasta') . '{cod}-{texto}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
-    Route::get(\Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
+	Route::get(\Routing::translateSeo('api/subasta') . '{cod}-{texto}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
+	Route::get(\Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 }
 Route::get('sendemailsobrepuja/{cod}/{licit}/{ref}/{orden_o_puja}', 'SubastaTiempoRealController@sendEmailSobrepuja');
 Route::post('api/action/subasta-{cod}', 'SubastaTiempoRealController@action')->where(array('cod' => '[0-9a-zA-Z]+'));
@@ -281,7 +281,7 @@ Route::post('api-ajax/mail-peticion-catalogo', 'MailController@mailToAdminPetici
 
 
 Route::get(\Routing::slug('thanks'), function () {
-    return View::make('front::generic.thanks');
+	return View::make('front::generic.thanks');
 });
 
 # Content Controller
@@ -294,9 +294,9 @@ Route::get(\Routing::translateSeo('mapa-web'), 'PageController@siteMapPage');
 
 //Soler esta utilizando un sistema de preguntas frequentes con csv.
 if (\Config::get("app.faqs_old", 0)) {
-    Route::get(\Routing::slugSeo('preguntas-frecuentes', true), 'ContentController@faqs')->name('faqs_page');
+	Route::get(\Routing::slugSeo('preguntas-frecuentes', true), 'ContentController@faqs')->name('faqs_page');
 } else {
-    Route::get(\Routing::translateSeo('preguntas-frecuentes'), 'V5\FaqController@index')->name('faqs_page');
+	Route::get(\Routing::translateSeo('preguntas-frecuentes'), 'V5\FaqController@index')->name('faqs_page');
 }
 
 require __DIR__ . '/user_panel.php';
@@ -377,7 +377,7 @@ Route::get('/generate_miniatures', 'ImageController@generateMiniatures');
 Route::get('/regenerate_img', 'ImageController@regenerate_images_table');
 
 Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
+	Artisan::call('cache:clear');
 });
 Route::get('/{lang}/rechargefilters', 'SubastaController@rechargefilters');
 
@@ -427,7 +427,7 @@ Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/lots
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/catalogs/lots/{lotNumber}', 'InvaluableController@updateLot');
 
 Route::get('/landing', function () {
-    return View::make('front::landings.landing');
+	return View::make('front::landings.landing');
 });
 
 
@@ -491,7 +491,7 @@ Route::get(\Routing::slug('workwithus') . "/{key}", 'V5\AutoFormulariosControlle
 Route::get(\Routing::slugSeo('servicios', true), 'ServicesController@index');
 Route::get('/{lang}/servicios/encapsulacion', 'ServicesController@encapsulacion');
 Route::get('/{lang}/servicios/fotografias', function () {
-    return View::make('pages.servicios.fotografias');
+	return View::make('pages.servicios.fotografias');
 });
 Route::post('/{lang}/servicios/valoracion-fotografia', 'ServicesController@valoracionFotografia');
 Route::post('/{lang}/servicios/valoracion-encapsulacion', 'ServicesController@valoracionEncapsulacion');
@@ -516,17 +516,17 @@ Route::post('/{lang}/api/email-when-change-file', 'apirest\MailApiRestController
 
 #listado de lotes por subasta
 if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") == "new") {
-    #nuevo
-    Route::get(\Routing::slugSeo('subasta') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
-    #version antigua
-    Route::get(\Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	#nuevo
+	Route::get(\Routing::slugSeo('subasta') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
+	#version antigua
+	Route::get(\Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
 } else {
-    #ver version nueva con URL test
-    Route::get(\Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
+	#ver version nueva con URL test
+	Route::get(\Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 
-    #antiguo
-    Route::get(\Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-    Route::get(\Routing::slugSeo('subasta') . '/{cod}-{texto}/page-{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
+	#antiguo
+	Route::get(\Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	Route::get(\Routing::slugSeo('subasta') . '/{cod}-{texto}/page-{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 }
 
 
@@ -584,14 +584,14 @@ Route::post('/articleCart/returnpayup2', 'V5\PayArticleCartController@ReturnPayU
 
 Route::group(['prefix' => 'api'], function () {
 
-    Route::post('{lang}/getArticles', 'V5\ArticleController@getArticles')->name("getArticles");
-    //Route::post(\Routing::translateSeo('getArticles'), 'V5\ArticleController@getArticles')->name("getArticles");
+	Route::post('{lang}/getArticles', 'V5\ArticleController@getArticles')->name("getArticles");
+	//Route::post(\Routing::translateSeo('getArticles'), 'V5\ArticleController@getArticles')->name("getArticles");
 
-    Route::post(\Routing::translateSeo('getOrtsec'), 'V5\ArticleController@getOrtSec');
-    Route::post(\Routing::translateSeo('getSec'), 'V5\ArticleController@getSec');
-    Route::post(\Routing::translateSeo('getTallasColores'), 'V5\ArticleController@getTallasColores');
-    Route::post(\Routing::translateSeo('getMarcas'), 'V5\ArticleController@getMarcas');
-    Route::post(\Routing::translateSeo('getFamilias'), 'V5\ArticleController@getFamilias');
+	Route::post(\Routing::translateSeo('getOrtsec'), 'V5\ArticleController@getOrtSec');
+	Route::post(\Routing::translateSeo('getSec'), 'V5\ArticleController@getSec');
+	Route::post(\Routing::translateSeo('getTallasColores'), 'V5\ArticleController@getTallasColores');
+	Route::post(\Routing::translateSeo('getMarcas'), 'V5\ArticleController@getMarcas');
+	Route::post(\Routing::translateSeo('getFamilias'), 'V5\ArticleController@getFamilias');
 });
 /***** Fin Articulos ******/
 
@@ -620,12 +620,12 @@ require __DIR__ . '/web_service.php';
 
 //Si no ha habido ningun resultado mostramos un 404
 Route::get('{any}', function () {
-    exit(\View::make('front::errors.404'));
+	exit(\View::make('front::errors.404'));
 })->where('any', '.*');
 
 
 Route::post('{any}', function () {
-    exit(\View::make('front::errors.404'));
+	exit(\View::make('front::errors.404'));
 })->where('any', '.*');
 
 /* FIN 5.2 de laravel despues de incluir el routes/web */

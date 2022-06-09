@@ -12,5 +12,4 @@ Route::group(['prefix' => 'webservice', 'namespace' => 'webservice', 'middleware
 
 	#FUNCIONES
 	Route::post('/{function}', 'WebServiceController@index');
-
 });
