@@ -11,7 +11,7 @@
 		<div class="col-xs-6 text-right">
 
 			@if(session('success'))
-					<a href="{{ route('subastas.lotes.create', ['cod_sub' => $cod_sub ,'menu' => 'subastas']) }}"
+					<a href="{{ route('subastas.lotes.create', ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
 						class="btn btn-primary">{{ trans("admin-app.button.new") }}
 						{{ trans("admin-app.title.lot") }}</a>
 			@endif
@@ -23,11 +23,11 @@
 			@endif
 
 			@if ($anterior)
-			<a href="{{ route('subastas.lotes.edit', ['cod_sub' => $cod_sub, 'ref_asigl0' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
+			<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
 				class="btn btn-warning">{{ trans("admin-app.button.prev") }}</a>
 			@endif
 			@if ($siguiente)
-			<a href="{{ route('subastas.lotes.edit', ['cod_sub' => $cod_sub, 'ref_asigl0' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
+			<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
 				class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
 			@endif
 

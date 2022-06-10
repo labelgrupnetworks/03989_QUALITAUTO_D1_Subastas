@@ -9,14 +9,14 @@
 			<h1>{{ trans("admin-app.title.lots") }}</h1>
 		</div>
 		<div class="col-xs-12 text-right" style="margin-top: 2rem">
-			<a href="{{ route("$parent_name.$resource_name.create", ['cod_sub' => $cod_sub ,'menu' => 'subastas']) }}"
+			<a href="{{ route("$parent_name.$resource_name.create", ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
 				class="btn btn-primary">{{ trans("admin-app.button.new") }}
 				{{ trans("admin-app.title.lot") }}</a>
 		</div>
 	</div>
 
 	<div class="row well">
-			@include('admin::pages.subasta.lotes._table', compact('fgAsigl0'))
+			@include('admin::pages.subasta.lotes._table', ['fgAsigl0' => $fgAsigl0 ?? null ])
 	</div>
 
 

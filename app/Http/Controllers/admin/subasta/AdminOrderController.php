@@ -100,6 +100,10 @@ class AdminOrderController extends Controller
 	 * */
 	function create(Request $request){
 
+		if(!$request->idAuction){
+			return back()->withErrors(['error' => 'No se ha especificado la subasta']);
+		}
+
 		/**Tipos de orden */
 		$tiposOrden = [
 			'W' => "Web",
@@ -110,14 +114,14 @@ class AdminOrderController extends Controller
 
 		$data['formulario'] = array();
 
-		if(!empty($request->cod_sub)){
-			$data['formulario']['subasta'] = FormLib::TextReadOnly("idauction", 1, $request->cod_sub);
+		if(!empty($request->idAuction)){
+			$data['formulario']['subasta'] = FormLib::TextReadOnly("idauction", 1, $request->idAuction);
 		}
 		else{
 			$data['formulario']['subasta'] = FormLib::Select2WithAjax('idauction', 1, '', '', '/admin/subasta/select2list', trans('admin-app.placeholder.sub_creditosub' ));
 		}
 
-		$data['formulario']['referencia lote'] = FormLib::Select2WithAjax('ref', 1, '', '', route('subastas.lotes.select2', ['cod_sub' => $request->cod_sub]), trans('admin-app.placeholder.lot_creditolot'));
+		$data['formulario']['referencia lote'] = FormLib::Select2WithAjax('ref', 1, '', '', route('subastas.lotes.select2', ['cod_sub' => $request->idAuction]), trans('admin-app.placeholder.lot_creditolot'));
 		$data['formulario']['cliente'] = FormLib::Select2WithAjax('cod_cli', 1, '', '', route('client.list'), trans('admin-app.placeholder.cli_creditosub' ));
 		$data['formulario']['orden'] = FormLib::Int('order', 1, 0);
 		$data['formulario']['fecha'] = FormLib::DateTime('date', 0, '');

@@ -16,7 +16,7 @@
 
 	<div class="row well">
 
-		<form method="POST" action="{{ route('visibilidad.update', ['cod_visibilidad' => $visibility->cod_visibilidad] ) }}">
+		<form method="POST" action="{{ route('visibilidad.update', ['visibilidad' => $visibility->cod_visibilidad] ) }}">
 			@method('PUT')
 			@csrf
 			@include('admin::pages.subasta.visibilidades._form', compact('formulario', 'visibility'))

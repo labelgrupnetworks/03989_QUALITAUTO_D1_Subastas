@@ -60,7 +60,7 @@
 							value="{{ trans("admin-app.button.search") }}">
 							<a class="btn btn-warning w-100"
 								@if($isRender)
-									href="{{route(request()->route()->getName(), ['cod_sub' => $idauction])}}"
+									href="{{route(request()->route()->getName(), ['subasta' => $idauction])}}"
 								@else
 									href="{{route("award.index")}}"
 								@endif

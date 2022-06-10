@@ -1,4 +1,4 @@
-<form name="save_session" action="{{ route('subastas.sesiones.store', ['cod_sub' => $fgSub->cod_sub]) }}" method="POST"
+<form name="save_session" action="{{ route('subastas.sesiones.store', ['subasta' => $fgSub->cod_sub]) }}" method="POST"
 	id="save_session" enctype="multipart/form-data">
 	@csrf
 

@@ -397,7 +397,7 @@ class AdminLotController extends Controller
 		$result = json_decode($json);
 		if ($result->status == 'ERROR') {
 			//return back()->withErrors(['errors' => [$json]])->withInput();
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'ref_asigl0' => $ref_asigl0]))->with(['warning' => ['Images' => $json], 'success' => array(trans('admin-app.title.updated_ok'))]);
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $ref_asigl0]))->with(['warning' => ['Images' => $json], 'success' => array(trans('admin-app.title.updated_ok'))]);
 		}
 
 		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);

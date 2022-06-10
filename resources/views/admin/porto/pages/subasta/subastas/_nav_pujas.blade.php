@@ -174,7 +174,7 @@
 						<input type="submit" class="btn btn-info w-100"
 							value="{{ trans("admin-app.button.search") }}">
 							<a
-							href="{{ route( request()->route()->getName(), ['cod_sub' => $cod_sub, 'menu' => 'subastas'])}}"
+							href="{{ route( request()->route()->getName(), ['subasta' => $cod_sub, 'menu' => 'subastas'])}}"
 
 							class="btn btn-warning w-100">{{ trans("admin-app.button.restart") }}</a>
 					</td>

@@ -19,7 +19,7 @@
 		<form action="{{ route('deposito.update', $fgDeposito->cod_deposito) }}" method="POST">
 			@method('PUT')
 			@csrf
-			@include('admin::pages.subasta.depositos._form', compact('formulario', '$fgDeposito'))
+			@include('admin::pages.subasta.depositos._form', compact('formulario', 'fgDeposito'))
 		</form>
 
 	</div>

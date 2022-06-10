@@ -10,9 +10,11 @@
 			<a href="/admin/order/excel/{{$cod_sub}}" class="btn btn-success btn-sm">{{ trans('admin-app.button.upload_excel') }}</a>
 		@endif
 
-		<a href="{{ route('orders.create', ['cod_sub' => $cod_sub, 'menu' => 'subastas'] ) }}"
+		@if($cod_sub)
+		<a href="{{ route('orders.create', ['idAuction' => $cod_sub, 'menu' => 'subastas'] ) }}"
 			class="btn btn-primary btn-sm">{{ trans("admin-app.button.new_fem") }}
 			{{ trans("admin-app.title.order") }}</a>
+		@endif
 
 			@include('admin::includes.config_table', ['id' => 'tableOrder', 'params' => ((array) $filter)])
 
@@ -128,7 +130,7 @@
 							value="{{ trans("admin-app.button.search") }}">
 							<a
 							@if($isRender)
-								href="{{ route( request()->route()->getName(), ['sub_orlic' => $cod_sub, 'menu' => 'subastas'])}}"
+								href="{{ route( request()->route()->getName(), ['subasta' => $cod_sub, 'menu' => 'subastas'])}}"
 							@else
 								href="{{route('orders.index', ['menu' => 'subastas'])}}"
 							@endif
@@ -151,7 +153,7 @@
 					<td class="tel1_orlic">{{$order->tel1_orlic}}</td>
 					<td style="">
 						<a title="{{ trans("admin-app.button.edit") }}"
-							href="{{ route('orders.edit', ['idauction' => $order->sub_orlic, 'ref' => $order->ref_asigl0, 'licit' => $order->licit_orlic]) }}"
+							href="{{ route('orders.edit', ['idAuction' => $order->sub_orlic, 'ref' => $order->ref_asigl0, 'licit' => $order->licit_orlic]) }}"
 							class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o"
 								aria-hidden="true"></i>{{ trans("admin-app.button.edit") }}
 						</a>

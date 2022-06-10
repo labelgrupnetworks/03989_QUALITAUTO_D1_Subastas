@@ -45,7 +45,7 @@
 					<td class="js-end_format">{{ $aucSession->end_format }}</td>
 
 					<td class="js-auc_edit">
-						<a title="{{ trans("admin-app.button.edit") }}" class="btn btn-success btn-sm js_edit_session" data-action="{{ route('subastas.sesiones.edit', ['cod_sub' => $aucSession->auction, 'reference' => $aucSession->reference]) }}">
+						<a title="{{ trans("admin-app.button.edit") }}" class="btn btn-success btn-sm js_edit_session" data-action="{{ route('subastas.sesiones.edit', ['subasta' => $aucSession->auction, 'sesione' => $aucSession->reference]) }}">
 							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 								{{ trans("admin-app.button.edit") }}
 						</a>
@@ -117,7 +117,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 				<a id="formDelete"
-					data-action="{{ route('subastas.sesiones.destroy', ['subasta' => $aucSession->auction, 'reference' => 0]) }}"
+					data-action="{{ route('subastas.sesiones.destroy', ['subasta' => $aucSession->auction, 'sesione' => 0]) }}"
 					class="btn btn-danger">Borrar
 				</a>
 
@@ -159,7 +159,7 @@
 	$('#create_session').on('click', function(){
 
 		$.ajax ({
-			url: "{{ route('subastas.sesiones.create', ['cod_sub' => $cod_sub]) }}",
+			url: "{{ route('subastas.sesiones.create', ['subasta' => $cod_sub]) }}",
 			type: "get",
 
 			success: function(result) {

@@ -207,7 +207,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
 			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
 		});
-		Route::resource('orders', 'subasta\AdminOrderController')->except(['show']);
+		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
 		Route::group(['prefix' => 'award'], function () {
 			Route::get('/', 'subasta\AdminAwardController@index')->name('award.index');
@@ -284,7 +284,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::resource('subastas', 'subasta\AdminSubastaGenericController');
 
 		Route::post('subastas_concursales/update/image', 'subasta\AdminSubastaConcursalController@updateImage')->name('subastas_concursales.update.image');
-		Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController');
+		Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController')->parameters([
+			'subastas_concursales' => 'subasta'
+		]);
 
 		Route::resource('subastas.sesiones', 'subasta\AdminAucSessionsController');
 
@@ -315,7 +317,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
 		Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
-		Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show']);
+		Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show'])->parameters([
+				'subastas_concursales' => 'subasta',
+				'lotes_concursales' => 'lote'
+		]);
 
 		Route::post('bi/ajax', 'bi\AdminBiController@lotsInfo')->name('bi.reload');
 		Route::post('bi/allcategories', 'bi\AdminBiController@lotsAwardForCategory');

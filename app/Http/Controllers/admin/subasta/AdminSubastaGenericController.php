@@ -205,7 +205,7 @@ class AdminSubastaGenericController extends Controller
 
 		$resource_name = $this->resource_name;
 
-		return view("admin::pages.subasta.subastas.show", compact('fgSub', 'viewFgAsigl0', 'pujas', 'pujasTable', 'ordersTable', 'awardsTable', 'winnersTable', 'ganadores', 'licitadores', 'resource_name', 'notAwardsTable'));
+		return view("admin::pages.subasta.subastas.show", compact('fgSub', 'viewFgAsigl0', 'pujasTable', 'ordersTable', 'awardsTable', 'winnersTable', 'licitadores', 'resource_name', 'notAwardsTable'));
     }
 
     public function edit($cod_sub)

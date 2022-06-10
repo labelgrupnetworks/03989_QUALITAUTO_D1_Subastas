@@ -19,7 +19,7 @@
 	@endif
 
 
-	<a href="{{ route("$parent_name.$resource_name.create", ['cod_sub' => $cod_sub ,'menu' => 'subastas']) }}"
+	<a href="{{ route("$parent_name.$resource_name.create", ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
 		class="btn btn-primary btn-sm">{{ trans("admin-app.button.new") }}
 		{{ trans("admin-app.title.lot") }}</a>
 
@@ -76,9 +76,9 @@
 							value="{{ trans("admin-app.button.search") }}">
 							<a
 							@if($render)
-								href="{{route("$parent_name.show", ['cod_sub' => $cod_sub, 'menu' => 'subastas'])}}"
+								href="{{route("$parent_name.show", ['subasta' => $cod_sub, 'menu' => 'subastas'])}}"
 							@else
-								href="{{route("$parent_name.$resource_name.index", ['cod_sub' => $cod_sub,'menu' => 'subastas'])}}"
+								href="{{route("$parent_name.$resource_name.index", ['subasta' => $cod_sub,'menu' => 'subastas'])}}"
 							@endif
 							class="btn btn-warning">{{ trans("admin-app.button.restart") }}
 						</a>

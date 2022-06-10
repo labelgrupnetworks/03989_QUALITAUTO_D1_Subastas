@@ -1,4 +1,4 @@
-<form name="save_session" action="{{ route('subastas.sesiones.update', ['cod_sub' => $fgSub->cod_sub, 'reference' => $aucSession->reference]) }}" method="POST"
+<form name="save_session" action="{{ route('subastas.sesiones.update', ['subasta' => $fgSub->cod_sub, 'sesione' => $aucSession->reference]) }}" method="POST"
 	id="save_session" enctype="multipart/form-data">
 	@csrf
 	@method('PUT')

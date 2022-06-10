@@ -18,7 +18,7 @@
 
 
 	<div class="row well">
-		<form name="createOrders" action="{{route('orders.update', ['cod_sub' => $idauction] )}}" method="POST">
+		<form name="createOrders" action="{{route('orders.update', ['idAuction' => $idauction] )}}" method="POST">
 			@method('PUT')
 
 			@include('admin::pages.subasta.ordenes.form')
