@@ -669,8 +669,9 @@ $(document).ready(function () {
 			success: function (response) {
 				if (response.status == 'success') {
 
-					if ($('#presta').val() == 1 && $('#back').val() == 'gallery') {
-						prestaLogin(response.data);
+					if ($('#presta').val() == 1 && Boolean($('#back').val())) {
+						externalLogin(response.context_url, response.data);
+						return;
 					}
 
 					if($('#logo_link').length > 0){
@@ -692,27 +693,6 @@ $(document).ready(function () {
 
 		});
 	});
-
-
-
-	function prestaLogin(res) {
-
-		$("#valoresPresta").val(JSON.stringify(res));
-
-		document.querySelector('#formPresta').submit();
-		return;
-
-		const iframe = document.getElementById("iframePresta");
-
-		if (!iframe) return;
-
-		var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-		let $bodyFrame =  $(innerDoc.querySelector('body'));
-		$bodyFrame.append($('#formPresta'));
-
-		$bodyFrame[0].querySelector('#formPresta').submit();
-	}
 
 	$('.btn-custom-search').click(function () {
 		$('.btn-custom-search').addClass('loadSearch')
@@ -1485,7 +1465,22 @@ $(document).ready(function () {
 	*/
 });
 
+function externalLogin(context, data){
+	const form = document.createElement('form');
+	form.method = 'POST';
 
+	form.action = `${context}/api-ajax/external-login`;
+
+	const input = document.createElement('input');
+	input.type = 'hidden';
+	input.name = 'valoresPresta';
+	input.value = JSON.stringify(data);
+
+	form.appendChild(input);
+
+	document.body.appendChild(form);
+	form.submit();
+}
 
 
 function see_desc() {
@@ -2148,7 +2143,6 @@ function abrirNuevaVentana(parametros) {
 		nuevaVentana.focus();
 	}
 }
-
 
 (function ($) {
 

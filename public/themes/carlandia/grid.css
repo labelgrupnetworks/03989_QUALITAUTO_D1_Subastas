@@ -147,6 +147,7 @@ form#form_lotlist select, form#form_lotlist select option{
     background: var(--btn-primary-background);
     font-weight: 400;
 	padding: 0 10px;
+	font-weight: bold;
 }
 
 .filters-searching button:focus, .filters-searching button:hover{

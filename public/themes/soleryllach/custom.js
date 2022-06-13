@@ -361,22 +361,22 @@
             e.preventDefault();
             var $this = $(this);
 
-            form = document.getElementById($('#frmUpdateUserInfoADV').attr("id"));
-            err = 0;
+			const form = document.getElementById('frmUpdateUserInfoADV');
+            let err = 0;
 
-            for (tt=0;tt<form.elements.length;tt++) {
-                if (form.elements[tt].type!="button" && form.elements[tt].type!="hidden" && form.elements[tt].type!="submit") {
+			//Capturamos solo los inputs validos
+			const isValidInput = (element) => !["button", "hidden", "submit"].includes(element.type);
+			const validFormElements = [...form.elements].filter(isValidInput);
 
-                    if (form.elements[tt].value=="" || !form.elements[tt].value || form.elements[tt].value==0 || form.elements[tt].value==null) {
-                        err++;
-                        $("#"+form.elements[tt].id).parent().addClass("has-error").addClass("has-danger");
-                    }
-                    else {
-                        $("#"+form.elements[tt].id).parent().removeClass("has-error").removeClass("has-danger");
-                    }
-
-                }
-            }
+			validFormElements.forEach(element => {
+				if (!Boolean(element.value)){
+					err++;
+					element.parentElement.classList.add('has-error', 'has-danger');
+				}
+				else {
+					element.parentElement.classList.remove('has-error', 'has-danger');
+				}
+			});
 
             $('button', $this).attr('disabled', 'disabled');
 

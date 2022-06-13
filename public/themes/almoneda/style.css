@@ -125,3 +125,7 @@ header.fixed nav .logo-company{
 .other, .mine {
 	color: var(--primary-color-text) !important;
 }
+
+.banner-link {
+	text-align: center;
+}

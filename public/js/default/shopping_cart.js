@@ -147,8 +147,8 @@ function calcCostToPay(){
 		total +=parseFloat($("#gastosEnvio_JS").val());
 	}
 
-	formattedTotal = new Intl.NumberFormat("de", {minimumFractionDigits: 2}).format(parseFloat(total));
-	$(".precio_final_carrito").html( formattedTotal)
+	formattedTotal = new Intl.NumberFormat("de", {minimumFractionDigits: 2, maximumFractionDigits: 2,style: 'currency', currency: 'EUR'}).format(parseFloat(total));
+	$(".precio_final_carrito").html( formattedTotal )
 }
 
 

@@ -321,12 +321,19 @@ a, a:focus, a:hover{
 
 a.button-principal, button.button-principal{
 	z-index: 9;
-	padding: 0;
+	/* padding: 0; */
+	padding: 6px 12px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	border-radius: 5px;
 	color: white;
+	font-weight: bold;
+}
+
+.button-principal {
+	min-width: 132px;
+	width: auto;
 }
 
 a.button-principal.with-auto{
@@ -431,7 +438,9 @@ footer, .copy,
 	display: inline-flex;
 	align-items: center;
 	font-size: 25px;
-	gap: 25px;
+	gap: 20px;
+	min-width: 151px;
+	justify-content: space-between;
 }
 
 .call-icons a, .icons-modal a {
@@ -513,6 +522,7 @@ header{
 .button-principal, .btn-bid-lotlist, .btn-info-auction, .btn-bid-life, .create-account-link a{
 	text-transform: uppercase;
 	max-height: var(--btn-height);
+	font-weight: bold;
 }
 
 .secondary-button{
@@ -2141,6 +2151,7 @@ form#password_recovery label {
 
 .bread-content .btn-return {
 	margin-top: 2rem;
+	font-size: 18px;
 }
 
 .similar-button {
@@ -2318,6 +2329,7 @@ form#password_recovery label {
     border: 1px solid lightgray;
     background: #E6F0FE;
     padding: 10px;
+	text-align: justify;
 }
 
 .well-buyer * {
@@ -2338,8 +2350,8 @@ form#password_recovery label {
 
 .custom-modal-block .modal-buttons-list * {
 	margin-top: 1rem;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .custom-modal-block .modal-buttons-list :nth-child(1) {
@@ -2367,36 +2379,47 @@ form#password_recovery label {
 	border-bottom: 1px solid #fff;
 }
 
-.ficha_v_title {
+.ficha_V .ficha_v_title p{
 	font-size: 20px;
 	font-weight: bold;
 	color: black;
 }
 
-.ficha_v_price_financiado .financiado_title {
+.ficha_V .prices_block p{
+	font-size: 19px;
+}
+
+.ficha_v_price_financiado .financiado_title, .ficha_v_price_financiado .monthly-fee-title {
 	position: relative;
 	display: inline-block;
 }
 
 .financiado_title i {
 	position: absolute;
-	bottom: 4px;
 	color: #000;
+	top: 15px;
+	right: -40px;
+}
+
+.monthly-fee-title i {
+	position: absolute;
+	color: #000;
+	display: none;
 }
 
 
-a[data-title] {
+a[data-customtitle] {
 	position: relative;
 }
 
-a[data-title]:hover:after {
+a[data-customtitle]:hover:after {
 	background: rgba(0, 0, 0, 1);
 	border-radius: 5px;
 	bottom: -35px;
 	color: #fff;
 	font-size: 15px;
 	font-weight: bold;
-	content: attr(data-title);
+	content: attr(data-customtitle);
 	left: -33px;
 	padding: 5px 15px;
 	position: absolute;
@@ -2404,7 +2427,7 @@ a[data-title]:hover:after {
 	width: max-content;
   }
 
-a[data-title]:hover:before {
+a[data-customtitle]:hover:before {
 	border: solid;
 	border-color: #333 transparent;
 	border-width: 0 6px 6px 6px;
@@ -2414,3 +2437,17 @@ a[data-title]:hover:before {
 	position: absolute;
 	z-index: 99;
   }
+
+.modal-text {
+	font-size: 18px;
+}
+
+.btn-primary, .modal-dismiss {
+	font-size: 17px;
+	font-weight: 500;
+}
+
+a.button-principal.loadbtn, button.button-principal.loadbtn {
+	min-width: initial !important;
+    max-height: initial !important;
+}

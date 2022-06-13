@@ -2,6 +2,110 @@ let sidebar = document.createElement("div");
 
 $(document).ready(function () {
 
+	$(".clictelefonoEvent_JS").on('click',function(){
+		if(device() =="mobile" ){
+			eventGa("Clic teléfono");
+		}
+
+	});
+
+	$(".clicWhatsappEvent_JS").on('click',function(){
+
+		ga('send','event','Clic Whatsapp',device());
+
+	});
+
+	$(".cliccontraofertarGrid_JS").on('click',function(){
+
+		ga('send','event','Clic Controfertar listado',$(this).data("coche") + "/" + $(this).data("matricula"));
+
+
+	});
+
+	$(".clicVerfichaGrid_JS").on('click',function(){
+
+		ga('send','event','Clic Ver Ficha',$(this).data("coche") + "/" + $(this).data("matricula"));
+
+
+	});
+
+	$(".clicVehiculosSimilares_JS").on('click',function(){
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+
+		ga('send','event','Clic Vehículos Similares',coche + "/" + matricula);
+
+
+	});
+
+	$(".clicAnadirFavoritos_JS").on('click',function(){
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+		ga('send','event','Añadir a Favoritos',coche + "/" + matricula);
+
+	});
+
+	$(".clicEliminarFavoritos_JS").on('click',function(){
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+		ga('send','event','Eliminar de Favoritos',coche + "/" + matricula);
+
+	});
+
+
+	$(".clicRechazoVehículosSimilares_JS").on('click',function(){
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+		if($("#amountOverModal").val() == "true" ){
+			ga('send','event','Cercano Esperar Respuesta',coche + "/" + matricula);
+		}else{
+			ga('send','event','Rechazo Vehículos Similares',coche + "/" + matricula);
+		}
+
+
+	});
+
+
+	$("#comprarYaModalEvent_JS").on('click',function(){
+
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+
+		if($("#amountOverModal").val() == "true"  ){
+			ga('send','event','Cercano Comprar ya',coche + "/" + matricula);
+		}else{
+			ga('send','event','Rechazo Comprar ya',coche + "/" + matricula);
+		}
+
+
+	});
+
+	$(".rechazoNuevaOfertaModalEvent_JS").on('click',function(){
+
+
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+		if($("#amountOverModal").val()  == "true"  ){
+			ga('send','event','Cercano Incrementar Oferta',coche + "/" + matricula);
+		}else{
+			ga('send','event','Rechazo Nueva Oferta',coche + "/" + matricula);
+		}
+	});
+
+
+
+	$(".clicDepositarSenal_JS").on('click',function(){
+		matricula = $("#matricula_JS").val();
+		coche = $("#nombre_coche_JS").val();
+		ga('send','event',' Depositar señal',coche + "/" + matricula);
+
+	});
+	// Clic Vehículos Similares
+
+
+
+
+	/* */
 	$("#wahtsappEvent_JS").on('click',function(){
 		eventGa("Compartir Whatsapp");
 	});
@@ -21,17 +125,26 @@ $(document).ready(function () {
 	$("#comprarYaEvent_JS").on('click',function(){
 		eventGa("Comprar ya inicio");
 	});
-	$("#comprarYaModalEvent_JS").on('click',function(){
-		eventGa("Comprar ya inicio");
-	});
 
-	$("#contraofertarEvent_JS").on('click',function(){
-		if($("#counteroffer-input").val() !=""){
-			eventGa("Contraofertar inicio");
-		}
 
-	});
 
+
+
+	/* Pilar ha pedido el 31-05-22 que se retiren
+
+	quitar  Contraofertar inicio
+	-Este evento se lanzaría cada vez que un usuario haga clic en el botón "CONTRAOFERTAR" situado debajo de la opción "CONTRAOFERTAR", en la ficha de los vehículos de venta directa
+
+
+
+
+		$("#contraofertarEvent_JS").on('click',function(){
+			if($("#counteroffer-input").val() !=""){
+				eventGa("Contraofertar inicio");
+			}
+
+		});
+	*/
 	$("#pujaAutomaticaEvent_JS").on('click',function(){
 		eventGa("Puja automática inicio");
 	});
@@ -181,6 +294,14 @@ $(document).ready(function () {
 	//Solo estamos utilizando el history.state en la ficha, si se llega a utilizar en otro lugar deberemos checkear condiciones
 	if(Boolean(history.state)){
 		$("#counteroffer-input").val(history.state.counterofferValue);
+
+		/* const historyData = Object.assign({}, history.state); */
+
+		if(!cod_licit) {
+			reatryCounteroffer(history.state);
+			return;
+		}
+
 		history.replaceState(null, '');
 		window.contraofertarLoteFicha();
 	}
@@ -271,21 +392,32 @@ window.contraofertarLoteFicha = function() {
 				matricula = $("#matricula_JS").val();
 				precio =$("#price_compra_ya_JS").val();
 				coche = $("#nombre_coche_JS").val();
-				ga('send','event','FORMULARIO VENTA DIRECTA CONTRAOFERTAR',coche  + "/" +  matricula,precio);
+				ga('send','event','FORMULARIO HAZ TU OFERTA',coche  + "/" +  matricula,precio);
 				//evento fbq
 				fbq('track', 'Lead', {value: 1,  });
 
 				//Si la contraoferta ha sido rechazada
 				if(data.pujarep == 'K') {
 					$("#modalContraofertaRechazada .insert_msg").html(data.msg);
+					$("#amountOverModal").val(data.amountOver);
 
 					const btnSimiliarLots = document.getElementById('btn-similares-modal');
-					btnSimiliarLots.classList.toggle('modal-dismiss', data.amountOver);
-					btnSimiliarLots.href = data.amountOver ? '' : data.similar_lots;
-					btnSimiliarLots.textContent = data.amountOver ? 'ESPERAR RESPUESTA' : 'VEHÍCULOS SIMILARES';
-
 					const btnFocusCounteroffer = document.getElementById('btn-focus-counteroffer');
-					btnFocusCounteroffer.textContent = data.amountOver ? 'INCREMENTAR OFERTA' : 'HACER NUEVA OFRETA';
+
+					//Eliminamos la posibilidad de que el botón tenga el evento asignado con anterioridad
+					btnSimiliarLots.removeEventListener('click', waitForAnswer);
+
+					if(data.amountOver) {
+						btnSimiliarLots.addEventListener('click', waitForAnswer);
+						btnSimiliarLots.href = '';
+						btnSimiliarLots.textContent = 'ESPERAR RESPUESTA';
+						btnFocusCounteroffer.textContent = 'INCREMENTAR OFERTA';
+					}
+					else {
+						btnSimiliarLots.href = data.similar_lots;
+						btnSimiliarLots.textContent = 'VEHÍCULOS SIMILARES';
+						btnFocusCounteroffer.textContent = 'HACER NUEVA OFERTA';
+					}
 
 					$.magnificPopup.open({items: {src: '#modalContraofertaRechazada'}, type: 'inline'}, 0);
 					return;
@@ -341,7 +473,15 @@ window.comprarLoteFichaCarlandia = function()
 				fbq('track', 'Lead', {value: 1,  });
 
 			$("#insert_msg").html(data.msg);
-			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+			$.magnificPopup.open({
+				items: {src: '#modalMensaje'},
+				type: 'inline',
+				callbacks: {
+					afterClose: () => reatryPayDeposit(data),
+				}
+			}, 0);
+
+
 			return;
 
         },
@@ -351,6 +491,15 @@ window.comprarLoteFichaCarlandia = function()
 		}
     });
 };
+
+function waitForAnswer(e){
+	e.preventDefault();
+	$.magnificPopup.close();
+	$("#insert_msg").html('Te informaremos sobre la decisión del vendedor cuanto antes.<br>Recuerda que en ese plazo, el vehículo podrá ser vendido a otro comprador.');
+	setTimeout(function(){
+		$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+	} ,200);
+}
 
 function contraOfertar(event){
 	event.stopPropagation();
@@ -471,23 +620,6 @@ function openModal(event){
 	$.magnificPopup.open({ items: { src: `#${idModal}` }, type: 'inline' }, 0);
 }
 
-function showGif(force) {
-
-	if ( (!window.localStorage || localStorage.getItem('firstTime') === 'false') && !force) {
-		return;
-	}
-
-	if(force){
-		const image_url = '/themes/carlandia/assets/img/anim_one.gif';
-		$('#gif-container img').attr('src', '');
-		$('#gif-container img').attr('src', image_url);
-	}
-
-	$('#gif-container').fadeIn('fast').delay(4000).fadeOut('fast');
-	localStorage.setItem('firstTime', 'false');
-}
-
-
 function changeSubCategoriesSelect(event) {
 
 	const linOrtsec = event.target.value;
@@ -545,6 +677,15 @@ function sendContactCarlandia() {
 	} else {
 		$(".g-recaptcha").find("iframe").addClass("has-error");
 		showMessage(messages.error.hasErrors);
+	}
+}
+function device(){
+	if( navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/BlackBerry/i)||  navigator.userAgent.match(/Windows Phone/i) || navigator.userAgent.match(/iPod/i)){
+		return "mobile";
+	}else if ( navigator.userAgent.match(/iPad/i)) {
+		return "tablet";
+	}else{
+		return "desktop";
 	}
 }
 

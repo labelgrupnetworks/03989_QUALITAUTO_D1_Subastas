@@ -18,19 +18,23 @@
 	/* Green */
 	--green-color-1: #4A574D;
 	--green-color-2: #89A18B;
+
+	--default-font-family: 'Roboto', sans-serif;
+	--titles-font-family: 'Libre Bodoni', serif !important;
+
 }
 
 body {
-    font-family: "Montserrat", Helvetica, Arial, sans-serif;
+    font-family: var(--default-font-family) !important;
     overflow-x: hidden;
-}
-
-body p {
-    font-family: "Montserrat", Helvetica, Arial, sans-serif;
 }
 
 p spam {
     font-size: 13px;
+}
+
+h1, .titlePage-custom {
+	font-family: var(--titles-font-family);
 }
 
 .white-bgcolor {
@@ -251,9 +255,8 @@ color-btn-client {
                 STANDARES
 /*******------------------------------********/
 
-.sesion-responsive a i,
-.sesion-responsive a {
-    color: white;
+.sesion-responsive a i, .sesion-responsive a {
+    color: #333;
 }
 
 .btn-1 {
@@ -442,9 +445,11 @@ div.lotes_recomendados div.item_home div.desc_lot {
 /*******------------------------------********/
 
 header .logo a img {
-    height: 60px;
-    margin-top: 5px;
+	margin-top: 5px;
     margin-bottom: 5px;
+    height: auto;
+	width: 100%;
+	max-width: 450px;
 }
 
 header .logo {
@@ -583,7 +588,7 @@ header .navbar-top .navbar-top-wrapper ul li p {
 
 .search-component .search-component-form button {
     position: absolute;
-    right: 28px;
+    right: 4px;
     border-radius: 50%;
     height: 24px;
     width: 24px;
@@ -591,7 +596,6 @@ header .navbar-top .navbar-top-wrapper ul li p {
     top: 0.25px;
     color: white;
     padding: 0;
-    position: relative;
 }
 
 .navbar-header ul.nav-responsive-wrapper {
@@ -724,10 +728,6 @@ footer li p {
 
 .copy p {
     font-size: 11px !important;
-}
-
-.footer-container {
-    margin: 0 8% 0 8%;
 }
 
 footer {
@@ -927,7 +927,8 @@ nav.navbar {
     text-transform: uppercase;
     padding-left: 15px;
     padding-right: 15px;
-    font-weight: 600;
+    font-weight: 400;
+	font-size: 17px;
 }
 
 .container-fluid>.navbar-collapse,
@@ -1011,10 +1012,10 @@ div.lotes_destacados {
 }
 
 div.lotes_destacados div.title_lotes_destacados {
+	font-family: var(--titles-font-family);
     color: var(--black-color);
-    text-transform: uppercase;
-    padding: 10px 12px;
-    font-size: 20px;
+    padding: 5px 0;
+    font-size: 36px;
 }
 
 div.lotes_destacados div.item_home {
@@ -1438,7 +1439,7 @@ div.map_contact {
 
 .map-contact {
 	margin-top: 3rem;
-	border: var(--brown-color-1) 2px solid;
+	border: var(--green-color-2) 2px solid;
 }
 
 .contact-title {
@@ -1450,7 +1451,7 @@ div.map_contact {
 .form-input-contact {
 	border: 0;
 	border-radius: 1px;
-	border-bottom: var(--green-color-1) solid 3px;
+	border-bottom: var(--green-color-1) solid 1px;
 	box-shadow: none;
 }
 
@@ -1489,11 +1490,6 @@ div.item_subasta {
     margin-bottom: 40px;
 	border-bottom: var(--gray-color-2) solid 2px;
 	padding-bottom: 20px;
-}
-
-div.item_subasta img {
-    margin-bottom: 10px;
-    min-height: 168px;
 }
 
 div.item_subasta div.item_subasta_item {
@@ -1825,7 +1821,7 @@ div.info_single_content ul.puja_rapida li {
 }
 
 div.info_single_content button.btn-custom {
-    background-color: #9A7C54;
+    background-color: var(--brown-color-1);
     color: #fff;
     width: 100%;
     /*padding-left: 50px;
@@ -3704,7 +3700,7 @@ div.item_lot_large {
 	height: 290px;
     margin: 2px 0;
     transition: .2s all linear;
-	border: var(--gray-color-2) solid 1px;
+	border: #ccc solid 1px;
 	border-bottom: var(--brown-color-1) solid 4px;
 	margin-bottom: 1rem;
 	padding: 1rem;
@@ -3720,6 +3716,7 @@ div.item_lot_large {
 	overflow: hidden;
 	-webkit-line-clamp: 3;
 	height: auto;
+	max-height: 60px;
 }
 
 .salida-estima {
@@ -4816,4 +4813,9 @@ header .navbar-top .navbar-top-wrapper ul.list-lang a {
 
 #resource_main_wrapper video {
 	aspect-ratio: 16 / 9;
+}
+
+
+.slick-slide img {
+	max-height: initial;
 }

@@ -40,12 +40,22 @@ $(document).ready(function () {
 		$('input[name=date]').val(date);
 	});
 
-
 	$('[name="cpostal"]').on('blur', (event) => {
 		document.querySelector('[name=provincia]').closest('div').classList.add('withfocus');
 		document.querySelector('[name=poblacion]').closest('div').classList.add('withfocus');
 	})
 });
+
+function checkPhone(input) {
+	const value = input.value;
+	const withPlus = value.includes('+');
+
+	if(value.length < 9 || (withPlus && value.length < 10)){
+		muestra_error_input(input, '');
+		return false;
+	}
+	return true;
+}
 
 function reloadPlaceholders() {
 
@@ -62,6 +72,12 @@ function reloadPlaceholders() {
 function forceRequiredInputs(){
 	$('input[name="usuario"]').attr('id', 'texto__1__usuario');
 	$('input[name="last_name"]').attr('id', 'texto__1__last_name');
+}
+
+function custom_checks(input) {
+	if(input.name = 'telefono'){
+		return checkPhone(input);
+	}
 }
 
 

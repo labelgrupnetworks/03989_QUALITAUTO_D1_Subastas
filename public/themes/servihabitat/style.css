@@ -188,6 +188,10 @@ footer .fa, footer .fab{
 	cursor: pointer;
 }
 
+.sales-page td[data-toggle="collapse"] {
+	cursor: pointer;
+}
+
 .sales-page .table .table {
 	background-color: transparent;
 }
@@ -208,4 +212,29 @@ footer .fa, footer .fab{
     -o-text-overflow: ellipsis;
     line-height: 1.5;
     margin: 0;
+}
+
+.account-user table .card-body{
+	border: 1px solid lightgray;
+    padding: 20px;
+}
+
+.account-user table .card-text > span:not(:first-of-type) {
+	display: flex;
+}
+.account-user table .card-text > span:not(:first-of-type) > b {
+	flex: 1;
+}
+
+.account-user table .card-body img{
+	margin: auto;
+	max-width: 50%;
+}
+
+.card-link{
+	text-decoration: none;
+	color: gray;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
 }

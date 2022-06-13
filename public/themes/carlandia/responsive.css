@@ -144,6 +144,17 @@
 
 @media (max-width: 992px) {
 
+	.financiado_title i {
+		top: 3px;
+		right: -25;
+	}
+
+	.monthly-fee-title i{
+		display: block;
+		top: 3px;
+		right: -20px;
+	}
+
 	.contact-return-button .bread {
 		padding-left: 0;
 	}

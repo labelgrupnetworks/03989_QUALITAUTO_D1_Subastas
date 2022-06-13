@@ -12,8 +12,11 @@ successRegister = function (response, aux) {
 
 		if (response.info == undefined) {
 
-			if($("input[name=back]").val() == 'gallery'){
-				login_session();
+			//Si venimos de una web externa volvemos a ella.
+			const queryParams = new URLSearchParams(window.location.search);
+			if(Boolean(queryParams.get('context_url'))){
+
+				document.location = `${queryParams.get('context_url')}${response.msg}`;
 				return;
 			}
 
@@ -34,17 +37,32 @@ successRegister = function (response, aux) {
  * Cuand el registro tiene exito, se realiza el login en subastas y en presta
  * Si se tiene la variable back, nos mantenemos en presta, si no se regresa a substas.
  */
+/**
+ * ¿Deprecated?
+ * Se debe validar email para poder realizar login, por lo que no tiene sentido
+ */
 function login_session(){
+
+	const data = {
+		_token: $("input[name=_token]").val(),
+		email: $("input[name=email]").val(),
+		password: $("input[name=password]").val(),
+		back: $("input[name=back]").val(),
+		context_url: $("input[name=context_url]").val()
+	}
 
 	$.ajax({
 		type: "POST",
 		url: '/login_post_ajax',
-		data: { _token: $("input[name=_token]").val(), email: $("input[name=email]").val(), password: $("input[name=password]").val(), back: $("input[name=back]").val() },
+		data: data,
 		success: function(response) {
 			if (response.status == 'success') {
 
-				prestaLoginRegister(JSON.stringify(response.data));
+				//En Duran es necesario que posteriormente al registro, te validen el usuario, por lo que
+				//nunca irá al success...
 
+				externalLogin(response.context_url, response.data);
+				//prestaLoginRegister(JSON.stringify(response.data));
 				//setTimeout(function(){ document.getElementById("logo_link").click(); }, 500);
 			}
 		},
@@ -57,6 +75,9 @@ function login_session(){
 }
 
 
+/**
+ * ¿Deprecated?
+ */
 function prestaLoginRegister(res) {
 	$("#valoresPresta").val(JSON.stringify(res));
 

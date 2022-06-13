@@ -1,3 +1,26 @@
+form input[type="number"] {
+    position: relative;
+    padding: 0 10px;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: #cccccc 1px solid;
+    border-left: 0;
+    border-radius: 0;
+    background: rgba(255,255,255,0.1);
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+form input[type=number]::-webkit-inner-spin-button,
+form input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
 .register h3 {
 	color: var(--primary-color);
 	font-weight: 600;
