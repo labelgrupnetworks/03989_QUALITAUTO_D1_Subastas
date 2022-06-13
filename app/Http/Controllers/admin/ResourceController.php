@@ -39,7 +39,7 @@ class ResourceController extends Controller
             $bloque =null;
 
         }
-        return \View::make('admin::pages.editResource',array('bloque' => $bloque[0]));
+        return \View::make('admin::pages.editResource',array('bloque' => $bloque[0] ?? null));
     }
 
     public function EditResources(){

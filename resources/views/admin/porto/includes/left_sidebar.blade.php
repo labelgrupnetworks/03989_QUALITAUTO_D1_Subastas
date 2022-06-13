@@ -347,7 +347,7 @@ $idiomes = \Config::get('app.locales');
 						@if (in_array('dev', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
-								<a href="/admin/static_pages">
+								<a href="/admin/static-pages">
 									<span>Páginas Estáticas</span>
 								</a>
 							</li>

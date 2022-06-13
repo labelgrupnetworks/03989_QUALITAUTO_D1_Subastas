@@ -22,7 +22,7 @@
 
 	<div class="block-edit">
 		<div class="row well">
-			<form action="{{ route('emails.update', ['cod_email' => $email->cod_email]) }}" method="POST">
+			<form action="{{ route('emails.update', ['email' => $email->cod_email]) }}" method="POST">
 				@method('PUT')
 				@csrf
 				<div class="col-xs-12 mb-2">

@@ -27,7 +27,7 @@ class TraduccionesController extends Controller
 
     /**
      * carga archivo y realiza merge con los datos de la base de datos
-     * @param type $idioma
+     * @param string $idioma
      *
      * @pendiente:
      *
@@ -41,7 +41,7 @@ class TraduccionesController extends Controller
      */
     public function cargarArchivo($idioma){
 
-        require (__DIR__ . '/../../../../resources/lang/' . strtolower($idioma) . '/app.php');
+        require lang_path(strtolower($idioma) . DIRECTORY_SEPARATOR . 'app.php');
         $this->archiveLang = $lang;
 
         $sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION "
@@ -427,8 +427,8 @@ class TraduccionesController extends Controller
 
     /**
      * Retira los acentos y sustuye a minusculas
-     * @param type String $value cadena a modificar
-     * @return type String cadena modificada
+     * @param string $value cadena a modificar
+     * @return string String cadena modificada
      */
     public function replacepreg($value){
 

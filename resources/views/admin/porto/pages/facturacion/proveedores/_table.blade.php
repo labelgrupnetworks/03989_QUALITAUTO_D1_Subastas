@@ -73,7 +73,7 @@
 
 				<td>
 					<a title="{{ trans("admin-app.button.edit") }}"
-						href="{{ route("providers.edit", ['num_dvc0' => $provider->cod_pro] ) }}"
+						href="{{ route("providers.edit", ['provider' => $provider->cod_pro] ) }}"
 						class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 						{{ trans("admin-app.button.edit") }}
 					</a>

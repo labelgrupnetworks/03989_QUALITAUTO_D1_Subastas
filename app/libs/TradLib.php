@@ -21,14 +21,14 @@ class TradLib {
 
 
 
-		$adminDefaultFile = base_path("lang/$lang/admin-default-app.php");
+		$adminDefaultFile = lang_path("$lang/admin-default-app.php");
 		if(!file_exists($adminDefaultFile)){
 			return;
 		}
 
 		$adminDefault = include $adminDefaultFile;
 
-		$pathAdminThemeFile = base_path("lang/$lang/admin-$theme-app.php");
+		$pathAdminThemeFile = lang_path("$lang/admin-$theme-app.php");
 
 		if(!file_exists($pathAdminThemeFile)){
 			return $adminDefault;
@@ -47,7 +47,7 @@ class TradLib {
             $emp = Config::get('app.main_emp');
         }
 
-        require (__DIR__ . '/../../lang/' . strtolower($language) . '/app.php');
+		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
 
         $sql = "SELECT WEB_TRANSLATE_HEADERS.KEY_HEADER,WEB_TRANSLATE_KEY.KEY_TRANSLATE,WEB_TRANSLATE.WEB_TRANSLATION "
                 . "FROM WEB_TRANSLATE_HEADERS "
@@ -99,7 +99,7 @@ class TradLib {
 
     public static function getArchiveTranslations($language) {
 
-        require (__DIR__ . '/../../resources/lang/' . strtolower($language) . '/app.php');
+		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
         return $lang;
     }
 

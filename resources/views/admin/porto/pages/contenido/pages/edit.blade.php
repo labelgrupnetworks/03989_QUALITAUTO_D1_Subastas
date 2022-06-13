@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="row well">
-		<form action="{{ route('static-pages.update', ['id' => $webPage->id_web_page]) }}" method="POST" enctype="multipart/form-data" name="staticPagesForm">
+		<form action="{{ route('static-pages.update', ['static_page' => $webPage->id_web_page]) }}" method="POST" enctype="multipart/form-data" name="staticPagesForm">
 			@method('PUT')
 			@csrf
 			@include('admin::pages.contenido.pages._form', compact('form', 'webPage'))

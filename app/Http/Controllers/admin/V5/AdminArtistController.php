@@ -206,7 +206,7 @@ class AdminArtistController extends Controller
 		}
 
 		$imgPath = $this->folderPath. $webArtist->id_artist.".jpg";
-		return view('admin::pages.contenido.artist.edit', compact('formulario', 'webArtist','imgPath', 'articles'));
+		return view('admin::pages.contenido.artist.edit', compact('formulario', 'webArtist','imgPath'));
 
 	}
 

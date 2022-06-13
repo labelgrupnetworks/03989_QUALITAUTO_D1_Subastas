@@ -469,7 +469,7 @@ private $cc = array();
 		$this->atributes['TEXT'] = $text;
 	}
 
-     private function replace(){
+     public function replace(){
 
       //reemplazamso los códigos por sus valores, si el valor es nulo se sustituye por vacio
 		$body_email = $this->email->body_email;

@@ -15,7 +15,7 @@
 		storageManager: {
 			...defaultSotreManager,
 			//urlStore: 'http://larablog.test/save-page',
-			//urlLoad: '{{ route('static-pages.show', ['id' => 7]) }}',
+			//urlLoad: '{{ route('static-pages.show', ['static_page' => 7]) }}',
 			params: {
 				"_token": document.querySelector('[name=_token]')?.value
 			}
