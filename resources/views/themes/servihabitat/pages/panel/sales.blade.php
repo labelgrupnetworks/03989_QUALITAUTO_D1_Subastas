@@ -42,7 +42,7 @@
 						<td colspan="12" data-toggle="collapse"
 							class="accordion-toggle title-sub-list accordion-{{$cod_sub}}" data-target="#{{$cod_sub}}">
 							<div class="d-flex align-items-center">
-								<span class="w-100">{{$lotes[0]->name}}</span>
+								<p class="w-100 m-0"><span class="mr-2">{{$lotes[0]->name}}</span> <small> {{ trans("$theme-app.user_panel.date_end") }} {{ date('d-m-Y', strtotime($lotes[0]->end) ) }}</small></p>
 								<i style="float: right; font-size: 14px;" class="fas fa-plus"></i>
 							</div>
 						</td>
@@ -61,9 +61,16 @@
 											<th class="col-xs-2">
 												{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th>
 											<th class="col-xs-2">
-												{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</th>
+												{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
+											</th>
 											<th class="col-xs-2">
 												{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
+											</th>
+											<th class="col-xs-2">
+												{{ trans("$theme-app.user_panel.offers") }}
+											</th>
+											<th class="col-xs-2">
+												{{ trans("$theme-app.user_panel.licits") }}
 											</th>
 										</tr>
 									</thead>
@@ -84,7 +91,13 @@
 
 										$totalLotes++;
 										$totalPsalida += $lote->impsalhces_asigl0;
-										$totalPremate += $lote->implic_hces1;
+
+										$isFinished = strtotime($lote->end) < time() && !empty($lote->implic_hces1);
+
+										if($isFinished){
+											$totalPremate += $lote->implic_hces1;
+										}
+
 										@endphp
 
 										<tr>
@@ -96,13 +109,15 @@
 											<td>
 												<span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
 													{{$lote->ref_asigl0}}</span>
-												<p class="td-desciption">
-													{!!$lote->desc_hces1!!}</p>
+												<div class="desc-wrapp max-line-3">
+													<p class="td-desciption ">
+														{!!$lote->desc_hces1!!}</p>
+												</div>
 											</td>
 
 											<td>
 												@if($hay_pujas)
-													{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+													{{ trans(\Config::get('app.theme').'-app.user_panel.sold') }}
 													@php
 													$lotsSold++;
 													@endphp
@@ -123,10 +138,20 @@
 											</td>
 
 											<td>
-												{{$lote->impsalhces_asigl0 }} €
+												{{ Tools::moneyFormat($lote->impsalhces_asigl0, '€') }}
 											</td>
 
-											<td>{{$lote->implic_hces1 }} €</td>
+											@if($isFinished)
+											<td>
+												{{ Tools::moneyFormat($lote->implic_hces1, '€') }}
+											</td>
+											@else
+											<td>-</td>
+											@endif
+
+											<td>{{ $lote->orders }}</td>
+
+											<td>{{ $lote->licits_orders }}</td>
 
 										</tr>
 

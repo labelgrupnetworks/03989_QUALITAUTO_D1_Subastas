@@ -316,10 +316,17 @@ $txtCliobj = \DB::table('FXCLIOBJ')
 $ownerData = $txtCliobj->join('');
 
 $emp = config('app.emp');
-$imgOwnerPath = "/files/CLI/$emp/$lote_actual->prop_hces1/files/propietario.jpg";
+
+$imgOwnerPath = "";
+$path = public_path() . "/files/CLI/$emp/$lote_actual->prop_hces1/files/propietario.*";
+$filesOwner = glob($path);
+$filesOwner = array_map('basename', $filesOwner);
+if(!empty($filesOwner)){
+	$imgOwnerPath = "/files/CLI/$emp/$lote_actual->prop_hces1/files/$filesOwner[0]";
+}
 @endphp
 
-{{-- Eloy: 23/03/22 Oculto hasta nueva orden de servihabitat --}}
+@if (!empty($ownerData))
 <div class="container mb-5">
     <div id="prop" class="col-xs-12 no-padding ficha-tipo-v">
         <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
@@ -327,18 +334,19 @@ $imgOwnerPath = "/files/CLI/$emp/$lote_actual->prop_hces1/files/propietario.jpg"
         </div>
 
         <div class="col-xs-12 col-md-3 no-padding desc-lot-profile-content mt-2">
+			@if(!empty($imgOwnerPath))
             <img src="{{ $imgOwnerPath }}" alt="{{$lote_actual->prop_hces1}}" class="img-responsive">
+			@endif
         </div>
 
-        @if (!empty($ownerData))
-            <div class="col-xs-12 col-md-9 no-padding desc-lot-profile-content mt-2 text-right lot-conditions">
-                <p><a data-toggle="modal" data-target="#prop-modal">{{ trans("$theme-app.lot.owner_details") }}</a>
-                </p>
-            </div>
-        @endif
+		<div class="col-xs-12 col-md-9 no-padding desc-lot-profile-content mt-2 text-right lot-conditions">
+			<p><a data-toggle="modal" data-target="#prop-modal">{{ trans("$theme-app.lot.owner_details") }}</a>
+			</p>
+		</div>
 
     </div>
 </div>
+@endif
 
 
 @if ($obsdet_hces1)

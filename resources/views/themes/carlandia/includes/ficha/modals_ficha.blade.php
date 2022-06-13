@@ -105,6 +105,120 @@
 	</section>
 </div>
 
+<div id="modalEsperarRespuestaFicha" class="modal-block mfp-hide">
+	<section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+				<div class="modal-text text-center">
+					<p>Te informaremos sobre la decisión del
+						vendedor lo antes posible. Para evitar que se venda a otro
+						comprador, asegura su compra al precio indicado o incrementa tu
+						oferta, de nuevo con los botones del pop up anterior.
+						</p>
+
+					<p><button class="btn btn-default modal-dismiss">Cerrar</button></p>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div id="modalContraofertarSinLicitador" class="modal-block custom-modal-block mfp-hide">
+	<section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+				<div class="well-buyer mb-2">
+					<h4>
+						<strong class="insert_msg"></strong>
+					</h4>
+				</div>
+				<div class="modal-text text-center">
+
+					<p class="mb-3"><a id="modal-contraofertarSinLicitador" class="button-principal" href="{{route('register', ['lang' => config('app.locale'), 'counteroffer' => true])}}">Facilitar datos</a></p>
+
+					<p class="">Si ya tienes cuenta, accede</p>
+
+					<p class="mb-3"><button class="button-principal custom_btn_login">Login</button></p>
+
+					<p><button class="btn btn-default modal-dismiss">Cerrar</button></p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div id="modalCerrarContraofertar" class="modal-block custom-modal-block mfp-hide">
+	<section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+
+				<div class="modal-text text-center">
+					<h4><strong><span class="insert_msg"></span></strong></h4>
+
+					<p class="mt-2 mb-2">
+						<a id="modalLinkRegister" class="button-principal" href="{{route('register', ['lang' => config('app.locale'), 'counteroffer' => true])}}">FACILITAR DATOS</a>
+						<a id="modalLinkDeposit" class="button-principal clicDepositarSenal_JS" href="">DEPOSITAR SEÑAL</a>
+					</p>
+
+					<p class="mb-3"><strong>¿Necesitas ayuda?</strong></p>
+
+					<div class="icons-modal mb-5">
+
+						<a href="tel:{{config('app.phoneNumber')}}" class="phone-icon">
+							<i class="fa fa-phone" aria-hidden="true"></i>
+						</a>
+						<a href="mailto:carlandia@calandia.es" class="mail-icon">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						</a>
+						<a href="https://api.whatsapp.com/send?phone=+34{{config('app.whatsAppNumer')}}&text=" target="_blank" class="whatsapp-icon hidden-sm hidden-md hidden-lg">
+							<i class="fa fa-whatsapp" aria-hidden="true"></i>
+						</a>
+						<a href="https://api.whatsapp.com/send?phone=0034{{config('app.whatsAppNumer')}}&text=" target="_blank" class="whatsapp-icon hidden-xs">
+							<i class="fa fa-whatsapp" aria-hidden="true"></i>
+						</a>
+
+					</div>
+
+					<div class="similiar-lots mb-3">
+						<p>Puedes ver otros <strong><u>Vehículos Similares</u></strong></p>
+						<p><a class="button-principal" href="">Aquí</a></p>
+					</div>
+
+					<p><button class="btn btn-default modal-dismiss">Cerrar</button></p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div id="modalContraofertaRechazada" class="modal-block custom-modal-block mfp-hide">
+	<section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+				<div class="well-buyer mb-2">
+					<h4><strong><span class="insert_msg"></span></strong></h4>
+				</div>
+				<div class="modal-text text-center">
+
+					<div class="d-flex justify-content-space-between modal-buttons-list" style="margin-bottom: 10rem;">
+
+						<button id="comprarYaModalEvent_JS" class="button-principal lot-action_comprar_lot">Comprar por {{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0, trans("$theme-app.subastas.euros")) }}</button>
+
+						<button id="btn-focus-counteroffer" class="rechazoNuevaOfertaModalEvent_JS button-principal focus-counteroffer">HACER NUEVA OFERTA</button>
+
+						<a id="btn-similares-modal" href="" class="button-principal clicRechazoVehículosSimilares_JS">VEHÍCULOS SIMILARES</a>
+						<input id="amountOverModal" type="hidden">
+					</div>
+
+					<p><button class="btn btn-default modal-dismiss">Cerrar</button></p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
 
 <?php  //estructura necesaria para crear lso elementos del listado de pujas  ?>
     <div id="duplicalte_list_pujas" class="hist_item hidden">

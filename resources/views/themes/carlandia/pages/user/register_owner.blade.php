@@ -40,7 +40,8 @@
 							</div>
 
 							<div class="col-xs-12 col-sm-4 col-md-3 mt-4">
-								{!!$formulario->telefono!!}
+								{{-- {!!$formulario->telefono!!} --}}
+								<input type="number" minlength="9" class="form-control effect-16" name="telefono" id="texto__1__telefono" value="" onblur="comprueba_campo(this)" data-placement="right" {{-- placeholder="Teléfono *" --}} autocomplete="off" style="padding-left: 10px;">
 								<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
 							</div>
 							<div class="movil col-xs-12 col-sm-4 col-md-3 mt-4">

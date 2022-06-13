@@ -45,10 +45,15 @@
                     <!-- Producto transportable -->
                     <form id="pagar_fact">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+
                     @foreach($data['pending'] as $key_bill => $pendiente)
-                     <div class="factura col-md-6" data-anum="{{$pendiente->anum_pcob}}" data-num="{{$pendiente->num_pcob}}" data-efec="{{$pendiente->efec_pcob}}">
+
+					{{-- Las tipo P en negativo no deben aparecer --}}
+					@continue($pendiente->tipo_dvc0 == 'P' && $pendiente->pendiente_pcob <= 0)
+
+					<div class="factura col-md-12" data-anum="{{$pendiente->anum_pcob}}" data-num="{{$pendiente->num_pcob}}" data-efec="{{$pendiente->efec_pcob}}">
                         <div class="factura_check" style="position: relative">
-                            @if ($pendiente->compraweb_sub == "S" || substr($pendiente->anum_pcob,0,1) == 'T')
+                            @if (($pendiente->compraweb_sub == "S" || substr($pendiente->anum_pcob,0,1) == 'T') && $pendiente->pendiente_pcob > 0)
                             <label for="checkFactura-{{$pendiente->anum_pcob}}-{{$pendiente->num_pcob}}-{{$pendiente->efec_pcob}}">
                                 <input name="factura[{{$pendiente->anum_pcob}}][{{$pendiente->num_pcob}}][{{$pendiente->efec_pcob}}]" id="checkFactura-{{$pendiente->anum_pcob}}-{{$pendiente->num_pcob}}-{{$pendiente->efec_pcob}}" type="checkbox" class="hide add_factura" checked>
                                 <span class="checkmark"></span>
@@ -68,21 +73,23 @@
                             </div>
                             <div class="factura_datos col-xs-12 col-md-9">
                                 <div class="factura_titulo">
-                                    <div>{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{$pendiente->date}} )</div>
+                                    <div>{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{date('d-m-Y',strtotime ($pendiente->fecha_dvc0))}} )</div>
                                 </div>
                                 <div class="factura_gastos">
                                     @php($precio_total = 0)
                                     @foreach($data['inf_factura'] as $key_type => $inf_fact)
 
                                         @if(!empty($inf_fact[$pendiente->anum_pcob][$pendiente->num_pcob]))
+
                                             @foreach($inf_fact[$pendiente->anum_pcob][$pendiente->num_pcob] as $fact)
 
+
                                                 @if($data['tipo_tv'][$pendiente->anum_pcob][$pendiente->num_pcob] == 'P')
-                                                    @php($precio_total = $precio_total + ((round((($fact->basea_dvc1l*$fact->iva_dvc1l)/100),2)) + $fact->basea_dvc1l)- $fact->padj_dvc1l)
+                                                    @php($precio_total = $precio_total + (((($fact->basea_dvc1l*$fact->iva_dvc1l)/100)) + $fact->basea_dvc1l)- $fact->padj_dvc1l)
                                                 @elseif($data['tipo_tv'][$pendiente->anum_pcob][$pendiente->num_pcob] == 'L')
-                                                     @php($precio_total = $precio_total + $fact->padj_dvc1l + $fact->basea_dvc1l + round((($fact->basea_dvc1l*$fact->iva_dvc1l)/100),2))
+                                                     @php($precio_total = $precio_total + $fact->padj_dvc1l + $fact->basea_dvc1l + (($fact->basea_dvc1l*$fact->iva_dvc1l)/100))
                                                 @elseif($data['tipo_tv'][$pendiente->anum_pcob][$pendiente->num_pcob] == 'T')
-                                                     @php($precio_total = $precio_total + $fact->total_dvc1 + round((($fact->total_dvc1*$fact->iva_dvc1)/100),2))
+                                                     @php($precio_total = $precio_total + $fact->total_dvc1 + (($fact->total_dvc1 * $fact->iva_dvc1)/100))
                                                 @endif
 
                                             @endforeach
@@ -108,8 +115,9 @@
                     <div class="facturacion_info_data">
 
                         <div class="importe_total adj" style="font-size: 23px;">
-                            <span> </span>
+                            <span>{{ trans("$theme-app.user_panel.balance_purchases") }}: </span>
                             <span id="total_bills">00</span><span> €</span>
+							<p><small>{!! trans("$theme-app.user_panel.clarification_contact") !!}</small></p>
                         </div>
                         <br>
 

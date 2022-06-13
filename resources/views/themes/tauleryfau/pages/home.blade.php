@@ -8,7 +8,7 @@
 
 @php
 	$openLogin = request()->has('openLogin') ? ['openLogin' => 'S'] : [];
-	header("Location: " . "https://www.tauleryfau.com" , true, 302);
+	header("Location: " . "https://www.tauleryfau.com/".Config::get('app.locale') , true, 302);
 	exit();
 @endphp
 

@@ -118,7 +118,7 @@ ga('send', 'pageview');
 <!-- End Google Tag Manager -->
 
 <!-- gtag -->
-@if(!empty($data["gtag_pageview"]))
+@if(!empty($data["gtag_pageview"]) )
 <script>
 	gtag('event', 'page_view', {
         'send_to': 'AW-788105662',

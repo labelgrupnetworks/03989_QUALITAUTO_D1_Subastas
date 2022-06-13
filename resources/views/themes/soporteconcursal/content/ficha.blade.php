@@ -218,9 +218,9 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 no-padding">
-            @if(( $subasta_online  || ($subasta_web && $subasta_abierta_P )) && !$cerrado &&  !$retirado)
+            {{-- @if(($subasta_online  || ($subasta_web && $subasta_abierta_P )) && !$cerrado &&  !$retirado) --}}
                 @include('includes.ficha.history')
-            @endif
+            {{-- @endif --}}
     </div>
         @include('includes.ficha.share')
 

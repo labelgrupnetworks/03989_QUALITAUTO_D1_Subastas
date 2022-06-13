@@ -53,20 +53,12 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                             <a class="refresh d-block color-letter" href=""> {{ trans(\Config::get('app.theme').'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
                         </div>
                     @endif
-                    @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
-                        <div class="full-screen widget d-inline-flex">
-                            @if(Session::has('user'))
-                                <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans(\Config::get('app.theme').'-app.lot_list.ver_ofertas') ?></a>
-                            @endif
-                        </div>
-                    @endif
 
-
-                        @if(!empty( $data['subastas']) && $data['subastas'][0]->tipo_sub == 'W'  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  && strtotime($data['subastas'][0]->start_session) > time())
-                        <div  class="widget text-right d-flex align-items-center justify-content-center timeLeft">
-                                <span data-countdown="{{ strtotime($data['subastas'][0]->start_session) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($data['subastas'][0]->start_session); ?>" data-closed="{{ $data['subastas'][0]->cerrado_asigl0 }}" class="timer"></span>
-                                <span class="clock"></span>
-                            </div>
+					@if(!empty( $data['subastas']) && $data['subastas'][0]->tipo_sub == 'W'  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  && strtotime($data['subastas'][0]->start_session) > time())
+					<div class="widget text-right d-flex align-items-center justify-content-center timeLeft">
+						<span data-countdown="{{ strtotime($data['subastas'][0]->start_session) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($data['subastas'][0]->start_session); ?>" data-closed="{{ $data['subastas'][0]->cerrado_asigl0 }}" class="timer"></span>
+						<span class="clock"></span>
+					</div>
                     @endif
 
 
@@ -131,6 +123,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 @foreach ($data['subastas'] as $key => $item)
                     <?php
 
+					$sobre_cerrado = $item->opcioncar_sub == 'S' ? true : false;
                     $titulo = $item->titulo_hces1 ?? $item->descweb_hces1;
                     $cerrado = $item->cerrado_asigl0 == 'S'? true : false;
                     $hay_pujas = !empty($item->max_puja)? true : false;

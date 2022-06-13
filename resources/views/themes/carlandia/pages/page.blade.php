@@ -26,9 +26,14 @@ $bread[] = array("name" => $data['data']->name_web_page  );
 				@endif
 				{!! $data['data']->content_web_page !!}
 
+
+				@if($data['data']->key_web_page != "info-adjudicacion")
 				<div class="mt-5">
 					<a class="button-principal" href="{{ route('allCategories') }}">{{ trans("$theme-app.home.buscar") }}</a>
 				</div>
+				@endif
+
+
 			</div>
 		</div>
 	</div>

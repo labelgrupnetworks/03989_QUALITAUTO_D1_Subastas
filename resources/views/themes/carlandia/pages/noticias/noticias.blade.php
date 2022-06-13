@@ -30,7 +30,7 @@
 					@include('includes.breadcrumb')
 
 					@if(empty ($data['categ']))
-					<h1 class="titlePage"><?= trans(\Config::get('app.theme').'-app.blog.principal_title') ?></h1>
+					<h1 class="title-page"> </h1>
 					@else
 					<h1 class="titlePage">{{ $data['categ']->title_category_blog_lang }}</h1>
 					@endif

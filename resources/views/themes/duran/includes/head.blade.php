@@ -10,7 +10,18 @@ header("X-Frame-Options:     DENY");
 <meta name="viewport" content="initial-scale=1,minimum-scale=0.15, maximum-scale=2, user-scalable=yes">
 <meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
 
-<title>{{ $data['seo']->meta_title ?? $seo->meta_title ?? trans("$theme-app.head.title_app") }}</title>
+<title>
+
+    @if( !empty($data['seo']->meta_title) )
+        {{$data['seo']->meta_title}}
+	@elseif(!empty($seo->meta_title))
+		{{ $seo->meta_title }}
+    @else
+        {{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+    @endif
+
+
+</title>
 
 <script>
  	//fecha servidor
@@ -29,9 +40,21 @@ header("X-Frame-Options:     DENY");
 	<meta name="robots" content="noindex,follow">
 @endif
 
-<meta name="title" content="{{ $data['seo']->meta_title ?? $seo->meta_title ?? trans("$theme-app.head.title_app") }}">
-<meta name="description" content="{{ $data['seo']->meta_description ?? $seo->meta_description ?? trans("$theme-app.head.meta_description") }}">
+@if(!empty($data['seo']->meta_title))
+<meta name="title" content="<?= $data['seo']->meta_title ?>">
+@elseif(!empty($seo->meta_title))
+	<meta name="title" content="{{ $seo->meta_title }}">
+@else
+<meta name="title" content="{{ trans(\Config::get('app.theme').'-app.head.title_app') }}">
+@endif
 
+@if(!empty($data['seo']->meta_description))
+    <meta name="description" content="<?= $data['seo']->meta_description ?>">
+@elseif(!empty($seo->meta_description))
+	<meta name="description" content="{{ $seo->meta_description }}">
+@else
+    <meta name="description" content="{{ trans(\Config::get('app.theme').'-app.head.meta_description') }}">
+@endif
 @if(!empty($seo->meta_keywords))
 	<meta name="keywords" content="{{ $seo->meta_keywords }}">
 @endif
@@ -63,6 +86,8 @@ header("X-Frame-Options:     DENY");
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
 <link href="{{ Tools::urlAssetsCache('/css/default/labelframework.css') }}" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+
+@stack('styles')
 
 <!-- Common Javascript -->
 <script>

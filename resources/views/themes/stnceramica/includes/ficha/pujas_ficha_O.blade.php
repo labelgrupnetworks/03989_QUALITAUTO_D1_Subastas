@@ -8,7 +8,7 @@
 
         <div class="pre">
             <p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
-            <p class="pre-price">
+            <p class="pre-price lotprice">
                 {{ $lote_actual->formatted_impsalhces_asigl0 }}
                 {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
                 <span class="lower-case">{{ trans("$theme-app.lot.lot-name") }}</span>
@@ -20,7 +20,7 @@
 
         @if (!empty($lote_actual->ancho_hces1))
             <div class="pre">
-                <p class="pre-price pricem2">
+                <p class="pre-price">
                     <span>{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0 / $lote_actual->ancho_hces1, false, 2) }}
                     </span>
                     <span>
@@ -37,7 +37,7 @@
 
         <div class="pre pre-actual_max_bid">
             <p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}</p>
-            <p class="pre-price">
+            <p class="pre-price lotprice">
                 <strong>
                     {{-- aparecera en rojo(clase other) si no eres el ganador y en verde si loeres (clase mine) , si no estas logeado no se modifica el color --}}
                     @if (Session::has('user'))
@@ -59,7 +59,7 @@
         @if (!empty($lote_actual->ancho_hces1))
             <div class="pre">
                 @if (!empty($lote_actual->ancho_hces1) && !empty($lote_actual->actual_bid))
-                    <p class="pre_min pricem2">
+                    <p class="pre_min">
                         <strong>
                             <span id="acutalPriceMeter">
                                 {{ \Tools::moneyFormat($lote_actual->actual_bid / $lote_actual->ancho_hces1, false, 2) }}
@@ -81,7 +81,7 @@
 
         <div class="pre">
             <p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.next_min_bid') }}</p>
-            <p class="pre-price">
+            <p class="pre-price lotprice">
                 <strong>
                     <span class="siguiente_puja"> </span>
                     {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
@@ -95,7 +95,7 @@
 
         @if (!empty($lote_actual->ancho_hces1))
             <div class="pre">
-                <p class="pre-price pricem2">
+                <p class="pre-price">
                     <strong><span class="siguiente_puja_permeter"> </span>
                         {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}{!! trans("$theme-app.lot.m2") !!}
                         @if (\Config::get('app.exchange'))

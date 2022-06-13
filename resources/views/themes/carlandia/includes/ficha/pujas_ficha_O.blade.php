@@ -26,7 +26,7 @@
 				if(Session::has('user') && !empty($lote_actual->max_puja) && $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']){
 					$class="mine";
 				}
-				elseif (Session::has('user') && !empty($lote_actual->max_puja)) {
+				elseif (Session::has('user') && !empty($lote_actual->max_puja) && $lote_actual->max_puja->cod_licit != $data['js_item']['user']['cod_licit'] && !empty($data['js_item']['user']['pujaMaxima'])) {
 					$class="other";
 				}
 			@endphp
@@ -120,7 +120,7 @@
 				<p class='explanation_bid t_insert'>
 					<span class="min_bid @if(!$hay_pujas) hidden @endif">{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }} </span>
 					<span class="no_bids @if($hay_pujas) hidden @endif">{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }} </span>
-					<i class="fa fa-info-circle ml-1 js-info-modal" data-modal="info-next-bid" aria-hidden="true"></i>
+					<i class="fa fa-info-circle ml-1" data-toggle="modal" data-target="#info-next-bid" aria-hidden="true"></i>
 				</p>
 
 				{{-- <p class='explanation_bid t_insert'>
@@ -282,5 +282,4 @@
     </script>
 @endif
 </div>
-
 

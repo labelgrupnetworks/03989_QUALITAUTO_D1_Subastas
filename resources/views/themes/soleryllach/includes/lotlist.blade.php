@@ -2,21 +2,22 @@
 	{{--  he puesto aquí los iconos por que el video tiene enlace y si lo meto dentro del otro enlace el html genera un momton de elementos a href abriendolos y cerrandolos--}}
 	@if(!empty($item->contextra_hces1))
 		<div style="position:absolute;right: 45px; top:265px;z-index: 100;">
-		<a href="{{$item->contextra_hces1}}" target="_blank">
-			<img src="/default/img/icons/video.png" style="height:16px" />
-		</a>
+			<a href="{{$item->contextra_hces1}}" target="_blank">
+				<img src="/default/img/icons/video.png" style="height:16px" />
+			</a>
 		</div>
 	@endif
-	@if( Config::get('app.icon_multiple_images') && !empty($item->imagenes)    && count($item->imagenes) > 1)
-		<a title="{{ $titulo }}"  <?= $url;?> style='text-decoration: none;'>
-			<div style="position:absolute;right: 30px; top:265px;z-index: 100;">
-				<img src="/default/img/icons/camara.png" style="height:20px" />
-			</div>
-			<div style="position:absolute;right: 26px; top:257px;z-index: 100;">
-				<img src="/default/img/icons/mas.png" style="height:8px" />
-			</div>
-		</a>
 
+	@if(Config::get('app.icon_multiple_images') && !empty($item->imagenes) && count($item->imagenes) > 1)
+
+	<a title="{{ $titulo }}"  <?= $url;?> style='text-decoration: none;'>
+		<div class="camera-icon">
+			<img src="/default/img/icons/camara.png"/>
+		</div>
+		<div class="plus-icon">
+			<img src="/default/img/icons/mas.png"/>
+		</div>
+	</a>
 	@endif
 
 
@@ -43,6 +44,9 @@
 						@endif
 
                 </div>
+
+			<p class="max-line-1 rarity-block @if($rarity) rarity-show @endif">{{ $rarity ?? '-' }}</p>
+
             <div class="data-container">
                 @if(!empty($titulo))
                     <div class="title_lot">

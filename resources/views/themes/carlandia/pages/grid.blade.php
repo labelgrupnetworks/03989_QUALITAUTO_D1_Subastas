@@ -5,7 +5,7 @@
 $eventoGa ="";
 	#si es subasta de venta directa
 	if( (!empty($codSub) && $codSub =='MOTORV') || request("typeSub") == "V" ){
-		$eventoGa ="ga('send','event','VISITA LISTADO','Venta directa');";
+		$eventoGa ="ga('send','event','VISITA LISTADO','Contraoferta');";
 		$seo_data->h1_seo = "<strong>Ofertas de coches en Venta Directa</strong>";
 		$seo_data->meta_title = "▷ Coches de Ocasión mediante Contraoferta | Carlandia";
 		$seo_data->meta_description = "Adquiere un coche de ocasión mediante oferta directa o mediante nuestro novedoso sistema de contraofertas en el que tu indicas el precio justo";
@@ -73,7 +73,7 @@ $eventoGa ="";
 
 @section('content')
 <script>
-	$(document).on('ready', function () {
+	$(function () {
 		{!! $eventoGa !!}
 	})
 </script>

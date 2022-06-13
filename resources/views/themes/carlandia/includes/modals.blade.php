@@ -73,7 +73,7 @@
                                         <!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
                                         <!-- <p id="insert_msg"></p><br/> -->
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class="btn button_modal_confirm modal-dismiss btn-custom secondary-button">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>

@@ -15,10 +15,10 @@ $empresa = $empre->getEmpre();
 
 					<div class="contact-bar">
 						@if (!empty($empresa->tel1_emp))
-							<a href="tel:{{$empresa->tel1_emp}}"><i class="fas fa-phone"></i> {{$empresa->tel1_emp}}</a>
+							<a href="tel:{{$empresa->tel1_emp}}"><i class="fa fa-phone fa-flip-horizontal"></i> {{$empresa->tel1_emp}}</a>
 						@endif
 						@if (!empty($empresa->email_emp))
-							<a href="mailto:{{$empresa->email_emp}}"><i class="fas fa-email"></i> {{$empresa->email_emp}}</a>
+							<a href="mailto:{{$empresa->email_emp}}"><i class="fa fa-email fa-flip-horizontal"></i> {{$empresa->email_emp}}</a>
 						@endif
 					</div>
 
@@ -160,7 +160,7 @@ $empresa = $empre->getEmpre();
 						</li>
 
 						<li class="item-phone">
-							<a href="tel:(+34) 932696282"><i class="fas fa-phone"></i> (+34) 932696282</a>
+							<a href="tel:(+34) 932696282"><i class="fa fa-phone fa-flip-horizontal"></i> (+34) 932696282</a>
 						</li>
 
                 </ul>

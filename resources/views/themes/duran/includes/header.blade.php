@@ -332,13 +332,13 @@ use App\libs\TradLib as TradLib;
                 <p class="text-center" style="color: darkred;">{{ trans(\Config::get('app.theme').'-app.login_register.registration_disabled') }}</p>
                 @endif
 			</div>
-			@if(!empty(\Config::get('app.ps_activate')))
+			{{-- @if(!empty(\Config::get('app.ps_activate')))
 			<iframe id="iframePresta" width="1px" height="1px" frameborder="0px"></iframe>
             <form id="formPresta" method="post" action="{{ \Config::get('app.ps_shop_path') . 'api-ajax/external-login' }}">
                 <input type="hidden" name="valoresPresta" id="valoresPresta" value="">
                 <input type="hidden" name="submitLogin" id="submitLogin" value="1">
             </form>
-            @endif
+            @endif --}}
         </div>
     </div>
     </div>

@@ -1,10 +1,12 @@
 <?php
 
 use App\libs\TradLib as TradLib;
+use App\Models\V5\FxCliWeb;
 
     $lang = Config::get('app.locale');
 
     $registration_disabled = Config::get('app.registration_disabled');
+
     $fullname = Session::get('user.name');
     if(strpos($fullname, ',')){
         $str = explode(",", $fullname);
@@ -13,7 +15,13 @@ use App\libs\TradLib as TradLib;
         $name = $fullname;
 	}
 
-
+	$permissionToSellerPanel = false;
+	if(config('app.permission_to_view_seller_panel', false) && session()->has('user')){
+		$cliweb = FxCliWeb::where('cod_cliweb', session()->get('user.cod'))->whereNotNull('permission_id_cliweb')->first();
+		if($cliweb){
+			$permissionToSellerPanel = true;
+		}
+	}
 ?>
 @if(count(Config::get('app.locales')) > 1)
 <div class="lang-selection">
@@ -155,9 +163,13 @@ use App\libs\TradLib as TradLib;
                             {{ trans($theme.'-app.login_register.my_panel') }}
 
                         </a>
+						@if($permissionToSellerPanel)
+						<a class="color-letter" href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}"> {{ trans("$theme-app.login_register.my_sales") }}</a>
+						@endif
                         @if(Session::get('user.admin'))
                             <a class="color-letter" href="/admin"  target = "_blank"> {{ trans($theme.'-app.login_register.admin') }}</a>
                         @endif
+
                         <a id="js-logout" class="color-letter" href="{{ \Routing::slug('logout') }}" >{{ trans($theme.'-app.login_register.logout') }}</a>
                     </div>
                     </div>

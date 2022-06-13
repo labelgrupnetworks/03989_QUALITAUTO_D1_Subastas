@@ -6,7 +6,8 @@ header("X-Frame-Options:     DENY");
 ?>
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+{{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous"> --}}
 <link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
 <link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
@@ -30,7 +31,7 @@ header("X-Frame-Options:     DENY");
 <script>
 	var traduction_large = { {!!trans("$theme-app.global.month_large")!!} };
     var traductions = { {!!trans("$theme-app.global.month")!!} };
-	var exchanges = {'{{$curency_usd->getCod()}}': {{$curency_usd->getExchange()}}};
+	var exchanges = {'{{$curency_usd->getCod()}}': {{$curency_usd->getExchange()}} };
 
 	var routing = {
 		subastashome: 	"{{ \Routing::slug('subastashome') }}",
@@ -66,21 +67,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
-
-<script>
-	//si pasan la variable view_login = true se mostrara el login
-   var view_login = @json(Request::input('view_login', false));
-   var resolution_web = $( window ).width();
-
-   if(view_login == true){
-
-	   if(resolution_web >= 1200) {
-		   view_login= true;
-	   }else{
-		   view_login = false;
-	   }
-   }
-</script>
 
 <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>

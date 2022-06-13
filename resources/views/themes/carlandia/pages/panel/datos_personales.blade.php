@@ -83,15 +83,7 @@
 
 					<form method="post" class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}" class="form-control">
-						<?php
-                        if($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null){
-                            $name = explode(",", $data['user']->nom_cli);
-                            if(count($name)!= 2){
-                                $name[1] = $data['user']->nom_cli;
-                                $name[0] = '';
-                            }
-                        }
-                    ?>
+
 						<div class="col_reg_form"></div>
 
 						<div class="inputs-custom-group d-flex justify-content-space-between flex-wrap">
@@ -107,6 +99,7 @@
 								<input type="hidden" class="form-control" name="title_rsoc_cli"
 									value="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}">
 							</div>
+
 							<div class="form-group input-group name_client col-xs-12 col-sm-6">
 								<label class="" for="apellido">{{
 									trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
@@ -118,25 +111,14 @@
 
 							</div>
 							@else
-							<div class="form-group input-group name_client col-xs-12 col-sm-5">
-								<label class="" for="nombre">{{ trans(\Config::get('app.theme').'-app.user_panel.name')
-									}}</label>
+
+							<div class="form-group input-group name_client col-xs-12">
+								<label class="" for="nombre">{{ trans(\Config::get('app.theme').'-app.user_panel.name')}}</label>
 								<input type="text" class="form-control" name="usuario"
 									placeholder="{{ trans(\Config::get('app.theme').'-app.user_panel.name') }}" required
-									value="<?= $name[1] ?>">
+									value="{{$data['user']->nom_cli}}">
 								<input type="hidden" class="form-control" name="title_name"
 									value="{{ trans(\Config::get('app.theme').'-app.user_panel.name') }}">
-
-							</div>
-							<div class="form-group input-group name_client col-xs-12 col-sm-1"></div>
-							<div class="form-group input-group name_client col-xs-12 col-sm-6">
-								<label class="" for="apellido">{{
-									trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
-								<input class="form-control" id="apellido" name="last_name"
-									placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}"
-									required="" type="text" value="<?= $name[0] ?>">
-								<input type="hidden" class="form-control" name="title_last_name"
-									value="{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}">
 
 							</div>
 							@endif

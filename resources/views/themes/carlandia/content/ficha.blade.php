@@ -103,7 +103,7 @@ $urlSimilar = (new \App\libs\EmailLib(''))->getUrlGridLots($lote_actual->num_hce
 		@if($subasta_online)
 			ga('send','event','VISITA FICHA','Subasta','{{ $lote_actual->descweb_hces1 }}/@if(!empty($caracteristicas[55])){{ $caracteristicas[55]->value_caracteristicas_hces1}}@endif');
 		@else
-			ga('send','event','VISITA FICHA','Venta directa','{{ $lote_actual->descweb_hces1 }}/@if(!empty($caracteristicas[55])){{ $caracteristicas[55]->value_caracteristicas_hces1}}@endif');
+			ga('send','event','VISITA FICHA','Contraoferta','{{ $lote_actual->descweb_hces1 }}/@if(!empty($caracteristicas[55])){{ $caracteristicas[55]->value_caracteristicas_hces1}}@endif');
 		@endif
 
 		fbq('track', 'ViewContent', {
@@ -255,21 +255,7 @@ $urlSimilar = (new \App\libs\EmailLib(''))->getUrlGridLots($lote_actual->num_hce
 
                             </div>
                         </div>
-						<div class="col-xs-12 no-padding favoritos d-flex gap-5">
-                        @if(Session::has('user') &&  !$retirado)
-                           <a  class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
-                           </a>
-                           <a class="secondary-button  <?= $lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
-							</a>
-						@endif
 
-						   <a class="secondary-button similar-button" href="{{$urlSimilar}}">
-								{{ trans("$theme-app.lot.similar_lots") }}
-							</a>
-
-					</div>
                 <div class="col-xs-12 no-padding">
                     <div class="minis-content d-flex flex-wrap">
                         <?php foreach($lote_actual->imagenes as $key => $imagen){?>
@@ -298,7 +284,10 @@ $urlSimilar = (new \App\libs\EmailLib(''))->getUrlGridLots($lote_actual->num_hce
 
     </div>
 
-    <div class="col-sm-5 col-xs-12 content-right-ficha d-flex justify-content-space-between flex-column mb-2">
+    <div class="col-sm-5 col-xs-12 p-0 content-right-ficha d-flex justify-content-space-between flex-column mb-2">
+
+		<div class="content-ficha d-flex flex-column" style="flex: 1">
+
 
        <div class="row d-flex flex-column">
 
@@ -314,7 +303,7 @@ $urlSimilar = (new \App\libs\EmailLib(''))->getUrlGridLots($lote_actual->num_hce
                     @endforeach
                 </div>
             @endif
-		<div class="ficha-info-content col-xs-12 no-padding h-100 flex-column justify-content-center d-flex">
+		<div class="ficha-info-content col-xs-12 h-100 flex-column justify-content-center d-flex">
 
             @if(!$retirado && !$devuelto && !$fact_devuelta)
                 <div class="ficha-info-items">
@@ -367,21 +356,47 @@ $urlSimilar = (new \App\libs\EmailLib(''))->getUrlGridLots($lote_actual->num_hce
     </div>
 	<div class="row row-position-end">
 		<div class="col-xs-12">
+			<div class="col-xs-12">
 				@if(( $subasta_online  || ($subasta_web && $subasta_abierta_P )) && !$cerrado &&  !$retirado)
 					@include('includes.ficha.history')
 				@endif
+			</div>
 		</div>
 
 		{{-- <div class="col-xs-12">
 			@include('includes.ficha.pujas_fichaPrivada')
 		</div> --}}
 
-		<div class="col-xs-12">
-			@include('includes.ficha.share')
+		<div class="col-xs-12 mb-2">
+			<div class="col-xs-12">
+				@include('includes.ficha.share')
+			</div>
 		</div>
 	</div>
 
-            </div>
+	</div>
+
+		<div class="last-next-text-color pl-1 pr-1 pt-1">
+			<div class="next  align-item-center @if(!empty($data['previous'])) d-flex justify-content-space-between @endif text-right">
+				@if(!empty($data['previous']))
+				<a class="{{-- color-letter --}} nextLeft" title="{{ trans(\Config::get('app.theme').'-app.subastas.last') }}"
+					href="{{$data['previous']}}"><i class="fa fa-angle-left fa-angle-custom"></i> {{
+					trans(\Config::get('app.theme').'-app.subastas.last') }}</a>
+				@endif
+
+
+				@if(!empty($data['next']))
+				<a class="{{-- color-letter --}} nextRight"
+					title="{{ trans(\Config::get('app.theme').'-app.subastas.next') }}" href="{{$data['next']}}">{{
+					trans(\Config::get('app.theme').'-app.subastas.next') }} <i
+						class="fa fa-angle-right fa-angle-custom"></i></a>
+				@endif
+
+
+			</div>
+		</div>
+	</div>
+
 
 
 			<div class="col-xs-12 col-sm-7" style="position: relative" id="data-container">

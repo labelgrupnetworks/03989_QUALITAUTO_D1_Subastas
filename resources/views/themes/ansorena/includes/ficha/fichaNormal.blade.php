@@ -1,3 +1,14 @@
+{{-- listamos los recursos que se hayan puesto en la carpeta de videos para mostrarlos en la imagen principal--}}
+@php
+$resourcesList = [];
+foreach( ($lote_actual->videos ?? []) as $key => $video){
+	$resource=["src"=>$video, "format" => "VIDEO"];
+	if (strtolower(substr($video, -4)) == ".gif" ){
+		$resource  ["format"] = "GIF";
+	}
+	$resourcesList[] = $resource;
+}
+@endphp
 
 <div class="ficha-content color-letter">
     <div class="container">
@@ -26,6 +37,22 @@
 
 							<div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
 
+								@foreach( $resourcesList as $resource)
+										<div class="item_content_img_single" style="position: relative;">
+											@if($resource["format"]=="GIF")
+												<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+												class="img-responsive"
+												src="{{$resource["src"]}}"
+												alt="{{$lote_actual->titulo_hces1}}">
+											@elseif($resource["format"]=="VIDEO")
+												<video width="100%" controls>
+													<source src="{{$resource["src"]}}" type="video/mp4">
+												</video>
+
+											@endif
+									</div>
+								@endforeach
+
 								@foreach($lote_actual->imagenes as $key => $imagen)
 									<div class="item_content_img_single" style="position: relative;">
 											<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
@@ -34,6 +61,9 @@
 											alt="{{$lote_actual->titulo_hces1}}">
 									</div>
 								@endforeach
+
+
+
 
 							</div>
 
@@ -80,6 +110,8 @@
                             {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
                         </div>
                     @endif
+					<div id="resource_main_wrapper" class="text-center" style="display:none">
+					</div>
                     <div class="img-global-content position-relative">
 
                     <div id="img_main" class="img_single">
@@ -109,7 +141,20 @@
                         @endif
                 <div class="col-xs-12 no-padding">
                     <div class="minis-content d-flex flex-wrap">
-						@if(count($lote_actual->imagenes) >1)
+
+							@foreach( $resourcesList as $key => $resource)
+									<div   class="mini-img-ficha no-360">
+											<a href="javascript:viewResourceFicha('<?=$resource["src"]?>', '<?=$resource["format"]?>');">
+												@if($resource["format"]=="GIF")
+													<div class="img-openDragon" style="background-image:url('{{$resource["src"]}}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@elseif($resource["format"]=="VIDEO")
+													<div class="img-openDragon" style="background-image:url('{{ asset('/img/icons/video_thumb.png') }}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@endif
+											</a>
+									</div>
+							@endforeach
+						{{-- solo mostramos las minis si hay mas de una o si tambien hay gif --}}
+						@if(count($lote_actual->imagenes) >1 || count($resourcesList)>0)
 							<?php foreach($lote_actual->imagenes as $key => $imagen){?>
 								<div   class="mini-img-ficha no-360">
 
@@ -447,30 +492,34 @@ $( document ).ready(function() {
 
     }});
 
-		function loadSeaDragon(img){
+	function loadSeaDragon(img){
+		$('#resource_main_wrapper').hide();
+		$('.img-global-content').show();
+		var element = document.getElementById("img_main");
 
-var element = document.getElementById("img_main");
+		while (element.firstChild) {
+		element.removeChild(element.firstChild);
+		}
+		OpenSeadragon({
+		id:"img_main",
+		prefixUrl: "/img/opendragon/",
 
-while (element.firstChild) {
-element.removeChild(element.firstChild);
+		showReferenceStrip:  true,
+
+
+		tileSources: [{
+				type: 'image',
+				url:  "/img/load/real/" + img
+			}],
+		showNavigator:false,
+		});
 }
-OpenSeadragon({
-id:"img_main",
-prefixUrl: "/img/opendragon/",
-
-showReferenceStrip:  true,
+loadSeaDragon('<?= $lote_actual->imagen; ?>');
 
 
-tileSources: [{
-		type: 'image',
-		url:  '/img/load/real/'+img
-	}],
-showNavigator:false,
-});
-}
-loadSeaDragon('<?= $lote_actual->imagen ?>');
-
-
+@if (count($resourcesList) > 0)
+	viewResourceFicha('{{ head($resourcesList)["src"] }}','{{ head($resourcesList)["format"] }}');
+@endif
 
         //Slider vertical lote
 

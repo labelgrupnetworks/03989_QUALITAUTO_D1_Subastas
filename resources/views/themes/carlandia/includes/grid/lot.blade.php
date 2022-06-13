@@ -21,7 +21,7 @@
 				</div>
 
 			@elseif($subasta_venta)
-				<div class="salida-time venta">
+				<div class="salida-time venta cliccontraofertarGrid_JS" data-matricula="{{$item->matricula}}">
 					<p><span style="text-transform: uppercase;">{{ trans("$theme-app.lot.counteroffer_btn") }}</span></p>
 				</div>
 			@endif
@@ -49,14 +49,14 @@
 					</div>
 
 					<div class="data-price text-center">
-						@if( !$retirado && !$devuelto)
+						@if(!$retirado && !$devuelto)
 							<p>
 								@if($subasta_venta)
-									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+									<span class="salida-title">Rango de precios</span>
 								@else
 									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+									<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 								@endif
-								<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 							</p>
 
 							@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado)
@@ -66,6 +66,16 @@
 								<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 								@endif
 							</p>
+							@elseif($subasta_venta)
+								@if($item->importe_max && $item->importe_min)
+								<p class="d-flex justify-content-space-between">
+									<span>{{ Tools::moneyFormat($item->importe_max, trans("$theme-app.subastas.euros"), 0) }}</span>
+									<span>-</span>
+									<span>{{ Tools::moneyFormat($item->importe_min, trans("$theme-app.subastas.euros"), 0) }}</span>
+								</p>
+								@else
+								<p>{{ ucfirst(mb_strtolower(trans("$theme-app.lot.cash_na"))) }}</p>
+								@endif
 							@endif
 
 							@if( $awarded && !$devuelto && !$retirado)
@@ -82,8 +92,9 @@
 									<p> <span class="salida-title notSold">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</span></p>
 								@endif
 							@endif
-					@endif
-				</div>
+						@endif
+					</div>
+
 
 				{{-- @if (!$devuelto && !$retirado && !$sub_historica)
 					@if($cerrado &&  empty($precio_venta) && $compra)
@@ -100,7 +111,7 @@
             </div>
 
 			@if($subasta_venta)
-			<div class="salida-time venta" {!! $url !!}>{{ trans("$theme-app.lot.see_sheet") }} <br> {{ 'HAZ TU OFERTA' }} </div>
+			<div class="salida-time venta clicVerfichaGrid_JS" data-coche="{{$titulo}}" data-matricula="{{$item->matricula}}" {!! $url !!}>{{ trans("$theme-app.lot.see_sheet") }} <br> {{ 'HAZ TU OFERTA' }} </div>
 			@else
 			<div class="salida-time online" {!! $url !!}>{{ trans("$theme-app.lot.see_sheet") }} <br> {{ 'HAZ TU PUJA' }} </div>
 			@endif

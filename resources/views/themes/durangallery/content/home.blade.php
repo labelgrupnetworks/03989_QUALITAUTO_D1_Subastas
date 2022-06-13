@@ -1,7 +1,7 @@
 
 {{-- Baners de home --}}
 <div class="banner-container">
-	{!! \BannerLib::bannersPorUbicacionKeyAsClass('HOME',["home-large" => ['dots' => false, 'autoplay' => true, 'arrows' => false]]) !!}
+	{!! \BannerLib::bannersPorUbicacionKeyAsClass('HOME',["home-large" => ['dots' => false, 'autoplay' => true, 'arrows' => false, 'autoplaySpeed' => 1500]]) !!}
 </div>
 
 

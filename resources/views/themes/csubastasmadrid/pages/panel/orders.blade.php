@@ -1,0 +1,77 @@
+@extends('layouts.default')
+
+@section('title')
+	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+@stop
+
+@section('content')
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 titlePage">
+			<h1 {{-- class="titlePage" --}}>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+			<p class="mini-underline"></p>
+		</div>
+	</div>
+</div>
+<div class="container panel">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12">
+            <?php $tab="orders";?>
+            @include('pages.panel.menu_micuenta')
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            @foreach($data['values'] as $key_sub => $all_inf)
+                              <div class="panel-heading">
+                                <h4 class="panel-title">
+                                  <a data-toggle="collapse" href="#{{$all_inf['inf']->cod_sub}}">{{$all_inf['inf']->name}}</a>
+                                </h4>
+                              </div>
+                              <div id="{{$all_inf['inf']->cod_sub}}" class="panel-collapse collapse <?= count($data['values']) == '1'? 'in':' ';?>">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-custom">
+                                            <thead>
+                                                <tr>
+                                                    <tr>
+                                                        <th> </th>
+                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</th>
+                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.auction') }}</th>
+                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.name') }}</th>
+                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</th>
+                                                        <th class="text-right">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</th>
+                                                    </tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($all_inf['lotes'] as $inf_lot)
+                                                    <?php
+                                                        $url_friendly = str_slug($inf_lot->titulo_hces1);
+                                                        $url_friendly = \Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->session_name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
+                                                    ?>
+                                                    <tr>
+                                                        <td><a href="{{$url_friendly}}"><img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" height="42"></a></td>
+                                                        <td>&nbsp;&nbsp;{{$inf_lot->ref_asigl0}}</td>
+                                                        @if(strtoupper($inf_lot->tipo_sub) == 'O' || strtoupper($inf_lot->tipo_sub) == 'P')
+                                                            <td>&nbsp;&nbsp;{{ trans(\Config::get('app.theme').'-app.user_panel.auctions_online') }}</td>
+                                                        @else
+                                                            <td>&nbsp;&nbsp;{{$inf_lot->cod_sub}}</td>
+                                                        @endif
+                                                         <td style="padding-left:10px;"><a href="{{$url_friendly}}" style="text-decoration: none;color: #333;">{{$inf_lot->titulo_hces1}}</a></td>
+                                                        <td>&nbsp;&nbsp;{{$inf_lot->date}}</td>
+
+                                                        <td class="text-right pr-5">{{$inf_lot->formatted_imp }} €&nbsp;&nbsp;</td>
+                                                    <tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                              </div>
+                            @endforeach
+                        </div>
+                    </div>
+		</div>
+	</div>
+</div>
+
+@stop

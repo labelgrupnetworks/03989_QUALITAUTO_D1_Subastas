@@ -72,17 +72,17 @@
 					</div>
 					<div class="col-xs-12 col-sm-7 enterprise text-justify">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6 no-padding">
-								<b>{{ $empresa->nom_emp ?? ''}}</b> <br>
-								{{ $empresa->dir_emp ?? ''}}<br>
-								{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}<br>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<br>{{ $empresa->tel1_emp ?? ''}}<br>
-								<a title="{{ $empresa->email_emp ?? ''}}"
-									href="mailto:{{ $empresa->email_emp ?? ''}}">
-									{{ $empresa->email_emp ?? ''}}
-								</a>
+							<div class="col-xs-12 no-padding">
+								<p><b>{{ $empresa->nom_emp ?? ''}}</b></p>
+								<p>{{ $empresa->dir_emp ?? ''}}</p>
+								<p>{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}</p>
+								<p>{{ $empresa->tel1_emp ?? ''}}</p>
+								<p>
+									<a title="{{ $empresa->email_emp ?? ''}}" href="mailto:{{ $empresa->email_emp ?? ''}}">
+										{{ $empresa->email_emp ?? ''}}
+									</a>
+								</p>
+
 							</div>
 						</div>
 					</div>

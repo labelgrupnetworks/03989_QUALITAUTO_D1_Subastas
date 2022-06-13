@@ -78,7 +78,8 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
                 <div class="navbar-brand icons-band">
 					@if (!Session::has('user'))
-						<a href="{{ config('app.custom_login_url') }}"
+						{{-- <a href="{{ config('app.custom_login_url') }}&context_url={{Request::getSchemeAndHttpHost()}}" --}}
+						<a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
 							class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 							<i class="fa fa-user"></i>
 						</a>
@@ -118,7 +119,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                         <a href="{{ \Routing::slug('dmg') }}">{{ trans($theme . '-app.subastas.dmg_auction') }}</a>
                     </li>
                     <li>
-                        <a href="{{ trans("$theme-app.links.blog_duran") }}">{{ trans($theme . '-app.home.magazine') }}</a>
+                        <a href="{{ trans("$theme-app.links.blog_duran") }}" target = "_blank">{{ trans($theme . '-app.home.magazine') }}</a>
                     </li>
                     <li>
                         <a href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
@@ -203,7 +204,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 								<a class="color-letter flex-display link-header" href="{{ \Routing::slug('dmg') }}">{{ trans($theme . '-app.subastas.dmg_auction') }}</a>
 							</li>
 							<li>
-								<a class="color-letter flex-display link-header" href="{{ trans("$theme-app.links.blog_duran") }}">{{ trans($theme . '-app.home.magazine') }}</a>
+								<a class="color-letter flex-display link-header" href="{{ trans("$theme-app.links.blog_duran") }}" target = "_blank">{{ trans($theme . '-app.home.magazine') }}</a>
 							</li>
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
@@ -242,7 +243,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 				<div class="col-xs-1">
 					<div class="navbar-brand icons-band">
 						@if (!Session::has('user'))
-							<a href="{{ config('app.custom_login_url') }}"
+							<a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
 								class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 								<i class="fa fa-user"></i>
 							</a>
@@ -341,7 +342,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                                     href="{{ \Routing::slug('dmg') }}"><span>{{ trans($theme . '-app.subastas.dmg_auction') }}</span></a>
                             </li>
                             <li>
-                                <a class="color-letter flex-display link-header"
+                                <a class="color-letter flex-display link-header" target = "_blank"
                                     title="{{ trans($theme . '-app.home.magazine') }}"
                                     href="{{ trans("$theme-app.links.blog_duran") }}"><span>
                                         {{ trans($theme . '-app.home.magazine') }}</span></a>
@@ -359,7 +360,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
                             @if (!Session::has('user'))
                                 <li>
-                                    <a href="{{ config('app.custom_login_url') }}"
+                                    <a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
                                         class="color-letter d-flex link-header btn_login_desktop"
                                         title="{{ trans($theme . '-app.login_register.login') }}"
                                         href="javascript:;"><span>{{ trans($theme . '-app.login_register.login') }}</span>

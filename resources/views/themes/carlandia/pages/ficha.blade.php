@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 ?>
 
-<div class="container next-last-ficha">
+	<div class="container next-last-ficha">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 color-letter">
                     @include('includes.breadcrumb_before_after')

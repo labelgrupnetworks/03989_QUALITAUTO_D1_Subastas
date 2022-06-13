@@ -14,9 +14,9 @@ if(!empty($data['usuario'])){
 
 <div class="row">
 	<div class="col-xs-12 mt-1 d-flex justify-content-center">
-		<a href="tel:123-456-7890" class="button-principal btn-ficha-default" type="button">
+		<a href="tel:{{config('app.phoneNumber')}}" class="button-principal btn-ficha-default" type="button">
 			<i class="fa fa-phone" aria-hidden="true"></i>
-			<span>123-456-7890</span>
+			<span>{{config('app.phoneNumber')}}</span>
 		</a>
 	</div>
 </div>

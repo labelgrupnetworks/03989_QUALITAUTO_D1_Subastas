@@ -72,7 +72,7 @@
 													{{ trans(\Config::get('app.theme').'-app.user_panel.bid_date') }}
 												</div>
 												<div class="col-xs-12 col-sm-2 col-one user-account-fecha text-center">
-													Fecha fin
+													{{ trans("$theme-app.user_panel.end_date") }}
 												</div>
                                             </div>
                                             <div class="user-accout-items-content">

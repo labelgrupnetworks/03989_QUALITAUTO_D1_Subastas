@@ -191,7 +191,9 @@ $vendido = (!empty($lote_actual->himp_csub)|| $lote_actual->desadju_asigl0 =='S'
 				</div>
 				<div class="col-xs-12 col-sm-12 no-padding">
 					@if(( $subasta_online && $start_session || ($subasta_web && $subasta_abierta_P )) && !$cerrado && !$retirado)
-					@include('includes.ficha.history')
+						@if ($sobre_cerrado == false)
+						@include('includes.ficha.history')
+						@endif
 					@endif
 				</div>
 				@include('includes.ficha.share')

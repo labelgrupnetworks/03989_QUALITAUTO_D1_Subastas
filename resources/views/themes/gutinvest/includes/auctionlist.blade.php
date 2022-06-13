@@ -20,7 +20,7 @@
                     <h3><strong>{{ $subasta->name }}</strong></h3>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-2">
+            <div class="col-xs-6 col-sm-1 no-padding close-date">
                 <div class="item-subasta-data-title">
                     {{ trans(\Config::get('app.theme').'-app.subastas.date_end') }}
                 </div>
@@ -28,7 +28,7 @@
                 {{date_format($dataEnd, 'd-m-Y')}}
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-2 no-padding">
+            <div class="col-xs-6 col-sm-3 auction-type">
                 <div class="item-subasta-data-title">
                     {{ trans(\Config::get('app.theme').'-app.subastas.mode_auction') }}
                 </div>
@@ -37,7 +37,7 @@
                 @if ($subasta->tipo_sub == 'V')
                     {{ trans(\Config::get('app.theme').'-app.lot_list.direct_sale') }}
                 @elseif($subasta->tipo_sub == 'W')
-                    {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+                    {{ trans(\Config::get('app.theme').'-app.lot_list.sell_for_offer') }}
                 @elseif($subasta->tipo_sub == 'O')
                     {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
                 @endif

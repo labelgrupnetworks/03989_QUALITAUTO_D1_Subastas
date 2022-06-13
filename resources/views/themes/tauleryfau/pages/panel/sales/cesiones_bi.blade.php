@@ -159,8 +159,8 @@ $( document ).ready(function() {
 function selectSalesChange(option, checked, select) {
 	//checked: true or false
 	//alert(option.length + ' options ' + (checked ? 'selected' : 'deselected'));
-	let typeChecker = option.context.dataset.type;
-	refreshSelects(this, typeChecker, option.context.value);
+	let typeChecker = option.data('type');
+	refreshSelects(this, typeChecker, option.attr('value'));
 
 	let selections = this.getSelected().map((i, input) => input.value).toArray();
 	if(selections.length == 0){

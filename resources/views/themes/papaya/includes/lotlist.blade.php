@@ -83,8 +83,8 @@
                 </div>
 
                 <p class="mt-2 d-flex align-items justify-content-center btn-pujar-itemhome">
-				@if(in_array($item->sub_hces1, ['']))
-					<a style="font-size: 20px" class="button-principal carousel-pujar" <?= $url ?>>{{ trans(\Config::get('app.theme').'-app.lot.auction_closed_envelope') }}</a>
+				@if($subasta_online && $sobre_cerrado)
+					<a class="button-principal carousel-pujar text-transform-uppercase" <?= $url ?>>{{ trans(\Config::get('app.theme').'-app.lot.closed_envelope') }}</a>
 				@elseif($subasta_online && strtotime($item->start_session) > time())
 					<a class="button-principal carousel-pujar" <?= $url ?>>{{ trans(\Config::get('app.theme').'-app.subastas.proximamente') }}</a>
                 @elseif($subasta_online && !$cerrado)

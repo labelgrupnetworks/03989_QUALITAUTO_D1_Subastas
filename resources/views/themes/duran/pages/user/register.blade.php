@@ -1,5 +1,11 @@
 @extends('layouts.session_layout')
 
+@push('styles')
+@if(!empty($formulario->back) && $formulario->back == 'nft')
+	<link rel="stylesheet" type="text/css" href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/nft.css') }}">
+@endif
+@endpush
+
 @section('title')
 {{ trans(\Config::get('app.theme').'-app.head.title_app') }}
 @stop
@@ -58,6 +64,7 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 					<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input class="form-control" type="hidden" name="back" value="{{ $formulario->back ?? '' }}">
+					<input class="form-control" type="hidden" name="context_url" value="{{ request('context_url', '') }}">
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="sexo" id="tipo_cli" value="1">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
@@ -460,13 +467,16 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 					</form>
 					@endif
 
-				@if(!empty(\Config::get('app.ps_activate')))
+				{{-- @if(!empty(\Config::get('app.ps_activate')))
+					@php
+					$urlToExternalLogin = $formulario->back == 'nft';
+					@endphp
 					<iframe id="iframePresta" width="1px" height="1px" frameborder="0px"></iframe>
 					<form id="formPresta" method="post" action="{{ \Config::get('app.ps_shop_path') . 'api-ajax/external-login' }}">
 					<input type="hidden" name="valoresPresta" id="valoresPresta" value="">
 					<input type="hidden" name="submitLogin" id="submitLogin" value="1">
 				</form>
-				@endif
+				@endif --}}
 					<br><br><br><br><br><br><br><br>
 			</div>
 		</div>

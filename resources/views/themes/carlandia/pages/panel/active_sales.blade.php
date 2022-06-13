@@ -122,18 +122,19 @@
                                             <p class="m-0">Valor de mercado:
                                                 <span>{{ Tools::moneyFormat($lot->pc_hces1, trans("$theme-app.lot.eur")) }}<span>
                                             </p>
-
+											@if($lot->tipo_sub == 'O')
                                             <p class="m-0">Precio Comprar Ya:
-                                                <span>{{ Tools::moneyFormat($lot->comprar, trans("$theme-app.lot.eur")) }}</span>
+                                                <span>{{ Tools::moneyFormat($lot->comprar, trans("$theme-app.lot.eur"), 2) }}</span>
                                             </p>
+											@endif
                                             <p class="m-0">Precio Mínimo/Reserva:
                                                 <span>
-                                                    {{ Tools::moneyFormat($lot->reserva, trans("$theme-app.lot.eur")) }}
+                                                    {{ Tools::moneyFormat($lot->reserva, trans("$theme-app.lot.eur"), 2) }}
                                                     <span>
                                             </p>
 
                                             <p class="m-0"><b>Precio Ofertado:
-                                                    <span>{{ Tools::moneyFormat($lot->max_imp_asigl1 ?? 0, trans("$theme-app.lot.eur")) }}<span></b>
+                                                    <span>{{ Tools::moneyFormat($lot->max_imp_asigl1 ?? 0, trans("$theme-app.lot.eur"), 2) }}<span></b>
                                             </p>
 
                                         </div>
@@ -163,9 +164,10 @@
 																{{ Tools::moneyFormat(($lot->max_imp_asigl1 * 100) / $lot->pc_hces1, '%', 0) }}
 															</td>
 															<td class="{{ $poWithPm >= 0 ? 'mine' : 'other' }}">
-																{{ Tools::moneyFormat($poWithPm, trans("$theme-app.lot.eur")) }}
+																{{ Tools::moneyFormat($poWithPm, trans("$theme-app.lot.eur"), 2) }}
 															</td>
 														</tr>
+														@if($lot->tipo_sub == 'O')
 														<tr>
 															<td class="title">Ofertado <b><i>vs</i></b> Comprar Ya:
 															</td>
@@ -173,9 +175,10 @@
 																{{ Tools::moneyFormat(($lot->max_imp_asigl1 * 100) / $lot->comprar, '%', 0) }}
 															</td>
 															<td class="{{ $poWithCy >= 0 ? 'mine' : 'other' }}">
-																{{ Tools::moneyFormat($poWithCy, trans("$theme-app.lot.eur")) }}
+																{{ Tools::moneyFormat($poWithCy, trans("$theme-app.lot.eur"), 2) }}
 															</td>
 														</tr>
+														@endif
 
 														<tr>
 															<td class="title">Ofertado <b><i>vs</i></b> Mínimo/Reserva:
@@ -184,7 +187,7 @@
 																{{ Tools::moneyFormat(($lot->max_imp_asigl1 * 100) / $lot->reserva, '%', 0) }}
 															</td>
 															<td class="{{ $poWithRm >= 0 ? 'mine' : 'other' }}">
-																{{ Tools::moneyFormat($poWithRm, trans("$theme-app.lot.eur")) }}
+																{{ Tools::moneyFormat($poWithRm, trans("$theme-app.lot.eur"), 2) }}
 															</td>
 														</tr>
 													</tbody>

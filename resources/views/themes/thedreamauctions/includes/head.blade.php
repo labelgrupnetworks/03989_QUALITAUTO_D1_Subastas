@@ -124,20 +124,6 @@ header("X-Frame-Options:     DENY");
         async defer>
 </script>
 
-<script>
-	//si pasan la variable view_login = true se mostrara el login
-   var view_login = @json(Request::input('view_login', false));
-   var resolution_web = $( window ).width();
-
-   if(view_login == true){
-
-	   if(resolution_web >= 1200) {
-		   view_login= true;
-	   }else{
-		   view_login = false;
-	   }
-   }
-</script>
 
 <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>

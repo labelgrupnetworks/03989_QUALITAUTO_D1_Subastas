@@ -28,12 +28,26 @@ header("X-Frame-Options:     DENY");
 	<meta name="robots" content="noindex,follow">
 @endif
 
-<meta name="title" content="{{ $data['seo']->meta_title ?? $seo->meta_title ?? trans("$theme-app.head.title_app") }}">
-<meta name="description" content="{{ $data['seo']->meta_description ?? $seo->meta_description ?? trans("$theme-app.head.meta_description") }}">
+@if(!empty($data['seo']->meta_title))
+<meta name="title" content="{{ $data['seo']->meta_title }}">
+@elseif (!empty($seo->meta_title))
+<meta name="title" content="{{ $seo->meta_title }}">
+@else
+<meta name="title" content="{{ trans("$theme-app.head.title_app") }}">
+@endif
+
+@if(!empty($data['seo']->meta_description))
+<meta name="description" content="{{ $data['seo']->meta_description }}">
+@elseif (!empty($seo->meta_description))
+<meta name="description" content="{{ $seo->meta_description }}">
+@else
+<meta name="description" content="{{ trans("$theme-app.head.meta_description") }}">
+@endif
 
 @if(!empty($data['seo']->canonical))
-    <?php  $var_http = isset($_SERVER['HTTPS'])? "https://" : "http://"; ?>
-    <link rel="canonical" href="{{$var_http.$data['seo']->canonical}}" />
+<link rel="canonical" href="{{ $data['seo']->canonical }}" />
+@elseif(!empty($seo->canonical))
+<link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
 
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
@@ -106,22 +120,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
-
-<script>
-	//si pasan la variable view_login = true se mostrara el login
-   var view_login = @json(Request::input('view_login', false));
-   var resolution_web = $( window ).width();
-
-   if(view_login == true){
-
-	   if(resolution_web >= 1200) {
-		   view_login= true;
-	   }else{
-		   view_login = false;
-	   }
-   }
-</script>
-
 
 
 <!--[if lt IE 9]>

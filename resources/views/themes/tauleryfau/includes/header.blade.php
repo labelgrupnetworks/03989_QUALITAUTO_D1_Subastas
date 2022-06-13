@@ -266,8 +266,8 @@ function wpLink($code) {
 
 				<div class="hidden-lg hidden-md w-100">
 
-					<li>
-						<a>
+					<li >
+						<a href="#">
 							<img src="{{ $flagsLanguage[config('app.locale')] }}" alt="{{ \Config::get('app.locales')[\Config::get('app.locale')] }}" width="16"
                             	height="11" style="width: 16px; height: 11px; margin-right: 0.3em">
 

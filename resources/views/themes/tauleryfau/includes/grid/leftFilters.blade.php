@@ -155,7 +155,7 @@
 	<div class="filters filters-padding filters-info-auciton hidden-md hidden-lg">
 		<div class="filter-buttons-info">
 
-			<a href="{{ Tools::url_info_auction($auction->cod_sub, $auction->name) }}" class="btn btn-color" type="submit">{{ trans("$theme-app.lot_list.info_sub") }}</a>
+			<a href="{{ $auction->descdet_sub }}" class="btn btn-color" type="submit">{{ trans("$theme-app.lot_list.info_sub") }}</a>
 
 			@if($auction->tipo_sub == 'W' && strtotime($auction->session_end) > time() && !$subasta_finalizada)
 				<a href="{{ Tools::url_real_time_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions) }}" class="btn btn-live">{{ trans(\Config::get('app.theme').'-app.lot.bid_live') }}</a>
