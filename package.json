@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+		"predev": "php artisan generate:jstranslates",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
@@ -10,6 +11,9 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@babel/preset-react": "^7.0.0",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
         "axios": "^0.25",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
