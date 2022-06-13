@@ -1,3 +1,3 @@
 <?php
 
-return \App\libs\TradLib::getTranslations(Config::get('app.locale'), '003');
+return \App\libs\TradLib::getTranslations(Config::get('app.locale'), '005');
