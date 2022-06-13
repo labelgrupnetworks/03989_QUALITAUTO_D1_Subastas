@@ -96,7 +96,7 @@
         </div>
 
         <!-- panel pujar -->
-        <div class="pujar" style="position:relative">
+        <div class="pujar">
             <div class="tuorden">
                 {{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_order') }}:
 				@if($data['js_item']['subasta']['currency']->symbol == "$")
@@ -146,12 +146,4 @@
 		@endif
     </div>
 
-</div>
-
-<div class="pujas-options-wrapper" style="display: none">
-	<div>
-		<span id="bid-cancel">Cancelar</span>
-		<span id="bid-select">Aceptar</span>
-	</div>
-	<ul id="bid-options"></ul>
 </div>

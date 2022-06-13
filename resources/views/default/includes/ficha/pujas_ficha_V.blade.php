@@ -27,8 +27,13 @@ if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_a
                 </div>
                 <div class="info_single_content info_single_button ficha-button-buy">
                     @if (!$retirado && empty($lote_actual->himp_csub) && !$sub_cerrada)
-                        <button data-from="modal" class="button-principal lot-action_comprar_lot" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
-                    @endif
+						{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
+						@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
+							<div class="require-wallet">{!! trans(\Config::get('app.theme').'-app.lot.require_wallet') !!}</div>
+						@else
+                        	<button data-from="modal" class="button-principal lot-action_comprar_lot" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+						@endif
+					@endif
                 </div>
 				<div class="mt-3">
 					@if (\Config::get('app.urlToPackengers'))

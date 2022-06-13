@@ -18,7 +18,7 @@
                 ?>
                 <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                     <a class="color-letter bread-link" itemtype="https://schema.org/Thing" itemprop="item" title="{{$crumb['name']}}" href="{{ $crumb["url"] }}">
-                        <span itemprop="name">{{$crumb["name"]}}</span>
+                        <span itemprop="name">{!! $crumb["name"] !!}</span>
                     </a>
                     <meta itemprop="position" content="{{$k+2}}" />
                 </li>

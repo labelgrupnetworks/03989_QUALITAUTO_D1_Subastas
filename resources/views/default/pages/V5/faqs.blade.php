@@ -51,10 +51,12 @@
                         @foreach ($data['cats'] as $item)
 
                             @if (!empty($item->parent_faqcat) && !$item->parent_faqcat == 0)
-                                <a href="javascript:muestraFaq({{ $item->cod_faqcat }})" class="subcat subfamily parent{{ $item->parent_faqcat }}">
+							<div class="subfamily parent{{ $item->parent_faqcat }}">
+                                <a href="javascript:muestraFaq({{ $item->cod_faqcat }})" class="subcat ">
                                     {{ $item->nombre_faqcat }}
                                     <span>></span>
                                 </a>
+							</div>
                             @endif
 
                         @endforeach

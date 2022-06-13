@@ -101,20 +101,25 @@
     <div class="info_single_content">
         <?php //las subastas abiertas tipo P se veran como W cuando empiece la subasta, pero controlamos que no sep uedan hacer ordenes (!$subasta_abierta_P) ?>
         @if( $cerrado_N && $fact_N &&  $start_orders  &&   !$end_orders && !$subasta_abierta_P)
-            <div class="insert-max-bid"><?=trans(\Config::get('app.theme').'-app.lot.insert_max_puja_start')?></div>
-            <div class="input-group group-pujar-custom d-flex justify-content-space-between">
-                    <input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" value="{{ $data['precio_salida'] }}" type="text">
-                    <div class="input-group-btn">
-                        <button id="pujar_ordenes_w" data-from="modal" type="button" class="ficha-btn-bid button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
-                    </div>
-                    @if(!empty($lote_actual->ordentel_sub) && $lote_actual->ordentel_sub <= $lote_actual->impsalhces_asigl0)
-                        <div >
-                            <button id="pujar_orden_telefonica" data-from="modal" type="button" class="ficha-btn-telephone-bid  button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.puja_telefonica') }}</button>
-                            <input id="orderphone" type="hidden" >   
-                        </div>
-                    @endif
-			</div>
-			
+
+			{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
+			@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
+				<div class="require-wallet">{!! trans(\Config::get('app.theme').'-app.lot.require_wallet') !!}</div>
+			@else
+				<div class="insert-max-bid"><?=trans(\Config::get('app.theme').'-app.lot.insert_max_puja_start')?></div>
+				<div class="input-group group-pujar-custom d-flex justify-content-space-between">
+						<input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" value="{{ $data['precio_salida'] }}" type="text">
+						<div class="input-group-btn">
+							<button id="pujar_ordenes_w" data-from="modal" type="button" class="ficha-btn-bid button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
+						</div>
+						@if(!empty($lote_actual->ordentel_sub) && $lote_actual->ordentel_sub <= $lote_actual->impsalhces_asigl0)
+							<div >
+								<button id="pujar_orden_telefonica" data-from="modal" type="button" class="ficha-btn-telephone-bid  button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.puja_telefonica') }}</button>
+								<input id="orderphone" type="hidden" >
+							</div>
+						@endif
+				</div>
+			@endif
 
         @endif
     </div>

@@ -113,27 +113,28 @@
 <script>
 
     $('.icon-responsive-live').click(function(){
-    	$('.menu').addClass('active');
+    $('.menu').addClass('active')
     })
-    $('.close-menu').click(function(){
-    	$('.menu').removeClass('active');
+            $('.close-menu').click(function(){
+    $('.menu').removeClass('active')
     })
 
 
-	function login_web(){
-		$.ajax({
-			type: "POST",
-			url: '/login_post_ajax',
-			data: $('.ob_disp #accerder-user-form').serialize(),
-			success: function(response){
+            function login_web(){
+            $.ajax({
+            type: "POST",
+                    url: '/login_post_ajax',
+                    data: $('.ob_disp #accerder-user-form').serialize(),
+                    success: function(response)
+                    {
+                    if (response.status == 'success'){
+                    location.reload();
+                    } else{
+                    $(".ob_disp #accerder-user-form .message-error-log").text('').append(messages.error[response.msg]);
+                    }
 
-				if (response.status == 'success'){
-					location.reload();
-				} else{
-					$(".ob_disp #accerder-user-form .message-error-log").text('').append(messages.error[response.msg]);
-				}
-			}
-		});
-	}
+                    }
+            });
+            }
 
 </script>
