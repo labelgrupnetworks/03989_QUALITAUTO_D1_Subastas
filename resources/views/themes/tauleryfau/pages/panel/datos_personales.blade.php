@@ -238,7 +238,7 @@ $families = [
 <script>
 const prefix = @json($prefix);
 
-$(document).on('ready', function () {
+$(function () {
 	reloadPrefix();
 	$('select[name="pais"]').on('change', reloadPrefix);
 	$('.js-select-categorias').select2();

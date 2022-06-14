@@ -256,7 +256,7 @@
 									</a>
 								@endif
 
-								@if(count($videos) > 0)
+								@if(count($videos ?? []) > 0)
 
 									<a href="javascript:loadVideoMobileGrid('{{$videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}')" class="d-flex align-items-center view-video js-video-mobile hidden-lg">
 										<span class="btn-play">VIDEO</span>
