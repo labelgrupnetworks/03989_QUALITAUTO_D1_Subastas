@@ -959,9 +959,9 @@ class subastaTiempoRealController extends Controller
         $user = new User();
         $mail = new MailController();
         //$subasta = new subasta();
-        $cod_sub            = Input::get('cod_sub');
-        $ref            = Input::get('ref');
-        $cod_licit = Input::get('cod_licit');
+        $cod_sub            = request('cod_sub');
+        $ref            = request('ref');
+        $cod_licit = request('cod_licit');
         $cod_user = Session::get('user.cod');
         $gestor = Session::get('user.admin');
 
@@ -1112,13 +1112,13 @@ class subastaTiempoRealController extends Controller
     {
 
         //$subasta = new subasta();
-        $cod_sub        = Input::get('cod_sub');
-        $ref            = Input::get('ref');
-        $imp            = Input::get('imp');
+        $cod_sub        = request('cod_sub');
+        $ref            = request('ref');
+        $imp            = request('imp');
 		$cod_user = Session::get('user.cod');
-		$tel1 = Input::get('tel1');
-		$tel2 = Input::get('tel2');
-		$ortherphone = Input::get('ortherphone');
+		$tel1 = request('tel1');
+		$tel2 = request('tel2');
+		$ortherphone = filter_var(request('ortherphone'), FILTER_VALIDATE_BOOLEAN);
 
 		$importeOrdenes = 0;
 
@@ -1368,10 +1368,10 @@ class subastaTiempoRealController extends Controller
 		$subasta->imp            = intval(request('params.imp'));
         $subasta->type_bid       = request('params.type_bid');
         //2017-10-10 lo cojemos del lote directamente
-        //$subasta->impsal         = Input::get('params.impsal');
+        //$subasta->impsal         = request('params.impsal');
 
         // //comprobamos que sea gestor, no nos fiamos de que venga en una variable
-        //$is_gestor               = Input::get('params.is_gestor');
+        //$is_gestor               = request('params.is_gestor');
         $can_do                  = request('params.can_do');
         $hash_user               = request('params.hash');
         $tipo_puja_gestor        = request('params.tipo_puja_gestor');
@@ -2666,11 +2666,11 @@ class subastaTiempoRealController extends Controller
     public function endLot()
     {
 
-        $cod_sub  = Input::get('params.cod_sub');
-        $lot = Input::get('params.lot');
-        $cod_licit      = Input::get('params.cod_licit');
-        $hash_user      = Input::get('params.hash');
-        $jump_lot = Input::get('params.jump_lot');
+        $cod_sub  = request('params.cod_sub');
+        $lot = request('params.lot');
+        $cod_licit      = request('params.cod_licit');
+        $hash_user      = request('params.hash');
+        $jump_lot = request('params.jump_lot');
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
@@ -2955,7 +2955,7 @@ class subastaTiempoRealController extends Controller
     public function calculateAvailableBids($actual_bid, $new_bid)
     {
         $subasta = new subasta();
-        $cod_sub = Input::get('cod_sub');
+        $cod_sub = request('cod_sub');
         if(!empty($cod_sub)){
             $subasta->cod = $cod_sub;
         }
@@ -3023,13 +3023,13 @@ class subastaTiempoRealController extends Controller
     {
 
         $SubastaTR      = new SubastaTiempoReal();
-        $cod_sub        = Input::get('params.cod_sub');
-        $status         = Input::get('params.status');
-        $reanudacion    = Input::get('params.reanudacion');
-        $minutes    = Input::get('params.minutesPause');
-        $cod_licit      = Input::get('params.cod_licit');
-        $hash_user      = Input::get('params.hash');
-        $id_auc_sessions =  Input::get('params.id_auc_sessions');
+        $cod_sub        = request('params.cod_sub');
+        $status         = request('params.status');
+        $reanudacion    = request('params.reanudacion');
+        $minutes    = request('params.minutesPause');
+        $cod_licit      = request('params.cod_licit');
+        $hash_user      = request('params.hash');
+        $id_auc_sessions =  request('params.id_auc_sessions');
 
 
 
@@ -3121,11 +3121,10 @@ class subastaTiempoRealController extends Controller
     public function pausarLote()
     {
 
-
-        $cod_sub        = Input::get('params.cod_sub');
-        $cod_licit      = Input::get('params.cod_licit');
-        $hash_user      = Input::get('params.hash');
-        $ref            = Input::get('params.ref');
+        $cod_sub        = request('params.cod_sub');
+        $cod_licit      = request('params.cod_licit');
+        $hash_user      = request('params.hash');
+        $ref            = request('params.ref');
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
@@ -3151,13 +3150,13 @@ class subastaTiempoRealController extends Controller
         $SubastaTR->cod             = $cod_sub;
         $SubastaTR->ref             = $ref;
 
-        $ref_new_pos_lot                = Input::get('params.ref_lot');
+        $ref_new_pos_lot                = request('params.ref_lot');
 
-        $ref_actual          = Input::get('params.ref_lote_actual');
+        $ref_actual          = request('params.ref_lote_actual');
 
         $SubastaTR->ref = $ref;
         if(empty($ref_new_pos_lot)) {
-            return $SubastaTR->changeStatusLot(Input::get('params.status'));
+            return $SubastaTR->changeStatusLot(request('params.status'));
         }else{
 
             $subasta->lote = $ref_new_pos_lot;
@@ -3174,7 +3173,7 @@ class subastaTiempoRealController extends Controller
 
             $res_activeNext = $this->ActiveNext($cod_sub,$ref_new_pos_lot,$ref);
             $res = $res_activeNext['destino'];
-            return $SubastaTR->changeStatusLot(Input::get('params.status'),$res);
+            return $SubastaTR->changeStatusLot(request('params.status'),$res);
         }
 
     }
@@ -3204,17 +3203,17 @@ class subastaTiempoRealController extends Controller
     public function setLicitLot()
     {
          $subasta = new Subasta();
-         $subasta->licit =Input::get('licit');
-         $subasta->cod = Input::get('cod_sub');
+         $subasta->licit =request('licit');
+         $subasta->cod = request('cod_sub');
 
 		$ministeryLicit = config('app.ministeryLicit', false);
 
         if ($subasta->checkLicitador(true)){
 
             $SubastaTR           = new SubastaTiempoReal();
-            $SubastaTR->cod      = Input::get('cod_sub');
-            $SubastaTR->ref      = Input::get('ref');
-            $SubastaTR->licit    = Input::get('licit');
+            $SubastaTR->cod      = request('cod_sub');
+            $SubastaTR->ref      = request('ref');
+            $SubastaTR->licit    = request('licit');
 
 			if($ministeryLicit && $SubastaTR->licit == $ministeryLicit){
 				return response($this->assignToMinistery($SubastaTR->cod, $SubastaTR->ref), 200);
@@ -3274,10 +3273,10 @@ class subastaTiempoRealController extends Controller
 				return $res;
         }
         $SubastaTR           = new SubastaTiempoReal();
-        $SubastaTR->cod      = Input::get('cod_sub');
-        $SubastaTR->ref      = Input::get('ref');
-        $SubastaTR->orden      = Input::get('orden');
-        $deleteBids     = Input::get('deletBids');
+        $SubastaTR->cod      = request('cod_sub');
+        $SubastaTR->ref      = request('ref');
+        $SubastaTR->orden      = request('orden');
+        $deleteBids     = request('deletBids');
 
         $res_open = $SubastaTR->openLot();
         if ($res_open && !empty($deleteBids) && $deleteBids == 1 ){
@@ -3487,11 +3486,11 @@ class subastaTiempoRealController extends Controller
          Log::info('cancelar orden');
 
         $subasta = new Subasta();
-        $subasta->cod     = Input::get('params.cod_sub');
-        $licit            = Input::get('params.cod_licit');
-        $imp_salida            = Input::get('params.imp_salida');
-        $subasta->ref     = Input::get('params.ref');
-        $hash_user        = Input::get('params.hash');
+        $subasta->cod     = request('params.cod_sub');
+        $licit            = request('params.cod_licit');
+        $imp_salida            = request('params.imp_salida');
+        $subasta->ref     = request('params.ref');
+        $hash_user        = request('params.hash');
 
 
 
@@ -3554,11 +3553,11 @@ class subastaTiempoRealController extends Controller
 		  Log::info('cancelar orden User');
 
 		 $subasta = new Subasta();
-		 $subasta->cod     = Input::get('params.cod_sub');
-		 $licit            = Input::get('params.cod_licit');
+		 $subasta->cod     = request('params.cod_sub');
+		 $licit            = request('params.cod_licit');
 
-		 $subasta->ref     = Input::get('params.ref');
-		 $hash_user        = Input::get('params.hash');
+		 $subasta->ref     = request('params.ref');
+		 $hash_user        = request('params.hash');
 
 		 Log::info('cancelar orden User subasta:'.  $subasta->cod . " referencia: "  . $subasta->ref. " licitador: ". $licit  );
 
@@ -3616,12 +3615,12 @@ class subastaTiempoRealController extends Controller
         Log::info('cancelar puja');
 
         $subasta = new Subasta();
-        $subasta->cod     = Input::get('params.cod_sub');
-        $licit            = Input::get('params.cod_licit');
+        $subasta->cod     = request('params.cod_sub');
+        $licit            = request('params.cod_licit');
 
-        $subasta->ref     = Input::get('params.ref');
+        $subasta->ref     = request('params.ref');
         $subasta->lote     = $subasta->ref;
-        $hash_user        = Input::get('params.hash');
+        $hash_user        = request('params.hash');
 
         $user  = new User();
         $user->cod   = $subasta->cod;
