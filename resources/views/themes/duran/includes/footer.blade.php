@@ -136,7 +136,7 @@
 										$categories = $fgortsec0->GetAllFgOrtsec0()->get()->toarray();
 									@endphp
 									@foreach ($categories as $k => $category)
-										<li><a class="footer-link" title="{!! $category["des_ortsec0"] !!}" href='{{ route("category",array( "keycategory" => $category["key_ortsec0"])) }}' > {{$category["des_ortsec0"]}}</a></li>
+										<li><a class="footer-link" title="{!! $category["des_ortsec0"] !!}" href='{{ route("category",array( "category" => $category["key_ortsec0"])) }}' > {{$category["des_ortsec0"]}}</a></li>
 									@endforeach
 								</ul>
 							</div>
