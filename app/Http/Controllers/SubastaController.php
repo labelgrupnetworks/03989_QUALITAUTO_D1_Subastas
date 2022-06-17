@@ -26,7 +26,7 @@ use App\libs\ImageGenerate;
 use App\libs\Currency;
 
 use App\libs\EmailLib;
-use Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Sec;
 use App\Models\Category;
 use App\Models\Bloques;
@@ -407,8 +407,10 @@ class SubastaController extends Controller
 
 		$totalItems = $subastaObj->getLots("count", $cache_sql);
 
-
-		if (empty(Route::current()->parameter('page')) or Route::current()->parameter('page') == 1) {
+		if(request()->has('page')){
+			$currentPage = request()->input('page');
+		}
+		elseif (empty(Route::current()->parameter('page')) or Route::current()->parameter('page') == 1) {
 			$currentPage    = 1;
 		} else {
 			$currentPage    = Route::current()->parameter('page');
@@ -463,9 +465,9 @@ class SubastaController extends Controller
 		$SEO_metas->canonical = $_SERVER['HTTP_HOST'] . $url;
 		$urlPattern     = $url . '/page-(:num)';
 
-		$paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		//Route::current()->parameter('page');
+		$subastaObj->page  = intval($currentPage);
 
-		$subastaObj->page  = Route::current()->parameter('page');
 
 		# Bug de paginador, a menos que se muestre 1 registro por pagina
 		//$paginator->numPages    = ($paginator->numPages -1);
@@ -484,6 +486,10 @@ class SubastaController extends Controller
 		}
 
 		$subasta = $subastaObj->getAllLotesInfo($subasta, true, $get_ordenes, true);
+
+		//$paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$paginator = new LengthAwarePaginator(range(1, $totalItems), $totalItems, $itemsPerPage, $currentPage, ["path" => $url]);
+		$paginator->appends(request()->except('page'));
 
 		// KIKE - Guardamos el código de subasta en una variable aparte para cuando se está llamando a la lista de lotes por
 		//        categoria y filtrando por sesión ?s=XXXX  si forzamos el cod_sub pasan cosas raras.
@@ -520,7 +526,7 @@ class SubastaController extends Controller
 			'dataAuxSubasta' => $dataAuxSubasta,
 			'totalItems' => $totalItems,
 		);
-
+		//dd($data);
 
 
 		if (!empty(Request::input('description'))) {

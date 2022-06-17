@@ -125,7 +125,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
 
 		<div class="col-xs-12 col-sm-8 col-md-9 text-center">
 
-			{!! $data['subastas.paginator'] !!}
+			{!! $data['subastas.paginator']->links() !!}
 
 		</div>
 

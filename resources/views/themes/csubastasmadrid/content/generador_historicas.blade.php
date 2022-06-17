@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 titlePage">
-            @if(\Input::get('finished') == "true")
+            @if(request('finished') == "true")
                 <h1> {{ trans(\Config::get('app.theme').'-app.subastas.price_made_long') }}</h1>
             @else
                 <h1> {{ $data['name'] }}</h1>
