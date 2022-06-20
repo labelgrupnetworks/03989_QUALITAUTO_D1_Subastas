@@ -2774,7 +2774,7 @@ class UserController extends Controller
 
 		$infoSales = $fgAsigl0->getLotsInfoSales($cod_subs, $cod_cli);
 
-		$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $period[0]);
+		$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $period[0] ?? null);
 
 		foreach ($facturasCabeceras as $key => $cabecera) {
 			$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0, $cod_subs);
@@ -3753,8 +3753,8 @@ class UserController extends Controller
                 $facturas->numero = $val_pendiente->num_pcob;
                 $fact_temp = $this->bills($val_pendiente->anum_pcob,$val_pendiente->num_pcob,true);
 
-                $val_pendiente->date = $fact_temp['date'];
-                $val_pendiente->factura = $fact_temp['filname'];
+                $val_pendiente->date = $fact_temp['date'] ?? null;
+                $val_pendiente->factura = $fact_temp['filname'] ?? null;
                 //buscamos si la factura esta generada
                 $tipo_fact = $facturas->bill_text_sub( substr($facturas->serie, 0, 1),substr($facturas->serie, 1));
                 //Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
@@ -3780,8 +3780,8 @@ class UserController extends Controller
         if(!empty($pagado)){
             foreach($pagado as $fact_pag){
                 $fact_temp = $this->bills($fact_pag->afra_cobro1,$fact_pag->nfra_cobro1,true);
-                $fact_pag->date = $fact_temp['date'];
-                $fact_pag->factura = $fact_temp['filname'];
+                $fact_pag->date = $fact_temp['date'] ?? null;
+                $fact_pag->factura = $fact_temp['filname'] ?? null;
                 $facturas->serie = $fact_pag->afra_cobro1;
                 $facturas->numero = $fact_pag->nfra_cobro1;
                 //Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
