@@ -91,7 +91,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 					<div class="miniImg row hidden-xs slider-thumnail">
 
-						@foreach($lote_actual->videos as $key => $video)
+						@foreach($lote_actual->videos ?? [] as $key => $video)
 						<div class="col-sm-3-custom">
 							<a style="cursor: pointer;">
 								<img class="btn-play img-responsive" src="/themes/{{$theme}}/assets/img/play_1.png" alt="video"
@@ -128,7 +128,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 					<!-- Inicio Galeria Responsive -->
 					<div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
 
-						@foreach($lote_actual->videos as $key => $video)
+						@foreach($lote_actual->videos ?? [] as $key => $video)
 						<div class="item_content_img_single" style="position: relative; height: 290px; overflow: hidden;">
 							<video width="100%" controls class="video_mobile">
 								<source src="{{$video}}" type="video/mp4">
