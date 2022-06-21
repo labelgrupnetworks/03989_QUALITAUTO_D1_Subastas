@@ -517,7 +517,7 @@ Route::post('/{lang}/api/email-when-change-file', 'apirest\MailApiRestController
 #listado de lotes por subasta
 if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") == "new") {
 	#nuevo
-	Route::get(\Routing::slugSeo('subasta') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
+	Route::get(\Routing::slugSeo('subasta') . '/{texto?}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 	#version antigua
 	Route::get(\Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
 } else {
