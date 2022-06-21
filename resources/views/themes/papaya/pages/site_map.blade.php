@@ -46,7 +46,7 @@
 					<ul class="ul-site">
 						@foreach ($categorias as $categoria)
 						<li class="li-site">
-							<h4><a href="{{ route("category", ['keycategory' => $categoria->key_ortsec0]) }}">{{$categoria->des_ortsec0}}</a></h4>
+							<h4><a href="{{ route("category", ['category' => $categoria->key_ortsec0]) }}">{{$categoria->des_ortsec0}}</a></h4>
 						</li>
 						@endforeach
 					</ul>

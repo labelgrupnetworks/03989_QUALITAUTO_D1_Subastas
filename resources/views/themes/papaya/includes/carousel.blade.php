@@ -26,7 +26,7 @@
 
 
 			<div class="title_item text-left mt-3">
-				<span class="seo_h4 text-left">{{ trans("$theme-app.lot.lot-name") }} {{ $bann->ref_asigl0 }} - {!! $bann->titulo_hces1 ?? $bann->descweb_hces1 !!}</span>
+				<span class="seo_h4 text-left">{{ trans("$theme-app.lot.lot-name") }} {{ $bann->ref_asigl0 }} - {!! $bann->titulo_hces1 ?? $bann->descweb_hces1 ?? '' !!}</span>
 			</div>
 		</a>
 
