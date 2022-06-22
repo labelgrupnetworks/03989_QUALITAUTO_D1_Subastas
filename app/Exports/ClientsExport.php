@@ -20,12 +20,10 @@ class ClientsExport extends StringValueBinder implements FromQuery, WithHeadings
 
 	public function __construct(Request $request)
 	{
+		$this->order = $request->order;
+		$this->order_dir = $request->order_dir;
 
-
-		$this->order = $request->filters['order'];
-		$this->order_dir = $request->filters['order_dir'];
 		//cambiar el select por solo los campos activos en la vista
-
 		$this->select = collect($request->selects)->filter(function ($value, $key) {
 			return $value /* && $key != 'envcat_cli2' */;
 		});

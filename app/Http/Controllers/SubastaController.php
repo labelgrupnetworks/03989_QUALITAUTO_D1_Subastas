@@ -2528,6 +2528,10 @@ class SubastaController extends Controller
 			abort(404);
 		}
 
+		if(!file_exists($file->storage_path)){
+			abort(404);
+		}
+
 		return response()->download($file->storage_path);
 	}
 

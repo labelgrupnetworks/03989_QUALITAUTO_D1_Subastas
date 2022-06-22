@@ -61,7 +61,8 @@ class PaymentsController extends Controller
 		$conGastosEnvio = true;
 		$subasta = new Subasta();
 		$pago = new Payments();
-		$deliverea = new Delivery();
+		$deliverea = null;
+
 		$emp  = Config::get('app.emp');
 		$gemp  = Config::get('app.gemp');
 		$hoy = date("Y-m-d");
@@ -181,6 +182,7 @@ class PaymentsController extends Controller
 							}
 							//Envio por deliverea
 							elseif ($shopping_cart['envios'] == '4') {
+								$deliverea = new Delivery();
 								$enviar = $deliverea->getCsube($emp, $sub, $ref);
 								if (empty($enviar)) {
 									return $res_error;
@@ -1210,7 +1212,7 @@ class PaymentsController extends Controller
 	public function pagoDirectoReturn($merchantID, $amount, $post)
 	{
 		$pago = new Payments();
-		$deliverea = new Delivery();
+		$deliverea = null;
 		$subasta = new Subasta();
 		$fact = new Facturas();
 		$user = new User();
@@ -1297,6 +1299,7 @@ class PaymentsController extends Controller
 					if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1) {
 						//Avisamos a deliverea
 						$send_lot_deliverea = array();
+						$deliverea = new Delivery();
 						$send_lot_deliverea = $deliverea->getCsube($lot->emp_csub, $lot->sub_csub, $lot->ref_csub);
 
 						if (!empty($send_lot_deliverea)) {
