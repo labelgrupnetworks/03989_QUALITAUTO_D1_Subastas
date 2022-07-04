@@ -157,6 +157,14 @@ $lang =[
 			'file' => 'File',
 			'form_success' => 'The information has been sent successfully.',
 			'text_success' => 'Thank you for contacting us.',
+			'since' => 'Since',
+			'to' => 'To',
+			'of' => 'of',
+			'from' => 'from',
+			'to_the' => 'to',
+			'filter' => 'Filter',
+			'filters' => 'Filters',
+			'clean' => 'Clean',
 		),
 	'head' =>
 		array (
@@ -849,6 +857,7 @@ $lang =[
 			"status" => "Status",
 			"closed" =>	"Closed",
 			'soon' => 'Soon',
+			'bids_numbers' => 'Nº of bids',
 		),
 	'valoracion_gratuita' =>
 		array (

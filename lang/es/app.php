@@ -120,6 +120,8 @@ $lang = [
 		'contact' => 'Contacto',
 		'cookies' => 'Política de cookies',
 		'direct_sale' => 'Venta Directa',
+		'make_offer' => 'Haz tu oferta',
+		'reverse_auction' => 'Subasta inversa',
 		'enterprise' => 'La empresa',
 		'faq' => 'Preguntas frecuentes',
 		'follow_us' => 'Síguenos en',
@@ -173,9 +175,14 @@ $lang = [
 		'file'	=> 'Archivo',
 		'form_success' => 'Se ha realizado correctamente el envío de la información',
 		'text_success' => 'Gracias por contactar con nosotros.',
-
-
-
+		'since' => 'Desde',
+		'to' => 'Hasta',
+		'of' => 'de',
+		'from' => 'del',
+		'to_the' => 'al',
+		'filter' => 'Filtrar',
+		'filters' => 'Filtros',
+		'clean' => 'Limpiar',
 	),
 	'head' =>
 	array(
@@ -451,6 +458,8 @@ $lang = [
 		'direct_sale' => 'Venta directa',
 		'permanent_auction' => 'Permanentes',
 		'special_auction' => 'Especiales',
+		'make_offer' => 'Haz tu oferta',
+		'reverse_auction' => 'Inversa',
 		'historic' => 'Historicas',
 		'discount' => 'Desc',
 		'hot_sale' => 'OFERTA',
@@ -476,10 +485,14 @@ $lang = [
 		'description_online' => 'Subastas Online',
 		'description_presenciales' => ' Descubra las próximas subastas presenciales. Las próximas subastas, actuales e históricas, no se pierda las novedades.',
 		'description_venta' => 'Venta directa',
+		'description_haz_oferta' => 'Subastas Haz tu oferta',
+		'description_inversa' => 'Subastas inversa',
 		'title_historic' => 'Histórico de Subastas',
 		'title_online' => 'Subastas Online',
 		'title_presenciales' => 'Próximas Subastas Presenciales ´´´´´',
-		'title_venta' => 'Venta directa'
+		'title_venta' => 'Venta directa',
+		'title_haz_oferta' => 'Subastas Haz tu oferta',
+		'title_inversa' => 'Subastas inversa',
 	),
 	'msg_error' =>
 	array(
@@ -487,6 +500,9 @@ $lang = [
 		'as_minimum' => 'como mínimo',
 		'bid_scaling' => 'Sólo pueden realizarse pujas siguiendo el escalado.',
 		'buying' => 'No se ha podido comprar el lote, por favor inténtelo de nuevo.',
+		'makeOffer' => 'No se ha podido registrar su oferta, por favor inténtelo de nuevo.',
+		'makeOfferLower' => 'No puede añadir una oferta inferior a las actuales',
+		'makeOfferLose' => 'La oferta no ha sido lo suficientemente alta',
 		'counteroffer' => 'No se ha podido realizar la contraoferta por el lote, por favor inténtelo de nuevo.',
 		'counteroffer_close' => 'No es posible realizar una contraoferta por un lote cerrado',
 		'counteroffer_ihave' => 'Ya ha realizado una contraoferta por un valor superior',
@@ -609,6 +625,7 @@ $lang = [
 	array(
 		'add_bidding_order' => 'Su puja máxima ha sido registrada correctamente',
 		'buying_lot' => 'Ha comprado el lote :lot',
+		'makeOfferBuyLot' => 'Enhorabuena se ha adjudicado el lote: ":lot"',
 		'counteroffer_success' => 'Contraoferta enviada con éxito',
 		'cancel_order_response' => 'Su orden ha sido cancelada',
 		'cli_licit_dont_exist' => 'Usuario no existe',
@@ -764,6 +781,8 @@ $lang = [
 		'lot_subasta_online' => 'Subasta Online',
 		'lot_subasta_presencial' => 'Subasta presencial',
 		'lot_subasta_venta' => 'Subasta venta',
+		'lot_subasta_make_offer' => 'Subasta haz tu oferta',
+		'lot_subasta_inversa' => 'Subasta inversa',
 		'lots_not_found' => 'No se han encontrado lotes.',
 		'mustLogin' => 'Debe iniciar sesión',
 		'next' => 'Siguiente',
@@ -896,6 +915,7 @@ $lang = [
 		'wallet' => 'WALLET',
 		'wallet_direction' => 'Dirección pública de wallet',
 		'wallet_new' => 'Crear wallet nueva',
+		'bids_numbers' => 'Nº de pujas',
 
 	),
 	'valoracion_gratuita' =>
