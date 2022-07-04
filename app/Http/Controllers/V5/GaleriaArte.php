@@ -12,7 +12,6 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
 
-
 class GaleriaArte extends Controller
 {
 

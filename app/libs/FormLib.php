@@ -191,34 +191,56 @@ class FormLib
 		return $aux;
 	}
 
-	static function TextAreaSummer($strNombre, $boolObligatorio = false, $strValue = '', $strExtra = "", $placeholder = "", $height = 300)
+	static function TextAreaSummer($strNombre, $boolObligatorio = false, $strValue = '', $strExtra = "", $placeholder = "", $height = 300, $toolBarOptions = "all")
 	{
 		/**
 		 * codemirror: {theme: 'monokai',mode: 'text/html',lineNumbers: true,tabMode: 'indent',prettifyHtml: false},
 		 */
 
+		$toolbar = self::getSummernoteToolbarOption($toolBarOptions);
+
 		$aux = "<textarea class='form-control effect-16' name='" . $strNombre . "' rows=10 id='textogrande__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " data-placement='right' placeholder='" . $placeholder . "' autocomplete='off'>" . $strValue . "</textarea>";
 		$aux .= "<script>
-
+		window.addEventListener('load', function(){
 			$('#textogrande__" . $boolObligatorio . "__" . $strNombre . "').summernote({
-				toolbar: [
-					['style', ['style']],
-					['font', ['bold', 'italic', 'underline', 'clear']],
-					['fontsize', ['fontsize']],
-					['color', ['color']],
-					['para', ['ul', 'ol', 'paragraph']],
-					['table', ['table']],
-					['insert', ['link', 'picture', 'video']],
-					['view', ['fullscreen', 'codeview', 'help', 'undo', 'redo']],
-					['height', ['height']]
-				],
-				height: 150,
+				toolbar: [$toolbar],
+				height: '$height',
 				lang: 'es-ES',
 				codemirror: { theme: 'ambiance' }
 		  	});
-
+		});
 	  	</script>";
 		return $aux;
+	}
+
+	private static function getSummernoteToolbarOption($toolBarOptions)
+	{
+		if($toolBarOptions == 'all'){
+			return "
+			['style', ['style']],
+			['font', ['bold', 'italic', 'underline', 'clear']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video']],
+			['view', ['fullscreen', 'codeview', 'help', 'undo', 'redo']],
+			['height', ['height']]
+			";
+		}
+
+		return "
+		['style', ['style']],
+		['font', ['bold', 'italic', 'underline', 'clear']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['table', ['table']],
+		['insert', ['link']],
+		['view', ['codeview', 'help', 'undo', 'redo']],
+		['height', ['height']]
+		";
+
 	}
 
 	static function SummernoteArea($idSummer, $nameInput, $boolObligatorio = false, $strValue = '')
@@ -237,6 +259,21 @@ class FormLib
 
 		$aux = "<input class='form-control effect-16' type='file' data-placement='right' name='" . $strNombre . "' id='file__" . $boolObligatorio . "__" . $strNombre . "' " . $strExtra . " autocomplete='off'>";
 		$aux .= "<small>". trans('admin-app.general.max_file_size', ['size' => $maxFileSize]) . "</small>";
+
+		return $aux;
+	}
+
+	static function FileWithValue($strNombre, $boolObligatorio = 0, $strExtra = "", $value = '')
+	{
+		$aux = self::File($strNombre, $boolObligatorio, $strExtra);
+
+		if(!empty($value)){
+			//si quisiera mostar el nombre del archivo
+			//$name = explode('/', $value);
+			//$name = end($name);
+
+			$aux .= "<p><a href='" . url("$value") ."' target='_blank'>Archvio actual</a></p>";
+		}
 
 		return $aux;
 	}
@@ -305,7 +342,7 @@ class FormLib
 
 
 		if($onLoad){
-			$aux .= '<script> $(document).on(\'ready\', function () { $(".form_datetime").datetimepicker({format: \'yyyy-mm-dd hh:ii:ss\'}); });</script>';
+			$aux .= '<script> $(document).ready(function () { $(".form_datetime").datetimepicker({format: \'yyyy-mm-dd hh:ii:ss\'}); });</script>';
 			return $aux;
 		}
 
@@ -505,7 +542,7 @@ class FormLib
 		$aux .= '<input type="hidden" name="'. $name .'[]" value="'. $maxValue .'" class="'. $inputClass .'" id="'. $id .'_1">';
 
 		$aux .= '<script>
-		$(document).on(`ready`, function(){
+		$(document).ready(function(){
 			let container = document.getElementById(`selectrange_'. $name .'`);
 
 			$(container.querySelector(`.slider-range`)).slider({

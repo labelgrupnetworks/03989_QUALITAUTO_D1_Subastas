@@ -62,7 +62,6 @@ class PaymentsController extends Controller
 		$subasta = new Subasta();
 		$pago = new Payments();
 		$deliverea = null;
-
 		$emp  = Config::get('app.emp');
 		$gemp  = Config::get('app.gemp');
 		$hoy = date("Y-m-d");
@@ -342,7 +341,9 @@ class PaymentsController extends Controller
 		//Calculamos gastos de envio
 		#Eloy - 21/10/2021: Nos hemos dado cuenta que en ERP añaden el iva y la licencia de exportación para calcular los gastos de envío
 		# y en Web no lo estabamos haciendo.
+
 		$envio_temp  = $this->gastosEnvio($gastos_envio + $tax + $price_exportacion_total, $sub);
+
 		#si ha elegido el envio no urgente, ponemos el precio del envio no urgente como principal
 		if(!empty(request("shipping")) && request("shipping") == "min"){
 			$envio_temp['iva'] =  $envio_temp['iva_min'];
@@ -1659,9 +1660,11 @@ class PaymentsController extends Controller
 			if (!empty($existGasimp)) {
 				$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
 				$envio_min = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli, true);
+
 			} else {
 				$pais = '*';
 				$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
+
 				if (empty($envio_temp)) {
 					$tipo = 'D';
 					$pais = $tipo_iva->pais;

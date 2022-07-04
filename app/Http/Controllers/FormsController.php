@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 //opcional
 use Config;
 
+
 # Cargamos el modelo
 use App\Models\Subasta;
 

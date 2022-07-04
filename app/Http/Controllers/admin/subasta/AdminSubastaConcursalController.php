@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class AdminSubastaConcursalController extends AdminSubastaGenericController
 {
@@ -129,6 +130,21 @@ class AdminSubastaConcursalController extends AdminSubastaGenericController
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
 		}
 	}
+
+	public function updateImage(Request $request)
+	{
+		$fgSub = FgSub::where('COD_SUB', $request->cod_sub)->first();
+
+		if (!$fgSub) {
+			return redirect()
+				->back()
+				->withErrors('not exist')
+				->withInput();
+		}
+
+		return $this->saveFgSubImage($request->file('imagen_sub'), $request->cod_sub, true, true);
+	}
+
 
 
 }

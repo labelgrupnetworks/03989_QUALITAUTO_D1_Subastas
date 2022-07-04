@@ -2075,7 +2075,7 @@ class SubastaController extends Controller
 				['upper(COD_CLI)', 'LIKE', "%$query%", 'or']
 			];
 
-			$clients = FxCli::select('RSOC_CLI as html', 'COD_CLI as id')->where($where)->get();
+			$clients = FxCli::select('RSOC_CLI as html', 'COD_CLI as id')->where($where)->where("BAJA_TMP_CLI","N")->get();
 
 			return response()->json($clients);
 		}

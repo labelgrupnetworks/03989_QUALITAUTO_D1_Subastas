@@ -12,6 +12,7 @@ use App\Models\V5\FgSub;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\Subasta;
+use Illuminate\Http\File;
 
 class CustomControllers extends Controller
 {
@@ -148,9 +149,15 @@ class CustomControllers extends Controller
 
 	public function videoAuctions () {
 
+		$isAdmin = (bool) session('user.admin');
+
 		$subastaReciente = FgSub::select('des_sub', 'dfec_sub')
 			->joinSessionSub()
-			->where('SUBC_SUB', 'S')
+			->when($isAdmin, function ($query) {
+				return $query->whereIn('SUBC_SUB', ['S', 'A']);
+			}, function ($query) {
+				return $query->where('SUBC_SUB', 'S');
+			})
 			//orden ascendente solo para probar subasta, dejar en desc cuando este en producción
 			//->orderby("session_start", "asc")
 			->orderby("session_start", "desc")
@@ -178,7 +185,11 @@ class CustomControllers extends Controller
 			}
 		}
 
-		return view('front::pages.video_auction', compact('videos', 'subastaReciente'));
+		$videoSorted = collect($videos)->flatten()->sortBy(function($video) {
+			return last(explode("/", $video));
+		});
+
+		return view('front::pages.video_auction', compact('videoSorted', 'subastaReciente'));
 
 	}
 }

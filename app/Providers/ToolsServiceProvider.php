@@ -9,6 +9,7 @@ use Log;
 use URL;
 use Mail;
 use App\Models\Subasta;
+use App\Models\Payments;
 use App\Models\Facturas;
 use App\Models\Enterprise;
 use App\libs\ImageGenerate;
@@ -579,7 +580,57 @@ class ToolsServiceProvider extends ServiceProvider
 		);
 	}
 
-	#importe con iva para comunitarios
+	#importe con iva para comunitarios, los precios en base de datos ya incluyen el iva
+	public static function PriceWithTaxForEuropean($imp,$codCli){
+		#si no está logeado devolvemos el precio como en base de datos, con iva
+		if (empty($codCli)) {
+			return $imp;
+		}
+		$payments = new Payments();
+		#recogemos el iva actual
+		$iva = $payments->getIVA(date('Y-m-d H:i:s'),'01');
+
+		$tax =0;
+		if(count($iva)> 0){
+			$tax = $iva[0]->iva_iva/100;
+		}
+
+		$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
+
+		# si no encontramos usuario , o si lo encontramos y es Europeo devolvemos el precio de base de datos que lleva el iva
+		if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+			return  $imp;
+
+		}else{
+			#si es usuario extracomunitario se le descuenta el iva, es necesario redondearlo para no arrastrar decimales
+			return  round($imp / (1 + $tax),2) ;
+		}
+	}
+
+	#si es europeo devolverá el iva y si no lo es devolverá 0
+	public static function TaxForEuropean($codCli){
+		$payments = new Payments();
+		#recogemos el iva actual
+		$iva = $payments->getIVA(date('Y-m-d H:i:s'),'01');
+
+		$tax =0;
+		if(count($iva)> 0){
+			$tax = $iva[0]->iva_iva/100;
+		}
+		# si no hay usuario se aplica el iva
+		if (empty($codCli)) {
+			return $tax;
+		}else{
+			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
+			if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+				return   $tax;
+
+			}else{
+				return 0;
+			}
+		}
+	}
+/*
 	public static function PriceWithTaxForEuropean($imp,$codCli, $taxForLoged = true){
 
 		$iva = DB::select( "select iva_iva from fsiva where dfec_iva <= :time and hfec_iva >= :time and cod_iva = :cod",
@@ -616,7 +667,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 
 	}
-
+*/
 	public static function NamePais($countri)
 	{
 		$enterprice = new Enterprise();
@@ -628,7 +679,7 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		$countries = array();
-		foreach ($paises as $pais) {
+		foreach ($paises ?? [] as $pais) {
 			$countries[$pais->cod_paises] = mb_convert_encoding(mb_convert_case($pais->des_paises, MB_CASE_TITLE), "UTF-8");
 		}
 		if (!empty($countries[$countri])) {
@@ -1224,13 +1275,18 @@ class ToolsServiceProvider extends ServiceProvider
 	 */
 	public static function getWorpressRss($url)
 	{
-		//'https://noticias.durangallery.com/feed/'
 		try {
-			$xml_string = file_get_contents($url);
+			$context = stream_context_create(array('http'=> array(
+				'timeout' => 3, //en segundos
+			)));
+
+			$xml_string = file_get_contents($url, false, $context);
 			$xml = simplexml_load_string($xml_string, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$json = json_encode($xml);
 			$array = json_decode($json, true);
+
 		} catch (\Throwable $th) {
+			Log::info('Error al obtener el feed de wordpress', ['error' => $th->getMessage()]);
 			return [];
 		}
 

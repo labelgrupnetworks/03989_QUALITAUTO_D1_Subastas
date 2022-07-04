@@ -598,6 +598,7 @@ class Subasta extends Model
                        NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
                        NVL(fgsublang.descdet_SUB_LANG,  sub.descdet_sub) descdet_sub,
                        NVL(fgsublang.obs_sub_lang,  sub.obs_sub) obs_sub,
+					   NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
                        sub.sesmaps_sub,sub.expomaps_sub,
                        auc.*,
                        auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
@@ -2592,8 +2593,13 @@ class Subasta extends Model
 		return $resultado;
 	}
 
-    // importe inicial, importe de orden mayor, segunda orden más grande
-        public function sobre_puja_orden($importe_salida, $importe_orden1,$importe_orden2)
+	/**
+	 * importe inicial, importe de orden mayor, segunda orden más grande
+	 * @param int $importe_salida importe inicial
+	 * @param int $importe_orden1 orden mas alta
+	 * @param int $importe_orden2 orden actual
+	 */
+    public function sobre_puja_orden($importe_salida, $importe_orden1,$importe_orden2)
     {
             // si no hay otra orden no hacemos lucha de ordenes y sale por importe de salida/reserva o por la orden si es mas pequeña que el precio de reserva
             if ((empty($importe_orden2) || $importe_orden2==0) ){
@@ -3900,7 +3906,7 @@ class Subasta extends Model
              $order_by = "session_start ASC";
         }
         if(empty($type)){
-            $tipo_sub = " sub.TIPO_SUB IN ('O', 'P', 'W', 'V') AND ";
+            $tipo_sub = " sub.TIPO_SUB IN ('O', 'P', 'W', 'V', 'M', 'I') AND ";
         }else{
 			$tipo_sub = " sub.TIPO_SUB = :type AND ";
 			$params['type'] = $type;

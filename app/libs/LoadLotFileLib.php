@@ -67,7 +67,8 @@ class LoadLotFileLib {
 							  "aceleracion" => "aceleracion", "velocidadMax" => "velocidad máxima", "provincia" => "provincia",
 							  "poblacion" => "población", "evaluacion_precio " => "evaluación precio", "estandarEmisiones" => "estándar emisiones",
 							  "cilindros" => "cilindros", "par" => "par", "neumaticosD" => "neumáticos delanteros",  "neumaticosT" => "neumáticos traseros",
-							  "maletero" => "Maletero",  "deposito" => "depósito", "ahorro" => "ahorro"
+							  "maletero" => "Maletero",  "deposito" => "depósito", "ahorro" => "ahorro",
+							  "precioFinanciadoRangoMax" => "Precio financiado max", "precioFinanciadoRangoMin" => "Precio financiado min", "cuotaRangoMax" => "Cuota max", "cuotaRangoMin" => "Cuota min", "precioMaxMercado" => "Precio max mercado",  "precioMinMercado" => "Precio min mercado"
 							);
 
 		#$addTime = 0;
@@ -185,7 +186,8 @@ class LoadLotFileLib {
 					if($vehiculo["tipo_venta"] == "directa" ){
 						$idAuction = self::VENTA;
 						$lot['startprice'] = $this->redondeoCarlandia(ceil($vehiculo['precio_venta_directa'] * $factorcomision));
-						$lot['lowprice'] = $this->redondeoCarlandia(ceil($vehiculo['precio_venta_directa_minimo'] * $factorcomision));
+						# 20-04-2022 no debe hacerse el redondeo de carlandia ya que lo han pedido así
+						$lot['lowprice'] = ceil($vehiculo['precio_venta_directa_minimo'] * $factorcomision);
 
 					}else{
 

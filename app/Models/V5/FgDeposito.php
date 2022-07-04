@@ -6,7 +6,6 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 class FgDeposito extends Model
 {
@@ -55,7 +54,7 @@ class FgDeposito extends Model
 	 */
 	public function isValid($cli_deposito, $sub_deposito, $ref_deposito)
 	{
-        if(!$cli_deposito){
+		if(!$cli_deposito){
             return false;
         }
 
@@ -96,6 +95,16 @@ class FgDeposito extends Model
 	public function getEstadoAttribute()
 	{
 		return $this->getEstados()[$this->estado_deposito];
+	}
+
+
+	static function getAllUsersWithValidDepositInAuctions($auctions)
+	{
+		return self::
+			distinct()
+			->whereIn('SUB_DEPOSITO', $auctions)
+			->where('ESTADO_DEPOSITO', self::ESTADO_VALIDO)
+			->get();
 	}
 
 }

@@ -41,6 +41,7 @@ use App\libs\FormLib;
 use App\Models\V5\Customer_Presta;
 use App\Models\V5\Address_Presta;
 use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgDvc1l;
 use App\Models\V5\FxDvc0;
 use App\Models\V5\FsIdioma;
@@ -332,7 +333,7 @@ class UserController extends Controller
 					$user->logLogin($login->cod_cliweb,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
 
 					$externalLoginData = null;
-                    $externalEncryptDate = null;
+					$externalEncryptData = null;
 
 					if(config('app.ps_activate', false)){
 						$externalLoginData = [
@@ -340,7 +341,7 @@ class UserController extends Controller
 							'password' => $password,
 							'back' => request('back', '')
 						];
-						$externalEncryptDate = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
+						$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
 					}
 
 
@@ -349,7 +350,7 @@ class UserController extends Controller
                     if($ajax){
                         $res = array(
 						 'status' => 'success',
-						 'data' => $externalEncryptDate,
+						 'data' => $externalEncryptData,
 						 'context_url' => request('context_url', ''),
                       );
 
@@ -2683,41 +2684,56 @@ class UserController extends Controller
     # Adjudicaciones del usuario en sesion
     public function getSales()
     {
-
-        $subasta = new Subasta();
-
-        $User = new User();
+        $user = new User();
 		$cod_cli = Session::get('user.cod');
-        $User->cod_cli = $cod_cli;
-        $User->itemsPerPage  = 16;
-		$lotes = $User->getSales();
-		$defaultMonthPeriod = 6;
 
-		$fgAsigl0 = new FgAsigl0();
-
-		$subastasActivas = $fgAsigl0->getActiveAuctionsWithPropietary($cod_cli, Session::get('user.admin'));
-		$infoSales = $fgAsigl0->getLotsInfoSales($subastasActivas->where('start', '>=', date("Y-m-d",strtotime("-$defaultMonthPeriod months")))->pluck('sub_asigl0')->toArray(), $cod_cli);
-
-		//toda la informacion. Facturas y lineas incluidas
-		//$facturas = (new FxDvc0())->getFacturasPropietario('$cod_cli')->groupBy('sub_hces1');
-
-		//cabeceras y lineas por separado
-		$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $defaultMonthPeriod);
-		$fgDvc1l = new FgDvc1l();
-		foreach ($facturasCabeceras as $key => $cabecera) {
-			$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0);
+		if(config('app.permission_to_view_seller_panel', false)){
+			$cliweb = FxCliWeb::where('cod_cliweb', $cod_cli)->whereNotNull('permission_id_cliweb')->first();
+			abort_if(!$cliweb, 404);
 		}
-		$facturas = $facturasCabeceras->keyBy('linea.sub_hces1');
 
-        $subasta->page = 'all';
+        $user->cod_cli = $cod_cli;
+		$lotes = $user->getSales(request()->all());
+
+		$condAuctions = $lotes->pluck('cod_sub')->unique()->values();
+		$pujas = FgAsigl1::select('ref_asigl1, lin_asigl1, licit_asigl1, imp_asigl1, fec_asigl1')
+			->joinFghces1Asigl0()
+			->where('prop_hces1', $cod_cli)
+			->whereIn('sub_asigl1', $condAuctions)
+			->orderBy('imp_asigl1', 'desc')
+			->orderBy('fec_asigl1', 'desc')->get();
+
+
+		$infoSales = [];
+		$facturas = [];
+		$subastasActivas = [];
+
+		//La información de las facturas solamente la utilizar tauler, por lo que encapsulo en un config
+		if(config('app.userpanel_sales_extends', false)){
+			$defaultMonthPeriod = 6;
+			$fgAsigl0 = new FgAsigl0();
+			$subastasActivas = $fgAsigl0->getActiveAuctionsWithPropietary($cod_cli, Session::get('user.admin'));
+			$infoSales = $fgAsigl0->getLotsInfoSales($subastasActivas->where('start', '>=', date("Y-m-d", strtotime("-$defaultMonthPeriod months")))->pluck('sub_asigl0')->toArray(), $cod_cli);
+
+			//toda la informacion. Facturas y lineas incluidas
+			//$facturas = (new FxDvc0())->getFacturasPropietario('$cod_cli')->groupBy('sub_hces1');
+
+			//cabeceras y lineas por separado
+			$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $defaultMonthPeriod);
+			$fgDvc1l = new FgDvc1l();
+			foreach ($facturasCabeceras as $key => $cabecera) {
+				$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0);
+			}
+			$facturas = $facturasCabeceras->keyBy('linea.sub_hces1');
+		}
+
         foreach($lotes as $key => $lot){
 
-            $subasta->ref = $lot->ref_asigl0;
-            $pujas = $subasta->getPujas(null,$lot->sub_asigl0);
-            $lot->pujas = $pujas;
+            //$pujas = $subasta->getPujas(null,$lot->sub_asigl0);
+            $lot->pujas = $pujas->where('ref_asigl1', $lot->ref_asigl0);
             $lot->puja_max = 0;
-            if(count($lot->pujas) > 0){
-                $lot->puja_max = head($lot->pujas);
+            if($lot->pujas->count() > 0){
+                $lot->puja_max = $lot->pujas->first();
             }
 		}
 
@@ -2727,7 +2743,9 @@ class UserController extends Controller
 			return [$item->cod_sub => $item];
 		});
 
-        return View::make('front::pages.panel.sales', array('subastas' => $subastas, 'subastasActivas' => $subastasActivas, 'infoSales' => (object)$infoSales, 'facturas' => $facturas));
+		$data = array('subastas' => $subastas, 'subastasActivas' => $subastasActivas, 'infoSales' => (object)$infoSales, 'facturas' => $facturas);
+
+		return view('front::pages.panel.sales', $data);
     }
 
 	public function getFacturasPropietarioLineas()
@@ -3577,8 +3595,8 @@ class UserController extends Controller
                 $facturas->numero = $val_pendiente->num_pcob;
                 $fact_temp = $this->bills($val_pendiente->anum_pcob,$val_pendiente->num_pcob,true);
 
-                $val_pendiente->date = $fact_temp['date'];
-                $val_pendiente->factura = $fact_temp['filname'];
+                $val_pendiente->date = $fact_temp['date'] ?? null;
+                $val_pendiente->factura = $fact_temp['filname'] ?? null;
                 //buscamos si la factura esta generada
                 $tipo_fact = $facturas->bill_text_sub( substr($facturas->serie, 0, 1),substr($facturas->serie, 1));
                 //Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
@@ -3628,8 +3646,8 @@ class UserController extends Controller
         if(!empty($pagado)){
             foreach($pagado as $fact_pag){
                 $fact_temp = $this->bills($fact_pag->afra_cobro1,$fact_pag->nfra_cobro1,true);
-                $fact_pag->date = $fact_temp['date'];
-                $fact_pag->factura = $fact_temp['filname'];
+                $fact_pag->date = $fact_temp['date'] ?? null;
+                $fact_pag->factura = $fact_temp['filname'] ?? null;
                 $facturas->serie = $fact_pag->afra_cobro1;
                 $facturas->numero = $fact_pag->nfra_cobro1;
                 //Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro

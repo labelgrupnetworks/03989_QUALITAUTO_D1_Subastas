@@ -66,9 +66,11 @@ class PayArticleCartController extends Controller
 		$comments = request("comments")."\n\n";
 		#si hay que grabar un anillo
 		$grabados = request("grabados");
-		foreach($grabados as $idArt => $grabadoArticulo){
-			foreach($grabadoArticulo as $grabadoUnidad){
-				$comments .="Grabado $idArt-" . $articles[$idArt]->model_art0.": ". $grabadoUnidad. "\n";
+		if(is_array($grabados )){
+			foreach($grabados as $idArt => $grabadoArticulo){
+				foreach($grabadoArticulo as $grabadoUnidad){
+					$comments .="Grabado $idArt-" . $articles[$idArt]->model_art0.": ". $grabadoUnidad. "\n";
+				}
 			}
 		}
 

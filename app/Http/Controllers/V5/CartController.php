@@ -145,10 +145,10 @@ class CartController extends Controller
 
 			if(\Config::get("app.TaxForEuropean")){
 				foreach($lots as $lot){
-					$lot->impSinIva = $lot->impsalhces_asigl0;
-					$lot->iva = \Tools::PriceWithTaxForEuropean(1,\Session::get('user.cod'));
+					$lot->iva =  \Tools::TaxForEuropean(\Session::get('user.cod')) *100;
+					#importe que verá el usuario, dependerá de si hay que cargarle el iva o no
 					$lot->impsalhces_asigl0 = \Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,\Session::get('user.cod'));
-
+					
 				}
 			}
 		}
@@ -297,7 +297,7 @@ public function checkReservedLot($codSub,$ref){
 	}
 	#si hay que bloquear el lote para reservar
 	if(\Config::get("app.reserveLot")){
-		
+
 
 
 		#confirmar reserva con webservice

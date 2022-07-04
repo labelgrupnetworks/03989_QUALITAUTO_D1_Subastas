@@ -4,7 +4,6 @@ namespace App\Http\Controllers\V5;
 use View;
 use Route;
 use Config;
-
 use Illuminate\Support\Facades\Request as Input;
 
 use Session;
@@ -105,7 +104,7 @@ class LotListController extends Controller
         $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
 		$fgasigl0 = new FgAsigl0();
 
-        $tipos_sub = array("O" =>trans(\Config::get('app.theme').'-app.lot_list.online_auction'), "W" => trans(\Config::get('app.theme').'-app.lot_list.face_auction'), "V" => trans(\Config::get('app.theme').'-app.lot_list.direct_sale'), "P" => trans(\Config::get('app.theme').'-app.lot_list.permanent_auction'), "E" => trans(\Config::get('app.theme').'-app.lot_list.special_auction'));
+        $tipos_sub = array("O" =>trans(\Config::get('app.theme').'-app.lot_list.online_auction'), "W" => trans(\Config::get('app.theme').'-app.lot_list.face_auction'), "V" => trans(\Config::get('app.theme').'-app.lot_list.direct_sale'), "P" => trans(\Config::get('app.theme').'-app.lot_list.permanent_auction'), "E" => trans(\Config::get('app.theme').'-app.lot_list.special_auction'), "M" => trans(\Config::get('app.theme').'-app.lot_list.make_offer'), "I" => trans(\Config::get('app.theme').'-app.lot_list.reverse_auction'));
 
 		$bread = array();
 
@@ -322,6 +321,10 @@ class LotListController extends Controller
 			$bladeVars["subasta_online"] = ($item->tipo_sub == 'P' || $item->tipo_sub == 'O')? true : false;
 			$bladeVars["subasta_venta"] = $item->tipo_sub == 'V' ? true : false;
 			$bladeVars["subasta_web"] = $item->tipo_sub == 'W' ? true : false;
+			$bladeVars["subasta_make_offer"] = $item->tipo_sub == 'M' ? true : false;
+			$bladeVars["subasta_inversa"] = $item->tipo_sub == 'I' ? true : false;
+
+
 			$bladeVars["subasta_abierta_P"] = $item->subabierta_sub == 'P'? true : false;
 			$bladeVars["subasta_abierta_O"] = $item->subabierta_sub == 'O'? true : false;
 			$bladeVars["retirado"] = $item->retirado_asigl0 !='N'? true : false;
@@ -366,7 +369,7 @@ class LotListController extends Controller
 			#descuentos y ofertas
 			$bladeVars["oferta"] = $item->oferta_asigl0 == 2? true : false;
 			$bladeVars["estimacion"] = $item->imptas_asigl0;
-			if($item->oferta_asigl0 == 1 && $item->impsalhces_asigl0 >0){
+			if($item->oferta_asigl0 == 1 && $item->impsalhces_asigl0 >0 && $item->imptas_asigl0 > 0){
 				$bladeVars["descuento"] =  round(((($item->imptas_asigl0 -  $item->impsalhces_asigl0)/$item->imptas_asigl0) *100), 0);
 			}else{
 				$bladeVars["descuento"] = "";

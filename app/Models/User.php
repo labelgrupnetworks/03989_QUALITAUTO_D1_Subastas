@@ -718,7 +718,7 @@ class User extends Model
                 ->addSelect('NVL(lotes_lang.titulo_hces1_lang, LO.titulo_hces1) titulo_hces1,LO.NUM_HCES1 ,  LO.LIN_HCES1, P.FEC_ASIGL1, P.HORA_ASIGL1, LO.COB_HCES1')
                 ->addSelect('C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1')
                 ->addSelect('SUB.cod_sub,sub.tipo_sub,auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
-                ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0')
+                ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0,FGC0.impgas_csub0,FGC0.tax_csub0 ')
                 ->Join('FGASIGL0 ASIGL0',function($join){
                     $join->on('ASIGL0.EMP_ASIGL0','=','C.EMP_CSUB')
                     ->on('ASIGL0.SUB_ASIGL0','=','C.SUB_CSUB')
@@ -887,17 +887,20 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
 
 
     #Ventas de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
-    public function getSales()
+    public function getSales($filters = null)
     {
 
 
         $lang = Config::get("app.language_complete")[Config::get("app.locale")];
 
+		$clobParams = "FGHCES1.desc_hces1, FGHCES1.descweb_hces1";
+
 		$query = DB::table('FGHCES1 FGHCES1')
 
 			->selectRaw('FGSUB.cod_sub, FGSUB.des_sub, FGSUB.tipo_sub, FGSUB.subc_sub, auc."name", auc."id_auc_sessions", auc."start", auc."end", auc."reference", auc."orders_start",
-				FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1, FGHCES1.titulo_hces1, FGHCES1.desc_hces1, FGHCES1.fac_hces1, FGHCES1.descweb_hces1, FGHCES1.webfriend_hces1,
+				FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1, FGHCES1.titulo_hces1, FGHCES1.fac_hces1, FGHCES1.webfriend_hces1, FGHCES1.titulo_hces1,
 				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0')
+			->addSelect($clobParams)
          	->Join('FGASIGL0 ASIGL0',function($join){
             	$join->on('ASIGL0.EMP_ASIGL0','=','FGHCES1.EMP_HCES1')
             	->on('ASIGL0.SUB_ASIGL0','=','FGHCES1.SUB_HCES1')
@@ -927,11 +930,29 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
         	->where('FGHCES1.PROP_HCES1',$this->cod_cli)
         	->where('FGHCES1.EMP_HCES1',Config::get("app.emp"))
         	->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
-			->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"');
+			->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"')
+
+			->when($filters, function ($query) use ($filters) {
+
+				return $query->when(!empty($filters['from-date']), function ($query) use ($filters) {
+					return $query->where('auc."start"', '>=', $filters['from-date']);
+
+				})->when(!empty($filters['to-date']), function ($query) use ($filters) {
+					return $query->where('auc."end"', '<=', $filters['to-date']);
+				});
+			});
+
+
 
 			if(\Config::get("app.number_bids_lotlist") ){
 				$query = $query->selectRaw(" (SELECT COUNT(DISTINCT(LICIT_ASIGL1))  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) LICITS")
 				->selectRaw(" (SELECT COUNT(LIN_ASIGL1)  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) BIDS");
+			}
+
+			if(config('app.number_orders_salespanel', false)){
+				$query = $query->selectRaw("(SELECT COUNT(DISTINCT(LIN_ORLIC)) FROM FGORLIC WHERE FGORLIC.EMP_ORLIC = ASIGL0.EMP_ASIGL0 AND FGORLIC.SUB_ORLIC = ASIGL0.SUB_ASIGL0 AND FGORLIC.REF_ORLIC = ASIGL0.REF_ASIGL0) LICITS_ORDERS")
+				->selectRaw(" (SELECT COUNT(LIN_ORLIC) FROM FGORLIC WHERE ASIGL0.EMP_ASIGL0 = FGORLIC.EMP_ORLIC AND ASIGL0.SUB_ASIGL0 = FGORLIC.SUB_ORLIC AND ASIGL0.REF_ASIGL0 = FGORLIC.REF_ORLIC) ORDERS")
+				->selectRaw(" (SELECT MAX(HIMP_ORLIC) FROM FGORLIC WHERE ASIGL0.EMP_ASIGL0 = FGORLIC.EMP_ORLIC AND ASIGL0.SUB_ASIGL0 = FGORLIC.SUB_ORLIC AND ASIGL0.REF_ASIGL0 = FGORLIC.REF_ORLIC) MAX_ORDER");
 			}
 
 			return $query->get();

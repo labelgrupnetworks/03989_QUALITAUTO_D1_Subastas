@@ -5,7 +5,7 @@ namespace App\Http\Controllers\admin\subasta;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\externalws\vottun\VottunController;
 use App\Models\V5\FgAsigl0;
-
+use App\Models\V5\FgNft;
 use Illuminate\Http\Request;
 
 class AdminNftController extends Controller
@@ -59,6 +59,27 @@ class AdminNftController extends Controller
 		];
 
 		return view('admin::pages.subasta.nfts.index', compact('nfts', 'tableParams'));
+	}
+
+	public function showFile($numhces_nft, $linhces_nft)
+	{
+		$nft = FgNft::where([
+			'numhces_nft' => $numhces_nft,
+			'linhces_nft' => $linhces_nft,
+		])->first();
+
+
+		if (!$nft || !$nft->path_nft) {
+			abort(404);
+		}
+
+		$path = storage_path("app/$nft->path_nft");
+
+		if (!file_exists($path)) {
+			abort(404);
+		}
+
+		return response()->file($path);
 	}
 
 	private function mintState($nft)

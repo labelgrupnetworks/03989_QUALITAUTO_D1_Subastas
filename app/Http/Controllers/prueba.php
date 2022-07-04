@@ -152,10 +152,14 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-	
+		
 
+		die();
+	}
 
-
+	public function testwebserviceNFTDuran(){
+		$a = new App\Http\Controllers\externalws\durannft\PaidController();
+		$a->informPaid("T91655801482");
 	}
 	public function TestVottun(){
 		$num = 8;

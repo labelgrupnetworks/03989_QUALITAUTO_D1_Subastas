@@ -33,6 +33,8 @@ class FgSub extends Model
 	const TIPO_SUB_VENTA_DIRECTA = 'V';
 	const TIPO_SUB_PERMANENTE = 'P';
 	const TIPO_SUB_ESPECIAL = 'E';
+	const TIPO_SUB_MAKE_OFFER = 'M';
+	const TIPO_SUB_INVERSA = 'M';
 
 	CONST SUBABIERTA_SUB_PUJAS = 'P';
 	CONST SUBABIERTA_SUB_ORDENES = 'O'; //evitar
@@ -235,10 +237,12 @@ class FgSub extends Model
 			self::TIPO_SUB_VENTA_DIRECTA => trans("admin-app.fields.tipo_sub_v"),
 			self::TIPO_SUB_PERMANENTE => trans("admin-app.fields.tipo_sub_p"),
 			self::TIPO_SUB_ESPECIAL => trans("admin-app.fields.tipo_sub_e"),
+			self::TIPO_SUB_MAKE_OFFER =>  trans("admin-app.fields.tipo_sub_m"),
+			self::TIPO_SUB_INVERSA =>  trans("admin-app.fields.tipo_sub_i"),
 		]);
 
 		return $types->filter(function ($value, $key) {
-			return in_array($key, explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E')));
+			return in_array($key, explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E,M,I')));
 		});
 
 	}

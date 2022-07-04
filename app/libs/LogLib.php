@@ -15,15 +15,17 @@ class LogLib
 			$tableModel= $tableModel->where($fieldName,$fieldValue);
 		}
 
-		$actual = $tableModel->select(" 'CURRENT' AS TYPE_UPDATE", $table.".*")->first();
+		$actual = $tableModel->select( $table.".*")->first();
 
 
 
 		$tableLogPath = 'App\Models\V5\log\\'.$model.'_Log';
 		$tableLogModel = new $tableLogPath();
 		foreach($fieldsPK as $fieldName => $fieldValue){
+
 			$tableLogModel= $tableLogModel->where($fieldName,$fieldValue);
 		}
+
 		$dateField = 'date_update_'. $tableSuffix;
 
 		#si la base de datos está en minusculas debemos ponerle la comilla
@@ -44,9 +46,9 @@ class LogLib
 		$cambios = array();
 
 		foreach($allStates as $key => $item){
-
+			#el primero
 			if(count($cambios)== 0){
-				$item["type_update"] = 'CREATE';
+
 				$cambios[] =(array) $item;
 			}else{
 
@@ -68,10 +70,11 @@ class LogLib
 	static function compare_rows($anterior, $actual, $tableSuffix){
 
 		#SI ES DELETE SOLO MOSTRAMOS DELETE, LA FECHA Y EL USUARIO, NO COMPARAMOS YA QUE ETSAN TODOS LOS CAMPOS ANULL Y LOS MARCARA COMO CAMBIOS
-		if( $actual["type_update"] != 'DELETE'){
+		//if( $actual["type_update"] != 'DELETE'){
 			$diferencias = array();
 			foreach($anterior as $prop => $value){
-				if($value != $actual[$prop] ){
+				#no se comprueba el id_update ya que en la tabla original no existe
+				if($prop !="id_update_".$tableSuffix && $value != $actual[$prop] ){
 					$diferencias[$prop] = $actual[$prop];
 				}
 			}
@@ -80,10 +83,10 @@ class LogLib
 			if( (count($diferencias) == 1 && !empty($diferencias["date_update_".$tableSuffix]) ) || (count($diferencias) == 2 && !empty($diferencias["date_update_".$tableSuffix]) && !empty($diferencias["type_update"]) )  ){
 				return [];
 			}
-		}
+		//}
 
 		#unificamos nombres para todas las tablas
-		$diferencias["type_update"] = $actual["type_update"];
+		$diferencias["type_update"] = $actual["type_update_".$tableSuffix];
 		$diferencias["usr_update"]= $actual["usr_update_".$tableSuffix];
 		unset($diferencias["usr_update_".$tableSuffix]);
 		$diferencias["date_update"]= $actual["date_update_".$tableSuffix];
@@ -102,6 +105,7 @@ class LogLib
 		$tableLogPath = 'App\Models\V5\log\\'.$model.'_Log';
 		$tableLogModel = new $tableLogPath();
 
+
 		$dateField = 'date_update_'. $tableSuffix;
 		#si la base de datos está en minusculas debemos ponerle la comilla
 		if($smallLetter){
@@ -119,14 +123,14 @@ class LogLib
 			$tableLogModel = $tableLogModel->where($dateField,"<=",$endDate);
 		}
 
-		$actual = $tableModel->first();
+		$actual = $tableModel->log()->get();
 
-		$logs = $tableLogModel->orderby($dateField)->get();
+		$logs = $tableLogModel->log()->orderby($dateField)->get();
 
 
 		if(!empty($actual)){
 			#hacemos un merge para que el actual quede el último
-			$allStates = array_merge($logs->toArray(), [$actual->toArray()]);
+			$allStates = array_merge($logs->toArray(), $actual->toArray());
 		}else{
 			$allStates = $logs->toArray();
 		}

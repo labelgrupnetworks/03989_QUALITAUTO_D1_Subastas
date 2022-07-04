@@ -1024,17 +1024,20 @@ class CronController extends Controller
 				IMGFRIENDLY_HCES1,
 				REF_ASIGL0,
 				FECALTA_ASIGL0,
+				RSOC_CLI,
+				(SELECT VALUE_CARACTERISTICAS_HCES1 FROM FGCARACTERISTICAS_HCES1  WHERE EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0  AND IDCAR_CARACTERISTICAS_HCES1 = 55) matricula,
 				nvl((SELECT VALUE_CARACTERISTICAS_HCES1 FROM FGCARACTERISTICAS_HCES1  WHERE EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0  AND IDCAR_CARACTERISTICAS_HCES1 = 62)
 				, IMPSALHCES_ASIGL0   )precio_min,
 				nvl((SELECT VALUE_CARACTERISTICAS_HCES1 FROM FGCARACTERISTICAS_HCES1  WHERE EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0  AND IDCAR_CARACTERISTICAS_HCES1 = 61)
 				, IMPSALHCES_ASIGL0   )precio_max")
 				->joinFghces1Asigl0()->joinSubastaAsigl0()->joinSessionAsigl0()
-			->whereIn('SUB_ASIGL0', ['MOTORO','MOTORV'])
-			->where('CERRADO_ASIGL0','N')
-			->where('RETIRADO_ASIGL0','N')
-			->where('OCULTO_ASIGL0', 'N')
-			->orderBy('REF_ASIGL0', 'asc')
-			->get();
+				->LeftJoinOwnerWithHces1()
+				->whereIn('SUB_ASIGL0', ['MOTORO','MOTORV'])
+				->where('CERRADO_ASIGL0','N')
+				->where('RETIRADO_ASIGL0','N')
+				->where('OCULTO_ASIGL0', 'N')
+				->orderBy('REF_ASIGL0', 'asc')
+				->get();
 
 
 			# Itera sobre la query para poner los datos en un array
@@ -1073,6 +1076,7 @@ class CronController extends Controller
 				}
 				$export["custom_label_1"] =(int)( ($inf_lot->price - $inf_lot->precio_min) /( $inf_lot->precio_max - $inf_lot->precio_min) * 100);
 
+				$export["custom_label_2"] = $inf_lot->matricula;
 
 /*
 •	muy bueno: todos los valores menores o iguales a 25
@@ -1090,7 +1094,7 @@ class CronController extends Controller
 				}else{
 					$export["custom_label_3"] ="malo";
 				}
-
+				$export["custom_label_4"] = $inf_lot->rsoc_cli;
 
 				$arrayForExport[] = $export;
             }

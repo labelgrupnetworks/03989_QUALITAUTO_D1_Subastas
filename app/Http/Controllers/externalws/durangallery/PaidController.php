@@ -7,7 +7,7 @@ use App\Http\Controllers\PaymentsController;
 use SimpleXMLElement;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgAsigl0;
-use App\Models\V5\FgCsub0;
+use App\Models\Payments;
 use App\Models\V5\WebPayCart;
 use App\Models\V5\FxPcob;
 use App\Models\V5\Web_Artist;
@@ -26,6 +26,7 @@ class PaidController extends DuranGalleryController
 
 
 					$xml =	$this->cartInfo($merchantID);
+
 					\Log::info("se ha vendido un lote");
 					$res = $this->callWebService($xml,"wbGrabarVenta");
 
@@ -114,9 +115,19 @@ class PaidController extends DuranGalleryController
 		$lots = $fgasigl0->select("REF_ASIGL0,SUB_ASIGL0, NUM_HCES1, LIN_HCES1, IDORIGEN_ASIGL0, DESC_HCES1, DES_ALM, DIR_ALM, ALM_HCES1, alto_hces1, ancho_hces1, grueso_hces1,   IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, PERMISOEXP_HCES1, SEC_HCES1, PC_HCES1, TRANSPORT_HCES1")->get();
 
 		$importeTotal = 0;
-		$ivaTotal = 0;
-		 #pongo el valor 100 por que al multiplicarlo por el iva, devuelve el iva en %, HAY QUE TENER EN CUENTA QUE LUEGO HAY QUE RESTARLO YA QUE LA FUNCION DEVUEVE EL PRECIO CON IVA Y NO SOLO EL IVA
-		$iva = \Tools::PriceWithTaxForEuropean(100,$cli->cod_cli) -100;
+
+		 #pongo el valor * 100 ya que el iva lo devolverá con decimales
+		$ivaUser = \Tools::TaxForEuropean($cli->cod_cli) *100;
+		 #los lotes  tienen iva en el precio por lo que hay que calcularlo sin iva siempre, no podemos usar el iva del usuario, si no el general
+		$payments = new Payments();
+		$ivaGeneral = $payments->getIVA(date('Y-m-d H:i:s'),'01');
+
+		if(count($ivaGeneral) > 0){
+			$ivaGeneral = $ivaGeneral[0]->iva_iva/100;
+		}else{
+			$ivaGeneral = 0;
+		}
+
 		foreach($lots as $lot){
 
 			#no hay que tener en cuenta el iva de la comisión,
@@ -162,10 +173,11 @@ class PaidController extends DuranGalleryController
 		   $lote["descripcion"] = $lot->desc_hces1 ;
 			#usamos subasta y rferencia como identificador ya que estan usando lotes con stock [OJO MIRAR IMPLICACIÓN DE QUE VARIOS LOTES TENGAN LA MISMA NUM Y LIN]
 		   $lote["referencia"] = $lot->sub_asigl0 ."-". $lot->ref_asigl0 ;
-		   #los lotes no tienen iva en el precio por lo que ponemos el importe directamente
-		   $lote["importesiniva"] = $lot->impsalhces_asigl0;
 
-		   $lote["tipoiva"] =$iva;   # indicar el iva que tiene 21 o 0 ;
+
+		   $lote["importesiniva"] =  round($lot->impsalhces_asigl0 / (1 + $ivaGeneral),2);
+
+		   $lote["tipoiva"] =$ivaUser;   # indicar el iva que tiene 21 o 0 ;
 		   $lote["vendedor"] =$idAutor;  # codigo artista ;
 		   $lote["familia"] = $lot->sec_hces1; # codigo familia ;
 		   $lote["coste"] = $lot->pc_hces1?? ""; # coste del articulo ; campo de caracteristica precio_neto_artista
@@ -174,7 +186,7 @@ class PaidController extends DuranGalleryController
 		   $lote["envioincluido"] =  $lot->transport_hces1=="S"? "1" : "0";  # envío incluido en el precio (1-Sí; 0-No) ;
 		   $lote["tenencia"] = $lot->alm_hces1;  # 2-artista, 1-Durán ;
 		   $lote["ubicacion"] = !empty($caracteristicas[2])?$caracteristicas[2]->value_caracteristicas_hces1 : ""; ; # ubicacion física ;
-		   $lote["total"] = \Tools::PriceWithTaxForEuropean($lote["importesiniva"],$cli->cod_cli)  ;# calcular precio total
+		   $lote["total"] = \Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli)  ;# precio final
 
 		   #borrar caracteristicas que para duran no son caracteristicas y por lo tanto no se deben enviar
 		   unset($caracteristicas[1]);
@@ -219,8 +231,8 @@ class PaidController extends DuranGalleryController
 	   }
 	   #importe total pagado, lo ponemso al final por que necesitamos calcularlo en base a los lotes
 	   $info["importeTotal"] = $importeTotal;
-	   $info["formaiva"] = $iva > 0? 1:2; #1-IVA incluido en el precio; 2-IVA exento
-
+	   $info["formaiva"] = $ivaUser > 0? 1:2; #1-IVA incluido en el precio; 2-IVA exento
+	  
 
 	  # $this->sendConfirmationMail($info);
 
@@ -352,7 +364,7 @@ class PaidController extends DuranGalleryController
 		$pago = FxPcob::select("IMP_PCOB, COD2_CLI, ANUM_PCOB, NUM_PCOB")->where("IDTRANS_PCOB0", $idTransaction)->joincli()->joinpcob1()->joinpcob0()->get();
 #Falta conseguir la informacion de que metodo de pago usan
 #pueden venir varios pagos
-
+		dd($pago);
 
 		#no hay pago
 		if(empty($pago)){

@@ -23,8 +23,8 @@ class FsUsr extends Model
 
 
 	public function scopelog($query){
-       #saco todos los campos a mano para poder encriptar el password, el password se ha de convertir a utf-8 por que si no falla
-	   return $query->select(" COD_USR,NOM_USR, CONVERT(STANDARD_HASH(PSW_USR), 'utf8', 'us7ascii' )  PSW_USR    ,ACC_USR,SERVS_USR,CTAEM_USR,PSWEM_USR,AUTEN_USR,NOMEM_USR,DIREM_USR,REFRESMM_USR,TIEMPOPM_USR,ACMENU_USR,IDIOMA_USR,TENVMAIL_USR,TENVFAX_USR,POPUP_USR,BAJA_USR,GESDOC_USR,ALMDEF_USR,TYPE_UPDATE_USR,DATE_UPDATE_USR,USR_UPDATE_USR");
+       #saco todos los campos a mano para poder ocultar password, el password lo habia convertido a utf-8 pero han pedido quitarlo CONVERT(STANDARD_HASH(PSW_USR), 'utf8', 'us7ascii' )  PSW_USR    ,
+	   return $query->select(" COD_USR,NOM_USR, ACC_USR,SERVS_USR,CTAEM_USR,PSWEM_USR,AUTEN_USR,NOMEM_USR,DIREM_USR,REFRESMM_USR,TIEMPOPM_USR,ACMENU_USR,IDIOMA_USR,TENVMAIL_USR,TENVFAX_USR,POPUP_USR,BAJA_USR,GESDOC_USR,ALMDEF_USR,TYPE_UPDATE_USR,DATE_UPDATE_USR,USR_UPDATE_USR");
 
 	}
 

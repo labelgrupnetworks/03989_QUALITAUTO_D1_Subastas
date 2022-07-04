@@ -15,11 +15,17 @@ class AnsorenaValidateUnion extends Controller
 		$type = request("type","NIF");
 
 		if($type == "NIF"){
-			$sql="SELECT min(ID_PADRE_NIF) ID_PADRE_NIF, count(distinct(ID_PADRE_NIF)) pendientes FROM VOLCADO_CLIENTES WHERE   ID_PADRE_NIF is not null  and VERIFICADO = 0 order by ID_PADRE_NIF";
+			$sql="
+				SELECT min(ID_PADRE_NIF)ID_PADRE_NIF , count(distinct(ID_PADRE_NIF)) pendientes FROM (
+				SELECT ID_PADRE_NIF FROM VOLCADO_CLIENTES
+				JOIN FXCLI ON GEMP_CLI='01' AND COD_CLI = NUMERO AND BAJA_TMP_CLI = 'N'
+				WHERE   ID_PADRE_NIF is not null  and VERIFICADO = 0 GROUP BY ID_PADRE_NIF HAVING COUNT(ID_PADRE_NIF) > 1
+				) t
+				";
 			$idPadre = \DB::select($sql, []);
 
 			if($idPadre[0]->pendientes > 0){
-				$sql="SELECT ID_NUM,ID_PADRE_NIF, NUMERO,NOMBRE,DIRECCION, POBLACION, TELEFONO,NIF, EMAIL FROM VOLCADO_CLIENTES WHERE ID_PADRE_NIF =".$idPadre[0]->id_padre_nif;
+				$sql="				SELECT ID_NUM,ID_PADRE_NIF, NUMERO,NOMBRE,DIRECCION, POBLACION, TELEFONO,NIF, EMAIL FROM VOLCADO_CLIENTES WHERE ID_PADRE_NIF =".$idPadre[0]->id_padre_nif;
 				$usuarios = \DB::select($sql, []);
 				$idPadreOld = $idPadre[0]->id_padre_nif;
 				return \View::make('front::pages.validateUnion', array('usuarios' => $usuarios, 'idPadreOld' =>$idPadreOld , 'type' => $type, 'pendientes' =>  $idPadre[0]->pendientes ));
@@ -27,7 +33,14 @@ class AnsorenaValidateUnion extends Controller
 		}
 
 		if($type == "TELEFONO"){
-			$sql="SELECT min(ID_PADRE_TELEFONO) ID_PADRE_TELEFONO, count(distinct(ID_PADRE_TELEFONO)) pendientes FROM VOLCADO_CLIENTES WHERE  ID_PADRE_TELEFONO IS NOT NULL  and VERIFICADO = 0 order by ID_PADRE_TELEFONO";
+			$sql="
+
+			SELECT min(ID_PADRE_TELEFONO)ID_PADRE_TELEFONO , count(distinct(ID_PADRE_TELEFONO)) pendientes FROM (
+				SELECT ID_PADRE_TELEFONO FROM VOLCADO_CLIENTES
+				JOIN FXCLI ON GEMP_CLI='01' AND COD_CLI = NUMERO AND BAJA_TMP_CLI = 'N'
+				WHERE   ID_PADRE_TELEFONO is not null  and VERIFICADO = 0 GROUP BY ID_PADRE_TELEFONO HAVING COUNT(ID_PADRE_TELEFONO) > 1
+				) t
+			";
 			$idPadre = \DB::select($sql, []);
 
 			if($idPadre[0]->pendientes > 0){
@@ -39,13 +52,37 @@ class AnsorenaValidateUnion extends Controller
 		}
 
 		if($type == "EMAIL"){
-			$sql="SELECT min(ID_PADRE_EMAIL) ID_PADRE_EMAIL, count(distinct(ID_PADRE_EMAIL)) pendientes FROM VOLCADO_CLIENTES WHERE  ID_PADRE_EMAIL IS NOT NULL  and VERIFICADO = 0 order by ID_PADRE_EMAIL";
+			$sql="
+			SELECT min(ID_PADRE_EMAIL) ID_PADRE_EMAIL , count(distinct(ID_PADRE_EMAIL)) pendientes FROM (
+				SELECT ID_PADRE_EMAIL FROM VOLCADO_CLIENTES
+				JOIN FXCLI ON GEMP_CLI='01' AND COD_CLI = NUMERO AND BAJA_TMP_CLI = 'N'
+				WHERE   ID_PADRE_EMAIL is not null  and VERIFICADO = 0 GROUP BY ID_PADRE_EMAIL HAVING COUNT(ID_PADRE_EMAIL) > 1
+				) t
+			";
 			$idPadre = \DB::select($sql, []);
 
 			if($idPadre[0]->pendientes > 0){
 				$sql="SELECT ID_NUM,ID_PADRE_EMAIL, NUMERO,NOMBRE,DIRECCION, POBLACION, TELEFONO,NIF, EMAIL FROM VOLCADO_CLIENTES WHERE ID_PADRE_EMAIL =".$idPadre[0]->id_padre_email;
 				$usuarios = \DB::select($sql, []);
 				$idPadreOld = $idPadre[0]->id_padre_email;
+				return \View::make('front::pages.validateUnion', array('usuarios' => $usuarios, 'idPadreOld' => $idPadreOld, 'type' => $type, 'pendientes' =>  $idPadre[0]->pendientes ));
+			}
+		}
+
+		if($type == "NOMBRE"){
+			$sql="
+			SELECT min(ID_PADRE_NOMBRE) ID_PADRE_NOMBRE , count(distinct(ID_PADRE_NOMBRE)) pendientes FROM (
+				SELECT ID_PADRE_NOMBRE FROM VOLCADO_CLIENTES
+				JOIN FXCLI ON GEMP_CLI='01' AND COD_CLI = NUMERO AND BAJA_TMP_CLI = 'N'
+				WHERE   ID_PADRE_NOMBRE is not null  and VERIFICADO = 0 GROUP BY ID_PADRE_NOMBRE HAVING COUNT(ID_PADRE_NOMBRE) > 1
+				) t
+			";
+			$idPadre = \DB::select($sql, []);
+
+			if($idPadre[0]->pendientes > 0){
+				$sql="SELECT ID_NUM,ID_PADRE_NOMBRE, NUMERO,NOMBRE,DIRECCION, POBLACION, TELEFONO,NIF, EMAIL FROM VOLCADO_CLIENTES WHERE ID_PADRE_NOMBRE =".$idPadre[0]->id_padre_nombre;
+				$usuarios = \DB::select($sql, []);
+				$idPadreOld = $idPadre[0]->id_padre_nombre;
 				return \View::make('front::pages.validateUnion', array('usuarios' => $usuarios, 'idPadreOld' => $idPadreOld, 'type' => $type, 'pendientes' =>  $idPadre[0]->pendientes ));
 			}
 		}

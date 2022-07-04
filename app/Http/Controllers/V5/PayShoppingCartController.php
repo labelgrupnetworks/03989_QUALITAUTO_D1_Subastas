@@ -72,9 +72,7 @@ class PayShoppingCartController extends Controller
 			$lotInfo->importe =  $lot->impsalhces_asigl0;
 
 			if(\Config::get("app.TaxForEuropean")){
-				$lotInfo->importeSinIva = 	$lot->impSinIva;
 				$lotInfo->iva = $lot->iva;
-
 			}
 			$inf->lots[] = $lotInfo;
 

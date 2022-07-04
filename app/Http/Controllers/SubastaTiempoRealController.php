@@ -531,8 +531,14 @@ class subastaTiempoRealController extends Controller
 		 * Como ahora el riesmax por defecto es 0, se realiza un bucle infinito que provoca error
 		 * Para solucionarlo, hasta que implementen el desarrollo de credito, podemos igualar
 		 * ries_cli a riesmax_cli
+		 *
+		 * Eloy: 22/06/2022
+		 * antes if(true)
+		 * Simplemente si el riesmax_cli es 0, se iguala a ries_cli.
+		 * Por lo que los que lo tengan a 0 no podrán solicitar más crédito.
+		 *
 		 */
-		if(true){
+		if(empty($user_ries->riesmax_cli)){
 			$user_ries->riesmax_cli = $user_ries->ries_cli;
 		}
 
@@ -952,6 +958,178 @@ class subastaTiempoRealController extends Controller
 		return $result;
 
 	}
+	public function makeOffer(){
+        $user = new User();
+        $mail = new MailController();
+        //$subasta = new subasta();
+        $cod_sub            = request('cod_sub');
+        $ref            = request('ref');
+        $imp           = request('imp');
+        $cod_licit = request('cod_licit');
+        $cod_user = request('user.cod');
+        $gestor = request('user.admin');
+
+
+
+        if (empty($cod_user)){
+            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.subastas.mustLogin'),NULL, FALSE);
+            return $res;
+
+        }
+
+        $user->cod_cli = $cod_user;
+        $exist_user = $user->getUserByCodCli();
+        if(empty($exist_user)){
+            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.subastas.mustLogin'),NULL, FALSE);
+            return $res;
+        }
+
+        $subasta = new subasta();
+        $subasta->cod = $cod_sub;
+        $subasta->cli_licit = $cod_user;
+        //si es gestor puede haber indicado un id de licitador para realizar la compra en su nombre
+        if($gestor && !empty($cod_licit) ){
+            $licit = $cod_licit;
+        }
+        //si no buscamos el id de licitaodr dle usuario.
+        else{
+
+            $checklicit = $subasta->checkLicitador();
+
+            //si no ha devuelto ningun codigo de licitador
+            if (count($checklicit) == 0){
+                $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.makeOffer'),NULL, FALSE);
+                return $res;
+            }
+            $licit = head($checklicit)->cod_licit;
+        }
+
+
+        $subasta->lote = $ref;
+        $l = $subasta->getLote();
+
+        //el lote no existe
+        if(count($l)== 0 ){
+            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.makeOffer'),NULL, FALSE);
+            return $res;
+        }
+        $lote = head($l);
+
+        //comprobamos que se puede realizar una oferta por el lote
+
+        if( ($lote->tipo_sub=='M'  && $lote->cerrado_asigl0!='N'  )   || $lote->retirado_asigl0!='N'  || ( $lote->subc_sub!='S' && $lote->subc_sub!='C' && $lote->subc_sub!='A')  ){
+
+            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.makeOffer'),NULL, FALSE);
+            return $res;
+        }
+
+		$subasta->ref =  $ref;
+		$subasta->page      =1;
+		$subasta->itemsPerPage = 1;
+		$pujas=	$subasta->getpujas();
+		\Log::info(print_r($pujas,true));
+
+		if(count($pujas) >0){
+			$maxPuja = head($pujas);
+
+			if($maxPuja->imp_asigl1 >= $imp){
+				$subasta->page      ="all";
+				$allPujas =$subasta->getpujas();
+				#es info y no error porque se tiene que recargar la página para ver las pujas actuales
+				$res = array(
+					'status' => 'info',
+					'msg_1' => trans(\Config::get('app.theme').'-app.msg_error.makeOfferLower'),
+					'pujas' =>$allPujas
+				);
+				\Log::info("lower");
+				return $res;
+			}
+		}
+
+
+
+
+
+        //datos para hacer la puja
+        $subasta->licit = $licit;
+        $subasta->type_bid = 'W';
+        $subasta->imp = $imp;
+        $subasta->ref = $ref;
+
+
+
+
+        $result = $subasta->addPuja();
+		if ($result['status'] == 'success'){
+
+			$importeLote =  $lote->impsalhces_asigl0;
+			if(!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0 ){
+				$importeLote =  $lote->impres_asigl0;
+			}
+			#si se queda
+			if($imp>= $importeLote){
+
+				$subasta->cerrarLote();
+
+				if(Config::get('app.WebServiceCloseLot')){
+
+					$theme  = Config::get('app.theme');
+					$rutaCloseLotcontroller = "App\Http\Controllers\\externalws\\$theme\CloseLotController";
+
+					$closeLotController = new $rutaCloseLotcontroller();
+
+					$closeLotController->createCloseLot($cod_sub,$ref);
+				}
+				if (Config::get('app.enable_email_buy_user')){
+					$mail->sendEmailCerradoGeneric(Config::get('app.emp'),$cod_sub,$ref);
+				}
+
+					# Opciones de envio de email
+					if(!empty(Config::get('app.accounting_email_admin'))){
+						$admin_email = Config::get('app.accounting_email_admin');
+					}else{
+					$admin_email = Config::get('app.admin_email');
+					}
+
+						$email = new EmailLib('LOT_SOLD_ADMIN');
+						if(!empty($email->email)){
+							$email->setUserByLicit($cod_sub, $licit,false);
+							$email->setAuction_code($cod_sub);
+							$email->setLot_ref($ref);
+							$email->setPrice($imp);
+							$email->setTo($admin_email);
+							$email->send_email();
+						}
+
+				$res = array(
+						'status' => 'success',
+						'msg' => trans(\Config::get('app.theme').'-app.msg_success.makeOfferBuyLot',['lot' => $lote->descweb_hces1]),
+						'location' => '/'.\Config::get("app.locale")."/user/panel/allotments"
+
+
+					);
+				return $res ;
+				}else{
+					$subasta->page      ="all";
+					$allPujas =$subasta->getpujas();
+					#es info y no error porque se tiene que recargar la página
+					$res = array(
+						'status' => 'info',
+						'msg_1' => trans(\Config::get('app.theme').'-app.msg_error.makeOfferLose',['lot' => $lote->descweb_hces1]),
+						'pujas' => $allPujas
+
+
+					);
+					return $res;
+				}
+        }else{
+            $res = $this->error_puja($result['msg'],NULL, FALSE);
+            return $res ;
+        }
+
+
+
+    }
 
 
 
@@ -979,6 +1157,11 @@ class subastaTiempoRealController extends Controller
             $res = $this->error_puja(trans(\Config::get('app.theme').'-app.subastas.mustLogin'),NULL, FALSE);
             return $res;
         }
+		if ( $exist_user[0]->blockpuj_cli == "S") {
+			$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.usuario_pendiente_revision'), NULL, False);
+			return $res;
+		}
+
 
         $subasta = new subasta();
         $subasta->cod = $cod_sub;
@@ -1287,7 +1470,15 @@ class subastaTiempoRealController extends Controller
 				}
 
 				if(Config::get('app.email_order_to_admin')){
-					$email->setBcc(Config::get('app.admin_email'));
+
+					//Servihabitat, necesita que en las subastas presenciales llegue el email a otro buzon
+					if($lote->tipo_sub == 'W' && config('app.alternative_admin_email', false)){
+						$email->setBcc(config('app.alternative_admin_email'));
+					}
+					else{
+						$email->setBcc(Config::get('app.admin_email'));
+					}
+
 				}
 				$email->send_email();
 			}
@@ -1296,7 +1487,7 @@ class subastaTiempoRealController extends Controller
             if (count($ordenes) > 0 && $ordenes[0]->himp_orlic >= $imp )
             {
                 $winner = false;
-                if( Config::get('app.notice_over_bid') ){
+                if(Config::get('app.notice_over_bid')){
 
                     $imp_actual = $subasta->sobre_puja_orden($lote->impsalhces_asigl0, $ordenes[0]->himp_orlic, $imp);
                    //notificamos al usuario que no es el ganador, su orden esta por debajo de la mayor, o en caso de igualarla pierde por que la ha hecho despues
@@ -1308,6 +1499,10 @@ class subastaTiempoRealController extends Controller
                         'winner' =>$winner,
                         'open_price' => $lote->open_price
                      );
+
+					 if(config('app.notice_over_bid_email', false)){
+						$this->sendEmailSobrepuja($subasta->cod, $subasta->licit, $subasta->ref, "orden");
+					 }
 
 
                     return $res;
@@ -1381,6 +1576,7 @@ class subastaTiempoRealController extends Controller
        //para evitar que falte esta variable la inicializamos a false indicando que se interrumpira la cuenta atras
         $no_interrupt_cd_time='false';
         $lote_tmp = $subasta->getLote();
+
 
         //comprobamos que exista un lote con esos datos
         if (count($lote_tmp) == 0){
@@ -1471,6 +1667,8 @@ class subastaTiempoRealController extends Controller
             }
 
         }
+
+
         //si no es puja en firme, o en el caso de que lo sea el usuario no sea gestor, un usuario normal no puede hacer pujas en firme
         //un gestor haciendo una puja en firme puede pujar por el valor que quiera apartir del precio de salida, y este preci ode salida no se corregirá auqnue este fuera de escala
         if( $tipo_puja_gestor != 'firme' || $is_gestor == false){
@@ -1525,7 +1723,6 @@ class subastaTiempoRealController extends Controller
         }
 
 
-
         /* COMPROBACIÓN PARA PUJAS MUY ELEVADAS QUE PUEDEN PROVOCAR ERROR, por eso se hace lo primero!!! */
         # Buscamos la púja más alta
             $subasta->page          = 1;
@@ -1558,6 +1755,8 @@ class subastaTiempoRealController extends Controller
          //debemos poner le limite de pujas que se van a cargar, es necesario ya que más arreiba se ponen estos valores a 1 para hacer unos calculos.
             $subasta->page          = 1;
             $subasta->itemsPerPage  = 100;
+
+
 
 
         # Escalado de la puja automático
@@ -2640,6 +2839,7 @@ class subastaTiempoRealController extends Controller
         }
 
 	}
+
 
 	public function addLowerBid(){
 

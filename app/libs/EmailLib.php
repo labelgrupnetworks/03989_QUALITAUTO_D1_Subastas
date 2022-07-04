@@ -260,6 +260,7 @@ private $cc = array();
             }
 
             $this->atributes['CLIENT_CODE'] = $inf_user->cod_cli;
+			$this->atributes['EXTERNAL_CLIENT_CODE'] = $inf_user->cod2_cli ?? '';
             $this->atributes['EMAIL'] = $inf_user->email_cli;
 			#si viene por licitador cogemos el nombre de licitador, asi los usuarios con multiples licitadores reciben el email que toca
             $this->atributes['NAME'] =  $inf_user->rsoc_licit?? $inf_user->nom_cli;
@@ -313,10 +314,12 @@ private $cc = array();
         $subasta = new Subasta();
         $subasta->cod= $cod_sub;
         $subasta->lote = $lot_ref;
-        $lot_array = $subasta->getLote();
+        $lot_array = $subasta->getLote(false,false);
+
         if(!empty($lot_array)){
             $lot = head($lot_array);
 		}
+
 
         if(!empty($lot)){
 
@@ -812,6 +815,11 @@ private $cc = array();
             'PROP'=>NULL,
             'BILL'=>NULL,
 			'ANCHO' => "<span style=\"color:#000CFF;\">693</span>",
+			'PRICE_COUNTEROFFER' => "<span style=\"color:#000CFF;\">0.000,00 €</span>",
+			'ESTIMACION_BAJA' => "<span style=\"color:#000CFF;\">0.000 €</span>",
+			'DIFF_IN_PERCENT' => "<span style=\"color:#000CFF;\">0,00 €</span>",
+			'DIFF_IN_MONEY' => "<span style=\"color:#000CFF;\">0,00 €</span>",
+			'LOT_CLOSE' => "<span style=\"color:#000CFF;\">01/01/2000</span>",
         );
     }
 
@@ -1119,7 +1127,10 @@ private $cc = array();
         }
 
 		public function getAtribute($atribute){
-			return $this->atributes[$atribute];
+			if(isset($this->atributes[$atribute])){
+				return $this->atributes[$atribute];
+			}
+			return null;
 		}
 
 
@@ -1141,8 +1152,17 @@ private $cc = array();
 				$this->atributes['PRICE'] = ToolsServiceProvider::moneyFormat($this->lot->impsalhces_asigl0 / $carlandiaCommission, false, 2);
 				$this->atributes['ESTIMACION_ALTA'] = ToolsServiceProvider::moneyFormat($this->lot->imptash_asigl0 / $carlandiaCommission, false, 2);
 				$this->atributes['RESERVE_PRICE'] = ToolsServiceProvider::moneyFormat($this->lot->impres_asigl0 / $carlandiaCommission, false, 2);
-				$this->atributes['ESTIMACION_BAJA'] = ToolsServiceProvider::moneyFormat($this->lot->imptas_asigl0 / $carlandiaCommission, false, 2);
+				$this->atributes['ESTIMACION_BAJA'] = ToolsServiceProvider::moneyFormat($this->lot->imptas_asigl0 / $carlandiaCommission, false, 0);
 			}
+		}
+
+		/**
+		 * Añade diseño alternativo de email, si no existe, usa el diseño por defecto
+		 */
+		public function setAlternativeDesign($addCode)
+		{
+			$actualDesign = $this->email->cod_email;
+			$this->get_design("{$actualDesign}_{$addCode}");
 		}
 
 }

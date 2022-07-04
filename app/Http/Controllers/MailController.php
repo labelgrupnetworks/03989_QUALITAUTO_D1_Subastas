@@ -1407,12 +1407,9 @@ class MailController extends Controller
 
             $email = new EmailLib('LOT_AWARD');
 			//si tienen config de emial por propietario cargamos template según este
-			if(config('app.email_by_propietary') && $propietary){
-				$theme = config('app.theme');
-				$email->get_design('LOT_AWARD_PROPIETARY');
-				$email->setAtribute('texto_personalizado', trans("$theme-app.emails.section_$propietary->cod_cli"));
+			if(config('app.email_by_propietary', false) && $propietary){
+				$email->setAlternativeDesign($propietary->cod_cli);
 			}
-
 
             if (!empty($email->email)) {
 
@@ -2169,10 +2166,8 @@ class MailController extends Controller
         $cod_sub = Request::input('cod_sub');
         $ref = Request::input('ref');
 
-        $usercontroller = new UserController();
         $user = new User();
         $subasta = new Subasta();
-
 
         $user->cod   = $cod_sub;
         $user->licit = $cod_licit;
@@ -2197,16 +2192,8 @@ class MailController extends Controller
 			$email->setLot($cod_sub, $ref);
 			$email->setTo(Config::get('app.admin_email'));
 
-			if(request('to_owner') && request('num_hces1') && request('lin_hces1') ){
-
-				$emailOwner = FgHces1::select('email_cli')->getOwner()->where([
-					['num_hces1', request('num_hces1')],
-					['lin_hces1', request('lin_hces1')]
-				])->first();
-
-				if($emailOwner){
-					$email->setCc($emailOwner->email_cli);
-				}
+			if(request('to_owner')){
+				$email->addOwnerToReceiveMail($cod_sub, $ref, false);
 			}
 
             $email->send_email();
@@ -2216,9 +2203,15 @@ class MailController extends Controller
 
 
 		$email = new EmailLib('INFO_LOT');
+
 		if (!empty($email->email)) {
             $email->setUserByLicit($cod_sub, $cod_licit, true);
 			$email->setLot($cod_sub, $ref);
+
+			if(config('app.email_by_propietary', false) && $email->getAtribute('PROP')){
+				$email->setAlternativeDesign($email->getAtribute('PROP'));
+			}
+
             $email->send_email();
         } else {
             \Log::info("email INFO_LOT no enviado, no existe o está deshabilitadio");

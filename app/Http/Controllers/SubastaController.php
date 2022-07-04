@@ -42,7 +42,6 @@ use App\Models\V5\FgLicit;
 use App\Models\V5\FxCli;
 
 
-//use \JasonGrimes\Paginator as Paginator;
 use Illuminate\Support\Str;
 
 class SubastaController extends Controller
@@ -126,6 +125,16 @@ class SubastaController extends Controller
 	public function venta_directa()
 	{
 		return      $this->listaSubastasSesiones('S', 'V');
+	}
+
+	public function haz_oferta()
+	{
+		return      $this->listaSubastasSesiones('S', 'M');
+	}
+
+	public function subasta_inversa()
+	{
+		return      $this->listaSubastasSesiones('S', 'I');
 	}
 
 	public function subastas_activas($return_value = false)
@@ -465,9 +474,9 @@ class SubastaController extends Controller
 		$SEO_metas->canonical = $_SERVER['HTTP_HOST'] . $url;
 		$urlPattern     = $url . '/page-(:num)';
 
-		//Route::current()->parameter('page');
-		$subastaObj->page  = intval($currentPage);
-
+		//$paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		//$subastaObj->page  = Route::current()->parameter('page');
+		$subastaObj->page = intval($currentPage);
 
 		# Bug de paginador, a menos que se muestre 1 registro por pagina
 		//$paginator->numPages    = ($paginator->numPages -1);
@@ -475,6 +484,8 @@ class SubastaController extends Controller
 
 		$subasta = $subastaObj->getLots("normal", $cache_sql);
 
+		$paginator = new LengthAwarePaginator(range(1, $totalItems), $totalItems, $itemsPerPage, $currentPage, ["path" => $url]);
+		$paginator->appends(request()->except('page'));
 
 		//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
 		\Tools::normalSearch();
@@ -486,10 +497,6 @@ class SubastaController extends Controller
 		}
 
 		$subasta = $subastaObj->getAllLotesInfo($subasta, true, $get_ordenes, true);
-
-		//$paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-		$paginator = new LengthAwarePaginator(range(1, $totalItems), $totalItems, $itemsPerPage, $currentPage, ["path" => $url]);
-		$paginator->appends(request()->except('page'));
 
 		// KIKE - Guardamos el código de subasta en una variable aparte para cuando se está llamando a la lista de lotes por
 		//        categoria y filtrando por sesión ?s=XXXX  si forzamos el cod_sub pasan cosas raras.
@@ -526,7 +533,7 @@ class SubastaController extends Controller
 			'dataAuxSubasta' => $dataAuxSubasta,
 			'totalItems' => $totalItems,
 		);
-		//dd($data);
+
 
 
 		if (!empty(Request::input('description'))) {
@@ -876,7 +883,15 @@ class SubastaController extends Controller
 			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_venta');
 			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_venta');
 			$name = trans(\Config::get('app.theme') . '-app.foot.direct_sale');
-		} else {
+		}  elseif ($type == 'M') {
+			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_haz_oferta');
+			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_haz_oferta');
+			$name = trans(\Config::get('app.theme') . '-app.foot.make_offer');
+		}  elseif ($type == 'I') {
+			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_inversa');
+			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_inversa');
+			$name = trans(\Config::get('app.theme') . '-app.foot.reverse_auction');
+		}else {
 			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_presenciales');
 			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_presenciales');
 			$name = trans(\Config::get('app.theme') . '-app.subastas.auctions');

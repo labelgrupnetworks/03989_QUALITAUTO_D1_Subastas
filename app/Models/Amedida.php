@@ -34,16 +34,16 @@ class Amedida {
                 'id_aucsession'   =>  $id_aucsession,
                 );
         $sql="select * from FGSUBIND  SUBIND
-join \"auc_sessions\"  ON \"auc_sessions\".\"company\" = SUBIND.EMP_SUBIND AND \"auc_sessions\".\"auction\" =  SUBIND.SUB_SUBIND 
+join \"auc_sessions\"  ON \"auc_sessions\".\"company\" = SUBIND.EMP_SUBIND AND \"auc_sessions\".\"auction\" =  SUBIND.SUB_SUBIND
  AND \"auc_sessions\".\"reference\" = SUBIND.SESION_SUBIND
 
-where EMP_SUBIND = :emp AND   \"auc_sessions\".\"id_auc_sessions\"= :id_aucsession AND  SUB_SUBIND = :cod_sub ORDER BY DREF_SUBIND,NIVEL_SUBIND,LIN_SUBIND";
+where EMP_SUBIND = :emp AND   \"auc_sessions\".\"id_auc_sessions\"= :id_aucsession AND  SUB_SUBIND = :cod_sub ORDER BY ORDEN_SUBIND";
          //ahora no va por id_auc_session directamente
         // $sql ="select * from FGSUBIND  where EMP_SUBIND = :emp AND   SESION_SUBIND= :id_aucsession AND  SUB_SUBIND = :cod_sub ORDER BY DREF_SUBIND,NIVEL_SUBIND,LIN_SUBIND";
-       
+
           $sesiones = DB::select($sql, $params);
 
-        return $sesiones;        
+        return $sesiones;
     }
-    
+
 }

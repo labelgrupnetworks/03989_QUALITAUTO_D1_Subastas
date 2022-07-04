@@ -234,6 +234,14 @@ class AdminLotController extends Controller
 				return back()->withErrors(['errors' => [$json]])->withInput();
 			}
 
+			if($request->get('es_nft_asigl0') == 'S'){
+				FgAsigl0::where([['ref_asigl0', $request->reflot], ['sub_asigl0', $cod_sub]])
+				->update([
+					'es_nft_asigl0' => $request->es_nft_asigl0,
+					'oculto_asigl0' => 'S'
+				]);
+			}
+
 			DB::commit();
 
 			if ($request->has('images')) {
@@ -241,11 +249,11 @@ class AdminLotController extends Controller
 				$json = $this->saveImages($request->file('images'), $request->idorigin);
 				$result = json_decode($json);
 				if ($result->status == 'ERROR') {
-					return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'ref_asigl0' => 1]))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
+					return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => 1]))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
 				}
 			}
 
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'ref_asigl0' => $request->reflot]))->with(['success' => array(trans('admin-app.title.created_ok'))]);
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $request->reflot]))->with(['success' => array(trans('admin-app.title.created_ok'))]);
 		} catch (\Throwable $th) {
 			DB::rollBack();
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
@@ -552,14 +560,29 @@ class AdminLotController extends Controller
 		$path_nft = '';
 		if($request->hasFile('file_nft')){
 			$emp = config('app.emp');
-			$webPath = "nft/$emp/";
-			$path = str_replace('/', '\\', public_path($webPath));
+
+			//Estará fuera del public
+			$path = "nft/$emp";
+			$webPath = storage_path("app/$path");
+
+			if (!file_exists($webPath))
+            {
+				try {
+					mkdir($webPath, 0775, true);
+					chmod($webPath,0775);
+
+				} catch (Exception $e) {
+					# Controlar el error en el log
+				   \Log::info( $e->getMessage());
+				}
+            }
+
 			$file = $request->file('file_nft');
 			$nameFile = $emp."_".$fgAsigl0->num_hces1."_".$fgAsigl0->lin_hces1.".".$file->getClientOriginalExtension();
 
-			$path_nft = $webPath.$nameFile;
+			$path_nft = $path."/".$nameFile;
 
-			$file->move($path, $nameFile);
+			$file->move($webPath, $nameFile);
 		}
 
 		//Si existe y viene el valor a N eliminamos info de NFT
@@ -589,21 +612,26 @@ class AdminLotController extends Controller
 				->update([
 					'es_nft_asigl0' => $request->es_nft_asigl0
 				]);
-
-		FgNft::where([
-			['numhces_nft', $fgAsigl0->num_hces1],
-			['linhces_nft', $fgAsigl0->lin_hces1]
-		])->update([
+		$update = [
 			'name_nft' => $request->name_nft,
 			'description_nft' => $request->description_nft,
 			'created_nft' => $request->created_nft,
-			'path_nft' => $path_nft,
+
 			'media_type_nft' => $request->media_type_nft,
 			'network_nft' => $request->network_nft,
 			'total_tokens_nft' => $request->total_tokens_nft,
 			'n_of_token_nft' => $request->n_of_token_nft,
 			'artista_nft' => $request->artista_nft,
-		]);
+		];
+
+		if(!empty( $path_nft)){
+			$update['path_nft'] = $path_nft;
+		}
+
+		FgNft::where([
+			['numhces_nft', $fgAsigl0->num_hces1],
+			['linhces_nft', $fgAsigl0->lin_hces1]
+		])->update($update);
 	}
 
 	/**
@@ -966,7 +994,7 @@ class AdminLotController extends Controller
 			'description_nft' => FormLib::Textarea('description_nft', 0, old('description_nft', $nftInfo->description_nft), 'maxlength="4000"', '', '3'),
 			'created_nft' => FormLib::Date("created_nft", 0, old('created_nft', $nftInfo->created_nft)),
 			'artista_nft' => FormLib::Text('artista_nft', 0, old('artista_nft', $nftInfo->artista_nft), 'maxlength="255"'),
-			'file_nft' => FormLib::File('file_nft'),
+			'file_nft' => FormLib::FileWithValue('file_nft', 0, '', route('nft.show.file', ['numhces' => $nftInfo->numhces_nft, 'linhces' => $nftInfo->linhces_nft])),
 			'media_type_nft' => FormLib::Select('media_type_nft', 0, old('media_type_nft', $nftInfo->media_type_nft), $mediaTpes),
 			'network_nft' => FormLib::Select('network_nft', 1, old('network_nft', $nftInfo->network_nft), $nftNetworks),
 			'total_tokens_nft' => FormLib::Int('total_tokens_nft', 0, old('total_tokens_nft', $nftInfo->total_tokens_nft)),
@@ -1209,6 +1237,53 @@ class AdminLotController extends Controller
 			echo "</div>";
 
 		}
+	}
+
+	public function cloneLot(Request $request)
+	{
+
+		#Hace las querys para obtener los datos del lote origen
+		$oldLot = FgAsigl0::select()->where("sub_asigl0", $request->auctionSource)->where("ref_asigl0", $request->lotToDuplicate)->first();
+		$lotHces1 = FgHces1::select()->where("sub_hces1", $request->auctionSource)->where("ref_hces1", $request->lotToDuplicate)->first();
+		$newRefAsigl0 = FgAsigl0::where('sub_asigl0', $request->newAuction)->max("ref_asigl0") + 1;
+
+		#Clona los datos del lote
+		$newLot = clone $oldLot;
+
+		# Modifica los datos del lote nuevo
+		# Asigl0
+		$newLot->sub_asigl0 = $request->newAuction;
+		$newLot->idorigen_asigl0 = $request->newAuction."-".$newRefAsigl0;
+		$newLot->ref_asigl0 = "$newRefAsigl0";
+		$newLot->fini_asigl0 = null;
+		$newLot->ffin_asigl0 = null;
+		$newLot->oculto_asigl0 = "S";
+		# Hces1
+		$lotHces1->sub_hces1 = $request->newAuction;
+		$lotHces1->idorigen_hces1 = $request->newAuction."-".$newRefAsigl0;
+		$lotHces1->ref_hces1 = "$newRefAsigl0";
+		$lotHces1->implic_hces1 = "0";
+		$lotHces1->lic_hces1 = "N";
+
+		# Modifica los datos del lote origen
+		$oldLot->cerrado_asigl0 = "S";
+		$oldLot->oculto_asigl0 = "S";
+
+		# Pasa los datos a Array para poder hacer insert y update
+		$oldLotArray = $oldLot->toArray();
+		$newLotArray = $newLot->toArray();
+		$lotHces1Array = $lotHces1->toArray();
+
+		# Actualiza los datos del lote origen
+		FgAsigl0::where("sub_asigl0", $request->auctionSource)->where("ref_asigl0", $request->lotToDuplicate)->update($oldLotArray);
+		FgHces1::where("num_hces1", $lotHces1->num_hces1)->where("lin_hces1", $lotHces1->lin_hces1)->update($lotHces1Array);
+
+		# Insertar el nuevo lote en base de datos
+		FgAsigl0::insert($newLotArray);
+
+		# Redirección a la ventana de edición del lote
+		return redirect(route('subastas.lotes.edit', ['subasta' => $request->newAuction, 'lote' => $newRefAsigl0]))->with(['warning' => array(trans('admin-app.title.warning_cloned_lot'))]);
+
 	}
 
 }

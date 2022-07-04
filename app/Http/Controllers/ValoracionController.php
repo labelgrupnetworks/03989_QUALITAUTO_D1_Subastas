@@ -26,6 +26,7 @@ class ValoracionController extends Controller
 
     public function GetValoracion()
     {
+		$data = [];
         return \View::make('pages.valoracion_articulos', array('data' => $data));
     }
 
