@@ -75,9 +75,10 @@
                     </div>
 
                     <div class="row">
-                        <div class="g-recaptcha col-xs-6"
-                            data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}" data-callback="onSubmit">
-                        </div>
+						<div class="col-xs-12">
+							<div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}" data-callback="onSubmit">
+                        	</div>
+						</div>
                     </div>
 
                     <div class="form-group row">
@@ -95,7 +96,7 @@
 
                     <h1 class="title-80">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
                     <h2 class="title-30">{{ trans("$theme-app.login_register.direccion") }}</h2>
-                    <p>{!! trans("$theme-app.global.gallery_address") !!}</p>
+                    <p><a href="https://goo.gl/maps/8QvGXS1rwEucnvpf9" target="_blank">{!! trans("$theme-app.global.gallery_address") !!}</a></p>
 
                     <h2 class="title-30">{{ trans("$theme-app.login_register.email") }}</h2>
                     <p>{!! trans("$theme-app.emails.durangallery_mail") !!}</p>

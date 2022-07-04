@@ -10,10 +10,11 @@
 		<?php
 		# hay dos modos de llamar a la vista, pasandole variables o directamente,
 		#si se le pasan variables hacemos un control para que no puedna poner lo que quieran
-		$importe = request("trans");
-		$idtrans = request("idtrans");
+
 
 		if(!empty(request("control"))){
+			$importe = request("trans");
+			$idtrans = request("idtrans");
 
 			$control = request("control");
 			$md5 = md5($importe.Session::get('user.cod'));

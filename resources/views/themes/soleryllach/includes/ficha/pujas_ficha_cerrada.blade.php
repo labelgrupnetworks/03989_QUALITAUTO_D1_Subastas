@@ -20,10 +20,10 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
                 <div class="col-xs-12 col-sm-6">
 
                         @if($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' && (!empty($precio_venta)) || ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0)) )
-                        @if($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))
-                            @php($precio_venta = $lote_actual->impadj_asigl0)
-                        @endif
-                        <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+
+
+
+                        <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat( ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))? $lote_actual->impadj_asigl0 : $precio_venta ) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && (!empty($precio_venta) ||$lote_actual->desadju_asigl0 =='S' ))
                         <p class="pre"> {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
                         @elseif(strtoupper($lote_actual->tipo_sub) == 'V' && $lote_actual->cerrado_asigl0 == 'N' && $lote_actual->end_session > date("now"))
@@ -35,18 +35,18 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
                         @endif
                         <p class="pre"></p>
                 </div>
-                <div class="col-xs-12 col-sm-6">
-                        <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
-                         <?php
-                            $categorys = new \App\Models\Category();
-                            $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-                        ?>
-                        <p>
-                            @foreach($tipo_sec as $sec)
-                                {{$sec->des_tsec}}
-                            @endforeach
-                       </p>
-                        </ul>
-                </div>
+                {{-- <div class="col-xs-12 col-sm-6">
+					<p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
+					@php
+					$categorys = new \App\Models\Category();
+					$tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
+					@endphp
+
+					<p>
+					@foreach($tipo_sec as $sec)
+						{{$sec->des_tsec}}
+					@endforeach
+					</p>
+				</div> --}}
         </div>
 </div>

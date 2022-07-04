@@ -1,15 +1,20 @@
+@if(!config('app.debug', false))
+
+
+@if(!empty($cookiesState['all']) || !empty($cookiesState['google']))
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-222598715-1"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
- 
-  gtag('config', 'G-CG3Z5377EP');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-CG3Z5377EP');
 </script>
-
-
+@else
+<script>
+	function ga() {return false}
+</script>
+@endif
 
 
 <script>
@@ -32,7 +37,7 @@
 
 
 
-
+@if(!empty($cookiesState['all']) || !empty($cookiesState['facebook']))
 <meta name="facebook-domain-verification" content="314slcvmc9txt1jovlhmt938h5qruu" />
 
 <!-- Facebook Pixel Code -->
@@ -47,17 +52,20 @@
 	'https://connect.facebook.net/en_US/fbevents.js');
 	fbq('init', '276857860968600');
 	fbq('track', 'PageView');
-	</script>
-	<noscript><img height="1" width="1" style="display:none"
-	src="https://www.facebook.com/tr?id=276857860968600&ev=PageView&noscript=1"
-	/></noscript>
-	<!-- End Facebook Pixel Code -->
-
+</script>
+<noscript><img height="1" width="1" style="display:none"
+		src="https://www.facebook.com/tr?id=276857860968600&ev=PageView&noscript=1" /></noscript>
+<!-- End Facebook Pixel Code -->
+@else
+<script>
+	function fbq() {return false}
+</script>
+@endif
 
 
 <!-- Hotjar Tracking Code for https://www.carlandia.es/es -->
 <script>
-    (function(h,o,t,j,a,r){
+	(function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
         h._hjSettings={hjid:2898417,hjsv:6};
         a=o.getElementsByTagName('head')[0];
@@ -66,3 +74,16 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
+@else
+
+<script>
+	function ga() {
+		console.log(arguments.callee.name, arguments);
+		return false;
+	}
+	function fbq() {
+		console.log(arguments.callee.name, arguments);
+		return false;
+	}
+</script>
+@endif

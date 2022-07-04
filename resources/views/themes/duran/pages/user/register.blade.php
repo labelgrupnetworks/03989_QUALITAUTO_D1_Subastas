@@ -1,7 +1,14 @@
 @extends('layouts.session_layout')
 
+@php
+$families = array();
+$isNftPage = !empty($formulario->back) && $formulario->back == 'nft';
+$isGalleryPage = !empty($formulario->back) && $formulario->back == 'gallery';
+$isDuranPage = empty($formulario->back);
+@endphp
+
 @push('styles')
-@if(!empty($formulario->back) && $formulario->back == 'nft')
+@if($isNftPage)
 	<link rel="stylesheet" type="text/css" href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/nft.css') }}">
 @endif
 @endpush
@@ -12,30 +19,7 @@
 
 @section('content')
 
-<?php
 
-$families = array();
-/*
-$families[2] = trans(\Config::get('app.theme').'-app.subastas.proximas_subastas'); // Próximas subastas
-$families[3] = trans(\Config::get('app.theme').'-app.subastas.abanicos');    // Abanicos
-$families[4] = trans(\Config::get('app.theme').'-app.subastas.alfombras');   // Alfombras
-$families[5] = trans(\Config::get('app.theme').'-app.subastas.ceramica');    // Cerámica
-$families[6] = trans(\Config::get('app.theme').'-app.subastas.contemporaneo');    // Contemporáneo
-$families[7] = trans(\Config::get('app.theme').'-app.subastas.cristal');     // Cristal
-$families[8] = trans(\Config::get('app.theme').'-app.subastas.escultura');   // Escultura
-$families[9] = trans(\Config::get('app.theme').'-app.subastas.joyas');       // Joyas
-$families[10] = trans(\Config::get('app.theme').'-app.subastas.lamparas');   // Lámparas
-$families[11] = trans(\Config::get('app.theme').'-app.subastas.miniaturas'); // Miniaturas
-$families[12] = trans(\Config::get('app.theme').'-app.subastas.muebles');    // Muebles
-$families[13] = trans(\Config::get('app.theme').'-app.subastas.oriental');   // Oriental
-$families[14] = trans(\Config::get('app.theme').'-app.subastas.pintura');    // Pintura
-$families[15] = trans(\Config::get('app.theme').'-app.subastas.plata');      // Plata
-$families[16] = trans(\Config::get('app.theme').'-app.subastas.porcelana');  // Porcelana
-$families[17] = trans(\Config::get('app.theme').'-app.subastas.relojes');    // Relojes
-$families[18] = trans(\Config::get('app.theme').'-app.subastas.tapices');    // Tapices
-$families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // Varios
-*/
-?>
 
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
@@ -45,10 +29,14 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 			<div class="col-xs-12 general-container">
 
 				<div class="text-center mb-5">
-					@if(!empty($formulario->back))
-						<a id="logo_link" title="{{(\Config::get( 'app.name' ))}}" href="{{(\Config::get( 'app.ps_shop_path' ))}}">
+					@if($isGalleryPage)
+						<a id="logo_link" title="{{(\Config::get( 'app.name' ))}}" href="{{ request('context_url', '') }}">
 							<img class="logo-landing img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_gallery.png"  alt="{{(\Config::get( 'app.name' ))}}">
 						</a>
+					@elseif($isNftPage)
+					<a id="logo_link" title="{{(\Config::get( 'app.name' ))}}" href="{{ request('context_url', '') }}">
+						<img class="logo-landing img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_nft.png" style="width: 200px;"  alt="{{(\Config::get( 'app.name' ))}}">
+					</a>
 					@else
 						<a id="logo_link" title="{{(\Config::get( 'app.name' ))}}" href="/">
 							<img class="logo-landing img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png" style="width: 200px;"  alt="{{(\Config::get( 'app.name' ))}}">

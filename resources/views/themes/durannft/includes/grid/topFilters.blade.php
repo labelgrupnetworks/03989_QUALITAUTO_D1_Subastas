@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-md-4 order-auction-lot">
+<div class="col-xs-12 col-md-4 mt-1 mb-1 order-auction-lot">
     <select class="form-control" id="order_selected" >
 
 		<option value="date_desc" @if ($filters["order"] == 'date_desc') selected @endif >
@@ -43,7 +43,7 @@
     </select>
 </div>
 
-<div class="col-xs-12 col-md-4">
+<div class="col-xs-12 col-md-4 mt-1 mb-1">
     <select class="form-control" id="total_selected" >
 		@foreach(\Config::get("app.filter_total_shown_options") as $numLots)
         	<option value="{{$numLots}}" @if (request('total') == $numLots) selected @endif >    {{ trans(\Config::get('app.theme').'-app.lot_list.see_num_lots',["num" => $numLots]) }}   </option>
@@ -52,7 +52,7 @@
 </div>
 
 
-<div class="col-xs-12 col-md-4 d-flex align-items-center justify-content-end">
+<div class="col-xs-12 col-md-4 mt-1 mb-1 d-flex align-items-center justify-content-end">
     <?php
     $count_lots = 0;
     foreach($tipos_sub as $typeSub =>$desType) {

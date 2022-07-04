@@ -102,7 +102,7 @@
 	<div class="col-xs-12 relatedArticles">
 		<h2 class="text-center titleReatedArticles">  {{ trans(\Config::get('app.theme').'-app.articles.more') }}  </h2>
 		@php
-			$relatedArticles = App\Models\articles\FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0")->where("ID_ART0","!=", $article->id_art0)->where("SEC_ART0","!=", $article->sec_art0)->Activo()->orderby(" DBMS_RANDOM.VALUE")->take(3)->get();
+			$relatedArticles = App\Models\articles\FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0")->where("ID_ART0","!=", $article->id_art0)->where("SEC_ART0","=", $article->sec_art0)->Activo()->orderby(" DBMS_RANDOM.VALUE")->take(3)->get();
 		@endphp
 		<div class="Grid articles-container">
 			@foreach($relatedArticles as $relatedArticle)

@@ -67,6 +67,6 @@
 		</a>
 	</div>
 
-	<center><a class="btn-return btn button-principal"  href={{$pay_link}}>DEPOSITAR SEÑAL</a></center>
+	<center><a class="btn-return btn button-principal" id="depositarSeñalComprar_JS" href={{$pay_link}}>DEPOSITAR SEÑAL</a></center>
 
 @endif

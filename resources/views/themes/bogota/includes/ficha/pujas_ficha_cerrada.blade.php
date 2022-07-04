@@ -12,13 +12,34 @@ elseif($lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->s
 $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ? $lote_actual->impsalweb_asigl0 : $precio_venta;
 ?>
 
+@if($cerrado && empty($precio_venta))
+<div  class="col-lg-12 col-md-12 info-ficha-buy-info no-padding">
+    <div class=" col-xs-12 no-padding info-ficha-buy-info-price d-flex">
+
+            <div class="pre">
+                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                <p class="pre-price">{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}{{$lote_actual->formatted_impsalhces_asigl0}}
+					@if(\Config::get("app.exchange"))
+					| <span id="startPriceExchange_JS" class="exchange"> </span>
+					@endif
+				</p>
+			</div>
+    </div>
+</div>
+@endif
+
 <div class="info_single lot-sold col-xs-12 no-padding">
 
             <div class="col-xs-8 col-sm-12 no-padding ">
                 @if($cerrado && !empty($precio_venta) && $remate )
                     <div class="pre">
                         <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>
-                        <p class="pre-price">{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} {{ \Tools::moneyFormat($precio_venta) }} </p>
+                        <p class="pre-price">
+							{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} {{ \Tools::moneyFormat($precio_venta) }} |
+							<span class="custom-exchange" data-value="{{$precio_venta}}"></span>
+						</p>
+
+
                     </div>
 
                 @elseif($cerrado && !empty($precio_venta) &&  !$remate)

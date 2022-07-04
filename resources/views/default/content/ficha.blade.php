@@ -12,6 +12,8 @@ $compra = $lote_actual->compra_asigl0 == 'S'? true : false;
 $subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O')? true : false;
 $subasta_venta = $lote_actual->tipo_sub == 'V' ? true : false;
 $subasta_web = $lote_actual->tipo_sub == 'W' ? true : false;
+$subasta_make_offer = $lote_actual->tipo_sub == 'M' ? true : false;
+$subasta_inversa = $lote_actual->tipo_sub == 'I' ? true : false;
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O'? true : false;
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P'? true : false;
 $retirado = $lote_actual->retirado_asigl0 !='N'? true : false;
@@ -246,13 +248,16 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                          if($subasta_web){
                             $nameCountdown = "countdown";
                             $timeCountdown = $lote_actual->start_session;
-                         }else if($subasta_venta){
-                            $nameCountdown = "countdown";
-                            $timeCountdown = $lote_actual->end_session;
-                         }else if($subasta_online){
+                         } else if($subasta_online){
                             $nameCountdown = "countdownficha";
                             $timeCountdown = $lote_actual->close_at;
-                         }
+                         }else if($subasta_inversa){
+                            $nameCountdown = "countdownficha";
+                            $timeCountdown = $lote_actual->close_at;
+                         }else{
+                            $nameCountdown = "countdown";
+                            $timeCountdown = $lote_actual->end_session;
+						 }
                     ?>
 
                         @if ($sub_cerrada)
@@ -279,7 +284,8 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
                             @include('includes.ficha.pujas_ficha_W')
 
-
+						@elseif( $subasta_make_offer && !$cerrado)
+							@include('includes.ficha.pujas_ficha_M')
                         @else
                             @include('includes.ficha.pujas_ficha_cerrada')
                         @endif
@@ -289,7 +295,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 no-padding">
-            @if(( $subasta_online  || ($subasta_web && $subasta_abierta_P )) && !$cerrado &&  !$retirado)
+            @if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
                 @include('includes.ficha.history')
             @endif
     </div>

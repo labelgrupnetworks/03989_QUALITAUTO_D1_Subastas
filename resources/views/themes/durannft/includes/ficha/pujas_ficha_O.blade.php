@@ -140,7 +140,7 @@
 			@endif
 			{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
 			@if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
-				<div class="require-wallet">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
+				<div class="require-wallet mt-1 mb-1">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
 			@else
 				<div class="input-group d-block group-pujar-custom ">
 					<div>
@@ -163,24 +163,26 @@
 
 
 
-			<div>
+
 				@if (\Config::get('app.urlToPackengers'))
-					<?php
-					$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
-					$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
-					?>
-					<div class="mt-1 mb-1 text-center">
-						<div class="packengers-container-button-ficha">
-							<a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
-								<i class="fa fa-truck" aria-hidden="true"></i>
-								{{ trans("$theme-app.lot.packengers_ficha") }}
-							</a>
+
+											<?php
+						$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
+						$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
+						?>
+						<div class="mt-1 mb-1 text-center">
+							<div class="packengers-container-button-ficha">
+								<a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
+									<i class="fa fa-truck" aria-hidden="true"></i>
+									{{ trans("$theme-app.lot.packengers_ficha") }}
+								</a>
+							</div>
 						</div>
-					</div>
+
 				@endif
-			</div>
+
+
 		</div>
-</div>
 @endif
 
 

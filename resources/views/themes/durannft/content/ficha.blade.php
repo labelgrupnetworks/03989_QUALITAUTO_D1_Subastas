@@ -9,6 +9,8 @@ $remate = $lote_actual->remate_asigl0 =='S'? true : false;
 $subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O')? true : false;
 $subasta_venta = $lote_actual->tipo_sub == 'V' ? true : false;
 $subasta_web = $lote_actual->tipo_sub == 'W' ? true : false;
+$subasta_make_offer = $lote_actual->tipo_sub == 'M' ? true : false;
+$subasta_inversa = $lote_actual->tipo_sub == 'I' ? true : false;
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O'? true : false;
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P'? true : false;
 $retirado = $lote_actual->retirado_asigl0 !='N'? true : false;
@@ -34,6 +36,17 @@ if ($compra){
 	if ($lote_actual->controlstock_hces1 == 'S' &&  (empty($lote_actual->stock_hces1) or $lote_actual->stock_hces1<1 ) ){
 		$compra = false;
 	}
+}
+
+
+# listamos los recursos que se hayan puesto en la carpeta de videos para mostrarlos en la imagen principal
+$resourcesList = [];
+foreach( ($lote_actual->videos ?? []) as $key => $video){
+	$resource=["src"=>$video, "format" => "VIDEO"];
+	if (strtolower(substr($video, -4)) == ".gif" ){
+		$resource  ["format"] = "GIF";
+	}
+	$resourcesList[] = $resource;
 }
 
 ?>
@@ -63,6 +76,21 @@ if ($compra){
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
+							@foreach( $resourcesList as $resource)
+								<div class="item_content_img_single" style="position: relative;">
+									@if($resource["format"]=="GIF")
+										<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+										class="img-responsive"
+										src="{{$resource["src"]}}"
+										alt="{{$lote_actual->titulo_hces1}}">
+									@elseif($resource["format"]=="VIDEO")
+										<video width="100%" controls>
+											<source src="{{$resource["src"]}}" type="video/mp4">
+										</video>
+
+									@endif
+								</div>
+							@endforeach
                             @foreach($lote_actual->imagenes as $key => $imagen)
                                    <div class="item_content_img_single" style="position: relative; height: 290px; overflow: hidden;">
 									<img style="max-width: 100%; height: auto; position: relative; display: inherit !important; margin: 0 auto !important; max-height: 100%; width: auto;"
@@ -104,6 +132,7 @@ if ($compra){
                             {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
                         </div>
                     @endif
+					<div id="resource_main_wrapper" class="text-center" style="display:none"></div>
                     <div class="img-global-content position-relative">
 
                     <div id="img_main" class="img_single">
@@ -124,6 +153,17 @@ if ($compra){
 
                 <div class="col-xs-12 no-padding">
                     <div class="minis-content d-flex flex-wrap">
+						@foreach( $resourcesList as $key => $resource)
+									<div   class="mini-img-ficha no-360">
+											<a href="javascript:viewResourceFicha('<?=$resource["src"]?>', '<?=$resource["format"]?>');">
+												@if($resource["format"]=="GIF")
+													<div class="img-openDragon" style="background-image:url('{{$resource["src"]}}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@elseif($resource["format"]=="VIDEO")
+													<div class="img-openDragon" style="background-image:url('{{ asset('/img/icons/video_thumb_black.png') }}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@endif
+											</a>
+									</div>
+							@endforeach
                         <?php foreach($lote_actual->imagenes as $key => $imagen){?>
                             <div   class="mini-img-ficha no-360">
 
@@ -207,7 +247,7 @@ if ($compra){
 
 			@foreach ($caracteristicas as $caracteristica)
 
-				@if( in_array($caracteristica->id_caracteristicas, [405, 414, 411, 407, 408, 410, 412]) )
+				@if( in_array($caracteristica->id_caracteristicas, [398,402,434]) )
 				<p class="feature-values">{{$caracteristica->name_caracteristicas}} : {{$caracteristica->value_caracteristicas_hces1}}</p>
 				@endif
 			@endforeach
@@ -235,16 +275,20 @@ if ($compra){
                 <div class="ficha-info-items">
                     <?php
                          #debemos poenr el código aqui par que lo usen en diferentes includes
-                         if($subasta_web){
+                           #debemos poenr el código aqui par que lo usen en diferentes includes
+						   if($subasta_web){
                             $nameCountdown = "countdown";
                             $timeCountdown = $lote_actual->start_session;
-                         }else if($subasta_venta){
-                            $nameCountdown = "countdown";
-                            $timeCountdown = $lote_actual->end_session;
-                         }else if($subasta_online){
+                         } else if($subasta_online){
                             $nameCountdown = "countdownficha";
                             $timeCountdown = $lote_actual->close_at;
-                         }
+                         }else if($subasta_inversa){
+                            $nameCountdown = "countdownficha";
+                            $timeCountdown = $lote_actual->close_at;
+                         }else{
+                            $nameCountdown = "countdown";
+                            $timeCountdown = $lote_actual->end_session;
+						 }
                     ?>
 
                         @if ($sub_cerrada)
@@ -271,6 +315,8 @@ if ($compra){
 
                             @include('includes.ficha.pujas_ficha_W')
 
+						@elseif( $subasta_make_offer && !$cerrado)
+							@include('includes.ficha.pujas_ficha_M')
 
                         @else
                             @include('includes.ficha.pujas_ficha_cerrada')
@@ -281,7 +327,7 @@ if ($compra){
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 no-padding">
-            @if(( $subasta_online  || ($subasta_web && $subasta_abierta_P )) && !$cerrado &&  !$retirado)
+            @if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer) && !$cerrado &&  !$retirado)
                 @include('includes.ficha.history')
             @endif
     </div>
@@ -507,8 +553,9 @@ var key ="<?= $key ?>";
 
 
         });
-    function loadSeaDragon(img){
-
+		function loadSeaDragon(img){
+		$('#resource_main_wrapper').hide();
+		$('.img-global-content').show();
         var element = document.getElementById("img_main");
         console.log()
         while (element.firstChild) {
@@ -529,6 +576,11 @@ var key ="<?= $key ?>";
         });
     }
     loadSeaDragon('<?= $lote_actual->imagen ?>');
+
+@if (count($resourcesList) > 0)
+	viewResourceFicha('{{ head($resourcesList)["src"] }}','{{ head($resourcesList)["format"] }}');
+@endif
+
 
 
 

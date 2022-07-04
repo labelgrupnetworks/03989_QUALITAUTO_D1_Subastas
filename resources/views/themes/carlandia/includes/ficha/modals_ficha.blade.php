@@ -204,7 +204,7 @@
 
 					<div class="d-flex justify-content-space-between modal-buttons-list" style="margin-bottom: 10rem;">
 
-						<button id="comprarYaModalEvent_JS" class="button-principal lot-action_comprar_lot">Comprar por {{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0, trans("$theme-app.subastas.euros")) }}</button>
+						<button id="comprarYaModalEvent_JS" data-amount-over="false" class="button-principal lot-action_comprar_lot">Comprar por {{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0, trans("$theme-app.subastas.euros")) }}</button>
 
 						<button id="btn-focus-counteroffer" class="rechazoNuevaOfertaModalEvent_JS button-principal focus-counteroffer">HACER NUEVA OFERTA</button>
 

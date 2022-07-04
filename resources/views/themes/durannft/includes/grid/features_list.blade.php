@@ -19,8 +19,8 @@
 				@foreach($featuresCount[$idFeature] as $featureValue)
 
 				<div class="radio">
-					<input type="radio" name="features[{{$idFeature}}]" id="feature_{{$featureValue["id_caracteristicas_value"]}}" value="{{$featureValue["id_caracteristicas_value"]}}" class="filter_lot_list_js" />
-					<label for="feature_{{$featureValue["id_caracteristicas_value"]}}" class="radio-label">{{$featureValue["value_caracteristicas_value"] }} ({{Tools::numberformat($featureValue["total"])}})</label>
+					<input type="radio" name="features[{{$idFeature}}]" id="feature_{{$idFeature}}_{{$featureValue["id_caracteristicas_value"]}}" value="{{$featureValue["id_caracteristicas_value"]}}" class="filter_lot_list_js" />
+					<label for="feature_{{$idFeature}}_{{$featureValue["id_caracteristicas_value"]}}" class="radio-label">{{$featureValue["value_caracteristicas_value"] }} ({{Tools::numberformat($featureValue["total"])}})</label>
 				</div>
 				@endforeach
 

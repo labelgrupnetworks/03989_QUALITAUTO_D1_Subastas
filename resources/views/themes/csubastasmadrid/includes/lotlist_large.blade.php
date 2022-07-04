@@ -29,7 +29,7 @@
     <div class="container-lot-large">
 
         <a title="{{ $titulo }}" <?= $url ?> style='text-decoration: none;'>
-            <div class="image-lot-large col-xs-12 col-sm-4">
+            <div class="image-lot-large col-xs-12 col-sm-4 h-100">
 
                 @if ($item->retirado_asigl0 != 'N')
                     <div class="retired ">
@@ -44,7 +44,7 @@
                         {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
                     </div>
                 @endif
-                <div class="img_lot">
+                <div class="img_lot h-100">
                     <img class="img-responsive lazy"
                         data-src="{{ Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1) }}"
                         alt="{{ $titulo }}">

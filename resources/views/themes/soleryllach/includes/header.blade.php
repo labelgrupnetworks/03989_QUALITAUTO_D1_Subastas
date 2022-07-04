@@ -169,77 +169,58 @@
                     <ul class="nav navbar-nav hidden-xs hidden-sm hidden-md" >
                         <?php //   <li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li> ?>
                         <li class="li-color"><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li>
-                            <?php
-
-                                $subastaObj        = new \App\Models\Subasta();
-                                $has_subasta = array();
-								$has_subasta = $subastaObj->auctionList ('S', 'W');
-
-                                if(  Session::get('user.admin')){
-                                   $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A','W'));
-                                }
-                                $not_finished=false;
-								$finished=false;
-                            ?>
-                        @foreach($has_subasta as $header_sub)
-                            @if(strtotime($header_sub->session_end) > time())
-                                <?php $not_finished = true?>
-                            @elseif(strtotime($header_sub->session_end) < time())
-                                <?php $finished = true?>
-                            @endif
-                        @endforeach
 
 
-                        @if(!empty($has_subasta))
+						@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
 
+						@php
+						$not_finished = $global['subastas']['S']['W']->flatten()->where('session_end', '>', now())->count();
+						$finished = $global['subastas']['S']['W']->flatten()->where('session_end', '<', now())->count();
+						@endphp
 
-                            <li class="li-color">
-                                    <a onclick="javascript:$('#menu_desp').toggle('blind',100)" style="cursor: pointer;">
-                                        {{ trans(\Config::get('app.theme').'-app.foot.auctions')}}
-                                        &nbsp;
-                                        <span class="caret"></span>
-                                    </a>
+						<li class="li-color">
+							<a onclick="javascript:$('#menu_desp').toggle('blind',100)" style="cursor: pointer;">
+								{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}
+								&nbsp;
+								<span class="caret"></span>
+							</a>
 
-                                <div id="menu_desp">
-                                @if(!empty($has_subasta) && $not_finished)
-                                    <a href="{{ \Routing::translateSeo('presenciales') }}?finished=false" class="item">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
-                                @endif
-                                @if(!empty($has_subasta) && $finished)
-                                    <a href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme').'-app.foot.auctions-finished')}}</a>
-                                @endif
-                                </div>
-                            </li>
-                        @endif
+							<div id="menu_desp">
+								@if($not_finished)
+									<a href="{{ \Routing::translateSeo('presenciales') }}?finished=false" class="item">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+								@endif
+								@if($finished)
+									<a href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme').'-app.foot.auctions-finished')}}</a>
+								@endif
+							</div>
+						</li>
+						@endif
 
-                        <?php #SUBASTAS DE VENTA DIRECTA
-                        $has_subasta_v = $subastaObj->auctionList ('S', 'V');
-                        if(  Session::get('user.admin')){
-                            $has_subasta_v= array_merge($has_subasta_v,$subastaObj->auctionList ('A','V'));
-						}
+						@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
 
-						if(count($has_subasta_v) == 1){
-							$indices = \App\Models\Amedida::indice(head($has_subasta_v)->cod_sub, head($has_subasta_v)->id_auc_sessions);
-							if(count($indices) > 0 ){
-                        		$url_lotes=\Routing::translateSeo('indice-subasta').head($has_subasta_v)->cod_sub."-".str_slug(head($has_subasta_v)->name)."-".head($has_subasta_v)->id_auc_sessions;
-                    		}else{
-                        		$url_lotes=\Routing::translateSeo('subasta').head($has_subasta_v)->cod_sub."-".str_slug(head($has_subasta_v)->name)."-".head($has_subasta_v)->id_auc_sessions;
-                    		}
-						}
+						@php
+							$subastasV = $global['subastas']['S']['V']->flatten();
+							$url_lotes = \Routing::translateSeo('venta-directa');
+							$firstVdAuction = $subastasV->first();
 
-                        ?>
-                        @if(!empty($has_subasta_v))
-                            <li class="li-color"><a href="{{ $url_lotes ?? \Routing::translateSeo('venta-directa')}}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
-                        @endif
+							if($subastasV->count() == 1){
+								$indices = \App\Models\Amedida::indice($firstVdAuction->cod_sub, $firstVdAuction->id_auc_sessions);
 
+								if(count($indices) > 0 ){
+									$url_lotes=\Routing::translateSeo('indice-subasta').$firstVdAuction->cod_sub."-".$firstVdAuction->name."-".$firstVdAuction->id_auc_sessions;
+								}else{
+									$url_lotes=\Routing::translateSeo('subasta').$firstVdAuction->cod_sub."-".str_slug($firstVdAuction->name)."-".$firstVdAuction->id_auc_sessions;
+								}
+							}
+						@endphp
+
+						<li class="li-color"><a href="{{ $url_lotes }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
+
+						@endif
 
                         <li class="li-color"><a href="<?= \Routing::translateSeo('subastas-historicas'); ?>">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
-                            <?php
-                            $has_subasta = $subastaObj->auctionList ('S', 'O');
-                            if(empty($has_subasta) && Session::get('user.admin')){
-                                $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-                            }
-                            ?>
-                        @if(!empty($has_subasta))
+
+                        @if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
                             <li class="li-color"><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
                         @endif
                          <li class="li-color">
@@ -265,65 +246,40 @@
         </div>
 	<div class="clearfix"></div>
 	<ul class="nav navbar-nav navbar-right navbar-responsive">
-            <li class="li-color">
+
+		<li class="li-color">
             <a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a>
         </li>
-        <?php
 
-            $subastaObj        = new \App\Models\Subasta();
-            $has_subasta = $subastaObj->auctionList ('S');
-            if(Session::get('user.admin')){
-                $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A'));
-            }
-            $not_inished=false;
-            $finished=false;
-        ?>
-        @foreach($has_subasta as $header_sub)
-            @if(strtotime($header_sub->session_end) > time())
-                <?php $not_finished = true?>
-            @elseif(strtotime($header_sub->session_end) < time())
-                <?php $finished = true?>
-            @endif
-        @endforeach
-        @if(!empty($has_subasta) && $not_finished)
-            <li class="li-color"><a href="{{ \Routing::translateSeo('presenciales') }}?finished=false">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
-        @endif
+		@if($global['subastas']->has('S') && $global['subastas']['S']->has('W') && $not_finished)
+			<li class="li-color"><a href="{{ \Routing::translateSeo('presenciales') }}?finished=false">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
+		@endif
 
-        <?php
-            $has_subasta_venta_directa = $subastaObj->auctionList ('S', 'V');
-            if( empty($has_subasta_venta_directa) && Session::get('user.admin')){
-                $has_subasta_venta_directa= array_merge($has_subasta_venta_directa,$subastaObj->auctionList ('A', 'V'));
-            }
-        ?>
-        @if(!empty($has_subasta_venta_directa))
+        @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
             <li class="li-color"><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
         @endif
 
-        @if(!empty($has_subasta) && $finished)
-            <li class="li-color"><a href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme').'-app.foot.auctions-finished')}}</a></li>
-        @endif
-            <li class="li-color"><a href="<?= (Session::has('user'))?\Routing::translateSeo('subastas-historicas'): \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.not-register'); ?>">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
-            <?php
-            $has_subasta = $subastaObj->auctionList ('S', 'O');
-            if(empty($has_subasta) && Session::get('user.admin')){
-                $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-            }
-            ?>
-            @if(!empty($has_subasta))
-                <li class="li-color"><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
-            @endif
-             <li class="li-color">
-                            <a href="<?= \Routing::translateSeo('departamentos')?>">{{ trans(\Config::get('app.theme').'-app.foot.departments') }}</a>
-                        </li>
+		@if($global['subastas']->has('S') && $global['subastas']['S']->has('W') && $finished)
+		<li class="li-color"><a href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme').'-app.foot.auctions-finished')}}</a></li>
+		@endif
 
-            <li class="li-color">
-                <a href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a>
-            </li>
-            <li class="li-color"><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}</a></li>
-            <li class="li-color">
+		<li class="li-color"><a href="<?= (Session::has('user'))?\Routing::translateSeo('subastas-historicas'): \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.not-register'); ?>">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
 
-                    <a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a>
-                </li>
+		@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+			<li class="li-color"><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
+		@endif
+
+		<li class="li-color">
+			<a href="<?= \Routing::translateSeo('departamentos')?>">{{ trans(\Config::get('app.theme').'-app.foot.departments') }}</a>
+        </li>
+
+		<li class="li-color">
+			<a href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a>
+		</li>
+		<li class="li-color"><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}</a></li>
+		<li class="li-color">
+			<a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a>
+		</li>
 
     </ul>
 </div>

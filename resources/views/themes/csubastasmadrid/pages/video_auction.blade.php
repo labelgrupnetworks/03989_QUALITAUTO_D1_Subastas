@@ -15,21 +15,23 @@
 			<p class="mini-underline"></p>
 		</div>
 		<div class="col-xs-12 full-border-bottom">
-			<div class="col-xs-12 col-md-4">
-				<img src="{{ Tools::url_img_auction('subasta_medium', $subastaReciente->cod_sub) }}"
-					alt="AUCTION {{ $subastaReciente->cod_sub }} IMAGE">
-			</div>
-			<div class="col-xs-12 col-md-8">
-				<h2>{{ $subastaReciente->des_sub }}</h2>
-				<p>{{ trans("$theme-app.lot_list.auction_video_text") }}</p>
-				<div class="selector">
-					<form action="" id="videoselector_{{ $subastaReciente->cod_sub }}">
-						<select multiple class="form-control" name="videos" id="videos">
-							@foreach ($videoSorted as $video)
-							<option value="{{ $video }}">{{ last(explode('/', $video)) }}</option>
-							@endforeach
-						</select>
-					</form>
+			<div class="row d-flex flex-wrap align-items-stretch">
+				<div class="col-xs-12 col-md-4">
+					<img src="{{ Tools::url_img_auction('subasta_medium', $subastaReciente->cod_sub) }}"
+						alt="AUCTION {{ $subastaReciente->cod_sub }} IMAGE">
+				</div>
+				<div class="col-xs-12 col-md-8 d-flex flex-direction-column">
+					<h2>{{ $subastaReciente->des_sub }}</h2>
+					<p>{{ trans("$theme-app.lot_list.auction_video_text") }}</p>
+					<div class="selector h-100">
+						<form action="" id="videoselector_{{ $subastaReciente->cod_sub }}" class="h-100">
+							<select multiple class="form-control" name="videos" id="videos" style="height: 100%; min-height: 200px">
+								@foreach ($videoSorted as $video)
+								<option value="{{ $video }}">{{ last(explode('/', $video)) }}</option>
+								@endforeach
+							</select>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -22,8 +22,10 @@
                                 @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
                                 <div class="bid-online"></div>
                                 <div class="bid-online animationPulseRed"></div>
-                            @endif
-                            <div class="border-right-light col-xs-12 col-md-8 h-100 no-padding">
+                            	@endif
+                            <div class="border-right-light col-xs-12 col-md-8 h-100 no-padding d-flex flex-direction-column">
+
+
 								<div class="auction-list-title text-center">{{$subasta->name }}</div>
 
 								<div class="snippet_documentacion" id="docs{{$subasta->id_auc_sessions}}">
@@ -78,79 +80,30 @@
 									@endif
 
 								</div>
-                                <div class="col-md-6 col-xs-12 col-sm-8 no-padding auction-item-img">
-                                    <div class="auction-size col-xs-12 no-padding">
-                                        <div data-loader="loaderDetacados" class='text-input__loading--line'></div>
-                                            <img
-                                                data-src="{{\Tools::url_img_session('subasta_medium',$subasta->cod_sub,$subasta->reference)}}"
-                                                alt="{{ $subasta->name }}"
-                                                class="img-responsive lazy"
-                                                style="display: none"
-                                            />
-                                        </div>
-                            </div>
-                            <div class="col-md-6 col-xs-12 col-sm-4 auction-desc-content d-flex justify-content-center flex-direction-column">
-                                <div class="mt-45n">
-                                    <p style="font-weight: 600;">{{ date("d-m-Y", strtotime($subasta->session_start)) }}</p>
-                                </div>
-                                <div class="">
-                                    <?php ?>
-                                    <small>{{ date("H:i", strtotime($subasta->session_start)) }} h</small>
-                                </div>
 
+								<div class="row d-flex align-items-center wrapper-aucion-image-date flex-wrap" style="flex: 1">
+									<div class="col-md-6 col-xs-12 col-sm-8 auction-item-img">
 
-								@if (Session::has('user') && Session::get('user.admin'))
-								<!-- Hacemos que solo sea visible para los administradores -->
-									<div class="documents">
-										<ul class="ul-format">
-											<?php
-												$pdf_cat = Tools::url_pdf($subasta->cod_sub,$subasta->reference,'cat');
-												$pdf_man = Tools::url_pdf($subasta->cod_sub,$subasta->reference,'man');
-												$pdf_pre = Tools::url_pdf($subasta->cod_sub,$subasta->reference,'pre');
-												//Ya no se usa desde el ERP, lo mantengo por si acaso
-												$pdf_adj = Tools::url_pdf($subasta->cod_sub,$subasta->reference,'adj');
-											?>
+										<div data-loader="loaderDetacados" class='text-input__loading--line'></div>
+										<img
+											data-src="{{\Tools::url_img_session('subasta_medium',$subasta->cod_sub,$subasta->reference)}}"
+											alt="{{ $subasta->name }}"
+											class="img-responsive lazy"
+											style="display: none"
+										/>
 
-											@if($pdf_cat)
-												<li class="col-md-12 col-xs-6 no-padding">
-													<a target="_blank" class="cat-pdf color-letter d-flex" href="{{$pdf_cat}}" role="button">
-														<div class="text-center"><i class="fas  fa-file-download"></i></div>
-														<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</small>
-													</a>
-												</li>
-											@endif
-
-											@if($pdf_man)
-												<li class="col-md-12 col-xs-6 no-padding">
-													<a target="_blank" class="cat-pdf color-letter d-flex" href="{{$pdf_man}}" role="button">
-														<div class="text-center"><i class="fas fa-file-download"></i></div>
-														<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_man') }}</small>
-													</a>
-												</li>
-											@endif
-
-											@if($pdf_pre)
-												<li class="col-md-12 col-xs-6 no-padding">
-													<a target="_blank" class="cat-pdf color-letter d-flex" href="{{$pdf_pre}}" role="button">
-														<div class="text-center"><i class="fas fa-file-download"></i></div>
-														<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_pre') }}</small>
-													</a>
-												</li>
-											@endif
-
-											@if($pdf_adj)
-												<li class="col-md-12 col-xs-6 no-padding">
-													<a target="_blank" class="cat-pdf color-letter d-flex" href="{{$pdf_adj}}" role="button">
-														<div class="text-center"><i class="fas fa-file-download"></i></div>
-														<small>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</small>
-													</a>
-												</li>
-											@endif
-										</ul>
 									</div>
-								@endif
+									<div class="col-md-6 col-xs-12 col-sm-4 d-flex justify-content-center align-items-center flex-direction-column">
+										<div class="mt-45n">
+											<p style="font-weight: 600;">{{ date("d-m-Y", strtotime($subasta->session_start)) }}</p>
+										</div>
+										<div class="">
+											<?php ?>
+											<small>{{ date("H:i", strtotime($subasta->session_start)) }} h</small>
+										</div>
+									</div>
+								</div>
 
-                            </div>
                         </div>
                             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 col-md-4 d-flex justify-content-center h-100 align-items-center">
                                     <div class="auction-item-links w-100">

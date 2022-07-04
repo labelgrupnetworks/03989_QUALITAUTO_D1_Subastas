@@ -15,7 +15,7 @@
 @endif
 
 <script src="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.min.js') }}"></script>
-@if(strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'O' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'P' || $data['subasta_info']->lote_actual->subabierta_sub == 'P')
+@if(strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'M' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'I' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'O' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'P' || $data['subasta_info']->lote_actual->subabierta_sub == 'P')
 
 <script src="{{ Tools::urlAssetsCache('/vendor/tiempo-real/tr_main.js') }}"></script>
 <script src="{{ URL::asset('js/hmac-sha256.js') }}"></script>

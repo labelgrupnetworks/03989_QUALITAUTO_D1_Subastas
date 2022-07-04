@@ -175,7 +175,7 @@ use App\libs\TradLib as TradLib;
                     ?>
                     <a title="{{ \Config::get('app.name') }}" href="/{{ $lang }}">
                         {{-- <img class="img-responsive" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo.svg" --}}
-                        <img class="img-responsive" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo_header.png?a=1"
+                        <img class="img-responsive" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo_header.png?v=2"
                             alt="{{ \Config::get('app.name') }}" style="display: inline-block; {{\Session::has('user') ? 'margin-top: 5px;' : 'margin-top: 2rem;'}}">
                     </a>
                 </div>

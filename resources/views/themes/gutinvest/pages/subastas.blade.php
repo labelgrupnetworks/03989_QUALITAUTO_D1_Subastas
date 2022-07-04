@@ -13,13 +13,21 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
+
+				<h1 class="titlePage">
 				@if ($data['type'] == 'W')
-					<h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.foot.online_sales')}}</h1>
+					 {{ trans(\Config::get('app.theme').'-app.foot.presenciales')}}
+				@elseif ($data['type'] == 'V')
+					 {{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}
+
+				@elseif($data['subc_sub'] == 'H')
+					{{ trans(\Config::get('app.theme').'-app.foot.historico')}}
 				@elseif ($data['type'] == null)
-					<h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.foot.online_sales')}}</h1>
+					{{ trans(\Config::get('app.theme').'-app.foot.online_sales')}}
 				@else
-					<h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</h1>
+					{{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}
 				@endif
+				</h1>
             </div>
         </div>
     </div>

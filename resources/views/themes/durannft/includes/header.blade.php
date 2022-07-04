@@ -99,7 +99,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
                     <li class="dropdown">
                         <a href="{{ route('allCategories') }}" {{-- class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                            aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFTs Subastados{{-- <span class="caret"></span> --}}</a>
+                            aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFT{{-- <span class="caret"></span> --}}</a>
                         {{-- <ul class="dropdown-menu">
                             @foreach ($categorys as $category)
                                 <li>
@@ -124,10 +124,11 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                     <li>
                         <a href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
+					    {{--
                     <li>
                         <a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
                     </li>
-
+					--}}
                     @if (!Session::has('user'))
                         <li>
                             <a href="javascript:;" class="hidden btn_login"title="{{ trans($theme . '-app.login_register.login') }}">
@@ -183,7 +184,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
 							<li class="dropdown">
 								<a href="{{ route('allCategories') }}" class="color-letter flex-display link-header"{{--  data-toggle="dropdown" role="button" aria-haspopup="true"
-									aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFTs Subastados{{-- <span class="caret"></span> --}}</a>
+									aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFT{{-- <span class="caret"></span> --}}</a>
 								{{-- <ul class="dropdown-menu">
 									@foreach ($categorys as $category)
 										<li>
@@ -208,9 +209,11 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
 							</li>
+							{{--
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
 							</li>
+							--}}
 
 							@if (!Session::has('user'))
 								<li>
@@ -290,7 +293,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
                             <li>
                                 <a href="{{ route('allCategories') }}" class="color-letter flex-display link-header"{{--  data-toggle="dropdown" role="button" aria-haspopup="true"
-									aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFTs Subastados{{-- <span class="caret"></span> --}}</a>
+									aria-expanded="false" --}}>{{-- {{ trans("$theme-app.lot.categories") }} --}}NFT{{-- <span class="caret"></span> --}}</a>
                                 {{-- <div class="submenuDefault">
                                     <div class="row">
                                         <div class="col-xs-12 p-2 category-col" role="tablist">
@@ -351,12 +354,13 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                                     title="{{ trans($theme . '-app.foot.contact') }}"
                                     href="<?= \Routing::translateSeo(trans($theme . '-app.links.contact')) ?>"><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
                             </li>
+							 {{--
                             <li>
                                 <a class="color-letter d-flex link-header"
                                     title="{{ trans($theme . '-app.foot.about_us') }}"
                                     href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}"><span>{{ trans($theme . '-app.foot.about_us') }}</span></a>
                             </li>
-
+							--}}
                             @if (!Session::has('user'))
                                 <li>
                                     <a href="{{ config('app.custom_login_url') }}&context_url={{ $host }}"

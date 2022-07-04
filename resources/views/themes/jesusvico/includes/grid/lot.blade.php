@@ -23,7 +23,7 @@
 			@endif
 
             <div class="data-container">
-                    <div class="title_item">
+                    <div class="title_item max-line-2">
                         <span class="seo_h4">{{ $titulo }}</span>
                     </div>
 					<div class="data-price text-center">

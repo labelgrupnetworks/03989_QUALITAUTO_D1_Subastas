@@ -16,9 +16,41 @@
 </div>
 
 <div class="account-user color-letter panel-user sales-page">
-	<div class="container">
-		<div class="row">
+	<div class="container container-75">
 
+		<div class="row">
+			<div class="col-xs-12 col-md-7">
+				<div class="user-account-title-content">
+					<div class="user-account-menu-title extra-account mb-3">
+						Filtros
+					</div>
+				</div>
+
+				<form action="">
+					<div class="filters-group d-flex align-items-end flex-wrap" style="gap: 20px">
+						<div class="form-group">
+							<label for="fromDate">Desde:</label>
+							<input class="form-control" type="date" name="from-date" id="fromDate" value="{{ request('from-date', null) }}">
+						</div>
+
+						<div class="form-group">
+							<label for="toDate">Hasta:</label>
+							<input class="form-control" type="date" name="to-date" id="toDate" value="{{ request('to-date', null) }}">
+						</div>
+
+						<div class="form-group">
+							<button type="submit" class="btn default-btn">Filtrar</button>
+						</div>
+						<div class="form-group">
+							<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" class="btn default-btn">Limpiar</a>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+
+		<div class="row">
 			<div class="col-xs-12">
 				<div class="user-account-title-content">
 					<div class="user-account-menu-title extra-account mb-3">
@@ -26,186 +58,187 @@
 					</div>
 				</div>
 
-				<table class="table js-table-accordion">
+				@php
+					use Illuminate\Support\Carbon;
+					$lotes = $subastas->flatten();
+					$totales = $lotes
+						->groupBy(function($lote) {
+							return \Tools::getDateFormat($lote->start, 'Y-m-d H:i:s', 'm-Y');
+						})
+						->each(function($total, $key) {
+							Carbon::setLocale(config('app.locale'));
+							$date = Carbon::createFromFormat('m-Y', $key);
+							$total->dateFormat = $date->isoFormat('MMMM YYYY');
 
-					<?php
-						$totalLotes = 0;
-						$totalPsalida = 0;
-						$totalPremate = 0;
-						$lotsSold = 0;
-						$lotsInAuction = 0;
-					?>
+							$total->offers = $total->map(function($lote) {
+								return !empty($lote->implic_hces1) ? 1 : 0;
+							})->sum();
+						});
 
-					@foreach($subastas as $cod_sub => $lotes)
+					$usersWithDeposit = App\Models\V5\FgDeposito::getAllUsersWithValidDepositInAuctions($subastas->keys());
+				@endphp
+				<div class="row">
+					<div class="col-xs-12">
+						<table class="table table-condensed table-to-card" id="auctions_table">
 
-					<tr>
-						<td colspan="12" data-toggle="collapse"
-							class="accordion-toggle title-sub-list accordion-{{$cod_sub}}" data-target="#{{$cod_sub}}">
-							<div class="d-flex align-items-center">
-								<p class="w-100 m-0"><span class="mr-2">{{$lotes[0]->name}}</span> <small> {{ trans("$theme-app.user_panel.date_end") }} {{ date('d-m-Y', strtotime($lotes[0]->end) ) }}</small></p>
-								<i style="float: right; font-size: 14px;" class="fas fa-plus"></i>
-							</div>
-						</td>
-					</tr>
+							<thead>
+								<tr>
+									<th data-card-title class="col-xs-1"></th>
+									<th class="col-xs-2">
+										PROCESO
+									</th>
 
-					<tr>
-						<td colspan="12" class="hiddenRow">
-							<div class="accordian-body collapse" id="{{$cod_sub}}">
-								<table class="table table-condensed table-to-card" id="{{$cod_sub}}_table">
+									<th class="col-xs-2">
+										FECHA INICIO COMERCIALIZACIÓN
+									</th>
 
-									<thead>
-										<tr>
-											<th data-card-title class="col-xs-1"></th>
-											<th class="col-xs-4">
-												{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</th>
-											<th class="col-xs-2">
-												{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th>
-											<th class="col-xs-2">
-												{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
-											</th>
-											<th class="col-xs-2">
-												{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
-											</th>
-											<th class="col-xs-2">
-												{{ trans("$theme-app.user_panel.offers") }}
-											</th>
-											<th class="col-xs-2">
-												{{ trans("$theme-app.user_panel.licits") }}
-											</th>
-										</tr>
-									</thead>
+									<th class="col-xs-2">
+										FECHA FIN DE COMERCIALIZACIÓN
+									</th>
 
-									<tbody>
+									<th class="col-xs-2 text-uppercase">
+										{{ trans("$theme-app.user_panel.licits") }}
+									</th>
 
-										@foreach($lotes as $lote)
-										@php
-										$url_friendly = str_slug($lote->desc_hces1);
-										$url_friendly =
-										\Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
-										$hay_pujas = !empty($lote->implic_hces1)? true : false;
-										$maxPuja = \Tools::moneyFormat($lote->implic_hces1);
-										$cerrado = $lote->cerrado_asigl0 == 'S'? true : false;
-										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' ||
-										$lote->cerrado_asigl0 == 'D') ? true : false;
-										$desadjudicado = $lote->desadju_asigl0 == 'S'? true : false;
+									<th class="col-xs-2">
+										OFERTAS PRESENTADAS
+									</th>
 
-										$totalLotes++;
-										$totalPsalida += $lote->impsalhces_asigl0;
+									<th class="col-xs-2">
+										Nº OFERTAS CERRADAS
+									</th>
 
-										$isFinished = strtotime($lote->end) < time() && !empty($lote->implic_hces1);
+									<th class="col-xs-2">
+										OFERTAS CERRADAS
+									</th>
+								</tr>
+							</thead>
 
-										if($isFinished){
-											$totalPremate += $lote->implic_hces1;
-										}
+							<tbody>
 
-										@endphp
+								@foreach($lotes as $lote)
 
-										<tr>
-											<td>
-												<a onclick="javascript:document.location='{{$url_friendly}}';"><img
-														src="{{ \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1) }}"
-														class="img-responsive"></a>
-											</td>
-											<td>
-												<span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
-													{{$lote->ref_asigl0}}</span>
-												<div class="desc-wrapp max-line-3">
-													<p class="td-desciption ">
-														{!!$lote->desc_hces1!!}</p>
-												</div>
-											</td>
+								@php
+								$url_friendly = str_slug($lote->desc_hces1);
+								$url_friendly = \Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
+								$depositInLot = $usersWithDeposit->where('sub_deposito', $lote->cod_sub)->where('ref_deposito', $lote->ref_asigl0)->count();
+								$depositInAuction = $usersWithDeposit->where('sub_deposito', $lote->cod_sub)->where('ref_deposito', null)->count();
+								$isFinished = strtotime($lote->end) < time() && !empty($lote->implic_hces1);
+								@endphp
 
-											<td>
-												@if($hay_pujas)
-													{{ trans(\Config::get('app.theme').'-app.user_panel.sold') }}
-													@php
-													$lotsSold++;
-													@endphp
+								<tr>
+									<td>
+										<a href="{{$url_friendly}}">
+											<img src="{{ \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1) }}" class="img-responsive">
+										</a>
+									</td>
+									<td>
+										<span class="max-line-2">
+											{!! $lote->descweb_hces1 !!}
+										</span>
+									</td>
 
-												@elseif(strtotime($lote->end) < time())
-													{{ trans(\Config::get('app.theme').'-app.user_panel.closed') }}
+									<td>
+										{{ \Tools::getDateFormat($lote->start, 'Y-m-d H:i:s', 'd/m/Y H:i') }}
+									</td>
+									<td>
+										{{ \Tools::getDateFormat($lote->end, 'Y-m-d H:i:s', 'd/m/Y H:i') }}
+									</td>
 
-												@elseif(strtotime($lote->orders_start) > time())
-													{{ trans(\Config::get('app.theme').'-app.user_panel.soon') }}
+									<td>
+										{{ $depositInLot + $depositInAuction /* $lote->licits_orders */ }}
+									</td>
 
-												@elseif(strtotime($lote->orders_start) < time())
-														{{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}
-													@php
-													$lotsInAuction++;
-													@endphp
+									<td>{{ $lote->orders ?? 0 }}</td>
 
-												@endif
-											</td>
+									<td>
+										{{ $isFinished ? 1 : 0 }}
+									</td>
 
-											<td>
-												{{ Tools::moneyFormat($lote->impsalhces_asigl0, '€') }}
-											</td>
+									<td>
+										{{ Tools::moneyFormat($lote->implic_hces1, '€') }}
+									</td>
 
-											@if($isFinished)
-											<td>
-												{{ Tools::moneyFormat($lote->implic_hces1, '€') }}
-											</td>
-											@else
-											<td>-</td>
-											@endif
+								</tr>
 
-											<td>{{ $lote->orders }}</td>
+								@endforeach
 
-											<td>{{ $lote->licits_orders }}</td>
+							</tbody>
 
-										</tr>
+						</table>
+					</div>
+				</div>
 
-										@endforeach
-
-									</tbody>
-
-								</table>
-							</div>
-						</td>
-					</tr>
-
-					{{-- con separacion entre subastas --}}
-					{{--<tr class="separator" style="height: 30px"></tr>--}}
-
-
-					@endforeach
-
-				</table>
 
 				<div class="row">
 					<div class="col-xs-12">
 
 						<div class="user-account-menu-title extra-account mb-3">
-							{{ /*trans(\Config::get('app.theme').'-app.user_panel.orders')*/ "Totales" }}</div>
+							Totales por mes
+						</div>
 
-						<table class="table table-condensed table-to-card" id="totals_table">
+						<table class="table table-condensed table-to-card" id="totals_month_table">
 
 							<thead>
 
 								<tr>
-									<th><b>{{ trans(\Config::get('app.theme').'-app.lot_list.lots') }}</b></th>
-									<th><b>{{ trans(\Config::get('app.theme').'-app.lot_list.award_filter') }}</b></th>
-									<th><b>{{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}</b></th>
-									<th><b>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</b></th>
-									<th><b>{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</b></th>
+									<th><b>MES</b></th>
+									<th><b>NÚMERO DE PROCESOS</b></th>
+									<th><b>OFERTAS PRESENTADAS</b></th>
+									<th><b>Nº OFERTAS CERRADAS</b></th>
+									<th><b>OFERTAS CERRADAS</b></th>
 								</tr>
 
 							</thead>
 
 							<tbody>
+								@foreach ($totales as $date => $total)
 								<tr>
-									<td>{{ $totalLotes }}</td>
-									<td>{{ $lotsSold }}</td>
-									<td>{{ $lotsInAuction }}</td>
-									<td>{{ \Tools::moneyFormat($totalPsalida) }} €</td>
-									<td>{{ \Tools::moneyFormat($totalPremate) }} €</td>
+									<td class="text-capitalize">
+										{{ $total->dateFormat /* \Tools::getDateFormat($date, 'm-Y', 'F Y') */ }}
+									</td>
+									<td>{{ $total->count() }}</td>
+									<td>{{ $total->sum('orders') }}</td>
+									<td>{{ $total->offers }}</td>
+									<td>{{ Tools::moneyFormat($total->sum('implic_hces1'), '€') }}</td>
 								</tr>
+								@endforeach
 							</tbody>
 
 						</table>
 
 					</div>
 
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12">
+
+						<div class="user-account-menu-title extra-account mb-3">
+							Totales
+						</div>
+
+						<table class="table table-condensed table-to-card" id="totals_table">
+
+							<thead>
+								<tr>
+									<th><b>NÚMERO DE PROCESOS</b></th>
+									<th><b>OFERTAS PRESENTADAS</b></th>
+									<th><b>OFERTAS CERRADAS</b></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr>
+									<td>{{ $totales->map(function($total) { return $total->count(); })->sum() }}</td>
+									<td>{{ $totales->map(function($total) { return $total->sum('orders'); })->sum() }}</td>
+									<td>{{ Tools::moneyFormat($totales->map(function($total) { return $total->sum('implic_hces1'); })->sum(), '€') }}</td>
+								</tr>
+							</tbody>
+
+						</table>
+
+					</div>
 				</div>
 
 			</div>
@@ -216,5 +249,5 @@
 @stop
 
 @push('scripts')
-	<script src="{{ URL::asset('js/tableToCards.js') }}"></script>
+<script src="{{ URL::asset('js/tableToCards.js') }}"></script>
 @endpush

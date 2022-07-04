@@ -113,7 +113,12 @@
 					<a href="/admin/newbanner/editar/{{ $item->id }}?ubicacion={{$ubicacion}}" class="btn btn-primary">Editar</a>
 
 					@if($pos = strpos(mb_strtoupper(Session::get('user.usrw')), '@LABELGRUP'))
-					<a href="/admin/newbanner/borrar/{{ $item->id }}" class="btn btn-danger">Eliminar</a>
+					{{-- <a href="/admin/newbanner/borrar/{{ $item->id }}" class="btn btn-danger">Eliminar</a> --}}
+					<button class="btn btn-danger" data-toggle="modal" data-target="#deleteBannerModal"
+						data-id="{{ $item->id }}"
+						data-name="{{ trans('admin-app.title.delete_resource', ['resource' => trans('admin-app.title.banner'), 'id' => $item->id]) }}">
+						{{ trans('admin-app.title.delete') }}
+					</button>
 					@endif
 				</div>
 			</div>
@@ -122,6 +127,7 @@
 		</div>
 	</div>
 
+	@include('admin::includes._delete_banner_modal', ['routeToDelete' => "/admin/newbanner/borrar/",])
 
 	<script>
 		window.onload = function(){
@@ -129,6 +135,24 @@
 				form_ubicacion.submit();
 			});
 		}
+
+		$('#deleteBannerModal').on('show.bs.modal', function(event) {
+			var button = $(event.relatedTarget);
+			var id = button.data('id');
+			var name = button.data('name');
+			var url = '/admin/newbanner/borrar/' + id;
+
+
+			//obtenemos el id del data action del form
+			var action = $('#formDelete').attr('data-action').slice(0, -1) + id;
+			$('#formDelete').attr('action', action);
+
+			// actualizamos en enlace del formulario #formDelete por la variable url
+			$('#submitDeleteBanner').attr('href', url);
+
+			var modal = $(this);
+			modal.find('.modal-title').text(name);
+		});
 	</script>
 
 @stop

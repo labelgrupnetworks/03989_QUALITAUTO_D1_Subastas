@@ -5,7 +5,7 @@
 </div>
 
 
-{{-- ultimas obras --}}
+{{-- ultimas obras
 <div class="container mt-3 mb-3">
 	<div class="row">
 		<div id="ultimas-obras-container" class="col-xs-12 ultimas-obras-container">
@@ -49,7 +49,7 @@
 	</div>
 </div>
 
-
+--}}
 
 @php
 	$replace = array('lang' => \Tools::getLanguageComplete(Config::get('app.locale')) ,'emp' => Config::get('app.emp'));

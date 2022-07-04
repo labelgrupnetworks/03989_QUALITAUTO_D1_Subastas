@@ -7,6 +7,7 @@
                 <h1 class="titlePage"> {{ $data['name'] }}</h1>
             @endif
         </div>
+	</div>
         <?php
             if(!empty($_GET['finished'])){
                 foreach($data['auction_list'] as $key => $sub_finished){
@@ -22,6 +23,7 @@
             }
 
         ?>
+		<div class="row d-flex flex-wrap">
         @if($data['subc_sub'] != 'H')
             @foreach ($data['auction_list'] as  $subasta)
                 <?php
@@ -36,81 +38,82 @@
 
 					$url_lotes_no_vendidos=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions.'?no_award=1';
                 ?>
-                <div class="col-xs-12 col-sm-4 col-lg-3">
-                    <div class="item_subasta">
 
-                        <div class="date-sub-content">
-                        @if($subasta->session_start)
-                        <?php
+						<div class="col-xs-12 col-sm-4 col-lg-3">
+							<div class="item_subasta">
 
-                            if($subasta->tipo_sub == 'V'){
-                                //ponemso el locale time para que salga en castellano
-                                 setlocale(LC_TIME,"es_ES");
+								<div class="date-sub-content">
+								@if($subasta->session_start)
+								<?php
 
-                                $fecha =ucfirst( strftime('%B %Y',strtotime($subasta->session_start)));
+									if($subasta->tipo_sub == 'V'){
+										//ponemso el locale time para que salga en castellano
+										setlocale(LC_TIME,"es_ES");
 
-
-                            }else{
-                                $fecha = strftime('%d/%m/%Y',strtotime($subasta->session_start));
-                            }
+										$fecha =ucfirst( strftime('%B %Y',strtotime($subasta->session_start)));
 
 
-                        ?>
-                        <div class="date-sub">{{ $fecha }}</div>
-                        @endif
-                        </div>
+									}else{
+										$fecha = strftime('%d/%m/%Y',strtotime($subasta->session_start));
+									}
 
-                        <a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
-                            <div class="img-lot">
-                                    <img
-                                        src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code}}.jpg"
-                                        alt="{{ $subasta->name }}"
-                                        class="img-responsive"
-                                    />
-                            </div>
-                            </a>
-                            <div class="item_subasta_item text-center">
-                                   {{ $subasta->name }}
-                            </div>
 
-							<p>
-								<a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">
-									@if($subasta->tipo_sub == 'V')
-										{{ trans(\Config::get('app.theme').'-app.subastas.see_venta_directa') }}
-									@else
-										{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+								?>
+								<div class="date-sub">{{ $fecha }}</div>
+								@endif
+								</div>
+
+								<a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
+									<div class="img-lot">
+											<img
+												src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code}}.jpg"
+												alt="{{ $subasta->name }}"
+												class="img-responsive"
+											/>
+									</div>
+									</a>
+									<div class="item_subasta_item text-center">
+										{{ $subasta->name }}
+									</div>
+
+									<p>
+										<a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">
+											@if($subasta->tipo_sub == 'V')
+												{{ trans(\Config::get('app.theme').'-app.subastas.see_venta_directa') }}
+											@else
+												{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+											@endif
+										</a>
+									</p>
+
+									<p><a title="{{ $subasta->name }}" href="{{ $url_lotes }}" class=" btn btn-lotes btn-color">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a></p>
+
+									<p>
+									@if(!empty(request('finished') && filter_var(request('finished'), FILTER_VALIDATE_BOOLEAN)))
+										<a title="{{ $subasta->name }}" href="{{ $url_lotes_no_vendidos  }}" class=" btn btn-lotes btn-color">{{ trans(\Config::get('app.theme').'-app.subastas.lotes_no_vendido') }}</a>
 									@endif
-								</a>
-							</p>
+									</p>
 
-							<p><a title="{{ $subasta->name }}" href="{{ $url_lotes }}" class=" btn btn-lotes btn-color">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a></p>
-
-							<p>
-							@if(!empty(request('finished') && filter_var(request('finished'), FILTER_VALIDATE_BOOLEAN)))
-								<a title="{{ $subasta->name }}" href="{{ $url_lotes_no_vendidos  }}" class=" btn btn-lotes btn-color">{{ trans(\Config::get('app.theme').'-app.subastas.lotes_no_vendido') }}</a>
-							@endif
-							</p>
-
-                            @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() && $subasta->subastatr_sub == 'S' )
-                                <p class="text-center" style="">
-                                    <a class="btn btn-block btn-live" style=""   href="{{ $url_tiempo_real }}"  target="_blank">{{ trans("$theme-app.subastas.bid_live") }}</a>
-                                </p>
-                            @endif
+									@if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() && $subasta->subastatr_sub == 'S' )
+										<p class="text-center" style="">
+											<a class="btn btn-block btn-live" style=""   href="{{ $url_tiempo_real }}"  target="_blank">{{ trans("$theme-app.subastas.bid_live") }}</a>
+										</p>
+									@endif
 
 
-							@if( $subasta->uppreciorealizado == 'S')
-							<p class="text-center">
-								<a class="btn btn-subasta" title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'pre')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</a>
-							</p>
-							@endif
+									@if( $subasta->uppreciorealizado == 'S')
+									<p class="text-center">
+										<a class="btn btn-subasta" title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'pre')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</a>
+									</p>
+									@endif
 
-							@if($subasta->upcatalogo == 'S')
-                                <p class="text-center" >
-                                    <a class="btn btn-subasta" title="{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'cat')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a>
-                                </p>
-                            @endif
-                    </div>
-                </div>
+									@if($subasta->upcatalogo == 'S')
+										<p class="text-center" >
+											<a class="btn btn-subasta" title="{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'cat')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a>
+										</p>
+									@endif
+							</div>
+						</div>
             @endforeach
         @elseif( Session::has('user') )
             <?php

@@ -1,5 +1,10 @@
 <!doctype html>
-<html>
+<html lang="{{ config('app.language_complete')[config('app.locale')] }}">
+
+@php
+$cookiesState = \Tools::cookies();
+@endphp
+
 <head>
 
     @include('includes.google_head')

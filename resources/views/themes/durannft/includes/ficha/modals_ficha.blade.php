@@ -4,19 +4,20 @@
                             <div class="panel-body">
                                     <div class="modal-wrapper">
                                             <div class=" text-center single_item_content">
-                                                <p class="class_h1"><?=trans(\Config::get('app.theme').'-app.lot.confirm_bid')?></p>
-												<p>
+                                                <p class="class_h1"><?=trans(\Config::get('app.theme').'-app.lot.confirm_bid')?></p><br/>
                                                 <span for="bid" class='desc_auc'>{{trans(\Config::get('app.theme').'-app.lot.bidding_for')}} </span>
-												<strong><span class="precio_orden"></span> €</strong>
+												<strong><span class="precio_orden"></span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</strong>
 													@if(\Config::get("app.exchange"))
 													|	<span id="newOrderExchange_JS" class="exchange"></span>
 												   @endif
-												</p>
-												<p>
-												<span>{!! trans("$theme-app.lot.aditional_info_puja") !!}</span>
-												</p>
-												<br>
-                                                    <button id="confirm_orden_custom" data-subcsub="{{ $subasta_abierta_O }}" class="btn button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?> </button>
+												<br/>
+                                                    </br>
+						<p class="phonebid_js">{{trans(\Config::get('app.theme').'-app.lot.phonebid_text')}} <br></p>
+                                                <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 1: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone1" id="phone1Bid_JS"></p>
+					        <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 2: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone2" id="phone2Bid_JS"></p>
+
+
+                                                    <button id="confirm_orden" class="btn button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?> </button>
 
                                                      <div class='mb-10'></div>
 
@@ -35,7 +36,7 @@
                                     <div class="modal-wrapper">
                                             <div class=" text-center single_item_content_">
                                                 <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
+                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</strong><br/>
                                                     </br>
                                                     <button  class="confirm_puja btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
                                                     <div class='mb-10'></div>
@@ -96,17 +97,38 @@
 </div>
 
 
+
+<div id="modalMakeOffer" class="container modal-block mfp-hide " data-to="makeOfferFicha">
+	<div    class="modal-sub-w">
+			<section class="panel">
+					<div class="panel-body">
+							<div class="modal-wrapper">
+									<div class=" text-center single_item_content_">
+										<p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
+										<span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="imp_make_offer"></span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</strong><br/>
+											</br>
+
+					<button class="btn btn-primary modal-confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+					<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button><div class='mb-10'></div>
+											 <div class='mb-10'></div>
+
+									</div>
+							</div>
+					</div>
+			</section>
+	</div>
+</div>
+
+
 <?php  //estructura necesaria para crear lso elementos del listado de pujas  ?>
     <div id="duplicalte_list_pujas" class="hist_item hidden">
         <span class="col-xs-8">
-            <span>{{ trans(\Config::get('app.theme').'-app.lot.bidder') }}</span> (
-            <span class="yo">{{ trans(\Config::get('app.theme').'-app.lot.I') }}</span>
-            <span class="uno hint--bottom-right hint--medium" data-hint=""></span>
-            <span class="dos hint--bottom-right hint--medium" data-hint="<?= nl2br(trans(\Config::get('app.theme').'-app.lot.puja_automatica')) ?>">A</span>)
+			<span class=num-puja></span>
+			<span> - </span>
             <span class="date"></span>
         </span>
         <span class="col-xs-4">
-            <span class="tres_item"><span class="price "> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</span></span>
+            <span class="tres_item"><span class="price"> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</span></span>
         </span>
    </div>
 
@@ -118,42 +140,3 @@
     <span id="hide_bids_text" class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
 
 </div>
-
-
-<!-- Modal -->
-<div class="modal fade custom-modal" id="generalTermsModal" tabindex="-1" role="dialog" aria-labelledby="generalTermsModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title d-inline-block" id="exampleModalLabel">{{ trans("$theme-app.subastas.general_conditions") }}</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-		@if(!empty($lote_actual->prop_hces1))
-			{!! trans("$theme-app.subastas.conditions_prop_$lote_actual->prop_hces1") !!}
-		@endif
-      </div>
-
-    </div>
-  </div>
-</div>
-
-@if(!empty($ownerData))
-<div class="modal fade custom-modal" id="prop-modal" tabindex="-1" role="dialog" aria-labelledby="prop-modalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h4 class="modal-title d-inline-block" id="prop-modalLabel">{{ trans("$theme-app.lot.owner_details") }}</h4>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-			{!! $ownerData !!}
-		</div>
-	  </div>
-	</div>
-</div>
-@endif

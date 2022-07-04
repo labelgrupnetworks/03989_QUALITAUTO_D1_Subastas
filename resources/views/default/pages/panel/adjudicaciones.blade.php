@@ -189,7 +189,7 @@ $packengersMoneyValue = 0;
                                                         </div>
                                                         <div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-                                                                <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</div>
+                                                                <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
 																@if ($comision !=0)
 																	<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
@@ -200,7 +200,7 @@ $packengersMoneyValue = 0;
                                                         <div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
                                                                 <div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-                                                                        <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</div>
+                                                                        <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
                                                                 <div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
                                                                 </div>
                                                             </div>
@@ -453,7 +453,7 @@ $packengersMoneyValue = 0;
 																</div>
 																<div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</div>
+																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
 																		@if ($comision !=0)
 																			<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
@@ -464,7 +464,7 @@ $packengersMoneyValue = 0;
 																<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
 																		<div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</div>
+																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
 																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
 																		</div>
 																	</div>

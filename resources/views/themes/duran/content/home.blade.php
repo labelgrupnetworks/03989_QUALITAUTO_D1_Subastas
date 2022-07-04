@@ -10,7 +10,7 @@
 <div class="item">
 	<div class="card">
 		<div class="card-body">
-			<a href="{{ route("category", ["category" => $category["key_ortsec0"]]) }}">
+			<a href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">
 				<h4 class="card-title"><img class="img-responsive"
 						src="{{ asset('themes/duran/assets/img/categorias/cat-' .$category["lin_ortsec0"]. '.png')}}">
 				</h4>

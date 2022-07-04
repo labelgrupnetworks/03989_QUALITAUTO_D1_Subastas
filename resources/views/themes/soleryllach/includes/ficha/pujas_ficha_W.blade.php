@@ -25,19 +25,19 @@
                             </div>
                         @endif
     </div>
-    <div class="col-xs-12 col-sm-6">
+    {{-- <div class="col-xs-12 col-sm-6">
             <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
-            <?php
+			@php
                $categorys = new \App\Models\Category();
                $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-           ?>
+			@endphp
+
             <p>
                @foreach($tipo_sec as $sec)
                    {{$sec->des_tsec}}
                @endforeach
             </p>
-
-    </div>
+    </div> --}}
 </div>
 @if($lote_actual->fac_hces1!='D')
 <div class="info_single col-xs-12 ficha-puja">

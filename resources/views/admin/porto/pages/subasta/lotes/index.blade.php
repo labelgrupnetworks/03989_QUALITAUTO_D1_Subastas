@@ -16,7 +16,7 @@
 	</div>
 
 	<div class="row well">
-			@include('admin::pages.subasta.lotes._table', ['fgAsigl0' => $fgAsigl0 ?? null ])
+			@include('admin::pages.subasta.lotes._table', ['fgAsigl0' => $fgAsigl0 ?? null])
 	</div>
 
 

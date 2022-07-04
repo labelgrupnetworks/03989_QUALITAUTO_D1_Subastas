@@ -54,6 +54,7 @@
 <div class="col-xs-12 pt-1 d-flex align-items-center mt-1">
     <?php
     $count_lots = 0;
+	
     foreach($tipos_sub as $typeSub =>$desType) {
 
         $numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
