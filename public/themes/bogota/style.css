@@ -144,3 +144,13 @@ color: #DDD;
     padding: 10px;
     background: #DBDBDB;
 }
+
+.auction-item-img {
+	height: 132px;
+}
+
+.auction-item-img img {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}

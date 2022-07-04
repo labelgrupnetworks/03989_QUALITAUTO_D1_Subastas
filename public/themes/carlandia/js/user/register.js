@@ -75,9 +75,10 @@ function forceRequiredInputs(){
 }
 
 function custom_checks(input) {
-	if(input.name = 'telefono'){
+	if(input.name == 'telefono'){
 		return checkPhone(input);
 	}
+	return true;
 }
 
 
@@ -164,30 +165,34 @@ submit_register_form = function() {
                     showMessage(response);
                 } else if (response.err == 0) {
 
-					fbq('track', 'CompleteRegistration', {value: 1.00,});
-					if(	$("input[name=type_user]").val() =="V"){
-						ga('send','event','CUENTA CLIENTE','Vendedor');
-					}else{
-						if ($("input[name=pri_emp]").val() == "J"){
-							ga('send','event','CUENTA CLIENTE','Comprador profesional');
-						}else{
-							ga('send','event','CUENTA CLIENTE','Comprador particular');
-						}
+					const typeClient = () => {
+
+						if($("input[name=type_user]").val() == "V") return 'Vendedor';
+						if($("input[name=pri_emp]").val() == "J") return 'Comprador profesional';
+
+						const queryParams = new URLSearchParams(window.location.search);
+						const counterofferType = queryParams.get('counterofferType');
+
+						if(!counterofferType) return 'Comprador particular';
+						if(counterofferType == 'A') return 'Comprador particular - Rango';
+
+						const isAmountOver = queryParams.get('amountOverOriginalValue');
+
+						return (isAmountOver === 'true') ? 'Comprador particular - Cercano' : 'Comprador particular - Rechazo';
 					}
+
+					fbq('track', 'CompleteRegistration', {value: 1.00,});
+
+					ga('send','event','CUENTA CLIENTE', typeClient());
 
 					if (response.backTo){
 						//Para que en la ficha de los lotes funcione el histoy.state es necesario volver hacia atras
 						history.go(-1);
 						//document.location = response.backTo;
-					}/*
-					if(sessionStorage.getItem('returnUrl')){
-						document.location = sessionStorage.getItem('returnUrl');
-
-					}*/
+					}
 					else if(response.info == undefined){
                         document.location = response.msg;
                     }
-
                     else {
 
                         $("#info_sent").val(JSON.stringify(response.info));
@@ -195,7 +200,6 @@ submit_register_form = function() {
                         $("#redirect_sent").val(response.redirect);
 
                         document.getElementById("formToSubalia").submit();
-
                     }
                 }
 

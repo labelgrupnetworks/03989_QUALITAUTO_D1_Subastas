@@ -26,3 +26,10 @@
 	}
 
 }
+
+@media (max-width: 566px){
+	.user-account-menu-title.extra-account {
+		background-color: var(--secondary-color);
+		color: white;
+	}
+}

@@ -184,6 +184,11 @@ footer .fa, footer .fab{
 	margin-right: 10px;
 }
 
+.sales-page input[type=date] {
+	box-shadow: none;
+	border-radius: 0;
+}
+
 .sales-page td.title-sub-list {
 	cursor: pointer;
 }
@@ -199,6 +204,18 @@ footer .fa, footer .fab{
 .sales-page thead {
 	background-color: var(--secondary-color);
 	color: #fff;
+}
+
+.default-btn {
+    padding: 5px 20px;
+    background: var(--btn-primary-background);
+    color: var(--btn-primary-text);
+    font-weight: 500;
+    border-radius: 0;
+
+    transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+    -o-transition: 0.3s linear all;
 }
 
 .td-desciption {
@@ -238,3 +255,5 @@ footer .fa, footer .fab{
     font-weight: 600;
     text-transform: uppercase;
 }
+
+

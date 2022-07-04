@@ -163,6 +163,7 @@
     font-size: 14px;
     text-align: justify;
     font-weight: initial;
+	overflow-wrap: anywhere;
 }
 
 .filters-auction-content{

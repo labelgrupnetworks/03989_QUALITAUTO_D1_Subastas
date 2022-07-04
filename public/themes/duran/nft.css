@@ -9,3 +9,77 @@ body {
 a {
 	color: #7f0041;
 }
+
+.form-control {
+	color: white;
+}
+
+.create-account .form-control {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+select option {
+    margin: 40px;
+    background: black;
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.eye-password {
+	filter: invert(1);
+}
+
+.button-principal {
+	background-color: #35333a;
+    color: #fff;
+    font-size: 18px;
+    padding: 8px 30px;
+    font-weight: 600;
+    height: auto;
+}
+
+.btn-primary {
+	background-color: #35333a;
+    color: #fff;
+    font-size: 18px;
+    padding: 8px 30px;
+    font-weight: 600;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    margin-top: 3rem;
+	transition: 0.5s;
+}
+
+.button-principal:hover, .btn-primary:hover {
+	background-color: #770043;
+}
+
+h1.titlePage {
+	text-align: center;
+}
+
+h1.titlePage, a.pass_recovery_login, p {
+	color: white;
+}
+
+.create-account-link a {
+	font-weight: 500;
+    color: #770043;
+    font-size: 18px;
+    letter-spacing: .18px;
+    padding: 10px 45px;
+    border: 1px solid #770043;
+    transition: 0.5s;
+    background-color: white;
+}
+
+.create-account-link a:hover {
+	color: white;
+	background-color: #770043;
+}
+
+form#password_recovery input{
+	color: initial;
+}
+

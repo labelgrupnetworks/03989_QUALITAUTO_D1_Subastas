@@ -804,7 +804,7 @@ $( ".submit_carrito" ).click(function() {
 
             $.ajax({
                 type: "POST",
-                data: {email : email, families: families,lang:lang,no_validate:true},
+                data: {email : email, families: families,lang:lang,no_validate:true, condiciones: true},
                 url: '/api-ajax/newsletter/add',
                 beforeSend: function () {
                 },

@@ -3710,6 +3710,12 @@ div.item_lot_large {
 	padding: 10px;
 }
 
+.image-lot-large img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
 .lot-desc .desc-lot-large {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
@@ -4818,4 +4824,50 @@ header .navbar-top .navbar-top-wrapper ul.list-lang a {
 
 .slick-slide img {
 	max-height: initial;
+}
+
+.sales-panel .panel-heading a, .sales-panel .panel-heading a:hover {
+	color: #333;
+	text-decoration: none;
+}
+
+.sales-panel tbody tr{
+	cursor: initial;
+}
+
+.sales-panel .table-custom tbody tr td {
+	padding: 5px 8px;
+}
+
+.sales-filters {
+	border: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+}
+
+.sales-filters a {
+	position: relative;
+	color: #333;
+	text-decoration: none;
+}
+
+.sales-filters a::after {
+	content: '\f0dd';
+	font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+}
+
+.sales-filters-title {
+	background-color: #f5f5f5;
+	color: #333;
+	padding: 1rem;
+	margin: 0;
+}
+
+.filters-group {
+	gap: 20px;
+	border: 1px solid #ddd;
+	border-top: 0;
+	border-radius: 0 0 4px 4px;
 }

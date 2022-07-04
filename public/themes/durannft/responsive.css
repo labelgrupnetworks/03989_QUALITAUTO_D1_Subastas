@@ -47,6 +47,15 @@
 
 @media(max-width: 768px) {
 
+	#formsearchResponsive .form-group .input-custom {
+		color: var(--color-white);
+	}
+
+	.form-check {
+		display: flex;
+		gap: 5px;
+	}
+
 	.mobilepl-3 {
 		padding-left: 3rem;
 	}
@@ -105,7 +114,7 @@
 	}
 
 	.contact-form h1 {
-		font-size: 36pt;
+		font-size: 32pt;
 	}
 
 	.contact-form h2,
@@ -132,6 +141,23 @@
 
 
 @media (max-width: 512px){
+
+	.title-80 {
+		font-size: 50px;
+	}
+
+	.item_artist .title_item {
+		font-size: 18px;
+	}
+
+	.contact-form h1 {
+		font-size: 27pt;
+	}
+
+	.contact-page p {
+		font-size: 15px;
+	}
+
     .list_lot {
 		grid-template-columns: 1fr;
 	}
@@ -163,7 +189,7 @@
 
 @media (max-width: 360px){
     .navbar-default .icons-band {
-		padding: 15px 0px;
+		padding: 15px 15px;
 	}
 }
 

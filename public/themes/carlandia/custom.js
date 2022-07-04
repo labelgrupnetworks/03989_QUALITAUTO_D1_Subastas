@@ -403,6 +403,9 @@ window.contraofertarLoteFicha = function() {
 
 					const btnSimiliarLots = document.getElementById('btn-similares-modal');
 					const btnFocusCounteroffer = document.getElementById('btn-focus-counteroffer');
+					const buttonComprarModal = document.querySelector('#comprarYaModalEvent_JS');
+
+					buttonComprarModal.dataset.amountOver = data.amountOver;
 
 					//Eliminamos la posibilidad de que el botón tenga el evento asignado con anterioridad
 					btnSimiliarLots.removeEventListener('click', waitForAnswer);
@@ -412,6 +415,7 @@ window.contraofertarLoteFicha = function() {
 						btnSimiliarLots.href = '';
 						btnSimiliarLots.textContent = 'ESPERAR RESPUESTA';
 						btnFocusCounteroffer.textContent = 'INCREMENTAR OFERTA';
+
 					}
 					else {
 						btnSimiliarLots.href = data.similar_lots;
@@ -444,13 +448,18 @@ window.contraofertarLoteFicha = function() {
 
 window.comprarLoteFichaCarlandia = function()
 {
-	const typePuja = document.querySelector('.lot-action_comprar_lot').dataset.typePuja;
+	const buttonComprar = document.querySelector('#comprarYaEvent_JS');
+	const typePuja = buttonComprar.dataset.typePuja;
+
+	const buttonComprarModal = document.querySelector('#comprarYaModalEvent_JS');
+	const amountOver = buttonComprarModal.dataset.amountOver;
+
 	const ruta = '/es/api/comprar-aux/subasta';
 
     $.ajax({
         type: "POST",
         url: `${ruta}-${cod_sub}`,
-        data: { cod_sub: cod_sub, ref: ref, 'type-puja': typePuja},
+        data: { cod_sub: cod_sub, ref: ref, 'type-puja': typePuja },
         success: function( data ) {
 
             $("#insert_msg").html("");
@@ -473,6 +482,13 @@ window.comprarLoteFichaCarlandia = function()
 				fbq('track', 'Lead', {value: 1,  });
 
 			$("#insert_msg").html(data.msg);
+
+			const depositarButton = document.querySelector('#depositarSeñalComprar_JS');
+			if(depositarButton) {
+				depositarButton.removeEventListener('click', (event) => depositarSenal(event, amountOver, typePuja));
+				depositarButton.addEventListener('click', (event) => depositarSenal(event, amountOver, typePuja) );
+			}
+
 			$.magnificPopup.open({
 				items: {src: '#modalMensaje'},
 				type: 'inline',
@@ -491,6 +507,24 @@ window.comprarLoteFichaCarlandia = function()
 		}
     });
 };
+
+function depositarSenal(event, amountOver, typePuja) {
+	event.preventDefault();
+
+	const matricula = $("#matricula_JS").val();
+	const coche = $("#nombre_coche_JS").val();
+
+	const isOnline = typePuja === 'Y';
+	const textEvent = (isOnline, amountOver) => {
+		if(isOnline) return 'Depositar señal';
+		if(!isOnline && amountOver === "true") return 'Cercano Depositar señal';
+		if(!isOnline && amountOver === "false") return 'Rechazo Depositar señal';
+	}
+
+	ga('send', 'event', textEvent(isOnline, amountOver), coche + "/" + matricula);
+
+	window.location.href = event.target.href;
+}
 
 function waitForAnswer(e){
 	e.preventDefault();
@@ -534,6 +568,12 @@ function sendCounterofferWithNotUser(){
 			//la url marca en que url se podran recuperar los datos, si no pongo nada los recuperaremos al volver aquí
 			//history.pushState(state, '', e.target.href);
 			history.pushState(data, '');
+
+			const loginButton = document.querySelector('#modal-contraofertarSinLicitador');
+			const url = new URL(loginButton.href);
+			url.searchParams.set('counterofferType', data.counterofferType);
+			url.searchParams.set('amountOverOriginalValue', data.amountOverOriginalValue.toString());
+			loginButton.href = url.toString();
 
 			$('#modalContraofertarSinLicitador .insert_msg').html(data.message);
 

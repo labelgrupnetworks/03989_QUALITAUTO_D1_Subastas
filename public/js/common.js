@@ -37,25 +37,29 @@ $(document).ready(function () {
      */
 
 	if ($('#bid_amount').length) {
-		$('#bid_amount').autoComplete({
-			minChars: 1,
-			cache: false,
+		if($('#bid_amount').hasClass("NoAutoComplete_JS") == false){
 
-			source: function (term, response) {
-				try {
-					xhr.abort();
-				} catch (e) {
-				}
-				$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.actual_bid + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
-					var matches = [];
-					for (i = 0; i < data.length; i++) {
-						matches.push(data[i].toString());
+
+			$('#bid_amount').autoComplete({
+				minChars: 1,
+				cache: false,
+
+				source: function (term, response) {
+					try {
+						xhr.abort();
+					} catch (e) {
 					}
+					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.actual_bid + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
+						var matches = [];
+						for (i = 0; i < data.length; i++) {
+							matches.push(data[i].toString());
+						}
 
-					response(matches);
-				});
-			},
-		});
+						response(matches);
+					});
+				},
+			});
+		}
 
 	}
 
@@ -1591,6 +1595,23 @@ function changeCurrencyNew(price, exchange, object) {
 	}
 	$(object).html(newPrice);
 
+}
+
+function changeCurrencyWithElement(price, exchange, element) {
+	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
+
+	let newPrice = numeral(price).format('0,0.00');
+	if(typeof sindecimales  != 'undefined' && sindecimales == true){
+		newPrice = numeral(price).format('0,0');
+	}
+
+	if (currency[exchange].pos_div == 'R') {
+		newPrice += " " + currency[exchange].symbolhtml_div;
+	} else {
+		newPrice = currency[exchange].symbolhtml_div + newPrice;
+	}
+
+	element.innerHTML = newPrice;
 }
 
 $(document).ready(function () {

@@ -148,7 +148,9 @@ const stateInputs = {
 	W: [],
 	E: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'compraweb_sub','subabierta_sub'],
 	V: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'compraweb_sub', 'subabierta_sub'],
-	O: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'subabierta_sub']
+	O: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'subabierta_sub'],
+	M: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'compraweb_sub', 'subabierta_sub'],
+	I: ['dfecorlic_sub', 'dhoraorlic_sub', 'hfecorlic_sub', 'hhoraorlic_sub', 'subabierta_sub'],
 }
 
 function reloadInputs(value) {

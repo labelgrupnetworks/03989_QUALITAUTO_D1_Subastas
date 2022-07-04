@@ -137,16 +137,16 @@ $( document ).ready(function() {
    $("#pujar_orden_telefonica").click(function() {
 		$("#orderphone").val("S");
 		$(".phonebid_js").removeClass("hide");
-		
+
          if(auction_info.user!== undefined){
-            if(auction_info.user.phone1 !== null){   
+            if(auction_info.user.phone1 !== null){
                 $("#phone1Bid_JS").val(auction_info.user.phone1);
-            } 
-            if(auction_info.user.phone2 !== null){   
+            }
+            if(auction_info.user.phone2 !== null){
                 $("#phone2Bid_JS").val( auction_info.user.phone2 );
-            } 
+            }
          }
-         
+
             confirmar_orden()
 
 	});
@@ -221,4 +221,42 @@ window.comprarLoteFicha = function comprarLoteFicha()
 
 };
 
+window.makeOfferFicha = function makeOfferFicha()
+{
+
+imp = $("#bid_make_offer").val();
+    $.ajax({
+        type: "POST",
+        url: "/api-ajax/makeOffer" ,
+        data: { cod_sub: cod_sub, ref: ref, imp: imp },
+        success: function( data ) {
+
+
+            if (data.status == 'error'){
+                    $("#insert_msg").html(data.msg_1);
+                    $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
+
+            }else if(data.status == 'info'){
+                $("#insert_msg").html(data.msg_1);
+				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
+				
+				auction_info.lote_actual.pujas = data.pujas
+				reloadPujasList_O();
+            }else if(data.status == 'success'){
+                $("#insert_msg").html(data.msg);
+                $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline',callbacks: {
+					close: function() {
+						document.location = data.location;
+					}
+				}
+			});
+
+            }
+
+
+        }
+    });
+
+
+};
 

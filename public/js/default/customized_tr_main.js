@@ -287,6 +287,13 @@ function reloadPujasList_O() {
 		// mostramos el boton de ver todos los lotrs si es necesario, num_lot siempre lleva un ode mas
 		if ((num_lot - 1) > view_num_pujas) {
 			container.append($("#view_more").clone().removeClass("hidden"));
+			//como al recargar el listado se perdia el valor actual, modifico el valor y simulo una llamada
+			if ($("#view_all_pujas_active").val() == '0') {
+				$("#view_all_pujas_active").val('1');
+			}else{
+				$("#view_all_pujas_active").val('0');
+			}
+			view_all_bids();
 		}
 
 

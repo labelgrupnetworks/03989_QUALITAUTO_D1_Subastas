@@ -39,7 +39,9 @@ function loadDivisa(){
 			changeCurrency( $("#startPriceDirectSale").val(), currencyExchange,"directSaleExchange_JS");
 		}
 
-
+		document.querySelectorAll('.custom-exchange').forEach((element) => {
+			changeCurrencyWithElement(element.dataset.value, currencyExchange, element);
+		});
 
 	}
 }

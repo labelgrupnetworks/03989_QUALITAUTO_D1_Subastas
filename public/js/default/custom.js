@@ -774,7 +774,14 @@ $(document).ready(function () {
 
 
 		} else {
-			$.magnificPopup.open({ items: { src: '#modalComprarFicha' }, type: 'inline' }, 0);
+			if($(this).hasClass("makeOffer_JS")){
+				bid_make_offer = $("#bid_make_offer").val()
+				$(".imp_make_offer").html(bid_make_offer.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
+				$.magnificPopup.open({ items: { src: '#modalMakeOffer' }, type: 'inline' }, 0);
+			}else{
+				$.magnificPopup.open({ items: { src: '#modalComprarFicha' }, type: 'inline' }, 0);
+			}
+
 		}
 
 	});

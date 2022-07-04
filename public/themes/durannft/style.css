@@ -23,7 +23,7 @@
     --newsletter-text: var(--color-white);
     --newsletter-placeholder: var(--color-gray);
     --newsletter-input-border: var(--color-white);
-    --newsletter-input-text: var(--color-gray);
+    --newsletter-input-text: var(--color-white);
     --footer-background: transparent;
     --footer-titles-color: var(--color-white);
     --footer-links-color: var(--color-white);
@@ -45,6 +45,10 @@ body {
 
 a {
     color: #7f0041;
+}
+
+.form-control {
+	color: var(--color-white);
 }
 
 .button-up {
@@ -798,19 +802,24 @@ h2) {
 
 .contact-form form .effect-16:focus~label,
 .contact-form form .has-content.effect-16~label {
-    font-size: 14px;
     font-weight: normal;
-    color: #3C3C3C;
     width: auto;
     z-index: 5;
-    background: white;
+    background-color: transparent;
+	color: var(--color-white);
+	font-size: 16px;
     padding: 5px 7px 0;
+}
+
+.effect-16:focus ~ label, .has-content.effect-16 ~ label {
+	top: -25px;
 }
 
 .contact-form form .input-effect label {
     font-weight: normal;
     color: #ccc;
     font-size: 16px;
+	width: auto;
 }
 
 .contact-form .has-error {
@@ -825,7 +834,7 @@ h2) {
     font-size: 16px;
     border: 2px solid #CCC;
     border-radius: 16px;
-    color: #3C3C3C;
+    color: var(--color-white);
 }
 
 .contact-form form input[type="checkbox"] {
@@ -833,15 +842,17 @@ h2) {
 }
 
 .contact-form a.button-principal {
+	display: inline-block;
     background-color: #262626;
     color: #fff;
-    border: none 1px;
     text-transform: uppercase;
-    opacity: 1;
+	padding: 20px 100px;
+	font-size: 24px;
+
+	width: auto;
+	height: auto;
+
     transition: all 0.5s ease-in-out;
-    padding: 20px 100px;
-    font-size: 24px;
-    margin-top: 1rem;
 }
 
 .contact-form a.button-principal:hover,
@@ -1388,5 +1399,7 @@ section.panel {
 	font-size: 13px;
 	color: var(--color-white);
 }
+
+
 
 
