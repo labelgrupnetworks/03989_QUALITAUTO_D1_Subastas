@@ -154,6 +154,7 @@ class Prueba extends BaseController
 	{
 
 		$this->testwebserviceNFTDuran();
+		//test
 	}
 
 
