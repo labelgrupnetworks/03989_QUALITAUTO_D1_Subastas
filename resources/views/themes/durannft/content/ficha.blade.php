@@ -71,8 +71,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                    $timeCountdown = $lote_actual->close_at;
                 }
            ?>
-
-                {{-- @include('includes.ficha.header_time') --}}
+				@if($subasta_online)
+               		@include('includes.ficha.header_time')
+				@endif
+				
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">

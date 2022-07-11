@@ -50,7 +50,7 @@ use Evo\Evo;
 use Mail;
 use Route;
 use \ForceUTF8\Encoding;
-use App\Http\Controllers\subastaTiempoRealController;
+use App\Http\Controllers\SubastaTiempoRealController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\PaymentsController;
@@ -152,25 +152,31 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		
 
-		die();
+		$this->testwebserviceNFTDuran();
 	}
+
+
 
 	public function testwebserviceNFTDuran(){
 		$a = new App\Http\Controllers\externalws\durannft\PaidController();
-		$a->informPaid("T91655801482");
+		$a->informPaid("P44657277578");
+
+		#$a->informPaid("T91655795173");
+	//	$a->informPaid("P55657178730");
+
 	}
 	public function TestVottun(){
 		$num = 8;
 		$lin=6;
 		$vottun = new VottunController();
-
+		$response = $vottun->vottunNetworks();
+		echo "<pre>";
 		//$response = $vottun->uploadFile($num, $lin);
 		//$response = $vottun->uploadMetadata($num, $lin);
 
 		//$response = $vottun->mint($num, $lin);
-		$response = $vottun->requestStateMint($num, $lin);
+		//$response = $vottun->requestStateMint($num, $lin);
 		//$response = $vottun->transferNFT($num, $lin);
 		//$response = $vottun->requestStateTransfer($num, $lin);
 		//$response =$vottun->requestHistorictransactions($num, $lin);

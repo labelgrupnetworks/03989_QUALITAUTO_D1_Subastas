@@ -301,14 +301,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('subastas/lotes/printExcel/{codSub}', 'subasta\AdminLotController@excelExhibition')->name('subastas.lotes.printExcel');
 		Route::get('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@getOrder')->name('subastas.lotes.order_edit');
 		Route::post('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@saveOrder')->name('subastas.lotes.order_store');
+		Route::post('subastas/lotes/clonelot/{lotRef}', 'subasta\AdminLotController@cloneLot')->name('subastas.lotes.cloneLot');
 
 
 		Route::get('subastas/lotes/order/destacados', 'subasta\AdminLotController@getOrderDestacada')->name('subastas.lotes.order_destacadas_edit');
 		Route::post('subastas/lotes/order/destacados', 'subasta\AdminLotController@saveOrderDestacada')->name('subastas.lotes.order_destacadas_store');
 
-		Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
+		//Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
 
 		Route::get('nfts/', 'subasta\AdminNftController@index')->name('nft.index');
+		Route::get('nfts/{numhces}/{linhces}/file', 'subasta\AdminNftController@showFile')->name('nft.show.file');
 		Route::post('nfts/mint', 'subasta\AdminNftController@mint')->name('nft.mint');
 		Route::post('nfts/transfer', 'subasta\AdminNftController@transfer')->name('nft.transfer');
 		Route::post('nfts/state', 'subasta\AdminNftController@state')->name('nft.state');
@@ -318,8 +320,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
 		Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
 		Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show'])->parameters([
-				'subastas_concursales' => 'subasta',
-				'lotes_concursales' => 'lote'
+			'subastas_concursales' => 'subasta',
+			'lotes_concursales' => 'lote'
 		]);
 
 		Route::post('bi/ajax', 'bi\AdminBiController@lotsInfo')->name('bi.reload');

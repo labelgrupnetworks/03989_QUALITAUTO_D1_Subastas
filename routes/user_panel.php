@@ -21,7 +21,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
 
 	# Lista de Ventas cedente
-	Route::get('{lang}/user/panel/sales', 'UserController@getSales');
+	Route::get('{lang}/user/panel/sales', 'UserController@getSales')->name('panel.sales');
 	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
 	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
 	#CARLANDIA

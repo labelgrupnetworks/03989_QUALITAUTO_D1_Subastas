@@ -205,9 +205,9 @@ $packengersMoneyValue = 0;
 										class="btn btn-step-reg"
 										disabled>{{ trans(\Config::get('app.theme').'-app.user_panel.pay') }}</button>
 									@endif
-
-									<a class="packengers-button-adjudicaciones" href="{{$urlCompletePackengers}}" target="_blank"><i class="fa fa-truck" aria-hidden="true"></i> Gestionar Envio</a>
-
+									{{--
+										<a class="packengers-button-adjudicaciones" href="{{$urlCompletePackengers}}" target="_blank"><i class="fa fa-truck" aria-hidden="true"></i> Gestionar Envio</a>
+ 									--}}
 								</div>
 								@elseif($data['user']->envcorr_cli == 'B')
 								<div class="adj">

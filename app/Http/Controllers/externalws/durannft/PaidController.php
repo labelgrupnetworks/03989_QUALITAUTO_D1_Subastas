@@ -21,6 +21,7 @@ class PaidController extends DuranNftController
 
 	public function informPaid($merchantID){
 		try{
+
 				if(!empty($merchantID)){
 					$xml =	$this->cartInfo($merchantID);
 
@@ -55,39 +56,31 @@ class PaidController extends DuranNftController
 
 
 	private function cartInfo($merchantID){
-		$transaccion = WebPayCart::where("IDTRANS_PAYCART", $merchantID)->first();
-		if(empty($transaccion)){
-			\Log::info("No hay carrito pagado con el idtrans $merchantID");
-			return ;
-		}
-		$info_trans = json_decode($transaccion->info_paycart);
+		//ver tipo de transaccion
+		$tipo = substr($merchantID,0,1) ;
 
-		$cli = FxCli::select("cod2_cli,cod_cli")->where("cod_cli",$transaccion->cli_paycart )->first();
-		if(empty($cli)){
-			\Log::info("No hay cliente con el cod_cli ". $transaccion->cli_paycart);
-			return ;
-		}
-		$info["codigopersona"] =$cli->cod2_cli;
-		$info["numeroPedido"] = $merchantID;
-
-		$info["enviarfactura"] = 1;
-
-		# 4-tarjeta; 6-bizum
-		if($info_trans->paymethod == "bizum"){
-			$formaPago= 6;
-		}else{
-			$formaPago= 4;
-		}
-		$info["formaPago"] = $formaPago;
+		#si es una factura
+		if ($tipo == "T"){
+			$transaccion = WebPayCart::where("IDTRANS_PAYCART", $merchantID)->first();
+			if(empty($transaccion)){
+				\Log::info("No hay carrito pagado con el idtrans $merchantID");
+				return ;
+			}
+			$info_trans = json_decode($transaccion->info_paycart);
+			$paymethod = $info_trans->paymethod;
 
 
-		$info["modoVenta"] = 9;#9-NFT ;6-galeria 5-subasta online; 3-venta directa online;
-		#falta poner campo de texto
+			$cli = FxCli::select("cod2_cli,cod_cli")->where("cod_cli",$transaccion->cli_paycart )->first();
+			if(empty($cli)){
+				\Log::info("No hay cliente con el cod_cli ". $transaccion->cli_paycart);
+				return ;
+			}
+			$info["codigopersona"] =$cli->cod2_cli;
 
-		$info["articulos"] = array();
-		#cargamos datos de los lotes
-		$fgasigl0 = new FgAsigl0();
-		#Crear where  de subastas y referencias
+
+			#cargamos datos de los lotes
+			$fgasigl0 = new FgAsigl0();
+			#Crear where  de subastas y referencias
 			$auctions = array();
 			foreach($info_trans->lots as $lot){
 				if(empty( $auctions[$lot->cod_sub])){
@@ -96,25 +89,102 @@ class PaidController extends DuranNftController
 				$auctions[$lot->cod_sub][] = $lot->ref;
 			}
 
-			$refLots=" ( ";
+
+		}elseif ($tipo == "P"){
+			$pago = new Payments();
+
+			$fact = $pago->getInfTransExt($merchantID);
+			if(empty($fact)){
+				\Log::info("No hay lotes pagados con el merchandId $merchantID");
+				return ;
+			}
+
+			$csubArray =  $pago->getFGCSUB0($fact->emp_csub0ext,$fact->npre_csub0ext,$fact->apre_csub0ext);
+			if(count($csubArray) == 0){
+				\Log::info("No se ha podido recuperar el csub con los datos ".$fact->emp_csub0ext." ".$fact->npre_csub0ext. " " . $fact->apre_csub0ext);
+				return ;
+			}
+			$csub = head($csubArray);
+			$cli = FxCli::select("cod2_cli,cod_cli")->where("cod_cli",$csub->cli_csub0 )->first();
+			if(empty($cli)){
+				\Log::info("No hay cliente con el cod_cli ". $csub->cli_csub0);
+				return ;
+			}
+			$info["codigopersona"] =$cli->cod2_cli;
+
+			$extraInfo =  $pago->getEXTRAINF($fact->apre_csub0ext, $fact->npre_csub0ext);
+
+			$info_trans = json_decode($extraInfo->extrainf_csub0);
+			$paymethod = "creditcard";
+			foreach($info_trans as $subasta){
+				foreach($subasta as $lote){
+					$paymethod = $lote->inf->paymethod;
+				}
+			}
+
+
+
+			$lotesCsub = $pago->getLotsFact($fact->apre_csub0ext, $fact->npre_csub0ext);
+
+
+			#Crear where  de subastas y referencias
+			$auctions = array();
+			foreach($lotesCsub as $lot){
+				if(empty( $auctions[$lot->sub_csub])){
+					$auctions[$lot->sub_csub] = Array();
+				}
+				$auctions[$lot->sub_csub][] = $lot->ref_csub;
+			}
+
+
+		}else{
+			\Log::info("tipo de pago no contemplado en webservice Duran NFT");
+		}
+
+		#Parte comun de coger lotes tanto si es
+		$refLots=" ( ";
 			$or = "";
 			foreach ($auctions as $cod_sub => $lots){
 				$refLots.= "$or (sub_asigl0 = '$cod_sub' and ref_asigl0 in (". implode(",", $lots) .") )";
 				$or = " OR ";
 			}
 			$refLots.=" )";
-		#FIN de Crear where  de subastas y referencias
 
 
+		#cargamos datos de los lotes
+		$fgasigl0 = new FgAsigl0();
 		$fgasigl0 = $fgasigl0->GetLotsByRefAsigl0($refLots)->leftjoinAlm();
-		$lots = $fgasigl0->select("REF_ASIGL0,SUB_ASIGL0, NUM_HCES1, LIN_HCES1, IDORIGEN_ASIGL0, DESC_HCES1, DES_ALM, DIR_ALM, ALM_HCES1, alto_hces1, ancho_hces1, grueso_hces1,   IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, PERMISOEXP_HCES1, SEC_HCES1, PC_HCES1, TRANSPORT_HCES1, COD2_CLI AS PROPIETARIO, COMP_HCES1")
-		->LeftJoinOwnerWithHces1()->get();
+		$lots = $fgasigl0->select("REF_ASIGL0,SUB_ASIGL0, TIPO_SUB,  NUM_HCES1, LIN_HCES1, IDORIGEN_ASIGL0, DESC_HCES1, DES_ALM, DIR_ALM, ALM_HCES1, alto_hces1, ancho_hces1, grueso_hces1, HIMP_CSUB , BASE_CSUB ,   IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, PERMISOEXP_HCES1, SEC_HCES1, PC_HCES1, TRANSPORT_HCES1, COD2_CLI AS PROPIETARIO, COMP_HCES1")
+		->LeftJoinOwnerWithHces1()->JoinCSubAsigl0()->get();
+
+
+		# 4-tarjeta; 6-bizum
+		if($paymethod == "bizum"){
+			$formaPago= 6;
+		}else{
+			$formaPago= 4;
+		}
+
+		$info["numeroPedido"] = $merchantID;
+
+		$info["enviarfactura"] = 1;
+
+
+		$info["formaPago"] = $formaPago;
+
+
+		$info["modoVenta"] = 9;#9-NFT ;6-galeria 5-subasta online; 3-venta directa online;
+		#falta poner campo de texto
+
+		$info["articulos"] = array();
+
 
 		$importeTotal = 0;
 
 		 #pongo el valor * 100 ya que el iva lo devolverá con decimales
 		$ivaUser = \Tools::TaxForEuropean($cli->cod_cli) *100;
-		 #los lotes  tienen iva en el precio por lo que hay que calcularlo sin iva siempre, no podemos usar el iva del usuario, si no el general
+
+		#los lotes  tienen iva en el precio por lo que hay que calcularlo sin iva siempre, no podemos usar el iva del usuario, si no el general
 		$payments = new Payments();
 		$ivaGeneral = $payments->getIVA(date('Y-m-d H:i:s'),'01');
 
@@ -128,20 +198,14 @@ class PaidController extends DuranNftController
 
 			#no hay que tener en cuenta el iva de la comisión,
 			$caracteristicas = FgCaracteristicas_Hces1::getByLot( $lot->num_hces1, $lot->lin_hces1);
-
-
-
-			#notificar al propietario
-			$email = new EmailLib('LOT_SOLD_ASSIGNOR');
-			if (!empty($email->email)) {
-				 #si no quieren que se envie el correo no pondran el email
-				if(!empty($autor) && !empty($autor->email_artist)){
-					$email->setLot($lot->sub_asigl0, $lot->ref_asigl0);
-					$email->setTo($autor->email_artist,$autor->name_artist);
-					$email->setName($autor->name_artist);
-
-					$email->send_email();
-				}
+			if($lot->tipo_sub == 'O'){
+				$price = $lot->himp_csub;
+				$paid = $price;
+				$importesiniva= round($price / (1 + ($ivaUser/100)),2);
+			}else{
+				$price = $lot->impsalhces_asigl0;
+				$paid =\Tools::PriceWithTaxForEuropean($price,$cli->cod_cli) ;
+				$importesiniva= round($price / (1 + $ivaGeneral),2);
 			}
 
 			#notificar al admin
@@ -149,8 +213,9 @@ class PaidController extends DuranNftController
 			if(!empty($email->email)){
 				$email->setUserByCod($cli->cod_cli,false);
 				$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
-				$email->setPrice(\Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli),"",2) );
+				$email->setPrice(\Tools::moneyFormat($paid,"",2));
 				$email->setTo(\Config::get('app.admin_email'));
+
 				$email->send_email();
 			}
 
@@ -163,7 +228,7 @@ class PaidController extends DuranNftController
 		   $lote["referencia"] = $lot->sub_asigl0 ."-". $lot->ref_asigl0 ;
 
 
-		   $lote["importesiniva"] =  round($lot->impsalhces_asigl0 / (1 + $ivaGeneral),2);
+		   $lote["importesiniva"] =  $importesiniva;
 
 		   $lote["tipoiva"] =$ivaUser;   # indicar el iva que tiene 21 o 0 ;
 		   $lote["vendedor"] =$lot->propietario;  # codigo artista ;
@@ -178,7 +243,7 @@ class PaidController extends DuranNftController
 		   $img = \Tools::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
 		   $lote["imagen"] =base64_encode(file_get_contents($img));    # imagen bits ;
 
-		   $lote["total"] = \Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli)  ;# precio final
+		   $lote["total"] = $paid  ;# precio final
 
 		   #borrar caracteristicas que para duran no son caracteristicas y por lo tanto no se deben enviar
 		 //  unset($caracteristicas[1]);
@@ -203,8 +268,9 @@ class PaidController extends DuranNftController
 	   #importe total pagado, lo ponemso al final por que necesitamos calcularlo en base a los lotes
 	   $info["importeTotal"] = $importeTotal;
 	   $info["formaiva"] = $ivaUser > 0? 1:2; #1-IVA incluido en el precio; 2-IVA exento
-
+	   #comento correo hay que reactivarlo
 	   $this->sendConfirmationMail($info);
+
 		return $this->createXMLPaid( $info);
 	}
 
@@ -268,14 +334,15 @@ class PaidController extends DuranNftController
 	public function sendConfirmationMail($info){
 		$cliente = FxCli::select("NOM_CLI, DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, PAIS_CLI, EMAIL_CLI ")->where("cod2_cli", $info["codigopersona"])->first();
 
-		$totalPagar =$info["importeTotal"] + $info["ivaTotal"]  ;
+
 
 		$infoFacturación =  $cliente->nom_cli."<br>". $cliente->dir_cli.$cliente->dir2_cli." <br> ".$cliente->pob_cli.", ".$cliente->pro_cli.", ".$cliente->cp_cli."<br> ".$cliente->pais_cli." <br> "."T: ".$cliente->tel1_cli;
 
 		$email = new EmailLib('NOTIFICAR_PAGO_DURAN');
 		$email->setAtribute("INFO_FACTURACION",$infoFacturación);
 		$email->setAtribute("NUM_PEDIDO",$info["numeroPedido"]);
-		$email->setAtribute("TOTAL",\Tools::moneyFormat( $info["importeTotal"] + $info["ivaTotal"]," €",2) );
+		$email->setAtribute("NAME",$cliente->nom_cli);
+		$email->setAtribute("TOTAL",\Tools::moneyFormat( $info["importeTotal"] ," €",2) );
 	#solo tienen 4-tarjeta; 6-bizum
 		if($info["formaPago"] == 4){
 			$infoPago= trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard');
@@ -286,16 +353,14 @@ class PaidController extends DuranNftController
 
 		$infoLots = "";
 		foreach($info["lotes"] as $lote){
-			$infoLots .= "<tr bgcolor=\"#efefef\"> ";
-			$infoLots .= "<td><p style=\"padding-left: 5px;\"><strong>".$lote["titulo"]."</strong></p></td>";
-			$infoLots .= "<td style=\"text-align: center;\">".$lote["codigoArticulo"] ."</td>";
-
-			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".\Tools::moneyFormat($lote["total"] + $lote["iva"]," €",2) ."</td>";
+			$infoLots .= "<tr bgcolor=\"#efefef\" style=\"text-align: center;\" >";
+			$infoLots .= "<td><p ><strong>".$lote["titulo"]."</strong></p></td>";
+			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".\Tools::moneyFormat($lote["total"] ," €",2) ."</td>";
 			$infoLots .= " </tr> ";
 		}
 
 		$email->setAtribute("INFO_ARTICULOS",$infoLots);
-		$email->setAtribute("TOTAL_ARTICULOS",\Tools::moneyFormat( $info["importeTotal"] + $info["ivaTotal"]," €",2) );
+
 
 		$email->setTo($cliente->email_cli, $cliente->nom_cli);
 		$email->setBcc(\Config::get('app.admin_email'));

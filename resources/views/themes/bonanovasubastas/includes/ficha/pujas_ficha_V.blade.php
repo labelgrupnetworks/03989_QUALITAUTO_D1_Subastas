@@ -52,7 +52,9 @@
 				$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
 				$urlCompletePackengers = \Config::get('app.packengers').$lotFotURL
 			?>
+			{{--
 			<div class="col-xs-12"><a class="packengers-button-ficha" href="{{$urlCompletePackengers}}" target="_blank"><i class="fa fa-truck" aria-hidden="true"></i> Calcula los gastos de envío</a></div>
+				--}}
 		</div>
     </div>
 

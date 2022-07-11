@@ -67,12 +67,13 @@
                         </tr>
                         <?php
                             $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
-                        ?> @foreach($indices as $indice)
+                        ?>
+						@foreach($indices as $indice)
                         <tr id="order-row-tpl" style="display: table-row;">
-                            <td class="class-content-orders" onclick="window.location='{{$data['url']}}?first_lot={{$indice->dref_subind}}&last_lot={{$indice->href_subind}}&index_hide=1'" style="padding-left: 10px">
+                            <td class="class-content-orders" @if(!empty($indice->dref_subind)) onclick="window.location='{{$data['url']}}?first_lot={{$indice->dref_subind}}&last_lot={{$indice->href_subind}}&index_hide=1'" @endif style="padding-left: 10px">
                                 <div class="nt-block-th left">
                                     <span style="<?= $indice->nivel_subind == 2? " padding-left:30px;font-size:0.9em; " : " "    ?> <?= $indice->nivel_subind == 3? "padding-left:60px;font-size:0.9em; " : " "    ?>">
-                                        {{$indice->des_subind}}
+                                        {!! $indice->des_subind ?? '&nbsp;' !!}
                                     </span>
                                 </div>
                             </td>
@@ -85,9 +86,7 @@
                             <td class="class-content-orders class-content-orders-max">
                                 <div class="nt-block-th">
                                     <span>{{$indice->href_subind}}</span>
-
                                 </div>
-
                             </td>
                         </tr>
                         @endforeach

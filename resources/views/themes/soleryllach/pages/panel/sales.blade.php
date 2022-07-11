@@ -21,7 +21,7 @@
 
 			@include('pages.panel.menu_micuenta')
 
-			<div class="row">
+			{{-- <div class="row">
 				<div class="col-xs-12 mt-2">
 					<div class="user-account-title-content sales-filters">
 						<div class="user-account-menu-title extra-account">
@@ -55,37 +55,43 @@
 					</form>
 
 				</div>
-			</div>
+			</div> --}}
 
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 
+					@php
+						$auctionsTypes = session('user.admin') ? ['S', 'A'] : ['S'];
+						$subastas = $subastas->flatten()->whereIn('subc_sub', $auctionsTypes)->groupBy('cod_sub');
+					@endphp
+
 					@foreach($subastas as $key_sub => $subasta)
 					<div class="panel-heading">
-						<a data-toggle="collapse" href="#{{$subasta[0]->cod_sub}}">
-							<h4 class="panel-title">{{$subasta[0]->name}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->orders_start, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->end, 'Y-m-d H:i:s', 'd/m/Y') }}</h4>
+						<a data-toggle="collapse" href="#{{ $key_sub }}">
+							<h4 class="panel-title">{{ $key_sub }} - {{$subasta[0]->name}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->orders_start, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->end, 'Y-m-d H:i:s', 'd/m/Y') }}</h4>
 						</a>
 					</div>
 
-					<div id="{{$subasta[0]->cod_sub}}"
+					<div id="{{ $key_sub }}"
 						class="panel-collapse collapse <?= $loop->first ? 'in':' ';?>">
 						<div class="panel-body">
 							<div class="table-responsive">
-								<table class="table table-striped table-custom">
+								<table class="table table-striped table-custom" style="width:100%">
 									<thead>
 										<tr>
-										<tr>
-											<th> </th>
+											<th class="no-sort sorting_disabled"> </th>
+											<th class="hidden">Index</th>
+											<th>{{ trans("$theme-app.user_panel.reference") }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</th>
-											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th></th>
+											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</th>
 											<th>{{ trans("$theme-app.user_panel.bids_numbers") }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</th>
 										</tr>
-										</tr>
 									</thead>
 									<tbody>
-										@foreach($subasta->sortBy('ref_asigl0') as $lote)
+
+										@foreach($subasta->sortBy('lin_hces1')->sortByDesc('num_hces1') as $lote)
 
 										@php
 										$url_friendly = !empty($lote->webfriend_hces1) ? $lote->webfriend_hces1 : str_slug($lote->titulo_hces1);
@@ -108,7 +114,9 @@
 											<td>
 												<a href="{{$url_friendly}}"><img src="{{ \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1) }}" height="42"></a>
 											</td>
-											<td>&nbsp;&nbsp;{{$lote->ref_asigl0}}</td>
+											<td class="hidden">{{$loop->index}}</td>
+											<td>{{$lote->num_hces1}} / {{ $lote->lin_hces1 }}</td>
+											<td>{{$lote->ref_asigl0}}</td>
 
 											<td>
 												@if(strtotime($lote->end) < time() && $hay_pujas)

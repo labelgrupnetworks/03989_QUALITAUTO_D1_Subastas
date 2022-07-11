@@ -56,13 +56,17 @@
         <p class="shared">{{ trans(\Config::get('app.theme').'-app.lot.share_lot') }}</p>
         @include('includes.ficha.share')
     </div>
+
 	<div class="row">
 		<?php
 			$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
 			$urlCompletePackengers = \Config::get('app.packengers').$lotFotURL
 		?>
+	{{--
 		<div class="col-xs-12"><a class="packengers-button-ficha" href="{{$urlCompletePackengers}}" target="_blank"><i class="fa fa-truck" aria-hidden="true"></i> Calcula los gastos de envío</a></div>
+	--}}
 	</div>
+
 </div>
 
 <div class="info_single col-xs-12 ficha-puja-o">

@@ -1,5 +1,11 @@
-<div class="{{$class_square}} square">
+@php
+	$subastaInst = new App\Models\Subasta();
+	$videos = [];
+	//$videos = $subastaInst->getLoteVideos($item);
+@endphp
 
+
+<div class="{{$class_square}} square">
 	{{--  he puesto aquí los iconos por que el video tiene enlace y si lo meto dentro del otro enlace el html genera un momton de elementos a href abriendolos y cerrandolos--}}
 	@if(!empty($item->contextra_hces1))
 	<div class="video-wrapper">
@@ -123,6 +129,10 @@
 						{{-- añado una linea más para las subastas W abiertas pujas, que se muestre el numero de licitadores y de pujas  --}}
 						<p class="salida" style="text-align:right" data-position="number-bids">
 							@if ($item->tipo_sub == 'W' &&  ($item->subc_sub == 'S' ||   $item->subc_sub == 'A') &&  ( $item->subabierta_sub == 'P' || $item->subabierta_sub == 'O'))
+
+								@if (!empty($videos))
+									<i class="fa fa-play" style="margin-right: 10px;" width="16px" height="16px" aria-hidden="true"></i>
+								@endif
 								<img src="/default/img/icons/hammer.png" style="margin-right: 5px;" width="16px" height="16px">{{ $item->total_pujas }}
 								<img src="/default/img/icons/licits.png" style="margin-left: 10px; margin-right: 5px;" width="16px" height="16px">{{ $item->total_postores }}
 							@endif

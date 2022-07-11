@@ -1303,6 +1303,11 @@ class ToolsServiceProvider extends ServiceProvider
 		return $collection->downloadExcel("$fileName.xlsx", \Maatwebsite\Excel\Excel::XLSX, $withHeading);
 	}
 
+	public static function exportCollectionToCsv($collection, $fileName, $withHeading = true)
+	{
+		return $collection->downloadExcel("$fileName.csv", \Maatwebsite\Excel\Excel::CSV, $withHeading);
+	}
+
 	public static function storeCollectionToCSV($collection, $fileName, $withHeading = true)
 	{
 		return $collection->storeExcel("./$fileName.csv", 'public_html', \Maatwebsite\Excel\Excel::CSV, $withHeading);

@@ -35,10 +35,6 @@
         margin-top: 10px;
         text-align: start;
     }
-
-	.container-lot-large {
-		height: 330px;
-	}
 }
 
 
@@ -337,10 +333,6 @@
         margin-bottom: 10px;
     }
 
-	.container-lot-large {
-		height: 660px;
-	}
-
 	.img_lot img {
 		margin: auto;
 		height: 300px;
@@ -461,10 +453,6 @@
     .save_orders {
         width: 100vh;
     }
-
-	.container-lot-large {
-		height: 560px;
-	}
 
 	.img_lot img {
 		margin: auto;

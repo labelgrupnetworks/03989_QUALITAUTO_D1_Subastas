@@ -194,7 +194,11 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                             }
                         }
 
-
+						$rarityLot = \App\Models\V5\FgHces1::getRarity()->addSelect('nvl(otv_lang."catalog_3_lang",otv."catalog_3") AS CATALOG_3')->where([ ['num_hces1', $item->num_hces1],['lin_hces1', $item->lin_hces1] ])->first();
+						$rarity = null;
+						if($rarityLot){
+							$rarity = $rarityLot->catalog_3;
+						}
                         $class_square = 'col-xs-12 col-sm-6 col-lg-4';
                     ?>
                     @include('includes.lotlist')

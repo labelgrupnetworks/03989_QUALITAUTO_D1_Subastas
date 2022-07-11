@@ -23,14 +23,14 @@
             <a title="{{ $titulo}}" <?= $url ?> >
                 <div class="border_item_img">
                     <div class="item_img">
-                        <img src="{{Tools::url_img('lote_medium',$bann->num_hces1,$bann->lin_hces1)}}" alt="{{ $titulo}}">
-                        @if( $bann->retirado_asigl0 !='N')
-                            <div class="retired">{{ trans(\Config::get('app.theme').'-app.lot.retired') }}</div>
+						@if( $bann->retirado_asigl0 !='N')
+						<div class="retired">{{ trans(\Config::get('app.theme').'-app.lot.retired') }}</div>
                         @elseif(\Config::get('app.awarded') && $bann->cerrado_asigl0 == 'S' &&  !empty($bann->max_puja) )
-                            <div class="retired" style ="background:#777777;text-transform: lowercase;">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
-                            </div>
+						<div class="retired" style ="background:#777777;text-transform: lowercase;">
+							{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+						</div>
                         @endif
+						<img src="{{Tools::url_img('lote_medium',$bann->num_hces1,$bann->lin_hces1)}}" alt="{{ $titulo}}">
                     </div>
                 </div>
             </a>

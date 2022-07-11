@@ -97,7 +97,7 @@
 
 															<div class="mt-1">
 
-																@if(\Config::get("app.paymentUP2") )
+																@if(\Config::get("app.paymentUP2")  || Config::get('app.paymentRedsys') )
 																	<input id="paycreditcard"  type="radio" name="paymethod" value="creditcard" checked="checked">
 																	<label for="paycreditcard"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}  <?php /* <span class="fab fa-cc-visa" style="font-size: 20px;"></span>*/ ?>  </span></label>
 																	<br>

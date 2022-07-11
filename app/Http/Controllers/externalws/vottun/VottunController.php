@@ -153,8 +153,9 @@ class VottunController extends Controller
 				if(empty($nft->path_nft)){
 					return $this->responseError("noFile");
 				}
+				$path = storage_path("app/$nft->path_nft");
 
-				$file = Psr7\Utils::tryFopen($nft->path_nft, 'r');
+				$file = Psr7\Utils::tryFopen($path, 'r');
 				$filenameArray = explode("/", $nft->path_nft);
 				$filename = array_pop($filenameArray);
 
@@ -180,7 +181,7 @@ class VottunController extends Controller
 
 				$data = new StdClass();
 
-				$data->artist = $nft->artist_nft;
+				$data->artist = $nft->artista_nft;
 				$data->created = date("d/m/Y" ,strtotime($nft->created_nft));
 				$data->year = date("Y" ,strtotime($nft->created_nft));
 				$data->mediaType = $nft->media_type_nft;
@@ -655,6 +656,17 @@ class VottunController extends Controller
 				"walletRequestTicket": "HjgLoqlkjpQhpen_cK7mMdYwrClZbNzx9v2lsDJDwG2mrIggQxebVCv7O-c0Ewgp3wByf72PGa_a4Er9cLmMZA=="
 			}
 			*/
+		}
+
+		public function vottunNetworks( ){
+			$type="nft";
+			$function = "networks";
+			$method= "GET";
+			$parameters = [
+			];
+
+			return $this->VottumRequest($type, $method   ,$parameters, $function);
+
 		}
 
 		/* FIN FUNCIONES CONTRA LA RED DE VOTTUN */

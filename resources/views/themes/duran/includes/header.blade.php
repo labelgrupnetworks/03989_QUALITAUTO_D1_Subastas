@@ -153,6 +153,8 @@ use App\libs\TradLib as TradLib;
 --}}
 				<li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}"><span>{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</span></a></li>
 
+				<li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}"><span>{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</span></a></li>
+
 				<li>
 					<a class="color-letter d-flex link-header align-items-center hidden-xs">
 					  <span>{{trans(\Config::get('app.theme').'-app.foot.descubre') }}</span>

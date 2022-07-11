@@ -124,10 +124,13 @@ Route::get(\Routing::translateSeo('subastas-historicas'), 'SubastaController@sub
 Route::get(\Routing::translateSeo('subastas-historicas-presenciales'), 'SubastaController@subastas_historicas_presenciales')->name('subastas.historicas_presenciales');
 Route::get(\Routing::translateSeo('subastas-historicas-online'), 'SubastaController@subastas_historicas_online')->name('subastas.historicas_online');
 Route::get(\Routing::translateSeo('subastas-online'), 'SubastaController@subastas_online')->name('subastas.online');;
-Route::get(\Routing::translateSeo('subastas-permanentes'), 'SubastaController@subastas_permanentes')->name('subastas.permanentes');;
+Route::get(\Routing::translateSeo('subastas-permanentes'), 'SubastaController@subastas_permanentes')->name('subastas.permanentes');
 Route::get(\Routing::translateSeo('venta-directa'), 'SubastaController@venta_directa')->name('subastas.venta_directa');
 Route::get(\Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones');
 Route::get(\Routing::translateSeo('subastas-activas'), 'SubastaController@subastas_activas')->name('subastas.activas');
+
+Route::get(\Routing::translateSeo('haz-oferta'), 'SubastaController@haz_oferta')->name('subastas.haz_oferta');
+Route::get(\Routing::translateSeo('subasta-inversa'), 'SubastaController@subasta_inversa')->name('subastas.subasta_inversa');
 
 
 Route::get(\Routing::slug('sub') . '/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
@@ -172,6 +175,7 @@ Route::post(\Routing::slug('api') . '/ol/subasta-{cod}', 'SubastaTiempoRealContr
 Route::post(\Routing::slug('api') . '/contraofertar/subasta-{cod}', 'SubastaTiempoRealController@contraOfertar')->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post(\Routing::slug('api') . '/check-contraofertar/subasta-{cod}', 'SubastaTiempoRealController@preContraOfertar')->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post(\Routing::slug('api') . '/comprar-aux/subasta-{cod}', 'SubastaTiempoRealController@comprarAux')->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::post('api-ajax/makeOffer', 'SubastaTiempoRealController@makeOffer');
 
 ////NGAMEZ ejemplos de abajo
 //Route::get(\Routing::slug('subasta/hc').'-{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));

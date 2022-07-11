@@ -339,6 +339,8 @@ class AdminLotController extends Controller
 
 	public function update(UpdateLoteApiRequest $request, $cod_sub, $ref_asigl0)
 	{
+		$response = ['success' => [], 'warning' => [], 'errors' => []];
+
 		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
 
 		if (!$fgAsigl0) {
@@ -369,8 +371,12 @@ class AdminLotController extends Controller
 		}
 
 		//Nft
+		$resultNftProcess = null;
 		if($request->has('es_nft_asigl0')) {
-			$this->nftProcess($request, $fgAsigl0);
+			$resultNftProcess = $this->nftProcess($request, $fgAsigl0);
+			if($resultNftProcess->status == 'error') {
+				$response['errors']['nft'] = $resultNftProcess->message;
+			}
 		}
 
 		//files
@@ -405,10 +411,15 @@ class AdminLotController extends Controller
 		$result = json_decode($json);
 		if ($result->status == 'ERROR') {
 			//return back()->withErrors(['errors' => [$json]])->withInput();
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $ref_asigl0]))->with(['warning' => ['Images' => $json], 'success' => array(trans('admin-app.title.updated_ok'))]);
+			$response['warning']['Images'] = $json;
+			$response['success'][] = trans('admin-app.title.updated_ok');
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'ref_asigl0' => $ref_asigl0]))
+					->with($response);
 		}
 
-		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
+		$response['success'][] = trans('admin-app.title.updated_ok');
+
+		return back()->with($response);
 	}
 
 	public function destroy($cod_sub, $ref_asigl0)
@@ -433,17 +444,17 @@ class AdminLotController extends Controller
 
 	public function publishNft($cod_sub, $ref_asigl0)
 	{
-
 		$lote = FgAsigl0::select("NUMHCES_ASIGL0, LINHCES_ASIGL0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0", $ref_asigl0)->first();
 
 		$vottun = new VottunController();
-		$res =$vottun->uploadFile($lote->numhces_asigl0, $lote->linhces_asigl0);
+		$res = $vottun->uploadFile($lote->numhces_asigl0, $lote->linhces_asigl0);
 
 		if($res->status == "success"){
 			$res = $vottun->uploadMetadata($lote->numhces_asigl0, $lote->linhces_asigl0);
 		}
 
-		return response()->json($res);
+		return $res;
+		//return response()->json($res);
 	}
 
 	public function getOrder($cod_sub)
@@ -588,22 +599,21 @@ class AdminLotController extends Controller
 		//Si existe y viene el valor a N eliminamos info de NFT
 		if($nft && $request->get('es_nft_asigl0', 'N') == 'N'){
 			$this->deleteNft($request, $fgAsigl0);
-			return true;
+			return (object)['status' => 'success'];
 		}
 
 		//Si existe realizamos update
 		if($nft){
-			$this->updateNft($request, $fgAsigl0, $path_nft);
-			return true;
+			return $this->updateNft($request, $fgAsigl0, $path_nft);
 		}
 
 		//Si no existe y es nft viene a S lo creamos
 		if($request->get('es_nft_asigl0', 'N') == 'S'){
 			$this->createNft($request, $fgAsigl0, $path_nft);
-			return true;
+			return (object)['status' => 'success'];
 		}
 
-		return false;
+		return (object)['status' => 'error', 'message' => 'No se pudo procesar el archivo'];
 	}
 
 	protected function updateNft(Request $request, FgAsigl0 $fgAsigl0, $path_nft)
@@ -632,6 +642,11 @@ class AdminLotController extends Controller
 			['numhces_nft', $fgAsigl0->num_hces1],
 			['linhces_nft', $fgAsigl0->lin_hces1]
 		])->update($update);
+
+		if(!empty($request->publish_nft)){
+			return $this->publishNft($fgAsigl0->sub_asigl0, $fgAsigl0->ref_asigl0);
+		}
+		return (object)['status' => 'success'];
 	}
 
 	/**
@@ -981,9 +996,11 @@ class AdminLotController extends Controller
 				'created_nft' => FormLib::Readonly('created_nft', 0, $nftInfo->created_nft),
 				'artista_nft' => FormLib::Readonly('artista_nft', 0, $nftInfo->artista_nft),
 				'media_type_nft' => FormLib::Readonly('media_type_nft', 0, $nftInfo->media_type_nft),
-				'network_nft' => FormLib::Readonly('network_nft', 0, $nftNetworks[$nftInfo->network_nft]),
+				'network_nft' => FormLib::Readonly('network_nft', 0, !empty($nftNetworks[$nftInfo->network_nft]) ? $nftNetworks[$nftInfo->network_nft] : "" ),
 				'total_tokens_nft' => FormLib::Readonly('total_tokens_nft', 0, $nftInfo->total_tokens_nft),
 				'n_of_token_nft' => FormLib::Readonly('n_of_token_nft', 0, $nftInfo->n_of_token_nft),
+				'IPFS_file' => FormLib::Link($nftInfo->hashfile_nft, $nftInfo->hashfile_nft),
+				'IPFS_metadata' => FormLib::Link($nftInfo->hashmetadata_nft, $nftInfo->hashmetadata_nft),
 			];
 			return $formulario;
 		}

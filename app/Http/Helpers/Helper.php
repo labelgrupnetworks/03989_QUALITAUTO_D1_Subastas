@@ -58,3 +58,10 @@ if(!function_exists('array_except')){
     }
 }
 
+if (!function_exists('trim_explode')) {
+	function trim_explode($delimiter, $string)
+	{
+		return array_map('trim', explode($delimiter, $string));
+	}
+}
+

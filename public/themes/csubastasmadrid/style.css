@@ -260,55 +260,60 @@ color-btn-client {
 }
 
 .btn-1 {
-    background: transparent !important;
+    background: transparent;
     transition: .2s all linear;
-    color: var(--black-color) !important;
+    color: var(--black-color);
     text-transform: uppercase;
 }
 
 .btn-1:hover {
-    color: var(--gray-color-3) !important;
+    color: var(--gray-color-3);
 }
 
 .btn-2 {
 	width: 100%;
-    background: var(--brown-color-1) !important;
+    background: var(--brown-color-1);
     transition: .2s all linear;
-    color: var(--white-color) !important;
+    color: var(--white-color);
     text-transform: uppercase;
 }
 
 .btn-2:hover {
-    color: var(--gray-color-3) !important;
-	background-color: var(--gray-color-1) !important;
+    color: var(--gray-color-3);
+	background-color: var(--gray-color-1);
 }
 
 .btn-3 {
 	width: 100%;
-    background: transparent !important;
+    background: transparent;
     transition: .2s all linear;
-	border: var(--gray-color-3) solid 1px !important;
-    color: var(--black-color) !important;
+	border: var(--gray-color-3) solid 1px;
+    color: var(--black-color);
     text-transform: uppercase;
 }
 
-.btn-3:hover {
-    color: var(--gray-color-3) !important;
-	background: var(--gray-color-4) !important;
-	border: var(--gray-color-5) solid 1px !important;
+.btn-3:hover, div.item_subasta a.btn-lotes.btn-3:hover {
+    color: var(--gray-color-3);
+	background: var(--gray-color-4);
+	border: var(--gray-color-5) solid 1px;
+}
+
+div.item_subasta a.btn-lotes.btn-3 {
+	background-color: transparent;
+	color: var(--black-color);
 }
 
 .btn-4 {
 	width: 100%;
-    background: var(--green-color-1) !important;
+    background: var(--green-color-1);
     transition: .2s all linear;
-    color: var(--white-color) !important;
+    color: var(--white-color);
     text-transform: uppercase;
 }
 
 .btn-4:hover {
-    color: var(--white-color) !important;
-	background: var(--green-color-2) !important;
+    color: var(--white-color);
+	background: var(--green-color-2);
 }
 
 .btn-lot-grid {
@@ -1584,10 +1589,10 @@ div.sidebar_lot div.sidebar_lot_title {
 }
 
 div.list_lot div.item_lot {
-    padding-bottom: 15px;
+    padding-bottom: 5px;
     margin-bottom: 40px;
     border: 1px solid #ccc;
-    min-height: 495px;
+    /* min-height: 495px; */
     transition: 0.3s linear all;
     -webkit-transition: 0.3s linear all;
 }
@@ -1660,7 +1665,8 @@ div.list_lot div.item_lot p.salida,
 .item_lot_large p.salida,
 .item_home p.salida {
     font-size: 13px;
-    height: 18px;
+    min-height: 19px;
+	margin-bottom: 5px;
 }
 
 div.list_lot div.item_lot p.salida .timer {
@@ -1691,16 +1697,21 @@ div.list_lot div.item_lot p.puja span {
 
 div.list_lot div.item_lot div.border_img_lot {
     /*border: 1px solid #ccc;*/
-    min-height: 156px;
-    margin-bottom: 12px;
+    height: 215px;
+	margin-bottom: 5px;
+	position: relative;
 }
 
 div.list_lot div.item_lot div.img_lot,
 .item_subasta a .img-lot {
     text-align: center;
     position: relative;
-    height: 240px;
     overflow: hidden;
+}
+
+.item_subasta a .img-lot {
+	height: 240px;
+	display: flex;
 }
 
 .content_item_mini .img_lot {
@@ -1711,25 +1722,22 @@ div.list_lot div.item_lot div.img_lot,
     overflow: hidden;
 }
 
-div.list_lot div.item_lot div.img_lot img,
-.item_subasta a .img-lot img {
-    max-width: 100%;
-    max-height: 215px;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    position: relative;
-    width: auto !important;
-    margin: 0 auto !important;
+div.list_lot div.item_lot div.img_lot img, .item_subasta a .img-lot img {
     display: inherit !important;
+	width: 100%;
+	max-height: 215px;
+	object-fit: contain;
+	padding: 10px;
+}
+
+div.list_lot div.item_lot div.img_lot img {
+	padding: 10px;
 }
 
 div.single div.img_single_border {
     border: 1px solid #ccc;
-    /* min-height: 485px; */
-	height: auto;
-    margin-bottom: 20px;
+	min-height: 485px;
+	margin-bottom: 20px;
     position: relative;
 }
 
@@ -2219,9 +2227,10 @@ div.data-container-large {
 }
 
 div.data-container {
-    min-height: 184px;
-    float: left;
-    min-height: 215px;
+    /* min-height: 184px;
+	float: left;
+	min-height: 215px; */
+	max-width: 100%;
 }
 
 .data-container .desc_lot {
@@ -2234,6 +2243,8 @@ div.data-container {
     -webkit-box-orient: vertical;
     display: -webkit-box; */
     margin-bottom: 10px;
+	height: 62px;
+	overflow: hidden;
 }
 
 .item_lot .data-container .data-price,
@@ -3528,7 +3539,7 @@ div.newsletter input.newsletter-input {
 
 /* --- NUEVO LOT LIST LARGE --- */
 
-/* .item_lot_large {
+.item_lot_large {
     height: 250px;
     margin: 2px 0;
     transition: .2s all linear;
@@ -3540,9 +3551,9 @@ div.newsletter input.newsletter-input {
     height: 80px;
 }
 
-.lot-desc {
+/* .lot-desc {
     background: #EAECEE;
-}
+} */
 
 .img-lot-large .img_lot {
     display: flex;
@@ -3595,7 +3606,7 @@ div.item_lot_large {
     flex: 8;
 }
 
-.salida-estima .top-title,
+/* .salida-estima .top-title,
 .puja-actual .top-title,
 .lot-name {
     background: #EAECEE;
@@ -3610,21 +3621,21 @@ div.item_lot_large {
     min-width: 121px;
     display: flex;
     flex-direction: column;
-}
+} */
 
 .puja-actual {
     flex: 2;
     min-width: 121px;
 }
 
-.price {
+/* .price {
     text-align: center;
     text-align: center;
     height: 100%;
     justify-content: center;
     align-items: center;
     display: flex;
-}
+} */
 
 .price .input-group input {
     height: 25px;
@@ -3642,7 +3653,7 @@ div.item_lot_large {
 
 .top-title {
     text-align: center;
-    padding: 0 5px;
+    /* padding: 0 5px; */
     text-align: center;
 }
 
@@ -3660,7 +3671,7 @@ div.item_lot_large {
     text-align: center;
 }
 
-.lot-desc {
+/* .lot-desc {
     border-left: 1px solid grey;
 }
 
@@ -3672,7 +3683,7 @@ div.item_lot_large {
 .lot-name,
 .top-title {
     border-bottom: 1px solid grey;
-}
+} */
 
 .price .input-group {
     display: flex;
@@ -3694,20 +3705,56 @@ div.item_lot_large {
     font-weight: 900;
     margin: 0;
     background: var(--primary-color);
-} */
+}
 
 .container-lot-large {
-	height: 290px;
     margin: 2px 0;
     transition: .2s all linear;
 	border: #ccc solid 1px;
 	border-bottom: var(--brown-color-1) solid 4px;
 	margin-bottom: 1rem;
 	padding: 1rem;
+	padding-top: 3rem;
 }
+
+.container-lot-large .lot-title {
+	margin-top: 0;
+}
+
+.lot-large-icons-wrapper {
+	position: absolute;
+	padding: 1rem;
+	display: flex;
+	gap: 5px;
+}
+
+.lot-large-camera-wrapper {
+	position: relative;
+	width: 20px;
+	height: 20px;
+}
+
+.lot-large-camera-wrapper img {
+	position: absolute;
+}
+
+.lot-large-camera {
+	position: absolute;
+	height: 20px;
+	top: 2px;
+}
+
+.lot-large-plus {
+	position: absolute;
+	height: 8px;
+    right: -3px;
+    top: -1px;
+}
+
 
 .image-lot-large {
 	padding: 10px;
+	padding-top: 0;
 }
 
 .image-lot-large img {
@@ -3724,14 +3771,14 @@ div.item_lot_large {
 	height: auto;
 	max-height: 60px;
 }
-
+/*
 .salida-estima {
 	padding: 5px;
 }
 
 .puja-actual {
 	padding: 5px;
-}
+} */
 
 .salida-estima .top-title,
 .puja-actual .top-title {
@@ -4232,11 +4279,15 @@ div.content_faq a i {
     box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
 }
 
-.retired {
-	background-color: var(--brown-color-1) !important;
-	color: var(--black-color) !important;
-	text-align: center !important;
-	text-transform: uppercase !important;
+.container-lot-large .retired {
+
+	bottom: initial;
+    left: 0;
+    right: 0;
+	background-color: var(--brown-color-1);
+	color: white;
+	text-align: center;
+	text-transform: uppercase;
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
@@ -4804,6 +4855,78 @@ header .navbar-top .navbar-top-wrapper ul.list-lang a {
 	border-bottom: var(--brown-color-4) 2px solid;
 	height: 3px;
 	width: 200px;
+}
+
+
+.rarity-block {
+	visibility: hidden;
+	background-color: #78112f;
+    color: white;
+	margin: 0;
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.rarity-show {
+	visibility: visible;
+}
+
+div.list_lot div.item_lot div.title_lot, .data-container .square-lot.title_lot {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.camera-wrapper {
+	position: relative;
+	width: 25px;
+	height: 25px;
+	margin-left: auto;
+}
+
+.video-wrapper {
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	z-index: 100;
+	right: 60px;
+    top: 260px;
+}
+
+.video-wrapper button{
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.video-wrapper img {
+	width: 100%;
+	height: auto;
+}
+
+.camera-icon {
+	position: absolute;
+	/* right: 10px; */
+	/* bottom: 0px; */
+	/* top: 295px; */
+	z-index: 100;
+}
+
+.camera-icon img {
+	height: 20px;
+}
+
+.plus-icon {
+	position:absolute;
+	right: 0;
+	bottom: 10px;
+	/* top: 287px; */
+	z-index: 100;
+}
+
+.plus-icon img {
+	height: 8px;
 }
 
 /*

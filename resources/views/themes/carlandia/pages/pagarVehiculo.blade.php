@@ -4,7 +4,7 @@
 <div class="ml-1 mr-1" style="text-align: justify;font-size: 16px;" >
 	<p style="text-align: left;">¡Enhorabuena! </p>
 
-	<p>En nombre de {{$prop_name}}, propietaria del vehículo, nos complace informarte que ha aceptado tu Oferta por el vehículo <strong>{{$lot_descweb}},</strong> ID {{$lot_ref}}, <strong>por {{$price_counteroffer}} (IVA incluido).</strong></p>
+	<p>Nos complace informarte que el vendedor <strong>ha aceptado tu oferta</strong> para comprar el vehículo <strong>{{$lot_descweb}},</strong> ID {{$lot_ref}}, <strong>por {{$price_counteroffer}} (IVA incluido).</strong></p>
 
 	<p>Como acabamos de indicarte por e-mail, para reservarlo a tu nombre, poder financiar su compra o pagarlo al contado y coordinar su entrega, por favor, <strong>procede a depositar la señal de {{$importe_reserva}} vía Redsys pulsando el botón de abajo.</strong></p>
 
@@ -36,10 +36,7 @@
 <div class="ml-1 mr-1" style="text-align: justify;font-size: 16px;" >
 	<p style="text-align: left;">¡Enhorabuena!</p>
 
-	<p>
-		En nombre de {{$prop_name}}, propietaria del vehículo, nos complace informarte que,
-		 te has adjudicado el vehículo <strong>{{$lot_descweb}},</strong> ID {{$lot_ref}},<strong> por {{$price}} (IVA incluido). </strong>
-	</p>
+	<p>Nos complace informarte que el vendedor <strong>ha aceptado tu oferta</strong> para comprar el vehículo <strong>{{$lot_descweb}},</strong> ID {{$lot_ref}}, <strong>por {{$price}} (IVA incluido).</strong></p>
 
 	<p>Para reservarlo a tu nombre, poder financiar su compra o pagarlo al contado y coordinar su entrega, por favor,
 		<strong> procede a depositar la señal de {{$importe_reserva}} vía Redsys pulsando el botón de abajo.</strong>

@@ -64,11 +64,11 @@ if (\Config::get('app.emp') == '003' || \Config::get('app.emp') == '004') {
     </div>
 
 	{{-- Banners de imagen de imagen y texto --}}
-{{--
+
     <div class="home-banner">
-        {!! \BannerLib::bannersPorKey('TEST_VIMEO', 'home-img-and-text-1', ['arrows' => false, 'dots' => false]) !!}
+        {!! \BannerLib::bannersPorKey('VIDEO_VIMEO', 'home-img-and-text-1', ['arrows' => false, 'dots' => false]) !!}
     </div>
---}}
+
 	<div class="home-banner">
         {!! \BannerLib::bannersPorKey('text-and-img-home-1', 'home-img-and-text-1', ['arrows' => false, 'dots' => false]) !!}
     </div>

@@ -885,6 +885,16 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
         $adj = DB::select($sql, $bindings);
     }
 
+	public function hasSales($cod_cli)
+	{
+		if(!$cod_cli){
+			return false;
+		}
+
+		$lotWithSale = FgHces1::getOwner()->where('cod_cli', $cod_cli)->first();
+
+		return $lotWithSale ? true : false;
+	}
 
     #Ventas de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
     public function getSales($filters = null)

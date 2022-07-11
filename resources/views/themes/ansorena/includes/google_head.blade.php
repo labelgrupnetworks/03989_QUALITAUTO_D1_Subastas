@@ -43,7 +43,13 @@
 	/></noscript>
 	<!-- End Facebook Pixel Code -->
 
-
+@else
+<script>
+function ga() {
+	console.log(arguments.callee.name, arguments);
+	return false;
+}
+</script>
 @endif
 <?php
 

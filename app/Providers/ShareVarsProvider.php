@@ -42,7 +42,10 @@ class ShareVarsProvider extends ServiceProvider
 
 		//para seleccionar a que vistas afecta (* a todas, ['name ruta', 'name ruta'] a varias)
 		//se pueden usar la session dentro del composer
-		View::composer(['includes.header', 'includes.footer'], GlobalComposer::class);
+		if(config('app.global_auctions_var', true)){
+			View::composer(['includes.header', 'includes.footer'], GlobalComposer::class);
+		}
+
     }
 
     public function register()

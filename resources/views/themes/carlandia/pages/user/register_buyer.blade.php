@@ -83,10 +83,15 @@ $comesFromCounteroffering = request('counteroffer');
 							{!!$formulario->usuario!!}
 							<label>{{ trans(\Config::get('app.theme').'-app.login_register.nombre') }} <span>*</span></label>
 						</div>
-						<div class="apellidos col-xs-12 col-sm-8 mt-1">
+						<div class="apellidos col-xs-12 col-sm-4 mt-1">
 							{!!$formulario->last_name!!}
 							<label>{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }} <span>*</span></label>
 						</div>
+						<div class="apellidos col-xs-12 col-sm-4 mt-1">
+							{!!$formulario->poblacion!!}
+							<label>{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }} <span>*</span></label>
+						</div>
+
 
 						<div class="col-xs-12 col-sm-4 mt-1">
 							<input type="number" minlength="6" class="form-control effect-16" name="telefono" id="texto__1__telefono" value="" onblur="comprueba_campo(this)" data-placement="right" placeholder="Teléfono *" autocomplete="off">

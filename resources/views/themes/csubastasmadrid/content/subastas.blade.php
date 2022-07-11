@@ -19,9 +19,10 @@
                 }
             }
         }
-
         ?>
+
         @if ($data['subc_sub'] != 'H')
+
             @foreach ($data['auction_list'] as $subasta)
                 <?php
                 $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
@@ -60,7 +61,7 @@
                             </div>
 
                             <div class="item_subasta_item_text">
-                                {!! $ficha_subasta->descdet_sub !!}
+                                {!! $ficha_subasta->session_info ?? $ficha_subasta->descdet_sub !!}
                             </div>
                         </div>
 

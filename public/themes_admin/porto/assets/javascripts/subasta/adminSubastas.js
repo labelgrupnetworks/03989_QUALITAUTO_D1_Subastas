@@ -96,7 +96,7 @@ window.addEventListener('load', function (event) {
 
 
 	// Publicar nft
-	$("#js-nft-publish").on("click", publishNft);
+	$("#js-nft-publish").on("click", updateAndPublishNft);
 
 });
 
@@ -250,6 +250,9 @@ function addResultFetchToElement(element, message, className) {
 	element.innerHTML = `<div class="alert ${className}">${message}</div>`;
 }
 
+/**
+ * @see updateAndPublishNft
+ */
 function publishNft(event) {
 	event.preventDefault();
 
@@ -272,6 +275,22 @@ function publishNft(event) {
 		.catch(err => {
 			addResultFetchToElement(resultElement, err.message, 'alert-danger');
 		});
+}
+
+function updateAndPublishNft(event) {
+	event.preventDefault();
+
+	const propertyCod = document.querySelector('select[name="owner"]').value;
+	const resultElement = document.getElementById('publish-nft-result');
+
+	if(!propertyCod) {
+		addResultFetchToElement(resultElement, 'Debe seleccionar un propietario', 'alert-danger');
+		return;
+	}
+
+	document.querySelector('[name=publish_nft]').value = 1;
+	document.getElementById('loteUpdate').submit();
+	return;
 }
 
 

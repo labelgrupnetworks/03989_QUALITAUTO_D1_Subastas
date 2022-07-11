@@ -71,3 +71,8 @@ Route::get(\Routing::slugSeo('coches-subasta'), 'V5\LotListController@getLotsLis
 #aceptar contraofertas por el concesionario
 Route::get('aceptacion-contraoferta', 'V5\CarlandiaPayController@aceptarContraoferta')->name('aceptacion-contraoferta');
 Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAceptada');
+
+
+#SALARETIRO
+Route::get('/exportar-a-excel-lotes/{codSub}', 'CustomControllers@exportarLotes');
+

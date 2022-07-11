@@ -118,6 +118,10 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                     <li>
                         <a href="{{ \Routing::slug('dmg') }}">{{ trans($theme . '-app.subastas.dmg_auction') }}</a>
                     </li>
+					<li>
+                        <a href="https://nft.duran-subastas.com/es">NFT</a>
+                    </li>
+
                     <li>
                         <a href="{{ trans("$theme-app.links.blog_duran") }}" target = "_blank">{{ trans($theme . '-app.home.magazine') }}</a>
                     </li>

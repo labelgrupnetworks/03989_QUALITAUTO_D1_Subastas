@@ -576,7 +576,13 @@ class FormLib
 	}
 
 
+	static function Link($text, $url)
+	{
 
+		$aux = "<p><a href=\"$url\" target=\"_blank\"> $text</a></p>";
+
+		return $aux;
+	}
 
 
 

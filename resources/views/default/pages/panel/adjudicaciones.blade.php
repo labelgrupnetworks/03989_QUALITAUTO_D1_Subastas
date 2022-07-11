@@ -280,27 +280,27 @@ $packengersMoneyValue = 0;
 														<div style="flex:1"></div>
 														<div class="mt-1 text-left">
 
-															@if(\Config::get("app.paymentUP2") )
+															@if(\Config::get("app.paymentUP2")  || Config::get('app.paymentRedsys') )
 																<input id="paycreditcard"  type="radio" name="paymethod" value="creditcard" checked="checked">
 																<label for="paycreditcard"> <span class="fab fa-cc-visa" style="font-size: 20px;margin: 0px 3px;"></span> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}     </label>
 																<br>
 															@endif
 
 															@if(\Config::get("app.PayBizum") )
-																<input id="paybizum"    type="radio" name="paymethod" value="bizum" checked="checked">
+																<input id="paybizum"    type="radio" name="paymethod" value="bizum" >
 																<label for="paybizum" > <img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_bizum') }}   </label>
 																<br>
 															@endif
 
 
 															@if(\Config::get("app.PayTransfer"))
-																<input id="paytransfer"    type="radio" name="paymethod" value="transfer" checked="checked">
+																<input id="paytransfer"    type="radio" name="paymethod" value="transfer" >
 																<label for="paytransfer"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_transfer') }} </label>
 																<br>
 															@endif
 
 															@if(\Config::get("app.paymentPaypal"))
-																<input id="paypaypal" type="radio" name="paymethod" value="paypal" checked="checked">
+																<input id="paypaypal" type="radio" name="paymethod" value="paypal" >
 																<label for="paypaypal"><i class="fa fa-paypal" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_paypal') }} </label>
 															@endif
 

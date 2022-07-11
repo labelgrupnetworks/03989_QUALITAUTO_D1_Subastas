@@ -7,29 +7,30 @@
 
 <div class="{{ $class_square }} large_square">
     {{-- he puesto aquí los iconos por que el video tiene enlace y si lo meto dentro del otro enlace el html genera un momton de elementos a href abriendolos y cerrandolos --}}
-    @if (!empty($item->contextra_hces1))
-        <div style="position:absolute;left: 520px; top:2px;z-index: 100;">
-            <a href="{{ $item->contextra_hces1 }}" target="_blank">
-                <img src="/default/img/icons/video.png" style="height:16px" />
-            </a>
-        </div>
-    @endif
-    @if (Config::get('app.icon_multiple_images') && !empty($item->imagenes) && count($item->imagenes) > 1)
-        <a title="{{ $titulo }}" <?= $url ?> style='text-decoration: none;'>
-            <div style="position:absolute;left: 552px; top:2px;z-index: 100;">
-                <img src="/default/img/icons/camara.png" style="height:20px" />
-            </div>
-            <div style="position:absolute;left: 573px; top:-2px;z-index: 100;">
-                <img src="/default/img/icons/mas.png" style="height:8px" />
-            </div>
-        </a>
-    @endif
+
+	<div class="lot-large-icons-wrapper">
+		@if (!empty($item->contextra_hces1))
+			<div>
+				<a href="{{ $item->contextra_hces1 }}" target="_blank">
+					<img src="/default/img/icons/video.png" style="height:16px" />
+				</a>
+			</div>
+		@endif
+		@if (Config::get('app.icon_multiple_images') && !empty($item->imagenes) && count($item->imagenes) > 1)
+			<div class="lot-large-camera-wrapper">
+				<a title="{{ $titulo }}" {!! $url !!} style='text-decoration: none;'>
+					<img class="lot-large-camera" src="/default/img/icons/camara.png"/>
+					<img class="lot-large-plus" src="/default/img/icons/mas.png"/>
+				</a>
+			</div>
+		@endif
+	</div>
 
 
-    <div class="container-lot-large">
+    <div class="container-lot-large row">
 
-        <a title="{{ $titulo }}" <?= $url ?> style='text-decoration: none;'>
-            <div class="image-lot-large col-xs-12 col-sm-4 h-100">
+		<div class="image-lot-large col-xs-12 col-sm-4 h-100">
+			<a title="{{ $titulo }}" <?= $url ?> style='text-decoration: none;'>
 
                 @if ($item->retirado_asigl0 != 'N')
                     <div class="retired">
@@ -49,8 +50,8 @@
                         data-src="{{ Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1) }}"
                         alt="{{ $titulo }}">
                 </div>
-            </div>
-        </a>
+			</a>
+        </div>
         <div class="col-xs-12 col-sm-8">
             <div class="lot-desc">
                 <h3 class="lot-title">

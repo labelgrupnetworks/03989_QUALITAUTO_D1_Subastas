@@ -192,4 +192,40 @@ class CustomControllers extends Controller
 		return view('front::pages.video_auction', compact('videoSorted', 'subastaReciente'));
 
 	}
+
+	public function exportarLotes()
+	{
+		$dominio = \Config::get('app.url');
+		$codSub = request()->codSub;
+		$lots = FgAsigl0::select("SUB_ASIGL0 as cod_sub", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1", "WEBFRIEND_HCES1", "TITULO_HCES1", '"name"', '"id_auc_sessions"')
+			->joinFghces1Asigl0()
+			->joinSessionAsigl0()
+			->where("EMP_ASIGL0", \Config::get('app.emp'))
+			->where("SUB_ASIGL0", $codSub)
+			->orderby("REF_ASIGL0")
+			->get();
+
+			foreach ($lots as $lot) {
+				$url = "";
+
+				$webfriend = !empty($lot->webfriend_hces1)? $lot->webfriend_hces1 :  str_slug($lot->titulo_hces1);
+				$url_vars ="";
+				$url_friendly = \Routing::translateSeo('lote').$lot->cod_sub."-".str_slug($lot->name).'-'.$lot->id_auc_sessions."/".$lot->ref_asigl0.'-'.$lot->num_hces1.'-'.$webfriend.$url_vars;
+				$url = $dominio.$url_friendly;
+
+				$lotsArrayToExport[$lot->cod_sub.'-'.$lot->ref_asigl0] = [
+					'Referencia' => $lot->ref_asigl0,
+					'Título' => $lot->titulo_hces1,
+					'URL' => $url
+				];
+
+			}
+
+			$lotsCollectForExport = collect($lotsArrayToExport);
+			$filename = \Config::get('app.theme').'_'.$codSub.'_Lotes';
+
+
+		return ToolsServiceProvider::exportCollectionToExcel($lotsCollectForExport, $filename);
+	}
+
 }
