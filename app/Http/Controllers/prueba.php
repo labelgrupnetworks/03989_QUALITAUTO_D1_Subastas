@@ -152,8 +152,8 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-
-		$this->testwebserviceNFTDuran();
+		//test subido
+		//$this->testwebserviceNFTDuran();
 		//test
 	}
 
