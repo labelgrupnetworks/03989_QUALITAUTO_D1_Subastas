@@ -42,7 +42,7 @@
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
-- `git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git`
+- ```git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git```
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03352_ALMONEDA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03226_BOGOTA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/00147_LabelGrup_Demo_Subastas.git`
