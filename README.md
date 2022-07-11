@@ -27,7 +27,13 @@
 
 <a name="download"></a>
 ## Descargar e iniciar proyecto
-`git clone`
+1. `git clone https://github.com/labelgrupnetworks/D1_Subastas_Web.git subastas`
+##### Desde dentro del directorio recien creado
+3. Añadir .env variables
+2. `composer update`
+3. `npm install`
+4. Añadir .htaccess
+
 
 
 <a name="addgit"></a>
@@ -42,7 +48,7 @@
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
-- ```git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git```
+- `git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git` 
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03352_ALMONEDA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03226_BOGOTA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/00147_LabelGrup_Demo_Subastas.git`
@@ -52,19 +58,23 @@
 
 <a name="examples"></a>
 ## Ejemplos de comandos
+
+Descargar código maestro
 ```git
-//descargar codigo maestro
 git pull origin main
 ```
+
+Subir codigo a cliente.
 ```git
-//subir codigo a cliente.
 git push demo main
 ```
+
+Subir codigo de rama main loca a rama develop remota
 ```git
-//subir codigo de rama main loca a rama develop remota
 git push demo main:develop
 ```
+
+Subir rama develop a todos los cliente
 ```git
-//subir rama develop a todos los cliente
 git push allprojects develop
 ```
