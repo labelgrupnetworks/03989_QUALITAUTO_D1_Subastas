@@ -189,7 +189,7 @@
     </div>
 </div>
 
-<div id="imgPopUpModal" class=" hidden">
+<div id="imgPopUpModal" class="d-none">
 	<span class="cursor">&times;</span>
 	<br/>
 	<img  id="img-pop-up-img">

@@ -3,167 +3,134 @@
 	$empresa = $empre->getEmpre();
  ?>
 
-<footer>
+<footer class="py-5">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-lg-7">
-				<div class="row">
-					<div class="col-xs-12 col-sm-3 text-center">
-						<div class="footer-title">
-							{{ trans($theme.'-app.foot.auctions') }}
-						</div>
-						<ul class="ul-format footer-ul">
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-							<li>
-								<a class="footer-link"
-									href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
-							</li>
-							@endif
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
-							<li>
-								<a class="footer-link"
-									href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
-							</li>
-							@endif
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
-							<li><a class="footer-link"
-									href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}</a>
-							</li>
-							@endif
-							@if($global['subastas']->has('H'))
-							<li>
-								<a class="footer-link"
-									href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
-							</li>
-							@endif
-						</ul>
-					</div>
-					<div class="col-xs-12 col-sm-4 text-center">
-						<div class="footer-title">
-							{{ trans($theme.'-app.foot.enterprise') }}
-						</div>
-						<ul class="ul-format footer-ul">
-							<li><a class="footer-link"
-									title="{{ trans($theme.'-app.foot.about_us') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  ?>">{{ trans($theme.'-app.foot.about_us') }}</a>
-							</li>
-							<li>
-								<a class="footer-link" title="{{ trans($theme.'-app.foot.contact')}}"
-									href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
-							</li>
-							<li><a class="footer-link" title="{{ trans($theme.'-app.foot.faq')}}"
-									href="<?= \Routing::translateSeo(trans($theme.'-app.links.faq')) ?>"><span>{{ trans($theme.'-app.foot.faq')}}</span></a>
-							</li>
-						</ul>
-					</div>
-					<div class="col-xs-12 col-sm-5 text-center">
+			<div class="col-6 col-md-2 mb-3">
+				<h5>{{ trans($theme.'-app.foot.auctions') }}</h5>
+				<ul class="nav flex-column">
+					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('presenciales') }}"
+							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.auctions')}}</a></li>
+					@endif
 
-						<div class="footer-title">
-							{{ trans($theme.'-app.foot.term_condition')}}
-						</div>
-						<ul class="ul-format footer-ul">
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.term_condition') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
-							</li>
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.privacy') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.privacy')?>">{{ trans($theme.'-app.foot.privacy') }}</a>
-							</li>
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.cookies') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.cookies')?>">{{ trans($theme.'-app.foot.cookies') }}</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-online') }}"
+							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
+					@endif
+
+					@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('venta-directa') }}"
+							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
+					@endif
+
+					@if($global['subastas']->has('H'))
+					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-historicas') }}"
+							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.historico')}}</a></li>
+					@endif
+				</ul>
 			</div>
 
-			<div class="col-xs-12 col-lg-5">
-				<div class="row footer-title">
-					<div class="col-xs-12 col-sm-5 image">
-						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"
-							alt="{{(\Config::get( 'app.name' ))}}" width="90%">
-					</div>
-					<div class="col-xs-12 col-sm-7 enterprise text-justify">
-						<div class="row">
-							<div class="col-xs-12 col-sm-6 no-padding">
-								<b>{{ $empresa->nom_emp ?? ''}}</b> <br>
-								{{ $empresa->dir_emp ?? ''}}<br>
-								{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}<br>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<br>{{ $empresa->tel1_emp ?? ''}}<br>
-								<a title="{{ $empresa->email_emp ?? ''}}"
-									href="mailto:{{ $empresa->email_emp ?? ''}}">
-									{{ $empresa->email_emp ?? ''}}
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="col-6 col-md-2 mb-3">
+				<h5>{{ trans($theme.'-app.foot.enterprise') }}</h5>
+				<ul class="nav flex-column">
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.about_us') }}"
+							title="{{ trans($theme.'-app.foot.about_us') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.about_us') }}</a>
+					</li>
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.contact') }}"
+							title="{{ trans($theme.'-app.foot.contact') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.contact') }}</a>
+					</li>
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo(trans($theme.'-app.links.faq')) }}"
+							title="{{ trans($theme.'-app.foot.faq') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.faq') }}</a>
+					</li>
+				</ul>
 			</div>
+
+			<div class="col-6 col-md-3 mb-3">
+				<h5>{{ trans($theme.'-app.foot.term_condition')}}</h5>
+				<ul class="nav flex-column">
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition') }}"
+							title="{{ trans($theme.'-app.foot.term_condition') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.term_condition') }}</a>
+					</li>
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.privacy') }}"
+							title="{{ trans($theme.'-app.foot.privacy') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.privacy') }}</a>
+					</li>
+					<li class="nav-item mb-2">
+						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.cookies') }}"
+							title="{{ trans($theme.'-app.foot.cookies') }}" class="nav-link p-0 text-muted">{{
+							trans($theme.'-app.foot.cookies') }}</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="col-md-2 mb-3">
+				<img class="logo-company img-fluid" src="/themes/{{$theme}}/assets/img/logo_footer.png"
+					alt="{{(\Config::get( 'app.name' ))}}">
+			</div>
+
+			<div class="col-md-3 mb-3 text-md-end">
+				<h5>{{ $empresa->nom_emp ?? ''}}</h5>
+				<p class="text-muted">{{ $empresa->dir_emp ?? ''}}</p>
+				<p class="text-muted">{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}</p>
+				<p class="text-muted"><a class="nav-link" href="tel:{{ $empresa->tel1_emp ?? ''}}">{{ $empresa->tel1_emp ?? ''}}</a></p>
+				<p class="text-muted"><a class="nav-link" href="mailto:{{ $empresa->email_emp ?? ''}}">{{ $empresa->email_emp ?? ''}}</a></p>
+			</div>
+		</div>
+
+		<div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+			<div>
+				<p>© {{ now()->format('Y') }} {!! trans($theme.'-app.foot.rights') !!}.</p>
+				<p><a class="nav-link" title="{{ trans($theme.'-app.foot.developedSoftware') }}"
+						href="{{ trans($theme.'-app.foot.developed_url') }}" target="_blank">{{
+						trans($theme.'-app.foot.developedBy') }}</a></p>
+			</div>
+
+
+			<ul class="list-unstyled d-flex">
+				<li class="ms-3"><a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
+						<svg class="bi" width="24" height="24" fill="currentColor">
+							<use xlink:href="bootstrap-icons.svg#twitter"></use>
+						</svg></a></li>
+
+				<li class="ms-3">
+					<a class="lb-text-primary" href="{{ Config::get('app.instagram') }}" target="_blank">
+						<svg class="bi" width="24" height="24" fill="currentColor">
+							<use xlink:href="bootstrap-icons.svg#instagram"></use>
+						</svg>
+					</a>
+				</li>
+
+				<li class="ms-3">
+					<a class="lb-text-primary" href="{{ Config::get('app.facebook') }}" target="_blank">
+						<svg class="bi" width="24" height="24" fill="currentColor">
+							<use xlink:href="bootstrap-icons.svg#facebook"></use>
+						</svg>
+					</a>
+				</li>
+				<li class="ms-3">
+					<a class="lb-text-primary" href="{{ Config::get('app.pinterest') }}" target="_blank">
+						<svg class="bi" width="24" height="24" fill="currentColor">
+							<use xlink:href="bootstrap-icons.svg#pinterest"></use>
+						</svg>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 </footer>
 
-
-
-
-
-
-
-
-<div class="copy color-letter">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-6">
-				<p>&copy; <?= trans($theme.'-app.foot.rights') ?> </p>
-			</div>
-
-			@if(!empty(\Config::get('app.facebook', '')) || !empty(\Config::get('app.twitter', '')) || !empty(\Config::get('app.instagram', '')) || !empty(\Config::get('app.pinterest', '')))
-			<div class="col-xs-12 col-sm-6 social-links">
-				<span class="social-links-title"><?= trans($theme.'-app.foot.follow_us') ?></span>
-
-				@if(!empty(\Config::get('app.facebook', '')))
-				<a href="{{ (\Config::get('app.facebook')) }}" target="_blank" class="social-link color-letter"><i class="fab fa-2x fa-facebook-square"></i></a>
-				&nbsp;
-				@endif
-
-				@if(!empty(\Config::get('app.twitter', '')))
-				<a href="{{ (\Config::get('app.twitter')) }}" target="_blank" class="social-link color-letter"><i class="fab fa-2x fa-twitter-square"></i></a>
-				&nbsp;
-				@endif
-
-				@if(!empty(\Config::get('app.instagram', '')))
-				<a href="{{ (\Config::get('app.instagram')) }}" target="_blank" class="social-link color-letter"><i class="fab fa-2x fa-instagram"></i></a>
-				&nbsp;
-				@endif
-
-				@if(!empty(\Config::get('app.pinterest', '')))
-				<a href="{{ (\Config::get('app.pinterest')) }}" target="_blank" class="social-link color-letter"><i class="fab fa-2x fa-pinterest"></i></a>
-				&nbsp;
-				@endif
-
-				<br>
-			</div>
-			@endif
-
-			<div class="col-xs-12">
-				<a class="color-letter" role="button"
-					title="{{ trans($theme.'-app.foot.developedSoftware') }}"
-					href="{{ trans($theme.'-app.foot.developed_url') }}"
-					target="no_blank">{{ trans($theme.'-app.foot.developedBy') }}</a>
-			</div>
-		</div>
-	</div>
-</div>
-
 @if (!Cookie::get("cookie_config"))
-	@include("includes.cookie")
+@include("includes.cookie")
 @endif
 
 <script>

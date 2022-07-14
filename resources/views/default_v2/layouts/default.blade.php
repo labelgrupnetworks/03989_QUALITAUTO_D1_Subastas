@@ -6,7 +6,6 @@ $cookiesState = \Tools::cookies();
 @endphp
 
 <head>
-
     @includeIf('includes.google_head')
 	@include('includes.head')
 		@yield('assets_components')

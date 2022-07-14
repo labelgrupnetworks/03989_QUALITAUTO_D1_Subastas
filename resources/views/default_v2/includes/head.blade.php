@@ -26,6 +26,9 @@ header("X-Frame-Options:     DENY");
 	var fecha_server = @json(getdate()[0] * 1000);
 	//fecha del sistema del usuario
 	var fecha_js = new Date().getTime();
+
+	const defaultTheme = 'default_v2';
+	const theme = {{ Js::from(config('app.theme')) }};
 </script>
 
 <link rel="shortcut icon" href="<?='/themes/'.$theme.'/img/favicon.ico'?>" />
@@ -87,6 +90,8 @@ header("X-Frame-Options:     DENY");
 
 <link href="{{ Tools::urlAssetsCache('/default_v2/css/labelframework.css') }}" rel="stylesheet" type="text/css">
 
+@stack('stylesheets')
+
 <script>
     var traduction_large = { {!!trans("$theme-app.global.month_large")!!} };
     var traductions = { {!!trans("$theme-app.global.month")!!} };
@@ -117,7 +122,7 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/validator.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 
-<script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.min.js') }}"></script>
+<script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
 
 {{-- <script src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
 <script src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script> --}}

@@ -1,41 +1,3 @@
-function categoryToogle(){
-
-	if($('.header_categories').css('display') == 'block'){
-		$('.header_categories').animate({left: '-100%'}, "slow").fadeOut(300);
-		return;
-	}
-
-	$('.header_categories').toggle().animate({left: $('.category-button').offset().left}, "slow");
-	return;
-}
-
-
-function verifyLang(actualLang) {
-
-	//comprobamos si el idoma actual de label a cambiado
-	if (actualLang !== sessionStorage.getItem('lang')) {
-
-		sessionStorage.setItem('lang', actualLang)
-		var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
-
-		if (!iframe) return;
-
-
-		//seteamos el nuevo idoma
-		//nativo de label
-		var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-		var restore_el = innerDoc.getElementsByTagName("button");
-
-		for (var i = 0; i < restore_el.length; i++) {
-			if (restore_el[i].id.indexOf("restore") >= 0) {
-				restore_el[i].click();
-				var close_el = innerDoc.getElementsByClassName("goog-close-link");
-				close_el[0].click();
-				return;
-			}
-		}
-	}
-}
 
 function viewResourceFicha($src, $format){
 	$('#resource_main_wrapper').empty();
@@ -48,8 +10,6 @@ function viewResourceFicha($src, $format){
 	$('#resource_main_wrapper').append($resource);
 	$('#resource_main_wrapper').show();
 }
-
-
 
 $(document).ready(function () {
 
@@ -68,10 +28,8 @@ $(document).ready(function () {
 		$(this).addClass("hidden") ;
 	})
 
-
 	$('.panel-collapse').on('show.bs.collapse', function () {
 		var id = $(this).attr('id')
-		console.log($(this))
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').show()
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').hide()
 	})
@@ -80,61 +38,6 @@ $(document).ready(function () {
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').hide()
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').show()
 	})
-
-
-	//Reestylin google tranlate
-	$('#google_translate_element').on("click", function () {
-
-		// Change font family and color
-		$("iframe").contents().find(".goog-te-menu2-item div, .goog-te-menu2-item:link div, .goog-te-menu2-item:visited div, .goog-te-menu2-item:active div, .goog-te-menu2 *")
-			.css({
-				'color': '#544F4B',
-				'font-family': 'Roboto',
-				'width': '100%'
-			});
-		// Change menu's padding
-		$("iframe").contents().find('.goog-te-menu2-item-selected').css('display', 'none');
-
-		// Change menu's padding
-		$("iframe").contents().find('.goog-te-menu2').css('padding', '0px');
-
-		// Change the padding of the languages
-		$("iframe").contents().find('.goog-te-menu2-item div').css('padding', '20px');
-
-		// Change the width of the languages
-		$("iframe").contents().find('.goog-te-menu2-item').css('width', '100%');
-		$("iframe").contents().find('td').css('width', '100%');
-
-		// Change hover effects
-		$("iframe").contents().find(".goog-te-menu2-item div").hover(function () {
-			$(this).css('background-color', '#4385F5').find('span.text').css('color', 'white');
-		}, function () {
-			$(this).css('background-color', 'white').find('span.text').css('color', '#544F4B');
-		});
-
-		// Change Google's default blue border
-		$("iframe").contents().find('.goog-te-menu2').css('border', 'none');
-
-		// Change the iframe's box shadow
-		$(".goog-te-menu-frame").css('box-shadow', '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.3)');
-
-
-
-		// Change the iframe's size and position?
-		$(".goog-te-menu-frame").css({
-			'height': '100%',
-			'width': '100%',
-			'top': '0px'
-		});
-		// Change iframes's size
-		$("iframe").contents().find('.goog-te-menu2').css({
-			'height': '100%',
-			'width': '100%'
-		});
-	});
-
-
-
 
 	$('#button-open-user-menu').click(function () {
 		$('#user-account-ul').toggle()
@@ -1133,6 +1036,40 @@ function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
 }
 
+function ajax_newcarousel(key, replace, lang, options) {
+
+	const $carrouselElement = $(`#${key}`);
+
+	$.ajax({
+		type: "POST",
+		url: '/api-ajax/newcarousel',
+		data: { key, replace, lang },
+		success: (result) => {
+
+			if(result === ''){
+				$carrouselElement.hide();
+			}
+
+			$carrouselElement.siblings('.loader').addClass('hidden');
+			$carrouselElement.html(result);
+
+			if (key === 'lotes_destacados') {
+				carrousel_molon($carrouselElement, options);
+			} else {
+				carrousel_molon_new($carrouselElement, options);
+			}
+
+			$('[data-countdown]').each(function () {
+				$(this).data('ini', new Date().getTime());
+				countdown_timer($(this));
+			});
+
+		}
+	});
+}
+
+
+
 function ajax_carousel(key, replace) {
 	//$( "#"+key ).siblings().removeClass('hidden');
 	$.ajax({
@@ -1163,43 +1100,6 @@ function ajax_carousel(key, replace) {
 
 };
 
-function ajax_newcarousel(key, replace, lang) {
-	//$( "#"+key ).siblings().removeClass('hidden');
-	$.ajax({
-		type: "POST",
-		url: "/api-ajax/newcarousel",
-		data: { key: key, replace: replace, lang: lang },
-		success: function (result) {
-
-			if (result === '') {
-				$("#" + key + '-content').hide();
-			}
-			$("#" + key).siblings('.loader').addClass('hidden');
-			$("#" + key).html(result);
-			//cargar cuenta atras
-			$('[data-countdown]').each(function (event) {
-
-				var countdown = $(this);
-				countdown.data('ini', new Date().getTime());
-				countdown_timer(countdown);
-
-
-			});
-
-			if (key === 'lotes_destacados') {
-				carrousel_molon($("#" + key));
-			} else {
-				carrousel_molon_new($("#" + key));
-			}
-
-		}
-
-	});
-
-};
-
-
-
 
 function format_date(fecha) {
 
@@ -1222,61 +1122,6 @@ function format_date(fecha) {
 	var formatted = $.datepicker.formatDate("dd ", fecha) + mes + " " + horas + ":" + minutos;
 	return formatted;
 }
-
-/*Antiguo carrousel con libreira owl. Eloy 24/02/2020
-function carrousel_molon(carrousel) {
-    carrousel.owlCarousel({
-        items: 2,
-        autoplay: true,
-        margin: 0,
-        dots: false,
-        nav: true,
-        navText: ['<i class="fa fa-angle-left ">', '<i class="fa fa-angle-right">'],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            991: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    });
-};*/
-
-/*Antiguo carrousel con libreira owl. Eloy 24/02/2020
-function carrousel_molon_new(carrousel) {
-    carrousel.owlCarousel({
-        items: 4,
-        autoplay: true,
-        margin: 0,
-        dots: false,
-        nav: true,
-        navText: ['<i class="fa fa-angle-left ">', '<i class="fa fa-angle-right">'],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    });
-};
-*/
 
 
 /**
@@ -1386,9 +1231,29 @@ function carrousleWithArrow() {
 	carrousel.data('hasSlick', true);
 }
 
+function addStylesheetIfNotExist(nameFile) {
+
+	var headElements = document.head.childNodes;
+	const existStylesheet = Array.from(headElements)
+		.filter((node) => node.nodeType === 1 && node.tagName === 'LINK')
+		.some((link) => link.href.includes(nameFile));
+
+	if(existStylesheet) return;
+
+	try{
+		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${defaultTheme}/css/${nameFile}">`);
+		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${theme}/css/${nameFile}">`);
+	}
+	catch(e){
+		console.log(e);
+	}
+}
 
 
-function carrousel_molon(carrousel) {
+
+function carrousel_molon(carrousel, options) {
+
+	addStylesheetIfNotExist('lot.css');
 
 	if (carrousel.data('hasSlick')) {
 		carrousel.slick('unslick');
@@ -1415,8 +1280,8 @@ function carrousel_molon(carrousel) {
 		slidesToShow: 4,
 		arrows: true,
 		dots: true,
-		prevArrow: $('.fa-chevron-left'),
-		nextArrow: $('.fa-chevron-right'),
+		/* prevArrow: $('.fa-chevron-left'),
+		nextArrow: $('.fa-chevron-right'), */
 		responsive: [
 			{
 				breakpoint: 1024,
@@ -1449,7 +1314,8 @@ function carrousel_molon(carrousel) {
 				}
 			}
 
-		]
+		],
+		...options
 	});
 
 	carrousel.data('hasSlick', true);

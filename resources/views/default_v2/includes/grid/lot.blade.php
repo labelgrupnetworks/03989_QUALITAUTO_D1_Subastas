@@ -1,5 +1,3 @@
-
-
 <div class="{{$class_square}} square" {!! $codeScrollBack !!}>
 	<a title="{{ $titulo }}" class="lote-destacado-link secondary-color-text" <?= $url?> >
 
@@ -18,7 +16,7 @@
 
             <div class="data-container">
                     <div class="title_item">
-                        <span class="seo_h4" style="text-align: center;">{!! strip_tags($titulo) !!}</span>
+                        <span class="seo_h4 max-line-2" style="text-align: center;">{!! strip_tags($titulo) !!}</span>
                     </div>
 
 					<div class="data-price text-center">
@@ -62,13 +60,13 @@
 
 				@if (!$devuelto && !$retirado && !$sub_historica)
 					@if($cerrado &&  empty($precio_venta) && $compra)
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
+						<p class="btn btn-primary-custom btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
 					@elseif($subasta_venta  && !$cerrado)
 						@if(!$end_session)
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
+						<p class="btn btn-primary-custom btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
 						@endif
 					@elseif(!$cerrado )
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</p>
+						<p class="btn btn-primary-custom btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</p>
 					@endif
 				@endif
 

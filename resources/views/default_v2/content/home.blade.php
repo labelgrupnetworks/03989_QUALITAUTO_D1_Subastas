@@ -1,71 +1,24 @@
-<div class="home-slider">
-	<div class="container">
-		<div class="row flex-display row-custom">
-			@if(!Session::has('user'))
-			<div class="col-xs-3 home-slider-control hidden-xs hidden-sm hidden-md">
-				<div class="banner-register text-center">
-					<div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.not_account') }}
-					</div>
-					<div class="banner-register-sub-title hidden">
-						{{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}</div>
-					<div class="banner-register-btn text-center">
-						<a class="button-principal"
-							title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}"
-							href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
-					</div>
-					<div class="banner-register-hr">
-						<hr>
-					</div>
-					<div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.account') }}</div>
-					<div class="banner-register-btn text-center">
-						<a class="secondary-button user-account btn_login"
-							href="javascript:;">{{ trans(\Config::get('app.theme').'-app.login_register.generic_name') }}</a>
-					</div>
-				</div>
-			</div>
-			@endif
-
-			<div
-				class="slider-new-banner col-xs-12 p-0 @if(!Session::has('user'))col-md-9 col-lg-9  @else col-xs-12 @endif">
-				{!! \BannerLib::bannersPorKey('new_home', 'home-top-banner') !!}
-			</div>
-
-
-		</div>
+<div class="home-slider" data-text="SOFTWARE DE SUBASTAS">
+	<div class="banner-content py-2 py-sm-5">
+		<h1 class="text-center">SUBASTAS <span class="lb-text-primary">LABELGRUP</span></h1>
+		<a class="btn btn-primary-custom text-wrap">MOSTRAR SUBASTA</a>
 	</div>
+	{!! \BannerLib::bannersPorKey('new_home', 'home-top-banner') !!}
 </div>
 
-<div class="clearfix"></div>
-<br><br>
 
 <!-- Inicio lotes destacados -->
-<div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
+<section class="section-destacados mt-3 mb-5">
 	<div class="container">
-		<div class="row flex-display flex-wrap">
-			<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
-				<div class="lotes-destacados-tittle color-letter">
-					{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-10 col-md-12 text-center">
-				<div class="lds-ellipsis loader">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-				<div class="owl-theme owl-carousel" id="lotes_destacados"></div>
-				<div class="owl-theme owl-carousel owl-loaded owl-drag m-0 pl-10" id="navs-arrows">
-					<div class="owl-nav">
-						<div class="owl-prev"><i class="fas fa-chevron-left"></i></div>
-						<div class="owl-next"><i class="fas fa-chevron-right"></i></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+		<h1>{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}</h1>
 
+		<div class="lotes_destacados">
+			<div class="loader"></div>
+			<div class="carrousel-wrapper" id="lotes_destacados"></div>
+		</div>
+
+	</div>
+</section>
 
 @php
 	$replace = array('lang' => \Tools::getLanguageComplete(Config::get('app.locale')) ,'emp' => Config::get('app.emp'));
@@ -74,8 +27,7 @@
 
 <script>
 	var replace = @json($replace);
-
     $( document ).ready(function() {
-        ajax_newcarousel("lotes_destacados", replace);
+        ajax_newcarousel("lotes_destacados", replace, null, {autoplay: false, arrows: true, dots: false});
     });
 </script>
