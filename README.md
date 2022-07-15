@@ -69,7 +69,7 @@ Subir codigo a cliente.
 git push demo main
 ```
 
-Subir codigo de rama main loca a rama develop remota
+Subir codigo de rama main local a rama develop remota
 ```git
 git push demo main:develop
 ```
