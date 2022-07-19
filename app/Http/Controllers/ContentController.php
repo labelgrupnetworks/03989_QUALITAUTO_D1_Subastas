@@ -204,7 +204,9 @@ class ContentController extends Controller
 			return "";
 		}
 
-		return \View::make('front::includes.new_carrousel', ["lots"  => $lots]);
+		$view = View::make('front::includes.new_carrousel', ["lots"  => $lots]);
+
+		return $view;
 	}
 
 	public function faqs()

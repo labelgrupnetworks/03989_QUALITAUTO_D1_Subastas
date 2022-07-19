@@ -8,7 +8,7 @@
 
 
 <!-- Inicio lotes destacados -->
-<section class="section-destacados mt-3 mb-5">
+<section class="section-destacados my-5">
 	<div class="container">
 		<h1>{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}</h1>
 
@@ -19,6 +19,40 @@
 
 	</div>
 </section>
+
+<div class="about-us-banner my-5">
+	{!! \BannerLib::bannersPorKey('about_us', 'about_banner', '{dots: false}') !!}
+</div>
+
+<section class="section-categoires py-5">
+	<div class="container">
+		<h1 class="mb-4">Categorias</h1>
+		<div class="row">
+			@include('components.category_1', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_1', ['category' => 'JOYAS', 'image' => 'category_jewel.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_1', ['category' => 'NUMIMÁTICA', 'image' => 'category-numismatica.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_1', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+		</div>
+	</div>
+</section>
+
+<section class="section-categoires py-5">
+	<div class="container">
+		<h1 class="mb-4">Categorias</h1>
+		<div class="row">
+			@include('components.category_2', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_2', ['category' => 'JOYAS', 'image' => 'category_jewel.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_2', ['category' => 'NUMIMÁTICA', 'image' => 'category-numismatica.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+			@include('components.category_2', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
 
 @php
 	$replace = array('lang' => \Tools::getLanguageComplete(Config::get('app.locale')) ,'emp' => Config::get('app.emp'));

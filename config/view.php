@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Seleccion de tema por defecto.
+|--------------------------------------------------------------------------
+| - default: Tema por defecto.
+| - default_v2:
+*/
+
+$defaultTheme = 'default_v2';
+//$defaultTheme = 'default';
+
 return [
 
     /*
@@ -13,10 +24,12 @@ return [
     |
     */
 
+
+
     'paths' => [
         //resource_path('views'),
         resource_path('/views/themes/'.App('config')['app']['theme']),
-        resource_path('/views/default'),
+		resource_path("/views/$defaultTheme"),
     ],
 
     /*

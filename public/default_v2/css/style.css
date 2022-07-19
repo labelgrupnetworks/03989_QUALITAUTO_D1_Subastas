@@ -4,7 +4,9 @@
 	--color-primary-dark: #8F1717;
 	--color-primary-contrast: #ffffff;
 
-	--color-secondary: #bebebe;
+	/* --color-secondary: #bebebe; */
+	--color-secondary: #f0f0f0;
+
 	--color-contrast-contrast: #000;
 
 	--text-color-primary: rgba(0, 0, 0, 0.87);
@@ -168,7 +170,7 @@ header .navbar-toggler {
 	justify-content: space-between;
 }
 
-.home-slider > .container-fluid {
+.home-slider > .column_banner {
 	padding: 0;
 }
 
@@ -184,10 +186,113 @@ header .navbar-toggler {
 	}
 }
 
+.about-us-banner a {
+	text-decoration: none;
+}
+
+.about-us-banner span {
+	text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 500;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+}
+
+
+.section-categoires .d-grid {
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+
+}
+
+.category-wrapper {
+	position: relative;
+	text-decoration: none;
+}
+
+.category-wrapper .block-img {
+	height: 140px;
+    position: absolute;
+    left: 20px;
+	bottom: 15px;
+	z-index: 1;
+}
+
+.category-wrapper .block-img img {
+	object-fit: contain;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    box-shadow: rgb(0 0 0 / 10%) 0px 1px 2px 0px;
+}
+
+.category-wrapper h3 {
+	z-index: 2;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: rgb(255 255 255 / 30%);
+	border-radius: 15px;
+}
+
+.block-background {
+	height: 130px;
+	background: var(--color-secondary);
+	border-radius: 15px;
+	box-shadow: rgb(0 0 0 / 10%) 0px 1px 2px 0px;
+}
+
+.category-wrapper-2 {
+	position: relative;
+	align-items: stretch;
+	height: 140px;
+	text-decoration: none;
+	color: var(--color-primary-light);
+}
+
+.category-wrapper-2:hover {
+	color: var(--color-primary);
+}
+
+.category-wrapper-2 .block-img {
+	position: absolute;
+	left: 0;
+	height: 100%;
+	padding-right: 1.5rem;
+}
+
+.category-wrapper-2 .block-img img {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+	border-radius: 15px 0 0 15px;
+}
+
+.category-wrapper-2 .block-background {
+	height: auto;
+	z-index: 1;
+	border-radius: 0 15px 15px 0;
+	border-top-left-radius: 40% 100%;
+    margin-left: auto;
+    width: 80%;
+	box-shadow: rgb(0 0 0 / 10%) 0px 1px 0px 0px;
+
+}
+
+.category-wrapper-2:hover .block-background {
+	box-shadow: rgb(255 0 0 / 20%) 0px 1px 1px 0px
+}
 
 .newsletter {
 	padding-top: 5rem;
 	padding-bottom: 5rem;
-	/* background-color: var(--color-secondary); */
 	background-color: var(--color-secondary);
 }
+
+.newsletter {
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	background-color: var(--color-secondary);
+}
+

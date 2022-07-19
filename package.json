@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-		"predev": "php artisan generate:jstranslates",
+        "predev": "php artisan generate:jstranslates",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
@@ -18,5 +18,8 @@
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
+    },
+    "dependencies": {
+        "bootstrap-icons": "^1.9.0"
     }
 }

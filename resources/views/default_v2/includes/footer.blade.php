@@ -6,7 +6,7 @@
 <footer class="py-5">
 	<div class="container">
 		<div class="row">
-			<div class="col-6 col-md-2 mb-3">
+			<div class="col-6 col-lg-2 mb-3">
 				<h5>{{ trans($theme.'-app.foot.auctions') }}</h5>
 				<ul class="nav flex-column">
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
@@ -31,7 +31,7 @@
 				</ul>
 			</div>
 
-			<div class="col-6 col-md-2 mb-3">
+			<div class="col-6 col-lg-2 mb-3">
 				<h5>{{ trans($theme.'-app.foot.enterprise') }}</h5>
 				<ul class="nav flex-column">
 					<li class="nav-item mb-2">
@@ -52,7 +52,7 @@
 				</ul>
 			</div>
 
-			<div class="col-6 col-md-3 mb-3">
+			<div class="col-6 col-lg-3 mb-3">
 				<h5>{{ trans($theme.'-app.foot.term_condition')}}</h5>
 				<ul class="nav flex-column">
 					<li class="nav-item mb-2">
@@ -73,12 +73,12 @@
 				</ul>
 			</div>
 
-			<div class="col-md-2 mb-3">
-				<img class="logo-company img-fluid" src="/themes/{{$theme}}/assets/img/logo_footer.png"
+			<div class="col-12 col-lg-2 order-last order-lg-4 mb-3">
+				<img width="200" class="logo-company img-fluid" src="/themes/{{$theme}}/assets/img/logo_footer.png"
 					alt="{{(\Config::get( 'app.name' ))}}">
 			</div>
 
-			<div class="col-md-3 mb-3 text-md-end">
+			<div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
 				<h5>{{ $empresa->nom_emp ?? ''}}</h5>
 				<p class="text-muted">{{ $empresa->dir_emp ?? ''}}</p>
 				<p class="text-muted">{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}</p>
@@ -93,6 +93,7 @@
 				<p><a class="nav-link" title="{{ trans($theme.'-app.foot.developedSoftware') }}"
 						href="{{ trans($theme.'-app.foot.developed_url') }}" target="_blank">{{
 						trans($theme.'-app.foot.developedBy') }}</a></p>
+				<p><a href="https://storyset.com/people">People illustrations by Storyset</a></p>
 			</div>
 
 
