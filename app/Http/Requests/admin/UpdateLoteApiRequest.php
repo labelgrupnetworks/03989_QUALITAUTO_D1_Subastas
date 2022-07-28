@@ -24,6 +24,7 @@ class UpdateLoteApiRequest extends FormRequest
 			'highprice' => "numeric|nullable",
 			'reserveprice' => "numeric|nullable",
 			'highlight' => "filled|alpha|max:1",
+			'close' => "filled|alpha|max:1",
 			'buyoption' => "filled|alpha|max:1",
 			'soldprice' => "filled|alpha|max:1",
 			'retired' => "filled|alpha|max:1",

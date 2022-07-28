@@ -372,7 +372,7 @@ class AdminLotController extends Controller
 
 		//Nft
 		$resultNftProcess = null;
-		if($request->has('es_nft_asigl0')) {
+		if($request->es_nft_asigl0 == 'S') {
 			$resultNftProcess = $this->nftProcess($request, $fgAsigl0);
 			if($resultNftProcess->status == 'error') {
 				$response['errors']['nft'] = $resultNftProcess->message;
@@ -413,7 +413,7 @@ class AdminLotController extends Controller
 			//return back()->withErrors(['errors' => [$json]])->withInput();
 			$response['warning']['Images'] = $json;
 			$response['success'][] = trans('admin-app.title.updated_ok');
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'ref_asigl0' => $ref_asigl0]))
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $ref_asigl0]))
 					->with($response);
 		}
 
