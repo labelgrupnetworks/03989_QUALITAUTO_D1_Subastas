@@ -25,7 +25,6 @@ yarn-error.log
 /.idea
 /.vscode
 
-config/app.php
 public/.htaccess
 public/articulos/
 public/blog/
