@@ -31,7 +31,7 @@
             <div class="col-xs-12 col-md-9 col-lg-9 ">
 
 			@if(!Session::has('user'))
-				<h2 class="text-center">{{ trans(\Config::get('app.theme').'-app.shopping_cart.mustLoginShippingCart') }} </h2>
+				<h2 class="text-center">{!! trans(\Config::get('app.theme').'-app.shopping_cart.mustLoginShippingCart') !!} </h2>
 
 			@elseif(count($lots)==0)
 				<h2 class="text-center">{{ trans(\Config::get('app.theme').'-app.shopping_cart.noLots') }} </h2>

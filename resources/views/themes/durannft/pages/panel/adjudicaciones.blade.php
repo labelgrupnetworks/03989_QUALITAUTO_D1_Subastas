@@ -127,7 +127,7 @@ foreach($data["js_item"] as $subasta => $lotes){
                                                     {{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
                                             </div>
                                             <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
+                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}
                                             </div>
                                         </div>
 
@@ -368,22 +368,17 @@ foreach($data["js_item"] as $subasta => $lotes){
 
                     <div class="user-accounte-titles-link col-xs-12 no-padding">
                         <ul class="ul-format d-flex justify-content-space-between flex-wrap" role="tablist">
-                            <li class="panel-collapse align-items-center d-flex justify-content-space-between w-100" role="pagadas"  data-toggle="collapse"  href="#lot_pag" >
+                            <li class="panel-collapse align-items-center d-flex justify-content-space-between w-100" role="pagadas"   >
                                 <a class="color-letter" >
                                     <div>{{ trans(\Config::get('app.theme').'-app.user_panel.bills') }}</div>
-
                                 </a>
-                                <div class="toggle-open-close">
-                                        <span class="toggle-open">{{ trans(\Config::get('app.theme').'-app.user_panel.open') }}</span>
-                                        <span class="toggle-close" style="display: none">{{ trans(\Config::get('app.theme').'-app.user_panel.hide') }}</span>
-                                    </div>
 
                             </li>
                         </ul>
                     </div>
 
 
-                    <div class="col-xs-12 no-padding collapse" aria-expanded="false" id="lot_pag">
+                    <div class="col-xs-12 no-padding " aria-expanded="false" >
 
                         <div class="panel-group" id="accordion">
                             <div class="panel panel-default">
@@ -401,7 +396,7 @@ foreach($data["js_item"] as $subasta => $lotes){
 									?>
 									<div class="panel-heading">
 										<div class="panel-title">
-											<a class="d-flex justify-content-space-between" data-toggle="collapse" href="#{{$all_inf['inf']->cod_sub}}_pag">
+											<a class="d-flex justify-content-space-between"  href="#{{$all_inf['inf']->cod_sub}}_pag">
 												<div>
 													<span class="title-sub-list">{{$all_inf['inf']->name}}</span>
 
@@ -409,7 +404,7 @@ foreach($data["js_item"] as $subasta => $lotes){
 												<img width=10 src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDk2LjE1NCA5Ni4xNTQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDk2LjE1NCA5Ni4xNTQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMC41NjEsMjAuOTcxbDQ1Ljk1MSw1Ny42MDVjMC43NiwwLjk1MSwyLjM2NywwLjk1MSwzLjEyNywwbDQ1Ljk1Ni01Ny42MDljMC41NDctMC42ODksMC43MDktMS43MTYsMC40MTQtMi42MSAgIGMtMC4wNjEtMC4xODctMC4xMjktMC4zMy0wLjE4Ni0wLjQzN2MtMC4zNTEtMC42NS0xLjAyNS0xLjA1Ni0xLjc2NS0xLjA1NkgyLjA5M2MtMC43MzYsMC0xLjQxNCwwLjQwNS0xLjc2MiwxLjA1NiAgIGMtMC4wNTksMC4xMDktMC4xMjcsMC4yNTMtMC4xODQsMC40MjZDLTAuMTUsMTkuMjUxLDAuMDExLDIwLjI4LDAuNTYxLDIwLjk3MXoiIGZpbGw9IiMwMDAwMDAiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
 												</a>
 											</div>
-											<div id="{{$all_inf['inf']->cod_sub}}_pag"  class="table-responsive panel-collapse collapse">
+											<div id="{{$all_inf['inf']->cod_sub}}_pag"  class="table-responsive panel-collapse ">
 
 												<div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
 													<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
@@ -419,7 +414,7 @@ foreach($data["js_item"] as $subasta => $lotes){
 															{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
 													</div>
 													<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
+															{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}
 													</div>
 												</div>
 
@@ -429,16 +424,27 @@ foreach($data["js_item"] as $subasta => $lotes){
 														<?php
 														$url_friendly = str_slug($inf_lot->titulo_hces1);
 														$url_friendly = \Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
-														$precio_remate = \Tools::moneyFormat($inf_lot->himp_csub);
+
+
+														$precio_remate =$inf_lot->himp_csub;
+
+
 														$precio_limpio = \Tools::moneyFormat($inf_lot->base_csub,false,2);
 														$comision = \Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva,false,2);
 
-													$precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
+														#el precio pagado debe mostrarse sin iva is el usuario es extracomunitario, por lo que calculamos el precio a pagar
+														if($inf_lot->tipo_sub == "V"){
+															$precio_pagar = \Tools::PriceWithTaxForEuropean($inf_lot->himp_csub ,\Session::get('user.cod'));
+														}else{
+															$precio_pagar =$precio_remate;
+														}
+
+														$precio_limpio_calculo =  number_format($precio_pagar + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
 														$calc_envio = number_format($inf_lot->himp_csub + $inf_lot->base_csub, 2, '.', '');
 
 
 														//Calculo total
-														$total_remate = $total_remate + $inf_lot->himp_csub;
+														$total_remate = $total_remate + $precio_remate;
 														$total_base = $total_base + $inf_lot->base_csub;
 														$total_iva = $total_iva + $inf_lot->base_csub_iva;
 													?>
@@ -463,7 +469,7 @@ foreach($data["js_item"] as $subasta => $lotes){
 																<div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</div>
-																		<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+																		<p><?=  \Tools::moneyFormat($precio_remate) ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
 																		@if ($comision !=0)
 																			<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>

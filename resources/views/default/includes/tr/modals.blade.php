@@ -139,10 +139,10 @@
     </section>
 </div>
 
-
-<?php /*
+{{-- Lo mantenemos ya que al comprar un lote por tr_main, comprueba que exista para diferenciar de donde obtiene los datos --}}
+{{-- El modal creo que solo lo utiliza Tauler --}}
 <div id="infoLot" class="modal-block modal-block-lg mfp-hide">
-    <section class="panel">
+    {{-- <section class="panel">
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text">
@@ -180,10 +180,8 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 </div>
- *
- */?>
 
 <div id="modalMensaje" class="container modal-block mfp-hide ">
     <div   data-to="pujarLoteFicha" class="modal-sub-w">

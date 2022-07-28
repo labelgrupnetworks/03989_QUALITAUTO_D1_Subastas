@@ -15,6 +15,8 @@ $url=route("article", ["idArticle" => $relatedArticle->id_art0, "friendly" =>\St
 
 	<div class="article-content">
 		<div class="artTitle"> {{$titulo}}</div>
-		<div class="artPrice">  {{$impFormat}}</div>
+		@if( $imp > 0)
+			<div class="artPrice">  {{$impFormat}}</div>
+		@endif
 	</div>
 </a>

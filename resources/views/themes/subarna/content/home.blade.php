@@ -9,12 +9,11 @@
 
 		<div class="row">
 			<div class="col-xs-12 separator">
-				{{-- <p>{{ trans("$theme-app.home.info") }}</p> --}}
+				<p>{!! trans("$theme-app.home.info") !!}</p>
 			</div>
 		</div>
 
-		{!! \BannerLib::bannersPorKey('home_2', 'home-banner2','{dots:false, arrows:false, autoplay: true,
-		autoplaySpeed: 4000, slidesToScroll:1}') !!}
+		{!! \BannerLib::bannersPorKey('home_2', 'home-banner2','{dots:false, arrows:false, autoplay: true, autoplaySpeed: 4000, slidesToScroll:1}') !!}
 		<div class="row">
 			<div class="col-xs-12 separator"></div>
 		</div>

@@ -106,7 +106,15 @@ foreach($all_adj_pag as $key_inf => $value){
 														$precio_limpio = \Tools::moneyFormat($inf_lot->base_csub,false,2);
 														$comision = \Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva,false,2);
 
-													$precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
+														#el precio pagado debe mostrarse sin iva si el usuario es extracomunitario, por lo que calculamos el precio a pagar
+														if($inf_lot->tipo_sub == "V"){
+															$precio_pagar = \Tools::PriceWithTaxForEuropean($inf_lot->himp_csub ,\Session::get('user.cod'));
+														}else{
+															$precio_pagar =$precio_remate;
+														}
+
+														$precio_limpio_calculo =  number_format($precio_pagar + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
+
 														$calc_envio = number_format($inf_lot->himp_csub + $inf_lot->base_csub, 2, '.', '');
 
 

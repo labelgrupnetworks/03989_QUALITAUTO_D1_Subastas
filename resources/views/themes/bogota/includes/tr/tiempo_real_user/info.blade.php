@@ -111,8 +111,15 @@
             </div>
 
             @if(Session::has('user'))
-            <a class="add_bid btn button btn-custom-save"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
-            <input type="hidden" id="tiempo_real" value="1" readonly>
+				@if((new App\Models\User())->getClientNllist(session('user.cod'))->nllist20_cliweb == 'S')
+					<a class="add_bid btn button btn-custom-save"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
+					<input type="hidden" id="tiempo_real" value="1" readonly>
+				@else
+					<a class="btn button btn-custom-save add_bid_nologin" data-toggle="modal" data-target="#acceptedTermsModal">
+						<i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}
+					</a>
+				@endif
+
             @else
             <a class="btn button btn-custom-save add_bid_nologin" onclick="initSesion();"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
             @endif
@@ -120,3 +127,5 @@
         </div>
     </div>
 </div>
+
+@include('front::includes.modal_accept_newconditions')

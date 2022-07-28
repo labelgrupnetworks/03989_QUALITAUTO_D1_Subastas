@@ -2,9 +2,25 @@
 <a href="{{$formularioImport}}" class="btn btn-success right" style="margin-right: 5px;">{{ trans('admin-app.button.upload_excel') }}</a>
 	@endif
 
-	<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
+	<div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
 
 		@if($isRender)
+			<div style="flex:1">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+					</button>
+
+					<ul class="dropdown-menu">
+						<li><a id="js-deleteSelectedOrders" href="{{ route('orders.delete_selection', ['idAuction' => $cod_sub]) }}">Eliminar</a></li>
+
+						<li role="separator" class="divider"></li>
+						<li><a id="js-selectAllOrders" href="#">Seleccionar todos</a></li>
+					</ul>
+				</div>
+			</div>
+
 			<a class="btn btn-success btn-sm" href="{{route('orders.export', ['idAuction' => $cod_sub])}}">{{ trans('admin-app.button.download_excel') }}</a>
 
 			<a href="/admin/order/excel/{{$cod_sub}}" class="btn btn-success btn-sm">{{ trans('admin-app.button.upload_excel') }}</a>
@@ -13,16 +29,19 @@
 		@if($cod_sub)
 		<a href="{{ route('orders.create', ['idAuction' => $cod_sub, 'menu' => 'subastas'] ) }}"
 			class="btn btn-primary btn-sm">{{ trans("admin-app.button.new_fem") }}
-			{{ trans("admin-app.title.order") }}</a>
+			{{ trans("admin-app.title.order") }}
+		</a>
 		@endif
-
+		<div style="margin-left: auto">
 			@include('admin::includes.config_table', ['id' => 'tableOrder', 'params' => ((array) $filter)])
+		</div>
 
 	</div>
 	<table id="tableOrder" class="table table-striped table-condensed table-responsive" style="width:100%" data-order-name="order_orders">
 		<thead>
 
 			<tr>
+				<th>Sel.</th>
 				<th class="sub_orlic" style="cursor: pointer" data-order="sub_orlic">
 					 {{ trans("admin-app.title.auction") }}
 					@if(request()->order_orders == 'sub_orlic')
@@ -122,6 +141,7 @@
 				<form class="form-group" action="">
 					<input type="hidden" name="order_orders_orders" value="{{ request('order_orders_orders', 'cod_cli') }}">
 					<input type="hidden" name="order_orders_dir" value="{{ request('order_orders_dir', 'desc') }}">
+					<td></td>
 					@foreach($filter as $index => $item)
 						<td class="{{$index}}">{!! $item !!}</td>
 					@endforeach
@@ -141,7 +161,9 @@
 			@foreach ($orders as $order )
 
 				<tr>
-
+					<td>
+						<input type="checkbox" name="orders" data-licit="{{ $order->licit_orlic }}" value="{{ $order->ref_asigl0 }}">
+					</td>
 					<td class="sub_orlic">{{$order->sub_orlic}}</td>
 					<td class="ref_asigl0">{{$order->ref_asigl0}}</td>
 					<td class="tipop_orlic">{{$order->tipo_order_orders_type}}</td>

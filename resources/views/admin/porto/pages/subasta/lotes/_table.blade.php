@@ -1,4 +1,22 @@
-<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
+<div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
+
+	<div style="flex:1">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
+			<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="caret"></span>
+			</button>
+
+			<ul class="dropdown-menu">
+				<li><a id="js-deleteSelectedLots" href="{{ route('subastas.lotes.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
+				{{-- <li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li> --}}
+				<li role="separator" class="divider"></li>
+				<li><a id="js-selectAllLots" href="#">Seleccionar todos</a></li>
+			</ul>
+		</div>
+	</div>
+
 	@if (\Config::get('app.exportExcelExhibition'))
 		<a class="btn btn-success btn-sm"
 			href="{{ route("$parent_name.$resource_name.printExcel", ['codSub' => $cod_sub]) }}" target="_blank">Excel
@@ -37,6 +55,7 @@
 		data-order-name="order">
 		<thead>
 			<tr>
+				<th>Sel.</th>
 
 				<th class="col-xs-1" style="width: 5%">{{ trans('admin-app.title.img') }}</th>
 				@foreach ($tableParams as $param => $display)
@@ -71,6 +90,7 @@
 					<input type="hidden" name="order_dir" value="{{ request('order_dir', 'asc') }}">
 
 					<td class=""></td>
+					<td class=""></td>
 
 					@foreach ($tableParams as $param => $display)
 						<td class="{{ $param }}" @if (!$display) style="display: none" @endif>
@@ -104,8 +124,14 @@
 
 
 				<tr id="fila{{ $lote->ref_asigl0 }}" style="max-height: 60px; overflow: hidden;">
-					<td><img src="{{ \Tools::url_img('lote_medium', $lote->numhces_asigl0, $lote->linhces_asigl0) }}" width="100%">
+
+					<td>
+						@if (($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) == 0 && ($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) == 0)
+							<input type="checkbox" name="lote" value="{{ $lote->ref_asigl0 }}">
+						@endif
 					</td>
+
+					<td><img src="{{ \Tools::url_img('lote_medium', $lote->numhces_asigl0, $lote->linhces_asigl0) }}" width="100%"></td>
 
 					@foreach ($tableParams as $param => $display)
 						<td class="{{ $param }}" @if (!$display) style="display: none" @endif>

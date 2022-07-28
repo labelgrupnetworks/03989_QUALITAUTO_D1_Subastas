@@ -32,14 +32,22 @@
 				<input type="hidden" name="idArt0" value="{{$article->id_art0}}">
 				<div class="col-xs-12 titleArticlePage"> {{$titulo}}</div>
 				<div class="col-xs-12 descriptionArticlePage"> {{$description}}</div>
-				<div class="col-xs-12 priceArticlePage">
-					<span id="art-original_JS" class="art-price_JS"  >{{ \Tools::moneyFormat($article->imp,'' , 0)}} </span>
-					@foreach($precioArticulos as $keyArticulo =>$precioArticulo)
-						<span id="art-{{$keyArticulo}}_JS" class="art-price_JS hide" >{{ \Tools::moneyFormat($precioArticulo,'' , 0)}} </span>
-					@endforeach
 
-					{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
-				</div>
+					@if( $article->imp> 0)
+					<div class="col-xs-12 priceArticlePage">
+						<span id="art-original_JS" class="art-price_JS"  >{{ \Tools::moneyFormat($article->imp,'' , 0)}} </span>
+						@foreach($precioArticulos as $keyArticulo =>$precioArticulo)
+							<span id="art-{{$keyArticulo}}_JS" class="art-price_JS hide" >{{ \Tools::moneyFormat($precioArticulo,'' , 0)}} </span>
+						@endforeach
+						{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+					</div>
+					@else
+					<div class="col-xs-12 titleArticlePage mt-1">
+						{!! trans(\Config::get('app.theme').'-app.articles.consultarPrecio') !!}
+					</div>
+					@endif
+
+
 				@php
 					#solo recargaremos el segundo select de variantes con la eleccion del primero y ñle pondremso la clase PrincipalTallaColor_JS
 					$numVariante=0;
@@ -65,9 +73,9 @@
 					@csrf
 
 					{{-- 07-07-22 Mónica ha pedido que los articulos de la seccion joyas únicas muestre siempre el cotactenos, lo saco del circuito de js que mlo muestra is hay stock  --}}
-				@if($article->sec_art0 == 'JX')
-					<div class="col-xs-12 mt-1 ">
-						<br/><br/>{{ trans(\Config::get('app.theme').'-app.articles.contactenos') }}<br/><br/>
+				@if($article->sec_art0 == 'JX' || $article->imp== 0)
+					<div class="col-xs-12 mt-1 descriptionArticlePage">
+						<br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
 					</div>
 				@else
 					<div class="siStock_JS col-xs-12 mt-1">

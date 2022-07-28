@@ -167,13 +167,11 @@ function getShipment(button){
 		type: "POST",
 		url: "{{ route('panel.shipment', ['lang' => Config::get('app.locale')]) }}",
 		data: data,
-		success: function(response){
-			addShipment(response);
-		}
+		success: addShipment
 	});
 }
 
-function addShipment(shipments){
+function addShipment({shipments, delivery_date}){
 
 	let ul = $('.timeline');
 	shipments.forEach(shipment => {
@@ -181,10 +179,14 @@ function addShipment(shipments){
 		let h3 = $('<h3>').append(shipment.des_estadosseg);
 		let p = $('<p>').append(shipment.long_description);
 		let li = $('<li>', {'class': "event", 'data-date': shipment.fecha_dvc0seg});
-		li.append(h3, p);
-		ul.append(li);
 
+		li.append(h3, p);
+
+		if(shipment.idseg_dvc0seg == 2 && delivery_date){
+			li.append($('<p>').append(`{{ trans("$theme-app.user_panel.estimated_delivery") }} ${delivery_date}`));
+		}
+
+		ul.append(li);
 	});
 }
-
 </script>

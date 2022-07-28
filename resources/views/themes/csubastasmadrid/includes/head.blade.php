@@ -74,6 +74,7 @@ header("X-Frame-Options:     DENY");
 <link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css" >
 <link rel="stylesheet" type="text/css" href="/vendor/slick/slick-theme.css" >
 <link rel="stylesheet" type="text/css" href="/vendor/banner/banner.css" >
+<link rel="stylesheet" href="{{ URL::asset('vendor/datatables/datatables.css') }}" />
 
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" />
 <!-- Magnific popup -->
@@ -135,6 +136,7 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.js') }}"></script>
+<script src="{{ URL::asset('vendor/datatables/datatables.js') }}"></script>
 
 <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>

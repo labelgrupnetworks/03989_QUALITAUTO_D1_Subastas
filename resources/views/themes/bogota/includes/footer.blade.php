@@ -168,7 +168,9 @@
 	</div>
 </div>
 
+
+@include('front::includes.modal_accept_newconditions')
+
 @if (!Cookie::get("cookie_config"))
 @include("includes.cookie")
-
 @endif

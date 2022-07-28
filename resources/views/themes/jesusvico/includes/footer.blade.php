@@ -16,8 +16,13 @@
 					<div class="col-xs-12 col-sm-12 col-lg-2 enterprise no-padding text-center">
 						<img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.jpg"  alt="{{(\Config::get( 'app.name' ))}}" width="90%"><br>
 						<?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
-						<?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> , <?= !empty($empresa->pais_emp)? $empresa->pais_emp : ''; ?></br>
-						<?= !empty($empresa->tel1_emp)? "Tels. $empresa->tel1_emp" : ''; ?><br>
+						<?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> , <?= !empty($empresa->pais_emp)? $empresa->pais_emp : ''; ?><br>
+						@if(!empty($empresa->tel1_emp))
+							Tels. <a href="tel:{{$empresa->tel1_emp}}" title="{{$empresa->tel1_emp}}">{{$empresa->tel1_emp}}</a><br>
+						@endif
+
+						WhatsApp: <a href="https://api.whatsapp.com/send?phone=0034689679207&text=">+34 689 679 207</a><br>
+
 						<a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>">
 							<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>
 						</a>

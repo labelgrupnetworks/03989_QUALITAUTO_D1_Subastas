@@ -289,9 +289,9 @@ use App\libs\TradLib as TradLib;
                 @endif
 
 
-                {{-- <li class="li-color"><a
-                        href="< ?= \Routing::translateSeo('subastas-historicas') ?>">{{ trans(\Config::get('app.theme') . '-app.foot.historico') }}</a>
-                </li> --}}
+                <li class="li-color"><a
+                        href="<?= \Routing::translateSeo('subastas-historicas') ?>">{{ trans(\Config::get('app.theme') . '-app.foot.historico') }}</a>
+                </li>
                 <?php
                 $has_subasta = $subastaObj->auctionList('S', 'O');
                 if (empty($has_subasta) && Session::get('user.admin')) {

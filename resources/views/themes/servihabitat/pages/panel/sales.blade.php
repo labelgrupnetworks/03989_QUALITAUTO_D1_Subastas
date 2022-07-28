@@ -29,20 +29,20 @@
 				<form action="">
 					<div class="filters-group d-flex align-items-end flex-wrap" style="gap: 20px">
 						<div class="form-group">
-							<label for="fromDate">Desde:</label>
+							<label for="fromDate">{{ trans("$theme-app.global.since") }}:</label>
 							<input class="form-control" type="date" name="from-date" id="fromDate" value="{{ request('from-date', null) }}">
 						</div>
 
 						<div class="form-group">
-							<label for="toDate">Hasta:</label>
+							<label for="toDate">{{ trans("$theme-app.global.to") }}:</label>
 							<input class="form-control" type="date" name="to-date" id="toDate" value="{{ request('to-date', null) }}">
 						</div>
 
 						<div class="form-group">
-							<button type="submit" class="btn default-btn">Filtrar</button>
+							<button type="submit" class="btn default-btn">{{ trans("$theme-app.global.filter") }}</button>
 						</div>
 						<div class="form-group">
-							<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" class="btn default-btn">Limpiar</a>
+							<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" class="btn default-btn">{{ trans("$theme-app.global.clean") }}</a>
 						</div>
 					</div>
 				</form>
@@ -60,7 +60,7 @@
 
 				@php
 					use Illuminate\Support\Carbon;
-					$lotes = $subastas->flatten();
+					$lotes = $subastas->flatten()->sortBy('start');
 					$totales = $lotes
 						->groupBy(function($lote) {
 							return \Tools::getDateFormat($lote->start, 'Y-m-d H:i:s', 'm-Y');
@@ -85,15 +85,15 @@
 								<tr>
 									<th data-card-title class="col-xs-1"></th>
 									<th class="col-xs-2">
-										PROCESO
+										{{ trans("$theme-app.user_panel.process") }}
 									</th>
 
 									<th class="col-xs-2">
-										FECHA INICIO COMERCIALIZACIÓN
+										{{ trans("$theme-app.user_panel.commercialization_start") }}
 									</th>
 
 									<th class="col-xs-2">
-										FECHA FIN DE COMERCIALIZACIÓN
+										{{ trans("$theme-app.user_panel.commercialization_end") }}
 									</th>
 
 									<th class="col-xs-2 text-uppercase">
@@ -101,15 +101,15 @@
 									</th>
 
 									<th class="col-xs-2">
-										OFERTAS PRESENTADAS
+										{{ trans("$theme-app.user_panel.bids_submitted") }}
 									</th>
 
 									<th class="col-xs-2">
-										Nº OFERTAS CERRADAS
+										{{ trans("$theme-app.user_panel.num_abr") }} {{ trans("$theme-app.user_panel.closed_offers") }}
 									</th>
 
 									<th class="col-xs-2">
-										OFERTAS CERRADAS
+										{{ trans("$theme-app.user_panel.closed_offers") }}
 									</th>
 								</tr>
 							</thead>
@@ -174,7 +174,7 @@
 					<div class="col-xs-12">
 
 						<div class="user-account-menu-title extra-account mb-3">
-							Totales por mes
+							{{ trans("$theme-app.user_panel.totals_per_month") }}
 						</div>
 
 						<table class="table table-condensed table-to-card" id="totals_month_table">
@@ -182,11 +182,11 @@
 							<thead>
 
 								<tr>
-									<th><b>MES</b></th>
-									<th><b>NÚMERO DE PROCESOS</b></th>
-									<th><b>OFERTAS PRESENTADAS</b></th>
-									<th><b>Nº OFERTAS CERRADAS</b></th>
-									<th><b>OFERTAS CERRADAS</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.month") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.number_of_processes") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.bids_submitted") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.num_abr") }} {{ trans("$theme-app.user_panel.closed_offers") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.closed_offers") }}</b></th>
 								</tr>
 
 							</thead>
@@ -215,16 +215,16 @@
 					<div class="col-xs-12">
 
 						<div class="user-account-menu-title extra-account mb-3">
-							Totales
+							{{ trans("$theme-app.global.totals") }}
 						</div>
 
 						<table class="table table-condensed table-to-card" id="totals_table">
 
 							<thead>
 								<tr>
-									<th><b>NÚMERO DE PROCESOS</b></th>
-									<th><b>OFERTAS PRESENTADAS</b></th>
-									<th><b>OFERTAS CERRADAS</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.number_of_processes") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.bids_submitted") }}</b></th>
+									<th><b>{{ trans("$theme-app.user_panel.closed_offers") }}</b></th>
 								</tr>
 							</thead>
 
