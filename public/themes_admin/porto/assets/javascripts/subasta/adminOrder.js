@@ -1,6 +1,9 @@
 
 $(document).on('ready', function () {
 
+	$('#js-deleteSelectedOrders').on('click', deleteSelectedOrders);
+	$('#js-selectAllOrders').on('click', selecteAllOrders);
+
 	if($('select[name="idauction"]').length && $('select[name="idauction"]').val() == ''){
 		$('select[name="ref"]').prop('disabled', true);
 	}
@@ -38,7 +41,71 @@ $(document).on('ready', function () {
 
 });
 
+function deleteSelectedOrders(event) {
+	event.preventDefault();
 
+	const selectedOrders = Array.from(document.getElementsByName('orders'))
+		.filter((element) => element.checked)
+		.map((element) => {
+			return {
+				licit : element.dataset.licit,
+				ref: element.value
+			}
+		});
+
+	if(selectedOrders.length === 0){
+		bootbox.alert("Debes seleccionar al menos una orden");
+		return;
+	}
+
+	bootbox.confirm("¿Estás seguro de eliminar todas las pujas seleccionadas", function (result) {
+		if(!result) return;
+
+		fetch(event.target.href, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				orders: selectedOrders
+			})
+		})
+		.then(handleToJson)
+		.then(handleDeleteOrdersResponse)
+		.catch(handleFetchingErrorWithBootbox);
+	});
+}
+
+function handleDeleteOrdersResponse(response) {
+	if(!response.success){
+		bootbox.alert("Ha ocurrido un error");
+		return;
+	}
+
+	const errorsMessage = (errors) => `
+		<div>
+			<p>Se ha producido un error en las siguientes ordenes:</p>
+			<ul>
+				${errors.map((element) => `<li>Refererencia: ${element.ref}, Licitador: ${element.licit}</li>`).join('')}
+			</ul>
+		</div>`;
+
+	const whenErrors = response.results.filter((element) => element.status == 'ERROR');
+	const responseMessage = whenErrors.length > 0
+		? errorsMessage(whenErrors)
+		: `<p>Se han eliminado correctamente las ordenes seleccionadas</p>`;
+
+	bootbox.alert(responseMessage);
+	location.reload();
+}
+
+
+
+function selecteAllOrders(event) {
+	event.preventDefault();
+	const bids = Array.from(document.getElementsByName('orders'));
+	bids.forEach((element) => element.checked = true);
+}
 
 function deleteOrder(idauction, ref, licit) {
 
