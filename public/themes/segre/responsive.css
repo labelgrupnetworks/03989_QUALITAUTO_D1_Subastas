@@ -1,0 +1,211 @@
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	/* Menú de navegación */
+
+	header.fixed .menu-especial {
+		top: 59px;
+	}
+
+	.menu-especial {
+		position: absolute;
+		z-index: 100000000;
+		background: var(--primary-color);
+		width: 199px;
+		/* border: 1px solid #ccc; */
+		border-top: var(--secondary-color) 2px solid;
+		top: 80px;
+		-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, .1);
+		box-shadow: 0px 0px 6px rgba(0, 0, 0, .1);
+		/* padding: 10px; */
+		display: none;
+	}
+
+	.menu-especial .item {
+		padding: 10px;
+		margin: 0;
+		border-bottom: var(--secondary-color) 1px solid;
+		color: #FFF;
+		text-decoration: none;
+		list-style: none;
+	}
+
+	.menu-especial a {
+		/* font-size: 12px;
+		font-weight: 100 !important;
+		margin: 5px 0 !important;
+		padding: 0 !important; */
+		text-decoration: none;
+		display: block;
+		text-transform: capitalize !important;
+		color: white;
+	}
+
+	.menu-especial a:hover {
+		text-decoration: none;
+		color: var(--secondary-color);
+	}
+
+	.navbar-responsive .menu-especial {
+		position: relative;
+		/*display: flex;*/
+		flex-direction: column;
+		border: 0;
+		-webkit-box-shadow: 0px;
+		box-shadow: 0px;
+		top: initial;
+	}
+
+	.navbar-responsive .menu-especial a {
+		border-bottom: 0px;
+		font-size: 14px;
+		margin: 5px 0px 5px 30px !important
+	}
+
+
+	.open-menu-especial:hover .menu-especial
+
+	/* .open-menu-especial:hover ~ .menu-especial */
+		{
+		display: block;
+	}
+
+	/* FIN Menú de navegación */
+}
+
+@media (max-width: 1200px) {
+	/* lg */
+
+	/* Menú de navegación */
+	.menu-principal-content li,
+	.menu-principal-content li a {
+		color: white;
+	}
+
+	.menu-principal {
+		background-color: var(--primary-color);
+	}
+
+	/* FIN Menú de navegación */
+
+	/* Menú de navegación */
+
+	#menu_desp,
+	#menu_desp_test,
+	#menu_desp_conozcanos,
+	#menu_desp_subasta,
+	#menu_desp_catalogo,
+	#menu_desp_comprar,
+	#menu_desp_app {
+		display: none;
+		/* position: absolute; */
+		/* left: 15px; */
+		width: 200px;
+		border-top: var(--secondary-color) 2px solid;
+		-webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.15);
+		-moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.15);
+		box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.15);
+		z-index: 3;
+		background: var(--primary-color);
+	}
+
+	#menu_desp .item,
+	#menu_desp_test .item,
+	#menu_desp_conozcanos .item,
+	#menu_desp_subasta .item,
+	#menu_desp_catalogo .item,
+	#menu_desp_comprar .item,
+	#menu_desp_app .item {
+		padding: 10px;
+		margin: 0;
+		border-bottom: var(--secondary-color) 1px solid;
+		color: #FFF;
+		text-decoration: none;
+		list-style: none;
+	}
+
+	#menu_desp .item a,
+	#menu_desp_test .item a,
+	#menu_desp_conozcanos .item a,
+	#menu_desp_subasta .item a,
+	#menu_desp_catalogo .item a,
+	#menu_desp_comprar .item a,
+	#menu_desp_app .item a {
+		color: #FFF;
+		display: block;
+	}
+
+	#menu_desp .item:hover a,
+	#menu_desp_test .item:hover a,
+	#menu_desp_conozcanos .item:hover a,
+	#menu_desp_subasta .item:hover a,
+	#menu_desp_catalogo .item:hover a,
+	#menu_desp_comprar .item:hover a,
+	#menu_desp_app .item:hover a {
+		color: var(--secondary-color);
+	}
+
+	/* FIN Menú de navegación */
+
+	/* Página app segre */
+
+	.app-video-resolution-responsive {
+		width: 720px;
+		height: 405px;
+	}
+
+	/* FIN Página app segre */
+}
+
+
+
+/* Large devices (desktops, 992px and up) */
+@media (max-width: 992px) {
+	/* md */
+	/* Página app segre */
+
+	.app-video-resolution-responsive {
+		width: 560px;
+		height: 315px;
+	}
+
+	.qr-responsive {
+		max-width: 500px;
+	}
+
+	/* FIN Página app segre */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+	/* sm */
+	/* Página app segre */
+
+	.app-video-resolution-responsive {
+		width: 400px;
+		height: 225px;
+	}
+
+	.qr-responsive {
+		max-width: 350px;
+	}
+
+	/* FIN Página app segre */
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+	/* xs */
+	/* Página app segre */
+
+	.app-video-resolution-responsive {
+		width: 240px;
+		height: 135px;
+	}
+
+	.qr-responsive {
+		max-width: 200px;
+
+	}
+
+	/* FIN Página app segre */
+}

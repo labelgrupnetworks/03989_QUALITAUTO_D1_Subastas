@@ -1,5 +1,9 @@
   $(document).ready(function(){
 
+	if($('.sales-panel').length){
+		initSalesDataTables();
+	}
+
 	$('.btn-credit').on('click', function(){
 		$('.btn-credit').removeClass('btn-color');
 		$(this).addClass('btn-color');
@@ -1230,4 +1234,18 @@ function viewResourceFicha($src, $format){
 	}
 	$('#resource_main_wrapper').append($resource);
 	$('#resource_main_wrapper').show();
+}
+
+function initSalesDataTables() {
+
+	$('.table').DataTable({
+		searching: false,
+		paging: false,
+		info: false,
+		//responsive: true,
+		columnDefs: [
+			{ orderable: false, targets: 0 }
+		],
+		order: [[1, 'asc']],
+	});
 }

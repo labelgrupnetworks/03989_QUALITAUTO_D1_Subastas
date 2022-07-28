@@ -183,6 +183,7 @@ $lang = [
 		'filter' => 'Filtrar',
 		'filters' => 'Filtros',
 		'clean' => 'Limpiar',
+		'totals' => 'Totales'
 	),
 	'head' =>
 	array(

@@ -165,6 +165,7 @@ $lang =[
 			'filter' => 'Filter',
 			'filters' => 'Filters',
 			'clean' => 'Clean',
+			'totals' => 'Totals'
 		),
 	'head' =>
 		array (

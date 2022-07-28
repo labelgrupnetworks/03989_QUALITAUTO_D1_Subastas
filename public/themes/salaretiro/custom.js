@@ -166,6 +166,9 @@ $(document).ready(function(){
 	$('.login').on('click', function(){
 		$('#loginResponsive').removeClass('fadeOutDown');
 		$('#loginResponsive').show().addClass('animated fadeInDown');
+
+		setTimeout(showAlertComisionMessage, 500);
+
 	});
 	$('#closeResponsive').on('click', function(){
 		$('#loginResponsive').addClass('animated fadeOutDown').removeClass('fadeInDown');
@@ -176,11 +179,13 @@ $(document).ready(function(){
 	$('#btnResponsiveClose').on('click', function(){
 	  $('#menuResponsive').addClass('animated fadeOutRight').removeClass('fadeInRight');
 	});
-	$('.btn_login_desktop').on('click', function(){
-            $.cookie('enterLogin','true',{expires:null,path: '/'});
-             $('.login-desktop-container').removeClass('loginClose')
-	  $('.login_desktop').fadeToggle("fast");
+
+	$('.btn_login_desktop').on('click', function () {
+		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
+		$('.login-desktop-container').removeClass('loginClose');
+		$('.login_desktop').fadeToggle("fast", "linear", showAlertComisionMessage);
 	});
+
 	$('.closedd').on('click', function(){
             $('.login-desktop-container').addClass('loginClose')
 	  $('.login_desktop').fadeToggle("fast");
@@ -1195,7 +1200,7 @@ function appearLogin(){
           if(!(window.location.href === window.location.origin + '/es') || (window.location.href === window.location.origin + '/en') ){
             if(!($.cookie('enterLogin'))){
                 if($('.btn_login_desktop').parents('ul').css('display') !== 'none'){
-                    $('.login_desktop').fadeIn()
+                    $('.login_desktop').fadeIn(null, null, showAlertComisionMessage);
                 }
 
                     $.cookie('enterLogin','true',{expires:null,path: '/'});
@@ -1250,3 +1255,6 @@ function reload_carrito() {
     });
 }
 
+function showAlertComisionMessage() {
+	$.magnificPopup.open({items: {src: '#modalAlertComision'}, type: 'inline'}, 0);
+}
