@@ -614,6 +614,11 @@ Route::get(\Routing::translateSeo('artista-fondo-galeria') . '{id_artist}', 'V5\
 
 Route::get('/{lang}/lot-file/{file}/{numhces}/{linhces}/download', 'SubastaController@getDownloadLotFile')->name('lot_file_download');
 
+/***** Vottun  ******/
+Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
+
+
+/***** FIN VOTTUN  ******/
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';

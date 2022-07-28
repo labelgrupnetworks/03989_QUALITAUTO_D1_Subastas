@@ -76,3 +76,8 @@ Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAcep
 #SALARETIRO
 Route::get('/exportar-a-excel-lotes/{codSub}', 'CustomControllers@exportarLotes');
 
+
+//Route::get('zohocrmauth', 'externalws\bogota\ZohoController@auth')->name('zohocrmauth');
+//Route::get('zohocrm', 'externalws\bogota\ZohoController@store')->name('zohocrm');
+
+
