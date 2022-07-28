@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Config;
 use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgAsigl1;
 use App\libs\FormLib;
+use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgHces1;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -129,5 +131,56 @@ class AdminPujasController extends Controller
 		return FgAsigl1::joinCli()->joinFghces1Asigl0();
 	}
 
+	public function deleteSelection(Request $request, $cod_sub)
+	{
+		foreach ($request->bids as $bid) {
+
+			if($bid['instance'] == 'FgAsigl1') {
+				$this->deleteBid($cod_sub, $bid['ref'], $bid['lin']);
+			}
+			elseif ($bid['instance'] == 'FgAsigl1_Aux') {
+				FgAsigl1_Aux::where([
+					'sub_asigl1' => $cod_sub,
+					'ref_asigl1' => $bid['ref'],
+					'lin_asigl1' => $bid['lin'],
+				])->delete();
+			}
+		}
+
+		return response()->json(['success' => true]);
+	}
+
+	private function deleteBid($cod_sub, $ref, $lin)
+	{
+		FgAsigl1::where([
+			'sub_asigl1' => $cod_sub,
+			'ref_asigl1' => $ref,
+			'lin_asigl1' => $lin,
+		])->delete();
+
+		$newImplic = FgAsigl1::where([
+			'sub_asigl1' => $cod_sub,
+			'ref_asigl1' => $ref,
+		])->max('imp_asigl1');
+
+		//Si no existe puja se elimina el campo licitado y se establece el importe a 0
+		$isLicit = !$newImplic ? 'N' : 'S';
+		$newImplic = $newImplic ?? 0;
+
+		$lot = FgAsigl0::select('numhces_asigl0', 'linhces_asigl0')
+			->where([
+				'sub_asigl0' => $cod_sub,
+				'ref_asigl0' => $ref,
+			])->first();
+
+		FgHces1::where([
+			'num_hces1' => $lot->numhces_asigl0,
+			'lin_hces1' => $lot->linhces_asigl0,
+		])->update([
+			'implic_hces1' => $newImplic,
+			'lic_hces1' => $isLicit
+		]);
+
+	}
 
 }

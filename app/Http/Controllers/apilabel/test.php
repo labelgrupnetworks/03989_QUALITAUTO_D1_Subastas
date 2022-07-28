@@ -75,7 +75,7 @@ class test extends BaseController
 
 
 				$Payment = new stdClass();
-				$Payment->idorigincli = "WWWWW2";  // "76355";
+				$Payment->idorigincli = "3";  // "76355";
 				$Payment->paid = "S";
 				$Payment->serial = "T20";
 				$Payment->number = 1;
@@ -706,7 +706,7 @@ class test extends BaseController
         }
 		#http://www.newsubastas.test/apilabel/test?function=getLot&testmode=CONTROLLER
         public function getLot(){
-            $parameters=array("idauction" =>"00000147");
+            $parameters=array("idauction" =>"LABELP");
             $this->excuteMode($parameters,"GET","lot", new LotController(),"showlot");
         }
 		#http://www.newsubastas.test/apilabel/test?function=putLot&testmode=CONTROLLER

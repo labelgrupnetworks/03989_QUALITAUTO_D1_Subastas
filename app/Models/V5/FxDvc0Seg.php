@@ -4,6 +4,8 @@
 namespace App\Models\V5;
 
 use App\Providers\ToolsServiceProvider;
+use Carbon\Carbon;
+use Carbon\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Config;
@@ -69,6 +71,57 @@ class FxDvc0Seg extends Model
 		 * LEFT JOIN FXDVC0SEG ON EMP_DVC0SEG = EMP_DVC0 AND ANUM_DVC0SEG = ANUM_DVC0 AND NUM_DVC0SEG = NUM_DVC0
 		 * LEFT JOIN FXESTADOSSEG ON IDSEG_DVC0SEG = ID_ESTADOSSEG
 		 */
+	}
+
+	/**
+	 * Fechas de entrega estimada para Tauler
+	 */
+	private static function estimatedsDeliveryDates2022()
+	{
+		$dates = [
+			[ 'application_date' => '2022-01-12', 'delivery_date' => '2022-01-29' ],
+			[ 'application_date' => '2022-02-09', 'delivery_date' => '2022-02-26' ],
+			[ 'application_date' => '2022-03-09', 'delivery_date' => '2022-03-26' ],
+			[ 'application_date' => '2022-04-08', 'delivery_date' => '2022-04-25' ],
+			[ 'application_date' => '2022-05-11', 'delivery_date' => '2022-05-28' ],
+			[ 'application_date' => '2022-06-10', 'delivery_date' => '2022-06-27' ],
+			[ 'application_date' => '2022-07-10', 'delivery_date' => '2022-07-30' ],
+			[ 'application_date' => '2022-09-07', 'delivery_date' => '2022-09-24' ],
+			[ 'application_date' => '2022-10-11', 'delivery_date' => '2022-10-29' ],
+			[ 'application_date' => '2022-11-09', 'delivery_date' => '2022-11-26' ],
+			[ 'application_date' => '2022-12-09', 'delivery_date' => '2022-12-27' ]
+		];
+
+		return collect($dates);
+	}
+
+	/**
+	 * Tauler muestra una fecha de entrega estimada según la fecha de la subasta
+	 */
+	public static function getEstimatedDeliveryDate($auctionDate)
+	{
+		$deliveryDate = self::estimatedsDeliveryDates2022()->filter(function ($date) use ($auctionDate){
+			return $date['application_date'] > $auctionDate;
+		})->first();
+
+		if(!$deliveryDate){
+			return null;
+		}
+
+		$carbonDate = Carbon::parse($deliveryDate['delivery_date']);
+
+		//8 de julio de 2022
+		if(config('app.locale') == 'es'){
+			$factory = new Factory([
+				'locale' => 'es_ES',
+				'timezone' => 'Europe/Madrid',
+			]);
+
+			return $factory->make($carbonDate)->isoFormat('LL');
+		}
+
+		//July 08th, 2022
+		return $carbonDate->format('F jS, Y');
 	}
 
 }

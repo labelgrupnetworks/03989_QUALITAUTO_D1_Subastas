@@ -240,7 +240,7 @@ class PaymentsController extends Controller
 
 					$gastos_envio = $gastos_envio + $inf_lot->himp_csub + $inf_lot->base_csub;
 
-					if ($delete_peticion_delivery) {
+					if ($delete_peticion_delivery && $deliverea) {
 						$deliverea->deleteCsube($emp, $sub, $ref);
 					}
 
@@ -696,8 +696,6 @@ class PaymentsController extends Controller
 			$email_admin = Config::get('app.admin_email');
 		}
 
-
-
 		$email = new EmailLib('INVOICE_PAY_ADMIN');
 
 		if (!empty($email->email)) {
@@ -707,6 +705,14 @@ class PaymentsController extends Controller
 			$email->setName($nom_cli);
 			$email->setOrder_id($order_id);
 			$email->setTo($email_admin, 'Admin');
+
+			if(!empty(config('app.admin_email_administracion_cc', ''))){
+				$emails = array_map('trim', explode(',', config('app.admin_email_administracion_cc', '')));
+				foreach ($emails as $email_cc) {
+					$email->setCc($email_cc);
+				}
+			}
+
 			$email->send_email();
 		}
 	}
@@ -949,7 +955,7 @@ class PaymentsController extends Controller
 
 
 		#Redsys recomienda que no haya letras en los 4 primeros digitos de la idorden, por lo que substituimos la F y P por 0 y 1 respectivamente
-		$ordenTrans = str_replace(["F","P","T"], [0,1,2], $ordenTrans);
+		$ordenTrans = str_replace(["F","P","T", "M"], [0,1,2,3], $ordenTrans);
 
 		$miObj = new RedsysAPI;
 
@@ -1171,6 +1177,9 @@ class PaymentsController extends Controller
 							$payShoppingCart = new PayShoppingCartController();
 							$payShoppingCart->returnPay($merchantId);
 							return;
+						}elseif($tipoPago == '3'){
+							#cambiamos el primer digito si es 3 por M que es el de coste minteo
+							$merchantId = "M".substr($returnedVars->Ds_Order,1);
 						}
 						#dividimos por cien por que al ser € se ha multiplicado antes por 100, Redsys no trabaja con decimales
 						$amount = $returnedVars->Ds_Amount/100;

@@ -272,24 +272,8 @@ class AdminLotController extends Controller
 
 		//Todos los lotes necesitan un idorigen para poder ser actualizados, así forzamos a que los tengan
 		if (!$fgAsigl0->idorigen_asigl0) {
-			$newIdOrigen = "$cod_sub-$fgAsigl0->ref_asigl0";
-
-			FgAsigl0::where([
-				['ref_asigl0', $ref_asigl0],
-				['sub_asigl0', $cod_sub]
-			])->update(
-				['idorigen_asigl0' => $newIdOrigen]
-			);
-
-			FgHces1::where([
-				['num_hces1', $fgAsigl0->numhces_asigl0],
-				['lin_hces1', $fgAsigl0->linhces_asigl0],
-				['sub_hces1', $cod_sub],
-			])->update(
-				['idorigen_hces1' => $newIdOrigen]
-			);
+			$this->addIdOrigin($cod_sub, $fgAsigl0->ref_asigl0, $fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 		}
-
 
 		$images = $this->getImagesFgAsigl0($fgAsigl0);
 		$files = $this->getFilesFgAsigl0($fgAsigl0);
@@ -455,6 +439,31 @@ class AdminLotController extends Controller
 
 		return $res;
 		//return response()->json($res);
+	}
+
+	public function unpublishNft($cod_sub, $ref_asigl0)
+	{
+		$lote = FgAsigl0::select("NUMHCES_ASIGL0, LINHCES_ASIGL0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0", $ref_asigl0)->first();
+		if(!$lote){
+			abort(404);
+		}
+
+		$nft = FgNft::where([["numhces_nft", $lote->numhces_asigl0], ["linhces_nft", $lote->linhces_asigl0]])->first();
+		if(!$nft){
+			return back()->withErrors(['errors' => ['El nft no existe']])->withInput();
+		}
+
+		if($nft->mint_id_nft){
+			return back()->withErrors(['errors' => ['No se puede despublicar un NFT ya mintado']])->withInput();
+		}
+
+		FgNft::where([["numhces_nft", $lote->numhces_asigl0], ["linhces_nft", $lote->linhces_asigl0]])
+			->update([
+				"hashfile_nft" => null,
+				"hashmetadata_nft" => null,
+			]);
+
+		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
 	public function getOrder($cod_sub)
@@ -704,9 +713,15 @@ class AdminLotController extends Controller
 				'order' => $key,
 			] + $item;
 		}
-
 		$imgController = new ImgController();
-		return $imgController->createImg($itemImages);
+
+		if(count($itemImages) > 0){
+
+			return $imgController->createImg($itemImages);
+		}else{
+			return   json_encode(['status' => "SUCCESS" ]);
+		}
+
 	}
 
 	protected function getImagesFgAsigl0($fgAsigl0)
@@ -873,6 +888,9 @@ class AdminLotController extends Controller
 				'biddercommission' => FormLib::Int('biddercommission', 0, old('biddercommission', $fgAsigl0->comlhces_asigl0 ?? 0)),
 				'ownercommission' => FormLib::Int('ownercommission', 0, old('ownercommission', $fgAsigl0->comphces_asigl0 ?? 0))
 			],
+			'otros' => [
+				'width' => FormLib::Int('width', 0, old('width', $fgAsigl0->ancho_hces1 ?? 0)),
+			],
 			'iframe' => [
 				'htmlcontent' => FormLib::TextArea('htmlcontent', 0, old('htmlcontent', $fgAsigl0->contextra_hces1))
 			],
@@ -987,6 +1005,7 @@ class AdminLotController extends Controller
 
 		//Para controlar el poder o no publicar el nft
 		$formulario->publish_nft = $fgAsigl0->es_nft_asigl0 == 'S' && empty($nftInfo->hashfile_nft);
+		$formulario->unpublish_nft = $fgAsigl0->es_nft_asigl0 == 'S' && $nftInfo->hashfile_nft && !$nftInfo->mint_id_nft;
 
 		if(!empty($nftInfo->hashfile_nft)) {
 			$formulario->nft = [
@@ -1300,7 +1319,59 @@ class AdminLotController extends Controller
 
 		# Redirección a la ventana de edición del lote
 		return redirect(route('subastas.lotes.edit', ['subasta' => $request->newAuction, 'lote' => $newRefAsigl0]))->with(['warning' => array(trans('admin-app.title.warning_cloned_lot'))]);
+	}
 
+	public function addIdOrigin($cod, $ref, $numhces, $linhces)
+	{
+		$newIdOrigen = "$cod-$ref";
+
+		FgAsigl0::where([
+			['ref_asigl0', $ref],
+			['sub_asigl0', $cod]
+		])->update(
+			['idorigen_asigl0' => $newIdOrigen]
+		);
+
+		FgHces1::where([
+			['num_hces1', $numhces],
+			['lin_hces1', $linhces],
+			['sub_hces1', $cod],
+		])->update(
+			['idorigen_hces1' => $newIdOrigen]
+		);
+
+		return $newIdOrigen;
+	}
+
+	public function deleteSelection(Request $request, $cod_sub)
+	{
+
+		$lots = FgAsigl0::select('idorigen_asigl0, ref_asigl0', 'sub_asigl0', 'numhces_asigl0 ', 'linhces_asigl0')
+			->where('sub_asigl0', $cod_sub)
+			->whereIn('ref_asigl0', $request->lots)
+			->get();
+			//->pluck('idorigen_asigl0');
+
+		if($lots->isEmpty()) {
+			return response()->json(['error' => 'No se encontraron lotes para eliminar'], 400);
+		}
+
+		//obtenemos el id origen de todos los lotes, y si no lo tiene, lo creamos
+		$idToDelete = $lots->map(function($lot) {
+			if(!$lot->idorigen_asigl0){
+				return $this->addIdOrigin($lot->sub_asigl0, $lot->ref_asigl0, $lot->numhces_asigl0, $lot->linhces_asigl0);
+			}
+			return $lot->idorigen_asigl0;
+		});
+
+		$apiLotController = new LotController();
+
+		//eliminamos los lotes
+		$idToDelete->map(function($id) use ($apiLotController) {
+			$apiLotController->eraseLot(['idorigin' => $id]);
+		});
+
+		return response()->json(['success' => true], 200);
 	}
 
 }

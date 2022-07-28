@@ -6,6 +6,7 @@ use App\Http\Controllers\V5\CartController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
 use App\Models\V5\FxClid;
+use App\Models\V5\FgCsub;
 use App\Models\V5\WebPayCart;
 use App\Models\Subasta;
 use App\Models\V5\FgAsigl0;
@@ -273,6 +274,11 @@ class PayShoppingCartController extends Controller
 				'redondeo'     => 2
 				)
 			);
+
+			
+
+			#Despues de crear la adjudicación debemos marcarla cómo pagada.
+			FgCsub::where("SUB_CSUB", $lot->cod_sub)->where("REF_CSUB", $lot->ref)->update(["AFRAL_CSUB"=> "L00"]);
 		}
 		# si es necesario updatar la información de la transacción
 		if($updateInfo){

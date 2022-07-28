@@ -32,20 +32,44 @@ class BannerLib
 		$item = DB::table("WEB_NEWBANNER_ITEM")->where("ID_WEB_NEWBANNER", $banner->id)->where('ACTIVO', 1)->where("LENGUAJE", strtoupper(Config::get("app.locale")))->orderBy("bloque")->orderBy("orden")->orderBy("WEB_NEWBANNER_ITEM.ID")->first();
 		$MobileDetect = new MobileDetect();
 
-		$img = '';
+		$rutaImg ="/img/banner/$theme/$emp/$banner->id/$item->id/" ;
+
+		#añadimos el locale a un array para poder buscar por idimo principal y si n oesta en ES
+		$languages[strtoupper(Config::get("app.locale"))] = 1;
+		#añadimos el ES despues para que busque primero en el idioma principal, si el principal es ES, esto no hace nada
+		$languages["ES"] = 1;
+
 
 		if ($MobileDetect->isMobile() ){
-			$img = public_path() . '/img/banner/' . $theme . '/' . $emp  . '/' . $banner->id . '/' . $item->id . '/' . strtoupper(Config::get("app.locale")) . '_mobile.jpg';
-			if(!file_exists($img)){
-				$img = Tools::urlAssetsCache("/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . ".jpg");
+
+			foreach (["jpg","gif"] as  $extension){
+				foreach ($languages as  $locale=>$a){
+					$pathImg = $rutaImg . $locale  . "_mobile.$extension";
+					if(file_exists(public_path().$pathImg)){
+						break 2;
+					}else{
+						#si no existe en mobile buscamos en tamaño escritorio
+						$pathImg = $rutaImg . $locale  . ".$extension";
+						if(file_exists(public_path().$pathImg)){
+							break 2;
+						}
+
+					}
+				}
 			}
-			else{
-				$img = Tools::urlAssetsCache("/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . "_mobile.jpg");
+
+		}else{
+			foreach (["jpg","gif"] as  $extension){
+				foreach ($languages as  $locale=>$a){
+					#si no existe en mobile buscamos en tamaño escritorio
+					$pathImg = $rutaImg . $locale  . ".$extension";
+					if(file_exists(public_path().$pathImg)){
+						break 2;
+					}
+				}
 			}
 		}
-		else{
-			$img = Tools::urlAssetsCache("/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . ".jpg");
-		}
+
 
 		if ($item->url) {
 			if ($item->ventana_nueva) {
@@ -54,7 +78,7 @@ class BannerLib
 				$html .= '<a href="' . $item->url . '">';
 			}
 		}
-		$html .= '<div class="bann-parallax" style="background-image: url(\'' . $img . '\'); min-height: ' . $height . ';"></div>';
+		$html .= '<div class="bann-parallax" style="background-image: url(\'' .  Tools::urlAssetsCache($pathImg) . '\'); min-height: ' . $height . ';"></div>';
 		if ($item->url) {
 			$html .= '</a>';
 		}
@@ -129,6 +153,13 @@ class BannerLib
 
 					foreach ($itemsPorBloque[$k] as $index => $item) {
 						$item_name = "item_".$tipo_item ;
+						$rutaImg ="/img/banner/$theme/$emp/$banner->id/$item->id/" ;
+
+						#añadimos el locale a un array para poder buscar por idimo principal y si n oesta en ES
+						$languages[strtoupper(Config::get("app.locale"))] = 1;
+						#añadimos el ES despues para que busque primero en el idioma principal, si el principal es ES, esto no hace nada
+						$languages["ES"] = 1;
+
 
 						if ($MobileDetect->isMobile()) {
 							// MOBILE
@@ -144,22 +175,21 @@ class BannerLib
 							//Por defecto si no existe imagen mobile se muestra la de escritorio
 							//$imagen_mobile = public_path() . '/themes/' . $theme . '/assets/img/banner/' . $banner->id . '/' . $item->id . '/' . strtoupper(Config::get("app.locale")) . '_mobile.jpg';
 
-							//modificación de ruta 29-06-20
-							$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . "_mobile.jpg";
 
-							//si no existe en mobile buscamos en tamaño escritorio
-							if(!file_exists(public_path() . $pathImg)){
-								$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . ".jpg";
-							}
+							foreach (["jpg","gif"] as  $extension){
+								foreach ($languages as  $locale=>$a){
+									$pathImg = $rutaImg . $locale  . "_mobile.$extension";
+									if(file_exists(public_path().$pathImg)){
+										break 2;
+									}else{
+										#si no existe en mobile buscamos en tamaño escritorio
+										$pathImg = $rutaImg . $locale  . ".$extension";
+										if(file_exists(public_path().$pathImg)){
+											break 2;
+										}
 
-							//si tampoco existe buscamos en español para mobile
-							if(strtoupper(Config::get("app.locale")) != 'ES' && !file_exists(public_path() . $pathImg)){
-								$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/ES_mobile.jpg";
-							}
-
-							//y si tampoco existe buscamos en español y escritorio para mobile
-							if(!file_exists(public_path() . $pathImg)){
-								$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/ES_.jpg";
+									}
+								}
 							}
 
 							$html .= '<img src="' . Tools::urlAssetsCache($pathImg) . '" width="100%">';
@@ -181,12 +211,17 @@ class BannerLib
 								}
 							}
 
-							$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/" . strtoupper(Config::get("app.locale")) . ".jpg";
 
-							//Si estamos en un idioma diferente al español y la imagen no existe
-							if(strtoupper(Config::get("app.locale")) != 'ES' && !file_exists(public_path() . $pathImg)){
-								$pathImg = "/img/banner/$theme/$emp/$banner->id/$item->id/ES.jpg";
+							foreach (["jpg","gif"] as  $extension){
+								foreach ($languages as  $locale=>$a){
+									$pathImg = $rutaImg . $locale  . ".$extension";
+									if(file_exists(public_path().$pathImg)){
+										break 2;
+									}
+								}
 							}
+
+
 
 
 							$html .= '<img src="' . Tools::urlAssetsCache($pathImg) . '" width="100%">';

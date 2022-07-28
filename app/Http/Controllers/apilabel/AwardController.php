@@ -114,6 +114,8 @@ class AwardController extends ApiLabelController
 					$this->createBid($item);
 					#indicar el implic para que se marque como vendido en el grid
 					$this->updateImplic($lotsByRef[$item["ref"]]["numhces_asigl0"], $lotsByRef[$item["ref"]]["linhces_asigl0"], $item["bid"],"S");
+					#cerrar el lote si no está cerrado
+					FgAsigl0::where("sub_asigl0",$item["idauction"])->where("ref_asigl0", $item["ref"])->update(["cerrado_asigl0" => "S"]);
 		     }
 
                 $this->update($update, $this->rules, $this->rename, new FgCsub());

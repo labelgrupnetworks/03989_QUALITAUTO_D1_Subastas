@@ -52,6 +52,7 @@ use App\Models\V5\FxCliObcta;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0Seg;
 use App\Models\V5\FgAsigl1_Aux;
+use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
@@ -3833,12 +3834,16 @@ class UserController extends Controller
 
 		//request -> cod_sub, afral_csub, nfral_csub
 		//añadir user.cod
+		$auction = FgSub::select('dfec_sub')->where('cod_sub', request('cod_sub'))->first();
+
 		$afral_csub = request('afral_csub', '');
 		$nfral_csub = request('nfral_csub', '');
 
-		$seguimientos = (new FxDvc0Seg())->getSeguimientoEnvío($afral_csub, $nfral_csub);
+		$shipments = (new FxDvc0Seg())->getSeguimientoEnvío($afral_csub, $nfral_csub);
 
-		return response($seguimientos, 200);
+		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
+
+		return response(['shipments' => $shipments, 'delivery_date' => $deliveryDate ], 200);
 	}
 
 

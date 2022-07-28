@@ -247,9 +247,8 @@ class Favorites extends Model
             if(!empty($this->list_licit)){
                 $sql = "SELECT * FROM WEB_FAVORITES FAVORITES
                         JOIN FGSUB SUB ON SUB.COD_SUB = FAVORITES.ID_SUB AND SUB.EMP_SUB = FAVORITES.ID_EMP
-                        JOIN FGASIGL0 ASIGL0 ON ASIGL0.SUB_ASIGL0 = FAVORITES.id_sub AND ASIGL0.REF_ASIGL0 = FAVORITES.id_ref
+                        JOIN FGASIGL0 ASIGL0 ON ASIGL0.SUB_ASIGL0 = FAVORITES.id_sub AND ASIGL0.REF_ASIGL0 = FAVORITES.id_ref AND ASIGL0.EMP_ASIGL0 = FAVORITES.id_emp
                         WHERE ASIGL0.CERRADO_ASIGL0 = 'N' AND FAVORITES.ID_EMP = :emp AND SUB.SUBC_SUB IN ('S','A') AND FAVORITES.ID_SUB || '-' || FAVORITES.ID_LICIT IN (".$this->list_licit.") ".$where." ORDER BY FAVORITES.ID_SUB,FAVORITES.ID_REF";
-
 
                 $res = DB::select($sql, $bindings);
             }

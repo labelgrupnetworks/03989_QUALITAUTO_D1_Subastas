@@ -106,6 +106,26 @@ class VottunController extends Controller
 						'verify' => false,
 						'body' => json_encode($parameters),
 						]);
+			#envio URL
+			}elseif($method == "POST_URL" || $method == "PUT_URL"){
+
+				$meth="POST";
+				if($method == "PUT_URL"){
+					$meth="PUT";
+				}
+
+				$headers = [
+						'Content-Type' => 'application/x-www-form-urlencoded',
+						'Accept' => '*/*',
+						'x-application-vkn' => $this->appId,
+						'authorization' =>"Bearer ". $this->accesstoken,
+					];
+
+				$response = $clientGuzz->request($meth, $url . $function,[
+						'headers' => $headers,
+						'verify' => false,
+						'form_params' => $parameters,
+						]);
 			#envio de archivos
 			}elseif($method == "POST_FORM-DATA"){
 				$boundary= 'my_custom_boundary';
@@ -461,6 +481,55 @@ class VottunController extends Controller
 			}
 		}
 
+		#vottun llamara a esta función cuando haya finalizado algun evento
+		public function webhook(){
+			$all = request()->all();
+			echo "hola " .print_r($all);
+			\Log::info("webhook funcvionando".print_r($all, true) );
+
+
+			/*
+			INFORMACION QUE ENVIARÁ VOTTUN sobre el minteo
+			(
+				[operationId] => 155635de-28b2-4d37-aa9b-ffbb9e30b5f2
+				[networkId] => 43113
+				[appId] => 4
+				[contractAddress] => 0xF93f3a2936e14eD8ED9C05f0fAd0ac515FAD19A0
+				[tokenId] => 4
+				[txHash] => 0x9455dc2f13fe07e28bbea0a041825d3dc6ebedbee1c63dd5e39669e1d9c9a60e
+				[operation] => mint
+				[to] => 0x50dc51a0b3D57f27dd8652b66812c184764ec2bD
+				[from] => 0xEC6fc3dc4607dA2d945DFa8ab0391Aa9FEDa60E9
+				[status] => Array
+					(
+						[status] => 4
+						[errorMessage] =>
+					)
+
+			)
+
+			INFORMACIÓN QUE ENVIARÁ VOTTUN SOBRE LA TRANSFERENCIA
+			(
+				[operationId] => b040c87d-7772-460a-aafb-7efb9484db6d
+				[networkId] => 43113
+				[appId] => 4
+				[contractAddress] => 0xF93f3a2936e14eD8ED9C05f0fAd0ac515FAD19A0
+				[tokenId] => 4
+				[txHash] => 0x1377475563cf6a66d7f3429e9f83a18c37a7e4027060ca7161ef1531465f587c
+				[operation] => transfer
+				[to] => 0x8e2dC0de77ab7cF61f9Ae72a18B157e46826509e
+				[from] => 0x50dc51a0b3D57f27dd8652b66812c184764ec2bD
+				[status] => Array
+					(
+						[status] => 4
+						[errorMessage] =>
+					)
+
+			)
+			*/
+
+		}
+
 
 
 		/* FUNCIONES CONTRA LA RED DE VOTTUN */
@@ -657,6 +726,42 @@ class VottunController extends Controller
 			}
 			*/
 		}
+
+		public function vottunCreateWebhook(){
+			$type="nft";
+			$function = "config/webhook";
+			$method= "POST_URL";
+			$parameters =["url"=> Route("webhookvottun")];
+			return $this->VottumRequest($type, $method   ,$parameters, $function);
+		}
+
+		public function vottunUpdateWebhook(){
+			$type="nft";
+			$function = "config/webhook";
+			$method= "PUT_URL";
+			$parameters =["url"=> Route("webhookvottun")];
+			return $this->VottumRequest($type, $method   ,$parameters, $function);
+
+		}
+
+		public function vottunGetWebhook(){
+			$type="nft";
+			$function = "config/webhook";
+			$method= "GET";
+			$parameters =[];
+			return $this->VottumRequest($type, $method   ,$parameters, $function);
+
+		}
+		
+		public function vottunTestWebhook(){
+			$type="nft";
+			$function = "config/webhook/test";
+			$method= "GET";
+			$parameters =[];
+			return $this->VottumRequest($type, $method   ,$parameters, $function);
+		}
+
+
 
 		public function vottunNetworks( ){
 			$type="nft";
