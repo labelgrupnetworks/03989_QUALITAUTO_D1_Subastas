@@ -1,4 +1,3 @@
-
-			<div class="bread">
-				@include('includes.bread')
-			</div>
+<div class="bread">
+	@include('includes.bread')
+</div>

@@ -3929,7 +3929,7 @@ class Subasta extends Model
 
 
         $sql ="
-            SELECT cod_sub, des_sub,  orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, session_start, session_end,subastatr_sub, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
+            SELECT cod_sub, des_sub,  orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, description, session_start, session_end,subastatr_sub, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
             emp_sub ||  '_' || cod_sub || '_' ||    reference as file_code,upcatalogo,uppdfadjudicacion,uppreciorealizado,upcatalogo_lang,uppreciorealizado_lang,upmanualuso_lang,COLORCAL_SUB ,CALINI_SUB, CALFIN_SUB
             FROM (
                 SELECT sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub, sub.subastatr_sub,COLORCAL_SUB,CALINI_SUB, CALFIN_SUB,
@@ -3941,6 +3941,7 @@ class Subasta extends Model
                        NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub) seshorario_sub,
                        NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
                        NVL(auc_lang.\"name_lang\",   auc.\"name\" ) name,
+                       NVL(auc_lang.\"description_lang\", auc.\"description\" ) description,
                        auc.\"reference\" reference ,auc.\"id_auc_sessions\" id_auc_sessions, auc.\"start\" session_start, auc.\"end\" session_end,
                         auc.\"orders_start\" as orders_start,  auc.\"orders_end\" as orders_end,auc.\"upCatalogo\" upcatalogo,auc.\"uppdfadjudicacion\" uppdfadjudicacion, auc.\"upPrecioRealizado\" uppreciorealizado,
                         auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
@@ -3961,7 +3962,7 @@ class Subasta extends Model
                     $tipo_sub
                     sub.EMP_SUB = :emp
 				$where
-                GROUP BY sub.COD_SUB, NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB), sub.EMP_SUB, sub.SUBC_SUB,NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub),NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub),NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub), auc.\"orders_start\",  auc.\"orders_end\", sub.tipo_sub, NVL(auc_lang.\"name_lang\",   auc.\"name\" ), auc.\"id_auc_sessions\",auc.\"reference\", auc.\"start\" , auc.\"end\",auc.\"upCatalogo\",auc.\"uppdfadjudicacion\",auc.\"upPrecioRealizado\",subastatr_sub,auc_lang.\"upCatalogo_lang\",auc_lang.\"upPrecioRealizado_lang\",auc_lang.\"upManualUso_lang\",COLORCAL_SUB,CALINI_SUB, CALFIN_SUB
+                GROUP BY sub.COD_SUB, NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB), sub.EMP_SUB, sub.SUBC_SUB,NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub),NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub),NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub), auc.\"orders_start\",  auc.\"orders_end\", sub.tipo_sub, NVL(auc_lang.\"name_lang\",   auc.\"name\" ), NVL(auc_lang.\"description_lang\", auc.\"description\" ), auc.\"id_auc_sessions\",auc.\"reference\", auc.\"start\" , auc.\"end\",auc.\"upCatalogo\",auc.\"uppdfadjudicacion\",auc.\"upPrecioRealizado\",subastatr_sub,auc_lang.\"upCatalogo_lang\",auc_lang.\"upPrecioRealizado_lang\",auc_lang.\"upManualUso_lang\",COLORCAL_SUB,CALINI_SUB, CALFIN_SUB
 
             )
             ORDER BY  $order_by

@@ -2,24 +2,47 @@
 	--color-primary: #cd2122;
 	--color-primary-light: #D74D4E;
 	--color-primary-dark: #8F1717;
-	--color-primary-contrast: #ffffff;
+	--color-primary-contrast: #ffffffea;
 
 	/* --color-secondary: #bebebe; */
 	--color-secondary: #f0f0f0;
 
 	--color-contrast-contrast: #000;
 
-	--text-color-primary: rgba(0, 0, 0, 0.87);
-	--text-color-secondary: rgba(0, 0, 0, 0.54);
-	--text-color-disabled: rgba(0, 0, 0, 0.38);
+	--text-color-rgb: 0, 0, 0;
+	--opacity-text: 0.75;
+	--opacity-text-light: 0.54;
+	--opacity-text-disabled: 0.38;
+
+	--text-color-primary: rgb(var(--text-color-rgb), var(--opacity-text));
+	--text-color-secondary: rgba(var(--text-color-rgb), var(--opacity-text-light));
+	--text-color-disabled: rgba(var(--text-color-rgb), var(--opacity-text-disabled));
+
+	--box-shadow-color-rgb: 0, 0, 0;
+	--box-shadow: 0px 1px 2px 0px rgba(var(--box-shadow-color-rgb), 0.1);
 }
 
 body {
+	--bs-body-color-rgb: var(--text-color-rgb);
+	--bs-body-color: var(--text-color-primary);
 	color: var(--text-color-primary);
 }
 
 p {
 	margin: 0;
+}
+
+h1 {
+	font-family: 'Playfair Display', serif;
+	font-weight: 700;
+}
+
+.btn {
+	--bs-btn-color: var(--text-color-primary);
+}
+
+.text-muted {
+	color: var(--text-color-secondary) !important;
 }
 
 .form-check-input:checked {
@@ -152,6 +175,16 @@ header .navbar-toggler {
 	border: none;
 }
 
+.breadcrumb a {
+	text-decoration: none;
+	color: var(--text-color-secondary);
+}
+
+.breadcrumb li.active a {
+	font-weight: 500;
+	color: var(--color-primary);
+}
+
 
 .home-slider {
 	position: relative;
@@ -225,7 +258,7 @@ header .navbar-toggler {
     width: 100%;
     height: 100%;
     border-radius: 15px;
-    box-shadow: rgb(0 0 0 / 10%) 0px 1px 2px 0px;
+    box-shadow: var(--box-shadow);
 }
 
 .category-wrapper h3 {
@@ -294,5 +327,34 @@ header .navbar-toggler {
 	padding-top: 5rem;
 	padding-bottom: 5rem;
 	background-color: var(--color-secondary);
+}
+
+.card-custom-large {
+	box-shadow: var(--box-shadow);
+}
+
+.card-custom-large .card-footer {
+	background-color: #fff;
+}
+
+.card-custom-large img {
+	object-fit: cover;
+	border-top-right-radius: var(--bs-border-radius);
+    border-bottom-right-radius: var(--bs-border-radius);
+}
+
+.card-custom-large .card-img-wrapper {
+	position: relative;
+}
+
+.card-custom-large .btn-live-wrapper {
+	position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px;
 }
 

@@ -16,6 +16,8 @@ class AucSessionsFiles extends Model
 
 	protected $guarded = [];
 
+	const TYPE_ENLACE = 5;
+
 	const TYPE_FILES = [
 		1 =>'Pdf',
 		2 => 'Video',
@@ -50,6 +52,18 @@ class AucSessionsFiles extends Model
             $builder->where('"company"', Config::get("app.emp"));
         });
     }
+
+	public function getTypeFileAttribute(){
+		return self::TYPE_FILES[$this->type];
+	}
+
+	public function getPathIconAttribute(){
+		return self::PATH_ICONS[$this->type];
+	}
+
+	public function getUrlFormatAttribute(){
+		return ($this->type == self::TYPE_ENLACE) ? $this->url : "/files{$this->path}";
+	}
 
 }
 

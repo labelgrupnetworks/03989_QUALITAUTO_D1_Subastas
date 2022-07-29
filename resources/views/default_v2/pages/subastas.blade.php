@@ -45,12 +45,20 @@
     }
 
     ?>
+
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				@include('includes.breadcrumb')
+			</div>
+		</div>
+	</div>
+
+
     <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-12 text-center color-letter">
+                <div class="col">
                         <h1 class="titlePage"> {{ $data['name'] }}</h1>
-
-                    @include('includes.breadcrumb')
                 </div>
             </div>
         </div>

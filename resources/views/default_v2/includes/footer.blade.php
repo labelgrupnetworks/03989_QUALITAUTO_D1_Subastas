@@ -98,15 +98,16 @@
 
 
 			<ul class="list-unstyled d-flex">
-				<li class="ms-3"><a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
+				<li class="ms-3">
+					<a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
 						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="bootstrap-icons.svg#twitter"></use>
+							<use xlink:href="/bootstrap-icons.svg#twitter"></use>
 						</svg></a></li>
 
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.instagram') }}" target="_blank">
 						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="bootstrap-icons.svg#instagram"></use>
+							<use xlink:href="/bootstrap-icons.svg#instagram"></use>
 						</svg>
 					</a>
 				</li>
@@ -114,14 +115,14 @@
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.facebook') }}" target="_blank">
 						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="bootstrap-icons.svg#facebook"></use>
+							<use xlink:href="/bootstrap-icons.svg#facebook"></use>
 						</svg>
 					</a>
 				</li>
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.pinterest') }}" target="_blank">
 						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="bootstrap-icons.svg#pinterest"></use>
+							<use xlink:href="/bootstrap-icons.svg#pinterest"></use>
 						</svg>
 					</a>
 				</li>

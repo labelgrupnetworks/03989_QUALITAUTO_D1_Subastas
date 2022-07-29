@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Request;
+use Illuminate\Http\Request as HttpRequest;
 //use Controller;
 //use View;
 use Session;
@@ -35,6 +36,7 @@ use App\libs\FormLib;
 use App\libs\TradLib;
 use App\Models\Payments;
 use App\Http\Controllers\V5\LotListController;
+use App\Models\V5\AucSessionsFiles;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1Files;
@@ -2550,5 +2552,24 @@ class SubastaController extends Controller
 		return response()->download($file->storage_path);
 	}
 
+	public function getAucSessionFiles(HttpRequest $request)
+	{
+		if(!$request->auction || !$request->reference){
+			return response()->json(['status' => 'error', 'error' => 'No se ha encontrado la subasta'], 404);
+		}
+
+		$auctionSessionFiles = AucSessionsFiles::where([
+			'"auction"' => $request->auction,
+			'"reference"' => $request->reference,
+			'"lang"' => config('app.language_complete')[config('app.locale')]
+		])->get();
+
+		$view = view('front::includes.subasta.files', ['auctionSessionFiles' => $auctionSessionFiles])->render();
+
+		return response()->json([
+			'status' => 'success',
+			'html' => $view,
+		]);
+	}
 
 }

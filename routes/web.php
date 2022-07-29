@@ -130,6 +130,8 @@ Route::get(\Routing::translateSeo('venta-directa'), 'SubastaController@venta_dir
 Route::get(\Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones');
 Route::get(\Routing::translateSeo('subastas-activas'), 'SubastaController@subastas_activas')->name('subastas.activas');
 
+Route::post('/api-ajax/sessions/files', 'subastaController@getAucSessionFiles')->name('apiajax.sessions.files');
+
 Route::get(\Routing::translateSeo('haz-oferta'), 'SubastaController@haz_oferta')->name('subastas.haz_oferta');
 Route::get(\Routing::translateSeo('subasta-inversa'), 'SubastaController@subasta_inversa')->name('subastas.subasta_inversa');
 
