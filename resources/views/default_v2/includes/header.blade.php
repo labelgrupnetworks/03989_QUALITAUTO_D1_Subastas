@@ -21,6 +21,8 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 		<div class="container py-1 bk-gray">
 			<div class="d-flex justify-content-end align-items-center gap-3">
 
+				@include('components.search', ['classes' => 'me-auto d-none d-xxl-block'])
+
 				@if(!Session::has('user'))
 					<button class="btn btn-sm btn-primary-custom btn_login">{{ trans($theme.'-app.login_register.login') }}</button>
 				@else
@@ -34,6 +36,7 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 				@endif
 
 				@if(count(Config::get('app.locales')) > 1)
+				{{-- Con dropdown --}}
 				<div class="btn-group">
 					<button type="button" class="btn btn-sm btn-outline-primary-custom dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 					  {{ config('app.locales')[config('app.locale')] }}
@@ -54,6 +57,7 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 					@endforeach
 					</ul>
 				</div>
+				{{-- Con enlaces --}}
 				{{-- @foreach(Config::get('app.locales') as $key => $value)
 					@php
 						$route = '';
@@ -137,10 +141,7 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 					</li>
 				</ul>
 
-				<form id="formsearchResponsive" class="d-flex" role="search" action="{{ \Routing::slug('busqueda') }}">
-					<input class="form-control me-2" type="search" placeholder="{{ trans("$theme-app.head.search_label") }}" aria-label="{{ trans("$theme-app.head.search_label") }}" name="texto">
-					<button role="button" type="submit" class="btn btn-outline-primary-custom">{{ trans($theme.'-app.head.search_button') }}</button>
-				</form>
+				@include('components.search', ['classes' => 'me-auto d-xxl-none'])
 			</div>
 		</div>
 	</nav>

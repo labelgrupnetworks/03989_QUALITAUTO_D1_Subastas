@@ -175,6 +175,20 @@ header .navbar-toggler {
 	border: none;
 }
 
+.search-component-wrapper {
+	width: 300px;
+}
+
+.search-component-wrapper .form-control:focus {
+    border-color: initial;
+    outline: 0;
+    box-shadow: -4px 0px 0px 0.25rem rgb(13 110 253 / 25%);
+}
+
+.search-component-wrapper .form-control:focus + button {
+	box-shadow: 4px 0px 0px 0.25rem rgb(13 110 253 / 25%);
+}
+
 .breadcrumb a {
 	text-decoration: none;
 	color: var(--text-color-secondary);
