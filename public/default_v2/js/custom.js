@@ -1699,9 +1699,33 @@ function abrirNuevaVentana(parametros) {
 	}
 }
 
+function changeGrid(event) {
+	const button = event.target.tagName == 'BUTTON' ? event.target : event.target.closest('button');
+	const changeType = button.dataset.grid;
+	const gridSection = document.querySelector('.section-grid-lots');
+	gridSection.classList.toggle('large', changeType === 'large');
+}
 
+function hideFilters(event) {
+	event.preventDefault();
+	changeFilters(false);
+}
 
+function showFilters(event) {
+	event.preventDefault();
+	changeFilters(true);
+}
 
+function changeFilters(show) {
+	const filtersElement = document.getElementById('js-filters-col');
+	const lotsElement = document.getElementById('js-lots-col');
+	const buttonShow = document.getElementById('js-show-filters');
+
+	filtersElement.classList.toggle('d-none', !show);
+	lotsElement.classList.toggle('col-lg-9', show);
+	lotsElement.classList.toggle('col-lg-12', !show);
+	buttonShow.classList.toggle('d-none', show);
+}
 
 (function ($) {
 

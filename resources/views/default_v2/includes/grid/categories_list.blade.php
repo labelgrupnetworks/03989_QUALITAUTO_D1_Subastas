@@ -1,16 +1,21 @@
 
 
 <div class="auction__filters-categories">
-        <div class="auction__filters-collapse d-flex align-items-center justify-content-space-between" role="button" data-toggle="collapse" href="#auction_categories" aria-expanded="true" aria-controls="auction_categories">
-            <div class="filters_titles">{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</div>
-            <i class="fa fa-sort-down"></i>
-        </div>
+
+	<div class="auction__filters-collapse d-flex align-items-center justify-content-between"
+		role="button" href="#auction_categories" aria-expanded="true" aria-controls="auction_categories"
+		data-bs-toggle="collapse">
+		<div class="filters_titles">{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</div>
+
+		<svg class="bi" width="16" height="16" fill="currentColor">
+			<use xlink:href="/bootstrap-icons.svg#caret-down-fill"/>
+		</svg>
+    </div>
 
         <div class="auction__filters-type-list mt-1 collapse " id="auction_categories" >
 
-            <div class="input-category d-flex align-items-center hidden">
+            <div class="input-category d-flex align-items-center d-none">
                 <input type="radio" name="category" id="all_categories" value="" <?=  empty($filters["category"])? 'checked="checked"' : '' ?>  />
-
             </div>
 
 

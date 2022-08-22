@@ -1,3 +1,8 @@
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+ */
 :root {
 	--color-primary: #cd2122;
 	--color-primary-light: #D74D4E;
@@ -20,6 +25,7 @@
 
 	--box-shadow-color-rgb: 0, 0, 0;
 	--box-shadow: 0px 1px 2px 0px rgba(var(--box-shadow-color-rgb), 0.1);
+	--box-shadow-lot: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
 }
 
 body {
@@ -41,6 +47,10 @@ h1 {
 	--bs-btn-color: var(--text-color-primary);
 }
 
+.dropdown-menu {
+	z-index: 1021;
+}
+
 .text-muted {
 	color: var(--text-color-secondary) !important;
 }
@@ -51,7 +61,7 @@ h1 {
 }
 
 .max-line-1, .max-line-2, .max-line-3, .max-line-4{
-	-webkit-line-clamp: 1;
+	-webkit-line-clamp: var(--max-lines, 1);
     text-overflow: ellipsis;
     overflow: hidden;
     display: block;
@@ -61,13 +71,13 @@ h1 {
     -o-text-overflow: ellipsis;
 }
 .max-line-2{
-	-webkit-line-clamp: 2;
+	--max-lines: 2;
 }
 .max-line-3{
-	-webkit-line-clamp: 3;
+	--max-lines: 3;
 }
 .max-line-4{
-	-webkit-line-clamp: 4;
+	--max-lines: 4;
 }
 
 .background-primary {
@@ -112,6 +122,11 @@ a.lb-text-primary:hover {
 	color: var(--color-primary);
 }
 
+/*
+|--------------------------------------------------------------------------
+| General - Header
+|--------------------------------------------------------------------------
+ */
 header a {
 	color: var(--text-color-secondary);
 	text-decoration: none;
@@ -199,7 +214,28 @@ header .navbar-toggler {
 	color: var(--color-primary);
 }
 
+/*
+|--------------------------------------------------------------------------
+| General - Newsletter
+|--------------------------------------------------------------------------
+ */
+.newsletter {
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	background-color: var(--color-secondary);
+}
 
+.newsletter {
+	padding-top: 5rem;
+	padding-bottom: 5rem;
+	background-color: var(--color-secondary);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Home - Banner (pasar a demo)
+|--------------------------------------------------------------------------
+ */
 .home-slider {
 	position: relative;
 }
@@ -233,6 +269,11 @@ header .navbar-toggler {
 	}
 }
 
+/*
+|--------------------------------------------------------------------------
+| Home
+|--------------------------------------------------------------------------
+ */
 .about-us-banner a {
 	text-decoration: none;
 }
@@ -331,18 +372,11 @@ header .navbar-toggler {
 	box-shadow: rgb(255 0 0 / 20%) 0px 1px 1px 0px
 }
 
-.newsletter {
-	padding-top: 5rem;
-	padding-bottom: 5rem;
-	background-color: var(--color-secondary);
-}
-
-.newsletter {
-	padding-top: 5rem;
-	padding-bottom: 5rem;
-	background-color: var(--color-secondary);
-}
-
+/*
+|--------------------------------------------------------------------------
+| Subastas
+|--------------------------------------------------------------------------
+ */
 .card-custom-large {
 	box-shadow: var(--box-shadow);
 }
@@ -370,5 +404,114 @@ header .navbar-toggler {
     align-items: flex-end;
     justify-content: center;
     padding: 20px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Grid
+|--------------------------------------------------------------------------
+ */
+.badge-custom-primary {
+	display: inline-flex;
+	gap: 5px;
+	color: var(--color-primary-contrast);
+	background-color: var(--color-primary);
+	cursor: pointer;
+	padding: 0.5rem;
+}
+
+.pagination-wrapper .pagination {
+	--bs-pagination-active-bg: var(--color-primary);
+	--bs-pagination-active-color: var(--color-primary-contrast);
+	--bs-pagination-color: var(--text-color-primary);
+	--bs-pagination-hover-color: var(--color-primary);
+	--bs-pagination-focus-color: var(--color-primary);
+	--bs-pagination-active-border-color: var(--color-primary);
+	--bs-pagination-padding-y: 0.25rem;
+	--bs-pagination-padding-x: 0.6rem;
+	flex-wrap: wrap;
+}
+
+.section-grid-lots {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 1rem;
+}
+
+.lot-card {
+	border: none;
+	box-shadow: var(--box-shadow-lot);
+}
+
+.lot-card .card-img-top {
+	height: 180px;
+	object-fit: contain;
+}
+
+.lot-card .card-title {
+	--line-heigth: 1.2;
+	line-height: var(--line-heigth);
+	min-height: calc(var(--line-heigth) * var(--max-lines, 1) * 1rem);
+}
+
+.lot-card .card-body {
+	min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.lot-card .card-body .lot-prices span:last-of-type {
+	float: right;
+}
+
+.lot-card .lot-btn {
+	margin-top: auto;
+}
+
+
+@media (min-width: 540px) {
+	.section-grid-lots.large {
+		grid-template-columns: 1fr;
+	}
+
+	.section-grid-lots.large .lot-card {
+		display: grid;
+		grid-template-columns: 2fr 3fr;
+	}
+
+	.section-grid-lots.large .lot-card .card-body {
+		padding-right: 50px;
+	}
+
+	.section-grid-lots.large .lot-card .card-footer {
+		grid-column-start: 1;
+		grid-column-end: end;
+	}
+
+}
+
+.label-grid {
+	z-index: 3;
+    position: absolute;
+    top: 27px;
+    right: -28px;
+    width: 85px;
+    height: 30px;
+    padding-top: 7px;
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+	text-align: center;
+    font-size: 12px;
+	font-weight: 500;
+	border-bottom-right-radius: var(--bs-card-inner-border-radius);
+	transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+}
+
+.filters-types > :is(div, section){
+	padding: 0.5rem 0;
+	border-bottom: 1px solid var(--bs-border-color);
 }
 

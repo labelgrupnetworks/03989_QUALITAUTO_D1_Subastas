@@ -7,54 +7,48 @@
 
 <div class="filters-auction-content">
 
+	<div class="filters-auction-title d-flex align-items-end justify-content-between border-bottom pb-1 mt-1">
+		<p>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</p>
+
+		<button class="btn btn-sm btn-outline-primary-custom d-flex align-items-center" onclick="hideFilters(event)">
+			<svg class="bi" width="16" height="16" fill="currentColor">
+				<use xlink:href="/bootstrap-icons.svg#arrow-bar-left"/>
+			</svg>
+		</button>
+	</div>
+
 	<div class="form-group">
 		<form id="form_lotlist" class="color-text" method="get" action="{{ $url }}">
 			{{-- oldpage es la página en la que estabamos antes de ir a la ficha, al volver debemos ir a ella --}}
-		<input type="hidden" name="oldpage" id="oldpage" value="{{request('oldpage')}}"   />
-		<input type="hidden" name="oldlot" id="oldlot" value="{{request('oldlot')}}"   />
-		<input type="hidden" name="order" id="hidden_order" value="{{request('order')}}"   />
-		<input type="hidden" name="total" id="hidden_total" value="{{request('total')}}"   />
-		<input type="hidden" name="historic" id="hidden_historic" value="{{request('historic')}}"   />
+			<input type="hidden" name="oldpage" id="oldpage" value="{{request('oldpage')}}"   />
+			<input type="hidden" name="oldlot" id="oldlot" value="{{request('oldlot')}}"   />
+			<input type="hidden" name="order" id="hidden_order" value="{{request('order')}}"   />
+			<input type="hidden" name="total" id="hidden_total" value="{{request('total')}}"   />
+			<input type="hidden" name="historic" id="hidden_historic" value="{{request('historic')}}"   />
 
-			<div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-					<span>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</span>
-			</div>
-			<div class="filters-auction-texts">
-				<label class="filters-auction-label" for="description"><span>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</span></label>
-				<input id="description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('description') }}">
-				<div class="filters-auction-divider-medium"></div>
-				@if(!empty($codSub) && !empty($refSession))
-					<label class="filters-auction-label" for="reference">{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</label>
-					<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('reference') }}">
+			<div class="filters-types mb-1">
+				@include('includes.grid.badges_section')
 
+				@include('includes.grid.search_list')
+
+				@include('includes.grid.categories_list')
+
+				@include('includes.grid.features_list')
+
+				@if(!empty($auction))
+					@if (strtotime($auction->session_start) < time() && ($auction->tipo_sub=='W'))
+						@include('includes.grid.filter_sold')
+					@endif
+					@else
+						@include('includes.grid.typeAuction_list')
 				@endif
-
-
-			<div class="filters-auction-divider-medium"></div>
-			<button class="btn btn-filter color-letter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
-
 			</div>
-
-
-			<div class="filters-auction-divider-medium"></div>
-			@include('includes.grid.categories_list')
-			<div class="filters-auction-divider-medium"></div>
-			@include('includes.grid.features_list')
-
-			@if(!empty($auction))
-				@if (strtotime($auction->session_start) < time() && ($auction->tipo_sub=='W'))
-					@include('includes.grid.filter_sold')
-				@endif
-				@else
-					@include('includes.grid.typeAuction_list')
-            @endif
 
 
 		</form>
 	</div>
 
 </div>
-
 
 <script>
     if (screen.width>768) {
@@ -68,10 +62,3 @@
 		@endforeach
     }
 </script>
-
-
-
-
-
-
-

@@ -7,14 +7,13 @@
 
 @section('content')
 
-<div class="container">
+<div class="container grid-header">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 text-center">
-			<?php //Si quieren mostrar nombre de la subasta o que se vea texto Lotes ?>
-
-				<h1 class="titlePage-custom color-letter text-center">{{$seo_data->h1_seo}}</h1>
-
+		<div class="col-12">
 			@include('includes.breadcrumb')
+		</div>
+		<div class="col-12">
+			<h1>{{ $seo_data->h1_seo }}</h1>
 		</div>
 	</div>
 </div>
