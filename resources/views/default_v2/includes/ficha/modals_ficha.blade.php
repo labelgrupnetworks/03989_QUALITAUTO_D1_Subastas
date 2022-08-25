@@ -119,26 +119,3 @@
 	</div>
 </div>
 
-
-<?php  //estructura necesaria para crear lso elementos del listado de pujas  ?>
-    <div id="duplicalte_list_pujas" class="hist_item hidden">
-        <span class="col-xs-8">
-            <span>{{ trans(\Config::get('app.theme').'-app.lot.bidder') }}</span> (
-            <span class="yo">{{ trans(\Config::get('app.theme').'-app.lot.I') }}</span>
-            <span class="uno hint--bottom-right hint--medium" data-hint=""></span>
-            <span class="dos hint--bottom-right hint--medium" data-hint="<?= nl2br(trans(\Config::get('app.theme').'-app.lot.puja_automatica')) ?>">A</span>)
-            <span class="date"></span>
-        </span>
-        <span class="col-xs-4">
-            <span class="tres_item"><span class="price "> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</span></span>
-        </span>
-   </div>
-
-<!--<div id="price_min_surpass" class="info hidden"><div class="col-xs-12 ">{{ trans(\Config::get('app.theme').'-app.lot.minimal-price') }} <strong> {{$lote_actual->impres_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div></div>-->
-<?php  //view more debe llevar el hidden para que funcione correctamente, el customized_tr_main ya se lo quitara si es necesario ?>
-<div id="view_more" class="more more-historic-bids hidden col-xs-12 text-right hidden">
-    <a title="ver todas"  data-toggle="collapse" data-target="#pujas-collapse" href="javascript:view_all_bids();">
-     <span id="view_more_text">{{ trans(\Config::get('app.theme').'-app.lot.see-all') }} </span>
-    <span id="hide_bids_text" class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
-
-</div>

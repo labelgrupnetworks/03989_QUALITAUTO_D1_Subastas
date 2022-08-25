@@ -390,6 +390,7 @@ $lang =[
 			'pujrep_W' => 'Web',
 			'pujrep_Y' => 'Buy at online auction',
 			'require_wallet' => 'You need to have an associated wallet to be able to bid on an NFT.<br> You can indicate your wallet or create a new one in <a href="/en/user/panel/info" > your account.</a>',
+			'closing_date' => 'Closing date: ',
 
 		),
 	'lot_list' =>

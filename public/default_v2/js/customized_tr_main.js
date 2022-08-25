@@ -194,6 +194,96 @@ function reloadPujasList_W() {
 	}
 }
 
+function reloadPujasListO() {
+
+	const { lote_actual: loteActual, subasta } = auction_info;
+
+	if(!loteActual){
+		return;
+	}
+
+	const { importe_escalado_siguiente, pujas, impres_asigl0 } = loteActual;
+
+	$('.siguiente_puja').html(new Intl.NumberFormat("de", {}).format(importe_escalado_siguiente));
+
+	const pujasReverse = [...pujas].reverse();
+
+	const firstBidToExceedReservePriece = pujasReverse.find((licitador) => parseInt(licitador.imp_asigl1) >= parseInt(loteActual.impres_asigl0));
+	const min_price_surpass = firstBidToExceedReservePriece?.imp_asigl1 || false;
+
+	//mostramso si se ha alcanzado el precio mínimo
+	document.querySelector('.precio_minimo_no_alcanzado').classList.toggle('hidden', !min_price_surpass);
+	document.querySelector('.precio_minimo_alcanzado').classList.toggle('hidden', min_price_surpass);
+
+	const codsLicits = [...new Set(pujasReverse.map((licitador) => licitador.cod_licit))];
+	const licits = Object.assign({}, ...codsLicits.map((codLicit, index) => ({[codLicit]: index + 1})));
+
+	reloadHistory({subasta, pujas, licits, importeReserva: impres_asigl0, minPriceSurpass : min_price_surpass});
+
+}
+
+/**
+ * Reload block bids in online lots detail
+ * @param {array} pujas
+ * @param {object} licits
+ * @param {object} subasta
+ */
+function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}){
+
+	const historyList = document.getElementById('pujas_list');
+	historyList.innerHTML = '';
+
+	document.getElementById('historial_pujas').classList.toggle('hidden', pujas.length == 0);
+	document.getElementById('num_pujas').innerText = pujas.length;
+
+	const viewAllPujasIsActive = document.getElementById('view_all_pujas_active').value == '1';
+	const view_num_pujas = document.getElementById('view_num_pujas').value;
+
+	let num_lot = 1;
+	const transTextI = document.getElementById('trans_lot_i').value;
+	const transTextAuto = document.getElementById('trans_lot_puja_automatica').value;
+	const transMinimalPrice = document.getElementById('trans_minimal_price').value;
+
+	const iElement = `<span class="yo">${transTextI}</span>`;
+	const otherElement = (numLicit) => `<span class="otherLicit hint--bottom-right hint--medium" data-hint="${messages.neutral.puja_corresponde} ${numLicit}">${numLicit}</span>`;
+	const autoElement = ` <span class="dos hint--bottom-right hint--medium" data-hint="${transTextAuto}">A</span>`;
+	const reservePriceSurpassElement = `<p class="info">${transMinimalPrice}</p>`;
+
+	pujas.forEach((puja, index) => {
+
+		const numLot = index + 1;
+
+		//se puede utilizar para mostrar o no la linea, por el momento prefiero mostrar todas y añadir scroll
+		const show = viewAllPujasIsActive || (numLot <= view_num_pujas && !viewAllPujasIsActive);
+
+		// si la puja es del licitador ocultamos el numero y se mostrará el YO
+		const bidderElement = (auction_info?.user?.cod_licit == puja.cod_licit) ? iElement : otherElement(licits[puja.cod_licit]);
+
+		const date = new Date(puja.bid_date.replace(/-/g, "/"));
+		const dateFormatted = format_date(date);
+
+		const pirceClass = (parseInt(puja.imp_asigl1) >= parseInt(importeReserva)) ? 'winner' : 'loser';
+
+		const currencySimbol = subasta.currency.symbol;
+		let pujaFormatted = puja.imp_asigl1.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+		pujaFormatted = frontCurrencies.includes(currencySimbol) ? `${currencySimbol} ${pujaFormatted}` : `${pujaFormatted} ${currencySimbol}`;
+
+		const line = `<p class="hist_item">
+					<span class="bidder">Pujador</span>
+					<span class="semi-colon">(</span>${bidderElement}${puja.type_asigl1 != 'A' ? '' : autoElement}<span class="semi-colon">)</span>
+					<span class="date">${dateFormatted}</span>
+					<span class="price ${pirceClass}">${pujaFormatted}</span>
+				</p>`;
+
+		historyList.innerHTML += line;
+
+		if(minPriceSurpass && parseInt(minPriceSurpass) == parseInt(puja.imp_asigl1)){
+			historyList.innerHTML += reservePriceSurpassElement ;
+		}
+
+	});
+}
+
 function reloadPujasList_O() {
 	var model = $('#duplicalte_list_pujas').clone();
 	var container = $('#pujas_list');

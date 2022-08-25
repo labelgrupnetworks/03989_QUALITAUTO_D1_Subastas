@@ -1,165 +1,161 @@
-<div id="reload_inf_lot" class="col-xs-12 info-ficha-buy-info no-padding">
-    <div class="col-xs-12">
-        <div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima'])?'':'hidden'; ?> ">
-            {{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
-            <strong>
+<div id="reload_inf_lot" class="ficha-pujas ficha-pujas-o">
 
-                <span id="tuorden">
-                    @if ( !empty($data['js_item']['user']['ordenMaxima']))
-                        @if ( !empty($lote_actual->max_puja) &&   $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
-                            {{ $lote_actual->formatted_actual_bid }}
-                        @else
-                            {{ $data['js_item']['user']['ordenMaxima']}}
-                        @endif
-                    @endif
-                </span>
-                {{trans(\Config::get('app.theme').'-app.subastas.euros')}}
-				@if(\Config::get("app.exchange"))
-				 |	<span  id="yourOrderExchange_JS" class="exchange"> </span>
-				@endif
-				</strong><br><br>
+	{{-- Precio salida --}}
+	<p class="price salida-price">
+		<span>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+		<span>
+			{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 
+			@if(config("app.exchange"))
+			| <span id="startPriceExchange_JS" class="exchange"> </span>
+			@endif
+		</span>
+	</p>
 
+	{{-- Estimación --}}
+	@if(!empty($lote_actual->imptash_asigl0))
+        <p class="price estimacion-price">
+            <span>{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</span>
+            <span>{{ \Tools::moneyFormat($lote_actual->imptash_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+		</p>
+	@endif
 
-        </div>
-    </div>
-    <div class="col-xs-12 no-padding info-ficha-buy-info-price d-flex">
+	{{-- Puja actual --}}
+	<h4 id="text_actual_max_bid" @class([
+		'price bid-price',
+		'hidden' => count($lote_actual->pujas) == 0
+	])>
+		<span>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
+		<span id="actual_max_bid" @class([
+			'mine' => Session::has('user') && $lote_actual->max_puja?->cod_licit == $data['js_item']['user']['cod_licit'],
+			'other' => Session::has('user') && $lote_actual->max_puja?->cod_licit != $data['js_item']['user']['cod_licit'],
+		])>
+			{{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 
-            <div class="pre">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-				@if(\Config::get("app.exchange"))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
-				@endif
-				</p>
+			@if(config("app.exchange"))
+				| <span id="actualBidExchange_JS" class="exchange"> </span>
+			@endif
+		</span>
+	</h4>
 
+	{{-- Sin pujas --}}
+	<h5 id="text_actual_no_bid" @class(['hidden' => count($lote_actual->pujas) > 0])>
+		{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }}
+	</h5>
 
+	{{-- Reserva alcanzada  --}}
+	<p @class(['price_minim_reached', 'hidden' => empty($lote_actual->impres_asigl0)])>
+		<span>{{ trans(\Config::get('app.theme').'-app.subastas.price_minim') }}</span>
+		<span class="precio_minimo_alcanzado hidden">{{ trans(\Config::get('app.theme').'-app.subastas.reached') }}</span>
+		<span class="precio_minimo_no_alcanzado hidden">{{ trans(\Config::get('app.theme').'-app.subastas.no_reached') }}</span>
+	</p>
 
+	{{-- Siguiente puja --}}
+	<p class="price next-price">
+		<span>{{ $hay_pujas ? trans(\Config::get('app.theme').'-app.lot.next_min_bid') : trans(\Config::get('app.theme').'-app.lot.min_puja') }}</span>
+		<span>
+			<span class="siguiente_puja"></span>
+			<span>&nbsp; {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 
-
-
-			</div>
-			@if(!empty($lote_actual->imptash_asigl0))
-            <div class="pre">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</p>
-                <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->imptash_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-
-
-				</p>
-			</div>
+			@if(\Config::get("app.exchange"))
+				| <span id="nextBidExchange_JS" class="exchange"> </span>
 			@endif
 
-    </div>
-    <div class=" col-xs-12 no-padding info-ficha-buy-info-price">
+		</span>
+	</p>
 
-            <div id="text_actual_max_bid" class="d-flex pre-price price-title-principal <?=  count($lote_actual->pujas) >0? '':'hidden' ?>">
-                <div class="pre pre-actual_max_bid">
-                    <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
-                    <strong>
-                        {{-- aparecera en rojo(clase other) si no eres el ganador y en verde si loeres (clase mine) , si no estas logeado no se modifica el color --}}
-                        @if(Session::has('user'))
-                            @php($class = (!empty($lote_actual->max_puja) &&   $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])? 'mine':'other')
-                        @else
-                            @php($class = '')
-                        @endif
-                        <span id="actual_max_bid" class="{{$class}}">{{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-						@if(\Config::get("app.exchange"))
-						| <span id="actualBidExchange_JS" class="exchange"> </span>
-						@endif
-
-
-                    </strong>
-                 </div>
-                <div class="pre">
-                    @if (isset($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 > 0 && Session::has('user'))
-                        <div class="pre_min">
-
-                                <p class='pre-title'> {{ trans(\Config::get('app.theme').'-app.subastas.price_minim') }}: </p>
-                                <strong>
-                                <span class="precio_minimo_alcanzado mine hidden">{{ trans(\Config::get('app.theme').'-app.subastas.reached') }}</span>
-                                <span class="precio_minimo_no_alcanzado other hidden">{{ trans(\Config::get('app.theme').'-app.subastas.no_reached') }}</span>
-                                </strong>
-
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-    </div>
-    <div class="col-xs-12 no-padding info-ficha-buy-info-price border-top-bottom">
-        <div class="pre d-flex mt-2 mb-2 ">
-            <div  id="text_actual_no_bid" class="price-title-principal pre col-xs-12 col-sm-3 no-padding <?=  count($lote_actual->pujas) >0? 'hidden':'' ?>">
-                {{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }}
-            </div>
-
-            <div class="col-xs-12 col-sm-9 no-padding">
-				@if ($hay_pujas)
-					<p class='explanation_bid t_insert pre-title' >{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}  </p>
-				@else
-					<p class='explanation_bid t_insert pre-title'>{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  </p>
-				@endif
-				<strong><span class="siguiente_puja"> </span>{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					@if(\Config::get("app.exchange"))
-						| <span id="nextBidExchange_JS" class="exchange"> </span>
-					@endif
-				</strong>
-            </div>
-
-        </div>
-	</div>
-
+	{{-- inputs pujar --}}
 	@if($start_session || $subasta_abierta_P)
-        <div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
+
+        <div class="insert-bid-input mt-3">
 
             @if (Session::has('user') &&  Session::get('user.admin'))
-            <div class="d-block w-100">
+            <div class="mb-3">
                 <input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value="" type="text" style="border: 1px solid red;" placeholder="Código de licitador">
                 @if ($subasta_abierta_P)
                     <input type="hidden" id="tipo_puja_gestor" value="abiertaP" >
                 @endif
             </div>
             @endif
+
 			{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
 			@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
 				<div class="require-wallet">{!! trans(\Config::get('app.theme').'-app.lot.require_wallet') !!}</div>
-
 			@else
-				<div class="input-group d-block group-pujar-custom ">
-					<div>
-						<div class="insert-bid insert-max-bid mb-1">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}</div>
-					</div>
-					<div class="d-flex mb-2">
-						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
-					<div class="input-group-btn">
-						<button type="button" data-from="modal" class=" lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
-					</div>
+
+				<p>Puja rapida</p>
+				<div class="escalados-container d-flex justify-content-between gap-1">
+					@foreach ($lote_actual->siguientes_escalados as $escalado)
+					<button type="button" data-from="modal" data-escalado-position="{{$loop->index}}" value="{{$escalado}}"
+						@class([
+							'btn btn-primary-custom w-100 lot-action_pujar_on_line js-lot-action_pujar_escalado',
+							'add_favs' => Session::has('user')
+						])>
+
+						<span value="{{$escalado}}" id="button-escalado">{{ \Tools::moneyFormat($escalado) }}</span>
+						{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+					</button>
+					@endforeach
+				</div>
+
+
+				<p class="mt-2">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}</p>
+				<div class="input-group">
+					<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}" aria-describedby="button-bid">
+					<span class="input-group-text currency-input">{{trans(\Config::get('app.theme').'-app.subastas.euros')}}</span>
+					<button type="button" id="button-bid" data-from="modal"
+						@class([
+							'lot-action_pujar_on_line btn btn-primary-custom',
+							'add_favs' => Session::has('user')
+						])
+						ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
+						{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
+					</button>
 				</div>
 			@endif
 
-
-
-
-
-				<div>
-					@if (\Config::get('app.urlToPackengers'))
-						<?php
-							$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
-							$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
-						?>
-						<div class="mt-1 mb-1 text-center">
-							<div class="packengers-container-button-ficha">
-								<a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
-									<i class="fa fa-truck" aria-hidden="true"></i>
-									{{ trans("$theme-app.lot.packengers_ficha") }}
-								</a>
-							</div>
-						</div>
-					@endif
-				</div>
-            </div>
-        </div>
+		</div>
 	@endif
 
+	{{-- mi orden máxima --}}
+    <p @class(['info_single_title', 'hist_new', 'hidden' => empty($data['js_item']['user']['ordenMaxima'])])>
+		{{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
+		<strong>
+			<span id="tuorden">
+				@if (!empty($data['js_item']['user']['ordenMaxima']))
+					@if (!empty($lote_actual->max_puja) &&   $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
+						{{ $lote_actual->formatted_actual_bid }}
+					@else
+						{{ $data['js_item']['user']['ordenMaxima']}}
+					@endif
+				@endif
+			</span>
+			{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+			@if(\Config::get("app.exchange"))
+				|	<span  id="yourOrderExchange_JS" class="exchange"> </span>
+			@endif
+		</strong>
+    </p>
+
+	{{-- Packengers --}}
+	@if (config('app.urlToPackengers'))
+	@php
+	$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
+	$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
+	@endphp
+
+	<div class="mt-3">
+		<a class="d-block btn btn-outline-primary-custom-alt" href="{{ $urlCompletePackengers }}" target="_blank">
+			<svg class="bi" width="16" height="16" fill="currentColor">
+				<use xlink:href="/bootstrap-icons.svg#truck"></use>
+			</svg>
+			{{ trans("$theme-app.lot.packengers_ficha") }}
+		</a>
+	</div>
+
+@endif
+
+</div>
 
 <?php //solo se debe recargar la fecha en las subatsas tipo Online, ne las abiertas tipo P no se debe ejecutar ?>
 @if($subasta_online)
@@ -174,16 +170,11 @@
                         url:  "/lot/getfechafin",
                         data: { cod: cod_sub, ref: ref},
                         success: function( data ) {
-
                             if (data.status == 'success'){
                                $(".timer").data('ini', new Date().getTime());
                                $(".timer").data('countdownficha',data.countdown);
-                               //var close_date = new Date(data.close_at * 1000);
-                              // $("#cierre_lote").html(close_date.toLocaleDateString('es-ES') + " " + close_date.toLocaleTimeString('es-ES'));
                                $("#cierre_lote").html(format_date_large(new Date(data.close_at * 1000),''));
                             }
-
-
                         }
                     });
                 }
@@ -191,6 +182,5 @@
         });
     </script>
 @endif
-</div>
 
 

@@ -140,7 +140,7 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/default_v2/js/shopping_cart.js') }}" ></script>
 
-{{-- <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script> --}}
+<script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
 {{-- <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script> --}}
 
 {{-- <script src="{{ URL::asset('js/numeral.js') }}"></script> --}}

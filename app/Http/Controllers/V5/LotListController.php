@@ -475,7 +475,7 @@ class LotListController extends Controller
 			$urlAllCategories =  route("allCategories");
 				$bread[] = array("url" =>$urlAllCategories, "name" => trans(\Config::get('app.theme').'-app.lot_list.all_categories') );
 			if(!empty($infoOrtsec)){
-				$urlCategory =  route("category",[ "keycategory" => $infoOrtsec->key_ortsec0 ]);
+				$urlCategory =  route("category",[ "category" => $infoOrtsec->key_ortsec0 ]);
 				$bread[] = array("url" =>$urlCategory, "name" =>$infoOrtsec->des_ortsec0  );
 
 				if(!empty($infoSec)){

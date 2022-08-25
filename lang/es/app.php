@@ -410,6 +410,7 @@ $lang = [
 		'pujrep_W' => 'Web',
 		'pujrep_Y' => 'Comprar en subasta online',
 		'require_wallet' => 'Para poder pujar por un lote NFT necesitas tener un wallet asociado. <br>Desde <a href="/es/user/panel/info" > tu panel de usuario</a> podrás indicarnos tu wallet o crearte uno nuevo.',
+		'closing_date' => 'Fecha de cierre: ',
 
 	),
 	'lot_list' =>

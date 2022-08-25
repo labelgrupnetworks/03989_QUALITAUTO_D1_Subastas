@@ -1,16 +1,3 @@
-
-function viewResourceFicha($src, $format){
-	$('#resource_main_wrapper').empty();
-	$('.img-global-content').hide();
-	if($format=="GIF"){
-		$resource = $('<img  src=' +$src + ' style="max-width: 100%;">');
-	}else if($format=="VIDEO"){
-		$resource = $('<video width="100%" height="auto" autoplay="true" controls>').append($('<source src="' +  $src + '">'));
-	}
-	$('#resource_main_wrapper').append($resource);
-	$('#resource_main_wrapper').show();
-}
-
 $(document).ready(function () {
 
 	$('.imgPopUpCall_JS').on('click', function () {
@@ -1862,20 +1849,181 @@ function changeFilters(show) {
 		return this;
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 })(jQuery);
+
+
+/**
+ * FICHA
+ */
+ function goToImage(positionImage) {
+	const viewer = OpenSeadragon.getViewer(document.getElementById("img_main"));
+	showImageContainer();
+	viewer.goToPage(parseInt(positionImage));
+}
+
+function showImageContainer() {
+	$('#resource_main_wrapper').hide();
+	if(typeof $resource != 'undefined' && $resource.lenght > 0 && typeof $resource[0].pause != 'undefined'){
+		$resource[0].pause();
+	}
+	$('.img-global-content').show();
+}
+
+function loadSeaDragon(images = [], conf = {}){
+
+	showImageContainer();
+
+	const defaultConf = {
+		id:"img_main",
+		tileSources: images,
+		showNavigator: false, //mostrar miniatura de la imagen
+		showReferenceStrip:  false, //mostrar miniatura de todas las imagenes
+
+		//id de contenedor y elementos de las toolbar
+		toolbar: "js-toolbar",
+		zoomInButton:   "zoom-in",
+		zoomOutButton:  "zoom-out",
+		homeButton:     "home",
+		fullPageButton: "full-page",
+		nextButton:     "next",
+		previousButton: "previous",
+
+		maxZoomPixelRatio: 2.5,
+		minZoomImageRatio: 0.1,
+		zoomPerScroll: 1.5,
+		visibilityRatio: 1.0,
+    	constrainDuringPan: true, //no permitir salirse del cuadro
+		preserveImageSizeOnResize: false, //mantener zoom al ampliar a pantalla completa
+
+		sequenceMode: true, //permitir desplazarse entre imagenes
+	};
+
+	return OpenSeadragon({...defaultConf, ...conf});
+}
+
+function viewResourceFicha($src, $format){
+	$('#resource_main_wrapper').empty();
+	$('.img-global-content').hide();
+	if($format=="GIF"){
+		$resource = $('<img  src=' +$src + ' style="max-width: 100%;">');
+	}else if($format=="VIDEO"){
+		$resource = $('<video width="100%" height="auto" autoplay="true" controls>').append($('<source src="' +  $src + '">'));
+	}
+	$('#resource_main_wrapper').append($resource);
+	$('#resource_main_wrapper').show();
+}
+
+function image360Init() {
+	const image360 = {
+		init: function() {
+			this.cache();
+			this.bindEvents();
+		},
+		cache: function() {
+			this.btn = $('#360img-button');
+			this.btnDesktop = $('.img-360-desktop');
+			this.backgroundCache = $('.img-360-desktop').css('background-image');
+			this.btnMobile = $('#js-360-btn-mobile');
+			this.btnPic = $('.pic');
+			this.actualImage = $('.zoomPad').find('img');
+			this.img360 = $('#360img');
+			this.img360Mobile = $('#js-360-img-mobile');
+			this.zoomPad = $('.jqzoom');
+			this.gif = $('#360img').find('img');
+			this.gifMobile = $('#js-360-img-mobile img');
+			this.no360 = $('.no-360');
+			this.btnMobile.show();
+			this.btn.show();
+
+		},
+		show: function(e) {
+
+			if (this.btn.attr('data-active') === 'active') {
+				this.hideContainer();
+
+			} else {
+				this.showContainer(false);
+				//this.loadGif()
+				this.activeBtn();
+			}
+		},
+
+		hideContainer: function() {
+
+			this.img360.addClass('d-none');
+			this.img360Mobile.hide();
+			$('#owl-carousel-responsive').show();
+			this.zoomPad.show();
+			this.disabledBtn();
+
+		},
+		showContainer: function(isMobile) {
+			if ($(window).width() > 1199) {
+				// this.img360.css('min-height', '350px');
+			} else {
+				if ($(window).width() > 991) {
+					// this.img360.css('min-height', '400px');
+				}
+			}
+			if ($(window).width() < 991) {
+				this.img360Mobile.append($('.orbitvu-viewer'));
+				// this.img360Mobile.css('min-height', '320px');
+			}
+
+			this.zoomPad.hide();
+			this.img360.removeClass('d-none');
+
+			$('#owl-carousel-responsive').hide();
+			this.img360Mobile.show();
+		},
+
+		loadGif: function() {
+
+			this.gif
+				.attr('src', srcImage)
+				.load(function() {
+					$('.loader').hide();
+					$(this).fadeIn();
+				});
+
+			this.gifMobile
+				.attr('src', srcImage)
+				.load(function() {
+					$('.loader').hide();
+					$(this).fadeIn();
+				});
+		},
+
+		activeBtn: function() {
+
+			this.btnDesktop.css('background-color', '#eee');
+			this.btnDesktop.css('background-image', 'none');
+			this.btnMobile.css('background-color', '#eee');
+			this.btnMobile.css('background-image', 'none');
+			this.btn.attr('data-active', 'active');
+			this.btnMobile.attr('data-active', 'active');
+			this.btnMobile.attr('data-active', 'active');
+
+		},
+		disabledBtn: function() {
+
+			this.btnDesktop.css('background-image', this.backgroundCache);
+			this.btnDesktop.css('background-color', 'transparent');
+			this.btnMobile.css('background-image', this.backgroundCache);
+			this.btnMobile.css('background-color', 'transparent');
+			this.btn.attr('data-active', 'disabled');
+			this.btnMobile.attr('data-active', 'disabled');
+		},
+		bindEvents: function() {
+			this.btn.on('click', this.show.bind(this));
+			this.btnMobile.on('click', this.show.bind(this));
+			this.btnPic.on('click', this.hideContainer.bind(this));
+			this.no360.on('click', this.hideContainer.bind(this));
+		}
+	};
+
+	image360.init();
+}
 
 
 
