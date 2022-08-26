@@ -24,21 +24,21 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 				@include('components.search', ['classes' => 'me-auto d-none d-xxl-block'])
 
 				@if(!Session::has('user'))
-					<button class="btn btn-sm btn-primary-custom btn_login">{{ trans($theme.'-app.login_register.login') }}</button>
+					<button class="btn btn-sm btn-lb-primary btn_login">{{ trans($theme.'-app.login_register.login') }}</button>
 				@else
-					<a class="btn btn-sm btn-primary-custom" href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme.'-app.login_register.my_panel') }}</a>
+					<a class="btn btn-sm btn-lb-primary" href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme.'-app.login_register.my_panel') }}</a>
 
 					@if(Session::get('user.admin'))
-					<a class="btn btn-sm btn-primary-custom" href="/admin"  target = "_blank"> {{ trans($theme.'-app.login_register.admin') }}</a>
+					<a class="btn btn-sm btn-lb-primary" href="/admin"  target = "_blank"> {{ trans($theme.'-app.login_register.admin') }}</a>
 					@endif
 
-					<a class="btn btn-sm btn-primary-custom" href="{{ \Routing::slug('logout') }}" >{{ trans($theme.'-app.login_register.logout') }}</a>
+					<a class="btn btn-sm btn-lb-primary" href="{{ \Routing::slug('logout') }}" >{{ trans($theme.'-app.login_register.logout') }}</a>
 				@endif
 
 				@if(count(Config::get('app.locales')) > 1)
 				{{-- Con dropdown --}}
 				<div class="btn-group">
-					<button type="button" class="btn btn-sm btn-outline-primary-custom dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+					<button type="button" class="btn btn-sm btn-outline-border-lb-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 					  {{ config('app.locales')[config('app.locale')] }}
 					</button>
 					<ul class="dropdown-menu dropdown-menu-end">
@@ -93,7 +93,7 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
 							@foreach ($categories as $category)
 								<li>
-									<a class="dropdown-item" href="{{ route("category",array( "category" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a>
+									<a class="dropdown-item" href="{{ route("category", ["category" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a>
 								</li>
 							@endforeach
 						</ul>
@@ -149,50 +149,70 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 </header>
 
 
-<div class="login_desktop" style="display: none" >
-    <div class="login_desktop_content">
-        <div class="only-login white-background">
-            <div class="login-content-form">
-            <img class="closedd" role="button" src="/themes/{{$theme}}/assets/img/shape.png" alt="Close">
-            <div class="login_desktop_title">
-                <?= trans($theme.'-app.login_register.login') ?>
-            </div>
-            <form data-toggle="validator" id="accerder-user-form" class="flex-display justify-center align-items-center flex-column">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="form-group">
-                    <div class="input-login-group">
-                        <i class="fa fa-user"></i>
-                        <input class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email" type="text">
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <div class="input-login-group">
-                        <i class="fa fa-key"></i>
-                        <input class="form-control" placeholder="{{ trans($theme.'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20" autocomplete="off">
-                        <img class="view_password eye-password" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
-                    </div>
-                </div>
-                <span class="message-error-log text-danger seo_h5"></span></p>
-                <div class="pass-login-content">
-                    <div class="text-center">
-                    <button id="accerder-user" class="button-principal" type="button">
-                        <div>{{ trans($theme.'-app.login_register.acceder') }}</div>
-                    </button>
-                    </div>
-                    <a onclick="cerrarLogin();" class="c_bordered pass_recovery_login" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans($theme.'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans($theme.'-app.login_register.forgotten_pass_question')}}</a>
+<div class="login_desktop container-fluid" style="display: none" >
+	<div class="h-100 d-flex justify-content-center align-content-center">
+		<div class="login_desktop_content m-auto">
+			<div class="only-login bg-white p-5 position-relative">
+				<div class="login-content-form">
+					<img class="closedd" role="button" src="/themes/{{$theme}}/assets/img/shape.png" alt="Close">
 
-                </div>
-            </form>
-            <div class="login-separator"></div>
-            <p class="text-center">{{ trans($theme.'-app.login_register.not_account') }}</p>
-            <div class="create-account-link">
-                @if(empty($registration_disabled))
-                <a class="" title="{{ trans($theme.'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">{{ trans($theme.'-app.login_register.register') }}</a>
-                @else
-                <p class="text-center" style="color: darkred;">{{ trans($theme.'-app.login_register.registration_disabled') }}</p>
-                @endif
-            </div>
-        </div>
-    </div>
+					<p class="login_desktop_title h1">{{ trans($theme.'-app.login_register.login') }}</p>
+
+					<form data-toggle="validator" id="accerder-user-form" class="d-flex align-items-center justify-content-center flex-column py-4">
+						@csrf
+
+						<div class="input-group mb-3">
+							<span class="input-group-text">
+								<svg class="bi" width="16" height="16" fill="currentColor">
+									<use xlink:href="/bootstrap-icons.svg#person-fill"></use>
+								</svg>
+							</span>
+							<input class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email">
+						</div>
+
+						<div class="input-group mb-0">
+							<span class="input-group-text">
+								<svg class="bi" width="16" height="16" fill="currentColor">
+									<use xlink:href="/bootstrap-icons.svg#key-fill"></use>
+								</svg>
+							</span>
+							<input class="form-control" placeholder="{{ trans($theme.'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20" autocomplete="off">
+							<span class="input-group-text view_password">
+								<img class="eye-password" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
+							</span>
+						</div>
+
+						<small class="align-self-end">
+							<a onclick="cerrarLogin();" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}"
+								id="p_recovery" data-title="{{ trans($theme.'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-bs-toggle="modal" data-bs-target="#modalAjax">
+								{{ trans($theme.'-app.login_register.forgotten_pass_question')}}
+							</a>
+						</small>
+
+						<p><span class="message-error-log text-danger seo_h5"></span></p>
+
+						<button id="accerder-user" class="btn btn-lb-primary w-100 mt-4" type="submit">
+							{{ trans($theme.'-app.login_register.acceder') }}
+						</button>
+
+					</form>
+
+					<div class="login-separator" data-content="o"></div>
+
+					<p class="text-center mb-2">{{ trans($theme.'-app.login_register.not_account') }}</p>
+
+					<div class="create-account-link">
+						@if(empty($registration_disabled))
+						<a class="btn btn-outline-lb-secondary w-100" title="{{ trans($theme.'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">
+							{{ trans($theme.'-app.login_register.register') }}
+						</a>
+						@else
+						<p class="text-center" style="color: darkred;">{{ trans($theme.'-app.login_register.registration_disabled') }}</p>
+						@endif
+					</div>
+				</div>
+			</div>
+		</div>
+
     </div>
 </div>

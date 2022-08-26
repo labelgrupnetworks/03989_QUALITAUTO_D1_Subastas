@@ -21,13 +21,13 @@ $files = $sub->getFiles($subasta->cod_sub);
 
 				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description) }}</p>
 
-				<a href="{{ $url_lotes }}" class="btn btn-primary-custom mt-auto">{{ trans("$theme-app.subastas.see_lotes") }}</a>
+				<a href="{{ $url_lotes }}" class="btn btn-lb-primary mt-auto">{{ trans("$theme-app.subastas.see_lotes") }}</a>
 			</div>
 
 			<footer class="card-footer">
 				<div class="row row-cols-2 gy-1 card-links">
 					<div class="col">
-						<a class="btn btn-sm btn-outline-primary-custom" href="{{ $url_subasta }}" aria-label="Plus">
+						<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $url_subasta }}" aria-label="Plus">
 							<svg class="bi" width="12" height="12" fill="currentColor">
 								<use xlink:href="/bootstrap-icons.svg#plus"></use>
 							</svg>
@@ -35,7 +35,7 @@ $files = $sub->getFiles($subasta->cod_sub);
 						</a>
 					</div>
 					<div class="col">
-						<button class="btn btn-sm btn-outline-primary-custom js-auction-files" data-auction="{{$subasta->cod_sub}}" data-reference="{{$subasta->reference}}">
+						<button class="btn btn-sm btn-outline-border-lb-primary js-auction-files" data-auction="{{$subasta->cod_sub}}" data-reference="{{$subasta->reference}}">
 							<svg class="bi" width="12" height="12" fill="currentColor">
 								<use xlink:href="/bootstrap-icons.svg#folder"></use>
 							</svg>
@@ -44,7 +44,7 @@ $files = $sub->getFiles($subasta->cod_sub);
 					</div>
 					@if($subasta->upcatalogo == 'S')
 					<div class="col">
-						<a class="btn btn-sm btn-outline-primary-custom" href="">
+						<a class="btn btn-sm btn-outline-border-lb-primary" href="">
 							<svg class="bi" width="12" height="12" fill="currentColor">
 								<use xlink:href="/bootstrap-icons.svg#file-pdf"></use>
 							</svg>
@@ -71,7 +71,7 @@ $files = $sub->getFiles($subasta->cod_sub);
 
 				@if($subasta->tipo_sub =='W' && strtotime($subasta->session_end) > time())
 				<div class="btn-live-wrapper">
-					<a class="btn btn-primary-custom" href="{{ $url_tiempo_real }}"
+					<a class="btn btn-lb-primary" href="{{ $url_tiempo_real }}"
 						title="{{ trans("$theme-app.lot_list.from") }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans("$theme-app.lot_list.to") }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end),'d/m/Y H:i') }}"
 						target="_blank">{{ trans("$theme-app.lot.bid_live") }}</a>
 				</div>

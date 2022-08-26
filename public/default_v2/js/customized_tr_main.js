@@ -239,14 +239,15 @@ function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}
 	const viewAllPujasIsActive = document.getElementById('view_all_pujas_active').value == '1';
 	const view_num_pujas = document.getElementById('view_num_pujas').value;
 
-	let num_lot = 1;
+	//traducciones necesarias
 	const transTextI = document.getElementById('trans_lot_i').value;
 	const transTextAuto = document.getElementById('trans_lot_puja_automatica').value;
 	const transMinimalPrice = document.getElementById('trans_minimal_price').value;
 
+	//HTMLElement de la linea
 	const iElement = `<span class="yo">${transTextI}</span>`;
-	const otherElement = (numLicit) => `<span class="otherLicit hint--bottom-right hint--medium" data-hint="${messages.neutral.puja_corresponde} ${numLicit}">${numLicit}</span>`;
-	const autoElement = ` <span class="dos hint--bottom-right hint--medium" data-hint="${transTextAuto}">A</span>`;
+	const otherElement = (numLicit) => `<span class="otherLicit hint--top hint--medium" data-hint="${messages.neutral.puja_corresponde} ${numLicit}">${numLicit}</span>`;
+	const autoElement = ` <span class="dos hint--top hint--medium" data-hint="${transTextAuto}">A</span>`;
 	const reservePriceSurpassElement = `<p class="info">${transMinimalPrice}</p>`;
 
 	pujas.forEach((puja, index) => {

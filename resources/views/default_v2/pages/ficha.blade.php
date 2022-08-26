@@ -6,6 +6,7 @@
 
 @push('stylesheets')
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.css') }}" />
+<link rel="stylesheet" type="text/css" href="/css/hint.css" >
 @endpush
 
 @push('scripts')

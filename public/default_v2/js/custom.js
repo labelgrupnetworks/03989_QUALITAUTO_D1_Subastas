@@ -1373,7 +1373,10 @@ function carrousel_molon_new(carrousel) {
 	carrousel.data('hasSlick', true);
 }
 
-function password_recovery(lang) {
+function password_recovery(event, lang) {
+
+	event.preventDefault();
+
 	var pass_recov = $("#password_recovery").serialize();
 	$.ajax({
 		type: "POST",
@@ -1387,6 +1390,7 @@ function password_recovery(lang) {
 			}
 		}
 	});
+	return false;
 };
 
 function format_date_large(fecha, text) {

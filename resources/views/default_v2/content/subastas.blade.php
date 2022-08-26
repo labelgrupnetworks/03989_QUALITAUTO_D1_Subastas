@@ -22,7 +22,7 @@
 			</div>
 			<div class="modal-body"></div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary-custom" data-bs-dismiss="modal">{{ trans("$theme-app.head.close") }}</button>
+				<button type="button" class="btn btn-lb-primary" data-bs-dismiss="modal">{{ trans("$theme-app.head.close") }}</button>
 			</div>
 		  </div>
 	</div>

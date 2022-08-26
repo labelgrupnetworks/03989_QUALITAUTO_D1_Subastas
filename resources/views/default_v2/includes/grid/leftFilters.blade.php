@@ -10,7 +10,7 @@
 	<div class="filters-auction-title d-flex align-items-end justify-content-between border-bottom pb-1 mt-1">
 		<p>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</p>
 
-		<button class="btn btn-sm btn-outline-primary-custom d-flex align-items-center" onclick="hideFilters(event)">
+		<button class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
 			<svg class="bi" width="16" height="16" fill="currentColor">
 				<use xlink:href="/bootstrap-icons.svg#arrow-bar-left"/>
 			</svg>

@@ -24,6 +24,6 @@
 		</label>
 		@endif
 
-		<button class="btn btn-sm btn-primary-custom w-100" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+		<button class="btn btn-sm btn-lb-primary w-100" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
 	</div>
 </div>

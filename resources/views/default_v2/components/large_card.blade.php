@@ -14,7 +14,7 @@
 			<footer class="card-footer">
 				<div class="row row-cols-2 gy-1 card-links">
 					<div class="col">
-						<a class="btn btn-sm btn-outline-primary-custom" href="{{ $linkInfo }}" aria-label="Plus">
+						<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $linkInfo }}" aria-label="Plus">
 							<svg class="bi" width="12" height="12" fill="currentColor">
 								<use xlink:href="/bootstrap-icons.svg#plus"></use>
 							</svg>
@@ -22,7 +22,7 @@
 						</a>
 					</div>
 					<div class="col">
-						<a class="btn btn-sm btn-outline-primary-custom" href="{{ $linkInfo }}">
+						<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $linkInfo }}">
 							<svg class="bi" width="12" height="12" fill="currentColor">
 								<use xlink:href="/bootstrap-icons.svg#folder"></use>
 							</svg>
@@ -38,7 +38,7 @@
 				class="w-100 h-100" alt="...">
 
 			<div class="btn-live-wrapper">
-				<button class="btn btn-primary-custom">{{ trans("$theme-app.lot.bid_live") }}</button>
+				<button class="btn btn-lb-primary">{{ trans("$theme-app.lot.bid_live") }}</button>
 			</div>
 
 		</div>

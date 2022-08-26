@@ -1,7 +1,7 @@
 <div class="home-slider" data-text="SOFTWARE DE SUBASTAS">
 	<div class="banner-content py-2 py-sm-5">
 		<h1 class="text-center">SUBASTAS <span class="lb-text-primary">LABELGRUP</span></h1>
-		<a class="btn btn-primary-custom text-wrap">MOSTRAR SUBASTA</a>
+		<a class="btn btn-lb-primary text-wrap">MOSTRAR SUBASTA</a>
 	</div>
 	{!! \BannerLib::bannersPorKey('new_home', 'home-top-banner') !!}
 </div>

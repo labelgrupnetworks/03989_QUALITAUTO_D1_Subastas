@@ -88,7 +88,7 @@
 					@foreach ($lote_actual->siguientes_escalados as $escalado)
 					<button type="button" data-from="modal" data-escalado-position="{{$loop->index}}" value="{{$escalado}}"
 						@class([
-							'btn btn-primary-custom w-100 lot-action_pujar_on_line js-lot-action_pujar_escalado',
+							'btn btn-lb-primary w-100 lot-action_pujar_on_line js-lot-action_pujar_escalado',
 							'add_favs' => Session::has('user')
 						])>
 
@@ -105,7 +105,7 @@
 					<span class="input-group-text currency-input">{{trans(\Config::get('app.theme').'-app.subastas.euros')}}</span>
 					<button type="button" id="button-bid" data-from="modal"
 						@class([
-							'lot-action_pujar_on_line btn btn-primary-custom',
+							'lot-action_pujar_on_line btn btn-lb-primary',
 							'add_favs' => Session::has('user')
 						])
 						ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
@@ -145,7 +145,7 @@
 	@endphp
 
 	<div class="mt-3">
-		<a class="d-block btn btn-outline-primary-custom-alt" href="{{ $urlCompletePackengers }}" target="_blank">
+		<a class="d-block btn btn-outline-lb-secondary" href="{{ $urlCompletePackengers }}" target="_blank">
 			<svg class="bi" width="16" height="16" fill="currentColor">
 				<use xlink:href="/bootstrap-icons.svg#truck"></use>
 			</svg>

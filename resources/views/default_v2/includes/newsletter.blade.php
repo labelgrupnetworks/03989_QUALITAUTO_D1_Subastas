@@ -15,7 +15,7 @@
 						<div class="input-group mb-3">
 							<input type="email" class="form-control" placeholder="email" aria-label="email"
 								aria-describedby="newsletter-btn">
-							<button class="btn btn-primary-custom button-newsletter" type="button"
+							<button class="btn btn-lb-primary button-newsletter" type="button"
 								id="newsletter-btn">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
 						</div>
 

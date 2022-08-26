@@ -50,13 +50,13 @@
 
 		@if (!$devuelto && !$retirado && !$sub_historica)
 			@if($cerrado &&  empty($precio_venta) && $compra)
-				<a {!! $url !!} class="btn btn-block btn-primary-custom lot-btn">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</a>
 			@elseif($subasta_venta  && !$cerrado)
 				@if(!$end_session)
-				<a {!! $url !!} class="btn btn-block btn-primary-custom lot-btn">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</a>
 				@endif
 			@elseif(!$cerrado )
-				<a {!! $url !!} class="btn btn-block btn-primary-custom lot-btn">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</a>
 			@endif
 		@endif
 	</div>

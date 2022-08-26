@@ -13,7 +13,7 @@ foreach($tipos_sub as $typeSub => $desType) {
 
 <div class="d-flex align-items-end flex-wrap gap-1 border-bottom pb-1">
 
-	<button id="js-show-filters" class="btn btn-sm btn-outline-primary-custom d-flex align-items-center d-none" onclick="showFilters(event)" alt="mostrar filtros">
+	<button id="js-show-filters" class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center d-none" onclick="showFilters(event)" alt="mostrar filtros">
 		<svg class="bi" width="16" height="16" fill="currentColor">
 			<use xlink:href="/bootstrap-icons.svg#arrow-bar-right"/>
 		</svg>
@@ -21,13 +21,13 @@ foreach($tipos_sub as $typeSub => $desType) {
 
 	<p class="cantidad-res me-auto">{{ Tools::numberformat($count_lots) }} {{ trans(\Config::get('app.theme').'-app.lot_list.results') }}</p>
 
-	<button class="btn btn-sm btn-outline-primary-custom d-none d-sm-flex align-items-center align-self-stretch" data-grid="grid" onclick="changeGrid(event)">
+	<button class="btn btn-sm btn-outline-border-lb-primary d-none d-sm-flex align-items-center align-self-stretch" data-grid="grid" onclick="changeGrid(event)">
 		<svg class="bi" width="16" height="16" fill="currentColor">
 			<use xlink:href="/bootstrap-icons.svg#grid-3x3-gap"/>
 		</svg>
 	</button>
 
-	<button class="btn btn-sm btn-outline-primary-custom d-none d-sm-flex align-items-center align-self-stretch" data-grid="large" onclick="changeGrid(event)">
+	<button class="btn btn-sm btn-outline-border-lb-primary d-none d-sm-flex align-items-center align-self-stretch" data-grid="large" onclick="changeGrid(event)">
 		<svg class="bi" width="16" height="16" fill="currentColor">
 			<use xlink:href="/bootstrap-icons.svg#list"/>
 		</svg>
