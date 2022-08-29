@@ -1,11 +1,11 @@
 @if(Session::has('user') && !$retirado)
 <div class="favoritos">
-	<a @class(['lb-text-primary', 'hidden' => $lote_actual->favorito]) href="javascript:action_fav_modal('add')">
+	<a id="del_fav" @class(['lb-text-primary', 'hidden' => !$lote_actual->favorito]) href="javascript:action_fav_modal('remove')">
 		<svg class="bi" width="24" height="24" fill="currentColor">
 			<use xlink:href="/bootstrap-icons.svg#heart-fill"></use>
 		</svg>
 	</a>
-	<a @class(['lb-text-primary', 'hidden' => !$lote_actual->favorito])  href="javascript:action_fav_modal('remove')">
+	<a id="add_fav" @class(['lb-text-primary', 'hidden' => $lote_actual->favorito])  href="javascript:action_fav_modal('add')">
 		<svg class="bi" width="24" height="24" fill="currentColor">
 			<use xlink:href="/bootstrap-icons.svg#heart"></use>
 		</svg>
@@ -60,15 +60,15 @@
 {{-- desktop --}}
 <div class="d-none d-sm-block">
 	@if($retirado)
-		<div class="retired">
+		<div class="label-grid ficha-label">
 			{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
 		</div>
 	@elseif($fact_devuelta)
-		<div class="retired">
+		<div class="label-grid ficha-label">
 			{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
 		</div>
 	@elseif($cerrado && (!empty($lote_actual->himp_csub) || ($sub_historica && !empty($lote_actual->impadj_asigl0))))
-		<div class="retired">
+		<div class="label-grid ficha-label">
 			{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
 		</div>
 	@endif

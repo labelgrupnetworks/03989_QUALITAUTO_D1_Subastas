@@ -58,27 +58,40 @@
 </div>
 
 <div id="modalMensaje" class="container modal-block mfp-hide ">
-    <div   data-to="pujarLoteFicha" class="modal-sub-w">
-            <section class="panel">
-                    <div class="panel-body">
-                            <div class="modal-wrapper">
-                                    <div class=" text-center single_item_content_">
-                                        <span class="class_h1"><p id="insert_msg_title"></p></span><br/>
+	<div data-to="pujarLoteFicha" class="modal-sub-w">
+		<section class="panel">
+			<div class="panel-body">
+				<div class="modal-wrapper">
+					<div class=" text-center single_item_content_">
+						<span class="class_h1">
+							<p id="insert_msg_title"></p>
+						</span>
+						<br>
 
-                                        <!-- METODO NUEVO -->
-                                        <p><span id="insert_msg_login_required"></span><a class="btn_login" href="#" onclick="$.magnificPopup.close();"><span id="insert_msg_log_in"></span></a><span id="insert_msg"></span></p><br/>
+						<!-- METODO NUEVO -->
+						<p>
+							<span id="insert_msg_login_required"></span>
+							<a class="btn_login" href="#" onclick="$.magnificPopup.close();">
+								<span id="insert_msg_log_in"></span>
+							</a>
+							<span id="insert_msg"></span>
+						</p>
+						<br>
 
-                                        <!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
-                                        <!-- <p id="insert_msg"></p><br/> -->
+						<!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
+						<!-- <p id="insert_msg"></p><br/> -->
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+						<button class="btn btn-lb-secondary modal-dismiss">
+							{{ trans(\Config::get('app.theme').'-app.lot.accept') }}
+						</button>
 
-                                    </div>
-                            </div>
-                    </div>
-            </section>
-    </div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
+
 <div id="modalPujarFicha" class="container modal-block mfp-hide ">
             <div   data-to="pujarLoteFicha" class="modal-sub-w">
                     <section class="panel">

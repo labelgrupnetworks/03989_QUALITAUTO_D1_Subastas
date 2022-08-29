@@ -70,6 +70,16 @@ h1, .h1 {
 	z-index: 1021;
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+	color: var(--color-primary-contrast);
+    background-color: var(--color-primary-light);
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	color: var(--color-primary-contrast);
+    background-color: var(--color-primary);
+}
+
 .text-muted {
 	color: var(--text-color-secondary) !important;
 }
@@ -82,8 +92,15 @@ h1, .h1 {
 	color: var(--text-color-winner);
 }
 
-.lose, .other {
+.lose, .other, .no-winner {
 	color: var(--text-color-loser);
+}
+
+.panel {
+    background-color: #fff;
+    border-radius: var(--lb-border-radius);
+    box-shadow: var(--box-shadow);
+	padding: 1rem 2rem;
 }
 
 .form-check-input:checked {
@@ -181,6 +198,7 @@ h1, .h1 {
 	text-decoration: none;
 	background-color: var(--color-primary);
 	color: var(--color-primary-contrast);
+	border-color: var(--color-primary);
 }
 
 .btn-outline-border-lb-primary {
@@ -203,6 +221,7 @@ h1, .h1 {
 .btn-outline-lb-secondary:is(:hover, :focus) {
 	background-color: var(--color-secondary);
 	color: var(--color-secondary-contrast);
+	border-color: var(--color-secondary);
 }
 
 .lb-text-primary {
@@ -263,7 +282,7 @@ header .nav-link::before {
     width: 100%;
     top: 50%;
     left: 0;
-    background-color: #cd2122;
+    background-color: var(--color-primary);
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     -webkit-transition: height .2s ease-in-out;
@@ -274,7 +293,7 @@ header .nav-link::before {
 }
 
 header .nav-link:hover:before {
-	background-color: #cd2122;
+	background-color: var(--color-primary);
 	/* height: calc(12px + 16px); */
 	height: 100%;
 	opacity: 1;
@@ -649,6 +668,10 @@ header .navbar-toggler {
 	-ms-transform: rotate(-90deg);
 }
 
+.label-grid.ficha-label {
+	top: 65px;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Ficha Lote - Layout
@@ -747,6 +770,11 @@ section.ficha-image {
 | Ficha Lote
 |--------------------------------------------------------------------------
  */
+
+.ficha-title p:first-of-type {
+	display: inline;
+}
+
 .img-content {
     position: absolute;
     top: 0;
@@ -794,7 +822,7 @@ section.ficha-image {
 
 .favoritos {
 	position: absolute;
-	right: 0;
+	right: 3px;
 	top: 3px;
 	z-index: 1000;
 }

@@ -49,13 +49,13 @@ var imp = '{{$data['subasta_info']->lote_actual->impsalhces_asigl0}}';
 //gardamos el código de licitador para saber is esta logeado o no y mostrar mensaje de que debe logearse
  if (!empty($data['js_item']) && !empty($data['js_item']['user']) && !empty($data['js_item']['user']['cod_licit'])   )
  {
-     $cod_licit ="'". $data['js_item']['user']['cod_licit']."'";
+     $cod_licit = $data['js_item']['user']['cod_licit'];
  }else{
-     $cod_licit ="null";
+     $cod_licit = 'null';
  }
 @endphp
 
-var cod_licit = @json($cod_licit);
+var cod_licit = {{$cod_licit}};
 routing.node_url 	 = '{{ Config::get("app.node_url") }}';
 routing.comprar		 = '{{ $data["node"]["comprar"] }}';
 routing.ol		 = '{{ $data["node"]["ol"] }}';

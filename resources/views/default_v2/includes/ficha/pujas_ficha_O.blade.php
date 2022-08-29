@@ -16,7 +16,11 @@
 	@if(!empty($lote_actual->imptash_asigl0))
         <p class="price estimacion-price">
             <span>{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</span>
-            <span>{{ \Tools::moneyFormat($lote_actual->imptash_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+            <span>{{ \Tools::moneyFormat($lote_actual->imptash_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+				@if(\Config::get("app.exchange"))
+				| <span id="estimateExchange_JS" class="exchange"> </span>
+				@endif
+			</span>
 		</p>
 	@endif
 
@@ -118,7 +122,7 @@
 	@endif
 
 	{{-- mi orden máxima --}}
-    <p @class(['info_single_title', 'hist_new', 'hidden' => empty($data['js_item']['user']['ordenMaxima'])])>
+    <p @class(['hist_new', 'hidden' => empty($data['js_item']['user']['ordenMaxima'])])>
 		{{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
 		<strong>
 			<span id="tuorden">
@@ -152,8 +156,7 @@
 			{{ trans("$theme-app.lot.packengers_ficha") }}
 		</a>
 	</div>
-
-@endif
+	@endif
 
 </div>
 
