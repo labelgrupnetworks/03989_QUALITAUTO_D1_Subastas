@@ -148,6 +148,8 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
+
+{{-- No se puede sobrescribir... así que no sirve --}}
 <script type="module" src="{{ Tools::urlAssetsCache('/default_v2/js/index.js') }}"></script>
 
 @stack('scripts')

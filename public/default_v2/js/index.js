@@ -9,7 +9,7 @@ function showAuctionsFiles(event) {
 	const modalElement = document.getElementById('documentsModal');
 	modalElement.querySelector('.modal-body').innerHTML = '';
 
-	const myModal = new bootstrap.Modal(modalElement);
+	const filesModal = new bootstrap.Modal(modalElement);
 
 	const element = event.target.classList.contains('js-auction-files')
 		? event.target
@@ -20,9 +20,8 @@ function showAuctionsFiles(event) {
 
 	auctionFiles(auction, reference)
 		.then(data => {
-			console.log(data);
 			modalElement.querySelector('.modal-body').innerHTML = data.html;
-			myModal.show();
+			filesModal.show();
 		});
 }
 

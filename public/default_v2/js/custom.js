@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
 
 	$('.imgPopUpCall_JS').on('click', function () {
 
@@ -2027,6 +2027,25 @@ function image360Init() {
 	};
 
 	image360.init();
+}
+
+function initializeParlaxBanner(minHeight = '300px') {
+
+	const bansParallax = document.querySelectorAll('.bann-parallax');
+
+	if(bansParallax.length == 0 && window.innerWidth <= 768){
+		return;
+	}
+
+	window.addEventListener('scroll', () => {
+		const value = window.scrollY;
+		const value2 = value - 1200;
+
+		bansParallax.forEach((element) => {
+			const positionBackground = (element.style.minHeight == minHeight) ? -value2 : -value;
+			element.style.backgroundPosition = `center ${positionBackground * 0.25}px`;
+		});
+	});
 }
 
 

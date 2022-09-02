@@ -31,6 +31,10 @@ return [
     | Supported: "smtp", "sendmail", "mailgun", "ses",
     |            "postmark", "log", "array", "failover"
     |
+	|
+	| smtp: la Ip de envío es la del host del servicio de correo
+	| sendmail: la Ip de envío es la del servidor web
+	|
     */
 
     'mailers' => [
