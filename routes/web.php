@@ -1,5 +1,5 @@
 <?php
-
+use Laravel\Socialite\Facades\Socialite;
 /* Esto iba en el routes de la version 5.2 de laravel */
 
 use App\Http\Controllers\Prueba;
@@ -616,6 +616,21 @@ Route::get(\Routing::translateSeo('artista-fondo-galeria') . '{id_artist}', 'V5\
 /***** Fin Galería de arte *****/
 
 Route::get('/{lang}/lot-file/{file}/{numhces}/{linhces}/download', 'SubastaController@getDownloadLotFile')->name('lot_file_download');
+
+
+
+Route::get('/auth/google/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/auth/google/callback', function () {
+
+
+    $user = Socialite::driver('google')->user();
+
+	dd($user);
+    // $user->token
+});
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

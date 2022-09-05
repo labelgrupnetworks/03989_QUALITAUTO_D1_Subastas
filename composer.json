@@ -11,6 +11,7 @@
         "intervention/image": "2.7.2",
         "laravel/framework": "v9.19.0",
         "laravel/sanctum": "v2.15.1",
+        "laravel/socialite": "5.5",
         "laravel/tinker": "v2.7.2",
         "maatwebsite/excel": "3.1.40",
         "neitanod/forceutf8": "v2.0.4",
