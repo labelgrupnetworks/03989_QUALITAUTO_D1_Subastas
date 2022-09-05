@@ -1360,6 +1360,8 @@ $(function () {
 
             $('#clock, button.start').hide();
             $('.started').removeClass('hidden');
+			$('body').addClass('tr_progress').removeClass('tr_stop').removeClass('tr_finished');
+
             params.status = 'in_progress';
             $('.tiempo_real')[0].style.position = "initial";
 
@@ -1415,6 +1417,7 @@ $(function () {
                 $('#clock, button.start').show();
 
                 $('.started').addClass('hidden');
+				$('body').addClass('tr_stop').removeClass('tr_progress').removeClass('tr_finished');
 
                 if (typeof auction_info.user == "undefined" || (typeof auction_info.user != "undefined" && !auction_info.user.is_gestor)){
                     $('.tiempo_real')[0].style.position = "fixed";
@@ -1522,6 +1525,7 @@ $(function () {
         {
             $('#clock').show();
 
+			$('body').addClass('tr_finished').removeClass('tr_stop').removeClass('tr_progress');
             $('.tiempo').data('stop', "stop");
             $('.tiempo').html(messages.neutral.auction_end);
             $('.started').addClass('hidden');
