@@ -97,6 +97,7 @@ window.addEventListener('load', function (event) {
 
 	// Publicar nft
 	$("#js-nft-publish").on("click", updateAndPublishNft);
+	$("#js-nft-mint").on("click", mintNft);
 
 });
 
@@ -293,4 +294,18 @@ function updateAndPublishNft(event) {
 	return;
 }
 
+function mintNft(event) {
+	event.preventDefault();
 
+	bootbox.confirm("¿Estás seguro que quieres mintear el NFT?", function (result) {
+		if(result){
+			document.querySelector('[name=mint_nft]').value = 1;
+			document.getElementById('loteUpdate').submit();
+		}
+	});
+
+
+
+
+	return;
+}
