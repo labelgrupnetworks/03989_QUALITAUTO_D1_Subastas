@@ -361,6 +361,13 @@ class AdminLotController extends Controller
 			if($resultNftProcess->status == 'error') {
 				$response['errors']['nft'] = $resultNftProcess->message;
 			}
+		}else{ #si ya está publicado y han decidido mintearlo
+			if(!empty($request->mint_nft)){
+				$resultNftMint =  $this->mintNFT($fgAsigl0->sub_asigl0, $fgAsigl0->ref_asigl0);
+				if($resultNftMint->status == 'error') {
+					$response['errors']['nft'] = $resultNftMint->message;
+				}
+			}
 		}
 
 		//files
@@ -439,6 +446,17 @@ class AdminLotController extends Controller
 
 		return $res;
 		//return response()->json($res);
+	}
+
+	public function mintNFT($cod_sub, $ref_asigl0)
+	{
+		$lote = FgAsigl0::select("NUMHCES_ASIGL0, LINHCES_ASIGL0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0", $ref_asigl0)->first();
+		
+
+		$res = (new VottunController())->mint($lote->numhces_asigl0, $lote->linhces_asigl0);
+
+		return $res;
+
 	}
 
 	public function unpublishNft($cod_sub, $ref_asigl0)
@@ -655,6 +673,7 @@ class AdminLotController extends Controller
 		if(!empty($request->publish_nft)){
 			return $this->publishNft($fgAsigl0->sub_asigl0, $fgAsigl0->ref_asigl0);
 		}
+
 		return (object)['status' => 'success'];
 	}
 

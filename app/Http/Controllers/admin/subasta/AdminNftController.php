@@ -84,13 +84,14 @@ class AdminNftController extends Controller
 
 	private function mintState($nft)
 	{
-		if($nft->token_id_nft){
+		#pay_mint_nft estará a nulo hasta que se mintee la obra, en ese momento tendrá un valor dependiendo de si se ha de cobrar o no al propietario o si ya se ha cobrado
+		if($nft->pay_mint_nft){
 			return 'minted';
 		}
 		if(!$nft->mint_id_nft){
 			return 'notminted';
 		}
-		if($nft->mint_id_nft && !$nft->token_id_nft){
+		if($nft->mint_id_nft && !$nft->pay_mint_nft){
 			return 'minting';
 		}
 	}
@@ -115,6 +116,8 @@ class AdminNftController extends Controller
 		return response()->json($transferResult);
 	}
 
+	#vOTTUN A MONTADO UN WEBHOOK AL QUE LLAMA AL FINALIZAR EL MINTEO, POR LO QUE YA NO ES NECESARIA ESTA FUNCIÓN
+	/*
 	public function state(Request $request)
 	{
 		$response = (new VottunController())->requestStateMint($request->num, $request->lin);
@@ -124,4 +127,5 @@ class AdminNftController extends Controller
 		];
 		return response()->json($response);
 	}
+	*/
 }

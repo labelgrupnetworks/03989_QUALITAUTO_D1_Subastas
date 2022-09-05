@@ -230,21 +230,16 @@ class PayArticleCartController extends Controller
 
 
 	//Peticion token universal pay
-	public function tokenPasarelaUP2($cod_cli, $numOrder, $importeTotal)
+	public function tokenPasarelaUP2($cod_cli, $numOrder, $importeTotal, $notificationUrl = '/articleCart/returnpayup2', $codSub = null )
 	{
 		$client = FxCli::where("gemp_cli", \Config::get("app.gemp"))->where("cod_cli",$cod_cli)->SelectBasicCli()->JoinCliWebCli()->addSelect("codpais_cli")->first();
 
-		if (!env('APP_DEBUG') && Config::get('app.environmentUP2')) {
-			$url_pay = 'https://api.universalpay.es/token';
-			$merchantId = Config::get('app.merchantIdUP2');
-			$brandId = Config::get('app.brandIdUP2');
-			$password = Config::get('app.passwordUP2');
-		} else {
-			$url_pay = 'https://api.test.universalpay.es/token';
-			$merchantId = Config::get('app.merchantIdUP2_test');
-			$brandId = Config::get('app.brandIdUP2_test');
-			$password = Config::get('app.passwordUP2_test');
-		}
+		$paymentcontroller = new PaymentsController();
+		$tipo = substr($numOrder, 0, 1);
+
+		$up2Vars = $paymentcontroller->universalPay2Vars($codSub,$tipo );
+
+
 
 
 
@@ -258,9 +253,9 @@ class PayArticleCartController extends Controller
 			'customerEmail' => trim($client->email_cli),
 			'merchantReference' =>  $cod_cli,
 			'amount' => floatval($importeTotal),
-			'brandId' => $brandId,
-			'merchantId' => $merchantId,
-			'password' => $password,
+			'brandId' => $up2Vars["brandId"],
+			'merchantId' => $up2Vars["merchantId"],
+			'password' => $up2Vars["password"],
 			'action' => 'PURCHASE',
 			'language' => !empty($client->idioma_cli) ? strtolower($client->idioma_cli) : 'es',
 			'timestamp' => $time,
@@ -268,7 +263,7 @@ class PayArticleCartController extends Controller
 			'channel' => 'ECOM',
 			'currency' => 'EUR',
 			'country' =>  $client->codpais_cli?? 'ES',
-			'merchantNotificationUrl' => $url . '/articleCart/returnpayup2',
+			'merchantNotificationUrl' => $url . $notificationUrl,
 			'merchantLandingPageUrl' => $url . '/gateway/returnPayPage',
 			'specinProcessWithoutCvv2' => 'false',
 			'forceSecurePayment' => 'true',
@@ -278,9 +273,9 @@ class PayArticleCartController extends Controller
 
 		//url-ify the data for the POST
 		$fields_string = http_build_query($fields);
-		\Log::info("URL de pago: $url_pay?$fields_string");
+		\Log::info("URL de pago: ". $up2Vars["url_pay"]."?$fields_string");
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url_pay);
+		curl_setopt($ch, CURLOPT_URL, $up2Vars["url_pay"]);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);

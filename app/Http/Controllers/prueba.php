@@ -152,9 +152,15 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		//te
-		//$this->testwebserviceNFTDuran();
-		//test
+		$a = new PayShoppingCartController();
+		$a->sendEmailPaid("T61660210733");
+
+
+
+/*
+		$pay = new PayShoppingCartController();
+		$pay->returnPay("M11660112336");
+*/
 	}
 
 
@@ -171,7 +177,10 @@ class Prueba extends BaseController
 		$num = 8;
 		$lin=6;
 		$vottun = new VottunController();
-		$response = $vottun->vottunNetworks();
+		$response = $vottun->webhook();
+		//$response = $vottun->vottunGetWebhook();
+		//$response = $vottun->vottunCreateWebhook();
+		//$response = $vottun->vottunNetworks();
 		echo "<pre>";
 		//$response = $vottun->uploadFile($num, $lin);
 		//$response = $vottun->uploadMetadata($num, $lin);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\externalws\durannft;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\externalws\vottun\VottunController;
 use SimpleXMLElement;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgAsigl0;
@@ -25,8 +26,15 @@ class PaidController extends DuranNftController
 				if(!empty($merchantID)){
 					$xml =	$this->cartInfo($merchantID);
 
-					\Log::info("se ha vendido un lote");
-					$res = $this->callWebService($xml,"wbGrabarVenta");
+					$tipo = substr($merchantID,0,1) ;
+					if($tipo == "M"){
+						#SE LLAMARA A LA FUNCION QUE TOQUE PARA INDICAR QUE SE HA PAGADO EL MINTADO O LA TRANSFERENCIA
+						$res = $this->callWebService($xml,"NOMBREDELA FUNCION QUE SEA");
+					}else{
+						\Log::info("se ha vendido un lote");
+						$res = $this->callWebService($xml,"wbGrabarVenta");
+					}
+
 
 					if(!empty($res) && $res->resultado == 0){
 						/* PONER IDORIGEN EN ASIGL0 para que luego puedan marcarlo como pagado */
@@ -58,6 +66,32 @@ class PaidController extends DuranNftController
 	private function cartInfo($merchantID){
 		//ver tipo de transaccion
 		$tipo = substr($merchantID,0,1) ;
+
+		#EL TIPO 'M' ES PARA PAGO DE MINTEO O TRANSFERENCIA
+		if ($tipo == "M"){
+			$transaccion = WebPayCart::where("IDTRANS_PAYCART", $merchantID)->first();
+			if(empty($transaccion)){
+				\Log::info("No hay carrito pagado con el idtrans $merchantID");
+				return ;
+			}
+			$info = json_decode($transaccion->info_paycart);
+
+			if($info->reason == "mint"){
+				#los datos del lote estan en  $info->num $info->lin
+
+				#HACER LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE SE HA PAGADO UN MINTEO
+
+			}elseif($info->reason == "transfer"){
+				foreach($info->lots as $keyLot => $lot) {
+					# los datosd de los lotes estan en $lot->num y $lot->lin
+
+				}
+				#HACER LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE SE HA  HECHO UNA O VARIAS TRANSFERENCIAS DE NFT
+
+			}
+			#para que no siga
+			return;
+		}
 
 		#si es una factura
 		if ($tipo == "T"){
@@ -139,9 +173,10 @@ class PaidController extends DuranNftController
 
 		}else{
 			\Log::info("tipo de pago no contemplado en webservice Duran NFT");
+			die();
 		}
 
-		#Parte comun de coger lotes tanto si es
+		#Parte comun de coger lotes tanto si es compra de carrito como si es adjudicacion por subasta online
 		$refLots=" ( ";
 			$or = "";
 			foreach ($auctions as $cod_sub => $lots){
@@ -193,8 +228,9 @@ class PaidController extends DuranNftController
 		}else{
 			$ivaGeneral = 0;
 		}
-
+		$vottuncontroller = new VottunController();
 		foreach($lots as $lot){
+			#SE DEBEN TRANSFERIR LAS OBRAS AL USUARIO
 
 			#no hay que tener en cuenta el iva de la comisión,
 			$caracteristicas = FgCaracteristicas_Hces1::getByLot( $lot->num_hces1, $lot->lin_hces1);

@@ -1647,6 +1647,11 @@ class UserController extends Controller
             $data['data'] = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
 			$seo = new \Stdclass();
 			$seo->noindex_follow = true;
+			if(config('app.seo_notlogged_page', 0)){
+				$seo->meta_title = trans(\Config::get('app.theme').'-app.metas.title_no_logged');
+				$seo->meta_description = trans(\Config::get('app.theme').'-app.metas.description__no_logged');
+			}
+
 			$data['seo'] = $seo;
             return View::make('front::pages.not-logged',  $data);
         }
@@ -2289,6 +2294,41 @@ class UserController extends Controller
         return View::make('front::pages.panel.adjudicaciones', array('data' => $data));
     }
     */
+	#mostrar listado de pagos pagados y pendientes de transferencia de NFT
+	public function nftTransferPay(){
+		$asigl0 = new Fgasigl0();
+		$nfts = $asigl0->JoinFghces1Asigl0()->JoinCSubAsigl0()->JoinNFT()->
+		select("DESCWEB_HCES1, TRANSFER_ID_NFT,COST_TRANSFER_NFT, PAY_TRANSFER_NFT ")->
+		where("CLIFAC_CSUB",Session::get('user.cod'))->
+		#networks de pago, si no son de pago no se deberá cobrar
+		wherein("NETWORK_NFT", explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) ))->
+		#que el lote se haya solicitado la transferencia
+		whereNotNull("TRANSFER_ID_NFT")->
+		#si es nulo es que no se ha transferido y si es P es que esta pendiente de transferir
+		whereRaw("(PAY_TRANSFER_NFT is NULL or PAY_TRANSFER_NFT = 'P')")->
+
+		# si la transferencia tiene importe es que se debe pagar, puede estar pagada o no pero es la manera de saber que nft mostrar en este listado
+		where("COST_TRANSFER_NFT",">",0)->
+		get();
+
+		$noTransfer= array();
+		$pendingPay = array();
+
+		foreach($nfts as $nft ){
+			if($nft->pay_transfer_nft == "P"){
+				$pendingPay[] = $nft;
+			}else{
+				$noTransfer[] = $nft;
+			}
+
+		}
+		#de momento no uso los pagados, pero dejo el código ya preparado por si hiciera falta
+		return View::make('front::pages.panel.nftTransferPayments',compact("pendingPay","noTransfer") );
+
+	}
+
+
+
     # Adjudicaciones pendientes de pago del usuario en sesion
 
     public function getAdjudicacionesPendientePago()
@@ -3736,6 +3776,234 @@ class UserController extends Controller
 
     }
 
+	public function getAllAllotmentsAndBills()
+	{
+		$seo = new \Stdclass();
+		$seo->noindex_follow = true;
+
+		if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data['data'] = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+			$data['seo'] = $seo;
+            return View::make('front::pages.not-logged', $data);
+        }
+
+		$cod_cli = session('user.cod');
+
+		//user data
+		$userModel = User::factory()
+			->setCodCli($cod_cli)
+			->setItemsPerPage('all');
+
+		$user =	$userModel->getUser();
+
+		$addres = new Address();
+        $addres->cod_cli = $user->cod_cli;
+        $envio = $addres->getUserShippingAddress();
+
+		//bills
+		$pendigBills = $this->getPendingBillsData($user);
+		$payedBills = $this->getPayedBillsData($user);
+
+		//allotments
+		$pendingAllotments = $this->getPendingAllotmentsData($user, $envio);
+		$payedAllotments = $this->getPayedAllotmentsData($user, $envio);
+
+		$data = [
+            'user' => $user,
+			'seo' => $seo,
+			'envio' => $envio,
+			'currency' => (new Subasta())->getCurrency(),
+		] + $pendigBills + $payedBills + $pendingAllotments + $payedAllotments;
+
+		return view('front::pages.panel.adjudicaciones', ['data' => $data]);
+	}
+
+	private function getPayedAllotmentsData($user, $envio)
+	{
+		$emp = config('app.emp');
+		$gemp = config('app.gemp');
+
+		$pago_controller = new PaymentsController();
+
+        $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S');
+
+		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
+        $tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
+
+		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $iva, $tipo_iva) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva);
+		});
+
+		return [
+			'adjudicaciones_pag' => $adjudicaciones_pag,
+			#al pasar le valor 1 devolvera el iva que hay que aplicar, por ejemplo 0,21
+			'ivaAplicable' => $pago_controller->calculate_iva($tipo_iva->tipo, $iva, 1),
+		];
+	}
+
+	private function getPendingAllotmentsData($user, $envio)
+	{
+		$emp = config('app.emp');
+		$gemp = config('app.gemp');
+
+		$subasta = new Subasta();
+		$parametrosSub = $subasta->getParametersSub();
+
+		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N');
+
+		$pago_controller = new PaymentsController();
+
+		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
+		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
+
+		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $iva, $tipo_iva) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva);
+		})->all();
+
+		$adjudicaciones = array_filter($adjudicaciones_temporales, function ($adjudicacion) {
+			return $adjudicacion->estado_csub0 != "T";
+		});
+
+		#adjudicaciones que estan pendientes de pagar por transferencia, y no pueden salir como no pagadas
+		$adjudicaciones_transfer = array_filter($adjudicaciones_temporales, function ($adjudicacion) {
+			return $adjudicacion->estado_csub0 == "T";
+		});
+
+		return [
+			'adjudicaciones' => $adjudicaciones,
+			'adjudicaciones_transfer' => $adjudicaciones_transfer,
+			'js_item' => $this->generatePreciosLotAdj($adjudicaciones),
+			'price_exportacion' => floatval($parametrosSub->licexp_prmsub),
+		];
+	}
+
+	private function allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva)
+	{
+		$subastaClass = new Subasta();
+		$pagoController = new PaymentsController();
+
+		$withNotIva = \Config::get("app.noIVAOnlineAuction") && $adjudicacion->tipo_sub == 'O';
+
+		$adjudicacionFormat = (object) array_merge(get_object_vars($adjudicacion), [
+			'formatted_imp_asigl1' => \Tools::moneyFormat($adjudicacion->himp_csub),
+			'imagen' => $subastaClass->getLoteImg($adjudicacion),
+			'date' => \Tools::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
+			'imp_asigl1' => $adjudicacion->himp_csub,
+			'base_csub_iva' => $withNotIva ? 0 : $pagoController->calculate_iva($tipo_iva->tipo, $iva, $adjudicacion->base_csub),
+			'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
+            'factura' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub,true),
+            'pending_fact' => (new Facturas())->pending_bills(false),
+			'days_extras_alm' => $this->days_extras_almacen($adjudicacion->fecha_csub),
+			'prefactura' => $this->proformaInvoiceFile($adjudicacion->sub_csub, true),
+			'ref_asigl0' => str_replace('.', '_', $adjudicacion->ref_asigl0)
+
+		]);
+
+		//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
+		//03/11/2021 - Eloy
+		$exportacion = $subastaClass->hasExportLicense($adjudicacion->num_hces1, $adjudicacion->lin_hces1);
+
+		$adjudicacionFormat->licencia_exportacion = 0;
+		if($exportacion){
+			$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
+			$adjudicacionFormat->licencia_exportacion = $pagoController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
+		}
+
+		return $adjudicacionFormat;
+	}
+
+	private function getPendingBillsData($user)
+	{
+		$facturas = new Facturas();
+		$facturas->cod_cli = $user->cod_cli;
+
+        $pendientes = $facturas->pending_bills();
+		$inf_fact = array();
+        $tipo_tv = array();
+        $js_fact = array();
+
+		foreach($pendientes as $val_pendiente){
+
+			$facturas->serie = $val_pendiente->anum_pcob;
+			$facturas->numero = $val_pendiente->num_pcob;
+			$fact_temp = $this->bills($val_pendiente->anum_pcob,$val_pendiente->num_pcob,true);
+
+			$val_pendiente->date = $fact_temp['date'] ?? null;
+			$val_pendiente->factura = $fact_temp['filname'] ?? null;
+
+			//buscamos si la factura esta generada
+			$tipo_fact = $facturas->bill_text_sub( substr($facturas->serie, 0, 1),substr($facturas->serie, 1));
+			$val_pendiente->tipo_tv = $tipo_fact->tv_contav;
+
+			//Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
+			if($tipo_fact->tv_contav == 'T'){
+				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturas->getFactTexto();
+				$val_pendiente->inf_fact = ['T'];
+				$val_pendiente->inf_fact['T'] = $facturas->getFactTexto();
+				if(!empty($val_pendiente->inf_fact['T'])){
+					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['T'])->where('sub_dvc1l', '!=', 'null')->first()->sub_dvc1l;
+				}
+
+			}elseif($tipo_fact->tv_contav == 'L' || $tipo_fact->tv_contav == 'P'){
+
+				$facutraSubasta = $facturas->getFactSubasta();
+				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facutraSubasta;
+				$val_pendiente->inf_fact['S'] = $facutraSubasta;
+				if(!empty($val_pendiente->inf_fact['S'])){
+					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['S'])->where('sub_dvc1l', '!=', null)->first()->sub_dvc1l;
+				}
+			}
+
+			//Sacamos de factura el precio
+			$js_fact[$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = floatval($val_pendiente->imp_pcob);
+			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
+			$tipo_tv[$facturas->serie][$facturas->numero] = $tipo_fact->tv_contav;
+		}
+
+		return [
+			'pending' => $pendientes,
+			'inf_factura' => $inf_fact,
+			'js_item'   => $js_fact,
+			'tipo_tv'  => $tipo_tv,
+		];
+	}
+
+	private function getPayedBillsData($user)
+	{
+		$facturas = new Facturas();
+		$facturas->cod_cli = $user->cod_cli;
+
+		$pagado = $facturas->paid_bill();
+        $inf_fact_pag = array();
+        $tipo_tv_pag = array();
+
+		foreach($pagado as $fact_pag){
+
+			$fact_temp = $this->bills($fact_pag->afra_cobro1,$fact_pag->nfra_cobro1,true);
+			$fact_pag->date = $fact_temp['date'] ?? null;
+			$fact_pag->factura = $fact_temp['filname'] ?? null;
+			$facturas->serie = $fact_pag->afra_cobro1;
+			$facturas->numero = $fact_pag->nfra_cobro1;
+
+			//Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
+			if($fact_pag->tv_contav == 'T'){
+				$inf_fact_pag['T'][$facturas->serie][$facturas->numero] = $facturas->getFactTexto();
+			}elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
+				$inf_fact_pag['S'][$facturas->serie][$facturas->numero] = $facturas->getFactSubasta();
+			}
+
+			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
+			$tipo_tv_pag[$facturas->serie][$facturas->numero] = $fact_pag->tv_contav;
+		}
+
+        return [
+			'inf_factura_pag' => $inf_fact_pag,
+			'bills' => $pagado,
+			'tipo_tv_pag'   =>$tipo_tv_pag,
+		];
+	}
+
 
 
 
@@ -3827,7 +4095,7 @@ class UserController extends Controller
 			'seo' => $seo
         );
 
-        return View::make('front::pages.panel.allBills', array('data' => $data));
+		return View::make('front::pages.panel.allBills', array('data' => $data));
     }
 
 	public function getShipment(){

@@ -989,7 +989,7 @@ class PaymentsController extends Controller
 	}
 
 
-	public function universalPay2Vars($prefact,$tipo ){
+	public function universalPay2Vars($codSub,$tipo ){
 		$up2Vars = array();
 		if (!env('APP_DEBUG') && Config::get('app.environmentUP2')) {
 			$up2Vars["url_pay"] = 'https://api.universalpay.es/token';
@@ -998,9 +998,8 @@ class PaymentsController extends Controller
 			$up2Vars["password"] = Config::get('app.passwordUP2');
 
 			#modificamos estos valores si el cliente tiene multicuenta y la subasta es multicuenta
-			if($tipo =="P" && Config::get('app.multiPasarela')){
+			if( ($tipo =="P" || $tipo == "T" ) && Config::get('app.multiPasarela') && !empty($codSub)){
 				$auctions = explode(',',Config::get('app.multiPasarela'));
-				$codSub = $prefact->sub_csub;
 
 				if(in_array($codSub, $auctions) ){
 					$up2Vars["merchantId"] = Config::get('app.merchantIdUP2_'.$codSub);
@@ -1032,7 +1031,7 @@ class PaymentsController extends Controller
 		$pay = new Payments();
 		$fact = new Facturas();
 		#funcion que devuelve los datos de universal pay v2
-		$up2Vars = $this->universalPay2Vars($prefact,$tipo );
+		$up2Vars = $this->universalPay2Vars($prefact->sub_csub,$tipo );
 
 
 		if (strpos($prefact->email_cli, ';') > 0) {
@@ -1132,6 +1131,17 @@ class PaymentsController extends Controller
 			if (!env('APP_DEBUG') && (bool) Config::get('app.environmentUP2') === true) {
 				$this->register_payment("UniversalPay", $amount);
 			}
+			$tipoPago = substr($merchantID,0,1);
+
+			#es un pago del carrito de la compra
+			if($tipoPago == "T"){
+				#Llamamos a la funcion de cart controller para que lo procese todo
+				$payShoppingCart = new PayShoppingCartController();
+				$payShoppingCart->returnPay($merchantID);
+				return;
+			}
+
+
 			$this->pagoDirectoReturn($merchantID, $amount, $post);
 		}
 	}

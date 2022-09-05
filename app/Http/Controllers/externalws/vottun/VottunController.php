@@ -8,7 +8,7 @@ use SimpleXMLElement;
 use GuzzleHttp\Client;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Psr7;
-
+use App\libs\EmailLib;
 use App\Models\V5\FgNft;
 use App\Models\V5\FgNftTransHist;
 use App\Models\V5\FgAsigl0;
@@ -159,12 +159,54 @@ class VottunController extends Controller
 
 			\Log::info("funcion: $function");
 			\Log::info( "parameters:". json_encode($parameters,JSON_PRETTY_PRINT  | JSON_UNESCAPED_UNICODE));
-			\Log::info( json_encode(json_decode($response->getBody()),JSON_PRETTY_PRINT  | JSON_UNESCAPED_UNICODE));
+			\Log::info("body response:". json_encode(json_decode($response->getBody()),JSON_PRETTY_PRINT  | JSON_UNESCAPED_UNICODE));
+			\Log::info("response statuscode:". $response->getStatusCode());
 
 				return json_decode($response->getBody());
 		}
 
+		/* AHORA SOLO DEBERÁ TRANSFERIR, LA OBRÁ DEBERA ESTAR MINTEADA ANTES DE PUBLICAR */
+		/******  Proceso de publicacion , minteo y transferencia  automático despues del pago  ******/
+		/*
+		public function mintPostPay($merchantID ,$sub, $ref){
+			#cogemos el identificador del pago y creamos otro igual pero con la letra M para poder identificar todas las obras asociadas a un mismo pago
+			#ademas usaremos este código para el pago del minteo
+			$merchantID = "M".substr($merchantID,1) ;
+			$lot = FgAsigl0::JoinNFT()->select("ES_NFT_ASIGL0 ,NUMHCES_ASIGL0, LINHCES_ASIGL0, HASHFILE_NFT, HASHMETADATA_NFT")->where("sub_asigl0", $sub)->where("ref_asigl0", $ref)->first();
 
+			#GUARDAMOS EL IDENTIFICADOR DEL PAGO PARA PODER AGRUPARLOS A TODOS LOS LOTES Y PODER USARLO DESPUES PARA PAGAR
+			FgNft::where("NUMHCES_NFT", $lot->numhces_asigl0)->where("LINHCES_NFT", $lot->linhces_asigl0)->update(["ID_PAYMENT_NFT" =>$merchantID] );
+
+
+			$mintear = false;
+			#si es un lote nft
+			if($lot && $lot->es_nft_asigl0 == 'S'){
+				# si no está publicado
+				if(empty($lot->hashfile_nft)){
+					$response = $this->uploadFile($lot->numhces_asigl0, $lot->linhces_asigl0);
+					if($response->status == "success"){
+						$response = $this->uploadMetadata($lot->numhces_asigl0, $lot->linhces_asigl0);
+						if($response->status == "success"){
+							#activamos mintear por que ya está publicado el lote
+							$mintear = true;
+						}
+					}
+				}else{
+					#activamos mintear por que ya estaba publicado el lote
+					$mintear = true;
+				}
+
+				if($mintear){
+					$this->mint($lot->numhces_asigl0, $lot->linhces_asigl0);
+				}else{
+					$this->sendEmailError("No se ha podido mintear el lote " . $lot->numhces_asigl0 + " " +$lot->linhces_asigl0 );
+
+				}
+
+			}
+		}
+	*/
+		/******  FIN Proceso de publicacion y minteo automático despues del pago  ******/
 		#Sube el archivo a vottun y guarda el hash del archivo en bbdd
 		public function uploadFile($num, $lin) {
 			try{
@@ -271,94 +313,6 @@ class VottunController extends Controller
 			}
 
 			return $info;
-		}
-
-		#consulta el estado del minteo y actualiza en base de datos si el resultado es que ya está minteado
-		public function requestStateMint($num, $lin){
-
-			#recuperamos el transactionhash de los datos de la operación de minteo
-			$operation = $this->getMintOpperation($num, $lin);
-			# si ha fallado la carga de la operacionde minteo
-			if (empty($operation)  || empty($operation->networkId) || empty($operation->statusId)){
-
-				return $this->responseError("failGetMintTransaction");
-			}
-			#si todo ha ido bien devolverá un 4 y seguiremos adelante
-			if ($operation->statusId !=4){
-				if ($operation->statusId ==5){
-					return $this->responseError("Mint failed: ". $operation->errorDescription,true);
-				}else{
-					return $this->responseInfo("Mint is not Confirmed: actual status is $operation->statusId -".$this->status[$operation->statusId] ,true);
-				}
-			}
-
-			#recuperamos la transaccion de minteo
-			$transaction = $this->getTransaction($operation->transactionHash, $operation->networkId);
-
-			#si ha fallado la carga de la transaccion de minteo
-			if(empty($transaction) || empty($transaction->transaction) ){
-				return $this->responseError("failGetMintTransaction");
-			}
-
-			if( $transaction->transaction->pending == true){
-				return $this->responseInfo("mintTransactionIsPending");
-			}
-
-			if(empty($transaction->receipt) ){
-				return $this->responseError("transaction");
-			}elseif($transaction->receipt->status !=1){
-				return $this->responseError($transaction->receipt->errorMessage, true);
-			}elseif(!is_int($transaction->receipt->tokenId)){
-				return $this->responseError("getTokenId");
-			}
-
-			FgNft::where("numhces_nft", $num)->where("linhces_nft", $lin)->update(["token_id_nft" => $transaction->receipt->tokenId]);
-
-			return $this->responseSuccess("NFT minted ",true);
-		}
-
-		#consulta el estado de la transferencia
-		public function requestStateTransfer($num, $lin){
-
-			#recuperamos el transactionhash de los datos de la operación de minteo
-			$operation = $this->getTransferOpperation($num, $lin);
-			# si ha fallado la carga de la operacionde transferencia
-			if (empty($operation)){
-				return $this->responseError("notTransaction");
-			}
-			if ( empty($operation->networkId) || empty($operation->statusId)){
-
-				return $this->responseError("failGetTransferTransaction");
-			}
-			#si todo ha ido bien devolverá un 4 y seguiremos adelante
-			if ($operation->statusId !=4){
-				if ($operation->statusId ==5){
-					return $this->responseError("Transfer failed: ". $operation->errorDescription,true);
-				}else{
-					return $this->responseInfo("Transfer is not Confirmed: actual status is $operation->statusId -".$this->status[$operation->statusId] ,true);
-				}
-			}
-
-			#recuperamos la transaccion de la transferencia
-			$transaction = $this->getTransaction($operation->transactionHash, $operation->networkId);
-
-			#si ha fallado la carga de la transaccion de transferencia
-			if(empty($transaction) || empty($transaction->transaction) ){
-				return $this->responseError("failGetTransferTransaction");
-			}
-
-			if( $transaction->transaction->pending == true){
-				return $this->responseInfo("transferTransactionIsPending");
-			}
-
-			if(empty($transaction->receipt) ){
-				return $this->responseError("transaction");
-			}elseif($transaction->receipt->status !=1){
-				return $this->responseError($transaction->receipt->errorMessage, true);
-			}elseif(!is_int($transaction->receipt->tokenId)){
-				return $this->responseError("getTokenId");
-			}
-			return $this->responseSuccess("NFT transfered ",true);
 		}
 
 		public function transferNFT($num, $lin){
@@ -482,9 +436,174 @@ class VottunController extends Controller
 		}
 
 		#vottun llamara a esta función cuando haya finalizado algun evento
+		#url de pruebas http://www.newsubastas.test/prueba?operation=mint&status[status]=4&networkId=4&operationId=7de69f65-f697-40bd-b7bc-fddaaa6b515b
+		#url de pruebas http://www.newsubastas.test/prueba?operation=transfer&status[status]=4&networkId=4&operationId=b8e4f247-34eb-4c04-9599-0263b2fe7a21
 		public function webhook(){
 			$all = request()->all();
-			echo "hola " .print_r($all);
+
+			#SI ES MINTEO
+			if(count($all) >0 &&  $all["operation"] == "mint"  ){
+
+				#VALOR 4 SIGNIFICA QUE HA IDO CORRECTO
+				if($all["status"]["status"] == 4){
+					#SI EL MINTEO SE HA REALIZADO CORRECTAMENTE SE DEBERÁ COMPROBAR SI ESTA DENTRO DE UNA RED QUE SE LE DEBA COBRAR AL PROPIETARIO
+					$network = $all["networkId"];
+
+					$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
+					$costMint = 0;
+					# Si pertenece a una network que se deba cobrar
+					if(in_array($network, $payNetworks)){
+						#indicamos que está pendiente el pago del minteo
+						$payMintNft = "P";
+
+						$vottunController = new VottunController();
+						#enviar email para el pago del minteo
+
+						$operationmint = $vottunController->vottunGetOpperation($all["operationId"]) ;
+						if(!empty($operationmint) ){
+
+							$mintTransaction =  $vottunController->vottunGetTransaction($operationmint->transactionHash, $operationmint->networkId);
+							if(!empty($mintTransaction) && !empty($mintTransaction->transaction)  && !empty($mintTransaction->transaction->gas)){
+								$lot = FgAsigl0::JoinFghces1Asigl0()->JoinNFT()->select("SUB_ASIGL0, REF_ASIGL0, PROP_HCES1 ")->where("MINT_ID_NFT", $all["operationId"])->first();
+
+										$link = Route("mintPayUrl", ["operationId" =>$all["operationId"]]);
+										#VOTTUM DEBE INDICAR EL PRECIO DEL MINTEO, DE MONMENTO PONGO EL CAMPO GAS Y LO DIVIDO ENTRE 100.000 PARA QUE NO SEA TAN GRANDE
+										$price = $mintTransaction->transaction->gas/100000;
+
+										#sumamos la comision de Vottun
+										$costMint =  $price + ($price * \Config::get("app.VottunComission") /100);
+
+										#notificar al propietario que debe pagar el minteo
+										$email = new EmailLib('MINT_PAY_OWNER');
+										if(!empty($email->email)){
+											$email->setUserByCod($lot->prop_hces1);
+											$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
+											$email->setPrice(\Tools::moneyFormat($costMint,"€",2));
+											$email->setUrl($link);
+
+											$email->send_email();
+										}
+
+
+							}
+						}
+
+						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE UN PAGO DEL MINTEO
+					}else{
+						#indicamos que no será necesario el pago del minteo
+						$payMintNft = "N";
+					}
+					#actualizamos el valor de Pay_mint para indicar el coste (solo si es de pago) y si esta pendiente o no será necesario el cobro
+					FgNft::where("MINT_ID_NFT", $all["operationId"])->update(["PAY_MINT_NFT" => $payMintNft, "COST_MINT_NFT" => $costMint]);
+
+				}else{
+					$this->sendEmailError("error en Webhook, el mintado no ha se ha realizado correctamente errorMessage:". $all["status"]["errorMessage"]);
+
+				}
+			}elseif(count($all) >0 &&  $all["operation"] == "transfer"){
+				#VALOR 4 SIGNIFICA QUE HA IDO CORRECTO
+				if($all["status"]["status"] == 4){
+					#SI la transferencia SE HA REALIZADO CORRECTAMENTE SE DEBERÁ COMPROBAR SI ESTA DENTRO DE UNA RED QUE SE LE DEBA COBRAR AL PROPIETARIO
+					$network = $all["networkId"];
+
+					$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
+
+					# Si pertenece a una network que se deba cobrar
+					if(in_array($network, $payNetworks)){
+						#indicamos que está pendiente el pago de la transferencia
+
+
+						$vottunController = new VottunController();
+						#enviar email para el pago de LA TRANSFERENCIA SOLO SI ESTAN TODAS LAS OBRAS TRANSFERIDAS
+
+						$operationTransfer = $vottunController->vottunGetOpperation($all["operationId"]) ;
+						if(!empty($operationTransfer) ){
+
+							$transferTransaction =  $vottunController->vottunGetTransaction($operationTransfer->transactionHash, $operationTransfer->networkId);
+							if(!empty($transferTransaction) && !empty($transferTransaction->transaction)  && !empty($transferTransaction->transaction->gas)){
+
+								#VOTTUM DEBE INDICAR EL PRECIO DEL MINTEO, DE MONMENTO PONGO EL CAMPO GAS Y LO DIVIDO ENTRE 100.000 PARA QUE NO SEA TAN GRANDE
+								$price = $transferTransaction->transaction->gas/100000;
+
+								#sumamos la comision de Vottun
+								$costTransfer =  $price + ($price * \Config::get("app.VottunComission") /100);
+
+								#actualizamos el valor de PAY_TRANSFER para indicar el coste  y que esta pendiente del cobro
+								FgNft::where("TRANSFER_ID_NFT", $all["operationId"])->update(["PAY_TRANSFER_NFT" => "P", "COST_TRANSFER_NFT" => $costTransfer]);
+
+								#Recuperamos el id del comprador para ver si tiene más transferencias pendientes
+								$buyer = FgAsigl0::JoinCSubAsigl0()->JoinNFT()->
+								select("CLIFAC_CSUB")->
+								#debemos poner el not null ya que JoinCSubAsigl0 hace un left join, si el lote ha estado en mas de una subasta puede devolver datos vacios de csub
+								wherenotnull("CLIFAC_CSUB") ->
+								where("TRANSFER_ID_NFT", $all["operationId"])->
+								first();
+
+								$transfers =array();
+								if(!empty($buyer)){
+									#buscamos todas las transferencias pendientes de pago o pendientes de finalizar que pertenezcan a las network de pago.
+									$transfers = FgAsigl0::JoinFghces1Asigl0()->JoinCSubAsigl0()->JoinNFT()->
+									select("DESCWEB_HCES1, TRANSFER_ID_NFT,COST_TRANSFER_NFT, PAY_TRANSFER_NFT ")->
+									where("CLIFAC_CSUB",$buyer->clifac_csub)->
+									#networks de pago, si no son de pago no se deberá cobrar
+									wherein("NETWORK_NFT", explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) ))->
+									#que el lote se haya solicitado la transferencia
+									whereNotNull("TRANSFER_ID_NFT")->
+									#si es nulo es que no se ha transferido y si es P es que esta pendiente de transferir
+									whereRaw("(PAY_TRANSFER_NFT is NULL or PAY_TRANSFER_NFT = 'P')")->
+
+									get();
+
+								}
+								#si hay transferecnias ponemos por defecto en true, y si hay algun registro que no se ha transferido cancelamos
+								$enviar = count($transfers) > 1;
+
+								$total = 0;
+								$transfersIds = array();
+								$lots_name = "<table>";
+								foreach($transfers as $transfer){
+									$total+=$transfer->cost_transfer_nft;
+									$transfersIds[]=$transfer->transfer_id_nft;
+									$lots_name .="<tr><td> * ".$transfer->descweb_hces1."<td><td style='text-align:right'> ". \Tools::moneyFormat($transfer->cost_transfer_nft,"€",2) ."</td></tr>";
+									#si hay alguna que no ha finalizado cancelamos el envio
+									if( empty($transfer->pay_transfer_nft)){
+										$enviar = false;
+									}
+
+
+								}
+								$lots_name .= "</table>";
+								if($enviar){
+									$link = Route("transferPayUrl", ["operationId" => implode("_",$transfersIds)]);
+									$email = new EmailLib('TRANSFERNFT_PAY_BUYER');
+									if(!empty($email->email)){
+										$email->setUserByCod($buyer->clifac_csub);
+										#falta indicar los lotes
+										$email->setAtribute("LOTS_NAME",$lots_name );
+										$email->setPrice(\Tools::moneyFormat($total,"€",2));
+										$email->setUrl($link);
+
+										$email->send_email();
+									}
+								}
+							}
+						}
+						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE EL PAGO DE LA TRANSFERENCIA
+
+					}else{
+						#indicamos que no será necesario el pago de la transferencia
+						FgNft::where("TRANSFER_ID_NFT", $all["operationId"])->update(["PAY_TRANSFER_NFT" => "N", "COST_TRANSFER_NFT" => 0]);
+
+					}
+
+				}else{
+					$this->sendEmailError("error en Webhook, el mintado no ha se ha realizado correctamente errorMessage:". $all["status"]["errorMessage"]);
+
+				}
+			}
+
+
+			//echo "hola " .print_r($all);
 			\Log::info("webhook funcvionando".print_r($all, true) );
 
 
@@ -530,6 +649,54 @@ class VottunController extends Controller
 
 		}
 
+		#calcular el coste del minteo
+		#Debe saber cuando estan todos los lotes transferidos y calcularlo entonces
+		public function calcMintCost($num, $lin) {
+
+			$lot = FgNft::where("NUMHCES_NFT", $num)->where("LINHCES_NFT", $lin)->first();
+			if(!empty($lot)){
+				#seleccionamos todos los lotes que pertenecen al mismo pago
+				$lots = FgNft::where("ID_PAYMENT_NFT", $lot->id_payment_nft)->get();
+				$transferidos = true;
+				foreach($lots as $lot){
+					echo "<br>comprobando transferencia num:" .$lot->numhces_nft. " lin:".$lot->linhces_nft;
+					#si uno de los lotes no ha sido transferido marcamos a false
+					if (empty($lot->transfer_id_nft)){
+						$transferidos = false;
+						echo "<br>falta transferencia";
+					}
+				}
+
+				if($transferidos){
+					echo "<br>calcular coste";
+					$coste = 0;
+					foreach($lots as $lot){
+						#extrar informacion de transaccion  para obtenmer los precios
+						$operationmint = $this->vottunGetOpperation($lot->mint_id_nft) ;
+						$mintTransaction=  $this->vottunGetTransaction($operationmint->transactionHash, $operationmint->networkId);
+
+						$operationtransfer = $this->vottunGetOpperation($lot->transfer_id_nft) ;
+
+						$transferTransaction=  $this->vottunGetTransaction($operationtransfer->transactionHash, $operationtransfer->networkId);
+
+
+
+
+						if(!empty($mintTransaction) && !empty($transferTransaction)){
+							$coste += $mintTransaction->transaction->gas;
+							echo "<br> Coste mint: ". $coste;
+							$coste += $transferTransaction->transaction->gas;
+							echo "<br> Coste trans: ". $coste;
+
+						}
+					}
+				}
+			}
+
+
+		}
+
+
 
 
 		/* FUNCIONES CONTRA LA RED DE VOTTUN */
@@ -546,6 +713,7 @@ class VottunController extends Controller
 				'file' => $file,
 				'filename' => $filename
 			];
+			\Log::info(print_r($parameters, true));
 			return $this->VottumRequest($type, $method   ,$parameters, $function);
 
 			#respuesta
@@ -752,7 +920,7 @@ class VottunController extends Controller
 			return $this->VottumRequest($type, $method   ,$parameters, $function);
 
 		}
-		
+
 		public function vottunTestWebhook(){
 			$type="nft";
 			$function = "config/webhook/test";
@@ -808,6 +976,129 @@ class VottunController extends Controller
 
 			return $response;
 		}
+
+		public function sendEmailError($message){
+
+			#si estamos fuera del circuito de pruebas, se envia el emails
+			if(!env('APP_DEBUG')){
+				$email = new EmailLib('VOTTUN_ERROR');
+				if(!empty($email->email)){
+					#Email que recibe el correo de alerta
+					$to = \Config::get("app.debug_to_email");
+					$email->setTo($to);
+					#Emails que recibiran copia del error
+					if(!empty(\Config::get("app.emailVottunError"))){
+						$bcc = explode(",",\Config::get("app.emailVottunError") );
+						foreach($bcc as $bcc_email){
+							$email->setBcc($bcc_email);
+						}
+					}
+
+
+					$email->setAtribute("MESSAGE", $message);
+
+					$email->send_email();
+					#lo comento para que se guarden siempre los logs
+					//return;
+				}
+			}
+			# si estamos en pruebas, lo escribimos solo en log
+			\Log::error($message);
+
+
+		}
+
+
+			#vOTTUN A MONTADO UN WEBHOOK AL QUE LLAMA AL FINALIZAR EL MINTEO, POR LO QUE YA NO ES NECESARIA ESTA FUNCIÓN
+	/*
+		#consulta el estado del minteo y actualiza en base de datos si el resultado es que ya está minteado
+		public function requestStateMint($num, $lin){
+
+			#recuperamos el transactionhash de los datos de la operación de minteo
+			$operation = $this->getMintOpperation($num, $lin);
+			# si ha fallado la carga de la operacionde minteo
+			if (empty($operation)  || empty($operation->networkId) || empty($operation->statusId)){
+
+				return $this->responseError("failGetMintTransaction");
+			}
+			#si todo ha ido bien devolverá un 4 y seguiremos adelante
+			if ($operation->statusId !=4){
+				if ($operation->statusId ==5){
+					return $this->responseError("Mint failed: ". $operation->errorDescription,true);
+				}else{
+					return $this->responseInfo("Mint is not Confirmed: actual status is $operation->statusId -".$this->status[$operation->statusId] ,true);
+				}
+			}
+
+			#recuperamos la transaccion de minteo
+			$transaction = $this->getTransaction($operation->transactionHash, $operation->networkId);
+
+			#si ha fallado la carga de la transaccion de minteo
+			if(empty($transaction) || empty($transaction->transaction) ){
+				return $this->responseError("failGetMintTransaction");
+			}
+
+			if( $transaction->transaction->pending == true){
+				return $this->responseInfo("mintTransactionIsPending");
+			}
+
+			if(empty($transaction->receipt) ){
+				return $this->responseError("transaction");
+			}elseif($transaction->receipt->status !=1){
+				return $this->responseError($transaction->receipt->errorMessage, true);
+			}elseif(!is_int($transaction->receipt->tokenId)){
+				return $this->responseError("getTokenId");
+			}
+
+			FgNft::where("numhces_nft", $num)->where("linhces_nft", $lin)->update(["token_id_nft" => $transaction->receipt->tokenId]);
+
+			return $this->responseSuccess("NFT minted ",true);
+		}
+
+		#consulta el estado de la transferencia
+		public function requestStateTransfer($num, $lin){
+
+			#recuperamos el transactionhash de los datos de la operación de minteo
+			$operation = $this->getTransferOpperation($num, $lin);
+			# si ha fallado la carga de la operacionde transferencia
+			if (empty($operation)){
+				return $this->responseError("notTransaction");
+			}
+			if ( empty($operation->networkId) || empty($operation->statusId)){
+
+				return $this->responseError("failGetTransferTransaction");
+			}
+			#si todo ha ido bien devolverá un 4 y seguiremos adelante
+			if ($operation->statusId !=4){
+				if ($operation->statusId ==5){
+					return $this->responseError("Transfer failed: ". $operation->errorDescription,true);
+				}else{
+					return $this->responseInfo("Transfer is not Confirmed: actual status is $operation->statusId -".$this->status[$operation->statusId] ,true);
+				}
+			}
+
+			#recuperamos la transaccion de la transferencia
+			$transaction = $this->getTransaction($operation->transactionHash, $operation->networkId);
+
+			#si ha fallado la carga de la transaccion de transferencia
+			if(empty($transaction) || empty($transaction->transaction) ){
+				return $this->responseError("failGetTransferTransaction");
+			}
+
+			if( $transaction->transaction->pending == true){
+				return $this->responseInfo("transferTransactionIsPending");
+			}
+
+			if(empty($transaction->receipt) ){
+				return $this->responseError("transaction");
+			}elseif($transaction->receipt->status !=1){
+				return $this->responseError($transaction->receipt->errorMessage, true);
+			}elseif(!is_int($transaction->receipt->tokenId)){
+				return $this->responseError("getTokenId");
+			}
+			return $this->responseSuccess("NFT transfered ",true);
+		}
+*/
 
 
 }

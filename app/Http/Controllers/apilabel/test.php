@@ -80,6 +80,7 @@ class test extends BaseController
 				$Payment->serial = "T20";
 				$Payment->number = 1;
 				$Payment->amount = 1200;
+				$Payment->reason = "M";
 				$Payment->description = "pago vehículo Rover 75 2.0 CDTi Classic 96 kW (131 CV) ";
 				$Payment->date =  date("Y-m-d H:i:s");
 				//$Payment->pdf = $pdf;
