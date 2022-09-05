@@ -30,6 +30,7 @@ Route::get('', function () {
 Route::get(\Routing::is_home(), 'HomeController@index')->name('home');
 Route::post('/accept_cookies', 'HomeController@accept_cookies');  // Función para aceptar las cookies legales
 Route::get('prueba', 'prueba@index')->name('prueba');
+Route::post('prueba', 'prueba@index')->name('prueba');
 Route::get('AnsorenaValidateUnion', 'AnsorenaValidateUnion@validateUnion')->name('AnsorenaValidateUnion');
 Route::get('AnsorenaDecisionUnion', 'AnsorenaValidateUnion@decisionUnion');
 Route::get('AnsorenaResultUnion', 'AnsorenaValidateUnion@resultUnion');
@@ -614,11 +615,14 @@ Route::get(\Routing::translateSeo('artista-fondo-galeria') . '{id_artist}', 'V5\
 
 Route::get('/{lang}/lot-file/{file}/{numhces}/{linhces}/download', 'SubastaController@getDownloadLotFile')->name('lot_file_download');
 
-/***** Vottun  ******/
+Route::get(\Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
+
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 
+#NFT
+Route::get("mintpayment/{operationId}", 'V5\PayShoppingCartController@createMintPay')->name('mintPayUrl');
+Route::get("transferpayment/{operationsIds}", 'V5\PayShoppingCartController@createTransferPay')->name('transferPayUrl');
 
-/***** FIN VOTTUN  ******/
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';
