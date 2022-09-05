@@ -2136,7 +2136,7 @@ class Subasta extends Model
 
 								$esSuperiorQueMaximo = !empty($maximum_time_increment) && $diferencia_original > $maximum_time_increment;
 
-                                if ($diferencia <=Config::get('app.increase_time_launch') && $diferencia >0 && !$esSuperiorQueMaximo){
+                                if ($diferencia <=Config::get('app.increase_time_launch') && $diferencia >=0 && !$esSuperiorQueMaximo){
 
                                     $fecha_fin_time =  $fecha_fin_time + Config::get('app.increase_time_add');
                                     $date = date("Y-m-d", $fecha_fin_time);
@@ -3268,8 +3268,11 @@ class Subasta extends Model
                 $lotes[$key]->videos          = $this->getLoteVideos($value);
             }else{
                 $lotes[$key]->imagenes          = array();
-                $lotes[$key]->videos          = array();
+
             }
+			if(empty($lotes[$key]->videos )){
+				$lotes[$key]->videos          = array();
+			}
 
            if (isset($value->desc_hces1)){
             $lotes[$key]->desc_hces1        = \Tools::friendlyDesc($value->desc_hces1);

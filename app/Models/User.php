@@ -44,6 +44,23 @@ class User extends Model
 	public $cod_sub;
 	public $seudo_cli;
 
+	static function factory()
+	{
+		return new self();
+	}
+
+	public function setCodCli($cod_cli)
+	{
+		$this->cod_cli = $cod_cli;
+		return $this;
+	}
+
+	public function setItemsPerPage($itemsPerPage)
+	{
+		$this->itemsPerPage = $itemsPerPage;
+		return $this;
+	}
+
     public function login()
     {
         //devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
