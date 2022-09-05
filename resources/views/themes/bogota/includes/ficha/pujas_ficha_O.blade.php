@@ -101,7 +101,7 @@
         </div>
 	</div>
 
-	@if($start_session)
+	@if($start_session || $subasta_abierta_P)
         <div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
 
             @if (Session::has('user') &&  Session::get('user.admin'))

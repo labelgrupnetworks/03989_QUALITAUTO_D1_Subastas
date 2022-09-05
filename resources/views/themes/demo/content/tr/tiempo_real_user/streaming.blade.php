@@ -1,6 +1,18 @@
-<p class="delay">{{ trans(\Config::get('app.theme').'-app.sheet_tr.delay') }}</p>
-<div class="streaming">
-    <div id="video"></div>
+
+<div class="stream-block">
+	<p class="delay">{{ trans(\Config::get('app.theme').'-app.sheet_tr.delay') }}</p>
+	<div class="stream-wrapper">
+		<!-- Añadir esta misma página en el themes del cliente, con su iframe correspondiente
+		<iframe src="//stream01.labelgrup.com:5443/WebRTCAppEE/play.html?name=273039929349767838886597" height="288" width="512" frameborder="0" allowfullscreen></iframe>
+		-->
+		<!-- Iframe you tube en bucle
+			<iframe width="512" height="288" src="https://www.youtube.com/embed/4ICM50Ksu1E?loop=1&playlist=4ICM50Ksu1E&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		-->
+		<!-- video youtube iniciado por javascript
+			<div id="video"></div>
+		-->
+		<div id="video"></div>
+	</div>
 </div>
 
 <script async src="https://www.youtube.com/iframe_api"></script>

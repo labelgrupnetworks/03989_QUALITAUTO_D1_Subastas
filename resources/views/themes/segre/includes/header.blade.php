@@ -141,12 +141,12 @@ if (strpos($fullname, ',')) {
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.other_services') }}">
 								{{ trans(\Config::get('app.theme') . '-app.foot.other_services') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
+							<a href="<?php echo Routing::translateSeo('blog') . trans(\Config::get('app.theme') . '-app.segre-enlaces.catalogaciones_destacadas'); ?>">
 								{{ trans(\Config::get('app.theme') . '-app.foot.featured_cataloging') }}
 							</a>
 						</p>
@@ -186,20 +186,20 @@ if (strpos($fullname, ',')) {
 						<div class="menu-especial" id="menu_desp_subasta">
 							<p class="item">
 								<a
-									href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'001') }}?category=1">
-									Pintura
+									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '001') }}?category=1">
+									{{ trans($theme . '-app.foot.paint') }}
 								</a>
 							</p>
 							<p class="item">
 								<a
-									href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'002') }}?category=3">
-									Artes Decorativa
+									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '002') }}?category=3">
+									{{ trans($theme . '-app.foot.decorative_arts') }}
 								</a>
 							</p>
 							<p class="item">
 								<a
-									href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'003')}}?category=2">
-									Joyas
+									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '003') }}?category=2">
+									{{ trans($theme . '-app.foot.jewels') }}
 								</a>
 							</p>
 
@@ -209,28 +209,28 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 							<p class="item">
-								<a href="{{ trans($theme . '-app.segre-enlaces.virtual_visit') }}">
-									{{ trans($theme . '-app.foot.virtual_visit') }}
+								<a href="{{ trans($theme . '-app.segre-enlaces.virtual_visit') }}" target="_blank">
+									{{ trans($theme . '-app.foot.virtual_visit') }} {{ trans("$theme-app.segre_enlaces.virtual_visit_code") }}
 								</a>
 							</p>
 
 							@if (strtotime($subastaActual->session_start) < strtotime('now'))
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'001')."?noAward=1&category=1" }}">
-										No vendidos Pintura
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '001') . '?noAward=1&category=1' }}">
+										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.paint') }}
 									</a>
 								</p>
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'002')."?noAward=1&category=3" }}">
-										No vendidos Artes Decorativa
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '002') . '?noAward=1&category=3' }}">
+										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.decorative_arts') }}
 									</a>
 								</p>
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub,$subastaActual->name,$subastaActual->id_auc_sessions,'003')."?noAward=1&category=2"}}">
-										No vendidos Joyas
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '003') . '?noAward=1&category=2' }}">
+										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.jewels') }}
 									</a>
 								</p>
 							@endif
@@ -268,39 +268,39 @@ if (strpos($fullname, ',')) {
 
 					{{-- Botón de desktop --}}
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
-						CATÁLOGOS
+						{{ trans($theme . '-app.foot.catalogs') }}
 					</a>
 
 					{{-- Botón de móvil --}}
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 						onclick="javascript:$('#menu_desp_catalogo').toggle('blind',100)">
-						CATALOGOS
+						{{ trans($theme . '-app.foot.catalogs') }}
 					</a>
 
 					<div class="menu-especial" id="menu_desp_catalogo">
 						<p class="item">
-							<a href="#">
-								Recibir Catalogo
+							<a href="{{ route('catalogos_newsletter') }}">
+								{{ trans($theme . '-app.foot.receive_catalog') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Pintura
+							<a href="{{ trans($theme . '-app.segre-enlaces.painting_catalog') }}" target="blank_">
+								{{ trans($theme . '-app.foot.paint') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Artes Decorativas
+							<a href="{{ trans($theme . '-app.segre-enlaces.decorative_arts_catalog') }}" target="blank_">
+								{{ trans($theme . '-app.foot.decorative_arts') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Joyas
+							<a href="{{ trans($theme . '-app.segre-enlaces.jewelry_catalog') }}" target="blank_">
+								{{ trans($theme . '-app.foot.jewels') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Catálogos por años
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}">
+								{{ trans($theme . '-app.foot.catalogs_by_years') }}
 							</a>
 						</p>
 					</div>
@@ -323,8 +323,8 @@ if (strpos($fullname, ',')) {
 
 					<div class="menu-especial" id="menu_desp_comprar">
 						<p class="item">
-							<a href="#">
-								Pujar Subasta Sala
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_auction_room') }}">
+								{{ trans($theme . '-app.foot.bid_auction_room') }}
 							</a>
 						</p>
 						<p class="item">
@@ -333,18 +333,18 @@ if (strpos($fullname, ',')) {
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Pujar en directo en web
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_through_website') }}">
+								{{ trans($theme . '-app.foot.bid_through_website') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Pujar Subasta Online
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_online_auction') }}">
+								{{ trans($theme . '-app.foot.bid_online_auction') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="#">
-								Vender en Segre
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.sell_in_segre') }}">
+								{{ trans($theme . '-app.foot.sell_in_segre') }}
 							</a>
 						</p>
 						<p class="item">
@@ -561,7 +561,7 @@ if (strpos($fullname, ',')) {
 				<div class="create-account-link">
 					@if (empty($registration_disabled))
 						<a class="" title="{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}"
-							href="https://www.subastassegre.com/default/customer/account/create/">{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}</a>
+							href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}</a>
 					@else
 						<p class="text-center" style="color: darkred;">
 							{{ trans(\Config::get('app.theme') . '-app.login_register.registration_disabled') }}</p>

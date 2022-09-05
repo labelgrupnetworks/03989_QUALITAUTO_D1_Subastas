@@ -35,7 +35,7 @@
 
 							<p>
 								<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
-								<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+								<span class="salida-price {{$winner}}">{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} {{ $maxPuja }} </span>
 							</p>
 
 

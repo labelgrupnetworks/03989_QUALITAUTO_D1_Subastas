@@ -4,7 +4,7 @@
     <div style="postion: relative"></div>
     <ul id="user-account-ul" class="ul-format color-letter">
         <li class="text-uppercase<?php if($tab == 'orders'){ echo(' tab-active'); } ?>" role="presentation">
-            
+
             <a class="" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}" href="{{ \Routing::slug('user/panel/orders') }}">
                 @if ($tab== 'orders')
                 <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer-grey.png"  alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
@@ -15,7 +15,7 @@
             </a>
         </li>
         <li class="text-uppercase<?php if($tab == 'favorites'){ echo(' tab-active'); } ?>" role="presentation" >
-           
+
             <a class="" href="{{ \Routing::slug('user/panel/favorites') }}" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" >
                 <i class="fas fa-star"></i>
                 {{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}
@@ -27,7 +27,7 @@
                 {{ trans(\Config::get('app.theme').'-app.user_panel.allotments') }}
 
             </a>
-            
+
             </li>
             <div class="<?php if($tab != 'allotments' && $tab !='bills'){echo('collapse'); } ?>" id="collapse_adj">
                 <ul class="sub_menu_adj">
@@ -36,12 +36,19 @@
                 </ul>
             </div>
 
+			@if( \Config::get("app.shoppingCart") )
+				<li class="text-uppercase<?php if($tab == 'showShoppingCart'){ echo(' tab-active'); } ?>" role="presentation">
+					<a class="" href="{{ route('showShoppingCart', ['lang' => config('app.locale')]) }}">
+						{{ trans("$theme-app.foot.direct_sale") }}
+					</a>
+				</li>
+			@endif
         <li class="text-uppercase<?php if($tab == 'datos-personales'){ echo(' tab-active'); } ?>" role="presentation">
-            
+
             <a class="" href="{{ \Routing::slug('user/panel/info') }}">
                 <i class="fas fa-user-circle"></i>
                 {{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</a></li>
-       
+
  <?php /*<li role="presentation" <?php if($tab == 'datos-personales'){ echo('class="active"'); } ?>><a href="{{ \Routing::slug('user/panel/info') }}">{{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</a></li> */?>
         <li class="text-uppercase"><a href="{{ \Routing::slug('logout') }}"><i class="fas fa-sign-out-alt"></i>{{ trans(\Config::get('app.theme').'-app.user_panel.exit') }}</a></li>
     </ul>

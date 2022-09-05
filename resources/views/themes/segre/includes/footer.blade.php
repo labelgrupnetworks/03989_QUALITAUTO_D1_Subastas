@@ -7,10 +7,10 @@ $empresa = $empre->getEmpre();
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12 col-md-4">
-				<h4 class="footer-title">CONTACTO</h4>
+				<h4 class="footer-title">{{ trans($theme.'-app.foot.contact_title') }}</h4>
 				<div class="footer-content">
 					{!! trans($theme.'-app.foot.contact_info') !!}
-					<a class="footer-link" href="http://www.subastassegre.es/recibir-catalogos/">Recibir catálogos</a>
+					<a class="footer-link" href="{{ route('catalogos_newsletter') }}">{{ trans($theme . '-app.foot.receive_catalog') }}</a>
 				</div>
 				<div class="social-link-container">
 					@if (\Config::get('app.facebook'))
@@ -54,12 +54,12 @@ $empresa = $empre->getEmpre();
 				<section>
 					<h4 class="footer-title">{{ trans($theme.'-app.foot.download_app') }}</h4>
 					<div class="footer-content">
-						<a href="{{ trans($theme.'-app.links.segre_app_apple') }}" target="_blank">
+						<a href="{{ trans($theme.'-app.segre-enlaces.segre_app_apple') }}" target="_blank">
 							<img class="" src="/themes/{{ \Config::get('app.theme') }}/assets/img/1logoapple200.png" alt=""
 								width="200" height="72">
 						</a>
 
-						<a href="{{ trans($theme.'-app.links.segre_app_android') }}" target="_blank">
+						<a href="{{ trans($theme.'-app.segre-enlaces.segre_app_android') }}" target="_blank">
 							<img class="" src="/themes/{{ \Config::get('app.theme') }}/assets/img/1logoandroid200.png" alt=""
 								width="200" height="72">
 						</a>
@@ -151,18 +151,18 @@ $empresa = $empre->getEmpre();
 			<div class="col-xs-12 col-sm-6">
 				<p>&copy; <?= trans(\Config::get('app.theme') . '-app.foot.rights') ?> </p>
 			</div>
-			<div class="col-xs-12 col-sm-6 social-links">
-				{{-- <span class="social-links-title">< ?= trans(\Config::get('app.theme') . '-app.foot.follow_us') ?></span>
+			{{-- <div class="col-xs-12 col-sm-6 social-links">
+				<span class="social-links-title">< ?= trans(\Config::get('app.theme') . '-app.foot.follow_us') ?></span>
 
 				<a class="social-link color-letter"><i class="fab fa-2x fa-facebook-square"></i></a>
 				&nbsp;
 				<a class="social-link color-letter"><i class="fab fa-2x fa-twitter-square"></i></a>
 				&nbsp;
 				<a class="social-link color-letter"><i class="fab fa-2x fa-instagram"></i></a>
-				<br> --}}
-			</div>
+				<br>
+			</div> --}}
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 col-sm-6 text-right">
 				<a class="color-letter" role="button"
 					title="{{ trans(\Config::get('app.theme') . '-app.foot.developedSoftware') }}"
 					href="{{ trans(\Config::get('app.theme') . '-app.foot.developed_url') }}"

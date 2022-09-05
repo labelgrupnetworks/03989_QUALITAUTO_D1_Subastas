@@ -1,51 +1,16 @@
-
-
-{{-- <div class="home-slider">
-    <div class="container-fluid">
-        <div class="row flex-display row-custom">
-            @if(!Session::has('user'))
-            <div class="col-xs-3 home-slider-control hidden-xs hidden-sm hidden-md">
-                <div class="banner-register d-flex flex-column justify-content-space-bettween">
-                    <div class = "d-flex flex-column justify-content-space-bettween">
-                        <div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.not_account') }}</div>
-
-                        <div class="banner-register-btn text-center">
-                            <a class="button-principal" title="{{ trans(\Config::get('app.theme').'-app.login_register.registration') }}" href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.registration') }}</a>
-                        </div>
-                    </div>
-
-                    <div class="banner-register-line"></div>
-
-                    <div class = "d-flex flex-column justify-content-space-bettween">
-                        <div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.account') }}</div>
-                        <div class="banner-register-btn text-center">
-                            <a class="secondary-button user-account btn_login" href="javascript:;">{{ trans(\Config::get('app.theme').'-app.login_register.generic_name') }}</a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            @endif
-            <div class="col-xs-12 p-0 @if(!Session::has('user'))col-lg-9 home-slider-control @endif">
-				{!! \BannerLib::bannersPorKey('papayaHome', 'home-top-banner', ['dots' => true, 'autoplay' => false, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false]) !!}
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 <div class="home-slider">
     <div class="container-fluid">
-        <div class="row flex-display row-custom">
+        <div class="row flex-display row-custom baner-register-block">
 
 			<div class="col-xs-12 col-lg-3">
 
-				<div class="row h-100 d-flex flex-direction-column">
-					<div class="col-xs-12" style="flex: 1">
+				<div class="row h-100 d-flex baner-register-wrapper">
+					<div class="col-xs-12 col-sm-6 col-lg-12" style="flex: 1">
 						{!! \BannerLib::bannersPorKey('home_left_mini', 'home-top-banner', ['dots' => false, 'autoplay' => false, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false]) !!}
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 col-sm-6 col-lg-12 hidden-xs">
 						@if(!Session::has('user'))
-						<div class="home-slider-control hidden-xs hidden-sm hidden-md">
+						<div class="home-slider-control">
 							<div class="banner-register d-flex flex-column justify-content-space-bettween">
 								<div class = "d-flex flex-column justify-content-space-bettween">
 									<div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.not_account') }}</div>

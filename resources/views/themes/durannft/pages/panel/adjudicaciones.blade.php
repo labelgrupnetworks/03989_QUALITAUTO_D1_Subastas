@@ -66,10 +66,18 @@ foreach($data["js_item"] as $subasta => $lotes){
                 <?php $tab="allotments";?>
                 @include('pages.panel.menu_micuenta')
             </div>
+
+
+
             <div class="col-xs-12 col-md-9 col-lg-9 ">
+				{{-- DIV DONDE CARGAREMOS LAS TRANSFERENCIAS DE NFT PENDIENTES DE PAGO --}}
+				<div id="pendingPayTransfersNft">
+
+				</div>
                 <div class="user-account-title-content">
                     <div class="user-account-menu-title">{{ trans(\Config::get('app.theme').'-app.user_panel.allotments') }}</div>
 				</div>
+
 
 
 
@@ -526,7 +534,22 @@ foreach($data["js_item"] as $subasta => $lotes){
 
     $( document ).ready(function() {
 		 reload_carrito();
+		 loadPendingTransferPays();
     });
+
+	function loadPendingTransferPays(){
+		$.ajax({
+			url: "/user/panel/loadPendingPayTransferNft",
+			dataType: "text",
+
+
+
+			success: function (data) {
+				$("#pendingPayTransfersNft").html(data);
+			}
+		});
+
+	}
 
 </script>
 

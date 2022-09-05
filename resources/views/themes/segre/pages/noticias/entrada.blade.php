@@ -11,14 +11,14 @@
 
 @section('content')
 
-<!-- titlte & breadcrumb -->
-<section>
+<!-- title & breadcrumb -->
+<section class="bg-primary-color mb-4">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 text-center color-letter titlepage-contenidoweb">
 
 				<?php
-    			$bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url'=> \Routing::slugSeo('blog') );
+    			$bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url'=>  \Routing::slugSeo('blog') );
     			$titulo_post = $data['news']->titulo_web_blog_lang;
     			$bread[] = array("name" => $titulo_post) ;
     			?>
@@ -41,22 +41,7 @@
 	<div class="container">
 		<div class="row">
 
-			<div class="col-xs-12 text-center">
-				<div class="date-post-principal article-data text-center">
-					<?php
 
-                        $fecha = strftime('%d %b %Y',strtotime($data['news']->publication_date_web_blog));
-
-                        if(\App::getLocale() != 'en'){
-                            $array_fecha = explode(" ",$fecha);
-                            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
-                            $fecha = $array_fecha[0].' '.$array_fecha[1].' '.$array_fecha[2];
-                        }
-
-                        ?>
-					<p>{{ $fecha }}</p>
-				</div>
-			</div>
 			<div class="col-xs-12">
 
 				<div class="col-md-12 col-xs-12">
@@ -121,18 +106,18 @@
 							{{ $rel_link->titulo_web_blog_lang }}
 						</div>
 						<div class="img-related-post">
-							<img class="img-responsive center-block" src="{{ $rel_link->img_web_blog }}">
+							<img class="img-responsive  center-block" src="{{ $rel_link->img_web_blog }}">
 						</div>
 						<div class="button-post">
 							<a href="{{ $url }}"
 								role="button"><?= trans(\Config::get('app.theme').'-app.blog.more') ?></a>
 						</div>
 					</div>
-
 					{{-- Salimos del bucle una vez mostrados los 3 elementos  --}}
 					@if ($key == 2)
 						@break
 					@endif
+
 
 					@endforeach
 				</div>

@@ -15,7 +15,11 @@
 
 	<div class="container">
 
-		<h1>{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
+		<h1 class="text-center">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
+
+		<div class="text-center">
+			<p class="paragraph-96ch margin-auto">{{ trans("$theme-app.foot.subtitle_contact_page") }}</p>
+		</div>
 
 		<div class="row">
 			<div class="col-xs-12 col-md-7 contact-page-form">

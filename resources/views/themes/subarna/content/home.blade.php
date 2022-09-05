@@ -9,7 +9,7 @@
 
 		<div class="row">
 			<div class="col-xs-12 separator">
-				<p>{!! trans("$theme-app.home.info") !!}</p>
+				{{-- <p>{!! trans("$theme-app.home.info") !!}</p> --}}
 			</div>
 		</div>
 

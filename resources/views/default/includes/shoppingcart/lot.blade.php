@@ -1,28 +1,37 @@
+
+@php
+
+
+	$url_friendly = str_slug($lot->descweb_hces1);
+    $url_friendly = \Routing::translateSeo('lote').$lot->sub_asigl0."-".$lot->id_auc_sessions.'-'.$lot->id_auc_sessions."/".$lot->ref_asigl0.'-'.$lot->num_hces1.'-'.$url_friendly;
+@endphp
 <div class="user-accout-items-content   ">
 	<div class="user-accout-item-wrapper  col-xs-12 no-padding">
 		<div class="d-flex">
 			<div class="col-xs-12 col-sm-6  col-one user-account-item ">
 				<div class="col-xs-12 col-sm-2 no-padding ">
-					<img src="{{ \Tools::url_img("lote_small", $lot->num_hces1, $lot->lin_hces1) }}" class="img-responsive">
+				<a href="{{$url_friendly}}"	><img src="{{ \Tools::url_img("lote_small", $lot->num_hces1, $lot->lin_hces1) }}" class="img-responsive"></a>
 				</div>
 				<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
 
 					<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.units') }}</div>
-					<div class="user-account-item-lot"><span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+					<div class="user-account-item-lot">
+						
+						<span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
 						@php
-						$refLot =$lot->ref_asigl0;
-						#si  tiene el . decimal hay que ver si se debe separar
-						if(strpos($refLot,'.')!==false){
+							$refLot =$lot->ref_asigl0;
+							#si  tiene el . decimal hay que ver si se debe separar
+							if(strpos($refLot,'.')!==false){
 
-							$refLot =str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
+								$refLot =str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
 
-							#si hay que recortar
-						}elseif( \config::get("app.substrRef")){
-							#cogemos solo los últimos x numeros, ya que se usaran hasta 9, los  primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
-							#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
-							$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
-						}
-					@endphp
+								#si hay que recortar
+							}elseif( \config::get("app.substrRef")){
+								#cogemos solo los últimos x numeros, ya que se usaran hasta 9, los  primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
+								#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
+								$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
+							}
+						@endphp
 					{{$refLot}}
 
 

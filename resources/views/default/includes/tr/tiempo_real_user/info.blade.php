@@ -1,4 +1,4 @@
-<div class="tr_user_info">
+<div class="tr_user_info started hidden">
     <div class="user_info_items">
 
 		{{-- currency --}}

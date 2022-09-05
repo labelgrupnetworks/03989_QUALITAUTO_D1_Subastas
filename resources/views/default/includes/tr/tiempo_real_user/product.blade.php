@@ -1,4 +1,4 @@
-<div class="tr_user_product">
+<div class="tr_user_product started hidden">
 
     <!-- imagen -->
     <div class="product_img" id="main_lot_box">

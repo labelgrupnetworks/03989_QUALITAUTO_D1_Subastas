@@ -269,8 +269,16 @@ if(is_dir(getcwd() . $path)){
 							@elseif ($sub_cerrada)
 							@include('includes.ficha.pujas_ficha_cerrada')
 
+
+
+
 							@elseif($subasta_venta && !$cerrado && !$end_session)
-							@include('includes.ficha.pujas_ficha_V')
+								@if( \Config::get("app.shoppingCart") )
+									@include('includes.ficha.pujas_ficha_ShoppingCart')
+								@else
+
+									@include('includes.ficha.pujas_ficha_V')
+								@endif
 
 							<?php //si un lote cerrado no se ha vendido se podra comprar ?>
 							@elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) &&

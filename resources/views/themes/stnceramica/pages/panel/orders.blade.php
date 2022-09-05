@@ -66,7 +66,7 @@
 													{{ trans(\Config::get('app.theme').'-app.user_panel.actual_bid') }}
 												</div>
                                                 <div class="col-xs-12 col-sm-2  col-one user-account-max-bid text-center">
-                                                        {{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}
+                                                        {{ trans(\Config::get('app.theme').'-app.user_panel.my_current_bid') }}
 												</div>
 												<div class="col-xs-12 col-sm-2 col-one user-account-fecha text-center">
 													{{ trans(\Config::get('app.theme').'-app.user_panel.bid_date') }}
@@ -76,7 +76,8 @@
 												</div>
                                             </div>
                                             <div class="user-accout-items-content">
-                                                    @foreach($all_inf['lotes'] as $inf_lot)
+													{{-- Se están mostrando las ordenes como lineas separadas de las pujas, comprobando el tipop_orlic las podemos discriminar --}}
+                                                    @foreach(collect($all_inf['lotes'])->where('tipop_orlic', '=', null) as $inf_lot)
 
                                                     <?php
                                                         $url_friendly = str_slug($inf_lot->titulo_hces1);

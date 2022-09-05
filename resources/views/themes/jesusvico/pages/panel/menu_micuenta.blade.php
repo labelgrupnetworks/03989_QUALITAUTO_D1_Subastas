@@ -1,5 +1,6 @@
 @php
 	$lotsOwner = \App\Models\V5\FgHces1::where('PROP_HCES1', Session::get('user.cod'))->first();
+	
 @endphp
 
 <div class="tabs-custom filters-auction-content">
@@ -64,7 +65,7 @@
 	</ul>
 
 	<p class="user-acount-menu-title mb-4" style="text-transform: uppercase;">
-		<a class="user-acount-menu-link {{ $tab == 'directsale' ? 'active' : ''}}" href="{{ route('panel.allotment.diectsale', ['lang' => config('app.locale')]) }}">
+		<a class="user-acount-menu-link {{ $tab == 'showShoppingCart' ? 'active' : ''}}" href="{{ route('showShoppingCart', ['lang' => config('app.locale')]) }}">
 			{{ trans("$theme-app.foot.direct_sale") }}
 		</a>
 	</p>

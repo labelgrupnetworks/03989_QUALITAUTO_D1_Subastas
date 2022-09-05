@@ -145,17 +145,6 @@
     @if ($start_session || $subasta_abierta_P)
         <div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
 
-            @if (Session::has('user') && Session::get('user.admin'))
-                <div class="d-block w-100">
-                    <input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value=""
-                        type="text" style="border: 1px solid red;" placeholder="Código de licitador">
-                    @if ($subasta_abierta_P)
-                        <input type="hidden" id="tipo_puja_gestor" value="abiertaP">
-                    @endif
-                </div>
-            @endif
-
-
             <div class="input-group d-block group-pujar-custom ">
                 <div>
                     <div class="insert-bid insert-max-bid mb-1">
@@ -167,7 +156,7 @@
                     <div class="input-group-btn">
 
 						@if(Session::has('user') && !$deposito)
-							<button type="button" data-from="modal" class="lot-action_pujar_no_licit ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+							<button type="button" data-from="modal" class="lot-action_pujar_no_deposit ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
 						@else
 							<button type="button" data-from="modal" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
 						@endif

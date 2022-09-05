@@ -16,13 +16,16 @@
 			</div>
 
 			<div  class="sliderthumbArticulo ">
-				@if(count($article->images) > 1)
+
 					@foreach($article->images as $image)
 					<div  class="sliderThumbsArticulos"  >
 						<img src="{{$image}}" data-img="{{$image}}" >
 					</div>
 					@endforeach
-				@endif
+					<div  class="sliderThumbsArticulos"  >
+						<img src="/themes/ansorena/assets/img/pages/generico-joyeria_thumb.jpg" data-img="/themes/ansorena/assets/img/pages/generico-joyeria.jpg" >
+					</div>
+
 			</div>
 
 		</div>

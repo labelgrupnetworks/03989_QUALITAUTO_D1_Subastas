@@ -1,4 +1,4 @@
-<div class="tr_user_info_auction">
+<div class="tr_user_info_auction started hidden">
 	<div>
 		<ul class="nav nav-tabs">
 			@if(Session::has('user'))
