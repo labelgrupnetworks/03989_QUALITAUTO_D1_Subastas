@@ -357,11 +357,10 @@ function displayAlert(type, msg) {
 		displayAlert_W(type, msg)
 	}
 }
+
 function displayAlert_W(type, msg) {
 	if (type == null || typeof type == 'undefined' || !$.isNumeric(type))
 		return false;
-
-	/*var type = ''; */
 
 	switch (type) {
 		case 0:
@@ -423,4 +422,48 @@ function initSesion() {
 function clickLogin() {
 	$(".login").click();
 	$.magnificPopup.close();
+}
+
+function initializedStreaming() {
+	console.log('streaming conected');
+}
+
+function playStreaming() {
+	console.log('streaming initialize');
+
+	if(!auctionIsStartedDate()){
+		console.log('this auction not initialize');
+		return;
+	}
+
+	showStreaming();
+}
+
+function finishStreaming() {
+	console.log('streaming stoped');
+	hideStreaming();
+}
+
+function closeStreaming() {
+	console.log('streaming closed');
+	hideStreaming();
+}
+
+function showStreaming() {
+	document.getElementById('streaming').style.opacity = '1';
+}
+
+function hideStreaming() {
+	document.getElementById('streaming').style.opacity = '0';
+}
+
+function auctionIsStartedDate() {
+	const start_session = auction_info?.lote_actual?.start_session;
+
+	if(!start_session){
+		return false;
+	}
+
+	const isStart = new Date() > new Date(start_session);
+	return isStart;
 }

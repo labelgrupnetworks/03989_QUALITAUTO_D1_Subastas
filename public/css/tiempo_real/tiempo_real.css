@@ -219,6 +219,37 @@ span.img_verified span i {
     grid-column-gap: 10px;
 }
 
+.tiempo_real.tr_stop .ficha_tr {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.tiempo_real.tr_stop .clock-page {
+	position: relative;
+	grid-row: 1 / end;
+	grid-column: 1 / end;
+	top: initial;
+}
+
+@media (max-width: 768px){
+
+	.tiempo_real.tr_stop .ficha_tr {
+		grid-template-columns: 1fr;
+    	grid-template-rows: 1fr 1fr;
+    	grid-template-areas: none;
+	}
+
+	.tiempo_real.tr_stop .clock-page {
+		grid-row: 1 / end;
+		grid-column: 1 / 2;
+	}
+
+	.tiempo_real.tr_stop .tr_user_streaming {
+		grid-area: auto;
+		grid-row: 2 / 3;
+		grid-column: 1 / 2;
+	}
+}
+
 .tr_user_product{
     grid-area: product;
     display: grid;
@@ -268,6 +299,12 @@ span.img_verified span i {
 	display: flex;
 	flex-direction: column;
 }
+
+.tr_user_streaming #streaming {
+	opacity: 0;
+}
+
+
 
 
 /*
@@ -412,6 +449,10 @@ span.img_verified span i {
         "tuorden"
         "input_puja add_bid "
        */
+}
+
+.tiempo_real.tr_stop .pujar{
+	display: none;
 }
 
 .tupuja, .tuorden{
@@ -743,8 +784,8 @@ span.img_verified span i {
 .tr_user_streaming .tab-content{
     font-size: 16px;
 	overflow: auto;
-	/* height: 83%;
-	max-height: 310px; */
+	height: 100%;
+	/* max-height: 310px; */
 }
 
 .tr_user_streaming ul > li{
@@ -752,6 +793,27 @@ span.img_verified span i {
     text-align: center;
     text-transform: uppercase;
 }
+
+.stream-block {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.stream-wrapper {
+	position: relative;
+	flex: 1;
+}
+
+.tiempo_real.tr_stop #ultimas_pujas {
+	display: none;
+}
+
+.tiempo_real.tr_stop #streaming {
+	display: block;
+}
+
+
 
 /*
 |--------------------------------------------------------------------------
