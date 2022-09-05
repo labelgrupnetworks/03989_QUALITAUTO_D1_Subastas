@@ -551,6 +551,7 @@ $lang = [
 		'nif_exist' => 'Ya existe un usario con este NIF/CIF',
 		'no_cancel_bid' => 'Solo es posible cancelar su puja si es la última puja activa',
 		'no_licit' => 'El licitador no existe',
+		'no_deposit' => 'Para poder pujar debes tener un depósito válido',
 		'not_accept_bid' => 'No se admiten pujas tan elevadas.',
 		'not_allowed_movement' => 'El lote no puede reanudarse en esa posición.',
 		'not_bid' => 'Actualmente no hay pujas',
@@ -917,6 +918,9 @@ $lang = [
 		'wallet_direction' => 'Dirección pública de wallet',
 		'wallet_new' => 'Crear wallet nueva',
 		'bids_numbers' => 'Nº de pujas',
+		'title_pending_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
+		'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde"
+
 
 	),
 	'valoracion_gratuita' =>
