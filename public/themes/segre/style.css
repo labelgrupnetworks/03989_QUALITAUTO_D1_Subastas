@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
 :root {
 
 	--primary-color: #414145;
@@ -18,6 +20,31 @@
 	--btn-home-border: #d6c285;
 	--btn-home-hover-background: #4c4c4c;
 
+	--btn-register-home-text: var(--secondary-color);
+	--btn-register-home-border: var(--secondary-color);
+	--btn-register-home-bgcolor: #4c4c4c;
+
+	--breadcrumb-text-color:  #ffffffcc;
+
+	--link-static-page-color: #4c4c5c;
+	--link-static-page-color-hover: #627691;
+
+	--btn-static-page-color: #4c4c4c;
+	--btn-static-page-color-hover: var(--secondary-color);
+	--btn-static-page-bgcolor-hover: #4c4c4c;
+	--btn-static-page-border: #4c4c4c;
+	--btn-static-page-border-color-hover: var(--secondary-color);
+
+	--btn-vender-segre-text: white;
+	--btn-vender-segre-text-hover: var(--secondary-color);
+	--btn-vender-segre-bgcolor-hover: #4c4c4c;
+	--btn-vender-segre-border: white;
+	--btn-vender-segre-border-hover: var(--secondary-color);
+
+
+	--btn-background-blue: #3BAFBF;
+	--btn-background-blue-hover: #00A8BF;
+
 	--btn-primary-background: #D6B964;
 	--btn-primary-background-hover: #00a9c7;
 	--btn-primary-text: #2b2b2b;
@@ -28,6 +55,13 @@
 	--btn-secondary-text: #2b2b2b;
 	--btn-secondary-text-hover: white;
 
+	--newsletter-background: #2b2b2b;
+	--newsletter-title-color: var(--secondary-color);
+	--newsletter-text: white;
+	--newsletter-input-text: #929292;
+	--newsletter-placeholder: var(--newsletter-input-text);
+	--btn-primary-background-hover: var(--primary-color);
+
 	--footer-background: #434343;
 	--footer-titles-color: #d6c285;
 	--footer-links-color: #eaeaea;
@@ -37,6 +71,26 @@
 	--footer-sociallinks-textcolor: #707070;
 
 	--filter-background: #414145;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: 'Playfair Display', serif;
+}
+
+p {
+	line-height: 2.25;
+}
+
+.paragraph-96ch {
+	width: 96ch;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
+.bg-black {
+	background-color: black;
 }
 
 .lang-selection,
@@ -90,6 +144,16 @@ nav .color-letter:hover,
 
 
 /* FIN MENÚ DE NAVEGACIÓN */
+
+/* BREADCRUMB */
+
+.titlePage,
+.bread-content ul,
+.bread-content ul li a {
+	color: var(--breadcrumb-text-color);
+}
+
+/* FIN BREADCRUMB */
 
 
 /* HOME */
@@ -148,13 +212,141 @@ nav .color-letter:hover,
 	padding-right: 5px;
 }
 
-.home-p-a-j .item_imagen {
+.yt-iframe-container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.featured-log-bnr .yt-video-title {
+	color: var(--secondary-color);
+}
+
+.featured-log-bnr iframe {
+	display: block;
+}
+
+.featured-log-bnr h3 {
+	color: #BBB;
+}
+
+.featured-log-bnr .item_imagen {
 	width: 100% !important;
+}
+
+.yt-banner-container .rowBanner {
+	align-items: flex-start;
+}
+
+.virtual-visit-title {
+	color: var(--secondary-color);
+}
+
+/* PONER BIEN VARIABLES */
+
+.btn-visita-virtual {
+	background-color: transparent;
+	border: white 1px solid;
+	color: white;
+	padding: 10px 20px;
+	transition: all 0.3s ease-in-out;
+}
+
+.btn-visita-virtual:hover {
+	background-color: white;
+	border: var(--secondary-color) 1px solid;
+	color: var(--secondary-color);
+}
+
+.ventajas-segre-imgs .item_imagen img {
+	height: 100px;
+	width: auto;
+	display: block;
+	margin: 0 auto;
+}
+
+.btn-register-home {
+	color: var(--btn-register-home-text);
+	border: 1px solid var(--btn-register-home-border);
+	background-color: var(--btn-register-home-bgcolor);
+	padding: 10px 20px;
+	letter-spacing: 2px;
+}
+
+.btn-register-home:hover {
+	color: var(--btn-register-home-text);
 }
 
 /* FIN HOME */
 
-/* PÁGINA ESTÁTICA DE APP SEGRE *
+/* TODAS LAS PÁGINAS ESTÁTICAS */
+
+.all-page-banner-container .column_banner {
+	padding: 0px;
+}
+
+.video-resolution-responsive {
+	width: 450px;
+	height: 253px;
+	margin: auto;
+	display: block;
+}
+
+.btn-static-page-big,
+.btn-static-page {
+	transition: all 0.2s ease-in-out;
+	color: var(--btn-static-page-color);
+	padding: 10px 20px;
+	letter-spacing: 2px;
+	border: 2px solid var(--btn-static-page-border);
+	background-color: transparent;
+}
+
+.btn-static-page-big:hover,
+.btn-static-page:hover {
+	background-color: var(--btn-static-page-bgcolor-hover);
+	border: 2px solid var(--btn-static-page-border-color-hover);
+	color: var(--btn-static-page-color-hover);
+}
+
+.btn-static-page-big {
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.btn-blue {
+	width: 100%;
+	padding: 3px 0px;
+	transition: all 0.2s ease-in-out;
+	color: white;
+	background-color: var(--btn-background-blue);
+	letter-spacing: 2px;
+}
+
+.btn-blue:hover {
+	color: white;
+	background-color: var(--btn-background-blue-hover);
+}
+
+.static-page-link {
+	color: var(--link-static-page-color);
+	text-decoration: none;
+	font-size: 16px;
+	transition: all 0.3s ease-in-out;
+}
+
+.static-page-link:hover {
+	color: var(--link-static-page-color-hover);
+	text-decoration: none;
+}
+
+.sp-container-catalogador {
+	min-height: 860px;
+}
+
+/* FIN TODAS LAS PÁGINAS ESTÁTICAS */
+
+/* PÁGINA ESTÁTICA DE APP SEGRE */
 
 .app-video-resolution-responsive {
 	width: 960px;
@@ -169,6 +361,102 @@ nav .color-letter:hover,
 }
 
 /* FIN PÁGINA ESTÁTICA DE APP SEGRE */
+
+/* VALORACIÓN */
+
+#dropzone {
+	border: 3px dashed var(--secondary-color) !important;
+}
+
+/* FIN VALORACIÓN */
+
+/* NEWSLETTER (CATÁLOGOS) */
+
+.newsletter-title-color {
+	color: var(--newsletter-title-color);
+}
+
+.cataog-newsletter-text-container {
+	background-color: var(--newsletter-background);;
+}
+
+.cataog-newsletter-text-container .title-catalog {
+	color: var(--newsletter-title-color);
+}
+
+.cataog-newsletter-text-container .subtitle-catalog {
+	margin: auto;
+	color: var(--newsletter-text);
+	width: 96ch;
+}
+
+/* FIN NEWSLETTER (CATÁLOGOS) */
+
+/* VENDER SEGRE BANNER */
+
+.sell-segre-banner-container .column_banner {
+	padding: 0px;
+}
+
+.sell-segre-banner .item_imagen>img {
+	display: none;
+}
+
+.sell-segre-banner .title {
+	font-size: 46px;
+	line-height: 1.25;
+}
+
+.btn-vender-segre {
+	transition: all 0.2s ease-in-out;
+	color: var(--btn-vender-segre-text);
+	padding: 10px 20px;
+	letter-spacing: 2px;
+	border: 2px solid var(--btn-vender-segre-border);
+	background-color: transparent;
+}
+
+.btn-vender-segre:hover {
+	background-color: var(--btn-vender-segre-bgcolor-hover);
+	border: 2px solid var(--btn-vender-segre-border-hover);
+	color: var(--btn-vender-segre-text-hover);
+}
+
+.bodegon-img {
+	display: block;
+	border: 1px solid white;
+}
+
+/* FIN VENDER SEGRE BANNER */
+
+/* BANNER APP */
+
+.title-app {
+	text-align: center;
+	font-size: 46px;
+	line-height: 1.25;
+}
+
+.app-img {
+	margin: auto;
+	display: block;
+}
+
+.video-app-segre {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.app-segre-banner-container .column_banner {
+	padding: 0px;
+}
+
+.app-segre-banner .item_imagen>img {
+	display: none;
+}
+
+/* FIN BANNER APP */
 
 /* FOOTER */
 
@@ -257,3 +545,35 @@ footer {
 }
 
 /* FIN SOCIAL LINKS */
+
+/* catalogos estática  */
+
+.container-iframe-catalogo {
+	background-color: #253139;
+
+}
+
+.title_iframe_catalogo {
+	margin-top: 40px;
+	text-align: center;
+	color: white;
+}
+
+.div_iframe_catalogo {
+	width: 100%;
+	height: 425px;
+	background-color: #253139;
+}
+
+.div_iframe_catalogo h2 {
+	margin-top: 40px;
+}
+
+.div_iframe_catalogo iframe {
+	width: 100%;
+	height: 100%;
+}
+
+.div_iframe_catalogo iframe #embedTitleField {
+	display: none;
+}

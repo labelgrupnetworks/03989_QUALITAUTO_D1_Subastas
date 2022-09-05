@@ -164,8 +164,8 @@
 	/* Página app segre */
 
 	.app-video-resolution-responsive {
-		width: 560px;
-		height: 315px;
+		width: 400px;
+		height: 225px;
 	}
 
 	.qr-responsive {
@@ -173,6 +173,13 @@
 	}
 
 	/* FIN Página app segre */
+	/* Página pujar en directo */
+
+	.video-resolution-responsive {
+
+	}
+
+	/* FIN Página pujar en directo */
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -181,8 +188,8 @@
 	/* Página app segre */
 
 	.app-video-resolution-responsive {
-		width: 400px;
-		height: 225px;
+		width: 350px;
+		height: 196px;
 	}
 
 	.qr-responsive {
@@ -190,6 +197,15 @@
 	}
 
 	/* FIN Página app segre */
+
+	/* Página pujar en directo */
+
+	.video-resolution-responsive {
+		width: 300px;
+		height: 168px;
+	}
+
+	/* FIN Página pujar en directo */
 }
 
 /* Small devices (landscape phones, 576px and up) */
@@ -208,4 +224,12 @@
 	}
 
 	/* FIN Página app segre */
+	/* Página pujar en directo */
+
+	.video-resolution-responsive {
+		width: 240px;
+		height: 135px;
+	}
+
+	/* FIN Página pujar en directo */
 }

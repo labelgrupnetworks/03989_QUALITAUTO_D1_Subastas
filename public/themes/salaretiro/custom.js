@@ -167,7 +167,7 @@ $(document).ready(function(){
 		$('#loginResponsive').removeClass('fadeOutDown');
 		$('#loginResponsive').show().addClass('animated fadeInDown');
 
-		setTimeout(showAlertComisionMessage, 500);
+		/* setTimeout(showAlertComisionMessage, 500); */
 
 	});
 	$('#closeResponsive').on('click', function(){
@@ -183,7 +183,7 @@ $(document).ready(function(){
 	$('.btn_login_desktop').on('click', function () {
 		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
 		$('.login-desktop-container').removeClass('loginClose');
-		$('.login_desktop').fadeToggle("fast", "linear", showAlertComisionMessage);
+		$('.login_desktop').fadeToggle("fast");
 	});
 
 	$('.closedd').on('click', function(){
@@ -1200,7 +1200,7 @@ function appearLogin(){
           if(!(window.location.href === window.location.origin + '/es') || (window.location.href === window.location.origin + '/en') ){
             if(!($.cookie('enterLogin'))){
                 if($('.btn_login_desktop').parents('ul').css('display') !== 'none'){
-                    $('.login_desktop').fadeIn(null, null, showAlertComisionMessage);
+                    $('.login_desktop').fadeIn();
                 }
 
                     $.cookie('enterLogin','true',{expires:null,path: '/'});

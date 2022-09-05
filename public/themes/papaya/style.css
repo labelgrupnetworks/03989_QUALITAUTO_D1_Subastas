@@ -1869,6 +1869,10 @@ hr { background-color: #707070; height: 1px; border: 0; }
     padding: 15px;
 }
 
+.baner-register-wrapper {
+	flex-direction: column;
+}
+
 .slick-dotted.slick-slider{
 	margin-bottom: 0 !important;
 }
