@@ -939,3 +939,51 @@ section.ficha-image {
 }
 
 
+/*
+|--------------------------------------------------------------------------
+| Calendar
+|--------------------------------------------------------------------------
+ */
+
+.calendar .month{
+	margin-top: 10px;
+}
+
+.calendar .day-content{
+	border-radius: var(--lb-border-radius);
+}
+
+.calendar .day {
+	--calendar-background-color: transparent;
+	background-color: var(--calendar-background-color);
+}
+
+.info_calendar {
+	--calendar-border-color: transparent;
+	border-color: var(--calendar-border-color);
+}
+
+.calendar_event_label {
+    height: 10px;
+    display: block;
+    width: 10px;
+    float: left;
+    margin-top: 8px;
+    margin-right: 5px;
+}
+
+.bs-callout {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #eeeeee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-default {
+    border-left-color: #777777;
+}
+
+.AUCTION_calendar_border {
+    border-left-color: #AAAAAA;
+}

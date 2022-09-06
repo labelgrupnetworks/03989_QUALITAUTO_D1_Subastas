@@ -124,9 +124,6 @@ header("X-Frame-Options:     DENY");
 
 <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
 
-{{-- <script src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
-<script src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script> --}}
-
 <script src="{{ Tools::urlAssetsCache('/default_v2/js/customized_tr_main.js') }}" ></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
 

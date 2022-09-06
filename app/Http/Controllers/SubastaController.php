@@ -42,8 +42,8 @@ use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FxCli;
-
-
+use App\Models\V5\WebCalendar;
+use App\Models\V5\WebCalendarEvent;
 use Illuminate\Support\Str;
 
 class SubastaController extends Controller
@@ -2320,13 +2320,52 @@ class SubastaController extends Controller
 		return $paymentsController->hasIvaReturnIva($tipo_iva->tipo, $iva);
 	}
 
-	public function calendarController()
+	public function calendarController(HttpRequest $request)
 	{
-
-		$data = $this->subastas_activas(true);
-		if (!empty($data)) {
-			$data = head($data);
+		$auctions = $this->subastas_activas(true);
+		if (!empty($auctions)) {
+			$auctions = head($auctions);
 		}
+
+		$events = WebCalendarEvent::get();
+		$year = $request->input('year', date("Y"));
+		$isValidYear = is_numeric($year) && $year > 2000 & $year < 2100;
+
+		if(!$isValidYear){
+			$year = date("Y");
+		}
+
+		$days = WebCalendar::where("start_calendar", ">", date("$year-01-01"))
+			->where("start_calendar", "<=", date("$year-12-31 23:59:59"))
+			->joinEvent()
+			->get();
+
+		$eventInCalendar = [];
+		foreach($days as $day){
+			$eventInCalendar[$day->cod_calendar_event] = 1;
+		}
+
+		//Formatos para utilizar en javascript
+		$daysEventsFormat = $days->map(function($day) {
+			return [
+				'name' => $day->name_calendar,
+				'description' => $day->description_calendar,
+				'startDate' => $day->start_calendar,
+				'endDate' => $day->end_calendar,
+				'calIniSub' => $day->calini_sub,
+				'color' => $day->color_calendar_event,
+				'url' => $day->url_calendar,
+			];
+		});
+		$auctionsEventsFormat = array_map(function($auction){
+			return [
+				'description' => $auction->des_sub,
+				'startDate' => $auction->session_start,
+				'endDate' => $auction->calfin_sub ?? $auction->session_start,
+				'calIniSub' => $auction->calini_sub,
+				'color' => '#AAAAAA'
+			];
+		}, $auctions);
 
 		$seoExist = TradLib::getWebTranslateWithStringKey('metas', 'title_calendar', config('app.locale', 'es'));
 		$seo = new \stdClass();
@@ -2335,7 +2374,18 @@ class SubastaController extends Controller
 			$seo->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_calendar');
 		}
 		$seo->canonical=$_SERVER['HTTP_HOST'].\Routing::slugSeo('calendar');
-		return \View::make('front::pages.calendar', array('data' => $data, 'seo' => $seo));
+
+		$viewData = [
+			'seo' => $seo,
+			'year' => $year,
+			'events' => $events,
+			'auctions' => $auctions,
+			'eventInCalendar' => $eventInCalendar,
+			'daysEventsFormat' => $daysEventsFormat,
+			'auctionsEventsFormat' => $auctionsEventsFormat
+		];
+
+		return view('front::pages.calendar', $viewData);
 	}
 
 	public function reproducciones()

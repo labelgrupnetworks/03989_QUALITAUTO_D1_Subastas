@@ -2048,6 +2048,78 @@ function initializeParlaxBanner(minHeight = '300px') {
 	});
 }
 
+function calendarInitialize(...allEvents) {
+
+	const urlSearchParams = new URLSearchParams(window.location.search);
+	const currentYear = urlSearchParams.get('year') || new Date().getFullYear();
+
+	const events = allEvents.flat().map((event, index) => {
+		return {
+			...event,
+			id: index,
+			startDate: new Date(event.startDate),
+			endDate: new Date(event.endDate),
+		}
+	});
+
+    const calendar = new Calendar('#calendar', {
+        enableRangeSelection: false,
+		language: 'es',
+		startMonth: 1,
+		startYear: currentYear,
+		minDay: new Date().getDay(),
+		maxDaysToChoose: false,
+		displayHeader: false,
+        mouseOnDay: function(e) {
+
+            if(e.events.length > 0) {
+                let content = '';
+				e.events.forEach((eventCalendar) => {
+					content += `<div class="event-tooltip-content">
+									<div class="event-name" style="color: ${eventCalendar.color}">${eventCalendar.description}</div>
+									</div>`;
+				});
+
+                $(e.element).popover({
+                    trigger: 'manual',
+                    container: 'body',
+                    html: true,
+                    content: content
+                });
+
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        },
+        dayContextMenu: function(e) {
+            $(e.element).popover('hide');
+        },
+		/**Para que color pinte el fondo  */
+		style: 'background',
+		customDayRenderer: function(element, date) {
+			/* pintar fin de semana */
+			if (date.getDay() === 6 || date.getDay() === 0) {
+				/* lo añadimso al padre para asi dejar poner mas clases si cae un dia especial */
+				element.closest('.day').style.setProperty('--calendar-background-color', '#ff0000');
+			}
+		},
+		clickDay: function(el){
+			if(el.events.length == 0) return;
+			if(!Boolean(el.events[0].url)) return;
+
+			const { url } = el.events[0];
+			window.open(url, '_blank');
+		},
+        dataSource: events,
+    });
+
+	return calendar;
+}
+
 
 
 
