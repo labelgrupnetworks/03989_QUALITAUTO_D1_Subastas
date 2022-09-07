@@ -5,27 +5,20 @@
 @stop
 
 @section('content')
-<?php
-$bread[] = array("name" =>$data['data']->name_web_page  );
-?>
-
+@php
+	$bread[] = array("name" =>$data['data']->name_web_page);
+@endphp
 
 <div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 text-center color-letter">
-					<h1 class="titlePage"><?=$data['data']->name_web_page ?></h1>
-
-				@include('includes.breadcrumb')
-			</div>
-		</div>
-	</div>
-
-<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web container">
-
-	{!! $data['data']->content_web_page !!}
-	<br><br>
+	@include('includes.breadcrumb')
+	<h1>{{ $data['data']->name_web_page }}</h1>
 </div>
 
+<div class="container">
+	<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web">
+		{!! $data['data']->content_web_page !!}
+	</div>
+</div>
 
 <script>
 	$('#button-map').click( function () {
@@ -61,7 +54,6 @@ $bread[] = array("name" =>$data['data']->name_web_page  );
 				$(this).removeClass("has-content");
 			}
 		})
-
 </script>
 @stop
 

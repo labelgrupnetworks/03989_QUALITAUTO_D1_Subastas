@@ -197,8 +197,10 @@ $(function () {
 	});
 
 
-	$("#accerder-user").click(function () {
-		$(this).addClass('loadbtn')
+	$("#accerder-user-form").on('submit', function (event) {
+		event.preventDefault();
+
+		$('#accerder-user').addClass('loadbtn')
 		$('.login-content-form').removeClass('animationShaker')
 		$.ajax({
 			type: "POST",
@@ -212,11 +214,7 @@ $(function () {
 					$("#accerder-user").removeClass('loadbtn')
 					$('.login-content-form').addClass('animationShaker')
 				}
-
-
 			}
-
-
 		});
 	});
 
@@ -2121,5 +2119,55 @@ function calendarInitialize(...allEvents) {
 }
 
 
+/**
+ * LISTENERS NUEVOS
+ */
 
+
+$(function(){
+
+	document.getElementById('contactForm')?.addEventListener('submit', sendContactForm, false);
+
+})
+
+function sendContactForm(event) {
+
+	event.preventDefault()
+	event.stopPropagation()
+
+	const form = event.target;
+	form.classList.add('was-validated');
+
+	if (!form.checkValidity()) {
+		showMessage(messages.error.hasErrors);
+		return false;
+	}
+
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+
+	const recaptchaResponse = $("#g-recaptcha-response").val();
+
+	if(!recaptchaResponse) {
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+		showMessage(messages.error.hasErrors);
+		return false;
+	}
+
+	$.ajax({
+		type: "POST",
+		url: "/contactSendmail",
+		data: $(contactForm).serialize(),
+		success: function (response) {
+			if (response.status == "error") {
+				showMessage(response.message);
+			} else {
+				showMessage(response, "");
+				setTimeout("location.reload()", 4000);
+			}
+		},
+		error: function (response) {
+			showMessage("Error");
+		}
+	});
+}
 

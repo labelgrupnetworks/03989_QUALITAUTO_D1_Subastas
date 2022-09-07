@@ -1,4 +1,4 @@
-<?php
+@php
 use App\libs\TradLib as TradLib;
 
 $lang = config('app.locale');
@@ -13,7 +13,8 @@ if(strpos($fullname, ',')){
 
 $categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->get()->toarray();
 $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') : \Routing::slug('busqueda');
-?>
+$pageName = Route::currentRouteName();
+@endphp
 
 <header>
 
@@ -101,16 +102,16 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
 					<li class="nav-item">
-						<a class="nav-link"
-							href="{{ \Routing::translateSeo('presenciales') }}">
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.presenciales'])
+							href="{{ route('subastas.presenciales') }}">
 							<span>{{ trans($theme.'-app.foot.auctions')}}</span>
 						</a>
 					</li>
 					@endif
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
 					<li class="nav-item">
-						<a class="nav-link"
-							href="{{ \Routing::translateSeo('subastas-online') }}">
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.online'])
+							href="{{ route('subastas.online') }}">
 							<span>{{ trans($theme.'-app.foot.online_auction') }}</span>
 						</a>
 					</li>
@@ -131,13 +132,13 @@ $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') 
 					@endif
 
 					<li class="nav-item">
-						<a class="nav-link" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'calendar']) title="" href="{{ route('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" title="" href="{{ \Routing::translateSeo('valoracion-articulos', null) }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion']) title="" href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'contact_page']) title="{{ trans($theme.'-app.foot.contact')}}" href="{{ route('contact_page') }}"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
 					</li>
 				</ul>
 

@@ -5,101 +5,61 @@
 @stop
 
 @section('content')
-<?php
 
-$bread[] = array("name" =>$data['title']  );
-?>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 text-center color-letter">
-            <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</h1>
-                @include('includes.breadcrumb')
-            </div>
-        </div>
-    </div>
-    <div id="" class="free-valuations color-letter">
-	    <div class="container" id="return-valoracion">
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <h1 class="titleSingle_corp">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.solicitud_valoracion') }}</h1>
-                </div>
-                <div class="col-xs-12 info">
-                    <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.desc_assessment')  ?>
-                </div>
-                <form id="form-valoracion-adv" class="form">
-                    <div class=" col-xs-12 col-lg-8 col-lg-offset-2">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <div class=" col-xs-12 content-form-valuations no-padding">
-                        <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
-                        <div class="col-xs-12 col-lg-6  no-padding d-flex flex-direction-column inputs-custom-group">
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="name"
-                                    name="name"
-                                    placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?>"
-                                    required=""
-                                    type="text"
-                                />
-                            </div>
+@php
+$bread[] = ["name" => $data['title']];
+@endphp
 
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="email"
-                                    name="email"
-                                    placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?>"
-                                    required=""
-                                    type="email"
-                                />
-                            </div>
+<div class="container valoracion-page">
 
-                            <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="telf"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?></label>
-                                <input
-                                    class="form-control"
-                                    id="telf"
-                                    name="telf"
-                                    placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?>"
-                                    required=""
-                                    type="phone"
-                                />
-                            </div>
+	@include('includes.breadcrumb')
 
+	<h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
 
+	<p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p>
 
+	<form id="form-valoracion-adv" action="" class="mt-3">
+		@csrf
+		<p class="text-danger h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
 
-                        </div>
-                        <div class="col-lg-6 col-xs-12 no-padding inputs-custom-group d-flex flex-column">
-                                <label class="" style="color: lightgray; font-size: 10px; font-weight: 100"><?=  trans(\Config::get('app.theme').'-app.user_panel.description')  ?></label>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="mb-3">
+					<label for="name" class="form-label">{{ trans("$theme-app.valoracion_gratuita.name") }}</label>
+					<input type="text" class="form-control" id="name" name="name" placeholder="{{ trans("$theme-app.valoracion_gratuita.name") }}" required>
+				</div>
+				<div class="mb-3">
+					<label for="email" class="form-label">{{ trans("$theme-app.valoracion_gratuita.email") }}</label>
+					<input type="email" class="form-control" id="email" name="email" placeholder="{{ trans("$theme-app.valoracion_gratuita.email") }}" required>
+				</div>
+				<div class="mb-3">
+					<label for="telf" class="form-label">{{ trans("$theme-app.valoracion_gratuita.telf") }}</label>
+					<input type="phone" class="form-control" id="telf" name="telf" placeholder="{{ trans("$theme-app.valoracion_gratuita.telf") }}" required>
+				</div>
+			</div>
 
-                            <textarea class="form-control" id="exampleTextarea" rows="10" name="descripcion" required placeholder="{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.description') }}"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-custom col-xs-12">
+			<div class="col-md-6">
+				<div class="mb-3">
+					<label for="descripcion" class="form-label">{{ trans("$theme-app.user_panel.description") }}</label>
+					<textarea class="form-control" rows="10" name="descripcion" required placeholder="{{ trans("$theme-app.valoracion_gratuita.description") }}"></textarea>
+				</div>
+			</div>
+		</div>
 
-                            <div id="dropzone">
-                                <small class="text-danger error-dropzone" style="display:none">{{ trans(\Config::get('app.theme').'-app.msg_error.max_size') }}</small>
-                                <div class="color-letter text-dropzone"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.adj_IMG')  ?></div>
-                                <div class="mini-file-content d-flex align-items-center" style="position:relative"></div>
+		<div class="row mb-3">
+			<div class="col-md-10">
+				<div id="dropzone" class="position-relative">
+					<p class="text-danger error-dropzone" style="display:none"><small>{{ trans("$theme-app.msg_error.max_size") }}</small></p>
+					<p class="text-dropzone">{!! trans("$theme-app.valoracion_gratuita.adj_IMG") !!}</p>
+					<div class="mini-file-content d-flex align-items-center position-relative gap-2 mt-1"></div>
+					<input id="images" type="file" name="imagen[]" multiple/>
+				</div>
+			</div>
+		</div>
 
-                                    <input id="images" type="file" name="imagen[]" />
-                                  </div>
-                    </div>
-                            <div class="col-xs-12 text-right no-padding">
-                                <button type="submit" id="valoracion-adv" class="button-send-valorate button-principal">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.send') }}</button>
-                            </div>
-                </div>
-
-                <div class="col-xs-12 info">
-                </div>
-            </form>
-        </div>
-    </div>
+		<button type="submit" id="valoracion-adv" class="button-send-valorate btn btn-lb-primary">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
+	</form>
 </div>
-
 
 <script>
       var imagesarr = [];
