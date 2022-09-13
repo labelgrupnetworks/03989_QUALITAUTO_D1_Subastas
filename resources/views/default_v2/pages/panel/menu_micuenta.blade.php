@@ -1,48 +1,50 @@
+@php
+	$user = session('user');
+	$firtsLetter = substr($user['name'], 0, 1);
+	$email = $user['usrw'];
+	$pageName = Route::currentRouteName();
+@endphp
 
-<div class="tabs-custom filters-auction-content">
-    <div id="button-open-user-menu" class="tabs-custom-responsive visible-xs visible-sm"><i class="fas fa-align-left"></i></div>
-    <div style="postion: relative"></div>
-    <ul id="user-account-ul" class="ul-format color-letter">
-        <li class="text-uppercase<?php if($tab == 'orders'){ echo(' tab-active'); } ?>" role="presentation">
-            
-            <a class="" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}" href="{{ \Routing::slug('user/panel/orders') }}">
-                @if ($tab== 'orders')
-                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer-grey.png"  alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
-                @else
-                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer.png"  alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
-                @endif
-                {{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}
-            </a>
-        </li>
-        <li class="text-uppercase<?php if($tab == 'favorites'){ echo(' tab-active'); } ?>" role="presentation" >
-           
-            <a class="" href="{{ \Routing::slug('user/panel/favorites') }}" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" >
-                <i class="fas fa-star"></i>
-                {{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}
-            </a>
-            </li>
-        <li class="text-uppercase<?php if($tab == 'allotments' || $tab == 'bills'){ echo(' tab-active'); } ?>" role="presentation">
-            <a class="" role="button" data-toggle="collapse" href="#collapse_adj" aria-expanded="false" aria-controls="collapse_adj" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" href="{{ \Routing::slug('user/panel/allotments/outstanding') }}" >
-                <i class="fas fa-trophy"></i>
-                {{ trans(\Config::get('app.theme').'-app.user_panel.allotments') }}
+<div class="card">
+	<div class="card-body">
+		<div class="d-flex gap-2 flex-wrap">
+			<div class="user-logo img-thumbnail rounded-circle">
+				<p class="h2 m-0">{{ $firtsLetter }}</p>
+			</div>
+			<div class="user-detail">
+				<h6 class="card-title">{{ ($user['name']) }}</h6>
+				<p class="card-text">{{ $email }}</p>
+			</div>
+		</div>
+	</div>
+	<div class="list-group list-group-flush">
+		<a href="{{ Routing::slug('user/panel/orders') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.orders'])
+			aria-current="{{ $pageName == 'panel.orders' }}">
+			{{ trans("$theme-app.user_panel.orders") }}
+		</a>
 
-            </a>
-            
-            </li>
-            <div class="<?php if($tab != 'allotments' && $tab !='bills'){echo('collapse'); } ?>" id="collapse_adj">
-                <ul class="sub_menu_adj">
-                    <a class="@if($tab == 'allotments') active @endif" style="text-transform: uppercase" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" href="{{ \Routing::slug('user/panel/allotments') }}" >{{ trans(\Config::get('app.theme').'-app.user_panel.lots') }}</a>
-                    <a class="@if($tab == 'bills') active @endif" style="text-transform: uppercase" data-title="{{ trans(\Config::get('app.theme').'-app.panel.pending_bills') }}" href="{{ \Routing::slug('user/panel/bills') }}" >{{ trans(\Config::get('app.theme').'-app.user_panel.pending_bills') }}</a>
-                </ul>
-            </div>
+		<a href="{{ Routing::slug('user/panel/favorites') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.favorites'])
+			aria-current="{{ $pageName == 'panel.favorites' }}">
+			{{ trans("$theme-app.user_panel.favorites") }}
+		</a>
 
-        <li class="text-uppercase<?php if($tab == 'datos-personales'){ echo(' tab-active'); } ?>" role="presentation">
-            
-            <a class="" href="{{ \Routing::slug('user/panel/info') }}">
-                <i class="fas fa-user-circle"></i>
-                {{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</a></li>
-       
- <?php /*<li role="presentation" <?php if($tab == 'datos-personales'){ echo('class="active"'); } ?>><a href="{{ \Routing::slug('user/panel/info') }}">{{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</a></li> */?>
-        <li class="text-uppercase"><a href="{{ \Routing::slug('logout') }}"><i class="fas fa-sign-out-alt"></i>{{ trans(\Config::get('app.theme').'-app.user_panel.exit') }}</a></li>
-    </ul>
+		<a href="{{ Routing::slug('user/panel/allotments') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.allotments'])
+			aria-current="{{ $pageName == 'panel.allotments' }}">
+			{{ trans("$theme-app.user_panel.allotments") }} {{ trans("$theme-app.user_panel.lots") }}
+		</a>
+
+		<a href="{{ Routing::slug('user/panel/bills') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.bills'])
+			aria-current="{{ $pageName == 'panel.bills' }}">
+			{{ trans("$theme-app.user_panel.allotments") }} {{ trans("$theme-app.user_panel.pending_bills") }}
+		</a>
+
+		<a href="{{ Routing::slug('user/panel/info') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
+			aria-current="{{ $pageName == 'panel.account_info' }}">
+			{{ trans("$theme-app.user_panel.info") }}
+		</a>
+
+		<a href="{{ Routing::slug('logout') }}" class="list-group-item list-group-item-action">
+			{{ trans("$theme-app.user_panel.exit") }}
+		</a>
+	</div>
 </div>

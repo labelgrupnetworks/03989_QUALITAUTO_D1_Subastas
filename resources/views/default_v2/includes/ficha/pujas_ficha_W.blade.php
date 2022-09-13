@@ -47,8 +47,8 @@
 		<h4 id="text_actual_max_bid" @class(['price bid-price', 'hidden' => $lote_actual->open_price == 0])>
 			<span>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
 			<span id="actual_max_bid" @class([
-				'mine' => Session::has('user') && $lote_actual->max_puja?->cod_licit == $data['js_item']['user']['cod_licit'],
-				'other' => Session::has('user') && $lote_actual->max_puja?->cod_licit != $data['js_item']['user']['cod_licit'],
+				'mine' => Session::has('user') && $lote_actual->max_puja && $lote_actual->max_puja?->cod_licit == $data['js_item']['user']['cod_licit'],
+				'other' => Session::has('user') && $lote_actual->max_puja && $lote_actual->max_puja?->cod_licit != $data['js_item']['user']['cod_licit'],
 				])>
 
 				{{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}

@@ -17,7 +17,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
 	# Lista de Favoritos
-	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos');
+	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos')->name('panel.favorites');
 	Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
 
 	# Lista de Ventas cedente
@@ -60,20 +60,20 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
 
 # Lista de Ordenes de licitacion
-Route::get('{lang}/user/panel/orders', 'UserController@orderbidsList');
+Route::get('{lang}/user/panel/orders', 'UserController@orderbidsList')->name('panel.orders');
 Route::get('{lang}/user/panel/orders' . '/page/{page}', 'UserController@orderbidsList');
 
 Route::get('{lang}/user/panel/allotments/outstanding', 'UserController@getAdjudicacionesPendientePago');
 Route::get('{lang}/user/panel/allotments/paid', 'UserController@getAdjudicacionesPagadas');
 Route::get('{lang}/user/panel/allotments/shopping-cart', 'UserController@getDirectSaleAdjudicaciones')->name('panel.allotment.diectsale');
 Route::get('{lang}/user/panel/allotments/{cod_sub}', 'UserController@getAdjudicacionesPendientePagoBySub')->name('panel.allotment.sub');
-Route::get('{lang}/user/panel/allotments', 'UserController@getAllAdjudicaciones');
+Route::get('{lang}/user/panel/allotments', 'UserController@getAllAdjudicaciones')->name('panel.allotments');
 Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generateAuthenticityCertificate')->name('panel.allotment.certifiacte');
 
 
 Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
 
-Route::get('{lang}/user/panel/bills', 'UserController@allBills');
+Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
