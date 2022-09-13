@@ -76,3 +76,14 @@ Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAcep
 #SALARETIRO
 Route::get('/exportar-a-excel-lotes/{codSub}', 'CustomControllers@exportarLotes');
 
+#SEGRE
+/* Hacer una ruta que llegue a la blade pages.newsletter */
+Route::get('/'.\Config::get('app.locale').'/catalog-newsleter', function () {
+	return view('front::pages.catalog_newsletter');
+})->name('catalogos_newsletter');
+
+
+//Route::get('zohocrmauth', 'externalws\bogota\ZohoController@auth')->name('zohocrmauth');
+//Route::get('zohocrm', 'externalws\bogota\ZohoController@store')->name('zohocrm');
+
+

@@ -410,7 +410,7 @@ $packengersMoneyValue = 0;
 															{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
 													</div>
 													<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
+															{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}
 													</div>
 												</div>
 
@@ -464,7 +464,7 @@ $packengersMoneyValue = 0;
 																<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
 																		<div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
+																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}</div>
 																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
 																		</div>
 																	</div>

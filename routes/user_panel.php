@@ -53,6 +53,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	#Lista de Temas Favoritos
 	Route::get('{lang}/user/panel/pending_bills', 'UserController@getPendingBills');
 
+
 	# Para Carlandia
 	Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
 	Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
@@ -74,6 +75,7 @@ Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generate
 Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
 
 Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
+Route::get('{lang}/user/panel/allotments-bills', 'UserController@getAllAllotmentsAndBills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
@@ -91,6 +93,10 @@ Route::get('{lang}/user/panel/showShoppingOrders', 'V5\ArticleController@showSho
 Route::get('{lang}/user/panel/transferpayment', function () {
 	exit(\View::make('front::pages.panel.transferpayment'));
 })->name("transferpayment");
+
+#NFT
+Route::get('user/panel/loadPendingPayTransferNft', 'UserController@nftTransferPay');
+
 
 #dejar esto al final, no se quien lo puso ni que  sentido tiene que coja cualquier valor
 Route::get('{lang}/user/panel/{value}', 'UserController@myBills');

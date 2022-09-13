@@ -1,0 +1,17 @@
+.tr_user_streaming #streaming {
+	opacity: 1;
+}
+
+.tiempo_real.tr_stop #streaming {
+	opacity: 0;
+}
+
+#video {
+	position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100% !important;
+    width: 100% !important;
+    /* display: none; */
+}

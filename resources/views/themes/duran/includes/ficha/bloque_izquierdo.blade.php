@@ -58,14 +58,15 @@
 			   <div class="item_content_img_single" style="position: relative; height: 290px; overflow: hidden;">
 					<img style="max-width: 100%; max-height: 100%;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;" class="img-responsive" src="{{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}" alt="{{$lote_actual->titulo_hces1}}">
 			   </div>
-			   @foreach($lote_actual->videos as $video)
-					<div class="item_content_img_single video-item">
-						<video width="100%" controls>
-							<source src="{{$video}}" type="video/mp4">
-						</video>
-					</div>
-				@endforeach
+
 		 @endforeach
+		 @foreach($lote_actual->videos as $video)
+			<div class="item_content_img_single video-item">
+				<video width="100%" controls>
+					<source src="{{$video}}" type="video/mp4">
+				</video>
+			</div>
+		@endforeach
 	</div>
 	<div class="row visible-xs visible-sm mt-2 mb-2">
 		@include('includes.ficha.share')

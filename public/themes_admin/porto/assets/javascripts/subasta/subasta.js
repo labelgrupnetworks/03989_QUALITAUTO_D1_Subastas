@@ -349,3 +349,22 @@ function exportWithFilters(event, tableConfig, parentFilters) {
 		});
 
 }
+
+function selectedCheckItemsByName(name) {
+	return Array.from(document.getElementsByName(name))
+		.filter((element) => element.checked)
+		.map((element) => element.value);
+}
+
+
+function handleToJson(response) {
+	if(response.ok){
+		return response.json();
+	}
+	throw new Error('Internal Server Error');
+}
+
+function handleFetchingErrorWithBootbox(error) {
+	console.error(error);
+	bootbox.alert("Ha ocurrido un error");
+}

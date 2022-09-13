@@ -44,6 +44,23 @@ class User extends Model
 	public $cod_sub;
 	public $seudo_cli;
 
+	static function factory()
+	{
+		return new self();
+	}
+
+	public function setCodCli($cod_cli)
+	{
+		$this->cod_cli = $cod_cli;
+		return $this;
+	}
+
+	public function setItemsPerPage($itemsPerPage)
+	{
+		$this->itemsPerPage = $itemsPerPage;
+		return $this;
+	}
+
     public function login()
     {
         //devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
@@ -515,6 +532,15 @@ class User extends Model
          return $data;
      }
 
+	 public function getClientNllist($cod_cli)
+	 {
+		$select = array_map(function($position) {
+			return "nllist{$position}_cliweb";
+		}, range(1, 20));
+
+		return FxCliWeb::select($select)->where('cod_cliweb',$cod_cli)->first();
+	 }
+
     # Actualizamos la información del perfil del usuario
     public function updateClientInfo()
     {
@@ -760,22 +786,27 @@ class User extends Model
                     ->on('FGC0.APRE_CSUB0','=','C.APRE_CSUB')
                     ->on('FGC0.NPRE_CSUB0','=','C.NPRE_CSUB');
 				})
-				->leftJoin('FXCOBRO1',function($join){
+				/* ->leftJoin('FXCOBRO1',function($join){
 					$join->on('FXCOBRO1.EMP_COBRO1','=','C.EMP_CSUB')
 					->on('FXCOBRO1.AFRA_COBRO1','=','C.AFRAL_CSUB')
 					->on('FXCOBRO1.NFRA_COBRO1','=','C.NFRAL_CSUB');
-				})
+				}) */
 
                 ->where('C.EMP_CSUB',Config::get('app.emp'))
                 ->where('C.CLIFAC_CSUB',$this->cod_cli)
                 ->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
                 ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"');
                 if($value == 'S'){
+					//Modificado 15/07/2022: Se modifica para que los lotes facturados no aparezcan como pendientes de pago
+					//Ojo, los facturados pero no pagados apareceren como pagados en la web.
 					#si existe en cobro es que está pagado, cogemos solo la linea 1 para que no de duplicados, tambien puede ser una factura manual AFRAL_CSUB = 'L00'
-					$sql->whereRaw(" (FXCOBRO1.LIN_COBRO1 =1 or FGC0.estado_csub0 = 'C' or C.AFRAL_CSUB = 'L00'  )");
+					/* $sql->whereRaw(" (FXCOBRO1.LIN_COBRO1 =1 or FGC0.estado_csub0 = 'C' or C.AFRAL_CSUB = 'L00'  )"); */
+					$sql->whereRaw("(C.AFRAL_CSUB IS NOT NULL)");
 
                 }else{
-					$sql->WhereRaw('FXCOBRO1.LIN_COBRO1 is null');
+					$sql->whereRaw("(C.AFRAL_CSUB  IS NULL AND (C.NFRAL_CSUB IS NULL OR C.NFRAL_CSUB = 0 ))");
+					$sql->whereRaw("(FGC0.estado_csub0 != 'C' or FGC0.estado_csub0 is null)");
+					/* $sql->WhereRaw('FXCOBRO1.LIN_COBRO1 is null');
 					#Si han creado facturas manuales (AFRAL_CSUB = 'L00' no deben salir como pendiente)
 					#eliminamos de la web todos los lotes por pagar anteriores al 2020 para no saturar
 					$sql->WhereRaw("( (C.AFRAL_CSUB != 'L00' and CAST(SUBSTR(C.AFRAL_CSUB, 2, 2) AS INT) > 19 or C.AFRAL_CSUB is null) OR (C.AFRAL_CSUB is not null AND C.NFRAL_CSUB != 0 and CAST(SUBSTR(C.AFRAL_CSUB, 2, 2) AS INT) > 19) )");
@@ -783,7 +814,7 @@ class User extends Model
                     $sql->where(function ($query) {
                         $query->orWhere('FGC0.estado_csub0','!=','C')
                               ->orWhereNull('FGC0.estado_csub0');
-                    });
+                    }); */
                 }
                 if(Request::input('order') == 'lasted'){
                     $sql->orderBy('C.fecha_csub','asc');
@@ -944,15 +975,22 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
 
 			->when($filters, function ($query) use ($filters) {
 
-				return $query->when(!empty($filters['from-date']), function ($query) use ($filters) {
-					return $query->where('auc."start"', '>=', $filters['from-date']);
+				return $query->when(!empty($filters['from-date']) && !empty($filters['to-date']), function ($query) use ($filters) {
+					//Con las dos fechas seleccionamos las sesiones que en algun momento esten entre esas fechas
+					return $query->where([
+						['auc."start"', '<=', $filters['to-date']],
+						['auc."end"', '>=', $filters['from-date']]
+					]);
+				}, function ($query) use ($filters) {
+					//En caso de venir una fecha
+					return $query->when(!empty($filters['from-date']), function ($query) use ($filters) {
+						return $query->where('auc."start"', '>=', $filters['from-date']);
 
-				})->when(!empty($filters['to-date']), function ($query) use ($filters) {
-					return $query->where('auc."end"', '<=', $filters['to-date']);
+					})->when(!empty($filters['to-date']), function ($query) use ($filters) {
+						return $query->where('auc."end"', '<=', $filters['to-date']);
+					});
 				});
 			});
-
-
 
 			if(\Config::get("app.number_bids_lotlist") ){
 				$query = $query->selectRaw(" (SELECT COUNT(DISTINCT(LICIT_ASIGL1))  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) LICITS")

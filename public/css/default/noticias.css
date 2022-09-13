@@ -331,6 +331,7 @@ a.categoria-sidebar:hover{
     margin-bottom: 14px;
 	color: var(--blog-primary-color) !important;
 	line-height: 29px;
+	text-align: justify;
 }
 
 .post-conent-principal1{

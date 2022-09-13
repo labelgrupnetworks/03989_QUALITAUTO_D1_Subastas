@@ -4146,8 +4146,20 @@ div.content_faq a i {
     font-weight: 900;
 }
 
-.panel-heading:after {
+/* .panel-heading:after{
     content: '\f0dd';
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+} */
+
+.panel-heading a {
+	display: block;
+}
+
+.panel-heading .panel-title:after {
+	content: '\f0dd';
     font: normal normal normal 14px/1 FontAwesome;
     position: absolute;
     top: 8px;
@@ -4947,6 +4959,13 @@ div.list_lot div.item_lot div.title_lot, .data-container .square-lot.title_lot {
 
 .slick-slide img {
 	max-height: initial;
+}
+
+.sales-panel-info {
+	font-size: 17px;
+    font-weight: 600;
+    margin: 40px 0 10px 0;
+    text-align: center;
 }
 
 .sales-panel .panel-heading a, .sales-panel .panel-heading a:hover {

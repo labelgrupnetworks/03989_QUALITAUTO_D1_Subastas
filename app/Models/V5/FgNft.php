@@ -35,5 +35,10 @@ class FgNft extends Model
         });
 	}
 
+
+	public function scopeJoinFghces($query){
+        return $query->join('FGHCES1', 'FGHCES1.EMP_HCES1 = FGNFT.EMP_NFT AND FGHCES1.NUM_HCES1 = FGNFT.NUMHCES_NFT AND FGHCES1.LIN_HCES1 = FGNFT.LINHCES_NFT');
+    }
+
 }
 

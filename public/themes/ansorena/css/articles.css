@@ -3,10 +3,6 @@
 }
 
 
-/* En ansorena solo tendrán la categoria joyas asi que entramos directos en esa categoria y ocultamos el todas y el joyas */
-.ortsec_rcomponent{
-	display: none;
-}
 
 .filtersArticles, .orderArticles{
 	background: #f3f3f3;

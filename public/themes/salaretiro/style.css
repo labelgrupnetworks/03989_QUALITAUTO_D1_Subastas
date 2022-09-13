@@ -3453,3 +3453,12 @@ iframe.has-error{
 .packengers-button-adjudicaciones i {
 	font-size: 18px;
 }
+
+.modal-comision h1 {
+	font-weight: bold;
+	font-size: 38px;
+}
+
+.modal-comision h4 {
+	font-size: 20px;
+}

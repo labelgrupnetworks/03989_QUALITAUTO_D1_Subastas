@@ -102,7 +102,13 @@
             <div class="input-group group-pujar-custom d-flex justify-content-space-between">
                     <input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" value="{{ $data['precio_salida'] }}" type="text">
                     <div class="input-group-btn">
-                        <button id="pujar_ordenes_w" data-from="modal" type="button" class="ficha-btn-bid button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
+
+						@if(Session::has('user') && (new App\Models\User())->getClientNllist(session('user.cod'))->nllist20_cliweb == 'S')
+                    		<button id="pujar_ordenes_w" data-from="modal" type="button" class="ficha-btn-bid button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
+						@else
+							<button type="button" data-from="modal" data-toggle="modal" data-target="#acceptedTermsModal" class="ficha-btn-bid ficha-btn-bid-height button-principal">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+						@endif
+
                     </div>
 			</div>
 

@@ -8,9 +8,6 @@
 | - default_v2:
 */
 
-$defaultTheme = 'default_v2';
-//$defaultTheme = 'default';
-
 return [
 
     /*
@@ -29,7 +26,7 @@ return [
     'paths' => [
         //resource_path('views'),
         resource_path('/views/themes/'.App('config')['app']['theme']),
-		resource_path("/views/$defaultTheme"),
+		resource_path('/views/'.App('config')['app']['default_theme']),
     ],
 
     /*

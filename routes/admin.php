@@ -206,6 +206,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/excel/{idAuction}', 'subasta\AdminOrderController@excel')->name('orders.excel');
 			Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
 			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
+			Route::post('/delete-selection/{idAuction}', 'subasta\AdminOrderController@deleteSelection')->name('orders.delete_selection'); 
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
@@ -290,6 +291,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::resource('subastas.sesiones', 'subasta\AdminAucSessionsController');
 
+		Route::post('subastas/{cod_sub}/pujas/delete-selection', 'subasta\AdminPujasController@deleteSelection')->name('subastas.pujas.delete_selection');
+
 		Route::get('subastas/{cod_sub}/lotes/select2list/', 'subasta\AdminLotController@getSelect2List')->name('subastas.lotes.select2');
 		Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
 
@@ -308,6 +311,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/lotes/order/destacados', 'subasta\AdminLotController@saveOrderDestacada')->name('subastas.lotes.order_destacadas_store');
 
 		//Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/publish-nft', 'subasta\AdminLotController@publishNft')->name('subastas.lotes.publish_nft');
+		Route::get('subastas/{cod_sub}/lotes/{ref_asigl0}/unpublish-nft', 'subasta\AdminLotController@unpublishNft')->name('subastas.lotes.unpublish_nft');
 
 		Route::get('nfts/', 'subasta\AdminNftController@index')->name('nft.index');
 		Route::get('nfts/{numhces}/{linhces}/file', 'subasta\AdminNftController@showFile')->name('nft.show.file');
@@ -315,6 +319,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('nfts/transfer', 'subasta\AdminNftController@transfer')->name('nft.transfer');
 		Route::post('nfts/state', 'subasta\AdminNftController@state')->name('nft.state');
 
+		Route::post('subastas/{cod_sub}/lotes/delete-selection', 'subasta\AdminLotController@deleteSelection')->name('subastas.lotes.delete_selection');
 		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
 
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');

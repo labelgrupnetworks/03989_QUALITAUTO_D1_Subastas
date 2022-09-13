@@ -1,7 +1,23 @@
 <div class="col-xs-12">
-	<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
-			<a class="btn btn-success btn-sm" href="{{ route('lote.export', ['cod_sub' => $cod_sub]) }}">{{ trans('admin-app.button.download_excel') }}</a>
-			@include('admin::includes.config_table', ['id' => 'tablePujas', 'params' => ((array) $filter)])
+	<div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
+		<div style="flex:1">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
+				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu">
+					<li><a id="js-deleteSelectedBids" href="{{ route('subastas.pujas.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
+
+					<li role="separator" class="divider"></li>
+					<li><a id="js-selectAllBids" href="#">Seleccionar todos</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<a class="btn btn-success btn-sm" href="{{ route('lote.export', ['cod_sub' => $cod_sub]) }}">{{ trans('admin-app.button.download_excel') }}</a>
+		@include('admin::includes.config_table', ['id' => 'tablePujas', 'params' => ((array) $filter)])
 
 	</div>
 </div>
@@ -9,6 +25,9 @@
 <div class="col-xs-12">
 	<table id="tablePujas" class="table table-striped table-condensed table-responsive" style="width:100%" data-order-name="order_pujas">
 		<thead>
+
+			<th>Sel.</th>
+
 			<th class="ref_asigl1"  style="cursor: pointer" data-order="ref_asigl1">
 				{{trans('admin-app.title.reference_lot')}}
 				   @if(request()->order_pujas == 'ref_asigl1')
@@ -167,6 +186,8 @@
 				<form class="form-group" action="">
 					<input type="hidden" name="order_pujas" value="{{ request('order_pujas', 'cod_cli') }}">
 					<input type="hidden" name="order_pujas_dir" value="{{ request('order_pujas_dir', 'desc') }}">
+
+					<td></td>
 					@foreach($filter as $index => $item)
 						<td class="{{$index}}">{!! $item !!}</td>
 					@endforeach
@@ -180,8 +201,15 @@
 					</td>
 				</form>
 			</tr>
+
 			@foreach($pujas as $k => $item)
+
 				<tr id="puja---{{$item->lin_asigl1}}---{{$item->ref_asigl1}}" style=" @if($item->retirado_asigl0=='S') color:red @endif">
+
+					<td>
+						<input type="checkbox" name="bids" data-instance="{{ last(explode('\\', get_class($item))) }}" data-ref="{{ $item->ref_asigl1 }}" value="{{ $item->lin_asigl1 }}">
+					</td>
+
 					<td class="ref_asigl1">{!! $item->ref_asigl1 !!}</td>
 					<td class="idorigen_asigl0">{!! $item->idorigen_asigl0 !!}</td>
 					<td class="lin_asigl1">{!! $item->lin_asigl1 !!}</td>

@@ -1,11 +1,16 @@
+@php
+	$hasWatchStreaming = config('app.tr_show_streaming', false);
+	$streamingByDefault = $hasWatchStreaming && true;
+@endphp
+
 <div class="tr_user_streaming">
     <div>
         <ul class="nav nav-tabs">
-            @if(!empty(\Config::get('app.tr_show_streaming')))
-            <li class="active">
+            @if($hasWatchStreaming)
+            <li class="{{ $streamingByDefault ? '' : 'active' }}">
                 <a data-toggle="tab" href="#ultimas_pujas">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</a>
             </li>
-            <li>
+            <li class="{{ $streamingByDefault ? 'active' : '' }}">
                 <a data-toggle="tab" href="#streaming">{{ trans(\Config::get('app.theme').'-app.sheet_tr.streaming') }}</a>
             </li>
             @else
@@ -16,12 +21,12 @@
 
         </ul>
 
-        <div class="tab-content">
-            <div id="ultimas_pujas" class="tab-pane fade in active ultimas_pujas">
+        <div class="tab-content" @if($hasWatchStreaming) style="z-index: 1001;" @endif>
+            <div id="ultimas_pujas" class="tab-pane fade ultimas_pujas {{ $streamingByDefault ? '' : 'in active' }}">
                 @include('content.tr.tiempo_real_user.ultimas_pujas')
             </div>
-            @if(!empty(\Config::get('app.tr_show_streaming')))
-            <div id="streaming" class="tab-pane fade">
+            @if($hasWatchStreaming)
+            <div id="streaming" class="tab-pane fade {{ $streamingByDefault ? 'in active' : '' }}">
                 @include('content.tr.tiempo_real_user.streaming')
             </div>
             @endif

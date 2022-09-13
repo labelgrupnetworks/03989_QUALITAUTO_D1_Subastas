@@ -273,10 +273,8 @@ class AdminOrderController extends Controller
 
 	}
 
-	/**
-	 * Eliminar item
-	 * */
-	function destroy(Request $request){
+	function destroy(Request $request)
+	{
 
 		$where = [
 			'idauction' => request('idauction'),
@@ -293,7 +291,25 @@ class AdminOrderController extends Controller
 		}
 
 		return response(json_encode($result), 200);
+	}
 
+	public function deleteSelection(Request $request, $cod_sub)
+	{
+		$orderController = new OrderController();
+		$results = [];
+		foreach ($request->orders as $order) {
+
+			$order = [
+				'idauction' => $cod_sub,
+				'ref' => '300',//$order['ref'],
+				'licit' => $order['licit']
+			];
+
+			$json = $orderController->eraseOrder($order);
+			$results[] = array_merge(json_decode($json, true), $order);
+		}
+
+		return response()->json(['success' => 'Ordenes eliminadas correctamente', 'results' => $results]);
 	}
 
 	function excel($idAuction)

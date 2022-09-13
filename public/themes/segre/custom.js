@@ -1,4 +1,4 @@
-
+/*
 $(document).ready(function () {
 
 	$("#accerder-user").off('click');
@@ -27,3 +27,4 @@ function custom_login(){
 }
 
 
+*/

@@ -984,7 +984,7 @@ class Subasta extends Model
         if($favorites){
             $sql_join_favorites = "join web_favorites fav on (fav.id_emp=asigl0.emp_asigl0 and fav.id_sub = asigl0.SUB_ASIGL0 and fav.id_ref = asigl0.REF_ASIGL0 and fav.cod_cli= :cli_licit)";
             $sql_favorites = " UNION
-                                    select  b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0,  ref_asigl0,tipo_sub,cod_sub,0 imp,a.fecha fec,  TO_CHAR(a.fecha,'HH24:MM:SS')  hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
+                                    select  b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0,  ref_asigl0,tipo_sub,cod_sub,0 imp, null tipop_orlic, a.fecha fec,  TO_CHAR(a.fecha,'HH24:MM:SS')  hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
                                     from web_favorites a
                                     JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.id_emp AND asigl0.SUB_ASIGL0 = a.id_sub AND asigl0.REF_ASIGL0 = a.id_ref)
                                      JOIN fglicit b ON (b.EMP_LICIT = a.id_emp AND b.SUB_LICIT = a.id_sub AND b.CLI_LICIT = a.cod_cli)
@@ -2136,7 +2136,7 @@ class Subasta extends Model
 
 								$esSuperiorQueMaximo = !empty($maximum_time_increment) && $diferencia_original > $maximum_time_increment;
 
-                                if ($diferencia <=Config::get('app.increase_time_launch') && $diferencia >0 && !$esSuperiorQueMaximo){
+                                if ($diferencia <=Config::get('app.increase_time_launch') && $diferencia >=0 && !$esSuperiorQueMaximo){
 
                                     $fecha_fin_time =  $fecha_fin_time + Config::get('app.increase_time_add');
                                     $date = date("Y-m-d", $fecha_fin_time);
@@ -3268,8 +3268,11 @@ class Subasta extends Model
                 $lotes[$key]->videos          = $this->getLoteVideos($value);
             }else{
                 $lotes[$key]->imagenes          = array();
-                $lotes[$key]->videos          = array();
+
             }
+			if(empty($lotes[$key]->videos )){
+				$lotes[$key]->videos          = array();
+			}
 
            if (isset($value->desc_hces1)){
             $lotes[$key]->desc_hces1        = \Tools::friendlyDesc($value->desc_hces1);

@@ -186,12 +186,19 @@ class BannerController extends Controller
 		foreach ($info['info'] as $k => $item) {
 
 			$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.jpg");
-
-			if (!is_file($path)) {
-				$item->imagen = "/img/noFoto.png";
-			} else {
+			if (is_file($path)) {
 				$item->imagen = $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.jpg";
+			}else{
+				$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.gif");
+				if (is_file($path)) {
+					$item->imagen = $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.gif";
+				} else {
+					$item->imagen = "/img/noFoto.png";
+				}
+
 			}
+
+
 			$item->imagen=ToolsServiceProvider::urlAssetsCache($item->imagen);
 		}
 
@@ -327,33 +334,54 @@ class BannerController extends Controller
 				$extension = explode(".", $item['name']);
 				$extension = $extension[sizeof($extension) - 1];
 
-				$size = getimagesize($item['tmp_name']);
-				if ($size[0] > 3000) {
-					$w = 3000;
-					$h = $size[1] * 3000 / $size[0];
-				} else {
-					$w = $size[0];
-					$h = $size[1];
-				}
-
-				if (strtoupper($extension) == "PNG") {
-					$src_image = imagecreatefrompng($item['tmp_name']);
-				} elseif (strtoupper($extension) == "JPG" || strtoupper($extension) == "JPEG" ) {
-					$src_image = imagecreatefromjpeg($item['tmp_name']);
-				}
-
-				$dst_image = imagecreatetruecolor($w, $h);
-
-				$blanco = imagecolorallocate($src_image, 255, 255, 255);
-				imagefill($dst_image, 0, 0, $blanco);
-
-				imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $w, $h, $size[0], $size[1]);
-
 				$mobile = "";
-				if (strpos($k, "mobile") > 0)
+				if (strpos($k, "mobile") > 0){
 					$mobile = "_mobile";
+				}
 
-				imagejpeg($dst_image, $path . "/" . $idioma . $mobile . ".jpg", 85);
+
+				if(strtoupper($extension) == "GIF") {
+					/*
+					$src_image = imagecreatefromgif($item['tmp_name']);
+					imagegif($src_image,  $path . "/" . $idioma . $mobile . ".gif");
+					*/
+					rename($item['tmp_name'], $path . "/" . $idioma . $mobile . ".gif");
+					#borramso la imgen jpg por si hubiera
+					@unlink(  $path . "/" . $idioma . $mobile . ".jpg");
+				}else{
+
+						$size = getimagesize($item['tmp_name']);
+					if ($size[0] > 3000) {
+						$w = 3000;
+						$h = $size[1] * 3000 / $size[0];
+					} else {
+						$w = $size[0];
+						$h = $size[1];
+					}
+
+
+					if (strtoupper($extension) == "PNG") {
+						$src_image = imagecreatefrompng($item['tmp_name']);
+					} elseif (strtoupper($extension) == "JPG" || strtoupper($extension) == "JPEG" ) {
+						$src_image = imagecreatefromjpeg($item['tmp_name']);
+					}
+
+					$dst_image = imagecreatetruecolor($w, $h);
+
+					$blanco = imagecolorallocate($src_image, 255, 255, 255);
+					imagefill($dst_image, 0, 0, $blanco);
+
+					imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $w, $h, $size[0], $size[1]);
+
+
+
+
+
+
+					imagejpeg($dst_image, $path . "/" . $idioma . $mobile . ".jpg", 85);
+					#borramso la imgen gif por si hubiera
+					@unlink(  $path . "/" . $idioma . $mobile . ".gif");
+				}
 			}
 		}
 

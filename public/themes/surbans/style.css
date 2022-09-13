@@ -91,4 +91,6 @@ header.fixed a.link-header{
 	font-weight: 700;
 }
 
-
+.auction__filters-estado-lote {
+	display: none;
+}

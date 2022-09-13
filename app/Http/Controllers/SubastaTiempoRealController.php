@@ -3152,10 +3152,11 @@ class subastaTiempoRealController extends Controller
     }
 
     #Calcula las posibles pujas para mostrar al usuario mediante el autocomplete.
-    public function calculateAvailableBids($actual_bid, $new_bid)
+	#02-08-2022 OJO, HE MODIFICADO LA FUNCION PARA QUE RECIBA LA PUJA SIGUIENTE EN VEZ DE ACTUAL_BID, YA QUE DABA FALLOS CON LA PRIMERA PUJA DE LOTE SI YA ESTABA PUJADO
+    public function calculateAvailableBids($next_bid, $new_bid)
     {
         $subasta = new subasta();
-        $cod_sub = request('cod_sub');
+        $cod_sub = Input::get('cod_sub');
         if(!empty($cod_sub)){
             $subasta->cod = $cod_sub;
         }
@@ -3164,14 +3165,14 @@ class subastaTiempoRealController extends Controller
         $end = false;
         $scales = array();
         //marco un limite superior para no realizar calculos innecesarios
-        $max_limit = max($new_bid * 1000, $actual_bid * 1000) ;
+        $max_limit = max($new_bid * 1000, $next_bid * 1000) ;
 
         $num_digits = strlen($new_bid);
         $i=0;
-        $val = $actual_bid;
+        $val = $next_bid;
         $seleccionado = NULL;
         // si ponene un rango muy grande no mostramos nada:
-        if($new_bid > ($actual_bid * 1000) ){
+        if($new_bid > ($next_bid * 1000) ){
             $end = true;
         }
         while (!$end){
@@ -3183,20 +3184,17 @@ class subastaTiempoRealController extends Controller
             }else{
                 while ($val < $scaleRanges[$i]->max  && !$end){
 
-					//Eloy: carlandia no queria que le aumentara la cantidad de cifras si no existia escalado en ese rango
-					$forzarSiguienteOpcionDeEscalado = config('app.escale_first_options', false) && $new_bid <= substr($val,0,$num_digits);
+				
+					if ($new_bid <= $val ) {
+						$seleccionado = $val;
+						$end = true;
+					}else{
+						$val = $subasta->NextScaleBid($next_bid,$val);
 
-					if ($new_bid == substr($val,0,$num_digits) || $forzarSiguienteOpcionDeEscalado ) {
-                       $seleccionado = $val;
-                       $end = true;
-                   }
-
-
-                    $val = $subasta->NextScaleBid($actual_bid,$val);
-
-                    if($val >= $max_limit ){
-                        $end = true;
-                    }
+						if($val >= $max_limit ){
+							$end = true;
+						}
+					}
 
                 }
             }
@@ -3204,12 +3202,12 @@ class subastaTiempoRealController extends Controller
         if(!empty($seleccionado)){
             $propuesto = $seleccionado;
             $y=5;
-            if($new_bid < $actual_bid){
+            if($new_bid < $propuesto){
                 $scales[] =$propuesto;
                 $y=4;
             }
             for($i=0;$i<$y;$i++){
-                $propuesto = $subasta->NextScaleBid($actual_bid,$propuesto);
+                $propuesto = $subasta->NextScaleBid($next_bid,$propuesto);
                 $scales[] =$propuesto;
             }
         }

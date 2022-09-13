@@ -5,11 +5,16 @@ namespace App\Http\Controllers\V5;
 use App\Http\Controllers\V5\CartController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\V5\PayArticleCartController;
 use App\Models\V5\FxClid;
+use App\Models\V5\FgCsub;
 use App\Models\V5\WebPayCart;
+use App\Http\Controllers\externalws\vottun\VottunController;
+use App\libs\EmailLib;
 use App\Models\Subasta;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgHces1;
+use App\Models\V5\FgNft;
 use View;
 use Config;
 use Session;
@@ -28,6 +33,8 @@ class PayShoppingCartController extends Controller
 			"status" => "error",
 			"msgError" => "generic"
 		);
+
+		$codSub = request("codSub");
 
 		$paymentcontroller = new PaymentsController();
 
@@ -49,7 +56,7 @@ class PayShoppingCartController extends Controller
 		}
 
 
-		$lots  = $cartController->loadLotsCart();
+		$lots  = $cartController->loadLotsCart($codSub);
 
 		$importeLotes = 0;
 
@@ -77,6 +84,7 @@ class PayShoppingCartController extends Controller
 			$inf->lots[] = $lotInfo;
 
 			#quitamos el lote del carrito sin cancelar las reservas en base de datos ni en webservice
+
 			unset($cartController->shoppingCart[$lot->sub_asigl0][$lot->ref_asigl0]) ;
 
 		}
@@ -171,8 +179,36 @@ class PayShoppingCartController extends Controller
 				"location" => $url
 			);
 
+		}elseif (Config::get('app.paymentUP2') == 'UP2') {
+
+
+			//Peticion universal pay
+			#usamos el creador de payArticle
+			$payArticle = new  PayArticleCartController();
+			# le pasamos la dirección /gateway/pagoDirectoReturn para que haga al pagar vaya a Paymentscontroller
+			$return_token = $payArticle->tokenPasarelaUP2($cod_cli, $webpayCart["IDTRANS_PAYCART"], $importeTotal,"/gateway/pagoDirectoReturn", $codSub );
+
+			if (!empty($return_token) && $return_token['result'] == 'success') {
+
+				if (!env('APP_DEBUG') && Config::get('app.environmentUP2')) {
+					$url_pay = 'https://cashierui.universalpay.es/ui/cashier';
+				} else {
+					$url_pay = 'https://cashierui.test.universalpay.es/ui/cashier';
+				}
+				$url = $url_pay."?merchantId=".$return_token['merchantId']. "&token=".$return_token['token']. "&integrationMode=standalone&paymentSolutionId=500";
+
+				\Log::info("Request Universal Pay: " . $url);
+				$res = array(
+					"status" => "success",
+					"location" => $url
+				);
+			} else {
+				$res = array(
+					"status" => "error"
+				);
+			}
 		}
-		#es necesario para que las cookies se actualicen y se pueda vaciar correctamente el carrito
+		#es necesario el response() para que las cookies se actualicen y se pueda vaciar correctamente el carrito
 		response();
 		return $res;
 	}
@@ -201,7 +237,7 @@ class PayShoppingCartController extends Controller
 		return \View::make('front::pages.panel.RedsysForm', $varsRedsys);
 	}
 
-	#llamada que hace redsys para indicarnos que transaccion se ha pagado
+	#llamada que hace redsys/ universal pay para indicarnos que transaccion se ha pagado
 	#tambien se llama si el pago es por transferencia, en el momento de elegir ese tipo de pago
 	public function returnPay($idTrans){
 		\Log::info("Dentro de Return Pay $idTrans");
@@ -220,67 +256,105 @@ class PayShoppingCartController extends Controller
 
 
 
-		$info = json_decode($transaccion->info_paycart);
 
-		if(empty($info ) || empty($info->lots) ){
-			\Log::info("Error en pasarela de pago de tienda online, no hay lotes asociados al id $idTrans   ");
-			return;
-		}
-		$subasta = new Subasta();
-		$subasta->cli_licit = $transaccion->cli_paycart;
+		$tipoPago = substr($idTrans,0,1);
+
+		if($tipoPago == "T"){
+			$info = json_decode($transaccion->info_paycart);
+			if(empty($info ) || empty($info->lots) ){
+				\Log::info("Error en pasarela de pago de tienda online, no hay lotes asociados al id $idTrans   ");
+				return;
+			}
+			$subasta = new Subasta();
+			$subasta->cli_licit = $transaccion->cli_paycart;
 
 
-		$subasta->type_bid = 'W';
-		#de momento no es necesario modificar la info de la transaccion, solo si algun producto tiene stock
-		$updateInfo = false;
-		foreach($info->lots as $keyLot => $lot) {
-			#control de stock si es necesario
-			$stock = FgAsigl0::select("CONTROLSTOCK_HCES1, nvl(STOCK_HCES1,0) STOCK_HCES1, NUM_HCES1, LIN_HCES1")->JoinFghces1Asigl0()->where("SUB_ASIGL0", $lot->cod_sub)->where("REF_ASIGL0", $lot->ref)->first();
+			$subasta->type_bid = 'W';
+			#de momento no es necesario modificar la info de la transaccion, solo si algun producto tiene stock
+			$updateInfo = false;
 
-			if(!empty($stock) && $stock->controlstock_hces1 == 'S' ){
-					#DESCONTAMOS 1 EL STOCK
-					\Log::info("entrando en stock");
-					$update =["stock_hces1" =>  $stock->stock_hces1 -1];
-					FgHces1::where("NUM_HCES1", $stock->num_hces1)->where("LIN_HCES1", $stock->lin_hces1)->update($update);
-					#se le otorga otra referencia para que el original no se adjudique y se adjudique la copia
-					$lot->ref = $this->duplicarObra($lot->cod_sub,$lot->ref);
-					#modificamos la referencia para que se tenga en la transacción la misma referencia que se ha vendido
-					$info->lots[$keyLot]->ref = $lot->ref;
-					$updateInfo = true;
-					#MODIFICAR LA REFERENCIA EN INFO Y AL FINA LDE TODO SUSTITUIR LA INFO ORIGINAL POR LA NUEVA, ASI SE REGISTRAN BIEN LSO LOTES VENDIDOS
+			foreach($info->lots as $keyLot => $lot) {
+				#control de stock si es necesario
+				$stock = FgAsigl0::select("CONTROLSTOCK_HCES1, nvl(STOCK_HCES1,0) STOCK_HCES1, NUM_HCES1, LIN_HCES1, DESCWEB_HCES1, REF_ASIGL0")->JoinFghces1Asigl0()->where("SUB_ASIGL0", $lot->cod_sub)->where("REF_ASIGL0", $lot->ref)->first();
+				$mailLots[]= $stock;
+				if(!empty($stock) && $stock->controlstock_hces1 == 'S' ){
+						#DESCONTAMOS 1 EL STOCK
+						\Log::info("entrando en stock");
+						$update =["stock_hces1" =>  $stock->stock_hces1 -1];
+						FgHces1::where("NUM_HCES1", $stock->num_hces1)->where("LIN_HCES1", $stock->lin_hces1)->update($update);
+						#se le otorga otra referencia para que el original no se adjudique y se adjudique la copia
+						$lot->ref = $this->duplicarObra($lot->cod_sub,$lot->ref);
+						#modificamos la referencia para que se tenga en la transacción la misma referencia que se ha vendido
+						$info->lots[$keyLot]->ref = $lot->ref;
+						$updateInfo = true;
+						#MODIFICAR LA REFERENCIA EN INFO Y AL FINA LDE TODO SUSTITUIR LA INFO ORIGINAL POR LA NUEVA, ASI SE REGISTRAN BIEN LSO LOTES VENDIDOS
+				}
+
+				//datos para hacer la puja
+				#HAY QUE COJER LA SUBASTA DE CADA LOTE YA QUE PUEDEN PERTENECER A SUBASTAS DIFERENTES
+				$subasta->cod =  $lot->cod_sub;
+				$checklicit = $subasta->checkLicitador();
+
+				$subasta->licit =head($checklicit)->cod_licit;
+				$subasta->imp = $lot->importe;
+				$subasta->ref = $lot->ref;
+
+				//debe ir a true para que no compruebe que este cerrado
+				$result = $subasta->addPuja(TRUE);
+
+				\Log::info("adjudicando lote". $lot->cod_sub ."   ". $lot->ref);
+
+				$a=DB::select("call CERRARLOTE(:subasta, :ref, :emp, :user_rp, :redondeo)",
+				array(
+					'subasta'    => $lot->cod_sub,
+					'ref'        => $lot->ref,
+					'emp'        => Config::get('app.emp'),
+					'user_rp'     => 'admin',
+					'redondeo'     => 2
+					)
+				);
+
+
+
+				#Despues de crear la adjudicación debemos marcarla cómo pagada.
+				FgCsub::where("SUB_CSUB", $lot->cod_sub)->where("REF_CSUB", $lot->ref)->update(["AFRAL_CSUB"=> "L00"]);
+			}
+			# si es necesario updatar la información de la transacción
+			if($updateInfo){
+				WebPayCart::where("IDTRANS_PAYCART", $idTrans)->update(["info_paycart" =>  json_encode($info)]);
+
+			}
+			#falta hacer el envio del email
+			$this->sendEmailPaid($idTrans);
+
+
+
+		#es un pago especial, puede ser un pago de minteo NFT o un pago de transferencia de NFT
+
+		}elseif($tipoPago == "M"){
+
+			$info = json_decode($transaccion->info_paycart);
+
+			if($info->reason == "mint"){
+				#guardamos el id de transaccion en la tabla de NFt para que se sepa que está pagado
+				FgNft::where("NUMHCES_NFT", $info->num)->where("LINHCES_NFT", $info->lin)->update(["PAY_MINT_NFT" =>$idTrans] );
+				#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR A PAGADO EL MINTEO DEL NFT
+
+			}elseif($info->reason == "transfer"){
+				foreach($info->lots as $keyLot => $lot) {
+					#guardamos el id de transaccion en la tabla de NFt para que se sepa que está pagado
+					FgNft::where("NUMHCES_NFT", $lot->num)->where("LINHCES_NFT", $lot->lin)->update(["PAY_TRANSFER_NFT" =>$idTrans] );
+					#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL Cliente ha pagado la transacción
+				}
+
 			}
 
-			//datos para hacer la puja
-			#HAY QUE COJER LA SUBASTA DE CADA LOTE YA QUE PUEDEN PERTENECER A SUBASTAS DIFERENTES
-			$subasta->cod =  $lot->cod_sub;
-			$checklicit = $subasta->checkLicitador();
-
-			$subasta->licit =head($checklicit)->cod_licit;
-			$subasta->imp = $lot->importe;
-			$subasta->ref = $lot->ref;
-
-			//debe ir a true para que no compruebe que este cerrado
-			$result = $subasta->addPuja(TRUE);
-
-			\Log::info("adjudicando lote". $lot->cod_sub ."   ". $lot->ref);
-
-			$a=DB::select("call CERRARLOTE(:subasta, :ref, :emp, :user_rp, :redondeo)",
-			array(
-				'subasta'    => $lot->cod_sub,
-				'ref'        => $lot->ref,
-				'emp'        => Config::get('app.emp'),
-				'user_rp'     => 'admin',
-				'redondeo'     => 2
-				)
-			);
-		}
-		# si es necesario updatar la información de la transacción
-		if($updateInfo){
-			WebPayCart::where("IDTRANS_PAYCART", $idTrans)->update(["info_paycart" =>  json_encode($info)]);
-
 		}
 
-		if(Config::get('app.WebServicePaidInvoice')){
+
+
+
+		if(Config::get('app.WebServicePaidInvoice')  ){
 
 			$theme  = Config::get('app.theme');
 			$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
@@ -304,6 +378,194 @@ class PayShoppingCartController extends Controller
 
 		FgAsigl0::create($obra->toArray());
 		return $obra->ref_asigl0;
+	}
+
+	#generar pago de coste de minteo
+	#http://www.newsubastas.test/mintpayment/7de69f65-f697-40bd-b7bc-fddaaa6b515b
+	public function createMintPay($operationId){
+
+		$vottunController = new VottunController();
+		#networks de pago
+		$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
+		$lot = FgNft::JoinFghces()->select("NUMHCES_NFT, LINHCES_NFT, PROP_HCES1, NETWORK_NFT, COST_MINT_NFT ")->where("MINT_ID_NFT", $operationId)->first();
+
+		if(!empty($lot)){
+			# si pertenece a una red de pago
+			if(in_array($lot->network_nft, $payNetworks)){
+
+
+					$info = new \Stdclass();
+					$info->paymethod ="creditcard";
+					$info->comments = "pago minteo";
+					$info->reason ="mint";
+					$info->num =  $lot->numhces_nft;
+					$info->lin =  $lot->linhces_nft;
+					# el coste del minteo se ha cargado en la tabla FGNFT en el momento de hacer el webhook
+					$info->total =  $lot->cost_mint_nft;
+
+
+
+
+					$webpayCart=array();
+					$webpayCart["CLI_PAYCART"] = $lot->prop_hces1;
+					$webpayCart["EMP_PAYCART"] = \Config::get("app.emp");
+
+					#CREAMOS EL ID DE LA TRANSACCION, LA LETRA QUE IDENTIFICARÁ LOS PAGOS DE MINTEO SERÁ LA M
+					$webpayCart["IDTRANS_PAYCART"] = "M" . rand(1, 9) . time();
+					$webpayCart["DATE_PAYCART"] = date("Y-m-d H:i:s");
+					$webpayCart["INFO_PAYCART"] = json_encode($info) ;
+					WebPayCart::insert($webpayCart);
+
+
+					$url = Config::get('app.url') . '/shoppingCart/callRedsys?idTrans=' . $webpayCart["IDTRANS_PAYCART"]."&paymethod=creditcard" ;
+					return redirect($url);
+
+			}else{
+				$vottunController->sendEmailError("error en cobro de minteo al propietario, en una red de pago no se ha podido recuperar la operación");
+
+			}
+
+		}else{
+			$vottunController->sendEmailError("error generando el cobro del minteo al propietario, no se ha encontrado el lote asociado con la operación $operationId");
+
+		}
+
+
+
+	}
+
+
+	#generar pago de coste de transferencia, puede venir mas de una transferencia
+	#http://www.newsubastas.test/transferpayment/b040c87d-7772-460a-aafb-7efb9484db6d_b8e4f247-34eb-4c04-9599-0263b2fe7a21_
+	public function createTransferPay($operationsIds){
+
+		if(!Session::has('user')){
+			#nostramos página con mensaje de error
+			return View::make('front::pages.not-logged',["data" =>trans(\Config::get('app.theme').'-app.user_panel.not-logged') ] );
+		}
+
+		$vottunController = new VottunController();
+		#networks de pago
+		$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
+		$transferId =  explode("_" , $operationsIds);
+
+		$asigl0 = new Fgasigl0();
+		$transfers = $asigl0->JoinFghces1Asigl0()->JoinCSubAsigl0()->JoinNFT()->
+		select("NUMHCES_NFT, LINHCES_NFT,  DESCWEB_HCES1, TRANSFER_ID_NFT,COST_TRANSFER_NFT, PAY_TRANSFER_NFT, CLIFAC_CSUB ")->
+		where("CLIFAC_CSUB",Session::get('user.cod'))->
+		#networks de pago, si no son de pago no se deberá cobrar
+		wherein("NETWORK_NFT", $payNetworks)->
+		#si está pendiente de pago
+		where("PAY_TRANSFER_NFT","P")->
+		#id de las transferencias
+		wherein("TRANSFER_ID_NFT", $transferId)->
+		where("ES_NFT_ASIGL0","S")->
+		# si la transferencia tiene importe es que se debe pagar, puede estar pagada o no pero es la manera de saber que nft mostrar en este listado
+		where("COST_TRANSFER_NFT",">",0)->
+		get();
+
+
+		#si no se recupera ninguna transferencia o no se recuperan todas las transferencias que se han pedido
+		if(count($transfers) == 0  || count($transfers) != count($transferId)){
+			\Log::info("Error en pago generar pago de transferencia, no coinciden el numero de transferecnia con el numero de id's facilitado." .print_r($transferId, true). print_r($transfers->toArray(),true));
+			#nostramos página con mensaje de error
+			return View::make('front::pages.not-logged',["data" =>trans(\Config::get('app.theme').'-app.user_panel.error_pay_transfer_nft') ] );
+		}
+		$info = new \Stdclass();
+		$info->paymethod ="creditcard";
+		$info->comments = "pago transferencia NFT";
+		$info->reason ="transfer";
+		$info->lots = [];
+		$info->total = 0;
+		foreach ($transfers as $transfer) {
+			$lot = new \Stdclass();
+			$lot->num =  $transfer->numhces_nft;
+			$lot->lin =  $transfer->linhces_nft;
+			$info->lots[] = $lot;
+			# el coste de la transferencia se ha cargado en la tabla FGNFT en el momento de hacer el webhook
+			$info->total += $transfer->cost_transfer_nft;
+
+		}
+
+		$webpayCart = array();
+		$webpayCart["CLI_PAYCART"] = $transfers[0]->clifac_csub;
+		$webpayCart["EMP_PAYCART"] = \Config::get("app.emp");
+
+		#CREAMOS EL ID DE LA TRANSACCION, LA LETRA QUE IDENTIFICARÁ LOS PAGOS DE MINTEO Y TRANSFERENCIA SERÁ LA M
+		$webpayCart["IDTRANS_PAYCART"] = "M" . rand(1, 9) . time();
+		$webpayCart["DATE_PAYCART"] = date("Y-m-d H:i:s");
+		$webpayCart["INFO_PAYCART"] = json_encode($info) ;
+		WebPayCart::insert($webpayCart);
+
+
+		$url = Config::get('app.url') . '/shoppingCart/callRedsys?idTrans=' . $webpayCart["IDTRANS_PAYCART"]."&paymethod=creditcard" ;
+		return redirect($url);
+	}
+
+	public function sendEmailPaid($idTrans)
+	{
+		#pendiente de hacer que envie email con los datos de la compra, tanto al comprador como al admin
+		$email = new EmailLib('SHOPPING_CART_PAY');
+		if(empty($email)) {
+			return false;
+		}
+
+		$transaccion = WebPayCart::where("IDTRANS_PAYCART", $idTrans)->first();
+		$info = json_decode($transaccion->info_paycart, true);
+
+		//información de los lotes
+		['total' => $total, 'lots' => $lots] = $info;
+		$lots = collect($lots);
+
+		$fgasigl0 = FgAsigl0::select('descweb_hces1', 'num_hces1', 'lin_hces1', 'impsalhces_asigl0')->joinFghces1Asigl0();
+
+		$lots->groupBy('cod_sub') //agrupamos por subasta
+			->each(function($lotsPerAuction, $cod_sub) use ($fgasigl0){ //para cada subasta
+				$fgasigl0->orWhere(function($query) use  ($lotsPerAuction, $cod_sub) {
+					$query->where("sub_asigl0", $cod_sub)
+						->whereIn("ref_asigl0", $lotsPerAuction->pluck('ref'));
+				});
+			});
+
+		$lotsQuery = $fgasigl0->get();
+
+		//montar tabla html con info de los lotes
+		$html = view('front::emails.paid_lot', ['lots' => $lotsQuery])->render();
+
+		//enviar email a usuario y admin
+		$email->setUserByCod($transaccion->cli_paycart, true);
+		$email->setPrice($total);
+		$email->setAtribute('HTML', $html);
+		//$email->setBcc(config('app.admin_email_administracion'));
+		$email->send_email();
+
+		return true;
+		/*
+		$fgasigl0 = new FgAsigl0();
+		$auctions = array();
+		foreach($info->lots as $keyLot => $lot) {
+			if(empty($auctions[$lot->cod_sub])){
+				$auctions[$lot->cod_sub] = array();
+			}
+			$auctions[$lot->cod_sub][] = $lot->ref;
+		}
+
+		foreach($auctions as $cod_sub => $lots){
+
+			$fgasigl0 = $fgasigl0->orWhere(function($query) use  ($cod_sub, $lots) {
+				$query->where("sub_asigl0", $cod_sub)
+				->whereIn("ref_asigl0", $lots);
+			});
+
+		}
+
+
+		$fgasigl0 = $fgasigl0->JoinFghces1Asigl0()->JoinFgOrtsec1Asigl0()->JoinSubastaAsigl0();
+
+		$lots = $fgasigl0->select(" SUB_ASIGL0, DES_SUB, REF_ASIGL0, IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, NUM_HCES1, LIN_HCES1, PESO_HCES1, PESOVOL_HCES1, SEC_HCES1, LIN_ORTSEC1, PERMISOEXP_HCES1")->get();
+
+		dd($lots);
+		*/
 	}
 
 /*

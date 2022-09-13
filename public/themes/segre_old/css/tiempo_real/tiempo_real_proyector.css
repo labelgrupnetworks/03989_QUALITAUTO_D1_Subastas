@@ -1,0 +1,113 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 17-feb-2020, 16:56:56
+    Author     : enadal
+*/
+:root {
+    --primary-color: #414145;
+    --secondary-color: #CBB997;
+}
+
+
+.nav_tr{
+    background-color: #494742;
+    color: #fff;
+}
+
+.nav_tr {
+    grid-template-columns: 3fr 2fr;
+}
+
+.ficha_tiempo_real {
+    grid-template-columns: 3fr 2fr;
+}
+
+.tr_proyector_content{
+	grid-template-rows: 2fr 9fr;
+}
+
+.lot{
+	text-align: center;
+	font-size: 100px;
+}
+
+.tr_proyector_info {
+    grid-template-rows: 2fr 3fr 3fr 3fr auto;
+}
+
+.tr_proyector_info .current-bid, .tr_proyector_info .next-bid{
+	font-size: 50px;
+}
+
+#actual_max_bid, #next_bid_JS {
+    font-size: 100px;
+}
+
+.tr_proyector_info .last-bids-container{
+	max-height: 227px;
+}
+
+@media (max-width: 1536px) {
+
+	.tr_proyector_info {
+		grid-template-rows: 2fr 2fr 2fr 3fr auto;
+	}
+
+	.lot{
+		font-size: 60px;
+	}
+
+	.tr_proyector_info .current-bid, .tr_proyector_info .next-bid{
+		font-size: 40px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 60px;
+	}
+
+	.tr_proyector_info .last-bids-container {
+		max-height: 210px;
+	}
+
+
+}
+
+@media (max-width: 1280px) {
+
+	.tr_proyector_info{
+		font-size: 18px;
+	}
+
+	.tr_proyector_info .last-bids-container{
+		max-height: 173px;
+	}
+
+	body > div:first-of-type{
+		grid-template-rows: 55px auto;
+	}
+
+	.auction_number{
+		font-size: 25px;
+	}
+
+	.brand img{
+		max-height: 35px;
+	}
+
+	.nav_tr{
+		padding: 10px;
+	}
+
+	.tr_proyector_info .current-bid, .tr_proyector_info .next-bid{
+		font-size: 30px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 40px;
+	}
+}
+

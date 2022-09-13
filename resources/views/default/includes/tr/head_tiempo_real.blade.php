@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.css') }}" />
 
+@stack('stylesheets')
+
 @if (config('app.socket_v4', 0))
 <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/client-dist/socket.io.js') }}"></script>
 @else
@@ -46,3 +48,5 @@
 </script>
 
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
+
+@stack('scripts')

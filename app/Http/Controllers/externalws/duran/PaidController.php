@@ -406,7 +406,6 @@ class PaidController extends DuranController
 #Falta conseguir la informacion de que metodo de pago usan
 #pueden venir varios pagos
 
-
 		#no hay pago
 		if(empty($pago)){
 			\Log::info("Transaccion no encontrada, $idTransaction");

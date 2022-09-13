@@ -22,93 +22,86 @@
 			@include('pages.panel.menu_micuenta')
 
 			<div class="row">
-				<div class="col-xs-12 mt-2">
-					<div class="user-account-title-content sales-filters">
-						<div class="user-account-menu-title extra-account">
-							<a data-toggle="collapse" href="#filters">
-								<h4 class="sales-filters-title">{{ trans("$theme-app.global.filters") }}</h4>
-							</a>
-						</div>
-					</div>
-
-					<form action="">
-						<div class="panel-collapse collapse in" id="filters">
-							<div class="filters-group d-flex align-items-end flex-wrap p-1">
-								<div class="form-group">
-									<label for="fromDate">{{ trans("$theme-app.global.since") }}:</label>
-									<input class="form-control" type="date" name="from-date" id="fromDate" value="{{ request('from-date', null) }}">
-								</div>
-
-								<div class="form-group">
-									<label for="toDate">{{ trans("$theme-app.global.to") }}:</label>
-									<input class="form-control" type="date" name="to-date" id="toDate" value="{{ request('to-date', null) }}">
-								</div>
-
-								<div class="form-group">
-									<button type="submit" class="btn btn-color">{{ trans("$theme-app.global.filter") }}</button>
-								</div>
-								<div class="form-group">
-									<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" class="btn btn-subasta">{{ trans("$theme-app.global.clean") }}</a>
-								</div>
-							</div>
-						</div>
-					</form>
-
+				<div class="col-xs-12">
+					<p class="sales-panel-info">{{ trans("$theme-app.user_panel.sales_info") }}</p>
 				</div>
 			</div>
 
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 
+					@php
+						$auctionsTypes = session('user.admin') ? ['S', 'A'] : ['S'];
+						$subastas = $subastas->flatten()->whereIn('subc_sub', $auctionsTypes)->groupBy('cod_sub');
+					@endphp
+
 					@foreach($subastas as $key_sub => $subasta)
 					<div class="panel-heading">
-						<a data-toggle="collapse" href="#{{$subasta[0]->cod_sub}}">
-							<h4 class="panel-title">{{$subasta[0]->name}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->orders_start, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->end, 'Y-m-d H:i:s', 'd/m/Y') }}</h4>
+						<a data-toggle="collapse" href="#{{ $key_sub }}">
+							<h4 class="panel-title">{{ $key_sub }} - {{$subasta[0]->name}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->orders_start, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->end, 'Y-m-d H:i:s', 'd/m/Y') }}</h4>
 						</a>
 					</div>
 
-					<div id="{{$subasta[0]->cod_sub}}"
+					<div id="{{ $key_sub }}"
 						class="panel-collapse collapse <?= $loop->first ? 'in':' ';?>">
 						<div class="panel-body">
 							<div class="table-responsive">
-								<table class="table table-striped table-custom">
+								<table class="table table-striped table-custom" style="width:100%">
 									<thead>
 										<tr>
-										<tr>
-											<th> </th>
+											<th class="no-sort sorting_disabled"> </th>
+											<th class="hidden">Index</th>
+											<th>{{ trans("$theme-app.user_panel.reference") }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</th>
-											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th></th>
+											<th>{{ trans(\Config::get('app.theme').'-app.user_panel.status') }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</th>
 											<th>{{ trans("$theme-app.user_panel.bids_numbers") }}</th>
 											<th>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</th>
 										</tr>
-										</tr>
 									</thead>
 									<tbody>
-										@foreach($subasta->sortBy('ref_asigl0') as $lote)
+
+										@php
+										$totalSalida = 0;
+										$totalMaxPuja = 0;
+										@endphp
+
+										@foreach($subasta->sortBy('lin_hces1')->sortByDesc('num_hces1') as $lote)
+
 										@php
 										$url_friendly = !empty($lote->webfriend_hces1) ? $lote->webfriend_hces1 : str_slug($lote->titulo_hces1);
 										$url_friendly = \Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
 										$hay_pujas = !empty(count($lote->pujas))? true : false;
 
 										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, 0);
-										$maxPuja = \Tools::moneyFormat($maxPuja ?? 0, '€');
+										$maxPujaFormat = \Tools::moneyFormat($maxPuja ?? 0, '€');
 										$cerrado = $lote->cerrado_asigl0 == 'S'? true : false;
 										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' || $lote->cerrado_asigl0 == 'D') ? true : false;
 										$desadjudicado = $lote->desadju_asigl0 == 'S'? true : false;
+
+										if($cerrado && empty($lote->implic_hces1)){
+											continue;
+										}
+
+										$totalSalida += $lote->impsalhces_asigl0;
+										$totalMaxPuja += $maxPuja;
+
 										@endphp
+
 										<tr>
 											<td>
 												<a href="{{$url_friendly}}"><img src="{{ \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1) }}" height="42"></a>
 											</td>
-											<td>&nbsp;&nbsp;{{$lote->ref_asigl0}}</td>
+											<td class="hidden">{{$loop->index}}</td>
+											<td>{{$lote->num_hces1}} / {{ $lote->lin_hces1 }}</td>
+											<td>{{$lote->ref_asigl0}}</td>
 
 											<td>
 												@if(strtotime($lote->end) < time() && $hay_pujas)
 													{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
 
-												@elseif(strtotime($lote->end) < time())
-													{{ trans(\Config::get('app.theme').'-app.user_panel.closed') }}
+												{{-- @elseif($cerrado && empty($lote->implic_hces1))
+													{{ trans(\Config::get('app.theme').'-app.user_panel.closed') }} --}}
 
 												@elseif(strtotime($lote->orders_start) > time())
 													{{ trans(\Config::get('app.theme').'-app.user_panel.soon') }}
@@ -122,11 +115,21 @@
 
 											<td>{{ count($lote->pujas) + ($lote->orders ?? 0) }}</td>
 
-											<td>{{ $maxPuja }}</td>
+											<td>{{ $maxPujaFormat }}</td>
 
 										</tr>
 											@endforeach
 									</tbody>
+									<tfoot>
+										<tr>
+											<th colspan="2">{{ trans("$theme-app.user_panel.totals") }}</th>
+											<th></th>
+											<th></th>
+											<th>{{ Tools::moneyFormat($totalSalida, '€') }}</th>
+											<th></th>
+											<th>{{ Tools::moneyFormat($totalMaxPuja, '€') }}</th>
+										</tr>
+									</tfoot>
 								</table>
 							</div>
 						</div>

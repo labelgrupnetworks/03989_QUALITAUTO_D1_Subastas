@@ -251,7 +251,9 @@ class LotController extends ApiLabelController
 				}
 
 				$res->items[$key]->url= \Tools::url_lot($item->idauction, $item->id_auc_sessions, $item->name, $item->reflot,$item->numcession,$item->urlfriendly,$item->title);
-				$res->items[$key]->urlimg= \Tools::url_img("lote_large", $item->numcession, $item->lincession, null, true);
+				$res->items[$key]->urlimg= \Tools::url_img("lote_large", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgMedium= \Tools::url_img("lote_medium", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgSmall= \Tools::url_img("lote_small", $item->numcession, $item->lincession, null, false);
 
 				#eliminamso num, ya que no se necesita devolver el num_hces
 				unset($res->items[$key]->name);

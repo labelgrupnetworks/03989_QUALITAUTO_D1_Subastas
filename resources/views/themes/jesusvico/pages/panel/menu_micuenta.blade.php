@@ -1,3 +1,8 @@
+@php
+	$lotsOwner = \App\Models\V5\FgHces1::where('PROP_HCES1', Session::get('user.cod'))->first();
+	
+@endphp
+
 <div class="tabs-custom filters-auction-content">
 
 	<div id="button-open-user-menu" class="tabs-custom-responsive visible-xs visible-sm">
@@ -6,7 +11,7 @@
 	<div style="postion: relative"></div>
 
 	<div id="user-account-ul">
-	<p class="user-acount-menu-title" style="text-transform: uppercase;">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
+	<p class="user-acount-menu-title" style="text-transform: uppercase;">{{ trans(\Config::get('app.theme').'-app.user_panel.auction') }}</p>
 	<ul class="ul-format color-letter">
 
 		<li class="text-uppercase<?php if($tab == 'orders'){ echo(' tab-active'); } ?>" role="presentation">
@@ -22,12 +27,7 @@
 				{{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}
 			</a>
 		</li>
-		<li class="text-uppercase<?php if($tab == 'directsale'){ echo(' tab-active'); } ?>" role="presentation">
-			<a class="" href="{{ route('panel.allotment.diectsale', ['lang' => config('app.locale')]) }}"
-				data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}">
-				{{ trans("$theme-app.foot.direct_sale") }}
-			</a>
-		</li>
+
 		<li class="text-uppercase<?php if($tab == 'allotments' || $tab == 'bills'){ echo(' tab-active'); } ?>"
 			role="presentation">
 			<a class="" role="button" data-toggle="collapse" href="#collapse_adj" aria-expanded="false"
@@ -47,15 +47,8 @@
 					href="{{ \Routing::slug('user/panel/bills') }}">{{ trans(\Config::get('app.theme').'-app.user_panel.pending_bills') }}</a>
 			</ul>
 		</div>
-	</ul>
 
-	@php
-		$lotsOwner = \App\Models\V5\FgHces1::where('PROP_HCES1', Session::get('user.cod'))->first();
-	@endphp
-
-	@if($lotsOwner)
-	<p class="user-acount-menu-title" style="text-transform: uppercase;">{{ trans(\Config::get('app.theme').'-app.user_panel.sell') }}</p>
-	<ul class="ul-format color-letter">
+		@if($lotsOwner)
 		<li class="text-uppercase<?php if($tab == 'sales'){ echo(' tab-active'); } ?>" role="presentation">
 			<a class="" href="{{ \Routing::slug('user/panel/sales') }}"
 				data-title="{{ trans(\Config::get('app.theme').'-app.panel.lots_owner') }}">
@@ -68,10 +61,16 @@
 				{{ trans(\Config::get('app.theme').'-app.user_panel.totals') }}
 			</a>
 		</li>
-	</ul>
 	@endif
+	</ul>
 
-	<p class="user-acount-menu-title" style="text-transform: uppercase">{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</p>
+	<p class="user-acount-menu-title mb-4" style="text-transform: uppercase;">
+		<a class="user-acount-menu-link {{ $tab == 'showShoppingCart' ? 'active' : ''}}" href="{{ route('showShoppingCart', ['lang' => config('app.locale')]) }}">
+			{{ trans("$theme-app.foot.direct_sale") }}
+		</a>
+	</p>
+
+	<p class="user-acount-menu-title" style="text-transform: uppercase">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</p>
 	<ul class="ul-format color-letter">
 
 		<li class="text-uppercase<?php if($tab == 'datos-personales'){ echo(' tab-active'); } ?>" role="presentation">

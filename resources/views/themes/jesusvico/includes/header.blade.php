@@ -2,6 +2,7 @@
 
 use App\libs\TradLib as TradLib;
 use App\Models\V5\FgCsub;
+use App\Http\Controllers\V5\CartController;
 
     $lang = Config::get('app.locale');
 
@@ -18,7 +19,10 @@ use App\Models\V5\FgCsub;
 	$sells = null;
 
 	if($cod_cli){
-		$sells = FgCsub::getAdjudicacionesPendientesCount($cod_cli, ['Tienda1', 'Tienda2', 'Tienda3', 'Tienda4', 'T14']);
+		$cartController = new CartController();
+		$sells =$cartController->getNumElements();
+		//$sells = FgCsub::getAdjudicacionesPendientesCount($cod_cli, ['Tienda1', 'Tienda2', 'Tienda3', 'Tienda4', 'T14']);
+
 	}
 
 ?>
@@ -339,7 +343,7 @@ use App\Models\V5\FgCsub;
 			</div>
 			@if(Session::has('user') && $sells)
 			<div class="sells">
-				<a href="{{ route('panel.allotment.diectsale', ['lang' => config('app.locale')]) }}">
+				<a href="{{ route('showShoppingCart', ['lang' => config('app.locale')]) }}">
 					<i class="fa fa-2x fa-shopping-cart" aria-hidden="true"></i>
 					<span class="badge">{{ $sells }}</span>
 				</a>

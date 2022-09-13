@@ -32,7 +32,12 @@ class ArticleController extends Controller
 
 	public function index(Request $request){
 		$data=[];
-		if($request->family){
+
+		#priorizamos las variables get, en caso de que haya los dos datos cogemos las variables por get
+		if(request("familia")){
+			$data["familia"] = request("familia");
+		}
+		elseif($request->family){
 			$fgfamart = FgFamart::select("COD_FAMART")->where("COD_FAMART",strtoupper($request->family) )->first();
 
 			\Tools::exit404IfEmpty($fgfamart);
@@ -40,7 +45,9 @@ class ArticleController extends Controller
 
 		}
 
-		if($request->category){
+		if(request("ortsec")){
+			$data["ortsec"] = request("ortsec");
+		}elseif($request->category){
 			$fgortsec0 = new FgOrtsec0();
 			$linOrtsec =  $fgortsec0->getLinFgOrtsec($request->category) ;
 
@@ -48,7 +55,9 @@ class ArticleController extends Controller
 			$data["ortsec"] = $linOrtsec;
 
 		}
-		if($request->subcategory){
+		if(request("sec")){
+			$data["sec"] = request("sec");
+		}elseif($request->subcategory){
 
 			$fxSec = new FxSec();
 			$cod_sec = $fxSec->GetCodFromKey($request->subcategory);

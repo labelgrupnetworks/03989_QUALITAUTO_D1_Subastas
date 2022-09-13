@@ -16,12 +16,22 @@
 		</div>
 
 		<input type="hidden" name="publish_nft" value="0">
+		<input type="hidden" name="mint_nft" value="0">
 	</fieldset>
 </div>
 
 @if($formulario->publish_nft)
 <div class="col-xs-12 text-right mt-2">
 	<a id="js-nft-publish" {{-- href="{{ route('subastas.lotes.publish_nft', ['cod_sub' => $cod_sub, 'ref_asigl0' => $fgAsigl0->ref_asigl0]) }}" --}} class="btn btn-primary">Publicar</a>
+</div>
+@endif
+@if($formulario->unpublish_nft)
+<div class="col-xs-6 text-left mt-2">
+	<a id="js-nft-unpublish" href="{{ route('subastas.lotes.unpublish_nft', ['cod_sub' => $cod_sub, 'ref_asigl0' => $fgAsigl0->ref_asigl0]) }}" class="btn btn-danger">Despublicar</a>
+</div>
+<div class="col-xs-6 text-right mt-2">
+	<a id="js-nft-mint"  class="btn btn-success ">Mintear</a>
+
 </div>
 @endif
 

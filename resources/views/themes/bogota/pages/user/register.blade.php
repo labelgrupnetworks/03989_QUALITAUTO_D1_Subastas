@@ -338,6 +338,8 @@ foreach ($document_type as $key => $value) {
                                                             {{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
                                                         </label>
                                                     </div>
+													<input type="hidden" name="families[20]" value="1">
+
 
                                                     @endif
                                                     </div>

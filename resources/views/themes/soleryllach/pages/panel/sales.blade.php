@@ -21,41 +21,11 @@
 
 			@include('pages.panel.menu_micuenta')
 
-			{{-- <div class="row">
-				<div class="col-xs-12 mt-2">
-					<div class="user-account-title-content sales-filters">
-						<div class="user-account-menu-title extra-account">
-							<a data-toggle="collapse" href="#filters">
-								<h4 class="sales-filters-title">{{ trans("$theme-app.global.filters") }}</h4>
-							</a>
-						</div>
-					</div>
-
-					<form action="">
-						<div class="panel-collapse collapse in" id="filters">
-							<div class="filters-group d-flex align-items-end flex-wrap p-1">
-								<div class="form-group">
-									<label for="fromDate">{{ trans("$theme-app.global.since") }}:</label>
-									<input class="form-control" type="date" name="from-date" id="fromDate" value="{{ request('from-date', null) }}">
-								</div>
-
-								<div class="form-group">
-									<label for="toDate">{{ trans("$theme-app.global.to") }}:</label>
-									<input class="form-control" type="date" name="to-date" id="toDate" value="{{ request('to-date', null) }}">
-								</div>
-
-								<div class="form-group">
-									<button type="submit" class="btn btn-color">{{ trans("$theme-app.global.filter") }}</button>
-								</div>
-								<div class="form-group">
-									<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" class="btn btn-subasta">{{ trans("$theme-app.global.clean") }}</a>
-								</div>
-							</div>
-						</div>
-					</form>
-
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="sales-panel-info">{{ trans("$theme-app.user_panel.sales_info") }}</p>
 				</div>
-			</div> --}}
+			</div>
 
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
@@ -91,6 +61,11 @@
 									</thead>
 									<tbody>
 
+										@php
+										$totalSalida = 0;
+										$totalMaxPuja = 0;
+										@endphp
+
 										@foreach($subasta->sortBy('lin_hces1')->sortByDesc('num_hces1') as $lote)
 
 										@php
@@ -99,7 +74,7 @@
 										$hay_pujas = !empty(count($lote->pujas))? true : false;
 
 										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, 0);
-										$maxPuja = \Tools::moneyFormat($maxPuja ?? 0, '€');
+										$maxPujaFormat = \Tools::moneyFormat($maxPuja ?? 0, '€');
 										$cerrado = $lote->cerrado_asigl0 == 'S'? true : false;
 										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' || $lote->cerrado_asigl0 == 'D') ? true : false;
 										$desadjudicado = $lote->desadju_asigl0 == 'S'? true : false;
@@ -107,6 +82,9 @@
 										if($cerrado && empty($lote->implic_hces1)){
 											continue;
 										}
+
+										$totalSalida += $lote->impsalhces_asigl0;
+										$totalMaxPuja += $maxPuja;
 
 										@endphp
 
@@ -137,11 +115,21 @@
 
 											<td>{{ count($lote->pujas) + ($lote->orders ?? 0) }}</td>
 
-											<td>{{ $maxPuja }}</td>
+											<td>{{ $maxPujaFormat }}</td>
 
 										</tr>
 											@endforeach
 									</tbody>
+									<tfoot>
+										<tr>
+											<th colspan="2">{{ trans("$theme-app.user_panel.totals") }}</th>
+											<th></th>
+											<th></th>
+											<th>{{ Tools::moneyFormat($totalSalida, '€') }}</th>
+											<th></th>
+											<th>{{ Tools::moneyFormat($totalMaxPuja, '€') }}</th>
+										</tr>
+									</tfoot>
 								</table>
 							</div>
 						</div>

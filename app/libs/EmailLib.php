@@ -41,10 +41,12 @@ public $attachments = NULL;
 private $pdfs = array();
 public $old_lang = NULL;
 private $cc = array();
-
+private $debug = true;
     public function __construct($cod_email){
+		#si existe la variable debug_email es la que manda, si no se usará APP_DEBUG
+		$this->debug = env('APP_DEBUG_EMAIL')??env('APP_DEBUG');
 
-        if ( env('APP_DEBUG')) {
+        if ( $this->debug) {
             $this->from = env('MAIL_FROM_ADDRESS') ?? Config::get('app.from_email');
         }else{
             $this->from = Config::get('app.from_email');
@@ -523,7 +525,7 @@ private $cc = array();
             // KIKE - Permitimos enviar a mas de un usuario las copias de los emails (BELIVE)
             // Emails separados por ;
 
-            if (Config::get('app.copies_emails') && !empty(Config::get('app.copies_emails_mailbox')) && !env('APP_DEBUG') && $this->to != Config::get('app.debug_to_email')) {
+            if (Config::get('app.copies_emails') && !empty(Config::get('app.copies_emails_mailbox')) && !$this->debug && $this->to != Config::get('app.debug_to_email')) {
                 $emailsEnCopia = explode(";",Config::get('app.copies_emails_mailbox'));
                 foreach($emailsEnCopia as $item) {
                     $this->bcc[] = $item;
@@ -540,7 +542,7 @@ private $cc = array();
                 Mail::send('emails.'.$this->blade, array("HTML_email"=>$this->HTML_email), function ($m)  {
                         $m->from($this->from, Config::get('app.name'));
                         $m->to($this->to, $this->to_name)->subject($this->email->subject_email);
-                        if(!env('APP_DEBUG')){
+                        if(!$this->debug){
                             foreach ($this->bcc as $bcc){
                                 $m->bcc( trim($bcc), trim($bcc));
                             }
@@ -596,7 +598,7 @@ private $cc = array();
 
     private function checkTo(){
 
-         if ( env('APP_DEBUG')) {
+         if ( $this->debug) {
             $this->to = !empty(env('MAIL_TO'))? env('MAIL_TO') : Config::get('app.debug_to_email');
 
         }else{

@@ -5002,3 +5002,99 @@ margin-bottom: 5px;
 	color: rgb(200, 0, 0);
 text-decoration-line: underline;
  }
+
+ /* NFT en el panel */
+ .payment-title-cell {
+	margin-top: 20px ;
+	border: 1px solid lightgray;
+	background: #9999;
+ }
+ .payment-text-cell {
+	margin-top: 20px ;
+	border: 1px solid lightgray;
+ }
+
+ .payment-money-cell {
+	margin-top: 20px ;
+	border: 1px solid lightgray;
+	text-align:right;
+ }
+ .payment-total-cell {
+	margin-top: 20px ;
+	text-align:right;
+ }
+
+
+ /*
+|--------------------------------------------------------------------------
+| REMATES DESTACADOS
+|--------------------------------------------------------------------------
+ */
+
+ .lot-remates-destacados {
+	min-height:480px;
+	position: relative;
+	border: 1px solid lightgrey;
+	background: white;
+	box-shadow: 0 3px 18px rgba(0,0,0,0.2);
+	transition: 0.2s linear all;
+	-webkit-box-shadow: 0 3px 18px rgba(0,0,0,0.2);
+	-webkit-transition: 0.2s linear all;
+	-o-transition: 0.2s linear all;
+  }
+
+
+  .lot-remates-destacados .item_img {
+    position: relative;
+    height: 283px;
+    text-align: center;
+}
+
+.lot-remates-destacados .item_img img {
+    position: relative;
+    top: 50%;
+    display: inherit !important;
+    width: auto !important;
+    max-width: 100%;
+    max-height: 250px;
+    margin: 0 auto !important;
+            transform: translateY(-50%);
+
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+}
+
+.lot-remates-destacados .title_lot{
+
+	font-size:24px;
+
+}
+
+.lot-remates-destacados .desc_lot{
+
+	text-align: justify;
+	margin-top:5px;
+
+
+}
+
+.lot-remates-destacados .price_lot{
+
+	margin-top:15px;
+
+
+}
+.lot-remates-destacados  .price_lot span{
+	color: var(--extra-color);
+	font-weight: bold;
+}
+
+.session-remates-destacados {
+	margin-top: 30px;
+	font-size:24px;
+	border-top: 1px  solid #868282;
+	border-bottom: 1px  solid #868282;
+
+
+}
+

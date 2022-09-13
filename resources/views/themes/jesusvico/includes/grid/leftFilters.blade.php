@@ -37,8 +37,8 @@
 				</div>
 
 				<div class="filters-auction-divider-medium"></div>
-
-				@if(!empty($codSub) && !empty($refSession))
+				{{--  quitamosel buscar por referencia de la tienda --}}
+				@if(!empty($codSub) && !empty($refSession) && $auction->tipo_sub != 'V')
 				<div class="input-group-search" style="position: relative">
 					<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}"
 						name="reference" type="text" class="form-control input-sm filter-auction-input"
@@ -69,10 +69,12 @@
 							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:
 							{{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
 						</option>
-						<option value="ref" @if ($filters["order"]=='ref' || empty($filters["order"]) ) selected @endif>
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:
-							{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
-						</option>
+						@if(empty($codSub) || $auction->tipo_sub != 'V')
+							<option value="ref" @if ($filters["order"]=='ref' || empty($filters["order"]) ) selected @endif>
+								{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:
+								{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+							</option>
+						@endif
 						<option value="hbids" @if ($filters["order"]=='hbids' ) selected @endif>
 							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:
 							{{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }}
@@ -118,15 +120,7 @@
 
 	@if(!empty($auction) && $auction->tipo_sub == 'V')
 
-	@php
-	//$url_lotes= \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions, $subasta->reference);
-	$subastaObj = new \App\Models\Subasta();
-	$shops = $subastaObj->auctionList('S', 'V');
-	if (Session::has('user') && Session::get('user.admin')) {
-		$shopsAdmin = $subastaObj->auctionList('A', 'V');
-		$shops = array_merge($shopsAdmin, $shops);
-	}
-	@endphp
+
 	<div class="filters-auction-content">
 		<div class="form-group">
 
@@ -135,26 +129,67 @@
 					href="#shop_links" aria-expanded="true" aria-controls="shop_links">
 					<div class="d-flex align-items-center">
 						<p class="m-0" style="flex: 1">{{ trans("$theme-app.subastas.stores") }}</p>
-						<i style="float: right; font-size: 14px" class="fas fa-plus"></i>
+						<i style="float: right; font-size: 14px" class="fas fa-minus"></i>
 					</div>
 				</div>
 
-				<div class="auction__filters-type-list mt-1 " id="shop_links" style="display: none">
+				<div class="auction__filters-type-list mt-1 " id="shop_links" style="">
 					<div class="filters-padding">
-						@foreach ($shops as $shop)
+
 						<div class="category_level_01 d-flex align-items-center justify-content-space-between">
 							<div class="radio">
-								<input name="shop" type="radio" class="js-link-to-shop" id="radio_{{$shop->cod_sub}}"
-									data-to="{{Tools::url_auction($shop->cod_sub, $shop->name, $shop->id_auc_sessions , $shop->reference) }}"
-									@if($auction->cod_sub == $shop->cod_sub) checked @endif
+								<input name="shop" type="radio" class="js-link-to-shop" id="radio_1"
+									data-to="{{ trans("$theme-app.links.tienda-numismatica") }}"
+									@if($auction->cod_sub == "Tienda1"  &&  $filters["category"] == 1) checked @endif
 								/>
 
-								<label for="radio_{{$shop->cod_sub}}" class="radio-label">
-									{{ $shop->des_sub }}
+								<label for="radio_1" class="radio-label">
+									{{ trans("$theme-app.subastas.tienda-numismatica") }}
 								</label>
 							</div>
 						</div>
-						@endforeach
+
+						<div class="category_level_01 d-flex align-items-center justify-content-space-between">
+							<div class="radio">
+								<input name="shop" type="radio" class="js-link-to-shop" id="radio_2"
+									data-to="{{ trans("$theme-app.links.tienda-arqueologia") }}"
+									@if($auction->cod_sub == "Tienda2"  ) checked @endif
+								/>
+
+								<label for="radio_2" class="radio-label">
+									{{ trans("$theme-app.subastas.tienda-arqueologia") }}
+								</label>
+							</div>
+						</div>
+
+
+
+						<div class="category_level_01 d-flex align-items-center justify-content-space-between">
+							<div class="radio">
+								<input name="shop" type="radio" class="js-link-to-shop" id="radio_3"
+									data-to="{{ trans("$theme-app.links.tienda-libreria") }}"
+									@if($auction->cod_sub == "Tienda1" &&  $filters["category"] == 3) checked @endif
+								/>
+
+								<label for="radio_3" class="radio-label">
+									{{ trans("$theme-app.subastas.tienda-libreria") }}
+								</label>
+							</div>
+						</div>
+
+						<div class="category_level_01 d-flex align-items-center justify-content-space-between">
+							<div class="radio">
+								<input name="shop" type="radio" class="js-link-to-shop" id="radio_4"
+									data-to="{{ trans("$theme-app.links.tienda-material") }}"
+									@if($auction->cod_sub == "Tienda1" &&  $filters["category"] == 4) checked @endif
+								/>
+
+								<label for="radio_4" class="radio-label">
+									{{ trans("$theme-app.subastas.tienda-material") }}
+								</label>
+							</div>
+						</div>
+
 
 					</div>
 				</div>
@@ -164,18 +199,18 @@
 		</div>
 	</div>
 	@endif
+{{-- no mostrar categorias en tienda  --}}
+@if(empty($auction) || $auction->tipo_sub != 'V')
+		<div class="filters-auction-content">
+			<div class="form-group">
 
+				@include('includes.grid.categories_list')
 
-	<div class="filters-auction-content">
-		<div class="form-group">
+				@include('includes.grid.features_list')
 
-			@include('includes.grid.categories_list')
-
-			@include('includes.grid.features_list')
-
+			</div>
 		</div>
-	</div>
-
+@endif
 
 
 	@if(!empty($auction))

@@ -137,6 +137,13 @@ class FgAsigl0 extends Model
 			$query = $query->whereRAW("FGHCES1.TOTALFOTOS_HCES1 IS NOT NULL ");
 		}
 
+		if(\Config::get("app.useNft")){
+
+			$query = $query->LeftJoinNFT()->
+				#SI NO ES NFT O SI LO ES TIENE QUE ESTAR MINTEADO PARA VERSE, USAMOS EL CAMPO PAY_MINT_NFT YA QUE DEJARÁ DE ESTAR A NULO SI SE HA MINTEADO CORRECTAMENTE
+					whereRAW("(FGASIGL0.ES_NFT_ASIGL0 ='N' OR FGNFT.PAY_MINT_NFT IS NOT NULL  )");
+		}
+
 		return $query;
     }
 
@@ -190,6 +197,9 @@ class FgAsigl0 extends Model
 
 	public function scopeJoinNFT($query){
         return $query->join('FGNFT', ' FGNFT.EMP_NFT = FGASIGL0.EMP_ASIGL0  AND  FGNFT.NUMHCES_NFT = FGASIGL0.NUMHCES_ASIGL0 AND FGNFT.LINHCES_NFT = FGASIGL0.LINHCES_ASIGL0');
+	}
+	public function scopeLeftJoinNFT($query){
+        return $query->leftjoin('FGNFT', ' FGNFT.EMP_NFT = FGASIGL0.EMP_ASIGL0  AND  FGNFT.NUMHCES_NFT = FGASIGL0.NUMHCES_ASIGL0 AND FGNFT.LINHCES_NFT = FGASIGL0.LINHCES_ASIGL0');
 	}
 
 	public function scopeLeftJoinCliWithCsub($query){

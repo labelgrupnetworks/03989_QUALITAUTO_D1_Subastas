@@ -11,9 +11,9 @@
 
 <a name="requirements"></a>
 ## Requerimientos
-- [PHP v.8.1.7](https://windows.php.net/download/)
+- [PHP v.8.1.7](https://windows.php.net/download/): [windows](https://windows.php.net/downloads/releases/archives/php-8.1.7-nts-Win32-vs16-x64.zip) | [linux](https://windows.php.net/downloads/releases/archives/php-8.1.7-src.zip)
 - [Laragon](https://laragon.org/) o [Wamp](https://www.wampserver.com/en/)
-- [Extensión OCI 8](https://pecl.php.net/package/oci8)
+- [Extensión OCI 8](https://pecl.php.net/package/oci8): [windows](https://windows.php.net/downloads/pecl/releases/oci8/3.2.1/php_oci8-3.2.1-8.1-ts-vs16-x64.zip) | [linux](https://pecl.php.net/get/oci8-3.2.1.tgz)
 - [Git](https://git-scm.com/)
 
 <a name="extensions"></a>
@@ -69,7 +69,7 @@ Subir codigo a cliente.
 git push demo main
 ```
 
-Subir codigo de rama main loca a rama develop remota
+Subir codigo de rama main local a rama develop remota
 ```git
 git push demo main:develop
 ```

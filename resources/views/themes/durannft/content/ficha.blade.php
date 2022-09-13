@@ -74,7 +74,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 				@if($subasta_online)
                		@include('includes.ficha.header_time')
 				@endif
-				
+
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
@@ -305,9 +305,11 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 							@endif
 
                         <?php //si un lote cerrado no se ha vendido se podra comprar ?>
-                        @elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
+                      {{-- Elimino la opción de venta despues de subastaa
+						 @elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
 
                             @include('includes.ficha.pujas_ficha_V')
+							--}}
                         <?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>
                         @elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
 

@@ -8,14 +8,15 @@ use App\libs\EmailLib;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\FgDeposito;
+use App\Models\V5\FgSub;
 use App\Models\V5\FxCliWeb;
+use App\Models\V5\FxDvc0Seg;
 use Illuminate\Database\Eloquent\Builder;
 
 class MailApiRestController extends ApiRestController {
 
-        public function sendMail($lang)
-		{
-
+    public function sendMail($lang)
+	{
         $validate = $this->validateParams(['type', 'apikey', 'user', 'passw']);
         if (count($validate) != 0) {
             return $this->responder(false, "Need the data params", $validate, 401);
@@ -62,6 +63,13 @@ class MailApiRestController extends ApiRestController {
                 }
                 return $this->sendMailWithAttachment($type);
 
+			case "CHANGE_SEG_STATE":
+				$validate = $this->validateParams(['codCli', 'codSub', 'codSeg']);
+				if (count($validate) != 0) {
+                    return $this->responder(false, "Need the data params", $validate, 401);
+                }
+				return $this->sendMailTrackingChange();
+
             case "OTHER":
                 return $this->sendTestMail();
             default :
@@ -69,6 +77,42 @@ class MailApiRestController extends ApiRestController {
         }
 
     }
+
+	private function sendMailTrackingChange(){
+
+		$codCli = request('codCli');
+		$codSub = request('codSub');
+		$codSeg = request('codSeg');
+
+		$emailsTemplates = [
+			'1' => 'TRACKING_CHANGE_SEG_STATE_1',
+			'2' => 'TRACKING_CHANGE_SEG_STATE_2',
+			'3' => 'TRACKING_CHANGE_SEG_STATE_3',
+			'4' => 'TRACKING_CHANGE_SEG_STATE_4',
+		];
+
+		$email = new EmailLib($emailsTemplates[$codSeg]);
+
+		if (empty($email->email)) {
+			return $this->responder(false, "the type of email is not valid", "", 401);
+		}
+
+		$email->setUserByCod($codCli, true);
+
+		$auction = FgSub::select('dfec_sub')
+			->joinLangSub()
+			->where('cod_sub', $codSub)
+			->first();
+
+		$email->setAtribute('AUCTION_NAME', $auction->des_sub);
+
+		$deliveryDate = FxDvc0Seg::getEstimatedDeliveryDate($auction->dfec_sub);
+
+		$email->setAtribute('DELIVERY_DATE', $deliveryDate);
+
+		$email->send_email();
+		return $this->responder(true, "Email sent", "", 200);
+	}
 
     public function sendMailWithAttachment($type)
 	{

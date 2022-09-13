@@ -289,4 +289,26 @@ class ContentController extends Controller
 
 		return compact('pages', 'subastas', 'lotes', 'categorias');
 	}
+
+	public function rematesDestacados($codSub){
+
+		$lots = FgAsigl0::ActiveLotAsigl0()->
+		select('REF_ASIGL0, NUM_HCES1, LIN_HCES1, DESCWEB_HCES1, DESC_HCES1, IMPSALHCES_ASIGL0, IMPLIC_HCES1, COD_SUB, "id_auc_sessions", "name", WEBFRIEND_HCES1, DES_SUB ')->
+		where("SUB_ASIGL0", $codSub)->
+		where("cerrado_asigl0", "S")->
+		where("IMPLIC_HCES1",">",0)->
+		where("DESTACADO_ASIGL0", "S")->
+		orderby('"start", ref_asigl0')->
+		get();
+		$sessions = array();
+		foreach($lots as $lot){
+			if (empty($sessions[$lot->name])){
+				$sessions[$lot->name] = array();
+			}
+			$sessions[$lot->name][] = $lot;
+		}
+
+		return View::make('pages.remates_destacados', compact("sessions"));
+
+	}
 }

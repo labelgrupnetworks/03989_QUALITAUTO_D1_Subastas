@@ -101,7 +101,7 @@
         </div>
 	</div>
 
-	@if($start_session)
+	@if($start_session || $subasta_abierta_P)
         <div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
 
             @if (Session::has('user') &&  Session::get('user.admin'))
@@ -121,7 +121,13 @@
                 <div class="d-flex mb-2">
                     <input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
                 <div class="input-group-btn">
-                    <button type="button" data-from="modal" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+
+					@if(Session::has('user') && (new App\Models\User())->getClientNllist(session('user.cod'))->nllist20_cliweb == 'S')
+                    	<button type="button" data-from="modal" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+					@else
+						<button type="button" data-from="modal" data-toggle="modal" data-target="#acceptedTermsModal" class="ficha-btn-bid ficha-btn-bid-height button-principal">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+					@endif
+
                 </div>
             </div>
 

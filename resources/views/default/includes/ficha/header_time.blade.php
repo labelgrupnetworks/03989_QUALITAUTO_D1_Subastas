@@ -9,16 +9,16 @@
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
                 @elseif($subasta_venta)
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_venta') }}
-				@elseif($subasta_make_offer)
+				@elseif($subasta_make_offer ?? false)
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_make_offer') }}
-				@elseif($subasta_inversa)
+				@elseif($subasta_inversa ?? false)
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_inversa') }}
                 @endif
             </div>
 
 
-            <div class=" no-padding ">
-				@if(!$subasta_make_offer)
+            <div class="no-padding ">
+				@if(!($subasta_make_offer ?? false))
                     <div class="col-xs-12 ficha-info-close-lot ">
                         <div class="date_top_side_small">
                             <span id="cierre_lote"></span>

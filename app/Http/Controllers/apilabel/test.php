@@ -75,11 +75,12 @@ class test extends BaseController
 
 
 				$Payment = new stdClass();
-				$Payment->idorigincli = "WWWWW2";  // "76355";
+				$Payment->idorigincli = "3";  // "76355";
 				$Payment->paid = "S";
 				$Payment->serial = "T20";
 				$Payment->number = 1;
 				$Payment->amount = 1200;
+				$Payment->reason = "M";
 				$Payment->description = "pago vehículo Rover 75 2.0 CDTi Classic 96 kW (131 CV) ";
 				$Payment->date =  date("Y-m-d H:i:s");
 				//$Payment->pdf = $pdf;
@@ -706,7 +707,7 @@ class test extends BaseController
         }
 		#http://www.newsubastas.test/apilabel/test?function=getLot&testmode=CONTROLLER
         public function getLot(){
-            $parameters=array("idauction" =>"00000147");
+            $parameters=array("idauction" =>"LABELP");
             $this->excuteMode($parameters,"GET","lot", new LotController(),"showlot");
         }
 		#http://www.newsubastas.test/apilabel/test?function=putLot&testmode=CONTROLLER

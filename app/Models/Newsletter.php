@@ -184,7 +184,7 @@ class Newsletter extends Model {
         $newsletters = array();
 
         //el tamaño corresponde a campos en base de datos
-        for ($t = 2; $t < 20; $t++) {
+        for ($t = 2; $t <= 20; $t++) {
             $newsletters[$t] = 'N';
             if(!empty($this->families[$t]) && $this->families[$t] == 1){
                 $newsletters[$t] = 'S';

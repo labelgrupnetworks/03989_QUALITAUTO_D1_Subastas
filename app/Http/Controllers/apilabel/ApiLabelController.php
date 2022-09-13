@@ -509,22 +509,25 @@ class ApiLabelController extends BaseController
 						}
 						foreach($itemArray as $field => $arrayValues){
 							$body.="<br> <b>$field:</b> <br>";
-							foreach($arrayValues as  $element){
+							if(is_array($arrayValues)){
+								foreach($arrayValues as  $element){
 
-								if(!is_array($element)){
-									$body.=" $element: <br>";
-								}else{
-									$body.=" <ul>";
-									foreach($element as $subElementKey => $subElement){
-										if(!is_array($subElement)){
-											$body.="<li> <b>$subElementKey</b>: $subElement</li>";
-										}else{
-											$body.="<li> <b>$subElementKey</b>: ".print_r($subElement,true)."</li>";
+									if(!is_array($element)){
+										$body.=" $element: <br>";
+									}else{
+										$body.=" <ul>";
+										foreach($element as $subElementKey => $subElement){
+											if(!is_array($subElement)){
+												$body.="<li> <b>$subElementKey</b>: $subElement</li>";
+											}else{
+												$body.="<li> <b>$subElementKey</b>: ".print_r($subElement,true)."</li>";
+											}
 										}
+										$body.=" </ul>";
 									}
-									$body.=" </ul>";
 								}
 							}
+
 
 						}
 					}

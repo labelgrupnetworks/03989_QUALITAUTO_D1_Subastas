@@ -42,8 +42,7 @@
 	<div class="container-fluid">
 		<div class="row signature-container">
 			<div class="col-xs-12 col-md-5">
-				<p><span class="text-transform-original">{{ $empresa->dir_emp ?? '' }}</span>
-					{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }} - <span
+				<p><span class="text-transform-original"> <span
 						class="text-transform-original">{{ trans(\Config::get('app.theme').'-app.foot.horario_contacto')}}</span>
 				</p>
 

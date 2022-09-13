@@ -165,6 +165,7 @@ $lang =[
 			'filter' => 'Filter',
 			'filters' => 'Filters',
 			'clean' => 'Clean',
+			'totals' => 'Totals'
 		),
 	'head' =>
 		array (
@@ -522,6 +523,7 @@ $lang =[
 			'nif_exist' => 'There is already a user with this NIF / CIF (ID)',
 			'no_cancel_bid' => 'It is only possible to cancel your bid if it is the last active bid',
 			'no_licit' => 'The bidder does not exist',
+			'no_deposit' => 'In order to bid you must have a valid deposit',
 			'not_accept_bid' => 'It is not allowed such high bids.',
 			'not_allowed_movement' => 'The lot can not be restarted in that position.',
 			'not_bid' => 'No current bids',
@@ -859,6 +861,9 @@ $lang =[
 			"closed" =>	"Closed",
 			'soon' => 'Soon',
 			'bids_numbers' => 'Nº of bids',
+			'title_pending_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
+			'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde"
+
 		),
 	'valoracion_gratuita' =>
 		array (

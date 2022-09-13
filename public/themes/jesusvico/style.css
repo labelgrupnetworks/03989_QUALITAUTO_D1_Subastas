@@ -1690,6 +1690,23 @@ td.title-sub-list {
 	margin: 0;
 }
 
+.user-acount-menu-link {
+	color: inherit;
+}
+
+.user-acount-menu-link:hover, .user-acount-menu-link:focus {
+	text-decoration: none;
+}
+
+.user-acount-menu-link.active {
+	background-color: #DFDFDF;
+	padding: 10px;
+	padding-left: 20px;
+	border-left: 2px solid black;
+}
+
+
+
 #user-account-ul ul{
 	margin-bottom: 30px;
 }

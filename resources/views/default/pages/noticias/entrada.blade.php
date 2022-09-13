@@ -18,7 +18,7 @@
 			<div class="col-xs-12 col-sm-12 text-center color-letter titlepage-contenidoweb">
 
 				<?php
-    			$bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url'=> "/" . \Routing::slugSeo('blog') );
+    			$bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url'=> \Routing::slugSeo('blog') );
     			$titulo_post = $data['news']->titulo_web_blog_lang;
     			$bread[] = array("name" => $titulo_post) ;
     			?>
@@ -112,7 +112,7 @@
 					{{ trans(\Config::get('app.theme').'-app.blog.post_related') }}:
 				</div>
 				<div class="entradas-relacionadas-lista">
-					@foreach($data['relationship_new'] as $rel_link)
+					@foreach($data['relationship_new'] as $key => $rel_link)
 					<?php
                                     $url = \Routing::slug('blog').'/'.$data['categorys'][$rel_link->primary_category_web_blog]->url_category_blog_lang.'/'.$rel_link->url_web_blog_lang
                                 ?>
@@ -121,7 +121,7 @@
 							{{ $rel_link->titulo_web_blog_lang }}
 						</div>
 						<div class="img-related-post">
-							<img class="img-responsive" src="{{ $rel_link->img_web_blog }}">
+							<img class="img-responsive center-block" src="{{ $rel_link->img_web_blog }}">
 						</div>
 						<div class="button-post">
 							<a href="{{ $url }}"
@@ -129,7 +129,10 @@
 						</div>
 					</div>
 
-
+					{{-- Salimos del bucle una vez mostrados los 3 elementos  --}}
+					@if ($key == 2)
+						@break
+					@endif
 
 					@endforeach
 				</div>

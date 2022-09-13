@@ -1,5 +1,26 @@
 @media (max-width: 1200px) {
 
+	header :is(a.button-principal, .btn_login.secondary-button) {
+		padding: 10px 10px;
+		font-size: 17px;
+		display: flex;
+		align-items: center;
+		gap: 3px;
+		white-space: nowrap;
+		width: auto;
+		height: auto !important;
+		line-height: 1;
+	}
+
+	.baner-register-block {
+		flex-direction: column-reverse;
+	}
+
+	.baner-register-wrapper {
+		flex-direction: row-reverse;
+		margin-top: 4rem;
+	}
+
     .order-views select#order_selected {
         border-radius: 0 !important;
         margin-bottom: 5px;
@@ -32,8 +53,21 @@
         margin-bottom: 10px;
     }
     .home-slider-control {
-        height: auto;
+        height: 100%;
     }
+
+	.banner-register > div {
+		gap: 5px;
+	}
+
+	.banner-register-line {
+		margin: 10px 0px;
+	}
+
+	.banner-register-title {
+		margin-bottom: initial;
+	}
+
     .large_square {
         min-height: 280px;
         min-width: auto;
