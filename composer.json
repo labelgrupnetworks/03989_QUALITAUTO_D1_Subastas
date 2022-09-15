@@ -40,12 +40,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
-        },
-		"classmap": [
-			"app/",
-			"database/factories/",
-			"app/packages/yajra"
-		]
+        }
 	},
     "scripts": {
         "post-autoload-dump": [
