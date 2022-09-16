@@ -8,30 +8,14 @@
 
 @section('content')
 
-<div class="container-fluid container-error">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="error-wrapper p-1">
-					<h1 class="mb-2">
-						@yield('error_code')
-					</h1>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="container mt-5 mb-5">
-
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="container-404-wrapper p-3">
-				@yield('error_message')
-			</div>
-		</div>
-	</div>
-
+<div class="container py-5 my-5 text-center">
+	<p class="fs-64 mb-3">
+		@yield('error_code')
+	</p>
+	<h1>
+		@yield('error_message')
+	</h1>
+	<a href="/{{\App::getLocale()}}">{{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a>
 </div>
 
 @stop

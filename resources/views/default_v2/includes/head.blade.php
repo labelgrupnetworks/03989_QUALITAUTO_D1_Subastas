@@ -61,6 +61,10 @@ header("X-Frame-Options:     DENY");
 @elseif(!empty($seo->canonical))
 <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..700&display=swap" rel="stylesheet">
+
 
 <!-- Global Packages -->
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}" >
@@ -80,7 +84,7 @@ header("X-Frame-Options:     DENY");
 
 <!-- Overwritable files -->
 <link href="{{ Tools::urlAssetsCache('/default_v2/css/style.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/css/style.css') }}" rel="stylesheet" type="text/css">
 
 <link href="{{ Tools::urlAssetsCache('/default_v2/css/banners.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/banners.css') }}" rel="stylesheet" type="text/css">

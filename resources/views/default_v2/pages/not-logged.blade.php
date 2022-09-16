@@ -6,16 +6,10 @@
 
 @section('content')
 
-<section class="account  min-height">
-    <div class="container not-logged-container">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <div class="text-center">
-                    <div class="not-logged-text color-letter">{{$data}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="py-sm-5 my-5">
+	<div class="container py-sm-5">
+		<h1 class="not-logged-text fs-64 text-lg-center">{{$data}}</h1>
+	</div>
 </section>
 
 

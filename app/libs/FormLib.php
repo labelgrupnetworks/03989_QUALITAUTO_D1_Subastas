@@ -283,7 +283,7 @@ class FormLib
 
 		$checked = (bool) ($checked);
 
-		$aux = "<span><input type='checkbox' " . ($checked ? 'checked=\'checked\'' : '') . " name='" . $strNombre . "' value='" . $strValue . "' id='bool__" . $boolObligatorio . "__" . $strNombre . "' " . $strExtra . " autocomplete='off' data-placement='bottom'></span>";
+		$aux = "<span><input type='checkbox' " . ($checked ? 'checked=\'checked\'' : '') . " name='" . $strNombre . "' value='" . $strValue . "' id='bool__" . $boolObligatorio . "__" . $strNombre . "' " . $strExtra . " autocomplete='off' data-placement='bottom' class='form-check-input'></span>";
 
 		return $aux;
 	}
@@ -378,7 +378,7 @@ class FormLib
 	static function Select($strNombre, $boolObligatorio = false, $strValue = '', $mixOptions = array(), $strExtra = "", $placeholder = "", $void_value = true)
 	{
 
-		$aux = "<select data-placement='right' class='form-control select2' type='select' class='input-lg' name='" . $strNombre . "' id='select__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " >";
+		$aux = "<select data-placement='right' class='form-control form-select select2' type='select' class='input-lg' name='" . $strNombre . "' id='select__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " >";
 		if($void_value){
 			$aux .= "<option value=''>" . $placeholder . "</option>";
 		}

@@ -13,7 +13,7 @@ $cookiesState = \Tools::cookies();
 
 <body>
 
-    <?php \Tools::personalJsCss();?>
+    {{-- {{ \Tools::personalJsCss(); }} --}}
 
     @if(!env('APP_DEBUG') && !empty(\Config::get('app.login_acces_web')) && !Session::has('user') )
         @include('includes.loggin_web')
