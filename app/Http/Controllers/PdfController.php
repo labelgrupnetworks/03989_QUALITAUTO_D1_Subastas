@@ -16,7 +16,7 @@ use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider as Tools;
 use Illuminate\Support\Facades\Config;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PdfController extends Controller
 {
@@ -99,7 +99,7 @@ class PdfController extends Controller
 
 
 
-		$pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+		$pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
 		$pdf =$pdf->loadView('front::reports.expoArt', $data);
 
 
@@ -380,7 +380,7 @@ class PdfController extends Controller
 			'content' => $content
 		];
 
-		return PDF::loadView($view, $data)->stream('archivo.pdf');
+		return Pdf::loadView($view, $data)->stream('archivo.pdf');
 	}
 
 	public function generateGenericPdf(string $view, string $reportTitle, array $tableInfo, string $titleTable, array $tableContent, string $content = '')
@@ -394,12 +394,12 @@ class PdfController extends Controller
 			'content' => $content
 		];
 
-		return PDF::loadView($view, $data);
+		return Pdf::loadView($view, $data);
 	}
 
 	public function generateRawPdf(string $view, array $data)
 	{
-		return PDF::loadView($view, $data);
+		return Pdf::loadView($view, $data);
 	}
 
 	public function setTableInfo(array $tableInfo)

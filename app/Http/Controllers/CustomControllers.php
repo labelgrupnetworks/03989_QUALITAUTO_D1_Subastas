@@ -6,13 +6,10 @@ use App\Exports\ViewExcelExport;
 use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FgAsigl0;
 use App\Http\Controllers\V5\GaleriaArte;
-use App\libs\FormLib;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
-use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\Subasta;
-use Illuminate\Http\File;
 
 class CustomControllers extends Controller
 {

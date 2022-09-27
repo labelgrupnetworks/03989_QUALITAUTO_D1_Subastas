@@ -9,6 +9,7 @@ storage/framework/testing/*
 storage/framework/views/*
 storage/logs/*
 /storage/*.key
+storage/debugbar
 
 /vendor
 
