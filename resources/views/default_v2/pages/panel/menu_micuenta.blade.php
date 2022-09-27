@@ -5,19 +5,10 @@
 	$pageName = Route::currentRouteName();
 @endphp
 
-<div class="card">
-	<div class="card-body">
-		<div class="d-flex gap-2 flex-wrap">
-			<div class="user-logo img-thumbnail rounded-circle">
-				<p class="h2 m-0">{{ $firtsLetter }}</p>
-			</div>
-			<div class="user-detail">
-				<h6 class="card-title">{{ ($user['name']) }}</h6>
-				<p class="card-text">{{ $email }}</p>
-			</div>
-		</div>
-	</div>
-	<div class="list-group list-group-flush">
+<div class="card menu-panel-card">
+
+	<div class="h6 mb-2">Comprador</div>
+	<div class="list-group list-group-flush mb-3">
 		<a href="{{ Routing::slug('user/panel/orders') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.orders'])
 			aria-current="{{ $pageName == 'panel.orders' }}">
 			{{ trans("$theme-app.user_panel.orders") }}
@@ -38,6 +29,21 @@
 			{{ trans("$theme-app.user_panel.allotments") }} {{ trans("$theme-app.user_panel.pending_bills") }}
 		</a>
 
+	</div>
+
+	<div class="h6 my-2">Vendedor</div>
+	<div class="list-group list-group-flush mb-3">
+
+		<a href="#" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
+			aria-current="{{ $pageName == 'panel.account_info' }}">
+			Mis Ventas
+		</a>
+
+	</div>
+
+
+	<div class="h6 mb-2">Configuración</div>
+	<div class="list-group list-group-flush mb-3">
 		<a href="{{ Routing::slug('user/panel/info') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
 			aria-current="{{ $pageName == 'panel.account_info' }}">
 			{{ trans("$theme-app.user_panel.info") }}
@@ -47,4 +53,7 @@
 			{{ trans("$theme-app.user_panel.exit") }}
 		</a>
 	</div>
+
+
+
 </div>

@@ -1,20 +1,14 @@
 @extends('layouts.default')
 
-@section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
-@stop
-
-
-
 @section('content')
 <div class="container user-panel-page orders-page">
 
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-lg-3">
 			@include('pages.panel.menu_micuenta')
 		</div>
 
-		<div class="col-md-9">
+		<div class="col-lg-9">
 			<h1>{{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}</h1>
 
 
@@ -32,7 +26,7 @@
 							<table class="table table-sm align-middle">
 								<thead class="table-light">
 									<tr>
-										<th>Img.</th>
+										<th></th>
 										<th>{{ trans("$theme-app.user_panel.lot") }}</th>
 										<th style="max-width: 300px">Title</th>
 										<th>Precio de salida</th>
