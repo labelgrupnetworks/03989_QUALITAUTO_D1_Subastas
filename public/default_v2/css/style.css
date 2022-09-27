@@ -1252,7 +1252,7 @@ section.ficha-image {
 | Adjudicaciones
 |--------------------------------------------------------------------------
 */
-.allotments-page .checkout {
+.allotments-page .checkout, .bills-page .checkout {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

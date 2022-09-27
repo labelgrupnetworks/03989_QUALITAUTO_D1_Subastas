@@ -10,11 +10,7 @@
             </div>
 
             <div class="col-lg-9">
-                <div class="title-with-buttons w-100 d-inline-flex flex-wrap align-items-center gap-2">
-                    <h1>{{ trans("$theme-app.user_panel.allotments") }}</h1>
-                    <a href="#" class="btn btn-lb-primary ms-auto">{{ trans("$theme-app.user_panel.still_paid") }}</a>
-                    <a href="#" class="btn btn-lb-primary">{{ trans("$theme-app.user_panel.bills") }}</a>
-                </div>
+				<h1>{{ trans("$theme-app.user_panel.allotments") }}</h1>
 
                 {{-- pendientes --}}
                 @if ($data['adjudicaciones']->isNotEmpty())
