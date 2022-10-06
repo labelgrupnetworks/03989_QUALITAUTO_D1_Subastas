@@ -34,8 +34,8 @@
 	<div class="h6 my-2">Vendedor</div>
 	<div class="list-group list-group-flush mb-3">
 
-		<a href="#" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
-			aria-current="{{ $pageName == 'panel.account_info' }}">
+		<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.sales'])
+			aria-current="{{ $pageName == 'panel.sales' }}">
 			Mis Ventas
 		</a>
 
@@ -47,6 +47,11 @@
 		<a href="{{ Routing::slug('user/panel/info') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
 			aria-current="{{ $pageName == 'panel.account_info' }}">
 			{{ trans("$theme-app.user_panel.info") }}
+		</a>
+
+		<a href="{{ route('panel.addresses', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.addresses'])
+			aria-current="{{ $pageName == 'panel.addresses' }}">
+			Direcciones
 		</a>
 
 		<a href="{{ Routing::slug('logout') }}" class="list-group-item list-group-item-action">

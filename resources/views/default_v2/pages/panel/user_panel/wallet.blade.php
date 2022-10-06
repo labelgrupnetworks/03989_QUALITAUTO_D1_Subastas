@@ -1,32 +1,17 @@
-@if (config('app.useNft', false))
-<div class="col-xs-12 col-md-9 mt-5">
+<h1>{{  mb_convert_case(trans("$theme-app.user_panel.wallet"), MB_CASE_TITLE, "UTF-8") }}</h1>
 
-	<div class="user-account-title-content">
-		<div class="user-account-menu-title">
-			{{ trans("$theme-app.user_panel.wallet") }}
+<form method="post" name="save-wallet" id="save-wallet">
+	@csrf
+
+	<div class="row gy-1">
+		<div class="col-12">
+			<label class="form-label" for="wallet">{{ trans("$theme-app.user_panel.wallet_direction") }}</label>
+			<input type="text" class="form-control" id="wallet" name="wallet_dir" value="{{ $data['user']->wallet_cli ?? '' }}" required>
 		</div>
-	</div>
-
-
-	<div class="col-xs-12 pt-2">
-		<form method="post" name="save-wallet" id="save-wallet">
-			@csrf
-			<div class="inputs-custom-group d-flex justify-content-space-between flex-wrap align-items-end">
-				<div class="form-group input-group col-xs-12 col-md-6">
-					<label for="wallet_direction">{{ trans("$theme-app.user_panel.wallet_direction") }}</label>
-					<input type="text" class="form-control" name="wallet_dir"
-						placeholder="Dirección pública la wallet" value="{{ $data['user']->wallet_cli ?? '' }}">
-				</div>
-
-				<div class="form-group col-xs-12 col-md-6 d-flex gap-5">
-					<button class="button-principal" type="submit" for="save-wallet">{{ trans("$theme-app.user_panel.save") }}</button>
-					<button class="button-principal" id="create-wallet">{{ trans("$theme-app.user_panel.wallet_new") }}</button>
-				</div>
-			</div>
-		</form>
-
+		<div class="col-12">
+			<button class="btn btn-lb-primary mb-1" type="submit" for="save-wallet">{{ trans("$theme-app.user_panel.save") }}</button>
+			<button class="btn btn-lb-secondary mb-1" id="create-wallet">{{ trans("$theme-app.user_panel.wallet_new") }}</button>
+		</div>
 		<div id="wallet-call-result"></div>
 	</div>
-
-</div>
-@endif
+</form>
