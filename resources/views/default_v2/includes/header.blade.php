@@ -11,7 +11,7 @@ if(strpos($fullname, ',')){
 	$name = $str[1];
 }
 
-$categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->get()->toarray();
+$categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
 $searchAction = config('app.gridLots', false) == "new" ? route('allCategories') : \Routing::slug('busqueda');
 $pageName = Route::currentRouteName();
 @endphp
@@ -89,6 +89,7 @@ $pageName = Route::currentRouteName();
 			<div class="navbar-collapse collapse" id="navbarHeader" style="">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold">
 
+					@if (!empty($categories))
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="categoriesHeader" data-bs-toggle="dropdown" aria-expanded="false">{{ trans("$theme-app.lot.categories") }}</a>
 						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
@@ -99,6 +100,7 @@ $pageName = Route::currentRouteName();
 							@endforeach
 						</ul>
 					</li>
+					@endif
 
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
 					<li class="nav-item">
