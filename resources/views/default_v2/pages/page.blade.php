@@ -15,7 +15,7 @@
 </div>
 
 <div class="container">
-	<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web">
+	<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web static-page">
 		{!! $data['data']->content_web_page !!}
 	</div>
 </div>

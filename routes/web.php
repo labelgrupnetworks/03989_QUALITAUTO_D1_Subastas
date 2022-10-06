@@ -37,6 +37,7 @@ Route::get(Routing::is_home(), 'HomeController@index')->name('home');
 Route::post('/accept_cookies', 'HomeController@accept_cookies');  // Función para aceptar las cookies legales
 Route::get('prueba', 'prueba@index')->name('prueba');
 Route::post('prueba', 'prueba@index')->name('prueba');
+Route::get('prueba/componentes', [prueba::class, 'componentes'])->name('prueba.componentes');
 Route::get('AnsorenaValidateUnion', 'AnsorenaValidateUnion@validateUnion')->name('AnsorenaValidateUnion');
 Route::get('AnsorenaDecisionUnion', 'AnsorenaValidateUnion@decisionUnion');
 Route::get('AnsorenaResultUnion', 'AnsorenaValidateUnion@resultUnion');

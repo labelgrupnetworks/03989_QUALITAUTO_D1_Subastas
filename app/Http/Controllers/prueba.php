@@ -152,15 +152,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$a = new PayShoppingCartController();
-		$a->sendEmailPaid("T61660210733");
-
-
-
-/*
-		$pay = new PayShoppingCartController();
-		$pay->returnPay("M11660112336");
-*/
+		$this->recreatePdfReports('LABELO');
 	}
 
 
@@ -1240,5 +1232,11 @@ $lang =[';
 
 		dd($dataForExport);
 		/* return $this->exportCollectionToExcel($dataForExport, $fileName); */
+	}
+
+	public function componentes(HttpRequest $request)
+	{
+		abort_if(!session('user.admin'), 404);
+		return view('front::pages.prueba_components', []);
 	}
 }
