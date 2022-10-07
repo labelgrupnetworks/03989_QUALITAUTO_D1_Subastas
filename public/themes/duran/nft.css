@@ -83,3 +83,17 @@ form#password_recovery input{
 	color: initial;
 }
 
+h1.titlePage, a.pass_recovery_login, p {
+	color: #000;
+}
+
+.btn {
+	background: #35333a;
+    color: #fff;
+}
+
+.btn.focus, .btn:focus, .btn:hover {
+	color: white;
+	background-color: #770043;
+}
+

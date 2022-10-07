@@ -441,6 +441,11 @@ span.linea {
     font-size: 16px;
 }
 
+.footer-link:focus {
+	text-decoration: none;
+	color: #fff;
+}
+
 
 /*****************************/
 
@@ -480,6 +485,11 @@ span.linea {
 
 .content-right-ficha {
     margin-top: 0;
+}
+
+.ficha-info-clock {
+	color: var(--color-white);
+	margin-right: 40px;
 }
 
 .ficha-info-wrapper {
@@ -673,6 +683,35 @@ span.linea {
     font-weight: 500;
 }
 
+.ficha-info-close-lot {
+	text-align: left;
+}
+
+
+.info-type-auction {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn-white {
+	background-color: #fff;
+	color: #000;
+	padding: 10px 20px;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 15px;
+	transition: background-color 0.2s ease-in-out;
+}
+
+.btn-white:hover {
+	background-color: rgb(100, 100, 100);
+	color: #fff;
+	text-decoration: none;
+}
 
 /*****************************/
 
@@ -1103,6 +1142,31 @@ form .input-effect {
 
 /********* Mi panel **********/
 
+.panel-user .inputs-custom-group .form-group label {
+	color: #fff;
+	font-weight: 600;
+}
+
+.panel-user .inputs-custom-group input,
+.panel-user .inputs-custom-group select,
+.panel-user form input[type="date"],
+.panel-user form input[type="hour"] {
+	background-color: rgba(255,255,255,0.1);
+}
+
+.panel-user select option {
+	background: rgba(0,0,0,0.9);
+}
+
+.panel-user .form-control[disabled],
+.panel-user .form-control[readonly],
+.panel-user fieldset[disabled] .form-control {
+	background-color: rgba(255,255,255, 0.2);
+}
+
+.panel-user form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
 
 /*****************************/
 
@@ -1429,4 +1493,7 @@ section.panel {
 
 .user-account-item-price{
 	color:#FFF;
+}
+.more-historic-bids a {
+color:#FFF;
 }

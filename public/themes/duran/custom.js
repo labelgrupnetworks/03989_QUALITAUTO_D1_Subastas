@@ -1467,9 +1467,10 @@ $(document).ready(function () {
 
 function externalLogin(context, data){
 	const form = document.createElement('form');
-	form.method = 'POST';
+	const url = new URL(context);
 
-	form.action = `${context}/api-ajax/external-login`;
+	form.method = 'POST';
+	form.action = `${url.origin}/api-ajax/external-login?back_to=${url.href}`;
 
 	const input = document.createElement('input');
 	input.type = 'hidden';
@@ -1477,7 +1478,6 @@ function externalLogin(context, data){
 	input.value = JSON.stringify(data);
 
 	form.appendChild(input);
-
 	document.body.appendChild(form);
 	form.submit();
 }

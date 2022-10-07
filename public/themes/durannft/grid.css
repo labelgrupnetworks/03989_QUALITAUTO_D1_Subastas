@@ -57,9 +57,11 @@
 	width: auto;
 	max-width: 100%;
 
-	background: url(./assets/img/fa-angle-down.png) no-repeat;
+	/* background: url(./assets/img/fa-angle-down.png) no-repeat;
     background-position: right center;
-	background-size: 20px;
+	background-size: 20px; */
+
+	background-color: black;
 }
 
 .cantidad-res {

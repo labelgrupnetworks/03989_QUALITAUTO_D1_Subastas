@@ -3079,6 +3079,36 @@ USER PANEL
 	flex: 7;
 }
 
+.bill-head {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+}
+
+.bill-head > div {
+	flex: 1;
+}
+
+.bill-wrapper {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+    height: 60px;
+    padding: 10px;
+	margin-bottom: 10px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 2px 6px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 6px rgba(0,0,0,.2);
+}
+
+.bill-wrapper > div {
+	flex: 1;
+}
+
+.bill-image img {
+	max-height: 100%;
+}
+
 
 .account.payment .custom-wrapper{
 	display: grid;
@@ -3190,13 +3220,13 @@ USER PANEL
 	transform: rotate(-90deg);
 }
 
-.factura-buttons a{
+.factura-buttons :is(a, button){
 	padding: 10px 12px 10px 12px;
 }
 
-.factura-buttons a:nth-child(2){
+/* .factura-buttons a:nth-child(2){
 	margin-left: 10px;
-}
+} */
 
 .factura-buttons .factura-button{
 	background-image: url(/img/icons/pdf.png);

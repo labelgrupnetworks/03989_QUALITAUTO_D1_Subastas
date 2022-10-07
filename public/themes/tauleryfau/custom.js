@@ -10,7 +10,7 @@ window.onscroll =
 	}
 
 
-$(document).ready(function () {
+$(function () {
 
 	$("input[name=shipping]").on("change", function(){
 		reload_carrito();
@@ -19,6 +19,8 @@ $(document).ready(function () {
 	$("input[name=clidd]").on("change", function(){
 		reload_carrito();
 	})
+
+	$('.js-pay-bill').on('submit', payFactura)
 
 	viewVideoBtnEvents();
 
@@ -1064,6 +1066,32 @@ $(document).ready(function () {
 
 });
 
+
+function payFactura(event) {
+	event.stopPropagation();
+	event.preventDefault();
+
+	const showErrorMessage = () => {
+		$("#modalMensaje #insert_msg").html('');
+		$("#modalMensaje #insert_msg").html(messages.error.generic);
+		$.magnificPopup.open({items: {src: '#modalMensaje'},type: 'inline'}, 0);
+	}
+
+	const form = event.target;
+	$.ajax({
+		type: "POST",
+		url: form.action,
+		data: $(form).serializeArray(),
+		success: function (data) {
+			if (data.status == 'success') {
+				window.location.href = data.msg;
+				return;
+			}
+			showErrorMessage();
+		},
+		error: showErrorMessage
+	});
+}
 
 
 function modalVideo(video, ref, codSub, title, description, textButton, url){

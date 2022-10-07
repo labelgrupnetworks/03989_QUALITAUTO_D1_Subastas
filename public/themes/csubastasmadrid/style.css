@@ -4606,6 +4606,15 @@ tbody tr input[type="checkbox"] {
     cursor: pointer;
 }
 
+.slick-prev:before, .slick-next:before {
+	color: #000;
+}
+
+.column_banner .slick-slide img {
+	height: auto;
+	max-height: initial;
+}
+
 .banner_home {
     margin: 0rem 0rem 5rem 0rem
 }

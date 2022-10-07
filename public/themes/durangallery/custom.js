@@ -1,13 +1,17 @@
 
-$(document).ready(function () {
+$(function () {
+
+	$('#js-ficha-login').on('click', (event) => {
+		$.magnificPopup.open({items: {src: '#modalCustomLogin'}, type: 'inline'}, 0);
+	});
 
 	$('.search-header').unbind('click');
 	$('.search-header').on('click', e => searchHeader(e));
 
-	$('.category-col a').on('mouseenter', function() {
+	/* $('.category-col a').on('mouseenter', function() {
 		$('.tab-content.tab-header > div').removeClass('active').removeClass('in');
 		$(this).tab('show');
-	});
+	}); */
 
 	$('.button-up i').removeClass('fa-chevron-up').addClass('fa-arrow-up');
 
