@@ -20,7 +20,7 @@
 
 				<div class="data-price">
 					@if( !$retirado && !$devuelto)
-						<p>
+						<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 							@if($subasta_venta && $item->cod_sub == 'VDJ')
 								<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.net_price') }}</span>
 							@elseif($subasta_venta)

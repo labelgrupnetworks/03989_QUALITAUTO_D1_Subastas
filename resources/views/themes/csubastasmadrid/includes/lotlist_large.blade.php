@@ -95,7 +95,7 @@
                                 <?php //en historico n odeben salir preic osañlida
                                 ?>
                             @elseif(\Config::get('app.impsalhces_asigl0'))
-                                {{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}:
+                                <span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}:</span>
                             @endif
                         @else
                             {{ trans(\Config::get('app.theme') . '-app.subastas.price_sale') }}:
@@ -108,8 +108,7 @@
 								{{ $item->formatted_imptash_asigl0 }}
 								{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
 							@elseif(\Config::get('app.impsalhces_asigl0'))
-								{{ $precio_salida }}
-								{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+								<span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ $precio_salida }} {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span>
 							@endif
 						@else
 							{{ $item->formatted_actual_bid }}

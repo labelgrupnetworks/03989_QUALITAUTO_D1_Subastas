@@ -42,7 +42,7 @@
 
     </select>
 </div>
-
+{{--
 <div class="col-xs-12 col-md-4 mt-1 mb-1">
     <select class="form-control" id="total_selected" >
 		@foreach(\Config::get("app.filter_total_shown_options") as $numLots)
@@ -50,7 +50,7 @@
 		@endforeach
     </select>
 </div>
-
+--}}
 
 <div class="col-xs-12 col-md-4 mt-1 mb-1 d-flex align-items-center justify-content-end">
     <?php

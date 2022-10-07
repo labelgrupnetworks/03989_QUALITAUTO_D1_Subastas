@@ -54,7 +54,7 @@
                         <?php foreach($lote_actual->imagenes as $key => $imagen){?>
                             <div class="col-sm-3-custom">
                                 <a href="javascript:loadSeaDragon('<?=$imagen?>');">
-                                    <div class="img-openDragon" style="background-image:url('/img/load/lote_small/<?php echo $imagen?>'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+                                    <div class="img-openDragon" style="background-image:url('/img/thumbs/100/{{\Config::get("app.emp")}}/{{$lote_actual->num_hces1}}/<?php echo $imagen?>'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
                                 </a>
                             </div>
                         <?php
@@ -88,7 +88,7 @@
                                         <p>{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
                                     </div>
                                 @endif
-                                       <img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;" class="img-responsive" src="/img/load/lote_medium_large/<?php echo $imagen?>" alt="{{$lote_actual->titulo_hces1}}">
+                                       <img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;" class="img-responsive" src="/img/thumbs/500/{{\Config::get("app.emp")}}/{{$lote_actual->num_hces1}}/<?php echo $imagen?>" alt="{{$lote_actual->titulo_hces1}}">
                                </div>
                          <?php } ?>
                     </div>

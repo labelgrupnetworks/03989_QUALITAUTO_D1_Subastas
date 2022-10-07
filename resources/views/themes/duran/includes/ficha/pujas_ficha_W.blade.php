@@ -1,15 +1,17 @@
 
 
 <div  class="col-lg-12 col-md-12 info-ficha-buy-info no-padding">
-    <div class=" col-xs-12 no-padding info-ficha-buy-info-price ">
+	@if ($lote_actual->ocultarps_asigl0 != 'S')
+		<div class=" col-xs-12 no-padding info-ficha-buy-info-price ">
 
-            <div class="pre d-flex justify-content-space-between align-items-center">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
+				<div class="pre d-flex justify-content-space-between align-items-center">
+					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
 
-            </div>
+				</div>
 
-    </div>
+		</div>
+	@endif
 </div>
 
 
@@ -89,7 +91,7 @@
 				ref: "{{$lote_actual->ref_asigl0}}",
 				_token: $("input[name=_token]").val()
 			},
-			
+
 			success: function (data) {
 				if (data.status == 'success') {
 					$('#pujar_orden_telefonica_duran').removeClass('hidden');

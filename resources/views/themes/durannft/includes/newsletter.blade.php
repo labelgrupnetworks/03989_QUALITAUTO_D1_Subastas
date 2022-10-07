@@ -6,7 +6,7 @@
 
 		<div class="w-100 newsletter-input-group">
 
-			<input class="form-control newsletter-input" type="text" placeholder="Tu email">
+			<input class="form-control newsletter-input" type="text" placeholder="{{ trans("$theme-app.foot.newsletter_text_input") }}">
 
 			<div class="form-check mt-1">
 				<input name="condiciones" type="checkbox" id="condiciones" type="checkbox" class="form-check-input">

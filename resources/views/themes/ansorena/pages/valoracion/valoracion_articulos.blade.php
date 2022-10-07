@@ -11,17 +11,51 @@ $bread[] = array("name" =>$data['title']  );
 ?>
 <div class="container">
     <div class="row">
+		{{--
         <div class="col-xs-12 col-sm-12 text-center color-letter">
                 @include('includes.breadcrumb')
             </div>
         </div>
+		--}}
     </div>
     <div id="" class="free-valuations color-letter">
 	    <div class="container" id="return-valoracion">
             <div class="row">
 				<div class="col-xs-12 col-lg-11 col-lg-offset-1">
-					<div class="col-xs-12 text-center">
-						<h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.solicitud_valoracion') }}</h1>
+					{{--<div class="col-xs-12 text-center hidden-xs ">
+						<a href="mailto:victor.marco@ansorena.com">	<img src="/themes/ansorena/img/banner-valoracion.jpg" width="100%"/></a>
+					</div>
+					<div class="col-xs-12 text-center hidden-sm hidden-md hidden-lg mb-1">
+						<a href="mailto:victor.marco@ansorena.com">	<img src="/themes/ansorena/img/banner-valoracion-text.jpg" width="100%"/></a>
+						<img src="/themes/ansorena/img/banner-valoracion-img.jpg" width="100%"/>
+					</div>
+
+					<div class="col-xs-12 text-center titlePage mt-5 mb-1" style="font-size: 20px; color: #7e9396;">
+						<strong>	¿ESTÁ INTERESADO EN VENDER UNA OBRA DE ARTE ANTIGUA?</strong>
+					</div>
+
+					<div class="col-xs-12 col-md-6 mt-3 " style="">
+						<p style="padding-right: 5px;">Nuestro experto en <b>Pintura Antigua y S.XIX.</b> estará en <b>Barcelona</b> los días <b>22 y 23 de Septiembre.</b></p>
+						<p style="padding-right: 5px;">Valoraciones gratuitas para subasta. Tasación, valoración o gestión de venta privada.</p>
+						<p style="padding-right: 5px;">No pierda esta oportunidad y <b>solicite su cita previa.</b></p>
+
+					</div>
+					<div class="col-xs-12 col-md-6 mt-2 mb-5 " >
+						<div class="col-xs-12 "  style="border: 1px solid #ccc;">
+							<div class="col-xs-12 mt-2 mb-2 " >
+								<p><b>SOLICITE CITA PREVIA POR TELÉFONO O POR EMAIL</b></p>
+								<ul style="padding-left: 15px;color: #7e9396;">
+									<li ><a href="mailto:victor.marco@ansorena.com">Victor.marco@ansorena.com</a></li>
+									<li style="padding-top: 10px;">699068542</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					--}}
+
+
+					<div class="col-xs-12 text-center mt-1">
+						<h1 class="titlePage" style='text-transform: uppercase;font-size: 20px; color: #7e9396;'><b>{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.solicitud_valoracion') }}</b></h1>
 
 							{!! \BannerLib::bannersPorKey("BANNER_VALORACION", "BANNER_VALORACION")!!}
 

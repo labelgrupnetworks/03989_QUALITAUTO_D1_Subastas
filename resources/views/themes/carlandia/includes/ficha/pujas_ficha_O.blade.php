@@ -3,14 +3,16 @@
     <div class="col-xs-12 info-ficha-buy-info-price header-info-ficha-prices d-flex p-0">
 
 			{{-- precio de salida --}}
-            <div class="pre pre-impsal">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-				@if(\Config::get("app.exchange"))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
-				@endif
-				</p>
-			</div>
+			@if ($lote_actual->ocultarps_asigl0 != 'S')
+				<div class="pre pre-impsal">
+					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+					@if(\Config::get("app.exchange"))
+						| <span id="startPriceExchange_JS" class="exchange"> </span>
+					@endif
+					</p>
+				</div>
+			@endif
 
 			{{-- precio estimado --}}
 			{{-- @if(!empty($lote_actual->imptash_asigl0))

@@ -30,7 +30,7 @@ $bread[] = array("name" =>$data['title']  );
                         <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
 
 						<div class=" col-xs-12 mt-3 mb-5 text-center">
-							<strong>Elija el tipo de consulta que desea hacer:<strong><br>
+							<strong>{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.elija_tipo_consulta') }}<strong><br>
 							<select  id="tipo" name="tipo">
 								<option value="tasacion" <?= request("tipo") == "tasacion"? "selected='selected'" : "" ?>> {{trans(\Config::get('app.theme').'-app.valoracion_gratuita.tasacion')  }} </option>
 								<option value="venta privada" <?= request("tipo") == "ventaprivada"? "selected='selected'" : "" ?>> {{trans(\Config::get('app.theme').'-app.valoracion_gratuita.venta_privada')   }} </option>

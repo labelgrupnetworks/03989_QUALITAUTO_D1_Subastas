@@ -161,7 +161,7 @@ if($subasta_venta){
 
 
 												<div class="col-xs-12 col-sm-12 lotes_destacados">
-													<div class="mas-pujados-title color-letter"><span>Lotes Relacionados</span>
+													<div class="mas-pujados-title color-letter"><span> {{ trans(\Config::get('app.theme').'-app.artist.relatedLots') }}</span>
 													</div>
 
 													<div class='loader hidden'></div>

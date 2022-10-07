@@ -1,15 +1,15 @@
 
 <div id="reload_inf_lot" class="col-xs-12 info-ficha-buy-info no-padding">
 
-    <div class="col-xs-6 col-md-12 no-padding info-ficha-buy-info-price mt-1">
+    @if ($lote_actual->ocultarps_asigl0 != 'S')
+        <div class="col-xs-6 col-md-12 no-padding info-ficha-buy-info-price mt-1">
+                <div class="pre d-flex justify-content-space-between align-items-center precio-puja-container">
+                    <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                    <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
 
-            <div class="pre d-flex justify-content-space-between align-items-center precio-puja-container">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
-
-            </div>
-
-	</div>
+                </div>
+        </div>
+    @endif
 
     <div class=" col-xs-6 col-md-12 no-padding info-ficha-buy-info-price mt-1">
 

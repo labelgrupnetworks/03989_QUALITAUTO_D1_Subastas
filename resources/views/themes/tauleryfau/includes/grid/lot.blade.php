@@ -112,8 +112,8 @@
 
                                 @elseif( \Config::get('app.impsalhces_asigl0'))
 
-                                    <p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.lot-price')}}</p>
-                                    <p class="price">{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                                    <p class="puja" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price')}}</p>
+                                    <p class="price" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
 
                                 @endif
                             </div>

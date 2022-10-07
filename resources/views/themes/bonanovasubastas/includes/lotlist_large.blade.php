@@ -45,11 +45,11 @@
                 <div class="data-price">
                 @if($item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')
                     @if($item->tipo_sub != 'V')
-                        @if( \Config::get('app.estimacion'))
-                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
-                        @elseif( \Config::get('app.impsalhces_asigl0'))
-                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
-                        @endif
+						@if( \Config::get('app.estimacion'))
+								<p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+						@elseif( \Config::get('app.impsalhces_asigl0'))
+								<p class="salida" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+						@endif
                     @elseif($item->tipo_sub == 'V')
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}:
                         <span >

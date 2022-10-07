@@ -79,7 +79,7 @@
 					@if( !$retirado && !$devuelto)
 					<div class="row nopadding w-100">
 
-						<div class="salida col-xs-12 ">
+						<div class="salida col-xs-12 " style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 							@if($subasta_venta)
 
 								<p class="precio-venta mb-0 col-xs-12 text-center">
@@ -92,7 +92,7 @@
 								<div class="salida-title mt-0 letter-price-salida col-xs-5 text-right">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
 							@endif
 
-									</div>
+						</div>
 
 
 						@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)

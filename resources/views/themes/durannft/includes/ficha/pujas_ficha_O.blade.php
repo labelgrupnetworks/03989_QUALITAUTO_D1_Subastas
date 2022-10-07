@@ -3,7 +3,6 @@
 		<div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima']) ? '' : 'hidden' ?> ">
 			{{ trans(\Config::get('app.theme') . '-app.lot.max_puja') }}
 			<strong>
-
 				<span id="tuorden">
 					@if (!empty($data['js_item']['user']['ordenMaxima']))
 						@if (!empty($lote_actual->max_puja) && $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
@@ -25,21 +24,18 @@
 	</div>
 	<div class="col-xs-12 no-padding info-ficha-buy-info-price d-flex">
 
-		<div class="pre">
-			<p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
-			<p class="pre-price">{{ $lote_actual->formatted_impsalhces_asigl0 }}
-				{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
-				@if (\Config::get('app.exchange'))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
-				@endif
-			</p>
+		@if ($lote_actual->ocultarps_asigl0 != 'S')
+			<div class="pre">
+				<p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
+				<p class="pre-price">{{ $lote_actual->formatted_impsalhces_asigl0 }}
+					{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+					@if (\Config::get('app.exchange'))
+						| <span id="startPriceExchange_JS" class="exchange"> </span>
+					@endif
+				</p>
+			</div>
+		@endif
 
-
-
-
-
-
-		</div>
 		@if (!empty($lote_actual->imptas_asigl0))
 			<div class="pre">
 				<p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.estimatelow') }}</p>
@@ -138,10 +134,7 @@
 					@endif
 				</div>
 			@endif
-			{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
-			@if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
-				<div class="require-wallet mt-1 mb-1">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
-			@else
+
 				<div class="input-group d-block group-pujar-custom ">
 					<div>
 						<div class="insert-bid insert-max-bid mb-1">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}
@@ -151,73 +144,94 @@
 						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number"
 							type="text" value="{{ $data['precio_salida'] }}">
 						<div class="input-group-btn">
+							@if (Session::has('user'))
 							<button type="button" data-from="modal"
 								class=" lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user') ? 'add_favs' : '' ?>"
 								type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
 								codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+							@else
+								<button type="button" data-from="modal" id="js-ficha-login"
+									class="ficha-btn-bid ficha-btn-bid-height button-principal"
+									type="button">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+							@endif
 						</div>
 					</div>
+
+
+
+
+
+
+
+			@if (\Config::get('app.urlToPackengers'))
+				<?php
+				$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
+				$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
+				?>
+				<div class="mt-1 mb-1 text-center">
+					<div class="packengers-container-button-ficha">
+						<a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
+							<i class="fa fa-truck" aria-hidden="true"></i>
+							{{ trans("$theme-app.lot.packengers_ficha") }}
+						</a>
+					</div>
+				</div>
 			@endif
 
 
-
-
-
-
-				@if (\Config::get('app.urlToPackengers'))
-
-											<?php
-						$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
-						$urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
-						?>
-						<div class="mt-1 mb-1 text-center">
-							<div class="packengers-container-button-ficha">
-								<a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
-									<i class="fa fa-truck" aria-hidden="true"></i>
-									{{ trans("$theme-app.lot.packengers_ficha") }}
-								</a>
-							</div>
-						</div>
-
-				@endif
-
-
 		</div>
-@endif
+	@else
+
+	<div class="mt-1 mb-2 text-center">
+
+		<p> {{ trans("$theme-app.lot.bid_start_text") }} <span id="inicio_fecha"></span></p>
+
+	</div>
+
+	@endif
+
+	@if (empty($data['usuario']))
+	<div class="text-center mt-2 mb-2">
+		<a class="btn btn-white" href="{{ config('app.custom_login_url') }}&context_url={{ url()->current() }}">{{ trans("$theme-app.lot.register_here") }}</a>
+	</div>
+	@endif
 
 
-<?php //solo se debe recargar la fecha en las subatsas tipo Online, ne las abiertas tipo P no se debe ejecutar
-?>
-@if ($subasta_online)
-	<script>
-	 $(document).ready(function() {
+	<?php //solo se debe recargar la fecha en las subatsas tipo Online, ne las abiertas tipo P no se debe ejecutar
+	?>
+	@if ($subasta_online)
+		<script>
+			$(document).ready(function() {
 
-	  $("#actual_max_bid").bind('DOMNodeInserted', function(event) {
-	   if (event.type == 'DOMNodeInserted') {
+				$("#inicio_fecha").html(format_date_large(new Date("{{$lote_actual->start_session}}".replace(/-/g, "/")),''));
 
-	    $.ajax({
-	     type: "GET",
-	     url: "/lot/getfechafin",
-	     data: {
-	      cod: cod_sub,
-	      ref: ref
-	     },
-	     success: function(data) {
+				$("#actual_max_bid").bind('DOMNodeInserted', function(event) {
+					if (event.type == 'DOMNodeInserted') {
 
-	      if (data.status == 'success') {
-	       $(".timer").data('ini', new Date().getTime());
-	       $(".timer").data('countdownficha', data.countdown);
-	       //var close_date = new Date(data.close_at * 1000);
-	       // $("#cierre_lote").html(close_date.toLocaleDateString('es-ES') + " " + close_date.toLocaleTimeString('es-ES'));
-	       $("#cierre_lote").html(format_date_large(new Date(data.close_at * 1000), ''));
-	      }
+						$.ajax({
+							type: "GET",
+							url: "/lot/getfechafin",
+							data: {
+								cod: cod_sub,
+								ref: ref
+							},
+							success: function(data) {
+
+								if (data.status == 'success') {
+									$(".timer").data('ini', new Date().getTime());
+									$(".timer").data('countdownficha', data.countdown);
+									//var close_date = new Date(data.close_at * 1000);
+									// $("#cierre_lote").html(close_date.toLocaleDateString('es-ES') + " " + close_date.toLocaleTimeString('es-ES'));
+									$("#cierre_lote").html(format_date_large(new Date(data.close_at *
+										1000), ''));
+								}
 
 
-	     }
-	    });
-	   }
-	  });
-	 });
-	</script>
-@endif
+							}
+						});
+					}
+				});
+			});
+		</script>
+	@endif
 </div>

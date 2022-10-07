@@ -3,15 +3,17 @@
 <div  class="col-lg-12 col-md-12 info-ficha-buy-info no-padding">
     <div class=" col-xs-12 no-padding info-ficha-buy-info-price d-flex">
 
-            <div class="pre">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					@if(\Config::get("app.exchange"))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
-					@endif
-				</p>
+			@if ($lote_actual->ocultarps_asigl0 != 'S')
+				<div class="pre">
+					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+						@if(\Config::get("app.exchange"))
+						| <span id="startPriceExchange_JS" class="exchange"> </span>
+						@endif
+					</p>
+				</div>
+			@endif
 
-			</div>
 			@if(!empty($lote_actual->imptas_asigl0))
 				<div class="pre">
 					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</p>
@@ -78,6 +80,7 @@
 		</div>
 	</div>
 </div>
+
 @endif
 
 @if( $cerrado_N && $fact_N && $start_session  &&  !$end_session )
@@ -96,8 +99,8 @@
 
 
 
-<?php
- /*
+
+
 <div class="ficha-info-item-for-pay col-xs-12 no-padding">
     <div class="info_single_content">
         <?php //las subastas abiertas tipo P se veran como W cuando empiece la subasta, pero controlamos que no sep uedan hacer ordenes (!$subasta_abierta_P) ?>
@@ -112,7 +115,7 @@
         @endif
     </div>
 </div>
-*/
-?>
+
+
 
 @endif

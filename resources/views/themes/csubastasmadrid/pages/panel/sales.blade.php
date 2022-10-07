@@ -30,20 +30,17 @@
 			<div class="panel-group" id="accordion">
 				<div class="panel panel-default">
 
-					@php
-						$auctionsTypes = session('user.admin') ? ['S', 'A'] : ['S'];
-						$subastas = $subastas->flatten()->whereIn('subc_sub', $auctionsTypes)->groupBy('cod_sub');
-					@endphp
-
 					@foreach($subastas as $key_sub => $subasta)
 					<div class="panel-heading">
 						<a data-toggle="collapse" href="#{{ $key_sub }}">
-							<h4 class="panel-title">{{ $key_sub }} - {{$subasta[0]->name}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->orders_start, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->end, 'Y-m-d H:i:s', 'd/m/Y') }}</h4>
+							<h4 class="panel-title">
+								{{ $key_sub }} - {{$subasta[0]->des_sub}} - {{ trans("$theme-app.global.from") }} {{ \Tools::getDateFormat($subasta[0]->dfec_sub, 'Y-m-d H:i:s', 'd/m/Y') }} {{ trans("$theme-app.global.to_the") }} {{ \Tools::getDateFormat($subasta[0]->hfec_sub, 'Y-m-d H:i:s', 'd/m/Y') }}
+							</h4>
 						</a>
 					</div>
 
 					<div id="{{ $key_sub }}"
-						class="panel-collapse collapse <?= $loop->first ? 'in':' ';?>">
+						class="panel-collapse collapse">
 						<div class="panel-body">
 							<div class="table-responsive">
 								<table class="table table-striped table-custom" style="width:100%">
@@ -68,20 +65,25 @@
 
 										@foreach($subasta->sortBy('lin_hces1')->sortByDesc('num_hces1') as $lote)
 
+
 										@php
-										$url_friendly = !empty($lote->webfriend_hces1) ? $lote->webfriend_hces1 : str_slug($lote->titulo_hces1);
-										$url_friendly = \Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
-										$hay_pujas = !empty(count($lote->pujas))? true : false;
 
-										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, 0);
-										$maxPujaFormat = \Tools::moneyFormat($maxPuja ?? 0, '€');
-										$cerrado = $lote->cerrado_asigl0 == 'S'? true : false;
-										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' || $lote->cerrado_asigl0 == 'D') ? true : false;
-										$desadjudicado = $lote->desadju_asigl0 == 'S'? true : false;
-
+										$cerrado = $lote->cerrado_asigl0 == 'S';
 										if($cerrado && empty($lote->implic_hces1)){
 											continue;
 										}
+
+										$url_friendly = !empty($lote->webfriend_hces1) ? $lote->webfriend_hces1 : str_slug($lote->titulo_hces1);
+										$url_friendly = \Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
+										$hay_pujas = !empty(count($lote->pujas));
+
+										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, 0);
+										$maxPujaFormat = \Tools::moneyFormat($maxPuja ?? 0, '€');
+
+										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' || $lote->cerrado_asigl0 == 'D') ? true : false;
+										$desadjudicado = $lote->desadju_asigl0 == 'S';
+
+
 
 										$totalSalida += $lote->impsalhces_asigl0;
 										$totalMaxPuja += $maxPuja;
@@ -113,7 +115,7 @@
 
 											<td>{{ Tools::moneyFormat($lote->impsalhces_asigl0, '€') }} </td>
 
-											<td>{{ count($lote->pujas) + ($lote->orders ?? 0) }}</td>
+											<td>{{ $lote->pujas->count() + ($lote->orders ?? 0) }}</td>
 
 											<td>{{ $maxPujaFormat }}</td>
 

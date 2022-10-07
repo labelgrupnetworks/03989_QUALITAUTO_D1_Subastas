@@ -39,7 +39,7 @@
 
 					<div class="data-price text-center">
 						@if( !$retirado && !$devuelto)
-							<p class="d-flex justify-content-space-between">
+							<p class="d-flex justify-content-space-between" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if($subasta_venta)
 									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
 								@else

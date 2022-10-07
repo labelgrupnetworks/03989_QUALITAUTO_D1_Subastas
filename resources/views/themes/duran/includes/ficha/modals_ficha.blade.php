@@ -42,7 +42,7 @@
 												<br/>
                                                 <span for="bid" class='desc_auc'>{{trans(\Config::get('app.theme').'-app.lot.bidding_for')}} </span> <strong><span class="precio_orden"></span> €</strong><br/>
 													<br/>
-													<p id="phonebid_js">{{trans(\Config::get('app.theme').'-app.lot.phonebid_text')}} <br><span id="phone_contact_js"> </span></p>
+													<p class="phonebid_js">{{trans(\Config::get('app.theme').'-app.lot.phonebid_text')}} <br><span id="phone_contact_js"> </span></p>
 													<br/>
                                                     <button id="confirm_orden" class="btn button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?> </button>
 

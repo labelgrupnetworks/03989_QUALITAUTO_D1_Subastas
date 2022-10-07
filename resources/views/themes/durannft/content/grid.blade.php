@@ -36,7 +36,7 @@
 						<div class="filters-control-wrapper">
 							<button id="filters-control" data-action="show">
 								<i class="fa fa-filter"></i>
-								<span id="filter-show" class="ml-1">Filtros</span>
+								<span id="filter-show" class="ml-1">{{ trans(\Config::get('app.theme') . '-app.lot_list.filters') }}</span>
 							</button>
 						</div>
 

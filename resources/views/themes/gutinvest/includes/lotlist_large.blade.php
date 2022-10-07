@@ -1,6 +1,6 @@
 <div class="{{$class_square}} large_square">
      <div class="col-xs-12 item_lot_large">
-        <div class="col-xs-12 col-sm-5 col-lg-4">            
+        <div class="col-xs-12 col-sm-5 col-lg-4">
             <a title="{{ $titulo }}" <?= $url;?> >
                 <div class="border_img_lot">
                     <div class="content_item_img">
@@ -15,7 +15,7 @@
                              <div class="retired" style =" top:5px; right:5px">
                                 {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
                             </div>
-                        <?php //@elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta)) || (empty($precio_venta)) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)) ) 
+                        <?php //@elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta)) || (empty($precio_venta)) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)) )
                         //cambio realizado por que el cliente quiere que aparezcan los lotes como cerrados en el historico
                         /*
                          * 2 cambio, se decide que no aparezca en la foto
@@ -24,16 +24,16 @@
                                 {{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}
                             </div>
                         */?>
-                        @endif        
-                    </div>        
+                        @endif
+                    </div>
                 </div>
             </a>
         </div>
         <div class="col-xs-12 col-sm-7 col-lg-8">
-            <div class="data-container">        
+            <div class="data-container">
                 @if(!empty($titulo))
                     <div class="title_lot">
-                        <a title="{{ $titulo }}"  <?= $url;?> >                          
+                        <a title="{{ $titulo }}"  <?= $url;?> >
                             <h4>{{ $titulo}}</h4>
                         </a>
                      </div>
@@ -48,17 +48,17 @@
                 </div>
                 @endif
                 <div class="data-price">
-                @if($item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')    
-                    @if($item->tipo_sub != 'V')          
+                @if($item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')
+                    @if($item->tipo_sub != 'V')
                         @if($item->tipo_sub == 'W' && !empty($item->formatted_imptas_asigl0) && !empty($item->formatted_imptash_asigl0))
                         <p class="salida" style="margin-bottom: 15px;">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span> {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
                         @endif
-                        
+
                         @if($item->cerrado_asigl0 != 'S')
-                        <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+                        <p class="salida" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
                         @endif
-                        
-                    @elseif($item->tipo_sub == 'V')   
+
+                    @elseif($item->tipo_sub == 'V')
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}:
                         <span >
                             {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
@@ -66,37 +66,37 @@
                     @endif
                     @if( ($item->tipo_sub== 'P' || $item->tipo_sub== 'O') && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}<span>  {{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
-                    @elseif ($item->tipo_sub== 'P' || $item->tipo_sub== 'O' && empty($item->max_puja) && $item->cerrado_asigl0 == 'N') 
-                        <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </p>    
+                    @elseif ($item->tipo_sub== 'P' || $item->tipo_sub== 'O' && empty($item->max_puja) && $item->cerrado_asigl0 == 'N')
+                        <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </p>
                     @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'S' && $item->cerrado_asigl0 == 'N'  )
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
                             <span class="{{$winner}}"> {{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
                     @endif
 
-                  
+
                     @if( \Config::get('app.awarded') || $item->cerrado_asigl0 == 'D')
                       <p class="salida">
                         @if($item->cerrado_asigl0 == 'D')
                             {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
-                        @elseif($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 =='S' && (!empty($precio_venta) ) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))  )    
+                        @elseif($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 =='S' && (!empty($precio_venta) ) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))  )
                             @if($item->subc_sub == 'H' && !empty($item->impadj_asigl0))
                                 @php($precio_venta = $item->impadj_asigl0)
-                            @endif    
+                            @endif
                             {{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}: <span class="pill">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                             <?php //cambio realizado por que el cliente quiere que aparezcan los lotes como cerrados en el historico ?>
                         @elseif($item->desadju_asigl0 =='S')
                             {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
                         @elseif($item->cerrado_asigl0 == 'S')
-                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}                       
+                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}
                         @endif
                       </p>
                     @endif
                     @if(($item->tipo_sub == 'P' || $item->tipo_sub == 'O') && $item->cerrado_asigl0=='N')
 
                         <span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
-                                      
+
                     @endif
-                    @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub) && $data['sub_data']->opcioncar_sub == 'S' && $item->tipo_sub == 'W' && $item->cerrado_asigl0=='N' && $item->fac_hces1=='N' &&  strtotime("now") > strtotime($item->orders_start)  &&   strtotime("now") < strtotime($item->orders_end))   
+                    @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub) && $data['sub_data']->opcioncar_sub == 'S' && $item->tipo_sub == 'W' && $item->cerrado_asigl0=='N' && $item->fac_hces1=='N' &&  strtotime("now") > strtotime($item->orders_start)  &&   strtotime("now") < strtotime($item->orders_end))
                         <div class="input-group">
                                 <input placeholder="" class="form-control input-lg" value="{{$item->impsalhces_asigl0}}" type="text">
                                 <div class="input-group-btn">
@@ -104,7 +104,7 @@
                                 </div>
                         </div>
                     @endif
-                @endif    
+                @endif
                 </div>
             </div>
          </div>

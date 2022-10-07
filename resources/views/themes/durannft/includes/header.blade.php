@@ -21,7 +21,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
     ->whereIn('lin_ortsec1', $categorys->pluck('lin_ortsec0'))
     ->get();
 ?>
-@if (count(Config::get('app.locales')) > 1)
+@if (count(Config::get('app.locales')) > 1 )
     <div class="lang-selection">
         <div class="container-fluid">
             <div class="row">
@@ -80,7 +80,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 					@if (!Session::has('user'))
 
 						{{-- <a href="{{ config('app.custom_login_url') }}&context_url={{Request::getSchemeAndHttpHost()}}" --}}
-						<a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
+						<a href="{{ config('app.custom_login_url') }}&context_url={{ url()->current() }}"
 							class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 							<i class="fa fa-user"></i>
 						</a>
@@ -123,6 +123,9 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                     </li> --}}
                     <li>
                         <a href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') }}">{{ trans($theme . '-app.foot.irises_page') }}</a>
                     </li>
 					    {{--
                     <li>
@@ -209,6 +212,9 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
 							</li>
+							<li>
+								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') }}">{{ trans($theme . '-app.foot.irises_page') }}</a>
+							</li>
 							{{--
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
@@ -245,7 +251,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 				<div class="col-xs-1">
 					<div class="navbar-brand icons-band">
 						@if (!Session::has('user'))
-							<a href="{{ config('app.custom_login_url') }}&context_url={{ $host }}"
+							<a href="{{ config('app.custom_login_url') }}&context_url={{ url()->current() }}"
 								class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 								<i class="fa fa-user"></i>
 							</a>
@@ -354,6 +360,11 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                                     title="{{ trans($theme . '-app.foot.contact') }}"
                                     href="<?= \Routing::translateSeo(trans($theme . '-app.links.contact')) ?>"><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
                             </li>
+                            <li>
+                                <a class="color-letter d-flex link-header"
+                                    title="{{ trans($theme . '-app.foot.irises_page') }}"
+                                    href="<?= Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') ?>"><span>{{ trans($theme . '-app.foot.irises_page') }}</span></a>
+                            </li>
 							 {{--
                             <li>
                                 <a class="color-letter d-flex link-header"
@@ -363,7 +374,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 							--}}
                             @if (!Session::has('user'))
                                 <li>
-                                    <a href="{{ config('app.custom_login_url') }}&context_url={{ $host }}"
+                                    <a href="{{ config('app.custom_login_url') }}&context_url={{ url()->current() }}"
                                         class="color-letter d-flex link-header btn_login_desktop"
                                         title="{{ trans($theme . '-app.login_register.login') }}"
                                         href="javascript:;"><span>{{ trans($theme . '-app.login_register.login') }}</span>

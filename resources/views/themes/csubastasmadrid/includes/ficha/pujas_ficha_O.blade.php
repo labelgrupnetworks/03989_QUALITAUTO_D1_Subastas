@@ -29,7 +29,7 @@
                             <div class="pre">
                                     {{$lote_actual->formatted_imptas_asigl0}} -  {{$lote_actual->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
                             </div>
-                        @elseif( \Config::get('app.impsalhces_asigl0'))
+                        @elseif( \Config::get('app.impsalhces_asigl0') && $lote_actual->ocultarps_asigl0 != 'S')
                             <p class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
                             <div class="pre">
                                     {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}

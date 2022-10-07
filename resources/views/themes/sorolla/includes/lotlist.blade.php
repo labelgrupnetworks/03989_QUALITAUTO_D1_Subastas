@@ -43,8 +43,8 @@
 						<p class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
                         <p>{{$item->formatted_impres_asigl0}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
                     @else
-                        <p class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                        <p>{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                        <p class="salida-title" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                        <p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
                     @endif
 
                     @if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)

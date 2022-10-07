@@ -82,11 +82,11 @@
 								{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span> {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 
 								@elseif(\Config::get('app.impsalhces_asigl0') && ($item->subc_sub !='H'  || !empty($precio_venta)))
-								{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span> {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+								<span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span> {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></span>
 								@endif
 
                         @elseif($item->subc_sub !='H')
-                            {{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }} <span>{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            <span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }} <span>{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></span>
                         @endif
 						</p>
 

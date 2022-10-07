@@ -21,15 +21,16 @@
                     </div>
 
 					<p class="text-center size-item">
-						@if(!empty($item->ancho_hces1))
-
+						@if(!empty($item->nobj_hces1))
+						{{ trans("$theme-app.lot_list.pices_at_auction") }} {{ $lote_actual->nobj_hces1 }} {{ trans("$theme-app.lot.pieces") }}
+						@elseif(!empty($item->ancho_hces1))
 						{{ trans("$theme-app.lot_list.meters_at_auction") }} {{ str_replace('.', ',', $item->ancho_hces1) }} {!! ' m<sup>2</sup>' !!}
 						@endif
 					<p>
 
 					<div class="data-price text-center">
 						@if( !$retirado && !$devuelto)
-							<p>
+							<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if($subasta_venta)
 									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
 								@else

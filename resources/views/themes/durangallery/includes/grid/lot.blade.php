@@ -52,7 +52,7 @@
 						<p style="flex: 1">
 							@if(!$retirado && !$devuelto)
 								{{-- Precio de salida --}}
-								<span class="salida-price">
+								<span class="salida-price" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 									@if($compra)
 										{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($item->impsalhces_asigl0,\Session::get('user.cod')),false,2) }}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 									@else

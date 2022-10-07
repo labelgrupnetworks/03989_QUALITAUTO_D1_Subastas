@@ -5,7 +5,7 @@
                 <div class="border_img_lot">
                     <div class="content_item_img">
                         <div class="img_lot">
-                            <img class="img-responsive lazy" data-src="/img/load/lote_medium/{{ $item->imagen }}" >
+                            <img class="img-responsive lazy" data-src="/img/thumbs/260/{{\Config::get("app.emp")}}/{{$item->num_hces1}}/{{ $item->imagen }}" >
                         </div>
 
                     </div>
@@ -35,7 +35,7 @@
                            @elseif( \Config::get('app.estimacion'))
                                 <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
                         @elseif( \Config::get('app.impsalhces_asigl0'))
-                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+                                <p class="salida" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
                         @endif
                     @elseif($item->tipo_sub == 'V')
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.price_now') }}:

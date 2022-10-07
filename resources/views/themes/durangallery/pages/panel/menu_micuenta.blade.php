@@ -20,6 +20,12 @@
             </a>
         </li>
 
+		<li class="text-uppercase<?php if($tab == 'datos-personales'){ echo(' tab-active'); } ?>" role="presentation">
+            <a class="" href="{{ \Routing::slug('user/panel/info') }}">
+                <i class="fas fa-user-circle"></i> {{ trans(\Config::get('app.theme').'-app.user_panel.info') }}
+			</a>
+		</li>
+
  <?php /*<li role="presentation" <?php if($tab == 'datos-personales'){ echo('class="active"'); } ?>><a href="{{ \Routing::slug('user/panel/info') }}">{{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</a></li> */?>
         <li class="text-uppercase"><a href="{{ \Routing::slug('logout') }}"><i class="fas fa-sign-out-alt"></i>{{ trans(\Config::get('app.theme').'-app.user_panel.exit') }}</a></li>
     </ul>

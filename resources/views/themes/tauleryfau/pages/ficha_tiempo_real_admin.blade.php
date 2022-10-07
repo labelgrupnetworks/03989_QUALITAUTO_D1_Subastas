@@ -98,7 +98,7 @@
                                                     </div>
                                                     <div class="controles_tipo_puja">
                                                         <i data-type="S" class="add_bid fa fa-3x fa-hand-paper-o" aria-hidden="true"></i>
-                                                        <i data-type="I" style="padding:0 30px 0 30px" class="add_bid fa fa-3x fa-globe" aria-hidden="true"></i>
+                                                        <i data-type="I" style="padding:0 30px 0 30px" class="add_bid fa fa-3x fa fa-wikipedia-w" aria-hidden="true"></i>
                                                         <i data-type="T" class="add_bid fa fa-3x fa-phone" aria-hidden="true"></i>
                                                     </div>
                                                 </div>
@@ -161,7 +161,7 @@
                                 ?>
                                     <div class="pujas_model col-xs-12">
                                         <div class="col-lg-3 tipoPuja">
-                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
+                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
                                             <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
                                             <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
                                             <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i>  {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
@@ -188,7 +188,7 @@
 
                             <div class="pujas_model hidden col-xs-12" id="type_bid_model">
                                 <div class="col-lg-3 tipoPuja">
-                                    <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
+                                    <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
                                     <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
                                     <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
                                     <p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
@@ -241,8 +241,8 @@
                                 ?>
                                 <div class="ol_model">
                                     <div class="col-lg-6 tipoOrden">
-                                        <p data-type="I" @if ($orden->tipop_orlic != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                        <p data-type="W" @if ($orden->tipop_orlic != 'W')class="hidden" @endif ><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                        <p data-type="I" @if ($orden->tipop_orlic != 'I')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                        <p data-type="W" @if ($orden->tipop_orlic != 'W')class="hidden" @endif ><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
                                         <p data-type="S" @if ($orden->tipop_orlic != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
                                         <p data-type="T" @if ($orden->tipop_orlic != 'T')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
                                         <p data-type="E" @if ($orden->tipop_orlic != 'E' && $orden->tipop_orlic != 'P')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
@@ -265,8 +265,8 @@
 
                         <div class="ol_model hidden" id="type_bid_model_order">
                             <div class="col-lg-6 tipoOrden">
-                                <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                <p data-type="W"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                <p data-type="W"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
                                 <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
                                 <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
                                 <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
