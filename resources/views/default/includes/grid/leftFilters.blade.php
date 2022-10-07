@@ -48,8 +48,6 @@
 				@else
 					@include('includes.grid.typeAuction_list')
             @endif
-
-
 		</form>
 	</div>
 

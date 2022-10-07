@@ -43,6 +43,15 @@
 					</a>
 				</li>
 			@endif
+			
+			@if (\Config::get('app.makePreferences'))
+				<li class="text-uppercase<?php if($tab == 'form-preferencias'){ echo(' tab-active'); } ?>" role="presentation">
+					<a class="" href="{{ \Routing::slug('user/panel/preferences') }}">
+						<i class="fa fa-bell-o" aria-hidden="true"></i> {{ trans("$theme-app.user_panel.preferences") }}
+					</a>
+				</li>
+			@endif
+
         <li class="text-uppercase<?php if($tab == 'datos-personales'){ echo(' tab-active'); } ?>" role="presentation">
 
             <a class="" href="{{ \Routing::slug('user/panel/info') }}">

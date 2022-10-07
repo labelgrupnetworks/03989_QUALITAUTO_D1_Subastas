@@ -15,41 +15,41 @@
                 {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
             </div>
         @endif
-        <div class="item_lot">    
+        <div class="item_lot">
             <div class="item_img">
-                <div data-loader="loaderDetacados" class='text-input__loading--line'></div>                      
+                <div data-loader="loaderDetacados" class='text-input__loading--line'></div>
                 <img class="img-responsive lazy" style="display: none;" data-src="{{$img}}" alt="{{$titulo}}">
             </div>
 
-            <div class="data-container">                
+            <div class="data-container">
                     <div class="title_item">
-                        <span class="seo_h4" style="text-align: center;">{{ $titulo}}</span>              
-                    </div>                
-                 
-                 <div class="desc_lot">                        
-                    <?= $item->desc_hces1 ?>                        
+                        <span class="seo_h4" style="text-align: center;">{{ $titulo}}</span>
+                    </div>
+
+                 <div class="desc_lot">
+                    <?= $item->desc_hces1 ?>
                  </div>
-            
+
             <div class="data-price text-center">
                 @if( !$retirado && !$fact_devuelta)
-                    @if($subasta_venta) 
+                    @if($subasta_venta)
                         <p class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
-                        <p>{{$item->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>  
-                    @else                        
-                        <p class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                        <p>{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
-                               
-                    @endif                   
+                        <p>{{$item->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                    @else
+                        <p class="salida-title" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                        <p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+
+                    @endif
                     @if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
                                 <p class="salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
                                 <p class="{{$winner}}">{{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
-                    
-                    @elseif ($subasta_web && $subasta_abierta_O && !empty($item->open_price) && !$cerrado  )              
+
+                    @elseif ($subasta_web && $subasta_abierta_O && !empty($item->open_price) && !$cerrado  )
                             <p class="salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
-                            <p class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>                    
+                            <p class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
                     @endif
 
-                        
+
                     @if( $awarded || $devuelto)
                             @if($devuelto)
                                 <p class="salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
@@ -65,14 +65,14 @@
                             @elseif($cerrado &&  empty($precio_venta))
                                 <p class="salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
                                 <div class="salida-price"></div>
- 
+
                             @else
                                 {{-- <p class="salida-title extra-color-one"></p>
                                 <div class="salida-price"></div> --}}
                             @endif
                         @endif
-                        
-                   
+
+
                     @endif
 
                 </div>
@@ -81,11 +81,11 @@
                             <p class="salida-time">
                                 <i class="fa fa-clock-o"></i>
                                 <span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
-                            </p>                        
+                            </p>
                         @endif
-                
+
             </div>
-               
+
         </div>
     </a>
 </div>

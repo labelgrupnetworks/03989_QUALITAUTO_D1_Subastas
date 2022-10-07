@@ -15,7 +15,7 @@
 				<div class="form-group input-group col-xs-12 col-md-6">
 					<label for="wallet_direction">{{ trans("$theme-app.user_panel.wallet_direction") }}</label>
 					<input type="text" class="form-control" name="wallet_dir"
-						placeholder="Dirección pública la wallet" value="{{ $data['user']->wallet_cli ?? '' }}">
+						placeholder="{{ trans("$theme-app.user_panel.wallet_direction") }}" value="{{ $data['user']->wallet_cli ?? '' }}">
 				</div>
 
 				<div class="form-group col-xs-12 col-md-6 d-flex gap-5">
