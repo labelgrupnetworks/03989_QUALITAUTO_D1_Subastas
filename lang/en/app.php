@@ -10,6 +10,7 @@ $lang =[
 			'blog_metatile' => 'Blog Demo',
 			'blog_metades' => 'Come into demo\'s blog',
 			'more' => 'Read more',
+			'less' => 'Read less',
 			'cat_related' => 'Related Categories',
 			'post_related' => 'Related posts',
 			'name' => 'Blog',
@@ -131,6 +132,7 @@ $lang =[
 			'developedSoftware' => 'Auction software',
 			'developedBy' => 'Developed by Labelgrup Networks.',
 			'developed_url' => 'https://www.labelgrup.com/subastas',
+			'inscribete_catalogo' => ''
 		),
 	'global' =>
 		array (
@@ -391,7 +393,7 @@ $lang =[
 			'pujrep_W' => 'Web',
 			'pujrep_Y' => 'Buy at online auction',
 			'require_wallet' => 'You need to have an associated wallet to be able to bid on an NFT.<br> You can indicate your wallet or create a new one in <a href="/en/user/panel/info" > your account.</a>',
-			'closing_date' => 'Closing date: ',
+			'custom_login' => 'To be able to bid you need to " href=":login_link">log in</a>.',
 
 		),
 	'lot_list' =>
@@ -556,6 +558,7 @@ $lang =[
 			'lotReserved' => 'The lot is not available, currently it is in another user cart',
 			'lotsLost' => 'Some lots already are not available',
 			'notVarianteArticle' => 'Select all the product characteristics',
+
 		),
 	'msg_neutral' =>
 		array (
@@ -862,7 +865,29 @@ $lang =[
 			'soon' => 'Soon',
 			'bids_numbers' => 'Nº of bids',
 			'title_pending_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
-			'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde"
+			'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde",
+			'wallet' => 'WALLET',
+			'wallet_direction' => "Wallet's public address",
+			'wallet_new' => 'Create a new wallet',
+			'family' => 'Family',
+			'subfamily' => 'Subfamily',
+			'keywords' => 'Keywords',
+			'actions' => 'Actions',
+			'family_selector' => 'Select a family',
+			'subfamily_selector' => 'Select a subfamily',
+			'desc_input_pref' => 'Put a name to your preference',
+			'keyword_input_one' => 'Enter a keyword',
+			'keyword_input_two' => 'Enter another keyword',
+			'keyword_input_three' => 'Enter a third keyword',
+			'validation_keywords' => 'You must enter at least one keyword',
+			'create_preference' => 'Create preference',
+			'preferences_mayus' => 'PREFERENCES',
+			'preferences' => 'Preferences',
+			'non_input_desc' => 'You must enter a preference name',
+			'only_word_text' => 'Only one word should be put',
+			'keywords_non_alphanumeric' => 'Keywords should not contain alphanumeric characters',
+			'input_all_empty' => 'It is mandatory to fill in at least one field of family, subfamily or one of the keywords',
+			'name' => 'Name',
 
 		),
 	'valoracion_gratuita' =>
@@ -959,6 +984,7 @@ $lang =[
 			'biography' => 'Biography',
 			'collective' => 'Colective',
 			'request_information' => 'Request information',
+			'upcoming_events' => "Upcoming events",
 		),
 	'articles' =>
 		array (

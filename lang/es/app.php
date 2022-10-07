@@ -22,6 +22,7 @@ $lang = [
 		'blog_metatile' => 'Blog Demo',
 		'blog_metades' => 'Entra en el blog de demo',
 		'more' => 'Leer más',
+		'less' => 'Leer menos',
 		'cat_related' => 'Categorías relacionadas',
 		'post_related' => 'Entradas relacionadas',
 		'name' => 'Blog',
@@ -411,8 +412,7 @@ $lang = [
 		'pujrep_W' => 'Web',
 		'pujrep_Y' => 'Comprar en subasta online',
 		'require_wallet' => 'Para poder pujar por un lote NFT necesitas tener un wallet asociado. <br>Desde <a href="/es/user/panel/info" > tu panel de usuario</a> podrás indicarnos tu wallet o crearte uno nuevo.',
-		'closing_date' => 'Fecha de cierre: ',
-
+		'custom_login' => 'Para poder pujar es necesario <a title="iniciar sesión" href=":login_link"> iniciar sesión </a>.',
 	),
 	'lot_list' =>
 	array(
@@ -535,7 +535,7 @@ $lang = [
 		'usuario_pendiente_revision' => 'Le hemos enviado un mail para completar su alta como cliente y poder pujar',
 		'inserting_bid' => 'No se ha podido guardar su puja, por favor inténtelo de nuevo.',
 		'inserting_bid_order' => 'Su orden no ha sido registrada, por favor inténtelo de nuevo',
-		'int_value' => 'Introduzca valores sin decimales',
+		'int_value' => 'El valor introducido debe ser mayor a 0 y no contener decimales',
 		'login_register_failed' => 'Correo o contraseña incorrectos',
 		'lot_closed' => 'No es posible pujar por un lote cerrado',
 		'lot_not_found' => 'El lote especificado no existe.',
@@ -592,7 +592,6 @@ $lang = [
 		'title_500' => 'Error inesperado.',
 		'message_500' => 'Se ha producido un error y no se ha podido completar la solicitud. Inténtelo de nuevo.',
 		'asign_to_ministery' => 'El lote anterior ha sido adjudicado al ministerio',
-
 	),
 	'msg_neutral' =>
 	array(
@@ -920,8 +919,26 @@ $lang = [
 		'wallet_new' => 'Crear wallet nueva',
 		'bids_numbers' => 'Nº de pujas',
 		'title_pending_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
-		'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde"
-
+		'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde",
+		'family' => 'Familia',
+		'subfamily' => 'Subfamilia',
+		'keywords' => 'Palabras clave',
+		'actions' => 'Acciones',
+		'desc_input_pref' => 'Pon un nombre a tu preferencia',
+		'family_selector' => 'Selecciona una familia',
+		'subfamily_selector' => 'Selecciona una subfamilia',
+		'keyword_input_one' => 'Introduce una palabra clave',
+		'keyword_input_two' => 'Introduce otra palabra clave',
+		'keyword_input_three' => 'Introduce una tercera palabra clave',
+		'validation_keywords' => 'Solo debe ser una palabra',
+		'create_preference' => 'Crear preferencia',
+		'preferences_mayus' => 'PREFERENCIAS',
+		'preferences' => 'Preferencias',
+		'non_input_desc' => 'Debe introducir un nombre para la preferencia',
+		'only_word_text' => 'Solo debe ponerse una palabra',
+		'keywords_non_alphanumeric' => 'Las palabras clave no deben contener carácteres alfanuméricos',
+		'input_all_empty' => 'Es obligatorio rellenar mínimo un campo de familia, subfamilia o una de las palabras clave',
+		'name' => 'Nombre',
 
 	),
 	'valoracion_gratuita' =>
@@ -1026,6 +1043,7 @@ $lang = [
 		'biography' => 'Biografia',
 		'collective' => "Colectiva",
 		'request_information' => "Solicitar información",
+		'upcoming_events' => "Próximos eventos",
 
 
 	),
