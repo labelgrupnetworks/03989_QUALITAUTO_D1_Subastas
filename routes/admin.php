@@ -206,7 +206,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/excel/{idAuction}', 'subasta\AdminOrderController@excel')->name('orders.excel');
 			Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
 			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
-			Route::post('/delete-selection/{idAuction}', 'subasta\AdminOrderController@deleteSelection')->name('orders.delete_selection'); 
+			Route::post('/delete-selection/{idAuction}', 'subasta\AdminOrderController@deleteSelection')->name('orders.delete_selection');
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
@@ -250,6 +250,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/edit', 'subasta\AdminCategoryController@edit');
 			Route::post('/update', 'subasta\AdminCategoryController@update');
 			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
+
+			/* Preferencias */
+			Route::get('/preferences/download', 'subasta\AdminSubCategoryController@downloadPreferencesExcel');
 		});
 
 		Route::group(['prefix' => 'subcategory'], function () {

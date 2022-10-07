@@ -83,7 +83,7 @@ Route::get('/'.\Config::get('app.locale').'/catalog-newsleter', function () {
 })->name('catalogos_newsletter');
 
 
-//Route::get('zohocrmauth', 'externalws\bogota\ZohoController@auth')->name('zohocrmauth');
-//Route::get('zohocrm', 'externalws\bogota\ZohoController@store')->name('zohocrm');
+Route::get('/auth/zoho', 'externalws\bogota\ZohoController@getTokensWithGrantCode')->name('auth.zoho');
+Route::get('/zoho/export', 'externalws\bogota\ZohoController@exportClientsToZoho')->name('zoho.export');
 
 

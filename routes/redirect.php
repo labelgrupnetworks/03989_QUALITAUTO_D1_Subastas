@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 
 Route::get(\Routing::redirect_lot(), 'RedirectController@redirect_lot');
 Route::get(\Routing::redirect_page(), 'RedirectController@redirect_page');
