@@ -31,6 +31,10 @@
 	<div class="row">
 		<div class="col-xs-12 text-right">
 			<input type="button" id="addEscalado" class="btn btn-sm btn-outline-primary" value="add">
+
+		</div>
+		<div class="col-xs-12 text-center">
+			<a href="/preciofueraescalado/{{$fgSub->cod_sub}}" class="btn btn-info" target="_blank">{{ trans("admin-app.button.check_scale") }}</a>
 		</div>
 	</div>
 </div>

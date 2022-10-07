@@ -20,7 +20,11 @@
 		@include('admin::includes.session_msg')
 	<div id="category">
 
+
 		<a href="/admin/category/edit" class="btn btn-primary" style="float:right">{{ trans('admin-app.title.new') }}</a>
+		@if (\Config::get('app.makePreferences'))
+			<a href="/admin/category/preferences/download" target="_self" class="btn btn-warning mr-3" style="float:right">{{ trans("admin-app.button.download_preferences") }}</a>
+		@endif
 
 		<h1>{{ trans('admin-app.title.categories') }}</h1>
 		<br>

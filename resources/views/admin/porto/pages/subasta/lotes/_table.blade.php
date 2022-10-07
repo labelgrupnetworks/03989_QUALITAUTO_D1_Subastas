@@ -207,7 +207,7 @@
 	<div class="col-xs-12 d-flex justify-content-center">
 		{{ $lotes->appends(array_except(Request::query(), ['lotesPage', 'tab']) + ['tab' => 'lotes'])->links() }}
 	</div>
-	@if (\Config::get('app.moveLot'))
+	@if (\Config::get('app.moveLot') && !empty($lote))
 		@include('admin::includes._move_lot_modal', ['routeToClone' => route("subastas.lotes.cloneLot", [$lote->ref_asigl0])])
 	@endif
 	@include('admin::includes._delete_modal', ['routeToDelete' => route("$parent_name.$resource_name.destroy", [$cod_sub, 0]),])
