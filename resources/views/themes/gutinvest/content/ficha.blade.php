@@ -227,7 +227,7 @@ $MobileDetect = new MobileDetect();
 								<p><?= str_replace('<b>Peso</b>', '<b>Ref. Interna</b>', $lote_actual->desc_hces1) ?></p>
 								@endif
 								<p><strong>{{ trans(\Config::get('app.theme').'-app.lot.number_items') }}: </strong>
-									{{$lote_actual->nobj_hces1}}</p>
+									{{$lote_actual->nobj_hces1??1}}</p>
 							</div>
 						</div>
 

@@ -22,7 +22,7 @@
 
 					<p class="text-center size-item">
 						@if(!empty($item->nobj_hces1))
-						{{ trans("$theme-app.lot_list.pices_at_auction") }} {{ $lote_actual->nobj_hces1 }} {{ trans("$theme-app.lot.pieces") }}
+						{{ trans("$theme-app.lot_list.pices_at_auction") }} {{ $item->nobj_hces1 }} {{ trans("$theme-app.lot.pieces") }}
 						@elseif(!empty($item->ancho_hces1))
 						{{ trans("$theme-app.lot_list.meters_at_auction") }} {{ str_replace('.', ',', $item->ancho_hces1) }} {!! ' m<sup>2</sup>' !!}
 						@endif

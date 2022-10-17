@@ -105,7 +105,7 @@ $sesiones = App\Models\V5\AucSessions::select('"id_auc_sessions","auction","refe
 											$pagina = intdiv($cuantosLotes->cuantos , $lotsPerPage);
 											#le sumamos 1 por que la página no empieza em 0 si no en 1
 											$pagina +=1;
-											$urlSession.="?page=$pagina#".$auction->cod_sub."-".$sesion->init_lot;
+											$urlSession.="?page=$pagina"."&total=".request("total",24)."#".$auction->cod_sub."-".$sesion->init_lot;
 
 										@endphp
 										<div class="col-xs-12 col-md-4">

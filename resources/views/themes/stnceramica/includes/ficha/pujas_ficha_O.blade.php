@@ -2,6 +2,7 @@
 
 	<p class="ficha-size-lot">
 		@if(!empty($lote_actual->nobj_hces1))
+
 		{{ trans("$theme-app.lot_list.pices_at_auction") }}
 		{{ $lote_actual->nobj_hces1 }} {{ trans("$theme-app.lot.pieces") }}
 		@else
@@ -76,7 +77,7 @@
 		<div class="pre">
 			<p class="pre_min">
 				<strong>
-					<span id="acutalPriceMeter">
+					<span id="acutalPricePerpiece">
 						{{ \Tools::moneyFormat($lote_actual->actual_bid / $lote_actual->nobj_hces1, false, 2) }}
 					</span>
 					<span>

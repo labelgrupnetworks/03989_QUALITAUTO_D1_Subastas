@@ -74,7 +74,7 @@
 										$url_friendly = !empty($lote->webfriend_hces1) ? $lote->webfriend_hces1 : str_slug($lote->titulo_hces1);
 										$url_friendly = \Routing::translateSeo('lote').$lote->cod_sub."-".str_slug($lote->name).'-'.$lote->id_auc_sessions."/".$lote->ref_asigl0.'-'.$lote->num_hces1.'-'.$url_friendly;
 										$hay_pujas = !empty(count($lote->pujas));
-										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, 0);
+										$maxPuja = !empty($lote->implic_hces1 && $hay_pujas) ? $lote->implic_hces1 : (new App\Models\Subasta())->sobre_puja_orden($lote->impsalhces_asigl0, $lote->max_order ?? 0, $lote->second_order ?? 0);
 										$maxPujaFormat = \Tools::moneyFormat($maxPuja ?? 0, '€');
 										$devuelto = ($lote->fac_hces1 == 'D' || $lote->fac_hces1 == 'R' || $lote->cerrado_asigl0 == 'D');
 										$desadjudicado = $lote->desadju_asigl0 == 'S';

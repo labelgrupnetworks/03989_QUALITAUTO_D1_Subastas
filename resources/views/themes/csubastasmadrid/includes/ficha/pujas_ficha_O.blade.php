@@ -32,8 +32,12 @@
                         @elseif( \Config::get('app.impsalhces_asigl0') && $lote_actual->ocultarps_asigl0 != 'S')
                             <p class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
                             <div class="pre">
+								@if($lote_actual->impsalhces_asigl0 ==0)
+								{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+								@else
                                     {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-                            </div>
+								@endif
+							</div>
                         @endif
                         <div class="hidden">
                         <p class="min">{{ trans(\Config::get('app.theme').'-app.subastas.price_minim') }}</p>
