@@ -19,7 +19,7 @@
 </table>
 <br><br>
 
-@if($info["envio"] == 1)
+@if( isset($info["envio"]) &&$info["envio"] == 1)
 <table style="width: 600px" cellpadding="5">
 	<tbody>
 		<tr>

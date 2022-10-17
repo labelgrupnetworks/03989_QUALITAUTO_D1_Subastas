@@ -30,8 +30,11 @@
 									@else
 										<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
 									@endif
-
-									<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+									@if($precio_salida ==0)
+										{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+									@else
+										<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+									@endif
 								@endif
 							</p>
 							@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
