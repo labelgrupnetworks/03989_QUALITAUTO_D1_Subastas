@@ -413,6 +413,7 @@ $lang = [
 		'pujrep_Y' => 'Comprar en subasta online',
 		'require_wallet' => 'Para poder pujar por un lote NFT necesitas tener un wallet asociado. <br>Desde <a href="/es/user/panel/info" > tu panel de usuario</a> podrás indicarnos tu wallet o crearte uno nuevo.',
 		'custom_login' => 'Para poder pujar es necesario <a title="iniciar sesión" href=":login_link"> iniciar sesión </a>.',
+		'free' => 'Libre'
 	),
 	'lot_list' =>
 	array(
@@ -569,6 +570,7 @@ $lang = [
 		'small_bid' => 'Su puja es inferior a la actual.',
 		'small_bid_inf' => 'Ya tiene una puja superor al valor introducido',
 		'small_order' => 'En lotes de subastas presenciales, la orden no puede ser inferior al precio de salida',
+		'small_order_zero' => 'En lotes de Precio libre, la puja no puede ser inferior a :escalado €',
 		'user_panel_inf_actualizada' => 'Error al actualizar información',
 		'user_panel_inf_email_error' => 'Error en la solicitud de modificación de usuario',
 		'user_panel_inf_error' => 'Error en la actualización',

@@ -394,6 +394,7 @@ $lang =[
 			'pujrep_Y' => 'Buy at online auction',
 			'require_wallet' => 'You need to have an associated wallet to be able to bid on an NFT.<br> You can indicate your wallet or create a new one in <a href="/en/user/panel/info" > your account.</a>',
 			'custom_login' => 'To be able to bid you need to " href=":login_link">log in</a>.',
+			'free' => 'free'
 
 		),
 	'lot_list' =>
@@ -542,6 +543,7 @@ $lang =[
 			'small_bid' => 'Your bid is lower than the current one.',
 			'small_bid_inf' => 'You already have a bid higher than the value entered',
 			'small_order' => 'The order can not be lower than the starting price in Live auctions lots',
+			'small_order_zero' => 'En lotes de Precio libre, la puja no puede ser inferior a :escalado €',
 			'user_panel_inf_actualizada' => 'Error updating information',
 			'user_panel_inf_email_error' => 'Error in the user modification request',
 			'user_panel_inf_error' => 'Update failed',
