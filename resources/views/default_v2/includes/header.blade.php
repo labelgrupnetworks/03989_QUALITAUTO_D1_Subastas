@@ -95,7 +95,7 @@ $pageName = Route::currentRouteName();
 						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
 							@foreach ($categories as $category)
 								<li>
-									<a class="dropdown-item" href="{{ route("category", ["category" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a>
+									<a class="dropdown-item" href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a>
 								</li>
 							@endforeach
 						</ul>
