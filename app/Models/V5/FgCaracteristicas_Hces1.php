@@ -50,6 +50,11 @@ class FgCaracteristicas_Hces1 extends Model
 		return $query->join("FGCARACTERISTICAS", " EMP_CARACTERISTICAS = EMP_CARACTERISTICAS_HCES1 and ID_CARACTERISTICAS = IDCAR_CARACTERISTICAS_HCES1");
 	}
 
+	public function scopeJoinCaracteristicasLang($query){
+		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
+		return $query->leftjoin("FGCARACTERISTICAS_LANG", " EMP_CARACTERISTICAS_LANG = EMP_CARACTERISTICAS and ID_CARACTERISTICAS_LANG = ID_CARACTERISTICAS AND LANG_CARACTERISTICAS_LANG = '$lang'");
+	}
+
 	public function scopeJoinCateristicasValue($query){
 		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
 		return $query->leftjoin("FGCARACTERISTICAS_VALUE", "EMP_CARACTERISTICAS_VALUE = EMP_CARACTERISTICAS_HCES1 and IDCAR_CARACTERISTICAS_VALUE = IDCAR_CARACTERISTICAS_HCES1 and ID_CARACTERISTICAS_VALUE = IDVALUE_CARACTERISTICAS_HCES1")
@@ -58,9 +63,10 @@ class FgCaracteristicas_Hces1 extends Model
 	}
 
 	static function getByLot($num, $lin){
-		return self::select("id_caracteristicas", "name_caracteristicas, nvl( nvl(VALUE_CAR_VAL_LANG, VALUE_CARACTERISTICAS_VALUE), nvl(value_car_hces1_lang, value_caracteristicas_hces1 )) value_caracteristicas_hces1, IDVALUE_CARACTERISTICAS_HCES1")
+		return self::select("id_caracteristicas", " nvl(name_caracteristicas_lang, name_caracteristicas) name_caracteristicas, nvl( nvl(VALUE_CAR_VAL_LANG, VALUE_CARACTERISTICAS_VALUE), nvl(value_car_hces1_lang, value_caracteristicas_hces1 )) value_caracteristicas_hces1, IDVALUE_CARACTERISTICAS_HCES1")
 				->joinlang()
 				->JoinCaracteristicas()
+				->JoinCaracteristicasLang()
 				->JoinCateristicasValue()
 				->where("NUMHCES_CARACTERISTICAS_HCES1", $num)
 				->where("LINHCES_CARACTERISTICAS_HCES1", $lin)

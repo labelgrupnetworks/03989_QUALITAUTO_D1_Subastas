@@ -978,6 +978,11 @@ class SubastaController extends Controller
 
 			if (!empty($lote_search)) {
 				$lote_search = head($lote_search);
+				#si el importe de salida es 0 debemos cojer el primer escalado como puja válida
+				if( $lote_search->impsalhces_asigl0== 0){
+					$lote_search->impsalhces_asigl0 = head($subasta->AllScales())->scale;
+				}
+				
 				$inf_lot_translate = $subasta->getMultilanguageTextLot($lote_search->num_hces1, $lote_search->lin_hces1);
 
 				$strLib = new StrLib();
@@ -1596,6 +1601,9 @@ class SubastaController extends Controller
 				}
 			}
 		} else {
+			if(config('app.redirect_auction_finish_to_home')){
+				return redirect()->route('home', [], 301);
+			}
 			exit(\View::make('front::errors.404'));
 		}
 		$data['seo'] = new \stdClass();

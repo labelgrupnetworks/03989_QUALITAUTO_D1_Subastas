@@ -4,8 +4,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Request;
 
 class Facturas extends Model
@@ -21,13 +21,12 @@ class Facturas extends Model
     public $imp;
     public $tk;
 
+    public function pending_bills($all = true)
+	{
 
-    public function pending_bills($all = true){
-
-
-        $gemp = Config::get('app.gemp');
+        $gemp = config('app.gemp');
         $sql = DB::table('FXPCOB')
-                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
+                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
                 ->Join('FXCLI',function($join) use($gemp){
                     $join->on('FXPCOB.COD_PCOB','=','FXCLI.COD_CLI')
                     ->where('GEMP_CLI','=',$gemp);
@@ -46,8 +45,8 @@ class Facturas extends Model
                     $join->on('EMP_DVC02','=','EMP_SUB')
                     ->on('SUB_DVC02','=','COD_SUB');
                 })
-                ->where('COD_PCOB',$this->cod_cli)
-                ->where('EMP_PCOB',Config::get('app.emp'));
+                ->where('COD_PCOB', $this->cod_cli)
+                ->where('EMP_PCOB', Config::get('app.emp'));
                 if(!empty($this->serie)){
                     $sql->where('anum_pcob',$this->serie);
                 }

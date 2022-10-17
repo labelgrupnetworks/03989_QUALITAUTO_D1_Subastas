@@ -5,13 +5,9 @@ namespace App\Models;
 
 use App\libs\EmailLib;
 use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use App\Models\V5\FgAsigl1;
-
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
 
 use App\libs\StrLib;
 use App\Models\V5\FgAsigl0;
@@ -20,7 +16,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\FgCsub;
 use App\Models\V5\Web_Cancel_Log;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 
 class Subasta extends Model
 {
@@ -455,7 +451,7 @@ class Subasta extends Model
 
                     ASIGL0.REF_ASIGL0, ASIGL0.NUMHCES_ASIGL0, ASIGL0.IMPSALHCES_ASIGL0, ASIGL0.CERRADO_ASIGL0, ASIGL0.REMATE_ASIGL0, ASIGL0.COMPRA_ASIGL0, ASIGL0.COMLHCES_ASIGL0,
                     ASIGL0.IMPTASH_ASIGL0, ASIGL0.IMPRES_ASIGL0, ASIGL0.IMPTAS_ASIGL0, ASIGL0.RETIRADO_ASIGL0, ASIGL0.DESTACADO_ASIGL0,ASIGL0.IMPADJ_ASIGL0,
-                    ASIGL0.DESADJU_ASIGL0, ASIGL0.IMPSALWEB_ASIGL0,
+                    ASIGL0.DESADJU_ASIGL0, ASIGL0.IMPSALWEB_ASIGL0, ASIGL0.OCULTARPS_ASIGL0,
                     SUB.COD_SUB, SUB.DES_SUB, SUB.TIPO_SUB, SUB.SUBC_SUB,SUB.SUBABIERTA_SUB, SUB.OPCIONCAR_SUB,
                     AUC.\"id_auc_sessions\", AUC.\"name\", AUC.\"start\" as START_SESSION, AUC.\"end\" as END_SESSION,
                     AUC.\"orders_start\", AUC.\"orders_end\",
@@ -1071,7 +1067,7 @@ class Subasta extends Model
                 NVL(lotes_lang.desc_hces1_lang, lotes.desc_hces1) desc_hces1,  NVL(lotes_lang.descweb_hces1_lang, lotes.descweb_hces1) descweb_hces1
                               FROM (
                          SELECT rownum rn,T3.* FROM (
-                          SELECT COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,NUMHCES_ASIGL0, LINHCES_ASIGL0, max(imp) imp, tipop_orlic , max(fec) as fec, max(hora) as hora FROM (
+                          SELECT COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,NUMHCES_ASIGL0, LINHCES_ASIGL0, max(imp) imp, max(tipop_orlic)  tipop_orlic , max(fec) as fec, max(hora) as hora FROM (
                  SELECT  T.*  from
                  (
                         $orders_sql
@@ -1080,7 +1076,7 @@ class Subasta extends Model
                     $sql_favorites
 
 
-                  )T       )T2  group by COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, tipo_sub,cod_sub,ref_asigl0,NUMHCES_ASIGL0, LINHCES_ASIGL0, tipop_orlic order by    tipo_sub, cod_sub,     ref_asigl0)T3 )T4
+                  )T       )T2  group by COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, tipo_sub,cod_sub,ref_asigl0,NUMHCES_ASIGL0, LINHCES_ASIGL0 order by    tipo_sub, cod_sub,     ref_asigl0)T3 )T4
                   JOIN FGHCES1 lotes ON   (lotes.EMP_HCES1 = :emp AND lotes.NUM_HCES1 = T4.NUMHCES_ASIGL0  AND lotes.LIN_HCES1 = T4.LINHCES_ASIGL0)
                 LEFT JOIN FGHCES1_LANG lotes_lang
                 ON (lotes_lang.EMP_HCES1_LANG = :emp AND lotes_lang.NUM_HCES1_LANG = lotes.num_hces1  AND lotes_lang.LIN_HCES1_LANG = lotes.lin_hces1 AND lotes_lang.LANG_HCES1_LANG = :lang)
@@ -2601,6 +2597,10 @@ class Subasta extends Model
 	 */
     public function sobre_puja_orden($importe_salida, $importe_orden1,$importe_orden2)
     {
+		#si el importe de salida es 0 debemos cojer la siguiente puja válida
+		if($importe_salida== 0){
+			$importe_salida = head($this->AllScales())->scale;
+		}
             // si no hay otra orden no hacemos lucha de ordenes y sale por importe de salida/reserva o por la orden si es mas pequeña que el precio de reserva
             if ((empty($importe_orden2) || $importe_orden2==0) ){
                 return min($importe_salida,$importe_orden1 );
@@ -2718,6 +2718,9 @@ class Subasta extends Model
 					}
 
 
+			}
+			if($val==0){
+				$val = $scaleRanges[$i]->scale;
 			}
 
 			return $val;
@@ -3133,7 +3136,7 @@ class Subasta extends Model
             if(!empty($value->nobj_hces1)){
                 $lotes[$key]->nobj_hces1  = $value->nobj_hces1;
             }else{
-                 $lotes[$key]->nobj_hces1  = 1;
+                 $lotes[$key]->nobj_hces1  = 0;
             }
 
             if(empty($value->impsalweb_asigl0)){
@@ -3176,14 +3179,17 @@ class Subasta extends Model
 				$lotes[$key]->stock_hces1='0';
 			}
 
+			$lotes[$key]->ocultarps_asigl0 = $value->ocultarps_asigl0 ?? 'N';
 
 			$lotes[$key]->pc_hces1 = \Tools::moneyFormat($value->pc_hces1 ?? 0);
 
             $lotes[$key]->formatted_actual_bid = \Tools::moneyFormat($lotes[$key]->actual_bid);
             /* IMPORTANTE se debe usar el campo impsalhces_asigl0 como precio de salida  mantengo el campo formatted_impsalhces_asigl0 para que no haya ningun problema con los blames que no hayan siido modificados */
             //$lotes[$key]->formatted_impsal_hces1 = \Tools::moneyFormat($value->impsalhces_asigl0);
-            $lotes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat($value->impsalhces_asigl0);
-            $lotes[$key]->formatted_imptash_asigl0 = \Tools::moneyFormat($value->imptash_asigl0);
+			//En caso de existir salida web, se prioriza mostrar ese precio por encima del original
+            $lotes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat(!empty($value->impsalweb_asigl0) ? $value->impsalweb_asigl0 : $value->impsalhces_asigl0);
+
+			$lotes[$key]->formatted_imptash_asigl0 = \Tools::moneyFormat($value->imptash_asigl0);
             $lotes[$key]->formatted_imptas_asigl0 = \Tools::moneyFormat($value->imptas_asigl0);
             $lotes[$key]->formatted_impres_asigl0 = \Tools::moneyFormat($value->impres_asigl0);
             $lotes[$key]->formatted_impsalweb_asigl0 = \Tools::moneyFormat($value->impsalweb_asigl0);
@@ -3554,20 +3560,26 @@ class Subasta extends Model
         }
 
         */
+		$importeSalida = $lote->impsalhces_asigl0;
+		#si el importe de salida es 0 debemos cojer la siguiente puja válida
+		if($importeSalida== 0){
+
+			$importeSalida = head($this->AllScales())->scale;
+		}
 
         //se debe superar el preci ode reserva y el precio de salida
        // 2017_10_10 DE MOMENTO NO
        // if ( empty($lote->max_puja) && $lote->ordenes[0]->himp_orlic >= $lote->impsalhces_asigl0 && $lote->ordenes[0]->himp_orlic >= $lote->impres_asigl0) {
-        if (!empty($lote->ordenes) &&  empty($lote->max_puja) && $lote->ordenes[0]->himp_orlic >= $lote->impsalhces_asigl0 ) {
+        if (!empty($lote->ordenes) &&  empty($lote->max_puja) && $lote->ordenes[0]->himp_orlic >= $importeSalida ) {
 
 
 
 
 
             if($lote->impres_asigl0 > 0){
-                $precio_salida = max($lote->impsalhces_asigl0, $lote->impres_asigl0);
+                $precio_salida = max($importeSalida, $lote->impres_asigl0);
             }else{
-                $precio_salida = $lote->impsalhces_asigl0;
+                $precio_salida = $importeSalida;
             }
 
             if (count($lote->ordenes) > 1) {
@@ -3608,7 +3620,7 @@ class Subasta extends Model
 					$this->type_bid     = 'E';
 				}
 
-                if ($orden->himp_orlic >= $lote->impsalhces_asigl0) {
+                if ($orden->himp_orlic >= $precio_salida) {
 
 					# comprobamos si el usuario puede hacer la puja o si haciendola supera su credito
 					if( \Config::get('app.use_credit')){
@@ -3932,7 +3944,7 @@ class Subasta extends Model
 
 
         $sql ="
-            SELECT cod_sub, des_sub,  orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, description, session_start, session_end,subastatr_sub, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
+            SELECT cod_sub, des_sub,  orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, session_start, session_end,subastatr_sub, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
             emp_sub ||  '_' || cod_sub || '_' ||    reference as file_code,upcatalogo,uppdfadjudicacion,uppreciorealizado,upcatalogo_lang,uppreciorealizado_lang,upmanualuso_lang,COLORCAL_SUB ,CALINI_SUB, CALFIN_SUB
             FROM (
                 SELECT sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub, sub.subastatr_sub,COLORCAL_SUB,CALINI_SUB, CALFIN_SUB,
@@ -3944,14 +3956,13 @@ class Subasta extends Model
                        NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub) seshorario_sub,
                        NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
                        NVL(auc_lang.\"name_lang\",   auc.\"name\" ) name,
-                       NVL(auc_lang.\"description_lang\", auc.\"description\" ) description,
                        auc.\"reference\" reference ,auc.\"id_auc_sessions\" id_auc_sessions, auc.\"start\" session_start, auc.\"end\" session_end,
                         auc.\"orders_start\" as orders_start,  auc.\"orders_end\" as orders_end,auc.\"upCatalogo\" upcatalogo,auc.\"uppdfadjudicacion\" uppdfadjudicacion, auc.\"upPrecioRealizado\" uppreciorealizado,
                         auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
                 FROM FGSUB sub
                 JOIN FGASIGL0 lotes ON (sub.COD_SUB = lotes.SUB_ASIGL0 AND lotes.EMP_ASIGL0 = :emp)
                 JOIN \"auc_sessions\" auc ON (auc.\"auction\" = sub.cod_sub AND auc.\"company\" = :emp)
-                LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = sub.cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
+                LEFT JOIN \"auc_sessions_lang\" auc_lang on ( auc_lang.\"id_auc_session_lang\" = auc.\"id_auc_sessions\" and auc_lang.\"auction_lang\" = sub.cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
                 LEFT JOIN FGSUB_LANG fgsublang ON (sub.EMP_SUB = fgsublang.EMP_SUB_LANG AND sub.COD_SUB = fgsublang.COD_SUB_LANG AND  fgsublang.LANG_SUB_LANG = :lang)
 
 				$join
@@ -3965,7 +3976,7 @@ class Subasta extends Model
                     $tipo_sub
                     sub.EMP_SUB = :emp
 				$where
-                GROUP BY sub.COD_SUB, NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB), sub.EMP_SUB, sub.SUBC_SUB,NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub),NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub),NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub), auc.\"orders_start\",  auc.\"orders_end\", sub.tipo_sub, NVL(auc_lang.\"name_lang\",   auc.\"name\" ), NVL(auc_lang.\"description_lang\", auc.\"description\" ), auc.\"id_auc_sessions\",auc.\"reference\", auc.\"start\" , auc.\"end\",auc.\"upCatalogo\",auc.\"uppdfadjudicacion\",auc.\"upPrecioRealizado\",subastatr_sub,auc_lang.\"upCatalogo_lang\",auc_lang.\"upPrecioRealizado_lang\",auc_lang.\"upManualUso_lang\",COLORCAL_SUB,CALINI_SUB, CALFIN_SUB
+                GROUP BY sub.COD_SUB, NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB), sub.EMP_SUB, sub.SUBC_SUB,NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub),NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub),NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub),NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub),NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub), auc.\"orders_start\",  auc.\"orders_end\", sub.tipo_sub, NVL(auc_lang.\"name_lang\",   auc.\"name\" ), auc.\"id_auc_sessions\",auc.\"reference\", auc.\"start\" , auc.\"end\",auc.\"upCatalogo\",auc.\"uppdfadjudicacion\",auc.\"upPrecioRealizado\",subastatr_sub,auc_lang.\"upCatalogo_lang\",auc_lang.\"upPrecioRealizado_lang\",auc_lang.\"upManualUso_lang\",COLORCAL_SUB,CALINI_SUB, CALFIN_SUB
 
             )
             ORDER BY  $order_by
@@ -4036,6 +4047,9 @@ class Subasta extends Model
     }
     //ver el precio
     function price_open_auction($precio_salida, $ordenes){
+		if($precio_salida== 0){
+			$precio_salida = head($this->AllScales())->scale;
+		}
         $orden_1 = 0;
         $orden_2 = 0;
         if(count($ordenes)>0){
@@ -4272,13 +4286,13 @@ class Subasta extends Model
 
     }
 
-    public function getParametersSub(){
-        $parameters = DB::select("select * from fgprmsub
-                    where emp_prmsub = :emp",
-                array(
-                        'emp'       => Config::get('app.emp')
-                     )
-                    );
+    public function getParametersSub()
+	{
+		$parameters = Cache::remember('fgprmsub', 600, function () {
+			return DB::select("select * from fgprmsub where emp_prmsub = :emp", ['emp' => Config::get('app.emp')]);
+		});
+		//original
+		//$parameters = DB::select("select * from fgprmsub where emp_prmsub = :emp", ['emp' => Config::get('app.emp')]);
         if(count($parameters) > 0){
             return head($parameters);
         }else{
@@ -4396,6 +4410,9 @@ class Subasta extends Model
 	}
 	#sobre puja inicial de subasta en caso de que haya credito, funcion recursiva
 	public function sobrePujaOrdenCredit($ordenes,$precio_salida, $codSub, $referenceSession, $ref ){
+		if($precio_salida== 0){
+			$precio_salida = head($this->AllScales())->scale;
+		}
 
 		$ordenGanadora=null;
 		$importeSuperar=0;

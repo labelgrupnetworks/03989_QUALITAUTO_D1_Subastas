@@ -42,6 +42,10 @@ class CloseLotController extends SegreController
 	}
 	public function responseCloseLot($res){
 		#por si fuera necesario tratar la respuesta
+		if($res->IdError != 0){
+			$this->ErrorLog("Adjudicaciones" ,"",$res->getBody()  );
+			return;
+		}
 	}
 
 

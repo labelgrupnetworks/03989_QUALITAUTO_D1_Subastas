@@ -29,7 +29,7 @@ class PaidController extends DuranNftController
 					$tipo = substr($merchantID,0,1) ;
 					if($tipo == "M"){
 						#SE LLAMARA A LA FUNCION QUE TOQUE PARA INDICAR QUE SE HA PAGADO EL MINTADO O LA TRANSFERENCIA
-						$res = $this->callWebService($xml,"NOMBREDELA FUNCION QUE SEA");
+						$res = $this->callWebService($xml,"wbFinalizarPagoNft");
 					}else{
 						\Log::info("se ha vendido un lote");
 						$res = $this->callWebService($xml,"wbGrabarVenta");

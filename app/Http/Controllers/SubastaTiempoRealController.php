@@ -70,6 +70,9 @@ class subastaTiempoRealController extends Controller
 
         $datos_sub = $subasta->getInfSubasta();
         if (empty($session) || empty($datos_sub) || ($datos_sub->tipo_sub != "W" && $datos_sub->subastatr_sub != "S") || ($datos_sub->subc_sub !="S" && $datos_sub->subc_sub !="A" )){
+			if(config('app.redirect_auction_finish_to_home')){
+				return redirect()->route('home', [], 301);
+			}
             exit (\View::make('front::errors.404'));
         }
         $subasta->session_reference = $session->reference;
@@ -189,6 +192,13 @@ class subastaTiempoRealController extends Controller
 		$text_lang = $subasta->getMultilanguageTextLot($lote[0]->num_hces1, $lote[0]->lin_hces1);
 
         $js_item['text_lang'] = $text_lang;
+		#Si el precio salida es c0
+
+
+		#si el importe de salida es 0 debemos cojer el primer escalado como puja válida
+		if($lote[0]->impsalhces_asigl0== 0){
+			$lote[0]->impsalhces_asigl0 = head($subasta->AllScales())->scale;
+		}
 
 
         $escalado_correcto = $subasta->NextScaleBid(0,$lote[0]->impsalhces_asigl0 - 1, false);
@@ -1347,8 +1357,9 @@ class subastaTiempoRealController extends Controller
 		$subasta->type_bid = "O";
         $subasta->tel1 = $tel1;
 		$subasta->tel2 = $tel2;
+		#la variable viene de js y no se puede enviar un booleano, lo envia como texto
+		if ( $ortherphone == "true"  || !empty($tel1) || !empty($tel2) ) {
 
-		if ( $ortherphone || !empty($tel1) || !empty($tel2) ) {
 			if(\Config::get('app.diferenciarOrdenTelefonicaWeb')){
 				$subasta->type_bid = "X";
 			}else{
@@ -1356,6 +1367,7 @@ class subastaTiempoRealController extends Controller
 			}
 
 		}
+
         $checklicit = $subasta->checkLicitador();
         //si no ha devuelto ningun codigo de licitador
         if (count($checklicit) ==0){
@@ -1373,6 +1385,7 @@ class subastaTiempoRealController extends Controller
         }
         $lote = head($l);
 
+
         //comprobamos que se pueda hacer una orden de licitación en el lote,
         //que el lote no este cerrado && no esté facturado && que haya empezado el periodo de ordenes de licitacion && que no haya acabado el periodod de ordenes de licitación && que la subasta esté activa
 
@@ -1385,6 +1398,19 @@ class subastaTiempoRealController extends Controller
             $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.small_order'),NULL, FALSE);
             return $res;
         }
+
+		if($lote->impsalhces_asigl0 == 0){
+			#Cogemos el primer escalado
+			$escalas = $subasta->allScales();
+			$primerEscalado = head($escalas)->scale;
+			#si el lote no tiene precio la puja debe superar el primer escalado
+			if($imp < $primerEscalado){
+				$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.small_order_zero',["escalado" =>$primerEscalado]),NULL, FALSE);
+				return $res;
+			}
+
+		}
+
 
         $ordenes_licit = $subasta->getOrdenes("AND licitadores.COD_LICIT = ".intval($subasta->licit));
 
@@ -1422,6 +1448,7 @@ class subastaTiempoRealController extends Controller
 
 			#si la casa de subastas tiene webService de cliente
 			if(Config::get('app.WebServiceOrder')){
+				
 				$theme  = Config::get('app.theme');
 				$rutaOrdercontroller = "App\Http\Controllers\\externalws\\$theme\OrderController";
 
@@ -1523,6 +1550,7 @@ class subastaTiempoRealController extends Controller
                     'open_price' => $lote->open_price
 
                 );
+
             return $res ;
         }elseif ($ord['status'] == 'error')
                                 {
@@ -1586,6 +1614,10 @@ class subastaTiempoRealController extends Controller
 
         //cogemos el precio inicial del lote
         $lote = head($lote_tmp);
+		#si el importe de salida es 0 debemos cojer el primer escalado como puja válida
+		if($lote->impsalhces_asigl0== 0){
+			$lote->impsalhces_asigl0 = head($subasta->AllScales())->scale;
+		}
 
         //si el usuario es gestor puede pujar por otra gente y por eso el codigo que envia es diferente al original, pero puede que en algun lugar de la web aun no se envie el parametro $cod_original_licit por lo que usaremso el codigo de licitador ya que no viene de un gestor.
         if (empty($cod_original_licit)){
@@ -2955,7 +2987,10 @@ class subastaTiempoRealController extends Controller
 
         if(!empty($data['lote_actual'])) {
 
-
+				#si el importe de salida es 0 debemos cojer el primer escalado como puja válida
+				if( $data['lote_actual'][0]->impsalhces_asigl0== 0){
+					$data['lote_actual'][0]->impsalhces_asigl0 = head($subasta->AllScales())->scale;
+				}
 
 
                 //detectar probleams con el importe de salida si no cumple el escalado, modificamos tambien el importe de reserva.

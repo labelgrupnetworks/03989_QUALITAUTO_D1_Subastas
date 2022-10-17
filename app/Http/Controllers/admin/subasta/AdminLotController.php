@@ -31,12 +31,14 @@ use App\Models\V5\FxPro;
 
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\CustomControllers;
-use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgNft;
 use App\Models\V5\FgNftNetwork;
 use App\Models\V5\FxAlm;
 
 use App\Http\Controllers\externalws\vottun\VottunController;
+use App\Providers\ToolsServiceProvider;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AdminLotController extends Controller
 {
@@ -451,7 +453,7 @@ class AdminLotController extends Controller
 	public function mintNFT($cod_sub, $ref_asigl0)
 	{
 		$lote = FgAsigl0::select("NUMHCES_ASIGL0, LINHCES_ASIGL0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0", $ref_asigl0)->first();
-		
+
 
 		$res = (new VottunController())->mint($lote->numhces_asigl0, $lote->linhces_asigl0);
 
@@ -611,7 +613,7 @@ class AdminLotController extends Controller
 
 				} catch (Exception $e) {
 					# Controlar el error en el log
-				   \Log::info( $e->getMessage());
+				   Log::info( $e->getMessage());
 				}
             }
 
@@ -909,6 +911,7 @@ class AdminLotController extends Controller
 			],
 			'otros' => [
 				'width' => FormLib::Int('width', 0, old('width', $fgAsigl0->ancho_hces1 ?? 0)),
+				'numberobjects' => FormLib::Int('numberobjects', 0, old('numberobjects', $fgAsigl0->nobj_hces1 ?? 0)),
 			],
 			'iframe' => [
 				'htmlcontent' => FormLib::TextArea('htmlcontent', 0, old('htmlcontent', $fgAsigl0->contextra_hces1))
@@ -1203,12 +1206,12 @@ class AdminLotController extends Controller
 	}
 
 	function assignOwner($lot,$cod_sub, $ref_asigl0){
-		if(!empty($lot["owner"]) && \Config::get("app.owner100x100")){
+		if(!empty($lot["owner"]) && config("app.owner100x100")){
 			$numLin = FgAsigl0::select("numhces_asigl0,linhces_asigl0")->where("SUB_ASIGL0", $cod_sub)->where("REF_ASIGL0",$ref_asigl0 )->first();
 			$hcesmt = FgHcesmt::select("count(*) as num")->where("NUM_HCESMT", $numLin->numhces_asigl0)->where("LIN_HCESMT",$numLin->linhces_asigl0)->first();
 			#siempre hay que crear o updatar por que pueden haber cambiado el usuario propietario
 			$nuevoProp= array(
-				"emp_hcesmt"=> \Config::get("app.emp"),
+				"emp_hcesmt"=> config("app.emp"),
 				"num_hcesmt" =>  $numLin->numhces_asigl0,
 				"lin_hcesmt" => $numLin->linhces_asigl0,
 				"ratio_hcesmt" =>100,
@@ -1235,7 +1238,7 @@ class AdminLotController extends Controller
 
 	public function getOrderDestacada()
 	{
-		$emp = \Config::get('app.emp');
+		$emp = config('app.emp');
 
 		$lots = FgAsigl0::select('sub_asigl0', 'ref_asigl0', 'descweb_hces1', 'orden_destacado_asigl0')
 		->joinFghces1Asigl0()->where('destacado_asigl0', 'S')->where('emp_asigl0', $emp)
@@ -1250,7 +1253,7 @@ class AdminLotController extends Controller
 	public function saveOrderDestacada(Request $request)
 	{
 
-		$emp = \Config::get('app.emp');
+		$emp = config('app.emp');
 
 
 		$lots = FgAsigl0::select('sub_asigl0','ref_asigl0' ,'orden_destacado_asigl0')
@@ -1286,7 +1289,7 @@ class AdminLotController extends Controller
 			echo "<div style='float:left;text-align:center; margin:10px'> Lote: ".$lote->ref_asigl0 ."<br>";
 			if($lotes[$key]->totalfotos_hces1 > 0) {
 				foreach($lotes[$key]->images as $keyImage => $image){
-					echo '<img src="'. \Tools::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1, $keyImage) . '" height="100px" >';
+					echo '<img src="'. ToolsServiceProvider::url_img("lote_small", $lote->num_hces1, $lote->lin_hces1, $keyImage) . '" height="100px" >';
 				}
 			}
 			echo "</div>";

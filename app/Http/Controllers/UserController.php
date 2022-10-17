@@ -53,6 +53,8 @@ use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0Seg;
 use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgSub;
+use App\Models\V5\Web_Preferences;
+use App\Models\V5\FgOrtsec0;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
@@ -249,6 +251,11 @@ class UserController extends Controller
 
 		//login
 		$this->login_post_ajax($request);
+
+		$backTo = $request->get('back_to', null);
+		if($backTo){
+			return redirect($backTo);
+		}
 		return redirect("/");
 	}
 
@@ -539,10 +546,9 @@ class UserController extends Controller
 
 	}
 
-	public function loginLanding()
+	public function loginLanding(HttpRequest $request)
 	{
-
-		$back = request('back', '');
+		$back = $request->get('back', '');
 
 		if(Session::has("user") && !empty($back)){
 			Session::flush();
@@ -953,9 +959,9 @@ class UserController extends Controller
 
                              //se inserta el nuevo cliente
                         $FXCLI = DB::select("INSERT INTO FXCLI
-                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI )
+                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI )
                            VALUES
-                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli)",
+                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli)",
                             array(
                                //'gemp'          => "'Config::get('app.gemp')'",
                                'email'         => $strToDefault ? Request::input('email') : strtoupper(Request::input('email')),
@@ -991,8 +997,8 @@ class UserController extends Controller
 							   'tdocid_cli' =>  $tdocid_cli,
 							   'tipv_cli' =>  $tipv_cli,
 							   'cod2_cli' => $cod2_cli,
-							   'preftel_cli' => request('preftel_cli', '')
-
+							   'preftel_cli' => request('preftel_cli', ''),
+							   'origen_cli' => request('origen', null)
                                )
 						 );
 
@@ -1200,10 +1206,10 @@ class UserController extends Controller
                     $user->cod_cli = $num;
                     $inf_user = $user->getUser();
 
-					if(request::has('dni1') && Request::has('dni2')){
+					if(Request::has('dni1') && Request::has('dni2')){
 						$this->saveImages(request(), $num);
 					}
-					if(request::has('creditcard_fxcli')){
+					if(Request::has('creditcard_fxcli')){
 						$this->saveCreditCard(request(), $num);
 					}
 
@@ -2737,7 +2743,7 @@ class UserController extends Controller
 		$lotes = $user->getSales(request()->all());
 
 		$condAuctions = $lotes->pluck('cod_sub')->unique()->values();
-		$pujas = FgAsigl1::select('ref_asigl1, lin_asigl1, licit_asigl1, imp_asigl1, fec_asigl1')
+		$pujas = FgAsigl1::select('ref_asigl1, lin_asigl1, licit_asigl1, imp_asigl1, fec_asigl1', 'sub_asigl1')
 			->joinFghces1Asigl0()
 			->where('prop_hces1', $cod_cli)
 			->whereIn('sub_asigl1', $condAuctions)
@@ -2771,7 +2777,7 @@ class UserController extends Controller
         foreach($lotes as $key => $lot){
 
             //$pujas = $subasta->getPujas(null,$lot->sub_asigl0);
-            $lot->pujas = $pujas->where('ref_asigl1', $lot->ref_asigl0);
+            $lot->pujas = $pujas->where('ref_asigl1', $lot->ref_asigl0)->where('sub_asigl1', $lot->cod_sub);
             $lot->puja_max = 0;
             if($lot->pujas->count() > 0){
                 $lot->puja_max = $lot->pujas->first();
@@ -3801,22 +3807,56 @@ class UserController extends Controller
         $addres->cod_cli = $user->cod_cli;
         $envio = $addres->getUserShippingAddress();
 
-		//bills
-		$pendigBills = $this->getPendingBillsData($user);
-		$payedBills = $this->getPayedBillsData($user);
-
 		//allotments
-		$pendingAllotments = $this->getPendingAllotmentsData($user, $envio);
-		$payedAllotments = $this->getPayedAllotmentsData($user, $envio);
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio);
+
+		//bills
+		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
+		//por lo que obtener las dos en esta página sería duplicar información
+		$pendingBillsData = $this->getPendingBillsData($user);
+
+		//extraer variables para acomodar datos
+		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
+		['adjudicaciones' => $pendingAllotments, 'js_item' => $allotmetsForJs] = $pendingAllotmentsData;
+		['adjudicaciones_pag' => $payedAllotments] = $payedAllotmentsData;
+
+		//billsForJs solo sería necesario si permitimos checkear las facturas
+		['pending' => $pendingBills, 'js_item' => $billsForJs] = $pendingBillsData;
+
+		//agrupaciones por subasta
+		$auctionsIdsPending = $pendingAllotments->pluck('sub_csub')->merge($pendingBills->where('tipo_tv', 'L')->pluck('cod_sub'));
+		$auctionsIdsPayed = $payedAllotments->pluck('sub_csub');
+
+		$allAuctionsIds = $auctionsIdsPending->merge($auctionsIdsPayed)->unique()->filter();
+		$auctions = FgSub::joinSessionSub()->addSelect('compraweb_sub')->whereIn('cod_sub', $allAuctionsIds)->where('"reference"', '001')->get();
+
+		$payedForAuctions = $auctionsIdsPayed->unique()->map(function($cod_sub) use ($payedAllotments, $auctions) {
+			return [
+				'auction' => $auctions->where('cod_sub', $cod_sub)->first(),
+				'allotments' => $payedAllotments->where('sub_csub', $cod_sub),
+			];
+		});
+
+		$pendingForAuctions = $auctionsIdsPending->unique()->map(function($cod_sub) use ($pendingAllotments, $pendingBills, $auctions) {
+			return [
+				'auction' => $auctions->where('cod_sub', $cod_sub)->first(),
+				'allotments' => $pendingAllotments->where('sub_csub', $cod_sub),
+				'bills' => $pendingBills->where('cod_sub', $cod_sub)->where('tipo_tv', 'L'),
+			];
+		});
 
 		$data = [
             'user' => $user,
 			'seo' => $seo,
 			'envio' => $envio,
 			'currency' => (new Subasta())->getCurrency(),
-		] + $pendigBills + $payedBills + $pendingAllotments + $payedAllotments;
+			'payedForAuctions' => $payedForAuctions,
+			'pendingForAuctions' => $pendingForAuctions,
+			'allotmetsForJs' => $allotmetsForJs,
+		];
 
-		return view('front::pages.panel.adjudicaciones', ['data' => $data]);
+		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
 	}
 
 	private function getPayedAllotmentsData($user, $envio)
@@ -3828,11 +3868,19 @@ class UserController extends Controller
 
         $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S');
 
+		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
+		$referencesByAction = $adjudicaciones_pag->groupBy('sub_csub')
+			->map(function($adjudicaciones){
+				return $adjudicaciones->pluck('ref_asigl0');
+			});
+
+		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
+
 		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
         $tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
 
-		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $iva, $tipo_iva) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva);
+		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
 		});
 
 		return [
@@ -3851,24 +3899,25 @@ class UserController extends Controller
 		$parametrosSub = $subasta->getParametersSub();
 
 		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N');
-
 		$pago_controller = new PaymentsController();
 
 		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
 		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
 
-		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $iva, $tipo_iva) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva);
-		})->all();
+		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
+		$referencesByAction = $adjudicaciones_pendientes->groupBy('sub_csub')
+			->map(function($adjudicaciones){
+				return $adjudicaciones->pluck('ref_asigl0');
+			});
+		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
 
-		$adjudicaciones = array_filter($adjudicaciones_temporales, function ($adjudicacion) {
-			return $adjudicacion->estado_csub0 != "T";
+		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
 		});
 
+		$adjudicaciones = $adjudicaciones_temporales->where('estado_csub0', '!=', 'T');
 		#adjudicaciones que estan pendientes de pagar por transferencia, y no pueden salir como no pagadas
-		$adjudicaciones_transfer = array_filter($adjudicaciones_temporales, function ($adjudicacion) {
-			return $adjudicacion->estado_csub0 == "T";
-		});
+		$adjudicaciones_transfer = $adjudicaciones_temporales->where('estado_csub0', 'T');
 
 		return [
 			'adjudicaciones' => $adjudicaciones,
@@ -3878,7 +3927,7 @@ class UserController extends Controller
 		];
 	}
 
-	private function allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva)
+	private function allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastos)
 	{
 		$subastaClass = new Subasta();
 		$pagoController = new PaymentsController();
@@ -3891,9 +3940,10 @@ class UserController extends Controller
 			'date' => \Tools::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
 			'imp_asigl1' => $adjudicacion->himp_csub,
 			'base_csub_iva' => $withNotIva ? 0 : $pagoController->calculate_iva($tipo_iva->tipo, $iva, $adjudicacion->base_csub),
-			'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
-            'factura' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub,true),
-            'pending_fact' => (new Facturas())->pending_bills(false),
+			//'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
+			'extras' => $gastos->where('sub_asigl2', $adjudicacion->sub_csub)->where('ref_asigl2', $adjudicacion->ref_asigl0),
+            'factura' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub, true),
+            //'pending_fact' => (new Facturas())->pending_bills(false), //no le he encontrado sentido
 			'days_extras_alm' => $this->days_extras_almacen($adjudicacion->fecha_csub),
 			'prefactura' => $this->proformaInvoiceFile($adjudicacion->sub_csub, true),
 			'ref_asigl0' => str_replace('.', '_', $adjudicacion->ref_asigl0)
@@ -3933,19 +3983,27 @@ class UserController extends Controller
 			$val_pendiente->factura = $fact_temp['filname'] ?? null;
 
 			//buscamos si la factura esta generada
-			$tipo_fact = $facturas->bill_text_sub( substr($facturas->serie, 0, 1),substr($facturas->serie, 1));
-			$val_pendiente->tipo_tv = $tipo_fact->tv_contav;
+			$tipo_fact = $facturas->bill_text_sub(substr($facturas->serie, 0, 1), substr($facturas->serie, 1));
+			$tipo_tv_contav = $tipo_fact->tv_contav;
+			$val_pendiente->tipo_tv = $tipo_tv_contav;
+			$totalPrice = 0;
 
 			//Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
-			if($tipo_fact->tv_contav == 'T'){
-				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturas->getFactTexto();
+			if($tipo_tv_contav == 'T'){
+
+				$facturaTexto = $facturas->getFactTexto();
+				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturaTexto;
 				$val_pendiente->inf_fact = ['T'];
-				$val_pendiente->inf_fact['T'] = $facturas->getFactTexto();
+				$val_pendiente->inf_fact['T'] = $facturaTexto;
 				if(!empty($val_pendiente->inf_fact['T'])){
 					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['T'])->where('sub_dvc1l', '!=', 'null')->first()->sub_dvc1l;
 				}
 
-			}elseif($tipo_fact->tv_contav == 'L' || $tipo_fact->tv_contav == 'P'){
+				foreach ($facturaTexto as $factura) {
+					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
+				}
+
+			}elseif($tipo_tv_contav == 'L' || $tipo_tv_contav == 'P'){
 
 				$facutraSubasta = $facturas->getFactSubasta();
 				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facutraSubasta;
@@ -3953,12 +4011,24 @@ class UserController extends Controller
 				if(!empty($val_pendiente->inf_fact['S'])){
 					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['S'])->where('sub_dvc1l', '!=', null)->first()->sub_dvc1l;
 				}
+
+				foreach ($facutraSubasta as $factura) {
+					if($tipo_tv_contav === 'P'){
+						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
+					}
+					//=== L
+					else {
+						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+					}
+				}
 			}
+
+			$val_pendiente->total_price = $totalPrice;
 
 			//Sacamos de factura el precio
 			$js_fact[$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = floatval($val_pendiente->imp_pcob);
 			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
-			$tipo_tv[$facturas->serie][$facturas->numero] = $tipo_fact->tv_contav;
+			$tipo_tv[$facturas->serie][$facturas->numero] = $tipo_tv_contav;
 		}
 
 		return [
@@ -3977,6 +4047,7 @@ class UserController extends Controller
 		$pagado = $facturas->paid_bill();
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
+		$totalPrice = 0;
 
 		foreach($pagado as $fact_pag){
 
@@ -3988,11 +4059,38 @@ class UserController extends Controller
 
 			//Dependeiendo de si es una factura de texto o de subasta informacion se busca en un sitio o otro
 			if($fact_pag->tv_contav == 'T'){
-				$inf_fact_pag['T'][$facturas->serie][$facturas->numero] = $facturas->getFactTexto();
+				//Las facturas de texto no están asociadas a lotes
+				$facturaTexto = $facturas->getFactTexto();
+				$fact_pag->cod_sub = null;
+				$inf_fact_pag['T'][$facturas->serie][$facturas->numero] = $facturaTexto;
+				$fact_pag->inf_fact = ['T'];
+				$fact_pag->inf_fact['T'] = $facturaTexto;
+
+				foreach ($facturaTexto as $factura) {
+					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
+				}
+
+
 			}elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
-				$inf_fact_pag['S'][$facturas->serie][$facturas->numero] = $facturas->getFactSubasta();
+
+				$facturasSubasta = $facturas->getFactSubasta();
+				//Puede existir mas de una subasta en cada factura, pero ahora mismo solamente necesito la primera. (Eloy)
+				$fact_pag->cod_sub = (count($facturasSubasta) > 0) ? $facturasSubasta[0]->sub_dvc1l : null;
+				$inf_fact_pag['S'][$facturas->serie][$facturas->numero] = $facturasSubasta;
+
+				foreach ($facturasSubasta as $factura) {
+					if($fact_pag->tv_contav == 'P'){
+						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
+					}
+					//=== L
+					else {
+						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+					}
+				}
+
 			}
 
+			$fact_pag->total_price = $totalPrice;
 			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
 			$tipo_tv_pag[$facturas->serie][$facturas->numero] = $fact_pag->tv_contav;
 		}
@@ -4227,7 +4325,7 @@ class UserController extends Controller
 		$hash = $hash->walletRequestTicket;
 
 		$urlBack = route('wallet.back');
-		$url = "https://powuat.vottun.tech/connect?h=$hash&r=$urlBack";
+		$url = "https://pow.vottun.tech/connect?h=$hash&r=$urlBack";
 
 		return response()->json(['status' => 'success', 'message' => 'hash obtained', 'url' => $url]);
 	}
@@ -4251,5 +4349,95 @@ class UserController extends Controller
 
 		return redirect()->route('panel.account_info', ['lang' => config('app.locale')]);
 	}
+
+	public function getPreferencesAndFamily()
+	{
+		$user = session('user');
+		$queryPreferences = Web_Preferences::select('ID_PREF', 'DESC_PREF', 'NOM_CLIWEB', 'DES_ORTSEC0', 'DES_SEC', 'KEYWORD1_PREF', 'KEYWORD2_PREF', 'KEYWORD3_PREF')
+			->joinUsersPreferences()
+			->joinOrtsec0Preferences()
+			->joinSecPreferences()
+			->where('COD_CLIWEB_PREF', $user['cod'])->get();
+
+		$queryFamily = FgOrtsec0::select('SUB_ORTSEC0', 'LIN_ORTSEC0', 'DES_ORTSEC0')->where('FGORTSEC0.SUB_ORTSEC0', '0')->get();
+
+		$ifQueryPreferences = count($queryPreferences) > 0;
+
+		return View::make('front::pages.panel.preferences', array('queryPreferences' => $queryPreferences, 'queryFamily' => $queryFamily, 'ifQueryPreferences' => $ifQueryPreferences));	}
+
+	public function getSubfamilyForPreferences(httpRequest $request)
+	{
+
+		$form = $request->all();
+		$linAndAucFamily = explode("-", $form['family-selector']);
+		$aucFamily = $linAndAucFamily[0];
+		$linFamily = $linAndAucFamily[1];
+
+		$querySubfamily = FgOrtsec0::select('COD_SEC','DES_SEC')
+			->joinOrtsec1FgOrtsec0()
+			->joinSecOrtsec0()
+			->where('LIN_ORTSEC1', $linFamily)->where('SUB_ORTSEC1', $aucFamily)->where('EMP_ORTSEC1', \Config::get('app.emp'))->get();
+
+
+		return response()->json(['querySubfamily' => $querySubfamily]);
+	}
+
+	public function setPreferences(HttpRequest $request)
+	{
+		$form = $request->all();
+		$user = session('user');
+		$codCli = $user['cod'];
+
+		if ($form['keyword1'] != '' || $form['keyword2'] != '' || $form['keyword1'] != '' || $form['family-selector'] != '-') {
+			# Validaciones
+			$keyword1 = explode(" ", $form['keyword1']);
+			$keyword1 = $keyword1[0];
+			$keyword2 = explode(" ", $form['keyword2']);
+			$keyword2 = $keyword2[0];
+			$keyword3 = explode(" ", $form['keyword3']);
+			$keyword3 = $keyword3[0];
+
+			if ($form['family-selector'] != '-') {
+				$linAndAucFamily = explode("-", $form['family-selector']);
+				$aucFamily = $linAndAucFamily[0];
+				$linFamily = $linAndAucFamily[1];
+				if ($form['subfamily-selector'] == '') {
+					$form['subfamily-selector'] = null;
+				}
+			} else {
+				$aucFamily = null;
+				$linFamily = null;
+				$form['subfamily-selector'] = null;
+			}
+
+			Web_Preferences::insert([
+				'COD_CLIWEB_PREF' => $codCli,
+				'EMP_PREF' => \Config::get('app.emp'),
+				'DESC_PREF' => $form['preference_name'],
+				'SUB_ORTSEC0_PREF' => $aucFamily,
+				'LIN_ORTSEC0_PREF' => $linFamily,
+				'COD_SEC_PREF' => $form['subfamily-selector'],
+				'KEYWORD1_PREF' => $keyword1,
+				'KEYWORD2_PREF' => $keyword2,
+				'KEYWORD3_PREF' => $keyword3,
+			]);
+
+		}
+
+		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
+	}
+
+	public function deletePreferences(HttpRequest $request)
+	{
+		$form = $request->all();
+		$user = session('user');
+		$codCli = $user['cod'];
+
+		Web_Preferences::where('COD_CLIWEB_PREF', $codCli)->where('ID_PREF', $form['preference_code'])->delete();
+
+		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
+	}
+
+
 }
 

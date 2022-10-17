@@ -750,9 +750,8 @@ class User extends Model
                     ->on('ASIGL0.SUB_ASIGL0','=','C.SUB_CSUB')
                     ->on('ASIGL0.REF_ASIGL0','=','C.REF_CSUB ');
                 })
-                ->Join('FGHCES1 LO',function($join){
+                ->Join('FGHCES1 LO', function($join){
                     $join->on('LO.EMP_HCES1','=','C.EMP_CSUB')
-                    ->on('LO.SUB_HCES1','=','C.SUB_CSUB')
                     ->on('LO.LIN_HCES1','=','ASIGL0.LINHCES_ASIGL0')
                     ->on('LO.NUM_HCES1','=','ASIGL0.NUMHCES_ASIGL0');
                 })
@@ -771,6 +770,16 @@ class User extends Model
                     $join->on('auc."company"','=','SUB.EMP_SUB')
                     ->on('auc."auction"','=','SUB.COD_SUB');
                 })
+				->leftjoin('FXDVC0 DVC', function($join) {
+					$join->on('DVC.emp_dvc0', '=', 'C.emp_csub')
+						->on('DVC.anum_dvc0', '=', 'C.afral_csub')
+						->on('DVC.num_dvc0', '=', 'C.nfral_csub');
+				})
+				->leftjoin('FXPCOB PCOB', function($join) {
+					$join->on('PCOB.emp_pcob', '=', 'DVC.emp_dvc0')
+						->on('PCOB.anum_pcob', '=', 'DVC.anum_dvc0')
+						->on('PCOB.num_pcob', '=', 'DVC.num_dvc0');
+				})
                 ->leftJoin('FGHCES1_LANG lotes_lang',function($join) use($lang){
                     $join->on('lotes_lang.EMP_HCES1_LANG','=','LO.EMP_HCES1')
                     ->on('lotes_lang.NUM_HCES1_LANG','=','ASIGL0.NUMHCES_ASIGL0')
@@ -786,35 +795,19 @@ class User extends Model
                     ->on('FGC0.APRE_CSUB0','=','C.APRE_CSUB')
                     ->on('FGC0.NPRE_CSUB0','=','C.NPRE_CSUB');
 				})
-				/* ->leftJoin('FXCOBRO1',function($join){
-					$join->on('FXCOBRO1.EMP_COBRO1','=','C.EMP_CSUB')
-					->on('FXCOBRO1.AFRA_COBRO1','=','C.AFRAL_CSUB')
-					->on('FXCOBRO1.NFRA_COBRO1','=','C.NFRAL_CSUB');
-				}) */
-
                 ->where('C.EMP_CSUB',Config::get('app.emp'))
                 ->where('C.CLIFAC_CSUB',$this->cod_cli)
                 ->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
                 ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"');
                 if($value == 'S'){
-					//Modificado 15/07/2022: Se modifica para que los lotes facturados no aparezcan como pendientes de pago
-					//Ojo, los facturados pero no pagados apareceren como pagados en la web.
-					#si existe en cobro es que está pagado, cogemos solo la linea 1 para que no de duplicados, tambien puede ser una factura manual AFRAL_CSUB = 'L00'
-					/* $sql->whereRaw(" (FXCOBRO1.LIN_COBRO1 =1 or FGC0.estado_csub0 = 'C' or C.AFRAL_CSUB = 'L00'  )"); */
+					//Modificado 21/09/22 Eloy: añadimos facturas y efectos pendientes para comprobar que realmente esta pagado.
+					//Si el lote esta en factura pero la factura no esta pagada, el lote no aparecera como pagado.
+					$sql->whereRaw("((DVC.asent_dvc0 = 'S' and PCOB.emp_pcob is null) or (C.afral_csub = 'L00') or (FGC0.estado_csub0 = 'C'))");
 					$sql->whereRaw("(C.AFRAL_CSUB IS NOT NULL)");
 
                 }else{
 					$sql->whereRaw("(C.AFRAL_CSUB  IS NULL AND (C.NFRAL_CSUB IS NULL OR C.NFRAL_CSUB = 0 ))");
 					$sql->whereRaw("(FGC0.estado_csub0 != 'C' or FGC0.estado_csub0 is null)");
-					/* $sql->WhereRaw('FXCOBRO1.LIN_COBRO1 is null');
-					#Si han creado facturas manuales (AFRAL_CSUB = 'L00' no deben salir como pendiente)
-					#eliminamos de la web todos los lotes por pagar anteriores al 2020 para no saturar
-					$sql->WhereRaw("( (C.AFRAL_CSUB != 'L00' and CAST(SUBSTR(C.AFRAL_CSUB, 2, 2) AS INT) > 19 or C.AFRAL_CSUB is null) OR (C.AFRAL_CSUB is not null AND C.NFRAL_CSUB != 0 and CAST(SUBSTR(C.AFRAL_CSUB, 2, 2) AS INT) > 19) )");
-					$sql->WhereRaw('FXCOBRO1.LIN_COBRO1 is null');
-                    $sql->where(function ($query) {
-                        $query->orWhere('FGC0.estado_csub0','!=','C')
-                              ->orWhereNull('FGC0.estado_csub0');
-                    }); */
                 }
                 if(Request::input('order') == 'lasted'){
                     $sql->orderBy('C.fecha_csub','asc');
@@ -843,65 +836,7 @@ class User extends Model
 
                 }
 
-               /* select fxpcob.emp_pcob, fgcsub.*  from fgcsub
-Left Join  fxpcob on fgcsub.AFRAL_CSUB = ANUM_PCOB and NUM_PCOB = fgcsub.NFRAL_CSUB and fgcsub.EMP_CSUB = emp_pcob
-where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
-;*/
         return $adj;
-        /*print_r($result);
-        die();
-        $pagado = '';
-        if($value == 'S'){
-            //COB_HCES1 = 'S' quiere decier que esta cobrado, puede estar pagado pero no cobrado
-            //entonces miramos estado_cusb0 esta pagado
-            $pagado="and (C.FAC_CSUB = 'S' OR FGC0.estado_csub0 = 'C')";
-
-        }elseif($value == 'N'){
-            //COB_HCES1 = 'N' quiere decier que no esta cobrado
-            $pagado="and C.FAC_CSUB != 'S' and (FGC0.estado_csub0 != 'C' or FGC0.estado_csub0 is null)";
-        }
-
-        $bindings = array(
-            'emp'           => Config::get('app.emp'),
-            'cli_licit'     => $this->cod_cli,
-            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
-
-            );
-        if(!$count){
-            $sql_pre = "SELECT rownum rn, C.SUB_CSUB,C.REF_CSUB, C.HIMP_CSUB,C.BASE_CSUB,C.FAC_CSUB,C.AFRAL_CSUB,C.NFRAL_CSUB,C.fecfra_csub,P.REF_ASIGL1, NVL(lotes_lang.titulo_hces1_lang, LO.titulo_hces1) titulo_hces1,LO.NUM_HCES1 ,  LO.LIN_HCES1, P.FEC_ASIGL1, P.HORA_ASIGL1, LO.COB_HCES1,C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1,
-                FGC0.*,SUB.*,auc.\"name\" as name, auc.\"id_auc_sessions\",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, asigl0.COMLHCES_ASIGL0
-                ";
-        }else{
-            $sql_pre = "Select count(rownum) num";
-        }
-
-
-        $sql="SELECT T.* FROM (".$sql_pre."
-                FROM  FGCSUB C
-                JOIN FGASIGL0 ASIGL0 ON ASIGL0.EMP_ASIGL0 =  C.EMP_CSUB AND  ASIGL0.SUB_ASIGL0 =  C.SUB_CSUB AND ASIGL0.REF_ASIGL0 = C.REF_CSUB
-                JOIN FGHCES1 LO ON (LO.EMP_HCES1 = C.EMP_CSUB AND    LO.SUB_HCES1  =   C.SUB_CSUB  AND LO.LIN_HCES1 =  ASIGL0.LINHCES_ASIGL0  AND LO.NUM_HCES1 =  ASIGL0.NUMHCES_ASIGL0 )
-                JOIN FGSUB SUB ON  SUB.EMP_SUB = C.EMP_CSUB AND SUB.COD_SUB =  C.SUB_CSUB
-                JOIN FGASIGL1 P ON P.SUB_ASIGL1 =  C.SUB_CSUB AND P.REF_ASIGL1 = C.REF_CSUB AND P.LICIT_ASIGL1 = C.LICIT_CSUB AND P.IMP_ASIGL1 = C.HIMP_CSUB
-                JOIN  \"auc_sessions\" auc ON  auc.\"company\" = SUB.EMP_SUB and auc.\"auction\" = SUB.COD_SUB
-                LEFT JOIN FGHCES1_LANG lotes_lang
-                ON (lotes_lang.EMP_HCES1_LANG = LO.EMP_HCES1 AND lotes_lang.NUM_HCES1_LANG = ASIGL0.NUMHCES_ASIGL0  AND lotes_lang.LIN_HCES1_LANG = ASIGL0.LINHCES_ASIGL0 AND lotes_lang.LANG_HCES1_LANG = :lang )
-                LEFT JOIN FXALM ALM ON (ALM.COD_ALM = LO.ALM_HCES1 AND LO.EMP_HCES1=ALM.EMP_ALM)
-                LEFT JOIN FGCSUB0 FGC0 ON (FGC0.EMP_CSUB0 = C.EMP_CSUB AND FGC0.APRE_CSUB0 = C.APRE_CSUB AND FGC0.NPRE_CSUB0 = C.NPRE_CSUB )
-                WHERE C.EMP_CSUB =:emp and C.CLIFAC_CSUB =:cli_licit  ".$pagado."
-                AND ASIGL0.REF_ASIGL0 >= auc.\"init_lot\"
-                AND ASIGL0.REF_ASIGL0 <= auc.\"end_lot\"
-                ORDER BY ".$order." auc.\"start\" desc, SUB.dfec_sub asc, ASIGL0.REF_ASIGL0
-                )T";
-
-        $adj = DB::select($sql, $bindings);
-        $sub = new Subasta();
-        foreach ($adj as $key => $value) {
-            $adj[$key]->formatted_imp_asigl1 = \Tools::moneyFormat($value->himp_csub);
-            $adj[$key]->imagen = $sub->getLoteImg($value);
-            $adj[$key]->date = \Tools::euroDate($value->fec_asigl1, $value->hora_asigl1 );
-            $adj[$key]->imp_asigl1 = $value->himp_csub;
-        }*/
-
     }
 
 
@@ -930,15 +865,12 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
     #Ventas de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
     public function getSales($filters = null)
     {
-
-
-        $lang = Config::get("app.language_complete")[Config::get("app.locale")];
-
 		$clobParams = "FGHCES1.desc_hces1, FGHCES1.descweb_hces1";
+		$showOnlyActiveAuctions = config('app.show_only_active_auctions', false);
 
 		$query = DB::table('FGHCES1 FGHCES1')
 
-			->selectRaw('FGSUB.cod_sub, FGSUB.des_sub, FGSUB.tipo_sub, FGSUB.subc_sub, auc."name", auc."id_auc_sessions", auc."start", auc."end", auc."reference", auc."orders_start",
+			->selectRaw('FGSUB.cod_sub, FGSUB.des_sub, FGSUB.tipo_sub, FGSUB.subc_sub, FGSUB.dfec_sub, FGSUB.hfec_sub, auc."name", auc."id_auc_sessions", auc."start", auc."end", auc."reference", auc."orders_start",
 				FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1, FGHCES1.titulo_hces1, FGHCES1.fac_hces1, FGHCES1.webfriend_hces1, FGHCES1.titulo_hces1,
 				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0')
 			->addSelect($clobParams)
@@ -947,24 +879,8 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
             	->on('ASIGL0.SUB_ASIGL0','=','FGHCES1.SUB_HCES1')
             	->on('ASIGL0.REF_ASIGL0','=','FGHCES1.REF_HCES1 ');
 			})
-			/*pendiente idiomas
-        	->leftJoin('FGHCES1_LANG lotes_lang',function($join) use($lang){
-            	$join->on('lotes_lang.EMP_HCES1_LANG','=','FGHCES1.EMP_HCES1')
-            	->on('lotes_lang.NUM_HCES1_LANG','=','ASIGL0.NUMHCES_ASIGL0')
-            	->on('lotes_lang.LIN_HCES1_LANG','=','ASIGL0.LINHCES_ASIGL0')
-            	->where('lotes_lang.LANG_HCES1_LANG','=',$lang);
-			})
-			*/
 			->join('FGSUB','FGSUB.EMP_SUB = ASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = ASIGL0.SUB_ASIGL0')
-			/*Pendiente idiomas
-			->leftJoin('FGSUB_LANG','FGSUB.EMP_SUB = ASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = ASIGL0.SUB_ASIGL0')
-			*/
-        	/*->leftJoin('FGCSUB csub',function($join){
-	            $join->on('csub.ref_csub','=','ASIGL0.ref_asigl0')
-    	        ->on('csub.sub_csub','=','ASIGL0.sub_asigl0')
-        	    ->on('csub.emp_csub','=','FGHCES1.EMP_HCES1');
-        	})*/
-        	->Join('"auc_sessions" auc',function($join){
+        	->join('"auc_sessions" auc',function($join){
             	$join->on('auc."auction"','=','FGHCES1.SUB_HCES1')
             	->on('auc."company"','=','FGHCES1.EMP_HCES1');
         	})
@@ -972,7 +888,10 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
         	->where('FGHCES1.EMP_HCES1',Config::get("app.emp"))
         	->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
 			->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"')
-
+			->when($showOnlyActiveAuctions, function ($query){
+				$auctionsType = session('user.admin') ? ['S', 'A'] : ['S'];
+				return $query->whereIn('FGSUB.subc_sub', $auctionsType);
+			})
 			->when($filters, function ($query) use ($filters) {
 
 				return $query->when(!empty($filters['from-date']) && !empty($filters['to-date']), function ($query) use ($filters) {
@@ -997,12 +916,14 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
 				->selectRaw(" (SELECT COUNT(LIN_ASIGL1)  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) BIDS");
 			}
 
-			if(config('app.number_orders_salespanel', false)){
+			if(config('app.number_orders_lotlist', false) || config('app.number_orders_salespanel', false)){
 				$query = $query->selectRaw("(SELECT COUNT(DISTINCT(LIN_ORLIC)) FROM FGORLIC WHERE FGORLIC.EMP_ORLIC = ASIGL0.EMP_ASIGL0 AND FGORLIC.SUB_ORLIC = ASIGL0.SUB_ASIGL0 AND FGORLIC.REF_ORLIC = ASIGL0.REF_ASIGL0) LICITS_ORDERS")
 				->selectRaw(" (SELECT COUNT(LIN_ORLIC) FROM FGORLIC WHERE ASIGL0.EMP_ASIGL0 = FGORLIC.EMP_ORLIC AND ASIGL0.SUB_ASIGL0 = FGORLIC.SUB_ORLIC AND ASIGL0.REF_ASIGL0 = FGORLIC.REF_ORLIC) ORDERS")
-				->selectRaw(" (SELECT MAX(HIMP_ORLIC) FROM FGORLIC WHERE ASIGL0.EMP_ASIGL0 = FGORLIC.EMP_ORLIC AND ASIGL0.SUB_ASIGL0 = FGORLIC.SUB_ORLIC AND ASIGL0.REF_ASIGL0 = FGORLIC.REF_ORLIC) MAX_ORDER");
+				->selectRaw(" (SELECT MAX(HIMP_ORLIC) FROM FGORLIC WHERE ASIGL0.EMP_ASIGL0 = FGORLIC.EMP_ORLIC AND ASIGL0.SUB_ASIGL0 = FGORLIC.SUB_ORLIC AND ASIGL0.REF_ASIGL0 = FGORLIC.REF_ORLIC) MAX_ORDER")
+				#para poder calcular el precio de salida en subastas W con ordenes abiertas necesitamos la segunda orden
+				->selectRaw("(SELECT  HIMP_ORLIC FROM(SELECT rownum  rn, HIMP_ORLIC FROM (SELECT    HIMP_ORLIC FROM FGORLIC WHERE  FGORLIC.EMP_ORLIC = ASIGL0.EMP_ASIGL0 AND  FGORLIC.SUB_ORLIC = ASIGL0.SUB_ASIGL0 AND FGORLIC.REF_ORLIC = ASIGL0.REF_ASIGL0  ORDER BY HIMP_ORLIC DESC )A)B WHERE rn = 2) SECOND_ORDER");
 			}
-
+			$query->orderby("SUB_ASIGL0,REF_ASIGL0");
 			return $query->get();
         	//->paginate($this->itemsPerPage);
     }
@@ -1092,6 +1013,7 @@ where emp_csub = '001' and clifac_csub='015629' and emp_pcob is null
 
         return $token;
     }
+
 
     public function favorites()
     {

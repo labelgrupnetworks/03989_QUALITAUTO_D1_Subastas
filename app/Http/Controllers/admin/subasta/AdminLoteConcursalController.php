@@ -92,6 +92,7 @@ class AdminLoteConcursalController extends AdminLotController
 			'id' => [
 				'reflot' => FormLib::TextReadOnly('reflot', 1, old('reflot', $fgAsigl0->ref_asigl0), 'maxlength="999999"'),
 				'idorigin' => FormLib::TextReadOnly('idorigin', 1, old('idorigin', $fgAsigl0->idorigen_asigl0 ?? "$cod_sub-$fgAsigl0->ref_asigl0"), 'maxlength="30"'),
+				'other_id' => FormLib::Text('other_id', 0, old('other_id', $fgAsigl0->loteaparte_hces1 ?? '')),
 			],
 			'imagen' => [
 				'image' => FormLib::File('images[]', 0, 'multiple="true" accept=".jpg, .jpeg, .png"'),

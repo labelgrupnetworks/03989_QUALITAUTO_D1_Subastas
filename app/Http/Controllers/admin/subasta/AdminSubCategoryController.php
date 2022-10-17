@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
+use App\Providers\ToolsServiceProvider;
 use App\Http\Controllers\Controller;
 use View;
 use App\libs\FormLib;
@@ -11,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\V5\FxSec;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgOrtsec1;
+use App\Models\V5\Web_Preferences;
 
 class AdminSubCategoryController extends Controller
 {
@@ -216,6 +218,22 @@ class AdminSubCategoryController extends Controller
 		return back()->with('success', array(trans('admin-app.title.deleted_ok')) );
 
 	}
+
+	/**
+	 * Descarga las preferencias de todos los usuarios en excel.
+	 * */
+	public function downloadPreferencesExcel () {
+		$queryPreferences = Web_Preferences::select('COD_CLIWEB_PREF as "Código de usuario"','NOM_CLIWEB as "Usuario"','EMAIL_CLIWEB as "Correo Electrónico"','DESC_PREF as "Preferencia"' , 'DES_ORTSEC0 as "Categoría"', 'DES_SEC as "Subcategoría"', 'KEYWORD1_PREF as "Palabra 1"', 'KEYWORD2_PREF as "Palabra 2"', 'KEYWORD3_PREF as "Palabra 3"')
+			->joinUsersPreferences()
+			->joinOrtsec0Preferences()
+			->joinSecPreferences()->distinct()->orderby('COD_CLIWEB_PREF')->get();
+
+		$filename = \Config::get('app.theme').'-preferences-'.date('Y-m-d');
+
+
+		return ToolsServiceProvider::exportCollectionToExcel($queryPreferences, $filename);
+	}
+
 
 
 }
