@@ -5,7 +5,7 @@ actionResponseDesign_O = function(data) {
 	$(".js-lot-action_pujar_escalado").attr("value", data.siguiente);
 
 	pricePerPiece({
-		target: document.querySelector('.siguiente_puja_perpiece'),
+		target: document.querySelector('.acutalPricePerpiece'),
 		price: data.actual_bid
 	})
 

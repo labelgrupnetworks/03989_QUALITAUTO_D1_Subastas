@@ -20,25 +20,29 @@ function nifVerifyError() {
 
 function mostrarErrorNIFForeign(cod_pais, nif) {
 	if (cod_pais != "ES" && nif != "") {
-		if ((cod_pais == "DK" || cod_pais == "SI" || cod_pais == "FI" || cod_pais == "HU" || cod_pais == "LU" || cod_pais == "MT") && nif.length != 8) {
+		if ((cod_pais == "DK" || cod_pais == "SI" || cod_pais == "FI" || cod_pais == "HU" || cod_pais == "LU" || cod_pais == "MT") && (nif.length != 8 || (verIfNum(nif) == false))) {
 			return false;
-		} else if ((cod_pais == "DE" || cod_pais == "AT" || cod_pais == "CY" || cod_pais == "EE" || cod_pais == "EL" || cod_pais == "PT") && nif.length != 9) {
+		} else if ((cod_pais == "AT" || cod_pais == "CY" || cod_pais == "PT") && nif.length != 9) {
+			return false;
+		} else if ((cod_pais == "DE" || cod_pais == "EE" || cod_pais == "EL") && (nif.length != 9 || (verIfNum(nif) == false))) {
 			return false;
 		} else if (cod_pais == "PL" && nif.length != 10) {
 			return false;
-		} else if ((cod_pais == "FR" || cod_pais == "IT" || cod_pais == "LV" || cod_pais == "HR") && nif.length != 11) {
+		} else if (cod_pais == "FR" && nif.length != 11) {
+			return false;
+		} else if ((cod_pais == "IT" || cod_pais == "LV" || cod_pais == "HR") && (nif.length != 11 || (verIfNum(nif) == false))) {
 			return false;
 		} else if ((cod_pais == "NL" || cod_pais == "SE") && nif.length != 12) {
 			return false;
-		} else if ((cod_pais == "BE" || cod_pais == "SK" || cod_pais == "BG") && (nif.length < 9 || nif.length > 10)) {
+		} else if ((cod_pais == "BE" || cod_pais == "SK" || cod_pais == "BG") && ((nif.length < 9 || nif.length > 10) || (verIfNum(nif) == false))) {
 			return false;
-		} else if (cod_pais == "CZ" && (nif.length < 8 || nif.length > 10)) {
+		} else if (cod_pais == "CZ" && ((nif.length < 8 || nif.length > 10) || (verIfNum(nif) == false))) {
 			return false;
 		} else if (cod_pais == "IE" && (nif.length < 8 || nif.length > 9)) {
 			return false;
-		} else if (cod_pais == "LT" && (nif.length != 9 && nif.length != 12)) {
+		} else if (cod_pais == "LT" && ((nif.length != 9 && nif.length != 12) || (verIfNum(nif) == false))) {
 			return false;
-		} else if (cod_pais == "RO" && (nif.length < 2 || nif.length > 10)) {
+		} else if (cod_pais == "RO" && ((nif.length < 2 || nif.length > 10) || (verIfNum(nif) == false))) {
 			return false;
 		} else {
             return true;
@@ -46,6 +50,18 @@ function mostrarErrorNIFForeign(cod_pais, nif) {
 	} else {
         return true;
     }
+}
+
+function verIfNum(string) {
+	if (string == "") {
+		return false;
+	}
+	for (i = 0; i < string.length; i++) {
+		if (isNaN(string.charAt(i))) {
+			return false;
+		}
+	}
+	return true;
 }
 
 submit_register_form = function () {
