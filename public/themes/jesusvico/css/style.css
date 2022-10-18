@@ -41,11 +41,16 @@
 	--lb-color-primary-contrast: #ffffffea;
 
 	--lb-color-secondary: #B9B20E;
+	--lb-color-secondary-lighter: rgb(185, 178, 14, 0.2);
 	--lb-color-secondary-light: #999314;
 	--lb-color-secondary-dark: #EDECC2;
 	--lb-color-secondary-contrast: #0D5257;
 
+	--lb-color-gray: #666666;
+
 	--lb-color-backgorund: #cd212212;
+	--lb-color-backgorund-dark: rgb(10, 63, 67, 0.2);
+	--lb-color-backgorund-light: rgb(10, 63, 67, 0.05);
 
 	--lb-text-color-rgb: 13, 82, 87;
 	--lb-text-color-primary: rgba(var(--lb-text-color-rgb), 0.75);
@@ -59,6 +64,7 @@
 	--lb-box-shadow-lot: rgba(50, 50, 105, 0.15) 0 2px 5px 0, rgba(0, 0, 0, 0.05) 0 1px 1px 0;
 
 	--lb-border-radius: 0;
+	--lb-color-border-light: rgb(10, 63, 67, 0.05);
 
 	--font-extra-light: 100;
 	--font-light: 300;
@@ -153,6 +159,40 @@ ul.style-diamond li::marker {
 
 .bg-lb-color-primary-light {
 	background-color: var(--lb-color-primary-light);
+}
+
+.bg-lb-color-backgorund-dark {
+	background-color: var(--lb-color-backgorund-dark);
+}
+
+.bg-lb-color-backgorund-light {
+	background-color: var(--lb-color-backgorund-light);
+}
+
+.bg-secondary-color {
+	background-color: var(--lb-color-secondary);
+}
+
+.bg-secondary-color-lighter {
+	background-color: var(--lb-color-secondary-lighter);
+}
+
+.lb-border-light {
+	border: var(--lb-color-border-light) solid 2px;
+}
+
+.static-link:hover,
+.static-link:focus,
+.static-link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.static-link-gray:hover,
+.static-link-gray:focus,
+.static-link-gray {
+	color: var(--lb-color-gray);
+	text-decoration: none;
 }
 
 .decoration {
