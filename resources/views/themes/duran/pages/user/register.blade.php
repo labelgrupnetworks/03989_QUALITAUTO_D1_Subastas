@@ -5,6 +5,14 @@ $families = array();
 $isNftPage = !empty($formulario->back) && $formulario->back == 'nft';
 $isGalleryPage = !empty($formulario->back) && $formulario->back == 'gallery';
 $isDuranPage = empty($formulario->back);
+
+$origen = 2;
+if($isGalleryPage) {
+	$origen = 3;
+}
+elseif ($isNftPage) {
+	$origen = 4;
+}
 @endphp
 
 @push('styles')
@@ -56,6 +64,8 @@ $isDuranPage = empty($formulario->back);
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="sexo" id="tipo_cli" value="1">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
+
+					<input class="form-control" type="hidden" name="origen" value="{{ $origen }}">
 
 					<div class="tipo_usuario">
 						<div class="particular selected" onclick="javascript:particular();">

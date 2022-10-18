@@ -18,6 +18,35 @@ $("#reference_selected_js").keydown(function(e){
 		$("#form_lotlist").submit();
 	}
 })
+$('#preference_selected').change(function () {
+	var preferenceSelectedSplit = $(this).val().split('-')
+
+	if(preferenceSelectedSplit[0] == ''){
+		$('#all_categories').prop('checked', true);
+	} else {
+		$("#category_"+preferenceSelectedSplit[0]).prop('checked', true);
+	}
+
+	if($("#section_" + preferenceSelectedSplit[1]).length){
+		$("#section_" + preferenceSelectedSplit[1]).prop('checked', true);
+	}else{
+		$("#form_lotlist").append('<input type="hidden" name="section" id="section_' + preferenceSelectedSplit[1] + '" value="' + preferenceSelectedSplit[1] + '" />');
+	}
+
+	var keywords = "";
+	if(preferenceSelectedSplit[2] != ""){
+		keywords = preferenceSelectedSplit[2];
+	}
+	if(preferenceSelectedSplit[3] != ""){
+		keywords = keywords + " " + preferenceSelectedSplit[3];
+	}
+	if(preferenceSelectedSplit[4] != ""){
+		keywords = keywords + " " + preferenceSelectedSplit[4];
+	}
+
+	$("#description").val(keywords);
+	$("#form_lotlist").submit();
+});
 
 
 

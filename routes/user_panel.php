@@ -57,6 +57,12 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	# Para Carlandia
 	Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
 	Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
+
+	# Preferencias
+	Route::get('{lang}/user/panel/preferences', 'UserController@getPreferencesAndFamily')->name('panel.preferences');
+	Route::post('user/panel/preferences', 'UserController@getSubfamilyForPreferences')->name('panel.preferences_subfamily');
+	Route::post('{lang}/user/panel/preferences/create', 'UserController@setPreferences')->name('panel.create_preferences');
+	Route::post('{lang}/user/panel/preferences/delete', 'UserController@deletePreferences')->name('panel.delete_preferences');
 });
 Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
 

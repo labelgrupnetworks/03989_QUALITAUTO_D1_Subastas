@@ -236,6 +236,11 @@ class FxCli extends Model
 		return $this->baja_tmp_cli;
 	}
 
+	public function getDirectionAttribute()
+	{
+		return $this->dir_cli . $this->dir2_cli;
+	}
+
 	public function getTipoDocumento (){
 		return[
 			self::TIPO_DOC_DNI => 'DNI',

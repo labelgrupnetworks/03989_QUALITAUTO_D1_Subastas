@@ -1,6 +1,11 @@
 
 $(document).ready(function () {
 
+	$('#js-ficha-login').on('click', (event) => {
+		$.magnificPopup.open({items: {src: '#modalCustomLogin'}, type: 'inline'}, 0);
+	});
+
+
 	$('.search-header').unbind('click');
 	$('.search-header').on('click', e => searchHeader(e));
 
@@ -274,3 +279,5 @@ carrousel_molon_new = function(carrousel) {
 
 	carrousel.data('hasSlick', true);
 }
+
+

@@ -2,7 +2,7 @@
 
     //si se ha superado el precio minimo
     $min_price_surpass = (count($lote_actual->pujas) >0 && $lote_actual->actual_bid >=  $lote_actual->impres_asigl0  );
-                
+
 ?>
 
 
@@ -19,7 +19,7 @@
                 <span data-countdown="{{strtotime($lote_actual->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($lote_actual->close_at,'large'); ?>" class="timer"></span>
             </span>
         </div>
-        
+
     </div>
     @if( \Config::get('app.estimacion'))
         <div class="col-xs-12 col-lg-6 col-md-12 col-sm-6 exit-price">
@@ -29,7 +29,7 @@
                 </div>
         </div>
     @endif
-    @if( \Config::get('app.impsalhces_asigl0'))
+    @if( \Config::get('app.impsalhces_asigl0') && $lote_actual->ocultarps_asigl0 != 'S')
         <div class="col-xs-12 col-lg-6 col-md-12 col-sm-6  exit-price">
             <p class="pre text">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
                 <div class="pre ">
@@ -37,7 +37,7 @@
                 </div>
         </div>
     @endif
-    
+
     <div class="col-xs-12">
         <div class="col-xs-12 col-sm-6 categories no-padding">
             <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
@@ -68,16 +68,16 @@
                                {{ trans(\Config::get('app.theme').'-app.subastas.no_reached') }}
                         </span>
     </div>
-     
+
      */
     ?>
     <div class="col-xs-12"></div>
         <div class="col-lg-12">
             <div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima'])?'':'hidden'; ?> ">
-                {{trans(\Config::get('app.theme').'-app.lot.max_puja')}} 
+                {{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
                 <strong>
                     <span id="tuorden">
-                        @if ( !empty($data['js_item']['user']['ordenMaxima'])) 
+                        @if ( !empty($data['js_item']['user']['ordenMaxima']))
                             {{ $data['js_item']['user']['ordenMaxima']}}
                         @endif
                     </span>
@@ -92,18 +92,18 @@
                 @if (count($lote_actual->pujas) >0)
                     <small class='explanation_bid t_insert' style="font-size:11px;">{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}  <strong><span class="siguiente_puja"> </span></strong> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </small>
                 @else
-                    <small class='explanation_bid t_insert' style="font-size:11px;">{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  <strong><span class="siguiente_puja"> </span></strong> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </small> 
+                    <small class='explanation_bid t_insert' style="font-size:11px;">{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  <strong><span class="siguiente_puja"> </span></strong> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </small>
                 @endif
 
                 @if (isset($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 > 0 && Session::has('user'))
                 <div class="pre_min">
                     <br><br>
                     <big>
-                        {{ trans(\Config::get('app.theme').'-app.subastas.price_minim') }}: 
+                        {{ trans(\Config::get('app.theme').'-app.subastas.price_minim') }}:
                         <span class="precio_minimo_alcanzado verde hidden">{{ trans(\Config::get('app.theme').'-app.subastas.reached') }}</span>
-                        <span class="precio_minimo_no_alcanzado rojo hidden">{{ trans(\Config::get('app.theme').'-app.subastas.no_reached') }}</span> 
+                        <span class="precio_minimo_no_alcanzado rojo hidden">{{ trans(\Config::get('app.theme').'-app.subastas.no_reached') }}</span>
                     </big>
-                </div>            
+                </div>
                 @endif
 
                 <div class="insert_bid">
@@ -113,7 +113,7 @@
                     <input style="font-style: normal;" id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
                     <div class="input-group" style="display: block;">
                         <button type="button" data-from="modal" class="lot-action_pujar_on_line btn btn-custom <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
-                                
+
                     </div>
                         @if(Session::has('user') &&  $lote_actual->retirado_asigl0 =='N')
                                 <a  class="btn btn-add-fav <?= $data['subasta_info']->lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
@@ -121,7 +121,7 @@
                                 </a>
                                 <a class="btn btn-del-fav <?= $data['subasta_info']->lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
                                     <p>{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}} </p>
-                                </a>  
+                                </a>
                                 @endif
                 </div>
 
@@ -139,15 +139,15 @@
                 </div>
             </div>
         </div>
-    </div>              
+    </div>
 <script>
-    
-    
-    
-    
-    
-    $(document).ready(function() {   
-        
+
+
+
+
+
+    $(document).ready(function() {
+
         //calculamos la fecha de cierre
         //$("#cierre_lote").html(format_date(new Date("{{$lote_actual->close_at}}".replace(/-/g, "/"))));
         $("#actual_max_bid").bind('DOMNodeInserted', function(event) {
@@ -157,22 +157,22 @@
                     type: "GET",
                     url:  "/lot/getfechafin",
                     data: { cod: cod_sub, ref: ref},
-                    success: function( data ) {         
+                    success: function( data ) {
                         reloadPujasList();
-                        if (data.status == 'success'){                    
+                        if (data.status == 'success'){
                            $(".timer").data('ini', new Date().getTime());
-                           $(".timer").data('countdown',data.countdown); 
-                            
+                           $(".timer").data('countdown',data.countdown);
+
 
                         }
 
 
                     }
                 });
-            } 
+            }
         });
     });
 </script>
 
-        
+
 

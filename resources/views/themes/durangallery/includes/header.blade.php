@@ -79,7 +79,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                 <div class="navbar-brand icons-band">
 					@if (!Session::has('user'))
 						{{-- <a href="{{ config('app.custom_login_url') }}&context_url={{Request::getSchemeAndHttpHost()}}" --}}
-						<a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
+						<a href="{{ config('app.custom_login_url') }}&context_url={{url()->current()}}"
 							class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 							<i class="fa fa-user"></i>
 						</a>
@@ -247,7 +247,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 				<div class="col-xs-1">
 					<div class="navbar-brand icons-band">
 						@if (!Session::has('user'))
-							<a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
+							<a href="{{ config('app.custom_login_url') }}&context_url={{url()->current()}}"
 								class="{{ !Session::has('user') ? 'btn_login' : '' }}" data-display="static">
 								<i class="fa fa-user"></i>
 							</a>
@@ -364,7 +364,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 
                             @if (!Session::has('user'))
                                 <li>
-                                    <a href="{{ config('app.custom_login_url') }}&context_url={{$host}}"
+                                    <a href="{{ config('app.custom_login_url') }}&context_url={{url()->current()}}"
                                         class="color-letter d-flex link-header btn_login_desktop"
                                         title="{{ trans($theme . '-app.login_register.login') }}"
                                         href="javascript:;"><span>{{ trans($theme . '-app.login_register.login') }}</span>

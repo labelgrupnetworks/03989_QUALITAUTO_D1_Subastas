@@ -12,6 +12,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0Seg;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 
 class MailApiRestController extends ApiRestController {
 
@@ -66,6 +67,7 @@ class MailApiRestController extends ApiRestController {
 			case "CHANGE_SEG_STATE":
 				$validate = $this->validateParams(['codCli', 'codSub', 'codSeg']);
 				if (count($validate) != 0) {
+					Log::error('sendMail - Need the data params', ['params', $validate]);
                     return $this->responder(false, "Need the data params", $validate, 401);
                 }
 				return $this->sendMailTrackingChange();

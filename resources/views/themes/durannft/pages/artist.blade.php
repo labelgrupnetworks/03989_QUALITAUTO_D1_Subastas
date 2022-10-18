@@ -39,13 +39,13 @@
                 {{-- Pestañas --}}
                 <ul class="nav nav-tabs artist-nav-tab" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#obras" aria-controls="obras" role="tab" data-toggle="tab">Obras</a>
+                        <a href="#obras" aria-controls="obras" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.subastas.obras') }}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#bio" class="" aria-controls="bio" role="tab" data-toggle="tab">Biografía</a>
+                        <a href="#bio" class="" aria-controls="bio" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.galery.biography') }}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#proxeventos" aria-controls="proxeventos" role="tab" data-toggle="tab">Próximos eventos</a>
+                        <a href="#proxeventos" aria-controls="proxeventos" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.galery.upcoming_events') }}</a>
                     </li>
                 </ul>
 

@@ -136,21 +136,22 @@
 								<input type="hidden" name="title_telefono" class="form-control" value="{{ trans(\Config::get('app.theme').'-app.user_panel.phone') }}">
 							</div>
 
-							<div class="form-group form-group-custom col-xs-12 col-sm-5">
+							<div class="form-group form-group-custom col-xs-12 @if(\Config::get("app.exchange")) col-sm-5 @else col-sm-8 @endif">
 								<label class="" for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
 								<input type="text" class="form-control" id="email" placeholder="{{ trans(\Config::get('app.theme').'-app.user_panel.email') }}" type="email" disabled name="email" value="{{$data['user']->usrw_cliweb}}" required>
 								<input type="hidden" class="form-control"  name="title_email" value="{{ trans(\Config::get('app.theme').'-app.user_panel.email') }}">
 							</div>
 
-							<div class="form-group form-group-custom col-xs-12 col-sm-3">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
-								<select name="divisa" class="form-control" required>
-									@foreach( $data['divisa'] as $key => $value)
-										<option <?= ($data['user']->cod_div_cli == strtoupper($value->cod_div))?'selected':''; ?> value="{{$value->cod_div}}">{{$value->des_div}}</option>
-									@endforeach
-								</select>
-							</div>
-
+							@if(\Config::get("app.exchange"))
+								<div class="form-group form-group-custom col-xs-12 col-sm-3">
+									<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+									<select name="divisa" class="form-control" required>
+										@foreach( $data['divisa'] as $key => $value)
+											<option <?= ($data['user']->cod_div_cli == strtoupper($value->cod_div))?'selected':''; ?> value="{{$value->cod_div}}">{{$value->des_div}}</option>
+										@endforeach
+									</select>
+								</div>
+							@endif
 							<div class="col-xs-12 hidden">
 								<label for="i-want-news">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
 								<div class="checkbox">

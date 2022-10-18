@@ -288,7 +288,7 @@ header > nav.navbar.first .navbar-brand{
                                     ?>
                                     <div class="pujas_model">
                                         <div class="col-md-3 tipoPuja">
-                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> </p>
+                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> </p>
                                             <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> </p>
                                             <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> </p>
                                             <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> </p>
@@ -317,7 +317,7 @@ header > nav.navbar.first .navbar-brand{
 
                             <div class="pujas_model hidden row" id="type_bid_model">
                                 <div class="col-lg-3 tipoPuja">
-                                    <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> </p>
+                                    <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> </p>
                                     <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> </p>
                                     <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> </p>
                                     <p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> </p>

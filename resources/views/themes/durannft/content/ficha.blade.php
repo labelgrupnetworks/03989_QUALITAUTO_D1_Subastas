@@ -70,6 +70,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                    $nameCountdown = "countdownficha";
                    $timeCountdown = $lote_actual->close_at;
                 }
+				$timeCountdownStart = $lote_actual->start_session
            ?>
 				@if($subasta_online)
                		@include('includes.ficha.header_time')
@@ -261,10 +262,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 					</div>
 				</div>
 				<p id="js-read-more" class="read-more">
-					<small>Leer más</small>
+					<small>{{ trans(\Config::get('app.theme').'-app.blog.more') }}</small>
 				</p>
 				<p id="js-read-less" class="hidden read-less">
-					<small>Leer menos</small>
+					<small>{{ trans(\Config::get('app.theme').'-app.blog.less') }}</small>
 				</p>
             </div>
 
@@ -423,6 +424,7 @@ var key ="<?= $key ?>";
 
             $("#cierre_lote").html(format_date_large(new Date("{{$timeCountdown}}".replace(/-/g, "/")),''));
 
+            $("#inicio_lote").html(format_date_large(new Date("{{$timeCountdownStart}}".replace(/-/g, "/")),''));
 
 
             <?php

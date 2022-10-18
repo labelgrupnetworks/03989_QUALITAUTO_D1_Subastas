@@ -551,7 +551,7 @@ Route::get(Routing::slugSeo('subastas'), 'V5\LotListController@getLotsListAllCat
 Route::get(Routing::slugSeo('subastas') . "_{keycategory}/{texto}", 'V5\LotListController@getLotsListCategory')->name('categoryTexFriendly');
 
 #listado de lotes por categoria
-Route::get(Routing::slugSeo('subastas') . "-{category}", 'V5\LotListController@getLotsListCategory')->name('category');
+Route::get(\Routing::slugSeo('subastas') . "-{keycategory}", 'V5\LotListController@getLotsListCategory')->name('category');
 #listado de lotes por secciones
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}"), 'V5\LotListController@getLotsListSection')->name('section');
 #listado de lotes por subcsecciones
@@ -641,6 +641,8 @@ Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" 
 #NFT
 Route::get("mintpayment/{operationId}", 'V5\PayShoppingCartController@createMintPay')->name('mintPayUrl');
 Route::get("transferpayment/{operationsIds}", 'V5\PayShoppingCartController@createTransferPay')->name('transferPayUrl');
+#Comprobar escalados fuera de rango
+Route::get("preciofueraescalado/{codSub}","CustomControllers@preciosFueraEscalado");
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

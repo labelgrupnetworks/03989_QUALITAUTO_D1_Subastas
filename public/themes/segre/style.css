@@ -577,3 +577,12 @@ footer {
 .div_iframe_catalogo iframe #embedTitleField {
 	display: none;
 }
+
+/* Registro */
+#registerForm .datos_newsletter .checkbox-container {
+	width: 62%;
+}
+
+.success_registered .titlePage {
+	color: black;
+}

@@ -5,7 +5,7 @@
 		</div>
 		<p>{{ trans(\Config::get('app.theme').'-app.user_panel.info') }}</p>
 	</a>
-	<a class="d-flex align-items-center @if($tab == 'allotments') active @endif" href="{{ \Routing::slug('user/panel/allotments') }}">
+	<a class="d-flex align-items-center @if($tab == 'allotments') active @endif" href="{{ route('panel.allotment-bills', ['lang' => config('app.locale')]) }}">
 		<div class="img-icon-container d-flex align-items-center justify-content-center">
 			<img style="width: 100%" src="/themes/{{\Config::get('app.theme')}}/assets/img/facturas.svg" alt="">
 		</div>

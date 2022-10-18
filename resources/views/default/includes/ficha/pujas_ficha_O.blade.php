@@ -26,12 +26,14 @@
     <div class="col-xs-12 no-padding info-ficha-buy-info-price d-flex">
 
             <div class="pre">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-				@if(\Config::get("app.exchange"))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
+				@if ($lote_actual->ocultarps_asigl0 != 'S')
+					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+					@if(\Config::get("app.exchange"))
+						| <span id="startPriceExchange_JS" class="exchange"> </span>
+					@endif
+					</p>
 				@endif
-				</p>
 
 
 
@@ -122,7 +124,6 @@
 			{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
 			@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
 				<div class="require-wallet">{!! trans(\Config::get('app.theme').'-app.lot.require_wallet') !!}</div>
-
 			@else
 				<div class="input-group d-block group-pujar-custom ">
 					<div>
@@ -130,8 +131,9 @@
 					</div>
 					<div class="d-flex mb-2">
 						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
-					<div class="input-group-btn">
-						<button type="button" data-from="modal" class=" lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+						<div class="input-group-btn">
+							<button type="button" data-from="modal" class=" lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+						</div>
 					</div>
 				</div>
 			@endif
@@ -156,7 +158,7 @@
 						</div>
 					@endif
 				</div>
-            </div>
+
         </div>
 	@endif
 

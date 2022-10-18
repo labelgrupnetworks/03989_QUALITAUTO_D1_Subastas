@@ -1,0 +1,55 @@
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #00263b;
+    --complement-color: #414145;
+    --extra-color: #00263b;
+    --primary-color-text: #707070;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background: #414145;
+	--btn-primary-background-hover: #00263b;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--header-links-color-hover: #9a9a9a;
+
+	--newsletter-background: #D2E2F2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #414145;
+	--newsletter-input-text: #414145;
+
+	--footer-background: white;
+	--footer-titles-color: #707070;
+	--footer-links-color: #707070;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: white;
+	--footer-sociallinks-textcolor: #707070;
+
+	--filter-background: #414145;
+
+	--error-background-color: #D2E2F2;
+	--error-text-color: #414145;
+}
+
+nav.menu-header, .footer {
+	background-color: #00263b;
+}
+
+a.link-header, .btn_login_desktop, .footer .color-letter, .menu-header{
+	color: #FFFFFF;
+}
+.link-header span::before {
+background: #FFFFFF;
+}
+
+a.link-header:hover, a.link-header:focus, .btn_login_desktop{
+	color: #EEEEEE;
+}

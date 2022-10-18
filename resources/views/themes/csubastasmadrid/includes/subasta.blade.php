@@ -30,7 +30,7 @@
 				</a>
 			</p> --}}
 
-			@if ($subasta->subc_sub == 'H')
+			@if ($subasta->subc_sub != 'N')
 				<p><a title="{{ $subasta->name }}" href="{{ $url_subasta }}"
 						class="btn btn-lotes btn-3">{{ trans(\Config::get('app.theme') . '-app.subastas.see_subasta') }}</a>
 				</p>

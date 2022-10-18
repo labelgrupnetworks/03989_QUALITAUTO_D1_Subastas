@@ -3,13 +3,19 @@
 <div  class="col-lg-12 col-md-12 info-ficha-buy-info no-padding">
     <div class=" col-xs-12 no-padding info-ficha-buy-info-price d-flex">
 
-            <div class="pre">
-                <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                <p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					@if(\Config::get("app.exchange"))
-					| <span id="startPriceExchange_JS" class="exchange"> </span>
+			@if ($lote_actual->ocultarps_asigl0 != 'S')
+				<div class="pre">
+					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+					@if($lote_actual->impsalhces_asigl0 ==0)
+						{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+					@else
+						<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+							@if(\Config::get("app.exchange"))
+								<span id="startPriceExchange_JS" class="exchange"> </span>
+							@endif
+						</p>
 					@endif
-				</p>
+			@endif
 
 			</div>
 			@if(!empty($lote_actual->imptash_asigl0))

@@ -160,7 +160,8 @@ class NoticiasController extends Controller
 
 		$theme = Config::get('app.theme');
 		$emp = Config::get('app.emp');
-		$lang = strtoupper(Config::get('app.locale', 'ES'));
+		//$lang = strtoupper(Config::get('app.locale', 'ES'));
+		$lang = 'ES';
 
 		$banners = WebNewbannerModel::select('id', 'descripcion')
 					->where([
@@ -179,9 +180,16 @@ class NoticiasController extends Controller
 									])
 								->orderBy('orden', 'desc')->first();
 
-			$banner->id_image = $webNewbannerItem->id;
-			$banner->texto = $webNewbannerItem->texto;
-			$banner->url_image = "/img/banner/$theme/$emp/$banner->id/$banner->id_image/$lang.jpg";
+			if($webNewbannerItem) {
+				$banner->id_image = $webNewbannerItem->id;
+				$banner->texto = $webNewbannerItem->texto;
+				$imagePath = "/img/banner/$theme/$emp/$banner->id/$banner->id_image/$lang.jpg";
+				if($lang != 'ES' && !file_exists(public_path() . $imagePath)){
+					$imagePath = "/img/banner/$theme/$emp/$banner->id/$banner->id_image/ES.jpg";
+				}
+
+				$banner->url_image = $imagePath;
+			}
 		}
 
 		return $banners;
@@ -223,7 +231,7 @@ class NoticiasController extends Controller
 							->where([
 								['ID_WEB_NEWBANNER', $banner->id],
 								['ACTIVO', 1],
-								['LENGUAJE', $lang]
+								['LENGUAJE', 'ES']
 							])
 							->orderBy('orden', 'desc')->get()->pluck('texto','id');
 

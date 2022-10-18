@@ -33,9 +33,9 @@
 
                             <span class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                     @elseif($item->tipo_sub == 'V' || \Config::get('app.impsalhces_asigl0'))
-                        <span > {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                        <span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}"> {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                     @elseif( \Config::get('app.estimacion'))
-                            <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            <span> {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                     @endif
                 @endif
              </div>

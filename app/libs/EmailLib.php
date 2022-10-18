@@ -266,6 +266,13 @@ private $debug = true;
             $this->atributes['EMAIL'] = $inf_user->email_cli;
 			#si viene por licitador cogemos el nombre de licitador, asi los usuarios con multiples licitadores reciben el email que toca
             $this->atributes['NAME'] =  $inf_user->rsoc_licit?? $inf_user->nom_cli;
+			#comprobamos si tiene separación de apellido por comas, si es así lo tratamos
+			$nameSurname= explode(",",$this->atributes['NAME']);
+			if(!empty($nameSurname[1])){
+				$this->atributes['NAME'] = $nameSurname[1]." ".$nameSurname[0];
+			}
+
+
             $this->atributes['CIF'] = $inf_user->cif_cli;
             $this->atributes['PHONE'] = $inf_user->tel1_cli;
             $this->atributes['CITY'] = $inf_user->pob_cli;
@@ -289,7 +296,7 @@ private $debug = true;
                 {
                     //si el idioma no es el actual cargamos de nuevo los textos en el idioma adecuado
                     if(\App::getLocale() != $lang){
-                        $old_lang = \App::getLocale();
+                        $this->old_lang = \App::getLocale();
                         //modificamos el locale para que los datos del lote/subasta etc se pasen en el idioma que toca
                         \App::setLocale($lang);
                         if (isset($inf_user->sexo_cli)) {
@@ -578,8 +585,8 @@ private $debug = true;
             } else  {
                  $this->setEmailLog('E');
             }
-            if(!empty($old_lang)){
-                \App::setLocale($old_lang);
+            if(!empty($this->old_lang)){
+                \App::setLocale($this->old_lang);
             }
             return true;
 
@@ -589,8 +596,8 @@ private $debug = true;
                 $this->setEmailLog('E');
             }
             \Log::error($e);
-            if(!empty($old_lang)){
-                \App::setLocale($old_lang);
+            if(!empty($this->old_lang)){
+                \App::setLocale($this->old_lang);
             }
             return false;
         }

@@ -140,3 +140,21 @@
     <span id="hide_bids_text" class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
 
 </div>
+
+<div id="modalCustomLogin" class="container modal-block mfp-hide">
+	<div class="modal-sub-w">
+		<section class="panel">
+			<div class="panel-body">
+				<div class="modal-wrapper">
+					<div class=" text-center single_item_content_">
+						<p>
+							<span>{!! trans("$theme-app.lot.custom_login", ['login_link' => config('app.custom_login_url') . "&context_url=" . url()->current()]) !!}</span>
+						</p>
+						<br>
+						<button class="btn button_modal_confirm modal-dismiss btn-custom">{{ trans("$theme-app.sheet_tr.confirm") }}</button>
+					</div>
+				</div>
+			</div>
+		</section>
+    </div>
+</div>

@@ -193,8 +193,8 @@
                                     <div class="pujas_model no_padding no-padding col-xs-12">
                                         <div class="col-xs-4 no-padding tipoPuja">
                                             <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i
-                                                    class="fa fa-globe" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}
+                                                    class="fa fa-wikipedia-w" aria-hidden="true"></i>
+                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}
                                             </p>
                                             <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i
                                                     class="fa fa-hand-paper-o" aria-hidden="true"></i>
@@ -236,8 +236,8 @@
 
                                     <div class="pujas_model no-padding hidden col-xs-12" id="type_bid_model">
                                         <div class="col-xs-4 no-padding tipoPuja">
-                                            <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}
+                                            <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i>
+                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}
                                             </p>
                                             <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o"
                                                     aria-hidden="true"></i>

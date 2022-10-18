@@ -105,7 +105,7 @@ class ClientController extends DuranController
 
 	#creo esta función para que sea más visible la asociación de campos
 	private function CreateFields($codCli, $tipoActualizacion){
-		$cliente = FxCli::SELECT("nllist1_cliweb,nllist2_cliweb, cod_cli, cod2_cli,rsoc_cli, nom_cli, fisjur_cli,tipv_cli, cif_cli, codpais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, tel1_cli, tel2_cli, email_cli, CODPAIS_CLID, DIR_CLID, DIR2_CLID, CP_CLID,POB_CLID, PRO_CLID")
+		$cliente = FxCli::SELECT("nllist1_cliweb,nllist2_cliweb, cod_cli, cod2_cli,rsoc_cli, nom_cli, fisjur_cli,tipv_cli, cif_cli, codpais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, tel1_cli, tel2_cli, email_cli, origen_cli, CODPAIS_CLID, DIR_CLID, DIR2_CLID, CP_CLID,POB_CLID, PRO_CLID")
 		->where("cod_cli",$codCli)
 		->join('FXCLIWEB', 'FXCLIWEB.COD_CLIWEB = FXCLI.COD_CLI  AND FXCLIWEB.GEMP_CLIWEB = FXCLI.GEMP_CLI')
 		->leftjoin('FXCLID', "FXCLID.GEMP_CLID = FXCLI.GEMP_CLI AND FXCLID.CLI_CLID = FXCLI.COD_CLI AND FXCLID.CODD_CLID ='W1' ")
@@ -118,7 +118,7 @@ class ClientController extends DuranController
 
 
 		$fields=array(
-					'origen' => 2,
+					'origen' => $cliente->origen_cli?? 2,
 					'tipoactualizacion' => $tipoActualizacion,
 					#si es una creación no debemos coger el cod2 ya que se cogerá el qeu se crea por defecto y no es el de Duran
 					'codigo' =>  $tipoActualizacion== "A"? null : $cliente->cod2_cli,

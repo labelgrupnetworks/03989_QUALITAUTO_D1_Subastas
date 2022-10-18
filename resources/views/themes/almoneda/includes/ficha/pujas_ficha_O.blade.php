@@ -43,6 +43,7 @@
 	{{-- Precio de salida --}}
     <div class="col-xs-12 no-padding info-ficha-buy-info-price {{-- d-flex --}}">
         <div class="pre">
+			@if ($lote_actual->ocultarps_asigl0 != 'S')
             <p class="pre-title title-font row">
                 <span class="col-xs-6">{{ trans(\Config::get('app.theme') . '-app.lot.minimum_rate') }}</span>
                 <span class="pre-price col-xs-6">
@@ -53,6 +54,7 @@
                     @endif
                 </span>
             </p>
+			@endif
         </div>
     </div>
 

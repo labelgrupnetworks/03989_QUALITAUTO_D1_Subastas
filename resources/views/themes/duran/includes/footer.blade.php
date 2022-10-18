@@ -69,10 +69,10 @@
 											@endforeach
 										@endforeach
 								   @endif
-								   	<li><a class="footer-link"  href="/es/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.online_auction')) }} </a></li>
+								   	<li><a class="footer-link"  href="/en/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.online_auction')) }} </a></li>
 									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.metas.title_historic'))  }}</a></li>
-									<li><a class="footer-link" href="/es/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.compra_ahora')) }}</a></li>
-									<li><a class="footer-link" href="/es/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</a></li>
+									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.compra_ahora')) }}</a></li>
+									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</a></li>
 									<li><a class="footer-link"  href="{{ \Routing::translateSeo('calendar') }}">{{ mb_strtoupper (trans($theme.'-app.foot.calendar')) }}</a></li>
 									<li>
 											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.how_to_buy')  ) }}</a>

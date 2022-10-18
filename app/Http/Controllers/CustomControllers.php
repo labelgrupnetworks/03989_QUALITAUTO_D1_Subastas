@@ -6,10 +6,15 @@ use App\Exports\ViewExcelExport;
 use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FgAsigl0;
 use App\Http\Controllers\V5\GaleriaArte;
+use App\libs\FormLib;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
+use App\Models\V5\FgPujas;
+use App\Models\V5\FgPujasSub;
+use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\Subasta;
+use Illuminate\Http\File;
 
 class CustomControllers extends Controller
 {
@@ -161,7 +166,7 @@ class CustomControllers extends Controller
 			->first();
 
 		if (!$subastaReciente) {
-			return view('front::pages.video_auction', ['videos' => [], 'subastaReciente' => new FgSub()]);
+			return view('front::pages.video_auction', ['videoSorted' => [], 'subastaReciente' => new FgSub()]);
 		}
 
 
@@ -202,6 +207,8 @@ class CustomControllers extends Controller
 			->orderby("REF_ASIGL0")
 			->get();
 
+
+
 			foreach ($lots as $lot) {
 				$url = "";
 
@@ -223,6 +230,71 @@ class CustomControllers extends Controller
 
 
 		return ToolsServiceProvider::exportCollectionToExcel($lotsCollectForExport, $filename);
+	}
+
+	public function preciosFueraEscalado($codSub){
+
+		$scales =FgPujasSub::select("imp_pujassub  imp_pujas, puja_pujassub  puja_pujas")->where("SUB_PUJASSUB", $codSub)->orderby("imp_pujas")->get();
+
+		if (empty($scales)){
+			$scales =FgPujas::orderby("imp_pujas")->get();
+		}
+
+		$rangos = [];
+		foreach($scales as $scale) {
+			$rangos[$scale->imp_pujas] = $scale->puja_pujas;
+		}
+
+		#comprobar si los rangos estan bien hechos
+		$rangoAnterior = 0;
+		foreach($rangos as $maxImp => $scale){
+			#calculamos la diferencia de un rango con el otro
+			$valor = $maxImp - $rangoAnterior;
+			$resto = $valor % $scale;
+			#Si hay resto es que los rangos no son correctos
+			if($resto > 0){
+				echo "Error en rango de escalado desde " . \Tools::moneyFormat($rangoAnterior,"€")." hasta " . \Tools::moneyFormat($maxImp,"€")." , no se puede alcanzar " . \Tools::moneyFormat($maxImp,"€")." sumando de " . \Tools::moneyFormat($scale,"€")."  en " . \Tools::moneyFormat($scale,"€")." desde " . \Tools::moneyFormat($rangoAnterior,"€")." <br> <br> ";
+			}
+			$rangoAnterior = $maxImp;
+		}
+
+
+		$lots = FgAsigl0::SELECT("REF_ASIGL0, IMPSALHCES_ASIGL0  ")->where("SUB_ASIGL0", $codSub)->get();
+
+		if(count($lots) ==0 ){
+			echo "No hay lotes en la subasta seleccionada ";
+			die();
+		}
+		$lotesFueraRango = "LOTES FUERA DE ESCALADO:<br><br> <ul>";
+		$hay = false;
+		foreach($lots as $lot){
+			$rangoAnterior = 0;
+			foreach($rangos as $maxImp => $scale){
+				#estamos en el rango de escalado correcto
+
+				if($lot->impsalhces_asigl0 < $maxImp ){
+					#restamos para dejar solo la parte de escalados
+					$valor = $lot->impsalhces_asigl0  - $rangoAnterior;
+					$resto = $valor % $scale;
+					#Si hay resto es que no esta dentro de la escala
+					if($resto > 0){
+						$hay = true;
+						$lotesFueraRango .= "<li>Ref: ".$lot->ref_asigl0." Importe " . \Tools::moneyFormat($lot->impsalhces_asigl0,"€")."  erroneo <ul><li> Importe Correcto:". \Tools::moneyFormat($lot->impsalhces_asigl0 - $resto,"€")." o " .\Tools::moneyFormat($lot->impsalhces_asigl0 - $resto + $scale,"€")." </li></ul></li>";
+					}
+					break;
+				}
+				$rangoAnterior = $maxImp;
+			}
+		}
+		$lotesFueraRango .= "</ul>";
+
+		if(!$hay){
+			echo "No hay lotes fuera de escalado";
+		}else{
+			echo $lotesFueraRango;
+		}
+
+
 	}
 
 }

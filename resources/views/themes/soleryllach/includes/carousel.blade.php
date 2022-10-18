@@ -58,14 +58,19 @@
                         @if( \Config::get('app.estimacion'))
                             {{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span class=""> {{$bann->imptas_asigl0}} -  {{$bann->imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 						@elseif( \Config::get('app.impsalhces_asigl0'))
-                            {{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span class="">
-								{{-- Para los lotes cerrados si tienen importe salida web lo mostramos --}}
-								@if($bann->cerrado_asigl0 == 'S' && !empty($bann->impsalweb_asigl0))
-									{{$bann->impsalweb_asigl0}}
+                            {{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
+
+							@if($bann->cerrado_asigl0 == 'S' && !empty($bann->impsalweb_asigl0))
+								<span class="">{{$bann->impsalweb_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+							@else
+								@if($bann->impsalhces_asigl0 ==0)
+										{{ trans(\Config::get('app.theme').'-app.lot.free') }}
 								@else
-									{{$bann->impsalhces_asigl0}}
+									<span class="">	{{$bann->impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 								@endif
-							{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+
+							@endif
+
                         @endif
                     </p>
                 @endif

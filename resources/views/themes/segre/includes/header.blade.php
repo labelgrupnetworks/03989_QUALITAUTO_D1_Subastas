@@ -174,13 +174,13 @@ if (strpos($fullname, ',')) {
 
 						{{-- Botón de desktop --}}
 						<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
-							{{ $subastaActual->des_sub }}
+							{{ trans($theme . '-app.foot.subasta_actual') }}
 						</a>
 
 						{{-- Botón de móvil --}}
 						<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 							onclick="javascript:$('#menu_desp_subasta').toggle('blind',100)">
-							{{ $subastaActual->des_sub }}
+							{{ trans($theme . '-app.foot.subasta_actual') }}
 						</a>
 
 						<div class="menu-especial" id="menu_desp_subasta">
@@ -203,14 +203,16 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 
-							<p class="item">
-								<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.telephone_bid') }}">
-									{{ trans($theme . '-app.foot.telephone_bid') }}
-								</a>
-							</p>
+
 							<p class="item">
 								<a href="{{ trans($theme . '-app.segre-enlaces.virtual_visit') }}" target="_blank">
-									{{ trans($theme . '-app.foot.virtual_visit') }} {{ trans("$theme-app.segre_enlaces.virtual_visit_code") }}
+									{{ trans($theme . '-app.foot.virtual_visit') }}
+								</a>
+							</p>
+
+							<p class="item">
+								<a href="{{ trans($theme . '-app.segre-enlaces.videos') }}">
+									{{ trans($theme . '-app.foot.videos') }}
 								</a>
 							</p>
 
@@ -240,16 +242,11 @@ if (strpos($fullname, ',')) {
 									{{ trans($theme . '-app.foot.featured_shots') }}
 								</a>
 							</p>
-							<p class="item">
-								<a href="{{ trans($theme . '-app.segre-enlaces.videos') }}">
-									{{ trans($theme . '-app.foot.videos') }}
-								</a>
-							</p>
 
 							@php
 								$has_subasta = $subastaObj->auctionList('H');
 							@endphp
-
+{{-- de momento omitimos el histórico
 							@if (!empty($has_subasta))
 								<p class="item">
 									<a href="{{ \Routing::translateSeo('subastas-historicas') }}">
@@ -257,7 +254,7 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
-
+--}}
 						</div>
 
 					</li>
@@ -267,16 +264,16 @@ if (strpos($fullname, ',')) {
 				<li class="open-menu-especial" style="position: relative">
 
 					{{-- Botón de desktop --}}
-					<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
-						{{ trans($theme . '-app.foot.catalogs') }}
+					<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}" class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
+						{{ trans($theme . '-app.foot.previous_auctions') }}
 					</a>
 
 					{{-- Botón de móvil --}}
-					<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
+					<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}" class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 						onclick="javascript:$('#menu_desp_catalogo').toggle('blind',100)">
-						{{ trans($theme . '-app.foot.catalogs') }}
+						{{ trans($theme . '-app.foot.previous_auctions') }}
 					</a>
-
+{{--
 					<div class="menu-especial" id="menu_desp_catalogo">
 						<p class="item">
 							<a href="{{ route('catalogos_newsletter') }}">
@@ -304,7 +301,7 @@ if (strpos($fullname, ',')) {
 							</a>
 						</p>
 					</div>
-
+--}}
 				</li>
 
 				{{-- MENÚ COMPRAR VENDER --}}
@@ -495,10 +492,9 @@ if (strpos($fullname, ',')) {
 					</div>
 
 					<div class="mega-menu background-body rigth-0">
-						{{-- <a class="color-letter" href="{{ \Routing::slug('user/panel/orders') }}" >
+						<a class="color-letter" href="{{ \Routing::slug('user/panel/orders') }}" >
                             {{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }}
-
-						</a> --}}
+						</a>
 						@if (Session::get('user.admin'))
 							<a class="color-letter" href="/admin" target="_blank">
 								{{ trans(\Config::get('app.theme') . '-app.login_register.admin') }}</a>

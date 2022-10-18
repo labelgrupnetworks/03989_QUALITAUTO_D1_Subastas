@@ -70,5 +70,12 @@ class AucSessions extends Model
         return $query->leftjoin("FSUSR",'FSUSR.COD_USR = "auc_sessions"."usr_update_sessions"');
 	}
 
+	public function scopeJoinLang($query){
+		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+
+		return $query->leftJoin('"auc_sessions_lang"','  "id_auc_session_lang" = "id_auc_sessions"   AND "company_lang" = "company"   AND "auction_lang" = "auction"  AND "lang_auc_sessions_lang" = \''.$lang.'\'');
+
+	}
+
 }
 

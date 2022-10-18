@@ -337,7 +337,7 @@ class LotListController extends Controller
 			$bladeVars["desadjudicado"] = $item->desadju_asigl0 == 'S'? true : false;
 
 			$bladeVars["webfriend"] = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  \Str::slug($item->descweb_hces1);
-			$bladeVars["precio_salida"] = \Tools::moneyFormat($item->impsalhces_asigl0);
+			$bladeVars["precio_salida"] = \Tools::moneyFormat(!empty($item->impsalweb_asigl0) ? $item->impsalweb_asigl0 : $item->impsalhces_asigl0);
 			#debe haber la variable number_bids_lotlist a 1 en webconfig para que devuelva el numero de pujas y de licitadores
 			$bladeVars["bids"] = !empty($item->bids)? $item->bids : 0;
 			$bladeVars["licits"] = !empty($item->licits)? $item->licits : 0;
@@ -475,7 +475,7 @@ class LotListController extends Controller
 			$urlAllCategories =  route("allCategories");
 				$bread[] = array("url" =>$urlAllCategories, "name" => trans(\Config::get('app.theme').'-app.lot_list.all_categories') );
 			if(!empty($infoOrtsec)){
-				$urlCategory =  route("category",[ "category" => $infoOrtsec->key_ortsec0 ]);
+				$urlCategory =  route("category",[ "keycategory" => $infoOrtsec->key_ortsec0 ]);
 				$bread[] = array("url" =>$urlCategory, "name" =>$infoOrtsec->des_ortsec0  );
 
 				if(!empty($infoSec)){

@@ -24,23 +24,23 @@
                     <a title="{{ $titulo }}" <?= $url;?>>
                        {{ $item->ref_asigl0 }}
                     </a>
-                    
+
                 </div>
              <div class="text-center">
-                @if( $item->retirado_asigl0 =='N'  && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R') 
-                    <?php //si no hay ordenes mostramos el precio de salida, ya que solo  ?> 
+                @if( $item->retirado_asigl0 =='N'  && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')
+                    <?php //si no hay ordenes mostramos el precio de salida, ya que solo  ?>
                     @if ($item->tipo_sub == 'W' && $item->subabierta_sub == 'S' && $item->cerrado_asigl0 == 'N' && !empty($item->open_price) && $item->open_price > $item->impsalhces_asigl0 )
-                        
+
                             <span class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                     @elseif($item->tipo_sub == 'V' || \Config::get('app.impsalhces_asigl0'))
-                        <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                        <span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}"> {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
                     @elseif( \Config::get('app.estimacion'))
                             <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-                    @endif                    
+                    @endif
                 @endif
-             </div>   
+             </div>
          </div>
-            
+
         <div class="capaOculta " style="top: 200px;position: absolute; background: white;   border: 1px solid #ccc;display: none;z-index:999;">
             <img style="max-width:638px;max-height: 400px;" src="/img/load/lote_large/{{ $item->imagen }}">
 

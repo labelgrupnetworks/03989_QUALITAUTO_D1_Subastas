@@ -3813,6 +3813,26 @@ input:checked ~ .input-check-custom {
     font-size: 18px;
 }
 
+
+/**************Panel Usuario Preferencias************/
+.preferences-table-container {
+	min-height: 500px;
+	margin-bottom: 3rem;
+}
+
+.preferences-container .error-msg {
+	color: red;
+	font-size: 14px;
+	background-color: rgb(255, 196, 196);
+	border: red solid 2px;
+	padding: 5px;
+	border-radius: 6px;
+	width: 56ch;
+	margin: auto;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 /***********************************
 ENVIO DELIVEREA DATOS PERSONALES
 ***********************************/

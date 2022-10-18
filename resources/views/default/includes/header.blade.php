@@ -123,7 +123,7 @@ use App\libs\TradLib as TradLib;
 									$categories = $fgortsec0->GetAllFgOrtsec0()->get()->toarray();
 								@endphp
 								@foreach ($categories as $k => $category)
-										<div class="categoryOption"><a href="{{ route("category",array( "category" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a></div>
+										<div class="categoryOption"><a href="{{ route("category",array( "keycategory" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a></div>
 
 								@endforeach
 							</div>

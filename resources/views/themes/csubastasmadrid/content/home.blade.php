@@ -1,4 +1,4 @@
-{!! \BannerLib::bannersPorKey('home-top-banner', 'home-top', ['dots' => false]) !!}
+{!! \BannerLib::bannersPorKey('home-top-banner', 'home-top', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1]) !!}
 
 <p class="text-center" style="color:#fff; cursor:context-menu;">Subastas de monedas, billetes, sellos, libros antiguos
     y coleccionismo en Barcelona. Expertos en numismática, filatelia, libros antiguos y coleccionismo. Valoraciones y

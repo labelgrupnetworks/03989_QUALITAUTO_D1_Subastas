@@ -49,7 +49,7 @@
                 <div class="aside pujas">
 
                     <p class="last-bids-title">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</p>
-                    <div id="pujas_list" class="pujas_list" style="height: 320px !important;">
+                    <div id="pujas_list" class="pujas_list" style="height: 320px">
 
                         <?php foreach ($data['subasta_info']->lote_actual->pujas as $puja) : ?>
                             <div class="pujas_model row">

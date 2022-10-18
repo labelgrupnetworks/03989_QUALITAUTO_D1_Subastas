@@ -45,7 +45,9 @@ class FgOrtsec1 extends Model
 	}
 
 	public function scopeJoinFgOrtsec0($query){
-        return $query->join('FGORTSEC0', 'FGORTSEC0.EMP_ORTSEC0 = FGORTSEC1.EMP_ORTSEC1 AND FGORTSEC0.LIN_ORTSEC0 = FGORTSEC1.LIN_ORTSEC1');
+		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
+        return $query->join('FGORTSEC0', 'FGORTSEC0.EMP_ORTSEC0 = FGORTSEC1.EMP_ORTSEC1 AND FGORTSEC0.LIN_ORTSEC0 = FGORTSEC1.LIN_ORTSEC1')->
+					   leftjoin('FGORTSEC0_LANG',"LIN_ORTSEC0_LANG = LIN_ORTSEC0  AND EMP_ORTSEC0_LANG = EMP_ORTSEC0 AND LANG_ORTSEC0_LANG  ='$lang'");
     }
 
 	public function scopeJoinFxSec($query){

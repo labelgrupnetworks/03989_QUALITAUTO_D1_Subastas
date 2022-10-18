@@ -4,15 +4,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
+use Illuminate\Support\Facades\DB;
 
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
-use Config;
-use Routing;
-use App\Models\Content;
+use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\PaymentsController;
+use App\Models\V5\FgAsigl2;
+use Illuminate\Support\Collection;
+
 class Payments extends Model
 {
 
@@ -589,6 +587,30 @@ class Payments extends Model
         }
         return $extra;
     }
+
+	/**
+	 * Obtener los gastos extra de un conjunto de lotes
+	 *
+	 * @param Collection<string, array> $auctionsLots ['cod_sub' => [ref1, ref2, ...]]
+	 * @param string $estado
+	 * @param string $origen
+	 * @param string $tipo
+	 * @return Collection
+	 */
+	public function getGastosExtra(Collection $auctionsLots, string $estado = 'P', string $origen = null, string $tipo = null) : Collection
+	{
+		return FgAsigl2::getBuilderForAuctions($auctionsLots)
+			->select('imp_asigl2', 'impiva_asigl2', 'desc_asigl2', 'tipo_asigl2', 'sub_asigl2', 'ref_asigl2')
+			->when($origen, function($q) use ($origen){
+				return $q->where('origen_asigl2', $origen);
+			})
+			->when($tipo, function($q) use ($tipo){
+				return $q->where('tipo_asigl2', $tipo);
+			})
+			->where('estado_asigl2', $estado)
+			->orderBy('tipo_asigl2', 'asc')
+			->get();
+	}
 
     public function updateGastosExtrasLot($lot){
         $sql = " UPDATE  FGASIGL2 SET ESTADO_ASIGL2 = :estado_c

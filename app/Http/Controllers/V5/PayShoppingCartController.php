@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\V5\PayArticleCartController;
 use App\Models\V5\FxClid;
+use App\Models\V5\FxCli;
 use App\Models\V5\FgCsub;
 use App\Models\V5\WebPayCart;
 use App\Http\Controllers\externalws\vottun\VottunController;
@@ -506,7 +507,7 @@ class PayShoppingCartController extends Controller
 	{
 		#pendiente de hacer que envie email con los datos de la compra, tanto al comprador como al admin
 		$email = new EmailLib('SHOPPING_CART_PAY');
-		if(empty($email)) {
+		if(empty($email->email)) {
 			return false;
 		}
 
@@ -528,9 +529,12 @@ class PayShoppingCartController extends Controller
 			});
 
 		$lotsQuery = $fgasigl0->get();
+		$cliente = FxCli::select("NOM_CLI,  EMAIL_CLI ")->where("cod_cli", $transaccion->cli_paycart)->first();
 
 		//montar tabla html con info de los lotes
-		$html = view('front::emails.paid_lot', ['lots' => $lotsQuery])->render();
+		$html = view('front::emails.paid_lot', ['lots' => $lotsQuery, 'info' => $info, 'cliente' =>$cliente ])->render();
+
+
 
 		//enviar email a usuario y admin
 		$email->setUserByCod($transaccion->cli_paycart, true);

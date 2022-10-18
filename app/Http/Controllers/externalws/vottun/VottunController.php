@@ -368,14 +368,20 @@ class VottunController extends Controller
 			if(empty($adjudicacion)){
 				return $this->responseError("lotNotSelled");
 			}
-			if (empty($adjudicacion->wallet_cli)){
-				return $this->responseError("buyerNoWallet");
+
+			if (!empty($adjudicacion->wallet_cli)){
+				$buyerWallet = $adjudicacion->wallet_cli;
+
+			}else{
+				#harcodeamos el wallet para permitir pujar sin indicar el wallet , esto puede provocar que el usuario n otenga wallet
+				$buyerWallet = "0xE552B25eEcA5c10b3100982cD661312D3c3BA09e";
+				#return $this->responseError("buyerNoWallet");
 			}
 
 
 			$network = $operation->networkId;
 			$from = $walletProp;
-			$to = $adjudicacion->wallet_cli;
+			$to = $buyerWallet ;
 			$price = $adjudicacion->himp_csub;
 
 			$res = $this->vottunTransferNft($from, $to, $tokenId, $price, $network );
@@ -488,10 +494,11 @@ class VottunController extends Controller
 							}
 						}
 
-						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE UN PAGO DEL MINTEO
+						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE UN PAGO DEL MINTEO Wbcrearpagonft
 					}else{
 						#indicamos que no será necesario el pago del minteo
 						$payMintNft = "N";
+						#PENDIENTE DE APROBAR:- SI LA RED NO ES DE PAGO , SE LLAMARA A GENERAR  EL PAGO createMintPay($operationId) Y SE MARCARÁ COMO PAGADO Y SE AVISARÁ A DURAN QUE  HAY UN PAGO PENDIENTE PendingOperitionPaid, AUNQUE LUEGO NO SE PAGUE
 					}
 					#actualizamos el valor de Pay_mint para indicar el coste (solo si es de pago) y si esta pendiente o no será necesario el cobro
 					FgNft::where("MINT_ID_NFT", $all["operationId"])->update(["PAY_MINT_NFT" => $payMintNft, "COST_MINT_NFT" => $costMint]);

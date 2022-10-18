@@ -1,5 +1,5 @@
 @php
-$auctions = App\Models\V5\FgSub::select("cod_sub", "des_sub", "tipo_sub")->orderby('hfec_sub')->get();
+$auctions = App\Models\V5\FgSub::select("cod_sub", "des_sub", "tipo_sub")->where("subc_sub","!=","C")->orderby('hfec_sub')->get();
 @endphp
 
 
@@ -24,7 +24,7 @@ $auctions = App\Models\V5\FgSub::select("cod_sub", "des_sub", "tipo_sub")->order
 						<div class="mt-2 mb-2">
 							<select name="newAuction" id="auctionToDuplicateLot">
 								@foreach ($auctions as $auction)
-									@if ($cod_sub != $auction->cod_sub)
+									@if ($cod_sub != $auction->cod_sub )
 										<option value="{{ $auction->cod_sub }}">{{ $auction->des_sub }}</option>
 									@endif
 								@endforeach

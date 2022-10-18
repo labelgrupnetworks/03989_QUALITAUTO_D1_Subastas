@@ -9,6 +9,14 @@
 
                 <div class="contacts-wrapper">
                     <ul>
+						<li>
+                            <a href="https://g.page/r/CfmFhuFI7RQlEBA">
+                                <span>
+                                    <i aria-hidden="true" class="fas fa-map-marker-alt"></i>
+                                </span>
+                                <span>Marqués de Urquijo 34, 2º Ext Dcha 28008 - Madrid, España</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="tel:+34914221444">
                                 <span>
@@ -18,31 +26,27 @@
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:info@tauleryfau.com">
-                                <span>
-                                    <i aria-hidden="true" class="fa fa-envelope"></i>
-                                </span>
-                                <span>info@tauleryfau.com</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://g.page/r/CfmFhuFI7RQlEBA">
-                                <span>
-                                    <i aria-hidden="true" class="fas fa-map-marker-alt"></i>
-                                </span>
-                                <span>Marqués de Urquijo 34, 2º Ext Dcha 28008 - Madrid, España</span>
-                            </a>
+							<a href="#">
+								<span>
+									<i aria-hidden="true" class="fa fa-calendar"></i>
+								</span>
+								<span>{!! trans("$theme-app.foot.schedule") !!}</span>
+							</a>
+
                         </li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-pages">
-                <p class="footer-pages-titles">{{ trans("$theme-app.subastas.inf_subasta_horario") }}</p>
+                <p class="footer-pages-titles">{{ trans("$theme-app.foot.our_locations") }}</p>
                 <p class="divider"></p>
 
                 <ul>
-					{!! trans("$theme-app.foot.schedule") !!}
+					<li><a href="{{ wpLink('wp_our_location') }}">Tauler&Fau Barcelona</a></li>
+					<li><a href="{{ wpLink('wp_our_location') }}">Tauler&Fau Valencia</a></li>
+					<li><a href="{{ wpLink('wp_our_location') }}">Tauler&Fau Sevilla</a></li>
+					<li><a href="{{ wpLink('wp_our_location') }}">Tauler&Fau Málaga</a></li>
                 </ul>
             </div>
             <div class="footer-pages">

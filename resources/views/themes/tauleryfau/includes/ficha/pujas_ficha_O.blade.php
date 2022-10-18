@@ -40,7 +40,7 @@
                     <span id="impsalexchange" class="currency-trnas" style="display: contents"></span>
                 </div>
             </div>
-        @elseif( \Config::get('app.impsalhces_asigl0'))
+        @elseif( \Config::get('app.impsalhces_asigl0') && $lote_actual->ocultarps_asigl0 != 'S')
             <div class="price">
                 <span class="pre title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
                 <div>

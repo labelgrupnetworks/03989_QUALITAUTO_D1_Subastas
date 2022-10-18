@@ -25,7 +25,7 @@
 	$col = empty($files)? "col-lg-12" : "col-lg-8";
 
 	$aucSessions = new  App\Models\V5\AucSessions();
-	$sessions = $aucSessions->where('"auction"', $auction->cod_sub)->orderby('"start"')->orderby('"reference"')->get();
+	$sessions = $aucSessions->JoinLang()->where('"auction"', $auction->cod_sub)->orderby('"start"')->orderby('"reference"')->get();
 
 ?>
 
@@ -61,7 +61,7 @@
 				@if($auction->tipo_sub == "W")
 					<div class="col-xs-12">
 					@foreach($sessions as $session)
-						<p><strong> {{$session->name}}.  <span style="color: #760043;">  {{ date_format(date_create_from_format('Y-m-d H:i:s',$session->start),'d/m/Y H:i') }}</span> </strong></p>
+						<p><strong> {{$session->name_lang??$session->name}}.  <span style="color: #760043;">  {{ date_format(date_create_from_format('Y-m-d H:i:s',$session->start),'d/m/Y H:i') }}</span> </strong></p>
 						<p>{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_desde',["ini" =>$session->init_lot,"fin" =>$session->end_lot]) }}</strong></p>
 
 

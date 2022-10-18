@@ -1,30 +1,47 @@
 <div id="reload_inf_lot" class="col-xs-12 info-ficha-buy-info no-padding">
 
-    <p class="ficha-size-lot">{{ trans("$theme-app.lot_list.meters_at_auction") }}
-        {{ str_replace('.', ',', $lote_actual->ancho_hces1) }} m<sup>2</sup></p>
+	<p class="ficha-size-lot">
+		@if(!empty($lote_actual->nobj_hces1))
+
+		{{ trans("$theme-app.lot_list.pices_at_auction") }}
+		{{ $lote_actual->nobj_hces1 }} {{ trans("$theme-app.lot.pieces") }}
+		@else
+		{{ trans("$theme-app.lot_list.meters_at_auction") }}
+		{{ str_replace('.', ',', $lote_actual->ancho_hces1) }} m<sup>2</sup></p>
+		@endif
+	</p>
+
+
 
 	<!-- ------------------------ PRECIO SALIDA ------------------------ -->
     <div class="col-xs-12 no-padding info-ficha-buy-info-price d-flex">
 
-        <div class="pre">
-            <p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
-            <p class="pre-price lotprice">
-                {{ $lote_actual->formatted_impsalhces_asigl0 }}
-                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
-                <span class="lower-case">{{ trans("$theme-app.lot.lot-name") }}</span>
-                @if (\Config::get('app.exchange'))
-                    | <span id="startPriceExchange_JS" class="exchange"> </span>
-                @endif
-            </p>
-        </div>
+		@if ($lote_actual->ocultarps_asigl0 != 'S')
+		<div class="pre">
+			<p class="pre-title">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
+			<p class="pre-price lotprice">
+				{{ $lote_actual->formatted_impsalhces_asigl0 }}
+				{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+				<span class="lower-case">{{ trans("$theme-app.lot.lot-name") }}</span>
+				@if (\Config::get('app.exchange'))
+					| <span id="startPriceExchange_JS" class="exchange"> </span>
+				@endif
+			</p>
+		</div>
+		@endif
 
-        @if (!empty($lote_actual->ancho_hces1))
+		@if (!empty($lote_actual->nobj_hces1))
+			<div class="pre">
+				<p class="pre-price">
+					<span>{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0 / $lote_actual->nobj_hces1, false, 2) }}</span>
+					<span>{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} {!! trans("$theme-app.lot.piece") !!}</span>
+				</p>
+			</div>
+        @elseif (!empty($lote_actual->ancho_hces1))
             <div class="pre">
                 <p class="pre-price">
-                    <span>{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0 / $lote_actual->ancho_hces1, false, 2) }}
-                    </span>
-                    <span>
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}{!! trans("$theme-app.lot.m2") !!}</span>
+                    <span>{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0 / $lote_actual->ancho_hces1, false, 2) }}</span>
+                    <span>{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}{!! trans("$theme-app.lot.m2") !!}</span>
                 </p>
             </div>
         @endif
@@ -56,21 +73,34 @@
             </p>
         </div>
 
-        @if (!empty($lote_actual->ancho_hces1))
+		@if (!empty($lote_actual->nobj_hces1) && !empty($lote_actual->actual_bid))
+		<div class="pre">
+			<p class="pre_min">
+				<strong>
+					<span id="acutalPricePerpiece">
+						{{ \Tools::moneyFormat($lote_actual->actual_bid / $lote_actual->nobj_hces1, false, 2) }}
+					</span>
+					<span>
+						{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+					</span>
+					{!! trans("$theme-app.lot.piece") !!}
+				</strong>
+			</p>
+		</div>
+
+        @elseif (!empty($lote_actual->ancho_hces1) && !empty($lote_actual->actual_bid))
             <div class="pre">
-                @if (!empty($lote_actual->ancho_hces1) && !empty($lote_actual->actual_bid))
-                    <p class="pre_min">
-                        <strong>
-                            <span id="acutalPriceMeter">
-                                {{ \Tools::moneyFormat($lote_actual->actual_bid / $lote_actual->ancho_hces1, false, 2) }}
-                            </span>
-                            <span>
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
-                            </span>
-                            {!! trans("$theme-app.lot.m2") !!}
-                        </strong>
-                    </p>
-                @endif
+				<p class="pre_min">
+					<strong>
+						<span id="acutalPriceMeter">
+							{{ \Tools::moneyFormat($lote_actual->actual_bid / $lote_actual->ancho_hces1, false, 2) }}
+						</span>
+						<span>
+							{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+						</span>
+						{!! trans("$theme-app.lot.m2") !!}
+					</strong>
+				</p>
             </div>
         @endif
 
@@ -93,7 +123,18 @@
             </p>
         </div>
 
-        @if (!empty($lote_actual->ancho_hces1))
+		@if (!empty($lote_actual->nobj_hces1))
+		<div class="pre">
+			<p class="pre-price">
+				<strong><span class="siguiente_puja_perpiece"> </span>
+					{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}{!! trans("$theme-app.lot.piece") !!}
+					@if (\Config::get('app.exchange'))
+						| <span id="nextBidExchange_JS" class="exchange"> </span>
+					@endif
+				</strong>
+			</p>
+		</div>
+        @elseif (!empty($lote_actual->ancho_hces1))
             <div class="pre">
                 <p class="pre-price">
                     <strong><span class="siguiente_puja_permeter"> </span>

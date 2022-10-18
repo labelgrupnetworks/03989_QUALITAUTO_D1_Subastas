@@ -50,7 +50,7 @@
 
 					<div class="data-price text-center">
 						@if(!$retirado && !$devuelto)
-							<p>
+							<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if($subasta_venta)
 									<span class="salida-title">Rango de precios</span>
 								@else

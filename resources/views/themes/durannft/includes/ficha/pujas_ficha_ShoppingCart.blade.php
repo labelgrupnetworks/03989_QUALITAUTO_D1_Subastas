@@ -13,15 +13,22 @@ if(!empty($data['usuario'])){
 
 <div class="info_single ficha_Shopping">
 	<div class="pre prices-wrapper mt-1">
-		
+
 			<div class="shop-price">
 				<p class="pre-price m-0">{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean( $lote_actual->impsalhces_asigl0,\Session::get('user.cod')),false,2) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
 			</div>
 
+			@if(Session::has('user'))
 			<button data-from="modal" class="button-principal addShippingCart_JS" type="button">
 				<i class="fa fa-shopping-bag" aria-hidden="true"></i>
 				{{trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
 			</button>
+			@else
+			<button data-from="modal" class="button-principal" type="button" id="js-ficha-login">
+				<i class="fa fa-shopping-bag" aria-hidden="true"></i>
+				{{trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
+			</button>
+			@endif
 
 
 		@csrf

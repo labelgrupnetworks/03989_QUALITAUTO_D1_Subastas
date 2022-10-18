@@ -1,80 +1,92 @@
-<div class="row">
-	<div class="col">
-		<div class="order-auction-lot">
-			<select class="form-control" id="order_selected" >
-				<option value="name" @if ($filters["order"] == 'name') selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
-				</option>
-				<option value="price_asc" @if ($filters["order"] == 'price_asc') selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
-				</option>
-				<option value="price_desc" @if ($filters["order"] == 'price_desc') selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
-				</option>
-				<option value="ref" @if ($filters["order"] == 'ref' || empty($filters["order"]) ) selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
-				</option>
+<div class="col-xs-12 col-md-4 order-auction-lot">
+    <select class="form-control" id="order_selected" >
 
-				<option value="date_asc" @if ($filters["order"] == 'date_asc') selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.date_asc') }}
-				</option>
-				<option value="date_desc" @if ($filters["order"] == 'date_desc') selected @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.date_desc') }}
-				</option>
-				<option value="hbids" @if ($filters["order"] == 'hbids') selected  @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }}
-				</option>
-				<option value="mbids" @if ($filters["order"] == 'mbids') selected  @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }}
-				</option>
-				<option value="lastbids" @if ($filters["order"] == 'lastbids') selected  @endif >
-					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.last_bids') }}
-				</option>
+        <option value="name" @if ($filters["order"] == 'name') selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
+        </option>
+        <option value="price_asc" @if ($filters["order"] == 'price_asc') selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
+        </option>
+        <option value="price_desc" @if ($filters["order"] == 'price_desc') selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
+        </option>
+        <option value="ref" @if ($filters["order"] == 'ref' || empty($filters["order"]) ) selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+        </option>
 
-				@if(!empty($auction) && $auction->tipo_sub == 'O')
-					<option value="ffin" @if ($filters["order"] == 'ffin') selected @endif >
-						{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
-					</option>
-				@endif
-			</select>
-		</div>
-	</div>
+		<!-- 12/03/21 -->
+		<option value="date_asc" @if ($filters["order"] == 'date_asc') selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.date_asc') }}
+        </option>
+        <option value="date_desc" @if ($filters["order"] == 'date_desc') selected @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.date_desc') }}
+        </option>
+		<!-- -->
 
-	<div class="col">
-		<div class="show-auction-lot">
-			<select class="form-control" id="total_selected" >
-				@foreach(\Config::get("app.filter_total_shown_options") as $numLots)
-					<option value="{{$numLots}}" @if (request('total') == $numLots) selected @endif >    {{ trans(\Config::get('app.theme').'-app.lot_list.see_num_lots',["num" => $numLots]) }}   </option>
+        <option value="hbids" @if ($filters["order"] == 'hbids') selected  @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }}
+        </option>
+        <option value="mbids" @if ($filters["order"] == 'mbids') selected  @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }}
+		</option>
+		<option value="lastbids" @if ($filters["order"] == 'lastbids') selected  @endif >
+            {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.last_bids') }}
+        </option>
+        @if(!empty($auction) && $auction->tipo_sub == 'O'))
+            <option value="ffin" @if ($filters["order"] == 'ffin') selected @endif >
+                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
+            </option>
+
+        @endif
+
+    </select>
+</div>
+
+<div class="col-xs-12 col-md-4">
+    <select class="form-control" id="total_selected" >
+		@foreach(\Config::get("app.filter_total_shown_options") as $numLots)
+        	<option value="{{$numLots}}" @if (request('total') == $numLots) selected @endif >    {{ trans(\Config::get('app.theme').'-app.lot_list.see_num_lots',["num" => $numLots]) }}   </option>
+		@endforeach
+    </select>
+</div>
+
+@php
+	$user = session('user');
+	$queryPreferences = App\Models\V5\Web_Preferences::select('ID_PREF','DESC_PREF', 'LIN_ORTSEC0_PREF', 'COD_SEC_PREF', 'KEYWORD1_PREF', 'KEYWORD2_PREF', 'KEYWORD3_PREF')
+		->where('COD_CLIWEB_PREF', $user['cod'])->distinct()->get();
+@endphp
+
+@if (\Config::get('app.makePreferences'))
+	@if(!count($queryPreferences) < 1)
+		<div class="col-xs-12 col-md-4">
+			<select class="form-control" id="preference_selected" >
+				<option value="-">Seleccione una preferencia</option>
+				@foreach($queryPreferences as $preference)
+					<option value="{{$preference->lin_ortsec0_pref}}-{{$preference->cod_sec_pref}}-{{$preference->keyword1_pref}}-{{$preference->keyword2_pref}}-{{$preference->keyword3_pref}}">{{$preference->desc_pref}}</option>
 				@endforeach
 			</select>
 		</div>
-	</div>
-
-	@php
-	$count_lots = 0;
-	foreach($tipos_sub as $typeSub => $desType) {
-		$numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
-
-		if(empty($filters['typeSub'])){
-			$count_lots += $numLots;
-		}elseif($typeSub == $filters['typeSub']){
-			$count_lots = $numLots;
-		}
-	}
-	@endphp
-
-	<div class="col">
-		<p class="cantidad-res">{{ Tools::numberformat($count_lots) }} {{ trans(\Config::get('app.theme').'-app.lot_list.results') }}</p>
-	</div>
-
-
-</div>
-
-
-
+	@endif
+@endif
 
 
 <div class="col-xs-12 pt-1 d-flex align-items-center mt-1">
+    <?php
+    $count_lots = 0;
+
+    foreach($tipos_sub as $typeSub =>$desType) {
+
+        $numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
+
+        if(empty($filters['typeSub'])){
+            $count_lots += $numLots;
+        }elseif($typeSub == $filters['typeSub']){
+              $count_lots = $numLots;
+        }
+    }
+
+       // ponemos puntos de millar            ?>
+    <p class="mr-2 mb-0 cantidad-res"  >{{ Tools::numberformat($count_lots) }} {{ trans(\Config::get('app.theme').'-app.lot_list.results') }}</p>
 
 
 	{{-- FILTRO DE SUBASTAS HISTÓRICAS --}}

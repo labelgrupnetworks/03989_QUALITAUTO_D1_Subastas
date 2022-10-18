@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use View;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Session;
 use Request;
 
@@ -29,6 +29,8 @@ use App\libs\PayPalV2API;
 use App\Models\V5\FsParams;
 use App\Models\V5\FgCsub0;
 use App\Models\V5\FgCsub;
+use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Collection;
 
 class PaymentsController extends Controller
 {
@@ -1031,7 +1033,7 @@ class PaymentsController extends Controller
 		$pay = new Payments();
 		$fact = new Facturas();
 		#funcion que devuelve los datos de universal pay v2
-		$up2Vars = $this->universalPay2Vars($prefact->sub_csub,$tipo );
+		$up2Vars = $this->universalPay2Vars($prefact->sub_csub ?? null, $tipo);
 
 
 		if (strpos($prefact->email_cli, ';') > 0) {
@@ -1481,7 +1483,7 @@ class PaymentsController extends Controller
 		$casosParticulares = $this->gastosEnvioCasosParticulares($lotes,$direccionEnvio );
 
 		#si devuelve un valor
-		if($casosParticulares != -1){
+		if($casosParticulares != -2){
 			return $casosParticulares;
 		}
 
@@ -1543,9 +1545,8 @@ class PaymentsController extends Controller
 
 
 	#calculos particulares
-	public function gastosEnvioCasosParticulares($lotes,$direccionEnvio ){
-
-
+	public function gastosEnvioCasosParticulares($lotes, $direccionEnvio)
+	{
 		if(\Config::get('app.theme')=='duran'){
 			/* 8.	CASO PARTICULAR LIBROS: Si todos los lotes del carrito son libros, los centímetros lineales totales no superan los 100 cms.
 			lineales y el peso total no supera los 2 Kg., entonces, el importe será de 9 euros para la zona de Madrid y 16 euros para el resto de zonas.
@@ -1570,15 +1571,74 @@ class PaymentsController extends Controller
 				#si es baleares o canarias se calcula con las tablas
 				elseif(substr($direccionEnvio->cp_clid,0,1) == '7' ||  substr($direccionEnvio->cp_clid,0,2) == '35' ||  substr($direccionEnvio->cp_clid,0,2) == '38')
 				{
-					return -1;
+					return -2;
 				}else{
 					return 12;
 				}
 			}
 
-			return -1;
-		}
+		} elseif(Config::get('app.theme') == 'jesusvico') {
 
+			//Nos aseguramos que trabajamos con una colección de datos
+			if(!$lotes instanceof Collection){
+				$lotes = collect($lotes);
+			}
+
+			//si tenemos paquetes de arqueologia no podemos calcular los gastos
+			$arqueologyLots = $lotes->where('lin_ortsec1', '2');
+			if($arqueologyLots->contains('sec_hces1', 'AN')) {
+				return -2;
+			}
+
+			$lotsPerSmallPackage = 10;
+			$lotsPerBigPackage = 3;
+
+			//monedas + arqueologia pequeña
+			$smallLots = $lotes->where('lin_ortsec1', '1')->count();
+			$smallLots += $arqueologyLots->where('sec_hces1', 'AP')->count();
+			//libros y materiales, accesorios, ... + arqueologia grande
+			$bigLots = $lotes->whereIn('lin_ortsec1', ['3', '4'])->count();
+			$bigLots += $arqueologyLots->where('sec_hces1', 'AG')->count();
+
+			//creamos paquetes pequeños, y nos quedams sus restantes
+			$smallPackages = (int) ($smallLots / $lotsPerSmallPackage);
+			$leftoverSmall = fmod($smallLots, $lotsPerSmallPackage);
+
+			//los grandes directamente redondeamos hacia arriba
+			$bigPackages = (int) ceil($bigLots / $lotsPerBigPackage);
+
+			//si me sobran lotes pequeños pero no tengo paquetes grandes, se añade un paquete pequeño
+			if($leftoverSmall && !$bigPackages){
+				$smallPackages++;
+			}
+
+			//segun el pais de origen calculamos los precios de cada paquete
+			$smallPrices = 0;
+			$bigPrices = 0;
+			$percentPrice = 0;
+
+			if($direccionEnvio->codpais_clid == 'ES'){
+				$smallPrices = $smallPackages * 5.50;
+				$bigPrices = $bigPackages * 7.50;
+
+			} elseif (in_array($direccionEnvio->codpais_clid, ToolsServiceProvider::PaisesEUR())) {
+				$smallPrices = $smallPackages * 8.50;
+				$bigPrices = $bigPackages * 11;
+
+			} else {
+				$smallPrices = $smallPackages * 12;
+				$bigPrices = $bigPackages * 15;
+
+				//Si es de fuera de europa añadimos un 5% por cada lote
+				$percentValue = 5;
+				$salesPrices = $lotes->sum('impsalhces_asigl0');
+				$percentPrice = ($percentValue / 100) * $salesPrices;
+			}
+
+			$totalShippingCost = $smallPrices + $bigPrices + $percentPrice;
+			return $totalShippingCost;
+		}
+		return -2;
 
 	}
 

@@ -21,7 +21,7 @@
                 {{ $lote_actual->formatted_imptas_asigl0 }} - {{ $lote_actual->formatted_imptash_asigl0 }}
                 {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
             </div>
-        @elseif(\Config::get('app.impsalhces_asigl0'))
+        @elseif(\Config::get('app.impsalhces_asigl0') && $lote_actual->ocultarps_asigl0 != 'S')
             <p class="pre">{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</p>
             <div class="pre">
                 {{ $lote_actual->formatted_impsalhces_asigl0 }}
@@ -68,6 +68,7 @@
 	</div>
 </div>
 
+@if(now() > $lote_actual->orders_start)
 <div class="info_single col-xs-12 ficha-puja-o">
     <div class="col-lg-12">
         <div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima']) ? '' : 'hidden' ?> ">
@@ -120,32 +121,35 @@
                     {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
             @endif
 
-            <div class="insert_bid">
-                <p><strong>{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</strong></p>
-            </div>
-            <div class="input-group">
-                <input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
-                    class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
-                <div class="input-group-btn" style="vertical-align: top;">
-                    <button type="button" data-from="modal"
-                        class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
-                        type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-                        codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
-                </div>
-                <br>
 
-            </div>
+				<div class="insert_bid">
+					<p><strong>{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</strong></p>
+				</div>
+				<div class="input-group">
+					<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
+						class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
+					<div class="input-group-btn" style="vertical-align: top;">
+						<button type="button" data-from="modal"
+							class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
+							type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+							codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+					</div>
+					<br>
+				</div>
 
-            <div class="input-group">
-                <br>
-                @if (Session::has('user') && Session::get('user.admin'))
-                    <input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value=""
-                        type="text" style="border: 1px solid red;" placeholder="Código de licitador">
-                    @if ($lote_actual->subabierta_sub == 'P')
-                        <input type="hidden" id="tipo_puja_gestor" value="abiertaP">
-                    @endif
-                @endif
-            </div>
+
+				<div class="input-group">
+					<br>
+					@if (Session::has('user') && Session::get('user.admin'))
+						<input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value=""
+							type="text" style="border: 1px solid red;" placeholder="Código de licitador">
+						@if ($lote_actual->subabierta_sub == 'P')
+							<input type="hidden" id="tipo_puja_gestor" value="abiertaP">
+						@endif
+					@endif
+				</div>
+
+
             <div class="col-xs-12">
                 <div class="checkbox">
                     <label for="recibir-newletter">
@@ -157,6 +161,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <script>
     $(document).ready(function() {

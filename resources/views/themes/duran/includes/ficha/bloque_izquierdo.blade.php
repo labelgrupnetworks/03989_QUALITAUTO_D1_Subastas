@@ -171,7 +171,7 @@
 
 	<?php
 	$FgOrtsec1 = new \App\Models\V5\FgOrtsec1();
-	$linOrtsec1 = $FgOrtsec1->select("LIN_ORTSEC1, DES_ORTSEC0")->JoinFgOrtsec0()->where("SEC_ORTSEC1",$lote_actual->sec_hces1 )->first();
+	$linOrtsec1 = $FgOrtsec1->select("LIN_ORTSEC1,NVL(DES_ORTSEC0_LANG, DES_ORTSEC0) DES_ORTSEC0 ")->JoinFgOrtsec0()->where("SEC_ORTSEC1",$lote_actual->sec_hces1 )->first();
 
 
 	?>
@@ -196,7 +196,7 @@
 		@php /* cambio el enlace	{{  Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }} */ @endphp
 		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}">{{ trans(\Config::get('app.theme').'-app.lot.quiere_valorar_bienes') }} </a>
 		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')  }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}</a>
-		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_bid')  }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_bid') }}</a>
+		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a>
 		@if ($subasta_web)
 			<a href="{{ Routing::translateSeo('calendar')  }}">{{ trans(\Config::get('app.theme').'-app.foot.calendar') }}</a>
 		@endif

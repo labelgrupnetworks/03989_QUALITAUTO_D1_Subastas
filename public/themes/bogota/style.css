@@ -154,3 +154,51 @@ color: #DDD;
 	width: 100%;
 	object-fit: contain;
 }
+
+.auctions-list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+}
+
+.aution-title {
+	text-align: center;
+	font-weight: 600;
+	line-height: 1.5;
+	margin: 0;
+	padding: 1rem 0;
+}
+
+.auction-content-block {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 1rem 0;
+}
+
+.auction-dates {
+	display: grid;
+	place-content: center;
+	text-align: center;
+}
+
+.auction-buttons {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+	padding: 1rem 0;
+}
+
+.auction-content-block .snippet_documentacion {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+	height: auto;
+    padding: 20px;
+    background-color: #fafafa;
+}
+
+.auction-image img {
+	margin: auto;
+}

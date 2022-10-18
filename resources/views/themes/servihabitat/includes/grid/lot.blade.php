@@ -37,7 +37,7 @@
 						@if(!$retirado && !$devuelto)
 
 							@if($item->ocultarps_asigl0 != 'S')
-							<p>
+							<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if($subasta_venta)
 									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
 								@else

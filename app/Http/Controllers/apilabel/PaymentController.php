@@ -33,7 +33,7 @@ class PaymentController extends ApiLabelController
 
     protected  $fxpcobRename = array( "cod_cli" => "cod_pcob","user_name" => "rsoc_pcob", "serial"=>"anum_pcob","number"=>"num_pcob", "amount"=>"imp_pcob","date"=>"fec_pcob", "pending_amount"=>"pendiente_pcob" );
 	protected  $fxcobro1Rename = array( "cod_cli" => "cli_cobro1","user_name" => "rsoc_cobro1", "serial"=>"afra_cobro1","number"=>"nfra_cobro1", "amount"=>"imp_cobro1","date"=>"fec_cobro1", "num_cobro" => "num_cobro1" );
-   	protected  $dvc0Rename = array( "cod_cli" => "cod_dvc0","user_name" => "rsoc_dvc0", "serial"=>"anum_dvc0","number"=>"num_dvc0", "amount"=>"total_dvc0","date"=>"fecha_dvc0",'reason' => "fpag_dvc0" );
+   	protected  $dvc0Rename = array( "cod_cli" => "cod_dvc0","user_name" => "rsoc_dvc0", "serial"=>"anum_dvc0","number"=>"num_dvc0", "amount"=>"total_dvc0","date"=>"fecha_dvc0" );
 	protected  $dvc1Rename = array( "cod_cli" => "cod_dvc1", "serial"=>"anum_dvc1","number"=>"num_dvc1", "amount"=>"total_dvc1" );
 	protected  $dvc02Rename = array(  "serial"=>"anum_dvc02","number"=>"num_dvc02", "path_pdf" =>"fich_dvc02" );
 	protected  $dvc2tRename = array(  "serial"=>"anum_dvc2t","number"=>"num_dvc2t", "description" =>"des_dvc2t" );

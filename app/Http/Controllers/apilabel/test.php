@@ -38,7 +38,7 @@ class test extends BaseController
 	public function postBidder(){
 
 		$bidder = new stdClass();
-		$bidder->idoriginclient = "3";
+		$bidder->idoriginclient = "3000000";
 		$bidder->codbidder = "2";
 		$bidder->idauction = "SUBALO";
 
@@ -469,7 +469,7 @@ class test extends BaseController
 			$Order = new stdClass();
             $Order->idoriginlot = "9000046";
             $Order->idauction = "00000901";
-            $Order->idoriginclient = '21125';#1WW2W3
+            $Order->idoriginclient = '81675';#1WW2W3
             $Order->order = 180;
             $Order->date = "2021-12-10 00:00:00";
 			$Order->num_award_conditional =1;
@@ -644,13 +644,13 @@ class test extends BaseController
 			die();
 			*/
             $lot = new stdClass();
-            $lot->idorigin = "1-2";
-            $lot->idauction = "LABELP";
-            //$lot->reflot = 1;
+            $lot->idorigin = time();
+            $lot->idauction = "TEST";
+            $lot->reflot = 62;
             $lot->idsubcategory = "AV";
             $lot->title = "titulo";
             $lot->description = "Lot metadescription";
-            $lot->search = "Texto para encontrar el lote desde el buscador";
+            $lot->search = "";
             $lot->startprice = 100;
             $lot->lowprice = 110;
             $lot->highprice = 150;

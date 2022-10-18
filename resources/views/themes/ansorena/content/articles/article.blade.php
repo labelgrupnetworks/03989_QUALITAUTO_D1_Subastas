@@ -1,5 +1,5 @@
 @php
-	$titulo=$article->model_art0;
+	$titulo = $article->model_art0;
 	$img = $article->img; # "https://ansorenacompromiso.com/sites/default/files/styles/sortija_ficha/public/images/productos/ar_1762-2.png";
 	$description = $article->des_art0;
 	#sumarle el iva al producto
@@ -9,24 +9,48 @@
 <div class="container fichaArticulo">
 	<div class="row">
 		<div class="col-xs-12 col-sm-7 pb-3">
-			<div id="img_main" class="img_single">
-				<a title="{{$titulo}}" >
-				<img class="img-responsive" src="{{ $img}}">
-				</a>
-			</div>
 
-			<div  class="sliderthumbArticulo ">
-
-					@foreach($article->images as $image)
-					<div  class="sliderThumbsArticulos"  >
-						<img src="{{$image}}" data-img="{{$image}}" >
-					</div>
-					@endforeach
-					<div  class="sliderThumbsArticulos"  >
-						<img src="/themes/ansorena/assets/img/pages/generico-joyeria_thumb.jpg" data-img="/themes/ansorena/assets/img/pages/generico-joyeria.jpg" >
+			{{-- mobile --}}
+			<div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
+				@foreach($article->images as $key => $image)
+					<div class="item_content_img_single" style="position: relative;">
+							<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+							class="img-responsive"
+							src="{{ $image }}"
+							alt="{{ $titulo }}">
 					</div>
 
+				@endforeach
+				<div class="item_content_img_single" style="position: relative;">
+					<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+					class="img-responsive"
+					src="/themes/ansorena/assets/img/pages/generico-joyeria.jpg"
+					alt="{{ $titulo }}">
+				</div>
 			</div>
+
+			{{-- desktop --}}
+			<div class="hidden-xs">
+				<div id="img_main" class="img_single">
+					<a title="{{$titulo}}" >
+					<img class="img-responsive" src="{{ $img}}">
+					</a>
+				</div>
+
+				<div  class="sliderthumbArticulo ">
+
+						@foreach($article->images as $image)
+						<div  class="sliderThumbsArticulos"  >
+							<img src="{{$image}}" data-img="{{$image}}" >
+						</div>
+						@endforeach
+						<div  class="sliderThumbsArticulos"  >
+							<img src="/themes/ansorena/assets/img/pages/generico-joyeria_thumb.jpg" data-img="/themes/ansorena/assets/img/pages/generico-joyeria.jpg" >
+						</div>
+
+				</div>
+			</div>
+
 
 		</div>
 

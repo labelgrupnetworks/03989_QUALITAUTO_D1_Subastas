@@ -29,7 +29,7 @@ class SegreController extends Controller
 			$user = "UsLabelGrup";
 			$password="MyPassw01!!";
 			$method= "POST";
-			$url = "https://subastassegre.es/API/ApiService.svc/Adjudicaciones";
+			$url = \Config::get("app.SegreURLWebservice")."/".$function;
 
 			$clientGuzz = new Client();
 
@@ -50,18 +50,15 @@ class SegreController extends Controller
 					return;
 				}
 				$body = json_decode($response->getBody());
-				if($body->IdError != 0){
-					$this->ErrorLog($function ,json_encode($parameters),$response->getBody()  );
-					return;
-				}
-				\Log::info("petición con exito: ".print_r($body, true));
+
+
 			return $body;
 
 
 		}catch (Exception $e){
 			\Log::info($e);
 			# de momento no enviamos a Anselmo, si no a subastas
-			$this->sendEmailError($function,"", $e->getMessage(),false );
+			$this->sendEmailError($function,print_r($parameters, true), $e->getMessage(),false );
 		}
 
 	}

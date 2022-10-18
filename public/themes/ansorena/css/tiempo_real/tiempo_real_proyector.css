@@ -1,0 +1,92 @@
+@media (max-width: 1280px) {
+	#actual_max_bid, #next_bid_JS {
+		font-size: 35px;
+	}
+}
+
+@media(min-width: 1280px) {
+	body {
+		line-height: 1.2;
+	}
+
+	.tr_proyector_info {
+		grid-template-rows: min-content auto;
+		padding: 20px;
+	}
+}
+
+@media (min-width: 1536px) {
+
+	.tr_proyector_info .last-bids-container{
+		height: 165px;
+		max-height: none;
+	}
+
+	.tr_proyector_info .pujas_list {
+		height: auto !important;
+		max-height: none;
+	}
+
+	.tr_proyector_info .lot,
+	.tr_proyector_info {
+		font-size: 40px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 75px;
+	}
+}
+
+@media (min-width: 1920px) {
+
+	.tr_proyector_info .last-bids-container{
+		height: 295px;
+	}
+
+	.tr_proyector_info .lot,
+	.tr_proyector_info {
+		font-size: 50px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 80px;
+	}
+}
+
+@media (min-width: 2560px) {
+	.tr_proyector_info .lot,
+	.tr_proyector_info {
+		font-size: 60px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 110px;
+	}
+}
+
+@media (min-width: 2880px) {
+	.tr_proyector_info .lot,
+	.tr_proyector_info {
+		font-size: 75px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 140px;
+	}
+}
+
+@media (min-width: 3840px) {
+
+	.tr_proyector_info .last-bids-container{
+		height: 540px;
+	}
+
+	.tr_proyector_info .lot,
+	.tr_proyector_info {
+		font-size: 100px;
+	}
+
+	#actual_max_bid, #next_bid_JS {
+		font-size: 160px;
+	}
+}

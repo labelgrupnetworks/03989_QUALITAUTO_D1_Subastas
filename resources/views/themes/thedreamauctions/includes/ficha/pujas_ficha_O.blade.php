@@ -2,14 +2,16 @@
 <div id="reload_inf_lot" class="col-xs-12 info-ficha-buy-info no-padding">
 
 	{{-- precio de salida --}}
-	<div class="mt-1 mb-1 starting-price-wrapper @if($hay_pujas) hidden @endif">
-		<p class="pre-title"><b>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</b></p>
-        <p class="pre-price starting_price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-			@if(\Config::get("app.exchange"))
-				| <span id="startPriceExchange_JS" class="exchange"> </span>
-			@endif
-		</p>
-	</div>
+	@if ($lote_actual->ocultarps_asigl0 != 'S')
+		<div class="mt-1 mb-1 starting-price-wrapper @if($hay_pujas) hidden @endif">
+			<p class="pre-title"><b>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</b></p>
+			<p class="pre-price starting_price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+				@if(\Config::get("app.exchange"))
+					| <span id="startPriceExchange_JS" class="exchange"> </span>
+				@endif
+			</p>
+		</div>
+	@endif
 
 	{{-- puja actual --}}
 	<div class="acual_bid_wrapper d-flex justify-content-space-between">

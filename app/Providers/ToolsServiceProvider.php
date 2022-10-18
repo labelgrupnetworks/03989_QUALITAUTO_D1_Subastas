@@ -461,6 +461,7 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		if (env('APP_DEBUG') || (!empty($_GET) && !empty($_GET['querylog']) && $_GET['querylog'] == 'active_log')) {
+
 			//si miramos desde debug es por que estamos abajo y va más lento, por eso el limite es mayor
 			if (env('APP_DEBUG')) {
 				$limit = 1000;
@@ -468,7 +469,9 @@ class ToolsServiceProvider extends ServiceProvider
 				$limit = 10;
 			}
 			$time = 0;
+			$count = 0;
 			foreach (DB::getQueryLog() as $query) {
+				$count++;
 				$color = "";
 				$time += $query['time'];
 				if ($query['time'] > $limit) {
@@ -480,7 +483,7 @@ class ToolsServiceProvider extends ServiceProvider
 				}
 				echo "<div style='border:1px solid grey; margin:30px;padding: 10px;word-break: break-all; $color'> (" . $query['time'] . ")<br> " . nl2br($query['query']) . "</div> ";
 			}
-			echo "<h1> Total: $time </h1>";
+			echo "<h1> Total: $time , TotalQuerys: $count</h1>";
 		}
 	}
 

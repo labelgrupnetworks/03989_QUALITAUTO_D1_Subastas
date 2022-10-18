@@ -94,7 +94,9 @@
                                 {{ trans(\Config::get('app.theme') . '-app.lot.estimate') }}:
                                 <?php //en historico n odeben salir preic osañlida?>
                             @elseif(\Config::get('app.impsalhces_asigl0'))
-                                {{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}:
+								<span style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
+									{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}:
+								</span>
                             @endif
                         @else
                             {{ trans(\Config::get('app.theme') . '-app.subastas.price_sale') }}:
@@ -106,9 +108,15 @@
 								{{ $item->formatted_imptas_asigl0 }} -
 								{{ $item->formatted_imptash_asigl0 }}
 								{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
-							@elseif(\Config::get('app.impsalhces_asigl0'))
-								{{ $precio_salida }}
-								{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+								@elseif(\Config::get('app.impsalhces_asigl0') &&  $item->ocultarps_asigl0 != 'S' )
+									@if($precio_salida ==0)
+											{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+										@else
+										<span >
+											{{ $precio_salida }}
+											{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+										</span>
+									@endif
 							@endif
 						@else
 							{{ $item->formatted_actual_bid }}
@@ -136,7 +144,7 @@
 
                         @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'O' && $item->cerrado_asigl0 == 'N')
                             <span class="{{ $winner }}">
-								@if ($item->open_price >= $item->impsalhces_asigl0)
+								@if ($item->open_price >= $item->impsalhces_asigl0 && $item->open_price >0)
                                     {{ \Tools::moneyFormat($item->open_price) }}
                                     {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
                                 @endif

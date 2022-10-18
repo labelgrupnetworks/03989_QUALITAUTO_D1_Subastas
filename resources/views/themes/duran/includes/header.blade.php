@@ -19,16 +19,13 @@ use App\libs\TradLib as TradLib;
         <div class="row">
             <div class="col-xs-12 text-right d-flex justify-content-flex-end">
 
-                    <!-- <?php foreach(Config::get('app.locales') as $key => $value) { ?>
+                    <?php /*  foreach(Config::get('app.locales') as $key => $value) { ?>
                         <ul class="ul-format list-lang d-inline-flex">
 
                             @if(\App::getLocale() != $key)
                             <?php
-                            /**
-                             * Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
-                             */
-                            $ruta = TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
-
+                            	#Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
+                            	$ruta = TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
                             ?>
                                 <li>
                                     <a translate="no" title="<?= trans(\Config::get('app.theme').'-app.head.language_es') ?>" class="link-lang color-letter" href="/<?=$key . $ruta;?>">
@@ -43,7 +40,7 @@ use App\libs\TradLib as TradLib;
                             </li>
                             @endif
                         </ul>
-                        <?php } ?> -->
+                        <?php }  */?>
                         <ul  class="ul-format list-lang d-inline-flex redes-sociales">
                             <li class="facebook">
                                 <a href="https://www.facebook.com/duran.subastas" target="_blank">
@@ -151,8 +148,6 @@ use App\libs\TradLib as TradLib;
 {{--
 				<li><a class="color-letter flex-display link-header justify-center align-items-center" href="/{{\Config::get("app.locale")}}/info-subasta/7503-venta-privadas"><span>{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</span></a></li>
 --}}
-				<li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}"><span>{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</span></a></li>
-
 				<li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}"><span>{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</span></a></li>
 
 				<li>

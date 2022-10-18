@@ -61,11 +61,16 @@
                             {{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span class="">
 								{{-- Para los lotes cerrados si tienen importe salida web lo mostramos --}}
 								@if($bann->cerrado_asigl0 == 'S' && !empty($bann->impsalweb_asigl0))
-									{{$bann->impsalweb_asigl0}}
+									<span class="">{{$bann->impsalweb_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 								@else
-									{{$bann->impsalhces_asigl0}}
+									@if($bann->impsalhces_asigl0 ==0)
+											{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+									@else
+										<span class="">	{{$bann->impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+									@endif
+
 								@endif
-							{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+
                         @endif
                     </p>
                 @endif

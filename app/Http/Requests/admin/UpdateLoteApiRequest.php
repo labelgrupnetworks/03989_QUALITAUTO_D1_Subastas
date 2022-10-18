@@ -61,6 +61,7 @@ class UpdateLoteApiRequest extends FormRequest
 			"withstock" => "alpha_num|max:1|nullable",
 			"stock" => "numeric|nullable",
 			"idexternal" => "alpha_num|max:30|nullable",
+			"other_id" => "max:30|nullable"
 			//"network_nft" => "required_if:es_nft_asigl0,S"
         ];
     }

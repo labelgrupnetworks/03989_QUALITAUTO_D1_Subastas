@@ -396,7 +396,7 @@ class ApiLabelController extends BaseController
             #si no existe el cliente devolvemos error
             if(empty($client)){
 				$messageBag = new MessageBag();
-				$messageBag->add("idoriginclient",trans('apilabel-app.errors.no_match') );
+				$messageBag->add("idoriginclient",$item["idoriginclient"] );
                 $errorsItem["item_".($key +1)] =$messageBag;
                 throw new ApiLabelException(trans('apilabel-app.errors.no_match'), $errorsItem);
             }
@@ -526,6 +526,8 @@ class ApiLabelController extends BaseController
 										$body.=" </ul>";
 									}
 								}
+							}else{
+								$body.=$arrayValues." <br>";
 							}
 
 
