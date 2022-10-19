@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-12 col-lg-4 order-lg-1">
+            <div class="col-12 col-lg-4 order-lg-1 mb-4 mb-lg-0">
                 @include('includes.newsletter')
             </div>
 
@@ -146,7 +146,7 @@
             </div>
         </div>
 
-		<p class="text-center mt-5">
+		<p class="text-center mt-5 small">
 			<span>© {!! trans("$theme-app.foot.rights") !!} | </span>
 			<span>
 				<a href="{{ trans("$theme-app.foot.developed_url") }}" title="{{ trans($theme . '-app.foot.developedSoftware') }}" target="_blank">

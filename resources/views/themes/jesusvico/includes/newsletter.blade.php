@@ -1,7 +1,7 @@
 <section class="newsletter">
-    <div class="d-flex flex-column align-items-start gap-4">
+    <div class="d-flex flex-column align-items-start gap-2 gap-lg-4">
 
-		<h3 class="newsletter-tittle mb-3">
+		<h3 class="newsletter-tittle mb-lg-3">
 			{{ trans("$theme-app.foot.newsletter_title") }}
 		</h3>
 
@@ -11,7 +11,7 @@
 
 		<div class="form-check">
 			<input class="form-check-input" id="condiciones" name="condiciones" type="checkbox" type="checkbox">
-			<label class="form-check-label" for="condiciones">
+			<label class="form-check-label small" for="condiciones">
 				{!! trans("$theme-app.login_register.read_conditions_politic") !!}
 			</label>
 		</div>
