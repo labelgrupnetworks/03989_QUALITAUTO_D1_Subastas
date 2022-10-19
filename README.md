@@ -78,3 +78,8 @@ Subir rama develop a todos los cliente
 ```git
 git push allprojects develop
 ```
+
+Realizar un commit sin modificaciones, por ejemplo para forzar un deploy
+```git
+git commit --allow-empty -m "empty commit"
+```
