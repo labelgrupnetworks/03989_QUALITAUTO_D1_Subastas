@@ -63,7 +63,7 @@
 	--lb-box-shadow: 0 1px 2px 0 rgba(var(--lb-box-shadow-color-rgb), 0.1);
 	--lb-box-shadow-lot: rgba(50, 50, 105, 0.15) 0 2px 5px 0, rgba(0, 0, 0, 0.05) 0 1px 1px 0;
 
-	--lb-border-radius: 0;
+	--lb-border-radius: 0.125rem;
 	--lb-color-border-light: rgb(10, 63, 67, 0.05);
 
 	--font-extra-light: 100;
@@ -142,6 +142,10 @@ h3,
 	.h3 {
 		font-size: 26pt;
 	}
+
+	.fs-40pt{
+		font-size: 40pt;
+	}
 }
 
 .text-lb-secondary {
@@ -183,6 +187,20 @@ h3,
 	--bs-btn-active-bg: var(--lb-color-secondary);
 	--bs-btn-hover-border-color: var(--lb-color-secondary);
 	--bs-btn-hover-bg: var(--lb-color-secondary);
+}
+
+.btn-lb-secondary {
+	--lb-color-primary-light: #8ea8a8;
+    --bs-btn-color: var(--lb-color-primary-contrast);
+    --bs-btn-border-color: var(--lb-color-primary-light);
+    --bs-btn-bg: var(--lb-color-primary-light);
+    --bs-btn-active-color: var(--lb-color-secondary-contrast);
+    --bs-btn-active-border-color: #fff;
+    --bs-btn-active-bg: #fff;
+    --bs-btn-hover-color: var(--lb-color-secondary-contrast);
+    --bs-btn-hover-border-color: #fff;
+    --bs-btn-hover-bg: #fff;
+	min-width: 240px;
 }
 
 
@@ -270,6 +288,78 @@ header .dropdown-menu {
 	text-decoration: none;
 	font-weight: var(--font-extra-bold);
 }
+
+/*
+|--------------------------------------------------------------------------
+| Footer
+|--------------------------------------------------------------------------
+*/
+.contact-banner {
+	background-image: url('/themes/jesusvico/assets/img/contacta.webp');
+	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+	height: 560px;
+	color: var(--lb-color-primary-contrast);
+	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+footer {
+	background-color: var(--lb-color-primary);
+	color: var(--lb-color-primary-contrast);
+}
+
+footer a,
+footer a:hover,
+footer a:focus {
+	color: var(--lb-color-primary-contrast);
+	text-decoration: none;
+}
+
+footer .nav-item {
+	--bs-nav-link-font-size: 14pt;
+	font-size: 14pt;
+}
+
+footer .nav-link {
+	--bs-nav-link-color: var(--lb-color-primary-contrast);
+	--bs-nav-link-hover-color: var(--lb-color-primary-contrast);
+	--bs-nav-link-padding-x: 0;
+	--bs-nav-link-padding-y: 0.125rem;
+}
+
+footer h5 {
+	font-weight: var(--font-bold);
+}
+
+.newsletter {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    background-color: transparent;
+}
+
+.newsletter .form-control {
+	background: transparent;
+    border-radius: 0;
+    padding: 0.5rem 0.75rem;
+    color: var(--lb-color-primary-contrast);
+}
+
+.newsletter .form-control::placeholder {
+	color: var(--lb-color-primary-contrast);
+}
+
+.newsletter .form-check-input:checked {
+	background-color: var(--lb-color-primary);
+	border-color: var(--lb-color-primary-contrast);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Estaticas
