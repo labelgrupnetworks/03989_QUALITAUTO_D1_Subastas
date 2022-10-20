@@ -21,7 +21,8 @@
 		{{-- @include('includes.statics.how_to_buy') --}}
 		{{-- @include('includes.statics.how_to_sell') --}}
 		{{-- @include('includes.statics.who_we_are') --}}
-		@include('includes.statics.laboratory')
+		{{-- @include('includes.statics.laboratory') --}}
+		@include('includes.statics.legal_advice')
 
 	</div>
 </div>
