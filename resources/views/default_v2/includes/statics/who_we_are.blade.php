@@ -46,7 +46,7 @@
 <div class="who-we-are">
 
 	<div class="row">
-		<div class="col-12 col-sm-4">
+		<div class="col-12 col-md-4">
 			<div class="flex-align-center" style="margin-bottom: 30px;">
 				<div class="mb-5">
 					<h4 class="fw-light">Los inicios de la empresa se remontan al año 1971, cuando <strong>Jesús Vico
@@ -68,7 +68,7 @@
 				</svg>
 			</div>
 		</div>
-		<div class="col-12 col-sm-8">
+		<div class="col-12 col-md-8">
 			<div class="decoration margin-video">
 				<div class="ratio ratio-16x9">
 					<video style="height: auto; padding: 0 10px;" controls=""
@@ -81,7 +81,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row mt-5">
 		<div class="col-12">
 			<section>
 				<h4 class="fw-light bg-secondary-color-lighter">1986</h4>
@@ -144,7 +144,7 @@
 	</div>
 
 
-	
+
 
 
 

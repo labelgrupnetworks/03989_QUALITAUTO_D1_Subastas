@@ -7,35 +7,6 @@
 		margin: 1.5rem 0 1.5rem 0;
 	}
 
-	.bids-container .option-links,
-	.bids-container .option {
-		margin-left: 30px;
-	}
-
-	.bids-container section {
-		padding: 15px 0;
-	}
-
-	.bids-container .option-links {
-		display: flex;
-		align-items: center;
-		font-size: 14pt;
-		font-weight: 200;
-		color: var(--lb-color-gray);
-	}
-
-	.bids-container .option-links a:hover,
-	.bids-container .option-links a:focus,
-	.bids-container .option-links a {
-		color: var(--lb-color-gray);
-		text-decoration: none;
-	}
-
-	.bids-container h4 {
-		margin: 0;
-		margin-bottom: 3px;
-	}
-
 	.how-to-sell .flex-align-center {
 		display: flex;
 		flex-direction: column;
@@ -43,8 +14,27 @@
 
 	}
 
+	.how-to-sell section {
+		margin: 3rem 0px;
+	}
+
+	.how-to-sell .ul.style-diamond li {
+		margin: 15px 0;
+	}
+
 	.how-to-sell .lb-blockquote {
 		max-width: none;
+	}
+
+	@media (min-width: 1200px) {
+		.how-to-sell .margin-video {
+			margin: 2rem;
+			margin-top: 5rem;
+		}
+
+		.how-to-sell .margin-arrow-svg {
+			margin-top: 17rem;
+		}
 	}
 </style>
 
@@ -52,18 +42,20 @@
 <div class="how-to-sell">
 
 	<div class="row">
-		<div class="col-12 col-sm-8">
+		<div class="col-12 col-md-8">
 
-			<div class="decoration">
-				<video style="width: 80%; height: auto;" controls="" poster="/themes/jesusvico/assets/img/how_to_sell_poster.jpg"
-					autoplay="">
-					<source src="/files/videos/jesusvico_tasaciones.mp4" type="video/mp4">
-					Tu navegador no soporta HTML5 video.
-				</video>
+			<div class="decoration margin-video">
+				<div class="ratio ratio-16x9">
+					<video style="height: auto; padding: 0 10px;" controls=""
+						poster="/themes/jesusvico/assets/img/how_to_sell_poster.jpg" autoplay="">
+						<source src="/files/videos/jesusvico_tasaciones.mp4" type="video/mp4">
+						Tu navegador no soporta HTML5 video.
+					</video>
+				</div>
 			</div>
 
 		</div>
-		<div class="col-12 col-sm-4">
+		<div class="col-12 col-md-4">
 
 			<div class="flex-align-center" style="margin-bottom: 30px">
 				<div class="mb-5">
@@ -72,7 +64,8 @@
 				</div>
 
 				{{-- Flecha --}}
-				<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
+				<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
+					viewBox="0 0 49.162 40.404">
 					<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
 						<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
 							transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
@@ -84,7 +77,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row mt-2">
 		<div class="col-12">
 			<section>
 				<h2>Subasta</h2>

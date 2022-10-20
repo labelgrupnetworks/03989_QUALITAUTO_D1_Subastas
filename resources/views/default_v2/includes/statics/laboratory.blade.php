@@ -11,15 +11,7 @@
 		margin: 1.5rem 0 1.5rem 0;
 	}
 
-	/* .laboratory h4 {
-		margin: 0;
-		margin-bottom: 3px;
-		padding: 4px 20px;
-		width: auto;
-		display: inline-block;
-	} */
-
-	.laboratory .flex-align-center {
+	.laboratory .flex-align-center-column {
 		display: flex;
 		align-items: center;
 		flex-direction: column;
@@ -29,10 +21,17 @@
 		max-width: 100%;
 	}
 
+	.laboratory .padding-li {
+		padding: 5px 20px;
+	}
+
+	.laboratory ul.style-diamond li {
+		margin-bottom: 7px;
+	}
+
 	@media (min-width: 1200px) {
 		.laboratory .margin-video {
 			margin: 2rem;
-			/* margin-top: 5rem; */
 		}
 
 		.laboratory {
@@ -41,7 +40,6 @@
 
 		.laboratory .margin-arrow-svg {
 			margin-top: 2rem;
-			/* margin-left: 18px; */
 		}
 
 		.laboratory .flex-align-center-row {
@@ -57,7 +55,7 @@
 <div class="laboratory">
 
 	<div class="row">
-		<div class="col-12 col-sm-8">
+		<div class="col-12 col-md-8">
 			<div class="decoration margin-video">
 				<div class="ratio ratio-16x9">
 					<video style="height: auto; padding: 0 10px;" controls=""
@@ -68,8 +66,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-sm-4">
-			<div class="flex-align-center" style="margin-bottom: 30px;margin-top: 3rem;">
+		<div class="col-12 col-md-4">
+			<div class="flex-align-center-column" style="margin-bottom: 30px;margin-top: 3rem;">
 				<div class="mb-5">
 					<h4>Jesús Vico es pionero en la relización de estudios tras el convenio firmado con el SECYR hace más de una
 						década.</h4>
@@ -92,8 +90,8 @@
 		</div>
 	</div>
 
-	<div class="row mt-5">
-		<div class="col-12 col-sm-8">
+	<div class="row mt-5 mb-5">
+		<div class="col-12 col-md-8">
 			<section>
 				<p>Conscientes de la importancia de esta herramienta, hemos decidido dar un paso más, abriendo una nueva línea de
 					colaboración con el territorio SGS Tecnos, dunsas en el año 1878 y líder mundial en ensayos y certificaciones.</p>
@@ -107,7 +105,7 @@
 				</blockquote>
 			</section>
 		</div>
-		<div class="col-12 col-sm-4">
+		<div class="col-12 col-md-4">
 			<section>
 				<svg id="Grupo_43" data-name="Grupo 43" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink" width="206.265" height="224" viewBox="0 0 206.265 224"
@@ -182,80 +180,82 @@
 
 	<div class="row">
 		<div class="col-12">
-			<div class="flex-align-center-row">
-				<section>
-					<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
-						height="44" viewBox="0 0 44 44">
-						<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
-							transform="translate(22) rotate(45)" fill="#b9b20e" />
-					</svg>
-				</section>
-				<section>
-					<h3>Ensayos <br> no destructivos</h3>
-				</section>
-				<section>
-					<ul class="style-diamond">
-						<li>
-							<p class="bg-lb-color-primary-light">Técnicas fotográficas</p>
-						</li>
-						<li>
-							<p class="bg-lb-color-primary-light">Rayos X</p>
-						</li>
-						<li>
-							<p class="bg-lb-color-primary-light">Infrarrojo</p>
-						</li>
-						<li>
-							<p class="bg-lb-color-primary-light">Ultravioleta</p>
-						</li>
-					</ul>
-				</section>
+			<div class="row">
+				<div class="flex-align-center-row mt-3 mb-3">
+					<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
+						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
+							height="44" viewBox="0 0 44 44">
+							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
+								transform="translate(22) rotate(45)" fill="#b9b20e" />
+						</svg>
+					</div>
+					<div class="col-6 col-md-4">
+						<h3>Ensayos <br> no destructivos</h3>
+					</div>
+					<div class="col-6 col-md-6">
+						<ul class="style-diamond">
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Técnicas fotográficas</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Rayos X</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Infrarrojo</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Ultravioleta</p>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="flex-align-center-row">
-				<section>
+			<div class="flex-align-center-row mt-3 mb-3">
+				<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
 					<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 						height="44" viewBox="0 0 44 44">
 						<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
 							transform="translate(22) rotate(45)" fill="#b9b20e" />
 					</svg>
-				</section>
-				<section>
+				</div>
+				<div class="col-6 col-md-4">
 					<h3>Laboratorio <br>de materiales</h3>
-				</section>
-				<section>
+				</div>
+				<div class="col-6 col-md-6">
 					<ul class="style-diamond">
 						<li>
-							<p class="bg-lb-color-primary-light">Ensayos metalográficos</p>
+							<p class="bg-lb-color-primary-light padding-li">Ensayos metalográficos</p>
 						</li>
 						<li>
-							<p class="bg-lb-color-primary-light">Micro y macroscopio de aleaciones y soldaduras</p>
+							<p class="bg-lb-color-primary-light padding-li">Micro y macroscopio de aleaciones y soldaduras</p>
 						</li>
 						<li>
-							<p class="bg-lb-color-primary-light">Termoluminiscencia</p>
+							<p class="bg-lb-color-primary-light padding-li">Termoluminiscencia</p>
 						</li>
 						<li>
-							<p class="bg-lb-color-primary-light">Carbono 14</p>
+							<p class="bg-lb-color-primary-light padding-li">Carbono 14</p>
 						</li>
 					</ul>
-				</section>
+				</div>
 			</div>
-			<div class="flex-align-center-row">
-				<section>
+			<div class="flex-align-center-row mt-3 mb-3">
+				<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
 					<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 						height="44" viewBox="0 0 44 44">
 						<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
 							transform="translate(22) rotate(45)" fill="#b9b20e" />
 					</svg>
-				</section>
-				<section>
+				</div>
+				<div class="col-6 col-md-4">
 					<h3>Estudios y<br>Certificación<br>Numismática</h3>
-				</section>
-				<section>
+				</div>
+				<div class="col-6 col-md-6">
 					<ul class="style-diamond">
 						<li>
-							<p class="bg-lb-color-primary-light">NGC (Numismatic Guaranty Corporation)</p>
+							<p class="bg-lb-color-primary-light padding-li">NGC (Numismatic Guaranty Corporation)</p>
 						</li>
 					</ul>
-				</section>
+				</div>
 			</div>
 
 		</div>

@@ -22,6 +22,7 @@
 		font-size: 14pt;
 		font-weight: 200;
 		color: var(--lb-color-gray);
+		flex-wrap: wrap;
 	}
 
 	.bids-container .option-links a:hover,
