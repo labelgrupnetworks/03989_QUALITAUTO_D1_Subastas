@@ -306,10 +306,11 @@ header .first-header-wrapper {
 header .nav-link {
 	--bs-nav-link-color: var(--lb-text-color-primary);
 	position: relative;
-
 }
 
-header .nav-link:hover {
+
+/* pasar a demo */
+/* header .nav-link:hover {
 	text-decoration: none;
 	color: var(--lb-color-primary-contrast);
 	transition: padding .2s ease-in-out, transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
@@ -336,10 +337,11 @@ header .nav-link::before {
 
 header .nav-link:hover:before {
 	background-color: var(--lb-color-primary);
-	/* height: calc(12px + 16px); */
 	height: 100%;
 	opacity: 1;
 }
+
+*/
 
 header .navbar-toggler {
 	--bs-navbar-toggler-focus-width: 0.1rem;

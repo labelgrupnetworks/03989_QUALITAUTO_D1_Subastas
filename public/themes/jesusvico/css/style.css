@@ -46,7 +46,7 @@
 	--lb-color-secondary-dark: #EDECC2;
 	--lb-color-secondary-contrast: #0D5257;
 
-	--lb-color-gray: #666666;
+	--lb-color-gray: #666;
 
 	--lb-color-backgorund: #cd212212;
 	--lb-color-backgorund-dark: rgb(10, 63, 67, 0.2);
@@ -63,7 +63,7 @@
 	--lb-box-shadow: 0 1px 2px 0 rgba(var(--lb-box-shadow-color-rgb), 0.1);
 	--lb-box-shadow-lot: rgba(50, 50, 105, 0.15) 0 2px 5px 0, rgba(0, 0, 0, 0.05) 0 1px 1px 0;
 
-	--lb-border-radius: 0;
+	--lb-border-radius: 0.125rem;
 	--lb-color-border-light: rgb(10, 63, 67, 0.05);
 
 	--font-extra-light: 100;
@@ -82,7 +82,16 @@
 	--bs-border-radius: var(--lb-border-radius, 0.375rem);
 	--bs-accordion-transition: color 1s ease-in-out, background-color 1s ease-in-out, border-color 1s ease-in-out, box-shadow 1s ease-in-out, border-radius 1s ease;
 	--bs-body-font-size: 16pt;
+
+	--bs-link-color: var(--lb-color-gray);
+	--bs-link-hover-color: #222;
 }
+
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+*/
 
 h1,
 .h1 {
@@ -133,12 +142,229 @@ h3,
 	.h3 {
 		font-size: 26pt;
 	}
+
+	.fs-40pt{
+		font-size: 40pt;
+	}
 }
 
 .text-lb-secondary {
 	color: var(--lb-color-secondary);
 }
 
+.crop-img {
+	overflow: hidden;
+	position: relative;
+}
+
+.crop-img img {
+	position: absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.btn {
+	--bs-btn-font-size: 18pt;
+	padding-top: 0.5rem;
+	font-weight: var(--font-extra-light);
+
+}
+
+.btn-lb-primary {
+	--bs-btn-active-border-color: var(--lb-color-secondary);
+	--bs-btn-active-bg: var(--lb-color-secondary);
+	--bs-btn-hover-border-color: var(--lb-color-secondary);
+	--bs-btn-hover-bg: var(--lb-color-secondary);
+}
+
+.btn-outline-lb-primary {
+	--bs-btn-active-border-color: var(--lb-color-secondary);
+	--bs-btn-active-bg: var(--lb-color-secondary);
+	--bs-btn-hover-border-color: var(--lb-color-secondary);
+	--bs-btn-hover-bg: var(--lb-color-secondary);
+}
+
+.btn-lb-secondary {
+	--lb-color-primary-light: #8ea8a8;
+    --bs-btn-color: var(--lb-color-primary-contrast);
+    --bs-btn-border-color: var(--lb-color-primary-light);
+    --bs-btn-bg: var(--lb-color-primary-light);
+    --bs-btn-active-color: var(--lb-color-secondary-contrast);
+    --bs-btn-active-border-color: #fff;
+    --bs-btn-active-bg: #fff;
+    --bs-btn-hover-color: var(--lb-color-secondary-contrast);
+    --bs-btn-hover-border-color: #fff;
+    --bs-btn-hover-bg: #fff;
+	min-width: 240px;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Header
+|--------------------------------------------------------------------------
+*/
+header {
+	text-transform: uppercase;
+}
+
+.first-header-wrapper {
+	background-color: var(--lb-color-primary);
+	color: #fff;
+	font-size: 14pt;
+}
+
+header .first-header-wrapper a,
+header .first-header-wrapper a.selected {
+	color: inherit;
+}
+
+header .navbar-brand {
+	width: 170px;
+	height: 80px;
+}
+
+header .nav-item {
+	flex: 1;
+	flex-direction: column;
+}
+
+header .nav-link:hover,
+header .nav-link:active,
+header .nav-link:focus {
+	text-decoration: none;
+	font-weight: var(--font-extra-bold);
+	color: var(--lb-color-primary);
+}
+
+header .dropdown-menu {
+	--bs-dropdown-border-color: none;
+	--bs-dropdown-link-color: var(--lb-color-primary);
+	/* text-align: center; */
+}
+
+@media (min-width: 1400px) {
+	header .dropdown-menu {
+		--bs-dropdown-padding-x: 0.5rem;
+		--bs-dropdown-color: var(--lb-color-primary-contrast);
+		--bs-dropdown-bg: var(--lb-color-primary);
+		--bs-dropdown-border-color: var(--bs-border-color-translucent);
+		--bs-dropdown-border-radius: 0;
+		--bs-dropdown-border-width: 0;
+		--bs-dropdown-link-color: var(--lb-color-primary-contrast);
+		--bs-dropdown-link-hover-color: #fff;
+		--bs-dropdown-link-hover-bg: transparent;
+		--bs-dropdown-link-active-color: transparent;
+		--bs-dropdown-link-active-bg: transparent;
+		--bs-dropdown-item-padding-x: 1rem;
+		--bs-dropdown-item-padding-y: 0.25rem;
+		min-width: 150%;
+		/* text-align: left; */
+	}
+
+	header .nav-item.dropdown {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	header .nav-item {
+		text-align: center;
+	}
+}
+
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+	color: var(--bs-dropdown-link-hover-color);
+	background-color: var(--bs-dropdown-link-hover-bg);
+	text-decoration: none;
+	font-weight: var(--font-extra-bold);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Footer
+|--------------------------------------------------------------------------
+*/
+.contact-banner {
+	background-image: url('/themes/jesusvico/assets/img/contacta.webp');
+	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+	height: 560px;
+	color: var(--lb-color-primary-contrast);
+	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+footer {
+	background-color: var(--lb-color-primary);
+	color: var(--lb-color-primary-contrast);
+}
+
+footer a,
+footer a:hover,
+footer a:focus {
+	color: var(--lb-color-primary-contrast);
+	text-decoration: none;
+}
+
+footer .nav-item {
+	--bs-nav-link-font-size: 14pt;
+	font-size: 14pt;
+}
+
+footer .nav-link {
+	--bs-nav-link-color: var(--lb-color-primary-contrast);
+	--bs-nav-link-hover-color: var(--lb-color-primary-contrast);
+	--bs-nav-link-padding-x: 0;
+	--bs-nav-link-padding-y: 0.125rem;
+}
+
+footer h5 {
+	font-weight: var(--font-bold);
+}
+
+.newsletter {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    background-color: transparent;
+}
+
+.newsletter .form-control {
+	background: transparent;
+    border-radius: 0;
+    padding: 0.5rem 0.75rem;
+    color: var(--lb-color-primary-contrast);
+}
+
+.newsletter .form-control::placeholder {
+	color: var(--lb-color-primary-contrast);
+}
+
+.newsletter .form-check-input:checked {
+	background-color: var(--lb-color-primary);
+	border-color: var(--lb-color-primary-contrast);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Estaticas
+|--------------------------------------------------------------------------
+*/
 .static-page p {
 	font-size: 18pt;
 }
