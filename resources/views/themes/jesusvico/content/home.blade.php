@@ -1,21 +1,23 @@
-{!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false]) !!}
-<br><br>
-{{-- {!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'fade' => true], '001', 'afterChange', 'test') !!} --}}
-{!! \BannerLib::bannersPorKey('new_home', 'banner_home') !!}
-
-<div class="mt-2 mb-2 events-banner">
-	{!! \BannerLib::bannersPorKey('events', 'doble_home', ['dots' => false, 'autoplay' => true]) !!}
-</div>
-
-
-{!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false]) !!}
-
-
-<section class="container-fluid contact-banner">
-    <div class="row">
-		<div class="end-50">
-			@include('includes.newsletter')
+<section>
+	<div class="container">
+		<div class="row gy-3">
+			<div class="col-md-8">
+				{!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['arrows' => false]) !!}
+			</div>
+			<div class="col-md-4">
+				{!! \BannerLib::bannersPorKey('blog_banner', 'blog_banner', ['dots' => false, 'autoplay' => true, 'arrows' => false]) !!}
+			</div>
 		</div>
+	</div>
+</section>
+
+<section class="container py-3 my-md-5">
+	{!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false, 'arrows' => false]) !!}
+</section>
+
+<section class="container-fluid newsletter-banner">
+    <div class="row p-md-5">
+		@include('includes.newsletter')
 	</div>
 </section>
 
@@ -90,18 +92,19 @@
 @endphp
 
 @if ($page)
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 color-letter titlepage-contenidoweb">
-			<h1 class="titlePage">{{ $page->name_web_page }}</h1>
+<section class="static-page">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 color-letter titlepage-contenidoweb">
+				<h1 class="titlePage">{{ $page->name_web_page }}</h1>
+			</div>
 		</div>
 	</div>
-</div>
-<div id="pagina-{{ $page->id_web_page }}" class="contenido contenido-web home-static-page">
-	<div class="container">
-		{!! $page->content_web_page !!}
+	<div id="pagina-{{ $page->id_web_page }}" class="contenido contenido-web home-static-page">
+		<div class="container">
+			{!! $page->content_web_page !!}
+		</div>
 	</div>
-</div>
+</section>
 @endif
-
 

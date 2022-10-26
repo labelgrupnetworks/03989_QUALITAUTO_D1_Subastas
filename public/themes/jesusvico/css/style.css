@@ -203,7 +203,9 @@ h3,
 	min-width: 240px;
 }
 
-
+.rowBanner {
+	--bs-gutter-y: 1rem;
+}
 /*
 |--------------------------------------------------------------------------
 | Header
@@ -458,3 +460,30 @@ ul.style-diamond li::marker {
 	z-index: 2;
 	position: relative;
 }
+
+/*
+|--------------------------------------------------------------------------
+| HOME
+|--------------------------------------------------------------------------
+*/
+.newsletter-banner {
+	background-image: url('/themes/jesusvico/assets/img/newsletter_bg.webp');
+	background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+	height: 700px;
+	color: var(--lb-color-primary-contrast);
+	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.newsletter-banner a,
+.newsletter-banner a:focus,
+.newsletter-banner a:hover {
+	color: var(--lb-color-primary-contrast);
+}
+
