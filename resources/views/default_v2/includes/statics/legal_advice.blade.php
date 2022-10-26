@@ -21,6 +21,12 @@
 		flex-direction: column;
 	}
 
+	.legal-advice .flex-align-center-row-mobile {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+	}
+
 
 	.legal-advice .lb-blockquote {
 		max-width: 100%;
@@ -39,9 +45,14 @@
 	}
 
 
+	.legal-advice .last-section-banner-height {
+		height: 200px;
+	}
 
 	@media (min-width: 576px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 450px;
 		}
 
@@ -55,7 +66,9 @@
 	}
 
 	@media (min-width: 768px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 395px;
 		}
 
@@ -65,24 +78,28 @@
 			flex-direction: row;
 		}
 
-		.margin-auto-min768 {
+		.legal-advice .margin-auto-min768 {
 			margin: auto;
 		}
 	}
 
 	@media (min-width: 992px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 398px;
 		}
 
-		.pl-0-min992 {
+		.legal-advice .pl-0-min992 {
 			padding-left: 0px !important;
 		}
 
 	}
 
 	@media (min-width: 1200px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 335px;
 		}
 
@@ -101,14 +118,18 @@
 	}
 
 	@media (min-width: 1400px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 302px;
 		}
 
 	}
 
 	@media (min-width: 1600px) {
-		.last-section-height {
+
+		.legal-advice .last-section-banner-height,
+		.legal-advice .last-section-height {
 			height: 269px;
 		}
 
@@ -116,58 +137,58 @@
 </style>
 
 
-<div class="legal-advice">
+<div class="container">
+	<div class="legal-advice">
 
-	<div class="row">
-		<div class="col-12 col-md-8 margin-auto-min768">
-			<div class="decoration margin-video">
-				<div class="ratio ratio-16x9">
-					<video style="height: auto; padding: 0 10px;" controls=""
-						poster="/themes/jesusvico/assets/img/legal_advice_poster.jpg" autoplay="">
-						<source src="/files/videos/jesusvico_asesoramiento_legal.mp4" type="video/mp4">
-						Tu navegador no soporta HTML5 video.
-					</video>
+		<div class="row">
+			<div class="col-12 col-md-8 margin-auto-min768">
+				<div class="decoration margin-video">
+					<div class="ratio ratio-16x9">
+						<video style="height: auto; padding: 0 10px;" controls=""
+							poster="/themes/jesusvico/assets/img/legal_advice_poster.jpg" autoplay="">
+							<source src="/files/videos/jesusvico_asesoramiento_legal.mp4" type="video/mp4">
+							Tu navegador no soporta HTML5 video.
+						</video>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-4">
+				<div class="flex-align-center-column" style="margin-bottom: 30px;margin-top: 3rem;">
+					<div class="mb-5">
+						<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
+						</h4>
+						<p style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho Olivares
+							Abogados, queremos ofrecer un servicio de asesoramiento especializado al coleccionista, dando soporte y
+							garantizando el correcto cumplimiento de la normativa vigente.</p>
+					</div>
+
+					{{-- Flecha --}}
+
+					<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
+						viewBox="0 0 49.162 40.404">
+						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+						</g>
+					</svg>
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-4">
-			<div class="flex-align-center-column" style="margin-bottom: 30px;margin-top: 3rem;">
-				<div class="mb-5">
-					<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
-					</h4>
-					<p style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho Olivares
-						Abogados, queremos ofrecer un servicio de asesoramiento especializado al coleccionista, dando soporte y
-						garantizando el correcto cumplimiento de la normativa vigente.</p>
-				</div>
 
-				{{-- Flecha --}}
-
-				<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
-					viewBox="0 0 49.162 40.404">
-					<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-						<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-							transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-						<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-							transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-					</g>
-				</svg>
-			</div>
-		</div>
-	</div>
-
-	<div class="row mt-5 mb-5">
-		<div class="flex-align-center-row">
+		<div class="row align-items-center mt-5 mb-5">
 			<div class="col-12 col-md-4">
 				<div class="flex-align-center-column">
 
 					<svg id="Grupo_46" data-name="Grupo 46" xmlns="http://www.w3.org/2000/svg"
 						xmlns:xlink="http://www.w3.org/1999/xlink" width="154" height="82.354" viewBox="0 0 154 82.354">
 						<defs>
-							<clipPath id="clip-path">
+							<clipPath>
 								<rect id="Rectángulo_34" data-name="Rectángulo 34" width="154" height="82.354" fill="#0d5257" />
 							</clipPath>
 						</defs>
-						<g id="Grupo_46-2" data-name="Grupo 46" clip-path="url(#clip-path)">
+						<g id="Grupo_46-2" data-name="Grupo 46">
 							<path id="Trazado_19" data-name="Trazado 19"
 								d="M201.247,101.222a3.609,3.609,0,0,1-2.04-.662,18.723,18.723,0,0,0-5.785-2.742,3.3,3.3,0,0,1-2.55-3.052,5.723,5.723,0,0,1,.863-3.418,20.253,20.253,0,0,0,1.872-4.725c.178-.582.36-1.179.557-1.769a3.792,3.792,0,0,0,.026-2.323,5.079,5.079,0,0,1,.021-2.7c.024-.1.041-.18.056-.255a9.127,9.127,0,0,0,.061-4.242c-.633-2.31-2.161-3.677-4.956-4.434-.489-.132-1-.259-1.488-.383a35.307,35.307,0,0,1-4.4-1.312,9.725,9.725,0,0,1-2.31-1.269,1.328,1.328,0,0,0-.312-.179,1.089,1.089,0,0,0-.032.162,6.207,6.207,0,0,1-2.85,4.648c-1.835,1.278-2.538,3.1-2.211,5.728.031.251.069.5.109.768a10.814,10.814,0,0,1-.025,4.535,4.3,4.3,0,0,0,.385,1.891c.234.642.441,1.281.64,1.9a17.68,17.68,0,0,0,1.764,4.22,4.968,4.968,0,0,1,.659,1.575c.392,1.654.218,3.819-2.837,4.732a18.064,18.064,0,0,0-5.206,2.5,3.9,3.9,0,0,1-2.232.77,1.069,1.069,0,0,1,0-2.137,1.778,1.778,0,0,0,1-.383,20.2,20.2,0,0,1,5.821-2.8c1.353-.4,1.673-.916,1.371-2.193a2.843,2.843,0,0,0-.371-.9,19.223,19.223,0,0,1-2.006-4.725c-.195-.6-.4-1.223-.617-1.829a5.493,5.493,0,0,1-.443-3.164,8.771,8.771,0,0,0-.019-3.658c-.045-.3-.085-.569-.119-.838-.423-3.407.623-6.014,3.111-7.746a4.079,4.079,0,0,0,1.95-3.158,2.1,2.1,0,0,1,2.031-2.067,2.9,2.9,0,0,1,1.714.636,7.61,7.61,0,0,0,1.81.99,33.615,33.615,0,0,0,4.125,1.225c.52.131,1.041.262,1.542.4,3.514.951,5.626,2.891,6.459,5.932a11.061,11.061,0,0,1-.024,5.214c-.019.1-.041.2-.064.3a3.1,3.1,0,0,0-.063,1.647,5.883,5.883,0,0,1-.047,3.608c-.191.574-.368,1.153-.539,1.713a21.833,21.833,0,0,1-2.1,5.225A3.626,3.626,0,0,0,193,94.63a1.173,1.173,0,0,0,.955,1.119,20.8,20.8,0,0,1,6.444,3.04,1.519,1.519,0,0,0,.842.3,1.068,1.068,0,1,1,0,2.137"
 								transform="translate(-108.135 -42.226)" fill="#0d5257" />
@@ -189,6 +210,8 @@
 						</g>
 					</svg>
 
+
+
 					<h4 class="text-lb-secondary">Fiscal</h4>
 
 				</div>
@@ -205,7 +228,7 @@
 								<rect id="Rectángulo_35" data-name="Rectángulo 35" width="124.108" height="82.354" fill="#0d5257" />
 							</clipPath>
 						</defs>
-						<g id="Grupo_50" data-name="Grupo 50" clip-path="url(#clip-path)">
+						<g id="Grupo_50" data-name="Grupo 50">
 							<path id="Trazado_25" data-name="Trazado 25"
 								d="M113.077,156.636a3.371,3.371,0,0,1-1.661-.537c-10.029-5.737-19.334-10.969-28.447-15.994-1.53-.843-2-1.626-1.789-2.992a3.734,3.734,0,0,0,.024-.734c0-.066-.006-.132-.006-.2a37.68,37.68,0,0,1,1.2-9.137c.883-3.11,2.585-4.762,5.516-5.354,4.465-.9,8.938-2.073,13.263-3.2l1.15-.3a3.371,3.371,0,0,1,.849-.123,2.167,2.167,0,0,1,1.677.867c1.3,1.41,2.655,2.81,3.963,4.163.987,1.021,2.008,2.077,3,3.126a2.291,2.291,0,0,0,1.631.844,2.261,2.261,0,0,0,1.621-.836c1.2-1.279,2.441-2.565,3.641-3.808,1.149-1.191,2.337-2.422,3.492-3.65a1.835,1.835,0,0,1,1.423-.729,2.625,2.625,0,0,1,.674.1c4.144,1.117,8.365,2.22,12.447,3.286l3.078.8a5.183,5.183,0,0,1,3.546,3.527c1.6,4.075,1.736,8.42,1.737,12.885,0,.411-.195.741-1.223,1.309q-3.466,1.914-6.928,3.832-2.946,1.631-5.894,3.261-2.37,1.311-4.746,2.613c-3.827,2.1-7.784,4.277-11.647,6.476a3.215,3.215,0,0,1-1.588.5m-29.7-21.451c-.666,2.338,1.628,3.612,2.5,4.1,8.906,4.945,17.64,9.878,25.752,14.473a2.885,2.885,0,0,0,1.443.414,3.026,3.026,0,0,0,1.525-.453c1.749-.994,3.545-1.983,5.281-2.94l1.722-.949,19.709-10.888a2.538,2.538,0,0,0,1.611-2.325,31.712,31.712,0,0,0-1.347-9.622,4.282,4.282,0,0,0-3.267-3c-4.571-1.114-9.026-2.312-12.781-3.338a3.439,3.439,0,0,0-.915-.133,2.8,2.8,0,0,0-2.082.985c-2.652,2.794-5.342,5.572-7.855,8.158-.688.707-1.051.856-1.236.856s-.546-.148-1.23-.852l-.821-.845c-2.258-2.324-4.594-4.727-6.839-7.133a3.117,3.117,0,0,0-2.378-1.127,4.224,4.224,0,0,0-1.055.146c-5.153,1.32-9.349,2.34-13.2,3.212a4.034,4.034,0,0,0-3.13,2.755,29.372,29.372,0,0,0-1.409,8.5"
 								transform="translate(-51.057 -74.282)" fill="#b9b20e" />
@@ -227,10 +250,12 @@
 						</g>
 					</svg>
 
+
 					<h4 class="text-lb-secondary">Civil</h4>
 
 				</div>
 			</div>
+
 			<div class="col-12 col-md-4">
 				<div class="flex-align-center-column">
 
@@ -241,7 +266,7 @@
 								<rect id="Rectángulo_36" data-name="Rectángulo 36" width="116.826" height="82.354" fill="#b9b20e" />
 							</clipPath>
 						</defs>
-						<g id="Grupo_51" data-name="Grupo 51" clip-path="url(#clip-path)">
+						<g id="Grupo_51" data-name="Grupo 51">
 							<path id="Trazado_33" data-name="Trazado 33"
 								d="M233.665,69.843H188.544a1.112,1.112,0,0,1,0-2.224h45.121a1.112,1.112,0,0,1,0,2.224"
 								transform="translate(-117.951 -42.553)" fill="#b9b20e" />
@@ -284,80 +309,81 @@
 						</g>
 					</svg>
 
+
 					<h4 class="text-lb-secondary">Penal</h4>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-12 col-lg-8 pr-none last-section-height">
-			<ul class="style-diamond">
-				<li>
-					<p class="bg-lb-color-primary-light padding-li">Asesoramiento sobre la legislación Española del Patrimonio
-						histórico</p>
-				</li>
-				<li>
-					<p class="bg-lb-color-primary-light padding-li">Trámites Administrativos. Livenvias de exportación temporales o
-						definitivas, con o sin ánimo de venta, dentro y fuera de la Unión Europea y trámites aduaneros.</p>
-				</li>
-				<li>
-					<p class="bg-lb-color-primary-light padding-li">Representación y defensa en los procesos e investigaciones.</p>
-				</li>
-				<li>
-					<p class="bg-lb-color-primary-light padding-li">Asesoramineto en el contexto del Convenio Internacional de
-						Especies Protegidas (marfiles).</p>
-				</li>
-				<li>
-					<p class="bg-lb-color-primary-light padding-li">Asesoramiento fiscal.</p>
-				</li>
-			</ul>
-		</div>
-		<div class="col-12 col-lg-4 pl-0-min992">
-			<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="color: white;">
-				<div class="carousel-inner">
-					<div class="carousel-item active background-primary-color last-section-height">
-						<div class="flex-align-center-column" style="height: 100%">
-							<div class="flex-align-center-row" style="height: 100%">
-								<blockquote class="blockquote lb-blockquote flex-align-center-container">
-									<p>Nuestro objetivo es garantizar<br>la legalidad<br>de su colección</p>
-								</blockquote>
-							</div>
-						</div>
-					</div>
-					<div class="carousel-item background-primary-color last-section-height">
-						<div class="flex-align-center-column" style="height: 100%">
-							<div class="flex-align-center-row" style="height: 100%">
-								<blockquote class="blockquote lb-blockquote flex-align-center-container">
-									<p>Primera consulta<br>totalmente gratuita</p>
-								</blockquote>
-							</div>
-						</div>
-					</div>
-					<div class="carousel-item background-primary-color last-section-height">
-						<div class="flex-align-center-column" style="height: 100%">
-							<div class="flex-align-center-row" style="height: 100%">
-								<blockquote class="blockquote lb-blockquote flex-align-center-container">
-									<p>Nuestro equipo le asesorará y<br>efectuará<br>sus trámites</p>
-								</blockquote>
-							</div>
-						</div>
-					</div>
-				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-					data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-					data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
+		<div class="row">
+			<div class="col-12 col-lg-8 pr-none last-section-height">
+				<ul class="style-diamond">
+					<li>
+						<p class="bg-lb-color-primary-light padding-li">Asesoramiento sobre la legislación Española del Patrimonio
+							histórico</p>
+					</li>
+					<li>
+						<p class="bg-lb-color-primary-light padding-li">Trámites Administrativos. Livenvias de exportación temporales o
+							definitivas, con o sin ánimo de venta, dentro y fuera de la Unión Europea y trámites aduaneros.</p>
+					</li>
+					<li>
+						<p class="bg-lb-color-primary-light padding-li">Representación y defensa en los procesos e investigaciones.</p>
+					</li>
+					<li>
+						<p class="bg-lb-color-primary-light padding-li">Asesoramineto en el contexto del Convenio Internacional de
+							Especies Protegidas (marfiles).</p>
+					</li>
+					<li>
+						<p class="bg-lb-color-primary-light padding-li">Asesoramiento fiscal.</p>
+					</li>
+				</ul>
 			</div>
+			<div class="col-12 col-lg-4 pl-0-min992 mb-3">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="color: white;">
+					<div class="carousel-inner">
+						<div class="carousel-item active background-primary-color last-section-banner-height">
+							<div class="flex-align-center-column" style="height: 100%">
+								<div class="flex-align-center-row flex-align-center-row-mobile" style="height: 100%">
+									<blockquote class="blockquote lb-blockquote flex-align-center-container">
+										<p>Nuestro objetivo es garantizar<br>la legalidad<br>de su colección</p>
+									</blockquote>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item background-primary-color last-section-banner-height">
+							<div class="flex-align-center-column" style="height: 100%">
+								<div class="flex-align-center-row flex-align-center-row-mobile" style="height: 100%">
+									<blockquote class="blockquote lb-blockquote flex-align-center-container">
+										<p>Primera consulta<br>totalmente gratuita</p>
+									</blockquote>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item background-primary-color last-section-banner-height">
+							<div class="flex-align-center-column" style="height: 100%">
+								<div class="flex-align-center-row flex-align-center-row-mobile" style="height: 100%">
+									<blockquote class="blockquote lb-blockquote flex-align-center-container">
+										<p>Nuestro equipo le asesorará y<br>efectuará<br>sus trámites</p>
+									</blockquote>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev d-none d-sm-none d-md-block" type="button"
+						data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next d-none d-sm-none d-md-block" type="button"
+						data-bs-target="#carouselExampleControls" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
 
+			</div>
 		</div>
+
+
 	</div>
-
-
 </div>

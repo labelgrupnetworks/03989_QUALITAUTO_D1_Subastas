@@ -1,36 +1,42 @@
 @font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-ExtraLight.ttf);
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-ExtraLight.ttf);
 	font-weight: 100;
 }
-@font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-Light.ttf);
-	font-weight: 300;
-}
-@font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-Regular.ttf);
-	font-weight: 400;
-}
-@font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-SemiBold.ttf);
-	font-weight: 600;
-}
-@font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-Bold.ttf);
-	font-weight: 700;
-}
-@font-face {
-    font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-ExtraBold.ttf);
-	font-weight: 800;
-}
+
 @font-face {
 	font-family: MartelSans;
-    src: url(./../assets/fonts/MartelSans-Black.ttf);
+	src: url(./../assets/fonts/MartelSans-Light.ttf);
+	font-weight: 300;
+}
+
+@font-face {
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-Regular.ttf);
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-SemiBold.ttf);
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-Bold.ttf);
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-ExtraBold.ttf);
+	font-weight: 800;
+}
+
+@font-face {
+	font-family: MartelSans;
+	src: url(./../assets/fonts/MartelSans-Black.ttf);
 	font-weight: 900;
 }
 
@@ -48,6 +54,7 @@
 
 	--lb-color-gray: #666;
 
+	--lb-color-primary-background: var(--lb-color-primary);
 	--lb-color-backgorund: #cd212212;
 	--lb-color-backgorund-dark: rgb(10, 63, 67, 0.2);
 	--lb-color-backgorund-light: rgb(10, 63, 67, 0.05);
@@ -143,7 +150,7 @@ h3,
 		font-size: 26pt;
 	}
 
-	.fs-40pt{
+	.fs-40pt {
 		font-size: 40pt;
 	}
 }
@@ -159,13 +166,13 @@ h3,
 
 .crop-img img {
 	position: absolute;
-    left: -100%;
-    right: -100%;
-    top: -100%;
-    bottom: -100%;
-    margin: auto;
-    min-height: 100%;
-    min-width: 100%;
+	left: -100%;
+	right: -100%;
+	top: -100%;
+	bottom: -100%;
+	margin: auto;
+	min-height: 100%;
+	min-width: 100%;
 }
 
 .btn {
@@ -191,15 +198,15 @@ h3,
 
 .btn-lb-secondary {
 	--lb-color-primary-light: #8ea8a8;
-    --bs-btn-color: var(--lb-color-primary-contrast);
-    --bs-btn-border-color: var(--lb-color-primary-light);
-    --bs-btn-bg: var(--lb-color-primary-light);
-    --bs-btn-active-color: var(--lb-color-secondary-contrast);
-    --bs-btn-active-border-color: #fff;
-    --bs-btn-active-bg: #fff;
-    --bs-btn-hover-color: var(--lb-color-secondary-contrast);
-    --bs-btn-hover-border-color: #fff;
-    --bs-btn-hover-bg: #fff;
+	--bs-btn-color: var(--lb-color-primary-contrast);
+	--bs-btn-border-color: var(--lb-color-primary-light);
+	--bs-btn-bg: var(--lb-color-primary-light);
+	--bs-btn-active-color: var(--lb-color-secondary-contrast);
+	--bs-btn-active-border-color: #fff;
+	--bs-btn-active-bg: #fff;
+	--bs-btn-hover-color: var(--lb-color-secondary-contrast);
+	--bs-btn-hover-border-color: #fff;
+	--bs-btn-hover-bg: #fff;
 	min-width: 240px;
 }
 
@@ -297,16 +304,16 @@ header .dropdown-menu {
 .contact-banner {
 	background-image: url('/themes/jesusvico/assets/img/contacta.webp');
 	background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+	background-size: cover;
+	background-position: center;
 	height: 560px;
 	color: var(--lb-color-primary-contrast);
 	text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
 }
 
 footer {
@@ -338,17 +345,17 @@ footer h5 {
 }
 
 .newsletter {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    background-color: transparent;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+	background-color: transparent;
 }
 
 .newsletter .form-control {
 	background: transparent;
-    border-radius: 0;
-    padding: 0.5rem 0.75rem;
-    color: var(--lb-color-primary-contrast);
+	border-radius: 0;
+	padding: 0.5rem 0.75rem;
+	color: var(--lb-color-primary-contrast);
 }
 
 .newsletter .form-control::placeholder {
@@ -385,6 +392,10 @@ ul.style-diamond li::marker {
 
 .bg-lb-color-primary-light {
 	background-color: var(--lb-color-primary-light);
+}
+
+.bg-lb-color-primary {
+	background-color: var(--lb-color-primary-background);
 }
 
 .bg-lb-color-backgorund-dark {
@@ -454,7 +465,27 @@ ul.style-diamond li::marker {
 	bottom: -22px;
 }
 
-.decoration > * {
+.decoration>* {
 	z-index: 2;
 	position: relative;
+}
+
+.flex-align-center-row {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+
+.input-text-style {
+	border: none;
+	background-color: var(--lb-color-backgorund-light);
+	border-radius: 0%;
+}
+
+.input-text-style:focus {
+	color: #212529;
+	background-color: var(--lb-color-backgorund-light);
+	border: var(--lb-color-primary) 0.5px solid;
+	outline: 0;
+	box-shadow: 0 0 0 1px var(--lb-color-primary-dark);
 }
