@@ -19,7 +19,7 @@ $files = $sub->getFiles($subasta->cod_sub);
 					<h6 class="card-subtitle mb-2 text-muted">{{ trans("$theme-app.user_panel.date") . ': ' . date("d-m-Y H:i", strtotime($subasta->session_start))}}</h6>
 				</header>
 
-				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description) }}</p>
+				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description ?? '') }}</p>
 
 				<a href="{{ $url_lotes }}" class="btn btn-lb-primary mt-auto">{{ trans("$theme-app.subastas.see_lotes") }}</a>
 			</div>

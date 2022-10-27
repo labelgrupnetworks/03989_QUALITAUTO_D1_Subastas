@@ -159,6 +159,10 @@ h3,
 	color: var(--lb-color-secondary);
 }
 
+.text-lb-gray {
+	color: var(--lb-color-gray);
+}
+
 .crop-img {
 	overflow: hidden;
 	position: relative;
@@ -213,12 +217,19 @@ h3,
 .rowBanner {
 	--bs-gutter-y: 1rem;
 }
+
+main.subastas,
+main.grid {
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
 /*
 |--------------------------------------------------------------------------
 | Header
 |--------------------------------------------------------------------------
 */
-header {
+body > header {
+	border-bottom: 1px solid var(--lb-color-secondary);
 	text-transform: uppercase;
 }
 
@@ -516,4 +527,28 @@ ul.style-diamond li::marker {
 .newsletter-banner a:focus,
 .newsletter-banner a:hover {
 	color: var(--lb-color-primary-contrast);
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| SUBASTAS
+|--------------------------------------------------------------------------
+*/
+.auctions-wrapper .year-border {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.auctions-wrapper .year-border * {
+	margin: 0;
+}
+
+.auction-card .card-body {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.auction-card .auction-card-title {
+	min-height: calc(1.2 * 2 * 1rem);
 }
