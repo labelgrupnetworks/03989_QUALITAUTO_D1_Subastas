@@ -7,10 +7,6 @@
 		margin: 1.5rem 0 1.5rem 0;
 	}
 
-	.how-to-sell .start-text-container {
-		height: 360px;
-	}
-
 	.how-to-sell section {
 		margin: 3rem 0px;
 	}
@@ -23,12 +19,16 @@
 		max-width: none;
 	}
 
+	.how-to-sell .start-text-container {
+		height: 360px;
+	}
+
 	@media (min-width: 768px) {
 		.how-to-sell .margin-video {
 			margin: 2rem;
 			margin-top: 5rem;
 		}
-		
+
 		.how-to-sell .start-text-container {
 			height: 450px;
 		}
