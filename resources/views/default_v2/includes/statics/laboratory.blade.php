@@ -29,7 +29,46 @@
 		margin-bottom: 7px;
 	}
 
+	.laboratory .margin-top-responsive {
+		margin-top: 3rem;
+	}
+
+	.laboratory .start-text-container {
+		height: 360px;
+	}
+
+	@media (min-width: 768px) {
+		.laboratory .margin-video {
+			margin: 2rem;
+			margin-top: 5rem;
+		}
+
+		.laboratory .start-text-container {
+			height: 540px;
+		}
+
+		.laboratory .margin-top-responsive {
+			margin-top: 1rem;
+		}
+		.laboratory .flex-align-center-row-sp {
+			display: flex;
+			align-items: center;
+			flex-direction: row;
+		}
+
+	}
+
+	@media (min-width: 992px) {
+		.laboratory .start-text-container {
+			height: 450px;
+		}
+	}
+
 	@media (min-width: 1200px) {
+		.laboratory .start-text-container {
+			height: 430px;
+		}
+
 		.laboratory .margin-video {
 			margin: 2rem;
 		}
@@ -38,16 +77,9 @@
 			margin-top: 3rem;
 		}
 
-		.laboratory .margin-arrow-svg {
-			margin-top: 2rem;
+		.laboratory .margin-top-responsive {
+			margin-top: 9rem;
 		}
-
-		.laboratory .flex-align-center-row {
-			display: flex;
-			align-items: center;
-			flex-direction: row;
-		}
-
 	}
 </style>
 
@@ -67,18 +99,19 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-4">
-				<div class="flex-align-center-column" style="margin-bottom: 30px;margin-top: 3rem;">
-					<div class="mb-5">
-						<h4>Jesús Vico es pionero en la relización de estudios tras el convenio firmado con el SECYR hace más de una
-							década.</h4>
-						<p style="color: gray; font-size: 14pt; font-weight: lighter; margin-top: 1rem;">SECYR: Servicio de Conservación,
-							Restauración y Estudios Científicos del Patrimonio Arqueológico de la Universidad Autónoma de Madrid.</p>
-					</div>
+				<div
+					class="d-flex flex-column align-items-center justify-content-between start-text-container margin-top-responsive"
+					style="margin-bottom: 30px;">
+					<h4>Jesús Vico es pionero en la relización de estudios tras el convenio firmado con el SECYR hace más de una
+						década.</h4>
+					<p class="mb-5" style="color: gray; font-size: 14pt; font-weight: lighter; margin-top: 1rem;">SECYR: Servicio de
+						Conservación,
+						Restauración y Estudios Científicos del Patrimonio Arqueológico de la Universidad Autónoma de Madrid.</p>
+
 
 					{{-- Flecha --}}
 
-					<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
-						viewBox="0 0 49.162 40.404">
+					<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
 						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
 							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
 								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
@@ -116,7 +149,7 @@
 									stroke="#245156" stroke-width="2" />
 							</clipPath>
 						</defs>
-						<g id="Grupo_42" data-name="Grupo 42" clip-path="url(#clip-path)">
+						<g id="Grupo_42" data-name="Grupo 42">
 							<path id="Trazado_5" data-name="Trazado 5"
 								d="M150.727,335.4c-5.331-5.358-12.016-6.491-19-6.161-9.386-.053-22.076,10.95-27.869,23.538-1.532,3.33-8,16.038-9.356,19.215-.537,1.254-43.547.579-68.533.081A17.133,17.133,0,0,0,8.49,389.2v5.725s143.22,2.615,159.54,2.281c4.673-.1,9.47-1.459,10.818-8.353a15.607,15.607,0,0,0-.581-7.483C175.739,372.815,159.349,343.008,150.727,335.4Z"
 								transform="translate(-4.504 -174.645)" fill="none" stroke="#245156" stroke-linecap="round"
@@ -179,49 +212,47 @@
 		</div>
 
 		<div class="row">
-			<div class="col-12">
-				<div class="row">
-					<div class="flex-align-center-row mt-3 mb-3">
-						<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
-							<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
-								height="44" viewBox="0 0 44 44">
-								<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
-									transform="translate(22) rotate(45)" fill="#b9b20e" />
-							</svg>
-						</div>
-						<div class="col-6 col-md-4">
-							<h3>Ensayos <br> no destructivos</h3>
-						</div>
-						<div class="col-6 col-md-6">
-							<ul class="style-diamond">
-								<li>
-									<p class="bg-lb-color-primary-light padding-li">Técnicas fotográficas</p>
-								</li>
-								<li>
-									<p class="bg-lb-color-primary-light padding-li">Rayos X</p>
-								</li>
-								<li>
-									<p class="bg-lb-color-primary-light padding-li">Infrarrojo</p>
-								</li>
-								<li>
-									<p class="bg-lb-color-primary-light padding-li">Ultravioleta</p>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="flex-align-center-row mt-3 mb-3">
-					<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
+			<div class="col-12 mt-2 mb-1">
+				<div class="row flex-align-center-row-sp mt-3 mb-3">
+					<div class="d-none d-md-block col-md-2 flex-align-center-column">
 						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 							height="44" viewBox="0 0 44 44">
 							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
 								transform="translate(22) rotate(45)" fill="#b9b20e" />
 						</svg>
 					</div>
-					<div class="col-6 col-md-4">
-						<h3>Laboratorio <br>de materiales</h3>
+					<div class="col-12 col-md-4">
+						<h3 class="text-center">Ensayos <br> no destructivos</h3>
 					</div>
-					<div class="col-6 col-md-6">
+					<div class="col-12 col-md-6">
+						<ul class="style-diamond">
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Técnicas fotográficas</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Rayos X</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Infrarrojo</p>
+							</li>
+							<li>
+								<p class="bg-lb-color-primary-light padding-li">Ultravioleta</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row flex-align-center-row-sp mt-3 mb-3">
+					<div class="d-none d-md-block col-md-2 flex-align-center-column">
+						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
+							height="44" viewBox="0 0 44 44">
+							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
+								transform="translate(22) rotate(45)" fill="#b9b20e" />
+						</svg>
+					</div>
+					<div class="col-12 col-md-4">
+						<h3 class="text-center">Laboratorio <br>de materiales</h3>
+					</div>
+					<div class="col-12 col-md-6">
 						<ul class="style-diamond">
 							<li>
 								<p class="bg-lb-color-primary-light padding-li">Ensayos metalográficos</p>
@@ -238,18 +269,18 @@
 						</ul>
 					</div>
 				</div>
-				<div class="flex-align-center-row mt-3 mb-3">
-					<div class=".d-none .d-md-block col-md-2 flex-align-center-column">
+				<div class="row flex-align-center-row-sp mt-3 mb-3">
+					<div class="d-none d-md-block col-md-2 flex-align-center-column">
 						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 							height="44" viewBox="0 0 44 44">
 							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
 								transform="translate(22) rotate(45)" fill="#b9b20e" />
 						</svg>
 					</div>
-					<div class="col-6 col-md-4">
-						<h3>Estudios y<br>Certificación<br>Numismática</h3>
+					<div class="col-12 col-md-4">
+						<h3 class="text-center">Estudios y<br>Certificación<br>Numismática</h3>
 					</div>
-					<div class="col-6 col-md-6">
+					<div class="col-12 col-md-6">
 						<ul class="style-diamond">
 							<li>
 								<p class="bg-lb-color-primary-light padding-li">NGC (Numismatic Guaranty Corporation)</p>
