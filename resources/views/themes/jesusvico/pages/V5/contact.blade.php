@@ -20,26 +20,19 @@
 		<h1>{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
 	</div>
 
-	<section class="container-fluid p-0 map-contact">
-		<iframe
-			src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5993.038773666047!2d2.033268!3d41.31931800000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x41a45e5c3be4fca8!2sLabelgrup%20Networks!5e0!3m2!1ses!2ses!4v1663759278691!5m2!1ses!2ses"
-			width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-			referrerpolicy="no-referrer-when-downgrade"></iframe>
-	</section>
-
 	<div class="container">
 
 		<div class="row gy-3">
 
-			<div class="col-md-5">
+			<div class="col-md-5 p-0 pe-md-5">
 				{{-- {!! $data['content'] !!} --}}
 
 				<section class="bg-lb-color-primary">
-					<h3 style="color: white;">Rellene el formulario y estaremos encantados de resolver sus dudas</h3>
+					<h3 class="p-5 m-0" style="color: white;">Rellene el formulario y estaremos encantados de resolver sus dudas</h3>
 				</section>
-				<section class="bg-lb-color-backgorund-light">
+				<section class="bg-lb-color-backgorund-light p-5">
 					<div class="flex-align-center-row pt-2 pb-2">
-						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="15.545" viewBox="0 0 21 15.545">
+						<svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="21" height="15.545" viewBox="0 0 21 15.545">
 							<g id="mail-outline" transform="translate(0.5 0.5)">
 								<rect id="Rectángulo_152" data-name="Rectángulo 152" width="20" height="14.545" rx="2" fill="none"
 									stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
@@ -48,10 +41,10 @@
 									stroke-linejoin="round" stroke-width="1" />
 							</g>
 						</svg>
-						<a href="mailto:info@jesusvico.com">info@jesusvico.com</a>
+						<a class="static-link" href="mailto:info@jesusvico.com">info@jesusvico.com</a>
 					</div>
 					<div class="flex-align-center-row pt-2 pb-2">
-						<svg xmlns="http://www.w3.org/2000/svg" width="20.963" height="20.919" viewBox="0 0 20.963 20.919">
+						<svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="20.963" height="20.919" viewBox="0 0 20.963 20.919">
 							<g id="call-outline" transform="translate(0.519 0.444)">
 								<path id="call-outline-2" data-name="call-outline"
 									d="M67.37,63.685a17.644,17.644,0,0,0-3.51-2.344c-1.168-.588-1.264-.637-2.183.046-.613.455-1.02.862-1.737.709A9.3,9.3,0,0,1,56.3,59.721a9.61,9.61,0,0,1-2.429-3.677c-.153-.714.26-1.117.711-1.731.636-.865.588-1.01.044-2.178a15.978,15.978,0,0,0-2.351-3.5c-.826-.816-.826-.672-1.358-.45a7.7,7.7,0,0,0-1.242.662,3.721,3.721,0,0,0-1.495,1.574c-.3.638-.433,2.134,1.109,4.935a24.445,24.445,0,0,0,4.863,6.466,26.606,26.606,0,0,0,6.478,4.845c3.114,1.744,4.308,1.4,4.948,1.106a3.709,3.709,0,0,0,1.578-1.49,7.649,7.649,0,0,0,.663-1.24C68.043,64.51,68.187,64.51,67.37,63.685Z"
@@ -65,7 +58,7 @@
 						</div>
 					</div>
 					<div class="flex-align-center-row pt-2 pb-2">
-						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+						<svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 							<g id="print-outline" transform="translate(0.5 0.5)">
 								<path id="Trazado_208" data-name="Trazado 208"
 									d="M19.917,19.188h1.25a2.105,2.105,0,0,0,2.083-2.114V8.614A2.105,2.105,0,0,0,21.167,6.5H5.333A2.105,2.105,0,0,0,3.25,8.614v8.458a2.105,2.105,0,0,0,2.083,2.114h1.25"
@@ -84,7 +77,7 @@
 						<p>+34 714 301 104</p>
 					</div>
 					<div class="flex-align-center-row pt-2 pb-2">
-						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="29.885" viewBox="0 0 21 29.885">
+						<svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="21" height="29.885" viewBox="0 0 21 29.885">
 							<g id="location-outline" transform="translate(0.5 0.5)">
 								<path id="Trazado_212" data-name="Trazado 212"
 									d="M15.687,2.438a9.769,9.769,0,0,0-10,9.513c0,6.041,6.666,15.615,9.114,18.921a1.1,1.1,0,0,0,1.771,0C19.021,27.567,25.687,18,25.687,11.951a9.768,9.768,0,0,0-10-9.513Z"
@@ -98,7 +91,7 @@
 						<p>Calle Jorge Juan, 83 duplicado,<br>28009 Madrid, España</p>
 					</div>
 					<div class="flex-align-center-row pt-2 pb-2">
-						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+						<svg class="m-2" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 							<g id="time-outline" transform="translate(0.5 0.5)">
 								<path id="Trazado_214" data-name="Trazado 214" d="M13.25,3.25a10,10,0,1,0,10,10A10,10,0,0,0,13.25,3.25Z"
 									transform="translate(-3.25 -3.25)" fill="none" stroke="#b9b20e" stroke-miterlimit="10"
@@ -111,8 +104,7 @@
 					</div>
 				</section>
 			</div>
-
-			<div class="col-md-7 contact-page-form">
+			<div class="col-md-7 contact-page-form ps-md-5">
 
 				<form name="contactForm" id="contactForm" novalidate>
 					@csrf
@@ -153,6 +145,13 @@
 		</div>
 
 	</div>
+
+	<section class="container-fluid p-0 map-contact mt-5 mb-5 pt-5">
+		<iframe
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6074.675997893583!2d-3.6826217223657953!3d40.42351398503582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228a4d0c37133%3A0x826a8f1e0b894a8c!2sJes%C3%BAs%20Vico%20S.A.!5e0!3m2!1ses!2ses!4v1666859088845!5m2!1ses!2ses"
+			width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+			referrerpolicy="no-referrer-when-downgrade"></iframe>
+	</section>
 
 	<script>
 		$('#button-map').click(function() {
