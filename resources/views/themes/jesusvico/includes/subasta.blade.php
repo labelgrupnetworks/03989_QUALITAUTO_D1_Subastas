@@ -1,0 +1,45 @@
+@php
+    $url_lotes = Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference);
+    $url_tiempo_real = Tools::url_real_time_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions);
+    $url_subasta = 'cambiar por archivo';
+    $sub = new App\Models\Subasta();
+    $files = $sub->getFiles($subasta->cod_sub);
+    $fileUrl = '';
+    if (!empty($files)) {
+        $fileUrl = $files[0]->type == '5' ? $files[0]->url : "/files{$files[0]->path}";
+    }
+@endphp
+
+<article class="card auction-card h-100 border-0">
+
+    <img class="card-img-top"
+        src="{{ \Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
+        alt="{{ $subasta->name }}" @if ($loop->index > 12) loading="lazy" @endif>
+
+    <div class="card-body d-flex flex-column align-items-center">
+        <header class="mb-auto">
+            <h4 class="auction-card-title fw-light text-lb-secondary text-center">{{ $subasta->name }}</h4>
+        </header>
+
+        <p class="card-subtitle small text-lb-gray mb-2">{{ date('d-m-Y H:i', strtotime($subasta->session_start)) }}</p>
+
+        <div class="d-flex justify-content-between w-100 gap-3">
+            <a class="btn btn-lb-primary w-100" href="{{ $url_lotes }}" aria-label="Plus">
+                <svg class="bi" width="32" height="32" fill="currentColor">
+                    <use xlink:href="/bootstrap-icons.svg#eye"></use>
+                </svg>
+            </a>
+
+            @if (!empty($files))
+                <a class="btn btn-lb-primary w-100" href="{{ $fileUrl }}" title="{{ $subasta->name }}"
+                    aria-label="Plus" target="_blank">
+                    <svg class="bi" width="32" height="24" fill="currentColor">
+                        <use xlink:href="/bootstrap-icons.svg#book"></use>
+                    </svg>
+                </a>
+            @endif
+
+
+        </div>
+    </div>
+</article>
