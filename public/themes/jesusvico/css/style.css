@@ -503,6 +503,26 @@ ul.style-diamond li::marker {
 	box-shadow: 0 0 0 1px var(--lb-color-primary-dark);
 }
 
+.tasacion-height-arrow-container {
+	height: 380px;
+}
+
+@media (min-width: 992px) {
+	.tasacion-height-arrow-container {
+		height: 450px;
+	}
+
+	.margin-video {
+		margin: 2rem;
+	}
+}
+
+@media (min-width: 1200px) {
+	.tasacion-height-arrow-container {
+		height: 550px;
+	}
+}
+
 /*
 |--------------------------------------------------------------------------
 | HOME
@@ -528,7 +548,6 @@ ul.style-diamond li::marker {
 .newsletter-banner a:hover {
 	color: var(--lb-color-primary-contrast);
 }
-
 
 /*
 |--------------------------------------------------------------------------

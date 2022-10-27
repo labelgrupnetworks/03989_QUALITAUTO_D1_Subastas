@@ -19,26 +19,37 @@
 		display: inline-block;
 	}
 
-	.who-we-are .flex-align-center {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
-
 	.who-we-are .lb-blockquote {
 		max-width: 50%;
 	}
 
-	@media (min-width: 1200px) {
+	.who-we-are .start-text-container {
+		height: 360px;
+	}
+
+	@media (min-width: 768px) {
 		.who-we-are .margin-video {
 			margin: 2rem;
 			margin-top: 5rem;
 		}
 
-		.who-we-are .margin-arrow-svg {
-			margin-top: 8rem;
-			margin-left: 18px
+		.who-we-are .start-text-container {
+			height: 540px;
 		}
+
+	}
+
+	@media (min-width: 992px) {
+		.who-we-are .start-text-container {
+			height: 450px;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.who-we-are .start-text-container {
+			height: 630px;
+		}
+
 	}
 </style>
 
@@ -47,7 +58,7 @@
 
 		<div class="row">
 			<div class="col-12 col-md-4">
-				<div class="flex-align-center" style="margin-bottom: 30px;">
+				<div class="d-flex flex-column justify-content-between start-text-container" style="margin-bottom: 30px;">
 					<div class="mb-5">
 						<h4 class="fw-light">Los inicios de la empresa se remontan al año 1971, cuando <strong>Jesús Vico
 								Monteoliva</strong> comienza su
@@ -57,8 +68,8 @@
 
 					{{-- Flecha --}}
 
-					<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
-						viewBox="0 0 49.162 40.404" style="align-self:flex-start;">
+					<svg class="ms-4" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404"
+						style="align-self:flex-start;">
 						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
 							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
 								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
@@ -82,7 +93,7 @@
 		</div>
 
 		<div class="row mt-5">
-			<div class="col-12">
+			<div class="col-12 mb-5">
 				<section>
 					<h4 class="fw-light bg-secondary-color-lighter">1986</h4>
 					<p>Diez años más tarde, en el 1986, <strong>se asocia con Julio Chico Escudero</strong> y constituyen la

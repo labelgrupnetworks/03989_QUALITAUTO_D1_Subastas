@@ -32,33 +32,29 @@
 				</div>
 
 			</div>
-			<div class="col-12 col-md-4">
+			<div class="col-12 col-md-4 d-flex flex-column align-items-center justify-content-between tasacion-height-arrow-container mb-md-5">
 
-				<div class="flex-align-center" style="margin-bottom: 30px">
-					<div class="mb-5">
-						<h3>¿Desea obtener una valoración de sus artículos?</h3>
-						<p>Uno de nuestros expertos valorará los objetos que detalle a continuación, y se podrá en contacto con usted para
-							transmitirle los resultados.</p>
-					</div>
+				<h3 class="mt-5">¿Desea obtener una valoración de sus artículos?</h3>
+				<p>Uno de nuestros expertos valorará los objetos que detalle a continuación, y se podrá en contacto con usted para
+					transmitirle los resultados.</p>
 
-					{{-- Flecha --}}
-					<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
-						viewBox="0 0 49.162 40.404">
-						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-						</g>
-					</svg>
-				</div>
+				{{-- Flecha --}}
+				<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
+					<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+						<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+							transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+						<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+							transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+					</g>
+				</svg>
+
 			</div>
 		</div>
 
 
 		<div class="row">
 
-			<div class="pt-5 mt-5 mb-5">
+			<div class="pt-5 mt-3 mb-5">
 				<p>Por favor, añada la máxima información posible para garantizar una revisión más precisa.</p>
 			</div>
 
