@@ -53,81 +53,89 @@
 					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Subastas presenciales y online</h5>
 				</div>
 				<div class="lb-border-light" style="padding: 8px;">
-					<section>
-						<h4>
-							<span class="text-lb-secondary">
-								<svg class="bi" width="24" height="24" fill="currentColor">
-									<use xlink:href="/bootstrap-icons.svg#envelope"></use>
-								</svg>
-							</span>
-							En nuestras oficinas
-						</h4>
-						<p class="option">
-							Entregando o enviando por correo postal la orden incluída en el catálogo
-						</p>
+					<section class="d-flex">
+						<span class="text-lb-secondary">
+							<svg class="bi" width="24" height="24" fill="currentColor">
+								<use xlink:href="/bootstrap-icons.svg#envelope"></use>
+							</svg>
+						</span>
+						<div class="ms-1">
+							<h4>
+								En nuestras oficinas
+							</h4>
+							<p>
+								Entregando o enviando por correo postal la orden incluída en el catálogo
+							</p>
+						</div>
 					</section>
-					<section>
-						<h4>
-							<span class="text-lb-secondary">
-								<svg class="bi" width="24" height="24" fill="currentColor">
-									<use xlink:href="/bootstrap-icons.svg#telephone"></use>
-								</svg>
-							</span>
-							Por teléfono
-						</h4>
-						<p class="option">
-							+34 914318807
-						</p>
+					<section class="d-flex">
+						<span class="text-lb-secondary">
+							<svg class="bi" width="24" height="24" fill="currentColor">
+								<use xlink:href="/bootstrap-icons.svg#telephone"></use>
+							</svg>
+						</span>
+						<div class="ms-1">
+							<h4>
+								Por teléfono
+							</h4>
+							<p>
+								+34 914318807
+							</p>
+						</div>
 					</section>
-					<section>
-						<h4>
-							<span class="text-lb-secondary">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-									<g id="at-outline" transform="translate(0.505 0.5)">
-										<path id="Trazado_122" data-name="Trazado 122"
-											d="M184.112,178.972a4.769,4.769,0,0,1-4.734,4.7c-2.376,0-3.958-2.105-3.729-4.7a4.89,4.89,0,0,1,4.558-4.7A4.088,4.088,0,0,1,184.112,178.972Z"
-											transform="translate(-170.342 -169.034)" fill="none" stroke="#b9b13c" stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="1" />
-										<path id="Trazado_123" data-name="Trazado 123"
-											d="M92.893,97.327a9.971,9.971,0,0,1-4.477.819,8.956,8.956,0,0,1-9.062-9.938A11.07,11.07,0,0,1,90.168,78.27c6.182,0,9.581,4.05,9.1,9.471-.356,4.047-2.942,5.213-4.3,4.973-1.274-.226-2.325-1.379-2.131-3.586l.479-5.435"
-											transform="translate(-79.315 -78.27)" fill="none" stroke="#b9b13c" stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="1" />
-									</g>
-								</svg>
-							</span>
-							Por correo electrónico
-						</h4>
-						<p class="option">
-							<a class="static-link" href="mailto:info@jesusvico.com">info@jesusvico.com</a>
-						</p>
+					<section class="d-flex">
+						<span class="text-lb-secondary">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+								<g id="at-outline" transform="translate(0.505 0.5)">
+									<path id="Trazado_122" data-name="Trazado 122"
+										d="M184.112,178.972a4.769,4.769,0,0,1-4.734,4.7c-2.376,0-3.958-2.105-3.729-4.7a4.89,4.89,0,0,1,4.558-4.7A4.088,4.088,0,0,1,184.112,178.972Z"
+										transform="translate(-170.342 -169.034)" fill="none" stroke="#b9b13c" stroke-linecap="round"
+										stroke-linejoin="round" stroke-width="1" />
+									<path id="Trazado_123" data-name="Trazado 123"
+										d="M92.893,97.327a9.971,9.971,0,0,1-4.477.819,8.956,8.956,0,0,1-9.062-9.938A11.07,11.07,0,0,1,90.168,78.27c6.182,0,9.581,4.05,9.1,9.471-.356,4.047-2.942,5.213-4.3,4.973-1.274-.226-2.325-1.379-2.131-3.586l.479-5.435"
+										transform="translate(-79.315 -78.27)" fill="none" stroke="#b9b13c" stroke-linecap="round"
+										stroke-linejoin="round" stroke-width="1" />
+								</g>
+							</svg>
+						</span>
+						<div class="ms-1">
+							<h4>
+								Por correo electrónico
+							</h4>
+							<p>
+								<a class="static-link" href="mailto:info@jesusvico.com">info@jesusvico.com</a>
+							</p>
+						</div>
 					</section>
 
-					<section>
-						<h4>
-							<span class="text-lb-secondary">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-									<g id="desktop-outline" transform="translate(0.196 0.5)">
-										<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
-											transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round" stroke-width="1" />
-										<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
-											transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="1" />
-										<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)" fill="none"
-											stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-										<path id="Trazado_125" data-name="Trazado 125"
-											d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
-											transform="translate(-32 -293.525)" fill="#b9b13c" />
-									</g>
-								</svg>
-							</span>
-							En nuestra web
-						</h4>
-						<p class="option">
-							Registrándose en nuestra página web y accediendo al menú de subastas
-						</p>
-						<p class="option" style="padding-top: 5px">
-							También podrá hacerlo a través de la páginas especializadas del sector en las que estamos presentes:
-						</p>
+					<section class="d-flex">
+						<span class="text-lb-secondary">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+								<g id="desktop-outline" transform="translate(0.196 0.5)">
+									<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
+										transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round" stroke-width="1" />
+									<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
+										transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
+										stroke-linejoin="round" stroke-width="1" />
+									<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)" fill="none"
+										stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+									<path id="Trazado_125" data-name="Trazado 125"
+										d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
+										transform="translate(-32 -293.525)" fill="#b9b13c" />
+								</g>
+							</svg>
+						</span>
+						<div class="ms-1">
+							<h4>
+								En nuestra web
+							</h4>
+							<p>
+								Registrándose en nuestra página web y accediendo al menú de subastas
+							</p>
+							<p class="mt-2">
+								También podrá hacerlo a través de la páginas especializadas del sector en las que estamos presentes:
+							</p>
+						</div>
 					</section>
 					<section class="option-links">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="15" viewBox="0 0 24 15">
@@ -155,85 +163,91 @@
 					</p>
 					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Suabstas en sala</h5>
 					<div class="lb-border-light" style="padding: 8px;">
-						<section>
-							<h4>
-								<span class="text-lb-secondary">
-									<svg class="bi" width="24" height="24" fill="currentColor">
-										<use xlink:href="/bootstrap-icons.svg#person"></use>
-									</svg>
-								</span>
-								Presencialmente
-							</h4>
-							<p class="option">
-								En nuestra sala de subastas
-							</p>
+						<section class="d-flex">
+							<span class="text-lb-secondary">
+								<svg class="bi" width="24" height="24" fill="currentColor">
+									<use xlink:href="/bootstrap-icons.svg#person"></use>
+								</svg>
+							</span>
+							<div class="ms-1">
+								<h4>
+									Presencialmente
+								</h4>
+								<p>
+									En nuestra sala de subastas
+								</p>
+							</div>
 						</section>
-						<section>
-							<h4>
-								<span class="text-lb-secondary">
-									<svg class="bi" width="24" height="24" fill="currentColor">
-										<use xlink:href="/bootstrap-icons.svg#telephone"></use>
-									</svg>
-								</span>
-								Telefónicamente
-							</h4>
-							<p class="option">
-								Informándonos de que desea pujar por esta vía con, al menos, <br>
-								24 horas de antelación
-							</p>
+						<section class="d-flex">
+							<span class="text-lb-secondary">
+								<svg class="bi" width="24" height="24" fill="currentColor">
+									<use xlink:href="/bootstrap-icons.svg#telephone"></use>
+								</svg>
+							</span>
+							<div class="ms-1">
+								<h4>
+									Telefónicamente
+								</h4>
+								<p>
+									Informándonos de que desea pujar por esta vía con, al menos, <br>
+									24 horas de antelación
+								</p>
+							</div>
 						</section>
-						<section>
-							<h4>
-								<span class="text-lb-secondary">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-										<g id="desktop-outline" transform="translate(0.196 0.5)">
-											<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
-												transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round"
-												stroke-width="1" />
-											<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
-												transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
-												stroke-linejoin="round" stroke-width="1" />
-											<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)"
-												fill="none" stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-											<path id="Trazado_125" data-name="Trazado 125"
-												d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
-												transform="translate(-32 -293.525)" fill="#b9b13c" />
-										</g>
-									</svg>
-								</span>
-								A través de nuestra página web
-							</h4>
-							<p class="option">
-								Puja en directo a través de nuestra página web
-							</p>
+						<section class="d-flex">
+							<span class="text-lb-secondary">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<g id="desktop-outline" transform="translate(0.196 0.5)">
+										<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
+											transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round" stroke-width="1" />
+										<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
+											transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
+											stroke-linejoin="round" stroke-width="1" />
+										<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)"
+											fill="none" stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+										<path id="Trazado_125" data-name="Trazado 125"
+											d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
+											transform="translate(-32 -293.525)" fill="#b9b13c" />
+									</g>
+								</svg>
+							</span>
+							<div class="ms-1">
+								<h4>
+									A través de nuestra página web
+								</h4>
+								<p>
+									Puja en directo a través de nuestra página web
+								</p>
+							</div>
 						</section>
 					</div>
 					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2 mt-3">Subastas online</h5>
 					<div class="lb-border-light" style="padding: 8px;">
-						<section>
-							<h4>
-								<span class="text-lb-secondary">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-										<g id="desktop-outline" transform="translate(0.196 0.5)">
-											<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
-												transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round"
-												stroke-width="1" />
-											<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
-												transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
-												stroke-linejoin="round" stroke-width="1" />
-											<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)"
-												fill="none" stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-											<path id="Trazado_125" data-name="Trazado 125"
-												d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
-												transform="translate(-32 -293.525)" fill="#b9b13c" />
-										</g>
-									</svg>
-								</span>
-								A través de nuestra página web
-							</h4>
-							<p class="option">
-								Puja en directo a través de nuestra página web
-							</p>
+						<section class="d-flex">
+							<span class="text-lb-secondary">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<g id="desktop-outline" transform="translate(0.196 0.5)">
+										<rect id="Rectángulo_153" data-name="Rectángulo 153" width="19.391" height="14.316" rx="2"
+											transform="translate(0.304)" fill="none" stroke="#b9b13c" stroke-linejoin="round" stroke-width="1" />
+										<path id="Trazado_124" data-name="Trazado 124" d="M213.7,386.6l-.475-2.6h-4.752L208,386.6Z"
+											transform="translate(-200.851 -369.684)" fill="#b9b13c" stroke="#b9b13c" stroke-linecap="round"
+											stroke-linejoin="round" stroke-width="1" />
+										<line id="Línea_40" data-name="Línea 40" x1="7.391" transform="translate(6.304 17.516)"
+											fill="none" stroke="#b9b13c" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
+										<path id="Trazado_125" data-name="Trazado 125"
+											d="M32,304v2.3a1.49,1.49,0,0,0,1.429,1.537H50.571A1.49,1.49,0,0,0,52,306.3V304Zm10,3.073a.77.77,0,1,1,.714-.768A.743.743,0,0,1,42,307.073Z"
+											transform="translate(-32 -293.525)" fill="#b9b13c" />
+									</g>
+								</svg>
+							</span>
+							<div class="ms-1">
+								<h4>
+									A través de nuestra página web
+								</h4>
+								<p>
+									Puja en directo a través de nuestra página web
+								</p>
+							</div>
 						</section>
 					</div>
 				</div>
@@ -369,7 +383,7 @@
 						que exista alguna duda acerca de la misma, se examinará de nuevo la pieza. Si esta duda persiste, le ofreceremos
 						las siguiente soluciones:
 					</p>
-					<ul class="style-diamond">
+					<ul class="style-diamond mb-5">
 						<li><strong>Certificado de la AENP</strong> (Asociación Española de Numismáticos Profesionales)</li>
 						<li><strong>Certificado de la IAPN</strong> (International Association of Professional Numismatists) a través de
 							su
