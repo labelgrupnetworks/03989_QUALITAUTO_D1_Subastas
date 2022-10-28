@@ -30,6 +30,12 @@
 		}
 
 		.how-to-sell .start-text-container {
+			height: 270px;
+		}
+	}
+
+	@media (min-width: 992px) {
+		.how-to-sell .start-text-container {
 			height: 450px;
 		}
 	}
@@ -45,7 +51,7 @@
 	<div class="how-to-sell">
 
 		<div class="row">
-			<div class="col-12 col-md-8">
+			<div class="col-12 col-lg-8">
 
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
@@ -58,10 +64,9 @@
 				</div>
 
 			</div>
-			<div class="col-12 col-md-4">
+			<div class="col-12 col-lg-4 mt-4 mt-lg-0">
 
-				<div class="d-flex flex-column align-items-center justify-content-between start-text-container"
-					style="margin-bottom: 30px">
+				<div class="d-flex flex-column align-items-center justify-content-between start-text-container">
 					<div class="mb-5 mt-5 mt-md-2">
 						<h3>Si está pensando en vender póngase en contacto con nosotros.</h3>
 						<h3>Le ofreceremos dos posibilidades para dar salida a sus piezas o a su colección.</h3>

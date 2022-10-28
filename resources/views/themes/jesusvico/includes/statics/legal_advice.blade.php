@@ -92,7 +92,7 @@
 		}
 
 		.legal-advice .start-text-container {
-			height: 620px;
+			height: 350px;
 		}
 	}
 
@@ -160,7 +160,7 @@
 	<div class="legal-advice">
 
 		<div class="row">
-			<div class="col-12 col-md-8 margin-auto-min768">
+			<div class="col-12 col-lg-8 margin-auto-min768">
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
 						<video style="height: auto; padding: 0 10px;" controls=""
@@ -171,7 +171,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-md-4">
+			<div class="col-12 col-lg-4">
 				<div class="d-flex flex-column align-items-center justify-content-between start-text-container" style="margin-bottom: 30px;margin-top: 3rem;">
 					<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
 					</h4>

@@ -44,7 +44,7 @@
 		}
 
 		.laboratory .start-text-container {
-			height: 540px;
+			height: 305px;
 		}
 
 		.laboratory .margin-top-responsive {
@@ -87,7 +87,7 @@
 	<div class="laboratory">
 
 		<div class="row">
-			<div class="col-12 col-md-8">
+			<div class="col-12 col-lg-8">
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
 						<video style="height: auto; padding: 0 10px;" controls=""
@@ -98,7 +98,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-md-4">
+			<div class="col-12 col-lg-4">
 				<div
 					class="d-flex flex-column align-items-center justify-content-between start-text-container margin-top-responsive"
 					style="margin-bottom: 30px;">

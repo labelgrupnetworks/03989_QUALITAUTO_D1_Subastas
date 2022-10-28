@@ -24,7 +24,7 @@
 
 		<div class="row gy-3">
 
-			<div class="col-md-5 p-0 pe-md-5">
+			<div class="col-lg-5 p-0 pe-lg-5">
 				{{-- {!! $data['content'] !!} --}}
 
 				<section class="bg-lb-color-primary">
@@ -104,7 +104,7 @@
 					</div>
 				</section>
 			</div>
-			<div class="col-md-7 contact-page-form ps-md-5">
+			<div class="col-lg-7 contact-page-form ps-xl-5 mt-5 mt-lg-0">
 
 				<form name="contactForm" id="contactForm" novalidate>
 					@csrf
