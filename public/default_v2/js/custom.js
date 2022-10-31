@@ -1710,10 +1710,20 @@ function changeFilters(show) {
 	const lotsElement = document.getElementById('js-lots-col');
 	const buttonShow = document.getElementById('js-show-filters');
 
+	const colsToLotsElement = calculateLotsGridColumns(filtersElement);
+
 	filtersElement.classList.toggle('d-none', !show);
-	lotsElement.classList.toggle('col-lg-9', show);
+	lotsElement.classList.toggle(`col-lg-${colsToLotsElement}`, show);
 	lotsElement.classList.toggle('col-lg-12', !show);
 	buttonShow.classList.toggle('d-none', show);
+}
+
+function calculateLotsGridColumns(filtersElement) {
+	const maxCols = 12;
+	const filterClasses = [...filtersElement.classList].find(className => className.includes('col-lg'));
+	const filterCols = filterClasses.slice(-1);
+	const elementsCols = maxCols - filterCols;
+	return elementsCols;
 }
 
 (function ($) {

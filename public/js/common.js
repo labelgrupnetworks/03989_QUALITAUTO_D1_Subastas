@@ -1,4 +1,8 @@
 let audioIsActived = false;
+let project = {
+	theme: 'demo',
+	version: 1,
+};
 
 $(document).ready(function () {
 

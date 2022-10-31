@@ -68,9 +68,8 @@ h1,
 	}
 }
 
-/* appearance for checked radiobutton */
-input[type="radio"]:checked {
-	background-color: var(--lb-color-primary);
+input {
+	accent-color:  var(--lb-color-primary);
 }
 
 .btn {
@@ -631,9 +630,34 @@ header .navbar-toggler {
 	gap: 1rem;
 }
 
+.section-grid-filters {
+	height: auto;
+	/*Firefox*/
+	scrollbar-color: var(--lb-color-primary) var(--lb-color-primary-light);
+	scrollbar-width: thin;
+}
+
+.section-grid-filters::-webkit-scrollbar {
+    width: 10px;
+}
+.section-grid-filters::-webkit-scrollbar-track {
+	background: var(--lb-color-primary-light);
+}
+.section-grid-filters::-webkit-scrollbar-thumb{
+    background: var(--lb-color-primary);
+}
+
 .filters-types> :is(div, section) {
 	padding: 0.5rem 0;
 	border-bottom: 1px solid var(--bs-border-color);
+}
+
+@media(min-width: 992px) {
+	.section-grid-filters {
+		height: 94vh;
+		top: 3vh;
+		overflow-y: auto;
+	}
 }
 
 /*

@@ -1,3 +1,9 @@
+project = {
+	...project,
+	theme: 'jesusvico',
+	version: 2
+};
+
 $(document).ready(function () {
 
 	//Eliminamos el menu superior fijo
@@ -109,8 +115,38 @@ $(document).ready(function () {
 
 	});
 
-	//comportamiento filtros
+	/**
+	 * Comportamientos de filtros
+	 * Desactivar para la version 2
+	 */
+	if(project.version == 1){
+		eventsToGridFilters();
+	}
 
+	$('.mosaic-container .post-container').on('click', function () {
+
+		var modal = document.getElementById("mosaic-modal");
+		var img = this.querySelector('img');
+		var modalImg = document.getElementById("img-modal");
+		var captionText = document.getElementById("mosaic-caption");
+
+		modal.style.display = "block";
+		modalImg.src = img.src;
+		captionText.innerHTML = img.alt;
+	});
+
+	$('.mosaic-close').on('click', function(){
+		document.getElementById("mosaic-modal").style.display = "none";
+	});
+
+	$('#button-open-user-menu').off('click');
+	$('#button-open-user-menu').on('click', function () {
+		$('#user-account-ul').toggle(500);
+	})
+
+});
+
+function eventsToGridFilters() {
 	$('#js-shop_links').click(() => {
 		var categories = $('#shop_links');
 		var icon = $('#js-shop_links i');
@@ -170,33 +206,10 @@ $(document).ready(function () {
 		}
 	});
 
-	$('.js-link-to-shop').on('change', function(e){
+	$('.js-link-to-shop').on('change', function (e) {
 		window.location.href = e.target.dataset.to;
-	})
-
-	$('.mosaic-container .post-container').on('click', function () {
-
-		var modal = document.getElementById("mosaic-modal");
-		var img = this.querySelector('img');
-		var modalImg = document.getElementById("img-modal");
-		var captionText = document.getElementById("mosaic-caption");
-
-		modal.style.display = "block";
-		modalImg.src = img.src;
-		captionText.innerHTML = img.alt;
 	});
-
-	$('.mosaic-close').on('click', function(){
-		document.getElementById("mosaic-modal").style.display = "none";
-	});
-
-
-	$('#button-open-user-menu').off('click');
-	$('#button-open-user-menu').on('click', function () {
-		$('#user-account-ul').toggle(500);
-	})
-
-});
+}
 
 function loadVideo(video) {
 	$('#video_main_wrapper').empty();

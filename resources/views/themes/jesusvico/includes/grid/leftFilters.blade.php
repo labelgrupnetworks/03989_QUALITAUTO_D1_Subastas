@@ -1,14 +1,10 @@
-@if(config('app.countdown_ingrid', 0) && !empty($auction))
-	<div class="filters-auction-content mb-1">
-		<b><p data-countdown="{{ strtotime($auction->session_start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($auction->session_start); ?>" data-closed="{{ 0 }}" class="timer mt-1"></p></b>
-		<p>{{ \Tools::getDateFormat($auction->session_start, 'Y-m-d H:i:s', 'd/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.lot_list.time_zone') }}</p>
-	</div>
-@endif
+@php
+	$shouldShowCountdown = !empty($auction) && $auction->tipo_sub != 'V';
+@endphp
 
 <div class="filters-auction-content">
 
-	<div class="filters-auction-title d-flex align-items-end justify-content-between border-bottom pb-1 mt-1">
-		<p>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</p>
+	<div class="filters-auction-title border-bottom pb-1 mt-1">
 
 		<button class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
 			<svg class="bi" width="16" height="16" fill="currentColor">
@@ -16,6 +12,15 @@
 			</svg>
 		</button>
 	</div>
+
+	@if($shouldShowCountdown)
+	<div class="filters-auction-content text-center bg-lb-primary-150 mb-4">
+		<div class="filter-title">
+			<p data-countdown="{{ strtotime($auction->session_start) - getdate()[0] }}" data-format="{{ Tools::down_timer($auction->session_start) }}" data-closed="0" class="timer"></p>
+			<p>{{ Tools::getDateFormat($auction->session_start, 'Y-m-d H:i:s', 'd/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.lot_list.time_zone') }}</p>
+		</div>
+	</div>
+	@endif
 
 	<div class="form-group">
 		<form id="form_lotlist" class="color-text" method="get" action="{{ $url }}">

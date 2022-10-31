@@ -475,15 +475,16 @@ class LotListController extends Controller
 			$urlAllCategories =  route("allCategories");
 				$bread[] = array("url" =>$urlAllCategories, "name" => trans(\Config::get('app.theme').'-app.lot_list.all_categories') );
 			if(!empty($infoOrtsec)){
-				$urlCategory =  route("category",[ "keycategory" => $infoOrtsec->key_ortsec0 ]);
+				$key_ortsec0 = $infoOrtsec->key_ortsec0 ?? '';
+				$urlCategory =  route("category", ["keycategory" => $key_ortsec0 ]);
 				$bread[] = array("url" =>$urlCategory, "name" =>$infoOrtsec->des_ortsec0  );
 
 				if(!empty($infoSec)){
-					$urlSection =  route("section",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec]);
+					$urlSection =  route("section",[ "keycategory" => $key_ortsec0 , "keysection" => $infoSec->key_sec]);
 					$bread[] = array("url" =>$urlSection, "name" => ucfirst(mb_strtolower($infoSec->des_sec))  );
 				}
 				if(!empty($infoSubSec)){
-					$urlSubSection =  route("subsection",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
+					$urlSubSection =  route("subsection",[ "keycategory" => $key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
 
 					$bread[] = array("url" =>$urlSubSection, "name" => ucfirst(mb_strtolower($infoSubSec->des_subsec))  );
 				}

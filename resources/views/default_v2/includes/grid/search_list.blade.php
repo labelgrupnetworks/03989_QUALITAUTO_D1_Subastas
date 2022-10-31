@@ -1,15 +1,16 @@
 <div class="filters-auction-texts">
-	<div class="auction__filters-collapse d-flex align-items-center justify-content-between"
+	<div class="auction__filters-collapse filter-parent-collapse d-flex align-items-center justify-content-between"
 		role="button" href="#auction_search" aria-expanded="true" aria-controls="auction_search"
 		data-bs-toggle="collapse">
-		<div class="filters_titles">Buscar</div>
+
+		<div class="filter-title">{{ trans("$theme-app.head.search_button") }}</div>
 
 		<svg class="bi" width="16" height="16" fill="currentColor">
-			<use xlink:href="/bootstrap-icons.svg#caret-down-fill"/>
+			<use xlink:href="/bootstrap-icons.svg#caret-down"/>
 		</svg>
 	</div>
 
-	<div id="auction_search" class="mt-1 collapse show">
+	<div id="auction_search" class="mt-1 collapse show filter-child-collapse">
 		<label class="filters-auction-label w-100 mb-1">
 			<p>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</p>
 			<input id="description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}"

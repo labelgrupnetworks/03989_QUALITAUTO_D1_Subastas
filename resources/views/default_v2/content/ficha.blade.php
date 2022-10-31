@@ -4,7 +4,7 @@ use App\Models\V5\FgDeposito;
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S';
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N';
-$hay_pujas = count($lote_actual->pujas) >0;
+$hay_pujas = count($lote_actual->pujas) > 0;
 $devuelto= $lote_actual->cerrado_asigl0 == 'D';
 $remate = $lote_actual->remate_asigl0 =='S';
 $compra = $lote_actual->compra_asigl0 == 'S';
