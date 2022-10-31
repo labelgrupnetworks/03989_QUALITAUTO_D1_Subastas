@@ -24,7 +24,7 @@
 	}
 
 	.who-we-are .start-text-container {
-		height: 360px;
+		height: 355px;
 	}
 
 	@media (min-width: 768px) {
@@ -34,7 +34,7 @@
 		}
 
 		.who-we-are .start-text-container {
-			height: 540px;
+			height: 210px;
 		}
 
 	}
@@ -57,8 +57,8 @@
 	<div class="who-we-are">
 
 		<div class="row">
-			<div class="col-12 col-md-4">
-				<div class="d-flex flex-column justify-content-between start-text-container" style="margin-bottom: 30px;">
+			<div class="col-12 col-lg-4">
+				<div class="d-flex flex-column align-items-center align-items-lg-start justify-content-between start-text-container" style="margin-bottom: 30px;">
 					<div class="mb-5">
 						<h4 class="fw-light">Los inicios de la empresa se remontan al año 1971, cuando <strong>Jesús Vico
 								Monteoliva</strong> comienza su
@@ -68,8 +68,7 @@
 
 					{{-- Flecha --}}
 
-					<svg class="ms-4" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404"
-						style="align-self:flex-start;">
+					<svg class="ms-lg-4 mb-4 mb-md-0" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
 						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
 							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
 								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
@@ -79,7 +78,7 @@
 					</svg>
 				</div>
 			</div>
-			<div class="col-12 col-md-8">
+			<div class="col-12 col-lg-8">
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
 						<video style="height: auto; padding: 0 10px;" controls=""

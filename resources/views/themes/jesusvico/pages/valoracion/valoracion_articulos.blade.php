@@ -19,7 +19,7 @@
 		<p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p> --}}
 
 		<div class="row">
-			<div class="col-12 col-md-8">
+			<div class="col-12 col-lg-8">
 
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
@@ -32,7 +32,7 @@
 				</div>
 
 			</div>
-			<div class="col-12 col-md-4 d-flex flex-column align-items-center justify-content-between tasacion-height-arrow-container mb-md-5">
+			<div class="col-12 col-lg-4 d-flex flex-column align-items-center justify-content-between tasacion-height-arrow-container mb-md-5">
 
 				<h3 class="mt-5">¿Desea obtener una valoración de sus artículos?</h3>
 				<p>Uno de nuestros expertos valorará los objetos que detalle a continuación, y se podrá en contacto con usted para

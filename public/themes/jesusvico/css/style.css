@@ -535,6 +535,12 @@ ul.style-diamond li::marker {
 	height: 380px;
 }
 
+@media (min-width: 768px) {
+	.tasacion-height-arrow-container {
+		height: 350px;
+	}
+}
+
 @media (min-width: 992px) {
 	.tasacion-height-arrow-container {
 		height: 450px;

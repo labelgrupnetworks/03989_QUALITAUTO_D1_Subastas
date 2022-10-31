@@ -49,6 +49,10 @@
 		height: 200px;
 	}
 
+	.legal-advice .start-text-container {
+		height: 400px;
+	}
+
 	@media (min-width: 576px) {
 
 		.legal-advice .last-section-banner-height,
@@ -81,6 +85,15 @@
 		.legal-advice .margin-auto-min768 {
 			margin: auto;
 		}
+
+		.legal-advice .margin-video {
+			margin: 2rem;
+			margin-top: 5rem;
+		}
+
+		.legal-advice .start-text-container {
+			height: 350px;
+		}
 	}
 
 	@media (min-width: 992px) {
@@ -92,6 +105,10 @@
 
 		.legal-advice .pl-0-min992 {
 			padding-left: 0px !important;
+		}
+
+		.legal-advice .start-text-container {
+			height: 490px;
 		}
 
 	}
@@ -111,9 +128,10 @@
 			margin-top: 3rem;
 		}
 
-		.legal-advice .margin-arrow-svg {
-			margin-top: 2rem;
+		.legal-advice .start-text-container {
+			height: 480px;
 		}
+
 
 	}
 
@@ -134,6 +152,7 @@
 		}
 
 	}
+
 </style>
 
 
@@ -141,7 +160,7 @@
 	<div class="legal-advice">
 
 		<div class="row">
-			<div class="col-12 col-md-8 margin-auto-min768">
+			<div class="col-12 col-lg-8 margin-auto-min768">
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
 						<video style="height: auto; padding: 0 10px;" controls=""
@@ -152,19 +171,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-md-4">
-				<div class="flex-align-center-column" style="margin-bottom: 30px;margin-top: 3rem;">
-					<div class="mb-5">
-						<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
-						</h4>
-						<p style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho Olivares
-							Abogados, queremos ofrecer un servicio de asesoramiento especializado al coleccionista, dando soporte y
-							garantizando el correcto cumplimiento de la normativa vigente.</p>
-					</div>
+			<div class="col-12 col-lg-4">
+				<div class="d-flex flex-column align-items-center justify-content-between start-text-container" style="margin-bottom: 30px;margin-top: 3rem;">
+					<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
+					</h4>
+					<p class="mb-5" style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho Olivares
+						Abogados, queremos ofrecer un servicio de asesoramiento especializado al coleccionista, dando soporte y
+						garantizando el correcto cumplimiento de la normativa vigente.</p>
 
 					{{-- Flecha --}}
 
-					<svg class="margin-arrow-svg" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
+					<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
 						viewBox="0 0 49.162 40.404">
 						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
 							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
