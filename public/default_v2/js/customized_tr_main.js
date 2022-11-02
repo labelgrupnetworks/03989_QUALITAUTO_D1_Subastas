@@ -212,8 +212,8 @@ function reloadPujasListO() {
 	const min_price_surpass = firstBidToExceedReservePriece?.imp_asigl1 || false;
 
 	//mostramso si se ha alcanzado el precio mínimo
-	document.querySelector('.precio_minimo_no_alcanzado').classList.toggle('hidden', !min_price_surpass);
-	document.querySelector('.precio_minimo_alcanzado').classList.toggle('hidden', min_price_surpass);
+	document.querySelector('.precio_minimo_no_alcanzado')?.classList.toggle('hidden', !min_price_surpass);
+	document.querySelector('.precio_minimo_alcanzado')?.classList.toggle('hidden', min_price_surpass);
 
 	const codsLicits = [...new Set(pujasReverse.map((licitador) => licitador.cod_licit))];
 	const licits = Object.assign({}, ...codsLicits.map((codLicit, index) => ({[codLicit]: index + 1})));

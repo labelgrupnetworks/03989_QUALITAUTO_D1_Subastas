@@ -1,16 +1,13 @@
-
-<?php
+@php
 $importe = \Tools::moneyFormat($lote_actual->actual_bid);
 $importeExchange = $lote_actual->actual_bid;
-if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_actual->impsalhces_asigl0 ){
+if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_actual->impsalhces_asigl0){
 	$importe =  \Tools::moneyFormat($lote_actual->impres_asigl0);
 	$importeExchange = $lote_actual->impres_asigl0;
 }
+@endphp
 
-
-?>
-<div class="col-xs-12 no-padding ">
-
+<div class="ficha-pujas ficha-make-offer">
 
     <div class="info_single ficha_V col-xs-12 no-padding">
 

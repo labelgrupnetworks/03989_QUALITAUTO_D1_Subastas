@@ -10,13 +10,7 @@
 @endpush
 
 @push('scripts')
-
-@if (config('app.socket_v4', 0))
-<script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/client-dist/socket.io.js') }}"></script>
-@else
 <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}"></script>
-@endif
-
 <script src="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.min.js') }}"></script>
 
 @if(strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'M' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'I' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'O' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'P' || $data['subasta_info']->lote_actual->subabierta_sub == 'P')
@@ -70,25 +64,24 @@ $(document).ready(function() {
 @php
     $lote_actual = $data['subasta_info']->lote_actual;
 
-    if(!empty($lote_actual)){
-        $bread = array();
-        $bread[] = array("url" => $lote_actual->url_subasta, "name" =>$lote_actual->title_url_subasta  );
-        if(!empty($data['seo']->meta_title)){
-            $bread[] = array( "name" => $data['seo']->meta_title );
-        }else{
-            $bread[] = array( "name" => $lote_actual->titulo_hces1 );
-        }
-    }
-
+	$titleName = match (true /* $auction->subc_sub */) {
+		$lote_actual->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_VENTA_DIRECTA => 'TIENDA',
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_HISTORICO => 'SUBASTAS ANTERIORES',
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => 'SUBASTA ACTUAL',
+		default => 'SUBASTA',
+	};
 @endphp
 
-<div class="container ficha-bread-header">
-	<div class="row">
-		<div class="col-12">
-			@include('includes.breadcrumb')
+<main class="ficha">
+	<div class="container grid-header">
+		<div class="row">
+			<div class="col-12">
+				<p class="h1">{{ $titleName }} | <b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b></p>
+			</div>
 		</div>
 	</div>
-</div>
 
-@include('content.ficha')
+	@include('content.ficha')
+</main>
+
 @stop

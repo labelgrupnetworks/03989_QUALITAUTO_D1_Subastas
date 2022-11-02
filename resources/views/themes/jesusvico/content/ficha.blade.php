@@ -1,7 +1,4 @@
 @php
-use App\Models\V5\FgHces1Files;
-use App\Models\V5\FgDeposito;
-
 $cerrado = $lote_actual->cerrado_asigl0 == 'S';
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N';
 $hay_pujas = count($lote_actual->pujas) > 0;
@@ -9,29 +6,34 @@ $devuelto= $lote_actual->cerrado_asigl0 == 'D';
 $remate = $lote_actual->remate_asigl0 =='S';
 $compra = $lote_actual->compra_asigl0 == 'S';
 $subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O');
-$subasta_venta = $lote_actual->tipo_sub == 'V';
-$subasta_web = $lote_actual->tipo_sub == 'W';
-$subasta_make_offer = $lote_actual->tipo_sub == 'M';
+$subasta_venta = $lote_actual->tipo_sub == 'V' ;
+$subasta_web = $lote_actual->tipo_sub == 'W' ;
 $subasta_inversa = $lote_actual->tipo_sub == 'I';
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O';
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P';
+$subasta_make_offer = $lote_actual->tipo_sub == 'M';
 $retirado = $lote_actual->retirado_asigl0 !='N';
 $sub_historica = $lote_actual->subc_sub == 'H';
-$sub_cerrada = ($lote_actual->subc_sub != 'A' && $lote_actual->subc_sub != 'S');
+$sub_cerrada = ($lote_actual->subc_sub != 'A'  && $lote_actual->subc_sub != 'S');
 $remate = $lote_actual->remate_asigl0 =='S';
 $awarded = \Config::get('app.awarded');
 // D = factura devuelta, R = factura pedniente de devolver
-$fact_devuelta = ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R');
-$fact_N = $lote_actual->fac_hces1=='N';
+$fact_devuelta = ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R') ;
+$fact_N = $lote_actual->fac_hces1=='N' ;
 $start_session = strtotime("now") > strtotime($lote_actual->start_session);
 $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
-$userSession = session('user');
-$deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
-$files = FgHces1Files::getAllFilesByLotCanViewUser($userSession, $lote_actual->num_hces1, $lote_actual->lin_hces1, $deposito);
+$sec =  New App\Models\V5\FxSec();
+$sec = $sec->select('des_sec')->joinFgOrtsecFxSec()->where('COD_SEC', mb_strtoupper($lote_actual->sec_hces1))->first();
+
+$path = "/files/".Config::get('app.emp')."/$lote_actual->num_hces1/$lote_actual->lin_hces1/files/";
+$files = [];
+if(is_dir(getcwd() . $path)){
+	$files = array_slice(scandir(getcwd() . $path), 2);
+}
 
 # listamos los recursos que se hayan puesto en la carpeta de videos para mostrarlos en la imagen principal
 $resourcesList = [];
@@ -45,7 +47,7 @@ foreach(($lote_actual->videos ?? []) as $key => $video){
 
 $refLot = $lote_actual->ref_asigl0;
 #si  tiene el . decimal hay que ver si se debe separar
-if(strpos($refLot,'.')!==false){
+if(strpos($refLot,'.') !== false){
 	$refLot = str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
 	#si hay que recortar
 }elseif(config("app.substrRef")){
@@ -67,20 +69,22 @@ if($subasta_web){
 	$nameCountdown = "countdown";
 	$timeCountdown = $lote_actual->end_session;
 }
+
 @endphp
 
-<div class="ficha-content container">
+<div class="ficha-content container mt-3">
 
 	<div class="ficha-grid">
 		<section class="ficha-title">
-			<h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1>
+			<h2>{{ trans("$theme-app.lot.lot-name") }} {{$refLot}}</h2>
+			{{-- <h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1> --}}
 		</section>
 
 		<section class="ficha-image">
 			@include('includes.ficha.ficha_image')
 		</section>
 
-		<section class="ficha-pujas">
+		<section class="ficha-pujas text-lb-gray">
 			@include('includes.ficha.ficha_pujas')
 		</section>
 
@@ -94,12 +98,12 @@ if($subasta_web){
 			@endif
 		</section>
 
-		<section class="ficha-share">
-			@include('includes.ficha.share')
-		</section>
-
 		<section class="ficha-previous-next">
 			@include('includes.ficha.previous_next')
+		</section>
+
+		<section class="ficha-share">
+			@include('includes.ficha.share')
 		</section>
 
 		<section class="ficha-files">
