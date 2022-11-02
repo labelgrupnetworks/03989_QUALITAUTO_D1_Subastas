@@ -132,7 +132,10 @@ $lang =[
 			'developedSoftware' => 'Auction software',
 			'developedBy' => 'Developed by Labelgrup Networks.',
 			'developed_url' => 'https://www.labelgrup.com/subastas',
-			'inscribete_catalogo' => ''
+			'inscribete_catalogo' => '',
+			'banner_contact' => 'Contact us and we will inform<br> you without any commitment',
+			'laboratory' => 'Laboratory',
+			'legal_advice' => 'Legal_advice',
 		),
 	'global' =>
 		array (

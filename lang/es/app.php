@@ -149,7 +149,10 @@ $lang = [
 		'developedSoftware' => 'Software de subastas',
 		'developedBy' => 'Desarrollado por Labelgrup Networks.',
 		'developed_url' => 'https://www.labelgrup.com/subastas',
-		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER'
+		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER',
+		'banner_contact' => 'Póngase en contacto con nosotros y<br> le informaremos sin ningún tipo de compromiso',
+		'laboratory' => 'Laboratiorio',
+		'legal_advice' => 'Asesoramiento legal',
 	),
 	'global' =>
 	array(
@@ -215,7 +218,7 @@ $lang = [
 		'es' => 'ESPAÑOL',
 		'free-valuations' => 'Valoraciones',
 		'home' => 'Inicio',
-		'how_to_buy' => 'Como comprar',
+		'how_to_buy' => 'Cómo comprar',
 		'more_bids' => 'MAS PUJADOS',
 		'not_account' => '¿No tienes cuenta?',
 		'pay-online' => 'Pago online',

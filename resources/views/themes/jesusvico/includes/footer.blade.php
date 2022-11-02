@@ -34,11 +34,11 @@
 						@endif
 
 						<h5 class="mt-3">
-							<a class="nav-link" title="{{ trans("$theme-app.foot.buy_coins") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.buy_coins") }}">{{ trans("$theme-app.foot.buy_coins") }}</a>
+							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_buy") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.buy_coins")."?static=how_to_buy" }}">{{ trans("$theme-app.foot.how_to_buy") }}</a>
 						</h5>
 
 						<h5 class="mt-3">
-							<a class="nav-link" title="{{ trans("$theme-app.foot.where_sell_coins") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.where_sell_coins") }}">{{ trans("$theme-app.foot.where_sell_coins") }}</a>
+							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_sell") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.where_sell_coins")."?static=how_to_sell" }}">{{ trans("$theme-app.foot.how_to_sell") }}</a>
 						</h5>
                     </div>
 
@@ -48,13 +48,13 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.about_us") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us") }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us")."?static=who_we_are" }}">
 									{{ trans("$theme-app.foot.about_us") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.team") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team") }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team")."?static=team" }}">
 									{{ trans("$theme-app.foot.team") }}
 								</a>
 							</li>
@@ -66,7 +66,7 @@
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.ethical_code") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code") }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code")."?static=ethical_code" }}">
 									{{ trans("$theme-app.foot.ethical_code") }}
 								</a>
 							</li>
@@ -90,13 +90,13 @@
 						<ul class="nav flex-column">
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.laboratory") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.laboratory") }}">
+									href="{{ Routing::translateSeo('pagina')."test?static=laboratory" }}">
 									{{ trans("$theme-app.foot.laboratory") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.legal_advice") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.legal_advice") }}">
+									href="{{ Routing::translateSeo('pagina')."test?static=legal_advice" }}">
 									{{ trans("$theme-app.foot.legal_advice") }}
 								</a>
 							</li>

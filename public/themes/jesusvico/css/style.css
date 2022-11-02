@@ -262,7 +262,11 @@ h3,
 
 main.subastas,
 main.grid,
-main.ficha {
+main.ficha,
+main.static-page,
+main.valoracion-page,
+.user-panel-page,
+main.contact-page {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 }

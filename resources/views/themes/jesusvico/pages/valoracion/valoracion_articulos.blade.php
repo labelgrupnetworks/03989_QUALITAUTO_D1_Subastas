@@ -10,13 +10,9 @@
 		$bread[] = ['name' => $data['title']];
 	@endphp
 
-	<div class="container valoracion-page mb-5">
+	<main class="container valoracion-page">
 
-		@include('includes.breadcrumb')
-
-		{{-- <h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
-
-		<p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p> --}}
+		<h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
 
 		<div class="row">
 			<div class="col-12 col-lg-8">
@@ -139,7 +135,7 @@
 					class="button-send-valorate btn btn-lb-primary">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
 			</form>
 		</div>
-	</div>
+	</main>
 
 	<script>
 		var imagesarr = [];
