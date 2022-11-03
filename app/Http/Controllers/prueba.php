@@ -147,12 +147,15 @@ use App\Http\Controllers\externalws\vottun\VottunController;
 use GuzzleHttp\Psr7;
 use App\Http\Controllers\webservice\LogChangesController;
 use App\Http\Controllers\admin\subasta\AdminLotcontroller;
+use Illuminate\Support\Facades\Log as FacadesLog;
+
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		$this->recreatePdfReports('LABELO');
+		FacadesLog::error('this is a log', ['test context']);
+    	dd('test');
 	}
 
 
