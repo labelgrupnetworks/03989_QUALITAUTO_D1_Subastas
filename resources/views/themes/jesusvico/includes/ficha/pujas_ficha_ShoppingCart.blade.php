@@ -25,9 +25,12 @@
         @if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
             <p class="require-wallet mb-4">{!! trans("$theme-app.lot.require_wallet") !!}</p>
         @else
-            <button class="btn btn-lb-primary w-100 mt-auto addShippingCart_JS" data-from="modal" type="button"
+            <button class="btn btn-lb-primary w-100 mt-auto py-3 addShippingCart_JS" data-from="modal" type="button"
                 ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
                 codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
+
+				@include('components.boostrap_icon', ['icon' => 'cart3', 'size' => '32'])
+
                 {{ trans("$theme-app.subastas.buy_lot") }}
             </button>
             {{-- código de token --}}

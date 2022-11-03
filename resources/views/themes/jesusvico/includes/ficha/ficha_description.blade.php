@@ -4,9 +4,11 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 @endphp
 
 <div class="description">
-	<h1 class="h4 no-decoration">{{ $lote_actual->descweb_hces1 }}</h1>
+	<div class="max-lines mb-2 h-auto" style="--max-lines: 3; max-height: initial">
+		<h1 class="h4 no-decoration fw-light" >{{ $lote_actual->descweb_hces1 }}</h1>
+	</div>
 	<div class="long-description text-lb-gray max-lines with-scroll lb-scroll">
-		<p>
+		<p class="fw-lighter">
 			{!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}
 			{{-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo rem illo incidunt esse, eius earum possimus voluptates vitae sequi, laudantium perferendis repudiandae molestiae? Fugit voluptatibus nemo eligendi quo voluptate. --}}
 		</p>

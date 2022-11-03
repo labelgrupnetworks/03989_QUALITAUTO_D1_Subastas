@@ -26,11 +26,9 @@ $isNotRetired = !$devuelto && !$retirado;
 		@if($isNotRetired)
 			<h4 class="lot-salida-price text-lb-gray">
 				@if(!$subasta_make_offer)
-					@if($subasta_venta)
-						<span>{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
-					@else
-						<span>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
-					@endif
+					<span>
+						{{ $subasta_venta ? trans("$theme-app.subastas.price_sale") : trans("$theme-app.lot.lot-price") }}
+					</span>
 
 					<span>{{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
 				@endif
@@ -57,7 +55,6 @@ $isNotRetired = !$devuelto && !$retirado;
 		@endif
 		</div>
 
-
 	</div>
 
 	<div class="card-footer">
@@ -72,15 +69,15 @@ $isNotRetired = !$devuelto && !$retirado;
 		@endif
 
 		@php
-		$isAwarded = $awarded && $cerrado &&  (!empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0));
+		$isAwarded = $awarded && $cerrado && $remate && (!empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0));
 		@endphp
 
 		@if ($isNotRetired)
 			@if($isAwarded)
 				<a {!! $url !!} class="btn btn-block btn-outline-lb-primary lot-btn">{{ trans("$theme-app.sheet_tr.view") }}</a>
-			@elseif ($cerrado && empty($precio_venta) && !$compra)
+			@elseif ($cerrado && empty($precio_venta) && !$compra || $sub_historica)
 				<div class="w-100 d-flex align-items-center justify-content-center bg-lb-primary-150">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</div>
-			@elseif($cerrado && empty($precio_venta) && $compra)
+			@elseif($cerrado && empty($precio_venta) && $compra && !$sub_historica)
 				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</a>
 			@elseif($subasta_venta && !$cerrado)
 				@if(!$end_session)

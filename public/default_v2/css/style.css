@@ -138,9 +138,13 @@ input {
 	-webkit-box-orient: vertical;
 	-o-text-overflow: ellipsis;
 	line-height: var(--line-height, 1.5);
-	height: calc(var(--line-heigth, 1.5) * var(--max-lines, 1) * 1rem);
-	max-height: calc(var(--line-heigth, 1.5) * var(--max-lines, 1) * 1rem);
+	height: calc(var(--line-height, 1.5) * var(--max-lines, 1) * 1rem);
+	max-height: calc(var(--line-height, 1.5) * var(--max-lines, 1) * 1rem);
 	transition: max-height 1s;
+	padding-bottom: 0;
+}
+.max-lines > * {
+	padding-bottom: 0;
 }
 
 .max-lines.with-scroll {

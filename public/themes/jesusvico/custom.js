@@ -245,7 +245,6 @@ function readMore(elemntClick, elementSelector){
 }
 
 function viewFilter(){
-
 	if($('#span-viewFilter').hasClass("ocultar")){
 		$('#span-viewFilter').text($('#js-hiddenFilter').val());
 		$('#span-viewFilter').removeClass("ocultar").addClass("mostrar");
@@ -256,6 +255,66 @@ function viewFilter(){
 		$('#span-viewFilter').removeClass("mostrar").addClass("ocultar")
 		$('.auction-lots-view').fadeOut();
 	}
-
 }
 
+
+/*********
+ * NEW THEME
+ */
+
+
+ carrousel_molon_new = function(carrousel) {
+	if (carrousel.data('hasSlick')) {
+		carrousel.slick('unslick');
+	}
+
+	const rows = 1;
+	carrousel.slick({
+		slidesToScroll: 1,
+		rows: rows,
+		slidesToShow: 6,
+		arrows: false,
+		swipeToSlide: true,
+		dots: false,
+		infinite: true,
+		autoplay: true,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+					slidesToShow: 4,
+					slidesToScroll: 4,
+					slidesPerRow: 4,
+				}
+			},
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					slidesPerRow: 3,
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					slidesPerRow: 2,
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					rows: 1,
+					slidesPerRow: 1,
+				}
+			}
+
+		]
+	});
+
+	carrousel.data('hasSlick', true);
+}

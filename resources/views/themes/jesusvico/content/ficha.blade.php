@@ -120,17 +120,11 @@ if($subasta_web){
 
 	<section class="ficha-recomendados mt-3">
 		<div class="lotes_destacados" id="lotes_recomendados-content">
-			<h1 class="mas-pujados-title">{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</h1>
-
-			<div class='loader d-none'></div>
-			<div id="lotes_recomendados" class="owl-theme owl-carousel"></div>
-
-			<div class="m-0 pl-10" id="navs-arrows">
-				<div class="owl-nav">
-					<div class="owl-prev"><i class="fas fa-chevron-left"></i></div>
-					<div class="owl-next"><i class="fas fa-chevron-right"></i></div>
-				</div>
+			<div class="title-wrapper text-center bg-lb-color-backgorund-light py-3 mb-3">
+				<h4 class="m-0 fw-light">{{ trans("$theme-app.lot.recommended_lots") }}</h4>
 			</div>
+			<div class='loader d-none'></div>
+			<div id="lotes_recomendados"></div>
 		</div>
 	</section>
 </div>
