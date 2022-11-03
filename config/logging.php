@@ -52,6 +52,18 @@ return [
     */
 
     'channels' => [
+
+        'stack' => [
+            'driver' => 'stack',
+            'channels' => ['daily', 'elasticsearch'],
+            'ignore_exceptions' => false,
+        ],
+
+        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
 		'elasticsearch' => [
 			'driver'         => 'monolog',
 			'level'          => 'debug',
@@ -65,21 +77,11 @@ return [
 				'client' => ClientBuilder::create()
 					->setHosts([env('ELASTIC_HOST')])
 					->setBasicAuthentication(env('ELASITC_USER'), env('ELASTIC_PASS'))
+					->setCABundle(base_path('caelastic.crt'))
 					->build(),
 			],
 		],
 
-        'stack' => [
-            'driver' => 'stack',
-            'channels' => ['single', 'elasticsearch'],
-            'ignore_exceptions' => false,
-        ],
-
-        'single' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-        ],
 
         'daily' => [
             'driver' => 'daily',
