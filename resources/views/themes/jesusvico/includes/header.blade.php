@@ -130,8 +130,8 @@ $pageName = Route::currentRouteName();
 							{{ trans($theme.'-app.foot.service') }}
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'/test?static=laboratory' }}">{{ trans("$theme-app.foot.laboratory") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'/test?static=legal_advice' }}">{{ trans("$theme-app.foot.legal_advice") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'test?static=laboratory' }}">{{ trans("$theme-app.foot.laboratory") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'test?static=legal_advice' }}">{{ trans("$theme-app.foot.legal_advice") }}</a></li>
 							<li><a class="dropdown-item" href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}">{{ trans("$theme-app.home.free-valuations") }}</a></li>
 						</ul>
 					</li>
