@@ -252,7 +252,7 @@ h3,
 	--bs-btn-hover-color: var(--lb-color-gray);
 	--bs-btn-hover-bg: rgba(13, 82, 87, 0.1);
 	--bs-btn-hover-border-color: rgba(13, 82, 87, 0.1);
-	--bs-btn-focus-shadow-rgb: 211,212,213;
+	--bs-btn-focus-shadow-rgb: 211, 212, 213;
 	--bs-btn-active-color: var(--lb-color-gray);
 	--bs-btn-active-bg: rgba(13, 82, 87, 0.1);
 	--bs-btn-active-border-color: rgba(13, 82, 87, 0.1);
@@ -272,7 +272,10 @@ main.ficha,
 main.static-page,
 main.valoracion-page,
 .user-panel-page,
-main.contact-page {
+main.contact-page,
+main.museum-page,
+main.events-page,
+main.event-page {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 }
@@ -284,6 +287,7 @@ main.contact-page {
 .badge-custom-primary span {
 	padding-top: 0.1rem;
 }
+
 /*
 |--------------------------------------------------------------------------
 | Header
@@ -789,7 +793,7 @@ section.ficha-pujas {
 	gap: 0.5rem;
 }
 
-.ficha-pujas.ficha-pujas-o > :is(p, h4, h5):not(.hidden) {
+.ficha-pujas.ficha-pujas-o> :is(p, h4, h5):not(.hidden) {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -802,7 +806,7 @@ section.ficha-pujas {
 	font-weight: var(--font-light);
 }
 
-.ficha-pujas-o .insert-bid-input > p {
+.ficha-pujas-o .insert-bid-input>p {
 	color: var(--lb-color-primary);
 	font-size: 18pt;
 	font-weight: var(--font-extra-light);
@@ -821,9 +825,9 @@ section.ficha-pujas {
 }
 
 .price.sold-price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .ficha-description .badge-custom-primary {
@@ -837,7 +841,8 @@ section.ficha-pujas {
 	--max-lines: 6;
 }
 
-.ficha-cerrada .price.sold-price, .ficha-cerrada .ficha-is-awarded {
+.ficha-cerrada .price.sold-price,
+.ficha-cerrada .ficha-is-awarded {
 	margin-left: -1rem;
 	margin-right: -1rem;
 	padding: 1rem;
@@ -847,8 +852,8 @@ section.ficha-pujas {
 
 .ficha-cerrada .price.salida-price {
 	display: flex;
-    justify-content: space-between;
-    align-items: center;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .carrousel-lot-card img {
@@ -856,7 +861,7 @@ section.ficha-pujas {
 }
 
 .lotes_destacados .slick-list {
-    margin: 0 -15px 10px -15px;
+	margin: 0 -15px 10px -15px;
 }
 
 @media (min-width: 992px) {
@@ -916,7 +921,7 @@ section.ficha-pujas {
 
 /*
 |--------------------------------------------------------------------------
-| MUSEUM
+| MUSEUM & EVENTS
 |--------------------------------------------------------------------------
 */
 .museum-card img {
@@ -924,3 +929,32 @@ section.ficha-pujas {
 	object-fit: contain;
 }
 
+.event-card .img-card-wrapper {
+	height: 600px;
+	background-position: center;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	transition: all 0.5s;
+}
+
+.event-card:hover .img-card-wrapper {
+	background-size: 110% auto;
+	transition: all 0.5s;
+}
+
+.event-page .event-images-wrapper {
+	height: 300px;
+}
+
+.event-page .event-images-wrapper img {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+}
+
+#eventModal .modal-header {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	z-index: 1;
+}

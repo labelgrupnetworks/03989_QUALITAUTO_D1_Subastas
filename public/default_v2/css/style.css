@@ -280,6 +280,10 @@ a.lb-text-primary:hover {
 	height: 100%;
 }
 
+.cursor-pointer {
+	cursor: pointer;
+}
+
 .lb-scroll {
 	/*Firefox*/
 	scrollbar-color: var(--lb-color-primary) var(--lb-color-primary-light);
