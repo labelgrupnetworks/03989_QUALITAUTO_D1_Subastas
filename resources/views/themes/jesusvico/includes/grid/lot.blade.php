@@ -60,11 +60,11 @@ $isNotRetired = !$devuelto && !$retirado;
 	<div class="card-footer">
 
 		@if(!$subasta_venta)
-		<div class="bidds-counter bg-lb-primary-150">
+		<div class="bidds-counter bg-lb-primary-150 text-lb-gray">
 			<img src="/themes/{{$theme}}/assets/icons/hammer.svg" alt="bids">
-			<h5 class="m-0 text-lb-gray">{{ $bids }}</h5>
-			<img src="/themes/{{$theme}}/assets/icons/hammer.svg" alt="bids">
-			<h5 class="m-0 text-lb-gray">{{ $licits }}</h5>
+			<h5 class="m-0">{{ $bids }}</h5>
+			@include('components.boostrap_icon', ['icon' => 'person-fill', 'size' => '20'])
+			<h5 class="m-0">{{ $licits }}</h5>
 		</div>
 		@endif
 

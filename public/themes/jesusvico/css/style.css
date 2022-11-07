@@ -288,6 +288,12 @@ main.event-page {
 	padding-top: 0.1rem;
 }
 
+.form-check-input:checked[type=radio] {
+	background-color: #fff;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -3.8 8 8'%3e%3ccircle r='3' fill='%230d5257'/%3e%3c/svg%3e");
+}
+
+
 /*
 |--------------------------------------------------------------------------
 | Header
@@ -684,6 +690,7 @@ ul.style-diamond li::marker {
 
 .auction__filters-type-list {
 	color: var(--lb-color-gray);
+	font-weight: var(--font-normal);
 }
 
 .section-grid-lots {
@@ -692,6 +699,7 @@ ul.style-diamond li::marker {
 
 .bottom-pagination .pagination {
 	margin-bottom: 0;
+	justify-content: flex-end;
 }
 
 /*
@@ -737,7 +745,8 @@ ul.style-diamond li::marker {
 	margin-bottom: 2px;
 }
 
-.lot-card .bidds-counter img:nth-of-type(2) {
+.lot-card .bidds-counter svg {
+	margin-bottom: 4px;
 	margin-left: 0.5rem;
 }
 
@@ -856,6 +865,11 @@ section.ficha-pujas {
 	align-items: center;
 }
 
+.escalados-container button {
+	min-width: 140px;
+	flex: 1;
+}
+
 .carrousel-lot-card img {
 	border-radius: 0;
 }
@@ -865,6 +879,14 @@ section.ficha-pujas {
 }
 
 @media (min-width: 992px) {
+
+	section.ficha-image {
+    	grid-row: 2 / 3;
+	}
+
+	section.ficha-pujas {
+		grid-row: 2 / 4;
+	}
 
 	section.ficha-pujas .ficha-info-content {
 		flex: 1;
@@ -876,8 +898,9 @@ section.ficha-pujas {
 	}
 
 	section.ficha-previous-next {
-		grid-row-start: 6;
-		grid-column: 1 / 4;
+		grid-row-start: 3;
+    	grid-column: 1 / 3;
+		align-self: flex-end;
 	}
 
 }
@@ -885,6 +908,10 @@ section.ficha-pujas {
 @media (min-width: 1200px) {
 	.ficha-grid {
 		grid-template-columns: 3fr 5fr 4fr;
+	}
+
+	section.ficha-image {
+		grid-row: 2 / 4;
 	}
 
 	section.ficha-description {

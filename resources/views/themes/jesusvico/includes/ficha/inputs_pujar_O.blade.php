@@ -15,11 +15,11 @@
         <div class="require-wallet">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
     @else
         <p>{{ trans("$theme-app.lot.quick_bid") }}</p>
-        <div class="escalados-container d-flex justify-content-between gap-1">
+        <div class="escalados-container d-flex justify-content-between gap-1 flex-wrap">
             @foreach ($lote_actual->siguientes_escalados as $escalado)
                 <button data-from="modal" data-escalado-position="{{ $loop->index }}" type="button"
                     value="{{ $escalado }}" @class([
-                        'btn btn-lb-primary w-100 lot-action_pujar_on_line js-lot-action_pujar_escalado',
+                        'btn btn-lb-primary lot-action_pujar_on_line js-lot-action_pujar_escalado',
                         'add_favs' => Session::has('user'),
                     ])>
 

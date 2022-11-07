@@ -16,7 +16,7 @@
 	@if($shouldShowCountdown)
 	<div class="filters-auction-content text-center bg-lb-primary-150 mb-4">
 		<div class="filter-title">
-			<p data-countdown="{{ strtotime($auction->session_start) - getdate()[0] }}" data-format="{{ Tools::down_timer($auction->session_start) }}" data-closed="0" class="timer"></p>
+			<p data-countdown="{{ strtotime($auction->session_start) - getdate()[0] }}" data-format="{{ Tools::down_timer($auction->session_start) }}" data-closed="0" class="timer fw-normal"></p>
 			<p>{{ Tools::getDateFormat($auction->session_start, 'Y-m-d H:i:s', 'd/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.lot_list.time_zone') }}</p>
 		</div>
 	</div>

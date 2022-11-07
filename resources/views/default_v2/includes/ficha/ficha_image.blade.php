@@ -58,7 +58,7 @@
 
 
 {{-- desktop --}}
-<div class="d-none d-sm-block">
+<div class="d-none d-sm-flex flex-column h-100">
 	@if($retirado)
 		<div class="label-grid ficha-label">
 			{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
@@ -125,7 +125,7 @@
 	</div>
 
 
-	<div class="minis-content d-flex gap-1">
+	<div class="minis-content d-flex gap-1 mt-auto">
 
 		@foreach($lote_actual->imagenes as $key => $imagen)
 			<div class="mini-img-ficha no-360">
