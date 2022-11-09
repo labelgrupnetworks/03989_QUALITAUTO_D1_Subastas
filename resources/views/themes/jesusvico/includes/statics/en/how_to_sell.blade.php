@@ -51,19 +51,20 @@
 	<div class="how-to-sell">
 
 		<div class="row">
-			<div class="col-12 col-lg-8">
+			<div class="col-12 col-lg-7">
 
 				<div class="decoration margin-video">
 					<div class="ratio ratio-16x9">
 						<video style="height: auto; padding: 0 10px;" controls=""
 							poster="/themes/jesusvico/assets/img/how_to_sell_poster.jpg" autoplay="">
 							<source src="/files/videos/jesusvico_tasaciones.mp4" type="video/mp4">
-							Tu navegador no soporta HTML5 video.
+								Your browser does not support HTML5 video.
 						</video>
 					</div>
 				</div>
 
 			</div>
+			<div class="d-none d-lg-block col-lg-1"></div>
 			<div class="col-12 col-lg-4 mt-4 mt-lg-0">
 
 				<div class="d-flex flex-column align-items-center justify-content-between start-text-container">
@@ -73,14 +74,16 @@
 					</div>
 
 					{{-- Flecha --}}
-					<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
-						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-						</g>
-					</svg>
+					<a href="#id">
+						<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
+							<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+								<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+								<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+							</g>
+						</svg>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -11,12 +11,6 @@
 		margin: 1.5rem 0 1.5rem 0;
 	}
 
-	.laboratory .flex-align-center-column {
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-	}
-
 	.laboratory .lb-blockquote {
 		max-width: 100%;
 	}
@@ -50,6 +44,7 @@
 		.laboratory .margin-top-responsive {
 			margin-top: 1rem;
 		}
+
 		.laboratory .flex-align-center-row-sp {
 			display: flex;
 			align-items: center;
@@ -110,15 +105,16 @@
 
 
 					{{-- Flecha --}}
-
-					<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
-						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-						</g>
-					</svg>
+					<a href="#id">
+						<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
+							<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+								<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+								<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+							</g>
+						</svg>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -214,7 +210,7 @@
 		<div class="row">
 			<div class="col-12 mt-2 mb-1">
 				<div class="row flex-align-center-row-sp mt-3 mb-3">
-					<div class="d-none d-md-block col-md-2 flex-align-center-column">
+					<div class="d-none d-md-flex col-md-2 justify-content-end">
 						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 							height="44" viewBox="0 0 44 44">
 							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
@@ -242,7 +238,7 @@
 					</div>
 				</div>
 				<div class="row flex-align-center-row-sp mt-3 mb-3">
-					<div class="d-none d-md-block col-md-2 flex-align-center-column">
+					<div class="d-none d-md-flex col-md-2 justify-content-end">
 						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 							height="44" viewBox="0 0 44 44">
 							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
@@ -270,7 +266,7 @@
 					</div>
 				</div>
 				<div class="row flex-align-center-row-sp mt-3 mb-3">
-					<div class="d-none d-md-block col-md-2 flex-align-center-column">
+					<div class="d-none d-md-flex col-md-2 justify-content-end">
 						<svg id="Rombo_bullet" data-name="Rombo bullet" xmlns="http://www.w3.org/2000/svg" width="44"
 							height="44" viewBox="0 0 44 44">
 							<rect id="Rectángulo_201" data-name="Rectángulo 201" width="31.113" height="31.113"
