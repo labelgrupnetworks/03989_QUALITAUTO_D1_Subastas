@@ -41,15 +41,16 @@
 <div class="container">
 
 	<div class="how-to-buy">
-		<h2>Face-to-face and online auctions</h2>
-		<h4 class="fw-light" style="margin-bottom: 1rem;">How to place your bids?</h4>
+		<h2>Subastas presenciales y Online</h2>
+		<h4 class="fw-light" style="margin-bottom: 1rem;">Cómo efectuar sus pujas</h4>
 		<div class="row bids-container">
 			<div class="col-12 col-md-6">
 				<div>
-					<h4 class="bg-lb-color-backgorund-dark text-center pt-2 pb-2">Bids in anteriority</h4>
-					<p style="margin: 1rem 0;">Both in face-to-face and online auctions. You can send us your offer with anteriority by
-						different means:</p>
-					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Face-to-face and online auctions</h5>
+					<h4 class="bg-lb-color-backgorund-dark text-center pt-2 pb-2">Pujas con anterioridad</h4>
+					<p style="margin: 1rem 0;">Tanto en subastas presenciales como online. podrá enviarnos su oferta con anterioridad
+						por
+						distintos medios:</p>
+					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Subastas presenciales y online</h5>
 				</div>
 				<div class="lb-border-light" style="padding: 8px;">
 					<section class="d-flex">
@@ -60,10 +61,10 @@
 						</span>
 						<div class="ms-1">
 							<h4>
-								In our offices
+								En nuestras oficinas
 							</h4>
 							<p>
-								Delivering or mailing the order included in the catalog
+								Entregando o enviando por correo postal la orden incluída en el catálogo
 							</p>
 						</div>
 					</section>
@@ -75,7 +76,7 @@
 						</span>
 						<div class="ms-1">
 							<h4>
-								By phone
+								Por teléfono
 							</h4>
 							<p>
 								+34 914318807
@@ -99,7 +100,7 @@
 						</span>
 						<div class="ms-1">
 							<h4>
-								Via email
+								Por correo electrónico
 							</h4>
 							<p>
 								<a class="static-link" href="mailto:info@jesusvico.com">info@jesusvico.com</a>
@@ -126,13 +127,13 @@
 						</span>
 						<div class="ms-1">
 							<h4>
-								On our website
+								En nuestra web
 							</h4>
 							<p>
-								By registering on our website and accessing the auction menu
+								Registrándose en nuestra página web y accediendo al menú de subastas
 							</p>
 							<p class="mt-2">
-								You can also do it through the specialized pages of the sector in which we are present:
+								También podrá hacerlo a través de la páginas especializadas del sector en las que estamos presentes:
 							</p>
 						</div>
 					</section>
@@ -157,10 +158,10 @@
 			</div>
 			<div class="col-12 col-md-6">
 				<div>
-					<h4 class="bg-lb-color-backgorund-dark text-center pt-2 pb-2">Bid on live</h4>
-					<p style="margin: 1rem 0;">If you prefer to bid live during the auction, you can do so in the following ways:
+					<h4 class="bg-lb-color-backgorund-dark text-center pt-2 pb-2">Pujar en directo</h4>
+					<p style="margin: 1rem 0;">Si prefiere pujar en directo durante la subasta, podrá hacerlo de la siguiente manera:
 					</p>
-					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Room auctions</h5>
+					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Subastas en sala</h5>
 					<div class="lb-border-light" style="padding: 8px;">
 						<section class="d-flex">
 							<span class="text-lb-secondary">
@@ -170,10 +171,10 @@
 							</span>
 							<div class="ms-1">
 								<h4>
-									Personally
+									Presencialmente
 								</h4>
 								<p>
-									In our auction room
+									En nuestra sala de subastas
 								</p>
 							</div>
 						</section>
@@ -185,10 +186,11 @@
 							</span>
 							<div class="ms-1">
 								<h4>
-									By phone
+									Telefónicamente
 								</h4>
 								<p>
-									Informing us that you wish to bid this way at least <br>24 hours in advance
+									Informándonos de que desea pujar por esta vía con, al menos, <br>
+									24 horas de antelación
 								</p>
 							</div>
 						</section>
@@ -211,15 +213,15 @@
 							</span>
 							<div class="ms-1">
 								<h4>
-									Through our website
+									A través de nuestra página web
 								</h4>
 								<p>
-									Bid live through our website
+									Puja en directo a través de nuestra página web
 								</p>
 							</div>
 						</section>
 					</div>
-					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2 mt-3">Online auctions</h5>
+					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2 mt-3">Subastas online</h5>
 					<div class="lb-border-light" style="padding: 8px;">
 						<section class="d-flex">
 							<span class="text-lb-secondary">
@@ -240,10 +242,10 @@
 							</span>
 							<div class="ms-1">
 								<h4>
-									Through our website
+									A través de nuestra página web
 								</h4>
 								<p>
-									Bid live through our website
+									Puja en directo a través de nuestra página web
 								</p>
 							</div>
 						</section>
@@ -263,9 +265,10 @@
 							</div>
 						</div>
 						<div class="col-12 col-md-11 bg-secondary-color-lighter" style="padding: 0.5rem">
-							Remember that if this is the first time you are going to participate in our auctions, you must provide us with
-							references from other Numismatic Houses with whom you have previously carried out commercial transactions and
-							register in our system by writing down the requested personal data.
+							Recuerde que si es la primera vez que va a participar en nuestras subastas, deberá facilitarnos referencias de
+							otras Casas Numismáticas con quien haya efectuado transacciones comerciales anteriormente y registrarse en
+							nuestro
+							sistema anotando los datos personales solicitados.
 						</div>
 
 					</div>
@@ -276,27 +279,27 @@
 
 		<div class="row">
 			<div class="col-12">
-				<h2>Online store</h2>
-				<h3>Direct sale virtual store</h3>
-				<p class="mb-2">Sale of our products at a fixed price, with a maximum delivery time of 48 hours.</p>
+				<h2>Tienda Online</h2>
+				<h3>Tienda virtual de vena directa</h3>
+				<p class="mb-2">Venta de nuestros productos a precio fijo, con un plazo máximo de envío de 48 horas.</p>
 			</div>
 			<div class="col-12 col-md-6">
 				<ul class="style-diamond">
 					<li>
-						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Numismatics</p>
+						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Numismática</p>
 					</li>
 					<li>
-						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Archeology</p>
+						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Arqueología</p>
 					</li>
 				</ul>
 			</div>
 			<div class="col-12 col-md-6">
 				<ul class="style-diamond">
 					<li>
-						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Bookshop</p>
+						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Librería</p>
 					</li>
 					<li>
-						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Numismatic material and accessories</p>
+						<p class="bg-lb-color-backgorund-light" style="padding: 0.5rem">Material y accesorios numismáticos</p>
 					</li>
 				</ul>
 			</div>
@@ -304,19 +307,19 @@
 
 		<div class="row">
 			<div class="col-12">
-				<h2>Payment method</h2>
-				<p style="padding-bottom: 1rem;">Invoices can be paid through the following ways:</p>
+				<h2>Medio de pago</h2>
+				<p style="padding-bottom: 1rem;">Las facturas pueden ser abonadas a través de las siguientes vías:</p>
 				<ul class="style-diamond">
-					<li><strong>Cash</strong> (established legal limitations)</li>
-					<li><strong>Bank check</strong> (established legal limitations)</li>
-					<li><strong>VISA, Mastercard and AMEX cards</strong> (additional 1% of the auction modality). You can do it,
-						physically, in our offices through the payment gateway.</li>
-					<li><strong>PayPal</strong> (3% additional in any modality). (5% outside the EU)</li>
-					<li><strong>Bank transfer:</strong></li>
+					<li><strong>Efectivo</strong> (limitaciones legales establecidas)</li>
+					<li><strong>Cheque bancario</strong> (limitaciones legales establecidas)</li>
+					<li><strong>Tarjetas VISA, Mastercard y AMEX</strong> (1% adicional de la modalidad de subastas). Podrá hacerlo,
+						físicamente, en nuestras oficinas a través de la pasarela de pago.</li>
+					<li><strong>PayPal</strong> (3% adicional en cualquier modalidad).(5% fuera de UE)</li>
+					<li><strong>Transferencia bancaria:</strong></li>
 				</ul>
 			</div>
 			<div class="col-12 col-md-4">
-				<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Face-to-face and online auctions</h5>
+				<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Subastas presenciales y online</h5>
 				<div class="lb-border-light mt-1 mb-2" style="padding: 0.5rem 1rem;">
 					<p>Banco Santander</p>
 					<p>Swift Code: BSCHESMM</p>
@@ -342,7 +345,7 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-4">
-				<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Numismatics, bookstore and material</h5>
+				<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Numismática, librería y material</h5>
 				<div class="lb-border-light mt-1 mb-2" style="padding: 0.5rem 1rem;">
 					<p>Banco Santander</p>
 					<p>Swift Code: BSCHESMM</p>
