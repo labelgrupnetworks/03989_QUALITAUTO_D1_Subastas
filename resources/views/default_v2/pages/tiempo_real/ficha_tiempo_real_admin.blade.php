@@ -5,8 +5,6 @@
 @stop
 
 @section('content')
-<link rel="stylesheet" href="{{ Tools::urlAssetsCache('/css/default/tiempo-real.css') }}" />
-<link rel="stylesheet" href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/tiempo-real.css') }}" />
 @include('includes.tr.tiempo_real_admin.header')
 <?php
 

@@ -166,7 +166,8 @@ class subastaTiempoRealController extends Controller
         }
 
         # Si tenemos el modulo de chat activado cargaremos los primeros mensajes en sala.
-        $mensajes_chat = false;
+		//todos los clientes lo tienen activado, pero en caso de que no, producia un error.
+        $mensajes_chat = ['data' => []];
         if(Config::get('app.tr_show_chat')) {
 
             $chat       = new Chat();
@@ -1448,7 +1449,7 @@ class subastaTiempoRealController extends Controller
 
 			#si la casa de subastas tiene webService de cliente
 			if(Config::get('app.WebServiceOrder')){
-				
+
 				$theme  = Config::get('app.theme');
 				$rutaOrdercontroller = "App\Http\Controllers\\externalws\\$theme\OrderController";
 
@@ -3219,7 +3220,7 @@ class subastaTiempoRealController extends Controller
             }else{
                 while ($val < $scaleRanges[$i]->max  && !$end){
 
-				
+
 					if ($new_bid <= $val ) {
 						$seleccionado = $val;
 						$end = true;

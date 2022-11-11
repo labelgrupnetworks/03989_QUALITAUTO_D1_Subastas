@@ -1,6 +1,6 @@
 <div class="aside pujas">
 
-    <div id="pujas_list">
+    <div id="pujas_list" class="pujas_list">
 
         <?php
         $ultima_orden = false;

@@ -1,128 +1,81 @@
-<div id="mensajes_predefinidos" class="modal-block mfp-hide">
+@php
+    $cur_lang = strtoupper(\App::getLocale());
+    $mensajes = $data['js_item']['chat']['mensajes'];
+    $mensajesPredefinidos = [];
+    $mensajesNoPredefinidos = [];
+    foreach ($mensajes as $id => $mensajePorIdioma) {
+        # Si no encuentra el idioma del usuario le asignamos uno por defecto
+        $mensaje = $mensajePorIdioma[$cur_lang] ?? array_values(array_slice($mensajePorIdioma, 0, 1))[0];
+        if ($mensaje->predefinido) {
+            $mensajesPredefinidos[] = $mensaje;
+        } else {
+            $mensajesNoPredefinidos[] = $mensaje;
+        }
+    }
+@endphp
+
+<div class="modal-block mfp-hide" id="mensajes_predefinidos">
     <section class="panel">
-        @if(Session::has('user'))
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text">
                     <ul class="chat-predefinidos" style="list-style:none; padding:0;">
-                        <?php
-                        $cur_lang = strtoupper(\App::getLocale());
+                        @foreach ($mensajesPredefinidos as $item)
+                            <li class="left clearfix chatline" id="predefinido-model-{{ $item->id_web_chat }}"
+                                style="padding:5px;">
+                                <div class="chat-body clearfix">
+                                    <div class="header"></div>
 
-                        if (!empty($data['js_item']['chat'])) {
+                                    <div class="col-lg-8">
+                                        <p>{{ $item->msg }}</p>
+                                    </div>
 
-                            foreach ($data['js_item']['chat']['mensajes'] as $k => $item) {
+                                    <div class="col-lg-4">
+                                        <button class="btn-primary btn btn-warning btn-chat-pre btn-enviar"
+                                            id_mensaje="{{ $item->id_web_chat }}" type="button">
+                                            {{ trans("$theme-app.sheet_tr.chat-send") }}
+                                            <button class="btn btn-danger btn-eliminar"
+                                                id_mensaje="{{ $item->id_web_chat }}" type="button" predefinido="1">
+                                                {{ trans("$theme-app.sheet_tr.chat-delete") }}
+                                            </button>
+                                    </div>
 
-                                # Si no encuentra el idioma del usuario le asignamos uno por defecto
-                                if (!isset($item[$cur_lang])) {
-
-                                    foreach ($data['js_item']['chat']['mensajes'][$k] as $index => $valor) {
-
-                                        if (isset($data['js_item']['chat']['mensajes'][$k][$index])) {
-                                            $item = $data['js_item']['chat']['mensajes'][$k][$index];
-                                        }
-
-                                        $item = $data['js_item']['chat']['mensajes'][$k][$index];
-                                    }
-                                } else {
-                                    $item = $item[$cur_lang];
-                                }
-
-                                if ($item->predefinido == 1) {
-                                    ?>
-                                    <li class="left clearfix chatline" id="predefinido-model-<?php echo $item->id_web_chat ?>" style="padding:5px;">
-                                        <div class="chat-body clearfix">
-                                            <div class="header"></div>
-
-                                            <div class="col-lg-8">
-                                                <p><?php echo $item->msg; ?></p>
-                                            </div>
-
-                                            <div class="col-lg-4">
-                                                <button type="button" class="btn-primary btn btn-warning btn-chat-pre btn-enviar" id_mensaje="<?php echo $item->id_web_chat ?>"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-send') }}</button>
-                                                <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="<?php echo $item->id_web_chat ?>" predefinido="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-delete') }}</button>
-                                            </div>
-
-                                        </div>
-                                    </li>
-                                    <?php
-                                }
-                            }
-                        }
-                        ?>
-
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
         </div>
-        @endif
     </section>
 </div>
 
-@if(Session::has('user'))
 <div class="panel-body">
-    <?php $cur_lang = strtoupper(\App::getLocale()); ?>
-
-    <!-- model -->
-    <li class="left clearfix hidden" id="chatline_model">
-        <div class="chat-body clearfix">
-            <div class="header">
-                <small class="pull-right text-muted">
-                    <span class="glyphicon glyphicon-time"></span><time class="timeago" datetime="2008-07-17T09:27:17Z"></time>
-                </small>
-            </div>
-            <p class="texto">
-                <?php if (isset($data['js_item']['user']) && $data['js_item']['user']['is_gestor']) { ?>
-                    <span class="glyphicon glyphicon-remove btn-eliminar" predefinido="0" id_mensaje=""></span>
-                <?php } ?>
-            </p>
-        </div>
+    {{-- Model --}}
+    <li class="list-group-item p-0 py-1 hidden" id="chatline_model">
+        <small class="text-muted float-end">
+			@include('components.boostrap_icon', ['icon' => 'clock'])
+            <time class="timeago" datetime="2008-07-17T09:27:17Z"></time>
+        </small>
+        <p class="texto float-start"></p>
     </li>
-    <!-- model -->
 
-    <ul class="chat">
-        <?php
-        if (!empty($data['js_item']['chat'])) {
-
-            foreach ($data['js_item']['chat']['mensajes'] as $k => $item) {
-
-                if (!isset($item[$cur_lang])) {
-
-                    foreach ($data['js_item']['chat']['mensajes'][$k] as $index => $valor) {
-
-                        if (isset($data['js_item']['chat']['mensajes'][$k][$index])) {
-                            $item = $data['js_item']['chat']['mensajes'][$k][$index];
-                        }
-
-                        $item = $data['js_item']['chat']['mensajes'][$k][$index];
-                    }
-                } else {
-                    $item = $item[$cur_lang];
-                }
-
-                if ($item->predefinido == 0) {
-                    $fecha = str_replace('/', '-', $item->fecha);
-                    $parte = explode(' ', $fecha);
-                    $fecha_final = $parte[0] . 'T' . $parte[1];
-                    ?>
-                    <li class="left clearfix chatline" id="chatline_model_<?php echo $item->id_web_chat; ?>">
-                        <div class="chat-body clearfix">
-                            <div class="header">
-                                <small class="pull-right text-muted">
-                                    <span class="glyphicon glyphicon-time"></span><time class="timeago" datetime="<?php echo $fecha_final; ?>"></time>
-                                </small>
-                            </div>
-
-                            <p>
-                                <?php echo $item->msg; ?>
-                            </p>
-                        </div>
-                    </li>
-                    <?php
-                }
-            }
-        }
-        ?>
-
+    <ul class="chat list-group list-group-flush">
+        @foreach ($mensajesNoPredefinidos as $item)
+            @php
+                $fecha = str_replace('/', '-', $item->fecha);
+                $parte = explode(' ', $fecha);
+                $fecha_final = $parte[0] . 'T' . $parte[1];
+            @endphp
+            <li class="list-group-item p-0 py-1 chatline" id="chatline_model_{{ $item->id_web_chat }}">
+				<small class="text-muted float-end">
+                    @include('components.boostrap_icon', ['icon' => 'clock'])
+                    <time class="timeago" datetime="{{ $fecha_final }}"></time>
+                </small>
+                <p class="texto">
+                    {{ $item->msg }}
+                </p>
+            </li>
+        @endforeach
     </ul>
 </div>
-@endif

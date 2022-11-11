@@ -1,32 +1,3 @@
-<div class="own_box" data-rel="login">
-    <div rel="content">
-        <div id="login_box">
-            <form id="accerder-user-form">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                        <input data-error="{{ trans(\Config::get('app.theme').'-app.login_register.write_valid_email') }}" type="email" name="email" class="form-control" placeholder="Email" required>
-                    </div>
-                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                    <div class="help-block with-errors"></div>
-                </div>
-
-                <div class="form-group has-feedback">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input maxlength="20" type="password" name="password" class="form-control" placeholder="Password" required>
-                    </div>
-                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                    <div class="help-block with-errors"></div>
-                </div>
-                <span class="message-error-log"></span>
-                <input onclick="javascript:login_web()" class="btn btn-primary btn-block btnLogin " type="button" value="{{ trans(\Config::get('app.theme').'-app.login_register.sign_in') }}">
-            </form>
-        </div>
-    </div>
-</div>
-
 <div id="modalComprar" class="modal-block mfp-hide" data-to="comprarLote">
     <section class="panel">
         <div class="panel-body">

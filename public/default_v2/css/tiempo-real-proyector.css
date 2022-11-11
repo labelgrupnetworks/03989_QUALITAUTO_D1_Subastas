@@ -1,0 +1,322 @@
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,700,600,300);
+/*Colors*/
+/*Media Queries*/
+/*Fonts*/
+/*Hover*/
+/*Images Directory Template*/
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+*/
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Tahoma;
+    font-size: 26px;
+    text-transform: uppercase;
+}
+
+p{
+	margin: 0;
+}
+
+
+
+body > div:first-of-type{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 80px auto;
+}
+
+link{
+    display: none;
+}
+
+.own_box{
+    display: none;
+}
+
+.clock-page{
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1;
+}
+
+.wait-time {
+    text-align: center;
+    color: grey;
+    margin-top: 40px;
+    font-size: 35px;
+}
+
+.ui-pnotify-container{
+	font-size: 20px;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Header
+|--------------------------------------------------------------------------
+*/
+
+.nav_tr{
+    height: 100%;
+    padding: 20px;
+    border-bottom: 1px solid #DBDBDB;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.nav_tr div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auction_number{
+    padding: 0;
+    margin: 0;
+
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+	-webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+}
+
+
+.nav_tr .nav-logo{
+    justify-content: flex-end;
+}
+
+.brand img{
+    max-height: 50px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Ficha
+|--------------------------------------------------------------------------
+*/
+
+.ficha_tiempo_real{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Content
+|--------------------------------------------------------------------------
+*/
+
+.tr_proyector_content{
+    display: grid;
+	position: relative;
+    height: 100%;
+	padding-left: 15px;
+
+}
+
+.img{
+   /*  height: 83vh; */
+    /* max-width: 100%; */
+    min-width: 70%;
+	/* max-height: 83vh; */
+    display: grid;
+    /* justify-self: center;
+    align-self: center; */
+}
+
+.img img{
+
+    /* width: 100%; */
+    /* max-height: 100%; */
+	max-width: inherit;
+	max-height: inherit;
+	width: 100%;
+	height: auto;
+
+	max-width: 100%;
+	max-height: 100%;
+	display: block; /* remove extra space below image */
+
+    justify-self: center;
+    align-self: center;
+}
+
+#img-proyector{
+	background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.autor_tr{
+	-webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Info
+|--------------------------------------------------------------------------
+*/
+
+.tr_proyector_info{
+	font-size: 35px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 2fr 2fr 2fr 4fr auto;
+    grid-row-gap: 5px;
+    padding: 0 20px 0 20px;
+}
+
+.tr_proyector_info > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tr_proyector_info .lot{
+    align-items: flex-end;
+    justify-content: center;
+	font-size: 50px;
+}
+
+.tr_proyector_info .starting-price{
+    border: 1px solid #DBDBDB;
+}
+
+.tr_proyector_info .current-bid{
+    border: 1px solid #DBDBDB;
+    background-color: rgba(0, 0, 0, 0.15);
+	font-weight: 800;
+}
+.tr_proyector_info .next-bid{
+    border: 1px solid #DBDBDB;
+}
+
+.tr_proyector_info .last-bids-container{
+
+    display: block;
+    padding: 15px;
+    border: 1px solid #DBDBDB;
+    max-height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.last-bids .last-bids-title{
+    border-bottom: 1px solid #DBDBDB;
+    text-align: center;
+}
+
+.tr_proyector_info .pujas_list{
+    max-height: 500px;
+    overflow: hidden;
+    text-align: center;
+}
+
+#actual_max_bid, #next_bid_JS{
+	font-size: 35px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Cuenta atras
+|--------------------------------------------------------------------------
+*/
+
+.count_down_msg {
+    position: absolute;
+    top: 0;
+    background: rgba(219, 219, 219, 0.789);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.count_down_msg p {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 20vw;
+    color: #c30e16;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Responsive
+|--------------------------------------------------------------------------
+*/
+@media (max-width: 1536px) {
+
+	.tr_proyector_info{
+		font-size: 22px;
+	}
+
+	.tr_proyector_info .lot{
+		font-size: 35px;
+	}
+
+	.tr_proyector_info .last-bids-container{
+		max-height: 220px;
+	}
+}
+
+@media (max-width: 1280px) {
+
+	.tr_proyector_info{
+		font-size: 18px;
+	}
+
+	.tr_proyector_info .lot{
+		font-size: 25px;
+	}
+
+	.tr_proyector_info .last-bids-container{
+		max-height: 173px;
+	}
+
+	body > div:first-of-type{
+		grid-template-rows: 55px auto;
+	}
+
+	.auction_number{
+		font-size: 25px;
+	}
+
+	.brand img{
+		max-height: 35px;
+	}
+
+	.nav_tr{
+		padding: 10px;
+	}
+}

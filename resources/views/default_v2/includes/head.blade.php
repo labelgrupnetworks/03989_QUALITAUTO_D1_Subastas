@@ -92,8 +92,6 @@ header("X-Frame-Options:     DENY");
 <link href="{{ Tools::urlAssetsCache('/default_v2/css/responsive.css') }}" rel="stylesheet" type="text/css" >
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
 
-<link href="{{ Tools::urlAssetsCache('/default_v2/css/labelframework.css') }}" rel="stylesheet" type="text/css">
-
 @stack('stylesheets')
 
 <script>

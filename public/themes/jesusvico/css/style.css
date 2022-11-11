@@ -151,14 +151,17 @@ h3,
 	background-color: rgba(var(--lb-color-primary-rgb), var(--opacity, 1));
 }
 
-.bg-lb-primary-150 {
-	--opacity: 0.15;
-	background-color: rgba(var(--lb-color-primary-rgb), var(--opacity, 1));
-}
-
 .bg-lb-primary-50 {
-	--opacity: 0.05;
-	background-color: rgba(var(--lb-color-primary-rgb), var(--opacity, 1));
+	background-color: rgba(var(--lb-color-primary-rgb), 0.05);
+}
+.bg-lb-primary-100 {
+	background-color: rgba(var(--lb-color-primary-rgb), 0.10);
+}
+.bg-lb-primary-150 {
+	background-color: rgba(var(--lb-color-primary-rgb), 0.15);
+}
+.bg-lb-primary-200 {
+	background-color: rgba(var(--lb-color-primary-rgb), 0.20);
 }
 
 @media (min-width: 1200px) {

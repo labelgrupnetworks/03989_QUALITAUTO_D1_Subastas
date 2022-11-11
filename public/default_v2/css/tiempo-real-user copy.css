@@ -1,0 +1,1638 @@
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:400,700,600,300);
+
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+*/
+:root {
+    --primary-color: #414145;
+    --secondary-color: #BF9814;
+}
+
+html, body {
+
+    width: 100%;
+    height: 100%;
+    font-family: Tahoma,Verdana,Segoe,sans-serif;
+    font-size: 25px;
+    text-transform: uppercase;
+
+}
+
+.tiempo_real_content{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 90px calc(100% - 90px);
+}
+
+link{
+    display: none;
+}
+
+.button{
+    font-weight: 700;
+    font-size: 12px;
+    outline: 0 !important;
+    margin-left: 20px;
+    padding: 10px 30px;
+    border-radius: 0;
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: #fff;
+    transition: 0.5s;
+    line-height: 1.5;
+}
+
+.button:hover{
+    background-color: transparent;
+    color: var(--secondary-color);
+    transition: 0.5s;
+}
+
+.btn-danger{
+    background-color: #c30e16;
+    border-color: #c30e16;
+    color: #fff;
+}
+
+.btn-danger:hover{
+    color: #c30e16;
+}
+
+.button_modal_confirm{
+    background-color: #DBDBDB;
+    color: black;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| HEADER
+|--------------------------------------------------------------------------
+*/
+
+/*modal de inicio de sesión*/
+.own_box {
+    display: none;
+    position: absolute;
+    background: #fff;
+    padding: 15px;
+    z-index: 99999;
+    border: 1px solid #2b373a;
+    max-width: 300px;
+}
+.own_box.ob_disp {
+    display: block;
+    border-top: 5px solid #bf9814;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    box-shadow: none;
+}
+
+.nav_tr{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.selectIdioma{
+    width: 100px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0;
+    background: rgba(255,255,255,.4);
+    color: black;
+    border: 0;
+    float: right;
+}
+
+.header_content{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+}
+
+.header_nologin{
+    grid-template-columns: 1fr 3fr 2fr;
+}
+
+.header_logo{
+    align-self: center;
+}
+
+.header_logo img{
+    max-height: 50px;
+    margin-left: 10px;
+}
+
+.header_title{
+    justify-self: center;
+    align-self: center;
+    letter-spacing: 0.1em;
+}
+
+.header_title .auction_number{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+.menu ul {
+    padding: 0;
+    list-style: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    margin: 0;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.header_session{
+    align-self: center;
+    font-size: 12px;
+    justify-self: end;
+    padding-right: 10px;
+}
+
+.header_session .button{
+    text-transform: capitalize;
+}
+
+.group.user_verified {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+span.img_verified span {
+    background: transparent;
+    border-radius: 50%;
+    border: 4px solid #bf9814;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    position: relative;
+}
+span.img_verified span i {
+    font-size: 25px;
+    font-weight: 400;
+    color: #237201;
+    background: #fff;
+    border-radius: 255px;
+    padding: 8px 8px 8px 10px;
+    border: 4px solid #2b373a;
+}
+.group.user_verified .u_data {
+    margin-left: 8px;
+}
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Ficha
+|--------------------------------------------------------------------------
+*/
+.ficha_tr{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+        "product info"
+        "info_auction streaming";
+    grid-column-gap: 10px;
+}
+
+.tiempo_real.tr_stop .ficha_tr {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.tiempo_real.tr_stop .clock-page {
+	position: relative;
+	grid-row: 1 / end;
+	grid-column: 1 / end;
+	top: initial;
+}
+
+@media (max-width: 768px){
+
+	.tiempo_real.tr_stop .ficha_tr {
+		grid-template-columns: 1fr;
+    	grid-template-rows: 1fr 1fr;
+    	grid-template-areas: none;
+	}
+
+	.tiempo_real.tr_stop .clock-page {
+		grid-row: 1 / end;
+		grid-column: 1 / 2;
+	}
+
+	.tiempo_real.tr_stop .tr_user_streaming {
+		grid-area: auto;
+		grid-row: 2 / 3;
+		grid-column: 1 / 2;
+	}
+}
+
+.tr_user_product{
+    grid-area: product;
+    display: grid;
+
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr 9fr;
+    grid-template-areas:
+        "product_img product_lot"
+        "product_img product_desc";
+
+    /* grid-gap: 10px; */
+	padding: 10px 15px;
+}
+
+.tr_user_info{
+    grid-area: info;
+    margin: 0 10px 10px 10px;
+
+}
+
+.tr_user_info_auction{
+    grid-area: info_auction;
+	padding: 10px;
+}
+
+.tr_user_info_auction > div{
+    border: 1px solid #DBDBDB;
+    text-transform: initial;
+    height: 100%;
+	overflow: auto;
+   /*  margin: 8px; */
+}
+
+.tr_user_streaming{
+    grid-area: streaming;
+	padding: 10px;
+}
+
+.tr_user_streaming > div{
+
+    border: 1px solid #DBDBDB;
+    text-transform: initial;
+    /* height: 90%;
+    margin: 8px; */
+	height: 100%;
+	max-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.tr_user_streaming #streaming {
+	opacity: 0;
+}
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Product
+|--------------------------------------------------------------------------
+*/
+.product_img{
+    grid-area: product_img;
+	height: 100%;
+    /* display: grid;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden; */
+}
+
+
+.product_img .img{
+	height: 100%;
+	text-align: center;
+}
+
+.product_img img{
+    /* justify-self: center;
+    align-self: center; */
+    width: 100%;
+	height: 100%;
+	object-fit: contain;
+	margin: auto;
+}
+
+.product_lot{
+    grid-area: product_lot;
+    display: grid;
+    margin: 0px 10px;
+}
+
+.product_lot span{
+    align-self: center;
+}
+
+.product_desc{
+    grid-area: product_desc;
+    margin: 10px;
+	position: relative;
+	/* max-height: 215px; */
+	overflow: auto;
+	height: 100%;
+}
+
+.product_desc::-webkit-scrollbar{
+    width: 5px;
+}
+.product_desc::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 56px #DBDBDB;
+}
+.product_desc::-webkit-scrollbar-thumb{
+    background-color: var(--secondary-color);
+    outline: 1px solid #DBDBDB;
+}
+
+.actual_titulo{
+    text-transform: initial;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.actual_descripcion{
+    text-transform: initial;
+    font-size: 18px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Info
+|--------------------------------------------------------------------------
+*/
+
+.user_info_items{
+    height: 85%;
+    display: grid;
+    grid-template-rows: 1fr 2fr 2fr 2.5fr 4fr 1fr;
+}
+
+.info-currency{
+	font-size: 15px;
+}
+
+.precio_estimado{
+    border: 1px solid #DBDBDB;
+    display: flex;
+    align-items: center;
+}
+
+.precio_estimado p{
+    margin-left: 10px;
+    margin-bottom: 0;
+    /* min-width: 240px; */
+}
+
+.precioSalida{
+    border: 1px solid #DBDBDB;
+    display: flex;
+    align-items: center;
+}
+.precioSalida p, .pactual p{
+    margin-left: 10px;
+    margin-bottom: 0;
+    min-width: 240px;
+}
+
+.pactual{
+    background-color: #DBDBDB;
+    display: flex;
+    align-items: center;
+}
+
+.pactual p {
+    min-width: 240px;
+}
+#actual_max_bid.mine {
+    color: #5cb85c;
+    font-weight: bold;
+}
+#actual_max_bid.other {
+    color: #c30e16;
+    font-weight: bold;
+}
+#actual_max_bid.black{
+    color: black;
+    font-weight: bold;
+    min-width: 70px;
+}
+
+.pujar{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2fr;
+	grid-gap: 5px;
+	/*
+	grid-template-areas:
+        "tuorden"
+        "input_puja add_bid "
+       */
+}
+
+.tiempo_real.tr_stop .pujar{
+	display: none;
+}
+
+.tupuja, .tuorden{
+    text-transform: initial;
+    font-size: 16px;
+    color: #616161;
+    align-self: end;
+}
+.tuorden{
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 3;
+}
+
+.bid_amount_gestor{
+    height: 45px;
+    text-align: end;
+    font-size: 20px;
+    padding-right: 25px;
+    color: black;
+}
+
+.input_puja{
+    position: relative;
+}
+
+.input_puja span{
+    position: absolute;
+    font-size: 24px;
+    color: black;
+    top: 6px;
+    right: 7px;
+}
+
+.btn-custom-save {
+    font-weight: 600;
+    margin-left: 0;
+    font-size: 20px;
+    max-height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.auction_conditions{
+	font-size: 16px;
+	margin-top: 5px;
+	text-transform: none;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Info Auction
+|--------------------------------------------------------------------------
+*/
+.tr_user_info_auction .tab-content{
+    height: 80%;
+}
+
+.tr_user_info_auction .tab-content > div{
+    height: 100%;
+}
+
+
+
+
+.tr_user_info_auction > div > ul > li{
+    width: 25%;
+}
+
+
+.nav:before{
+    content: initial;
+}
+
+.tr_user_info_auction > ul > li{
+    width: 25%;
+}
+
+.nav-tabs>li>a{
+    border: 0px;
+    background-color: #DBDBDB;
+    color: black;
+    border-radius: 0;
+    margin-bottom: 1px;
+
+    /*min-width: 150px;*/
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    background-color: #fff;
+    color: black;
+    border: 0px;
+    margin: 0;
+}
+
+.tr_user_info_auction .object_title{
+    font-size: 18px;
+}
+
+.tr_user_info_auction .button-search button{
+    width: 100%;
+}
+
+
+#cancelarOrdenUser{
+	float: left;
+	padding: 2px 6px;
+	margin-right: 20px;
+	background-color: #c30e16;
+    border-color: #c30e16;
+    color: #fff;
+}
+
+#cancelarOrdenUser:hover{
+	color: #c30e16;
+	background-color: #FFFFFF;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Content Chat
+|--------------------------------------------------------------------------
+*/
+.tr_user_info_auction .panel-body {
+    overflow-y: auto;
+    max-height: 275px;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.chat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.chat li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #ebebeb;
+}
+
+.chat li .chat-body p {
+    margin: 0;
+    color: #777;
+}
+
+.glyphicon-time{
+    margin-right: 5px;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Content Buscador
+|--------------------------------------------------------------------------
+*/
+.lotes-content{
+    height: 100%;
+}
+
+.tr_user_info_auction .aside.buscador {
+    overflow: hidden;
+
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr 5fr 1fr;
+    grid-template-rows: 1fr 1fr 2fr 2fr;
+    grid-template-areas:
+        ". . . search-lot search-lot"
+        "btn-previous num-lot-search . checkbox-favorite btn-next"
+        "img2 img2 desc-search desc-search ."
+        "img2 img2 price-search button-search .";
+
+    grid-row-gap: 5px;
+    height: 100%;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    color: #fff !important;
+    transition: 0.5s;
+}
+
+.search-lot {
+    width: 100%;
+    grid-area: search-lot;
+
+    align-self: center;
+    justify-self: end;
+    margin-right: 5px;
+}
+
+.btn-previous{
+    grid-area: btn-previous;
+    margin-left: 5px;
+}
+
+.btn-next{
+    grid-area: btn-next;
+    margin-right: 5px;
+}
+
+.num-lot-search{
+    grid-area: num-lot-search;
+    align-self: center;
+    margin-left: 35px;
+}
+
+.num-lot-search h2{
+    margin: 0;
+}
+
+.img2{
+    grid-area: img2;
+    display: grid;
+
+}
+
+.img2 img {
+    justify-self: center;
+    align-self: center;
+	width: auto;
+	max-width: 60%;
+	max-height: 100%;
+	height: auto;
+}
+
+.desc-search{
+    grid-area: desc-search;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.desc-title{
+    overflow: auto;
+    height: 100px;
+    max-height: 30px;
+    word-wrap: break-word;
+    margin: 0;
+}
+
+.desc{
+    font-size: 18px;
+}
+
+.desc > p{
+    margin-top: 10px;
+    overflow: auto;
+    max-height: 80px;
+}
+
+.desc-search .lot-action_comprar, .desc-search .lot-order_importe{
+    max-width: 300px;
+}
+
+.price-search{
+    grid-area: price-search;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.button-search{
+    grid-area: button-search;
+    font-size: 18px;
+}
+
+.checkbox-favorite{
+    grid-area: checkbox-favorite;
+    font-size: 18px;
+    margin-left: 5px;
+}
+
+.checkbox-favorite label{
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-favorite label input{
+    margin-top: 0;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Content Mis Adjudicaciones
+|--------------------------------------------------------------------------
+*/
+
+.adjudicaciones{
+    height: 100%;
+    max-height: 240px;
+    overflow: auto;
+}
+
+.adjudicaciones_model{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    color: #777;
+    font-size: 20px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Content Credito
+|--------------------------------------------------------------------------
+*/
+.credit-block {
+	padding: 20px;
+}
+
+.credit-btn{
+	margin: 0;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| TR_STREAMING
+|--------------------------------------------------------------------------
+*/
+
+.tr_user_streaming .tab-content{
+    font-size: 16px;
+	overflow: auto;
+	height: 100%;
+	/* max-height: 310px; */
+}
+
+.tr_user_streaming ul > li{
+    width: 50%;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.stream-block {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.stream-wrapper {
+	position: relative;
+	flex: 1;
+}
+
+.tiempo_real.tr_stop #ultimas_pujas {
+	display: none;
+}
+
+.tiempo_real.tr_stop #streaming {
+	display: block;
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Ulimtas Pujas
+|--------------------------------------------------------------------------
+*/
+
+.tr_user_streaming .aside {
+    padding: 10px;
+    margin: 10px 0 0 0;
+}
+
+.tr_user_streaming #ficha #pujas_list, #ficha #adjudicaciones_list, #ficha #ol_list {
+    overflow-y: auto;
+    max-height: 235px;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.tr_user_streaming #ficha .tipoPuja p, #ficha .importePuja p {
+	margin-bottom: 1px;
+}
+
+
+.adjudicaciones_model:nth-child(2n+1){
+    background: #DBDBDB
+}
+
+/*
+|--------------------------------------------------------------------------
+| Streaming
+|--------------------------------------------------------------------------
+*/
+
+#streaming{
+    height: 100%;
+}
+
+.delay{
+    font-size: 10px;
+    text-align: center;
+    margin: 0;
+}
+
+.tr_user_streaming .streaming{
+    height: auto;
+	text-align: center;
+    /* display: grid; */
+}
+
+iframe{
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /* justify-self: center;
+    align-self: center; */
+}
+
+/*
+|--------------------------------------------------------------------------
+| Modales
+|--------------------------------------------------------------------------
+*/
+.mfp-content{
+    font-size: 14px;
+    text-transform: initial;
+}
+
+.modal-block .txt_loading, .modal-block .insert_msg {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+i-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+mfp-content.object_title {
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.ui-pnotify{
+    font-size: 14px;
+}
+
+.autocomplete-suggestions {
+    font-size: 20px;
+}
+
+.message-error-log{
+    font-size: 14px;
+}
+/*
+|--------------------------------------------------------------------------
+| Página inicio
+|--------------------------------------------------------------------------
+*/
+
+.clock-page{
+    display: block;
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 100;
+}
+
+.wait-time {
+    text-align: center;
+    color: grey;
+    margin-top: 40px;
+    font-size: 35px;
+}
+/*
+|--------------------------------------------------------------------------
+| Fair warning
+|--------------------------------------------------------------------------
+*/
+
+
+#fairwarning {
+	position: absolute;
+    top: 0;
+    background: red;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+	text-align: center;
+	opacity: 0.0;
+	display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.parpadea {
+
+	animation-name: parpadeo;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+
+	-webkit-animation-name:parpadeo;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+  }
+
+  @-moz-keyframes parpadeo{
+	0% { opacity: 1.0; }
+	50% { opacity: 0.0; }
+	100% { opacity: 1.0; }
+  }
+
+  @-webkit-keyframes parpadeo {
+	0% { opacity: 1.0; }
+	50% { opacity: 0.0; }
+	 100% { opacity: 1.0; }
+  }
+
+  @keyframes parpadeo {
+	0% { opacity: 1.0; }
+	 50% { opacity: 0.0; }
+	100% { opacity: 1.0; }
+  }
+
+/*
+|--------------------------------------------------------------------------
+| Cuenta atras
+|--------------------------------------------------------------------------
+*/
+
+.count_down_msg {
+    position: absolute;
+    top: 0;
+    background: rgb(219, 219, 219);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    text-align: center;
+}
+
+.count_down_msg .final_auction{
+    position: relative;
+    top: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.count_down_msg p {
+    text-align: center;
+    position: relative;
+    top: 25%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 85px;
+    color: #c30e16;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+|
+|   MEDIA QUERY
+|
+|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+*/
+
+
+@media (max-width: 1500px){
+    .tr_user_info_auction > ul > li {
+        width: 33.33%;
+	}
+
+	/* .ficha_tr{
+		height: 89%;
+	} */
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| TABLET QUERY
+|--------------------------------------------------------------------------
+*/
+
+@media (max-width: 1200px) and (min-width: 768px){
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERAL - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    body{
+        font-size: 18px;
+    }
+
+    .tiempo_real_content {
+        grid-template-columns: 100%;
+        grid-template-rows: 80px auto;
+        grid-gap: 10px;
+    }
+
+	.clock-page {
+		top: 80px;
+	}
+
+    /*
+    |--------------------------------------------------------------------------
+    | HEADER - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .header_logo{
+        display: none;
+    }
+
+    .header_content {
+        grid-template-columns: 8fr 1fr;
+    }
+
+    .header_content > div{
+        justify-self: center;
+        align-self: center;
+    }
+
+    .header_title {
+        align-self: center;
+        letter-spacing: 0.1em;
+    }
+    .header_title .auction_number {
+        font-size: 15px;
+    }
+
+    .menu {
+
+        background-color: #eee;
+        height: 80px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 10;
+        width: 100%;
+
+        -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        -o-transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .menu.active {
+        right: -100%;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        -webkit-transition: -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        -o-transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98), -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+    }
+
+    .menu ul {
+        flex-direction: row-reverse;
+    }
+
+    i.fa.fa-close{
+        font-size: 25px;
+        margin-top: 15px;
+        margin-left: 10px;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ficha - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_product{
+        /* grid-template-columns: 100%;
+        grid-template-rows: 1fr 6fr 5fr;
+        grid-template-areas:
+            "product_lot"
+            "product_img"
+            "product_desc"; */
+        grid-gap: 0px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content Buscador - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction .aside.buscador {
+
+        grid-template-columns: 1fr 4fr 2fr 4fr 1fr;
+        grid-template-rows: 2fr 1fr 2fr 4fr 1fr 2fr;
+        grid-template-areas:
+            ". . search-lot search-lot search-lot"
+            "btn-previous num-lot-search num-lot-search num-lot-search btn-next"
+            ". desc-search desc-search desc-search ."
+            ". img2 img2 img2 ."
+            ". price-search price-search price-search ."
+            "checkbox-favorite checkbox-favorite . button-search button-search"
+            ;
+
+        grid-gap: 10px;
+    }
+
+    .num-lot-search{
+        margin-left: 0;
+    }
+
+    .checkbox-favorite{
+        font-size: 15px;
+        align-self: center;
+    }
+
+    .price-search{
+        justify-self: center;
+    }
+
+    .desc-title{
+        max-height: 45px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Info Auction - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction > div > ul > li{
+        width: 33%;
+    }
+
+    .button-search{
+        text-align: center;
+        align-self: center;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content Chat - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction .panel-body{
+        max-height: 320px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ulimtas Pujas - TABLET
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_streaming .aside{
+        max-height: 290px;
+    }
+
+    .tr_user_streaming .nav a{
+        font-size: 14px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TR_STREAMING - TABLET
+    |--------------------------------------------------------------------------
+    */
+    .tr_user_streaming > ul{
+        font-size: 15px;
+    }
+
+    iframe {
+        /*height: 50%;
+        width: 100%;*/
+        align-self: start;
+    }
+}
+
+
+@media (max-width: 950px) and (min-width: 768px){
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FICHA - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .ficha_tr{
+        grid-template-columns: 100%;
+        grid-template-rows: auto 300px 400px 600px 100px;
+        grid-template-areas:
+            "product"
+            "info"
+            "streaming"
+            "info_auction"
+            ".";
+    }
+
+    .tr_user_product{
+        /* grid-template-columns: 100%;
+        grid-template-rows: 1fr 6fr auto;
+        grid-template-areas:
+            "product_lot"
+            "product_img"
+            "product_desc";
+        grid-gap: 0px; */
+
+		grid-template-columns: 2fr 2fr;
+		max-height: 400px;
+    }
+
+
+}
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| MOVIL QUERY
+|--------------------------------------------------------------------------
+*/
+@media (max-width: 768px){
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERAL - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .button:hover {
+        background-color: var(--secondary-color);
+        color: #fff;
+        transition: 0.5s;
+    }
+
+
+    body{
+        font-size: 18px;
+    }
+
+    .tiempo_real_content {
+        grid-template-columns: 100%;
+        grid-template-rows: 80px auto;
+        grid-gap: 10px;
+    }
+
+	.clock-page {
+		top: 80px;
+	}
+
+    /*
+    |--------------------------------------------------------------------------
+    | HEADER - MOVIL
+    |--------------------------------------------------------------------------
+    */
+    .header_content {
+        grid-template-columns: 8fr 1fr;
+    }
+
+    .header_content > div{
+        justify-self: center;
+        align-self: center;
+    }
+
+    .header_title {
+        align-self: center;
+        letter-spacing: 0.1em;
+    }
+    .header_title .auction_number {
+        font-size: 15px;
+    }
+
+    .menu {
+
+        background-color: #eee;
+        height: 80px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+
+        position: fixed;
+        top: 0;
+        right: -100%;
+        z-index: 10;
+        width: 100%;
+
+        -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        -o-transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), -webkit-transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .menu.active {
+        right: -100%;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        -webkit-transition: -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        -o-transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+        transition: transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98), -webkit-transform 1s cubic-bezier(0.16, 1.08, 0.38, 0.98);
+    }
+
+    .menu ul {
+        flex-direction: row-reverse;
+    }
+
+    i.fa.fa-close{
+        font-size: 25px;
+        margin-top: 15px;
+        margin-left: 10px;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FICHA - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .ficha_tr{
+        grid-template-columns: 100%;
+        grid-template-rows: auto 300px 400px 600px 100px;
+        grid-template-areas:
+            "product"
+            "info"
+            "streaming"
+            "info_auction"
+            ".";
+    }
+
+    .tr_user_product{
+        grid-template-columns: 100%;
+        grid-template-rows: 1fr 6fr auto;
+        grid-template-areas:
+            "product_lot"
+            "product_img"
+            "product_desc";
+        grid-gap: 0px;
+		max-height: 600px;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product - MOVIL
+    |--------------------------------------------------------------------------
+    */
+    .actual_descripcion .object_title{
+        font-size: 20px;
+    }
+
+
+
+    .product_img img{
+        max-width: 300px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Info - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .user_info_items {
+        display: grid;
+        grid-template-rows: 2fr 2fr 2fr 1fr;
+    }
+
+    .pujar{
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        background: #292929;
+        z-index: 10;
+        padding: 5px;
+    }
+
+    .pujar .tuorden{
+		color: white;
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cuenta atras - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .count_down_msg {
+        position: fixed;
+        top: 0px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        text-align: center;
+        height: 150px;
+    }
+
+    .count_down_msg p{
+        top: 45%;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content Chat - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction .panel-body {
+        max-height: 100%;
+        font-size: 16px;
+    }
+
+    .nav>li>a{
+        padding: 10px 0px;
+        text-align: center;
+        font-size: small;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content Buscador - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction h2, .tr_user_info_auction h2 span{
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .tr_user_info_auction span{
+        font-size: 20px;
+    }
+
+    .desc-title{
+        max-height: 55px;
+        font-size: 18;
+    }
+
+    .desc > p{
+        max-height: 130px;
+    }
+
+    .tr_user_info_auction .aside.buscador {
+        grid-template-columns: 1fr 4fr 0.5fr 4fr 1fr;
+        grid-template-rows: 2fr 1fr 2fr 4fr 1fr 2fr;
+        grid-template-areas:
+            ". . search-lot search-lot search-lot"
+            "btn-previous num-lot-search num-lot-search num-lot-search btn-next"
+            ". desc-search desc-search desc-search ."
+            ". img2 img2 img2 ."
+            ". price-search price-search price-search ."
+            "checkbox-favorite checkbox-favorite . button-search button-search"
+            ;
+
+        grid-gap: 10px;
+    }
+
+    .search-lot{
+        margin-top: 10px;
+    }
+
+    .button-search{
+        text-align: center;
+        align-self: center;
+        margin-right: 5px;
+    }
+
+    .num-lot-search{
+        margin-left: 0;
+    }
+
+    .checkbox-favorite{
+        font-size: 15px;
+        margin: 0;
+        margin-left: 5px;
+        align-self: center;
+    }
+
+    .price-search{
+        text-align: center;
+        font-size: 18px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Info Auction - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .tr_user_info_auction > div > ul > li{
+        width: 33%;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content Mis Adjudicaciones - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    .adjudicaciones_model *{
+        font-size: 16px;
+    }
+
+    .adjudicaciones_model span{
+        font-size: 16px;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TR_STREAMING - MOVIL
+    |--------------------------------------------------------------------------
+    */
+
+    iframe {
+
+        /*height: 100%;*/
+        /*width: 100%;*/
+        align-self: start;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| MINI MOVIL QUERY
+|--------------------------------------------------------------------------
+*/
+
+
+
+@media (max-width: 480px){
+    .menu ul {
+        flex-direction: row-reverse;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | TR_STREAMING - MINI MOVIL
+    |--------------------------------------------------------------------------
+    */
+    iframe {
+        /* height: 100%; */
+        width: 100%;
+        align-self: start;
+    }
+
+}

@@ -686,7 +686,7 @@ $(function () {
         if (data.status == 'error' && typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
             displayAlert(0, data.msg);
             return;
-        } else if (!auction_info.user.is_gestor) {
+        } else if (!auction_info.user?.is_gestor) {
             displayAlert(1, messages.success.new_chat_message);
             //si tab-messages existe hacemos la animacion del tab messages
             if ($('#tab-messages').length > 0) {
@@ -2255,9 +2255,9 @@ $(function () {
 	});
 
 	socket.on('fairwarning_response', function (data) {
-		$("#fairwarning").addClass("parpadea");
+		$("#fairwarning").addClass("parpadea").addClass("max-index");
 		setTimeout(function() {
-			$("#fairwarning").removeClass("parpadea");
+			$("#fairwarning").removeClass("parpadea").removeClass("max-index");
 		},3000);
 
     });
