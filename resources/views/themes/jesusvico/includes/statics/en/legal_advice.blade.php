@@ -152,7 +152,6 @@
 		}
 
 	}
-
 </style>
 
 
@@ -166,30 +165,32 @@
 						<video style="height: auto; padding: 0 10px;" controls=""
 							poster="/themes/jesusvico/assets/img/legal_advice_poster.jpg" autoplay="">
 							<source src="/files/videos/jesusvico_asesoramiento_legal.mp4" type="video/mp4">
-							Tu navegador no soporta HTML5 video.
+								Your browser does not support HTML5 video.
 						</video>
 					</div>
 				</div>
 			</div>
 			<div class="col-12 col-lg-4">
-				<div class="d-flex flex-column align-items-center justify-content-between start-text-container" style="margin-bottom: 30px;margin-top: 3rem;">
+				<div class="d-flex flex-column align-items-center justify-content-between start-text-container"
+					style="margin-bottom: 30px;margin-top: 3rem;">
 					<h4>En el grupo Jesús Vico somos conscientes de la complejidad legal existente en materia de Patrimonio Histórico.
 					</h4>
-					<p class="mb-5" style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho Olivares
+					<p class="mb-5" style="font-size: 14pt; font-weight: lighter; margin-top: 1rem;">Con la colaboración del despacho
+						Olivares
 						Abogados, queremos ofrecer un servicio de asesoramiento especializado al coleccionista, dando soporte y
 						garantizando el correcto cumplimiento de la normativa vigente.</p>
 
 					{{-- Flecha --}}
-
-					<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
-						viewBox="0 0 49.162 40.404">
-						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-						</g>
-					</svg>
+					<a href="#id">
+						<svg xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
+							<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+								<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+								<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+							</g>
+						</svg>
+					</a>
 				</div>
 			</div>
 		</div>

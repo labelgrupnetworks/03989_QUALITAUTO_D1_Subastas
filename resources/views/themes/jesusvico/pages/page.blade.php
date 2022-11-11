@@ -12,16 +12,19 @@
     <main class="static-page">
         <div class="container">
             {{-- @include('includes.breadcrumb') --}}
-            <h1>{{ $data['data']->name_web_page }}</h1>
+            <h1 class="text-uppercase">{{ $data['data']->name_web_page }}</h1>
         </div>
 
-        <div class="container-fluid">
+		{{-- Al crear una estática nueva hay que poner dentro de la estática el container --}}
+
+        <div>
             <div class="contenido contenido-web static-page" id="pagina-{{ $data['data']->id_web_page }}">
                 @if (request('static'))
                     @php
+						$lang = \Config::get('app.locale');
                         $page = request('static');
                     @endphp
-                    @include("includes.statics.$page")
+                    @include("includes.statics.$lang.$page")
                 @else
                     {!! $data['data']->content_web_page !!}
                 @endif

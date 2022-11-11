@@ -20,7 +20,7 @@
 	}
 
 	.who-we-are .lb-blockquote {
-		max-width: 50%;
+		max-width: 100%;
 	}
 
 	.who-we-are .start-text-container {
@@ -43,6 +43,10 @@
 		.who-we-are .start-text-container {
 			height: 450px;
 		}
+
+		.who-we-are .lb-blockquote {
+			max-width: 50%;
+		}
 	}
 
 	@media (min-width: 1200px) {
@@ -58,7 +62,8 @@
 
 		<div class="row">
 			<div class="col-12 col-lg-4">
-				<div class="d-flex flex-column align-items-center align-items-lg-start justify-content-between start-text-container" style="margin-bottom: 30px;">
+				<div class="d-flex flex-column align-items-center align-items-lg-start justify-content-between start-text-container"
+					style="margin-bottom: 30px;">
 					<div class="mb-5">
 						<h4 class="fw-light">Los inicios de la empresa se remontan al año 1971, cuando <strong>Jesús Vico
 								Monteoliva</strong> comienza su
@@ -68,14 +73,17 @@
 
 					{{-- Flecha --}}
 
-					<svg class="ms-lg-4 mb-4 mb-md-0" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404" viewBox="0 0 49.162 40.404">
-						<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
-							<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
-							<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
-								transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
-						</g>
-					</svg>
+					<a href="#id">
+						<svg class="ms-lg-4 mb-4 mb-md-0" xmlns="http://www.w3.org/2000/svg" width="49.162" height="40.404"
+							viewBox="0 0 49.162 40.404">
+							<g id="Grupo_40" data-name="Grupo 40" transform="translate(-240.156 -563.202)">
+								<path id="Trazado_2" data-name="Trazado 2" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 533.71)" fill="none" stroke="#b9b13c" stroke-width="2" />
+								<path id="Trazado_3" data-name="Trazado 3" d="M140.429,44.608,164.3,68.482l23.874-23.874"
+									transform="translate(100.433 519.301)" fill="none" stroke="#b9b13c" stroke-width="2" opacity="0.398" />
+							</g>
+						</svg>
+					</a>
 				</div>
 			</div>
 			<div class="col-12 col-lg-8">

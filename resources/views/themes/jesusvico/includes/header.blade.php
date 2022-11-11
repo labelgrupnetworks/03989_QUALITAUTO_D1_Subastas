@@ -136,7 +136,7 @@ $pageName = Route::currentRouteName();
 						</ul>
 					</li>
 					<li class="nav-item">
-						<a class='nav-link' href="{{ Routing::translateSeo('contact') }}"><span>{{ trans($theme.'-app.foot.contact') }}</span></a>
+						<a class='nav-link' href="{{ Routing::translateSeo('contacto') }}"><span>{{ trans($theme.'-app.foot.contact') }}</span></a>
 					</li>
 					<li class="nav-item">
 						<a class='nav-link' href="{{ trans("$theme-app.links.blog") }}" target="_blank"><span>{{ trans($theme.'-app.home.blog') }}</span></a>

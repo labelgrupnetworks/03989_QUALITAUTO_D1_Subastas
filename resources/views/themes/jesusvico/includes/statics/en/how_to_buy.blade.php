@@ -161,7 +161,7 @@
 					<h4 class="bg-lb-color-backgorund-dark text-center pt-2 pb-2">Pujar en directo</h4>
 					<p style="margin: 1rem 0;">Si prefiere pujar en directo durante la subasta, podrá hacerlo de la siguiente manera:
 					</p>
-					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Suabstas en sala</h5>
+					<h5 class="bg-lb-color-backgorund-light text-center pt-2 pb-2">Subastas en sala</h5>
 					<div class="lb-border-light" style="padding: 8px;">
 						<section class="d-flex">
 							<span class="text-lb-secondary">
