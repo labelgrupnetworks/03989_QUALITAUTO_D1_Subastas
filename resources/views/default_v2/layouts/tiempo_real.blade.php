@@ -78,8 +78,7 @@
                 if (response.status == 'success') {
                     location.reload();
                 } else {
-                    $("#accerder-user-form .message-error-log").text('').append(messages.error[
-                        response.msg]);
+                    $("#accerder-user-form .message-error-log").text('').append(messages.error[response.msg]);
                 }
 
             }

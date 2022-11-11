@@ -6,7 +6,7 @@
 
 	<div class="filters-auction-title border-bottom pb-1 mt-1">
 
-		<button class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
+		<button id="js-hide-filters" class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
 			<svg class="bi" width="16" height="16" fill="currentColor">
 				<use xlink:href="/bootstrap-icons.svg#arrow-bar-left"/>
 			</svg>

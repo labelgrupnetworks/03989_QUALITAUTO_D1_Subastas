@@ -110,52 +110,6 @@
     </section>
 </div>
 
-
-<?php /*
-<div id="infoLot" class="modal-block modal-block-lg mfp-hide">
-    <section class="panel">
-        <div class="panel-body">
-            <div class="modal-wrapper">
-                <div class="modal-text">
-                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <span class="i_lot"></span></p>
-                    <div class="row">
-                        <div class="col-lg-4 img">
-                            <img class="img-responsive" src="">
-                        </div>
-                        <div class="col-lg-8 txt">
-                            <p class="i_title"></p>
-                            <p class="i_desc"></p>
-                            <p>
-                                <span>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}</span>
-                                <span class="i_imp"></span>
-                                <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
-                            </p>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="add_to_fav" data-from="modal"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.add_to_fav') }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <span class="lot-msg_adjudicado hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i>  {{ trans(\Config::get('app.theme').'-app.sheet_tr.awarded') }}</b> <span class="imp_adj"></span></span>
-                        <span class="lot-msg_ensubasta hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}</b></span>
-
-                        <button data-from="modal" class="lot-action_comprar btn btn-primary pull-left hidden" type="button" ref="" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy') }}</button>
-
-                        <button data-from="modal" class="lot-order_importe btn btn-primary  hidden" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.import_order') }}</button>
-                    </div>
-                    <div >
-                        <button class="btn btn-primary modal-dismiss pull-right">{{ trans(\Config::get('app.theme').'-app.sheet_tr.close') }}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
- *
- */?>
-
 <div id="modalMensaje" class="container modal-block mfp-hide ">
     <div   data-to="pujarLoteFicha" class="modal-sub-w">
             <section class="panel">

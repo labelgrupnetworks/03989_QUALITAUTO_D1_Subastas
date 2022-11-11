@@ -15,6 +15,10 @@
 					@include('includes.grid.topFilters')
 				</div>
 
+				<div class="banner-lotes-container mb-2">
+					{!! \BannerLib::bannersPorKey('banner_lotes', 'banner_lotes', $options = ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false]) !!}
+				</div>
+
 				@if(config("app.paginacion_grid_lotes"))
 
 					<div class="pagination-wrapper">

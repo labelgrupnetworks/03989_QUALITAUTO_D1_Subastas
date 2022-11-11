@@ -58,36 +58,6 @@
                         href="{{ $url }}">{{ trans("$theme-app.sheet_tr.view") }}</a>
                 </div>
             </div>
-            {{-- condicion para llamada ajax. por ahora se muestra siempre @if ($lote->cerrado_asigl0 != 'N' || !Session::has('user')) j-active-info @endif --}}
-            {{-- <div class="lots j-active-info h-100 col-12 col-sm-6 col-md-3"
-                        data-ref_asigl0="{{ $lote->ref_asigl0 }}" data-cod_sub="{{ $data['subasta_info']->cod_sub }}"
-                        data-background-image="url({{ $img }})" style="order: {{ $loop->index }};">
-
-                        <div class="lots-content">{{ $lote->ref_hces1 }}</div>
-
-                        <div class="j-lots-data justify-content-center align-items-center">
-                            <div class="loader" style="display: none"></div>
-                            <div
-                                class="j-lots-data-load h-100 d-flex flex-column justify-content-end align-items-center">
-                                <p class="j-lots-price m-0">
-                                    {{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}:
-                                    <span>{{ $lote->impsalini_hces1 ?? 0 }} €</span>
-                                </p>
-                                <p class="j-lots-state">
-                                    {{ trans(Config::get('app.theme') . '-app.sheet_tr.not_awarded') }}</p>
-                                @if (!empty($url))
-                                    <a class="btn btn-info j-btn-custom-add lots-btn" href="{{ $url }}"
-                                        target="_blank">
-                                        <span class="j-text-add"
-                                            style="display: none">{{ trans(\Config::get('app.theme') . '-app.sheet_tr.buy') }}</span>
-                                        <span
-                                            class="j-text-view">{{ trans(\Config::get('app.theme') . '-app.lot.ver') }}</span>
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div> --}}
         @endforeach
 
     </div>

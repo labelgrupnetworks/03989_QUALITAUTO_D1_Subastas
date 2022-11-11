@@ -652,11 +652,32 @@ ul.style-diamond li::marker {
 	min-height: calc(1.2 * 2 * 1rem);
 }
 
+.auction-card .card-buttons {
+	width: 100%;
+	display: flex;
+	justify-content: stretch;
+	flex-wrap: wrap;
+}
+
+.auction-card .card-buttons .btn-lb-primary {
+	flex: 1;
+}
+.auction-card .card-buttons .btn-lb-primary.bg-danger {
+	flex: none;
+	width: 100%;
+}
+
+
+
 /*
 |--------------------------------------------------------------------------
 | GRID
 |--------------------------------------------------------------------------
 */
+.banner-lotes-container .container-fluid {
+	padding: 0;
+}
+
 .filters-types {
 	display: flex;
 	flex-direction: column;
@@ -772,8 +793,12 @@ simbolos:: %3e == /> | %3c == < | %23 == #
 	height: 420px;
 }
 
-.ficha-grid :is(.description, .categories, .ficha-info, .ficha-info-content, .ficha-image) {
+.ficha-grid :is(.description, .categories, .ficha-info, .ficha-info-content) {
 	padding: 1rem;
+	border: 1px solid #e8eeee;
+}
+
+.ficha-grid .ficha-image{
 	border: 1px solid #e8eeee;
 }
 
@@ -786,6 +811,10 @@ section.ficha-pujas {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
+}
+
+.minis-content button {
+	padding: 0;
 }
 
 .ficha-pujas .price {
