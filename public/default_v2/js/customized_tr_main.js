@@ -1,8 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Globales
  */
+let ajax;
+let prevLot = 1;
+let isSlick = false;
+let prevSize = 0;
+
+const screenSizes = {
+	TABLET_IPHONE: 1024,
+	TABLET: 800,
+	PHONE: 600
+}
 
 /*
    |--------------------------------------------------------------------------
@@ -67,7 +75,8 @@ $(document).ready(function () {
 		$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
 	});
 
-
+	$(window).on('resize', initSlick);
+	initSlick();
 
 });
 
@@ -525,25 +534,7 @@ function clickLogin() {
 	$.magnificPopup.close(); */
 }
 
-
-let arrayViews = [];
-let ajax;
-let prevLot = 1;
-let isSlick = false;
-let prevSize = 0;
-const TABLET_IPHONE = 1024;
-const TABLET = 800;
-const PHONE = 600;
-
-$(document).ready(function () {
-
-	$(window).on('resize', initSlick);
-	initSlick();
-	/* reloadCarrousel(); */
-
-});
-
-function hoverClickCarrousel(e){
+/* function hoverClickCarrousel(e){
 
 	let lotSelected = $(e.target).closest('.lots')[0];
 	let cod_sub = lotSelected.dataset.cod_sub;
@@ -552,7 +543,6 @@ function hoverClickCarrousel(e){
 	if (cod_sub != 'undefined' && ref_asigl0 != 'undefined'){
 		getInfo(cod_sub, ref_asigl0);
 	}
-
 }
 
 function getInfo(cod_sub, ref_asigl0){
@@ -599,7 +589,7 @@ function hoverOutCarrousel() {
 	}
 	$('.j-btn-custom-add .j-text-add').css("display", "none");
 	$('.j-btn-custom-add .j-text-view').css("display", "block");
-}
+} */
 
 function reloadCarrousel() {
 
@@ -638,7 +628,7 @@ function initSlick(){
 
 	prevLot = 1;
 
-	if(vSize < TABLET_IPHONE && vSize >= TABLET){
+	if(vSize < screenSizes.TABLET_IPHONE && vSize >= screenSizes.TABLET){
 		slidesToShow = 3;
 		prevLot = 1;
 
@@ -646,29 +636,29 @@ function initSlick(){
 		* todos estos if's sirven para comprobar que realmente el tamaño de la pagina
 		* se ha modificado, y no recargue la imagen de manera inecesaria.
 		*/
-		if(prevSize == TABLET_IPHONE){
+		if(prevSize == screenSizes.TABLET_IPHONE){
 			return;
 		}
-		prevSize = TABLET_IPHONE;
+		prevSize = screenSizes.TABLET_IPHONE;
 
 	}
-	else if(vSize < TABLET && vSize >= PHONE){
+	else if(vSize < screenSizes.TABLET && vSize >= screenSizes.PHONE){
 		slidesToShow = 2;
 		prevLot = 0;
 
-		if(prevSize == TABLET){
+		if(prevSize == screenSizes.TABLET){
 			return;
 		}
-		prevSize = TABLET;
+		prevSize = screenSizes.TABLET;
 	}
-	else if(vSize < PHONE){
+	else if(vSize < screenSizes.PHONE){
 		slidesToShow = 1;
 		prevLot = 0;
 
-		if(prevSize == PHONE){
+		if(prevSize == screenSizes.PHONE){
 			return;
 		}
-		prevSize = PHONE;
+		prevSize = screenSizes.PHONE;
 	}
 	else{
 		if(prevSize == 1){

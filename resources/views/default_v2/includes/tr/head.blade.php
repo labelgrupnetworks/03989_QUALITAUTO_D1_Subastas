@@ -107,3 +107,10 @@
 
 
 <script src="{{ URL::asset('vendor/slick/slick.js') }}"></script>
+
+{{-- solamente si utilizamos componentes de react --}}
+{{-- @if(!$isAdmin)
+<script defer src="{{ URL::asset('/default_v2/js/manifest.js') }}"></script>
+<script defer src="{{ URL::asset('/default_v2/js/vendor.js') }}"></script>
+<script defer src="{{ URL::asset('/default_v2/js/TiempoRealComponents.js') }}"></script>
+@endif --}}
