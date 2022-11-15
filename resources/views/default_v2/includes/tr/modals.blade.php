@@ -5,7 +5,7 @@
                 <div class="modal-text text-center">
                     <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy_lot_question') }}</p>
                     <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
                     <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid_question') }}</p>
 
                     <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order_question') }}</p>
 
                     <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                     <input id="order_amount" autocomplete="off" class="form-control bid_amount_gestor" type="text">
                     <br />
                     <button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>

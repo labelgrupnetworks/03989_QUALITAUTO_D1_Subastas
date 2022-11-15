@@ -6,17 +6,15 @@
 
 @section('content')
 
-
-
     @if (\Config::get('app.exchange'))
         <script src="{{ URL::asset('js/default/divisas.js') }}"></script>
     @endif
 
-
     @php
         # Fecha hasta
-        $horah = $data['subasta_info']->lote_actual->end_session;
-        $hastah = substr($data['subasta_info']->lote_actual->end_session, 0, 10);
+		$loteActual = $data['subasta_info']->lote_actual;
+        $horah = $loteActual->end_session;
+        $hastah = substr($loteActual->end_session, 0, 10);
         $hastah = str_replace('-', '/', $hastah);
         $fecha_finh = $hastah . $horah;
         $ministeryLicit = config('app.ministeryLicit', false);
@@ -30,11 +28,24 @@
         }
 
         $auctionStatus = $data['subasta_info']->status;
-        $tiempo = $data['subasta_info']->lote_actual->start_session;
+        $tiempo = $loteActual->start_session;
 
         if ($auctionStatus == 'stopped' || $auctionStatus == 'reload') {
             $tiempo = $data['subasta_info']->reanudacion;
         }
+
+		$urlLot = config('app.url') . Routing::translateSeo('lote');
+		$auctionLots = \App\Models\V5\FgAsigl0::JoinFghces1Asigl0()
+                ->JoinSessionAsigl0()
+                ->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'ref_asigl0', 'cerrado_asigl0')
+				->addSelect(DB::raw("('$urlLot' || sub_asigl0 || '-' || auc.\"id_auc_sessions\" || '-' || auc.\"id_auc_sessions\" || '/' || ref_asigl0 || '-' || num_hces1 || '-' || webfriend_hces1) as url"))
+                ->where('SUB_ASIGL0', $data['subasta_info']->cod_sub)
+                ->where('auc."reference"', $data['subasta_info']->reference)
+                ->where('RETIRADO_ASIGL0', 'N')
+                ->where('OCULTO_ASIGL0', 'N')
+                ->get();
+
+
 
     @endphp
 
@@ -42,6 +53,7 @@
         var ministeryLicit = @json($ministeryLicit);
         const withExchange = '{{ $withExchange }}';
         var currency = (Boolean(withExchange)) ? @json($divisas) : null;
+		const auctionLots = @json($auctionLots);
 
         //solamente contiene el estado en la primera carga, no se actualiza
         const initialAuctionStatus = '{{ $auctionStatus }}';

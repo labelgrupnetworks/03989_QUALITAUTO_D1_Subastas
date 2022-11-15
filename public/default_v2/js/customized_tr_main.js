@@ -1,17 +1,3 @@
-/**
- * Globales
- */
-let ajax;
-let prevLot = 1;
-let isSlick = false;
-let prevSize = 0;
-
-const screenSizes = {
-	TABLET_IPHONE: 1024,
-	TABLET: 800,
-	PHONE: 600
-}
-
 /*
    |--------------------------------------------------------------------------
    | Repinta la caja de pujas
@@ -75,9 +61,7 @@ $(document).ready(function () {
 		$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
 	});
 
-	$(window).on('resize', initSlick);
 	initSlick();
-
 });
 
 const frontCurrencies = ['$', 'US$', 'COP '];
@@ -534,64 +518,10 @@ function clickLogin() {
 	$.magnificPopup.close(); */
 }
 
-/* function hoverClickCarrousel(e){
-
-	let lotSelected = $(e.target).closest('.lots')[0];
-	let cod_sub = lotSelected.dataset.cod_sub;
-	let ref_asigl0 = lotSelected.dataset.ref_asigl0;
-
-	if (cod_sub != 'undefined' && ref_asigl0 != 'undefined'){
-		getInfo(cod_sub, ref_asigl0);
-	}
-}
-
-function getInfo(cod_sub, ref_asigl0){
-
-	ajax = $.ajax({
-		type: "GET",
-		url: `/api-ajax/award_price/${cod_sub}/${ref_asigl0}`,
-		beforeSend: function () {
-			//$('.j-lots-data .loader').css("display", "block");
-			$('.j-lots-data .j-lots-data-load').css("display", "none");
-		},
-		success: function (response) {
-			//console.log(response);// = JSON.parse(response);
-			$('.j-lots-data .j-lots-state').html(response.html);
-
-			if (response.purchasable) {
-				$('.j-btn-custom-add .j-text-add').css("display", "block");
-				$('.j-btn-custom-add .j-text-view').css("display", "none");
-			}
-		},
-		error: function (error) {
-
-		},
-		complete: function () {
-			//$('.j-lots-data .loader').css("display", "none");
-			$('.j-lots-data .j-lots-data-load').css("display", "flex");
-			$('.j-lots-state').css("display", "block");
-		}
-	});
-}
-
-function hoverOverCarrousel() {
-
-	let cod_sub = this.dataset.cod_sub;
-	let ref_asigl0 = this.dataset.ref_asigl0;
-
-	getInfo(cod_sub, ref_asigl0);
-}
-
-function hoverOutCarrousel() {
-	if (ajax != null) {
-		ajax.abort();
-		ajax = null;
-	}
-	$('.j-btn-custom-add .j-text-add').css("display", "none");
-	$('.j-btn-custom-add .j-text-view').css("display", "block");
-} */
-
 function reloadCarrousel() {
+
+	//Si se muestrán más de tres retrasamos uno, sino avanzamos uno.
+	const prevLot = window.screen.width >= 768 ? 1 : -1;
 
 	if (typeof auction_info != 'undefined' && typeof auction_info.lote_actual != 'undefined') {
 
@@ -606,12 +536,6 @@ function reloadCarrousel() {
 
 		$('.lots').removeClass('actual-lot');
 
-		for (const lot of $('.lots')) {
-			if(lot.dataset.backgroundImage != 'undefined'){
-				lot.style.backgroundImage = lot.dataset.backgroundImage;
-			}
-		}
-
 		$actualLot.addClass('actual-lot');//.addClass('j-active-info');
 
 		if ($('#j-followCarrousel').prop('checked')) {
@@ -623,49 +547,13 @@ function reloadCarrousel() {
 }
 
 function initSlick(){
-	let vSize = getViewPortSize().width;
 	let slidesToShow = 4;
 
-	prevLot = 1;
-
-	if(vSize < screenSizes.TABLET_IPHONE && vSize >= screenSizes.TABLET){
-		slidesToShow = 3;
-		prevLot = 1;
-
-		/**
-		* todos estos if's sirven para comprobar que realmente el tamaño de la pagina
-		* se ha modificado, y no recargue la imagen de manera inecesaria.
-		*/
-		if(prevSize == screenSizes.TABLET_IPHONE){
-			return;
-		}
-		prevSize = screenSizes.TABLET_IPHONE;
-
-	}
-	else if(vSize < screenSizes.TABLET && vSize >= screenSizes.PHONE){
-		slidesToShow = 2;
-		prevLot = 0;
-
-		if(prevSize == screenSizes.TABLET){
-			return;
-		}
-		prevSize = screenSizes.TABLET;
-	}
-	else if(vSize < screenSizes.PHONE){
-		slidesToShow = 1;
-		prevLot = 0;
-
-		if(prevSize == screenSizes.PHONE){
-			return;
-		}
-		prevSize = screenSizes.PHONE;
-	}
-	else{
-		if(prevSize == 1){
-			return;
-		}
-		prevSize = 1;
-	}
+	const breackPoints = [
+		{ breakpoint: 993, settings: {slidesToShow: 3} },
+		{ breakpoint: 768, settings: {slidesToShow: 2} },
+		{ breakpoint: 576, settings: {slidesToShow: 1} }
+	];
 
 	const slickOptions = {
 		dots: false,
@@ -676,37 +564,37 @@ function initSlick(){
 		swipeToSlide: true,
 		prevArrow: $('.prev-arrow-carrousel'),
 		nextArrow: $('.next-arrow-carrousel'),
+		responsive: breackPoints
 	}
 
-	if(!isSlick){
-		$('.lots-carrousel').slick(slickOptions);
-		  isSlick = true;
-	}
-	else{
-		$('.lots-carrousel').slick("unslick").slick(slickOptions);
-	}
+	$('.lots-carrousel').slick(slickOptions);
 
 	reloadCarrousel();
-
-	//Son los eventos para mostrar precio de adjudicación
-	/* $('.lots.j-active-info').unbind('mouseenter mouseleave'); //elimina eventos anteriores para no acumular
-	$('.lots.j-active-info').hover(hoverOverCarrousel, hoverOutCarrousel); //añade evento a hover a lotes */
 }
 
+function login_web() {
+	const loading = document.querySelector(".loading-wrapper");
 
-function getViewPortSize() {
-    var doc = document, w = window;
-    var docEl = (doc.compatMode && doc.compatMode === 'CSS1Compat')?
-            doc.documentElement: doc.body;
-
-    var width = docEl.clientWidth;
-    var height = docEl.clientHeight;
-
-    // mobile zoomed in?
-    if ( w.innerWidth && width > w.innerWidth ) {
-        width = w.innerWidth;
-        height = w.innerHeight;
-    }
-
-    return {width: width, height: height};
+	$.ajax({
+		type: "POST",
+		url: '/login_post_ajax',
+		data: $('#accerder-user-form').serialize(),
+		beforeSend: () => {
+			loading.classList.remove('d-none');
+			return true;
+		},
+		success: function(response) {
+			if (response.status == 'success') {
+				location.reload();
+			} else {
+				$("#accerder-user-form .message-error-log").text('').append(messages.error[response.msg]);
+			}
+		}
+	})
+	.fail(() => {
+		$("#accerder-user-form .message-error-log").text('').append(messages.error.code_500);
+	})
+	.always(() => {
+		loading.classList.add('d-none');
+	});
 }

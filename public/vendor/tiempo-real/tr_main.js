@@ -141,6 +141,31 @@ $(function () {
      | Órdenes de licitación y pujas
      |--------------------------------------------------------------------------
      */
+
+    $('#ficha').on('click', '.add_next-bid', function (event) {
+ 		/* Terminos y Condiciones de las pujas*/
+        /* Hay que aceptarlas para poder continuar*/
+        var tos = $('#tos');
+        if (typeof tos != 'undefined' && !tos.prop('checked') && tos.prop('checked') == false) {
+            return $.magnificPopup.open({items: {src: '#modalAcceptTos'}, type: 'inline', showCloseBtn: false, enableEscapeKey: false, modal: true, closeOnBgClick: false}, 0);
+        }
+
+        var amount = auction_info.lote_actual.importe_escalado_siguiente;
+        var ref = auction_info.lote_actual.ref_asigl0;
+        var imp_sal = auction_info.lote_actual.impsalhces_asigl0;
+
+        /* Solo Ordenes de licitación*/
+        var solo_ol = $(this).hasClass('solo_ol');
+        if (solo_ol) {
+            var can_do_bid = 'orders';
+        } else {
+            var can_do_bid = 'all';
+        }
+
+        addBidLogic(amount, ref, imp_sal, this, can_do_bid);
+	});
+
+
     /* Añadir puja desde el boton de pujar normal*/
     $('#ficha').on('click', '.add_bid', function () {
         /* Terminos y Condiciones de las pujas*/
@@ -1686,6 +1711,7 @@ $(function () {
         $('#precioSalida span').html(auction_info.lote_actual.formatted_impsalhces_asigl0);
 		$('#precioReserva span').html(auction_info.lote_actual.impres_asigl0 ? auction_info.lote_actual.formatted_impres_asigl0 : '0');
 		$('#precioCoste span').html(auction_info.lote_actual.pc_hces1);
+		$('.add_next-bid #value-view').html(auction_info.lote_actual.importe_escalado_siguiente ?? '0');
         if (typeof cedente != 'undefined') {
             $('#inf_prop .inf_cod_prop').html(auction_info.lote_actual.prop_hces1);
             $('#inf_prop .inf_name_prop').html('');
@@ -1771,6 +1797,13 @@ $(function () {
 
                         $('.adj_ref span', $this).html(adjRef);
                         $('.adj_imp', $this).html(value.imp_asigl1);
+
+						let url = "";
+						if(typeof auctionLots != "undefined"){
+							const lot = auctionLots.find((lot) => lot.ref_asigl0 == adjRef);
+							url = lot.url;
+						}
+						$('.adj-link', $this).attr('href', url);
 
 						container.append($this);
                     }

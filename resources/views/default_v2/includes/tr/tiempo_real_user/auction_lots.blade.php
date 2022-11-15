@@ -21,23 +21,9 @@
     </div>
 
     <div class="lots-carrousel">
-        @php
-            $carrouselLotes = \App\Models\V5\FgAsigl0::JoinFghces1Asigl0()
-                ->JoinSessionAsigl0()
-                ->select('num_hces1', 'lin_hces1', 'ref_hces1', 'impsal_hces1', 'webfriend_hces1', 'titulo_hces1', 'ref_asigl0', 'cerrado_asigl0')
-                ->where('SUB_ASIGL0', $data['subasta_info']->cod_sub)
-                ->where('auc."reference"', $data['subasta_info']->reference)
-                ->where('RETIRADO_ASIGL0', 'N')
-                ->where('OCULTO_ASIGL0', 'N')
-                ->get();
-        @endphp
-
-        @foreach ($carrouselLotes as $lote)
+        @foreach ($auctionLots as $lote)
             @php
-                $loteActual = $data['subasta_info']->lote_actual;
-                $idAucSession = $loteActual->id_auc_sessions;
                 $img = Tools::url_img('lote_medium', $lote->num_hces1, $lote->lin_hces1);
-                $url = Tools::url_lot($data['subasta_info']->cod_sub, $idAucSession, $idAucSession, $lote->ref_asigl0, $lote->num_hces1, $lote->webfriend_hces1, $lote->titulo_hces1);
             @endphp
             <div class="card carrousel-lot-card border-0 j-active-info lots" data-ref_asigl0="{{ $lote->ref_asigl0 }}"
                 data-cod_sub="{{ $data['subasta_info']->cod_sub }}" data-order="{{ $loop->index }}" style="order: {{ $loop->index }};">
@@ -55,7 +41,7 @@
 
                 <div class="card-footer p-0 bg-transparent">
                     <a class="btn w-100 btn-outline-lb-primary lot-btn"
-                        href="{{ $url }}">{{ trans("$theme-app.sheet_tr.view") }}</a>
+                        href="{{ $lote->url }}">{{ trans("$theme-app.sheet_tr.view") }}</a>
                 </div>
             </div>
         @endforeach

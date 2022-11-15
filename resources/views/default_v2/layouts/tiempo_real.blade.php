@@ -59,29 +59,3 @@
 </body>
 
 </html>
-
-<script>
-    $('.icon-responsive-live').click(function() {
-        $('.menu').addClass('active')
-    })
-    $('.close-menu').click(function() {
-        $('.menu').removeClass('active')
-    })
-
-
-    function login_web() {
-        $.ajax({
-            type: "POST",
-            url: '/login_post_ajax',
-            data: $('#accerder-user-form').serialize(),
-            success: function(response) {
-                if (response.status == 'success') {
-                    location.reload();
-                } else {
-                    $("#accerder-user-form .message-error-log").text('').append(messages.error[response.msg]);
-                }
-
-            }
-        });
-    }
-</script>

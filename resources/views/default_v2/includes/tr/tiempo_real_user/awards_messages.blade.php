@@ -25,12 +25,12 @@
 
     <div class="tab-content p-1 lb-scroll tab-awards-messages" id="nav-tabContent">
         @if (Session::has('user'))
-            <div class="tab-pane fade" id="nav-adjudicaciones" role="tabpanel" aria-labelledby="nav-adjudicaciones-tab"
+            <div class="tab-pane fade show active p-3" id="nav-adjudicaciones" role="tabpanel" aria-labelledby="nav-adjudicaciones-tab"
                 tabindex="0">
                 @include('content.tr.tiempo_real_user.adjudicaciones')
             </div>
         @endif
-        <div class="tab-pane fade show active p-3" id="nav-mensajes" role="tabpanel" aria-labelledby="nav-mensajes-tab"
+        <div @class(['tab-pane fade p-3', 'show active' => !Session::has('user')]) id="nav-mensajes" role="tabpanel" aria-labelledby="nav-mensajes-tab"
             tabindex="0">
             @include('content.tr.tiempo_real_user.msg_sala')
         </div>

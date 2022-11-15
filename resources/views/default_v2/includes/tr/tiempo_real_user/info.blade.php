@@ -1,6 +1,7 @@
 @php
     $loteActual = $data['subasta_info']->lote_actual;
     $currencySimbol = $data['js_item']['subasta']['currency']->symbol;
+	$position = $currencySimbol == "$" ? 'F' : 'R';
     $withBids = count($loteActual->pujas) > 0;
     $imWinner = !empty($data['js_item']['user']) && !empty($loteActual->max_puja) && $loteActual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'];
 @endphp
@@ -52,7 +53,7 @@
             @if ($currencySimbol == "$")
                 {{ $currencySimbol }}<span>{{ $loteActual->formatted_impsalhces_asigl0 }}</span>
             @else
-                <span>{{ $loteActual->formatted_impsalhces_asigl0 }}</span><span> {{ $currencySimbol }}</span>
+                <span>{{ $loteActual->formatted_impsalhces_asigl0 }}</span> {{ $currencySimbol }}
             @endif
             @if (Config::get('app.exchange'))
                 | <span class="exchange" id="startPriceExchange_JS"> </span>
@@ -69,7 +70,7 @@
                 {{ $data['js_item']['user']['maxOrden']->himp_orlic ?? ($data['js_item']['user']['maxPuja']->imp_asigl1 ?? '0') }}
             </span>
             @if ($currencySimbol != "$")
-                {{ $currencySimbol }}<span id="tuorden">
+                {{ $currencySimbol }}
             @endif
 
             @if (Config::get('app.exchange'))
@@ -103,9 +104,6 @@
                 'none' => !Session::has('user'),
             ])>
                 @if ($withBids)
-                    @php
-                        $position = $currencySimbol == "$" ? 'F' : 'R';
-                    @endphp
                     {{ Tools::moneyFormat($loteActual->actual_bid, $currencySimbol, 0, $position) }}
                 @endif
             </span>
@@ -122,7 +120,7 @@
         <input id="tiempo_real" type="hidden" value="1" readonly>
 
         @if (Session::has('user'))
-            <button class="add_bid btn btn-lb-primary w-100 mb-2">
+            <button class="add_next-bid btn btn-lb-primary w-100 mb-2">
                 <h4>{{ trans("$theme-app.sheet_tr.place_bid") }}</h4>
                 <h4 class="fw-bold" id="value-view">
                     {{ Tools::moneyFormat($loteActual->importe_escalado_siguiente, $currencySimbol, 0, $position) }}

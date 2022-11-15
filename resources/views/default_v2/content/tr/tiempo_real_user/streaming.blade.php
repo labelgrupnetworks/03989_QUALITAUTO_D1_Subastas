@@ -1,15 +1,16 @@
-<p class="delay">{{ trans(\Config::get('app.theme').'-app.sheet_tr.delay') }}</p>
-<div class="streaming embed-responsive embed-responsive-16by9">
+<div class="streaming ratio ratio-16x9">
     <!-- Añadir esta misma página en el themes del cliente, con su iframe correspondiente
     <iframe src="//stream01.labelgrup.com:5443/WebRTCAppEE/play.html?name=273039929349767838886597" height="288" width="512" frameborder="0" allowfullscreen></iframe>
 	-->
-	<!-- Iframe you tube en bucle
-		<iframe width="512" height="288" src="https://www.youtube.com/embed/4ICM50Ksu1E?loop=1&playlist=4ICM50Ksu1E&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-	-->
+
+	{{-- Iframe you tube en bucle --}}
+	<iframe width="512" height="288" src="https://www.youtube.com/embed/4ICM50Ksu1E?loop=1&playlist=4ICM50Ksu1E&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 	<!-- video youtube iniciado por javascript
 		<div id="video"></div>
 	-->
 </div>
+<p class="delay mt-2 px-1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.delay') }}</p>
 
 <?php /* script para iniciar vido de youtube en div
 

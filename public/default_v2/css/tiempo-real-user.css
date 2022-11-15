@@ -1,5 +1,23 @@
 @import url('global.css');
 
+body {
+	width: 100%;
+}
+
+.list-group-item {
+	color: var(--lb-text-color-primary);
+}
+
+.loading-wrapper {
+	width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 .nav {
 	--bs-nav-link-color: var(--lb-text-color-primary);
 	--bs-nav-link-hover-color: var(--lb-text-color-primary);
@@ -41,16 +59,15 @@
 }
 
 .product_lot {
-	grid-column: 1 / 4;
+	grid-row: 1;
 }
 
 .product_img {
-	grid-column: 1 / 2;
-	grid-row: 2 / 4;
+	grid-row: 2;
 }
 
 .product_desc {
-	grid-column: 2 / 3;
+	grid-row: 4;
 
 	display: flex;
 	flex-direction: column;
@@ -58,12 +75,11 @@
 }
 
 .tr_user_info {
-	grid-column: 2 / 3
+	grid-row: 3;
 }
 
 .tr_user_streaming {
-	grid-column: 3 / 4;
-	grid-row: 2 / 4;
+	grid-row: 5;
 
 	display: flex;
 	flex-direction: column;
@@ -71,11 +87,13 @@
 }
 
 .tr_user_auction_lots {
-	grid-column: 1 / 3;
+	grid-row: 7;
+	grid-column: 1 / 2;
+	overflow: hidden;
 }
 
 .tr_user_awards_messages {
-	grid-column: 3 / 4;
+	grid-row: 6;
 	display: flex;
 	flex-direction: column;
 	justify-content: stretch;
@@ -86,11 +104,54 @@
 		grid-template-columns: 1fr 1fr;
 	}
 
+	.product_img {
+		grid-column: 1 / 2;
+		grid-row: 2 / 4;
+	}
+
+	.product_desc {
+		grid-column: 2 / 3;
+		grid-row: 2 / 3;
+	}
+
+	.tr_user_info {
+		grid-column: 2 / 3;
+		grid-row: 3 / 4;
+	}
+
+	.tr_user_streaming {
+		grid-column: 1 / 2;
+		grid-row: 4 / 5;
+	}
+
+	.tr_user_auction_lots {
+		grid-column: 1 / 3;
+		grid-row: 5 / 6;
+	}
+
+	.tr_user_awards_messages {
+		grid-column: 2 / 3;
+		grid-row: 4 / 5;
+	}
+
 }
 
 @media (min-width: 1200px) {
 	.ficha_tr {
 		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.tr_user_streaming {
+		grid-column: 3 / 4;
+		grid-row: 2 / 4;
+	}
+
+	.tr_user_auction_lots {
+		grid-row: 4 / 5;
+	}
+
+	.tr_user_awards_messages {
+		grid-column: 3 / 4;
 	}
 }
 
@@ -114,6 +175,28 @@
 
 .pactual {
 	font-weight: var(--font-bold);
+}
+
+.input-puja {
+	font-size: 18pt;
+}
+
+.input-puja input {
+	border-right: 0;
+}
+
+.input-puja .input-group-text {
+	background: transparent;
+    border-left: 0;
+    border-right: 0;
+}
+
+.autocomplete-suggestions {
+	padding: 0.5rem;
+}
+
+.autocomplete-suggestion {
+	padding: 0.25rem 0;
 }
 
 /*
@@ -287,4 +370,30 @@
 	overflow-y: auto;
 	line-height: 1.4;
 	flex-grow: 1;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Streaming
+|--------------------------------------------------------------------------
+*/
+#nav-streaming {
+	margin: -0.25rem;
+}
+
+.delay {
+	font-size: 13px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Modals
+|--------------------------------------------------------------------------
+*/
+.panel .btn-danger {
+	color: #fff;
+}
+
+.insert_msg {
+	margin-bottom: 1rem;
 }
