@@ -1,5 +1,15 @@
 @import url('global.css');
 
+:root {
+	--pading-pages: 1rem;
+}
+
+@media(min-width: 992px) {
+	:root {
+		--pading-pages: 3rem;
+	}
+}
+
 .rowBanner {
 	--bs-gutter-y: 1rem;
 }
@@ -14,8 +24,8 @@ main.contact-page,
 main.museum-page,
 main.events-page,
 main.event-page {
-	padding-top: 3rem;
-	padding-bottom: 3rem;
+	padding-top: var(--pading-pages);
+	padding-bottom: var(--pading-pages);
 }
 
 .badge-custom-primary {
@@ -194,8 +204,77 @@ footer h5 {
 | Estaticas
 |--------------------------------------------------------------------------
 */
+:root {
+	--decaration-size: 10px;
+}
+
+@media (min-width: 768px) {
+	:root {
+		--decaration-size: 20px;
+	}
+}
+
+@keyframes lb-fade {
+	0% {
+		opacity: 0;
+		-webkit-transform: var(--translate);
+		transform: var(--translate);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: none;
+		transform: none;
+	}
+}
+
+.carousel-item {
+    transition: transform .6s ease-in-out;
+}
+
+.lb-fadeIn {
+	opacity: 0;
+	animation-delay: var(--delay, .2s);
+	-webkit-animation-duration: .6s;
+    animation-duration: .6s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+
+	--translate: var(--translate, translate3d(0,100px,0));
+	animation-name: lb-fade;
+}
+
+.lb-fadeInRight {
+	--translate: translate3d(100px,0,0);
+}
+.lb-fadeInLeft {
+	--translate: translate3d(-100px,0,0);
+}
+.lb-fadeInBottom {
+	--translate: translate3d(0,100px,0);
+}
+
+.separator {
+	opacity: 0;
+	padding-top: var(--separator, 1rem);
+	padding-bottom: var(--separator, 1rem);
+	margin-top: var(--separator, 1rem);
+	margin-bottom: var(--separator, 1rem);
+}
+
+@media(min-width: 992px) {
+	.separator {
+		--separator: 3rem;
+	}
+}
+
 .static-page p {
-	font-size: 18pt;
+	font-size: calc(1.275rem + .3vw);
+}
+
+@media(min-width: 1200px) {
+	.static-page p {
+		font-size: 18pt;
+	}
 }
 
 ul.style-diamond {
@@ -210,6 +289,11 @@ ul.style-diamond li {
 
 ul.style-diamond li::marker {
 	color: var(--lb-color-secondary);
+}
+
+ul.style-diamond li p {
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .bg-lb-color-primary-light {
@@ -257,10 +341,13 @@ ul.style-diamond li::marker {
 .decoration {
 	position: relative;
 	z-index: 1;
+	margin: var(--decaration-size);
+
 }
 
 .decoration::after,
 .decoration::before {
+	--size-decoration: calc(var(--decaration-size) * -1);
 	content: ' ';
 	position: absolute;
 	width: 50%;
@@ -268,34 +355,19 @@ ul.style-diamond li::marker {
 	background-color: var(--lb-color-primary-light);
 }
 
-/* .decoration::before {
-	left: 0;
-	top: calc(var(--bs-gutter-x) * -.5);
-}
-
-.decoration::after {
-	right: 0;
-	bottom: calc(var(--bs-gutter-x) * -.5);
-} */
 .decoration::before {
-	left: -12px;
-	top: -22px;
+	left: var(--size-decoration);
+	top: var(--size-decoration);
 }
 
 .decoration::after {
-	right: -12px;
-	bottom: -22px;
+	right: var(--size-decoration);
+	bottom: var(--size-decoration);
 }
 
 .decoration>* {
 	z-index: 2;
 	position: relative;
-}
-
-.flex-align-center-row {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
 }
 
 .input-text-style {
@@ -325,10 +397,6 @@ ul.style-diamond li::marker {
 @media (min-width: 992px) {
 	.tasacion-height-arrow-container {
 		height: 450px;
-	}
-
-	.margin-video {
-		margin: 2rem;
 	}
 }
 
