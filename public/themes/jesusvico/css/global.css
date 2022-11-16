@@ -217,7 +217,8 @@ h3,
 	padding-top: 4px;
 }
 
-.btn-lb-primary, .panel .btn-primary {
+.btn-lb-primary,
+.panel .btn-primary {
 	--bs-btn-active-border-color: var(--lb-color-secondary);
 	--bs-btn-active-bg: var(--lb-color-secondary);
 	--bs-btn-hover-border-color: var(--lb-color-secondary);

@@ -7,12 +7,14 @@ project = {
 $(function () {
 	$('#js-show-filters, #js-hide-filters').on('click', resizeGridBanner);
 
-	createObservers('.observer-animation-bottom');
+	createObservers();
 })
 
-function createObservers(elementSelector) {
+function createObservers() {
 
-	const targets = [...document.querySelectorAll(elementSelector)];
+	const observerTypes = ['.observer-animation-bottom', '.observer-animation-left', '.observer-animation-right'];
+
+	const targets = [...document.querySelectorAll(observerTypes.toString())];
 	if(targets.length === 0){
 		return;
 	}
@@ -21,20 +23,27 @@ function createObservers(elementSelector) {
 		rootMargin: '0px',
 		threshold: 0.8
 	}
-
 	const observer = new IntersectionObserver(handleIntersect, options);
-
-	targets.forEach(target => {
-		observer.observe(target);
-	});
+	targets.forEach(target => observer.observe(target));
 }
 
 function handleIntersect(entries, observer) {
 	entries.forEach((entry) => {
-		if (entry.isIntersecting && entry.target.classList.contains('opacity-0')) {
-			entry.target.classList.remove('opacity-0');
-			entry.target.classList.add('lb-fadeIn')
-			entry.target.classList.add('lb-fadeInBottom');
+
+		const { isIntersecting, target } = entry;
+		const { classList } = target;
+
+		const observers = {
+			'observer-animation-bottom': 'lb-fadeInBottom',
+			'observer-animation-left': 'lb-fadeInLeft',
+			'observer-animation-right': 'lb-fadeInRight',
+		}
+
+		if (isIntersecting && classList.contains('opacity-0')) {
+			const animation = [...classList].find((className) => Object.keys(observers).includes(className));
+			classList.remove('opacity-0');
+			classList.add('lb-fadeIn')
+			classList.add(observers[animation]);
 		}
 	});
 }

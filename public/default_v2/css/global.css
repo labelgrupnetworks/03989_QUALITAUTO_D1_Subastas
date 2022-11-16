@@ -225,7 +225,13 @@ input {
 	position: relative;
 }
 
-.lb-blockquote::before {
+.lb-blockquote-100 {
+	width: 100%;
+	padding-left: 1rem;
+	position: relative;
+}
+
+.lb-blockquote::before, .lb-blockquote-100::before {
 	content: ' ';
 	position: absolute;
 	width: 2px;
