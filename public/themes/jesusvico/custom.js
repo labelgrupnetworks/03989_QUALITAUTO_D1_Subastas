@@ -28,16 +28,17 @@ function createObservers() {
 }
 
 function handleIntersect(entries, observer) {
+
+	const observers = {
+		'observer-animation-bottom': 'lb-fadeInBottom',
+		'observer-animation-left': 'lb-fadeInLeft',
+		'observer-animation-right': 'lb-fadeInRight',
+	};
+
 	entries.forEach((entry) => {
 
 		const { isIntersecting, target } = entry;
 		const { classList } = target;
-
-		const observers = {
-			'observer-animation-bottom': 'lb-fadeInBottom',
-			'observer-animation-left': 'lb-fadeInLeft',
-			'observer-animation-right': 'lb-fadeInRight',
-		}
 
 		if (isIntersecting && classList.contains('opacity-0')) {
 			const animation = [...classList].find((className) => Object.keys(observers).includes(className));

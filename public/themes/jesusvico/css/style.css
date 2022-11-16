@@ -214,12 +214,12 @@ footer h5 {
 |--------------------------------------------------------------------------
 */
 :root {
-	--decaration-size: 10px;
+	--decoration-size: 10px;
 }
 
 @media (min-width: 768px) {
 	:root {
-		--decaration-size: 20px;
+		--decoration-size: 20px;
 	}
 }
 
@@ -354,13 +354,13 @@ ul.style-diamond li p {
 .decoration {
 	position: relative;
 	z-index: 1;
-	margin: var(--decaration-size);
+	margin: var(--decoration-size);
 
 }
 
 .decoration::after,
 .decoration::before {
-	--size-decoration: calc(var(--decaration-size) * -1);
+	--size-decoration: calc(var(--decoration-size) * -1);
 	content: ' ';
 	position: absolute;
 	width: 50%;
