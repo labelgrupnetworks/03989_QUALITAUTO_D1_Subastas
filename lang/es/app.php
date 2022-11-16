@@ -231,7 +231,8 @@ $lang = [
 		'google_rating' => 'Rating',
 		'google_reviews' => 'reviews',
 		'google_write_review' => 'Escribir Reseña',
-		'google_view' => 'Ver en'
+		'google_view' => 'Ver en',
+		'collaborate' => 'Colaboran'
 	),
 
 	'links' =>

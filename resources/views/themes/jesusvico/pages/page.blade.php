@@ -11,7 +11,6 @@
 
     <main class="static-page">
         <div class="container">
-            {{-- @include('includes.breadcrumb') --}}
             <h1 class="text-uppercase">{{ $data['data']->name_web_page }}</h1>
         </div>
 

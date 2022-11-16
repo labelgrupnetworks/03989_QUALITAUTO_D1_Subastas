@@ -215,6 +215,7 @@ $lang =[
 			'google_reviews' => 'reviews',
 			'google_write_review' => 'Write a Review',
 			'google_view' => 'View in',
+			'collaborate' => 'Colaboran'
 		),
 	'links' =>
 		array (

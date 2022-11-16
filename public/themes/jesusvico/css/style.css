@@ -23,7 +23,8 @@ main.valoracion-page,
 main.contact-page,
 main.museum-page,
 main.events-page,
-main.event-page {
+main.event-page,
+.home-static-page {
 	padding-top: var(--pading-pages);
 	padding-bottom: var(--pading-pages);
 }
@@ -443,6 +444,44 @@ ul.style-diamond li p {
 .newsletter-banner a:focus,
 .newsletter-banner a:hover {
 	color: var(--lb-color-primary-contrast);
+}
+
+.static-page-banner {
+	height: auto;
+	overflow: hidden;
+}
+
+.static-page-banner img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+}
+
+.home-static-page p {
+	margin-bottom: 0.5rem;
+}
+
+.home-static-page .lb-blockquote {
+	max-width: 100%;
+}
+
+.home-static-page a {
+	color: currentcolor;
+}
+
+@media(min-width: 992px) {
+	.static-page-banner {
+		height: 400px;
+	}
+
+	.static-page-banner img {
+		object-fit: cover;
+	}
+
+	.home-static-page .lb-blockquote {
+		max-width: 50%;
+	}
 }
 
 /*
