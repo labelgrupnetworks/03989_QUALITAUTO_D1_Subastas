@@ -101,7 +101,7 @@
 							<img src="/themes/jesusvico/assets/img/aenp_img.png" alt="">
 						</div>
 						<div>
-							<button class="btn btn-lb-primary" onclick="window.location.href = 'https://aenp.org/codigo-de-conducta-aenp/';">Read</button>
+							<a class="btn btn-lb-primary" href="https://aenp.org/codigo-de-conducta-aenp/">Read</a>
 						</div>
 					</div>
 				</div>
@@ -114,7 +114,7 @@
 							<img src="/themes/jesusvico/assets/img/iapn_img.png" alt="">
 						</div>
 						<div>
-							<button class="btn btn-lb-primary" onclick="window.location.href = 'https://iapn-coins.org/iapn/association/';">Read</button>
+							<a class="btn btn-lb-primary" href="https://iapn-coins.org/iapn/association/">Read</a>
 						</div>
 					</div>
 				</div>

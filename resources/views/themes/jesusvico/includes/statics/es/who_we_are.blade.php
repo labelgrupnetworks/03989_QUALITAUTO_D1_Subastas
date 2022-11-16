@@ -123,13 +123,4 @@
 			</article>
 		</div>
 	</section>
-
-
-
-
-
-
-
-
-
 </div>
