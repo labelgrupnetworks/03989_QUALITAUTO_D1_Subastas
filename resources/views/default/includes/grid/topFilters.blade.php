@@ -50,13 +50,16 @@
     </select>
 </div>
 
-@php
-	$user = session('user');
-	$queryPreferences = App\Models\V5\Web_Preferences::select('ID_PREF','DESC_PREF', 'LIN_ORTSEC0_PREF', 'COD_SEC_PREF', 'KEYWORD1_PREF', 'KEYWORD2_PREF', 'KEYWORD3_PREF')
-		->where('COD_CLIWEB_PREF', $user['cod'])->distinct()->get();
-@endphp
 
 @if (\Config::get('app.makePreferences'))
+	@php
+		$queryPreferences = [];
+		$user = session('user');
+		if ($user) {
+			$queryPreferences = App\Models\V5\Web_Preferences::select('ID_PREF','DESC_PREF', 'LIN_ORTSEC0_PREF', 'COD_SEC_PREF', 'KEYWORD1_PREF', 'KEYWORD2_PREF', 'KEYWORD3_PREF')
+				->where('COD_CLIWEB_PREF', $user['cod'])->distinct()->get();
+		}
+	@endphp
 	@if(!count($queryPreferences) < 1)
 		<div class="col-xs-12 col-md-4">
 			<select class="form-control" id="preference_selected" >
