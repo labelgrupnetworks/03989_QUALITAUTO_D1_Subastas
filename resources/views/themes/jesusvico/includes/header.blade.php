@@ -142,22 +142,42 @@ $pageName = Route::currentRouteName();
 						<a class='nav-link' href="{{ trans("$theme-app.links.blog") }}" target="_blank"><span>{{ trans($theme.'-app.home.blog') }}</span></a>
 					</li>
 
-					<li class="nav-item">
-						<a href="{{ !Session::has('user') ? '#' : \Routing::slug('user/panel/orders') }}"
-							@class([
-								'btn_login' => !Session::has('user'),
-							])>
-						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
-							<defs>
-							  <clipPath id="clip-path">
-								<rect id="Rectángulo_19" data-name="Rectángulo 19" width="29" height="29" fill="#b9b13c"/>
-							  </clipPath>
-							</defs>
-							<g id="Grupo_25" data-name="Grupo 25" clip-path="url(#clip-path)">
-							  <path id="Trazado_1" data-name="Trazado 1" d="M14.5,29A14.5,14.5,0,1,1,29,14.5,14.517,14.517,0,0,1,14.5,29M5.81,24.823a13.475,13.475,0,0,0,17.378,0l-.6-1.543a8.679,8.679,0,0,0-16.178,0ZM14.5,16.75a9.619,9.619,0,0,1,9.021,6.17l.46,1.183a13.5,13.5,0,1,0-18.961,0l.459-1.181A9.619,9.619,0,0,1,14.5,16.75m0-1.875a4.656,4.656,0,1,1,4.656-4.656A4.661,4.661,0,0,1,14.5,14.875m0-8.312a3.656,3.656,0,1,0,3.656,3.656A3.66,3.66,0,0,0,14.5,6.563" fill="#b9b13c"/>
-							</g>
-						  </svg>
-						</a>
+					<li class="nav-item dropdown">
+						@if(!Session::has('user'))
+						<button class="btn border-0 btn_login">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
+								<defs>
+								  <clipPath id="clip-path">
+									<rect id="Rectángulo_19" data-name="Rectángulo 19" width="29" height="29" fill="#b9b13c"/>
+								  </clipPath>
+								</defs>
+								<g id="Grupo_25" data-name="Grupo 25" clip-path="url(#clip-path)">
+								  <path id="Trazado_1" data-name="Trazado 1" d="M14.5,29A14.5,14.5,0,1,1,29,14.5,14.517,14.517,0,0,1,14.5,29M5.81,24.823a13.475,13.475,0,0,0,17.378,0l-.6-1.543a8.679,8.679,0,0,0-16.178,0ZM14.5,16.75a9.619,9.619,0,0,1,9.021,6.17l.46,1.183a13.5,13.5,0,1,0-18.961,0l.459-1.181A9.619,9.619,0,0,1,14.5,16.75m0-1.875a4.656,4.656,0,1,1,4.656-4.656A4.661,4.661,0,0,1,14.5,14.875m0-8.312a3.656,3.656,0,1,0,3.656,3.656A3.66,3.66,0,0,0,14.5,6.563" fill="#b9b13c"/>
+								</g>
+							  </svg>
+						</button>
+						@else
+						<button class="btn border-0 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
+								<defs>
+								  <clipPath id="clip-path">
+									<rect id="Rectángulo_19" data-name="Rectángulo 19" width="29" height="29" fill="#b9b13c"/>
+								  </clipPath>
+								</defs>
+								<g id="Grupo_25" data-name="Grupo 25" clip-path="url(#clip-path)">
+								  <path id="Trazado_1" data-name="Trazado 1" d="M14.5,29A14.5,14.5,0,1,1,29,14.5,14.517,14.517,0,0,1,14.5,29M5.81,24.823a13.475,13.475,0,0,0,17.378,0l-.6-1.543a8.679,8.679,0,0,0-16.178,0ZM14.5,16.75a9.619,9.619,0,0,1,9.021,6.17l.46,1.183a13.5,13.5,0,1,0-18.961,0l.459-1.181A9.619,9.619,0,0,1,14.5,16.75m0-1.875a4.656,4.656,0,1,1,4.656-4.656A4.661,4.661,0,0,1,14.5,14.875m0-8.312a3.656,3.656,0,1,0,3.656,3.656A3.66,3.66,0,0,0,14.5,6.563" fill="#b9b13c"/>
+								</g>
+							  </svg>
+						</button>
+						@endif
+
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li><a class="dropdown-item" href="{{ Routing::slug('user/panel/orders') }}">{{ trans("$theme-app.login_register.my_panel") }}</a></li>
+							@if(Session::get('user.admin'))
+							<li><a class="dropdown-item" href="/admin" target="_blank">{{ trans("$theme-app.login_register.admin") }}</a></li>
+							@endif
+							<li><a class="dropdown-item" href="{{ Routing::slug('logout') }}">{{ trans("$theme-app.login_register.logout") }}</a></li>
+						</ul>
 					</li>
 				</ul>
 

@@ -64,7 +64,6 @@
 
 	--lb-text-color-rgb: 13, 82, 87;
 	--lb-text-color-primary: rgba(var(--lb-text-color-rgb), 0.75);
-	--lb-text-color-secondary: rgba(var(--lb-text-color-rgb), 0.54);
 	--lb-text-color-disabled: rgba(var(--lb-text-color-rgb), 0.38);
 	--lb-text-color-winner: #00870d;
 	--lb-text-color-loser: #D36C13;

@@ -1,7 +1,7 @@
 <section class="newsletter">
     <div class="d-flex flex-column align-items-start gap-2 gap-lg-4">
 
-		<h3 class="newsletter-tittle mb-lg-3">
+		<h3 class="newsletter-tittle mb-lg-3 fs-1">
 			{{ trans("$theme-app.foot.newsletter_title") }}
 		</h3>
 

@@ -67,7 +67,7 @@
 <section class="container partners py-5 my-5">
 	<h3 class="text-center mb-4">{{ trans("$theme-app.home.collaborate") }}</h3>
 
-	<div class="row row-cols-3 row-cols-lg-6 gx-5 gy-3 align-items-center">
+	<div class="row row-cols-3 row-cols-lg-6 gx-4 gy-3 align-items-center">
 		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/Logo-FNMT-mono.png" alt=""></div>
 		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-SGS-mono.png" alt=""></div>
 		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-JMO-mono.png" alt=""></div>
