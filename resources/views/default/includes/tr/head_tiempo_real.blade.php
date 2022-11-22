@@ -16,11 +16,7 @@
 
 @stack('stylesheets')
 
-@if (config('app.socket_v4', 0))
-<script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/client-dist/socket.io.js') }}"></script>
-@else
 <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}"></script>
-@endif
 
 <script src="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.js') }}"></script>
 <script src="{{ URL::asset('vendor/tiempo-real/pnotify/modernizr.js') }}"></script>
