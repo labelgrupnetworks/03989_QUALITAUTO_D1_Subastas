@@ -11,12 +11,7 @@
 
 @push('scripts')
 
-@if (config('app.socket_v4', 0))
-<script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/client-dist/socket.io.js') }}"></script>
-@else
 <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}"></script>
-@endif
-
 <script src="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.min.js') }}"></script>
 
 @if(strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'M' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'I' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'O' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'P' || $data['subasta_info']->lote_actual->subabierta_sub == 'P')
