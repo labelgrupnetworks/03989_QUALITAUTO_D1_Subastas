@@ -31,7 +31,7 @@
                         aria-labelledby="#bills-pending-heading">
                         <div class="accordion-body p-0">
 
-                            <div class="table-responsive table-to-columns">
+                            <div class="table-to-columns">
                                 <form id="pagar_fact">
                                     @csrf
                                     <table class="table table-sm align-middle">
@@ -143,7 +143,7 @@
                         aria-labelledby="#bills-payed-heading">
                         <div class="accordion-body p-0">
 
-                            <div class="table-responsive table-to-columns">
+                            <div class="table-to-columns">
 
                                 <table class="table table-sm align-middle">
                                     <thead class="table-light">

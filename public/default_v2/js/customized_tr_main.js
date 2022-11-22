@@ -513,9 +513,6 @@ function clickLogin() {
 	const dropdownElement = document.getElementById('dropdownLogin');
 	const dropdown = new bootstrap.Dropdown(dropdownElement);
 	dropdown.show();
-	return 1;
-	/* $(".login").click();
-	$.magnificPopup.close(); */
 }
 
 function reloadCarrousel() {

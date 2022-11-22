@@ -116,8 +116,8 @@
                     <input type="hidden" id="lang_dirreciones" value="{{ config('app.locale') }}">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <button type="button" class="btn btn-outline-lb-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-lb-primary">Send message</button>
                 </div>
             </div>
         </div>

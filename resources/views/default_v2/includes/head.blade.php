@@ -89,9 +89,6 @@ header("X-Frame-Options:     DENY");
 <link href="{{ Tools::urlAssetsCache('/default_v2/css/banners.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/banners.css') }}" rel="stylesheet" type="text/css">
 
-<link href="{{ Tools::urlAssetsCache('/default_v2/css/responsive.css') }}" rel="stylesheet" type="text/css" >
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
-
 @stack('stylesheets')
 
 <script>
@@ -118,6 +115,10 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache('/js/common.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>
 <script src="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.js') }}"></script>
+
+{{--solo se utiliza en ficha de subasta tipo W ¿mover? --}}
+<script src="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.js') }}"></script>
+<script src="{{ URL::asset('vendor/tiempo-real/pnotify/modernizr.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
@@ -147,9 +148,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
-
-{{-- No se puede sobrescribir... así que no sirve --}}
-<script type="module" src="{{ Tools::urlAssetsCache('/default_v2/js/index.js') }}"></script>
 
 @stack('scripts')
 

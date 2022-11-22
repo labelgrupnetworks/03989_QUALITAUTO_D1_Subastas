@@ -21,7 +21,7 @@
 
 					  <div id="{{ $all_inf['inf']->cod_sub }}-collapse" class="accordion-collapse collapse show" aria-labelledby="#{{$all_inf['inf']->cod_sub}}-heading">
 						<div class="accordion-body p-0">
-							<div class="table-responsive table-to-columns">
+							<div class="table-to-columns">
 
 								<table class="table table-sm align-middle">
 									<thead class="table-light">

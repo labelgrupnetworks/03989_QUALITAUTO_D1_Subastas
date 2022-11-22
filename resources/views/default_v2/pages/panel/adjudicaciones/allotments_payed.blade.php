@@ -38,7 +38,7 @@ foreach ($all_adj_pag as $key_inf => $value) {
                     <div id="{{ $all_inf['inf']->cod_sub }}_pag" class="accordion-collapse collapse show"
                         aria-labelledby="#{{ $all_inf['inf']->cod_sub }}-heading_pag">
 
-                        <div class="table-responsive table-to-columns">
+                        <div class="table-to-columns">
                             <table class="table table-sm align-middle">
                                 <thead class="table-light">
                                     <tr>

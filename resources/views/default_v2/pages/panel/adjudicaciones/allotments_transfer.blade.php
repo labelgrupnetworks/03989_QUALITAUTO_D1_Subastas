@@ -38,7 +38,7 @@ foreach ($all_adj_trans as $key_inf => $value) {
                 <div id="{{ $all_inf['inf']->cod_sub }}_trans" class="accordion-collapse collapse show"
                     aria-labelledby="#{{ $all_inf['inf']->cod_sub }}-heading_trans">
 
-                    <div class="table-responsive table-to-columns">
+                    <div class="table-to-columns">
                         <table class="table table-sm align-middle">
                             <thead class="table-light">
                                 <tr>
