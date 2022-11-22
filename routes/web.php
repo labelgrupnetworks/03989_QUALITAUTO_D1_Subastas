@@ -24,7 +24,7 @@ Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController
 View::addNamespace('front', [
 	resource_path('/views/themes/' . App('config')['app']['theme']),
 	//resource_path('/views/default'),
-	resource_path('/views/default_v2'),
+	resource_path('/views/' . App('config')['app']['default_theme']),
 ]);
 View::addNamespace('admin', realpath(base_path('resources/views/admin/' . Config::get('app.admin_theme'))));
 

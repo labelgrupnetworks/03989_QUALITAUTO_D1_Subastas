@@ -1,110 +1,104 @@
 <section>
-	<div class="container">
-		<div class="row gy-3">
-			<div class="col-md-8">
-				{!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['arrows' => false]) !!}
-			</div>
-			<div class="col-md-4">
-				{!! \BannerLib::bannersPorKey('blog_banner', 'blog_banner', ['dots' => false, 'autoplay' => true, 'arrows' => false]) !!}
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row gy-3">
+            <div class="col-md-8">
+                {!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['arrows' => false]) !!}
+            </div>
+            <div class="col-md-4">
+                {!! \BannerLib::bannersPorKey('blog_banner', 'blog_banner', [
+                    'dots' => false,
+                    'autoplay' => true,
+                    'arrows' => false,
+                ]) !!}
+            </div>
+        </div>
+    </div>
 </section>
 
 <section class="container py-3 my-md-5">
-	{!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false, 'arrows' => false]) !!}
+    {!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false, 'arrows' => false]) !!}
 </section>
 
 <section class="container-fluid newsletter-banner">
     <div class="row p-md-5">
-		@include('includes.newsletter')
-	</div>
+        @include('includes.newsletter')
+    </div>
 </section>
 
-	<!-- Inicio lotes destacados -->
-	<div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
-		<div class="container">
-			<div class="row min-height flex-display flex-wrap">
-				<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
-					<div class="lotes-destacados-tittle color-letter">
-						{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
-					</div>
-				</div>
-				<div class="col-xs-12 col-xs-12 col-sm-12 text-center">
-					<div class="lds-ellipsis loader"><div></div><div></div><div></div><div></div></div>
-					<div class="owl-theme owl-carousel" id="lotes_destacados"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-		<script>
-			$(document).ready(function() {
-				if($('.content_art_container').height() - $('.content_art').height() > 0){
-					$('.scroll-buttons').removeClass('hidden')
-				}
-
-			$('.calendar-down').click(function(){
-				var scroll = $('.content_art_container').height() - $('.content_art').height()
-			   if($('.content_art').scrollTop() < scroll){
-				   $('.content_art').animate({scrollTop: $('.content_art').scrollTop() + (($('.content_art_container').height() / $('.contact-misc').length) / 1.5)}, 500);
-			   } else{
-				   $('.content_art').scrollTop(scroll)
-			   }
-			})
-
-
-				$('.calendar-up').click(function(){
-				var scroll = $('.content_art_container').height() - $('.content_art').height()
-			   if($('.content_art').scrollTop() > 0){
-				   $('.content_art').animate({scrollTop: $('.content_art').scrollTop() - (($('.content_art_container').height() / $('.contact-misc').length)/ 1.5)}, 500);
-
-
-			   } else{
-				   $('.content_art').scrollTop(0)
-			   }
-			})
-
-			})
-		</script>
-
-<br><br>
+<!-- Inicio lotes destacados -->
+<div class="lotes_destacados secundary-color-text" id="lotes_destacados-content">
+    <div class="container">
+        <div class="row min-height flex-display flex-wrap">
+            <div class="col-12 lotes-destacados-principal-title">
+                <div class="lotes-destacados-tittle color-letter">
+                    {{ trans(\Config::get('app.theme') . '-app.lot_list.lotes_destacados') }}
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <div class="lds-ellipsis loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="owl-theme owl-carousel" id="lotes_destacados"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @php
-	$replace = array(
-		'lang' => \Tools::getLanguageComplete(Config::get('app.locale')) ,'emp' => Config::get('app.emp') ,
-	);
+    $lang = Config::get('app.locale');
+    $replace = [
+        'lang' => \Tools::getLanguageComplete($lang),
+        'emp' => Config::get('app.emp'),
+    ];
 @endphp
 
 <script>
-	var replace = @json($replace);
-	var key = "lotes_destacados";
+    var replace = @json($replace);
+    var key = "lotes_destacados";
 
-	$(document).ready(function() {
-		ajax_carousel(key, replace);
-	 });
+    $(document).ready(function() {
+        ajax_carousel(key, replace);
+    });
 </script>
 
-{!! \BannerLib::bannersPorKey('partners', 'partners', "{dots:false,autoplay: true, autoplaySpeed: 5000, slidesToScroll:1}") !!}
+<section class="container partners py-5 my-5">
+	<h3 class="text-center mb-4">{{ trans("$theme-app.home.collaborate") }}</h3>
+
+	<div class="row row-cols-3 row-cols-lg-6 gx-5 gy-3 align-items-center">
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/Logo-FNMT-mono.png" alt=""></div>
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-SGS-mono.png" alt=""></div>
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-JMO-mono.png" alt=""></div>
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-UAM-V-mono.png" alt=""></div>
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-UCM-H-mono.png" alt=""></div>
+		<div class="col"><img class="img-fluid" src="/themes/jesusvico/assets/img/colaboradores/logo-URJC-mono.png" alt=""></div>
+	</div>
+
+</section>
 
 @php
-	$page = App\Models\V5\Web_Page::where('key_web_page', 'subasta-numismatica')->where('lang_web_page', strtoupper(Config::get('app.locale')))->first();
+    $page = App\Models\V5\Web_Page::where('key_web_page', 'subasta-numismatica')
+        ->where('lang_web_page', strtoupper($lang))
+        ->first();
 @endphp
 
 @if ($page)
-<section class="static-page">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 color-letter titlepage-contenidoweb">
-				<h1 class="titlePage">{{ $page->name_web_page }}</h1>
-			</div>
-		</div>
-	</div>
-	<div id="pagina-{{ $page->id_web_page }}" class="contenido contenido-web home-static-page">
-		<div class="container">
-			{!! $page->content_web_page !!}
-		</div>
-	</div>
-</section>
-@endif
+    <section class="static-page-banner">
+        <img src="/themes/jesusvico/assets/img/static_home.webp" alt="{{ $page->name_web_page }}" loading="lazy">
+    </section>
 
+    <section class="static-page home-static-page">
+        <div class="container">
+            <h2>{{ $page->name_web_page }}</h2>
+        </div>
+
+        <div>
+            <div class="contenido contenido-web static-page" id="pagina-{{ $page->id_web_page }}">
+                {{-- {!! $page->content_web_page !!} --}}
+                @include("includes.statics.$lang.subasta_numismatica")
+            </div>
+        </div>
+    </section>
+@endif

@@ -99,7 +99,7 @@
 							<img src="/themes/jesusvico/assets/img/aenp_img.png" alt="">
 						</div>
 						<div>
-							<button class="btn btn-lb-primary" onclick="window.location.href = 'https://www.jesusvico.com/';">Leer</button>
+							<a class="btn btn-lb-primary" href="https://aenp.org/codigo-de-conducta-aenp/">Leer</a>
 						</div>
 					</div>
 				</div>
@@ -112,7 +112,7 @@
 							<img src="/themes/jesusvico/assets/img/iapn_img.png" alt="">
 						</div>
 						<div>
-							<button class="btn btn-lb-primary" onclick="window.location.href = 'https://www.jesusvico.com/';">Leer</button>
+							<a class="btn btn-lb-primary" href="https://iapn-coins.org/iapn/association/">Leer</a>
 						</div>
 					</div>
 				</div>

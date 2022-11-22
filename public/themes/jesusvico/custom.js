@@ -6,7 +6,56 @@ project = {
 
 $(function () {
 	$('#js-show-filters, #js-hide-filters').on('click', resizeGridBanner);
+
+	createObservers();
 })
+
+function createObservers() {
+
+	const observerTypes = ['.observer-animation-bottom', '.observer-animation-left', '.observer-animation-right'];
+
+	const targets = [...document.querySelectorAll(observerTypes.toString())];
+	if(targets.length === 0){
+		return;
+	}
+
+	const options = {
+		rootMargin: '0px',
+		threshold: 0.8
+	}
+	const observer = new IntersectionObserver(handleIntersect, options);
+	targets.forEach(target => observer.observe(target));
+}
+
+function handleIntersect(entries, observer) {
+
+	const observers = {
+		'observer-animation-bottom': 'lb-fadeInBottom',
+		'observer-animation-left': 'lb-fadeInLeft',
+		'observer-animation-right': 'lb-fadeInRight',
+	};
+
+	entries.forEach((entry) => {
+
+		const { isIntersecting, target } = entry;
+		const { classList } = target;
+
+		if (isIntersecting && classList.contains('opacity-0')) {
+			const animation = [...classList].find((className) => Object.keys(observers).includes(className));
+			classList.remove('opacity-0');
+			classList.add('lb-fadeIn')
+			classList.add(observers[animation]);
+		}
+	});
+}
+
+function scrollToElement(element, miliseconds) {
+	const speed = miliseconds ?? 600;
+	$('html,body').animate({
+		scrollTop: $(element).offset().top - 70
+	}, speed);
+}
+
 
 carrousel_molon_new = function (carrousel) {
 	if (carrousel.data('hasSlick')) {
