@@ -124,9 +124,11 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                     <li>
                         <a href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
+					 {{--
                     <li>
                         <a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') }}">{{ trans($theme . '-app.foot.irises_page') }}</a>
                     </li>
+					--}}
 					    {{--
                     <li>
                         <a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
@@ -212,9 +214,11 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">{{ trans($theme . '-app.foot.contact') }}</a>
 							</li>
+							{{--
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') }}">{{ trans($theme . '-app.foot.irises_page') }}</a>
 							</li>
+							--}}
 							{{--
 							<li>
 								<a class="color-letter flex-display link-header" href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
@@ -360,11 +364,13 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                                     title="{{ trans($theme . '-app.foot.contact') }}"
                                     href="<?= \Routing::translateSeo(trans($theme . '-app.links.contact')) ?>"><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
                             </li>
+							 {{--
                             <li>
                                 <a class="color-letter d-flex link-header"
                                     title="{{ trans($theme . '-app.foot.irises_page') }}"
-                                    href="<?= Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') ?>"><span>{{ trans($theme . '-app.foot.irises_page') }}</span></a>
+                                    href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.irises_page') }}"><span>{{ trans($theme . '-app.foot.irises_page') }}</span></a>
                             </li>
+							--}
 							 {{--
                             <li>
                                 <a class="color-letter d-flex link-header"

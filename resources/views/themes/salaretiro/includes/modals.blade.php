@@ -122,6 +122,23 @@
             </section>
     </div>
 </div>
+<div id="modalMensajeBuy" class="container modal-block mfp-hide ">
+	<div class="modal-sub-w">
+        <section class="panel">
+			<div class="panel-body">
+				<div class="modal-wrapper">
+					<div class="text-center single_item_content_">
+						<p class="class_h1" id="insert_msg_title"></p>
+						<p id="insert_msg"></p>
+						<br>
+						<button class="btn button_modal_confirm modal-dismiss btn-custom">{{ trans("$theme-app.lot.keep_buying") }}</button>
+						<a id="js-payLot" href="{{ Routing::slug('user/panel/allotments/outstanding') }}" class="btn btn-custom">{{ trans("$theme-app.lot.pay_lot") }}</a>
+					</div>
+				</div>
+			</div>
+		</section>
+    </div>
+</div>
 <div id="modalPujarFicha" class="container modal-block mfp-hide ">
             <div   data-to="pujarLoteFicha" class="modal-sub-w">
                     <section class="panel">

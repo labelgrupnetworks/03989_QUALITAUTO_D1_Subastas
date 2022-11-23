@@ -39,10 +39,19 @@
 										alt="{{ $subasta->name }}" class="img-responsive lazy m-auto" style="display: none" />
                                 </div>
                                 <div class="col-xs-12 col-md-7 auction-dates">
-                                    <p style="font-weight: 600;">
-                                        {{ date('d-m-Y', strtotime($subasta->session_start)) }}
-                                    </p>
-                                    <small>{{ date('H:i', strtotime($subasta->session_start)) }} h</small>
+
+									<div class="auctions-init-dates text-center mb-1">
+										<p class="m-0">Inico</p>
+										<p class="m-0" style="font-weight: 600;">{{ date('d-m-Y', strtotime($subasta->session_start)) }}</p>
+										<small>{{ date('H:i', strtotime($subasta->session_start)) }} h</small>
+									</div>
+									@if($subasta->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_ONLINE)
+									<div class="auctions-close-dates text-center">
+										<p class="m-0">Cierre</p>
+										<p class="m-0" style="font-weight: 600;">{{ date('d-m-Y', strtotime($subasta->session_end)) }}</p>
+										<small>{{ date('H:i', strtotime($subasta->session_end)) }} h</small>
+									</div>
+									@endif
                                 </div>
 
 								<div class="snippet_documentacion" id="docs{{ $subasta->id_auc_sessions }}">

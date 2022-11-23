@@ -33,11 +33,11 @@ $youtubeBannerOptions = "{
 
 {!! \BannerLib::bannersPorKey('home-top-banner', 'home-superior', [
     'arrows' => true,
-    'dots' => false,
+    'dots' => true,
     'autoplay' => true,
     'autoplaySpeed' => '3000',
 ]) !!}
-
+{{--
 <div class="bg-primary-color">
 	<div class="container">
 		<div class="row">
@@ -120,8 +120,8 @@ $youtubeBannerOptions = "{
 <div class="catalog-banner-container">
 	{!! \BannerLib::bannersPorKey('catalog-home-banner', 'home-catalog', $home3bannerOptions) !!}
 </div>
-
-<div class="container">
+--}}
+<div class="container pt-2">
 	<div class="row">
 		<div class="col-xs-12">
 			<h2 class="title-color-dark-gray mt-4 mb-4 text-center">{{ trans($theme . '-app.home.featured_lots_title') }}</h2>
@@ -129,10 +129,11 @@ $youtubeBannerOptions = "{
 	</div>
 </div>
 
-<div class="bg-primary-color pt-5 pb-5">
+<div class=" pt-1 pb-5">
 	<div class="yt-banner-container pb-3">
 		{!! \BannerLib::bannersPorKey('featured-lot-banner', 'featured-log-bnr', $youtubeBannerOptions) !!}
 	</div>
+	{{--
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-md-6">
@@ -149,8 +150,9 @@ $youtubeBannerOptions = "{
 			</div>
 		</div>
 	</div>
+	--}}
 </div>
-
+{{--
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
@@ -166,7 +168,7 @@ $youtubeBannerOptions = "{
 <div class="text-center mt-4 mb-2">
 	<a class="btn btn-register-home" href="{{ \Routing::slug('register') }}">{{ trans("$theme-app.home.register_button") }}</a>
 </div>
-
+--}}
 
 <br><br>
 
@@ -200,10 +202,11 @@ $youtubeBannerOptions = "{
 
 @include('includes.newsletter')
 
+{{--
 <div class="sell-segre-banner-container">
 	{!! \BannerLib::bannersPorKey('banner-sell-segre', 'sell-segre-banner', "{'dots': false, 'arrows': false,'}") !!}
 </div>
-
+--}}
 <div class="app-segre-banner-container">
 	{!! \BannerLib::bannersPorKey('banner-app-segre', 'app-segre-banner', "{'dots': false, 'arrows': false,'}") !!}
 </div>

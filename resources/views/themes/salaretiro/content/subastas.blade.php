@@ -24,7 +24,7 @@
                     <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</h1>
                 </div>
             @endif
-            @foreach ($data['auction_list'] as  $subasta)
+            @foreach (array_reverse($data['auction_list']) as  $subasta)
                 <?php
                     // $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
                     $indices = array();

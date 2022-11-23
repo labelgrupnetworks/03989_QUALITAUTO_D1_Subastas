@@ -28,7 +28,7 @@ $families = array();
 					<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
-
+{{--
 					<div class="tipo_usuario">
 						<div class="particular selected" onclick="javascript:particular();">
 							{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}
@@ -38,7 +38,7 @@ $families = array();
 						</div>
 					</div>
 
-
+--}}
 
 
 
@@ -53,7 +53,7 @@ $families = array();
 						<div class="tit">
 							{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}
 						</div>
-
+{{--
 
 						<div class="tipo_sexo">
 							<div class="hombre selected" onclick="javascript:hombre();">
@@ -63,7 +63,7 @@ $families = array();
 								{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}
 							</div>
 						</div>
-
+--}}
 						<div class="clearfix"></div>
 						<br>
 
@@ -91,15 +91,18 @@ $families = array();
 								<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
 								{!!$formulario->telefono!!}
 							</div>
+							{{--
 							<div class="movil">
 								<label>{{ trans(\Config::get('app.theme').'-app.login_register.mobile') }}</label>
 								{!!$formulario->movil!!}
 							</div>
+							--}}
 							<div class="datos_right">
 								<label class="nif">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
 								<label class="cif" style="display:none">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
 								{!!$formulario->cif!!}
 							</div>
+							{{--
 							<div class="observaciones">
 								<label class="pt-3">{{ trans(\Config::get('app.theme').'-app.login_register.observacion') }}</label>
 								{!!$formulario->obscli!!}
@@ -154,7 +157,7 @@ $families = array();
 								<label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
 								{!!$formulario->language!!}
 							</div>
-
+						--}}
 
 						<div class="clearfix"></div>
 					</div>

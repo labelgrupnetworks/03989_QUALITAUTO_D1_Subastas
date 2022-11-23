@@ -782,7 +782,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 			@foreach($lote_actual->imagenes as $key => $imagen)
 			{
 				type: 'image',
-				url: '/img/load/real/{{$imagen}}'
+				url: '/img/{{config('app.emp')}}/{{$lote_actual->num_hces1}}/{{$imagen}}?a={{rand()}}'
 			},
 			@endforeach
 		],

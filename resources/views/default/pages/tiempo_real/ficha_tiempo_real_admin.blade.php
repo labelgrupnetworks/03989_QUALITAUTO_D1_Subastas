@@ -23,6 +23,8 @@ $fecha_finh  = $hastah.$horah;
 
 <script>
 
+//si dejan el campo vacio del licitador no dejamos continuar
+//var notEmptyLicit = true;
 
 
 <?php if(!empty($data['js_item']['user']['is_gestor'])){ ?>

@@ -84,6 +84,12 @@
 							{{ !empty($client->cod_cliweb) ? trans('admin-app.general.yes') : trans('admin-app.general.not') }}
 						</td>
 
+						@foreach ($newsletterTableParam as $param => $newsletterParam)
+						<td class="{{$param}}">
+							{{ $client->{$param} == 'S' ? trans('admin-app.general.yes') : trans('admin-app.general.not') }}
+						</td>
+						@endforeach
+
 						<td>
 							<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
                     			data-id="{{ $client->email_cliweb }}">{{ trans("admin-app.button.delete_subscription") }}</button>

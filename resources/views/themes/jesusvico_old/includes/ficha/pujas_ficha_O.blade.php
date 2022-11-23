@@ -35,20 +35,22 @@
 
 
 	{{-- Precio salida --}}
-	<div class="d-flex align-items-center flex-wrap grid-precio-salida">
-		<div class="w-100 info-ficha-buy-info-price border-bottom">
-			<div class="pre">
+	@if ($lote_actual->ocultarps_asigl0 != 'S')
+		<div class="d-flex align-items-center flex-wrap grid-precio-salida">
+			<div class="w-100 info-ficha-buy-info-price border-bottom">
+				<div class="pre">
 
-				<p class="pre-price">
-					{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
-					<span class="text-right">
-						{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					</span>
-				</p>
+					<p class="pre-price">
+						{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
+						<span class="text-right">
+							{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+						</span>
+					</p>
 
+				</div>
 			</div>
 		</div>
-	</div>
+	@endif
 
 	{{-- input --}}
 	<div class="d-flex align-items-center flex-wrap grid-input">

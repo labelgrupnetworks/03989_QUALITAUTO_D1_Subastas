@@ -24,6 +24,8 @@ $ministeryLicit = config('app.ministeryLicit', '50');
 
 	//Variable que decide mostrar o no SIEMPRE, el modal de asignacion al cerrar un lote
 	var showEverModal = true;
+	//si dejan el campo vacio del licitador no dejamos continuar
+	var notEmptyLicit = true;
 	var ministeryLicit = @json($ministeryLicit);
 
 

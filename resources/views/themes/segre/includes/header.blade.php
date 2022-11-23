@@ -14,43 +14,43 @@ if (strpos($fullname, ',')) {
 }
 ?>
 
-@php
-/* Idiomas */
-@endphp
-@if (count(Config::get('app.locales')) > 1)
-	<div class="lang-selection">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-12 text-right d-flex justify-content-flex-end">
-
-					@foreach (Config::get('app.locales') as $key => $value)
-						<ul class="ul-format list-lang d-inline-flex">
-							<?php
-							if (\App::getLocale() != $key) {
-							    #Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
-							    $ruta = "/$key" . TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $key);
-							} else {
-							    $ruta = '';
-							}
-							?>
-							<li>
-								<a translate="no" title="<?= trans(\Config::get('app.theme') . '-app.head.language_es') ?>"
-									class="link-lang  color-letter {{ empty($ruta) ? 'active' : '' }} " {{ empty($ruta) ? '' : "href=$ruta" }}>
-
-									<span translate="no">{{ trans(\Config::get('app.theme') . '-app.home.' . $key) }}</span>
-								</a>
-							</li>
-						</ul>
-					@endforeach
 
 
+<?php #el proximo div es un espacio en blanco para que funcione el scroll del menu y no se suba todo para arriba ?>
+{{-- <div class="header-height "></div> --}}
+<header>
+	@if (count(Config::get('app.locales')) > 1 && 1==2)
+		<div class="lang-selection">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-12 text-right d-flex justify-content-flex-end">
+
+						@foreach (Config::get('app.locales') as $key => $value)
+							<ul class="ul-format list-lang d-inline-flex">
+								<?php
+								if (\App::getLocale() != $key) {
+									#Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
+									$ruta = "/$key" . TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $key);
+								} else {
+									$ruta = '';
+								}
+								?>
+								<li>
+									<a translate="no" title="<?= trans(\Config::get('app.theme') . '-app.head.language_es') ?>"
+										class="link-lang  color-letter {{ empty($ruta) ? 'active' : '' }} " {{ empty($ruta) ? '' : "href=$ruta" }}>
+
+										<span translate="no">{{ trans(\Config::get('app.theme') . '-app.home.' . $key) }}</span>
+									</a>
+								</li>
+							</ul>
+						@endforeach
+
+
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-@endif
-
-<header>
+	@endif
 	@php
 		/* Barra de búsqueda */
 	@endphp
@@ -83,17 +83,23 @@ if (strpos($fullname, ',')) {
 	@php
 		/* Fin barra de búsqueda */
 	@endphp
+	<div class="logo-header mt-1 mb-1">
+		<a title="{{(\Config::get( 'app.name' ))}}" href="/">
+			<img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
+				alt="{{(\Config::get( 'app.name' ))}}">
+		</a>
+		{{-- <div class="menu-responsive hidden-lg">
+			<div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">
+				<img class="img-responsive" style="max-width: 40px" src="/themes/{{\Config::get('app.theme')}}/assets/img/menu_icon.png" alt="">
+			</div>
+		</div> --}}
+	</div>
 	<nav class="menu-header">
-		<div class="menu-responsive hidden-lg">
+		<div class="menu-responsive">
 			<div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">
 				{{ trans(\Config::get('app.theme') . '-app.head.menu') }}</div>
 		</div>
-		<div class="logo-header">
-			<a title="{{ \Config::get('app.name') }}" href="/">
-				<img class="logo-company" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo.png"
-					alt="{{ \Config::get('app.name') }}">
-			</a>
-		</div>
+
 		<div class="menu-principal">
 
 			<ul class="menu-principal-content d-flex justify-content-center align-items-center">
@@ -145,25 +151,26 @@ if (strpos($fullname, ',')) {
 								{{ trans(\Config::get('app.theme') . '-app.foot.other_services') }}
 							</a>
 						</p>
+						
 						<p class="item">
-							<a href="<?php echo Routing::translateSeo('blog') . trans(\Config::get('app.theme') . '-app.segre-enlaces.catalogaciones_destacadas'); ?>">
-								{{ trans(\Config::get('app.theme') . '-app.foot.featured_cataloging') }}
+							<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.general-conditions') }}">
+								{{ trans($theme.'-app.foot.general-conditions') }}
 							</a>
 						</p>
-						<p class="item">
-							<a href="{{ trans(\Config::get('app.theme') . '-app.segre-enlaces.comunic_arte') }}" target="_blank">
-								{{ trans(\Config::get('app.theme') . '-app.foot.comunic_arte') }}
-							</a>
-						</p>
+
+
 					</div>
 				</li>
 
 				@php
 					$subastaObj = new \App\Models\Subasta();
 					$has_subasta = $subastaObj->auctionList('S', 'W');
+
 					if (count($has_subasta) > 0) {
 					$subastaActual = head($has_subasta);
 					}
+
+
 
 				@endphp
 
@@ -203,7 +210,14 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 
+							<p class="item">
+								<a
+								href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_auction_room') }}">
+									{{ trans($theme . '-app.foot.how_to_bid') }}
+								</a>
+							</p>
 
+							{{--
 							<p class="item">
 								<a href="{{ trans($theme . '-app.segre-enlaces.virtual_visit') }}" target="_blank">
 									{{ trans($theme . '-app.foot.virtual_visit') }}
@@ -215,30 +229,30 @@ if (strpos($fullname, ',')) {
 									{{ trans($theme . '-app.foot.videos') }}
 								</a>
 							</p>
-
+							--}}
 							@if (strtotime($subastaActual->session_start) < strtotime('now'))
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '001') . '?noAward=1&category=1' }}">
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, "pintura", $subastaActual->id_auc_sessions, '001') . '?noAward=1&category=1' }}">
 										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.paint') }}
 									</a>
 								</p>
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '002') . '?noAward=1&category=3' }}">
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, "artes decorativas", $subastaActual->id_auc_sessions, '002') . '?noAward=1&category=3' }}">
 										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.decorative_arts') }}
 									</a>
 								</p>
 								<p class="item">
 									<a
-										href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '003') . '?noAward=1&category=2' }}">
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, "joyas", $subastaActual->id_auc_sessions, '003') . '?noAward=1&category=2' }}">
 										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.jewels') }}
 									</a>
 								</p>
 							@endif
 
 							<p class="item">
-								<a href="{{ trans($theme . '-app.segre-enlaces.featured_shots') }}">
+								<a href="{{Route("rematesDestacados",["codSub" =>$subastaActual->cod_sub ])}}">
 									{{ trans($theme . '-app.foot.featured_shots') }}
 								</a>
 							</p>
@@ -260,19 +274,66 @@ if (strpos($fullname, ',')) {
 					</li>
 				@endif
 
+				@php
+
+				#buscar subasta anterior
+				$subastaAnterior = NULL;
+				$subastasAnteriores = $subastaObj->auctionList('H', 'W');
+
+				if (count($subastasAnteriores) > 0) {
+					$subastaAnterior = head($subastasAnteriores);
+				}
+
+			@endphp
+
 				{{-- MENÚ CATÁLOGOS --}}
 				<li class="open-menu-especial" style="position: relative">
 
 					{{-- Botón de desktop --}}
-					<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}" class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
+					<a  class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
 						{{ trans($theme . '-app.foot.previous_auctions') }}
 					</a>
 
 					{{-- Botón de móvil --}}
-					<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}" class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
+					<a  class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 						onclick="javascript:$('#menu_desp_catalogo').toggle('blind',100)">
 						{{ trans($theme . '-app.foot.previous_auctions') }}
 					</a>
+					<div class="menu-especial" id="menu_desp_catalogo">
+						<p class="item">
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.todo_catalogos') }}">
+								{{ trans($theme . '-app.foot.catalogs') }}
+							</a>
+						</p>
+
+						@if ( !empty($subastaAnterior) && strtotime($subastaAnterior->session_start) < strtotime('now'))
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "pintura", $subastaAnterior->id_auc_sessions, '001') . '?noAward=1&category=1' }}">
+									{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.paint') }}
+								</a>
+							</p>
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "artes decorativas", $subastaAnterior->id_auc_sessions, '002') . '?noAward=1&category=3' }}">
+									{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.decorative_arts') }}
+								</a>
+							</p>
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "joyas", $subastaAnterior->id_auc_sessions, '003') . '?noAward=1&category=2' }}">
+									{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.jewels') }}
+								</a>
+							</p>
+						@endif
+						@if ( !empty($subastaAnterior))
+							<p class="item">
+								<a href="{{Route("rematesDestacados",["codSub" =>$subastaAnterior->cod_sub ])}}">
+									{{ trans($theme . '-app.foot.featured_shots') }}
+								</a>
+							</p>
+						@endif
+					</div>
 {{--
 					<div class="menu-especial" id="menu_desp_catalogo">
 						<p class="item">
@@ -303,6 +364,25 @@ if (strpos($fullname, ',')) {
 					</div>
 --}}
 				</li>
+				{{-- MENÚ COMPRAR COMPRAR --}}
+				<li class="open-menu-especial" style="position: relative">
+
+					{{-- Botón de desktop --}}
+					<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md"
+					href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_auction_room') }}">
+					{{ trans($theme . '-app.foot.bid_auction_room') }}
+					</a>
+
+					{{-- Botón de móvil --}}
+					<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
+						href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_auction_room') }}">
+						{{ trans($theme . '-app.foot.bid_auction_room') }}
+					</a>
+
+
+				</li>
+
+
 
 				{{-- MENÚ COMPRAR VENDER --}}
 				<li class="open-menu-especial" style="position: relative">
@@ -319,11 +399,7 @@ if (strpos($fullname, ',')) {
 					</a>
 
 					<div class="menu-especial" id="menu_desp_comprar">
-						<p class="item">
-							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.bid_auction_room') }}">
-								{{ trans($theme . '-app.foot.bid_auction_room') }}
-							</a>
-						</p>
+						{{--
 						<p class="item">
 							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.telephone_bid') }}">
 								{{ trans($theme . '-app.foot.telephone_bid') }}
@@ -339,29 +415,31 @@ if (strpos($fullname, ',')) {
 								{{ trans($theme . '-app.foot.bid_online_auction') }}
 							</a>
 						</p>
+						--}}
 						<p class="item">
 							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.sell_in_segre') }}">
 								{{ trans($theme . '-app.foot.sell_in_segre') }}
 							</a>
 						</p>
 						<p class="item">
-							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.shipping_returns') }}">
-								{{ trans($theme . '-app.foot.shipping_returns') }}
+							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.contacto_expertos') }}">
+								{{ trans($theme . '-app.foot.contacto_expertos') }}
 							</a>
 						</p>
 					</div>
 
 				</li>
 
-				{{-- MENÚ APP SEGRE --}}
+				{{-- MENÚ APP SEGRE
+
 				<li class="open-menu-especial" style="position: relative">
 
-					{{-- Botón de desktop --}}
+					{{-- Botón de desktop
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
 						{{ trans($theme . '-app.foot.app_segre') }}
 					</a>
 
-					{{-- Botón de móvil --}}
+					{{-- Botón de móvil
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 						onclick="javascript:$('#menu_desp_app').toggle('blind',100)">
 						{{ trans($theme . '-app.foot.app_segre') }}
@@ -376,6 +454,7 @@ if (strpos($fullname, ',')) {
 					</div>
 
 				</li>
+				--}}
 				@php
 					/* -------------------END DESKTOP & MOBILE------------------- */
 				@endphp
@@ -477,30 +556,36 @@ if (strpos($fullname, ',')) {
 					</a>
 				</div>
 			@else
-				<div class="my-account color-letter-header">
-					<div class="row">
-						<div class="col-xs-3 text-center">
-							<img width="25px;" class="logo-company" src="/themes/{{ \Config::get('app.theme') }}/assets/img/user.png"
+				<div class="my-account">
+					<img width="25px;" class="logo-company" src="/themes/{{ \Config::get('app.theme') }}/assets/img/user.png"
 								alt="{{ \Config::get('app.name') }}">
-						</div>
-						<div class="col-xs-9 text-center">
-							@if (!empty($name))
-								<div class="hidden-xs" style='font-size: 11px'><b><?= $name ?></b></div>
-							@endif
-							<span class="hidden-xs">{{ trans(\Config::get('app.theme') . '-app.login_register.my_panel') }}</span>
-						</div>
+
+					<div class="text-center visible-lg">
+						@if (!empty($name))
+							<div style='font-size: 11px'><b><?= $name ?></b></div>
+						@endif
+						<span>{{ trans(\Config::get('app.theme') . '-app.login_register.my_panel') }}</span>
 					</div>
 
-					<div class="mega-menu background-body rigth-0">
-						<a class="color-letter" href="{{ \Routing::slug('user/panel/orders') }}" >
-                            {{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }}
-						</a>
+					<div class="mega-menu menu-especial">
+						<div class="item">
+							<a href="{{ \Routing::slug('user/panel/orders') }}" >
+                            	{{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }}
+							</a>
+						</div>
+
 						@if (Session::get('user.admin'))
-							<a class="color-letter" href="/admin" target="_blank">
+						<div class="item">
+							<a href="/admin" target="_blank">
 								{{ trans(\Config::get('app.theme') . '-app.login_register.admin') }}</a>
+						</div>
 						@endif
-						<a class="color-letter"
-							href="{{ \Routing::slug('logout') }}">{{ trans(\Config::get('app.theme') . '-app.login_register.logout') }}</a>
+
+						<div class="item">
+							<a href="{{ \Routing::slug('logout') }}">
+								{{ trans(\Config::get('app.theme') . '-app.login_register.logout') }}</a>
+						</div>
+
 					</div>
 				</div>
 			@endif

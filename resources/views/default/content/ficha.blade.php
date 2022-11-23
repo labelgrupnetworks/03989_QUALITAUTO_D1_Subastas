@@ -27,6 +27,8 @@ $fact_N = $lote_actual->fac_hces1=='N' ? true : false;
 $start_session = strtotime("now") > strtotime($lote_actual->start_session);
 $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
+$inicio_pujas = strtotime("now") > strtotime($lote_actual->fini_asigl0);
+
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
@@ -317,7 +319,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
             </div>
             <div class="col-xs-12 no-padding desc-lot-profile-content">
-                    <p><?= $lote_actual->desc_hces1 ?></p>
+                    <?= $lote_actual->desc_hces1 ?>
             </div>
 
 </div>

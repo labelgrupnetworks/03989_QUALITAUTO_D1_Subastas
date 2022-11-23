@@ -30,13 +30,13 @@
 
 						@if(in_array($auction->cod_sub, array_keys($subastasExternas)))
 
-						<p>
+						<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 							<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
 							<span class="salida-price">{{ $precio_salida }} {{ $divisas[$subastasExternas[$auction->cod_sub]]->symbolhtml_div }}</span>
 						</p>
 
 						@elseif( !$retirado && !$devuelto)
-							<p>
+							<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if($subasta_venta)
 									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
 								@else

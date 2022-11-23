@@ -21,7 +21,8 @@
 
 		<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
         <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
-        <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
+        <button id="newsletter-btn-duranNFT" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
+
 
 		{{-- <div>
 			<p class="legal-text text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium aliquam similique exercitationem sint, architecto delectus placeat sed! Quibusdam doloribus nisi ut. Id, nobis. Tempora vero ducimus hic modi laboriosam commodi. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam a amet suscipit. In aperiam quisquam dolores numquam. Voluptatem, illo! Obcaecati cupiditate quia nihil vero, ducimus modi eum reprehenderit pariatur harum.</p>

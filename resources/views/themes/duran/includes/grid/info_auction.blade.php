@@ -7,8 +7,8 @@
 			</div>
 		@endif
 		<div class="col-xs-12  descripcion-left">
-			<div class="d-flex descripcion-cat pb-4">
-				<p>{!! $auction->descdet_sub !!}</p>
+			<div class=" descripcion-cat pb-4">
+				{!! $auction->descdet_sub !!}
 			</div>
 		</div>
 	</div>

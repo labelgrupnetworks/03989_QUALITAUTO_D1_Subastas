@@ -11,7 +11,7 @@
                 </div>
                 <input class="form-control input-lg newsletter-input" type="text" placeholder="">
                 <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
-                <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="20" >
+                <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
                 <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
 			</div>
 			<div class="check_term box col-xs-12 col-sm-6  col-md-5 col-md-offset-1 col-lg-6 col-lg-offset-1 col-xs-offset-0">

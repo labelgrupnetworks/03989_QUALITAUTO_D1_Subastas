@@ -134,7 +134,10 @@
 					@endif
 				</div>
 			@endif
-
+				{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
+			@if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
+			<div class="require-wallet mt-1 mb-1">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
+			@else
 				<div class="input-group d-block group-pujar-custom ">
 					<div>
 						<div class="insert-bid insert-max-bid mb-1">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}
@@ -156,7 +159,7 @@
 							@endif
 						</div>
 					</div>
-
+			@endif
 
 
 

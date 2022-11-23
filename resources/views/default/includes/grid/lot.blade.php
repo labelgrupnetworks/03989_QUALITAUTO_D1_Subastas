@@ -70,7 +70,8 @@
 						@if(!$end_session)
 						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
 						@endif
-					@elseif(!$cerrado )
+					@elseif(!$cerrado && (!$subasta_online || $inicio_pujas_online))
+						@php /* Si no está cerrado saldrá el botón o si la subasta online está abierta y es superior a la fecha de inicio también aparecerá */ @endphp
 						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</p>
 					@endif
 				@endif

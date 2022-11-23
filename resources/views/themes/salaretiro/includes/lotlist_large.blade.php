@@ -37,18 +37,13 @@
                         @elseif( \Config::get('app.impsalhces_asigl0'))
                                 <p class="salida" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
                         @endif
-                    @elseif($item->tipo_sub == 'V')
-                        <p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.price_now') }}:
-                        <span >
-							{{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-                        </span>
-						</p>
-						<p class="salida">{{ trans(\Config::get('app.theme').'-app.subastas.previous_price') }}:
-							<s>
-								{{$item->formatted_impsalweb_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-							</s>
-						</p>
+                    @elseif($item->tipo_sub === 'V')
+						@php
+							$pvp = Tools::moneyFormat($item->impsalhces_asigl0 + $item->impsalhces_asigl0 * ($item->comlhces_asigl0 / 100) * 1.21, trans("$theme-app.subastas.euros"), 2);
+						@endphp
+						<p class="salida">PVP:<span> {{ $pvp }}</span></p>
                     @endif
+
                     @if( ($item->tipo_sub== 'P' || $item->tipo_sub== 'O') && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}<span>  {{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
                     @elseif (($item->tipo_sub== 'P' || $item->tipo_sub== 'O' )&& empty($item->max_puja) && $item->cerrado_asigl0 == 'N')
@@ -57,7 +52,6 @@
                         <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
                             <span class="{{$winner}}"> {{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
                     @endif
-
 
                     @if( \Config::get('app.awarded') || $item->cerrado_asigl0 == 'D')
                       <p class="salida availability">

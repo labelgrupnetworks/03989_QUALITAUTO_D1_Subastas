@@ -58,7 +58,7 @@
 		font-size: 12px;
 	}
 
-	td.Sociedad {
+	td.Sociedad, td.colummn-name {
 		font-size: 12px;
 	}
 

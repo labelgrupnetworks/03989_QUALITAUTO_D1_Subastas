@@ -50,7 +50,7 @@
 
 					<div class="data-price">
 						<p style="flex: 1">
-							@if(!$retirado && !$devuelto)
+							@if(!$retirado && !$devuelto && !$cerrado)
 								{{-- Precio de salida --}}
 								<span class="salida-price" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 									@if($compra)

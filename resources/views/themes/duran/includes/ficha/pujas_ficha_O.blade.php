@@ -71,36 +71,37 @@
 
         <div class="insert-bid-input col-lg-12 d-flex justify-content-center flex-column no-padding">
 
-            @if (Session::has('user') &&  Session::get('user.admin'))
-            <div class="d-block w-100">
-                <input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value="" type="text" style="border: 1px solid red;" placeholder="Código de licitador">
-                @if ($subasta_abierta_P)
-                    <input type="hidden" id="tipo_puja_gestor" value="abiertaP" >
-                @endif
-            </div>
-                @endif
+            @if (Session::has('user') &&  Session::get('user.admin')  )
+				<div class="d-block w-100">
+					<input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value="" type="text" style="border: 1px solid red;" placeholder="Código de licitador">
+					@if ($subasta_abierta_P)
+						<input type="hidden" id="tipo_puja_gestor" value="abiertaP" >
+					@endif
+				</div>
+            @endif
 
-
-            <div class="input-group d-block group-pujar-custom mr-1">
-                <div>
-                    <div class="insert-bid insert-max-bid mb-1">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }} 	<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="{{ Routing::translateSeo('pagina')."info-pujas-online"  }}?modal=1" data-title="{{ trans(\Config::get('app.theme').'-app.lot.title_info_pujas') }}"><i class="fas fa-info-circle"></i></a>
+			@if ($start_session)
+				<div class="input-group d-block group-pujar-custom mr-1">
+					<div>
+						<div class="insert-bid insert-max-bid mb-1">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }} 	<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="{{ Routing::translateSeo('pagina')."info-pujas-online"  }}?modal=1" data-title="{{ trans(\Config::get('app.theme').'-app.lot.title_info_pujas') }}"><i class="fas fa-info-circle"></i></a>
+						</div>
 					</div>
-				</div>
-				<div class="input-group-btn boton-pujas mt-1 boton-pujar-online mb-2">
-					<button type="button" data-from="modal" value="{{$data['precio_salida']}}" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal js-lot-action_pujar_escalado <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
-						<span id="boton_puja_directa_JS">{{$data['precio_salida']}} </span>€
+					<div class="input-group-btn boton-pujas mt-1 boton-pujar-online mb-2">
+						<button type="button" data-from="modal" value="{{$data['precio_salida']}}" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal js-lot-action_pujar_escalado <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
+							<span id="boton_puja_directa_JS">{{$data['precio_salida']}} </span>€
 
-						</button>
-				</div>
+							</button>
+					</div>
 
-                <div class="col-xs-7 no-padding">
-                    <input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number mb-2" type="text" value="{{ $data['precio_salida'] }}">
-				</div>
-				<div class="col-xs-5 no-padding text-right">
-					<button type="button" data-from="modal" class="lot-action_pujar_on_line  ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.autopuja') }}</button>
-				</div>
+					<div class="col-xs-7 no-padding">
+						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number mb-2" type="text" value="{{ $data['precio_salida'] }}">
+					</div>
+					<div class="col-xs-5 no-padding text-right">
+						<button type="button" data-from="modal" class="lot-action_pujar_on_line  ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.autopuja') }}</button>
+					</div>
 
-            </div>
+				</div>
+			@endif
         </div>
 
 

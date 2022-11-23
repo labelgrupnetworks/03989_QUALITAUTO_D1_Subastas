@@ -4,7 +4,7 @@
 	<div class="account-user color-letter  pendientes_pago mb-2">
 
 			<div class="row">
-				<h2>{!! trans(\Config::get('app.theme').'-app.user_panel.title_pending_pays_NFT') !!}</h2>
+				<h2>{!! trans(\Config::get('app.theme').'-app.user_panel.title_pending_transfer_pays_NFT') !!}</h2>
 
 				@php
 

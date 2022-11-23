@@ -6,7 +6,6 @@ if(!empty($data['noticia'])){
 }else{
     $noticia = array();
 }
-
 ?>
 <form id="save_blog">
 <section role="main" class="content-body">
@@ -148,7 +147,7 @@ if(!empty($data['noticia'])){
 																		</div>
                                                                         <div class="col-md-12" >
 
-                                                                               <textarea lang="{{strtoupper($idiomes)}}" id="summernote_{{strtoupper($idiomes)}}"  class="summernote summernote_descrip" data-plugin-summernote data-plugin-options="{ 'height': 900, 'codemirror': { 'theme': 'monokai' }, 'lang' : 'es-ES' }" placeholder="{{ trans('admin-app.placeholder.contenido') }}" class="form-control" rows="5">
+                                                                               <textarea lang="{{strtoupper($idiomes)}}" id="summernote_{{strtoupper($idiomes)}}"  class="summernote summernote_descrip" class="form-control" rows="5">
                                                                                     <?= !empty($blog_lang)?$blog_lang->texto_web_blog_lang:"" ?>
                                                                                 </textarea>
 

@@ -24,7 +24,7 @@
 	</div>
 
 
-	<div class="bg-primary-color mb-4">
+	<div class=" mb-4">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 text-center color-letter">

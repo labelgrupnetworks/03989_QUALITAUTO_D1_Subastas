@@ -28,7 +28,7 @@ use App\libs\TradLib as TradLib;
         </div>
         <div class="menu-principal">
 
-            <ul class="menu-principal-content d-flex  align-items-center">
+            <ul class="menu-principal-content d-flex  align-items-center" style="flex-direction: column;align-items: center;">
                 <span role="button" class="close-menu-reponsive hidden-lg">{{ trans($theme.'-app.head.close') }}</span>
 
 
@@ -60,8 +60,8 @@ use App\libs\TradLib as TradLib;
 					--}}
              {{--   @if($global['subastas']->has('S') && $global['subastas']['S']->has('W')) --}}
                   <li>
-                      <a class="color-letter d-flex link-header justify-content-center align-items-center" href="/es/subasta/test_TEST-001">
-                        <span>{{ trans($theme.'-app.foot.auctions')}}</span>
+                      <a class="color-letter d-flex link-header justify-content-center align-items-center" href="/es/subasta/subasta-solidaria_LLUIS-001">
+                        <span>Ver Lotes {{ trans($theme.'-app.foot.auctions')}}</span>
                     </a>
                     </li>
               {{--   @endif --}}
@@ -129,6 +129,10 @@ use App\libs\TradLib as TradLib;
 
         </div>
 		--}}
+		<div style="background-color: white;text-align: center; max-width:80px">
+			<img style="height:100%"   src="/themes/ferreries/assets/img/logo_menorca_head_new.jpg"  alt="menorca">
+		</div>
+		
         <div class="user-account">
                 @if(!Session::has('user'))
                     <div class="user-account-login">

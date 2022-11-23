@@ -20,25 +20,27 @@
 
 {{-- Precio salida e input/boton live --}}
 <div class="row d-flex align-items-center flex-wrap">
+	@if ($lote_actual->ocultarps_asigl0 != 'S')
+		<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 info-ficha-buy-info mt-1">
 
-	<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 info-ficha-buy-info mt-1">
+			<div class="info-ficha-buy-info-price d-flex border-bottom">
 
-		<div class="info-ficha-buy-info-price d-flex border-bottom">
+				<div class="pre">
+					<p class="pre-price">
+						{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
+						<span>
+						{{$lote_actual->formatted_impsalhces_asigl0}}
+						{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+						</span>
+					</p>
 
-			<div class="pre">
-				<p class="pre-price">
-					{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
-					<span>
-					{{$lote_actual->formatted_impsalhces_asigl0}}
-					{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					</span>
-				</p>
+				</div>
 
 			</div>
 
 		</div>
+	@endif
 
-	</div>
 
 	<div class="col-xs-12 col-sm-5 col-lg-5 info-ficha-buy-info">
 

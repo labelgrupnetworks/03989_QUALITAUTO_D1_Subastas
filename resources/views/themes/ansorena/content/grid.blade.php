@@ -89,6 +89,7 @@ $sesiones = App\Models\V5\AucSessions::select('"id_auc_sessions","auction","refe
 										@php
 										$day = date("d", strtotime($sesion->start));
 										$month = date("M", strtotime($sesion->start));
+										$hour = date("H:i", strtotime($sesion->start));
 										$monthName =mb_strtoupper( \Tools::get_month_lang($month, trans(\Config::get('app.theme')."-app.global.month_large")));
 										$urlSession=\Tools::url_auction($sesion->auction,$sesion->name,$sesion->id_auc_sessions,'001');
 										#poner esto antes de la página a la que debe ir
@@ -112,7 +113,7 @@ $sesiones = App\Models\V5\AucSessions::select('"id_auc_sessions","auction","refe
 											<a href="{{$urlSession}}">
 												<div class="sesiones">
 
-													{!!	trans(\Config::get('app.theme')."-app.lot_list.session_secription", array("number" => intval($sesion->reference), "day" => $day, "month" => $monthName, "name" => $sesion->name, "init_lot" => $sesion->init_lot, "end_lot" => $sesion->end_lot )) !!}
+													{!!	trans(\Config::get('app.theme')."-app.lot_list.session_secription", array("number" => intval($sesion->reference), "day" => $day, "month" => $monthName, "name" => $sesion->name, "init_lot" => $sesion->init_lot, "end_lot" => $sesion->end_lot, "hour" => $hour )) !!}
 
 												</div>
 											</a>

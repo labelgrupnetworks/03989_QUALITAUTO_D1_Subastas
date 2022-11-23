@@ -9,6 +9,8 @@
 
 @section('content')
 
+@include('includes.pujar_lote_btn')
+
 @include('content.home')
 
 @stop

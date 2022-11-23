@@ -19,28 +19,69 @@
 </div>
 
 
-<div id="modalPujarFicha" class="container modal-block mfp-hide ">
-            <div   data-to="pujarLoteFicha" class="modal-sub-w">
-                    <section class="panel">
-                            <div class="panel-body">
-                                    <div class="modal-wrapper">
-                                            <div class=" text-center single_item_content_">
-                                                <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
-                                                    </br>
-                                                    <button  class="confirm_puja btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
-                                                    <div class='mb-10'></div>
-                                                     <div class='mb-10'></div>
+<div id="modalPujarFicha" class="container modal-block mfp-hide">
+	<div data-to="pujarLoteFicha" class="modal-sub-w">
+		<section class="panel">
+			<div class="panel-body">
+				<div class="modal-wrapper">
+					<div class=" text-center single_item_content_">
+						<p class="class_h1 mb-3">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p>
+						<p class="mb-3">
+							<span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }}</span> <strong><span class="precio_orden"></span> €</strong>
+						</p>
+						<button class="confirm_puja btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
 
-                                            </div>
-                                    </div>
-                            </div>
-                    </section>
-            </div>
+						@if(config('app.withMultipleBidders', false))
+						<button id="multipleBiddersLink" class="btn btn-custom">{{ trans("$theme-app.lot.add_bidders") }}</button>
+						@endif
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
+{{-- Cuando confirma se ejecuta confirm_puja() de tr_main --}}
 
+@if(!empty($data['usuario']))
+@php
+	$usuario = $data['usuario'];
+@endphp
+<div id="multipleBidders" class="modal-lg modal-block mfp-hide">
+	<div class="modal-sub-w">
+		<section class="panel">
 
+			<div class="panel-body">
+				<h2 class="class_h1 mb-3">{{ trans("$theme-app.lot.bidders") }}</h2>
 
+				<form id="biddersForm">
+					<div class="d-flex align-items-center mb-2 flex-wrap bidder-wrap" id="bidder_0">
+						<p class="m-0">1</p>
+						<input type="text" class="form-control" name="name" placeholder="Nombre o Razón Social" value="{{$usuario->fisjur_cli === 'R' ? $usuario->rsoc_cli : $usuario->nom_cli}}">
+						<input type="text" class="form-control" name="last-name" placeholder="Apellidos">
+
+						<div class="input-group">
+							<input type="number" max="100" class="form-control" name="ratio" value="100">
+							<div class="input-group-addon">%</div>
+						</div>
+						<div class="input-group">
+							<input type="number" step="0.01" class="form-control" name="import" readonly>
+							<div class="input-group-addon">{{ trans("$theme-app.lot.eur") }}</div>
+						</div>
+					</div>
+				</form>
+				<div class="mt-2 mb-3 d-flex align-items-end gap-5">
+					<button id="addBidder" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+					<p class="m-0 text-center has-error hidden" id="multipleBidderError" style="flex: 1">{{ trans("$theme-app.msg_error.bidders_ratio") }}</p>
+				</div>
+
+				<button class="btn btn-primary btn-custom confirm_puja_multiple">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+				<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+			</div>
+		</section>
+	</div>
+</div>
+@endif
 
 <div id="modal_frame"  data-to="pujarLoteFichaBalclis" class="container modal-block mfp-hide ">
     <div class='modal-dialog modal-sm'>

@@ -177,7 +177,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                                 $precio_venta = $item->implic_hces1;
                         }
                          //si tiene preci ode venta o se ha marado como devuelto
-                        $vendido = (!empty($precio_venta)|| $item->desadju_asigl0 =='S' )? true : false;
+                        $vendido = (!empty($precio_venta) )? true : false;
                         $winner = "";
                         if($subasta_web && $subasta_abierta_O){
                             //si el usuario actual es el

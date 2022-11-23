@@ -245,9 +245,10 @@ use App\Http\Controllers\V5\CartController;
 				</li>
 
 				<li>
+
 					<a class="color-letter d-flex link-header justify-content-center align-items-center"
 						title="{{ trans(\Config::get('app.theme').'-app.home.blog')}}"
-						href="{{\Routing::translateSeo('blog')}} "><span>{{ trans(\Config::get('app.theme').'-app.home.blog')}}</span></a>
+						href="{{ trans("$theme-app.links.blog") }}" target="_blank"><span>{{ trans(\Config::get('app.theme').'-app.home.blog')}}</span></a>
 				</li>
 
 

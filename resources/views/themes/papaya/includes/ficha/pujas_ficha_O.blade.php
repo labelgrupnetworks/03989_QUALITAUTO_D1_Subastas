@@ -100,9 +100,7 @@
 				<input id="bid_amount_firm" style="font-size: 20px;" placeholder="{{ $data['precio_salida'] }}"
 					class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
 				<div class="input-group-btn">
-					<?php
-						//dd(Session::get('user'));
-						?>
+
 					@if(!Session::has('user'))
 					<button type="button" data-from="modal"
 						class="btn-blue lot-action_pujar_no_user ficha-btn-bid ficha-btn-bid-height button-principal"

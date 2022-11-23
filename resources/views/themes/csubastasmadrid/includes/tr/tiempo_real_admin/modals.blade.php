@@ -111,7 +111,7 @@
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
                     <div class="winner_undefined hidden">
-						<div class="with_winner">
+
 							<p class="insert_msg msg_winner_undefined">{{ trans(\Config::get('app.theme').'-app.sheet_tr.winner_undefined') }}</p>
 							<div class="col-sm-6 col-sm-offset-3">
 								<input type="text" class="form-control" name="w_undefined" id="w_undefined">
@@ -119,7 +119,7 @@
 							<br>
 							<br>
 							<br>
-						</div>
+						
                     </div>
 
                     <p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans(\Config::get('app.theme').'-app.msg_error.no_licit') }}</p>

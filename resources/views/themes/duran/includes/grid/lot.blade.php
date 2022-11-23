@@ -138,13 +138,16 @@
 						{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
 					</div>
 					@elseif(!$cerrado )
-						@if($subasta_web )
-							<div class="pujar style-2">
-						@elseif($subasta_online )
-							<div class="pujar style-5">
+
+						@if($subasta_web || ($subasta_online && strtotime("now")  > strtotime($item->start)))
+							@if($subasta_web )
+								<div class="pujar style-2">
+							@elseif($subasta_online )
+								<div class="pujar style-5">
+							@endif
+							{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
+							</div>
 						@endif
-						{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
-						</div>
 					@endif
 
 				@endif

@@ -1,10 +1,13 @@
+@php
+	$salePrice = $lote_actual->actual_bid;
+	$pvp = Tools::moneyFormat($salePrice + $salePrice * ($lote_actual->comlhces_asigl0 / 100) * 1.21, trans("$theme-app.subastas.euros"), 2);
+@endphp
+
 <div class="info_single ficha_V col-xs-12">
     <div class="info_single_title col-xs-12">
         <div class="sub-o">
 
-            <?php // entraran tanto lotes de subastas V como cerrados de otra con posibilidad de compra
-            ?>
-
+            {{-- entraran tanto lotes de subastas V como cerrados de otra con posibilidad de compra --}}
             <p>
                 @if ($lote_actual->tipo_sub == 'V')
                     {{ trans(\Config::get('app.theme') . '-app.subastas.lot_subasta_venta') }}
@@ -27,22 +30,26 @@
             @if ($lote_actual->cerrado_asigl0 == 'N')
                 <span class="cierre_lote"></span>
             @endif
-            <?php /* no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> */
-            ?>
+            {{-- no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> --}}
+
         </div>
     </div>
 
     <div class="col-xs-12 col-sm-6">
         <p class="pre">{{ trans(\Config::get('app.theme') . '-app.subastas.price_sale') }}</p>
-        <div class="pre">{{ $lote_actual->formatted_actual_bid }}
-            {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</div>
+
+		<div class="pre">
+			{{$pvp}}
+			{{-- {{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} --}}
+		</div>
+
         <div class="info_single_content info_single_button">
             @if ($lote_actual->retirado_asigl0 == 'N' && empty($lote_actual->himp_csub) && ($lote_actual->subc_sub == 'S' || $lote_actual->subc_sub == 'A'))
                 <button data-from="modal" class="lot-action_comprar_lot btn btn-lg btn-custom" type="button"
-                    ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
-                    codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}"><i class="fa fa-shopping-cart"
-                        aria-hidden="true"></i>
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}</button>
+                    ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
+					<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    {{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}
+				</button>
             @endif
         </div>
 
@@ -64,6 +71,7 @@
 
     </div>
     <div class="col-xs-12">
+		<p style="margin-top: 0.5rem; margin-bottom: 0">{{ trans("$theme-app.lot.amount_with_commission") }}</p>
         <div class="col-xs-12">
         	<?php
         		$lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
@@ -95,8 +103,7 @@
     $(document).ready(function() {
         //calculamos la fecha de cierre
         //   $("#cierre_lote").html(format_date_large(new Date("{{ $lote_actual->end_session }}".replace(/-/g, "/"))),"");
-        $(".cierre_lote").html(format_date_large(new Date("{{ $lote_actual->end_session }}".replace(/-/g,
-            "/")), ''));
+        $(".cierre_lote").html(format_date_large(new Date("{{ $lote_actual->end_session }}".replace(/-/g, "/")), ''));
 
     });
 </script>

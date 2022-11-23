@@ -62,57 +62,7 @@
 	}
 </script>
 
-{{-- Obtener el enlace y comprobar si en el enlace hay 'es' --}}
 
-@if (\Config::get('app.locale') == 'es')
-	<div class="container irises-home-container mt-3 mb-3">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2 class="text-center"><span class="font-weight-200">Empezamos el 29 de septiembre a las 12h <br>con el iris de
-					</span><strong>Javier Bardem</strong></h2>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<img class="img-responsive mt-5 mb-5" src="/themes/durannft/img/bardem-desktop.png">
-			</div>
-		</div>
-		<div class="irises-content">
-			<h2><strong>OJOS QUE ABREN OTROS OJOS</strong></h2>
-			<h4>Ahora tú puedes conseguir la foto única de su iris y, al mismo tiempo, conseguir que muchas personas vulnerables
-				recuperen la visión.</h4>
-		</div>
-		<div class="btn-container mt-4">
-			<a class="btn btn-white" href="/es/lote/Iris-2741-2741/2-138-bardems-iris">INSCRÍBETE A LA SUBASTA</a>
-		</div>
-	</div>
-@else
-	<div class="container irises-home-container mt-3 mb-3">
-		<div class="row">
-			<div class="col-xs-12">
-				<h2 class="text-center"><span class="font-weight-200">We start on September 29 at 12:00 p.m. <br>with the iris of
-					</span><strong>Javier Bardem</strong></h2>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<img class="img-responsive mt-5 mb-5" src="/themes/durannft/img/bardem-desktop.png">
-			</div>
-		</div>
-		<div class="irises-content">
-			<h2><strong>EYES THAT OPEN OTHER EYES</strong></h2>
-			<h4>Now you can get the unique photo of your iris and, at the same time, get many vulnerable people
-				regain vision.</h4>
-		</div>
-		<div class="btn-container mt-4">
-			<a class="btn btn-white" href="/en/lote/Iris-2741-2741/2-138-bardems-iris">GO TO AUCTION</a>
-		</div>
-	</div>
-@endif
-
-
-
-{{-- FIN INICIO CONTENIDO IRIS DEL MUNDO --}}
 
 {{-- ultimas obras
 <div class="container mt-3 mb-3">

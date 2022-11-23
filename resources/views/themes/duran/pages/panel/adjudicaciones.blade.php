@@ -214,7 +214,7 @@ foreach($all_adj_pag as $key_inf => $value){
 
 											<?PHP /* Calculo de gastos de envio */ ?>
 											@if( !empty(Config::get('app.web_gastos_envio')))
-												<div class="col-xs-12 col-sm-5 gastos_envio" >
+												<div class="col-xs-12 col-sm-4 gastos_envio" >
 													<strong> {{ trans(\Config::get('app.theme').'-app.user_panel.direccion-facturacion') }}</strong>
 														<select id="clidd_{{$all_inf['inf']->cod_sub}}"  name="clidd_{{$all_inf['inf']->cod_sub}}" class="change_address_js "   data-sub="{{$all_inf['inf']->cod_sub}}" style="width: 90%;">
 														@foreach($data["address"] as $key => $value)
@@ -306,6 +306,12 @@ foreach($all_adj_pag as $key_inf => $value){
 
 
 											</div>
+										@elseif($all_inf['inf']->compraweb_sub == 'N' && $all_inf['inf']->cod_sub=='7501')
+										{{-- subasta solidaria  como no se paga lo activamos si el pago de la subasta esta quitado--}}
+										<div >	El importe del remate deberá abonarlo mediante transferencia siguiendo las instrucciones específicas de la subasta que puede consultar <a href="https://www.duran-subastas.com/es/pagina/subasta-benefica" target="_blank" >aquí</a></div>
+
+										<div style="float:right" >{{ trans(\Config::get('app.theme').'-app.user_panel.total_price') }} <br><strong>{{  \Tools::moneyFormat(($total_remate + $total_base  + $total_iva),false,2)}}</strong> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+										</div>
 
 										@endif
 									</div>
