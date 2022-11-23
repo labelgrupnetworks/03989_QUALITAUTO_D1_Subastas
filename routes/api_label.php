@@ -85,4 +85,10 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 	Route::POST('/subcategory', 'SubCategoryController@postSubCategory');
 	Route::PUT('/subcategory', 'SubCategoryController@putSubCategory');
 	Route::DELETE('/subcategory', 'SubCategoryController@deleteSubCategory');
+
+	#SUBCATEGORY
+	Route::GET('/deposit', 'DepositController@getDeposit');
+	Route::POST('/deposit', 'DepositController@postDeposit');
+	Route::PUT('/deposit', 'DepositController@putDeposit');
+	Route::DELETE('/deposit', 'DepositController@deleteDeposit');
 });

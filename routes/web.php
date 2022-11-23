@@ -639,8 +639,10 @@ Route::get(\Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentCon
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 
 #NFT
-Route::get("mintpayment/{operationId}", 'V5\PayShoppingCartController@createMintPay')->name('mintPayUrl');
-Route::get("transferpayment/{operationsIds}", 'V5\PayShoppingCartController@createTransferPay')->name('transferPayUrl');
+#pago individual del minteo que se pondrá en el correo
+Route::get("mintnftpayment/{operationId}", 'V5\PayShoppingCartController@createMintPay')->name('mintNftPayUrl');
+#pago
+Route::get("transfernftpayment/{operationsIds}", 'V5\PayShoppingCartController@createTransferPay')->name('transferNftPayUrl');
 #Comprobar escalados fuera de rango
 Route::get("preciofueraescalado/{codSub}","CustomControllers@preciosFueraEscalado");
 

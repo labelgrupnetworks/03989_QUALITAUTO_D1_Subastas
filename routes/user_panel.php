@@ -81,7 +81,7 @@ Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generate
 Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
 
 Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
-Route::get('{lang}/user/panel/allotments-bills', 'UserController@getAllAllotmentsAndBills');
+Route::get('{lang}/user/panel/allotments-bills', 'UserController@getAllAllotmentsAndBills')->name('panel.allotment-bills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
