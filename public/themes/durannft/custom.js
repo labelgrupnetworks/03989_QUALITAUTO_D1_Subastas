@@ -1,6 +1,23 @@
 
 $(document).ready(function () {
 
+	/**
+     * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
+     * actualmente no utilizamos en la vista.
+     */
+	 $('#newsletter-btn-duranNFT').on('click', function () {
+
+
+		var email = $('.newsletter-input').val();
+		var lang = $('#lang-newsletter').val();
+		var entrar = false;
+
+	if ($('#condiciones').prop("checked")) {
+		entrar = true;
+	}
+		sendNewsletterEmail(email, lang, entrar);
+	});
+
 	$('#js-ficha-login').on('click', (event) => {
 		$.magnificPopup.open({items: {src: '#modalCustomLogin'}, type: 'inline'}, 0);
 	});
@@ -215,6 +232,10 @@ action_fav_lote = function (event) {
 	});
 
 
+
+
+
+
 };
 
 
@@ -280,4 +301,54 @@ carrousel_molon_new = function(carrousel) {
 	carrousel.data('hasSlick', true);
 }
 
+
+function sendNewsletterEmail(email, lang, entrar){
+	/* Sin checks no hace falta
+   if ($('#condiciones').prop("checked")) {
+	   entrar = true;
+   }
+   */
+   if (entrar) {
+	   $.ajax({
+		   type: "POST",
+		   data: {
+			   email: email,
+			   lang: lang,
+			   condiciones: 1,
+			   families: [1]
+		   },
+		   url: '/api-ajax/newsletter/add',
+		   beforeSend: function () { },
+		   success: function (msg) {
+			   if (msg.status == 'success') {
+				   gtag('event','Enviar',{'event_category':'Registro_Newsletter'});
+
+				   	var expires = new Date();
+					expires = new Date(9999, expires.getMonth(), expires.getDay());
+					localStorage.setItem('nextNewsletter', expires);
+
+				   $('.insert_msg').html(messages.success[msg.msg]);
+				   		$('#modalAjax').modal('hide');
+			   } else {
+				   $('.insert_msg').html(messages.error[msg.msg]);
+			   }
+			   $.magnificPopup.open({
+				   items: {
+					   src: '#newsletterModal'
+				   },
+				   type: 'inline'
+			   }, 0);
+		   }
+	   });
+   } else {
+	   $("#insert_msgweb").html('');
+	   $("#insert_msgweb").html(messages.neutral.accept_condiciones);
+	   $.magnificPopup.open({
+		   items: {
+			   src: '#modalMensajeWeb'
+		   },
+		   type: 'inline'
+	   }, 0);
+   }
+}
 

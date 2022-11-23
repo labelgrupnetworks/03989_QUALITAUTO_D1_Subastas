@@ -300,8 +300,11 @@ span.img_verified span i {
 	flex-direction: column;
 }
 
+/**
+Cambiar a 0 cuando se active el streaming por js
+**/
 .tr_user_streaming #streaming {
-	opacity: 0;
+	opacity: 1;
 }
 
 

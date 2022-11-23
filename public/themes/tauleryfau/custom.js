@@ -326,8 +326,9 @@ $(function () {
 
 	if( $('.switcher').length ) {
 		const showFilterString = JSON.parse(sessionStorage.getItem('showFilter'));
+		const switcherIsVisible = document.querySelector('.switcher')?.offsetWidth;
 
-		if(showFilterString) {
+		if(showFilterString && switcherIsVisible) {
 			$('.switcher').trigger('click');
 		}
 	}

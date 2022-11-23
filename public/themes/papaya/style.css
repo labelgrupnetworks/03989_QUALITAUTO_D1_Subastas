@@ -5759,3 +5759,46 @@ section.blog-home > div.p-0.position-relative.content_art_container.container > 
 	width: 100%;
 	font-size: 20px;
 }
+
+#multipleBidders {
+	max-width: 900px;
+}
+
+#multipleBidders input[type=text] {
+	margin-left: 15px;
+	margin-bottom: 5px;
+	flex: 1;
+	min-width: 130px;
+}
+
+#multipleBidders .bidder-wrap input[type=text]:first-of-type {
+	margin-left: 7px;
+}
+
+#multipleBidders :is(input[type=text], input[type=number]),
+#multipleBidders .input-group-addon {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    background: rgb(242, 242, 242);
+    border-radius: 0;
+    position: relative;
+    padding: 0 10px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+	transition: none;
+}
+
+/* transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s; */
+
+#multipleBidders .input-group {
+	width: 100%;
+	min-width: 130px;
+	flex: 1;
+	margin-left: 15px;
+	margin-bottom: 5px;
+}
+
+#multipleBidders :is(input[type=text], input[type=number]):focus + .input-group-addon {
+	border-color: #000;
+}

@@ -99,6 +99,10 @@ a.button-principal{
     color: #414145;
 }
 
+.footer-link-address {
+	text-align: center;
+}
+
 .social-link {
     align-items: center;
     justify-content: flex-end;
@@ -122,8 +126,34 @@ hr {
     background-color: #707070;
 }
 /*************************SLIDER HOME*******************/
+.home-slider {
+	margin: 2rem 0;
+}
+
+.home-banners-wraper {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: 2rem;
+}
+
 .home-slider-control {
     height: 419px;
+}
+
+.home-small-banner * {
+	padding: 0;
+	height: 100%;
+}
+
+.home-small-banner .slick-dots {
+	height: auto;
+}
+
+@media(min-width: 768px) {
+	.home-banners-wraper {
+		flex-direction: row;
+	}
 }
 
 /*************************BANNER HOME*******************/
@@ -218,6 +248,28 @@ hr {
 
 header.fixed nav .logo-company {
     max-width: 60px;
+}
+
+.user-account-login {
+	gap: 2rem;
+	padding: 0 15px;
+}
+
+.user-account-login > a {
+    height: 100%;
+    padding: 0;
+    color: var(--primary-color-text);
+    font-size: 16px;
+    text-decoration: none;
+            transition: 0.3s linear all;
+
+    -webkit-transition: 0.3s linear all;
+         -o-transition: 0.3s linear all;
+}
+
+.user-account-login > a:hover {
+    color: var(--secondary-color-text);
+    text-decoration: none;
 }
 
 .como_vender {

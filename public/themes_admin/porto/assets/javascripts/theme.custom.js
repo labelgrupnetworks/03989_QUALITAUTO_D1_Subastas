@@ -15,7 +15,20 @@ $(document).ready(function () {
 
 	});
 
-
+	$('.summernote_descrip').summernote({
+		toolbar: [
+		  // [groupName, [list of button]]
+		  ['style', ['style']],
+		  ['font', ['bold', 'italic', 'underline', 'clear']],
+		  ['fontsize', ['fontsize']],
+		  ['color', ['color']],
+		  ['para', ['ul', 'ol', 'paragraph']],
+		  ['height', ['height']],
+		  ['table', ['table']],
+		  ['insert', ['link', 'picture', 'video']],
+		  ['view', ['fullscreen', 'codeview', 'help']],
+		]
+	});
 
 });
 

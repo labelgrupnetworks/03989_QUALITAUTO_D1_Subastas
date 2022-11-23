@@ -7,7 +7,7 @@
   --primary-color: #018ccc;
 }
 
-body{ 
+body{
     background: white;
 }
 
@@ -94,7 +94,7 @@ input:checked ~ .input-check-custom{
     -webkit-transition: .3s linear all;
     -o-transition: .3s linear all;
     transition: .3s linear all;
-    backgound: white;
+    background: white;
     border: none;
 }
 

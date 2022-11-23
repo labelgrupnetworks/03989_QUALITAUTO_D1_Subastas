@@ -306,7 +306,7 @@ div.newsletter button.btn-custom {
         transition: .3s background linear;
 }
 
-div.mfp-content div.modal-wrapper button.btn-custom {
+div.mfp-content div.modal-wrapper :is(button, a).btn-custom {
 	background-color: #015BA9;
 	color: #fff;
 	border-radius: 0;
@@ -3211,10 +3211,6 @@ div.newsletter{
     top: 34px;
     right: 11px;
     cursor: pointer;
-}
-
-.panel{
-    margin-top:30px;
 }
 /*
 @-moz-document url-prefix() {

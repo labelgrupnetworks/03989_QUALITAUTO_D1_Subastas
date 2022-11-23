@@ -211,17 +211,47 @@
 
 	});
 
+	$('#addBidder').on('click', addBidder);
+	$('#biddersForm').on('change', changeInputBidders);
+});
 
+	function addBidder(event) {
+		$block = document.getElementById('bidder_0').cloneNode(true);
+		const newId = document.querySelectorAll('#biddersForm > div').length;
 
+		$block.setAttribute('id', `bidder_${newId}`);
+		$block.querySelector('p').innerHTML = newId + 1;
+		const $inputs = $block.querySelectorAll('input');
+		$inputs.forEach((input) => input.value = '');
 
+		document.getElementById('biddersForm').appendChild($block);
+	}
 
+	/**
+	 *
+	 * @param {Event} event
+	 * @returns {void}
+	 */
+	function changeInputBidders(event) {
+		const elementTarget = event.target;
 
-    });
+		if(elementTarget.name !== 'ratio'){
+			return;
+		}
 
+		if(elementTarget.value > 100){
+			elementTarget.value = 100;
+		}
+		if(elementTarget.value < 0){
+			elementTarget.value = 0;
+		}
 
+		const bid = $('#bid_amount_firm').val();
+		const divWrapper = elementTarget.closest('.bidder-wrap');
+		const importElement = divWrapper.querySelector('[name="import"]');
 
-
-
+		importElement.value = (bid * (elementTarget.value / 100)).toFixed(2);
+	}
 
    function actionResponseDesign(data){
         if( auction_info.subasta.sub_tiempo_real == 'S'){

@@ -1,3 +1,11 @@
+$(document).ready(function () {
+	$(document).off( "scroll" );
+
+	$('.user-account').click(function() {
+		$(this).find('.mega-menu').toggle();
+	})
+});
+
 /*
 $(document).ready(function () {
 

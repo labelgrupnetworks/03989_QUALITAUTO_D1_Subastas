@@ -1251,6 +1251,10 @@ a.pass_recovery_login:hover {
 	margin-top: 10px;
 }
 
+.form-check-label{
+	display: initial;
+}
+
 /*************************FIN NEWSLETTER*******************/
 
 /************************LOTES DESTACADOS HOME**************/
@@ -3970,6 +3974,9 @@ ENVIO DELIVEREA DATOS PERSONALES
     margin-right: 5px;
     border-radius: 0;
     color: #ffffff;
+	height: 100%;
+    width: auto;
+    padding: 6px 12px;
 }
 
 .deliverea-buttons .btn-save, .deliverea-buttons .btn-delete {
@@ -5118,3 +5125,37 @@ text-decoration-line: underline;
 
 }
 
+/*
+|--------------------------------------------------------------------------
+| Boton pujar en vivo
+|--------------------------------------------------------------------------
+ */
+
+ .home-live-btn-link {
+	background-color: #FF0000;
+	color: #FFFFFF;
+
+    position: relative;
+    display: block;
+    float: rigth;
+    float: right;
+	  margin: 15px 0;
+    padding: 7px 0;
+
+    width: 100%;
+
+    border: 0;
+    text-align: center;
+    text-decoration: none;
+            transition: 0.1s linear all;
+
+    -webkit-transition: 0.1s linear all;
+         -o-transition: 0.1s linear all;
+}
+
+.home-live-btn-link:hover {
+
+	background: var(--btn-secondary-background-hover);
+	color: var(--btn-secondary-text-hover);
+	text-decoration: none;
+}

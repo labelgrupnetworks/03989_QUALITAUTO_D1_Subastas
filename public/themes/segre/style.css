@@ -3,7 +3,7 @@
 :root {
 
 	--primary-color: #414145;
-	--secondary-color: #D6B964;
+	--secondary-color: #921f30;
 	--complement-color: #414145;
 	--complement-primary-color: #d6b553;
 	--complement-secondary-color: #d6c285;
@@ -24,7 +24,7 @@
 	--btn-register-home-border: var(--secondary-color);
 	--btn-register-home-bgcolor: #4c4c4c;
 
-	--breadcrumb-text-color:  #ffffffcc;
+	--breadcrumb-text-color: #434343;
 
 	--link-static-page-color: #4c4c5c;
 	--link-static-page-color-hover: #627691;
@@ -45,9 +45,12 @@
 	--btn-background-blue: #3BAFBF;
 	--btn-background-blue-hover: #00A8BF;
 
-	--btn-primary-background: #D6B964;
-	--btn-primary-background-hover: #00a9c7;
-	--btn-primary-text: #2b2b2b;
+	--btn-background-segre: #921f30;
+	--btn-background-segre-hover: #5a0b17;
+
+	--btn-primary-background: var(--secondary-color);
+	--btn-primary-background-hover: #5a0b17;
+	--btn-primary-text: white;
 	--btn-primary-text-hover: white;
 
 	--btn-secondary-background: white;
@@ -55,17 +58,17 @@
 	--btn-secondary-text: #2b2b2b;
 	--btn-secondary-text-hover: white;
 
-	--newsletter-background: #2b2b2b;
+	--newsletter-background: #eaeaea;
 	--newsletter-title-color: var(--secondary-color);
-	--newsletter-text: white;
+	--newsletter-text: 2b2b2b;
 	--newsletter-input-text: #929292;
 	--newsletter-placeholder: var(--newsletter-input-text);
 	--btn-primary-background-hover: var(--primary-color);
 
-	--footer-background: #434343;
-	--footer-titles-color: #d6c285;
-	--footer-links-color: #eaeaea;
-	--footer-links-color-hover: var(--complement-primary-color);
+	--footer-background: #eaeaea;
+	--footer-titles-color: var(--secondary-color);
+	--footer-links-color: #434343;
+	--footer-links-color-hover:var(--secondary-color);
 
 	--footer-sociallinks-background: white;
 	--footer-sociallinks-textcolor: #707070;
@@ -73,8 +76,94 @@
 	--filter-background: #414145;
 }
 
-h1,h2,h3,h4,h5,h6 {
-	font-family: 'Playfair Display', serif;
+/* cambio color menu, ahora lo quieren blanco */
+a.link-header, .menu-especial a, .user-account, .lang-selection {
+
+	font-family: Playfair Display, sans-serif;
+	font-weight: normal;
+
+}
+a.link-header{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+nav .color-letter,
+nav .color-letter:hover,
+.lang-selection .color-letter,
+.lang-selection .color-letter:hover,
+.user-account-login,
+.btn_login_desktop {
+	color:#5a0b17;
+}
+/*
+header.fixed nav {
+	border-bottom: 0px;
+
+}
+
+.header-height {
+	height: 170px;
+
+}
+
+header.fixed {
+	height: 170px;
+	width: 100%;
+	z-index: 100;
+	top: 0px;
+	background: white;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+} */
+
+header {
+	position: sticky;
+	height: auto;
+	width: 100%;
+	z-index: 100;
+	top: 0px;
+	background: white;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav.menu-header {
+	height: 40px;
+	justify-content: space-between;
+}
+
+.menu-header .menu-responsive {
+	visibility: hidden;
+}
+
+/*
+	.lang-selection,
+	nav.menu-header {
+		background-color: #2b2b2b;
+	}
+
+	.lang-selection {
+		border-bottom: 1px solid #2b2b2b;
+	}
+
+	nav .color-letter,
+	nav .color-letter:hover,
+	.lang-selection .color-letter,
+	.lang-selection .color-letter:hover,
+	.user-account-login,
+	.btn_login_desktop {
+		color: #ffffff;
+	}
+*/
+/* fin cambio color */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+footer {
+	font-family:  sans-serif;
 }
 
 p {
@@ -82,7 +171,7 @@ p {
 }
 
 .paragraph-96ch {
-	width: 96ch;
+	max-width: 96ch;
 }
 
 .margin-auto {
@@ -93,22 +182,12 @@ p {
 	background-color: black;
 }
 
-.lang-selection,
-nav.menu-header {
-	background-color: #2b2b2b;
-}
 
-.lang-selection {
-	border-bottom: 1px solid #2b2b2b;
-}
 
-nav .color-letter,
-nav .color-letter:hover,
-.lang-selection .color-letter,
-.lang-selection .color-letter:hover,
-.user-account-login,
-.btn_login_desktop {
-	color: #ffffff;
+
+
+.item_lot{
+	min-height: 450px;
 }
 
 
@@ -118,12 +197,62 @@ nav .color-letter:hover,
 }
 
 .my-account {
-	color: #fff;
+	color: #921f30;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 2rem;
+	position: relative;
 }
 
-.mega-menu a.color-letter {
-	color: #46494f;
+.my-account .logo-company {
+	filter: hue-rotate(138deg) saturate(65) brightness(0.45);
 }
+
+.mega-menu.menu-especial {
+	position: absolute;
+	z-index: 100000000;
+	background: #EEEEEE;
+	width: 199px;
+	border-top: var(--secondary-color) 2px solid;
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, .1);
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, .1);
+	display: none;
+	top: 100%;
+	right: 10px;
+	left: initial;
+}
+
+.mega-menu.menu-especial .item {
+	padding: 10px;
+	margin: 0;
+	border-bottom: var(--secondary-color) 1px solid;
+	color: #FFF;
+	text-decoration: none;
+	list-style: none;
+
+}
+
+.mega-menu.menu-especial a {
+	text-decoration: none;
+	display: block;
+	text-transform: capitalize !important;
+	color: #921f30;
+	border-top: 0;
+	padding: 0;
+}
+
+.mega-menu.menu-especial a:hover {
+	background: none;
+	text-decoration: none;
+	color: var(--secondary-color);
+}
+
+/* .mega-menu a.color-letter {
+	color: #46494f;
+} */
+
 
 .clock-text {
 	text-align: center;
@@ -159,7 +288,7 @@ nav .color-letter:hover,
 /* HOME */
 
 .bg-primary-color {
-	background-color: var(--primary-color);
+	background-color: #eaeaea;
 }
 
 .title-color-yellow {
@@ -227,7 +356,7 @@ nav .color-letter:hover,
 }
 
 .featured-log-bnr h3 {
-	color: #BBB;
+	color: #444;
 }
 
 .featured-log-bnr .item_imagen {
@@ -328,6 +457,32 @@ nav .color-letter:hover,
 	background-color: var(--btn-background-blue-hover);
 }
 
+.btn-segre {
+	width: 100%;
+	padding: 3px 0px;
+	transition: all 0.2s ease-in-out;
+	color: white;
+	background-color: var(--btn-background-segre);
+	letter-spacing: 2px;
+	border-radius: 10px;
+}
+
+.btn-segre:hover {
+	color: white;
+	background-color: var(--btn-background-segre-hover);
+
+}
+
+.comprar-info{
+border: 1px solid #921f30;
+background-color: #f4f1f1;
+border-radius: 25px;
+padding: 0px 10px 15px 10px;
+margin-top: 40px;
+text-align: center;
+}
+
+
 .static-page-link {
 	color: var(--link-static-page-color);
 	text-decoration: none;
@@ -377,7 +532,7 @@ nav .color-letter:hover,
 }
 
 .cataog-newsletter-text-container {
-	background-color: var(--newsletter-background);;
+	background-color: var(--newsletter-background);
 }
 
 .cataog-newsletter-text-container .title-catalog {
@@ -391,7 +546,9 @@ nav .color-letter:hover,
 }
 
 /* FIN NEWSLETTER (CATÁLOGOS) */
-
+.home-superior{
+	margin-top:20px;
+}
 /* VENDER SEGRE BANNER */
 
 .sell-segre-banner-container .column_banner {
@@ -461,8 +618,7 @@ nav .color-letter:hover,
 /* FOOTER */
 
 footer {
-	padding-left: 20px;
-	padding-right: 20px;
+	padding: 30px;
 }
 
 .footer-title {
@@ -586,3 +742,8 @@ footer {
 .success_registered .titlePage {
 	color: black;
 }
+
+.lot-remates-destacados {
+	min-height: 520px;
+}
+

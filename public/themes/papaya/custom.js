@@ -1,6 +1,4 @@
 
-
-
 function verifyLang(actualLang){
 
     //comprobamos si el idoma actual de label a cambiado
@@ -29,15 +27,33 @@ function verifyLang(actualLang){
 }
 
 function reloadDate(){
-
 	$('#this-moment').text(new Date().toLocaleDateString('es-ES', {timeZoneName:"short",weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric', second: 'numeric'}));
+}
 
+function openMultipleBiddersModal() {
+
+	//clean modal
+	document.querySelectorAll('#biddersForm > div:not(:first-child)').forEach(element => element.remove());
+
+	//add this puja
+	const bidImport = $('#bid_amount_firm').val();
+	$importInput = document.getElementById('multipleBidders').querySelector('[name="import"]');
+	$importInput.value = bidImport;
+	$importInput.setAttribute('max', bidImport);
+
+	//open modal
+	$.magnificPopup.open({items: {src: '#multipleBidders'}, type: 'inline'}, 0)
 }
 
 
-$(document).ready(function () {
+$(function () {
 
 	setInterval(reloadDate, 1000);
+
+	$('#multipleBiddersLink').on('click', (event) => {
+		$.magnificPopup.close();
+		setTimeout(openMultipleBiddersModal, 200);
+	});
 
     $('.panel-collapse').on('show.bs.collapse', function () {
         var id = $(this).attr('id')

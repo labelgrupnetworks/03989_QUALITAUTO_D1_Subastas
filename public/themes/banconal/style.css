@@ -1,0 +1,103 @@
+:root {
+
+    --primary-color: #414145;
+    --secondary-color: #BF9814;
+    --complement-color: #414145;
+    --extra-color: #00205b ;
+    --primary-color-text: #707070;
+	--secondary-color-text: #46494f;
+
+	--btn-primary-background:  #4192d9 ;;
+	--btn-primary-background-hover: #006eb8;
+	--btn-primary-text: white;
+	--btn-primary-text-hover: white;
+
+	--btn-secondary-background: white;
+	--btn-secondary-background-hover: #414145;
+	--btn-secondary-text: #46494f;
+	--btn-secondary-text-hover: white;
+
+	--newsletter-background: #D2E2F2;
+	--newsletter-text: #414145;
+	--newsletter-placeholder: #414145;
+	--newsletter-input-border: #414145;
+	--newsletter-input-text: #414145;
+
+	--footer-background: white;
+	--footer-titles-color: #707070;
+	--footer-links-color: #707070;
+	--footer-links-color-hover: #b4b4b4;
+
+	--footer-sociallinks-background: white;
+	--footer-sociallinks-textcolor: #707070;
+
+	--filter-background: #414145;
+}
+a:focus, a:hover {
+
+}
+
+.btn_login_desktop {
+color:#FFF;
+font-weight: bold;
+}
+.btn_login_desktop:hover {
+	color:#EEE;
+	font-weight: bold;
+}
+
+.menu-header{
+ /* background: linear-gradient(to bottom, #006ca7 0%,#00498e 50%,#013a81 87%,#0058b2 88%,#014598 100%);*/
+ background: linear-gradient( 0deg, rgba(24, 44, 105, 1) 0%, rgba(9, 9, 121, 1) 52%, rgba(38, 92, 134, 1) 100% );
+}
+
+.content-right-ficha{
+	margin-top:0px;
+	border: 2px solid #d7effa;
+	border-radius: 15px;
+	min-height: 100%;
+}
+
+
+
+
+.desc-lot-profile-content ul{
+	margin-left: 15px;
+}
+
+.ficha-content .pre .pre-price {
+	font-size: 18px;
+	font-weight: bold;
+  }
+
+.menu-footer ul{
+	margin-top: 30px;
+}
+
+footer {
+	padding:0px;
+	/* background: linear-gradient(to bottom, #006ca7 0%,#00498e 50%,#013a81 87%,#0058b2 88%,#014598 100%); */
+	background: linear-gradient( 0deg, rgba(24, 44, 105, 1) 0%, rgba(9, 9, 121, 1) 52%, rgba(38, 92, 134, 1) 100% );
+	margin-top: 80px;
+
+}
+.footer-link, .footer-title, footer a {
+	color: #f3eded;
+	font-weight: bold;
+}
+
+.description-ficha{
+	background: #E5E5E5;
+	padding-left: 10px;
+	border: 6px solid #E5E5E5;
+	border-radius: 15px;
+}
+
+.importePuja{
+	font-size: 25px;
+	color:#00205b;
+}
+
+.hist_item, .tres_item {
+	font-size: 12px;
+  }

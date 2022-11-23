@@ -449,7 +449,7 @@ font-size:30px;
 
 
 .column_banner .mini-button{
-	float: right;
+	/*float: right;*/
 	background-color: #fff;
 	color: #7d9396;
 	text-decoration: none;
@@ -980,7 +980,7 @@ z-index: 10;
 	border: 2px solid white;
 	letter-spacing: 2px;
 	font-size: 20px;
-	
+
   }
 
   .buttonVideo a:hover {

@@ -1258,3 +1258,43 @@ function reload_carrito() {
 function showAlertComisionMessage() {
 	$.magnificPopup.open({items: {src: '#modalAlertComision'}, type: 'inline'}, 0);
 }
+
+window.comprarLoteFicha = function comprarLoteFicha(){
+
+	$.ajax({
+        type: "POST",
+        url:  routing.comprar + '-' + cod_sub,
+        data: { cod_sub: cod_sub, ref: ref},
+        success: comprarLoteResponse,
+		error: () => {
+			const data = {
+				status: 'error',
+				msg_1: messages.error.code_500,
+			};
+			comprarLoteResponse(data);
+		}
+    });
+}
+
+function comprarLoteResponse(response) {
+
+	const isSuccess = response.status == 'success';
+
+	document.getElementById('js-payLot').classList.toggle('hidden', !isSuccess);
+	document.querySelector('.lot-action_comprar_lot').classList.toggle('hidden', isSuccess);
+
+	const responseMessage = isSuccess ? response.msg : response.msg_1;
+	$("#modalMensajeBuy #insert_msg").html(responseMessage);
+
+	$.magnificPopup.open({
+		items: { src: '#modalMensajeBuy' },
+		type: 'inline',
+		callbacks: {
+			close: function() {
+				if(isSuccess){
+					document.location.reload();
+				}
+			}
+		}
+	});
+}
