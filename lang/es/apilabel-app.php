@@ -60,6 +60,7 @@ return
 		"exist_bids" => "The bidder cannot be eliminated because they have bids or orders",
 		'no_array' => "Error in the field :field, must be an array",
 		'array_no_numeric' => "Error in the field :field, the elements of array it must be numerical ",
+		'unique_constraint_violated' => "Unique constraint has been violated ",
     ),
 
 

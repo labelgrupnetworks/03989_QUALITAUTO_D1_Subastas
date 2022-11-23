@@ -8,6 +8,7 @@ return [
 		'ancho_hces1' => 'Superficie m2',
 		'width' => 'Superficie m2',
 		'numberobjects' => 'Nº de Piezas',
+		'nobj_hces1' => 'Nº de Piezas',
 		'email_clid' => 'Email 2'
 	),
 	'help_fields' => array(

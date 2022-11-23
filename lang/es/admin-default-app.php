@@ -703,6 +703,7 @@ return [
 		'emailshipping' => 'Email',
 		'email_clid' => 'Email dir. envío',
 		'surface_euro' => 'Importe venta m2',
+		'pieces_euro' => 'Importe venta por numero de piezas',
 		'pagado' => 'Pagado',
 		'afral_csub' => 'Pagado',
 		'referencia' => 'Referencia',

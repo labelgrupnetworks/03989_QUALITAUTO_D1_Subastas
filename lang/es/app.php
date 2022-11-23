@@ -103,6 +103,7 @@ $lang = [
 		'api_not_lot' => 'El lote no existe',
 		'api_not_auction' => 'La subasta no existe',
 		'api_not_award' => 'Este lote no tiene adjudicaciones',
+		'multiple_bidder' => '<p style="margin:0">:name propietario del :ratio % por un valor de :value</p>'
 	),
 	'faq' =>
 	array(
@@ -349,6 +350,7 @@ $lang = [
 		'add_to_fav' => 'Añadir a favoritos',
 		'bid_live' => 'Pujar en vivo',
 		'bidder' => 'Pujador',
+		'bidders' => 'Pujadores',
 		'bidding' => 'pujas ',
 		'bidding_for' => 'Está pujando por',
 		'categories' => 'Categorías',
@@ -420,7 +422,9 @@ $lang = [
 		'free' => 'Libre',
 		'auction_date' => 'Fecha de la subasta',
 		'quick_bid' => 'Puja rápida',
-		'bid_on' => 'Pujar por'
+		'bid_on' => 'Pujar por',
+		'add_bidders' => 'Añadir pujadores',
+		'bid_participants' => 'Participantes en la puja'
 	),
 	'lot_list' =>
 	array(
@@ -575,7 +579,7 @@ $lang = [
 		'same_bidder' => 'La puja máxima ya le pertenece.',
 		'session_end' => 'Su sesión ha finalizado, por favor vuelva a iniciarla',
 		'small_bid' => 'Su puja es inferior a la actual.',
-		'small_bid_inf' => 'Ya tiene una puja superor al valor introducido',
+		'small_bid_inf' => 'Ya tiene una puja superior al valor introducido',
 		'small_order' => 'En lotes de subastas presenciales, la orden no puede ser inferior al precio de salida',
 		'small_order_zero' => 'En lotes de Precio libre, la puja no puede ser inferior a :escalado €',
 		'user_panel_inf_actualizada' => 'Error al actualizar información',
@@ -601,6 +605,7 @@ $lang = [
 		'title_500' => 'Error inesperado.',
 		'message_500' => 'Se ha producido un error y no se ha podido completar la solicitud. Inténtelo de nuevo.',
 		'asign_to_ministery' => 'El lote anterior ha sido adjudicado al ministerio',
+		'bidders_ratio' => 'La suma de los ratios debe sumar 100%'
 	),
 	'msg_neutral' =>
 	array(
@@ -927,7 +932,8 @@ $lang = [
 		'wallet_direction' => 'Dirección pública de wallet',
 		'wallet_new' => 'Crear wallet nueva',
 		'bids_numbers' => 'Nº de pujas',
-		'title_pending_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
+		'title_pending_transfer_pays_NFT' => "Hay pagos de transferencia de NFT pendientes",
+		'title_pending_mint_pays_NFT' => "Hay pagos de Minteo de NFT pendientes",
 		'error_pay_transfer_nft' => "Ha habido un problema generando el pago de la transferencia, por favor intentelo más tarde",
 		'family' => 'Familia',
 		'subfamily' => 'Subfamilia',
@@ -968,6 +974,7 @@ $lang = [
 		'our_experts' => 'Nuestros expertos'
 	),
 	'reports' => array(
+		'certificate_report' => 'Certificado',
 		'bid_report' => 'Informe Pujas',
 		'bid_detail' => 'Detalle de pujas',
 		'client_report' => 'Informe Cliente',

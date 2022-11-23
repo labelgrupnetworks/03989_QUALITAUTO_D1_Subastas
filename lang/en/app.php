@@ -88,6 +88,7 @@ $lang =[
 			'api_not_lot' => 'Lot doesn\'t exist',
 			'api_not_auction' => 'Auction doesn\'t exist',
 			'api_not_award' => 'This lot hasn\'t awards',
+			'multiple_bidder' => '<p style="margin:0">:name owner of :ratio % for a value of :value</p>'
 		),
 	'faq' =>
 		array (
@@ -331,6 +332,7 @@ $lang =[
 			'add_to_fav' => 'Add to Favorites',
 			'bid_live' => 'Live bidding',
 			'bidder' => 'Bidder',
+			'bidders' => 'Bidders',
 			'bidding' => 'Bids',
 			'bidding_for' => 'You are bidding for',
 			'categories' => 'Categories',
@@ -401,7 +403,9 @@ $lang =[
 			'free' => 'free',
 			'auction_date' => 'Auction date',
 			'quick_bid' => 'Quick bid',
-			'bid_on' => 'Bid on'
+			'bid_on' => 'Bid on',
+			'add_bidders' => 'Add bidders',
+			'bid_participants' => 'Participants in the bid'
 		),
 	'lot_list' =>
 		array (
@@ -566,7 +570,14 @@ $lang =[
 			'lotReserved' => 'The lot is not available, currently it is in another user cart',
 			'lotsLost' => 'Some lots already are not available',
 			'notVarianteArticle' => 'Select all the product characteristics',
-
+			'code_404' => '404 - Page not found',
+			'title_404' => 'Page not found.',
+			'message_404' => 'The page you are trying to access could not be found. The content may no longer be available or the address may not exist.',
+			'code_500' => '500 - Unexpected error',
+			'title_500' => 'Unexpected error.',
+			'message_500' => 'An error has occurred and the request could not be completed. Try again.',
+			'asign_to_ministery' => 'The previous lot has been awarded to the Ministry.',
+			'bidders_ratio' => 'The sum of the ratios must add up to 100%.'
 		),
 	'msg_neutral' =>
 		array (
