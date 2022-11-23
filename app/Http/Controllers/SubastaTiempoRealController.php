@@ -1324,9 +1324,11 @@ class subastaTiempoRealController extends Controller
 
         }
 
-        $aux_user = DB::table("FXCLI")->addSelect("ries_cli,blockpuj_cli")->where("GEMP_CLI",\Config::get("app.gemp"))->where("COD_CLI",$cod_user)->first();
-
-		if ( $aux_user->blockpuj_cli == "S") {
+        $aux_user = DB::table("FXCLI")->addSelect("ries_cli,blockpuj_cli")->where("GEMP_CLI",\Config::get("app.gemp"))->where("COD_CLI",$cod_user)->where("BAJA_TMP_CLI","N")->first();
+		if(empty($aux_user)){
+			$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.activacion_casa_subastas'), NULL, False);
+			return $res;
+		}elseif (   $aux_user->blockpuj_cli == "S") {
 			$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.usuario_pendiente_revision'), NULL, False);
 			return $res;
 		}
@@ -1455,7 +1457,16 @@ class subastaTiempoRealController extends Controller
 
 				$orderController = new $rutaOrdercontroller();
 
-				$orderController->createOrder($cod_user, $cod_sub, $ref, $imp);
+				$resOrden = $orderController->createOrder($cod_user, $cod_sub, $ref, $imp);
+				#si el webservice puede rechazar la orden, y la orden ha sido rechazada
+				if(Config::get('app.WebServiceRejectOrder') && !$resOrden){
+					$res = array(
+						'status' => 'error',
+						'msg_1' => trans(\Config::get('app.theme').'-app.msg_error.inserting_bid_order') ,
+						'cod_licit_actual' => $subasta->licit
+					);
+					return $res;
+				}
 			}
 
             //cogemos los datos de nuevo para saber si tiene precio abierto, es necesario coger los datos con la nueva orden
@@ -3470,7 +3481,7 @@ class subastaTiempoRealController extends Controller
 		->first();
 
 		if(!$actualWinner){
-			return 'error';
+			return 'error-notbid';
 		}
 
 		$minsteryBid = $actualWinner->replicate()->fill([

@@ -290,7 +290,7 @@ class LotController extends ApiLabelController
 				# si no hay subasta devolvemos error de que es requerida / antes solo se revisaba quefaltara en el primer elemento, 07-06-22
 				if(empty($item["idauction"])) {
 					$messageBag = new MessageBag();
-					$messageBag->add("idauction", array(trans('apilabel-app.validation.required')));
+					$messageBag->add("idauction", trans('apilabel-app.validation.required',["attribute" => "idauction"]));
 					$errorsItem["item_".($key +1)] =$messageBag;
 					throw new ApiLabelException(trans('apilabel-app.errors.validation'), $errorsItem);
 				}

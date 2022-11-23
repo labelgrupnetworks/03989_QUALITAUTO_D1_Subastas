@@ -136,6 +136,39 @@ class FgAsigl1 extends Model
 		];
 	}
 
+
+	static function depositBid($licit,$codSub,$ref,$impBid,$date){
+
+
+
+
+		#buscar pujas del lote, ordenadas de mayor a menor, para que al ampliar el num no esté repetido
+		$bids = self::where("SUB_ASIGL1", $codSub)->where("REF_ASIGL1",$ref)->orderby("IMP_ASIGL1","DESC")->orderby("LIN_ASIGL1","DESC")->get();
+
+		$moveBids=[];
+		$linAsigl1 = 1;
+		foreach($bids as $bid ){
+			if($bid->imp_asigl1 >= $impBid){
+
+				self::where("SUB_ASIGL1", $codSub)->where("REF_ASIGL1", $ref)->where("LIN_ASIGL1", $bid->lin_asigl1)->update(["LIN_ASIGL1" => ($bid->lin_asigl1 + 1)]);
+			}else{
+				$linAsigl1= $bid->lin_asigl1 +1;
+				break;
+			}
+		}
+
+		self::create( [ "SUB_ASIGL1" => $codSub,
+							"REF_ASIGL1" =>$ref,
+							"LIN_ASIGL1" =>$linAsigl1,
+							"LICIT_ASIGL1" =>$licit,
+							"IMP_ASIGL1" =>$impBid,
+							"FEC_ASIGL1" =>$date,
+							"HORA_ASIGL1" =>date("H:i:s", strtotime($date)),
+							"PUJREP_ASIGL1" => "E"
+						]);
+		#ver la posición de la puja, modificar la posición de las pujas que mueve
+	}
+
 	public function scopelog($query){
         return $query->joinUsr()->LeftJoinCli()->select("FXCLI.NOM_CLI, FXCLI.CIF_CLI,FSUSR.NOM_USR, FGASIGL1.*");
 	}

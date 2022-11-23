@@ -7,12 +7,7 @@ use App\Http\Controllers\apilabel\ApiLabelController;
 use App\Http\Controllers\webservice\LogChangesController;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
-#para APP
-use App\Models\User;
-use App\Models\V5\FxCliWeb;
-use App\Http\Controllers\UserController;
 
-#fin controllers para APP
 use Controller;
 use Config;
 use Request;
@@ -26,24 +21,32 @@ use Illuminate\Database\QueryException;
 
 class WebServiceController extends ApiLabelController
 {
-private $parameters = array();
-# Las funciones se crearan con nomenclatura camelCase, Nunca usar separador _ ya que se usará  para agrupar funciones a permisos
-# y una vez lleguemos al controlador se eliminará la parte derecha de _
+	public  $parameters = array();
+# Las funciones se crearan con nomenclatura camelCase, Nunca usar separador _  ya que se usará  para agrupar funciones a permisos
+# por ejemplo nombreFuncion_APP podrá acceder cualquiera que tenga permisos de APP
 
-	public function index($functionTmp){
+	public function index($function){
 
 		try{
-			$this->parameters = request("request");
-			$functionExplode = explode("_", $functionTmp);
+
+
+
+			$functionExplode = explode("_", $function);
 			if(!empty($functionExplode[1])){
-				#si es compuesto cogemos la funcion, está en la parte izquierda del separador _
-				$function = $functionExplode[0];
+				#la función está agrupada, iremos a su controlador y la ejecutaremos
+				$rutaController = "App\Http\Controllers\webservice\WebService".$functionExplode[1]."Controller";
+				$controller = new $rutaController();
+				$controller->parameters = request("request");
+				return $controller->{$functionExplode[0]}();
+
+
 			}else{
-				#si no es compuesto cogemos la funcion que pasan
-				$function =$functionTmp;
+				#ejecutamos la función en este controlador
+				$this->parameters = request("request");
+				return $this->{$function}();
 			}
 
-			return $this->{$function}();
+
 		}catch(\Exception $e){
 			return $this->exceptionApi($e);
 		}
@@ -80,76 +83,6 @@ private $parameters = array();
 			return $this->exceptionApi($e);
 		}
 	}
-
-	#FUNCIONES APP
-		#REGISTRO
-		public function checkInUseNif(){
-
-
-
-			$user = new User();
-			$user->nif = mb_strtoupper(trim($this->parameters['nif']));
-			$exist = $user->getUserByNif("N");
-
-
-			if(empty($exist)){
-
-				return $this->responseSuccsess();
-			}else{
-				#COMPROBAMOS SI TIENE USUARIO WEB, SI YA TIENE USUARIO WEB NO DEBE PODER CONTINUAR
-				$cliWeb = FxCliWeb::select("cod_cliweb")->where('cod_cliweb', $exist[0]->cod_cli)->first();
-				if(empty($cliWeb)){
-					return $this->responseSuccsess();
-				}else{
-					return $this->responseError("NIF in use");
-				}
-
-
-			}
-		}
-
-		public function checkInUseEmail(){
-
-
-			$user = new User();
-			$email = mb_strtoupper(trim($this->parameters['email']));
-			$exist = $user->EmailExist($email,Config::get('app.emp'),Config::get('app.gemp'));
-
-			if(empty($exist)){
-				return $this->responseSuccsess();
-			}else{
-				return $this->responseError("Email in use");
-			}
-		}
-
-		public function addressFields(){
-			try{
-				$lang = $this->parameters['lang'];
-				$data = file_get_contents("app_movile/register/address.fields_".$lang.".json");
-				$addressFields = json_decode($data, true);
-				#si hiciera falta añadir campo para un cliente lo hacemos sobre el objeto addressFields
-				return $this->responseSuccsess("Address fields for $lang", $addressFields);
-			}catch(\Exception $e){
-				return $this->exceptionApi($e);
-			}
-		}
-
-		public function personalInfoFields(){
-			try{
-				$lang = $this->parameters['lang'];
-				$data = file_get_contents("app_movile/register/personal_info.fields_".$lang.".json");
-				$personalInfoFields = json_decode($data, true);
-				#si hiciera falta añadir campo para un cliente lo hacemos sobre el objeto personalInfoFields
-				return $this->responseSuccsess("Address fields for $lang", $personalInfoFields);
-			}catch(\Exception $e){
-				return $this->exceptionApi($e);
-			}
-		}
-		#FIN REGISTRO
-
-
-
-	#FIN FUNCIONES APP
 
 
 }

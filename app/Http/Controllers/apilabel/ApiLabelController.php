@@ -316,7 +316,7 @@ class ApiLabelController extends BaseController
         #vemos si es posible detectar el numero del registro, como el indice empieza en 0 sumamos 1
         $pos="";
         if(!is_null($this->index) && is_numeric($this->index)){
-            $pos =" _". ($this->index +1);
+            $pos ="_". ($this->index +1);
         }
 
         if($e instanceof QueryException){

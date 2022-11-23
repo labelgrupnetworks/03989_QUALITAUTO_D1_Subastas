@@ -105,7 +105,9 @@ class RoutingServiceProvider extends ServiceProvider
 
 
     }
+
     //si lang se usa como atributo hay que ponerlo entre llaves
+	#sirve solo para lectura, para generar la url es translateSeo
     public static function slugSeo($key,$lang_is_attr = false){
         $language = \Request::segment(1);
         $segment = \Request::segment(2);

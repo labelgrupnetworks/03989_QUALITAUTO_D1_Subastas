@@ -8,6 +8,7 @@ use App\Http\Controllers\externalws\vottun\VottunController;
 use SimpleXMLElement;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgNft;
 use App\Models\Payments;
 use App\Models\V5\WebPayCart;
 use App\Models\V5\FxPcob;
@@ -28,6 +29,7 @@ class PaidController extends DuranNftController
 
 					$tipo = substr($merchantID,0,1) ;
 					if($tipo == "M"){
+
 						#SE LLAMARA A LA FUNCION QUE TOQUE PARA INDICAR QUE SE HA PAGADO EL MINTADO O LA TRANSFERENCIA
 						$res = $this->callWebService($xml,"wbFinalizarPagoNft");
 					}else{
@@ -75,22 +77,42 @@ class PaidController extends DuranNftController
 				return ;
 			}
 			$info = json_decode($transaccion->info_paycart);
+			$xml = new SimpleXMLElement("<root></root>");
+
+			#de momento no hay campo
+
+			$xml->addChild("idpago", $merchantID );
+			$xml->addChild("formapago", $info->paymethod );
+			$xml->addChild("fechapagado", date("Y-m-d H:i:s") );
+			$xml->addChild("importe", $info->total);
+			$transacciones = $xml->addChild('transacciones');
+
+
 
 			if($info->reason == "mint"){
-				#los datos del lote estan en  $info->num $info->lin
-
-				#HACER LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE SE HA PAGADO UN MINTEO
+				foreach($info->lots as $keyLot => $lot) {
+					$mint=FgNft::select("MINT_ID_NFT, NETWORK_NFT")->where("NUMHCES_NFT",$lot->num)->where("LINHCES_NFT",$lot->lin)->first();
+					if(!empty($mint)){
+						$transacciones->addChild('idtransaccion', $mint->network_nft ."-". $mint->mint_id_nft);
+					}else{
+						\Log::info("no se ha encontrado ningun minteo relacionado con el pago $merchantID");
+					}
+				}
 
 			}elseif($info->reason == "transfer"){
 				foreach($info->lots as $keyLot => $lot) {
-					# los datosd de los lotes estan en $lot->num y $lot->lin
+					$transfer = FgNft::select("TRANSFER_ID_NFT, NETWORK_NFT")->where("NUMHCES_NFT",$lot->num)->where("LINHCES_NFT",$lot->lin)->first();
+					if(!empty($transfer)){
+						$transacciones->addChild('idtransaccion',$transfer->network_nft ."-". $transfer->transfer_id_nft);
+					}else{
+						\Log::info("no se ha encontrado ninguna transferencia relacionada con el pago $merchantID");
+					}
 
 				}
-				#HACER LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE SE HA  HECHO UNA O VARIAS TRANSFERENCIAS DE NFT
 
 			}
 			#para que no siga
-			return;
+			return $xml;
 		}
 
 		#si es una factura
@@ -231,7 +253,7 @@ class PaidController extends DuranNftController
 		$vottuncontroller = new VottunController();
 		foreach($lots as $lot){
 			#SE DEBEN TRANSFERIR LAS OBRAS AL USUARIO
-
+			$vottuncontroller->transferNFT($lot->num_hces1, $lot->lin_hces1);
 			#no hay que tener en cuenta el iva de la comisión,
 			$caracteristicas = FgCaracteristicas_Hces1::getByLot( $lot->num_hces1, $lot->lin_hces1);
 			if($lot->tipo_sub == 'O'){
@@ -260,8 +282,8 @@ class PaidController extends DuranNftController
 		  # $lote["codigoArticulo"] = !empty($caracteristicas[1])? $caracteristicas[1]->value_caracteristicas_hces1 : ""; # codigo en duran   ;
 		   $lote["titulo"] = $lot->descweb_hces1 ;
 		   $lote["descripcion"] = $lot->desc_hces1 ;
-			#usamos subasta y rferencia como identificador ya que estan usando lotes con stock [OJO MIRAR IMPLICACIÓN DE QUE VARIOS LOTES TENGAN LA MISMA NUM Y LIN]
-		   $lote["referencia"] = $lot->sub_asigl0 ."-". $lot->ref_asigl0 ;
+			#usamos Num y lin ya que los lotes pueden variar de subasta, por lo que se han podido mintear en otra subasta y se envia el identificador del lote al mintear
+		   $lote["referencia"] = $lot->num_hces1 ."-".  $lot->lin_hces1 ;
 
 
 		   $lote["importesiniva"] =  $importesiniva;

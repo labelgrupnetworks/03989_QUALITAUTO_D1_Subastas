@@ -363,6 +363,7 @@ class AdminAwardController extends Controller
 
 		if(config('app.surface_euro', false)){
 			$headers['surface_euro'] = trans("admin-app.fields.surface_euro");
+			$headers['pieces_euro'] = trans("admin-app.fields.pieces_euro");
 		}
 
 		foreach ($adjudicacionesFormat as $idAward => $adjudicacion) {
@@ -377,6 +378,14 @@ class AdminAwardController extends Controller
 				}
 				else {
 					$awardsToExcel[$idAward]['surface_euro'] = ToolsServiceProvider::moneyFormat($adjudicacion->get('himp_csub') / $adjudicacion->get('ancho_hces1'), false, 2);
+				}
+
+				//@todo: precio x num objetos. Solo para stn. extraer a otro config o buscar otra manera de mostrar estos datos.
+				if(!$adjudicacion->get('nobj_hces1')){
+					$awardsToExcel[$idAward]['pieces_euro'] = 0;
+				}
+				else {
+					$awardsToExcel[$idAward]['pieces_euro'] = ToolsServiceProvider::moneyFormat($adjudicacion->get('himp_csub') / $adjudicacion->get('nobj_hces1'), false, 2);
 				}
 			}
 

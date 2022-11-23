@@ -331,12 +331,13 @@ class LotListController extends Controller
 			$bladeVars["sub_historica"] = $item->subc_sub == 'H'? true : false;
 			$bladeVars["remate"] = $item->remate_asigl0 == 'S'? true : false;
 			$bladeVars["awarded"]	 = \Config::get('app.awarded');
+			$bladeVars["inicio_pujas_online"] = strtotime("now") > strtotime($item->fini_asigl0) ? true : false;
 			// D = factura devuelta, R = factura pedniente de devolver
 			$bladeVars["devuelto"] = ($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R' || $item->cerrado_asigl0 == 'D') ? true : false;
 			$bladeVars["precio_venta"] = \Tools::moneyFormat($item->implic_hces1);
 			$bladeVars["desadjudicado"] = $item->desadju_asigl0 == 'S'? true : false;
 
-			$bladeVars["webfriend"] = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  \Str::slug($item->descweb_hces1);
+			$bladeVars["webfriend"] = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  \Str::slug(strip_tags($item->descweb_hces1));
 			$bladeVars["precio_salida"] = \Tools::moneyFormat(!empty($item->impsalweb_asigl0) ? $item->impsalweb_asigl0 : $item->impsalhces_asigl0);
 			#debe haber la variable number_bids_lotlist a 1 en webconfig para que devuelva el numero de pujas y de licitadores
 			$bladeVars["bids"] = !empty($item->bids)? $item->bids : 0;
@@ -475,16 +476,15 @@ class LotListController extends Controller
 			$urlAllCategories =  route("allCategories");
 				$bread[] = array("url" =>$urlAllCategories, "name" => trans(\Config::get('app.theme').'-app.lot_list.all_categories') );
 			if(!empty($infoOrtsec)){
-				$key_ortsec0 = $infoOrtsec->key_ortsec0 ?? '';
-				$urlCategory =  route("category", ["keycategory" => $key_ortsec0 ]);
+				$urlCategory =  route("category",[ "keycategory" => $infoOrtsec->key_ortsec0 ]);
 				$bread[] = array("url" =>$urlCategory, "name" =>$infoOrtsec->des_ortsec0  );
 
 				if(!empty($infoSec)){
-					$urlSection =  route("section",[ "keycategory" => $key_ortsec0 , "keysection" => $infoSec->key_sec]);
+					$urlSection =  route("section",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec]);
 					$bread[] = array("url" =>$urlSection, "name" => ucfirst(mb_strtolower($infoSec->des_sec))  );
 				}
 				if(!empty($infoSubSec)){
-					$urlSubSection =  route("subsection",[ "keycategory" => $key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
+					$urlSubSection =  route("subsection",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
 
 					$bread[] = array("url" =>$urlSubSection, "name" => ucfirst(mb_strtolower($infoSubSec->des_subsec))  );
 				}

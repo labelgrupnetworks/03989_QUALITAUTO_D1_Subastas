@@ -12,11 +12,13 @@ use App\Models\V5\FgAsigl1;
 use App\libs\StrLib;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1_Aux;
+use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\FgCsub;
 use App\Models\V5\Web_Cancel_Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Subasta extends Model
 {
@@ -768,7 +770,7 @@ class Subasta extends Model
         $pujas = DB::select("SELECT * FROM (
             SELECT * FROM (
                   SELECT rownum rn, pu.* FROM (
-                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1,  concat(SUBSTR(pujas1.fec_asigl1,1,11),  pujas1.hora_asigl1) as bid_date, type_asigl1 FROM FGASIGL1 pujas1
+                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1,  concat(SUBSTR(pujas1.fec_asigl1,1,11),  pujas1.hora_asigl1) as bid_date, type_asigl1 FROM FGASIGL1 pujas1
                       JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
 
                       WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
@@ -791,7 +793,7 @@ class Subasta extends Model
 
 	function getPujasWithAuction($byLicit = null){
 
-		$fgasigl1 = FgAsigl1::select('ref_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'cod_licit', 'cli_licit', 'rsoc_licit', 'nom_cli')
+		$fgasigl1 = FgAsigl1::select('ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'cod_licit', 'cli_licit', 'rsoc_licit', 'nom_cli')
 							->joinCli()
 							->where('sub_asigl1', $this->cod);
 
@@ -1179,8 +1181,10 @@ class Subasta extends Model
         //No se puede modificar el ORDER BY
         $sql= "SELECT licitadores.cod_licit,ordenesLicitacion.tipop_orlic,ordenesLicitacion.himp_orlic,ordenesLicitacion.fec_orlic, licit_orlic, lots_conditional_orlic, num_conditional_orlic FROM FGORLIC ordenesLicitacion
                                 JOIN FGLICIT licitadores
+								JOIN FXCLI ON FXCLI.GEMP_CLI = :gemp AND  FXCLI.COD_CLI = licitadores.CLI_LICIT
                                 ON (licitadores.COD_LICIT = ordenesLicitacion.LICIT_ORLIC AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod)
                             WHERE
+								FXCLI.BAJA_TMP_CLI ='N' AND
                                 ordenesLicitacion.EMP_ORLIC = :emp
                                 ".$where."
                                 AND ordenesLicitacion.SUB_ORLIC = :cod
@@ -1189,7 +1193,7 @@ class Subasta extends Model
                                 AND ordenesLicitacion.HORA_ORLIC is not null
                                 ORDER BY ordenesLicitacion.HIMP_ORLIC DESC,
                                 TO_DATE(TO_CHAR(ordenesLicitacion.FEC_ORLIC, 'DD/MM/YY') || ' ' || ordenesLicitacion.HORA_ORLIC, 'DD/MM/YY HH24:MI:SS') ASC, LIN_ORLIC ASC";
-        $params = array('cod' => strtoupper($cod_sub), 'lote' => $this->ref, 'emp' => App('config')['app']['emp']);
+        $params = array('cod' => strtoupper($cod_sub), 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
 
         /*\Log::error("CONSULTA ORDENES-->".$sql.' :: cod'. strtoupper($cod_sub). ' lote' .intval($this->ref) );*/
         $ordenesTmp = DB::select($sql,$params);
@@ -2092,7 +2096,6 @@ class Subasta extends Model
                         return $res;
                     }
 
-
                     $expire = DB::select("SELECT FGASIGL0.FFIN_ASIGL0, FGASIGL0.HFIN_ASIGL0, FGASIGL0.FFIN_ORIGINAL_ASIGL0, FGASIGL0.HFIN_ORIGINAL_ASIGL0 FROM FGASIGL0
                                             JOIN FGSUB ON  FGSUB.EMP_SUB =  FGASIGL0.EMP_ASIGL0   AND   FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0
                                             WHERE
@@ -2150,17 +2153,11 @@ class Subasta extends Model
                                          )
                                      );
                                 }
-                             }
-
+                            }
                      }
-
-
-
-
-
-
                 }
 
+				DB::beginTransaction();
                 $sql_asigl1 = "INSERT INTO FGASIGL1
                             (EMP_ASIGL1, SUB_ASIGL1, REF_ASIGL1, LIN_ASIGL1, LICIT_ASIGL1, IMP_ASIGL1, FEC_ASIGL1, PUJREP_ASIGL1, TYPE_ASIGL1, HORA_ASIGL1)
                         VALUES
@@ -2200,6 +2197,17 @@ class Subasta extends Model
                  //copiar en subalia la puja, DE MOMENTO SOLO HABRÁ PUJAS Y ORDENES EN LA BASE DE DATOS DE LOS CLIENTES, POR LO QUE NO SE COPIA A SUBALIA
               //  $this->add_puja_subalia($type_asigl1, $sql_asigl1, $sql_hces1);
 
+			if(config('app.withMultipleBidders', false)){
+				$bid = FgAsigl1::query()->where([
+					['sub_asigl1', $this->cod],
+					['ref_asigl1', $this->ref],
+					['licit_asigl1', $this->licit],
+					['imp_asigl1', $this->imp],
+				])->first();
+				$this->addPujaMultiple($bid);
+			}
+			DB::commit();
+
 				#llamar a webservice externo notificando la puja
 				$this->webServiceBid($this->licit, $this->cod, $this->ref, $this->imp, $type_asigl1, "PUJA");
 
@@ -2220,7 +2228,8 @@ class Subasta extends Model
 
         } catch (\Exception $e) {
 
-            \Log::error(__FILE__.' ::'. $e);
+			DB::rollBack();
+            Log::error(__FILE__.' ::'. $e);
 
             $result = array(
                 'status' => 'error',
@@ -2229,6 +2238,39 @@ class Subasta extends Model
         }
 
         return $result;
+	}
+
+	private function addPujaMultiple($bid)
+	{
+		$hasMultipleBidders = request('params.bidders');
+		if(!$hasMultipleBidders){
+			return false;
+		}
+
+		$sumRatios = 0;
+		$biddersRequest = request('params.bidders');
+		$bidders = array_map(function($bidderRequest) use ($bid, &$sumRatios){
+
+			$sumRatios += $bidderRequest['ratio'];
+
+			return [
+				'emp_asigl1mt' => $bid->emp_asigl1,
+				'sub_asigl1mt' => $bid->sub_asigl1,
+				'ref_asigl1mt' => $bid->ref_asigl1,
+				'lin_asigl1mt' => $bid->lin_asigl1,
+				'ratio_asigl1mt' => $bidderRequest['ratio'],
+				'nom_asigl1mt' => $bidderRequest['name'],
+				'apellido_asigl1mt' => $bidderRequest['surname']
+			];
+		}, $biddersRequest);
+
+		if($sumRatios != 100) {
+			throw new \Exception("La suma de ratios debe ser igual a 100 %");
+		}
+
+		FgAsigl1Mt::insert($bidders);
+
+		return true;
 	}
 
 	/**
@@ -3121,6 +3163,11 @@ class Subasta extends Model
                 $lotes[$key]->sub_hces1  = $value->sub_hces1;
             }else{
                  $lotes[$key]->sub_hces1  = NULL;
+            }
+            if(!empty($value->fini_asigl0)){
+                $lotes[$key]->fini_asigl0  = $value->fini_asigl0;
+            }else{
+                 $lotes[$key]->fini_asigl0  = NULL;
             }
 
             if(!empty($value->orders_start)){

@@ -120,7 +120,7 @@ class ToolsServiceProvider extends ServiceProvider
 		return $str;
 	}
 
-	public static function moneyFormat($qtty, $currency = FALSE, $decimal = 0, $position = 'R')
+	public static function moneyFormat($qtty, $currency = FALSE, $decimal = 0, $position = 'R', $decimalSeparator=",", $thousandSeparator=".")
 	{
 
 		if (!is_numeric($qtty)) {
@@ -134,7 +134,7 @@ class ToolsServiceProvider extends ServiceProvider
                 }
                 */
 
-		$format = number_format($qtty, $decimal, ',', '.');
+		$format = number_format($qtty, $decimal, $decimalSeparator, $thousandSeparator);
 
 
 		if (!empty($currency)) {
@@ -706,9 +706,18 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_lot($cod_sub, $id_session, $des_sub, $ref, $num_hces, $friendly = "", $title = "")
 	{
-		$webfriend = !empty($friendly) ? $friendly :  Str::slug($title);
-		//se esta usando dos veces el id sessión pero se tendrá que cambiar en algun momento por el des_sub
-		return Config::get('app.url') . \Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
+		$webfriend = !empty($friendly) ? $friendly :  \Str::slug(strip_tags(trim($title)));
+
+		if(\Config::get("app.newUrlLot")){
+			//$url = Route("lote",["texto"=> $webfriend,"ref" => $ref, "cod" => $cod_sub]);
+			$url =\Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
+		}else{
+			$url=Config::get('app.url') .\Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
+		}
+
+		return $url;
+
+
 	}
 
 	public static function url_auction($cod_sub, $name, $id_session, $ref_session = '001')
@@ -716,23 +725,23 @@ class ToolsServiceProvider extends ServiceProvider
 		if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") == "new") {
 			return route("urlAuction", ["texto" => \Str::slug($name), "cod" => $cod_sub, "session" => $ref_session]);
 		} else {
-			return   Config::get('app.url') . \Routing::translateSeo('subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
+			return   Config::get('app.url') . \Routing::translateSeo('subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
 		}
 	}
 
 	public static function url_info_auction($cod_sub, $name)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('info-subasta') . $cod_sub . "-" . Str::slug($name);
+		return   Config::get('app.url') . \Routing::translateSeo('info-subasta') . $cod_sub . "-" . \Str::slug($name);
 	}
 
 	public static function url_indice_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('indice-subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . \Routing::translateSeo('indice-subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_real_time_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('api/subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . \Routing::translateSeo('api/subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_categorys($category)

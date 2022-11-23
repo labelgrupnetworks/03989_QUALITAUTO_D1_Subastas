@@ -20,8 +20,15 @@ class AdminNewsletterClientController extends Controller
 
 	public function index(Request $request)
 	{
+
+		$newslettersSelect = [];
+		if(config('app.newsletterFamilies')){
+			$newslettersSelect = collect(explode(',', config('app.newsletterFamilies', '')))->map(function($item){
+				return "nllist" . trim($item) . "_cliweb";
+			}) ;
+		}
+
 		$clients = FxCliWeb::select('COD_CLIWEB', 'COD2_CLIWEB', 'EMAIL_CLIWEB', 'NOM_CLIWEB', 'FECALTA_CLIWEB')
-			->where('NLLIST1_CLIWEB', 'S')
 			->when($request->cod_cliweb, function($query, $cod_cliweb){
 				return $query->where('cod_cliweb', $cod_cliweb);
 			})
@@ -44,20 +51,39 @@ class AdminNewsletterClientController extends Controller
 				}
 				return $query->where('cod_cliweb', 0);
 			})
+			->when(!empty($newslettersSelect), function($query) use ($newslettersSelect, $request){
+				$query->addSelect($newslettersSelect->implode(','));
+				foreach ($newslettersSelect as $value) {
+					$query->when($request->{$value}, function ($query, $nllist_cliweb) use($value) {
+						return $query->where($value, $nllist_cliweb);
+					})
+					->orWhere($value, 'S');
+				}
+			}, function($query){
+				return $query->where('NLLIST1_CLIWEB', 'S');
+			})
 			->orderBy($request->get('order', 'FECALTA_CLIWEB'), $request->get('order_dir', 'desc'))
 			->paginate(20);
 
+		$bool = ['S' => 'Si', 'N' => 'No'];
+		$newsletters = [];
+		$newsletterTableParam = [];
 
-		$filters = (object)[
+		foreach ($newslettersSelect as $value) {
+			$newsletters[$value] = FormLib::Select($value, 0, $request->{$value}, $bool, '', '', true);
+			$newsletterTableParam[$value] = 0;
+		}
+
+		$filters = (object)([
 			'cod_cliweb' => FormLib::text('cod_cliweb', 0, $request->cod_cliweb),
 			'cod2_cliweb' => FormLib::text("cod2_cliweb", 0, $request->cod2_cliweb),
 			'email_cliweb' => FormLib::text("email_cliweb", 0, $request->email_cliweb),
 			'nom_cliweb' => FormLib::text("nom_cliweb", 0, $request->nom_cliweb),
 			'fecalta_cliweb' => FormLib::Date('fecalta_cliweb', 0, $request->fecalta_cliweb),
-			'is_client_web' => FormLib::Select('is_client_web', 0, $request->is_client_web, ['S' => 'Si', 'N' => 'No']),
-		];
+			'is_client_web' => FormLib::Select('is_client_web', 0, $request->is_client_web, $bool),
+		] + $newsletters);
 
-		return view('admin::pages.usuario.newsletter.index', compact('clients', 'filters'));
+		return view('admin::pages.usuario.newsletter.index', compact('clients', 'filters','newsletterTableParam'));
 	}
 
 	public function destroy(Request $request, $email_cliweb)

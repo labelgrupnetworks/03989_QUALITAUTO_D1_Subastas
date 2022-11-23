@@ -273,7 +273,7 @@ class AdminLotController extends Controller
 		}
 
 		//Todos los lotes necesitan un idorigen para poder ser actualizados, así forzamos a que los tengan
-		if (!$fgAsigl0->idorigen_asigl0) {
+		if (!$fgAsigl0->idorigen_asigl0 || !$fgAsigl0->idorigen_hces1) {
 			$this->addIdOrigin($cod_sub, $fgAsigl0->ref_asigl0, $fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 		}
 

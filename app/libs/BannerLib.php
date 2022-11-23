@@ -110,9 +110,9 @@ class BannerLib
 		$bannerObject = DB::table("WEB_NEWBANNER_ITEM")->where("ID_WEB_NEWBANNER", $banner->id)->where('ACTIVO', 1)->where("LENGUAJE", strtoupper(Config::get("app.locale")))->orderBy("bloque")->orderBy("orden")->orderBy("WEB_NEWBANNER_ITEM.ID");
 
 		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
-		/* if ( env('APP_DEBUG') || \Config::get("app.clobToVarchar")) {
+		if (  \Config::get("app.clobToVarchar")) {
 			$bannerObject = $bannerObject->select("dbms_lob.substr(TEXTO, 4000, 1 ) texto, ORDEN, ACTIVO, ID, ID_WEB_NEWBANNER, VENTANA_NUEVA, BLOQUE, URL, LENGUAJE");
-		} */
+		}
 		$items = $bannerObject->get();
 		$tipo = DB::table("WEB_NEWBANNER_TIPO")->where("ID", $banner->id_web_newbanner_tipo)->first();
 		$bloques = explode(",", $tipo->bloques);

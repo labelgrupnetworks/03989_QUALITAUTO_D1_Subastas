@@ -91,7 +91,7 @@ class FgDvc1l extends Model
 
 
 		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
-		if ( env('APP_DEBUG') || \Config::get("app.clobToVarchar")) {
+		if ( (env('APP_DEBUG') || \Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"))) {
 			$query = $query->addSelect("dbms_lob.substr(NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1), 4000, 1 ) DESCWEB_HCES1")
 							->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1), 4000, 1 ) DESC_HCES1");
 		}else{

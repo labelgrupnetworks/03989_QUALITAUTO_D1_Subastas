@@ -14,6 +14,33 @@ use Illuminate\Support\Facades\DB as DB;
 
 class TradLib {
 
+	public static function getAppMobileTranslation($langs=["es"])
+	{
+		$theme = config('app.theme');
+		$lang = head($langs);
+		foreach ($langs as $lang){
+			$translations[$lang]=array();
+
+			$mobileDefaultFile = (__DIR__ . "/../../resources/lang/$lang/appMobile.php");
+			if(!file_exists($mobileDefaultFile)){
+				return;
+			}
+			$mobileDefault = include $mobileDefaultFile;
+
+			$pathMobileThemeFile = (__DIR__ . "/../../resources/lang/$lang/appMobile_$theme.php");
+
+			if(!file_exists($pathMobileThemeFile)){
+				$translations[$lang]["translation"] = $mobileDefault;
+			}else{
+				$mobileTheme = include $pathMobileThemeFile;
+
+				$translations[$lang]["translation"] =  array_replace_recursive($mobileDefault, $mobileTheme);
+			}
+		}
+
+		return $translations;
+	}
+
 	public static function getAdminTranslation()
 	{
 		$theme = config('app.theme');

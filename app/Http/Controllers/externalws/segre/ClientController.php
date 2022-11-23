@@ -18,7 +18,7 @@ class ClientController extends SegreController
 
 		$res = $this->callWebService(json_encode($fields),"ClientNew");
 
-
+		\Log::info(print_r($res,true));
 		if(!empty($res)){
 			#ClientStatus==0 => alta pendiente
 			if ($res->ClientStatus == 0 && $res->IdError == 0){
@@ -27,15 +27,14 @@ class ClientController extends SegreController
 			}
 			#cliente existente dado de alta
 			elseif ($res->ClientStatus == 1 ){
-				echo "CLiente $codCli ya existente en Segre";
-				#Lo hardcodeo para las pruebas
-				$res->codigo=1;
+				\Log::info("Cliente $codCli ya existenate en segre");
+
 				#comprobamos que no exista el código que nos han pasado, usamos cliweb por que si usamso cli y existe un usuario solo ERP no permite crear usuario web
-				$client = FxCliWeb::where("cod2_cliweb", intval ($res->codigo))->first();
+				$client = FxCliWeb::where("cod2_cliweb", intval ($res->IdOriginClient))->first();
 				#el usuario  debería tener bajaTemporal en 'A' ya que es registro  regtype = 4
 
 				if( empty($client) ){
-					echo "no existe cliweb con ese cod2";
+				
 					$bajaTemporal='N';
 					$email = new EmailLib('NEW_USER');
 					if(!empty($email->email)){
@@ -44,14 +43,14 @@ class ClientController extends SegreController
 						$email->send_email();
 					}
 
-					FxCli::where("cod_cli", $codCli)->update(["cod2_cli" => intval ($res->codigo), "baja_tmp_cli" => $bajaTemporal]);
-					FxCliWeb::where("cod_cliweb", $codCli)->update(["cod2_cliweb" => intval ($res->codigo)]);
-					FxCli2::where("cod_cli2", $codCli)->update(["cod2_cli2" => intval ($res->codigo)]);
-					FxCliD::where("cli_clid", $codCli)->update(["cli2_clid" => intval ($res->codigo)]);
+					FxCli::where("cod_cli", $codCli)->update(["cod2_cli" => intval ($res->IdOriginClient), "baja_tmp_cli" => $bajaTemporal]);
+					FxCliWeb::where("cod_cliweb", $codCli)->update(["cod2_cliweb" => intval ($res->IdOriginClient)]);
+					FxCli2::where("cod_cli2", $codCli)->update(["cod2_cli2" => intval ($res->IdOriginClient)]);
+					FxCliD::where("cli_clid", $codCli)->update(["cli2_clid" => intval ($res->IdOriginClient)]);
 
 				}else{
 
-					$this->sendEmailError("wbclientes","No se ha podido asignar el código de usuario externo ya que ya está en uso cod_cli: $codCli, cod2_cli: ". $res->codigo,  print_r($res,true),true );
+					$this->sendEmailError("wbclientes","No se ha podido asignar el código de usuario externo ya que ya está en uso cod_cli: $codCli, cod2_cli: ". $res->IdOriginClient,  print_r($res,true),true );
 					$bajaTemporal='E';
 					$email = new EmailLib('USER_SEGRE_DUPLICATED');
 					if(!empty($email->email)){

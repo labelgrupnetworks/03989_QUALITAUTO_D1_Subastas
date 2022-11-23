@@ -107,4 +107,20 @@ class FgDeposito extends Model
 			->get();
 	}
 
+
+
+	public function scopeJoinCli($query){
+        return $query->join("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_DEPOSITO");
+
+	}
+
+	public function scopeJoinAsigl0($query){
+        return $query->join("FGASIGL0", "EMP_ASIGL0 = EMP_DEPOSITO AND SUB_ASIGL0 = SUB_DEPOSITO AND REF_ASIGL0 = REF_DEPOSITO ");
+    }
+
+
+	 #esta funcion espera un objeto y coje los valores que necesita la APi para hacer un update
+	 public function scopeWhereUpdateApi($query, $item){
+        return $query->where('sub_deposito', $item["sub_deposito"])->where('ref_deposito', $item["ref_deposito"])->where('cli_deposito', $item["cli_deposito"]);
+    }
 }

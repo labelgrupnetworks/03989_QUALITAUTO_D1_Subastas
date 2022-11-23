@@ -1234,13 +1234,17 @@ class MailController extends Controller
 			$pdfController->generateAuctionBidsReportPdf($info, $reportTitleBidsReport);
 			$pdfController->generateAuctionAwardsReportPdf($info, $reportTitleAwardsReport);
 
+			if(config('app.certificate_in_report', false)) {
+				$pdfController->generateCertificateReportPdf($cod_sub);
+			}
+
 			//generamos y guardamos archivos
 			$pdfController->savePdfs($info->cod_sub, null);
 
 			$email->setAuction_code($cod_sub);
 			$email->setTo(Config::get('app.admin_email'));
 
-			$email->attachments = $pdfController->getPathsPdfs([$reportTitleBidsReport,$reportTitleAwardsReport]);
+			$email->attachments = $pdfController->getPathsPdfs();
 
 			if(!$email->send_email()){
 				return;
@@ -1419,6 +1423,10 @@ class MailController extends Controller
                 $email->setPriceAdjudication($cod_sub, $ref);
 				$email->setAtribute('DESCDET_HCES1', $inf_lot_translate[strtoupper(Config::get('app.locale'))]->descdet_hces1);
 
+				if(config('app.withMultipleBidders', false)){
+					$email->setMultipleBidders($adjudicado->sub_csub, $adjudicado->ref_csub, $adjudicado->licit_csub, $adjudicado->himp_csub);
+				}
+
 				if(Config::get('app.informes_pdf_user', 0)){
 					$email->attachments = $pdfController->getPathsPdfs([
 						trans(\Config::get('app.theme') . '-app.reports.bid_report'),
@@ -1460,6 +1468,10 @@ class MailController extends Controller
                     $email->setAtribute('DESCDET_HCES1', $inf_lot_translate[strtoupper(Config::get('app.locale'))]->descdet_hces1);
 					$email->setCloseDate($inf_lot->close_at);
 					$email->setTo($admin_email);
+
+					if(config('app.withMultipleBidders', false)){
+						$email->setMultipleBidders($adjudicado->sub_csub, $adjudicado->ref_csub, $adjudicado->licit_csub, $adjudicado->himp_csub);
+					}
 
 					if(Config::get('app.informes_pdf', 0)){
 						$email->attachments = $pdfController->getPathsPdfs();

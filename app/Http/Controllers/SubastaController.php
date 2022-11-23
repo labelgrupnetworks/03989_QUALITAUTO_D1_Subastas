@@ -1040,7 +1040,8 @@ class SubastaController extends Controller
 				$where = "ORDEN_HCES1";
 			}
 		}
-
+		#18-10-22 MODIFICADO PARA PODER USAR UNA URL ALTERNATIVA
+/*
 		$subastaObj->texto = Route::current()->parameter('texto2');
 		preg_match('#.*-(\d+)$#', $subastaObj->texto, $matches);
 		if (empty($matches[1]) || !is_numeric($matches[1])) {
@@ -1049,8 +1050,9 @@ class SubastaController extends Controller
 		}
 
 		$session_slug = $matches[1];
-		$subastaObj->id_auc_sessions = $matches[1];
 
+		$subastaObj->id_auc_sessions = $matches[1];
+*/
 		$lote = $subastaObj->getLote($where, true, true);
 
 		if (empty($lote) || $lote[0]->subc_sub =='N') {
@@ -1060,15 +1062,22 @@ class SubastaController extends Controller
 			}
 			exit(\View::make('front::errors.404'));
 		}
+		$session_slug = $lote[0]->id_auc_sessions;
+		$subastaObj->id_auc_sessions = $session_slug;
 		#quito los parametros para comparar solo la url
 		$urlsinparametros= explode('?', $_SERVER['REQUEST_URI']);
 		$url_actual = $urlsinparametros[0];
 
+
 		$titulo = $lote[0]->titulo_hces1?? $lote[0]->descweb_hces1;
-		$webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
-
+		
+		#18-10-22 MODIFICADO PARA QUE USE LA MISMA FUNCION
+		/* $webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
 		$url_buena = \Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
-
+		*/
+		$url_buena = \Tools::url_lot($lote[0]->cod_sub,$lote[0]->id_auc_sessions,$lote[0]->name,$lote[0]->ref_asigl0,$lote[0]->num_hces1,$lote[0]->webfriend_hces1,$titulo);
+		#quitamos la parte del dominio, por si viniera informada
+		$url_buena = str_replace( Config::get('app.url'),"",$url_buena);
 		if ($url_buena != $url_actual) {
 			//exit (\View::make('front::errors.404'));
 			return \Redirect::to(\URL::asset($url_buena), 301);
@@ -1077,7 +1086,7 @@ class SubastaController extends Controller
 
 
 
-		$subastaObj->select_filter = 'asigl0.ref_asigl0, hces1.webfriend_hces1, hces1.num_hces1, SUB.cod_sub, "id_auc_sessions",  NVL(HCES1_LANG.WEBFRIEND_HCES1_LANG,  HCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1,titulo_hces1';
+		$subastaObj->select_filter = 'asigl0.ref_asigl0,  hces1.num_hces1, SUB.cod_sub, "id_auc_sessions",  NVL(HCES1_LANG.WEBFRIEND_HCES1_LANG,  HCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1,titulo_hces1';
 		$subastaObj->page = 'all';
 
 		$auction_in_categories =  \Config::get('app.auction_in_categories');
@@ -1183,11 +1192,24 @@ class SubastaController extends Controller
 			}
 			//si no hemos pasado por actual y aun no hay previous
 			elseif ($actual == false) {
-				$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-				$previous = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
+			#	$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
+			#	$previous = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
+
+
+
+			$previous = \Tools::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
+
+
+
 			} elseif ($actual && is_null($next)) {
-				$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-				$next = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
+				#$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
+				#$next = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
+
+
+
+				$next = \Tools::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
+
+
 				break;
 			}
 		}

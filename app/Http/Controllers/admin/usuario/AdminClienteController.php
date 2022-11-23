@@ -413,7 +413,7 @@ class AdminClienteController extends Controller
 
 	}
 
-	private function passwordEncrypt($passwd)
+	public function passwordEncrypt($passwd)
 	{
 		if(!empty(Config::get('app.multi_key_pass'))){
 			$newKey=md5(time());
@@ -427,7 +427,7 @@ class AdminClienteController extends Controller
 		return $password_encrypt;
 	}
 
-	private function newCod2Cli($cod_cli)
+	public function newCod2Cli($cod_cli = NULL)
 	{
 		if(!$cod_cli){
 			$cod_cli = FxCli::getNextCodCli();

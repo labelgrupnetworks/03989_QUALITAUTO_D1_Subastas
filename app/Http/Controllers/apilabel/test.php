@@ -135,7 +135,7 @@ class test extends BaseController
 	#BIDS
 	#http://www.newsubastas.test/apilabel/test?function=getBid&testmode=CONTROLLER
 	public function getBid(){
-		$parameters=array("idauction" => "582","type" => "W"); //, "min_date" => "2020-05-15 00:00:00", "max_date" => "2020-06-05 00:00:00" , "idoriginlot" => "2pa" , "idoriginclient" => "90045"
+		$parameters=array("idauction" => "LABELO","type" => "W"); //, "min_date" => "2020-05-15 00:00:00", "max_date" => "2020-06-05 00:00:00" , "idoriginlot" => "2pa" , "idoriginclient" => "90045"
 		#, "idoriginlot" => "Origen5", "idoriginclient" => 45964
 		$this->excuteMode($parameters,"GET","bid", new BidController(false),"showBid");
 	}
@@ -148,7 +148,7 @@ class test extends BaseController
 				#añado campos como si hicieramos desde admin
 
 				$Auction = new stdClass();
-				$Auction->idauction = "SUBPRU";
+				$Auction->idauction = "testapi";
 				$Auction->name = "Subasta de test active";
 				$Auction->type = "W";
 				$Auction->status = "S";
@@ -158,6 +158,17 @@ class test extends BaseController
 				$Auction->finishauction = "2020-10-30 23:05:00";
 				$Auction->startorders = "2020-10-15 11:00:00";
 				$Auction->finishorders = "2020-10-30 12:00:00";
+
+				#idiomas Subastas
+				$auctionLang = new stdclass();
+				$auctionLang->lang = "en";
+				$auctionLang->name = "name ingles";
+				$auctionLang->description = "description ingles";
+				$auctionLang->metatitle = "metatitle ingles";
+				$auctionLang->metadescription = "metadescription ingles";
+				$Auction->auctionlanguages[]=(array)$auctionLang;
+
+
 				$Auction->sessions = array();
 
 				# array(  "start"=> "start", "finish" => "end", "startorders"=> "orders_start", "finishorders" => "orders_end", "firstlot" => "init_lot", "endlot" => "endlot"   );
@@ -174,7 +185,17 @@ class test extends BaseController
 				$session->firstlot = 1;
 				$session->lastlot = 999999;
 
+					#idiomas sesiones
+					$sessionLang = new stdclass();
+					$sessionLang->lang = "en";
+					$sessionLang->name = "session name ingles";
+					$sessionLang->description = "session description ingles";
+					$session->sessionLanguages[]=(array)$sessionLang;
+
 				$Auction->sessions[] = (array)$session;
+
+
+
 /*
 				$session = new stdClass();
 
@@ -368,11 +389,11 @@ class test extends BaseController
         public function postClient(){
 
             $Client = new stdClass();
-            $Client->idorigincli_ = 112;
-			$Client->email = "testruben2labelgrup.com";
-			$Client->idnumber = "test111111111111111111111111111111111111111111111111111111111111111";
+            $Client->idorigincli = "1WW197";
+			$Client->email = "PRUEBA@PRUEBA.COM";
+			$Client->idnumber = "test111111111";
 			$Client->name = "Ruben Sanchez Gines";
-			$Client->country = "ESs";
+			$Client->country = "ES";
 			$Client->province = "Barcelona";
 			$Client->address = "Calle pichincha del Rey numero 53";
 			$Client->password = "passwordhash";
@@ -394,7 +415,7 @@ class test extends BaseController
 			$Client->mobileshipping = "901901900";
 
 			#no usuario web
-			$Client->notwebuser = "S";
+			//$Client->notwebuser = "N";
 
 			$items[] = (array)$Client;
 
@@ -410,7 +431,7 @@ class test extends BaseController
         #http://www.newsubastas.test/apilabel/test?function=getClient&testmode=CONTROLLER
         public function getClient(){
 
-            $parameters=array("idorigincli"=> "1977"); //"idorigincli" => 280999
+            $parameters=array("idorigincli"=> "000001"); //"idorigincli" => 280999
             #$parameters=array("idnumber" => "4777241SS" );
 			#$parameters=array("temporaryblock" => "N");
 			#$parameters=array();
@@ -971,6 +992,57 @@ class test extends BaseController
 
     #FIN CATEGORY
 
+	#DEPOSIT
+	#http://www.newsubastas.test/apilabel/test?function=postDeposit&testmode=CONTROLLER
+	public function postDeposit(){
+
+		$deposit = new stdClass();
+		$deposit->idoriginclient = "3";
+		$deposit->idauction = "BBBO";
+		$deposit->idoriginlot = "EJEMPLO1";
+
+		$deposit->status = "V";
+		$deposit->amount = "1600";
+		$deposit->date = date("Y-m-d H:i:s");// "2022-11-05 09:00:05";
+
+
+		$items[] = (array)$deposit;
+		#los dos últimos parametros son solo para lanzar los controladores
+		$this->excuteMode($items,"POST","deposit", new DepositController(false),"createDeposit");
+
+
+	}
+	#http://www.newsubastas.test/apilabel/test?function=putDeposit&testmode=CONTROLLER
+	public function putDeposit(){
+
+		$deposit = new stdClass();
+		$deposit->idoriginclient = "112";
+		$deposit->idauction = "BBBO";
+		$deposit->idoriginlot = "EJEMPLO1";
+		$deposit->status = "V";
+		$deposit->amount = "5000";
+		$deposit->date = "2022-11-09 09:20:01";
+
+		$items[] = (array)$deposit;
+		#los dos últimos parametros son solo para lanzar los controladores
+		$this->excuteMode($items,"PUT","deposit", new DepositController(false),"updateDeposit");
+
+
+	}
+
+	#http://www.newsubastas.test/apilabel/test?function=getDeposit&testmode=CONTROLLER
+	public function getDeposit(){
+		$parameters = array("idauction" => "BBBO", "reflot" => "20");
+		$this->excuteMode($parameters,"GET","bidder", new DepositController(false),"showDeposit");
+	}
+
+	#http://www.newsubastas.test/apilabel/test?function=deleteDeposit&testmode=CONTROLLER
+	public function deleteDeposit(){
+		$parameters = array("idauction" => "BBBO", "idoriginlot" => "EJEMPLO1","idoriginclient" => "3");
+
+		$this->excuteMode($parameters,"DELETE","bidder", new DepositController(false),"eraseDeposit");
+	}
+	#FIN DEPOSIT
 
 
     #fin de test peticiones api

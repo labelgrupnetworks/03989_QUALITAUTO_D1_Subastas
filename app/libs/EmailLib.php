@@ -18,6 +18,7 @@ use App\Http\Controllers\V5\CarlandiaPayController;
 use App\libs\TradLib as TradLib;
 use App\Jobs\MailJob;
 use App\Models\V5\FgAsigl1;
+use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider;
@@ -721,7 +722,6 @@ private $debug = true;
 				$this->setAtribute('PAY_LINK', $link);
 			}
 
-
 			$this->setAtribute("IMPORTESINIVA",\Tools::moneyFormat($precioSinIva,false,2));
         }
     }
@@ -1172,6 +1172,34 @@ private $debug = true;
 		{
 			$actualDesign = $this->email->cod_email;
 			$this->get_design("{$actualDesign}_{$addCode}");
+		}
+
+		public function setMultipleBidders($codSub, $ref, $licit, $amount)
+		{
+			$theme = config('app.theme');
+
+			$bidders = FgAsigl1Mt::joinAsigl1()
+				->where([
+					['sub_asigl1', $codSub],
+					['ref_asigl1', $ref],
+					['licit_asigl1', $licit],
+					['imp_asigl1', $amount]
+				])
+				->get();
+
+			$this->atributes['BIDDERS'] = "";
+
+			if(!$bidders){
+				$this->atributes['BIDDERS'] = trans("$theme-app.emails.multiple_bidder", ['name' => $this->atributes['NAME'], 'ratio' => "100", 'value' => $amount]);
+				return;
+			}
+
+			foreach ($bidders as $bidder) {
+				$bidValue = $bidder->getAmountRatio($amount);
+				$stringValue = ToolsServiceProvider::moneyFormat($bidValue, trans("$theme-app.subastas.euros"), 2);
+				$this->atributes['BIDDERS'] .= trans("$theme-app.emails.multiple_bidder", ['name' => $bidder->full_name, 'ratio' => $bidder->ratio_asigl1mt, 'value' => $stringValue]);
+			}
+			return;
 		}
 
 }

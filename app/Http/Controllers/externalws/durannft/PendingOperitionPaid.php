@@ -22,23 +22,18 @@ class PendingOperitionPaid extends DuranNftController
 /* ESTA A MEDIAS
 SE HA PARADO EL TEMA POR QUE FALTA REUNION PARA VER QUE QUIEREN HACER
 */
-	public function informPendingPaid($operationId){
+#la operación hace referencia al id de la operación de transaccion (transferencia o minteo)
+	public function informPendingPaid($operationId, $type){
 		try{
 
 				if(!empty($operationId)){
 
-					$xml =	$this->infoXml($operationId);
+					$xml =	$this->infoXml($operationId, $type);
 
 					$res = $this->callWebService($xml,"Wbcrearpagonft");
 
 					if(!empty($res) && $res->resultado == 0){
-						/* PONER IDORIGEN EN ASIGL0 para que luego puedan marcarlo como pagado */
-						foreach($res->articulosnuevos->articulo as $articulo){
-							$idorigen = (string) $articulo->codigoarticulo;
-							$subRef = explode("-",$articulo->referencia);
-							FgAsigl0::where("sub_asigl0", $subRef[0])->where("ref_asigl0", $subRef[1])->update(["idorigen_asigl0" => $idorigen]);
 
-						}
 					}
 
 					#el resultado 1 está controlado en duran controller y el 0 es k todo ok
@@ -58,70 +53,62 @@ SE HA PARADO EL TEMA POR QUE FALTA REUNION PARA VER QUE QUIEREN HACER
 	}
 
 
-	private function infoXml($operationId){
-		$transaccion = WebPayCart::where("IDTRANS_PAYCART", $operationId)->first();
-		$info = json_decode($transaccion->info_paycart);
+	private function infoXml($operationId, $type){
+		$asigl0 = new Fgasigl0();
+		$asigl0 = $asigl0->JoinFghces1Asigl0()->JoinNFT();
 
-
-		$cli = FxCli::select("cod2_cli,cod_cli")->where("cod_cli",$transaccion->cli_paycart )->first();
-		if(empty($cli)){
-			\Log::info("No hay cliente con el cod_cli ". $transaccion->cli_paycart );
-			return ;
+		if($type == "mint"){
+			$asigl0 = $asigl0->select("NUM_HCES1, LIN_HCES1,PROP_HCES1, NETWORK_NFT")->
+			where("MINT_ID_NFT", $operationId);
+		}elseif($type == "transfer") {
+			$asigl0 = $asigl0->select("CLIFAC_CSUB, NETWORK_NFT")->
+			JoinCSubAsigl0()->where("TRANSFER_ID_NFT", $operationId);
 		}
 
-		#pongo el valor * 100 ya que el iva lo devolverá con decimales
-		$ivaUser = \Tools::TaxForEuropean($cli->cod_cli) *100;
-
-		$payments = new Payments();
-		$ivaGeneral = $payments->getIVA(date('Y-m-d H:i:s'),'01');
-		if(count($ivaGeneral) > 0){
-			$ivaGeneral = $ivaGeneral[0]->iva_iva/100;
-		}else{
-			$ivaGeneral = 0;
-		}
-
+		$transaction = $asigl0->first();
 
 		$xml = new SimpleXMLElement("<root></root>");
+		$xml->addChild("idtransaccion", $transaction->network_nft ."-". $operationId);
+		$xml->addChild("referencia",  $transaction->num_hces1 ."-".  $transaction->lin_hces1);
 
-		$vottunComission = \Config::get("app.VottunComission")/100;
-		#la comisión esta incluida en el precio que han pagado por lo que se debe restar para obtener el importe real de la transaccion
-		$comision = round($info->total / (1+  $vottunComission),2);
-		$total = $info->total + $comision;
-		$operationId = rand();#cre oque da error por que se ha repetido el identificador, pongo esto para las pruebas
-		$xml->addChild("identificador",  $operationId);
-		$xml->addChild("cliente",  $cli->cod2_cli );
 		$xml->addChild("fechacreacion", date("Y-m-d h:i:s") );
-		$xml->addChild("coste",  $info->total);# sin iva
-		$xml->addChild("comision", $comision );#sin iva
-		$xml->addChild("iva", round($total * $ivaGeneral,2) );#importe del iva (el real no el que tenga el usuario)
-		$xml->addChild("tipoiva",$ivaUser);
-		$xml->addChild("total",$total + round($total * $ivaUser/100 ,2) );
 
 
 
 
-
-		if($info->reason == "mint"){
+		if($type == "mint"){
+			$client = FxCli::select("cod2_cli")->where("cod_cli", $transaction->prop_hces1 )->first();
+			$xml->addChild("cliente",$client->cod2_cli );
 			$xml->addChild("concepto", "Minteo");
 			$xml->addChild("tipo", 1);
-			$xml->addChild("numeropedido", ""); #pedido que da origen al pago
-		}else{
+
+		}elseif($type == "transfer") {
+			$client = FxCli::select("cod2_cli")->where("cod_cli", $transaction->clifac_csub )->first();
+			$xml->addChild("cliente",  $client->cod2_cli );
 			$xml->addChild("concepto", "Transferencia");
 			$xml->addChild("tipo", 2);
-			$xml->addChild("numeropedido", "Poneraqui el valor del pedido");
+			
 		}
-		$xml->addChild("red",1); #Pendiente de saber que red es
+		#etherum
+		if($transaction->network_NFT == '4' || $transaction->network_NFT == '5'){
+			$xml->addChild("red",1);
+		}elseif($transaction->network_NFT == '137'){ #polygon
+			$xml->addChild("red",2);
+		}elseif($transaction->network_NFT == '43113' || $transaction->network_NFT == '43114'){ #avalanche
+			$xml->addChild("red",3);
+		}
+
+
+
+
+		/* Pendiente que nso pasen los valores Vottun*/
+		$xml->addChild("coste", 100);# sin iva
+		$xml->addChild("comision", 10 );#sin iva
+		$xml->addChild("iva", 21 );#importe del iva (el real no el que tenga el usuario)
+		$xml->addChild("tipoiva",21);
+		$xml->addChild("total",121);
+
 		return $xml;
-/*
-fechacreacion		fecha hora	yyyy-mm-dd hh:mm:ss
-importe		real		importe a pagar. Separador decimal: “.”
-concepto		texto (255)
-tipo			int		1-minteo; 2-traspaso nft
-numeropedido		texto (20)	pedido que da origen al pago
-
-*/
-
-
 
 	}
 

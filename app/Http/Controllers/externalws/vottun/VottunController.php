@@ -472,7 +472,7 @@ class VottunController extends Controller
 							if(!empty($mintTransaction) && !empty($mintTransaction->transaction)  && !empty($mintTransaction->transaction->gas)){
 								$lot = FgAsigl0::JoinFghces1Asigl0()->JoinNFT()->select("SUB_ASIGL0, REF_ASIGL0, PROP_HCES1 ")->where("MINT_ID_NFT", $all["operationId"])->first();
 
-										$link = Route("mintPayUrl", ["operationId" =>$all["operationId"]]);
+										$link = Route("mintNftPayUrl", ["operationId" =>$all["operationId"]]);
 										#VOTTUM DEBE INDICAR EL PRECIO DEL MINTEO, DE MONMENTO PONGO EL CAMPO GAS Y LO DIVIDO ENTRE 100.000 PARA QUE NO SEA TAN GRANDE
 										$price = $mintTransaction->transaction->gas/100000;
 
@@ -490,11 +490,24 @@ class VottunController extends Controller
 											$email->send_email();
 										}
 
+										//informPendingPaid($operationId, $type)
+										# LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE UN PAGO DEL MINTEO Wbcrearpagonft
+										#Notificar a casas de subastas por webservice que hay pendiente de pagar un minteo
+										if(Config::get('app.WebServicePaidtransactionNft')){
+
+											$theme  = Config::get('app.theme');
+											$rutaPendingOperitionPaid = "App\Http\Controllers\\externalws\\$theme\PendingOperitionPaid";
+
+											$pendingOperitionPaid = new $rutaPendingOperitionPaid();
+											$pendingOperitionPaid->informPaid($all["operationId"],"mint");
+										}
+
 
 							}
 						}
 
-						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE UN PAGO DEL MINTEO Wbcrearpagonft
+
+
 					}else{
 						#indicamos que no será necesario el pago del minteo
 						$payMintNft = "N";
@@ -537,6 +550,19 @@ class VottunController extends Controller
 
 								#actualizamos el valor de PAY_TRANSFER para indicar el coste  y que esta pendiente del cobro
 								FgNft::where("TRANSFER_ID_NFT", $all["operationId"])->update(["PAY_TRANSFER_NFT" => "P", "COST_TRANSFER_NFT" => $costTransfer]);
+
+								# LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL comprador TIENE PENDIENTE UN PAGO de la transferencia Wbcrearpagonft
+								#Notificar a casas de subastas por webservice que hay pendiente de pagar una transferencia
+								if(Config::get('app.WebServicePaidtransactionNft')){
+
+									$theme  = Config::get('app.theme');
+									$rutaPendingOperitionPaid = "App\Http\Controllers\\externalws\\$theme\PendingOperitionPaid";
+
+									$pendingOperitionPaid = new $rutaPendingOperitionPaid();
+									$pendingOperitionPaid->informPaid($all["operationId"],"transfer");
+								}
+
+
 
 								#Recuperamos el id del comprador para ver si tiene más transferencias pendientes
 								$buyer = FgAsigl0::JoinCSubAsigl0()->JoinNFT()->
@@ -581,7 +607,7 @@ class VottunController extends Controller
 								}
 								$lots_name .= "</table>";
 								if($enviar){
-									$link = Route("transferPayUrl", ["operationId" => implode("_",$transfersIds)]);
+									$link = Route("transferNftPayUrl", ["operationId" => implode("_",$transfersIds)]);
 									$email = new EmailLib('TRANSFERNFT_PAY_BUYER');
 									if(!empty($email->email)){
 										$email->setUserByCod($buyer->clifac_csub);
@@ -595,11 +621,12 @@ class VottunController extends Controller
 								}
 							}
 						}
-						#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR TIENE PENDIENTE EL PAGO DE LA TRANSFERENCIA
+
 
 					}else{
 						#indicamos que no será necesario el pago de la transferencia
 						FgNft::where("TRANSFER_ID_NFT", $all["operationId"])->update(["PAY_TRANSFER_NFT" => "N", "COST_TRANSFER_NFT" => 0]);
+							#PENDIENTE DE APROBAR:- SI LA RED NO ES DE PAGO , SE LLAMARA A GENERAR  EL PAGO createMintPay($operationId) Y SE MARCARÁ COMO PAGADO Y SE AVISARÁ A DURAN QUE  HAY UN PAGO PENDIENTE PendingOperitionPaid, AUNQUE LUEGO NO SE PAGUE
 
 					}
 

@@ -2333,6 +2333,40 @@ class UserController extends Controller
 
 	}
 
+	#mostrar listado de minteos pendientes de pago
+		public function nftMintPay(){
+		$asigl0 = new Fgasigl0();
+		$nfts = $asigl0->JoinFghces1Asigl0()->JoinCSubAsigl0()->JoinNFT()->
+		select("DESCWEB_HCES1, MINT_ID_NFT,COST_MINT_NFT, PAY_MINT_NFT ")->
+		where("PROP_HCES1",Session::get('user.cod'))->
+		#networks de pago, si no son de pago no se deberá cobrar
+		wherein("NETWORK_NFT", explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) ))->
+		#que el lote se haya solicitado la transferencia
+		whereNotNull("MINT_ID_NFT")->
+		#si es nulo es que no se ha transferido y si es P es que esta pendiente de transferir
+		whereRaw("(PAY_MINT_NFT is NULL or PAY_MINT_NFT = 'P')")->
+
+		# si EL MINTEO tiene importe es que se debe pagar, puede estar pagada o no pero es la manera de saber que nft mostrar en este listado
+		where("COST_MINT_NFT",">",0)->
+		get();
+
+		$noTransfer= array();
+		$pendingPay = array();
+
+		foreach($nfts as $nft ){
+			if($nft->pay_mint_nft == "P"){
+				$pendingPay[] = $nft;
+			}else{
+				$noTransfer[] = $nft;
+			}
+
+		}
+
+		#de momento no uso los pagados, pero dejo el código ya preparado por si hiciera falta
+		return View::make('front::pages.panel.nftMintPayments',compact("pendingPay","noTransfer") );
+
+	}
+
 
 
     # Adjudicaciones pendientes de pago del usuario en sesion

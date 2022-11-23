@@ -20,13 +20,14 @@ class OrderController extends SegreController
 			$res = $this->callWebService(json_encode($fields),"OrderNew");
 
 
-		\Log::info(print_r($fields,true));
-		\Log::info(print_r($res,true));
+		\Log::info("Peticion a Segre: " .print_r($fields,true));
+		\Log::info("Respuesta a Segre: " .print_r($res,true));
 
 			if(!empty($res)){
 
 				if ($res->IdError != 0 ) {
-
+					#prefiero notificarlo en la pantalla y no enviar email
+					/*
 					$paleta = FgLicit::SELECT("COD_LICIT")->WHERE("SUB_LICIT", $codSub)->WHERE("CLI_LICIT", $codCli)->first();
 					FgOrlic::where("EMP_ORLIC", \Config::get('app.emp'))->where("SUB_ORLIC",$codSub)->where("REF_ORLIC",$ref)->where("LICIT_ORLIC", $paleta->cod_licit)->where("HIMP_ORLIC", $order)->delete();
 					$email = new EmailLib('ORDER_FAIL');
@@ -39,7 +40,19 @@ class OrderController extends SegreController
 					}
 
 					$this->sendEmailError("OrderNew",print_r($fields,true), print_r($res,true) );
+					asunto email
+					Su orden máxima no ha podido registrase en Subastas Segre
+					diseño email
+					Estimada/o [*NAME*],
+						<p> Le informamos que  su orden máxima para el lote [*LOT_REF*] de la subasta [*AUCTION_CODE*]. con un importe de  [*ORDER*]  no ha podido registrase en el sistema de Subastas Segre</p>
+
+						<p>Puede ponerse en contacto con nosotros en el teléfono 915 159 584 o por email en la dirección <a href="mailto:info@subastassegre.es"> info@subastassegre.es</a></p>.
+					*/
+					return false;
 				}
+				return true;
+			}else{
+				return false;
 			}
 	}
 

@@ -337,9 +337,11 @@ class PayShoppingCartController extends Controller
 			$info = json_decode($transaccion->info_paycart);
 
 			if($info->reason == "mint"){
-				#guardamos el id de transaccion en la tabla de NFt para que se sepa que está pagado
-				FgNft::where("NUMHCES_NFT", $info->num)->where("LINHCES_NFT", $info->lin)->update(["PAY_MINT_NFT" =>$idTrans] );
-				#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR A PAGADO EL MINTEO DEL NFT
+				foreach($info->lots as $keyLot => $lot) {
+					#guardamos el id de transaccion en la tabla de NFt para que se sepa que está pagado
+					FgNft::where("NUMHCES_NFT", $lot->num)->where("LINHCES_NFT", $lot->lin)->update(["PAY_MINT_NFT" =>$idTrans] );
+					#FALTA LLAMADA A WEBSERVICE DE DURAN INDICANDO QUE EL AUTOR A PAGADO EL MINTEO DEL NFT
+				}
 
 			}elseif($info->reason == "transfer"){
 				foreach($info->lots as $keyLot => $lot) {
@@ -381,115 +383,89 @@ class PayShoppingCartController extends Controller
 		return $obra->ref_asigl0;
 	}
 
-	#generar pago de coste de minteo
+	#generar pago de coste de transferencia, puede venir mas de una transferencia
 	#http://www.newsubastas.test/mintpayment/7de69f65-f697-40bd-b7bc-fddaaa6b515b
-	public function createMintPay($operationId){
-
-		$vottunController = new VottunController();
-		#networks de pago
-		$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
-		$lot = FgNft::JoinFghces()->select("NUMHCES_NFT, LINHCES_NFT, PROP_HCES1, NETWORK_NFT, COST_MINT_NFT ")->where("MINT_ID_NFT", $operationId)->first();
-
-		if(!empty($lot)){
-			# si pertenece a una red de pago
-			if(in_array($lot->network_nft, $payNetworks)){
-
-
-					$info = new \Stdclass();
-					$info->paymethod ="creditcard";
-					$info->comments = "pago minteo";
-					$info->reason ="mint";
-					$info->num =  $lot->numhces_nft;
-					$info->lin =  $lot->linhces_nft;
-					# el coste del minteo se ha cargado en la tabla FGNFT en el momento de hacer el webhook
-					$info->total =  $lot->cost_mint_nft;
-
-
-
-
-					$webpayCart=array();
-					$webpayCart["CLI_PAYCART"] = $lot->prop_hces1;
-					$webpayCart["EMP_PAYCART"] = \Config::get("app.emp");
-
-					#CREAMOS EL ID DE LA TRANSACCION, LA LETRA QUE IDENTIFICARÁ LOS PAGOS DE MINTEO SERÁ LA M
-					$webpayCart["IDTRANS_PAYCART"] = "M" . rand(1, 9) . time();
-					$webpayCart["DATE_PAYCART"] = date("Y-m-d H:i:s");
-					$webpayCart["INFO_PAYCART"] = json_encode($info) ;
-					WebPayCart::insert($webpayCart);
-
-
-					$url = Config::get('app.url') . '/shoppingCart/callRedsys?idTrans=' . $webpayCart["IDTRANS_PAYCART"]."&paymethod=creditcard" ;
-					return redirect($url);
-
-			}else{
-				$vottunController->sendEmailError("error en cobro de minteo al propietario, en una red de pago no se ha podido recuperar la operación");
-
-			}
-
-		}else{
-			$vottunController->sendEmailError("error generando el cobro del minteo al propietario, no se ha encontrado el lote asociado con la operación $operationId");
-
-		}
-
-
-
+	public function createMintPay($operationsIds){
+		return $this->createTransactionPay("MINT", $operationsIds);
 	}
-
 
 	#generar pago de coste de transferencia, puede venir mas de una transferencia
 	#http://www.newsubastas.test/transferpayment/b040c87d-7772-460a-aafb-7efb9484db6d_b8e4f247-34eb-4c04-9599-0263b2fe7a21_
 	public function createTransferPay($operationsIds){
+		return $this->createTransactionPay("TRANSFER", $operationsIds);
+	}
 
+	public function createTransactionPay($type, $operationsIds){
+		/*
 		if(!Session::has('user')){
 			#nostramos página con mensaje de error
 			return View::make('front::pages.not-logged',["data" =>trans(\Config::get('app.theme').'-app.user_panel.not-logged') ] );
 		}
-
+		*/
 		$vottunController = new VottunController();
 		#networks de pago
 		$payNetworks = explode("," , str_replace(" ","", \Config::get("app.nftPayNetwork")) );
-		$transferId =  explode("_" , $operationsIds);
+		$transactionsId =  explode("_" , $operationsIds);
 
 		$asigl0 = new Fgasigl0();
-		$transfers = $asigl0->JoinFghces1Asigl0()->JoinCSubAsigl0()->JoinNFT()->
-		select("NUMHCES_NFT, LINHCES_NFT,  DESCWEB_HCES1, TRANSFER_ID_NFT,COST_TRANSFER_NFT, PAY_TRANSFER_NFT, CLIFAC_CSUB ")->
-		where("CLIFAC_CSUB",Session::get('user.cod'))->
+		$asigl0 = $asigl0->JoinFghces1Asigl0()->JoinNFT()->
+		select("NUMHCES_NFT, LINHCES_NFT,  DESCWEB_HCES1 ")->
+
 		#networks de pago, si no son de pago no se deberá cobrar
 		wherein("NETWORK_NFT", $payNetworks)->
-		#si está pendiente de pago
-		where("PAY_TRANSFER_NFT","P")->
-		#id de las transferencias
-		wherein("TRANSFER_ID_NFT", $transferId)->
-		where("ES_NFT_ASIGL0","S")->
-		# si la transferencia tiene importe es que se debe pagar, puede estar pagada o no pero es la manera de saber que nft mostrar en este listado
-		where("COST_TRANSFER_NFT",">",0)->
-		get();
 
+		where("ES_NFT_ASIGL0","S");
 
-		#si no se recupera ninguna transferencia o no se recuperan todas las transferencias que se han pedido
-		if(count($transfers) == 0  || count($transfers) != count($transferId)){
+		if($type == "TRANSFER"){
+			$asigl0 = $asigl0->addselect("TRANSFER_ID_NFT,COST_TRANSFER_NFT COST, PAY_TRANSFER_NFT,CLIFAC_CSUB")->
+			JoinCSubAsigl0()->
+			#where("CLIFAC_CSUB",Session::get('user.cod'))->
+			#si está pendiente de pago
+			where("PAY_TRANSFER_NFT","P")->
+			#id de las transferencias
+			wherein("TRANSFER_ID_NFT", $transactionsId)->
+			# si la transferencia tiene importe es que se debe pagar, puede estar pagada o no pero es la manera de saber que nft mostrar en este listado
+			where("COST_TRANSFER_NFT",">",0);
+		}elseif($type == "MINT"){
+			$asigl0 = $asigl0->addselect("MINT_ID_NFT,COST_MINT_NFT COST, PAY_MINT_NFT,PROP_HCES1")->
+			where("PAY_MINT_NFT","P")->
+			wherein("MINT_ID_NFT", $transactionsId)->
+			where("COST_MINT_NFT",">",0);
+		}
+
+		$transactions = $asigl0->get();
+
+		#si no se recupera ninguna transaccion o no se recuperan todas las transferencias que se han pedido
+		if(count($transactions) == 0  || count($transactions) != count($transactionsId)){
 			\Log::info("Error en pago generar pago de transferencia, no coinciden el numero de transferecnia con el numero de id's facilitado." .print_r($transferId, true). print_r($transfers->toArray(),true));
 			#nostramos página con mensaje de error
 			return View::make('front::pages.not-logged',["data" =>trans(\Config::get('app.theme').'-app.user_panel.error_pay_transfer_nft') ] );
 		}
 		$info = new \Stdclass();
 		$info->paymethod ="creditcard";
-		$info->comments = "pago transferencia NFT";
-		$info->reason ="transfer";
-		$info->lots = [];
-		$info->total = 0;
-		foreach ($transfers as $transfer) {
-			$lot = new \Stdclass();
-			$lot->num =  $transfer->numhces_nft;
-			$lot->lin =  $transfer->linhces_nft;
-			$info->lots[] = $lot;
-			# el coste de la transferencia se ha cargado en la tabla FGNFT en el momento de hacer el webhook
-			$info->total += $transfer->cost_transfer_nft;
-
+		$webpayCart = array();
+		if($type == "TRANSFER"){
+			$webpayCart["CLI_PAYCART"] = $transactions[0]->clifac_csub;
+			$info->comments = "pago transferencia NFT";
+			$info->reason ="transfer";
+		}elseif($type == "MINT"){
+			$webpayCart["CLI_PAYCART"] = $transactions[0]->prop_hces1;
+			$info->comments = "pago minteo NFT";
+			$info->reason ="mint";
 		}
 
-		$webpayCart = array();
-		$webpayCart["CLI_PAYCART"] = $transfers[0]->clifac_csub;
+		$info->lots = [];
+		$info->total = 0;
+		foreach ($transactions as $transaction) {
+			$lot = new \Stdclass();
+			$lot->num =  $transaction->numhces_nft;
+			$lot->lin =  $transaction->linhces_nft;
+			$info->lots[] = $lot;
+			# el coste de la transferencia se ha cargado en la tabla FGNFT en el momento de hacer el webhook
+			$info->total += $transaction->cost;
+		}
+
+
 		$webpayCart["EMP_PAYCART"] = \Config::get("app.emp");
 
 		#CREAMOS EL ID DE LA TRANSACCION, LA LETRA QUE IDENTIFICARÁ LOS PAGOS DE MINTEO Y TRANSFERENCIA SERÁ LA M
