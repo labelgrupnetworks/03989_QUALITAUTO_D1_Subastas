@@ -108,11 +108,6 @@
 
 												</div>
 											</td>
-											{{-- @if(config("app.DeleteOrders") && (empty($inf_lot->implic_hces1) || $inf_lot->imp > $inf_lot->implic_hces1))
-											<td>
-												<input  class="btn btn-lb-primary delete_order_panel" type="button" ref="{{$inf_lot->ref_asigl0}}" sub="{{$inf_lot->cod_sub}}" value="{{ trans("$theme-app.user_panel.delete_orden") }}">
-											</td>
-											@endif --}}
 										</tr>
 									@endforeach
 								</tbody>

@@ -27,21 +27,16 @@ $(document).ready(function () {
 
 		if (typeof cod_licit == 'undefined' || cod_licit == null) {
 
-			/*
-			//muestra un mensaje para hacer login o registro
-				$("#insert_msg_title").html("");
-				$("#insert_msg").html(messages.error.mustLogin);
-				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			*/
 			//este codigo abre directamente la ventana emergente de login
 			$('.login_desktop').fadeToggle("fast");
 			$('.login_desktop [name=email]').focus();
-				return;
-			} else {
 
+			return;
+
+		} else {
 
 			if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente))) {
-				$("#insert_msg_title").html($("#bid_amount").val() + "€ " + messages.error.lower_bid);
+				$("#insert_msg_title").html(messages.error.lower_bid);
 				$("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 			}
@@ -49,16 +44,6 @@ $(document).ready(function () {
 				$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
 			}
 		}
-	});
-
-	$('.lotlist-orden').on('click', function (e) {
-		e.stopPropagation();
-		$.magnificPopup.close();
-		var precio_lot = $(this).parent().siblings().val();
-		var ref = $(this).attr('ref');
-		$(".precio_orden").html(precio_lot);
-		$(".ref_orden").html(ref);
-		$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
 	});
 
 	initSlick();

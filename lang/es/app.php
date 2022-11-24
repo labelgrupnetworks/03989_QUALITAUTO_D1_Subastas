@@ -424,7 +424,8 @@ $lang = [
 		'quick_bid' => 'Puja rápida',
 		'bid_on' => 'Pujar por',
 		'add_bidders' => 'Añadir pujadores',
-		'bid_participants' => 'Participantes en la puja'
+		'bid_participants' => 'Participantes en la puja',
+		'closing_date' => 'Fecha fin: '
 	),
 	'lot_list' =>
 	array(

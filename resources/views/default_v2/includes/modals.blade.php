@@ -1,3 +1,5 @@
+{{-- El data-to solamente funciona cuando esta en el div con clase modal-block --}}
+
 <!-- Modal -->
 <div class="modal fade" id="modalAjax" aria-labelledby="myModalLabel" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -15,90 +17,61 @@
     </div>
 </div>
 
-
-<div class="modal-block mfp-hide" id="newsletterModal">
+<div class="container modal-block mfp-hide " id="newsletterModal">
     <section class="panel">
-        <div class="panel-body">
-            <div class="modal-wrapper">
-                <div class="modal-text text-center maxw">
-                    <p class="insert_msg"></p>
-                    <button
-                        class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme') . '-app.home.confirm') }}</button>
-                </div>
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <p class="insert_msg"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.home.confirm") }}
+                </button>
             </div>
         </div>
     </section>
 </div>
-<div class="modal fade" id="mediaModal" role="dialog" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal" type="button">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- content dynamically inserted -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="container modal-block mfp-hide " id="modalMensajeWeb">
-    <div class="modal-sub-w" data-to="pujarLoteFicha">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1">
-                            <p id="insert_msg_title"></p>
-                        </span><br />
-                        <p id="insert_msgweb"></p><br />
-
-                        <button
-                            class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
-
-                    </div>
-                </div>
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <p id="insert_msgweb"></p>
             </div>
-        </section>
-    </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.lot.accept") }}
+                </button>
+            </div>
+        </div>
+    </section>
 </div>
 
-<div class="container modal-block mfp-hide " id="modalMensaje">
-    <div class="modal-sub-w" data-to="pujarLoteFicha">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1">
-                            <p id="insert_msg_title"></p>
-                        </span>
-                        <br>
-
-                        <!-- METODO NUEVO -->
-                        <p>
-                            <span id="insert_msg_login_required"></span>
-                            <a class="btn_login" href="#" onclick="$.magnificPopup.close();">
-                                <span id="insert_msg_log_in"></span>
-                            </a>
-                            <span id="insert_msg"></span>
-                        </p>
-                        <br>
-
-                        <!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
-                        <!-- <p id="insert_msg"></p><br/> -->
-
-                        <button class="btn btn-lb-secondary modal-dismiss">
-                            {{ trans(\Config::get('app.theme') . '-app.lot.accept') }}
-                        </button>
-
-                    </div>
-                </div>
+<div class="container modal-block mfp-hide" id="modalMensaje">
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <h5 class="class_h1" id="insert_msg_title"></h5>
+                <p id="insert_msg_login_required"></p>
+                <p>
+                    <a class="btn_login" href="#" onclick="$.magnificPopup.close();">
+                        <span id="insert_msg_log_in"></span>
+                    </a>
+                </p>
+                <p><span id="insert_msg"></span></p>
             </div>
-        </section>
-    </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.lot.accept") }}
+                </button>
+            </div>
+
+        </div>
+    </section>
 </div>
 
-<div class="container modal-block mfp-hide " id="modalPujarFicha">
+{{-- @todo tengo dudas de que se este utilizando, ya hay uno en modals_ficha --}}
+{{-- <div class="container modal-block mfp-hide " id="modalPujarFicha">
     <div class="modal-sub-w" data-to="pujarLoteFicha">
         <section class="panel">
             <div class="panel-body">
@@ -116,7 +89,7 @@
                         <div class='mb-10'></div>
                         <div class='mb-10'></div>
                         <ul class="items_list">
-                            <li><?= trans(\Config::get('app.theme') . '-app.lot.tax_not_included') ?> </li>
+                            <li> {{trans(\Config::get('app.theme') . '-app.lot.tax_not_included')}} </li>
 
                         </ul>
                     </div>
@@ -125,125 +98,76 @@
         </section>
     </div>
 </div>
+ --}}
 
-<div class="container modal-block mfp-hide " id="modalMensajeDelete">
-    <div class="modal-sub-w" data-to="pujarLoteFicha">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1"></span><br />
-                        <p id="insert_msg_delete"></p><br />
-
-                        <button class=" btn confirm_delete modal-dismiss btn-custom " ref=''
-                            sub=''>{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
-
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
-
-
+ {{-- se utiliza en panel/orders --}}
 <div class="container modal-block mfp-hide " id="modalMensajeDeleteOrder">
-    <div class="modal-sub-w" data-to="pujarLoteFicha">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1"></span><br />
-                        <p id="msg_delete_order"></p><br />
-
-                        <button class=" btn confirm_delete_order modal-dismiss btn-custom " ref=''
-                            sub=''>{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
-
-                    </div>
-                </div>
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <p id="msg_delete_order"></p>
             </div>
-        </section>
-    </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary confirm_delete_order">
+                    {{ trans("$theme-app.lot.accept") }}
+                </button>
+            </div>
+        </div>
+    </section>
 </div>
 
-
+{{-- Solamente en ficha shoppingCart --}}
 <div class="container modal-block mfp-hide " id="modalShoppingCart">
-    <div class="modal-sub-w">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1">
-                            <p id="msg_title_ShoppingCart"></p>
-                        </span><br />
-                        <p id="insert_msgweb"></p><br />
-                        <a href="{{ trans(\Config::get('app.theme') . '-app.lot.href_continue_buying') }}">
-                            <button
-                                class=" btn modal-dismiss   btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.continue_buying') }}</button>
-                        </a>
-                        <a href="{{ route('showShoppingCart', ['lang' => \Config::get('app.locale')]) }}">
-                            <button
-                                class=" btn  btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.go_to_cart') }}</button>
-                        </a>
-
-                    </div>
-                </div>
+    <section class="panel">
+        <div class="modal-wrapper">
+			<div class="modal-header">
+				<h5 id="msg_title_ShoppingCart"></h5>
+			</div>
+            <div class="modal-body">
+				<p id="insert_msgweb"></p>
             </div>
-        </section>
-    </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-secondary">
+                    {{ trans("$theme-app.lot.continue_buying") }}
+                </button>
+				<a href="{{ route('showShoppingCart', ['lang' => Config::get('app.locale')]) }}" class="btn btn-lb-primary">
+                    {{ trans("$theme-app.lot.go_to_cart") }}
+				</a>
+            </div>
+        </div>
+    </section>
 </div>
 
-
-
+{{-- Solamente en ficha articles --}}
 <div class="container modal-block mfp-hide " id="modalArticleCart">
-    <div class="modal-sub-w">
-        <section class="panel">
-            <div class="panel-body">
-                <div class="modal-wrapper">
-                    <div class=" text-center single_item_content_">
-                        <span class="class_h1">
-                            <p id="msg_title_ArticleCart"></p>
-                        </span><br />
-                        <p id="insert_msgweb"></p><br />
-                        <a href="{{ Route('articles') }}">
-                            <button
-                                class=" btn   btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.continue_buying') }}</button>
-                        </a>
-                        <a href="{{ route('showArticleCart', ['lang' => \Config::get('app.locale')]) }}">
-                            <button
-                                class=" btn  btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.go_to_cart') }}</button>
-                        </a>
-
-                    </div>
-                </div>
+    <section class="panel">
+        <div class="modal-wrapper">
+			<div class="modal-header">
+				<h5 id="msg_title_ArticleCart"></h5>
+			</div>
+            <div class="modal-body">
+				<p id="insert_msgweb"></p>
             </div>
-        </section>
-    </div>
+            <div class="modal-footer">
+                <a href="{{ route('articles') }}" class="btn modal-dismiss btn-lb-secondary">
+                    {{ trans("$theme-app.lot.continue_buying") }}
+                </a>
+				<a href="{{ route('showArticleCart', ['lang' => Config::get('app.locale')]) }}" class="btn btn-lb-primary">
+                    {{ trans("$theme-app.lot.go_to_cart") }}
+				</a>
+            </div>
+        </div>
+    </section>
 </div>
 
+{{-- Solamente lo usa el blog de ansoreana para ampliar las imagenes,
+	se podría modificar por los mismos que utiliza vico en eventos/piezas --}}
 <div class="d-none" id="imgPopUpModal">
     <span class="cursor">&times;</span>
     <br />
     <img id="img-pop-up-img">
     <div id="img-pop-up-label"></div>
 </div>
-
-
-@if (!empty($lote_actual->contextra_hces1))
-    <div class="modal fade" id="modal360" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        tabindex="-1">
-        <div class="modal-dialog flex valign" role="document">
-            <div class="modal-content">
-                <a class="close-modal-360" data-dismiss="modal"><i class="fas fa-times"></i></a>
-                <div class="modal-body">
-                    <?= $lote_actual->contextra_hces1 ?>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
-
-
-
 
 @if ($errors->any())
     <script>

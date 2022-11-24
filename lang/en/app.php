@@ -405,7 +405,8 @@ $lang =[
 			'quick_bid' => 'Quick bid',
 			'bid_on' => 'Bid on',
 			'add_bidders' => 'Add bidders',
-			'bid_participants' => 'Participants in the bid'
+			'bid_participants' => 'Participants in the bid',
+			'closing_date' => 'Closing date: '
 		),
 	'lot_list' =>
 		array (

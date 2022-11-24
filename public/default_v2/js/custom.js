@@ -359,7 +359,6 @@ $(function () {
 		if (e.isDefaultPrevented()) {
 			// formulario incorrecto
 			var text = $(".error-form-validation").html();
-			$("#insert_msgweb").html('');
 			$("#insert_msgweb").html(text);
 			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		} else {
@@ -369,12 +368,10 @@ $(function () {
 			has_errors = verifyFormLoginContent();
 
 			if (has_errors) {
-				$("#insert_msgweb").html('');
 				$("#insert_msgweb").html(messages.error.generic);
 				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			}
 			else if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-				$("#insert_msgweb").html('');
 				$("#insert_msgweb").html(messages.error.dni_incorrect);
 				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			} else {
@@ -438,7 +435,6 @@ $(function () {
 				}
 			});
 		} else {
-			$("#insert_msgweb").html('');
 			$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		}
@@ -745,44 +741,6 @@ $(function () {
 
 			$.magnificPopup.open({ items: { src: '#changeOrden' }, type: 'inline' }, 0);
 		}
-	});
-
-	$(".confirm_delete").click(function () {
-		var ref = $(this).attr("ref");
-		var sub = $(this).attr("sub");
-		$.magnificPopup.close();
-		$.ajax({
-			type: "POST",
-			url: '/api-ajax/delete_order',
-			data: { ref: ref, sub: sub },
-			success: function (response) {
-				res = jQuery.parseJSON(response);
-				if (res.status == 'success') {
-					$("#" + res.respuesta).remove();
-					$("#insert_msg").html(messages.success[res.msg]);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					change_price_saved_offers();
-				} else {
-					if ($(res.respuesta).empty()) {
-						$("#" + res.respuesta + " .form-group-custom input").addClass("has-error-custom");
-					}
-					$("#insert_msg").html(messages.error[res.msg]);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-				}
-
-			}
-
-		});
-	});
-
-	$(".delete_order").click(function () {
-		var ref = $(this).attr("ref");
-		var sub = $(this).attr("sub");
-		$(".confirm_delete").attr("price", $("#" + sub + "-" + ref + " input").val());
-		$(".confirm_delete").attr("ref", ref);
-		$(".confirm_delete").attr("sub", sub);
-		$("#insert_msg_delete").html(messages.neutral.confirm_delete);
-		$.magnificPopup.open({ items: { src: '#modalMensajeDelete' }, type: 'inline' }, 0);
 	});
 
 	$("#form-valoracion-adv").submit(function (event) {
