@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\V5\FxCli;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;

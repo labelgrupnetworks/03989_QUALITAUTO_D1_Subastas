@@ -82,7 +82,7 @@
 
 				<td>
 					<a title="{{ trans("admin-app.button.edit") }}"
-						href="{{ route("bills.edit", ['num_dvc0' => $bill->num_dvc0] ) }}"
+						href="{{ route("bills.edit", ['bill' => $bill->num_dvc0] ) }}"
 						class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 						{{ trans("admin-app.button.edit") }}
 					</a>
