@@ -1,6 +1,6 @@
+{{--
 
 
-	<!--
     <div class="info-auction secondary-color" id="auction__lots">
 
         <div class="container">
@@ -22,8 +22,7 @@
                 @endif
             </div>
         </div>
-	</div>
-	-->
+	</div> --}}
 
 <div class="info-auction-tab-contet">
     <div class="container">
@@ -115,7 +114,7 @@
 		@if (empty($filters["section"]))
 			<div class="links-sections">
 				@foreach($sections as $sec)
-					<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0, 'keysection' => $sec['key_sec']))}}">{{ucfirst($sec["des_sec"])}}</a>
+					<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0, 'keysection' => $sec['key_sec'] ?? ' '))}}">{{ucfirst($sec["des_sec"])}}</a>
 				@endforeach
 			</div>
 		@endif

@@ -92,7 +92,7 @@ if( is_numeric($year) && $year > 2000 & $year < 2100){
 			#evitamos que se repitan sesiones con misma fecha
 			 $fechasSesiones = array()
 			 @endphp
-            @foreach($data as $sub)
+            @foreach($auctions as $sub)
 				@if($sub->tipo_sub == 'W' &&  !array_key_exists(strtotime($sub->session_start), $fechasSesiones)  )
 
 					<div class="bs-callout bs-callout-default AUCTION_calendar_border" id="callout-alerts-dismiss-plugin" >
