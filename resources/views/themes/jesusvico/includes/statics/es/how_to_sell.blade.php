@@ -16,7 +16,7 @@
         <div class="col-12 col-lg-7">
             <div class="decoration">
                 <div class="ratio ratio-16x9 lb-fadeIn lb-fadeInLeft">
-                    <video controls="" poster="/themes/jesusvico/assets/img/how_to_sell_poster.jpg" autoplay="">
+                    <video controls="" poster="/themes/jesusvico/assets/img/how_to_sell_poster.jpg">
                         <source src="/files/videos/jesusvico_tasaciones.mp4" type="video/mp4">
                         Tu navegador no soporta HTML5 video.
                     </video>

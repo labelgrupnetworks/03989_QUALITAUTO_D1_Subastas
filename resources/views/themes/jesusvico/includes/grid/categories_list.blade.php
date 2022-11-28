@@ -6,7 +6,7 @@
 		<div class="filter-title">{{ trans(\Config::get('app.theme') . '-app.lot_list.categories') }}</div>
     </div>
 
-    <div class="auction__filters-type-list collapse filter-child-collapse p-0" id="auction_categories">
+    <div class="auction__filters-type-list show filter-child-collapse p-0" id="auction_categories">
 
         <div class="input-category bg-lb-primary-50">
 			<div class="form-check">

@@ -585,7 +585,7 @@ ul.style-diamond li p {
 }
 
 .section-grid-lots {
-	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
 }
 
 .bottom-pagination .pagination {
@@ -693,8 +693,16 @@ section.ficha-pujas {
 	font-weight: var(--font-extra-light);
 }
 
-.ficha-pujas .next-price {
+.ficha-pujas .bid-price {
 	color: var(--lb-text-color-primary);
+}
+
+.ficha-pujas #actual_max_bid:not(.lose, .other, .no-winner) {
+	color: var(--lb-color-secondary);
+}
+
+.ficha-pujas .next-price {
+	display: none !important;
 }
 
 .ficha-pujas .price .value {
