@@ -14,6 +14,7 @@
 	--bs-gutter-y: 1rem;
 }
 
+main.home,
 main.subastas,
 main.grid,
 main.ficha,
@@ -24,7 +25,8 @@ main.contact-page,
 main.museum-page,
 main.events-page,
 main.event-page,
-.home-static-page {
+.home-static-page,
+.create-account {
 	padding-top: var(--pading-pages);
 	padding-bottom: var(--pading-pages);
 }
@@ -65,7 +67,7 @@ body>header {
 .first-header-wrapper {
 	background-color: var(--lb-color-primary);
 	color: #fff;
-	font-size: 14pt;
+	font-size: 16px;
 }
 
 header .first-header-wrapper a,
@@ -138,6 +140,16 @@ header .dropdown-menu {
 	font-weight: var(--font-extra-bold);
 }
 
+.login_desktop .input-group:not(.has-validation)>:not(:last-child) {
+	background-color: #fff;
+	border-right: 0;
+}
+
+.login_desktop .input-group>:not(:first-child) {
+	border-left: 0;
+	background-color: #fff;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Footer
@@ -171,8 +183,7 @@ footer a:focus {
 }
 
 footer .nav-item {
-	--bs-nav-link-font-size: 14pt;
-	font-size: 14pt;
+	--bs-nav-link-font-size: 16px;
 }
 
 footer .nav-link {
@@ -286,7 +297,7 @@ footer h5 {
 
 @media(min-width: 1200px) {
 	.static-page p {
-		font-size: 18pt;
+		font-size: 20px;
 	}
 }
 
@@ -546,8 +557,8 @@ ul.style-diamond li p {
 }
 
 .filter-title {
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
+	padding-top: 0.8rem;
+	padding-bottom: 0.8rem;
 }
 
 .filter-child-collapse {
@@ -587,6 +598,11 @@ ul.style-diamond li p {
 | GRID - LOT
 |--------------------------------------------------------------------------
 */
+
+.lot-card .card-img-top {
+	margin-top: 0.5rem;
+}
+
 .lot-card .card-footer {
 	display: flex;
 	gap: 0.5rem;
@@ -677,8 +693,12 @@ section.ficha-pujas {
 	font-weight: var(--font-extra-light);
 }
 
+.ficha-pujas .next-price {
+	color: var(--lb-text-color-primary);
+}
+
 .ficha-pujas .price .value {
-	font-size: 26pt;
+	font-size: 28px;
 	font-weight: var(--font-light);
 }
 
@@ -699,24 +719,24 @@ section.ficha-pujas {
 }
 
 .ficha-pujas.ficha-pujas-o .price .value {
-	font-size: 22pt;
+	font-size: 24px;
 	font-weight: var(--font-light);
 }
 
 .ficha-pujas-o .insert-bid-input>p {
 	color: var(--lb-color-primary);
-	font-size: 18pt;
+	font-size: 20px;
 	font-weight: var(--font-extra-light);
 }
 
 .ficha-pujas-o input {
-	font-size: 18pt;
+	font-size: 20px;
 	padding: 0.5rem 1rem;
 	border-right: 0;
 }
 
 .ficha-pujas-o .currency-input {
-	font-size: 18pt;
+	font-size: 20px;
 	border-left: 0;
 	background: none;
 }
@@ -842,6 +862,7 @@ section.ficha-pujas {
 .museum-card img {
 	height: 300px;
 	object-fit: contain;
+	padding: 0.5rem;
 }
 
 .event-card .img-card-wrapper {

@@ -90,7 +90,7 @@
 	--bs-font-sans-serif: 'MartelSans', 'Rubik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--bs-border-radius: var(--lb-border-radius, 0.375rem);
 	--bs-accordion-transition: color 1s ease-in-out, background-color 1s ease-in-out, border-color 1s ease-in-out, box-shadow 1s ease-in-out, border-radius 1s ease;
-	--bs-body-font-size: 16pt;
+	--bs-body-font-size: 18px;
 	--bs-body-font-weight: var(--font-extra-light);
 
 	--bs-link-color: var(--lb-color-gray);
@@ -102,6 +102,9 @@
 | General
 |--------------------------------------------------------------------------
 */
+.lb-text-primary {
+	color: var(--lb-text-color-primary);
+}
 
 .btn-close.btn-lb-close {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'%3E%3Ctitle%3Eionicons-v5-m%3C/title%3E%3Cpath d='M448,256c0-106-86-192-192-192S64,150,64,256s86,192,192,192S448,362,448,256Z' style='fill:none;stroke:%230d5257;stroke-miterlimit:10;stroke-width:32px'/%3E%3Cline x1='320' y1='320' x2='192' y2='192' style='fill:none;stroke:%230d5257;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/%3E%3Cline x1='192' y1='320' x2='320' y2='192' style='fill:none;stroke:%230d5257;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px'/%3E%3C/svg%3E");
@@ -164,17 +167,17 @@ h3,
 
 	h1,
 	.h1 {
-		font-size: 22pt;
+		font-size: 24px;
 	}
 
 	h2,
 	.h2 {
-		font-size: 26pt;
+		font-size: 28px;
 	}
 
 	h3,
 	.h3 {
-		font-size: 26pt;
+		font-size: 28px;
 	}
 
 	.fs-40pt {
@@ -279,4 +282,10 @@ h3,
 	--bs-btn-active-border-color: var(--lb-color-primary);
 	--bs-btn-hover-color: var(--lb-color-primary);
 	--bs-btn-hover-border-color: var(--lb-color-primary);
+}
+
+.input-group-text,
+.form-control,
+.form-select {
+	border-radius: var(--lb-border-radius);
 }

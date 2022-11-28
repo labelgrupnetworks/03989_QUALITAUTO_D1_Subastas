@@ -78,7 +78,8 @@ $(document).ready(function() {
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">
-				<p class="h1">{{ $titleName }} | <b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b></p>
+				{{-- <p class="h1">{{ $titleName }} | <b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b></p> --}}
+				<p class="h1"><b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b> | <a href="javascript:navigation.back();">Volver</a>  </p>
 			</div>
 		</div>
 	</div>

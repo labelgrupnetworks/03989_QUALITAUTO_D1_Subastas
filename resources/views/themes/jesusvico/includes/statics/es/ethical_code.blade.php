@@ -93,7 +93,7 @@
 				<div class="col-12 col-md-6 mb-5">
 					<div class="flex-align-center-column">
 						<div>
-							<h3 class="bg-lb-color-primary-light">Código de conducta de la AENP</h3>
+							<h3 class="bg-lb-color-primary-light px-2 pt-2 pb-1">Código de conducta de la AENP</h3>
 						</div>
 						<div style="height: 118px;display: flex;align-items: center;">
 							<img src="/themes/jesusvico/assets/img/aenp_img.png" alt="">
@@ -106,7 +106,7 @@
 				<div class="col-12 col-md-6 mb-5">
 					<div class="flex-align-center-column">
 						<div>
-							<h3 class="bg-lb-color-primary-light">Código de conducta de la IAPN</h3>
+							<h3 class="bg-lb-color-primary-light px-2 pt-2 pb-1">Código de conducta de la IAPN</h3>
 						</div>
 						<div class="flex-align-center-row-mobile">
 							<img src="/themes/jesusvico/assets/img/iapn_img.png" alt="">

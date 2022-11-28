@@ -12,7 +12,7 @@
 
             <h1>{{ trans("$theme-app.blog.museum-pieces") }}</h1>
 
-            <div class="row row-cols-1 row-cols-md-2 gy-3 gx-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-3 gx-3">
                 @foreach ($banners as $key => $banner)
                     @php
                         $year = '';
