@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="fixed">
+<html @class(['fixed', 'sidebar-left-collapsed' => session('admin.navigator_collapse')])>
     <head>
         @include('admin::includes.head')
     </head>

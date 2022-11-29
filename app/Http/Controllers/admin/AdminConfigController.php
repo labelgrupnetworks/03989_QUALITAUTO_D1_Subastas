@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 
-use Request;
-use Controller;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use App\Models\Content;
+use Illuminate\Support\Facades\View;
 
 class AdminConfigController extends Controller
 {
@@ -25,7 +26,7 @@ class AdminConfigController extends Controller
             $data['web_config'][$config->key] = $config->value;
         }
         $data['config_pago'] = $web_config_pago_temp;
-        return \View::make('admin::pages.config', array('data' => $data));
+        return View::make('admin::pages.config', array('data' => $data));
     }
 
     public function save(Request $request){
@@ -56,5 +57,11 @@ class AdminConfigController extends Controller
         }
 
     }
+
+	public function saveConfigurationSession(Request $request)
+	{
+		$request->session()->put('admin.navigator_collapse', $request->get('navigatorIsCollapse', false));
+		return response(['status' => 'success']);
+	}
 
 }

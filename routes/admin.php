@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\admin\AdminConfigController;
 /*
 |--------------------------------------------------------------------------
 | Layout - BackOffice
@@ -359,6 +359,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
 
 		Route::resource('emails', 'contenido\AdminEmailsController')->only(['index', 'edit', 'update']);
+
+
+		Route::post('admin-config', [AdminConfigController::class, 'saveConfigurationSession']);
 	});
 
 

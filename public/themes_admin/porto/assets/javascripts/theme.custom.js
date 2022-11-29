@@ -1,8 +1,9 @@
-$(document).ready(function () {
+$(function() {
+
+	document.querySelector('.sidebar-toggle')?.addEventListener('click', saveNavigatorPosition);
 
 	//permite orden de columnas en tablas con data-order
 	$('thead th').on('click', tableConfig.orderTable);
-
 
 	$(".delete_button_js").click(function (event){
 		var button = $(this);
@@ -30,10 +31,7 @@ $(document).ready(function () {
 		]
 	});
 
-});
 
-
-$(function() {
 	var action_tab = {};
 
 	//Dropzone subida de imágenes para el slider
@@ -595,6 +593,23 @@ $(document).on('ready', function () {
     } );
 });
 
+/**
+ * Guarda en sesión la posición del navegador lateral.
+ * No es necesaria la respuesta, por eso no se trata.
+ */
+function saveNavigatorPosition(event) {
+	const navigatorIsCollapse = $('html').hasClass('sidebar-left-collapsed');
+
+	fetch('/admin/admin-config', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		  },
+		body: JSON.stringify({ navigatorIsCollapse }),
+	})
+}
+
 function LabelUtils() {
 
 	this.numberFormat = number => {
@@ -606,11 +621,13 @@ function LabelUtils() {
 
 	this.sumArrayValues = (totalValue, value) => this.intVal(totalValue) + this.intVal(value);
 
-	this.intVal = i => {
-		return typeof i === 'string' ?
-			i.replace(/[\$,]/g, '')*1 :
-			typeof i === 'number' ?
-				i : 0;
+	this.intVal = (i) => {
+		const isString = typeof i === 'string';
+		if(isString) {
+			return i.replace(/[\$,]/g, '') * 1;
+		}
+
+		return  typeof i === 'number' ? i : 0;
 	};
 
 	this.months = {
