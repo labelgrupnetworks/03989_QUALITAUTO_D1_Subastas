@@ -1172,6 +1172,7 @@ window.modalDeletAddress = function modalDeletAddress() {
 	var token = $("#modalDeletAddress #_token").val();
 	var cod = $("#modalDeletAddress #cod_delete").val();
 	var lang = $("#modalDeletAddress #lang").val();
+
 	$.ajax({
 		type: "POST",
 		url: '/delete_address_shipping',
@@ -1184,8 +1185,7 @@ window.modalDeletAddress = function modalDeletAddress() {
 				ajax_shipping('W1', lang);
 			}
 		}
-	});
-
+	})
 };
 
 function fav_addres(thi) {
@@ -1196,14 +1196,16 @@ function fav_addres(thi) {
 		data: { codd_clid: cod },
 		success: function (response) {
 			if (response.status == 'success') {
-
 				$("#modalMensaje #insert_msg").html('');
 				$("#modalMensaje #insert_msg").html(messages.success.success_saved);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				ajax_shipping(response.codd_clid, cod);
+				return response;
 			}
 
 		}
+	}).then((response) => {
+		return response;
 	});
 }
 
@@ -1215,7 +1217,7 @@ function delete_shipping_addres(thi) {
 
 function submit_shipping_addres(event, thi) {
 	event.preventDefault();
-	$.ajax({
+	return $.ajax({
 		type: "POST",
 		context: thi,
 		url: '/change_address_shipping',
@@ -1227,8 +1229,11 @@ function submit_shipping_addres(event, thi) {
 				$("#modalMensaje #insert_msg").html(messages.success.success_saved);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				ajax_shipping(response.codd_clid, $("#lang_dirreciones").val());
+				return response;
 			}
 		}
+	}).then((response) => {
+		return response;
 	});
 }
 

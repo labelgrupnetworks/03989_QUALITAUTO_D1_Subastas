@@ -232,40 +232,4 @@ if ($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null) {
             </div>
         </div>
     </section>
-
-
-
-    <div class="account-user color-letter  panel-user">
-
-        @if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1)
-            <section class="panel-user">
-                <div class="container panel">
-                    <div class="row">
-                        @include('pages.panel.address_shipping')
-                    </div>
-                </div>
-            </section>
-
-            <div id="modalDeletAddress" class="container modal-block mfp-hide" data-to="modalDeletAddress">
-                <div data-to="modalDeletAddress" class="">
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div class="modal-wrapper">
-                                <div class=" text-center single_item_content_">
-                                    <p>{{ trans(\Config::get('app.theme') . '-app.user_panel.delete_address') }}</p>
-                                    <br>
-                                    <input name="_token" type="hidden" id="_token" value="{{ csrf_token() }}" />
-                                    <input value="" name="cod" type="hidden" id="cod_delete">
-                                    <input value="<?= Config::get('app.locale') ?>" name="lang" type="hidden"
-                                        id="lang">
-                                    <button
-                                        class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        @endif
-    </div>
 @stop
