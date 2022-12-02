@@ -1,160 +1,13 @@
 $(function () {
 
-	$('.imgPopUpCall_JS').on('click', function () {
-
-		var modal = $("#imgPopUpModal");
-		modal.removeClass("hidden") ;
-		var modalImg = document.getElementById("img-pop-up-img");
-		var captionText = document.getElementById("img-pop-up-label");
-
-
-		modalImg.src = this.src;
-		captionText.innerHTML = this.alt;
-	});
-	$('#imgPopUpModal').on('click', function () {
-		$(this).addClass("hidden") ;
-	})
-
-	$('.panel-collapse').on('show.bs.collapse', function () {
-		var id = $(this).attr('id')
-		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').show()
-		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').hide()
-	})
-	$('.panel-collapse').on('hide.bs.collapse', function () {
-		var id = $(this).attr('id')
-		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').hide()
-		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').show()
-	})
-
-	$('#button-open-user-menu').click(function () {
-		$('#user-account-ul').toggle()
-	})
-	$('.newsletter-input').focus(function () {
-		$('.newsletter-placeholder').fadeOut()
-	})
-	$('.newsletter-input').focusout(function () {
-		if ($(this).val().length > 0) {
-			$('.newsletter-placeholder').hide()
-		} else {
-			$('.newsletter-placeholder').show()
-		}
-	})
-
-	$('.user-account').hover(function () {
-		$(this).find('.mega-menu').show()
-	}, function () {
-		$(this).find('.mega-menu').hide()
-
-	})
-
-	$('.search-header').click(function () {
-		$('#formsearchResponsive input').focus()
-		$('.menu-principal-search').addClass('active')
-		$(this).fadeOut(500)
-		$('.search-header-close').css('left', '0')
-		$('.search-header-close').addClass('bounceInLeft')
-
-
-	})
-
-	$('.search-header-close').click(function () {
-		$('.menu-principal-search').removeClass('active')
-		$('.search-header-close').css('left', '-90px')
-		$('.search-header-close').removeClass('bounceInLeft')
-		$('.search-header').fadeIn()
-	})
-
-
-	$('.menu-responsive').click(function () {
-		$('.menu-principal').addClass('open')
-	})
-
-	$('.close-menu-reponsive').click(function () {
-		$('.menu-principal').removeClass('open')
-	})
-
-
-	$("#country").change(function () {
-		var selected_country = $("#frmRegister-adv #country").val();
-		if (selected_country == "ES") {
-			$('#dni').prop("required", true);
-			$('#cpostal').prop("required", true);
-		} else {
-			$('#dni').removeAttr("required");
-			$('#cpostal').removeAttr("required");
-		}
-	});
-
-	//recargar toda la suma de los lotes seleccionados
-
-
-	$('#owl-carousel').fadeIn('fast');
-
-
-	$('.switcher').click(function () {
-		$(this).toggleClass('switcher-active');
-
-	});
-
-	$('.tabs-custom ul li').click(function (e) {
-
-		var elFather = $(this).parents('.tabs-custom');
-		var elBro = $(elFather).siblings('.tab-content');
-
-
-		$(elBro).fadeOut(200);
-		$('.loading-page').show(500);
-		if ($('.adj').length) {
-			$('.adj').hide();
-		}
-
-	});
-	$(document).scroll(function (e) {
-		if ($(document).scrollTop() > 33) {
-			$('header').addClass('fixed w-100 top-0 left-0')
-
-		}
-		if ($(document).scrollTop() <= 33) {
-			$('header').removeClass('fixed w-100 top-0 left-0')
-
-		}
-		if ($(document).scrollTop() > 100) {
-			$('.button-up').show(500)
-		}
-		if ($(document).scrollTop() <= 100) {
-			$('.button-up').hide(500)
-		}
-	})
-
-
-	$('.button-up').click(function () {
-
-		$('html,body').animate({ scrollTop: 0 }, 500);
-	});
-
-
-
-	$("#owl-carousel").owlCarousel({
-		items: 1,
-		loop: true,
-		autoplay: true,
-		stagePadding: 0,
-		margin: 0,
-		dots: true,
-		nav: false,
-		animateOut: 'fadeOut',
-		slideTransition: 'ease',
-
-		navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">']
-	});
-
-
 	/**Funcion a lanzar cuando se inizializa el carousel de movil en la ficha del lote*/
-	$("#owl-carousel-responsive").on('initialized.owl.carousel', function(event){
-		if(typeof initOwlResponsive !== 'undefined'){
+	$("#owl-carousel-responsive").on('initialized.owl.carousel', function (event) {
+		if (typeof initOwlResponsive !== 'undefined') {
 			initOwlResponsive(event);
 		}
 	});
+
+	//carousel imagenes ficha lote
 	$("#owl-carousel-responsive").owlCarousel({
 		items: 1,
 		autoplay: $('.video-item').length > 0 ? false : true,
@@ -164,354 +17,13 @@ $(function () {
 		responsiveClass: true,
 	});
 
-	$("#accerder-user-form input[name='password']").on('keyup', function (e) {
-		if (e.keyCode == 13) {
-			$("#accerder-user").click()
-		}
-	});
+	$('.btn_login').on('click', showLogin);
+	$('.closedd').on('click', closeLogin);
+	$("#accerder-user-form").on('submit', handleSubmitLoginForm);
+	$('#newsletter-btn').on('click', handleSubmitNewsletterForm);
 
-	$("#accerder-user-form-responsive input[name='password']").on('keyup', function (e) {
-		if (e.keyCode == 13) {
-			$("#accerder-user-responsive").click()
-		}
-	});
-	$('.login').on('click', function () {
-		$('#loginResponsive').removeClass('fadeOutDown');
-		$('#loginResponsive').show().addClass('animated fadeInDown');
-	});
-	$('#closeResponsive').on('click', function () {
-		$('#loginResponsive').addClass('animated fadeOutDown').removeClass('fadeInDown');
-	})
-	$('#btnResponsive').on('click', function () {
-		$('#menuResponsive').show().addClass('animated fadeInRight').removeClass('fadeOutRight');
-	});
-	$('#btnResponsiveClose').on('click', function () {
-		$('#menuResponsive').addClass('animated fadeOutRight').removeClass('fadeInRight');
-	});
-	$('.btn_login').on('click', function () {
-		$('.login_desktop').fadeToggle("fast");
-		$('.login_desktop [name=email]').focus();
-	});
-	$('.closedd').on('click', function () {
-		$('.login_desktop').fadeToggle("fast");
-	});
-
-
-	$("#accerder-user-form").on('submit', function (event) {
-		event.preventDefault();
-
-		$('#accerder-user').addClass('loadbtn')
-		$('.login-content-form').removeClass('animationShaker')
-		$.ajax({
-			type: "POST",
-			url: '/login_post_ajax',
-			data: $('#accerder-user-form').serialize(),
-			success: function (response) {
-				if (response.status == 'success') {
-					location.reload();
-				} else {
-					$(".message-error-log").text('').append(messages.error[response.msg]);
-					$("#accerder-user").removeClass('loadbtn')
-					$('.login-content-form').addClass('animationShaker')
-				}
-			}
-		});
-	});
-
-	$('.btn-custom-search').click(function () {
-		$('.btn-custom-search').addClass('loadSearch')
-	})
-
-	//Iguala contenido de un formulario divididos por contenedores div
-	function equalsForm(form) {
-		var inputs = form.find('input')
-		var select = form.find('select')
-		$(inputs).each(function () {
-			var ref = $(this).attr('data-like')
-			$(this).val($(ref).val())
-		})
-		$(select).each(function () {
-			var ref = $(this).attr('data-like')
-			$(this).val($(ref).val())
-		})
-	}
-
-
-	//verifica si las password son identicas
-	function validatePass() {
-		if ($('#password').val() !== $('#confirmcontrasena').val()) {
-			$('input[name="password"]').parent().addClass('has-error')
-			$('#confirmcontrasena').parent().addClass('has-error')
-			$('#error-confirm-pass').show()
-			return false
-		} else {
-			$('#error-confirm-pass').hide()
-			return true
-		}
-	}
-
-
-	//verifica si los emails son identicos
-	function validateEmail() {
-		if ($('#email').val() !== $('#emailconfirm').val()) {
-			$('#email').parent().addClass('has-error')
-			$("#emailconfirm").parent().addClass('has-error')
-			$('#error-confirm-email').show()
-			return false
-		} else {
-			$('#error-confirm-email').hide()
-			return true
-		}
-	}
-
-	//Validamos pagina uno del formulario
-	$('#create-user').click(function () {
-		$('#error-address').hide()
-		var validate = ''
-		if ($('#second-address').is(':checked')) {
-			equalsForm($('#second-address-content'))
-		}
-		validate = validateFrom($('.personal-info'), true)
-		validate = validateFrom($('.create-account-address-container'), false, true)
-		if (validate === 'error') {
-			$('#error-address').show()
-		} else {
-			if ($('#condiciones').is(':checked')) {
-				$('#frmRegister-adv').submit()
-			} else {
-				$('#condiciones').siblings('span').addClass('text-danger')
-				$('#condiciones').siblings('span').find('a').addClass('text-danger')
-			}
-		}
-
-
-	})
-
-
-	$('#condiciones').change(function () {
-		$('#condiciones').siblings('span').removeClass('text-danger')
-		$('#condiciones').siblings('span').find('a').removeClass('text-danger')
-	})
-
-	function validateFrom(form, hasEmailPass, hasSelect) {
-		var inputs = form.find('.form-group')
-		var valError = '';
-		$(inputs).each(function (index, el) {
-			$(this).removeClass('has-error')
-			if ($(this).find('input').attr('type') === 'text' || $(this).find('input').attr('type') === 'password' || $(this).find('input').attr('type') === 'email') {
-				if (!$(this).hasClass('hidden')) {
-					if ($(this).find('input').val().length === 0) {
-						$(this).addClass('has-error')
-						valError = 'error'
-					}
-				}
-
-			}
-		})
-
-		if (hasSelect) {
-			var select = form.find('select')
-			$(select).each(function (index, el) {
-				$(this).removeClass('has-error')
-				if ($(this).val().length === 0) {
-					$(this).parent().addClass('has-error')
-					valError = 'error'
-				}
-			})
-		}
-
-		if (hasEmailPass) {
-			if (!$('#erroremail').hasClass('hidden')) {
-				$("#insert_msgweb").html($("#erroremail").html());
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-				valError = 'error'
-			}
-			else if (!validateEmail()) {
-				$("#insert_msgweb").html($("#error-confirm-email").html());
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-				valError = 'error'
-			}
-			else if ((!validatePass())) {
-				$("#insert_msgweb").html($("#error-confirm-pass").html());
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-				valError = 'error'
-			}
-
-
-
-		}
-		return valError
-	}
-
-
-
-	$('#second-address').change(function () {
-		if ($('#second-address-content').css('display') === 'none') {
-			$('#second-address-content').fadeIn()
-		} else {
-			$('#second-address-content').hide()
-		}
-		equalsForm($('#second-address-content'))
-	})
-
-
-	$('#frmRegister-adv').validator().on('submit', function (e) {
-		if (e.isDefaultPrevented()) {
-			// formulario incorrecto
-			var text = $(".error-form-validation").html();
-			$("#insert_msgweb").html(text);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		} else {
-			e.preventDefault();
-			var $this = $(this);
-			$(this).validator('validate');
-			has_errors = verifyFormLoginContent();
-
-			if (has_errors) {
-				$("#insert_msgweb").html(messages.error.generic);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			}
-			else if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-				$("#insert_msgweb").html(messages.error.dni_incorrect);
-				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-			} else {
-				$('button', $this).attr('disabled', 'disabled');
-				// Datos correctos enviamos ajax
-				$.ajax({
-					type: "POST",
-					url: routing.registro,
-					data: $('#frmRegister-adv').serialize(),
-					beforeSend: function () {
-						$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-					},
-					success: function (response) {
-						$('button', $this).attr('disabled', false);
-						res = jQuery.parseJSON(response);
-						if (res.err == 1) {
-							$("#insert_msgweb").html('');
-							$("#insert_msgweb").html(messages.error[res.msg]);
-							$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-						} else {
-							window.location.href = res.msg;
-						}
-
-					}
-				});
-			}
-
-
-		}
-
-	});
-
-
-    /**
-     * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
-     * actualmente no utilizamos en la vista.
-     */
-	$('#newsletter-btn').on('click', function () {
-		var email = $('.newsletter-input').val();
-		var lang = $('#lang-newsletter').val();
-
-		var entrar = false;
-		if ($('#condiciones').prop("checked")) {
-			entrar = true;
-		}
-
-		if (entrar) {
-			$.ajax({
-				type: "POST",
-				data: { email: email, lang: lang, condiciones: 1, families: [1] },
-				url: '/api-ajax/newsletter/add',
-				beforeSend: function () {
-				},
-				success: function (msg) {
-					if (msg.status == 'success') {
-						$('.insert_msg').html(messages.success[msg.msg]);
-					} else {
-						$('.insert_msg').html(messages.error[msg.msg]);
-					}
-					$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
-				}
-			});
-		} else {
-			$("#insert_msgweb").html(messages.neutral.accept_condiciones);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		}
-	});
-
-	$('#frmUpdateUserPasswordADV').validator().on('submit', function (e) {
-
-		if (e.isDefaultPrevented()) {
-			// formulario incorrecto
-		} else {
-
-			e.preventDefault();
-			var $this = $(this);
-
-			$('button', $this).attr('disabled', 'disabled');
-			// Datos correctos enviamos ajax
-			$.ajax({
-				type: "POST",
-				url: '/api-ajax/client/update/password',
-				data: $('#frmUpdateUserPasswordADV').serialize(),
-				beforeSend: function () {
-					//$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-				},
-				success: function (response) {
-
-					$('button', $this).attr('disabled', false);
-
-					res = jQuery.parseJSON(response);
-
-					if (res.err == 1) {
-						$('.insert_msg').html('<div class="alert alert-danger">' + messages.error[res.msg] + '</div>');
-					} else {
-						$('.insert_msg').html('<div class="alert alert-success">' + messages.success[res.msg] + '</div>');
-					}
-
-				}
-			});
-
-		}
-	});
-
-	$('#frmUpdateUserInfoADV').validator().on('submit', function (e) {
-
-		if (e.isDefaultPrevented()) {
-
-			// formulario incorrecto
-		} else {
-
-			e.preventDefault();
-			var $this = $(this);
-
-			$('button', $this).attr('disabled', 'disabled');
-			// Datos correctos enviamos ajax
-			$.ajax({
-				type: "POST",
-				url: '/api-ajax/client/update',
-				data: $('#frmUpdateUserInfoADV').serialize(),
-				beforeSend: function () {
-					$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-				},
-				success: function (response) {
-
-					$('button', $this).attr('disabled', false);
-
-					res = jQuery.parseJSON(response);
-
-					if (res.err == 1) {
-						$('.col_reg_form').html('<div class="alert alert-danger">' + messages.error[res.msg] + '</div>');
-					} else {
-						$('.col_reg_form').html('<div class="alert alert-success">' + messages.success[res.msg] + '</div>');
-					}
-				}
-
-			});
-
-		}
-	});
+	$('#frmUpdateUserPasswordADV').validator().on('submit', handleSubmitUpdatePasswordForm);
+	$('#frmUpdateUserInfoADV').validator().on('submit', handleSubmitUpdateUser);
 
 	$("#confirm_orden").click(function () {
 
@@ -529,7 +41,7 @@ $(function () {
 		$.ajax({
 			type: "POST",
 			url: routing.ol + '-' + cod_sub,
-			data: { cod_sub: cod_sub, ref: ref, imp: imp,tel1: tel1,tel2: tel2,ortherphone : ortherphone },
+			data: { cod_sub: cod_sub, ref: ref, imp: imp, tel1: tel1, tel2: tel2, ortherphone: ortherphone },
 			success: function (data) {
 				if (data.status == 'error') {
 
@@ -538,8 +50,8 @@ $(function () {
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				} else if (data.status == 'success') {
 					//divisas, debe existir el selector
-					if(typeof $("#currencyExchange").val() != 'undefined'){
-						changeCurrency(data.imp, $("#currencyExchange").val(),"yourOrderExchange_JS");
+					if (typeof $("#currencyExchange").val() != 'undefined') {
+						changeCurrency(data.imp, $("#currencyExchange").val(), "yourOrderExchange_JS");
 					}
 
 					$("#tuorden").html(data.imp.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
@@ -592,155 +104,29 @@ $(function () {
 
 	});
 
-	$("#accerder-user-responsive").click(function (event) {
-		event.preventDefault();
-		$.ajax({
-			type: "POST",
-			url: '/login_post_ajax',
-			data: $('#accerder-user-form-responsive').serialize(),
-			success: function (response) {
-				if (response.status == 'success') {
-					location.reload();
-				} else {
-					$(".message-error-log").text('').append(messages.error[response.msg]);
-				}
-
-			}
-		});
-	});
-
 	$('.lot-action_comprar_lot').on('click', function (e) {
 		e.stopPropagation();
 		$.magnificPopup.close();
 		if (typeof cod_licit == 'undefined' || cod_licit == null) {
 
 
-			/************METODO NUEVO PARA MOSTRAR INICIO DE SESION CON LINK**********************************/
-		 /*
-		 	//codigo: muestra un mensaje para redirigir al usuario para hacer login o registrarse
-			$("#insert_msg_login_required").html("");
-			$("#insert_msg_login_required").html(messages.error.login_required);
-			$("#insert_msg_log_in").html("");
-			$("#insert_msg_log_in").html(messages.error.log_in);
-			$("#insert_msg").html("");
-			$("#insert_msg").html(messages.error.register_required);
 
-			//crea un cuadro de dialogo
-			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			back up	15/3/21
-			*/
-
-		//este codigo abre directamente la ventana emergente de login
-		$('.login_desktop').fadeToggle("fast");
-		$('.login_desktop [name=email]').focus();
-
-
-            /**************METODO ORIGINAL**********************************
-             * @OJO para utilizar, es necesario cambiar también en modals.blade el div con id "modalMensaje"
-             *
-             * $("#insert_msg").html("");
-             * $("#insert_msg").html(messages.error.mustLogin);
-             *
-             */
+			//este codigo abre directamente la ventana emergente de login
+			$('.login_desktop').fadeToggle("fast");
+			$('.login_desktop [name=email]').focus();
 
 
 		} else {
-			if($(this).hasClass("makeOffer_JS")){
+			if ($(this).hasClass("makeOffer_JS")) {
 				bid_make_offer = $("#bid_make_offer").val()
 				$(".imp_make_offer").html(bid_make_offer.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
 				$.magnificPopup.open({ items: { src: '#modalMakeOffer' }, type: 'inline' }, 0);
-			}else{
+			} else {
 				$.magnificPopup.open({ items: { src: '#modalComprarFicha' }, type: 'inline' }, 0);
 			}
 
 		}
 
-	});
-
-	$("#large_square").click(function () {
-		see_desc();
-	});
-
-	$("#square").click(function () {
-		see_img();
-	});
-
-	$("#small_square").click(function () {
-		see_img_samll();
-	});
-
-	$("#square_mobile").click(function () {
-		see_img();
-	});
-
-	$("#large_square_mobile").click(function () {
-		see_desc();
-	});
-
-	if ($.cookie('lot') == 'desc') {
-		see_desc();
-	} else if ($.cookie('lot') == 'img') {
-		see_img();
-	} else if ($.cookie('lot') == 'small_img') {
-		see_img_samll();
-	} else {
-		see_img();
-	}
-
-	$(window).resize(function () {
-		if ($(window).width() < 1200) {
-			$('.small_square .item_lot').removeClass('col');
-		}
-	});
-
-
-	if ($(window).width() < 768) {
-		see_img();
-	}
-
-	$("#save_change_orden").click(function () {
-
-		var cod_sub = $(this).attr('cod_sub');
-		var ref = $(this).attr('ref');
-		var order = $(this).attr('order');
-		$.ajax({
-			type: "POST",
-			url: url_orden + '-' + cod_sub,
-			data: { cod_sub: cod_sub, ref: ref, imp: order },
-			success: function (res) {
-				if (res.status == 'success') {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(res.msg);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					change_price_saved_offers();
-				} else {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(res.msg_1);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-				}
-			}
-
-		});
-	});
-
-	$('.save_orders').validator().on('submit', function (e) {
-		var order;
-		if (e.isDefaultPrevented()) {
-
-		} else {
-			e.preventDefault()
-			var save_orders = $(this).serializeArray();
-			$.each(save_orders, function (i, field) {
-				$("#save_change_orden").attr(field.name, field.value);
-				if (field.name == 'order') {
-					order = field.value
-				}
-			});
-			$(".precio_orden").html('');
-			$(".precio_orden").html(order);
-
-			$.magnificPopup.open({ items: { src: '#changeOrden' }, type: 'inline' }, 0);
-		}
 	});
 
 	$("#form-valoracion-adv").submit(function (event) {
@@ -749,7 +135,6 @@ $(function () {
 		$("#valoracion-adv").addClass("hidden");
 		event.preventDefault();
 		formData = new FormData(this);
-
 
 		var max_size = 6000;
 		var size = 0;
@@ -796,49 +181,6 @@ $(function () {
 			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 		}
 	});
-
-	$('.content_item_mini').hover(function (e) {
-
-		var el, newPos, capaOculta, vwCapaOculta, vwWindow;
-		el = $(this)
-		posEl = el.offset()
-		capaOculta = $(this).siblings($('.capaOculta'))
-		capaOculta.show()
-		posLeft = posEl.left
-		vwWindow = $(window).width() / 2
-
-		if (posLeft > vwWindow) {
-			vwCapaOculta = ($('.capaOculta').width() / 2);
-			newPos = posLeft - vwCapaOculta;
-			newpos2 = ($('.capaOculta').offset().left - vwCapaOculta) - 90
-			capaOculta.css("left", newpos2 + 'px');
-
-
-		} else {
-
-			newpos2 = 0
-		}
-		capaOculta.css("left", newpos2 + 'px');
-
-		var posElTop = el.offset().top
-		vhWindow = $(window).height() / 2
-
-		if (posElTop > vhWindow) {
-			if ($(document).scrollTop() > 200) {
-
-			}
-
-			var newPosTop = -400 + ($(document).scrollTop());
-
-			capaOculta.css("top", '-400px');
-
-		}
-
-
-	}, function () {
-		var capaOculta = $(this).siblings($('.capaOculta'))
-		capaOculta.hide()
-	})
 
 	//eliminar ordenes	desde el panel de pujas
 	$(".confirm_delete_order").click(function () {
@@ -892,92 +234,18 @@ $(function () {
 
 	$('#save-wallet').on('submit', updateWalletInfo);
 	$('#create-wallet').on('click', createWallet);
+
+	$("#submit_fact").click(function () {
+		payFacs();
+	});
+
+	document.getElementById('contactForm')?.addEventListener('submit', sendContactForm, false);
+	document.querySelectorAll('.js-auction-files').forEach(el => {
+		el.addEventListener('click', showAuctionsFiles);
+	});
+
 });
 
-function updateWalletInfo(event) {
-	event.preventDefault();
-
-	const walletForm = event.target;
-
-	$.ajax({
-		type: "POST",
-		data: $(walletForm).serialize(),
-		url: '/api-ajax/wallet/update',
-		dataType: 'json',
-		beforeSend: function () {
-			walletForm.querySelector('button[type="submit"]').disabled = true;
-		 },
-		 success: function (response) {
-			const alertClass = response.status == 'success' ? 'alert-success' : 'alert-danger';
-			const htmlResult = `<div class="alert ${alertClass}">${response.message}</div>`;
-			document.getElementById('wallet-call-result').innerHTML = htmlResult;
-		 },
-		 error: function (xhr, status) {
-			const htmlResult = `<div class="alert alert-danger">${xhr.responseJSON.message}</div>`
-			document.getElementById('wallet-call-result').innerHTML = htmlResult;
-		 },
-		 complete: function () {
-			walletForm.querySelector('button[type="submit"]').removeAttribute('disabled');
-		 }
-	})
-
-}
-
-function createWallet(event) {
-	event.preventDefault();
-	const createButton = event.target;
-
-	$.ajax({
-		type: "POST",
-		url: '/api-ajax/wallet/create',
-		dataType: 'json',
-		beforeSend: function () {
-			createButton.disabled = true;
-		 },
-		 success: function (response) {
-			location.href = response.url;
-		 },
-		 error: function (xhr, status) {
-			const htmlResult = `<div class="alert alert-danger">${xhr.responseJSON.message}</div>`
-			document.getElementById('wallet-call-result').innerHTML = htmlResult;
-		 },
-		 complete: function () {
-			createButton.removeAttribute('disabled');
-		 }
-	})
-}
-
-
-function see_desc() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'desc', { expires: 7, path: '/' });
-	$(".square").addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".large_square").removeClass("hidden");
-	$('.bar-lot-large').removeClass("hidden");
-}
-
-function see_img() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'img', { expires: 7, path: '/' });
-	$(".large_square").addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".square").removeClass("hidden");
-}
-
-function see_img_samll() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'small_img', { expires: 7, path: '/' });
-	$(".large_square").addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".square").addClass("hidden");
-	$(".small_square").removeClass("hidden");
-}
-
-function cerrarLogin() {
-	$('.login_desktop').fadeToggle("fast");
-}
 
 function ajax_newcarousel(key, replace, lang, options) {
 
@@ -989,7 +257,7 @@ function ajax_newcarousel(key, replace, lang, options) {
 		data: { key, replace, lang },
 		success: (result) => {
 
-			if(result === ''){
+			if (result === '') {
 				$carrouselElement.hide();
 			}
 
@@ -1043,7 +311,10 @@ function ajax_carousel(key, replace) {
 
 };
 
-
+/**
+ * Solamente se llama desde customized_tr_main.js
+ * @mover
+ */
 function format_date(fecha) {
 
 	var horas = fecha.getHours();
@@ -1066,114 +337,6 @@ function format_date(fecha) {
 	return formatted;
 }
 
-
-/**
- *Crear carrousel de una sola fila
- * @param {div} carrousel
- * @param {object} arrows
- */
-function carrouselOneRow(carrousel, arrows) {
-
-	if (carrousel.data('hasSlick')) {
-		carrousel.slick('unslick');
-	}
-
-	if (arrows) {
-		carrousleWithArrow();
-	}
-	else {
-		carrouselNotArrow();
-	}
-}
-
-
-function carrousleWithArrow() {
-
-	var arrowContainer = $('#navs-arrows');
-	var arrowPrev = $('.owl-prev');
-	var arrowNext = $('.owl-next');
-
-	arrowContainer.removeClass('hidden');
-
-	carrousel.slick({
-		slidesToScroll: 1,
-		rows: 1,
-		slidesToShow: 4,
-		arrows: true,
-		prevArrow: arrowPrev,
-		nextArrow: arrowNext,
-		responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: true,
-					rows: 1
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-					rows: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-					rows: 1
-				}
-			}
-		]
-	});
-
-	carrousel.data('hasSlick', true);
-}
-
-function carrousleWithArrow() {
-
-	carrousel.slick({
-		slidesToScroll: 1,
-		rows: 1,
-		slidesToShow: 4,
-		arrows: false,
-		responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: true,
-					rows: 1,
-					dots: true
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-					rows: 1
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-					rows: 1
-				}
-			}
-		]
-	});
-
-	carrousel.data('hasSlick', true);
-}
-
 function addStylesheetIfNotExist(nameFile) {
 
 	var headElements = document.head.childNodes;
@@ -1181,13 +344,13 @@ function addStylesheetIfNotExist(nameFile) {
 		.filter((node) => node.nodeType === 1 && node.tagName === 'LINK')
 		.some((link) => link.href.includes(nameFile));
 
-	if(existStylesheet) return;
+	if (existStylesheet) return;
 
-	try{
+	try {
 		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${defaultTheme}/css/${nameFile}">`);
 		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${theme}/css/${nameFile}">`);
 	}
-	catch(e){
+	catch (e) {
 		console.log(e);
 	}
 }
@@ -1371,20 +534,6 @@ function format_date_large(fecha, text) {
 	return formatted;
 }
 
-
-
-function close_modal_session() {
-
-	$("#closeResponsive").trigger("click");
-}
-
-
-function action_fav_moda(action) {
-	//$('.lds-ellipsis').show()
-	$('.ficha-info-fav-ico a').addClass('hidden')
-	$('.ficha-info-fav-ico a.added').removeClass('hidden')
-}
-
 function action_fav_modal(action) {
 
 	$('.lds-ellipsis').show()
@@ -1438,11 +587,6 @@ function action_fav_modal(action) {
 			}
 		});
 	}
-
-
-
-
-
 };
 
 function action_fav_lote(action, ref, cod_sub, cod_licit) {
@@ -1472,144 +616,61 @@ function action_fav_lote(action, ref, cod_sub, cod_licit) {
 	});
 
 };
-function change_price_saved_offers() {
-	var precio = 0;
-	$('input[name=order]').each(function () {
-		precio = parseInt($(this).val()) + parseInt(precio);
-	})
-	$("#change_price").html('');
-	$("#change_price").html(parseFloat(precio, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
-}
-
-//FAQS
-$(document).ready(function () {
-
-	$('.primary-item').click(function (e) {
 
 
-		$('.lists').removeClass('open');
-		($('.lists').eq($(this).index()).addClass('open'));
-		$('.secondary-item-sub').attr('data-open', '0')
-		$('.lists').css('min-height', $('.lists').height() + alto)
-		var alto = $('.lists').eq($(this).index()).height() + ($('.lists').eq($(this).index()).find('li').length + 300);
-		console.log(alto);
-		$('.lists').eq($(this).index()).css('min-height', alto)
-
-	});
-
-	$('.secondary-item-sub').click(function (e) {
-
-		if ($(this).attr('data-open') === '0') {
-			$('.secondary-item-dec').removeClass('open')
-			$('.secondary-item-sub').attr('data-open', 0)
-			$('.secondary-item-sub').removeClass('translate')
-			$(this).siblings().addClass('open');
-			$(this).addClass('translate')
-			$(this).attr('data-open', 1)
-		} else {
-			$('.secondary-item-dec').removeClass('open');
-			$('.secondary-item-sub').attr('data-open', 0)
-			$(this).removeClass('translate')
-		}
-	})
-
-	$('.add_factura').change(function () {
-		reload_facturas();
-	});
-
-	$("#submit_fact").click(function () {
-		payFacs();
-
-	});
-
-
-
-	$('#full-screen').click(function () {
-		if ($('.filters-auction-content').css('display') === 'none') {
-			$('.filters-auction-content').parent().show()
-			$('.filters-auction-content').show("slide", { direction: "left" }, 500);
-
-			$('.list_lot_content').removeClass('col-md-12').addClass('col-md-9')
-			$('.square').removeClass('col-lg-3').addClass('col-lg-4')
-			$(this).removeClass('active')
-
-		} else {
-			$('.filters-auction-content').hide("slide", { direction: "left" }, 500, function () {
-				//$('.auction-container').removeClass('container').addClass('container-fluid')
-				$('.filters-auction-content').parent().hide()
-				$('.list_lot_content').removeClass('col-md-9').addClass('col-md-12')
-				$('.square').removeClass('col-lg-4').addClass('col-lg-3')
-				$(this).addClass('active')
-			});
-
-		}
-
-	});
-
-	$(".thumbPop").thumbPopup({
-		imgSmallFlag: "lote_medium",
-		imgLargeFlag: "lote_large",
-		cursorTopOffset: 0,
-		cursorLeftOffset: 20
-
-	});
-
-
-});
-
-function payFacs(button){
+function payFacs(button) {
 
 	$("#btoLoader").siblings().addClass('hidden');
 	$("#btoLoader").removeClass('hidden');
 
-		var pay_fact = $('#pagar_fact').serializeArray();
-		var total = 0;
+	var pay_fact = $('#pagar_fact').serializeArray();
+	var total = 0;
 
-		for (const factura of pendientes) {
-			if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
-				total += parseFloat(factura.imp_pcob);
+	for (const factura of pendientes) {
+		if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
+			total += parseFloat(factura.imp_pcob);
+		}
+	}
+
+	if (total > 0) {
+		$.ajax({
+			type: "POST",
+			url: '/gateway/pagarFacturasWeb',
+			data: pay_fact,
+			success: function (data) {
+				if (data.status == 'success') {
+					window.location.href = data.msg;
+				} else
+					if (data.status == 'error') {
+						$("#modalMensaje #insert_msg").html('');
+						$("#modalMensaje #insert_msg").html(messages.error.generic);
+						$.magnificPopup.open({
+							items: {
+								src: '#modalMensaje'
+							},
+							type: 'inline'
+						}, 0);
+
+					}
+				$("#btoLoader").siblings().removeClass('hidden');
+				$("#btoLoader").addClass('hidden');
+
+			},
+			error: function (response) {
+				$("#modalMensaje #insert_msg").html('');
+				$("#modalMensaje #insert_msg").html(messages.error.generic);
+				$.magnificPopup.open({
+					items: {
+						src: '#modalMensaje'
+					},
+					type: 'inline'
+				}, 0);
+				$("#btoLoader").siblings().removeClass('hidden');
+				$("#btoLoader").addClass('hidden');
 			}
-		}
+		});
 
-		if (total > 0) {
-			$.ajax({
-				type: "POST",
-				url: '/gateway/pagarFacturasWeb',
-				data: pay_fact,
-				success: function (data) {
-					if (data.status == 'success') {
-						window.location.href = data.msg;
-					} else
-						if (data.status == 'error') {
-							$("#modalMensaje #insert_msg").html('');
-							$("#modalMensaje #insert_msg").html(messages.error.generic);
-							$.magnificPopup.open({
-								items: {
-									src: '#modalMensaje'
-								},
-								type: 'inline'
-							}, 0);
-
-						}
-						$("#btoLoader").siblings().removeClass('hidden');
-						$("#btoLoader").addClass('hidden');
-
-				},
-				error: function (response) {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(messages.error.generic);
-					$.magnificPopup.open({
-						items: {
-							src: '#modalMensaje'
-						},
-						type: 'inline'
-					}, 0);
-					$("#btoLoader").siblings().removeClass('hidden');
-					$("#btoLoader").addClass('hidden');
-				}
-			});
-
-		}
+	}
 }
 
 function reload_facturas() {
@@ -1636,14 +697,6 @@ function change_currency(price) {
 	var price = numeral(price).format('0,0.00');
 
 	return price;
-}
-
-function abrirNuevaVentana(parametros) {
-	var url = parametros;
-	var nuevaVentana = (window.open(url, $(this).attr('href'), "width=300", "height=300"));
-	if (nuevaVentana) {
-		nuevaVentana.focus();
-	}
 }
 
 function changeGrid(event) {
@@ -1685,8 +738,6 @@ function calculateLotsGridColumns(filtersElement) {
 }
 
 (function ($) {
-
-
 
 	$.fn.thumbPopup = function (options) {
 
@@ -1761,17 +812,6 @@ function calculateLotsGridColumns(filtersElement) {
 			var rectificaY = 0;
 			var rectificaX = 0;
 
-			/*	if (windowSize.width + windowSize.scrollLeft < event.pageX + popupSize.width + settings.cursorLeftOffset){
-					  $(popup).css("left", event.pageX - popupSize.width - settings.cursorLeftOffset);
-				  } else {
-					  $(popup).css("left", event.pageX + settings.cursorLeftOffset);
-				  }
-				  if (windowSize.height + windowSize.scrollTop < event.pageY + popupSize.height + settings.cursorTopOffset){
-					  $(popup).css("top", event.pageY - popupSize.height - settings.cursorTopOffset);
-				  } else {
-					  $(popup).css("top", event.pageY + settings.cursorTopOffset);
-				  } */
-
 			if (event.pageX + popupSize.width > screen.width) {
 				rectificaX = -(popupSize.width + 40);
 			}
@@ -1812,9 +852,6 @@ function calculateLotsGridColumns(filtersElement) {
 			};
 		}
 
-
-
-
 		//Return original selection for chaining
 		return this;
 	};
@@ -1825,7 +862,7 @@ function calculateLotsGridColumns(filtersElement) {
 /**
  * FICHA
  */
- function goToImage(positionImage) {
+function goToImage(positionImage) {
 	const viewer = OpenSeadragon.getViewer(document.getElementById("img_main"));
 	showImageContainer();
 	viewer.goToPage(parseInt(positionImage));
@@ -1833,51 +870,51 @@ function calculateLotsGridColumns(filtersElement) {
 
 function showImageContainer() {
 	$('#resource_main_wrapper').hide();
-	if(typeof $resource != 'undefined' && $resource.lenght > 0 && typeof $resource[0].pause != 'undefined'){
+	if (typeof $resource != 'undefined' && $resource.lenght > 0 && typeof $resource[0].pause != 'undefined') {
 		$resource[0].pause();
 	}
 	$('.img-global-content').show();
 }
 
-function loadSeaDragon(images = [], conf = {}){
+function loadSeaDragon(images = [], conf = {}) {
 
 	showImageContainer();
 
 	const defaultConf = {
-		id:"img_main",
+		id: "img_main",
 		tileSources: images,
 		showNavigator: false, //mostrar miniatura de la imagen
-		showReferenceStrip:  false, //mostrar miniatura de todas las imagenes
+		showReferenceStrip: false, //mostrar miniatura de todas las imagenes
 
 		//id de contenedor y elementos de las toolbar
 		toolbar: "js-toolbar",
-		zoomInButton:   "zoom-in",
-		zoomOutButton:  "zoom-out",
-		homeButton:     "home",
+		zoomInButton: "zoom-in",
+		zoomOutButton: "zoom-out",
+		homeButton: "home",
 		fullPageButton: "full-page",
-		nextButton:     "next",
+		nextButton: "next",
 		previousButton: "previous",
 
 		maxZoomPixelRatio: 2.5,
 		minZoomImageRatio: 0.1,
 		zoomPerScroll: 1.5,
 		visibilityRatio: 1.0,
-    	constrainDuringPan: true, //no permitir salirse del cuadro
+		constrainDuringPan: true, //no permitir salirse del cuadro
 		preserveImageSizeOnResize: false, //mantener zoom al ampliar a pantalla completa
 
 		sequenceMode: true, //permitir desplazarse entre imagenes
 	};
 
-	return OpenSeadragon({...defaultConf, ...conf});
+	return OpenSeadragon({ ...defaultConf, ...conf });
 }
 
-function viewResourceFicha($src, $format){
+function viewResourceFicha($src, $format) {
 	$('#resource_main_wrapper').empty();
 	$('.img-global-content').hide();
-	if($format=="GIF"){
-		$resource = $('<img  src=' +$src + ' style="max-width: 100%;">');
-	}else if($format=="VIDEO"){
-		$resource = $('<video width="100%" height="auto" autoplay="true" controls>').append($('<source src="' +  $src + '">'));
+	if ($format == "GIF") {
+		$resource = $('<img  src=' + $src + ' style="max-width: 100%;">');
+	} else if ($format == "VIDEO") {
+		$resource = $('<video width="100%" height="auto" autoplay="true" controls>').append($('<source src="' + $src + '">'));
 	}
 	$('#resource_main_wrapper').append($resource);
 	$('#resource_main_wrapper').show();
@@ -1885,11 +922,11 @@ function viewResourceFicha($src, $format){
 
 function image360Init() {
 	const image360 = {
-		init: function() {
+		init: function () {
 			this.cache();
 			this.bindEvents();
 		},
-		cache: function() {
+		cache: function () {
 			this.btn = $('#360img-button');
 			this.btnDesktop = $('.img-360-desktop');
 			this.backgroundCache = $('.img-360-desktop').css('background-image');
@@ -1906,7 +943,7 @@ function image360Init() {
 			this.btn.show();
 
 		},
-		show: function(e) {
+		show: function (e) {
 
 			if (this.btn.attr('data-active') === 'active') {
 				this.hideContainer();
@@ -1918,7 +955,7 @@ function image360Init() {
 			}
 		},
 
-		hideContainer: function() {
+		hideContainer: function () {
 
 			this.img360.addClass('d-none');
 			this.img360Mobile.hide();
@@ -1927,7 +964,7 @@ function image360Init() {
 			this.disabledBtn();
 
 		},
-		showContainer: function(isMobile) {
+		showContainer: function (isMobile) {
 			if ($(window).width() > 1199) {
 				// this.img360.css('min-height', '350px');
 			} else {
@@ -1947,24 +984,24 @@ function image360Init() {
 			this.img360Mobile.show();
 		},
 
-		loadGif: function() {
+		loadGif: function () {
 
 			this.gif
 				.attr('src', srcImage)
-				.load(function() {
+				.load(function () {
 					$('.loader').hide();
 					$(this).fadeIn();
 				});
 
 			this.gifMobile
 				.attr('src', srcImage)
-				.load(function() {
+				.load(function () {
 					$('.loader').hide();
 					$(this).fadeIn();
 				});
 		},
 
-		activeBtn: function() {
+		activeBtn: function () {
 
 			this.btnDesktop.css('background-color', '#eee');
 			this.btnDesktop.css('background-image', 'none');
@@ -1975,7 +1012,7 @@ function image360Init() {
 			this.btnMobile.attr('data-active', 'active');
 
 		},
-		disabledBtn: function() {
+		disabledBtn: function () {
 
 			this.btnDesktop.css('background-image', this.backgroundCache);
 			this.btnDesktop.css('background-color', 'transparent');
@@ -1984,7 +1021,7 @@ function image360Init() {
 			this.btn.attr('data-active', 'disabled');
 			this.btnMobile.attr('data-active', 'disabled');
 		},
-		bindEvents: function() {
+		bindEvents: function () {
 			this.btn.on('click', this.show.bind(this));
 			this.btnMobile.on('click', this.show.bind(this));
 			this.btnPic.on('click', this.hideContainer.bind(this));
@@ -1993,25 +1030,6 @@ function image360Init() {
 	};
 
 	image360.init();
-}
-
-function initializeParlaxBanner(minHeight = '300px') {
-
-	const bansParallax = document.querySelectorAll('.bann-parallax');
-
-	if(bansParallax.length == 0 && window.innerWidth <= 768){
-		return;
-	}
-
-	window.addEventListener('scroll', () => {
-		const value = window.scrollY;
-		const value2 = value - 1200;
-
-		bansParallax.forEach((element) => {
-			const positionBackground = (element.style.minHeight == minHeight) ? -value2 : -value;
-			element.style.backgroundPosition = `center ${positionBackground * 0.25}px`;
-		});
-	});
 }
 
 function calendarInitialize(...allEvents) {
@@ -2028,78 +1046,63 @@ function calendarInitialize(...allEvents) {
 		}
 	});
 
-    const calendar = new Calendar('#calendar', {
-        enableRangeSelection: false,
+	const calendar = new Calendar('#calendar', {
+		enableRangeSelection: false,
 		language: 'es',
 		startMonth: 1,
 		startYear: currentYear,
 		minDay: new Date().getDay(),
 		maxDaysToChoose: false,
 		displayHeader: false,
-        mouseOnDay: function(e) {
+		mouseOnDay: function (e) {
 
-            if(e.events.length > 0) {
-                let content = '';
+			if (e.events.length > 0) {
+				let content = '';
 				e.events.forEach((eventCalendar) => {
 					content += `<div class="event-tooltip-content">
 									<div class="event-name" style="color: ${eventCalendar.color}">${eventCalendar.description}</div>
 									</div>`;
 				});
 
-                $(e.element).popover({
-                    trigger: 'manual',
-                    container: 'body',
-                    html: true,
-                    content: content
-                });
+				$(e.element).popover({
+					trigger: 'manual',
+					container: 'body',
+					html: true,
+					content: content
+				});
 
-                $(e.element).popover('show');
-            }
-        },
-        mouseOutDay: function(e) {
-            if(e.events.length > 0) {
-                $(e.element).popover('hide');
-            }
-        },
-        dayContextMenu: function(e) {
-            $(e.element).popover('hide');
-        },
+				$(e.element).popover('show');
+			}
+		},
+		mouseOutDay: function (e) {
+			if (e.events.length > 0) {
+				$(e.element).popover('hide');
+			}
+		},
+		dayContextMenu: function (e) {
+			$(e.element).popover('hide');
+		},
 		/**Para que color pinte el fondo  */
 		style: 'background',
-		customDayRenderer: function(element, date) {
+		customDayRenderer: function (element, date) {
 			/* pintar fin de semana */
 			if (date.getDay() === 6 || date.getDay() === 0) {
 				/* lo añadimso al padre para asi dejar poner mas clases si cae un dia especial */
 				element.closest('.day').style.setProperty('--calendar-background-color', '#ff0000');
 			}
 		},
-		clickDay: function(el){
-			if(el.events.length == 0) return;
-			if(!Boolean(el.events[0].url)) return;
+		clickDay: function (el) {
+			if (el.events.length == 0) return;
+			if (!Boolean(el.events[0].url)) return;
 
 			const { url } = el.events[0];
 			window.open(url, '_blank');
 		},
-        dataSource: events,
-    });
+		dataSource: events,
+	});
 
 	return calendar;
 }
-
-
-/**
- * LISTENERS NUEVOS
- */
-
-
-$(function(){
-
-	document.getElementById('contactForm')?.addEventListener('submit', sendContactForm, false);
-	document.querySelectorAll('.js-auction-files').forEach(el => {
-		el.addEventListener('click', showAuctionsFiles);
-	});
-
-})
 
 function sendContactForm(event) {
 
@@ -2118,7 +1121,7 @@ function sendContactForm(event) {
 
 	const recaptchaResponse = $("#g-recaptcha-response").val();
 
-	if(!recaptchaResponse) {
+	if (!recaptchaResponse) {
 		$(".g-recaptcha").find("iframe").addClass("has-error");
 		showMessage(messages.error.hasErrors);
 		return false;
@@ -2174,4 +1177,197 @@ async function auctionFiles(auction, reference) {
 	return await response.json();
 }
 
+function showLogin(event) {
+	$('.login_desktop').fadeToggle("fast");
+	$('.login_desktop [name=email]').focus();
+}
 
+function closeLogin(event) {
+	$('.login_desktop').fadeToggle("fast");
+}
+
+/**
+ * @todo
+ * - [ ] añadir evento loading mientras carga
+ * - [ ] eliminar evento al recibir respuesta
+ * - [ ] controlar respuesta de error
+ * @param {Event} event
+ */
+function handleSubmitLoginForm(event) {
+	event.preventDefault();
+
+	$('#accerder-user').addClass('loadbtn')
+	$('.login-content-form').removeClass('animationShaker')
+
+	$.ajax({
+		type: "POST",
+		url: '/login_post_ajax',
+		data: $('#accerder-user-form').serialize(),
+		success: successLoginForm
+	});
+}
+
+function successLoginForm(response) {
+	if (response.status == 'success') {
+		location.reload();
+	} else {
+		$(".message-error-log").text('').append(messages.error[response.msg]);
+		$("#accerder-user").removeClass('loadbtn')
+		$('.login-content-form').addClass('animationShaker')
+	}
+}
+
+function handleSubmitNewsletterForm(event) {
+	var email = $('.newsletter-input').val();
+	var lang = $('#lang-newsletter').val();
+	var entrar = $('#condiciones').prop("checked");
+
+	if (entrar) {
+		$.ajax({
+			type: "POST",
+			data: { email: email, lang: lang, condiciones: 1, families: [1] },
+			url: '/api-ajax/newsletter/add',
+			beforeSend: function () {
+			},
+			success: function (msg) {
+				if (msg.status == 'success') {
+					$('.insert_msg').html(messages.success[msg.msg]);
+				} else {
+					$('.insert_msg').html(messages.error[msg.msg]);
+				}
+				$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+			}
+		});
+	} else {
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+	}
+}
+
+/**
+ *
+ * @param {Event} event
+ */
+function handleSubmitUpdatePasswordForm(event) {
+	event.preventDefault();
+
+	//No se para que esta
+	if (event.isDefaultPrevented()) {
+		return
+	}
+
+	var $this = $(event.target);
+
+	$('button', $this).attr('disabled', 'disabled');
+
+	$.ajax({
+		type: "POST",
+		url: '/api-ajax/client/update/password',
+		data: $('#frmUpdateUserPasswordADV').serialize(),
+		beforeSend: function () {
+			//$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
+		},
+		success: function (response) {
+
+			$('button', $this).attr('disabled', false);
+
+			res = jQuery.parseJSON(response);
+
+			if (res.err == 1) {
+				$('.insert_msg').html('<div class="alert alert-danger">' + messages.error[res.msg] + '</div>');
+			} else {
+				$('.insert_msg').html('<div class="alert alert-success">' + messages.success[res.msg] + '</div>');
+			}
+
+		}
+	});
+}
+
+function handleSubmitUpdateUser(event) {
+	if (event.isDefaultPrevented()) {
+		return
+	}
+	e.preventDefault();
+	var $this = $(event.target);
+
+	$('button', $this).attr('disabled', 'disabled');
+	// Datos correctos enviamos ajax
+	$.ajax({
+		type: "POST",
+		url: '/api-ajax/client/update',
+		data: $('#frmUpdateUserInfoADV').serialize(),
+		beforeSend: function () {
+			$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
+		},
+		success: function (response) {
+
+			$('button', $this).attr('disabled', false);
+
+			res = jQuery.parseJSON(response);
+
+			if (res.err == 1) {
+				$('.col_reg_form').html('<div class="alert alert-danger">' + messages.error[res.msg] + '</div>');
+			} else {
+				$('.col_reg_form').html('<div class="alert alert-success">' + messages.success[res.msg] + '</div>');
+			}
+		}
+
+	});
+}
+
+function updateWalletInfo(event) {
+	event.preventDefault();
+
+	const walletForm = event.target;
+
+	$.ajax({
+		type: "POST",
+		data: $(walletForm).serialize(),
+		url: '/api-ajax/wallet/update',
+		dataType: 'json',
+		beforeSend: function () {
+			walletForm.querySelector('button[type="submit"]').disabled = true;
+		},
+		success: function (response) {
+			const alertClass = response.status == 'success' ? 'alert-success' : 'alert-danger';
+			const htmlResult = `<div class="alert ${alertClass}">${response.message}</div>`;
+			document.getElementById('wallet-call-result').innerHTML = htmlResult;
+		},
+		error: function (xhr, status) {
+			const htmlResult = `<div class="alert alert-danger">${xhr.responseJSON.message}</div>`
+			document.getElementById('wallet-call-result').innerHTML = htmlResult;
+		},
+		complete: function () {
+			walletForm.querySelector('button[type="submit"]').removeAttribute('disabled');
+		}
+	})
+
+}
+
+function createWallet(event) {
+	event.preventDefault();
+	const createButton = event.target;
+
+	$.ajax({
+		type: "POST",
+		url: '/api-ajax/wallet/create',
+		dataType: 'json',
+		beforeSend: function () {
+			createButton.disabled = true;
+		},
+		success: function (response) {
+			location.href = response.url;
+		},
+		error: function (xhr, status) {
+			const htmlResult = `<div class="alert alert-danger">${xhr.responseJSON.message}</div>`
+			document.getElementById('wallet-call-result').innerHTML = htmlResult;
+		},
+		complete: function () {
+			createButton.removeAttribute('disabled');
+		}
+	})
+}
+
+function cerrarLogin() {
+	$('.login_desktop').fadeToggle("fast");
+}
