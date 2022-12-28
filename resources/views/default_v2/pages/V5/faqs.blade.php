@@ -1,96 +1,120 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+    {{ trans(\Config::get('app.theme') . '-app.foot.faq') }}
 @stop
 
 @section('content')
-<?php
-    $bread[] = [
-        "name" => "name",
-        "url" => URL::current(),
-        "title" => "title",
-    ];
-?>
+    @php
+        $bread[] = [
+            'name' => trans(\Config::get('app.theme') . '-app.foot.faq'),
+            'url' => URL::current(),
+            'title' => 'title',
+        ];
 
+        $categories = $data['cats']->where('parent_faqcat', 0);
+        $subCategories = $data['cats']->where('parent_faqcat', '!=', 0)->groupBy('parent_faqcat');
+        $questions = $data['items']->groupBy('cod_faqcat');
+    @endphp
 
-    <div class="container" id="faq">
-
-        <div class="featured-auctions-title">
-            <p class="theme-subalia secondary-color">
-                {{trans(\Config::get('app.theme').'-app.foot.faq') }}
-            </p>
+    <main class="faqs">
+        <div class="container">
+            @include('includes.breadcrumb')
+            <h1>{{ trans(\Config::get('app.theme') . '-app.foot.faq') }}</h1>
         </div>
 
-        <div class="col-xs-12">
-            <div class="row">
-                <div class="col-xs-12 col-sm-4">
+        <div class="container mt-3" id="faq">
 
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_category') }}</h4>
-                    <hr class="hidden-xs">
-                    <div class="block">
-                        @foreach ($data['cats'] as $item)
+            <div class="row row-cols-1 row-cols-lg-3">
 
-                            @if (empty($item->parent_faqcat) || $item->parent_faqcat == 0)
-                                <a href="javascript:muestraSub({{ $item->cod_faqcat }})" class="cat">
+                <div class="col">
+                    <h4>{{ trans("$theme-app.faq.select_category") }}</h4>
+                    <hr>
+                    <div class="list-group list-group-flush" role="tablist">
+                        @foreach ($categories as $item)
+                            <a id="parent-{{ $item->cod_faqcat }}" data-bs-toggle="list" href="#list-{{ $item->cod_faqcat }}"
+                                role="tab" aria-controls="list-{{ $item->cod_faqcat }}" @class([
+                                    'list-group-item list-group-item-action d-flex justify-content-between align-items-center',
+                                    'active' => $loop->first,
+                                ])>
+                                {{ $item->nombre_faqcat }}
+                                <span>></span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="col tab-content" id="tabSubcategory" role="tabpanel">
+                    <h4>{{ trans("$theme-app.faq.select_sub_category") }}</h4>
+                    <hr>
+
+                    @foreach ($subCategories as $parentId => $items)
+                        <div id="list-{{ $parentId }}" role="tablist" aria-labelledby="parent-{{ $parentId }}"
+                            @class([
+                                'list-group list-group-flush tab-pane fade',
+                                'show active' => $loop->first,
+                            ])>
+                            @foreach ($items as $item)
+                                <a id="subcategory-{{ $item->cod_faqcat }}" data-bs-toggle="list"
+                                    href="#question-{{ $item->cod_faqcat }}" role="tab"
+                                    aria-controls="question-{{ $item->cod_faqcat }}" @class([
+                                        'list-group-item list-group-item-action d-flex justify-content-between align-items-center',
+                                    ])
+                                    {{-- onclick="muestraFaq({{ $item->cod_faqcat }})" --}}>
                                     {{ $item->nombre_faqcat }}
                                     <span>></span>
                                 </a>
-                            @endif
+                            @endforeach
+                        </div>
+                    @endforeach
 
-                        @endforeach
-                    </div>
-
-                </div>
-
-                <div class="col-xs-12 col-sm-4">
-
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_sub_category') }}</h4>
-					<hr class="hidden-xs">
-                    <div class="block">
-                        @foreach ($data['cats'] as $item)
-
-                            @if (!empty($item->parent_faqcat) && !$item->parent_faqcat == 0)
-							<div class="subfamily parent{{ $item->parent_faqcat }}">
-                                <a href="javascript:muestraFaq({{ $item->cod_faqcat }})" class="subcat ">
-                                    {{ $item->nombre_faqcat }}
-                                    <span>></span>
-                                </a>
-							</div>
-                            @endif
-
-                        @endforeach
-                    </div>
 
                 </div>
 
-                <div class="col-xs-12 col-sm-4">
+                <div class="col tab-content">
+                    <h4>{{ trans("$theme-app.faq.select_question") }}</h4>
+                    <hr>
 
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_question') }}</h4>
-					<hr class="hidden-xs">
-                    <div class="block">
-                        @foreach ($data['items'] as $item)
-
-                            <div class="parentFaq parentFaq{{ $item->cod_faqcat }}">
-                                <a href="javascript:FaqshowContent('faq{{ $item->cod_faq }}')" class="question">
-                                    <span>+</span>
-                                    {{ $item->titulo_faq }}
-                                </a>
-                                <div id="faq{{ $item->cod_faq }}" class="faq" >
-                                    {!! nl2br($item->desc_faq) !!}
-                                    <br>
+                    @foreach ($questions as $parentId => $items)
+                        <div id="question-{{ $parentId }}" role="tabpanel"
+                            aria-labelledby="subcategory-{{ $parentId }}" @class(['list-group list-group-flush tab-pane fade'])>
+                            @foreach ($items as $item)
+                                <div class="parentFaq parentFaq{{ $item->cod_faqcat }}">
+                                    <a class="question" href="javascript:FaqshowContent('faq{{ $item->cod_faq }}')">
+                                        <span>+</span>
+                                        {{ $item->titulo_faq }}
+                                    </a>
+                                    <div class="faq" id="faq{{ $item->cod_faq }}">
+                                        {!! nl2br($item->desc_faq) !!}
+                                        <br>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
+                        </div>
+                    @endforeach
 
-                        @endforeach
-                    </div>
+
                 </div>
+
             </div>
+
         </div>
-    </div>
+    </main>
 
-    <br><br><br><br><br><br><br><br><br><br>
+    <script>
+        const triggerTabList = document.querySelectorAll('#tabSubcategory a')
+        triggerTabList.forEach(triggerEl => {
+            const tabTrigger = new bootstrap.Tab(triggerEl)
 
-
+            triggerEl.addEventListener('click', event => {
+                event.preventDefault()
+				triggerTabList.forEach(triggerEle => {
+					const tabTriggerR = new bootstrap.Tab(triggerEl)
+					tabTriggerR.hide();
+					//triggerEle.classList.remove("active");
+				})
+                tabTrigger.show()
+            })
+        })
+    </script>
 @stop
-

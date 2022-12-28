@@ -561,6 +561,9 @@ function action_fav_modal(action) {
 					$("#insert_msg").html("");
 					$("#insert_msg").html(messages.success[data.msg]);
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+
+					const isAdding = action == 'add';
+
 					if (action == 'add') {
 						$('.ficha-info-fav-ico a.added').removeClass('hidden')
 						$('.ficha-info-fav-ico').addClass('active')

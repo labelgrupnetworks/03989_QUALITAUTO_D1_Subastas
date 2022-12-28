@@ -160,15 +160,6 @@
     </section>
 </div>
 
-{{-- Solamente lo usa el blog de ansoreana para ampliar las imagenes,
-	se podría modificar por los mismos que utiliza vico en eventos/piezas --}}
-<div class="d-none" id="imgPopUpModal">
-    <span class="cursor">&times;</span>
-    <br />
-    <img id="img-pop-up-img">
-    <div id="img-pop-up-label"></div>
-</div>
-
 @if ($errors->any())
     <script>
         $(document).ready(function() {
