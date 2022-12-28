@@ -239,6 +239,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/edit', 'subasta\AdminLicitController@edit');
 			Route::post('/update', 'subasta\AdminLicitController@update');
 			Route::get('/list', 'subasta\SubastaController@getSelectLicits');
+			Route::post('/export-licits', 'subasta\SubastaController@exportLicits');
 		});
 
 

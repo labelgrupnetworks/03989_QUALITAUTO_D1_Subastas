@@ -133,10 +133,7 @@ $lang =[
 			'developedSoftware' => 'Auction software',
 			'developedBy' => 'Developed by Labelgrup Networks.',
 			'developed_url' => 'https://www.labelgrup.com/subastas',
-			'inscribete_catalogo' => '',
-			'banner_contact' => 'Contact us and we will inform<br> you without any commitment',
-			'laboratory' => 'Laboratory',
-			'legal_advice' => 'Legal_advice',
+			'inscribete_catalogo' => ''
 		),
 	'global' =>
 		array (
@@ -216,7 +213,6 @@ $lang =[
 			'google_reviews' => 'reviews',
 			'google_write_review' => 'Write a Review',
 			'google_view' => 'View in',
-			'collaborate' => 'Colaboran'
 		),
 	'links' =>
 		array (
@@ -401,12 +397,11 @@ $lang =[
 			'require_wallet' => 'You need to have an associated wallet to be able to bid on an NFT.<br> You can indicate your wallet or create a new one in <a href="/en/user/panel/info" > your account.</a>',
 			'custom_login' => 'To be able to bid you need to " href=":login_link">log in</a>.',
 			'free' => 'free',
-			'auction_date' => 'Auction date',
-			'quick_bid' => 'Quick bid',
-			'bid_on' => 'Bid on',
 			'add_bidders' => 'Add bidders',
 			'bid_participants' => 'Participants in the bid',
-			'closing_date' => 'Closing date: '
+			'start_date' => 'Start date:',
+			'end_date' => 'End date:',
+			'can_place_bids' => 'You can place bids from: '
 		),
 	'lot_list' =>
 		array (
@@ -638,6 +633,8 @@ $lang =[
 			'add_cart' => 'Article added to shopping cart.',
 			'delete_lot_cart' => ' The lot has been deleted from the shopping cart',
 			'phoneOrder' => 'Successful phone order',
+			'newsletter_unsubscribe' => "The subscription to email newsletters :email has been canceled",
+			'newsletter_subscribe' => "The subscription to email newsletters :email has been executed successfully"
 		),
 	'sheet_tr' =>
 		array (

@@ -150,10 +150,7 @@ $lang = [
 		'developedSoftware' => 'Software de subastas',
 		'developedBy' => 'Desarrollado por Labelgrup Networks.',
 		'developed_url' => 'https://www.labelgrup.com/subastas',
-		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER',
-		'banner_contact' => 'Póngase en contacto con nosotros y<br> le informaremos sin ningún tipo de compromiso',
-		'laboratory' => 'Laboratiorio',
-		'legal_advice' => 'Asesoramiento legal',
+		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER'
 	),
 	'global' =>
 	array(
@@ -219,7 +216,7 @@ $lang = [
 		'es' => 'ESPAÑOL',
 		'free-valuations' => 'Valoraciones',
 		'home' => 'Inicio',
-		'how_to_buy' => 'Cómo comprar',
+		'how_to_buy' => 'Como comprar',
 		'more_bids' => 'MAS PUJADOS',
 		'not_account' => '¿No tienes cuenta?',
 		'pay-online' => 'Pago online',
@@ -232,8 +229,7 @@ $lang = [
 		'google_rating' => 'Rating',
 		'google_reviews' => 'reviews',
 		'google_write_review' => 'Escribir Reseña',
-		'google_view' => 'Ver en',
-		'collaborate' => 'Colaboran'
+		'google_view' => 'Ver en'
 	),
 
 	'links' =>
@@ -420,12 +416,11 @@ $lang = [
 		'require_wallet' => 'Para poder pujar por un lote NFT necesitas tener un wallet asociado. <br>Desde <a href="/es/user/panel/info" > tu panel de usuario</a> podrás indicarnos tu wallet o crearte uno nuevo.',
 		'custom_login' => 'Para poder pujar es necesario <a title="iniciar sesión" href=":login_link"> iniciar sesión </a>.',
 		'free' => 'Libre',
-		'auction_date' => 'Fecha de la subasta',
-		'quick_bid' => 'Puja rápida',
-		'bid_on' => 'Pujar por',
 		'add_bidders' => 'Añadir pujadores',
 		'bid_participants' => 'Participantes en la puja',
-		'closing_date' => 'Fecha fin: '
+		'start_date' => 'Fecha de inicio:',
+		'end_date' => 'Fecha de fin:',
+		'can_place_bids' => 'Podrá realizar pujas a partir de: '
 	),
 	'lot_list' =>
 	array(
@@ -606,7 +601,8 @@ $lang = [
 		'title_500' => 'Error inesperado.',
 		'message_500' => 'Se ha producido un error y no se ha podido completar la solicitud. Inténtelo de nuevo.',
 		'asign_to_ministery' => 'El lote anterior ha sido adjudicado al ministerio',
-		'bidders_ratio' => 'La suma de los ratios debe sumar 100%'
+		'bidders_ratio' => 'La suma de los ratios debe sumar 100%',
+		'noPhoneInPhoneBid' => 'Es necesario que indique su número de teléfono'
 	),
 	'msg_neutral' =>
 	array(
@@ -669,6 +665,8 @@ $lang = [
 		'add_cart' => 'Articulo añadido al carrito de la compra',
 		'delete_lot_cart' => 'Lote eliminado del carrito de la compra',
 		'phoneOrder' => "Orden telefónica realizada con éxito",
+		'newsletter_unsubscribe' => "La suscripción a newsletters del email :email a sido cancelada",
+		'newsletter_subscribe' => "La suscripción a newsletters del email :email se ha ejecutado con exito"
 	),
 	'sheet_tr' =>
 	array(
