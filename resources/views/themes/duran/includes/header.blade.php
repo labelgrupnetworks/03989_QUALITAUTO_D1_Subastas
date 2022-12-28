@@ -19,7 +19,7 @@ use App\libs\TradLib as TradLib;
         <div class="row">
             <div class="col-xs-12 text-right d-flex justify-content-flex-end">
 
-                    <?php /*  foreach(Config::get('app.locales') as $key => $value) { ?>
+				<?php foreach(Config::get('app.locales') as $key => $value) { ?>
                         <ul class="ul-format list-lang d-inline-flex">
 
                             @if(\App::getLocale() != $key)
@@ -40,7 +40,7 @@ use App\libs\TradLib as TradLib;
                             </li>
                             @endif
                         </ul>
-                        <?php }  */?>
+                        <?php }  ?>
                         <ul  class="ul-format list-lang d-inline-flex redes-sociales">
                             <li class="facebook">
                                 <a href="https://www.facebook.com/duran.subastas" target="_blank">

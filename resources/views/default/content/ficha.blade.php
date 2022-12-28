@@ -322,23 +322,23 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                     <?= $lote_actual->desc_hces1 ?>
             </div>
 
-</div>
-
-<section class="container">
-	<div class="row">
-		<div class="col-xs-12">
-
-			@foreach ($files as $file)
-			<p>
-				<a href="{{ $file->download_path }}" alt="{{ $file->name_hces1_files }}" target="_blank">
-					{{ $file->name_hces1_files }}
-				</a>
-			</p>
-			@endforeach
-
-		</div>
 	</div>
-</section>
+
+
+			<div class="row">
+				<div class="col-xs-12">
+
+					@foreach ($files as $file)
+					<p>
+						<a href="{{ $file->download_path }}" alt="{{ $file->name_hces1_files }}" target="_blank">
+							{{ $file->name_hces1_files }}
+						</a>
+					</p>
+					@endforeach
+
+				</div>
+			</div>
+		
 
 
     <div class="row">

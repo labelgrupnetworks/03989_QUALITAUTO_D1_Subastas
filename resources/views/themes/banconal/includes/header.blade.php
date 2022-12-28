@@ -99,7 +99,7 @@ use App\libs\TradLib as TradLib;
 		*/
 		?>
         <div class="logo-header">
-            <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
+            <a href="https://www.banconal.com.pa" target="_blank">
                 <img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
             </a>
         </div>
@@ -153,7 +153,7 @@ use App\libs\TradLib as TradLib;
                                 <?= trans($theme.'-app.login_register.login') ?>
                         </a>
                     </div>
-                    @else
+                @else
                     <div class="my-account color-letter-header">
                         <div class="row">
                             <div class="col-xs-3 text-center">
@@ -169,10 +169,7 @@ use App\libs\TradLib as TradLib;
                         </div>
 
                     <div class="mega-menu background-body rigth-0">
-                        <a class="color-letter" href="{{ \Routing::slug('user/panel/orders') }}" >
-                            {{ trans($theme.'-app.login_register.my_panel') }}
 
-                        </a>
                         @if(Session::get('user.admin'))
                             <a class="color-letter" href="/admin"  target = "_blank"> {{ trans($theme.'-app.login_register.admin') }}</a>
                         @endif
@@ -240,15 +237,9 @@ use App\libs\TradLib as TradLib;
 
                 </div>
             </form>
-            <div class="login-separator"></div>
-            <p class="text-center">{{ trans($theme.'-app.login_register.not_account') }}</p>
-            <div class="create-account-link">
-                @if(empty($registration_disabled))
-                <a class="" title="{{ trans($theme.'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">{{ trans($theme.'-app.login_register.register') }}</a>
-                @else
-                <p class="text-center" style="color: darkred;">{{ trans($theme.'-app.login_register.registration_disabled') }}</p>
-                @endif
-            </div>
+
+
+
         </div>
     </div>
     </div>

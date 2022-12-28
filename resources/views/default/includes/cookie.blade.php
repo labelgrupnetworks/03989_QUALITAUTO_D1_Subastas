@@ -1,5 +1,5 @@
 {{--<div id="cookie_law" token="{{ csrf_token() }}"><span id="text_cookie_law"></span></div>--}}
-<div class="col-xs-12" id="cookie_law" token="{{ csrf_token() }}">
+<div class="col-xs-12 js-cookie-session" id="cookie_law" token="{{ csrf_token() }}" style="display: none">
 	<span>
 		<div class='container-fluid'>
 			<div class='row'>

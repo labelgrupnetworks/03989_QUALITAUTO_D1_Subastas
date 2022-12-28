@@ -15,7 +15,7 @@
 						<p class="phonebid_js">{{trans(\Config::get('app.theme').'-app.lot.phonebid_text')}} <br></p>
                                                 <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 1: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone1" id="phone1Bid_JS"></p>
 					        <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 2: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone2" id="phone2Bid_JS"></p>
-
+							<p id="errorOrdenFicha" style="color:red"><p>
 
                                                     <button id="confirm_orden" class="btn button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?> </button>
 

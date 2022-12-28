@@ -223,7 +223,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 						@endphp
 						{{$refLot}}
 
-						- {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}
+						- {!! str_replace(array("<p>","</p>"),array("",""),$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1)!!}
 
                     </div>
 					<div class="col-xs-12 no-padding desc-lot-profile-content">
@@ -328,7 +328,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 	</div>
 </section>
 
-
+<div class="container">
     <div class="row">
         <div class="single">
             <div class="col-xs-12 col-md-7">
@@ -349,8 +349,8 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                 </div>
             </div>
         </div>
+	</div>
 </div>
-
 <?php
 $key = "lotes_recomendados";
  $replace = array(

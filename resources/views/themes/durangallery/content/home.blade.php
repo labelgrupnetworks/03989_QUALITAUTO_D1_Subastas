@@ -86,7 +86,7 @@
 	<h2 class="title-40 color-black text-center mt-1">{{ trans("$theme-app.blog.last_post") }}</h2>
 
 	<div class="blog-wrapper row mt-3">
-		@foreach ( collect(\Tools::getWorpressRss('https://noticias.durangallery.com/feed/'))->take(4) as $post)
+		@foreach ( collect(\Tools::getWorpressRss('https://blog.duran-subastas.com/feed'))->take(4) as $post)
 		<div class="col-xs-12 col-md-6 p-3">
 
 			<div class="blog-content">

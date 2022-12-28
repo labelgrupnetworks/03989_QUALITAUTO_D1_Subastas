@@ -121,7 +121,11 @@ $youtubeBannerOptions = "{
 	{!! \BannerLib::bannersPorKey('catalog-home-banner', 'home-catalog', $home3bannerOptions) !!}
 </div>
 --}}
-<div class="container pt-2">
+<div class="pt-3 ">
+	{!! \BannerLib::bannersPorKey('CATALOGOS', '', '') !!}
+</div>
+<div class="container pt-3">
+
 	<div class="row">
 		<div class="col-xs-12">
 			<h2 class="title-color-dark-gray mt-4 mb-4 text-center">{{ trans($theme . '-app.home.featured_lots_title') }}</h2>
@@ -130,6 +134,9 @@ $youtubeBannerOptions = "{
 </div>
 
 <div class=" pt-1 pb-5">
+
+
+
 	<div class="yt-banner-container pb-3">
 		{!! \BannerLib::bannersPorKey('featured-lot-banner', 'featured-log-bnr', $youtubeBannerOptions) !!}
 	</div>
@@ -208,7 +215,7 @@ $youtubeBannerOptions = "{
 </div>
 --}}
 <div class="app-segre-banner-container">
-	{!! \BannerLib::bannersPorKey('banner-app-segre', 'app-segre-banner', "{'dots': false, 'arrows': false,'}") !!}
+	{!! \BannerLib::bannersPorKey('banner-app-segre', 'app-segre-banner', "{'dots': false, 'arrows': false,}") !!}
 </div>
 
 

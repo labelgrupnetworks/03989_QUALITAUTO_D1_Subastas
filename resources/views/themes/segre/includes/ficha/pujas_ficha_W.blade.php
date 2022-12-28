@@ -111,6 +111,11 @@
                     <div class="input-group-btn">
                         <button id="pujar_ordenes_w" data-from="modal" type="button" class="ficha-btn-bid button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
                     </div>
+					<div class="">
+						<button id="pujar_orden_telefonica" data-from="modal" type="button" class="ficha-btn-telephone-bid  button-principal" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.puja_telefonica') }}</button>
+						<input id="orderphone" type="hidden" >
+						<input id="userphone1" type="hidden" value="" >
+					</div>
 			</div>
         @endif
     </div>

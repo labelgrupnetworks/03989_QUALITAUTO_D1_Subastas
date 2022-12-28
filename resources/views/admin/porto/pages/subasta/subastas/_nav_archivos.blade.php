@@ -37,14 +37,16 @@
 						<input type="hidden" name="auction" value="{{$files->auction}}">
 						<input type="hidden" name="reference" value="{{$files->reference}}">
 						<input type="hidden" name="idFile" value="{{$files->id}}">
-						<td style="width: 5%"><img
-								src="{{ \App\Models\V5\AucSessionsFiles::PATH_ICONS[$files->type] }}" width="100%"></td>
+						<td style="width: 5%">
+							@if(!empty(\App\Models\V5\AucSessionsFiles::PATH_ICONS[$files->type]))
+								<img src="{{ \App\Models\V5\AucSessionsFiles::PATH_ICONS[$files->type] }}" width="100%"></td>
+							@endif
 						<td style="width: 10%">{{ $files->reference }}</td>
 						<td><a style="text-decoration: none;" title="{{ $files->description }}" target="_blank"
 								href="/files{{ $files->path }}">{{ $files->description }}</a>
 						</td>
 						<td style="width: 10%">{{ $files->order }}</td>
-						<td><button type="submit" class="btn btn-danger"><b>X</b></button></td>
+						<td><a class="btn btn-danger" data-toggle="modal" data-target="#deleteSessionFileModal" data-auction="{{$files->auction}}" data-reference="{{$files->reference}}" data-id="{{$files->id}}"><b>X</b></a></td>
 					</form>
 				</tr>
 				@endforeach
@@ -53,4 +55,25 @@
 		</fieldset>
 	</div>
 </div>
+
+
+@include('admin::includes._delete_session_file_modal', ['routeToDelete' => "/admin/sesion/deletefile"])
+
+<script>
+	$('#deleteSessionFileModal').on('show.bs.modal', function(event) {
+
+		var button = $(event.relatedTarget);
+		var auction = button.data('auction');
+		var reference = button.data('reference');
+		var id = button.data('id');
+
+		$('#formDeleteSessionFile').find('#auction').val(auction);
+		$('#formDeleteSessionFile').find('#reference').val(reference);
+		$('#formDeleteSessionFile').find('#idFile').val(id);
+
+		var modal = $(this);
+		modal.find('.modal-title').text(name);
+	});
+
+</script>
 

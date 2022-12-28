@@ -5,7 +5,9 @@
 $clientsCookies = json_decode(\Config::get('app.config_cookies', '{}'), true);
 $bread[] = array("name" => trans(\Config::get('app.theme').'-app.cookies.bread') );
 ?>
-@include('includes.breadcrumb')
+<div class="container">
+	@include('includes.breadcrumb')
+</div>
 
 <div class="contenido cookies-page">
 	<div class="container">
@@ -16,7 +18,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.cookies.bread')
 			</div>
 		</div>
 
-		<form class="form-inline" method="POST"
+		<form id="cookiesForm" class="form-inline" method="POST"
 			action="{{route('cookieConfig', ['lang' => Config::get('app.locale')])}}">
 			@csrf
 			<div class="row block-cookie technical_cookies mt-3">

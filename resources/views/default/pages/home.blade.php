@@ -9,7 +9,7 @@
 
 @section('content')
 
-@include('includes.pujar_lote_btn')
+@include('includes.tiempo_real_btn')
 
 @include('content.home')
 

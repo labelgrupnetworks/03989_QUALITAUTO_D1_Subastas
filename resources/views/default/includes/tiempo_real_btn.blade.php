@@ -20,7 +20,7 @@
 								<a class="home-live-btn-link " href="{{ \Tools::url_real_time_auction($session->cod_sub, $session->name, $session->id_auc_sessions) }}">
 									<div class="bid-online"></div>
 									<div class="bid-online animationPulseRed"></div>
-									Pujar en vivo {{ $session->name }}
+									{{ trans("$theme-app.lot.bid_live") }} {{ $session->name }}
 								</a>
 							</div>
 						</div>

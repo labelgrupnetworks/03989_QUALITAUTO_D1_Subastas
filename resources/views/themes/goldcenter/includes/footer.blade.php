@@ -6,54 +6,59 @@
 <footer>
 	<div class="container">
 		<div class="row">
+			<div class="col-xs-12 col-lg-5">
+				<div class="row ">
+					<div class="col-xs-12 col-sm-5 image">
+						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"
+							alt="{{(\Config::get( 'app.name' ))}}" width="90%">
+					</div>
+					<div class="col-xs-12 col-sm-5 col-md-offset-2 enterprise text-justify">
+						<div class="footer-address">
+							<div class="row">
+								<div class="footer-title col-xs-12">
+									{{ trans($theme.'-app.foot.contact') }}
+								</div>
+								<div class="col-xs-12">
+
+								<span>
+								{{ trans("$theme-app.foot.address") }}<br>
+								{{ trans("$theme-app.foot.zip_code") }}<br>
+								</span>
+								<a href="mailto:{{ trans("$theme-app.foot.email") }}">{{ trans("$theme-app.foot.email") }}</a><br><br>
+								<strong>{{ trans("$theme-app.foot.phone_number") }}</strong>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="col-xs-12 col-lg-7">
 				<div class="row">
-					<div class="col-xs-12 col-sm-3 text-center">
-						<div class="footer-title">
-							{{ trans($theme.'-app.foot.auctions') }}
-						</div>
-						<ul class="ul-format footer-ul">
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-							<li>
-								<a class="footer-link"
-									href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
-							</li>
-							@endif
+					<div class="col-xs-12 col-sm-2 text-center">
 
-							@if($global['subastas']->has('H'))
-							<li>
-								<a class="footer-link"
-									href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
-							</li>
-							@endif
-						</ul>
 					</div>
-					<div class="col-xs-12 col-sm-4 text-center">
+					<div class="col-xs-12 col-sm-5 text-left">
 						<div class="footer-title">
-							{{ trans($theme.'-app.foot.enterprise') }}
+							Links
 						</div>
 						<ul class="ul-format footer-ul">
-							<li><a class="footer-link"
-									title="{{ trans($theme.'-app.foot.about_us') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  ?>">{{ trans($theme.'-app.foot.about_us') }}</a>
-							</li>
-							<li>
-								<a class="footer-link" title="{{ trans($theme.'-app.foot.contact')}}"
-									href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
-							</li>
 
-						</ul>
-					</div>
-					<div class="col-xs-12 col-sm-5 text-center">
-
-						<div class="footer-title">
-							{{ trans($theme.'-app.foot.term_condition')}}
-						</div>
-						<ul class="ul-format footer-ul">
 							<li>
 								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.term_condition') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
+									href="{{\Routing::translateSeo("/subasta-actual") }}">{{ trans($theme.'-app.subastas.auctions')}}</a>
+							</li>
+							<li><a class="footer-link"  
+								title="{{ trans($theme.'-app.foot.about_us') }}"
+								href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  ?>">{{ trans($theme.'-app.foot.about_us') }}</a>
+						</li>
+
+
+							<li>
+								<a class="footer-link"
+									title="{{ trans($theme.'-app.foot.general_conditions') }}"
+									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.general_conditions')?>">{{ trans($theme.'-app.foot.general_conditions') }}</a>
 							</li>
 							<li>
 								<a class="footer-link"
@@ -62,43 +67,33 @@
 							</li>
 							<li>
 								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.cookies') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.cookies')?>">{{ trans($theme.'-app.foot.cookies') }}</a>
+									title="{{ trans($theme.'-app.foot.aviso_legal') }}"
+									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.foot.aviso_legal_link')?>">{{ trans($theme.'-app.foot.aviso_legal') }}</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="col-xs-12 col-sm-5 text-left ">
+
+						<div class="footer-title">
+							{{ trans($theme.'-app.foot.follow_us')}}
+						</div>
+						<ul class="ul-format footer-ul">
+							<li>
+								<a class="share-social-foot d-flex align-items-center justify-content-center color-letter" target="_blank"  href="https://www.facebook.com/Boutique-de-Lolo-102017296036941"><i class="fa fa-facebook-f"></i></a>
 							</li>
 							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.general_conditions') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.general_conditions')?>">{{ trans($theme.'-app.foot.general_conditions') }}</a>
+								<a class="share-social-foot d-flex align-items-center justify-content-center color-letter" target="_blank" href="https://www.instagram.com/boutiquedelolomadrid"><i class="fa fa-instagram"></i></a>
 							</li>
+
+
+
 						</ul>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-lg-5">
-				<div class="row footer-title">
-					<div class="col-xs-12 col-sm-5 image">
-						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"
-							alt="{{(\Config::get( 'app.name' ))}}" width="90%">
-					</div>
-					<div class="col-xs-12 col-sm-7 enterprise text-justify">
-						<div class="row">
-							<div class="col-xs-12 col-sm-6 no-padding">
-								<b>{{ $empresa->nom_emp ?? ''}}</b> <br>
-								{{ $empresa->dir_emp ?? ''}}<br>
-								{{ $empresa->cp_emp ?? ''}} {{ $empresa->pob_emp ?? ''}}, {{ $empresa->pais_emp ?? ''}}<br>
-							</div>
-							<div class="col-xs-12 col-sm-6">
-								<br>{{ $empresa->tel1_emp ?? ''}}<br>
-								<a title="{{ $empresa->email_emp ?? ''}}"
-									href="mailto:{{ $empresa->email_emp ?? ''}}">
-									{{ $empresa->email_emp ?? ''}}
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+
 		</div>
 	</div>
 </footer>

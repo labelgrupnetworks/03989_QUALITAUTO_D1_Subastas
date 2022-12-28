@@ -8,6 +8,23 @@
 						<div class="row">
 							<div class="col-xs-12 col-md-3 auction-lots-view">
 								@include('includes.grid.leftFilters')
+								<div class="social pb-3">
+									<h3 class="text-center">{{ trans("$theme-app.foot.follow") }}</h3>
+
+									<div class="social-icons d-flex align-items-center justify-content-center">
+										<div class="social-icon">
+											<div class="border-gradient">
+												<a href="{{ (\Config::get('app.instagram')) }}" target="_blank" class="social-link"><i class="fab fa-2x fa-instagram"></i></a>
+											</div>
+										</div>
+
+										<div class="social-icon">
+											<div class="border-gradient">
+												<a href="{{ (\Config::get('app.facebook')) }}" target="_blank" class="social-link"><i class="fa fa-2x fa-facebook"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
 
 							</div>
 							<div class="col-xs-12 col-md-9 p-0">

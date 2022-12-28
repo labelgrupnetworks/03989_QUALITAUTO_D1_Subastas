@@ -203,6 +203,14 @@
 					</ul>
 				</li>
 				<?php
+					$has_subasta = $subastaObj->auctionList ('H');
+				?>
+				@if(!empty($has_subasta))
+				<li><a
+					href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
+				</li>
+				@endif
+				<?php
 				  $has_subasta = $subastaObj->auctionList ('S', 'V');
                   if(empty($has_subasta) && Session::get('user.admin')){
                        $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
@@ -271,6 +279,15 @@
 				href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
 		</li>
 		@endif
+		<?php
+			$has_subasta = $subastaObj->auctionList ('H');
+        ?>
+		@if(!empty($has_subasta))
+		<li><a
+			href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
+		</li>
+		@endif
+
 		<?php
                   $has_subasta = $subastaObj->auctionList ('S', 'O');
                   if(empty($has_subasta) && Session::get('user.admin')){

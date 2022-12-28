@@ -120,10 +120,10 @@
     })
 
 
-            function login_web(){
+        function login_web(){
             $.ajax({
             type: "POST",
-                    url: '/custom_login',
+                    url: '/login_post_ajax',
                     data: $('.ob_disp #accerder-user-form').serialize(),
                     success: function(response)
                     {
@@ -135,6 +135,6 @@
 
                     }
             });
-            }
+        }
 
 </script>

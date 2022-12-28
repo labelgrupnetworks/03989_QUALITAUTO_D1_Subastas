@@ -15,7 +15,7 @@ use App\libs\TradLib as TradLib;
 
 
 ?>
-@if(count(Config::get('app.locales')) > 1)
+@if(count(Config::get('app.locales')) > 1 && 1==2)
 <div class="lang-selection">
     <div class="container-fluid">
         <div class="row">
@@ -92,10 +92,10 @@ use App\libs\TradLib as TradLib;
 <header>
     <nav class="menu-header">
         <div class="menu-responsive hidden-lg">
-            <div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">{{ trans($theme.'-app.head.menu') }}</div>
+            <div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter" style="visibility: hidden;">{{ trans($theme.'-app.head.menu') }}</div>
         </div>
         <div class="logo-header">
-            <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
+            <a title="boutique de lolo" href="https://boutiquedelolo.com">
                 <img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
             </a>
         </div>
@@ -113,7 +113,7 @@ use App\libs\TradLib as TradLib;
                     </li>
 					--}}
 
-
+					{{-- Categorias
 					<li>
 						<a class="color-letter d-flex link-header justify-content-center align-items-center category-button"  href="#"><span>{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</span></a>
 						<div class="submenuDefault ">
@@ -130,13 +130,16 @@ use App\libs\TradLib as TradLib;
 					  </div>
 
 					</li>
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-                  <li>
-                      <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
-                        <span>{{ trans($theme.'-app.foot.auctions')}}</span>
-                    </a>
-                    </li>
-                @endif
+					--}}
+					{{-- Subastas
+						@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+						<li>
+							<a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
+								<span>{{ trans($theme.'-app.foot.auctions')}}</span>
+							</a>
+							</li>
+						@endif
+				--}}
 				{{--
                 @if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
                     <li>
@@ -148,17 +151,15 @@ use App\libs\TradLib as TradLib;
                     <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('venta-directa') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
                 @endif
 				--}}
+				{{-- Subastas
                 @if($global['subastas']->has('H'))
                     <li>
                         <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span>
                         </a>
                     </li>
                 @endif
-               <?php /*
-                *    <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans($theme.'-app.foot.auctions')}}</a></li>
+				--}}
 
-                * */
-                  ?>
 				  {{--
 	      <li>
                     <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
@@ -168,9 +169,11 @@ use App\libs\TradLib as TradLib;
                     <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos', null) }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
                 </li>
 				--}}
+				{{-- contacto
                 <li>
-                    <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
+                    <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="{{ \Routing::translateSeo(trans($theme.'-app.links.contact')) }}"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
                 </li>
+				--}}
             </ul>
         </div>
         <div class="search-header-container  d-flex justify-content-center align-items-center hidden-xs" role="button">

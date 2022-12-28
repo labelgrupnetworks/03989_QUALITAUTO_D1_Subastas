@@ -128,6 +128,11 @@ $lang = Config::get('app.locale');
                         title="{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}"
                         href="<?= \Routing::translateSeo(trans(\Config::get('app.theme') . '-app.links.contact')) ?>"><span>{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</span></a>
                 </li>
+
+				<li>
+                    <a class="color-letter d-flex link-header justify-content-center align-items-center" target="_blank"
+                        title="{{ trans(\Config::get('app.theme') . '-app.blog.name') }}" href="/blog"><span>{{ trans(\Config::get('app.theme') . '-app.blog.name') }}</span></a>
+                </li>
             </ul>
         </div>
         <div class="search-header-container  d-flex justify-content-center align-items-center hidden-xs" role="button">

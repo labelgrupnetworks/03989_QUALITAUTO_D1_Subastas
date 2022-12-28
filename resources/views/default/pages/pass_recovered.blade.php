@@ -6,7 +6,7 @@
 
 @section('content')
 @if(Config::get('app.panel_password_recovery'))
-<section class="mb-20">
+<section class="mb-5 mt-5">
     <div class="container panel panel-recovery">
         <div class='row'>
             <div class="col-lg-4 col-md-4 col-xs-12 col-lg-offset-4 col-md-offset-4">

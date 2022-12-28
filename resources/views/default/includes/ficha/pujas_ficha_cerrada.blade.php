@@ -14,7 +14,7 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 
 <div class="info_single lot-sold col-xs-12 no-padding">
 
-            <div class="col-xs-8 col-sm-12 no-padding ">
+            <div class="col-xs-8 col-sm-12 no-padding text-center">
                 @if($cerrado && !empty($precio_venta) && $remate )
                     <div class="pre">
                         <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>

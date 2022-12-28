@@ -83,7 +83,7 @@
 			<option value="lastbids" @if (app('request')->input('order') == 'lastbids') selected @endif >
 					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.last_bids') }}
 			</option>
-			<option value="360" @if (app('request')->input('order') == '360') selected @endif >
+			<option value="media" @if (app('request')->input('order') == 'media') selected @endif >
 					{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.lots_360') }}
 			</option>
 

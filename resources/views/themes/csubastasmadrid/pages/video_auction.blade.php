@@ -26,8 +26,8 @@
 					<div class="selector h-100">
 						<form action="" id="videoselector_{{ $subastaReciente->cod_sub }}" class="h-100">
 							<select multiple class="form-control" name="videos" id="videos" style="height: 100%; min-height: 200px">
-								@foreach ($videoSorted ?? [] as $video)
-								<option value="{{ $video }}">{{ last(explode('/', $video)) }}</option>
+								@foreach ($videos ?? [] as $ref => $video)
+								<option value="{{ $video }}">Lote {!! $ref !!}</option>
 								@endforeach
 							</select>
 						</form>
@@ -41,7 +41,6 @@
 	</div>
 
 </div>
-
 
 <script>
 	$('#videos').change(function () {

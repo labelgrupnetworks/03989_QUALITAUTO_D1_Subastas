@@ -24,9 +24,9 @@
 <link rel="stylesheet" href="{{ $base_url }}/vendor/hover-css/hover.css" />
 <link rel="stylesheet" href="{{ $base_url }}/vendor/pnotify/pnotify.custom.css" />
 <!--<link rel="stylesheet" href="{{ $base_url }}/vendor/datatables/datatables.min.css" />-->
-<link rel="stylesheet" href="{{ $base_url }}/stylesheets/theme.css" />
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache("/themes_admin/porto/assets/stylesheets/theme.css") }}" />
 <link rel="stylesheet" href="{{ $base_url }}/stylesheets/skins/default.css" />
-<link rel="stylesheet" href="{{ $base_url }}/stylesheets/theme-custom.css" />
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache("/themes_admin/porto/assets/stylesheets/theme-custom.css") }}" />
 <link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css" >
 <link rel="stylesheet" type="text/css" href="/vendor/slick/slick-theme.css" >
 <link rel="stylesheet" type="text/css" href="/vendor/datatables/datatables.css">

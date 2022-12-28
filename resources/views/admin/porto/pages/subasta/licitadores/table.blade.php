@@ -2,7 +2,13 @@
 <div class="row well">
 	<div class="col-xs-12">
 
-		<h1>Licitadores</h1><a href="{{$formularioCreate}}" class="btn btn-primary right">Nuevo Licitador</a>
+		<h1>Licitadores</h1>
+		<a href="{{$formularioCreate}}" class="btn btn-primary right">Nuevo Licitador</a>
+		<form id="idAuctionForExport" name="idAuctionForExport" action="/admin/licit/export-licits" method="POST">
+			<input id="idAuctionForExcel" type="hidden" name="idAuctionExcel" value="">
+			<a id="submitLicitExport" onclick="javascript:submit_form(document.getElementById('idAuctionForExport'),0);" class="btn btn-warning right mr-2 d-none">Exportar licitadores</a>
+		</form>
+
 		<p><i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;<span class="badge">
 				La selección de la subasta es obligatoria</span></p>
 		<br>
@@ -52,5 +58,14 @@
 	</div>
 </div>
 
-
+<script>
+	$('#select__1__SUB_LICIT').change(function() {
+		$('#idAuctionForExcel').val($(this).val());
+		if ($('#idAuctionForExcel').val() != '') {
+			$('#submitLicitExport').removeClass('d-none');
+		} else {
+			$('#submitLicitExport').addClass('d-none');
+		}
+	});
+</script>
 

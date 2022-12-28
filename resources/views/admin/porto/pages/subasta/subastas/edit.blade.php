@@ -52,7 +52,9 @@
 
 				<input type="hidden" name="tab" value="">
 				<input type="hidden" name="route.update.image" value="{{ route('subastas.update.image') }}">
-				<input type="hidden" name="upload_first_session" value="1" data-question="Desea actualizar los datos de la primera sesión">
+				@if(config('app.admin_upload_first_session', 1))
+					<input type="hidden" name="upload_first_session" value="1" data-question="Desea actualizar los datos de la primera sesión">
+				@endif
 
 				<div class="row">
 

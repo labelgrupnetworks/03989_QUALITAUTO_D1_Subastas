@@ -96,3 +96,54 @@
 	}
 </script>
 @endif
+
+
+<script>
+	@if(request("recoveryPassword"))
+
+	$(document).ready(function () {
+
+		var loader = $('.loader.copyme').clone().removeClass('hidden');
+
+		$('#modalAjax .modal-content .modal-title').html("Actualizar contraseña");
+
+
+
+
+		$.ajax({
+			url: "/es/password_recovery",
+			dataType: "text",
+
+			beforeSend: function (xhr) {
+				$('#modalAjax .modal-content .modal-body').html(loader);
+			},
+
+			success: function (data) {
+
+				try {
+
+					info = $.parseJSON(data);
+
+					if (info.status == 'error') {
+						window.location.href = '/';
+					}
+
+					//$('#modalAjax .modal-content .modal-body').html("<div style='padding:20px;'>"+info.msg+"</div>");
+
+				} catch (e) {
+					// not json
+					$('#modalAjax .modal-content .modal-body').html("<div style='padding:20px;'>" + data + "</div>");
+				}
+
+				$('#modalAjax .modal-content .loader.copyme').remove();
+				@if(request("emailRecovery"))
+					$("#password_recovery [name=email]").val("{{request("emailRecovery")}}");
+				@endif
+
+				$('#modalAjax').modal("show");
+			}
+		});
+	});
+	@endif
+
+	</script>

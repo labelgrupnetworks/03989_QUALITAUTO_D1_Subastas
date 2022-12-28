@@ -90,7 +90,7 @@ $currency = "B/.";
 									$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
 								}
 							@endphp
-						<h1>Lote	{{$refLot}} </h1>
+						<h1>{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }} -	{{$refLot}} </h1>
 
 						@php /*	- {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!} */ @endphp
 
@@ -103,28 +103,7 @@ $currency = "B/.";
 							*/ @endphp
 							<div class="col-xs-12 no-padding desc-lot-profile-content">
 
-									<?php /*	{{!!   $lote_actual->desc_hces1 !!}} */ ?>
-										<p><h2>Finca 1</h2></p>
-										<ul>
-											<li><strong>Nº Folio Real:</strong> 16 </li>
-											<li><strong>Código de Ubicación:</strong> 2543 </li>
-											<li><strong>Provincia:</strong> COMARCA INDÍGENA EMBERÁ DE DARIÉN </li>
-											<li><strong>Sección Propiedad:</strong> Propiedad Horizontal </li>
-										</ul>
-											<p><h2>Finca 2</h2></p>
-										<ul>
-											<li><strong>Nº Folio Real:</strong> 576 </li>
-											<li><strong>Código de Ubicación:</strong> 849211 </li>
-											<li><strong>Provincia:</strong> BOCAS DEL TORO</li>
-											<li><strong>Sección Propiedad:</strong> Propiedad ” </li>
-										</ul>
-											<p><h2>Finca 3</h2></p>
-										<ul>
-											<li><strong>Nº Folio Real:</strong> 3212 </li>
-											<li><strong>Código de Ubicación:</strong> 39712 </li>
-											<li><strong>Provincia:</strong> VERAGUAS</li>
-											<li><strong>Sección Propiedad:</strong> Propiedad Horizontal </li>
-										</ul>
+									<?=    $lote_actual->desc_hces1  ?>
 
 
 							</div>
@@ -210,11 +189,13 @@ $currency = "B/.";
 						</div>
 					@endif
 					</div>
-					<div class="col-xs-12 col-sm-12 no-padding">
-						@if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
-							@include('includes.ficha.history')
-						@endif
-					</div>
+					@if(Session::has('user') && $deposito)
+						<div class="col-xs-12 col-sm-12 no-padding">
+							@if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
+								@include('includes.ficha.history')
+							@endif
+						</div>
+					@endif
 				</div>
 			</div>
 

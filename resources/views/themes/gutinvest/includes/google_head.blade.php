@@ -106,25 +106,13 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
-
-<!-- Google Tag Manager -->
-<script>
-	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-	})(window,document,'script','dataLayer','GTM-KT4XS2H');
-</script>
-<!-- End Google Tag Manager -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SEM089379G"></script>
+<script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-SEM089379G'); </script>
 
 <!-- gtag -->
 @if(!empty($data["gtag_pageview"]) )
-<script>
-	gtag('event', 'page_view', {
-        'send_to': 'AW-788105662',
-        'user_id': '{{$data["gtag_pageview"]}}'
-      });
-</script>
+<script> gtag('event', 'page_view', { 'send_to': 'G-SEM089379G', 'user_id': '{{$data["gtag_pageview"]}}'}); </script>
 @endif
 <!-- gtag -->
 
@@ -136,10 +124,6 @@ ga('send', 'pageview');
 	(function(){var s = document.getElementsByTagName("script")[0]; var b = document.createElement("script"); b.type = "text/javascript";b.async = true; b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; s.parentNode.insertBefore(b, s);})();
 </script> <noscript> <img height="1" width="1" style="display:none;" alt=""
 		src="https://dc.ads.linkedin.com/collect/?pid=600457&fmt=gif" /> </noscript>
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-788105662"></script>
-<script>
-	window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-788105662');
-</script>
 <!-- linkedin_partner / -->
 
 <!-- Smartsupp Live Chat script -->

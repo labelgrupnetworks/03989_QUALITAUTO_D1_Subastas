@@ -33,6 +33,7 @@ $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 $userSession = session('user');
+
 $deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
 $files = FgHces1Files::getAllFilesByLotCanViewUser($userSession, $lote_actual->num_hces1, $lote_actual->lin_hces1, $deposito);
 
@@ -520,6 +521,7 @@ var key ="<?= $key ?>";
 
 
         <?php
+
     } ?>
 
 
@@ -541,7 +543,12 @@ var key ="<?= $key ?>";
 
         tileSources: [{
                 type: 'image',
-                url:  '/img/load/real/'+img
+				 {{-- en los lotes de pintura se cargan con la imagen real ya que se veian mal --}}
+				@if($lote_actual->reference == "001")
+                	url:  '/img/{{config('app.emp')}}/{{$lote_actual->num_hces1}}/'+img
+				@else
+					url:  '/img/load/real/'+img
+				@endif
             }],
         showNavigator:false,
         });
