@@ -1,0 +1,13 @@
+.filters-auction-content{
+	background: var(--primary-color);
+}
+
+.filters-auction-content input::placeholder {
+	color: rgb(255, 255, 255, 0.75);
+}
+
+#form_lotlist .btn-filter {
+	color: #fff;
+	background-color: var(--secondary-color);
+	border: 0;
+}

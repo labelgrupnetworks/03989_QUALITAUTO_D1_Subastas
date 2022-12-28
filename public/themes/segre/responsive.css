@@ -216,6 +216,16 @@
 	}
 
 	/* FIN Página pujar en directo */
+
+	form .input-effect label {
+		left: 25px;
+		font-weight: 100;
+		width: 160px;
+	}
+
+	.cataog-newsletter-text-container .subtitle-catalog {
+		width: auto;
+	}
 }
 
 /* Small devices (landscape phones, 576px and up) */

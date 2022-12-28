@@ -1,8 +1,4 @@
 let audioIsActived = false;
-let project = {
-	theme: 'demo',
-	version: 1,
-};
 
 $(document).ready(function () {
 
@@ -41,29 +37,25 @@ $(document).ready(function () {
      */
 
 	if ($('#bid_amount').length) {
-		if($('#bid_amount').hasClass("NoAutoComplete_JS") == false){
+		$('#bid_amount').autoComplete({
+			minChars: 1,
+			cache: false,
 
-
-			$('#bid_amount').autoComplete({
-				minChars: 1,
-				cache: false,
-
-				source: function (term, response) {
-					try {
-						xhr.abort();
-					} catch (e) {
+			source: function (term, response) {
+				try {
+					xhr.abort();
+				} catch (e) {
+				}
+				$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.actual_bid + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
+					var matches = [];
+					for (i = 0; i < data.length; i++) {
+						matches.push(data[i].toString());
 					}
-					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.importe_escalado_siguiente + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
-						var matches = [];
-						for (i = 0; i < data.length; i++) {
-							matches.push(data[i].toString());
-						}
 
-						response(matches);
-					});
-				},
-			});
-		}
+					response(matches);
+				});
+			},
+		});
 
 	}
 
@@ -444,11 +436,10 @@ $(document).ready(function () {
      |--------------------------------------------------------------------------
      */
 
-	if($('.homeSearch').length != 0){
-		$('.homeSearch').selectpicker({
-			size: 4
-		});
-	}
+	$('.homeSearch').selectpicker({
+		size: 4
+	});
+
 
     /*
      |--------------------------------------------------------------------------
@@ -685,8 +676,6 @@ $(document).ready(function () {
 		verifyFormLoginContent();
 	});
 
-	$('#cookiesForm').on('submit', checkCookiesForm);
-	checkPreferenceCookie();
 
 
 
@@ -955,15 +944,6 @@ function format_money(money) {
 	return money;
 }
 
-function formatMoney({money = 0, decimals = 2, symbol = '€'}){
-
-	money = money.toFixed(decimals);
-	money = money.replace('.', ',');
-	money = money.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
-
-	return money + ' ' + symbol;
-}
-
 function popup_frame(url) {
 	$('#modal_info').magnificPopup(
 		{
@@ -1174,7 +1154,6 @@ window.modalDeletAddress = function modalDeletAddress() {
 	var token = $("#modalDeletAddress #_token").val();
 	var cod = $("#modalDeletAddress #cod_delete").val();
 	var lang = $("#modalDeletAddress #lang").val();
-
 	$.ajax({
 		type: "POST",
 		url: '/delete_address_shipping',
@@ -1187,27 +1166,26 @@ window.modalDeletAddress = function modalDeletAddress() {
 				ajax_shipping('W1', lang);
 			}
 		}
-	})
+	});
+
 };
 
 function fav_addres(thi) {
 	var cod = $(thi).attr('cod');
-	return $.ajax({
+	$.ajax({
 		type: "POST",
 		url: '/api-ajax/add_favorite_address_shipping',
 		data: { codd_clid: cod },
 		success: function (response) {
 			if (response.status == 'success') {
+
 				$("#modalMensaje #insert_msg").html('');
 				$("#modalMensaje #insert_msg").html(messages.success.success_saved);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				ajax_shipping(response.codd_clid, cod);
-				return response;
 			}
 
 		}
-	}).then((response) => {
-		return response;
 	});
 }
 
@@ -1219,7 +1197,7 @@ function delete_shipping_addres(thi) {
 
 function submit_shipping_addres(event, thi) {
 	event.preventDefault();
-	return $.ajax({
+	$.ajax({
 		type: "POST",
 		context: thi,
 		url: '/change_address_shipping',
@@ -1231,11 +1209,8 @@ function submit_shipping_addres(event, thi) {
 				$("#modalMensaje #insert_msg").html(messages.success.success_saved);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				ajax_shipping(response.codd_clid, $("#lang_dirreciones").val());
-				return response;
 			}
 		}
-	}).then((response) => {
-		return response;
 	});
 }
 
@@ -1248,7 +1223,7 @@ function countdown_timer_ficha(countdown) {
 
 	ToFinish = countdown.data('countdownficha') - Math.round(((new Date().getTime() - countdown.data('ini')) / 1000));
 
-	if (ToFinish < 0) {
+	if (ToFinish == -1) {
 		ToFinish = 0;
 		$.ajax({
 			type: "GET",
@@ -1259,17 +1234,20 @@ function countdown_timer_ficha(countdown) {
 					$("#reload_inf_lot").html('');
 					$("#reload_inf_lot").html(response);
 					reloadPujasList_O();
-					countdown.data('stop', 'stop');
-					if (typeof countdown.data('txtend') != 'undefined') {
-						countdown.html(countdown.data('txtend'));
-
-					}
 				}
 			}
 		});
 
+	} else if (ToFinish < -1) {
+		ToFinish = 0;
+		//SI HAY TEXTO DE FIN, PONEMOS EL TEXTO Y PARAMOS EL BUCLE
+		if (typeof countdown.data('txtend') != 'undefined') {
+			countdown.html(countdown.data('txtend'));
+			countdown.data('stop', 'stop');
+			//paramos el contador
+			return
+		}
 	}
-	
 
 	var timeFormat = time_format(ToFinish, countdown.data('format'));
 	countdown.html(timeFormat);
@@ -1578,11 +1556,7 @@ function ajax_shipping(cod_ship, lang) {
 
 function changeCurrency(price, exchange, object) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
-	if(typeof sindecimales  != 'undefined' && sindecimales==true){
-		newPrice = numeral(price).format('0,0');
-	}else{
-		newPrice = numeral(price).format('0,0.00');
-	}
+	newPrice = numeral(price).format('0,0.00');
 	if (currency[exchange].pos_div == 'R') {
 		newPrice += " " + currency[exchange].symbolhtml_div;
 	} else {
@@ -1594,9 +1568,7 @@ function changeCurrency(price, exchange, object) {
 
 function changeCurrencyNew(price, exchange, object) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
-
 	newPrice = numeral(price).format('0,0.00');
-
 	if (currency[exchange].pos_div == 'R') {
 		newPrice += " " + currency[exchange].symbolhtml_div;
 	} else {
@@ -1604,23 +1576,6 @@ function changeCurrencyNew(price, exchange, object) {
 	}
 	$(object).html(newPrice);
 
-}
-
-function changeCurrencyWithElement(price, exchange, element) {
-	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
-
-	let newPrice = numeral(price).format('0,0.00');
-	if(typeof sindecimales  != 'undefined' && sindecimales == true){
-		newPrice = numeral(price).format('0,0');
-	}
-
-	if (currency[exchange].pos_div == 'R') {
-		newPrice += " " + currency[exchange].symbolhtml_div;
-	} else {
-		newPrice = currency[exchange].symbolhtml_div + newPrice;
-	}
-
-	element.innerHTML = newPrice;
 }
 
 $(document).ready(function () {
@@ -1779,31 +1734,6 @@ function getCookie(cname) {
 	return "";
   }
 
-
-function checkCookiesForm(event) {
-	event.preventDefault();
-
-	const desactivatePreferenceInput = document.querySelector("[name='preferences'][value='0']");
-	if(desactivatePreferenceInput.checked) {
-		localStorage.setItem('showCookies', 'false');
-	}
-
-	event.target.submit();
-}
-
-function checkPreferenceCookie() {
-
-	if($(".js-cookie-session").length === 0){
-		return;
-	}
-
-	const showCookies = localStorage.getItem('showCookies');
-	if(!showCookies || showCookies !== "false") {
-		$(".js-cookie-session").fadeIn();
-	}
-}
-
-
 //
 //  Función creada para poder debugar mostrando objetos
 //
@@ -1915,6 +1845,12 @@ function sendContact() {
 /******************************* FUNCIONES SOBRE PANTALLA FAQS **************************/
 /****************************************************************************************/
 
+function openLogin(){
+	//por si venimos de un moda, no afecta a nada mas
+	$.magnificPopup.close();
+	$('.login_desktop').fadeToggle("fast");
+	$('.login_desktop [name=email]').focus();
+}
 
 function FaqshowContent(id) {
 	$(".faq").hide(500);
@@ -1945,54 +1881,3 @@ $(document).ready(function () {
 });
 
 
-function trans(key = null, replace = {}, locale = null){
-
-	const keys = key.split('.');
-	const existTranslate = typeof translates != 'undefined' && typeof translates[keys[0]] != 'undefined' && typeof translates[keys[0]][keys[1]] != 'undefined';
-
-	if(!existTranslate){
-		return key;
-	}
-
-	let string = translates[keys[0]][keys[1]];
-	Object.keys(replace).map(function(value) {
-
-		let str1 = `:${value}`;
-		let re = new RegExp(str1, "i");
-		string = string.replace(re, replace[value]);
-
-	});
-
-
-	return string;
-}
-
-function openLogin(){
-	//por si venimos de un moda, no afecta a nada mas
-	$.magnificPopup.close();
-	$('.login_desktop').fadeToggle("fast");
-	$('.login_desktop [name=email]').focus();
-}
-
-
-function markCurrentPageHeader(exceptions){
-
-	const urlArray = window.location.pathname.split('/');
-    const section = urlArray[2];
-    var menuItems = $('.menu-principal-content').find('li');
-
-	for (const value of exceptions) {
-		if(section == value){
-			return;
-		}
-	}
-
-    menuItems.each(function () {
-
-        $(this).find('a').attr('href')
-        var link = $(this).find('a').attr('href').includes(section)
-        if (link) {
-            $(this).find('a').addClass('color-brand')
-        }
-    });
-}

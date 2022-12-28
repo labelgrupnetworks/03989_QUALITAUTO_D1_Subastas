@@ -429,6 +429,7 @@ p {
 	letter-spacing: 2px;
 	border: 2px solid var(--btn-static-page-border);
 	background-color: transparent;
+	white-space: normal;
 }
 
 .btn-static-page-big:hover,
@@ -712,7 +713,7 @@ footer {
 .title_iframe_catalogo {
 	margin-top: 40px;
 	text-align: center;
-	color: white;
+	
 }
 
 .div_iframe_catalogo {
@@ -745,5 +746,16 @@ footer {
 
 .lot-remates-destacados {
 	min-height: 520px;
+}
+
+
+/* Left Filters (Filtros grid lotes) */
+
+/* Imágen catálogo */
+.img-catalog-lot-list {
+	max-height: 250px;
+	display: block;
+	margin: auto;
+	margin-bottom: 3rem;
 }
 

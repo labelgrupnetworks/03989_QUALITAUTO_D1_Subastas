@@ -642,18 +642,29 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#confirm_orden").click(function () {
+	$("#confirm_orden").click(function (event) {
 
 		imp = $("#bid_modal_pujar").val();
 		if ($("#orderphone").val() == "S") {
 			tel1 = $("#phone1Bid_JS").val();
 			tel2 = $("#phone2Bid_JS").val();
 			ortherphone = true;
+
+			if(tel1.length ==0  && tel2.length ==0){
+				$("#errorOrdenFicha").removeClass("hidden");
+				$("#errorOrdenFicha").html(messages.error["noPhoneInPhoneBid"]);
+				/* Evitamos que se cierre */
+				event.preventDefault();
+				return ;
+			}
+
+
 		} else {
 			tel1 = "";
 			tel2 = "";
 			ortherphone = false;
 		}
+		$("#errorOrdenFicha").addClass("hidden");
 		$.magnificPopup.close();
 		$.ajax({
 			type: "POST",

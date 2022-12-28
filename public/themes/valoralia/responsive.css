@@ -1,0 +1,20 @@
+@media (max-width: 1200px) {
+
+	.menu-principal {
+		background: var(--primary-color);
+		color: #fff;
+	}
+
+	.menu-principal-content {
+
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+
+	.menu-principal-content li,
+	.menu-principal-content li a,
+	.menu-principal-content li a:is(::selection, :focus),
+	.close-menu-reponsive {
+		color: #fff;
+	}
+}

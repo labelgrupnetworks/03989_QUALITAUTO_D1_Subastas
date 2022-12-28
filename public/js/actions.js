@@ -137,6 +137,7 @@ $( document ).ready(function() {
    $("#pujar_orden_telefonica").click(function() {
 		$("#orderphone").val("S");
 		$(".phonebid_js").removeClass("hide");
+		$("#errorOrdenFicha").addClass("hidden");
 
          if(auction_info.user!== undefined){
             if(auction_info.user.phone1 !== null){
@@ -239,7 +240,7 @@ imp = $("#bid_make_offer").val();
             }else if(data.status == 'info'){
                 $("#insert_msg").html(data.msg_1);
 				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'});
-				
+
 				auction_info.lote_actual.pujas = data.pujas
 				reloadPujasList_O();
             }else if(data.status == 'success'){

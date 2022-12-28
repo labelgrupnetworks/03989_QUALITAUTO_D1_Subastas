@@ -311,6 +311,9 @@ BOLG SECTION
 .read-more-button a {
     margin: 0 40px;
 }
+.read-more small, .read-less small{
+	cursor: pointer;
+}
 
 /**
 NEWSLETTER

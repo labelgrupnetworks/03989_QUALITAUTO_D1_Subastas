@@ -1,7 +1,7 @@
 :root {
 
     --primary-color: #414145;
-    --secondary-color: #BF9814;
+    --secondary-color: #006eb8;
     --complement-color: #414145;
     --extra-color: #00205b ;
     --primary-color-text: #707070;
@@ -33,9 +33,7 @@
 
 	--filter-background: #414145;
 }
-a:focus, a:hover {
 
-}
 
 .btn_login_desktop {
 color:#FFF;
@@ -101,3 +99,29 @@ footer {
 .hist_item, .tres_item {
 	font-size: 12px;
   }
+
+  .my-account{
+	color: #FFF;
+  }
+
+  .lot-sold .pre
+{
+	margin-top:0px;
+	margin-bottom:30px
+}
+
+.ficha-nologin-nodeposito{
+	margin-bottom: 25px;
+	color: red;
+	text-align: center;
+}
+
+.item_lot .data-container {
+	margin-top: 50px;
+
+}
+
+.item_lot {
+	min-height: 260px;
+}
+

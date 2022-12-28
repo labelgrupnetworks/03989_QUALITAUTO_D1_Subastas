@@ -1,14 +1,14 @@
 :root {
 
     --primary-color: #414145;
-    --secondary-color: #c38f27;
+    --secondary-color: #b07c25;
     --complement-color: #414145;
-    --extra-color: #c38f27;
+    --extra-color: #b07c25;
     --primary-color-text: #707070;
 	--secondary-color-text: #46494f;
 
 	--btn-primary-background: #414145;
-	--btn-primary-background-hover: #c38f27;
+	--btn-primary-background-hover: #b07c25;
 	--btn-primary-text: white;
 	--btn-primary-text-hover: white;
 
@@ -45,4 +45,27 @@
 #text_actual_no_bid
 {
 	color:var(--secondary-color);
+}
+
+.footer-title {
+	margin: 0 0 15px 0;
+}
+.share-social-foot{
+float: left;
+}
+.share-social-foot i
+{
+
+	color: black;
+    border: 1px solid black;
+    border-radius: 9999px;
+    width: 16px;
+    height: 16px;
+	display:inline-flex ;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-size: 20px;
+	margin-right: 20px;
+
 }

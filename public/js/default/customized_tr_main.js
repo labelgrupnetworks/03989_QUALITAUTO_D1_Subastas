@@ -71,7 +71,7 @@ $(document).ready(function () {
 
 });
 
-const frontCurrencies = ['$', 'US$', 'COP '];
+const frontCurrencies = ['$', 'US$', 'COP ', 'B/. '];
 
 function actionResponseDesign(data) {
 	if (auction_info.subasta.sub_tiempo_real == 'S') {
@@ -431,10 +431,10 @@ function initializedStreaming() {
 function playStreaming() {
 	console.log('streaming initialize');
 
-	if(!auctionIsStartedDate()){
+	/* if(!auctionIsStartedDate()){
 		console.log('this auction not initialize');
 		return;
-	}
+	} */
 
 	showStreaming();
 }

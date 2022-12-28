@@ -1,0 +1,133 @@
+:root {
+	/* hsl(196deg 98% 32%); */
+    --primary-color: #0276A1;
+    --secondary-color: #83af38;
+
+    --complement-color: var(--primary-color);
+    --extra-color: var(--primary-color);
+
+	--primary-color-text: #7e8085;
+	--secondary-color-text: #7e8085;
+
+	--btn-primary-background: var(--primary-color);
+	--btn-primary-background-hover: hsl(196deg 98% 45%);
+
+	--btn-primary-text: #fff;
+	--btn-primary-text-hover: #fff;
+
+	--btn-secondary-background: var(--primary-color);
+	--btn-secondary-background-hover: hsl(196deg 98% 45%);
+	--btn-secondary-text: #fff;
+	--btn-secondary-text-hover: #fff;
+
+	--newsletter-background: #46494f;
+	--newsletter-text: #ffffffc7;
+	--newsletter-placeholder: #ffffffc7;
+	--newsletter-input-border: #ffffffc7;
+	--newsletter-input-text: #ffffffc7;
+
+	--footer-background: #0276A1;
+	--footer-titles-color: #fff;
+	--footer-links-color: #fff;
+	--footer-links-color-hover: rgba(255, 255, 255, 0.75);
+
+	--footer-sociallinks-background: #0276A1;
+	--footer-sociallinks-textcolor: #fff;
+
+	--filter-background: #0276A1;
+}
+
+@font-face {
+	font-family: Avenir;
+	font-weight: 100;
+	src: url('assets/fonts/Avenir Book.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 200;
+	src: url('assets/fonts/Avenir Book.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 300;
+	src: url('assets/fonts/Avenir Book.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 400;
+	src: url('assets/fonts/Avenir Book.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 500;
+	src: url('assets/fonts/Avenir Book.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 600;
+	src: url('assets/fonts/Avenir Black.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 700;
+	src: url('assets/fonts/Avenir Black.ttf')  format('truetype');
+}
+
+@font-face {
+	font-family: Avenir;
+	font-weight: 800;
+	src: url('assets/fonts/Avenir Black.ttf')  format('truetype');
+}
+@font-face {
+	font-family: Avenir;
+	font-weight: 900;
+	src: url('assets/fonts/Avenir Black.ttf')  format('truetype');
+}
+
+body {
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+footer a {
+	color: #fff;
+}
+
+footer a:is(:hover, :focus, ::selection) {
+	color: rgba(255, 255, 255, 0.75);
+}
+
+input {
+	accent-color: var(--secondary-color);
+}
+
+.menu-principal-content {
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.page-contact-info-absolute {
+	background: var(--primary-color);
+}
+
+.button-map {
+	background: var(--secondary-color);
+}
+
+.contact-page-info-house-auction {
+    color: #fff;
+}
+
+.banner-register-btn {
+	margin-top: 40px;
+}
+
+a.link-header {
+	font-size: 20px;
+}
+
+.link-header span:before {
+	top: initial;
+	bottom: 0;
+	height: 3px;
+}

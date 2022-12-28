@@ -11,7 +11,7 @@
    */
 $(document).ready(function () {
 
-	$('.lot-action_pujar_on_line').on('click', function (e) {
+	$('.lot-action_pujar_on_line_banco').on('click', function (e) {
 		e.stopPropagation();
 		$.magnificPopup.close();
 		//si pulsan el boton de puja donde viene un valor
@@ -46,14 +46,9 @@ $(document).ready(function () {
 			} else {
 
 
-			if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente))) {
-				$("#insert_msg_title").html($("#bid_amount").val() + "€ " + messages.error.lower_bid);
-				$("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
-				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			}
-			else {
-				$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
-			}
+
+			$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
+
 		}
 	});
 
@@ -82,6 +77,8 @@ function actionResponseDesign(data) {
 }
 
 function actionResponseDesign_W(data) {
+	console.log(data);
+	data.formatted_actual_bid = data.actual_bid.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
 	if(frontCurrencies.includes(auction_info.subasta.currency.symbol)){
 		$('#actual_max_bid').html(auction_info.subasta.currency.symbol + data.formatted_actual_bid )
 	}else{
@@ -257,9 +254,9 @@ function reloadPujasList_O() {
 			var impPuja = puja.imp_asigl1.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
 			if(frontCurrencies.includes(auction_info.subasta.currency.symbol)){
-				$('.price', $this).html(auction_info.subasta.currency.symbol + impPuja );
+				$('.price', $this).html("B/." + impPuja );
 			}else{
-				$('.price', $this).html(impPuja + " " + auction_info.subasta.currency.symbol );
+				$('.price', $this).html("B/." + " " +impPuja  );
 			}
 			var fecha = new Date(puja.bid_date.replace(/-/g, "/"));
 			var formatted = format_date(fecha)
