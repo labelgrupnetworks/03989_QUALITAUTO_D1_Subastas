@@ -4,6 +4,8 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\externalws\mailing\ExternalMailingController;
+use App\Http\Controllers\externalws\mailing\services\MailchimpService;
 use Illuminate\Database\Eloquent\Model;
 use Config;
 use App\libs\EmailLib;
@@ -179,32 +181,14 @@ class Newsletter extends Model {
     /*
      * Metodo nuevo, substituye a family()
      */
-    public function newFamilies() {
+    public function newFamilies()
+	{
+		$info = $this->newsletterFormat($this->families);
 
-        $newsletters = array();
-
-        //el tamaño corresponde a campos en base de datos
-        for ($t = 2; $t <= 20; $t++) {
-            $newsletters[$t] = 'N';
-            if(!empty($this->families[$t]) && $this->families[$t] == 1){
-                $newsletters[$t] = 'S';
-            }
-        }
-
-        $info = array();
-        //primer valor siempre a S, si entra es que ha haceptado las newslletter
-        $info["NLLIST1_CLIWEB"] = 'S';
-
-
-        foreach ($newsletters as $k => $item) {
-            $info["NLLIST" . $k . "_CLIWEB"] = $item;
-        }
-
-        FxCliWeb::where('GEMP_CLIWEB', $this->gemp)
-                ->where('EMP_CLIWEB', $this->emp)
-                ->where('LOWER(USRW_CLIWEB)', strtolower($this->email))
+		FxCliWeb::where('LOWER(USRW_CLIWEB)', strtolower($this->email))
 				->update($info);
 
+		$this->subscribeToExternalService($this->email);
 
 		//Soporte Concursal queria que también se enviara el registro en la newsletter
 		$email = new EmailLib('USER_NEWSLETTER');
@@ -212,9 +196,54 @@ class Newsletter extends Model {
 			$email->setTo(strtolower($this->email));
 			$email->send_email();
 		}
-
     }
 
+	/**
+	 * formato de families
+	 * [1 => 1, 4 => 1, 5 => 1, ...]
+	 */
+	private function newsletterFormat($families)
+	{
+		$newsletters = ['NLLIST1_CLIWEB' => 'S'];
+		foreach (range(2, 20) as $number) {
+			$newsletters["NLLIST{$number}_CLIWEB"] = (!empty($families[$number]) && $families[$number] == 1) ? 'S' : 'N';
+		}
+		return $newsletters;
+	}
+
+	/**
+	 * Crea o modifica la información de newsletters
+	 * en plataformas externas
+	 */
+	public function subscribeToExternalService($email_cli)
+	{
+		if(!$sendToExternalService = config('app.mailing_service', null)){
+			return false;
+		}
+
+		$service = "App\Http\Controllers\\externalws\mailing\services\\$sendToExternalService";
+		$externalMailingService = new ExternalMailingController(new $service());
+		$externalMailingService->add($email_cli);
+
+		return true;
+	}
+
+	/**
+	 * Desuscribe o elimina la información de newsletters
+	 * en plataformas externas
+	 */
+	public function unSubscribeToExternalService($email_cli)
+	{
+		if(!$sendToExternalService = config('app.mailing_service', null)){
+			return false;
+		}
+
+		$service = "App\Http\Controllers\\externalws\mailing\services\\$sendToExternalService";
+		$externalMailingService = new ExternalMailingController(new $service());
+		$externalMailingService->remove($email_cli);
+
+		return true;
+	}
 
     public function checkUser($bindings) {
         $sql = "SELECT cli.cod_cliweb, cli.usrw_cliweb FROM FXCLIWEB cli

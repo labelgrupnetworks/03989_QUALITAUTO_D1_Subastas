@@ -59,6 +59,9 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
+use Symfony\Component\HttpFoundation\Response;
+
+use function GuzzleHttp\Promise\all;
 
 class UserController extends Controller
 {
@@ -567,6 +570,19 @@ class UserController extends Controller
     public function registro(HttpRequest $request)
     {
 
+		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
+		{
+			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
+			foreach ($camposFormNoNullables as $campo) {
+				if (empty($request[$campo])) {
+					return json_encode(array(
+						"err"       => 1,
+						"msg"       => 'error_register'
+					));
+				}
+			}
+		}
+
 		if(request::has('dni1') && Request::has('dni2')){
 			if(!$this->validateImages(request())){
 				return json_encode(array(
@@ -683,8 +699,8 @@ class UserController extends Controller
 
         // run the validation rules on the inputs from the form
         $validator = Validator::make(Input::all(), $rules);
-
-        if ($ya_existe_nif_pais || $ya_existe_cliweb || $validator->fails())
+		#multipleNif es un config que permite repetir el dni al registar
+        if ( ($ya_existe_nif_pais && !\Config::get("app.multipleNif")) || $ya_existe_cliweb || $validator->fails())
         {
 
 
@@ -916,7 +932,8 @@ class UserController extends Controller
                     $iva_cli=$this->cliente_tax(Request::input('pais'),Request::input('cpostal'));
                    /* ARGI HA PEDIDO QUE SE CREEN LOS USUARIOS CON LA W AUNQUE ESTE dni YA EXISTIERA 2019_04_24*/
                     //si no existe un cliente con ese NIF
-                    if (empty($u) || Config::get('app.registro_user_w')){
+					#si se permite multiples dni
+                    if (empty($u) || Config::get('app.registro_user_w') || \Config::get("app.multipleNif")){
 
                         $exist_user=$user->getUserByNif('S');
                         if(!empty($exist_user)){
@@ -3411,6 +3428,12 @@ class UserController extends Controller
 
     # Miramos on the fly si existe el NIF
     public function existNif(){
+		#si permitimos multiples nif n odamos este error
+		if(\Config::get("app.multipleNif")){
+			return array(
+				'status'            => 'success'
+			);
+		}
 
         $user = new User();
         $user->nif = mb_strtoupper(trim(Request::input('nif')));
@@ -4472,6 +4495,52 @@ class UserController extends Controller
 		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
 	}
 
+	public function unsuscribeToNewsletter($lang, $cod_cli, $hash)
+	{
+		$requestType = request()->query('type');
 
+		if(!$user = (new User())->getUserByHash($cod_cli, $hash)) {
+			if($requestType === "json") {
+				return response()->json(["message" => "Not Found", "status" => "error"], Response::HTTP_NOT_FOUND);
+			}
+			abort(Response::HTTP_NOT_FOUND);
+		}
+
+		$isSended = (new Newsletter())->unSubscribeToExternalService($user->email_cliweb);
+		$message = trans(config('app.theme').'-app.msg_success.newsletter_unsubscribe', ['email' => $user->email_cliweb]);
+
+		if($requestType === "json") {
+			return !$isSended
+				? response()->json(["message" => "Interval server error", "status" => "error"], Response::HTTP_INTERNAL_SERVER_ERROR)
+				: response()->json(["message" => $message, "status" => "success"]);
+		}
+
+		abort_if(!$isSended, Response::HTTP_NOT_FOUND);
+		return view("front::pages.message", ["message" => $message]);
+	}
+
+	public function suscribeToNewsletter($lang, $cod_cli, $hash)
+	{
+		$requestType = request()->query('type');
+
+		if(!$user = (new User())->getUserByHash($cod_cli, $hash)) {
+			if($requestType === "json") {
+				return response()->json(["message" => "Not Found", "status" => "error"], Response::HTTP_NOT_FOUND);
+			}
+			abort(Response::HTTP_NOT_FOUND);
+		}
+
+		$isSended = (new Newsletter())->subscribeToExternalService($user->email_cliweb);
+		$message = trans(config('app.theme').'-app.msg_success.newsletter_subscribe', ['email' => $user->email_cliweb]);
+
+		if($requestType === "json") {
+			return !$isSended
+				? response()->json(["message" => "Interval server error", "status" => "error"], Response::HTTP_INTERNAL_SERVER_ERROR)
+				: response()->json(["message" => $message, "status" => "success"]);
+		}
+
+		abort_if(!$isSended, Response::HTTP_NOT_FOUND);
+		return view("front::pages.message", ["message" => $message]);
+	}
 }
 

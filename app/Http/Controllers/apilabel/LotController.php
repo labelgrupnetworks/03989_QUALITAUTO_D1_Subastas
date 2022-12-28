@@ -78,6 +78,24 @@ class LotController extends ApiLabelController
                     $items[$key]["lin"] = $linHces;
                     $items[$key]["num"] = $numHces;
 
+					#fecha y hora
+					if(!empty($items[$key]["startdate"]) ){
+						if( !empty($items[$key]["starthour"])){
+							$items[$key]["startdate"] .=" ".$items[$key]["starthour"];
+						}else{
+							$items[$key]["startdate"] .=" 00:00:00";
+						}
+					}
+					if(!empty($items[$key]["enddate"]) ){
+						if( !empty($items[$key]["starthour"])){
+							$items[$key]["enddate"] .=" ".$items[$key]["endhour"];
+						}else{
+							$items[$key]["enddate"] .=" 00:00:00";
+						}
+					}
+
+
+
 					#Caracteristicas
                     if(!empty($item["features"])){
 						$orderFeatures = array();
@@ -146,6 +164,9 @@ class LotController extends ApiLabelController
 
                     $linHces++;
                 }
+				#modificamos las rules para las fechas
+				$this->rules["startdate"] = "date_format:Y-m-d H:i:s|nullable";
+				$this->rules["enddate"] = "date_format:Y-m-d H:i:s|nullable";
 
                 #añadimos num y lin en asigl0 y haces1 rename para que lso guarde en base de datos
                 $this->asigl0Rename = array_merge($this->asigl0Rename, array( "num"=>"numhces_asigl0","lin"=>"linhces_asigl0"));
@@ -300,6 +321,15 @@ class LotController extends ApiLabelController
 					$items[$key]["urlfriendly"] =  mb_substr(\Str::slug( $item["title"]),0,100);
 
 				}
+
+				#fecha y hora
+				if(!empty($items[$key]["startdate"]) && !empty($items[$key]["starthour"])){
+					$items[$key]["startdate"] .=" ".$items[$key]["starthour"];
+				}
+
+				if(!empty($items[$key]["enddate"]) && !empty($items[$key]["endhour"])){
+					$items[$key]["enddate"] .=" ".$items[$key]["endhour"];
+				}
 				#propietari odel lote
 				if(!empty($item["originowner"])){
 					#si el array de usuarios esta vacio lo cargamos una vez, de esta manera no se carga siempre, solo cuando hay propietarios del lote
@@ -328,6 +358,9 @@ class LotController extends ApiLabelController
 				} */
 
 			}
+			#modificamos las rules para las fechas
+			$this->rules["startdate"] = "date_format:Y-m-d H:i:s|nullable";
+			$this->rules["enddate"] = "date_format:Y-m-d H:i:s|nullable";
 
 
             #limpiamos los required menos de idorigen

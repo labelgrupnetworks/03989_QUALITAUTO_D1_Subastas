@@ -144,7 +144,7 @@ class BannerLib
 			$cols = round(12 / sizeof($bloques));
 
 			$html .= '<div class="column_banner col-xs-12 col-md-' . $cols . '">';
-			$html .= '<div id="banner' . $rand . '" class="' . $class . '">';
+			$html .= '<div id="banner' . $rand . '" class="' . $class . ' charge">';
 
 			if (isset($itemsPorBloque[$k])) {
 
@@ -290,7 +290,7 @@ class BannerLib
 
 					$html .= ".on('" . $event . "', function(){ ". $methodEvent ."(this) })";
 				}
-
+				$html .= ";$('#banner" . $rand . "').removeClass('charge')";
 				$html .= ";</script>";
 			}
 		}

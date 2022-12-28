@@ -15,6 +15,7 @@ use App\Models\V5\FxClid;
 use App\libs\EmailLib;
 use DB;
 use stdClass;
+use App\Models\V5\FsParams;
 
 class ClientController extends ApiLabelController
 {
@@ -52,8 +53,18 @@ class ClientController extends ApiLabelController
 				$codcli = FxCli::getNextCodCli();
 				#para crear usuarios web
 				$itemsWeb = array();
+				$tcli_params = FsParams::select("tcli_params")->first();
+
+					if(!empty($tcli_params) && !empty($tcli_params->tcli_params)){
+						$numdigits = $tcli_params->tcli_params;
+					}else{
+						$numdigits = 6;
+					}
+					
+
                 foreach($items as $key => $item){
-					$items[$key]["codcli"] = sprintf("%'.06d", $codcli);
+					$items[$key]["codcli"] =sprintf("%'.0".$numdigits ."d", $codcli);
+
 
 					if(!empty($item["email"])){
 						$items[$key]["email_cliweb"] = $item["email"];

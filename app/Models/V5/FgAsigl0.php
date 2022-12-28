@@ -147,6 +147,11 @@ class FgAsigl0 extends Model
 				whereRAW("(FGASIGL0.ES_NFT_ASIGL0 ='N' OR FGNFT.PAY_MINT_NFT IS NOT NULL  )");
 		}
 
+		#muestra solo los lotes en lso que le usuario tiene un deposito válido.
+		if(Config::get("app.viewDepositLots")){
+			$query = $query->JoinViewDepositLots();
+		}
+
 		return $query;
     }
 
@@ -319,7 +324,7 @@ class FgAsigl0 extends Model
 									 ) CLI_WIN_BID");
 
         $query = $query->addselect("FGASIGL0.EMP_ASIGL0,FGASIGL0.SUB_ASIGL0, FGASIGL0.REF_ASIGL0, FGASIGL0.CERRADO_ASIGL0, FGASIGL0.IMPSALHCES_ASIGL0, FGASIGL0.COMLHCES_ASIGL0, FGASIGL0.RETIRADO_ASIGL0, FGASIGL0.REMATE_ASIGL0, FGASIGL0.COMPRA_ASIGL0, FGASIGL0.IDORIGEN_ASIGL0, FGASIGL0.IMPTAS_ASIGL0, FGASIGL0.OFERTA_ASIGL0, FGASIGL0.FINI_ASIGL0, FGASIGL0.HINI_ASIGL0, FGASIGL0.OCULTARPS_ASIGL0, FGASIGL0.IMPSALWEB_ASIGL0 ")
-                ->addSelect("FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1,  FGHCES1.FAC_HCES1, FGHCES1.SEC_HCES1, FGHCES1.IDORIGEN_HCES1, FGHCES1.IMPLIC_HCES1, FGHCES1.LIC_HCES1, FGHCES1.TOTALFOTOS_HCES1, FGHCES1.TRANSPORT_HCES1, FGHCES1.ANCHO_HCES1, FGHCES1.NOBJ_HCES1 ")
+                ->addSelect("FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1,  FGHCES1.FAC_HCES1, FGHCES1.SEC_HCES1, FGHCES1.IDORIGEN_HCES1, FGHCES1.IMPLIC_HCES1, FGHCES1.LIC_HCES1, FGHCES1.TOTALFOTOS_HCES1, FGHCES1.TRANSPORT_HCES1, FGHCES1.ANCHO_HCES1, FGHCES1.NOBJ_HCES1, FGHCES1.VIDEOS_HCES1 ")
                 ->addSelect("NVL(FGHCES1_LANG.TITULO_HCES1_LANG, FGHCES1.TITULO_HCES1) TITULO_HCES1,   NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1")
 
                 ->addSelect("FGSUB.COD_SUB, FGSUB.TIPO_SUB, FGSUB.SUBC_SUB, FGSUB.SUBABIERTA_SUB")
@@ -363,7 +368,7 @@ class FgAsigl0 extends Model
 
 				#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000, a veces necesitamos que en pre no lo haga
 				if ( (env('APP_DEBUG') || Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"))) {
-					
+
 					$query = $query->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1), 4000, 1 ) DESCWEB_HCES1")
 					->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1), 4000, 1 ) DESC_HCES1");
 				}else{
@@ -564,6 +569,19 @@ class FgAsigl0 extends Model
 
 	public function scopeJoinUsr($query){
         return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGASIGL0.USR_UPDATE_ASIGL0");
+	}
+
+	#se ha creado para futuver/banconal pero actualmente no está en uso, se deberá comentar la vista grid que se creo para ellos, ya uqe esta vista fuerza que no haya grid.
+ 	public function scopeJoinViewDepositLots($query){
+
+		if(empty(\Session::get('user.cod'))){
+			return $query->where(1,2);
+		}else{
+			return $query->join("FGDEPOSITO","EMP_DEPOSITO = EMP_ASIGL0 AND  SUB_DEPOSITO = SUB_ASIGL0 AND REF_DEPOSITO=REF_ASIGL0")->
+			where("ESTADO_DEPOSITO", "V")->
+			where("CLI_DEPOSITO", \Session::get('user.cod'));
+
+		}
 	}
 }
 

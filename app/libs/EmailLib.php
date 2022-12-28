@@ -339,7 +339,7 @@ private $debug = true;
             $this->atributes['LOT_IMG'] = \Tools::url_img('lote_medium',$lot->numhces_asigl0,$lot->linhces_asigl0);
 
            // $this->atributes['LOT_LINK'] = Config::get('app.url').\Routing::translateSeo('lote').$cod_sub."-".$lot->id_auc_sessions.'-'.$lot->id_auc_sessions."/".$lot->ref_asigl0.'-'.$lot->num_hces1.'-'.$webfriend.
-			$this->atributes['LOT_LINK'] = \Tools::url_lot($cod_sub, $lot->id_auc_sessions, $lot->des_sub, $lot->ref_asigl0, $lot->num_hces1,$lot->webfriend_hces1,$lot->titulo_hces1);
+			$this->atributes['LOT_LINK'] = ToolsServiceProvider::url_lot($cod_sub, $lot->id_auc_sessions, $lot->des_sub, $lot->ref_asigl0, $lot->num_hces1,$lot->webfriend_hces1,$lot->titulo_hces1);
 			$this->atributes['LOT_LINK_DESCWEB'] = \Tools::url_lot($cod_sub,$lot->id_auc_sessions, $lot->des_sub , $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->descweb_hces1);
 
             $this->atributes['LOT_LINHCES'] = $lot->lin_hces1;
@@ -606,8 +606,8 @@ private $debug = true;
 
     private function checkTo(){
 
-         if ( $this->debug) {
-            $this->to = !empty(env('MAIL_TO'))? env('MAIL_TO') : Config::get('app.debug_to_email');
+        if ($this->debug) {
+            $this->to = !empty(env('MAIL_TO')) ? env('MAIL_TO') : explode(";", Config::get('app.debug_to_email'));
 
         }else{
             if(strpos($this->to, ';') > 0){

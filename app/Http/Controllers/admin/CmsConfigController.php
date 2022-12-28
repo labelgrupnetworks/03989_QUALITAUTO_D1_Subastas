@@ -8,7 +8,7 @@ use App\Models\V5\FxCli;
 use Controller;
 use Illuminate\Support\Facades\Request as Input;
 use Maatwebsite\Excel\Facades\Excel;
-
+use App\Models\V5\FsParams;
 
 
 
@@ -96,8 +96,15 @@ class CmsConfigController extends Controller
 		if(!$cod_cli){
 			$cod_cli = FxCli::getNextCodCli();
 		}
+		$tcli_params = FsParams::select("tcli_params")->first();
 
-		$formatCodCli = sprintf("%'.06d", $cod_cli);
+		if(!empty($tcli_params) && !empty($tcli_params->tcli_params)){
+			$numdigits = $tcli_params->tcli_params;
+		}else{
+			$numdigits = 6;
+		}
+
+		$formatCodCli = sprintf("%'.0".$numdigits ."d", $cod_cli);
 
 		return str_replace("0", "W", $formatCodCli);
 	}

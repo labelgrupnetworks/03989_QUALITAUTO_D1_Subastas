@@ -129,21 +129,6 @@ class ClientsExport extends StringValueBinder implements FromQuery, WithHeadings
 
 		return $values;
 	}
-	/* public function query()
-	{
-
-		$clients = FxCli::
-			leftJoinCliWebCli()
-			->select('cod_cli', 'cif_cli', 'tel1_cli', 'sg_cli', 'dir_cli', 'cp_cli', 'pob_cli', 'pro_cli', 'pais_cli', 'nllist1_cliweb')
-			->addSelect("NVL(nom_cli, nom_cliweb) as nom_cli")
-			->addSelect("NVL(email_cli, email_cliweb) as email_cli");
-
-		if(Config::get('app.exportcli_profesion', 0)){
-			$clients->addSelect('seudo_cli');
-		}
-
-		return $clients->orderBy('cod_cli', 'desc');
-	} */
 
 	public function headings(): array
 	{

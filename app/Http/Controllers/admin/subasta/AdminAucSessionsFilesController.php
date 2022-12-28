@@ -193,7 +193,7 @@ class AdminAucSessionsFilesController extends Controller
 			'lang' => FormLib::Select('lang', 1, 'es-ES', $langsFile, '', '', false),
 			'typeFile' => FormLib::Select('typefile', 1, 1, $typeFiles, '', '', false),
 			'url' => FormLib::Text('url', 0),
-			'img' => FormLib::File("img", 0),
+			'img' => FormLib::File("imagenFile", 0),
 		];
 	}
 }

@@ -10,6 +10,7 @@ use Config;
 use \Request;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
+use App\Providers\ToolsServiceProvider;
 
 class User extends Model
 {
@@ -1299,6 +1300,21 @@ class User extends Model
 		}
 
 		return true;
+	}
+
+	public function getUserByHash($cod_cli, $hash)
+	{
+		$user = FxCliWeb::where('cod_cliweb', $cod_cli)->first();
+		if(!$user) {
+			return null;
+		}
+
+		$cliHash = ToolsServiceProvider::encodeStr("{$user->email_cliweb}-{$cod_cli}");
+
+		if ($cliHash !== $hash) {
+			return null;
+		}
+		return $user;
 	}
 
 }

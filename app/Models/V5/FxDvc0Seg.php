@@ -79,17 +79,17 @@ class FxDvc0Seg extends Model
 	private static function estimatedsDeliveryDates2022()
 	{
 		$dates = [
-			[ 'application_date' => '2022-01-12', 'delivery_date' => '2022-01-29' ],
-			[ 'application_date' => '2022-02-09', 'delivery_date' => '2022-02-26' ],
-			[ 'application_date' => '2022-03-09', 'delivery_date' => '2022-03-26' ],
-			[ 'application_date' => '2022-04-08', 'delivery_date' => '2022-04-25' ],
-			[ 'application_date' => '2022-05-11', 'delivery_date' => '2022-05-28' ],
-			[ 'application_date' => '2022-06-10', 'delivery_date' => '2022-06-27' ],
-			[ 'application_date' => '2022-07-10', 'delivery_date' => '2022-07-30' ],
-			[ 'application_date' => '2022-09-07', 'delivery_date' => '2022-09-24' ],
-			[ 'application_date' => '2022-10-11', 'delivery_date' => '2022-10-29' ],
-			[ 'application_date' => '2022-11-09', 'delivery_date' => '2022-11-26' ],
-			[ 'application_date' => '2022-12-09', 'delivery_date' => '2022-12-27' ]
+			[ 'application_date' => '2023-01-12', 'delivery_date' => '2022-01-29' ],
+			[ 'application_date' => '2023-02-07', 'delivery_date' => '2023-02-24' ],
+			[ 'application_date' => '2023-03-07', 'delivery_date' => '2023-03-24' ],
+			[ 'application_date' => '2023-04-11', 'delivery_date' => '2023-04-28' ],
+			[ 'application_date' => '2023-05-16', 'delivery_date' => '2023-06-02' ],
+			[ 'application_date' => '2023-06-13', 'delivery_date' => '2023-06-30' ],
+			[ 'application_date' => '2023-07-13', 'delivery_date' => '2023-07-30' ],
+			[ 'application_date' => '2023-09-07', 'delivery_date' => '2023-09-24' ],
+			[ 'application_date' => '2023-10-10', 'delivery_date' => '2023-10-27' ],
+			[ 'application_date' => '2023-11-09', 'delivery_date' => '2023-11-26' ],
+			[ 'application_date' => '2023-12-12', 'delivery_date' => '2023-12-29' ]
 		];
 
 		return collect($dates);

@@ -169,13 +169,12 @@ class CustomControllers extends Controller
 			return view('front::pages.video_auction', ['videoSorted' => [], 'subastaReciente' => new FgSub()]);
 		}
 
-
 		$lots = FgAsigl0::select("SUB_ASIGL0", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1")
 			->joinFghces1Asigl0()
 			->where("EMP_ASIGL0", \Config::get('app.emp'))
 			->where("SUB_ASIGL0", $subastaReciente->cod_sub)
+			->orderBy('ref_asigl0')
 			->get();
-
 
 		$subasta = new Subasta();
 		$videos = [];
@@ -183,15 +182,15 @@ class CustomControllers extends Controller
 		foreach ($lots as $lot) {
 			$video = $subasta->getLoteVideos($lot);
 			if (!empty($video)) {
-				$videos[] = $video;
+				$videos[$lot->ref_asigl0] = $video[0];
 			}
 		}
 
-		$videoSorted = collect($videos)->flatten()->sortBy(function($video) {
+		/* $videoSorted = collect($videos)->flatten()->sortBy(function($video) {
 			return last(explode("/", $video));
-		});
+		}); */
 
-		return view('front::pages.video_auction', compact('videoSorted', 'subastaReciente'));
+		return view('front::pages.video_auction', compact('videos', 'subastaReciente'));
 
 	}
 

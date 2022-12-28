@@ -26,10 +26,11 @@ class OrderController extends SegreController
 			if(!empty($res)){
 
 				if ($res->IdError != 0 ) {
-					#prefiero notificarlo en la pantalla y no enviar email
-					/*
 					$paleta = FgLicit::SELECT("COD_LICIT")->WHERE("SUB_LICIT", $codSub)->WHERE("CLI_LICIT", $codCli)->first();
 					FgOrlic::where("EMP_ORLIC", \Config::get('app.emp'))->where("SUB_ORLIC",$codSub)->where("REF_ORLIC",$ref)->where("LICIT_ORLIC", $paleta->cod_licit)->where("HIMP_ORLIC", $order)->delete();
+					#prefiero notificarlo en la pantalla y no enviar email
+					/*
+
 					$email = new EmailLib('ORDER_FAIL');
 					if(!empty($email->email)){
 						$email->setUserByCod($codCli,true);
@@ -99,6 +100,7 @@ class OrderController extends SegreController
 			return;
 		}
 
+		$orlic = FgOrlic::WHERE("SUB_ORLIC", $codSub)->WHERE("LICIT_ORLIC", $paleta->cod_licit)->WHERE("REF_ORLIC", $ref)->first();
 
 			$orderList = new \StdClass();
 			$orderList->idAuction = $codSub;
@@ -107,10 +109,25 @@ class OrderController extends SegreController
 			$orderItem = new \StdClass();
 			$orderItem->idOriginLot = $idOrigen->idorigen_asigl0;
 			$orderItem->idOriginClient = $codigoPersona->cod2_cli;
+
 			if(!$delete){
 				$orderItem->order = $order;
 				$orderItem->codBidder = $paleta->cod_licit;
 			}
+			#cambios por puja telefónica.
+			#si viene del delete no existirá orlic por que se ha borrado
+			if(!$delete && $orlic->tipop_orlic == "T"){
+				$orderItem->type = "T";
+				$orderItem->phone1 = $orlic->tel1_orlic;
+				$orderItem->phone2 = $orlic->tel2_orlic;
+			}else{
+				$orderItem->type = "O";
+				$orderItem->phone1 = "";
+				$orderItem->phone2 = "";
+			}
+
+
+			#
 
 			$orderList->items[] = $orderItem;
 

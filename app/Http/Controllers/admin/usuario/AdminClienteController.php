@@ -4,13 +4,14 @@ namespace App\Http\Controllers\admin\usuario;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Config;
+use Illuminate\Support\Facades\Config;
 use App\libs\FormLib;
 use App\Models\V5\FxCli;   // Clientes
 use App\Models\V5\FsPaises;  // Paises
 use App\Exports\ClientsExport;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Requests\admin\ClienteRequest;
+use App\Models\Newsletter;
 use App\Models\V5\FgSg;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\FsOrigen;
@@ -19,7 +20,7 @@ use Illuminate\Http\Request;
 use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FxTcli;
 use stdClass;
-
+use App\Models\V5\FsParams;
 class AdminClienteController extends Controller
 {
 
@@ -205,6 +206,8 @@ class AdminClienteController extends Controller
 			$this->addOrigenes($request, $cod_cli);
 		}
 
+		(new Newsletter())->subscribeToExternalService($cliente['email']);
+
 		return redirect(route('clientes.index'))
 			->with(['success' => [0 => 'Cliente creado correctamente']]);
 	}
@@ -284,6 +287,7 @@ class AdminClienteController extends Controller
 			$this->addOrigenes($request, $request->codcli);
 		}
 
+		(new Newsletter())->subscribeToExternalService($cliente['email']);
 
 		return redirect(route('clientes.index'))
 			->with(['success' => [0 => 'Cliente actualizado correctamente']]);
@@ -432,8 +436,16 @@ class AdminClienteController extends Controller
 		if(!$cod_cli){
 			$cod_cli = FxCli::getNextCodCli();
 		}
+		$tcli_params = FsParams::select("tcli_params")->first();
 
-		$formatCodCli = sprintf("%'.06d", $cod_cli);
+		if(!empty($tcli_params) && !empty($tcli_params->tcli_params)){
+			$numdigits = $tcli_params->tcli_params;
+		}else{
+			$numdigits = 6;
+		}
+
+		$formatCodCli = sprintf("%'.0".$numdigits ."d", $cod_cli);
+
 
 		return str_replace("0", "W", $formatCodCli);
 	}

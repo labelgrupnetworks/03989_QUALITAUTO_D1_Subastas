@@ -33,6 +33,5 @@ class VerifyCsrfToken extends Middleware
         "*/register_subalia",
 		"/articleCart/returnpayup2",
 		"/carlandia/confirmPayment"
-
     ];
 }

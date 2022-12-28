@@ -168,6 +168,10 @@ class ToolsServiceProvider extends ServiceProvider
 				$curr = 'US$';
 				break;
 
+			case 'PAB':
+				$curr = 'B/. ';
+				break;
+
 			default:
 				$curr = '€';
 				break;
@@ -710,7 +714,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		if(\Config::get("app.newUrlLot")){
 			//$url = Route("lote",["texto"=> $webfriend,"ref" => $ref, "cod" => $cod_sub]);
-			$url =\Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
+			$url =Config::get('app.url') .\Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
 		}else{
 			$url=Config::get('app.url') .\Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
 		}

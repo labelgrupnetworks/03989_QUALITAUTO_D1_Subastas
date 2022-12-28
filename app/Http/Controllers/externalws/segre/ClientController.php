@@ -34,9 +34,9 @@ class ClientController extends SegreController
 				#el usuario  debería tener bajaTemporal en 'A' ya que es registro  regtype = 4
 
 				if( empty($client) ){
-				
+
 					$bajaTemporal='N';
-					$email = new EmailLib('NEW_USER');
+					$email = new EmailLib('NEW_USER_SEGRE');
 					if(!empty($email->email)){
 
 						$email->setUserByCod($codCli,true);
@@ -112,6 +112,8 @@ class ClientController extends SegreController
 		#si es empresa
 		if($cliente->fisjur_cli == "J"){
 			$fiscalName = $cliente->rsoc_cli;
+			$name = $cliente->nom_cli;
+			$surname ="-";
 		}else{
 			$nom_cli = explode(",",$cliente->nom_cli);
 			$name =$nom_cli[1];

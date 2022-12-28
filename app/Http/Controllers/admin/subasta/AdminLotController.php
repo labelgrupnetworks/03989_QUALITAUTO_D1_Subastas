@@ -858,6 +858,10 @@ class AdminLotController extends Controller
 
 		}
 
+		//en las subastas presenciales la fecha del lote es indiferente
+		$type = FgSub::where('cod_sub', $cod_sub)->value('tipo_sub');
+		$datesRequired = (int)($type !== FgSub::TIPO_SUB_PRESENCIAL);
+
 		$ownerForm = FormLib::Select2WithAjax('owner', 0, old('owner', $fgAsigl0->prop_hces1), (!empty($propietario)) ? $propietario->rsoc_cli : '', route('client.list'), trans('admin-app.placeholder.owner'));
 		if($withProvider){
 			$ownerForm = FormLib::Select2WithAjax('owner', 0, old('owner', $fgAsigl0->prop_hces1), (!empty($propietario)) ? $propietario->nom_pro : '', route('provider.list'), trans('admin-app.placeholder.owner'));
@@ -895,10 +899,10 @@ class AdminLotController extends Controller
 				'disclaimed' => FormLib::Select('disclaimed', 1, old('disclaimed', $fgAsigl0->desadju_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
 			],
 			'fechas' => [
-				'startdate' => FormLib::Date("startdate", 1, old('startdate', $fgAsigl0->fini_asigl0)),
-				'starthour' => FormLib::Hour("starthour", 1, old('starthour', $fgAsigl0->hini_asigl0), 'step="1"'),
-				'enddate' => FormLib::Date("enddate", 1, old('enddate', $fgAsigl0->ffin_asigl0)),
-				'endhour' => FormLib::Hour("endhour", 1, old('endhour', $fgAsigl0->hfin_asigl0), 'step="1"')
+				'startdate' => FormLib::Date("startdate", $datesRequired, old('startdate', $fgAsigl0->fini_asigl0)),
+				'starthour' => FormLib::Hour("starthour", $datesRequired, old('starthour', $fgAsigl0->hini_asigl0), 'step="1"'),
+				'enddate' => FormLib::Date("enddate", $datesRequired, old('enddate', $fgAsigl0->ffin_asigl0)),
+				'endhour' => FormLib::Hour("endhour", $datesRequired, old('endhour', $fgAsigl0->hfin_asigl0), 'step="1"')
 			],
 			'precios' => [
 				'startprice' => FormLib::Int('startprice', 1, old('startprice', $fgAsigl0->impsalhces_asigl0 ?? 0)),

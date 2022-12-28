@@ -25,7 +25,11 @@ class GlobalComposer
 			return $view->with('global', ['subastas' => static::$subastas]);
 		}
 
-		$subastasQuery = FgSub::joinLangSub()->joinSessionSub()
+		$subastasQuery = FgSub::query()
+			//No he encontrado un caso en el que lo necesite y en caso
+			//de necesitarlo saldra a cuenta envolverlo en un condicional.
+			//->joinLangSub()
+			->joinSessionSub()
 			->addSelect('subc_sub')
 			->where('subc_sub', '!=', 'N');
 

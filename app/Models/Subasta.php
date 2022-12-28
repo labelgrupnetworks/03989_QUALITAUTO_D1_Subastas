@@ -17,6 +17,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\FgCsub;
 use App\Models\V5\Web_Cancel_Log;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -1724,7 +1725,7 @@ class Subasta extends Model
 
         $currency = new \stdClass();
         $currency->name = head($curr)->div_params;
-        $currency->symbol = \Tools::getCurrency($currency->name);
+        $currency->symbol = ToolsServiceProvider::getCurrency($currency->name);
 
         return $currency;
     }

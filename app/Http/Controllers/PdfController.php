@@ -21,7 +21,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PdfController extends Controller
 {
-
 	const PUBLIC_PATH = DIRECTORY_SEPARATOR . 'reports' . DIRECTORY_SEPARATOR;
 
 	protected $tableInfo;
@@ -34,7 +33,6 @@ class PdfController extends Controller
 	public function __construct()
 	{
 	}
-
 
 	public function pdfExhibition($codSub, $reference ){
 		$galeriaArte = new GaleriaArte();
@@ -200,7 +198,7 @@ class PdfController extends Controller
 		];
 
 
-		$this->addPdf(PDF::loadView('front::reports.award_lot', $data), $reportTitle);
+		$this->addPdf(Pdf::loadView('front::reports.award_lot', $data), $reportTitle);
 	}
 
 	public function generateNotAwardLotPdf($propetary, $ref_asigl0)
@@ -219,9 +217,8 @@ class PdfController extends Controller
 
 	public function generateAuctionBidsReportPdf($inf_subasta, $reportTitle)
 	{
-
 		//titulo de la tabla
-		$titleTable = trans(\Config::get('app.theme') . '-app.reports.lots_detail');
+		$titleTable = trans(config('app.theme') . '-app.reports.lots_detail');
 
 		//pujas e info de licitador
 		$subasta = new Subasta();
@@ -231,60 +228,39 @@ class PdfController extends Controller
 		//obtenemos todas las referencias de la subasta, y de ahí la mas baja y la mas alta
 		$referencias = $this->bids->pluck('ref_asigl1')->unique();
 
-		$lotesSinPujas = FgAsigl0::select('ref_asigl0 as ref_asigl1')->where('sub_asigl0', $inf_subasta->cod_sub)->whereNotIn('ref_asigl0', $referencias)->orderBy('ref_asigl0')->get();
+		$lotesSinPujas = FgAsigl0::select('ref_asigl0 as ref_asigl1')
+			->where('sub_asigl0', $inf_subasta->cod_sub)
+			->whereNotIn('ref_asigl0', $referencias)
+			->orderBy('ref_asigl0')->get();
+
 		$todos = $this->bids->concat($lotesSinPujas);
 
-		$rangoLotes = $todos->count() > 1 ? $todos->min('ref_asigl1') . ' - ' . $todos->max('ref_asigl1') : $todos->min('ref_asigl1');
+		$lotsRange = $todos->min('ref_asigl1');
+		if($todos->count() > 1) {
+			$lotsRange .= " - {$todos->max('ref_asigl1')}";
+		}
 
-		//datos del propietario del primer lote #Esto esta muy personalizado para inbusa, si se utiliza en otro cliente se necesaitaran realizar modificaciones
-		$owner = FgHces1::select('loteaparte_hces1')->getOwner()->where('SUB_HCES1', $inf_subasta->cod_sub)->first();
+		//datos del propietario del primer lote #Esto esta muy personalizado para inbusa,
+		//si se utiliza en otro cliente se necesaitaran realizar modificaciones
+		$owner = FgHces1::select('loteaparte_hces1')->getOwner()
+			->where('SUB_HCES1', $inf_subasta->cod_sub)
+			->first();
 
-		//cabecera del pdf
-		$tableInfo = [
-			trans(\Config::get('app.theme') . '-app.reports.prop_hces1') => $owner->rsoc_cli ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.lote_aparte') => $owner->loteaparte_hces1 ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
-			trans(\Config::get('app.theme') . '-app.reports.lots_code') => $rangoLotes,
-			trans(\Config::get('app.theme') . '-app.reports.date_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
-			trans(\Config::get('app.theme') . '-app.reports.date_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
+		$bids = $todos->each(function($item) {
+			$item->isBid = !empty($item->licit_asigl1);
+		})->sortBy(function($item){ return $item->ref_asigl1.'#'.$item->fec_asigl1; });
+
+		$data = [
+			'owner' => $owner,
+			'auction' => $inf_subasta,
+			'lotsRange' => $lotsRange,
+			'bids' => $bids,
+			'reportTitle' => $reportTitle,
+			'titleTable' => $titleTable,
 		];
 
-		//generamos contanido de la tabla
-		$tableContent = [];
-		if (count($referencias) == 0) {
-			$tableContent[] = [
-				trans(\Config::get('app.theme') . '-app.reports.licit') => '',
-				trans(\Config::get('app.theme') . '-app.reports.cli_name') => '',
-				trans(\Config::get('app.theme') . '-app.reports.lot_name') => '',
-				trans(\Config::get('app.theme') . '-app.reports.imp_asigl1') => '',
-				trans(\Config::get('app.theme') . '-app.reports.bid_date') => ''
-			];
-		}
-
-		foreach ($todos->sortBy('ref_asigl1') as $key => $bid) {
-
-			if(empty($bid->licit_asigl1)){
-				$tableContent[] = [
-					trans(\Config::get('app.theme') . '-app.reports.lot_name') => $bid->ref_asigl1,
-					'not_bids' => mb_strtoupper(trans(\Config::get('app.theme') . '-app.lot_list.no_bids'))
-				];
-				continue;
-			}
-
-			//nºpujador, sociedad (nom_cli), nº lote, cantidad €, fecha
-			$tableContent[] = [
-				trans(\Config::get('app.theme') . '-app.reports.lot_name') => $bid->ref_asigl1,
-				trans(\Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $bid->cli_licit,
-				trans(\Config::get('app.theme') . '-app.reports.cli_name') => substr($bid->nom_cli, 0, 25)/* $bid->nom_cli */,
-				trans(\Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
-				trans(\Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->fec_asigl1, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
-			];
-		}
-
 		//guardamos pdf en la clase
-		$this->addPdf($this->generateGenericPdf('front::reports.report1', $reportTitle, $tableInfo, $titleTable, $tableContent), $reportTitle);
+		$this->addPdf(Pdf::loadView('front::reports.bids_auction', $data), $reportTitle);
 	}
 
 	public function generateAuctionAwardsReportPdf($inf_subasta, $reportTitle)
@@ -445,7 +421,6 @@ class PdfController extends Controller
 
 	public function generateGenericPdf(string $view, string $reportTitle, array $tableInfo, string $titleTable, array $tableContent, string $content = '')
 	{
-
 		$data = [
 			'reportTitle' => $reportTitle,
 			'tablaSubasta' => $tableInfo,
@@ -505,7 +480,6 @@ class PdfController extends Controller
 
 	public function savePdfs($cod_sub, $ref = null)
 	{
-
 		$path = getcwd() . self::PUBLIC_PATH . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_sub . DIRECTORY_SEPARATOR;
 
 		if (!empty($ref)) {

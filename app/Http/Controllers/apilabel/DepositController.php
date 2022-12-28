@@ -17,7 +17,7 @@ use App\Models\V5\FgDeposito;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgLicit;
-
+use App\libs\EmailLib;
 
 use DB;
 use stdClass;
@@ -91,7 +91,7 @@ class DepositController extends ApiLabelController
            		DB::commit();
 
 				#una vez comprobado que se han creado los depositos y si se tienen que crear las pujas iniciales
-				if(\Config::get("app.depositBid") || 1 == 1){
+				if(\Config::get("app.depositBid") ){
 
 					$idAuction = $items[0]["idauction"];
 
@@ -119,9 +119,26 @@ class DepositController extends ApiLabelController
 						foreach($items as $key => $item){
 							$licit = $this->getLicit($licits, $item, $key);
 							FgAsigl1::depositBid($licit["cod_licit"],$item["idauction"],$item["reflot"],$item["amount"],$item["date"]);
+							if(\Config::get("app.mailDepositBid") ){
+								$client = FxCli::select("cod_cli")->where("cod2_cli", $item["idoriginclient"])->JoinCliWebCli()->first();
+								if(!empty($client)){
+									$email = new EmailLib('DEPOSIT_ACTIVATE');
+									if (!empty($email->email)) {
+										$email->setUserByCod($client->cod_cli, true);
+										$email->setLot($item["idauction"],$item["reflot"]);
+										$urlLot = $email->getAtribute("LOT_LINK");
+
+										$email->setAtribute("URL_PASWWORD",$urlLot."?recoveryPassword=S&emailRecovery=".$client->email_cli);
+										$email->send_email();
+
+									}
+								}
+							}
 
 
 						}
+
+
 				}
 
             return  $this->responseSuccsess();
@@ -271,7 +288,7 @@ class DepositController extends ApiLabelController
 
 
 			#una vez comprobado que se ha eliminado el deposito y si se tienen que crear las pujas iniciales
-			if(\Config::get("app.depositBid") || 1 == 1){
+			if(\Config::get("app.depositBid") ){
 				$licit = FgLicit::JoinCli()->where("CLI_LICIT",$whereVars["cli_deposito"])->first();
 				if(!empty($licit)){
 					FgAsigl1::where("SUB_ASIGL1",$whereVars["idauction"])->where("REF_ASIGL1",$whereVars["reflot"])->where("LICIT_ASIGL1",$licit->cod_licit)->delete();

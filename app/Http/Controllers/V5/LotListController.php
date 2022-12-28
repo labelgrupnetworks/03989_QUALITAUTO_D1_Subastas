@@ -773,6 +773,9 @@ class LotListController extends Controller
                 $fgasigl0 =  $fgasigl0->orderby("FGHCES1.ORDEN_HCES1", "DESC");
             }elseif($order == '360'){
 				$fgasigl0 =  $fgasigl0->orderby("FGHCES1.IMG360_HCES1", "DESC");
+			}elseif($order == 'media'){
+				$fgasigl0 = $fgasigl0->selectRaw("case when (FGHCES1.VIDEOS_HCES1 = 'S' or (FGHCES1.TOTALFOTOS_HCES1 IS NOT NULL and FGHCES1.TOTALFOTOS_HCES1 > 1)) then '1' else '0' end as media");
+				$fgasigl0 = $fgasigl0->orderby("media", "DESC");
 			}elseif($order == 'award'){
 				$fgasigl0 =  $fgasigl0->orderby("FGASIGL0.CERRADO_ASIGL0", "DESC")->orderBy("FGHCES1.LIC_HCES1",'DESC');
 			}elseif($order == 'noaward'){

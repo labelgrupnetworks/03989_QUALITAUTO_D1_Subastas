@@ -51,7 +51,7 @@ class test extends BaseController
 
 	#http://www.newsubastas.test/apilabel/test?function=getBidder&testmode=CONTROLLER
 	public function getBidder(){
-		$parameters = array("idauction" => "582", "codbidder" => "1");
+		$parameters = array("idauction" => "00000153", "codbidder" => "37");
 		$this->excuteMode($parameters,"GET","bidder", new BidderController(false),"showBidder");
 	}
 
@@ -75,13 +75,13 @@ class test extends BaseController
 
 
 				$Payment = new stdClass();
-				$Payment->idorigincli = "3";  // "76355";
-				$Payment->paid = "S";
+				$Payment->idorigincli = "WWWWW1";  // "76355";
+				$Payment->paid = "N";
 				$Payment->serial = "T20";
 				$Payment->number = 1;
-				$Payment->amount = 1200;
+				$Payment->amount = 200;
 				$Payment->reason = "M";
-				$Payment->description = "pago vehículo Rover 75 2.0 CDTi Classic 96 kW (131 CV) ";
+				$Payment->description = "pulsera oro";
 				$Payment->date =  date("Y-m-d H:i:s");
 				//$Payment->pdf = $pdf;
 				//$Payment->pdf64 = base64_encode(file_get_contents( $pdf64));
@@ -667,7 +667,7 @@ class test extends BaseController
             $lot = new stdClass();
             $lot->idorigin = time();
             $lot->idauction = "TEST";
-            $lot->reflot = 62;
+            $lot->reflot = 63;
             $lot->idsubcategory = "AV";
             $lot->title = "titulo";
             $lot->description = "Lot metadescription";
@@ -734,9 +734,13 @@ class test extends BaseController
 		#http://www.newsubastas.test/apilabel/test?function=putLot&testmode=CONTROLLER
         public function putLot(){
 			$lot = new stdClass();
-			$lot->idorigin = "060521B-5";
-            $lot->idauction = "060521B";
-            $lot->reflot = 5;
+			$lot->idorigin = "1671623786";
+            $lot->idauction = "TEST";
+            $lot->reflot = 63;
+			$lot->startdate = '2020-03-02';
+            $lot->enddate = '2020-03-03';
+            $lot->starthour = '20:01:04';
+            $lot->endhour = '05:40:05';
            /*
             $lot->idsubcategory = "AV";
             $lot->title = "titulo";
@@ -997,9 +1001,9 @@ class test extends BaseController
 	public function postDeposit(){
 
 		$deposit = new stdClass();
-		$deposit->idoriginclient = "3";
-		$deposit->idauction = "BBBO";
-		$deposit->idoriginlot = "EJEMPLO1";
+		$deposit->idoriginclient = "ruben1";
+		$deposit->idauction = "LABELO";
+		$deposit->idoriginlot = "LABELO-2";
 
 		$deposit->status = "V";
 		$deposit->amount = "1600";
