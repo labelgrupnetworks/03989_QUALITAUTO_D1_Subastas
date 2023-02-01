@@ -22,7 +22,7 @@ $(document).on('ready', function () {
 
 	$('#js-nft-unpublish').on('click', unpublishNft);
 
-	$('#js-deleteSelectedLots').on('click', deleteSelectedLots);
+	$('.js-actionSelectedLots').on('click', actionSelectedLots);
 	$('#js-selectAllLots').on('click', selectedAllLots);
 });
 
@@ -111,7 +111,7 @@ function unpublishNft(event) {
 	});
 }
 
-function deleteSelectedLots(event) {
+function actionSelectedLots(event) {
 	event.preventDefault();
 
 	const lots = selectedCheckItemsByName('lote');
@@ -121,7 +121,7 @@ function deleteSelectedLots(event) {
 		return;
 	}
 
-	bootbox.confirm("¿Estás seguro de eliminar todos los lotes seleccionados", function (result) {
+	bootbox.confirm(event.target.dataset.title, function (result) {
 		if(!result) return;
 
 		fetch(event.target.href, {
@@ -135,7 +135,7 @@ function deleteSelectedLots(event) {
 		.then(data => {
 
 			if(data.success){
-				bootbox.alert("Se han eliminado los lotes seleccionados");
+				bootbox.alert(event.target.dataset.respuesta);
 				location.reload();
 			}
 			else{
@@ -146,7 +146,43 @@ function deleteSelectedLots(event) {
 	});
 
 }
+/*
+function removeStockSelectedLots(event) {
+	event.preventDefault();
 
+	const lots = selectedCheckItemsByName('lote');
+
+	if(lots.length === 0){
+		bootbox.alert("Debes seleccionar al menos un lote");
+		return;
+	}
+
+	bootbox.confirm("¿Estás seguro de quitar el stock en todos los lotes seleccionados", function (result) {
+		if(!result) return;
+
+		fetch(event.target.href, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({lots})
+		})
+		.then(handleToJson)
+		.then(data => {
+
+			if(data.success){
+				bootbox.alert("Se ha quitado el stock a los lotes seleccionados");
+				location.reload();
+			}
+			else{
+				bootbox.alert("Ha ocurrido un error");
+			}
+		})
+		.catch(handleFetchingErrorWithBootbox);
+	});
+
+}
+*/
 function selectedAllLots(event) {
 	event.preventDefault();
 	const lots = Array.from(document.getElementsByName('lote'));

@@ -1,3 +1,31 @@
+/** prueba para crear url encriptada con filtros, lo mantengo para ver que hago con esto
+$(() => {
+	document.getElementById('appliFilters')?.addEventListener('click', (event) => {
+		const filtersElement = document.querySelectorAll('.filter');
+
+		const filters = [];
+		filtersElement.forEach((filterElement) => {
+			filters.push({
+				field: filterElement.querySelector('[name=field]').value,
+				operation: filterElement.querySelector('[name=operation]').value,
+				value: filterElement.querySelector('[name=value]').value,
+			})
+		});
+
+		const filtersJson = JSON.stringify(filters);
+		const filtersHash = utf8_to_b64(filtersJson);
+
+		let url = new URL(document.location);
+		url.searchParams.set('filters', filtersHash);
+
+		window.location.href = url.href;
+	});
+})
+
+function utf8_to_b64(str) {
+	return window.btoa(unescape(encodeURIComponent(str)));
+}
+*/
 
 function bajaDeCliente(cliente, status) {
 
@@ -176,7 +204,7 @@ function exportClients(event) {
 
 	fetch(route, data)
 		.then(res => {
-			if(!res.ok){
+			if (!res.ok) {
 				throw new Error('Error descarga de excel');
 			}
 			return res.blob()

@@ -10,3 +10,30 @@
 .sidebar-left, .page-header, .content-body{
 	transition: 0.6s;
 }
+
+.row-reports{
+	background-color: #DDD;
+}
+.body-reports{
+	background-color: #FFF;
+}
+
+.menu-reports{
+	padding: 5px;
+	list-style: none;
+
+}
+
+.menu-reports ul{
+	padding: 0;
+}
+
+.menu-reports li{
+	position: relative;
+	display: block;
+}
+
+.menu-reports li a{
+	text-decoration: none;
+	color: #444;
+}

@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 	listaItemsBloque();
-	$('.jsChangeStatus').click(estadoBanner);
+	$('.jsChangeStatus').on('click', estadoBanner);
 
 
 	$(".sortableBanner").sortable({
@@ -49,9 +49,6 @@ $(document).ready(function () {
 
 });
 
-
-
-
 function listaItemsBloque() {
 
 	$(".bannerItems").each(function (index) {
@@ -70,12 +67,14 @@ function listaItemsBloque() {
 
 function nuevoItemBloque(id, index) {
 
-	token = $("#_token").val();
+	const request = {
+		_token: $("#_token").val(),
+		key: $("[name=nombre]").val(),
+		id,
+		index
+	}
 
-	$.post("/admin/newbanner/nuevoItemBloque", { id: id, index: index, _token: token }, function (data) {
-		listaItemsBloque();
-	});
-
+	$.post("/admin/newbanner/nuevoItemBloque", request, (response) => listaItemsBloque());
 }
 
 function editaItemBloque(id) {
@@ -116,44 +115,43 @@ function guardaItemBloque() {
 
 function borraItemBloque(id) {
 
-	token = $("#_token").val();
-	$.post("/admin/newbanner/borraItemBloque", { id: id, _token: token }, function (data) {
-		listaItemsBloque();
-	});
-
-}
-
-function estadoBanner(id) {
-
-	var button = this;
-	var activo = 1;
-	if (button.getAttribute("estado") == 'on') {
-		activo = 0;
+	const request = {
+		_token: $("#_token").val(),
+		key: $("[name=nombre]").val(),
+		id
 	}
 
-	var id = this.id;
+	$.post("/admin/newbanner/borraItemBloque", request, (response) => listaItemsBloque());
+}
+
+/**
+ * @param {Event} event
+ * @returns
+ */
+function estadoBanner(event) {
+
+	const button = event.currentTarget;
+	const id = button.dataset.id;
+	const key = button.dataset.key;
+	const isActive = button.getAttribute("estado") === 'on' ? 0 : 1;
+
+	const request = {
+		activo: isActive,
+		id,
+		key
+	};
 
 	$.ajax({
 		url: "/admin/newbanner/activar",
 		type: "post",
-		data: { "activo": activo, "id": id },
-		success: function () {
-
-			if (activo == 0) {
-				button.setAttribute("estado", "off");
-				button.setAttribute("title", "Activar");
-				$(button).removeClass("btn-success");
-				$(button).addClass("btn-danger");
-			}
-			else {
-				button.setAttribute("estado", "on");
-				button.setAttribute("title", "Desactivar");
-				$(button).removeClass("btn-danger");
-				$(button).addClass("btn-success");
-			}
+		data: request,
+		success: () => {
+			button.setAttribute('estado', isActive ? 'on' : 'off');
+			button.setAttribute('title', isActive ? 'Desactivar' : 'Activar');
+			button.classList.toggle('btn-danger', !isActive);
+			button.classList.toggle('btn-success', isActive);
 
 			saved("Modificado");
-
 		},
 		error: function () {
 			error("Error en servidor, contacte con equipo técnico");
@@ -175,10 +173,15 @@ function desactivaItemBloque(id) {
  * @param {number} estado tinyint activo desactivo
  */
 function estadoItemBloque(id, estado) {
-	token = $("#_token").val();
-	$.post("/admin/newbanner/estadoItemBloque", { id: id, _token: token, activo: estado }, function (data) {
-		listaItemsBloque();
-	});
+
+	const request = {
+		_token: $("#_token").val(),
+		key: $("[name=nombre]").val(),
+		activo: estado,
+		id
+	}
+
+	$.post("/admin/newbanner/estadoItemBloque", request, (response) => listaItemsBloque());
 }
 
 function editar_run() {
