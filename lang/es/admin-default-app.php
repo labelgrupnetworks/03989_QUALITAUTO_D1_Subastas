@@ -256,6 +256,8 @@ return [
 		'featured_sales' => 'Ventas Destacadas',
 		'nft_lot' => 'NFT',
 		'nfts' => 'Ventas NFT',
+		'bi_reports' => 'BI Reports',
+		'stock' => 'Stock'
 	),
 	'button' => array(
 		'export' => 'Exportar',
@@ -634,6 +636,7 @@ return [
 		'cif_pro' => 'CIF',
 		'contacto_pro' => 'Contacto',
 		'margen_pro' => 'Comisión',
+		'anum_pedc0'	=> 'Periodo',
 		'num_pedc0'	=> 'Número pedido',
 		'cod_pedc0'	=> 'Código de Usuario',
 		'rsoc_pedc0'	=> 'Nombre de Usuario',
@@ -729,7 +732,21 @@ return [
 		'type_email' => 'Tipo / Destinatario',
 		'IPFS_file' => 'Archivo publicado',
 		'IPFS_metadata' => 'Metadata publicada',
-		'numberobjects' => 'Nº de Objetos'
+		'numberobjects' => 'Nº de Objetos',
+		'id_newsletter_suscription' => 'Id',
+		'email_newsletter_suscription' => 'Email',
+		'lang_newsletter_suscription' => 'Idioma',
+		'create_newsletter_suscription' => 'Fecha',
+		'stock_hces1'	=> "Stock",
+		'note'	=> 'Observaciones',
+		'createdate' => 'Fecha de alta',
+		'obsdet_hces1' => 'Observaciones',
+		'fecalta_asigl0' => 'Fecha alta',
+		'alm_hces1'	=> 'Almacen',
+		'des_alm'	=> 'Almacen',
+		'technique'	=> "Técnica",
+		'measurement'	=> "Medidas",
+		'compra_asigl0'	=> "Compra"
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -1080,5 +1097,19 @@ return [
 			"mintTransactionIsPending" => "El acuñamiento aun no ha finalizado",
 			"transferTransactionIsPending" => "El acuñamiento aun no ha finalizado",
 		)
-	)
+		),
+		'reportsBi' => array(
+			"menuTitle" => "Reports",
+			"reports" => array(
+				"type_bids" => "Tipos de pujas",
+				"sale_category" => "Ventas por categoria",
+
+			),
+			"titlesReport" => array(
+				"num_bids" => "Número de pujas",
+				"imp_bids" => "Importe de pujas",
+			)
+
+
+		)
 ];

@@ -24,7 +24,7 @@ if(\Config::get("app.emp") == '003' || \Config::get("app.emp") == '004'){
 			'tipo_sub_e' => 'Exposición',
 			'subabierta_sub' => 'Exposición abierta',
 			'compraweb_sub' => 'Fondo de galería',
-			'buyoption' => 'Fondo de galería',
+			'buyoption' => 'Fondo de galería web',
 			'opcioncar_sub' => 'Exposición Online',
 			'newsletter2' => 'Newsletter Joyería',
 			'newsletter3' => 'Newsletter Subastas Pintura',
@@ -44,11 +44,13 @@ if(\Config::get("app.emp") == '003' || \Config::get("app.emp") == '004'){
 			'envcat_cli2' => 'Cat. subastas',
 			'impsalhces_asigl0' => 'Precio',
 			'startprice' => 'Precio',
+			'compra_asigl0'	=> "Fondo Galeria Web",
 		),
 		'help_fields' => array(
 			'buyoption' => 'Añadirá este lote al Fondo de galería',
 			'compraweb_sub' => 'Fondo de galería',
 			'opcioncar_sub' => 'Marcará la exposición como Online',
+			'stock' => 'Stock',
 		)
 
 

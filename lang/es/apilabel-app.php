@@ -30,7 +30,7 @@ return
         'date_format' => "Error in the field :attribute Wrong date or time format, sended value: ':input'",
 		'filled' => "Error in the field  :attribute cannot be empty",
 		'required_without_all' => "Error in the field  :attribute, at least one of the field is mandatory",
-
+		'not_be_modified' => "Error in the field  :attribute, this field cannot be modified",
 
     ),
     'success' =>

@@ -133,7 +133,13 @@ $lang =[
 			'developedSoftware' => 'Auction software',
 			'developedBy' => 'Developed by Labelgrup Networks.',
 			'developed_url' => 'https://www.labelgrup.com/subastas',
-			'inscribete_catalogo' => ''
+			'inscribete_catalogo' => '',
+			'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER',
+			'newsletters' => 'Newsletters',
+			'subscriptions' => 'Subscriptions',
+			'agree_notifications' => 'I wish and agree to receive notifications about the following topics/events:',
+			'unsuscribe_from' => 'If you want to subscribe and no longer receive notifications, you can unsubscribe from ',
+			'unsuscribe_link' => 'this link'
 		),
 	'global' =>
 		array (
@@ -401,7 +407,15 @@ $lang =[
 			'bid_participants' => 'Participants in the bid',
 			'start_date' => 'Start date:',
 			'end_date' => 'End date:',
-			'can_place_bids' => 'You can place bids from: '
+			'can_place_bids' => 'You can place bids from: ',
+			'submit_offer_concursal' => 'Submit offer',
+			'bidder_name_concursal' => 'Bidder name',
+			'insert_max_puja_concursal' => 'Insert your maximum offer',
+			'max_puja_concursal' => 'Your offer has been of',
+			'insert_max_puja_start_concursal' => 'Leave your offer here, before it is up for auction',
+			'confirm_bid_concursal' => 'confirm your offer',
+			'bidding_for_concursal' => 'You are bidding for',
+			'price_offer' => 'Price to offer'
 		),
 	'lot_list' =>
 		array (
@@ -467,6 +481,7 @@ $lang =[
 			'auctionFirst' => 'Auctions',
 			'directSaleFirst' => 'Direct sales',
 			'bestPrice' => 'Best purchase price',
+			'video' => 'Vídeo'
 		),
 	'metas' =>
 		array (
@@ -573,7 +588,8 @@ $lang =[
 			'title_500' => 'Unexpected error.',
 			'message_500' => 'An error has occurred and the request could not be completed. Try again.',
 			'asign_to_ministery' => 'The previous lot has been awarded to the Ministry.',
-			'bidders_ratio' => 'The sum of the ratios must add up to 100%.'
+			'bidders_ratio' => 'The sum of the ratios must add up to 100%.',
+			'no_deposit_w' => 'In order to place an offer you must have a valid deposit',
 		),
 	'msg_neutral' =>
 		array (
@@ -634,7 +650,8 @@ $lang =[
 			'delete_lot_cart' => ' The lot has been deleted from the shopping cart',
 			'phoneOrder' => 'Successful phone order',
 			'newsletter_unsubscribe' => "The subscription to email newsletters :email has been canceled",
-			'newsletter_subscribe' => "The subscription to email newsletters :email has been executed successfully"
+			'newsletter_subscribe' => "The subscription to email newsletters :email has been executed successfully",
+			'correct_bid_concursal' => 'Bid Successfully Done',
 		),
 	'sheet_tr' =>
 		array (
@@ -762,6 +779,9 @@ $lang =[
 			'lot_subasta_online' => 'Online Auctions',
 			'lot_subasta_presencial' => 'On-site auction',
 			'lot_subasta_venta' => 'Sale auction',
+			'lot_subasta_make_offer' => 'Make your offer',
+			'lot_subasta_inversa' => 'Reverse Auction',
+			'lot_subasta_especial' => 'Special Auction',
 			'lots_not_found' => 'Lots not found',
 			'mustLogin' => 'Must log in',
 			'next' => 'Next',

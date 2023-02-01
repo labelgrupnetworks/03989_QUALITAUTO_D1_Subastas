@@ -150,7 +150,12 @@ $lang = [
 		'developedSoftware' => 'Software de subastas',
 		'developedBy' => 'Desarrollado por Labelgrup Networks.',
 		'developed_url' => 'https://www.labelgrup.com/subastas',
-		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER'
+		'inscribete_catalogo' => 'SUSCRÍBETE A NUESTRA NEWSLETTER',
+		'newsletters' => 'Newsletters',
+		'subscriptions' => 'Suscripciones',
+		'agree_notifications' => 'Deseo y acepto recibir notificaciones de sobre los siguientes temas/eventos:',
+		'unsuscribe_from' => 'En caso de querer de suscribirse y no recibir más notificaciones puede darse de baja desde ',
+		'unsuscribe_link' => 'este enlace'
 	),
 	'global' =>
 	array(
@@ -420,7 +425,15 @@ $lang = [
 		'bid_participants' => 'Participantes en la puja',
 		'start_date' => 'Fecha de inicio:',
 		'end_date' => 'Fecha de fin:',
-		'can_place_bids' => 'Podrá realizar pujas a partir de: '
+		'can_place_bids' => 'Podrá realizar pujas a partir de: ',
+		'submit_offer_concursal' => 'Presentar oferta',
+		'bidder_name_concursal' => 'Nombre Ofertante',
+		'insert_max_puja_concursal' => 'Inserte su oferta',
+		'max_puja_concursal' => 'Su oferta realizada ha sido de',
+		'insert_max_puja_start_concursal' => 'Introduzca aquí su oferta para cuando empiece la subasta.',
+		'confirm_bid_concursal' => 'Confirme su oferta',
+		'bidding_for_concursal' => 'Está realizando una oferta por',
+		'price_offer' => 'Precio a ofrecer'
 	),
 	'lot_list' =>
 	array(
@@ -488,6 +501,7 @@ $lang = [
 		'auctionFirst' => 'Subasta ',
 		'directSaleFirst' => 'Venta directa',
 		'bestPrice' => 'Precio más atractivo',
+		'video' => 'Vídeo'
 	),
 	'metas' =>
 	array(
@@ -530,6 +544,7 @@ $lang = [
 		'err-add_newsletter' => 'Email erróneo, introduzca uno nuevo para darse de alta en el boletín',
 		'error_contact_emp' => 'No es posible realizar el registro, para más información pongase en <a href="/es/pagina/contacto">contacto</a>con nosotros',
 		'error_delete_order' => 'Error en el momento de eliminar la orden',
+		'error_delete_order_online' => 'No es posible eliminar la puja máxima si es la puja actual o si ya ha sido superada',
 		'error_exist_dni' => 'Ya existe una cuenta con este DNI/NIE/NIF. Si ha olvidado su contraseña, puede restablecerla pulsando sobre ¿Ha olvidado su contraseña? o contactando con nosotros.',
 		'error_no_image' => 'Es necesario adjuntar una imágen',
 		'error_no_mail' => 'Es necesario adjuntar mail de contacto',
@@ -602,7 +617,8 @@ $lang = [
 		'message_500' => 'Se ha producido un error y no se ha podido completar la solicitud. Inténtelo de nuevo.',
 		'asign_to_ministery' => 'El lote anterior ha sido adjudicado al ministerio',
 		'bidders_ratio' => 'La suma de los ratios debe sumar 100%',
-		'noPhoneInPhoneBid' => 'Es necesario que indique su número de teléfono'
+		'noPhoneInPhoneBid' => 'Es necesario que indique su número de teléfono',
+		'no_deposit_w' => 'Para poder realizar una oferta debes tener un depósito válido',
 	),
 	'msg_neutral' =>
 	array(
@@ -666,7 +682,8 @@ $lang = [
 		'delete_lot_cart' => 'Lote eliminado del carrito de la compra',
 		'phoneOrder' => "Orden telefónica realizada con éxito",
 		'newsletter_unsubscribe' => "La suscripción a newsletters del email :email a sido cancelada",
-		'newsletter_subscribe' => "La suscripción a newsletters del email :email se ha ejecutado con exito"
+		'newsletter_subscribe' => "La suscripción a newsletters del email :email se ha ejecutado con exito",
+		'correct_bid_concursal' => 'Oferta realizada correctamente',
 	),
 	'sheet_tr' =>
 	array(
@@ -798,6 +815,7 @@ $lang = [
 		'lot_subasta_venta' => 'Subasta venta',
 		'lot_subasta_make_offer' => 'Subasta haz tu oferta',
 		'lot_subasta_inversa' => 'Subasta inversa',
+		'lot_subasta_especial' => 'Subasta especial',
 		'lots_not_found' => 'No se han encontrado lotes.',
 		'mustLogin' => 'Debe iniciar sesión',
 		'next' => 'Siguiente',
