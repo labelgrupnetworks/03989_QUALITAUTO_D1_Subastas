@@ -24,6 +24,9 @@ function custom_checks(campo){
 	if(campo.name == 'usuario' && campo.value.includes('@')){
 		return false;
 	}
+	if(campo.name == 'nif' && campo.value == '') {
+		return false;
+	}
 	return true;
 }
 

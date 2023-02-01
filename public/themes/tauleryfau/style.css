@@ -8409,8 +8409,8 @@ button .fa-info:before {
 }
 
 .input-currency, .single-lot {
-	-moz-appearance:textfield;
-	-webkit-appearance: none;
+	appearance: none;
+	-moz-appearance: textfield;
 }
 
 .currency-simbol{
@@ -9547,3 +9547,16 @@ span.select2, .select2 span{
 	padding: 0 5px 0 10px;
 }
 
+.banner_grid.charge .item_imagen:not(.pos_item_1) {
+	display: none!important;
+}
+
+.slick-slide img {
+	width: 100%;
+	height: auto;
+}
+
+#newsletterForm input[type='checkbox'] {
+	position: relative;
+	opacity: 1;
+}

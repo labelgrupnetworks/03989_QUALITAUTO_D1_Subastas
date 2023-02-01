@@ -125,3 +125,22 @@ footer {
 	min-height: 260px;
 }
 
+.ToplabelGrid{
+
+		position: absolute;
+		z-index: 3;
+
+		top: 10px;
+
+
+
+}
+.ToplabelGrid .soldLabel{
+	width: 100%;
+	height: 30px;
+	padding-top: 7px;
+	background: var(--extra-color);
+	color: white;
+	font-size: 12px;
+	text-align: center;
+}

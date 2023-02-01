@@ -131,3 +131,46 @@ a.link-header {
 	bottom: 0;
 	height: 3px;
 }
+
+#infoLotForm {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+#infoLotForm input[type='number'] {
+	-moz-appearance:textfield;
+}
+
+#infoLotForm input[type='number']::-webkit-outer-spin-button,
+#infoLotForm input[type='number']::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+.offer-btn {
+	display: block;
+	width: 100%;
+}
+
+.ficha-info-items {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.checkbox label {
+	padding-left: 30px;
+}
+
+.checkbox input[type=checkbox] {
+	margin-left: -30px;
+}
+
+.checkbox input[type=checkbox].has-error + span {
+	color: red;
+}
+
+.checkbox input[type=checkbox]:checked + span {
+	color: inherit;
+}
+
+

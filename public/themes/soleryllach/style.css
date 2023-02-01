@@ -4574,3 +4574,16 @@ div.list_lot div.item_lot div.title_lot, .data-container .square-lot.title_lot {
 	border-top: 0;
 	border-radius: 0 0 4px 4px;
 }
+
+.list-block {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.list-block label {
+	font-weight: initial;
+}
+
+.checkbox input[type=checkbox]#recibir-newletter {
+	margin-left: 0;
+}

@@ -5,8 +5,6 @@ window.onscroll =
 		if ($('.online-time').length > 0) {
 			timeForAuctions()
 		}
-
-
 	}
 
 
@@ -555,43 +553,12 @@ $(function () {
 
 	});
 
-	$('#newsletter-btn').on('click', function () {
-		var email = $('.newsletter-input').val();
-		var lang = $('#lang-newsletter').val();
-		var families = [];
-		//coge los ocultos
-		$(".newsletter").each(function (index) {
-			families.push($(this).val());
-		});
-
-		var entrar = true;
-
-		if ($('#condiciones').prop("checked")) {
-			entrar = true;
-		}
-
-		if (entrar) {
-			$.ajax({
-				type: "POST",
-				data: { email: email, families: families, lang: lang },
-				url: '/api-ajax/newsletter/add',
-				beforeSend: function () {
-				},
-				success: function (msg) {
-					if (msg.status == 'success') {
-						$('.insert_msg').html(messages.success[msg.msg]);
-					} else {
-						$('.insert_msg').html(messages.error[msg.msg]);
-					}
-					$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
-				}
-			});
-		} else {
-			$("#insert_msgweb").html('');
-			$("#insert_msgweb").html(messages.neutral.accept_condiciones);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		}
-	});
+	/**
+     * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
+     * actualmente no utilizamos en la vista.
+     */
+	$('#newsletter-btn').on('click', newsletterSuscription);
+	$('#newsletterForm').on('submit', newsletterFormSuscription);
 
 	$('#frmUpdateUserPasswordADV').validator().on('submit', function (e) {
 
@@ -1064,6 +1031,19 @@ $(function () {
 		video.pause();
 		video.currentTime = 0;
 	});
+
+	$('#searchLot').on('submit', (event) => {
+		event.preventDefault();
+
+		const reference = $("[name=reference]").val();
+		if(!reference){
+			return;
+		}
+
+		let action = event.target.action;
+		const goTo = action.replace(":ref", reference.trim())
+		window.location = goTo;
+	})
 
 });
 
@@ -1889,4 +1869,64 @@ function viewVideoBtnEvents(){
 	});
 }
 
+function newsletterSuscription (event) {
+	var email = $('.newsletter-input').val();
+	var lang = $('#lang-newsletter').val();
 
+	if (!$('#condiciones').prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const newsletters = {};
+	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
+		if(element.checked) {
+			newsletters[`families[${element.value}]`] = '1';
+		}
+	});
+
+	const data = {
+		email,
+		lang,
+		condiciones: 1,
+		...newsletters
+	}
+
+	addNewsletter(data);
+}
+
+function newsletterFormSuscription(event) {
+	event.preventDefault();
+
+	if (!$("[name=condiciones]").prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+	const data = $(event.target).serialize();
+
+	addNewsletter(data);
+}
+
+function addNewsletter(data) {
+	$.ajax({
+		type: "POST",
+		data: data,
+		url: '/api-ajax/newsletter/add',
+		success: function (msg) {
+			if (msg.status == 'success') {
+				$('.insert_msg').html(messages.success[msg.msg]);
+			} else {
+				$('.insert_msg').html(messages.error[msg.msg]);
+			}
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		},
+		error: function(error) {
+			$('.insert_msg').html(messages.error.message_500);
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		}
+	});
+}

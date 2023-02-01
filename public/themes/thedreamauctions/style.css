@@ -406,3 +406,54 @@ img.img-openDragon{
 .popover-content{
 	text-align: justify;
 }
+
+.social-icons {
+	gap: 3rem;
+}
+
+.social-icons .social-icon {
+	padding: 10px;
+	background: linear-gradient(#747474, #000, #000);
+    border-radius: 9999px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.social-icons .social-icon .border-gradient {
+	border-radius: 9999px;
+  	border: 2px solid transparent;
+	background: linear-gradient(#f2ca7c,#978050, #978050, #f2ca7c) border-box;
+
+}
+
+.social-icons .social-icon a {
+	display: block;
+	border-radius: 9999px;
+	background: linear-gradient(#747474, #000, #000);
+}
+
+
+.social-icons .social-icon a i{
+	padding: 10px;
+    border-radius: 9999px;
+	/* border: 2px solid transparent; */
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	background: linear-gradient(#f2ca7c,#978050);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+
+
+.social-icons .social-icon a:is(:hover, ::selection, :focus) {
+	text-decoration: none;
+}
