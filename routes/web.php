@@ -139,12 +139,11 @@ Route::get(Routing::translateSeo('subastas-permanentes'), 'SubastaController@sub
 Route::get(Routing::translateSeo('venta-directa'), 'SubastaController@venta_directa')->name('subastas.venta_directa');
 Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones');
 Route::get(Routing::translateSeo('subastas-activas'), 'SubastaController@subastas_activas')->name('subastas.activas');
-
-Route::post('/api-ajax/sessions/files', 'subastaController@getAucSessionFiles')->name('apiajax.sessions.files');
+Route::get(Routing::translateSeo('subastas-especiales'), 'SubastaController@subastas_especiales')->name('subastas.especiales');
 
 Route::get(Routing::translateSeo('haz-oferta'), 'SubastaController@haz_oferta')->name('subastas.haz_oferta');
 Route::get(Routing::translateSeo('subasta-inversa'), 'SubastaController@subasta_inversa')->name('subastas.subasta_inversa');
-
+Route::post('/api-ajax/sessions/files', 'subastaController@getAucSessionFiles')->name('apiajax.sessions.files');
 
 Route::get(Routing::slug('sub') . '/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
 Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAuctionList');
@@ -275,8 +274,6 @@ Route::get(Routing::slug('ordenes') . '/{cod}/{lote}', 'SubastaController@getOrd
         Route::get(Routing::slug('subasta/hc').'-{cod}-{texto}/{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
     }*/
 
-# Newsletter
-Route::post('api-ajax/newsletter/{opcion}', 'NewsletterController@setNewsletter');
 Route::post('/api-ajax/carousel', 'ContentController@getAjaxCarousel');
 Route::post('/api-ajax/newcarousel', 'ContentController@getAjaxNewCarousel');
 Route::post('/api-ajax/add-sec-user', 'UserController@changeFavTsec');
@@ -286,7 +283,6 @@ Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser')
 
 # Búsqueda
 Route::get(Routing::slugSeo('busqueda') . '/redirect', 'BusquedaController@redirect');
-
 Route::get(Routing::slugSeo('busqueda') . '/{texto?}', 'BusquedaController@index');
 Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index');
 Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', 'BusquedaController@index');
@@ -649,8 +645,16 @@ Route::get("transfernftpayment/{operationsIds}", 'V5\PayShoppingCartController@c
 #Comprobar escalados fuera de rango
 Route::get("preciofueraescalado/{codSub}","CustomControllers@preciosFueraEscalado");
 
-Route::get("/{lang}/newsletter-unsuscribe/{cod_cli}/{hash}", "UserController@unsuscribeToNewsletter");
-Route::get("/{lang}/newsletter-suscribe/{cod_cli}/{hash}", "UserController@suscribeToNewsletter");
+Route::get("/api-ajax/newsletters/{service}/{action}", "NewsletterController@checkCallback");
+Route::post("/api-ajax/newsletters/{service}/{action}", "NewsletterController@callbackUnsuscribe");
+
+Route::post('api-ajax/newsletter/{opcion}', 'NewsletterController@setNewsletter');
+Route::get("/{lang}/newsletter/{email}", "NewsletterController@configNewsletter")->where('lang', 'es|en');
+Route::get("/{lang}/newsletter-suscribe/{email}", "NewsletterController@suscribeOnlyToExternalService");
+Route::get("/{lang}/newsletter-unsuscribe/{email}", "NewsletterController@unsuscribeNewsletter")->name('newsletter.unsuscribe');
+Route::get("/{lang}/newsletter-migrate", "NewsletterController@migrateNewslettersToNewFormat");
+Route::get("/{lang}/newsletter-mailchimp-export", "NewsletterController@mailchimpExportCsv");
+
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

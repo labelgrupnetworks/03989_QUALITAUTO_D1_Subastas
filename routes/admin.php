@@ -1,11 +1,14 @@
 <?php
-use App\Http\Controllers\admin\AdminConfigController;
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 /*
 |--------------------------------------------------------------------------
 | Layout - BackOffice
 |--------------------------------------------------------------------------
 */
 # Añadido excepcional ya que no funcionaba el admin
+
 Route::get('/admin', 'AdminHomeController@index');
 Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
@@ -267,8 +270,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
-		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'destroy']);
+		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'show', 'destroy']);
 
+		Route::get('newsletter/export/', 'usuario\AdminNewsletterController@export')->name('newsletter.export');
+		Route::resource('newsletter', 'usuario\AdminNewsletterController');
 
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
@@ -287,6 +292,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::post('subastas/update/image', 'subasta\AdminSubastaGenericController@updateImage')->name('subastas.update.image');
 		Route::resource('subastas', 'subasta\AdminSubastaGenericController');
+
+		Route::get('stock', 'subasta\AdminStockController@index')->name('subastas.stock.index');;
+		Route::get('stock/printExcel', 'subasta\AdminStockController@excel')->name('subastas.stock.printExcel');
 
 		Route::post('subastas_concursales/update/image', 'subasta\AdminSubastaConcursalController@updateImage')->name('subastas_concursales.update.image');
 		Route::resource('subastas_concursales', 'subasta\AdminSubastaConcursalController')->parameters([
@@ -324,6 +332,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('nfts/state', 'subasta\AdminNftController@state')->name('nft.state');
 
 		Route::post('subastas/{cod_sub}/lotes/delete-selection', 'subasta\AdminLotController@deleteSelection')->name('subastas.lotes.delete_selection');
+		Route::post('subastas/{cod_sub}/lotes/stockRemove-selection', 'subasta\AdminLotController@stockRemoveSelection')->name('subastas.lotes.stockRemove_selection');
+		Route::post('subastas/{cod_sub}/lotes/setToSellSelection', 'subasta\AdminLotController@setToSellSelection')->name('subastas.lotes.setToSellSelection');
+
 		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
 
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
@@ -341,6 +352,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('bi/cedentes/{cod_cli}', 'bi\AdminBiCedentesController@show')->name('bi_cedentes.show');
 		Route::get('bi/cedentes/{cod_cli}/json', 'bi\AdminBiCedentesController@getShow')->name('bi_cedentes.show_data');
 		Route::get('bi/cedentes', 'bi\AdminBiCedentesController@index')->name('bi_cedentes.index');
+
+		Route::get('bi/reports/','bi\AdminBiReports@index' )->name('bi_reports');
+		Route::get('bi/report/{report}','bi\AdminBiReports@report' )->name('bi_report');
 
 		Route::get('providers/list', 'facturacion\AdminProviderController@getSelectProviders')->name('provider.list');
 		Route::resource('providers', 'facturacion\AdminProviderController')->except(['show']);
@@ -360,9 +374,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
 
 		Route::resource('emails', 'contenido\AdminEmailsController')->only(['index', 'edit', 'update']);
-
-
-		Route::post('admin-config', [AdminConfigController::class, 'saveConfigurationSession']);
 	});
 
 
