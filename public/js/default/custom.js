@@ -532,42 +532,12 @@ $(document).ready(function () {
 
 	});
 
-
     /**
      * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
      * actualmente no utilizamos en la vista.
      */
-	$('#newsletter-btn').on('click', function () {
-		var email = $('.newsletter-input').val();
-		var lang = $('#lang-newsletter').val();
-
-		var entrar = false;
-		if ($('#condiciones').prop("checked")) {
-			entrar = true;
-		}
-
-		if (entrar) {
-			$.ajax({
-				type: "POST",
-				data: { email: email, lang: lang, condiciones: 1, families: [1] },
-				url: '/api-ajax/newsletter/add',
-				beforeSend: function () {
-				},
-				success: function (msg) {
-					if (msg.status == 'success') {
-						$('.insert_msg').html(messages.success[msg.msg]);
-					} else {
-						$('.insert_msg').html(messages.error[msg.msg]);
-					}
-					$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
-				}
-			});
-		} else {
-			$("#insert_msgweb").html('');
-			$("#insert_msgweb").html(messages.neutral.accept_condiciones);
-			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		}
-	});
+	$('#newsletter-btn').on('click', newsletterSuscription);
+	$('#newsletterForm').on('submit', newsletterFormSuscription);
 
 	$('#frmUpdateUserPasswordADV').validator().on('submit', function (e) {
 
@@ -645,38 +615,41 @@ $(document).ready(function () {
 	$("#confirm_orden").click(function (event) {
 
 		imp = $("#bid_modal_pujar").val();
+		tel1 = "";
+		tel2 = "";
+		ortherphone = false;
+
 		if ($("#orderphone").val() == "S") {
+
 			tel1 = $("#phone1Bid_JS").val();
 			tel2 = $("#phone2Bid_JS").val();
 			ortherphone = true;
 
-			if(tel1.length ==0  && tel2.length ==0){
+			if(tel1.length == 0 && tel2.length == 0){
 				$("#errorOrdenFicha").removeClass("hidden");
 				$("#errorOrdenFicha").html(messages.error["noPhoneInPhoneBid"]);
 				/* Evitamos que se cierre */
 				event.preventDefault();
 				return ;
 			}
-
-
-		} else {
-			tel1 = "";
-			tel2 = "";
-			ortherphone = false;
 		}
+
 		$("#errorOrdenFicha").addClass("hidden");
 		$.magnificPopup.close();
+
 		$.ajax({
 			type: "POST",
 			url: routing.ol + '-' + cod_sub,
-			data: { cod_sub: cod_sub, ref: ref, imp: imp,tel1: tel1,tel2: tel2,ortherphone : ortherphone },
+			data: { cod_sub, ref, imp, tel1, tel2, ortherphone },
 			success: function (data) {
 				if (data.status == 'error') {
 
 					$("#insert_msg_title").html("");
 					$("#insert_msg").html(data.msg_1);
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+
 				} else if (data.status == 'success') {
+
 					//divisas, debe existir el selector
 					if(typeof $("#currencyExchange").val() != 'undefined'){
 						changeCurrency(data.imp, $("#currencyExchange").val(),"yourOrderExchange_JS");
@@ -698,13 +671,14 @@ $(document).ready(function () {
 						$("#max_bid_color").removeClass("winner");
 						$("#max_bid_color").addClass("no_winner");
 					}
+
+					$('.delete_order').removeClass("hidden");
+
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				}
 
 			}
 		});
-
-
 	});
 
 	$("#confirm_orden_lotlist").click(function () {
@@ -2013,21 +1987,67 @@ function abrirNuevaVentana(parametros) {
 		return this;
 	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 })(jQuery);
 
+function newsletterSuscription (event) {
+	var email = $('.newsletter-input').val();
+	var lang = $('#lang-newsletter').val();
 
+	if (!$('#condiciones').prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
 
+	const newsletters = {};
+	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
+		if(element.checked) {
+			newsletters[`families[${element.value}]`] = '1';
+		}
+	});
+
+	const data = {
+		email,
+		lang,
+		condiciones: 1,
+		...newsletters
+	}
+
+	addNewsletter(data);
+}
+
+function newsletterFormSuscription(event) {
+	event.preventDefault();
+
+	if (!$("[name=condiciones]").prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+	const data = $(event.target).serialize();
+
+	addNewsletter(data);
+}
+
+function addNewsletter(data) {
+	$.ajax({
+		type: "POST",
+		data: data,
+		url: '/api-ajax/newsletter/add',
+		success: function (msg) {
+			if (msg.status == 'success') {
+				$('.insert_msg').html(messages.success[msg.msg]);
+			} else {
+				$('.insert_msg').html(messages.error[msg.msg]);
+			}
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		},
+		error: function(error) {
+			$('.insert_msg').html(messages.error.message_500);
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		}
+	});
+}
 

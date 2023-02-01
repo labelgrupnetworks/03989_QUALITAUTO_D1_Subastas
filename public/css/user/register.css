@@ -28,11 +28,9 @@
 #registerForm #collapse_direccion div {padding:0 0 10px 0;width:46%;float:left;margin-right:25px;}
 
 #registerForm .datos_newsletter {padding:40px 0 20px 0;}
-#registerForm .datos_newsletter div {width:49%;float:left;}
 #registerForm .datos_newsletter div input {margin:0 10px 0 0;}
 #registerForm .datos_newsletter div label {position: relative;top:-2px;cursor:pointer;font-weight: normal;}
 
-#registerForm .datos_condiciones {padding-top:30px;}
 #registerForm .datos_condiciones div input {margin:0 10px 0 0;}
 #registerForm .datos_condiciones div label {position: relative;top:-2px;cursor:pointer;font-weight: normal;}
 

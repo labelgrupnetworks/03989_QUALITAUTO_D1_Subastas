@@ -141,31 +141,6 @@ $(function () {
      | Órdenes de licitación y pujas
      |--------------------------------------------------------------------------
      */
-
-    $('#ficha').on('click', '.add_next-bid', function (event) {
- 		/* Terminos y Condiciones de las pujas*/
-        /* Hay que aceptarlas para poder continuar*/
-        var tos = $('#tos');
-        if (typeof tos != 'undefined' && !tos.prop('checked') && tos.prop('checked') == false) {
-            return $.magnificPopup.open({items: {src: '#modalAcceptTos'}, type: 'inline', showCloseBtn: false, enableEscapeKey: false, modal: true, closeOnBgClick: false}, 0);
-        }
-
-        var amount = auction_info.lote_actual.importe_escalado_siguiente;
-        var ref = auction_info.lote_actual.ref_asigl0;
-        var imp_sal = auction_info.lote_actual.impsalhces_asigl0;
-
-        /* Solo Ordenes de licitación*/
-        var solo_ol = $(this).hasClass('solo_ol');
-        if (solo_ol) {
-            var can_do_bid = 'orders';
-        } else {
-            var can_do_bid = 'all';
-        }
-
-        addBidLogic(amount, ref, imp_sal, this, can_do_bid);
-	});
-
-
     /* Añadir puja desde el boton de pujar normal*/
     $('#ficha').on('click', '.add_bid', function () {
         /* Terminos y Condiciones de las pujas*/
@@ -711,7 +686,7 @@ $(function () {
         if (data.status == 'error' && typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
             displayAlert(0, data.msg);
             return;
-        } else if (!auction_info.user?.is_gestor) {
+        } else if (!auction_info.user.is_gestor) {
             displayAlert(1, messages.success.new_chat_message);
             //si tab-messages existe hacemos la animacion del tab messages
             if ($('#tab-messages').length > 0) {
@@ -843,12 +818,17 @@ $(function () {
 
 		if (typeof data.items != 'undefined' && data.items.src == "#modalEndLot") {
 
-			if (typeof auction_info.lote_actual.max_puja != 'undefined' && auction_info.lote_actual.max_puja != 0 && auction_info.lote_actual.max_puja.cod_licit == auction_info.subasta.dummy_bidder || showModal) {
+			if (typeof auction_info.lote_actual.max_puja != 'undefined' && auction_info.lote_actual.max_puja != 0 && auction_info.lote_actual.max_puja.cod_licit == auction_info.subasta.dummy_bidder ) {
+				$('#w_undefined').val('');
 
                 $('#modalEndLot .winner_undefined').removeClass('hidden');
-				$('#modalEndLot .with_winner').removeClass('hidden');
 
-            } else {
+
+            }
+			else if (showModal  &&  auction_info.lote_actual.max_puja.cod_licit != auction_info.subasta.dummy_bidder){
+				$('#modalEndLot .winner_undefined').addClass('hidden');
+			}
+			else {
 
 				$('#modalEndLot .winner_undefined').addClass('hidden');
 
@@ -856,18 +836,7 @@ $(function () {
         }
 
         $.magnificPopup.proto.open.call(this, data);
-        if (typeof data.items != 'undefined' && data.items.src == "#modalEndLot") {
 
-			$('#w_undefined').val('');
-
-			//si vamos a mostrar el modal aunque el ganador no sea el bidder, rellenamos la casilla del licitador
-			if(auction_info.lote_actual.max_puja.cod_licit != auction_info.subasta.dummy_bidder && showModal){
-				$('#modalEndLot .with_winner').addClass('hidden');
-				$('#w_undefined').val(auction_info.lote_actual.max_puja.cod_licit);
-			}
-
-            $('#w_undefined').focus();
-        }
     };
 
 
@@ -1026,8 +995,13 @@ $(function () {
 
 
             $('#slote_title', selector).html(refLotBuscador);
-            $('h4', selector).html(auction_info.buscador.titulo_hces1);
-            $('#desc_web', selector).html(auction_info.buscador.descweb_hces1);
+			if (typeof auction_info.buscador.text_lang == 'undefined'){
+            	$('h4', selector).html(auction_info.buscador.titulo_hces1);
+            	$('#desc_web', selector).html(auction_info.buscador.descweb_hces1);
+			}else{
+				$('h4', selector).html(auction_info.buscador.text_lang[auction_info.lang_code].titulo_hces1);
+            	$('#desc_web', selector).html(auction_info.buscador.text_lang[auction_info.lang_code].descweb_hces1);
+			}
             $('.precio', selector).html(auction_info.buscador.formatted_impsalhces_asigl0);
             if (typeof auction_info.buscador.himp_csub != 'undefined' && auction_info.buscador.himp_csub != '0') {
 				if(auction_info.subasta.currency.symbol == '$' || auction_info.subasta.currency.symbol == 'US$'){
@@ -1711,7 +1685,6 @@ $(function () {
         $('#precioSalida span').html(auction_info.lote_actual.formatted_impsalhces_asigl0);
 		$('#precioReserva span').html(auction_info.lote_actual.impres_asigl0 ? auction_info.lote_actual.formatted_impres_asigl0 : '0');
 		$('#precioCoste span').html(auction_info.lote_actual.pc_hces1);
-		$('.add_next-bid #value-view').html(auction_info.lote_actual.importe_escalado_siguiente ?? '0');
         if (typeof cedente != 'undefined') {
             $('#inf_prop .inf_cod_prop').html(auction_info.lote_actual.prop_hces1);
             $('#inf_prop .inf_name_prop').html('');
@@ -1797,13 +1770,6 @@ $(function () {
 
                         $('.adj_ref span', $this).html(adjRef);
                         $('.adj_imp', $this).html(value.imp_asigl1);
-
-						let url = "";
-						if(typeof auctionLots != "undefined"){
-							const lot = auctionLots.find((lot) => lot.ref_asigl0 == adjRef);
-							url = lot.url;
-						}
-						$('.adj-link', $this).attr('href', url);
 
 						container.append($this);
                     }
@@ -1973,11 +1939,21 @@ $(function () {
     function mountLot() {
         var lot = {};
 
+
+		if (typeof auction_info.modal_item.text_lang == 'undefined'){
+			lot.title = auction_info.modal_item.titulo_hces1;
+			lot.desc_hces1 = auction_info.modal_item.desc_hces1;
+			lot.descweb_hces1 = auction_info.modal_item.descweb_hces1;
+		}else{
+
+			lot.title = auction_info.modal_item.text_lang[auction_info.lang_code].titulo_hces1;
+			lot.desc_hces1 = auction_info.modal_item.text_lang[auction_info.lang_code].desc_hces1;
+			lot.descweb_hces1 = auction_info.modal_item.text_lang[auction_info.lang_code].descweb_hces1;
+		}
         lot.ref = auction_info.modal_item.ref_asigl0;
-        lot.title = auction_info.modal_item.titulo_hces1;
+
         lot.himp_csub = auction_info.modal_item.himp_csub;
-        lot.desc_hces1 = auction_info.modal_item.desc_hces1;
-        lot.descweb_hces1 = auction_info.modal_item.descweb_hces1;
+
         lot.imp = auction_info.modal_item.formatted_impsalhces_asigl0;
         lot.imagen = auction_info.modal_item.imagen;
 
@@ -2288,9 +2264,9 @@ $(function () {
 	});
 
 	socket.on('fairwarning_response', function (data) {
-		$("#fairwarning").addClass("parpadea").addClass("max-index");
+		$("#fairwarning").addClass("parpadea");
 		setTimeout(function() {
-			$("#fairwarning").removeClass("parpadea").removeClass("max-index");
+			$("#fairwarning").removeClass("parpadea");
 		},3000);
 
     });
@@ -2365,14 +2341,27 @@ $(function () {
 
 	};
 
-
-
     $('.confirm_puja').on('click', function (e) {
         confirm_puja();
     });
 
-    function confirm_puja() {
+	$('.confirm_puja_multiple').on('click', function (e) {
+		if(!checkSumRatiosIsValid()){
+			showMultipleBidderError();
+			return false;
+		};
+        confirm_puja({hasMultipleBidders: true});
+    });
+
+    function confirm_puja(options = {}) {
+
         $.magnificPopup.close();
+
+		const defaultOptions = {
+			hasMultipleBidders: false,
+			...options
+		}
+
         var type_bid = 'W';
         var can_do = null;
         var imp_sal = auction_info.lote_actual.impsalhces_asigl0;
@@ -2383,10 +2372,25 @@ $(function () {
         if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor && $('#ges_cod_licit').length > 0 && $('#ges_cod_licit').val() != "") {
             cod_licit = $('#ges_cod_licit').val();
             $('#ges_cod_licit').val('');
-
         }
 
-        var params = {'cod_licit': cod_licit, 'cod_sub': auction_info.subasta.cod_sub, 'ref': ref, 'url': routing.action_url, 'imp': amount, 'type_bid': type_bid, 'impsal': imp_sal, 'can_do': can_do, 'cod_original_licit': auction_info.user.cod_licit, 'tipo_puja_gestor': $("#tipo_puja_gestor").val()};
+		const bidders = defaultOptions.hasMultipleBidders ? generateMultipleBiddersItem() : [];
+
+        var params = {
+			'cod_licit': cod_licit,
+			'cod_sub': auction_info.subasta.cod_sub,
+			'ref': ref,
+			'url': routing.action_url,
+			'imp': amount,
+			'type_bid': type_bid,
+			'impsal': imp_sal,
+			'can_do': can_do,
+			'cod_original_licit': auction_info.user.cod_licit,
+			'tipo_puja_gestor': $("#tipo_puja_gestor").val(),
+			hasMultipleBidders: defaultOptions.hasMultipleBidders,
+			bidders,
+		};
+
         var string_hash = params.cod_licit + " " + params.cod_sub + " " + params.ref + " " + params.imp;
         params.hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
         socket.emit('action', params);
@@ -2411,4 +2415,35 @@ function closeBids() {
 function openBids() {
     $('.add_bid').removeClass('loading');
     $.magnificPopup.close();
+}
+
+function checkSumRatiosIsValid() {
+	const sumRatios = [...document.querySelectorAll('.bidder-wrap')].reduce((previousValue, currentValue) => {
+		return previousValue + parseInt(currentValue.querySelector('[name="ratio"]').value);
+	}, 0);
+
+	return sumRatios === 100;
+}
+
+function showMultipleBidderError() {
+	document.getElementById('multipleBidderError').classList.remove('hidden');
+}
+
+function generateMultipleBiddersItem() {
+	const bidders = [];
+	document.querySelectorAll('.bidder-wrap').forEach((element) => {
+
+		const value = element.querySelector('[name="ratio"]').value;
+		if(isNaN(parseInt(value) || value == 0)){
+			return;
+		}
+
+		const bidder = {
+			name: element.querySelector('[name="name"]').value,
+			surname: element.querySelector('[name="last-name"]').value,
+			ratio: element.querySelector('[name="ratio"]').value
+		};
+		bidders.push(bidder);
+	});
+	return bidders;
 }

@@ -572,18 +572,23 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
        }
 
-	window.asign_licit = function asign_licit() {
-		if (!$('#modalEndLot .winner_undefined').hasClass('hidden') && $.isNumeric($('#modalEndLot .winner_undefined input').val()) && $('#modalEndLot .winner_undefined input').val() > 0) {
+	window.asign_licit = function asign_licit(forceAsign = false) {
+
+		//si viene a true el forzar la asignación entramos, puede ser por ejemplo por una asignación del ministerio
+		if ( forceAsign || (!$('#modalEndLot .winner_undefined').hasClass('hidden') && $.isNumeric($('#modalEndLot .winner_undefined input').val()) && $('#modalEndLot .winner_undefined input').val() > 0)) {
 
 			//si ha entrado una puja nueva mientras asignabamos el licitador debemos cancelar la asignacion
 			/*Fer un update del licitador introduit a la última puja del licitiador = auction_info.subasta.dummy_bidder*/
 			winner = $('#w_undefined').val();
+
+
 
 			/**
 			 * Si tenemos la opcion de mostrar siempre el modal de asignar licitador
 			 * Y el licitador introducido ya era el ganador, cerramos el lote directamente
 			 */
 			if (typeof showEverModal != 'undefined' && showEverModal && winner == auction_info.lote_actual.max_puja.cod_licit) {
+				$("#modalEndLot_msg_error").addClass('hidden');
 				send_end_lot();
 				return;
 			}
@@ -604,10 +609,17 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 						$("#modalEndLot_msg_error").html(messages.error['no_licit']);
 						$.magnificPopup.open({ items: { src: '#modalEndLot' }, type: 'inline', showCloseBtn: false, enableEscapeKey: false, closeOnBgClick: false }, 0);
 
-					} else if (msg == 'ministery') {
+					}else if (msg == 'error-notbid') {
+						$.magnificPopup.close();
+						$("#modalEndLot_msg_error").removeClass('hidden');
+						$("#modalEndLot_msg_error").html(messages.error['not_bid']);
+						$.magnificPopup.open({ items: { src: '#modalEndLot' }, type: 'inline', showCloseBtn: false, enableEscapeKey: false, closeOnBgClick: false }, 0);
 
+					} else if (msg == 'ministery') {
+						$("#modalEndLot_msg_error").addClass('hidden');
 						//aign_ministery_html();
 						send_end_lot();
+
 
 					} else {
 						$("#modalEndLot_msg_error").addClass('hidden');
@@ -632,7 +644,22 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
 
 		} else {
-			send_end_lot();
+			/* debe estar visible el campo del licitador y ademas si la casa de subastas no permite poner el licitador vacio */
+			if (!$('#modalEndLot .winner_undefined').hasClass('hidden') && typeof notEmptyLicit != 'undefined' && notEmptyLicit){
+				/* debemos esperar ya que hay procesos en paralelo que nos cerraran la ventana  */
+				setTimeout(function(){
+					$.magnificPopup.close();
+					$("#modalEndLot_msg_error").removeClass('hidden');
+					$("#modalEndLot_msg_error").html(messages.error['no_licit']);
+					$.magnificPopup.open({ items: { src: '#modalEndLot' }, type: 'inline', showCloseBtn: false, enableEscapeKey: false, closeOnBgClick: false }, 0);
+
+				},500);
+			}else{
+				$("#modalEndLot_msg_error").addClass('hidden');
+				send_end_lot();
+
+			}
+
 		}
 	}
 
@@ -968,7 +995,8 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 	$('.assignToMinistry').on('click', function() {
 		//añadimos el numero de licitador y asignamos
 		$('#w_undefined').val(ministeryLicit);
-		asign_licit();
+		//forzamos la modificación del licitador
+		asign_licit(true);
 	});
 	/*
 	|--------------------------------------------------------------------------

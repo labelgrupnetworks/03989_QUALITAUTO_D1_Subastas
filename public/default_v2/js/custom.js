@@ -512,26 +512,13 @@ function password_recovery(event, lang) {
 	return false;
 };
 
-function format_date_large(fecha, text) {
+function format_date_large(fecha) {
 
-	var horas = fecha.getHours();
-	var minutos = fecha.getMinutes();
-	var mes;
-	if (horas < 10) {
-		horas = '0' + horas
-	}
-	if (minutos < 10) {
-		minutos = '0' + minutos
-	}
+	const options = {
+		year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'
+	};
 
-	$.each(traduction_large, function (key, value) {
-		if (key == $.datepicker.formatDate("M", fecha)) {
-			mes = value;
-		}
-	});
-
-	var formatted = $.datepicker.formatDate("dd ", fecha) + mes + " " + $.datepicker.formatDate("yy", fecha) + " " + text + " " + horas + ":" + minutos + " h";
-	return formatted;
+	return new Intl.DateTimeFormat('es-ES', options).format(fecha) + " h";
 }
 
 function action_fav_modal(action) {

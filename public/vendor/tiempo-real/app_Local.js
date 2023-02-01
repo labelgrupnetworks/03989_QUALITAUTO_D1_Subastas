@@ -1,11 +1,11 @@
 var port= 22345 ;// soler 2125, local-auctions 22345; demo 2345
 var hostname = 'www.newsubastas.test/';  //'demoauction.label-grup.com';
 //algunas rutas necesitan definir la url entero
-var large_hostname= 'http://www.newsubastas.test/';
+var large_hostname= 'http://subastas.com';
 
 var io = require('socket.io')(port, {
 	cors: {
-		origin: 'http://www.newsubastas.test'
+		origin: 'http://subastas.com'
 	}
 });//29345
 var request = require("request");
