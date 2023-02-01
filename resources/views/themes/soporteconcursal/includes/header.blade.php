@@ -146,9 +146,9 @@ use App\libs\TradLib as TradLib;
                     </div>
                     @else
                     <div class="my-account color-letter-header">
-                        <div class="row">
+                        <div class="row d-flex align-items-center h-100">
                             <div class="col-xs-3 text-center">
-                                <img width="25px;" class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/user.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                                <img width="25" height="25" src="/themes/{{\Config::get('app.theme')}}/assets/img/user.png"  alt="{{(\Config::get( 'app.name' ))}}">
                             </div>
                             <div class="col-xs-9 text-center">
                         @if(!empty($name))

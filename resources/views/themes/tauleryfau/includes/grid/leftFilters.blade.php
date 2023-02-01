@@ -12,10 +12,15 @@
 			if(!empty($status) && $status[0]->estado == "ended"){
 				$subasta_finalizada = true;
 			}
+
+			$pos = strpos($auction->name, '-');
+			if ($pos !== false) {
+				$auction->name = substr_replace($auction->name, '<br>', $pos, strlen('-'));
+			}
 		@endphp
 
 		<div class="filter-section-head filter-name-auction hidden-xs hidden-sm">
-			<h4 class="text-center">{!! str_replace('-', '<br>', $auction->des_sub) !!}</h4>
+			<h4 class="text-center">{!! $auction->name !!}</h4>
 		</div>
 
 		<div class="lot-count">
@@ -139,13 +144,15 @@
 					@include('includes.grid.filter_my_lots')
 			   	@endif
 
+				@if(!empty($auction) && strtotime($auction->session_start) < time())
+				   @include('includes.grid.filter_sold')
+			   	@endif
+
 				@include('includes.grid.categories_list')
 
 				@include('includes.grid.features_list')
 
-				@if(!empty($auction) && strtotime($auction->session_start) < time())
-					@include('includes.grid.filter_sold')
-				@endif
+
 
 			</form>
 		</div>

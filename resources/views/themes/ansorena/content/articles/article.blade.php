@@ -105,14 +105,15 @@
 						<br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
 					</div>
 				@else
-					<div class="siStock_JS col-xs-12 mt-1">
+				{{-- Es posible que no haya variamtes, en ese caso miramso le stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
+					<div class="siStock_JS col-xs-12 mt-1 @if(!$article->stock) hidden @endif">
 						<button style="width: 100%;" class="button-principal addCartButton addArticleCard_JS" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.addCart') }}</button>
 					</div>
-					<div class="col-xs-12 mt-1  noStock_JS hidden">
+					<div class="col-xs-12 mt-1  noStock_JS @if($article->stock) hidden @endif">
 						{{--
 							Ansorena Han pedido que no aparezca el no disponible
 							<button style="width: 100%;"  disabled="disabled" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.outStock') }}</button> --}}
-						<br/><br/>{{ trans(\Config::get('app.theme').'-app.articles.contactenos') }}<br/><br/>
+						<br/><br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
 
 					</div>
 				@endif

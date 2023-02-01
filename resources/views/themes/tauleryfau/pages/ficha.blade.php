@@ -151,7 +151,7 @@ $(document).ready(function() {
 </script>
 <?php
 
-
+ 	$searchUrl = Tools::url_lot_to_js($lote_actual->cod_sub, $lote_actual->id_auc_sessions, $lote_actual->ref_asigl0, $lote_actual->num_hces1);
 
     $bread = array(
         "url" => '',
@@ -223,7 +223,7 @@ $(document).ready(function() {
 
 						</div>
 						<div class="w-100">
-                            <form class="form-single-lot samsung-visual" method="get" action="{{$bread['url']}}">
+                            <form id="searchLot" class="form-single-lot samsung-visual" method="get" action="{{ $searchUrl }}">
                             <div class="bar-filters into-lot flex">
 
                                   <div class="select-currency d-felx align-items-center">

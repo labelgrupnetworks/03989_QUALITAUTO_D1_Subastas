@@ -6,9 +6,9 @@
 
 @section('content')
 
-<?php
-$families = array();
-?>
+@php
+$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
 
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
@@ -260,34 +260,30 @@ $families = array();
 						</div>
 
 						<div class="clearfix"></div>
-						@if(!empty($formulario->newsletter))
-						<div class="datos_newsletter">
-
-							@if(!empty($families) && count($families) > 0)
+						@if (!empty($newsletters) && count($newsletters) > 0)
 
 							<!-- con categorias newsletter -->
-							<big>{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</big>
+							<big>{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}</big>
 							<br>
-
-							@foreach($families as $t => $item)
-							<div>
-								<input type="checkbox" name="families[{{$t}}]" value="1" id="{{$t}}">
-								<label for="{{$t}}">{{ $item }}</label>
-							</div>
+							@foreach ($newsletters as $id_newsletters => $name_newsletters)
+								<div>
+									<input id="register_newsletter_{{ $id_newsletters }}" type="checkbox"
+										name="families[{{ $id_newsletters }}]" value="{{ $id_newsletters }}">
+									<label for="register_newsletter_{{ $id_newsletters }}">
+										{{ $name_newsletters }}
+									</label>
+								</div>
 							@endforeach
-
-							@else
+						@else
 							<!-- sin categorias newsletter -->
 
 							<div class="checkbox-container col-xs-12">
-								{!! $formulario->newsletter!!}
-								<label for="bool__0__newsletter">
-									{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
+								{!! $formulario->newsletter !!}
+								<label for="bool__0__newsletter" style="font-weight: initial">
+									{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}
 								</label>
 							</div>
 
-							@endif
-						</div>
 						@endif
 
 						<div class="datos_condiciones">

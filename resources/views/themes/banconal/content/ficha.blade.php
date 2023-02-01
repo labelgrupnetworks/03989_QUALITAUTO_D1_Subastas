@@ -50,6 +50,24 @@ $currency = "B/.";
 
 ?>
 
+@if(!Session::has('user') )
+	<div class="container">
+		<div class="row mt-5">
+			<div  class="col-xs-12 ficha-nologin-nodeposito mt-5 mb-5"  >
+				<h2>{{ trans(\Config::get('app.theme').'-app.lot.necesario-login') }}</h2>
+			</div>
+		</div>
+	</div>
+@elseif(!$deposito)
+	<div class="container">
+		<div class="row mt-5">
+			<div  class="col-xs-12 ficha-nologin-nodeposito mt-5 mb-5"  >
+				<h2>{{ trans(\Config::get('app.theme').'-app.lot.necesario-deposito') }}</h2>
+			</div>
+		</div>
+	</div>
+
+@else
 
 <div class="ficha-content color-letter">
     <div class="container">
@@ -156,45 +174,48 @@ $currency = "B/.";
 								}
 							?>
 
-								@if ($sub_cerrada)
-									@include('includes.ficha.pujas_ficha_cerrada')
+									{{-- Parte derecha --}}
+									@if ($sub_cerrada)
+										@include('includes.ficha.pujas_ficha_cerrada')
 
-								@elseif($subasta_venta && !$cerrado && !$end_session)
-									@if( \Config::get("app.shoppingCart") )
-										@include('includes.ficha.pujas_ficha_ShoppingCart')
-									@else
+									@elseif($subasta_venta && !$cerrado && !$end_session)
+										@if( \Config::get("app.shoppingCart") )
+											@include('includes.ficha.pujas_ficha_ShoppingCart')
+										@else
+
+											@include('includes.ficha.pujas_ficha_V')
+										@endif
+
+									<?php //si un lote cerrado no se ha vendido se podra comprar ?>
+									@elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
 
 										@include('includes.ficha.pujas_ficha_V')
+									<?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>
+									@elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
+
+										@include('includes.ficha.pujas_ficha_O')
+
+									@elseif( $subasta_web && !$cerrado)
+
+										@include('includes.ficha.pujas_ficha_W')
+
+									@elseif( $subasta_make_offer && !$cerrado)
+										@include('includes.ficha.pujas_ficha_M')
+									@else
+										@include('includes.ficha.pujas_ficha_cerrada')
 									@endif
 
-								<?php //si un lote cerrado no se ha vendido se podra comprar ?>
-								@elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
-
-									@include('includes.ficha.pujas_ficha_V')
-								<?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>
-								@elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
-
-									@include('includes.ficha.pujas_ficha_O')
-
-								@elseif( $subasta_web && !$cerrado)
-
-									@include('includes.ficha.pujas_ficha_W')
-
-								@elseif( $subasta_make_offer && !$cerrado)
-									@include('includes.ficha.pujas_ficha_M')
-								@else
-									@include('includes.ficha.pujas_ficha_cerrada')
-								@endif
 
 						</div>
 					@endif
 					</div>
 					@if(Session::has('user') && $deposito)
 						<div class="col-xs-12 col-sm-12 no-padding">
-							@if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
+							@if(( $subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer )  &&  !$retirado)
 								@include('includes.ficha.history')
 							@endif
 						</div>
+						
 					@endif
 				</div>
 			</div>
@@ -267,3 +288,5 @@ $currency = "B/.";
 
 
 @include('includes.ficha.modals_ficha')
+
+@endif

@@ -51,8 +51,8 @@ use App\libs\TradLib as TradLib;
                         <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-online') }}"><span>{{ trans($theme.'-app.foot.online_auction')}}</span></a>
                     </li>
                 @endif
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
-                    <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('venta-directa') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('E'))
+                    <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-especiales') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
                 @endif
 
                 <li>

@@ -426,6 +426,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 				@php
 					$loteInicial = $lote_actual->ref_asigl0;
+
 						if($lote_actual->ref_asigl0 > $minMaxLot[0]->max - 20){
 							$loteInicial = $minMaxLot[0]->max - 20;
 						}
@@ -447,7 +448,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 					$(document).ready(function(){
 
-						ajax_carousel("lotes_subasta", replace, ref + 1);
+						ajax_carousel("lotes_subasta", replace, parseInt(ref) + 1);
 
 						if($('#historial_pujas').length){
 							$('.exeption-one').css('margin-top', '115px')

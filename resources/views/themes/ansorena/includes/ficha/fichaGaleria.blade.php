@@ -27,8 +27,13 @@ if(!empty($data['usuario'])){
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-8" >
-				<div class="imgFichaGal" >
-					<img  src="{{Tools::url_img_friendly('real',$lote_actual->num_hces1,$lote_actual->lin_hces1,0,\Str::slug($lote_actual->descweb_hces1))}}" alt="{{$lote_actual->descweb_hces1}}">
+				<div class="imgFichaGal" aa="{{"img/".\Config::get("app.emp")."/".$lote_actual->num_hces1."/".\Config::get("app.emp")."-".$lote_actual->num_hces1."-".$lote_actual->lin_hces1."_01.jpg"}}">
+
+					@if(!file_exists("img/".\Config::get("app.emp")."/".$lote_actual->num_hces1."/".\Config::get("app.emp")."-".$lote_actual->num_hces1."-".$lote_actual->lin_hces1."_01.jpg"))
+						<img  src="{{Tools::url_img_friendly('real',$lote_actual->num_hces1,$lote_actual->lin_hces1,0,\Str::slug($lote_actual->descweb_hces1))}}" alt="{{$lote_actual->descweb_hces1}}">
+					@else
+						<img  src="{{Tools::url_img_friendly('real',$lote_actual->num_hces1,$lote_actual->lin_hces1,1,\Str::slug($lote_actual->descweb_hces1))}}" alt="{{$lote_actual->descweb_hces1}}">
+					@endif
 
 				</div>
 				<?php /*

@@ -1,45 +1,48 @@
-<script src='https://www.google.com/recaptcha/api.js?hl={{config('app.locale')}}'></script>
+@php
+    $newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
 
-<div class="newsletter">
-	<div class="news_home col-xs-12 ">
-		<h4>{{trans(\Config::get('app.theme').'-app.foot.newsletter_title')}}</h4>
-		<form class="form-inline" id="form-newsletter">
-			<div class="form-group">
-				<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input')}} <label>
-						<input class="newsletter-input form-control" type="text" name="email">
-						<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>">
-			</div>
+<script src='https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}'></script>
 
-			<button id="newsletter-btn" class="btn-secondary-color btn"
-				type="button">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
+<div class="newsletter js-newletter-block">
+    <div class="news_home col-xs-12 ">
+        <h4>{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_title') }}</h4>
+        <form class="form-inline" id="form-newsletter">
+            <div class="form-group">
+                <label>{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_text_input') }} <label>
+                        <input class="newsletter-input form-control" type="text" name="email">
+						<input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
 
-			<ul class="list_cat_home">
-				<div class="list_cat_home_block">
-					<li><input type="checkbox" class="newsletter" name="families[]" value="1">
-						{{trans(\Config::get('app.theme').'-app.foot.sellos_españa')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="3">
-						{{trans(\Config::get('app.theme').'-app.foot.libros_documentos')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="5">
-						{{trans(\Config::get('app.theme').'-app.foot.monedas_billetes')}}</li>
-				</div>
-				<div class="list_cat_home_block">
-					<li><input type="checkbox" class="newsletter" name="families[]" value="2">
-						{{trans(\Config::get('app.theme').'-app.foot.sellos')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="4">
-						{{trans(\Config::get('app.theme').'-app.foot.carteles')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="6">
-						{{trans(\Config::get('app.theme').'-app.foot.coleccionismo')}}</li>
-				</div>
-			</ul>
-			<div id="recaptcha" data-callback="recaptcha_callback" class="g-recaptcha"
-				data-sitekey="6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV"></div>
-			<div class="check_term box">
-				<input name="condiciones" required type="checkbox" class="form-control" id="condiciones" />
-				<label for="recibir-newletter">
-					<?= trans(\Config::get('app.theme').'-app.login_register.read_conditions_politic') ?>
-				</label>
-			</div>
-		</form>
-	</div>
+            </div>
+
+            <button id="newsletter-btn" class="btn-secondary-color btn"
+                type="button">{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_button') }}</button>
+
+            <ul class="list-unstyled my-3">
+                <div class="list-block">
+                    @foreach ($newsletters as $id_newsletters => $name_newsletters)
+                        <li>
+                            <div class="form-check">
+                                <label>
+                                    <input type="checkbox" class="newsletter" name="families[{{ $id_newsletters }}]"
+                                        value="{{ $id_newsletters }}">
+                                    {{ $name_newsletters }}
+                                </label>
+                            </div>
+                        </li>
+                    @endforeach
+                </div>
+            </ul>
+            <div id="recaptcha" data-callback="recaptcha_callback" class="g-recaptcha"
+                data-sitekey="6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV"></div>
+
+            <div class="check_term box">
+                <input name="condiciones" required type="checkbox" class="form-control" id="condiciones" />
+                <label for="recibir-newletter">
+                    <?= trans(\Config::get('app.theme') . '-app.login_register.read_conditions_politic') ?>
+                </label>
+            </div>
+        </form>
+    </div>
 
 </div>

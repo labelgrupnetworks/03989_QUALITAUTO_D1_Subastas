@@ -105,7 +105,7 @@ $(document).ready(function() {
 					<div class="col-xs-12 col-sm-12 color-letter">
 						{{-- Si venimos de la página del artista de fondo de galeria, debemos volver a esa página, si no mostramso el breadcrumb --}}
 						@if( request("artistaFondoGaleria")  )
-							@include('includes.breadcrumb')
+							@include('includes.breadcrumb_atist_before_after')
 						@else
 							@include('includes.breadcrumb_before_after')
 						@endif

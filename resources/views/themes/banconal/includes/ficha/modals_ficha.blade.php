@@ -142,3 +142,20 @@
     <span id="hide_bids_text" class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
 
 </div>
+
+
+
+<div id="modalCancelarOrdenUser" class="modal-block mfp-hide" data-to="cancelar_orden_user">
+    <section class="panel">
+        <div class="panel-body">
+            <div class="modal-wrapper">
+                <div class="modal-text text-center">
+                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order_question') }}</p>
+
+                    <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
