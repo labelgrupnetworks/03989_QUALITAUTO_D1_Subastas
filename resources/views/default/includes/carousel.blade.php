@@ -25,7 +25,7 @@
                     <div class="item_img">
 
                         <div data-loader="loaderDetacados" class='text-input__loading--line'></div>
-                        <img class="lazy" data-src="{{Tools::url_img('lote_medium',$bann->num_hces1,$bann->lin_hces1)}}" alt="{{ $titulo}}" />
+                        <img class="lazy" data-src="{{Tools::url_img('lote_medium',$bann->num_hces1,$bann->lin_hces1)}}" alt="{{ $titulo }}" width="260" height="195" />
                     </div>
                 </div>
 

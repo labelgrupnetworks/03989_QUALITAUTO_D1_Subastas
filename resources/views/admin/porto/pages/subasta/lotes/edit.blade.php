@@ -9,26 +9,33 @@
 			<h1>{{ trans("admin-app.button.edit") }} {{ trans("admin-app.title.lot") }} - {{$fgAsigl0->ref_asigl0}}</h1>
 		</div>
 		<div class="col-xs-6 text-right">
-
-			@if(session('success'))
-					<a href="{{ route('subastas.lotes.create', ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
-						class="btn btn-primary">{{ trans("admin-app.button.new") }}
-						{{ trans("admin-app.title.lot") }}</a>
-			@endif
-
-			@if ($render)
-			<a href="{{ route('subastas.show', [$cod_sub]) }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
+			{{-- solo mostramos el botón de volver si venimso de stock --}}
+			@if(request("return") == "stockList")
+					<a href="{{ route('subastas.stock.index') }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
 			@else
-			<a href="{{ route('subastas.lotes.index', [$cod_sub]) }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
-			@endif
 
-			@if ($anterior)
-			<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
-				class="btn btn-warning">{{ trans("admin-app.button.prev") }}</a>
-			@endif
-			@if ($siguiente)
-			<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
-				class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
+					@if(session('success'))
+							<a href="{{ route('subastas.lotes.create', ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
+								class="btn btn-primary">{{ trans("admin-app.button.new") }}
+								{{ trans("admin-app.title.lot") }}</a>
+					@endif
+
+					@if ($render)
+						<a href="{{ route('subastas.show', [$cod_sub]) }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
+					@else
+
+							<a href="{{ route('subastas.lotes.index', [$cod_sub]) }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
+						
+					@endif
+
+					@if ($anterior )
+					<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
+						class="btn btn-warning">{{ trans("admin-app.button.prev") }}</a>
+					@endif
+					@if ($siguiente )
+					<a href="{{ route('subastas.lotes.edit', ['subasta' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
+						class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
+					@endif
 			@endif
 
 

@@ -74,7 +74,11 @@
 		<div class="row">
 			@foreach ($formulario->newsletters as $field => $input)
 			<div class="col-xs-6 col-sm-3">
+				@if(config('app.newsletter_table', 0))
+				<label class="mt-1" for="{{$field}}">{{ $field }}</label>
+				@else
 				<label class="mt-1" for="{{$field}}">{{ trans("admin-app.fields.newsletter$field") }}</label>
+				@endif
 				{!! $input !!}
 			</div>
 			@endforeach

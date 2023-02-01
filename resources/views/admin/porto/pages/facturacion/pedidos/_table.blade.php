@@ -42,7 +42,7 @@
 		<tbody>
 			<tr id="filters">
 				<form class="form-group" action="">
-					<input type="hidden" name="order" value="{{ request('order', 'num_pedc0') }}">
+					<input type="hidden" name="order" value="{{ request('order', 'anum_pedc0') }}">
 					<input type="hidden" name="order_dir" value="{{ request('order_dir', 'desc') }}">
 
 					@foreach ($tableParams as $param => $display)
@@ -87,7 +87,7 @@
 					</a>
 					--}}
 					<button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-								data-id="{{ $pedido->num_pedc0 }}" data-name="{{ trans('admin-app.title.delete_pedido', ['id' => $pedido->num_pedc0 ])  }}">
+								data-id="{{ $pedido->anum_pedc0 }}-{{ $pedido->num_pedc0 }}" data-name="{{ trans('admin-app.title.delete_pedido', ['id' => $pedido->num_pedc0 ])  }}">
 								<i class="fa fa-trash"></i>
 					</button>
 				</td>

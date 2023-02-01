@@ -253,7 +253,7 @@
                     <div class="row gy-1">
 						<div class="col-md-6">
 							<label class="form-label">
-								{{ trans("$theme-app.login_register.email") }}</label>
+								{{ trans("$theme-app.login_register.email") }}
                     			{!! $formulario->email !!}
 							</label>
 						</div>

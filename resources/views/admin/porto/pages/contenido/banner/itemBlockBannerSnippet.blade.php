@@ -50,19 +50,22 @@
 			bloque =  "{{$info[0]->bloque}}";
 			orden = new Array();
 			counter = 0;
-			$( "#sortable{{$info[0]->bloque}} .row" ).each(function() {
+
+			$("#sortable{{$info[0]->bloque}} .row" ).each(function() {
 				id = $(this).attr("id").replace("item","");
 				orden[counter] = id;
 				counter = counter+1;
 			})
 
-			token = $("#_token").val();
-		    $.post( "/admin/newbanner/ordenaBloque", {bloque:bloque, orden:JSON.stringify(orden),id_web_banner:id_web_banner, _token:token}, function( data ) {
+			const request = {
+				_token: $("#_token").val(),
+				key: $("[name=nombre]").val(),
+				orden: JSON.stringify(orden),
+				bloque,
+				id_web_banner
+			}
 
-		    	}
-
-		    );
-
+		    $.post("/admin/newbanner/ordenaBloque", request, () => saved("Modificado"));
 		}
 	});
 

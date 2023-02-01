@@ -3,6 +3,7 @@ header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
 header("Expires: 0 "); // Proxies.
 header("X-Frame-Options:     DENY");
+//header("Cache-Control: max-age=31536000");
 ?>
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -60,41 +61,63 @@ header("X-Frame-Options:     DENY");
 @endif
 
 <!-- Global Packages -->
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
+{{-- <link rel="stylesheet" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}"> --}}
 
-<link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
-<link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
-<link rel="stylesheet" type="text/css" href="/css/jquery.jqzoom.css" >
-<link rel="stylesheet" type="text/css" href="/css/hint.css" >
-<link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" />
+{!! Tools::preloadStylesheets("vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css", true) !!}
+{!! Tools::preloadStylesheets("/css/owl.carousel.min.css", false) !!}
+
+{{-- <link rel="stylesheet" href="/css/owl.carousel.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/css/owl.carousel.min.css"></noscript> --}}
+<link rel="stylesheet" href="/css/owl.theme.default.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/css/owl.theme.default.min.css"></noscript>
+<link rel="stylesheet" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}"></noscript>
+
+<link rel="stylesheet" href="/css/jquery.jqzoom.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" type="text/css" href="/css/jquery.jqzoom.css" ></noscript>
+
+<link rel="stylesheet" href="/css/hint.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" type="text/css" href="/css/hint.css" ></noscript>
+
+<link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" /></noscript>
 
 <!-- Slick / banner -->
-<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" />
-<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" />
+<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" /></noscript>
+
+<link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" /></noscript>
 
 <!-- Magnific popup -->
-<link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
-<link rel="stylesheet" href="/css/animate.min.css">
+<link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" /></noscript>
+
+<link rel="stylesheet" href="/css/animate.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/css/animate.min.css"></noscript>
 
 <!-- Overwritable files -->
 <link href="{{ Tools::urlAssetsCache('/css/default/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/css/default/grid.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/grid.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/css/default/banners.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/banners.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/css/default/responsive.css') }}" rel="stylesheet" type="text/css" >
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
+<link href="{{ Tools::urlAssetsCache('/css/default/grid.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/grid.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+<link href="{{ Tools::urlAssetsCache('/css/default/banners.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/banners.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+<link href="{{ Tools::urlAssetsCache('/css/default/responsive.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
+<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" media="print" onload="this.media='all'">
 <link href="{{ Tools::urlAssetsCache('/css/default/labelframework.css') }}" rel="stylesheet" type="text/css">
-<link href='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.css') }}' rel='stylesheet' />
+<link href='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.css') }}' rel='stylesheet' media="print" onload="this.media='all'">
 
 {{-- Icons --}}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+{!! Tools::preloadStylesheets("vendor/font-awesome/5.4.2/css/all.css", false) !!}
+{!! Tools::preloadStylesheets("vendor/font-awesome/4.7.0/css/font-awesome.min.css", true) !!}
+{{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous" media="print" onload="this.media='all'"> --}}
+{{-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
 
 <!--Google -->
-<link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700,900" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <script>
     var traduction_large = { {!!trans("$theme-app.global.month_large")!!} };
@@ -118,31 +141,31 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache("/js/lang/". \Config::get('app.locale') . "/$theme-app.js") }}"></script>
 <script src="{{ URL::asset('vendor/jquery/3.6.0/dist/jquery.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/common.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>
-<script src="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.js') }}"></script>
-<script src="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.js') }}"></script>
-<script src="{{ URL::asset('vendor/tiempo-real/pnotify/modernizr.js') }}"></script>
-<script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
-<script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
-<script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
-<script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
-<script src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
-<script src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script>
-<script src="{{ Tools::urlAssetsCache('/js/default/customized_tr_main.js') }}" ></script>
-<script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
-<script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
-<script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('js/jquery.ui.touch-punch.min.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/js/default/custom.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/js/default/shopping_cart.js') }}" ></script>
-<script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
-<script src="{{ URL::asset('js/numeral.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
+<script defer src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/tiempo-real/pnotify/modernizr.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
+<script defer src="{{ URL::asset('js/validator.js') }}"></script>
+<script defer src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
+<script defer src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
+<script defer src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script>
+<script defer src="{{ Tools::urlAssetsCache('/js/default/customized_tr_main.js') }}" ></script>
+<script defer src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
+<script defer src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
+<script defer src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
+<script defer src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
+<script defer type="text/javascript" src="{{ URL::asset('js/jquery.ui.touch-punch.min.js') }}"></script>
+<script defer src="{{ Tools::urlAssetsCache('/js/default/custom.js') }}"></script>
+<script defer src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
+<script defer src="{{ Tools::urlAssetsCache('/js/default/shopping_cart.js') }}" ></script>
+<script defer src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
+<script defer src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
+<script defer src="{{ URL::asset('js/numeral.js') }}"></script>
+<script defer src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 
 @stack('scripts')

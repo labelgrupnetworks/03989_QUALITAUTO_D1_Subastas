@@ -6,7 +6,7 @@
 
                 <span id="tuorden">
                     @if ( !empty($data['js_item']['user']['ordenMaxima']))
-                        @if ( !empty($lote_actual->max_puja) &&   $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
+					@if($data['js_item']['user']['pujaMaxima'] && intval($data['js_item']['user']['ordenMaxima']) <= intval($data['js_item']['user']['pujaMaxima']->imp_asigl1))
                             {{ $lote_actual->formatted_actual_bid }}
                         @else
                             {{ $data['js_item']['user']['ordenMaxima']}}
@@ -134,6 +134,15 @@
 						<div class="input-group-btn">
 							<button type="button" data-from="modal" class=" lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
 						</div>
+					</div>
+
+					<div class="d-flex mb-2">
+						{{--  OJO revisar que exita en el node la funcion cancel_order_user,  bloqueo la condicion con 1==2 por si acaso --}}
+						@if(1 == 2 && Session::has('user') && !empty(\Config::get("app.DeleteOrdersAnyTime")))
+							<button style="width:100%" id="cancelarOrdenUser"   class="ficha-btn-bid-height button-principal  @if(empty($data['js_item']['user']['ordenMaxima']))  hidden @endif" type="button" ref="{{$data['subasta_info']->lote_actual->ref_asigl0}}" sub="{{$data['subasta_info']->lote_actual->cod_sub}}" >  {{ trans(\Config::get('app.theme').'-app.user_panel.delete_orden') }}
+							</button>
+						@endif
+
 					</div>
 				</div>
 			@endif

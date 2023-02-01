@@ -12,7 +12,7 @@
                         <?php
                                 $numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
                         ?>
-
+						@if($numLots)
                             <div class="input-type-auction d-flex align-items-center">
                                 <div class="radio">
                                 <?php //si no ha lotes no podrán marcar la opcion ?>
@@ -22,6 +22,7 @@
 
                                 </div>
                             </div>
+						@endif
                     @endforeach
 
                 </div>

@@ -32,12 +32,14 @@ $cookiesState = \Tools::cookies();
 
 </div>
 
- <?php #Tools::querylog(); ?>
- @if(request("openLogin")=="S" && !Session::has('user') )
+@php
+//Tools::querylog();
+@endphp
+
+@if(request("openLogin") == "S" && !Session::has('user') )
 	<script>
 		openLogin();
 	</script>
-
  @endif
 </body>
 

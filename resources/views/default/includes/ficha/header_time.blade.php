@@ -13,6 +13,8 @@
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_make_offer') }}
 				@elseif($subasta_inversa ?? false)
                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_inversa') }}
+				@elseif($lote_actual->tipo_sub === "E")
+                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_especial') }}
                 @endif
             </div>
 

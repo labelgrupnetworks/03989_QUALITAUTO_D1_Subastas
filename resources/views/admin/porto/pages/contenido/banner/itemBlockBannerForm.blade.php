@@ -8,6 +8,7 @@
 <form id="formLenguaje" method="POST" action="/admin/newbanner/guardaItemBloque" enctype="multipart/form-data">
 
 	{!! $formulario[strtoupper($lang)]['token'] !!}
+	{!! $formulario[strtoupper($lang)]['key'] !!}
 
 @foreach(\Config::get("app.locales") as $lang => $textLang)
 	<div class="langs lenguaje{{strtoupper($lang)}}" style="display: none">

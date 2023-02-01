@@ -1,59 +1,13 @@
 <div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
-
-	<div style="flex:1">
-		<div class="btn-group">
-			<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
-			<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<span class="caret"></span>
-			</button>
-
-			<ul class="dropdown-menu">
-
-			@if(\Config::get("app.stockIni")>0)
-				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?" data-respuesta="Se ha puesto el stock a  0 en las obras seleccionados" href="{{ route('subastas.lotes.stockRemove_selection', ['cod_sub' => $cod_sub]) }}">Poner Stock a 0</a></li>
-				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?" data-respuesta="Se ha puesto en Fondo de Galeria las obras seleccionados" href="{{ route('subastas.lotes.setToSellSelection', ['cod_sub' => $cod_sub]) }}">Poner en Fondo de Galeria</a></li>
+	<div style="flex:1"> </div>
 
 
-			@else
-				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de eliminar todos los lotes seleccionados" data-respuesta="Se han eliminado los lotes seleccionados" href="{{ route('subastas.lotes.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
-			@endif
-
-				{{-- <li><a href="#">Another action</a></li>
-				<li><a href="#">Something else here</a></li> --}}
-				<li role="separator" class="divider"></li>
-				<li><a id="js-selectAllLots" href="#">Seleccionar todos</a></li>
-			</ul>
-		</div>
-	</div>
-
-	@if (\Config::get('app.exportExcelExhibition'))
 		<a class="btn btn-success btn-sm"
-			href="{{ route("$parent_name.$resource_name.printExcel", ['codSub' => $cod_sub]) }}" target="_blank">Excel
-			Obras</a>
-	@endif
-	@if (\Config::get('app.exportPdfExhibition'))
-		<a class="btn btn-success btn-sm" href="{{ route("$parent_name.$resource_name.printPdf", ['codSub' => $cod_sub]) }}"
-			target="_blank">Pdf Obras</a>
-	@endif
-	<a class="btn btn-success btn-sm"
-		href="{{ route("$parent_name.$resource_name.order_edit", ['cod_sub' => $cod_sub]) }}">Ordenar</a>
-
-	<a class="btn btn-success btn-sm" href="/themes_admin/porto/assets/files/plantillaejemplo.xlsx"
-		download="plantilla.xlsx">Descargar plantilla Excel</a>
-
-	<a href="/admin/lote/file/{{ $cod_sub }}" class="btn btn-success btn-sm">Subir Excel</a>
-
-	@if (\Config::get('app.uploadLotFile'))
-		@foreach (explode(',', \Config::get('app.uploadLotFile')) as $typeUploadFile)
-			<a href="/admin/lote/file/{{ $cod_sub }}?type={{ trim($typeUploadFile) }}" class="btn btn-success btn-sm">Subir
-				{{ $typeUploadFile }}</a>
-		@endforeach
-	@endif
+			href="{{ route("$parent_name.$resource_name.printExcel") }}" target="_blank">Excel
+			Stock</a>
 
 
-	<a href="{{ route("$parent_name.$resource_name.create", ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
-		class="btn btn-primary btn-sm">{{ trans("admin-app.button.new") }}
-		{{ trans("admin-app.title.lot") }}</a>
+
 
 	@include('admin::includes.config_table', ['id' => $resource_name, 'params' => $tableParams])
 
@@ -64,12 +18,10 @@
 		data-order-name="order">
 		<thead>
 			<tr>
-				<th>Sel.</th>
-
 				<th class="col-xs-1" style="width: 5%">{{ trans('admin-app.title.img') }}</th>
 				@foreach ($tableParams as $param => $display)
 					<th class="{{ $param }}" style="cursor: pointer; @if (!$display) display: none; @endif"
-						@if (!in_array($param, ['max_puja', 'max_orden', 'descweb_hces1'])) data-order="{{ $param }}" @endif>
+						@if (!in_array($param, [ 'descweb_hces1'])) data-order="{{ $param }}" @endif>
 
 						{{ trans_choice("admin-app.fields.$param", $tipo_sub ?? '') }}
 
@@ -98,7 +50,7 @@
 					<input type="hidden" name="order" value="{{ request('order', 'ref_asigl0') }}">
 					<input type="hidden" name="order_dir" value="{{ request('order_dir', 'asc') }}">
 
-					<td class=""></td>
+
 					<td class=""></td>
 
 					@foreach ($tableParams as $param => $display)
@@ -111,9 +63,9 @@
 							value="{{ trans("admin-app.button.search") }}">
 							<a
 							@if($render)
-								href="{{route("$parent_name.show", ['subasta' => $cod_sub, 'menu' => 'subastas'])}}"
+								href="{{route("$parent_name.show", [ 'menu' => 'subastas'])}}"
 							@else
-								href="{{route("$parent_name.$resource_name.index", ['subasta' => $cod_sub,'menu' => 'subastas'])}}"
+								href="{{route("$parent_name.$resource_name.index", ['menu' => 'subastas'])}}"
 							@endif
 							class="btn btn-warning">{{ trans("admin-app.button.restart") }}
 						</a>
@@ -134,25 +86,12 @@
 
 				<tr id="fila{{ $lote->ref_asigl0 }}" style="max-height: 60px; overflow: hidden;">
 
-					<td>
-						@if (($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) == 0 && ($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) == 0)
-							<input type="checkbox" name="lote" value="{{ $lote->ref_asigl0 }}">
-						@endif
-					</td>
-
 					<td><img src="{{ \Tools::url_img('lote_medium', $lote->numhces_asigl0, $lote->linhces_asigl0) }}" width="100%"></td>
 
 					@foreach ($tableParams as $param => $display)
 						<td class="{{ $param }}" @if (!$display) style="display: none" @endif>
 
 							@switch($param)
-								@case('max_puja')
-									{!! Tools::moneyFormat($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) !!}
-								@break
-
-								@case('max_orden')
-									{!! Tools::moneyFormat($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) !!}
-								@break
 
 								@case('prop_hces1')
 									{!! $propietarios[$lote->$param] ?? '' !!}
@@ -177,7 +116,7 @@
 							<p>MOVIDO</p>
 						@else
 							<a title="{{ trans('admin-app.button.edit') }}"
-								href="{{ route("$parent_name.$resource_name.edit", [$lote->sub_asigl0, $lote->ref_asigl0, 'render' => $render]) }}"
+								href="{{ route("subastas.lotes.edit", [$lote->sub_asigl0, $lote->ref_asigl0, 'render' => $render,'return'=>'stockList']) }}"
 								class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 								Editar
 							</a>
@@ -188,6 +127,7 @@
 									<i class="fa fa-files-o"></i>
 								</button>
 							@endif
+							{{-- quito todo lo referente a borrar lote, lo marco con BORRAR_LOTE
 							@if (($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) == 0 && ($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) == 0)
 								<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
 									data-id="{{ $lote->ref_asigl0 }}"
@@ -195,6 +135,7 @@
 									<i class="fa fa-trash"></i>
 								</button>
 							@endif
+							--}}
 						@endif
 					</td>
 				</tr>
@@ -219,9 +160,11 @@
 	@if (\Config::get('app.moveLot') && !empty($lote))
 		@include('admin::includes._move_lot_modal', ['routeToClone' => route("subastas.lotes.cloneLot", [$lote->ref_asigl0])])
 	@endif
+	{{-- quito todo lo referente a borrar lote, lo marco con BORRAR_LOTE
 	@include('admin::includes._delete_modal', ['routeToDelete' => route("$parent_name.$resource_name.destroy", [$cod_sub, 0]),])
 
 	<script>
+
 	 $('#deleteModal').on('show.bs.modal', function(event) {
 
 	  var button = $(event.relatedTarget);
@@ -257,3 +200,4 @@
 
 
 	</script>
+--}}

@@ -107,7 +107,7 @@
 							estado="off"
 							class="btn btn-danger jsChangeStatus"
 						@endif
-							id="{{ $item->id }}">
+							data-id="{{ $item->id }}" data-key="{{ $item->key }}">
 								<i class="fa fa-power-off"></i>
 						</a>
 					<a href="/admin/newbanner/editar/{{ $item->id }}?ubicacion={{$ubicacion}}" class="btn btn-primary">Editar</a>

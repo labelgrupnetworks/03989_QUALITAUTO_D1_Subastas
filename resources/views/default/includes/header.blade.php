@@ -96,7 +96,7 @@ use App\libs\TradLib as TradLib;
         </div>
         <div class="logo-header">
             <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
-                <img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                <img width="195" height="84" class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png" alt="{{(\Config::get( 'app.name' ))}}">
             </a>
         </div>
         <div class="menu-principal">
@@ -167,7 +167,7 @@ use App\libs\TradLib as TradLib;
                 </li>
             </ul>
         </div>
-        <div class="search-header-container  d-flex justify-content-center align-items-center hidden-xs" role="button">
+        <div class="search-header-container d-flex justify-content-center align-items-center hidden-xs" role="button" aria-label="Search">
                 <div class="search-header d-flex justify-content-center align-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.17 29.861">
                     <defs>
@@ -210,7 +210,7 @@ use App\libs\TradLib as TradLib;
                         <div class="row">
                             <div class="col-xs-3 text-center">
 								{{-- le he quitado la clase logo company por que no veo que tenga que tenerla y fallaba cuando modificaban esa clase,class="logo-company" --}}
-                                <img width="25px;"  src="/themes/{{$theme}}/assets/img/user.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                                <img width="25" src="/themes/{{$theme}}/assets/img/user.png"  alt="{{(\Config::get( 'app.name' ))}}">
                             </div>
                             <div class="col-xs-9 text-center">
                         @if(!empty($name))

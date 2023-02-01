@@ -86,7 +86,7 @@
 				<div class="row footer-title">
 					<div class="col-xs-12 col-sm-5 image">
 						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"
-							alt="{{(\Config::get( 'app.name' ))}}" width="90%">
+							alt="{{(Config::get( 'app.name' ))}}" width="195" height="84">
 					</div>
 					<div class="col-xs-12 col-sm-7 enterprise text-justify">
 						<div class="row">

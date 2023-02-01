@@ -54,9 +54,15 @@ $idiomes = \Config::get('app.locales');
 						@endif
 						<ul class="nav nav-children">
 							<li>
+								@if(config('app.newsletter_table', 0))
+								<a href="{{ route('newsletter.index') }}">
+									<span>Newsletter</span>
+								</a>
+								@else
 								<a href="{{ route('user_newsletter.index') }}">
 									<span>Newsletter</span>
 								</a>
+								@endif
 							</li>
 						</ul>
 					</li>
@@ -86,6 +92,16 @@ $idiomes = \Config::get('app.locales');
 									@if (config('app.test-admin', false))
 									<sup> Vers. 2</sup>
 									@endif
+								</a>
+							</li>
+						</ul>
+						@endif
+						@if (in_array('stock', $config_menu_admin))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('subastas.stock.index') }}">
+									<span>{{ trans('admin-app.title.stock') }}</span>
+
 								</a>
 							</li>
 						</ul>
