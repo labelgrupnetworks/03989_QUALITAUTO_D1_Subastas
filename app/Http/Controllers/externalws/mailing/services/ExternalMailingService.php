@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\externalws\mailing\services;
 
 use App\libs\EmailLib;
-use App\Models\V5\FxCliWeb;
+use App\Models\Newsletter;
+use App\Models\V5\FsIdioma;
+use App\Models\V5\FxCli;
 
 abstract class ExternalMailingService
 {
@@ -13,29 +15,28 @@ abstract class ExternalMailingService
 
 	function getUserInfo($email_cli)
 	{
-		$user = FxCliWeb::query()
-			->joinCliCliweb()
-			->where('LOWER(USRW_CLIWEB)', strtolower($email_cli))
-			->first();
+		$newsletterModel = new Newsletter();
+		$suscriptions = $newsletterModel->getSuscriptionsWithNamesByEmail($email_cli);
 
-		//substituir por petición a bbdd
-		$newsletters = collect([
-			(object) ["id_newsletter" => 1, "name_newsletter" => "JOYAS"],
-			(object) ["id_newsletter" => 2, "name_newsletter" => "COCHES"],
-			(object) ["id_newsletter" => 3, "name_newsletter" => "ARTE"],
-			(object) ["id_newsletter" => 4, "name_newsletter" => "MUEBLES"],
-			(object) ["id_newsletter" => 5, "name_newsletter" => "JOYAS"],
-			(object) ["id_newsletter" => 6, "name_newsletter" => "JOYAS"],
-		]);
+		$userInfo = FxCli::where('lower(email_cli)', mb_strtolower($email_cli))->first() ?? new FxCli();
 
-		$user->subscriptions = $newsletters->filter(function($newsletter) use ($user){
-			return $user->{"nllist{$newsletter->id_newsletter}_cliweb"} === "S";
-		})->pluck('name_newsletter')->toArray();
+		$userLanguage = $userInfo->idioma_cli ?? optional($suscriptions->first())->lang_newsletter_suscription ?? 'ES';
+		$userInfo->idioma = FsIdioma::where('lower(cod_idioma)', mb_strtolower($userLanguage))->value('des_idioma');
+		$userInfo->idioma_short = $userLanguage;
 
-		return $user;
+		$completName = array_map("trim", explode(",", $userInfo->nom_cli ?? ''));
+		$nameHaveComa = count($completName) !== 1;
+
+		$userInfo->first_name = $nameHaveComa ? $completName[1] : $completName[0];
+		$userInfo->last_name = $nameHaveComa ? $completName[0] : "";
+
+		return [
+			'newsletterSuscriptions' => $suscriptions->pluck('name.name_newsletter')->toArray(),
+			'user' => $userInfo
+		];
 	}
 
-	protected function sendEmailError($function, $request, $response, $sendExternalAdmin = false)
+	protected function sendEmailError($function, $request, $response)
 	{
 		$email = new EmailLib('WS_ERROR');
 		if (!empty($email->email)) {

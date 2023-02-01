@@ -89,6 +89,7 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\FgHces1_Lang;
 use App\Models\V5\FgLicit;
 use App\Models\V5\Web_Favorites;
+use App\Models\V5\FsParams;
 
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrlic;
@@ -101,6 +102,7 @@ use App\Models\V5\AucSessionsFiles;
 
 use App\Http\Controllers\apilabel\PaymentController;
 use App\Http\Controllers\externalws\duran\BidController;
+use App\Http\Controllers\externalws\durannft\PendingOperitionPaid;
 
 use App\Http\Controllers\V5\ArticleController;
 use App\Http\Controllers\V5\PayArticleCartController;
@@ -138,7 +140,7 @@ use App\Http\Controllers\admin\facturacion\AdminPedidosController;
 
 
 use App\Http\Controllers\V5\CarlandiaPayController;
-
+use App\Http\Controllers\webservice\WebServiceController;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\WebPayCart;
 use App\Providers\ToolsServiceProvider;
@@ -147,19 +149,24 @@ use App\Http\Controllers\externalws\vottun\VottunController;
 use GuzzleHttp\Psr7;
 use App\Http\Controllers\webservice\LogChangesController;
 use App\Http\Controllers\admin\subasta\AdminLotcontroller;
+use App\Models\V5\FgAsigl1Mt;
+use Faker\Provider\en_US\PaymentTest;
+
+
+
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		$this->recreatePdfReports('LABELO');
+
 	}
 
 
 
 	public function testwebserviceNFTDuran(){
 		$a = new App\Http\Controllers\externalws\durannft\PaidController();
-		$a->informPaid("P44657277578");
+		$a->informPaid("M61666250095");
 
 		#$a->informPaid("T91655795173");
 	//	$a->informPaid("P55657178730");
@@ -213,6 +220,9 @@ public function cargaMotorflash(){
 
 		$pdfController->generateAuctionAwardsReportPdf($info, $reportTitleAwardsReport);
 		$pdfController->generateAuctionBidsReportPdf($info, $reportTitleBidsReport);
+		if(config('app.certificate_in_report', false)) {
+			$pdfController->generateCertificateReportPdf($cod_sub);
+		}
 
 		//generamos y guardamos archivos
 		$pdfController->savePdfs($info->cod_sub, null);
@@ -254,7 +264,7 @@ public function cargaMotorflash(){
 
 		$pdfController->generateBidsPdf();
 		$pdfController->generateClientsPdf();
-		$pdfController->generateAwardLotPdf($propietary->rsoc_cli, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
+		$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? null, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
 
 		$pdfController->savePdfs($inf_subasta->cod_sub, $inf_lot->ref_asigl0);
 
@@ -717,19 +727,11 @@ public function cargaMotorflash(){
 		);
 	}
 
-	public function sendEmailLotAward()
+	public function sendEmailLotAward($cod_sub, array $refs, $emp)
 	{
-
-		$cod_sub = 'VDRESTOS';
-		$emp = '001';
-		$ref = ['2180'];
-
-		//$cod_sub = 'PRUEBA10';
-		//$ref = ['6', '7'];
-
-		foreach ($ref as $key => $value) {
+		foreach ($refs as $ref) {
 			$mailController = new MailController();
-			$mailController->sendEmailCerradoGeneric($emp, $cod_sub, $value);
+			$mailController->sendEmailCerradoGeneric($emp, $cod_sub, $ref);
 		}
 	}
 
@@ -1232,11 +1234,5 @@ $lang =[';
 
 		dd($dataForExport);
 		/* return $this->exportCollectionToExcel($dataForExport, $fileName); */
-	}
-
-	public function componentes(HttpRequest $request)
-	{
-		abort_if(!session('user.admin'), 404);
-		return view('front::pages.prueba_components', []);
 	}
 }

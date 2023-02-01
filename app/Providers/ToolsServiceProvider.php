@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use DB;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Log;
 use URL;
 use Mail;
@@ -233,7 +233,7 @@ class ToolsServiceProvider extends ServiceProvider
 		} else {
 			$start  = $itemsPerPage;
 
-			if (is_int($page) && $page > 2) {
+			if (is_numeric($page) && $page > 2) {
 				$start = (($itemsPerPage * $page) + 1) - $itemsPerPage;
 			} else {
 				$start = ($itemsPerPage) + 1;
@@ -424,6 +424,11 @@ class ToolsServiceProvider extends ServiceProvider
 			$contents = view('front::includes.languages', ['idiomas' => $idiomas])->render();
 			echo $contents;
 		}
+	}
+
+	public static function getOtherLanguages()
+	{
+		return array_diff_key(config('app.locales'), [config('app.locale') => 1]);
 	}
 
 	public static function slider($key, $html)
@@ -720,8 +725,15 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		return $url;
+	}
 
+	public static function url_lot_to_js($cod_sub, $id_session, $ref, $num_hces)
+	{
+		$appUrl = Config::get('app.url');
 
+		return Config::get("app.newUrlLot")
+			? $appUrl . RoutingServiceProvider::translateSeo('subasta-lote') . "a/$cod_sub-$ref"
+			: $appUrl . RoutingServiceProvider::translateSeo('lote') . "$cod_sub-$id_session-$id_session/:ref-$num_hces";
 	}
 
 	public static function url_auction($cod_sub, $name, $id_session, $ref_session = '001')
@@ -1246,10 +1258,25 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function urlAssetsCache($path)
 	{
-
 		if (file_exists(public_path($path))) {
 			return URL::asset($path) . "?a=" . filemtime(public_path($path));
 		}
+	}
+
+	public static function preloadStylesheets($path, $isCritical)
+	{
+		if (!file_exists(public_path($path))) {
+			return;
+		}
+		$url = self::urlAssetsCache($path);
+		$preload = $isCritical ? "" : " media=\"print\" onload=\"this.media='all'\"";
+		$stylesheet = "<link href=\"$url\" rel=\"stylesheet\"$preload>";
+		$noScript = "<noscript><link href=\"$url\" rel=\"stylesheet\"/></noscript>";
+
+		return $isCritical
+			? $stylesheet
+			: "$stylesheet
+			$noScript";
 	}
 
 	public static function googleReviews($daysToReload)

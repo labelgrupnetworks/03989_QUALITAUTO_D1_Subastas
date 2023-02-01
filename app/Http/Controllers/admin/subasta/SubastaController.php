@@ -44,6 +44,7 @@ class SubastaController extends Controller
 {
 
 	public $fgCaracteristicas = null;
+	public $featureValues = null;
 
 	public function index()
 	{
@@ -975,10 +976,7 @@ class SubastaController extends Controller
 
 	public function addLoteVideo()
 	{
-
-		//obtener ficheros adjuntos
 		$fichero = null;
-
 		if (request()->hasFile('ficheroAdjunto')) {
 			$fichero = request()->file('ficheroAdjunto');
 		} else {
@@ -986,10 +984,8 @@ class SubastaController extends Controller
 				->with(['errorsVideo' => [0 => 'Necesita adjuntar un fichero']]);
 		}
 
-		//datos
 		$num_hces1 = request('num_hces1');
 		$lin_hces1 = request('lin_hces1');
-
 
 		$pathFiles = getcwd() . '/files/videos/' . Config::get("app.emp") . "/$num_hces1/$lin_hces1";
 		$nameFile = $fichero->getClientOriginalName();
@@ -999,8 +995,14 @@ class SubastaController extends Controller
 		}
 
 		$newfile = str_replace("\\", "/", $pathFiles . '/' . $nameFile);
-
 		copy($fichero->getPathname(), $newfile);
+
+		FgHces1::where([
+			['num_hces1', $num_hces1],
+			['lin_hces1', $lin_hces1],
+		])->update([
+			'videos_hces1' => 'S'
+		]);
 
 		return redirect()->back()
 			->with(['successVideo' => [0 => 'Video añadido correctamente']]);

@@ -2,34 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MailChimpExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
 use App\Models\V5\FxCliWeb;
 use App\Models\Newsletter;
+use App\Models\V5\Fx_Newsletter_Suscription;
 
 class NewsletterController extends Controller
 {
-	#Metodo nuevo
-	public function setNewsletter(Request $request)
+	private $newsletterModel;
+
+	public function __construct()
 	{
-		$rules = array(
-			'email'    => 'required|email',
-			'condiciones'    => 'required',
-		);
+		$this->newsletterModel = new Newsletter();
+	}
+
+	public function setNewsletter(Request $request, $option = "add")
+	{
+		if ($this->isNotValid($request)) {
+			return response()->json([
+				'status' => 'error',
+				"msg" => 'err-add_newsletter'
+			]);
+		}
+
+		$email = trim($request->input('email'));
+		$lang = $request->input('lang', $request->input('language'));
+		$families = $request->get('families');
+
+		$result = Config::get('app.newsletter_table', false)
+			? $this->setNewNewsletters($lang, $email, $families)
+			: $this->setOldNewsletter($lang, $email, $families);
+
+		return $result;
+	}
+
+	private function isNotValid(Request $request)
+	{
+		$rules = [
+			'email' => 'required|email',
+			'condiciones' => 'required',
+		];
 
 		$validator = Validator::make($request->all(), $rules);
 
-		if ($validator->fails()) {
-			return [
-				'status' => 'error',
-				"msg" => 'err-add_newsletter'
-			];
-		}
+		return $validator->fails();
+	}
 
-		$email = trim($request->get('email'));
-		$lang = $request->get('lang');
+	private function setNewNewsletters($lang, $email, $families)
+	{
+		$this->newsletterModel
+			->setAttributes($lang, $email, $families)
+			->suscribe();
 
+		return [
+			'status' => 'success',
+			'msg' => 'success-add_newsletter'
+		];
+	}
+
+	/**
+	 * @deprecated
+	 * Eliminar este y los metodos que solo se llamen desde aquí, cuando la migración a las
+	 * nuevas tablas este finalizado
+	 */
+	private function setOldNewsletter($lang, $email, $families)
+	{
 		// Miramos si ya existe el usuario y está registrado
 		$hasCliweb = FxCliWeb::where('LOWER(USRW_CLIWEB)', strtolower($email))->first();
 		if (!$hasCliweb) {
@@ -47,7 +87,7 @@ class NewsletterController extends Controller
 		}
 
 		$news = new Newsletter();
-		$news->families = $request->get('families');
+		$news->families = $families;
 		$news->lang = $lang;
 		$news->email = $email;
 
@@ -59,5 +99,128 @@ class NewsletterController extends Controller
 			'status' => 'success',
 			'msg' => 'success-add_newsletter'
 		];
+	}
+
+	public function configNewsletter(Request $request, $lang, $email)
+	{
+		$isAdmin = (bool)session('user.admin');
+		//abort_if(!Hash::check($email, $request->input('hash', null)) && !$isAdmin, 404);
+
+		$suscriptions = $this->newsletterModel->getIdSuscriptions($email);
+		$newsletters = $this->newsletterModel->getNewslettersNames();
+
+		return view('front::pages.newsletters', ['suscriptions' => $suscriptions, 'newsletters' => $newsletters]);
+	}
+
+	public function unsuscribeNewsletter(Request $request, $lang, $email)
+	{
+		$requestType = $request->query('type', 'view');
+
+		abort_if(md5($email) !== $request->input('hash', null), 404, "Not Found");
+
+		$idNewsletter = $request->input('id', null);
+		if($idNewsletter) {
+			$this->newsletterModel->deleteSuscriptionsById($idNewsletter, $email);
+
+			if(!empty($this->newsletterModel->getIdSuscriptions($email))){
+				return $this->suscribeOnlyToExternalService($request, $lang, $email);
+			}
+		}
+
+		$this->newsletterModel->deleteSuscriptions($email);
+		$this->newsletterModel->unSubscribeToExternalService($email);
+
+		$message = trans(config('app.theme') . '-app.msg_success.newsletter_unsubscribe', ['email' => $email]);
+
+		return $requestType === "json"
+			? response()->json(["message" => $message, "status" => "success"])
+			: view("front::pages.message", ["message" => $message]);
+	}
+
+	public function suscribeOnlyToExternalService(Request $request, $lang, $email)
+	{
+		$requestType = $request->query('type', 'view');
+
+		abort_if(md5($email) !== $request->input('hash', null), 404, "Not Found");
+
+		$this->newsletterModel->subscribeToExternalService($email);
+		$message = trans(config('app.theme') . '-app.msg_success.newsletter_subscribe', ['email' => $email]);
+
+		return $requestType === "json"
+			? response()->json(["message" => $message, "status" => "success"])
+			: view("front::pages.message", ["message" => $message]);
+	}
+
+	/**
+	 * Eliminar cuando estén todos los clientes migrados
+	 */
+	public function migrateNewslettersToNewFormat()
+	{
+		//abort(404);
+		Fx_Newsletter_Suscription::query()->delete();
+		$fxCliWebQuery = FxCliWeb::query()->select("email_cliweb, idioma_cliweb, fecalta_cliweb");
+		foreach (range(1, 20) as $value) {
+			$fxCliWebQuery->addSelect("nllist{$value}_cliweb");
+			$fxCliWebQuery->orWhere("nllist{$value}_cliweb", "S");
+		}
+		$users = $fxCliWebQuery->get();
+
+		//dd($users);
+
+		$suscriptions = [];
+		$users->each(function ($user) use (&$suscriptions) {
+			foreach (range(1, 20) as $value) {
+				if ($user->{"nllist{$value}_cliweb"} === "S") {
+					$suscriptions[] = [
+						'lang_newsletter_suscription' => mb_strtoupper($user->idioma_cliweb ?? 'ES'),
+						'email_newsletter_suscription' => $user->email_cliweb,
+						'id_newsletter' => $value,// + 1, //cuando la nllist_1 corresponde a una familia
+						'create_newsletter_suscription' => $user->fecalta_cliweb ?? now()
+					];
+				}
+			}
+		});
+
+		foreach (collect($suscriptions)->chunk(1000) as $suscriptions) {
+			Fx_Newsletter_Suscription::insertWithDefaultValues($suscriptions->all());
+		};
+
+		dd('fin');
+
+		//dd($users->count(), $users, $suscriptions);
+
+
+	}
+
+	public function mailchimpExportCsv()
+	{
+		$isAdmin = (bool)session('user.admin');
+		abort_if(!$isAdmin, 404);
+
+		return (new MailChimpExport(true))->download('export.csv', \Maatwebsite\Excel\Excel::CSV);
+	}
+
+	/**
+	 * En Mailchimp es necesario que la url del callback sea accesible por get
+	 * y de una respuesta correcta.
+	 */
+	public function checkCallback()
+	{
+		return response()->json(['status' => 'success']);
+	}
+
+	/**
+	 * Callback para webhook de servicios externos.
+	 * Por el momento solo para mailchimp, pero en la variable service se
+	 * utilizará para controlar de que servicio llega
+	 */
+	public function callbackUnsuscribe(Request $request, $service, $action)
+	{
+		$data = $request->data;
+		$email = $data['email'];
+
+		$this->newsletterModel->deleteSuscriptions($email);
+
+		return response()->json(['status' => 'success']);
 	}
 }

@@ -2,15 +2,15 @@
 
 namespace App\libs;
 
-use Config;
-use DB;
-use \ForceUTF8\Encoding;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use \App\libs\MobileDetect;
+use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
+use Intervention\Image\Facades\Image;
 
 class BannerLib
 {
-
 	static function bannerParallax($key = 0, $class = "", $height = '100%', $emp = null){
 
 		if (!$key){
@@ -23,13 +23,15 @@ class BannerLib
 		$theme = Config::get('app.theme');
 		$html = "";
 
-		$banner = DB::table("WEB_NEWBANNER")->where("KEY", $key)->where("EMPRESA",$emp )->where("activo", 1)->first();
+		$banner = CacheLib::rememberCache(self::banerCacheName($key), $seconds = 3600, function() use($key) {
+			return WebNewbannerModel::getActiveBannerWithKey($key);
+		});
 
 		if (empty($banner)){
 			return false;
 		}
 
-		$item = DB::table("WEB_NEWBANNER_ITEM")->where("ID_WEB_NEWBANNER", $banner->id)->where('ACTIVO', 1)->where("LENGUAJE", strtoupper(Config::get("app.locale")))->orderBy("bloque")->orderBy("orden")->orderBy("WEB_NEWBANNER_ITEM.ID")->first();
+		$item = $banner->activeItems->first();
 		$MobileDetect = new MobileDetect();
 
 		$rutaImg ="/img/banner/$theme/$emp/$banner->id/$item->id/" ;
@@ -70,7 +72,6 @@ class BannerLib
 			}
 		}
 
-
 		if ($item->url) {
 			if ($item->ventana_nueva) {
 				$html .= '<a href="' . $item->url . '" target="_blank">';
@@ -89,7 +90,6 @@ class BannerLib
 
 	static function bannersPorKey($key = 0, $class = "", $options = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1], $emp = null, $event = false, $methodEvent = '')
 	{
-
 		if (!$key){
 			return false;
 		}
@@ -97,45 +97,37 @@ class BannerLib
 			$emp = Config::get("app.main_emp");
 		}
 
+		$theme = Config::get('app.theme');
 		$html = "";
 
-		$banner = DB::table("WEB_NEWBANNER")->where("KEY", $key)->where("EMPRESA",$emp )->where("activo", 1)->first();
+		$banner = CacheLib::rememberCache(self::banerCacheName($key), $seconds = 3600, function() use ($key) {
+			return WebNewbannerModel::getActiveBannerWithKey($key);
+		});
 
 		if (empty($banner)){
 			return false;
 		}
+		$bloques = explode(",", $banner->type->bloques);
 
-		$theme = Config::get('app.theme');
-
-		$bannerObject = DB::table("WEB_NEWBANNER_ITEM")->where("ID_WEB_NEWBANNER", $banner->id)->where('ACTIVO', 1)->where("LENGUAJE", strtoupper(Config::get("app.locale")))->orderBy("bloque")->orderBy("orden")->orderBy("WEB_NEWBANNER_ITEM.ID");
-
-		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
-		if (  \Config::get("app.clobToVarchar")) {
-			$bannerObject = $bannerObject->select("dbms_lob.substr(TEXTO, 4000, 1 ) texto, ORDEN, ACTIVO, ID, ID_WEB_NEWBANNER, VENTANA_NUEVA, BLOQUE, URL, LENGUAJE");
-		}
-		$items = $bannerObject->get();
-		$tipo = DB::table("WEB_NEWBANNER_TIPO")->where("ID", $banner->id_web_newbanner_tipo)->first();
-		$bloques = explode(",", $tipo->bloques);
-
-		if(is_array($options) && count($items) == 1){
+		if(is_array($options) && count($banner->activeItems) == 1){
 			$options['dots'] = false;
 		}
 
-
 		$itemsPorBloque = array();
-		foreach ($items as $item) {
+		foreach ($banner->activeItems as $item) {
 			if (!isset($itemsPorBloque[$item->bloque]))
 				$itemsPorBloque[$item->bloque] = array();
 			$itemsPorBloque[$item->bloque][] = $item;
 		}
 
-		if ($tipo->completo) {
+		if ($banner->type->completo) {
 			$html .= "<div class='container-fluid'><div class='row rowBanner'>";
 		} else {
 			$html .= "<div class='container'><div class='row rowBanner'>";
 		}
 
 		$MobileDetect = new MobileDetect();
+		$isMobile = $MobileDetect->isMobile();
 
 		foreach ($bloques as $k => $tipo_item) {
 
@@ -149,7 +141,7 @@ class BannerLib
 			if (isset($itemsPorBloque[$k])) {
 
 
-				if ($tipo_item == "imagen" || $tipo_item == "imgBlock" || $tipo_item == "imgSingle") {
+				if (in_array($tipo_item, ["imagen", "imgBlock", "imgSingle"])) {
 
 					foreach ($itemsPorBloque[$k] as $index => $item) {
 						$item_name = "item_".$tipo_item ;
@@ -161,79 +153,55 @@ class BannerLib
 						$languages["ES"] = 1;
 
 
-						if ($MobileDetect->isMobile()) {
-							// MOBILE
-							$html .= "<div class=\"item $item_name pos_item_$index  \">";
-							if ($item->url) {
-								if ($item->ventana_nueva) {
-									$html .= '<a href="' . $item->url . '" target="_blank">';
-								} else {
-									$html .= '<a href="' . $item->url . '">';
-								}
+						$html .= "<div class=\"item $item_name pos_item_$index";
+						$html .= $isMobile ? "\">" : " hidden-xs\">";
+						if ($item->url) {
+							if ($item->ventana_nueva) {
+								$html .= '<a href="' . $item->url . '" target="_blank">';
+							} else {
+								$html .= '<a href="' . $item->url . '">';
 							}
-
-							//Por defecto si no existe imagen mobile se muestra la de escritorio
-							//$imagen_mobile = public_path() . '/themes/' . $theme . '/assets/img/banner/' . $banner->id . '/' . $item->id . '/' . strtoupper(Config::get("app.locale")) . '_mobile.jpg';
-
-
-							foreach (["jpg","gif"] as  $extension){
-								foreach ($languages as  $locale=>$a){
-									$pathImg = $rutaImg . $locale  . "_mobile.$extension";
-									if(file_exists(public_path().$pathImg)){
-										break 2;
-									}else{
-										#si no existe en mobile buscamos en tamaño escritorio
-										$pathImg = $rutaImg . $locale  . ".$extension";
-										if(file_exists(public_path().$pathImg)){
-											break 2;
-										}
-
-									}
-								}
-							}
-
-							$html .= '<img src="' . Tools::urlAssetsCache($pathImg) . '" width="100%">';
-
-							if ($item->texto) {
-								$html .= "<span>" . $item->texto . "</span>";
-							}
-							if ($item->url) {
-								$html .= '</a>';
-							}
-							$html .= '</div>';
-						} else {
-							$html .= "<div class=\"item $item_name pos_item_$index hidden-xs\">";
-							if ($item->url) {
-								if ($item->ventana_nueva) {
-									$html .= '<a href="' . $item->url . '" target="_blank">';
-								} else {
-									$html .= '<a href="' . $item->url . '">';
-								}
-							}
-
-
-							foreach (["jpg","gif"] as  $extension){
-								foreach ($languages as  $locale=>$a){
-									$pathImg = $rutaImg . $locale  . ".$extension";
-									if(file_exists(public_path().$pathImg)){
-										break 2;
-									}
-								}
-							}
-
-
-
-
-							$html .= '<img src="' . Tools::urlAssetsCache($pathImg) . '" width="100%">';
-
-							if ($item->texto) {
-								$html .= "<span>" . $item->texto . "</span>";
-							}
-							if ($item->url) {
-								$html .= '</a>';
-							}
-							$html .= '</div>';
 						}
+
+						foreach (["webp", "jpg", "gif"] as $extension){
+							foreach (array_keys($languages) as $locale){
+
+								$pathImg = $isMobile
+									? "{$rutaImg}{$locale}_mobile.$extension"
+									: "{$rutaImg}{$locale}.{$extension}";
+
+								if(file_exists(public_path($pathImg))){
+									break 2;
+
+								}else{
+									#si no existe en mobile buscamos en tamaño escritorio
+									$pathImg = $rutaImg . $locale  . ".$extension";
+									if(file_exists(public_path($pathImg))){
+										break 2;
+									}
+								}
+							}
+						}
+
+						if(!file_exists(public_path($pathImg))) {
+							return;
+						}
+
+						$image = Image::make(public_path($pathImg));
+						$width = $image->width();
+						$height = $image->height();
+						$publicPath = Tools::urlAssetsCache($pathImg);
+
+						$html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">";
+
+						if ($item->texto) {
+							$html .= "<span>" . $item->texto . "</span>";
+						}
+						if ($item->url) {
+							$html .= '</a>';
+						}
+						$html .= '</div>';
+
 					}
 				}
 
@@ -297,18 +265,11 @@ class BannerLib
 
 		$html .= "</div></div>";
 
-
 		return $html;
 	}
 
-
-
-
-
 	static function bannersPorUbicacion($ubicacion = 0, $class = 0)
 	{
-
-
 		$banners = DB::table("WEB_NEWBANNER")->where("UBICACION", "LIKE", "%" . $ubicacion . "%")->where("activo", 1)->orderBy("orden")->orderBy("WEB_NEWBANNER.id")->get();
 		$html = "";
 		foreach ($banners as $item) {
@@ -321,8 +282,6 @@ class BannerLib
 
 	static function bannersPorUbicacionKeyAsClass($ubicacion = 0, $options = array())
 	{
-
-
 		$banners = DB::table("WEB_NEWBANNER")->where("UBICACION",  $ubicacion )->where("activo", 1)->orderBy("orden")->orderBy("WEB_NEWBANNER.ID")->get();
 		$html = "";
 		foreach ($banners as $item) {
@@ -334,5 +293,10 @@ class BannerLib
 		}
 
 		return $html;
+	}
+
+	static function banerCacheName($key)
+	{
+		return "banner_{$key}";
 	}
 }

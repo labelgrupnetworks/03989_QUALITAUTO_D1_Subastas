@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin\contenido;
 
-use View;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Request as Input;
 use App\libs\FormLib;
 use App\libs\BannerLib;
@@ -11,27 +11,34 @@ use Illuminate\Http\Request;
 use App\Models\WebNewbannerModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\libs\CacheLib;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerTipoModel;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
-
+use Intervention\Image\Facades\Image;
 
 class BannerController extends Controller
 {
-
 	public $PATH_IMG = "";
 	public $PUBLIC_PATH_IMG = "";
 
 	function __construct()
 	{
-
 		//Metodo para eliminar directorio desde codigo y poder crearlo manualmente desde ftp, descomentar solo si es necesario reiniciarla
 		//$path = str_replace("\\", "/", getcwd() . "/img/banner");
 		//$this->eliminar_directorio($path);
 
 		$this->PUBLIC_PATH_IMG = "/img/banner/" . Config::get('app.theme') . "/" .  Config::get("app.main_emp") . "/";
 		$this->PATH_IMG = getcwd() . $this->PUBLIC_PATH_IMG;
+
+		$this->middleware(function($request, $next) {
+			if($key = $request->input('key')) {
+				$this->refreshBannerCache($key);
+			}
+			return $next($request);
+		}, ['only' => ['nuevoItemBloque', 'borraItemBloque', 'estadoItemBloque', 'guardaItemBloque', 'ordenaBloque', 'activar']]);
 	}
 
 	public function index(Request $request)
@@ -60,7 +67,6 @@ class BannerController extends Controller
 
 	public function ubicacionHome()
 	{
-
 		$data = array('menu' => 2);
 
 		$data['banners'] = WebNewbannerModel::where("UBICACION", "HOME")->orderby("ORDEN")->get();
@@ -71,10 +77,8 @@ class BannerController extends Controller
 		return View::make('admin::pages.contenido.banner.index', $data);
 	}
 
-
 	public function nuevo()
 	{
-
 		$data = array('menu' => 2);
 
 		$data['nombre'] = FormLib::Text("nombre", 1);
@@ -89,7 +93,6 @@ class BannerController extends Controller
 
 	public function nuevo_run()
 	{
-
 		$data = Input::all();
 
 		//$tipo = WebNewbannerTipoModel::where("ID",$data['tipo_banner'])->first();
@@ -102,7 +105,7 @@ class BannerController extends Controller
 
 		$id = WebNewbannerModel::insertGetId([
 			"ID" => $newid,
-			"EMPRESA" => \Config::get("app.main_emp"),
+			"EMPRESA" => Config::get("app.main_emp"),
 			"ACTIVO" => 0,
 			"KEY" => $data['nombre'],
 			"ID_WEB_NEWBANNER_TIPO" => $data['tipo_banner']
@@ -113,7 +116,6 @@ class BannerController extends Controller
 
 	public function editar($id = 0)
 	{
-
 		if (empty($id)) {
 			return "Error";
 		}
@@ -128,7 +130,7 @@ class BannerController extends Controller
 			return "404";
 		}
 
-		if ($data['banner']->empresa != \Config::get("app.main_emp")) {
+		if ($data['banner']->empresa != Config::get("app.main_emp")) {
 			return "Error de empresa";
 		}
 
@@ -158,7 +160,6 @@ class BannerController extends Controller
 
 	public function activar(Request $request)
 	{
-
 		$id = $request->input('id', '0');
 		$activo = $request->input('activo', '0');
 
@@ -169,11 +170,20 @@ class BannerController extends Controller
 			]);
 	}
 
+	private function getValidExtension($path)
+	{
+		foreach (['webp', 'jpg', 'gif'] as $extension) {
+			if(is_file("$path.$extension")){
+				return $extension;
+			}
+		}
+		return null;
+	}
+
+
 	function listaItemsBloque()
 	{
-
 		$data = Input::all();
-		$theme = Config::get('app.theme');
 
 		$info['info'] = DB::table("WEB_NEWBANNER_ITEM")->where("ID_WEB_NEWBANNER", $data['id'])->where("BLOQUE", $data['index'])->where("LENGUAJE", "ES")->orderBy("ORDEN", "ASC")->get()->toArray();
 
@@ -182,22 +192,12 @@ class BannerController extends Controller
 		$tipos = explode(",", $tipos->bloques);
 		$info['tipo'] = $tipos[$data['index']];
 
+		foreach ($info['info'] as $item) {
 
-		foreach ($info['info'] as $k => $item) {
+			$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES");
+			$extension = $this->getValidExtension($path);
 
-			$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.jpg");
-			if (is_file($path)) {
-				$item->imagen = $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.jpg";
-			}else{
-				$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.gif");
-				if (is_file($path)) {
-					$item->imagen = $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.gif";
-				} else {
-					$item->imagen = "/img/noFoto.png";
-				}
-
-			}
-
+			$item->imagen = !$extension ? "/img/noFoto.png" : $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.$extension";
 
 			$item->imagen=ToolsServiceProvider::urlAssetsCache($item->imagen);
 		}
@@ -205,57 +205,46 @@ class BannerController extends Controller
 		return View::make('admin::pages.contenido.banner.itemBlockBannerSnippet', $info);
 	}
 
-	function nuevoItemBloque()
+	function nuevoItemBloque(Request $request)
 	{
-
 		$calculoId = DB::table("WEB_NEWBANNER_ITEM")->max("ID");
 
-		if (empty($calculoId))
+		if (empty($calculoId)) {
 			$calculoId = 0;
+		}
 
-		$data = Input::all();
-
-		foreach (\Config::get("app.locales") as $lang => $textLang) {
+		foreach (Config::get("app.locales") as $lang => $textLang) {
 
 			DB::table("WEB_NEWBANNER_ITEM")->insert([
-
 				"ID" => $calculoId + 1,
-				"ID_WEB_NEWBANNER" => $data['id'],
-				"BLOQUE" => $data['index'],
+				"ID_WEB_NEWBANNER" => $request->input('id'),
+				"BLOQUE" => $request->input('index'),
 				"LENGUAJE" => strtoupper($lang),
 				"TEXTO" => "",
 				"URL" => "",
 				"VENTANA_NUEVA" => 0
-
 			]);
 		}
 	}
 
-
 	function borraItemBloque()
 	{
-
 		$data = Input::all();
-
 		if (isset($data['id']) && !empty($data['id'])) {
-
 			DB::table("WEB_NEWBANNER_ITEM")->where("id", $data['id'])->delete();
 		}
 	}
 
-	function estadoItemBloque()
+	function estadoItemBloque(Request $request)
 	{
-		$data = Input::all();
-
-		if (isset($data['id']) && !empty($data['id'])) {
-			WebNewbannerItemModel::where("id", $data['id'])
-				->update(['activo' =>  !empty($data['activo'])]);
-		}
+		WebNewbannerItemModel::where('id', $request->input('id'))
+			->update([
+				'activo' => !empty($request->input('activo'))
+			]);
 	}
 
 	function editaItemBloque()
 	{
-
 		$data = Input::all();
 		$info = array();
 
@@ -269,8 +258,7 @@ class BannerController extends Controller
 		$tipos = explode(",", $tipos->bloques);
 		$info['tipo'] = $tipos[$info_aux[0]->bloque];
 
-
-		foreach (\Config::get("app.locales") as $lang => $textLang) {
+		foreach (Config::get("app.locales") as $lang => $textLang) {
 
 			$lang = strtoupper($lang);
 			$formulario[$lang] = array();
@@ -288,113 +276,77 @@ class BannerController extends Controller
 		}
 
 		$formulario[$lang]['token'] = Formlib::Hidden("_token", 1, csrf_token());
+		$formulario[$lang]['key'] = Formlib::Hidden("key", 1, $info['banner']->key);
 
 		$info['formulario'] = $formulario;
 
 		return View::make('admin::pages.contenido.banner.itemBlockBannerForm', $info);
 	}
 
-	function guardaItemBloque()
+	function guardaItemBloque(Request $request)
 	{
+		$theme = config('app.theme');
+		$mainEmp = config('app.main_emp');
+		$id = $request->input('id_ES');
+		$parentId = $request->input('id_web_newbanner_ES');
 
-		$data = Input::all();
-		$theme = Config::get('app.theme');
+		$langs = array_map('mb_strtoupper', array_keys(config('app.locales')));
+		foreach ($langs as $lang) {
 
-		$id = $data['id_ES'];
+			$update = [
+				'texto' => $request->input("texto_$lang", ""),
+				'ventana_nueva' => (int)$request->has("ventana_nueva_$lang"),
+				'url' => $request->input("url_$lang", ""),
+			];
 
-		foreach (\Config::get("app.locales") as $lang => $textLang) {
+			WebNewbannerItemModel::query()
+				->where([
+					['lenguaje', $lang],
+					['id', $id],
+				])
+				->update($update);
 
-			if (!isset($data['ventana_nueva_' . strtoupper($lang)])) {
-				$data['ventana_nueva_' . strtoupper($lang)] = 0;
-			} else {
-				$data['ventana_nueva_' . strtoupper($lang)] = 1;
+			$direcoryPath = str_replace("\\", "/","/img/banner/$theme/$mainEmp/$parentId/$id");
+			if (!is_dir(public_path($direcoryPath))) {
+				mkdir(public_path($direcoryPath), 0775, true);
+				chmod(public_path($direcoryPath), 0775);
 			}
-			$url =  $data['url_' . strtoupper($lang)]?? '';
-			$ventana_nueva = $data['ventana_nueva_' . strtoupper($lang)]?? '';
 
-			DB::table("WEB_NEWBANNER_ITEM")->where("lenguaje", strtoupper($lang))->where("id", $id)->update([
-				"texto" => $data['texto_' . strtoupper($lang)],
-				"url" => $url,
-				"ventana_nueva" => $ventana_nueva
-			]);
-		}
+			if($image = request()->file("imagen_$lang")) {
+				$this->saveImage($image, "$lang", $direcoryPath, false);
+			}
 
-		$path = str_replace("\\", "/", $this->PATH_IMG . $data['id_web_newbanner_ES'] . "/" . $id);
-		if (!is_dir($path)) {
-			mkdir($path, 0775, true);
-			chmod($path, 0775);
-		}
-
-		foreach ($_FILES as $k => $item) {
-
-			if (!empty($item['tmp_name'])) {
-
-				$idioma = str_replace("imagen_mobile_", "", $k);
-				$idioma = str_replace("imagen_", "", $idioma);
-				$extension = explode(".", $item['name']);
-				$extension = $extension[sizeof($extension) - 1];
-
-				$mobile = "";
-				if (strpos($k, "mobile") > 0){
-					$mobile = "_mobile";
-				}
-
-
-				if(strtoupper($extension) == "GIF") {
-					/*
-					$src_image = imagecreatefromgif($item['tmp_name']);
-					imagegif($src_image,  $path . "/" . $idioma . $mobile . ".gif");
-					*/
-					rename($item['tmp_name'], $path . "/" . $idioma . $mobile . ".gif");
-					#borramso la imgen jpg por si hubiera
-					@unlink(  $path . "/" . $idioma . $mobile . ".jpg");
-				}else{
-
-						$size = getimagesize($item['tmp_name']);
-					if ($size[0] > 3000) {
-						$w = 3000;
-						$h = $size[1] * 3000 / $size[0];
-					} else {
-						$w = $size[0];
-						$h = $size[1];
-					}
-
-
-					if (strtoupper($extension) == "PNG") {
-						$src_image = imagecreatefrompng($item['tmp_name']);
-					} elseif (strtoupper($extension) == "JPG" || strtoupper($extension) == "JPEG" ) {
-						$src_image = imagecreatefromjpeg($item['tmp_name']);
-					}
-
-					$dst_image = imagecreatetruecolor($w, $h);
-
-					$blanco = imagecolorallocate($src_image, 255, 255, 255);
-					imagefill($dst_image, 0, 0, $blanco);
-
-					imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, $w, $h, $size[0], $size[1]);
-
-
-
-
-
-
-					imagejpeg($dst_image, $path . "/" . $idioma . $mobile . ".jpg", 85);
-					#borramso la imgen gif por si hubiera
-					@unlink(  $path . "/" . $idioma . $mobile . ".gif");
-				}
+			if($imageMobile = request()->file("imagen_mobile_$lang", $image)) {
+				$this->saveImage($imageMobile, "{$lang}_mobile", $direcoryPath, true);
 			}
 		}
-
-
-
-		return redirect("/admin/newbanner/editar/" . $data['id_web_newbanner_ES']);
+		return redirect("/admin/newbanner/editar/$parentId");
 	}
 
+	private function saveImage(UploadedFile $image, string $fileName, string $direcoryPath, bool $isMobile)
+	{
+		$extension = "webp";
 
+		if($image->getMimeType() == "image/gif") {
+			copy($image->getRealPath(), public_path("$direcoryPath/$fileName.gif"));
+			@unlink(public_path("$direcoryPath/$fileName.$extension"));
+			return;
+		}
+
+		$path = public_path("$direcoryPath/$fileName.$extension");
+
+		$imageSave = Image::make($image);
+		if($isMobile) {
+			$imageSave->resize(800, null, function ($constraint) {
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			});
+		}
+		$imageSave->save($path, 90, $extension);
+	}
 
 	function editar_run()
 	{
-
 		$data = Input::all();
 
 		if (!isset($data['activo'])) {
@@ -411,18 +363,15 @@ class BannerController extends Controller
 			"UBICACION" => $data['ubicacion']
 		]);
 
+		$this->refreshBannerCache($data['nombre']);
 		echo "OK";
 	}
 
-
-
 	function borrar($id = 0)
 	{
-
 		if (empty($id)) {
 			die("No se puede eliminar");
 		}
-		$theme = Config::get('app.theme');
 
 		DB::table("WEB_NEWBANNER_ITEM")->where("id_web_newbanner", $id)->delete();
 		DB::table("WEB_NEWBANNER")->where("id", $id)->delete();
@@ -474,16 +423,11 @@ class BannerController extends Controller
 		return $result;
 	}
 
-
 	function vistaPrevia()
 	{
-
 		$info = Input::all();
-
 		echo BannerLib::bannersPorKey($info['key']);
 	}
-
-
 
 	function ordenaBloque()
 	{
@@ -498,20 +442,24 @@ class BannerController extends Controller
 				->update(["orden" => $orden]);
 		}
 	}
-	#devuelve la primera imagen que encuentra de un banner
-	public function bannerImage($banners){
-		$rutaImg = "img/banner/".Config::get('app.theme') ."/". Config::get('app.emp') ;
-		$nameImg = strtoupper(Config::get('app.locale')).".jpg";
+
+	/**
+	 * devuelve la primera imagen que encuentra de un banner
+	 */
+	public function bannerImage($banners)
+	{
+		$rutaImg = "img/banner/".Config::get('app.theme') ."/". Config::get('app.main_emp');
+		$nameImg = strtoupper(Config::get('app.locale'));
 
 		$idsBanners = array();
 		foreach($banners as $banner){
 			$idsBanners[] = $banner->id;
 		}
 
-		//$items = WebNewbannerModel::select("WEB_NEWBANNER_ITEM.ID , WEB_NEWBANNER_ITEM.ID_WEB_NEWBANNER ")->JoinBannerItem()->wherenotin("UBICACION",[WebNewbannerModel::UBICACION_EVENTO,WebNewbannerModel::UBICACION_MUSEO, WebNewbannerModel::UBICACION_HOME])->orderby("ID")->get();
-		$items = WebNewbannerItemModel::select("ID , ID_WEB_NEWBANNER ")->wherein("ID_WEB_NEWBANNER",$idsBanners)->orderby("ID_WEB_NEWBANNER,ID")->get();
-
-
+		$items = WebNewbannerItemModel::select("ID , ID_WEB_NEWBANNER ")
+			->wherein("ID_WEB_NEWBANNER", $idsBanners)
+			->orderby("ID_WEB_NEWBANNER,ID")
+			->get();
 
 		$images = array();
 		foreach($items as $item){
@@ -520,24 +468,20 @@ class BannerController extends Controller
 
 			# si aun no tenemos una imagen para ese baner
 			if(empty($images[$idBanner])){
-				$img = $rutaImg."/". $idBanner .  "/". $idItem . "/". $nameImg;
 
+				$path = "$rutaImg/$idBanner/$idItem/$nameImg";
+				$extension = $this->getValidExtension($path);
 
-				if(file_exists($img) ){
-
-					$images[$idBanner] ="/". $img;
-				}
+				$images[$idBanner] = (!$extension)
+					? "/img/noFoto.png"
+					: "/$path.$extension";
 			}
-
-
-
 		}
 		return $images;
 	}
 
-	public function orderBanner(){
-
-
+	public function orderBanner()
+	{
 		$order = request("order");
 		$ubicacion = request("ubicacion");
 			foreach ($order as $key => $id) {
@@ -547,7 +491,11 @@ class BannerController extends Controller
 			}
 
 		return MessageLib::successMessage("Orden modificado");
+	}
 
+	private function refreshBannerCache($key)
+	{
+		CacheLib::forgetCache(BannerLib::banerCacheName($key));
 	}
 
 }

@@ -42,7 +42,7 @@ class FgPedc0 extends Model
     }
 
 	public function scopeJoinPedc1($query){
-		return $query->join("FGPEDC1", "FGPEDC1.EMP_PEDC1 = FGPEDC0.EMP_PEDC0 AND FGPEDC1.NUM_PEDC1 = FGPEDC0.NUM_PEDC0");
+		return $query->join("FGPEDC1", "FGPEDC1.EMP_PEDC1 = FGPEDC0.EMP_PEDC0 AND FGPEDC1.ANUM_PEDC1 = FGPEDC0.ANUM_PEDC0 AND FGPEDC1.NUM_PEDC1 = FGPEDC0.NUM_PEDC0");
 	}
 
 }

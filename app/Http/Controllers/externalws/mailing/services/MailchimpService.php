@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\externalws\mailing\services;
 
-use App\Models\V5\FsIdioma;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -27,37 +27,52 @@ class MailchimpService extends ExternalMailingService
 
 		$this->headerWithAutoritzation = [
 			'Authorization' => "Basic $auth",
-  			'Content-Type' => 'application/json',
+			'Content-Type' => 'application/json',
 		];
 	}
 
 	function subscribe($email_cli)
 	{
-		$user = $this->getUserInfo($email_cli);
+		[
+			'newsletterSuscriptions' => $newsletterSuscriptions,
+			'user' => $user
+		] = $this->getUserInfo($email_cli);
 
-		if(empty($user->subscriptions)) {
-			$this->loggin("empty newsletters", ['user' => $user]);
+		if (empty($newsletterSuscriptions)) {
+			$this->loggin("empty newsletters", ['user' => $email_cli]);
+			return false;
 		}
 
-		$completName = array_map("trim", explode(",", $user->nom_cliweb));
-		$nameHaveComa = count($completName) !== 1;
-		$name = $nameHaveComa ? $completName[1] : $completName[0];
-		$lastName = $nameHaveComa ? $completName[0] : "";
-
-		$idioma = FsIdioma::where('cod_idioma', $user->idioma_cli)->value('des_idioma');
-
-		$userHash = md5($user->email_cliweb);
+		$userHash = md5(mb_strtolower($email_cli));
 		$resource = "{$this->membersResource}/{$userHash}";
 
+		$language = [
+			'ES' => 'es_ES',
+			'EN' => 'en'
+		];
+
 		$body = json_encode([
-			'email_address' => $user->email_cliweb,
+			'email_address' => $email_cli,
 			'status' => 'subscribed',
+			'language' => $language[$user->idioma_short] ?? 'es_ES',
 			'merge_fields' => [
-				'FNAME' => $name,
-				'LNAME' => $lastName,
-				'IDIOMA' => $idioma,
-				'PAIS' => $user->pais_cli,
-				'GRUPO' => implode(',', $user->subscriptions)
+				'FNAME' => $user->first_name ?? '',
+				'LNAME' => $user->last_name ?? '',
+				"ADDRESS" => [
+					"addr1" => $user->dir_cli ?? '-',
+					"addr2" => $user->dir2_cli ?? '',
+					"city" => $user->pob_cli ?? '-',
+					"state" => $user->pro_cli ?? '',
+					"zip" => $user->cp_cli ?? '-',
+					"country" => $user->codpais_cli ?? ''
+				],
+				'PHONE' => $user->tel1_cli ?? '',
+				'IDIOMA' => $user->idioma ?? '',
+				'PAIS' => $user->pais_cli ?? '',
+				'GRUPO' => implode(',', $newsletterSuscriptions),
+				'CODCLI' => $user->cod_cli ?? '',
+				'POB' => $user->pob_cli ?? '',
+				'PRO' => $user->pro_cli ?? '',
 			],
 			//'tags' => $user->subscriptions
 		]);
@@ -69,12 +84,11 @@ class MailchimpService extends ExternalMailingService
 
 	function unsuscribe($email_cli)
 	{
-		$user = $this->getUserInfo($email_cli);
-		$userHash = md5($user->email_cliweb);
+		$userHash = md5(mb_strtolower($email_cli));
 		$resource = "{$this->membersResource}/{$userHash}";
 
 		$body = json_encode([
-			'email_address' => $user->email_cliweb,
+			'email_address' => $email_cli,
 			'status' => 'unsubscribed',
 		]);
 
@@ -85,21 +99,23 @@ class MailchimpService extends ExternalMailingService
 
 	private function sendRequest(Request $request)
 	{
+		$requestBody = $request->getBody()->getContents();
 		try {
 			$response = $this->client->send($request);
 			$responseJson = json_decode($response->getBody()->getContents(), true);
 			$this->loggin("mailchimp response", $responseJson);
-		} catch (\Throwable $th) {
-			$this->loggin("mailchimp error", $th->getMessage());
+		} catch (ClientException $e) {
+			$error = $e->getResponse()->getBody()->getContents();
+			$this->loggin("mailchimp error", $error);
+			$this->sendEmailError('mailchimp', $requestBody, $error);
 		}
 	}
 
 	private function loggin($title, $message)
 	{
-		if(!config('app.debug')){
+		/* if (!config('app.debug')) {
 			return;
-		}
+		} */
 		Log::debug($title, ['message' => $message]);
 	}
-
 }

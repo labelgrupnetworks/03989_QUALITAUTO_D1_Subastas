@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Controller;
 use App\libs\FormLib;
 use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgHces1;
 use App\Models\V5\FxCli;
 use App\Models\articles\FgArt0;
 use App\Models\articles\FgArt;
@@ -25,10 +26,12 @@ class AdminPedidosController extends Controller
 
 	public function index(Request $request)
 	{
-		$pedidos = FgPedc0::select( "num_pedc0, max(cod_pedc0) cod_pedc0 , max(rsoc_pedc0) rsoc_pedc0, max(dto3_pedc1) dto3_pedc1, max(dto_pedc1) dto_pedc1, max(fecha_pedc0) fecha_pedc0, max(total_pedc0) total_pedc0, listagg('*' || des_pedc1,'<br>') within group (order by num_pedc0) obras ")
+		$pedidos = FgPedc0::select( "anum_pedc0,num_pedc0, max(cod_pedc0) cod_pedc0 , max(rsoc_pedc0) rsoc_pedc0, max(dto3_pedc1) dto3_pedc1, max(dto_pedc1) dto_pedc1, max(fecha_pedc0) fecha_pedc0, max(total_pedc0) total_pedc0, listagg('*' || des_pedc1,'<br>') within group (order by num_pedc0) obras ")
 			->JoinPedc1()
-			->when($request->num_pedc0, function ($query, $cod_pro) {
-				return $query->where('num_pedc0', 'like', "%{$cod_pro}%");
+			->when($request->anum_pedc0, function ($query, $anum_pedc0) {
+				return $query->where('anum_pedc0',  "$anum_pedc0");
+			})->when($request->num_pedc0, function ($query, $cod_pro) {
+				return $query->where('num_pedc0',  "$cod_pro");
 			})
 			->when($request->cod_pedc0, function ($query, $nom_pro) {
 				return $query->where('cod_pedc0', 'like', "%".mb_strtoupper($nom_pro)."%");
@@ -43,13 +46,15 @@ class AdminPedidosController extends Controller
 				return $query->where('total_pedc0', $total_pedc0);
 			})
 
-			->orderBy($request->input('order', 'num_pedc0'), $request->input('order_dir', 'desc'))
-			->groupby("num_pedc0")
+			->orderBy($request->input('order', 'anum_pedc0'), $request->input('order_dir', 'desc'))
+			->orderBy('num_pedc0', 'desc')
+			->groupby('anum_pedc0',"num_pedc0")
 			->paginate(30);
 
-		$tableParams = ['num_pedc0' => 1, 'cod_pedc0' => 1, 'rsoc_pedc0' => 1, 'fecha_pedc0' => 1, 'total_pedc0' => 1, 'dto_pedc1' => 1, 'dto3_pedc1' => 1, 'obras' => 1];
+		$tableParams = ['anum_pedc0' => 1,'num_pedc0' => 1, 'cod_pedc0' => 1, 'rsoc_pedc0' => 1, 'fecha_pedc0' => 1, 'total_pedc0' => 1, 'dto_pedc1' => 1, 'dto3_pedc1' => 1, 'obras' => 1];
 
 		$formulario = (object)[
+			'anum_pedc0' => FormLib::Text('anum_pedc0', 0, $request->anum_pedc0),
 			'num_pedc0' => FormLib::Text('num_pedc0', 0, $request->num_pedc0),
 			'cod_pedc0' => FormLib::Text('cod_pedc0', 0, $request->cod_pedc0),
 			'rsoc_pedc0' => FormLib::Text('rsoc_pedc0', 0, $request->rsoc_pedc0),
@@ -112,7 +117,7 @@ class AdminPedidosController extends Controller
 			$or = " OR ";
 		}
 		$refLots.=" )";
-		$lots = $asigl0->GetLotsByRefAsigl0( $refLots)->addselect("prop_hces1, pc_hces1")->get();
+		$lots = $asigl0->GetLotsByRefAsigl0( $refLots)->addselect("prop_hces1, pc_hces1, stock_hces1")->get();
 		$precioBaseTotal = 0;
 
 		# recorremos los lotes para calcular el importe total y así poder usar ese valor para calcular el importe a descontar de cada lotes
@@ -156,6 +161,7 @@ class AdminPedidosController extends Controller
 		$importeactual = 0;
 		$contador = 0;
 		foreach($lots as $lot){
+
 			$contador++;
 			# si no es el ultimo calculamos el importe
 			if($contador != count($lots)){
@@ -192,6 +198,11 @@ class AdminPedidosController extends Controller
 				)
 			);
 
+
+			# si hay valor de stock mayor que cero Y TIENEN ACTIVADO EL CONTRO LDE STOCK le restamos 1
+			if(!empty($lot->stock_hces1) && $lot->stock_hces1>0){
+				FgHces1::where("NUM_HCES1", $lot->num_hces1)->where("LIN_HCES1", $lot->lin_hces1)->where("CONTROLSTOCK_HCES1", "S")->update(["stock_hces1"=> $lot->stock_hces1 -1]);
+			}
 		}
 	}
 
@@ -279,26 +290,41 @@ class AdminPedidosController extends Controller
 
 	public function destroy($num_pedc0)
 	{
-		$pedido = FgPedc0::where('num_pedc0', $num_pedc0)->first();
-		$lineaspedido = FgPedc1::where('num_pedc1', $num_pedc0)->get();
+
+		$pedc0 = explode("-",$num_pedc0);
+
+		$pedido = FgPedc0::where('anum_pedc0', $pedc0[0])->where('num_pedc0', $pedc0[1])->first();
+		$lineaspedido = FgPedc1::where('anum_pedc1', $pedc0[0])->where('num_pedc1', $pedc0[1])->get();
 
 		if (!$pedido) {
 			return back()->withErrors(['errors' => ['sale not exist']])->withInput();
 		}elseif($pedido->estado_pedc0=='S'){
 			return back()->withErrors(['errors' => ['sale with delivery note or  invoice']])->withInput();
 		}
-
+		$articulos=[];
 		foreach($lineaspedido as $lineaPedido){
 			if ($lineaPedido->cants_pedc1 != 0) {
 				return back()->withErrors(['errors' => ['sale with delivery note or  invoice']])->withInput();
 			}
+			$art0 = FgArt0::select("MODEL_ART0")->where("ID_ART0", $lineaPedido->art_pedc1)->first();
+
+			if(!empty($art0)){
+				$articulos[] = explode("-",$art0->model_art0);
+			}
+
 		}
 
 		try {
 			DB::beginTransaction();
 
-			FgPedc0::where('num_pedc0', $num_pedc0)->delete();
-			FgPedc1::where('num_pedc1', $num_pedc0)->delete();
+			#añadir stock
+			foreach($articulos as $articulo){
+				FgHces1::where("SUB_HCES1", $articulo[0])->where("REF_HCES1", $articulo[1])->where("CONTROLSTOCK_HCES1", "S")->update(["stock_hces1"=>DB::raw('stock_hces1+1')]);
+
+			}
+
+			FgPedc0::where('anum_pedc0', $pedc0[0])->where('num_pedc0', $pedc0[1])->delete();
+			FgPedc1::where('anum_pedc1', $pedc0[0])->where('num_pedc1', $pedc0[1])->delete();
 
 			DB::commit();
 

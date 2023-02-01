@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Request;
 use Session;
 use Routing;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Redirect;
 use DB;
 use App\Models\Subasta;
@@ -22,6 +22,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Providers\ToolsServiceProvider as Tools;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Log;
 
 class MailController extends Controller
@@ -2242,15 +2243,18 @@ class MailController extends Controller
 		$lot = request("lot");
 		$info_lot = request("info_lot", false);
 		$cod_user = session('user.cod', null);
+		$user_price = request("user_price", 0);
+		$user_price = ToolsServiceProvider::moneyFormat($user_price, trans(Config::get('app.theme') . '-app.lot.eur'));
 
 		$email = new EmailLib('ASK_LOT_ADMIN');
         if (!empty($email->email)) {
 			$formFields ="";
-			$prohibidosAux= array("auction", "lot", "info_lot");
+			$prohibidosAux= array("auction", "lot", "info_lot", "user_price");
 			$formFields = $this->processPostVars($formFields, $prohibidosAux);
 
 			$email->setAtribute("AUCTION_NAME", $auction);
 			$email->setAtribute("LOT_REF", $lot);
+			$email->setAtribute("USER_PRICE", $user_price);
 
 			if($info_lot){
 				$email->setLot($auction, $lot);

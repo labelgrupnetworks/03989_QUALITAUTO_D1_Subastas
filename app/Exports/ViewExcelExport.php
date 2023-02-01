@@ -7,22 +7,17 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class ViewExcelExport implements FromView
 {
-
-	public function __construct($artists,$caracteristicas,$lots,$auction)
+	private $vars = [];
+	private $view = [];
+	public function __construct($view,$vars)
 	{
-		$this->artists = $artists;
-		$this->caracteristicas = $caracteristicas;
-		$this->lots = $lots;
-		$this->auction = $auction;
+		$this->view = $view;
+		$this->vars = $vars;
+
 	}
 
     public function view(): View
     {
-        return view('front::reports.expoArtExcel', [
-			'artists' => $this->artists,
-			'caracteristicas' => $this->caracteristicas,
-			'lots' => $this->lots,
-			'auction' => $this->auction
-		]);
+        return view('front::reports.'.$this->view, $this->vars);
     }
 }

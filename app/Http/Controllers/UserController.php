@@ -59,9 +59,6 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
-use Symfony\Component\HttpFoundation\Response;
-
-use function GuzzleHttp\Promise\all;
 
 class UserController extends Controller
 {
@@ -569,7 +566,6 @@ class UserController extends Controller
     # Registrar un usuario
     public function registro(HttpRequest $request)
     {
-
 		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
 		{
 			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
@@ -1138,9 +1134,6 @@ class UserController extends Controller
 					}elseif(!empty(Config::get('app.password_MD5'))){
 							$password_encrypt =  md5(Config::get('app.password_MD5').$password);
 					}
-                    //Newsletter
-
-
 
                     if(!empty(Request::input('newsletter'))){
                         $newsletter = 'S';
@@ -1203,22 +1196,10 @@ class UserController extends Controller
 
                     }
 
-
-
-                    //Poner que familias newsletter quieren recibir
-                    $news = new Newsletter();
-
-                    $news->families = Null;
-                    if(!empty(Request::input('families'))){
-                        $news->families = Request::input('families');
-                    }
-
-                    $news->lang = $languages;
-                    $news->email =  Request::input('email');
-                    // 30-04-2019 - Quitamos !empty(Request::input('newsletter')) porque no tiene sentido para las families
-                    if(!empty($news->families)){
-                        $news->newFamilies();
-                    }
+					//Añadimos a newsletter controlando tanto el sistema nuevo como el antiguo
+					if(!empty(Request::input('newsletter'))){
+						(new NewsletterController())->setNewsletter($request, "add");
+					}
 
                     $user->cod_cli = $num;
                     $inf_user = $user->getUser();
@@ -4495,52 +4476,5 @@ class UserController extends Controller
 		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
 	}
 
-	public function unsuscribeToNewsletter($lang, $cod_cli, $hash)
-	{
-		$requestType = request()->query('type');
-
-		if(!$user = (new User())->getUserByHash($cod_cli, $hash)) {
-			if($requestType === "json") {
-				return response()->json(["message" => "Not Found", "status" => "error"], Response::HTTP_NOT_FOUND);
-			}
-			abort(Response::HTTP_NOT_FOUND);
-		}
-
-		$isSended = (new Newsletter())->unSubscribeToExternalService($user->email_cliweb);
-		$message = trans(config('app.theme').'-app.msg_success.newsletter_unsubscribe', ['email' => $user->email_cliweb]);
-
-		if($requestType === "json") {
-			return !$isSended
-				? response()->json(["message" => "Interval server error", "status" => "error"], Response::HTTP_INTERNAL_SERVER_ERROR)
-				: response()->json(["message" => $message, "status" => "success"]);
-		}
-
-		abort_if(!$isSended, Response::HTTP_NOT_FOUND);
-		return view("front::pages.message", ["message" => $message]);
-	}
-
-	public function suscribeToNewsletter($lang, $cod_cli, $hash)
-	{
-		$requestType = request()->query('type');
-
-		if(!$user = (new User())->getUserByHash($cod_cli, $hash)) {
-			if($requestType === "json") {
-				return response()->json(["message" => "Not Found", "status" => "error"], Response::HTTP_NOT_FOUND);
-			}
-			abort(Response::HTTP_NOT_FOUND);
-		}
-
-		$isSended = (new Newsletter())->subscribeToExternalService($user->email_cliweb);
-		$message = trans(config('app.theme').'-app.msg_success.newsletter_subscribe', ['email' => $user->email_cliweb]);
-
-		if($requestType === "json") {
-			return !$isSended
-				? response()->json(["message" => "Interval server error", "status" => "error"], Response::HTTP_INTERNAL_SERVER_ERROR)
-				: response()->json(["message" => $message, "status" => "success"]);
-		}
-
-		abort_if(!$isSended, Response::HTTP_NOT_FOUND);
-		return view("front::pages.message", ["message" => $message]);
-	}
 }
 

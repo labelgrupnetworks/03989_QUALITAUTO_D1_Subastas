@@ -14,9 +14,9 @@ class MailJob implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 	#numero de intentos
-	public $tries = 5;
+	public $tries ;
 	#intervalo de segundos entre intentos
-	public $retryAfter = 60;
+	public $retryAfter ;
 
 	protected $emailLib;
 
@@ -27,6 +27,8 @@ class MailJob implements ShouldQueue
      */
 	public function __construct($emailLib)
     {
+		$this->tries = env('QUEUE_TRIES', 3);
+		$this->retryAfter = env('QUEUE_RETRY_AFTER', 90);
 		$this->emailLib = $emailLib;
 	}
 

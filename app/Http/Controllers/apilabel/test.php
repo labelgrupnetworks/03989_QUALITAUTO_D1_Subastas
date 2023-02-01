@@ -78,8 +78,8 @@ class test extends BaseController
 				$Payment->idorigincli = "WWWWW1";  // "76355";
 				$Payment->paid = "N";
 				$Payment->serial = "T20";
-				$Payment->number = 1;
-				$Payment->amount = 200;
+				$Payment->number = 2;
+				$Payment->amount = 0.01;
 				$Payment->reason = "M";
 				$Payment->description = "pulsera oro";
 				$Payment->date =  date("Y-m-d H:i:s");
@@ -235,16 +235,57 @@ class test extends BaseController
 		#añado campos como si hicieramos desde admin
 
 		$Auction = new stdClass();
-		$Auction->idauction = "00000900";
-		$Auction->name = "SUBASTA 900";
-		$Auction->status = "S";
-		$Auction->phoneorders = 1;
+		$Auction->idauction = "testapi";
 
-		$Auction->startauction = "2021-06-07 18:00:00";
-		$Auction->finishauction = "2021-06-09 23:30:00";
-		$Auction->startorders = "2021-05-13 00:00:00";
-		$Auction->finishorders = "2021-06-09 18:00:00";
 
+
+
+
+
+		$auctionLang = new stdclass();
+		$auctionLang->lang = "fr";
+		$auctionLang->name = "name fr";
+		$auctionLang->description = "description fr";
+		$auctionLang->metatitle = "metatitle fr";
+		$auctionLang->metadescription = "metadescription fr";
+		$Auction->auctionlanguages[]=(array)$auctionLang;
+
+		$auctionLang = new stdclass();
+		$auctionLang->lang = "en";
+		$auctionLang->name = "name en";
+		$auctionLang->description = "description en";
+		$auctionLang->metatitle = "metatitle en";
+		$auctionLang->metadescription = "metadescription en";
+		$Auction->auctionlanguages[]=(array)$auctionLang;
+
+		$session = new stdClass();
+
+		$session->name = "Subasta de api session";
+		$session->reference = "001";
+		$session->description = "descripcion session";
+		$session->start = "2020-06-30 08:20:00";
+		$session->finish = "2020-06-30 23:20:00";
+		$session->startorders = "2020-06-30 23:20:00";
+		$session->finishorders = "2020-06-30 23:20:00";
+		$session->firstlot = 1;
+		$session->lastlot = 999999;
+
+			#idiomas sesiones
+			$sessionLang = new stdclass();
+			$sessionLang->lang = "fr";
+			$sessionLang->name = "session name fr";
+			$sessionLang->description = "session description fr";
+			$session->sessionLanguages[]=(array)$sessionLang;
+/*
+			#idiomas sesiones
+			$sessionLang = new stdclass();
+			$sessionLang->lang = "pt";
+			$sessionLang->name = "session name pt";
+			$sessionLang->description = "session description pt";
+			$session->sessionLanguages[]=(array)$sessionLang;
+*/
+		$Auction->sessions[] = (array)$session;
+/*
 			$session = new stdClass();
 			$session->reference = "001";
 			$session->name = "SUBASTA 900 - PINTURA";
@@ -279,7 +320,7 @@ class test extends BaseController
 			$session->finish = "2021-06-09 19:30:00";
 			$session->finishorders = "2021-06-09 14:00:00";
 			$Auction->sessions[] = (array)$session;
-
+*/
 /*
 			$Auction->name = "SUBASTA DE API";
 			$Auction->type = "O";

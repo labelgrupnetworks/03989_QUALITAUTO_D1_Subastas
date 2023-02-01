@@ -32,7 +32,7 @@ class AdminClienteController extends Controller
 	public function index(Request $request)
 	{
 		$newslettersSelect = [];
-		if(config('app.newsletterFamilies')){
+		if(config('app.newsletterFamilies') && !config('app.newsletter_table')){
 			$newslettersSelect = collect(explode(',', config('app.newsletterFamilies', '')))->map(function($item){
 				return "nllist" . trim($item) . "_cliweb";
 			}) ;
@@ -287,7 +287,17 @@ class AdminClienteController extends Controller
 			$this->addOrigenes($request, $request->codcli);
 		}
 
-		(new Newsletter())->subscribeToExternalService($cliente['email']);
+		if(config('app.newsletter_table')) {
+
+			$families = array_filter($request->input('families', []), function($family) {
+				return $family === 'S';
+			});
+			(new Newsletter())
+				->setAttributes($request->input('language'), $request->input('email'), $families)
+				->suscribe();
+		}
+
+		//(new Newsletter())->subscribeToExternalService($cliente['email']);
 
 		return redirect(route('clientes.index'))
 			->with(['success' => [0 => 'Cliente actualizado correctamente']]);
@@ -339,15 +349,6 @@ class AdminClienteController extends Controller
 
 		$booleanSelectOptions = ['S' => 'Si', 'N' => 'No'];
 
-		$newslettersFamilies = explode(',', config('app.newsletterFamilies', ''));
-
-		$newsletters = [];
-		for ($i = 1; $i <= 20; $i++) {
-			if(in_array($i, $newslettersFamilies)){
-				$newsletters[$i] = FormLib::select("newsletter$i", 0, old("newsletter$i", $cliente->{"newsletter$i"} ?? 'N'), $booleanSelectOptions, '', '', false);
-			}
-		}
-
 		$form = [
 			'identificacion' => [
 				'idorigincli' => FormLib::TextReadOnly('idorigincli', 0, $cliente->idorigincli),
@@ -395,7 +396,7 @@ class AdminClienteController extends Controller
 				'phoneshipping' => FormLib::Text('phoneshipping', 0, old('phoneshipping', $cliente->phoneshipping ?? ''), 'maxlength="40"'),
 				'mobileshipping' => FormLib::Text('mobileshipping', 0, old('mobileshipping', $cliente->mobileshipping ?? ''), 'maxlength="40"'),
 			],
-			'newsletters' => $newsletters,
+			'newsletters' => $this->newsletterForm($fxcli, $cliente),
 			'additional' => [
 				'enviocatalogo' =>  FormLib::Select('enviocatalogo', 0, old('enviocatalogo', $fxcli->cli2->envcat_cli2 ?? 'N'), $booleanSelectOptions, '', '', false),
 			],
@@ -415,6 +416,34 @@ class AdminClienteController extends Controller
 
 		return $form;
 
+	}
+
+	private function newsletterForm($fxCli, $apiCli)
+	{
+		$newsletters = [];
+		$booleanSelectOptions = ['S' => 'Si', 'N' => 'No'];
+
+		if(config('app.newsletter_table')){
+			$newsletterRepo = new Newsletter();
+			$subsriptions = $newsletterRepo->getSuscriptionsWithNamesByEmail($fxCli->email_cliweb ?? '');
+			$newslettersNames = $newsletterRepo->getNewslettersNames(true);
+
+			foreach ($newslettersNames as $id => $name) {
+				$suscription = $subsriptions->where('id_newsletter', $id)->first();
+				$newsletters[$name] = FormLib::Select("families[$id]", 0, old("families[$id]", (bool)$suscription ? 'S' : 'N'), $booleanSelectOptions, '', '', false);
+			}
+		}
+		else {
+			$newslettersFamilies = explode(',', config('app.newsletterFamilies', ''));
+
+			for ($i = 1; $i <= 20; $i++) {
+				if(in_array($i, $newslettersFamilies)){
+					$newsletters[$i] = FormLib::select("newsletter$i", 0, old("newsletter$i", $apiCli->{"newsletter$i"} ?? 'N'), $booleanSelectOptions, '', '', false);
+				}
+			}
+		}
+
+		return $newsletters;
 	}
 
 	public function passwordEncrypt($passwd)

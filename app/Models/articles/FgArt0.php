@@ -89,7 +89,7 @@ class FgArt0 extends Model
 	public function scopeJoinFgPedc0($query){
         return $query->join('FGPEDC0', 'FGPEDC0.EMP_PEDC0 = FGART0.EMP_ART0 AND FGPEDC0.NUM_PEDC0 = FGPEDC1.NUM_PEDC1');
     }
-
+	
 
 
 

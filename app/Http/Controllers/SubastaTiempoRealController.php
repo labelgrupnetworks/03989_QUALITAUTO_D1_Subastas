@@ -241,6 +241,17 @@ class subastaTiempoRealController extends Controller
             $LoteSiguiente = $subastaLoteSiguiente->getLote();
 
             $subasta_info->lote_siguiente = head($subasta->getAllLotesInfo($LoteSiguiente));
+			$inf_lot_translate = $subasta->getMultilanguageTextLot( $subasta_info->lote_siguiente->num_hces1,  $subasta_info->lote_siguiente->lin_hces1);
+			$subasta_info->lote_siguiente->text_lang = $inf_lot_translate;
+			$lang = strtoupper(Config::get('app.locale'));
+
+
+			$subasta_info->lote_siguiente->titulo_hces1 = $inf_lot_translate[$lang]->titulo_hces1;
+			$subasta_info->lote_siguiente->desc_hces1 = $inf_lot_translate[$lang]->desc_hces1;
+			$subasta_info->lote_siguiente->descweb_hces1 = $inf_lot_translate[$lang]->descweb_hces1;
+
+
+
         }else{
             //ojo he puesto clone por que si no al cambiar imagen de lote_actual a base 64 cambiaba tambien la de lote siguiente
             $subasta_info->lote_siguiente = clone  $subasta_info->lote_actual;
@@ -3078,6 +3089,8 @@ class subastaTiempoRealController extends Controller
                if (!empty($lote_siguiente)){
 
                    $data['lote_siguiente'] = head($subasta->getAllLotesInfo($lote_siguiente));
+
+				   $data['lote_siguiente']->text_lang = $subasta->getMultilanguageTextLot( $data['lote_siguiente']->num_hces1,  $data['lote_siguiente']->lin_hces1);
 
                    //añadir funcion que envíe mail a usuario segun su favorito y posicion de este
                    //parametro que indica el numero de lotes que faltan para enviar mail

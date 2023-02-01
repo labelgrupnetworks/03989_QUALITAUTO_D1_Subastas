@@ -128,12 +128,26 @@ private $debug = true;
             return false;
         }
 		$this->replace();
-
-		if(\Config::get("app.queueEmails") && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)){
+		#quitado 11/01/2023 \Config::get("app.queueEmails") &&
+		if(env("QUEUE_CONNECTION") != "sync" && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)){
 			MailJob::dispatch($this)->onQueue( Config::get('app.queue_env'));
 			return true;
 		}else{
-			return $this->send();
+			try{
+
+				return $this->send();
+
+			}catch (\Exception $e) {
+				if(!empty($this->email)){
+					\Log::error("Error Send email: ". $this->email->cod_email);
+					$this->setEmailLog('E');
+				}
+				\Log::error($e);
+				if(!empty($this->old_lang)){
+					\App::setLocale($this->old_lang);
+				}
+				return false;
+			}
 		}
 
 
@@ -520,7 +534,7 @@ private $debug = true;
 
     private function send(){
 
-        try{
+
 
             if (!Config::get('app.enable_emails')){
                 return False;
@@ -591,17 +605,7 @@ private $debug = true;
             }
             return true;
 
-        }catch (\Exception $e) {
-            if(!empty($this->email)){
-                \Log::error("Error Send email: ". $this->email->cod_email);
-                $this->setEmailLog('E');
-            }
-            \Log::error($e);
-            if(!empty($this->old_lang)){
-                \App::setLocale($this->old_lang);
-            }
-            return false;
-        }
+
     }
 
     private function checkTo(){

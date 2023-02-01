@@ -87,7 +87,7 @@ class TradLib {
             'language' => strtoupper($language)
 		);
 
-        $data = CacheLib::useCache('translate', $sql, $params, $withCache);
+        $data = CacheLib::useCache('translate'.$language, $sql, $params, $withCache);
 
         $translate = array();
 

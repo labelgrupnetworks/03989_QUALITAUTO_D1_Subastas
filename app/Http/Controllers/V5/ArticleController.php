@@ -142,7 +142,18 @@ class ArticleController extends Controller
 			$precioArticulos[ $valvariante->id_valvariantes]=  round($valvariante->pvp_art + ($valvariante->pvp_art * $iva), 2);
 		}
 
+		$article->stock = true;
+		#si no tiene variantes debemos buscar stock en la tabla fgstk
+		if(count($variantes) == 0){
+			#los lotes pueden tener stock aunque no tenga variantes
+			$stkArt = FgArt0::JoinArt()->ArtActivo()
+			->leftjoin("DP_STOCK_PROD", " DP_STOCK_PROD.EMP_ART = FGART.EMP_ART AND DP_STOCK_PROD.ID_ART = FGART.ID_ART")
+			->select("nvl(DP_STOCK_PROD.STOCK,0) stock")
+			->where("ID_ART0", $idArticle)
+			->first();
 
+			$article->stock = $stkArt->stock >0;
+		}
 
 
 

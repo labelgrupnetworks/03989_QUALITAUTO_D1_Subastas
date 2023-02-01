@@ -95,6 +95,11 @@ class SubastaController extends Controller
 		return $lotListController->getLotsList( Str::slug($auction->name), $auction->cod_sub,  $auction->reference );
 	}
 
+	public function subastas_especiales()
+	{
+		return $this->listaSubastasSesiones('S', 'E');
+	}
+
 	public function subastas_presenciales()
 	{
 		return      $this->listaSubastasSesiones('S', 'W');
@@ -982,12 +987,18 @@ class SubastaController extends Controller
 				if( $lote_search->impsalhces_asigl0== 0){
 					$lote_search->impsalhces_asigl0 = head($subasta->AllScales())->scale;
 				}
-				
-				$inf_lot_translate = $subasta->getMultilanguageTextLot($lote_search->num_hces1, $lote_search->lin_hces1);
+				$inf_lot_translate =  $subasta->getMultilanguageTextLot($lote_search->num_hces1, $lote_search->lin_hces1);
+				$lote_search->text_lang = $inf_lot_translate;
 
 				$strLib = new StrLib();
-				$lote_search->titulo_hces1 = $strLib->CleanStr($inf_lot_translate[$lang]->titulo_hces1);
+				$lote_search->titulo_hces1 = $inf_lot_translate[$lang]->titulo_hces1;
+				$lote_search->desc_hces1 = $inf_lot_translate[$lang]->desc_hces1;
+				$lote_search->descweb_hces1 = $inf_lot_translate[$lang]->descweb_hces1;
+/*
+
+
 				$lote_search->desc_hces1 = $strLib->CleanStr($inf_lot_translate[$lang]->desc_hces1);
+				*/
 				$lote_search->formatted_impsalhces_asigl0 = \Tools::moneyFormat($lote_search->impsalhces_asigl0);
 				$lote_search->imagen            = $subasta_search->getLoteImg($lote_search);
 				//si hay alguna puja max_puja >0 miramos si tiene un valor de adjudicación y lo ponemos como max puja
@@ -1005,6 +1016,7 @@ class SubastaController extends Controller
 				$webfriend = !empty($inf_lot_translate[strtoupper($lang)]->webfriend_hces1) ? $inf_lot_translate[strtoupper($lang)]->webfriend_hces1 :  str_slug($inf_lot_translate[strtoupper($lang)]->titulo_hces1);
 				$url_friendly = \Routing::translateSeo('lote') . $lote_search->sub_asigl0 . "-" . str_slug($lote_search->id_auc_sessions) . '-' . $lote_search->id_auc_sessions . "/" . $lote_search->ref_asigl0 . '-' . $lote_search->num_hces1 . '-' . $webfriend;
 				$lote_search->url_lot    = $url_friendly;
+
 				$res = array(
 					"status" => "success",
 					"lote"     => $lote_search
@@ -1070,7 +1082,7 @@ class SubastaController extends Controller
 
 
 		$titulo = $lote[0]->titulo_hces1?? $lote[0]->descweb_hces1;
-		
+
 		#18-10-22 MODIFICADO PARA QUE USE LA MISMA FUNCION
 		/* $webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
 		$url_buena = \Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
@@ -2167,7 +2179,8 @@ class SubastaController extends Controller
 
 		$inf_subasta = $subasta->getInfSubasta();
 
-		if (!empty($inf_subasta) && empty(\Config::get("app.DeleteOrdersAnyTime")) && empty(\Config::get("app.DeleteOrders"))   && (strtotime("now") < strtotime($inf_subasta->orders_start)  ||  strtotime("now") > strtotime($inf_subasta->orders_end))) {
+									#
+		if (!empty($inf_subasta)  && empty(\Config::get("app.DeleteOrdersAnyTime")) && empty(\Config::get("app.DeleteOrders"))   && (strtotime("now") < strtotime($inf_subasta->orders_start)  ||  strtotime("now") > strtotime($inf_subasta->orders_end))) {
 
 
 			$res = array(
@@ -2176,6 +2189,30 @@ class SubastaController extends Controller
 			);
 		} else if (!empty($licit)) {
 			$orden = $subasta->getOrden($licit[0]->cod_licit);
+			#para subastas online
+			if( $inf_subasta->tipo_sub == 'O'  ){
+
+				#debemos comprobar si la orden es superior a las pujas que quedan, por que si no lo es le daremos un mensaje al usuario que no se puede borrar uan orden si ya se ha convertido en puja
+				$pujas = $subasta->getPujas($licit[0]->cod_licit);
+
+				#Si no hay ordenes o la orden ya se ha materializado en puja
+				if(count($orden)==0 || ( count($pujas) > 0 && $pujas[0]->imp_asigl1>= $orden[0]->himp_orlic)) {
+
+					$res = array(
+						"status" => "error",
+						"msg" => 'error_delete_order_online',
+						"respuesta" => $subasta->cod . '-' . $subasta->ref
+					);
+					return json_encode($res);
+				}
+
+
+
+
+			}
+
+
+
 			if (!empty($orden[0]->himp_orlic)) {
 				$subasta->imp = $orden[0]->himp_orlic;
 				$subasta->cancelarOrden($licit[0]->cod_licit);

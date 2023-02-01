@@ -34,7 +34,6 @@ class FgSub extends Model
 	const TIPO_SUB_PERMANENTE = 'P';
 	const TIPO_SUB_ESPECIAL = 'E';
 	const TIPO_SUB_MAKE_OFFER = 'M';
-	const TIPO_SUB_INVERSA = 'M';
 
 	CONST SUBABIERTA_SUB_PUJAS = 'P';
 	CONST SUBABIERTA_SUB_ORDENES = 'O'; //evitar
@@ -204,7 +203,6 @@ class FgSub extends Model
 
 		}
         return $query;
-
 	}
 
 	public function getSubcSubTypes(){
@@ -228,8 +226,11 @@ class FgSub extends Model
 
 	}
 
-
-	public function getTipoSubTypes(){
+	public function getTipoSubTypes()
+	{
+		//actualizar tabla sys_auction_types de todos los clientes y activar erpActiveAuctions
+		//$configActiveAuctions = explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E,M,I'));
+		//$erpActiveAuctions = SysAuctionTypes::enabledAuctions()->get()->pluck('code');
 
 		$types = collect([
 			self::TIPO_SUB_PRESENCIAL => trans("admin-app.fields.tipo_sub_w"),
@@ -238,7 +239,6 @@ class FgSub extends Model
 			self::TIPO_SUB_PERMANENTE => trans("admin-app.fields.tipo_sub_p"),
 			self::TIPO_SUB_ESPECIAL => trans("admin-app.fields.tipo_sub_e"),
 			self::TIPO_SUB_MAKE_OFFER =>  trans("admin-app.fields.tipo_sub_m"),
-			self::TIPO_SUB_INVERSA =>  trans("admin-app.fields.tipo_sub_i"),
 		]);
 
 		return $types->filter(function ($value, $key) {

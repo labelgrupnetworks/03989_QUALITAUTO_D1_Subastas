@@ -84,31 +84,47 @@ class CustomControllers extends Controller
 
 
 
-	public function excelExhibition($codSub, $reference)
+	public function excelExhibition($codSub, $reference, $stock = false)
 	{
 		$galeriaArte = new GaleriaArte();
 
-		$fgsub = new Fgsub();
-		$auction = $fgsub->getInfoSub($codSub, $reference);
+		if(!empty($codSub)){
+			$fgsub = new Fgsub();
+			$auction = $fgsub->getInfoSub($codSub, $reference);
 
-		\Tools::exit404IfEmpty($auction);
-		if ($auction->tipo_sub != 'E') {
-			exit(\View::make('front::errors.404'));
+			\Tools::exit404IfEmpty($auction);
+			if ($auction->tipo_sub != 'E') {
+				exit(\View::make('front::errors.404'));
+			}
+		}else{
+			$auction =null;
 		}
+
 
 		$fgasigl0 = new FgAsigl0();
 
-		$lots = $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1, IMPSALHCES_ASIGL0,  DESCWEB_HCES1, REF_ASIGL0,   DES_SUB, DFEC_SUB, HFEC_SUB,IDVALUE_CARACTERISTICAS_HCES1')
+
+
+		if($stock){
+			$lots =  $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1, IMPSALHCES_ASIGL0,  DESCWEB_HCES1, REF_ASIGL0,   STOCK_HCES1,OBSDET_HCES1,FECALTA_ASIGL0, DES_ALM, SUB_ASIGL0, OBSDET_HCES1, FECALTA_ASIGL0, PC_HCES1')
+			->JoinFghces1Asigl0()->LeftJoinAlm()
+			->where("stock_hces1",">",0)->orderby("sub_asigl0,ref_asigl0")->get();
+		}else{
+			$lots =  $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1, IMPSALHCES_ASIGL0,  DESCWEB_HCES1, REF_ASIGL0,   DES_SUB, DFEC_SUB, HFEC_SUB,IDVALUE_CARACTERISTICAS_HCES1')
 			->leftjoin('FGCARACTERISTICAS_HCES1', "FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0 AND FGCARACTERISTICAS_HCES1.IDCAR_CARACTERISTICAS_HCES1 = '" . \Config::get("app.ArtistCode") . "'")
-			->where("COD_SUB", $codSub)
-			#ordenamos por orden, pero tambien tenemos en cuenta la referencia ya que por defecto el orden esta a nully rompia la ordenacion
-			->ActiveLotAsigl0()->orderby("orden_hces1,ref_hces1")->get();
+			->where("COD_SUB", $codSub)->ActiveLotAsigl0()->orderby("orden_hces1,ref_hces1")->get();
+		}
 
-
-		$caracteristicasTmp = $fgasigl0->select('NUM_HCES1, LIN_HCES1, ID_CARACTERISTICAS, nvl(VALUE_CARACTERISTICAS_VALUE,VALUE_CARACTERISTICAS_HCES1 ) VALUE_CARACTERISTICAS')
+		$fgasigl0 = new FgAsigl0();
+		$fgasigl0 = $fgasigl0->select('NUM_HCES1, LIN_HCES1, ID_CARACTERISTICAS, nvl(VALUE_CARACTERISTICAS_VALUE,VALUE_CARACTERISTICAS_HCES1 ) VALUE_CARACTERISTICAS')
 			->LeftJoinCaracteristicasAsigl0()
-			->where("COD_SUB", $codSub)
-			->ActiveLotAsigl0()->get();
+			->ActiveLotAsigl0();
+
+
+			$fgasigl0 = $fgasigl0->where("COD_SUB", $codSub);
+
+
+		$caracteristicasTmp = $fgasigl0->get();
 		$caracteristicas = array();
 
 		foreach ($caracteristicasTmp as $caracteristica) {
@@ -142,10 +158,20 @@ class CustomControllers extends Controller
 			}
 		}
 
-		$fileName = $codSub . '_Exhibition';
+		if($stock){
 
-		$export = new ViewExcelExport($artists,$caracteristicas,$lots,$auction);
-    	return Excel::download($export, "$fileName.xlsx");
+			$fileName = 'stock';
+
+			$export = new ViewExcelExport("expoStockExcel",compact('artists','caracteristicas','lots'));
+			return Excel::download($export, "$fileName.xlsx");
+
+		}else{
+
+			$fileName = $codSub . '_Exhibition';
+
+			$export = new ViewExcelExport("expoArtExcel",compact('artists','caracteristicas','lots','auction'));
+			return Excel::download($export, "$fileName.xlsx");
+		}
 
 	}
 

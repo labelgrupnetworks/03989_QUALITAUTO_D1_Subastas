@@ -14,6 +14,10 @@ class WebNewbannerTipoModel extends Model
     public $incrementing = false;
  //   public  $keyType = string;
     //permitimos crear un elemento apartir de todos los campos
-    protected $guarded = [];    
+    protected $guarded = [];
 
+	public function banner()
+    {
+        return $this->hasOne(WebNewbannerModel::class, 'id_web_newbanner_tipo', 'id');
+    }
 }

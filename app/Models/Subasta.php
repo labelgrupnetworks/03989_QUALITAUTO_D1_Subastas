@@ -988,7 +988,7 @@ class Subasta extends Model
                                     JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.id_emp AND asigl0.SUB_ASIGL0 = a.id_sub AND asigl0.REF_ASIGL0 = a.id_ref)
                                      JOIN fglicit b ON (b.EMP_LICIT = a.id_emp AND b.SUB_LICIT = a.id_sub AND b.CLI_LICIT = a.cod_cli)
                                     JOIN FGSUB SUB ON  SUB.EMP_SUB = a.id_emp AND SUB.COD_SUB = a.id_sub
-                                    JOIN  \"auc_sessions\" auc ON  auc.\"company\" = asigl0.emp_asigl0 and auc.\"auction\" = SUB.COD_SUB
+                                    JOIN  \"auc_sessions\" auc ON  auc.\"company\" = asigl0.emp_asigl0 and auc.\"auction\" = SUB.COD_SUB and auc.\"init_lot\" <= asigl0.REF_ASIGL0 and auc.\"end_lot\" >= asigl0.REF_ASIGL0
                                     left join fgorlic orlic on (orlic.emp_orlic = a.id_emp and orlic.sub_orlic = a.id_sub and orlic.ref_orlic  = a.id_ref and orlic.licit_orlic = b.cod_licit)
                                     left join fgasigl1 asigl1 on (asigl1.emp_asigl1 = a.id_emp and asigl1.sub_asigl1 = a.id_sub and asigl1.ref_asigl1  = a.id_ref and asigl1.licit_asigl1 = b.cod_licit)
                                     where a.id_emp = :emp
@@ -1027,7 +1027,7 @@ class Subasta extends Model
                         JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.emp_orlic AND asigl0.SUB_ASIGL0 = a.SUB_ORLIC AND asigl0.REF_ASIGL0 = a.REF_ORLIC)
                         JOIN fglicit b ON (b.EMP_LICIT = :emp AND b.SUB_LICIT = a.SUB_ORLIC AND b.COD_LICIT = a.LICIT_ORLIC)
                         JOIN FGSUB SUB ON  SUB.EMP_SUB = a.emp_orlic AND SUB.COD_SUB = a.SUB_ORLIC
-                        JOIN  \"auc_sessions\" auc ON  auc.\"company\" = asigl0.emp_asigl0 and auc.\"auction\" = SUB.COD_SUB
+                        JOIN  \"auc_sessions\" auc ON  auc.\"company\" = asigl0.emp_asigl0 and auc.\"auction\" = SUB.COD_SUB and auc.\"init_lot\" <= asigl0.REF_ASIGL0 and auc.\"end_lot\" >= asigl0.REF_ASIGL0
                         $sql_join_favorites
                         where a.EMP_ORLIC = :emp
                         AND asigl0.REF_ASIGL0 >= auc.\"init_lot\"
@@ -1053,7 +1053,7 @@ class Subasta extends Model
                     ) pujas
 
                     JOIN FGSUB SUB ON  SUB.EMP_SUB =  pujas.emp_asigl0 AND SUB.COD_SUB = pujas.SUB_ASIGL0
-                    JOIN  \"auc_sessions\" auc ON  auc.\"company\" = SUB.EMP_SUB and auc.\"auction\" =  SUB.COD_SUB
+                    JOIN  \"auc_sessions\" auc ON  auc.\"company\" = SUB.EMP_SUB and auc.\"auction\" =  SUB.COD_SUB and auc.\"init_lot\" <= ref_asigl0 and auc.\"end_lot\" >= ref_asigl0
                     where
                         SUB.SUBC_SUB in ('A','S')
                  AND ref_asigl0 >= auc.\"init_lot\"
@@ -4145,6 +4145,9 @@ class Subasta extends Model
         $primary_lang = strtoupper(key($locales));
         $texts[$primary_lang] = new \stdClass();
         $texts[$primary_lang]->titulo_hces1 = $strLib->CleanStr(head($res)->titulo_hces1);
+		if(empty($texts[$primary_lang]->titulo_hces1)){
+			$texts[$primary_lang]->titulo_hces1 = $strLib->CleanStr(head($res)->descweb_hces1);
+		}
         $texts[$primary_lang]->desc_hces1 = $strLib->CleanStr(head($res)->desc_hces1);
         $texts[$primary_lang]->descweb_hces1 = $strLib->CleanStr(head($res)->descweb_hces1);
         $texts[$primary_lang]->descdet_hces1 = $strLib->CleanStr( nl2br(head($res)->descdet_hces1));
@@ -4158,6 +4161,9 @@ class Subasta extends Model
             if($lang !== false){
                 $texts[$lang] = new \stdClass();
                 $texts[$lang]->titulo_hces1 = $strLib->CleanStr($text_lang->titulo_hces1_lang);
+				if(empty($texts[$lang]->titulo_hces1)){
+					$texts[$lang]->titulo_hces1 = $strLib->CleanStr($text_lang->descweb_hces1_lang);
+				}
                 $texts[$lang]->desc_hces1 = $strLib->CleanStr($text_lang->desc_hces1_lang);
                 $texts[$lang]->descweb_hces1 = $strLib->CleanStr($text_lang->descweb_hces1_lang);
                 $texts[$lang]->descdet_hces1 = $strLib->CleanStr(nl2br($text_lang->descdet_hces1_lang));
@@ -4169,6 +4175,9 @@ class Subasta extends Model
             if(!isset($texts[strtoupper($key_lang)])){
                 $texts[strtoupper($key_lang)] = new \stdClass();
                 $texts[strtoupper($key_lang)]->titulo_hces1 = $texts[$primary_lang]->titulo_hces1;
+				if(empty($texts[strtoupper($key_lang)]->titulo_hces1)){
+					$texts[strtoupper($key_lang)]->titulo_hces1 = $texts[$primary_lang]->descweb_hces1;
+				}
                 $texts[strtoupper($key_lang)]->desc_hces1 = $texts[$primary_lang]->desc_hces1;
                 $texts[strtoupper($key_lang)]->descweb_hces1 = $texts[$primary_lang]->descweb_hces1;
                 $texts[strtoupper($key_lang)]->descdet_hces1 = nl2br($texts[$primary_lang]->descdet_hces1);

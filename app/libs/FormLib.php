@@ -385,7 +385,10 @@ class FormLib
 
 		foreach ($mixOptions as $k => $v) {
 			$aux .= '<option value="' . $k . '"';
-			if ($k == $strValue) {
+			if (is_array($strValue) && in_array($v,$strValue ))  {
+				$aux .= " selected='selected'";
+			}
+			if (!is_array($strValue) && $k == $strValue) {
 				$aux .= " selected='selected'";
 			}
 			$aux .= ">" . $v . "</option>";
@@ -425,8 +428,7 @@ class FormLib
 		foreach ($array as $key => $value) {
 
 			$aux .= "<option value='$key' ";
-
-			if ( (!$isMultiple && $strValue ?? '' == $key) || ($isMultiple && is_array($strValue) && in_array($key, $strValue)) ) {
+			if ( (!$isMultiple && ($strValue ?? '') == $key) || ($isMultiple && is_array($strValue) && in_array($key, $strValue)) ) {
 				$aux .= "selected='selected'";
 			}
 

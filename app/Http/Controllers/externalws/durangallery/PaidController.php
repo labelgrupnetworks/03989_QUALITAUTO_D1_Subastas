@@ -112,7 +112,8 @@ class PaidController extends DuranGalleryController
 
 
 		$fgasigl0 = $fgasigl0->GetLotsByRefAsigl0($refLots)->leftjoinAlm();
-		$lots = $fgasigl0->select("REF_ASIGL0,SUB_ASIGL0, NUM_HCES1, LIN_HCES1, IDORIGEN_ASIGL0, DESC_HCES1, DES_ALM, DIR_ALM, ALM_HCES1, alto_hces1, ancho_hces1, grueso_hces1,   IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, PERMISOEXP_HCES1, SEC_HCES1, PC_HCES1, TRANSPORT_HCES1")->get();
+		$lots = $fgasigl0->select("REF_ASIGL0,SUB_ASIGL0, NUM_HCES1, LIN_HCES1, IDORIGEN_ASIGL0, DESC_HCES1, DES_ALM, DIR_ALM, ALM_HCES1, alto_hces1, ancho_hces1, grueso_hces1,   IMPSALHCES_ASIGL0,COML_HCES1 , DESCWEB_HCES1, PERMISOEXP_HCES1, SEC_HCES1, PC_HCES1, TRANSPORT_HCES1, COD2_CLI AS PROPIETARIO")
+		->LeftJoinOwnerWithHces1()->get();
 
 		$importeTotal = 0;
 
@@ -132,14 +133,14 @@ class PaidController extends DuranGalleryController
 
 			#no hay que tener en cuenta el iva de la comisión,
 			$caracteristicas = FgCaracteristicas_Hces1::getByLot( $lot->num_hces1, $lot->lin_hces1);
-			$idAutor="";
-			if(!empty($caracteristicas[414])){
+
+			$idPropietario=$lot->propietario;
+			if(empty($idPropietario) &&  !empty($caracteristicas[414])){
 				$autor = Web_Artist::where("ID_ARTIST", $caracteristicas[414]->idvalue_caracteristicas_hces1)->first();
 				if(!empty($autor)){
-					$idAutor = $autor->idexternal_artist;
+					$idPropietario = $autor->idexternal_artist;
 				}
 			}
-
 
 			#notificar al propietario
 			$email = new EmailLib('LOT_SOLD_ASSIGNOR');
@@ -160,6 +161,11 @@ class PaidController extends DuranGalleryController
 				$email->setUserByCod($cli->cod_cli,false);
 				$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
 				$email->setPrice(\Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli),"",2) );
+				$seguro_txt = "";
+				if($info["seguro"] == 1){
+					$seguro_txt = "<span style='color: red;'>El usuario quiere contratar el seguro de envio.</span>";
+				}
+				$email->setAtribute("SEGURO", $seguro_txt);
 				$email->setTo("sara.gimeno@duran-subastas.com");
 				$email->setCc("consuelo.duran@duran-subastas.com");
 				$email->setCc("macarena.duran@duran-subastas.com");
@@ -178,7 +184,7 @@ class PaidController extends DuranGalleryController
 		   $lote["importesiniva"] =  round($lot->impsalhces_asigl0 / (1 + $ivaGeneral),2);
 
 		   $lote["tipoiva"] =$ivaUser;   # indicar el iva que tiene 21 o 0 ;
-		   $lote["vendedor"] =$idAutor;  # codigo artista ;
+		   $lote["vendedor"] =$idPropietario;  # codigo artista ;
 		   $lote["familia"] = $lot->sec_hces1; # codigo familia ;
 		   $lote["coste"] = $lot->pc_hces1?? ""; # coste del articulo ; campo de caracteristica precio_neto_artista
 		   $img = \Tools::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
@@ -232,7 +238,7 @@ class PaidController extends DuranGalleryController
 	   #importe total pagado, lo ponemso al final por que necesitamos calcularlo en base a los lotes
 	   $info["importeTotal"] = $importeTotal;
 	   $info["formaiva"] = $ivaUser > 0? 1:2; #1-IVA incluido en el precio; 2-IVA exento
-	  
+
 
 	  # $this->sendConfirmationMail($info);
 

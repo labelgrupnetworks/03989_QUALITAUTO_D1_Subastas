@@ -66,6 +66,19 @@ class AdminLotController extends Controller
 		$tipo_sub = FgSub::where('cod_sub', $cod_sub)->first()->tipo_sub;
 
 		$lotes = FgAsigl0::query();
+		if ($request->obsdet_hces1) {
+			$lotes->where('upper(obsdet_hces1)', 'like', "%" . mb_strtoupper($request->obsdet_hces1) . "%");
+		}
+		if ($request->des_alm) {
+			$lotes->where('upper(des_alm)', 'like', "%" . mb_strtoupper($request->des_alm) . "%");
+		}
+		if ($request->fecalta_asigl0) {
+			$lotes->where('fecalta_asigl0', '=', $request->fecalta_asigl0);
+		}
+
+		if ($request->stock_hces1) {
+			$lotes->where('stock_hces1', '=', $request->stock_hces1);
+		}
 		if ($request->ref_asigl0) {
 			$lotes->where('ref_asigl0', '=', $request->ref_asigl0);
 		}
@@ -118,7 +131,7 @@ class AdminLotController extends Controller
 			$lotes->where('ffin_asigl0', '<=',$request->ffin_asigl0);
 		}
 
-		$select = ['SUB_ASIGL0', 'REF_ASIGL0', 'IDORIGEN_ASIGL0', 'CERRADO_ASIGL0', 'IMPSALHCES_ASIGL0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0', 'comlhces_asigl0', 'comphces_asigl0', 'DESTACADO_ASIGL0', 'RETIRADO_ASIGL0', 'OCULTO_ASIGL0', 'NUMHCES_ASIGL0', 'LINHCES_ASIGL0', 'PROP_HCES1', 'DESCWEB_HCES1', 'fini_asigl0', 'ffin_asigl0'];
+		$select = ['SUB_ASIGL0', 'REF_ASIGL0', 'IDORIGEN_ASIGL0', 'CERRADO_ASIGL0', 'IMPSALHCES_ASIGL0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0', 'comlhces_asigl0', 'comphces_asigl0', 'DESTACADO_ASIGL0', 'RETIRADO_ASIGL0', 'OCULTO_ASIGL0', 'NUMHCES_ASIGL0', 'LINHCES_ASIGL0', 'PROP_HCES1', 'DESCWEB_HCES1', 'fini_asigl0', 'ffin_asigl0','STOCK_HCES1','OBSDET_HCES1','FECALTA_ASIGL0', 'DES_ALM'];
 
 		$tableParams = [
 			'sub_asigl0' => 0, 'ref_asigl0' => Config::get('external_id', 1), 'idorigen_asigl0' => Config::get('external_id', 0), 'prop_hces1' => 1,
@@ -126,9 +139,16 @@ class AdminLotController extends Controller
 			'comlhces_asigl0' => 0, 'comphces_asigl0' => 0, 'cerrado_asigl0' => 1, 'destacado_asigl0' => 1, 'retirado_asigl0' => 1, 'oculto_asigl0' => 1,
 			'fini_asigl0' => 0, 'ffin_asigl0' => 0
 		];
+		#si tienen stock obligatorio le añado el campo stock y lo pongo el primero
+		if(config("app.stockIni",0)>0){
+			#lo quito para poder ponerlo el primero de nuevo
+			unset($tableParams["ref_asigl0"]);
+			$tableParams = array_merge(['ref_asigl0' => 1,'stock_hces1' => 1,'des_alm' => 1,'obsdet_hces1' => 1,'fecalta_asigl0' => 1],$tableParams);
+		}
 
 		$lotes = $lotes->select($select)
 			->joinFghces1Asigl0()
+			->LeftJoinAlm()
 			->where('SUB_ASIGL0', $cod_sub);
 
 		if(config('app.ArtistCode', false)){
@@ -177,6 +197,13 @@ class AdminLotController extends Controller
 			'fini_asigl0' => FormLib::Date('fini_asigl0', 0, $request->fini_asigl0),
 			'ffin_asigl0' => FormLib::Date('ffin_asigl0', 0, $request->ffin_asigl0),
 		];
+		#si tienen stock obligatorio le añado el campo stock y lo pongo el primero
+		if(config("app.stockIni",0)>0){
+			$formulario->stock_hces1 = FormLib::Text('stock_hces1', 0, $request->stock_hces1, '', '');
+			$formulario->des_alm = FormLib::Text('des_alm', 0, $request->des_alm, '', '');
+			$formulario->obsdet_hces1 = FormLib::Text('obsdet_hces1', 0, $request->obsdet_hces1, '', '');
+			$formulario->fecalta_asigl0 = FormLib::Date('fecalta_asigl0', 0, $request->fecalta_asigl0, '', '');
+		}
 
 		//retorna la vista completa o solamente la tabla
 		$render = $this->isRender;
@@ -229,6 +256,7 @@ class AdminLotController extends Controller
 			$lot["languages"] = $this->requestLangs($request);
 
 			$json = $lotControler->createLot([$lot]);
+
 			$result = json_decode($json);
 
 			if ($result->status == 'ERROR') {
@@ -747,23 +775,25 @@ class AdminLotController extends Controller
 
 	protected function getImagesFgAsigl0($fgAsigl0)
 	{
-		$imagenes = array();
-		$pathWithoutPosition = "/img/$this->emp/$fgAsigl0->numhces_asigl0/$this->emp-$fgAsigl0->numhces_asigl0-$fgAsigl0->linhces_asigl0";
-		$path = "$pathWithoutPosition.jpg";
+		$path = "/img/$this->emp/$fgAsigl0->numhces_asigl0/";
+		$systemPath = getcwd() . $path;
 
-		if (is_file(str_replace("\\", "/", getcwd() . $path))) {
-			$imagenes[] = $path;
-		}
+		$images = is_dir($systemPath) ? array_diff(scandir($systemPath), ['.', '..']) : [];
 
-		for ($t = 1; $t < 20; $t++) {
+		$validImages = array_filter($images, function($image) use ($fgAsigl0) {
+			$imageName = "{$this->emp}-{$fgAsigl0->numhces_asigl0}-{$fgAsigl0->linhces_asigl0}";
+			$isThisLine = strpos($image, "{$imageName}.") !== false || strpos($image, "{$imageName}_") !== false;
 
-			$pos = str_pad($t, 2, 0, STR_PAD_LEFT);
-			if (is_file(str_replace("\\", "/", getcwd() . $pathWithoutPosition . "_$pos.jpg"))) {
-				$imagenes[] = $pathWithoutPosition . "_$pos.jpg";
-			}
-		}
+			$isHidden = strpos($image, "-NV");
 
-		return $imagenes;
+			return !$isHidden && $isThisLine;
+		});
+
+		$paths = array_map(function ($image) use ($path){
+			return $path . $image;
+		}, $validImages);
+
+		return $paths;
 	}
 
 	protected function getFilesFgAsigl0($fgAsigl0)
@@ -831,6 +861,13 @@ class AdminLotController extends Controller
 			$newfile = str_replace("\\", "/", $path . '/' . $file->getClientOriginalName());
 			copy($file->getPathname(), $newfile);
 		}
+
+		FgHces1::where([
+			['num_hces1', $fgAsigl0->num_hces1],
+			['lin_hces1', $fgAsigl0->lin_hces1],
+		])->update([
+			'videos_hces1' => 'S'
+		]);
 	}
 
 	protected function basicFormCreateFgAsigl0(FgAsigl0 $fgAsigl0, $cod_sub)
@@ -867,6 +904,14 @@ class AdminLotController extends Controller
 			$ownerForm = FormLib::Select2WithAjax('owner', 0, old('owner', $fgAsigl0->prop_hces1), (!empty($propietario)) ? $propietario->nom_pro : '', route('provider.list'), trans('admin-app.placeholder.owner'));
 		}
 
+		$stockIni = config("app.stockIni",0);
+
+		if($stockIni >0){
+			$controlStockIni = 'S';
+		}else{
+			$controlStockIni = 'N';
+		}
+
 		$basicForm =
 		[
 			'hiddens' => [
@@ -885,9 +930,12 @@ class AdminLotController extends Controller
 				"warehouse" => '',
 				'title' => FormLib::Text('title', 1, old('title', strip_tags($fgAsigl0->descweb_hces1))),
 				'order' => FormLib::Text('order', 0, old('order', $fgAsigl0->orden_hces1)),
+				"withstock" => FormLib::Select('withstock', 0, old('withstock', $fgAsigl0->controlstock_hces1 ?? $controlStockIni), ['N' => 'No', 'S' => 'Si'], '', '', false),
+				"stock" => FormLib::Int('stock', 0, old('stock', $fgAsigl0->stock_hces1 ?? $stockIni), 'minlength="1"','',''),
 				'description' => FormLib::TextAreaTiny('description', 0, old('description', $fgAsigl0->desc_hces1)),
 				'extrainfo' => FormLib::TextAreaTiny('extrainfo', 0, old('extrainfo', $fgAsigl0->descdet_hces1)),
 				'search' => FormLib::Textarea('search', 0, $fgAsigl0->search_hces1),
+				'note' => FormLib::TextAreaTiny('note', 0, old('note', $fgAsigl0->obsdet_hces1)),
 			],
 			'estados' => [
 				'highlight' => FormLib::Select('highlight', 1, old('highlight', $fgAsigl0->destacado_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
@@ -926,6 +974,10 @@ class AdminLotController extends Controller
 		if(config("app.adminHideDescription")){
 			unset($basicForm["info"]["description"]);
 			$basicForm["hiddens"]["description"] =  FormLib::Hidden('description', 1, "_");
+		}
+		if(config("app.adminShowCreateDate")){
+
+			$basicForm["info"]["createdate"] =  FormLib::Date("createdate", 0, old('createdate', $fgAsigl0->fecalta_asigl0));
 		}
 
 		$almacenes = FxAlm::select('des_alm', 'cod_alm')->where('baja_tmp_alm', 'N')->pluck('des_alm', 'cod_alm')->toArray();
@@ -985,16 +1037,18 @@ class AdminLotController extends Controller
 
 	protected function addExtrasToForm($formulario, $fgAsigl0)
 	{
+		/*
 		$almacenes = FxAlm::select('des_alm', 'cod_alm')->where('baja_tmp_alm', 'N')->pluck('des_alm', 'cod_alm');
+		"warehouse" => FormLib::Select('warehouse', 0, old('warehouse', $fgAsigl0->alm_hces1 ?? null), $almacenes ?? [], '', '', true),
+		*/
 		$labelOptions = is_array(trans("admin-app.labels")) ? trans("admin-app.labels") : [];
 
 		$formulario->extras = [
 			"idexternal" => FormLib::Text('idexternal', 0, old('idexternal', $fgAsigl0->ubi_hces1), 'maxlength="30"'),
-			"warehouse" => FormLib::Select('warehouse', 0, old('warehouse', $fgAsigl0->alm_hces1 ?? null), $almacenes ?? [], '', '', true),
+
 			'extrainfo' => FormLib::Textarea('extrainfo', 0, old('extrainfo', $fgAsigl0->descdet_hces1), '', '', '3'),
 			"label" => FormLib::Select('label', 0, old('label', $fgAsigl0->oferta_asigl0 ?? null), $labelOptions ?? [], '', '', false),
-			"withstock" => FormLib::Select('withstock', 0, old('withstock', $fgAsigl0->controlstock_hces1 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
-			"stock" => FormLib::Int('stock', 0, old('stock', $fgAsigl0->stock_hces1 ?? 0), 'minlength="1"'),
+
 			"weight" => FormLib::Int('weight', 0, old('weight', $fgAsigl0->peso_hces1 ?? 0), 'minlength="1"'),
 			"high" => FormLib::Int('high', 0, old('high', $fgAsigl0->alto_hces1 ?? 0), 'minlength="1"'),
 			"width" => FormLib::Int('width', 0, old('width', $fgAsigl0->ancho_hces1 ?? 0), 'minlength="1"'),
@@ -1397,6 +1451,40 @@ class AdminLotController extends Controller
 			$apiLotController->eraseLot(['idorigin' => $id]);
 		});
 
+		return response()->json(['success' => true], 200);
+	}
+
+	public function stockRemoveSelection(Request $request, $cod_sub)
+	{
+
+		$lots = FgAsigl0::select('idorigen_asigl0 idorigin')
+			->where('sub_asigl0', $cod_sub)
+			->whereIn('ref_asigl0', $request->lots)
+			->get();
+			//->pluck('idorigen_asigl0');
+
+		if($lots->isEmpty()) {
+			return response()->json(['error' => 'No se encontraron lotes, n ose ha podido quitar el stock'], 400);
+		}
+
+		//obtenemos el id origen de todos los lotes, y si no lo tiene, lo creamos
+		$idsToRemoveStock = $lots->map(function($lot) {
+			if(!$lot->idorigin){
+				return $this->addIdOrigin($lot->sub_asigl0, $lot->ref_asigl0, $lot->numhces_asigl0, $lot->linhces_asigl0);
+			}
+			return $lot->idorigin;
+		});
+
+
+		FgHces1::wherein("idorigen_hces1", $idsToRemoveStock)->update(["STOCK_HCES1" =>0]);
+
+
+		return response()->json(['success' => true], 200);
+	}
+	#poner los lotes a la venta
+	public function setToSellSelection(Request $request, $cod_sub)
+	{
+		FgAsigl0::where('sub_asigl0', $cod_sub)->whereIn('ref_asigl0', $request->lots)->update(["COMPRA_ASIGL0" =>'S']);
 		return response()->json(['success' => true], 200);
 	}
 

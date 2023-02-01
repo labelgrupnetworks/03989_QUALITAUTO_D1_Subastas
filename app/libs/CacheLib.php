@@ -7,22 +7,21 @@
  */
 
 namespace App\libs;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-//use DB;
 /**
- * Description of Str_lib
- *
  * @author LABEL-RSANCHEZ
+ * @method static mixed rememberCache(string $key, \DateTimeInterface|\DateInterval|int $ttl, \Closure $callback)
+ * @method static bool forgetCache(string $key)
  */
 class CacheLib {
 
-
-
     public static  function getCache($keyname){
 
-        if ( Config::get('app.enable_cache') && \Cache::has($keyname)){
-            return \Cache::get($keyname);
+        if (Config::get('app.enable_cache') && Cache::has($keyname)){
+            return Cache::get($keyname);
         }else{
             return false;
         }
@@ -36,7 +35,7 @@ class CacheLib {
             }else{
                 $expiresAt = 60; # un minuto
             }
-            \Cache::put($keyname, $data, $expiresAt);
+            Cache::put($keyname, $data, $expiresAt);
 
         }else{
             return false;
@@ -51,14 +50,14 @@ class CacheLib {
         //si estamos en debug o se fuerza la carga mediante el expires
          if (( (env('APP_DEBUG') &&  !in_array($keyname, ['translate'.$langThemeEmp, 'WEB_SEO_ROUTES'.$langThemeEmp])) || $expiresAt === 0 ) ){
 
-              $data = \DB::select($sql, $params);
+              $data = DB::select($sql, $params);
 
          }
          //si no hay datos
          elseif ( ($data === false )){
 			// \Log::info("guardando cache $keyname");
 
-            $data = \DB::select($sql, $params);
+            $data = DB::select($sql, $params);
             CacheLib::putCache($keyname, $data,$expiresAt);
         }else{
            ;//  \Log::info("usando cache $keyname");
@@ -71,5 +70,26 @@ class CacheLib {
 
         return $data;
     }
+
+	public static function rememberCache($key, $ttl, $closure)
+	{
+		if(is_int($ttl) &&  $ttl <= 0){
+			self::forgetCache($key);
+		}
+		return Cache::remember(self::keyFormat($key), $ttl, $closure);
+	}
+
+	public static function forgetCache($key)
+	{
+		return Cache::forget(self::keyFormat($key));
+	}
+
+	private static function keyFormat(string $key)
+	{
+		$locale = Config::get('app.locale');
+		$theme = Config::get("app.theme");
+		$emp = Config::get("app.emp");
+		return "$key-$locale-$theme-$emp";
+	}
 
 }
