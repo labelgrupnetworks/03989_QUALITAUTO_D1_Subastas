@@ -273,6 +273,10 @@ input {
 	--bs-btn-hover-color: var(--lb-color-primary-contrast);
 	--bs-btn-hover-border-color: var(--lb-color-primary-dark);
 	--bs-btn-hover-bg: var(--lb-color-primary-dark);
+
+	--bs-btn-disabled-color: var(--lb-color-primary-contrast);
+	--bs-btn-disabled-bg: var(--lb-color-primary);
+	--bs-btn-disabled-border-color: var(--lb-color-primary);
 }
 
 .btn-lb-secondary {
@@ -285,6 +289,7 @@ input {
 	--bs-btn-hover-color: var(--lb-color-primary-contrast);
 	--bs-btn-hover-border-color: var(--lb-color-secondary-dark);
 	--bs-btn-hover-bg: var(--lb-color-secondary-dark);
+
 }
 
 .btn-outline-lb-primary {
@@ -406,4 +411,39 @@ a.lb-text-primary:hover {
 
 .modal-block.container {
 	max-width: 500px;
+}
+
+.spinner {
+	display: none;
+}
+
+.spinner-1 {
+	width: 36px;
+	padding: 8px;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: var(--bs-btn-color);
+	--_m:
+		conic-gradient(#0000 10%, #000),
+		linear-gradient(#000 0 0) content-box;
+	-webkit-mask: var(--_m);
+	mask: var(--_m);
+	-webkit-mask-composite: source-out;
+	mask-composite: subtract;
+	animation: s1 1s infinite linear;
+}
+
+.btn.loading .spinner {
+	display: block;
+}
+.btn.loading span {
+	display: none;
+}
+
+
+
+@keyframes s1 {
+	to {
+		transform: rotate(1turn)
+	}
 }

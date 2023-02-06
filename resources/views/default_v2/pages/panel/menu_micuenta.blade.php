@@ -29,6 +29,11 @@
 			{{ trans("$theme-app.user_panel.allotments") }} {{ trans("$theme-app.user_panel.pending_bills") }}
 		</a>
 
+		<a href="{{ route('showShoppingCart', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'showShoppingCart'])
+			aria-current="{{ $pageName == 'showShoppingCart' }}">
+			{{ trans("$theme-app.foot.direct_sale") }}
+		</a>
+
 	</div>
 
 	<div class="h6 my-2">Vendedor</div>

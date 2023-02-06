@@ -1186,14 +1186,20 @@ function closeLogin(event) {
 function handleSubmitLoginForm(event) {
 	event.preventDefault();
 
-	$('#accerder-user').addClass('loadbtn')
-	$('.login-content-form').removeClass('animationShaker')
+	const button = document.getElementById('accerder-user');
+	let isSending = true;
+
+	button.classList.toggle('loading', isSending);
 
 	$.ajax({
 		type: "POST",
 		url: '/login_post_ajax',
 		data: $('#accerder-user-form').serialize(),
-		success: successLoginForm
+		success: successLoginForm,
+		complete: () => {
+			isSending = false;
+			button.classList.toggle('loading', isSending);
+		}
 	});
 }
 
@@ -1202,8 +1208,6 @@ function successLoginForm(response) {
 		location.reload();
 	} else {
 		$(".message-error-log").text('').append(messages.error[response.msg]);
-		$("#accerder-user").removeClass('loadbtn')
-		$('.login-content-form').addClass('animationShaker')
 	}
 }
 

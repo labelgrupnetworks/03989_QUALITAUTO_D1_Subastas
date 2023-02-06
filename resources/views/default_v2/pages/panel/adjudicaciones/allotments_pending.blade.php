@@ -36,7 +36,7 @@ foreach($all_adj as $key_inf => $value){
 					@endphp
 
 					<h2 class="accordion-item accordion-header" id="{{$all_inf['inf']->cod_sub}}-heading">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{$all_inf['inf']->cod_sub}}" aria-expanded="true" aria-controls="{{$all_inf['inf']->cod_sub}}">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pagar_lotes_{{$all_inf['inf']->cod_sub}}" aria-expanded="true" aria-controls="pagar_lotes_{{$all_inf['inf']->cod_sub}}">
 							{{$all_inf['inf']->name}}
 
 							@if($all_inf['inf']->compraweb_sub == 'S')
@@ -47,8 +47,8 @@ foreach($all_adj as $key_inf => $value){
 							@endif
 						</button>
 					</h2>
-					<div id="{{$all_inf['inf']->cod_sub}}" class="accordion-collapse collapse show" aria-labelledby="#{{$all_inf['inf']->cod_sub}}-heading">
 
+					<form id="pagar_lotes_{{$all_inf['inf']->cod_sub}}" class="accordion-collapse collapse show" aria-labelledby="#{{$all_inf['inf']->cod_sub}}-heading">
 						<div class="table-to-columns">
 							<table class="table table-sm align-middle">
 								<thead class="table-light">
@@ -204,7 +204,7 @@ foreach($all_adj as $key_inf => $value){
 								</div>
 							@endif
 
-							<div class="total-price checkout">
+							<div class="total-price checkout mb-2">
 								<div>
 									<h4>{{ trans(\Config::get('app.theme').'-app.user_panel.total_price') }}</h4>
 									<h4><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</h4>
@@ -275,7 +275,7 @@ foreach($all_adj as $key_inf => $value){
 
 						@endif
 
-					</div>
+						</form>
 				@endforeach
 			</div>
 

@@ -20,26 +20,29 @@ $(function() {
 
 
 	$('.change_address_carrito_js').on("change",function () {
-		calcShippingCosts();
+
+		calcShippingCosts($(this).data("sub"));
 	});
 
-	$("#seguro_carrito_js").on("click", function (){
-		calcCostToPay();
+	$(".check_seguro_js").on("click", function (){
+
+		calcCostToPay($(this).data("sub"));
 	});
 
 	$('.change_envio_carrito_js').on("click",function () {
+		sub = $(this).data("sub")
 
 		if($(this).val() == 1){
 			//envio a dirección
 
-			$("#seguro_carrito_js").removeAttr("disabled");
+			$("#seguro_carrito_" + sub +"_js").removeAttr("disabled");
 		}else{
 			//recoge cliente
 
-			$("#seguro_carrito_js").prop("checked", false);
-			$("#seguro_carrito_js").attr("disabled", "disabled");
+			$("#seguro_carrito_" + sub +"_js").prop("checked", false);
+			$("#seguro_carrito_" + sub +"_js").attr("disabled", "disabled");
 		}
-		calcCostToPay();
+		calcCostToPay(sub);
 	});
 
 	$( ".submitShoppingCart_JS" ).on("click",function() {
@@ -103,52 +106,53 @@ function deleteLot(cod_sub, ref, reload){
 
 
 
-function calcShippingCosts(){
+function calcShippingCosts(codsub){
 	token = $('input[name="_token"]').val();
 
 	$.ajax({
 		type: "POST",
 		url: "/shippingCostsCart",
-		data: { _token: token, clidd_carrito: $('#clidd_carrito').val()},
+		data: { _token: token, clidd_carrito: $('#clidd_carrito_' + codsub).val()},
 		success: function (response) {
 
 			if(response.status == "success"){
 
-				$("#envioPosible_carrito_js").removeClass("hidden");
-				$("#envioNoDisponible_carrito_js").addClass("hidden");
-				$("#seguro_carrito_js").removeAttr("disabled");
+				$("#envioPosible_carrito_" + codsub + "_js").removeClass("hidden");
+				$("#envioNoDisponible_carrito_" + codsub + "_js").addClass("hidden");
+				$("#seguro_carrito_" + codsub + "_js").removeAttr("disabled");
 				formattedCosts = new Intl.NumberFormat("de", {minimumFractionDigits: 2}).format(parseFloat(response.costs));
-				$("#coste-envio-carrito_js").text(formattedCosts);
-				$("#gastosEnvio_JS").val(response.costs);
-				calcCostToPay();
+				$("#coste-envio-carrito_" + codsub + "_js").text(formattedCosts);
+				$("#gastosEnvio_" + codsub + "_JS").val(response.costs);
+				calcCostToPay(codsub);
 			}else if(response.status == "error"){
-				$("#envioPosible_carrito_js").addClass("hidden");
-				$("#envioNoDisponible_carrito_js").removeClass("hidden");
-				$("#seguro_carrito_js").prop("checked", false);
+				$("#envioPosible_carrito_" + codsub + "_js").addClass("hidden");
+				$("#envioNoDisponible_carrito_" + codsub + "_js").removeClass("hidden");
+				$("#seguro_carrito_" + codsub + "_js").prop("checked", false);
 				$("#recogida_almacen_carrito_js").prop("checked", true);
-				$("#seguro_carrito_js").removeAttr("disabled");
-				$("#coste-envio-carrito_js").text(0);
-				$("#gastosEnvio_JS").val(0);
-				calcCostToPay();
+				$("#seguro_carrito_" + codsub + "_js").removeAttr("disabled");
+				$("#coste-envio-carrito_" + codsub + "_js").text(0);
+				$("#gastosEnvio_" + codsub + "_JS").val(0);
+				calcCostToPay(codsub);
 			}
 		}
 	});
 }
 //new Intl.NumberFormat("de", {}).format(auction_info.lote_actual.importe_escalado_siguiente)
-function calcCostToPay(){
-	total = parseFloat($("#totalLotes_JS").val());
+function calcCostToPay(codsub){
+	console.log(codsub);
+	total = parseFloat($("#totalLotes_" + codsub + "_JS").val());
 
 
-	if( $("#seguro_carrito_js").prop("checked")){
-		total +=parseFloat($("#seguro_JS").val());
+	if( $("#seguro_carrito_" + codsub + "_js").prop("checked")){
+		total +=parseFloat($("#seguro_" + codsub + "_JS").val());
 	}
 
-	if( $("#envio_agencia_carrito_js").prop("checked")){
-		total +=parseFloat($("#gastosEnvio_JS").val());
+	if( $("#envio_agencia_carrito_" + codsub + "_js").prop("checked")){
+		total +=parseFloat($("#gastosEnvio_" + codsub + "_JS").val());
 	}
 
 	formattedTotal = new Intl.NumberFormat("de", {minimumFractionDigits: 2, maximumFractionDigits: 2,style: 'currency', currency: 'EUR'}).format(parseFloat(total));
-	$(".precio_final_carrito").html( formattedTotal )
+	$(".precio_final_carrito_" + codsub).html( formattedTotal )
 }
 
 
@@ -156,14 +160,12 @@ function calcCostToPay(){
 
 function sendShoppingCart(cod_sub){
 
-	$( ".submitShoppingCart_JS" ).html("<div class='loader mini' style='width: 20px;height: 20px;margin-top: 0px;margin-bottom: 0;'></div>");
-//	$( ".submitShoppingCart_JS" ).attr("disabled", "disabled");
-
-   var pay_lote = $('#pagar_lotes_'+cod_sub).serialize();
+	$(".submitShoppingCart_JS").addClass('loading disabled');
+	const pay_lote = $('#pagar_lotes_'+cod_sub).serialize();
 
    $.ajax({
 		type: "POST",
-		url:  '/shoppingCart/pay',
+		url:  '/shoppingCart/pay?codSub='+cod_sub,
 		data: pay_lote,
 		success: function(data) {
 			if(data.status == 'success'){
@@ -171,8 +173,7 @@ function sendShoppingCart(cod_sub){
 			}else if(data.status == 'error'){
 				$("#modalMensaje #insert_msg").html(messages.error[data.msgError]);
 				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-				$( ".submitShoppingCart_JS" ).html(" ");
-				$( ".submitShoppingCart_JS" ).prop("disabled", false);
+
 				if(data.msgError == "lotsLost"){
 					setTimeout(function (){
 						location.reload()
@@ -184,6 +185,9 @@ function sendShoppingCart(cod_sub){
 			$("#modalMensaje #insert_msg").html('');
 			$("#modalMensaje #insert_msg").html(messages.error.generic);
 			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+		},
+		complete: () => {
+			$(".submitShoppingCart_JS").removeClass('loading disabled');
 		}
 	});
 }

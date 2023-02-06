@@ -231,7 +231,8 @@ $pageName = Route::currentRouteName();
 						<p><span class="message-error-log text-danger seo_h5"></span></p>
 
 						<button id="accerder-user" class="btn btn-lb-primary w-100 mt-4" type="submit">
-							{{ trans($theme.'-app.login_register.acceder') }}
+							<span class="text">{{ trans($theme.'-app.login_register.acceder') }}</span>
+							<div class="spinner spinner-1 m-auto"></div>
 						</button>
 
 					</form>

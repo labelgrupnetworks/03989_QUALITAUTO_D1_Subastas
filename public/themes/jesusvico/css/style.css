@@ -26,7 +26,8 @@ main.museum-page,
 main.events-page,
 main.event-page,
 .home-static-page,
-.create-account {
+.create-account,
+main.page-banner {
 	padding-top: var(--pading-pages);
 	padding-bottom: var(--pading-pages);
 }
@@ -901,4 +902,45 @@ section.ficha-pujas {
 	width: 100%;
 	top: 0;
 	z-index: 1;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Tienda Online
+|--------------------------------------------------------------------------
+*/
+.content-page-banner > .container > .row {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tienda-banner {
+	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 50%);
+}
+
+.tienda-banner img {
+    transition: all 0.5s linear;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.tienda-banner:hover img{
+    filter: brightness(50%);
+    -webkit-filter: brightness(50%);
+    transition:all 0.5s linear;
+}
+
+.content-page-banner .col-md-3{
+	width: 80%;
+	margin-top: 2rem;
+	flex: initial;
+}
+
+@media (min-width: 768px) {
+	.content-page-banner .col-md-3 {
+		width: 45%;
+		margin-top: 2rem;
+	}
 }

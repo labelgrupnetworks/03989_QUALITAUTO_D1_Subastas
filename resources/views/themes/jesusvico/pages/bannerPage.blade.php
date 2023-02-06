@@ -13,20 +13,15 @@
 @stop
 
 @section('content')
+    <main id="page-banner" class="page-banner">
 
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 color-letter titlepage-contenidoweb">
-			<h1 class="titlePage"> {{ $data['name_web_page'] }}</h1>
+        <div class="container">
+            <h1> {{ $data['name_web_page'] }}</h1>
+        </div>
+
+        <div id="content-page-banner" class="content-page-banner mb-5">
+			{!! \BannerLib::bannersPorKey($data['banner'], $data['banner'], ['dots' => false]) !!}
 		</div>
-	</div>
-</div>
 
-<div id="content-page-banner" class="content-page-banner mb-5">
-
-	{!! \BannerLib::bannersPorKey($data['banner'], $data['banner'], ['dots' => false]) !!}
-
-</div>
-
-
+    </main>
 @stop

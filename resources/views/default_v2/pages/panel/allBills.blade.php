@@ -66,7 +66,7 @@
                                     </table>
                                 </form>
                             </div>
-							<div class="total-price checkout">
+							<div class="total-price checkout mb-2">
 
 								<div class="importe_total adj">
 									<h4>{{ trans("$theme-app.user_panel.total_price") }}</h4>
