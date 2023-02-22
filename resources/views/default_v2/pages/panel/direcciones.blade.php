@@ -11,7 +11,7 @@
 
             <div class="col-lg-9">
 
-                <h1>Direcciones</h1>
+                <h1>{{ trans("$theme-app.user_panel.addresses") }}</h1>
                 <section class="adrresses row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 gy-2">
                     @foreach ($data['shippingaddress'] as $key => $address)
                         <div class="col">
@@ -29,15 +29,15 @@
 
                                     <button class="btn btn-sm btn-lb-secondary" data-bs-toggle="modal"
                                         data-bs-target="#editAddress" data-codd="{{ $address->codd_clid }}"
-                                        type="button" title="Editar">Editar</button>
+                                        type="button" title="{{ trans("$theme-app.user_panel.edit") }}">{{ trans("$theme-app.user_panel.edit") }}</button>
 
                                     @if ($address->codd_clid != 'W1')
-                                        <button class="btn btn-sm btn-lb-secondary fav-address" title="{{'Seleccionar como principal'}}"
+                                        <button class="btn btn-sm btn-lb-secondary fav-address" title="{{ trans("$theme-app.user_panel.select_as_parent") }}"
                                             cod="{{ $address->codd_clid }}">
 											@include('components.boostrap_icon', ['icon' => 'star', 'size' => '18'])
 										</button>
 
-										<button class="btn btn-sm btn-lb-secondary delete-address" cod="{{ $address->codd_clid }}" title="Eliminar">
+										<button class="btn btn-sm btn-lb-secondary delete-address" cod="{{ $address->codd_clid }}" title="{{ trans("$theme-app.user_panel.remove") }}">
 											@include('components.boostrap_icon', ['icon' => 'trash', 'size' => '18'])
 										</button>
                                     @endif
@@ -51,7 +51,7 @@
                         <button class="card address-card h-100 w-100" data-bs-toggle="modal" data-bs-target="#editAddress" data-codd="0">
                             <div class="card-body card-new-direction">
 								@include('components.boostrap_icon', ['icon' => 'plus', 'size' => '48'])
-                                Añadir nueva dirección
+                                {{ trans("$theme-app.user_panel.add_new_address") }}
                             </div>
                         </button>
                     </div>
@@ -65,7 +65,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editAddressLabel">Editar dirección</h5>
+                    <h5 class="modal-title" id="editAddressLabel">{{ trans("$theme-app.user_panel.edit") }} {{ trans("$theme-app.user_panel.address") }}</h5>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

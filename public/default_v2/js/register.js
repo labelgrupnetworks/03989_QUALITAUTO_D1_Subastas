@@ -1,5 +1,7 @@
 document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchCityForSecondAddress);
+document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
 document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
+
 
 
 function searchCityForSecondAddress(event) {
@@ -7,7 +9,7 @@ function searchCityForSecondAddress(event) {
 	const country = document.querySelector('[name="clid_pais"]').value;
 	const zip = event.target.value;
 
-	if(!Boolean(country.trim()) || !Boolean(zip.trim())){
+	if (!Boolean(country.trim()) || !Boolean(zip.trim())) {
 		return;
 	}
 
@@ -27,16 +29,16 @@ async function searchCityByCode(country, zip) {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({country, zip})
+		body: JSON.stringify({ country, zip })
 	});
 
-	if(!response.ok) {
+	if (!response.ok) {
 		throw new Error(response.status);
 	}
 
 	const responseJson = await response.json();
 
-	if(responseJson.status === 'error'){
+	if (responseJson.status === 'error') {
 		throw new Error(responseJson.status);
 	}
 
@@ -90,15 +92,15 @@ function handleCheckedAddressShipping(checkElement) {
 function handleSubmitRegisterForm(event) {
 	event.preventDefault();
 
-	//mirar y copiar direccion
-	const withDirection = document.querySelector("[name=with-address]").value;
-	if(!withDirection) {
+	//en caso de no tener dirección multiple o de estar seleccionado, copiamos dirección
+	const withSameAddress = document.querySelector("[name=shipping_address]").checked;
+	if (withSameAddress) {
 		copyPrincipalAddress();
 	}
 
 	const form = event.target;
 
-	if(!registerValidations(form)) {
+	if (!registerValidations(form)) {
 		return;
 	}
 
@@ -128,17 +130,17 @@ function copyPrincipalAddress() {
  */
 function registerValidations(form) {
 
-	if(!submit_form(form, 1)) {
+	if (!submit_form(form, 1)) {
 		showMessage(messages.error.hasErrors);
 		return false;
 	}
 
-	if(!checkIfErrorEmail()) {
+	if (!checkIfErrorEmail()) {
 		showMessage(messages.error.email_exist);
 		return false;
 	}
 
-	if(!checkNifValidations() || !checkCaptcha()){
+	if (!checkNifValidations() || !checkCaptcha()) {
 		showMessage(messages.error.hasErrors);
 		return false
 	}
@@ -150,7 +152,7 @@ function checkNifValidations() {
 	const paisInput = document.querySelector(`[name=pais]`);
 	const nifInput = document.querySelector(`[name=nif]`);
 
-	if(paisInput.value === "ES" && !nifInput.value.trim()) {
+	if (paisInput.value === "ES" && !nifInput.value.trim()) {
 		muestra_error_input(nifInput);
 		return false;
 	}
@@ -160,7 +162,7 @@ function checkNifValidations() {
 
 function checkIfErrorEmail() {
 	const emaiInput = document.querySelector(`[name=email]`);
-	if(emaiInput.classList.contains("email-error")) {
+	if (emaiInput.classList.contains("email-error")) {
 		muestra_error_input(emaiInput)
 		return false;
 	}
@@ -203,4 +205,37 @@ function errorRegisterForm(response) {
 function loadingData(isLoading) {
 	const button = document.querySelector('.submitButton');
 	button.classList.toggle('loading', isLoading);
+}
+
+/**
+ * @param {Event} event
+ */
+function checkExistNif(event) {
+	const nifInput = event.target;
+	const nif = nifInput.value.trim().toUpperCase();
+
+	if (!nif) return
+
+	fetch('/api-ajax/exist-nif', {
+		method: "POST",
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ nif })
+	})
+		.then((response) => response.json())
+		.then((data) => {
+
+			if (data.status !== 'error') {
+				nifInput.classList.remove("is-invalid");
+				return;
+			}
+
+			muestra_error_input(nifInput);
+			showMessage(messages.error.nif_exist);
+
+			nifInput.classList.add("is-invalid");
+			return;
+		})
 }

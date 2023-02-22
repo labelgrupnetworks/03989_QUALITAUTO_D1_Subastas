@@ -103,7 +103,7 @@
 
                                                                 <ul class="dropdown-menu">
                                                                     <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                                            target="_blank">Ver lote</a></li>
+                                                                            target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
                                                                     <li>
                                                                         <a class="dropdown-item"
                                                                             href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">

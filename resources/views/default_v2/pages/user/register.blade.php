@@ -27,11 +27,9 @@
         <form id="registerForm" action="{{ route('send_register') }}">
             @csrf
 
-            <input name="with-address" type="hidden" value={{ config('app.delivery_address', false) }}>
-
             <div class="row mb-5">
                 <div class="col-md-4">
-                    <h4>Inromación Personal</h4>
+                    <h4>{{ trans("$theme-app.user_panel.personal_info") }}</h4>
                 </div>
                 <div class="col-md-8">
                     <div class="row gy-1">
@@ -48,10 +46,10 @@
 
                         <div class="col-md-2">
                             <label class="form-label">
-                                Género
+                                {{ trans("$theme-app.login_register.genre") }}
                                 <select class="form-select" name="sexo">
-                                    <option value="H" selected>Sr.</option>
-                                    <option value="M">Sra.</option>
+                                    <option value="H" selected>{{ trans("$theme-app.login_register.genre_mr") }}</option>
+                                    <option value="M">{{ trans("$theme-app.login_register.genre_mrs") }}</option>
                                 </select>
                             </label>
                         </div>
@@ -197,10 +195,10 @@
                 <div class="col-md-8">
                     <label class="form-check-label">
                         <input class="form-check-input" name="shipping_address" type="checkbox"
-                            onchange="handleCheckedAddressShipping(this)" @checked(config('app.delivery_address', false)) />
+                            onchange="handleCheckedAddressShipping(this)" @checked(!config('app.delivery_address', false)) />
                         {{ trans("$theme-app.login_register.utilizar_direcc_direccenv") }}
                     </label>
-                    <div class="row mt-2 gy-1 d-none" id="js-shipping_address">
+                    <div class="row mt-2 gy-1" id="js-shipping_address">
                         {!! $formulario->clid !!}
 
                         <div class="col-md-6">
@@ -245,7 +243,7 @@
 
             <div class="row mb-5">
                 <div class="col-md-4">
-                    <h4>Cuenta</h4>
+                    <h4>{{ trans("$theme-app.login_register.cuenta") }}</h4>
                 </div>
                 <div class="col-md-8">
                     <div class="row gy-1">
@@ -302,7 +300,7 @@
 
             <div class="row mb-5">
                 <div class="col-md-4">
-                    <h4>Conciciones</h4>
+                    <h4>{{ trans("$theme-app.login_register.conditions") }}</h4>
                 </div>
                 <div class="col-md-8">
                     <div class="row gy-1">

@@ -50,7 +50,7 @@ if(strpos($refLot, '.') !== false){
 			</button>
 
 			<ul class="dropdown-menu">
-				<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">Ver lote</a></li>
+				<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
 				<li>
 					<button class="dropdown-item deleteLot_JS"
 						data-sub="{{$lot->sub_asigl0}}" data-ref="{{$lot->ref_asigl0}}">

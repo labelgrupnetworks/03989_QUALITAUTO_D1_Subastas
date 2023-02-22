@@ -7,7 +7,7 @@
 
 <div class="card menu-panel-card">
 
-	<div class="h6 mb-2">Comprador</div>
+	<div class="h6 mb-2">{{ trans("$theme-app.user_panel.buyer") }}</div>
 	<div class="list-group list-group-flush mb-3">
 		<a href="{{ Routing::slug('user/panel/orders') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.orders'])
 			aria-current="{{ $pageName == 'panel.orders' }}">
@@ -36,18 +36,18 @@
 
 	</div>
 
-	<div class="h6 my-2">Vendedor</div>
+	<div class="h6 my-2">{{ trans("$theme-app.user_panel.seller") }}</div>
 	<div class="list-group list-group-flush mb-3">
 
 		<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.sales'])
 			aria-current="{{ $pageName == 'panel.sales' }}">
-			Mis Ventas
+			{{ trans("$theme-app.user_panel.my_sale_title") }}
 		</a>
 
 	</div>
 
 
-	<div class="h6 mb-2">Configuración</div>
+	<div class="h6 mb-2">{{ trans("$theme-app.user_panel.setting") }}</div>
 	<div class="list-group list-group-flush mb-3">
 		<a href="{{ Routing::slug('user/panel/info') }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.account_info'])
 			aria-current="{{ $pageName == 'panel.account_info' }}">
@@ -56,7 +56,7 @@
 
 		<a href="{{ route('panel.addresses', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.addresses'])
 			aria-current="{{ $pageName == 'panel.addresses' }}">
-			Direcciones
+			{{ trans("$theme-app.user_panel.addresses") }}
 		</a>
 
 		<a href="{{ Routing::slug('logout') }}" class="list-group-item list-group-item-action">

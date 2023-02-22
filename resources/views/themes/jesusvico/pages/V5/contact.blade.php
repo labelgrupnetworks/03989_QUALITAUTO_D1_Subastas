@@ -23,8 +23,7 @@
                     {{-- {!! $data['content'] !!} --}}
 
                     <section class="bg-lb-color-primary">
-                        <h3 class="p-5 m-0" style="color: white;">Rellene el formulario y estaremos encantados de resolver sus
-                            dudas</h3>
+                        <h3 class="p-5 m-0" style="color: white;">{{ trans("$theme-app.foot.answer_your_questions") }}</h3>
                     </section>
                     <section class="bg-lb-color-backgorund-light p-5">
                         <div class="d-flex align-items-center pt-2 pb-2">
@@ -150,7 +149,7 @@
                                 data-callback="onSubmit"></div>
                         </div>
 
-                        <button class="btn btn-lb-primary" type="submit">Enviar</a>
+                        <button class="btn btn-lb-primary" type="submit">{{ trans("$theme-app.global.enviar") }}</a>
 
                     </form>
                 </div>

@@ -95,7 +95,7 @@
 													</button>
 
 													<ul class="dropdown-menu">
-														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">Ver lote</a></li>
+														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
 														{{-- <li><hr class="dropdown-divider"></li> --}}
 														@if(config("app.DeleteOrders") && (empty($inf_lot->implic_hces1) || $inf_lot->imp > $inf_lot->implic_hces1))
 															<li>

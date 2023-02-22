@@ -104,7 +104,7 @@ foreach ($all_adj_trans as $key_inf => $value) {
 
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                            target="_blank">Ver lote</a></li>
+                                                            target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
                                                 </ul>
 
                                             </div>

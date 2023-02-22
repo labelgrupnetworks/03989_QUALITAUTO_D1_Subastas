@@ -327,6 +327,9 @@ $lang =[
 			'mobile' => 'Mobile',
 			'document_type' => 'Document type',
 			'expiration_date' => 'Expiration date',
+			'conditions' => 'Conditions',
+			'genre_mr' => 'Mr.',
+			'genre_mrs' => 'Mrs.'
 		),
 	'lot' =>
 		array (
@@ -822,6 +825,7 @@ $lang =[
 			'actual_bid' => 'Current lot bid',
 			'add_address' => 'Add another address',
 			'address' => 'Address',
+			'addresses' => 'Addresses',
 			'address_normal' => 'Other addresses',
 			'address_predeterminated' => 'Default address',
 			'allotments' => 'My adjudications',
@@ -894,6 +898,14 @@ $lang =[
 			'text_transfer' => 'You can make your transfer payment of :pago € to the following bank account <br> :cuenta',
 			"iva" => "VAT",
 			"unit_iva" => "unit VAT",
+			'shop' => "Shop",
+			"direccion-facturacion" => "Select an address from your address book",
+			"envio_agencia" => "Shipment by agency",
+			"envio_no_disponible" => "It is not possible to send by agency; the purchase volume exceeds the limit or the delivery address is outside our scope.",
+			"recogida_producto" => "Pickup at current location.",
+			"sala_almacen" => "room/warehouse",
+			"gastos_envio" => "Shipping costs",
+			"seguro_envio" => "Shipping insurance",
 			"my_lots" => "My lots",
 			"my_sale_title" => "My sales",
 			"my_sale_title_detail" => "My sale details",
@@ -925,7 +937,14 @@ $lang =[
 			'keywords_non_alphanumeric' => 'Keywords should not contain alphanumeric characters',
 			'input_all_empty' => 'It is mandatory to fill in at least one field of family, subfamily or one of the keywords',
 			'name' => 'Name',
-
+			'see_lot' => "See lot",
+			'buyer' => 'Buyer',
+			'seller' => 'Seller',
+			'setting' => 'Setting',
+			'edit' => 'Edit',
+			'add_new_address' => 'Add new address',
+			'select_as_parent' => 'Select as parent',
+			'remove' => 'Remove'
 		),
 	'valoracion_gratuita' =>
 		array (

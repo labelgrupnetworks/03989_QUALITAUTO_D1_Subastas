@@ -117,7 +117,7 @@
 
                                                                 <ul class="dropdown-menu">
                                                                     <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                                            target="_blank">Ver lote</a></li>
+                                                                            target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
                                                                     {{-- <li><hr class="dropdown-divider"></li> --}}
                                                                 </ul>
                                                             </div>

@@ -67,13 +67,12 @@ $(document).ready(function() {
     $lote_actual = $data['subasta_info']->lote_actual;
 
 	$titleName = match (true /* $auction->subc_sub */) {
-		$lote_actual->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_VENTA_DIRECTA => 'TIENDA',
-		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_HISTORICO => 'SUBASTAS ANTERIORES',
-		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => 'SUBASTA ACTUAL',
-		default => 'SUBASTA',
+		$lote_actual->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_VENTA_DIRECTA => trans("$theme-app.subastas.store"),
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_HISTORICO => trans("$theme-app.subastas.previous_auctions"),
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => trans("$theme-app.subastas.current_auction"),
+		default => trans("$theme-app.subastas.inf_subasta_subasta"),
 	};
 @endphp
-
 <main class="ficha">
 	<div class="container grid-header">
 		<div class="row">

@@ -344,6 +344,10 @@ $lang = [
 		'mobile' => 'Móvil',
 		'document_type' => "Tipo de documento",
 		'expiration_date' => 'Fecha expiración',
+		'conditions' => 'Condiciones',
+		'genre_mr' => 'Sr.',
+		'genre_mrs' => 'Sra.'
+
 	),
 	'lot' =>
 	array(
@@ -856,6 +860,7 @@ $lang = [
 		'actual_bid' => 'Puja actual lote',
 		'add_address' => 'Añadir otra dirección',
 		'address' => 'Dirección',
+		'addresses' => 'Direcciones',
 		'address_normal' => 'Otras direcciones',
 		'address_predeterminated' => 'Dirección Predeterminada',
 		'allotments' => 'Mis adjudicaciones',
@@ -936,7 +941,7 @@ $lang = [
 		"envio_agencia" => "Envío por agencia",
 		"envio_no_disponible" => "No es posible realizar el envío por agencia; el volumen de la compra excede el límite o la dirección de entrega está fuera de nuestro ámbito.",
 		"recogida_producto" => "Recogida en la ubicación actual.",
-		"sala_almacen" => "Sala/almacen",
+		"sala_almacen" => "Sala/almacén",
 		"gastos_envio" => "Gastos de Envío",
 		"seguro_envio" => "Seguro de envío",
 		"my_lots" => "Mis lotes",
@@ -971,7 +976,14 @@ $lang = [
 		'keywords_non_alphanumeric' => 'Las palabras clave no deben contener carácteres alfanuméricos',
 		'input_all_empty' => 'Es obligatorio rellenar mínimo un campo de familia, subfamilia o una de las palabras clave',
 		'name' => 'Nombre',
-
+		'see_lot' => "Ver lote",
+		'buyer' => 'Comprador',
+		'seller' => 'Vendedor',
+		'setting' => 'Configuración',
+		'edit' => 'Editar',
+		'add_new_address' => 'Añadir nueva dirección',
+		'select_as_parent' => 'Seleccionar como principal',
+		'remove' => 'Eliminar'
 	),
 	'valoracion_gratuita' =>
 	array(
