@@ -142,6 +142,8 @@ function registerValidations(form) {
 		showMessage(messages.error.hasErrors);
 		return false
 	}
+
+	return true;
 }
 
 function checkNifValidations() {
