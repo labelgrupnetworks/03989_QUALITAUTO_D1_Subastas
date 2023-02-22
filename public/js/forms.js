@@ -237,6 +237,7 @@ function muestra_error_input(campo,error) {
 
 	$("label[for="+id+"]").addClass('has-error');
     $(campo).addClass('has-error');
+	$(campo).addClass('is-invalid');
 
     if (campo.value != "" && campo.value != null) {
         $(campo).addClass('has-content');
@@ -260,6 +261,7 @@ function oculta_error_input(campo) {
     $(campo).addClass('has-content');
 
     $(campo).removeClass('has-error');
+	$(campo).removeClass('is-invalid');
 
     if (campo.value != "" && campo.value != null) {
         $(campo).addClass('has-content');
@@ -268,9 +270,6 @@ function oculta_error_input(campo) {
         $(campo).removeClass('has-content');
         $(campo).parent().removeClass('has-content');
     }
-
-
-    $(campo).popover("hide");
 
 }
 

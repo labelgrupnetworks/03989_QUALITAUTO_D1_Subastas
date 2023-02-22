@@ -1178,8 +1178,8 @@ function closeLogin(event) {
 
 /**
  * @todo
- * - [ ] añadir evento loading mientras carga
- * - [ ] eliminar evento al recibir respuesta
+ * - [X] añadir evento loading mientras carga
+ * - [X] eliminar evento al recibir respuesta
  * - [ ] controlar respuesta de error
  * @param {Event} event
  */
@@ -1187,9 +1187,7 @@ function handleSubmitLoginForm(event) {
 	event.preventDefault();
 
 	const button = document.getElementById('accerder-user');
-	let isSending = true;
-
-	button.classList.toggle('loading', isSending);
+	button.classList.toggle('loading', true);
 
 	$.ajax({
 		type: "POST",
@@ -1197,8 +1195,7 @@ function handleSubmitLoginForm(event) {
 		data: $('#accerder-user-form').serialize(),
 		success: successLoginForm,
 		complete: () => {
-			isSending = false;
-			button.classList.toggle('loading', isSending);
+			button.classList.toggle('loading', false);
 		}
 	});
 }

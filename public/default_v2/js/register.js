@@ -1,4 +1,5 @@
 document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchCityForSecondAddress);
+document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
 
 
 function searchCityForSecondAddress(event) {
@@ -83,3 +84,121 @@ function handleCheckedAddressShipping(checkElement) {
 	document.getElementById('clid').value = isChecked ? '0' : '1';
 }
 
+/**
+ * @param {Event} event
+ */
+function handleSubmitRegisterForm(event) {
+	event.preventDefault();
+
+	//mirar y copiar direccion
+	const withDirection = document.querySelector("[name=with-address]").value;
+	if(!withDirection) {
+		copyPrincipalAddress();
+	}
+
+	const form = event.target;
+
+	if(!registerValidations(form)) {
+		return;
+	}
+
+	$.ajax({
+		type: "POST",
+		url: form.action,
+		data: new FormData(form),
+		processData: false,
+		contentType: false,
+		beforeSend: () => loadingData(true),
+		success: successRegister,
+		error: errorRegisterForm,
+		complete: () => loadingData(false)
+	});
+}
+
+function copyPrincipalAddress() {
+	const inputsNames = ['pais', 'cpostal', 'provincia', 'poblacion', 'codigoVia', 'direccion'];
+	inputsNames.forEach((inputName) => {
+		document.querySelector(`[name='clid_${inputName}']`).value = document.querySelector(`[name='${inputName}']`).value;
+	});
+}
+
+/**
+ *
+ * @param {HTMLFormElement} form
+ */
+function registerValidations(form) {
+
+	if(!submit_form(form, 1)) {
+		showMessage(messages.error.hasErrors);
+		return false;
+	}
+
+	if(!checkIfErrorEmail()) {
+		showMessage(messages.error.email_exist);
+		return false;
+	}
+
+	if(!checkNifValidations() || !checkCaptcha()){
+		showMessage(messages.error.hasErrors);
+		return false
+	}
+}
+
+function checkNifValidations() {
+	const paisInput = document.querySelector(`[name=pais]`);
+	const nifInput = document.querySelector(`[name=nif]`);
+
+	if(paisInput.value === "ES" && !nifInput.value.trim()) {
+		muestra_error_input(nifInput);
+		return false;
+	}
+
+	return true;
+}
+
+function checkIfErrorEmail() {
+	const emaiInput = document.querySelector(`[name=email]`);
+	if(emaiInput.classList.contains("email-error")) {
+		muestra_error_input(emaiInput)
+		return false;
+	}
+	return true;
+}
+
+function checkCaptcha() {
+	const response = $("#g-recaptcha-response").val();
+	return Boolean(response);
+}
+
+function successRegister(response, aux) {
+	response = $.parseJSON(response);
+	if (response.err == 1) {
+		response.message = response.msg;
+		response.status = "error";
+		showMessage(response);
+
+	} else if (response.err == 0) {
+
+		if (response.info == undefined) {
+			document.location = response.msg;
+		}
+		else {
+
+			$("#info_sent").val(JSON.stringify(response.info));
+			$("#cod_auchouse_sent").val(response.cod_auchouse);
+			$("#redirect_sent").val(response.redirect);
+
+			document.getElementById("formToSubalia").submit();
+
+		}
+	}
+}
+
+function errorRegisterForm(response) {
+	showMessage(messages.error.error_contact_emp, "Error");
+}
+
+function loadingData(isLoading) {
+	const button = document.querySelector('.submitButton');
+	button.classList.toggle('loading', isLoading);
+}

@@ -55,7 +55,7 @@ Route::get(Routing::slug('login'), 'UserController@login');
 Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered');
 Route::post(Routing::slug('login'), 'UserController@login_post');
 Route::post('/login_post_ajax', 'UserController@login_post_ajax');
-Route::post(Routing::slug('registro'), 'UserController@registro');
+Route::post(Routing::slug('registro'), 'UserController@registro')->name('send_register');
 Route::get(Routing::slug('logout'), 'UserController@logout');
 Route::get(Routing::slug('password_recovery'), 'UserController@passwordRecovery');
 Route::post('/{lang}/send_password_recovery', 'UserController@sendPasswordRecovery');
