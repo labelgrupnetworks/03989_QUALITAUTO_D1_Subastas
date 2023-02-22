@@ -32,6 +32,8 @@
     <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/tiempo-real-user.css") }}" rel="stylesheet" />
 @endif
 
+@stack('stylesheets')
+
 <script>
     var fecha_server = {{ getdate()[0] * 1000 }};
     var routing = {
@@ -107,6 +109,8 @@
 
 
 <script src="{{ URL::asset('vendor/slick/slick.js') }}"></script>
+
+@stack('scripts')
 
 {{-- solamente si utilizamos componentes de react --}}
 {{-- @if(!$isAdmin)
