@@ -662,6 +662,10 @@ simbolos:: %3e == /> | %3c == < | %23 == #
 | FICHA
 |--------------------------------------------------------------------------
 */
+a.back-link {
+	text-transform: none;
+}
+
 #img_main {
 	height: 420px;
 }
@@ -754,6 +758,10 @@ section.ficha-pujas {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.ficha-description h1 {
+	text-transform: none;
 }
 
 .ficha-description .badge-custom-primary {

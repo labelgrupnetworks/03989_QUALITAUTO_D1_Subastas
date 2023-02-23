@@ -1,7 +1,7 @@
 <section class="container-fluid contact-banner">
-    <h1 class="no-decoration fs-40pt">
+    <h3 class="no-decoration fs-40pt fw-lighter">
 		{!! trans("$theme-app.foot.banner_contact") !!}
-    </h1>
+    </h3>
     <a class="btn btn-lb-secondary" href="{{ Routing::translateSeo('contact') }}">{{ trans("$theme-app.foot.contact") }}</a>
 </section>
 
@@ -135,10 +135,7 @@
 						<h5 class="mt-4"><a class="nav-link" href="{{ Routing::translateSeo('contact') }}">{{ trans($theme.'-app.foot.contact') }}</a></h5>
 
 						<h5 class="mt-4">{{ trans($theme.'-app.subastas.inf_subasta_horario') }}</h5>
-						<ul class="nav flex-column">
-                            <li class="nav-item">De lunes a viernes</li>
-                            <li class="nav-item">De 9:30h a 18:00h</li>
-						</ul>
+						<p>{!! trans("$theme-app.foot.schedule") !!}</p>
                     </div>
 
                 </div>
