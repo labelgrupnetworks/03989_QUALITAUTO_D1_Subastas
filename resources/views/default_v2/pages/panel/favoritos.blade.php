@@ -31,8 +31,8 @@
                                                 <tr>
                                                     <th></th>
                                                     <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                                    <th style="max-width: 300px">Title</th>
-                                                    <th>Precio de salida</th>
+                                                    <th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
+                                                    <th>{{ trans("$theme-app.user_panel.starting_price") }}</th>
                                                     <th>{{ trans("$theme-app.user_panel.actual_bid") }}</th>
                                                     <th>{{ trans("$theme-app.user_panel.mi_puja") }}</th>
                                                     <th></th>
@@ -66,10 +66,10 @@
                                                         <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
                                                             {{ $refLot }}
                                                         </td>
-                                                        <td class="td-title" data-title="Title">
+                                                        <td class="td-title" data-title="{{ trans("$theme-app.user_panel.title") }}">
                                                             <span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
                                                         </td>
-                                                        <td data-title="Precio de salida">
+                                                        <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
                                                             {{ $inf_lot->formatted_impsalhces_asigl0 }}
                                                             {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
                                                         </td>

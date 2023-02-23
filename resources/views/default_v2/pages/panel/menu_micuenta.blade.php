@@ -1,7 +1,7 @@
 @php
-	$user = session('user');
+	/* $user = session('user');
 	$firtsLetter = substr($user['name'], 0, 1);
-	$email = $user['usrw'];
+	$email = $user['usrw']; */
 	$pageName = Route::currentRouteName();
 @endphp
 

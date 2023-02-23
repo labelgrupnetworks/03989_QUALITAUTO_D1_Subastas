@@ -28,8 +28,8 @@
 									<tr>
 										<th></th>
 										<th>{{ trans("$theme-app.user_panel.lot") }}</th>
-										<th style="max-width: 300px">Title</th>
-										<th>Precio de salida</th>
+										<th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
+										<th>{{ trans("$theme-app.user_panel.starting_price") }}</th>
 										<th>{{ trans("$theme-app.user_panel.actual_bid") }}</th>
 										<th>{{ trans("$theme-app.user_panel.mi_puja") }}</th>
 										<th>{{ trans("$theme-app.user_panel.bid_date") }}</th>
@@ -62,10 +62,10 @@
 											<td data-title="{{ trans("$theme-app.user_panel.lot") }}">
 												{{$refLot}}
 											</td>
-											<td data-title="Title" class="td-title">
+											<td data-title="{{ trans("$theme-app.user_panel.title") }}" class="td-title">
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat provident eum repellendus aliquid unde ex exercitationem itaque voluptates error odit veniam earum quod, voluptas vel beatae laborum minus ea maxime.</span>
 											</td>
-											<td data-title="Precio de salida">
+											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
 												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">

@@ -78,7 +78,7 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                             <td data-title="{{ trans("$theme-app.user_panel.description") }}" class="td-title">
                                                 <span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
                                             </td>
-                                            <td data-title="Precio de salida">
+                                            <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
                                                 {{ $inf_lot->impsalhces_asigl0 ?? 0 }}
                                                 {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
                                             </td>

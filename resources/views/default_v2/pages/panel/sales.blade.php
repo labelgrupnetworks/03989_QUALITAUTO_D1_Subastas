@@ -43,7 +43,7 @@
                                                 <tr>
                                                     <th></th>
                                                     <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                                    <th style="max-width: 300px">Title</th>
+                                                    <th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
                                                     <th>{{ trans("$theme-app.user_panel.status") }}</th>
                                                     <th>{{ trans("$theme-app.lot.lot-price") }}</th>
                                                     <th>{{ trans("$theme-app.lot.puja_actual") }}</th>
@@ -89,7 +89,7 @@
                                                         <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
                                                             {{ $lote->ref_asigl0 }}
                                                         </td>
-                                                        <td class="td-title" data-title="Title">
+                                                        <td class="td-title" data-title="{{ trans("$theme-app.user_panel.title") }}">
                                                             <span class="max-line-2">{!! $lote->desc_hces1 !!}</span>
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.status") }}">

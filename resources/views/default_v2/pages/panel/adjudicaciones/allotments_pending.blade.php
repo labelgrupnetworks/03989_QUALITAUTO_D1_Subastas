@@ -55,7 +55,7 @@ foreach($all_adj as $key_inf => $value){
 									<tr>
 										<th></th>
 										<th>{{ trans("$theme-app.user_panel.lot") }}</th>
-										<th style="max-width: 300px">{{ trans("$theme-app.user_panel.description") }}</th>
+										<th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
 										<th>{{ trans("$theme-app.lot.lot-price") }}</th>
 										<th>{{ trans("$theme-app.user_panel.price") }}</th>
 										<th>{{ trans("$theme-app.user_panel.price_comision") }}</th>
@@ -111,10 +111,10 @@ foreach($all_adj as $key_inf => $value){
 											<td data-title="{{ trans("$theme-app.user_panel.lot") }}">
 												{{$refLot}}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.description") }}" class="td-title">
+											<td data-title="{{ trans("$theme-app.user_panel.title") }}" class="td-title">
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
-											<td data-title="Precio de salida">
+											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
 												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.price") }}">

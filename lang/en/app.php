@@ -174,7 +174,8 @@ $lang =[
 			'filter' => 'Filter',
 			'filters' => 'Filters',
 			'clean' => 'Clean',
-			'totals' => 'Totals'
+			'totals' => 'Totals',
+			'back' => 'Return'
 		),
 	'head' =>
 		array (
@@ -872,7 +873,7 @@ $lang =[
 			'phone' => 'Phone',
 			'price' => 'Hammer price',
 			'price_clean' => 'Amount to be paid',
-			'price_comision' => 'Comisión',
+			'price_comision' => 'Commission',
 			'return_subastas' => 'Back to the auction',
 			'return_credit' => 'Request and return to auction',
 			'save' => 'Save',
@@ -944,7 +945,9 @@ $lang =[
 			'edit' => 'Edit',
 			'add_new_address' => 'Add new address',
 			'select_as_parent' => 'Select as parent',
-			'remove' => 'Remove'
+			'remove' => 'Remove',
+			'title' => 'Title',
+			'starting_price' => 'Starting price'
 		),
 	'valoracion_gratuita' =>
 		array (

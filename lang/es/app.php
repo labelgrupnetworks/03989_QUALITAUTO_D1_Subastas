@@ -190,7 +190,8 @@ $lang = [
 		'filter' => 'Filtrar',
 		'filters' => 'Filtros',
 		'clean' => 'Limpiar',
-		'totals' => 'Totales'
+		'totals' => 'Totales',
+		'back' => 'Volver'
 	),
 	'head' =>
 	array(
@@ -983,7 +984,9 @@ $lang = [
 		'edit' => 'Editar',
 		'add_new_address' => 'Añadir nueva dirección',
 		'select_as_parent' => 'Seleccionar como principal',
-		'remove' => 'Eliminar'
+		'remove' => 'Eliminar',
+		'title' => 'Título',
+		'starting_price' => 'Precio de salida'
 	),
 	'valoracion_gratuita' =>
 	array(
