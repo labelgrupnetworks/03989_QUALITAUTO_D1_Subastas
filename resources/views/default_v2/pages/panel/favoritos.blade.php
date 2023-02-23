@@ -55,12 +55,22 @@
                                                             #le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
                                                             $refLot = substr($refLot, -\config::get('app.substrRef')) + 0;
                                                         }
+
+														$myCodLicitInThisAuction = $data['codigos_licitador'][$inf_lot->cod_sub];
+
+														$pujas = collect($inf_lot->pujas);
+                                                        $myMaxBid = $pujas->where('cod_licit', $myCodLicitInThisAuction)->first();
+
+														$orders = collect($inf_lot->ordenes);
+														$myMaxOrder = $orders->where('cod_licit', $myCodLicitInThisAuction)->max('himp_orlic');
+
+														$maxValue = max($myMaxBid?->imp_asigl1, $myMaxOrder);
                                                     @endphp
                                                     <tr>
                                                         <td class="td-img">
                                                             <a href="{{ $url_friendly }}">
                                                                 <img class="img-fluid"
-                                                                    src="{{ \Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}">
+                                                                    src="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}">
                                                             </a>
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
@@ -71,21 +81,17 @@
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
                                                             {{ $inf_lot->formatted_impsalhces_asigl0 }}
-                                                            {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+                                                            {{ trans(Config::get('app.theme') . '-app.subastas.euros') }}
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">
                                                             {{ \Tools::moneyFormat($inf_lot->actual_bid ?? 0, trans(\Config::get('app.theme') . '-app.subastas.euros')) }}
                                                         </td>
-                                                        @php
-                                                            $pujas = collect($inf_lot->pujas);
-                                                            $myMaxBid = $pujas->where('cod_licit', $data['codigos_licitador'][$inf_lot->cod_sub])->first();
-                                                        @endphp
                                                         <td data-title="{{ trans("$theme-app.user_panel.mi_puja") }}"
                                                             @class([
                                                                 'mine' => $myMaxBid?->rn == 1,
                                                                 'other' => $myMaxBid?->rn != 1,
                                                             ])>
-                                                            {{ \Tools::moneyFormat($myMaxBid?->imp_asigl1, trans(\Config::get('app.theme') . '-app.subastas.euros')) }}
+                                                            {{ Tools::moneyFormat($maxValue, trans(\Config::get('app.theme') . '-app.subastas.euros')) }}
                                                         </td>
 
                                                         <td>
@@ -106,7 +112,7 @@
                                                                             target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
                                                                     <li>
                                                                         <a class="dropdown-item"
-                                                                            href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">
+                                                                            href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}', '{{ $myCodLicitInThisAuction }}')">
                                                                             {{ trans(\Config::get('app.theme') . '-app.lot.del_from_fav') }}
                                                                         </a>
                                                                     </li>
