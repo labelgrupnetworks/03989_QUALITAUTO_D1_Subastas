@@ -336,10 +336,10 @@ $lang = [
 		'subalia_hasUser' => 'Accede desde aquí con tu usuario de',
 		'subalia_notHasUser' => 'Si no eres usuario de esta sala de subastas debes registrarte haciendo clic',
 		'here' => 'aquí',
-		'title_direccion_envio' => 'Dirección envio',
+		'title_direccion_envio' => 'Dirección envío',
 		'user' => 'Usuario',
 		'utilizar_direcc_direccenv' => 'Utilizar la misma dirección para el envío (en el caso que necesitara)',
-		'via' => 'Via',
+		'via' => 'Vía',
 		'write_valid_email' => 'Escriba un email válido',
 		'registration_disabled' => 'Deshabilitado el registro temporalmente',
 		'mobile' => 'Móvil',
@@ -438,7 +438,10 @@ $lang = [
 		'insert_max_puja_start_concursal' => 'Introduzca aquí su oferta para cuando empiece la subasta.',
 		'confirm_bid_concursal' => 'Confirme su oferta',
 		'bidding_for_concursal' => 'Está realizando una oferta por',
-		'price_offer' => 'Precio a ofrecer'
+		'price_offer' => 'Precio a ofrecer',
+		'closing_date' => 'Fecha de cierre',
+		'quick_bid' => 'Puja rápida',
+		'bid_on' => 'Pujar por'
 	),
 	'lot_list' =>
 	array(

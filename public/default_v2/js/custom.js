@@ -1242,13 +1242,7 @@ function handleSubmitNewsletterForm(event) {
 function handleSubmitUpdatePasswordForm(event) {
 	event.preventDefault();
 
-	//No se para que esta
-	if (event.isDefaultPrevented()) {
-		return
-	}
-
 	var $this = $(event.target);
-
 	$('button', $this).attr('disabled', 'disabled');
 
 	$.ajax({
@@ -1275,10 +1269,7 @@ function handleSubmitUpdatePasswordForm(event) {
 }
 
 function handleSubmitUpdateUser(event) {
-	if (event.isDefaultPrevented()) {
-		return
-	}
-	e.preventDefault();
+	event.preventDefault();
 	var $this = $(event.target);
 
 	$('button', $this).attr('disabled', 'disabled');

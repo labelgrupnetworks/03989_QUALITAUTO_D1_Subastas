@@ -1039,7 +1039,7 @@ section.ficha-image {
 	.account-user,
 	.account-info,
 	.create-account
-) label {
+) label:not(.form-check-label) {
 	width: 100%;
 }
 

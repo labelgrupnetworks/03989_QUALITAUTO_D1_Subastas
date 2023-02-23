@@ -419,7 +419,10 @@ $lang =[
 			'insert_max_puja_start_concursal' => 'Leave your offer here, before it is up for auction',
 			'confirm_bid_concursal' => 'confirm your offer',
 			'bidding_for_concursal' => 'You are bidding for',
-			'price_offer' => 'Price to offer'
+			'price_offer' => 'Price to offer',
+			'closing_date' => 'Closing date',
+			'quick_bid' => 'Quick bid',
+			'bid_on' => 'Bid for'
 		),
 	'lot_list' =>
 		array (

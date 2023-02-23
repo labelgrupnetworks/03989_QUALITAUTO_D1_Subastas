@@ -313,10 +313,13 @@
                         <div class="col-12">
                             <label class="form-check-label">
                                 {!! $formulario->condiciones !!}
-                                {!! trans("$theme-app.login_register.read_conditions") !!}
-                                (<a href='{{ Routing::translateSeo('pagina') . trans("$theme-app.links.term_condition") }}'
-                                    target="_blank">{{ trans("$theme-app.login_register.more_info") }}
-                                </a>)
+								<span class="fw-bold text-danger">*</span>
+								<span>
+									{!! trans("$theme-app.login_register.read_conditions") !!}
+									(<a href='{{ Routing::translateSeo('pagina') . trans("$theme-app.links.term_condition") }}'
+										target="_blank">{{ trans("$theme-app.login_register.more_info") }}
+									</a>)
+								</span>
                             </label>
                         </div>
                         <div class="col-12">

@@ -125,8 +125,8 @@
                     <input id="lang_dirreciones" type="hidden" value="{{ config('app.locale') }}">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-outline-lb-primary" data-bs-dismiss="modal" type="button">Close</button>
-                    <button class="btn btn-lb-primary" form="save_address_shipping" type="submit">Save</button>
+                    <button class="btn btn-outline-lb-primary" data-bs-dismiss="modal" type="button">{{ trans("$theme-app.head.close") }}</button>
+                    <button class="btn btn-lb-primary" form="save_address_shipping" type="submit">{{ trans("$theme-app.user_panel.save") }}</button>
                 </div>
             </div>
         </div>
