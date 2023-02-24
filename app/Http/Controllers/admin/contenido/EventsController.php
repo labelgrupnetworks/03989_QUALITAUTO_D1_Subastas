@@ -147,7 +147,7 @@ class EventsController extends Controller
 			}
 		}
 
-		return redirect(route('event.edit', ['id' => $data['id_web_newbanner_ES']]));
+		return redirect(route('event.edit', ['event' => $data['id_web_newbanner_ES']]));
 
 	}
 	public function update($id)
