@@ -14,6 +14,7 @@ return [
         'prefix_schema'  => env('DB_SCHEMA_PREFIX', ''),
         'edition'        => env('DB_EDITION', 'ora$base'),
         'server_version' => env('DB_SERVER_VERSION', '11g'),
+		'version' => '21'
         /* 'options' => [
             PDO::ATTR_CASE => PDO::CASE_UPPER,
         ] */
@@ -31,6 +32,7 @@ return [
         'prefix_schema'  => env('DB_SCHEMA_PREFIX', ''),
         'edition'        => env('DB_EDITION', 'ora$base'),
         'server_version' => env('DB_SERVER_VERSION', '11g'),
+		'version' => '11'
     ],
 ];
 
