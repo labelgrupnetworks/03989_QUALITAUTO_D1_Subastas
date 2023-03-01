@@ -83,3 +83,8 @@ Realizar un commit sin modificaciones, por ejemplo para forzar un deploy
 ```git
 git commit --allow-empty -m "empty commit"
 ```
+
+Deshacer un commit pero manteniendo el commit en el historial
+```git
+git revert [id del commit]
+```
