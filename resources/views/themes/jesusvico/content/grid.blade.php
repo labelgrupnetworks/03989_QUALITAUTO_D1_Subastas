@@ -3,13 +3,13 @@
     <div class="container">
 
 		<div class="row">
-			<div id="js-filters-col" class="col-lg-4">
+			<div id="js-filters-col" class="col-lg-3">
 				<aside class="section-grid-filters sticky-lg-top">
 					@include('includes.grid.leftFilters')
 				</aside>
 			</div>
 
-			<div id="js-lots-col" class="col-lg-8">
+			<div id="js-lots-col" class="col-lg-9">
 
 				<div class="section-grid-top-filters">
 					@include('includes.grid.topFilters')

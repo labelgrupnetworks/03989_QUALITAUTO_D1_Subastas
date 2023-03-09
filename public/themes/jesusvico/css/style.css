@@ -206,7 +206,7 @@ footer h5 {
 }
 
 .newsletter .form-control {
-	background: transparent;
+	background: rgb(0, 0, 0, 0.5);
 	border-radius: 0;
 	padding: 0.5rem 0.75rem;
 	color: var(--lb-color-primary-contrast);
@@ -442,7 +442,7 @@ ul.style-diamond li p {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-	height: 700px;
+	height: 350px;
 	color: var(--lb-color-primary-contrast);
 	text-align: center;
 	display: flex;
@@ -515,6 +515,13 @@ ul.style-diamond li p {
 	padding-right: 0;
 }
 
+.auction-card .card-img-top {
+	border-radius: var(--bs-card-border-radius);
+	height: auto;
+	object-fit: cover;
+	object-position: center;
+}
+
 .auction-card .auction-card-title {
 	min-height: calc(1.2 * 2 * 1rem);
 }
@@ -533,6 +540,23 @@ ul.style-diamond li p {
 .auction-card .card-buttons .btn-lb-primary.bg-danger {
 	flex: none;
 	width: 100%;
+}
+
+@media(min-width: 768px) {
+	.auction-card .card-img-top {
+		min-height: 309px;
+	}
+}
+@media(min-width: 992px) {
+	.auction-card .card-img-top {
+		min-height: 240px;
+	}
+}
+@media(min-width: 1200px) {
+	.auction-card .card-img-top {
+		min-height: 238px;
+		height: clamp(14.875rem, -1.0625rem + 21.25vw, 20.1875rem);
+	}
 }
 
 
@@ -586,7 +610,7 @@ ul.style-diamond li p {
 }
 
 .section-grid-lots {
-	grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(357px, 1fr));
 }
 
 .bottom-pagination .pagination {

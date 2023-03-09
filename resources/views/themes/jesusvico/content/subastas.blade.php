@@ -11,7 +11,7 @@
 				<hr>
 			</div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-6 gy-3 mb-3 align-items-stretch">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 gy-3 mb-3 align-items-stretch">
                 @foreach ($auctions as $subasta)
                     <div class="col">
                         @include('includes.subasta', ['subasta' => $subasta])
