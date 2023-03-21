@@ -116,7 +116,7 @@ $pageName = Route::currentRouteName();
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us").'?static=who_we_are' }}">{{ trans("$theme-app.foot.about_us") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team").'?static=team' }}">{{ trans("$theme-app.foot.team") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.press") }}">{{ trans("$theme-app.foot.press") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('prensa') }}">{{ trans("$theme-app.foot.press") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code").'?static=ethical_code' }}">{{ trans("$theme-app.foot.ethical_code") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('mosaic-blog') }}">{{ trans("$theme-app.blog.museum-pieces") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('events') }}">{{ trans("$theme-app.blog.events") }}</a></li>

@@ -26,7 +26,7 @@
     </section> --}}
 
     <!-- Inicio lotes destacados -->
-    <section class="section-destacados my-5">
+    <section class="section-destacados bg-lb-color-backgorund-dark py-4 my-5">
         <div class="container">
             <h1 class="mb-4">Ventas destacadas</h1>
             <div class="lotes_destacados">
