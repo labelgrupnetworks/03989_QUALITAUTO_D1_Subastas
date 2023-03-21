@@ -59,6 +59,11 @@
 <a name="examples"></a>
 ## Ejemplos de comandos
 
+Actualizar Origin
+```sh { closeTerminalOnSuccess=false }
+git push origin main
+```
+
 Descargar código maestro
 ```git
 git pull origin main
