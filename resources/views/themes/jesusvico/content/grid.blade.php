@@ -1,4 +1,17 @@
 
+@php
+$count_lots = 0;
+foreach($tipos_sub as $typeSub => $desType) {
+	$numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
+
+	if(empty($filters['typeSub'])){
+		$count_lots += $numLots;
+	}elseif($typeSub == $filters['typeSub']){
+		$count_lots = $numLots;
+	}
+}
+@endphp
+
 <div class="info-auction-tab-contet">
     <div class="container">
 

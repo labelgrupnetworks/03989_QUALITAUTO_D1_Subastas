@@ -4,10 +4,10 @@
 
 <div class="filters-auction-content">
 
-	<div class="filters-auction-title border-bottom pb-1 mt-1">
+	<div class="filters-auction-title border-bottom pb-1">
 
 		<button id="js-hide-filters" class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
-			<svg class="bi" width="16" height="16" fill="currentColor">
+			<svg class="bi" width="18" height="18" fill="currentColor">
 				<use xlink:href="/bootstrap-icons.svg#arrow-bar-left"/>
 			</svg>
 		</button>
@@ -31,7 +31,7 @@
 			<input type="hidden" name="total" id="hidden_total" value="{{request('total')}}"   />
 			<input type="hidden" name="historic" id="hidden_historic" value="{{request('historic')}}"   />
 
-			<div class="filters-types mb-1">
+			<div class="filters-types mb-1 mt-1">
 				@include('includes.grid.badges_section')
 
 				@include('includes.grid.search_list')

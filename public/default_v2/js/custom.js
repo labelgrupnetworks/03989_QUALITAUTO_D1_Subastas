@@ -281,8 +281,10 @@ function ajax_newcarousel(key, replace, lang, options) {
 
 
 
-function ajax_carousel(key, replace) {
+function ajax_carousel(key, replace, lang, options) {
 	//$( "#"+key ).siblings().removeClass('hidden');
+	const $carrouselElement = $(`#${key}`);
+
 	$.ajax({
 		type: "POST",
 		url: "/api-ajax/carousel",
@@ -295,9 +297,9 @@ function ajax_carousel(key, replace) {
 			$("#" + key).siblings('.loader').addClass('hidden');
 			$("#" + key).html(result);
 			if (key === 'lotes_destacados') {
-				carrousel_molon($("#" + key));
+				carrousel_molon($carrouselElement, options);
 			} else {
-				carrousel_molon_new($("#" + key));
+				carrousel_molon_new($carrouselElement, options);
 			}
 
 
@@ -365,29 +367,14 @@ function carrousel_molon(carrousel, options) {
 		carrousel.slick('unslick');
 	}
 
-	var rows = 1;
-	/*Si se añaden más de una fila, estas no cambian al reducir pantalla
-	//Establecer desde el inicio
-	if(window.innerWidth < 1024){
-		rows = 1;
-	}*/
-
-	/**
-	 * Si se utilizan más de un row, se tiene en cuenta slidesPerRow
-	 * En caso de usar un solo row, se utiliza slidesToShow
-	 * Utilizar los dos, crea conflictos...
-	 */
-
-	carrousel.slick({
+	const rows = 1;
+	const defaultOptions = {
 		slidesToScroll: 1,
 		rows: rows,
 		autoplay: true,
-		/*slidesPerRow: 4,*/
 		slidesToShow: 4,
 		arrows: true,
 		dots: true,
-		/* prevArrow: $('.fa-chevron-left'),
-		nextArrow: $('.fa-chevron-right'), */
 		responsive: [
 			{
 				breakpoint: 1024,
@@ -395,7 +382,6 @@ function carrousel_molon(carrousel, options) {
 					slidesToShow: 3,
 					slidesToScroll: 3,
 					infinite: true,
-
 					rows: 1,
 					slidesPerRow: 3,
 				}
@@ -407,7 +393,6 @@ function carrousel_molon(carrousel, options) {
 					slidesToScroll: 2,
 					rows: 1,
 					slidesPerRow: 2,
-
 				}
 			},
 			{
@@ -419,41 +404,30 @@ function carrousel_molon(carrousel, options) {
 					slidesPerRow: 1,
 				}
 			}
+		]
+	}
 
-		],
+	carrousel.slick({
+		...defaultOptions,
 		...options
 	});
 
 	carrousel.data('hasSlick', true);
 }
 
-function carrousel_molon_new(carrousel) {
+function carrousel_molon_new(carrousel, options) {
 	if (carrousel.data('hasSlick')) {
 		carrousel.slick('unslick');
 	}
 
 	var rows = 1;
-	/*Si se añaden más de una fila, estas no cambian al reducir pantalla
-	//Establecer desde el inicio
-	if(window.innerWidth < 1024){
-		rows = 1;
-	}*/
-
-	/**
-	 * Si se utilizan más de un row, se tiene en cuenta slidesPerRow
-	 * En caso de usar un solo row, se utiliza slidesToShow
-	 * Utilizar los dos, crea conflictos...
-	 */
-
-	carrousel.slick({
+	const defaultOptions = {
 		slidesToScroll: 1,
 		rows: rows,
-		/*slidesPerRow: 4,*/
+		autoplay: true,
 		slidesToShow: 4,
 		arrows: true,
-		swipeToSlide: true,
-		prevArrow: $('.owl-prev'),
-		nextArrow: $('.owl-next'),
+		dots: true,
 		responsive: [
 			{
 				breakpoint: 1024,
@@ -461,7 +435,6 @@ function carrousel_molon_new(carrousel) {
 					slidesToShow: 3,
 					slidesToScroll: 3,
 					infinite: true,
-					dots: true,
 					rows: 1,
 					slidesPerRow: 3,
 				}
@@ -473,7 +446,6 @@ function carrousel_molon_new(carrousel) {
 					slidesToScroll: 2,
 					rows: 1,
 					slidesPerRow: 2,
-
 				}
 			},
 			{
@@ -485,8 +457,12 @@ function carrousel_molon_new(carrousel) {
 					slidesPerRow: 1,
 				}
 			}
-
 		]
+	}
+
+	carrousel.slick({
+		...defaultOptions,
+		...options
 	});
 
 	carrousel.data('hasSlick', true);

@@ -49,6 +49,7 @@
 	--lb-color-primary-dark: #0a3f43;
 	--lb-color-primary-contrast: #ffffffea;
 
+	--lb-color-secondary-rgb: 185, 178, 14;
 	--lb-color-secondary: #B9B20E;
 	--lb-color-secondary-lighter: rgb(185, 178, 14, 0.2);
 	--lb-color-secondary-light: #999314;
@@ -95,6 +96,8 @@
 
 	--bs-link-color: var(--lb-color-gray);
 	--bs-link-hover-color: #222;
+
+	--bs-secondary-rgb: var(--lb-color-secondary-rgb);
 }
 
 /*

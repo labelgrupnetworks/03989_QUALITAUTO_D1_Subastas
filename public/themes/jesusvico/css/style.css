@@ -23,6 +23,7 @@ main.valoracion-page,
 .user-panel-page,
 main.contact-page,
 main.museum-page,
+main.press-page,
 main.events-page,
 main.event-page,
 .home-static-page,
@@ -496,6 +497,18 @@ ul.style-diamond li p {
 	}
 }
 
+.column_banner .triple {
+	border: 1px solid rgb(var(--lb-color-primary-rgb), 0.2);
+}
+
+.section-destacados .slick-dots li {
+	margin: 0;
+}
+
+.section-destacados .lot-card {
+	margin: 10px 5px;
+}
+
 /*
 |--------------------------------------------------------------------------
 | SUBASTAS
@@ -897,7 +910,7 @@ section.ficha-pujas {
 
 /*
 |--------------------------------------------------------------------------
-| MUSEUM & EVENTS
+| MUSEUM, EVENTS & PRESS
 |--------------------------------------------------------------------------
 */
 .museum-card img {
@@ -907,17 +920,17 @@ section.ficha-pujas {
 }
 
 .event-card .img-card-wrapper {
-	height: 600px;
+	height: 300px;
 	background-position: center;
-	background-size: 100% auto;
+	background-size: cover;
 	background-repeat: no-repeat;
 	transition: all 0.5s;
 }
 
-.event-card:hover .img-card-wrapper {
+/* .event-card:hover .img-card-wrapper {
 	background-size: 110% auto;
 	transition: all 0.5s;
-}
+} */
 
 .event-page .event-images-wrapper {
 	height: 300px;
@@ -935,6 +948,32 @@ section.ficha-pujas {
 	top: 0;
 	z-index: 1;
 }
+
+.press-card img {
+	height: auto;
+	object-fit: contain;
+}
+
+.press-row {
+	margin-bottom: 3rem;
+	padding-bottom: 3rem;
+}
+
+@media (min-width: 992px) {
+	.event-card .img-card-wrapper {
+		height: 600px;
+	}
+
+	.press-card img {
+		height: 350px;
+		object-fit: cover;
+	}
+
+	.press-row.with-border {
+		border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+	}
+}
+
 
 /*
 |--------------------------------------------------------------------------

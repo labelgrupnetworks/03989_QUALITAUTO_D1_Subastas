@@ -19,48 +19,58 @@
         {!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false, 'arrows' => false]) !!}
     </section>
 
-    <section class="container-fluid newsletter-banner">
+    {{-- <section class="container-fluid newsletter-banner">
         <div class="row p-md-5">
             @include('includes.newsletter')
         </div>
-    </section>
+    </section> --}}
 
     <!-- Inicio lotes destacados -->
-    <div class="lotes_destacados secundary-color-text" id="lotes_destacados-content">
+    <section class="section-destacados my-5">
         <div class="container">
-            <div class="row min-height flex-display flex-wrap">
-                <div class="col-12 lotes-destacados-principal-title">
-                    <div class="lotes-destacados-tittle color-letter">
-                        {{ trans(\Config::get('app.theme') . '-app.lot_list.lotes_destacados') }}
-                    </div>
-                </div>
-                <div class="col-12 text-center">
-                    <div class="lds-ellipsis loader">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div class="owl-theme owl-carousel" id="lotes_destacados"></div>
-                </div>
+            <h1 class="mb-4">Ventas destacadas</h1>
+            <div class="lotes_destacados">
+                <div class="loader"></div>
+                <div class="carrousel-wrapper" id="ventas_destacadas"></div>
             </div>
         </div>
-    </div>
+    </section>
 
     @php
         $lang = Config::get('app.locale');
         $replace = [
-            'lang' => \Tools::getLanguageComplete($lang),
+            'lang' => Tools::getLanguageComplete($lang),
             'emp' => Config::get('app.emp'),
         ];
     @endphp
 
     <script>
         var replace = @json($replace);
-        var key = "lotes_destacados";
+
+        const caroulseOptions = {
+            autoplay: false,
+			dots: true,
+            slidesToShow: 3,
+            arrows: false,
+            responsive: [{
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                },
+            ]
+        }
 
         $(document).ready(function() {
-            ajax_carousel(key, replace);
+            ajax_carousel("ventas_destacadas", replace, null, caroulseOptions);
         });
     </script>
 
@@ -92,6 +102,7 @@
 
     @if ($page)
         <section class="static-page-banner">
+            {{-- {!! \BannerLib::bannersPorKey('new_home', 'static', ['dots' => false, 'arrows' => false]) !!} --}}
             <img src="/themes/jesusvico/assets/img/static_home.webp" alt="{{ $page->name_web_page }}" loading="lazy">
         </section>
 

@@ -1,16 +1,3 @@
-@php
-$count_lots = 0;
-foreach($tipos_sub as $typeSub => $desType) {
-	$numLots = Tools::showNumLots($numActiveFilters, $filters, "typeSub", $typeSub);
-
-	if(empty($filters['typeSub'])){
-		$count_lots += $numLots;
-	}elseif($typeSub == $filters['typeSub']){
-		$count_lots = $numLots;
-	}
-}
-@endphp
-
 <div class="d-flex align-items-end flex-wrap gap-1 border-bottom pb-1">
 
 	<button id="js-show-filters" class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center d-none" onclick="showFilters(event)" alt="mostrar filtros">

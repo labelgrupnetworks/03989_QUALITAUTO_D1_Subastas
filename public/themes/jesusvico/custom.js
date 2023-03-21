@@ -57,7 +57,7 @@ function scrollToElement(element, miliseconds) {
 }
 
 
-carrousel_molon_new = function (carrousel) {
+carrousel_molon_new = function (carrousel, newOptions = {}) {
 	if (carrousel.data('hasSlick')) {
 		carrousel.slick('unslick');
 	}
@@ -85,9 +85,9 @@ carrousel_molon_new = function (carrousel) {
 			{ breakpoint: 600, settings: breackPointShow(2) },
 			{ breakpoint: 480, settings: breackPointShow(1) }
 		]
-	}
+	};
 
-	carrousel.slick(options);
+	carrousel.slick({...options, ...newOptions});
 	carrousel.data('hasSlick', true);
 }
 

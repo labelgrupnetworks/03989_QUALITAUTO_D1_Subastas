@@ -23,29 +23,34 @@
                         'add_favs' => Session::has('user'),
                     ])>
 
-					<span>{{ trans("$theme-app.lot.bid_on") }}</span><br>
-                    <b><span id="button-escalado" value="{{ $escalado }}">{{ \Tools::moneyFormat($escalado) }}</span>
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</b>
+                    <span>{{ trans("$theme-app.lot.bid_on") }}</span><br>
+                    <b><span id="button-escalado"
+                            value="{{ $escalado }}">{{ \Tools::moneyFormat($escalado) }}</span>
+                        {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</b>
                 </button>
             @endforeach
         </div>
 
 
         <p class="mt-3">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</p>
-        <div class="input-group">
-            <input class="form-control control-number" id="bid_amount" type="text"
-                value="{{ $data['precio_salida'] }}" aria-describedby="button-bid"
-                placeholder="{{ $data['precio_salida'] }}">
-            <span
-                class="input-group-text currency-input">{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span>
+        <div class="">
+            <div class="input-group">
+                <input class="form-control control-number" id="bid_amount" type="text"
+                    value="{{ $data['precio_salida'] }}" aria-describedby="button-bid"
+                    placeholder="{{ $data['precio_salida'] }}">
+                <span
+                    class="input-group-text currency-input">{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span>
+                <button id="button-bid" data-from="modal" type="button" @class([
+                    'lot-action_pujar_on_line btn btn-lb-primary w-50',
+                    'add_favs' => Session::has('user'),
+                ])
+                    ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
+                    {{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}
+                </button>
+            </div>
+
         </div>
-        <button id="button-bid" data-from="modal" type="button" @class([
-            'lot-action_pujar_on_line btn btn-lb-primary w-100',
-            'add_favs' => Session::has('user'),
-        ])
-            ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
-            {{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}
-        </button>
+
     @endif
 
 </div>

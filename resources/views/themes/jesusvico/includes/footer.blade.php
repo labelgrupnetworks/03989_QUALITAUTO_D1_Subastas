@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-6 col-lg-3 mb-3">
 						@if(($global['subastas']->has('S') && $global['subastas']['S']->has('W')) || $global['subastas']->has('H'))
-                        <h5>{{ trans($theme . '-app.foot.auctions') }}</h5>
+                        <h5>{{ trans("$theme-app.subastas.auctions") }}</h5>
                         <ul class="nav flex-column">
 
 							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
@@ -32,6 +32,10 @@
 							@endif
                         </ul>
 						@endif
+
+						<h5 class="mt-3">
+							<a class="nav-link" title="{{ trans("$theme-app.foot.direct_sale") }}" href="{{ Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale') }}</a>
+						</h5>
 
 						<h5 class="mt-3">
 							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_buy") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.buy_coins")."?static=how_to_buy" }}">{{ trans("$theme-app.foot.how_to_buy") }}</a>

@@ -13,6 +13,7 @@
 				<input type="radio" name="category" id="all_categories" value="" class="filter_lot_list_js form-check-input" @checked(empty($filters["category"]))/>
 				<label for="all_categories" class="form-check-label">
 					{{trans(\Config::get('app.theme').'-app.lot_list.all_categories')}}
+					({{ Tools::numberformat($count_lots) }})
 				</label>
 			</div>
         </div>
