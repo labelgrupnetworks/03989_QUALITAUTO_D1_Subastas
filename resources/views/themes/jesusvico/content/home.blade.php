@@ -22,7 +22,7 @@
     <!-- Inicio lotes destacados -->
     <section class="section-destacados bg-lb-color-backgorund-dark py-4 my-5">
         <div class="container">
-            <h1 class="mb-4">Remates destacados</h1>
+            <h2 class="h1 mb-4">Remates destacados</h2>
             <div class="lotes_destacados">
                 <div class="loader"></div>
                 <div class="carrousel-wrapper" id="ventas_destacadas"></div>
@@ -37,24 +37,16 @@
 
     <script>
         const caroulseOptions = {
-            autoplay: false,
+            autoplay: true,
+			autoplaySpeed: 3000,
 			dots: true,
-            slidesToShow: 3,
+            slidesToShow: 4,
+			slidesToScroll: 1,
             arrows: false,
-            responsive: [{
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1
-                    }
-                },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    }
-                },
+            responsive: [
+				{breakpoint: 1200, settings: {slidesToShow: 3}},
+				{breakpoint: 992, settings: {slidesToShow: 2}},
+				{breakpoint: 768, settings: {slidesToShow: 1}}
             ]
         }
 

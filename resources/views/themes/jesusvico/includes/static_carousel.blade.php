@@ -8,7 +8,7 @@
 
     <div class="card-body">
 
-        <h5 class="card-title max-line-2">{{ trans("$theme-app.lot.lot-name") . ' ' . $lot->id . '-' . $lot->title }}</h5>
+        <h5 class="card-title max-line-2 text-center">{{ $lot->title }}</h5>
 
         <div class="lot-prices">
             <h4 class="lot-salida-price text-lb-gray">
