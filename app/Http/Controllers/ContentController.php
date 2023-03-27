@@ -138,6 +138,23 @@ class ContentController extends Controller
 	{
 	}
 
+	public function getAjaxStaticCarousel()
+	{
+		$pathFile = public_path(request('path', ''));
+		if(!file_exists($pathFile)){
+			return response()->json(['message' => 'Not Found'], 404);
+		}
+
+		$lots = json_decode(file_get_contents($pathFile));
+		$content = "";
+
+		foreach ($lots as $lot) {
+			$content .= view('includes.static_carousel', ['lot' => $lot])->render();
+		}
+
+		return $content;
+	}
+
 	function getAjaxCarousel()
 	{
 		$bloque         = new Bloques();

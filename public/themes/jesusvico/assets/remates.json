@@ -1,0 +1,110 @@
+[
+	{
+		"id": 1,
+		"title": "Juba II con Cleopatra. Unidad.",
+		"startingPrice": 400,
+		"awardPrice": 6785
+	},
+	{
+		"id": 2,
+		"title": "Portugal. Juan III. Portugués (10 cruzados).",
+		"startingPrice": 60000,
+		"awardPrice": 70800
+	},
+	{
+		"id": 3,
+		"title": "Imperio Romano. Británico. Sestercio.",
+		"startingPrice": 15000,
+		"awardPrice": 47200
+	},
+	{
+		"id": 4,
+		"title": "Imperio Romano. Nerón. Sestercio.",
+		"startingPrice": 6500,
+		"awardPrice": 25960
+	},
+	{
+		"id": 5,
+		"title": "Reino Visigodo. Égica. Tremissis.",
+		"startingPrice": 10000,
+		"awardPrice": 30680
+	},
+	{
+		"id": 6,
+		"title": "Filipinas. 8 reales. Resello Y.",
+		"startingPrice": 150,
+		"awardPrice": 23010
+	},
+	{
+		"id": 7,
+		"title": "Reinos de Castilla y León. Doña Beatriz de Portugal. Real.",
+		"startingPrice": 65000,
+		"awardPrice": 85550
+	},
+	{
+		"id": 8,
+		"title": "Imperio Español. Felipe II. Doble escudo Felipe.",
+		"startingPrice": 4500,
+		"awardPrice": 42480
+	},
+	{
+		"id": 9,
+		"title": "Hispania Antigua. Emisiones Hispano-Cartaginesas. Doble siclo.",
+		"startingPrice": 12000,
+		"awardPrice": 36580
+	},
+	{
+		"id": 10,
+		"title": "Monarquía Española. Felipe IV. 50 reales.",
+		"startingPrice": 18000,
+		"awardPrice": 43660
+	},
+	{
+		"id": 11,
+		"title": "Monarquía Española. Fernando VI. 8 escudos.",
+		"startingPrice": 20000,
+		"awardPrice": 38940
+	},
+	{
+		"id": 12,
+		"title": "Reino Visigodo. Recesvinto. Tremissis.",
+		"startingPrice": 27000,
+		"awardPrice": 41300
+	},
+	{
+		"id": 13,
+		"title": "Monarquía Española. Fernando VI. 8 reales.",
+		"startingPrice": 35000,
+		"awardPrice": 45430
+	},
+	{
+		"id": 14,
+		"title": "Monarquía Española. Felipe III. 50 reales.",
+		"startingPrice": 170000,
+		"awardPrice": 200600
+	},
+	{
+		"id": 15,
+		"title": "Monarquía Española. Felipe IV. 8 escudos.",
+		"startingPrice": 525000,
+		"awardPrice": 619500
+	},
+	{
+		"id": 16,
+		"title": "Monarquía Española. Luis I. 8 escudos.",
+		"startingPrice": 75000,
+		"awardPrice": 123900
+	},
+	{
+		"id": 17,
+		"title": "Estado Unidos de Norteamérica. 20 dólares.",
+		"startingPrice": 38000,
+		"awardPrice": 61360
+	},
+	{
+		"id": 18,
+		"title": "Monarquía Española. Reyes Católicos. 10 excelentes.",
+		"startingPrice": 450000,
+		"awardPrice": 53100
+	}
+]

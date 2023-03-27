@@ -1,4 +1,5 @@
 <section class="container-fluid contact-banner">
+	<img src="/themes/jesusvico/assets/img/2-web-contacto.webp" alt="contact background image" loading="lazy">
     <h3 class="no-decoration fs-40pt fw-lighter">
 		{!! trans("$theme-app.foot.banner_contact") !!}
     </h3>

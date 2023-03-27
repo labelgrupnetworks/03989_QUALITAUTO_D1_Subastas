@@ -276,6 +276,7 @@ Route::get(Routing::slug('ordenes') . '/{cod}/{lote}', 'SubastaController@getOrd
 
 Route::post('/api-ajax/carousel', 'ContentController@getAjaxCarousel');
 Route::post('/api-ajax/newcarousel', 'ContentController@getAjaxNewCarousel');
+Route::post('/api-ajax/static-carousel', 'ContentController@getAjaxStaticCarousel');
 Route::post('/api-ajax/add-sec-user', 'UserController@changeFavTsec');
 
 Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser');

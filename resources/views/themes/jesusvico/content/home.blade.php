@@ -19,16 +19,10 @@
         {!! \BannerLib::bannersPorKey('triple_banner', 'triple', ['dots' => false, 'arrows' => false]) !!}
     </section>
 
-    {{-- <section class="container-fluid newsletter-banner">
-        <div class="row p-md-5">
-            @include('includes.newsletter')
-        </div>
-    </section> --}}
-
     <!-- Inicio lotes destacados -->
     <section class="section-destacados bg-lb-color-backgorund-dark py-4 my-5">
         <div class="container">
-            <h1 class="mb-4">Ventas destacadas</h1>
+            <h1 class="mb-4">Remates destacados</h1>
             <div class="lotes_destacados">
                 <div class="loader"></div>
                 <div class="carrousel-wrapper" id="ventas_destacadas"></div>
@@ -38,15 +32,10 @@
 
     @php
         $lang = Config::get('app.locale');
-        $replace = [
-            'lang' => Tools::getLanguageComplete($lang),
-            'emp' => Config::get('app.emp'),
-        ];
+		$path = str_replace("\\", "/", "/themes/$theme/assets/remates.json");
     @endphp
 
     <script>
-        var replace = @json($replace);
-
         const caroulseOptions = {
             autoplay: false,
 			dots: true,
@@ -69,8 +58,10 @@
             ]
         }
 
+		const path = @json($path);
+
         $(document).ready(function() {
-            ajax_carousel("ventas_destacadas", replace, null, caroulseOptions);
+            ajaxStaticCarousel("ventas_destacadas", {path, options: caroulseOptions});
         });
     </script>
 
@@ -94,6 +85,13 @@
 
     </section>
 
+	<section class="container-fluid newsletter-banner">
+		<img src="/themes/jesusvico/assets/img/1-newsletter.webp" alt="newsletter background image" loading="lazy">
+		<div class="row p-md-5">
+			@include('includes.newsletter')
+		</div>
+	</section>
+
     @php
         $page = App\Models\V5\Web_Page::where('key_web_page', 'subasta-numismatica')
             ->where('lang_web_page', strtoupper($lang))
@@ -101,11 +99,6 @@
     @endphp
 
     @if ($page)
-        <section class="static-page-banner">
-            {{-- {!! \BannerLib::bannersPorKey('new_home', 'static', ['dots' => false, 'arrows' => false]) !!} --}}
-            <img src="/themes/jesusvico/assets/img/static_home.webp" alt="{{ $page->name_web_page }}" loading="lazy">
-        </section>
-
         <section class="static-page home-static-page">
             <div class="container">
                 <h2>{{ $page->name_web_page }}</h2>

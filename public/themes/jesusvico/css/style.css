@@ -158,10 +158,6 @@ header .dropdown-menu {
 |--------------------------------------------------------------------------
 */
 .contact-banner {
-	background-image: url('/themes/jesusvico/assets/img/contacta.webp');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
 	height: 560px;
 	color: var(--lb-color-primary-contrast);
 	text-align: center;
@@ -170,6 +166,21 @@ header .dropdown-menu {
 	align-items: center;
 	justify-content: center;
 	gap: 2rem;
+	position: relative;
+}
+
+.contact-banner img {
+    position: absolute;
+	left: 0;
+	top: 0;
+    width: 100%;
+    height: 100%;
+	object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.contact-banner > :not(img) {
+	z-index: 1;
 }
 
 footer {
@@ -439,11 +450,7 @@ ul.style-diamond li p {
 |--------------------------------------------------------------------------
 */
 .newsletter-banner {
-	background-image: url('/themes/jesusvico/assets/img/newsletter_bg.webp');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	height: 350px;
+	height: 500px;
 	color: var(--lb-color-primary-contrast);
 	text-align: center;
 	display: flex;
@@ -451,6 +458,21 @@ ul.style-diamond li p {
 	align-items: flex-end;
 	justify-content: center;
 	gap: 2rem;
+	position: relative;
+}
+
+.newsletter-banner img {
+    position: absolute;
+	left: 0;
+	top: 0;
+    width: 100%;
+    height: 100%;
+	object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.newsletter-banner > div {
+	z-index: 1;
 }
 
 .newsletter-banner a,
@@ -834,6 +856,10 @@ section.ficha-pujas {
 
 .carrousel-lot-card img {
 	border-radius: 0;
+}
+
+.section-destacados .lot-card .card-img-top {
+	padding: 0.5rem;
 }
 
 .lotes_destacados .slick-list {

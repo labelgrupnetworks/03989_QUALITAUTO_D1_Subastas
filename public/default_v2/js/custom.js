@@ -279,11 +279,74 @@ function ajax_newcarousel(key, replace, lang, options) {
 	});
 }
 
+const defaultCarouselOptions = {
+	slidesToScroll: 1,
+	rows: 1,
+	autoplay: true,
+	slidesToShow: 4,
+	arrows: true,
+	dots: true,
+	responsive: [
+		{
+			breakpoint: 1024,
+			settings: {
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				infinite: true,
+				rows: 1,
+				slidesPerRow: 3,
+			}
+		},
+		{
+			breakpoint: 600,
+			settings: {
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				rows: 1,
+				slidesPerRow: 2,
+			}
+		},
+		{
+			breakpoint: 480,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				rows: 1,
+				slidesPerRow: 1,
+			}
+		}
+	]
+};
+
+function ajaxStaticCarousel(key, {path, options}) {
+	const $carrouselElement = $(`#${key}`);
+
+	$.ajax({
+		type: "POST",
+		url: "/api-ajax/static-carousel",
+		data: { path },
+		success: (result) => {
+
+			$carrouselElement.html(result)
+			if ($carrouselElement.data('hasSlick')) {
+				$carrouselElement.slick('unslick');
+			}
+
+			$carrouselElement.slick({
+				...defaultCarouselOptions,
+				...options
+			});
+
+			$carrouselElement.data('hasSlick', true);
+		}
+	});
+}
 
 
 function ajax_carousel(key, replace, lang, options) {
 	//$( "#"+key ).siblings().removeClass('hidden');
 	const $carrouselElement = $(`#${key}`);
+
 
 	$.ajax({
 		type: "POST",
@@ -367,48 +430,8 @@ function carrousel_molon(carrousel, options) {
 		carrousel.slick('unslick');
 	}
 
-	const rows = 1;
-	const defaultOptions = {
-		slidesToScroll: 1,
-		rows: rows,
-		autoplay: true,
-		slidesToShow: 4,
-		arrows: true,
-		dots: true,
-		responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: true,
-					rows: 1,
-					slidesPerRow: 3,
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-					rows: 1,
-					slidesPerRow: 2,
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-					rows: 1,
-					slidesPerRow: 1,
-				}
-			}
-		]
-	}
-
 	carrousel.slick({
-		...defaultOptions,
+		...defaultCarouselOptions,
 		...options
 	});
 
@@ -420,48 +443,8 @@ function carrousel_molon_new(carrousel, options) {
 		carrousel.slick('unslick');
 	}
 
-	var rows = 1;
-	const defaultOptions = {
-		slidesToScroll: 1,
-		rows: rows,
-		autoplay: true,
-		slidesToShow: 4,
-		arrows: true,
-		dots: true,
-		responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 3,
-					slidesToScroll: 3,
-					infinite: true,
-					rows: 1,
-					slidesPerRow: 3,
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-					rows: 1,
-					slidesPerRow: 2,
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-					rows: 1,
-					slidesPerRow: 1,
-				}
-			}
-		]
-	}
-
 	carrousel.slick({
-		...defaultOptions,
+		...defaultCarouselOptions,
 		...options
 	});
 
