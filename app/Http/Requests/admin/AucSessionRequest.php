@@ -21,7 +21,7 @@ class AucSessionRequest extends FormRequest
 			'orders_end' => "date_format:Y-m-d H:i:s|nullable",
 			'init_lot' => "required|numeric|max:999999" ,
 			'end_lot' => "required|numeric|max:999999",
-			"image_session" => "image|mimes:jpeg,png,jpg|max:5000",
+			"image_session" => "image|mimes:jpeg,png,jpg",
 			//'phoneorders' => "nullable|alpha_num|max:1",
         ];
     }
