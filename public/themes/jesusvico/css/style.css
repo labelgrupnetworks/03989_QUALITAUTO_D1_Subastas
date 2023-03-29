@@ -908,7 +908,7 @@ section.ficha-pujas {
 
 @media (min-width: 1200px) {
 	.ficha-grid {
-		grid-template-columns: 3fr 5fr 4fr;
+		grid-template-columns: 3fr 5fr 3fr;
 	}
 
 	section.ficha-image {
