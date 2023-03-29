@@ -354,7 +354,7 @@ class LotListController extends Controller
 			}
 			$bladeVars["url"] = $url;
 
-			$imageResolion = Config::get('lotlist_img', 'lote_medium');
+			$imageResolion = Config::get('app.lotlist_img', 'lote_medium');
 			$bladeVars["img"] = Tools::url_img($imageResolion, $item->num_hces1, $item->lin_hces1);
 
 
