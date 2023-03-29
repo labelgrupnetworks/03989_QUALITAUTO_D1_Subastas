@@ -39,11 +39,11 @@
 						</h5>
 
 						<h5 class="mt-3">
-							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_buy") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.buy_coins")."?static=how_to_buy" }}">{{ trans("$theme-app.foot.how_to_buy") }}</a>
+							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_buy") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.buy_coins") }}">{{ trans("$theme-app.foot.how_to_buy") }}</a>
 						</h5>
 
 						<h5 class="mt-3">
-							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_sell") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.where_sell_coins")."?static=how_to_sell" }}">{{ trans("$theme-app.foot.how_to_sell") }}</a>
+							<a class="nav-link" title="{{ trans("$theme-app.foot.how_to_sell") }}" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.where_sell_coins") }}">{{ trans("$theme-app.foot.how_to_sell") }}</a>
 						</h5>
                     </div>
 
@@ -53,25 +53,25 @@
                         <ul class="nav flex-column">
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.about_us") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us")."?static=who_we_are" }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us") }}">
 									{{ trans("$theme-app.foot.about_us") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.team") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team")."?static=team" }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team") }}">
 									{{ trans("$theme-app.foot.team") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.press") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.press") }}">
+									href="{{ Routing::translateSeo('prensa') }}">
 									{{ trans("$theme-app.foot.press") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.ethical_code") }}"
-									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code")."?static=ethical_code" }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code") }}">
 									{{ trans("$theme-app.foot.ethical_code") }}
 								</a>
 							</li>
@@ -137,7 +137,7 @@
                     <div class="col-6 col-lg-3 mb-3">
                         <h5><a class="nav-link" href="{{ trans("$theme-app.links.blog") }}" target="_blank">{{ trans("$theme-app.home.blog") }}</a></h5>
 
-						<h5 class="mt-4"><a class="nav-link" href="{{ Routing::translateSeo('contact') }}">{{ trans($theme.'-app.foot.contact') }}</a></h5>
+						<h5 class="mt-4"><a class="nav-link" href="{{ Routing::translateSeo('contacto') }}">{{ trans($theme.'-app.foot.contact') }}</a></h5>
 
 						<h5 class="mt-4">{{ trans($theme.'-app.subastas.inf_subasta_horario') }}</h5>
 						<p>{!! trans("$theme-app.foot.schedule") !!}</p>

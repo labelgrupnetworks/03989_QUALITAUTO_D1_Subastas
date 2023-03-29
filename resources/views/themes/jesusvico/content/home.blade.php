@@ -98,8 +98,7 @@
 
             <div>
                 <div class="contenido contenido-web static-page" id="pagina-{{ $page->id_web_page }}">
-                    {{-- {!! $page->content_web_page !!} --}}
-                    @include("includes.statics.$lang.subasta_numismatica")
+                    {!! $page->content_web_page !!}
                 </div>
             </div>
         </section>

@@ -114,10 +114,10 @@ $pageName = Route::currentRouteName();
 						  {{ trans("$theme-app.login_register.empresa") }}
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us").'?static=who_we_are' }}">{{ trans("$theme-app.foot.about_us") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team").'?static=team' }}">{{ trans("$theme-app.foot.team") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us") }}">{{ trans("$theme-app.foot.about_us") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team") }}">{{ trans("$theme-app.foot.team") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('prensa') }}">{{ trans("$theme-app.foot.press") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code").'?static=ethical_code' }}">{{ trans("$theme-app.foot.ethical_code") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code") }}">{{ trans("$theme-app.foot.ethical_code") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('mosaic-blog') }}">{{ trans("$theme-app.blog.museum-pieces") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('events') }}">{{ trans("$theme-app.blog.events") }}</a></li>
 						</ul>
@@ -128,8 +128,8 @@ $pageName = Route::currentRouteName();
 							{{ trans($theme.'-app.foot.service') }}
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'test?static=laboratory' }}">{{ trans("$theme-app.foot.laboratory") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').'test?static=legal_advice' }}">{{ trans("$theme-app.foot.legal_advice") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.laboratory") }}">{{ trans("$theme-app.foot.laboratory") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.legal_advice") }}">{{ trans("$theme-app.foot.legal_advice") }}</a></li>
 							<li><a class="dropdown-item" href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}">{{ trans("$theme-app.home.free-valuations") }}</a></li>
 						</ul>
 					</li>
