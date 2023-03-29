@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V5;
 use View;
 use Route;
-use Config;
 use Illuminate\Support\Facades\Request as Input;
 
 use Session;
@@ -23,6 +22,8 @@ use App\Models\V5\Sub_AucHouse;
 use App\Models\V5\Sub_AucHouse_Desc;
 use App\Models\V5\FgCaracteristicas;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Providers\ToolsServiceProvider as Tools;
+use Illuminate\Support\Facades\Config;
 
 use App\libs\SeoLib;
 use stdClass;
@@ -353,7 +354,8 @@ class LotListController extends Controller
 			}
 			$bladeVars["url"] = $url;
 
-			$bladeVars["img"] = \Tools::url_img('lote_medium', $item->num_hces1, $item->lin_hces1);
+			$imageResolion = Config::get('lotlist_img', 'lote_medium');
+			$bladeVars["img"] = Tools::url_img($imageResolion, $item->num_hces1, $item->lin_hces1);
 
 
 			if(!Session::has('user')){
