@@ -65,7 +65,7 @@
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.press") }}"
-									href="{{ Routing::translateSeo('prensa') }}">
+									href="{{ Routing::translateSeo('blog') . trans("$theme-app.links.press")}}">
 									{{ trans("$theme-app.foot.press") }}
 								</a>
 							</li>

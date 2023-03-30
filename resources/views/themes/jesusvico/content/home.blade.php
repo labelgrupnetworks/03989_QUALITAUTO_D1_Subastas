@@ -1,9 +1,9 @@
 <main class="home">
 
-    <section class="container">
+    <section class="container home-banners">
         <div class="row gy-3">
             <div class="col-md-8">
-                {!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['arrows' => false]) !!}
+                {!! \BannerLib::bannersPorKey('new_home', 'banner_home', ['arrows' => false, 'autoplay' => true, 'dots' => false]) !!}
             </div>
             <div class="col-md-4">
                 {!! \BannerLib::bannersPorKey('blog_banner', 'blog_banner', [

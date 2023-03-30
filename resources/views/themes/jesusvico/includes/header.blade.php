@@ -105,7 +105,7 @@ $pageName = Route::currentRouteName();
 
 					<li class="nav-item">
 						<a class="nav-link" href="{{ \Routing::translateSeo('venta-directa') }}">
-							<span>{{ trans($theme.'-app.foot.direct_sale')}}</span>
+							<span style="white-space: nowrap;">{{ trans($theme.'-app.foot.direct_sale')}}</span>
 						</a>
 					</li>
 
@@ -116,7 +116,7 @@ $pageName = Route::currentRouteName();
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us") }}">{{ trans("$theme-app.foot.about_us") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.team") }}">{{ trans("$theme-app.foot.team") }}</a></li>
-							<li><a class="dropdown-item" href="{{ Routing::translateSeo('prensa') }}">{{ trans("$theme-app.foot.press") }}</a></li>
+							<li><a class="dropdown-item" href="{{ Routing::translateSeo('blog') . trans("$theme-app.links.press") }}">{{ trans("$theme-app.foot.press") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.ethical_code") }}">{{ trans("$theme-app.foot.ethical_code") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('mosaic-blog') }}">{{ trans("$theme-app.blog.museum-pieces") }}</a></li>
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('events') }}">{{ trans("$theme-app.blog.events") }}</a></li>
