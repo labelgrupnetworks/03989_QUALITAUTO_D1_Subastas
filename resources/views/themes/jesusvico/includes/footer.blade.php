@@ -95,13 +95,13 @@
 						<ul class="nav flex-column">
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.laboratory") }}"
-									href="{{ Routing::translateSeo('pagina')."test?static=laboratory" }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.laboratory") }}">
 									{{ trans("$theme-app.foot.laboratory") }}
 								</a>
 							</li>
                             <li class="nav-item">
 								<a class="nav-link" title="{{ trans("$theme-app.foot.legal_advice") }}"
-									href="{{ Routing::translateSeo('pagina')."test?static=legal_advice" }}">
+									href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.legal_advice") }}">
 									{{ trans("$theme-app.foot.legal_advice") }}
 								</a>
 							</li>

@@ -109,9 +109,7 @@ if($subasta_web){
 		<section class="ficha-files">
 			@foreach ($files as $file)
 			<p>
-				<a href="{{ $file->download_path }}" alt="{{ $file->name_hces1_files }}" target="_blank">
-					{{ $file->name_hces1_files }}
-				</a>
+				<a href="{{ $path . $file }}" alt="" target="_blank">{{ $file }}</a>
 			</p>
 			@endforeach
 		</section>
