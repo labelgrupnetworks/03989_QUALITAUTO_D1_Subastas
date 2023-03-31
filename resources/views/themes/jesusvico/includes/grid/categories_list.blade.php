@@ -29,7 +29,7 @@
             ?>
             @if ($linOrtsec0 == $filters['category'] && $numCategoryLots > 0)
                 <div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between bg-lb-primary-50"
-                    data-toggle="collapse" href="#sections_{{ $category['key_ortsec0'] }}" role="button"
+					data-bs-toggle="collapse" href="#sections_{{ $category['key_ortsec0'] }}" role="button"
                     aria-expanded="true" aria-controls="sections_{{ $category['key_ortsec0'] }}">
 
 					<div class="category_level_01">

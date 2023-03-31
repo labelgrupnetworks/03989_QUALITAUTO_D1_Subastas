@@ -638,6 +638,10 @@ ul.style-diamond li p {
 	margin-bottom: 0.5rem;
 	color: var(--lb-color-gray);
 }
+.input-category.input-subcategory {
+	margin-bottom: 0;
+	padding: 0.5rem;
+}
 
 .auction__filters-type-list {
 	color: var(--lb-color-gray);
