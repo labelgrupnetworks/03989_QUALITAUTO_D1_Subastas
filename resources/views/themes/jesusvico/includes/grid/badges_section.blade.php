@@ -76,4 +76,16 @@
 			@include('components.boostrap_icon', ['icon' => 'x-circle'])<span>{{$aucHouses[$filters["auchouse"]]["rsoc_auchouse"]}}</span>
 		</span>
     @endif
+
+	@if(!empty(request('myLotsProperty')))
+	<span data-del_filter="#myLotsProperty" class="del_filter_js badge badge-custom-primary">
+		@include('components.boostrap_icon', ['icon' => 'x-circle'])<span>{{ trans("$theme-app.lot_list.my_lots_property") }}</span>
+	</span>
+	@endif
+
+	@if(!empty(request('myLotsClient')))
+	<span data-del_filter="#myLotsClient" class="del_filter_js badge badge-custom-primary">
+		@include('components.boostrap_icon', ['icon' => 'x-circle'])<span>{{ trans("$theme-app.lot_list.my_lots_clients") }}</span>
+	</span>
+	@endif
 </section>
