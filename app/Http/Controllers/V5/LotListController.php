@@ -1042,7 +1042,8 @@ class LotListController extends Controller
 				$userBids = FGASIGL1::select('EMP_ASIGL1,SUB_ASIGL1,LICIT_ASIGL1,REF_ASIGL1')
                    ->groupBy('EMP_ASIGL1,SUB_ASIGL1,LICIT_ASIGL1,REF_ASIGL1');
 				#he puesto "OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' MINUTE) " antes del nombre de la tabla por que si no no funciona, paranoias de oracle
-				$fgasigl0 = $fgasigl0->joinSub($userBids, "OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' MINUTE) LOTS_CLIENT", "LOTS_CLIENT.EMP_ASIGL1 = FGASIGL0.EMP_ASIGL0 AND LOTS_CLIENT.SUB_ASIGL1 = FGASIGL0.SUB_ASIGL0 AND LOTS_CLIENT.LICIT_ASIGL1 = FGLICIT.COD_LICIT AND LOTS_CLIENT.REF_ASIGL1 =  FGASIGL0.REF_ASIGL0");
+				//03/04/23: Eloy. Quito el "OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '1' MINUTE)". En las nuevas versiones de oracle no es necesario.
+				$fgasigl0 = $fgasigl0->joinSub($userBids, "LOTS_CLIENT", "LOTS_CLIENT.EMP_ASIGL1 = FGASIGL0.EMP_ASIGL0 AND LOTS_CLIENT.SUB_ASIGL1 = FGASIGL0.SUB_ASIGL0 AND LOTS_CLIENT.LICIT_ASIGL1 = FGLICIT.COD_LICIT AND LOTS_CLIENT.REF_ASIGL1 =  FGASIGL0.REF_ASIGL0");
 
             }
             return  $fgasigl0;

@@ -40,6 +40,10 @@
 
 				@include('includes.grid.features_list')
 
+				@if(Session::has('user'))
+					@include('includes.grid.filter_my_lots')
+				@endif
+
 				@if(!empty($auction))
 
 					@if (strtotime($auction->session_start) < time() && ($auction->tipo_sub=='W'))
