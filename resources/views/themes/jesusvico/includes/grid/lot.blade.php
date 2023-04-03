@@ -20,7 +20,7 @@ $isNotRetired = !$devuelto && !$retirado;
 			@endif
 		</h2>
 
-	  	<h5 class="card-title max-line-2">{!! strip_tags($titulo) !!}</h5>
+	  	<h5 class="card-title max-line-2">{!! strip_tags($item->desc_hces1) !!}</h5>
 
 		<div class="lot-prices">
 		@if($isNotRetired)

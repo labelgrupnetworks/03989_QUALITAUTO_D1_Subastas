@@ -860,6 +860,9 @@ section.ficha-pujas {
 
 .carrousel-lot-card img {
 	border-radius: 0;
+	height: 250px;
+    width: 100%;
+    object-fit: contain;
 }
 
 .section-destacados {

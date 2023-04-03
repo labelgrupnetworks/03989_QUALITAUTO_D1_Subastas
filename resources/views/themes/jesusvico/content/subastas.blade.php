@@ -1,5 +1,5 @@
 @php
-    $auctionsForYears = collect($data['auction_list'])->groupBy(fn($auction) => (new Carbon\Carbon($auction->session_start))->year);
+    $auctionsForYears = collect($data['auction_list'])->sortByDesc('session_start')->groupBy(fn($auction) => (new Carbon\Carbon($auction->session_start))->year);
 @endphp
 
 <div class="auctions-wrapper">
