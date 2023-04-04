@@ -521,6 +521,11 @@ ul.style-diamond li p {
 
 .column_banner .triple {
 	border: 1px solid rgb(var(--lb-color-primary-rgb), 0.2);
+	background-color: var(--lb-color-primary-extra-light);
+}
+
+.column_banner .triple:hover {
+	background-color: var(--lb-color-primary-light);
 }
 
 .section-destacados .slick-dots li {
@@ -641,6 +646,7 @@ ul.style-diamond li p {
 .input-category.input-subcategory {
 	margin-bottom: 0;
 	padding: 0.5rem;
+	text-transform: uppercase;
 }
 
 .auction__filters-type-list {
@@ -854,7 +860,7 @@ section.ficha-pujas {
 }
 
 .escalados-container button {
-	min-width: 140px;
+	font-size: 18px;
 	flex: 1;
 }
 
