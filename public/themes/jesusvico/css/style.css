@@ -308,6 +308,10 @@ footer h5 {
 	font-size: calc(1.275rem + .3vw);
 }
 
+section.static-page.home-static-page {
+	text-align: justify;
+}
+
 @media(min-width: 1200px) {
 	.static-page p {
 		font-size: 20px;
@@ -668,6 +672,19 @@ ul.style-diamond li p {
 | GRID - LOT
 |--------------------------------------------------------------------------
 */
+.lot-card {
+	transition: all 0.3s linear;
+}
+
+.lot-card:hover {
+	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.lot-card:hover .btn {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+}
 
 .lot-card .card-img-top {
 	margin-top: 0.5rem;
@@ -1067,3 +1084,28 @@ section.ficha-pujas {
 		margin-top: 2rem;
 	}
 }
+
+
+.btn-to-top {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: var(--lb-color-secondary);
+	color: #fff;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: opacity 0.3s;
+	opacity: 0;
+	z-index: 9999;
+  }
+
+  .btn-to-top.show {
+	opacity: 1;
+  }

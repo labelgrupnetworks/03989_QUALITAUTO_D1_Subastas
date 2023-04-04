@@ -25,10 +25,13 @@ $cookiesState = \Tools::cookies();
         @include('includes.modals')
     @endif
 
-<div class="button-up">
+{{-- <div class="button-up">
     <i class="fa fa-chevron-up" aria-hidden="true"></i>
+</div> --}}
 
-</div>
+<button id="btn-to-top" class="btn-to-top">
+	@include('components.boostrap_icon', ['icon' => 'arrow-up'])
+</button>
 
  <?php #Tools::querylog(); ?>
  @if(request("openLogin")=="S" && !Session::has('user') )
