@@ -304,8 +304,13 @@ footer h5 {
 	}
 }
 
-.static-page p {
+
+.static-page, .static-page p {
 	font-size: calc(1.275rem + .3vw);
+}
+
+.static-page :is(span, b) {
+	font-size: inherit !important;
 }
 
 section.static-page.home-static-page {
@@ -313,7 +318,7 @@ section.static-page.home-static-page {
 }
 
 @media(min-width: 1200px) {
-	.static-page p {
+	.static-page, .static-page p {
 		font-size: 20px;
 	}
 }
