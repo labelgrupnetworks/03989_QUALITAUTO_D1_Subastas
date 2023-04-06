@@ -1,4 +1,4 @@
-<?php
+Config<?php
 
 namespace App\Http\Controllers;
 
@@ -159,9 +159,34 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-
+		$this->sendPaymentsEmailAfterPayCaptured();
 	}
 
+
+	private function sendPaymentsEmailAfterPayCaptured()
+	{
+		$amount = '1924.81';
+		$serie = "T20";
+		$num = "64611855";
+
+		$user = new User();
+		$user->cod_cli = '000916';
+		$inf_client = $user->getUserByCodCli()[0];
+
+		$paymentController = new PaymentsController();
+		$paymentController->correo_payment("$serie/$num", $amount, '906893', $inf_client->nom_cli);
+
+		$email = new EmailLib('INVOICE_PAY_USER');
+		if (!empty($email->email)) {
+			$email->setUserByCod($inf_client->cod_cli, true);
+			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/myBills'));
+			$email->setPrice(ToolsServiceProvider::moneyFormat($amount, false, 2));
+			$email->setBill("$serie/$num");
+			$email->send_email();
+		}
+
+		dd('sended');
+	}
 
 
 	public function testwebserviceNFTDuran(){
