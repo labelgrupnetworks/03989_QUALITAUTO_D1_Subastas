@@ -725,8 +725,10 @@ section.ficha-image {
 
 .ficha-content .image-wrapper {
 	position: relative;
-	height: 290px;
+	min-height: 290px;
 	overflow: hidden;
+	display: flex;
+	align-items: center;
 }
 
 #img_main {
