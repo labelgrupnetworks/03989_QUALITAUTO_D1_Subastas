@@ -2,16 +2,17 @@
    |--------------------------------------------------------------------------
    | Repinta la caja de pujas
    |--------------------------------------------------------------------------
-   */
-$(document).ready(function () {
+   */$(document).ready(function () {
 
 	$('.lot-action_pujar_on_line').on('click', function (e) {
 		e.stopPropagation();
 		$.magnificPopup.close();
 		//si pulsan el boton de puja donde viene un valor
 
-		if ($(e.target)[0].hasAttribute("value")) {
-			precioOrden = $(e.target).attr("value");
+
+		if ($(e.currentTarget)[0].hasAttribute("value")) {
+			precioOrden = $(e.currentTarget).attr("value");
+			$("#bid_amount").val(precioOrden);
 
 		} else { //si pulsan el boton de autopuja
 			precioOrden = $("#bid_amount").val();
@@ -118,7 +119,13 @@ function actionResponseDesign_W(data) {
 function actionResponseDesign_O(data) {
 	/* sirve para Duran boton directo con valor de puja */
 	$("#boton_puja_directa_JS").html(data.siguiente);
-	$(".js-lot-action_pujar_escalado").attr("value", data.siguiente);
+
+	//$(".js-lot-action_pujar_escalado").attr("value", data.siguiente);
+	//actualizar botones escalado
+	if ( $(".js-lot-action_pujar_escalado").length) {
+		reloadPujasButtons(data.pujasAll[0].cod_sub, data.actual_bid);
+ 	}
+
 
 	actionResponseDesign_W(data);
 
@@ -578,5 +585,27 @@ function login_web() {
 	})
 	.always(() => {
 		loading.classList.add('d-none');
+	});
+}
+
+function reloadPujasButtons(codSub, actualBid){
+
+	$.ajax({
+		type: "GET",
+		url: '/api-ajax/calculate_bids/' + actualBid + '/' + actualBid + '?cod_sub=' + codSub,
+		success: function( response )
+		{
+			response = JSON.parse(response);
+			//let buttons = $(".js-lot-action_pujar_escalado");
+
+			for (let index = 0; index < 3; index++) {
+
+				$(`[data-escalado-position=${index}]`).attr('value', response[index]);
+				$(`[data-escalado-position=${index}] span`).attr('value', response[index]).text(new Intl.NumberFormat("de-DE").format(response[index]));
+
+				/* $(buttons[index]).attr('value', response[index]);
+				$(buttons[index].firstElementChild).attr('value', response[index]).text(new Intl.NumberFormat("de-DE").format(response[index])); */
+			}
+		}
 	});
 }
