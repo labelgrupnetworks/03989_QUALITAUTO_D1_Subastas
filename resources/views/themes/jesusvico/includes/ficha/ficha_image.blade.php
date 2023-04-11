@@ -34,7 +34,7 @@
             <div class="image-wrapper">
                 <a class="js-smartPhoto" data-caption="{{ $lote_actual->titulo_hces1 }}"
                     data-id="id-{{ $key + 1 }}"
-                    href="{{ Tools::url_img('lote_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+                    href="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                     <img class="lazy" data-group="nogroup"
                         src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                 </a>
