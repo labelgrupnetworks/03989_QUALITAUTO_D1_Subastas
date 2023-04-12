@@ -1,11 +1,11 @@
 var port= 22345 ;// soler 2125, local-auctions 22345; demo 2345
-var hostname = 'www.newsubastas.test/';  //'demoauction.label-grup.com';
+var hostname = 'http://subastas.test/';  //'demoauction.label-grup.com';
 //algunas rutas necesitan definir la url entero
-var large_hostname= 'http://subastas.com';
+var large_hostname= 'http://subastas.test';
 
 var io = require('socket.io')(port, {
 	cors: {
-		origin: 'http://subastas.com'
+		origin: 'http://subastas.test'
 	}
 });//29345
 var request = require("request");
@@ -415,6 +415,84 @@ io.on('connection', function(socket) {
 	{
         io.sockets.in(params.cod_sub).emit('fairwarning_response');
 	});
+
+
+
+
+	/* PHP SOCKETS */
+	socket.on('actionFinish', function(params)
+	{
+		console.log("action finish " );
+			/* PARARCUENTA ATRAS nuevo código para no parar cuenta atras */
+			if (typeof params.can_do == 'undefined' || params.can_do != 'orders') {
+			if( typeof params.res.no_interrupt_cd_time != 'undefined' &&  params.res.no_interrupt_cd_time == 'true'){
+				console.log("no interrumpir") ;//si ha habido un error no debemos parar la cuenta atras
+			}else{
+					interrupt_cd_time[params.cod_sub] = true;
+					console.log("Interrumpir cuenta atras") ;
+			}
+		}else{
+				console.log("Orden no interrumpir") ;
+		}
+		io.sockets.in(params.cod_sub).emit('action_response', params.res);
+	});
+
+	socket.on('emitCancelarBid', function(params)
+	{
+		console.log("cancelar bid " + params);
+		io.sockets.in(params.cod_sub).emit('cancel_bid_response', params.res);
+	});
+
+	socket.on('emitEndLot', function(params)
+	{
+		console.log("End lot " );
+		io.sockets.in(params.cod_sub).emit('end_lot_response', params.res);
+	});
+
+	socket.on('emitCancelOrder', function(params)
+	{
+		console.log("Cancel Order " );
+		io.sockets.in(params.cod_sub).emit('cancel_order_response', params.res);
+	});
+
+	socket.on('emitCancelOrderUser', function(params)
+	{
+		console.log("Cancel Order user" );
+		io.sockets.in(params.cod_sub).emit('cancel_order_response',  params.res);
+	});
+
+	socket.on('emitSetStatus', function(params)
+	{
+		console.log("set status " );
+		io.sockets.in(params.cod_sub).emit('auction_status_response', params.res);
+	});
+
+	socket.on('emitSetChat', function(params)
+	{
+		console.log("set chat " );
+		io.sockets.in(params.cod_sub).emit('chat_response',  params.res);
+	});
+
+	socket.on('emitDeleteChat', function(params)
+	{
+		console.log("set chat " );
+		io.sockets.in(params.cod_sub).emit('delete_msg_response',  params.res);
+	});
+
+	socket.on('emitStopCountDown', function(params)
+	{
+		interrupt_cd_time[params.cod_sub] = true;
+	});
+
+	socket.on('emitLotPause', function(params)
+	{
+		console.log("pause lot " );
+		io.sockets.in(params.cod_sub).emit('pausar_lote_response',  params.res);
+	});
+
+
+
+
 
 
 });

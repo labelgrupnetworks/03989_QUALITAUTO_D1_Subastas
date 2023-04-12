@@ -1597,30 +1597,43 @@ class subastaTiempoRealController extends Controller
         }
 
     }
+	# Funcion de pujas y ordenes de licitacion en tiempo real mediante node
+    public function action()
+    {
+		$codSub            = Input::get('params.cod_sub');
+        $ref            = Input::get('params.ref');
+
+        $licit          = Input::get('params.cod_licit');
+        //si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
+		$cod_original_licit      = Input::get('params.cod_original_licit');
+
+
+		$imp            = intval(Input::get('params.imp'));
+        $type_bid       = Input::get('params.type_bid');
+
+        $can_do                  = Input::get('params.can_do');
+        $hash_user               = Input::get('params.hash');
+        $tipo_puja_gestor        = Input::get('params.tipo_puja_gestor');
+		\Log::info ("antiguo circuito action");
+		return $this->executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  );
+	}
 
     # Funcion de pujas y ordenes de licitacion en tiempo real mediante node
-    public function action()
+    public function executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  )
     {
 
         $subasta = new subasta();
-        $subasta->cod            = request('params.cod_sub');
-        $subasta->ref            = request('params.ref');
-        $subasta->lote = $subasta->ref;
-        $subasta->licit          = request('params.cod_licit');
+        $subasta->cod = $codSub;
+        $subasta->ref =  $ref;
+        $subasta->lote =  $ref ;
+        $subasta->licit = $licit;
         //si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
-		$cod_original_licit      = request('params.cod_original_licit');
-		$this->cod_original_licit = request('params.cod_original_licit');
+		$this->cod_original_licit = $cod_original_licit;
 		//08-04-2021: forzamos que el valor recibido no tenga decimales
-		$subasta->imp            = intval(request('params.imp'));
-        $subasta->type_bid       = request('params.type_bid');
+		$subasta->imp = $imp;
+        $subasta->type_bid = $type_bid;
         //2017-10-10 lo cojemos del lote directamente
-        //$subasta->impsal         = request('params.impsal');
-
-        // //comprobamos que sea gestor, no nos fiamos de que venga en una variable
-        //$is_gestor               = request('params.is_gestor');
-        $can_do                  = request('params.can_do');
-        $hash_user               = request('params.hash');
-        $tipo_puja_gestor        = request('params.tipo_puja_gestor');
+        //$subasta->impsal         = Input::get('params.impsal');
 
 
         $is_gestor = false;
@@ -2918,14 +2931,25 @@ class subastaTiempoRealController extends Controller
 	}
 
 
-    public function endLot()
-    {
+ 	#conservo la función por si hubiera que usar sockets desde js en algun cliente
+	 public function endLot()
+	 {
+		 $cod_sub  = Input::get('params.cod_sub');
+		 $lot = Input::get('params.lot');
+		 $cod_licit      = Input::get('params.cod_licit');
+		 $hash_user      = Input::get('params.hash');
+		 $jump_lot = Input::get('params.jump_lot');
 
-        $cod_sub  = request('params.cod_sub');
-        $lot = request('params.lot');
-        $cod_licit      = request('params.cod_licit');
-        $hash_user      = request('params.hash');
-        $jump_lot = request('params.jump_lot');
+		 return $this->endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot);
+
+
+	 }
+
+
+	 public function endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot)
+	 {
+
+		 \Log::info("end lot V2" );
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
@@ -3274,13 +3298,10 @@ class subastaTiempoRealController extends Controller
          return json_encode($scales);
 
     }
-
-    # SUBASTA
-    # Seteamos el estado de la subasta y su fecha de reanudacion
-    public function setStatus()
+	public function setStatus()
     {
 
-        $SubastaTR      = new SubastaTiempoReal();
+
         $cod_sub        = request('params.cod_sub');
         $status         = request('params.status');
         $reanudacion    = request('params.reanudacion');
@@ -3289,15 +3310,20 @@ class subastaTiempoRealController extends Controller
         $hash_user      = request('params.hash');
         $id_auc_sessions =  request('params.id_auc_sessions');
 
+		return $this->setStatusv2($cod_sub, $status, $reanudacion, $minutes, $cod_licit, $hash_user, $id_auc_sessions );
+	}
 
+    # SUBASTA
+    # Seteamos el estado de la subasta y su fecha de reanudacion
+    public function setStatusv2($cod_sub, $status, $reanudacion, $minutes, $cod_licit, $hash_user, $id_auc_sessions )
+    {
 
+        $SubastaTR      = new SubastaTiempoReal();
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
         $gestor->licit = $cod_licit;
         $g = $gestor->getUserByLicit();
-
-
 
         //si no se encuentra el licitador o el licitador no es gestor
         if(count($g) == 0 || $g[0]->tipacceso_cliweb != 'S'){
@@ -3376,14 +3402,21 @@ class subastaTiempoRealController extends Controller
 
     # LOTE
     # Pausar un lote, únicamente en subasta en tiempo real
-    public function pausarLote()
+	public function pausarLote()
     {
 
         $cod_sub        = request('params.cod_sub');
         $cod_licit      = request('params.cod_licit');
         $hash_user      = request('params.hash');
         $ref            = request('params.ref');
+		$ref_new_pos_lot                = request('params.ref_lot');
 
+		$status = request('params.status');
+		$this->pausarLoteV2( $cod_sub, $cod_licit,  $hash_user, $ref, $status, $ref_new_pos_lot);
+	}
+
+    public function pausarLoteV2( $cod_sub, $cod_licit,  $hash_user, $ref, $status, $ref_new_pos_lot = NULL)
+    {
         $gestor = new User();
         $gestor->cod = $cod_sub;
         $gestor->licit = $cod_licit;
@@ -3408,13 +3441,11 @@ class subastaTiempoRealController extends Controller
         $SubastaTR->cod             = $cod_sub;
         $SubastaTR->ref             = $ref;
 
-        $ref_new_pos_lot                = request('params.ref_lot');
 
-        $ref_actual          = request('params.ref_lote_actual');
 
         $SubastaTR->ref = $ref;
         if(empty($ref_new_pos_lot)) {
-            return $SubastaTR->changeStatusLot(request('params.status'));
+            return $SubastaTR->changeStatusLot($status);
         }else{
 
             $subasta->lote = $ref_new_pos_lot;
@@ -3431,7 +3462,7 @@ class subastaTiempoRealController extends Controller
 
             $res_activeNext = $this->ActiveNext($cod_sub,$ref_new_pos_lot,$ref);
             $res = $res_activeNext['destino'];
-            return $SubastaTR->changeStatusLot(request('params.status'),$res);
+            return $SubastaTR->changeStatusLot($status,$res);
         }
 
     }
@@ -3739,17 +3770,20 @@ class subastaTiempoRealController extends Controller
 
 
     }
-     public function  cancelarOrden()
+
+	public function  cancelarOrden()
     {
-         Log::info('cancelar orden');
+		return $this->cancelarOrdenV2(Input::get('params.cod_sub'), Input::get('params.cod_licit'),  Input::get('params.ref'),  Input::get('params.hash'));
+	}
+
+	public function  cancelarOrdenV2($codSub, $licit,  $ref, $hash_user)
+    {
 
         $subasta = new Subasta();
-        $subasta->cod     = request('params.cod_sub');
-        $licit            = request('params.cod_licit');
-        $imp_salida            = request('params.imp_salida');
-        $subasta->ref     = request('params.ref');
-        $hash_user        = request('params.hash');
+        $subasta->cod     = $codSub;
 
+
+        $subasta->ref     = $ref;
 
 
         $user  = new User();
@@ -3806,16 +3840,18 @@ class subastaTiempoRealController extends Controller
 
 	 }
 
-	 public function  cancelarOrdenUser()
-	 {
-		  Log::info('cancelar orden User');
+	public function  cancelarOrdenUser()
+	{
 
-		 $subasta = new Subasta();
-		 $subasta->cod     = request('params.cod_sub');
-		 $licit            = request('params.cod_licit');
+		return  $this->cancelarOrdenUserV2(request('params.cod_sub'), request('params.ref'), request('params.cod_licit'), request('params.hash'));
+	}
 
-		 $subasta->ref     = request('params.ref');
-		 $hash_user        = request('params.hash');
+	public function  cancelarOrdenUserV2($codSub, $ref, $licit, $hash_user)
+	{
+		$subasta = new Subasta();
+		$subasta->cod = $codSub;
+		$subasta->ref = $ref;
+
 
 		 Log::info('cancelar orden User subasta:'.  $subasta->cod . " referencia: "  . $subasta->ref. " licitador: ". $licit  );
 
@@ -3867,18 +3903,29 @@ class subastaTiempoRealController extends Controller
 
 	  }
 
-    public function cancelarPuja()
+	public function cancelarPuja()
+	{
+
+		$codSub = Input::get('params.cod_sub');
+		$codLicit = Input::get('params.cod_licit');
+		$ref  = Input::get('params.ref');
+		$hash= Input::get('params.hash');
+
+		return $this->cancelarPujaV2($codSub, $codLicit, $ref, $hash);
+	}
+
+    public function cancelarPujaV2($codSub, $codLicit, $ref,  $hash_user)
     {
 
-        Log::info('cancelar puja');
+    
 
         $subasta = new Subasta();
-        $subasta->cod     = request('params.cod_sub');
-        $licit            = request('params.cod_licit');
+        $subasta->cod     = $codSub;
+        $licit            = $codLicit;
 
-        $subasta->ref     = request('params.ref');
+        $subasta->ref     =$ref;
         $subasta->lote     = $subasta->ref;
-        $hash_user        = request('params.hash');
+
 
         $user  = new User();
         $user->cod   = $subasta->cod;

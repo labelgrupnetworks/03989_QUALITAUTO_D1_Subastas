@@ -57,15 +57,24 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
 	window.cancelar_puja = function ()
 	{
-            var cod_licit = auction_info.user.cod_licit;
+
             var cod_sub =  auction_info.subasta.cod_sub;
             var ref = auction_info.lote_actual.ref_asigl0;
-            var imp_salida = auction_info.lote_actual.impsalhces_asigl0;
-            var string_hash = cod_licit + " " + cod_sub + " " + ref;
-            var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
 
-            socket.emit('cancel_bid', { cod_licit: cod_licit, cod_sub: cod_sub,  ref: ref, imp_salida: imp_salida, hash: hash });
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/cancelarbid',
+				data:{  cod_sub: cod_sub,  ref: ref },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
 
 	};
 
@@ -76,15 +85,24 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 	window.cancelar_orden = function ()
 	{
 
-            var cod_licit = auction_info.user.cod_licit;
+
             var cod_sub =  auction_info.subasta.cod_sub;
             var ref = auction_info.lote_actual.ref_asigl0;
-            var imp_salida = auction_info.lote_actual.impsalhces_asigl0;
-            var string_hash = cod_licit + " " + cod_sub + " " + ref;
-            var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/cancelarorden',
+				data:{  cod_sub: cod_sub,  ref: ref },
+				beforeSend: function () {
 
-            socket.emit('cancel_order', { cod_licit: cod_licit, cod_sub: cod_sub,  ref: ref, imp_salida: imp_salida, hash: hash });
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+
 
 	};
 
@@ -113,12 +131,23 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
                         var status = 'in_progress';
                         var cod_sub = auction_info.subasta.cod_sub;
                         var cod_licit = auction_info.user.cod_licit;
-                        var string_hash = status + " " + cod_sub + " " + cod_licit +" " ;
-                        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-                        socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, reanudacion: null,  id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
 
-	    		//socket.emit('auction_status', {status: 'in_progress', cod_sub: auction_info.subasta.cod_sub,id_auc_sessions: auction_info.subasta.id_auc_sessions, reanudacion: null, url: routing.status_url});
-	    	}
+						$.ajax({
+							type: "POST",
+							url: '/phpsock/set_status_auction',
+							data:{  cod_sub: cod_sub, status:status,  id_auc_sessions: auction_info.subasta.id_auc_sessions },
+							beforeSend: function () {
+
+							},
+							success: function( response ) {
+								if(response.status == 'error'){
+									displayAlert(1, messages.error[response.msg]);
+								}
+							}
+						});
+
+
+	    		 	}
 	    }
 
     });
@@ -137,11 +166,23 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
             }
 
             var cod_sub = auction_info.subasta.cod_sub;
-            var cod_licit = auction_info.user.cod_licit;
-            var string_hash = status + " " + cod_sub + " " + cod_licit +" " + minutesPause;
-            var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-            socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, minutesPause: minutesPause,  id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
-    	}
+
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/set_status_auction',
+				data:{  cod_sub: cod_sub, status:status,  minutesPause: minutesPause, id_auc_sessions: auction_info.subasta.id_auc_sessions },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+
+
+		}
 
     }
 
@@ -161,11 +202,25 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
             var status = 'stopped';
             var cod_sub = auction_info.subasta.cod_sub;
-            var cod_licit = auction_info.user.cod_licit;
-            var string_hash = status + " " + cod_sub + " " + cod_licit +" " + fechaPause;
-            var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-            socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, reanudacion: fechaPause,  id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
-        }else{
+			var id_auc_sessions= auction_info.subasta.id_auc_sessions;
+
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/set_status_auction',
+				data:{  cod_sub: cod_sub, status:status,  reanudacion: fechaPause, id_auc_sessions: id_auc_sessions },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+
+
+
+		}else{
             displayAlert(0, messages.error['wrong_date']);
 
         }
@@ -188,11 +243,22 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 		if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor){
                         var status = 'in_progress';
                         var cod_sub = auction_info.subasta.cod_sub;
-                        var cod_licit = auction_info.user.cod_licit;
-                        var string_hash = status + " " + cod_sub + " " + cod_licit +" " ;
-                        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-                        socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, reanudacion: null, id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
-    	    	}
+						$.ajax({
+							type: "POST",
+							url: '/phpsock/set_status_auction',
+							data:{  cod_sub: cod_sub, status:status,   id_auc_sessions: auction_info.subasta.id_auc_sessions },
+							beforeSend: function () {
+
+							},
+							success: function( response ) {
+								if(response.status == 'error'){
+									displayAlert(1, messages.error[response.msg]);
+								}
+							}
+						});
+
+
+				}
 
 	}
 	/*
@@ -208,22 +274,28 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
         */
         $('body').on('click', '.btn-eliminar', function() {
 
-    	var id_mensaje  = $(this).attr('id_mensaje');
+
 
     	/* si es un mensaje predefinido pasaremos un parametro para identificar el socket emit*/
     	var predefinido = $(this).attr('predefinido');
         var cod_licit = auction_info.user.cod_licit;
         var cod_sub = auction_info.subasta.cod_sub;
-        var string_hash = id_mensaje + " " + cod_sub + " " + cod_licit;
-        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
 
-    	var params = { 'cod_sub': cod_sub, 'id_mensaje': id_mensaje, 'predefinido': predefinido, id: socket.id,cod_licit: cod_licit,hash: hash };
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/delete_message_chat',
+			data:{  cod_sub: cod_sub, id_mensaje:$(this).attr('id_mensaje'), predefinido: $(this).attr('predefinido') },
+			beforeSend: function () {
 
-		/* solo puede el gestor*/
-		if(typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-			socket.emit('delete_msg', params);
-		}
+			},
+			success: function( response ) {
+				if(response.status == 'error'){
+					displayAlert(1, messages.error[response.msg]);
+				}
+			}
+		});
+
 
         });
          /*
@@ -264,17 +336,28 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 			/* Insertamos los valores dentro del array javascript*/
 			mensajes_sin_procesar[$(this).attr('contador')] = { 'msg': $(this).val(), 'predefinido': predefinido, 'lang_code': $(this).attr('clave')};
 		});
-                var cod_licit = auction_info.user.cod_licit;
+
                 var cod_sub = auction_info.subasta.cod_sub;
-                var string_hash = mensajes.ES.msg + " " + cod_sub + " " + cod_licit;
-                var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
 
-		var params = { 'cod_sub': cod_sub, 'mensaje': mensajes, cod_licit: cod_licit, hash: hash };
-		//var params = {'url': 'http://auctions.tauleryfau.com/api/chat', 'cod_sub': auction_info.subasta.cod_sub, 'mensaje': mensajes };
 		/* solo puede enviar chat el gestor*/
 		if(typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-			socket.emit('chat', params);
+
+
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/set_message_chat',
+				data:{  cod_sub: cod_sub, mensaje:mensajes },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+
 		}
 
 		/* Reseteamos el valor de los campos input de mensaje*/
@@ -303,25 +386,22 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
     	$.each(auction_info.chat.mensajes[id_mensaje], function(index, value) {
     		auction_info.chat.mensajes[id_mensaje][index].predefinido = 0;
     	});
-        /*
-    	var params = {'url': routing.chat, 'cod_sub': auction_info.subasta.cod_sub, 'mensaje': auction_info.chat.mensajes[id_mensaje] };
 
-		// solo puede enviar chat el gestor
+		var cod_sub = auction_info.subasta.cod_sub;
 		if(typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-			socket.emit('chat', params);
-		}
-        */
-        var cod_licit = auction_info.user.cod_licit;
-                var cod_sub = auction_info.subasta.cod_sub;
-                var string_hash = auction_info.chat.mensajes[id_mensaje].ES.msg + " " + cod_sub + " " + cod_licit;
-                var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/set_message_chat',
+				data:{  cod_sub: cod_sub, mensaje:auction_info.chat.mensajes[id_mensaje] },
+				beforeSend: function () {
 
-
-		var params = { 'cod_sub': cod_sub, 'mensaje':auction_info.chat.mensajes[id_mensaje], cod_licit: cod_licit, hash: hash };
-		//var params = {'url': 'http://auctions.tauleryfau.com/api/chat', 'cod_sub': auction_info.subasta.cod_sub, 'mensaje': mensajes };
-		/* solo puede enviar chat el gestor*/
-		if(typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-			socket.emit('chat', params);
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
 		}
 
 	});
@@ -334,8 +414,22 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
    $('.fairwarning_js').click(function(){
 	if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor){
-		console.log("fair warning")
-		socket.emit('fairwarning', {cod_sub: auction_info.subasta.cod_sub});
+
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/fair_warning',
+			data:{  cod_sub: auction_info.subasta.cod_sub},
+			beforeSend: function () {
+
+			},
+			success: function( response ) {
+				if(response.status == 'error'){
+					displayAlert(1, messages.error[response.msg]);
+				}
+			}
+		});
+
+
 
 	}
 });
@@ -350,36 +444,31 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
     	if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor){
 
     		if ($(this).data().status == 'end'){
-
-
-                    /*evitamos tener que pulsar el boton
-    			 $.magnificPopup.open({items: {src: '#modalEndLot'}, type: 'inline'}, 0);
-                        mostramos el campo de poner un licitador si  el licitador actual es el dummy*/
-                    count_down_lot();
+				var url = '/phpsock/start_count_down';
     		}else{
-    			socket.emit('stop_count_down', {cod_sub: auction_info.subasta.cod_sub});
+				var url = '/phpsock/stop_count_down';
+
     		}
+
+			$.ajax({
+				type: "POST",
+				url: url,
+				data:{  cod_sub: auction_info.subasta.cod_sub,  cd_time: auction_info.subasta.cd_time,  lot: auction_info.lote_actual.ref_asigl0},
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
     	}
     });
 
 
 
 
-        function count_down_lot() {
-
-
-    	if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-                        var cod_sub = auction_info.subasta.cod_sub;
-                        var cod_licit = auction_info.user.cod_licit;
-                        var lot = auction_info.lote_actual.ref_asigl0;
-                        var string_hash = lot + " " + cod_sub + " " + cod_licit ;
-                        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-
-                 //socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, reanudacion: null, id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
-
-    		socket.emit('start_count_down', {cod_sub: cod_sub, cod_licit: cod_licit, hash: hash,  cd_time: auction_info.subasta.cd_time, url: routing.end_lot, lot: lot});
-    	}
-    }
     /*
 	|--------------------------------------------------------------------------
 	| Reabrir un lote en concreto
@@ -490,13 +579,24 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 		var status  = $('.lotPause').data().status;
 
 		if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-                       var cod_sub = auction_info.subasta.cod_sub;
-                       var cod_licit = auction_info.user.cod_licit;
-                       var ref = auction_info.buscador.ref_asigl0;
-                       var string_hash = ref + " " + cod_sub + " " + cod_licit ;
-                       var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
-                       socket.emit('pausar_lote', {ref: ref, cod_sub: cod_sub, cod_licit: cod_licit, status: status, hash: hash});
+			var cod_sub = auction_info.subasta.cod_sub;
+			var ref = auction_info.buscador.ref_asigl0;
+
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/lot_pause',
+				data:{  cod_sub: cod_sub, ref: ref, status: status },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+
 	    }
 	}
 
@@ -541,11 +641,23 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 			if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
 
                             var cod_sub = auction_info.subasta.cod_sub;
-                            var cod_licit = auction_info.user.cod_licit;
-                            var string_hash = ref + " " + cod_sub + " " + cod_licit ;
-                            var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-                            socket.emit('pausar_lote', {ref: ref, cod_licit: cod_licit, cod_sub: cod_sub, status: status, ref_lote_actual: auction_info.lote_actual.ref_asigl0, orden_actual: orden_actual, ref_lot: ref_lot, hash: hash });
-                        }
+							$.ajax({
+								type: "POST",
+								url: '/phpsock/jump_lot',
+								data:{  cod_sub: cod_sub,  ref: ref, status: status , ref_lote_actual: auction_info.lote_actual.ref_asigl0, orden_actual: orden_actual, ref_lot: ref_lot },
+								beforeSend: function () {
+
+								},
+								success: function( response ) {
+									if(response.status == 'error'){
+										displayAlert(1, messages.error[response.msg]);
+									}
+								}
+							});
+
+
+
+			}
 			//displayAlert(0, messages.error.not_allowed_movement);
 
 	}
@@ -559,16 +671,25 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
         function send_end_lot(jump_lot = 0){
             if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-                        var cod_sub = auction_info.subasta.cod_sub;
-                        var cod_licit = auction_info.user.cod_licit;
-                        var lot = auction_info.lote_actual.ref_asigl0;
-                        var string_hash = lot + " " + cod_sub + " " + cod_licit ;
-                        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+				var cod_sub = auction_info.subasta.cod_sub;
 
-                 //socket.emit('auction_status', {status: status ,cod_licit: cod_licit, cod_sub: auction_info.subasta.cod_sub, reanudacion: null, id_auc_sessions: auction_info.subasta.id_auc_sessions, hash: hash});
+				var lot = auction_info.lote_actual.ref_asigl0;
 
-    		socket.emit('server_end_lot', {cod_sub: cod_sub, cod_licit: cod_licit, hash: hash,  cd_time: auction_info.subasta.cd_time, url: routing.end_lot, lot: lot,jump_lot:jump_lot});
-            }
+				$.ajax({
+					type: "POST",
+					url: '/phpsock/endlot',
+					data:{  cod_sub: cod_sub,  lot: lot, jump_lot: jump_lot },
+					beforeSend: function () {
+
+					},
+					success: function( response ) {
+						if(response.status == 'error'){
+							displayAlert(1, messages.error[response.msg]);
+						}
+					}
+				});
+
+			}
 
        }
 
@@ -666,7 +787,21 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
         $(".cancelasignlicit").click(function() {
             $("#modalEndLot_msg_error").addClass('hidden');
             var cod_sub = auction_info.subasta.cod_sub;
-            socket.emit('open_bids',{cod_sub: cod_sub});
+
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/open_bids',
+				data:{  cod_sub: cod_sub },
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+					}
+				}
+			});
+           
 
             //si no ha asignado ganador y  está activa la subasta automática
             if(automatic_auction){

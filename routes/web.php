@@ -657,6 +657,30 @@ Route::get("/{lang}/newsletter-migrate", "NewsletterController@migrateNewsletter
 Route::get("/{lang}/newsletter-mailchimp-export", "NewsletterController@mailchimpExportCsv");
 
 
+#Funciones nuevas de los  sockets en PHP
+Route::post("/phpsock/actionv2","V5\NodePhp@actionV2");
+Route::post("/phpsock/cancelarbid","V5\NodePhp@cancelarBid");
+Route::post("/phpsock/endlot","V5\NodePhp@endLot");
+Route::post("/phpsock/cancelarorden","V5\NodePhp@cancelarOrden");
+Route::post("/phpsock/set_status_auction","V5\NodePhp@setStatusAuction");
+Route::post("/phpsock/set_message_chat","V5\NodePhp@setMessageChat");
+Route::post("/phpsock/delete_message_chat","V5\NodePhp@deleteMessageChat");
+Route::post("/phpsock/start_count_down","V5\NodePhp@startCountDown");
+Route::post("/phpsock/stop_count_down","V5\NodePhp@stopCountDown");
+Route::post("/phpsock/lot_pause","V5\NodePhp@lotPause");
+Route::post("/phpsock/fair_warning","V5\NodePhp@fairWarning");
+Route::post("/phpsock/jump_lot","V5\NodePhp@jumpLot");
+Route::post("/phpsock/open_bids","V5\NodePhp@openBids");
+Route::post("/phpsock/cancelar_orden_user","V5\NodePhp@cancelarOrdenUser");
+
+
+
+
+
+
+
+
+
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';

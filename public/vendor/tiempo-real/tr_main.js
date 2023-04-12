@@ -62,8 +62,8 @@ $(function () {
      |--------------------------------------------------------------------------
      */
 
-    function addBidLogic(amount, ref, imp_sal, $this, can_do)
-    {
+	 function addBidLogic(amount, ref, imp_sal, $this, can_do)
+	 {
 
         var type_bid = 'W';
 
@@ -93,8 +93,12 @@ $(function () {
                 /* Puja inferior a la actual*/
                 displayAlert(0, messages.error.small_bid);
 
+
+
                 return;
             }
+
+
         }
 
         /* Comprobamos que exista el licitador*/
@@ -103,10 +107,6 @@ $(function () {
             return;
         }
         var params = {'cod_licit': auction_info.user.cod_licit, 'cod_sub': auction_info.subasta.cod_sub, 'ref': ref, 'url': routing.action_url, 'imp': amount, 'type_bid': type_bid, 'impsal': imp_sal, 'can_do': can_do, 'cod_original_licit': auction_info.user.cod_licit};
-
-
-
-
         if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor && $('#ges_cod_licit').length > 0) {
             params.cod_licit = $('#ges_cod_licit').val();
             params.type_bid = $($this).data().type;
@@ -133,8 +133,25 @@ $(function () {
         }
 
         $('.add_bid').addClass('loading');
-        socket.emit('action', params);
-    }
+
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/actionv2',
+			data: params,
+			beforeSend: function () {
+
+			},
+			success: function( response ) {
+							if(response.status == 'error'){
+								displayAlert(1, messages.error[response.msg]);
+							}
+			}
+		});
+
+
+	 }
+
+
 
     /*
      |--------------------------------------------------------------------------
@@ -2330,15 +2347,23 @@ $(function () {
 
 	window.cancelar_orden_user = function ()
     {
-        var cod_licit = auction_info.user.cod_licit;
-        var cod_sub = auction_info.subasta.cod_sub;
-        var ref = auction_info.lote_actual.ref_asigl0;
-        var string_hash = cod_licit + " " + cod_sub + " " + ref;
-        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
 
-        socket.emit('cancel_order_user', {cod_licit: cod_licit, cod_sub: cod_sub, ref: ref, hash: hash});
 
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/cancelar_orden_user',
+			data:{  cod_sub: auction_info.subasta.cod_sub,    ref: auction_info.lote_actual.ref_asigl0},
+			beforeSend: function () {
+
+			},
+			success: function( response ) {
+				if(response.status == 'error'){
+					displayAlert(1, messages.error[response.msg]);
+				}
+			}
+		});
+		
 	};
 
     $('.confirm_puja').on('click', function (e) {
@@ -2391,10 +2416,23 @@ $(function () {
 			bidders,
 		};
 
-        var string_hash = params.cod_licit + " " + params.cod_sub + " " + params.ref + " " + params.imp;
-        params.hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
-        socket.emit('action', params);
-    }
+			$.ajax({
+				type: "POST",
+				url: '/phpsock/actionv2',
+				data: params,
+				beforeSend: function () {
+
+				},
+				success: function( response ) {
+					if(response.status == 'error'){
+						displayAlert(1, messages.error[response.msg]);
+						$('#abrirLote').addClass('hidden');
+					}
+				}
+			});
+	};
+
+
 
 
 });

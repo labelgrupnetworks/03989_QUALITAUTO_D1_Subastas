@@ -34,15 +34,19 @@ class ChatController extends Controller
     	return json_encode($chat->getChat());
     }
 
+	 # Guardamos un mensaje de chat
+	 public function setChatArray()
+	 {
+		 $cod_sub = Input::get('cod_sub');
+		 $mensaje = Input::get('mensaje');
+		 $cod_licit = Input::get('cod_licit');
+		 $hash_user      = Input::get('hash');
+		 return $this->setChat($cod_sub, $mensaje,  $cod_licit,  $hash_user );
+
+	 }
     # Guardamos un mensaje de chat
-    public function setChatArray()
+    public function setChat($cod_sub, $mensaje,  $cod_licit,  $hash_user )
     {
-        $cod_sub = Input::get('cod_sub');
-        $mensaje = Input::get('mensaje');
-        $cod_licit = Input::get('cod_licit');
-        $hash_user      = Input::get('hash');
-
-
         $gestor = new User();
         $gestor->cod = $cod_sub;
         $gestor->licit = $cod_licit;
@@ -94,8 +98,13 @@ class ChatController extends Controller
         $id_mensaje = Input::get('id_mensaje');
         $cod_licit = Input::get('cod_licit');
         $hash_user      = Input::get('hash');
+		$predefinido = Input::get('predefinido');
 
+		return $this->deleteChatv2( $cod_sub, $id_mensaje, $cod_licit, $hash_user,$predefinido );
 
+	}
+	public function deleteChatv2( $cod_sub, $id_mensaje, $cod_licit, $hash_user,$predefinido )
+	{
         $gestor = new User();
         $gestor->cod = $cod_sub;
         $gestor->licit = $cod_licit;
@@ -126,7 +135,7 @@ class ChatController extends Controller
 
 
         $cod_sub = $cod_sub;
-        $predefinido = Input::get('predefinido');
+
         $chat                 = new Chat();
         $chat->cod            = $cod_sub;
         $chat->deleteChat($id_mensaje);
