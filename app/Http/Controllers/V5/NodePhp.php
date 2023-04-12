@@ -464,7 +464,7 @@ public function actionV2()
 
 		];
 
-		$url = "http://localhost:22345";
+		$url =  env('NODE_URL');
 		$client = new \ElephantIO\Client(new Version2X($url, $options));
 
 		$client->initialize();
