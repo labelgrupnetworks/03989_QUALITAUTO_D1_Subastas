@@ -2,11 +2,11 @@
 namespace App\Http\Controllers\V5;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\subastaTiempoRealController;
+use App\Http\Controllers\SubastaTiempoRealController;
 use App\Http\Controllers\ChatController;
 use Session;
 use App\Models\V5\FgLicit;
-
+use Config;
 use ElephantIO\Engine\SocketIO\Version2X;
 use ElephantIO\Engine\Socket\SecureOptionBuilder;
 
@@ -464,7 +464,7 @@ public function actionV2()
 
 		];
 
-		$url =  env('NODE_URL');
+		$url =  Config::get("app.node_url");
 		$client = new \ElephantIO\Client(new Version2X($url, $options));
 
 		$client->initialize();
