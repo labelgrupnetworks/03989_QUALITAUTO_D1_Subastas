@@ -194,7 +194,7 @@
                 <div class="col-md-8">
                     <label class="form-check-label">
                         <input class="form-check-input" name="shipping_address" type="checkbox"
-                            onchange="handleCheckedAddressShipping(this)" @checked(!config('app.delivery_address', false)) />
+                            onchange="handleCheckedAddressShipping(this)" checked />
                         {{ trans("$theme-app.login_register.utilizar_direcc_direccenv") }}
                     </label>
                     <div class="row mt-2 gy-1" id="js-shipping_address">
