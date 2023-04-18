@@ -1709,6 +1709,7 @@ $(function () {
         $('#precioSalida span').html(auction_info.lote_actual.formatted_impsalhces_asigl0);
 		$('#precioReserva span').html(auction_info.lote_actual.impres_asigl0 ? auction_info.lote_actual.formatted_impres_asigl0 : '0');
 		$('#precioCoste span').html(auction_info.lote_actual.pc_hces1);
+		$('.add_next-bid #value-view').html(numeral(auction_info.lote_actual.importe_escalado_siguiente ?? 0).format('0,0' ) + " €");
         if (typeof cedente != 'undefined') {
             $('#inf_prop .inf_cod_prop').html(auction_info.lote_actual.prop_hces1);
             $('#inf_prop .inf_name_prop').html('');
