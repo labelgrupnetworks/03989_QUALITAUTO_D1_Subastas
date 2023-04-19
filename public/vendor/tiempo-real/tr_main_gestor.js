@@ -177,6 +177,10 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 				success: function( response ) {
 					if(response.status == 'error'){
 						displayAlert(1, messages.error[response.msg]);
+					}else{
+						if(automatic_auction){
+							stop_automatic_auction();
+						}
 					}
 				}
 			});
@@ -214,6 +218,10 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 				success: function( response ) {
 					if(response.status == 'error'){
 						displayAlert(1, messages.error[response.msg]);
+					}else{
+						if(automatic_auction){
+							stop_automatic_auction();
+						}
 					}
 				}
 			});
@@ -801,7 +809,7 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 					}
 				}
 			});
-           
+
 
             //si no ha asignado ganador y  está activa la subasta automática
             if(automatic_auction){
