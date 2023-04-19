@@ -304,12 +304,21 @@ footer h5 {
 	}
 }
 
-.static-page p {
+
+.static-page, .static-page p {
 	font-size: calc(1.275rem + .3vw);
 }
 
+.static-page :is(span, b) {
+	font-size: inherit !important;
+}
+
+section.static-page.home-static-page {
+	text-align: justify;
+}
+
 @media(min-width: 1200px) {
-	.static-page p {
+	.static-page, .static-page p {
 		font-size: 20px;
 	}
 }
@@ -521,6 +530,11 @@ ul.style-diamond li p {
 
 .column_banner .triple {
 	border: 1px solid rgb(var(--lb-color-primary-rgb), 0.2);
+	background-color: var(--lb-color-primary-extra-light);
+}
+
+.column_banner .triple:hover {
+	background-color: var(--lb-color-primary-light);
 }
 
 .section-destacados .slick-dots li {
@@ -641,6 +655,7 @@ ul.style-diamond li p {
 .input-category.input-subcategory {
 	margin-bottom: 0;
 	padding: 0.5rem;
+	text-transform: uppercase;
 }
 
 .auction__filters-type-list {
@@ -662,6 +677,19 @@ ul.style-diamond li p {
 | GRID - LOT
 |--------------------------------------------------------------------------
 */
+.lot-card {
+	transition: all 0.3s linear;
+}
+
+.lot-card:hover {
+	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.lot-card:hover .btn {
+    color: var(--bs-btn-hover-color);
+    background-color: var(--bs-btn-hover-bg);
+    border-color: var(--bs-btn-hover-border-color);
+}
 
 .lot-card .card-img-top {
 	margin-top: 0.5rem;
@@ -854,7 +882,7 @@ section.ficha-pujas {
 }
 
 .escalados-container button {
-	min-width: 140px;
+	font-size: 18px;
 	flex: 1;
 }
 
@@ -1060,4 +1088,39 @@ section.ficha-pujas {
 		width: 45%;
 		margin-top: 2rem;
 	}
+}
+
+
+.btn-to-top {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: var(--lb-color-secondary);
+	color: #fff;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	transition: opacity 0.3s;
+	opacity: 0;
+	z-index: 9999;
+  }
+
+  .btn-to-top.show {
+	opacity: 1;
+  }
+
+
+/*
+|--------------------------------------------------------------------------
+| Registro - Datos de perfil
+|--------------------------------------------------------------------------
+*/
+.register-currency {
+	display: none;
 }

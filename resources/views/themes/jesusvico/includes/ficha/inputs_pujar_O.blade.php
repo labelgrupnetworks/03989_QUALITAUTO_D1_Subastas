@@ -23,10 +23,11 @@
                         'add_favs' => Session::has('user'),
                     ])>
 
-                    <span>{{ trans("$theme-app.lot.bid_on") }}</span><br>
-                    <b><span id="button-escalado"
-                            value="{{ $escalado }}">{{ \Tools::moneyFormat($escalado) }}</span>
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</b>
+                    <p>{{ trans("$theme-app.lot.bid_on") }}</p>
+                    <b>
+						<span value="{{ $escalado }}">{{ Tools::moneyFormat($escalado) }}</span>
+							{{ trans("$theme-app.subastas.euros") }}
+					</b>
                 </button>
             @endforeach
         </div>

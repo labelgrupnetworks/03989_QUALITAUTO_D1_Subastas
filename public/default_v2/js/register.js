@@ -1,6 +1,7 @@
 document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchCityForSecondAddress);
 document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
 document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
+handleCheckedAddressShipping(document.querySelector('[name="shipping_address"]'));
 
 
 

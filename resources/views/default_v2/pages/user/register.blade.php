@@ -154,20 +154,13 @@
                 </div>
             </div>
 
-            {{-- Por el momento oculto hasta saber que hacer con estos campos --}}
-            <div class="row mb-5 d-none">
+            <div class="row mb-5">
                 <div class="col-md-4">
                     <h4>Otros</h4>
                 </div>
                 <div class="col-md-8">
                     <div class="row gy-1">
-                        <div class="col-md-6">
-                            <label class="form-label">
-                                {!! $formulario->condiciones2 !!}
-                                {!! trans("$theme-app.login_register.read_conditions2") !!}
-                            </label>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 register-currency">
                             <label class="form-label">
                                 {{ trans("$theme-app.login_register.currency") }}
                                 {!! $formulario->divisa !!}
@@ -177,6 +170,12 @@
                             <label class="form-label">
                                 {{ trans("$theme-app.login_register.observacion") }}
                                 {!! $formulario->obscli !!}
+                            </label>
+                        </div>
+						<div class="col-12">
+                            <label class="form-label">
+                                {!! $formulario->condiciones2 !!}
+                                {!! trans("$theme-app.login_register.read_conditions2") !!}
                             </label>
                         </div>
                     </div>
@@ -195,7 +194,7 @@
                 <div class="col-md-8">
                     <label class="form-check-label">
                         <input class="form-check-input" name="shipping_address" type="checkbox"
-                            onchange="handleCheckedAddressShipping(this)" @checked(!config('app.delivery_address', false)) />
+                            onchange="handleCheckedAddressShipping(this)" checked />
                         {{ trans("$theme-app.login_register.utilizar_direcc_direccenv") }}
                     </label>
                     <div class="row mt-2 gy-1" id="js-shipping_address">

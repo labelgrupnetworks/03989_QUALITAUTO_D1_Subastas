@@ -19,7 +19,7 @@
         <div class="container">
             <h1 class="mb-5">{{ trans("$theme-app.blog.events") }}</h1>
 
-            <div class="row row-cols-1 row-cols-lg-2">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                 @foreach ($banners as $banner)
                     <div class="col">
                         <article class="card event-card border-0 text-center mb-5">

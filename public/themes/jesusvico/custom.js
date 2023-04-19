@@ -8,6 +8,28 @@ $(function () {
 	$('#js-show-filters, #js-hide-filters').on('click', resizeGridBanner);
 
 	createObservers();
+
+
+	const btnToTop = document.querySelector('#btn-to-top');
+
+	window.addEventListener('scroll', () => {
+		const scrollHeight = window.pageYOffset;
+		const pageHeight = document.documentElement.scrollHeight;
+		const thirdHeight = pageHeight / 3;
+
+		if (scrollHeight > thirdHeight) {
+			btnToTop.classList.add('show');
+		} else {
+			btnToTop.classList.remove('show');
+		}
+	});
+
+	btnToTop.addEventListener('click', () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	});
 })
 
 function createObservers() {
@@ -15,7 +37,7 @@ function createObservers() {
 	const observerTypes = ['.observer-animation-bottom', '.observer-animation-left', '.observer-animation-right'];
 
 	const targets = [...document.querySelectorAll(observerTypes.toString())];
-	if(targets.length === 0){
+	if (targets.length === 0) {
 		return;
 	}
 
@@ -87,7 +109,7 @@ carrousel_molon_new = function (carrousel, newOptions = {}) {
 		]
 	};
 
-	carrousel.slick({...options, ...newOptions});
+	carrousel.slick({ ...options, ...newOptions });
 	carrousel.data('hasSlick', true);
 }
 

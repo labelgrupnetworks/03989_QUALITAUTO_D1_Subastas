@@ -4,11 +4,10 @@ $isNotRetired = !$devuelto && !$retirado;
 <div class="card lot-card" {!! $codeScrollBack !!}>
 	@include('includes.grid.labelLots')
 
-	<a {!! $url !!}>
-		<img class="card-img-top" src="{{ $img }}" alt="{{ $titulo }}" loading="{{ $loop->iteration > 6 ? 'lazy' : 'auto' }}">
-	</a>
+	<img class="card-img-top" src="{{ $img }}" alt="{{ $titulo }}" loading="{{ $loop->iteration > 6 ? 'lazy' : 'auto' }}">
 
 	<div class="card-body">
+		<a {!! $url !!} class="stretched-link"></a>
 
 		<h2>
 			{{ trans("$theme-app.lot.lot-name") }} {{$item->ref_asigl0}}

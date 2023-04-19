@@ -336,7 +336,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/{cod_sub}/lotes/stockRemove-selection', 'subasta\AdminLotController@stockRemoveSelection')->name('subastas.lotes.stockRemove_selection');
 		Route::post('subastas/{cod_sub}/lotes/setToSellSelection', 'subasta\AdminLotController@setToSellSelection')->name('subastas.lotes.setToSellSelection');
 
-		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show']);
+		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show'])->parameters([
+			'subastas' => 'cod_sub',
+		]);
 
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
 		Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
