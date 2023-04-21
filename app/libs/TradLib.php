@@ -73,6 +73,10 @@ class TradLib {
         if (empty($emp)) {
             $emp = Config::get('app.main_emp');
         }
+		#Evitamos que de error el require si intenta cargar un isdioma que no existe el archivo APP
+		if(!file_exists(lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php'))){
+			$language='es';
+		}
 
 		require lang_path(strtolower($language) . DIRECTORY_SEPARATOR . 'app.php');
 
