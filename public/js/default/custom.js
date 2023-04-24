@@ -896,7 +896,6 @@ $(document).ready(function () {
 	});
 
 	$("#form-valoracion-adv").submit(function (event) {
-		$('#images').remove()
 		$(".loader").removeClass("hidden");
 		$("#valoracion-adv").addClass("hidden");
 		event.preventDefault();
@@ -1990,8 +1989,8 @@ function abrirNuevaVentana(parametros) {
 })(jQuery);
 
 function newsletterSuscription (event) {
-	var email = $('.newsletter-input').val();
-	var lang = $('#lang-newsletter').val();
+	const email = $('.newsletter-input').val();
+	const lang = $('#lang-newsletter').val();
 
 	if (!$('#condiciones').prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -2002,7 +2001,7 @@ function newsletterSuscription (event) {
 
 	const newsletters = {};
 	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
-		if(element.checked) {
+		if(element.checked || element.type === "hidden") {
 			newsletters[`families[${element.value}]`] = '1';
 		}
 	});

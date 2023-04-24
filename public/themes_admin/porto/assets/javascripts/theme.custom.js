@@ -580,17 +580,23 @@ $(document).on('ready', function () {
 	if(!$('.dataTable').length > 0){
 		return;
 	}
+	$('.dataTable').each(function() {
+		/* si no es data table aun, la generamos  */
+		if($.fn.dataTable.isDataTable( $( this ) ) == false ){
+			$( this ).DataTable( {
 
-   $('.dataTable').DataTable( {
-      /*dom: 'lBfrtip',*/
-      paging:   true,
-        ordering: true,
-        info:     true,
-        stateSave: true,
-        lengthChange: true,
-        autoWidth: true,
-        lengthMenu: [50, 75, 100],
-    } );
+				paging:   true,
+				  ordering: true,
+				  info:     true,
+				  stateSave: true,
+				  lengthChange: true,
+				  autoWidth: true,
+				  lengthMenu: [50, 75, 100],
+			  } );
+		}
+	})
+
+
 });
 
 /**

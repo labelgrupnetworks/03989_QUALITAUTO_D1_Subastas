@@ -1,3 +1,4 @@
+/*
 .sidebar-right{
 	top: 110px;
 	transition: 0.6s;
@@ -10,13 +11,15 @@
 .sidebar-left, .page-header, .content-body{
 	transition: 0.6s;
 }
-
+*/
+/* Reports */
 .row-reports{
 	background-color: #DDD;
 }
 .body-reports{
 	background-color: #FFF;
 }
+
 
 .menu-reports{
 	padding: 5px;
@@ -36,4 +39,39 @@
 .menu-reports li a{
 	text-decoration: none;
 	color: #444;
+}
+
+
+#dtreports .td_text{
+	text-align: center;
+}
+
+#dtreports  .td_number{
+	text-align: right;
+	padding-right: 30px;
+}
+
+#dtreports thead  th  {
+	text-align: center;
+	background: #494949;
+	color: #FFF;
+}
+#dtreports tfoot  th  {
+	background: #C4C4C4;
+	color: #444;
+}
+#dtreports tbody tr{
+	background: #e5e5e5;
+
+}
+
+#dtreports .subtable th {
+	text-align: center;
+	background: #5D5D5D;
+	color: #FFF;
+}
+
+#dtreports .subtable tbody tr{
+	background: #f2dfd6;
+
 }

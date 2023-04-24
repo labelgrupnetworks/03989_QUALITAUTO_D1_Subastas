@@ -771,6 +771,7 @@ nav {
 	max-width: 195px;
 	height: auto;
     transition: 0.2s linear all;
+	object-fit: contain;
 }
 
 .menu-principal {
