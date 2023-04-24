@@ -8,7 +8,7 @@ class ApiLabelException extends exception
 {
     protected $items;
 
-    public function __construct($message, $items = NULL)
+    public function __construct($message, $items = [])
     {
         parent::__construct($message);
         $this->items = $items;

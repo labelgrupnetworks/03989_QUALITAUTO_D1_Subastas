@@ -1197,7 +1197,7 @@ class UserController extends Controller
                     }
 
 					//Añadimos a newsletter controlando tanto el sistema nuevo como el antiguo
-					if(!empty(Request::input('newsletter'))){
+					if(!empty(Request::input('newsletter')) || !empty($request->get('families'))){
 						(new NewsletterController())->setNewsletter($request, "add");
 					}
 
@@ -1478,6 +1478,62 @@ class UserController extends Controller
 		}
 	}
 
+	private function updateCIFImages($request, $cod_cli)
+	{
+		try {
+
+			$images = $this->getCIFImages($cod_cli);
+
+			$dni1 = "dni1";
+			$dni2 = "dni2";
+			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+
+			if (isset($request[$dni1])) {
+				$file = $request[$dni1];
+				$filename = $dni1 . '.' . $file->getClientOriginalExtension();
+				if (isset($images[$dni1])) {
+					unlink($images[$dni1]);
+				}
+				$file->move($destinationPath, $filename);
+			}
+
+			if ($request[$dni2]) {
+				$file2 = $request[$dni2];
+				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
+				if (isset($images[$dni2])) {
+					unlink($images[$dni2]);
+				}
+				$file2->move($destinationPath, $filename2);
+			}
+
+			//crear los nuevos archivos
+		} catch (\Throwable $th) {
+			Log::error($th);
+			return false;
+		}
+	}
+
+	private function getCIFImages($cod_cli)
+	{
+		try {
+			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+
+			$files = glob($destinationPath . '*', GLOB_BRACE);
+
+			$images = [];
+
+			foreach ($files as $file) {
+				$filename = pathinfo($file, PATHINFO_FILENAME);
+				$images[$filename] = $file;
+			}
+
+			return $images;
+		} catch (\Throwable $th) {
+			Log::error($th);
+			return false;
+		}
+	}
+
 	private function saveCreditCard($request, $cod_cli){
 
 		$credit_card = $request->creditcard_fxcli;
@@ -1506,6 +1562,92 @@ class UserController extends Controller
 			'orden_cliobcta' => $lin_cliobcta + 1,
 			'tipobs_cliobcta' => FxCliObcta::TIPOBS_CLIOBCTA_TARGETA
 		]);
+	}
+
+	private function updateCreditCard($request, $cod_cli)
+	{
+		$cli = FxCli::select('email_cli')->where('cod_cli', $cod_cli)->first();
+		$credit_card = $request["creditcard_fxcli"];
+		/* conseguir el mail */
+		$key = strtolower($cli->email_cli);
+		$method = 'aes-256-cbc';
+
+		// Must be exact 32 chars (256 bit)
+		$password = substr(hash('sha256', $key, true), 0, 32);
+
+		// IV must be exact 16 chars (128 bit)
+		$iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+
+		$creditEncrypt = base64_encode(openssl_encrypt($credit_card, $method, $password, OPENSSL_RAW_DATA, $iv));
+
+		if ($this->getCreditCard($cli->email_cli, $cod_cli)) {
+			/* Actualizar el conc_cliobcta con el creditEncrypt haciendo where sobre el $cod_cli */
+			FxCliObcta::where('cli_cliobcta', $cod_cli)->update([
+				'conc_cliobcta' => $creditEncrypt
+			]);
+		} else {
+			/* Crear un nuevo registro en la tabla fxclicobcta */
+			$lin_cliobcta = FxCliObcta::select('lin_cliobcta')->where('cli_cliobcta', $cod_cli)->max('lin_cliobcta');
+			if(!$lin_cliobcta){
+				$lin_cliobcta = 0;
+			}
+
+			FxCliObcta::create([
+				'cli_cliobcta' => $cod_cli,
+				'lin_cliobcta' => $lin_cliobcta + 1,
+				'fec_cliobcta' => date("Y-m-d H:i:s"),
+				'conc_cliobcta' => $creditEncrypt,
+				'usr_cliobcta' => FxCliObcta::USR_CLIOBCTA_WEB,
+				'orden_cliobcta' => $lin_cliobcta + 1,
+				'tipobs_cliobcta' => FxCliObcta::TIPOBS_CLIOBCTA_TARGETA
+			]);
+		}
+	}
+
+	private function getCreditCard($email, $cod_cli)
+	{
+		try {
+			//Conseguir la tarjeta de base de datos
+			$credit_card = FxCliObcta::select('conc_cliobcta')
+				->where('cli_cliobcta', $cod_cli)
+				->where('tipobs_cliobcta', FxCliObcta::TIPOBS_CLIOBCTA_TARGETA)
+				->orderBy('fec_cliobcta', 'desc')
+				->first();
+
+			// Obtenemos key y método
+			$key = strtolower($email);
+			$method = 'aes-256-cbc';
+
+			// Must be exact 32 chars (256 bit)
+			$password = substr(hash('sha256', $key, true), 0, 32);
+
+			// IV must be exact 16 chars (128 bit)
+			$iv = chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0) . chr(0x0);
+
+			$creditDecrypt = openssl_decrypt(base64_decode($credit_card->conc_cliobcta), $method, $password, OPENSSL_RAW_DATA, $iv);
+
+			$creditDecrypt = explode(" ", $creditDecrypt);
+			$creditDecrypt[1] = explode("/", $creditDecrypt[1]);
+
+			return $creditDecrypt;
+
+
+		} catch (\Throwable $th) {
+			Log::error($th);
+			return false;
+		}
+	}
+
+	public function getCreditCardAndCIFImages($cod_cli)
+	{
+		$email = FxCli::select('email_cli', 'cif_cli')->where('cod_cli', $cod_cli)->first();
+		$credit_card = $this->getCreditCard($email->email_cli, $cod_cli);
+		$cifImages = $this->getCIFImages($cod_cli);
+		if ($credit_card && isset($cifImages["dni1"]) && isset($cifImages["dni2"]) && $email->cif_cli) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 
@@ -1977,6 +2119,13 @@ class UserController extends Controller
         $data['countries'] = $enterprise->getCountries();
         $data['via']  = $enterprise->getVia();
 
+
+		// Si existe el config de userPanelCIFandCC añade los datos de tarjeta y CIF
+		if (Config::get('app.userPanelCIFandCC')) {
+			$data['creditCard'] = $this->getCreditCard($datos->email_cli, $datos->cod_cli);
+			$data['cifImages'] = $this->getCIFImages($datos->cod_cli);
+		}
+
         if (!empty(FsIdioma::getArrayValues())) {
             $data['language'] = FsIdioma::getArrayValues();
         } else {
@@ -2046,6 +2195,18 @@ class UserController extends Controller
 			$news->email =  Request::input('email');
 			$news->newFamilies();
         }
+
+		# Si existe el config de userPanelCIFandCC actualiza los datos de tarjeta y CIF (HECHO PARA SALARETIRO)
+		if (\Config::get('app.userPanelCIFandCC')) {
+			$Update->nif = Request::input('nif');
+			$this->updateCreditCard(Request::all(), $Update->cod_cli);
+			if (Request::file('dni1') || Request::file('dni2')) {
+				$this->updateCIFImages(Request::all(), $Update->cod_cli);
+			} else{
+				$this->updateCIFImages(null, $Update->cod_cli);
+			}
+		}
+
 
 		/**Inbusa necesita que se guarde el nombre de la empresa como nombre principal, para correos e informes*/
 		if(!empty(Request::input('representar'))){
@@ -4033,10 +4194,11 @@ class UserController extends Controller
 				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturaTexto;
 				$val_pendiente->inf_fact = ['T'];
 				$val_pendiente->inf_fact['T'] = $facturaTexto;
+				/* Las facturas de texto no tienen código de subasta
 				if(!empty($val_pendiente->inf_fact['T'])){
 					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['T'])->where('sub_dvc1l', '!=', 'null')->first()->sub_dvc1l;
 				}
-
+				*/
 				foreach ($facturaTexto as $factura) {
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}

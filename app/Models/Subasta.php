@@ -976,6 +976,11 @@ class Subasta extends Model
 			$showClosedLotOrdersInPanel = "";
 		}
 
+        $showLotsAllSubcSubAuctions = " AND SUB.SUBC_SUB IN ('S','A')";
+        if(config('app.showLotsAllSubcSubAuctions', 0)){
+            $showLotsAllSubcSubAuctions = "";
+        }
+
         if(!empty(Config::get('app.orderby_allbidsandorders'))){
               $orderby = Config::get('app.orderby_allbidsandorders');
 		}
@@ -992,7 +997,7 @@ class Subasta extends Model
                                     left join fgorlic orlic on (orlic.emp_orlic = a.id_emp and orlic.sub_orlic = a.id_sub and orlic.ref_orlic  = a.id_ref and orlic.licit_orlic = b.cod_licit)
                                     left join fgasigl1 asigl1 on (asigl1.emp_asigl1 = a.id_emp and asigl1.sub_asigl1 = a.id_sub and asigl1.ref_asigl1  = a.id_ref and asigl1.licit_asigl1 = b.cod_licit)
                                     where a.id_emp = :emp
-                                        AND SUB.SUBC_SUB in ('A','S')
+										$showLotsAllSubcSubAuctions
                                         AND a.cod_cli = :cli_licit
                                         AND b.CLI_LICIT < :subalia_min_licit
                                         $whereClose
@@ -1032,7 +1037,7 @@ class Subasta extends Model
                         where a.EMP_ORLIC = :emp
                         AND asigl0.REF_ASIGL0 >= auc.\"init_lot\"
                         AND asigl0.REF_ASIGL0 <= auc.\"end_lot\"
-                            AND SUB.SUBC_SUB in ('A','S')
+                            $showLotsAllSubcSubAuctions
                             AND b.CLI_LICIT = :cli_licit
                             AND b.COD_LICIT < :subalia_min_licit
                             $showClosedLotOrdersInPanel"; //  AND (TIPO_SUB != 'W' or auc.\"start\" > SYSDATE)"
@@ -1055,9 +1060,9 @@ class Subasta extends Model
                     JOIN FGSUB SUB ON  SUB.EMP_SUB =  pujas.emp_asigl0 AND SUB.COD_SUB = pujas.SUB_ASIGL0
                     JOIN  \"auc_sessions\" auc ON  auc.\"company\" = SUB.EMP_SUB and auc.\"auction\" =  SUB.COD_SUB and auc.\"init_lot\" <= ref_asigl0 and auc.\"end_lot\" >= ref_asigl0
                     where
-                        SUB.SUBC_SUB in ('A','S')
-                 AND ref_asigl0 >= auc.\"init_lot\"
-                        AND ref_asigl0 <= auc.\"end_lot\"";
+						ref_asigl0 >= auc.\"init_lot\"
+						AND ref_asigl0 <= auc.\"end_lot\"
+						$showLotsAllSubcSubAuctions";
 
 
         //hay tantos selects anidados por que al hacer un group by se perdian valores de RN y eso provocaria que se cargaran menos elementos por página

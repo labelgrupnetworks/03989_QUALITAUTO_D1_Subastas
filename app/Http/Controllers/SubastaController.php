@@ -2312,6 +2312,7 @@ class SubastaController extends Controller
 		if ($lote_actual->cerrado_asigl0 == 'N') {
 			return 'error';
 		}
+		$data['retirado'] = $lote_actual->retirado_asigl0 == 'S' ? true : false;
 		$data['remate'] = $lote_actual->remate_asigl0 == 'S' ? true : false;
 		$data['subasta_venta'] = ($lote_actual->tipo_sub == 'V') ? true : false;
 		$data['devuelto'] = ($lote_actual->cerrado_asigl0 == 'D') ? true : false;

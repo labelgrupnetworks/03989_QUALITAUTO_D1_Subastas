@@ -239,6 +239,7 @@ class BannerLib
 					$options = json_encode($options);
 				}
 
+
 				$html .= "<script>$('#banner" . $rand . "').slick($options)";
 
 				if($event){
@@ -298,5 +299,14 @@ class BannerLib
 	static function banerCacheName($key)
 	{
 		return "banner_{$key}";
+	}
+
+	static function bannerWithView($key, $view)
+	{
+		$banner = CacheLib::rememberCache(self::banerCacheName($key), $seconds = 3600, function() use ($key) {
+			return WebNewbannerModel::getActiveBannerWithKey($key);
+		});
+
+		return view("front::includes.banners.$view", ['banner' => $banner]);
 	}
 }

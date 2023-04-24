@@ -153,40 +153,101 @@ use App\Models\V5\FgAsigl1Mt;
 use Faker\Provider\en_US\PaymentTest;
 
 
-
+use ElephantIO\Engine\SocketIO\Version2X;
+use ElephantIO\Engine\Socket\SecureOptionBuilder;
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		$this->sendPaymentsEmailAfterPayCaptured();
+
+		$options=[
+			'headers' => [
+
+				'X-My-Header: websocket rocks',
+				'Authorization: Bearer 12b3c4d5e6f7g8h9i'
+			],'context' => [
+				'ssl' => [
+					'verify_peer' => false,
+					'verify_peer_name' => false
+				]
+			]
+
+		];
+
+		//$url = "https://demoauction.labelgrup.com:29345";
+		//$url = "https://www.salaretiro.com:29345";
+		//$url = "https://auctions.tauleryfau.com:2087";
+		//$url = "https://demoauction.labelgrup.com:2088";
+		//$url = "http://localhost:22345";
+		//$url = "https://demoauction.labelgrup.com/themes/demo/assets/img/logo.png";
+
+		//$url = "https://auctions.tauleryfau.com:2087";
+		//$url = "https://demoauction.labelgrup.com:2088";
+		$url = "https://subdemo-autodeploy.enpreproduccion.com:22345";
+		$client = new \ElephantIO\Client(new Version2X($url, $options));
+
+		$client->initialize();
+		$client->emit('broadcast', ['foo' => 'bar']);
+		$client->close();
+
 	}
 
+	public function duplicadosAnsorena(){
+		$sql="
+		select  cod_cli codigo,nom_cli nombre, cif_cli cif, concat(dir_cli,dir2_cli) direccion, tel1_cli telefono, tel2_cli telefono2,  email_cli email,TO_CHAR(f_alta_cli, 'DD/MM/YYYY') as fecha_alta,  compras, TO_CHAR(fecha_ultima_compra, 'DD/MM/YYYY') fecha_ultima_compra, ventas, TO_CHAR(fecha_ultima_venta, 'DD/MM/YYYY') fecha_ultima_venta, TO_CHAR(fecha_ultima_puja, 'DD/MM/YYYY') fecha_ultima_puja, TO_CHAR(fecha_ultima_cesion, 'DD/MM/YYYY')fecha_ultima_cesion
 
-	private function sendPaymentsEmailAfterPayCaptured()
-	{
-		$amount = '1924.81';
-		$serie = "T20";
-		$num = "64611855";
+				from fxcli A
+			   left join (select sum(himp_csub) compras, max(fecha_csub) fecha_ultima_compra,clifac_csub,emp_csub  from fgcsub group by clifac_csub,emp_csub) T on emp_csub = '001' and  clifac_csub= A.cod_cli
+				left join (
+				   select max(fec_asigl1) fecha_ultima_puja,cli_licit,emp_licit  from fgasigl1
+				   join fglicit on emp_licit = emp_asigl1 and sub_licit = sub_asigl1 and cod_licit = licit_asigl1
+				   group by emp_licit, cli_licit
+				   ) T2 on emp_licit = '001'    and  cli_licit= A.cod_cli
+			   left join (
+			   select max(fec_his) fecha_ultima_cesion,cod_his,emp_his from fxhis2 where tdoc_his ='HC' and accion_his='ALT'
+				group by emp_his, cod_his
+			   )T3 on  emp_his = '001' and  cod_his= A.cod_cli
 
-		$user = new User();
-		$user->cod_cli = '000916';
-		$inf_client = $user->getUserByCodCli()[0];
+			   left join (select sum(total_dvc0) ventas, max(fecha_dvc0) fecha_ultima_venta, cod_dvc0,emp_dvc0  from FXDVC0 where tipo_dvc0 ='P' and emp_dvc0='001' group by emp_dvc0, cod_dvc0 ) V on  emp_dvc0='001' and V.cod_dvc0 = A.cod_cli
+			  where gemp_cli = '01' and baja_tmp_cli ='N' and
+			   (
+				   cif_cli not in (
+					   select cif_cli from fxcli where gemp_cli = '01' and length(cif_cli) > 5 and baja_tmp_cli ='N' group by cif_cli having(count(cif_cli) >1)
+				   )
+				   and
+				   nom_cli in (
+					   select nom_cli from fxcli where gemp_cli = '01' and length(nom_cli) > 1 and baja_tmp_cli ='N'
+					  and  cif_cli not in (
+					   select cif_cli from fxcli where gemp_cli = '01' and length(cif_cli) > 5 and baja_tmp_cli ='N' group by cif_cli having(count(cif_cli) >1)
+				   )
 
-		$paymentController = new PaymentsController();
-		$paymentController->correo_payment("$serie/$num", $amount, '906893', $inf_client->nom_cli);
+					   group by nom_cli having(count(nom_cli) >1)
+					)
 
-		$email = new EmailLib('INVOICE_PAY_USER');
-		if (!empty($email->email)) {
-			$email->setUserByCod($inf_client->cod_cli, true);
-			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/myBills'));
-			$email->setPrice(ToolsServiceProvider::moneyFormat($amount, false, 2));
-			$email->setBill("$serie/$num");
-			$email->send_email();
+			   )
+		order by nom_cli,nvl(fecha_ultima_puja,fecha_ultima_cesion)desc, nvl(fecha_ultima_compra,fecha_ultima_venta)desc
+
+	   ";
+		#and  cif_cli in (' GB788152982','AAA916794')
+		$users = \DB::select($sql, []);
+		$listado = [];
+		foreach($users as $key=> $user){
+			if($key >0 ){
+				if($users[$key-1]->nombre != $user->nombre){
+					$listado[] = collect(["codigo" => "","nombre" => "", "cif" => "", "direccion" => "", "telefono" => "", "telefono2" => "",  "email" => "", "fecha_alta" =>"" , "compras" => "",   "fecha_ultima_compra" => "",   "ventas" => "",   "fecha_ultima_venta" => "", "fecha_ultima_puja" => "" , "fecha_ultima_cesion" => "" ]);
+				}
+			}
+			$listado[] = $user;
 		}
 
-		dd('sended');
+		$collection = collect($listado);
+
+		return $collection->downloadExcel("duplicados por nombre V3.xlsx", \Maatwebsite\Excel\Excel::XLSX, true);
+
+
 	}
+
 
 
 	public function testwebserviceNFTDuran(){
@@ -1259,5 +1320,172 @@ $lang =[';
 
 		dd($dataForExport);
 		/* return $this->exportCollectionToExcel($dataForExport, $fileName); */
+	}
+
+	function testWhatsappMSG()
+	{
+
+
+		#FORMA DE CARGAR UN MENSAJE DE TEXTO
+		$type = "text";
+		$message = [
+			'body' => "Esto es una prueba de envío de mensaje ".\Config::get('app.url'),
+		];
+
+		#FORMA DE CARGAR UNA IMAGEN
+		/* $type = "image";
+		$message = [
+			'url' => '', #IMÁGEN EN BASE64
+			'caption' => 'Este es el logo de la web de labelgrup',
+		]; */
+
+		#FORMA DE CARGAR UN TEMPLATE
+		/* $type = "template";
+		$message = [
+			'name' => 'hello_world',
+			'language' => [
+				'code' => 'en_US'
+			]
+		]; */
+
+		$bodyMSG = [
+			'messaging_product' => 'whatsapp',
+			'to' => '34640637357',
+			'type' => $type,
+			$type => $message
+		];
+
+		/* [
+			'headers' => [
+				'Authorization' => 'Bearer EAAGCB52O9oMBACgCPNWTY2r6nnKtZAKDZCrQpnZBS5NNQTbthnQZCZADSpbZC8iUdkiwqgUr5CNG9TZBnioflCZATkbSO57Gyu28PKYDc8yFgUUZAwrBWt3yXhi0LGZBgRKX0Dd2b4LhCTf7cyBvIm6lVEqQqnwmSZCaiwerbg0mfb7akhn1kRdhBoDLL1ZAIHWHc2s47jfTde2ScZCLhLNWAJbqR',
+				'Content-Type' => 'application/json',
+			],
+			'json' => $bodyMSG
+		] */
+
+		$client = new Client();
+
+		$response = $client->request('POST', 'https://graph.facebook.com/v15.0/113096834998329/messages', [
+			'headers' => [
+				'Authorization' => 'Bearer 	EAAGCB52O9oMBAHTFOT1wIxM5K92XsJUXBYPtBNOAnWx6VIcaqqI28qKEDn8BL2b6hPYY9WKZBZAZCpYjkpfq2oz9Os7OxykjIsZBX5q3fIKFfKnZCSQaQHOqZCgZAkDatk9yLkGHNLYCsjciMpZAXTQO7wLe7pCWe2tjtkFHr5r4spReyz1DP8nu',
+				'Content-Type' => 'application/json',
+			],
+			'json' => [
+				'messaging_product' => 'whatsapp',
+				'to' => '34640637357',
+				'type' => "template",
+				'template' => [
+					'name' => 'sample_happy_hour_announcement',
+					'language' => [
+						'code' => 'es'
+					],
+					'components' => [
+						[
+							'type' => 'header',
+							'parameters' => [
+								[
+									'type' => 'video',
+									'video' => [
+										'link' => 'https://demoauction.labelgrup.com/img/video_test.mp4',
+									]
+								]
+							],
+						],
+						[
+							'type' => 'body',
+							'parameters' => [
+								[
+									'type' => 'text',
+									'text' => 'EXEMPLO'
+								],
+								[
+									'type' => 'text',
+									'text' => 'EJEMPLO 2'
+								]
+							],
+						]
+					],
+				]
+			]
+		]);
+
+
+
+
+			/* "template" => [
+				'name' => 'sample_issue_resolution',
+				'language' => [
+					'code' => 'en_US'
+				],
+				"components" => [
+					[
+						"type" => "header",
+						"parameters" => [
+							[
+								"type" => "text",
+								"text" => "This is a header"
+							]
+						],
+						"type" => "body",
+						"parameters" => [
+							[
+								"type" => "text",
+								"text" => ""
+							]
+						]
+					],
+				]
+			] */
+		/* ,
+								[
+									"type" => "text",
+									"text" => "This is another text"
+								], */
+								/* Pasar 1 parámetro con ejemplo de tipo button */
+								/* [
+									"type" => "button",
+									"button" => [
+										"id" => "button_1",
+										"type" => "web_url",
+										"title" => "This is a button",
+										"url" => "https://www.labelgrup.com"
+									]
+								] */
+
+							/* [
+								"type" => "image",
+								"image" => [
+									"aspect_ratio" => "1:1",
+									"animated" => false,
+									"caption" => "This is a caption",
+									"url" => "https://www.labelgrup.com/wp-content/uploads/2016/10/logo.png"
+								]
+							], */
+					/* [
+						"type" => "footer",
+						"parameters" => [
+							[
+								"type" => "button",
+								"button" => [
+									"id" => "button_1",
+									"type" => "web_url",
+									"title" => "This is a button",
+									"url" => "https://www.labelgrup.com"
+								]
+							]
+						]
+					] */
+
+
+		$statusCode = $response->getStatusCode();
+
+		if ($statusCode == 200) {
+			// Petición exitosa
+			$body = $response->getBody();
+			dump($body);
+		} else {
+			// Algo salió mal
+			dump("Error en la petición. Código de estado: " . $statusCode);
+		}
 	}
 }

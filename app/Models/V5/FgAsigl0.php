@@ -180,6 +180,10 @@ class FgAsigl0 extends Model
         return $query->leftjoin("FGORTSEC1" , "FGORTSEC1.EMP_ORTSEC1 = FGASIGL0.EMP_ASIGL0 AND FGORTSEC1.SUB_ORTSEC1 ='0' AND FGORTSEC1.SEC_ORTSEC1 =  FGHCES1.SEC_HCES1");
 	}
 
+	public function scopeJoinSecAsigl0($query){
+        return $query->leftjoin("FXSEC" , "FXSEC.GEMP_SEC = '".\Config::get("app.gemp")."' AND FXSEC.COD_SEC =FGHCES1.SEC_HCES1");
+	}
+
 	public function scopejoinFgCaracteristicasAsigl0($query){
 		return $query->join("FGCARACTERISTICAS" , "FGCARACTERISTICAS.EMP_CARACTERISTICAS = EMP_ASIGL0 ");
 

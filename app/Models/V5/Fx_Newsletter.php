@@ -20,7 +20,6 @@ class Fx_Newsletter extends Model
 	{
 		$this->attributes = [
 			'gemp_newsletter' => Config::get("app.gemp"),
-			'emp_newsletter' => Config::get("app.emp"),
 			'id' => self::withoutGlobalScope('gemp')->max('id') + 1
 		];
 		parent::__construct($vars);
@@ -31,7 +30,6 @@ class Fx_Newsletter extends Model
 		parent::boot();
 		static::addGlobalScope('gemp', function (Builder $builder) {
 			$builder->where('gemp_newsletter', Config::get("app.gemp"));
-			$builder->where('emp_newsletter', Config::get("app.emp"));
 		});
 	}
 

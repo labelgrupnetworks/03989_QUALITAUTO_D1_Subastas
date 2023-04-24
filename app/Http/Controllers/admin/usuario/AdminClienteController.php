@@ -294,7 +294,7 @@ class AdminClienteController extends Controller
 			});
 			(new Newsletter())
 				->setAttributes($request->input('language'), $request->input('email'), $families)
-				->suscribe();
+				->suscribe(true);
 		}
 
 		//(new Newsletter())->subscribeToExternalService($cliente['email']);

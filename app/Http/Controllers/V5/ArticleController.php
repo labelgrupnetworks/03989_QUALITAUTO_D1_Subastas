@@ -99,7 +99,7 @@ class ArticleController extends Controller
 
 	public function article($idArticle){
 
-		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
+		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0, CSTK_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
 
 
 
@@ -143,6 +143,7 @@ class ArticleController extends Controller
 		}
 
 		$article->stock = true;
+
 		#si no tiene variantes debemos buscar stock en la tabla fgstk
 		if(count($variantes) == 0){
 			#los lotes pueden tener stock aunque no tenga variantes
@@ -152,8 +153,15 @@ class ArticleController extends Controller
 			->where("ID_ART0", $idArticle)
 			->first();
 
-			$article->stock = $stkArt->stock >0;
+			if($article->cstk_art0 == 'S'){
+				$article->stock = $stkArt->stock >0;
+			}else{
+				$article->stock = 'S';
+			}
+
+
 		}
+
 
 
 

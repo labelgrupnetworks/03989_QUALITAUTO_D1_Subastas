@@ -31,9 +31,10 @@ class NewsletterController extends Controller
 		$email = trim($request->input('email'));
 		$lang = $request->input('lang', $request->input('language'));
 		$families = $request->get('families');
+		$cehckForGroup = $request->get('isMultiCompany', false);
 
 		$result = Config::get('app.newsletter_table', false)
-			? $this->setNewNewsletters($lang, $email, $families)
+			? $this->setNewNewsletters($lang, $email, $families, $cehckForGroup)
 			: $this->setOldNewsletter($lang, $email, $families);
 
 		return $result;
@@ -51,11 +52,11 @@ class NewsletterController extends Controller
 		return $validator->fails();
 	}
 
-	private function setNewNewsletters($lang, $email, $families)
+	private function setNewNewsletters($lang, $email, $families, $cehckForGroup)
 	{
 		$this->newsletterModel
 			->setAttributes($lang, $email, $families)
-			->suscribe();
+			->suscribe($cehckForGroup);
 
 		return [
 			'status' => 'success',
@@ -106,10 +107,12 @@ class NewsletterController extends Controller
 		$isAdmin = (bool)session('user.admin');
 		//abort_if(!Hash::check($email, $request->input('hash', null)) && !$isAdmin, 404);
 
-		$suscriptions = $this->newsletterModel->getIdSuscriptions($email);
-		$newsletters = $this->newsletterModel->getNewslettersNames();
+		$isMultiCompany = Config::get('app.multi_company', false);
 
-		return view('front::pages.newsletters', ['suscriptions' => $suscriptions, 'newsletters' => $newsletters]);
+		$suscriptions = $this->newsletterModel->getIdSuscriptions($email);
+		$newsletters = $this->newsletterModel->getNewslettersNames($isMultiCompany);
+
+		return view('front::pages.newsletters', ['suscriptions' => $suscriptions, 'newsletters' => $newsletters, 'isMultiCompany' => $isMultiCompany]);
 	}
 
 	public function unsuscribeNewsletter(Request $request, $lang, $email)
@@ -127,7 +130,7 @@ class NewsletterController extends Controller
 			}
 		}
 
-		$this->newsletterModel->deleteSuscriptions($email);
+		$this->newsletterModel->deleteSuscriptions($email, true);
 		$this->newsletterModel->unSubscribeToExternalService($email);
 
 		$message = trans(config('app.theme') . '-app.msg_success.newsletter_unsubscribe', ['email' => $email]);
@@ -164,8 +167,6 @@ class NewsletterController extends Controller
 			$fxCliWebQuery->orWhere("nllist{$value}_cliweb", "S");
 		}
 		$users = $fxCliWebQuery->get();
-
-		//dd($users);
 
 		$suscriptions = [];
 		$users->each(function ($user) use (&$suscriptions) {
@@ -219,7 +220,7 @@ class NewsletterController extends Controller
 		$data = $request->data;
 		$email = $data['email'];
 
-		$this->newsletterModel->deleteSuscriptions($email);
+		$this->newsletterModel->deleteSuscriptions($email, true);
 
 		return response()->json(['status' => 'success']);
 	}

@@ -43,7 +43,7 @@ class Newsletter
 		return $this;
 	}
 
-	public function suscribe()
+	public function suscribe($checkForGroup)
 	{
 		if (!$this->email) {
 			throw new Exception(trans(Config::get('app.theme') . "-app.msg_error.err-add_newsletter"));
@@ -51,7 +51,7 @@ class Newsletter
 
 		$newslettersIds = array_keys($this->families ?? [Fx_Newsletter::GENERAL => 1]);
 
-		$this->deleteSuscriptions($this->email);
+		$this->deleteSuscriptions($this->email, $checkForGroup);
 
 		$suscriptions = array_map(function ($id) {
 			return [
@@ -127,9 +127,13 @@ class Newsletter
 
 	}
 
-	public function deleteSuscriptions(string $email)
+	public function deleteSuscriptions(string $email, bool $checkForGroup = false)
 	{
-		Fx_Newsletter_Suscription::whereEmail($email)->delete();
+		Fx_Newsletter_Suscription::whereEmail($email)
+			->when(!$checkForGroup, function($query) {
+				$query->WhereEmp();
+			})
+			->delete();
 	}
 
 	public function deleteSuscriptionsById($idNewsletter, string $email)

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter;
+use App\Models\V5\FxCli;
+use App\Models\V5\FxCli2;
 
 class AdminNewsletterController extends Controller
 {
@@ -21,8 +23,13 @@ class AdminNewsletterController extends Controller
 
 	public function index()
 	{
-		$newsletters = Fx_Newsletter::whereLang()->withCount('suscriptors')->get();
-		return view('admin::pages.usuario.newsletter.new_index', ['newsletters' => $newsletters]);
+		$newsletters = Fx_Newsletter::whereLang()
+			->withCount('suscriptors')
+			->get();
+
+		$catalogsCount = FxCli2::where('envcat_cli2', 'S')->count();
+
+		return view('admin::pages.usuario.newsletter.new_index', ['newsletters' => $newsletters, 'catalogsCount' => $catalogsCount]);
 	}
 
 	public function edit($id)

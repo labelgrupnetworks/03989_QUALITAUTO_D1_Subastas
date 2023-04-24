@@ -422,7 +422,7 @@ class ApiLabelController extends BaseController
         return $this->responseApi("SUCCESS", $message, $items);
     }
 
-    protected function responseError( $message="", $items = null) {
+    protected function responseError( $message="", $items = []) {
 
 		#si existe el array items de la petición
 		if( !empty($this->request["items"])  ){

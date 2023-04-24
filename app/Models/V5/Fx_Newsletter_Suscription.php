@@ -32,7 +32,7 @@ class Fx_Newsletter_Suscription extends Model
 		parent::boot();
 		static::addGlobalScope('gemp', function (Builder $builder) {
 			$builder->where('gemp_newsletter_suscription', Config::get("app.gemp"));
-			$builder->where('emp_newsletter_suscription', Config::get("app.emp"));
+			//$builder->where('emp_newsletter_suscription', Config::get("app.emp"));
 		});
 	}
 
@@ -79,6 +79,11 @@ class Fx_Newsletter_Suscription extends Model
 		return $query->where('lower(email_newsletter_suscription)', $email);
 	}
 
+	public function scopeWhereEmp($query)
+	{
+		return $query->where('emp_newsletter_suscription', Config::get('app.emp'));
+	}
+
 	public function scopeWhereFilters($query, Request $request)
 	{
 		return $query
@@ -117,7 +122,7 @@ class Fx_Newsletter_Suscription extends Model
 
 	public function scopeJoinNewsletter($query)
 	{
-		return $query->join('Fx_Newsletter', 'fx_newsletter_suscription.id_newsletter = fx_newsletter.id_newsletter and fx_newsletter_suscription.gemp_newsletter_suscription = fx_newsletter.gemp_newsletter and fx_newsletter_suscription.emp_newsletter_suscription = fx_newsletter.emp_newsletter')
+		return $query->join('Fx_Newsletter', 'fx_newsletter_suscription.id_newsletter = fx_newsletter.id_newsletter and fx_newsletter_suscription.gemp_newsletter_suscription = fx_newsletter.gemp_newsletter')
 			->where('lang_newsletter', mb_strtoupper(config('app.locale')));
 	}
 

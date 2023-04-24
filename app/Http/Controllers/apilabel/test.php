@@ -75,16 +75,16 @@ class test extends BaseController
 
 
 				$Payment = new stdClass();
-				$Payment->idorigincli = "WWWWW1";  // "76355";
+				$Payment->idorigincli = "21125";  // "76355";
 				$Payment->paid = "N";
 				$Payment->serial = "T20";
-				$Payment->number = 2;
-				$Payment->amount = 0.01;
+				$Payment->number = 3;
+				$Payment->amount = 2;
 				$Payment->reason = "M";
-				$Payment->description = "pulsera oro";
-				$Payment->date =  date("Y-m-d H:i:s");
-				//$Payment->pdf = $pdf;
-				//$Payment->pdf64 = base64_encode(file_get_contents( $pdf64));
+				$Payment->description = "Compras subasta 150 5, 6 y 7 de Julio 2022";
+				$Payment->date =  "2023-02-20 19:34:24";//  date("Y-m-d H:i:s");
+				$Payment->pdf = null;
+				//$Payment->pdf64 =base64_encode(file_get_contents( $pdf64));
 				$items[] = (array)$Payment;
 
 				#los dos últimos parametros son solo para lanzar los controladores
@@ -102,7 +102,7 @@ class test extends BaseController
 
 	#http://www.newsubastas.test/apilabel/test?function=deletePayment&testmode=CONTROLLER
 	public function deletePayment(){
-		$parameters = array("serial" => "T20", "number" => "9999991");
+		$parameters = array("serial" => "T20", "number" => "20230005");
 		$this->excuteMode($parameters,"DELETE","payment", new PaymentController(false),"erasePayment");
 	}
 
@@ -135,7 +135,7 @@ class test extends BaseController
 	#BIDS
 	#http://www.newsubastas.test/apilabel/test?function=getBid&testmode=CONTROLLER
 	public function getBid(){
-		$parameters=array("idauction" => "LABELO","type" => "W"); //, "min_date" => "2020-05-15 00:00:00", "max_date" => "2020-06-05 00:00:00" , "idoriginlot" => "2pa" , "idoriginclient" => "90045"
+		$parameters=array("idauction" => "00001009"); //, "min_date" => "2020-05-15 00:00:00", "max_date" => "2020-06-05 00:00:00" , "idoriginlot" => "2pa" , "idoriginclient" => "90045"
 		#, "idoriginlot" => "Origen5", "idoriginclient" => 45964
 		$this->excuteMode($parameters,"GET","bid", new BidController(false),"showBid");
 	}

@@ -119,10 +119,10 @@ class FormLib
 		return $aux;
 	}
 
-	static function Int($strNombre, $boolObligatorio = 0, $strValue, $strExtra = "", $placeholder = "")
+	static function Int($strNombre, $boolObligatorio = 0, $strValue, $strExtra = "", $placeholder = "", $class="text-center")
 	{
 
-		$aux = '<input type="text" class="form-control text-center effect-16" name="' . $strNombre . '" id="numero__' . $boolObligatorio . '__' . $strNombre . '" value="' . $strValue . '" onblur="comprueba_campo(this)" data-placement="right"  ' . $strExtra . ' autocomplete="off">';
+		$aux = '<input type="text" class="form-control  effect-16 '.$class.'" name="' . $strNombre . '" id="numero__' . $boolObligatorio . '__' . $strNombre . '" value="' . $strValue . '" onblur="comprueba_campo(this)" data-placement="right"  ' . $strExtra . ' autocomplete="off">';
 
 		return $aux;
 	}
@@ -283,7 +283,7 @@ class FormLib
 
 		$checked = (bool) ($checked);
 
-		$aux = "<span><input type='checkbox' " . ($checked ? 'checked=\'checked\'' : '') . " name='" . $strNombre . "' value='" . $strValue . "' id='bool__" . $boolObligatorio . "__" . $strNombre . "' " . $strExtra . " autocomplete='off' data-placement='bottom' class='form-check-input'></span>";
+		$aux = "<span><input type='checkbox' " . ($checked ? 'checked=\'checked\'' : '') . " name='" . $strNombre . "' value='" . $strValue . "' id='bool__" . $boolObligatorio . "__" . $strNombre . "' " . $strExtra . " autocomplete='off' data-placement='bottom'></span>";
 
 		return $aux;
 	}
@@ -375,17 +375,18 @@ class FormLib
 		return $aux;
 	}
 
-	static function Select($strNombre, $boolObligatorio = false, $strValue = '', $mixOptions = array(), $strExtra = "", $placeholder = "", $void_value = true)
+	static function Select($strNombre, $boolObligatorio = false, $strValue ='' , $mixOptions = array(), $strExtra = "", $placeholder = "", $void_value = true)
 	{
 
-		$aux = "<select data-placement='right' class='form-control form-select select2' type='select' class='input-lg' name='" . $strNombre . "' id='select__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " >";
+		$aux = "<select data-placement='right' class='form-control select2' type='select' class='input-lg' name='" . $strNombre . "' id='select__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " >";
 		if($void_value){
 			$aux .= "<option value=''>" . $placeholder . "</option>";
 		}
 
 		foreach ($mixOptions as $k => $v) {
 			$aux .= '<option value="' . $k . '"';
-			if (is_array($strValue) && in_array($v,$strValue ))  {
+			
+			if (is_array($strValue) && in_array($k,$strValue ))  {
 				$aux .= " selected='selected'";
 			}
 			if (!is_array($strValue) && $k == $strValue) {

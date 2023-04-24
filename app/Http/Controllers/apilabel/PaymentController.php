@@ -16,7 +16,7 @@ use App\Models\V5\FxDvc2t;
 use App\Models\V5\FsContav;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCobro1;
-
+use App\libs\EmailLib;
 use DB;
 
 #IMPORTANTE  es necesario que exista un registro en la tabla FSCONTAV y los pagos los asociaremos siempre a este , este registro debe tener fecha de finalización lo mas lejso en el tiempo que se pueda.
@@ -56,6 +56,7 @@ class PaymentController extends ApiLabelController
 			if(empty($items) || empty($items[0])){
 				throw new ApiLabelException(trans('apilabel-app.errors.no_items'));
 			}
+
 			#separar pagos en dos grupos, los pagados y los pendientes de pago
 			$pendiente_pago =array();
 			$pagados =array();
@@ -69,20 +70,24 @@ class PaymentController extends ApiLabelController
 					$namefile = $item["serial"]."_".$item["number"].'_'.time();
 					$items[$key]["path_pdf"] = $namefile;
 				}
+				#validamos que venga el idorigincli
+				$this->validatorArray($items, ["idorigincli" => "required|alpha_num|max:10"]);
 
 				# coger datos de usuario, si no existe dará fallo el primer create ya que es obligatorio
+
 				if(!empty($item["idorigincli"])){
 					$fxcli = 	FxCli::select("COD_CLI, NOM_CLI")->where("cod2_cli", $item["idorigincli"])->first();
+
 					if(empty($fxcli)){
 						throw new ApiLabelException(trans('apilabel-app.errors.no_exist_client'));
 					}
+
 					$items[$key]["cod_cli"] = $fxcli->cod_cli;
 					$items[$key]["user_name"] = $fxcli->nom_cli;
 				}
 
 				#mirar si existe contav
 				$this->searchContav($item["serial"]);
-
 
 
 				if(!empty($item["paid"]) && $item["paid"]=="S"){
@@ -114,7 +119,17 @@ class PaymentController extends ApiLabelController
 
 			$this->uploadPDF($items);
 
-            DB::commit();
+
+			#enviamos los emails al final, para asegurarnos de que todo ha ido bien
+			foreach($items as $key =>$item){
+				$email = new EmailLib('PAY_IN_WEB');
+				if (!empty($email->email)) {
+					$email->setUserByCod($item["cod_cli"]);
+					$email->send_email();
+				}
+			}
+
+			DB::commit();
             return  $this->responseSuccsess();
 
         } catch(\Exception $e){
@@ -320,6 +335,7 @@ public function searchContav($serial){
 
 	$contav = FsContav::WhereActiveDate(date('Y-m-d H:i:s'))->WHERE("CLA_CONTAV", 1)->WHERE("SER_CONTAV",$sercontav)->WHERE("PER_CONTAV",$percontav)->first();
 	if(empty($contav)){
+
 		throw new ApiLabelException(trans('apilabel-app.errors.no_exist_serial'));
 		#no se puede crear ya que lo mejor es crear un Fscontav permanente
 		/*

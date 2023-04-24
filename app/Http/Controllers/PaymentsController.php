@@ -215,19 +215,22 @@ class PaymentsController extends Controller
 
 								#Dirección envio
 								$address = request('clidd');
+
+								#TAULER: En el caso de ser recogida en tienda, solamente añadimos ese dato como dirección
+								//Lo sacamos fuera del if para tener siempre unos valores por defecto
+								$inf_env_lic = $this->addressStorePickup($inf_env_lic);
+
 								if(!empty($address))
 								{
 									$inf_env_lic->tarifa = request("shipping") ;
 									$inf_env_lic->fecharec = null;
-									$inf_env_lic->infenv =$address;
+									$inf_env_lic->infenv = $address;
+
 									#guardamos todos los datos de la dirección de envio, ya que si solo guardamos el código la info asociada  puede variar en el tiempo
-									#TAULER: En el caso de ser recogida en tienda, solamente añadimos ese dato como dirección
-									if(!empty(request("shipping")) && request("shipping") == "recoger"){
-										$inf_env_lic = $this->addressStorePickup($inf_env_lic);
-									}
-									else{
+									if(request("shipping") !== "recoger"){
 										$inf_env_lic = $this->addresInfo($inf_env_lic);
 									}
+
 								}
 							} else {
 								$inf_env_lic->fecharec = null;
@@ -1381,7 +1384,26 @@ class PaymentsController extends Controller
 				//Buscamos la linia max de la cabezera
 				$max_lin = $fact->maxCOBRO1($anum_cob, $num_cob);
 
-				#No se pueden poner debajo por que se eliminan los pcobs
+
+
+
+				foreach ($inf_fact as $bill_pay) {
+					$fact->serie = $bill_pay->serie_pcob1;
+					$fact->numero_pcob1 = $bill_pay->numero_pcob1;
+					$fact->efec = $bill_pay->efecto_pcob1;
+					$max_lin = $max_lin + 1;
+
+					//Insertamos cada linia con la cabezera asiganda
+					$fact->insertCOBRO1($anum_cob, $num_cob, $bill_pay, $params, $date, $max_lin);
+					//Borramos facturas de pendiente de cobro
+					$fact->deletePCOB($bill_pay);
+					//updateamos el precio que se ha cobgrado
+					$fact->updateCOBRO0($anum_cob, $num_cob);
+				}
+				//Llamamos a la funcion de cerrar Factura
+				$fact->closeCobro($anum_cob, $num_cob);
+
+				#ha de ir aquí por que necesita que esten creados los cobros
 				#Notificar a casas de subastas por webservice que se ha pagado una facura
 				if(Config::get('app.WebServicePaidInvoice')){
 
@@ -1393,21 +1415,6 @@ class PaymentsController extends Controller
 					$paidController->informPaid($merchantID);
 				}
 
-
-				foreach ($inf_fact as $bill_pay) {
-					$fact->serie = $bill_pay->serie_pcob1;
-					$fact->numero_pcob1 = $bill_pay->numero_pcob1;
-					$fact->efec = $bill_pay->efecto_pcob1;
-					$max_lin = $max_lin + 1;
-					//Insertamos cada linia con la cabezera asiganda
-					$fact->insertCOBRO1($anum_cob, $num_cob, $bill_pay, $params, $date, $max_lin);
-					//Borramos facturas de pendiente de cobro
-					$fact->deletePCOB($bill_pay);
-					//updateamos el precio que se ha cobgrado
-					$fact->updateCOBRO0($anum_cob, $num_cob);
-				}
-				//Llamamos a la funcion de cerrar Factura
-				$fact->closeCobro($anum_cob, $num_cob);
 				//enviamos correo al administrador
 				$this->correo_payment($inf_fact[0]->serie_pcob1 . "/" . $inf_fact[0]->numero_pcob1, $amount, $merchantID, $inf_client->nom_cli);
 				//enviamos email de factura pagada
@@ -1955,7 +1962,7 @@ class PaymentsController extends Controller
 		$email = new EmailLib('INVOICE_PAY_USER');
 		if (!empty($email->email)) {
 			$email->setUserByCod($inf_client->cod_cli, true);
-			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/myBills'));
+			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/bills'));
 			$email->setPrice(\Tools::moneyFormat($amount, false, 2));
 			$email->setBill($facturas->serie . '/' . $facturas->numero);
 			$email->send_email();

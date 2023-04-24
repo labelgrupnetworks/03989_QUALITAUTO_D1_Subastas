@@ -599,6 +599,9 @@ class User extends Model
 			if(!empty($this->seudo_cli)){
 				$updateData['SEUDO_CLI'] = $this->seudo_cli;
 			}
+			if (!empty($this->nif)) {
+				$updateData['CIF_CLI'] = $this->nif;
+			}
 
             DB::table('FXCLI')
                     ->where('GEMP_CLI',Config::get('app.gemp'))
@@ -804,7 +807,12 @@ class User extends Model
 					//Modificado 21/09/22 Eloy: añadimos facturas y efectos pendientes para comprobar que realmente esta pagado.
 					//Si el lote esta en factura pero la factura no esta pagada, el lote no aparecera como pagado.
 					$sql->whereRaw("((DVC.asent_dvc0 = 'S' and PCOB.emp_pcob is null) or (C.afral_csub = 'L00') or (FGC0.estado_csub0 = 'C'))");
-					$sql->whereRaw("(C.AFRAL_CSUB IS NOT NULL)");
+					#es necesario que el lote está facturado para que aparezca en lotes pagados
+
+					if(\Config::get("app.required_invoice_pay_lot")){
+						$sql->whereRaw("(C.AFRAL_CSUB IS NOT NULL)");
+					}
+
 
                 }else{
 					$sql->whereRaw("(C.AFRAL_CSUB  IS NULL AND (C.NFRAL_CSUB IS NULL OR C.NFRAL_CSUB = 0 ))");
