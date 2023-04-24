@@ -689,6 +689,15 @@ require __DIR__ . '/api_label.php';
 require __DIR__ . '/web_service.php';
 
 
+/* Rutas para llamar al 404 */
+Route::get('404', function () {
+	exit(View::make('front::errors.404'));
+})->name('not_found');
+
+Route::post('404', function () {
+	exit(View::make('front::errors.404'));
+})->name('not_found');
+
 //Si no ha habido ningun resultado mostramos un 404
 Route::get('{any}', function () {
 	exit(View::make('front::errors.404'));
