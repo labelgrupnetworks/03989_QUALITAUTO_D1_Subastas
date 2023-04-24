@@ -198,6 +198,11 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                                 </div>
                             </div>
                 </div>
+				<div class="col-xs-12 mt-2 no-padding">
+					@if ($lote_actual->tipo_sub == 'O')
+						{!! trans(\Config::get('app.theme').'-app.lot.elimina_puja') !!}
+					@endif
+				</div>
             </div>
 
     </div>
@@ -221,10 +226,12 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 								#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
 								$refLot = substr($refLot,-\config::get("app.substrRef"))+0;
 							}
-						@endphp
-						{{$refLot}}
+							/*
 
-						- {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}
+								{{$refLot}}	-
+							*/
+						@endphp
+						 {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}
 
                     </div>
 
@@ -275,7 +282,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 							@endif
 
                         <?php //si un lote cerrado no se ha vendido se podra comprar ?>
-                        @elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
+                        @elseif( ($subasta_web || $subasta_online) && $cerrado && $lote_actual->implic_hces1==0 && $compra && !$fact_devuelta)
 
                             @include('includes.ficha.pujas_ficha_V')
                         <?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>

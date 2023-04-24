@@ -392,16 +392,17 @@ elseif ($isNftPage) {
 						<div class="clearfix"></div>
 
 						<div class="datos_newsletter">
+							<input type="hidden" name="newsletter" value="1">
 							<!-- sin categorias newsletter -->
 							<span>
-								<input type="checkbox" name="families[1]" value="1">
+								<input type="checkbox" name="families[{{$origen}}]" value="{{$origen}}">
 							</span>
 							<label for="bool__1__condiciones">
 								{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
 							</label>
 							<br>
 							<span>
-								<input type="checkbox" name="families[2]" value="1">
+								<input type="checkbox" name="families[1]" value="1">
 							</span>
 							<label for="bool__1__condiciones">
 								{{ trans(\Config::get('app.theme').'-app.login_register.informacion_comercial') }}

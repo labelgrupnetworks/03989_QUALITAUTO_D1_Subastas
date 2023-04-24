@@ -34,6 +34,10 @@
 			echo $menuEstaticoHtml->content_web_page ;
 
 	}
+
+	# Guardamos la lista de extensiones para comprobar si es una imagen o un video
+	$extensionesImagen = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'svgz', 'ico', 'JPG', 'JPEG', 'PNG', 'GIF', 'BMP', 'TIFF', 'TIF', 'SVG', 'SVGZ', 'ICO');
+	$extensionesVideo = array('mp4', 'webm', 'ogg', 'avi', 'mkv', 'MP4', 'WEBM', 'OGG', 'AVI', 'MKV');
 @endphp
 
 	<div class="container">
@@ -64,6 +68,9 @@
 		@foreach ($data['noticias'] as $key => $noticias)
 		@php
 		$url = \Routing::slug('blog').'/'.$data['categorys'][$noticias->primary_category_web_blog]->url_category_blog_lang.'/'.$noticias->url_web_blog_lang;
+		$img_web_separado = explode("/", $noticias->img_web_blog);
+		$nombreArchivo = explode(".", end($img_web_separado));
+		$extension = end($nombreArchivo);
 		@endphp
 
 		<div class="row entrada-post">
@@ -71,8 +78,15 @@
 			<div class="col-sm-12 col-xs-12 primer-post ">
 				<div class="col-xs-12  hidden-md hidden-lg">
 					<a href="{{ $url }}">
-						<img alt="{{$noticias->titulo_web_blog_lang}}" class="img-responsive img-blog"
-						src="{{$noticias->img_web_blog}}">
+						@if (in_array($extension, $extensionesImagen))
+							<img alt="{{$noticias->titulo_web_blog_lang}}" class="img-responsive img-blog"
+							src="{{$noticias->img_web_blog}}">
+						@elseif(in_array($extension, $extensionesVideo))
+							<video class="img-responsive img-blog" controls autoplay>
+								<source src="{{$noticias->img_web_blog}}" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						@endif
 					</a>
 				</div>
 				<div class="col-xs-12 col-md-7">
@@ -113,8 +127,17 @@
 				</div>
 				</div>
 				<div class="col-xs-12 col-md-5 hidden-xs hidden-sm">
-					<a href="{{ $url }}"><img alt="{{$noticias->titulo_web_blog_lang}}" class="img-responsive img-blog"
-						src="{{$noticias->img_web_blog}}"></a>
+					<a href="{{ $url }}">
+						@if (in_array($extension, $extensionesImagen))
+							<img alt="{{$noticias->titulo_web_blog_lang}}" class="img-responsive img-blog"
+							src="{{$noticias->img_web_blog}}">
+						@elseif(in_array($extension, $extensionesVideo))
+							<video class="img-responsive img-blog" controls autoplay>
+								<source src="{{$noticias->img_web_blog}}" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						@endif
+					</a>
 				</div>
 			</div>
 

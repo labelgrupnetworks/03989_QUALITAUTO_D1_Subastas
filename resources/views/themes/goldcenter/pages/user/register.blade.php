@@ -6,30 +6,9 @@
 
 @section('content')
 
-<?php
-
-$families = array();
-/*
-$families[2] = trans(\Config::get('app.theme').'-app.subastas.proximas_subastas'); // Próximas subastas
-$families[3] = trans(\Config::get('app.theme').'-app.subastas.abanicos');    // Abanicos
-$families[4] = trans(\Config::get('app.theme').'-app.subastas.alfombras');   // Alfombras
-$families[5] = trans(\Config::get('app.theme').'-app.subastas.ceramica');    // Cerámica
-$families[6] = trans(\Config::get('app.theme').'-app.subastas.contemporaneo');    // Contemporáneo
-$families[7] = trans(\Config::get('app.theme').'-app.subastas.cristal');     // Cristal
-$families[8] = trans(\Config::get('app.theme').'-app.subastas.escultura');   // Escultura
-$families[9] = trans(\Config::get('app.theme').'-app.subastas.joyas');       // Joyas
-$families[10] = trans(\Config::get('app.theme').'-app.subastas.lamparas');   // Lámparas
-$families[11] = trans(\Config::get('app.theme').'-app.subastas.miniaturas'); // Miniaturas
-$families[12] = trans(\Config::get('app.theme').'-app.subastas.muebles');    // Muebles
-$families[13] = trans(\Config::get('app.theme').'-app.subastas.oriental');   // Oriental
-$families[14] = trans(\Config::get('app.theme').'-app.subastas.pintura');    // Pintura
-$families[15] = trans(\Config::get('app.theme').'-app.subastas.plata');      // Plata
-$families[16] = trans(\Config::get('app.theme').'-app.subastas.porcelana');  // Porcelana
-$families[17] = trans(\Config::get('app.theme').'-app.subastas.relojes');    // Relojes
-$families[18] = trans(\Config::get('app.theme').'-app.subastas.tapices');    // Tapices
-$families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // Varios
-*/
-?>
+@php
+$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
 
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
@@ -300,18 +279,21 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
                                                 @if(!empty($formulario->newsletter))
                                                 <div class="datos_newsletter">
 
-                                                    @if(!empty($families) && count($families) > 0)
+                                                    @if(!empty($newsletters) && count($newsletters) > 0)
 
                                                     <!-- con categorias newsletter -->
                                                     <big>{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</big>
                                                     <br>
 
-                                                    @foreach($families as $t => $item)
-                                                    <div>
-                                                        <input type="checkbox" name="families[{{$t}}]" value="1" id="{{$t}}">
-                                                        <label for="{{$t}}">{{ $item }}</label>
-                                                    </div>
-                                                    @endforeach
+													@foreach ($newsletters as $id_newsletters => $name_newsletters)
+													<div>
+														<input id="register_newsletter_{{ $id_newsletters }}" type="checkbox"
+															name="families[{{ $id_newsletters }}]" value="{{ $id_newsletters }}">
+														<label for="register_newsletter_{{ $id_newsletters }}">
+															{{ $name_newsletters }}
+														</label>
+													</div>
+													@endforeach
 
                                                     @else
                                                     <!-- sin categorias newsletter -->

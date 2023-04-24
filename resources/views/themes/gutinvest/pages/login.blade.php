@@ -6,7 +6,9 @@
 
 
 @section('content')
-
+@php
+    $newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
 
 <section class="bread-new">
     <div class="container">
@@ -33,25 +35,25 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12">
                 <div class="crear">
-                    
+
                     <div class="col-xs-12">
-                        <div class="item-perfil">                
+                        <div class="item-perfil">
                             <div class="input-group-custom">
                                 <div class="input-group-addon-custom form-group">
-                                    <input 
-                                        class="form-control  change_job" 
-                                        style="display: none;" 
-                                        id="inlineCheckbox1" 
-                                        name="pri_emp" 
-                                        value="F" 
-                                        checked="checked" 
-                                        type="radio" 
-                                    /> 
+                                    <input
+                                        class="form-control  change_job"
+                                        style="display: none;"
+                                        id="inlineCheckbox1"
+                                        name="pri_emp"
+                                        value="F"
+                                        checked="checked"
+                                        type="radio"
+                                    />
                                     <label class="input-check-custom " for="inlineCheckbox1">{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}</label>
                                 </div>
                                 <div class="form-group input-group-addon-custom ">
-                                    <input class="form-control change_job" style="display: none;" id="inlineCheckbox2" name="pri_emp" value="J" type="radio"> 
-                                    <label class="input-check-custom" for="inlineCheckbox2">{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}</label>                 
+                                    <input class="form-control change_job" style="display: none;" id="inlineCheckbox2" name="pri_emp" value="J" type="radio">
+                                    <label class="input-check-custom" for="inlineCheckbox2">{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}</label>
                                 </div>
                             </div>
                         </div>
@@ -59,10 +61,10 @@
                             <div class="item-contact-data col-md-8 col-md-offset-2" style="border: 1px solid #ccc; margin-bottom: 10px; padding-bottom:20px;">
                                 <div class="tit">{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}</div>
                                     <div class="row">
-                                        <div class="col-xs-6">                                    
+                                        <div class="col-xs-6">
                                             <div class="input-group pull-right">
                                                 <div class="form-group input-gener">
-                                                    <input class="form-control" style="display: none;" id="inlineRadio1" value="H" name="sexo" checked="checked" type="radio"> 
+                                                    <input class="form-control" style="display: none;" id="inlineRadio1" value="H" name="sexo" checked="checked" type="radio">
                                                     <label class="input-check-custom" for="inlineRadio1">{{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}</label>
                                                 </div>
                                             </div>
@@ -70,16 +72,16 @@
                                         <div class="col-xs-6">
                                             <div class="input-group">
                                                 <div class="form-group input-gener">
-                                                    <input class="form-control" style="display: none;" id="inlineRadio2" name="sexo" value="M" type="radio"> 
-                                                    <label class="input-check-custom" for="inlineRadio2">{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}</label>     
+                                                    <input class="form-control" style="display: none;" id="inlineRadio2" name="sexo" value="M" type="radio">
+                                                    <label class="input-check-custom" for="inlineRadio2">{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 <div class="row">
                                     <div class="col-xs-12 data-contact-container">
-                                        <div class="col-xs-12 col-md-6">  
-                                            <div class="col-xs-12 col-md-12 pull-right">                              
+                                        <div class="col-xs-12 col-md-6">
+                                            <div class="col-xs-12 col-md-12 pull-right">
                                                 <div class="form-group input-group name_client">
                                                     <label for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.nombre_apellido') }}</label>
                                                     <input class="form-control" id="nombre" name="usuario" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.nombre_apellido') }}" required="" type="text">
@@ -98,32 +100,32 @@
                                                 </div>
                                                 <div class="form-group input-group">
                                                     <label for="telefono">{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
-                                                    <input 
-                                                        name="telefono" 
-                                                        class="form-control" 
-                                                        placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}" 
-                                                        required="" 
-                                                        maxlength="40" 
+                                                    <input
+                                                        name="telefono"
+                                                        class="form-control"
+                                                        placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}"
+                                                        required=""
+                                                        maxlength="40"
                                                         type="text"
                                                     />
                                                 </div>
-                                        
-                                        
+
+
                                         <div  class="form-group input-group">
                                             <label for="nif" class="dni_txt">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
                                             <label for="nif" class="cif_txt hidden">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
-                                            <input 
-                                                id="dni" 
-                                                placeholder="NIF/DNI/NIE" 
-                                                class="form-control dni" 
-                                                size="10" 
-                                                name="nif" 
-                                                title="Formato del NIF/NIE(12345678A/X1234567A)" 
-                                                required="" 
-                                                type="text" 
+                                            <input
+                                                id="dni"
+                                                placeholder="NIF/DNI/NIE"
+                                                class="form-control dni"
+                                                size="10"
+                                                name="nif"
+                                                title="Formato del NIF/NIE(12345678A/X1234567A)"
+                                                required=""
+                                                type="text"
                                             />
                                         </div>
-                                                
+
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
@@ -141,17 +143,17 @@
                                             </div>
                                             <div class="form-group input-group">
                                                 <label for="direccion">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
-                                                <input 
-                                                    name="direccion" 
-                                                    class="form-control" 
-                                                    id="direccion" 
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}" 
-                                                    required="" 
-                                                    maxlength="60" 
-                                                    type="text" 
+                                                <input
+                                                    name="direccion"
+                                                    class="form-control"
+                                                    id="direccion"
+                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}"
+                                                    required=""
+                                                    maxlength="60"
+                                                    type="text"
                                                 />
-                                            </div> 
-                                         
+                                            </div>
+
                                         <div class="input-group">
                                             <label for="country">{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
                                             <select id="country" name="pais" class="form-control notranslate" required>
@@ -165,37 +167,37 @@
                                         </div>
                                         <div class="form-group input-group">
                                         <label for="codigo_postal">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
-                                        <input 
-                                            id="cpostal" 
-                                            name="cpostal" 
-                                            class="form-control" 
-                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}" 
-                                            required="" 
-                                            maxlength="10" 
-                                            type="text" 
+                                        <input
+                                            id="cpostal"
+                                            name="cpostal"
+                                            class="form-control"
+                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}"
+                                            required=""
+                                            maxlength="10"
+                                            type="text"
                                         />
                                     </div>
                                         <div class="form-group input-group">
                                         <label for="Ciudad">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
-                                        <input 
-                                            name="poblacion" 
-                                            class="form-control" 
-                                            id="Ciudad" 
-                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}" 
-                                            required="" 
-                                            maxlength="30" 
-                                            type="text" 
+                                        <input
+                                            name="poblacion"
+                                            class="form-control"
+                                            id="Ciudad"
+                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}"
+                                            required=""
+                                            maxlength="30"
+                                            type="text"
                                         />
                                     </div>
                                     <div class="form-group input-group">
                                         <label for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
-                                        <input 
-                                            name="provincia" 
-                                            class="form-control" 
-                                            id="provincia" 
-                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}" 
-                                            maxlength="30" 
-                                            type="text" 
+                                        <input
+                                            name="provincia"
+                                            class="form-control"
+                                            id="provincia"
+                                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}"
+                                            maxlength="30"
+                                            type="text"
                                         />
                                     </div>
                                         <div class="form-group input-group <?= count(Config::get('app.locales'))==1?'hidden':''; ?> ">
@@ -207,10 +209,10 @@
                                                 </select>
                                         </div>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
-                    </div>   
-                </div> 
+                    </div>
+                </div>
             </div>
             <?php if(!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1){ ?>
             <div class="row">
@@ -220,11 +222,11 @@
                             <div class="tit">{{ trans(\Config::get('app.theme').'-app.login_register.title_direccion_envio') }}</div>
                         </div>
                     <div class="ship-check">
-                        <input 
-                            id="shipping_address" 
+                        <input
+                            id="shipping_address"
                             class="form-control"
-                            name="shipping_address" 
-                            type="checkbox" 
+                            name="shipping_address"
+                            type="checkbox"
                         />
                         <label for="shipping_address">{{ trans(\Config::get('app.theme').'-app.login_register.utilizar_direcc_direccenv') }}</label>
                     </div>
@@ -245,12 +247,12 @@
                     </div>
                     <div class="form-group input-group">
                         <label for="country_envio">{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
-                        <select 
-                            id="country_envio" 
-                            name="clid_pais" 
-                            onchange="" 
-                            class="form-control" 
-                            required 
+                        <select
+                            id="country_envio"
+                            name="clid_pais"
+                            onchange=""
+                            class="form-control"
+                            required
                         >
                             <option value="">---</option>
                                 @if (!empty($data) && !empty($data["countries"]) )
@@ -260,58 +262,58 @@
                                 @endif
                         </select>
                     </div>
-                   
+
                     <div class="form-group input-group">
                         <label >{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
                         <input id="clid_provincia"
-                            name="clid_provincia" 
-                            class="form-control" 
-                            id="provincia" 
-                            maxlength="30" 
-                            type="text" 
+                            name="clid_provincia"
+                            class="form-control"
+                            id="provincia"
+                            maxlength="30"
+                            type="text"
                             placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}"
                         />
                     </div>
-                    
+
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-sm-6">
                 <div class="col-sm-12 col-md-12">
                     <div class="form-group input-group">
                         <label for="direccion_envio">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
-                        <input 
-                            name="clid_direccion" 
-                            class="form-control" 
-                            id="direccion_envio" 
-                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}" 
-                            required="" 
-                            maxlength="60" 
+                        <input
+                            name="clid_direccion"
+                            class="form-control"
+                            id="direccion_envio"
+                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}"
+                            required=""
+                            maxlength="60"
                             type="text" />
                     </div>
                     <div class="form-group input-group">
                         <label for="cpostal_envio">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
-                        <input 
-                            id="codigo_postal" 
-                            name="clid_cpostal" 
-                            class="form-control" 
-                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}" 
-                            required="" 
-                            maxlength="10" 
+                        <input
+                            id="codigo_postal"
+                            name="clid_cpostal"
+                            class="form-control"
+                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}"
+                            required=""
+                            maxlength="10"
                             type="text" />
                     </div>
                      <div class="form-group input-group">
                         <label for="Ciudad_envio">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
-                        <input 
-                            name="clid_poblacion" 
-                            class="form-control" 
-                            id="clid_poblacion" 
-                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}" 
-                            required="" 
-                            maxlength="30" 
+                        <input
+                            name="clid_poblacion"
+                            class="form-control"
+                            id="clid_poblacion"
+                            placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}"
+                            required=""
+                            maxlength="30"
                             type="text" />
                     </div>
-                    
-                    
+
+
                 </div>
 
             </div>
@@ -319,7 +321,7 @@
 
     </div>
 
-</div> 
+</div>
             <?php } ?>
 <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2" style="border: 1px solid #ccc; margin-bottom: 10px; padding-bottom:20px;">
@@ -330,110 +332,101 @@
             <div class="form-group form-group-custom">
                 <label for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
                  <label id="erroremail" class="hidden text-danger"></label>
-                <input 
-                    class="form-control" 
-                    id="email" 
-                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email') }}" 
-                    name="email" 
-                    required="" 
+                <input
+                    class="form-control"
+                    id="email"
+                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email') }}"
+                    name="email"
+                    required=""
                     type="text"
                 />
-               
+
             </div>
             <div class="form-group form-group-custom">
                 <label for="emailconfirm">{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}</label>
                 <input data-match="#email"
-                    class="form-control" 
-                    id="emailconfirm" 
-                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}" 
-                    required="" 
-                    type="text" 
+                    class="form-control"
+                    id="emailconfirm"
+                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}"
+                    required=""
+                    type="text"
                 />
             </div>
             <div class="form-group form-group-custom">
                 <label for="contrasena">{{ trans(\Config::get('app.theme').'-app.login_register.password') }}</label>
-                <input 
-                    maxlength="20" 
-                    id="password" 
-                    name="password" 
-                    class="form-control" 
-                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.password') }}" 
-                    data-minlength="5" 
-                    required="" 
+                <input
+                    maxlength="20"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.password') }}"
+                    data-minlength="5"
+                    required=""
                     type="password" />
             </div>
             <div class="form-group form-group-custom">
                 <label for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}</label>
-                <input 
-                    maxlength="20" 
-                    name="confirm_password" 
-                    class="form-control" 
-                    data-match="#password" 
-                    id="confirmcontrasena" 
-                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}" 
-                    required="" 
+                <input
+                    maxlength="20"
+                    name="confirm_password"
+                    class="form-control"
+                    data-match="#password"
+                    id="confirmcontrasena"
+                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}"
+                    required=""
                     type="password">
             </div>
         </div>
-        
 
 
 
-        
+
+
 
         <div class="col-xs-12">
             <div class="checkbox">
-                <!--<input 
-                     value="1" 
-                     name="newsletter" 
-                     type="hidden"
-                     class="form-control"
-                     id="i-want-news"
-                />-->
                 <label for="i-want-news">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
             </div>
 
-
             <div class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1 list_cat_home_container">
 
-                <div class="list_cat_home_block">
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="1">  {{trans(\Config::get('app.theme').'-app.foot.metal')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="2">  {{trans(\Config::get('app.theme').'-app.foot.contruction')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="3"> {{trans(\Config::get('app.theme').'-app.foot.food')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="4"> {{trans(\Config::get('app.theme').'-app.foot.transport')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="5">  {{trans(\Config::get('app.theme').'-app.foot.wood')}}</li>
-                </div>
-                <div class="list_cat_home_block">
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="6">  {{trans(\Config::get('app.theme').'-app.foot.chemical')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="7">  {{trans(\Config::get('app.theme').'-app.foot.stocks')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="8">  {{trans(\Config::get('app.theme').'-app.foot.arts')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="9">  {{trans(\Config::get('app.theme').'-app.foot.habite')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="10">  {{trans(\Config::get('app.theme').'-app.foot.others')}}</li>
-                </div>
+				@foreach ($newsletters->chunk(5) as $chunk)
+				<div class="list_cat_home_block">
+					@foreach ($chunk as $id_newsletters => $name_newsletters)
+                    <li>
+						<input type="checkbox" class="newsletter" name="families[{{$id_newsletters}}]" value="{{$id_newsletters}}">
+						{{ $name_newsletters }}
+					</li>
+					@endforeach
+				</div>
+				@endforeach
+				<input type="hidden" name="newsletter" value="on">
+
             </div>
+
             <div class="clearfix"></div><br>
 
 
             <div class="checkbox">
-                <input 
-                    name="condiciones" 
-                    required 
+                <input
+                    name="condiciones"
+                    required
                     type="checkbox"
-                    class="form-control" 
+                    class="form-control"
                     id="recibir-newletter"
                 />
                 <label for="recibir-newletter">
-                    {{ trans(\Config::get('app.theme').'-app.login_register.read_conditions') }} (<a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition') ?>" target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)                                
+                    {{ trans(\Config::get('app.theme').'-app.login_register.read_conditions') }} (<a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition') ?>" target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)
                 </label>
             </div>
         </div>
-        
-        
+
+
     </div>
 
 </div>
-                
-                
+
+
                     <div class="input-button-register">
                         <p id="error-form-validation" class="text-danger" style="font-size: 18px;"></p>
                         <button type="submit" class="btn btn-registro">{{ trans(\Config::get('app.theme').'-app.login_register.finalizar') }}</button>
@@ -457,11 +450,11 @@
 
 <script>
 $( document ).ready(function() {
-    
+
     $('.icon-date').click(function(){
-        
-        $('#datetimepicker').focus();    
+
+        $('#datetimepicker').focus();
     });
-});    
+});
 </script>
 @stop

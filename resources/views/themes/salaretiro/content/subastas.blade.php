@@ -75,9 +75,22 @@
                             <p style="text-align: justify; color: black; font-style: oblique;">@if(in_array($subasta->cod_sub,array('VDWDEC18','VDWMOB18','VDWESC18','CINE2019','VDWP19'))) {{trans(\Config::get('app.theme').'-app.subastas.auctions_alert') }}  @endif</p>
                         @endif
                         @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
-                            <p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
-                                <a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
-                            </p>
+							@if (\Session::has('user'))
+								@php
+									$userController = new \App\Http\Controllers\UserController();
+								@endphp
+								@if ($userController->getCreditCardAndCIFImages(\Session::get('user.cod')))
+									<p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
+										<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+									</p>
+								@else
+									<p class="color-red text-center">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
+								@endif
+							@else
+								<p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
+									<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+								</p>
+							@endif
                         @endif
 
 						<?php $sub = new App\Models\Subasta;

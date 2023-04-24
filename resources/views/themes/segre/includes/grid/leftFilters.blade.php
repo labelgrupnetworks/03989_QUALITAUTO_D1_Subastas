@@ -82,7 +82,7 @@
 			@include('includes.grid.features_list')
 
 			@if (!empty($auction))
-				@if (strtotime($auction->session_start) < time() && $auction->tipo_sub == 'W')
+				@if ( (strtotime($auction->session_start) < time() && $auction->tipo_sub == 'W') || (strtotime($auction->session_end) < time() && $auction->tipo_sub == 'O') )
 					@include('includes.grid.filter_sold')
 				@endif
 			@else

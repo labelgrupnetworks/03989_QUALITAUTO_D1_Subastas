@@ -12,6 +12,10 @@ $data['seo']->noindex_follow='true';
 
 @section('content')
 
+@php
+	$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
+
 <?php
 
 $data['families'] = array();
@@ -176,8 +180,8 @@ $data['families'][2] = "Arte";
 								<label>{{ trans(\Config::get('app.theme').'-app.login_register.dni_reverse') }}</label>
 								{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
 							</div>
+							<div>{{ trans("$theme-app.login_register.credit_card_register_note") }}</div>
 						</div>
-
 						<div class="clearfix"></div>
 					</div>
 
@@ -305,18 +309,20 @@ $data['families'][2] = "Arte";
 
 						<div class="datos_newsletter">
 
-						@if(!empty($data['families']) && count($data['families']) > 0)
+							@if (!empty($newsletters) && count($newsletters) > 0)
 
 							<!-- con categorias newsletter -->
-	                        <big>{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</big>
-	                        <br><br>
-
-	                    	@foreach($data['families'] as $t => $item)
-	                            <div>
-	                                <input type="checkbox" name="families[{{$t}}]" value="1" id="{{$t}}">
-	                                <label for="{{$t}}">{{ $item }}</label>
-	                            </div>
-	                        @endforeach
+							<big>{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}</big>
+							<br>
+							@foreach ($newsletters as $id_newsletters => $name_newsletters)
+								<div>
+									<input id="register_newsletter_{{ $id_newsletters }}" type="checkbox"
+										name="families[{{ $id_newsletters }}]" value="{{ $id_newsletters }}">
+									<label for="register_newsletter_{{ $id_newsletters }}">
+										{{ $name_newsletters }}
+									</label>
+								</div>
+							@endforeach
 
 						@else
                             <!-- sin categorias newsletter -->

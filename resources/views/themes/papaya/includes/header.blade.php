@@ -84,7 +84,7 @@ $empresa = $empre->getEmpre();
                 </div>
                 <div class="hidden-md hidden-lg logo-header img-responsive d-flex alig-items-center justify-content-flex-start">
                     <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
-                        <img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logoInbusa.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                        <img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.webp"  alt="{{(\Config::get( 'app.name' ))}}">
                     </a>
                 </div>
             </div>
@@ -92,7 +92,7 @@ $empresa = $empre->getEmpre();
             <div class="col-xs-8 col-md-2 hidden-xs hidden-sm  ">
                 <div class="logo-header img-responsive d-flex alig-items-center justify-content-flex-start">
                     <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
-                        <img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logoInbusa.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                        <img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.webp"  alt="{{(\Config::get( 'app.name' ))}}">
                     </a>
                 </div>
             </div>

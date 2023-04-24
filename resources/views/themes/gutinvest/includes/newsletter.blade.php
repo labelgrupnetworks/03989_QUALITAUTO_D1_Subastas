@@ -1,4 +1,8 @@
-<div id="newsletter_secction" class="newsletter">
+@php
+	$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
+@endphp
+
+<div id="newsletter_secction" class="newsletter js-newletter-block">
     <div class="container">
         <div class="row">
             <form class="form-inline" id="form-newsletter">
@@ -9,7 +13,7 @@
             <div class="col-xs-12  text-center">
                 <div class="input-group">
                    <input class="form-control input newsletter-input" name="email" type="text" placeholder="{{trans(\Config::get('app.theme').'-app.emails.write_email')}}">
-				   <input type="hidden" id="lang" value="<?=\App::getLocale()?>">
+				   <input type="hidden" name="lang" id="lang" value="<?=\App::getLocale()?>">
 				   <input type="hidden" id="condiciones" name="condiciones" value="true">
 
                     <button id="newsletter-btn" type="button" class="btn btn-custom newsletter-button">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
@@ -17,21 +21,16 @@
             </div>
             <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-3 list_cat_home_container">
 
-                <div class="list_cat_home_block">
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="1">  {{trans(\Config::get('app.theme').'-app.foot.metal')}}</li>
-                    <li><input type="checkbox" class="newsletter" name="families[]" value="2">  {{trans(\Config::get('app.theme').'-app.foot.contruction')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="3"> {{trans(\Config::get('app.theme').'-app.foot.food')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="4"> {{trans(\Config::get('app.theme').'-app.foot.transport')}}</li>
-					<li><input type="checkbox" class="newsletter" name="families[]" value="5">  {{trans(\Config::get('app.theme').'-app.foot.wood')}}</li>
-
-            </div>
-            <div class="list_cat_home_block">
-                <li><input type="checkbox" class="newsletter" name="families[]" value="6">  {{trans(\Config::get('app.theme').'-app.foot.chemical')}}</li>
-                <li><input type="checkbox" class="newsletter" name="families[]" value="7">  {{trans(\Config::get('app.theme').'-app.foot.stocks')}}</li>
-                <li><input type="checkbox" class="newsletter" name="families[]" value="8">  {{trans(\Config::get('app.theme').'-app.foot.arts')}}</li>
-                <li><input type="checkbox" class="newsletter" name="families[]" value="9">  {{trans(\Config::get('app.theme').'-app.foot.habite')}}</li>
-				<li><input type="checkbox" class="newsletter" name="families[]" value="10">  {{trans(\Config::get('app.theme').'-app.foot.others')}}</li>
-            </div>
+				@foreach ($newsletters->chunk(5) as $chunk)
+				<div class="list_cat_home_block">
+					@foreach ($chunk as $id_newsletters => $name_newsletters)
+                    <li>
+						<input type="checkbox" class="newsletter" name="families[{{$id_newsletters}}]" value="{{$id_newsletters}}">
+						{{ $name_newsletters }}
+					</li>
+					@endforeach
+				</div>
+				@endforeach
             </div>
             </form>
         </div>

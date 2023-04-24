@@ -60,7 +60,7 @@
 				<div class="col-xs-12 titleArticlePage"> {{$titulo}}</div>
 				<div class="col-xs-12 descriptionArticlePage"> {{$description}}</div>
 
-					@if( $article->imp> 0)
+				@if( $article->imp> 0)
 					<div class="col-xs-12 priceArticlePage">
 						<span id="art-original_JS" class="art-price_JS"  >{{ \Tools::moneyFormat($article->imp,'' , 0)}} </span>
 						@foreach($precioArticulos as $keyArticulo =>$precioArticulo)
@@ -68,11 +68,11 @@
 						@endforeach
 						{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
 					</div>
-					@else
+				@else
 					<div class="col-xs-12 titleArticlePage mt-1">
 						{!! trans(\Config::get('app.theme').'-app.articles.consultarPrecio') !!}
 					</div>
-					@endif
+				@endif
 
 
 				@php
@@ -105,7 +105,7 @@
 						<br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
 					</div>
 				@else
-				{{-- Es posible que no haya variamtes, en ese caso miramso le stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
+				{{-- Es posible que no haya variamtes, en ese caso miramso el stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
 					<div class="siStock_JS col-xs-12 mt-1 @if(!$article->stock) hidden @endif">
 						<button style="width: 100%;" class="button-principal addCartButton addArticleCard_JS" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.addCart') }}</button>
 					</div>

@@ -1,6 +1,6 @@
 <div class="container mt-2 mb-2">
 
-	<div class="newsletter d-flex flex-direction-column align-items-center">
+	<div class="newsletter js-newletter-block d-flex flex-direction-column align-items-center">
 
 		<div class="newsletter-tittle text-uppercase"> {{ trans(\Config::get('app.theme').'-app.foot.inscribete_catalogo') }}</div>
 
@@ -20,7 +20,7 @@
 		</div>
 
 		<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
-        <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
+        <input type="hidden" class="newsletter" id="newsletter-input" name="families[3]" value="3">
         <button id="newsletter-btn-duranNFT" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
 
 

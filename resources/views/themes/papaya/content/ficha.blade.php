@@ -26,6 +26,12 @@ $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 $vendido = (!empty($lote_actual->himp_csub)|| $lote_actual->desadju_asigl0 =='S' )? true : false;
+
+if ($retirado || $fact_devuelta || $cerrado) {
+	header("Location: " . URL::to('/404'), true, 301);
+	exit();
+}
+
 ?>
 
 

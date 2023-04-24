@@ -169,6 +169,11 @@
 				</div>
 
         </div>
+	@else
+		<div class="">
+			<p>{{ trans("$theme-app.lot.can_place_bids") }}{{ Tools::getDateFormat($lote_actual->fini_asigl0, 'Y-m-d H:i:s', 'd/m/Y H:i:s') }}</p>
+		</div>
+		
 	@endif
 
 

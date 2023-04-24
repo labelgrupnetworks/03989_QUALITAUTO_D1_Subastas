@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xs-12 hidden-xs hidden-sm banner_grid">
+    <div class="col-xs-12 hidden-xs hidden-sm banner_grid" style="max-height: 82.56px; overflow: hidden;">
         {!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true, autoplaySpeed: 5000, slidesToScroll:1}') !!}
     </div>
 </div>

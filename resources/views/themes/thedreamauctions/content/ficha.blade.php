@@ -180,8 +180,8 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 				<div class="col-xs-12 mt-3">
 					@php
-						$previousRef = (!empty($data['previous'])) ? explode('-', explode('/', $data['previous'])[4])[0] : '';
-						$nextRef = (!empty($data['next'])) ? explode('-', explode('/', $data['next'])[4])[0] : '';
+						$previousRef = (!empty($data['previous'])) ? explode('-', explode('/', $data['previous'])[6])[0] : '';
+						$nextRef = (!empty($data['next'])) ? explode('-', explode('/', $data['next'])[6])[0] : '';
 					@endphp
 
 					<div class="next align-items-center d-flex justify-content-space-between">

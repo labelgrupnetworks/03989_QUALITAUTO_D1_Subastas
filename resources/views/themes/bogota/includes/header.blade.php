@@ -22,82 +22,6 @@ use App\libs\TradLib as TradLib;
 	$fgortsec0 = new App\Models\V5\FgOrtsec0();
 	$categories = $fgortsec0->GetAllFgOrtsec0()->get()->toarray();
 ?>
-<?php /*
-<div class="lang-selection">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 text-right d-flex justify-content-flex-end">
-
-					@foreach(Config::get('app.locales') as $key => $value)
-						<ul class="ul-format list-lang d-inline-flex">
-							<?php
-								if(\App::getLocale() != $key){
-									#Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
-									$ruta ="/$key". TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
-								}else{
-									$ruta ="";
-								}
-							?>
-							<li>
-								<a translate="no" title="<?= trans($theme.'-app.head.language_es') ?>" class="link-lang  color-letter {{ empty($ruta)? 'active': '' }} " {{ empty($ruta)? "": "href=$ruta" }} >
-
-								<span translate="no">{{ trans($theme.'-app.home.' . $key)}}</span>
-								</a>
-							</li>
-						</ul>
-					@endforeach
-
-
-
-			<?php // GOOGLE TRANSLATE DESCONECTADO  ?>
-
-               <div class="google_translate2">
-                        <style>
-                            div#google_translate_element div.goog-te-gadget-simple a.goog-te-menu-value span:nth-of-type(1),
-                            div#google_translate_element div.goog-te-gadget-simple a.goog-te-menu-value span:nth-of-type(2)
-                            {display:none;}
-                            div#google_translate_element div.goog-te-gadget-simple {margin:0px; padding:0px; display:inline-block; background-color:#000000; border:1px solid #000;}
-                            div#google_translate_element div.goog-te-gadget-simple a.goog-te-menu-value::after{
-                                content: '<?= trans($theme.'-app.head.more_lang') ?>';
-                                padding-right:5px;
-                                color: #707070;
-                                text-decoration: none;
-                                font-family: 'Rubik', sans-serif;
-                                font-size: 14px;
-                                text-transform: uppercase;
-                                }
-
-                        </style>
-                        <div id="google_translate_element"></div>
-                    </div>
-                    <script type="text/javascript">
-
-                    //guardamos idoma actual
-                    var actualLang = '<?= $lang ?>'
-                    $(window).bind("load", () => {
-
-                        //Verificamos si han cambiado el idioma
-                        //nativo de label
-                        verifyLang(actualLang)
-                    })
-
-                    function googleTranslateElementInit() {
-                        const goo =  new google.translate.TranslateElement({pageLanguage: 'es', includedLanguages: 'en,de,fr', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-                    }
-
-
-
-                    </script>
-                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-
-            </div>
-
-        </div>
-    </div>
-</div>
-	*/
-	?>
 <header>
     <nav class="menu-header">
         <div class="menu-responsive hidden-lg">
@@ -115,7 +39,9 @@ use App\libs\TradLib as TradLib;
 
 
 				<li>
-					<a class="color-letter d-flex link-header justify-content-center align-items-center category-button"  href="#"><span>{{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</span></a>
+					<a class="color-letter d-flex link-header justify-content-center align-items-center category-button"  href="#">
+						<span>{{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</span>
+					</a>
 
 					<div class="submenuDefault ">
 						<div class=" pt-1 pb-1" >
@@ -143,37 +69,10 @@ use App\libs\TradLib as TradLib;
 				  </div>
 
 				</li>
-				<?php /* NO TIENEN VENTA DIRECTA
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
-                    <li><a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('venta-directa') }}"><span>{{ trans($theme.'-app.foot.direct_sale')}}</span></a></li>
-                @endif
 
-                @if($global['subastas']->has('H'))
-                    <li>
-                        <a class="color-letter flex-display link-header justify-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span></a>
-                    </li>
-                @endif
-				 * */
-				 ?>
 				<li><a class="color-letter d-flex link-header justify-content-center align-items-center category-button" 	title="{{ trans($theme.'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  ?>"><span>{{ trans($theme.'-app.foot.about_us') }}</span></a>
 				</li>
 
-
-
-
-               <?php /*
-                *    <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans($theme.'-app.foot.auctions')}}</a></li>
-
-                * */
-                  ?>
-				  <?php /* NO TIENEN CALENDARIO NI VALORACIONES
-						<li>
-							<a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
-						</li>
-						<li>
-							<a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos') }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
-						</li>
-					*/ ?>
                 <li>
                     <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
                 </li>

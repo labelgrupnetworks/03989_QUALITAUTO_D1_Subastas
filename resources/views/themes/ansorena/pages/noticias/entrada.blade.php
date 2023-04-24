@@ -33,6 +33,10 @@ if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002'){
 		}
 
 }
+
+# Guardamos la lista de extensiones para comprobar si es una imagen o un video
+$extensionesImagen = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'svgz', 'ico', 'JPG', 'JPEG', 'PNG', 'GIF', 'BMP', 'TIFF', 'TIF', 'SVG', 'SVGZ', 'ICO');
+$extensionesVideo = array('mp4', 'webm', 'ogg', 'avi', 'mkv', 'MP4', 'WEBM', 'OGG', 'AVI', 'MKV');
 @endphp
 <section>
 	<div class="container">
@@ -110,8 +114,17 @@ if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002'){
 									src="{{ $cod_video }}" frameborder="0" allow="autoplay; encrypted-media"
 									allowfullscreen></iframe>
 								@else
-								<img class="img-responsive center-block img-web-blog" src="{{ $data['news']->img_web_blog }}">
+									@php
+										$img_web_separado = explode("/", $data['news']->img_web_blog);
+										$nombreArchivo = explode(".", end($img_web_separado));
+										$extension = end($nombreArchivo);
+									@endphp
 
+									@if (in_array($extension, $extensionesImagen))
+										<img class="img-responsive center-block img-web-blog" src="{{ $data['news']->img_web_blog }}">
+									@elseif (in_array($extension, $extensionesVideo))
+										<video class="img-responsive center-block img-web-blog" src="{{ $data['news']->img_web_blog }}" controls autoplay></video>
+									@endif
 								@endif
 
 						</div>
@@ -161,8 +174,19 @@ if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002'){
 							{{ $rel_link->titulo_web_blog_lang }}
 						</div>
 						<div class="img-related-post">
+
+							@php
+								$img_web_separado = explode("/", $rel_link->img_web_blog);
+								$nombreArchivo = explode(".", end($img_web_separado));
+								$extension = end($nombreArchivo);
+							@endphp
+
 							<a href="{{ $url }}">
-							<img class="img-responsive" src="{{ $rel_link->img_web_blog }}">
+								@if (in_array($extension, $extensionesImagen))
+									<img class="img-responsive" src="{{ $rel_link->img_web_blog }}">
+								@elseif (in_array($extension, $extensionesVideo))
+									<video class="img-responsive" src="{{ $rel_link->img_web_blog }}" controls autoplay></video>
+								@endif
 							</a>
 						</div>
 						<div class="button-post">

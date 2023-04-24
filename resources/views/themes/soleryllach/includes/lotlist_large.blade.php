@@ -237,7 +237,7 @@
                                 @elseif($item->cerrado_asigl0 == 'S' &&  empty($precio_venta) &&  $item->subc_sub != 'H')
 								{{-- No vendido, no debe aparecer boton --}}
 
-								@elseif($item->cerrado_asigl0=='N'  && $item->tipo_sub == 'W' &&  ($item->subc_sub == 'S' ||   $item->subc_sub == 'A'))
+								@elseif($item->cerrado_asigl0=='N'  && $item->tipo_sub == 'W' &&  ($item->subc_sub == 'S' ||   $item->subc_sub == 'A') && strtotime('now') < strtotime($item->orders_end))
 								{{-- No cerrado y en subasta, debe aparecer boton de pujar --}}
 								<a title="{{ $titulo }}" <?= $url ?> class="btn btn-2">{{ trans("$theme-app.lot.pujar") }}</a>
 								@endif

@@ -20,6 +20,8 @@
                     <form id="newsletterForm" method="POST">
                         <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
                         <input type="hidden" name="email" value="{{ request('email') }}">
+                        <input type="hidden" name="isMultiCompany" value="{{ $isMultiCompany }}">
+
                         <div class="list-group shadow">
                             @foreach ($newsletters as $id_newsletters => $name_newsletters)
                                 @php

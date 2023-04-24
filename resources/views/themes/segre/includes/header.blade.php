@@ -19,7 +19,7 @@ if (strpos($fullname, ',')) {
 <?php #el proximo div es un espacio en blanco para que funcione el scroll del menu y no se suba todo para arriba ?>
 {{-- <div class="header-height "></div> --}}
 <header>
-	@if (count(Config::get('app.locales')) > 1 && 1==2)
+	@if (count(Config::get('app.locales')) > 1 )
 		<div class="lang-selection">
 			<div class="container-fluid">
 				<div class="row">
@@ -481,6 +481,46 @@ if (strpos($fullname, ',')) {
 					</div>
 
 				</li>
+				@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+					@php
+						$subastaOnline= $global['subastas']['S']['O']->first()->first();
+					@endphp
+
+					<li class="open-menu-especial" style="position: relative">
+
+						{{-- Botón de desktop --}}
+						<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md"
+						href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+						{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
+						</a>
+
+						{{-- Botón de móvil --}}
+						<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
+							href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+							{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
+						</a>
+					</li>
+				@elseif(Session::get('user.admin') && $global['subastas']->has('A') && $global['subastas']['A']->has('O'))
+					@php
+						$subastaOnline= $global['subastas']['A']['O']->first()->first();
+					@endphp
+
+					<li class="open-menu-especial" style="position: relative">
+
+						{{-- Botón de desktop --}}
+						<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md"
+						href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+						{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
+						</a>
+
+						{{-- Botón de móvil --}}
+						<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
+							href="{{ \Tools::url_auction($subastaOnline->cod_sub, $subastaOnline->name, $subastaOnline->id_auc_sessions, '001')  }}">
+							{{ strtoupper(trans($theme.'-app.foot.online_auction'))}}
+						</a>
+					</li>
+
+				@endif
 
 				{{-- MENÚ APP SEGRE
 

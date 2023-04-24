@@ -60,16 +60,14 @@ foreach($all_adj_pag as $key_inf => $value){
 				</div>
 
 
-				<?php #quitamos texto pendientes de pago
-				/*
+
                 <div class="user-accounte-titles-link">
                     <ul class="ul-format d-flex justify-content-space-between flex-wrap" role="tablist">
                         <li role="pagar"class="active" >
                             <a data-toggle="collapse" href="#lot_pend" class="color-letter" href="{{ \Routing::slug('user/panel/allotments/outstanding') }}" >{{ trans(\Config::get('app.theme').'-app.user_panel.still_paid') }}</a></li>
                     </ul>
 				</div>
-				*/
-				?>
+
 
                 <div class="col-xs-12 no-padding in" aria-expanded="true" id="lot_pend">
 
@@ -295,9 +293,7 @@ foreach($all_adj_pag as $key_inf => $value){
 
 
 
-<?php
-#Oculto los lotes pagados ya que de momento no se pagan por la web
-/*
+
 
                     <div class="user-accounte-titles-link col-xs-12 no-padding">
                         <ul class="ul-format d-flex justify-content-space-between flex-wrap" role="tablist">
@@ -425,15 +421,6 @@ foreach($all_adj_pag as $key_inf => $value){
 
                             </div>
                         </div>
-
-*/
-
-?>
-
-
-
-
-
 
 
 

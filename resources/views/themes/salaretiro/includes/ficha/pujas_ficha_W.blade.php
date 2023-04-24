@@ -94,34 +94,64 @@
                 </div>
             </div>
         @endif
+		@php
+			$userController = new \App\Http\Controllers\UserController();
+		@endphp
 
         <div class="col-xs-12">
             <div class="info_single_content">
                 @if ($lote_actual->cerrado_asigl0 == 'N' && $lote_actual->fac_hces1 == 'N' && strtotime('now') > strtotime($lote_actual->start_session) && strtotime('now') < strtotime($lote_actual->end_session))
-                    <a
-                        href='{{ Routing::translateSeo('api/subasta') .$data['subasta_info']->lote_actual->cod_sub .'-' .str_slug($data['subasta_info']->lote_actual->name) .'-' .$data['subasta_info']->lote_actual->id_auc_sessions }}'>
-                        <button
-                            class="btn btn-lg btn-custom live-btn"><?= trans(\Config::get('app.theme') . '-app.lot.bid_live') ?></button>
-                    </a>
+					@if (\Session::has('user'))
+						@if ($userController->getCreditCardAndCIFImages(\Session::get('user.cod')))
+								<a href='{{ Routing::translateSeo('api/subasta') .$data['subasta_info']->lote_actual->cod_sub .'-' .str_slug($data['subasta_info']->lote_actual->name) .'-' .$data['subasta_info']->lote_actual->id_auc_sessions }}'>
+								<button class="btn btn-lg btn-custom live-btn"><?= trans(\Config::get('app.theme') . '-app.lot.bid_live') ?></button>
+							</a>
+						@else
+							<p class="color-red">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
+						@endif
+					@else
+							<a href='{{ Routing::translateSeo('api/subasta') .$data['subasta_info']->lote_actual->cod_sub .'-' .str_slug($data['subasta_info']->lote_actual->name) .'-' .$data['subasta_info']->lote_actual->id_auc_sessions }}'>
+							<button class="btn btn-lg btn-custom live-btn"><?= trans(\Config::get('app.theme') . '-app.lot.bid_live') ?></button>
+						</a>
+					@endif
                 @endif
                 @if ($lote_actual->cerrado_asigl0 == 'N' && $lote_actual->fac_hces1 == 'N' && strtotime('now') > strtotime($lote_actual->orders_start) && strtotime('now') < strtotime($lote_actual->orders_end))
-                    <p><strong><?= trans_choice(\Config::get('app.theme') . '-app.lot.insert_max_puja_start', 1, ['price' => $data['precio_salida']]) ?></strong>
-                    </p>
-                    <div class="input-group group-pujar-custom">
-                        <input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}"
-                            class="form-control input-lg control-number" value="{{ $data['precio_salida'] }}"
-                            type="text">
-                        <div class="input-group-btn">
-                            <button id="pujar_ordenes_w" data-from="modal" type="button" class="btn btn-lg btn-custom"
-                                ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
-                                codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.place_bid') }}</button>
-                        </div>
-                    </div>
-                    <div class="checkbox">
-                        <label for="recibir-newletter">
-                            <?= trans(\Config::get('app.theme') . '-app.subastas.read_conditions') ?>
-                        </label>
-                    </div>
+					@if (\Session::has('user'))
+						@if ($userController->getCreditCardAndCIFImages(\Session::get('user.cod')))
+							<p><strong><?= trans_choice(\Config::get('app.theme') . '-app.lot.insert_max_puja_start', 1, ['price' => $data['precio_salida']]) ?></strong>
+							</p>
+							<div class="input-group group-pujar-custom">
+								<input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}"
+									class="form-control input-lg control-number" value="{{ $data['precio_salida'] }}"
+									type="text">
+								<div class="input-group-btn">
+									<button id="pujar_ordenes_w" data-from="modal" type="button" class="btn btn-lg btn-custom"
+										ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
+										codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.place_bid') }}</button>
+								</div>
+							</div>
+						@else
+							<p class="color-red">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
+						@endif
+					@else
+						<p><strong><?= trans_choice(\Config::get('app.theme') . '-app.lot.insert_max_puja_start', 1, ['price' => $data['precio_salida']]) ?></strong>
+						</p>
+						<div class="input-group group-pujar-custom">
+							<input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}"
+								class="form-control input-lg control-number" value="{{ $data['precio_salida'] }}"
+								type="text">
+							<div class="input-group-btn">
+								<button id="pujar_ordenes_w" data-from="modal" type="button" class="btn btn-lg btn-custom"
+									ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
+									codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.place_bid') }}</button>
+							</div>
+						</div>
+						@endif
+					<div class="checkbox">
+						<label for="recibir-newletter">
+							<?= trans(\Config::get('app.theme') . '-app.subastas.read_conditions') ?>
+						</label>
+					</div>
                 @endif
 
             </div>

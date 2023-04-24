@@ -98,8 +98,7 @@
                     class="<?= $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'] ? 'mine' : 'other' ?>">{{ $lote_actual->formatted_actual_bid }}
                     €</span>
             @elseif(count($lote_actual->pujas) == 0)
-                <span id="text_actual_no_bid"> <?php /* trans(\Config::get('app.theme').'-app.lot_list.no_bids') */
-?> </span>
+                <span id="text_actual_no_bid"> <?php /* trans(\Config::get('app.theme').'-app.lot_list.no_bids') */?> </span>
                 <span id="text_actual_max_bid"
                     class="hidden">{{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}</span>
                 <span id="actual_max_bid" class="hidden"></span>
@@ -109,19 +108,51 @@
                 <span id="actual_max_bid">{{ $lote_actual->formatted_actual_bid }} €</span>
             @endif
             <br>
-            @if (count($lote_actual->pujas) > 0)
-                <small class='explanation_bid t_insert'
-                    style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.next_min_bid') }}
-                    <strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
-            @else
-                <small class='explanation_bid t_insert'
-                    style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.min_puja') }}
-                    <strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
-            @endif
 
-
+			@if (\Session::has('user'))
+				@php
+					$userController = new \App\Http\Controllers\UserController();
+					$ccAndCIFverif = $userController->getCreditCardAndCIFImages(\Session::get('user.cod'));
+				@endphp
+				@if ($ccAndCIFverif)
+					@if (count($lote_actual->pujas) > 0)
+						<small class='explanation_bid t_insert'
+							style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.next_min_bid') }}
+							<strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
+							{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
+					@else
+						<small class='explanation_bid t_insert'
+							style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.min_puja') }}
+							<strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
+							{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
+					@endif
+					<div class="insert_bid">
+						<p><strong>{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</strong></p>
+					</div>
+					<div class="input-group">
+						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
+							class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
+							<div class="input-group-btn" style="vertical-align: top;">
+								<button type="button" data-from="modal"
+									class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
+									type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+									codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+							</div>
+						<br>
+					</div>
+				@endif
+			@else
+				@if (count($lote_actual->pujas) > 0)
+					<small class='explanation_bid t_insert'
+						style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.next_min_bid') }}
+						<strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
+						{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
+				@else
+					<small class='explanation_bid t_insert'
+						style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.min_puja') }}
+						<strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong>
+						{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} </small>
+				@endif
 				<div class="insert_bid">
 					<p><strong>{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</strong></p>
 				</div>
@@ -129,14 +160,27 @@
 					<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
 						class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
 					<div class="input-group-btn" style="vertical-align: top;">
-						<button type="button" data-from="modal"
-							class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
-							type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-							codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
-					</div>
+							<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
+								class="form-control input-lg control-number" type="text" value="{{ $data['precio_salida'] }}">
+							<div class="input-group-btn" style="vertical-align: top;">
+								<button type="button" data-from="modal"
+									class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
+									type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+									codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+							</div>
+						</div>
 					<br>
 				</div>
+			@endif
+				<div>
+					@if (\Session::has('user'))
+						@if (!$ccAndCIFverif)
+							<p class="color-red">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
+						@endif
+					@endif
+				</div>
 
+				{{-- FALTA CREAR UN PARA QUE SE VEA EL MENSAJE CON EL !$ccAndCIFverif y "<p>{{ trans("$theme-app.lot.info_no_cc_and_cif") }}</p>" --}}
 
 				<div class="input-group">
 					<br>

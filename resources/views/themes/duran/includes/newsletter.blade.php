@@ -1,4 +1,4 @@
-<div class="newsletter text-center">
+<div class="newsletter js-newletter-block text-center">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 mb-3">
@@ -14,7 +14,7 @@
 
 
                 <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
-                <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
+                <input type="hidden" class="newsletter" id="newsletter-input" name="families[1]" value="1" >
                 <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
 				<!-- codi check terminos y condiciones -->
 				<div class="check_term box ">

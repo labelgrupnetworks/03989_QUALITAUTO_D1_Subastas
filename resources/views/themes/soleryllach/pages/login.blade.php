@@ -417,18 +417,6 @@
 											@endforeach
 										</div>
 									</ul>
-                                    {{-- <ul class="list_cat_home">
-                                            <div class="list_cat_home_block">
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="1">  {{trans(\Config::get('app.theme').'-app.foot.sellos_españa')}}</li>
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="3">  {{trans(\Config::get('app.theme').'-app.foot.libros_documentos')}}</li>
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="5"> {{trans(\Config::get('app.theme').'-app.foot.monedas_billetes')}}</li>
-                                            </div>
-                                            <div class="list_cat_home_block">
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="2">  {{trans(\Config::get('app.theme').'-app.foot.sellos')}}</li>
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="4">  {{trans(\Config::get('app.theme').'-app.foot.carteles')}}</li>
-                                                    <li><input type="checkbox"  class="newsletter" name="families[]" value="6">  {{trans(\Config::get('app.theme').'-app.foot.coleccionismo')}}</li>
-                                            </div>
-                                    </ul> --}}
 			<input type="hidden" name="newsletter" value="on">
             <div class="checkbox">
                 <input style="height:15px;width: 15px;"

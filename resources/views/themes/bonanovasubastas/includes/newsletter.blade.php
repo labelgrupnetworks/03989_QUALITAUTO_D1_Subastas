@@ -12,12 +12,12 @@
                     <div class="input-group">
                         <input class="form-control input-lg newsletter-input" type="text" placeholder="{{trans(\Config::get('app.theme').'-app.emails.write_email')}}">
                         <div class="input-group-btn">
-                            <input type="hidden" id="lang-newsletter" value="<?= strtoupper(\App::getLocale()) ?>" >                                                
-                            
+                            <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
+
                             <button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
                         </div>
                     </div>
-                </div>     
+                </div>
             </div>
         </div>
     </div>

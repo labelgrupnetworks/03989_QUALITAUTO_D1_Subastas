@@ -45,11 +45,24 @@
 
         <div class="info_single_content info_single_button">
             @if ($lote_actual->retirado_asigl0 == 'N' && empty($lote_actual->himp_csub) && ($lote_actual->subc_sub == 'S' || $lote_actual->subc_sub == 'A'))
-                <button data-from="modal" class="lot-action_comprar_lot btn btn-lg btn-custom" type="button"
-                    ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
-					<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}
-				</button>
+				@if (\Session::has('user'))
+					@php
+						$userController = new \App\Http\Controllers\UserController();
+						$ccAndCIFverif = $userController->getCreditCardAndCIFImages(\Session::get('user.cod'));
+					@endphp
+					@if ($userController->getCreditCardAndCIFImages(\Session::get('user.cod')))
+						<button data-from="modal" class="lot-action_comprar_lot btn btn-lg btn-custom" type="button"
+							ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							{{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}
+						</button>
+					@endif
+				@else
+					<button type="button" data-from="modal"
+						class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
+						type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+				@endif
             @endif
         </div>
 
@@ -70,6 +83,13 @@
         @include('includes.ficha.share')
 
     </div>
+	@if (\Session::has('user'))
+		@if (!$ccAndCIFverif)
+			<div class="col-xs-12">
+				<p class="color-red">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
+			</div>
+		@endif
+	@endif
     <div class="col-xs-12">
 		<p style="margin-top: 0.5rem; margin-bottom: 0">{{ trans("$theme-app.lot.amount_with_commission") }}</p>
         <div class="col-xs-12">

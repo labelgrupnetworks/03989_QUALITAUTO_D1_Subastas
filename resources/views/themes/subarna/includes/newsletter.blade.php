@@ -22,12 +22,11 @@
 				</div>
 				<div class="form-check mt-1">
 					<input
-						name="families[]"
-						value="1"
+						name="comercial"
 						type="checkbox"
-						id="bool__1__comercial"
+						id="comercial"
 						type="checkbox" class="form-check-input">
-					<label class="form-check-label" for="bool__1__comercial">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
+					<label class="form-check-label" for="comercial">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
 				</div>
 
                 <ul class="redes d-flex align-items-center justify-content-space-between mt-3">

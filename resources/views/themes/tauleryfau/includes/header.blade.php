@@ -163,10 +163,36 @@ function wpLink($code) {
                         href="{{ wpLink('wp_auctions') }}">{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}</a>
                 </li>
 
-                <li>
-                    <a
-                        href="{{ wpLink('wp_calendar') }}">{{ trans(\Config::get('app.theme') . '-app.services.calendar') }}</a>
+				<li>
+                    <a href="{{ wpLink('wp_calendar') }}">{{ trans(\Config::get('app.theme') . '-app.services.calendar') }}
+                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
+                    </a>
+
+					{{-- enlaces desplegables en escritorio --}}
+                    <div id="" class="menu_desp hidden-xs hidden-sm">
+                        <a href="{{ wpLink('wp_calendar') }}"
+                            class="color-letter flex-display link-header justify-center align-items-center"
+                            style="cursor: pointer;">{{ trans("$theme-app.subastas.next_auctions") }}</a>
+
+						<a href="{{ wpLink('wp_events') }}"
+                            class="color-letter flex-display link-header justify-center align-items-center"
+                            style="cursor: pointer;">{{ trans("$theme-app.foot.events") }}</a>
+                    </div>
                 </li>
+
+				{{-- enlaces desplegables en móvil --}}
+				<div id="" class="menu_desp-xs hidden-md hidden-lg">
+					<li>
+						<a href="{{ wpLink('wp_calendar') }}"
+						class="color-letter flex-display link-header justify-center align-items-center"
+						style="cursor: pointer;">{{ trans("$theme-app.subastas.next_auctions") }}</a>
+					</li>
+					<li>
+						<a href="{{ wpLink('wp_events') }}"
+						class="color-letter flex-display link-header justify-center align-items-center"
+						style="cursor: pointer;">{{ trans("$theme-app.foot.events") }}</a>
+					</li>
+				</div>
 
                 <li>
                     <a title="{{ trans(\Config::get('app.theme') . '-app.foot.how_to_sell') }}"
@@ -214,6 +240,37 @@ function wpLink($code) {
 						<a href="{{ wpLink('wp_coin_grading') }}"
                             class="color-letter flex-display link-header justify-center align-items-center"
                             style="cursor: pointer;">{{ trans("$theme-app.foot.coin_grading") }}</a>
+					</li>
+				</div>
+
+				<li>
+                    <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans(\Config::get('app.theme') . '-app.foot.onzas_macuquinas') }}
+                        <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
+                    </a>
+
+					{{-- enlaces desplegables en escritorio --}}
+                    <div id="" class="menu_desp hidden-xs hidden-sm">
+                        <a href="{{ wpLink('wp_onzas_macuquinas') }}"
+                            class="color-letter flex-display link-header justify-center align-items-center"
+                            style="cursor: pointer;">{{ trans("$theme-app.foot.database_online") }}</a>
+
+						<a href="{{ wpLink('wp_catalogue_pdf') }}"
+                            class="color-letter flex-display link-header justify-center align-items-center"
+                            style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
+                    </div>
+                </li>
+
+				{{-- enlaces desplegables en móvil --}}
+				<div id="" class="menu_desp-xs hidden-md hidden-lg">
+					<li>
+						<a href="{{ wpLink('wp_onzas_macuquinas') }}"
+						class="color-letter flex-display link-header justify-center align-items-center"
+						style="cursor: pointer;">{{ trans("$theme-app.foot.database_online") }}</a>
+					</li>
+					<li>
+						<a href="{{ wpLink('wp_catalogue_pdf') }}"
+                            class="color-letter flex-display link-header justify-center align-items-center"
+                            style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
 					</li>
 				</div>
 
