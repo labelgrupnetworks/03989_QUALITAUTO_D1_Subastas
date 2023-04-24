@@ -504,6 +504,7 @@ $lang =[
 	'msg_error' =>
 		array (
 			'already_added_to_fav' => 'Lot already added to Favorites ',
+			'add_to_fav' => 'No se ha podido añadir a favoritos',
 			'as_minimum' => 'As minimum',
 			'bid_scaling' => 'Only bids can be made following the escalation, which will be detailed in the "Terms and Conditions" section.',
 			'buying' => 'Could not buy the lot, please try again.',

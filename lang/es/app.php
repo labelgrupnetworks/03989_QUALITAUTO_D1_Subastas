@@ -529,6 +529,7 @@ $lang = [
 	'msg_error' =>
 	array(
 		'already_added_to_fav' => 'Lote ya añadido a favoritos',
+		'add_to_fav' => 'Failed to add lot to favorites',
 		'as_minimum' => 'como mínimo',
 		'bid_scaling' => 'Sólo pueden realizarse pujas siguiendo el escalado.',
 		'buying' => 'No se ha podido comprar el lote, por favor inténtelo de nuevo.',
