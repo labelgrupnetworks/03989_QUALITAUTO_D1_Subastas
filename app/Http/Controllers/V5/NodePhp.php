@@ -17,7 +17,7 @@ public function actionV2()
     {
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -74,7 +74,7 @@ public function actionV2()
 	{
 		#no comprobamos que sea admin, por que los usuarios tambien pueden borrar pujas y ya se revisa en la función cancelarPujaV2 si el usuario puede elimnar la puja o no tiene permiso
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -109,7 +109,7 @@ public function actionV2()
 
 		#no comprobamos que sea admin, por que los usuarios tambien pueden borrar pujas y ya se revisa en la función cancelarPujaV2 si el usuario puede elimnar la puja o no tiene permiso
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -143,7 +143,7 @@ public function actionV2()
 
 		#no comprobamos que sea admin, por que los usuarios tambien pueden borrar pujas y ya se revisa en la función cancelarPujaV2 si el usuario puede elimnar la puja o no tiene permiso
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -179,7 +179,7 @@ public function actionV2()
 	{
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -214,7 +214,7 @@ public function actionV2()
 
 	public function setStatusAuction(){
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -263,7 +263,7 @@ public function actionV2()
 
 	public function setMessageChat(){
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -299,7 +299,7 @@ public function actionV2()
 
 	public function deleteMessageChat(){
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -335,7 +335,7 @@ public function actionV2()
 	public function startCountDown(){
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -359,7 +359,7 @@ public function actionV2()
 	public function lotPause(){
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -389,7 +389,7 @@ public function actionV2()
 	public function jumpLot(){
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -421,7 +421,7 @@ public function actionV2()
 	public function fairWarning(){
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;
@@ -436,7 +436,7 @@ public function actionV2()
 	public function openBids(){
 
 		if (!Session::has('user')) {
-			$res = new Stdclass();
+			$res = new \Stdclass();
 			$res->status = "error";
 			$res->msg ="session_end" ;
 			return $res;

@@ -1194,8 +1194,8 @@ class Subasta extends Model
                                 AND ordenesLicitacion.HORA_ORLIC is not null
                                 ORDER BY ordenesLicitacion.HIMP_ORLIC DESC,
                                 TO_DATE(TO_CHAR(ordenesLicitacion.FEC_ORLIC, 'DD/MM/YY') || ' ' || ordenesLicitacion.HORA_ORLIC, 'DD/MM/YY HH24:MI:SS') ASC, LIN_ORLIC ASC";
-        $params = array('cod' => strtoupper($cod_sub), 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
-
+        $params = array('cod' => $cod_sub, 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
+	  
         /*\Log::error("CONSULTA ORDENES-->".$sql.' :: cod'. strtoupper($cod_sub). ' lote' .intval($this->ref) );*/
         $ordenesTmp = DB::select($sql,$params);
 	  	#debemos crear un array nuevo para que no haya huecos en el array, antes faltaba el elemento 0 y daba fallos
