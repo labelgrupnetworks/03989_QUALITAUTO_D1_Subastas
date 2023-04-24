@@ -11,6 +11,9 @@ $(document).ready(function () {
 		responsiveClass: true,
 	});
 
+	$('.panel-collapse').on('show.bs.collapse', showCloseButton);
+	$('.panel-collapse').on('hide.bs.collapse', showOpenButton);
+
 });
 
 function loadVideo(video) {
@@ -85,3 +88,15 @@ action_fav_modal = function(action) {
 $(function () {
 	$('[data-toggle="popover"]').popover()
 });
+
+function showCloseButton () {
+	var id = $(this).attr('id')
+	$('.label-close-' + id).show()
+	$('.label-open-' + id).hide()
+}
+function showOpenButton () {
+	var id = $(this).attr('id')
+	$('.label-close-' + id).hide()
+	$('.label-open-' + id).show()
+}
+

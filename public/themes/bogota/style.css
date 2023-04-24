@@ -202,3 +202,7 @@ color: #DDD;
 .auction-image img {
 	margin: auto;
 }
+
+.contenido-web img {
+	max-width: 100%;
+}

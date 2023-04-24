@@ -46,57 +46,6 @@ function seeLessInfo(){
 	$('.seeless').hide();
 }
 
-function sendNewsletterEmail(email, lang, entrar){
-	/* Sin checks no hace falta
-   if ($('#condiciones').prop("checked")) {
-	   entrar = true;
-   }
-   */
-   if (entrar) {
-	   $.ajax({
-		   type: "POST",
-		   data: {
-			   email: email,
-			   lang: lang,
-			   condiciones: 1,
-			   families: [1]
-		   },
-		   url: '/api-ajax/newsletter/add',
-		   beforeSend: function () { },
-		   success: function (msg) {
-			   if (msg.status == 'success') {
-				   gtag('event','Enviar',{'event_category':'Registro_Newsletter'});
-
-				   	var expires = new Date();
-					expires = new Date(9999, expires.getMonth(), expires.getDay());
-					localStorage.setItem('nextNewsletter', expires);
-
-				   $('.insert_msg').html(messages.success[msg.msg]);
-				   		$('#modalAjax').modal('hide');
-			   } else {
-				   $('.insert_msg').html(messages.error[msg.msg]);
-			   }
-			   $.magnificPopup.open({
-				   items: {
-					   src: '#newsletterModal'
-				   },
-				   type: 'inline'
-			   }, 0);
-		   }
-	   });
-   } else {
-	   $("#insert_msgweb").html('');
-	   $("#insert_msgweb").html(messages.neutral.accept_condiciones);
-	   $.magnificPopup.open({
-		   items: {
-			   src: '#modalMensajeWeb'
-		   },
-		   type: 'inline'
-	   }, 0);
-   }
-}
-
-
 function newsletterDay(){
 	// First check, if localStorage is supported.
 	if (window.localStorage) {
@@ -130,16 +79,7 @@ function newsletterDay(){
 		}
 	});
 
-	$('#modalAjax #newsletter-btn').on('click', function () {
-
-		var email = $('#modalAjax .newsletter-input').val();
-		var lang = $('#modalAjax #lang-newsletter').val();
-		var entrar = false;
-		if ($('#modalAjax #condiciones').prop("checked")) {
-			entrar = true;
-		}
-		sendNewsletterEmail(email, lang, entrar);
-	});
+	$('#modalAjax #newsletter-btn').on('click', newsletterSuscriptionFromModal);
 }
 
 function updateWalletInfo(event) {
@@ -926,18 +866,8 @@ $(document).ready(function () {
      * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
      * actualmente no utilizamos en la vista.
      */
-	$('#newsletter-btn').on('click', function () {
-
-
-		var email = $('.newsletter-input').val();
-		var lang = $('#lang-newsletter').val();
-		var entrar = false;
-
-	if ($('#condiciones').prop("checked")) {
-		entrar = true;
-	}
-		sendNewsletterEmail(email, lang, entrar);
-	});
+	$('#newsletter-btn').on('click', newsletterSuscription);
+	$('#newsletterForm').on('submit', newsletterFormSuscription);
 
 	$('#frmUpdateUserPasswordADV').validator().on('submit', function (e) {
 
@@ -2305,3 +2235,100 @@ function abrirNuevaVentana(parametros) {
    }*/
 
 })(jQuery);
+
+function newsletterSuscriptionFromModal(event) {
+	const email = $('#modalAjax .newsletter-input').val();
+	const lang = $('#modalAjax #lang-newsletter').val();
+
+	if (!$('#modalAjax #condiciones').prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const newsletters = {};
+	document.querySelectorAll("#modalAjax .js-newletter-block [name^=families]").forEach((element) => {
+		if(element.checked || element.type === "hidden") {
+			newsletters[`families[${element.value}]`] = '1';
+		}
+	});
+
+	const data = {
+		email,
+		lang,
+		condiciones: 1,
+		...newsletters
+	}
+
+	addNewsletter(data);
+}
+
+function newsletterSuscription (event) {
+	const email = $('.newsletter-input').val();
+	const lang = $('#lang-newsletter').val();
+
+	if (!$('#condiciones').prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const newsletters = {};
+	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
+		if(element.checked || element.type === "hidden") {
+			newsletters[`families[${element.value}]`] = '1';
+		}
+	});
+
+	const data = {
+		email,
+		lang,
+		condiciones: 1,
+		...newsletters
+	}
+
+	addNewsletter(data);
+}
+
+function newsletterFormSuscription(event) {
+	event.preventDefault();
+
+	if (!$("[name=condiciones]").prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+	const data = $(event.target).serialize();
+
+	addNewsletter(data);
+}
+
+function addNewsletter(data) {
+	$.ajax({
+		type: "POST",
+		data: data,
+		url: '/api-ajax/newsletter/add',
+		success: function (msg) {
+			if (msg.status == 'success') {
+				gtag('event','Enviar',{'event_category':'Registro_Newsletter'});
+
+				var expires = new Date();
+				expires = new Date(9999, expires.getMonth(), expires.getDay());
+				localStorage.setItem('nextNewsletter', expires);
+
+				$('.insert_msg').html(messages.success[msg.msg]);
+			} else {
+				$('.insert_msg').html(messages.error[msg.msg]);
+			}
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		},
+		error: function(error) {
+			$('.insert_msg').html(messages.error.message_500);
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		}
+	});
+}
+

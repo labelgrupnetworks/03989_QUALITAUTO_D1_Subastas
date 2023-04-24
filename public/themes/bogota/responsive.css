@@ -1,14 +1,19 @@
 @media (max-width: 1200px) {
 	.menu-principal {
-		background: #088484;
+		background: #000;
 	}
 
 	.menu-principal-content li a {
 		color: #FFF;
 	}
 
-	.menu-principal-content li .submenuDefault {
-		position: relative;
-		display: block;
+	.menu-principal-content li:hover .submenuDefault {
+		display: none;
 	}
+
+	.menu-principal-content li.active .submenuDefault {
+		display: block;
+		position: relative;
+	}
+
 }

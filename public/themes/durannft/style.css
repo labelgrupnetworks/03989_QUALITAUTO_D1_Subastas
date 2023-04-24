@@ -1497,3 +1497,8 @@ section.panel {
 .more-historic-bids a {
 color:#FFF;
 }
+
+.newsletters-page .list-group-item {
+	background-color: inherit;
+	accent-color: var(--links-color);
+}

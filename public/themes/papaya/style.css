@@ -5802,3 +5802,51 @@ section.blog-home > div.p-0.position-relative.content_art_container.container > 
 #multipleBidders :is(input[type=text], input[type=number]):focus + .input-group-addon {
 	border-color: #000;
 }
+
+.newsletters-page form input[type="checkbox"] {
+    position: initial;
+    top: initial;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: initial;
+	margin: initial;
+}
+
+.newsletters-page .button-principal {
+	height: auto;
+	padding: 10px 8px;
+	border-radius: initial;
+	float: right;
+}
+
+.newsletters-page .list-group-item {
+	margin-bottom: 10px;
+	border: initial;
+	border-bottom: 1px solid #ddd;
+}
+
+.newsletters-page .list-group-item:is(:first-child, :last-child) {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0
+}
+
+.newsletter_label {
+	max-width: 75%;
+}
+
+.newsletter-dialog {
+	border: 0;
+	margin: auto;
+	padding: 2rem 3rem;
+}
+
+.dialog-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.3);
+}

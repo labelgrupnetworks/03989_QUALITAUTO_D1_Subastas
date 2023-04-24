@@ -184,12 +184,13 @@ p {
 
 
 
-
-
 .item_lot{
 	min-height: 450px;
 }
 
+.item_lot .salida-time{
+	padding: 2px 0px 10px 0px;
+}
 
 .btn-bid-lotlist {
 	background: var(--btn-primary-background);
@@ -207,6 +208,7 @@ p {
 }
 
 .my-account .logo-company {
+	width: 25px;
 	filter: hue-rotate(138deg) saturate(65) brightness(0.45);
 }
 
@@ -359,7 +361,7 @@ p {
 	color: #444;
 }
 
-.featured-log-bnr .item_imagen {
+.featured-log-bnr .item_texto {
 	width: 100% !important;
 }
 
@@ -713,7 +715,7 @@ footer {
 .title_iframe_catalogo {
 	margin-top: 40px;
 	text-align: center;
-	
+
 }
 
 .div_iframe_catalogo {

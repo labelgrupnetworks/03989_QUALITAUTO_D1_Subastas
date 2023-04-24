@@ -546,53 +546,8 @@ $('#button-open-user-menu').click(function() {
 
     });
 
-    $('#newsletter-btn').on('click', function () {
-
-        var email = $('.newsletter-input').val();
-        var error = false;
-        var message = "";
-
-        if (!$('#form-newsletter #bool__1__condiciones').prop("checked")) {
-            error = true;
-            message = message + messages.neutral.accept_condiciones + ". ";
-        }
-
-        if (!comprueba_email(email,1)) {
-            error = true;
-            message = message + messages.error.email_invalid + ". ";
-        }
-
-        $("#form-newsletter .g-recaptcha").find("iframe").removeClass("has-error");
-        response = $("#g-recaptcha-response").val();
-        response2 = $("#g-recaptcha-response-1").val(); // Esto está para cuando existen 2 repatchas. Ej: Contactar
-
-        if (!response && !response2) {
-            error = true;
-            message = message + messages.error.recaptcha_incorrect + ". ";
-        }
-
-        if (!error) {
-            $.ajax({
-                type: "POST",
-                data: $("#form-newsletter").serialize(),
-                url: '/api-ajax/newsletter/add',
-                beforeSend: function () {
-                },
-                success: function (msg) {
-                    if (msg.status == 'success') {
-                        $('.insert_msg').html(messages.success[msg.msg]);
-                    } else {
-                        $('.insert_msg').html(messages.error[msg.msg]);
-                    }
-                    $.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
-                }
-            });
-        } else {
-            $("#insert_msgweb").html('');
-            $("#insert_msgweb").html(message);
-            $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-        }
-    });
+	$('#newsletter-btn').on('click', newsletterSuscription);
+	$('#newsletterForm').on('submit', newsletterFormSuscription);
 
     $('#frmUpdateUserPasswordADV').validator().on('submit', function (e) {
 
@@ -1634,7 +1589,81 @@ function sendCatalogoContact() {
 
 }
 
+function newsletterSuscription (event) {
+	const email = $('.newsletter-input').val();
+	const lang = $('#lang-newsletter').val();
 
+	if (!comprueba_email(email, 1)) {
+		$("#insert_msgweb").html(messages.error.email_invalid);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	if (!$('.js-newletter-block [name=condiciones]').prop("checked")) {
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	$("#form-newsletter .g-recaptcha").find("iframe").removeClass("has-error");
+	const response = $("#g-recaptcha-response").val();
+	const response2 = $("#g-recaptcha-response-1").val(); // Esto está para cuando existen 2 repatchas. Ej: Contactar
+	if (!response && !response2) {
+		$("#insert_msgweb").html(messages.error.recaptcha_incorrect);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const newsletters = {};
+	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
+		if(element.checked) {
+			newsletters[`families[${element.value}]`] = '1';
+		}
+	});
+
+	const data = {
+		email,
+		lang,
+		condiciones: 1,
+		...newsletters
+	}
+
+	addNewsletter(data);
+}
+
+function newsletterFormSuscription(event) {
+	event.preventDefault();
+
+	if (!$("[name=condiciones]").prop("checked")) {
+		$("#insert_msgweb").html('');
+		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+	const data = $(event.target).serialize();
+
+	addNewsletter(data);
+}
+
+function addNewsletter(data) {
+	$.ajax({
+		type: "POST",
+		data: data,
+		url: '/api-ajax/newsletter/add',
+		success: function (msg) {
+			if (msg.status == 'success') {
+				$('.insert_msg').html(messages.success[msg.msg]);
+			} else {
+				$('.insert_msg').html(messages.error[msg.msg]);
+			}
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		},
+		error: function(error) {
+			$('.insert_msg').html(messages.error.message_500);
+			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+		}
+	});
+}
 
 
 

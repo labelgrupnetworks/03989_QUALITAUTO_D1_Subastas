@@ -8,6 +8,15 @@ body {
     overflow-x: hidden;
 }
 
+.flex-column {
+	flex-direction: column;
+}
+
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 p spam{
     font-size:13px;
 }
@@ -2204,9 +2213,7 @@ td span input.form-control{
 }
 
 
-.technique_material,
-.model,
-.desc_lot p{
+:not(h1) > :is(.technique_material, .model, .desc_lot p) {
     font-size: 13px;
 }
 
@@ -3457,4 +3464,95 @@ iframe.has-error{
 
 .modal-comision h4 {
 	font-size: 20px;
+}
+
+.slick-slide img {
+	width: 100%;
+	height: auto;
+}
+
+.newsletters-page form input[type="checkbox"] {
+    position: initial;
+    top: initial;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: initial;
+	margin: initial;
+}
+
+.newsletters-page .button-principal {
+	height: auto;
+	padding: 10px 8px;
+	border-radius: initial;
+	float: right;
+}
+
+.newsletters-page .list-group-item {
+	margin-bottom: 10px;
+	border: initial;
+	border-bottom: 1px solid #ddd;
+}
+
+.newsletters-page .list-group-item:is(:first-child, :last-child) {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0
+}
+
+.newsletter_label {
+	max-width: 75%;
+}
+
+.newsletter-dialog {
+	border: 0;
+	margin: auto;
+	padding: 2rem 3rem;
+}
+
+.dialog-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.card-expired-panel-container {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+}
+
+.panel-card-expired-month {
+	padding-right: 0px;
+}
+.panel-card-expired-month .form-control {
+	border-radius: 0px;
+	border-right: 0px;
+	-moz-appearance: textfield;
+}
+
+.panel-card-expired-year {
+	border-radius: 0px;
+	padding-left: 0px;
+}
+.panel-card-expired-year .form-control {
+	border-radius: 0px;
+	border-left: 0px;
+	-moz-appearance: textfield;
+}
+
+.panel-card-expired-separator {
+	padding: 0px;
+}
+.panel-card-expired-separator .form-control {
+	border-left: 0px;
+	border-right: 0px;
+	border-radius: 0px;
+}
+
+.color-red {
+	color: red;
 }
