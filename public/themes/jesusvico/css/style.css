@@ -862,6 +862,12 @@ section.ficha-pujas {
 	font-weight: var(--font-extra-light);
 }
 
+.ficha-description .provenance {
+	color: var(--lb-color-gray);
+	font-weight: var(--font-extra-light);
+	font-style: italic;
+}
+
 .description .long-description {
 	--max-lines: 6;
 }
