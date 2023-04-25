@@ -1312,3 +1312,8 @@ function createWallet(event) {
 function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
 }
+
+// En la version dos este metodo no aplica, y se llama desde common.js
+ajax_shipping = function(cod_ship, lang) {
+	return true;
+}

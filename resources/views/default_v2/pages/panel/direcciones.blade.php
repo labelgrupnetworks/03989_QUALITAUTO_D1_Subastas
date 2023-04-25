@@ -145,10 +145,12 @@
                                 <input id="cod_delete" name="cod" type="hidden" value="">
                                 <input id="lang" name="lang" type="hidden"
                                     value="<?= Config::get('app.locale') ?>">
-                                <button
-                                    class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans("$theme-app.lot.accept") }}</button>
 
                             </div>
+							<div class="modal-footer">
+								<button
+                                    class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans("$theme-app.lot.accept") }}</button>
+							</div>
                         </div>
                     </div>
                 </section>
