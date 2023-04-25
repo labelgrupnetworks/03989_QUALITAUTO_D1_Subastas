@@ -1330,6 +1330,7 @@ $(function () {
 
 			$('#bid_amount').val(auction_info.lote_actual.importe_escalado_siguiente);
 			$('#next_bid_JS').html(format_thousand(auction_info.lote_actual.importe_escalado_siguiente));
+			$('.add_next-bid #value-view').html(format_thousand(auction_info.lote_actual.importe_escalado_siguiente) + " " + auction_info.subasta.currency.symbol);
 
             //funcion customizada
             if (typeof actualize_currency === 'function') {
@@ -2388,7 +2389,7 @@ $(function () {
 				}
 			}
 		});
-		
+
 	};
 
     $('.confirm_puja').on('click', function (e) {
