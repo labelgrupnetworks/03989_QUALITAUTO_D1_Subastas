@@ -1,1 +1,0 @@
-{{$emailOptions['content']}}
