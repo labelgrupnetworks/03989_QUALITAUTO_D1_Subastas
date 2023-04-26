@@ -1,9 +1,0 @@
-
-#registerForm .tipo_usuario div.selected {border-top: 5px solid #c09715 !important;}
-#registerForm .tipo_sexo div.selected {border-top: 5px solid #c09715 !important;}
-
-#registerForm .idioma {display: block !important}
-
-.eye-password {position: absolute;right:10px;top:34px;cursor:pointer;}
-#registerForm .submitButton {padding:8px 84px;font-size:16px;text-transform:capitalize;}
-#registerForm .has-error {border:#C00 1px solid;}
