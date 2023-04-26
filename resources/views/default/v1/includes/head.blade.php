@@ -61,13 +61,11 @@ header("X-Frame-Options:     DENY");
 @endif
 
 <!-- Global Packages -->
-{{-- <link rel="stylesheet" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}"> --}}
 
 {!! Tools::preloadStylesheets("vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css", true) !!}
 {!! Tools::preloadStylesheets("/css/owl.carousel.min.css", false) !!}
 
-{{-- <link rel="stylesheet" href="/css/owl.carousel.min.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="/css/owl.carousel.min.css"></noscript> --}}
+
 <link rel="stylesheet" href="/css/owl.theme.default.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/css/owl.theme.default.min.css"></noscript>
 <link rel="stylesheet" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" media="print" onload="this.media='all'">
@@ -173,7 +171,3 @@ header("X-Frame-Options:     DENY");
 
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->

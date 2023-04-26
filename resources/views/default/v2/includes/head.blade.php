@@ -83,10 +83,10 @@ header("X-Frame-Options:     DENY");
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
 
 <!-- Overwritable files -->
-<link href="{{ Tools::urlAssetsCache('/default_v2/css/style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ Tools::urlAssetsCache(public_default_path('css/style.css')) }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/css/style.css') }}" rel="stylesheet" type="text/css">
 
-<link href="{{ Tools::urlAssetsCache('/default_v2/css/banners.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ Tools::urlAssetsCache(public_default_path('css/banners.css')) }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/banners.css') }}" rel="stylesheet" type="text/css">
 
 @stack('stylesheets')
@@ -127,7 +127,7 @@ header("X-Frame-Options:     DENY");
 
 <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
 
-<script src="{{ Tools::urlAssetsCache('/default_v2/js/customized_tr_main.js') }}" ></script>
+<script src="{{ Tools::urlAssetsCache(public_default_path('js/customized_tr_main.js')) }}" ></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
 
 <script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
@@ -136,9 +136,9 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/jquery.ui.touch-punch.min.js') }}"></script>
 
-<script src="{{ Tools::urlAssetsCache('/default_v2/js/custom.js') }}"></script>
+<script src="{{ Tools::urlAssetsCache(public_default_path('js/custom.js')) }}"></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/default_v2/js/shopping_cart.js') }}" ></script>
+<script src="{{ Tools::urlAssetsCache(public_default_path('js/shopping_cart.js')) }}" ></script>
 
 <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
 {{-- <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script> --}}

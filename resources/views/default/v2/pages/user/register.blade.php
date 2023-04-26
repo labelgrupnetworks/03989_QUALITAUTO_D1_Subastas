@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @push('scripts')
-    <script defer src="{{ Tools::urlAssetsCache('/default_v2/js/register.js') }}"></script>
+    <script defer src="{{ Tools::urlAssetsCache(public_default_path('js/register.js')) }}"></script>
 @endpush
 
 @section('title')

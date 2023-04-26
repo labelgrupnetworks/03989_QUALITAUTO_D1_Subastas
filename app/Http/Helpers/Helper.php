@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 /*
@@ -62,6 +63,14 @@ if (!function_exists('trim_explode')) {
 	function trim_explode($delimiter, $string)
 	{
 		return array_map('trim', explode($delimiter, $string));
+	}
+}
+
+if(!function_exists('public_default_path')){
+	function public_default_path($path = "")
+	{
+		$version = Config::get('app.default_version');
+		return $path ? "default/$version/$path" : "default/$version";
 	}
 }
 

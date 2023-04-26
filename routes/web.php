@@ -23,8 +23,7 @@ Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController
 # Nombres de espacios
 View::addNamespace('front', [
 	resource_path('/views/themes/' . App('config')['app']['theme']),
-	//resource_path('/views/default'),
-	resource_path('/views/' . App('config')['app']['default_theme']),
+	resource_path('/views/default/' . App('config')['app']['default_version']),
 ]);
 View::addNamespace('admin', realpath(base_path('resources/views/admin/' . Config::get('app.admin_theme'))));
 

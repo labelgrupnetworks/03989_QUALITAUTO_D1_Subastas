@@ -7,7 +7,6 @@
 | - default: Tema por defecto.
 | - default_v2:
 */
-
 return [
 
     /*
@@ -24,9 +23,8 @@ return [
 
 
     'paths' => [
-        //resource_path('views'),
         resource_path('/views/themes/'.App('config')['app']['theme']),
-		resource_path('/views/'.App('config')['app']['default_theme']),
+		resource_path('/views/default/'.App('config')['app']['default_version']),
     ],
 
     /*

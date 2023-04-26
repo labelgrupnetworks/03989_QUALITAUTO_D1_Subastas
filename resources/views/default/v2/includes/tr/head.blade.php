@@ -25,10 +25,10 @@
 <link rel="stylesheet" type="text/css" href={{ URL::asset("/vendor/slick/slick-theme.css") }} />
 
 @if ($isAdmin)
-    <link href="{{ Tools::urlAssetsCache('/default_v2/css/tiempo-real-admin.css') }}" rel="stylesheet" />
+    <link href="{{ Tools::urlAssetsCache(public_default_path('css/tiempo-real-admin.css')) }}" rel="stylesheet" />
     <link href="{{ Tools::urlAssetsCache("/themes/$theme/tiempo-real-admin.css") }}" rel="stylesheet" />
 @else
-    <link href="{{ Tools::urlAssetsCache('/default_v2/css/tiempo-real-user.css') }}" rel="stylesheet" />
+    <link href="{{ Tools::urlAssetsCache(public_default_path('css/tiempo-real-user.css')) }}" rel="stylesheet" />
     <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/tiempo-real-user.css") }}" rel="stylesheet" />
 @endif
 
@@ -87,7 +87,7 @@
 @endif
 
 <script src="{{ Tools::urlAssetsCache('/vendor/tiempo-real/tr_main.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/default_v2/js/customized_tr_main.js') }}"></script>
+<script src="{{ Tools::urlAssetsCache(public_default_path('js/customized_tr_main.js')) }}"></script>
 <script src="{{ Tools::urlAssetsCache("/themes/$theme/js/customized_tr_main.js") }}"></script>
 
 <script src="{{ URL::asset('js/hmac-sha256.js') }}"></script>
@@ -114,7 +114,7 @@
 
 {{-- solamente si utilizamos componentes de react --}}
 {{-- @if(!$isAdmin)
-<script defer src="{{ URL::asset('/default_v2/js/manifest.js') }}"></script>
-<script defer src="{{ URL::asset('/default_v2/js/vendor.js') }}"></script>
-<script defer src="{{ URL::asset('/default_v2/js/TiempoRealComponents.js') }}"></script>
+<script defer src="{{ URL::asset(public_default_path('js/manifest.js')) }}"></script>
+<script defer src="{{ URL::asset(public_default_path('js/vendor.js')) }}"></script>
+<script defer src="{{ URL::asset(public_default_path('js/TiempoRealComponents.js')) }}"></script>
 @endif --}}
