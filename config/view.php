@@ -24,7 +24,7 @@ return [
 
     'paths' => [
         resource_path('/views/themes/'.App('config')['app']['theme']),
-		resource_path('/views/default/'.App('config')['app']['default_version']),
+		resource_path('/views/default/'.App('config')['app']['default_theme']),
     ],
 
     /*

@@ -69,7 +69,7 @@ if (!function_exists('trim_explode')) {
 if(!function_exists('public_default_path')){
 	function public_default_path($path = "")
 	{
-		$version = Config::get('app.default_version');
+		$version = Config::get('app.default_theme');
 		return $path ? "default/$version/$path" : "default/$version";
 	}
 }

@@ -14,8 +14,7 @@ return [
     |
     */
     'theme' => env('APP_THEME', 'demo'),
-	'default_theme' => env('APP_DEFAULT_THEME', 'default'),
-	'default_version' => env('DEFAULT_VERSION', 'v1'),
+	'default_theme' => env('APP_DEFAULT_THEME', 'v1'),
 	'locales' => array_combine($localesKeys, $localesValues),
     'language_complete' => ['es' => 'es-ES', 'de' => 'de-DE', 'en' => 'en-GB', 'fr' => 'fr-FR', 'pt' => 'pt-PT', 'ru' => 'ru-RU', 'ca' => 'ca-CA'],
     'emp'   => env('APP_EMP', '001'),
