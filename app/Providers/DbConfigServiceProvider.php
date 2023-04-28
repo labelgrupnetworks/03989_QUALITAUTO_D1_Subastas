@@ -36,13 +36,13 @@ class DbConfigServiceProvider extends ServiceProvider
             Config::set('app.'.$value->key.'', $value->value);
         }
 
-		#Futuver quiere que se pueda cambiar el password del correo
-		/*
-		if(!empty(\Config::get('app.mail_password'))){
-			Config::set('mail.password', \Config::get('app.mail_password'));
-		}
-		*/
-		
+		#añadimos ahora la ruta de default así se puede definir por base de datos
+		$default = [resource_path('/views/default/'.\Config::get('app.default_theme'))];
+
+		Config::set('view.paths',array_merge( \Config::get('view.paths'), $default));
+
+
+
     }
 
     public static function slug($name)

@@ -7,6 +7,8 @@
 | - default: Tema por defecto.
 | - default_v2:
 */
+
+
 return [
 
     /*
@@ -21,10 +23,9 @@ return [
     */
 
 
-
+# el path de default se carga en DbConfigServiceProvider
     'paths' => [
-        resource_path('/views/themes/'.App('config')['app']['theme']),
-		resource_path('/views/default/'.App('config')['app']['default_theme']),
+        resource_path('/views/themes/'.App('config')['app']['theme'])
     ],
 
     /*
