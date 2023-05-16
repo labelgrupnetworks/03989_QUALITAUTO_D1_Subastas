@@ -1200,7 +1200,7 @@ class Subasta extends Model
                                 ORDER BY ordenesLicitacion.HIMP_ORLIC DESC,
                                 TO_DATE(TO_CHAR(ordenesLicitacion.FEC_ORLIC, 'DD/MM/YY') || ' ' || ordenesLicitacion.HORA_ORLIC, 'DD/MM/YY HH24:MI:SS') ASC, LIN_ORLIC ASC";
         $params = array('cod' => $cod_sub, 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
-	  
+
         /*\Log::error("CONSULTA ORDENES-->".$sql.' :: cod'. strtoupper($cod_sub). ' lote' .intval($this->ref) );*/
         $ordenesTmp = DB::select($sql,$params);
 	  	#debemos crear un array nuevo para que no haya huecos en el array, antes faltaba el elemento 0 y daba fallos
@@ -3560,18 +3560,15 @@ class Subasta extends Model
 
     public function getLoteVideos($lote)
     {
-        if(empty($_SERVER['APP_URL'])){
-            return;
-		}
 		$customPathVideos = Config::get('app.custom_path_video', '');
 
 		if(!empty($customPathVideos)){
-			$ruta_carpeta = $_SERVER['DOCUMENT_ROOT']."/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/";
-			$ruta_http = $_SERVER['APP_URL']."/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/";
+			$ruta_carpeta = public_path("/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/");
+			$ruta_http = config('app.url')."/$customPathVideos/$lote->num_hces1/$lote->lin_hces1/";
 		}
 		else{
-			$ruta_carpeta = $_SERVER['DOCUMENT_ROOT'].'/files/videos/'.Config::get('app.emp')."/$lote->num_hces1/$lote->lin_hces1/";
-			$ruta_http = $_SERVER['APP_URL'].'/files/videos/'.Config::get('app.emp')."/$lote->num_hces1/$lote->lin_hces1/";
+			$ruta_carpeta = public_path('/files/videos/'.Config::get('app.emp')."/$lote->num_hces1/$lote->lin_hces1/");
+			$ruta_http = config('app.url').'/files/videos/'.Config::get('app.emp')."/$lote->num_hces1/$lote->lin_hces1/";
 		}
 
         $videos = array();
