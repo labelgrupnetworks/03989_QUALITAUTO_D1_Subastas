@@ -516,7 +516,7 @@ class PayShoppingCartController extends Controller
 		$email->setUserByCod($transaccion->cli_paycart, true);
 		$email->setPrice($total);
 		$email->setAtribute('HTML', $html);
-		//$email->setBcc(config('app.admin_email_administracion'));
+		$email->setBcc(config('app.admin_email_administracion'));
 		$email->send_email();
 
 		return true;
