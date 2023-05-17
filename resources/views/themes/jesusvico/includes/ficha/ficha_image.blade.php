@@ -156,7 +156,7 @@
                     @if ($resource['format'] == 'GIF')
                         <img src="{{ $resource['src'] }}" alt="{{ $lote_actual->titulo_hces1 }}">
                     @elseif($resource['format'] == 'VIDEO')
-                        <img src="{{ asset('/img/icons/video_thumb.png') }}" alt="{{ $lote_actual->titulo_hces1 }}">
+                        <img src="{{ asset("/themes/$theme/assets/icons/video_thumb.png") }}" alt="{{ $lote_actual->titulo_hces1 }}">
                     @endif
                 </button>
             </div>

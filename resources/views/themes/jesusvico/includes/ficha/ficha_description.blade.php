@@ -11,16 +11,17 @@
         <h1 class="h4 no-decoration fw-light">{{ $lote_actual->descweb_hces1 }}</h1>
     </div>
     <div class="long-description text-lb-gray max-lines with-scroll lb-scroll">
-        <p class="fw-lighter">
+        <div class="fw-lighter mb-4">
             {!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}
-        </p>
-    </div>
+        </div>
 
-    @if (!empty($lote_actual->descdet_hces1))
-        <p class="provenance">
-            {{ $lote_actual->descdet_hces1 }}
-        </p>
-    @endif
+		@if (!empty($lote_actual->descdet_hces1))
+			<div class="provenance">
+				{!! $lote_actual->descdet_hces1 !!}
+			</div>
+    	@endif
+
+    </div>
 </div>
 
 
