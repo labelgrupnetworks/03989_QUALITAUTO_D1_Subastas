@@ -1,5 +1,11 @@
 @php
 	$shouldShowCountdown = !empty($auction) && $auction->tipo_sub != 'V';
+
+	if (!empty($lots)) {
+		$isTiendaOnline = $lots[0]->id_auc_sessions == 1581 || $lots[0]->id_auc_sessions == 1582;
+	} else {
+		$isTiendaOnline = false;
+	}
 @endphp
 
 <div class="filters-auction-content">
@@ -36,11 +42,15 @@
 
 				@include('includes.grid.search_list')
 
+				@if($isTiendaOnline)
+					@include('includes.grid.online_store_list')
+				@endif
+
 				@include('includes.grid.categories_list')
 
 				@include('includes.grid.features_list')
 
-				@if(Session::has('user'))
+				@if(Session::has('user') && !$isTiendaOnline)
 					@include('includes.grid.filter_my_lots')
 				@endif
 
