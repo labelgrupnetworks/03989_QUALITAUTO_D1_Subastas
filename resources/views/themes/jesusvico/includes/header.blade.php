@@ -143,6 +143,7 @@ $pageName = Route::currentRouteName();
 					<li class="nav-item dropdown">
 						@if(!Session::has('user'))
 						<button class="btn border-0 btn_login">
+							<span>{{ trans("$theme-app.global.header_login") }}</span>
 							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
 								<defs>
 								  <clipPath id="clip-path">
