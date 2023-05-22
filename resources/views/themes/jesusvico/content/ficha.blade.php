@@ -26,6 +26,8 @@ $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
+$isTiendaOnline = $lote_actual->id_auc_sessions == 1581 || $lote_actual->id_auc_sessions == 1582;
+
 $sec =  New App\Models\V5\FxSec();
 $sec = $sec->select('des_sec')->joinFgOrtsecFxSec()->where('COD_SEC', mb_strtoupper($lote_actual->sec_hces1))->first();
 
