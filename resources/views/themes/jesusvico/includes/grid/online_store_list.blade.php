@@ -58,26 +58,6 @@
 				<label for="tienda_material">{{ trans("$theme-app.subastas.tienda-material") }}</label>
 			</div>
 
-			{{-- <div class="row">
-				<div class="col-12 col-sm-6">
-					<a class="page-link d-flex align-items-center justify-content-center text-center mt-2 mb-1"
-						href="{{ trans("$theme-app.links.tienda-numismatica") }}">{{ trans("$theme-app.subastas.tienda-numismatica") }}</a>
-				</div>
-				<div class="col-12 col-sm-6">
-					<a class="page-link d-flex align-items-center justify-content-center text-center mt-2 mb-1"
-						href="{{ trans("$theme-app.links.tienda-arqueologia") }}">{{ trans("$theme-app.subastas.tienda-arqueologia") }}</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12 col-sm-6">
-					<a class="page-link d-flex align-items-center justify-content-center text-center mt-1 mb-2"
-						href="{{ trans("$theme-app.links.tienda-libreria") }}">{{ trans("$theme-app.subastas.tienda-libreria") }}</a>
-				</div>
-				<div class="col-12 col-sm-6">
-					<a class="page-link d-flex align-items-center justify-content-center text-center mt-1 mb-2"
-						href="{{ trans("$theme-app.links.tienda-material") }}">{{ trans("$theme-app.subastas.tienda-material") }}</a>
-				</div>
-			</div> --}}
 		</div>
 
 
