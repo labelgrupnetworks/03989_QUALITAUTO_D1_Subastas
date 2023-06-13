@@ -17,6 +17,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
 	# Lista de Favoritos
+	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');
 	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos')->name('panel.favorites');
 	Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
 

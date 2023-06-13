@@ -201,6 +201,7 @@ Route::get('api-ajax/get_lote/{lang}/{cod}/{id_auc_sessions}/{ref}/{order}/{sear
 
 Route::get('api-ajax/calculate_bids/{actual_bid}/{new_bid}', 'SubastaTiempoRealController@calculateAvailableBids')->where(array('actual_bid' => '[0-9]+', 'new_bid' => '[0-9]+',));
 Route::get('api-ajax/favorites/{action}', 'SubastaController@favorites')->where(array('action' => '[a-zA-Z]+'));
+Route::get('api-ajax/favorites-new/{action}', 'SubastaController@favoritesNew')->where(array('action' => '[a-zA-Z]+'));
 Route::post('api-ajax/set_licit_lot', 'SubastaTiempoRealController@setLicitLot');
 Route::post('api-ajax/activate_next', 'SubastaTiempoRealController@ActiveNext');
 Route::post('api-ajax/jump_lots', 'SubastaTiempoRealController@jumpLots');
@@ -326,6 +327,8 @@ Route::get('/delivery/getshipmentsrates', 'DeliveryController@getShipmentsRates'
 Route::get('/delivery/newshipment', 'DeliveryController@newShipment');
 
 //TPV
+
+Route::post('/response_redsys_multi_tpv/{tpvCode}', 'PaymentsController@responseRedsysMultiTpv');
 Route::post('/gateway/{function}', 'PaymentsController@index');
 Route::get('/gateway/returnPayPage', 'PaymentsController@returnPayPage');
 Route::get('/sermepa/peticion.php', 'PaymentsController@pagoDirecto');
@@ -656,6 +659,10 @@ Route::get("/{lang}/newsletter-migrate", "NewsletterController@migrateNewsletter
 Route::get("/{lang}/newsletter-mailchimp-export", "NewsletterController@mailchimpExportCsv");
 
 
+/* SIMULACIÓN DE ENDPOINT DE PUSH */
+Route::get("/send_push", "V5\AppPushController@pushTestSender");
+Route::get("api-ajax/push_app", "V5\AppPushController@pushTestEndPoint");
+Route::post("api-ajax/push_app", "V5\AppPushController@pushTestEndPoint");
 #Funciones nuevas de los  sockets en PHP
 Route::post("/phpsock/actionv2","V5\NodePhp@actionV2");
 Route::post("/phpsock/cancelarbid","V5\NodePhp@cancelarBid");
@@ -672,13 +679,17 @@ Route::post("/phpsock/jump_lot","V5\NodePhp@jumpLot");
 Route::post("/phpsock/open_bids","V5\NodePhp@openBids");
 Route::post("/phpsock/cancelar_orden_user","V5\NodePhp@cancelarOrdenUser");
 
+Route::get("/lot-qr-generate", "CustomControllers@lotQRGenerator")->name('lotQRGenerator');
+
+/* Depositos */
+Route::post("deposit/pay", "V5\DepositController@createPayment")->name("payDeposit");
+Route::get('/deposit/callRedsys', 'V5\DepositController@callRedsys')->name("depositCallRedsys");
+#direccion donde respondera redsys para que el usuario vea que se ha realizado el pago del deposito correctamente y luego redirigiendo al lote
+Route::get('/{lang}/returnPayPageDeposit/{codSub}/{ref}', 'V5\DepositController@returnPayPageDeposit')->name("returnPayPageDeposit");
 
 
 
-
-
-
-
+//responseRedsysMultiTpv
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
