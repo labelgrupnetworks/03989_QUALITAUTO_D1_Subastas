@@ -24,7 +24,6 @@
         <div class="container">
             <h2 class="h1 mb-4">Remates destacados</h2>
             <div class="lotes_destacados">
-                <div class="loader"></div>
                 <div class="carrousel-wrapper" id="ventas_destacadas"></div>
             </div>
         </div>
