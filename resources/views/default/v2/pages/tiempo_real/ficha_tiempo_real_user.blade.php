@@ -43,10 +43,8 @@
                 ->where('auc."reference"', $data['subasta_info']->reference)
                 ->where('RETIRADO_ASIGL0', 'N')
                 ->where('OCULTO_ASIGL0', 'N')
+				->orderby("nvl(orden_hces1, ref_hces1), nvl(orden_hces1, 99999999999)")
                 ->get();
-
-
-
     @endphp
 
     <script>
