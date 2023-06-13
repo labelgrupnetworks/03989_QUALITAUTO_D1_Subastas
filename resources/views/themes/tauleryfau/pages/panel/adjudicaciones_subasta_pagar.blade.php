@@ -274,7 +274,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
                                     $url_friendly = \Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
                                     $precio_remapte = $inf_lot->himp_csub;
                                     $precio_limpio = \Tools::moneyFormat($inf_lot->base_csub,false,2);
-                                    $comision = $inf_lot->base_csub + $inf_lot->base_csub_iva;
+                                    $comision = $inf_lot->base_csub;
 
                                     $precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
                                     $calc_envio = number_format($inf_lot->himp_csub + $inf_lot->base_csub, 2, '.', '');
@@ -283,7 +283,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
                                     //Calculo total
                                     $total_remate = $total_remate + $inf_lot->himp_csub;
                                     $total_base = $total_base + $inf_lot->base_csub;
-									$total_iva = $total_iva + $inf_lot->base_csub_iva;
+									//$total_iva = $total_iva + $inf_lot->base_csub_iva;
 									$total_licencia_exportacion += $inf_lot->licencia_exportacion;
                                 ?>
 
@@ -376,6 +376,10 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 								<!-- /Lotes en vista desktop-->
 								<?php $i++ ?>
 								@endforeach
+								@php
+								 	$iva = $data["js_item"]["iva"];
+									$total_iva = $total_base * ($iva /100);
+								@endphp
 								@if($data['user']->envcorr_cli != 'B')
 								<div class="adj adj-panel-wrapper">
 

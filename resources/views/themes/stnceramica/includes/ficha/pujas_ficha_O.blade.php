@@ -151,65 +151,92 @@
 
 
     @if ($start_session || $subasta_abierta_P)
-        <div class="insert-bid-input col-xs-12 d-flex justify-content-center flex-column pt-1 pb-1">
 
-            @if (Session::has('user') && Session::get('user.admin'))
-                <div class="d-block w-100">
-                    <input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value=""
-                        type="text" style="border: 1px solid red;" placeholder="Código de licitador">
-                    @if ($subasta_abierta_P)
-                        <input type="hidden" id="tipo_puja_gestor" value="abiertaP">
-                    @endif
-                </div>
-            @endif
+		@if($deposito)
+			<div class="insert-bid-input col-xs-12 d-flex justify-content-center flex-column pt-1 pb-1">
+
+				@if (Session::has('user') && Session::get('user.admin'))
+					<div class="d-block w-100">
+						<input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value=""
+							type="text" style="border: 1px solid red;" placeholder="Código de licitador">
+						@if ($subasta_abierta_P)
+							<input type="hidden" id="tipo_puja_gestor" value="abiertaP">
+						@endif
+					</div>
+				@endif
 
 
-            <div class="input-group d-block group-pujar-custom ">
-                <div>
-                    <div class="insert-bid insert-max-bid mb-1">
-                        <p class="mt-1 mb-0">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}
-                        </p>
-                        <div
-                            class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima']) ? '' : 'hidden' ?> ">
-                            {{ trans(\Config::get('app.theme') . '-app.lot.max_puja') }}
-                            <strong>
+				<div class="input-group d-block group-pujar-custom ">
+					<div>
+						<div class="insert-bid insert-max-bid mb-1">
+							<p class="mt-1 mb-0">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}
+							</p>
+							<div
+								class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima']) ? '' : 'hidden' ?> ">
+								{{ trans(\Config::get('app.theme') . '-app.lot.max_puja') }}
+								<strong>
 
-                                <span id="tuorden">
-                                    @if (!empty($data['js_item']['user']['ordenMaxima']))
-                                        @if (!empty($lote_actual->max_puja) && $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
-                                            {{ $lote_actual->formatted_actual_bid }}
-                                        @else
-                                            {{ $data['js_item']['user']['ordenMaxima'] }}
-                                        @endif
-                                    @endif
-                                </span>
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
-                                @if (\Config::get('app.exchange'))
-                                    | <span id="yourOrderExchange_JS" class="exchange"> </span>
-                                @endif
-                            </strong>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex mb-2">
-                    <input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
-                        class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
-                    <div class="input-group-btn">
-                        <button type="button" data-from="modal"
-                            class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user') ? 'add_favs' : '' ?>"
-                            type="button" ref="{{ $lote_actual->ref_asigl0 }}"
-                            ref="{{ $lote_actual->ref_asigl0 }}"
-                            codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
-                    </div>
-                </div>
+									<span id="tuorden">
+										@if (!empty($data['js_item']['user']['ordenMaxima']))
+											@if (!empty($lote_actual->max_puja) && $lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])
+												{{ $lote_actual->formatted_actual_bid }}
+											@else
+												{{ $data['js_item']['user']['ordenMaxima'] }}
+											@endif
+										@endif
+									</span>
+									{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+									@if (\Config::get('app.exchange'))
+										| <span id="yourOrderExchange_JS" class="exchange"> </span>
+									@endif
+								</strong>
+							</div>
+						</div>
+					</div>
+					<div class="d-flex mb-2">
 
-            </div>
-        </div>
+
+							<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}"
+								class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
+							<div class="input-group-btn">
+								<button type="button" data-from="modal"
+									class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user') ? 'add_favs' : '' ?>"
+									type="button" ref="{{ $lote_actual->ref_asigl0 }}"
+									ref="{{ $lote_actual->ref_asigl0 }}"
+									codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+							</div>
+
+					</div>
+
+				</div>
+			</div>
+		@else
+
+		<div class="insert-bid-input col-xs-12 d-flex justify-content-center flex-column pt-1 pb-2">
+			<p class="mt-1 mb-1">
+				{!! trans(\Config::get('app.theme') . '-app.lot.text_pay_deposit',["imp_deposito" =>($lote_actual->impsalhces_asigl0 * Config::get("app.depositPct") /100 )." €" ]) !!}
+			</p>
+			<p class="mt-1 mb-1 ">
+				<form id="depositoForm" class="text-center">
+					<button id="submitDeposito_JS" type="button" 	class="ficha-btn-deposit "
+						>{{ trans(\Config::get('app.theme') . '-app.lot.pay_deposit') }}
+					</button>
+					<input type="hidden" name="codSub" value="{{$lote_actual->cod_sub }}">
+					<input type="hidden" name="ref" value="{{$lote_actual->ref_asigl0 }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
+				</form>
+			</p>
+		</div>
+
+		@endif
     @endif
 
 
     <?php //solo se debe recargar la fecha en las subatsas tipo Online, ne las abiertas tipo P no se debe ejecutar
     ?>
+
+
     @if ($subasta_online)
         <script>
             $(document).ready(function() {

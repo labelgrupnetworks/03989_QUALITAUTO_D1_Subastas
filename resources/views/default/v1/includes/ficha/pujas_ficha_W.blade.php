@@ -11,7 +11,7 @@
 					@else
 						<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
 							@if(\Config::get("app.exchange"))
-								<span id="startPriceExchange_JS" class="exchange"> </span>
+							|	<span id="startPriceExchange_JS" class="exchange"> </span>
 							@endif
 						</p>
 					@endif
@@ -58,7 +58,9 @@
                         @php($class = '')
                     @endif
                     <span id="actual_max_bid" class="{{$class}}">{{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-
+					@if(\Config::get("app.exchange"))
+						| <span id="actualBidExchange_JS" class="exchange"> </span>
+					@endif
                 </strong>
             </div>
             @endif

@@ -22,12 +22,13 @@ $fact_devuelta = ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == '
 $fact_N = $lote_actual->fac_hces1=='N' ? true : false;
 $start_session = strtotime("now") > strtotime($lote_actual->start_session);
 $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
+$lot_close_at = strtotime("now") > strtotime($lote_actual->close_at);
 
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 $vendido = (!empty($lote_actual->himp_csub)|| $lote_actual->desadju_asigl0 =='S' )? true : false;
 
-if ($retirado || $fact_devuelta || $cerrado) {
+if ($retirado || $fact_devuelta || $cerrado || $lot_close_at) {
 	header("Location: " . URL::to('/404'), true, 301);
 	exit();
 }

@@ -76,6 +76,22 @@
                             </tr>
                         @endforelse
 
+						@if($catalogsCount)
+						<tr id="fila_catalogs">
+
+							<td>#</td>
+							<td>Cátalogo</td>
+							<td>{{ $catalogsCount }}</td>
+
+							<td>
+								<a class="btn btn-xs btn-default"
+									href=""><i
+										class="fa fa-list"></i> Ver suscriptores</a>
+
+							</td>
+						</tr>
+						@endif
+
                     </tbody>
 
                 </table>

@@ -601,36 +601,16 @@ $idiomes = \Config::get('app.locales');
 					@endif
 
 					@if(in_array('bi',$config_menu_admin))
-					<li class="nav-parent @if(!empty($menu) && $menu == 'bi') nav-expanded @endif">
-						<a href="#">
-							<i class="fa fa-pie-chart" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.bi') }}</span>
-						</a>
-						<ul class="nav nav-children">
-							<li>
-								<a href="{{ route('bi.index') }}">
-									<span>{{ trans('admin-app.title.auctions') }}</span>
-								</a>
-							</li>
-						</ul>
-						@if (in_array('dev', $config_menu_admin))
-						<ul class="nav nav-children">
-							<li>
-								<a href="{{ route('bi_cedentes.index') }}">
-									<span>Cedentes</span>
-								</a>
-							</li>
-						</ul>
-						@endif
-						{{-- <ul class="nav nav-children">
-							<li>
-								<a href="{{ route('bi.index') }}">
-									<span>{{ trans_choice('admin-app.title.client', 2) }}</span>
-								</a>
-							</li>
-						</ul> --}}
-					</li>
+						<li>
+							<a  href="/admin/bi/report/categoryAwardsSales?years[]={{date("Y")}}">
+								<i class="fa fa-pie-chart" aria-hidden="true"></i>
+								<span>{{ trans('admin-app.title.bi_reports') }}</span>
+							</a>
+
+						</li>
 					@endif
+
+
 				</ul>
 
 

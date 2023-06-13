@@ -14,11 +14,18 @@ $hastah      = substr($data['subasta_info']->lote_actual->end_session,0,10);
 $hastah      = str_replace('-', '/', $hastah);
 $fecha_finh  = $hastah.$horah;
 
-
+$withExchange = config('app.exchange', false);
+if($withExchange) {
+	$currency = new App\libs\Currency();
+	$divisas = $currency->getAllCurrencies($data['js_item']['subasta']['currency']->name);
+}
 
 ?>
 
 <script>
+const withExchange = '{{$withExchange}}';
+var currency = (Boolean(withExchange)) ? @json($divisas) : null;
+
 <?php if(!empty($data['js_item']['user']['is_gestor'])){ ?>
     var licitadores = {
     <?php foreach ($data['licitadores'] as $key => $value) : ?>
@@ -236,6 +243,9 @@ body, html {
                                     <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:</strong>
                                     <span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}
                                 </p>
+								@if(\Config::get("app.exchange"))
+								| <span id="startPriceExchange_JS" class="exchange"> </span>
+								@endif
                             </div>
 
 
@@ -258,6 +268,10 @@ body, html {
 
                                     </span>
 
+									@if(\Config::get("app.exchange"))
+									| <span id="actualBidExchange_JS" class="exchange"> </span>
+									@endif
+
                                     @if(Session::has('user') && $data['js_item']['user']['is_gestor'])
 
                                         <span id="cancelarPuja" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
@@ -278,7 +292,10 @@ body, html {
                                 <div class="col-lg-6">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_bid') }}: <span id="tupuja"><?php if (!empty($data['js_item']['user']['maxPuja']))  { echo $data['js_item']['user']['maxPuja']->formatted_imp_asigl1; } ?></span></div>
 
                                 <div class="col-lg-6">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_order') }}: <span id="tuorden"><?php if (!empty($data['js_item']['user']['maxOrden']))  { echo $data['js_item']['user']['maxOrden']->himp_orlic; } ?></span></div>
-                            @endif
+								@if(\Config::get("app.exchange"))
+								|	<span  id="yourOrderExchange_JS" class="exchange"> </span>
+								@endif
+							@endif
 
                             <!-- controles -->
                             <div class="row started hidden">

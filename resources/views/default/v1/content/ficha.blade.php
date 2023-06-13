@@ -115,10 +115,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
                 @if(Session::has('user') &&  !$retirado)
                 <div class="col-xs-12 no-padding favoritos visible-xs hidden-sm hidden-md hidden-ls">
-                    <a  class="secondary-button  <?= $lote_actual->favorito ? 'hidden' : '' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
+                    <a  class="secondary-button  <?= $lote_actual->favorito ? 'hidden' : '' ?>" id="add_fav" href="javascript:action_fav_modal_new('add')">
                         {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
                     </a>
-                    <a class="secondary-button  <?= $lote_actual->favorito ? '' : 'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
+                    <a class="secondary-button  <?= $lote_actual->favorito ? '' : 'hidden' ?>" id="del_fav" href="javascript:action_fav_modal_new('remove')">
                         {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
                     </a>
                 </div>
@@ -142,7 +142,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                     <div class="img-global-content position-relative">
 
                     <div id="img_main" class="img_single">
-                            <a title="{{$lote_actual->titulo_hces1}}" href="javascript:action_fav_modal('remove')">
+                            <a title="{{$lote_actual->titulo_hces1}}" href="javascript:action_fav_modal_new('remove')">
                             <img class="img-responsive" src="{{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}}" alt="{{$lote_actual->titulo_hces1}}">
                             </a>
                         </div>
@@ -158,10 +158,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                         </div>
                         @if(Session::has('user') &&  !$retirado)
                         <div class="col-xs-12 no-padding favoritos">
-                           <a  class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
+                           <a  class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav_btn" href="javascript:action_fav_modal_new('add')">
                                {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
                            </a>
-                           <a class="secondary-button  <?= $lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
+                           <a class="secondary-button  <?= $lote_actual->favorito? '':'hidden' ?>" id="del_fav_btn" href="javascript:action_fav_modal_new('remove')">
                                {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
                            </a>
                         </div>
@@ -277,8 +277,8 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                         @elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
 
                             @include('includes.ficha.pujas_ficha_V')
-                        <?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>
-                        @elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
+                        <?php //si una subasta es abierta p solo entraremso a la tipo online  ?>
+                        @elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P )) && !$cerrado)
 
                              @include('includes.ficha.pujas_ficha_O')
 
@@ -338,7 +338,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
 				</div>
 			</div>
-		
+
 
 
     <div class="row">

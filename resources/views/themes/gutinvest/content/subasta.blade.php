@@ -176,8 +176,8 @@ $user = (Session::get('user'));
                 @foreach ($data['subastas'] as $key => $item)
                     <?php
                         $url = "";
-                        //Si no esta retirado tendrá enlaces
-                        if($item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R'){
+                        //Si las facturas están devueltas no mostrará enlace
+                        if($item->fac_hces1 != 'D' && $item->fac_hces1 != 'R'){
                             $webfriend = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  str_slug($item->titulo_hces1);
                             if($data['type'] == "theme"){
                                 $url_vars = "?theme=".$data['theme'];

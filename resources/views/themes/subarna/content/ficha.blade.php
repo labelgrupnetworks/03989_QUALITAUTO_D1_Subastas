@@ -182,7 +182,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 					&& !$fact_devuelta)
 					@include('includes.ficha.pujas_ficha_V')
 
-					@elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)
+					@elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P )) && !$cerrado)
 					@include('includes.ficha.pujas_ficha_O')
 
 					@elseif( $subasta_web && !$cerrado)

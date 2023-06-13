@@ -121,6 +121,10 @@ $empresa = $empre->getEmpre();
 							href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}</a>
 					</li>
 					<li>
+						<a class="footer-link" title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}"
+							href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>">{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}</a>
+					</li>
+					<li>
 						<a class="footer-link" title="{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}"
 							href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')?>">{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}</a>
 					</li>

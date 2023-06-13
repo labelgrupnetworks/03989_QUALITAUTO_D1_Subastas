@@ -13,12 +13,13 @@
 					<div class="col-xs-12  text-center">
 
 						<ul class="ul-format footer-ul">
-							<li>
-								<a class="footer-link"
-									title="{{ trans($theme.'-app.foot.term_condition') }}"
-									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
-							</li>
-
+							@php	/*
+								<li>
+									<a class="footer-link"
+										title="{{ trans($theme.'-app.foot.term_condition') }}"
+										href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
+								</li>
+							*/ @endphp
 						</ul>
 					</div>
 					@php	/*

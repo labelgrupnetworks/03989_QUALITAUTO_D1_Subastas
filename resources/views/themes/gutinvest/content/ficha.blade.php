@@ -26,7 +26,7 @@ $MobileDetect = new MobileDetect();
 					<div id="video_main_wrapper" class="img_single_border video_single_border" @if(empty($lote_actual->videos)) style="display:none" @endif>
 					</div>
 					<div id="img_main_wrapper" class="img_single_border" style="position: relative; @if(!empty($lote_actual->videos) && count($lote_actual->videos) > 0) display:none @endif">
-						@if( $lote_actual->retirado_asigl0 !='N')
+						@if( $lote_actual->retirado_asigl0 !='N' || $lote_actual->subc_sub == 'H')
 						<div class="retired ">
 							{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
 						</div>

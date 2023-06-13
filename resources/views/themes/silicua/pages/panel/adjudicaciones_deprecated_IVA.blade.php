@@ -31,7 +31,14 @@ foreach($all_adj_pag as $key_inf => $value){
 }
 
 ?>
-<script src="{{ URL::asset('js/payment.js')}}"></script>
+{{-- es un sobrecargo en % que se cobrará a los que paguen por la web --}}
+@if(Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb")))
+	<script>
+		var extraCharge ={{Config::get("app.sobreCargoPagoWeb")}};
+	</script>
+@endif
+
+<script src="{{ Tools::urlAssetsCache('js/payment.js')}}"></script>
 <script>
     var info_lots = $.parseJSON('<?php echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
 </script>

@@ -380,6 +380,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 						@elseif(($lote_actual->tipo_sub == 'O' || $lote_actual->tipo_sub == 'P' ||
 						$lote_actual->subabierta_sub == 'P')&& $lote_actual->cerrado_asigl0 != 'S')
+						
 						@include('includes.ficha.pujas_ficha_O')
 
 						@elseif( $lote_actual->tipo_sub == 'W' && $lote_actual->cerrado_asigl0 != 'S')

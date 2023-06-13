@@ -29,10 +29,10 @@
 <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}"></script>
 <script src="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.min.js') }}"></script>
 @if(strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'O' || strtoupper($data['subasta_info']->lote_actual->tipo_sub) == 'P' || $data['subasta_info']->lote_actual->subabierta_sub == 'P')
-@if(strtotime("now") < strtotime($data['subasta_info']->lote_actual->start_session))
+
 	<script src="{{ Tools::urlAssetsCache('vendor/tiempo-real/tr_main.js') }}"></script>
     <script src="{{ URL::asset('js/hmac-sha256.js') }}"></script>
-@endif
+
 
 @endif
 <script src="{{ URL::asset('js/openseadragon.min.js') }}"></script>

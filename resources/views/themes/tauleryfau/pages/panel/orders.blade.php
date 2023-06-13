@@ -91,10 +91,10 @@
 						$SubastaTR->cod =$all_inf['inf']->cod_sub;
 						$SubastaTR->session_reference = $all_inf['inf']->reference;
 
-						$status = $SubastaTR->getStatus();
+						$ended = $SubastaTR->getStatusSessions();
 						$subasta_finalizada = false;
 
-						if(!empty($status) && $status[0]->estado == "ended" && $all_inf['inf']->tipo_sub != 'V'){
+						if($ended && $all_inf['inf']->tipo_sub != 'V'){
 							$subasta_finalizada = true;
 							array_unshift($finalized, $all_inf);
 						}

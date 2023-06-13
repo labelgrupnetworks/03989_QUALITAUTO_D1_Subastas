@@ -73,12 +73,17 @@
 						</div>
 
                         <div class="datos_condiciones">
-
-							<div class="checkbox-container condiciones col-xs-12">
+							<div class="checkbox-container condiciones col-xs-12 mb-1">
 								{!! $formulario->condiciones!!}
 								<label for="bool__1__condiciones">
 									{!! trans("$theme-app.login_register.read_conditions_politic") !!}
 									</label>
+							</div>
+							<div class="checkbox-container condiciones col-xs-12">
+								{!! $formulario->newsletter !!}
+								<label for="bool__0__newsletter">
+									{!! trans("$theme-app.login_register.recibir_newsletter") !!}
+								</label>
 							</div>
 							<br>
 							<div class="col-xs-12 col-lg-offset-3">

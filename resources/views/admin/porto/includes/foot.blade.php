@@ -52,6 +52,9 @@
 <script src="{{ URL::asset('vendor/datatables/datatables.js') }}"></script>
 <script src="{{ URL::asset('vendor/datetimepicker/js/bootstrap-datetimepicker.js') }}"></script>
 <script src="{{ $base_url }}/vendor/chart.js-3.4.1/package/dist/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+
 <script type="text/javascript" src="{{ URL::asset('vendor/bootstrap-multiselect//bootstrap-multiselect.js') }}"></script>
 
 {{-- <script src="{{ URL::asset('js/common.js') }}"></script> --}}

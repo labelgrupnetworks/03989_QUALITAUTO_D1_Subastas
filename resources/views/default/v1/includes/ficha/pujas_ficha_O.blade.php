@@ -109,6 +109,17 @@
 
         </div>
 	</div>
+	@if($subasta_abierta_P && $cerrado_N && $fact_N && $start_session  &&  !$end_session )
+		<div class="col-xs-12 no-padding">
+			<div class="ficha-live-btn-content">
+				<a class="ficha-live-btn-link secondary-button" href='{{\Tools::url_real_time_auction($data['subasta_info']->lote_actual->cod_sub,$data['subasta_info']->lote_actual->name,$data['subasta_info']->lote_actual->id_auc_sessions)}}'>
+					<div class="bid-online"></div>
+					<div class="bid-online animationPulseRed"></div>
+					<?=trans(\Config::get('app.theme').'-app.lot.bid_live')?>
+				</a>
+			</div>
+		</div>
+	@endif
 
 	@if($inicio_pujas || $subasta_abierta_P)
         <div class="insert-bid-input col-lg-10 col-lg-offset-1 d-flex justify-content-center flex-column">
@@ -173,7 +184,7 @@
 		<div class="">
 			<p>{{ trans("$theme-app.lot.can_place_bids") }}{{ Tools::getDateFormat($lote_actual->fini_asigl0, 'Y-m-d H:i:s', 'd/m/Y H:i:s') }}</p>
 		</div>
-		
+
 	@endif
 
 

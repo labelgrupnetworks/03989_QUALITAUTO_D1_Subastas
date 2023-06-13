@@ -13,12 +13,7 @@
                         @endif
                     @endif
                 </span>
-            {{trans(\Config::get('app.theme').'-app.subastas.euros')}}
-			@if(\Config::get("app.exchange"))
-				 |	<span  id="yourOrderExchange_JS" class="exchange"> </span>
-			@endif
-
-			</strong>
+            {{trans(\Config::get('app.theme').'-app.subastas.euros')}}</strong>
         </div>
     </div>
     <div class=" col-xs-12 no-padding info-ficha-buy-info-price d-flex">
@@ -26,23 +21,15 @@
 			@if ($lote_actual->ocultarps_asigl0 != 'S')
 				<div class="pre">
 					<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					@if(\Config::get("app.exchange"))
-						| <span id="startPriceExchange_JS" class="exchange"> </span>
-					@endif
-					</p>
+					<p class="pre-price">{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
 
 				</div>
 			@endif
 
             <div class="pre">
                 <p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</p>
-                <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->imptas_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->imptas_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </p>
 
-				@if(\Config::get("app.exchange"))
-					| <span id="estimateExchange_JS" class="exchange"> </span>
-				@endif
-				</p>
             </div>
 
     </div>
@@ -58,9 +45,7 @@
                         @php($class = '')
                     @endif
                     <span id="actual_max_bid" class="{{$class}}">{{ $lote_actual->formatted_actual_bid }} €</span>
-					@if(\Config::get("app.exchange"))
-						| <span id="actualBidExchange_JS" class="exchange"> </span>
-					@endif
+
                 </strong>
             </div>
         </div>
@@ -68,17 +53,14 @@
     <div class="col-xs-12 no-padding info-ficha-buy-info-price border-top-bottom">
         <div class="pre d-flex mt-2 mb-2 ">
             <div  id="text_actual_no_bid" class="price-title-principal pre col-xs-12 col-sm-6 no-padding <?=  count($lote_actual->pujas) >0? 'hidden':'' ?>"> {{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </div>
-            <div class="col-xs-12 col-sm-9 no-padding">
-				@if ($hay_pujas)
-					<p class='explanation_bid t_insert pre-title' >{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}  </p>
-				@else
-					<p class='explanation_bid t_insert pre-title'>{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  </p>
-				@endif
-				<strong><span class="siguiente_puja"> </span>{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
-					@if(\Config::get("app.exchange"))
-						| <span id="nextBidExchange_JS" class="exchange"> </span>
-					@endif
-				</strong>
+            <div class="col-xs-12 col-sm-6 no-padding">
+            @if ($hay_pujas)
+                    <p class='explanation_bid t_insert pre-title' >{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}  </p>
+                    <strong><span class="siguiente_puja">{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span></strong>
+                @else
+                    <p class='explanation_bid t_insert pre-title'>{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  </p>
+                    <strong><span class="siguiente_puja">{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span></strong>
+                @endif
             </div>
         </div>
     </div>

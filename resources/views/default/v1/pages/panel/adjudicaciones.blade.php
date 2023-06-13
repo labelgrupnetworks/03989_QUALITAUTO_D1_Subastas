@@ -35,7 +35,15 @@ $urlToPackengersMaker = "";
 $packengersMoneyValue = 0;
 
 ?>
-<script src="{{ URL::asset('js/payment.js')}}"></script>
+
+{{-- es un sobrecargo en % que se cobrará a los que paguen por la web --}}
+@if(Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb")))
+	<script>
+		var extraCharge ={{Config::get("app.sobreCargoPagoWeb")}};
+	</script>
+@endif
+
+<script src="{{ Tools::urlAssetsCache('js/payment.js')}}"></script>
 <script>
     var info_lots = $.parseJSON('<?php echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
 </script>
@@ -112,15 +120,13 @@ $packengersMoneyValue = 0;
                                     <form id="pagar_lotes_{{$all_inf['inf']->cod_sub}}" >
                                         @endif
                                         <div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
-                                            <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
+                                            <div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item">
                                                     {{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
                                             </div>
                                             <div class="col-xs-12 col-sm-2 col-one user-account-fecha">
                                                     {{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
                                             </div>
-                                            <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
-                                            </div>
+
                                         </div>
 
                                         <div class="user-accout-items-content   ">
@@ -131,22 +137,23 @@ $packengersMoneyValue = 0;
                                                 $url_friendly = \Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
                                                 $precio_remate = \Tools::moneyFormat($inf_lot->himp_csub);
                                                 $precio_limpio = \Tools::moneyFormat($inf_lot->base_csub,false,2);
-                                                $comision = \Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva,false,2);
+                                                $comision = \Tools::moneyFormat($inf_lot->base_csub ,false,2);
 
                                                 $precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
                                                 $calc_envio = number_format($inf_lot->himp_csub + $inf_lot->base_csub, 2, '.', '');
 
 												#Suma para calcular el precio total para URL de packengers
-												$packengersMoneyValue += $precio_limpio_calculo;
+												#$packengersMoneyValue += $precio_limpio_calculo;
 
                                                 //Calculo total
                                                 $total_remate = $total_remate + $inf_lot->himp_csub;
                                                 $total_base = $total_base + $inf_lot->base_csub;
-                                                $total_iva = $total_iva + $inf_lot->base_csub_iva;
+                                               /* El iva se calcula la final con la suma total*/
+                                                # $total_iva = $total_iva + $inf_lot->base_csub_iva;
                                             ?>
                                                     <div class="user-accout-item-wrapper  col-xs-12 no-padding">
                                                         <div class="d-flex">
-                                                        <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
+                                                        <div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item ">
                                                             <div class="col-xs-12 col-sm-1 no-padding">
 																<?php //Oculto los check con una clase hidden ?>
                                                                      <div class="checkbox hidden" style="margin-top: 0px;">
@@ -197,13 +204,7 @@ $packengersMoneyValue = 0;
 																@endif
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
-                                                                <div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-                                                                        <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
-                                                                <div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
-                                                                </div>
-                                                            </div>
 														<input class="hide envios_{{$inf_lot->sub_csub}}_js" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][envios]" value='{{ Config::get('app.web_gastos_envio')? '5' : '1' }}'>
 														<input class="hide seguro_lote_{{$inf_lot->sub_csub}}_js" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][seguro]" value='0'>
 
@@ -271,8 +272,13 @@ $packengersMoneyValue = 0;
 
 											@endif
 											<div class="col-xs-12 col-sm-4 total-price">
+												<br/>
+												{{ trans(\Config::get('app.theme').'-app.user_panel.remate_comision') }} <br><span class="precio_final_remate_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+												<br/><br/>
 
-												 <br/>
+												{{ trans(\Config::get('app.theme').'-app.user_panel.iva_comision') }} <br><span class="iva_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+												<br/><br/>
+
 												{{ trans(\Config::get('app.theme').'-app.user_panel.total_price') }} <br><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
 												<br/><br/>
 												@if(\Config::get("app.PayBizum") || \Config::get("app.PayTransfer") || \Config::get("app.paymentPaypal"))
@@ -336,6 +342,10 @@ $packengersMoneyValue = 0;
                             </div>
                         @if($tipo_pago_global)
                                 <div class="adj color-letter d-flex align-items-center justify-content-space-between">
+
+
+									<div class="total-price">{{ trans(\Config::get('app.theme').'-app.user_panel.remate_comision') }} <span class="precio_final_remate_global">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }} </div>
+									<div class="total-price">{{ trans(\Config::get('app.theme').'-app.user_panel.iva_comision') }} <span class="iva_final_global">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }} </div>
                                     <div class="total-price">{{ trans(\Config::get('app.theme').'-app.user_panel.total_price') }} <span class="precio_final_global">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }} </div>
                                         @if(!empty(Config::get('app.merchantIdUP2')) || !empty(Config::get('app.paymentRedsys')))
                                             <button style="margin-left: 15px;" type="button" class="secondary-button   submit_carrito btn btn-step-reg2"  cod_sub="global" class="btn btn-step-reg" disabled>{{ trans(\Config::get('app.theme').'-app.user_panel.pay') }}</button>
@@ -403,15 +413,13 @@ $packengersMoneyValue = 0;
 											<div id="{{$all_inf['inf']->cod_sub}}_pag"  class="table-responsive panel-collapse collapse">
 
 												<div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
-													<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
+													<div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item">
 															{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
 													</div>
-													<div class="col-xs-12 col-sm-2 col-one user-account-fecha">
+													<div class="col-xs-12 col-sm-2 col-lg-2  col-one user-account-fecha">
 															{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
 													</div>
-													<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}
-													</div>
+
 												</div>
 
 												<div class="user-accout-items-content">
@@ -422,20 +430,22 @@ $packengersMoneyValue = 0;
 														$url_friendly = \Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
 														$precio_remate = \Tools::moneyFormat($inf_lot->himp_csub);
 														$precio_limpio = \Tools::moneyFormat($inf_lot->base_csub,false,2);
-														$comision = \Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva,false,2);
+														$comision = \Tools::moneyFormat($inf_lot->base_csub ,false,2);
 
-													$precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
+														/* El iva se calcula la final con la suma total*/
+                                                		#$precio_limpio_calculo =  number_format($inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva, 2, '.', '');
 														$calc_envio = number_format($inf_lot->himp_csub + $inf_lot->base_csub, 2, '.', '');
 
 
 														//Calculo total
 														$total_remate = $total_remate + $inf_lot->himp_csub;
 														$total_base = $total_base + $inf_lot->base_csub;
-														$total_iva = $total_iva + $inf_lot->base_csub_iva;
+														/* El iva se calcula la final con la suma total*/
+                                                		#$total_iva = $total_iva + $inf_lot->base_csub_iva;
 													?>
 															<div class="user-accout-item-wrapper  col-xs-12 no-padding">
 																<div class="d-flex">
-																<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
+																<div class="col-xs-12 col-sm-8 col-lg-10 col-one user-account-item ">
 																	<div class="col-xs-12 col-sm-1 no-padding">
 																			<div class="checkbox" style="margin-top: 0px;">
 
@@ -461,13 +471,7 @@ $packengersMoneyValue = 0;
 																		@endif
 																	</div>
 																</div>
-																<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
-																		<div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}</div>
-																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
-																		</div>
-																	</div>
 																	<input class="hide" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][envios]" value='1'>
 															</div>
 															</div>

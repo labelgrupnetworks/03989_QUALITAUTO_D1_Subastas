@@ -6,9 +6,12 @@
                 <div class="modal-text">
                     <ul class="chat-predefinidos" style="list-style:none; padding:0;">
                         <?php
+
                         $cur_lang = strtoupper(\App::getLocale());
 
-                        if (!empty($data['js_item']['chat'])) {
+                        if (!empty($data['js_item']['chat']) && is_array($data['js_item']['chat']['mensajes']) ) {
+
+
 
                             foreach ($data['js_item']['chat']['mensajes'] as $k => $item) {
 
@@ -81,7 +84,7 @@
 
     <ul class="chat">
         <?php
-        if (!empty($data['js_item']['chat'])) {
+        if (!empty($data['js_item']['chat']) && is_array($data['js_item']['chat']['mensajes'])) {
 
             foreach ($data['js_item']['chat']['mensajes'] as $k => $item) {
 

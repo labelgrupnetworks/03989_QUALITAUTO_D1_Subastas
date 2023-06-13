@@ -139,7 +139,7 @@
                 //@endif?>
 
                 <div class="input-group direct-puja">
-                    @if(strtotime("now") < strtotime($lote_actual->start_session))
+
 						<input id="bid_amount"  class="form-control" type="hidden" value="{{ $data['precio_salida'] }}" type="text" placeholder="{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}">
 						<div class="d-flex align-items-center">
 
@@ -168,7 +168,7 @@
                                 <input type="hidden" id="tipo_puja_gestor" value="abiertaP" >
                             @endif
                         @endif
-                    @endif
+                    
                 </div>
             </div>
         @endif

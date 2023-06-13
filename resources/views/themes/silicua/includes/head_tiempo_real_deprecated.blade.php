@@ -17,18 +17,20 @@
 <script src="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.min.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.inputmask.js') }}"></script>
 <script type="text/javascript">
-        
+
 	routing.node_url 	 ='{{ Config::get("app.node_url") }}';
 	routing.comprar		 = '{{ $data["node"]["comprar"] }}';
         @if(!empty($data['js_item']['user']['is_gestor']) && $data['js_item']['user']['is_gestor'])
 	routing.pause_lot	 = '{{ $data["node"]["pause_lot"] }}';
-        
+
         @endif
-       
+
 	var auction_info = $.parseJSON('<?php echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
-	
-	
+
+
 
 </script>
-
+@if(\Config::get("app.exchange"))
+	<script src="{{ URL::asset('js/default/divisas.js') }}"></script>
+@endif
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>

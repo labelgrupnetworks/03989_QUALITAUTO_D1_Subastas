@@ -51,7 +51,7 @@
 				</a>
 				@endif
 				@if( $lote_actual->cerrado_asigl0=='N' && $lote_actual->fac_hces1=='N' && strtotime("now") >
-				strtotime($lote_actual->orders_start) && strtotime("now") < strtotime($lote_actual->orders_end))
+				strtotime($lote_actual->orders_start) && strtotime("now") < strtotime($lote_actual->orders_end) && !$subasta_abierta_P)
 					<p><strong><?=trans(\Config::get('app.theme').'-app.lot.insert_max_puja_start')?></strong></p>
 					<div class="input-group group-pujar-custom">
 						<input id="bid_modal_pujar" placeholder="{{ $data['precio_salida'] }}"

@@ -110,9 +110,25 @@
 	<div class="row ficha-separator @if(!$hay_pujas) hidden @endif"></div>
 
 
+
+
 	{{-- bloque puja --}}
 	@if($start_session || $subasta_abierta_P)
 	<div class="mt-2 mb-2 insert-bid-input d-flex justify-content-center flex-column">
+		@if( $cerrado_N && $fact_N && $start_session  &&  !$end_session )
+			<div class="col-xs-12 no-padding">
+				<div class="ficha-live-btn-content">
+					<a class="ficha-live-btn-link secondary-button" href='{{\Tools::url_real_time_auction($data['subasta_info']->lote_actual->cod_sub,$data['subasta_info']->lote_actual->name,$data['subasta_info']->lote_actual->id_auc_sessions)}}'>
+						<div class="bid-online"></div>
+						<div class="bid-online animationPulseRed"></div>
+						<?=trans(\Config::get('app.theme').'-app.lot.bid_live')?>
+					</a>
+				</div>
+			</div>
+		@endif
+
+
+
 		@if (Session::has('user') &&  Session::get('user.admin'))
 		<div class="d-block w-100 mb-1">
 			<input id="ges_cod_licit" name="ges_cod_licit" class="form-control" type="text" value="" type="text" style="border: 1px solid red;" placeholder="Código de licitador">
@@ -123,6 +139,9 @@
 		@else
 			<input type="hidden" id="tipo_puja_gestor" value="">
 		@endif
+
+
+
 
 		<div class="input-group d-block group-pujar-custom mb-2">
 			<p class="insert-bid insert-max-bid"><b>{{ trans(\Config::get('app.theme').'-app.lot.insert_firm_bid') }}</b></p>

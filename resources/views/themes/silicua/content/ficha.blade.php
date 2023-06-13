@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 $cerrado = $lote_actual->cerrado_asigl0 == 'S'? true : false;
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N'? true : false;
 $hay_pujas = count($lote_actual->pujas) >0? true : false;
@@ -9,11 +12,14 @@ $compra = $lote_actual->compra_asigl0 == 'S'? true : false;
 $subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O')? true : false;
 $subasta_venta = $lote_actual->tipo_sub == 'V' ? true : false;
 $subasta_web = $lote_actual->tipo_sub == 'W' ? true : false;
+
+
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O'? true : false;
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P'? true : false;
 $retirado = $lote_actual->retirado_asigl0 !='N'? true : false;
 $sub_historica = $lote_actual->subc_sub == 'H'? true : false;
 $sub_cerrada = ($lote_actual->subc_sub != 'A'  && $lote_actual->subc_sub != 'S')? true : false;
+
 $awarded = \Config::get('app.awarded');
 // D = factura devuelta, R = factura pedniente de devolver
 $fact_devuelta = ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R') ? true : false;
@@ -21,10 +27,32 @@ $fact_N = $lote_actual->fac_hces1=='N' ? true : false;
 $start_session = strtotime("now") > strtotime($lote_actual->start_session);
 $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
+
+
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
+
 $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
+
+
+
+# listamos los recursos que se hayan puesto en la carpeta de videos para mostrarlos en la imagen principal
+$resourcesList = [];
+foreach( ($lote_actual->videos ?? []) as $key => $video){
+	$resource=["src"=>$video, "format" => "VIDEO"];
+	if (strtolower(substr($video, -4)) == ".gif" ){
+		$resource  ["format"] = "GIF";
+	}
+	$resourcesList[] = $resource;
+}
+
+
+
+
+
+
+
 ?>
 
 
@@ -51,10 +79,42 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
+							@foreach( $resourcesList as $resource)
+								<div class="item_content_img_single" style="position: relative;">
+									@if($resource["format"]=="GIF")
+										<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+										class="img-responsive"
+										src="{{$resource["src"]}}"
+										alt="{{$lote_actual->titulo_hces1}}">
+									@elseif($resource["format"]=="VIDEO")
+										<video width="100%" controls>
+											<source src="{{$resource["src"]}}" type="video/mp4">
+										</video>
+
+									@endif
+								</div>
+							@endforeach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                             <?php foreach($lote_actual->imagenes as $key => $imagen){?>
                                    <div class="item_content_img_single" style="position: relative; height: 290px; overflow: hidden;">
                                         <img style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;" class="img-responsive" src="{{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}" alt="{{$lote_actual->titulo_hces1}}">
+
+
+
                                    </div>
                              <?php } ?>
                         </div>
@@ -73,6 +133,19 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                                 </div>
                             </div>
                             <?php } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="col-xs-12 no-padding hidden-xs">
                     @if( $retirado)
                         <div class="retired">
@@ -87,6 +160,7 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                             {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
                         </div>
                     @endif
+					<div id="resource_main_wrapper" class="text-center" style="display:none"></div>
                     <div class="img-global-content position-relative">
 
                     <div id="img_main" class="img_single">
@@ -105,8 +179,38 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                             </div>
                         </div>
 
+
+
+
+
+
+
+
+
+
                 <div class="col-xs-12 no-padding">
                     <div class="minis-content d-flex flex-wrap">
+					@foreach( $resourcesList as $key => $resource)
+									<div   class="mini-img-ficha no-360">
+											<a href="javascript:viewResourceFicha('<?=$resource["src"]?>', '<?=$resource["format"]?>');">
+												@if($resource["format"]=="GIF")
+													<div class="img-openDragon" style="background-image:url('{{$resource["src"]}}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@elseif($resource["format"]=="VIDEO")
+													<div class="img-openDragon" style="background-image:url('{{ asset('/img/icons/video_thumb.png') }}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+												@endif
+											</a>
+									</div>
+							@endforeach
+
+
+
+
+
+
+
+
+
+
                         <?php foreach($lote_actual->imagenes as $key => $imagen){?>
                             <div   class="mini-img-ficha no-360">
 
@@ -136,7 +240,24 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
        <div class="d-flex  flex-column">
             <div class="ficha-info-title col-xs-12 no-padding">
                     <div class="titleficha col-xs-12 no-padding  secondary-color-text no-padding">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 {{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
+
                     </div>
 
             </div>
@@ -169,23 +290,39 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                             $nameCountdown = "countdownficha";
                             $timeCountdown = $lote_actual->close_at;
                          }
+
+
+
+
+
+
                     ?>
 
                         @if ($sub_cerrada)
                             @include('includes.ficha.pujas_ficha_cerrada')
 
                         @elseif($subasta_venta && !$cerrado && !$end_session)
+
+
+
+
                             @include('includes.ficha.pujas_ficha_V')
+
+
                         <?php //si un lote cerrado no se ha vendido se podra comprar ?>
                         @elseif( ($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta && !$desadjudicado)
 
                             @include('includes.ficha.pujas_ficha_V')
                         <?php //si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta ?>
-                        @elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado && !$desadjudicado)
+                        @elseif( ($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session )) && !$cerrado && !$desadjudicado)
+
                              @include('includes.ficha.pujas_ficha_O')
 
                         @elseif( $subasta_web && !$cerrado && !$desadjudicado)
                             @include('includes.ficha.pujas_ficha_W')
+
+
+
 
 
                         @else
@@ -224,6 +361,7 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
 <div class="container">
     <div class="@if($subasta_online && !$cerrado) col-sm-7 @endif col-xs-12 no-padding ficha-tipo-v">
 
+
             <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
                     <p class="desc-lot-profile-title">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
 
@@ -232,7 +370,25 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
                     <p><?= $lote_actual->desc_hces1 ?></p>
             </div>
 
+
+
+
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="row">
         <div class="single">
             <div class="col-xs-12 col-md-7">
@@ -244,6 +400,12 @@ $desadjudicado = ($lote_actual->desadju_asigl0 =='S' )? true : false;
 
                     <div class='loader hidden'></div>
                     <div id="lotes_recomendados" class="owl-theme owl-carousel"></div>
+
+
+
+
+
+
                 </div>
             </div>
         </div>
@@ -255,8 +417,10 @@ $key = "lotes_recomendados";
     'emp' => Config::get('app.emp') ,
     'sec_hces1' => $lote_actual->sec_hces1,
     'id_hces1' => $lote_actual->id_hces1,
+
     'lang' => Config::get('app.language_complete')[''.Config::get('app.locale').''] ,
 );
+
 
 ?>
 
@@ -414,6 +578,8 @@ var key ="<?= $key ?>";
 
         });
     function loadSeaDragon(img){
+		$('#resource_main_wrapper').hide();
+		$('.img-global-content').show();
 
         var element = document.getElementById("img_main");
         console.log()
@@ -435,6 +601,12 @@ var key ="<?= $key ?>";
         });
     }
     loadSeaDragon('<?= $lote_actual->imagen ?>');
+
+	@if (count($resourcesList) > 0)
+		viewResourceFicha('{{ head($resourcesList)["src"] }}','{{ head($resourcesList)["format"] }}');
+
+	@endif
+
 
 
 

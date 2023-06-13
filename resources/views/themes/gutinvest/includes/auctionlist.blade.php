@@ -4,12 +4,17 @@
     <div class="item-subasta-img col-xs-12 col-sm-3 no-padding">
     <a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
             <div class="img-lot">
-                    <img
-                        src="/img/load/subasta_medium/AUCTION_{{ $subasta->emp_sub }}_{{ $subasta->cod_sub }}.jpg"
-                        alt="{{ $subasta->name }}"
-                        class="img-responsive"
-                        style="margin: 0 auto"
-                    />
+				@if ($subasta->subc_sub == 'H')
+					<div class="retired">
+						{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+					</div>
+				@endif
+				<img
+					src="/img/load/subasta_medium/AUCTION_{{ $subasta->emp_sub }}_{{ $subasta->cod_sub }}.jpg"
+					alt="{{ $subasta->name }}"
+					class="img-responsive"
+					style="margin: 0 auto"
+				/>
             </div>
     </a>
     </div>

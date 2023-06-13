@@ -1,4 +1,5 @@
 <?php
+use App\Models\V5\FgDeposito;
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S'? true : false;
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N'? true : false;
@@ -27,7 +28,8 @@ $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
-
+$userSession = session('user');
+$deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
 
 ?>
 
@@ -489,6 +491,33 @@ var key ="<?= $key ?>";
             },200);
             }
         }
+
+
+/*   */
+$( "#submitDeposito_JS" ).on("click",function() {
+
+
+	$.ajax({
+		type: "POST",
+		url:  '{{Route("payDeposit")}}',
+		data: $('#depositoForm').serialize(),
+		success: function(data) {
+			if(data.status == 'success'){
+				window.location.href = data.location;
+			}else if(data.status == 'error'){
+				$("#modalMensaje #insert_msg").html(messages.error[data.msgError]);
+				$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+
+			}
+		},
+		error: function (response){
+			$("#modalMensaje #insert_msg").html('');
+			$("#modalMensaje #insert_msg").html(messages.error.generic);
+			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+		}
+	});
+});
+
 
 
  </script>

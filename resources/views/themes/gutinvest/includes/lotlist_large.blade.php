@@ -7,12 +7,12 @@
                         <div class="img_lot">
                             <img class="img-responsive lazy" data-src="/img/load/lote_medium/{{ $item->imagen }}" alt="{{$titulo}}">
                         </div>
-                        @if( $item->retirado_asigl0 !='N')
-                        <div class="retired" style ="top:5px; right:5px">
+                        @if( $item->retirado_asigl0 !='N' || $item->subc_sub == 'H')
+                        <div class="retired" style ="top:0px; right:0px">
                             {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
                         </div>
                         @elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
-                             <div class="retired" style =" top:5px; right:5px">
+                             <div class="retired" style ="top:0px; right:0px">
                                 {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
                             </div>
                         <?php //@elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta)) || (empty($precio_venta)) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)) )

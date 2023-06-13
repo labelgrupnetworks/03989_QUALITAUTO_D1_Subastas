@@ -2,13 +2,12 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <h1 class="titlePage">
-                @if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                    {{$lote_actual->ref_asigl0}} - {!!$lote_actual->titulo_hces1!!}
-                @elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                    {{$lote_actual->titulo_hces1}}
-                @elseif(\Config::get('app.ref_asigl0'))
-                    {{trans(\Config::get('app.theme').'-app.lot.lot-name')}}  {{$lote_actual->ref_asigl0}} ;
-                @endif
+				@php
+					 $lote_actual->descweb_hces1 = str_replace ('<p>',' ',$lote_actual->descweb_hces1);
+                        $lote_actual->descweb_hces1 = str_replace ('</p>',' ',$lote_actual->descweb_hces1);
+				@endphp
+				{{$lote_actual->ref_asigl0}} - {!!$lote_actual->descweb_hces1!!}
+
             </h1>
         </div>
     </div>

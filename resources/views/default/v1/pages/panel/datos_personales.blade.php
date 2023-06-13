@@ -152,6 +152,28 @@
 									</select>
 								</div>
 							@endif
+
+							@if (\Config::get('app.userPanelCIFandCC'))
+								<div class="form-group form-group-custom col-xs-12 col-sm-4">
+									<label for="nif">{{ trans(\Config::get('app.theme') . '-app.user_panel.nif_dni_nie') }}</label>
+									<input type="text" class="form-control effect-16" name="nif" id="nif__1__nif"
+										value="{{ $data['user']->cif_cli }}" data-placement="right" placeholder="" autocomplete="off">
+								</div>
+
+								<div class="form-group input-group col-xs-12 col-md-4">
+									<label for="dni1">{{ trans(\Config::get('app.theme') . '-app.login_register.dni_obverse') }}</label>
+									{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = '') !!}
+									<p style="color: green; display: {{ isset($data['cifImages']['dni1']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+								</div>
+								<div class="form-group input-group col-xs-12 col-md-4">
+									<label for="dni2">{{ trans(\Config::get('app.theme') . '-app.login_register.dni_reverse') }}</label>
+									{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
+									<p style="color: green; display: {{ isset($data['cifImages']['dni2']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}/p>
+								</div>
+							@endif
+
 							<div class="col-xs-12 hidden">
 								<label for="i-want-news">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
 								<div class="checkbox">
@@ -189,10 +211,10 @@
 								</select>
 								<input type="hidden" name="title_pais" value="{{ trans(\Config::get('app.theme').'-app.user_panel.pais') }}">
 							</div>
-							<div class="form-group input-group col-xs-12 col-sm-4 col-md-2">
+							<div class="form-group input-group col-xs-12 col-sm-4 {{\Config::get('app.userPanelCIFandCC') ? 'col-md-3' : 'col-md-2'}}">
 								<label for="codigo_postal">{{ trans(\Config::get('app.theme').'-app.user_panel.zip_code') }}</label>
-								<input id="cpostal" type="text" name="cpostal" class="form-control" id="codigo_postal" placeholder="{{ trans(\Config::get('app.theme').'-app.user_panel.zip_code') }}" required maxlength="10" value="{{$data['user']->cp_cli}}">
 								<input type="hidden" name="title_codigo_postal" value="{{ trans(\Config::get('app.theme').'-app.user_panel.zip_code') }}">
+								<input id="cpostal" type="text" name="cpostal" class="form-control" id="codigo_postal" placeholder="{{ trans(\Config::get('app.theme').'-app.user_panel.zip_code') }}" required maxlength="10" value="{{$data['user']->cp_cli}}">
 							</div>
 
 							<div class="form-group input-group col-xs-12 col-sm-4 col-md-5">
@@ -201,11 +223,53 @@
 								<input type="hidden" name="title_provincia" value="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}">
 							</div>
 
-							<div class="form-group input-group col-xs-12 col-sm-4 col-md-5">
+							<div class="form-group input-group col-xs-12 col-sm-4 {{\Config::get('app.userPanelCIFandCC') ? 'col-md-4' : 'col-md-5'}} col-md-5">
 								<label for="nombre">{{ trans(\Config::get('app.theme').'-app.user_panel.city') }}</label>
 								<input type="text" name="poblacion" class="form-control" id="Ciudad" placeholder="{{ trans(\Config::get('app.theme').'-app.user_panel.city') }}" required required maxlength="30" value="{{$data['user']->pob_cli}}">
 								<input type="hidden" name="title_poblacion" value="{{ trans(\Config::get('app.theme').'-app.user_panel.city') }}">
 							</div>
+
+							@if (\Config::get('app.userPanelCIFandCC'))
+								<div class="form-group input-group col-xs-12 col-md-8">
+									@php
+										$numCard = $data['creditCard'][0];
+										$numMonthCard = $data['creditCard'][1][0];
+										$numYearCard = $data['creditCard'][1][1];
+									@endphp
+									<div class="form-group-custom form-group col-xs-12">
+										<label>{{ trans(\Config::get('app.theme') . '-app.login_register.credit_card') }}</label>
+										{!! FormLib::Hidden('creditcard_fxcli', 1, '') !!}
+										<input type="text" class="form-control effect-16" name="creditcard" id="texto__1__creditcard"
+											minlength="14" maxlength="16" pattern="[0-9]+" data-placement="right"
+											placeholder="" autocomplete="off" value="{{ $numCard }}">
+									</div>
+								</div>
+									<div class="form-group input-group col-xs-12 col-md-4">
+										<div class="form-group-custom form-group card-expired-wrapper">
+
+											<div class="form-group col-xs-12" style="margin: 0; padding: 0">
+												<label
+													for="">{{ trans(\Config::get('app.theme') . '-app.login_register.expiration_date') }}</label>
+											</div>
+											<div class="row">
+												<div class="form-group col-xs-5 panel-card-expired-month pr-0">
+													<input id="texto__1__card-expired-month" type="number" name="card-expired-month"
+														class="form-control without-arrow text-center" max="12" placeholder="mm"
+														value="{{ $numMonthCard }}">
+												</div>
+												<div class="form-group col-xs-2 card-expired-separator text-center panel-card-expired-separator p-0">
+													<span class="form-control"> / </span>
+												</div>
+												<div class="form-group col-xs-5 panel-card-expired-year pl-0">
+													<input id="texto__1__card-expired-year" type="number" name="card-expired-year"
+														class="form-control without-arrow text-center" min="20" max="99" placeholder="yy"
+														value="{{ $numYearCard }}">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							@endif
 
 							<div class="col-xs-12">
 								<button type="submit" class="button-principal">{{ trans(\Config::get('app.theme').'-app.user_panel.save') }}</button>

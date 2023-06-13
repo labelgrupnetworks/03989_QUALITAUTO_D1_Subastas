@@ -4,21 +4,21 @@
 
                     <a title="{{ $titulo }}" <?= $url;?>  >
                         <div class="img_lot">
+							@if( $item->retirado_asigl0 !='N' || $item->subc_sub == 'H')
+								<div class="retired ">
+									{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+								</div>
+							@elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
+								 <div class="retired" style ="background:#0B5345;text-transform: lowercase;">
+									{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+								</div>
+							@elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  !empty($precio_venta))
+								<div class="retired" style ="background:#0B5345;text-transform: lowercase;">
+									{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+								</div>
+							@endif
                             <img class="img-responsive lazy" data-src="/img/load/lote_small/{{ $item->imagen }}" xoriginal="/img/load/lote_large/{{ $item->imagen }}" alt="{{$titulo}}">
                         </div>
-                        @if( $item->retirado_asigl0 !='N')
-                            <div class="retired ">
-                                {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
-                            </div>
-                        @elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
-                             <div class="retired" style ="background:#0B5345;text-transform: lowercase;">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
-                            </div>
-                        @elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  !empty($precio_venta))
-                            <div class="retired" style ="background:#0B5345;text-transform: lowercase;">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
-                            </div>
-                        @endif
                     </a>
                     <div class="title_lot text-center">
                     <a title="{{ $titulo }}" <?= $url;?>>

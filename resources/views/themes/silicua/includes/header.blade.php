@@ -1,3 +1,8 @@
+
+<script>
+	var sindecimales = true;
+
+	</script>
 <?php
 $lang = Config::get('app.locale');
 ?>
@@ -183,7 +188,7 @@ $lang = Config::get('app.locale');
                 </div>
             @else
                 <a class="my-account color-letter">
-                    <img width="25px;" class="logo-company"
+                    <img width="25px;" class=""
                         src="/themes/{{ \Config::get('app.theme') }}/assets/img/user.png"
                         alt="{{ \Config::get('app.name') }}">
                     <span

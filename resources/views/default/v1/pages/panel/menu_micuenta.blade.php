@@ -14,9 +14,19 @@
                 {{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}
             </a>
         </li>
+		@if (\Config::get('app.userPanelMySales'))
+			@php
+				$hasSales = (new App\Models\User())->hasSales(session('user.cod'));
+			@endphp
+			@if ($hasSales)
+				<li class="text-uppercase<?php if($tab == 'sales'){ echo(' tab-active'); } ?>" role="presentation">
+					<a data-title="{{ trans("$theme-app.user_panel.my_sale_title") }}" href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}"><i class="fa fa-money" aria-hidden="true"></i> {{ trans("$theme-app.user_panel.my_sale_title") }}</a>
+				</li>
+			@endif
+		@endif
         <li class="text-uppercase<?php if($tab == 'favorites'){ echo(' tab-active'); } ?>" role="presentation" >
 
-            <a class="" href="{{ \Routing::slug('user/panel/favorites') }}" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" >
+            <a class="" href="{{ \Routing::slug('user/panel/' . (empty(\Config('app.new_favorites_panel')) ? 'favorites' : \Config('app.new_favorites_panel'))) }}" data-title="{{ trans(\Config::get('app.theme').'-app.panel.my_adj') }}" >
                 <i class="fas fa-star"></i>
                 {{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}
             </a>
@@ -43,7 +53,7 @@
 					</a>
 				</li>
 			@endif
-			
+
 			@if (\Config::get('app.makePreferences'))
 				<li class="text-uppercase<?php if($tab == 'form-preferencias'){ echo(' tab-active'); } ?>" role="presentation">
 					<a class="" href="{{ \Routing::slug('user/panel/preferences') }}">

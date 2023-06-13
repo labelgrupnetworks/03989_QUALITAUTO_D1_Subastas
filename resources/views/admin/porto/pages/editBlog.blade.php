@@ -6,6 +6,10 @@ if(!empty($data['noticia'])){
 }else{
     $noticia = array();
 }
+
+# Guardamos la lista de extensiones para comprobar si es una imagen o un video
+$extensionesImagen = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'svgz', 'ico', 'JPG', 'JPEG', 'PNG', 'GIF', 'BMP', 'TIFF', 'TIF', 'SVG', 'SVGZ', 'ICO');
+$extensionesVideo = array('mp4', 'webm', 'ogg', 'avi', 'mkv', 'MP4', 'WEBM', 'OGG', 'AVI', 'MKV');
 ?>
 <form id="save_blog">
 <section role="main" class="content-body">
@@ -260,7 +264,18 @@ if(!empty($data['noticia'])){
                                                             </div>
                                                             <div class="col-sm-6 img_place">
                                                                 @if(!empty($noticia) && !empty( head($noticia['lang'])->img_web_blog))
-                                                                    <img src="{{head($noticia['lang'])->img_web_blog}}" class="img-responsive">
+
+																	@php
+																		$img_web_separado = explode("/", head($noticia['lang'])->img_web_blog);
+																		$nombreArchivo = explode(".", end($img_web_separado));
+																		$extension = end($nombreArchivo);
+																	@endphp
+
+																	@if (in_array($extension, $extensionesImagen))
+                                                                    	<img src="{{head($noticia['lang'])->img_web_blog}}" class="img-responsive">
+																	@elseif (in_array($extension, $extensionesVideo))
+																		<video class="img-responsive" src="{{ head($noticia['lang'])->img_web_blog }}" controls autoplay></video>
+																	@endif
                                                                 @else
                                                                      <i class="fa fa-file-image-o"></i>
                                                                 @endif

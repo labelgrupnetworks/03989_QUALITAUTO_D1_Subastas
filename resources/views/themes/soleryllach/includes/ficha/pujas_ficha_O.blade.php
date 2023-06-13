@@ -106,6 +106,13 @@
                 <small class='explanation_bid t_insert' style="font-size:13px; font-weight: 900">{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}  <strong><span class="siguiente_puja">{{ $data['precio_salida'] }}</span></strong> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </small>
             @endif
 
+			@if( $lote_actual->cerrado_asigl0=='N' && $lote_actual->fac_hces1=='N' && strtotime("now") > strtotime($lote_actual->start_session)  &&  strtotime("now")  < strtotime($lote_actual->end_session) )
+				<br><br>
+				<a href='{{  Routing::translateSeo('api/subasta').$data['subasta_info']->lote_actual->cod_sub."-".str_slug($data['subasta_info']->lote_actual->name)."-".$data['subasta_info']->lote_actual->id_auc_sessions }}'>
+					<button class="btn btn-lg btn-custom live-btn btn-color"><?=trans(\Config::get('app.theme').'-app.lot.bid_live')?></button>
+				</a>
+			@endif
+
             <div class="insert_bid">
                 <p><strong>{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}</strong></p>
             </div>

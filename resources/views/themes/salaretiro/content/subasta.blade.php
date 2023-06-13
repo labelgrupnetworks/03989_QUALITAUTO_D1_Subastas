@@ -107,6 +107,8 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                         $item->descweb_hces1 = str_replace ('</p>',' ',$item->descweb_hces1);
 
                          $title=$item->titulo_hces1;
+						 $titulo ="<span class='ref_item'>$item->ref_asigl0 -</span>". $item->descweb_hces1 . " ".$item->desc_hces1 ;
+						 /*
                         if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
 
                             $titulo ="<span class='ref_item'>$item->ref_asigl0 -</span> $item->descweb_hces1 ";
@@ -115,7 +117,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                         }elseif(\Config::get('app.ref_asigl0')){
                             $titulo = trans(\Config::get('app.theme').'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
                         }
-
+						*/
                         $precio_venta=NULL;
                         if (!empty($item->himp_csub)){
                                 $precio_venta=$item->himp_csub;
