@@ -151,17 +151,7 @@ class BannerLib
 						$languages[strtoupper(Config::get("app.locale"))] = 1;
 						#añadimos el ES despues para que busque primero en el idioma principal, si el principal es ES, esto no hace nada
 						$languages["ES"] = 1;
-
-
-						$html .= "<div class=\"item $item_name pos_item_$index";
-						$html .= $isMobile ? "\">" : " hidden-xs\">";
-						if ($item->url) {
-							if ($item->ventana_nueva) {
-								$html .= '<a href="' . $item->url . '" target="_blank">';
-							} else {
-								$html .= '<a href="' . $item->url . '">';
-							}
-						}
+						
 
 						foreach (["webp", "jpg", "gif"] as $extension){
 							foreach (array_keys($languages) as $locale){
@@ -183,24 +173,34 @@ class BannerLib
 							}
 						}
 
-						if(!file_exists(public_path($pathImg))) {
-							return;
-						}
+						if(file_exists(public_path($pathImg))) {
 
-						$image = Image::make(public_path($pathImg));
-						$width = $image->width();
-						$height = $image->height();
-						$publicPath = Tools::urlAssetsCache($pathImg);
+							$html .= "<div class=\"item $item_name pos_item_$index";
+							$html .= $isMobile ? "\">" : " hidden-xs\">";
+							if ($item->url) {
+								if ($item->ventana_nueva) {
+									$html .= '<a href="' . $item->url . '" target="_blank">';
+								} else {
+									$html .= '<a href="' . $item->url . '">';
+								}
+							}
 
-						$html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">";
+							$image = Image::make(public_path($pathImg));
+							$width = $image->width();
+							$height = $image->height();
+							$publicPath = Tools::urlAssetsCache($pathImg);
 
-						if ($item->texto) {
-							$html .= "<span>" . $item->texto . "</span>";
+							$html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">";
+
+							if ($item->texto) {
+								$html .= "<span>" . $item->texto . "</span>";
+							}
+							if ($item->url) {
+								$html .= '</a>';
+							}
+
+							$html .= '</div>';
 						}
-						if ($item->url) {
-							$html .= '</a>';
-						}
-						$html .= '</div>';
 
 					}
 				}

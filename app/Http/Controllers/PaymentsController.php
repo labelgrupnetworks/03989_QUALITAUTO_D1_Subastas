@@ -25,12 +25,14 @@ use App\libs\RedsysAPI;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FxClid;
 use App\Http\Controllers\V5\PayShoppingCartController;
+use App\Http\Controllers\V5\DepositController;
 use App\libs\PayPalV2API;
 use App\Models\V5\FsParams;
 use App\Models\V5\FgCsub0;
 use App\Models\V5\FgCsub;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Collection;
+use GuzzleHttp\Client;
 
 class PaymentsController extends Controller
 {
@@ -99,7 +101,7 @@ class PaymentsController extends Controller
 		$tipo_iva = $this->user_has_Iva($gemp, $user_cod);
 		$imp_gastosErp = array('imp' => 0, 'iva' => 0);
 		$price_exportacion_total = 0;
-
+		$base_csub_lotes = 0;
 		foreach ($carrito as $sub => $value) {
 			foreach ($value as $ref => $value) {
 
@@ -134,14 +136,9 @@ class PaymentsController extends Controller
 					$increment_asigl2 = $pago->getIncrementGastosExtras($ref, $sub, $emp);
 
 					$iva_cli = $this->hasIvaReturnIva($tipo_iva->tipo, $iva);
+					#para el iva de los lotes
+					$base_csub_lotes +=$inf_lot->base_csub;
 
-					// calculamos iva del lote
-					#Duran solo las online pasan por este circuito por eso no hace falta comparar si la subasta es de tipo online
-					if(\Config::get("app.noIVAOnlineAuction") ){
-						$tax = $tax +  0;
-					}else{
-						$tax = $tax + $this->calculate_iva($tipo_iva->tipo, $iva, $inf_lot->base_csub);
-					}
 
 					//Cogemos gastos extas si ya tenia una prefactura hecha
 					$gastosErp = $pago->getPrefacturaGenerated($sub, $ref);
@@ -343,6 +340,11 @@ class PaymentsController extends Controller
 			}
 		}
 
+		// calculamos iva de los lotes, todos juntos para que no haya problemas de decimales
+		#Duran solo las online pasan por este circuito por eso no hace falta comparar si la subasta es de tipo online
+		if(!\Config::get("app.noIVAOnlineAuction") ){
+			$tax = $tax + $this->calculate_iva($tipo_iva->tipo, $iva, $base_csub_lotes);
+		}
 		//Calculamos gastos de envio
 		#Eloy - 21/10/2021: Nos hemos dado cuenta que en ERP añaden el iva y la licencia de exportación para calcular los gastos de envío
 		# y en Web no lo estabamos haciendo.
@@ -401,8 +403,14 @@ class PaymentsController extends Controller
 		$token = '';
 		//generamos token
 		$token = $this->generate_token();
+		#si tiene un sobrecargo por pagar en web
+		$imp_extra = 0;
+		if(Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb"))){
+			$imp_extra = ($precio +  $envio + $tax) * (Config::get("app.sobreCargoPagoWeb") / 100) ;
 
-		$pago->insertPreFactura($emp, $apre, $npre, $user_cod, $precio, $envio, $tax, $token, $jsonLot, $price_exportacion_total);
+		}
+
+		$pago->insertPreFactura($emp, $apre, $npre, $user_cod, $precio, $envio, $tax, $token, $jsonLot, $price_exportacion_total,$imp_extra);
 
 		$tipo = 'P';
 		$paymethod ="";
@@ -945,8 +953,8 @@ class PaymentsController extends Controller
 
 		return $msg;
 	}
-	#
-	function requestRedsys($amount, $ordenTrans, $merchantURL ){
+	#la operacion 0 es la normal , la autorización
+	function requestRedsys($amount, $ordenTrans, $merchantURL, $operacion = 0 , $multiRedsys = null, $urlOk = null, $urlKo = null ){
 
 
 		$url =  Config::get('app.url');
@@ -960,19 +968,39 @@ class PaymentsController extends Controller
 
 
 		#Redsys recomienda que no haya letras en los 4 primeros digitos de la idorden, por lo que substituimos la F y P por 0 y 1 respectivamente
-		$ordenTrans = str_replace(["F","P","T", "M"], [0,1,2,3], $ordenTrans);
+		$ordenTrans = str_replace(["F","P","T", "M","D"], [0,1,2,3,4], $ordenTrans);
 
 		$miObj = new RedsysAPI;
 
+		if(!empty($multiRedsys))
+		{
+			\Log::info("multiredsys $multiRedsys");
+			$merchantCode = Config::get('app.MerchandCodeRedsys_'.$multiRedsys);
+			$terminal = Config::get('app.TerminalRedsys_'.$multiRedsys);
+			$keyRedsys = Config::get('app.KeyRedsys_'.$multiRedsys);
+
+		}else{
+			$merchantCode = Config::get('app.MerchandCodeRedsys');
+			$terminal = Config::get('app.TerminalRedsys');
+			$keyRedsys = Config::get('app.KeyRedsys');
+		}
+		if(empty($urlOk)){
+			$urlOk = $url.Config::get('app.PaymentUrlOK');
+		}
+		if(empty($urlKo)){
+			$urlKo = $url.Config::get('app.PaymentUrlKO');
+		}
+
+
 		$miObj->setParameter("DS_MERCHANT_AMOUNT",round($amount * 100,0));#para euros las dos ultimas cifras se consideran decimales, por lo que hay que mltiplicarlo por 100
 		$miObj->setParameter("DS_MERCHANT_ORDER",$ordenTrans);
-		$miObj->setParameter("DS_MERCHANT_MERCHANTCODE",Config::get('app.MerchandCodeRedsys'));
+		$miObj->setParameter("DS_MERCHANT_MERCHANTCODE",$merchantCode);
 		$miObj->setParameter("DS_MERCHANT_CURRENCY","978");#moneda, 978 es Euros
-		$miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE",0); #tipo transaccion
-		$miObj->setParameter("DS_MERCHANT_TERMINAL",Config::get('app.TerminalRedsys'));
+		$miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE",$operacion); #tipo transaccion 0 autorización, la normal, 1 preautorización
+		$miObj->setParameter("DS_MERCHANT_TERMINAL",$terminal);
 		$miObj->setParameter("DS_MERCHANT_MERCHANTURL",$url . $merchantURL);
-		$miObj->setParameter("DS_MERCHANT_URLOK", $url.Config::get('app.PaymentUrlOK'));
-		$miObj->setParameter("DS_MERCHANT_URLKO", $url.Config::get('app.PaymentUrlKO'));
+		$miObj->setParameter("DS_MERCHANT_URLOK", $urlOk );
+		$miObj->setParameter("DS_MERCHANT_URLKO", $urlKo);
 		$miObj->setParameter("DS_MERCHANT_PAYMETHODS",$payMethod);
 
 
@@ -984,7 +1012,7 @@ class PaymentsController extends Controller
 		// Se generan los parámetros de la petición
 		$varsRedsys["version"] = "HMAC_SHA256_V1";
 		$varsRedsys["params"] = $miObj->createMerchantParameters();
-		$varsRedsys["signature"] = $miObj->createMerchantSignature(Config::get('app.KeyRedsys')); #Clave recuperada de CANALES
+		$varsRedsys["signature"] = $miObj->createMerchantSignature($keyRedsys); #Clave recuperada de CANALES
 
 		#log con la información que se envia a redsys
 		\Log::info(json_encode($miObj->vars_pay));
@@ -1151,7 +1179,44 @@ class PaymentsController extends Controller
 		}
 	}
 
-	public function pagoDirectoReturnRedsys()
+	public function restRedsys ($varsRedsys){
+		
+
+		$url = \Config::get("app.UrlRedsys")."rest/trataPeticionREST" ;
+		$clientGuzz = new Client(['verify' => false]);
+		$method="POST";
+		$vars=[
+			"Ds_SignatureVersion" => $varsRedsys["version"],
+			"Ds_MerchantParameters" => $varsRedsys["params"],
+			"Ds_Signature" => $varsRedsys["signature"],
+
+		];
+        $responseJson=$clientGuzz->request($method, $url,[
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+              ],
+
+            \GuzzleHttp\RequestOptions::JSON =>$vars
+            ]);
+
+			$response = json_decode($responseJson->getBody());
+
+			if(empty($response->errorCode)){
+				return true;
+			}else{
+				\Log::error("Error en restRedsys ".$response->errorCode);
+				return false;
+			}
+
+	}
+
+	public function responseRedsysMultiTpv($tpvCode){
+		\Log::info("Pago multi tpv code $tpvCode");
+		$this->pagoDirectoReturnRedsys($tpvCode);
+	}
+
+	public function pagoDirectoReturnRedsys($multiTpvCode=null)
 	{
 		try{
 			$redsys = new RedsysAPI;
@@ -1160,8 +1225,12 @@ class PaymentsController extends Controller
 			$version = $request["Ds_SignatureVersion"];
 			$datos = $request["Ds_MerchantParameters"];
 			$signatureRecibida = $request["Ds_Signature"];
+			$kc = Config::get('app.KeyRedsys');
+			if(!empty($multiTpvCode)){
+				$kc = Config::get('app.KeyRedsys_'.$multiTpvCode );
+			}
 
-			$kc = Config::get('app.KeyRedsys');//Clave recuperada de CANALES
+			//Clave recuperada de CANALES
 			$firma = $redsys->createMerchantSignatureNotif($kc,$datos);
 			$decodec = $redsys->decodeMerchantParameters($datos);
 			$returnedVars = json_decode($decodec);
@@ -1195,6 +1264,13 @@ class PaymentsController extends Controller
 						}elseif($tipoPago == '3'){
 							#cambiamos el primer digito si es 3 por M que es el de coste minteo
 							$merchantId = "M".substr($returnedVars->Ds_Order,1);
+						}elseif($tipoPago == '4'){
+							#cambiamos el primer digito si es 3 por M que es el de coste minteo
+							$merchantId = "D".substr($returnedVars->Ds_Order,1);
+							#Llamamos a la funcion de depositController para que lo
+							$depositController = new DepositController();
+							$depositController->returnPay($merchantId);
+							return;
 						}
 						#dividimos por cien por que al ser € se ha multiplicado antes por 100, Redsys no trabaja con decimales
 						$amount = $returnedVars->Ds_Amount/100;
@@ -1784,6 +1860,8 @@ class PaymentsController extends Controller
 		}
 		$res["imp_min"]=  floatval($imp_min);
 		$res["iva_min"]=  floatval($iva_min);
+
+
 
 		return $res;
 	}

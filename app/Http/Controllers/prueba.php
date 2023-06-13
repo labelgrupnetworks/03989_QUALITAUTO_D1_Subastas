@@ -142,6 +142,10 @@ use App\Http\Controllers\admin\facturacion\AdminPedidosController;
 use App\Http\Controllers\V5\CarlandiaPayController;
 use App\Http\Controllers\webservice\WebServiceController;
 use App\Models\V5\FgCaracteristicas_Hces1;
+use App\Models\V5\FgCaracteristicas_Hces1_Lang;
+use App\Models\V5\FgCaracteristicas_Value;
+use App\Models\V5\FgCaracteristicas_Value_Lang;
+
 use App\Models\V5\WebPayCart;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp\Client;
@@ -155,11 +159,18 @@ use Faker\Provider\en_US\PaymentTest;
 
 use ElephantIO\Engine\SocketIO\Version2X;
 use ElephantIO\Engine\Socket\SecureOptionBuilder;
+use App\Http\Controllers\V5\AppPushController;
+use App\Http\Controllers\V5\DepositController;
+use App\models\V5\AppUsersToken;
+use App\models\V5\AppPush;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
+		return ;
 
 		$options=[
 			'headers' => [
@@ -172,29 +183,304 @@ class Prueba extends BaseController
 					'verify_peer_name' => false
 				]
 			]
-
 		];
 
-		//$url = "https://demoauction.labelgrup.com:29345";
-		//$url = "https://www.salaretiro.com:29345";
-		//$url = "https://auctions.tauleryfau.com:2087";
-		//$url = "https://demoauction.labelgrup.com:2088";
-		//$url = "http://localhost:22345";
-		//$url = "https://demoauction.labelgrup.com/themes/demo/assets/img/logo.png";
 
-		//$url = "https://auctions.tauleryfau.com:2087";
-		//$url = "https://demoauction.labelgrup.com:2088";
-		$url = "https://subdemo-autodeploy.enpreproduccion.com:22345";
-		$client = new \ElephantIO\Client(new Version2X($url, $options));
 
-		$client->initialize();
-		$client->emit('broadcast', ['foo' => 'bar']);
-		$client->close();
 
+		$a = new DepositController();
+		$idTrans = "D31684405321";
+		$a->confirmPreAuthorization("STNTEST","1");
+		//$a->returnPay($idTrans);
 	}
 
-	public function duplicadosAnsorena(){
-		$sql="
+
+	public function traspaso_fgcaracteristicas(){
+
+
+		//$res = $this->traspaso_auc_custom_fields();
+		//$res = $this->traspaso_auc_custom_fields_lang();
+		//$res = $this->traspaso_object_types();
+		//$res = $this->traspaso_object_types_lang();
+		#ultimo paso pasar values
+		$res = $this->traspaso_values_hces1();
+		if($res){
+
+			return redirect('prueba?a='.rand());
+		}
+	}
+	# una vez volcados todos los datos, hacemos update en fgcaracteristica_hces1 para añadir los codes
+	public function traspaso_values_hces1($numelements = 200){
+		$caracteristicas = FgCaracteristicas::get();
+
+
+		$idcaracteristicas = array();
+		foreach($caracteristicas as $caracteristica){
+			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
+		}
+
+
+		$sql= "select \"field\" from \"auc_custom_fields_values\" group by \"field\"";
+		$fields = \DB::select($sql, []);
+		$select = "";
+		$where = array();
+
+		foreach($fields as $field){
+			$select .= ', "'.$field->field.'_code" ' ;
+			$where[]= '  "'.$field->field.'_code" is not null ';
+		}
+
+		$sql = "select * from (
+		select \"transfer_sheet_number\" , \"transfer_sheet_line\"  $select
+		, ROW_NUMBER() OVER(order by \"transfer_sheet_number\" , \"transfer_sheet_line\") as rn
+		from \"object_types_values\"
+		left join (select EMP_CARACTERISTICAS_HCES1,NUMHCES_CARACTERISTICAS_HCES1, LINHCES_CARACTERISTICAS_HCES1 from fgcaracteristicas_hces1 where idvalue_caracteristicas_hces1 is not null group by EMP_CARACTERISTICAS_HCES1,NUMHCES_CARACTERISTICAS_HCES1, LINHCES_CARACTERISTICAS_HCES1) T
+			on EMP_CARACTERISTICAS_HCES1 = \"company\" and  NUMHCES_CARACTERISTICAS_HCES1 =  \"transfer_sheet_number\" and  LINHCES_CARACTERISTICAS_HCES1 = \"transfer_sheet_line\"
+		where \"company\" = ".\Config::get("app.emp") ." ".
+		"and T.EMP_CARACTERISTICAS_HCES1 is null
+		and (". implode(' or ',$where ) . ")
+		)
+			where rn <= $numelements";
+
+		$codes = \DB::select($sql, []);
+		echo "traspasando códigos". count($codes)." a la FgCaracteristicas_Hces1";
+		if(count($codes) == 0){
+			die();
+		}
+
+		foreach($codes as $code){
+
+			foreach($code as $atribute => $val){
+
+				if(!is_null($val) && $atribute != "transfer_sheet_number"  && $atribute != "transfer_sheet_line"  && $atribute != "rn"   ){
+
+					$atribute = str_replace("_code", "",$atribute);
+					FgCaracteristicas_Hces1::where("NUMHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_number)->
+					where("LINHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_line)->
+					where("IDCAR_CARACTERISTICAS_HCES1", $idcaracteristicas[$atribute])->
+					update(["IDVALUE_CARACTERISTICAS_HCES1" => $val]);
+
+
+				}
+			}
+		}
+
+		return true;
+	}
+
+
+	# OJO tener en cuenta que la tabla de fgcaracteristicas_value debe estar vacia para esa empresa, si no es así habrá que sumar un numero
+	public function traspaso_auc_custom_fields($numelements=200){
+		$caracteristicas = FgCaracteristicas::get();
+
+		$select="";
+		$idcaracteristicas = array();
+		foreach($caracteristicas as $caracteristica){
+			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
+		}
+		$sql = "select * from (
+			select \"auc_custom_fields_values\".*,  ROW_NUMBER() OVER(order by \"id\") as rn from \"auc_custom_fields_values\"
+			left join fgcaracteristicas_value on emp_caracteristicas_value = '" .\Config::get("app.emp")."' and id_caracteristicas_value = \"id\"
+			where emp_caracteristicas_value is null
+			)
+			where rn <= $numelements";
+
+		$customFieldsValue = \DB::select($sql, []);
+
+		$caracteristicasValue = array();
+
+		echo "traspasando ". count($customFieldsValue)." a la traspaso_auc_custom_fields";
+
+		if(count($customFieldsValue) == 0){
+			#si acabamos ya no redireccionamos
+			die();
+		}
+		foreach($customFieldsValue as $customFieldValue){
+
+			$caracteristicasValue[]=[
+				"EMP_CARACTERISTICAS_VALUE" => \Config::get("app.emp"),
+				"ID_CARACTERISTICAS_VALUE" =>  $customFieldValue->id,
+				"IDCAR_CARACTERISTICAS_VALUE" => $idcaracteristicas[ $customFieldValue->field],
+				"OBJ_TYPE_CARACTERISTICAS_VALUE" =>  $customFieldValue->object_type,
+				"SECTION_CARACTERISTICAS_VALUE" =>  $customFieldValue->section,
+				"VALUE_CARACTERISTICAS_VALUE" =>$customFieldValue->value
+			];
+		}
+
+		FgCaracteristicas_Value::insert($caracteristicasValue);
+		return true;
+	}
+
+	public function traspaso_auc_custom_fields_lang($numelements=200){
+		$caracteristicas = FgCaracteristicas::get();
+
+		$select="";
+		$idcaracteristicas = array();
+		foreach($caracteristicas as $caracteristica){
+			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
+		}
+		$sql = "select * from (
+			select \"auc_custom_fields_values_lang\".*,  ROW_NUMBER() OVER(order by \"id_lang\") as rn from \"auc_custom_fields_values_lang\"
+			left join fgcaracteristicas_value_lang on emp_car_val_lang = '" .\Config::get("app.emp")."' and idcarval_car_val_lang = \"id_lang\"
+			where emp_car_val_lang is null
+			)
+			where rn <= $numelements";
+
+		$customFieldsValue_lang = \DB::select($sql, []);
+
+		$caracteristicasValue_lang = array();
+		echo "traspasando ". count($customFieldsValue_lang)." a la traspaso_auc_custom_fields_lang";
+
+		if(count($customFieldsValue_lang) == 0){
+			#si acabamos ya no redireccionamos
+			die();
+		}
+		foreach($customFieldsValue_lang as $customFieldValue_lang){
+
+			$caracteristicasValue_lang[]=[
+				"EMP_CAR_VAL_LANG" => \Config::get("app.emp"),
+				"IDCARVAL_CAR_VAL_LANG" =>  $customFieldValue_lang->id_lang,
+				"LANG_CAR_VAL_LANG" =>  $customFieldValue_lang->lang,
+				"VALUE_CAR_VAL_LANG" =>  $customFieldValue_lang->value_lang
+			];
+		}
+
+		FgCaracteristicas_Value_Lang::insert($caracteristicasValue_lang);
+		return true;
+	}
+
+	public function traspaso_object_types($numelements=200){
+		$caracteristicas = FgCaracteristicas::get();
+
+		$select="";
+		$idcaracteristicas = array();
+		$whereNull = array();
+		foreach($caracteristicas as $caracteristica){
+			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
+			$whereNull[]=' NVL(LENGTH("'.$caracteristica->name_caracteristicas.'"),0) > 0';
+		}
+
+		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1".$select)->
+		join('"object_types_values"','"company" = emp_hces1 and "transfer_sheet_number" = num_hces1 and "transfer_sheet_line" = lin_hces1')->
+		leftjoin("FGCARACTERISTICAS_HCES1","EMP_CARACTERISTICAS_HCES1 = EMP_HCES1 AND NUMHCES_CARACTERISTICAS_HCES1 = NUM_HCES1 AND LINHCES_CARACTERISTICAS_HCES1=LIN_HCES1")->
+		/* comprobamos que no exista en la tabla de caracteristicas */
+		where("EMP_CARACTERISTICAS_HCES1")->
+		whereRaw(" (". implode(' or ',$whereNull ) ." )")->
+		take($numelements)->get();
+
+		$caracteristicasHces1 = array();
+
+		echo "traspasando ". count($lotes)." a la traspaso_object_types";
+
+		if(count($lotes) == 0){
+			#si acabamos ya no redireccionamos
+			die();
+		}
+
+		foreach($lotes as $lote){
+
+			foreach($lote->toArray() as $atribute => $val){
+
+				if(!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn" ){
+
+					#son los campos clob, "technical_description" se sacara a las hces1
+				if(in_array($atribute, ["obverse", "reverse"]) ){
+					#cada p que haya ponemos un salto de linea
+					$val = str_replace("</p>",  "</p>\n", $val);
+					#quitamos código HTML ya que si no se superan los 2000 caracteres
+					$val = strip_tags($val);
+
+
+				}
+
+					$caracteristicasHces1[]=[
+						"EMP_CARACTERISTICAS_HCES1" =>$lote->emp_hces1,
+						"NUMHCES_CARACTERISTICAS_HCES1" =>$lote->num_hces1,
+						"LINHCES_CARACTERISTICAS_HCES1" =>$lote->lin_hces1,
+						"IDCAR_CARACTERISTICAS_HCES1" => $idcaracteristicas[$atribute],
+						"VALUE_CARACTERISTICAS_HCES1" => $val
+					];
+				}
+			}
+		}
+
+		FgCaracteristicas_Hces1::insert($caracteristicasHces1);
+
+		return true;
+	}
+
+	public function traspaso_object_types_lang($numelements=200){
+		$caracteristicas = FgCaracteristicas::get();
+
+		$select="";
+		$idcaracteristicas = array();
+
+		$whereNull=array();
+
+		foreach($caracteristicas as $caracteristica){
+			$select.=' ,"'.$caracteristica->name_caracteristicas.'_lang"';
+			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
+			$whereNull[]=' NVL(LENGTH("'.$caracteristica->name_caracteristicas.'_lang"),0) > 0';
+
+		}
+
+
+
+		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1, \"lang_object_types_values_lang\" ".$select)->
+		join('"object_types_values_lang"','"company_lang" = emp_hces1 and "transfer_sheet_number_lang" = num_hces1 and "transfer_sheet_line_lang" = lin_hces1')->
+		leftjoin("FGCARACTERISTICAS_HCES1_LANG","EMP_CAR_HCES1_LANG = EMP_HCES1 AND NUMHCES_CAR_HCES1_LANG = NUM_HCES1 AND LINHCES_CAR_HCES1_LANG=LIN_HCES1 AND LANG_CAR_HCES1_LANG =  \"lang_object_types_values_lang\"")->
+		/* comprobamos que no exista en la tabla de caracteristicas  por lo que  miramso que EMP_CAR_HCES1_LANG sea nulo*/
+		where("EMP_CAR_HCES1_LANG")->
+		whereRaw(" (". implode(' or ',$whereNull ) ." )")->
+		take($numelements)->get();
+
+		$caracteristicasHces1 = array();
+
+		echo "traspasando ". count($lotes)." a la object_types_values_lang";
+
+		if(count($lotes) == 0){
+			#si acabamos ya no redireccionamos
+			die();
+		}
+
+		foreach($lotes as $lote){
+
+			foreach($lote->toArray() as $atribute => $val){
+
+				if(!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn" && $atribute != "lang_object_types_values_lang"){
+					if(in_array($atribute, ["obverse_lang", "reverse_lang"]) ){
+						#cada p que haya ponemos un salto de linea
+						$val = str_replace("</p>",  "</p>\n", $val);
+						#quitamos código HTML ya que si no se superan los 2000 caracteres
+						$val = strip_tags($val);
+
+
+					}
+
+					$caracteristicasHces1[]=[
+						"EMP_CAR_HCES1_LANG" =>$lote->emp_hces1,
+						"NUMHCES_CAR_HCES1_LANG" =>$lote->num_hces1,
+						"LINHCES_CAR_HCES1_LANG" =>$lote->lin_hces1,
+						"IDCAR_CAR_HCES1_LANG" => $idcaracteristicas[str_replace("_lang","",$atribute)],
+						"VALUE_CAR_HCES1_LANG" => $val,
+						"LANG_CAR_HCES1_LANG" => $lote->lang_object_types_values_lang
+					];
+				}
+			}
+		}
+		FgCaracteristicas_Hces1_Lang::insert($caracteristicasHces1);
+
+		return true;
+	}
+
+
+
+	public function duplicadosAnsorena()
+	{
+		$sql = "
 		select  cod_cli codigo,nom_cli nombre, cif_cli cif, concat(dir_cli,dir2_cli) direccion, tel1_cli telefono, tel2_cli telefono2,  email_cli email,TO_CHAR(f_alta_cli, 'DD/MM/YYYY') as fecha_alta,  compras, TO_CHAR(fecha_ultima_compra, 'DD/MM/YYYY') fecha_ultima_compra, ventas, TO_CHAR(fecha_ultima_venta, 'DD/MM/YYYY') fecha_ultima_venta, TO_CHAR(fecha_ultima_puja, 'DD/MM/YYYY') fecha_ultima_puja, TO_CHAR(fecha_ultima_cesion, 'DD/MM/YYYY')fecha_ultima_cesion
 
 				from fxcli A
@@ -232,10 +518,10 @@ class Prueba extends BaseController
 		#and  cif_cli in (' GB788152982','AAA916794')
 		$users = \DB::select($sql, []);
 		$listado = [];
-		foreach($users as $key=> $user){
-			if($key >0 ){
-				if($users[$key-1]->nombre != $user->nombre){
-					$listado[] = collect(["codigo" => "","nombre" => "", "cif" => "", "direccion" => "", "telefono" => "", "telefono2" => "",  "email" => "", "fecha_alta" =>"" , "compras" => "",   "fecha_ultima_compra" => "",   "ventas" => "",   "fecha_ultima_venta" => "", "fecha_ultima_puja" => "" , "fecha_ultima_cesion" => "" ]);
+		foreach ($users as $key => $user) {
+			if ($key > 0) {
+				if ($users[$key - 1]->nombre != $user->nombre) {
+					$listado[] = collect(["codigo" => "", "nombre" => "", "cif" => "", "direccion" => "", "telefono" => "", "telefono2" => "",  "email" => "", "fecha_alta" => "", "compras" => "",   "fecha_ultima_compra" => "",   "ventas" => "",   "fecha_ultima_venta" => "", "fecha_ultima_puja" => "", "fecha_ultima_cesion" => ""]);
 				}
 			}
 			$listado[] = $user;
@@ -244,23 +530,23 @@ class Prueba extends BaseController
 		$collection = collect($listado);
 
 		return $collection->downloadExcel("duplicados por nombre V3.xlsx", \Maatwebsite\Excel\Excel::XLSX, true);
-
-
 	}
 
 
 
-	public function testwebserviceNFTDuran(){
+	public function testwebserviceNFTDuran()
+	{
 		$a = new App\Http\Controllers\externalws\durannft\PaidController();
 		$a->informPaid("M61666250095");
 
 		#$a->informPaid("T91655795173");
-	//	$a->informPaid("P55657178730");
+		//	$a->informPaid("P55657178730");
 
 	}
-	public function TestVottun(){
+	public function TestVottun()
+	{
 		$num = 8;
-		$lin=6;
+		$lin = 6;
 		$vottun = new VottunController();
 		$response = $vottun->webhook();
 		//$response = $vottun->vottunGetWebhook();
@@ -282,21 +568,21 @@ class Prueba extends BaseController
 	}
 
 
-/* carga motorflash */
-public function cargaMotorflash(){
+	/* carga motorflash */
+	public function cargaMotorflash()
+	{
 
-	$cron = new  App\Http\Controllers\CronController();
-	$cod_cli= "000025";
-	$cron->loadCarsCedente($cod_cli);
-
-}
+		$cron = new  App\Http\Controllers\CronController();
+		$cod_cli = "000025";
+		$cron->loadCarsCedente($cod_cli);
+	}
 
 
 	public function recreatePdfReports($cod_sub)
 	{
 		$subasta = new Subasta();
-        $subasta->cod = $cod_sub;
-        $subasta->page = 'all';
+		$subasta->cod = $cod_sub;
+		$subasta->page = 'all';
 		$info = $subasta->getInfSubasta();
 
 		$pdfController = new PdfController();
@@ -306,7 +592,7 @@ public function cargaMotorflash(){
 
 		$pdfController->generateAuctionAwardsReportPdf($info, $reportTitleAwardsReport);
 		$pdfController->generateAuctionBidsReportPdf($info, $reportTitleBidsReport);
-		if(config('app.certificate_in_report', false)) {
+		if (config('app.certificate_in_report', false)) {
 			$pdfController->generateCertificateReportPdf($cod_sub);
 		}
 
@@ -330,19 +616,19 @@ public function cargaMotorflash(){
 		$adjudicado = $subasta->get_csub(config('app.emp'));
 
 		$pdfController = new PdfController();
-		if(!empty($inf_lot->prop_hces1)){
+		if (!empty($inf_lot->prop_hces1)) {
 			$propietary = FxCli::select('RSOC_CLI')->where('COD_CLI', $inf_lot->prop_hces1)->first();
 		}
 
 		$tableInfo = [
-			trans(\Config::get('app.theme').'-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
-			trans(\Config::get('app.theme').'-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
-			trans(\Config::get('app.theme').'-app.reports.auction_code') => $inf_subasta->cod_sub,
-			trans(\Config::get('app.theme').'-app.reports.lot_code') => $inf_lot->ref_asigl0,
-			trans(\Config::get('app.theme').'-app.reports.date_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme').'-app.reports.hour_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
-			trans(\Config::get('app.theme').'-app.reports.date_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme').'-app.reports.hour_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
+			trans(\Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
+			trans(\Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
+			trans(\Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
+			trans(\Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
+			trans(\Config::get('app.theme') . '-app.reports.date_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans(\Config::get('app.theme') . '-app.reports.hour_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
+			trans(\Config::get('app.theme') . '-app.reports.date_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans(\Config::get('app.theme') . '-app.reports.hour_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
 		];
 
 		$pdfController->setTableInfo($tableInfo);
@@ -353,7 +639,6 @@ public function cargaMotorflash(){
 		$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? null, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
 
 		$pdfController->savePdfs($inf_subasta->cod_sub, $inf_lot->ref_asigl0);
-
 	}
 
 	public function borrarCarpeta($carpeta)
@@ -1304,7 +1589,7 @@ $lang =[';
 			->where('COD_SUB', '23142')
 			->first();
 
-		 /* foreach ($dataForExport as $key => $value) {
+		/* foreach ($dataForExport as $key => $value) {
 			$url_friendly = \Tools::url_lot($value->cod_sub, $value->id_auc_sessions, $value->name, $value->lot_number, $value->num_hces1, $value->webfriend_hces1, $value->description);
 			$dataForExport[$key]["lot_url"] = $url_friendly;
 			$dataForExport[$key]["photo_url"] = \Tools::url_img('lote_medium', $value->num_hces1, $value->lin_hces1);
@@ -1322,52 +1607,40 @@ $lang =[';
 		/* return $this->exportCollectionToExcel($dataForExport, $fileName); */
 	}
 
-	function testWhatsappMSG()
+
+	function whatsappAction ()
+	{
+		$headers_whatsapp = [
+			'Authorization' => 'Bearer EAAGCB52O9oMBANpgu8ZBQqP5oijPZAQOyw8d9tuxZBF8wZBn3a0bwfqSRaNJ9FSULbX8JgxR5S1It176hJuJ5TX92YB7fqGnoG6KaKDo5sIflmjJXCQmYetFHryvp048TV2FzVydQxQ8ouB6SSxz2KRmSKHBw2mPFZBtQFbzcmz4MuRuKUs8S',
+			'Content-Type' => 'application/json',
+		];
+
+		try {
+
+			$response = $this->sendTemplateWhatsapp($headers_whatsapp);
+
+			dd($response->getBody()->getContents());
+
+		} catch (\Throwable $th) {
+			\Log::info($th->getMessage());
+
+			dd($th->getMessage());
+		}
+	}
+
+	function sendTemplateWhatsapp($headers)
 	{
 
-
-		#FORMA DE CARGAR UN MENSAJE DE TEXTO
-		$type = "text";
-		$message = [
-			'body' => "Esto es una prueba de envío de mensaje ".\Config::get('app.url'),
-		];
-
-		#FORMA DE CARGAR UNA IMAGEN
-		/* $type = "image";
-		$message = [
-			'url' => '', #IMÁGEN EN BASE64
-			'caption' => 'Este es el logo de la web de labelgrup',
-		]; */
-
-		#FORMA DE CARGAR UN TEMPLATE
-		/* $type = "template";
-		$message = [
-			'name' => 'hello_world',
-			'language' => [
-				'code' => 'en_US'
-			]
-		]; */
-
-		$bodyMSG = [
-			'messaging_product' => 'whatsapp',
-			'to' => '34640637357',
-			'type' => $type,
-			$type => $message
-		];
-
-		/* [
-			'headers' => [
-				'Authorization' => 'Bearer EAAGCB52O9oMBACgCPNWTY2r6nnKtZAKDZCrQpnZBS5NNQTbthnQZCZADSpbZC8iUdkiwqgUr5CNG9TZBnioflCZATkbSO57Gyu28PKYDc8yFgUUZAwrBWt3yXhi0LGZBgRKX0Dd2b4LhCTf7cyBvIm6lVEqQqnwmSZCaiwerbg0mfb7akhn1kRdhBoDLL1ZAIHWHc2s47jfTde2ScZCLhLNWAJbqR',
-				'Content-Type' => 'application/json',
-			],
-			'json' => $bodyMSG
-		] */
+		$var1 = \Request::get('var1');
+		$var2 = \Request::get('var2');
+		$var3 = \Request::get('var3');
+		$var4 = \Request::get('var4');
 
 		$client = new Client();
 
-		$response = $client->request('POST', 'https://graph.facebook.com/v15.0/113096834998329/messages', [
+		$response = $client->request('POST', 'https://graph.facebook.com/v16.0/113096834998329/messages', [
 			'headers' => [
-				'Authorization' => 'Bearer 	EAAGCB52O9oMBAHTFOT1wIxM5K92XsJUXBYPtBNOAnWx6VIcaqqI28qKEDn8BL2b6hPYY9WKZBZAZCpYjkpfq2oz9Os7OxykjIsZBX5q3fIKFfKnZCSQaQHOqZCgZAkDatk9yLkGHNLYCsjciMpZAXTQO7wLe7pCWe2tjtkFHr5r4spReyz1DP8nu',
+				'Authorization' => 'Bearer EAAGCB52O9oMBANpgu8ZBQqP5oijPZAQOyw8d9tuxZBF8wZBn3a0bwfqSRaNJ9FSULbX8JgxR5S1It176hJuJ5TX92YB7fqGnoG6KaKDo5sIflmjJXCQmYetFHryvp048TV2FzVydQxQ8ouB6SSxz2KRmSKHBw2mPFZBtQFbzcmz4MuRuKUs8S',
 				'Content-Type' => 'application/json',
 			],
 			'json' => [
@@ -1375,32 +1648,34 @@ $lang =[';
 				'to' => '34640637357',
 				'type' => "template",
 				'template' => [
-					'name' => 'sample_happy_hour_announcement',
+					'name' => 'sample_recient_auction',
 					'language' => [
-						'code' => 'es'
+						'code' => 'es_ES'
 					],
 					'components' => [
 						[
 							'type' => 'header',
 							'parameters' => [
 								[
-									'type' => 'video',
-									'video' => [
-										'link' => 'https://demoauction.labelgrup.com/img/video_test.mp4',
-									]
+									'type' => 'text',
+									'text' => $var1
 								]
 							],
 						],
 						[
 							'type' => 'body',
 							'parameters' => [
+/* 								[
+									'type' => 'text',
+									'image' => $var1
+								], */
 								[
 									'type' => 'text',
-									'text' => 'EXEMPLO'
+									'text' => $var2
 								],
 								[
 									'type' => 'text',
-									'text' => 'EJEMPLO 2'
+									'text' => $var3
 								]
 							],
 						]
@@ -1409,83 +1684,78 @@ $lang =[';
 			]
 		]);
 
+		return $response;
+	}
 
+	function createTemplate4Whatsapp($headers)
+	{
 
+		$var1 = \Request::get('var1');
+		$var2 = \Request::get('var2');
+		$var3 = \Request::get('var3');
+		$var4 = \Request::get('var4');
 
-			/* "template" => [
-				'name' => 'sample_issue_resolution',
-				'language' => [
-					'code' => 'en_US'
-				],
-				"components" => [
-					[
-						"type" => "header",
-						"parameters" => [
-							[
-								"type" => "text",
-								"text" => "This is a header"
+			$client = new Client();
+
+$text_template = '¿Estás preparado para la emoción de nuestra última subasta?
+Descubre la increíble colección de lotes en la subasta "{{1}}". Te espera una amplia selección de productos y ofertas imperdibles.
+¡No te pierdas la oportunidad de participar en vivo el próximo {{2}} y disfruta de la emocionante experiencia de pujar por tus favoritos.
+
+Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en tiempo real.
+
+¡Te esperamos con entusiasmo!';
+
+			$response = $client->request('POST', 'https://graph.facebook.com/v17.0/110347208640772/message_templates', [
+				'headers' => $headers,
+				'json' => [
+					"name" => "sample_recient_auction",
+					"language" => "es_ES",
+					"category" => "MARKETING",
+					"components" => [
+						[
+							"type" => "HEADER",
+							"format" => "TEXT",
+							"text" => "¡Hola {{1}}!",
+							"example" => [
+								"header_text" => [
+									"Jorge Alameda"
+								]
 							]
 						],
-						"type" => "body",
-						"parameters" => [
-							[
-								"type" => "text",
-								"text" => ""
-							]
-						]
-					],
-				]
-			] */
-		/* ,
-								[
-									"type" => "text",
-									"text" => "This is another text"
-								], */
-								/* Pasar 1 parámetro con ejemplo de tipo button */
-								/* [
-									"type" => "button",
-									"button" => [
-										"id" => "button_1",
-										"type" => "web_url",
-										"title" => "This is a button",
-										"url" => "https://www.labelgrup.com"
+						[
+							"type" => "BODY",
+							"text" => $text_template,
+							"example" => [
+								"body_text" => [
+									[
+										"Alfombras y tapices del siglo primero","13 de octubre"
 									]
-								] */
-
-							/* [
-								"type" => "image",
-								"image" => [
-									"aspect_ratio" => "1:1",
-									"animated" => false,
-									"caption" => "This is a caption",
-									"url" => "https://www.labelgrup.com/wp-content/uploads/2016/10/logo.png"
 								]
-							], */
-					/* [
-						"type" => "footer",
-						"parameters" => [
-							[
-								"type" => "button",
-								"button" => [
-									"id" => "button_1",
-									"type" => "web_url",
-									"title" => "This is a button",
-									"url" => "https://www.labelgrup.com"
+							]
+						],
+						[
+							"type" => "FOOTER",
+							"text" => '¿No te interesa? Toca "Detener promociones"'
+						],
+						[
+							"type" => "BUTTONS",
+							"buttons" => [
+								[
+									"type" => "QUICK_REPLY",
+									"text" => "Detener promociones",
 								]
 							]
 						]
-					] */
+					]
+				]
+			]);
 
+			dump($response->getBody()->getContents());
 
-		$statusCode = $response->getStatusCode();
+				/* 'recipient_type' => 'individual', */
 
-		if ($statusCode == 200) {
-			// Petición exitosa
-			$body = $response->getBody();
-			dump($body);
-		} else {
-			// Algo salió mal
-			dump("Error en la petición. Código de estado: " . $statusCode);
-		}
+					/* 'link' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', */
+
+			return $response;
 	}
 }

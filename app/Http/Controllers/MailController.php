@@ -57,19 +57,15 @@ class MailController extends Controller
             return Redirect::to(Routing::slug('thanks'));
         }
 
-        /* No esta funcionando el codigo de Hansel
-            $rules = [
-                'nombre' => 'required|min:5',
-                'email' => 'required|email',
-                'comentario' => 'required'
-            ];
+		// Lista de emails baneados por spam y que no son captados por el recaptcha
+		$bannedsEmails = ['eric.jones.z.mail@gmail.com'];
+		$isEmailBanned = in_array(trim(request('email')), $bannedsEmails);
 
-            $validator = Validator::make(request()->all(), $rules);
-            if ($validator->fails()) {
-                return Redirect::to(Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact'))
-                        ->withInput(request()->all());
-            }
-            */
+		if($isEmailBanned){
+			\Log::info("Correo bloqueado email baneado");
+			return Redirect::to(Routing::slug('thanks'));
+		}
+
         //evita ataques desde fuera de nuestro dominio
         if (!empty($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] !== '' && strpos($_SERVER['HTTP_REFERER'], \Config::get('app.url')) !== false   && strpos($_SERVER['HTTP_REFERER'], \Config::get('app.url')) == 0) {
             $this->template     = 'mailer';

@@ -68,6 +68,14 @@ class AdminAwardController extends Controller
 		} else {
 			$tableParams['afral_csub'] = 0;
 		}
+		if (\Config::get('app.payDepositTpv')) {
+			$tableParams['cod_deposito'] = 1;
+			$tableParams['importe_deposito'] = 1;
+		} else {
+			$tableParams['cod_deposito'] = 0;
+			$tableParams['importe_deposito'] = 0;
+		}
+
 
 		foreach ($personalizedFields as $field) {
 			$tableParams[$field] = 1;
@@ -372,6 +380,11 @@ class AdminAwardController extends Controller
 				$awardsToExcel[$idAward][$key] = $adjudicacion->get($key);
 			}
 
+			/* pongo un espacio para que el excel interprete el numero como texto, ya que es muy largo y en excel no se ve bien   */
+			if(config('app.payDepositTpv', false)){
+				$awardsToExcel[$idAward]['cod_deposito'] = " ". $awardsToExcel[$idAward]['cod_deposito'];
+			}
+
 			if(config('app.surface_euro', false)){
 				if(!$adjudicacion->get('ancho_hces1')){
 					$awardsToExcel[$idAward]['surface_euro'] = 0;
@@ -444,6 +457,11 @@ class AdminAwardController extends Controller
 			->leftjoin('FXCLID', "FXCLID.GEMP_CLID = FXCLI.GEMP_CLI AND FXCLID.CLI_CLID = FXCLI.COD_CLI AND CODD_CLID = 'W1'")
 			->whereNotNull('clifac_csub')
 
+			->when(\Config::get('app.payDepositTpv'), function($query){
+				return $query->addSelect('cod_deposito, importe_deposito')->
+					#COGEMOS SOLO LAS QUE ESTAN MARCADAS COMO CONFIRMACION PAGADA, ENVIADO_DEPOSITO = 'P'
+					leftjoin("FGDEPOSITO","EMP_DEPOSITO = EMP_ASIGL0 AND  SUB_DEPOSITO = SUB_ASIGL0 AND REF_DEPOSITO=REF_ASIGL0 AND CLI_DEPOSITO = COD_CLI AND ESTADO_DEPOSITO = 'V'  AND ENVIADO_DEPOSITO = 'P' ");
+			})
 			->when(\Config::get('app.payAwards'), function($query){
 				return $query->addSelect('afral_csub');
 			})

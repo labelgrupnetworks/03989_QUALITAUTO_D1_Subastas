@@ -591,7 +591,11 @@ class AdminBiReports extends Controller
 				$families[$cod_family]->revaluation = "0%";
 			}
 		}
-		$totales["sold_pct"] = round( (($totales["sold"]  / $totales["lots"]) ) *100, 2) ."%";
+		if($totales["lots"] >0){
+			$totales["sold_pct"] = round( (($totales["sold"]  / $totales["lots"]) ) *100, 2) ."%";
+		}else{
+			$totales["revaluation"] = "0%";
+		}
 		if($totales["price"] >0){
 			$totales["revaluation"] =  round( (($totales["sold_price"] / $totales["price"]) -1) * 100 , 2) ."%";
 		}else{
@@ -773,7 +777,11 @@ private function auctionAwards( $type ){
 			$auctions[$cod_auction]->revaluation = "0%";
 		}
 	}
-	$totales["sold_pct"] = round( (($totales["sold"]  / $totales["lots"]) ) *100, 2) ."%";
+	if($totales["price"] >0){
+		$totales["sold_pct"] = round( (($totales["sold"]  / $totales["lots"]) ) *100, 2) ."%";
+	}else{
+		$totales["sold_pct"] = "0%";
+	}
 	if($totales["price"] >0){
 		$totales["revaluation"] =  round( (($totales["sold_price"] / $totales["price"]) -1) * 100 , 2) ."%";
 	}else{

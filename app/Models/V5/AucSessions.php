@@ -77,5 +77,9 @@ class AucSessions extends Model
 
 	}
 
+	public function scopeLeftJoinWebSubastas($query){
+		return $query->leftJoin('WEB_SUBASTAS','WEB_SUBASTAS.ID_EMP = "auc_sessions"."company" AND WEB_SUBASTAS.ID_SUB = "auc_sessions"."auction" AND WEB_SUBASTAS.SESSION_REFERENCE = "auc_sessions"."reference"');
+	}
+
 }
 

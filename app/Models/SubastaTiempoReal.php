@@ -11,7 +11,7 @@ use \pdo;
 use yajra\Oci8\Connectors\OracleConnector;
 use yajra\Oci8\Oci8Connection;
 use App\Models\Subasta;
-
+use App\Models\V5\AucSessions;
 
 class SubastaTiempoReal extends Model
 {
@@ -589,8 +589,21 @@ class SubastaTiempoReal extends Model
         return $result;
     }
 
+	public function getStatusSessions()
+	{
+		# Obtiene las sessiones de la subasta
+		$sessions = AucSessions::select('ESTADO, REANUDACION, "auction"')
+		->leftJoinWebSubastas()
+		->where('"auction"', $this->cod)->get();
 
+		# Comprueba que todas las sessiones esten en estado ended
+		$ended = $sessions->every(function($session) {
+			# Comprueba que la session este en estado ended
+			return $session->estado == "ended";
+		});
 
+		return $ended;
+	}
 
 
 }

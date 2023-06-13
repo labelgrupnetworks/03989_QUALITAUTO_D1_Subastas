@@ -1152,18 +1152,26 @@ class subastaTiempoRealController extends Controller
 
 
     }
+	public function comprar(){
 
-
-
-    public function comprar(){
-        $user = new User();
-        $mail = new MailController();
-        //$subasta = new subasta();
         $cod_sub            = request('cod_sub');
         $ref            = request('ref');
         $cod_licit = request('cod_licit');
         $cod_user = Session::get('user.cod');
         $gestor = Session::get('user.admin');
+
+		return $this->comprarLote($cod_sub, $ref, $cod_user, $cod_licit, $gestor );
+	}
+
+
+
+
+    public function comprarLote($cod_sub, $ref, $cod_user, $cod_licit = null, $gestor = false  ) {
+        $user = new User();
+        $mail = new MailController();
+
+
+
 
 
 
@@ -1276,24 +1284,6 @@ class subastaTiempoRealController extends Controller
                     }
 
 
-            /* 2019/02/19 no se est'a usando
-            if(Config::get('app.email_cedente_lot_comprado')){
-                $auction = $subasta->getInfSubasta();
-                if(!empty($auction)){
-                    $des_sub = $auction->des_sub;
-                }
-                if(Config::get('app.email_cedente_lot_comprado_personalized')){
-                    $mail->EmailsAdjudicacionesCedentePersonalized($cod_sub,$ref,$des_sub);
-                }else{
-                    $mail->EmailsAdjudicacionesCedente($cod_sub,$ref,$des_sub);
-                }
-
-            }
-     $mail->EmailsAdjudicacionesCedente($cod_sub,$ref,$des_sub);
-
-         */
-
-
 
             $res = array(
                     'status' => 'success',
@@ -1324,6 +1314,15 @@ class subastaTiempoRealController extends Controller
 		$tel1 = request('tel1');
 		$tel2 = request('tel2');
 		$ortherphone = filter_var(request('ortherphone'), FILTER_VALIDATE_BOOLEAN);
+		return $this->crearOrdenLicitacion($cod_sub, $ref,  $imp, $cod_user, $tel1, $tel2, $ortherphone);
+	}
+
+	public function crearOrdenLicitacion ($cod_sub, $ref,  $imp, $cod_user, $tel1 = null, $tel2 = null, $ortherphone = null)
+    {
+		\Log::info("Orden en subasta $cod_sub lote $ref importe: $imp, por el usuario $cod_user ");
+		if($ortherphone){
+			\Log::info("La orden es telefónica, telefonos: $tel1 , $tel2 ");
+		}
 
 		$importeOrdenes = 0;
 
@@ -1484,15 +1483,20 @@ class subastaTiempoRealController extends Controller
             $l = $subasta->getLote();
 			$lote = head($subasta->getAllLotesInfo($l,false,false,false));
 
-			/*Mail de confirmación de puja por escrito (orden)*/
-			if($subasta->type_bid == "T" ){
-				$email = new EmailLib('CONFIRMATION_PHONE_BID');
-				#SI NO TIENE EMAIL PERSONALIZADO PARA LAS TELEFÓNICAS, PONEMOS LA NORMAL
-				if(empty($email->email)){
+			if($lote->ministerio_hces1 == 'S' ){
+				$email = new EmailLib('CONFIRMATION_BID_MINISTRY');
+			}
+			if(empty($email) || empty($email->email)){
+				/*Mail de confirmación de puja por escrito (orden)*/
+				if($subasta->type_bid == "T" ){
+					$email = new EmailLib('CONFIRMATION_PHONE_BID');
+					#SI NO TIENE EMAIL PERSONALIZADO PARA LAS TELEFÓNICAS, PONEMOS LA NORMAL
+					if(empty($email->email)){
+						$email = new EmailLib('CONFIRMATION_BID');
+					}
+				}else {
 					$email = new EmailLib('CONFIRMATION_BID');
 				}
-			}else {
-				$email = new EmailLib('CONFIRMATION_BID');
 			}
 
 			if(!empty($email->email)){
@@ -3240,7 +3244,10 @@ class subastaTiempoRealController extends Controller
     public function calculateAvailableBids($next_bid, $new_bid)
     {
         $subasta = new subasta();
-        $cod_sub = Input::get('cod_sub');
+		if(empty($cod_sub)){
+			$cod_sub = Input::get('cod_sub');
+		}
+
         if(!empty($cod_sub)){
             $subasta->cod = $cod_sub;
         }
@@ -4341,7 +4348,7 @@ class subastaTiempoRealController extends Controller
 			if(!empty($email->email)){
 				$email->setUserByLicit($subasta->cod, $subasta->licit, true);
 				$email->setLot($subasta->cod, $subasta->ref);
-				$email->setBid($subasta->imp);
+				$email->setBid(\Tools::moneyFormat($subasta->imp));
 
 				if(Config::get('app.email_bid_withdatebid', 0)){
 

@@ -55,10 +55,12 @@ class CartController extends Controller
 		$lots =array();
 		#puede haber lotes con mas de un elemento en el carrito por eso no sumamos lotes si no unidades
 		$this->numElements=0;
+
 		if(!empty($shoppingCart)){
 
 			foreach($shoppingCart as $cod_sub => $lots){
 				$fgasigl0 = $fgasigl0->orWhere(function($query) use  ($cod_sub, $lots) {
+
 					$query->where("sub_asigl0", $cod_sub)
 					->whereIn("ref_asigl0", array_keys($lots));
 				});
@@ -66,9 +68,12 @@ class CartController extends Controller
 			}
 			#certificamos que no se carguen lotes cerrados
 			$lots = $fgasigl0->select("SUB_ASIGL0, REF_ASIGL0")->where("CERRADO_ASIGL0","N")->where("OCULTO_ASIGL0","N")->where("RETIRADO_ASIGL0","N")->get();
+
 			foreach($lots as $key => $lot){
-				$this->shoppingCart[$lot->sub_asigl0][$lot->ref_asigl0] = $shoppingCart[$lot->sub_asigl0][$lot->ref_asigl0];
-				$this->numElements+=  $shoppingCart[$lot->sub_asigl0][$lot->ref_asigl0];
+				#convertimos la referencia en texto por que si no hay problemas con los decimales
+				$ref = $lot->ref_asigl0."";
+				$this->shoppingCart[$lot->sub_asigl0][$ref] = $shoppingCart[$lot->sub_asigl0][$ref];
+				$this->numElements+=  $shoppingCart[$lot->sub_asigl0][$ref];
 			}
 		}
 

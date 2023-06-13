@@ -1543,6 +1543,31 @@ class SubastaController extends Controller
 	}
 
 
+	//---------- NEW FAVORITES ----------------
+	//Añadir un lote a favoritos o eliminarlo
+	public function favoritesNew($action)
+	{
+
+		$cod_sub   = Input::get('cod_sub');
+		$ref       = Input::get('ref');
+
+		$res = array();
+
+		$fav = new Favorites($cod_sub, false);
+
+		switch ($action) {
+			case 'add':
+				$res = $fav->setFavNew($ref);
+				break;
+			case 'remove':
+				$res = $fav->removeFavNew($ref);
+				break;
+		}
+
+		return $res;
+	}
+
+	//-------- FIN NEW FAVORITES --------------
 
 
 	private function create_filters($data)

@@ -15,6 +15,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\Subasta;
 use Illuminate\Http\File;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CustomControllers extends Controller
 {
@@ -319,6 +320,27 @@ class CustomControllers extends Controller
 			echo $lotesFueraRango;
 		}
 
+
+	}
+
+	public function lotQRGenerator()
+	{
+
+		$cod_sub = request('cod_sub');
+		$ref = request('ref');
+
+		$result = FgAsigl0::select("sub_asigl0 as cod_sub", "ref_asigl0 as ref", "num_hces1 as num_hces", '"id_auc_sessions" as id_session', "descweb_hces1 as titulo", "WEBFRIEND_HCES1 as friendly")
+		->joinFghces1Asigl0()
+		->joinSessionAsigl0()
+		->where("sub_asigl0", $cod_sub)
+		->where("ref_asigl0", $ref)
+		->first();
+
+		$url_lot = ToolsServiceProvider::url_lot($cod_sub, $result->id_session,'' ,$ref, $result->num_hces, $result->friendly, $result->titulo);
+
+		$qr = QrCode::format('svg')->size(100)->generate($url_lot);
+
+		return $qr;
 
 	}
 

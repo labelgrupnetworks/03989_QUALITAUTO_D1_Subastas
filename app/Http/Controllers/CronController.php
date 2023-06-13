@@ -16,6 +16,7 @@ use TCK\Odbc\OdbcServiceProvider;
 
 use Config;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\V5\DepositController;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Sec;
 use App\Models\User;
@@ -404,6 +405,7 @@ class CronController extends Controller
 
     public function EmailsAdjudicacionesGeneric(){
         $mail = new MailController();
+		$deposito = new DepositController();
         $emp =  Config::get('app.emp');
 
          $index = DB::table('WEB_EMAIL_CLOSLOT')
@@ -411,6 +413,10 @@ class CronController extends Controller
                     ->where('SENDED','N')
                     ->get();
         foreach($index as $value){
+			if(Config::get('app.payDepositTpv')){
+				$deposito->confirmPreAuthorization($value->id_sub,$value->id_ref);
+			}
+
             $mail->sendEmailCerradoGeneric($value->id_emp,$value->id_sub,$value->id_ref);
         }
 

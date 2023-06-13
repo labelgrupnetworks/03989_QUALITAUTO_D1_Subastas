@@ -556,7 +556,7 @@ class WebServiceAPPController  extends WebServiceController{
 
 			$lotes = array();
 			foreach($lots as $key =>$lot){
-
+				
 				$lote = array();
 				$lote["codauction"] = $lot->sub_asigl0;
 				$lote["lotref"] = $lot->ref_asigl0;
@@ -575,7 +575,7 @@ class WebServiceAPPController  extends WebServiceController{
 
 				$lote["enddate"] = in_array($lot->tipo_sub,['O','P'] )?  $lot->ffin_asigl0 : null;
 				#si esta cerrado  y no vendido ,pero tiene opcion de compra lo mostraremso como un venta directa
-				if($lote["close"]  && !$lote["sold"]  && $lot->compra_asigl0  &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
+				if($lote["close"]  && !$lote["sold"]  && $lot->compra_asigl0=='S'  &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
 					$lote["close"] = false;
 					$lote["forsale"] = true;
 
@@ -711,7 +711,7 @@ class WebServiceAPPController  extends WebServiceController{
 				$lote["soldprice"] = ($lot->remate_asigl0 == 'S' && $lote["sold"])? $lot->implic_hces1 : null;
 
 				$lote["forsale"] = ($lot->tipo_sub == 'V' && !$lote["close"]);
-				if($lote["close"]  && !$lote["sold"]  && $lot->compra_asigl0  &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
+				if($lote["close"]  && !$lote["sold"]  &&  $lot->compra_asigl0=='S'   &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
 					$lote["close"] = false;
 					$lote["forsale"] = true;
 				}
@@ -781,7 +781,7 @@ class WebServiceAPPController  extends WebServiceController{
 				}
 
 				#si esta cerrado  y no vendido ,pero tiene opcion de compra lo mostraremos como una venta directa
-				if($lote["close"]  && !$lote["sold"]  && $lot->compra_asigl0  &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
+				if($lote["close"]  && !$lote["sold"]  && $lot->compra_asigl0=='S'  &&  ( in_array($lot->tipo_sub,['W','O','P'] ))){
 					$lote["forsale"] = true;
 				}
 				$subastaObj->session_reference = $lot->reference;

@@ -133,6 +133,12 @@ class ToolsServiceProvider extends ServiceProvider
                     $format = number_format($qtty, $decimal, ',', '.');
                 }
                 */
+		if(\Config::get("app.decimalSeparator")){
+			$decimalSeparator = \Config::get("app.decimalSeparator");
+		}
+		if(\Config::get("app.thousandSeparator")){
+			$thousandSeparator = \Config::get("app.thousandSeparator");
+		}
 
 		$format = number_format($qtty, $decimal, $decimalSeparator, $thousandSeparator);
 

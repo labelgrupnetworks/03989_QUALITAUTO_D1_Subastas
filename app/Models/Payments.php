@@ -55,8 +55,8 @@ class Payments extends Model
                     $where_tk=' ';
         }
 
-        $data =  "Select (fgcsub0.IMP_CSUB0+fgcsub0.IMPGAS_CSUB0 ) as IMP_CSUB0,fgcsub0.IMPCOB_CSUB0,fgcsub0.IMPGAS_CSUB0,
-                    fgcsub0.TAX_CSUB0, fxcli.nom_cli,fgcsub0.cli_csub0, (fgcsub0.IMP_CSUB0+fgcsub0.IMPGAS_CSUB0+fgcsub0.TAX_CSUB0 + nvl(fgcsub0.EXP_CSUB0,0)) IMPTOTAL
+        $data =  "Select (fgcsub0.IMP_CSUB0+fgcsub0.IMPGAS_CSUB0 ) as IMP_CSUB0,fgcsub0.IMPCOB_CSUB0,fgcsub0.IMPGAS_CSUB0,fgcsub0.IMPEXTRA_CSUB0,
+                    fgcsub0.TAX_CSUB0, fxcli.nom_cli,fgcsub0.cli_csub0, (fgcsub0.IMP_CSUB0+fgcsub0.IMPGAS_CSUB0+fgcsub0.TAX_CSUB0 + nvl(fgcsub0.EXP_CSUB0,0) + nvl(fgcsub0.IMPEXTRA_CSUB0,0)  ) IMPTOTAL
                     ,fgcsub0.estado_csub0, fxcli.email_cli, fxcli.cp_cli,fxcli.codpais_cli,fxcli.idioma_cli,fxcli.cod_cli,fac_csub,sub_csub
                     from fgcsub0
                     INNER JOIN fsempres ON fgcsub0.emp_csub0=fsempres.cod_emp
@@ -255,9 +255,9 @@ class Payments extends Model
            ->update(['apre_csub' => $apre,'npre_csub' => $npre,'prefac_csub'=>'S']);
     }
 
-    public function insertPreFactura($emp,$apre,$npre,$user_cod,$precio,$envio,$tax,$token,$jsonLot,$exp_csub0){
-        DB::select("INSERT INTO fgcsub0 (EMP_CSUB0, APRE_CSUB0, NPRE_CSUB0,FECHA_CSUB0,USR_CSUB0,CLI_CSUB0,ESTADO_CSUB0,IMP_CSUB0,IMPGAS_CSUB0,TAX_CSUB0,TK_CSUB0,EXTRAINF_CSUB0,EXP_CSUB0) "
-                . "VALUES (:emp,:apre, :nepre,SYSDATE,:user_csub, :cli, :estado, :precio, :imp_gas, :tax,:tk,:inf,:exp_csub0)",
+    public function insertPreFactura($emp,$apre,$npre,$user_cod,$precio,$envio,$tax,$token,$jsonLot,$exp_csub0, $imp_extra = 0){
+        DB::select("INSERT INTO fgcsub0 (EMP_CSUB0, APRE_CSUB0, NPRE_CSUB0,FECHA_CSUB0,USR_CSUB0,CLI_CSUB0,ESTADO_CSUB0,IMP_CSUB0,IMPGAS_CSUB0,TAX_CSUB0,TK_CSUB0,EXTRAINF_CSUB0,EXP_CSUB0, IMPEXTRA_CSUB0) "
+                . "VALUES (:emp,:apre, :nepre,SYSDATE,:user_csub, :cli, :estado, :precio, :imp_gas, :tax,:tk,:inf,:exp_csub0, :imp_extra)",
                     array(
                         'emp'   => $emp,
                         'apre'       => $apre,
@@ -270,7 +270,8 @@ class Payments extends Model
                         'tax' => $tax,
                         'tk'=>$token,
 						'inf'=>$jsonLot,
-						'exp_csub0' => $exp_csub0
+						'exp_csub0' => $exp_csub0,
+						'imp_extra' => round($imp_extra,2)
                         )
                 );
     }

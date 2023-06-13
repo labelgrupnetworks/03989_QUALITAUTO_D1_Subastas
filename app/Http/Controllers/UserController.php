@@ -54,6 +54,7 @@ use App\Models\V5\FxDvc0Seg;
 use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgSub;
 use App\Models\V5\Web_Preferences;
+use App\Models\V5\Web_Favorites;
 use App\Models\V5\FgOrtsec0;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
@@ -3257,6 +3258,94 @@ class UserController extends Controller
            }
         }
     }
+
+	// ---------------------------- //
+	// ------Nuevos Favoritos------ //
+	// ---------------------------- //
+
+	public function getNewFavoritos(){
+
+		if(!empty(Config::get('app.user_panel_group_subasta')) && Config::get('app.user_panel_group_subasta') == 1){
+			return $this->getFavoritosSubastasNew();
+		}else{
+			return $this->getFavoritosLotsNew();
+		}
+	}
+
+	#Lotes favoritos
+    public function getFavoritosSubastasNew(){
+
+          if(!Session::has('user'))
+        {
+            $favs = array();
+            $paginator ="";
+            $data = array(
+                    'favoritos'      => $favs,
+                    'paginator'      => $paginator,
+                );
+
+            return View::make('front::pages.panel.favoritos', array('data' => $data));
+        }
+
+        $favs = array();
+        $fav  = new Favorites(false, false);
+        $favs = $fav->getFavsNewByCodCli();
+
+		$all_favorites = array();
+
+
+		if(!isset($favs['status']) || $favs['status'] != 'error') {
+			foreach ($favs as $lot){
+				$lot->url_img = \Tools::url_img("lote_small", $lot->num_hces1, $lot->lin_hces1);
+				$url_friendly = str_slug($lot->titulo_hces1);
+				$lot->url_lot = \Routing::translateSeo('lote').$lot->id_sub."-".str_slug($lot->name).'-'.$lot->id_auc_sessions."/".$lot->id_ref.'-'.$lot->num_hces1.'-'.$url_friendly;
+
+				$all_favorites[$lot->id_sub]['lotes'][] = $lot;
+				$all_favorites[$lot->id_sub]['inf'] = [
+					'cod_sub' => $lot->id_sub,
+					'des_sub' => $lot->des_sub,
+					'name' => $lot->name,
+				];
+			}
+		}
+
+        $data = array(
+                    'favoritos'      => $all_favorites
+                );
+
+        return View::make('front::pages.panel.new_favoritos', array('data' => $data));
+
+
+     }
+
+	public function getFavoritosLotsNew()
+    {
+
+        if(!Session::has('user'))
+        {
+            $favs = array();
+            $data = array(
+                    'favoritos'      => $favs,
+                );
+
+            return View::make('front::pages.panel.favoritos', array('data' => $data));
+        }
+
+        $favs = array();
+        $fav  = new Favorites(Session::get('user.cod'), false);
+        $favs = $fav->getFavsNewByCodCli();
+
+        $data = array(
+                    'favoritos'      => $favs,
+                );
+
+        return View::make('front::pages.panel.favoritos', array('data' => $data));
+    }
+
+
+	// ---------------------------- //
+	// ----Fin Nuevos Favoritos---- //
+	// ---------------------------- //
 
      //Guardar save divisas
     public function savedDivisas(){

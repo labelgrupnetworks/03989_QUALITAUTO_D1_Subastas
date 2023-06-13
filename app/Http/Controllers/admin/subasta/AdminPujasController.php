@@ -120,15 +120,17 @@ class AdminPujasController extends Controller
 
 			$pujasSql = $asigl1->unionAll($asigl1_aux)->toSql();
 
+			#Se añade en la query el Left Join con FXCLI para que aparezcan todos las pujas
 			return DB::table(DB::raw("($pujasSql) PUJAS"))
 					->where('emp_asigl1', config('app.emp'))
 					->join("FGLICIT", "EMP_LICIT = EMP_ASIGL1 AND SUB_LICIT = SUB_ASIGL1 AND COD_LICIT = LICIT_ASIGL1 ")
-					->join("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT")
+					->leftjoin("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT")
 					->join("FGASIGL0", "EMP_ASIGL0 = EMP_ASIGL1 AND SUB_ASIGL0 = SUB_ASIGL1 AND REF_ASIGL0 = REF_ASIGL1 ")
 					->join('FGHCES1', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0');
 		}
 
-		return FgAsigl1::joinCli()->joinFghces1Asigl0();
+		#Se añade en la query el Left Join con FXCLI para que aparezcan todos las pujas
+		return FgAsigl1::leftJoinCli()->joinFghces1Asigl0();
 	}
 
 	public function deleteSelection(Request $request, $cod_sub)

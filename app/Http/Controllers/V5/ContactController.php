@@ -62,10 +62,12 @@ class ContactController extends Controller
 		$data = $request->all();
 		$jsonResponse = \Tools::validateRecaptcha(\Config::get('app.codRecaptchaEmail'));
 
-        if (empty($jsonResponse) || $jsonResponse->success !== true) {
+		// Lista de emails baneados por spam y que no son captados por el recaptcha
+		$bannedsEmails = ['eric.jones.z.mail@gmail.com'];
+		$isEmailBanned = in_array(trim($data['email']), $bannedsEmails);
 
+        if (empty($jsonResponse) || $jsonResponse->success !== true || $isEmailBanned) {
         	return MessageLib::errorMessage("recaptcha_incorrect");
-
         }
 
 
@@ -112,7 +114,7 @@ class ContactController extends Controller
 			$email->send_email();
 		}
 
-		
+
 
 		return MessageLib::successMessage("mensaje_enviado");
 

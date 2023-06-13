@@ -9,6 +9,9 @@ use Config;
 use Exception;
 use Log;
 use App\Models\Subasta;
+use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgAsigl1;
+use App\Models\V5\FgLicit;
 use App\Models\V5\Web_Favorites;
 use Session;
 
@@ -326,6 +329,240 @@ OBSDET_HCES1,TALLA_HCES1,TRANSPORT_HCES1,IMPNOVA_HCES1,
         return $result;
     }
 
+
+	// ---------------------------- //
+	// ------Nuevos Favoritos------ //
+	// ---------------------------- //
+
+	public function getFavNew($ref)
+    {
+        $this->ref = $ref;
+        return $this->getFavsNew(TRUE);
+    }
+
+	public function getFavsNew($by_ref = FALSE){
+        try {
+
+			#Guarda los datos de la query sacando todos los favoritos.
+			$res = Web_Favorites::select()->where('cod_cli', Session::get('user.cod'))->orderby('id_ref');
+
+			#Si el parametro $by_ref es true, se filtra por subastas y referencia.
+			if ($by_ref) {
+				$res->where('id_sub', $this->cod_sub);
+				$res->where('id_ref', $this->ref);
+			}
+
+			#Se ejecuta la query.
+			$res = $res->get();
+
+			#Si no hay resultados, devuelve error.
+            if (empty($res[0])){
+               $result = array(
+                        'status'    => 'error',
+                    );
+
+               return $result;
+            }
+
+			#Si hay resultados, guarda el success.
+            $result = array(
+                        'status' => 'success',
+                        'data'   => $res
+                    );
+
+
+        } catch (Exception $e) {
+			#Si hay error, guarda el error en los logs.
+            Log::error(__FILE__.' ::'. $e);
+
+            $result = array(
+                        'status'    => 'error',
+                    );
+        }
+
+        return $result;
+    }
+
+	public function setFavNew($ref)
+    {
+
+		#Comprueba si ya está en favoritos.
+        $already_exits = $this->getFavNew($ref);
+
+
+		#Si ya está en favoritos, devuelve error.
+        if (!empty($already_exits['data']['0'])){
+            $result = array(
+                'status' => 'error',
+                'msg'    => 'already_added_to_fav'
+            );
+
+            return $result;
+        }
+
+		#Recoge el código de usuario.
+		$cod_cli = Session::get('user.cod');
+
+		#Hace query para recoger el código de licitador.
+		$cod_licit_res = FgLicit::select('cod_licit')->where('cli_licit', $cod_cli)->where('sub_licit', $this->cod_sub)->first();
+
+        try  {
+
+			#Array con los datos a insertar.
+			$dataFavTemp = array(
+				'id_licit' => $cod_licit_res->cod_licit,
+				'id_sub' => $this->cod_sub,
+				'id_emp' => Config::get('app.emp'),
+				'id_ref' => $this->ref,
+				'fecha' => date('Y-m-d H:i:s'),
+				'cod_cli' => $cod_cli
+			);
+
+			#Inserta en la tabla de favoritos con el modelo de Web_Favorites.
+			Web_Favorites::insert($dataFavTemp);
+
+			#Guarda el resultado.
+            $result = array(
+                    'status'    => 'success',
+                    'msg'       => 'fav_added'
+                );
+
+            $data =  $this->getFavNew($ref);
+
+            if (!empty($data['data']->items)){
+                $result['data'] = $data['data'][0];
+            }
+
+        } catch (Exception $e) {
+			#Si hay error, el error lo manda para el Log.
+            Log::error(__FILE__.' ::'. $e);
+
+            $result = array(
+                        'status'    => 'error',
+                        );
+        }
+
+        return $result;
+    }
+
+	# Borramos un mensaje y todos sus idiomas
+    public function removeFavNew($ref)
+    {
+		#Comprueba si ya está en favoritos.
+        $already_exits = $this->getFavNew($ref);
+
+		#Si devuelven los datos vacíos, devuelve error.
+        if (empty($already_exits['data']['0'])){
+             $result = array(
+                'status' => 'error',
+                'msg'       => 'delete_fav_error'
+            );
+
+            return $result;
+        }
+
+        try {
+
+			#Borramos el favorito.
+            Web_Favorites::where('cod_cli', Session::get('user.cod'))
+                ->where('id_ref', $ref)
+				->where('id_sub', $this->cod_sub)
+                ->delete();
+
+			#Devolvemos el resultado.
+            $result = array(
+                        'status'    => 'success',
+                        'msg'       => 'deleted_fav_success'
+                        );
+
+        } catch (Exception $e) {
+			#Si hay error, el error lo manda para el Log.
+            Log::error(__FILE__.' ::'. $e);
+
+            $result = array(
+                        'status'    => 'error',
+                        'msg'       => 'delete_fav_error'
+                        );
+        }
+
+        return $result;
+    }
+
+    public function getFavsNewByCodCli($by_ref = FALSE)
+    {
+
+        try {
+
+			#Guarda los datos de la query sacando todos los favoritos haciendo un join para sacar el licitador ganador con el licitador perdedor.
+			$res = Web_Favorites::leftjoin(DB::raw("(SELECT *
+					FROM fgasigl1 A
+					WHERE lin_asigl1 = (
+						SELECT MAX(lin_asigl1)
+						FROM fgasigl1 B
+						WHERE B.sub_asigl1 = A.sub_asigl1
+						AND B.ref_asigl1 = A.ref_asigl1
+					)) fgasigl1"), function($join) {
+					$join->on('emp_asigl1', '=', 'id_emp')
+						->on('sub_asigl1', '=', 'id_sub')
+						->on('ref_asigl1', '=', 'id_ref');
+				})
+			->select('web_favorites.*',
+					'"auction"',
+					'"reference"',
+					'fgasigl1.licit_asigl1 as licit_ganador',
+					'"name"',
+					'"id_auc_sessions"',
+					'NVL(DESCWEB_HCES1_LANG, DESCWEB_HCES1) DESCWEB_HCES1',
+					'IMPLIC_HCES1',
+					'NUM_HCES1',
+					'LIN_HCES1',
+					'COD_LICIT',
+					"DES_SUB",
+					"NVL(DES_SUB_LANG, DES_SUB) DES_SUB",
+					"TIPO_SUB",
+					"NVL(titulo_hces1_lang, titulo_hces1) titulo_hces1",
+					"NVL(desc_hces1_lang, desc_hces1) desc_hces1")
+			->joinAsigl0Favorites()
+			->joinHces1Favorites()
+			->joinSubastaFavorites()
+			->joinSessionFavorites()
+			->joinLicitFavorites()
+			->joinLangHces1Favorites()
+			->joinLangSubastaFavorites()
+			->where('web_favorites.cod_cli', Session::get('user.cod'))
+			->whereRaw("SUBC_SUB in ('A', 'S')
+						AND TIPO_SUB in ('W', 'O', 'V')
+						AND RETIRADO_ASIGL0 = 'N'
+						AND CERRADO_ASIGL0 = 'N'
+						AND OCULTO_ASIGL0 = 'N'");
+
+			# Comprueba si pasan por subasta y referencia y la añade a la query.
+			if ($by_ref) {
+				$res->where('id_sub', $this->cod_sub)
+				->where('id_ref', $this->ref);
+			}
+
+			# Ordena la query y la ejecuta.
+			$result = $res->orderby('ffin_asigl0')
+			->orderby('hfin_asigl0', 'desc')
+			->orderby('id_ref')
+			->get();
+
+        } catch (Exception $e) {
+
+            Log::error(__FILE__.' ::'. $e);
+
+            $result = array(
+                        'status'    => 'error',
+                    );
+        }
+        return $result;
+    }
+
+
+	// ---------------------------- //
+	// ----Fin Nuevos Favoritos---- //
+	// ---------------------------- //
 
     public function getFavsByCodCli($by_ref = FALSE)
     {
