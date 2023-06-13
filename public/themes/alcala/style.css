@@ -5339,3 +5339,8 @@ width: 100%;
 .buttons-baner-container a{
 	padding: 10px 25px;
 }
+
+/* Quitar el seleccionar idioma del selector de traducción de google */
+.google_translate .goog-te-gadget-simple a span:nth-child(1) {
+	display: none;
+}

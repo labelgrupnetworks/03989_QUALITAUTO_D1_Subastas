@@ -11,34 +11,6 @@
     */
    $(document).ready(function(){
 
-        $('.lot-action_pujar_on_line').on('click', function(e) {
-             e.stopPropagation();
-                   $.magnificPopup.close();
-                   $( ".precio_orden" ).html($("#bid_amount").val());
-
-                   if (typeof cod_licit == 'undefined' || cod_licit == null )
-                    {
-
-                        $("#insert_msg_title").html("");
-                        $("#insert_msg").html(messages.error.mustLogin);
-                        $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-
-                        return;
-                    }else{
-
-
-						if (!auction_info.user.is_gestor && ( isNaN(parseInt($("#bid_amount").val())) ||  parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente) ) )
-                        {
-                            $("#insert_msg_title").html($("#bid_amount").val() +  "€ " + messages.error.lower_bid);
-                            $("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
-                            $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-                        }
-                        else{
-                            $.magnificPopup.open({items: {src: '#modalPujarFicha'}, type: 'inline'}, 0);
-                        }
-                    }
-        });
-
          $('.lotlist-orden').on('click', function(e) {
             e.stopPropagation();
             $.magnificPopup.close();
@@ -123,17 +95,7 @@
    }
 
 
-    function reloadPujasList()
-    {
 
-        if( auction_info.subasta.sub_tiempo_real == 'S'){
-            reloadPujasList_W()
-        }else {
-            reloadPujasList_O()
-        }
-
-
-    }
 
     function reloadPujasList_W(){
         var model = $('#type_bid_model').clone();

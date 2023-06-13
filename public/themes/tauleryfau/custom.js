@@ -1658,11 +1658,11 @@ function reload_carrito() {
 				}
 			});
 		}
-		$(".gasto-envio-express-" + index_sub+"_JS").text(precio_envio_express);
+		$(".gasto-envio-express-" + index_sub+"_JS").text(precio_envio_express.toFixed(2).replace(".", ","));
 
 		if(precio_envio_min != 0){
 			$("label[for=shipping_express_min]").show();
-			$(".gasto-envio-min-" + index_sub+"_JS").text(precio_envio_min);
+			$(".gasto-envio-min-" + index_sub+"_JS").text(precio_envio_min.toFixed(2).replace(".", ","));
 		}
 		else{
 			$("label[for=shipping_express_min]").hide();
@@ -1682,7 +1682,7 @@ function reload_carrito() {
 			precio_envio = 0;
 		}
 
-		$(".text-gasto-envio-" + index_sub).text(precio_envio);
+		$(".text-gasto-envio-" + index_sub).text(precio_envio.toFixed(2).replace(".", ","));
 		$(".js-divisa.text-gasto-envio-" + index_sub).attr('value', precio_envio);
 		precio_final = parseFloat(precio_final) + parseFloat(precio_envio);
 		$(".precio_final_" + index_sub).text(precio_final.toFixed(2).replace(".", ","));

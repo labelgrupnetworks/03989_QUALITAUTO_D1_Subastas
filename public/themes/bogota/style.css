@@ -9,8 +9,8 @@
     --primary-color-text: #707070;
 	--secondary-color-text: #46494f;
 
-	--btn-primary-background: #414145;
-	--btn-primary-background-hover: #00664F;
+	--btn-primary-background: #888888;
+	--btn-primary-background-hover: #686868;
 	--btn-primary-text: white;
 	--btn-primary-text-hover: white;
 
@@ -19,11 +19,11 @@
 	--btn-secondary-text: #46494f;
 	--btn-secondary-text-hover: white;
 
-	--newsletter-background: #D2F2E2;
-	--newsletter-text: #414145;
-	--newsletter-placeholder: #414145;
-	--newsletter-input-border: #414145;
-	--newsletter-input-text: #414145;
+	--newsletter-background: black;
+	--newsletter-text: white;
+	--newsletter-placeholder: #d4d4d4;
+	--newsletter-input-border: #888888;
+	--newsletter-input-text: white;
 
 	--footer-background: white;
 	--footer-titles-color: #707070;
@@ -206,3 +206,11 @@ color: #DDD;
 .contenido-web img {
 	max-width: 100%;
 }
+
+.button-newsletter:hover {
+	background-color: var(--btn-primary-background-hover);
+}
+
+.newsletter-placeholder {
+	opacity: 0.8;
+ }

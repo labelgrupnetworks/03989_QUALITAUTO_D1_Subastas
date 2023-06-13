@@ -1,5 +1,17 @@
-
-
 #registerForm .tipo_usuario div.selected, #registerForm .tipo_sexo div.selected{
 	border-top-color: var(--secondary-color);
 }
+
+.checkbox-container.condiciones {
+	display: flex;
+}
+
+.checkbox-container.condiciones input[type="checkbox"] {
+	top: 0;
+}
+
+#registerForm .datos_condiciones div label {
+	top: 0;
+}
+
+

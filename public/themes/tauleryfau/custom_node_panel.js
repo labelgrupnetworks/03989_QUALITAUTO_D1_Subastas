@@ -140,23 +140,9 @@ $(function () {
 			'impsal': imp_sal, 'can_do': null, 'cod_original_licit': cod_licit,
 			'tipo_puja_gestor': false
 		};
-
-
-		$.ajax({
-			type: "POST",
-			url: '/phpsock/actionv2',
-			data: params,
-			beforeSend: function () {
-
-			},
-			success: function( response ) {
-				if(response.status == 'error'){
-					displayAlert(1, messages.error[response.msg]);
-					$('#abrirLote').addClass('hidden');
-				}
-			}
-		});
-		
+		var string_hash = params.cod_licit + " " + params.cod_sub + " " + params.ref + " " + params.imp;
+		params.hash = CryptoJS.HmacSHA256(string_hash, auctions_info.user.tk).toString(CryptoJS.enc.Hex);
+		socket.emit('action', params);
 	});
 
 });

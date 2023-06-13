@@ -36,7 +36,7 @@
 */
 /*
 |--------------------------------------------------------------------------
-| Paginador 
+| Paginador
 |--------------------------------------------------------------------------
  */
 body {
@@ -96,7 +96,7 @@ a:hover, a .active, a:active, a .focus, a:focus, a .active.focus, a .active:focu
   padding: 20px 0;
   color: #2b373a;
 }
-  
+
 .btn-danger {
   background-color: #c30e16 !important;
   border-color: #c30e16 !important;
@@ -111,7 +111,7 @@ a:hover, a .active, a:active, a .focus, a:focus, a .active.focus, a .active:focu
   padding: 2px 16px;
   font-weight: 700;
   font-size: 12px;
-  outline: 0 !important; 
+  outline: 0 !important;
     margin-left: 20px;
     padding: 10px 30px;
     border-radius: 0;
@@ -137,13 +137,13 @@ a:hover, a .active, a:active, a .focus, a:focus, a .active.focus, a .active:focu
 |--------------------------------------------------------------------------
 */ }
   .own_box.ob_disp {
-    display: block; 
+    display: block;
     border-top: 5px solid #154360;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     box-shadow: none;
-  
+
   }
 
 
@@ -265,7 +265,7 @@ a:hover, a .active, a:active, a .focus, a:focus, a .active.focus, a .active:focu
 #filter_order_by {
   /*margin-top: 14px;*/
   float: right;
-  margin-top: -48px; 
+  margin-top: -48px;
   text-align: right;
   margin-right: 15px;
 
@@ -352,7 +352,7 @@ body.bg_login {
     margin-top: 5px; }
 
 header .btn-register {
-  margin-left: 20px; 
+  margin-left: 20px;
     margin-left: 20px;
     padding: 10px 30px;
     border-radius: 0;
@@ -361,7 +361,7 @@ header .btn-register {
     background: #00361e;
     border-radius: 0 !important;
     min-height: 100px;
-   
+
     border: 0 !important;
     margin: 0; }
   header > nav.navbar.first .navbar-brand {
@@ -385,7 +385,7 @@ header .btn-register {
     header > nav.navbar.first .navbar-nav > li > .user_section .group {
       margin: 0; } }
         header > nav.navbar.first .navbar-nav > li > .user_section .group a {
-          margin-right: 10px; 
+          margin-right: 10px;
             margin-right: 10px;
             padding: 10px 30px;
             border-radius: 0;
@@ -813,15 +813,15 @@ header .btn-register {
     list-style: none;
     margin-bottom: 10px; }
   #ficha .salida {
-    
+
     color: #58585a;
-   
+
     font-weight: bold;
     padding: 5px;
     font-size: 20px; }
     #ficha .actual {
      margin-bottom: 10px;
-    color: #58585a;   
+    color: #58585a;
     font-weight: bold;
     padding: 5px;
     font-size: 20px; }
@@ -1076,8 +1076,8 @@ footer {
 
 .hi-icon-effect-1a .hi-icon {
   color: #bf9814 !important;
-  /* 
-Effect 1a 
+  /*
+Effect 1a
 Fondo en hover
 */ }
 
@@ -1206,7 +1206,7 @@ Fondo en hover
     .permanentAuctions #content .item .label_lote_on_line
     {
         position: absolute;
-        float: left;        
+        float: left;
         top: 45px;
         left: 25px;
         background-color: #ffc000;
@@ -1219,11 +1219,11 @@ Fondo en hover
     .permanentAuctions #content .item .label_lote_gallery
     {
         position: absolute;
-        float: left;        
+        float: left;
         top: 240px;
         left: 255px;
-       
-        
+
+
     }
     .permanentAuctions #content .item .img {
       text-align: center;
@@ -1320,8 +1320,8 @@ Fondo en hover
       font-weight: bold;
       margin-bottom: 5px;
       margin-top: 10px;
-      min-height: 51px; 
-      max-height: 51px; 
+      min-height: 51px;
+      max-height: 51px;
       font-size: 15px;
       overflow: hidden;
     }
@@ -1452,7 +1452,7 @@ section.newsletter {
     max-height: 307px;
     position: relative;
     width: auto;
-   
+
     /* ficha buscador imagen */ }
   #ficha .img2 {
     text-align: center;
@@ -1579,7 +1579,7 @@ section.newsletter {
     position: absolute;
     right: -29px;
     top: 40%;
-    
+
     padding: 12px;
     cursor: pointer;
     border-radius: 0 3px 3px 0;
@@ -1774,7 +1774,7 @@ section.newsletter {
 .object_title {
     font-weight: bold;
     font-size: 26px;
-    
+
 }
 
 #actual_descripcion{
@@ -2092,6 +2092,11 @@ display: flex;
         justify-content: center;
 cursor: pointer;
 }
+.scrollable {
+	max-height: 145px;
+	overflow: auto;
+  }
+
 
 @media (max-width: 768px) {
   .menu{

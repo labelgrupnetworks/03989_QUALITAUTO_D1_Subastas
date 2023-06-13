@@ -2225,7 +2225,7 @@ h4 .ref_item{
 	font-weight: 600;
 }
 
-.control-title .brand, .control-title .object_author, .model, .control-title .object_title, .control-title .description{
+.control-title .brand, .control-title .object_author, .model, .control-title .object_title{
 	font-weight: 600;
 }
 
@@ -3555,4 +3555,9 @@ dialog::backdrop {
 
 .color-red {
 	color: red;
+}
+
+/* Quitar el seleccionar idioma del selector de traducción de google */
+#google_translate_element .goog-te-gadget-simple a span:nth-child(1) {
+	display: none;
 }

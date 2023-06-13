@@ -1667,6 +1667,101 @@ function action_fav_lote(action, ref, cod_sub, cod_licit) {
 	});
 
 };
+
+//	New Favorite Lot Modal
+function action_fav_modal_new(action) {
+
+	routing.favorites_new = '/api-ajax/favorites-new';
+
+	$('.lds-ellipsis').show()
+	$('.ficha-info-fav-ico a').addClass('hidden')
+
+	$.magnificPopup.close();
+	if (typeof cod_licit == 'undefined' || cod_licit == null) {
+		$("#insert_msg").html(messages.error.mustLogin);
+		$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+		return;
+	} else {
+		$.ajax({
+			type: "GET",
+			url: routing.favorites_new + "/" + action,
+			data: { cod_sub: cod_sub, ref: ref },
+			success: function (data) {
+				$('.lds-ellipsis').hide()
+
+
+				if (data.status == 'error') {
+					$("#insert_msg").html("");
+					$("#insert_msg").html(messages.error[data.msg]);
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				} else if (data.status == 'success') {
+					$("#insert_msg").html("");
+					$("#insert_msg").html(messages.success[data.msg]);
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+					if (action == 'add') {
+						if (document.querySelector('.ficha-info-fav-ico')) {
+							$('.ficha-info-fav-ico a.added').removeClass('hidden')
+							$('.ficha-info-fav-ico').addClass('active')
+						}
+						$("#add_fav").addClass('hidden');
+						$("#del_fav").removeClass('hidden');
+						$("#add_fav_btn").addClass('hidden');
+						$("#del_fav_btn").removeClass('hidden');
+						$("#add_fav_responsive").addClass('hidden');
+						$("#del_fav_responsive").removeClass('hidden');
+						$(".slider-thumnail-container #add_fav").addClass('hidden');
+						$(".slider-thumnail-container #del_fav").removeClass('hidden');
+
+					} else {
+						if (document.querySelector('.ficha-info-fav-ico')) {
+							$('.ficha-info-fav-ico').removeClass('active')
+						}
+						$("#del_fav").addClass('hidden');
+						$("#add_fav").removeClass('hidden');
+						$("#del_fav_btn").addClass('hidden');
+						$("#add_fav_btn").removeClass('hidden');
+						$(".slider-thumnail-container #add_fav").removeClass('hidden');
+						$(".slider-thumnail-container #del_fav").addClass('hidden');
+
+
+					}
+
+				}
+
+			}
+		});
+	}
+
+};
+
+//	New Favorite Lot Action
+function action_fav_lote_new(action, ref, cod_sub) {
+	routing.favorites_new = '/api-ajax/favorites-new';
+	//$.magnificPopup.close();
+
+	$.ajax({
+		type: "GET",
+		url: routing.favorites_new + "/" + action,
+		data: { cod_sub: cod_sub, ref: ref },
+		success: function (data) {
+
+			if (data.status == 'error') {
+
+				$("#insert_msg").html("");
+				$("#insert_msg").html(messages.error[data.msg]);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			} else if (data.status == 'success') {
+				$("#insert_msg").html("");
+				$("#insert_msg").html(messages.success[data.msg]);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				$('.' + ref + '-' + cod_sub).remove();
+
+			}
+
+		}
+	});
+
+};
 function change_price_saved_offers() {
 	var precio = 0;
 	$('input[name=order]').each(function () {

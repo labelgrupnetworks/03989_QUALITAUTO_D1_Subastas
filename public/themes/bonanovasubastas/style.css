@@ -4376,3 +4376,8 @@ div.newsletter button.btn-custom {
 dialog::backdrop {
 	background: rgba(0, 0, 0, 0.3);
 }
+
+/* Quitar el seleccionar idioma del selector de traducción de google */
+#google_translate_element .goog-te-gadget-simple a span:nth-child(1) {
+	display: none;
+}
