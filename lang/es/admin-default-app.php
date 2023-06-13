@@ -1069,6 +1069,7 @@ return [
 		'pujrep_U' => 'Subalia',
 		'pujrep_W' => 'Web',
 		'pujrep_Y' => 'Comprar en subasta online',
+		'pujrep_X' => 'Telefónica Web',
 		'type_asigl1_N' => 'Normal',
 		'type_asigl1_A' => 'Automática',
 		'type_asigl1_Z' => 'Api',
@@ -1098,16 +1099,33 @@ return [
 			"transferTransactionIsPending" => "El acuñamiento aun no ha finalizado",
 		)
 		),
-		'reportsBi' => array(
+	'reportsBi' => array(
 			"menuTitle" => "Reports",
+			"filters" => "Filtros",
 			"reports" => array(
-				"type_bids" => "Tipos de pujas",
-				"sale_category" => "Ventas por categoria",
+				"type_bids" => "Adjudicaciones por tipo de puja",
+				"sale_category" => "Adjudicaciones por categoria",
+				"amount_sale_category" => "Importe adjudicaciones por categoria",
+				"sale_auction" => "Adjudicaciones por subasta",
+				"amount_sale_auction" => "Importe adjudicaciones por subasta",
+				"catalog_subscribed" => "Suscripciones a catálogo",
+				"bidders" => "Pujadores",
 
 			),
 			"titlesReport" => array(
 				"num_bids" => "Número de pujas",
 				"imp_bids" => "Importe de pujas",
+				"sale_category" => "Adjudicaciones por categoria",
+				"amount_sale_category" => "Importe adjudicaciones por categoria",
+				"lots_award" => "Lotes adjudicados",
+				"price_award" => "Importe adjudicados",
+				"subscribed_clients" => "Clientes Suscritos",
+				"subscribed_clients_award" => "Adjudicaciones de Suscritos",
+				"amount_subscribed_clients_award" => "Importe adjudicaciones de Suscritos",
+				"sale_auction" => "Adjudicaciones por subasta",
+				"amount_sale_auction" => "Importe adjudicaciones por subasta",
+				"bidders_award" => "Adjudicaciones Pujadores",
+				"amount_bidders_award" => "Importe adjudicaciones Pujadores",
 			)
 
 
