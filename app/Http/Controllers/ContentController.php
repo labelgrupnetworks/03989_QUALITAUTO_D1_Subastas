@@ -141,7 +141,8 @@ class ContentController extends Controller
 	public function getAjaxStaticCarousel()
 	{
 		$pathFile = public_path(request('path', ''));
-		if(!file_exists($pathFile)){
+
+		if(!file_exists($pathFile) || !is_file($pathFile)){
 			return response()->json(['message' => 'Not Found'], 404);
 		}
 
