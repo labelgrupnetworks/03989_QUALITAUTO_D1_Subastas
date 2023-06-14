@@ -1,14 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use View;
-use Config;
-use Cookie;
-use Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Config;
 
-
-use App\Http\Controllers\UserController;
-use App\Models\User;
 use App\Models\Blog;
 use App\Models\CategorysBlog;
 use App\Models\Sec;
@@ -215,6 +210,11 @@ class NoticiasController extends Controller
 		$theme = Config::get('app.theme');
 		$emp = Config::get('app.emp');
 		$lang = strtoupper($lang);
+
+		//validate if id is number
+		if(!is_numeric($id)){
+			exit (View::make('front::errors.404'));
+		}
 
 		$banner = WebNewbannerModel::select('id', 'descripcion')
 					->where([
