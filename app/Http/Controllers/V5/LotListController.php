@@ -182,7 +182,6 @@ class LotListController extends Controller
 
 		$seo_data = $this->lotListSeo($auction, $infoOrtsec, $infoSec, $infoSubSec,  $filters, $tipos_sub);
 
-
 		$bread = $this->generateBreadCrumb($auction, $infoOrtsec, $infoSec, $infoSubSec);
 		if(!empty( $bread) && !empty($bread[0]) && empty($seo_data->canonical)){
 			$seo_data->canonical = $bread[0]["url"];
@@ -481,7 +480,7 @@ class LotListController extends Controller
 				$urlCategory =  route("category",[ "keycategory" => $infoOrtsec->key_ortsec0 ]);
 				$bread[] = array("url" =>$urlCategory, "name" =>$infoOrtsec->des_ortsec0  );
 
-				if(!empty($infoSec)){
+				if(!empty($infoSec->key_sec)){
 					$urlSection =  route("section",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec]);
 					$bread[] = array("url" =>$urlSection, "name" => ucfirst(mb_strtolower($infoSec->des_sec))  );
 				}
