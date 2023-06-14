@@ -98,7 +98,7 @@ class RegisterController extends Controller
 
 			$data['formulario']->usuario = FormLib::Text("usuario",0,"",0);
 			$data['formulario']->last_name = FormLib::Text("last_name",0,"",0);
-			$data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli",0,"",0);
+			$data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli", 0, "", "maxlength='60'");
 			$data['formulario']->contact = FormLib::Text("contact",0,"",0);
 
 
@@ -157,12 +157,12 @@ class RegisterController extends Controller
                 if ($postUser->fisjur_cli == "F") {
                     $data['formulario']->usuario = FormLib::Text("usuario", 0, "$postUser->nombre1 $postUser->nombre2", 0);
                     $data['formulario']->last_name = FormLib::Text("last_name", 0, $postUser->nombre2, 0);
-                    $data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli", 0, "", 0);
+                    $data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli", 0, "", "maxlength='60'");
                     $data['formulario']->contact = FormLib::Text("contact", 0, "", 0);
                 } else {
                     $data['formulario']->usuario = FormLib::Text("usuario", 0, "", 0);
                     $data['formulario']->last_name = FormLib::Text("last_name", 0, "", 0);
-                    $data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli", 0, $postUser->nombre1, 0);
+                    $data['formulario']->rsoc_cli = FormLib::Text("rsoc_cli", 0, $postUser->nombre1, "maxlength='60'");
                     $data['formulario']->contact = FormLib::Text("contact", 0, $postUser->nom_cli, 0);
                 }
 
