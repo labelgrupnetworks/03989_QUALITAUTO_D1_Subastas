@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Request;
-use Requests;
-use Session;
-use Routing;
-use Route;
-use Config;
-use Mail;
-use View;
-use Redirect;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
+use App\Providers\RoutingServiceProvider as Routing;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 use App\Models\Subasta;
 use App\Models\Bloques;
 use Paginator;
 use App\Models\Favorites;
-use stdClass;
 
 class BusquedaController extends Controller
 {
@@ -33,6 +29,10 @@ class BusquedaController extends Controller
         }
 	public function lots_search()
 	{
+
+		if(!View::exists('front::pages.busqueda')) {
+			abort(404);
+		}
             //las palabras deben tener mas de un caracter, si no n oson validas, debe haber almenos una palabra valida para ralizar la busqueda
             $valid_words = false;
             $bloque = new Bloques();
@@ -188,7 +188,12 @@ class BusquedaController extends Controller
 
 
         public function auction_search()
-	{
+		{
+
+			if(!View::exists('front::pages.busqueda')) {
+				abort(404);
+			}
+
             //las palabras deben tener mas de un caracter, si no n oson validas, debe haber almenos una palabra valida para ralizar la busqueda
             $valid_words = false;
             $bloque = new Bloques();
@@ -262,7 +267,7 @@ class BusquedaController extends Controller
                                     'history' => $history,
                             );
 
-            return View::make('front::pages.busqueda', array('data' => $data));
+            	return View::make('front::pages.busqueda', array('data' => $data));
             }
 
             /* lo dej ocomentado por que ya no se usará 08/02/2018
