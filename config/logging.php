@@ -53,7 +53,14 @@ return [
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
-
+		//logs de la api
+		'api' => [
+			'driver' => 'daily',
+			'path' => storage_path('logs/API.log'),
+			'ignore_exceptions' => false,
+			'level' => 'debug',
+			'days' => 30,
+		],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
