@@ -609,10 +609,10 @@ class UserController extends Controller
             }
         } elseif(config('app.captcha_v3', false)){
 			if(!ToolsServiceProvider::validateRecaptchaV3($request->get('captcha_token'), $request->getClientIp(), $request->get('email'))){
-				return response()->json([
-					'err' => 1,
-					'msg' => 'recaptcha_incorrect'
-				]);
+				return array(
+					"err"       => 1,
+					"msg"       => 'recaptcha_incorrect'
+				  );
 			}
 		}
 

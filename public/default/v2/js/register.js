@@ -2,8 +2,6 @@ document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchC
 document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
 document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
 handleCheckedAddressShipping(document.querySelector('[name="shipping_address"]'));
-executeCaptchaV3();
-
 
 function searchCityForSecondAddress(event) {
 
@@ -90,8 +88,10 @@ function handleCheckedAddressShipping(checkElement) {
 /**
  * @param {Event} event
  */
-function handleSubmitRegisterForm(event) {
+async function handleSubmitRegisterForm(event) {
 	event.preventDefault();
+
+	await executeCaptchaV3();
 
 	//en caso de no tener dirección multiple o de estar seleccionado, copiamos dirección
 	const withSameAddress = document.querySelector("[name=shipping_address]").checked;
@@ -170,13 +170,20 @@ function checkIfErrorEmail() {
 	return true;
 }
 
-function executeCaptchaV3() {
+async function executeCaptchaV3() {
 	const captchaElemenent = document.querySelector('[name="captcha_token"]');
 	const key = captchaElemenent.getAttribute('data-sitekey');
-	grecaptcha.ready(function() {
-		grecaptcha.execute(key, {action: 'submit'})
-		.then(async function(token) {
-			captchaElemenent.value = token;
+
+	return new Promise((resolve, reject) => {
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				captchaElemenent.value = token;
+				resolve();
+			});
 		});
 	});
 }
