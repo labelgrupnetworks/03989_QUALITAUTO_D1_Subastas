@@ -2,7 +2,7 @@ document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchC
 document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
 document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
 handleCheckedAddressShipping(document.querySelector('[name="shipping_address"]'));
-
+executeCaptchaV3();
 
 
 function searchCityForSecondAddress(event) {
@@ -170,8 +170,19 @@ function checkIfErrorEmail() {
 	return true;
 }
 
+function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+	const key = captchaElemenent.getAttribute('data-sitekey');
+	grecaptcha.ready(function() {
+		grecaptcha.execute(key, {action: 'submit'})
+		.then(async function(token) {
+			captchaElemenent.value = token;
+		});
+	});
+}
+
 function checkCaptcha() {
-	const response = $("#g-recaptcha-response").val();
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
 	return Boolean(response);
 }
 

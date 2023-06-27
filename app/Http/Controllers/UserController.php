@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
 use Routing;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Route;
 /*use Mail;*/
 use Cookie;
@@ -60,6 +60,7 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -595,7 +596,7 @@ class UserController extends Controller
         //Validación recaptcha
         if(!empty(Config::get('app.codRecaptcha'))){
 
-            $jsonResponse = \Tools::validateRecaptcha(Config::get('app.codRecaptcha'));
+            $jsonResponse = ToolsServiceProvider::validateRecaptcha(Config::get('app.codRecaptcha'));
             if (empty($jsonResponse) || $jsonResponse->success !== true) {
 
                 Log::info('Error recaptcha: '.Request::input('g-recaptcha-response'));
@@ -606,7 +607,14 @@ class UserController extends Controller
                 );
 
             }
-        }
+        } elseif(config('app.captcha_v3', false)){
+			if(!ToolsServiceProvider::validateRecaptchaV3($request->get('captcha_token'), $request->getClientIp(), $request->get('email'))){
+				return response()->json([
+					'err' => 1,
+					'msg' => 'recaptcha_incorrect'
+				]);
+			}
+		}
 
         $user = new User();
         //Lo ponemos en el principio por que envia un email, asi savemos que idioma lo tenemos que enviar

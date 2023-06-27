@@ -4,6 +4,10 @@
 	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
 @stop
 
+@push('scripts')
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+@endpush
+
 @section('content')
 
 @php

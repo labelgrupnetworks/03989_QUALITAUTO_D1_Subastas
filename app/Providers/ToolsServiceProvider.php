@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use DB;
 use Illuminate\Support\Facades\Config;
-use Log;
+use Illuminate\Support\Facades\Log;
 use URL;
 use Mail;
 use App\Models\Subasta;
@@ -19,7 +19,7 @@ use App\Models\V5\FxCli;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
-
+use Illuminate\Support\Facades\Http;
 
 class ToolsServiceProvider extends ServiceProvider
 {
@@ -709,7 +709,6 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function validateRecaptcha($secret)
 	{
-
 		if (empty($_POST['g-recaptcha-response'])) {
 			return null;
 		}
@@ -717,6 +716,30 @@ class ToolsServiceProvider extends ServiceProvider
 		$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
 		$responseData = json_decode($verifyResponse);
 		return $responseData;
+	}
+
+	public static function validateRecaptchaV3($token, $ip, $email)
+	{
+		$privateKey = Config::get('app.captcha_v3_private', '');
+
+		$response = Http::asForm()
+		->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => $privateKey,
+			'response' => $token,
+			'remoteip' => $ip,
+		]);
+
+		if($response->failed()) {
+			return false;
+		}
+
+		$responseObject = $response->object();
+		if($responseObject->success == false || $responseObject->score < config('app.captcha_v3_severity', '0.5')) {
+			Log::warning('Recaptcha failed', ['response' => $response->json(), 'email' => $email, 'ip' => $ip]);
+			return false;
+		}
+
+		return true;
 	}
 
 	public static function url_lot($cod_sub, $id_session, $des_sub, $ref, $num_hces, $friendly = "", $title = "")
