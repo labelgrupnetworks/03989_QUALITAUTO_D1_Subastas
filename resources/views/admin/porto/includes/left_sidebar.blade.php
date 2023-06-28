@@ -547,59 +547,6 @@ $idiomes = \Config::get('app.locales');
 					</li>
 					@endif
 
-
-					<?php
-                        $banner = new \App\Models\Banners();
-                        $sections = $banner->get_banner_sections();
-					?>
-					@if(in_array('banners',$config_menu_admin) && !empty($sections->toArray()))
-					<li class="nav-parent @if(!empty($_GET['crs'])) nav-expanded @endif" style="">
-						<a href="#">
-							<i class="fa fa-columns" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.resources') }}</span>
-						</a>
-						<ul class="nav nav-children">
-							@foreach($sections as $section)
-							<li>
-								<a href="/admin/resources?see=all&crs={{$section->cod_banner_section}}">
-									<span>{{$section->des_banner_section}}</span>
-								</a>
-							</li>
-							@endforeach
-						</ul>
-					</li>
-					<li class="nav-parent @if(!empty($_GET['cbs'])) nav-expanded @endif" style="">
-						<a href="#">
-							<i class="fa fa-columns" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.banners') }}</span>
-						</a>
-						<ul class="nav nav-children">
-							@foreach($sections as $section)
-							<li>
-								<a href="/admin/banner?see=B&cbs={{$section->cod_banner_section}}">
-									<span>{{$section->des_banner_section}}</span>
-								</a>
-							</li>
-							@endforeach
-						</ul>
-
-					</li>
-					@elseif(in_array('banners',$config_menu_admin))
-					<li>
-						<a href="/admin/resources?see=all">
-							<i class="fa fa-folder" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.resources') }}</span>
-						</a>
-					</li>
-					<li>
-						<a href="/admin/banner?see=B">
-							<i class="fa fa-folder" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.banners') }}</span>
-						</a>
-
-					</li>
-					@endif
-
 					@if(in_array('bi',$config_menu_admin))
 						<li>
 							<a  href="/admin/bi/report/categoryAwardsSales?years[]={{date("Y")}}">

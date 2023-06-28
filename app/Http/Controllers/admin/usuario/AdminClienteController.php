@@ -38,7 +38,7 @@ class AdminClienteController extends Controller
 			}) ;
 		}
 
-		$clientes = FxCli::with('tipoCli')->with('cli2')
+		$clientes = FxCli::with('tipoCli')->with('cli2:cod_cli2, envcat_cli2')
 			->leftJoinCliWebCli()
 			->leftJoinClid('W1')
 			->select("FXCLI.COD_CLI", "FXCLI.COD2_CLI", "FXCLI.TIPO_CLI", "FXCLI.RSOC_CLI", "FXCLI.EMAIL_CLI", "FXCLI.TEL1_CLI", "FXCLI.PAIS_CLI", "FXCLI.PRO_CLI", "FXCLI.IDIOMA_CLI", "FXCLI.FISJUR_CLI", "FXCLI.BAJA_TMP_CLI", "FXCLI.F_MODI_CLI")

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\libs\FormLib;
 use App\Models\V5\FsParams;  // Parametros de la empresa
 use App\Exports\ClientsExport;
-
+use App\Models\V5\FxCli;
 
 class ClienteController extends Controller
 {
@@ -19,18 +19,9 @@ class ClienteController extends Controller
         $data = array('menu' => 3);
 
         //Eloy: Añadida condición gemp
-        $clientes = DB::table("FXCli")->leftJoin("FxCliWeb",function($q)
-                {
-                    $q->on('FXCLIWEB.GEMP_CLIWEB','=','FXCLI.GEMP_CLI')
-                    ->on('FXCLIWEB.COD_CLIWEB','=','FXCLI.COD_CLI');
-                })
-                ->where('FXCLI.GEMP_CLI','=',\Config::get('app.gemp'))
-                ->get();
-
-        /*Eloy: Al convertir el id a int se pierden los ceros a la izquierda
-        foreach($clientes as $cliente) {
-            $cliente->cod_cli = (int)$cliente->cod_cli;
-        }*/
+		$clientes = FxCli::select("fxcli.cod_cli, fxcli.cod2_cli, fxcli.baja_tmp_cli, fxcli.nom_cli, fxcli.rsoc_cli")
+			->leftJoinCliWebCli()
+			->get();
 
         $data['clientes'] = $clientes;
 
