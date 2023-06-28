@@ -2,6 +2,8 @@
 
 @push('scripts')
     <script defer src="{{ Tools::urlAssetsCache(public_default_path('js/register.js')) }}"></script>
+    <script defer src="{{ Tools::urlAssetsCache("/themes/$theme/js/register.js") }}"></script>
+
 	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
 @endpush
 
