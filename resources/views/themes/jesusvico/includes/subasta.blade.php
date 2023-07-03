@@ -20,7 +20,7 @@
 <article class="card auction-card h-100 border-0">
 
     <img class="card-img-top"
-        src="{{ \Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
+        src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}"
         alt="{{ $subasta->name }}" @if ($loop->index > 12) loading="lazy" @endif>
 
     <div class="card-body d-flex flex-column align-items-center">
