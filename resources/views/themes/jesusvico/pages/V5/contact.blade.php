@@ -5,7 +5,11 @@
 @stop
 
 @push('scripts')
-    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
+	@if(config('app.captcha_v3'))
+	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+	@else
+	<script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
+	@endif
 @endpush
 
 @section('content')
@@ -115,6 +119,9 @@
 
                     <form id="contactForm" name="contactForm" novalidate>
                         @csrf
+						@if(config('app.captcha_v3'))
+						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+						@endif
                         <div class="mb-2">
                             <label class="form-label"
                                 for="texto__1__nombre">{{ trans("$theme-app.login_register.contact") }}</label>
@@ -144,10 +151,12 @@
                             </label>
                         </div>
 
-                        <div class="mb-2">
+						@if(!config('app.captcha_v3'))
+						<div class="mb-2">
                             <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
                                 data-callback="onSubmit"></div>
                         </div>
+						@endif
 
                         <button class="btn btn-lb-primary" type="submit">{{ trans("$theme-app.global.enviar") }}</a>
 

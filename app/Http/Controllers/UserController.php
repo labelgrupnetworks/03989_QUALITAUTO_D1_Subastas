@@ -594,25 +594,13 @@ class UserController extends Controller
 		$strToDefault = Config::get('app.strtodefault_register', 0);
 
         //Validación recaptcha
-        if(!empty(Config::get('app.codRecaptcha'))){
+		if(Config::get('app.codRecaptcha', false) || Config::get('app.captcha_v3', false)) {
+			$token = $request->input('captcha_token');
+			$ip = $request->getClientIp();
+			$email = $request->input('email');
 
-            $jsonResponse = ToolsServiceProvider::validateRecaptcha(Config::get('app.codRecaptcha'));
-            if (empty($jsonResponse) || $jsonResponse->success !== true) {
-
-                Log::info('Error recaptcha: '.Request::input('g-recaptcha-response'));
-
-                return array(
-                  "err"       => 1,
-                  "msg"       => 'recaptcha_incorrect'
-                );
-
-            }
-        } elseif(config('app.captcha_v3', false)){
-			if(!ToolsServiceProvider::validateRecaptchaV3($request->get('captcha_token'), $request->getClientIp(), $request->get('email'))){
-				return array(
-					"err"       => 1,
-					"msg"       => 'recaptcha_incorrect'
-				  );
+			if(!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptcha'))) {
+				return ["err" => 1, "msg"=> 'recaptcha_incorrect'];
 			}
 		}
 

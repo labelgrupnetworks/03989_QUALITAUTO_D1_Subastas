@@ -707,6 +707,29 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
+	/**
+	 * @param string|null $token Token de recaptcha v3
+	 * @param string|null $ip IP del usuario
+	 * @param string|null $email string Email del usuario
+	 * @param string|null $privateCaptcha string|null Clave privada de recaptcha v2
+	 */
+	public static function captchaIsValid($token, $ip, $email, $privateCaptcha = null)
+	{
+		if(Config::get('app.captcha_v3', false)) {
+			return self::validateRecaptchaV3($token, $ip, $email);
+		}
+
+		if($privateCaptcha) {
+			$jsonResponse = self::validateRecaptcha($privateCaptcha);
+			if(empty($jsonResponse) || $jsonResponse->success !== true) {
+				Log::warning('Recaptcha v2 failed', ['response' => $jsonResponse, 'email' => $email, 'ip' => $ip]);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static function validateRecaptcha($secret)
 	{
 		if (empty($_POST['g-recaptcha-response'])) {
@@ -718,7 +741,7 @@ class ToolsServiceProvider extends ServiceProvider
 		return $responseData;
 	}
 
-	public static function validateRecaptchaV3($token, $ip, $email)
+	private static function validateRecaptchaV3($token, $ip, $email)
 	{
 		$privateKey = Config::get('app.captcha_v3_private', '');
 

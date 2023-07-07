@@ -4,7 +4,11 @@
     <script defer src="{{ Tools::urlAssetsCache(public_default_path('js/register.js')) }}"></script>
     <script defer src="{{ Tools::urlAssetsCache("/themes/$theme/js/register.js") }}"></script>
 
+	@if(config('app.captcha_v3'))
 	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+	@else
+	<script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
+	@endif
 @endpush
 
 @section('title')
@@ -18,8 +22,6 @@
         $newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
     @endphp
 
-    {{-- <script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script> --}}
-
     <section class="container create-account">
 
         <div class="mb-3">
@@ -29,7 +31,10 @@
 
         <form id="registerForm" action="{{ route('send_register') }}">
             @csrf
+
+			@if(config('app.captcha_v3'))
 			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+			@endif
 
 
             <div class="row mb-5">
@@ -326,6 +331,13 @@
 								</span>
                             </label>
                         </div>
+
+						@if(!config('app.captcha_v3'))
+						<div class="col-12">
+                            <div class="g-recaptcha" data-sitekey="{{ config('app.codRecaptchaEmailPublico') }}"
+                                data-callback="onSubmit"></div>
+                        </div>
+						@endif
 
                     </div>
                 </div>

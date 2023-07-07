@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 # Cargamos el modelo
 use App\Models\User;
 use App\Providers\RoutingServiceProvider as Routing;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Config;
 
 class ValoracionController extends Controller
@@ -88,31 +89,27 @@ class ValoracionController extends Controller
 
 	public function ValoracionArticulosAdv($lang)
 	{
-
 		try {
+
 			if (empty($_POST['post'])) {
 				$url = \Routing::translateSeo('valoracion-articulos-success');
 			} else {
 				$url = Routing::translateSeo('pagina') . 'vender-monedas-success';
 			}
 
+			if(Config::get('app.codRecaptchaValoracion', false) || Config::get('app.captcha_v3', false)) {
+				$token = request()->input('captcha_token');
+				$ip = request()->getClientIp();
+				$email = request()->input('email');
 
-			if (!empty(Config::get('app.codRecaptchaValoracion'))) {
-
-				$jsonResponse = \Tools::validateRecaptcha(Config::get('app.codRecaptchaValoracion'));
-				if (empty($jsonResponse) || $jsonResponse->success !== true) {
-
-					\Log::info('Error recaptcha: ' . Request::input('g-recaptcha-response'));
-
-					return $result = array(
-						'status'  => 'error',
-
-
-					);
+				if(!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaValoracion'))) {
+					return [
+						"status" => 'error',
+						"err" => 1,
+						"msg" => 'recaptcha_incorrect'
+					];
 				}
 			}
-
-			$false = true;
 
 			\App::setLocale($lang);
 
@@ -148,7 +145,7 @@ class ValoracionController extends Controller
 
 
 			$htmlFields = false;
-			$prohibidos = array('_token', 'imagen', 'email_category', 'name', 'email', 'telf', 'post', 'g-recaptcha-response');
+			$prohibidos = array('_token', 'imagen', 'email_category', 'name', 'email', 'telf', 'post', 'g-recaptcha-response', 'captcha_token');
 
 			foreach ($_POST as $key => $value) {
 
@@ -159,7 +156,6 @@ class ValoracionController extends Controller
 					}
 				}
 			}
-
 
 
 			if (Config::get('app.assessment_registered')) {

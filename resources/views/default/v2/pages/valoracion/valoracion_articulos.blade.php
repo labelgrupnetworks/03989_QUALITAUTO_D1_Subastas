@@ -3,9 +3,17 @@
 @section('title')
 	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
 @stop
-
+{{--
 @push('scripts')
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+@endpush --}}
+
+@push('scripts')
+	@if(config('app.captcha_v3'))
+	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+	@else
+	<script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
+	@endif
 @endpush
 
 @section('content')
@@ -24,6 +32,10 @@ $bread[] = ["name" => $data['title']];
 
 	<form id="form-valoracion-adv" action="" class="mt-3">
 		@csrf
+		@if(config('app.captcha_v3'))
+			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+		@endif
+
 		<p class="text-danger h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
 
 		<div class="row">
@@ -59,6 +71,15 @@ $bread[] = ["name" => $data['title']];
 					<input id="images" type="file" name="imagen[]" multiple/>
 				</div>
 			</div>
+		</div>
+
+		<div class="row mb-3">
+			@if(!config('app.captcha_v3'))
+			<div class="col-12">
+				<div class="g-recaptcha" data-sitekey="{{ config('app.codRecaptchaEmailPublico') }}"
+					data-callback="onSubmit"></div>
+			</div>
+			@endif
 		</div>
 
 		<button type="submit" id="valoracion-adv" class="button-send-valorate btn btn-lb-primary">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>

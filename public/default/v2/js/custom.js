@@ -129,12 +129,12 @@ $(function () {
 
 	});
 
-	$("#form-valoracion-adv").submit(function (event) {
+	$("#form-valoracion-adv").submit(async function (event) {
 		$('#images').remove()
 		$(".loader").removeClass("hidden");
 		$("#valoracion-adv").addClass("hidden");
+
 		event.preventDefault();
-		formData = new FormData(this);
 
 		var max_size = 6000;
 		var size = 0;
@@ -142,44 +142,56 @@ $(function () {
 		$("#form-valoracion-adv").find('input[type="file"]').each(function (index, element) {
 
 			$(element.files).each(function (index, el) {
-
 				size = size + ((el.size / 1024))
 			})
 		});
 
-		if (Math.floor(size) < max_size) {
-			$.ajax({
-				type: "POST",
-				url: "valoracion-articulos-adv",
-				data: formData,
-				enctype: 'multipart/form-data',
-				processData: false,
-				contentType: false,
-				success: function (result) {
-					if (result.status == 'correct') {
-						window.location.href = result.url;
-					} else if (result.status == 'error_size' || result.status == 'error_no_image') {
-						$("#modalMensaje #insert_msg").html('');
-						$("#modalMensaje #insert_msg").html(messages.error[result.msg]);
-						$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					} else {
-						$(".msg_valoracion").removeClass('hidden');
-					}
-					$(".loader").addClass("hidden");
-					$("#valoracion-adv").removeClass("hidden");
-				},
-				error: function (result) {
-					$(".loader").addClass("hidden");
-					$("#valoracion-adv").removeClass("hidden");
-					$(".msg_valoracion").removeClass('hidden');
-				}
-			});
-		} else {
+		if (Math.floor(size) > max_size) {
 			$(".loader").addClass("hidden");
 			$("#valoracion-adv").removeClass("hidden");
 			$("#insert_msg").html(messages.error.max_size_img);
 			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			return;
 		}
+
+		await executeCaptchaV3();
+
+		if(!checkCaptcha()) {
+			$(".loader").addClass("hidden");
+			$("#valoracion-adv").removeClass("hidden");
+			$("#insert_msg").html(messages.error.generic);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			return;
+		}
+
+		formData = new FormData(this);
+		$.ajax({
+			type: "POST",
+			url: "valoracion-articulos-adv",
+			data: formData,
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			success: function (result) {
+				if (result.status == 'correct') {
+					window.location.href = result.url;
+				} else if (result.status == 'error_size' || result.status == 'error_no_image') {
+					$("#modalMensaje #insert_msg").html('');
+					$("#modalMensaje #insert_msg").html(messages.error[result.msg]);
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				} else {
+					$(".msg_valoracion").removeClass('hidden');
+				}
+				$(".loader").addClass("hidden");
+				$("#valoracion-adv").removeClass("hidden");
+			},
+			error: function (result) {
+				$(".loader").addClass("hidden");
+				$("#valoracion-adv").removeClass("hidden");
+				$(".msg_valoracion").removeClass('hidden');
+			}
+		});
+
 	});
 
 	//eliminar ordenes	desde el panel de pujas
@@ -1053,7 +1065,7 @@ function calendarInitialize(...allEvents) {
 	return calendar;
 }
 
-function sendContactForm(event) {
+async function sendContactForm(event) {
 
 	event.preventDefault()
 	event.stopPropagation()
@@ -1066,12 +1078,9 @@ function sendContactForm(event) {
 		return false;
 	}
 
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
+	await executeCaptchaV3();
 
-	const recaptchaResponse = $("#g-recaptcha-response").val();
-
-	if (!recaptchaResponse) {
-		$(".g-recaptcha").find("iframe").addClass("has-error");
+	if(!checkCaptcha()) {
 		showMessage(messages.error.hasErrors);
 		return false;
 	}
@@ -1311,6 +1320,33 @@ function createWallet(event) {
 
 function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
+}
+
+function checkCaptcha() {
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
+	return Boolean(response);
+}
+
+async function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+
+	if(!captchaElemenent) return;
+
+	const key = captchaElemenent.getAttribute('data-sitekey');
+
+	return new Promise((resolve, reject) => {
+
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				captchaElemenent.value = token;
+				resolve();
+			});
+		});
+	});
 }
 
 // En la version dos este metodo no aplica, y se llama desde common.js

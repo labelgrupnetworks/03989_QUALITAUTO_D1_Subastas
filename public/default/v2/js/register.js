@@ -170,29 +170,6 @@ function checkIfErrorEmail() {
 	return true;
 }
 
-async function executeCaptchaV3() {
-	const captchaElemenent = document.querySelector('[name="captcha_token"]');
-	const key = captchaElemenent.getAttribute('data-sitekey');
-
-	return new Promise((resolve, reject) => {
-		grecaptcha.ready(function() {
-			grecaptcha.execute(key, {action: 'submit'})
-			.then(function(token) {
-
-				if(!token) reject('No token found');
-
-				captchaElemenent.value = token;
-				resolve();
-			});
-		});
-	});
-}
-
-function checkCaptcha() {
-	const response = document.querySelector('[name="g-recaptcha-response"]').value;
-	return Boolean(response);
-}
-
 function successRegister(response, aux) {
 	response = $.parseJSON(response);
 	if (response.err == 1) {

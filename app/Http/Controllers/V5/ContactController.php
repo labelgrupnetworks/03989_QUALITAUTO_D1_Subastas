@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\V5;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use View;
 
 
@@ -15,6 +15,7 @@ use App\libs\EmailLib;
 # Cargamos los modelos
 
 use App\Models\V5\Web_Page;
+use App\Providers\ToolsServiceProvider;
 
 class ContactController extends Controller
 {
@@ -55,24 +56,29 @@ class ContactController extends Controller
 
 	}
 
-	public function contactSendmail(Request $request) {
-
+	public function contactSendmail(Request $request)
+	{
 		// Recogemos la info
-
 		$data = $request->all();
-		$jsonResponse = \Tools::validateRecaptcha(\Config::get('app.codRecaptchaEmail'));
 
 		// Lista de emails baneados por spam y que no son captados por el recaptcha
 		$bannedsEmails = ['eric.jones.z.mail@gmail.com'];
 		$isEmailBanned = in_array(trim($data['email']), $bannedsEmails);
+		if($isEmailBanned) {
+			return MessageLib::errorMessage("recaptcha_incorrect");
+		}
 
-        if (empty($jsonResponse) || $jsonResponse->success !== true || $isEmailBanned) {
-        	return MessageLib::errorMessage("recaptcha_incorrect");
-        }
+		if(Config::get('app.codRecaptchaEmail', false) || Config::get('app.captcha_v3', false)) {
+			$token = $request->input('captcha_token');
+			$ip = $request->getClientIp();
+			$email = $request->input('email');
 
+			if(!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaEmail'))) {
+				return MessageLib::errorMessage("recaptcha_incorrect");
+			}
+		}
 
 		// Enviamos el email a admin
-
 		$email = new EmailLib('NEW_CONTACT_ADMIN');
 
 		if (!empty($email->email)) {

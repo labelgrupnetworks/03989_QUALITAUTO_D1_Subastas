@@ -4,6 +4,10 @@
     {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
+@push('scripts')
+	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+@endpush
+
 @section('content')
 
     @php
@@ -63,6 +67,10 @@
 
                 <form class="mt-3" id="form-valoracion-adv" action="">
                     @csrf
+					@if(config('app.captcha_v3'))
+						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+					@endif
+
                     <p class="text-danger h4 hidden msg_valoracion">
                         {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.error') }}</p>
 
