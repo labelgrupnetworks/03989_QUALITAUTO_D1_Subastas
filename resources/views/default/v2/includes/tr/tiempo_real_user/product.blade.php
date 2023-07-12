@@ -27,7 +27,7 @@
           <h6 class="text-lb-gray">{!! $data['text_lang'][$data['js_item']['lang_code']]->desc_hces1 !!}</h6>
       </div>
       <div class="hidden notranslate count_down_msg" id="count_down_msg">
-          <span class="final_auction">{{ trans(\Config::get('app.theme') . '-app.sheet_tr.final_auction') }}</span><br>
+          <span class="final_auction">{{ trans(\Config::get('app.theme') . '-app.sheet_tr.final_auction') }}</span>
           <p class="count"></p>
       </div>
       <div class="" id="fairwarning">
