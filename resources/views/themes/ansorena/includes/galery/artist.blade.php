@@ -1,9 +1,8 @@
-<div class = "galLot galLotArtist">
-	<div class="galImgLot h-100">
-	<a class="h-100 d-flex flex-column"
-	href="{{$url}}">
-		<img src="{{$img}}">
-		<div class="artistGridTitle mt-1"> {{$artist->name_artist }}</div>
-	</a>
-	</div>
-</div>
+<article class="card auction-card">
+    <img class="card-img-top" width="" src="/img/autores/{{ $artist->id_artist }}.jpg" alt="">
+    <div class="card-body">
+        <p class="ff-highlight card-title">
+            {{ Tools::changePositionNamesWithComa($artist->name_artist) }}</p>
+    </div>
+    <a class="stretched-link" href="{{ route('artistaGaleria', ['id_artist' => $artist->id_artist]) }}"></a>
+</article>

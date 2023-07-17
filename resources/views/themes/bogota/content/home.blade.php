@@ -14,7 +14,7 @@
 					{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-10 col-md-12 text-center">
+			<div class="col-xs-12 col-sm-10 col-md-12 text-center lotes-destacados-principal-lot">
 				<div class="lds-ellipsis loader">
 					<div></div>
 					<div></div>
@@ -43,6 +43,6 @@
 <script>
     var replace = @json($replace);
     $( document ).ready(function() {
-        ajax_carousel("lotes_destacados",replace);
+        ajax_newcarousel("lotes_destacados",replace);
      });
 </script>

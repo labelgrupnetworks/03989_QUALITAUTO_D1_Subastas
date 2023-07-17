@@ -2,6 +2,7 @@
 <html>
 	<?php $cookiesState = \Tools::cookies();?>
 <head>
+	@include('includes.open_graph_head')
     @include('includes.google_head')
     @include('includes.head')
 </head>

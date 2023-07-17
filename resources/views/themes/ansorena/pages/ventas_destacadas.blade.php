@@ -1,69 +1,64 @@
 @extends('layouts.default')
+@section('framework-css')
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}">
+@endsection
+
+@section('framework-js')
+    <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+@endsection
+
+@section('custom-css')
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/global.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/style.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
+@endsection
+
 @php
+    use App\Models\V5\FgAsigl0;
 
-$key = 'ventas_destacadas';
-$replace = [
-    'lang' => \Tools::getLanguageComplete(Config::get('app.locale')),
-    'emp' => Config::get('app.emp'),
-];
-$bloque = new App\Models\Bloques();
-$lots = $bloque->getResultBlockByKeyname($key, $replace);
-
+    $locale = Config::get('app.locale');
+    $menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUSUBASTAS');
+    $lots = (new FgAsigl0())->ventasDestacadas('orden_destacado_asigl0', request('order_dir', 'asc'));
 @endphp
 @section('content')
 
-@if (empty($lots))
-    <br><br>
-    <center><big><big>{{ trans(\Config::get('app.theme') . '-app.lot_list.no_results') }}</big></big></center>
-@else
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 text-center color-letter">
-			@php
+    {!! $menuEstaticoHtml->content_web_page !!}
 
-					$pagina = new App\Models\Page();
-					$menuEstaticoHtml  = $pagina->getPagina(Str::upper(\Config::get("app.locale")),"MENUSUBASTAS");
+    <main class="grid-prominent-sales">
+        <h1 class="ff-highlight grid-page-tile">
+            {{ trans("$theme-app.lot_list.featured-sales") }}</h1>
 
+        <section class="grid-section">
+            <div class="container">
+                <form class="top-filters-wrapper pb-4">
 
-			@endphp
-			{!! $menuEstaticoHtml->content_web_page!!}
-		</div>
-	</div>
-</div>
-    <div class="container">
-        <div class="row ventas-destacadas-container">
-			<div class="text-center mt-1">
-				<h1 class="titlePage">{{ trans("$theme-app.lot_list.featured-sales") }}</h1>
-			</div>
-			<div class="mt-3">
-            @foreach ($lots as $item)
+                    @include('includes.components.order')
 
-                <?php
-                #transformo el array en variables para conservar los nombres antiguos
-                # si es necesario ampliar varibles se puede hacer en la funcion setVarsLot del lotlistcontroller, o si solo es para este cleinte ponerlas aquí.
-                /* dd($item); */
-                /* foreach ($item->bladeVars as $key => $value) {
-                                    ${$key} = $value;
-                                } */
+                    <p class="filters-number-result opacity-50">
+                        {{ Tools::numberformat($lots->total()) . ' ' . trans("$theme-app.lot_list.results") }}
+                    </p>
+                </form>
 
-                $class_square = 'col-xs-12 col-sm-6 col-lg-4';
+                @if (empty($lots))
+                    <h3 class="text-center">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_results') }}</h3>
+                @else
+                    <div class="section-grid-lots row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 gy-4">
 
-                if (empty(\Config::get('app.paginacion_grid_lotes'))) {
-                    $idlot = 'lot_' . $item->sub_asigl0 . '_' . $item->ref_asigl0;
-                    $codeScrollBack = " id=\"$idlot\" onclick=\"changeURL('$actualPage', '$idlot')\" ";
-                } else {
-                    $codeScrollBack = '';
-                }
+                        @foreach ($lots as $lot)
+                            @php
+                                $titulo = trans("$theme-app.subastas.auctions") . ' ' . $lot->sub_asigl0 . ' / ' . trans("$theme-app.lot.lot-name") . ' ' . $lot->ref_asigl0;
+								$url = Tools::url_lot($lot->sub_asigl0, $lot->auc_session, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->titulo_hces1)
+                            @endphp
 
-                $titulo = trans(\Config::get('app.theme') . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
-                $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($item->num_hces1, $item->lin_hces1);
+                            @include('includes.grid.lot_venta_destacada')
+                        @endforeach
+                    </div>
+                    <div class="pagination-wrapper">
+                        {!! $lots->appends(Request::query())->links('front::includes.grid.paginator_pers') !!}
+                    </div>
+                @endif
+            </div>
+        </section>
+    </main>
 
-                ?>
-
-                @include('includes.grid.lot_venta_destacada')
-            @endforeach
-			</div>
-        </div>
-    </div>
-@endif
 @stop

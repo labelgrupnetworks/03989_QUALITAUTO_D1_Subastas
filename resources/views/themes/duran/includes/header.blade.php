@@ -136,11 +136,9 @@ use App\libs\TradLib as TradLib;
 									<div class="categoryOption"> 	<a href="{{ \Tools::url_auction($subasta->cod_sub,$subasta->des_sub,$subasta->id_auc_sessions, $subasta->reference) }}">{{$subasta->des_sub}}</a> </div>
 									@endif
 								@endforeach
-								@php
-								/*
+
 								<div class="categoryOption"> <a  href="/<?= \Config::get("app.locale") ?>/subasta/subasta-solo-online-duran_7501-001?order=orden_asc">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}} </a> </div>
-								*/
-								@endphp
+								
 									<div class="categoryOption"> <a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.metas.title_historic') }}</a> </div>
 							</div>
 					  </div>

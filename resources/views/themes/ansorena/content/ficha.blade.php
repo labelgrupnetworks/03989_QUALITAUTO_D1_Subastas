@@ -1,4 +1,4 @@
-<?php
+@php
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S'? true : false;
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N'? true : false;
@@ -9,7 +9,6 @@ $compra = $lote_actual->compra_asigl0 == 'S'? true : false;
 $subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O')? true : false;
 $subasta_venta = $lote_actual->tipo_sub == 'V' ? true : false;
 $subasta_web = $lote_actual->tipo_sub == 'W' ? true : false;
-$subasta_galeria = $lote_actual->tipo_sub == 'E' || $lote_actual->tipo_sub == 'F' ? true : false;
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O'? true : false;
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P'? true : false;
 $retirado = $lote_actual->retirado_asigl0 !='N'? true : false;
@@ -23,18 +22,15 @@ $fact_N = $lote_actual->fac_hces1=='N' ? true : false;
 $start_session = strtotime("now") > strtotime($lote_actual->start_session);
 $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
-$start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
-$end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
+    $start_orders = strtotime('now') > strtotime($lote_actual->orders_start);
+    $end_orders = strtotime('now') > strtotime($lote_actual->orders_end);
 
-?>
+@endphp
 
-
-@if($subasta_galeria )
-	@include('includes.ficha.fichaGaleria');
+@if ($subasta_galeria)
+    @include('includes.ficha.fichaGaleria')
 @else
-	@include('includes.ficha.fichaNormal');
+    @include('includes.ficha.fichaNormal')
 @endif
-
-
 
 @include('includes.ficha.modals_ficha')

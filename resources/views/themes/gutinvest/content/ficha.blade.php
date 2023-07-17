@@ -121,7 +121,7 @@ $MobileDetect = new MobileDetect();
 						<div class="item_content_img_single"
 							style="position: relative; height: 290px; overflow: hidden;">
 							<img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;"
-								class="img-responsive" src="/img/load/lote_medium_large/<?php echo $imagen?>"
+							loading="lazy" class="img-responsive" src="/img/load/lote_medium_large/<?php echo $imagen?>"
 								alt="{{$lote_actual->titulo_hces1}}">
 						</div>
 						<?php } ?>

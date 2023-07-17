@@ -184,3 +184,39 @@
 		</div>
 	</section>
 </div>
+
+@if(!$auctionConditionsAccepted)
+<div id="modalCheckBasesFicha" class="mfp-hide">
+	<section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+				<div class="modal-text text-center">
+					<h3>{{ trans("$theme-app.lot.accept_conditions_auction") }}</h3>
+					<form id="checkBases" data-codsub="{{ $lote_actual->cod_sub }}">
+						@csrf
+						<div class="form-group row">
+							<div class="col-xs-12">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" disabled>
+										<span>
+											{!! trans("$theme-app.lot.accept_conditions", ['url' => $auctionBasesFile->public_file_path]) !!}
+										</span>
+									</label>
+								</div>
+							</div>
+						</div>
+
+					</form>
+					<button form="checkBases" type="submit" class="btn btn-primary modal-confirm btn-custom" disabled>
+						{{ trans("$theme-app.sheet_tr.confirm") }}
+					</button>
+					<button class="btn btn-default modal-dismiss" onclick="(() => $.magnificPopup.close())()">
+						{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+@endif

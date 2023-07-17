@@ -142,6 +142,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 							<img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;"
 								class="img-responsive"
+								loading="lazy"
 								src="{{ \Tools::url_img("lote_medium_large", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
 								alt="{{$lote_actual->titulo_hces1}}">
 						</div>

@@ -17,23 +17,6 @@
 </style>
 
 @php
-if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002'){
-	#mostraremos el menu de condecoraciones solo si pertenece a condecoraciones
-		if($data['news']->id_category_blog ==2 ){
-			$key = "MENUCONDECORACIONES";
-		}else{
-			$key = "MENUANSORENA";
-		}
-		#si aun no ha encontrado un menu que sustituir
-		$pagina = new App\Models\Page();
-
-		$menuEstaticoHtml  = $pagina->getPagina(\Config::get("app.locale"),$key);
-		if(!empty($menuEstaticoHtml)){
-			echo $menuEstaticoHtml->content_web_page;
-		}
-
-}
-
 # Guardamos la lista de extensiones para comprobar si es una imagen o un video
 $extensionesImagen = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'svgz', 'ico', 'JPG', 'JPEG', 'PNG', 'GIF', 'BMP', 'TIFF', 'TIF', 'SVG', 'SVGZ', 'ICO');
 $extensionesVideo = array('mp4', 'webm', 'ogg', 'avi', 'mkv', 'MP4', 'WEBM', 'OGG', 'AVI', 'MKV');

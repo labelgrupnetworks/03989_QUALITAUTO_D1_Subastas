@@ -82,14 +82,9 @@
 
                         @foreach($lote_actual->imagenes as $key => $imagen)
                         <div class="col-sm-3-custom">
-							<a href="javascript:seed.goToPage(parseInt('{{ $key }}'));">
-                                <div class="img-openDragon" data-pos="{{ $key }}"
-                                    style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>'); background-size: contain; background-position: center; background-repeat: no-repeat;"
-                                    alt="{{$lote_actual->titulo_hces1}}"
-									data-image="{{ $imagen }}">
-								</div>
-							</a>
-
+							<button onclick="seed.goToPage(parseInt('{{ $key }}'))" data-image="{{ $imagen }}" class="img-openDragon"
+								style="background-color:transparent; background-image:url('{{Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key)}}'); background-size: contain; background-position: center; background-repeat: no-repeat;">
+							</button>
                         </div>
                         @endforeach
                     </div>

@@ -1,223 +1,232 @@
 @php
-	$titulo = $article->model_art0;
-	$img = $article->img; # "https://ansorenacompromiso.com/sites/default/files/styles/sortija_ficha/public/images/productos/ar_1762-2.png";
-	$description = $article->des_art0;
-	#sumarle el iva al producto
 
+    $titulo = $article->model_art0;
+    $img = $article->img;
+    $description = $article->des_art0;
+    $images = $article->images;
+    $images[] = '/themes/ansorena/assets/img/pages/generico-joyeria.jpg';
 
+    $relatedArticles = App\Models\articles\FgArt0::select('ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0')
+        ->where('ID_ART0', '!=', $article->id_art0)
+        ->where('SEC_ART0', '=', $article->sec_art0)
+        ->activo()
+        ->orderby(' DBMS_RANDOM.VALUE')
+        ->take(3)
+        ->get();
 @endphp
-<div class="container fichaArticulo">
-	<div class="row">
-		<div class="col-xs-12 col-sm-7 pb-3">
 
-			{{-- mobile --}}
-			<div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
-				@foreach($article->images as $key => $image)
-					<div class="item_content_img_single" style="position: relative;">
-							<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
-							class="img-responsive"
-							src="{{ $image }}"
-							alt="{{ $titulo }}">
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-7" id="images-wrapper">
+            <div class="d-flex gap-2">
+
+                <div class="images">
+                    @foreach ($images as $key => $image)
+                        <div class="img_main" id="image_{{ $key }}" data-image="{{ $image }}">
+
+                            <div id="js-toolbar_{{ $key }}" class="toolbar image-toolbar">
+                                <a id="zoom-in_{{ $key }}" href="#zoom-in_{{ $key }}" title="Zoom in">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#plus"></use>
+                                    </svg>
+                                </a>
+
+                                <a id="zoom-out_{{ $key }}" href="#zoom-out_{{ $key }}"
+                                    title="Zoom out">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#dash"></use>
+                                    </svg>
+                                </a>
+
+                                <a id="home_{{ $key }}" href="#home_{{ $key }}" title="Go home">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#arrow-clockwise"></use>
+                                    </svg>
+                                </a>
+
+                                <a id="full-page_{{ $key }}" href="#full-page_{{ $key }}"
+                                    title="Toggle full page">
+                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                        <use xlink:href="/bootstrap-icons.svg#fullscreen"></use>
+                                    </svg>
+                                </a>
+                            </div>
+
+                            <img src="{{ $image }}" alt="{{ $titulo }}"
+                                style="background-blend-mode: multiply">
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Miniaturas --}}
+                <div class="minis-content d-none d-lg-flex">
+                    <div class="minis-content-wrapper">
+                        @foreach ($images as $key => $imagen)
+                            <a class="mini-img-ficha no-360" href="#image_{{ $key }}">
+                                <img src="{{ $imagen }}" alt="{{ $titulo }}">
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                {{-- / Miniaturas --}}
+
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <form id="articleForm">
+                @csrf
+                <input type="hidden" name="idArt0" value="{{ $article->id_art0 }}">
+                <section class="ficha-info">
+                    <h1 class="ficha-info-title">
+                        {{ $titulo }}
+                    </h1>
+
+                    <h2 class="ficha-info-description">
+                        {{ $description }}
+                    </h2>
+                    @foreach ($variantes as $keyVariante => $variante)
+                        <div class="@if (!$loop->first) hidden @endif">
+
+                            <div class="ficha-article-select-wrapper">
+                                <div id="tallaColor_{{ $keyVariante }}_container" class="ficha-article-select d-none">
+                                    <select data-label="{{trans("$theme-app.articles.select_size")}}" name="tallaColor[{{ $keyVariante }}]"
+                                        class="form-select tallaColor_JS  @if ($loop->first) PrincipalTallaColor_JS @endif ">
+                                        {{-- se rellena por json --}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            @if ($variante == 'TALLAS')
+                                {!! trans(\Config::get('app.theme') . '-app.articles.consultar_tallas') !!}</a>
+                            @endif
+                        </div>
+                    @endforeach
+
+                    <div class="ficha-article-prices">
+                        @if ($article->imp > 0)
+                            <span id="art-original_JS"
+                                class="art-price_JS">{{ Tools::moneyFormat($article->imp, '', 0) }}
+                            </span>
+                            @foreach ($precioArticulos as $keyArticulo => $precioArticulo)
+                                <span id="art-{{ $keyArticulo }}_JS"
+                                    class="art-price_JS hide">{{ Tools::moneyFormat($precioArticulo, '', 0) }} </span>
+                            @endforeach
+                            {{ trans("$theme-app.subastas.euros") }}
+                        @else
+                            <p class="mt-3">{!! trans("$theme-app.articles.consultarPrecio") !!}</p>
+                        @endif
+                    </div>
+
+                    <div class="ficha-article-buttons mt-1">
+                        {{-- 07-07-22 Mónica ha pedido que los articulos de la seccion joyas únicas muestre siempre el cotactenos, lo saco del circuito de js que mlo muestra is hay stock  --}}
+                        @if ($article->sec_art0 == 'JX' || $article->imp == 0)
+                            <p class="descriptionArticlePage">
+                                {!! trans(\Config::get('app.theme') . '-app.articles.contactenos') !!}
+                            </p>
+                        @else
+                            {{-- Es posible que no haya variamtes, en ese caso miramso el stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
+                            <button
+                                class="btn btn-lb-primary btn-medium w-100 addArticleCard_JS siStock_JS @if (!$article->stock) hidden @endif">
+                                {{ trans("$theme-app.articles.addCart") }}
+                            </button>
+
+                            {{-- Ansorena Han pedido que no aparezca el no disponible --}}
+                            {{-- <button style="width: 100%;"  disabled="disabled" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.outStock') }}</button> --}}
+                            <p class="noStock_JS @if ($article->stock) hidden @endif">
+                                {!! trans(\Config::get('app.theme') . '-app.articles.contactenos') !!}
+                            </p>
+                        @endif
+
+                        <div class="ficha-article-links">
+                            <a class="btn btn-outline-lb-primary btn-medium"
+                                href="{{ trans("$theme-app.articles.hrefMoreInfo", ['joya' => $titulo]) }}">
+                                {{ trans("$theme-app.articles.moreInfo") }}
+                            </a>
+
+                            <a class="btn btn-outline-lb-primary btn-medium"
+                                href="{{ trans("$theme-app.articles.hrefCreatujoya", ['joya' => $titulo]) }}">
+                                {{ trans("$theme-app.articles.creaTujoya") }}
+                            </a>
+                        </div>
+                    </div>
+
+					<div class="prev-next-buttons">
+						@if (!empty($data['previous']))
+							<a class="swiper-button-prev" title="{{ trans("$theme-app.subastas.last") }}" href="{{ $data['previous'] }}">
+							</a>
+						@endif
+
+						@if (!empty($data['next']))
+							<a class="swiper-button-next" title="{{ trans("$theme-app.subastas.next") }}" href="{{ $data['next'] }}">
+							</a>
+						@endif
 					</div>
 
-				@endforeach
-				<div class="item_content_img_single" style="position: relative;">
-					<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
-					class="img-responsive"
-					src="/themes/ansorena/assets/img/pages/generico-joyeria.jpg"
-					alt="{{ $titulo }}">
-				</div>
-			</div>
+                </section>
+            </form>
+        </div>
 
-			{{-- desktop --}}
-			<div class="hidden-xs">
-				<div id="img_main" class="img_single">
-					<a title="{{$titulo}}" >
-					<img class="img-responsive" src="{{ $img}}">
-					</a>
-				</div>
+    </div>
 
-				<div  class="sliderthumbArticulo ">
+    <section class="recomendados relatedArticles">
+        <p class="ff-highlight section-title">{{ trans("$theme-app.articles.more") }}</p>
 
-						@foreach($article->images as $image)
-						<div  class="sliderThumbsArticulos"  >
-							<img src="{{$image}}" data-img="{{$image}}" >
-						</div>
-						@endforeach
-						<div  class="sliderThumbsArticulos"  >
-							<img src="/themes/ansorena/assets/img/pages/generico-joyeria_thumb.jpg" data-img="/themes/ansorena/assets/img/pages/generico-joyeria.jpg" >
-						</div>
+        <div class="Grid articles-container">
+            @foreach ($relatedArticles as $relatedArticle)
+                @include('includes/articles/relatedArticle')
+            @endforeach
+        </div>
+    </section>
 
-				</div>
-			</div>
-
-
-		</div>
-
-		<div class="col-xs-12 col-sm-5">
-			<form id="articleForm">
-				<input type="hidden" name="idArt0" value="{{$article->id_art0}}">
-				<div class="col-xs-12 titleArticlePage"> {{$titulo}}</div>
-				<div class="col-xs-12 descriptionArticlePage"> {{$description}}</div>
-
-				@if( $article->imp> 0)
-					<div class="col-xs-12 priceArticlePage">
-						<span id="art-original_JS" class="art-price_JS"  >{{ \Tools::moneyFormat($article->imp,'' , 0)}} </span>
-						@foreach($precioArticulos as $keyArticulo =>$precioArticulo)
-							<span id="art-{{$keyArticulo}}_JS" class="art-price_JS hide" >{{ \Tools::moneyFormat($precioArticulo,'' , 0)}} </span>
-						@endforeach
-						{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
-					</div>
-				@else
-					<div class="col-xs-12 titleArticlePage mt-1">
-						{!! trans(\Config::get('app.theme').'-app.articles.consultarPrecio') !!}
-					</div>
-				@endif
-
-
-				@php
-					#solo recargaremos el segundo select de variantes con la eleccion del primero y ñle pondremso la clase PrincipalTallaColor_JS
-					$numVariante=0;
-				@endphp
-				@foreach($variantes as $keyVariante => $variante)
-				<div class=" col-xs-12 @if($numVariante!=0)  hidden  @endif mt-1">
-					<label> {{$variante}} </label>
-					<br>
-
-						<select name="tallaColor[{{$keyVariante}}]"  class="tallaColor_JS  @if($numVariante==0) PrincipalTallaColor_JS   @endif ">
-						{{--se rellena por json --}}
-						</select>
-
-					@if ($variante == "TALLAS")
-					{!! trans(\Config::get('app.theme').'-app.articles.consultar_tallas') !!}</a>
-					@endif
-				</div>
-				@php $numVariante++; @endphp
-				@endforeach
-
-				<div class=" buyButtonArticlePage ">
-					{{-- código de token --}}
-					@csrf
-
-					{{-- 07-07-22 Mónica ha pedido que los articulos de la seccion joyas únicas muestre siempre el cotactenos, lo saco del circuito de js que mlo muestra is hay stock  --}}
-				@if($article->sec_art0 == 'JX' || $article->imp== 0)
-					<div class="col-xs-12 mt-1 descriptionArticlePage">
-						<br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
-					</div>
-				@else
-				{{-- Es posible que no haya variamtes, en ese caso miramso el stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
-					<div class="siStock_JS col-xs-12 mt-1 @if(!$article->stock) hidden @endif">
-						<button style="width: 100%;" class="button-principal addCartButton addArticleCard_JS" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.addCart') }}</button>
-					</div>
-					<div class="col-xs-12 mt-1  noStock_JS @if($article->stock) hidden @endif">
-						{{--
-							Ansorena Han pedido que no aparezca el no disponible
-							<button style="width: 100%;"  disabled="disabled" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.outStock') }}</button> --}}
-						<br/><br/>{!! trans(\Config::get('app.theme').'-app.articles.contactenos') !!}<br/><br/>
-
-					</div>
-				@endif
-					<div class=" col-xs-6 mt-1">
-						<a  href="{{ trans(\Config::get('app.theme').'-app.articles.hrefMoreInfo',["joya" =>$titulo]) }}">
-							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans(\Config::get('app.theme').'-app.articles.moreInfo') }}</button>
-						</a>
-					</div>
-
-					<div class=" col-xs-6 mt-1">
-						<a  href="{{ trans(\Config::get('app.theme').'-app.articles.hrefCreatujoya',["joya" =>$titulo] ) }}">
-							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans(\Config::get('app.theme').'-app.articles.creaTujoya') }}</button>
-						</a>
-					</div>
-
-
-						</div>
-				<div  class="col-xs-12 mt-1 ">
-					@include('includes.ficha.share')
-				</div>
-			</form>
-
-		</div>
-	</div>
-
-	<div class="col-xs-12 relatedArticles">
-		<h2 class="text-center titleReatedArticles">  {{ trans(\Config::get('app.theme').'-app.articles.more') }}  </h2>
-		@php
-			$relatedArticles = App\Models\articles\FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0")->where("ID_ART0","!=", $article->id_art0)->where("SEC_ART0","=", $article->sec_art0)->Activo()->orderby(" DBMS_RANDOM.VALUE")->take(3)->get();
-		@endphp
-		<div class="Grid articles-container">
-			@foreach($relatedArticles as $relatedArticle)
-				@include("includes/articles/relatedArticle")
-			@endforeach
-		</div>
-	</div>
 </div>
 
 <script>
+    getTallasColoresFicha();
+    /*
+    // no tiene que aparecer marcada ningun rsultado por defecto ya que no apareceran el resto de selects
+    $("select ").each(function(){
+    				$(this).val("");
+    		})
+    */
 
-getTallasColoresFicha();
-/*
-// no tiene que aparecer marcada ningun rsultado por defecto ya que no apareceran el resto de selects
-$("select ").each(function(){
-				$(this).val("");
-		})
-*/
-		$(".sliderThumbsArticulos img").on("click", function(){
-			loadSeaDragon($(this).data("img"));
-		});
+    initImagesVisor();
 
-function loadSeaDragon(img){
+    function initImagesVisor() {
+        const size = window.innerWidth;
+        console.log({
+            size
+        });
+        if (size >= 992) {
+            initOpen();
+        } else {
+            $('.images').slick({
+                arrows: false,
+                adaptiveHeight: true
+            });
 
-	var element = document.getElementById("img_main");
-	console.log()
-	while (element.firstChild) {
-		element.removeChild(element.firstChild);
-	}
-	OpenSeadragon({
-		id:"img_main",
-		prefixUrl: "/img/opendragon/",
+        }
 
-		showReferenceStrip:  true,
-
-
-		tileSources: [{
-				type: 'image',
-				url:img
-			/*	url:  '/img/load/real/'+img*/
-			}],
-		showNavigator:false,
-	});
-}
-loadSeaDragon('{{$img}}');
+    }
 
 
-$(".sliderthumbArticulo").slick({
-	slidesToShow: 6,
- 	slidesToScroll: 6,
-//	prevArrow: $('.prev'),
-//	nextArrow: $('.next'),
-	nextArrow: '<i class="icon fas fa-arrow-alt-circle-right nextArrowBtn"></i>',
-    prevArrow: '<i class="icon fas fa-arrow-alt-circle-left prevArrowBtn"></i>',
-	focusOnSelect: true,
-
-	responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 4,
-					slidesToScroll: 4,
-
-				}
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-
-
-				}
-			}
-
-		]
-});
+    function initOpen() {
+        document.querySelectorAll('.img_main').forEach((element, index) => {
+            OpenSeadragon({
+                id: element.id,
+                prefixUrl: "/img/opendragon/",
+                showReferenceStrip: true,
+                tileSources: [{
+                    type: 'image',
+                    url: element.dataset.image
+                }],
+                toolbar: `js-toolbar_${index}`,
+                zoomInButton: `zoom-in_${index}`,
+                zoomOutButton: `zoom-out_${index}`,
+                homeButton: `home_${index}`,
+                fullPageButton: `full-page_${index}`
+            })
+            element.querySelector('img').style.display = 'none';
+        })
+    }
 </script>

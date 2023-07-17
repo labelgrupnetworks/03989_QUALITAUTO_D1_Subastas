@@ -205,9 +205,9 @@
                     <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
 				@endif
 
-			  	@if($global['subastas']->has('S') && $global['subastas']['S']->has('P'))
+			  	{{-- @if($global['subastas']->has('S') && $global['subastas']['S']->has('P'))
 				  	<li><a href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
-			  	@endif
+			  	@endif --}}
 				@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
 
 					@if($global['subastas']['S']['V']->has('VDJ'))

@@ -1,59 +1,56 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.galery.artists') }}
+    {{ trans(\Config::get('app.theme') . '-app.galery.artists') }}
 @stop
 
+@section('framework-css')
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}">
+@endsection
+
+@section('framework-js')
+    <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+@endsection
+
+@section('custom-css')
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/global.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/style.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
+@endsection
 
 @section('content')
-<link href="{{ Tools::urlAssetsCache('/css/default/galery.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/galery.css') }}" rel="stylesheet" type="text/css">
-<div class="container">
-	<div class="row">
 
-			<div class="col-xs-12 galTitle">
-				<h1 class="titlePage-custom color-letter text-center">{{ trans(\Config::get('app.theme').'-app.galery.artists') }}</h1>
+    @include('includes.galery.subnav')
 
+    <main class="artist-page">
 
-			</div>
-			<div class="col-xs-12 textPage-custom">
-				{!! nl2br(trans(\Config::get('app.theme').'-app.galery.texto_artistas')) !!}
-			</div>
-			<div class=" col-xs-12 searchExhibitions">
-				<form id="fromSearchExhibitions" >
-					<input  type="text" id="searchExhibitions_JS"  name="search" value="{{request("search")}}" size="30" maxlength="128">
-					<button type="submit">	<i class="fa fa-search" aria-hidden="true"></i></button>
-				</form>
+        <div class="container">
 
-			</div>
+			<h1 class="page-title">
+				{{ trans("$theme-app.galery.artists") }}
+			</h1>
 
-	</div>
-</div>
+			<h2 class="page-subtitle mb-5">
+				{!! trans("$theme-app.galery.texto_artistas") !!}
+			</h2>
 
+            <form class="top-filters-wrapper justify-content-between py-3">
 
-<div class="container ">
-	<div class="row ">
+                <input type="hidden" name="page" value="{{ request('page') }}">
 
-			<div class="gridArtists">
-					@foreach($artists as $artist)
-					@php
-						$url =Route("artistaGaleria",["id_artist" => $artist->id_artist]);
-						$img = "/img/autores/".$artist->id_artist.".jpg";
+                @include('includes.components.order')
 
-					@endphp
+                @include('includes.components.search')
+            </form>
+
+            <div class="row row-cols-1 row-cols-lg-3 gx-0 gx-lg-5 gy-5">
+                @foreach ($artists as $artist)
+                    <div class="col">
 						@include('includes.galery.artist')
-					@endforeach
-				</div>
+                    </div>
+                @endforeach
+            </div>
 
-	</div>
-</div>
-	<script>
-		$("#searchExhibitions_JS").keydown(function(e){
-			if (e.keyCode == 13) {
-				$("#fromSearchExhibitions").submit();
-			}
-		})
-
-
-	</script>
+        </div>
+    </main>
 @stop

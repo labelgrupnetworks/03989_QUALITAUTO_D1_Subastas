@@ -122,7 +122,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 						<div id="img_main" class="img_single">
 							<a title="{{$lote_actual->titulo_hces1}}" href="javascript:action_fav_modal('remove')">
-								<img class="img-responsive" src="{{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}}" alt="{{$lote_actual->titulo_hces1}}">
+								<img class="img-responsive" src="" alt="{{$lote_actual->titulo_hces1}}">
 							</a>
 						</div>
 

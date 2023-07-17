@@ -151,8 +151,8 @@
 
 
     @if ($start_session || $subasta_abierta_P)
-
-		@if($deposito)
+{{-- Si no esta activo el deposito no se tiene en cuenta --}}
+		@if($deposito || !\Config::get('app.payDepositTpv'))
 			<div class="insert-bid-input col-xs-12 d-flex justify-content-center flex-column pt-1 pb-1">
 
 				@if (Session::has('user') && Session::get('user.admin'))

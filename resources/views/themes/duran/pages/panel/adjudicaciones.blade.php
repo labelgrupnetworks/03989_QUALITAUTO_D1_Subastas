@@ -272,7 +272,7 @@ foreach($all_adj_pag as $key_inf => $value){
 														<div style="flex:1"></div>
 														<div class="mt-1 text-left">
 
-															@if(\Config::get("app.paymentUP2") )
+															@if(\Config::get("app.paymentUP2")   || Config::get('app.paymentRedsys')  )
 																<input id="paycreditcard"  type="radio" name="paymethod" value="creditcard" checked="checked">
 																<label for="paycreditcard"> <span class="fab fa-cc-visa" style="font-size: 20px;margin: 0px 3px;"></span> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}     </label>
 																<br>

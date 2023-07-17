@@ -1,169 +1,148 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
 @section('content')
-<?php
 
-$bread[] = array("name" =>$data['title']  );
-?>
-<div class="container">
-    <div class="row">
-		{{--
-        <div class="col-xs-12 col-sm-12 text-center color-letter">
-                @include('includes.breadcrumb')
+@section('framework-css')
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}">
+@endsection
+
+@section('framework-js')
+    <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+@endsection
+
+@section('custom-css')
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/global.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/style.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
+@endsection
+
+<main class="valuation-page pt-0">
+	@php
+		$bannerTitle = "<h1>" . trans("$theme-app.home.free-valuations") . "</h1>";
+		$bannerSubtitle = "<h2>" . trans("$theme-app.valoracion_gratuita.banner_text") . "</h2>";
+	@endphp
+
+    {!! BannerLib::bannerWithView('tasaciones-principal', 'fluid', ['title' => "<div class='slider-title'>{$bannerTitle}{$bannerSubtitle}</div>"], ['autoplay' => true]) !!}
+
+    <section class="valuation-form container pb-5">
+        <h3 class="ff-highlight valuation-title">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</h3>
+
+        <form id="form-valoracion-adv" class="form">
+            @csrf
+
+            <div class="row g-3">
+                <p class="text-danger valoracion-h4 hidden msg_valoracion">
+                    {{ trans("$theme-app.valoracion_gratuita.error") }}
+                </p>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="name" name="name"
+                            placeholder="{{ trans("$theme-app.valoracion_gratuita.name") }}" required=""
+                            type="text" />
+                        <label for="name">
+                            {{ trans("$theme-app.valoracion_gratuita.name") }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="email" name="email"
+                            placeholder="{{ trans("$theme-app.valoracion_gratuita.email") }}" required=""
+                            type="email" />
+                        <label for="email">
+                            {{ trans("$theme-app.valoracion_gratuita.email") }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-floating">
+                        <input class="form-control" id="telf" name="telf"
+                            placeholder="{{ trans("$theme-app.valoracion_gratuita.telf") }}" required=""
+                            type="tel" />
+                        <label for="telf">
+                            {{ trans("$theme-app.valoracion_gratuita.telf") }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    {{-- <label for="categoria">
+						{{ trans("$theme-app.valoracion_gratuita.category") }}
+					</label> --}}
+                    <select class="form-select h-100" name="categoria" id="categoria">
+                        <option value="artes_decorativas" selected="">
+                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.artes_decorativas') }}
+                        </option>
+                        <option value="joyas">
+                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.joyas') }}</option>
+                        <option value="muebles">
+                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.muebles') }}
+                        </option>
+                        <option value="pintura_antigua">
+                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.pintura_antigua') }}
+                        </option>
+                        <option value="pintura">
+                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.pintura') }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <textarea class="form-control" id="descripcion" name="descripcion"
+                            placeholder="{{ trans("$theme-app.user_panel.description") }}" required="" rows="10" type="phone"></textarea>
+                        <label for="descripcion">
+                            {{ trans("$theme-app.user_panel.description") }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <div id="dropzone" class="h-100">
+                        <small class="text-danger error-dropzone"
+                            style="display:none">{{ trans("$theme-app.msg_error.max_size") }}</small>
+                        <div class="color-letter text-dropzone">
+                            {!! trans("$theme-app.valoracion_gratuita.adj_IMG") !!}
+                        </div>
+                        <div class="mini-file-content d-flex align-items-center" style="position:relative"></div>
+                        <input id="images" type="file" name="imagen[]" />
+                    </div>
+                </div>
+
+                <div class="col-md-6" style="font-size: 18px">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="condiciones" value="on"
+                            id="bool__1__condiciones" autocomplete="off">
+                        <label class="form-check-label" for="bool__1__condiciones">
+                            {!! trans("$theme-app.emails.privacy_conditions") !!}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <button type="submit" id="valoracion-adv"
+                        class="btn btn-lb-primary btn-medium">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
+                </div>
+
             </div>
-        </div>
-		--}}
-    </div>
-    <div id="" class="free-valuations color-letter">
-	    <div class="container" id="return-valoracion">
-            <div class="row">
-				<div class="col-xs-12 col-lg-11 col-lg-offset-1">
-					{{--<div class="col-xs-12 text-center hidden-xs ">
-						<a href="mailto:victor.marco@ansorena.com">	<img src="/themes/ansorena/img/banner-valoracion.jpg" width="100%"/></a>
-					</div>
-					<div class="col-xs-12 text-center hidden-sm hidden-md hidden-lg mb-1">
-						<a href="mailto:victor.marco@ansorena.com">	<img src="/themes/ansorena/img/banner-valoracion-text.jpg" width="100%"/></a>
-						<img src="/themes/ansorena/img/banner-valoracion-img.jpg" width="100%"/>
-					</div>
 
-					<div class="col-xs-12 text-center titlePage mt-5 mb-1" style="font-size: 20px; color: #7e9396;">
-						<strong>	¿ESTÁ INTERESADO EN VENDER UNA OBRA DE ARTE ANTIGUA?</strong>
-					</div>
-
-					<div class="col-xs-12 col-md-6 mt-3 " style="">
-						<p style="padding-right: 5px;">Nuestro experto en <b>Pintura Antigua y S.XIX.</b> estará en <b>Barcelona</b> los días <b>22 y 23 de Septiembre.</b></p>
-						<p style="padding-right: 5px;">Valoraciones gratuitas para subasta. Tasación, valoración o gestión de venta privada.</p>
-						<p style="padding-right: 5px;">No pierda esta oportunidad y <b>solicite su cita previa.</b></p>
-
-					</div>
-					<div class="col-xs-12 col-md-6 mt-2 mb-5 " >
-						<div class="col-xs-12 "  style="border: 1px solid #ccc;">
-							<div class="col-xs-12 mt-2 mb-2 " >
-								<p><b>SOLICITE CITA PREVIA POR TELÉFONO O POR EMAIL</b></p>
-								<ul style="padding-left: 15px;color: #7e9396;">
-									<li ><a href="mailto:victor.marco@ansorena.com">Victor.marco@ansorena.com</a></li>
-									<li style="padding-top: 10px;">699068542</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					--}}
-
-
-					<div class="col-xs-12 text-center mt-1">
-						<h1 class="titlePage" style='text-transform: uppercase;font-size: 20px; color: #7e9396;'><b>{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.solicitud_valoracion') }}</b></h1>
-
-							{!! \BannerLib::bannersPorKey("BANNER_VALORACION", "BANNER_VALORACION")!!}
-
-					</div>
-					<div class="col-xs-12 info">
-						<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.desc_assessment')  ?>
-					</div>
-					<form id="form-valoracion-adv" class="form">
-						<div class=" col-xs-12 ">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<div class=" col-xs-12 content-form-valuations no-padding">
-							<p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
-							<div class="col-xs-12 col-lg-6  no-padding d-flex flex-direction-column inputs-custom-group">
-								<div class="form-group form-group-custom col-xs-12 col-xs-12">
-									<label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?></label>
-									<input
-										class="form-control"
-										id="name"
-										name="name"
-										placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?>"
-										required=""
-										type="text"
-									/>
-								</div>
-
-								<div class="form-group form-group-custom col-xs-12 col-xs-12">
-									<label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?></label>
-									<input
-										class="form-control"
-										id="email"
-										name="email"
-										placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?>"
-										required=""
-										type="email"
-									/>
-								</div>
-
-								<div class="form-group form-group-custom col-xs-12 col-xs-12">
-									<label class="" for="telf"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?></label>
-									<input
-										class="form-control"
-										id="telf"
-										name="telf"
-										placeholder="<?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?>"
-										required=""
-										type="phone"
-									/>
-								</div>
-								<div class="form-group  form-group-custom col-xs-12 col-xs-12">
-									<label for="categoria" class="control-label">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.category')}}</label>
-
-										<select name="categoria">
-											<option value="artes_decorativas" selected="">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.artes_decorativas')}}</option>
-											<option value="joyas">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.joyas')}}</option>
-											<option value="muebles">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.muebles')}}</option>
-											<option value="pintura_antigua">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.pintura_antigua')}}</option>
-											<option value="pintura">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.pintura')}}</option>
-										</select>
-								</div>
-
-
-
-
-							</div>
-							<div class="col-lg-6 col-xs-12 no-padding inputs-custom-group d-flex flex-column">
-									<label class="" style="color: lightgray; font-size: 10px; font-weight: 100"><?=  trans(\Config::get('app.theme').'-app.user_panel.description')  ?></label>
-
-								<textarea class="form-control" id="exampleTextarea" rows="10" name="descripcion" required placeholder="{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.description') }}"></textarea>
-							</div>
-						</div>
-						<div class="form-group form-group-custom col-xs-12">
-
-								<div id="dropzone">
-									<small class="text-danger error-dropzone" style="display:none">{{ trans(\Config::get('app.theme').'-app.msg_error.max_size') }}</small>
-									<div class="color-letter text-dropzone"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.adj_IMG')  ?></div>
-									<div class="mini-file-content d-flex align-items-center" style="position:relative"></div>
-
-										<input id="images" type="file" name="imagen[]" />
-									</div>
-						</div>
-								<div class="col-xs-12 text-right no-padding">
-									<button type="submit" id="valoracion-adv" class="button-send-valorate button-principal">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.send') }}</button>
-								</div>
-					</div>
-
-					<div class="col-xs-12 ">
-						{!! trans(\Config::get('app.theme').'-app.global.proteccion_datos_valoración') !!}
-					</div>
-				</form>
-			</div>
-        </div>
-    </div>
-</div>
-
+        </form>
+    </section>
+</main>
 
 <script>
-      var imagesarr = [];
-      function myFunction( el ) {
+    var imagesarr = [];
+
+    function myFunction(el) {
         $(el).remove()
     }
-$(function() {
+    $(function() {
 
-$('.mini-upload-image').click(function (){
-    alert()
-})
+        $('.mini-upload-image').click(function() {
+            alert()
+        })
 
 
- });
-
+    });
 </script>
 @stop

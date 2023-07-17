@@ -1,410 +1,480 @@
-<?php
-
-use App\libs\TradLib as TradLib;
-
-    $lang = Config::get('app.locale');
-
+@php
+    use App\libs\TradLib as TradLib;
+    use App\Http\Controllers\V5\ArticleController;
     $registration_disabled = Config::get('app.registration_disabled');
-    $fullname = Session::get('user.name');
-    if(strpos($fullname, ',')){
-        $str = explode(",", $fullname);
-        $name = $str[1];
-    }else{
-        $name = $fullname;
+    $locale = Config::get('app.locale');
+    $envioroment = Config::get('app.env');
+
+	$domains = [
+        'local' => 'http://www.newsubastas.test',
+        'develop' => 'https://auctions-ansorena.labelgrup.com',
+        'production' => 'https://www.ansorena.com',
+    ];
+
+	$galleryDomains = [
+        'local' => "http://www.gallery.test",
+        'develop' => "https://www.preprodgaleria.enpreproduccion.com",
+        'production' => "https://galeria.ansorena.com",
+    ];
+    $domain = $domains[$envioroment];
+    $galleryDomain = $galleryDomains[$envioroment];
+
+    $pagina = Routing::translateSeo('pagina', '/', $domain);
+    $isGallery = in_array(Config::get('app.emp'), ['003', '004']);
+    $galleryClass = $isGallery ? 'gallery' : '';
+
+    $cod_cli = Session::get('user.cod');
+    $articlesToCart = 0;
+
+    if (!$isGallery && $cod_cli) {
+        $articlesToCart = count((new ArticleController())->loadArticleCart());
     }
-?>
-<?php #el proximo div es un espacio en blanco para que funcione el scroll del menu y no se suba todo para arriba ?>
-<div class="header-height "></div>
-<header class="fixed  header-height ">
 
-	<div class="lang-selection">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-3">
+    //Comprobar en que página estamos
+    $isSobreNosotros = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.historia"), Routing::translateSeo('equipo', null, $domain), $pagina . trans("$theme-app.links.careers")]);
 
-					@foreach(Config::get('app.locales') as $key => $value)
-					<ul class="ul-format list-lang d-inline-flex">
-						<?php
-								if(\App::getLocale() != $key){
-									#Obtener la ruta en el idioma contrario segun las tablas seo y/o traducciones links
-									$ruta ="/$key". TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
-								}else{
-									$ruta ="";
-								}
-                            ?>
-						<li>
-							<a translate="no" title="<?= trans(\Config::get('app.theme').'-app.head.language_'.$key) ?>"
-								class="link-lang  color-letter {{ empty($ruta)? 'active': '' }} "
-								{{ empty($ruta)? "": "href=$ruta" }}>
+    $isJoyeria = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.joyas_category"), $pagina . trans("$theme-app.links.condecoraciones")]) || (!Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain)) && strpos(url()->full(), 'articulos') !== false);
 
-								<span translate="no"><img
-										src="/themes/{{ \Config::get('app.theme') ."/assets/img/head/$key" }}{{ empty($ruta)? '': '_OFF' }}.png"></span>
-							</a>
-						</li>
-					</ul>
-					@endforeach
+    $isSubastas = Routing::currentUrlInArray([Routing::translateSeo('presenciales', null, $domain), Routing::translateSeo('ventas-destacadas', null, $domain), Routing::translateSeo('subastas-historicas', null, $domain), $pagina . trans("$theme-app.links.buy_and_sell")]);
 
-				</div>
+    $isStories = Routing::currentUrlInArray([Routing::translateSeo('blog/comunicacion', null, $domain), Routing::translateSeo('blog/joyeria', null, $domain)]);
+@endphp
 
+<header>
+    <div class="container {{ $galleryClass }}">
 
-				<div class="col-xs-4 col-sm-6 col-md-7 pl-0 pr-0">
+        <div class="select-searching">
 
-					@if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002')
-						<div class="user-account">
-							<div class="user-account-login">
+            <button class="navbar-toggler flex-center" type="button" aria-expanded="false" aria-label="Menú"
+                onclick="toogleMenu(this)"></button>
 
+            <div class="select-container" id="select-container">
+                <select name="" id="locale-select">
+                    @foreach (array_keys(Config::get('app.locales')) as $lang)
+                        <option
+                            value="{{ "/$lang" . TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $lang) }}"
+                            @if ($locale === $lang) selected @endif>
+                            {{ $lang }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-									  <a class="cart-icon justify-center align-items-center " style="height: 100%;" href="{{route("showArticleCart", ["lang" => \Config::get("app.locale")]) }}">
+            <script>
+                $('#locale-select').select2({
+                    minimumResultsForSearch: Infinity,
+                    width: 'resolve',
+                    dropdownParent: $('#select-container')
+                })
+            </script>
 
-											@php
-											# 07-01-2021 a veces da error la carga del archivo, esto sucede todos los dias asó k copio el código directamente en vez de abrirlo
-											#					{!! file_get_contents(asset('themes/duran/assets/img/bag.svg')) !!}
+            @if (!$isGallery)
+                <div class="search-component">
+                    <form action="{{ Routing::translateSeo('subasta-actual') }}#grid-lots">
+                        <input type="search" name="description"
+                            placeholder="{{ trans("$theme-app.global.write_search") }}">
+                        <span class="icon flex-center">
+                            <img src="/themes/ansorena/assets/img/vectors/search.svg"
+                                alt="{{ trans("$theme-app.global.write_search") }}">
+                        </span>
+                    </form>
 
-											@endphp
-											<svg height="512pt" viewBox="-35 0 512 512.00102" width="512pt" xmlns="http://www.w3.org/2000/svg"><path d="m443.054688 495.171875-38.914063-370.574219c-.816406-7.757812-7.355469-13.648437-15.15625-13.648437h-73.140625v-16.675781c0-51.980469-42.292969-94.273438-94.273438-94.273438-51.984374 0-94.277343 42.292969-94.277343 94.273438v16.675781h-73.140625c-7.800782 0-14.339844 5.890625-15.15625 13.648437l-38.9140628 370.574219c-.4492192 4.292969.9453128 8.578125 3.8320308 11.789063 2.890626 3.207031 7.007813 5.039062 11.324219 5.039062h412.65625c4.320313 0 8.4375-1.832031 11.324219-5.039062 2.894531-3.210938 4.285156-7.496094 3.835938-11.789063zm-285.285157-400.898437c0-35.175782 28.621094-63.796876 63.800781-63.796876 35.175782 0 63.796876 28.621094 63.796876 63.796876v16.675781h-127.597657zm-125.609375 387.25 35.714844-340.097657h59.417969v33.582031c0 8.414063 6.824219 15.238282 15.238281 15.238282s15.238281-6.824219 15.238281-15.238282v-33.582031h127.597657v33.582031c0 8.414063 6.824218 15.238282 15.238281 15.238282 8.414062 0 15.238281-6.824219 15.238281-15.238282v-33.582031h59.417969l35.714843 340.097657zm0 0"/></svg>
-
-										</a>
-
-
-
-
-								@if(!Session::has('user'))
-								<a class=" btn_login "
-									title="<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>"
-									href="javascript:;">
-									<img class="ico-login"
-										src="/themes/{{\Config::get('app.theme')}}/assets/img/head/login.png">
-									<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>
-								</a>
-								@else
-								<a class=" " href="{{ \Routing::slug('user/panel/orders') }}">
-									<img class="ico-login"
-										src="/themes/{{\Config::get('app.theme')}}/assets/img/head/login.png">
-									<span class="hidden-xs ">
-										{{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }} <span>
-								</a>
-
-								@if(Session::get('user.admin'))
-								<a href="/admin" target="_blank">
-									{{ trans(\Config::get('app.theme').'-app.login_register.admin') }}</a>
-								@endif
-								<a href="{{ \Routing::slug('logout') }}" alt="logout"><img class="ico-logout"
-										src="/themes/{{\Config::get('app.theme')}}/assets/img/head/close_session.png"> </a>
-								@endif
-							</div>
-
-						</div>
-					@endif
-
-
-				</div>
-				<div class="col-xs-5 col-sm-3  col-md-2 pl-0 rss-head">
-					<ul class="ul-format">
-						<li><a href="https://instagram.com/ansorena1845" title="Instagram" target="_blank"> <img
-									src="/themes/{{\Config::get('app.theme')}}/assets/img/head/instagram.png"></a></li>
-						<li><a href="https://www.linkedin.com/company/ansorena/" title="Linkedin" target="_blank"> <img
-									src="/themes/{{\Config::get('app.theme')}}/assets/img/head/linkedin.png"></a></li>
-						<li><a href="http://www.youtube.com/ansorenasubastas" title="Youtube" target="_blank"> <img
-									src="/themes/{{\Config::get('app.theme')}}/assets/img/head/youtube.png"></a></li>
-						<li><a href="http://twitter.com/ansorenaarte" title="Twitter" target="_blank"> <img
-									src="/themes/{{\Config::get('app.theme')}}/assets/img/head/twitter.png"></a></li>
-						<li><a href="http://www.facebook.com/ansorenadesde1845" title="Facebook" target="_blank"> <img
-									src="/themes/{{\Config::get('app.theme')}}/assets/img/head/facebook.png"></a></li>
-					</ul>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="logo-header">
-		<a title="{{(\Config::get( 'app.name' ))}}" href="https://www.ansorena.com">
-			<img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
-				alt="{{(\Config::get( 'app.name' ))}}">
-		</a>
-		<div class="menu-responsive hidden-lg">
-			<div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">
-				<img class="img-responsive" style="max-width: 40px" src="/themes/{{\Config::get('app.theme')}}/assets/img/menu_icon.png" alt="">
-			</div>
-		</div>
-	</div>
-
-	<?php /* OCULTO EL BUSCADOR
-	@if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") =="new" )
-		<div class="menu-principal-search d-flex align-items-center justify-content-center">
-				<form id="formsearchResponsive" role="search" action="{{ route('allCategories') }}" class="search-component-form flex-inline position-relative">
-					<div class="form-group">
-						<input class="form-control input-custom br-100" placeholder="{{ trans(\Config::get('app.theme').'-app.head.search_label') }}" type="text" name="description" />
-					</div>
-					<button role="button" type="submit" class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans(\Config::get('app.theme').'-app.head.search_button') }}</button>
-				</form>
-		</div>
-	@else
-		<div class="menu-principal-search d-flex align-items-center justify-content-center">
-			<form id="formsearchResponsive" role="search" action="{{ \Routing::slug('busqueda') }}" class="search-component-form flex-inline position-relative">
-				<div class="form-group">
-					<input class="form-control input-custom br-100" placeholder="{{ trans(\Config::get('app.theme').'-app.head.search_label') }}" type="text" name="texto" />
-				</div>
-				<button role="button" type="submit" class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans(\Config::get('app.theme').'-app.head.search_button') }}</button>
-			</form>
-		</div>
-	@endif
-	*/
-	?>
-	<nav class="menu-header">
-
-		<div class="menu-principal">
-			<span role="button" class="close-menu-reponsive hidden-lg">
-				<img src="/themes/{{ \Config::get('app.theme') }}/assets/img/shape.png" alt="Cerrar">
-			</span>
-
-			<ul class="menu-principal-content d-flex justify-content-center align-items-start">
-
-				<?php /* QUITAMOS LA HOME
-                    <li class="flex-display">
-                        <a class="color-letter flex-display link-header justify-center align-items-center" title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/{{$lang}}">
-                            <span>{{ trans(\Config::get('app.theme').'-app.home.home')}}</span>
-                        </a>
-					</li>
-					*/
-					?>
-
-				@if(\Config::get("app.emp") == '001' || \Config::get("app.emp") == '002')
-
-				<li>
-					<a class="color-letter d-flex link-header justify-content-center align-items-center"
-						 href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.joyas_category') }}" >
-						<span>{{ trans(\Config::get('app.theme').'-app.foot.joyeria')}}</span>
-					</a>
-				</li>
-				<li><a class="color-letter d-flex link-header justify-content-center align-items-center" href="https://galeria.ansorena.com/es" target="_blank">{{ trans(\Config::get('app.theme').'-app.galery.galery')}}</a></li>
-				<li>
-					<a class="color-letter d-flex link-header justify-content-center align-items-center"
-						title="{{ trans(\Config::get('app.theme').'-app.foot.condecoraciones')}}"
-						href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.condecoraciones')}}"><span>{{ trans(\Config::get('app.theme').'-app.foot.condecoraciones')}}</span></a>
-				</li>
-				<li><a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ route("subasta.actual") }}">{{ trans(\Config::get('app.theme').'-app.subastas.auctions')}}</a></li>
-
-				<li>
-					<a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos', null) }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
-				</li>
-
-				<li>
-					<a class="color-letter d-flex link-header justify-content-center align-items-center"
-						title="{{ trans(\Config::get('app.theme').'-app.foot.ansorena')}}"
-						href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.historia')}}"><span>{{ trans(\Config::get('app.theme').'-app.foot.ansorena')}}</span></a>
-				</li>
-
-
-				<li>
-					<a class="color-letter d-flex link-header justify-content-center align-items-center"
-						title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}"
-						href="<?= \Routing::translateSeo(trans(\Config::get('app.theme').'-app.links.contact')) ?>"><span>{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</span></a>
-				</li>
-				<?php /*
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-						@php
-							if(count($global['subastas']['S']['W']) == 1){
-								#cojer primera subasta y primera sesión
-									$subasta = $global['subastas']['S']['W']->first()->first();
-
-									$url_web =  \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,	$subasta->reference);
-							}else{
-									$url_web =  \Routing::translateSeo('presenciales');
-							}
-
-						@endphp
-						<li>
-							<a class="color-letter d-flex link-header justify-content-center align-items-center"
-								href="{{ $url_web }}">
-								<span>{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</span>
-							</a>
-						</li>
-					@endif
-
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
-						@php
-							if(count($global['subastas']['S']['O']) == 1){
-								#cojer primera subasta y primera sesión
-								$subasta = $global['subastas']['S']['O']->first()->first();
-
-								$url_web =  \Tools::url_auction($subasta->cod_sub, \Str::slug($subasta->name) ,$subasta->id_auc_sessions,	$subasta->reference);
-							}else{
-								$url_web =  \Routing::translateSeo('subastas-online');
-							}
-
-						@endphp
-						<li>
-							<a class="color-letter flex-display link-header justify-center align-items-center"
-								href="{{ $url_web }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</span></a>
-						</li>
-					@endif
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
-						<li><a class="color-letter flex-display link-header justify-center align-items-center"
-								href="{{ \Routing::translateSeo('venta-directa') }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</span></a>
-						</li>
-					@endif
-					@if($global['subastas']->has('H') )
-						<li>
-							<a class="color-letter flex-display link-header justify-center align-items-center"
-								href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</span>
-							</a>
-						</li>
-					@endif
-					*/
-					?>
-				@endif
-				<?php /*
-                *
-
-
-	      <li>
-                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.calendar')}}</span></a>
-                </li>
-                 <li>
-                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos') }}"><span> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</span></a>
-				</li>
-				  * */
-
-                  ?>
-				@if(\Config::get("app.emp") == '003' || \Config::get("app.emp") == '004')
-						@php
-						$subObj = new App\Models\V5\FgSub();
-
-						#Cojemos la exposicion/subasta tipo E  activa que empiece antes, si no quieren que aparezca esa que la pongan en histórico
-						#Las subastas con opcion carrito son las que ellos llaman online
-						$actual = $subObj->select("DES_SUB, COD_SUB")->where("SUBC_SUB","S")->where("TIPO_SUB","E")->where("OPCIONCAR_SUB","N")->orderby("DFEC_SUB")->first();
-
-					@endphp
-
-
-
-
-						@if(!empty($actual))
-							<li ><a href="{{\Tools::url_exposicion($actual->des_sub, $actual->cod_sub)}}" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.galery.current_exhibition') }}</a></li>
-						@endif
-						<li ><a href="{{Route("exposiciones")}}?online=N" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.galery.exhibitions') }}</a></li>
-
-						<li ><a href="{{Route("exposiciones")}}?online=S" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.galery.online_exhibitions') }}</a></li>
-
-						{{-- 	 lo comento por que de momento pongo todos en
-						<li ><a href="{{Route("exposiciones-anteriores")}}" class="color-letter d-flex link-header justify-content-center align-items-center"> {{ trans(\Config::get('app.theme').'-app.galery.previous_exhibition') }}</a></li>
-						--}}
-
-
-						<li ><a href="{{Route("artistasGaleria")}}" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.galery.artists') }}</a></li>
-						<li ><a href="{{Route("fondoGaleria")}}" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.galery.gallery_collection') }}</a></li>
-
-						<li ><a href="<?php echo Routing::translateSeo('blog').trans(\Config::get('app.theme').'-app.links.news')?>" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.home.news')}}</a></li>
-
-						<li ><a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact_galery')?>" class="color-letter d-flex link-header justify-content-center align-items-center">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a></li>
-					</ul>
-
-				@endif
-
-			</ul>
-		</div>
-		<?php /*   OCULTO EL BUSCADOR
-        <div class="search-header-container  d-flex justify-content-center align-items-center hidden-xs" role="button">
-                <div class="search-header d-flex justify-content-center align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.17 29.861">
-                    <defs>
-                      <style>
-                        .cls-1 {
-                          fill: #46494f;
-                        }
-                      </style>
-                    </defs>
-                    <g id="magnifying-glass" transform="translate(-7.254)">
-                      <path id="Path_1" data-name="Path 1" class="cls-1" d="M36.055,27.715l-6.7-6.7a12.612,12.612,0,1,0-9.441,4.3,12.545,12.545,0,0,0,7.6-2.594l6.765,6.767a1.258,1.258,0,0,0,1.779-1.778ZM9.769,12.661A10.147,10.147,0,1,1,19.916,22.805,10.16,10.16,0,0,1,9.769,12.661Z"/>
-                    </g>
-                  </svg>
                 </div>
-                <div class="search-header-close d-flex justify-content-center align-items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33.697 33.544">
-                            <defs>
-                              <style>
-                                .close-svg {
-                                  fill: #46494f;
-                                }
-                              </style>
-                            </defs>
-                            <g id="cancel" transform="translate(0 -0.435)">
-                              <path id="Path_27" data-name="Path 27" class="close-svg" d="M18.993,17.284,33.238,3.039a1.481,1.481,0,0,0,0-2.144,1.481,1.481,0,0,0-2.144,0L16.849,15.139,2.6.894a1.481,1.481,0,0,0-2.144,0,1.481,1.481,0,0,0,0,2.144L14.7,17.284.459,31.528a1.481,1.481,0,0,0,0,2.144,1.842,1.842,0,0,0,1.225.306c.306,0,.919,0,.919-.306L16.848,19.428,31.093,33.673a1.842,1.842,0,0,0,1.225.306c.306,0,.919,0,.919-.306a1.481,1.481,0,0,0,0-2.144Z" transform="translate(0 0)"/>
-                            </g>
-                          </svg>
-                        </div>
+            @endif
 
-		</div>
-		*/
-		?>
+        </div>
 
-	</nav>
+        @if (Route::current()->getName() === 'home')
+            <h1>
+                <a class="logo-link" title="{{ Config::get('app.name') }}" href="{{ $domain . '/' . $locale }}">
+                    <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
+                </a>
+            </h1>
+        @else
+            <a class="logo-link" title="{{ Config::get('app.name') }}" href="{{ $domain . '/' . $locale }}">
+                <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
+            </a>
+        @endif
+
+        @if ($isGallery)
+            <div class="search-gallery-wrapper">
+                <div class="search-component">
+                    <form action="{{ Routing::translateSeo('exposiciones') }}">
+                        <input type="search" name="search"
+                            placeholder="{{ trans("$theme-app.global.write_search") }}">
+                        <span class="icon flex-center">
+                            <img src="/themes/ansorena/assets/img/vectors/search.svg"
+                                alt="{{ trans("$theme-app.global.write_search") }}">
+                        </span>
+                    </form>
+                </div>
+            </div>
+        @else
+            <div class="login-wrapper d-flex">
+                @if (!Session::has('user'))
+                    <button class="btn btn-white btn-header-sm btn_login flex-center">
+                        <svg width="20" height="20" viewBox="0 0 18 21" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M4.639 6.00943C4.639 3.52379 6.65401 1.50878 9.13965 1.50878C11.6253 1.50878 13.6403 3.52379 13.6403 6.00943C13.6403 8.49507 11.6253 10.5101 9.13965 10.5101C6.65401 10.5101 4.639 8.49507 4.639 6.00943ZM9.13965 0.491241C6.09204 0.491241 3.62146 2.96182 3.62146 6.00943C3.62146 9.05704 6.09204 11.5276 9.13965 11.5276C12.1873 11.5276 14.6578 9.05704 14.6578 6.00943C14.6578 2.96182 12.1873 0.491241 9.13965 0.491241ZM4.13088 12.7812C2.12076 12.7812 0.491226 14.4107 0.491226 16.4208V20.1779H1.50876V16.4208C1.50876 14.9727 2.68273 13.7987 4.13088 13.7987H14.1497C15.5979 13.7987 16.7718 14.9727 16.7718 16.4208V20.1779H17.7894V16.4208C17.7894 14.4107 16.1598 12.7812 14.1497 12.7812H4.13088Z" />
+                        </svg>
+                        <span>{{ trans("$theme-app.login_register.generic_name") }}</span>
+                    </button>
+                @else
+                    <a href="{{ \Routing::slug('user/panel/orders') }}"
+                        class="btn btn-white btn-header-sm flex-center">
+                        <svg width="20" height="20" viewBox="0 0 18 21" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M4.639 6.00943C4.639 3.52379 6.65401 1.50878 9.13965 1.50878C11.6253 1.50878 13.6403 3.52379 13.6403 6.00943C13.6403 8.49507 11.6253 10.5101 9.13965 10.5101C6.65401 10.5101 4.639 8.49507 4.639 6.00943ZM9.13965 0.491241C6.09204 0.491241 3.62146 2.96182 3.62146 6.00943C3.62146 9.05704 6.09204 11.5276 9.13965 11.5276C12.1873 11.5276 14.6578 9.05704 14.6578 6.00943C14.6578 2.96182 12.1873 0.491241 9.13965 0.491241ZM4.13088 12.7812C2.12076 12.7812 0.491226 14.4107 0.491226 16.4208V20.1779H1.50876V16.4208C1.50876 14.9727 2.68273 13.7987 4.13088 13.7987H14.1497C15.5979 13.7987 16.7718 14.9727 16.7718 16.4208V20.1779H17.7894V16.4208C17.7894 14.4107 16.1598 12.7812 14.1497 12.7812H4.13088Z" />
+                        </svg>
+                        <span>{{ trans("$theme-app.login_register.my_panel") }}</span>
+                    </a>
+                @endif
+
+                @if (Session::get('user.admin'))
+                    <a href="/admin" target="_blank" class="btn btn-white btn-header-sm flex-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor"
+                            class="bi bi-person-gear" viewBox="0 0 16 16">
+                            <path
+                                d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
+                        </svg>
+                        <span>{{ trans("$theme-app.login_register.admin") }}</span>
+                    </a>
+                @endif
+
+                <a href="{{ route('showArticleCart', ['lang' => \Config::get('app.locale')]) }}"
+                    class="btn btn-white btn-header-xs flex-center shopping-cart-btn">
+
+                    @if ($articlesToCart)
+                        <span class="articles-cart">{{ $articlesToCart }}</span>
+                    @endif
+                </a>
+            </div>
+        @endif
+    </div>
 </header>
 
-<div class="login_desktop" style="display: none">
-	<div class="login_desktop_content">
-		<div class="only-login white-background">
-			<div class="login-content-form">
-				<img class="closedd" role="button" src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png"
-					alt="Close">
-				<div class="login_desktop_title">
-					<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>
-				</div>
-				<form data-toggle="validator" id="accerder-user-form"
-					class="flex-display justify-center align-items-center flex-column">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<div class="form-group">
-						<div class="input-login-group">
-							<i class="fa fa-user"></i>
-							<input class="form-control"
-								placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}"
-								type="email" name="email" type="text">
-						</div>
-					</div>
-					<div class="form-group ">
-						<div class="input-login-group">
-							<i class="fa fa-key"></i>
-							<input class="form-control"
-								placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}"
-								type="password" name="password" maxlength="20">
-							<img class="view_password eye-password"
-								src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
-						</div>
-					</div>
-					<span class="message-error-log text-danger seo_h5"></span></p>
-					<div class="pass-login-content">
-						<div class="text-center">
-							<button id="accerder-user" class="button-principal" type="button">
-								<div>{{ trans(\Config::get('app.theme').'-app.login_register.acceder') }}</div>
-							</button>
-						</div>
-						<a onclick="cerrarLogin();" class="c_bordered pass_recovery_login"
-							data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery"
-							data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}"
-							href="javascript:;" data-toggle="modal"
-							data-target="#modalAjax">{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}</a>
+<nav id="menu-header" class="menu-header open open-lg">
 
-					</div>
-				</form>
-				<div class="login-separator"></div>
-				<p class="text-center">{{ trans(\Config::get('app.theme').'-app.login_register.not_account') }}</p>
-				<div class="create-account-link">
-					@if(empty($registration_disabled))
-					<a class="" title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}"
-						href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
-					@else
-					<p class="text-center" style="color: darkred;">
-						{{ trans(\Config::get('app.theme').'-app.login_register.registration_disabled') }}</p>
-					@endif
-				</div>
-			</div>
-		</div>
-	</div>
+    <ul>
+        <div>
+            <li>
+                <a @if ($isSobreNosotros) class="lb-link-underline" @endif href="#nav-sobrenosotros"
+                    role="tab">{{ trans("$theme-app.foot.about_us") }}</a>
+            </li>
+        </div>
+
+        <div>
+            <li class="d-none d-lg-block">
+                <a @if ($isJoyeria) class="lb-link-underline" @endif href="#subnav-joyeria"
+                    role="tab">{{ trans("$theme-app.foot.joyeria") }}</a>
+            </li>
+			<li class="d-lg-none">
+                <a @if ($isJoyeria) class="lb-link-underline" @endif href="{{ $pagina . trans("$theme-app.links.joyas_category") }}">{{ trans("$theme-app.foot.joyeria") }}</a>
+            </li>
+            <li>
+                <a @if ($isSubastas) class="lb-link-underline" @endif href="#subnav-subastas"
+                    role="tab">{{ trans("$theme-app.subastas.auctions") }}</a>
+            </li>
+            <li>
+                <a @if ($isGallery) class="lb-link-underline" @endif
+                    href="{{ "$galleryDomain/$locale" }}">{{ trans("$theme-app.galery.galery") }}</a>
+            </li>
+
+            <li>
+                <a @if (Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain))) class="lb-link-underline" @endif
+                    href="{{ Routing::translateSeo('valoracion-articulos', null, $domain) }}">{{ trans("$theme-app.home.free-valuations") }}</a>
+            </li>
+        </div>
+
+        <div>
+            <li>
+                <a @if ($isStories) class="lb-link-underline" @endif
+                    title="{{ trans("$theme-app.blog.principal_title") }}" role="tab"
+                    href="#subnav-stories">{{ trans("$theme-app.blog.principal_title") }}</a>
+            </li>
+
+            <li>
+                <a @if (Routing::currentUrl(Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain))) class="lb-link-underline" @endif
+                    title="{{ trans("$theme-app.foot.contact") }}"
+                    href="{{ Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain) }}">{{ trans("$theme-app.foot.contact") }}</a>
+            </li>
+        </div>
+
+    </ul>
+
+</nav>
+
+<div id="submenu-header" class="submenu-wrapper">
+
+    <div class="container position-relative">
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeSubmenu()"></button>
+    </div>
+
+    <div class="submenu-block">
+        <nav class="subment-nav tab-content">
+            <div role="tabpanel" id="nav-sobrenosotros">
+                <div class="d-flex flex-column gap-4">
+                    <p class="position-relative subnav-title">
+                        <button type="button" class="btn-close" aria-label="Close"
+                            onclick="closeSubmenu()"></button>
+                        <span>{{ trans("$theme-app.foot.about_us") }}</span>
+                    </p>
+                    <a
+                        href="{{ $pagina . trans("$theme-app.links.historia") }}">{{ trans("$theme-app.foot.history") }}</a>
+                    <a
+                        href="{{ Routing::translateSeo('equipo', null, $domain) }}">{{ trans("$theme-app.foot.team") }}</a>
+                    <a
+                        href="{{ $pagina . trans("$theme-app.links.careers") }}">{{ trans("$theme-app.foot.work_with_us") }}</a>
+                </div>
+            </div>
+            <div role="tabpanel" id="nav-joyeria-subastas">
+                <div role="tabpanel" id="subnav-joyeria">
+                    <div class="d-flex flex-column gap-4">
+
+                        <p class="position-relative subnav-title">
+                            <button type="button" class="btn-close" aria-label="Close"
+                                onclick="closeSubmenu()"></button>
+                            <span>{{ trans("$theme-app.foot.joyeria") }}</span>
+                        </p>
+
+                        <a href="{{ $pagina . trans("$theme-app.links.joyas_category") }}">
+                           {{ trans("$theme-app.foot.jewellery_catalog") }}
+                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="6.2006" height="0.688955"
+                                    transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
+                                    fill="#0F0E0D" />
+                                <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
+                                    transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
+                            </svg>
+                        </a>
+
+                        <div class="subnav-joyeria-content">
+                            <div>
+
+                                <p class="ff-highlight subnav-title-highlight">
+                                    {{ trans("$theme-app.subastas.joyas") }}
+                                </p>
+                                <div class="d-grid grid-2 subnav-list">
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/solitarios', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.solitaires") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/sortijas', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.rings") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/pendientes', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.earrings") }}
+                                    </a>
+                                    <a href="{{ Routing::translateSeo('articulos-joyeria/broches', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.broochs") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/collares', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.neckclaces") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/colgantes', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.Pendants") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/pulseras', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.bracelets") }}
+                                    </a>
+                                    <a href="{{ Routing::translateSeo('articulos-joyeria/gemelos', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.Cufflinks") }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="ff-highlight subnav-title-highlight">
+                                    {{ trans("$theme-app.articles.engagement") }}
+                                </p>
+                                <div class="d-flex flex-column subnav-list">
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/solitarios', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.solitaires") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-compromiso/alianzas-bodas', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.rings_a") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/pendientes', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.earrings") }}
+                                    </a>
+                                    <a
+                                        href="{{ Routing::translateSeo('articulos-joyeria/pulseras', null, $domain) }}">
+                                        {{ trans("$theme-app.articles.bracelets") }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-4">
+                                <div>
+                                    <p class="ff-highlight subnav-title-highlight">
+                                        {{ trans("$theme-app.articles.high_jelwelry") }}
+                                    </p>
+                                    <div class="d-flex flex-wrap subnav-list">
+                                        <a
+                                            href="{{ Routing::translateSeo('articulos', null, $domain) . '?ortsec=11&sec=JX' }}">{{ trans("$theme-app.subastas.see-all") }}</a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="ff-highlight subnav-title-highlight">
+                                        {{ trans("$theme-app.foot.condecoraciones") }}
+                                    </p>
+                                    <div class="d-flex flex-wrap subnav-list">
+                                        <a
+                                            href="{{ $pagina . trans("$theme-app.links.condecoraciones") }}">{{ trans("$theme-app.subastas.see-all") }}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" id="subnav-subastas">
+
+                    <div class="d-flex flex-column gap-4">
+                        <p class="position-relative subnav-title">
+                            <button type="button" class="btn-close" aria-label="Close"
+                                onclick="closeSubmenu()"></button>
+                            <span>{{ trans("$theme-app.subastas.auctions") }}</span>
+                        </p>
+
+                        <a href="{{ Routing::translateSeo('presenciales', null, $domain) }}">
+                            {{ trans("$theme-app.home.home") }} {{ trans("$theme-app.subastas.auctions") }}
+                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="6.2006" height="0.688955"
+                                    transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
+                                    fill="#0F0E0D" />
+                                <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
+                                    transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
+                            </svg>
+                        </a>
+
+                        <a href="{{ Routing::translateSeo('ventas-destacadas', null, $domain) }}">
+                            {{ trans("$theme-app.lot_list.featured-sales") }}
+                        </a>
+                        <a href="{{ Routing::translateSeo('subastas-historicas', null, $domain) }}">
+                            {{ trans("$theme-app.artist.passAuctions") }}
+                        </a>
+                        <a href="{{ $pagina . trans("$theme-app.links.buy_and_sell") }}">
+                            {{ trans("$theme-app.foot.buy_and_sell") }}
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+            <div role="tabpanel" id="subnav-stories">
+                <div class="d-flex flex-column gap-4">
+                    <p class="position-relative subnav-title">
+                        <button type="button" class="btn-close" aria-label="Close"
+                            onclick="closeSubmenu()"></button>
+                        <span>{{ trans("$theme-app.blog.principal_title") }}</span>
+                    </p>
+
+					<a href="{{ Routing::translateSeo('blog', null, $domain) }}">
+						{{ trans("$theme-app.home.home") }} STORIES
+						<svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+							xmlns="http://www.w3.org/2000/svg">
+							<rect width="6.2006" height="0.688955"
+								transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
+								fill="#0F0E0D" />
+							<rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
+								transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
+						</svg>
+					</a>
+
+					<a href="{{ Routing::translateSeo('blog/joyeria', null, $domain) }}">{{ trans("$theme-app.foot.joyeria") }}</a>
+
+					<a href="{{ Routing::translateSeo('blog/comunicacion', null, $domain) }}">{{ trans("$theme-app.subastas.auctions") }}</a>
+
+					<a href="{{ Routing::translateSeo('blog/noticias', null, $galleryDomain) }}">{{ trans("$theme-app.galery.galery") }}</a>
+
+
+
+                </div>
+            </div>
+        </nav>
+    </div>
 </div>
 
+<div class="login_desktop container-fluid" style="display: none">
+    <div class="h-100 d-flex justify-content-center align-content-center">
+        <div class="login_desktop_content m-auto">
+            <div class="only-login bg-white position-relative">
+                <div class="text-center">
+                    <button type="button" class="btn-close closedd" aria-label="Close"></button>
 
+                    <p class="login_desktop_title h1">{{ trans($theme . '-app.login_register.login') }}</p>
 
-<script>
+                    <form data-toggle="validator" id="accerder-user-form">
+                        @csrf
 
-</script>
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="floatingInput" name="email"
+                                placeholder="email@example.com">
+                            <label for="floatingInput">{{ trans("$theme-app.login_register.ph_user") }}</label>
+                        </div>
+
+                        <div class="form-floating input-group">
+                            <input type="password" name="password" class="form-control" id="floatingPassword"
+                                placeholder="contraseña">
+                            <label for="floatingPassword">{{ trans("$theme-app.login_register.password") }}</label>
+                            <span class="input-group-text view_password">
+                                <img class="eye-password"
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
+                            </span>
+                        </div>
+
+                        <p class="message-error-log text-danger d-none"></p>
+
+                        <button id="accerder-user" class="btn btn-lb-primary btn-fluid" type="submit">
+                            <span class="text">{{ trans($theme . '-app.login_register.acceder') }}</span>
+                            <div class="spinner spinner-1 m-auto"></div>
+                        </button>
+
+                    </form>
+
+                    <div class="d-flex flex-column gap-3">
+
+                        <a onclick="cerrarLogin();" class="c_bordered fs-16"
+                            data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery"
+                            data-title="{{ trans($theme . '-app.login_register.forgotten_pass_question') }}"
+                            href="javascript:;" data-bs-toggle="modal" data-bs-target="#modalAjax"
+                            data-toggle="modal" data-target="#modalAjax">
+                            {{ trans($theme . '-app.login_register.forgotten_pass_question') }}
+                        </a>
+
+                        <div class="login-separator" data-content=""></div>
+
+                        <p class="text-center mb-2 fs-16">{{ trans($theme . '-app.login_register.not_account') }}</p>
+
+                        <div>
+                            @if (empty($registration_disabled))
+                                <a class="btn btn-lb-primary btn-medium"
+                                    title="{{ trans("$theme-app.login_register.register") }}"
+                                    href="{{ \Routing::slug('register') }}">
+                                    {{ trans("$theme-app.login_register.register") }}
+                                </a>
+                            @else
+                                <p class="text-center" style="color: darkred;">
+                                    {{ trans($theme . '-app.login_register.registration_disabled') }}</p>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

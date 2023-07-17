@@ -1,0 +1,20 @@
+<button class="btn search-button btn-outline-lb-secondary" type="button">
+    <input type="text" name="search" placeholder="{{ trans("$theme-app.head.search_button") }}"
+        value="{{ request('search') }}">
+    <div class="btn-content">
+        <svg class="icon" width="20" height="20" viewBox="0 0 20 20" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9C16.5 11.0349 15.6896 12.8805 14.374 14.2317C14.3467 14.2498 14.3209 14.2709 14.2968 14.2949C14.2728 14.319 14.2517 14.3449 14.2335 14.3722C12.8822 15.6889 11.0358 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9ZM14.6475 15.3527C13.146 16.6885 11.1678 17.5 9 17.5C4.30558 17.5 0.5 13.6944 0.5 9C0.5 4.30558 4.30558 0.5 9 0.5C13.6944 0.5 17.5 4.30558 17.5 9C17.5 11.1668 16.6892 13.1442 15.3545 14.6455L19.3539 18.6449C19.5492 18.8401 19.5492 19.1567 19.3539 19.352C19.1587 19.5473 18.8421 19.5473 18.6468 19.352L14.6475 15.3527Z"
+                fill="#0F0E0D" />
+        </svg>
+        <span>{{ trans("$theme-app.head.search_button") }}</span>
+        <span type="reset" title="Clear the query" aria-label="Clear the query" style="" class="reset-query">
+            <svg clase="close-svg" width="20" height="20" viewBox="0 0 20 20">
+                <path d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z"
+                    stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </svg>
+        </span>
+    </div>
+</button>

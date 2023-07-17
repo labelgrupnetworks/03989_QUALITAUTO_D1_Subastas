@@ -21,10 +21,18 @@
 <script src="{{ URL::asset('vendor/jquery-print/jQuery.print.js') }}"></script>
 
 <?php
+use App\Models\V5\AucSessionsFiles;
+use App\Models\V5\FgSubConditions;
+
 //gardamos el código de licitador para saber is esta logeado o no y mostrar mensaje de que debe logearse
 $user = "";
 $cod_licit ="null";
 $deposito= null;
+
+$auctionBasesFile = AucSessionsFiles::whereAuctionBases($data['subasta_info']->lote_actual->cod_sub)->get();
+$auctionBasesFile = $auctionBasesFile->where('locale', config('app.locale'))->first() ?? $auctionBasesFile->first();
+$auctionConditionsAccepted = is_null($auctionBasesFile);
+
 if(Session::has('user')){
 
 	$user = Session::get('user');
@@ -34,14 +42,8 @@ if(Session::has('user')){
 	$deposito = $fgdeposito->isValid($user['cod'], $cod_sub, $ref);
 
 	$cod_licit = $data['js_item']['user']['cod_licit'] ?? "null";
-/*
-	if($deposito){
-		$cod_licit = $data['js_item']['user']['cod_licit'] ?? "null";
-	}
-	else{
-		$cod_licit = 0;
-	}
-	*/
+
+	$auctionConditionsAccepted = $auctionConditionsAccepted ?: FgSubConditions::isAcceptedCondtition($user['cod'], $data['subasta_info']->lote_actual->cod_sub);
 }
 ?>
 

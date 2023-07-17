@@ -110,11 +110,23 @@
 						data-ref="{{ $lote_actual->ref_asigl0 }}" data-codsub="{{ $lote_actual->cod_sub }}"
 						data-lang="{{\App::getLocale()}}"
 						class="btn-blue lot-action_pujar_no_licit ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
-						type="button">{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}</button>
+						type="button">
+						{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}
+					</button>
+					@elseif(!$auctionConditionsAccepted)
+					<button type="button" data-from="modal" data-codcli="{{Session::get('user')['cod'] }}"
+						data-lang="{{\App::getLocale()}}"
+						ref="{{ $lote_actual->ref_asigl0 }}"
+						codsub="{{ $lote_actual->cod_sub }}"
+						data-tipoPuja="firme"
+						class="btn-blue lot-action_pujar_no_bases ficha-btn-bid ficha-btn-bid-height button-principal {{ Session::has('user') ? 'add_favs' : '' }}"
+						type="button">
+					{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}
+					</button>
 					@else
 					<button type="button" data-tipoPuja="firme" data-from="modal"
 						class="btn-blue lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>"
-						type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
+						type="button" ref="{{ $lote_actual->ref_asigl0 }}"
 						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.firm_bid') }}</button>
 					@endif
 				</div>

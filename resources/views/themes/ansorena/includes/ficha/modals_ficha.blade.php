@@ -1,31 +1,49 @@
-<div id="ordenFicha" class="container modal-block mfp-hide " >
-            <div   data-to="pujarLoteFicha" class="modal-sub-w"  >
-                    <section class="panel">
-                            <div class="panel-body">
-                                    <div class="modal-wrapper">
-                                            <div class=" text-center single_item_content">
-                                                <p class="class_h1"><?=trans(\Config::get('app.theme').'-app.lot.confirm_bid')?></p><br/>
-                                                <span for="bid" class='desc_auc'>{{trans(\Config::get('app.theme').'-app.lot.bidding_for')}} </span> <strong><span class="precio_orden"></span> €</strong><br/>
-                                                    </br>
-					        <p class="phonebid_js">{{trans(\Config::get('app.theme').'-app.lot.phonebid_text')}} <br></p>
-                                                <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 1: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone1" id="phone1Bid_JS"></p>
-					        <p class="phonebid_js"><?=trans(\Config::get('app.theme').'-app.login_register.phone')?> 2: <input style="padding: 0 0 0 5px;" type="text" value="" name="phone2" id="phone2Bid_JS"></p>
+<div id="ordenFicha" class="container order-modal modal-block mfp-hide">
+    <div data-to="pujarLoteFicha" class="modal-sub-w">
+        <section class="panel">
+			<div class="modal-wrapper">
+				<div class="modal-body d-flex flex-column gap-4">
+					<p class="h2">
+						{{ trans("$theme-app.lot.confirm") }}
+					</p>
+					<p>
+						<span for="bid" class='desc_auc'>{{ trans("$theme-app.lot.bidding_for") }} </span>
+						<strong>
+							<span class="precio_orden"></span> {{ trans("$theme-app.subastas.euros") }}
+						</strong>
+					</p>
+					<p class="phonebid_js">{{ trans("$theme-app.lot.phonebid_text") }}</p>
 
+					<div class="form-floating phonebid_js">
+						<input id="precio_orden_modal" type="text" class="form-control control-number" placeholder="0000" value="" autocomplete="off">
+						<label for="floatingInput">{{ trans("$theme-app.lot.bid_amount") }}</label>
+					</div>
 
-                                                    <button id="confirm_orden" class="btn button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?> </button>
+					<div class="form-floating phonebid_js">
+						<input type="text" class="form-control" value="" name="phone1" id="phone1Bid_JS" placeholder="{{ trans("$theme-app.login_register.phone") }} 1">
+						<label for="floatingInput">{{ trans("$theme-app.login_register.phone") }} 1</label>
+					</div>
 
+					<div class="form-floating phonebid_js">
+						<input type="text" class="form-control" value="" name="phone2" id="phone2Bid_JS" placeholder="{{ trans("$theme-app.login_register.phone") }} 2">
+						<label for="floatingInput">{{ trans("$theme-app.login_register.phone") }} 2</label>
+					</div>
 
-													<p class="mt-2 mb-1" >
-														{!! trans(\Config::get('app.theme').'-app.lot.text_condition_confirm_bid') !!}
-													</p>
+					<button id="confirm_orden" class="btn btn-medium button_modal_confirm btn-lb-primary my-2">
+						{{ trans("$theme-app.lot.confirm") }}
+					</button>
 
-													{{-- <div class='mb-10'></div> --}}
+					<p>
+						{!! trans("$theme-app.lot.text_condition_confirm_bid") !!}
+					</p>
 
-                                            </div>
-                                    </div>
-                            </div>
-                    </section>
-            </div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn modal-dismiss btn-lb-primary">{{ trans("$theme-app.global.cancel") }}</button>
+				</div>
+			</div>
+        </section>
+    </div>
 </div>
 
 

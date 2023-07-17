@@ -29,6 +29,7 @@
 					<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
 						<img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;"
 							class="img-responsive"
+							loading="lazy"
 							src="{{ \Tools::url_img("lote_medium_large", $num_hces1, $lin_hces1, $key) }}"
 							alt="{{$titulo}}">
 					</div>

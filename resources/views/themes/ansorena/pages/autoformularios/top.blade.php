@@ -1,118 +1,120 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ $data['title'] }}
+    {{ $data['title'] }}
 @stop
 
+@section('framework-css')
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}">
+@endsection
+
+@section('framework-js')
+    <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
+@endsection
+
+@section('custom-css')
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/global.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/style.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
-<?php
-	$bread[] = array("name" => $data['title']  );
-?>
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
+    <main class="autoformulario gray-page contenido-web">
 
+        <div class="container">
+            <h1 class="ff-highlight text-center fs-32-40">{{ $data['title'] }}</h1>
 
-<div class="container autoformulario">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 text-center color-letter">
+            @if (isset($data['content']))
+                <div class="autoformulario-content">
+                    {!! $data['content'] !!}
+                </div>
+            @endif
+        </div>
 
-			<h1 class="titlePage"> {{ $data['title'] }}</h1>
-			@include('includes.breadcrumb')
+        <div class="container mp-4 pt-md-5">
+            <form name="autoformulario" id="autoformulario" method="post">
 
-		</div>
-	</div>
+                <input name="subject" type="hidden" value="{{ $data['title'] }}">
+                {!! $data['formulario']['_token']['formulario'] !!}
 
+                <div class="row g-3">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            {!! $data['formulario']['nomApell']['formulario'] !!}
+                            <label for="floatingInput">
+                                <b class="text-danger">*</b>
+                                {{ trans("$theme-app.global.nomApell") }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            {!! $data['formulario']['email']['formulario'] !!}
+                            <label for="floatingInput">
+                                <b class="text-danger">*</b>
+                                {{ trans("$theme-app.global.email") }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            {!! $data['formulario']['telefono']['formulario'] !!}
+                            <label for="floatingInput">
+                                <b class="text-danger">*</b>
+                                {{ trans("$theme-app.global.telefono") }}
+                            </label>
+                        </div>
+                    </div>
 
-	<div class="row">
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {!! $data['formulario']['mensaje']['formulario'] !!}
+                            <label for="floatingInput">
+                                {{ trans("$theme-app.global.mensaje") }}
+                            </label>
+                        </div>
+                    </div>
 
-		@if (isset($data['content']))
-			<div class="col-xs-12 mb-2">
-				<br><br>
-				{!! $data['content'] !!}
-			</div>
-			<div class="clearfix"></div>
-		@endif
-
-
-	   <div class="col-xs-12">
-			<div class="row form-group">
-				<form name="autoformulario" id="autoformulario" method="post" >
-
-					<input name="subject" type="hidden" value="{{ $data['title'] }}">
-
-					@foreach($data['formulario'] as $k => $item)
-
-						@if ($data['formulario'][$k]['type'] == "Hidden")
-
-							{!! $data['formulario'][$k]['formulario']!!}
-
-						@elseif ($data['formulario'][$k]['type'] == "TextArea")
-							<div class="input-effect col-xs-12">
-								<label>
-									@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
-								{!! $data['formulario'][$k]['formulario']!!}
-
+                    <div class="col-12">
+						<div class="row mx-0 border">
+							<div class="col-md-4 d-flex flex-column gap-2 py-2">
+								<label for="file__1__files">
+									<b class="text-danger">*</b>
+									{{ trans("$theme-app.global.file_curriculum") }}
+								</label>
+								{!! $data['formulario']['file_curriculum']['formulario'] !!}
 							</div>
-
-						@elseif ($data['formulario'][$k]['type'] == "Image")
-							<div class="col-xs-12">
-								{!! $data['formulario'][$k]['formulario']!!}
-							</div>
-						@elseif($data['formulario'][$k]['type'] == "File")
-							<div class="input-effect col-xs-12 col-md-4">
-								<label>
-									@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
-								{!! $data['formulario'][$k]['formulario']!!}
-
-							</div>
-						@else
-							<div class="input-effect col-xs-12 col-md-4">
-								<label>
-								@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
-								{!! $data['formulario'][$k]['formulario']!!}
-
-							</div>
-						@endif
-
-					@endforeach
-
-					<div class="row">
-						<div class="col-xs-12 col-md-8">
-							<div class="check_term row">
-                                <div class="col-xs-2 col-md-1">
-                                    <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
-                                </div>
-                                <div class="col-xs-10 col-md-11">
-                                    <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
-                                </div>
-                            </div>
 						</div>
-						<div class="col-xs-12 col-md-4">
 
-							<div class="g-recaptcha"
-								  data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-								  data-callback="onSubmit"
-								  >
-							</div>
+                    </div>
 
-						</div>
-					</div>
-					<br><br><br>
-					<div class="col-xs-12 text-center">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="condiciones" value="on"
+                                id="bool__1__condiciones" autocomplete="off">
+                            <label class="form-check-label" for="bool__1__condiciones">
+                                {!! trans("$theme-app.emails.privacy_conditions") !!}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
+                            data-callback="onSubmit">
+                        </div>
+                    </div>
+
+					<div class="col-12 text-center">
 						{!! $data['submit'] !!}
 					</div>
 
-					<?= trans(\Config::get('app.theme') . '-app.global.proctecion_datos_candidatura') ?>
-			</form>
-		</div>
+                </div>
 
-	</div>
-</div>
+            </form>
+        </div>
 
-<br><br><br>
-
+    </main>
 
 @stop

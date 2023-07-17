@@ -56,7 +56,7 @@ $bread[] = array("name" =>$data['title']  );
 
                    </div>
 
-                   <input type="hidden" name="email_category" value="xavier.llach@soleryllach.com">
+                   <input type="hidden" name="email_category" value="syl@soleryllach.com">
                    <div class="check_term box">
 			<input
 				name="condiciones"

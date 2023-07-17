@@ -1,41 +1,40 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.galery.exhibitions') }}
+    {{ trans(\Config::get('app.theme') . '-app.galery.exhibitions') }}
 @stop
 
+@section('framework-css')
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('vendor/swiper/swiper-bundle.min.css') }}" />
+@endsection
+
+@section('framework-js')
+    <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ URL::asset('vendor/swiper/swiper-bundle.min.js') }}"></script>
+@endsection
+
+@section('custom-css')
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/global.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/style.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
+@endsection
 
 @section('content')
-<link href="{{ Tools::urlAssetsCache('/css/default/galery.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/galery.css') }}" rel="stylesheet" type="text/css">
-<div class="container">
-	<div class="row">
+    @include('includes.galery.subnav')
 
-			<div class="col-xs-12 galTitle">
-				<h1 class="titlePage-custom color-letter text-center">{{ trans(\Config::get('app.theme').'-app.galery.exhibitions') }}</h1>
+    <main class="exhibitions-page">
+        <div class="container-fluid">
+            <h1 class="page-title">
+                {{ request('online') === 'S' ? trans("$theme-app.galery.online_exhibitions") : trans("$theme-app.galery.exhibitions") }}
+            </h1>
 
+            <h2 class="page-subtitle">
+                {{ request('online') === 'S' ? trans("$theme-app.galery.texto_online_exhibitions") : trans("$theme-app.galery.texto_exhibitions") }}
+            </h2>
 
-			</div>
-			<div class=" col-xs-12 searchExhibitions">
-				<form id="fromSearchExhibitions" >
-					<input  type="text" id="searchExhibitions_JS"  name="search" value="{{request("search")}}" size="30" maxlength="128">
-					<input  type="hidden"  name="online" value="{{request("online")}}" >
-					<button type="submit">	<i class="fa fa-search" aria-hidden="true"></i></button>
-				</form>
+            @include('content.galery.exhibitions');
+        </div>
 
-			</div>
-
-	</div>
-</div>
-
-    @include('content.galery.exhibitions')
-	<script>
-		$("#searchExhibitions_JS").keydown(function(e){
-			if (e.keyCode == 13) {
-				$("#fromSearchExhibitions").submit();
-			}
-		})
-
-
-	</script>
+    </main>
 @stop

@@ -78,6 +78,14 @@
 			@endif
 
         </div>
+		<div   class="siguientePujaClass ">
+            <p>{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}</p>
+			<span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span> &nbsp; <span class="siguiente_puja"> {{ \Tools::moneyFormat($data['subasta_info']->lote_actual->importe_escalado_siguiente) }}</span>
+			@if(\Config::get("app.exchange"))
+				| <span id="nextBidExchange_JS" class="exchange"> </span>
+			@endif
+        </div>
+		<div></div>
 
         <!-- panel pujar -->
         <div class="pujar">

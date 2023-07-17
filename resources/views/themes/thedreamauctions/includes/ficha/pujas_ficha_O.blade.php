@@ -174,12 +174,12 @@
 			</div>
 		</div>
 
-		{{-- <small class="mt-1">
+		<small class="mt-1">
 			{{ trans("$theme-app.lot.add_buyer") }}
 			<i class="fa fa-question-circle" style="cursor: pointer" aria-hidden="true" data-container="body"
 				data-toggle="popover" data-placement="bottom" data-title="{{ trans("$theme-app.lot.add_buyer_title") }}" data-html="true" data-content='{!! trans("$theme-app.lot.add_buyer_content") !!}'>
 			</i>
-		</small> --}}
+		</small>
 	</div>
 	<div class="row ficha-separator"></div>
 	@endif

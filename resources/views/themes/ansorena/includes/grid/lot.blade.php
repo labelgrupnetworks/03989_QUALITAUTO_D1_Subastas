@@ -1,93 +1,100 @@
+@php
+    $showActualBid = ($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas;
+    $showResult = $awarded && Session::has('user');
+@endphp
 
+<div class="col">
+    <div role="article" class="card lot-card" {!! $codeScrollBack !!}>
 
-<div  class="{{$class_square}} square" {!! $codeScrollBack !!}>
-	<div id="{{$item->sub_asigl0}}-{{$item->ref_asigl0}}" style="position: absolute;top:-180px"></div>
-	<a title="{{ $titulo }}" class="lote-destacado-link secondary-color-text" <?= $url?> >
+        <div id="{{ $item->sub_asigl0 }}-{{ $item->ref_asigl0 }}" style="position: absolute;top:-180px"></div>
 
-		{{-- las etiquetas van a parta para simplificar el código --}}
-		@include('includes.grid.labelLots')
-        <div class="item_lot">
-			@if($subasta_online && !$cerrado)
-				<p class="salida-time">
-					<i class="fa fa-clock-o"></i>
-					<span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
-				</p>
-			@endif
-            <div class="item_img">
-                <img class="img-responsive " src="{{$img}}" alt="{{$titulo}}">
+        <div class="lot-card-imageblock">
+            <a {!! $url !!} title="{{ $titulo }}" class="stretched-link"></a>
+
+            <div class="lot-card-header">
+                <span>{{ $titulo }}</span>
+
+                @if ($subasta_online && !$cerrado)
+                    <p class="salida-time">
+                        <i class="fa fa-clock-o"></i>
+                        <span data-countdown="{{ strtotime($item->close_at) - getdate()[0] }}"
+                            data-format="{{ Tools::down_timer($item->close_at) }}" class="timer"></span>
+                    </p>
+                @endif
             </div>
 
-            <div class="data-container">
-					<div class="item-info-lot">
-						<div class="title_item">
-							<span class="seo_h4" style="text-align: center;">{{$titulo}}</span>
-						</div>
+            <img src="{{ $img }}" alt="{{ $titulo }}" class="card-img-top">
 
-						{{--
-						indice de caracteristicas
-						1 - Autor
-						2 - Técnica
-						3 - Medidas
-						4 - Fechas del autor
-						--}}
-						<p class="item-autor">{{ $caracteristicas[1]->value_caracteristicas_hces1 ?? '' }}</p>
-						<p class="item-titulo">{!! $item->descweb_hces1 !!}</p>
-						<p class="item-tecnica">{{ $caracteristicas[2]->value_caracteristicas_hces1 ?? '' }}</p>
-						<p class="item-medidas">{{ $caracteristicas[3]->value_caracteristicas_hces1 ?? '' }}</p>
+        </div>
 
-					</div>
+        <div class="card-body lot-card-body">
 
-					<div class="data-price text-center">
-						@if( !$retirado && !$devuelto)
-							<p class="d-flex justify-content-space-between" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
-								@if($subasta_venta)
-									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
-								@else
-									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
-								@endif
-								<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-							</p>
-							@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
+            <div class="lot-title max-line-4">{!! $item->descweb_hces1 !!}</div>
 
-							<p class="d-flex justify-content-space-between">
-								<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
-								<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-							</p>
+            <div class="lot-data mt-4">
 
+                @if (!$retirado && !$devuelto)
+                    <div class="lot-prices">
 
-							@endif
-							{{--   EL USUARIO DEBE ESTAR LOGEADO PARA QUE PUEDA VER EL RESULTADO DE LA SUBASTA --}}
-							@if( $awarded && \Session::has("user") && !$devuelto && !$retirado)
+                        <p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden' }}">
+                            @if ($subasta_venta)
+                                {{ trans("$theme-app.subastas.price_sale") }}
+                            @else
+                                {{ trans("$theme-app.lot.lot-price") }}
+                            @endif
+                            {{ $precio_salida }} {{ trans("$theme-app.subastas.euros") }}
+                        </p>
 
-								@if($cerrado && $remate  &&  (!empty($precio_venta) ) || ($sub_historica && !empty($item->impadj_asigl0)) )
-									@if($sub_historica && !empty($item->impadj_asigl0))
-										@php($precio_venta = $item->impadj_asigl0)
-									@endif
-									<p class="d-flex justify-content-space-between">
-										<span class="salida-title soldGrid">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</span>
-										<span class="salida-price  soldGrid">{{ $precio_venta }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
-									</p>
-								@elseif($cerrado &&  (!empty($precio_venta) )  || ($sub_historica && !empty($item->impadj_asigl0)) )
-									<p> <span class="salida-title notSold">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</span></p>
-								@elseif($cerrado &&  empty($precio_venta) && !$compra)
-									<p> <span class="salida-title notSold">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</span></p>
-								@endif
-							@endif
-					@endif
-				</div>
+                        @if ($showActualBid)
+                            <p>
+                                {{ trans("$theme-app.lot.puja_actual") }}
+                                <span class="{{ $winner }}">{{ $maxPuja }}
+                                    {{ trans("$theme-app.subastas.euros") }}</span>
+                            </p>
+                        @endif
 
-				@if (!$devuelto && !$retirado && !$sub_historica)
-					@if($cerrado &&  empty($precio_venta) && $compra)
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
-					@elseif($subasta_venta  && !$cerrado )
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
-					@elseif(!$cerrado )
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</p>
-					@endif
-				@endif
+                        @if ($showResult)
 
+                            @if (($cerrado && $remate && !empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0)))
+                                @if ($sub_historica && !empty($item->impadj_asigl0))
+                                    @php($precio_venta = $item->impadj_asigl0)
+                                @endif
+                                <p>
+                                    {{ trans("$theme-app.subastas.buy_to") }} {{ $precio_venta }}
+                                    {{ trans("$theme-app.subastas.euros") }}
+                                </p>
+                            @elseif(($cerrado && !empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0)))
+                                <p class="lb-text-capitalize">{{ trans("$theme-app.subastas.buy") }}
+                                </p>
+                            @elseif($cerrado && empty($precio_venta) && !$compra)
+                                <p class="lb-text-capitalize">{{ trans("$theme-app.subastas.dont_buy") }}</p>
+                            @endif
+                        @endif
+
+                    </div>
+
+                    @if (!$sub_historica)
+                        @if ($cerrado && empty($precio_venta) && $compra)
+                            <a {!! $url !!} title="{{ $titulo }}"
+                                class="btn btn-outline-lb-primary btn-small">
+                                {{ trans("$theme-app.subastas.buy_lot") }}
+                            </a>
+                        @elseif($subasta_venta && !$cerrado)
+                            <a {!! $url !!} title="{{ $titulo }}"
+                                class="btn btn-outline-lb-primary btn-small">
+                                {{ trans("$theme-app.subastas.buy_lot") }}
+                            </a>
+                        @elseif(!$cerrado)
+                            <a {!! $url !!} title="{{ $titulo }}"
+                                class="btn btn-outline-lb-primary btn-small">
+                                {{ trans("$theme-app.lot.pujar") }}
+                            </a>
+                        @endif
+                    @endif
+                @endif
             </div>
 
         </div>
-    </a>
+
+    </div>
 </div>
