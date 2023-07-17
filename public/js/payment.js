@@ -86,11 +86,17 @@ function sendCarrito(cod_sub){
 function reload_carrito() {
 
 	var precio_global = 0;
+	var imp_iva = 0;
+	var precio_sin_iva = 0;
 
     $.each(info_lots, function (index_sub, value_sub) {
-		precio_subasta = reload_carrito_subasta(index_sub, value_sub);
-        precio_global = precio_global + precio_subasta;
+		subasta = reload_carrito_subasta(index_sub, value_sub);
+        precio_global = precio_global + subasta.precio_final;
+        imp_iva = imp_iva + subasta.imp_iva;
+        precio_sin_iva = precio_sin_iva + subasta.precio_total;
     });
+	$(".iva_final_global").text(imp_iva.toFixed(2).replace(".", ","));
+	$(".precio_final_remate_global").text(precio_sin_iva.toFixed(2).replace(".", ","));
 	$(".precio_final_global").text(precio_global.toFixed(2).replace(".", ","));
      if (precio_global <= 0) {
             $('.submit_carrito').attr("disabled", "disabled");
@@ -102,17 +108,22 @@ function reload_carrito() {
 function reload_carrito_subasta(index_sub, value_sub){
 	var precio_envio = 0;
 	var sum_precio_envio = 0;
-	var precio_final = 0;
+	var precio_total = 0;
 	var precio_seguro = 0;
-
+	var imp_iva = 0;
+	var precio_base = 0;
 	$.each(value_sub.lots, function (index, value) {
 		if ($("#add-carrito-" + index_sub + "-" + index + "").is(":checked")) {
-			precio_final = precio_final + value.himp + value.iva + value.base;
+			precio_base = precio_base + value.base;
+
+			precio_total = precio_total + value.himp + value.base;
 			sum_precio_envio = sum_precio_envio + value.himp + value.base;
 
 		}
-	});
 
+	});
+	imp_iva =  ( precio_base * (info_lots.iva/100));
+	precio_total_iva = precio_total + imp_iva;
 	if (sum_precio_envio > 0) {
 		//si existe la opción de recogida por parte del usuario y está seleccionada
 		if ($("#recogida_almacen_" + index_sub + "_js").is(":checked")) {
@@ -130,8 +141,16 @@ function reload_carrito_subasta(index_sub, value_sub){
 
 
 	$(".text-gasto-envio-" + index_sub).text(precio_envio.toFixed(2).replace(".", ","));
-	precio_final = parseFloat(precio_final) + parseFloat(precio_envio) + parseFloat(precio_seguro);
+	precio_final = parseFloat(precio_total_iva) + parseFloat(precio_envio) + parseFloat(precio_seguro);
 
+
+	if(typeof extraCharge != 'undefined'){
+		precio_final += precio_final * (extraCharge/100);
+
+	}
+
+	$(".iva_final_" + index_sub).text(imp_iva.toFixed(2).replace(".", ","));
+	$(".precio_final_remate_" + index_sub).text(precio_total.toFixed(2).replace(".", ","));
 	$(".precio_final_" + index_sub).text(precio_final.toFixed(2).replace(".", ","));
 
 	if (precio_final <= 0) {
@@ -139,8 +158,14 @@ function reload_carrito_subasta(index_sub, value_sub){
 	} else {
 		$('.submit_carrito[cod_sub="' + index_sub + '"]').removeAttr("disabled");
 	}
+	var subasta = {
+		precio_final: precio_final,
+		imp_iva: imp_iva,
+		precio_total: precio_total,
 
-	return precio_final;
+	 }
+
+	return subasta;
 }
 
 

@@ -160,6 +160,8 @@ function reloadPujasList_W() {
 	var model = $('#type_bid_model').clone();
 	var container = $('.aside.pujas #pujas_list');
 
+	$('.siguiente_puja').html(new Intl.NumberFormat("de", {}).format(auction_info.lote_actual.importe_escalado_siguiente));
+
 	if (typeof auction_info.lote_actual != 'undefined' && typeof auction_info.lote_actual.pujas != 'undefined' && typeof container != 'undefined' && container.length > 0) {
 
 		$('.aside.pujas .pujas_model:not(#type_bid_model)').remove();

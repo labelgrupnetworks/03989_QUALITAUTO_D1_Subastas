@@ -271,6 +271,9 @@ function oculta_error_input(campo) {
         $(campo).parent().removeClass('has-content');
     }
 
+
+    //$(campo).popover("hide");
+
 }
 
 
@@ -364,6 +367,10 @@ $(document).ready(function () {
   });
 
   $('#dropzone #images').on('change', function(e) {
+	 changeDropzoneImage(this,e);
+
+  });
+  function  changeDropzoneImage(imageInput,e){
 
     max_size = 6000;
     var size = 0
@@ -375,23 +382,32 @@ $(document).ready(function () {
         });
     if(Math.floor(size) < max_size){
         var idrandom = 'image-'+Math.random();
-        var x = $('#images').clone();
+		// copiamos images y le cambiamos el nombre, no podemos usar el clone por que no iba en iphone
+        var x = $('#images');
         $(x)
             .attr('id', idrandom)
             .hide()
         $('#dropzone').append(x)
+		//creamos de nuevo el input #images
+		$newImage = $('<input id="images" type="file" name="imagen[]"  />');
+
+		$('#dropzone').append($newImage);
+		$newImage.on('change', function(e) {
+		 changeDropzoneImage(this,e);
+
+	  });
         $('.error-dropzone').hide()
     }else{
-        $(this).removeClass('hover');
-        $(this).val(null);
+        $(imageInput).removeClass('hover');
+        $(imageInput).val(null);
         $('.error-dropzone').show()
         return false
     }
 
     var img = e.target.files
-    for(i = 0; i < this.files.length ; i++){
+    for(i = 0; i < imageInput.files.length ; i++){
 
-        var file = this.files[i];
+        var file = imageInput.files[i];
     $('#dropzone').removeClass('hover');
 
 
@@ -403,7 +419,8 @@ $(document).ready(function () {
         var data = e.target.result,
             $img = $('<img class="img-responsive" />').attr('src', data).fadeIn();
             $div  = $('<div onclick="myFunction(this)" id='+idrandom+' class="mini-upload-image"><div class="delete-img">Delete</div></div>');
-            $(x).attr('id', idrandom).hide()
+			console.log("reader onload");
+
             $('#dropzone').append(x)
             $div.append(x)
             $div.append($img)
@@ -419,7 +436,7 @@ $(document).ready(function () {
 
     }
 
-  });
+  };
 
 
     $("#autoformulario").submit(function (event) {
@@ -482,10 +499,6 @@ $(document).ready(function () {
             }
         }
     });
-
-
-
-
 
 });
 

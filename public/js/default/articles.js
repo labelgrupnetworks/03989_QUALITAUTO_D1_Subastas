@@ -50,12 +50,14 @@ $(function() {
 
 
 	$(".addArticleCard_JS").on("click", function(e){
+		e.preventDefault();
 
 		if (typeof logged == 'undefined' || logged == false )
 		{
 			$("#insert_msg_title").html("");
 			$("#insert_msg").html(messages.error.mustLoginArticle);
 			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
+			return;
 
 		}else{
 			var empty = false;
@@ -104,6 +106,7 @@ function getTallasColoresFicha(){
 
 
 			for (var key in response) {
+
 				$select = $("select[name='tallaColor[" + key +"]']");
 				$select.children().remove();
 
@@ -118,6 +121,10 @@ function getTallasColoresFicha(){
 						id = keyOption;
 					}
 					$select.append("<option value='" + id + "'> " +   options[keyOption]["valor_valvariante"] + " </option");
+				}
+
+				if(typeof selectToSelect2 != 'undefined'){
+					selectToSelect2($select);
 				}
 			  }
 

@@ -375,8 +375,9 @@
             }
             else {
 
-                $("#insert_msgweb").html(messages.error.generic);
+                $("#insert_msgweb").html(messages.error.form_error);
                 $.magnificPopup.open({items: {src: '#modalMensajeWeb'}, type: 'inline'}, 0);
+				$('button', $this).attr('disabled', false);
 
             }
 
@@ -1068,53 +1069,6 @@ $(document).ready(function() {
         }
     });
 
-    $('.add_factura').change(function() {
-        reload_facturas();
-    });
-
-    $("#submit_fact").click(function () {
-        $("#submit_fact").addClass('hidden');
-        $("#submit_fact").siblings().removeClass('hidden');
-        var pay_fact = $('#pagar_fact').serializeArray();
-        var total = 0;
-        $.each(info_fact, function (index_anum, value_anum) {
-            $.each(value_anum, function (index_num, value_num) {
-                $.each(value_num, function (efect_num, value_efect) {
-                    if ($("#checkFactura-" + index_anum + "-" + index_num + "-" + efect_num + "").is(":checked")) {
-                        total = total + info_fact[index_anum][index_num][efect_num];
-                    }
-                });
-            });
-        });
-        if (total > 0) {
-            $.ajax({
-                type: "POST",
-                url: '/gateway/pagarFacturasWeb',
-                data: pay_fact,
-                success: function (data) {
-                    if (data.status == 'success') {
-                        window.location.href = data.msg;
-                    } else
-                        if (data.status == 'error') {
-                            $("#modalMensaje #insert_msg").html('');
-                            $("#modalMensaje #insert_msg").html(messages.error.generic);
-                            $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-                            $("#submit_carrito").removeClass('hidden');
-                            $("#submit_carrito").siblings().addClass('hidden');
-                        }
-
-                },
-                error: function (response) {
-                    $("#modalMensaje #insert_msg").html('');
-                    $("#modalMensaje #insert_msg").html(messages.error.generic);
-                    $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-                    $("#submit_fact").removeClass('hidden');
-                    $("#submit_fact").siblings().addClass('hidden');
-                }
-            });
-        }
-
-    });
 
 });
 
@@ -1155,30 +1109,6 @@ function reload_carrito(){
     });
 }
 
-function reload_facturas(){
-    var total = 0;
-   $.each(info_fact, function (index_anum, value_anum) {
-        $.each(value_anum, function (index_num, value_num) {
-            $.each(value_num, function (efect_num, value_efect) {
-                if ($("#checkFactura-" + index_anum + "-" + index_num + "-" + efect_num + "").is(":checked")) {
-                    total = total + info_fact[index_anum][index_num][efect_num];
-                }
-            });
-        });
-    });
-    if(total>0){
-        $("#submit_fact").removeClass('hidden');
-    }else{
-        $("#submit_fact").addClass('hidden');
-    }
-    $("#total_bills").html(change_currency(total));
-}
-
-function change_currency(price){
-
-    var price = numeral(price).format('0,0.00');
-    return price;
-}
 
 function recaptcha_callback() {
 	$( '#recaptcha' ).removeClass( "error" );
@@ -1272,3 +1202,125 @@ function addNewsletter(data) {
 		}
 	});
 }
+
+$(document).on("change", ".add_factura", function() {
+	reload_facturas();
+});
+
+$(document).on("click", "#submit_fact", function() {
+	payFacs();
+});
+
+function reload_facturas() {
+
+	var total = 0;
+
+	for (const factura of pendientes) {
+
+		if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
+			total += parseFloat(factura.imp_pcob);
+		}
+	}
+
+	if (total > 0) {
+		$("#submit_fact").removeClass('hidden');
+	} else {
+		$("#submit_fact").addClass('hidden');
+	}
+	$("#total_bills").html(change_currency(total));
+	// Hacer la línea $("#total_bills").html(change_currency(total)); sin jquery
+
+}
+
+function payFacs(button){
+
+	$("#btoLoader").siblings().addClass('hidden');
+	$("#btoLoader").removeClass('hidden');
+
+		var pay_fact = $('#pagar_fact').serializeArray();
+		var total = 0;
+
+		for (const factura of pendientes) {
+			if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
+				total += parseFloat(factura.imp_pcob);
+			}
+		}
+
+		if (total > 0) {
+			$.ajax({
+				type: "POST",
+				url: '/gateway/pagarFacturasWeb',
+				data: pay_fact,
+				success: function (data) {
+					if (data.status == 'success') {
+						window.location.href = data.msg;
+					} else
+						if (data.status == 'error') {
+							$("#modalMensaje #insert_msg").html('');
+							$("#modalMensaje #insert_msg").html(messages.error.generic);
+							$.magnificPopup.open({
+								items: {
+									src: '#modalMensaje'
+								},
+								type: 'inline'
+							}, 0);
+
+						}
+						$("#btoLoader").siblings().removeClass('hidden');
+						$("#btoLoader").addClass('hidden');
+
+				},
+				error: function (response) {
+					$("#modalMensaje #insert_msg").html('');
+					$("#modalMensaje #insert_msg").html(messages.error.generic);
+					$.magnificPopup.open({
+						items: {
+							src: '#modalMensaje'
+						},
+						type: 'inline'
+					}, 0);
+					$("#btoLoader").siblings().removeClass('hidden');
+					$("#btoLoader").addClass('hidden');
+				}
+			});
+
+		}
+};
+
+function change_currency(price) {
+	var price = numeral(price).format('0,0.00');
+	return price;
+};
+
+$(document).on("click", ".panel-collapse", openCloseToggle);
+
+function openCloseToggle() {
+	let condition = $(this).find(".toggle-open").css("display") != "none" && $(this).find(".label-open").css("display") != "none";
+
+	if (condition) {
+		$(this).find(".toggle-open").hide();
+		$(this).find(".toggle-close").show();
+		$(this).find(".label-open").hide();
+		$(this).find(".label-close").show();
+	} else {
+		$(this).find(".toggle-close").hide();
+		$(this).find(".toggle-open").show();
+		$(this).find(".label-close").hide();
+		$(this).find(".label-open").show();
+	}
+}
+
+$(document).on("click", "#button-open-user-menu", function () {
+	$('#user-account-ul').toggle()
+});
+
+$('.panel-collapse').on('show.bs.collapse', function () {
+	var id = $(this).attr('id')
+	$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').show()
+	$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').hide()
+})
+$('.panel-collapse').on('hide.bs.collapse', function () {
+	var id = $(this).attr('id')
+	$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').hide()
+	$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').show()
+})

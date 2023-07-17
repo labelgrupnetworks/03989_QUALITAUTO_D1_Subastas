@@ -1029,22 +1029,22 @@ a.link-header:hover, a.link-header:focus {
 }
 
 .loadbtn {
-    display: block !important;
-    width: 44px !important;
-    margin: 0 auto !important;
+    display: block;
+    width: 44px;
+    margin: 0 auto;
     padding: 0;
-    border-bottom: 1px solid var(--primary-color) !important;
-    border-radius: 50% !important;
-    background: white !important;
-            box-shadow: none;
-    color: transparent !important;
-            animation: spin 0.8s infinite linear !important;
-            animation-delay: 0.4s !important;
-            transition: 0.2s linear width, 0.4s linear border-radius, 0.4s linear background;
+    border-bottom: 1px solid var(--primary-color);
+    border-radius: 50%;
+    background: white;
+    box-shadow: none;
+    color: transparent;
+    animation: spin 0.8s infinite linear;
+    animation-delay: 0.4s;
+    transition: 0.2s linear width, 0.4s linear border-radius, 0.4s linear background;
 
-    -webkit-animaanimation-delay: 0.4s !important;
-    -webkit-animation: spin 0.8s infinite linear !important;
-    -webkit-animation-delay: 0.4s !important;
+    -webkit-animaanimation-delay: 0.4s;
+    -webkit-animation: spin 0.8s infinite linear;
+    -webkit-animation-delay: 0.4s;
     -webkit-box-shadow: none;
     -webkit-transition: 0.2s linear width, 0.4s linear border-radius, 0.4s linear background;
          -o-transition: 0.2s linear width, 0.4s linear border-radius, 0.4s linear background;
@@ -5265,4 +5265,32 @@ text-decoration-line: underline;
 
 dialog::backdrop {
 	background: rgba(0, 0, 0, 0.3);
+}
+
+.bid-life {
+	margin-bottom: 5px;
+}
+
+.auctions-list .btn-grop-calendar {
+	width: 100%;
+}
+
+.auctions-list .btn-grop-calendar button {
+	border: 1px solid;
+    background: var(--btn-secondary-background);
+    color: var(--btn-secondary-text);
+    font-weight: 500;
+    border-radius: 0;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.btn-grop-calendar .dropdown-menu img {
+	object-fit: contain;
+}
+
+.btn-grop-calendar .dropdown-menu>li>a {
+	display: flex;
+    align-items: center;
+    gap: 5px;
 }

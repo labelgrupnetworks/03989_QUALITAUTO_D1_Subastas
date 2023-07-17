@@ -86,8 +86,27 @@ form#password_recovery input{
 .modal-header{
     font-size: 20px;
     font-weight: bold;
-
 }
+
+#modalCheckBasesFicha {
+	background: transparent none repeat scroll 0 0;
+    margin: 40px auto;
+    max-width: 600px;
+    padding: 0;
+    position: relative;
+    text-align: left;
+}
+
+#modalCheckBasesFicha label {
+	display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+#modalCheckBasesFicha label > input {
+	position: relative;
+}
+
 /* Checkboxs terminos y condiciones Newsletter */
 .check_term.box label{
     display: -webkit-inline-box;
@@ -5276,6 +5295,8 @@ Estilos page preguntas frequentes
 
 .slick-slide img{
 	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 
 

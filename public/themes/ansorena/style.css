@@ -23,21 +23,17 @@
 	--newsletter-input-border: #414145;
 	--newsletter-input-text: #414145;
 
-	--footer-background: white;
-	--footer-titles-color: #707070;
-	--footer-links-color: #707070;
-	--footer-links-color-hover: #b4b4b4;
-
-	--footer-sociallinks-background: white;
-	--footer-sociallinks-textcolor: #707070;
-
 	--filter-background: #414145;
 }
 
-
+html {
+	font-size: 13px;
+}
 
 /* GENERAL */
-
+.breadcrumb {
+	background-color: #fff;
+}
 
 .cart-icon svg {
     width: 16px;
@@ -153,43 +149,6 @@ body{
 }
 
 
-/* FOOTER */
-
-footer{
-	padding: 80px 0 20px 0;
-	border-bottom: 0px solid #b3b3b3;
-
-
-}
-
-.footer-title{
-	font-size:18px;
-	text-transform: uppercase;
-	font-weight: normal;
-	margin: 0;
-}
-
-footer .logo-company{
-	max-width: 200px;
-}
-
-.signature{
-	color: var(--primary-color-text);
-}
-
-.signature hr{
-	background-color: var(--footer-links-color);
-}
-
-.footer-ul li{
-	float: right;
-	margin: 0 10px;
-}
-
-
-/* FIN FOOTER */
-
-
 /* GRID DE LOTES */
 
 .item_lot{
@@ -272,7 +231,10 @@ footer .logo-company{
 	font-size: 14px;
 }
 
-
+.group-pujar-custom .input-group-btn {
+	width: initial;
+	flex: initial;
+}
 /* FIN FICHA LOTE*/
 
 

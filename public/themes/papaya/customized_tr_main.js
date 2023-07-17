@@ -87,6 +87,59 @@
 			});
 		});
 
+		$('.lot-action_pujar_no_bases').on('click', function(e){
+			$.magnificPopup.open({ items: { src: '#modalCheckBasesFicha' }, type: 'inline' }, 0);
+		});
+
+		$('#modalCheckBasesFicha a').on('click auxclick', function(e){
+			e.preventDefault();
+			if(e.button == 2){
+				return;
+			}
+
+			$('#modalCheckBasesFicha input[type="checkbox"]').prop('disabled', false);
+			window.open(event.target.href, '_blank');
+		});
+
+		$('#modalCheckBasesFicha input[type="checkbox"]').on('change', function(e){
+			if($(this).is(':checked')){
+				$('#modalCheckBasesFicha button[type=submit]').prop('disabled', false);
+			}else{
+				$('#modalCheckBasesFicha button[type=submit]').prop('disabled', true);
+			}
+		});
+
+		$('#modalCheckBasesFicha form').on('submit', function(e){
+			e.preventDefault();
+
+ 			if(!this.querySelector('input[type="checkbox"]').checked){
+				return;
+			}
+
+			acceptConditionsFetch(this.dataset.codsub, this.querySelector('input[name="_token"]').value)
+				.then((data) => {
+
+					if(data.status !== 'success'){
+						$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+						$("#insert_msg_title").html("");
+						$("#insert_msg").html(data.message);
+						return;
+					}
+
+					$('.lot-action_pujar_no_bases').off('click');
+					$('.lot-action_pujar_no_bases').on('click', pujarAction);
+					$('.lot-action_pujar_no_bases').trigger('click');
+				})
+				.catch((error) => {
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+					$("#insert_msg_title").html("");
+					$("#insert_msg").html(messages.error.generic);
+				});
+
+
+			//$.magnificPopup.close();
+		});
+
 		$('.lot-action_pujar_no_user').on('click', function(e){
 
 			$.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
@@ -103,56 +156,7 @@
 		});
 
 
-	   $('.lot-action_pujar_on_line').on('click', function (e) {
-
-		   e.stopPropagation();
-		   $.magnificPopup.close();
-
-		   if (this.dataset.tipopuja != undefined && this.dataset.tipopuja == 'firme') {
-			   $('#bid_amount').val($('#bid_amount_firm').val());
-			   $('#tipo_puja_gestor').val('firme');
-		   }
-		   else{
-				$('#tipo_puja_gestor').val('');
-		   }
-
-		   $(".precio_orden").html($("#bid_amount").val());
-
-		   if (typeof cod_licit == 'undefined' || cod_licit == null) {
-
-			   $("#insert_msg_title").html("");
-			   $("#insert_msg").html(messages.error.mustLogin);
-			   $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-
-			   return;
-		   }
-		   else if (!auction_info.user.is_gestor && cod_licit == 0) {
-
-			   $("#insert_msg_title").html("");
-			   $("#insert_msg").html(messages.error.no_licit);
-			   $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			   return;
-
-		   }
-		   else {
-
-
-			   if ((isNaN(parseInt($("#bid_amount").val())) || parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente))) {
-				   /*$("#insert_msg_title").html($("#bid_amount").val() + "€ " + messages.error.lower_bid);
-				   $("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
-				   $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);*/
-
-				   //modal puja inferior
-				   $.magnificPopup.open({ items: { src: '#modalPujarInfFicha' }, type: 'inline' }, 0);
-			   }
-			   else {
-
-
-
-				   $.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
-			   }
-		   }
-	   });
+	   $('.lot-action_pujar_on_line').on('click', pujarAction);
 
          $('.lotlist-orden').on('click', function(e) {
             e.stopPropagation();
@@ -563,4 +567,63 @@ function view_all_bids(){
     | END Mostrar alertas
     |--------------------------------------------------------------------------
     */
+
+	async function acceptConditionsFetch(codSub, token) {
+		const response = await fetch(`/api-ajax/accept-auction-conditions`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ codSub, _token: token })
+		});
+
+		if (!response.ok) {
+			throw new Error(response.statusText);
+		}
+
+		const data = await response.json();
+		return data;
+	}
+
+	function pujarAction(e) {
+		e.stopPropagation();
+		$.magnificPopup.close();
+
+		if (this.dataset.tipopuja != undefined && this.dataset.tipopuja == 'firme') {
+			$('#bid_amount').val($('#bid_amount_firm').val());
+			$('#tipo_puja_gestor').val('firme');
+		}
+		else {
+			$('#tipo_puja_gestor').val('');
+		}
+
+		$(".precio_orden").html($("#bid_amount").val());
+
+		if (typeof cod_licit == 'undefined' || cod_licit == null) {
+
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html(messages.error.mustLogin);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+
+			return;
+		}
+		else if (!auction_info.user.is_gestor && cod_licit == 0) {
+
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html(messages.error.no_licit);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			return;
+
+		}
+		else {
+
+			if ((isNaN(parseInt($("#bid_amount").val())) || parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente))) {
+				//modal puja inferior
+				$.magnificPopup.open({ items: { src: '#modalPujarInfFicha' }, type: 'inline' }, 0);
+			}
+			else {
+				$.magnificPopup.open({ items: { src: '#modalPujarFicha' }, type: 'inline' }, 0);
+			}
+		}
+	}
 

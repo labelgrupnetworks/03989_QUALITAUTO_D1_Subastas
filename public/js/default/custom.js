@@ -71,7 +71,6 @@ $(document).ready(function () {
 
 	$('.panel-collapse').on('show.bs.collapse', function () {
 		var id = $(this).attr('id')
-		console.log($(this))
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-close').show()
 		$(this).siblings('.user-accounte-titles-link[data-id="' + id + '"]').find('.label-open').hide()
 	})
@@ -320,19 +319,26 @@ $(document).ready(function () {
 	});
 
 
-	$("#accerder-user").click(function () {
-		$(this).addClass('loadbtn')
+	$("#accerder-user").click(function (event) {
+
+		event.preventDefault();
+		$(this).addClass('loadbtn loading')
+
 		$('.login-content-form').removeClass('animationShaker')
 		$.ajax({
 			type: "POST",
 			url: '/login_post_ajax',
 			data: $('#accerder-user-form').serialize(),
+			beforeSend: () => {
+				$(".message-error-log").addClass('d-none');
+			},
 			success: function (response) {
 				if (response.status == 'success') {
 					location.reload();
 				} else {
 					$(".message-error-log").text('').append(messages.error[response.msg]);
-					$("#accerder-user").removeClass('loadbtn')
+					$(".message-error-log").removeClass('d-none');
+					$("#accerder-user").removeClass('loadbtn loading')
 					$('.login-content-form').addClass('animationShaker')
 				}
 

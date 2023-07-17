@@ -126,6 +126,13 @@ p .novelty{
 	z-index: 100;
 }
 
+/**
+Quitar cuando streaming en js
+**/
+.tr_user_streaming #streaming {
+	opacity: 0;
+}
+
 @media (max-width:1200px) {
 	.logo-time-wait{
 	  max-width: 250px;

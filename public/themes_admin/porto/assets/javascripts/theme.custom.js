@@ -5,6 +5,7 @@ $(function() {
 	//permite orden de columnas en tablas con data-order
 	$('thead th').on('click', tableConfig.orderTable);
 
+
 	$(".delete_button_js").click(function (event){
 		var button = $(this);
 		bootbox.confirm("¿Estas seguro de que quieres eliminar este elemento?", function (result) {
@@ -30,7 +31,6 @@ $(function() {
 		  ['view', ['fullscreen', 'codeview', 'help']],
 		]
 	});
-
 
 	var action_tab = {};
 

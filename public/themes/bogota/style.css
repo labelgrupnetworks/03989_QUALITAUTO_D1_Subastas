@@ -214,3 +214,7 @@ color: #DDD;
 .newsletter-placeholder {
 	opacity: 0.8;
  }
+.lotes-destacados-principal-title, .lotes-destacados-principal-lot
+{
+	padding: 0px;
+}

@@ -350,3 +350,14 @@ header.fixed nav .logo-company {
 	height: auto;
 	min-height: 110px;
 }
+
+.item_content_img_single {
+	height: 500px;
+}
+
+.owl-carousel .owl-item :is(img, video) {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}

@@ -41,3 +41,11 @@ html, body{
 		height: 89%;
 	}
 } */
+
+@media (max-width: 768px){
+	.tr_user_product{
+		max-height: none;
+	}
+}
+
+

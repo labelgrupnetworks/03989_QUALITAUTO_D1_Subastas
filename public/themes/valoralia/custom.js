@@ -157,3 +157,29 @@ function sendInfoLot(event) {
 	});
 }
 
+ajax_newcarousel = function (key, replace, lang) {
+
+	$.ajax({
+		type: "POST",
+		url: "/api-ajax/newcarousel",
+		data: { key: key, replace: replace, lang: lang },
+		success: function (result) {
+
+			if (result === '') {
+				$("#" + key + '-content').hide();
+			}
+			$("#" + key).siblings('.loader').addClass('hidden');
+			$("#" + key).html(result);
+			//cargar cuenta atras
+			$('[data-countdown]').each(function (event) {
+
+				var countdown = $(this);
+				countdown.data('ini', new Date().getTime());
+				countdown_timer(countdown);
+
+			});
+
+		}
+
+	});
+}

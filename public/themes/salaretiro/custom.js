@@ -314,6 +314,8 @@ $(document).ready(function () {
 				}
 			});
 
+			$('button', $this).attr('disabled', false);
+
 		}
 	});
 
@@ -478,6 +480,8 @@ $(document).ready(function () {
 				}
 
 			});
+
+			$('button', $this).attr('disabled', false);
 
 		}
 	});
@@ -646,7 +650,7 @@ $(document).ready(function () {
 		reload_carrito();
 	});
 
-	function reload_facturas() {
+	/* function reload_facturas() {
 		var total = 0;
 		$.each(info_fact, function (index_anum, value_anum) {
 			$.each(value_anum, function (index_num, value_num) {
@@ -663,7 +667,7 @@ $(document).ready(function () {
 			$("#submit_fact").addClass('hidden');
 		}
 		$("#total_bills").html(change_currency(total));
-	}
+	} */
 
 	$(".submit_carrito").click(function () {
 		var cod_sub = $(this).attr('cod_sub');
@@ -695,7 +699,7 @@ $(document).ready(function () {
 
 	});
 
-	$("#submit_fact").click(function () {
+	/* $("#submit_fact").click(function () {
 		$("#submit_fact").addClass('hidden');
 		$("#submit_fact").siblings().removeClass('hidden');
 		var pay_fact = $('#pagar_fact').serializeArray();
@@ -737,7 +741,7 @@ $(document).ready(function () {
 			});
 		}
 
-	});
+	}); */
 
 	$("#save_change_orden").click(function () {
 
@@ -1451,4 +1455,115 @@ function creditCardInputHidden (e){
 	let year = $('input[name=card-expired-year]').val();
 	$('input[name=creditcard_fxcli]').val(`${card} ${month}/${year}`);
 }
+
+$(document).on("change", ".add_factura", function() {
+	reload_facturas();
+});
+
+$(document).on("click", "#submit_fact", function() {
+	payFacs();
+});
+
+function reload_facturas() {
+
+	var total = 0;
+
+	for (const factura of pendientes) {
+
+		if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
+			total += parseFloat(factura.imp_pcob);
+		}
+	}
+
+	if (total > 0) {
+		$("#submit_fact").removeClass('hidden');
+	} else {
+		$("#submit_fact").addClass('hidden');
+	}
+	$("#total_bills").html(change_currency(total));
+	// Hacer la línea $("#total_bills").html(change_currency(total)); sin jquery
+
+}
+
+function payFacs(button){
+
+	$("#btoLoader").siblings().addClass('hidden');
+	$("#btoLoader").removeClass('hidden');
+
+		var pay_fact = $('#pagar_fact').serializeArray();
+		var total = 0;
+
+		for (const factura of pendientes) {
+			if ($(`#checkFactura-${factura.anum_pcob}-${factura.num_pcob}-${factura.efec_pcob}`).is(":checked")) {
+				total += parseFloat(factura.imp_pcob);
+			}
+		}
+
+		if (total > 0) {
+			$.ajax({
+				type: "POST",
+				url: '/gateway/pagarFacturasWeb',
+				data: pay_fact,
+				success: function (data) {
+					if (data.status == 'success') {
+						window.location.href = data.msg;
+					} else
+						if (data.status == 'error') {
+							$("#modalMensaje #insert_msg").html('');
+							$("#modalMensaje #insert_msg").html(messages.error.generic);
+							$.magnificPopup.open({
+								items: {
+									src: '#modalMensaje'
+								},
+								type: 'inline'
+							}, 0);
+
+						}
+						$("#btoLoader").siblings().removeClass('hidden');
+						$("#btoLoader").addClass('hidden');
+
+				},
+				error: function (response) {
+					$("#modalMensaje #insert_msg").html('');
+					$("#modalMensaje #insert_msg").html(messages.error.generic);
+					$.magnificPopup.open({
+						items: {
+							src: '#modalMensaje'
+						},
+						type: 'inline'
+					}, 0);
+					$("#btoLoader").siblings().removeClass('hidden');
+					$("#btoLoader").addClass('hidden');
+				}
+			});
+
+		}
+};
+
+function change_currency(price) {
+	var price = numeral(price).format('0,0.00');
+	return price;
+};
+
+$(document).on("click", ".panel-collapse", openCloseToggle);
+
+function openCloseToggle() {
+	let condition = $(this).find(".toggle-open").css("display") != "none" && $(this).find(".label-open").css("display") != "none";
+
+	if (condition) {
+		$(this).find(".toggle-open").hide();
+		$(this).find(".toggle-close").show();
+		$(this).find(".label-open").hide();
+		$(this).find(".label-close").show();
+	} else {
+		$(this).find(".toggle-close").hide();
+		$(this).find(".toggle-open").show();
+		$(this).find(".label-close").hide();
+		$(this).find(".label-open").show();
+	}
+}
+
+$(document).on("click", "#button-open-user-menu", function () {
+	$('#user-account-ul').toggle()
+});
 

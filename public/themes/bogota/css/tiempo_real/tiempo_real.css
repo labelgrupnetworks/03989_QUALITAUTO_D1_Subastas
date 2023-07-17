@@ -8,7 +8,7 @@
 	font-size: 20px;
 }
 
-.pactual, .precioSalida{
+.pactual, .precioSalida, .siguientePujaClass{
 	padding: 5px;
 }
 
@@ -41,4 +41,26 @@
 .bid_amount_gestor{
 	padding-right: 55px;
 }
+
+.user_info_items{
+    height: 85%;
+    display: grid;
+    grid-template-rows: 1fr 2fr 2fr 2.5fr 2fr 2fr 1fr;
+}
+
+.siguientePujaClass{
+	border: 1px solid #DBDBDB;
+display: flex;
+align-items: center;
+	margin-bottom: 20px;
+}
+.siguientePujaClass p {
+	margin-left: 10px;
+	margin-bottom: 0;
+
+  }
+
+.siguientePujaClass > span:nth-child(2) {
+	margin-left: auto;
+  }
 
