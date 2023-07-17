@@ -26,10 +26,10 @@ const Pujas = ({socket, pujasIniciales}) => {
 
 			return (
 				<div key={puja.rn}>
-					<div className="col-7 tipoPuja">
+					<div className="col-xs-7 tipoPuja">
 						<p data-type={puja.pujrep_asigl1}><i className={`fa ${tipoPuja[puja.pujrep_asigl1]}`} aria-hidden="true"></i> Internacional</p>
 					</div>
-					<div className="col-5 text-center importePuja">
+					<div className="col-xs-5 text-center importePuja">
 						<p className="puj_imp">{`${puja.formatted_imp_asigl1}€`}</p>
 					</div>
 				</div>

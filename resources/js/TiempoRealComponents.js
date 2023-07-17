@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Pujas from './components/Tiempo_real/Pujas';
 import ReactDOM from 'react-dom';
 
