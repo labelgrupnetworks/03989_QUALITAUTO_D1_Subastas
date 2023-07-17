@@ -41,6 +41,7 @@ $lang = [
 		'OPEN_event' => "Sala Abierta",
 		'EXPO_event' => "Exposición subasta",
 		'year' => "Año",
+		'add_calendar' => "Añadir al calendario",
 	),
 	'cookies' =>
 	array(
@@ -191,7 +192,11 @@ $lang = [
 		'filters' => 'Filtros',
 		'clean' => 'Limpiar',
 		'totals' => 'Totales',
-		'back' => 'Volver'
+		'back' => 'Volver',
+		'see_more' => 'Ver más',
+		'sort' => 'Ordenar',
+		'all' => 'All',
+		'cancel' => 'Cancelar'
 	),
 	'head' =>
 	array(
@@ -441,7 +446,13 @@ $lang = [
 		'price_offer' => 'Precio a ofrecer',
 		'closing_date' => 'Fecha de cierre',
 		'quick_bid' => 'Puja rápida',
-		'bid_on' => 'Pujar por'
+		'bid_on' => 'Pujar por',
+		'text_pay_deposit' => 'Para poder realizar una puja debes hacer un depósito de <strong> :imp_deposito </strong>',
+		'pay_deposit' => 'HACER DEPÓSITO',
+		'accept_conditions' => 'He leido y acepto las <a href=":url" target="_blank">Bases Generales</a>',
+		//Aceptación de las bases de la subasta
+		'accept_conditions_auction' => 'Acepto las bases generales de la subasta',
+
 	),
 	'lot_list' =>
 	array(
@@ -509,7 +520,8 @@ $lang = [
 		'auctionFirst' => 'Subasta ',
 		'directSaleFirst' => 'Venta directa',
 		'bestPrice' => 'Precio más atractivo',
-		'video' => 'Vídeo'
+		'video' => 'Vídeo',
+		'from_to_lot' => 'del lote :init_lot AL :end_lot'
 	),
 	'metas' =>
 	array(
@@ -693,6 +705,7 @@ $lang = [
 		'newsletter_unsubscribe' => "La suscripción a newsletters del email :email a sido cancelada",
 		'newsletter_subscribe' => "La suscripción a newsletters del email :email se ha ejecutado con exito",
 		'correct_bid_concursal' => 'Oferta realizada correctamente',
+		'conditions_accepted' => 'Condiciones aceptadas',
 	),
 	'sheet_tr' =>
 	array(
@@ -1135,8 +1148,8 @@ $lang = [
 		'catalogue' => 'CATÁLOGO',
 		'search' => 'BUSCAR',
 		'search_text' => 'Buscar por texto',
-		'search_filter' => 'FILTRO BÚSQUEDA',
-		'ordered_for' => 'ORDENADO POR',
+		'search_filter' => 'FILTROS',
+		'ordered_for' => 'ORDENAR',
 		'order' => 'ORDEN',
 		'price_asc' => 'PRECIO ASCENDENTE',
 		'price_desc' => 'PRECIO DESCENDENTE',

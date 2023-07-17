@@ -104,6 +104,8 @@ return [
         'enable_interest_tsec_desc'                 => 'Si está activado pedirá a los usuarios sus intereses y les permitirá modificarlos desde el panel de usuario.',
         'delivery_address'                 => 'Habilitar dirección de envio para el usuario',
         'delivery_address_desc'                 => 'Si está activo se le solicitará al usuario indicar una dirección de envio en la creación del usuario y le permitirá gestionarlas desde el panel de usuario.',
+		'css_framework' => '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">',
+		'css_framework_5' => '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">',
 
 
     ),
@@ -168,7 +170,7 @@ return [
 		'select_auction_to_clone'=>'Elige la subasta destino la cual quieras clonar el lote.',
         'noticias' => 'Noticias',
         'categories_blog'=>'Categories Blog',
-        'categories_blog_principal' => 'Categoria principal Blog',
+        'categories_blog_principal' => 'Categoría principal Blog',
         'size_img'=>'Tamaño de la imagen : 1110 x738',
         'insertar_cita'=>'(Para poner CITA en el contenido poner el codigo [*CITA*])',
         'faq' => 'Faq',
@@ -282,7 +284,9 @@ return [
 		'delete_subscription' => 'Eliminar suscripción',
 		'sort' => 'Ordenar',
 		'download_preferences' => 'Descargar preferencias de usuarios',
-		'check_scale' => 'Revisar Escalado'
+		'check_scale' => 'Revisar Escalado',
+		'invaluable_load' => 'Subir a Invaluable',
+		'invaluable_delete' => 'Eliminar de Invaluable'
 
 	),
 	'bi' => array(
@@ -330,7 +334,7 @@ return [
 			'biography_artist_lang' => 'Biografia',
 			'extra_artist' => 'Información extra',
 			'extra_artist_lang' => 'Información extra',
-			'title' => "Titulo",
+			'title' => "Título",
 			'url'	=> "URL",
 			'active_artist' => 'Activo',
 			'phone_artist' => 'Teléfono',
@@ -746,7 +750,19 @@ return [
 		'des_alm'	=> 'Almacen',
 		'technique'	=> "Técnica",
 		'measurement'	=> "Medidas",
-		'compra_asigl0'	=> "Compra"
+		'compra_asigl0'	=> "Compra",
+		'img_web_blog'	=> "Imagen",
+		'id_web_blog'	=> "Id",
+		'title_web_blog'	=> "Título",
+		'publication_date_web_blog'	=> "Fecha de publicación",
+		'category_name' => 'Categoría',
+		'is_enable' => 'Activado',
+		'id_subconditions' => 'Id',
+		'cod_subconditions' => 'Subasta',
+		'cli_subconditions' => 'Cliente',
+		'from_fechacreacion_subconditions' => 'Desde fecha',
+		'to_fechacreacion_subconditions' => 'Hasta fecha',
+		'fechacreacion_subconditions' => 'Fecha',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -983,7 +999,7 @@ return [
         'lotes'                        =>'Lotes',
         'grupo-lotes'                        =>'Grupo de lotes',
          'languages'                        =>'Idiomas',
-        'title'                        =>'Titulo',
+        'title'                        =>'Título',
         'subtitle'                        =>'Subtitulo',
         'padre' => 'Depende de',
         'add_sessions' => 'Agregar Session',

@@ -28,6 +28,7 @@ $lang =[
 			'OPEN_event' => 'Auction house open',
 			'EXPO_event' => 'Auction exhibition',
 			'year' => 'Year',
+			'add_calendar' => "Add to calendar",
 		),
 	'cookies' =>
 		array (
@@ -175,7 +176,11 @@ $lang =[
 			'filters' => 'Filters',
 			'clean' => 'Clean',
 			'totals' => 'Totals',
-			'back' => 'Return'
+			'back' => 'Return',
+			'see_more' => 'See more',
+			'sort' => 'Sort',
+			'all' => 'Todas',
+			'cancel' => 'Cancel'
 		),
 	'head' =>
 		array (
@@ -422,7 +427,11 @@ $lang =[
 			'price_offer' => 'Price to offer',
 			'closing_date' => 'Closing date',
 			'quick_bid' => 'Quick bid',
-			'bid_on' => 'Bid for'
+			'bid_on' => 'Bid for',
+			'text_pay_deposit' => 'In order to place a bid you must make a deposit of <strong> :imp_deposito </strong>',
+			'pay_deposit' => 'MAKE A DEPOSIT',
+			'accept_conditions' => 'I have read and accept the <a href=":url" target="_blank">General Rules</a>',
+			'accept_conditions_auction' => 'I accept the general rules of the auction',
 		),
 	'lot_list' =>
 		array (
@@ -488,7 +497,8 @@ $lang =[
 			'auctionFirst' => 'Auctions',
 			'directSaleFirst' => 'Direct sales',
 			'bestPrice' => 'Best purchase price',
-			'video' => 'Vídeo'
+			'video' => 'Vídeo',
+			'from_to_lot' => ' lots from :init_lot to :end_lot'
 		),
 	'metas' =>
 		array (
@@ -660,6 +670,7 @@ $lang =[
 			'newsletter_unsubscribe' => "The subscription to email newsletters :email has been canceled",
 			'newsletter_subscribe' => "The subscription to email newsletters :email has been executed successfully",
 			'correct_bid_concursal' => 'Bid Successfully Done',
+			'conditions_accepted' => 'You have accepted the terms and conditions',
 		),
 	'sheet_tr' =>
 		array (
@@ -1026,6 +1037,12 @@ $lang =[
 			'comment' => '<strong>Comments</strong> <u> (If you want to include any clarification about this delivery, introduce it in this field):</u>',
 			'text_reserve' => 'The articles stored in your cart will have an exclusive reserve time exclusive for you of 15 minutes. After this time they will be available in the catalog again. The articles will remain in your cart until you confirm the payment or if it is selected by other user',
 			'esimationTime' => "El tiempo estimado es de 15 días",
+			'shopping_orders' => 'Orders',
+			'shopping_order_number' => "Order nº",
+			'img' => "Img",
+			'quantity' => "Quantity",
+			'base_price' => "Base price",
+			'esimationTime' => "The estimated time is 15 days",
 		),
 	'artist' =>
 		array (
@@ -1078,7 +1095,7 @@ $lang =[
 		),
 	'articles_js' =>
 		array(
-			'all' => 'Al',
+			'all' => 'All',
 			'filters' => 'FILTERS',
 			'brands' => 'BRANDS',
 			'collections' => 'COLLECTIONS',
