@@ -6,7 +6,7 @@ $cookiesState = \Tools::cookies();
 @endphp
 
 <head>
-
+	@include('includes.open_graph_head')
     @include('includes.google_head')
 	@include('includes.head')
 		@yield('assets_components')

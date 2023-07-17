@@ -16,6 +16,9 @@
 	<script src="{{ $base_url }}/vendor/grapejs/grapesjs-preset-newsletter.min.js"></script>
 @endpush
 
+
+<input type="hidden" name="css_styles" value='{{ trans("admin-app.config.css_framework_5") }}'>
+
 <section role="main" class="content-body">
 	@include('admin::includes.header_content')
 

@@ -1,4 +1,5 @@
 @if (sizeof($info)>0)
+
 <ul id="sortable{{$info[0]->bloque}}">
 	@foreach ($info as $k => $item)
 	<li>
@@ -34,11 +35,6 @@
 </li>
 	@endforeach
 </ul>
-@else
-
-	<center>No hay resultados</center>
-
-@endif
 
 <script>
 	$( "#sortable{{$info[0]->bloque}}" ).sortable({
@@ -70,3 +66,10 @@
 	});
 
 </script>
+@else
+
+	<center>No hay resultados</center>
+
+@endif
+
+

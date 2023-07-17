@@ -27,6 +27,10 @@
 							<a href="{{ route('subastas.lotes.index', [$cod_sub]) }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
 
 					@endif
+				</a>
+					@if(\Config::get("app.invaluableHouse"))
+						<a href="{{ route('loadLotInvaluable', ["codsub" =>$cod_sub ,"reference" => $fgAsigl0->reference, "ref" => $fgAsigl0->ref_asigl0]) }}" class="btn btn-primary">{{ trans("admin-app.button.invaluable_load") }}</a>
+					@endif
 
 					@if ($anterior )
 					<a href="{{ route('subastas.lotes.edit', ['cod_sub' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"

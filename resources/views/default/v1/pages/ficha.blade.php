@@ -22,7 +22,7 @@
 <script src="{{ URL::asset('vendor/jquery-print/jQuery.print.js') }}"></script>
 
 @if(\Config::get("app.exchange"))
-	<script src="{{ URL::asset('js/default/divisas.js') }}"></script>
+	<script src="{{ Tools::urlAssetsCache('js/default/divisas.js') }}"></script>
 @endif
 
 <script>

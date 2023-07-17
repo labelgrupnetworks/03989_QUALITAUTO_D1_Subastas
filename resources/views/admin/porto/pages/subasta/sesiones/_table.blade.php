@@ -49,6 +49,13 @@
 							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 								{{ trans("admin-app.button.edit") }}
 						</a>
+						@if(\Config::get("app.invaluableHouse"))
+						<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#loadInvaluable"
+									data-reference="{{ $aucSession->reference }}"
+									>
+									<i class="fa fa-upload "></i>{{ trans("admin-app.button.invaluable_load") }}
+								</button>
+						@endif
 						@if ($loop->index)
 						<a title="{{ trans("admin-app.button.delete") }}" class="btn btn-danger btn-sm" data-reference="{{ $aucSession->reference }}" data-toggle="modal" data-target="#deleteSesionModal">
 							<i class="fa fa-trash" aria-hidden="true"></i>
@@ -127,8 +134,60 @@
     </div>
 </div>
 
-<script>
 
+<div class="modal fade" id="loadInvaluable" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h5 class="modal-title" id=" modalLabel"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<p> ¿Deseas subir la sessión a Invaluable?</p>
+			</div>
+
+			<div class="modal-footer">
+
+
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
+					<a href="{{ Route("loadCatalogInvaluable",["codsub" => $aucSession->auction]) }}" class="btn btn-info">Subir a Invaluable</a>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<script>
+	$('#loadInvaluable').on('show.bs.modal', function(event) {
+	var button = $(event.relatedTarget);
+	var reference = button.data('reference');
+
+	var modal = $(this);
+	href= modal.find('a').attr("href");
+	modal.find('a').attr("href",href + "/" + reference);
+});
+
+/*
+$('#loadInvaluable').on('show.bs.modal', function(event) {
+
+	var button = $(event.relatedTarget);
+	var id = button.data('id');
+	var name = button.data('name');
+
+	//obtenemos el id del data action del form
+	var action = $('#formInvaluableCatalog').attr('data-action').slice(0, -1) + id;
+	$('#formInvaluableCatalog').attr('action', action);
+
+	var modal = $(this);
+	modal.find('.modal-title').text(name);
+});
+*/
 	$('.js_edit_session').on('click', function(e){
 
 		e.preventDefault();
@@ -185,6 +244,8 @@
 				deleteSession(action);
 			});
     });
+
+
 
 
 

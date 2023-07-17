@@ -134,6 +134,17 @@ $idiomes = \Config::get('app.locales');
 							</li>
 						</ul>
 						@endif
+
+						@if(!empty(array_intersect(['subConditions', 'dev'], $config_menu_admin)))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('subasta_conditions.index') }}">
+									<span>Condiciones aceptadas</span>
+								</a>
+							</li>
+						</ul>
+						@endif
+
 						@if(!in_array('noOrders', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
@@ -336,7 +347,7 @@ $idiomes = \Config::get('app.locales');
 					</li>
 					@endif
 
-					@if(in_array('contenido',$config_menu_admin) || in_array('dev', $config_menu_admin) || in_array('edit_emails', $config_menu_admin))
+					@if(!empty(array_intersect(['contenido', 'edit_emails', 'blog_cms', 'dev'], $config_menu_admin)))
 					<li class="nav-parent @if(request('menu', '') == 'contenido' || (!empty($menu) && $menu == 'contenido') ) nav-expanded @endif" style="">
 						<a href="#">
 							<i class="fa fa-user" aria-hidden="true"></i>
@@ -375,6 +386,16 @@ $idiomes = \Config::get('app.locales');
 							<li>
 								<a href="{{ route('emails.index') }}">
 									<span>Edición de Emails</span>
+								</a>
+							</li>
+						</ul>
+						@endif
+
+						@if (!empty(array_intersect(['blog_cms', 'dev'], $config_menu_admin)))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('admin.contenido.blog.index') }}">
+									<span>Blog</span>
 								</a>
 							</li>
 						</ul>
