@@ -91,4 +91,12 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 	Route::POST('/deposit', 'DepositController@postDeposit');
 	Route::PUT('/deposit', 'DepositController@putDeposit');
 	Route::DELETE('/deposit', 'DepositController@deleteDeposit');
+
+	#INVALUABLE
+		#put y post hacen lo mismo, crear y editar
+	Route::POST('/invaluable/catalog', 'InvaluableController@catalog');
+	Route::PUT('/invaluable/catalog', 'InvaluableController@catalog');
+	Route::POST('/invaluable/lot', 'InvaluableController@lot');
+	Route::PUT('/invaluable/lot', 'InvaluableController@lot');
+	Route::DELETE('/invaluable/lot', 'InvaluableController@deleteLot');
 });

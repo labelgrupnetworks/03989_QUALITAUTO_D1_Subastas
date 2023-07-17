@@ -461,6 +461,7 @@ Route::get('api-ajax/award_price/{cod_sub}/{ref_asigl0}', 'SubastaTiempoRealCont
 
 Route::post('api-ajax/formulario-pujar', 'SubastaController@getFormularioPujar');
 Route::post('api-ajax/enviar-formulario-pujar', 'SubastaController@sendFormularioPujar');
+Route::post('api-ajax/accept-auction-conditions', 'SubastaController@acceptAuctionConditions');
 
 
 
@@ -687,8 +688,9 @@ Route::get('/deposit/callRedsys', 'V5\DepositController@callRedsys')->name("depo
 #direccion donde respondera redsys para que el usuario vea que se ha realizado el pago del deposito correctamente y luego redirigiendo al lote
 Route::get('/{lang}/returnPayPageDeposit/{codSub}/{ref}', 'V5\DepositController@returnPayPageDeposit')->name("returnPayPageDeposit");
 
-
-
+/* INVALUABLE */
+Route::get("carga-catalogo-invaluable/{codSub}/{reference}", "externalAggregator\Invaluable\House@catalogs");
+Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregator\Invaluable\House@catalogLots");
 //responseRedsysMultiTpv
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */

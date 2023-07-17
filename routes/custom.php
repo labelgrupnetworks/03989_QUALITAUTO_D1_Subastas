@@ -15,6 +15,7 @@ Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCat
 Route::get(\Routing::slugSeo('departamentos', true), 'PageController@getDepartment');
 Route::get(\Routing::translateSeo('departamento') . '{text}', 'EnterpriseController@department')->name('department');
 Route::get(\Routing::translateSeo('video-subastas'), 'CustomControllers@videoAuctions');
+Route::get(\Routing::translateSeo('equipo'), 'EnterpriseController@team')->name('enterprise.team');
 
 
 #TAULER

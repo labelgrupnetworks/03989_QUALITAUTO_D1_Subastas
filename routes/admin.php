@@ -59,6 +59,32 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('/category-blog', 'BlogController@getCategoryBlog');
 		Route::get('/category-blog/name/{id?}', 'BlogController@seeCategoryBlog');
 
+		Route::post('/contenido/blog-category', 'contenido\AdminBlogCategoryController@store')->name('admin.contenido.blog-category.store');
+		Route::get('/contenido/blog-category/{id}/edit', 'contenido\AdminBlogCategoryController@edit')->name('admin.contenido.blog-category.edit');
+		Route::post('/contenido/blog-category/{id}', 'contenido\AdminBlogCategoryController@update')->name('admin.contenido.blog-category.update');
+		Route::put('/contenido/blog-category/{id}/enabled', 'contenido\AdminBlogCategoryController@changeIsEnabled')->name('admin.contenido.blog-category.enabled');
+		Route::put('/contenido/blog-category/order', 'contenido\AdminBlogCategoryController@updateOrder')->name('admin.contenido.blog-category.order');
+		Route::delete('/contenido/blog-category/{id}', 'contenido\AdminBlogCategoryController@destroy')->name('admin.contenido.blog-category.delete');
+
+		Route::get('/contenido/blog', 'contenido\AdminBlogController@index')->name('admin.contenido.blog.index');
+		Route::get('/contenido/blog/create', 'contenido\AdminBlogController@create')->name('admin.contenido.blog.create');
+		Route::post('/contenido/blog', 'contenido\AdminBlogController@store')->name('admin.contenido.blog.store');
+		Route::get('/contenido/blog/{id}', 'contenido\AdminBlogController@show')->name('admin.contenido.blog.show');
+		Route::get('/contenido/blog/{id}/edit', 'contenido\AdminBlogController@edit')->name('admin.contenido.blog.edit');
+		Route::put('/contenido/blog/{id}', 'contenido\AdminBlogController@update')->name('admin.contenido.blog.update');
+		Route::delete('/contenido/blog/{id}', 'contenido\AdminBlogController@destroy')->name('admin.contenido.blog.destroy');
+
+		Route::post('/contenido/blog/{id}/image', 'contenido\AdminBlogController@storeFrontResourceBlog')->name('admin.contenido.blog.image');
+		Route::put('/contenido/blog/{id}/enabled', 'contenido\AdminBlogController@changeIsEnabledBlog')->name('admin.contenido.blog.enabled');
+
+		Route::get('/contenido/content/import', 'contenido\AdminContentPageController@importHtmlToWebBlogLang')->name('admin.contentido.content.import');
+		Route::post('/contenido/content/{id}/assets', 'contenido\AdminContentPageController@uploadAsset')->name('admin.contentido.content.assets');
+		Route::post('/contenido/content/{id}/block', 'contenido\AdminContentPageController@store')->name('admin.contentido.content.store');
+		Route::post('/contenido/content/{id}/block/{id_content}/resource', 'contenido\AdminContentPageController@setResource')->name('admin.contentido.content.resource');
+		Route::put('/contenido/content/{id}/block/{id_content}', 'contenido\AdminContentPageController@update')->name('admin.contentido.content.update');
+		Route::put('/contenido/content/{id}/block/{id_content}/order', 'contenido\AdminContentPageController@order')->name('admin.contentido.content.order');
+		Route::delete('/contenido/content/{id}/block/{id_content}', 'contenido\AdminContentPageController@destroy')->name('admin.contentido.content.destroy');
+
 		Route::get('/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 		//TODO: V5
@@ -347,6 +373,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			'lotes_concursales' => 'lote'
 		]);
 
+		Route::get('subasta-conditions', 'subasta\AdminSubastaConditionsController@index')->name('subasta_conditions.index');
+		Route::get('subasta-conditions/download', 'subasta\AdminSubastaConditionsController@download')->name('subasta_conditions.download');
+
 		Route::post('bi/ajax', 'bi\AdminBiController@lotsInfo')->name('bi.reload');
 		Route::post('bi/allcategories', 'bi\AdminBiController@lotsAwardForCategory');
 		Route::post('bi/auction-modal-info', 'bi\AdminBiController@getAuctionInfo');
@@ -379,6 +408,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::resource('emails', 'contenido\AdminEmailsController')->only(['index', 'edit', 'update']);
 
 		Route::post('admin-config', [AdminConfigController::class, 'saveConfigurationSession']);
+
+		Route::get('subastas/load_catalog_invaluable/{codsub}/{reference?}', 'subasta\AdminSubastaGenericController@loadInvaluableCatalog')->name('loadCatalogInvaluable');
+
+		Route::get('subastas/load_lot_invaluable/{codsub}/{reference}/{ref}', 'subasta\AdminLotController@loadInvaluableLot')->name('loadLotInvaluable');
+
 	});
 
 
