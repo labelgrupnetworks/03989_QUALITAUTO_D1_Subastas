@@ -24,6 +24,7 @@ use App\Models\V5\FgPujasSub;
 use App\Models\V5\FgSub_lang;
 use App\Models\V5\FxPro;
 use App\Models\V5\Web_Artist;
+use App\Http\Controllers\externalAggregator\Invaluable\House;
 
 class AdminSubastaGenericController extends Controller
 {
@@ -547,5 +548,16 @@ class AdminSubastaGenericController extends Controller
 			}
 		}
 	}
+
+	public function loadInvaluableCatalog($codSub, $reference){
+
+
+		$house = new House();
+		$resJson = $house->catalogs( $codSub, $reference);
+		$res = json_decode($resJson);
+		return redirect(Route($this->resource_name.".edit",$codSub))->with(['success' => [$res->message]]);
+	}
+
+
 
 }

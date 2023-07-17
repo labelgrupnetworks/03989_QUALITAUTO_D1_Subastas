@@ -40,6 +40,7 @@ use App\Providers\ToolsServiceProvider;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
+use App\Http\Controllers\externalAggregator\Invaluable\House;
 class AdminLotController extends Controller
 {
 
@@ -181,7 +182,7 @@ class AdminLotController extends Controller
 			'ref_asigl0' => FormLib::Text('ref_asigl0', 0, $request->ref_asigl0, '', ''),
 			'idorigen_asigl0' => FormLib::Text('idorigen_asigl0', 0, $request->idorigen_asigl0, '', ''),
 			'sub_asigl0' => FormLib::Text('sub_asigl0', 0, $request->sub_asigl0, '', ''),
-			'prop_hces1' => FormLib::Select2WithAjax('prop_hces1', 0, $request->prop_hces1, '', route('client.list'), trans('admin-app.placeholder.owner')),
+			'prop_hces1' => FormLib::Select2WithAjax('prop_hces1', 0, $request->prop_hces1, '', config('app.useProviders', 0) ? route('provider.list') : route('client.list'), trans('admin-app.placeholder.owner')),
 			'descweb_hces1' => FormLib::Text('descweb_hces1', 0, $request->descweb_hces1, '', ''),
 			'artist_name' => FormLib::Text('artist_name', 0, $request->artists_name),
 			'impsalhces_asigl0' => FormLib::Text('impsalhces_asigl0', 0, $request->impsalhces_asigl0, '', ''),
@@ -294,7 +295,7 @@ class AdminLotController extends Controller
 	{
 		$render = request('render', false);
 
-		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
+		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->JoinSessionAsigl0()->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
 
 		if (!$fgAsigl0) {
 			abort(404);
@@ -918,7 +919,7 @@ class AdminLotController extends Controller
 				'idauction' => FormLib::Hidden('idauction', 1, $cod_sub),
 			],
 			'id' => [
-				'reflot' => FormLib::TextReadOnly('reflot', 1, old('reflot', $fgAsigl0->ref_asigl0), 'maxlength="999999"'),
+				'reflot' => FormLib::TextReadOnly('reflot', 1, old('reflot', $fgAsigl0->ref_asigl0), 'maxlength="999999999"'),
 				'idorigin' => FormLib::TextReadOnly('idorigin', 1, old('idorigin', $fgAsigl0->idorigen_asigl0 ?? "$cod_sub-$fgAsigl0->ref_asigl0"), 'maxlength="30"'),
 			],
 			'imagen' => [
@@ -1487,5 +1488,14 @@ class AdminLotController extends Controller
 		FgAsigl0::where('sub_asigl0', $cod_sub)->whereIn('ref_asigl0', $request->lots)->update(["COMPRA_ASIGL0" =>'S']);
 		return response()->json(['success' => true], 200);
 	}
+
+	public function loadInvaluableLot($codSub, $sesionReference ,$ref){
+
+
+		$house = new House();
+		$resJson = $house->catalogLots( $codSub, $sesionReference , $ref );
+		$res = json_decode($resJson);
+		return redirect(route("$this->parent_name.$this->resource_name.edit",['subasta' => $codSub, 'lote' => $ref]))->with(['success' => [$res->message]]);
+		}
 
 }

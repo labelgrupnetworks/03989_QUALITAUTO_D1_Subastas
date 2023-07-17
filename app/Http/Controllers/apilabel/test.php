@@ -38,8 +38,8 @@ class test extends BaseController
 	public function postBidder(){
 
 		$bidder = new stdClass();
-		$bidder->idoriginclient = "3000000";
-		$bidder->codbidder = "2";
+		$bidder->idoriginclient = "4554";
+		$bidder->codbidder = "7";
 		$bidder->idauction = "SUBALO";
 
 		$items[] = (array)$bidder;
@@ -51,7 +51,7 @@ class test extends BaseController
 
 	#http://www.newsubastas.test/apilabel/test?function=getBidder&testmode=CONTROLLER
 	public function getBidder(){
-		$parameters = array("idauction" => "00000153", "codbidder" => "37");
+		$parameters = array("idauction" => "SUBALO");
 		$this->excuteMode($parameters,"GET","bidder", new BidderController(false),"showBidder");
 	}
 

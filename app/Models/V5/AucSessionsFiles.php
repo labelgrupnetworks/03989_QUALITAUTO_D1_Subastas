@@ -16,14 +16,13 @@ class AucSessionsFiles extends Model
 
 	protected $guarded = [];
 
-	const TYPE_ENLACE = 5;
-
 	const TYPE_FILES = [
 		1 =>'Pdf',
 		2 => 'Video',
 		3 => 'Imagen',
 		4 => 'Documento',
-		5 => 'Enlace'
+		5 => 'Enlace',
+		6 => 'Bases de la subasta'
 	];
 
 	const PATH_ICONS = [
@@ -32,17 +31,21 @@ class AucSessionsFiles extends Model
 		3 => '/img/icons/image.png',
 		4 => '/img/icons/document.png',
 		5 => '/img/icons/video.png',
+		6 => '/img/icons/document.png'
 	];
+
+	const TYPE_ENLACE = 5;
+	const AUCTION_CONDITIONS = 6;
 
 
     #definimos la variable emp para no tener que indicarla cada vez
-    public function __construct(array $vars = []){
+    public function __construct(array $vars = [])
+	{
         $this->attributes=[
             '"company"' => Config::get("app.emp")
         ];
         parent::__construct($vars);
     }
-
 
     protected static function boot()
     {
@@ -53,17 +56,32 @@ class AucSessionsFiles extends Model
         });
     }
 
-	public function getTypeFileAttribute(){
+	public function scopeWhereAuctionBases($query, $auction)
+	{
+		return $query->where([
+			'"auction"' => $auction,
+			'"type"' => self::AUCTION_CONDITIONS,
+		]);
+	}
+
+	public function getPublicFilePathAttribute()
+	{
+		return "\\files{$this->path}";
+	}
+
+	public function getTypeFileAttribute()
+	{
 		return self::TYPE_FILES[$this->type];
 	}
 
-	public function getPathIconAttribute(){
+	public function getPathIconAttribute()
+	{
 		return self::PATH_ICONS[$this->type];
 	}
 
-	public function getUrlFormatAttribute(){
+	public function getUrlFormatAttribute()
+	{
 		return ($this->type == self::TYPE_ENLACE) ? $this->url : "/files{$this->path}";
 	}
-
 }
 

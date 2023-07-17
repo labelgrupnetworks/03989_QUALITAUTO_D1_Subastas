@@ -1488,7 +1488,7 @@ class subastaTiempoRealController extends Controller
 			}
 			if(empty($email) || empty($email->email)){
 				/*Mail de confirmación de puja por escrito (orden)*/
-				if($subasta->type_bid == "T" ){
+				if($subasta->type_bid == "T" || $subasta->type_bid == "X" ){
 					$email = new EmailLib('CONFIRMATION_PHONE_BID');
 					#SI NO TIENE EMAIL PERSONALIZADO PARA LAS TELEFÓNICAS, PONEMOS LA NORMAL
 					if(empty($email->email)){
@@ -3241,7 +3241,7 @@ class subastaTiempoRealController extends Controller
 
     #Calcula las posibles pujas para mostrar al usuario mediante el autocomplete.
 	#02-08-2022 OJO, HE MODIFICADO LA FUNCION PARA QUE RECIBA LA PUJA SIGUIENTE EN VEZ DE ACTUAL_BID, YA QUE DABA FALLOS CON LA PRIMERA PUJA DE LOTE SI YA ESTABA PUJADO
-    public function calculateAvailableBids($next_bid, $new_bid)
+    public function calculateAvailableBids($next_bid, $new_bid, $cod_sub = null)
     {
         $subasta = new subasta();
 		if(empty($cod_sub)){

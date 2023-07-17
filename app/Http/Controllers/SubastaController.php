@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-
-use Request;
 use Illuminate\Http\Request as HttpRequest;
+use Request;
 //use Controller;
 //use View;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Routing;
 use Route;
 use Illuminate\Support\Facades\Request as Input;
-use Config;
-use Log;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use DB;
 use App\Models\Subasta;
 use App\Models\Enterprise;
@@ -41,6 +40,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgLicit;
+use App\Models\V5\FgSubConditions;
 use App\Models\V5\FxCli;
 use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
@@ -920,10 +920,11 @@ class SubastaController extends Controller
 			return redirect($url);
 		}
 
-
+		$calendars = Config::get('app.add_calendar_feature', false) ? $subastaObj->getCalendarsLinks($auction_list) : null;
 
 		$data = array(
 			'auction_list' => $auction_list,
+			'calendars' => $calendars,
 			'subc_sub' => $status,
 			'type' => $type,
 			'name' => $name,
@@ -1444,10 +1445,10 @@ class SubastaController extends Controller
 		$SEO_metas->meta_description = $lote[0]->webmetad_hces1;
 
 		if (empty($lote[0]->webmetat_hces1)) {
-			$SEO_metas->meta_title = $lote[0]->titulo_hces1;
+			$SEO_metas->meta_title = mb_substr(strip_tags($lote[0]->descweb_hces1),0,60 );
 		}
 		if (empty($lote[0]->webmetad_hces1)) {
-			$SEO_metas->meta_description = '';
+			$SEO_metas->meta_description = mb_substr(strip_tags($lote[0]->desc_hces1),0,160 );
 		}
 
 		//ponemos el canonical, de momento solo las subastas tematicas llevan variables, pero no afectara negativamente al resto
@@ -1458,6 +1459,10 @@ class SubastaController extends Controller
 		if (!empty(strpos($SEO_metas->canonical, '?'))) {
 			$SEO_metas->canonical = substr($SEO_metas->canonical, 0, strpos($SEO_metas->canonical, '?'));
 		}
+
+		#datos para Open Graph
+		$SEO_metas->openGraphImagen = \Tools::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
+
 		$data['seo'] = $this->cleanStrMeta($SEO_metas);
 
 		/*  codigo temporal */
@@ -2628,6 +2633,33 @@ class SubastaController extends Controller
 		}
 		return response(trans(\Config::get('app.theme') . '-app.msg_error.generic'), 404);
 
+	}
+
+	public function acceptAuctionConditions(HttpRequest $request)
+	{
+		$theme = Config::get('app.theme');
+
+		if(!Session::has('user')){
+			Log::error("Error al aceptar condiciones de subasta, usuario no logueado", ["request" => $request->all()]);
+
+			return response()->json([
+				'status' => 'error',
+				'message' => trans("$theme-app.msg_error.mustLogin")
+			]);
+		}
+
+		$cod_cli = Session::get('user')['cod'];;
+		$cod_sub = $request->input('codSub');
+
+		FgSubConditions::create([
+			'cod_subconditions' => $cod_sub,
+			'cli_subconditions' => $cod_cli
+		]);
+
+		return response()->json([
+			'status' => 'success',
+			'message' => trans("$theme-app.msg_success.conditions_accepted"),
+		]);
 	}
 
 	public function modalGridImages(){

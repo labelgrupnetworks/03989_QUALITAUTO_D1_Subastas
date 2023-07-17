@@ -16,6 +16,7 @@ use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgOrlic;
 use App\Models\V5\FgCsub;
+use App\Models\V5\FgSub;
 use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Cache;
@@ -4634,6 +4635,95 @@ class Subasta extends Model
 		}
 
 
+	}
+
+	public function getCalendarsLinks($auctions)
+	{
+		$calendarsLinks = array_map(function($auction) {
+
+			$link = ToolsServiceProvider::url_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions, $auction->reference);
+			if($auction->tipo_sub === FgSub::TIPO_SUB_PRESENCIAL && strtotime($auction->session_end) > time()){
+				$link = ToolsServiceProvider::url_real_time_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions);
+			}
+
+			$titleText = "Inicio de subasta " . $auction->des_sub;
+
+			$calendars = [
+				'auction_id' => $auction->id_auc_sessions,
+				'google' => $this->getGoogleCalendarLink($titleText, $auction->des_sub, $auction->session_start, $auction->session_end, $link),
+				'outlook' => $this->getOutlookCalendarLink($titleText, $auction->des_sub, $auction->session_start, $auction->session_end, $link),
+				'yahoo' => $this->getYahooCalendarLink($titleText, $auction->des_sub, $auction->session_start, $auction->session_end, $link),
+				'icalendar' => $this->getICalendarLink($titleText, $auction->des_sub, $auction->session_start, $auction->session_end, $link)
+			];
+
+			return $calendars;
+		}, $auctions);
+
+		return $calendarsLinks;
+	}
+
+	private function getGoogleCalendarLink($title, $description, $startDate, $endDate, $link)
+	{
+		$startDate = $this->changeDateFormatToCalendar($startDate);
+		$endDate = $this->changeDateFormatToCalendar($endDate);
+		$details = "$description<br><br><a href='$link'>$link</a>";
+		return "https://www.google.com/calendar/render?action=TEMPLATE&text=" . $title . "&dates=" . $startDate . "/" . $endDate . "&details=" . $details . "&location=";
+	}
+
+	private function getOutlookCalendarLink($title, $description, $startDate, $endDate, $link)
+	{
+		$startDate = $this->changeDateFormatToCalendar($startDate, 'Y-m-d\TH:i:s\Z');
+		$endDate = $this->changeDateFormatToCalendar($endDate, 'Y-m-d\TH:i:s\Z');
+		$details = "$description<br><br><a href='$link'>$link</a>";
+		return "https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&startdt=" . $startDate . "&enddt=" . $endDate . "&subject=" . $title . "&body=" . $details . "&location=";
+	}
+
+	private function getYahooCalendarLink($title, $description, $startDate, $endDate, $link)
+	{
+		$startDate = $this->changeDateFormatToCalendar($startDate);
+		$endDate = $this->changeDateFormatToCalendar($endDate);
+		$details = "$description<br><br><a href='$link'>$link</a>";
+		return "https://calendar.yahoo.com/?v=60&view=d&type=20&title=" . $title . "&st=" . $startDate . "&et=" . $endDate . "&desc=" . $details . "&in_loc=";
+	}
+
+	private function getICalendarLink($title, $description, $startDate, $endDate, $link)
+	{
+		$startDate = $this->changeDateFormatToCalendar($startDate);
+		$endDate = $this->changeDateFormatToCalendar($endDate);
+
+		$fileData = "
+		BEGIN:VCALENDAR
+		VERSION:2.0
+		PRODID:-//ZContent.net//Zap Calendar 1.0//EN
+		CALSCALE:GREGORIAN
+		METHOD:PUBLISH
+		BEGIN:VEVENT
+		SUMMARY:$title
+		DESCRIPTION:$description
+		DTSTART:$startDate
+		DTEND:$endDate
+		DTSTAMP:$startDate
+		URL:$link
+		LOCATION:
+		END:VEVENT
+		END:VCALENDAR";
+
+		//eliminar espacios en blanco entre lineas
+		$fileData = preg_replace('/^\s+|\s+$/m', '', $fileData);
+
+		$base64File = base64_encode($fileData);
+
+		return "data:text/calendar;base64," . $base64File;
+	}
+
+	private function changeDateFormatToCalendar($date, $format = 'Ymd\THis\Z')
+	{
+		$timeZone = config('app.timezone', 'Europe/Madrid');
+		$date = new \DateTime($date, new \DateTimeZone($timeZone));
+		$date->setTimezone(new \DateTimeZone('UTC'));
+		$date = $date->format($format);
+
+		return $date;
 	}
 
 

@@ -20,6 +20,7 @@ class WebNewbannerModel extends Model
 	const UBICACION_EVENTO = 'evento';
 	const UBICACION_MUSEO = 'piezas-museo';
 	const UBICACION_HOME = 'HOME';
+	const UBICACION_BLOG = 'BLOG';
 	const WEB_NEWBANNER_TIPO_EVENTO = 1;
 
 	#definimos la variable emp para no tener que indicarla cada vez

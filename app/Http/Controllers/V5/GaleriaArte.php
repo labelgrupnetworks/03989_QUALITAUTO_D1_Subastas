@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\V5;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use Session;
 use App\Http\Controllers\Controller;
 
@@ -11,6 +11,7 @@ use App\Models\V5\FgAsigl0;
 
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
+use Illuminate\Support\Facades\View;
 
 class GaleriaArte extends Controller
 {
@@ -89,47 +90,39 @@ class GaleriaArte extends Controller
 
 			return \View::make('front::pages.galery.galeryGrid', $data);
 		}
-
     }
-	public function artists(){
+
+	public function artists()
+	{
 		$webArtist = new Web_Artist();
-		#$fgasigl0 = new  FgAsigl0 ;
+
 		$searchWords = request("search");
 		if($searchWords){
 			$search = $this->prepareSearchWords($searchWords);
 			#Es necesario poner las dos pipes || para concatenar la variable si no da error  número/nombre de variable no válid
-			$webArtist  =  $webArtist->whereraw(" CATSEARCH(name_artist,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
-
+			$webArtist = $webArtist->whereraw(" CATSEARCH(name_artist,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
 		}
 
+		$data["artists"] = $webArtist->select("ID_ARTIST, NAME_ARTIST")
+			->where("ACTIVE_ARTIST", "1")
+			->orderby("NAME_ARTIST", request("order_dir", "asc"))
+			->get();
 
-		$data["artists"] = $webArtist->select("ID_ARTIST, NAME_ARTIST")->where("ACTIVE_ARTIST","1")->orderby("NAME_ARTIST")->get();
-		#cargaremos todos los artistas activos por lo que no hay que mirar que tengan galeria
-		/*
-		$data["artists"] =	$fgasigl0->select("ID_ARTIST, NAME_ARTIST")
-		->JoinSubastaAsigl0()
-		->join('FGCARACTERISTICAS_HCES1', 'FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0')
-		->join('WEB_ARTIST', 'WEB_ARTIST.EMP_ARTIST = FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 AND WEB_ARTIST.ID_ARTIST =  FGCARACTERISTICAS_HCES1.IDVALUE_CARACTERISTICAS_HCES1')
-		->where("TIPO_SUB","E")
-		->wherein("SUBC_SUB", ["S","H"] )
-		->groupby("ID_ARTIST, NAME_ARTIST")
-		->get();
-		*/
-		if(\Config::get("app.ArtistNameSurname")){
+		if(Config::get("app.ArtistNameSurname")){
 			$data["artists"] = $this->nameSurname($data["artists"] );
 		}
 
-
-		return \View::make('front::pages.galery.artists', $data);
+		return View::make('front::pages.galery.artists', $data);
 	}
 
 	public function artist($id_artist){
 		$artist = Web_Artist::where("ID_ARTIST", $id_artist)->first();
 
+		\Tools::exit404IfEmpty($artist);
+
 		if(\Config::get("app.ArtistNameSurname")){
 			$artist = $this->nameSurname($artist );
 		}
-		\Tools::exit404IfEmpty($artist);
 
 		$fgasigl0 = new  FgAsigl0 ;
 		$exhibitions =	$fgasigl0->select("DES_SUB, COD_SUB, DFEC_SUB, HFEC_SUB, NAME_ARTIST")
@@ -180,7 +173,29 @@ class GaleriaArte extends Controller
 		}
 
 		if(request("search")){
-			$subObj = $subObj->where("lower(DES_SUB)", "like", "%".mb_strtolower(request("search"))."%");
+
+			#buscará por artista tambien
+			if(config("app.ArtistInExibition", false)) {
+				#En artistas se guarda como "apellido, nombre" por lo que debemos retocar un poco la busqueda
+				#inicializamos con la variable de DES_SUB
+				$where = "";
+				$variables = ["%" . mb_strtolower(request("search")). "%"];
+				#descomponemos la variable de busqueda en las diferentes palabras
+				$words = explode(" ", request("search"));
+				foreach($words as $word){
+					if(!empty($word)){
+						$variables[] = "%" . mb_strtolower($word). "%";
+						$where .=" OR  lower(name_artist) like ? ";
+					}
+
+
+				}
+
+				$subObj = $subObj->leftJoin('WEB_ARTIST', 'EMP_ARTIST = EMP_SUB AND ID_ARTIST = VALORCOL_SUB');
+				$subObj = $subObj->whereraw("lower(DES_SUB) like ? $where	",$variables);
+			}else{
+				$subObj = $subObj->whereraw("lower(DES_SUB) like ?","%" . mb_strtolower(request("search"). "%"));
+			}
 		}
 
 		return  $subObj->select("DES_SUB, COD_SUB, DFEC_SUB, HFEC_SUB")->where("TIPO_SUB","E")->orderby("DFEC_SUB", "DESC")->get();
@@ -205,7 +220,8 @@ class GaleriaArte extends Controller
 		->wherein("TIPO_SUB",["E","F"])
 		#PARA QUE APAREZCA EN EL FONDO DE GALERIA DEBE SER NECESARIO QUE SE PONGA QUE SE PUEDE COMPRAR
 		->where("COMPRA_ASIGL0", "S" )
-		->where("STOCK_HCES1",">=", "1")
+		#Lorena de galeria ansorena Ha pedido que sigan saliendo las obras aunque se haya vendido
+		#->where("STOCK_HCES1",">=", "1")
 		#ORDENAMOS POR DESTACADO DESC PARA QUE PONGA PRIMERO EL DESTACADO SI EXISTE, SI NO, COJERÁ EL QUE TENGA LA REFERENCIA MÁS PEQUEÑA
 		->orderby('NAME_ARTIST,DESTACADO_ASIGL0 desc, REF_ASIGL0')
 		->get();
@@ -252,7 +268,8 @@ class GaleriaArte extends Controller
 		#PARA QUE APAREZCA EN EL FONDO DE GALERIA DEBE SER NECESARIO QUE SE PONGA QUE SE PUEDE COMPRAR
 		->where("COMPRA_ASIGL0", "S" )
 		#DEBE TENER STOCK PARA APARECER EN EL LISTADO DEL ARTISTA EN FONDO DE GALERIA
-		->where("STOCK_HCES1",">=", "1")
+		#Lorena de galeria ansorena Ha pedido que sigan saliendo las obras aunque se haya vendido
+		#->where("STOCK_HCES1",">=", "1")
 		#ORDENAMOS POR DESTACADO DESC PARA QUE PONGA PRIMERO EL DESTACADO SI EXISTE, SI NO, COJERÁ EL QUE TENGA LA REFERENCIA MÁS PEQUEÑA
 		->orderby('DESTACADO_ASIGL0 desc, REF_ASIGL0')
 		->get();

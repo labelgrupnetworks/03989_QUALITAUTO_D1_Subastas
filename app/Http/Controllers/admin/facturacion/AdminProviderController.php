@@ -207,7 +207,7 @@ class AdminProviderController extends Controller
 
 			$where = [
 				['upper(nom_pro)', 'LIKE', "%$query%", 'or'],
-				['cod_pro', '=', "$query", 'or']
+				['upper(COD_PRO)', 'LIKE', "%$query%", 'or']
 			];
 
 			$providers = FxPro::select('nom_pro as html', 'cod_pro as id')->where($where)->get();

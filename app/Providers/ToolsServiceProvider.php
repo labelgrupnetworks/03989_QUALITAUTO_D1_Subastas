@@ -16,6 +16,7 @@ use App\libs\ImageGenerate;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\services\GoogleApiPlacesController;
 use App\Models\V5\FxCli;
+use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
@@ -861,6 +862,11 @@ class ToolsServiceProvider extends ServiceProvider
 			$file="img/".Config::get('app.emp') . "/". $numhces . "/" . Config::get('app.emp') . "-$numhces-$linhces" . $path_img_num . ".jpg";
 			return $img_file.self::date_modification($file);
 		}
+
+		if($size === "real") {
+			return self::lotRealImage($numhces, $linhces, $img_num);
+		}
+
 		$images_size = \Tools::images_size();
 		$emp = Config::get('app.emp');
 		$path_img_num = '';
@@ -908,6 +914,54 @@ class ToolsServiceProvider extends ServiceProvider
         */
 	}
 
+	public static function auctionImage($cod_sub, $size = null)
+	{
+		//search file without extension
+		$emp = Config::get('app.emp');
+		$url = Config::get('app.url');
+		$theme = Config::get('app.theme');
+
+		if($size) {
+			$images_size = self::images_size();
+			$imagePath = "img/thumbs/$images_size[$size]/AUCTION_{$emp}_{$cod_sub}.*";
+		}
+		else {
+			$imagePath = "img/AUCTION_{$emp}_{$cod_sub}.*";
+		}
+
+		$globImage = glob($imagePath);
+		$image_to_load = $globImage ? $globImage[0] : null;
+
+		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
+
+		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
+			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
+		}
+
+		return "$url/$image_to_load";
+	}
+
+	public static function lotRealImage($numhces, $linhces, $img_num = null)
+	{
+		$emp = Config::get('app.emp');
+		$nameFile = "$emp-$numhces-$linhces";
+		$webPath = "/img/$emp/$numhces/";
+
+		$path = "/img/$emp/$numhces/$nameFile";
+		if($img_num) {
+			$path .= "_".sprintf("%02d", $img_num);
+		}
+
+		$image = glob(public_path($path) . ".*");
+
+		if($image) {
+			$imageFile = $image[0];
+			return $webPath . basename($imageFile) . self::date_modification($imageFile);
+		}
+		else {
+			return "/themes/" . Config::get('app.theme') . "/img/items/no_photo.png";
+		}
+	}
 
 	public static function date_modification($img_file){
 
@@ -1407,5 +1461,55 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		return $collection->storeExcel("./$fileName.csv", 'public_html', \Maatwebsite\Excel\Excel::CSV, $withHeading);
 	}
+
+	public static function decodeHtmlStringToArrayByTag($stringHtml, $tag, $closure = null)
+	{
+		$dom = new DOMDocument();
+		$dom->preserveWhiteSpace = false;
+
+		try {
+
+			//limpiamos posibles simbolos & ya que provocan error
+			$stringHtml = preg_replace("/&(?!\S+;)/", "&amp;", $stringHtml);
+
+			$dom->loadHTML(mb_convert_encoding($stringHtml, 'HTML-ENTITIES', 'UTF-8'));
+
+			$elements = $dom->getElementsByTagName($tag);
+			foreach ($elements as $element) {
+
+				if($closure) {
+					$closure($element);
+				}
+				$html_arr[] = $dom->saveHtml($element);
+			}
+			return $html_arr ?? [];
+
+		} catch (\Throwable $th) {
+			return [$stringHtml];
+		}
+	}
+
+	public static function changePositionNamesWithComa($string)
+	{
+		$names = explode(',', $string);
+		$names = array_reverse($names);
+		$string = implode(' ', $names);
+		return trim($string);
+	}
+
+	public static function fileNameIsImage($url)
+	{
+		$extension = pathinfo($url, PATHINFO_EXTENSION);
+		$extension = strtolower($extension);
+		return in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']);
+	}
+
+	public static function fileNameIsVideo($url)
+	{
+		$extension = pathinfo($url, PATHINFO_EXTENSION);
+		$extension = strtolower($extension);
+		return in_array($extension, ['mp4', 'webm', 'mov']);
+	}
+
 
 }

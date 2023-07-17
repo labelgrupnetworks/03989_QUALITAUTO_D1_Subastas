@@ -8,7 +8,8 @@ use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class FgSub extends Model
 {
@@ -288,6 +289,60 @@ class FgSub extends Model
 
 	public function scopeJoinUsr($query){
         return $query->leftjoin("FSUSR","FSUSR.COD_USR = FGSUB.USR_UPDATE_SUB");
+	}
+
+	public function scopeLeftJoinArtistExhibition($query){
+		return $query->leftjoin("WEB_ARTIST", "WEB_ARTIST.ID_ARTIST = FGSUB.VALORCOL_SUB AND WEB_ARTIST.EMP_ARTIST = FGSUB.EMP_SUB");
+	}
+
+	public function changeToExhibitionFormat($fgsubModel)
+	{
+		if(!$fgsubModel) {
+			return null;
+		}
+
+		$artistName = $fgsubModel->name_artist ?? "";
+    	$artistNameArray = explode(',', $artistName);
+		if (count($artistNameArray) > 1) {
+			$artistName = trim($artistNameArray[1]) . ' ' . $artistNameArray[0];
+		}
+
+		$completeLocale = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+		$localeToTime = str_replace('-', '_', $completeLocale);
+		$dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM' : 'MMMM Do';
+
+		$initialDate = Carbon::parse($fgsubModel->dfec_sub);
+		$endDate = Carbon::parse($fgsubModel->hfec_sub);
+		$initialDateFormat = $initialDate->locale($localeToTime)->isoFormat($dateFormat);
+		$endDateFormat = $endDate->locale($localeToTime)->isoFormat($dateFormat);
+
+		//Se organiza por temporadas y no por años, las temporadas empiezan el septiembre y acaban en agosto
+		//si el mes es menor que septiembre pertenece a la temporada anterior, por lo que restaremos un año
+		$season = $initialDate->month < 9 ? $initialDate->year - 1 : $initialDate->year;
+
+		//$emp = Config::get('app.emp');
+		//$image = ToolsServiceProvider::urlAssetsCache("/img/AUCTION_{$emp}_{$fgsubModel->cod_sub}.JPEG");
+		$image = ToolsServiceProvider::url_img_auction('subasta_large', $fgsubModel->cod_sub);
+		//$image = ToolsServiceProvider::auctionImage($fgsubModel->cod_sub, 'subasta_large');
+		//$image = $fgsubModel->image_lot ?? "";
+
+		$exhibitionFields = [
+			'url' => ToolsServiceProvider::url_exposicion($fgsubModel->des_sub, $fgsubModel->cod_sub),
+			'image' => $image,
+			'artist' => $artistName,
+			'title' => $fgsubModel->des_sub,
+			'initialDate' => $initialDateFormat,
+			'finalDate' => $endDateFormat,
+			'year' => $initialDate->year,
+			'season' => $season,
+		];
+
+		return (object) $exhibitionFields;
+	}
+
+	public function getExhibitionFieldsAttribute()
+	{
+		return $this->changeToExhibitionFormat($this);
 	}
 
 }

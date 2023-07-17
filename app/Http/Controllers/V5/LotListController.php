@@ -408,6 +408,8 @@ class LotListController extends Controller
 			$seo_data->h1_seo=$auction->name;
 			$seo_data->meta_title =$auction->webmetat_sub;
 			$seo_data->meta_description =$auction->webmetad_sub;
+				#datos para Open Graph
+			$seo_data->openGraphImagen = \Tools::url_img_session("subasta_large", $auction->cod_sub, $auction->reference);
 		}else{
 			if(request("historic")){
 				$seo_data->h1_seo = trans(\Config::get('app.theme').'-app.lot_list.historic_sold_lots');

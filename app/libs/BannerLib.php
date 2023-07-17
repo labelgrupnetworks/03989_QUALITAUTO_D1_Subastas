@@ -9,6 +9,9 @@ use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
 use Intervention\Image\Facades\Image;
 
+/**
+ * @method static array getOnlyContentForBanner(WebNewbannerModel|null $banner)
+ */
 class BannerLib
 {
 	static function bannerParallax($key = 0, $class = "", $height = '100%', $emp = null){
@@ -84,9 +87,17 @@ class BannerLib
 			$html .= '</a>';
 		}
 		return $html;
-
-
 	}
+
+	static function bannerPorId($id, $class = "", $options = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1], $emp = null, $event = false, $methodEvent = '')
+	{
+		$banner = WebNewbannerModel::where('id', $id)->first();
+		if (!$banner){
+			return false;
+		}
+		return self::bannersPorKey($banner->key, $class, $options, $emp, $event, $methodEvent);
+	}
+
 
 	static function bannersPorKey($key = 0, $class = "", $options = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1], $emp = null, $event = false, $methodEvent = '')
 	{
@@ -104,6 +115,8 @@ class BannerLib
 			return WebNewbannerModel::getActiveBannerWithKey($key);
 		});
 
+		$options = !empty($banner->type->opciones) ? json_decode($banner->type->opciones, true) : $options;
+
 		if (empty($banner)){
 			return false;
 		}
@@ -120,11 +133,9 @@ class BannerLib
 			$itemsPorBloque[$item->bloque][] = $item;
 		}
 
-		if ($banner->type->completo) {
-			$html .= "<div class='container-fluid'><div class='row rowBanner'>";
-		} else {
-			$html .= "<div class='container'><div class='row rowBanner'>";
-		}
+		$bannerTypeClass = "banner_type_{$banner->type->id}";
+		$bannerContainerClass = $banner->type->completo ? "container-fluid" : "container";
+		$html .= "<div class='{$bannerContainerClass} {$bannerTypeClass}'><div class='row rowBanner'>";
 
 		$MobileDetect = new MobileDetect();
 		$isMobile = $MobileDetect->isMobile();
@@ -151,7 +162,7 @@ class BannerLib
 						$languages[strtoupper(Config::get("app.locale"))] = 1;
 						#añadimos el ES despues para que busque primero en el idioma principal, si el principal es ES, esto no hace nada
 						$languages["ES"] = 1;
-						
+
 
 						foreach (["webp", "jpg", "gif"] as $extension){
 							foreach (array_keys($languages) as $locale){
@@ -301,12 +312,34 @@ class BannerLib
 		return "banner_{$key}";
 	}
 
-	static function bannerWithView($key, $view)
+	static function bannerWithView($key, $view, $content = [], $options = [])
 	{
 		$banner = CacheLib::rememberCache(self::banerCacheName($key), $seconds = 3600, function() use ($key) {
 			return WebNewbannerModel::getActiveBannerWithKey($key);
 		});
 
-		return view("front::includes.banners.$view", ['banner' => $banner]);
+		if(!$banner) {
+			return '';
+		}
+
+		return view("front::includes.banners.$view", ['banner' => $banner, 'content' => $content, 'options' => $options]);
+	}
+
+	static function getOnlyContentForBanner($banner)
+	{
+		$texts = [];
+		$images = [];
+		if($banner) {
+			$bannerItems = $banner->activeItems;
+			$texts = $bannerItems->pluck('texto')->filter();
+			$images = $bannerItems->pluck('images')->filter(function($item) {
+				return $item['desktop'] !== null;
+			})->values();
+		}
+
+		return [
+			'texts' => $texts,
+			'images' => $images
+		];
 	}
 }

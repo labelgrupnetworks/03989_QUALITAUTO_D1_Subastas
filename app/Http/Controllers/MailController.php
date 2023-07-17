@@ -2237,6 +2237,7 @@ class MailController extends Controller
 
 		$auction = request("auction");
 		$lot = request("lot");
+		$lot_name = request("lot_name", '');
 		$info_lot = request("info_lot", false);
 		$cod_user = session('user.cod', null);
 		$user_price = request("user_price", 0);
@@ -2245,11 +2246,13 @@ class MailController extends Controller
 		$email = new EmailLib('ASK_LOT_ADMIN');
         if (!empty($email->email)) {
 			$formFields ="";
-			$prohibidosAux= array("auction", "lot", "info_lot", "user_price");
+			$prohibidosAux= array("auction", "lot", "info_lot", "user_price", "lot_name");
 			$formFields = $this->processPostVars($formFields, $prohibidosAux);
 
 			$email->setAtribute("AUCTION_NAME", $auction);
 			$email->setAtribute("LOT_REF", $lot);
+			$email->setAtribute("LOT_NAME", $lot_name);
+
 			$email->setAtribute("USER_PRICE", $user_price);
 
 			if($info_lot){

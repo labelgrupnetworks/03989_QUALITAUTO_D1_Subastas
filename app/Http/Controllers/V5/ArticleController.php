@@ -66,7 +66,32 @@ class ArticleController extends Controller
 
 		}
 
+		//obtener título de la página
+		$data['title'] = $this->getArticlesPageTitle($data);
+
 		return View::make('front::pages.articles.grid', $data);
+	}
+
+	private function getArticlesPageTitle($data){
+		$title = "";
+
+		if(!empty($data['sec'])){
+			$fxSec = new FxSec();
+			$section = $fxSec->query()
+				->select('nvl(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC) des_sec')
+				->JoinLangFxSec()->where('cod_sec', $data['sec'])->first();
+			$title = $section->des_sec ?? '';
+		}
+		elseif(!empty($data['ortsec'])){
+			$fgortsec0 = new FgOrtsec0();
+			$section = $fgortsec0->query()
+				->select('nvl(FGORTSEC0_LANG.DES_ORTSEC0_LANG, FGORTSEC0.DES_ORTSEC0) des_ortsec0')
+				->JoinLangFgOrtsec0()
+				->where('lin_ortsec0', $data['ortsec'])->first();
+			$title = $section->des_ortsec0 ?? '';
+		}
+
+		return $title;
 	}
 
 
@@ -99,7 +124,7 @@ class ArticleController extends Controller
 
 	public function article($idArticle){
 
-		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0, CSTK_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
+		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0, CSTK_ART0, ORDEN_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
 
 
 
@@ -219,14 +244,35 @@ class ArticleController extends Controller
 		#es neceario para lso articulos realcionados
 		$data["iva"]= $iva;
 
-
 		#anterior y siguiente  lo haremos por id, los articulos estan ordenados al reves
-		$anterior = FgArt0::select("ID_ART0, MODEL_ART0")->where("id_art0",">", $article->id_art0 )->Activo()->where("SEC_ART0", $article->sec_art0)->orderby("id_art0")->first();
+		$anterior = FgArt0::select("ID_ART0, MODEL_ART0, orden_art0")
+			->when(empty($article->orden_art0)  , function ($query) use ($article) {
+				return $query->where("orden_art0", $article->orden_art0)
+						->where("id_art0", '<', $article->id_art0);
+			},
+			function ($query) use ($article) {
+				return $query->where("orden_art0","<", $article->orden_art0);
+			})
+			->activo()
+			->where("SEC_ART0", $article->sec_art0)
+			->orderby("orden_art0","desc")->orderBy('id_art0', 'desc')->first();
 
 		if(!empty($anterior)){
 			$data["data"]["previous"]= route("article", ["idArticle" => $anterior->id_art0, "friendly" =>\Str::slug($anterior->model_art0)]);
 		}
-		$siguiente = FgArt0::select("ID_ART0, MODEL_ART0")->where("id_art0","<", $article->id_art0 )->Activo()->where("SEC_ART0", $article->sec_art0)->orderby("id_art0","DESC")->first();
+		$siguiente = FgArt0::select("ID_ART0, MODEL_ART0, orden_art0")
+			->when(empty($article->orden_art0 ), function ($query) use ($article) {
+				return $query->where("orden_art0", $article->orden_art0)
+						->where("id_art0", '>', $article->id_art0)
+						;
+			},
+			function ($query) use ($article) {
+				return $query->where("orden_art0",">", $article->orden_art0);
+			})
+			->activo()
+			->where("SEC_ART0", $article->sec_art0)
+			->orderby("orden_art0")->orderBy('id_art0')
+			->first();
 
 		if(!empty($siguiente)){
 			$data["data"]["next"]= route("article", ["idArticle" => $siguiente->id_art0, "friendly" =>\Str::slug($siguiente->model_art0)]);
@@ -349,7 +395,7 @@ class ArticleController extends Controller
 
 		if(request("search") && !in_array("search", $omitir)){
 			#FALTA que hacer bien la query, con indice y que no tenga en cuenta mayusculas ni acentos
-			$fgArt0 = $fgArt0->where("DES_ART0","like","%". strtoupper(request("search")) . "%"  );
+			$fgArt0 = $fgArt0->where("upper(DES_ART0)","like","%". strtoupper(request("search")) . "%"  );
 			#no tiene sentido buscar por ortse si yase hace una busqueda más restrictiva
 		}
 

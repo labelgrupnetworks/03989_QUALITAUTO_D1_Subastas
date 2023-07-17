@@ -12,6 +12,8 @@ use App\Models\WebNewbannerModel;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\libs\CacheLib;
+use App\Models\V5\Web_Blog_Lang;
+use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerTipoModel;
 use App\Providers\ToolsServiceProvider;
@@ -45,7 +47,7 @@ class BannerController extends Controller
 	{
 		$data = array('menu' => 2);
 
-		$ubicacionesProhibidas = [WebNewbannerModel::UBICACION_EVENTO,WebNewbannerModel::UBICACION_MUSEO];
+		$ubicacionesProhibidas = [WebNewbannerModel::UBICACION_EVENTO, WebNewbannerModel::UBICACION_MUSEO, WebNewbannerModel::UBICACION_BLOG];
 		$banners = WebNewbannerModel::query();
 		$banners = $banners->wherenotin("UBICACION", $ubicacionesProhibidas);
 
@@ -77,23 +79,38 @@ class BannerController extends Controller
 		return View::make('admin::pages.contenido.banner.index', $data);
 	}
 
-	public function nuevo()
+	public function nuevo(Request $request)
 	{
-		$data = array('menu' => 2);
+		$isIframe = $request->has('to_frame');
 
-		$data['nombre'] = FormLib::Text("nombre", 1);
-		$data['tipo'] = FormLib::Hidden("tipo_banner", 1);
-		$data['token'] = Formlib::hidden("_token", 1, csrf_token());
-		$data['SUBMIT'] = FormLib::Submit("Continuar", "nuevoBanner");
+		$tipos = WebNewbannerTipoModel::query()
+			->when($isIframe, function($query) {
+				return $query->whereIn('id', [1, 2, 3, 4, 5, 16, 21]);
+			})
+			->get();
 
-		$data['tipos'] = WebNewbannerTipoModel::get();
+		$data = [
+			'menu' => 2,
+			'nombre' => $isIframe ? FormLib::TextReadOnly("nombre", 1, "bl_{$request->rel_id}_{$request->id_content}") : FormLib::Text("nombre", 1),
+			'tipo' => FormLib::Hidden("tipo_banner", 1),
+			'SUBMIT' => FormLib::Submit("Continuar", "nuevoBanner"),
+			'tipos' => $tipos,
+			'is_iframe' => $isIframe
+		];
 
-		return View::make('admin::pages.contenido.banner.nuevo', $data);
+		if($isIframe){
+			$data['ubicacion'] = FormLib::Hidden("ubicacion", 1, $request->get('ubicacion'));
+			$data['id_content'] = FormLib::Hidden("id_content", 1, $request->get('id_content'));
+		};
+
+		$view = $isIframe ? 'admin::pages.contenido.banner._nuevo' : 'admin::pages.contenido.banner.nuevo';
+
+		return View::make($view, $data);
 	}
 
-	public function nuevo_run()
+	public function nuevo_run(Request $request)
 	{
-		$data = Input::all();
+		$data =  $request->all();
 
 		//$tipo = WebNewbannerTipoModel::where("ID",$data['tipo_banner'])->first();
 		$newid = WebNewbannerModel::withoutGlobalScopes()->orderBy("ID", "desc")->first();
@@ -103,22 +120,81 @@ class BannerController extends Controller
 			$newid = $newid->id + 1;
 		}
 
-		$id = WebNewbannerModel::insertGetId([
+		$isIframe = $request->has('to_frame');
+
+		$bannerData = [
 			"ID" => $newid,
 			"EMPRESA" => Config::get("app.main_emp"),
-			"ACTIVO" => 0,
+			"ACTIVO" => $isIframe ? 1 : 0,
 			"KEY" => $data['nombre'],
 			"ID_WEB_NEWBANNER_TIPO" => $data['tipo_banner']
-		]);
+		];
 
-		return redirect("/admin/newbanner/editar/" . $id);
+		if($isIframe) {
+			$bannerData['UBICACION'] = $request->get('ubicacion');
+		}
+
+		$id = WebNewbannerModel::insertGetId($bannerData);
+
+		$urlToRedirect = "/admin/newbanner/editar/$id";
+
+		if($isIframe) {
+			$webContentPage = Web_Content_Page::query()
+				->where('id_content_page', $request->get('id_content'))
+				->first();
+
+			$webContentPage->type_id_content_page = $id;
+			$webContentPage->save();
+
+			//Ya que los banners ya controlan por si mismo los idiomas, en los contenidos
+			//solo permitimos crearlos en español y crearemos una copia en el idioma que corresponda
+			if($webContentPage->table_rel_content_page == Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG) {
+
+				$webBlogLang = Web_Blog_Lang::where([
+					['id_web_blog_lang', $webContentPage->rel_id_content_page],
+					['lang_web_blog_lang', 'ES']
+				])->first();
+
+				$idsOtherLangs = Web_Blog_Lang::where([
+					['idblog_web_blog_lang', $webBlogLang->idblog_web_blog_lang],
+					['lang_web_blog_lang', '!=', 'ES']
+				])->pluck('id_web_blog_lang');
+
+
+				foreach ($idsOtherLangs as $idOtherLang) {
+
+					$maxOrder = Web_Content_Page::where([
+						['table_rel_content_page', Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG],
+						['rel_id_content_page', $idOtherLang],
+						['type_content_page', Web_Content_Page::TYPE_CONTENT_PAGE_BANNER]
+					])->max('order_content_page');
+
+					Web_Content_Page::create([
+						'table_rel_content_page' => Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG,
+						'rel_id_content_page' => $idOtherLang,
+						'type_content_page' => Web_Content_Page::TYPE_CONTENT_PAGE_BANNER,
+						'type_id_content_page' => $id,
+						'order_content_page' => $maxOrder + 1
+					]);
+				}
+
+			}
+
+
+
+			$urlToRedirect .= "?to_frame=1";
+		}
+
+		return redirect($urlToRedirect);
 	}
 
-	public function editar($id = 0)
+	public function editar(Request $request, $id = 0)
 	{
 		if (empty($id)) {
 			return "Error";
 		}
+
+		$isIframe = $request->has('to_frame');
 
 		$data = array('menu' => 2);
 
@@ -142,7 +218,7 @@ class BannerController extends Controller
 		$data['orden'] = FormLib::Int("orden", 1, $data['banner']->orden);
 		$data['activo'] = FormLib::Bool("activo", 0, $data['banner']->activo);
 		$data['descripcion'] = FormLib::Textarea("descripcion", 0, $data['banner']->descripcion);
-		$data['ubicacion'] = FormLib::Text("ubicacion", 1, $data['banner']->ubicacion);
+		$data['ubicacion'] = $isIframe ? FormLib::TextReadOnly("ubicacion", 0, $data['banner']->ubicacion) : FormLib::Text("ubicacion", 1, $data['banner']->ubicacion);
 
 		$ubicaciones = DB::select("SELECT DISTINCT(ubicacion) FROM WEB_NEWBANNER");
 
@@ -154,8 +230,11 @@ class BannerController extends Controller
 		}
 		unset($c[0]);
 		$data['ubicaciones'] = implode(",", $c);
+		$data['is_iframe'] = $isIframe;
 
-		return View::make('admin::pages.contenido.banner.editar', $data);
+		$view = $isIframe ? 'admin::pages.contenido.banner._editar' : 'admin::pages.contenido.banner.editar';
+
+		return View::make($view, $data);
 	}
 
 	public function activar(Request $request)
@@ -320,10 +399,11 @@ class BannerController extends Controller
 				$this->saveImage($imageMobile, "{$lang}_mobile", $direcoryPath, true);
 			}
 		}
-		return redirect("/admin/newbanner/editar/$parentId");
+
+		return back()->with(['success' =>array(trans('admin-app.title.updated_ok'))]);
 	}
 
-	private function saveImage(UploadedFile $image, string $fileName, string $direcoryPath, bool $isMobile)
+	public function saveImage(UploadedFile $image, string $fileName, string $direcoryPath, bool $isMobile)
 	{
 		$extension = "webp";
 

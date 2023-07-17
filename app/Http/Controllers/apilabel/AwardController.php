@@ -25,10 +25,10 @@ class AwardController extends ApiLabelController
     #arrays que sirve para traducir las variables que envian y las de busqueda
     protected  $renameExtra = array("idoriginlot"=>"idorigen_asigl0", "idoriginclient"=>"cod2_cli");
     protected  $rename = array("licit"=>"licit_csub", "idauction"=>"sub_csub",  "ref"=>"ref_csub",  "bid"=>"himp_csub", "commission" => "base_csub", "date" => "fecha_csub", "clifac" => "clifac_csub", "invoice" => "fac_csub", "serialpay" => "afral_csub", "numberpay" => "nfral_csub"  );
-	protected  $renameAsigl1 = array("licit"=>"licit_asigl1","lin"=>"lin_asigl1", "idauction"=>"sub_asigl1",  "ref"=>"ref_asigl1",  "bid"=>"imp_asigl1", "type" => "type_asigl1", "date" => "fec_asigl1");
+	protected  $renameAsigl1 = array("licit"=>"licit_asigl1","lin"=>"lin_asigl1", "idauction"=>"sub_asigl1",  "ref"=>"ref_asigl1",  "bid"=>"imp_asigl1", "type" => "type_asigl1", "date" => "fec_asigl1","hour" => "hora_asigl1");
 
-    protected  $rules = array('idoriginlot' => "required|max:255", "idauction" => "required|max:8","idoriginclient" => "required|max:8", "bid" => "required|numeric", "date" => "date_format:Y-m-d H:i:s|nullable", "commission" => "numeric|nullable", "invoice" => "alpha_num|max:1|nullable", "serialpay" => "alpha_num|max:3|nullable", "numberpay" => "numeric|nullable|max:99999999" );
-
+    protected  $rules = array('idoriginlot' => "required|max:255", "idauction" => "required|max:8","idoriginclient" => "required|max:8", "bid" => "required|numeric", "date" => "date_format:Y-m-d H:i:s|nullable", "hour" => "date_format:H:i:s|nullable","commission" => "numeric|nullable", "invoice" => "alpha_num|max:1|nullable", "serialpay" => "alpha_num|max:3|nullable", "numberpay" => "numeric|nullable|max:99999999" );
+	protected $maxCodLicit;
     public function postAward(){
         $items =  request("items");
         return $this->createAward( $items );
@@ -209,6 +209,9 @@ class AwardController extends ApiLabelController
 	}
 
 	private function createBid($lot){
+		if(!empty($lot["date"]) && empty($lot["hour"])){
+			$lot["hour"] = substr($lot["date"],-8);
+		}
 		$bidUser = FgAsigl1::select(" lin_asigl1")
 						->where("sub_asigl1", $lot["idauction"])
 						->where("ref_asigl1", $lot["ref"])

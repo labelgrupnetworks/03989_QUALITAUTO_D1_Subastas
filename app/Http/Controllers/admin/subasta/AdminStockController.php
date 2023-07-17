@@ -179,7 +179,7 @@ class AdminStockController extends Controller
 			'ref_asigl0' => FormLib::Text('ref_asigl0', 0, $request->ref_asigl0, '', ''),
 			'idorigen_asigl0' => FormLib::Text('idorigen_asigl0', 0, $request->idorigen_asigl0, '', ''),
 			'sub_asigl0' => FormLib::Text('sub_asigl0', 0, $request->sub_asigl0, '', ''),
-			'prop_hces1' => FormLib::Select2WithAjax('prop_hces1', 0, $request->prop_hces1, '', route('client.list'), trans('admin-app.placeholder.owner')),
+			'prop_hces1' => FormLib::Select2WithAjax('prop_hces1', 0, $request->prop_hces1, '', config('app.useProviders', 0) ? route('provider.list') : route('client.list'), trans('admin-app.placeholder.owner')),
 			'descweb_hces1' => FormLib::Text('descweb_hces1', 0, $request->descweb_hces1, '', ''),
 			'artist_name' => FormLib::Text('artist_name', 0, $request->artist_name),
 			'measurement' => FormLib::Text('measurement', 0, $request->measurement),

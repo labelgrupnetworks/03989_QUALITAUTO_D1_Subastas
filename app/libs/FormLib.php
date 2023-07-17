@@ -2,12 +2,7 @@
 
 namespace App\libs;
 
-use Config;
-use \ForceUTF8\Encoding;
-
-
-use App\Models\subalia\FxAucHouse;
-use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 class FormLib
 {
@@ -385,7 +380,7 @@ class FormLib
 
 		foreach ($mixOptions as $k => $v) {
 			$aux .= '<option value="' . $k . '"';
-			
+
 			if (is_array($strValue) && in_array($k,$strValue ))  {
 				$aux .= " selected='selected'";
 			}
@@ -512,7 +507,7 @@ class FormLib
 	static function Submit($strValue = "Enviar", $strFormId)
 	{
 
-		$aux = '<a onclick="javascript:submit_form(document.getElementById(\'' . $strFormId . '\'),0);" class="button-principal submitButton">' . $strValue . '</a>';
+		$aux = '<a onclick="javascript:submit_form(document.getElementById(\'' . $strFormId . '\'),0);" class="button-principal submitButton btn btn-lb-primary">' . $strValue . '</a>';
 
 		return $aux;
 	}
@@ -685,12 +680,14 @@ class FormLib
 			$fields = explode(",", $fields);
 		}
 
+		$theme = Config::get('app.theme');
+
 		$formulario = array('_token' => array("formulario" => Formlib::hidden("_token", 1, csrf_token()), "type" => "Hidden", "mandatory" => 1));
 
 		foreach ($fields as $item) {
 			$item=trim($item);
 			if ($item == "email" || $item == "mail")
-				$formulario['email'] = array("formulario" => FormLib::Email("email", 1, ""), "type" => "Email", "mandatory" => 1);
+				$formulario['email'] = array("formulario" => FormLib::Email("email", 1, "", "", trans("$theme-app.global.$item")), "type" => "Email", "mandatory" => 1);
 
 			if ($item == "nombre")
 				$formulario["nombre"] = array("formulario" => FormLib::Text("nombre", 1, ""), "type" => "Text", "mandatory" => 1);
@@ -699,7 +696,7 @@ class FormLib
 				$formulario["apellidos"] = array("formulario" => FormLib::Text("apellidos", 0, ""), "type" => "Text", "mandatory" => 0);
 
 			if ($item == "telefono" || $item == "phone" || $item == "tel")
-				$formulario["telefono"] = array("formulario" => FormLib::Text("telefono", 1, ""), "type" => "Text", "mandatory" => 1);
+				$formulario["telefono"] = array("formulario" => FormLib::Text("telefono", 1, "", "", trans("$theme-app.global.$item")), "type" => "Text", "mandatory" => 1);
 
 			if ($item == "description" || $item == "desc" || $item == "descripcion")
 				$formulario["descripcion"] = array("formulario" => FormLib::Textarea("descripcion", 1, ''), "type" => "TextArea", "mandatory" => 1);
@@ -737,7 +734,7 @@ class FormLib
 				$formulario["pais"] = array("formulario" => FormLib::Text("pais", 1, ""), "type" => "Text", "mandatory" => 1);
 
 			if ($item == "nomApell")
-				$formulario["nomApell"] = array("formulario" => FormLib::Text("nomApell", 1, ""), "type" => "Text", "mandatory" => 1);
+				$formulario["nomApell"] = array("formulario" => FormLib::Text("nomApell", 1, "", "", trans("$theme-app.global.$item")), "type" => "Text", "mandatory" => 1);
 
 			if ($item == "precio")
 				$formulario["precio"] = array("formulario" => FormLib::Float("precio", 1, ""), "type" => "Text", "mandatory" => 1);

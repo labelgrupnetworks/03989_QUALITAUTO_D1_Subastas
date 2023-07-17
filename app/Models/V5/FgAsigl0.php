@@ -224,14 +224,14 @@ class FgAsigl0 extends Model
 	}
 	public function scopeWithArtist($query)
 	{
-		return $query->leftJoin("FGCARACTERISTICAS" , "FGCARACTERISTICAS.EMP_CARACTERISTICAS = EMP_ASIGL0 and FGCARACTERISTICAS.ID_CARACTERISTICAS = ".config('app.ArtistCode', 0))
+		return $query->addSelect('FGCARACTERISTICAS_VALUE.VALUE_CARACTERISTICAS_VALUE as artist_name')->leftJoin("FGCARACTERISTICAS" , "FGCARACTERISTICAS.EMP_CARACTERISTICAS = EMP_ASIGL0 and FGCARACTERISTICAS.ID_CARACTERISTICAS = ".config('app.ArtistCode', 0))
 			->leftJoin("FGCARACTERISTICAS_HCES1" , "FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = EMP_ASIGL0 AND FGCARACTERISTICAS_HCES1.IDCAR_CARACTERISTICAS_HCES1 = FGCARACTERISTICAS.ID_CARACTERISTICAS AND FGCARACTERISTICAS_HCES1.NUMHCES_CARACTERISTICAS_HCES1 = NUMHCES_ASIGL0 AND FGCARACTERISTICAS_HCES1.LINHCES_CARACTERISTICAS_HCES1 = LINHCES_ASIGL0")
 			->leftJoin("FGCARACTERISTICAS_VALUE" , "EMP_CARACTERISTICAS_VALUE = EMP_ASIGL0 AND IDCAR_CARACTERISTICAS_VALUE = ID_CARACTERISTICAS AND  ID_CARACTERISTICAS_VALUE = IDVALUE_CARACTERISTICAS_HCES1")
 
 			//por si necesito buscar má de uno por lote
 			//->selectRaw("LISTAGG(FGCARACTERISTICAS_VALUE.VALUE_CARACTERISTICAS_VALUE, '; ') as artists ")
 			//->groupBy($selects);
-			->addSelect('FGCARACTERISTICAS_VALUE.VALUE_CARACTERISTICAS_VALUE as artist_name');
+			;
 
 	}
 
@@ -587,5 +587,54 @@ class FgAsigl0 extends Model
 
 		}
 	}
+
+	public function ventasDestacadas($order = 'orden_destacado_asigl0', $orderDirection = "asc", $paginate = 12, $limit = 0)
+	{
+		$query = self::query()
+			->select('fgasigl0.ffin_asigl0', 'fgasigl0.hfin_asigl0', 'fgasigl0.sub_asigl0', 'fgasigl0.cerrado_asigl0', 'fgasigl0.ref_asigl0', 'fgasigl0.retirado_asigl0', 'fgasigl0.remate_asigl0', 'fgasigl0.impsalhces_asigl0')
+			->addSelect('fgasigl0.imptas_asigl0', 'fgasigl0.imptash_asigl0', 'fgasigl0.impsalweb_asigl0')
+			->addSelect('auc."id_auc_sessions"', 'auc."name"')
+			->addSelect('fgsub.tipo_sub', 'fgsub.subabierta_sub')
+			->addSelect('fghces1.num_hces1', 'fghces1.lin_hces1', 'fghces1.implic_hces1 as max_puja')
+			->selectRaw('(CASE WHEN fgasigl0.ffin_asigl0 IS NOT NULL AND fgasigl0.hfin_asigl0 IS NOT NULL
+				THEN REPLACE(TO_DATE(TO_CHAR(fgasigl0.ffin_asigl0, \'DD/MM/YY\') || \' \' || fgasigl0.hfin_asigl0,
+					\'DD/MM/YY HH24:MI:SS\'), \'-\', \'/\')
+				ELSE NULL END) close_at')
+			->selectRaw('NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, fghces1.WEBFRIEND_HCES1) webfriend_hces1')
+			->selectRaw('NVL(FGHCES1_LANG.TITULO_HCES1_LANG, fghces1.titulo_hces1) titulo_hces1')
+			->selectRaw('NVL(FGHCES1_LANG.descweb_hces1_lang, fghces1.descweb_hces1) descweb_hces1')
+			->selectRaw('NVL(FGHCES1_LANG.desc_hces1_lang, fghces1.desc_hces1) desc_hces1')
+			->joinFghces1Asigl0()
+			->joinSubastaAsigl0()
+			->joinSessionAsigl0()
+			->joinFghces1LangAsigl0()
+			->where([
+				['retirado_asigl0', 'N'],
+				['oculto_asigl0', 'N'],
+				['destacado_asigl0', 'S']
+			])
+			->whereIn('subc_sub', ['H', 'S'])
+			->where(function ($query) {
+				$query->whereNotIn('FGSUB.TIPO_SUB', ['O', 'P'])
+					->orWhere(function ($query) {
+						$query->whereRaw('TRUNC(fgasigl0.FINI_ASIGL0) < TRUNC(SYSDATE)')
+						->orWhere(function ($query) {
+							$query->whereRaw('fgasigl0.FINI_ASIGL0 = TRUNC(SYSDATE)')
+								->whereRaw("fgasigl0.HINI_ASIGL0 <= TO_CHAR(SYSDATE, 'HH24:MI:SS')");
+					});
+				});
+			})
+			->orderBy($order, $orderDirection)
+			->when($limit, function ($query, $limit) {
+				return $query->limit($limit);
+			});
+
+			if($paginate) {
+				return $query->paginate($paginate);
+			}
+
+			return $query->get();
+	}
+
 }
 

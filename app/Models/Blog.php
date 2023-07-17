@@ -3,16 +3,16 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\Web_Blog;
 use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 class Blog extends Model
 {
     public $lang;
 
     public function __construct() {
-
 
        $this->lang;
 
@@ -77,8 +77,18 @@ class Blog extends Model
                and blog.emp_web_blog = :emp
                and blog_lang.lang_web_blog_lang = :lang";
 
-         return DB::select($sql,$bindings);
+        return DB::select($sql,$bindings);
+   }
 
+   public function getAllPrincipalBlog()
+   {
+		return Web_Blog::getAllNoticiesWithRelations();
+   }
+
+   public function getNoticiasAllLangs()
+   {
+		$noticias = Web_Blog::joinWebBlogLang()->where('id_web_blog', $this->idblog)->get();
+		return $noticias;
    }
 
    public function getNoticiaRelCategory(){
@@ -167,22 +177,32 @@ class Blog extends Model
                 ->select('ID_WEB_BLOG,IMG_WEB_BLOG,LOT_CATEGORIES_WEB_BLOG,LOT_SUB_CATEGORIES_WEB_BLOG,PUBLICATION_DATE_WEB_BLOG,primary_category_web_blog,author_web_blog,'
                         . 'WEB_BLOG_LANG.*')
                 ->join('WEB_BLOG_LANG','WEB_BLOG_LANG.idblog_web_blog_lang', '=', 'WEB_BLOG.id_web_blog')
-                ->when($key_categ, function($q) use($key_categ,$lang){
-                        return $q->addSelect('WEB_CATEGORY_BLOG_LANG.*')
+
+				->when($key_categ, function($q) use($key_categ,$lang){
+
+					return $q->addSelect('WEB_CATEGORY_BLOG_LANG.*')
                                 ->join('WEB_BLOG_REL_CATEGORY', 'WEB_BLOG_REL_CATEGORY.IDBLOG_WEB_BLOG_REL_CATEGORY', '=', 'WEB_BLOG.ID_WEB_BLOG')
                         ->join('WEB_CATEGORY_BLOG','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG','=','WEB_BLOG_REL_CATEGORY.IDCAT_WEB_BLOG_REL_CATEGORY')
                         ->join('WEB_CATEGORY_BLOG_LANG','WEB_CATEGORY_BLOG_LANG.ID_CATEGORY_BLOG_LANG','=','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG')
                         ->where('WEB_CATEGORY_BLOG.EMP_CATEGORY_BLOG',Config::get('app.main_emp'))
                         ->where('WEB_CATEGORY_BLOG_LANG.URL_CATEGORY_BLOG_LANG',$key_categ)
                         ->where('WEB_CATEGORY_BLOG_LANG.lang_category_blog_lang',$lang)
-                        ->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG',1);
+                        ->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG', 1);
                     }
+                , function($q) use($lang){
 
-                )
+					return $q->join('WEB_BLOG_REL_CATEGORY', 'WEB_BLOG_REL_CATEGORY.IDBLOG_WEB_BLOG_REL_CATEGORY', '=', 'WEB_BLOG.ID_WEB_BLOG')
+						->join('WEB_CATEGORY_BLOG','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG','=','WEB_BLOG.PRIMARY_CATEGORY_WEB_BLOG')
+						->join('WEB_CATEGORY_BLOG_LANG','WEB_CATEGORY_BLOG_LANG.ID_CATEGORY_BLOG_LANG','=','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG')
+						->where('WEB_CATEGORY_BLOG.EMP_CATEGORY_BLOG', Config::get('app.main_emp'))
+						->where('WEB_CATEGORY_BLOG_LANG.lang_category_blog_lang', $lang)
+						->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG', 1);
+				})
                 ->where('WEB_BLOG.emp_web_blog',Config::get('app.main_emp'))
                 ->where('WEB_BLOG_LANG.lang_web_blog_lang', $lang)
                 ->where('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG','<=',date("Y-m-d"))
                 ->where('ENABLED_WEB_BLOG_LANG',1)
+
                 ->whereNotNull('URL_WEB_BLOG_LANG')
                 ->whereNotNull('primary_category_web_blog')
                 ->orderBy('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG', 'desc');
@@ -286,7 +306,13 @@ class Blog extends Model
                 ->first();
    }
 
-
+   public function getHomeNotices($limit, $withContent)
+	{
+		return Web_Blog::getNoticiesQuery($withContent)
+			->select('id_web_blog', 'img_web_blog', 'primary_category_web_blog')
+			->limit($limit)
+			->get();
+	}
 }
 
 class CategorysBlog extends Model
@@ -350,14 +376,16 @@ class CategorysBlog extends Model
         ]);
    }
 
-   public function getCategory($all = false){
+   public function getCategory($all = false, $checkIsEnabled = true){
 
         $result = DB::table('WEB_CATEGORY_BLOG')
                 ->select('id_category_blog','metatit_category_blog_lang','metades_category_blog_lang','metacont_category_blog_lang','title_category_blog_lang','name_category_blog_lang ','id_category_blog_lang','url_category_blog_lang')
                 ->join('WEB_CATEGORY_BLOG_LANG','WEB_CATEGORY_BLOG_LANG.ID_CATEGORY_BLOG_LANG','=','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG')
                 ->where('WEB_CATEGORY_BLOG.EMP_CATEGORY_BLOG',Config::get('app.main_emp'))
                 ->where('WEB_CATEGORY_BLOG_LANG.lang_category_blog_lang',$this->lang)
-                ->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG',1);
+				->when($checkIsEnabled, function ($query) {
+					return $query->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG', 1);
+				});
 
                 if($all){
                    return $result->get();

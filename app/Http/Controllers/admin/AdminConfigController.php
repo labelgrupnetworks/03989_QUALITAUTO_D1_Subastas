@@ -58,6 +58,7 @@ class AdminConfigController extends Controller
 
     }
 
+
 	public function saveConfigurationSession(Request $request)
 	{
 		$request->session()->put('admin.navigator_collapse', $request->get('navigatorIsCollapse', false));

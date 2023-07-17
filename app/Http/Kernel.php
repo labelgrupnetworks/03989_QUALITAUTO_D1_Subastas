@@ -90,6 +90,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'SessionTimeout' =>\App\Http\Middleware\SessionTimeout::class
+        'SessionTimeout' =>\App\Http\Middleware\SessionTimeout::class,
+		'trimStrings' => \App\Http\Middleware\TrimStrings::class,
     ];
 }

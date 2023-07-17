@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Config;
 use App\Models\Blog;
 use App\Models\CategorysBlog;
 use App\Models\Sec;
+use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerModel;
 
@@ -57,24 +58,27 @@ class NoticiasController extends Controller
             'seo'=>$SEO_metas
 		);
 
-		#dd($data);
+		//dd($data);
 
         return View::make('front::pages.noticias.noticias',array('data' => $data));
 
     }
 
-    public function news($lang,$key_categ,$key_news){
-        $blog = new Blog();
+    public function news($lang, $key_categ, $key_news)
+	{
+		$blog = new Blog();
         $sec = new Sec();
+
+		$isAdmin = session('user.admin') ? true : false;
 
         $categorys = array();
         $categoryBlog = new CategorysBlog();
         $categoryBlog->lang = strtoupper(Config::get('app.locale'));
-        $categorys_temp=$categoryBlog->getCategory(true);
-        if(!empty($key_categ)){
+        $categorys_temp = $categoryBlog->getCategory(true, !$isAdmin);
+
+		if(!empty($key_categ)){
             $categoryBlog->url_category = $key_categ;
             $categ = $categoryBlog->getCategory();
-
         }
 
         foreach($categorys_temp as $categ_value){
@@ -85,7 +89,7 @@ class NoticiasController extends Controller
         $blog->lang = strtoupper(Config::get('app.locale'));
         $noticias=$blog->getNoticia($key_categ,$key_news);
 
-        if(empty($noticias)){
+        if(empty($noticias) || empty($categorys[$noticias->primary_category_web_blog])){
             exit (\View::make('front::errors.404'));
         }
 
@@ -104,16 +108,26 @@ class NoticiasController extends Controller
         $SEO_metas->meta_description = $noticias->metadescription_web_blog_lang;
         $SEO_metas->canonical =  $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
 
+		$contents = Web_Content_Page::with(['contentHtml'])
+			->where([
+				['table_rel_content_page', Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG],
+				['rel_id_content_page', $noticias->id_web_blog_lang]
+			])->orderBy('order_content_page')->get();
+
         $data = array (
             'news' => $noticias,
             'relationship_new' =>$relationship_new,
             'categorys' => $categorys,
             'seo'=>$SEO_metas,
-            'categorys_web'=>$categorys_web
+            'categorys_web'=>$categorys_web,
+			'contents' => $contents
 		);
 
+		if(Config::get('app.new_blog', false)) {
+			return view('front::pages.noticias.new_entrada', ['data' => $data]);
+		}
 
-        return  View::make('front::pages.noticias.entrada',array('data' => $data));
+        return View::make('front::pages.noticias.entrada',array('data' => $data));
 	}
 
 

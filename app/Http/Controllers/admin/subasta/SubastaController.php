@@ -2086,24 +2086,25 @@ class SubastaController extends Controller
 		return ToolsServiceProvider::exportCollectionToExcel($licitadores, $filename);
 	}
 
-	function getSelect2ClientList(){
-
+	function getSelect2ClientList()
+	{
 		$query =  mb_strtoupper(request('q'));
 
-		if(!empty($query)){
-
-			$where = [
-				['upper(RSOC_CLI)', 'LIKE', "%$query%", 'or'],
-				['upper(COD2_CLI)', 'LIKE', "%$query%", 'or'],
-				['upper(COD_CLI)', 'LIKE', "%$query%", 'or']
-			];
-
-			$clients = FxCli::select('RSOC_CLI as html', 'COD_CLI as id')->where($where)->where("BAJA_TMP_CLI","N")->get();
-
-			return response()->json($clients);
+		if(empty($query)){
+			return response();
 		}
 
-		return response();
+		$where = [
+			['upper(RSOC_CLI)', 'LIKE', "%$query%", 'or'],
+			['upper(COD2_CLI)', 'LIKE', "%$query%", 'or'],
+			['upper(COD_CLI)', 'LIKE', "%$query%", 'or']
+		];
+
+		$clients = FxCli::select('RSOC_CLI as html', 'COD_CLI as id')
+			->where($where)->where("BAJA_TMP_CLI","N")
+			->get();
+
+		return response()->json($clients);
 	}
 
 	function existingFeatureValues(){

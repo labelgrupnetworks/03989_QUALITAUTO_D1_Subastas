@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use DB;
 use Config;
 use Log;
-use URL;
+use Illuminate\Support\Facades\URL;
 use Session;
 
 class RoutingServiceProvider extends ServiceProvider
@@ -142,7 +142,7 @@ class RoutingServiceProvider extends ServiceProvider
         }
 
     }
-    public static function translateSeo($key, $slash = "/"){
+    public static function translateSeo($key, $slash = "/", $domain = null){
 
         $lang = \App::getLocale();
 
@@ -151,12 +151,13 @@ class RoutingServiceProvider extends ServiceProvider
         }
 
         $array_seo_translate = Config::get('translate_SEO');
-        //buscamos la key y el idioma para devolver la traducción
+		//buscamos la key y el idioma para devolver la traducción
         if(isset($array_seo_translate[$key]) && isset($array_seo_translate[$key][$lang]) ){
-            return "/$lang/".$array_seo_translate[$key][$lang]->keylang_seo_routes.$slash;
+			$domain = $array_seo_translate[$key][$lang]->domain_seo_routes ?? $domain;
+            return "$domain/$lang/".$array_seo_translate[$key][$lang]->keylang_seo_routes.$slash;
         }
         else{
-            return "/$lang/$key".$slash;
+            return "$domain/$lang/$key".$slash;
         }
     }
     //esta funcion mira si la url que hay es simplemente el idioma o es la raiz
@@ -335,5 +336,24 @@ class RoutingServiceProvider extends ServiceProvider
         }
 
     }
+
+	public static function currentUrl($url)
+	{
+		return URL::full() == $url;
+	}
+
+	/**
+	 * @param array $urls
+	 */
+	public static function currentUrlInArray($urls)
+	{
+		foreach($urls as $url)
+		{
+			if(self::currentUrl($url)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

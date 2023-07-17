@@ -153,6 +153,7 @@ use App\Http\Controllers\externalws\vottun\VottunController;
 use GuzzleHttp\Psr7;
 use App\Http\Controllers\webservice\LogChangesController;
 use App\Http\Controllers\admin\subasta\AdminLotcontroller;
+use App\Models\Address;
 use App\Models\V5\FgAsigl1Mt;
 use Faker\Provider\en_US\PaymentTest;
 
@@ -163,6 +164,7 @@ use App\Http\Controllers\V5\AppPushController;
 use App\Http\Controllers\V5\DepositController;
 use App\models\V5\AppUsersToken;
 use App\models\V5\AppPush;
+use Illuminate\Support\Facades\Artisan;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Prueba extends BaseController
@@ -170,6 +172,9 @@ class Prueba extends BaseController
 
 	public function index()
 	{
+		return;
+		$this->sendFailedJobs(request('from'), request('to'));
+		dd('send');
 		return ;
 
 		$options=[
@@ -192,6 +197,13 @@ class Prueba extends BaseController
 		$idTrans = "D31684405321";
 		$a->confirmPreAuthorization("STNTEST","1");
 		//$a->returnPay($idTrans);
+	}
+
+	private function sendFailedJobs($fromId, $toId)
+	{
+		foreach(range($fromId, $toId) as $id){
+			Artisan::call('queue:retry', ['id' => $id]);
+		}
 	}
 
 
@@ -532,7 +544,16 @@ class Prueba extends BaseController
 		return $collection->downloadExcel("duplicados por nombre V3.xlsx", \Maatwebsite\Excel\Excel::XLSX, true);
 	}
 
-
+	private function addressStorePickup($inf_env_lic)
+	{
+		$inf_env_lic->paisenv = '';
+		$inf_env_lic->provenv = '';
+		$inf_env_lic->pobenv = '';
+		$inf_env_lic->direnv = 'RECOGIDA EN TIENDA';
+		$inf_env_lic->cpenv = '';
+		$inf_env_lic->telenv = '';
+		return $inf_env_lic;
+	}
 
 	public function testwebserviceNFTDuran()
 	{

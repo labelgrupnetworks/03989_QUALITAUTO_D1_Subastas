@@ -46,7 +46,10 @@ class BidderController extends ApiLabelController
 
                 foreach($items as $key => $item){
 
-					$client = FxCli::select("cod_cli,nvl(rsoc_cli, nom_cli) rsoc_cli")->where("cod2_cli", $item["idoriginclient"])->first();
+					$client = FxCli::select("cod_cli,nvl(rsoc_cli, nom_cli) rsoc_cli")
+					->addSelect("FGLICIT.COD_LICIT")
+        			->leftjoin('FGLICIT', "FGLICIT.CLI_LICIT = FXCLI.COD_CLI  AND FGLICIT.EMP_LICIT = '" . Config::get("app.emp") . "'  AND FGLICIT.SUB_LICIT = '" . $item["idauction"]. "'")
+					->where("cod2_cli", $item["idoriginclient"])->first();
 
 					#si no existe el cliente devolvemos error
 					if(empty($client)){
@@ -54,18 +57,37 @@ class BidderController extends ApiLabelController
 						throw new ApiLabelException(trans('apilabel-app.errors.no_match'), $errorsItem);
 					}
 
-					   $items[$key]["cli_licit"] =  $client->cod_cli;
-					   $items[$key]["rsoc_licit"] =  $client->rsoc_cli;
+					# si ya tiene paleta se la reasignamos
+					if(!empty($client->cod_licit)){
+
+						unset($items[$key]);
+						DB::select(" call CAMBIAR_LICIT(:emp, :sub, :old, :new, 'API')",
+							array(
+								"emp" => Config::get("app.emp"),
+								"sub" => $item["idauction"],
+								"old" => $client->cod_licit,
+								"new" => $item["codbidder"]
+							)
+						);
+					}else{
+						$items[$key]["cli_licit"] =  $client->cod_cli;
+						$items[$key]["rsoc_licit"] =  $client->rsoc_cli;
+					}
+
+
 
 
 
                     #$this->setBidder( $item, $licits, $lots[$item["idoriginlot"]], $bidders);
 				}
-				#añadimos los campos de la tabla
-				$this->rename["cli_licit"] = "cli_licit";
-				$this->rename["rsoc_licit"] = "rsoc_licit";
 
-                $this->create($items, $this->rules, $this->rename, new FgLicit());
+				if(count($items) > 0){
+					#añadimos los campos de la tabla
+					$this->rename["cli_licit"] = "cli_licit";
+					$this->rename["rsoc_licit"] = "rsoc_licit";
+					$this->create($items, $this->rules, $this->rename, new FgLicit());
+				}
+
 
 
             DB::commit();
@@ -124,7 +146,7 @@ class BidderController extends ApiLabelController
 			$whereRules = $this->getItems($this->rules, array("idauction", "codbidder"));
 			$this->erase($whereVars, $whereRules, $this->rename, new FgLicit());
 
-			
+
             DB::commit();
             return $this->responseSuccsess();
 
