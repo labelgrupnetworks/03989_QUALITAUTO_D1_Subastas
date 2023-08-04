@@ -46,6 +46,10 @@
 - `git remote add silicua https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git`
 - `git remote add soporteconcursal https://github.com/labelgrupnetworks/02946_SOPORTECONCURSAL_D1_Subastas.git`
 
+- `git remote add soler https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
+ 
+
+
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
 - `git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git` 
@@ -55,6 +59,7 @@
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02946_SOPORTECONCURSAL_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git`
+- `git remote set-url --add --push allprojects  https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
 
 <a name="examples"></a>
 ## Ejemplos de comandos
