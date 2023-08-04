@@ -49,7 +49,7 @@
 - `git remote add segre https://github.com/labelgrupnetworks/02913_SEGRE_D1_Subastas.git`
 - `git remote add alcala https://github.com/labelgrupnetworks/02056_ALCALA_D1_Subastas.git` 
 - `git remote add ansorena https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
-- `git remote add duran https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
+- `git remote add duran https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas.git`
 - `git remote add soler https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
  
 
