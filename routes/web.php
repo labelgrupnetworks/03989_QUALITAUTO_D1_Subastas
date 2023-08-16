@@ -556,7 +556,7 @@ Route::get(Routing::slugSeo('subastas') . "_{keycategory}/{texto}", 'V5\LotListC
 #listado de lotes por categoria
 Route::get(Routing::slugSeo('subastas') . "-{keycategory}", 'V5\LotListController@getLotsListCategory')->name('category');
 #listado de lotes por secciones
-Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}"), 'V5\LotListController@getLotsListSection')->name('section');
+Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection?}"), 'V5\LotListController@getLotsListSection')->name('section');
 #listado de lotes por subcsecciones
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}/{keysubsection}"), 'V5\LotListController@getLotsListSubSection')->name('subsection');
 #buscador
