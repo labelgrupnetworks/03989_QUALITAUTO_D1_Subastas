@@ -18,7 +18,7 @@ use Route;
 /*use Mail;*/
 use Cookie;
 use Paginator;
-use Log;
+use Illuminate\Support\Facades\Log;
 # ODBC Service Provider
 //use TCK\Odbc\OdbcServiceProvider;
 use App\Http\Controllers\PaymentsController;
@@ -1811,7 +1811,6 @@ class UserController extends Controller
 	 */
 	public function generateAuthenticityCertificate()
 	{
-
 		if(!Session::get('user')){
 			abort(401);
 		}
@@ -1838,23 +1837,23 @@ class UserController extends Controller
 			'Referencia' => $ref_asigl0
 		];
 
-		$client = new GuzzleHttp\Client();
 		try{
-			$response = $client->post($url, ['json' => $body]);
+			$response = Http::post($url, $body);
 		}
 		catch (\Throwable $th){
-			\Log::error("error al conectar con api de certificados");
-			\Log::error($th);
+			Log::error("error al conectar con api de certificados");
+			Log::error($th);
 			return response($th, 500);
 		}
 
-		if ($response->getStatusCode() != 200) {
-			\Log::error("error en la api de certificados");
-			\Log::error($response->getStatusCode());
-			return response($response->getStatusCode(), 500);
+		if ($response->status() != 200) {
+			Log::error("error en la api de certificados");
+			Log::error($response->status());
+			return response($response->status(), 500);
 		}
 
-		if($response->getBody()){
+		if($response->body()){
+			Log::info("generando certificado", ['body' => $response->body()]);
 			if(file_exists($file)){
 				return response($path, 200);
 			}
