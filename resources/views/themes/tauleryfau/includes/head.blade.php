@@ -62,13 +62,12 @@ header("X-Frame-Options:     DENY");
 @endif
 
 @if(!empty($data['seo']->canonical))
-
         <link rel="canonical" href="{{$data['seo']->canonical}}" />
-    @if(!empty($data['subastas.paginator']) && $data['subastas.paginator']->currentPage > 1 )
-        <link rel="prev" href="{{$data['seo']->canonical."/page-".($data['subastas.paginator']->currentPage - 1)}}" />
+    @if(!empty($data['subastas.paginator']) && $data['subastas.paginator']->currentPage() > 1 )
+        <link rel="prev" href="{{$data['seo']->canonical."/page-".($data['subastas.paginator']->currentPage() - 1)}}" />
     @endif
-    @if(!empty($data['subastas.paginator']) && $data['subastas.paginator']->currentPage < $data['subastas.paginator']->numPages)
-        <link rel="next" href="{{$data['seo']->canonical."/page-".($data['subastas.paginator']->currentPage + 1)}}" />
+    @if(!empty($data['subastas.paginator']) && !empty($data['subastas.paginator']->nextPageUrl()))
+        <link rel="next" href="{{$data['seo']->canonical."/page-".($data['subastas.paginator']->nextPageUrl())}}" />
     @endif
 @endif
 
