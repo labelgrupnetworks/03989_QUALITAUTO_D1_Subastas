@@ -282,70 +282,61 @@ class UserController extends Controller
     //login con ajax
     public function login_post_ajax(HttpRequest $request)
     {
-
-       $res = $this->login_post($request, TRUE);
-
+        $res = $this->login_post($request, true);
         return  $res;
     }
 
-    public function login_post(HttpRequest $request, $ajax = FALSE)
-    {
-        $rules = array(
-            'email'    => 'required|email',    // make sure the email is an actual email
-            'password' => 'required'     // password can only be alphanumeric
+	public function login_post(HttpRequest $request, $ajax = false)
+	{
+		$rules = array(
+			'email'    => 'required|email',    // make sure the email is an actual email
+			'password' => 'required'     // password can only be alphanumeric
 		);
-         $ip = $this->getUserIP();
-        // run the validation rules on the inputs from the form
-        $validator = Validator::make(Input::all(), $rules);
-        if ($validator->fails()) {
-            //Log::info('LOGIN_NO_VALIDO no existe EMAIL: "'.Request::input('email').'" PASSWORD: "'.Request::input('password').'"' );
-            if($ajax){
-                  $res = array(
-                      'status' => 'error',
-                      'msg' => 'login_register_failed'
-                   );
+		$ip = $this->getUserIP();
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()) {
+			//Log::info('LOGIN_NO_VALIDO no existe EMAIL: "'.Request::input('email').'" PASSWORD: "'.Request::input('password').'"' );
+			if ($ajax) {
+				$res = array(
+					'status' => 'error',
+					'msg' => 'login_register_failed'
+				);
 
-                return $res;
+				return $res;
+			} else {
+				return Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
+			}
+		} else {
 
-              }else{
-                return Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
-              }
-        } else {
+			# Cargamos el modelo
+			$user           = new User();
+			$email    = Request::input('email');
+			$password = Request::input('password');
 
-            # Cargamos el modelo
-            $user           = new User();
-            $email    = Request::input('email');
-            $password = Request::input('password');
+			$login = $this->getInfUser($email, $password);
 
-            $login = $this->getInfUser($email,$password);
+			# Si existe el usuario
+			if (!empty($login)) {
+				# Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
+				if ($login->tipacceso_cliweb != 'X') {
 
-            /*if(!empty(Config::get('app.password_MD5'))){
-                $user->password =  md5(Config::get('appº.password_MD5').$user->password);
-                $login          = $user->login_encrypt();
-                 Log::info('ENCRYPT');
-            }else{
-                 $login          = $user->login();
-                 Log::info('NORMAL');
-            }*/
+					if (!empty(Request::input('remember_me'))) {
+						$password = Request::input('password');
+						Cookie::queue('user', '' . $email . '%' . $password . '', '525600');
+					}
 
-            # Si existe el usuario
+					//Eliminamos los tokens de sesion anteriores
+					$request->session()->invalidate();
+					$request->session()->regenerateToken();
 
-            if(!empty($login)) {
-                # Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
-                if($login->tipacceso_cliweb != 'X') {
-
-					if(!empty(Request::input('remember_me'))){
-                        $password=Request::input('password');
-                        Cookie::queue('user', ''.$email.'%'.$password.'','525600');
-                    }
-
-                    $this->SaveSession($login);
-					$user->logLogin($login->cod_cliweb,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
+					$this->SaveSession($login);
+					$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
 					$externalLoginData = null;
 					$externalEncryptData = null;
 
-					if(config('app.ps_activate', false)){
+					if (config('app.ps_activate', false)) {
 						$externalLoginData = [
 							'email' => $email,
 							'password' => $password,
@@ -354,81 +345,70 @@ class UserController extends Controller
 						$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
 					}
 
-
-
-
-                    if($ajax){
-                        $res = array(
-						 'status' => 'success',
-						 'data' => $externalEncryptData,
-						 'context_url' => request('context_url', ''),
-                      );
-
-                      return $res;
-                     }else{
-                        return Redirect::back();
-                     }
-
-                    //return Redirect::to(Routing::slug('login'));
-
-                }
-
-            } else {
-                //Usuario no existe
-                $user->email = $email;
-                //Buscamos el cliente por email si existe
-                $user_inf = $user->getUserByEmail();
-                $her_pwd = null;
-                //Si existe la contraseña es incorecta
-                if(!empty($user_inf)){
-                    $her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
-                }
-                //Insertamos error de login para tener mas informacion
-                $user->logLoginError($email,md5(Config::get('app.password_MD5').$password),$her_pwd,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
-
-              if($ajax){
-                  if(!empty($user_inf)){
-					if($user_inf[0]->baja_tmp_cli == 'W'){
+					if ($ajax) {
 						$res = array(
-						  'status' => 'error',
-						  'msg' => 'baja_tmp_doble_optin'
-					   );
+							'status' => 'success',
+							'data' => $externalEncryptData,
+							'context_url' => request('context_url', ''),
+						);
+
 						return $res;
-					}elseif($user_inf[0]->baja_tmp_cli == 'S'){
-                          $res = array(
-                            'status' => 'error',
-                            'msg' => 'contact_admin'
-                         );
-                          return $res;
-                      }elseif($user_inf[0]->baja_tmp_cli == 'A'){
-						$res = array(
-						  'status' => 'error',
-						  'msg' => 'activacion_casa_subastas'
-					   );
-						return $res;
+					} else {
+						return Redirect::back();
 					}
-                  }
 
-                  $res = array(
-                      'status' => 'error',
-                      'msg' => 'login_register_failed'
-                   );
+				}
+			} else {
+				//Usuario no existe
+				$user->email = $email;
+				//Buscamos el cliente por email si existe
+				$user_inf = $user->getUserByEmail();
+				$her_pwd = null;
+				//Si existe la contraseña es incorecta
+				if (!empty($user_inf)) {
+					$her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
+				}
+				//Insertamos error de login para tener mas informacion
+				$user->logLoginError($email, md5(Config::get('app.password_MD5') . $password), $her_pwd, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
-                return $res;
+				if ($ajax) {
+					if (!empty($user_inf)) {
+						if ($user_inf[0]->baja_tmp_cli == 'W') {
+							$res = array(
+								'status' => 'error',
+								'msg' => 'baja_tmp_doble_optin'
+							);
+							return $res;
+						} elseif ($user_inf[0]->baja_tmp_cli == 'S') {
+							$res = array(
+								'status' => 'error',
+								'msg' => 'contact_admin'
+							);
+							return $res;
+						} elseif ($user_inf[0]->baja_tmp_cli == 'A') {
+							$res = array(
+								'status' => 'error',
+								'msg' => 'activacion_casa_subastas'
+							);
+							return $res;
+						}
+					}
 
-              }else{
-                return Redirect::to('/');
-              }
+					$res = array(
+						'status' => 'error',
+						'msg' => 'login_register_failed'
+					);
 
+					return $res;
+				} else {
+					return Redirect::to('/');
+				}
+			}
 
+			# Redirigimos en caso de error
 
-            }
-
-            # Redirigimos en caso de error
-
-            return Redirect::to(Routing::slug('login'))->withErrors([]);
-
-        }
+			return Redirect::to(Routing::slug('login'))->withErrors([]);
+		}
 	}
 
 	/**
@@ -3386,7 +3366,6 @@ class UserController extends Controller
 
     public function sendPasswordRecovery()
     {
-
         $email = Request::input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
@@ -3395,26 +3374,36 @@ class UserController extends Controller
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
 
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
+
+			//cualquier string es true, por lo que siempre entra en este if.
+			//Igualmente, todos los clientes tienen el input a "true" ¿Eliminar este if?
             if (!empty($val_post) && $val_post == true) {
-                if (!empty($activate) && $activate == true) {
+
+				//Solamente lo utiliza tauler
+				if (!empty($activate) && $activate == true) {
                     return array(
                         'status' => 'error',
                         'msg' => trans(\Config::get('app.theme').'-app.login_register.email_does_not_exist')
                     );
                 }
 
-                return array(
-                    'status'            => 'error',
-                    'msg'               => trans(\Config::get('app.theme').'-app.login_register.not_valid_mail')
-                );
-             }else{
+				//Lo comentamos para no exponer emails de clientes, aunque sean erroneos retornamos el mismo mensaje
+                //return array('status' => 'error','msg' => trans(\Config::get('app.theme').'-app.login_register.not_valid_mail'));
+				return $successResponse;
+
+             } else {
                 return Redirect::to(Routing::slug('login'))->with('error_pass_recovery', trans(\Config::get('app.theme').'-app.login_register.not_valid_mail'));
             }
         }
 
         $email = urlencode($email);
-        $code = \Tools::encodeStr($email.'-'.$mail_exists[0]->pwdwencrypt_cliweb);
+        $code = ToolsServiceProvider::encodeStr($email.'-'.$mail_exists[0]->pwdwencrypt_cliweb);
         $url = Config::get('app.url').'/'.Config::get('app.locale').'/email-recovery'.'?email='.$email.'&code='.$code;
 
         $email = new EmailLib('RECOVERY_PASSWORD');
@@ -3426,12 +3415,7 @@ class UserController extends Controller
                 $email->send_email();
         }
 
-        return array(
-                'status'            => 'succes',
-                'msg'               => trans(\Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-            );
-
-
+        return $successResponse;
     }
 
     public function getPasswordRecovery()
