@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\View;
 
 use App\Models\Subasta;
 use App\Models\Bloques;
-use Paginator;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use App\Models\Favorites;
 
 class BusquedaController extends Controller
@@ -38,7 +38,6 @@ class BusquedaController extends Controller
             $bloque = new Bloques();
             $sub = new Subasta();
             # Cargamos modelo de subasta para el getLote
-            $page 		= 'all';
             $itemsPerPage  			= 48;
             $totalItems = 0;
 
@@ -133,29 +132,20 @@ class BusquedaController extends Controller
    		# Siempre que haya resultados de la busqueda activa
             if($totalItems > 0) {
                     # Pagina de paginador
-                    if(empty(Route::current()->parameter('page')) or Route::current()->parameter('page') == 1) {
-                        $currentPage    = 1;
-                    } else {
-                        $currentPage    = Route::current()->parameter('page');
-                    }
+					$currentPage = request()->query('page', 1);
 
-                    # Volvemos a buscar los resultados pero esta vez delimitando los items segun paginas e itemsperpagina
-                    $page  	= Route::current()->parameter('page');
-
-                    $replace['paginacion'] = $sub->getOffset($page, $itemsPerPage);
+                    $replace['paginacion'] = $sub->getOffset($currentPage, $itemsPerPage);
 
                     $resultado = $bloque->getResultBlockByKeyname('search',$replace);
 
                     //dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
                     \Tools::normalSearch();
                     # Paginador
-                    $urlPattern     = Routing::slug('busqueda').'/'.$texto.'/(:num)';
-                    $paginator      = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+					$path = request()->fullUrlWithoutQuery(['page']);
+                    $paginator = new Paginator($resultado, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
                     # Info de lotes extendida
-                    $subastaObj = new Subasta();
-                    $resultado = $subastaObj->getAllLotesInfo($resultado, true, false);
-
+                    $resultado = (new Subasta)->getAllLotesInfo($resultado, true, false);
 
             } else {
                 $resultado = array();
