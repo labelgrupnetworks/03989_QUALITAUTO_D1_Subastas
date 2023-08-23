@@ -293,7 +293,11 @@ class UserController extends Controller
 			'email'    => 'required|email',    // make sure the email is an actual email
 			'password' => 'required'     // password can only be alphanumeric
 		);
+
 		$ip = $this->getUserIP();
+		$user = new User();
+		$email = Request::input('email');
+		$password = Request::input('password');
 
 		$responseError = [
 			'status' => 'error',
@@ -305,16 +309,12 @@ class UserController extends Controller
 			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
 		}
 
-		$limiterKey = 'login_' . $request->session()->token();
-
+		$limiterKey = 'login_' . $email;
 		if(Config::get('app.login_attempts', 0) && RateLimiter::tooManyAttempts($limiterKey, Config::get('app.login_attempts', 0))){
 			$responseError['msg'] = 'login_too_many_attempts';
+			Log::info('Exceso de intentos de login, bloqueo en entrada', ['email' => $email, 'ip' => $ip]);
 			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors(['msg' => 'login_too_many_attempts']);
 		}
-
-		$user = new User();
-		$email = Request::input('email');
-		$password = Request::input('password');
 
 		$login = $this->getInfUser($email, $password);
 
@@ -323,6 +323,13 @@ class UserController extends Controller
 			# Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
 			if ($login->tipacceso_cliweb == 'X') {
 				return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors([]);
+			}
+
+			//Necesario por si se eliminan datos de cache
+			if(Config::get('app.login_attempts', 0) && !empty($login->bloqueado_en_cliweb) && now()->diffInSeconds($login->bloqueado_en_cliweb) < Config::get('app.login_attempts_timeout', 60)) {
+				$responseError['msg'] = 'login_too_many_attempts';
+				Log::info('Exceso de intentos de login, bloqueo de base de datos', ['email' => $email, 'ip' => $ip]);
+				return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors(['msg' => 'login_too_many_attempts']);
 			}
 
 			if (!empty(Request::input('remember_me'))) {
@@ -357,19 +364,22 @@ class UserController extends Controller
 			return $ajax ? $responseSuccess : Redirect::back();
 		}
 
-		if(Config::get('app.login_attempts', 0)) {
-			RateLimiter::hit($limiterKey, Config::get('app.login_attempts_timeout', 60));
-		}
-
 		//Usuario no existe
 		$user->email = $email;
 		//Buscamos el cliente por email si existe
 		$user_inf = $user->getUserByEmail();
 		$her_pwd = null;
+
 		//Si existe la contraseña es incorecta
 		if (!empty($user_inf)) {
 			$her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
 		}
+
+        if($this->checkAndAddRateLimitBlock($limiterKey, $user_inf[0]->cod_cliweb ?? null)) {
+            $responseError['msg'] = 'login_too_many_attempts';
+            Log::info('Exceso de intentos de login, bloqueo realizado', ['email' => $email, 'ip' => $ip]);
+        }
+
 		//Insertamos error de login para tener mas informacion
 		$user->logLoginError($email, md5(Config::get('app.password_MD5') . $password), $her_pwd, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
@@ -388,6 +398,26 @@ class UserController extends Controller
 
 		return $ajax ? $responseError : Redirect::to('/');
 	}
+
+    private function checkAndAddRateLimitBlock($key, $codCli = null)
+    {
+        if(!Config::get('app.login_attempts', 0)){
+            return false;
+        }
+
+        RateLimiter::hit($key, Config::get('app.login_attempts_timeout', 60));
+
+        if(!RateLimiter::tooManyAttempts($key, Config::get('app.login_attempts', 0))){
+            return false;
+        }
+
+        //En caso de existir el usuario añadimos el bloqueo a la base de datos
+        if($codCli){
+            FxCliWeb::where('cod_cliweb', $codCli)->update(['bloqueado_en_cliweb' => now()]);
+        }
+
+        return true;
+    }
 
 	/**
 	 * Login para Segre

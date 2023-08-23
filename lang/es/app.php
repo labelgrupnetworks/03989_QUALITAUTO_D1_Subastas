@@ -642,7 +642,7 @@ $lang = [
 		'no_deposit_w' => 'Para poder realizar una oferta debes tener un depósito válido',
 		//'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en :time.',
 		//'attempts_minutes_ago' => '{1} :time minuto|[2,*] :time minutos',
-		'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo más tarde.',
+		'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión.<br>Por favor, inténtelo de nuevo en 5 minutos.',
 	),
 	'msg_neutral' =>
 	array(

@@ -610,8 +610,7 @@ $lang =[
 			'no_deposit_w' => 'In order to place an offer you must have a valid deposit',
 			//'login_too_many_attempts' => 'Too many login attempts. Please try again in :time.',
 			//'attempts_minutes_ago' => '{1} :time minute ago|[2,*] :time minutes ago',
-			'login_too_many_attempts' => 'Too many login attempts. Please try again later.',
-
+			'login_too_many_attempts' => 'Too many login attempts.<br>Please try again in 5 minutes.',
 
 		),
 	'msg_neutral' =>
