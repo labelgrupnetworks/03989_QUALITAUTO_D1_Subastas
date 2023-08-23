@@ -61,6 +61,7 @@ use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 
 class UserController extends Controller
 {
@@ -293,122 +294,99 @@ class UserController extends Controller
 			'password' => 'required'     // password can only be alphanumeric
 		);
 		$ip = $this->getUserIP();
-		// run the validation rules on the inputs from the form
+
+		$responseError = [
+			'status' => 'error',
+			'msg' => 'login_register_failed'
+		];
+
 		$validator = Validator::make(Input::all(), $rules);
 		if ($validator->fails()) {
-			//Log::info('LOGIN_NO_VALIDO no existe EMAIL: "'.Request::input('email').'" PASSWORD: "'.Request::input('password').'"' );
-			if ($ajax) {
-				$res = array(
-					'status' => 'error',
-					'msg' => 'login_register_failed'
-				);
-
-				return $res;
-			} else {
-				return Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
-			}
-		} else {
-
-			# Cargamos el modelo
-			$user           = new User();
-			$email    = Request::input('email');
-			$password = Request::input('password');
-
-			$login = $this->getInfUser($email, $password);
-
-			# Si existe el usuario
-			if (!empty($login)) {
-				# Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
-				if ($login->tipacceso_cliweb != 'X') {
-
-					if (!empty(Request::input('remember_me'))) {
-						$password = Request::input('password');
-						Cookie::queue('user', '' . $email . '%' . $password . '', '525600');
-					}
-
-					//Eliminamos los tokens de sesion anteriores
-					$request->session()->invalidate();
-					$request->session()->regenerateToken();
-
-					$this->SaveSession($login);
-					$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
-
-					$externalLoginData = null;
-					$externalEncryptData = null;
-
-					if (config('app.ps_activate', false)) {
-						$externalLoginData = [
-							'email' => $email,
-							'password' => $password,
-							'back' => request('back', '')
-						];
-						$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
-					}
-
-					if ($ajax) {
-						$res = array(
-							'status' => 'success',
-							'data' => $externalEncryptData,
-							'context_url' => request('context_url', ''),
-						);
-
-						return $res;
-					} else {
-						return Redirect::back();
-					}
-
-				}
-			} else {
-				//Usuario no existe
-				$user->email = $email;
-				//Buscamos el cliente por email si existe
-				$user_inf = $user->getUserByEmail();
-				$her_pwd = null;
-				//Si existe la contraseña es incorecta
-				if (!empty($user_inf)) {
-					$her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
-				}
-				//Insertamos error de login para tener mas informacion
-				$user->logLoginError($email, md5(Config::get('app.password_MD5') . $password), $her_pwd, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
-
-				if ($ajax) {
-					if (!empty($user_inf)) {
-						if ($user_inf[0]->baja_tmp_cli == 'W') {
-							$res = array(
-								'status' => 'error',
-								'msg' => 'baja_tmp_doble_optin'
-							);
-							return $res;
-						} elseif ($user_inf[0]->baja_tmp_cli == 'S') {
-							$res = array(
-								'status' => 'error',
-								'msg' => 'contact_admin'
-							);
-							return $res;
-						} elseif ($user_inf[0]->baja_tmp_cli == 'A') {
-							$res = array(
-								'status' => 'error',
-								'msg' => 'activacion_casa_subastas'
-							);
-							return $res;
-						}
-					}
-
-					$res = array(
-						'status' => 'error',
-						'msg' => 'login_register_failed'
-					);
-
-					return $res;
-				} else {
-					return Redirect::to('/');
-				}
-			}
-
-			# Redirigimos en caso de error
-
-			return Redirect::to(Routing::slug('login'))->withErrors([]);
+			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
 		}
+
+		$limiterKey = 'login_' . $request->session()->token();
+
+		if(Config::get('app.login_attempts', 0) && RateLimiter::tooManyAttempts($limiterKey, Config::get('app.login_attempts', 0))){
+			$responseError['msg'] = 'login_too_many_attempts';
+			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors(['msg' => 'login_too_many_attempts']);
+		}
+
+		$user = new User();
+		$email = Request::input('email');
+		$password = Request::input('password');
+
+		$login = $this->getInfUser($email, $password);
+
+		# Si existe el usuario
+		if (!empty($login)) {
+			# Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
+			if ($login->tipacceso_cliweb == 'X') {
+				return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors([]);
+			}
+
+			if (!empty(Request::input('remember_me'))) {
+				$password = Request::input('password');
+				Cookie::queue('user', '' . $email . '%' . $password . '', '525600');
+			}
+
+			//Eliminamos los tokens de sesion anteriores
+			$request->session()->invalidate();
+			$request->session()->regenerateToken();
+
+			$this->SaveSession($login);
+			$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
+
+			$externalEncryptData = null;
+
+			if (config('app.ps_activate', false)) {
+				$externalLoginData = [
+					'email' => $email,
+					'password' => $password,
+					'back' => request('back', '')
+				];
+				$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
+			}
+
+			$responseSuccess = [
+				'status' => 'success',
+				'data' => $externalEncryptData,
+				'context_url' => request('context_url', ''),
+			];
+
+			return $ajax ? $responseSuccess : Redirect::back();
+		}
+
+		if(Config::get('app.login_attempts', 0)) {
+			RateLimiter::hit($limiterKey, Config::get('app.login_attempts_timeout', 60));
+		}
+
+		//Usuario no existe
+		$user->email = $email;
+		//Buscamos el cliente por email si existe
+		$user_inf = $user->getUserByEmail();
+		$her_pwd = null;
+		//Si existe la contraseña es incorecta
+		if (!empty($user_inf)) {
+			$her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
+		}
+		//Insertamos error de login para tener mas informacion
+		$user->logLoginError($email, md5(Config::get('app.password_MD5') . $password), $her_pwd, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
+
+		if (!empty($user_inf)) {
+
+			if ($user_inf[0]->baja_tmp_cli == 'W') {
+				$responseError['msg'] = 'baja_tmp_doble_optin';
+
+			} elseif ($user_inf[0]->baja_tmp_cli == 'S') {
+				$responseError['msg'] = 'contact_admin';
+
+			} elseif ($user_inf[0]->baja_tmp_cli == 'A') {
+				$responseError['msg'] = 'activacion_casa_subastas';
+			}
+		}
+
+		return $ajax ? $responseError : Redirect::to('/');
 	}
 
 	/**

@@ -608,6 +608,11 @@ $lang =[
 			'asign_to_ministery' => 'The previous lot has been awarded to the Ministry.',
 			'bidders_ratio' => 'The sum of the ratios must add up to 100%.',
 			'no_deposit_w' => 'In order to place an offer you must have a valid deposit',
+			//'login_too_many_attempts' => 'Too many login attempts. Please try again in :time.',
+			//'attempts_minutes_ago' => '{1} :time minute ago|[2,*] :time minutes ago',
+			'login_too_many_attempts' => 'Too many login attempts. Please try again later.',
+
+
 		),
 	'msg_neutral' =>
 		array (

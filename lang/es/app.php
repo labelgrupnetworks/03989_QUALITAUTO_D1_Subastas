@@ -640,6 +640,9 @@ $lang = [
 		'bidders_ratio' => 'La suma de los ratios debe sumar 100%',
 		'noPhoneInPhoneBid' => 'Es necesario que indique su número de teléfono',
 		'no_deposit_w' => 'Para poder realizar una oferta debes tener un depósito válido',
+		//'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en :time.',
+		//'attempts_minutes_ago' => '{1} :time minuto|[2,*] :time minutos',
+		'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo más tarde.',
 	),
 	'msg_neutral' =>
 	array(
