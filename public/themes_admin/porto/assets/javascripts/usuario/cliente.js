@@ -223,3 +223,110 @@ function exportClients(event) {
 		});
 
 }
+
+document.getElementById('clientFile').addEventListener('change', updateFiles);
+function updateFiles(event) {
+	const files = event.target.files;
+
+	//if no files, return
+	if (files.length == 0) {
+		return;
+	}
+
+	const formData = new FormData();
+	//append all files to formData
+	for (let i = 0; i < files.length; i++) {
+		formData.append('files[]', files[i]);
+	}
+
+	const route = document.getElementById('store_file_route').value;
+	const notify = loadNotify('Subiendo archivos...');
+
+	fetch(route, {
+		method: 'POST',
+		body: formData
+	})
+	.then(res => {
+		if (!res.ok) {
+			throw new Error('Error al subir los archivos');
+		}
+		return res.json()
+	})
+	.then(data => {
+		if (data.status != 'success') {
+			throw new Error(data.message);
+		}
+		renderTableBody(data.files);
+
+		$(event.target).val('');
+
+		saved('Archivos subidos correctamente');
+	})
+	.catch(err => error(err))
+	.finally(() => notify.remove());
+}
+
+function renderTableBody(files){
+
+	$('#bodyTableFile').empty();
+	$('#bodyTableFile').append(files.map((file) => {
+		const row = $('<tr></tr>')
+			.append($('<td></td>').append(
+				$('<a></a>')
+					.attr('href', file.link)
+					.attr('target', '_blank')
+					.text(file.name)
+			))
+			.append($('<td></td>').text(file.size_kb))
+			.append($('<td></td>').text(file.last_modified_human))
+			.append($('<td></td>').append(
+				$('<button></button>')
+					.addClass('btn btn-xs btn-danger')
+					.attr('type', 'button')
+					.text('Eliminar')
+					.on('click', () => deleteFile(file.unlink))
+			));
+		return row;
+	}));
+}
+
+function deleteFile(route) {
+
+	const notify = loadNotify('Eliminando archivo...');
+	fetch(route, {
+		method: 'DELETE',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			_token: document.querySelector('[name="_token"]').value
+		 })
+	})
+	.then(res => {
+		if (!res.ok) {
+			throw new Error('Error al eliminar el archivo');
+		}
+		return res.json()
+	})
+	.then(data => {
+		if (data.status != 'success') {
+			throw new Error(data.message);
+		}
+
+		renderTableBody(data.files);
+		saved('Archivo eliminado correctamente');
+	})
+	.catch(err => error(err))
+	.finally(() => notify.remove());
+}
+
+function loadNotify(message = 'Cargando...') {
+	return new PNotify({
+		title: message,
+		type: 'info',
+		textTrusted: true,
+		icon: 'fa fa-spin fa-spinner',
+		hide: false,
+		destroy: true,
+		closer: false,
+		sticker: false
+	});
+}
