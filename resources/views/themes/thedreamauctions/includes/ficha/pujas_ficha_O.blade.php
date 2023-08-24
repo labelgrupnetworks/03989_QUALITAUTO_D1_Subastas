@@ -175,10 +175,17 @@
 		</div>
 
 		<small class="mt-1">
-			{{ trans("$theme-app.lot.add_buyer") }}
+			@if(config('app.buyer_premium_active', false))
+			{{ trans("$theme-app.lot.add_buyer", ['commission' => config('app.addComisionEmailBid') . '%']) }}
 			<i class="fa fa-question-circle" style="cursor: pointer" aria-hidden="true" data-container="body"
-				data-toggle="popover" data-placement="bottom" data-title="{{ trans("$theme-app.lot.add_buyer_title") }}" data-html="true" data-content='{!! trans("$theme-app.lot.add_buyer_content") !!}'>
+				data-toggle="popover" data-placement="bottom" data-title="{{ trans("$theme-app.lot.add_buyer_title") }}" data-html="true" data-content='{!! trans("$theme-app.lot.add_buyer_content", ['commission' => config('app.addComisionEmailBid') . '%']) !!}'>
 			</i>
+			@else
+			{{ trans("$theme-app.lot.not_buyer_premium") }}
+			<i class="fa fa-question-circle" style="cursor: pointer" aria-hidden="true" data-container="body"
+				data-toggle="popover" data-placement="bottom" data-title="{{ trans("$theme-app.lot.not_buyer_title") }}" data-html="true" data-content='{!! trans("$theme-app.lot.not_buyer_content") !!}'>
+			</i>
+			@endif
 		</small>
 	</div>
 	<div class="row ficha-separator"></div>

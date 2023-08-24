@@ -78,41 +78,17 @@
                     <ul class="menu-principal-content d-flex justify-content-space-between align-items-center">
 
                             <span role="button" class="close-menu-reponsive hidden-lg hidden-md">X</span>
-                                <?php /*Inicio
-                                <li class="flex-display">
-                                    <a class="color-letter flex-display link-header justify-center align-items-center" title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/{{$lang}}">
-                                        <span>{{ trans(\Config::get('app.theme').'-app.home.home')}}</span>
-                                    </a>
-                                </li>
-                               */ ?>
-                            <?php
-                               $subastaObj        = new \App\Models\Subasta();
-                               $has_subasta = $subastaObj->auctionList ('S', 'W');
-                               if( empty($has_subasta) && Session::get('user.admin')){
-                                   $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                               }
 
-                            ?>
 
-                            @if(!empty($has_subasta))
-                              <li>
-                                  <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
-                                    {{ trans(\Config::get('app.theme').'-app.foot.auctions') }}
-                                </a>
-                                </li>
+							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+                              	<li>
+                                  	<a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
+                                    	{{ trans(\Config::get('app.theme').'-app.foot.auctions') }}
+                                	</a>
+                            	</li>
                             @endif
 
-                            <?php
-                              $has_subasta = $subastaObj->auctionList ('S', 'V');
-                              if(empty($has_subasta) && Session::get('user.admin')){
-                                   $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
-                               }
-                            ?>
-
-                            <?php
-                                $has_subasta = $subastaObj->auctionList ('H');
-                            ?>
-                            @if(!empty($has_subasta))
+                            @if($global['subastas']->has('H'))
                                 <li>
                                     <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}
                                     </a>

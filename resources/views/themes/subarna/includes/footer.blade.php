@@ -47,9 +47,9 @@
 							</li>
 							@endif
 
-                            {{-- <li>
+                            <li>
 								<a class="footer-link" href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a>
-							</li> --}}
+							</li>
                             {{--
 							<li>
 								<a class="footer-link" href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a>

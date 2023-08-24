@@ -28,7 +28,6 @@ header("X-Frame-Options:     DENY");
 </script>
 
 <link rel="shortcut icon" href="<?='/themes/'.$theme.'/img/favicon.ico'?>" />
-<link href="//fonts.googleapis.com/css?family=PT+Sans:400,700,700italic,400italic" rel="stylesheet" type="text/css">
 
 @if( env('APP_DEBUG'))
     <meta name="robots" content="noindex">
@@ -62,24 +61,23 @@ header("X-Frame-Options:     DENY");
 
 <!-- Global Packages -->
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
-<link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/5.4.2/css/all.min.css') }}">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/4.7.0/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
-<link rel="stylesheet" type="text/css" href="/css/jquery.jqzoom.css" >
-<link rel="stylesheet" type="text/css" href="/css/hint.css" >
+
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" />
 <link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick.css') }}" />
 <link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" />
 <!-- Magnific popup -->
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/animate/3.5.2/animate.min.css') }}">
+
+@stack('styles')
+
 <!-- Common Javascript -->
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
 <link href="{{ Tools::urlAssetsCache('/css/default/labelframework.css') }}" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Rubik:400,500,700,900" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- Common Javascript -->
 <script>
@@ -114,22 +112,19 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
-<script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
 <script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
+
+@stack('scripts')
+
+<script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
-<script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
+
+{{-- <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script> --}} {{-- No veo el uso --}}
+{{-- <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script> --}}
+
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
-<script src="/js/user/register.js"></script>
 
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-        async defer>
-    </script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+

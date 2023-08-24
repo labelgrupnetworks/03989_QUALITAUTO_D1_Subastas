@@ -4,6 +4,18 @@
 	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
 @stop
 
+@push('styles')
+<link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
+<link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
+<link rel="stylesheet" type="text/css" href="/css/jquery.jqzoom.css">
+<link rel="stylesheet" type="text/css" href="/css/hint.css" >
+@endpush
+
+@push('scripts')
+<script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
+<script src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
+@endpush
+
 
 @section('content')
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/autocomplete/jquery.auto-complete.css') }}" />

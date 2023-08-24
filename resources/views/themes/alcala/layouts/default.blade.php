@@ -24,7 +24,7 @@
     <i class="fa fa-chevron-up" aria-hidden="true"></i>
 
 </div>
- <?php //Tools::querylog(); ?>
+{{--  {!! Tools::querylog() !!} --}}
 </body>
 
 </html>
