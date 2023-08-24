@@ -916,6 +916,7 @@ $lang =[
 			'unit_price' => 'unit price',
 			'units' => 'Units',
 			'text_transfer' => 'You can make your transfer payment of :pago € to the following bank account <br> :cuenta',
+			'shop' => "Shop",
 			"iva" => "VAT",
 			"unit_iva" => "unit VAT",
 			'shop' => "Shop",
