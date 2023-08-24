@@ -46,8 +46,12 @@ $pageName = Route::currentRouteName();
 						@foreach(Config::get('app.locales') as $key => $value)
 						@php
 							$route = '';
+							//get current route url without domain
+							$routePath = Route::getFacadeRoot()->current()->uri();
+
+
 							if($key != $lang){
-								$route = "/$key". TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
+								$route = "/$key". TradLib::getRouteTranslate((substr($routePath, 4)), \App::getLocale(), $key);
 							}
 						@endphp
 						<li>
