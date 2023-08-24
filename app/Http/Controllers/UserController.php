@@ -8,7 +8,7 @@ use Redirect;
 //opcional
 use DB;
 use Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
@@ -62,6 +62,7 @@ use GuzzleHttp;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -160,7 +161,8 @@ class UserController extends Controller
 
 			$user->password =  md5(Config::get('app.password_MD5').$user->password);
 			$login          = $user->login_encrypt();
-			if(empty($login) && strlen($password)>8){
+
+			if(!Config::get('app.strict_password_validation', false) && empty($login) && strlen($password) > 8){
 				$user->password = substr($password,0,8);
 				$user->password =  md5(Config::get('app.password_MD5').$user->password);
 				$login          = $user->login_encrypt();
@@ -289,10 +291,10 @@ class UserController extends Controller
 
 	public function login_post(HttpRequest $request, $ajax = false)
 	{
-		$rules = array(
+		$rules = [
 			'email'    => 'required|email',    // make sure the email is an actual email
 			'password' => 'required'     // password can only be alphanumeric
-		);
+		];
 
 		$ip = $this->getUserIP();
 		$user = new User();
@@ -621,12 +623,16 @@ class UserController extends Controller
          return json_encode($response);
          *
          */
-        $rules = array(
+        $rules = [
             //'regtype'  => 'required',          // Tipo de usuario
             'email'    => 'required|email',    // make sure the email is an actual email
             'password' => 'required|min:5'     // password can only be alphanumeric and has to be greater than 5 characters
             //Si se modifica el minimo de caracteres para el password, ha de cambiarse tambien en el forms.js
-        );
+		];
+
+		if(Config::get('app.strict_password_validation', false)) {
+			$rules['password'] = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
+		}
 
         //VALIDAR SI EXISTE EL DADO DE ALTA PARA ESTA EMPRESA Y GRUPO DE EMPRESAS
 
@@ -4011,13 +4017,21 @@ class UserController extends Controller
     }
 
     //Panel para modificar contraseña, el usuario ha pedido recibir un email para modificarla
-    public function changePassw(){
+    public function changePassw(HttpRequest $request){
         $user = new User();
 
         $res = array(
             'status' => 'error',
             'msg' => 'user_panel_inf_error'
          );
+
+		if(Config::get('app.strict_password_validation', false)) {
+			$validations = $this->checkIsValidPassword($request);
+			if(!empty($validations)){
+				return response()->json(['status' => 'error', 'message' => $validations->all()], 422);
+			}
+		}
+
 
         $email = Request::input('email');
         $password = Request::input('password');
@@ -4718,6 +4732,21 @@ class UserController extends Controller
 		Web_Preferences::where('COD_CLIWEB_PREF', $codCli)->where('ID_PREF', $form['preference_code'])->delete();
 
 		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
+	}
+
+	private function checkIsValidPassword(HttpRequest $request)
+	{
+		$rules = [
+			'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'],
+		];
+
+		$validator = Validator::make($request->all(), $rules);
+
+		if($validator->fails()){
+			return $validator->errors();
+		}
+
+		return null;
 	}
 
 }

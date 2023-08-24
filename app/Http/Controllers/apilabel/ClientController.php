@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\apilabel;
 
-
-
 use Controller;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Request;
 
 use App\Models\V5\FxCli;
@@ -16,6 +14,7 @@ use App\libs\EmailLib;
 use DB;
 use stdClass;
 use App\Models\V5\FsParams;
+use Illuminate\Validation\Rules\Password;
 
 class ClientController extends ApiLabelController
 {
@@ -30,6 +29,13 @@ class ClientController extends ApiLabelController
 	#la direccion tiene 60 pero se han de partir en dos de 30
 	protected  $rules = array("idorigincli" => "required|alpha_num|max:8" ,  "idnumber"=> "max:20", "email" => "email|max:80", "password" => "max:256" , "name"=>"max:60", "registeredname" => "max:60", "country" => "alpha|max:2", "province" => "max:30", "city" => "max:30", "zipcode" => "max:10", "address" => "max:60", "phone" => "max:40", "mobile" => "max:40", "fax" => "max:40", "legalentity" => "alpha_num|max:1", "notes" =>"max:200", "temporaryblock" => "alpha_num|max:1", "createdate" => "date_format:Y-m-d H:i:s|nullable" , "updatedate" => "date_format:Y-m-d H:i:s|nullable",  "source" => "alpha_num|max:2|nullable", "documenttype" =>"alpha_num|max:1|nullable", "docrepresentative" => "max:20|nullable", "typerepresentative" => "alpha_num|max:1|nullable" , "profession" => "max:15|nullable", "enviocatalogo" => "alpha_num|max:1|nullable", "prefix" => "alpha_num|max:4|nullable", "language" => "alpha_num|max:2|nullable", "sg_cli" => "alpha_num|max:2|nullable", "birthdate" =>"date_format:Y-m-d H:i:s|nullable");
 
+	public function __construct()
+	{
+		if(Config::get('app.strict_password_in_api', false)){
+			$this->rules['password'] = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
+		}
+		parent::__construct();
+	}
 
     public function postClient(){
 
@@ -60,7 +66,6 @@ class ClientController extends ApiLabelController
 					}else{
 						$numdigits = 6;
 					}
-					
 
                 foreach($items as $key => $item){
 					$items[$key]["codcli"] =sprintf("%'.0".$numdigits ."d", $codcli);

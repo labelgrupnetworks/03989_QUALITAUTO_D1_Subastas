@@ -1269,7 +1269,7 @@ function countdown_timer_ficha(countdown) {
 		});
 
 	}
-	
+
 
 	var timeFormat = time_format(ToFinish, countdown.data('format'));
 	countdown.html(timeFormat);
@@ -1518,6 +1518,14 @@ $(document).ready(function () {
 					}
 					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 
+				},
+				error: function (response) {
+					$('button', $this).removeAttr('disabled');
+
+					const errors = response.responseJSON.message;
+					const html = errors.map(error => `<p>${error}</p>`).join('');
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+					$("#modalMensaje #insert_msg").html(html);
 				}
 			});
 
