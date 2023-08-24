@@ -1,4 +1,4 @@
-<div class="btn-group btn-grop-calendar">
+<div class="btn-group btn-grop-calendar btn-block">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         {{ trans("$theme-app.calendar.add_calendar") }} <span class="caret"></span>
