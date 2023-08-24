@@ -187,20 +187,11 @@
     }
 
     .auctions-list{
-        padding: 0px 0 50px 0;
+        padding: 0px 1rem 50px;
     }
 
     .lotes-destacados-tittle{
         width: 400px;
-        /*-webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        transform: rotate(-90deg);
-        height: 137px;
-        position: absolute;
-        font-size: 18px;
-        top: -198px;
-        text-align: right;
-        left: 0;*/
     }
 
     .lotes-destacados-principal-title{
@@ -250,10 +241,29 @@
 	.text-xs-center{
 		text-align: initial;
 	}
+}
+
+@media(min-width: 992px) {
+	.auctions-list {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.auctions-auction-card {
+		flex-direction: row;
+	}
+
+	.auction-card__info {
+		border-right: 1px solid lightgray;
+	}
+
+	.auction-card__data {
+		flex-direction: row;
+	}
 
 
 
 }
+
 @media (max-width: 768px) {
 
 	.text-xs-center{

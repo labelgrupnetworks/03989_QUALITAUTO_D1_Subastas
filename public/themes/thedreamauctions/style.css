@@ -393,6 +393,7 @@ img.img-openDragon{
     white-space: initial;
     color: initial;
     background: white;
+	max-width: 340px;
 }
 
 .contenido.contenido-web{

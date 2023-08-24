@@ -2154,6 +2154,102 @@ margin-right: 5px;
     border-radius: 4px;
 }
 
+.auctions-auction-card {
+	position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+}
+
+.auction-card__info {
+	flex: 2;
+    position: relative;
+	display: flex;
+    flex-direction: column;
+}
+
+.auction-card_title {
+	border-bottom: 1px solid lightgray;
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+    text-wrap: balance;
+	font-weight: 600;
+}
+
+.auction-card__data {
+	flex: 1;
+	display: flex;
+    padding: 1rem;
+    gap: 1rem;
+	position: relative;
+	flex-direction: column;
+}
+
+.auction-card__image-wrap img {
+	margin: auto;
+	width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 170px;
+}
+
+.auction-card__image-wrap, .auction-card__dates {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.auction-card__buttons {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.auction-card__buttons :is(a, button) {
+	font-weight: 500;
+    transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+    -o-transition: 0.3s linear all;
+	border-radius: 0;
+}
+
+.auction-card__button_principal {
+	background: var(--btn-primary-background);
+    color: var(--btn-primary-text);
+}
+
+.auction-card__button_principal:hover {
+	background: var(--btn-primary-background-hover);
+    color: var(--btn-primary-text-hover);
+}
+
+.auction-card__button_secondary {
+	background: var(--btn-secondary-background);
+    color: var(--btn-secondary-text);
+	border: 1px solid var(--btn-secondary-text);
+}
+
+.auction-card__button_secondary:hover {
+	background: var(--btn-secondary-background-hover);
+    color: var(--btn-secondary-text-hover);
+}
+
+.auctions-auction-card .snippet_documentacion {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    bottom: 0;
+    padding: 1rem;
+    background-color: #fafafa;
+}
+
 .auction-item-icon-desc {
     margin-bottom: 5px;
     padding: 0 0;
@@ -2176,6 +2272,9 @@ margin-right: 5px;
 
 .auctions-list {
     padding: 110px 0;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
 }
 
 .auction-container {

@@ -1542,7 +1542,7 @@ footer {
     background-color: #282828;
     min-height: 325px;
     padding: 60px 0 0;
-    background-image: url(/themes/alcala/assets/img/pattern.png);
+    background-image: url("/themes/alcala/assets/img/pattern.webp");
     color: white;
 }
 footer div.module_footer address {
@@ -2300,8 +2300,6 @@ hr { background-color: #f9f3ce ; height: 1px; border: 0; }
     overflow: hidden;
     text-align: justify;
     color: #707070 !important;
-    font-family: 'Rubik', sans-serif !important;
-
 }
 
 .square .data-price p.salida-title {
@@ -2390,7 +2388,6 @@ a.bid-live{
     font-size: 12px !important;
     text-align: justify;
     color: #707070 !important;
-    font-family: 'Rubik', sans-serif !important;
 }
 .square .desc_lot {
     height: 36px;
@@ -5228,7 +5225,12 @@ header {border-bottom:lightgray 1px solid;}
     .first_check {margin-top:70px;}
 }
 
-.slick-slide img {margin:auto;}
+.slick-slide img {
+	margin:auto;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
 
 .slick-prev:before {
     color: #000;
@@ -5343,4 +5345,8 @@ width: 100%;
 /* Quitar el seleccionar idioma del selector de traducción de google */
 .google_translate .goog-te-gadget-simple a span:nth-child(1) {
 	display: none;
+}
+
+#autoformulario input::placeholder {
+	color: transparent;
 }
