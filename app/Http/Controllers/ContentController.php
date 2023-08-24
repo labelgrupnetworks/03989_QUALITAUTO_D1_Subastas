@@ -204,7 +204,6 @@ class ContentController extends Controller
 		$lots = null;
 		$lotsQuery = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
 
-
 		$lotlistcontroller = new LotListController();
 		$lotlist = $lotlistcontroller->setRef($lotsQuery);
 
@@ -212,7 +211,11 @@ class ContentController extends Controller
 		if (!empty($lotlist) && !empty($lotlist->refLots)) {
 
 			$fgasigl0 = new FgAsigl0();
-			$lots = $fgasigl0->GetLotsByRefAsigl0($lotlist->refLots)->get();
+			$lots = $fgasigl0->GetLotsByRefAsigl0($lotlist->refLots)
+			->when(request('order'), function ($query, $order) {
+				return $query->orderBy($order);
+			})
+			->get();
 
 			#seteamos las variables para la blade
 			$lots = $lotlistcontroller->setVarsLot($lots);

@@ -9,7 +9,7 @@ use Routing;
 use Route;
 use Illuminate\Support\Facades\Request as Input;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use Session;
 use DateTime;
 
@@ -24,7 +24,7 @@ use App\Models\Favorites;
 use App\Models\Subalia;
 use App\libs\EmailLib;
 use DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
@@ -3631,12 +3631,13 @@ class subastaTiempoRealController extends Controller
             $no_enviar= true;
              Log::info('-----No hay sesión, no enviar email: ');
 
-        }//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
-        elseif( time() > $start_session && (strtoupper($lote->tipo_sub) != 'O' && strtoupper($lote->tipo_sub) != 'P' )){
-            $no_enviar= true;
-             Log::info('-----La session ya ha empezado, no enviar email: ');
-
-        }else{
+        }
+		//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
+		//Si tienen el config send_email_tr, omitimos el resto
+        elseif( time() > $start_session && (strtoupper($lote->tipo_sub) != 'O' && strtoupper($lote->tipo_sub) != 'P' ) && !Config::get('app.send_email_tr', 0)){
+			$no_enviar= true;
+			Log::info('-----La session ya ha empezado, no enviar email: ');
+        } else {
 
            if($orden_o_puja == "orden")
             {
@@ -4317,11 +4318,12 @@ class subastaTiempoRealController extends Controller
 
                  Log::info('-----No hay sesión, no enviar email: ');
                   return;
-            }//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
-            elseif( time() > $start_session && (strtoupper($inf_lot->tipo_sub) != 'O' && strtoupper($inf_lot->tipo_sub) != 'P' )){
-
-                 Log::info('-----La session ya ha empezado, no enviar email: ');
-                  return;
+            }
+			//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real
+			//o la sesión ya ha acabado, excepto si tienen config send_email_tr.
+            elseif(time() > $start_session && (strtoupper($inf_lot->tipo_sub) != 'O' && strtoupper($inf_lot->tipo_sub) != 'P' && !Config::get('app.send_email_tr', 0))){
+				Log::info('-----La session ya ha empezado, no enviar email: ');
+				return;
 			}
 
             $user->cod = $subasta->cod;
@@ -4331,6 +4333,11 @@ class subastaTiempoRealController extends Controller
 
             if(empty($inf_user) || empty($inf_user->email_cliweb)){
                 return;
+			}
+
+			if(Config::get('app.send_email_lot_increment_bid_to_all_users_with_deposit', 0)){
+				//enviar email a todos los usuarios que tengan un deposito valido por este lote
+				(new MailController())->sendLotIncrementBidToAllUsersWithDepositNotification($subasta->cod, $subasta->ref, $subasta->licit);
 			}
 
 			$inf_lot_translate = $subasta->getMultilanguageTextLot($inf_lot->num_hces1,$inf_lot->lin_hces1);

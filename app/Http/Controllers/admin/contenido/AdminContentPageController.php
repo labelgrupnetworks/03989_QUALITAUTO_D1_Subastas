@@ -181,11 +181,51 @@ class AdminContentPageController extends Controller
 
 		$urlPath = $webContentPage->upsertMediaResouce($request->file('file'));
 
+		$storeInOtherLanguages = Config::get('app.web_content_resource_multilanguage', true);
+		if ($storeInOtherLanguages) {
+			$this->cloneContentResourceToOtherLanguages($webContentPage);
+		}
+
 		return response()->json([
 			'status' => 'success',
 			'message' => 'Contenido actualizado correctamente',
 			'data' => $urlPath
 		]);
+	}
+
+	private function cloneContentResourceToOtherLanguages(Web_Content_Page $webContentPage)
+	{
+		//damos por hecho que solo tenemos español e ingles
+		$otherWebBlogLang = $webContentPage->webBlogLang->otherLangs()->first();
+		if(!$otherWebBlogLang){
+			return;
+		}
+
+		//buscamos si existe el mismo tipo de contenido en el otro idioma
+		$webContentPageLang = Web_Content_Page::query()
+			->where([
+				['table_rel_content_page', $webContentPage->table_rel_content_page],
+				['rel_id_content_page', $otherWebBlogLang->id_web_blog_lang],
+				['type_content_page', $webContentPage->type_content_page],
+				['type_id_content_page', $webContentPage->type_id_content_page]
+			])->first();
+
+		//si no existe lo creamos identico al que ya tenemos pero con el id del otro idioma
+		if (!$webContentPageLang) {
+
+			$maxOrder = Web_Content_Page::where([
+				['table_rel_content_page', $webContentPage->table_rel_content_page],
+				['rel_id_content_page', $otherWebBlogLang->id_web_blog_lang]
+			])->max('order_content_page');
+
+			$webContentPageLang = Web_Content_Page::create([
+				'table_rel_content_page' => $webContentPage->table_rel_content_page,
+				'rel_id_content_page' => $otherWebBlogLang->id_web_blog_lang,
+				'type_content_page' => $webContentPage->type_content_page,
+				'type_id_content_page' => $webContentPage->type_id_content_page,
+				'order_content_page' => $maxOrder + 1,
+			]);
+		}
 	}
 
 	public function uploadAsset(Request $request)

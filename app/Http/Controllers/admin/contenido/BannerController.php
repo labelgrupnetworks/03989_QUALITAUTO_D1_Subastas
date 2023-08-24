@@ -422,7 +422,7 @@ class BannerController extends Controller
 				$constraint->upsize();
 			});
 		}
-		$imageSave->save($path, 90, $extension);
+		$imageSave->save($path, 80, $extension);
 	}
 
 	function editar_run()
@@ -547,7 +547,7 @@ class BannerController extends Controller
 			$idItem = $item->id;
 
 			# si aun no tenemos una imagen para ese baner
-			if(empty($images[$idBanner])){
+			if(empty($images[$idBanner]) || $images[$idBanner] == "/img/noFoto.png"){
 
 				$path = "$rutaImg/$idBanner/$idItem/$nameImg";
 				$extension = $this->getValidExtension($path);

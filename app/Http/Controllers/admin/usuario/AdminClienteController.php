@@ -243,7 +243,10 @@ class AdminClienteController extends Controller
 		//sobresctibimos campos no editables
 		$formulario->identificacion['codcli'] = FormLib::TextReadOnly('codcli', 0, $cliente->codcli);
 
-		return view('admin::pages.usuario.cliente_v2.edit', compact('formulario', 'clienteFxCli', 'cliente'));
+		//archivos de cliente
+		$files = (new AdminClienteFilesController())->getClientFiles($cliente->codcli);
+
+		return view('admin::pages.usuario.cliente_v2.edit', compact('formulario', 'clienteFxCli', 'cliente', 'files'));
 	}
 
 	public function update(ClienteRequest $request)

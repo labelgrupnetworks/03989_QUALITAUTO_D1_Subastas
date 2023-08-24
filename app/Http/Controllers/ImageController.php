@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\libs\CacheLib;
 use Illuminate\Routing\Controller as BaseController;
 
 use App\libs\ImageGenerate;
-
-use Config;
-use DB;
+use App\Models\V5\Web_Images_Size;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request as HttpRequest;
 use Request;
+use Intervention\Image\Facades\Image;
 
 class ImageController extends BaseController
 {
@@ -180,6 +184,64 @@ class ImageController extends BaseController
 
     }
 
+	function generateImageLot(HttpRequest $request)
+	{
+		$num_hces = $request->input('num_hces1');
+		$lin_hces = $request->input('lin_hces1');
+
+		$emp = Config::get('app.emp');
+
+		$sizes = CacheLib::rememberCache('image_sizes', 1200, function() {
+			return Web_Images_Size::query()
+				->where('name_web_images_size', 'like', '%lote%')->pluck('size_web_images_size');
+		});
+
+
+		$path = "img/$emp/$num_hces/";
+		$images = array_diff(scandir($path), ['.', '..']);
+
+		if(!empty($lin_hces)){
+			$images = array_filter($images, function($image) use ($lin_hces) {
+				[$imageName, $extension] = explode(".", $image);
+
+				$imageParams = explode("-", $imageName);
+				[$imgEmp, $imgNum, $imgLin] = $imageParams;
+
+				$imgLin = strpos($imgLin, "_") === false ? $imgLin : explode("_", $imgLin)[0];
+				return $imgLin == $lin_hces;
+			});
+		}
+
+		foreach ($images as $image) {
+			[$imageName, $extension] = explode(".", $image);
+			$imagePath = public_path($path.$image);
+
+			foreach ($sizes as $size) {
+				set_time_limit(60);
+				$directoryThumb = "img/thumbs/$size/$emp/$num_hces";
+				if(!is_dir(public_path($directoryThumb))){
+					mkdir(public_path($directoryThumb), 0775, true);
+					chmod(public_path($directoryThumb), 0775);
+				}
+
+				$imageThumb = public_path("$directoryThumb/$imageName.webp");
+
+				$imageMake = Image::make($imagePath);
+
+				$imageMake->resize($size, null, function ($constraint) {
+					$constraint->aspectRatio();
+					$constraint->upsize();
+				});
+
+				$imageMake->save($imageThumb, 80, 'webp');
+				echo "<br><br>Imágen $imageName $size generada:<br><br>";
+			}
+
+		}
+
+		dd("fin");
+	}
+
     function generare_images_lot($lot,$images_generates, $sizes){
 
          $new_image_folders = \Config::get("app.new_image_folders");
@@ -268,3 +330,4 @@ class ImageController extends BaseController
             return $images_generates;
     }
 }
+

@@ -863,6 +863,11 @@ class LotListController extends Controller
 				$description = $this->clearWords($description, \Tools::getLanguageComplete(Config::get("app.locale")));
 
                 if(\Config::get("app.search_engine") ){
+					$excludedWords =[];
+					#sacamos listado de palabras excluidas
+					foreach(  \DB::select("SELECT spw_word as excluded FROM ctx_stopwords") as $excludeWord){
+						$excludedWords[]=$excludeWord->excluded;
+					}
 
                     $words = explode(" ",$description);
                     $search="";
@@ -871,22 +876,31 @@ class LotListController extends Controller
 
                     foreach($words as $key => $word ){
 
-                        #ponemos el comodin de busqueda % para que busque cualquier texto despues de la palabra y dolar $ para que busque por stem (raiz, origen de una palabra)
-                        $search .=$and. " $".$word."% ";
-                         $and=" AND ";
+						#que no sea una palabra escluida por Catsearctch
+                      	if(!in_array($word,$excludedWords)){
+						#ponemos el comodin de busqueda % para que busque cualquier texto despues de la palabra y dolar $ para que busque por stem (raiz, origen de una palabra)
+
+							$search .=$and. " $".$word."% ";
+							$and=" AND ";
+						}
+
 					}
 
-					#si el idioma es el principal buscamos en hces1, si no en hces1_lang
-					if(\Tools::getLanguageComplete(Config::get("app.locale")) == head(Config::get("app.language_complete")) ){
-						#Es necesario poner las dos pipes || para concatenar la variable si no da error  número/nombre de variable no válid
-						$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
-					}else{
-						$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1_lang,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
-						$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
-						#OJO debe ser Join no left Join
-						$fgasigl0 =  $fgasigl0->join('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
+					if(!empty($search)){
 
-					//	$fgasigl0 = $fgasigl0->JoinFghces1LangAsigl0();
+
+						#si el idioma es el principal buscamos en hces1, si no en hces1_lang
+						if(\Tools::getLanguageComplete(Config::get("app.locale")) == head(Config::get("app.language_complete")) ){
+							#Es necesario poner las dos pipes || para concatenar la variable si no da error  número/nombre de variable no válid
+							$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
+						}else{
+							$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1_lang,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
+							$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+							#OJO debe ser Join no left Join
+							$fgasigl0 =  $fgasigl0->join('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
+
+						//	$fgasigl0 = $fgasigl0->JoinFghces1LangAsigl0();
+						}
 					}
 
                 }else{

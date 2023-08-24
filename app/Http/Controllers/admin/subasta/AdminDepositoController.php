@@ -27,6 +27,9 @@ class AdminDepositoController extends Controller
 		if ($request->ref_deposito) {
 			$fgDepositos->where('upper(ref_deposito)', 'like', "%" . mb_strtoupper($request->ref_deposito) . "%");
 		}
+		if ($request->rsoc_cli) {
+			$fgDepositos->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($request->rsoc_cli) . "%");
+		}
 		if ($request->estado_deposito) {
 			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
 		}
@@ -40,7 +43,8 @@ class AdminDepositoController extends Controller
 			$fgDepositos->where('cli_deposito', 'like', "%" . mb_strtoupper($request->cli_deposito) . "%");
 		}
 
-		$fgDepositos = $fgDepositos->select('cod_deposito', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
+		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
+		->JoinCli()
 			->orderBy("fecha_deposito", "desc")
 			->paginate(40);
 
@@ -49,6 +53,7 @@ class AdminDepositoController extends Controller
 		$formulario = (object)[
 			'sub_deposito' => FormLib::Text('sub_deposito', 0, $request->sub_deposito, '', 'Subasta'),
 			'ref_deposito' => FormLib::Text('ref_deposito', 0, $request->ref_deposito, '', 'Referencia'),
+			'rsoc_cli' => FormLib::Text('rsoc_cli', 0, $request->rsoc_cli, '', 'Razón social'),
 			'estado_deposito' => FormLib::Select('estado_deposito', 0, $request->estado_deposito, $fgDeposito->getEstados(), '', ''),
 			'importe_deposito' => FormLib::Text('importe_deposito', 0, $request->importe_deposito, '', 'Importe'),
 			'fecha_deposito' => FormLib::Date('fecha_deposito', 0, $request->fecha_deposito),
@@ -115,14 +120,12 @@ class AdminDepositoController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
+	 * @param  FgDeposito  $deposito
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(UpdateDepositoPut $request, $cod_deposito)
+	public function update(UpdateDepositoPut $request, FgDeposito $deposito)
 	{
-		$fgDeposito = FgDeposito::where('cod_deposito', $cod_deposito)->firstOrFail();
-
-		FgDeposito::where('cod_deposito', $cod_deposito)->update($request->validated());
+		$deposito->update($request->validated());
 
 		return redirect(route('deposito.index'))
 				->with(['success' =>array(trans('admin-app.title.updated_ok')) ]);

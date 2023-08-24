@@ -2160,7 +2160,13 @@ class UserController extends Controller
         $Update->tel2  = Input::get('telefono2');
         $Update->nombre_pais = DB::select("SELECT des_paises FROM FSPAISES WHERE cod_paises = :codPais", array("codPais" =>Request::input('pais')  ));
         $Update->pais = Request::input('pais');
-        $Update->iva_cli=$this->cliente_tax(Request::input('pais'),Request::input('cpostal'));
+
+		/**
+		 * Una vez establecido el tipo de IVA, no debemos modificarlo al editar el usuario
+		 * @see https://genius.labelgrup.com/account/assists/6984
+		 */
+        //$Update->iva_cli=$this->cliente_tax(Request::input('pais'),Request::input('cpostal'));
+
 		$Update->divisa = Input::get('divisa');
 		$Update->nacimiento = request('nacimiento', null);
 		$Update->genero = request('genero', null);

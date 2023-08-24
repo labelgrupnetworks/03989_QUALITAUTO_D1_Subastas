@@ -196,7 +196,7 @@ class FormLib
 
 		$aux = "<textarea class='form-control effect-16' name='" . $strNombre . "' rows=10 id='textogrande__" . $boolObligatorio . "__" . $strNombre . "' onblur='comprueba_campo(this)' " . $strExtra . " data-placement='right' placeholder='" . $placeholder . "' autocomplete='off'>" . $strValue . "</textarea>";
 		$aux .= "<script>
-		window.addEventListener('load', function(){
+		$(() => {
 			$('#textogrande__" . $boolObligatorio . "__" . $strNombre . "').summernote({
 				toolbar: [$toolbar],
 				height: '$height',

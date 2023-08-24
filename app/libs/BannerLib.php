@@ -329,17 +329,33 @@ class BannerLib
 	{
 		$texts = [];
 		$images = [];
+		$links = [];
+
 		if($banner) {
 			$bannerItems = $banner->activeItems;
 			$texts = $bannerItems->pluck('texto')->filter();
 			$images = $bannerItems->pluck('images')->filter(function($item) {
 				return $item['desktop'] !== null;
 			})->values();
+
+			$blockTypes = explode(',' ,$banner->type->bloques);
+			$linksPositions = array_keys($blockTypes, 'link');
+
+			foreach($linksPositions as $position) {
+				$linkItem = $bannerItems->where('bloque', $position)->first();
+				if($linkItem) {
+					$links[] = $linkItem->url;
+				}
+			}
+
 		}
 
-		return [
+		$data = [
 			'texts' => $texts,
-			'images' => $images
+			'images' => $images,
+			'links' => $links
 		];
+
+		return $data;
 	}
 }

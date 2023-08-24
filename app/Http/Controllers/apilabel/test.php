@@ -368,10 +368,10 @@ class test extends BaseController
 	public function postAward(){
 
 		$Award = new stdClass();
-		$Award->idoriginlot = "740445";
-		$Award->idauction = "LABELV";
-		$Award->idoriginclient = '62543'; #62543
-		$Award->bid = 605;
+		$Award->idoriginlot = "PRUEBA1-5";
+		$Award->idauction = "PRUEBA1";
+		$Award->idoriginclient = '1WW226'; #62543
+		$Award->bid = 150;
 		//$Award->commission = 264;
 
 		//$Award->invoice = "N";

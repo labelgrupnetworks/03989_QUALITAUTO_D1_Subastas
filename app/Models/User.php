@@ -571,7 +571,7 @@ class User extends Model
 								'DIR_CLI'=> $this->dir,
 								'DIR2_CLI'=> $this->dir2,
 								'CP_CLI'=>$this->cp,
-								'IVA_CLI'=>$this->iva_cli,
+								//'IVA_CLI'=>$this->iva_cli,
 								'POB_CLI'=>$this->pob,
 								'PRO_CLI'=>$this->pro,
 								'TEL1_CLI'=>$this->tel,
