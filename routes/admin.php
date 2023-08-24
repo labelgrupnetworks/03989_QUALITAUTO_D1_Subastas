@@ -151,7 +151,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'configuracion'], function () {
 			Route::get('/', 'configuracion\GeneralController@index');
-			Route::post('/save', 'configuracion\GeneralController@save');
+			Route::post('/save', 'configuracion\GeneralController@save')->name('admin.configuracion.save');
 
 			Route::get('credito/export', 'configuracion\AdminCreditoController@export')->name('credito.export');
 			Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
@@ -305,6 +305,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
 		Route::resource('clientes', 'usuario\AdminClienteController');
+		Route::resource('clientes.files', 'usuario\AdminClienteFilesController')->only(['store', 'show', 'destroy']);
 
 		Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
 		Route::resource('visibilidad', 'subasta\AdminVisibilidadController')->except(['show']);
