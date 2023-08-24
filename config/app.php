@@ -228,7 +228,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Paginator'     => JasonGrimes\Paginator::class,
         'Tools'         => App\Providers\ToolsServiceProvider::class,
         'Routing'       => App\Providers\RoutingServiceProvider::class,
         'CacheLib'      => \App\libs\CacheLib::class,
