@@ -60,6 +60,7 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
@@ -4028,7 +4029,7 @@ class UserController extends Controller
 		if(Config::get('app.strict_password_validation', false)) {
 			$validations = $this->checkIsValidPassword($request);
 			if(!empty($validations)){
-				return response()->json(['status' => 'error', 'message' => $validations->all()], 422);
+				return response()->json(['status' => 'error', 'message' => $validations], 422);
 			}
 		}
 
@@ -4736,14 +4737,16 @@ class UserController extends Controller
 
 	private function checkIsValidPassword(HttpRequest $request)
 	{
+		$minPasswordLength = 8;
 		$rules = [
-			'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'],
+			'password' => ['required', Password::min($minPasswordLength)->letters()->mixedCase()->numbers()->symbols(), 'max:256'],
 		];
 
 		$validator = Validator::make($request->all(), $rules);
 
 		if($validator->fails()){
-			return $validator->errors();
+			//return $validator->errors(); //devuelve un array con los errores producidos
+			return [trans(Config::get('app.theme') . '-app.msg_error.invalid_strict_password', ['min' => $minPasswordLength])];
 		}
 
 		return null;
