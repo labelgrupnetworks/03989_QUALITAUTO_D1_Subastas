@@ -127,14 +127,15 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-	'password' => [
+	/* 'password' => [
 		'min' => 'La :attribute debe contener más de :min caracteres',
 		'mixed' => 'La :attribute debe contener al menos una letra mayúscula y una minúscula',
 		'letters' => 'La :attribute debe contener al menos una letra',
 		'symbols' => 'La :attribute debe contener al menos un símbolo',
 		'numbers' => 'La :attribute debe contener al menos un número',
 		'uncompromised' => 'La :attribute ha aparecido en una fuga de datos. Por favor, elija una :attribute diferente',
-	],
+		'invalid_strict_password' => 'La contraseña debe cumplir con los siguientes criterios:<br>Más de :min caracteres, al menos una letra mayúscula, una minúscula, un símbolo y un número.'
+	], */
 
     'custom' => [
         'password' => [

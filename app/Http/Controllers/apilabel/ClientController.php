@@ -179,9 +179,6 @@ class ClientController extends ApiLabelController
 
     public function updateClient($items)
 	{
-		if(Config::get('app.strict_password_in_api', false)){
-			$this->rules['password'] = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
-		}
 
         try {
             DB::beginTransaction();
