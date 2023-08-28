@@ -1181,7 +1181,7 @@ class ToolsServiceProvider extends ServiceProvider
 		if (isset($a[1]) && empty($admin)) {
 
 			$b = explode("@", $a[1]);
-			$theme = env('APP_THEME');
+			$theme = Config::get('app.theme');
 			$modulo = Str::camel($a[0]);
 			$componente = Str::camel(str_replace("Controller", "", $b[0]));
 			if (is_file(public_path() . "/js/$modulo/$componente.js")) {
@@ -1194,7 +1194,6 @@ class ToolsServiceProvider extends ServiceProvider
 			if (is_file(public_path() . "/css/$modulo/$componente.css")) {
 				echo '<link rel="stylesheet" type="text/css" href="' . self::urlAssetsCache("/css/$modulo/$componente.css") . '" >';
 			}
-
 			if (is_file(public_path() . "/themes/$theme/css/$modulo/$componente.css")) {
 				echo '<link rel="stylesheet" type="text/css" href="' . self::urlAssetsCache("/themes/$theme/css/$modulo/$componente.css") . '" >';
 			}
