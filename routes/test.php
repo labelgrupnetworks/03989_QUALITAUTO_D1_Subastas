@@ -6,4 +6,5 @@ use Illuminate\Support\Facades\DB;
 DB::listen(function($query){
     echo "<code>".$query->sql."</code>";
     echo "<br>";
+    echo "<br>";
 });

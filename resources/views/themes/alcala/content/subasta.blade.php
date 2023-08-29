@@ -114,15 +114,12 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-3">
-            <?php
-                $inf_subasta = new \App\Models\Subasta();
-                if(!empty($data['sub_data'])){
-                    $inf_subasta->cod = $data['sub_data']->cod_sub;
-                }else{
-                    $inf_subasta->cod = $data['cod_sub'];
-                }
-                $ficha_subasta=$inf_subasta->getInfSubasta();
-            ?>
+            @php
+                //No se esta utilizando
+				/* $inf_subasta = new \App\Models\Subasta();
+				$inf_subasta->cod = !empty($data['sub_data']) ? $data['sub_data']->cod_sub : $data['cod_sub'];
+                $ficha_subasta= $inf_subasta->getInfSubasta(); */
+            @endphp
             @include('includes.subasta_filters')
         </div>
 

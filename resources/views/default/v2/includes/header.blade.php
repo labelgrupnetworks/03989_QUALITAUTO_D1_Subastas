@@ -1,5 +1,5 @@
 @php
-use App\libs\TradLib as TradLib;
+
 
 $lang = config('app.locale');
 $registration_disabled = Config::get('app.registration_disabled');
@@ -36,45 +36,7 @@ $pageName = Route::currentRouteName();
 					<a class="btn btn-sm btn-lb-primary" href="{{ \Routing::slug('logout') }}" >{{ trans($theme.'-app.login_register.logout') }}</a>
 				@endif
 
-				@if(count(Config::get('app.locales')) > 1)
-				{{-- Con dropdown --}}
-				<div class="btn-group">
-					<button type="button" class="btn btn-sm btn-outline-border-lb-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-					  {{ config('app.locales')[config('app.locale')] }}
-					</button>
-					<ul class="dropdown-menu dropdown-menu-end">
-						@foreach(Config::get('app.locales') as $key => $value)
-						@php
-							$route = '';
-							//get current route url without domain
-							$routePath = Route::getFacadeRoot()->current()->uri();
-
-
-							if($key != $lang){
-								$route = "/$key". TradLib::getRouteTranslate((substr($routePath, 4)), \App::getLocale(), $key);
-							}
-						@endphp
-						<li>
-							<a @class(['dropdown-item', 'disabled' => $key == $lang]) translate="no" aria-current="true" title="{{ trans("$theme-app.head.language_$key") }}" href="{{$route}}">
-								{{ trans("$theme-app.home.$key") }}
-							</a>
-						</li>
-					@endforeach
-					</ul>
-				</div>
-				{{-- Con enlaces --}}
-				{{-- @foreach(Config::get('app.locales') as $key => $value)
-					@php
-						$route = '';
-						if($key != $lang){
-							$route = "/$key". TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
-						}
-					@endphp
-					<a @class(['selected' => $key == $lang]) translate="no" title="{{ trans("$theme-app.head.language_$key") }}" href="{{$route}}">
-						<span translate="no">{{ trans("$theme-app.home.$key") }}</span>
-					</a>
-				@endforeach --}}
-				@endif
+				@include('includes.header.language_selector')
 			</div>
 		</div>
 	</div>
@@ -174,7 +136,7 @@ $pageName = Route::currentRouteName();
 									<use xlink:href="/bootstrap-icons.svg#person-fill"></use>
 								</svg>
 							</span>
-							<input class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email">
+							<input class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email" autocomplete="email">
 						</div>
 
 						<div class="input-group mb-0">
