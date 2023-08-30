@@ -49,25 +49,20 @@
 - `git remote add alcala https://github.com/labelgrupnetworks/02056_ALCALA_D1_Subastas.git`
 - `git remote add tauler https://github.com/labelgrupnetworks/01862_TAULERFAU_D1_Subastas.git`
 - `git remote add segre https://github.com/labelgrupnetworks/02913_SEGRE_D1_Subastas.git`
-- `git remote add ansorena https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
 - `git remote add duran https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas.git`
-
+- `git remote add ansorena https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
+- `git remote add ansorena-galery https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Galeria.git`
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
+
+**Esto no es necesario**, pero si se quiere tener un remoto para todos los proyectos se puede hacer de la siguiente manera:
+
 - `git remote add allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git` 
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03352_ALMONEDA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03226_BOGOTA_D1_Subastas.git`
 - `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/00147_LabelGrup_Demo_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02946_SOPORTECONCURSAL_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/D1_Subastas_Web.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02056_ALCALA_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/01862_TAULERFAU_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02913_SEGRE_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
-- `git remote set-url --add --push allprojects https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas.git`
+- ...
 
 <a name="examples"></a>
 ## Ejemplos de comandos
