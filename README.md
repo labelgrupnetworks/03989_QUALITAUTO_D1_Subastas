@@ -52,6 +52,8 @@
 - `git remote add duran https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas.git`
 - `git remote add ansorena https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
 - `git remote add ansorena-galery https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Galeria.git`
+- `git remote add subarna https://github.com/labelgrupnetworks/01232_SUBARNA_D1_Subastas.git`
+- `git remote add bonanova https://github.com/labelgrupnetworks/00162_BONANOVA_D1_Subastas.git`
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
