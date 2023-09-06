@@ -869,7 +869,9 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		$images_size = self::images_size();
-		$image_to_load = "img/thumbs/$images_size[$size]/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
+		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
+
+		$image_to_load = "img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
 		$extension = 'webp';
 
 		if(!file_exists("$image_to_load.$extension")){
