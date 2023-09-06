@@ -1641,6 +1641,18 @@ footer div.module_footer ul.links li a {
     padding: 20px 0;
 }
 
+.footer-social-links {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	gap: 4px;
+}
+
+.footer-social-links a {
+	display: inline-flex;
+	color: #fff;
+}
+
 .social-link{
     -webkit-box-pack: end;
     -ms-flex-pack: end;

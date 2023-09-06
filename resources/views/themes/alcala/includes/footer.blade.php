@@ -124,9 +124,9 @@ Todos los derechos reservados |
 <a href="{{ \Routing::translateSeo('normativa-lssi') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}">{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}</a></span>
                 </div>
 
-                <div class="col-xs-12 col-md-2">
+                <div class="col-xs-12 col-md-2 footer-social-links">
                     <a href="http://twitter.com/alcalasubastas" title="Twitter" target="out">
-                        <img src="/themes/alcala/img/twitter.png" alt="">
+						@include('components.x-icon', ['size' => '19'])
                     </a>
                     <a href="https://www.facebook.com/alcalasubastas/" title="Facebook" target="out">
                         <img src="/themes/alcala/img/facebook.png" alt="">
