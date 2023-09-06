@@ -414,6 +414,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('subastas/load_lot_invaluable/{codsub}/{reference}/{ref}', 'subasta\AdminLotController@loadInvaluableLot')->name('loadLotInvaluable');
 
+		Route::get('jobs', 'configuracion\AdminJobsController@index')->name('admin.jobs.index');
+		Route::get('jobs/pending/{id}', 'configuracion\AdminJobsController@showPendingJob')->name('admin.jobs.pending');
+		Route::get('jobs/failed/{id}', 'configuracion\AdminJobsController@showFailedJob')->name('admin.jobs.failed');
+		Route::post('jobs/failed/{id}', 'configuracion\AdminJobsController@reesendFailedJob')->name('admin.jobs.failed_retry');
+
 	});
 
 
