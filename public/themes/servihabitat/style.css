@@ -112,13 +112,21 @@ footer {
     font-size: 16px;
 }
 
-footer .fa, footer .fab{
-	color: #fff;
-}
-
 .footer-title{
 	margin: 0px 0 15px 0;
 	color: var(--footer-sociallinks-background);
+}
+
+footer .redes {
+	display: flex;
+    align-items: center;
+	gap: 30px;
+    color: var(--footer-sociallinks-textcolor);
+}
+
+footer .redes .social-link {
+	color: currentColor;
+	max-height: 32px;
 }
 
 .sub_menu_adj a{

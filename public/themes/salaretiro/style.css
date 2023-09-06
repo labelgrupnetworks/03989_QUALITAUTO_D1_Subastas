@@ -381,18 +381,26 @@ footer div.module_footer address a {
 footer div.module_footer address a:hover {
 	text-decoration: none;
 }
+
 footer div.module_footer ul.redes {
 	margin: 0;
-    padding: 0;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-}
 footer div.module_footer ul.redes li {
-	display: inline-block;
-	margin-right: 15px;
+    display: inline-block;
 }
+
 footer div.module_footer ul.redes li a {
     color: #000;
+	line-height: 1;
+    height: 14px;
+    display: block;
 }
+
 footer div.module_footer div.tit_links {
 	font-size: 20px;
 	color: black;
@@ -1079,16 +1087,22 @@ div.info_single_content button.btn-custom {
 	margin-bottom: 0;
 }
 .info_single ul.red {
-	margin-left:  0;
-	padding-left: 0;
+    margin: 0;
+	display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
 }
+
 .info_single ul.red li {
-	display: inline-block;
-	margin-right: 10px;
-	margin-top: 10px;
+    display: inline-block;
 }
+
 .info_single ul.red li a {
-	color: #000;
+    color: #000;
+	line-height: 1em;
+    display: block;
+	height: 14px;
 }
 .info_single div.min {
 	background-color: #921919;
@@ -1950,26 +1964,36 @@ tbody tr{
         -ms-flex-align: center;
             align-items: center;
     }
-    .share-panel-auction ul{
-        list-style: none;
-        padding: 0;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-    }
 
-    .share-panel-auction ul li{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #015BA9;
-        text-align: center;
-        padding-top: 5px;
-        margin-left: 10px;
-    }
-    .share-panel-auction ul li a{
-        color: white;
-    }
+	.share-auction-component .share-auction-title {
+		display: none;
+	}
+
+	.share-auction-component .share-auction-list {
+		list-style: none;
+		padding: 10px 0;
+		margin: 0;
+		display: flex;
+		gap: 10px;
+		align-items: center
+	}
+
+	.share-auction-component .share-auction-list li {
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		background: var(--primary-color);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.share-auction-component .share-auction-list a {
+		display: inline-block;
+		color: white;
+		line-height: 1;
+		height: 14px;
+	}
 
     .it_ro h1.titleSingle{
         margin-top: 0;
