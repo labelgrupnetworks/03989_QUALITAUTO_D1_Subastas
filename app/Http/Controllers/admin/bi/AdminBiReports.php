@@ -151,6 +151,8 @@ class AdminBiReports extends Controller
 
 		}
 
+		$params = $this->params;
+
 		return compact('name','sql', 'params', 'charts'); #, 'datatable','titles','classes'
 	}
 
@@ -320,6 +322,7 @@ class AdminBiReports extends Controller
 				return (new AwardsExport($clients, $headers ))->download("report_".$name."_" . date("Ymd-H:m:s") . ".xlsx");
 			}
 
+			$params = $this->params;
 			return compact('name','sql', 'params', 'charts','datatable','subtable','titles','classes','totales','subtitles','width');
 		}
 
@@ -453,6 +456,7 @@ class AdminBiReports extends Controller
 			return (new AwardsExport($clients, $headers ))->download("report_".$name."_" . date("Ymd-H:m:s") . ".xlsx");
 		}
 		$pagingDatatable=true;
+		$params = $this->params;
 		return compact('name','sql', 'params', 'charts','datatable','titles','classes','pagingDatatable','totales');
 	}
 	#Registro BI
@@ -469,6 +473,7 @@ class AdminBiReports extends Controller
 		$classes=["cod_cli"=>"td_number","nom_cli" =>"td_text","tipo_usuario"=> "td_text","fecha" => "td_text", "ip" =>"td_text"];
 		$pagingDatatable=true;
 		$charts=[];
+		$params = $this->params;
 		return compact('name','sql', 'params', 'charts','datatable','titles','classes','pagingDatatable');
 
 	}
@@ -655,6 +660,8 @@ class AdminBiReports extends Controller
 			return (new AwardsExport($excel, $headers ))->download("report_".$name."_" . date("Ymd-H:m:s") . ".xlsx");
 		}
 
+		$params = $this->params;
+
 		return compact('name','sql', 'params', 'charts','datatable','titles','subtitles','classes','width','totales', 'subtable');
 
 
@@ -840,6 +847,8 @@ private function auctionAwards( $type ){
 
 		return (new AwardsExport($excel, $headers ))->download("report_".$name."_" . date("Ymd-H:m:s") . ".xlsx");
 	}
+
+	$params = $this->params;
 
 	return compact('name','sql', 'params', 'charts','datatable','titles','subtitles','classes','width','totales','subtable');
 
