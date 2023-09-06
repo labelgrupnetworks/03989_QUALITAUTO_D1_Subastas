@@ -6,7 +6,7 @@
     </li>
         <li class="flex valign">
         <a target="_blank" title="{{ trans(\Config::get('app.theme').'-app.lot.share_tiwtter') }}" href="http://twitter.com/share?text=<?= $data['subasta_info']->lote_actual->titulo_hces1.' '.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-            <i class="fab fa-twitter"></i>
+            @include('components.x-icon', ['size' => '20'])
         </a>
     </li>
     <li class="flex valign">
