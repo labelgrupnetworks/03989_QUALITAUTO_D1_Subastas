@@ -46,9 +46,7 @@ $pageName = Route::currentRouteName();
 					</li>
 					<li>
 						<a href="{{ Config::get('app.twitter') }}" target="_blank">
-							<svg class="bi" width="18" height="18" fill="currentColor">
-								<use xlink:href="/bootstrap-icons.svg#twitter"></use>
-							</svg>
+							@include('components.x-icon', ['size' => '18'])
 						</a>
 					</li>
 					<li>
