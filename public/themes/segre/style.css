@@ -646,6 +646,9 @@ footer {
 
 .social-link-container {
 	margin-top: 30px;
+	display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 /* FIN FOOTER */
@@ -672,12 +675,20 @@ footer {
 }
 
 .twitter-social-link {
-	color: #55ACEE;
+	display: inline-flex;
+    color: #fff;
+    background: #000;
+    border-radius: 7px;
 }
 
 .twitter-social-link:hover {
-	color: #5197CC;
+	color: #fff;
 }
+
+.twitter-social-link svg {
+	padding: 5px;
+}
+
 
 .youtube-social-link {
 	color: #CD201F;
