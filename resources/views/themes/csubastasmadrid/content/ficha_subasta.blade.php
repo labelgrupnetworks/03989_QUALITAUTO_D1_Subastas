@@ -7,20 +7,20 @@
                         <div class="img-border-auction">
 
                             <img  width="100%" src="/img/load/subasta_large/AUCTION_{{ $data["auction"]->emp_sub }}_{{ $data["auction"]->cod_sub }}.jpg" class="img-responsive">
-                           
+
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-sm-5 col-xs-12">
                     <div class="col-xs-12">
                          <h1 class="titleSingle">{{ $data["auction"]->des_sub}}</h1>
                          <p><?= empty($data["auction"]->descdet_sub)? ' ' : $data["auction"]->descdet_sub; ?></p>
-                        
+
                     </div>
                     <div class="col-xs-12 desc-panel-aution">
 
-                        
+
                         <div class="content-auction-desc">
                         <div class="block-auction exposition-des">
                             @if( (!empty($data["auction"]->expofechas_sub)) ||  (!empty($data["auction"]->expohorario_sub)) || (!empty($data["auction"]->expolocal_sub)) || (!empty($data["auction"]->expomaps_sub)))
@@ -64,39 +64,24 @@
 
 
                         </div>
-                        
+
                     </div>
-                    
+
                         <div class="links-aution">
                             @foreach ($data['sessions'] as $session)
                             <div class="link-auction">
                                 <p>{{$session->name}}</p><a></a><a class="btn btn-view-lot btn-color" title="Ver lotes" href="<?= Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions) ?>">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
                             </div>
-                            @endforeach                           
+                            @endforeach
                         </div>
                     </div>
                    <div class="col-xs-12 share-panel-auction">
-                       <ul>
-                           
-                           <li class="btn-color"><a href="http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-                                <i class="fa fa-facebook"></i>
-                               </a>
-                           </li>
-                           <li class="btn-color">
-                               <a title="Compartir por e-mail" href="http://twitter.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>&amp;text=<?= $data["auction"]->des_sub?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-twitter"></i></a>
-                           </li>
-                           <li class="btn-color">
-                              <a title="Compartir por e-mail" href="mailto:?Subject={{ trans(\Config::get('app.theme').'-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-envelope"></i></a> 
-                           </li>
-                       </ul>
+						@include('includes.ficha.share_ficha_subasta')
                    </div>
-                    
-                    
-                    
                 </div>
 
             </div>
-		
+
 	</div>
 </div>
 

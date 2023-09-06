@@ -147,25 +147,12 @@
 	<div class="container">
 
 		<div class="row">
-
 			<div class="col-xs-12 col-sm-6">
 				<a class="color-letter" role="button"
 					title="{{ trans(\Config::get('app.theme').'-app.foot.developedSoftware') }}"
 					href="{{ trans(\Config::get('app.theme').'-app.foot.developed_url') }}"
 					target="no_blank">{{ trans(\Config::get('app.theme').'-app.foot.developedBy') }}</a>
 			</div>
-
-			<div class="col-xs-12 col-sm-6 social-links">
-				<span class="social-links-title"><?= trans(\Config::get('app.theme').'-app.foot.follow_us') ?></span>
-
-				<a class="social-link color-letter"><i class="fab fa-2x fa-facebook-square"></i></a>
-				&nbsp;
-				<a class="social-link color-letter"><i class="fab fa-2x fa-twitter-square"></i></a>
-				&nbsp;
-				<a class="social-link color-letter"><i class="fab fa-2x fa-instagram"></i></a>
-				<br>
-			</div>
-
 		</div>
 
 		<div class="row">

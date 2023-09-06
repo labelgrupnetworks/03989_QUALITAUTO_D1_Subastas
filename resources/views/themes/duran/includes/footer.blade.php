@@ -29,7 +29,7 @@
 								</li>
 								<li class="twitter">
 									<a href="https://twitter.com/duransubastas" target="_blank">
-										<i class="fab fa-twitter"></i>
+										@include('components.x-icon', ['size' => '15'])
 									</a>
 								</li>
 								<li class="youtube">
@@ -71,7 +71,7 @@
 								   @endif
 
 								   	<li><a class="footer-link"  href="/en/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.online_auction')) }} </a></li>
-								
+
 									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.metas.title_historic'))  }}</a></li>
 									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.compra_ahora')) }}</a></li>
 									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</a></li>

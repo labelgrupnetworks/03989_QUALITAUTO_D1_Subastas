@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="img-info-auction" style="background-image: url(/img/pruebas_subasta.png);    background-image: url(/img/load/subasta_large/AUCTION_{{ $data["auction"]->emp_sub }}_{{ $data["auction"]->cod_sub }}.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;margin-top: 10px;"></div>
-                
+
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
                             <div class="link-auction">
                                 <small>{{$session->name}}</small><a class="btn btn-view-lot" title="Ver lotes" href="<?= Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions) ?>">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
                             </div>
-                            @endforeach                           
+                            @endforeach
                         </div>
         </div>
         <div class="col-xs-12">
@@ -44,27 +44,13 @@
                     <p><a target="_blank" title="cómo llegar" href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
                 @endif
 
-            
+
         </div>
 
-            <div class="col-xs-12 share-panel-auction">
-                <div><small><strong>{{ trans(\Config::get('app.theme').'-app.subastas.shared_auctions') }}</strong></small></div>
-                       <ul>
-                           
-                           <li><a href="http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-                                <i class="fa fa-facebook"></i>
-                               </a>
-                           </li>
-                           <li>
-                               <a title="Compartir por e-mail" href="http://twitter.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>&amp;text=<?= $data["auction"]->des_sub?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-twitter"></i></a>
-                           </li>
-                           <li>
-                              <a title="Compartir por e-mail" href="mailto:?Subject={{ trans(\Config::get('app.theme').'-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-envelope"></i></a> 
-                           </li>
-                       </ul>
-                   </div>
-  
-    </div>
+		<div class="col-xs-12 share-panel-auction">
+				@include('includes.ficha.share_ficha_subasta')
+		</div>
+	</div>
 </div>
 
 @else

@@ -1,13 +1,11 @@
 <div class="banner-home-row">
 	{!! \BannerLib::bannersPorKey('home', 'home-banner','{dots:false, arrows:false, autoplay: true, autoplaySpeed: 4000, slidesToScroll:1}') !!}
 </div>
-<div style=" text-align: center;color: #FFF;  margin: 15px;" >
 
-
+{{-- <div style=" text-align: center;color: #FFF;  margin: 15px;" >
 	<p style="background-color: #5C0120; padding: 4px;	">Del <strong>d&iacute;a 12 hasta el 27 de agosto (incluidos los dos)</strong> Subarna permanecer&aacute; <strong>cerrado por per&iacute;odo vacacional.</strong> &iexcl;Te animamos a que realices tus gestiones con nosotros antes o despu&eacute;s de estas fechas!</p>
 	<p style="background-color: #5C0120; padding: 4px;	margin-top: 15px;"><strong>From August 12th to August 27th (including both)</strong> Subarna will be closed<strong> for holidays</strong>. Before or after these dates, we invite you to arrange your appointments with us.</p>
-
-</div>
+</div> --}}
 
 {!! \BannerLib::bannerParallax('principal') !!}
 

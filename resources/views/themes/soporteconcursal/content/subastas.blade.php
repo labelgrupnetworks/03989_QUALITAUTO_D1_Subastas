@@ -27,7 +27,7 @@
 									$url_lotes = \Tools::url_lot($subasta->cod_sub,$subasta->id_auc_sessions,$subasta->name,$lotes[0]->ref_asigl0,$lotes[0]->num_hces1,$lotes[0]->webfriend_hces1,$lotes[0]->titulo_hces1);
 								}
                             ?>
-                        <div class="col-xs-12 col-md-6">
+                        <div class="col-xs-12">
                             <div class="col-xs-12 border-lot auction-container no-padding">
                                 @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
                                 <div class="bid-online"></div>

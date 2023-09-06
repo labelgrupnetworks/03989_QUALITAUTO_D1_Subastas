@@ -27,7 +27,7 @@ header("X-Frame-Options:     DENY");
 	var fecha_js = new Date().getTime();
 </script>
 
-<link rel="shortcut icon" href="<?='/themes/'.$theme.'/img/favicon.ico'?>" />
+<link rel="shortcut icon" href="{{ "/themes/$theme/img/favicon.ico?a=050923" }}" />
 @if( env('APP_DEBUG'))
     <meta name="robots" content="noindex">
 @elseif( !empty($data['seo']->noindex_follow) && $data['seo']->noindex_follow == true )
