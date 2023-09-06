@@ -204,6 +204,9 @@ class UserController extends Controller
 
     }
 
+	/**
+	 * @deprecated en desuso 25/08/2023
+	 */
     public function remmember_user(){
         if(!Session::has('user') && !empty(Cookie::get('user')) && Cookie::get('user') != null){
 
@@ -663,6 +666,11 @@ class UserController extends Controller
         }
 
         //Comprobamos si este dni esta de baja si es a si no se puede registrar
+		/**
+		 * @todo Eloy, 25/08/2023
+		 * Esto no sirve de nada si nada más salir se vuelve a reasinar la
+		 * variable $ya_existe_cliweb a false ¿?
+		 */
         if(!empty($nif))
         {
              $existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
@@ -672,6 +680,12 @@ class UserController extends Controller
 
         }
 
+		/**
+		 * @todo Eloy, 25/08/2023
+		 * A parte de reasignar la variable $ya_existe_cliweb a false e invalidar el bloque anterior,
+		 * Se asigna el select a la variable $existe_dni_arr pero no se usa para nada,
+		 * Se busca en $ya_existe_cliweb como array cuando lo acabamos de asignar como booleano
+		 */
         $ya_existe_cliweb=false;
         if(!empty(Request::input('email')))
         {

@@ -12,9 +12,9 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
 
-class User extends Model
+class User
 {
-    protected $table = 'FXCLIWEB';
+    //protected $table = 'FXCLIWEB';
 
     public $user;
     public $password;
@@ -45,6 +45,13 @@ class User extends Model
 	public $cod_sub;
 	public $seudo_cli;
 
+	public function __construct(array $atributtes = [])
+	{
+		foreach ($atributtes as $key => $value) {
+			$this->$key = $value;
+		}
+	}
+
 	static function factory()
 	{
 		return new self();
@@ -60,6 +67,12 @@ class User extends Model
 	{
 		$this->itemsPerPage = $itemsPerPage;
 		return $this;
+	}
+
+	public function getUserModelByCodCli($cod_cli, $select = ['*'])
+	{
+		$user = FxCli::joinCliWebCli()->select($select)->where('cod_cli', $cod_cli)->first();
+		return new self($user->toArray());
 	}
 
     public function login()
