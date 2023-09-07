@@ -1311,7 +1311,7 @@ function carrousel_molon(carrousel, loteInicial, loop) {
 
 	carrousel.data('hasSlick', true);
 
-	if(loteInicial != null){
+	if(loteInicial != null && $('.owl-item.active > .item').length > 0){
 		while($('.owl-item.active > .item')[0].dataset.ref != loteInicial && parseInt($('.owl-item.active > .item')[0].dataset.ref) +1 < loteInicial && !$('.owl-next').hasClass('disabled')){
 			$('.owl-next').trigger("click")
 		}

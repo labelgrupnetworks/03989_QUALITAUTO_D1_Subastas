@@ -24,7 +24,7 @@
 	}
 
 	$lote_actual = $data['subasta_info']->lote_actual;
-	$cod_licit = $data['js_item']['user']['cod_licit'] ?? "null";
+	$cod_licit = $data['js_item']['user']['cod_licit'] ?? null;
 
 	$lote_actual->total_pujas = 0;
 	$lote_actual->total_postores = 0;
@@ -82,6 +82,7 @@ var cod_sub = '{{$lote_actual->cod_sub}}';
 var ref = '{{$lote_actual->ref_asigl0}}';
 var imp = '{{$lote_actual->impsalhces_asigl0}}';
 var cod_licit = '{{ $cod_licit }}';
+cod_licit = cod_licit.length ? cod_licit : null;
 
 routing.node_url 	 = '{{ Config::get("app.node_url") }}';
 routing.comprar		 = '{{ $data["node"]["comprar"] }}';
