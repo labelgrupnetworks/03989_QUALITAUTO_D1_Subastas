@@ -1152,19 +1152,23 @@ class User
         }
     }
 
-    public function logLoginError($email,$passw,$her_pwd,$emp,$date,$ip){
-
+    public function logLoginError($email,$passw,$her_pwd,$emp,$date,$ip)
+	{
         try {
             DB::table('WEB_LOGIN_ERROR')
-                ->insert(['USRW_WEB_LOGIN_ERROR' => $email, 'PASS_WEB_LOGIN_ERROR' =>$passw,'PASS_USER_WEB_LOGIN_ERROR'=>$her_pwd,'DATE_WEB_LOGIN_ERROR' => $date, 'EMP_WEB_LOGIN_ERROR'=>$emp, 'IP_WEB_LOGIN_ERROR'=>$ip]
-            );
+                ->insert([
+					'USRW_WEB_LOGIN_ERROR' => $email,
+					'PASS_WEB_LOGIN_ERROR' =>$passw,
+					'PASS_USER_WEB_LOGIN_ERROR'=>$her_pwd,
+					'DATE_WEB_LOGIN_ERROR' => $date,
+					'EMP_WEB_LOGIN_ERROR'=>$emp,
+					'IP_WEB_LOGIN_ERROR'=>$ip
+					]);
+
         } catch (\Exception $e) {
-            \Log::emergency('Insert WEB_LOGIN_ERROR');
+            \Log::emergency('Insert WEB_LOGIN_ERROR', ['error' => $e->getMessage()]);
         }
     }
-
-
-
 
     public function getTown($zip_code,$country){
         return DB::table('FSPOB')
