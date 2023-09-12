@@ -1620,6 +1620,10 @@ class UserController extends Controller
 				->orderBy('fec_cliobcta', 'desc')
 				->first();
 
+			if(!$credit_card){
+				return false;
+			}
+
 			// Obtenemos key y método
 			$key = strtolower($email);
 			$method = 'aes-256-cbc';
@@ -1639,7 +1643,7 @@ class UserController extends Controller
 
 
 		} catch (\Throwable $th) {
-			Log::error($th);
+			Log::info('Error al conseguir la tarjeta de credito', ['error' => $th->getMessage()]);
 			return false;
 		}
 	}
