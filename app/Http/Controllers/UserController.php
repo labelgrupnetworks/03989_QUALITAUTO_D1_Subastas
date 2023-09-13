@@ -1503,7 +1503,7 @@ class UserController extends Controller
 				$file->move($destinationPath, $filename);
 			}
 
-			if ($request[$dni2]) {
+			if (isset($request[$dni2])) {
 				$file2 = $request[$dni2];
 				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
 				if (isset($images[$dni2])) {
@@ -2215,13 +2215,11 @@ class UserController extends Controller
 		if (\Config::get('app.userPanelCIFandCC')) {
 			$Update->nif = Request::input('nif');
 			$this->updateCreditCard(Request::all(), $Update->cod_cli);
+
 			if (Request::file('dni1') || Request::file('dni2')) {
 				$this->updateCIFImages(Request::all(), $Update->cod_cli);
-			} else{
-				$this->updateCIFImages(null, $Update->cod_cli);
 			}
 		}
-
 
 		/**Inbusa necesita que se guarde el nombre de la empresa como nombre principal, para correos e informes*/
 		if(!empty(Request::input('representar'))){
