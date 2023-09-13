@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
 		}
 
 		LogViewer::auth(function ($request) {
-			return Session::has('user.admin') && in_array(Session::get('user.usrw'), ["SUBASTAS@LABELGRUP.COM"]);
+			return Session::has('user.admin') && in_array(mb_strtolower(Session::get('user.usrw')), ["subastas@labelgrup.com"]);
 		});
 	}
 }
