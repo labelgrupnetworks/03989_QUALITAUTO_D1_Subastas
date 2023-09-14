@@ -2539,12 +2539,17 @@ class UserController extends Controller
 
 	}
 
-
-
-    # Adjudicaciones pendientes de pago del usuario en sesion
-
+	/**
+	 * Adjudicaciones pendientes de pago del usuario en sesion
+	 * @deprecated Este metodo corresponde a una versión del panel antigua, revisamos el inicio si
+	 * existe la vista para redirigir a /allotments en caso de no existir
+	 */
     public function getAdjudicacionesPendientePago()
     {
+		if(!View::exists('front::pages.panel.adjudicaciones_pagar')){
+			return redirect()->route('panel.allotments', ['lang' => Config::get('app.locale')], 301);
+		}
+
         $subasta = new Subasta();
         $parametrosSub= $subasta->getParametersSub();
         if(!Session::has('user')){
@@ -2607,12 +2612,7 @@ class UserController extends Controller
 
 
         return View::make('front::pages.panel.adjudicaciones_pagar', array('data' => $data));
-
-
 	}
-
-
-
 
     #Lotes adjudicados pagados
     public function getAdjudicacionesPagadas()
