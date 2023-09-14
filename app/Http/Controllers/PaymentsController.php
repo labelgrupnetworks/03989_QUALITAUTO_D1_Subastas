@@ -919,7 +919,6 @@ class PaymentsController extends Controller
 	function content_email_purchase($lot)
 	{
 		$msg = '';
-		$delivery = new Delivery();
 		$subasta = new Subasta();
 		if ($lot->openv_csub == 1) {
 			$subasta->cod = $lot->sub_csub;
@@ -938,6 +937,10 @@ class PaymentsController extends Controller
 		} else if ($lot->openv_csub == 3) {
 			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.email_transportista', 1, []) . '</br>';
 		} else if ($lot->openv_csub == 4) {
+
+			/* la libreria de Deliverea no esta funcional. Revisar si
+			alguien la utiliza y elimenar este caso si no es así. */
+			$delivery = new Delivery();
 			$send_lot = $delivery->getCsube(Config::get('app.emp'), $lot->sub_csub, $lot->ref_csub);
 			$dir = '';
 			if (!empty($send_lot)) {
@@ -1180,7 +1183,7 @@ class PaymentsController extends Controller
 	}
 
 	public function restRedsys ($varsRedsys){
-		
+
 
 		$url = \Config::get("app.UrlRedsys")."rest/trataPeticionREST" ;
 		$clientGuzz = new Client(['verify' => false]);
