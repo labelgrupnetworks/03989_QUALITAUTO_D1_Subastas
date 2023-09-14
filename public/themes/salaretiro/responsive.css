@@ -316,6 +316,13 @@
 
 }
 
+@media(width <= 768px) {
+
+	.user-accout-item-wrapper > div {
+		flex-direction: column;
+	}
+
+}
 
 
 /* Landscape phones and portrait tablets */

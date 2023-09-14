@@ -3367,7 +3367,9 @@ iframe.has-error{
 }
 
 .packengers-button-adjudicaciones {
-	padding-right: 3rem;
+	display: inline-block;
+	padding: 0.5rem 0;
+	margin: 1.5rem 0;
 }
 
 .packengers-button-adjudicaciones,
@@ -3943,4 +3945,12 @@ ul.sub_menu_adj {
 
 .has-error label{
 	color:#b21416;
+}
+
+.flex-direction-column {
+	flex-direction: column;
+}
+
+.panel-user .total-price {
+	text-align: right;
 }
