@@ -1,27 +1,14 @@
 @php
-    $subastaObj = new \App\Models\Subasta();
-    $has_subasta = $subastaObj->auctionList('H');
+	$existHistorica = $global['subastas']->has('H');
+	$existPresencial = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
 
-    $sub_historica = false;
-    if (!empty($has_subasta)) {
-        $sub_historica = true;
-    }
-
-    $has_subasta = $subastaObj->auctionList('S', 'W');
-    if (Session::get('user.admin')) {
-        $has_subasta = array_merge($has_subasta, $subastaObj->auctionList('A', 'W'));
-    }
-
-    $sub_presencial = false;
-    if (!empty($has_subasta) && count($has_subasta) >= 2) {
-        $url_subasta = \Routing::translateSeo('presenciales');
-        $sub_presencial = true;
-    } elseif (!empty($has_subasta) && count($has_subasta) == 1) {
-        $url_subasta = \Routing::translateSeo('info-subasta') . $has_subasta[0]->cod_sub . '-' . str_slug($has_subasta[0]->name);
-        $sub_presencial = true;
-    } else {
-        $url_subasta = '#';
-    }
+	$urlPresencial="#";
+	if($existPresencial && $global['subastas']['S']['W']->count() == 1){
+		$subasta = $global['subastas']['S']['W']->first();
+		$urlPresencial = Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
+	} elseif($existPresencial && $global['subastas']['S']['W']->count() > 1){
+		$urlPresencial = Routing::translateSeo('presenciales');
+	}
 @endphp
 <footer>
     <div class="container">
@@ -35,13 +22,13 @@
                             <p><b>{{ trans(\Config::get('app.theme') . '-app.subastas.auctions') }}</b></p>
                         </div>
                         <ul class="ul-format footer-ul">
-							@if ($sub_presencial)
+							@if ($existPresencial)
 							<li>
-								<a class="footer-link" href="{{ $url_subasta }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+								<a class="footer-link" href="{{ $urlPresencial }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
 							</li>
 							@endif
 
-							@if ($sub_historica)
+							@if ($existHistorica)
 							<li>
 								<a class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
 							</li>
@@ -50,11 +37,6 @@
                             <li>
 								<a class="footer-link" href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a>
 							</li>
-                            {{--
-							<li>
-								<a class="footer-link" href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a>
-							</li>
-							--}}
                         </ul>
                     </div>
 

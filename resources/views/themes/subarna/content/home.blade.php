@@ -54,7 +54,7 @@
 
 <?php
 	$noticiasController = new App\Http\Controllers\NoticiasController();
-	$blogs = $noticiasController->index(\Config::get('app.locale'));
+	$blogs = $noticiasController->smallIndex(\Config::get('app.locale'));
 	$noticias = $blogs->data['noticias'];
 ?>
 <div class="blog_home">
@@ -74,12 +74,10 @@
 					{{-- <p>{!!Str::limit(strip_tags($noticia->texto_web_blog_lang), 300)!!}</p> --}}
 					<p>{!! substr(strip_tags($noticia->texto_web_blog_lang), 0, 200)!!}</p>
 				</div>
-				@if (!empty($blogs->data['categorys'][$noticia->primary_category_web_blog]))
 				<div class="blog_enlace">
 					<a
-						href="{{\Routing::slugSeo('blog').'/'.$blogs->data['categorys'][$noticia->primary_category_web_blog]->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans(\Config::get('app.theme').'-app.home.learn_more') }}</a>
+						href="{{\Routing::slugSeo('blog').'/'.$noticia->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans(\Config::get('app.theme').'-app.home.learn_more') }}</a>
 				</div>
-				@endif
 			</div>
 			@endforeach
 		</div>

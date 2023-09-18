@@ -157,32 +157,19 @@
 				</li>
 
 			@php
-				$subastaObj= new \App\Models\Subasta();
-				$has_subasta = $subastaObj->auctionList ('H');
+				$existHistorica = $global['subastas']->has('H');
+				$existPresencial = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
 
-				$sub_historica = false;
-				if(!empty($has_subasta)){
-					$sub_historica = true;
-				}
-
-				$has_subasta = $subastaObj->auctionList ('S', 'W');
-				if(Session::get('user.admin')){
-                    $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                }
-
-				$sub_presencial = false;
-                if(!empty($has_subasta) && count($has_subasta)>=2){
-					$url_subasta = \Routing::translateSeo('presenciales');
-					$sub_presencial = true;
-                }elseif(!empty($has_subasta) && count($has_subasta)==1){
-					$url_subasta=\Routing::translateSeo('info-subasta').$has_subasta[0]->cod_sub."-".str_slug($has_subasta[0]->name);
-					$sub_presencial = true;
-                }else{
-                    $url_subasta="#";
+				$urlPresencial="#";
+				if($existPresencial && $global['subastas']['S']['W']->count() == 1){
+					$subasta = $global['subastas']['S']['W']->first();
+					$urlPresencial = Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
+				} elseif($existPresencial && $global['subastas']['S']['W']->count() > 1){
+					$urlPresencial = Routing::translateSeo('presenciales');
 				}
 			@endphp
 
-			@if($sub_presencial || $sub_historica)
+			@if($existHistorica || $existPresencial)
 				<li>
 					<a onclick="javascript:$('#menu_sub').toggle('blind',100)" style="cursor: pointer;">
 						{{ trans(\Config::get('app.theme').'-app.foot.presenciales') }}
@@ -191,10 +178,10 @@
 					</a>
 
 					<div id="menu_sub">
-						@if ($sub_presencial)
-							<a href="{{ $url_subasta }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+						@if ($existPresencial)
+							<a href="{{ $urlPresencial }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
 						@endif
-						@if ($sub_historica)
+						@if ($existHistorica)
 							<a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
 						@endif
 					</div>
@@ -276,56 +263,26 @@
         <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}</a></li>
         <li><a title="{{ trans(\Config::get('app.theme').'-app.home.how_to_buy') }}" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy') }}">{{ trans(\Config::get('app.theme').'-app.home.how_to_buy') }}</a></li>
 		<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell') }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}</a></li>
-            <?php
 
-                   $subastaObj        = new \App\Models\Subasta();
-                   $has_subasta = $subastaObj->auctionList ('S', 'W');
-                   if( empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta = array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                   }
-
-                ?>
-                @if(!empty($has_subasta))
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
                   <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
                 @endif
 
-
-                <?php
-                  $has_subasta = $subastaObj->auctionList ('S', 'V');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta = array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
-                   }
-                ?>
-                @if(!empty($has_subasta))
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
                     <li>
                         <a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a>
                     </li>
                 @endif
 
-
-                <?php
-                  $has_subasta = $subastaObj->auctionList ('S', 'O');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta = array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-                   }
-                ?>
-                @if(!empty($has_subasta))
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
                     <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
                 @endif
-				<?php
-				$has_subasta = $subastaObj->auctionList ('S', 'P');
-				if(empty($has_subasta) && Session::get('user.admin')){
-					 $has_subasta = array_merge($has_subasta,$subastaObj->auctionList ('A', 'P'));
-				 }
-			  	?>
-			  	@if(!empty($has_subasta))
+
+				@if($global['subastas']->has('S') && $global['subastas']['S']->has('P'))
 				  	<li><a href="{{ route('allCategories', ['typeSub' => 'P']) }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
 			  	@endif
 
-                <?php
-                    $has_subasta = $subastaObj->auctionList ('H');
-                ?>
-                @if(!empty($has_subasta))
+                @if($global['subastas']->has('H'))
                     <li><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
                 @endif
 
