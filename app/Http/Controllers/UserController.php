@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Config;
 use Route;
 /*use Mail;*/
 use Cookie;
-use Paginator;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\Log;
 # ODBC Service Provider
 //use TCK\Odbc\OdbcServiceProvider;
@@ -1811,6 +1811,8 @@ class UserController extends Controller
 			$data['seo'] = $seo;
             return View::make('front::pages.not-logged',  $data);
         }
+
+		//el orderBidsListLots falla la vista, revisar antes de activar
          if(!empty(Config::get('app.user_panel_group_subasta')) && Config::get('app.user_panel_group_subasta') == 1){
             return $this->orderbidsListSubastas();
          }else{
@@ -1931,10 +1933,12 @@ class UserController extends Controller
 
         }
 
-        $totalItems = count($sub->getAllBidsAndOrders());
+		$queryValues = $sub->getAllBidsAndOrders();
+        $totalItems = count($queryValues);
+
 
         $itemsPerPage = $sub->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
+        //$urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
 
         if(empty($page) or $page == 1) {
             $currentPage    = 1;
@@ -1942,12 +1946,13 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
         //$paginator->numPages = ($paginator->numPages -1);
 
-        $data['values'] = $sub->getAllBidsAndOrders();
+        $data['values'] = $queryValues;
         $data['paginator'] = $paginator;
         $data['currency'] = $sub->getCurrency();
         //}
@@ -1982,47 +1987,6 @@ class UserController extends Controller
         return View::make('front::pages.panel.preawards', compact('data'));
 	}
 
-   //2018_01_19 no se esta usando
-   /*
-    # Listado de pujas en el panel de usuario
-    public function bidsList()
-    {
-        $sub = new Subasta();
-        $sub->licit = Session::get('user.cod');
-        $data = array();
-        $page = Route::current()->parameter('page');
-
-        //$data_licit = $sub->getCodLicitFromCli();
-
-
-
-        $sub->page  = 'all';
-        $sub->licit  = Session::get('user.cod');
-        $totalItems = count($sub->getAllSubastaLicitPujas());
-
-        $itemsPerPage = $sub->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/bids').'/page/(:num)';
-
-        if(empty($page) or $page == 1) {
-            $currentPage    = 1;
-        } else {
-            $currentPage    = $page;
-        }
-
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-
-        $sub->page = $currentPage;
-        //$paginator->numPages = ($paginator->numPages -1);
-
-        $data['values'] = $sub->getAllSubastaLicitPujas();
-
-        $data['paginator'] = $paginator;
-        $data['currency'] = $sub->getCurrency();
-        //}
-
-        return View::make('front::pages.panel.bids', array('data' => $data));
-    }
-*/
     # Listado de ordenes de licitacion en el panel de usuario
     public function orderList()
     {
@@ -2039,7 +2003,8 @@ class UserController extends Controller
             $sub->licit = "'".$licits."'";*/
 
         $sub->page  = 'all';
-        $totalItems = count($sub->getAllSubastaLicitOrdenes());
+		$queryValues = $sub->getAllSubastaLicitOrdenes();
+        $totalItems = count($queryValues);
 
         $itemsPerPage = $sub->itemsPerPage = 10;
         $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
@@ -2050,12 +2015,13 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
         //$paginator->numPages = ($paginator->numPages -1);
 
-        $data['values'] = $sub->getAllSubastaLicitOrdenes();
+        $data['values'] = $queryValues;
         $data['paginator'] = $paginator;
         $data['currency'] = $sub->getCurrency();
         //}
@@ -2071,7 +2037,8 @@ class UserController extends Controller
         $page = Route::current()->parameter('page');
 
         $sub->page  = 'all';
-        $totalItems = count($sub->getAllSubastaLicitOrdenes());
+		$queryValues = $sub->getAllSubastaLicitOrdenes();
+        $totalItems = count($queryValues);
 
         $itemsPerPage = $sub->itemsPerPage = 10;
         $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
@@ -2082,11 +2049,12 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
 
-        $data['values']     = $sub->getAllSubastaLicitOrdenes();
+        $data['values']     = $queryValues;
         $data['paginator']  = $paginator;
         $data['currency']   = $sub->getCurrency();
 
@@ -2429,49 +2397,7 @@ class UserController extends Controller
 
         return json_encode($response);
     }
-//2018_01_19 no se esta usando
-   /*
-    # Adjudicaciones del usuario en sesion
-    public function getAdjudicaciones()
-    {
-        # Lista de códigos de licitacion del usuario en sesion
-        $User = new User();
-        $User->cod_cli = Session::get('user.cod');
-        $User->page  = 'all';
 
-        $adjudicaciones = $User->getAdjudicaciones();
-
-        # Paginador #
-        $page = Route::current()->parameter('page');
-
-        $totalItems = count($adjudicaciones);
-
-        $itemsPerPage = $User->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/allotments').'/page/(:num)';
-
-        if(empty($page) or $page == 1) {
-            $currentPage    = 1;
-        } else {
-            $currentPage    = $page;
-        }
-
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-
-        $User->page          = $currentPage;
-        //$paginator->numPages = ($paginator->numPages -1);
-        # end paginador #
-        $adjudicaciones = $User->getAdjudicaciones();
-
-        $sub = new Subasta();
-        $data = array(
-                    'adjudicaciones' => $adjudicaciones,
-                    'paginator'      => $paginator,
-                    'currency'       => $sub->getCurrency()
-                );
-
-        return View::make('front::pages.panel.adjudicaciones', array('data' => $data));
-    }
-    */
 	#mostrar listado de pagos pagados y pendientes de transferencia de NFT
 	public function nftTransferPay(){
 		$asigl0 = new Fgasigl0();
@@ -3203,7 +3129,8 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($favs, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $fav->page           = $currentPage;
         # end paginador #
