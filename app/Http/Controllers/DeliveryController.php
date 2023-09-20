@@ -12,6 +12,7 @@ use App\Models\Enterprise;
 use App\Models\Subasta;
 use App\Models\Address;
 use App\Http\Controllers\PaymentsController;
+use App\Models\delivery\Delivery_default;
 use Illuminate\Support\Facades\Request as Input;
 use Session;
 
@@ -38,7 +39,7 @@ class DeliveryController  extends Controller{
          $emp = \Config::get('app.emp');
 
         \App::setLocale(strtolower($lang));
-        $delivery =new Delivery();
+        $delivery =new Delivery(new Delivery_default());
         $value_delivery = $delivery->getShipmentsRates($emp, $cod_sub,$ref,$destinationCountryCode, $destinationZipCode);
 
 
@@ -84,13 +85,13 @@ class DeliveryController  extends Controller{
     }
 
     public function newShipment(){
-        $a = new Delivery();
+        $a = new Delivery(new Delivery_default());
         $a->newShipment();
     }
 
     public function getShipmentDelivery(){
        $addres = new Address();
-       $delivery = new Delivery();
+       $delivery = new Delivery(new Delivery_default());
        $addres->cod_cli = Session::get('user.cod');
        $cod_dir = Input::get('cod_dir');
        $cod_sub = Input::get('sub');

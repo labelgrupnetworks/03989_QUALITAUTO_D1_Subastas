@@ -27,6 +27,7 @@ use App\Models\V5\FxClid;
 use App\Http\Controllers\V5\PayShoppingCartController;
 use App\Http\Controllers\V5\DepositController;
 use App\libs\PayPalV2API;
+use App\Models\delivery\Delivery_default;
 use App\Models\V5\FsParams;
 use App\Models\V5\FgCsub0;
 use App\Models\V5\FgCsub;
@@ -180,7 +181,7 @@ class PaymentsController extends Controller
 							}
 							//Envio por deliverea
 							elseif ($shopping_cart['envios'] == '4') {
-								$deliverea = new Delivery();
+								$deliverea = new Delivery(new Delivery_default());
 								$enviar = $deliverea->getCsube($emp, $sub, $ref);
 								if (empty($enviar)) {
 									return $res_error;
@@ -940,7 +941,7 @@ class PaymentsController extends Controller
 
 			/* la libreria de Deliverea no esta funcional. Revisar si
 			alguien la utiliza y elimenar este caso si no es así. */
-			$delivery = new Delivery();
+			$delivery = new Delivery(new Delivery_default());
 			$send_lot = $delivery->getCsube(Config::get('app.emp'), $lot->sub_csub, $lot->ref_csub);
 			$dir = '';
 			if (!empty($send_lot)) {
@@ -1403,7 +1404,7 @@ class PaymentsController extends Controller
 					if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1) {
 						//Avisamos a deliverea
 						$send_lot_deliverea = array();
-						$deliverea = new Delivery();
+						$deliverea = new Delivery(new Delivery_default());
 						$send_lot_deliverea = $deliverea->getCsube($lot->emp_csub, $lot->sub_csub, $lot->ref_csub);
 
 						if (!empty($send_lot_deliverea)) {
