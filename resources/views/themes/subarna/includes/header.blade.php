@@ -162,7 +162,7 @@
 
 				$urlPresencial="#";
 				if($existPresencial && $global['subastas']['S']['W']->count() == 1){
-					$subasta = $global['subastas']['S']['W']->first();
+					$subasta = $global['subastas']['S']['W']->flatten()->first();
 					$urlPresencial = Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
 				} elseif($existPresencial && $global['subastas']['S']['W']->count() > 1){
 					$urlPresencial = Routing::translateSeo('presenciales');
@@ -199,7 +199,7 @@
 
 					@if($global['subastas']['S']['V']->has('VDJ'))
 						@php
-							$subasta = $global['subastas']['S']['V']['VDJ']->first();
+							$subasta = $global['subastas']['S']['V']['VDJ']->flatten()->first();
 							$url_venta = \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions, $subasta->reference)."?only_salable=on";
 							unset($global['subastas']['S']['V']['VDJ']);
 						@endphp
@@ -209,7 +209,7 @@
 
 					@if($global['subastas']['S']['V']->count() == 1)
 						@php
-							$subasta = $global['subastas']['S']['V']->first()->first();
+							$subasta = $global['subastas']['S']['V']->flatten()->first();
 							$url_venta = \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions, $subasta->reference)."?only_salable=on";
 						@endphp
 						<li><a href="{{$url_venta}}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>

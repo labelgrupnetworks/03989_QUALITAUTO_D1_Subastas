@@ -4,7 +4,7 @@
 
 	$urlPresencial="#";
 	if($existPresencial && $global['subastas']['S']['W']->count() == 1){
-		$subasta = $global['subastas']['S']['W']->first();
+		$subasta = $global['subastas']['S']['W']->flatten()->first();
 		$urlPresencial = Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
 	} elseif($existPresencial && $global['subastas']['S']['W']->count() > 1){
 		$urlPresencial = Routing::translateSeo('presenciales');
