@@ -3833,3 +3833,59 @@ ul.sub_menu_adj {
 .has-error label{
 	color:#b21416;
 }
+
+.modal-toast {
+	top: auto;
+	left: auto;
+	right: 0px;
+	bottom: 0px;
+	padding: 20px;
+}
+
+.modal-toast .close {
+	position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 30px;
+	opacity: .7;
+}
+
+.modal-toast .close:hover {
+	opacity: .9;
+}
+
+.modal-toast .modal-dialog {
+	margin: 0px;
+	width: 500px;
+	max-width: 100%;
+}
+
+.modal-toast .modal-content {
+	box-shadow: rgba(0,0,0,.19) 0 10px 20px, rgba(0,0,0,.23) 0 6px 6px;
+	border: 0;
+    border-radius: 12px;
+	font-size: 15px;
+    font-weight: 600;
+}
+
+.modal-toast .modal-header {
+	border-bottom: 0;
+	text-align: center;
+}
+
+.modal-toast .modal-footer {
+	border-top: 0;
+	text-align: center;
+}
+
+.modal-toast .modal-title {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.modal-toast .modal-body {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+

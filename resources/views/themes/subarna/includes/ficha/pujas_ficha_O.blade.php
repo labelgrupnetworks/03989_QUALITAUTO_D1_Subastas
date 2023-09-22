@@ -74,8 +74,29 @@
 	</div>
 </div>
 
+<div id="postVentaModal" class="modal modal-toast fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{ trans("$theme-app.lot.post_venta_title") }}</h4>
+			</div>
+
+			<div class="modal-body">
+				<p>{{ trans("$theme-app.lot.post_venta_content") }}</p>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-lg btn-primary" data-dismiss="modal">{{ trans("$theme-app.head.close") }}</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script>
 	$(document).ready(function() {
+
+		showPostVentaModal(auction_info.lote_actual);
 
         //calculamos la fecha de cierre
         //$("#cierre_lote").html(format_date(new Date("{{$lote_actual->close_at}}".replace(/-/g, "/"))));
@@ -101,4 +122,20 @@
             }
         });
     });
+
+	function showPostVentaModal({tipo_sub, compra_asigl0}) {
+		if(tipo_sub !== 'W' || compra_asigl0 !== 'S') {
+			return;
+		}
+
+		$('#postVentaModal').modal({
+			show: true,
+			backdrop: false,
+			keyboard: false
+		});
+
+		$('#postVentaModal').on('shown.bs.modal', function () {
+			$('body').removeClass('modal-open');
+		});
+	}
 </script>
