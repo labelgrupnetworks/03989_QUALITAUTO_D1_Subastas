@@ -124,6 +124,15 @@
     });
 
 	function showPostVentaModal({tipo_sub, compra_asigl0}) {
+
+		const isMobile = window.matchMedia("(max-width: 600px)").matches;
+		const keyStorage = 'postVentaModal';
+
+		//en mobile solo se muestra una vez al dia
+		if(isMobile && !shouldExecuteOncePerDay(keyStorage)){
+			return;
+		}
+
 		if(tipo_sub !== 'W' || compra_asigl0 !== 'S') {
 			return;
 		}
@@ -137,5 +146,20 @@
 		$('#postVentaModal').on('shown.bs.modal', function () {
 			$('body').removeClass('modal-open');
 		});
+	}
+
+	function shouldExecuteOncePerDay(keyStorage) {
+
+		if (!window.localStorage) {
+			return true;
+		}
+
+		const now = new Date();
+		const last = new Date(localStorage.getItem(keyStorage));
+		if (last.getDate() !== now.getDate()) {
+			localStorage.setItem(keyStorage, now);
+			return true;
+		}
+		return false;
 	}
 </script>
