@@ -211,7 +211,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
     <div class="col-sm-5 col-xs-12 content-right-ficha d-flex justify-content-space-between flex-column">
 
-       <div class="d-flex  flex-column">
+       <div class="d-flex flex-column">
             <div class="ficha-info-title col-xs-12 no-padding">
                     <div class="titleficha col-xs-12 no-padding  secondary-color-text no-padding">
 						@php
@@ -233,10 +233,18 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 							*/
 						@endphp
 						 {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}
-
                     </div>
-
             </div>
+
+			<section class="long-description">
+				<div class="desc-lot-title">
+					<p class="desc-lot-profile-title">{{ trans("$theme-app.lot.description") }}</p>
+				</div>
+
+				<div class="desc-lot-profile-content">
+					{!! $lote_actual->desc_hces1 !!}
+				</div>
+			</section>
 
             <?php
             $categorys = new \App\Models\Category();
@@ -318,21 +326,6 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 </div>
 
 
-
-<div class="container">
-	{{-- ¿? <div class="@if($subasta_online && !$cerrado) col-sm-7 @endif col-xs-12 no-padding ficha-tipo-v"> --}}
-    <div class="col-xs-12 no-padding ficha-tipo-v">
-
-            <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
-                    <p class="desc-lot-profile-title">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
-
-            </div>
-            <div class="col-xs-12 no-padding desc-lot-profile-content">
-                    <?= $lote_actual->desc_hces1 ?>
-            </div>
-
-</div>
-
 <section class="container">
 	<div class="row">
 		<div class="col-xs-12">
@@ -349,7 +342,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 	</div>
 </section>
 
-
+<div class="container">
     <div class="row mb-3">
         <div class="single">
             <div class="col-xs-12 col-md-7">

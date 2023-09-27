@@ -772,3 +772,14 @@ footer {
 	margin-bottom: 3rem;
 }
 
+.content-right-ficha .desc-lot-title {
+	margin-bottom: 1rem;
+}
+
+.content-right-ficha .desc-lot-profile-title {
+	margin: 0;
+}
+
+.content-right-ficha .desc-lot-profile-content {
+	font-size: 14px;
+}
