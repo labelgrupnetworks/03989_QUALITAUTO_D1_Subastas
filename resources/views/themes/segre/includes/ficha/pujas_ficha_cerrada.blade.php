@@ -21,9 +21,7 @@ else{
 }
 
 //Si hay precio de venta y impsalweb_asigl0 contiene valor, mostramos este como precio de venta
-//$precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ? $lote_actual->impsalweb_asigl0 : $precio_venta;
-
-//dd($lote_actual);
+$precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ? $lote_actual->impsalweb_asigl0 : $precio_venta;
 ?>
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 <div class="info_single lot-sold col-xs-12 no-padding">
