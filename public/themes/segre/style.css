@@ -783,3 +783,12 @@ footer {
 .content-right-ficha .desc-lot-profile-content {
 	font-size: 14px;
 }
+
+.lot-sold .pre {
+	margin: 0;
+}
+
+.lot-sold .lot-sold_impsal p {
+	line-height: 1.5;
+	margin: 0;
+}
