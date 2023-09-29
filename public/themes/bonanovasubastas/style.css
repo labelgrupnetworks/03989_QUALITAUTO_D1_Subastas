@@ -690,6 +690,11 @@ nav.navbar {
     border-color: transparent;
 }
 
+.slick-slide img {
+	width: 100%;
+	height: auto;
+}
+
 .slick-prev {
     left: -40px;
 }
