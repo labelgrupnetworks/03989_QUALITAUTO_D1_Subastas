@@ -64,7 +64,6 @@ $(function () {
 
 	 function addBidLogic(amount, ref, imp_sal, $this, can_do)
 	 {
-
         var type_bid = 'W';
 
         /*Si no es un importe válido*/
@@ -134,6 +133,14 @@ $(function () {
 
         $('.add_bid').addClass('loading');
 
+		addBidLogicWithSocket(params);
+	 }
+
+	 function addBidLogicWithSocket(params) {
+		socket.emit('action', params);
+	 }
+
+	 function addBidLogicWithAjax(params) {
 		$.ajax({
 			type: "POST",
 			url: '/phpsock/actionv2',
@@ -141,17 +148,13 @@ $(function () {
 			beforeSend: function () {
 
 			},
-			success: function( response ) {
-							if(response.status == 'error'){
-								displayAlert(1, messages.error[response.msg]);
-							}
+			success: function (response) {
+				if (response.status == 'error') {
+					displayAlert(1, messages.error[response.msg]);
+				}
 			}
 		});
-
-
 	 }
-
-
 
     /*
      |--------------------------------------------------------------------------
@@ -2373,9 +2376,10 @@ $(function () {
 
 	window.cancelar_orden_user = function ()
     {
+		cancelarOrdenUserWithSocket();
+	};
 
-
-
+	function cancelarOrdenUserWithAjax() {
 		$.ajax({
 			type: "POST",
 			url: '/phpsock/cancelar_orden_user',
@@ -2389,8 +2393,16 @@ $(function () {
 				}
 			}
 		});
+	}
 
-	};
+	function cancelarOrdenUserWithSocket() {
+		var cod_licit = auction_info.user.cod_licit;
+        var cod_sub = auction_info.subasta.cod_sub;
+        var ref = auction_info.lote_actual.ref_asigl0;
+        var string_hash = cod_licit + " " + cod_sub + " " + ref;
+        var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+        socket.emit('cancel_order_user', {cod_licit: cod_licit, cod_sub: cod_sub, ref: ref, hash: hash});
+	}
 
     $('.confirm_puja').on('click', function (e) {
         confirm_puja();
@@ -2442,24 +2454,31 @@ $(function () {
 			bidders,
 		};
 
-			$.ajax({
-				type: "POST",
-				url: '/phpsock/actionv2',
-				data: params,
-				beforeSend: function () {
-
-				},
-				success: function( response ) {
-					if(response.status == 'error'){
-						displayAlert(1, messages.error[response.msg]);
-						$('#abrirLote').addClass('hidden');
-					}
-				}
-			});
+		confirmPujaWithSocket(params);
 	};
 
+	function confirmPujaWithSocket(params) {
+		var string_hash = params.cod_licit + " " + params.cod_sub + " " + params.ref + " " + params.imp;
+        params.hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+        socket.emit('action', params);
+	}
 
+	function confirmPujaWithAjax(params) {
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/actionv2',
+			data: params,
+			beforeSend: function () {
 
+			},
+			success: function( response ) {
+				if(response.status == 'error'){
+					displayAlert(1, messages.error[response.msg]);
+					$('#abrirLote').addClass('hidden');
+				}
+			}
+		});
+	}
 
 });
 

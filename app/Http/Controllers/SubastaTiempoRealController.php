@@ -1604,20 +1604,18 @@ class subastaTiempoRealController extends Controller
 	# Funcion de pujas y ordenes de licitacion en tiempo real mediante node
     public function action()
     {
-		$codSub            = Input::get('params.cod_sub');
-        $ref            = Input::get('params.ref');
+		$codSub = request('params.cod_sub');
+        $ref = request('params.ref');
+        $licit = request('params.cod_licit');
 
-        $licit          = Input::get('params.cod_licit');
-        //si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
-		$cod_original_licit      = Input::get('params.cod_original_licit');
+		//si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
+		$cod_original_licit = request('params.cod_original_licit');
+		$imp = intval(request('params.imp'));
+        $type_bid = request('params.type_bid');
+        $can_do = request('params.can_do');
+        $hash_user = request('params.hash');
+        $tipo_puja_gestor = request('params.tipo_puja_gestor');
 
-
-		$imp            = intval(Input::get('params.imp'));
-        $type_bid       = Input::get('params.type_bid');
-
-        $can_do                  = Input::get('params.can_do');
-        $hash_user               = Input::get('params.hash');
-        $tipo_puja_gestor        = Input::get('params.tipo_puja_gestor');
 		\Log::info ("antiguo circuito action");
 		return $this->executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  );
 	}
@@ -2935,25 +2933,21 @@ class subastaTiempoRealController extends Controller
 	}
 
 
- 	#conservo la función por si hubiera que usar sockets desde js en algun cliente
-	 public function endLot()
-	 {
-		 $cod_sub  = Input::get('params.cod_sub');
-		 $lot = Input::get('params.lot');
-		 $cod_licit      = Input::get('params.cod_licit');
-		 $hash_user      = Input::get('params.hash');
-		 $jump_lot = Input::get('params.jump_lot');
+	#conservo la función por si hubiera que usar sockets desde js en algun cliente
+	public function endLot()
+	{
+		$cod_sub  = request('params.cod_sub');
+		$lot = request('params.lot');
+		$cod_licit = request('params.cod_licit');
+		$hash_user = request('params.hash');
+		$jump_lot = request('params.jump_lot');
 
-		 return $this->endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot);
-
-
-	 }
-
+		return $this->endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot);
+	}
 
 	 public function endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot)
 	 {
-
-		 \Log::info("end lot V2" );
+		\Log::info("end lot V2" );
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
@@ -3781,7 +3775,7 @@ class subastaTiempoRealController extends Controller
 
 	public function  cancelarOrden()
     {
-		return $this->cancelarOrdenV2(Input::get('params.cod_sub'), Input::get('params.cod_licit'),  Input::get('params.ref'),  Input::get('params.hash'));
+		return $this->cancelarOrdenV2(request('params.cod_sub'), request('params.cod_licit'), request('params.ref'), request('params.hash'));
 	}
 
 	public function  cancelarOrdenV2($codSub, $licit,  $ref, $hash_user)
@@ -3913,20 +3907,16 @@ class subastaTiempoRealController extends Controller
 
 	public function cancelarPuja()
 	{
-
-		$codSub = Input::get('params.cod_sub');
-		$codLicit = Input::get('params.cod_licit');
-		$ref  = Input::get('params.ref');
-		$hash= Input::get('params.hash');
+		$codSub = request('params.cod_sub');
+		$codLicit = request('params.cod_licit');
+		$ref  = request('params.ref');
+		$hash= request('params.hash');
 
 		return $this->cancelarPujaV2($codSub, $codLicit, $ref, $hash);
 	}
 
     public function cancelarPujaV2($codSub, $codLicit, $ref,  $hash_user)
     {
-
-    
-
         $subasta = new Subasta();
         $subasta->cod     = $codSub;
         $licit            = $codLicit;
