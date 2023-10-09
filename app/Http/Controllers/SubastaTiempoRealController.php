@@ -1878,7 +1878,8 @@ class subastaTiempoRealController extends Controller
 			$res = array(
                     'status' => 'error',
                     'msg_2' => 'bid_scaling',
-                    'cod_licit_actual'  => $subasta->licit
+                    'cod_licit_actual'  => $subasta->licit,
+					'no_interrupt_cd_time' => 'true'
                     );
             if (!empty($is_gestor)){
                 $res['is_gestor'] = TRUE;
