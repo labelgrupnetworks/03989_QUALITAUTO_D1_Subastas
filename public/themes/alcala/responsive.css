@@ -207,9 +207,7 @@
         right: 0;
         margin-top: 40px;
     }
-    .filters-auction-texts{
-        height: 60px;
-    }
+
     .tabs-custom.filters-auction-content .ul-format{
         display: none;
     }
@@ -232,9 +230,7 @@
     .account-user .border-password{
         margin-top: 20px;
     }
-    .filters-auction-texts{
-        height: 116px;
-    }
+
     .auction-desc-content {
         height: auto;
         padding-bottom: 20px;
