@@ -608,6 +608,10 @@ $lang =[
 			'asign_to_ministery' => 'The previous lot has been awarded to the Ministry.',
 			'bidders_ratio' => 'The sum of the ratios must add up to 100%.',
 			'no_deposit_w' => 'In order to place an offer you must have a valid deposit',
+			//'login_too_many_attempts' => 'Too many login attempts. Please try again in :time.',
+			//'attempts_minutes_ago' => '{1} :time minute ago|[2,*] :time minutes ago',
+			'login_too_many_attempts' => 'Too many login attempts.<br>Please try again in 5 minutes.',
+			'invalid_strict_password' => 'The password must meet the following criteria:<br>More than :min characters, at least one uppercase letter, one lowercase, one symbol and one number.'
 		),
 	'msg_neutral' =>
 		array (
@@ -912,6 +916,7 @@ $lang =[
 			'unit_price' => 'unit price',
 			'units' => 'Units',
 			'text_transfer' => 'You can make your transfer payment of :pago € to the following bank account <br> :cuenta',
+			'shop' => "Shop",
 			"iva" => "VAT",
 			"unit_iva" => "unit VAT",
 			'shop' => "Shop",

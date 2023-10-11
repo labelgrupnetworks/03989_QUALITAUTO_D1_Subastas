@@ -26,18 +26,15 @@ $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 $aux_user = Session::get('user');
-$aux_user = DB::table("FXCLI")->addSelect("ries_cli,blockpuj_cli")->where("COD_CLI",$aux_user['cod'])->first();
 
 $puede_pujar = 1;
 
 if (!empty($aux_user)) {
-
+	$aux_user = DB::table("FXCLI")->addSelect("ries_cli, blockpuj_cli")->where("COD_CLI", $aux_user['cod'])->first();
     if ($aux_user->blockpuj_cli == 'S') {
         $puede_pujar = 0;
     }
-
 }
-
 ?>
 
 <div class="ficha-content">

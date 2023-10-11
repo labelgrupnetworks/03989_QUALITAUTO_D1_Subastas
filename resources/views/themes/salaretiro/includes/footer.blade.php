@@ -17,10 +17,13 @@
 
                                 </address>
                                 <ul class="redes">
-                                        <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a title="Google Plus" href="<?= Config::get('app.googleplus') ?>"><i class="fa fa-google-plus"></i></a></li>
-                                        <li><a title="Instagram" href="<?= Config::get('app.instagram') ?>"><i class="fa fa-instagram"></i></a></li>
+									<li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-facebook"></i></a></li>
+									<li>
+										<a title="Twitter" href="<?= Config::get('app.twitter') ?>">
+											@include('components.x-icon', ['size' => '14'])
+										</a>
+									</li>
+									<li><a title="Instagram" href="<?= Config::get('app.instagram') ?>"><i class="fa fa-instagram"></i></a></li>
                                 </ul>
                         </div>
                 </div>

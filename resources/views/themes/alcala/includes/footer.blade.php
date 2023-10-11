@@ -9,35 +9,6 @@
                 </div>
 
                 <ul class="contacts">
-                    <?php 
-						$empre= new \App\Models\Enterprise;
-						$empresa = $empre->getEmpre();
-					 ?>
-                    <?php /*
-					 * Problemas con las direcciones
-					 * <address>
-							 <?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?>
-                    <br>
-                    <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
-                    <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?>
-                    <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> ,
-                    <?= !empty($empresa->pais_emp)? $empresa->pais_emp : ''; ?></br>
-                    <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?><br> - <a
-                        title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"
-                        href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>
-                    </address>
-
-                    * Alcala no tiene redes sociales
-                    <ul class="redes">
-                        <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i
-                                    class="fa fa-facebook"></i></a></li>
-                        <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>"><i
-                                    class="fa fa-twitter"></i></a></li>
-                        <li><a title="Google Plus" href="<?= Config::get('app.googleplus') ?>"><i
-                                    class="fa fa-google-plus"></i></a></li>
-                    </ul>
-                    */
-                    ?>
                     <li class="cont-phone">T: +34 91 577 87 97</li>
                     <li class="cont-phone">M: +34 717 79 17 39</li>
                     <li class="cont-whatsapp">W: +34 616 095 044</li>
@@ -108,7 +79,7 @@
                                         <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
                                         <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
                                         <li><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
-                                         * 
+                                         *
                                          */
                                         ?>
                     </ul>
@@ -138,33 +109,33 @@
     <div class="copyr-top"></div>
     <div class="copyr-spacer text-center">
         <div class="container">
-            
+
             <div class="button-up">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-10">
-                    &copy; 2019 Alcalá Subastas | 
+                    &copy; 2019 Alcalá Subastas |
 
-<a href="{{ \Routing::translateSeo('quienes-somos') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.quienes_somos') }}">{{ trans(\Config::get('app.theme').'-app.foot.quienes_somos') }}</a> | 
-Todos los derechos reservados | 
-<a href="{{ \Routing::translateSeo('aviso-legal') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}">{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}</a> | 
-<a href="{{ \Routing::translateSeo('politica-privacidad') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.politica_privacidad') }}">{{ trans(\Config::get('app.theme').'-app.foot.politica_privacidad') }}</a> | 
+<a href="{{ \Routing::translateSeo('quienes-somos') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.quienes_somos') }}">{{ trans(\Config::get('app.theme').'-app.foot.quienes_somos') }}</a> |
+Todos los derechos reservados |
+<a href="{{ \Routing::translateSeo('aviso-legal') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}">{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}</a> |
+<a href="{{ \Routing::translateSeo('politica-privacidad') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.politica_privacidad') }}">{{ trans(\Config::get('app.theme').'-app.foot.politica_privacidad') }}</a> |
 <a href="{{ \Routing::translateSeo('normativa-lssi') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}">{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}</a></span>
                 </div>
 
-                <div class="col-xs-12 col-md-2">
+                <div class="col-xs-12 col-md-2 footer-social-links">
                     <a href="http://twitter.com/alcalasubastas" title="Twitter" target="out">
-                        <img src="/themes/alcala/img/twitter.png" alt="">
+						@include('components.x-icon', ['size' => '19'])
                     </a>
                     <a href="https://www.facebook.com/alcalasubastas/" title="Facebook" target="out">
                         <img src="/themes/alcala/img/facebook.png" alt="">
                     </a>
-                
+
                     <a href="http://www.youtube.com/user/edubobillo" title="YouTube" target="out">
                         <img src="/themes/alcala/img/youtube.png" alt="">
                     </a>
-                
+
                     <a href="https://www.instagram.com/alcalasubastas/" title="Instagram" target="out">
                         <img src="/themes/alcala/img/instagram.png" alt="Instagram" />
                     </a>
@@ -191,7 +162,7 @@ Todos los derechos reservados |
 
 
 
-    
+
 </footer>
 
 @if (!Cookie::get("cookie_law"))

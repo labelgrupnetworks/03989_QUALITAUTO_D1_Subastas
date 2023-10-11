@@ -20,9 +20,7 @@
             <a class="lb-text-primary"
                 href="http://twitter.com/share?text=<?= $titulo . ' ' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>&url=<?= $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>"
                 title="{{ trans(\Config::get('app.theme') . '-app.lot.share_twitter') }}" target="_blank">
-                <svg class="bi" width="24" height="24" fill="currentColor">
-                    <use xlink:href="/bootstrap-icons.svg#twitter"></use>
-                </svg>
+                @include('components.x-icon', ['size' => '24'])
             </a>
         </li>
         <li class="ms-3">

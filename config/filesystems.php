@@ -55,6 +55,18 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+		'blog' => [
+			'driver' => 'local',
+			'root' => public_path('img/blog'),
+			'url' => '/img/blog',
+			'visibility' => 'public'
+		],
+		'client' => [
+			'driver' => 'local',
+			'root' => storage_path('app/files/CLI/') . env('APP_EMP'),
+			'url' => env('APP_URL').'/admin/clientes',
+			'visibility' => 'public' //establece los permisos del directorio o archivo
+		]
 
     ],
 

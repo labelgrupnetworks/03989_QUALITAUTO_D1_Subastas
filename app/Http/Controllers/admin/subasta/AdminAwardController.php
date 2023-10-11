@@ -381,7 +381,7 @@ class AdminAwardController extends Controller
 			}
 
 			/* pongo un espacio para que el excel interprete el numero como texto, ya que es muy largo y en excel no se ve bien   */
-			if(config('app.payDepositTpv', false)){
+			if(config('app.payDepositTpv', false) && !empty($awardsToExcel[$idAward]['cod_deposito'] )){
 				$awardsToExcel[$idAward]['cod_deposito'] = " ". $awardsToExcel[$idAward]['cod_deposito'];
 			}
 

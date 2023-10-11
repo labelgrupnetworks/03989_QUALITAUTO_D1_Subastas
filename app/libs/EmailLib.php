@@ -7,7 +7,7 @@
  */
 
 namespace App\libs;
-use Config;
+use Illuminate\Support\Facades\Config;
 use DB;
 use Mail;
 use App\Models\User;
@@ -703,10 +703,11 @@ private $debug = true;
             $this->setPrice(\Tools::moneyFormat($precio,false,2));
             $this->setPrice_tax(\Tools::moneyFormat($precio_tax,false,2));
 			$this->setPrice_auction(\Tools::moneyFormat($adjudicado->himp_csub,false,2));
-			if(config('app.addComisionEmailBid', 0)){
-				$this->atributes["TOTAL_AMOUNT"] = \Tools::moneyFormat($precio + ( ($precio * config('app.addComisionEmailBid', 0)) / 100),false,2);
 
+			if(Config::get('app.emails_with_commission', false)) {
+				$this->addCommissionMessages($precio);
 			}
+
 			if(config::get("app.carlandiaCommission")){
 				#importe total, lo pongo con € y sin decimales
 				$this->setPrice(\Tools::moneyFormat($precio,trans(\Config::get('app.theme').'-app.subastas.euros')));
@@ -918,10 +919,33 @@ private $debug = true;
         public function setBid($bid){
             $this->atributes["BID"] = $bid;
 
-			if(config('app.addComisionEmailBid', 0)){
-				$this->atributes["TOTAL_AMOUNT"] = $bid + ( ($bid * config('app.addComisionEmailBid', 0)) / 100);
+			if(Config::get('app.emails_with_commission', false)) {
+				$this->addCommissionMessages($bid);
 			}
         }
+
+		/**
+		 * Añade los mensajes de comisión al email (utilizado por tda)
+		 * @param $bid
+		 */
+		private function addCommissionMessages($bid)
+		{
+			$totalAmount = $bid;
+			$this->atributes["COMMISSION_MESSAGE"] = '';
+
+			if(Config::get('app.buyer_premium_active', false)) {
+
+				$totalAmount = $bid + ( ($bid * config('app.addComisionEmailBid', 0)) / 100);
+
+				$this->atributes["COMMISSION_MESSAGE"] = trans(Config::get('app.theme').'-app.emails.commission_message', [
+					'commission' => Config::get('app.addComisionEmailBid', 0) . '%'
+				]);
+			}
+
+			$this->atributes["TOTAL_AMOUNT_MESSAGE"] = trans(Config::get('app.theme').'-app.emails.total_amount_message', [
+				'totalAmount' => $totalAmount
+			]);
+		}
 
 		public function setBidDate($bidDate){
             $this->atributes["BID_DATE"] = $bidDate;

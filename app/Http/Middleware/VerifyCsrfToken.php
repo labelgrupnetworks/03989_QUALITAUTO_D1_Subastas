@@ -24,7 +24,7 @@ class VerifyCsrfToken extends Middleware
          "*api/*",
         "api-ajax/*",
         "gateway/*",
-        "/login_post_ajax",
+        //"/login_post_ajax",
         "*/valoracion-articulos-adv*",
         "apirest/*",
         "admin/*",

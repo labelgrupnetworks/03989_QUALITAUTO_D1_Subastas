@@ -2131,46 +2131,36 @@ tbody tr{
     padding: 10px;
 }
 
-.share-panel-auction{
-
-    background: #f6f6f6;
-    width: 100%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    line-height: 22px;
-    font-weight: 300;
-    padding: 10px 15px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
--webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-        justify-content: space-between;
--webkit-box-align: center;
-    -ms-flex-align: center;
-        align-items: center;
-}
-.share-panel-auction ul{
-    list-style: none;
-    padding: 0;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
+.share-auction-component {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
 }
 
-.share-panel-auction ul li{
+.share-auction-component .share-auction-list {
+	list-style: none;
+	padding: 10px 0;
+	margin: 0;
+	display: flex;
+	gap: 10px;
+	align-items: center
+}
+
+.share-auction-component .share-auction-list li {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     background: #9E9E9E;
-    text-align: center;
-    padding-top: 5px;
-    margin-left: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.share-panel-auction ul li a{
+
+.share-auction-component .share-auction-list a {
+	display: inline-block;
     color: white;
+    line-height: 1;
+	height: 14px;
 }
 
 .it_ro h1.titleSingle{
@@ -3180,7 +3170,8 @@ div button.btn-step-reg2 {
 }
 .newsletter .redes a{
     color: grey;
-
+	display: block;
+    height: 42px;
 }
 
 .cookies-message{
@@ -3842,3 +3833,60 @@ ul.sub_menu_adj {
 .has-error label{
 	color:#b21416;
 }
+
+.modal-toast {
+	top: auto;
+	left: auto;
+	right: 0px;
+	bottom: 0px;
+	padding: 20px;
+	max-width: 100%;
+}
+
+.modal-toast .close {
+	position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 30px;
+	opacity: .7;
+}
+
+.modal-toast .close:hover {
+	opacity: .9;
+}
+
+.modal-toast .modal-dialog {
+	margin: 0px;
+	width: 500px;
+	max-width: 100%;
+}
+
+.modal-toast .modal-content {
+	box-shadow: rgba(0,0,0,.19) 0 10px 20px, rgba(0,0,0,.23) 0 6px 6px;
+	border: 0;
+    border-radius: 12px;
+	font-size: 15px;
+    font-weight: 600;
+}
+
+.modal-toast .modal-header {
+	border-bottom: 0;
+	text-align: center;
+}
+
+.modal-toast .modal-footer {
+	border-top: 0;
+	text-align: center;
+}
+
+.modal-toast .modal-title {
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.modal-toast .modal-body {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+

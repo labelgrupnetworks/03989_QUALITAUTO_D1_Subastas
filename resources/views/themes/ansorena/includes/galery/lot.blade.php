@@ -1,5 +1,5 @@
 @php
-    $image = Tools::url_img('square_medium', $lot->num_hces1, $lot->lin_hces1);
+    $image = Tools::url_img('square_medium', $lot->num_hces1, $lot->lin_hces1, 0, true);
     $url = Tools::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->descweb_hces1);
 	if(!empty($artist)) {
 		$url .= '?artistaFondoGaleria=' . $artist->id_artist;

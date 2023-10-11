@@ -2,6 +2,11 @@
 	{!! \BannerLib::bannersPorKey('home', 'home-banner','{dots:false, arrows:false, autoplay: true, autoplaySpeed: 4000, slidesToScroll:1}') !!}
 </div>
 
+{{-- <div style=" text-align: center;color: #FFF;  margin: 15px;" >
+	<p style="background-color: #5C0120; padding: 4px;	">Del <strong>d&iacute;a 12 hasta el 27 de agosto (incluidos los dos)</strong> Subarna permanecer&aacute; <strong>cerrado por per&iacute;odo vacacional.</strong> &iexcl;Te animamos a que realices tus gestiones con nosotros antes o despu&eacute;s de estas fechas!</p>
+	<p style="background-color: #5C0120; padding: 4px;	margin-top: 15px;"><strong>From August 12th to August 27th (including both)</strong> Subarna will be closed<strong> for holidays</strong>. Before or after these dates, we invite you to arrange your appointments with us.</p>
+</div> --}}
+
 {!! \BannerLib::bannerParallax('principal') !!}
 
 <section class="section section-light">
@@ -49,7 +54,7 @@
 
 <?php
 	$noticiasController = new App\Http\Controllers\NoticiasController();
-	$blogs = $noticiasController->index(\Config::get('app.locale'));
+	$blogs = $noticiasController->smallIndex(\Config::get('app.locale'));
 	$noticias = $blogs->data['noticias'];
 ?>
 <div class="blog_home">
@@ -69,12 +74,10 @@
 					{{-- <p>{!!Str::limit(strip_tags($noticia->texto_web_blog_lang), 300)!!}</p> --}}
 					<p>{!! substr(strip_tags($noticia->texto_web_blog_lang), 0, 200)!!}</p>
 				</div>
-				@if (!empty($blogs->data['categorys'][$noticia->primary_category_web_blog]))
 				<div class="blog_enlace">
 					<a
-						href="{{\Routing::slugSeo('blog').'/'.$blogs->data['categorys'][$noticia->primary_category_web_blog]->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans(\Config::get('app.theme').'-app.home.learn_more') }}</a>
+						href="{{\Routing::slugSeo('blog').'/'.$noticia->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans(\Config::get('app.theme').'-app.home.learn_more') }}</a>
 				</div>
-				@endif
 			</div>
 			@endforeach
 		</div>

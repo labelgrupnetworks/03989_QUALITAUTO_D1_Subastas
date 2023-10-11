@@ -14,7 +14,9 @@
 
 
 		<li>
-            <a target="_blank" class=" d-flex align-items-center justify-content-center color-letter" title="{{ trans(\Config::get('app.theme').'-app.lot.share_twitter') }}" href="http://twitter.com/share?text=<?= $data['subasta_info']->lote_actual->titulo_hces1 ?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fab fa-twitter"></i></a>
+            <a target="_blank" class=" d-flex align-items-center justify-content-center color-letter" title="{{ trans(\Config::get('app.theme').'-app.lot.share_twitter') }}" href="http://twitter.com/share?text=<?= $data['subasta_info']->lote_actual->titulo_hces1 ?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
+				@include('components.x-icon', ['size' => '17'])
+			</a>
 		</li>
 		<?php /*
 		<li>

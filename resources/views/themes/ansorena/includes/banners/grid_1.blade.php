@@ -8,7 +8,7 @@
         'text2' => $bannerContent['texts'][1] ?? $content['text2'],
         'image1' => $bannerContent['images'][0] ?? $content['images1'],
         'image2' => $bannerContent['images'][1] ?? $content['images2'],
-        'url' => $content['url'],
+        'url' => $bannerContent['links'][0] ?? $content['url'],
     ];
 
     $loading = $options['loading'] ?? 'eager';

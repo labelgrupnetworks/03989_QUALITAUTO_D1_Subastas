@@ -8,24 +8,14 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <?php /*<div class="prefooterlogo-bk">
-                        <span style="font-size: 45px;">#</span><img
-
-                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
-                        alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
-                        class="img-responsive"
-                        style="max-width: 80%;"
-                    />
-                        */?>
-                </div>
                 <div class="prefooter-title">{{ trans(\Config::get('app.theme').'-app.foot.followus') }}</div>
                 <div class="prefooter-social">
                     <a target="_blank" href="https://www.instagram.com/soleryllach">
                     <i class="fa fa-instagram"></i>
                     </a>
-                    <a  target="_blank" href="https://twitter.com/soleryllach">
-                    <i class="fa fa-twitter-square"></i>
-                    </a>
+					<a  target="_blank" href="https://twitter.com/soleryllach">
+						@include('components.x-icon', ['sizeX' => '30', 'sizeY' => '35', 'color' => '#0C2340'])
+					</a>
                     <a  target="_blank" href="https://www.facebook.com/soleryllach">
                     <i class="fa fa-facebook"></i>
                     </a>
@@ -43,14 +33,14 @@
                 <div class="col-xs-12 col-md-3 logo">
                     <img
                         height="60"
-                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.png?a=1"
+                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_blanc.png?a=1"
                         alt="{{ trans(\Config::get('app.theme').'-app.home.name') }}"
                         class="img-responsive"
                         style="height:auto;"
                     />
                     <ul class="module_wrapper">
                             <address>
-                                    <?= !empty($empresa->nom_emp)? $empresa->nom_emp : ''; ?> <br>
+									Soler y Llach Auctions<br>
                                     <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
                                     <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> </br>
                                     <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?>  <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>

@@ -3,8 +3,11 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Http\Controllers\MailController;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class FgDeposito extends Model
@@ -13,12 +16,14 @@ class FgDeposito extends Model
 	// Variables propias de Eloquent para poder usar el ORM de forma correcta.
 
 	protected $table = 'FgDeposito';
-	protected $primaryKey = 'COD_DEPOSITO';
-	protected $dateFormat = 'U';
-	protected $attributes = false;                  // Ej: ['delayed' => false]; Son valores por defecto para el modelo
+	protected $primaryKey = 'cod_deposito';
+	protected $dateFormat = 'Y-m-d H:i:s';
 
-	public $timestamps = false; 	// No usaremos campos de BBDD created_at y updated_at
-	public $incrementing = false;
+	//public $timestamps = false;
+	const CREATED_AT = null;
+	const UPDATED_AT = 'fecha_deposito';
+
+	public $incrementing = true;
 
 	protected $guarded = []; // Blacklist de variables que no queremos updatear de forma masiva
 
@@ -31,7 +36,7 @@ class FgDeposito extends Model
 	public function __construct(array $vars = [])
 	{
 		$this->attributes = [
-			'emp_deposito' => \Config::get("app.emp")
+			'emp_deposito' => Config::get("app.emp")
 		];
 
 		parent::__construct($vars);
@@ -42,7 +47,15 @@ class FgDeposito extends Model
 		parent::boot();
 
 		static::addGlobalScope('emp', function (Builder $builder) {
-			$builder->where('emp_deposito', \Config::get("app.emp"));
+			$builder->where('emp_deposito', Config::get("app.emp"));
+		});
+
+		static::saved(function ($fgDeposito) {
+
+			$sendNotification = Config::get('app.send_valid_deposit_notification', false) && !$fgDeposito->isSended && $fgDeposito->isValidState;
+			if ($sendNotification) {
+				self::sendDepositNotification($fgDeposito);
+			}
 		});
 	}
 
@@ -54,26 +67,12 @@ class FgDeposito extends Model
 	 */
 	public function isValid($cli_deposito, $sub_deposito, $ref_deposito)
 	{
-		if(!$cli_deposito){
-            return false;
-        }
+		if (!$cli_deposito) {
+			return false;
+		}
 
-		$deposit = self::
-			where([
-				['CLI_DEPOSITO', $cli_deposito],
-				['ESTADO_DEPOSITO', $this::ESTADO_VALIDO],
-			])
-			->where(function(Builder $query) use ($sub_deposito, $ref_deposito){
-
-				$query->where(function (Builder $query) use ($sub_deposito){
-					$query->where('SUB_DEPOSITO', $sub_deposito)
-					->orWhereNull('SUB_DEPOSITO');
-				})
-				->where(function (Builder $query) use ($ref_deposito){
-					$query->where('REF_DEPOSITO', $ref_deposito)
-					->orWhereNull('REF_DEPOSITO');
-				});
-			})
+		$deposit = self::where('CLI_DEPOSITO', $cli_deposito)
+			->whereValidConditions($sub_deposito, $ref_deposito)
 			->first();
 
 		if ($deposit) {
@@ -82,8 +81,30 @@ class FgDeposito extends Model
 		return false;
 	}
 
+	public function getAllClientsWithValidDepositInLotQuery($sub_deposito, $ref_deposito)
+	{
+		return self::distinct()->whereValidConditions($sub_deposito, $ref_deposito);
+	}
 
-	public function getEstados(){
+	public function scopeWhereValidConditions($query, $sub_deposito, $ref_deposito)
+	{
+		return $query
+			->where('ESTADO_DEPOSITO', self::ESTADO_VALIDO)
+			->where(function (Builder $query) use ($sub_deposito, $ref_deposito) {
+
+				$query->where(function (Builder $query) use ($sub_deposito) {
+					$query->where('SUB_DEPOSITO', $sub_deposito)
+						->orWhereNull('SUB_DEPOSITO');
+				})
+					->where(function (Builder $query) use ($ref_deposito) {
+						$query->where('REF_DEPOSITO', $ref_deposito)
+							->orWhereNull('REF_DEPOSITO');
+					});
+			});
+	}
+
+	public function getEstados()
+	{
 		return [
 			self::ESTADO_PENDIENTE => trans("admin-app.fields.estado_deposito_p"),
 			self::ESTADO_VALIDO => trans("admin-app.fields.estado_deposito_v"),
@@ -97,30 +118,59 @@ class FgDeposito extends Model
 		return $this->getEstados()[$this->estado_deposito];
 	}
 
+	public function getIsSendedAttribute()
+	{
+		if (!$this->enviado_deposito) {
+			return false;
+		}
+
+		return $this->enviado_deposito == 'S';
+	}
+
+	public function getIsValidStateAttribute()
+	{
+		return $this->estado_deposito == self::ESTADO_VALIDO;
+	}
 
 	static function getAllUsersWithValidDepositInAuctions($auctions)
 	{
-		return self::
-			distinct()
+		return self::distinct()
 			->whereIn('SUB_DEPOSITO', $auctions)
 			->where('ESTADO_DEPOSITO', self::ESTADO_VALIDO)
 			->get();
 	}
 
-
-
-	public function scopeJoinCli($query){
-        return $query->join("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_DEPOSITO");
-
+	public function scopeJoinCli($query)
+	{
+		return $query->join("FXCLI", "GEMP_CLI = '" . Config::get("app.gemp") . "' AND COD_CLI = CLI_DEPOSITO");
 	}
 
-	public function scopeJoinAsigl0($query){
-        return $query->join("FGASIGL0", "EMP_ASIGL0 = EMP_DEPOSITO AND SUB_ASIGL0 = SUB_DEPOSITO AND REF_ASIGL0 = REF_DEPOSITO ");
-    }
+	public function scopeJoinAsigl0($query)
+	{
+		return $query->join("FGASIGL0", "EMP_ASIGL0 = EMP_DEPOSITO AND SUB_ASIGL0 = SUB_DEPOSITO AND REF_ASIGL0 = REF_DEPOSITO ");
+	}
 
 
-	 #esta funcion espera un objeto y coje los valores que necesita la APi para hacer un update
-	 public function scopeWhereUpdateApi($query, $item){
-        return $query->where('sub_deposito', $item["sub_deposito"])->where('ref_deposito', $item["ref_deposito"])->where('cli_deposito', $item["cli_deposito"]);
-    }
+	#esta funcion espera un objeto y coje los valores que necesita la APi para hacer un update
+	public function scopeWhereUpdateApi($query, $item)
+	{
+		return $query->where('sub_deposito', $item["sub_deposito"])->where('ref_deposito', $item["ref_deposito"])->where('cli_deposito', $item["cli_deposito"]);
+	}
+
+	private static function sendDepositNotification($fgDeposito)
+	{
+		try {
+			(new MailController())->sendValidDepositNotification($fgDeposito->cli_deposito, $fgDeposito->sub_deposito, $fgDeposito->ref_deposito);
+		} catch (\Throwable $th) {
+			Log::error('Error al enviar mensaje de deposito valido', ['error' => $th->getMessage()]);
+			return false;
+		}
+
+		$fgDeposito->enviado_deposito = 'S';
+		$fgDeposito->fechaenvio_deposito = date('Y-m-d H:i:s');
+		$fgDeposito->usuarioenvio_deposito = 'WEB';
+		$fgDeposito->save();
+
+		return true;
+	}
 }

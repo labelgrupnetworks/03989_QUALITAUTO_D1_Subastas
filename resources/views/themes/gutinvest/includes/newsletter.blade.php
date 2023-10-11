@@ -9,7 +9,7 @@
 
 
             <div class="col-xs-12 tit_newsletter text-center">{{trans(\Config::get('app.theme').'-app.foot.newsletter_title')}}</div>
-            <div class="col-xs-12 newsletter-sub_title text-center">{{trans(\Config::get('app.theme').'-app.foot.newsletter_title')}}</div>
+            <div class="col-xs-12 newsletter-sub_title text-center">{{trans(\Config::get('app.theme').'-app.foot.newsletter_subtitle')}}</div>
             <div class="col-xs-12  text-center">
                 <div class="input-group">
                    <input class="form-control input newsletter-input" name="email" type="text" placeholder="{{trans(\Config::get('app.theme').'-app.emails.write_email')}}">

@@ -109,21 +109,9 @@
                             @endforeach
                         </div>
                     </div>
-                   <div class="col-xs-12 share-panel-auction">
-                       <div>{{ trans(\Config::get('app.theme').'-app.subastas.shared_auctions') }}</div>
-                       <ul>
 
-                           <li class="btn-color"><a href="http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-                                <i class="fa fa-facebook"></i>
-                               </a>
-                           </li>
-                           <li class="btn-color">
-                               <a title="Compartir por e-mail" href="http://twitter.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>&amp;text=<?= $data["auction"]->des_sub?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-twitter"></i></a>
-                           </li>
-                           <li class="btn-color">
-                              <a title="Compartir por e-mail" href="mailto:?Subject={{ trans(\Config::get('app.theme').'-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-envelope"></i></a>
-                           </li>
-                       </ul>
+                   <div class="col-xs-12 share-panel-auction">
+                       @include('includes.ficha.share_ficha_subasta')
                    </div>
 
 

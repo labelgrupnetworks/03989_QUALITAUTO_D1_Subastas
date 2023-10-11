@@ -71,33 +71,29 @@
 					{{ trans($theme.'-app.foot.follow_us')}}
 				</div>
 
-				@if(!empty(\Config::get('app.twitter', '')))
-				<a href="{{ (\Config::get('app.twitter')) }}" target="_blank" class="social-link color-letter mr-1"><i class="fa fa-2x fa-twitter"></i></a>
-				&nbsp;
-				@endif
+				<div class="redes">
+					@if(!empty(\Config::get('app.twitter', '')))
+					<a href="{{ (\Config::get('app.twitter')) }}" target="_blank" class="social-link">
+						@include('components.x-icon', ['size' => '32'])
+					</a>
+					@endif
 
-				@if(!empty(\Config::get('app.facebook', '')))
-				<a href="{{ (\Config::get('app.facebook')) }}" target="_blank" class="social-link color-letter mx-1"><i class="fa fa-facebook fa-2x"></i></a>
-				&nbsp;
-				@endif
+					@if(!empty(\Config::get('app.facebook', '')))
+					<a href="{{ (\Config::get('app.facebook')) }}" target="_blank" class="social-link"><i class="fa fa-facebook fa-2x"></i></a>
+					@endif
 
-				@if(!empty(\Config::get('app.instagram', '')))
-				<a href="{{ (\Config::get('app.instagram')) }}" target="_blank" class="social-link color-letter mx-1"><i class="fab fa-2x fa-instagram"></i></a>
-				&nbsp;
-				@endif
+					@if(!empty(\Config::get('app.instagram', '')))
+					<a href="{{ (\Config::get('app.instagram')) }}" target="_blank" class="social-link"><i class="fab fa-2x fa-instagram"></i></a>
+					@endif
 
-				@if(!empty(\Config::get('app.pinterest', '')))
-				<a href="{{ (\Config::get('app.pinterest')) }}" target="_blank" class="social-link color-letter mx-1"><i class="fab fa-2x fa-pinterest"></i></a>
-				&nbsp;
-				@endif
+					@if(!empty(\Config::get('app.pinterest', '')))
+					<a href="{{ (\Config::get('app.pinterest')) }}" target="_blank" class="social-link"><i class="fab fa-2x fa-pinterest"></i></a>
+					@endif
 
-				@if(!empty(\Config::get('app.youtube', '')))
-				<a href="{{ (\Config::get('app.youtube')) }}" target="_blank" class="social-link color-letter ml-1"><i class="fab fa-2x fa-youtube"></i></a>
-				&nbsp;
-				@endif
-
-				<br>
-
+					@if(!empty(\Config::get('app.youtube', '')))
+					<a href="{{ (\Config::get('app.youtube')) }}" target="_blank" class="social-link"><i class="fab fa-2x fa-youtube"></i></a>
+					@endif
+				</div>
 				@endif
 
 			</div>

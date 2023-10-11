@@ -151,7 +151,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'configuracion'], function () {
 			Route::get('/', 'configuracion\GeneralController@index');
-			Route::post('/save', 'configuracion\GeneralController@save');
+			Route::post('/save', 'configuracion\GeneralController@save')->name('admin.configuracion.save');
 
 			Route::get('credito/export', 'configuracion\AdminCreditoController@export')->name('credito.export');
 			Route::get('credito/subasta', 'configuracion\AdminCreditoController@getCreditData')->name('credito.subasta');
@@ -305,6 +305,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
 		Route::resource('clientes', 'usuario\AdminClienteController');
+		Route::resource('clientes.files', 'usuario\AdminClienteFilesController')->only(['store', 'show', 'destroy']);
 
 		Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
 		Route::resource('visibilidad', 'subasta\AdminVisibilidadController')->except(['show']);
@@ -412,6 +413,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('subastas/load_catalog_invaluable/{codsub}/{reference?}', 'subasta\AdminSubastaGenericController@loadInvaluableCatalog')->name('loadCatalogInvaluable');
 
 		Route::get('subastas/load_lot_invaluable/{codsub}/{reference}/{ref}', 'subasta\AdminLotController@loadInvaluableLot')->name('loadLotInvaluable');
+
+		Route::get('jobs', 'configuracion\AdminJobsController@index')->name('admin.jobs.index');
+		Route::get('jobs/pending/{id}', 'configuracion\AdminJobsController@showPendingJob')->name('admin.jobs.pending');
+		Route::get('jobs/failed/{id}', 'configuracion\AdminJobsController@showFailedJob')->name('admin.jobs.failed');
+		Route::post('jobs/failed/{id}', 'configuracion\AdminJobsController@reesendFailedJob')->name('admin.jobs.failed_retry');
 
 	});
 

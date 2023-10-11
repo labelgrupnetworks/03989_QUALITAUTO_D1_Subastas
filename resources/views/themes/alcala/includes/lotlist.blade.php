@@ -17,8 +17,7 @@
         @endif
         <div class="item_lot">
             <div class="item_img">
-                <div data-loader="loaderDetacados" class='text-input__loading--line'></div>
-                <img class="img-responsive lazy" style="display: none;" data-src="{{$img}}" alt="{{$titulo}}">
+				<img class="img-responsive" src="{{ $img }}" loading="lazy" style="display: none" alt="{{$titulo}}">
             </div>
 
             <div class="data-container">
@@ -38,8 +37,8 @@
                         <p class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
                         <p>{{$item->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
                     @else
-                        <p class="salida-title" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                        <p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">{{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                        <p class="salida-title" style="visibility: {{ $item->ocultarps_asigl0 ?? 'N' != 'S' ? 'visible' : 'hidden'}}">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                        <p style="visibility: {{ $item->ocultarps_asigl0 ?? 'N' != 'S' ? 'visible' : 'hidden'}}">{{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
 
                     @endif
                     @if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)

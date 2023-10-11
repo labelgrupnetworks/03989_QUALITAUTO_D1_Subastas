@@ -232,9 +232,11 @@
 							@if (\Config::get('app.userPanelCIFandCC'))
 								<div class="form-group {{-- input-group --}} col-xs-12 col-md-8">
 									@php
-										$numCard = $data['creditCard'][0];
-										$numMonthCard = $data['creditCard'][1][0];
-										$numYearCard = $data['creditCard'][1][1];
+										//creditCard puede llegar como false, se debe validar
+										//o dar un valor por defecto
+										$numCard = $data['creditCard'][0] ?? '';
+										$numMonthCard = $data['creditCard'][1][0] ?? '';
+										$numYearCard = $data['creditCard'][1][1] ?? '';
 									@endphp
 									<div class="{{-- form-group-custom --}} form-group {{-- col-xs-12 --}}">
 										<label>{{ trans(\Config::get('app.theme') . '-app.login_register.credit_card') }}</label>

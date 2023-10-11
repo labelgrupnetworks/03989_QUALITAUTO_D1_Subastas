@@ -1,3 +1,4 @@
+@if ($banner)
 @php
     $slide = uniqid('slide-');
     $title = $content['title'] ?? '';
@@ -93,7 +94,7 @@
     }
 </style>
 
-<section class="fluid-banner">
+<section class="fluid-banner position-relative">
     @if (!empty($title))
 		{!! $title !!}
     @endif
@@ -131,3 +132,4 @@
 
     $(".{{ $slide }}").slick(options);
 </script>
+@endif

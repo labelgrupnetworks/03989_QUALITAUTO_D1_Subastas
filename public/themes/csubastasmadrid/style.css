@@ -2744,26 +2744,34 @@ tbody tr {
     align-items: center;
 }
 
-.share-panel-auction ul {
-    list-style: none;
-    padding: 0;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
+.share-auction-component .share-auction-title {
+	display: none;
 }
 
-.share-panel-auction ul li {
+.share-auction-component .share-auction-list {
+	list-style: none;
+	padding: 10px 0;
+	margin: 0;
+	display: flex;
+	gap: 10px;
+	align-items: center
+}
+
+.share-auction-component .share-auction-list li {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     background: var(--primary-color);
-    text-align: center;
-    padding-top: 5px;
-    margin-left: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.share-panel-auction ul li a {
+.share-auction-component .share-auction-list a {
+	display: inline-block;
     color: white;
+    line-height: 1;
+	height: 14px;
 }
 
 .it_ro h1.titleSingle {

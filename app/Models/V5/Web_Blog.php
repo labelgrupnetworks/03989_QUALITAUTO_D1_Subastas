@@ -62,7 +62,9 @@ class Web_Blog extends Model
 	public static function getNoticiesQuery($withContent)
 	{
 		return self::query()
-			->with('principalCategory')
+			->with(['principalCategory.languages' => function ($query) {
+				$query->where('lang_category_blog_lang', mb_strtoupper(Config::get('app.locale')));
+			}])
 			->with(['localeLang' => function ($query) use ($withContent) {
 				$query->select('idblog_web_blog_lang', 'titulo_web_blog_lang', 'url_web_blog_lang', 'enabled_web_blog_lang')
 					->when($withContent, function ($query) {

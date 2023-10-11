@@ -1126,16 +1126,23 @@ div.info_single_content button.btn-custom {
 	margin-bottom: 0;
 }
 .info_single ul.red {
-	margin-left:  0;
-	padding-left: 0;
+    margin: 0;
+	display: flex;
+    align-items: center;
+	justify-content: end;
+    gap: 10px;
+    padding: 10px 0;
 }
+
 .info_single ul.red li {
-	display: inline-block;
-	margin-right: 10px;
-	margin-top: 10px;
+    display: inline-block;
 }
+
 .info_single ul.red li a {
-	color: #2D3031;
+    color: #2D3031;
+	line-height: 1em;
+    display: block;
+	height: 14px;
 }
 .info_single div.min {
 	background-color: #921919;
@@ -1927,42 +1934,37 @@ tbody tr{
         padding: 10px;
     }
 
-    .share-panel-auction{
+	.share-auction-component .share-auction-title {
+		margin-bottom: 5px;
+		font-weight: bold;
+		font-size: .85em;
+	}
 
-        background: transparent;
-        width: 100%;
+	.share-auction-component .share-auction-list {
+		list-style: none;
+		padding: 0 0 10px 0;
+		margin: 0;
+		display: flex;
+		gap: 10px;
+		align-items: center
+	}
 
-        line-height: 22px;
-        font-weight: 300;
-        padding: 10px 15px;
+	.share-auction-component .share-auction-list li {
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		background: var(--primary-color);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
-
-    }
-    .share-panel-auction ul{
-        list-style: none;
-        padding: 0;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-    }
-
-    .share-panel-auction ul li{
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #234575;
-        text-align: center;
-        padding-top: 5px;
-        margin-left: 10px;
-    }
-
-            .share-panel-auction ul li:first-child{
-
-        margin-left: 0px;
-    }
-    .share-panel-auction ul li a{
-        color: white;
-    }
+	.share-auction-component .share-auction-list a {
+		display: inline-block;
+		color: white;
+		line-height: 1;
+		height: 14px;
+	}
 
     .it_ro h1.titleSingle{
         margin-top: 0;
@@ -2827,11 +2829,12 @@ footer div.module_footer ul.links li a:hover {
     text-align: right;
 }
 
-.footer-redes ul{
+.footer-redes ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: inline-block;
+    display: inline-flex;
+	gap: 10px;
 
 }
 .footer-redes .redes-title{
@@ -2840,8 +2843,15 @@ footer div.module_footer ul.links li a:hover {
 
 .footer-redes ul li{
 	display: inline-block;
-	margin: 0 2px;
+}
 
+.footer-redes ul li a {
+	line-height: 1;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	text-decoration: none;
 }
 
 .footer-redes .redes-title span{

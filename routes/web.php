@@ -176,6 +176,11 @@ Route::post('/api-ajax/open_lot', 'SubastaTiempoRealController@openLot');
 # Lotes API Service
 # Subastas en Tiempo Real
 if (!empty(intval(Config::get('app.enable_tr_auctions')))) {
+
+	Route::get(Routing::translateSeo('api/subasta') . 'streaming-test', function(){
+		return view('front::pages.tiempo_real.streamin_test');
+	});
+
 	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', 'SubastaTiempoRealController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 }
@@ -391,6 +396,7 @@ Route::get('/email_cancel_puja/{cod_sub}/{ref}/{cod_licit}', 'MailController@ema
 
 Route::get('/generate_miniatures', 'ImageController@generateMiniatures');
 Route::get('/regenerate_img', 'ImageController@regenerate_images_table');
+Route::get('/new_generate_miniatures', 'ImageController@generateImageLot');
 
 Route::get('/clear-cache', function () {
 	Artisan::call('cache:clear');
@@ -556,7 +562,7 @@ Route::get(Routing::slugSeo('subastas') . "_{keycategory}/{texto}", 'V5\LotListC
 #listado de lotes por categoria
 Route::get(Routing::slugSeo('subastas') . "-{keycategory}", 'V5\LotListController@getLotsListCategory')->name('category');
 #listado de lotes por secciones
-Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}"), 'V5\LotListController@getLotsListSection')->name('section');
+Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection?}"), 'V5\LotListController@getLotsListSection')->name('section');
 #listado de lotes por subcsecciones
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}/{keysubsection}"), 'V5\LotListController@getLotsListSubSection')->name('subsection');
 #buscador

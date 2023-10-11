@@ -245,45 +245,17 @@ class MailApiRestController extends ApiRestController {
             return $this->responseRules($validate);
         }
 
+		$cod_cli = request('cod_cli');
+		$cod_sub = $request->cod_sub;
+		$ref_lot = $request->ref_lot;
 
-		$email = new EmailLib('DEPOSIT_ACCEPTED');
-		if(!$email->email){
-			return $this->responseNotFound(trans(config('app.theme') . '-app.emails.api_email_type'));
+		try {
+			(new MailController())->sendValidDepositNotification($cod_cli, $cod_sub, $ref_lot);
+			return $this->responder(true, trans(config('app.theme') . '-app.emails.api_email_send'), "", 200);
 		}
-
-		$email->setUrl(route('allCategories', ['order' => 'date_desc']));
-		$email->setUserByCod(request('cod_cli'), true);
-
-		$subasta = new Subasta();
-        $subasta->cod = $request->cod_sub;
-        $subasta->page = 'all';
-
-		$inf_subasta = $subasta->getInfSubasta();
-		if(!$inf_subasta){
-			return $this->responseNotFound(trans(config('app.theme') . '-app.emails.api_not_auction'));
+		catch (\Throwable $th) {
+			return $this->responseNotFound($th->getMessage());
 		}
-
-		$textContent = trans_choice(config('app.theme').'-app.emails.deposit_auction', 1, ['name' => $inf_subasta->name]);
-
-		//cliente subasta lote -> esa subasta y lote concretos
-		if($request->ref_lot){
-
-			$subasta->ref = $request->ref_lot;
-        	$subasta->lote = $request->ref_lot;
-			$inf_lot = head($subasta->getLote(false, true));
-
-			if (empty($inf_lot)) {
-				return $this->responseNotFound(trans(config('app.theme') . '-app.emails.api_not_lot'));
-			}
-
-			$textContent = trans_choice(config('app.theme').'-app.emails.deposit_lot', 1, ['desc' => $inf_lot->descweb_hces1, 'name' => $inf_subasta->name]);
-		}
-
-		$email->setText($textContent);
-
-		$email->send_email();
-
-		return $this->responder(true, trans(config('app.theme') . '-app.emails.api_email_send'), "", 200);
 	}
 
 	public function emailProvisionalLotAward()

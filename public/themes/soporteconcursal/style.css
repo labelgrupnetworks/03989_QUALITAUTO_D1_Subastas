@@ -198,6 +198,10 @@ header.fixed nav{
 /****************************************************/
 /*****              Grid Subastas           *********/
 /****************************************************/
+.auctions-list {
+	grid-template-columns: 1fr 1fr;
+}
+
 .estado-subasta {
 	padding: 6px;
 	text-transform: uppercase;

@@ -3,7 +3,7 @@
 		<h1 class="text-center">SUBASTAS <span class="lb-text-primary">LABELGRUP</span></h1>
 		<a class="btn btn-lb-primary text-wrap">MOSTRAR SUBASTA</a>
 	</div>
-	{!! BannerLib::bannersPorKey('new_home', 'home-top-banner') !!}
+	{!! BannerLib::bannersPorKey('new_home', 'home-top-banner', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false]) !!}
 </div>
 
 
@@ -21,43 +21,12 @@
 </section>
 
 <div class="about-us-banner my-5">
-	{!! \BannerLib::bannersPorKey('about_us', 'about_banner', '{dots: false}') !!}
+	{!! BannerLib::bannersPorKey('about_us', 'about_banner', '{dots: false}') !!}
 </div>
 
-<section class="section-categoires py-5">
-	<div class="container">
-		<h1 class="mb-4">Categorias</h1>
-		<div class="row">
-			@include('components.category_1', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_1', ['category' => 'JOYAS', 'image' => 'category_jewel.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_1', ['category' => 'NUMIMÁTICA', 'image' => 'category-numismatica.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_1', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-		</div>
-	</div>
-</section>
-
-<section class="section-categoires py-5">
-	<div class="container">
-		<h1 class="mb-4">Categorias</h1>
-		<div class="row">
-			@include('components.category_2', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_2', ['category' => 'JOYAS', 'image' => 'category_jewel.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_2', ['category' => 'NUMIMÁTICA', 'image' => 'category-numismatica.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-			@include('components.category_2', ['category' => 'ARTE', 'image' => 'category_art.jpg', 'url' => '/es/subastas-diseno', 'size' => 'col-6 col-md-4'])
-		</div>
-	</div>
-</section>
-
-
-
-
-
-
-
 @php
-	$replace = array('lang' => \Tools::getLanguageComplete(Config::get('app.locale')) ,'emp' => Config::get('app.emp'));
+	$replace = ['lang' => Tools::getLanguageComplete(Config::get('app.locale')), 'emp' => Config::get('app.emp')];
 @endphp
-
 
 <script>
 	var replace = @json($replace);

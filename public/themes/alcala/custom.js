@@ -117,19 +117,6 @@ $('#button-open-user-menu').click(function() {
         }
     })
 
-    $('.lazy').Lazy({
-        effect: 'fadeIn',
-        effectTime: 500,
-        visibleOnly: false,
-        onError: function (element) {
-            console.log('error loading ' + element.data('src'));
-        },
-        afterLoad: function (element) {
-            $(element).show()
-            $('.text-input__loading--line').hide()
-        },
-    });
-
     $('.user-account').hover(function () {
         $(this).find('.mega-menu').show()
     }, function () {
@@ -228,7 +215,7 @@ $('#button-open-user-menu').click(function() {
         $('html,body').animate({ scrollTop: 0 }, 500);
     });
 
-    $("#owl-carousel").owlCarousel({
+    $("#owl-carousel").owlCarousel && $("#owl-carousel").owlCarousel({
         items: 1,
         loop: true,
         autoplay: true,
@@ -242,7 +229,7 @@ $('#button-open-user-menu').click(function() {
         navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">']
     });
 
-    $(".owl-carousel-home").owlCarousel({
+    $("#owl-carousel").owlCarousel && $(".owl-carousel-home").owlCarousel({
         items: 4,
         loop: true,
         autoplay: true,
@@ -268,7 +255,7 @@ $('#button-open-user-menu').click(function() {
     });
 
 
-    $(".owl-carousel-single").owlCarousel({
+    $("#owl-carousel").owlCarousel && $(".owl-carousel-single").owlCarousel({
         items: 4,
         loop: true,
         autoplay: true,
@@ -292,7 +279,7 @@ $('#button-open-user-menu').click(function() {
         }
     });
 
-    $("#owl-carousel-responsive").owlCarousel({
+    $("#owl-carousel").owlCarousel && $("#owl-carousel-responsive").owlCarousel({
         items: 1,
         autoplay: true,
         margin: 20,
@@ -994,19 +981,7 @@ function ajax_carousel(key, replace) {
             } else {
                 carrousel_molon_new($("#" + key));
             }
-            $('.lazy').Lazy({
-                // your configuration goes here
-                scrollDirection: 'vertical',
-                effect: 'fadeIn',
-                effectTime: 100,
-                visibleOnly: true,
-                onError: function (element) {
-                    console.log('error loading ' + element.data('src'));
-                },
-                afterLoad: function (element) {
-                    $('.text-input__loading--line').hide();
-                },
-            });
+
             $('[data-countdown]').each(function () {
                 $(this).data('ini', new Date().getTime());
                 countdown_timer($(this));
@@ -1294,12 +1269,6 @@ $(document).ready(function () {
             $(this).removeClass('translate')
         }
     })
-
-    $('.lazy').Lazy({
-        scrollDirection: 'vertical',
-        effect: 'fadeIn',
-        visibleOnly: true,
-    });
 
     $('.add_factura').change(function () {
         reload_facturas();

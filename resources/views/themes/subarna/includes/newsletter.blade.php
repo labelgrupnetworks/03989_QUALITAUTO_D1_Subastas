@@ -31,7 +31,9 @@
 
                 <ul class="redes d-flex align-items-center justify-content-space-between mt-3">
                     <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-3x fa-facebook"></i></a></li>
-                    <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>"><i class="fa fa-3x fa-twitter"></i></a></li>
+                    <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>">
+						@include('components.x-icon', ['size' => '42'])
+						</a></li>
                     <li><a title="Instagram" href="<?= Config::get('app.instagram') ?>"><i class="fa fa-3x fa-instagram"></i></a></li>
                     <li><a title="Linkedin" href="<?= Config::get('app.linkedin') ?>"><i class="fa fa-3x fa-linkedin"></i></a></li>
             </ul>

@@ -8,7 +8,7 @@ use Redirect;
 //opcional
 use DB;
 use Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
 use Session;
 use View;
@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Config;
 use Route;
 /*use Mail;*/
 use Cookie;
-use Paginator;
-use Log;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Facades\Log;
 # ODBC Service Provider
 //use TCK\Odbc\OdbcServiceProvider;
 use App\Http\Controllers\PaymentsController;
@@ -60,7 +60,10 @@ use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -159,7 +162,8 @@ class UserController extends Controller
 
 			$user->password =  md5(Config::get('app.password_MD5').$user->password);
 			$login          = $user->login_encrypt();
-			if(empty($login) && strlen($password)>8){
+
+			if(!Config::get('app.strict_password_validation', false) && empty($login) && strlen($password) > 8){
 				$user->password = substr($password,0,8);
 				$user->password =  md5(Config::get('app.password_MD5').$user->password);
 				$login          = $user->login_encrypt();
@@ -200,6 +204,9 @@ class UserController extends Controller
 
     }
 
+	/**
+	 * @deprecated en desuso 25/08/2023
+	 */
     public function remmember_user(){
         if(!Session::has('user') && !empty(Cookie::get('user')) && Cookie::get('user') != null){
 
@@ -282,154 +289,141 @@ class UserController extends Controller
     //login con ajax
     public function login_post_ajax(HttpRequest $request)
     {
-
-       $res = $this->login_post($request, TRUE);
-
+        $res = $this->login_post($request, true);
         return  $res;
     }
 
-    public function login_post(HttpRequest $request, $ajax = FALSE)
-    {
-        $rules = array(
-            'email'    => 'required|email',    // make sure the email is an actual email
-            'password' => 'required'     // password can only be alphanumeric
-		);
-         $ip = $this->getUserIP();
-        // run the validation rules on the inputs from the form
-        $validator = Validator::make(Input::all(), $rules);
-        if ($validator->fails()) {
-            //Log::info('LOGIN_NO_VALIDO no existe EMAIL: "'.Request::input('email').'" PASSWORD: "'.Request::input('password').'"' );
-            if($ajax){
-                  $res = array(
-                      'status' => 'error',
-                      'msg' => 'login_register_failed'
-                   );
+	public function login_post(HttpRequest $request, $ajax = false)
+	{
+		$rules = [
+			'email'    => 'required|email',    // make sure the email is an actual email
+			'password' => 'required'     // password can only be alphanumeric
+		];
 
-                return $res;
+		$ip = $this->getUserIP();
+		$user = new User();
+		$email = Request::input('email');
+		$password = Request::input('password');
 
-              }else{
-                return Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
-              }
-        } else {
+		$responseError = [
+			'status' => 'error',
+			'msg' => 'login_register_failed'
+		];
 
-            # Cargamos el modelo
-            $user           = new User();
-            $email    = Request::input('email');
-            $password = Request::input('password');
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()) {
+			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors($validator->errors());
+		}
 
-            $login = $this->getInfUser($email,$password);
+		$limiterKey = 'login_' . $email;
+		if(Config::get('app.login_attempts', 0) && RateLimiter::tooManyAttempts($limiterKey, Config::get('app.login_attempts', 0))){
+			$responseError['msg'] = 'login_too_many_attempts';
+			Log::info('Exceso de intentos de login, bloqueo en entrada', ['email' => $email, 'ip' => $ip]);
+			return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors(['msg' => 'login_too_many_attempts']);
+		}
 
-            /*if(!empty(Config::get('app.password_MD5'))){
-                $user->password =  md5(Config::get('appº.password_MD5').$user->password);
-                $login          = $user->login_encrypt();
-                 Log::info('ENCRYPT');
-            }else{
-                 $login          = $user->login();
-                 Log::info('NORMAL');
-            }*/
+		$login = $this->getInfUser($email, $password);
 
-            # Si existe el usuario
+		# Si existe el usuario
+		if (!empty($login)) {
+			# Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
+			if ($login->tipacceso_cliweb == 'X') {
+				return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors([]);
+			}
 
-            if(!empty($login)) {
-                # Tipacceso (S) = Admin | (N) Normal | (X) Sin acceso | (A) AdminConfig
-                if($login->tipacceso_cliweb != 'X') {
+			//Necesario por si se eliminan datos de cache
+			if(Config::get('app.login_attempts', 0) && !empty($login->bloqueado_en_cliweb) && now()->diffInSeconds($login->bloqueado_en_cliweb) < Config::get('app.login_attempts_timeout', 60)) {
+				$responseError['msg'] = 'login_too_many_attempts';
+				Log::info('Exceso de intentos de login, bloqueo de base de datos', ['email' => $email, 'ip' => $ip]);
+				return $ajax ? $responseError : Redirect::to(Routing::slug('login'))->withErrors(['msg' => 'login_too_many_attempts']);
+			}
 
-					if(!empty(Request::input('remember_me'))){
-                        $password=Request::input('password');
-                        Cookie::queue('user', ''.$email.'%'.$password.'','525600');
-                    }
+			if (!empty(Request::input('remember_me'))) {
+				$password = Request::input('password');
+				Cookie::queue('user', '' . $email . '%' . $password . '', '525600');
+			}
 
-                    $this->SaveSession($login);
-					$user->logLogin($login->cod_cliweb,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
+			//Eliminamos los tokens de sesion anteriores
+			$request->session()->invalidate();
+			$request->session()->regenerateToken();
 
-					$externalLoginData = null;
-					$externalEncryptData = null;
+			$this->SaveSession($login);
+			$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
-					if(config('app.ps_activate', false)){
-						$externalLoginData = [
-							'email' => $email,
-							'password' => $password,
-							'back' => request('back', '')
-						];
-						$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
-					}
+			$externalEncryptData = null;
 
+			if (config('app.ps_activate', false)) {
+				$externalLoginData = [
+					'email' => $email,
+					'password' => $password,
+					'back' => request('back', '')
+				];
+				$externalEncryptData = ToolsServiceProvider::encrypt(json_encode($externalLoginData), config('app.ps_sb_auth_key'));
+			}
 
+			$responseSuccess = [
+				'status' => 'success',
+				'data' => $externalEncryptData,
+				'context_url' => request('context_url', ''),
+			];
 
+			return $ajax ? $responseSuccess : Redirect::back();
+		}
 
-                    if($ajax){
-                        $res = array(
-						 'status' => 'success',
-						 'data' => $externalEncryptData,
-						 'context_url' => request('context_url', ''),
-                      );
+		//Usuario no existe
+		$user->email = $email;
+		//Buscamos el cliente por email si existe
+		$user_inf = $user->getUserByEmail();
+		$her_pwd = null;
 
-                      return $res;
-                     }else{
-                        return Redirect::back();
-                     }
+		//Si existe la contraseña es incorecta
+		if (!empty($user_inf)) {
+			$her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
+		}
 
-                    //return Redirect::to(Routing::slug('login'));
-
-                }
-
-            } else {
-                //Usuario no existe
-                $user->email = $email;
-                //Buscamos el cliente por email si existe
-                $user_inf = $user->getUserByEmail();
-                $her_pwd = null;
-                //Si existe la contraseña es incorecta
-                if(!empty($user_inf)){
-                    $her_pwd = $user_inf[0]->pwdwencrypt_cliweb;
-                }
-                //Insertamos error de login para tener mas informacion
-                $user->logLoginError($email,md5(Config::get('app.password_MD5').$password),$her_pwd,Config::get('app.emp'),date("Y-m-d H:i:s"),$ip);
-
-              if($ajax){
-                  if(!empty($user_inf)){
-					if($user_inf[0]->baja_tmp_cli == 'W'){
-						$res = array(
-						  'status' => 'error',
-						  'msg' => 'baja_tmp_doble_optin'
-					   );
-						return $res;
-					}elseif($user_inf[0]->baja_tmp_cli == 'S'){
-                          $res = array(
-                            'status' => 'error',
-                            'msg' => 'contact_admin'
-                         );
-                          return $res;
-                      }elseif($user_inf[0]->baja_tmp_cli == 'A'){
-						$res = array(
-						  'status' => 'error',
-						  'msg' => 'activacion_casa_subastas'
-					   );
-						return $res;
-					}
-                  }
-
-                  $res = array(
-                      'status' => 'error',
-                      'msg' => 'login_register_failed'
-                   );
-
-                return $res;
-
-              }else{
-                return Redirect::to('/');
-              }
-
-
-
-            }
-
-            # Redirigimos en caso de error
-
-            return Redirect::to(Routing::slug('login'))->withErrors([]);
-
+        if($this->checkAndAddRateLimitBlock($limiterKey, $user_inf[0]->cod_cliweb ?? null)) {
+            $responseError['msg'] = 'login_too_many_attempts';
+            Log::info('Exceso de intentos de login, bloqueo realizado', ['email' => $email, 'ip' => $ip]);
         }
+
+		//Insertamos error de login para tener mas informacion
+		$user->logLoginError($email, md5(Config::get('app.password_MD5') . $password), $her_pwd, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
+
+		if (!empty($user_inf)) {
+
+			if ($user_inf[0]->baja_tmp_cli == 'W') {
+				$responseError['msg'] = 'baja_tmp_doble_optin';
+
+			} elseif ($user_inf[0]->baja_tmp_cli == 'S') {
+				$responseError['msg'] = 'contact_admin';
+
+			} elseif ($user_inf[0]->baja_tmp_cli == 'A') {
+				$responseError['msg'] = 'activacion_casa_subastas';
+			}
+		}
+
+		return $ajax ? $responseError : Redirect::to('/');
 	}
+
+    private function checkAndAddRateLimitBlock($key, $codCli = null)
+    {
+        if(!Config::get('app.login_attempts', 0)){
+            return false;
+        }
+
+        RateLimiter::hit($key, Config::get('app.login_attempts_timeout', 60));
+
+        if(!RateLimiter::tooManyAttempts($key, Config::get('app.login_attempts', 0))){
+            return false;
+        }
+
+        //En caso de existir el usuario añadimos el bloqueo a la base de datos
+        if($codCli){
+            FxCliWeb::where('cod_cliweb', $codCli)->update(['bloqueado_en_cliweb' => now()]);
+        }
+
+        return true;
+    }
 
 	/**
 	 * Login para Segre
@@ -633,12 +627,16 @@ class UserController extends Controller
          return json_encode($response);
          *
          */
-        $rules = array(
+        $rules = [
             //'regtype'  => 'required',          // Tipo de usuario
             'email'    => 'required|email',    // make sure the email is an actual email
             'password' => 'required|min:5'     // password can only be alphanumeric and has to be greater than 5 characters
             //Si se modifica el minimo de caracteres para el password, ha de cambiarse tambien en el forms.js
-        );
+		];
+
+		if(Config::get('app.strict_password_validation', false)) {
+			$rules['password'] = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
+		}
 
         //VALIDAR SI EXISTE EL DADO DE ALTA PARA ESTA EMPRESA Y GRUPO DE EMPRESAS
 
@@ -668,6 +666,11 @@ class UserController extends Controller
         }
 
         //Comprobamos si este dni esta de baja si es a si no se puede registrar
+		/**
+		 * @todo Eloy, 25/08/2023
+		 * Esto no sirve de nada si nada más salir se vuelve a reasinar la
+		 * variable $ya_existe_cliweb a false ¿?
+		 */
         if(!empty($nif))
         {
              $existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
@@ -677,6 +680,12 @@ class UserController extends Controller
 
         }
 
+		/**
+		 * @todo Eloy, 25/08/2023
+		 * A parte de reasignar la variable $ya_existe_cliweb a false e invalidar el bloque anterior,
+		 * Se asigna el select a la variable $existe_dni_arr pero no se usa para nada,
+		 * Se busca en $ya_existe_cliweb como array cuando lo acabamos de asignar como booleano
+		 */
         $ya_existe_cliweb=false;
         if(!empty(Request::input('email')))
         {
@@ -1494,7 +1503,7 @@ class UserController extends Controller
 				$file->move($destinationPath, $filename);
 			}
 
-			if ($request[$dni2]) {
+			if (isset($request[$dni2])) {
 				$file2 = $request[$dni2];
 				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
 				if (isset($images[$dni2])) {
@@ -1611,6 +1620,10 @@ class UserController extends Controller
 				->orderBy('fec_cliobcta', 'desc')
 				->first();
 
+			if(!$credit_card){
+				return false;
+			}
+
 			// Obtenemos key y método
 			$key = strtolower($email);
 			$method = 'aes-256-cbc';
@@ -1630,7 +1643,7 @@ class UserController extends Controller
 
 
 		} catch (\Throwable $th) {
-			Log::error($th);
+			Log::info('Error al conseguir la tarjeta de credito', ['error' => $th->getMessage()]);
 			return false;
 		}
 	}
@@ -1798,6 +1811,8 @@ class UserController extends Controller
 			$data['seo'] = $seo;
             return View::make('front::pages.not-logged',  $data);
         }
+
+		//el orderBidsListLots falla la vista, revisar antes de activar
          if(!empty(Config::get('app.user_panel_group_subasta')) && Config::get('app.user_panel_group_subasta') == 1){
             return $this->orderbidsListSubastas();
          }else{
@@ -1811,7 +1826,6 @@ class UserController extends Controller
 	 */
 	public function generateAuthenticityCertificate()
 	{
-
 		if(!Session::get('user')){
 			abort(401);
 		}
@@ -1838,23 +1852,23 @@ class UserController extends Controller
 			'Referencia' => $ref_asigl0
 		];
 
-		$client = new GuzzleHttp\Client();
 		try{
-			$response = $client->post($url, ['json' => $body]);
+			$response = Http::post($url, $body);
 		}
 		catch (\Throwable $th){
-			\Log::error("error al conectar con api de certificados");
-			\Log::error($th);
+			Log::error("error al conectar con api de certificados");
+			Log::error($th);
 			return response($th, 500);
 		}
 
-		if ($response->getStatusCode() != 200) {
-			\Log::error("error en la api de certificados");
-			\Log::error($response->getStatusCode());
-			return response($response->getStatusCode(), 500);
+		if ($response->status() != 200) {
+			Log::error("error en la api de certificados");
+			Log::error($response->status());
+			return response($response->status(), 500);
 		}
 
-		if($response->getBody()){
+		if($response->body()){
+			Log::info("generando certificado", ['body' => $response->body()]);
 			if(file_exists($file)){
 				return response($path, 200);
 			}
@@ -1919,10 +1933,12 @@ class UserController extends Controller
 
         }
 
-        $totalItems = count($sub->getAllBidsAndOrders());
+		$queryValues = $sub->getAllBidsAndOrders();
+        $totalItems = count($queryValues);
+
 
         $itemsPerPage = $sub->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
+        //$urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
 
         if(empty($page) or $page == 1) {
             $currentPage    = 1;
@@ -1930,12 +1946,13 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
         //$paginator->numPages = ($paginator->numPages -1);
 
-        $data['values'] = $sub->getAllBidsAndOrders();
+        $data['values'] = $queryValues;
         $data['paginator'] = $paginator;
         $data['currency'] = $sub->getCurrency();
         //}
@@ -1970,47 +1987,6 @@ class UserController extends Controller
         return View::make('front::pages.panel.preawards', compact('data'));
 	}
 
-   //2018_01_19 no se esta usando
-   /*
-    # Listado de pujas en el panel de usuario
-    public function bidsList()
-    {
-        $sub = new Subasta();
-        $sub->licit = Session::get('user.cod');
-        $data = array();
-        $page = Route::current()->parameter('page');
-
-        //$data_licit = $sub->getCodLicitFromCli();
-
-
-
-        $sub->page  = 'all';
-        $sub->licit  = Session::get('user.cod');
-        $totalItems = count($sub->getAllSubastaLicitPujas());
-
-        $itemsPerPage = $sub->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/bids').'/page/(:num)';
-
-        if(empty($page) or $page == 1) {
-            $currentPage    = 1;
-        } else {
-            $currentPage    = $page;
-        }
-
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-
-        $sub->page = $currentPage;
-        //$paginator->numPages = ($paginator->numPages -1);
-
-        $data['values'] = $sub->getAllSubastaLicitPujas();
-
-        $data['paginator'] = $paginator;
-        $data['currency'] = $sub->getCurrency();
-        //}
-
-        return View::make('front::pages.panel.bids', array('data' => $data));
-    }
-*/
     # Listado de ordenes de licitacion en el panel de usuario
     public function orderList()
     {
@@ -2027,7 +2003,8 @@ class UserController extends Controller
             $sub->licit = "'".$licits."'";*/
 
         $sub->page  = 'all';
-        $totalItems = count($sub->getAllSubastaLicitOrdenes());
+		$queryValues = $sub->getAllSubastaLicitOrdenes();
+        $totalItems = count($queryValues);
 
         $itemsPerPage = $sub->itemsPerPage = 10;
         $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
@@ -2038,12 +2015,13 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
         //$paginator->numPages = ($paginator->numPages -1);
 
-        $data['values'] = $sub->getAllSubastaLicitOrdenes();
+        $data['values'] = $queryValues;
         $data['paginator'] = $paginator;
         $data['currency'] = $sub->getCurrency();
         //}
@@ -2059,7 +2037,8 @@ class UserController extends Controller
         $page = Route::current()->parameter('page');
 
         $sub->page  = 'all';
-        $totalItems = count($sub->getAllSubastaLicitOrdenes());
+		$queryValues = $sub->getAllSubastaLicitOrdenes();
+        $totalItems = count($queryValues);
 
         $itemsPerPage = $sub->itemsPerPage = 10;
         $urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
@@ -2070,11 +2049,12 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $sub->page = $currentPage;
 
-        $data['values']     = $sub->getAllSubastaLicitOrdenes();
+        $data['values']     = $queryValues;
         $data['paginator']  = $paginator;
         $data['currency']   = $sub->getCurrency();
 
@@ -2173,7 +2153,13 @@ class UserController extends Controller
         $Update->tel2  = Input::get('telefono2');
         $Update->nombre_pais = DB::select("SELECT des_paises FROM FSPAISES WHERE cod_paises = :codPais", array("codPais" =>Request::input('pais')  ));
         $Update->pais = Request::input('pais');
-        $Update->iva_cli=$this->cliente_tax(Request::input('pais'),Request::input('cpostal'));
+
+		/**
+		 * Una vez establecido el tipo de IVA, no debemos modificarlo al editar el usuario
+		 * @see https://genius.labelgrup.com/account/assists/6984
+		 */
+        //$Update->iva_cli=$this->cliente_tax(Request::input('pais'),Request::input('cpostal'));
+
 		$Update->divisa = Input::get('divisa');
 		$Update->nacimiento = request('nacimiento', null);
 		$Update->genero = request('genero', null);
@@ -2197,13 +2183,11 @@ class UserController extends Controller
 		if (\Config::get('app.userPanelCIFandCC')) {
 			$Update->nif = Request::input('nif');
 			$this->updateCreditCard(Request::all(), $Update->cod_cli);
+
 			if (Request::file('dni1') || Request::file('dni2')) {
 				$this->updateCIFImages(Request::all(), $Update->cod_cli);
-			} else{
-				$this->updateCIFImages(null, $Update->cod_cli);
 			}
 		}
-
 
 		/**Inbusa necesita que se guarde el nombre de la empresa como nombre principal, para correos e informes*/
 		if(!empty(Request::input('representar'))){
@@ -2413,49 +2397,7 @@ class UserController extends Controller
 
         return json_encode($response);
     }
-//2018_01_19 no se esta usando
-   /*
-    # Adjudicaciones del usuario en sesion
-    public function getAdjudicaciones()
-    {
-        # Lista de códigos de licitacion del usuario en sesion
-        $User = new User();
-        $User->cod_cli = Session::get('user.cod');
-        $User->page  = 'all';
 
-        $adjudicaciones = $User->getAdjudicaciones();
-
-        # Paginador #
-        $page = Route::current()->parameter('page');
-
-        $totalItems = count($adjudicaciones);
-
-        $itemsPerPage = $User->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/allotments').'/page/(:num)';
-
-        if(empty($page) or $page == 1) {
-            $currentPage    = 1;
-        } else {
-            $currentPage    = $page;
-        }
-
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
-
-        $User->page          = $currentPage;
-        //$paginator->numPages = ($paginator->numPages -1);
-        # end paginador #
-        $adjudicaciones = $User->getAdjudicaciones();
-
-        $sub = new Subasta();
-        $data = array(
-                    'adjudicaciones' => $adjudicaciones,
-                    'paginator'      => $paginator,
-                    'currency'       => $sub->getCurrency()
-                );
-
-        return View::make('front::pages.panel.adjudicaciones', array('data' => $data));
-    }
-    */
 	#mostrar listado de pagos pagados y pendientes de transferencia de NFT
 	public function nftTransferPay(){
 		$asigl0 = new Fgasigl0();
@@ -2523,12 +2465,17 @@ class UserController extends Controller
 
 	}
 
-
-
-    # Adjudicaciones pendientes de pago del usuario en sesion
-
+	/**
+	 * Adjudicaciones pendientes de pago del usuario en sesion
+	 * @deprecated Este metodo corresponde a una versión del panel antigua, revisamos el inicio si
+	 * existe la vista para redirigir a /allotments en caso de no existir
+	 */
     public function getAdjudicacionesPendientePago()
     {
+		if(!View::exists('front::pages.panel.adjudicaciones_pagar')){
+			return redirect()->route('panel.allotments', ['lang' => Config::get('app.locale')], 301);
+		}
+
         $subasta = new Subasta();
         $parametrosSub= $subasta->getParametersSub();
         if(!Session::has('user')){
@@ -2591,12 +2538,7 @@ class UserController extends Controller
 
 
         return View::make('front::pages.panel.adjudicaciones_pagar', array('data' => $data));
-
-
 	}
-
-
-
 
     #Lotes adjudicados pagados
     public function getAdjudicacionesPagadas()
@@ -3187,7 +3129,8 @@ class UserController extends Controller
             $currentPage    = $page;
         }
 
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+		$path = request()->fullUrlWithoutQuery(['page']);
+        $paginator = new Paginator($favs, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
         $fav->page           = $currentPage;
         # end paginador #
@@ -3387,7 +3330,6 @@ class UserController extends Controller
 
     public function sendPasswordRecovery()
     {
-
         $email = Request::input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
@@ -3396,26 +3338,36 @@ class UserController extends Controller
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
 
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
+
+			//cualquier string es true, por lo que siempre entra en este if.
+			//Igualmente, todos los clientes tienen el input a "true" ¿Eliminar este if?
             if (!empty($val_post) && $val_post == true) {
-                if (!empty($activate) && $activate == true) {
+
+				//Solamente lo utiliza tauler
+				if (!empty($activate) && $activate == true) {
                     return array(
                         'status' => 'error',
                         'msg' => trans(\Config::get('app.theme').'-app.login_register.email_does_not_exist')
                     );
                 }
 
-                return array(
-                    'status'            => 'error',
-                    'msg'               => trans(\Config::get('app.theme').'-app.login_register.not_valid_mail')
-                );
-             }else{
+				//Lo comentamos para no exponer emails de clientes, aunque sean erroneos retornamos el mismo mensaje
+                //return array('status' => 'error','msg' => trans(\Config::get('app.theme').'-app.login_register.not_valid_mail'));
+				return $successResponse;
+
+             } else {
                 return Redirect::to(Routing::slug('login'))->with('error_pass_recovery', trans(\Config::get('app.theme').'-app.login_register.not_valid_mail'));
             }
         }
 
         $email = urlencode($email);
-        $code = \Tools::encodeStr($email.'-'.$mail_exists[0]->pwdwencrypt_cliweb);
+        $code = ToolsServiceProvider::encodeStr($email.'-'.$mail_exists[0]->pwdwencrypt_cliweb);
         $url = Config::get('app.url').'/'.Config::get('app.locale').'/email-recovery'.'?email='.$email.'&code='.$code;
 
         $email = new EmailLib('RECOVERY_PASSWORD');
@@ -3427,12 +3379,7 @@ class UserController extends Controller
                 $email->send_email();
         }
 
-        return array(
-                'status'            => 'succes',
-                'msg'               => trans(\Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-            );
-
-
+        return $successResponse;
     }
 
     public function getPasswordRecovery()
@@ -4014,13 +3961,21 @@ class UserController extends Controller
     }
 
     //Panel para modificar contraseña, el usuario ha pedido recibir un email para modificarla
-    public function changePassw(){
+    public function changePassw(HttpRequest $request){
         $user = new User();
 
         $res = array(
             'status' => 'error',
             'msg' => 'user_panel_inf_error'
          );
+
+		if(Config::get('app.strict_password_validation', false)) {
+			$validations = $this->checkIsValidPassword($request);
+			if(!empty($validations)){
+				return response()->json(['status' => 'error', 'message' => $validations], 422);
+			}
+		}
+
 
         $email = Request::input('email');
         $password = Request::input('password');
@@ -4721,6 +4676,23 @@ class UserController extends Controller
 		Web_Preferences::where('COD_CLIWEB_PREF', $codCli)->where('ID_PREF', $form['preference_code'])->delete();
 
 		return redirect()->route('panel.preferences', ['lang' => config('app.locale')]);
+	}
+
+	private function checkIsValidPassword(HttpRequest $request)
+	{
+		$minPasswordLength = 8;
+		$rules = [
+			'password' => ['required', Password::min($minPasswordLength)->letters()->mixedCase()->numbers()->symbols(), 'max:256'],
+		];
+
+		$validator = Validator::make($request->all(), $rules);
+
+		if($validator->fails()){
+			//return $validator->errors(); //devuelve un array con los errores producidos
+			return [trans(Config::get('app.theme') . '-app.msg_error.invalid_strict_password', ['min' => $minPasswordLength])];
+		}
+
+		return null;
 	}
 
 }

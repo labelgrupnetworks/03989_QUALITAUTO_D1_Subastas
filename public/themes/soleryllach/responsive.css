@@ -268,6 +268,7 @@
 
 	footer .logo img{
 		margin: 10px auto;
+		max-width: 56.25%;
 	}
 
     footer .module_wrapper{
@@ -338,19 +339,30 @@
     #lotes_destacados{
         padding: 0;
     }
-
-
-
-
 }
 
+@media (min-width: 768px) {
+	.navbar-default .navbar-nav {
+		align-items: flex-end;
+	}
 
+	.navbar-default .navbar-nav>li>a {
+		padding: 0;
+    	padding-bottom: 0.3rem;
+		line-height: 1;
+	}
+
+	.navbar-default .navbar-nav li.logo a {
+		padding: 0;
+	}
+}
 
 /* Landscape phones and portrait tablets */
 @media (max-width: 768px) {
 
 	footer .logo img{
 		margin: 10px auto;
+		max-width: 56.25%;
 	}
     .name-data-custom{
         min-width: 300px;

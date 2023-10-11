@@ -1,36 +1,12 @@
 
-<div>
-	<video class="w-100" src="/themes/ansorena/assets/home_corto.mp4" controls autoplay muted loop playsinline>
-		Tu navegador no admite el elemento <code>video</code>.
-	</video>
-</div>
 
-{{-- {!! BannerLib::bannerWithView('home-top-banner', 'fluid', ['title' => "<p class='slider-title'>" . trans("$theme-app.home.banner_title") . '</p>'], ['autoplay' => true]) !!} --}}
+{!! BannerLib::bannerWithView('home-video', 'video', ['src' => "/themes/ansorena/assets/home_corto.mp4"]) !!}
+{!! BannerLib::bannerWithView('home-top-banner', 'fluid', ['title' => "<p class='slider-title'>" . trans("$theme-app.home.banner_title") . '</p>'], ['autoplay' => true]) !!}
+{!! BannerLib::bannerWithView('home-joyeria', 'grid_1', ['title' => trans("$theme-app.foot.joyeria")], ['loading' => 'lazy']) !!}
 
-{!! BannerLib::bannerWithView(
-    'home-joyeria',
-    'grid_1',
-    [
-        'title' => trans("$theme-app.foot.joyeria"),
-        'url' => $pagina . trans("$theme-app.links.joyas_category"),
-    ],
-    ['loading' => 'lazy']
-) !!}
+{!! BannerLib::bannerWithView('home-subastas','grid_2', ['title' => trans("$theme-app.subastas.auctions")], ['loading' => 'lazy'] ) !!}
 
-{!! BannerLib::bannerWithView(
-    'home-subastas',
-    'grid_2',
-    [
-        'title' => trans("$theme-app.subastas.auctions"),
-        'url' => Routing::translateSeo('presenciales'),
-    ],
-    ['loading' => 'lazy']
-) !!}
-
-{!! BannerLib::bannerWithView('home-galeria', 'grid_2', [
-    'title' => trans("$theme-app.galery.galery"),
-    'url' => $galleryDomain,
-]) !!}
+{!! BannerLib::bannerWithView('home-galeria', 'grid_2', ['title' => trans("$theme-app.galery.galery")]) !!}
 
 {!! BannerLib::bannerWithView(
     'home-tasaciones',
@@ -85,9 +61,8 @@
                     </div>
                     <h3 class="blog-article-title">{{ $blog->localeLang->titulo_web_blog_lang }}</h3>
                     <span>{{ $blog->category_name }}</span>
-
-					<a href="{{ Config::get('app.locale') . '/blog/' . mb_strtolower($blog->category_name) . '/' . $blog->localeLang->url_web_blog_lang }}"
-                        class="stretched-link"></a>
+					<a href="{{ Routing::translateSeo("blog/{$blog->principalCategory->languages->first()->url_category_blog_lang}/{$blog->localeLang->url_web_blog_lang}") }}"
+						class="stretched-link"></a>
                 </article>
             @endforeach
         </div>

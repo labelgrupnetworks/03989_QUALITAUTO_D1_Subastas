@@ -23,6 +23,7 @@ export const FormProvider = ({ children, initialState }) => {
 
 	useEffect(() => {
 		updateUrl(formFields);
+		window.scrollTo(0, 0);
 	}, [formFields])
 
 	return (

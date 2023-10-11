@@ -9,7 +9,7 @@ use Routing;
 use Route;
 use Illuminate\Support\Facades\Request as Input;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use Session;
 use DateTime;
 
@@ -24,7 +24,7 @@ use App\Models\Favorites;
 use App\Models\Subalia;
 use App\libs\EmailLib;
 use DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
@@ -1604,20 +1604,18 @@ class subastaTiempoRealController extends Controller
 	# Funcion de pujas y ordenes de licitacion en tiempo real mediante node
     public function action()
     {
-		$codSub            = Input::get('params.cod_sub');
-        $ref            = Input::get('params.ref');
+		$codSub = request('params.cod_sub');
+        $ref = request('params.ref');
+        $licit = request('params.cod_licit');
 
-        $licit          = Input::get('params.cod_licit');
-        //si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
-		$cod_original_licit      = Input::get('params.cod_original_licit');
+		//si el usuario es administrador debemos mirar este código ya que elcod_licit se machaca
+		$cod_original_licit = request('params.cod_original_licit');
+		$imp = intval(request('params.imp'));
+        $type_bid = request('params.type_bid');
+        $can_do = request('params.can_do');
+        $hash_user = request('params.hash');
+        $tipo_puja_gestor = request('params.tipo_puja_gestor');
 
-
-		$imp            = intval(Input::get('params.imp'));
-        $type_bid       = Input::get('params.type_bid');
-
-        $can_do                  = Input::get('params.can_do');
-        $hash_user               = Input::get('params.hash');
-        $tipo_puja_gestor        = Input::get('params.tipo_puja_gestor');
 		\Log::info ("antiguo circuito action");
 		return $this->executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  );
 	}
@@ -1880,7 +1878,8 @@ class subastaTiempoRealController extends Controller
 			$res = array(
                     'status' => 'error',
                     'msg_2' => 'bid_scaling',
-                    'cod_licit_actual'  => $subasta->licit
+                    'cod_licit_actual'  => $subasta->licit,
+					'no_interrupt_cd_time' => 'true'
                     );
             if (!empty($is_gestor)){
                 $res['is_gestor'] = TRUE;
@@ -2935,25 +2934,21 @@ class subastaTiempoRealController extends Controller
 	}
 
 
- 	#conservo la función por si hubiera que usar sockets desde js en algun cliente
-	 public function endLot()
-	 {
-		 $cod_sub  = Input::get('params.cod_sub');
-		 $lot = Input::get('params.lot');
-		 $cod_licit      = Input::get('params.cod_licit');
-		 $hash_user      = Input::get('params.hash');
-		 $jump_lot = Input::get('params.jump_lot');
+	#conservo la función por si hubiera que usar sockets desde js en algun cliente
+	public function endLot()
+	{
+		$cod_sub  = request('params.cod_sub');
+		$lot = request('params.lot');
+		$cod_licit = request('params.cod_licit');
+		$hash_user = request('params.hash');
+		$jump_lot = request('params.jump_lot');
 
-		 return $this->endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot);
-
-
-	 }
-
+		return $this->endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot);
+	}
 
 	 public function endLotV2($cod_sub, $lot, $cod_licit, $hash_user, $jump_lot)
 	 {
-
-		 \Log::info("end lot V2" );
+		\Log::info("end lot V2" );
 
         $gestor = new User();
         $gestor->cod = $cod_sub;
@@ -3631,12 +3626,13 @@ class subastaTiempoRealController extends Controller
             $no_enviar= true;
              Log::info('-----No hay sesión, no enviar email: ');
 
-        }//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
-        elseif( time() > $start_session && (strtoupper($lote->tipo_sub) != 'O' && strtoupper($lote->tipo_sub) != 'P' )){
-            $no_enviar= true;
-             Log::info('-----La session ya ha empezado, no enviar email: ');
-
-        }else{
+        }
+		//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
+		//Si tienen el config send_email_tr, omitimos el resto
+        elseif( time() > $start_session && (strtoupper($lote->tipo_sub) != 'O' && strtoupper($lote->tipo_sub) != 'P' ) && !Config::get('app.send_email_tr', 0)){
+			$no_enviar= true;
+			Log::info('-----La session ya ha empezado, no enviar email: ');
+        } else {
 
            if($orden_o_puja == "orden")
             {
@@ -3780,7 +3776,7 @@ class subastaTiempoRealController extends Controller
 
 	public function  cancelarOrden()
     {
-		return $this->cancelarOrdenV2(Input::get('params.cod_sub'), Input::get('params.cod_licit'),  Input::get('params.ref'),  Input::get('params.hash'));
+		return $this->cancelarOrdenV2(request('params.cod_sub'), request('params.cod_licit'), request('params.ref'), request('params.hash'));
 	}
 
 	public function  cancelarOrdenV2($codSub, $licit,  $ref, $hash_user)
@@ -3912,20 +3908,16 @@ class subastaTiempoRealController extends Controller
 
 	public function cancelarPuja()
 	{
-
-		$codSub = Input::get('params.cod_sub');
-		$codLicit = Input::get('params.cod_licit');
-		$ref  = Input::get('params.ref');
-		$hash= Input::get('params.hash');
+		$codSub = request('params.cod_sub');
+		$codLicit = request('params.cod_licit');
+		$ref  = request('params.ref');
+		$hash= request('params.hash');
 
 		return $this->cancelarPujaV2($codSub, $codLicit, $ref, $hash);
 	}
 
     public function cancelarPujaV2($codSub, $codLicit, $ref,  $hash_user)
     {
-
-    
-
         $subasta = new Subasta();
         $subasta->cod     = $codSub;
         $licit            = $codLicit;
@@ -4317,11 +4309,12 @@ class subastaTiempoRealController extends Controller
 
                  Log::info('-----No hay sesión, no enviar email: ');
                   return;
-            }//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real o la sesión ya ha acabado.
-            elseif( time() > $start_session && (strtoupper($inf_lot->tipo_sub) != 'O' && strtoupper($inf_lot->tipo_sub) != 'P' )){
-
-                 Log::info('-----La session ya ha empezado, no enviar email: ');
-                  return;
+            }
+			//Si la session ya ha empezado y no es de tipo "On line" o "Permanente" no debería enviar ya que estamos en tiempo real
+			//o la sesión ya ha acabado, excepto si tienen config send_email_tr.
+            elseif(time() > $start_session && (strtoupper($inf_lot->tipo_sub) != 'O' && strtoupper($inf_lot->tipo_sub) != 'P' && !Config::get('app.send_email_tr', 0))){
+				Log::info('-----La session ya ha empezado, no enviar email: ');
+				return;
 			}
 
             $user->cod = $subasta->cod;
@@ -4331,6 +4324,11 @@ class subastaTiempoRealController extends Controller
 
             if(empty($inf_user) || empty($inf_user->email_cliweb)){
                 return;
+			}
+
+			if(Config::get('app.send_email_lot_increment_bid_to_all_users_with_deposit', 0)){
+				//enviar email a todos los usuarios que tengan un deposito valido por este lote
+				(new MailController())->sendLotIncrementBidToAllUsersWithDepositNotification($subasta->cod, $subasta->ref, $subasta->licit);
 			}
 
 			$inf_lot_translate = $subasta->getMultilanguageTextLot($inf_lot->num_hces1,$inf_lot->lin_hces1);

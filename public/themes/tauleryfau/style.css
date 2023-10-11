@@ -6048,10 +6048,10 @@ FICHA LOTE
     align-self: flex-end;
 }
 .shared ul.red {
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
+	display: flex;
+    align-items: center;
     justify-content: center;
-    width: 100%;
+    gap: 20px;
     margin-top: 25px;
 }
 .single-lot-desc-title.desc{
@@ -6064,7 +6064,6 @@ FICHA LOTE
     justify-content: space-between;
 }
 .shared ul li{
-    margin-right: 20px;
     border: 1px solid #b79d81;
     border-radius: 50%;
     padding: 7px;
@@ -6077,9 +6076,11 @@ FICHA LOTE
     cursor: pointer;
 }
 
-.shared ul li:last-child{
-    margin-right: 0;
+.shared ul.red a {
+	color: currentColor;
+	height: 20px;
 }
+
 .time-shared-wrapper{
     margin-top: 20px;
 }

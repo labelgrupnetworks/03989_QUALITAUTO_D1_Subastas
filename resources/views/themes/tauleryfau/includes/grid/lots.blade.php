@@ -22,7 +22,7 @@
 				$class_square = 'col-xs-12 col-sm-6 col-lg-4';
 
 
-			$subastaModel = new \App\Models\subasta();
+			$subastaModel = new \App\Models\Subasta();
 			$numLin = new \stdClass();
 			$numLin->num_hces1 = $item->num_hces1;
 			$numLin->lin_hces1 = $item->lin_hces1;

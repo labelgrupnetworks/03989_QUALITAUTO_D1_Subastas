@@ -42,8 +42,9 @@ $titulo = $titulo ?? $data['subasta_info']->lote_actual->titulo_hces1;
 			<a class=" d-flex align-items-center justify-content-center color-letter"
 				title="{{ trans(\Config::get('app.theme').'-app.lot.share_twitter') }}"
 				target="_blank"
-				href="http://twitter.com/share?text=<?= $titulo.' '.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i
-					class="fab fa-twitter"></i></a>
+				href="http://twitter.com/share?text=<?= $titulo.' '.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
+				@include('components.x-icon', ['size' => '27'])
+			</a>
 		</li>
 		<li class="share-item" style="display: none">
 			<a class=" d-flex align-items-center justify-content-center color-letter"

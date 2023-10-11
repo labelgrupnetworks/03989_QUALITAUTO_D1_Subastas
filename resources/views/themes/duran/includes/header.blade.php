@@ -54,7 +54,7 @@ use App\libs\TradLib as TradLib;
                             </li>
                             <li class="twitter">
                                 <a href="https://twitter.com/duransubastas"  target="_blank">
-                                    <i class="fab fa-twitter"></i>
+									@include('components.x-icon', ['size' => '12'])
                                 </a>
                             </li>
                             <li class="youtube">
@@ -138,7 +138,7 @@ use App\libs\TradLib as TradLib;
 								@endforeach
 
 								<div class="categoryOption"> <a  href="/<?= \Config::get("app.locale") ?>/subasta/subasta-solo-online-duran_7501-001?order=orden_asc">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}} </a> </div>
-								
+
 									<div class="categoryOption"> <a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.metas.title_historic') }}</a> </div>
 							</div>
 					  </div>

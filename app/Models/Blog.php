@@ -170,6 +170,34 @@ class Blog extends Model
         ->where( 'IDBLOG_WEB_BLOG_REL_CATEGORY',$this->idblog_lang)->delete();
    }
 
+   public function getSmallNoticiasLang()
+   {
+		$lang = $this->lang;
+		$blog = Web_Blog::query()
+		->select("WEB_BLOG.IMG_WEB_BLOG, WEB_BLOG.PRIMARY_CATEGORY_WEB_BLOG")
+		->addSelect("WEB_BLOG_LANG.TITULO_WEB_BLOG_LANG, substr(WEB_BLOG_LANG.TEXTO_WEB_BLOG_LANG, 0, 600) as TEXTO_WEB_BLOG_LANG, WEB_BLOG_LANG.URL_WEB_BLOG_LANG")
+		->addSelect("WEB_CATEGORY_BLOG_LANG.URL_CATEGORY_BLOG_LANG")
+
+		->join('WEB_BLOG_LANG','WEB_BLOG_LANG.idblog_web_blog_lang', '=', 'WEB_BLOG.id_web_blog')
+		->join('WEB_BLOG_REL_CATEGORY', 'WEB_BLOG_REL_CATEGORY.IDBLOG_WEB_BLOG_REL_CATEGORY', '=', 'WEB_BLOG.ID_WEB_BLOG')
+		->join('WEB_CATEGORY_BLOG','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG','=','WEB_BLOG.PRIMARY_CATEGORY_WEB_BLOG')
+		->join('WEB_CATEGORY_BLOG_LANG','WEB_CATEGORY_BLOG_LANG.ID_CATEGORY_BLOG_LANG','=','WEB_CATEGORY_BLOG.ID_CATEGORY_BLOG')
+
+		->where('WEB_CATEGORY_BLOG.EMP_CATEGORY_BLOG', Config::get('app.main_emp'))
+		->where('WEB_CATEGORY_BLOG_LANG.lang_category_blog_lang', $lang)
+		->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG', 1)
+		->where('WEB_BLOG_LANG.lang_web_blog_lang', $lang)
+		->where('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG','<=',date("Y-m-d"))
+		->where('ENABLED_WEB_BLOG_LANG',1)
+
+		->whereNotNull('URL_WEB_BLOG_LANG')
+		->whereNotNull('primary_category_web_blog')
+		->orderBy('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG', 'desc')
+		->paginate(Config::get('app.paginate_blog', 16));
+
+		return $blog;
+   }
+
    public function getAllNoticiasLang($key_categ=null){
        $lang = $this->lang;
 

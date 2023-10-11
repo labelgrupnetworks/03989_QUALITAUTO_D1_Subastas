@@ -12,9 +12,9 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
 
-class User extends Model
+class User
 {
-    protected $table = 'FXCLIWEB';
+    //protected $table = 'FXCLIWEB';
 
     public $user;
     public $password;
@@ -45,6 +45,13 @@ class User extends Model
 	public $cod_sub;
 	public $seudo_cli;
 
+	public function __construct(array $atributtes = [])
+	{
+		foreach ($atributtes as $key => $value) {
+			$this->$key = $value;
+		}
+	}
+
 	static function factory()
 	{
 		return new self();
@@ -60,6 +67,12 @@ class User extends Model
 	{
 		$this->itemsPerPage = $itemsPerPage;
 		return $this;
+	}
+
+	public function getUserModelByCodCli($cod_cli, $select = ['*'])
+	{
+		$user = FxCli::joinCliWebCli()->select($select)->where('cod_cli', $cod_cli)->first();
+		return new self($user->toArray());
 	}
 
     public function login()
@@ -571,7 +584,7 @@ class User extends Model
 								'DIR_CLI'=> $this->dir,
 								'DIR2_CLI'=> $this->dir2,
 								'CP_CLI'=>$this->cp,
-								'IVA_CLI'=>$this->iva_cli,
+								//'IVA_CLI'=>$this->iva_cli,
 								'POB_CLI'=>$this->pob,
 								'PRO_CLI'=>$this->pro,
 								'TEL1_CLI'=>$this->tel,
@@ -1139,19 +1152,23 @@ class User extends Model
         }
     }
 
-    public function logLoginError($email,$passw,$her_pwd,$emp,$date,$ip){
-
+    public function logLoginError($email,$passw,$her_pwd,$emp,$date,$ip)
+	{
         try {
             DB::table('WEB_LOGIN_ERROR')
-                ->insert(['USRW_WEB_LOGIN_ERROR' => $email, 'PASS_WEB_LOGIN_ERROR' =>$passw,'PASS_USER_WEB_LOGIN_ERROR'=>$her_pwd,'DATE_WEB_LOGIN_ERROR' => $date, 'EMP_WEB_LOGIN_ERROR'=>$emp, 'IP_WEB_LOGIN_ERROR'=>$ip]
-            );
+                ->insert([
+					'USRW_WEB_LOGIN_ERROR' => $email,
+					'PASS_WEB_LOGIN_ERROR' =>$passw,
+					'PASS_USER_WEB_LOGIN_ERROR'=>$her_pwd,
+					'DATE_WEB_LOGIN_ERROR' => $date,
+					'EMP_WEB_LOGIN_ERROR'=>$emp,
+					'IP_WEB_LOGIN_ERROR'=>$ip
+					]);
+
         } catch (\Exception $e) {
-            \Log::emergency('Insert WEB_LOGIN_ERROR');
+            \Log::emergency('Insert WEB_LOGIN_ERROR', ['error' => $e->getMessage()]);
         }
     }
-
-
-
 
     public function getTown($zip_code,$country){
         return DB::table('FSPOB')

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use URL;
@@ -850,38 +850,42 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_img($size, $numhces, $linhces, $img_num = null, $force_old = null)
 	{
-		#podemso forzar a generar imagenes con el force_old=1, en zonas como la ficha del lote
-		$loadOld = !empty($force_old) ? $force_old : Config::get('app.loadImage', 0);
-		#codigo antiguo
-		if ($loadOld) {
-			$path_img_num = '';
-			if (!empty($img_num)) {
-				$path_img_num = "_" . sprintf("%02d", $img_num);
-			}
-			$img_file=Config::get('app.url') . "/img/load/$size/" . Config::get('app.emp') . "-$numhces-$linhces" . $path_img_num . ".jpg";
-			$file="img/".Config::get('app.emp') . "/". $numhces . "/" . Config::get('app.emp') . "-$numhces-$linhces" . $path_img_num . ".jpg";
-			return $img_file.self::date_modification($file);
-		}
-
-		if($size === "real") {
-			return self::lotRealImage($numhces, $linhces, $img_num);
-		}
-
-		$images_size = \Tools::images_size();
 		$emp = Config::get('app.emp');
+		$url = Config::get('app.url');
+
 		$path_img_num = '';
 		if (!empty($img_num)) {
 			$path_img_num = "_" . sprintf("%02d", $img_num);
 		}
-		$image_to_load = "img/thumbs/$images_size[$size]/$emp/$numhces/$emp-$numhces-$linhces" . $path_img_num . ".jpg";
-		$file="img/".Config::get('app.emp') . "/". $numhces . "/" . Config::get('app.emp') . "-$numhces-$linhces" . $path_img_num . ".jpg";
+		$file = "img/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}.jpg";
 
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
+		#podemso forzar a generar imagenes con el force_old=1, en zonas como la ficha del lote
+		$loadOld = !empty($force_old) ? $force_old : Config::get('app.loadImage', 0);
+
+		#codigo antiguo
+		if ($loadOld) {
+			$img_file = "$url/img/load/$size/$emp-$numhces-$linhces{$path_img_num}.jpg";
+			return $img_file.self::date_modification($file);
 		}
-		$image_to_load = Config::get('app.url') . '/' . $image_to_load;
+
+		$images_size = self::images_size();
+		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
+
+		$image_to_load = "img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
+		$extension = 'webp';
+
+		if(!file_exists("$image_to_load.$extension")){
+			$extension = 'jpg';
+		}
+
+		$image_to_load = "$image_to_load.$extension";
+		$theme = Config::get('app.theme');
+		$pathNoPhoto = "themes/$theme/img/items/no_photo";
+
+		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
+			$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
+		}
+		$image_to_load = "$url/$image_to_load";
 		return $image_to_load.self::date_modification($file);
 	}
 
@@ -1179,7 +1183,7 @@ class ToolsServiceProvider extends ServiceProvider
 		if (isset($a[1]) && empty($admin)) {
 
 			$b = explode("@", $a[1]);
-			$theme = env('APP_THEME');
+			$theme = Config::get('app.theme');
 			$modulo = Str::camel($a[0]);
 			$componente = Str::camel(str_replace("Controller", "", $b[0]));
 			if (is_file(public_path() . "/js/$modulo/$componente.js")) {
@@ -1192,7 +1196,6 @@ class ToolsServiceProvider extends ServiceProvider
 			if (is_file(public_path() . "/css/$modulo/$componente.css")) {
 				echo '<link rel="stylesheet" type="text/css" href="' . self::urlAssetsCache("/css/$modulo/$componente.css") . '" >';
 			}
-
 			if (is_file(public_path() . "/themes/$theme/css/$modulo/$componente.css")) {
 				echo '<link rel="stylesheet" type="text/css" href="' . self::urlAssetsCache("/themes/$theme/css/$modulo/$componente.css") . '" >';
 			}

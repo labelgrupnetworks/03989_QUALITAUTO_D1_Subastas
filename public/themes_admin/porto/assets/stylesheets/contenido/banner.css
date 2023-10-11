@@ -1,31 +1,96 @@
-#newbanner {background:#FFF;border:#CCC 1px solid;padding:15px;width: 100%;}
-#newbanner .row {padding:5px;margin:0 10px;width: 100%;}
-#newbanner .items {border-top:#CCC 1px solid; background-color: #FFF;}
+#newbanner {
+	background: #FFF;
+	border: #CCC 1px solid;
+	padding: 15px;
+	width: 100%;
+}
+
+#newbanner .row {
+	padding: 5px;
+	margin: 0 10px;
+	width: 100%;
+}
+
+#newbanner .items {
+	border-top: #CCC 1px solid;
+	background-color: #FFF;
+}
 
 #editbanner {}
-#editbanner .banner_items .row {border-top:#CCC 1px solid;padding:10px 0;}
-.has-error {border:#C00 1px solid;}
-.well {background: #FFF}
 
-.bloqueBanner {border:#CCC 1px solid;background:#EEE;padding:15px;}
-.bloqueBanner .btn {float:right;margin-left:10px;}
-.bannerItems .row {padding:10px 0;}
+#editbanner .banner_items .row {
+	border-top: #CCC 1px solid;
+	padding: 10px 0;
+}
+
+.has-error {
+	border: #C00 1px solid;
+}
+
+.well {
+	background: #FFF
+}
+
+.bloquesBanner {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.bloqueBanner {
+	border: #CCC 1px solid;
+	background: #EEE;
+	padding: 1rem;
+	flex: 1;
+	min-width: 200px;
+}
+
+.bloqueBanner .btn {
+	float: right;
+	margin-left: 10px;
+}
+
+.bannerItems .row {
+	padding: 10px 0;
+}
 
 @media (min-width: 576px) {
 	.modal-dialog {
 		min-width: 80%;
-		width:80%;
+		width: 80%;
 	}
 
 }
 
-#banners .well {border:#CCC 1px solid;padding:20px;cursor:pointer;}
+#banners .well {
+	border: #CCC 1px solid;
+	padding: 20px;
+	cursor: pointer;
+}
 
 .bannerItems ul {
-    list-style: none;
+	list-style: none;
+	padding-left: 0;
 }
 
 .bannerItems ul li {
-	position:relative;min-height:100px;border:#CCC 1px solid;background:#f0f0f0;padding:10px;margin-bottom:10px;cursor:pointer;
+	position: relative;
+	min-height: 100px;
+	border: #CCC 1px solid;
+	background: #f0f0f0;
+	padding: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
 }
 
+.bannerItem {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.bannerItem img {
+    max-height: 150px;
+    object-fit: contain;
+}

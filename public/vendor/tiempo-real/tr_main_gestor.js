@@ -451,31 +451,52 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
     $('.change_end_lot').click(function(){
     	if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor){
 
-    		if ($(this).data().status == 'end'){
-				var url = '/phpsock/start_count_down';
-    		}else{
-				var url = '/phpsock/stop_count_down';
-
-    		}
-
-			$.ajax({
-				type: "POST",
-				url: url,
-				data:{  cod_sub: auction_info.subasta.cod_sub,  cd_time: auction_info.subasta.cd_time,  lot: auction_info.lote_actual.ref_asigl0},
-				beforeSend: function () {
-
-				},
-				success: function( response ) {
-					if(response.status == 'error'){
-						displayAlert(1, messages.error[response.msg]);
-					}
-				}
-			});
+			//endLotWithAjax($(this).data().status);
+			endLotWithSocket($(this).data().status);
     	}
     });
 
+	function endLotWithAjax(status) {
+		if (status == 'end'){
+			var url = '/phpsock/start_count_down';
+		}else{
+			var url = '/phpsock/stop_count_down';
+		}
 
+		$.ajax({
+			type: "POST",
+			url: url,
+			data:{  cod_sub: auction_info.subasta.cod_sub,  cd_time: auction_info.subasta.cd_time,  lot: auction_info.lote_actual.ref_asigl0},
+			beforeSend: function () {
 
+			},
+			success: function( response ) {
+				if(response.status == 'error'){
+					displayAlert(1, messages.error[response.msg]);
+				}
+			}
+		});
+	}
+
+	function endLotWithSocket(status) {
+
+		status == 'end'
+			? count_down_lot()
+			: socket.emit('stop_count_down', { cod_sub: auction_info.subasta.cod_sub });
+	}
+
+	function count_down_lot() {
+
+		if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
+			var cod_sub = auction_info.subasta.cod_sub;
+			var cod_licit = auction_info.user.cod_licit;
+			var lot = auction_info.lote_actual.ref_asigl0;
+			var string_hash = lot + " " + cod_sub + " " + cod_licit;
+			var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+
+			socket.emit('start_count_down', { cod_sub: cod_sub, cod_licit: cod_licit, hash: hash, cd_time: auction_info.subasta.cd_time, url: routing.end_lot, lot: lot });
+		}
+	}
 
     /*
 	|--------------------------------------------------------------------------
@@ -631,43 +652,47 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 	| Reanudar un lote en concreto en X posición
 	|--------------------------------------------------------------------------
 	*/
-	window.reanudar_lote = function()
-	{
-		var status  		= $('.lotResume').data().status;
-		var orden_actual 	= $('#lotOrden').attr('data-orden');
+	window.reanudar_lote = function () {
+		var status = $('.lotResume').data().status;
+		var orden_actual = $('#lotOrden').attr('data-orden');
 
-		ref 	= $('#lotOrden').attr('data-ref');
+		ref = $('#lotOrden').attr('data-ref');
 
-
-		if(!ref) {
+		if (!ref) {
 			ref = auction_info.buscador.ref_asigl0;
 		}
 
-		var ref_lot   = $('#lotOrden').val();
+		var ref_lot = $('#lotOrden').val();
 
+		if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
 
-			if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
+			var cod_sub = auction_info.subasta.cod_sub;
+			reanudarLoteWithSocket(status, orden_actual, ref, ref_lot, cod_sub);
+		}
+		//displayAlert(0, messages.error.not_allowed_movement);
+	}
 
-                            var cod_sub = auction_info.subasta.cod_sub;
-							$.ajax({
-								type: "POST",
-								url: '/phpsock/jump_lot',
-								data:{  cod_sub: cod_sub,  ref: ref, status: status , ref_lote_actual: auction_info.lote_actual.ref_asigl0, orden_actual: orden_actual, ref_lot: ref_lot },
-								beforeSend: function () {
+	function reanudarLoteWithSocket(status, orden_actual, ref, ref_lot, cod_sub) {
+		var cod_licit = auction_info.user.cod_licit;
+		var string_hash = ref + " " + cod_sub + " " + cod_licit ;
+		var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
+		socket.emit('pausar_lote', {ref: ref, cod_licit: cod_licit, cod_sub: cod_sub, status: status, ref_lote_actual: auction_info.lote_actual.ref_asigl0, orden_actual: orden_actual, ref_lot: ref_lot, hash: hash });
+	}
 
-								},
-								success: function( response ) {
-									if(response.status == 'error'){
-										displayAlert(1, messages.error[response.msg]);
-									}
-								}
-							});
+	function reanudarLoteWithAjax(status, orden_actual, ref, ref_lot, cod_sub) {
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/jump_lot',
+			data: { cod_sub: cod_sub, ref: ref, status: status, ref_lote_actual: auction_info.lote_actual.ref_asigl0, orden_actual: orden_actual, ref_lot: ref_lot },
+			beforeSend: function () {
 
-
-
+			},
+			success: function (response) {
+				if (response.status == 'error') {
+					displayAlert(1, messages.error[response.msg]);
+				}
 			}
-			//displayAlert(0, messages.error.not_allowed_movement);
-
+		});
 	}
 
 
@@ -677,29 +702,40 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 	|--------------------------------------------------------------------------
 	*/
 
-        function send_end_lot(jump_lot = 0){
-            if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
-				var cod_sub = auction_info.subasta.cod_sub;
+	function send_end_lot(jump_lot = 0){
+		if (typeof auction_info.user != 'undefined' && auction_info.user.is_gestor) {
+			sendEndLotWithSocket(jump_lot);
+		}
+	}
 
-				var lot = auction_info.lote_actual.ref_asigl0;
+	function sendEndLotWithSocket(jump_lot) {
+		var cod_sub = auction_info.subasta.cod_sub;
+		var cod_licit = auction_info.user.cod_licit;
+		var lot = auction_info.lote_actual.ref_asigl0;
+		var string_hash = lot + " " + cod_sub + " " + cod_licit ;
+		var hash = CryptoJS.HmacSHA256(string_hash, auction_info.user.tk).toString(CryptoJS.enc.Hex);
 
-				$.ajax({
-					type: "POST",
-					url: '/phpsock/endlot',
-					data:{  cod_sub: cod_sub,  lot: lot, jump_lot: jump_lot },
-					beforeSend: function () {
+		socket.emit('server_end_lot', {cod_sub: cod_sub, cod_licit: cod_licit, hash: hash, cd_time: auction_info.subasta.cd_time, url: routing.end_lot, lot: lot,jump_lot:jump_lot});
+	}
 
-					},
-					success: function( response ) {
-						if(response.status == 'error'){
-							displayAlert(1, messages.error[response.msg]);
-						}
-					}
-				});
+	function sendEndLotWithAjax(jump_lot) {
+		var cod_sub = auction_info.subasta.cod_sub;
+		var lot = auction_info.lote_actual.ref_asigl0;
 
+		$.ajax({
+			type: "POST",
+			url: '/phpsock/endlot',
+			data: { cod_sub: cod_sub, lot: lot, jump_lot: jump_lot },
+			beforeSend: function () {
+
+			},
+			success: function (response) {
+				if (response.status == 'error') {
+					displayAlert(1, messages.error[response.msg]);
+				}
 			}
-
-       }
+		});
+	}
 
 	window.asign_licit = function asign_licit(forceAsign = false) {
 

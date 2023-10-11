@@ -162,7 +162,7 @@ ajax_newcarousel = function (key, replace, lang) {
 	$.ajax({
 		type: "POST",
 		url: "/api-ajax/newcarousel",
-		data: { key: key, replace: replace, lang: lang },
+		data: { key: key, replace: replace, lang: lang, order: 'close_at' },
 		success: function (result) {
 
 			if (result === '') {

@@ -48,15 +48,19 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
                     </div>
 				@else {{--if(!$sub_historica && !$sub_cerrada ) --}}
 					{{-- Formulario de  petición de información--}}
-					<div class="col-xs-12 ">
-						<p class="pre-title-principal adj-text">	{{ trans(\Config::get('app.theme').'-app.galery.request_information') }} </p>
+					@if(!empty($lote_actual->impsalhces_asigl0))
+					<div class="pre lot-sold_impsal">
+                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                        <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                    </div>
+					@endif
 
-					</div>
+					<p class="pre-title-principal adj-text">	{{ trans(\Config::get('app.theme').'-app.galery.request_information') }} </p>
 					<form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
 						<input type="hidden" name="auction" value="{{ $lote_actual->cod_sub}} - {{ $lote_actual->des_sub}}">
 						<input type="hidden" name="lot" value="   {{$lote_actual->descweb_hces1 }} ">
 
-						<div class="form-group mt-3">
+						<div class="form-group">
 							<div class="input-effect col-xs-12">
 								<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
 								<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">

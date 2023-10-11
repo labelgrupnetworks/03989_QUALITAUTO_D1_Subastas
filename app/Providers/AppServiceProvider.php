@@ -5,8 +5,10 @@ namespace App\Providers;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Opcodes\LogViewer\Facades\LogViewer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,5 +52,9 @@ class AppServiceProvider extends ServiceProvider
 				}
 			);
 		}
+
+		LogViewer::auth(function ($request) {
+			return Session::has('user.admin') && in_array(mb_strtolower(Session::get('user.usrw')), ["subastas@labelgrup.com"]);
+		});
 	}
 }

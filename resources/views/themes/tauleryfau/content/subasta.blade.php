@@ -490,7 +490,7 @@
 
 						<?php
 							$paginator = $data['subastas.paginator'];
-							$paginator->setMaxPagesToShow(4);
+							//$paginator->setMaxPagesToShow(4);
 							echo $paginator;
 						?>
 
@@ -578,7 +578,7 @@
             </div>
         </div>
     </div>
-    @if(!empty($data['seo']->meta_content) && $data['subastas.paginator']->currentPage == 1 )
+    @if(!empty($data['seo']->meta_content) && $data['subastas.paginator']->currentPage() == 1 )
         <div class="container category">
             <div class="row">
                 <div class="col-xs-12" style="margin-bottom: 40px;margin-left:10px">

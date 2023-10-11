@@ -13,6 +13,19 @@ use App\Models\WebNewbannerModel;
 
 class NoticiasController extends Controller
 {
+	public function smallIndex()
+	{
+		$blog = new Blog();
+		$blog->lang = strtoupper(Config::get('app.locale'));
+		$noticias = $blog->getSmallNoticiasLang();
+
+		$data = [
+			'noticias' => $noticias,
+		];
+
+        return (object)['data' => $data];
+	}
+
     public function index($lang,$key_categ = null)
     {
 
@@ -46,7 +59,7 @@ class NoticiasController extends Controller
 
         $i = 0;
         foreach($categorys_temp as $categ_value){
-            if(in_array($categ_value->id_category_blog,$category_exist)){
+            if(in_array($categ_value->id_category_blog, $category_exist)){
                 $categorys[$categ_value->id_category_blog] = $categ_value;
             }
         }

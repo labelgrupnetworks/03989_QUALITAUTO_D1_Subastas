@@ -92,7 +92,7 @@ return [
     'not_in'               => ':attribute es inválido.',
     'not_regex'            => 'El formato del campo :attribute no es válido.',
     'numeric'              => ':attribute debe ser numérico.',
-    'password'             => 'La contraseña es incorrecta.',
+    //'password'             => 'La contraseña es incorrecta.',
     'present'              => 'El campo :attribute debe estar presente.',
     'regex'                => 'El formato de :attribute es inválido.',
     'required'             => 'El campo :attribute es obligatorio.',
@@ -127,6 +127,15 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
+	/* 'password' => [
+		'min' => 'La :attribute debe contener más de :min caracteres',
+		'mixed' => 'La :attribute debe contener al menos una letra mayúscula y una minúscula',
+		'letters' => 'La :attribute debe contener al menos una letra',
+		'symbols' => 'La :attribute debe contener al menos un símbolo',
+		'numbers' => 'La :attribute debe contener al menos un número',
+		'uncompromised' => 'La :attribute ha aparecido en una fuga de datos. Por favor, elija una :attribute diferente',
+		'invalid_strict_password' => 'La contraseña debe cumplir con los siguientes criterios:<br>Más de :min caracteres, al menos una letra mayúscula, una minúscula, un símbolo y un número.'
+	], */
 
     'custom' => [
         'password' => [

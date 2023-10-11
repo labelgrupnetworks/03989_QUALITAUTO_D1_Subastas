@@ -20,7 +20,7 @@ $empresa = $empre->getEmpre();
 					@endif
 					@if (\Config::get('app.twitter'))
 						<a class="twitter-social-link social-link" href="{{ \Config::get('app.twitter') }}" target="_blank">
-							<i class="fa fa-twitter-square social-link-icon" aria-hidden="true"></i>
+							@include('components.x-icon', ['size' => '40'])
 						</a>
 					@endif
 					@if (\Config::get('app.youtube'))

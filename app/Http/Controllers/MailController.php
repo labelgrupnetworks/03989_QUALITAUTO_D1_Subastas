@@ -16,13 +16,15 @@ use App\Models\Facturas;
 use App\Models\Payments;
 use App\Models\Enterprise;
 use App\libs\EmailLib;
-use \App\Http\Controllers\UserController;
+use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1;
+use App\Models\V5\FgLicit;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Providers\ToolsServiceProvider as Tools;
 use App\Providers\ToolsServiceProvider;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class MailController extends Controller
@@ -2467,4 +2469,81 @@ class MailController extends Controller
 		return $emailData->send_email();
 	}
 
+	public function sendValidDepositNotification($cod_cli, $cod_sub, $ref_lot = null)
+	{
+		$theme = config('app.theme');
+
+		$email = new EmailLib('DEPOSIT_ACCEPTED');
+		if(!$email->email){
+			throw new Exception(trans("$theme-app.emails.api_email_type"), 1);
+		}
+
+		$email->setUrl(route('allCategories', ['order' => 'date_desc']));
+		$email->setUserByCod($cod_cli, true);
+
+		$subasta = new Subasta();
+        $subasta->cod = $cod_sub;
+        $subasta->page = 'all';
+
+		$inf_subasta = $subasta->getInfSubasta();
+		if(!$inf_subasta){
+			throw new Exception(trans("$theme-app.emails.api_not_auction"), 1);
+		}
+
+		$textContent = trans_choice("$theme-app.emails.deposit_auction", 1, ['name' => $inf_subasta->name]);
+
+		//cliente subasta lote -> esa subasta y lote concretos
+		if($ref_lot){
+
+			$subasta->ref = $ref_lot;
+        	$subasta->lote = $ref_lot;
+			$inf_lot = head($subasta->getLote(false, true));
+
+			if (empty($inf_lot)) {
+				throw new Exception(trans("$theme-app.emails.api_not_lot"), 1);
+			}
+
+			$urlLot = Tools::url_lot($cod_sub, $inf_lot->reference, '', $ref_lot, $inf_lot->numhces_asigl0, $inf_lot->webfriend_hces1, $inf_lot->descweb_hces1);
+			$email->setUrl($urlLot);
+
+			$textContent = trans_choice("$theme-app.emails.deposit_lot", 1, ['desc' => $inf_lot->descweb_hces1, 'name' => $inf_subasta->name]);
+		}
+
+		$email->setText($textContent);
+
+		$email->send_email();
+
+		return true;
+	}
+
+	public function sendLotIncrementBidToAllUsersWithDepositNotification($codSub, $refLot, $codLicitToBid)
+	{
+		$licit = FgLicit::select('cli_licit')->where([
+			['sub_licit', $codSub],
+			['cod_licit', $codLicitToBid]
+		])->first();
+
+		if(!$licit){
+			return false;
+		}
+
+		$cliLicit = $licit->cli_licit;
+		$clientsCode = (new FgDeposito())->getAllClientsWithValidDepositInLotQuery($codSub, $refLot)->pluck('cli_deposito');
+
+		$clientsToSendEmail = $clientsCode->filter(function($item) use ($cliLicit){
+			return $item != $cliLicit;
+		});
+
+		$email = new EmailLib('LOT_INCREMENT_BID');
+		if(!$email->email) {
+			return false;
+		}
+
+		$email->setLot($codSub, $refLot);
+
+		$clientsToSendEmail->each(function($codCli) use ($email){
+			$email->setUserByCod($codCli, true);
+			$email->send_email();
+		});
+	}
 }

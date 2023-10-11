@@ -23,6 +23,7 @@
 					<tr>
 						<th>{{ trans("admin-app.fields.sub_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.ref_deposito") }}</th>
+						<th>{{ trans("admin-app.fields.rsoc_cli") }}</th>
 						<th>{{ trans("admin-app.fields.estado_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.importe_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.fecha_deposito") }}</th>
@@ -37,6 +38,7 @@
 						<form class="form-group" action="">
 							<td>{!! $formulario->sub_deposito !!}</td>
 							<td>{!! $formulario->ref_deposito !!}</td>
+							<td>{!! $formulario->rsoc_cli !!}</td>
 							<td>{!! $formulario->estado_deposito !!}</td>
 							<td>{!! $formulario->importe_deposito !!}</td>
 							<td>{!! $formulario->fecha_deposito !!}</td>
@@ -50,6 +52,7 @@
 					<tr id="fila{{$deposito->cod_deposito}}">
 						<td>{{$deposito->sub_deposito}}</td>
 						<td>{{$deposito->ref_deposito}}</td>
+						<td>{{$deposito->rsoc_cli}}</td>
 						<td>{{$deposito->estado}}</td>
 						<td>{{$deposito->importe_deposito}}</td>
 						<td>{{$deposito->fecha_deposito}}</td>
