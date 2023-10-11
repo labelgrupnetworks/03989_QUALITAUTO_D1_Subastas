@@ -55,7 +55,7 @@
                 orden = new Array();
                 counter = 0;
 
-                $("#sortable{{ $info[0]->bloque }} .row").each(function() {
+                $("#sortable{{ $info[0]->bloque }} .bannerItem").each(function() {
                     id = $(this).attr("id").replace("item", "");
                     orden[counter] = id;
                     counter = counter + 1;
