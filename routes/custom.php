@@ -56,6 +56,9 @@ Route::get('/exportPackengers/{codSub}', 'CustomControllers@exportPackengers');
 
 #ANSORENA
 Route::view(\Routing::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
+Route::get('/'. Config::get('app.locale') .'/private-chanel/login', 'CustomControllers@privateChanelLogin')->name('private_chanel.login');
+Route::post('/'. Config::get('app.locale') .'/private-chanel/login', 'CustomControllers@loginInPrivateChanel')->name('private_chanel.login');
+Route::post('/'. Config::get('app.locale') .'/private-chanel/form', 'CustomControllers@sendPrivateChanelForm')->name('private_chanel.form');
 
 #Carlandia
 #carga con Cron

@@ -32,6 +32,12 @@ $cookiesState = \Tools::cookies();
 //Tools::querylog();
 @endphp
 
+<script>
+	window.setTimeout(function(){
+		newsletterDay();
+	}, 3000);
+</script>
+
 @if(request("openLogin") == "S" && !Session::has('user') )
 	<script>
 		openLogin();

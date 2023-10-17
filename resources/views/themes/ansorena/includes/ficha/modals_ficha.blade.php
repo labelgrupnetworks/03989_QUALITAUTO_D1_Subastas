@@ -48,33 +48,39 @@
 
 
 <div id="modalPujarFicha" class="container modal-block mfp-hide ">
-            <div   data-to="pujarLoteFicha" class="modal-sub-w">
-                    <section class="panel">
-                            <div class="panel-body">
-                                    <div class="modal-wrapper">
-                                            <div class=" text-center single_item_content_">
-                                                <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
-                                                    </br>
-                                                    <button  class="confirm_puja confirm_puja_Ansorena btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
-                                                    <div class='mb-10'></div>
-                                                     <div class='mb-10'></div>
+	<div data-to="pujarLoteFicha" class="modal-sub-w">
+    	<section class="panel">
+			<div class="modal-wrapper">
+				<div class="modal-body d-flex flex-column gap-4">
+					<p class="h2">
+						{{ trans("$theme-app.lot.confirm") }}
+					</p>
 
-                                            </div>
-                                    </div>
-                            </div>
-                    </section>
-            </div>
+					<p>
+						<span for="bid" class='desc_auc'>{{ trans("$theme-app.lot.you_are_bidding") }} </span>
+						<strong>
+							<span class="precio_orden"></span> {{ trans("$theme-app.subastas.euros") }}
+						</strong>
+					</p>
+
+					<p>
+						{!! trans("$theme-app.lot.text_condition_confirm_bid") !!}
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-lb-primary confirm_puja confirm_puja_Ansorena button_modal_confirm">
+						{{ trans("$theme-app.lot.confirm") }}
+					</button>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
-
-
-
 
 <div id="modal_frame"  data-to="pujarLoteFichaBalclis" class="container modal-block mfp-hide ">
     <div class='modal-dialog modal-sm'>
     </div>
 </div>
-
 
  <div id="modalCloseBids" class="modal-block mfp-hide">
 		<section class="panel">

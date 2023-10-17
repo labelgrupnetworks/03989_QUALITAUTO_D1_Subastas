@@ -659,3 +659,20 @@ $(() => {
 	}
 });
 
+function newsletterDay(){
+	// First check, if localStorage is supported.
+	if (!window.localStorage) {
+		return;
+	}
+
+	const nextPopup = localStorage.getItem('nextNewsletter');
+	if (new Date(nextPopup) > new Date()) {
+		return;
+	}
+
+	const now = new Date();
+	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+	localStorage.setItem('nextNewsletter', expires);
+
+	$.magnificPopup.open({ items: { src: '#newsletterDailyModal' }, type: 'inline' }, 0);
+}
