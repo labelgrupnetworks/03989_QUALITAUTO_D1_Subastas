@@ -57,7 +57,7 @@
             </div>
             <div class="footer-company text-lg-end">
                 <p class="ff-highlight">{{ trans("$theme-app.foot.where_we_are") }}</p>
-                <p>c/ de Alcalá, 52. MADRID <br>
+                <p>Alcalá, 52. MADRID <br>
                     10h-14h y 16:30h-20h <br>
                     (+34) 915 328 515</p>
                 <p class="ff-highlight">{{ trans("$theme-app.foot.work_with_us") }}</p>
@@ -137,6 +137,9 @@
 
                     <a href="{{ $pagina . trans("$theme-app.links.cookies") }}"
                         title="{{ trans("$theme-app.foot.cookies") }}">{{ trans("$theme-app.foot.cookies") }}</a>
+
+						<a href="{{ Routing::translateSeo('private-chanel/login', null, $domain) }}"
+                        	title="{{ trans("$theme-app.foot.intranet") }}">{{ trans("$theme-app.foot.intranet") }}</a>
                 </div>
             </div>
         </div>

@@ -545,6 +545,7 @@ article.blog-article {
 .newsletter-form input[type="checkbox"] {
 	font-size: 18px;
 	border-radius: 1rem;
+	aspect-ratio: 1/1;
 }
 
 .newsletter-form input[type="checkbox"]~label {
@@ -568,10 +569,26 @@ article.blog-article {
 	align-items: center;
 }
 
+#newsletterDailyModal .newsletter-section {
+	padding: 0;
+}
+
+#newsletterDailyModal .newsletter-title {
+	font-size: clamp(2rem, 0.6923rem + 3.5897vw, 5rem);
+}
+
+#newsletterDailyModal .modal-wrapper .modal-body {
+	padding: 2rem clamp(1rem, 0.5385rem + 2.0513vw, 3rem);
+}
+
 @media(min-width: 992px) {
 
 	.newsletter-form p {
 		max-width: 50%;
+	}
+
+	#newsletterDailyModal .newsletter-form p, #newsletterDailyModal .newsletter-form input[type="checkbox"]~label {
+		max-width: 100%;
 	}
 
 	.newsletter-form input[type="email"] {
@@ -1569,6 +1586,22 @@ section.ficha-info {
 	position: absolute;
 	left: 0;
 	top: 0;
+}
+
+#historial_pujas {
+	border: 2px solid var(--lb-border-color);
+	border-radius: var(--lb-border-radius);
+	padding: 1rem;
+	font-size: 16px;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+    font-weight: 400;
+}
+
+#historial_pujas .hist_title {
+	text-align: center;
+	font-weight: 600;
+	margin-bottom: 1rem;
 }
 
 section.recomendados {
@@ -2644,6 +2677,11 @@ h3.valuation-title {
 h3.valuation-title small {
 	display: block;
 	margin-top: 1rem;
+}
+
+.valuation-form-contact {
+	font-size: 14px;
+	line-height: 1.4;
 }
 
 @media(min-width: 992px) {
@@ -4097,3 +4135,18 @@ section.syncing-banner .text-block {
 		order: 2;
 	} */
 }
+
+main.private-page .container {
+	max-width: 400px;
+}
+
+main.private-page form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+main.private-page .form-check-label {
+	line-height: 1.5;
+}
+

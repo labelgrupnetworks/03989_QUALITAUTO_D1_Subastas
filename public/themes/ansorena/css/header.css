@@ -971,12 +971,13 @@ header .navbar-toggler {
 nav.menu-header {
 	position: fixed;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 	transform: translate3d(-100%, 0px, 0px);
+	max-height: calc(100vh - var(--top-sticky-sections));
 	height: 100%;
 	width: 100%;
 	padding-top: 1rem;
-	align-items: flex-start;
 	font-family: var(--bs-body-font-family);
 	font-style: normal;
 	font-weight: 600;
@@ -1001,6 +1002,7 @@ nav.menu-header ul {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-self: flex-start;
 	gap: 80px;
 	list-style: none;
 	margin: 0;
@@ -1020,13 +1022,20 @@ nav.menu-header ul>div:first-of-type {
 	justify-content: flex-end;
 }
 
+nav.menu-header ul.menu-header__langs {
+	flex: 1;
+	flex-direction: row;
+	gap: 1rem;
+}
+
 @media (min-width: 992px) {
 	nav.menu-header {
+		flex-direction: row;
+		justify-content: center;
 		height: 60px;
 		position: sticky;
 		top: 120px;
 		transform: translate3d(0px, -60px, 0px);
-		align-items: center;
 		left: 0;
 		padding-top: 0;
 	}
@@ -1052,6 +1061,10 @@ nav.menu-header ul>div:first-of-type {
 		display: inline-flex;
 		flex-direction: row;
 		gap: 32px;
+	}
+
+	nav.menu-header ul.menu-header__langs {
+		display: none;
 	}
 }
 

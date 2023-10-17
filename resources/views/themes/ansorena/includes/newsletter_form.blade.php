@@ -8,8 +8,7 @@
             <label for="newsletter-input">{{ trans("$theme-app.foot.newsletter_text_input") }}</label>
         </div>
 
-        <button type="submit" class="btn btn-lb-primary btn-medium newsletter-submit"
-            id="newsletter-btn">{{ trans("$theme-app.foot.suscribe_me") }}</button>
+        <button type="submit" class="btn btn-lb-primary btn-medium newsletter-submit" onclick="newsletterSuscription()">{{ trans("$theme-app.foot.suscribe_me") }}</button>
     </div>
 
     <div class="form-check">

@@ -220,13 +220,15 @@
 						@endif
 					</div>
 
+					@if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && !$retirado)
+						<div>
+							@include('includes.ficha.history')
+						</div>
+					@endif
+
             </div>
 
-            <div>
-                @if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && !$retirado)
-                    @include('includes.ficha.history')
-                @endif
-            </div>
+
 
             {{--  @include('includes.ficha.share') --}}
 

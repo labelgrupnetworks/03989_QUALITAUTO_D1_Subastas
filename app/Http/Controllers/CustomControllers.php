@@ -6,6 +6,7 @@ use App\Exports\ViewExcelExport;
 use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FgAsigl0;
 use App\Http\Controllers\V5\GaleriaArte;
+use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
@@ -15,6 +16,9 @@ use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Models\Subasta;
 use Illuminate\Http\File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CustomControllers extends Controller
@@ -344,4 +348,44 @@ class CustomControllers extends Controller
 
 	}
 
+	public function privateChanelLogin()
+	{
+		if(!Config::get('app.access_to_private_chanel', false)){
+			return abort(404);
+		}
+
+		return view('pages.private_chanel.login');
+	}
+
+	public function loginInPrivateChanel(Request $request)
+	{
+		$isUser = $request->input('user') === Config::get('app.privatechanel_user');
+		$isPassword = Hash::check($request->input('password'), Config::get('app.privatechanel_hash_password'));
+
+		if(!$isUser || !$isPassword){
+			return back()->withErrors(['user' => 'Usuario o contraseña incorrectos.']);
+		}
+
+		return view('pages.private_chanel.form');
+	}
+
+	public function sendPrivateChanelForm(Request $request)
+	{
+		$impechment = $request->input('impeachment');
+		$message = $request->input('message');
+
+		$impechmentType = $impechment === 'ce' ? 'Código ético' : 'Blanqueo de capitales';
+
+		$emailLib = new EmailLib('IMPECHMENT_ADMIN');
+		if (empty($emailLib->email)) {
+			return redirect(route('home'))->withErrors(['success' => 'Formulario enviado correctamente.']);
+		}
+
+		$emailLib->setAtribute('IMPECHMENT_TYPE', $impechmentType);
+		$emailLib->setAtribute('MESSAGE', $message);
+		$emailLib->setTo('luis.gasset@ansorena.com;jaimemato@ansorena.com');
+		$emailLib->send_email();
+
+		return redirect(route('home'))->withErrors(['success' => 'Formulario enviado correctamente.']);
+	}
 }

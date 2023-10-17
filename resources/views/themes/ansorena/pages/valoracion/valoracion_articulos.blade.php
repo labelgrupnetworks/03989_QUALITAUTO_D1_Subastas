@@ -30,6 +30,9 @@
 
     <section class="valuation-form container pb-5">
         <h3 class="ff-highlight valuation-title">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</h3>
+		<div class="valuation-form-contact">
+			{!! trans("$theme-app.valoracion_gratuita.contact") !!}
+		</div>
 
         <form id="form-valoracion-adv" class="form">
             @csrf

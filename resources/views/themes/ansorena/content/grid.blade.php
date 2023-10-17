@@ -4,6 +4,8 @@
     }
 
     use Carbon\Carbon;
+	use App\Models\V5\AucSessionsFiles;
+
     $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
     $localeToTime = str_replace('-', '_', $completeLocale);
     $dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM' : 'MMMM Do';
@@ -23,6 +25,20 @@
     }
 
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpg");
+
+	$catalogUrl = "/catalogos/{$auction->cod_sub}";
+	if($auction->tipo_sub == 'O'){
+
+		$auctionFile = AucSessionsFiles::where([
+			['"auction"', $auction->cod_sub],
+			['"type"', 1]
+		])->first();
+
+		if($auctionFile){
+			$catalogUrl = $auctionFile->publicFilePath;
+		}
+	}
+
 @endphp
 
 <main class="grid-page pt-2">
@@ -105,7 +121,7 @@
 
         <div class="grid-section-header" id="grid-lots">
             <h2 class="ff-highlight grid-section-title">{{ trans("$theme-app.lot_list.lots") }}</h2>
-            <a href="/catalogos/{{ $auction->cod_sub }}">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
+            <a href="{{ $catalogUrl }}" target="_blank">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
         </div>
 
         <div class="grid-lots position-relative">

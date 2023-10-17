@@ -30,12 +30,17 @@
         $articlesToCart = count((new ArticleController())->loadArticleCart());
     }
 
+	$urlSubastaOnline = '';
+	if(Arr::has($global, 'subastas.S.O')) {
+		$urlSubastaOnline = Routing::translateSeo('subasta-actual-online', null, $domain);
+	}
+
     //Comprobar en que página estamos
     $isSobreNosotros = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.historia"), Routing::translateSeo('equipo', null, $domain), $pagina . trans("$theme-app.links.careers")]);
 
     $isJoyeria = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.joyas_category"), $pagina . trans("$theme-app.links.condecoraciones")]) || (!Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain)) && strpos(url()->full(), 'articulos') !== false);
 
-    $isSubastas = Routing::currentUrlInArray([Routing::translateSeo('presenciales', null, $domain), Routing::translateSeo('ventas-destacadas', null, $domain), Routing::translateSeo('subastas-historicas', null, $domain), $pagina . trans("$theme-app.links.buy_and_sell")]);
+    $isSubastas = Routing::currentUrlInArray([Routing::translateSeo('presenciales', null, $domain), Routing::translateSeo('ventas-destacadas', null, $domain), Routing::translateSeo('subastas-historicas', null, $domain), $pagina . trans("$theme-app.links.buy_and_sell"), Routing::translateSeo('subasta-actual-online', null, $domain)]);
 
     $isStories = Routing::currentUrlInArray([Routing::translateSeo('blog/comunicacion', null, $domain), Routing::translateSeo('blog/joyeria', null, $domain)]);
 @endphp
@@ -204,6 +209,28 @@
 
     </ul>
 
+	<ul class="menu-header__langs">
+		@foreach(Config::get('app.locales') as $key => $value)
+			@if(Config::get('app.locale') == $key)
+			<li>
+				<p class="lb-link-underline" style="text-transform: uppercase">{{ $key }}</p>
+			</li>
+			@else
+			<li>
+				<a title="{{ trans(\Config::get('app.theme').'-app.head.language_'.$key) }}" href="/{{ $key }}">
+					<p style="text-transform: uppercase">{{ $key }}</p>
+				</a>
+			</li>
+			@endif
+
+			@if($loop->first)
+			<li>
+				<span>|</span>
+			</li>
+			@endif
+		@endforeach
+	</ul>
+
 </nav>
 
 <div id="submenu-header" class="submenu-wrapper">
@@ -358,6 +385,13 @@
                                     transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
                             </svg>
                         </a>
+
+						@if($urlSubastaOnline)
+						<a href="{{ $urlSubastaOnline }}">
+                            Subasta online
+                        </a>
+						@endif
+
 
                         <a href="{{ Routing::translateSeo('ventas-destacadas', null, $domain) }}">
                             {{ trans("$theme-app.lot_list.featured-sales") }}

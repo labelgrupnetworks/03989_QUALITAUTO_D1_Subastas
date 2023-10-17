@@ -32,6 +32,28 @@
     </section>
 </div>
 
+<div class="container modal-block mfp-hide " id="newsletterDailyModal">
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <section class="newsletter-section js-newletter-block">
+					<div class="container">
+						<div class="row row-cols-1 gx-lg-5 align-items-center">
+							<h4 class="newsletter-title">{{ trans("$theme-app.foot.newsletters") }}</h4>
+							@include('includes.newsletter_form')
+						</div>
+					</div>
+				</section>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.head.close") }}
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
