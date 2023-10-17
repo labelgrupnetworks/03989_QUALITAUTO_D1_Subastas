@@ -172,31 +172,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		return;
-		$this->sendFailedJobs(request('from'), request('to'));
-		dd('send');
-		return ;
-
-		$options=[
-			'headers' => [
-
-				'X-My-Header: websocket rocks',
-				'Authorization: Bearer 12b3c4d5e6f7g8h9i'
-			],'context' => [
-				'ssl' => [
-					'verify_peer' => false,
-					'verify_peer_name' => false
-				]
-			]
-		];
-
-
-
-
-		$a = new DepositController();
-		$idTrans = "D31684405321";
-		$a->confirmPreAuthorization("STNTEST","1");
-		//$a->returnPay($idTrans);
+		
 	}
 
 	private function sendFailedJobs($fromId, $toId)

@@ -20,7 +20,7 @@ $(function () {
 	$('.btn_login').on('click', showLogin);
 	$('.closedd').on('click', closeLogin);
 	$("#accerder-user-form").on('submit', handleSubmitLoginForm);
-	$('#newsletter-btn').on('click', handleSubmitNewsletterForm);
+	$('.newsletter-btn-js').on('click', handleSubmitNewsletterForm);
 
 	$('#frmUpdateUserPasswordADV').validator().on('submit', handleSubmitUpdatePasswordForm);
 	$('#frmUpdateUserInfoADV').validator().on('submit', handleSubmitUpdateUser);
@@ -1177,14 +1177,24 @@ function successLoginForm(response) {
 }
 
 function handleSubmitNewsletterForm(event) {
-	var email = $('.newsletter-input').val();
-	var lang = $('#lang-newsletter').val();
-	var entrar = $('#condiciones').prop("checked");
+
+	var parent = $(this).closest(".newsletter-js");
+
+	var email = parent.find('.newsletter-input-email-js').val();
+
+	var lang = parent.find('.lang-newsletter-js').val();
+	var entrar = parent.find('.condiciones-newsletter-js').prop("checked");
+	const families = {};
+	parent.find("[name^=families]").each(function(index) {
+		if($(this).prop("checked")|| $(this).is(":hidden")) {
+			families[$(this).val()] = 1;
+		}
+	});
 
 	if (entrar) {
 		$.ajax({
 			type: "POST",
-			data: { email: email, lang: lang, condiciones: 1, families: [1] },
+			data: { email: email, lang: lang, condiciones: 1, families: families },
 			url: '/api-ajax/newsletter/add',
 			beforeSend: function () {
 			},
