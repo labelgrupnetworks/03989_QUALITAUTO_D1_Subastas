@@ -18,6 +18,7 @@ use App\Models\articles\FgArt_Variantes;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FxSec;
 use App\Models\V5\FgFamart;
+use App\Models\V5\FgOrtsec1;
 
 # Cargamos el modelo
 
@@ -257,14 +258,32 @@ class ArticleController extends Controller
 			->where("SEC_ART0", $article->sec_art0)
 			->orderby("orden_art0","desc")->orderBy('id_art0', 'desc')->first();
 
+
+		if(empty($anterior)) {
+			//search previous sec
+			$actualSec = FgOrtsec1::where('sec_ortsec1', $article->sec_art0)->first();
+			$previousSec = FgOrtsec1::query()
+			->join('fgart0', 'fgart0.sec_art0 = sec_ortsec1 and fgart0.emp_art0 = fgortsec1.emp_ortsec1 and fgart0.baja_art0 = \'N\' and fgart0.web_art0 in (\'S\', \'2\')')
+			->where([
+				['lin_ortsec1', $actualSec->lin_ortsec1],
+				['orden_ortsec1', '<', $actualSec->orden_ortsec1]
+			])->orderBy('orden_ortsec1', 'desc')->first();
+
+			if (!empty($previousSec)) {
+				$anterior = FgArt0::select("ID_ART0, MODEL_ART0, orden_art0")
+					->activo()
+					->where("SEC_ART0", $previousSec->sec_ortsec1)
+					->orderby("orden_art0","desc")->orderBy('id_art0', 'desc')->first();
+			}
+		}
+
 		if(!empty($anterior)){
 			$data["data"]["previous"]= route("article", ["idArticle" => $anterior->id_art0, "friendly" =>\Str::slug($anterior->model_art0)]);
 		}
 		$siguiente = FgArt0::select("ID_ART0, MODEL_ART0, orden_art0")
 			->when(empty($article->orden_art0 ), function ($query) use ($article) {
 				return $query->where("orden_art0", $article->orden_art0)
-						->where("id_art0", '>', $article->id_art0)
-						;
+						->where("id_art0", '>', $article->id_art0);
 			},
 			function ($query) use ($article) {
 				return $query->where("orden_art0",">", $article->orden_art0);
@@ -273,6 +292,26 @@ class ArticleController extends Controller
 			->where("SEC_ART0", $article->sec_art0)
 			->orderby("orden_art0")->orderBy('id_art0')
 			->first();
+
+		if(empty($siguiente)) {
+			//search next sec
+			$actualSec = FgOrtsec1::where('sec_ortsec1', $article->sec_art0)->first();
+			$nextSec = FgOrtsec1::query()
+			->join('fgart0', 'fgart0.sec_art0 = sec_ortsec1 and fgart0.emp_art0 = fgortsec1.emp_ortsec1 and fgart0.baja_art0 = \'N\' and fgart0.web_art0 in (\'S\', \'2\')')
+			->where([
+				['lin_ortsec1', $actualSec->lin_ortsec1],
+				['orden_ortsec1', '>', $actualSec->orden_ortsec1]
+			])
+			->first();
+
+			if (!empty($nextSec)) {
+				$siguiente = FgArt0::select("ID_ART0, MODEL_ART0, orden_art0")
+					->activo()
+					->where("SEC_ART0", $nextSec->sec_ortsec1)
+					->orderby("orden_art0")->orderBy('id_art0')
+					->first();
+			}
+		}
 
 		if(!empty($siguiente)){
 			$data["data"]["next"]= route("article", ["idArticle" => $siguiente->id_art0, "friendly" =>\Str::slug($siguiente->model_art0)]);
