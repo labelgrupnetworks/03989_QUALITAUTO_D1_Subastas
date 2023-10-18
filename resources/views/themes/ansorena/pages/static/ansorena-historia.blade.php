@@ -41,7 +41,7 @@
         <div class="row px-md-5 gx-0 gx-lg-2 gy-2">
             <div class="col-md-7">
                 <div class="ratio ratio-16x9">
-					<video src="/themes/ansorena/assets/home.mp4" controls autoplay muted loop>
+					<video src="/uploads/videos/home.mp4" controls autoplay muted loop>
 						Your browser does not support the <code>video</code> element.
 					</video>
 				</div>

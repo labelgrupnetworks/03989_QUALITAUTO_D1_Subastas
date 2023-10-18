@@ -154,7 +154,7 @@ class AdminBlogController extends Controller
 		$inf_noticia['lang'] = $this->blog->getNoticiasAllLangs()->keyBy('lang_web_blog_lang');
 		$ids = $inf_noticia['lang']->pluck('id_web_blog_lang')->toArray();
 
-		$contents = Web_Content_Page::whereRelation(Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG, $ids)
+		$contents = Web_Content_Page::WhereCustomRelation(Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG, $ids)
 			->with(['contentHtml', 'contentResource'])
 			->orderBy('order_content_page')->get();
 
@@ -260,7 +260,7 @@ class AdminBlogController extends Controller
 		Web_Blog_Lang::where('idblog_web_blog_lang', $id)->delete();
 
 		//No!, no se debe pasar el id de blog, si no el id de todos los web_blog_langs en un array
-		Web_Content_Page::whereRelation(Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG, $id)->delete();
+		Web_Content_Page::WhereCustomRelation(Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG, $id)->delete();
 
 
 

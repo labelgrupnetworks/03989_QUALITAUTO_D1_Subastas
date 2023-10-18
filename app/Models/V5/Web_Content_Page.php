@@ -83,7 +83,7 @@ class Web_Content_Page extends Model
 	}
 
 	//scope para where según tipo de relacion
-	public function scopeWhereRelation($query, $table_rel_content_page, $rel_id_content_page)
+	public function scopeWhereCustomRelation($query, $table_rel_content_page, $rel_id_content_page)
 	{
 		return $query->where('table_rel_content_page', $table_rel_content_page)
 			->when(is_array($rel_id_content_page), function ($query) use ($rel_id_content_page) {
