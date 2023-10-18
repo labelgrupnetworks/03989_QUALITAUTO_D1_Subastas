@@ -121,8 +121,7 @@
 
                         <button type="button"
                             class="btn btn-lb-primary btn-medium ficha-btn-bid lot-action_pujar_on_line {{ Session::has('user') ? 'add_favs' : '' }}"
-                            ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}"
-                            id="pujar_ordenes_w_ansorena">
+                            ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
                             {{ trans("$theme-app.lot.pujar") }}
                         </button>
                     </div>
@@ -188,7 +187,6 @@
 							$("#cierre_lote").html(format_date_large(new Date(data
 								.close_at * 1000), ''));
 						}
-
 
 					}
 				});
