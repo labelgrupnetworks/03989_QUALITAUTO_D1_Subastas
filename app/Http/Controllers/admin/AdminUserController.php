@@ -94,6 +94,9 @@ class AdminUserController extends Controller
                     Session::put('user.cod', $login->cod_cliweb);
                     Session::put('user.emp', $login->emp_cliweb);
                     Session::put('user.gemp', $login->gemp_cliweb);
+                    Session::put('user.usrw', strtoupper($login->usrw_cliweb));
+
+
                     if($login->tipacceso_cliweb == 'S') {
                         Session::push('user.admin', 1);
                     }elseif($login->tipacceso_cliweb == 'A'){

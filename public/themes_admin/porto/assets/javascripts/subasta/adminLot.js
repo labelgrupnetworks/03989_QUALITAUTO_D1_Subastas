@@ -24,6 +24,35 @@ $(document).on('ready', function () {
 
 	$('.js-actionSelectedLots').on('click', actionSelectedLots);
 	$('#js-selectAllLots').on('click', selectedAllLots);
+
+
+	$(".js-send_webservice_close_lot").on('click', function (event) {
+		event.preventDefault();
+
+
+		const sub = this.dataset.sub;
+		const ref = this.dataset.ref;
+
+
+
+		bootbox.confirm("¿Estás seguro que quieres enviar el lote cómo finalizado a la casa de subastas?", function (result) {
+			token = $("[name='_token']").val();
+			if (result) {
+				$.ajax({
+					type: "POST",
+					url: "/admin/lote/send_end_lot_ws",
+					data: { sub, ref,  _token: token },
+					success: function (response) {
+						bootbox.alert('Se ha enviado el lote cómo finalizado  a través del webservice');
+					},
+					error: function (error) {
+						bootbox.alert('Ha ocurrido un error al enviar el lote como finalizado a través del webservice');
+					}
+				});
+			}
+		});
+	});
+
 });
 
 const OPERATION_TYPES = {

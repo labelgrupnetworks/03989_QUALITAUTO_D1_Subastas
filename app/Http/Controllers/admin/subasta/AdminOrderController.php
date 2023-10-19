@@ -70,7 +70,7 @@ class AdminOrderController extends Controller
 			$orders->where('tel1_orlic', 'like', "%". $request->tel1_orlic . "%" );
 		}
 
-		$orders = $orders->select("FGORLIC.sub_orlic", "FGASIGL0.ref_asigl0", "FGORLIC.tipop_orlic", "FGORLIC.licit_orlic", "FGHCES1.descweb_hces1", "FXCLI.nom_cli", "FGORLIC.fec_orlic", "FGORLIC.himp_orlic", "FGORLIC.tel1_orlic")
+		$orders = $orders->select("FGORLIC.sub_orlic", "FGASIGL0.ref_asigl0", "FGORLIC.tipop_orlic", "FGORLIC.licit_orlic", "FGHCES1.descweb_hces1", "FXCLI.nom_cli", "FXCLI.cod_cli", "FGORLIC.fec_orlic", "FGORLIC.himp_orlic", "FGORLIC.tel1_orlic")
 			->JoinAsigl0()
 			->JoinCli()
 			->JoinFghces1()
@@ -424,5 +424,19 @@ class AdminOrderController extends Controller
     {
 		return (new OrdersExport($id))->download("ordenes_subasta_$id" . "_" . date("Ymd") . ".xlsx");
     }
+
+	#usamos esta función para poder llamar al web service desde el admin
+	function send_ws(Request $request){
+		#por seguridad solo podrá ejecutar este código el usuari ode subastas
+		if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') ){
+			$theme  = Config::get('app.theme');
+			$rutaOrderController = "App\Http\Controllers\\externalws\\$theme\OrderController";
+
+			$orderController = new $rutaOrderController();
+
+			$orderController->createOrder($request->codcli, $request->sub, $request->ref, $request->imp);
+		}
+	}
+
 
 }

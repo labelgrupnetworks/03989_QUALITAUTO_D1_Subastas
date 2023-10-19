@@ -12,7 +12,7 @@ class AdminJobsController extends Controller
 	public function __construct()
 	{
 		$this->middleware(function ($request, $next) {
-			if (session('user.usrw') != 'SUBASTAS@LABELGRUP.COM') {
+			if (strtoupper(session('user.usrw')) != 'SUBASTAS@LABELGRUP.COM') {
 				abort(403, 'No tienes permisos para acceder a esta página');
 			}
 			return $next($request);

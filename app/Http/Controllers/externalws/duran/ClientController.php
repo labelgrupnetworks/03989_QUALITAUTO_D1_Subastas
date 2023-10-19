@@ -13,8 +13,9 @@ class ClientController extends DuranController
 
 
 	public function createClient($codCli){
-
+		
 		$fields = $this->CreateFields($codCli, "A");
+
 		$xml = $this->createXML($fields);
 		$res = $this->callWebService($xml,"wbclientes");
 

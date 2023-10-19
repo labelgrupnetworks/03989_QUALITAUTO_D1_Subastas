@@ -15,7 +15,7 @@ class CloseLotControllerOnline extends DuranController
 
 	public function createCloseLot($codSub, $ref){
 
-
+	
 			$xml = $this->createXMLCloseLot( $codSub, $ref);
 
 			//Al ejecutarse por cron hacemos la llamada directamente, noes necesario las colas

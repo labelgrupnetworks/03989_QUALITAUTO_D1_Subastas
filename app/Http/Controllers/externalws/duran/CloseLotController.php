@@ -15,6 +15,8 @@ class CloseLotController extends DuranController
 
 	public function createCloseLot($codSub, $ref){
 
+		
+
 			$xml = $this->createXMLCloseLot( $codSub, $ref);
 			$theme  = \Config::get('app.theme');
 			#dejar las dobles barras si no no va,

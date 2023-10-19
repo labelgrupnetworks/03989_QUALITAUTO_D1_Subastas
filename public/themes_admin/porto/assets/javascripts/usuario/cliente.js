@@ -77,6 +77,33 @@ window.onload = function () {
 	$('.view_password').on('mousedown', (e) => viewPassword(true));
 	$('.view_password').on('mouseup', (e) => viewPassword(false));
 
+	$(".js-send_webservice_cli").on('click', function (event) {
+		event.preventDefault();
+
+		console.log(this.dataset.codcli);
+		const codcli = this.dataset.codcli;
+		if (typeof codcli == "undefined" || codcli == '') {
+			return;
+		}
+
+		bootbox.confirm("¿Estás seguro que quieres enviar este usuario al webservice de la casa de subastas?", function (result) {
+			token = $("[name='_token']").val();
+			if (result) {
+				$.ajax({
+					type: "POST",
+					url: "clientes/send_ws",
+					data: { codcli,  _token: token },
+					success: function (response) {
+						bootbox.alert('Se ha enviado el usuario a través del webservice');
+					},
+					error: function (error) {
+						bootbox.alert('Ha ocurrido un error al enviar el usuario a través del webservice');
+					}
+				});
+			}
+		});
+	});
+
 
 	$(".js-delete_cli").on('click', function (event) {
 		event.preventDefault();
@@ -224,7 +251,10 @@ function exportClients(event) {
 
 }
 
-document.getElementById('clientFile').addEventListener('change', updateFiles);
+if (document.getElementById('clientFile')){
+	document.getElementById('clientFile').addEventListener('change', updateFiles);
+}
+
 function updateFiles(event) {
 	const files = event.target.files;
 

@@ -331,6 +331,18 @@ class AdminClienteController extends Controller
 		return (new ClientsExport($request))->download("clientes" . "_" . date("Ymd") . ".xlsx");
 	}
 
+	#usamos esta función para poder llamar al web service desde el admin
+	function send_ws(Request $request){
+		#por seguridad solo podrá ejecutar este código el usuari ode subastas
+		if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') ){
+			$theme  = Config::get('app.theme');
+			$rutaClientcontroller = "App\Http\Controllers\\externalws\\$theme\ClientController";
+
+			$clientController = new $rutaClientcontroller();
+			$clientController->createClient($request->codcli);
+		}
+	}
+
 	function modificarBajaTemporal(Request $request)
 	{
 		if (!$request->filled('id_cli') && !$request->filled('baja_tmp')) {

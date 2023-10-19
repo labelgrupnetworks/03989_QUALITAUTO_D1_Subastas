@@ -9,6 +9,7 @@ use App\Http\Controllers\apilabel\LotController;
 use App\Http\Controllers\apilabel\ImgController;
 
 use Illuminate\Support\Facades\Request as Input;
+use Illuminate\Http\Request;
 
 use App\libs\FormLib;
 use App\libs\Currency;
@@ -2120,4 +2121,24 @@ class SubastaController extends Controller
 
 		return $featureValue;
 	}
+
+	#usamos esta función para poder llamar al web service desde el admin
+	function send_end_lot_ws(Request $request){
+
+		$sub = Fgsub::select("tipo_sub")->where("cod_sub", $request->sub)->first();
+		#por seguridad solo podrá ejecutar este código el usuari ode subastas
+		if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') ){
+			$theme  = Config::get('app.theme');
+			if($sub->tipo_sub == 'O'){
+				$rutaLotController = "App\Http\Controllers\\externalws\\$theme\CloseLotControllerOnline";
+			}else{
+				$rutaLotController = "App\Http\Controllers\\externalws\\$theme\CloseLotController";
+			}
+
+			$lotController = new $rutaLotController();
+
+			$lotController->createCloseLot($request->sub, $request->ref);
+		}
+	}
+
 }

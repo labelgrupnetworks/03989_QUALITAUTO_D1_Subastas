@@ -195,6 +195,13 @@
 									<i class="fa fa-trash"></i>
 								</button>
 							@endif
+							@if($lote->cerrado_asigl0 == 'S')
+								@if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') )
+									<br/>
+									<a class="js-send_webservice_close_lot btn btn-send-webservice btn-sm" data-sub="{{$lote->sub_asigl0}}" data-ref="{{$lote->ref_asigl0}}" > {{ trans("admin-app.button.send_close_lot_webservice",["empresa" => \Config::get("app.theme")]) }} </a>
+								@endif
+							
+							@endif
 						@endif
 					</td>
 				</tr>

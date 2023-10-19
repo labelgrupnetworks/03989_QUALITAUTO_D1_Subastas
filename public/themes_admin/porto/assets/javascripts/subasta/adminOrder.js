@@ -39,6 +39,35 @@ $(document).on('ready', function () {
 
 	});
 
+
+	$(".js-send_webservice_order").on('click', function (event) {
+		event.preventDefault();
+
+
+		const sub = this.dataset.sub;
+		const ref = this.dataset.ref;
+		const codcli = this.dataset.codcli;
+		const imp = this.dataset.imp;
+
+
+		bootbox.confirm("¿Estás seguro que quieres enviar esta orden al webservice de la casa de subastas?", function (result) {
+			token = $("[name='_token']").val();
+			if (result) {
+				$.ajax({
+					type: "POST",
+					url: "/admin/orders/send_ws",
+					data: { sub, ref, codcli, imp,  _token: token },
+					success: function (response) {
+						bootbox.alert('Se ha enviado la orden a través del webservice');
+					},
+					error: function (error) {
+						bootbox.alert('Ha ocurrido un error al enviar la orden a través del webservice');
+					}
+				});
+			}
+		});
+	});
+
 });
 
 function deleteSelectedOrders(event) {

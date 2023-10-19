@@ -13,6 +13,7 @@ class OrderController extends DuranController
 	#Comuníca las ordenes de la subasta presencial, las online va por otro circuito
 	public function createOrder($codCli, $codSub, $ref, $order, $delete = false){
 
+	
 			$xml = $this->createXMLOrder($codCli, $codSub, $ref, $order);
 			if($delete){
 				#tiene la misma estructura que hacer puja por eso podemso usar el mismo createOrder
@@ -90,6 +91,7 @@ class OrderController extends DuranController
 		return $xml;
 
 	}
+
 
 
 

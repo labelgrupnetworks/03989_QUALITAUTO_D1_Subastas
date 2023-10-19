@@ -17611,3 +17611,19 @@ html.dark .thumbnail {
 .fixed{
 	position: relative!important;
 }
+
+.btn-send-webservice{
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #1c7d74;
+  border-color: #1c7d74;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn-send-webservice:hover{
+
+	background-color: #28aea2;
+	border-color: #28aea2;
+
+  }

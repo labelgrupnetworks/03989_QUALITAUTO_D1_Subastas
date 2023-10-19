@@ -286,7 +286,9 @@ return [
 		'download_preferences' => 'Descargar preferencias de usuarios',
 		'check_scale' => 'Revisar Escalado',
 		'invaluable_load' => 'Subir a Invaluable',
-		'invaluable_delete' => 'Eliminar de Invaluable'
+		'invaluable_delete' => 'Eliminar de Invaluable',
+		'send_webservice' => 'Send to :empresa  WS',
+		'send_close_lot_webservice' => 'Send close lot to :empresa  WS'
 
 	),
 	'bi' => array(

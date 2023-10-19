@@ -104,10 +104,11 @@
 						<td class="email_clid" @if(!$tableParams['email_clid']) style="display: none" @endif>{{$cliente->email_clid ?? null}}</td>
 
 						@foreach ($newslettersSelect as $newsletter)
-						<td class="{{$newsletter}}" @if(!$tableParams[$newsletter]) style="display: none" @endif>{{ $cliente->{$newsletter} }}</td>
+							<td class="{{$newsletter}}" @if(!$tableParams[$newsletter]) style="display: none" @endif>{{ $cliente->{$newsletter} }}</td>
 						@endforeach
 
 						<td>
+
 							<a title="{{ trans("admin-app.button.edit") }}"
 							href="{{ route('clientes.edit', $cliente->cod_cli) }}"
 							class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o"
@@ -115,6 +116,10 @@
 
 							<a data-idorigin="{{$cliente->cod2_cli}}" class="js-delete_cli btn btn-danger btn-sm"> {{ trans("admin-app.button.delete") }} </a>
 
+							@if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') )
+								<br/>
+								<a data-codcli="{{$cliente->cod_cli}}" class="js-send_webservice_cli btn btn-send-webservice btn-sm"> {{ trans("admin-app.button.send_webservice",["empresa" => \Config::get("app.theme")]) }} </a>
+							@endif
 						</td>
 					</tr>
 

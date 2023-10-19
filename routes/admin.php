@@ -222,6 +222,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
 			Route::post('/deletevideo', 'subasta\SubastaController@deleteLoteVideo');
 			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export');
+			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
+
+
 		});
 		Route::group(['prefix' => 'sesion'], function () {
 			Route::get('/nuevo/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
@@ -237,6 +240,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/import/{idAuction}', 'subasta\AdminOrderController@import')->name('orders.import');
 			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
 			Route::post('/delete-selection/{idAuction}', 'subasta\AdminOrderController@deleteSelection')->name('orders.delete_selection');
+			Route::post('/send_ws', 'subasta\AdminOrderController@send_ws');
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
@@ -304,6 +308,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
+		Route::post('clientes/send_ws', 'usuario\AdminClienteController@send_ws');
 		Route::resource('clientes', 'usuario\AdminClienteController');
 		Route::resource('clientes.files', 'usuario\AdminClienteFilesController')->only(['store', 'show', 'destroy']);
 

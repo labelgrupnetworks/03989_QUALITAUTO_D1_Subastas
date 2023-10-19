@@ -182,6 +182,12 @@
 
 						<a href="javascript:deleteOrder('{{$order->sub_orlic}}', '{{ $order->ref_asigl0 }}', '{{ $order->licit_orlic }}');"
 							class="btn btn-danger btn-sm">{{ trans("admin-app.button.delete") }}</a>
+
+							
+						@if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') )
+							<br/>
+							<a class="js-send_webservice_order btn btn-send-webservice btn-sm" data-sub="{{$order->sub_orlic}}" data-codcli="{{$order->cod_cli}}"  data-ref="{{$order->ref_asigl0}}"  data-imp="{{$order->himp_orlic}}" > {{ trans("admin-app.button.send_webservice",["empresa" => \Config::get("app.theme")]) }} </a>
+						@endif
 					</td>
 
 				</tr>
