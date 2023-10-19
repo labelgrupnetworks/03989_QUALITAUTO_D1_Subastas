@@ -65,7 +65,7 @@
     <input type="hidden" name="add_block"
         value="{{ route('admin.contentido.content.store', ['id' => $noticiaLocale->id_web_blog]) }}">
     <input type="hidden" name="edit_block"
-        value="{{ route('admin.contentido.content.update', ['id' => $noticiaLocale->id_web_blog, 'id_content' => '']) }}">
+        value="{{ route('admin.contentido.content.update', ['id' => $noticiaLocale->id_web_blog, 'id_content' => 0]) }}">
 
     <input type="hidden" name="css_styles" value="{{ trans('admin-app.config.css_framework_5') }}">
 

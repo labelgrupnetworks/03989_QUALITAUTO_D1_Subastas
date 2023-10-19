@@ -868,6 +868,12 @@ class ToolsServiceProvider extends ServiceProvider
 			return $img_file.self::date_modification($file);
 		}
 
+		/* revisar esto, ya que se quito pero sin el no puedo cargar imagnes
+		de ansorena galeria */
+		if($size === "real") {
+			return self::lotRealImage($numhces, $linhces, $img_num);
+		}
+
 		$images_size = self::images_size();
 		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
 

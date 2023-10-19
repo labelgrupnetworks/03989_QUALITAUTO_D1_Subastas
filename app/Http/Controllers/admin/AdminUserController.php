@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\admin;
 
-use Request;
+use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
+//use Request;
 use Controller;
 use View;
 use Session;
@@ -33,8 +35,19 @@ class AdminUserController extends Controller
         return Redirect::to('admin/login');
     }
 
-    #Loguea al usuario. Solo accesible por post.
+	#Loguea al usuario. Solo accesible por post.
     public function login_post(Request $request)
+    {
+		return (new UserController)->login_post($request);
+	}
+
+    #Loguea al usuario. Solo accesible por post.
+
+	/**
+	 * @deprecated podemos utilizar el login de UserController que es el mismo
+	 *
+	 */
+   	/*  public function login_post(Request $request)
     {
         #Valida los datos de inicio de sessión.
         $rules = array(
@@ -125,5 +138,5 @@ class AdminUserController extends Controller
             return Redirect::to('admin/login')->withErrors($msg_error);
 
         }
-    }
+    } */
 }
