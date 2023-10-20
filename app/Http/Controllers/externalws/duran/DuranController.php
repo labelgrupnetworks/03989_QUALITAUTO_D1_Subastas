@@ -4,6 +4,8 @@ namespace App\Http\Controllers\externalws\duran;
 use Request;
 use Exception;
 use SoapFault;
+use SoapClient;
+use SoapVar;
 use SimpleXMLElement;
 use App\libs\EmailLib;
 use Hamcrest\Arrays\IsArray;
@@ -25,15 +27,15 @@ class DuranController extends Controller
 			$endpoint = \Config::get("app.endpointWS") ; #"http://213.0.23.84/sa3/publico.svc";
 			$wsdlFile= $endpoint."?wsdl";
 			//Creación del cliente SOAP
-			$soapClient = new \SoapClient($wsdlFile,array(
+			$soapClient = new SoapClient($wsdlFile,array(
 			'location'=>$endpoint,
 			'trace'=>true,
 			'exceptions'=>true));
 
 			$stringXML = str_replace('<?xml version="1.0"?>', "", $xml->asXML());
 			$sequencia = new \stdClass();
-			$sequencia->parametro= new \SoapVar($stringXML,XSD_STRING);
-			$sequencia->funcion= new \SoapVar($function,XSD_STRING);
+			$sequencia->parametro= new SoapVar($stringXML,XSD_STRING);
+			$sequencia->funcion= new SoapVar($function,XSD_STRING);
 
 
 
