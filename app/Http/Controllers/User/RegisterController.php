@@ -166,6 +166,7 @@ class RegisterController extends Controller
                     $data['formulario']->contact = FormLib::Text("contact", 0, $postUser->nom_cli, 0);
                 }
 
+				$data['formulario']->prefix = FormLib::Text("preftel_cli", 1, '', 'maxlength="4"');
                 $data['formulario']->telefono = FormLib::Text("telefono", 1, $postUser->tel1_cli, 0);
                 $data['formulario']->movil = FormLib::Text("movil", 0, "", 0);
                 $data['formulario']->cif = FormLib::Text("nif", 0, $postUser->cif_cli, 0);
@@ -294,6 +295,7 @@ class RegisterController extends Controller
             $userControler = new UserController();
             return $userControler->login($postUser, $info);
         }
+
 
         //redirige al nuevo formulario de registro
         return $this->index(null, null, null, $postUser, $info);
