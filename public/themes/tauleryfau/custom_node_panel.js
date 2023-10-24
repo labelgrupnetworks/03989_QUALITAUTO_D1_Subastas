@@ -141,6 +141,12 @@ $(function () {
 			'tipo_puja_gestor': false
 		};
 
+		confirmPujaPanelWithSocket(params);
+		//confirmPujaPanelWithAjax(params);
+	});
+
+
+	function confirmPujaPanelWithAjax(params) {
 		$.ajax({
 			type: "POST",
 			url: '/phpsock/actionv2',
@@ -155,7 +161,13 @@ $(function () {
 				}
 			}
 		});
-	});
+	}
+
+	function confirmPujaPanelWithSocket(params) {
+		var string_hash = params.cod_licit + " " + params.cod_sub + " " + params.ref + " " + params.imp;
+		params.hash = CryptoJS.HmacSHA256(string_hash, auctions_info.user.tk).toString(CryptoJS.enc.Hex);
+		socket.emit('action', params);
+	}
 
 });
 
