@@ -19,12 +19,14 @@ use App\Models\V5\FgCsub;
 use App\Models\V5\FgSub;
 use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider;
+use DateTime;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class Subasta extends Model
 {
     protected $table = 'FGSUB';
+	protected $guarded = [];
 
     # Codigo subasta (COD_SUB)
     public $cod;
@@ -2214,6 +2216,9 @@ class Subasta extends Model
 				$this->addPujaMultiple($bid);
 			}
 			DB::commit();
+
+			$now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+			Log::debug("Fin de la puja: ", ['codSub' => $this->cod, 'ref' => $this->ref, 'licit' => $this->licit, 'imp' => $this->imp, 'time' => $now->format("Y-m-d H:i:s.u")]);
 
 				#llamar a webservice externo notificando la puja
 				$this->webServiceBid($this->licit, $this->cod, $this->ref, $this->imp, $type_asigl1, "PUJA");
@@ -4726,7 +4731,21 @@ class Subasta extends Model
 		return $date;
 	}
 
+	public function getNextScaleValue($import)
+	{
+		if(!$this->getAttribute('cod') && !$this->cod) {
+			return 0;
+		}
 
+		$this->cod = $this->cod ?? $this->getAttribute('cod');
+
+		$scales = $this->allScales();
+		$nextScale = collect($scales)->first(function($scale) use ($import) {
+			return $scale->min < $import && $import < $scale->max;
+		});
+
+		return $nextScale->scale ?? 0;
+	}
 
     /* comento el tema de enviar email de puja es para salaretiro, Josep comenta que de momento no se envie
     function send_email_bid($cod,$ref,$licit,$imp) {
