@@ -669,36 +669,6 @@ $(document).ready(function () {
 		$("#total_bills").html(change_currency(total));
 	} */
 
-	$(".submit_carrito").click(function () {
-		var cod_sub = $(this).attr('cod_sub');
-		$(".submit_carrito").html("<div class='loader mini' style='width: 20px;height: 20px;margin-top: 0px;margin-bottom: 0;'></div>");
-		$(".submit_carrito").attr("disabled", "disabled");
-
-		var pay_lote = $('#pagar_lotes_' + cod_sub).serialize();
-		$.ajax({
-			type: "POST",
-			url: '/gateway/pagarLotesWeb',
-			data: pay_lote,
-			success: function (data) {
-				if (data.status == 'success') {
-					window.location.href = data.msg;
-				} else if (data.status == 'error') {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(messages.error.generic);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					$(".submit_carrito").html(" ");
-					(".submit_carrito").prop("disabled", false);
-				}
-			},
-			error: function (response) {
-				$("#modalMensaje #insert_msg").html('');
-				$("#modalMensaje #insert_msg").html(messages.error.generic);
-				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-			}
-		});
-
-	});
-
 	/* $("#submit_fact").click(function () {
 		$("#submit_fact").addClass('hidden');
 		$("#submit_fact").siblings().removeClass('hidden');
