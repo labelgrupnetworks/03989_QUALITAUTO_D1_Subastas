@@ -1623,6 +1623,8 @@ class subastaTiempoRealController extends Controller
     # Funcion de pujas y ordenes de licitacion en tiempo real mediante node
     public function executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  )
     {
+		$now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+		Log::debug('Inicio de la puja: ', ['codSub' => $codSub, 'ref' => $ref, 'licit' => $licit, 'imp' => $imp, 'time' => $now->format("Y-m-d H:i:s.u")]);
 
         $subasta = new subasta();
         $subasta->cod = $codSub;
@@ -1747,11 +1749,23 @@ class subastaTiempoRealController extends Controller
 
             //detectar probleams con el importe de salida si no cumple el escalado, modificamos tambie nel importe de reserva si en la configuración tenenmos que se fuerce
             //not_force_correct_price_tiempo_real sirve que en tiempo real no fuerze el escalado correcto en la primer puja
-            if($lote->tipo_sub == 'W' && $escalado_correcto != $lote->impsalhces_asigl0 && \Config::get('app.force_correct_price') && ( empty(\Config::get('app.not_force_correct_price_tiempo_real'))  || \Config::get('app.not_force_correct_price_tiempo_real') != 1)){
+            if($lote->tipo_sub == 'W'
+				&& $escalado_correcto != $lote->impsalhces_asigl0
+				&& Config::get('app.force_correct_price')
+				&& (empty(Config::get('app.not_force_correct_price_tiempo_real')) || Config::get('app.not_force_correct_price_tiempo_real') != 1)
+			){
                 $lote->impsalhces_asigl0 = $escalado_correcto;
                 $lote->impres_asigl0 = $escalado_correcto;
             }
 
+			//si es una subasta de tipo O y el importe de salida no es correcto, lo corregimos
+			if($lote->tipo_sub == 'O'
+				&& $escalado_correcto != $lote->impsalhces_asigl0
+				&& Config::get('app.force_correct_price'))
+			{
+				$lote->impsalhces_asigl0 = $escalado_correcto;
+                $lote->impres_asigl0 = $escalado_correcto;
+			}
 
         }
         $subasta->impsal = $lote->impsalhces_asigl0;
