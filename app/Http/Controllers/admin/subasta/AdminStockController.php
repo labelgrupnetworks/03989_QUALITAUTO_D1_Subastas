@@ -208,7 +208,7 @@ class AdminStockController extends Controller
 		$resource_name = $this->resource_name;
 		$parent_name = $this->parent_name;
 		$render = false;
-		$data = compact('cod_sub', 'lotes', 'formulario',  'tableParams', 'propietarios', 'resource_name', 'parent_name', 'tipo_sub','render');
+		$data = compact('lotes', 'formulario',  'tableParams', 'propietarios', 'resource_name', 'parent_name', 'render');
 
 
 
