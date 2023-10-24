@@ -50,6 +50,12 @@
 		</div>
 		@endif
 
+		@if(in_array("FEATURE", explode(',', config("app.ShowEditLotOptions"))))
+		<div class="row well">
+			@include('admin::pages.subasta.lotes._lot_features', compact('cod_sub'))
+		</div>
+		@endif
+
 		<div class="row well">
 			@include('admin::pages.subasta.lotes._lot_images', compact('images'))
 		</div>

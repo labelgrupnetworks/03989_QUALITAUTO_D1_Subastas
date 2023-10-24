@@ -310,6 +310,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
 		Route::post('clientes/send_ws', 'usuario\AdminClienteController@send_ws');
 		Route::resource('clientes', 'usuario\AdminClienteController');
+		Route::post('clientes/{cod_cli}/dni', 'usuario\AdminClienteFilesController@storeDni')->name('admin.clientes.dni.store');
 		Route::resource('clientes.files', 'usuario\AdminClienteFilesController')->only(['store', 'show', 'destroy']);
 
 		Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
@@ -367,6 +368,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/{cod_sub}/lotes/delete-selection', 'subasta\AdminLotController@deleteSelection')->name('subastas.lotes.delete_selection');
 		Route::post('subastas/{cod_sub}/lotes/stockRemove-selection', 'subasta\AdminLotController@stockRemoveSelection')->name('subastas.lotes.stockRemove_selection');
 		Route::post('subastas/{cod_sub}/lotes/setToSellSelection', 'subasta\AdminLotController@setToSellSelection')->name('subastas.lotes.setToSellSelection');
+
+		Route::post('subastas/{cod_sub}/lotes/{ref_asigl0}/export/{service?}', 'subasta\AdminLotController@export')->name('subastas.lotes.export');
+		Route::post('subastas/{cod_sub}/lotes/export/{service?}', 'subasta\AdminLotController@multipleExport')->name('subastas.lotes.multiple_export');
 
 		Route::resource('subastas.lotes', 'subasta\AdminLotController')->except(['show'])->parameters([
 			'subastas' => 'cod_sub',

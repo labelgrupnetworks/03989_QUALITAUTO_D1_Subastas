@@ -320,7 +320,6 @@ div.lotes_recomendados div.item_home div.desc_lot{
 
 .title_auction{
     margin-bottom: 5px;
-    opacity: .5;
     font-weight: 900;
     font-size: 14px;
     line-height: 14px;
@@ -331,6 +330,7 @@ div.lotes_recomendados div.item_home div.desc_lot{
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     display: -webkit-box;
+	color: var(--primary-color);
 }
 
 /*******------------------------------********
@@ -660,7 +660,8 @@ footer li p{
 
 .languaje{
     margin-left: 10px;
-
+	min-width: 40px;
+    text-align: right;
 }
 
 .languaje select.form-control{
@@ -691,12 +692,20 @@ footer li p{
 }
 
 .goog-te-gadget-simple:before{
-    content: "\f0ac";
+    content: " ";
     display: inline-block;
     font: normal normal normal 20px/1 FontAwesome;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    color:white;
+    color: #333;
+	background: url('/themes/soleryllach/assets/img/google_translate.png');
+    background-size: contain;
+	background-repeat: no-repeat;
+    top: 0;
+    position: absolute;
+    left: -15px;
+    bottom: 0;
+    right: 15px;
 }
 
 
@@ -840,15 +849,52 @@ nav.navbar {
 div.lotes_destacados {
 	margin: 20px 0 30px;
 }
-div.lotes_destacados div.title_lotes_destacados {
-	color: #fff;
-	text-transform: uppercase;
-	padding: 10px 12px;
-	font-size: 20px;
+div.lotes_destacados div.title_lotes_destacados, .calendar h2, .newsletter h2 {
+	font-family: 'Playfair Display', serif;
+    color: #292929;
+    padding: 10px 0;
+    font-size: 30px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--primary-color);
+	margin-top: 0;
 }
-div.lotes_destacados div.item_home {
 
-	padding: 20px 0 10px 0;
+.newsletter h4 {
+	margin-top: 40px;
+}
+
+.newsletter #newsletter-btn {
+	background-color: var(--primary-color);
+    border-radius: 0;
+}
+
+.newsletter #newsletter-btn:hover {
+	background-color: var(--primary-color-hover);
+}
+
+.lotes_destacados .owl-stage {
+	padding: 2rem 0;
+}
+
+.lotes_destacados .owl-item {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+div.lotes_destacados div.item_home {
+	padding: 5px 10px;
+    margin-bottom: 40px;
+    border: 1px solid #ccc;
+    transition: 0.3s linear all;
+    -webkit-transition: 0.3s linear all;
+    border-bottom: 4px solid var(--primary-color);
+}
+
+div.lotes_destacados div.item_home:hover {
+	border: 1px solid transparent;
+    border-bottom: 4px solid var(--primary-color);
+    box-shadow: 0 3px 18px rgb(0 0 0 / 20%);
+    -webkit-box-shadow: 0 3px 18px rgb(0 0 0 / 20%);
 }
 div.lotes_destacados div.border_item_img {
 	border: 1px solid #ccc;
@@ -2705,7 +2751,17 @@ background-color: #fff;
 .google_translate1 .goog-te-gadget-simple, .google_translate2 .goog-te-gadget-simple{
     background: transparent !important;
     border: 0 !important;
+	position: relative;
 }
+
+.google_translate1 .goog-te-gadget-simple > span {
+	visibility: hidden;
+}
+
+.google_translate1 .goog-te-gadget-simple a:hover {
+	text-decoration: none;
+}
+
 .google_translate2 .goog-te-gadget-simple .goog-te-menu-value, .google_translate1 .goog-te-gadget-simple .goog-te-menu-value{
     color:white !important;
     font-size: 11px;
@@ -2862,8 +2918,8 @@ goog-te-menu-value:hover{
 
 div.news_home {
     margin-bottom: 40px;
-    border: 5px solid #ededed;
-    padding: 22px 30px;
+    padding: 20px;
+	padding-top: 0;
     background-color: #ededed;
 }
 
@@ -2914,9 +2970,7 @@ div.list_cat_home_block:nth-child(1){
 .news_home .form-inline .form-group{
     vertical-align: initial;
 }
-div.news_home h2 {
-	margin-bottom: 42px;
-}
+
 div.news_home div.checkbox {
 	margin-top: 50px;
 }
@@ -4685,15 +4739,30 @@ dialog::backdrop {
 
 }
 
-.tabs-custom ul li a img:first-child {
+/* Funcionamiento icono "mis pujas" */
+.tabs-custom ul li a img.hammer-icon-standard {
 	-webkit-transition: .2s color linear;
 	-o-transition: .2s color linear;
 	transition: .2s all linear;
 }
 
-.tabs-custom ul li a:hover img:first-child {
+.tabs-custom ul li a img.hammer-icon-hover {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 2s, opacity 1s;
+}
+
+.tabs-custom ul li a:hover img.hammer-icon-standard {
 	opacity: 0;
 }
+
+.tabs-custom ul li a:hover img.hammer-icon-hover {
+	visibility: visible;
+  	opacity: 1;
+  	transition: visibility 0s, opacity 0s;
+}
+/* FIN Funcionamiento icono "mis pujas" */
+
 .tabs-custom ul li a i.fa {
 	margin-left: 4px;
 }
@@ -5056,3 +5125,45 @@ ul.sub_menu_adj {
 .has-error label{
 	color:#b21416;
 }
+
+/**
+Panel favoritos
+reinicializo estilo para no afectar al resto de páginas
+*/
+
+.panel-group.panel-favorite-page {
+	margin-top: 20px;
+}
+
+.panel-group.panel-favorite-page .panel-default {
+	margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	border-color: #ddd;
+}
+
+.panel-group.panel-favorite-page .panel-default>.panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+	padding: 0;
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+.panel-group.panel-favorite-page .panel-heading a {
+    display: block;
+}
+
+.panel-group.panel-favorite-page .panel-heading .panel-title:after {
+    content: '\f0dd';
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    top: 8px;
+    right: 15px;
+}
+

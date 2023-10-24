@@ -21,6 +21,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ToolsServiceProvider extends ServiceProvider
 {
@@ -1520,5 +1522,30 @@ class ToolsServiceProvider extends ServiceProvider
 		return in_array($extension, ['mp4', 'webm', 'mov']);
 	}
 
+
+	/**
+	 * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|null $files
+	 */
+	public static function validFiles($files)
+	{
+		if(!is_array($files)){
+			return $files->isValid() ? [$files] : [];
+		}
+
+		$files = array_filter($files, function ($file) {
+			return $file->isValid();
+		});
+
+		return $files;
+	}
+
+	public static function isValidMime(Request $request, $rules)
+	{
+		if(Validator::make($request->file(), $rules)->fails()){
+			return false;
+		}
+
+		return true;
+	}
 
 }

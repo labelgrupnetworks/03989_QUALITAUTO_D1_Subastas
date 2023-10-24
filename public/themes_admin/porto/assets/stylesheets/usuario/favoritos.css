@@ -44,3 +44,9 @@
 }
 .contenedorSubasta {margin-bottom:60px;margin-top:20px;}
 
+/* clientes */
+.dni-img img {
+	width: 100%;
+	height: 200px;
+	object-fit: contain;
+}

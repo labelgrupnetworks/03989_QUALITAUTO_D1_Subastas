@@ -155,12 +155,6 @@ color: #DDD;
 	object-fit: contain;
 }
 
-.auctions-list {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: stretch;
-}
-
 .aution-title {
 	text-align: center;
 	font-weight: 600;

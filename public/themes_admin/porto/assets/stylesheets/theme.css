@@ -17612,18 +17612,47 @@ html.dark .thumbnail {
 	position: relative!important;
 }
 
-.btn-send-webservice{
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #1c7d74;
-  border-color: #1c7d74;
-  width: 100%;
-  margin-top: 4px;
+.btn-group.open .dropdown-menu .dropdown-toggle {
+	-webkit-box-shadow: none;
+    box-shadow: none;
 }
 
-.btn-send-webservice:hover{
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu > a::after {
+  display: block;
+  content: "";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 4px 0 4px 4px;
+  border-left-color: #000;
+  margin-top: 6px;
+  margin-right: -10px;
+}
+.dropdown-submenu > ul.dropdown-menu {
+  position: absolute;
+  left: 100%;
+  /*para anular el pading el menu superior*/
+  top: -5px;
+  margin: 0;
+}
 
-	background-color: #28aea2;
-	border-color: #28aea2;
-
+.btn-send-webservice{
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #1c7d74;
+	border-color: #1c7d74;
+	width: 100%;
+	margin-top: 4px;
   }
+
+  .btn-send-webservice:hover{
+
+	  background-color: #28aea2;
+	  border-color: #28aea2;
+
+	}

@@ -67,7 +67,7 @@
 			<div class="col-xs-12 col-lg-5">
 				<div class="row footer-title">
 					<div class="col-xs-12 col-sm-5 image">
-						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"
+						<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.webp"
 							alt="{{(\Config::get( 'app.name' ))}}" width="90%">
 					</div>
 					<div class="col-xs-12 col-sm-7 enterprise text-justify">

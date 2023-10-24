@@ -1,12 +1,12 @@
 :root {
     --primary-color: #414145;
-    --secondary-color: #69C188;
+    --secondary-color: #004b7a;
     --complement-color: #414145;
-    --extra-color: #69C188;
+    --extra-color: #004b7a;
     --primary-color-text: #707070;
 	--secondary-color-text: #46494f;
 
-	--btn-primary-background: #69C188;
+	--btn-primary-background: #004b7a;
 	--btn-primary-background-hover: #38423B;
 	--btn-primary-text: #fff;
 	--btn-primary-text-hover: #ffffffde;
@@ -21,11 +21,11 @@
 	--newsletter-background: #585858;
 	--newsletter-text: #ffffffde;
 	--newsletter-placeholder: #ffffffde;
-	--newsletter-input-border: #69C188;
+	--newsletter-input-border: #004b7a;
 	--newsletter-input-text: #ffffffde;
 
 	--footer-background: white;
-	--footer-titles-color: #69C188;
+	--footer-titles-color: #004b7a;
 	--footer-links-color: #707070;
 	--footer-links-color-hover: #585858;
 
@@ -35,14 +35,46 @@
 	--filter-background: #414145;
 }
 
-.logo-company{
-	height: 75px;
-    width: auto;
-	max-width: none;
+header, nav {
+	height: auto;
+}
+
+.menu-header {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.logo-header a {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	gap: 1rem;
+}
+
+.logo-header p {
+	margin: 0;
+    line-height: 1.1;
+    font-family: serif;
+    font-weight: 600;
+	font-size: 22px;
+}
+
+header.fixed .logo-header p {
+	font-size: 19px;
+}
+
+.logo-company {
+	width: 100%;
+    max-width: 120px;
+	height: auto;
 }
 
 .user-account .logo-company{
 	height: initial;
+}
+
+.account-user-menu .filters-auction-content {
+	background-color: var(--filter-background);
 }
 
 header.fixed nav .logo-company{

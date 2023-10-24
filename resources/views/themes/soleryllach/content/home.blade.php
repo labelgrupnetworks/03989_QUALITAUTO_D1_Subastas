@@ -7,26 +7,23 @@
 <!-- Inicio lotes destacados -->
 <div class="lotes_destacados">
     <div class="container">
-            <div class="title_lotes_destacados principal-color">
-                     {{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
-            </div>
-            <div class="loader"></div>
-            <div class="owl-theme owl-carousel" id="lotes_destacados"></div>
+		<div class="title_lotes_destacados">
+			Highlights
+		</div>
+		<div class="loader"></div>
+		<div class="owl-theme owl-carousel" id="lotes_destacados"></div>
     </div>
 </div>
 
+@php
+	$replace = ['lang' => Config::get('app.language_complete')[Config::get('app.locale')] ,'emp' => Config::get('app.emp')];
+@endphp
+
 <script>
-    <?php
-        $key = "lotes_destacados";
-        $replace = array(
-              'lang' => Config::get('app.language_complete')[Config::get('app.locale')] ,'emp' => Config::get('app.emp') ,
-                  );
-    ?>
-    var replace = <?= json_encode($replace) ?>;
-    var key ="<?= $key ?>";
+    var replace = @json($replace);
     $( document ).ready(function() {
-            ajax_carousel(key,replace);
-     });
+        ajax_carousel("lotes_destacados", replace);
+    });
 </script>
 
 

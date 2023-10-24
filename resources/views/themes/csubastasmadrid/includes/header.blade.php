@@ -120,8 +120,8 @@ use App\libs\TradLib as TradLib;
                                 <script type="text/javascript">
                                     function googleTranslateElementInit() {
                                         new google.translate.TranslateElement({
-                                            pageLanguage: 'es',
-                                            includedLanguages: 'es,ca,de,fr',
+                                            pageLanguage: '{{config('app.locale')}}',
+											includedLanguages: 'ca,de,fr,ru,ja,it,zh-CN',
                                             layout: google.translate.TranslateElement.InlineLayout.SIMPLE
                                         }, 'google_translate_element');
                                     }

@@ -42,36 +42,31 @@
 				</div>
 				{{--FIN  MENU --}}
 				{{-- FILTROS--}}
-				<div class="col-xs-10 text-center  pb-1" style="background-color: #ffe7e7">
-					<form action="{{ route('bi_report',["report"=>request("report")]) }}" name="biReload" id="biReload">
+				<div class="p-1" style="background-color: #ffe7e7; display: flex; align-items: end; gap: 1rem">
+					<form action="{{ route('bi_report',["report"=>request("report")]) }}" name="biReload" id="biReload" style="flex: 1; display: flex; align-items: end; justify-content: space-between; gap: 1rem">
 						@foreach ($formulario as $field => $input)
-							<div class="col-xs-2 ">
+							<div style="flex: 1">
 								<label class="mt-1" for="{{$field}}">{{ trans("admin-app.fields.$field") }}</label>
 
 								{!! $input !!}
 							</div>
 						@endforeach
-						<div class="col-xs-2 ">
+
+						<button type="submit" class="btn btn-sm btn-default">{{ trans("admin-app.button.search") }}</button>
+						{{-- <div class="col-xs-2 ">
 							<div class="col-xs-6">
 								<br>
-								<button type="submit" class="btn btn-default">{{ trans("admin-app.button.search") }}</button>
-							</div>
-							<div class="col-xs-6">
-								<br>
-								{{-- No pongo el botón de reiniciar por que hay queries pesadas que si se piden por todos los años tardan mucho
+								No pongo el botón de reiniciar por que hay queries pesadas que si se piden por todos los años tardan mucho
 									<button onclick="refreshAll()" class="btn btn-default">{{ trans("admin-app.button.restart") }}</button>
-									--}}
+
 							</div>
-						</div>
+						</div> --}}
 					</form>
-					<div class="col-xs-1 ">
 
+					<button class="btn btn-sm btn-warning" onclick="window.print()">Imprimir</button>
 
-					</div>
-					<div class="col-xs-1 ">
-						<br>
-						<a href="{{Request::fullUrlWithQuery(["export" => "excel"])}}" target="_blank" class="btn btn-sm btn-primary">Exportar EXCEL</a>
-					</div>
+					<a href="{{Request::fullUrlWithQuery(["export" => "excel"])}}" target="_blank" class="btn btn-sm btn-primary">Exportar EXCEL</a>
+
 				</div>
 				{{-- FIN FILTRO --}}
 

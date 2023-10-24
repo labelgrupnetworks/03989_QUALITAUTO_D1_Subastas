@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\V5\CarlandiaPayController;
+use App\Providers\RoutingServiceProvider;
+
 #ALCALA
 // Comprar catálogo
 
@@ -41,6 +43,9 @@ Route::post('/ordenTelefonica', 'externalws\duran\PujaTelefonicaController@creat
 Route::post('/verBotonOrdenTelefonica', 'externalws\duran\PujaTelefonicaController@wbVerBotonTelefono');
 Route::get('/cancelreserveWs', 'CronController@CancelReservationWS');
 Route::get('/consentimiento', 'externalws\duran\ConsentimientoControler@createConsentimiento');
+
+Route::get(RoutingServiceProvider::translateSeo('landing-subastas', '') . '{keySubSection}', 'V5\LotListController@getCustomListSubSection')->name('landing-subastas');
+
 
 #DURAN-GALLERY
 Route::view(\Routing::slug('dmg'), 'front::pages.dmg');

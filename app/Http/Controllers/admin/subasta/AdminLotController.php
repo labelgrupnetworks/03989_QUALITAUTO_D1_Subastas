@@ -41,6 +41,9 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\externalAggregator\Invaluable\House;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
+
 class AdminLotController extends Controller
 {
 
@@ -440,6 +443,28 @@ class AdminLotController extends Controller
 		}
 
 		$response['success'][] = trans('admin-app.title.updated_ok');
+
+		if(Config::get('app.lot_api_integrations', false)) {
+			$service = 'Diario de subastas';
+			$responseJson = $this->export($cod_sub, $request->reflot, $service);
+			$responseArray = json_decode($responseJson->getContent(), true);
+
+			if($responseArray['status'] != 'success') {
+				$message = $responseArray['message'];
+
+				if(isset($responseArray['data']['errors'])) {
+					$errors = $responseArray['data']['errors'];
+					foreach ($errors as $key => $value) {
+						$message .= "<br>$key: " . implode(', ', $value);
+					}
+				}
+
+				$response['warning'][$service] = $message;
+			}
+			else {
+				$response['success'][$service] = $responseArray['message'];
+			}
+		}
 
 		return back()->with($response);
 	}
@@ -1497,5 +1522,40 @@ class AdminLotController extends Controller
 		$res = json_decode($resJson);
 		return redirect(route("$this->parent_name.$this->resource_name.edit",['subasta' => $codSub, 'lote' => $ref]))->with(['success' => [$res->message]]);
 		}
+
+	public function export($cod_sub, $ref_asigl0, $service = null) :JsonResponse
+	{
+		//el service serviría para añadir más servicios de exportación inyectando el servicio en el contructor
+		// por ahora solamente esta Diario de subastas
+		$theme = Config::get('app.theme');
+		$WsLotController = "App\Http\Controllers\\externalws\\$theme\WsLotController";
+
+		$result = (new $WsLotController)->upsertLot([
+			'codSub' => $cod_sub,
+			'refAsigl0' => $ref_asigl0,
+		]);
+
+		return response()->json($result);
+	}
+
+	public function multipleExport(Request $request, $cod_sub, $service = null) :JsonResponse
+	{
+		//el service serviría para añadir más servicios de exportación inyectando el servicio en el contructor
+		$theme = Config::get('app.theme');
+		$WsLotController = "App\Http\Controllers\\externalws\\$theme\WsLotController";
+
+		$results = collect($request->lots)->map(function ($lot) use ($WsLotController, $cod_sub) {
+			return (new $WsLotController)->upsertLot([
+				'codSub' => $cod_sub,
+				'refAsigl0' => $lot,
+			]);
+		});
+
+		return response()->json([
+			'message' => "Se han exportado las obras seleccionados",
+			'status' => 'success',
+			'data' => $results ?? [],
+		]);
+	}
 
 }

@@ -4143,15 +4143,30 @@ text-transform: capitalize !important;
 
 }
 
-.tabs-custom ul li a img:first-child {
+/* Funcionamiento icono "mis pujas" */
+.tabs-custom ul li a img.hammer-icon-standard {
 	-webkit-transition: .2s color linear;
 	-o-transition: .2s color linear;
 	transition: .2s all linear;
 }
 
-.tabs-custom ul li a:hover img:first-child {
+.tabs-custom ul li a img.hammer-icon-hover {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 2s, opacity 1s;
+}
+
+.tabs-custom ul li a:hover img.hammer-icon-standard {
 	opacity: 0;
 }
+
+.tabs-custom ul li a:hover img.hammer-icon-hover {
+	visibility: visible;
+  	opacity: 1;
+  	transition: visibility 0s, opacity 0s;
+}
+/* FIN Funcionamiento icono "mis pujas" */
+
 .tabs-custom ul li a i.fa {
 	margin-left: 4px;
 }
@@ -4540,4 +4555,13 @@ ul.sub_menu_adj {
 
 .has-error label{
 	color:#b21416;
+}
+
+/* Quitar el seleccionar idioma del selector de traducción de google */
+#google_translate_element .goog-te-gadget-simple a span:nth-child(1) {
+	display: none;
+}
+
+.google_translate {
+	margin: auto;
 }

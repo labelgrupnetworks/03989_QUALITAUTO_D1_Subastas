@@ -5,8 +5,10 @@
 <script src='https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}'></script>
 
 <div class="newsletter js-newletter-block">
-    <div class="news_home col-xs-12 ">
-        <h4>{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_title') }}</h4>
+
+    <div class="news_home">
+		<h2>Newsletter</h2>
+        <h4>{{ trans("$theme-app.foot.newsletter_title") }}</h4>
         <form class="form-inline" id="form-newsletter">
             <div class="form-group">
                 <label>{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_text_input') }} <label>

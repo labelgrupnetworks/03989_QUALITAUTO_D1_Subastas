@@ -30,7 +30,9 @@ if(!empty($auction) && count($bread)>0){
 					<div class="col-xs-12 d-flex align-items-end justify-content-space-between titlePage-wrapper">
 						<h1 class="titlePage-custom color-letter text-center">
 
-						@if(!empty($infoSec))
+						@if(!empty($infoSubSec))
+							{{$infoSubSec->des_subsec}}
+						@elseif(!empty($infoSec))
 							{{$infoSec->des_sec}}
 						@elseif(!empty($infoOrtsec))
 							{{$infoOrtsec->des_ortsec0}}

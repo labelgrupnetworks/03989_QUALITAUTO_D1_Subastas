@@ -575,7 +575,7 @@ class UserController extends Controller
 			}
 		}
 
-		if(request::has('dni1') && Request::has('dni2')){
+		if(Request::has('dni1') && Request::has('dni2')){
 			if(!$this->validateImages(request())){
 				return json_encode(array(
 					"err"       => 1,
@@ -1217,6 +1217,10 @@ class UserController extends Controller
 						$this->saveCreditCard(request(), $num);
 					}
 
+					if(Request::has('user_files')){
+						$this->saveFiles(request(), $num);
+					}
+
                     if(!empty($u)){
                         # Enviamos email notificando la asociación de un cliente con un usuario web
                             $email = new EmailLib('USER_ASSOCIATED');
@@ -1458,15 +1462,19 @@ class UserController extends Controller
 
 	private function saveImages($request, $cod_cli)
 	{
+		$this->saveDni($request, $cod_cli, 'dni1');
+		$this->saveDni($request, $cod_cli, 'dni2');
+	}
 
+	public function saveDni($request, $cod_cli, $fileName)
+	{
 		try {
+			$file = $request->file($fileName);
+			if(!$file || !$file->isValid()){
+				return false;
+			}
 
-			$file = $request->file('dni1');
-			$file2 = $request->file('dni2');
-
-			$filename = 'dni1.' . $file->getClientOriginalExtension();
-			$filename2 = 'dni2.' . $file2->getClientOriginalExtension();
-
+			$filename = $fileName . '.' . $file->getClientOriginalExtension();
 			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
 
 			if(!is_dir($destinationPath)){
@@ -1474,7 +1482,6 @@ class UserController extends Controller
 			}
 
 			$file->move($destinationPath, $filename);
-			$file2->move($destinationPath, $filename2);
 
 			return true;
 
@@ -1484,7 +1491,24 @@ class UserController extends Controller
 		}
 	}
 
-	private function updateCIFImages($request, $cod_cli)
+	private function saveFiles($request, $cod_cli)
+	{
+		$errorMessage = 'Error al guardar los archivos del usuario en el registro';
+		if(!ToolsServiceProvider::isValidMime($request, ['user_files[]' => 'mimes:jpg,jpeg,png,pdf'])){
+			Log::error($errorMessage, ['client' => $cod_cli, 'error' => 'Invalid mime type']);
+			return;
+		}
+
+		$files = ToolsServiceProvider::validFiles($request->file('user_files'));
+
+		try {
+			(new User)->storeFiles($files, $cod_cli);
+		} catch (\Throwable $th) {
+			Log::error($errorMessage, ['client' => $cod_cli, 'error' => $th->getMessage()]);
+		}
+	}
+
+	public function updateCIFImages($request, $cod_cli)
 	{
 		try {
 
@@ -1519,7 +1543,7 @@ class UserController extends Controller
 		}
 	}
 
-	private function getCIFImages($cod_cli)
+	public function getCIFImages($cod_cli)
 	{
 		try {
 			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
@@ -1536,7 +1560,7 @@ class UserController extends Controller
 			return $images;
 		} catch (\Throwable $th) {
 			Log::error($th);
-			return false;
+			return [];
 		}
 	}
 
@@ -2097,9 +2121,11 @@ class UserController extends Controller
         $data['via']  = $enterprise->getVia();
 
 
-		// Si existe el config de userPanelCIFandCC añade los datos de tarjeta y CIF
-		if (Config::get('app.userPanelCIFandCC')) {
+		// divido los configs ya que son independientes
+		if(Config::get('app.user_panel_cc', false)) {
 			$data['creditCard'] = $this->getCreditCard($datos->email_cli, $datos->cod_cli);
+		}
+		if(Config::get('app.user_panel_cif', false)) {
 			$data['cifImages'] = $this->getCIFImages($datos->cod_cli);
 		}
 
@@ -2179,15 +2205,19 @@ class UserController extends Controller
 			$news->newFamilies();
         }
 
-		# Si existe el config de userPanelCIFandCC actualiza los datos de tarjeta y CIF (HECHO PARA SALARETIRO)
-		if (\Config::get('app.userPanelCIFandCC')) {
-			$Update->nif = Request::input('nif');
-			$this->updateCreditCard(Request::all(), $Update->cod_cli);
+		$Update->nif = Request::input('nif', null);
 
+		//Separo los configs ya que algunos clientes solo necesitan actualizar una de las dos cosas
+		if(Config::get('app.user_panel_cc', false)) {
+			$this->updateCreditCard(Request::all(), $Update->cod_cli);
+		}
+
+		if(Config::get('app.user_panel_cif', false)) {
 			if (Request::file('dni1') || Request::file('dni2')) {
 				$this->updateCIFImages(Request::all(), $Update->cod_cli);
 			}
 		}
+
 
 		/**Inbusa necesita que se guarde el nombre de la empresa como nombre principal, para correos e informes*/
 		if(!empty(Request::input('representar'))){
@@ -3736,7 +3766,7 @@ class UserController extends Controller
             }
 
             $user->BajaTmpCli($mail_exists[0]->cod_cli,'N',date("Y-m-d H:i:s"),'W');
-            return Redirect::to(Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.registered'));
+			Redirect::to(route('user.registered'));
 
         }elseif($type == 'newsletter'){
             $cod = Request::input('code');

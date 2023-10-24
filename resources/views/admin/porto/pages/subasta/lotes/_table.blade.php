@@ -9,14 +9,29 @@
 
 			<ul class="dropdown-menu">
 
-			@if(\Config::get("app.stockIni")>0)
+			@if(Config::get("app.stockIni")>0)
 				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?" data-respuesta="Se ha puesto el stock a  0 en las obras seleccionados" href="{{ route('subastas.lotes.stockRemove_selection', ['cod_sub' => $cod_sub]) }}">Poner Stock a 0</a></li>
 				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?" data-respuesta="Se ha puesto en Fondo de Galeria las obras seleccionados" href="{{ route('subastas.lotes.setToSellSelection', ['cod_sub' => $cod_sub]) }}">Poner en Fondo de Galeria</a></li>
-
-
-			@else
-				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de eliminar todos los lotes seleccionados" data-respuesta="Se han eliminado los lotes seleccionados" href="{{ route('subastas.lotes.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
 			@endif
+
+			@if(Config::get('app.lot_api_integrations', false))
+				<li class="dropdown-submenu">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Exportar</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="js-actionSelectedLots"
+								href="{{ route('subastas.lotes.multiple_export', ['cod_sub' => $cod_sub, 'service' => 'bbd']) }}"
+								data-title="¿Estás seguro de exportar todas las obras seleccionadas?" data-respuesta="Se han exportado las obras seleccionados"
+								>
+								Diario de Subastas
+							</a>
+						</li>
+					</ul>
+				</li>
+			@endif
+
+				<li><a class="js-actionSelectedLots" data-title="¿Estás seguro de eliminar todos los lotes seleccionados" data-respuesta="Se han eliminado los lotes seleccionados" href="{{ route('subastas.lotes.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
+
 
 				{{-- <li><a href="#">Another action</a></li>
 				<li><a href="#">Something else here</a></li> --}}
@@ -51,7 +66,7 @@
 	@endif
 
 
-	<a href="{{ route("$parent_name.$resource_name.create", ['cod_sub' => $cod_sub ,'menu' => 'subastas']) }}"
+	<a href="{{ route("$parent_name.$resource_name.create", ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
 		class="btn btn-primary btn-sm">{{ trans("admin-app.button.new") }}
 		{{ trans("admin-app.title.lot") }}</a>
 
@@ -133,9 +148,14 @@
 
 
 				<tr id="fila{{ $lote->ref_asigl0 }}" style="max-height: 60px; overflow: hidden;">
+					@php
+						$withoutBids = ($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) == 0;
+						$withoutOrders = ($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) == 0;
+						$withExternalApi = Config::get('app.lot_api_integrations', false);
+					@endphp
 
 					<td>
-						@if (($pujas->where('ref_asigl1', $lote->ref_asigl0)->max('imp_asigl1') ?? 0) == 0 && ($ordenes->where('ref_orlic', $lote->ref_asigl0)->max('himp_orlic') ?? 0) == 0)
+						@if (($withoutBids && $withoutOrders) || $withExternalApi)
 							<input type="checkbox" name="lote" value="{{ $lote->ref_asigl0 }}">
 						@endif
 					</td>
@@ -200,7 +220,21 @@
 									<br/>
 									<a class="js-send_webservice_close_lot btn btn-send-webservice btn-sm" data-sub="{{$lote->sub_asigl0}}" data-ref="{{$lote->ref_asigl0}}" > {{ trans("admin-app.button.send_close_lot_webservice",["empresa" => \Config::get("app.theme")]) }} </a>
 								@endif
-							
+							@endif
+							@if(Config::get('app.lot_api_integrations', false))
+							<div class="btn-group">
+								<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								  Export <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-right">
+								  	<li>
+										<a class="export-lot" type="button" href="#"
+											data-route="{{ route('subastas.lotes.export', ['cod_sub' => $lote->sub_asigl0, 'ref_asigl0' => $lote->ref_asigl0, 'service' => 'bbd']) }}">
+											Diario de Subastas
+										</a>
+									</li>
+								</ul>
+							  </div>
 							@endif
 						@endif
 					</td>
@@ -262,5 +296,37 @@
 	  modal.find('.modal-title').text(name);
 	 });
 
+	 $('.export-lot').on('click', function(event) {
+		event.preventDefault();
+		const route = $(this).data('route');
+
+		const dialegOptions = {
+			title: 'Exportando lote',
+			message: '<p><i class="fa fa-spin fa-spinner"></i> Exportando...</p>'
+		}
+
+		let dialog = bootbox.dialog(dialegOptions);
+
+		dialog.init(function() {
+			$.ajax({
+				url: route,
+				type: 'POST',
+				dataType: 'json',
+				success: function (response) {
+					let message = `<p>${response.message}</p>`;
+					if (response.data?.errors) {
+						let errors = Object.values(response.data.errors);
+						message += '<ul>';
+						errors.forEach(error => {
+							message += `<li>${error}</li>`;
+						});
+						message += '</ul>';
+					}
+					dialog.find('.bootbox-body').html(message);
+				}
+			});
+		});
+
+	 });
 
 	</script>

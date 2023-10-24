@@ -75,3 +75,64 @@
 	background: #f2dfd6;
 
 }
+
+/**
+ * 	Reportes
+ * media to print
+ */
+@media print {
+	@page {
+		size: landscape;
+		/* margin: 0; */
+	}
+
+	.header, header, #sidebar-left, .menu-reports, .btn-default, .btn-primary, .btn-warning {
+		display: none;
+	}
+
+	html.fixed .content-body {
+		margin: 0;
+		padding: 0;
+	}
+
+	html.fixed .inner-wrapper {
+		padding-top: 0;
+	}
+
+	.row-reports > div {
+		width: 100%;
+	}
+
+	.body-reports {
+		padding: 0;
+	}
+
+	.body-reports .col-md-6 {
+		width: 50%;
+	}
+
+	.body-reports .col-md-12 {
+		page-break-after: always;
+		page-break-inside: avoid;
+	}
+
+	.dataTables_filter {
+		display: none;
+	}
+
+	table th::before, table th::after {
+		content: none !important;
+	}
+
+	table .details-control {
+		display: none;
+	}
+
+	.body-reports canvas {
+		max-width: 100%;
+	}
+
+	/* .body-reports .col-md-6 canvas {
+		max-height: 400px;
+	} */
+}

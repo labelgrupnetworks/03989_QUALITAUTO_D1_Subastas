@@ -167,6 +167,10 @@ function actionSelectedLots(event) {
 				bootbox.alert(event.target.dataset.respuesta);
 				location.reload();
 			}
+			else if(data.status === 'success'){
+				console.log(data);
+				bootbox.alert(data.message);
+			}
 			else{
 				bootbox.alert("Ha ocurrido un error");
 			}

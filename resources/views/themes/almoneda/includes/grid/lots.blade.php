@@ -11,7 +11,7 @@
 			foreach($item->bladeVars as $key => $value){
 				${$key} = $value;
 			}
-				$class_square = 'col-xs-12 col-sm-6 col-lg-4';
+				$class_square = 'col-xs-12';
 
 
 			if(empty(\Config::get("app.paginacion_grid_lotes"))){

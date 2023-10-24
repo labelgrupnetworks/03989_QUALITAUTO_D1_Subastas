@@ -11,6 +11,7 @@ use \Request;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\Storage;
 
 class User
 {
@@ -1340,6 +1341,39 @@ class User
 			return null;
 		}
 		return $user;
+	}
+
+	/**
+	 * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|null $files
+	 * @param string $cod_cli
+	 * @return bool
+	 */
+	public function storeFiles($files, $cod_cli = null)
+	{
+		if(!$cod_cli) {
+			$cod_cli = $this->cod_cli;
+		}
+
+		if(!$cod_cli) {
+			return false;
+		}
+
+		$storage = Storage::disk('client');
+		$relativePath = "$cod_cli/files";
+
+		if(!$files){
+			return false;
+		}
+
+		if (!$storage->exists($relativePath)) {
+			$storage->makeDirectory($relativePath);
+		}
+
+		foreach ($files as $file) {
+			$storage->putFileAs($relativePath, $file, $file->getClientOriginalName());
+		}
+
+		return true;
 	}
 
 }

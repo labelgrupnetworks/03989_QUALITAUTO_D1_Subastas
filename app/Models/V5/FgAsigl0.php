@@ -259,7 +259,7 @@ class FgAsigl0 extends Model
 	public function scopeActiveLotForCategory($query){
 
 		if (Session::has('user') && Session::get('user.admin')){
-			$active =  array("S","A");
+			$active =  array("S", "A");
 		}else{
 			$active =  array("S");
 		}
@@ -287,7 +287,15 @@ class FgAsigl0 extends Model
 	public function scopeHistoricLotForCategory($query){
 		#lote cerrado y adjudicado de una subasta histórica o actual si ya se ha cerrado el lote, no puede cojer la venta privada tipo E
 
-		return $query->where("FGSUB.SUBC_SUB",'H')->wherein("FGSUB.TIPO_SUB",["W","V","O","P"])->whereraw("( FGASIGL0.CERRADO_ASIGL0='S' AND  FGHCES1.LIC_HCES1 ='S' )");
+		return $query
+			->where("FGSUB.SUBC_SUB",'H')
+			->wherein("FGSUB.TIPO_SUB",["W","V","O","P"])
+			->where(function($query) {
+				return $query->whereraw("( FGASIGL0.CERRADO_ASIGL0='S' AND  FGHCES1.LIC_HCES1 ='S' )")
+					->when(Config::get('app.show_notawards_lots_in_historic_search', false), function ($query) {
+						return $query->orWhere('FGHCES1.LIC_HCES1', 'N');
+					});
+			});
 
 	}
 
@@ -636,5 +644,72 @@ class FgAsigl0 extends Model
 			return $query->get();
 	}
 
+	public static function getLotWithSession($codSub, $refAsigl0) :self
+	{
+		return self::query()
+			->joinFghces1Asigl0()
+			->joinSubastaAsigl0()
+			->joinSessionAsigl0()
+			->where([
+				['ref_asigl0', $refAsigl0],
+				['sub_asigl0', $codSub]
+			])
+			->first();
+	}
+
+	public function getImages()
+	{
+		if(!$this->numhces_asigl0 || !$this->linhces_asigl0) {
+			return [];
+		}
+
+		$path = "/img/{$this->emp_asigl0}/{$this->numhces_asigl0}/";
+		$systemPath = public_path($path);
+		$images = is_dir($systemPath) ? array_diff(scandir($systemPath), ['.', '..']) : [];
+
+		$validImages = array_filter($images, function($image) {
+			$imageName = "{$this->emp_asigl0}-{$this->numhces_asigl0}-{$this->linhces_asigl0}";
+			$isThisLine = strpos($image, "{$imageName}.") !== false || strpos($image, "{$imageName}_") !== false;
+
+			$isHidden = strpos($image, "-NV");
+
+			return !$isHidden && $isThisLine;
+		});
+
+		$paths = array_map(function ($image) use ($path){
+			return $path . $image;
+		}, $validImages);
+
+		return $paths;
+	}
+
+	public function getFiles()
+	{
+		if(!$this->emp_asigl0 || !$this->numhces_asigl0 || !$this->linhces_asigl0) {
+			return [];
+		}
+
+		$path = "/files/{$this->emp_asigl0}/{$this->num_hces1}/{$this->lin_hces1}/files/";
+		$systemPath = public_path($path);
+
+		$files = [];
+		if (is_dir($systemPath)) {
+			$files = array_diff(scandir($systemPath), ['.', '..']);
+		}
+
+		$paths = array_map(function ($file) use ($path){
+			return $path . $file;
+		}, $files);
+
+		return $paths;
+	}
+
+	public function getFeatures()
+	{
+		if(!$this->numhces_asigl0 || !$this->linhces_asigl0) {
+			return [];
+		}
+		return FgCaracteristicas_Hces1::getByLot($this->numhces_asigl0, $this->linhces_asigl0);
+	}
 }
 

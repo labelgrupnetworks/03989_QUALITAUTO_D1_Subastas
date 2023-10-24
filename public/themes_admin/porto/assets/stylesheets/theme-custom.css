@@ -453,3 +453,7 @@ tr.shown td.details-control {
     place-content: center;
     background: #ffffffc7;
 }
+
+.row.d-flex::before, .row.d-flex::after {
+	content: none;
+}

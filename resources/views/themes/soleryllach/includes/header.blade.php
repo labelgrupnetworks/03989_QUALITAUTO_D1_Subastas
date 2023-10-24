@@ -102,6 +102,22 @@
                             </form>
                         </div>
 
+						<div class="languaje">
+							<div class="google_translate1">
+								<div id="google_translate_element"></div>
+							</div>
+							<script type="text/javascript">
+								function googleTranslateElementInit() {
+									new google.translate.TranslateElement({
+										pageLanguage: '{{config('app.locale')}}',
+										includedLanguages: 'ca,de,fr,ru,ja,it,zh-CN',
+										layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+									}, 'google_translate_element');
+								}
+							</script>
+							<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                        </div>
+
                         <ul class="ul-format list-lang d-inline-flex">
                             @foreach (Config::get('app.locales') as $key => $value)
                                 @php

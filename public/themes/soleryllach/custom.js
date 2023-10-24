@@ -870,9 +870,11 @@ function ajax_carousel(key,replace){
 function carrousel_molon(carrousel){
     carrousel.owlCarousel({
         items:3,
-        autoplay:true,
+        autoplay: true,
+		autoplayHoverPause: true,
         margin: 20,
-        dots:true,
+		loop: true,
+        dots: false,
         nav: true,
         navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">'],
         responsiveClass: true,
@@ -1228,8 +1230,6 @@ function reload_facturas() {
 		$("#submit_fact").addClass('hidden');
 	}
 	$("#total_bills").html(change_currency(total));
-	// Hacer la línea $("#total_bills").html(change_currency(total)); sin jquery
-
 }
 
 function payFacs(button){

@@ -251,14 +251,13 @@ function exportClients(event) {
 
 }
 
-if (document.getElementById('clientFile')){
-	document.getElementById('clientFile').addEventListener('change', updateFiles);
-}
+document.getElementById('clientFile')?.addEventListener('change', updateFiles);
+document.getElementById('dni1')?.addEventListener('change', updateDni);
+document.getElementById('dni2')?.addEventListener('change', updateDni);
 
 function updateFiles(event) {
 	const files = event.target.files;
 
-	//if no files, return
 	if (files.length == 0) {
 		return;
 	}
@@ -343,6 +342,51 @@ function deleteFile(route) {
 
 		renderTableBody(data.files);
 		saved('Archivo eliminado correctamente');
+	})
+	.catch(err => error(err))
+	.finally(() => notify.remove());
+}
+
+function updateDni(event) {
+	const files = event.target.files;
+
+	if (files.length == 0) {
+		return;
+	}
+
+	const file = files[0];
+	const formData = new FormData();
+	formData.append(event.target.name, file);
+
+	const route = document.querySelector('[name=route_dni]').value;
+	const notify = loadNotify('Subiendo archivo...');
+
+	fetch(route, {
+		method: 'POST',
+		body: formData
+	})
+	.then(res => {
+		if (!res.ok) {
+			throw new Error('Error al subir el archivo');
+		}
+		return res.json()
+	})
+	.then(data => {
+		if (data.status != 'success') {
+			throw new Error(data.message);
+		}
+
+		const { dnis } = data;
+		if(dnis.dni1 != undefined) {
+			$('#dni1-img').attr('src', `data:image/jpeg;base64,${dnis.dni1.base64}`);
+		}
+		if(dnis.dni2 != undefined) {
+			$('#dni2-img').attr('src', `data:image/jpeg;base64,${dnis.dni2.base64}`);
+		}
+
+		$(event.target).val('');
+
+		saved('Archivo subido correctamente');
 	})
 	.catch(err => error(err))
 	.finally(() => notify.remove());

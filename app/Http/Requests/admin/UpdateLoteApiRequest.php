@@ -11,7 +11,7 @@ class UpdateLoteApiRequest extends FormRequest
     {
 
 		return [
-			'idorigin' => "required|max:30",
+			'idorigin' => "required|max:255",
 			'idauction' => "required|alpha_num|max:8",
 			'reflot' => "required|numeric|max:999999999",
 			'idsubcategory' => "required|alpha_num|max:2",

@@ -110,12 +110,12 @@
 				<div class="img-files-item">
 					<img src="{{ $file->img }}">
 					<div class="d-flex justify-content-space-between">
-						@if ($auction->cod_sub <=616)
+						{{-- @if ($auction->cod_sub <=616) --}}
 							<a class="ver" href="{{ $file->url }}" target="_blank">{{ mb_strtoupper(trans(\Config::get('app.theme').'-app.sheet_tr.view')) }}</a>
 							<a  class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.download')) }}  </a>
-						@else
+						{{-- @else
 							<a style="width: 100%;text-align: center;" class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.download')) }}  </a>
-						@endif
+						@endif --}}
 
 					</div>
 				</div>

@@ -578,6 +578,23 @@ $idiomes = \Config::get('app.locales');
 						</li>
 					@endif
 
+					@if(session('user.usrw') === 'SUBASTAS@LABELGRUP.COM')
+					<li class="nav-parent @if(!empty($menu) && $menu == 'configuracion_admin') nav-expanded @endif">
+						<a href="#">
+							<i class="fa fa-gear" aria-hidden="true"></i>
+							<span>Configuración interna</span>
+						</a>
+
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('admin.jobs.index') }}">
+									<span>Jobs</span>
+								</a>
+							</li>
+						</ul>
+
+					</li>
+					@endif
 
 				</ul>
 

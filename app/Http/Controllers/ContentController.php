@@ -215,6 +215,13 @@ class ContentController extends Controller
 			->when(request('order'), function ($query, $order) {
 				return $query->orderBy($order);
 			})
+			->when(request('orders'), function ($query, $ordersString) {
+				$orders = explode(',', $ordersString);
+				foreach ($orders as $order) {
+					$query->orderBy($order);
+				}
+				return $query;
+			})
 			->get();
 
 			#seteamos las variables para la blade

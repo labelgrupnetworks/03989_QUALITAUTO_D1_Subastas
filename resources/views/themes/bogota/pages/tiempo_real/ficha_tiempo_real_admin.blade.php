@@ -134,7 +134,7 @@ body, html {
 }
 .fondo1 {
     /*border: 1px solid black;*/
-    height: 451px;
+    /* height: 451px; */
 }
 
 .img-lot {
@@ -301,6 +301,18 @@ body, html {
                                        </p>
                             </div>
 
+							<div id="precioReserva" class="precioReserve salida text-center">
+                                <p>
+                                    <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.reserve_price') }}:</strong>
+									@if($data['js_item']['subasta']['currency']->symbol == "$")
+										{{ $data['js_item']['subasta']['currency']->symbol }}<span>{{ $data['subasta_info']->lote_actual->impres_asigl0 ? $data['subasta_info']->lote_actual->formatted_impres_asigl0 : 0 }}</span>
+
+									@else
+										<span>{{ $data['subasta_info']->lote_actual->impres_asigl0 ? $data['subasta_info']->lote_actual->formatted_impres_asigl0 : 0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}
+									@endif
+                                </p>
+                            </div>
+
 
 
                             <!-- puja actual -->
@@ -325,18 +337,19 @@ body, html {
                                         @endif
 
                                     </span>
-
-                                    @if(Session::has('user') && $data['js_item']['user']['is_gestor'])
-
-                                        <span id="cancelarPuja" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
-                                        <span id="cancelarOrden" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order') }}</span>
-
-                                    @endif
-                                    @if(\Config::get('app.tr_show_canel_bid_client') && Session::has('user') && !$data['js_item']['user']['is_gestor'])
-
-                                    <span id="cancelarPujaUser" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
-                                    @endif
                                 </p>
+								<p>
+									@if(Session::has('user') && $data['js_item']['user']['is_gestor'])
+
+									<span id="cancelarPuja" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
+									<span id="cancelarOrden" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order') }}</span>
+
+									@endif
+									@if(\Config::get('app.tr_show_canel_bid_client') && Session::has('user') && !$data['js_item']['user']['is_gestor'])
+
+									<span id="cancelarPujaUser" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
+									@endif
+								</p>
 
                             </div>
 

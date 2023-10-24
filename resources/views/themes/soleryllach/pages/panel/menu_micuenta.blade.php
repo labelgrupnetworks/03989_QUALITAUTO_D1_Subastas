@@ -8,8 +8,8 @@
 
 			<a class="" data-title="{{ trans(\Config::get('app.theme') . '-app.panel.my_orders') }}"
 				href="{{ \Routing::slug('user/panel/orders') }}">
-                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer.png" class="hammer-icon" alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
-                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer-hover.png"  alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
+                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer.png" class="hammer-icon hammer-icon-standard" alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
+                <img width="20px" src="/themes/{{\Config::get('app.theme')}}/assets/img/hammer-hover.png" class="hammer-icon-hover" alt="{{ trans(\Config::get('app.theme').'-app.panel.my_orders') }}">
 				{{ trans(\Config::get('app.theme') . '-app.user_panel.orders') }}
 			</a>
 		</li>

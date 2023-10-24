@@ -10,6 +10,7 @@ use App\Models\V5\FxCli;   // Clientes
 use App\Models\V5\FsPaises;  // Paises
 use App\Exports\ClientsExport;
 use App\Http\Controllers\apilabel\ClientController;
+use App\Http\Controllers\UserController;
 use App\Http\Requests\admin\ClienteRequest;
 use App\Models\Newsletter;
 use App\Models\V5\FgSg;
@@ -246,7 +247,18 @@ class AdminClienteController extends Controller
 		//archivos de cliente
 		$files = (new AdminClienteFilesController())->getClientFiles($cliente->codcli);
 
-		return view('admin::pages.usuario.cliente_v2.edit', compact('formulario', 'clienteFxCli', 'cliente', 'files'));
+		//dnis
+		$dnisPaths = (new UserController)->getCIFImages($cliente->codcli);
+		$dnis = array_map(function($dni){
+			return [
+				'path' => $dni,
+				'filename' => basename($dni),
+				'base64' => base64_encode(file_get_contents($dni)),
+
+			];
+		}, $dnisPaths);
+
+		return view('admin::pages.usuario.cliente_v2.edit', compact('formulario', 'clienteFxCli', 'cliente', 'files', 'dnis'));
 	}
 
 	public function update(ClienteRequest $request)

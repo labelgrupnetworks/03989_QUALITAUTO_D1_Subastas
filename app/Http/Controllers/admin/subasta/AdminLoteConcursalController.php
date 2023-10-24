@@ -5,6 +5,10 @@ namespace App\Http\Controllers\admin\subasta;
 use Illuminate\Support\Facades\Config;
 use App\libs\FormLib;
 use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgCaracteristicas;
+use App\Models\V5\FgCaracteristicas_Hces1;
+use App\Models\V5\FgCaracteristicas_Hces1_Lang;
+use App\Models\V5\FgCaracteristicas_Value;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxSec;
 use App\Models\V5\FgHces1;
@@ -75,7 +79,14 @@ class AdminLoteConcursalController extends AdminLotController
 
 		$formulario->submit = FormLib::Submit('Actualizar', 'loteUpdate');
 
-		return view('admin::pages.subasta.lotes_concursales.edit', compact('formulario', 'fgAsigl0', 'cod_sub', 'images', 'files', 'anterior', 'siguiente', 'render'));
+		$features = FgCaracteristicas::getAllFeatures();
+		$featuresValues = FgCaracteristicas_Value::SelectAllForInput();
+		$featuresHces1 = FgCaracteristicas_Hces1::getByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
+		$featuresHces1Lang = FgCaracteristicas_Hces1_Lang::getByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
+
+		$data = compact('formulario', 'fgAsigl0', 'cod_sub', 'images', 'files', 'anterior', 'siguiente', 'render', 'features', 'featuresValues', 'featuresHces1', 'featuresHces1Lang');
+
+		return view('admin::pages.subasta.lotes_concursales.edit', $data);
 	}
 
 	protected function basicFormCreateFgAsigl0(FgAsigl0 $fgAsigl0, $cod_sub)
@@ -85,7 +96,7 @@ class AdminLoteConcursalController extends AdminLotController
 			$propietario = FxCli::select('RSOC_CLI')->where('COD_CLI', $fgAsigl0->prop_hces1)->first();
 		}
 
-		return [
+		$form =  [
 			'hiddens' => [
 				'idauction' => FormLib::Hidden('idauction', 1, $cod_sub),
 			],
@@ -101,7 +112,7 @@ class AdminLoteConcursalController extends AdminLotController
 				'owner' => FormLib::Select2WithAjax('owner', 0, old('owner', $fgAsigl0->prop_hces1), (!empty($propietario)) ? $propietario->rsoc_cli : '', route('client.list'), trans('admin-app.placeholder.owner')),
 				'idsubcategory' => FormLib::select("idsubcategory", 1, $fgAsigl0->sec_hces1, FxSec::GetActiveFxSec()),
 				'title' => FormLib::Text('title', 1, old('title', strip_tags($fgAsigl0->descweb_hces1))),
-				'description' => FormLib::TextAreaTiny('description', 0, old('description', $fgAsigl0->desc_hces1)),
+				'description' => FormLib::TextAreaTiny('description', 0, old('description', $fgAsigl0->desc_hces1))
 			],
 			'estados' => [
 				'highlight' => FormLib::Select('highlight', 1, old('highlight', $fgAsigl0->destacado_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
@@ -125,5 +136,23 @@ class AdminLoteConcursalController extends AdminLotController
 			],
 			'submit' => FormLib::Submit('Guardar', 'loteStore')
 		];
+
+		if($this->hasShowOption('extrai')) {
+			$form['info']['extrainfo'] = FormLib::TextAreaTiny('extrainfo', 0, old('extrainfo', $fgAsigl0->descdet_hces1));
+		}
+
+		return $form;
+	}
+
+
+	private function hasShowOption($option) {
+		$showOptions = Config::get('app.ShowEditLotOptions');
+		$arrayOptions = explode(',', $showOptions);
+
+		$arrayOptions = array_map(function($value) {
+			return mb_strtolower(trim($value));
+		}, $arrayOptions);
+
+		return in_array(mb_strtolower($option), $arrayOptions);
 	}
 }

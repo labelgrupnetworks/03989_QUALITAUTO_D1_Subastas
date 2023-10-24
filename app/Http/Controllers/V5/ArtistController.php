@@ -63,7 +63,7 @@ class ArtistController extends Controller
     }
 
 	public function artist(Request $request){
-		$artist  = Web_Artist::select("id_artist")->LeftJoinLang()->where("id_artist", $request->idArtist)->first();
+		$artist  = Web_Artist::select('id_artist', 'name_artist')->LeftJoinLang()->where("id_artist", $request->idArtist)->first();
 
 		$articles = Web_Artist_Article::where("idartist_artist_article", $request->idArtist)->get();
 		#coger lotes activos, historicos los coje, ordenados por fecha y subasta

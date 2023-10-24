@@ -158,6 +158,20 @@ $families = array();
 								{!!$formulario->language!!}
 							</div>
 
+							<div class="datos_left">
+								<label>{{ trans(\Config::get('app.theme').'-app.login_register.dni_obverse') }}</label>
+								{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = "") !!}
+							</div>
+
+							<div class="datos_right">
+								<label>{{ trans(\Config::get('app.theme').'-app.login_register.dni_reverse') }}</label>
+								{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
+							</div>
+
+							<div class="user_files">
+								<label>{{ trans("$theme-app.login_register.other_files") }}</label>
+								{!! FormLib::File('user_files[]', $boolObligatorio = 1, $strExtra = "multiple") !!}
+							</div>
 
 						<div class="clearfix"></div>
 					</div>

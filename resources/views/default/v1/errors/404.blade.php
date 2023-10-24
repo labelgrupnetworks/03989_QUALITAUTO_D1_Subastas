@@ -27,6 +27,7 @@ header("HTTP/1.0 404 Not Found");
 
             img.logo {
                 margin-bottom: 40px;
+				max-width: 100%;
             }
 
             .content {

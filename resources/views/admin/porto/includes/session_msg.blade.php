@@ -11,19 +11,26 @@
 </div>
 @endforeach
 @endif
-@if(session('success'))
+
+@foreach (session('success') ?? [] as $key => $success)
 <div class="alert alert-success" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 			aria-hidden="true">&times;</span></button>
-	<strong>{{ session('success')[0] }}</strong>
+	<strong>
+		{{-- show key only if not number --}}
+		{{ intval($key) === $key ? '' : $key . ': ' }}
+		{{ $success}}
+	</strong>
 </div>
-@endif
-@if(session('warning'))
-@foreach (session('warning') as $key => $warning)
+@endforeach
+
+@foreach (session('warning') ?? [] as $key => $warning)
 <div class="alert alert-warning" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
 			aria-hidden="true">&times;</span></button>
-	<strong>{{ $key . ': ' .  $warning}}</strong>
+	<strong>
+		{{ intval($key) === $key ? '' : $key . ': ' }}
+		{!! $warning !!}
+	</strong>
 </div>
 @endforeach
-@endif

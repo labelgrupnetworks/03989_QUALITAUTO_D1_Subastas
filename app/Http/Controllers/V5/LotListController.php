@@ -34,7 +34,7 @@ class LotListController extends Controller
     var $lotsPerPage = 24 ;
 	var $actualPage = 1;
 	var $totalLots=0;
-
+	var $landing_page = null;
 
 /*
      #entrada por URL a la petición de mostrar lotes segun busqueda de texto
@@ -84,6 +84,28 @@ class LotListController extends Controller
 
         return $this->lotList( $linSec, $codSec,$codSubSec, null,  null);
     }
+	public function getCustomListSubSection($keySubSection){
+		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+
+        $gemp = Config::get("app.gemp");
+
+		$this->landing_page =  FxSubSec::JoinLangFXSUBSEC()
+		->select("cod_subsec")
+		->addSelect("NVL(FXSUBSEC_LANG.META_TITULO_SUBSEC_LANG, FXSUBSEC.META_TITULO_SUBSEC) META_TITULO_SUBSEC")
+		->addSelect("NVL(FXSUBSEC_LANG.META_DESCRIPTION_SUBSEC_LANG, FXSUBSEC.META_DESCRIPTION_SUBSEC) META_DESCRIPTION_SUBSEC")
+		->addSelect("NVL(FXSUBSEC_LANG.META_CONTENIDO_SUBSEC_LANG, FXSUBSEC.META_CONTENIDO_SUBSEC) META_CONTENIDO_SUBSEC")
+		->addSelect("NVL(FXSUBSEC_LANG.DES_SUBSEC_LANG, FXSUBSEC.DES_SUBSEC) DES_SUBSEC")
+		->addSelect("NVL(FXSUBSEC_LANG.KEY_SUBSEC_LANG, FXSUBSEC.KEY_SUBSEC) KEY_SUBSEC")
+		->where('NVL(FXSUBSEC_LANG.KEY_SUBSEC_LANG, FXSUBSEC.KEY_SUBSEC)', $keySubSection)
+		->where('gemp_subsec', $gemp)
+		->first();
+		\Tools::exit404IfEmpty($this->landing_page);
+
+
+		$linSec = $codSubSec= $this->landing_page->cod_subsec;
+
+		return $this->lotList( $linSec, null,$codSubSec, null,  null);
+	}
 
     public function getLotsListAllCategories (){
 
@@ -179,8 +201,14 @@ class LotListController extends Controller
         $subSections = $subsec->GetSubSecFromSec($filters["section"]);
 		$infoSubSec =  $subsec->GetInfoFxSubSec($filters["subsection"]);
 
+		#cargamos los datos de la landing page ya que el id de subsección puede ser compartidos por las landings y puede cargar los de otra subsección
+		if(!empty($this->landing_page)){
+			$infoSubSec = $this->landing_page;
+		}
+
 
 		$seo_data = $this->lotListSeo($auction, $infoOrtsec, $infoSec, $infoSubSec,  $filters, $tipos_sub);
+
 
 		$bread = $this->generateBreadCrumb($auction, $infoOrtsec, $infoSec, $infoSubSec);
 		if(!empty( $bread) && !empty($bread[0]) && empty($seo_data->canonical)){
@@ -487,9 +515,15 @@ class LotListController extends Controller
 					$bread[] = array("url" =>$urlSection, "name" => ucfirst(mb_strtolower($infoSec->des_sec))  );
 				}
 				if(!empty($infoSubSec)){
-					$urlSubSection =  route("subsection",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
-
+					#si se trata de una  landing
+					if(!empty($this->landing_page)){
+						$urlSubSection =  route("landing-subastas",[ "subfam" =>  $infoSubSec->key_subsec]);
+					}else{
+						$urlSubSection =  route("subsection",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
+					}
 					$bread[] = array("url" =>$urlSubSection, "name" => ucfirst(mb_strtolower($infoSubSec->des_subsec))  );
+
+
 				}
 			}
 		}

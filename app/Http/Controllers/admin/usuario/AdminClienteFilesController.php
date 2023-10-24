@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\admin\usuario;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\UserController;
+use App\Models\User;
+use App\Providers\ToolsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -54,22 +57,37 @@ class AdminClienteFilesController extends Controller
 		return response($file, 200)->header('Content-Type', $storage->mimeType("$cod_cli/files/$name"));
 	}
 
-	public function store(Request $request, $cod_cli)
+	public function storeDni(Request $request, $cod_cli)
 	{
-		$storage = Storage::disk('client');
-		$relativePath = "$cod_cli/files";
-
-		$files = $this->validateFiles($request->file('files'));
-		if(!$files){
+		$files = $request->file();
+		if(empty($files)){
 			return response()->json(['status' => 'error', 'message' => 'No se han seleccionado ficheros válidos']);
 		}
 
-		if (!$storage->exists($relativePath)) {
-			$storage->makeDirectory($relativePath);
-		}
+		//files is array, get first key name
+		$nameFile = array_keys($files)[0];
+		$userController = new UserController;
+		$userController->saveDni($request, $cod_cli, $nameFile);
 
-		foreach ($files as $file) {
-			$storage->putFileAs($relativePath, $file, $file->getClientOriginalName());
+		$dnisPaths = $userController->getCIFImages($cod_cli);
+		$dnis = array_map(function($dni){
+			return [
+				'path' => $dni,
+				'filename' => basename($dni),
+				'base64' => base64_encode(file_get_contents($dni)),
+
+			];
+		}, $dnisPaths);
+
+		return response()->json(['dnis' => $dnis, 'status' => 'success']);
+	}
+
+	public function store(Request $request, $cod_cli)
+	{
+		$files = ToolsServiceProvider::validFiles($request->file('files'));
+
+		if(!(new User)->storeFiles($files, $cod_cli)){
+			return response()->json(['status' => 'error', 'message' => 'No se han seleccionado ficheros válidos']);
 		}
 
 		//return getMetadata in json
@@ -90,14 +108,5 @@ class AdminClienteFilesController extends Controller
 
 		$newFiles = $this->getClientFiles($cod_cli);
 		return response()->json(['files' => $newFiles, 'status' => 'success']);
-	}
-
-	private function validateFiles($files)
-	{
-		$files = array_filter($files, function ($file) {
-			return $file->isValid();
-		});
-
-		return $files;
 	}
 }

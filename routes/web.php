@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 
 require __DIR__ . '/redirect.php';
+//require __DIR__ . '/test.php'; //Para mostrar momento de las consultas en el navegador
 
 Route::get('/{lang}/img/load/{size}/{img}', 'ImageController@return_image_lang');
 Route::get('/img/load/{size}/{img}', 'ImageController@return_image');
@@ -51,7 +52,7 @@ Route::get('send_new_password/{num_mails?}', 'MailController@send_new_password')
 
 # Login @ UserController
 Route::get(Routing::slug('login'), 'UserController@login');
-Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered');
+Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered')->name('user.registered');
 Route::post(Routing::slug('login'), 'UserController@login_post');
 Route::post('/login_post_ajax', 'UserController@login_post_ajax');
 Route::post(Routing::slug('registro'), 'UserController@registro')->name('send_register');
@@ -112,10 +113,10 @@ Route::post('/subasta/modal_images_fullscreen', 'SubastaController@modalImagesFu
             */
 
 #lotes
-
 Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 #NewLotes
 Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'));
+
 
 //2017-11-08  no parece que se use
 //Route::get(Routing::slugSeo('lote').'/{cod}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
