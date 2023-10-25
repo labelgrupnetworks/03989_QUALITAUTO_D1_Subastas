@@ -73,7 +73,7 @@ io.on('connection', function(socket) {
 
 
     	if (typeof interrupt_cd_time[params.cod_sub] == 'undefined'){
-    		interrupt_cd_time[params.cod_sub] = false;
+    		interrupt_cd_time[params.cod_sub] = [];
     	}
 
     	if (typeof cd_interval[params.cod_sub] == 'undefined'){
@@ -81,7 +81,7 @@ io.on('connection', function(socket) {
     	}
 
     	if (typeof proceso_puja_finalizado[params.cod_sub] == 'undefined'){
-    		proceso_puja_finalizado[params.cod_sub] = true;
+    		proceso_puja_finalizado[params.cod_sub] = [];
     	}
 
     	//Envia respuesta a 1 usuario.
@@ -223,7 +223,7 @@ io.on('connection', function(socket) {
 
 
 	    var data = [];
-    	proceso_puja_finalizado[params.cod_sub] = false;
+    	proceso_puja_finalizado[params.cod_sub][params.ref] = false;
 	    /*PARARCUENTA ATRAS para la cuenta atrás de finalizar lote.
 
             if (typeof params.can_do == 'undefined' || params.can_do != 'orders') {
@@ -246,8 +246,8 @@ io.on('connection', function(socket) {
                             if( typeof $res.no_interrupt_cd_time != 'undefined' &&  $res.no_interrupt_cd_time == 'true'){
                                console.log("no interrumpir") ;//si ha habido un error no debemos parar la cuenta atras
                             }else{
-                                 interrupt_cd_time[params.cod_sub] = true;
-                                  console.log("Interrumpir cuenta atras") ;
+                                 interrupt_cd_time[params.cod_sub][params.ref] = true;
+                                  console.log("Interrumpir cuenta atras" + params.ref) ;
                             }
                         }else{
                              console.log("Orden no interrumpir") ;
@@ -259,7 +259,7 @@ io.on('connection', function(socket) {
 			var respuestaDate = new Date();
 			tiempoRespuesta = respuestaDate - peticionDate;
 			console.log("response action lot", params.ref, "licit:", params.cod_licit, "imp:", params.imp , "time:", tiempoRespuesta, " ms");
-		    proceso_puja_finalizado[params.cod_sub] = true;
+		    proceso_puja_finalizado[params.cod_sub][params.ref] = true;
 		    io.sockets.in(params.cod_sub).emit('action_response', $res);
 
 		});
@@ -324,40 +324,43 @@ io.on('connection', function(socket) {
     });
 
 	//Inicia la cuenta atrás para pasar de lote.
-    socket.on('start_count_down', function(params)
+	socket.on('start_count_down', function(params)
 	{
-		var cd_frequency = 1000; // miliseconds
+		var cd_frequency = 250;// miliseconds
 
-		interrupt_cd_time[params.cod_sub] = false;
+		interrupt_cd_time[params.cod_sub][params.lot] = false;
 
 		if (typeof params.cd_time != 'undefined' && params.cd_time != ''){
 
 			if(typeof cd_interval[params.cod_sub] == 'undefined' || !cd_interval[params.cod_sub]){
-				cd_interval[params.cod_sub] = setInterval( function(){
+				var funcion = function(){
 
-					if(params.cd_time == -1 || interrupt_cd_time[params.cod_sub]){
+					if(params.cd_time <0 || interrupt_cd_time[params.cod_sub][params.lot]){
 					 	clearInterval(cd_interval[params.cod_sub]);
 					 	cd_interval[params.cod_sub] = false;
-
-					 	if (params.cd_time == -1 && !interrupt_cd_time[params.cod_sub] && proceso_puja_finalizado[params.cod_sub]){
+						console.log(proceso_puja_finalizado[params.cod_sub][params.lot]);
+					 	if (params.cd_time <0 && !interrupt_cd_time[params.cod_sub][params.lot] && (typeof proceso_puja_finalizado[params.cod_sub][params.lot] == 'undefined' || proceso_puja_finalizado[params.cod_sub][params.lot])){
                                                         io.sockets.in(params.cod_sub).emit('local_end_lot',{cod_licit:params.cod_licit});
 					 	  /* PARARCUENTA si hemos llegado a -1 pero han interrumpido el cd time debemos volver a activar pujas, ya que se bloquearon en el segundo 0	*/
-					 	}else if (params.cd_time == -1 && interrupt_cd_time[params.cod_sub] ){
+					 	}else if (params.cd_time <0 && interrupt_cd_time[params.cod_sub][params.lot] ){
 							io.sockets.in(params.cod_sub).emit('openBids');
                                                   /* Si hay un proceso de puja que aun no ha finalizado volvemos a abrir las pujas y marcamos como si se interrumpiera para que no se bloquee la subasta*/
-						}else if (!proceso_puja_finalizado[params.cod_sub]){
+						}else if (typeof proceso_puja_finalizado[params.cod_sub][params.lot] != 'undefined' && !proceso_puja_finalizado[params.cod_sub][params.lot]){
                                                     io.sockets.in(params.cod_sub).emit('openBids');
-                                                    interrupt_cd_time[params.cod_sub]=true;
+                                                    interrupt_cd_time[params.cod_sub][params.lot]=true;
                                                 }
                                                  /* FIN PARARCUENTA ATRAS */
 					}else if(params.cd_time == 0){
                                               io.sockets.in(params.cod_sub).emit('closeBidsEndLot',{cod_licit:params.cod_licit});
                                         }
 
-					io.sockets.in(params.cod_sub).emit('start_count_down_response', { cd_time: params.cd_time, interrupt_cd_time: interrupt_cd_time[params.cod_sub] } );
+					io.sockets.in(params.cod_sub).emit('start_count_down_response', { cd_time: Math.ceil(params.cd_time), interrupt_cd_time: interrupt_cd_time[params.cod_sub][params.lot] } );
 
-					params.cd_time--;
-				}, cd_frequency );
+					params.cd_time-= cd_frequency/1000;
+				}
+				/* primera llamada para que no espera un segundo */
+				funcion();
+				cd_interval[params.cod_sub] = setInterval( funcion, cd_frequency );
 			}
 
 		}
@@ -398,7 +401,7 @@ io.on('connection', function(socket) {
     //Para la cuenta atrás para pasar de lote.
     socket.on('stop_count_down', function(params)
 	{
-		interrupt_cd_time[params.cod_sub] = true;
+		interrupt_cd_time[params.cod_sub][params.lot] = true;
 
 	});
     socket.on('open_bids', function(params)
@@ -428,7 +431,7 @@ io.on('connection', function(socket) {
 			if( typeof params.res.no_interrupt_cd_time != 'undefined' &&  params.res.no_interrupt_cd_time == 'true'){
 				console.log("no interrumpir") ;//si ha habido un error no debemos parar la cuenta atras
 			}else{
-					interrupt_cd_time[params.cod_sub] = true;
+					interrupt_cd_time[params.cod_sub][params.lot] = true;
 					console.log("Interrumpir cuenta atras") ;
 			}
 		}else{
@@ -481,7 +484,7 @@ io.on('connection', function(socket) {
 
 	socket.on('emitStopCountDown', function(params)
 	{
-		interrupt_cd_time[params.cod_sub] = true;
+		interrupt_cd_time[params.cod_sub][params.lot] = true;
 	});
 
 	socket.on('emitLotPause', function(params)
