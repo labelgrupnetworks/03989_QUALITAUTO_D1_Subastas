@@ -482,7 +482,7 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
 		status == 'end'
 			? count_down_lot()
-			: socket.emit('stop_count_down', { cod_sub: auction_info.subasta.cod_sub });
+			: socket.emit('stop_count_down', { cod_sub: auction_info.subasta.cod_sub,  lot: auction_info.lote_actual.ref_asigl0 });
 	}
 
 	function count_down_lot() {
