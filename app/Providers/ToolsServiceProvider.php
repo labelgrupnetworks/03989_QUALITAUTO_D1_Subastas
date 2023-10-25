@@ -1402,23 +1402,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return $apiGoogle->getReviews($daysToReload);
 	}
 
-	public static function cookies()
-	{
-		$cookie = \Request::cookie('cookie_config', null);
-		$data = [];
-		$dataCookie = [];
-		if (!empty($cookie)) {
-			$data = explode(";", $cookie);
-			foreach ($data as $key => $value) {
-				if(!empty($value)){
-					$temp = explode("=", $value);
-					$dataCookie[$temp[0]] = $temp[1];
-				}
-			}
-		}
-		return $dataCookie;
-	}
-
 	public static function getDateFormat($dateValue, $formatOrigin, $formatReturn){
 
 		if(empty($dateValue)){
