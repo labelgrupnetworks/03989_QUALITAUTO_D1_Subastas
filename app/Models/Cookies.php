@@ -192,6 +192,8 @@ class Cookies
 	{
 		$analyticsCookies = [
 			'_g',
+			'La',
+			'_hj'
 		];
 
 		$this->removeCookies($analyticsCookies);
@@ -199,8 +201,7 @@ class Cookies
 
 	private function removeCookies($cookies)
 	{
-		$host = request()->getHttpHost();
-		$domain = str_replace('www', '', $host);
+		$domain = $this->getCookiesDomain();
 		$actualCookies = array_keys(Cookie::get());
 
 		foreach ($actualCookies as $cookieName) {
@@ -210,5 +211,24 @@ class Cookies
 				}
 			}
 		}
+	}
+
+	private function getCookiesDomain()
+	{
+		$host = request()->getHost();
+		$hostParts = explode('.', $host);
+
+		// Verifica si el host comienza con "www." y quítalo si es necesario
+		if (count($hostParts) > 0 && $hostParts[0] === 'www') {
+			array_shift($hostParts);
+		}
+
+		// Verifica si tiene dominio y subdominio y quítalo si es necesario
+		if (count($hostParts) > 2) {
+			array_shift($hostParts);
+		}
+
+		$domain = "." . implode('.', $hostParts);
+		return $domain;
 	}
 }

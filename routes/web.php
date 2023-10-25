@@ -34,7 +34,6 @@ Route::get('', function () {
 });
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
-Route::post('/accept_cookies', 'HomeController@accept_cookies');  // Función para aceptar las cookies legales
 Route::get('prueba', 'prueba@index')->name('prueba');
 Route::post('prueba', 'prueba@index')->name('prueba');
 Route::get('prueba/componentes', [prueba::class, 'componentes'])->name('prueba.componentes');
@@ -423,10 +422,10 @@ Route::get(Routing::slugSeo('calendar'), 'SubastaController@calendarController')
 
 Route::post('api-ajax/updateDivisa', 'UserController@savedDivisas');
 
-
-Route::get('/{lang}/cookies', 'CookiesController@getConfigCookies')->name('cookieConfig');
-Route::post('/{lang}/cookies', 'CookiesController@setConfigCookies')->name('cookieConfig');
 Route::post('/accept-all-cookies', 'CookiesController@acceptAllCookies');
+Route::post('/reject-all-cookies', 'CookiesController@rejectAllCookies');
+Route::post('/save-preferences-cookies', 'CookiesController@setPreferencesCookies');
+Route::post('/add-configurations-cookies', 'CookiesController@addConfigurationsCookies');
 
 
 /* Invaluable */
