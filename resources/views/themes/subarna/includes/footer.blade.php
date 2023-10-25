@@ -105,15 +105,6 @@
         </div>
 
     </div>
-
-    <div id="cookies-message" class="cookies-message d-flex align-items-center justify-content-space-between"
-        style="display: none">
-        <div>
-            {!! trans(\Config::get('app.theme') . '-app.msg_neutral.cookie_law') !!}
-        </div>
-        <button class="cookies-btn"
-            id="cookies-btn">{{ trans(\Config::get('app.theme') . '-app.home.confirm') }}</button>
-    </div>
 </footer>
 
 <div class="copy">
@@ -132,12 +123,10 @@
     </div>
 </div>
 
-<script>
-    if (localStorage.cookies !== 'true') {
-        $("#cookies-message").show()
-    }
-    $('#cookies-btn').click(function() {
-        $('#cookies-message').hide();
-        localStorage.cookies = 'true'
-    });
-</script>
+
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
+@endif
+
+@include('includes.cookies_personalize')
+
