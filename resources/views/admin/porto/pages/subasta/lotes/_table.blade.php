@@ -66,7 +66,7 @@
 	@endif
 
 
-	<a href="{{ route("$parent_name.$resource_name.create", ['subasta' => $cod_sub ,'menu' => 'subastas']) }}"
+	<a href="{{ route("$parent_name.$resource_name.create", ['cod_sub' => $cod_sub ,'menu' => 'subastas']) }}"
 		class="btn btn-primary btn-sm">{{ trans("admin-app.button.new") }}
 		{{ trans("admin-app.title.lot") }}</a>
 
