@@ -20,7 +20,7 @@
             <button onclick="acceptAllCookies()">
                 {{ trans("$theme-app.cookies.accept_all") }}
             </button>
-            <button type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+            <button type="button" data-toggle="modal" data-bs-toggle="modal" data-target="#cookiesPersonalize" data-bs-target="#cookiesPersonalize">
                 {{ trans("$theme-app.cookies.personalize") }}
             </button>
             <button onclick="rejectAllCookies()">

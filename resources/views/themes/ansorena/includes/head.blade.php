@@ -59,13 +59,15 @@ header('X-Frame-Options:     DENY');
     <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- Global Packages -->
 @section('framework-css')
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/5.2.0/css/bootstrap-utilities.css') }}">
 @show
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="{{ URL::asset('vendor/select2/4.1.0/select2.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css">
 <link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}">
@@ -103,10 +105,8 @@ header('X-Frame-Options:     DENY');
 <link href='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.css') }}' rel='stylesheet' />
 
 {{-- Icons --}}
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
-    integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css"
-    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/5.4.2/css/all.min.css') }}">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/4.7.0/css/font-awesome.min.css') }}">
 
 <!--Google -->
 <link rel="stylesheet" href="https://use.typekit.net/hes3gvg.css">
@@ -145,13 +145,13 @@ header('X-Frame-Options:     DENY');
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 
 @section('framework-js')
     <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 @show
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ URL::asset('vendor/select2/4.1.0/select2.min.js') }}"></script>
+
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
 <script src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script>
@@ -174,8 +174,3 @@ header('X-Frame-Options:     DENY');
 @stack('scripts')
 
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->

@@ -6,13 +6,13 @@
     $envioroment = Config::get('app.env');
 
 	$domains = [
-        'local' => 'http://www.newsubastas.test',
+        'local' => Config::get('app.url'),
         'develop' => 'https://auctions-ansorena.labelgrup.com',
         'production' => 'https://www.ansorena.com',
     ];
 
 	$galleryDomains = [
-        'local' => "http://www.gallery.test",
+        'local' => "http://gallery.test",
         'develop' => "https://www.preprodgaleria.enpreproduccion.com",
         'production' => "https://galeria.ansorena.com",
     ];

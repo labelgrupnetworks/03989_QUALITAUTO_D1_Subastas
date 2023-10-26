@@ -12,7 +12,7 @@
 <div class="cookie-type">
 
     <div class="cookie-type_header_wrap">
-        <div class="cookie-type_header" role="button" data-toggle="collapse" href="#collapse{{ $type }}Cookies"
+        <div class="cookie-type_header" role="button" data-toggle="collapse" data-bs-toggle="collapse" href="#collapse{{ $type }}Cookies"
             aria-expanded="false" aria-controls="collapse{{ $type }}Cookies">
             <span class="cookie-type_header_arrow"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
             <span class="cookie-type_header_text">{{ trans("$theme-app.cookies.type_$type") }}</span>

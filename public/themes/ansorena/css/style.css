@@ -118,13 +118,6 @@ input[type="password"] {
 	background-color: #f0f0f0;
 }
 
-.cookies-block {
-	position: sticky;
-	bottom: 0;
-	background-color: #ffffffe8;
-	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
-}
-
 .lb-link-underline {
 	text-decoration: none;
 	position: relative;
@@ -3837,10 +3830,10 @@ main.gallery-ficha .image-gallery {
 }
 
 /*
-	|--------------------------------------------------------------------------
-	| Menú
-	|--------------------------------------------------------------------------
-	*/
+|--------------------------------------------------------------------------
+| Menú
+|--------------------------------------------------------------------------
+*/
 .menu-panel-card {
 	border: 0;
 }
@@ -4149,4 +4142,3 @@ main.private-page form {
 main.private-page .form-check-label {
 	line-height: 1.5;
 }
-

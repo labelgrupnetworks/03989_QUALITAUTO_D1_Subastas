@@ -2,13 +2,13 @@
 	$locale = Config::get('app.locale');
     $envioroment = Config::get('app.env');
     $domains = [
-        'local' => "http://www.newsubastas.test",
+        'local' => Config::get('app.url'),
         'develop' => 'https://auctions-ansorena.labelgrup.com',
         'production' => 'https://www.ansorena.com',
     ];
 
 	$galleryDomains = [
-		'local' => "http://www.gallery.test/$locale",
+		'local' => "http://gallery.test/$locale",
         'develop' => "https://www.preprodgaleria.enpreproduccion.com/$locale",
         'production' => "https://galeria.ansorena.com/$locale",
 	];
@@ -138,8 +138,12 @@
                     <a href="{{ $pagina . trans("$theme-app.links.cookies") }}"
                         title="{{ trans("$theme-app.foot.cookies") }}">{{ trans("$theme-app.foot.cookies") }}</a>
 
-						<a href="{{ Routing::translateSeo('private-chanel/login', null, $domain) }}"
-                        	title="{{ trans("$theme-app.foot.intranet") }}">{{ trans("$theme-app.foot.intranet") }}</a>
+					<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-bs-toggle="modal" data-target="#cookiesPersonalize" data-bs-target="#cookiesPersonalize">
+						{{ trans("$theme-app.cookies.configure") }}
+					</button>
+
+					<a href="{{ Routing::translateSeo('private-chanel/login', null, $domain) }}"
+						title="{{ trans("$theme-app.foot.intranet") }}">{{ trans("$theme-app.foot.intranet") }}</a>
                 </div>
             </div>
         </div>
@@ -148,6 +152,8 @@
 
 </footer>
 
-@if (!Cookie::get('cookie_config'))
-    @include('includes.cookie')
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
 @endif
+
+@include('includes.cookies_personalize')
