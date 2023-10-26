@@ -72,6 +72,11 @@
                                 <a class="footer-link"
                                     href="{{ \Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.term_condition') }}">{{ trans(\Config::get('app.theme') . '-app.foot.term_condition') }}</a>
                             </li>
+							<li>
+								<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+									{{ trans("$theme-app.cookies.configure") }}
+								</button>
+							</li>
                         </ul>
                     </div>
                     <div class="col-xs-6 col-md-3 mb-3 text-sm-center">

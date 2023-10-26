@@ -689,6 +689,15 @@ footer .footer-title{
 	font-size: 16px;
 }
 
+.footer-link-button {
+	all: unset;
+	cursor: pointer;
+}
+
+.footer-link-button:is(::selection, :active, :focus) {
+	text-decoration: underline;
+}
+
 footer .footer-link{
 	color: #333;
 	line-height: 23px;
@@ -3173,27 +3182,6 @@ div button.btn-step-reg2 {
 	display: block;
     height: 42px;
 }
-
-.cookies-message{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background: lightgrey;
-    padding: 7px 20px;
-    font-size: 12px;
-    width: 100%;
-    z-index: 9999999;
-}
-
-.cookies-btn{
-    border-radius: 5px;
-    background: #1B4C77;
-    color: white;
-    box-shadow: none;
-    min-width: 100px;
-
-}
-
 
 .justify-content-space-between{
     -webkit-box-pack: justify;
