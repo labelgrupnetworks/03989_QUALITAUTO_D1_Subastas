@@ -1232,6 +1232,9 @@ function action_fav_lote(action, ref, cod_sub, cod_licit) {
 				$("#insert_msg").html(messages.success[data.msg]);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 				$('.' + ref + '-' + cod_sub).remove();
+				if (action == 'remove' && $('#heading-'+cod_sub+' #'+cod_sub+' .user-accout-items-content .user-accout-item-wrapper').length <= 0) {
+					$('#heading-'+cod_sub).remove();
+				}
 
 			}
 
