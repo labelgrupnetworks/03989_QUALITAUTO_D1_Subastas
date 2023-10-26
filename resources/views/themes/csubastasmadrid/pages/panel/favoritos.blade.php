@@ -40,7 +40,7 @@
 									$totalMiPuja = 0;
 								@endphp
 
-									<div class="panel-heading">
+									<div class="panel-heading" id="heading-{{$all_inf['inf']->cod_sub}}">
 
 										<h4 class="panel-title">
 											<a data-toggle="collapse" href="#{{$all_inf['inf']->cod_sub}}">
