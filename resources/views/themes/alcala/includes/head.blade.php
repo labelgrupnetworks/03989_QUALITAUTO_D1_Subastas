@@ -59,6 +59,7 @@ header("X-Frame-Options:     DENY");
 <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Global Packages -->
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
 <link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/5.4.2/css/all.min.css') }}">
@@ -109,7 +110,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
@@ -118,9 +118,6 @@ header("X-Frame-Options:     DENY");
 
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom.js') }}"></script>
-
-{{-- <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script> --}} {{-- No veo el uso --}}
-{{-- <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script> --}}
 
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
