@@ -61,6 +61,9 @@ header("X-Frame-Options:     DENY");
 @elseif(!empty($seo->canonical))
 <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" />
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..700&display=swap" rel="stylesheet">
@@ -123,7 +126,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
 

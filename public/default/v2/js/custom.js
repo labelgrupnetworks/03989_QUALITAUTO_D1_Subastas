@@ -660,11 +660,17 @@ function change_currency(price) {
 	return price;
 }
 
+/**
+ * @param {Event} event
+ */
 function changeGrid(event) {
-	const button = event.target.tagName == 'BUTTON' ? event.target : event.target.closest('button');
+	const button = event.currentTarget;
 	const changeType = button.dataset.grid;
+
 	const gridSection = document.querySelector('.section-grid-lots');
 	gridSection.classList.toggle('large', changeType === 'large');
+
+	saveConfigurationCookies({ lot: changeType });
 }
 
 function hideFilters(event) {
