@@ -1552,6 +1552,15 @@ footer {
     margin-bottom: 6px;
 }
 
+.footer-link-button {
+	all: unset;
+	cursor: pointer;
+}
+
+.footer-link-button:is(::selection, :active, :focus) {
+	text-decoration: underline;
+}
+
 .footer-link {
     color: var(--footer-links-color);
     text-decoration: none;
@@ -5365,6 +5374,10 @@ dialog::backdrop {
 	border-top: 1px solid #ddd;
 }
 
+.cookies p {
+	line-height: 1.2;
+}
+
 .cookies__title {
 	font-size: 1.2em;
 	font-weight: 700;
@@ -5451,6 +5464,10 @@ dialog::backdrop {
 	.cookies[data-style="bar"] .cookies_buttons {
 		align-self: flex-start;
 	}
+}
+
+.modal-cookies p {
+	line-height: 1.2;
 }
 
 .modal-cookies .modal-body {
