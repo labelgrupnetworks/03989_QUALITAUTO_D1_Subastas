@@ -25,9 +25,7 @@ $(document).ready(function () {
 	//aber el desplegable de login una vez por session
 	//en cualquier ruta exepto en /es o /en
 	appearLogin();
-	if ($.cookie('condiciones_sub') == 'true') {
-		$("#condiciones").click();
-	}
+
 	var d = document.documentElement.style;
 	if (('flexWrap' in d) || ('WebkitFlexWrap' in d) || ('msFlexWrap' in d)) {
 
@@ -181,7 +179,6 @@ $(document).ready(function () {
 	});
 
 	$('.btn_login_desktop').on('click', function () {
-		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
 		$('.login-desktop-container').removeClass('loginClose');
 		$('.login_desktop').fadeToggle("fast");
 	});
@@ -497,10 +494,6 @@ $(document).ready(function () {
 		} else {
 			$.magnificPopup.open({ items: { src: '#ordenFicha' }, type: 'inline' }, 0);
 		}
-	});
-
-	$("#condiciones").click(function () {
-		$.cookie('condiciones_sub', 'true', { expires: 1, path: '/' });
 	});
 
 	$("#confirm_orden").click(function () {
@@ -1184,32 +1177,36 @@ function change_price_saved_offers() {
 	$("#change_price").html(parseFloat(precio, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
 }
 
+function appearLogin(){
 
-
-function appearLogin() {
-
-	if ($('.btn_login_desktop').length) {
-
-		if (!(window.location.href === window.location.origin + '/es') || (window.location.href === window.location.origin + '/en')) {
-			if (!($.cookie('enterLogin'))) {
-				if ($('.btn_login_desktop').parents('ul').css('display') !== 'none') {
-					$('.login_desktop').fadeIn();
-				}
-
-				$.cookie('enterLogin', 'true', { expires: null, path: '/' });
-			}
-		}
-	} else {
-		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
+	if (!window.localStorage) {
+		return;
 	}
 
-	/* opcional hacerlo con sessionStorage
-	 *       if(!localStorage.getItem('enterLogin')) {
-		localStorage.setItem('enter', 'login');
-	}else{
-		console.log(localStorage.getItem('enterLogin'))
+	if ($('.btn_login_desktop').length === 0) {
+		return;
 	}
-	 */
+
+	const thisRoute = window.location.href;
+	const originRoute = window.location.origin;
+
+	//check if not in home
+	if (thisRoute === originRoute + '/es' || thisRoute === originRoute + '/en') {
+		return;
+	}
+
+	const nextPopup = localStorage.getItem('enterLogin');
+	if (new Date(nextPopup) > new Date()) {
+		return;
+	}
+
+	const now = new Date();
+	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+	localStorage.setItem('enterLogin', expires);
+
+	if ($('.btn_login_desktop').parents('ul').css('display') !== 'none') {
+		$('.login_desktop').fadeIn();
+	}
 }
 
 function reload_carrito() {

@@ -1,5 +1,11 @@
-@if (!empty(\Config::get('app.google_conversion_id')) && (!empty($cookiesState['google']) || !empty($cookiesState['all'])) )
+@php
+    use App\Models\Cookies;
+    $cookiesPreferences = new Cookies();
 
+    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
+@endphp
+
+@if ($cookiesPreferences->isAnalysisAllowed() && Config::get('app.google_conversion_id', false))
 <script type="text/javascript">
 
 	var google_conversion_id = {{\Config::get('app.google_conversion_id') }};
