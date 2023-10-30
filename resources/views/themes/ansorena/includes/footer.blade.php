@@ -2,13 +2,13 @@
 	$locale = Config::get('app.locale');
     $envioroment = Config::get('app.env');
     $domains = [
-        'local' => "http://www.newsubastas.test",
+        'local' => Config::get('app.url'),
         'develop' => 'https://auctions-ansorena.labelgrup.com',
         'production' => 'https://www.ansorena.com',
     ];
 
 	$galleryDomains = [
-		'local' => "http://www.gallery.test/$locale",
+		'local' => Config::get('app.url') . $locale,
         'develop' => "https://www.preprodgaleria.enpreproduccion.com/$locale",
         'production' => "https://galeria.ansorena.com/$locale",
 	];
@@ -17,7 +17,6 @@
 	$galleryDomain = $galleryDomains[$envioroment];
 
     $pagina = Routing::translateSeo('pagina', '/', $domain);
-
 @endphp
 <footer>
     <div class="container">
