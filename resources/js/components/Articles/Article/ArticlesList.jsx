@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Paginate } from "./Paginate";
-import { Article } from "./Article";
+import { Paginate } from "./Paginate.jsx";
+import { Article } from "./Article.jsx";
 import { useArticles } from "../../../hooks/useArticles";
 import { useForm } from "../../../hooks/useForm";
 

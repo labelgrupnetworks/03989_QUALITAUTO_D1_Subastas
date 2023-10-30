@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "predev": "php artisan generate:jstranslates",
+		"predev": "php artisan generate:jstranslates",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
@@ -20,6 +20,7 @@
         "postcss": "8.4.31"
     },
     "dependencies": {
-        "bootstrap-icons": "1.10.5"
+        "bootstrap-icons": "1.10.5",
+		"react-paginate": "8.2.0"
     }
 }

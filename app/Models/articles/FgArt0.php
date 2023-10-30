@@ -46,12 +46,20 @@ class FgArt0 extends Model
 	public function scopeJoinOrtsec1($query){
 		return $query->join("FGORTSEC1", "FGORTSEC1.EMP_ORTSEC1 = FGART0.EMP_ART0 AND FGORTSEC1.SEC_ORTSEC1 = FGART0.SEC_ART0");
 	}
-	public function scopeJoinOrtsec0($query){
-		return $query->join("FGORTSEC0", "FGORTSEC0.EMP_ORTSEC0 = FGORTSEC1.EMP_ORTSEC1 AND FGORTSEC0.LIN_ORTSEC0 = FGORTSEC1.LIN_ORTSEC1");
+	public function scopeJoinOrtsec0($query, $withLangs = false){
+		return $query->join("FGORTSEC0", "FGORTSEC0.EMP_ORTSEC0 = FGORTSEC1.EMP_ORTSEC1 AND FGORTSEC0.LIN_ORTSEC0 = FGORTSEC1.LIN_ORTSEC1")
+			->when($withLangs, function($query){
+				$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+				return $query->join("FGORTSEC0_LANG", "FGORTSEC0_LANG.EMP_ORTSEC0_LANG = FGORTSEC0.EMP_ORTSEC0 AND FGORTSEC0_LANG.SUB_ORTSEC0_LANG = FGORTSEC0.SUB_ORTSEC0 AND FGORTSEC0_LANG.LIN_ORTSEC0_LANG = FGORTSEC0.LIN_ORTSEC0 AND FGORTSEC0_LANG.LANG_ORTSEC0_LANG = '$lang'");
+			});
 	}
 
-	public function scopeJoinSec($query){
-		return $query->join("FXSEC", "FXSEC.GEMP_SEC = ". Config::get("app.gemp") . "  AND FXSEC.COD_SEC = FGART0.SEC_ART0" );
+	public function scopeJoinSec($query, $withLangs = false){
+		return $query->join("FXSEC", "FXSEC.GEMP_SEC = ". Config::get("app.gemp") . "  AND FXSEC.COD_SEC = FGART0.SEC_ART0" )
+			->when($withLangs, function($query){
+				$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+				return $query->join("FXSEC_LANG", "FXSEC_LANG.GEMP_SEC_LANG = FXSEC.GEMP_SEC AND FXSEC_LANG.CODSEC_SEC_LANG = FXSEC.COD_SEC AND FXSEC_LANG.LANG_SEC_LANG = '$lang'");
+			});
 	}
 
 	public function scopeJoinArt($query  ){

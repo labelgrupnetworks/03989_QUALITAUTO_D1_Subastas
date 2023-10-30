@@ -4,7 +4,7 @@ import { getTallasColores } from "../services/articles"
 export function useTallaColores({ fields }) {
 	const [tallasColoresList, setTallasColoresList] = useState([])
 	useEffect(() => {
-		getTallasColores({ fields })
+		getTallasColores({ fields, language })
 			.then((res) => {
 				setTallasColoresList(res);
 			})

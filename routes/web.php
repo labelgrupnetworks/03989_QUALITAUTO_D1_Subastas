@@ -611,11 +611,11 @@ Route::group(['prefix' => 'api'], function () {
 	Route::post('{lang}/getArticles', 'V5\ArticleController@getArticles')->name("getArticles");
 	//Route::post(Routing::translateSeo('getArticles'), 'V5\ArticleController@getArticles')->name("getArticles");
 
-	Route::post(Routing::translateSeo('getOrtsec'), 'V5\ArticleController@getOrtSec');
-	Route::post(Routing::translateSeo('getSec'), 'V5\ArticleController@getSec');
-	Route::post(Routing::translateSeo('getTallasColores'), 'V5\ArticleController@getTallasColores');
-	Route::post(Routing::translateSeo('getMarcas'), 'V5\ArticleController@getMarcas');
-	Route::post(Routing::translateSeo('getFamilias'), 'V5\ArticleController@getFamilias');
+	Route::post('{lang}/getOrtsec', 'V5\ArticleController@getOrtSec');
+	Route::post('{lang}/getSec', 'V5\ArticleController@getSec');
+	Route::post('{lang}/getTallasColores', 'V5\ArticleController@getTallasColores');
+	Route::post('{lang}/getMarcas', 'V5\ArticleController@getMarcas');
+	Route::post('{lang}/getFamilias', 'V5\ArticleController@getFamilias');
 });
 /***** Fin Articulos ******/
 
