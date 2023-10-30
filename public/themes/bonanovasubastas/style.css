@@ -31,6 +31,8 @@
     --panel-heading-background: #9999;
 	--panel-item-border: lightgray;
 	--panel-user-border-password: grey;
+
+	--error-form-color: #b21416;
 }
 
 body {
@@ -4788,10 +4790,16 @@ ul.sub_menu_adj {
 }
 
 .has-error{
-	color:#b21416;
-	border:#C00 1px solid !important;
+	color: var(--error-form-color);
+}
+
+.account-user .form-group.has-error label,
+.account-user .form-group.has-error input,
+#registerForm .has-error{
+	color: var(--error-form-color);
+	border-color: var(--error-form-color) !important;
 }
 
 .has-error label{
-	color:#b21416;
+	color: var(--error-form-color);
 }
