@@ -184,7 +184,9 @@ class AutoFormulariosController extends Controller
             }
 
             $email->setAtribute('CONTENT',$html);
-            $email->setTo(Config::get('app.admin_email'));
+			$emailTo = Config::get('app.admin_email_autoformulario', Config::get('app.admin_email'));
+			$email->setTo($emailTo);
+
             $email->send_email();
 
 

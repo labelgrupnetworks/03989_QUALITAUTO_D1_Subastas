@@ -19,6 +19,7 @@ use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FxSec;
 use App\Models\V5\FgFamart;
 use App\Models\V5\FgOrtsec1;
+use App\Providers\ToolsServiceProvider;
 
 # Cargamos el modelo
 
@@ -123,14 +124,17 @@ class ArticleController extends Controller
 
 	/*   FICHA ARTICULOS */
 
-	public function article($idArticle){
+	public function article($idArticle)
+	{
+		$article = FgArt0::query()
+			->leftJoinFgArt0Lang()
+			->select("FGART0.ID_ART0, FGART0.PVP_ART0, FGART0.SEC_ART0, FGART0.CSTK_ART0, FGART0.ORDEN_ART0")
+			->addSelect('NVL(FGART0_LANG.MODEL_ART0_LANG, FGART0.MODEL_ART0) MODEL_ART0, NVL(FGART0_LANG.DES_ART0_LANG, FGART0.DES_ART0) DES_ART0')
+			->where("FGART0.ID_ART0", $idArticle)
+			->activo()
+			->first();
 
-		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0, CSTK_ART0, ORDEN_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
-
-
-
-
-		\Tools::exit404IfEmpty($article);
+		ToolsServiceProvider::exit404IfEmpty($article);
 
 		#el iva que aplicaremos
 		$cartController = new CartController();

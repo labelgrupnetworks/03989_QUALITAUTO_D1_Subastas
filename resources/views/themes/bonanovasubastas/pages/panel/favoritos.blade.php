@@ -33,7 +33,7 @@
 							<div class="panel panel-default">
 
 								@foreach ($data['favoritos'] as $key_sub => $all_inf)
-									<div class="panel-heading">
+									<div id="heading-{{ $all_inf['inf']->cod_sub }}" class="panel-heading">
 										<div class="panel-title">
 											<a class="d-block" data-toggle="collapse" href="#{{ $all_inf['inf']->cod_sub }}">
 												<span class="title-sub-list">{{ $all_inf['inf']->name }}</span>
@@ -61,7 +61,7 @@
 													$url_friendly = str_slug($inf_lot->titulo_hces1);
 													$url_friendly = \Routing::translateSeo('lote') . $inf_lot->cod_sub . '-' . str_slug($inf_lot->name) . '-' . $inf_lot->id_auc_sessions . '/' . $inf_lot->ref_asigl0 . '-' . $inf_lot->num_hces1 . '-' . $url_friendly;
 													?>
-													<div class="user-accout-item-wrapper  col-xs-12 no-padding">
+													<div class="user-accout-item-wrapper col-xs-12 no-padding {{ $inf_lot->ref_asigl0 }}-{{ $inf_lot->cod_sub }}">
 														<div class="d-flex d-block-sm">
 															<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
 																<a href='{{ $url_friendly }}'>
