@@ -1193,7 +1193,7 @@ class Subasta extends Model
 								JOIN FXCLI ON FXCLI.GEMP_CLI = :gemp AND  FXCLI.COD_CLI = licitadores.CLI_LICIT
                                 ON (licitadores.COD_LICIT = ordenesLicitacion.LICIT_ORLIC AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod)
                             WHERE
-								FXCLI.BAJA_TMP_CLI ='N' AND
+							(FXCLI.BAJA_TMP_CLI ='N' OR FXCLI.BAJA_TMP_CLI ='W')  AND
                                 ordenesLicitacion.EMP_ORLIC = :emp
                                 ".$where."
                                 AND ordenesLicitacion.SUB_ORLIC = :cod
