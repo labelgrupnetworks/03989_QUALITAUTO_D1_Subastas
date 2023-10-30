@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang=”<?= \Config::get('app.language_complete')[\Config::get('app.locale')]; ?>“>
 
-<?php $cookiesState = \Tools::cookies();?>
-
 <head>
 	@include('includes.google_head')
 	@include('includes.head')

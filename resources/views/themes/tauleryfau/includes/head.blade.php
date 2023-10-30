@@ -141,7 +141,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>

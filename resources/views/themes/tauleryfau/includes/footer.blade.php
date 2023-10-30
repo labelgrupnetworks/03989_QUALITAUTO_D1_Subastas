@@ -119,31 +119,10 @@
 
         </div>
     </div>
-    @if (!Cookie::get('cookie_config'))
-        @include('includes.cookie')
-    @endif
 </footer>
 
-<script>
-    let domain = window.location.hostname;
-</script>
-
-@if (empty($cookiesState['google']) && empty($cookiesState['all']))
-    <script>
-        deleteGoogleCookies(domain);
-
-        if (domain.includes('www')) {
-            deleteGoogleCookies(domain.split('www')[1]);
-        }
-    </script>
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
 @endif
 
-@if (empty($cookiesState['facebook']) && empty($cookiesState['all']))
-    <script>
-        deleteFacebookCookies(domain);
-
-        if (domain.includes('www')) {
-            deleteFacebookCookies(domain.split('www')[1]);
-        }
-    </script>
-@endif
+@include('includes.cookies_personalize')
