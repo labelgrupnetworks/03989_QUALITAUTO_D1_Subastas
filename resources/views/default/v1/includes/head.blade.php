@@ -60,6 +60,8 @@ header("X-Frame-Options:     DENY");
 <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
 
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- Global Packages -->
 
 {!! Tools::preloadStylesheets("vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css", true) !!}
@@ -109,8 +111,6 @@ header("X-Frame-Options:     DENY");
 {{-- Icons --}}
 {!! Tools::preloadStylesheets("vendor/font-awesome/5.4.2/css/all.css", false) !!}
 {!! Tools::preloadStylesheets("vendor/font-awesome/4.7.0/css/font-awesome.min.css", true) !!}
-{{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous" media="print" onload="this.media='all'"> --}}
-{{-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
 
 <!--Google -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,7 +146,6 @@ header("X-Frame-Options:     DENY");
 <script defer src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script defer src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script defer src="{{ URL::asset('js/validator.js') }}"></script>
-<script defer src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script defer src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script defer src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script defer src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>

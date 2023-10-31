@@ -50,9 +50,11 @@ header("X-Frame-Options:     DENY");
 <link rel="canonical" href="{{ $seo->canonical }}" />
 @endif
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" type="text/css">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/4.7.0/css/font-awesome.min.css') }}">
 <link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
 <link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
@@ -64,7 +66,7 @@ header("X-Frame-Options:     DENY");
 <link rel="stylesheet" href="{{ URL::asset('vendor/slick/slick-theme.css') }}" />
 <!-- Magnific popup -->
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/popup/magnific-popup.css') }}" />
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/animate/3.5.2/animate.min.css') }}">
 <!-- Common Javascript -->
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
@@ -107,7 +109,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/customized_tr_main.js') }}" ></script>
@@ -121,8 +122,3 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 
-
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->

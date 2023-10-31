@@ -124,6 +124,12 @@ Todos los derechos reservados |
 <a href="{{ \Routing::translateSeo('normativa-lssi') }}" title="{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}">{{ trans(\Config::get('app.theme').'-app.foot.normativa_lssi') }}</a></span>
                 </div>
 
+				<div class="col-xs-12 col-md-10">
+					<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+						{{ trans("$theme-app.cookies.configure") }}
+					</button>
+				</div>
+
                 <div class="col-xs-12 col-md-2 footer-social-links">
                     <a href="http://twitter.com/alcalasubastas" title="Twitter" target="out">
 						@include('components.x-icon', ['size' => '19'])
@@ -157,15 +163,11 @@ Todos los derechos reservados |
         </div>
     </div>
 
-
-
-
-
-
-
 </footer>
 
-@if (!Cookie::get("cookie_law"))
-    @include("includes.cookie")
-<script>cookie_law();</script>
+
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
 @endif
+
+@include('includes.cookies_personalize')

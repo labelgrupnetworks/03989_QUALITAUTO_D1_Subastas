@@ -67,9 +67,11 @@
                                      <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.normas') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">{{ trans(\Config::get('app.theme').'-app.foot.normas') }}</a></li>
                                     <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a></li>
 									<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.aviso_legal')?>">{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}</a></li>
-									<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}" href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{ trans(\Config::get('app.theme').'-app.cookies.configure') }}</a></li>
-
-
+									<li>
+										<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+											{{ trans("$theme-app.cookies.configure") }}
+										</button>
+									</li>
                                 </ul>
                         </div>
                 </div>
@@ -111,13 +113,9 @@
 	</div>
 </div>
 
-@if (!Cookie::get("cookie_config"))
-    @include("includes.cookie")
+
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
 @endif
 
-{{--
-@if (!Cookie::get("cookie_law"))
-    @include("includes.cookie")
-<script>cookie_law();</script>
-@endif
---}}
+@include('includes.cookies_personalize')

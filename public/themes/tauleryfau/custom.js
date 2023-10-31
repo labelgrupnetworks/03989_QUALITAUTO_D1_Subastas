@@ -762,33 +762,6 @@ $(function () {
 	});
 
 
-
-
-
-	$("#large_square").click(function () {
-		see_desc();
-	});
-
-	$("#square").click(function () {
-		see_img();
-	});
-
-	$("#small_square").click(function () {
-		see_img_samll();
-	});
-
-
-
-	if ($.cookie('lot') == 'desc') {
-		see_desc();
-	} else if ($.cookie('lot') == 'img') {
-		see_img();
-	} else if ($.cookie('lot') == 'small_img') {
-		see_img_samll();
-	} else {
-		see_img();
-	}
-
 	$(window).resize(function () {
 		if ($(window).width() < 1200) {
 			$('.small_square .item_lot').removeClass('col');
@@ -1151,38 +1124,6 @@ function moreImagesGridMobile(num_hces1, lin_hces1, page){
     $.post( "/subasta/modal_images_fullscreen", params, function(response) {
 		$("body").append(response);
 	});
-}
-
-function see_desc() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'desc', { expires: 7, path: '/' });
-	$(".square").fadeOut('slow').addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".large_square").fadeIn('slow').removeClass("hidden");
-	$('.bar-lot-large').removeClass("hidden");
-	$('.fa-lot-list-large').addClass('selected')
-	$('.fa-lot-list').removeClass('selected')
-}
-
-function see_img() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'img', { expires: 7, path: '/' });
-	$(".large_square").fadeOut('slow').addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".square").fadeIn('slow').removeClass("hidden");
-	$('.fa-lot-list-large').removeClass('selected')
-	$('.fa-lot-list').addClass('selected')
-
-}
-
-function see_img_samll() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'small_img', { expires: 7, path: '/' });
-	$(".large_square").addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".square").addClass("hidden");
-	$(".small_square").removeClass("hidden");
 }
 
 function cerrarLogin() {

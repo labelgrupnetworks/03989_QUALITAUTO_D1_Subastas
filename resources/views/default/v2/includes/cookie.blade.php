@@ -1,18 +1,36 @@
-<div class="container-fluid py-3 cookies-block" id="cookie_law" token="{{ csrf_token() }}">
-    <h6 class="cookie-title">{{ trans(\Config::get('app.theme') . '-app.cookies.cookies_policy') }}</h6>
-	<p>
-		{!! trans(\Config::get('app.theme') . '-app.msg_neutral.cookie_law') !!}
-	</p>
+@php
+    $style = $style ?? 'popover'; // popover | bar
+@endphp
 
-    <div class="text-center mt-3">
-        @if (config('app.set_cookies', 1))
-            <a class='btn btn-lb-primary' href="{{ route('cookieConfig', ['lang' => \Config::get('app.locale')]) }}">
-                {{ trans(\Config::get('app.theme') . '-app.cookies.configure') }}
-            </a>
-        @endif
+<div class="cookies" data-style="{{ $style }}">
+    <p class="cookies__title">{{ trans("$theme-app.cookies.cookies_policy") }}</p>
 
-        <button class='btn btn-lb-secondary-gold' id='accept_all_cookies'>
-            {{ trans(\Config::get('app.theme') . '-app.cookies.accept') }}
-        </button>
+    <div class="cookies_content">
+        <div class="cookies__messages">
+            <p class="cookies__message">
+                {{ trans("$theme-app.cookies.popover_description") }}
+            </p>
+
+            <p class="cookies__message">
+                {{ trans("$theme-app.cookies.popover_description2") }}
+            </p>
+        </div>
+
+        <div class="cookies_buttons">
+            <button onclick="acceptAllCookies()">
+                {{ trans("$theme-app.cookies.accept_all") }}
+            </button>
+            <button type="button" data-toggle="modal" data-bs-toggle="modal" data-target="#cookiesPersonalize" data-bs-target="#cookiesPersonalize">
+                {{ trans("$theme-app.cookies.personalize") }}
+            </button>
+            <button onclick="rejectAllCookies()">
+                {{ trans("$theme-app.cookies.reject_all") }}
+            </button>
+        </div>
     </div>
+
+    <div class="cookies_links">
+        @include('includes.cookies._cookies_links')
+    </div>
+
 </div>

@@ -1,3 +1,11 @@
+@php
+    use App\Models\Cookies;
+    $cookiesPreferences = new Cookies();
+
+    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
+@endphp
+
+@if ($cookiesPreferences->isAnalysisAllowed())
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G2F5CY1R1J"></script>
 <script>
@@ -25,3 +33,9 @@
     gtag('js', new Date());
     gtag('config', 'G-G2F5CY1R1J');
 </script>
+<!-- End Google tag (gtag.js) -->
+@else
+<script>
+	ga = () => {}
+</script>
+@endif

@@ -213,7 +213,7 @@ h3,
 	min-width: 100%;
 }
 
-.btn:not(.btn-sm) {
+.btn:not(.btn-sm, .btn-link) {
 	--bs-btn-font-size: 18pt;
 	padding-top: 0.5rem;
 	font-weight: var(--font-extra-light);

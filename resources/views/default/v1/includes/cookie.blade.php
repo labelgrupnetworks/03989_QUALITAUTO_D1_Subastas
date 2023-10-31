@@ -1,30 +1,37 @@
-{{--<div id="cookie_law" token="{{ csrf_token() }}"><span id="text_cookie_law"></span></div>--}}
-<div class="col-xs-12 js-cookie-session" id="cookie_law" token="{{ csrf_token() }}" style="display: none">
-	<span>
-		<div class='container-fluid'>
-			<div class='row'>
-				<div class='col-xs-12 col-sm-12'>
-					<p class="cookie-title">{{ trans(\Config::get('app.theme').'-app.cookies.cookies_policy') }}</p>
-					{!! trans(\Config::get('app.theme').'-app.msg_neutral.cookie_law') !!}
-				</div>
-			</div>
+@php
+    $style = $style ?? 'popover'; // popover | bar
+	$position = $position ?? 'left'; // left | right
+@endphp
 
-			<div class="row mt-2">
-				<div class='col-xs-12 text-center'>
+<div class="cookies" data-style="{{ $style }}" data-position="{{ $position }}">
+    <p class="cookies__title">{{ trans("$theme-app.cookies.cookies_policy") }}</p>
 
-					@if (config('app.set_cookies', 1))
-					<a class='btn btn-cookies'
-						href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">
-						{{ trans(\Config::get('app.theme').'-app.cookies.configure') }}
-					</a>
-					@endif
+    <div class="cookies_content">
+        <div class="cookies__messages">
+            <p class="cookies__message">
+                {{ trans("$theme-app.cookies.popover_description") }}
+            </p>
 
-					<a class='btn btn-cookies' id='accept_all_cookies'>
-						{{ trans(\Config::get('app.theme').'-app.cookies.accept') }}
-					</a>
+            <p class="cookies__message">
+                {{ trans("$theme-app.cookies.popover_description2") }}
+            </p>
+        </div>
 
-				</div>
-			</div>
-		</div>
-	</span>
+        <div class="cookies_buttons">
+            <button onclick="acceptAllCookies()">
+                {{ trans("$theme-app.cookies.accept_all") }}
+            </button>
+            <button type="button" data-toggle="modal" data-bs-toggle="modal" data-target="#cookiesPersonalize" data-bs-target="#cookiesPersonalize">
+                {{ trans("$theme-app.cookies.personalize") }}
+            </button>
+            <button onclick="rejectAllCookies()">
+                {{ trans("$theme-app.cookies.reject_all") }}
+            </button>
+        </div>
+    </div>
+
+    <div class="cookies_links">
+        @include('includes.cookies._cookies_links')
+    </div>
+
 </div>
