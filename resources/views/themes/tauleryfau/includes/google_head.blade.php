@@ -2,7 +2,7 @@
     use App\Models\Cookies;
     $cookiesPreferences = new Cookies();
 
-    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE, Cookies::THIRD_FACEBOOK]);
+    Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE]);
 @endphp
 
 @if ($cookiesPreferences->isAnalysisAllowed())

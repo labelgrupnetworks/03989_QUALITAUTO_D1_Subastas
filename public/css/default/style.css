@@ -5457,6 +5457,11 @@ dialog::backdrop {
 		width: 100%;
 	}
 
+	.cookies[data-style="popover"][data-position="right"] {
+		left: initial;
+		right: 15px;
+	}
+
 	.cookies_buttons {
 		flex-direction: row;
 	}

@@ -92,6 +92,11 @@
                     </li>
                     <li><a href="{{ wpLink('wp_cookie_policy') }}">{{ trans("$theme-app.cookies.title") }}</a>
                     </li>
+					<li>
+						<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+							{{ trans("$theme-app.cookies.configure") }}
+						</button>
+					</li>
                 </ul>
             </div>
 
@@ -122,7 +127,7 @@
 </footer>
 
 @if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
-	@include('includes.cookie', ['style' => 'popover'])
+	@include('includes.cookie', ['style' => 'popover', 'position' => 'right'])
 @endif
 
 @include('includes.cookies_personalize')

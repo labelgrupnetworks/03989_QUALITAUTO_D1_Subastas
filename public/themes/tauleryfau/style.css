@@ -9668,6 +9668,11 @@ span.select2, .select2 span{
 		width: 100%;
 	}
 
+	.cookies[data-style="popover"][data-position="right"] {
+		left: initial;
+		right: 15px;
+	}
+
 	.cookies_buttons {
 		flex-direction: row;
 	}
@@ -9783,4 +9788,15 @@ span.select2, .select2 span{
 
 .cookie-type label:active:after {
 	width: 30px;
+}
+
+.footer-link-button {
+	all: unset;
+	cursor: pointer;
+	color: #fff;
+    font-weight: 600;
+}
+
+.footer-link-button:is(::selection, :active, :focus, :hover) {
+	color: var(--text-gold-color);
 }

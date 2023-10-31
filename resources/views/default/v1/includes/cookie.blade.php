@@ -1,8 +1,9 @@
 @php
     $style = $style ?? 'popover'; // popover | bar
+	$position = $position ?? 'left'; // left | right
 @endphp
 
-<div class="cookies" data-style="{{ $style }}">
+<div class="cookies" data-style="{{ $style }}" data-position="{{ $position }}">
     <p class="cookies__title">{{ trans("$theme-app.cookies.cookies_policy") }}</p>
 
     <div class="cookies_content">
