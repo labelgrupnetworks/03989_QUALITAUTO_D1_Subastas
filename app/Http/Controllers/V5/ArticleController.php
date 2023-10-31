@@ -1,9 +1,7 @@
 <?php
 namespace App\Http\Controllers\V5;
 
-
-use Config;
-
+use Illuminate\Support\Facades\Config;
 use View;
 use Route;
 use DB;
@@ -19,6 +17,7 @@ use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FxSec;
 use App\Models\V5\FgFamart;
 use App\Models\V5\FgOrtsec1;
+use App\Providers\ToolsServiceProvider;
 
 # Cargamos el modelo
 
@@ -123,14 +122,17 @@ class ArticleController extends Controller
 
 	/*   FICHA ARTICULOS */
 
-	public function article($idArticle){
+	public function article($idArticle)
+	{
+		$article = FgArt0::query()
+			->leftJoinFgArt0Lang()
+			->select("FGART0.ID_ART0, FGART0.PVP_ART0, FGART0.SEC_ART0, FGART0.CSTK_ART0, FGART0.ORDEN_ART0")
+			->addSelect('NVL(FGART0_LANG.MODEL_ART0_LANG, FGART0.MODEL_ART0) MODEL_ART0, NVL(FGART0_LANG.DES_ART0_LANG, FGART0.DES_ART0) DES_ART0')
+			->where("FGART0.ID_ART0", $idArticle)
+			->activo()
+			->first();
 
-		$article = FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0, CSTK_ART0, ORDEN_ART0")->where("ID_ART0", $idArticle)->Activo()->first();
-
-
-
-
-		\Tools::exit404IfEmpty($article);
+		ToolsServiceProvider::exit404IfEmpty($article);
 
 		#el iva que aplicaremos
 		$cartController = new CartController();
@@ -379,23 +381,23 @@ class ArticleController extends Controller
 
 	#Llamadas por react a Json
 
-	public function getArticles($lang){
-
-
+	public function getArticles($lang)
+	{
 		Config::set('app.locale', $lang);
 
-
-
-
-		$fgArt0 = FgArt0::select("ID_ART0,   max(MODEL_ART0) MODEL_ART0, max(PVP_ART0) PVP_ART0")->ArtActivo()->JoinArt();
-
+		$fgArt0 = FgArt0::query()
+			->select("FGART0.ID_ART0, max(FGART0.PVP_ART0) PVP_ART0")
+			->addSelect("NVL(max(FGART0_LANG.MODEL_ART0_LANG), max(FGART0.MODEL_ART0)) MODEL_ART0")
+			->artActivo()
+			->leftJoinFgArt0Lang()
+			->joinArt();
 
 		$order = request('order', 'id_art0');
 		$orderDirection = request('order_dir', 'desc');
 		if($order == 'id_art0' ){
-			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1")->orderBy("ORDEN_ART0")->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, ID_ART0");
+			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1")->orderBy("ORDEN_ART0")->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
 		}else{
-			$fgArt0 = $fgArt0->orderBy(request('order'), $orderDirection)->groupby(" ID_ART0");
+			$fgArt0 = $fgArt0->orderBy(request('order'), $orderDirection)->groupby("FGART0.ID_ART0");
 		}
 
 		#necesitamos ortsec1 para el orden
@@ -404,13 +406,12 @@ class ArticleController extends Controller
 
 		$articles = $fgArt0->paginate($this->numElements);
 
-		header('Content-Type: application/json');
 		#genero el urlArt con código de articulo vacio por que se lo concatenaré en react
+		$this->setInfoArticles($articles);
 
-		 $this->setInfoArticles($articles) ;
-
-		echo json_encode($articles);
+		return response()->json($articles);
 	}
+
 	#Se pasa el objeto fgart y un array de filtros que se deben omitir, por ejemplo si estamos buscando ortsec no podemos filtar por el
 	private function setFilters($fgArt0, $omitir = []){
 
@@ -434,7 +435,12 @@ class ArticleController extends Controller
 
 		if(request("search") && !in_array("search", $omitir)){
 			#FALTA que hacer bien la query, con indice y que no tenga en cuenta mayusculas ni acentos
-			$fgArt0 = $fgArt0->where("upper(DES_ART0)","like","%". strtoupper(request("search")) . "%"  );
+			if(Config::get('app.local') != 'es') {
+				$fgArt0 = $fgArt0->where("upper(DES_ART0_LANG)","like","%". strtoupper(request("search")) . "%"  );
+			}
+			else {
+				$fgArt0 = $fgArt0->where("upper(DES_ART0)","like","%". strtoupper(request("search")) . "%"  );
+			}
 			#no tiene sentido buscar por ortse si yase hace una busqueda más restrictiva
 		}
 
@@ -472,48 +478,69 @@ class ArticleController extends Controller
 		return $fgArt0;
 	}
 
-	public function getOrtSec(){
+	public function getOrtSec($lang)
+	{
+		Config::set('app.locale', $lang);
 		$fgArt0 = new fgArt0();
-		$fgArt0 = $fgArt0->select("MAX(DES_ORTSEC0) DES_ORTSEC0, LIN_ORTSEC0, COUNT(LIN_ORTSEC0) AS CUANTOS")->Activo()->JoinOrtsec1()->JoinOrtsec0()->groupby("LIN_ORTSEC0");
+		$fgArt0 = $fgArt0->select("NVL(MAX(DES_ORTSEC0_LANG), MAX(DES_ORTSEC0)) DES_ORTSEC0, LIN_ORTSEC0, COUNT(LIN_ORTSEC0) AS CUANTOS")
+			->Activo()
+			->leftJoinFgArt0Lang()
+			->JoinOrtsec1()
+			->JoinOrtsec0(true)
+			->groupby("LIN_ORTSEC0");
 
 		$fgArt0 = $this->setFilters($fgArt0, ["ortsec","sec"]);
 
 		return $fgArt0->get();
 	}
 
-	public function getSec(){
+	public function getSec($lang)
+	{
+		Config::set('app.locale', $lang);
 		$fgArt0 = new fgArt0();
-
-		$fgArt0 =$fgArt0->select("MAX(DES_SEC) DES_SEC, COD_SEC, COUNT(COD_SEC) AS CUANTOS")->Activo()->joinSec()->groupby("COD_SEC");
+		$fgArt0 = $fgArt0->select("NVL(MAX(DES_SEC_LANG), MAX(DES_SEC)) DES_SEC, COD_SEC, COUNT(COD_SEC) AS CUANTOS")
+			->Activo()
+			->leftJoinFgArt0Lang()
+			->joinSec(true)
+			->groupby("COD_SEC");
 		$fgArt0 = $this->setFilters($fgArt0,["sec"]);
-		return $fgArt0->get();
+		$sections = $fgArt0->get();
 
+		return $sections;
 	}
 
-	public function getMarcas()
+	public function getMarcas($lang)
 	{
+		Config::set('app.locale', $lang);
 		$fgArt0 = new FgArt0();
 
-		$fgArt0 = $fgArt0->select("MAX(DES_MARCA) DES_MARCA, MARCA_MARCA, COUNT(MARCA_MARCA) AS CUANTOS")->Activo()->joinMarca()->groupby("MARCA_MARCA");
+		$fgArt0 = $fgArt0->select("MAX(DES_MARCA) DES_MARCA, MARCA_MARCA, COUNT(MARCA_MARCA) AS CUANTOS")->Activo()->leftJoinFgArt0Lang()->joinMarca()->groupby("MARCA_MARCA");
 
 		$fgArt0 = $this->setFilters($fgArt0, ["marca"]);
 
 		return $fgArt0->get();
 	}
 
-	public function getFamilias()
+	public function getFamilias($lang)
 	{
+		Config::set('app.locale', $lang);
 		$fgArt0 = new FgArt0();
 
-		$fgArt0 = $fgArt0->select("MAX(DES_FAMART) DES_FAMART, COD_FAMART, COUNT(COD_FAMART) AS CUANTOS")->Activo()->joinFamilia()->groupby("COD_FAMART");
+		$fgArt0 = $fgArt0->select("MAX(DES_FAMART) DES_FAMART, COD_FAMART, COUNT(COD_FAMART) AS CUANTOS")
+			->Activo()
+			->leftJoinFgArt0Lang()
+			->joinFamilia()
+			->groupby("COD_FAMART");
 
 		$fgArt0 = $this->setFilters($fgArt0, ["familia"]);
+		$familias = $fgArt0->get();
 
-		return $fgArt0->get();
+		return $familias;
 	}
 
-	public function getTallasColores(){
-
+	public function getTallasColores($lang)
+	{
+		Config::set('app.locale', $lang);
 		$tallasColores = [];
 		$variantes = FgArt_Variantes::select("FGART_VARIANTES.ID_VARIANTE")->orderby("NAME_VARIANTE")->get();
 
@@ -522,7 +549,7 @@ class ArticleController extends Controller
 			$fgArt0 = $this->setFilters($fgArt0,["tallaColor_". $variante->id_variante]);
 			$fgArt0 =  $fgArt0->where("FGART_VARIANTES.ID_VARIANTE", $variante->id_variante);
 
-			$elementos =  $fgArt0->getTallaColor()->get();
+			$elementos =  $fgArt0->leftJoinFgArt0Lang()->getTallaColor()->get();
 
 			if(count($elementos)>0){
 

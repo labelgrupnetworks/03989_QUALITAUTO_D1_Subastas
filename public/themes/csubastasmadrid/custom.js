@@ -988,31 +988,34 @@ function action_fav_modal (action){
 
 };
 
-function action_fav_lote(action, ref, cod_sub, cod_licit){
-    routing.favorites	 = '/api-ajax/favorites';
-    //$.magnificPopup.close();
+function action_fav_lote(action, ref, cod_sub, cod_licit) {
+	routing.favorites = '/api-ajax/favorites';
+	//$.magnificPopup.close();
 
-    $.ajax({
-        type: "GET",
-        url:  routing.favorites + "/" + action,
-        data: { cod_sub: cod_sub, ref: ref, cod_licit: cod_licit },
-        success: function( data ) {
+	$.ajax({
+		type: "GET",
+		url: routing.favorites + "/" + action,
+		data: { cod_sub: cod_sub, ref: ref, cod_licit: cod_licit },
+		success: function (data) {
 
-            if (data.status == 'error'){
+			if (data.status == 'error') {
 
-                $("#insert_msg").html("");
-                $("#insert_msg").html(messages.error[data.msg]);
+				$("#insert_msg").html("");
+				$("#insert_msg").html(messages.error[data.msg]);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			} else if (data.status == 'success') {
+				$("#insert_msg").html("");
+				$("#insert_msg").html(messages.success[data.msg]);
+				$( '.'+ref+'-'+cod_sub).remove();
                 $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-            }else if(data.status == 'success'){
-                $("#insert_msg").html("");
-                $("#insert_msg").html( messages.success[data.msg] );
-                $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-                $( '.'+ref+'-'+cod_sub).remove();
+				if (action == 'remove' && $('#'+cod_sub+' .panel-body .table tbody tr').length <= 0) {
+					$('#'+cod_sub).remove();
+					$('#heading-'+cod_sub).remove();
+				}
+			}
 
-            }
-
-        }
-    });
+		}
+	});
 
 };
 function change_price_saved_offers(){

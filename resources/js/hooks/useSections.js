@@ -7,7 +7,7 @@ export function useSections({ fields }) {
 	const [secList, setSecList] = useState([])
 
 	useEffect(() => {
-		getOrtsec({ fields })
+		getOrtsec({ fields, language })
 			.then((res) => {
 				setOrtSecList(res);
 			})
@@ -17,7 +17,7 @@ export function useSections({ fields }) {
 	useEffect(() => {
 		setSecList([]);
 
-		getSec({ fields })
+		getSec({ fields, language })
 			.then((res) => {
 				setSecList(res);
 			})

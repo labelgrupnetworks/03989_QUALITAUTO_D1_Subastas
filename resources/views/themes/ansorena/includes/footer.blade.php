@@ -8,7 +8,7 @@
     ];
 
 	$galleryDomains = [
-		'local' => "http://gallery.test/$locale",
+		'local' => Config::get('app.url') . $locale,
         'develop' => "https://www.preprodgaleria.enpreproduccion.com/$locale",
         'production' => "https://galeria.ansorena.com/$locale",
 	];
@@ -17,7 +17,6 @@
 	$galleryDomain = $galleryDomains[$envioroment];
 
     $pagina = Routing::translateSeo('pagina', '/', $domain);
-
 @endphp
 <footer>
     <div class="container">
