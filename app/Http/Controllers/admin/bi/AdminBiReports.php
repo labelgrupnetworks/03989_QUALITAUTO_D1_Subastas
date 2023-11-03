@@ -53,7 +53,7 @@ class AdminBiReports extends Controller
 	{
 		$auctionsRequest = request("auctions",[]);
 
-		$subastasFilters = FgSub::joinSessionSub()->where("cod_sub","!=","0")->orderBy('session_start', 'desc')->get();
+		$subastasFilters = FgSub::joinSessionSub()->where("cod_sub","!=","0")->where("subc_sub","!=","A")->where("subc_sub","!=","N")->orderBy('session_start', 'desc')->get();
 		#filtramos las subastas y los tipos de subastas por el año
 
 		$auctionsByYear = $subastasFilters->map(function ($auction,$key) {
