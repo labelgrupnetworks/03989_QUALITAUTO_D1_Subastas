@@ -676,3 +676,19 @@ function newsletterDay(){
 
 	$.magnificPopup.open({ items: { src: '#newsletterDailyModal' }, type: 'inline' }, 0);
 }
+
+function showRematesModal() {
+	//si ya hay un modal abierto, volvemos a lanzar el evento hasta que se cierre
+	if ($('.mfp-bg.mfp-ready').length) {
+		setTimeout(showRematesModal, 1000);
+		return;
+	}
+	$.magnificPopup.open({ items: { src: '#rematesModal' }, type: 'inline' }, 0);
+}
+
+function showLoginFromModal() {
+	$.magnificPopup.close();
+
+	$('.login_desktop').fadeToggle("fast");
+	$('.login_desktop [name=email]').focus();
+}

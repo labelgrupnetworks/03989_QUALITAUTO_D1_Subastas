@@ -9,6 +9,7 @@
         ->orderby('"reference"')
         ->get();
 
+	$isFirstSessionEnded = $sessions->where('end', '<', now())->isNotEmpty();
     $emp = config('app.emp');
 
     //$auctionImage = Tools::url_img_auction('subasta_large', $activeAuction->cod_sub);
@@ -154,3 +155,10 @@
     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.buy_and_sell") }}"
         class="btn btn-outline-lb-primary btn-medium">{{ trans("$theme-app.subastas.know_more") }}</a>
 </section>
+
+
+@if($isFirstSessionEnded && !Session::has('user'))
+<script>
+	window.setTimeout(showRematesModal, 3500);
+</script>
+@endif

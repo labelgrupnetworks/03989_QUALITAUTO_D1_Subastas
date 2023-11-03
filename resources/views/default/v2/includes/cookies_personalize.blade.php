@@ -2,6 +2,7 @@
 	use App\Models\Cookies;
 	$cookiesPreferences = new Cookies();
 
+	$configCookies = $cookiesPreferences->getConfigurationCookies();
 	$analyisi = $cookiesPreferences->getAnalysisCookies();
 	$advertising = $cookiesPreferences->getAdvertisingCookies();
 @endphp
@@ -25,7 +26,7 @@
 
                 @include('includes.cookies._cookie_type', [
                     'type' => 'preferences',
-                    'cookies' => ['cookie_preferences'],
+                    'cookies' => $configCookies,
                 ])
 
                 @include('includes.cookies._cookie_type', ['type' => 'analysis', 'cookies' => $analyisi, 'anulable' => true, 'is_checked' => $cookiesPreferences->isAnalysisAllowed()])

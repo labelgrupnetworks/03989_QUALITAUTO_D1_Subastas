@@ -54,6 +54,30 @@
     </section>
 </div>
 
+<div class="container modal-block mfp-hide" id="rematesModal">
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+                <section class="remates-modal-section">
+					<div class="container">
+						<div class="row row-cols-1 gx-lg-5 gy-4 align-items-center">
+							<h4 class="ff-highlight fs-32-48 text-uppercase">{{ trans("$theme-app.subastas.featured_sales") }}</h4>
+							<p>
+								{!! trans("$theme-app.subastas.check_auction_results") !!}
+							</p>
+						</div>
+					</div>
+				</section>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.head.close") }}
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
 <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
