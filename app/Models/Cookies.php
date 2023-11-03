@@ -77,11 +77,11 @@ class Cookies
 
 	public function setPermissions($permissions)
 	{
-		if(!$permissions['analysis']){
+		if (!$permissions['analysis']) {
 			$this->removeAnalysisCookies();
 		}
 
-		if(!$permissions['advertising']){
+		if (!$permissions['advertising']) {
 			$this->removeAdvertisingCookies();
 		}
 
@@ -103,6 +103,19 @@ class Cookies
 	public function isAdvertisingAllowed()
 	{
 		return $this->preferences['permissions']['advertising'];
+	}
+
+	public function getConfigurationCookies()
+	{
+		$configCookies = ['cookie_preferences'];
+		if (Config::get('app.use_articleCart', false)) {
+			$configCookies[] = 'articleCart*';
+		}
+
+		if (Config::get('app.shoppingCart', false)) {
+			$configCookies[] = 'shoppingCart*';
+		}
+		return $configCookies;
 	}
 
 	public function getAnalysisCookies()
