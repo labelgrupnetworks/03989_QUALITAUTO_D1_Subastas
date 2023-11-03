@@ -801,6 +801,24 @@ article.blog-article {
 	text-transform: uppercase;
 }
 
+.remates-modal-section {
+	padding: 3rem;
+}
+
+.remates-modal-section .btn-link {
+	padding: 0;
+    text-transform: none;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+	text-decoration: underline;
+}
+
+.remates-modal-section .btn-link:hover {
+	color: inherit;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Grid
