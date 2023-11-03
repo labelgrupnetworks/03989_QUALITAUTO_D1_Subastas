@@ -34,7 +34,6 @@ Route::get('', function () {
 });
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
-Route::post('/accept_cookies', 'HomeController@accept_cookies');  // Función para aceptar las cookies legales
 Route::get('prueba', 'prueba@index')->name('prueba');
 Route::post('prueba', 'prueba@index')->name('prueba');
 Route::get('prueba/componentes', [prueba::class, 'componentes'])->name('prueba.componentes');
@@ -423,10 +422,10 @@ Route::get(Routing::slugSeo('calendar'), 'SubastaController@calendarController')
 
 Route::post('api-ajax/updateDivisa', 'UserController@savedDivisas');
 
-
-Route::get('/{lang}/cookies', 'CookiesController@getConfigCookies')->name('cookieConfig');
-Route::post('/{lang}/cookies', 'CookiesController@setConfigCookies')->name('cookieConfig');
 Route::post('/accept-all-cookies', 'CookiesController@acceptAllCookies');
+Route::post('/reject-all-cookies', 'CookiesController@rejectAllCookies');
+Route::post('/save-preferences-cookies', 'CookiesController@setPreferencesCookies');
+Route::post('/add-configurations-cookies', 'CookiesController@addConfigurationsCookies');
 
 
 /* Invaluable */
@@ -611,11 +610,11 @@ Route::group(['prefix' => 'api'], function () {
 	Route::post('{lang}/getArticles', 'V5\ArticleController@getArticles')->name("getArticles");
 	//Route::post(Routing::translateSeo('getArticles'), 'V5\ArticleController@getArticles')->name("getArticles");
 
-	Route::post(Routing::translateSeo('getOrtsec'), 'V5\ArticleController@getOrtSec');
-	Route::post(Routing::translateSeo('getSec'), 'V5\ArticleController@getSec');
-	Route::post(Routing::translateSeo('getTallasColores'), 'V5\ArticleController@getTallasColores');
-	Route::post(Routing::translateSeo('getMarcas'), 'V5\ArticleController@getMarcas');
-	Route::post(Routing::translateSeo('getFamilias'), 'V5\ArticleController@getFamilias');
+	Route::post('{lang}/getOrtsec', 'V5\ArticleController@getOrtSec');
+	Route::post('{lang}/getSec', 'V5\ArticleController@getSec');
+	Route::post('{lang}/getTallasColores', 'V5\ArticleController@getTallasColores');
+	Route::post('{lang}/getMarcas', 'V5\ArticleController@getMarcas');
+	Route::post('{lang}/getFamilias', 'V5\ArticleController@getFamilias');
 });
 /***** Fin Articulos ******/
 

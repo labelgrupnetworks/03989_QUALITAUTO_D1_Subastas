@@ -6,7 +6,7 @@ export function useMarcas({ fields }) {
 	const [marcasList, setMarcasList] = useState([]);
 
 	useEffect(() => {
-		getMarcas({ fields })
+		getMarcas({ fields, language })
 			.then((res) => {
 				setMarcasList(res);
 			})

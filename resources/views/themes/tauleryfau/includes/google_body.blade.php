@@ -1,9 +1,11 @@
-<!-- Google Tag Manager (noscript) -->
+@php
+    use App\Models\Cookies;
+    $cookiesPreferences = new Cookies();
+@endphp
 
-@if(!empty($cookiesState['google']) || !empty($cookiesState['all']))
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGJRQZX"
-
-	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-
-	<!-- End Google Tag Manager (noscript) -->
+@if ($cookiesPreferences->isAnalysisAllowed())
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGJRQZX" style="display:none;visibility:hidden"
+            height="0" width="0"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 @endif

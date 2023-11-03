@@ -6,7 +6,7 @@ export function useFamilies({ fields }) {
 	const [familiasList, setFamiliasList] = useState([]);
 
 	useEffect(() => {
-		getFamilias({ fields })
+		getFamilias({ fields, language })
 			.then((res) => {
 				setFamiliasList(Object.values(res));
 			});

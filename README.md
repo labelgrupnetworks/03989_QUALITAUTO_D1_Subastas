@@ -55,6 +55,7 @@
 - `git remote add subarna https://github.com/labelgrupnetworks/01232_SUBARNA_D1_Subastas.git`
 - `git remote add bonanova https://github.com/labelgrupnetworks/00162_BONANOVA_D1_Subastas.git`
 - `git remote add salaretiro https://github.com/labelgrupnetworks/01407_SALARETIRO_D1_Subastas.git`
+- `git remote add cmoriones https://github.com/labelgrupnetworks/03744_Cristina_Moriones_D1_Subastas.git`
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos

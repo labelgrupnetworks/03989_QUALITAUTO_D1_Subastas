@@ -72,8 +72,11 @@
                                     <li><a title="{{ trans(\Config::get('app.theme').'-app.links.our_guarantee') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.our_guarantee')?>">{{ trans(\Config::get('app.theme').'-app.head.our_guarantee') }}</a></li>
 									<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')?>">{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}</a></li>
 									<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')?>">{{ trans(\Config::get('app.theme').'-app.foot.cookies') }}</a></li>
-									<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.aviso_legal') }}" href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{ trans(\Config::get('app.theme').'-app.cookies.configure') }}</a></li>
-
+									<li>
+										<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+											{{ trans("$theme-app.cookies.configure") }}
+										</button>
+									</li>
                                 </ul>
                         </div>
                 </div>
@@ -93,29 +96,9 @@
 		</div>
 	</div>
 </div>
-@if (!Cookie::get("cookie_config"))
-	@include("includes.cookie")
-@endif
-<script>
-	let domain = window.location.hostname;
-</script>
 
-@if (empty($cookiesState['google']) && empty($cookiesState['all']))
-<script>
-	deleteGoogleCookies(domain);
-
-	if(domain.includes('www')){
-		deleteGoogleCookies(domain.split('www')[1]);
-	}
-</script>
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+	@include('includes.cookie', ['style' => 'popover'])
 @endif
 
-@if (empty($cookiesState['facebook']) && empty($cookiesState['all']))
-<script>
-	deleteFacebookCookies(domain);
-
-	if(domain.includes('www')){
-		deleteFacebookCookies(domain.split('www')[1]);
-	}
-</script>
-@endif
+@include('includes.cookies_personalize')

@@ -1,3 +1,7 @@
+@php
+    use App\Models\Cookies;
+    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
+@endphp
 
 <div class="info-auction-tab-contet">
     <div class="container">
@@ -21,7 +25,7 @@
 						{{ $paginator->links() }}
 					</div>
 
-					<div class="section-grid-lots mb-2">
+					<div class="section-grid-lots mb-2 {{$styleLotSeeConfiguration}}">
 						@include("includes.grid.lots")
 					</div>
 
@@ -29,7 +33,7 @@
 						{{ $paginator->links() }}
 					</div>
 				@else
-					<div class="section-grid-lots">
+					<div class="section-grid-lots {{$styleLotSeeConfiguration}}">
 						<div class="section-grid-lots" id="lotsGrid"></div>
 					</div>
 

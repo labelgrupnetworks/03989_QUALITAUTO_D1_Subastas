@@ -25,9 +25,7 @@ $(document).ready(function () {
 	//aber el desplegable de login una vez por session
 	//en cualquier ruta exepto en /es o /en
 	appearLogin();
-	if ($.cookie('condiciones_sub') == 'true') {
-		$("#condiciones").click();
-	}
+
 	var d = document.documentElement.style;
 	if (('flexWrap' in d) || ('WebkitFlexWrap' in d) || ('msFlexWrap' in d)) {
 
@@ -181,7 +179,6 @@ $(document).ready(function () {
 	});
 
 	$('.btn_login_desktop').on('click', function () {
-		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
 		$('.login-desktop-container').removeClass('loginClose');
 		$('.login_desktop').fadeToggle("fast");
 	});
@@ -499,10 +496,6 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#condiciones").click(function () {
-		$.cookie('condiciones_sub', 'true', { expires: 1, path: '/' });
-	});
-
 	$("#confirm_orden").click(function () {
 		imp = $("#bid_modal_pujar").val();
 		$.ajax({
@@ -597,36 +590,6 @@ $(document).ready(function () {
 		}
 
 	});
-
-	$("#large_square").click(function () {
-		see_desc();
-	});
-
-	$("#square").click(function () {
-		see_img();
-	});
-
-	$("#small_square").click(function () {
-		see_img_samll();
-	});
-
-	$("#square_mobile").click(function () {
-		see_img();
-	});
-
-	$("#large_square_mobile").click(function () {
-		see_desc();
-	});
-
-	if ($.cookie('lot') == 'desc') {
-		see_desc();
-	} else if ($.cookie('lot') == 'img') {
-		see_img();
-	} else if ($.cookie('lot') == 'small_img') {
-		see_img_samll();
-	} else {
-		see_img();
-	}
 
 	$(window).resize(function () {
 		if ($(window).width() < 1200) {
@@ -921,42 +884,7 @@ $(document).ready(function () {
 		$("#onlyHistory").removeAttr("checked");
 	});
 
-
-
-
-
 });
-
-
-
-
-
-function see_desc() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'desc', { expires: 7, path: '/' });
-	$(".square").addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".large_square").removeClass("hidden");
-	$('.bar-lot-large').removeClass("hidden");
-}
-
-function see_img() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'img', { expires: 7, path: '/' });
-	$(".large_square").addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".small_square").addClass("hidden");
-	$(".square").removeClass("hidden");
-}
-
-function see_img_samll() {
-	$.removeCookie('lot');
-	$.cookie('lot', 'small_img', { expires: 7, path: '/' });
-	$(".large_square").addClass("hidden");
-	$('.bar-lot-large').addClass("hidden");
-	$(".square").addClass("hidden");
-	$(".small_square").removeClass("hidden");
-}
 
 function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
@@ -1252,32 +1180,36 @@ function change_price_saved_offers() {
 	$("#change_price").html(parseFloat(precio, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
 }
 
+function appearLogin(){
 
-
-function appearLogin() {
-
-	if ($('.btn_login_desktop').length) {
-
-		if (!(window.location.href === window.location.origin + '/es') || (window.location.href === window.location.origin + '/en')) {
-			if (!($.cookie('enterLogin'))) {
-				if ($('.btn_login_desktop').parents('ul').css('display') !== 'none') {
-					$('.login_desktop').fadeIn();
-				}
-
-				$.cookie('enterLogin', 'true', { expires: null, path: '/' });
-			}
-		}
-	} else {
-		$.cookie('enterLogin', 'true', { expires: null, path: '/' });
+	if (!window.localStorage) {
+		return;
 	}
 
-	/* opcional hacerlo con sessionStorage
-	 *       if(!localStorage.getItem('enterLogin')) {
-		localStorage.setItem('enter', 'login');
-	}else{
-		console.log(localStorage.getItem('enterLogin'))
+	if ($('.btn_login_desktop').length === 0) {
+		return;
 	}
-	 */
+
+	const thisRoute = window.location.href;
+	const originRoute = window.location.origin;
+
+	//check if not in home
+	if (thisRoute === originRoute + '/es' || thisRoute === originRoute + '/en') {
+		return;
+	}
+
+	const nextPopup = localStorage.getItem('enterLogin');
+	if (new Date(nextPopup) > new Date()) {
+		return;
+	}
+
+	const now = new Date();
+	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+	localStorage.setItem('enterLogin', expires);
+
+	if ($('.btn_login_desktop').parents('ul').css('display') !== 'none') {
+		$('.login_desktop').fadeIn();
+	}
 }
 
 function reload_carrito() {
@@ -1540,3 +1472,50 @@ $(document).on("click", "#button-open-user-menu", function () {
 	$('#user-account-ul').toggle()
 });
 
+$(document).ready(function () {
+
+	$("#square").click(() => seeLot('img'));
+	$("#square_mobile").click(() => seeLot('img'));
+	$("#small_square").click(() => seeLot('small_img'));
+	$("#large_square").click(() => seeLot('desc'));
+	$("#large_square_mobile").click(() => seeLot('desc'));
+
+	let styleLotSee = document.querySelector('[name=lot_see_configuration]')?.value;
+	if (styleLotSee) {
+		seeLot(styleLotSee, false);
+	}
+});
+
+function seeLot(style, save = true) {
+	const options = {
+		'desc': see_desc,
+		'img': see_img,
+		'small_img': see_img_samll
+	}
+
+	hideAllStylesLots();
+	options[style] ? options[style]() : options['img']();
+
+	if(!save) return;
+	saveConfigurationCookies({ lot: style });
+}
+
+function hideAllStylesLots() {
+	$(".square").addClass("hidden");
+	$(".small_square").addClass("hidden");
+	$(".large_square").addClass("hidden");
+	$('.bar-lot-large').addClass("hidden");
+}
+
+function see_desc() {
+	$(".large_square").removeClass("hidden");
+	$('.bar-lot-large').removeClass("hidden");
+}
+
+function see_img() {
+	$(".square").removeClass("hidden");
+}
+
+function see_img_samll() {
+	$(".small_square").removeClass("hidden");
+}

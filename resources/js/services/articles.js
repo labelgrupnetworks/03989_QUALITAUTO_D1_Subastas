@@ -16,9 +16,9 @@ export async function getArticles({ fields, language }) {
 	}
 }
 
-export async function getOrtsec({ fields }) {
+export async function getOrtsec({ fields, language }) {
 	try {
-		const response = await fetch('/api/es/getOrtsec', {
+		const response = await fetch(`/api/${language}/getOrtsec`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -34,9 +34,9 @@ export async function getOrtsec({ fields }) {
 	}
 }
 
-export async function getSec({ fields }) {
+export async function getSec({ fields, language }) {
 	try {
-		const response = await fetch('/api/es/getSec', {
+		const response = await fetch(`/api/${language}/getSec`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -52,9 +52,9 @@ export async function getSec({ fields }) {
 	}
 }
 
-export async function getTallasColores({ fields }) {
+export async function getTallasColores({ fields, language }) {
 	try {
-		const response = await fetch('/api/es/getTallasColores', {
+		const response = await fetch(`/api/${language}/getTallasColores`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -70,9 +70,9 @@ export async function getTallasColores({ fields }) {
 	}
 }
 
-export async function getMarcas({ fields }) {
+export async function getMarcas({ fields, language }) {
 	try {
-		const response = await fetch('/api/es/getMarcas', {
+		const response = await fetch(`/api/${language}/getMarcas`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -88,9 +88,9 @@ export async function getMarcas({ fields }) {
 	}
 }
 
-export async function getFamilias({ fields }) {
+export async function getFamilias({ fields, language }) {
 	try {
-		const response = await fetch('/api/es/getFamilias', {
+		const response = await fetch(`/api/${language}/getFamilias`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

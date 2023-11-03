@@ -684,13 +684,6 @@ $(document).ready(function () {
 	$("#frmRegister-adv input, #frmRegister-adv select").blur(function () {
 		verifyFormLoginContent();
 	});
-
-	$('#cookiesForm').on('submit', checkCookiesForm);
-	checkPreferenceCookie();
-
-
-
-
 });
 
 function emailSobrePuja(cod, licit, lote) {
@@ -1654,8 +1647,6 @@ $(document).ready(function () {
 
 	});
 
-	//Eloy: Comentado para evitar petición inicial al cargar la página
-	//$("#actual_currency").trigger("change");
 
 });
 
@@ -1702,113 +1693,70 @@ $(document).ready(function () {
 /***************************************************************************************/
 /*************************** FUNCIONES SOBRE MODAL DE COOKIES **************************/
 /***************************************************************************************/
-
-function cookie_law() {
-
-	$("#text_cookie_law").html("<div class='container-fluid'><div class='row'><div class='col-xs-12 col-sm-10'>" + messages.neutral.cookie_law + "</div><div class='col-xs-12 col-sm-2 text-center mt-1'><a class='button-principal' id='accept_cookies'>Aceptar</a></div></div>");
-
-}
-
-$(document).ready(function () {
-
-	$("#accept_cookies").on("click", function () {
-		token = $("#cookie_law").attr("token");
-		$.post("/accept_cookies", { _token: token }, function (data) {
-
-			if (data == "OK") {
-				$("#cookie_law").fadeOut(500);
-			}
-
-		});
-
+function acceptAllCookies() {
+	fetch('/accept-all-cookies', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	}).then(function (response) {
+		if (response.ok) {
+			$(".cookies").fadeOut(500);
+			$(".modal-cookies").modal('hide');
+		}
 	});
+}
 
-	$("#accept_all_cookies").on("click", function () {
-		token = $("#cookie_law").attr("token");
-		$.post("/accept-all-cookies", { _token: token }, function (data) {
-
-			if (data == "OK") {
-				$("#cookie_law").fadeOut(500);
-			}
-
-		});
-
+function rejectAllCookies() {
+	fetch('/reject-all-cookies', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	}).then(function (response) {
+		if (response.ok) {
+			$(".cookies").fadeOut(500);
+			$(".modal-cookies").modal('hide');
+		}
 	});
+}
 
-	$("#accept_form_cookies").on("click", function (e) {
-		e.preventDefault();
-		$.post($('#cookie-form').attr('action'), $('#cookie-form').serialize(), function (data) {
+function savePreferencesCookies() {
 
-			if (data == "OK") {
-				$("#cookie_law").fadeOut(500);
-			}
+	const isAnalysisActive = document.querySelector("[name='permission_analysis']")?.checked;
+	const isAdvertisingActive = document.querySelector("[name='permission_advertising']")?.checked;
+	const data = {
+		'analysis': isAnalysisActive ? 1 : 0,
+		'advertising': isAdvertisingActive ? 1 : 0
+	};
 
-		});
-
+	fetch('/save-preferences-cookies', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		},
+		body: JSON.stringify({preferences: data})
+	}).then(function (response) {
+		if (response.ok) {
+			$(".modal-cookies").modal('hide');
+		}
 	});
-
-});
-
-
-
-function deleteGoogleCookies(domain){
-	deleteCookies('_ga', domain);
-	deleteCookies('__gat_gtag_UA_112197559_1', domain);
-	deleteCookies('_gid', domain);
 }
 
-function deleteFacebookCookies(domain){
-	deleteCookies('_fbp', domain);
-}
-
-function deleteCookies(cookieName, domain){
-
-	/*
-	if(getCookie(cookieName).trim() == ''){
-		return;
-	}
-	*/
-	document.cookie = `${cookieName}=; Path=/; domain=${domain}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-}
-
-function getCookie(cname) {
-	var name = cname + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
-	  var c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
-	}
-	return "";
-  }
-
-
-function checkCookiesForm(event) {
-	event.preventDefault();
-
-	const desactivatePreferenceInput = document.querySelector("[name='preferences'][value='0']");
-	if(desactivatePreferenceInput.checked) {
-		localStorage.setItem('showCookies', 'false');
-	}
-
-	event.target.submit();
-}
-
-function checkPreferenceCookie() {
-
-	if($(".js-cookie-session").length === 0){
-		return;
-	}
-
-	const showCookies = localStorage.getItem('showCookies');
-	if(!showCookies || showCookies !== "false") {
-		$(".js-cookie-session").fadeIn();
-	}
+function saveConfigurationCookies(data) {
+	fetch('/add-configurations-cookies', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		},
+		body: JSON.stringify({configurations: data})
+	}).catch(function (error) {
+		console.log(error);
+	});
 }
 
 

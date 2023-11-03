@@ -17,14 +17,4 @@ class HomeController extends Controller
 
         return view('front::pages.home', array('data' => $data));
     }
-
-	public function accept_cookies()
-	{
-		$config = config('session');
-
-		return response('OK')->cookie(
-		    'cookie_law', '1', (60*24*365), $config['path'], $config['domain'], $config['secure'], true
-		);
-	}
-
 }
