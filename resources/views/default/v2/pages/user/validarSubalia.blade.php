@@ -16,8 +16,8 @@
         @if(!Session::has('user'))
         <p class="mt-2 text-center">{{ trans(\Config::get('app.theme').'-app.login_register.subalia_hasUser') }} {{(\Config::get( 'app.name' ))}}</p>
 
-        <form id="formUserNoLogin" method="post" action="javascript:landingLogin(this);">
-            
+        <form id="formUserNoLogin" method="post" action="javascript:validarLogin(this);">
+
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="mt-5 formsLanding">
@@ -40,17 +40,15 @@
             <div class="mt-2 mb-5 formsLanding">
                 {!!$formulario->submit!!}
             </div>
-        </form>   
+        </form>
         <div class="mt-1 mb-5">
                 <a title="" href="{{ $redirect }}"><button class="btn" style="background-color: transparent; min-width: 150px;color:black;" id="cancelarSubalia">{{ trans(\Config::get('app.theme').'-app.login_register.cancel') }}</button></a>
         </div>
 
 
-        @if(\Config::get("app.locale") == 'en')
-            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-        @else
-            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-        @endif
+       
+            <form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
+
                 <input type="hidden" name="info" id="info" value="">
                 <input type="hidden" name="cod_auchouse" id="cod_auchouse" value="">
                 <input type="hidden" name="redirect" id="redirectH" value="">
