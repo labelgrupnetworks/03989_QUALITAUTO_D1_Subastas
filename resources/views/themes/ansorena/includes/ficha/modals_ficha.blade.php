@@ -28,6 +28,7 @@
 						<input type="text" class="form-control" value="" name="phone2" id="phone2Bid_JS" placeholder="{{ trans("$theme-app.login_register.phone") }} 2">
 						<label for="floatingInput">{{ trans("$theme-app.login_register.phone") }} 2</label>
 					</div>
+					<p id="errorOrdenFicha" style="color:red"><p>
 
 					<button id="confirm_orden" class="btn btn-medium button_modal_confirm btn-lb-primary my-2">
 						{{ trans("$theme-app.lot.confirm") }}
