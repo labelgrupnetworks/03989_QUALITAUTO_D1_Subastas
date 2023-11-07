@@ -19,6 +19,7 @@ use App\Models\WebNewbannerTipoModel;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -593,6 +594,7 @@ class BannerController extends Controller
 				// Get real and relative path for current file
 				$filePath = $file->getRealPath();
 				$relativePath = substr($filePath, strlen($path) + 1);
+				Log::debug('paths', ['filepath' => $filePath, 'path' => $path, 'relativePath' => $relativePath]);
 
 				// Add current file to archive
 				$zip->addFile($filePath, "$theme/$relativePath");
