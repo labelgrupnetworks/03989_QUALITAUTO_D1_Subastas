@@ -71,55 +71,6 @@ $('.search-component-form').submit(function(){
 	      navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">']
 	  });
 
-	  $(".owl-carousel-home").owlCarousel({
-	      items:4,
-	      loop: true,
-	      autoplay:true,
-	      margin: 20,
-	      dots:false,
-	      nav: false,
-	      responsiveClass: true,
-	      responsive: {
-	          0: {
-	              items: 1
-	          },
-	          600: {
-	              items: 2
-	          },
-	          1000: {
-	              items: 4
-	          },
-	          1200: {
-	              items: 4
-	          },
-	      }
-	  });
-
-
-	  $(".owl-carousel-single").owlCarousel({
-	      items:4,
-	      loop: true,
-	      autoplay:true,
-	      margin: 20,
-	      dots:true,
-	      nav: true,
-	      responsiveClass: true,
-	      responsive: {
-	          0: {
-	              items: 1
-	          },
-	          600: {
-	              items: 2
-	          },
-	          1000: {
-	              items: 4
-	          },
-	          1200: {
-	              items: 4
-	          },
-	      }
-	  });
-
         $("#owl-carousel-responsive").owlCarousel({
             items:1,
             autoplay:true,
@@ -796,34 +747,6 @@ function carrousel_molon(carrousel) {
 
 	carrousel.data('hasSlick', true);
 }
-
-
-/** Antiguo carousel
-function carrousel_molon(carrousel){
-    carrousel.owlCarousel({
-        items:3,
-        autoplay:true,
-        margin: 20,
-        dots:true,
-        nav: true,
-        navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">'],
-        responsiveClass: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    });
-};*/
 
 function password_recovery(lang){
     var pass_recov = $("#password_recovery").serialize();

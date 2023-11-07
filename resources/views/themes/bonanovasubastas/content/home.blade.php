@@ -4,24 +4,6 @@
 
 			{!! \BannerLib::bannersPorKey('top_home', 'home-top-banner', '{dots:true, arrows:true, autoplay: true,
 			autoplaySpeed: 5000, slidesToScroll:1}') !!}
-
-			<?php /* Banner Slider Antiguo
-			<div class="owl-carousel owl-theme" id="owl-carousel">
-				<?php
-	        		$key = "slider_home_".strtoupper(Config::get('app.locale'));
-            		$html="<div class='item-carousel'>
-            			<a href=\"{url}\" {target}>
-                			<img class=\"img-responsive\" src='{img}'>
-                			<div class='slider-text'>
-                    			<h1>{html}</h1>
-                			</div>
-            			</a>
-        			</div>";
-        			$content = \Tools::slider($key, $html);
-    				?>
-			<?= $content ?>
-			</div>
-		*/?>
 	</div>
 
 </div>
@@ -37,7 +19,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
 				<div class="loader"></div>
-				<div class="owl-theme owl-carousel" id="lotes_destacados"></div>
+				<div id="lotes_destacados"></div>
 			</div>
 		</div>
 

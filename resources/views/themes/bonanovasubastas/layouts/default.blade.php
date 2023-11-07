@@ -1,11 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	@include('includes.open_graph_head')
-    @include('includes.google_head')
 	@include('includes.head')
-	{{ \Tools::PersonalJsCss() }}
-	@yield('assets_components')
 </head>
 
 <body>
