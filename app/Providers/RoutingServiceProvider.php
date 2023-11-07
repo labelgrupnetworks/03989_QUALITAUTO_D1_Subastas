@@ -2,12 +2,11 @@
 
 namespace App\Providers;
 
+use App\libs\CacheLib;
 use Illuminate\Support\ServiceProvider;
-use DB;
-use Config;
-use Log;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
-use Session;
 
 class RoutingServiceProvider extends ServiceProvider
 {
@@ -30,7 +29,7 @@ class RoutingServiceProvider extends ServiceProvider
    public static function seo_rutes() {
        // $seo_routes = DB::select("SELECT * FROM WEB_SEO_ROUTES WHERE ID_EMP = '".Config::get('app.main_emp')."'");
         $sql="SELECT * FROM WEB_SEO_ROUTES WHERE ID_EMP = '".Config::get('app.main_emp')."'";
-        $seo_routes = \CacheLib::useCache('WEB_SEO_ROUTES',$sql, array(),100);
+        $seo_routes = CacheLib::useCache('WEB_SEO_ROUTES', $sql, array(), 100);
         $arr_seo_routes = array();
         $arr_seo_translate = array();
         foreach ($seo_routes as $route) {
@@ -40,6 +39,7 @@ class RoutingServiceProvider extends ServiceProvider
             }
             $arr_seo_translate[$route->key_seo_routes][$route->lang_seo_routes] = $route;
         }
+
         Config::set('routes_SEO', $arr_seo_routes);
         Config::set('translate_SEO', $arr_seo_translate);
     }
@@ -146,8 +146,8 @@ class RoutingServiceProvider extends ServiceProvider
 
         $lang = \App::getLocale();
 
-        if(empty(Config::get('translate_SEO'))){
-            \Routing::seo_rutes();
+        if(!Config::has('translate_SEO')){
+            self::seo_rutes();
         }
 
         $array_seo_translate = Config::get('translate_SEO');

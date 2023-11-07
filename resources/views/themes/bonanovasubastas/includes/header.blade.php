@@ -2,11 +2,11 @@
         <div class="navbar-top">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12">               
+                <div class="col-xs-12">
                     <div class="navbar-top-wrapper">
                         <ul>
                             @if(!Session::has('user'))
-                                <li class="hidden-xs hidden-sm"><a class="btn-color" title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a></li>                                
+                                <li class="hidden-xs hidden-sm"><a class="btn-color" title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}" href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a></li>
                                 <li class="hidden-xs hidden-sm"><a class="btn_login_desktop btn-color" title="<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>" href="javascript:;"><?= trans(\Config::get('app.theme').'-app.login_register.login') ?></a></li>
                                 <li class="hidden-lg hidden-md sesion-responsive"><a title="Login" class="login" href="javascript:;"><i class="fa fa-user fa-2x fa-lg"></i></a></li>
                             @else
@@ -25,7 +25,7 @@
                                 <div class="login_desktop_title">
                                     <?= trans(\Config::get('app.theme').'-app.login_register.login') ?>
                                 </div>
-                                <img class="closedd" src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png" alt="Close">    
+                                <img class="closedd" src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png" alt="Close">
                                 <form data-toggle="validator" id="accerder-user-form">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="form-group">
@@ -37,15 +37,15 @@
                                         <input class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20">
                                     </div>
                                     <p>
-                                        <a 
-                                        onclick="cerrarLogin();" 
-                                        class="c_bordered" 
-                                        data-ref="{{ \Routing::slug('password_recovery') }}" 
-                                        id="p_recovery" 
-                                        data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}" 
-                                        href="javascript:;" 
-                                        data-toggle="modal" 
-                                        data-target="#modalAjax" 
+                                        <a
+                                        onclick="cerrarLogin();"
+                                        class="c_bordered"
+                                        data-ref="{{ \Routing::slug('password_recovery') }}"
+                                        id="p_recovery"
+                                        data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}"
+                                        href="javascript:;"
+                                        data-toggle="modal"
+                                        data-target="#modalAjax"
                                         >
                                                 {{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}
                                         </a>
@@ -59,9 +59,9 @@
                                     @endif
                                 </form>
                             </div>
-                            
+
                         </ul>
-                        
+
                     </div>
                 </div>
             </div>
@@ -80,16 +80,16 @@
                     <div class="menu-access">
                         <div class="languaje">
                             @if (\Config::get( 'app.enable_language_selector' ))
-                            <select 
-                                id="selectorIdioma" 
-                                actuallang="/{{ \App::getLocale() }}/" 
-                                name="idioma" 
-                                class="form-control" 
+                            <select
+                                id="selectorIdioma"
+                                actuallang="/{{ \App::getLocale() }}/"
+                                name="idioma"
+                                class="form-control"
                                 style="width:100px; height:27px; font-size:11px;"
                             >
                                 <option value="es"><?= trans(\Config::get('app.theme').'-app.head.language_es') ?></option>
                                 <option value="en"><?= trans(\Config::get('app.theme').'-app.head.language_en') ?></option>
-                            </select>     
+                            </select>
                             @elseif(\Config::get( 'app.google_translate' ))
                                 <div class="google_translate1">
                                     <div id="google_translate_element"></div>
@@ -113,7 +113,7 @@
                                 </form>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -143,53 +143,28 @@
                     </div>
                 </div>
 
-              
+
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav hidden-xs hidden-sm hidden-md">
-	    <?php //   <li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li> ?>
-              <li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li>
-                <?php
 
-                   $subastaObj        = new \App\Models\Subasta();
-                   $has_subasta = $subastaObj->auctionList ('S', 'W');
-                   if( empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                   }
-                   
-                ?>
-                @if(!empty($has_subasta))
+              <li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li>
+
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
                   <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
                 @endif
-                <?php
-                    $has_subasta = $subastaObj->auctionList ('H');
-                ?>
-                @if(!empty($has_subasta))
+
+                @if($global['subastas']->has('H'))
                     <li><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
                 @endif
-                <?php
-                  $has_subasta = $subastaObj->auctionList ('S', 'O');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-                   }
-                ?>
-                @if(!empty($has_subasta))
+
+				@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
                     <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
                 @endif
-                <?php
-                  $has_subasta = $subastaObj->auctionList ('S', 'V');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
-                   }
-                ?>
-                @if(!empty($has_subasta))
+
+                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
                     <li><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
                 @endif
-               <?php /*
-                *    <li><a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
-	    
-                * */
-                  ?>
-	      
+
 	      <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a></li>
 	    </ul>
         	  </div>
@@ -206,53 +181,20 @@
             <li class="li-color">
             <a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a>
         </li>
-        <?php
 
-            $subastaObj        = new \App\Models\Subasta();
-            $has_subasta = $subastaObj->auctionList ('S');
-            if(  Session::get('user.admin')){
-                $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A'));
-            }
-            $not_finished=false;
-            $finished=false;
-        ?>
-        @foreach($has_subasta as $header_sub)
-            @if(strtotime($header_sub->session_end) <= time())
-                <?php $not_finished = true?>
-            @elseif(strtotime($header_sub->session_end) > time())
-                <?php $finished = true?>
-            @endif
-        @endforeach
-        <?php
+        @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+            <li><a class="li-color" href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
+        @endif
 
-                   $subastaObj        = new \App\Models\Subasta();
-                   $has_subasta = $subastaObj->auctionList ('S', 'W');
-                   if( empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                   }
-                   
-                ?>
-                @if(!empty($has_subasta))
-                  <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a></li>
-                @endif
-                            <li class="li-color"><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
+		@if($global['subastas']->has('H'))
+			<li class="li-color"><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a></li>
+		@endif
 
-            <?php
-            $has_subasta = $subastaObj->auctionList ('S', 'O');
-            if(empty($has_subasta) && Session::get('user.admin')){
-                $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-            }
-            ?>
-        @if(!empty($has_subasta))
+		@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
             <li class="li-color"><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a></li>
         @endif
-            <?php
-                $has_subasta = $subastaObj->auctionList ('S', 'V');
-                if( empty($has_subasta) && Session::get('user.admin')){
-                    $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
-                }
-            ?>
-        @if(!empty($has_subasta))
+
+		@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
             <li class="li-color"><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
         @endif
         	      <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}" href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a></li>
