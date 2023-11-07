@@ -1,31 +1,9 @@
   $(document).ready(function(){
 
-
-      $("#country").change(function(){
-        var selected_country = $("#frmRegister-adv #country").val();
-        if(selected_country=="ES"){
-            $('#dni').prop("required", true);
-            $('#cpostal').prop("required", true);
-        }else{
-            $('#dni').removeAttr("required");
-            $('#cpostal').removeAttr("required");
-        }
-      });
-
-      $('.lazy').Lazy({
-	// your configuration goes here
-	scrollDirection: 'vertical',
-	effect: 'fadeIn',
-	visibleOnly: true,
-	onError: function(element) {
-		console.log('error loading ' + element.data('src'));
-	}
-});
-$('.search-component-form').submit(function(){
-   $('.btn-custom-search').find('i').hide()
-   $('.btn-custom-search').find('.loader.mini').show()
-})
-
+	  $('.search-component-form').submit(function () {
+		  $('.btn-custom-search').find('i').hide()
+		  $('.btn-custom-search').find('.loader.mini').show()
+	  })
 
       $('.switcher').click(function() {
         $(this).toggleClass('switcher-active');
@@ -60,24 +38,13 @@ $('.search-component-form').submit(function(){
                 $('html,body').animate({scrollTop: 0}, 500);
             });
 
-	  $("#owl-carousel").owlCarousel({
-	      items:1,
-	      loop: true,
-	      autoplay:true,
-              stagePadding: 0,
-              margin: 0,
-	      dots:true,
-	      nav: true,
-	      navText: ['<i class="fa fa-angle-left visible-lg">', '<i class="fa fa-angle-right visible-lg">']
-	  });
-
-        $("#owl-carousel-responsive").owlCarousel({
+	  $().owlCarousel && $("#owl-carousel-responsive").owlCarousel({
             items:1,
             autoplay:true,
             margin: 20,
             dots:true,
             nav: true,
-	    responsiveClass: true,
+	    	responsiveClass: true,
         });
 
 
@@ -131,156 +98,6 @@ $('.search-component-form').submit(function(){
 
                 }
             });
-        });
-        function validateEmail(email) {
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(email).toLowerCase());
-        }
-
-        function newValidator(e) {
-            var code = 0
-            for (var i = 0; i < e.target.elements.length; i++) {
-                e.target.elements[i].parentNode.classList.remove('has-error')
-                if (e.target.elements[i].dataset.match) {
-                    var _str = e.target.elements[i].dataset.match
-                    var _confirm = _str.replace('#', '')
-                    var _fielderror = document.getElementById('confirm-error')
-                    _fielderror.classList.add('hidden')
-                }
-            }
-            for (var i = 0; i < e.target.elements.length; i++) {
-
-                if (e.target.elements[i].required) {
-                    if (e.target.elements[i]) {
-                        if (e.target.elements[i].value === '') {
-                            e.target.elements[i].parentNode.classList.add('has-error')
-                            code = 1
-                        }
-                    }
-                }
-            }
-
-            if (code === 0) {
-                for (var i = 0; i < e.target.elements.length; i++) {
-                    if (e.target.elements[i].required) {
-                        if (e.target.elements[i].type === 'password') {
-                            if (e.target.elements[i].value.length < 5) {
-                                e.target.elements[i].parentNode.classList.add('has-error')
-                                code = 2
-                            } else {
-                                if (e.target.elements[i].dataset.match) {
-                                    var str = e.target.elements[i].dataset.match
-                                    var confirm = str.replace('#', '')
-                                    var fielderror = document.getElementById('confirm-error')
-                                    var field = document.getElementById(confirm)
-                                    if (e.target.elements[i].value !== field.value) {
-                                        e.target.elements[i].parentNode.classList.add('has-error')
-                                        field.parentNode.classList.add('has-error')
-                                        fielderror.classList.remove('hidden')
-                                        code = 1
-                                    }
-                                }
-                            }
-                        }
-                        if (e.target.elements[i].type === 'select-one') {
-                            if (e.target.elements[i].value === '') {
-                                e.target.elements[i].parentNode.classList.add('has-error')
-                                code = 2
-                            }
-                        }
-                        if (e.target.elements[i].type === 'email') {
-                            if (e.target.elements[i].value !== '') {
-                                //validateEmail(e.target.elements[i].value)
-                                if (e.target.elements[i].dataset.match) {
-                                    var str = e.target.elements[i].dataset.match
-                                    var confirm = str.replace('#', '')
-                                    var fielderror = document.getElementById('confirm-error')
-                                    var field = document.getElementById(confirm)
-                                    if (e.target.elements[i].value !== field.value) {
-                                        e.target.elements[i].parentNode.classList.add('has-error')
-                                        field.parentNode.classList.add('has-error')
-                                        fielderror.classList.remove('hidden')
-                                        code = 2
-                                    }
-                                }
-                                //e.target.elements[i].parentNode.classList.add('has-error')
-                            }
-                        }
-
-                    }
-
-                }
-            }
-
-            return code
-        }
-
-        $('#frmRegister-adv').on('submit', function (e) {
-
-            e.preventDefault()
-            var error = false
-            if ($("#frmRegister-adv input#dni").parent().hasClass("has-error")) {
-                $("#insert_msgweb").html('');
-                $("#insert_msgweb").html(messages.error.dni_incorrect);
-                $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-                error = true
-                return false
-            }
-            var val = newValidator(e)
-            if (val === 1) {
-
-                var text = $("#error-form-validation").html();
-                $("#insert_msgweb").html('');
-                $("#insert_msgweb").html(text);
-                $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-                $("#insert_msgweb").html('');
-                error = true
-                return false
-
-            }
-            if(val === 0){
-                if(!($('#erroremail').hasClass('hidden'))){
-                    $('#error-form-validation').removeClass('hidden')
-                    error = true
-                    return false
-                }
-            }
-
-            if (error === false) {
-                var $this = $(this)
-
-                $.ajax({
-                    type: "POST",
-                    url: routing.registro,
-                    data: $('#frmRegister-adv').serialize(),
-                    beforeSend: function () {
-                        $('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
-                    },
-                    success: function (response) {
-                        $('button', $this).attr('disabled', false);
-                        res = jQuery.parseJSON(response);
-                        if (res.err == 1) {
-                            $("#insert_msgweb").html('');
-                            $("#insert_msgweb").html(messages.error[res.msg]);
-                            $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-                        } else {
-                            if (res.redirect != undefined) {
-                            $("#info_sent").val(JSON.stringify(res.info));
-                            $("#cod_auchouse_sent").val(res.cod_auchouse);
-                            $("#redirect_sent").val(res.redirect);
-
-                            document.getElementById("formToSubalia").submit();
-                            } else {
-                                window.location.href = res.msg;
-                            }
-                        }
-
-                    }
-                });
-            }
-
-
-
         });
 
 		$('#newsletter-btn').on('click', newsletterSuscription);
@@ -464,52 +281,6 @@ $('#accerder-user-responsive').find('.loader.mini').hide()
             }
         });
 
-        $( "#save_change_orden" ).click(function() {
-
-            var cod_sub = $(this).attr('cod_sub');
-            var ref = $(this).attr('ref');
-            var order = $(this).attr('order');
-             $.ajax({
-                    type: "POST",
-                    url:  url_orden+'-'+cod_sub,
-                    data: {cod_sub:cod_sub,ref:ref,imp:order},
-                    success: function( res )
-                    {
-                        if(res.status == 'success'){
-                            $("#modalMensaje #insert_msg").html('');
-                            $("#modalMensaje #insert_msg").html(res.msg);
-                            $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-                            change_price_saved_offers();
-                        }else{
-                            $("#modalMensaje #insert_msg").html('');
-                            $("#modalMensaje #insert_msg").html(res.msg_1);
-                            $.magnificPopup.open({items: {src: '#modalMensaje'}, type: 'inline'}, 0);
-                        }
-                    }
-
-                });
-        });
-
-        $('.save_orders').validator().on('submit', function (e) {
-            var order;
-            if (e.isDefaultPrevented()) {
-
-            }else{
-                e.preventDefault()
-                var save_orders = $(this).serializeArray();
-                $.each(save_orders, function(i, field){
-                    $("#save_change_orden").attr(field.name,field.value);
-                    if(field.name == 'order'){
-                        order = field.value
-                    }
-                });
-                $( ".precio_orden" ).html('');
-                $( ".precio_orden" ).html(order);
-
-                $.magnificPopup.open({items: {src: '#changeOrden'}, type: 'inline'}, 0);
-            }
-        });
-
         $( ".confirm_delete" ).click(function() {
             var ref = $(this).attr("ref");
             var sub = $(this).attr("sub");
@@ -537,16 +308,6 @@ $('#accerder-user-responsive').find('.loader.mini').hide()
                 }
 
             });
-        });
-
-        $( ".delete_order" ).click(function() {
-            var ref = $(this).attr("ref");
-            var sub = $(this).attr("sub");
-            $(".confirm_delete").attr( "price", $("#"+sub+"-"+ref+" input").val() );
-            $(".confirm_delete").attr( "ref", ref );
-            $(".confirm_delete").attr( "sub", sub );
-            $("#insert_msg_delete").html(messages.neutral.confirm_delete);
-            $.magnificPopup.open({items: {src: '#modalMensajeDelete'}, type: 'inline'}, 0);
         });
 
         $( "#form-valoracion-adv" ).submit(function(event) {
@@ -922,54 +683,10 @@ $(document).ready(function() {
         }
     })
 
-	/* $("#submit_fact").click(function () {
-		$("#submit_fact").addClass('hidden');
-		$("#submit_fact").siblings().removeClass('hidden');
-		var pay_fact = $('#pagar_fact').serializeArray();
-		var total = 0;
-		$.each(info_fact, function (index_anum, value_anum) {
-			$.each(value_anum, function (index_num, value_num) {
-				$.each(value_num, function (efect_num, value_efect) {
-					if ($("#checkFactura-" + index_anum + "-" + index_num + "-" + efect_num + "").is(":checked")) {
-						total = total + info_fact[index_anum][index_num][efect_num];
-					}
-				});
-			});
-		});
-		if (total > 0) {
-			$.ajax({
-				type: "POST",
-				url: '/gateway/pagarFacturasWeb',
-				data: pay_fact,
-				success: function (data) {
-					if (data.status == 'success') {
-						window.location.href = data.msg;
-					} else
-						if (data.status == 'error') {
-							$("#modalMensaje #insert_msg").html('');
-							$("#modalMensaje #insert_msg").html(messages.error.generic);
-							$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-							$("#submit_carrito").removeClass('hidden');
-							$("#submit_carrito").siblings().addClass('hidden');
-						}
-
-				},
-				error: function (response) {
-					$("#modalMensaje #insert_msg").html('');
-					$("#modalMensaje #insert_msg").html(messages.error.generic);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-					$("#submit_fact").removeClass('hidden');
-					$("#submit_fact").siblings().addClass('hidden');
-				}
-			});
-		}
-
-	}); */
-
 });
 
 
-function reload_carrito(){
+function reload_carrito() {
 
      $.each(info_lots, function( index_sub, value_sub ){
         var precio_envio = 0;
@@ -1005,14 +722,6 @@ function reload_carrito(){
 function newsletterSuscription (event) {
 	var email = $('.newsletter-input').val();
 	var lang = $('#lang-newsletter').val();
-
-	//No hace falta las condiciones
-	/* if (!$('#condiciones').prop("checked")) {
-		$("#insert_msgweb").html('');
-		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
-		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		return;
-	} */
 
 	const newsletters = {};
 	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
