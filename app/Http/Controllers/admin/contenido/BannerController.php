@@ -593,11 +593,10 @@ class BannerController extends Controller
 
 				// Get real and relative path for current file
 				$filePath = $file->getRealPath();
-				$relativePath = substr($filePath, strlen($path) + 1);
-				Log::debug('paths', ['filepath' => $filePath, 'path' => $path, 'relativePath' => $relativePath]);
+				$relativePath = substr($filePath, strpos($filePath, $theme));
 
 				// Add current file to archive
-				$zip->addFile($filePath, "$theme/$relativePath");
+				$zip->addFile($filePath, $relativePath);
 			}
 		}
 		// Zip archive will be created only after closing object
