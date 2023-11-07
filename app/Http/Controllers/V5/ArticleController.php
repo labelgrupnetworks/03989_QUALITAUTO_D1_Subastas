@@ -481,12 +481,22 @@ class ArticleController extends Controller
 	public function getOrtSec($lang)
 	{
 		Config::set('app.locale', $lang);
+		$isDefaultLang = Config::get('app.locale') == Config::get('app.fallback_locale');
+
 		$fgArt0 = new fgArt0();
-		$fgArt0 = $fgArt0->select("NVL(MAX(DES_ORTSEC0_LANG), MAX(DES_ORTSEC0)) DES_ORTSEC0, LIN_ORTSEC0, COUNT(LIN_ORTSEC0) AS CUANTOS")
+		$fgArt0 = $fgArt0
 			->Activo()
 			->leftJoinFgArt0Lang()
 			->JoinOrtsec1()
-			->JoinOrtsec0(true)
+			->when($isDefaultLang, function ($query) {
+				return $query
+					->select("MAX(DES_ORTSEC0) DES_ORTSEC0, LIN_ORTSEC0, COUNT(LIN_ORTSEC0) AS CUANTOS")
+					->joinOrtsec0();
+			}, function ($query) {
+				return $query
+					->select("NVL(MAX(DES_ORTSEC0_LANG), MAX(DES_ORTSEC0)) DES_ORTSEC0, LIN_ORTSEC0, COUNT(LIN_ORTSEC0) AS CUANTOS")
+					->joinOrtsec0Lang();
+			})
 			->groupby("LIN_ORTSEC0");
 
 		$fgArt0 = $this->setFilters($fgArt0, ["ortsec","sec"]);
@@ -497,11 +507,20 @@ class ArticleController extends Controller
 	public function getSec($lang)
 	{
 		Config::set('app.locale', $lang);
+		$isDefaultLang = Config::get('app.locale') == Config::get('app.fallback_locale');
+
 		$fgArt0 = new fgArt0();
-		$fgArt0 = $fgArt0->select("NVL(MAX(DES_SEC_LANG), MAX(DES_SEC)) DES_SEC, COD_SEC, COUNT(COD_SEC) AS CUANTOS")
-			->Activo()
+		$fgArt0 = $fgArt0->Activo()
 			->leftJoinFgArt0Lang()
-			->joinSec(true)
+			->when($isDefaultLang, function ($query) {
+				return $query
+					->select("MAX(DES_SEC) DES_SEC, COD_SEC, COUNT(COD_SEC) AS CUANTOS")
+					->joinSec();
+			}, function ($query) {
+				return $query
+					->select("NVL(MAX(DES_SEC_LANG), MAX(DES_SEC)) DES_SEC, COD_SEC, COUNT(COD_SEC) AS CUANTOS")
+					->joinSecLang();
+			})
 			->groupby("COD_SEC");
 		$fgArt0 = $this->setFilters($fgArt0,["sec"]);
 		$sections = $fgArt0->get();
@@ -524,12 +543,21 @@ class ArticleController extends Controller
 	public function getFamilias($lang)
 	{
 		Config::set('app.locale', $lang);
+		$isDefaultLang = Config::get('app.locale') == Config::get('app.fallback_locale');
+
 		$fgArt0 = new FgArt0();
 
-		$fgArt0 = $fgArt0->select("MAX(DES_FAMART) DES_FAMART, COD_FAMART, COUNT(COD_FAMART) AS CUANTOS")
-			->Activo()
+		$fgArt0 = $fgArt0->Activo()
 			->leftJoinFgArt0Lang()
-			->joinFamilia()
+			->when($isDefaultLang, function ($query) {
+				return $query
+					->select("MAX(DES_FAMART) DES_FAMART, COD_FAMART, COUNT(COD_FAMART) AS CUANTOS")
+					->joinFamilia();
+			}, function ($query) {
+					return $query
+					->select("MAX(DES_FAMART_LANG) DES_FAMART, COD_FAMART, COUNT(COD_FAMART) AS CUANTOS")
+					->joinFamiliaLang();
+			})
 			->groupby("COD_FAMART");
 
 		$fgArt0 = $this->setFilters($fgArt0, ["familia"]);
@@ -541,6 +569,8 @@ class ArticleController extends Controller
 	public function getTallasColores($lang)
 	{
 		Config::set('app.locale', $lang);
+		$isDefaultLang = Config::get('app.locale') == Config::get('app.fallback_locale');
+
 		$tallasColores = [];
 		$variantes = FgArt_Variantes::select("FGART_VARIANTES.ID_VARIANTE")->orderby("NAME_VARIANTE")->get();
 
@@ -549,14 +579,11 @@ class ArticleController extends Controller
 			$fgArt0 = $this->setFilters($fgArt0,["tallaColor_". $variante->id_variante]);
 			$fgArt0 =  $fgArt0->where("FGART_VARIANTES.ID_VARIANTE", $variante->id_variante);
 
-			$elementos =  $fgArt0->leftJoinFgArt0Lang()->getTallaColor()->get();
+			$elementos =  $fgArt0->leftJoinFgArt0Lang()->getTallaColor($isDefaultLang)->get();
 
-			if(count($elementos)>0){
-
-				$tallasColores[] =  $elementos ;
-
+			if(count($elementos) > 0) {
+				$tallasColores[] =  $elementos;
 			}
-
 		}
 
 		return $tallasColores;
