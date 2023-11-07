@@ -460,4 +460,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('/login', 'AdminUserController@login_post');
 		Route::get('/logout', 'AdminUserController@logout');
 	});
+
+	#ruta a la cual se debe poder acceder desde fuera del admin y sin estar logeado ya que la llamada la hace subalia
+	Route::post('orders/subalia_send_ws', 'subasta\AdminOrderController@subalia_send_ws');
 });

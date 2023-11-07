@@ -13,7 +13,7 @@ class OrderController extends DuranController
 	#Comuníca las ordenes de la subasta presencial, las online va por otro circuito
 	public function createOrder($codCli, $codSub, $ref, $order, $delete = false){
 
-	
+
 			$xml = $this->createXMLOrder($codCli, $codSub, $ref, $order);
 			if($delete){
 				#tiene la misma estructura que hacer puja por eso podemso usar el mismo createOrder
@@ -36,8 +36,6 @@ class OrderController extends DuranController
 					$this->sendEmailError($service,htmlspecialchars($stringXML), print_r($res,true) );
 				}
 			}
-
-
 	}
 	public function deleteOrder($licit, $codSub, $ref, $order){
 		#debemos cojer el código usuario ya que nos llega el licitador
@@ -60,7 +58,7 @@ class OrderController extends DuranController
 		if(empty($codigoPersona) || empty($idOrigen)){
 			$textEmail = "No se ha podido realizar el la puja, usuario o lote no existe<br> codcli: $codCli <br> codsub: $codSub <br> ref: $ref <br> order: $order  ";
 			$this->sendEmailError("createOrder", $textEmail,""  );
-			return;
+			die();
 		}
 
 			$codigoarticulo = substr($idOrigen->idorigen_asigl0,-7);
