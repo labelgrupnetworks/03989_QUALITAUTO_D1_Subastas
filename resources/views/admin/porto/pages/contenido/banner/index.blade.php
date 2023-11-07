@@ -20,7 +20,10 @@
 
 	<div id="newbanner">
 		@if($pos = strpos(mb_strtoupper(Session::get('user.usrw')), '@LABELGRUP'))
-		<a href="/admin/newbanner/nuevo?ubicacion={{$ubicacion}}" class="btn btn-primary" style="float:right">Nuevo</a>
+		<div class="d-flex gap-5 justify-content-end">
+			<a href="/admin/newbanner/download" class="btn btn-warning" download>Descargar Copia</a>
+			<a href="/admin/newbanner/nuevo?ubicacion={{$ubicacion}}" class="btn btn-primary">Nuevo</a>
+		</div>
 		@endif
 		<h1>Banners {{$ubicacion}}</h1>
 

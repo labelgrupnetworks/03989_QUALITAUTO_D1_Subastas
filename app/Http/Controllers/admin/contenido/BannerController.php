@@ -19,7 +19,11 @@ use App\Models\WebNewbannerTipoModel;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ZipArchive;
 
 class BannerController extends Controller
 {
@@ -573,9 +577,41 @@ class BannerController extends Controller
 		return MessageLib::successMessage("Orden modificado");
 	}
 
+	public function download()
+	{
+		$theme = Config::get('app.theme');
+		$path = public_path("img/banner/$theme");
+		$zipFileName = 'banner.zip';
+
+		$zip = new ZipArchive();
+		$zip->open($zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+
+		foreach ($files as $name => $file) {
+			// Skip directories (they would be added automatically)
+			if (!$file->isDir()) {
+
+				// Get real and relative path for current file
+				$filePath = $file->getRealPath();
+				$relativePath = substr($filePath, strpos($filePath, $theme));
+
+				// Add current file to archive
+				$zip->addFile($filePath, $relativePath);
+			}
+		}
+		// Zip archive will be created only after closing object
+		$zip->close();
+
+		$response = response()->download($zipFileName);
+
+		// Delete zip file after download.
+		//register_shutdown_function('unlink', $zipFileName);
+
+		return $response;
+	}
+
 	private function refreshBannerCache($key)
 	{
 		CacheLib::forgetCache(BannerLib::banerCacheName($key));
 	}
-
 }
