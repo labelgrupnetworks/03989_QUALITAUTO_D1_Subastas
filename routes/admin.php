@@ -108,6 +108,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'newbanner'], function () {
 			Route::get('/', "contenido\BannerController@index");
+			Route::get('/download', "contenido\BannerController@download");
 			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
 			Route::get('/nuevo', "contenido\BannerController@nuevo");
 			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
