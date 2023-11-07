@@ -1,15 +1,11 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
-
-
-
-@section('content')
-<script>
-    <?php // login es la págian antigua y si cierran sesion estando en una página que requiere estar logeado redirige a esta página  ?>
-    window.location.replace("/{{ \App::getLocale() }}/register");
-
-</script>
+@php
+// login es la págian antigua y si cierran sesion estando en una página que requiere estar logeado redirige a esta página  ?>
+	header("Location: " . URL::to(route('register', ['lang' => Config::get('app.locale')])), true, 301);
+	exit();
+@endphp

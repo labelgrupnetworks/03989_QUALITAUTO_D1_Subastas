@@ -27,6 +27,7 @@
 </script>
 
 <script src="{{ Tools::urlAssetsCache('/js/lang/' . \Config::get('app.locale') . "/$theme-app.js") }}"></script>
+
 <script src="{{ URL::asset('vendor/jquery/3.6.0/dist/jquery.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/common.js') }}"></script>
 <script defer src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>
@@ -40,11 +41,14 @@
 <script defer src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script defer src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
 <script defer src='{{ URL::asset('vendor/year-calendar/bootstrap-year-calendar.es.js') }}'></script>
+<script defer src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
+
+@stack('scripts')
+
 <script defer src="{{ Tools::urlAssetsCache('/js/default/customized_tr_main.js') }}"></script>
 <script defer src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
 <script defer src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
 <script defer src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script>
-<script defer src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
 <script defer type="text/javascript" src="{{ URL::asset('js/jquery.ui.touch-punch.min.js') }}"></script>
 <script defer src="{{ Tools::urlAssetsCache('/js/default/custom.js') }}"></script>
 <script defer src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/custom.js') }}"></script>

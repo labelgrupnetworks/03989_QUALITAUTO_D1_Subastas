@@ -5,7 +5,7 @@
                 <div class="border_img_lot">
                     <div class="content_item_img">
                         <div class="img_lot">
-                            <img class="img-responsive lazy" data-src="{{Tools::url_img('lote_medium',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
+							<img class="img-responsive" src="{{Tools::url_img('lote_medium', $item->num_hces1, $item->lin_hces1)}}" loading="lazy" alt="{{$titulo}}">
                         </div>
                         @if( $item->retirado_asigl0 !='N')
                         <div class="retired" style="top:5px; right:5px">

@@ -3,13 +3,11 @@
 @include('includes.head.meta_tags')
 
 @include('includes.head.stylesheets')
-@stack('styles')
 
 @include('includes.head.scripts')
-@stack('scripts')
 
 @yield('assets_components')
 
-@php
+{{-- @php
     Tools::personalJsCss();
-@endphp
+@endphp --}}

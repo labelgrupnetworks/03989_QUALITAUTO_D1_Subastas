@@ -37,16 +37,12 @@
 <script src="{{ URL::asset('js/validator.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
+
+@stack('scripts')
+
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
-
-{{-- owl se utiliza en la ficha, mover allí --}}
-<script src="{{ URL::asset('js/owl.carousel.min.js') }}"></script>
-
-{{-- <script src="{{ URL::asset('js/jquery.jqzoom-core.js') }}"></script> --}}
 <script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/custom.js') }}"></script>
-{{-- <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script> --}}
-<script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script>
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>

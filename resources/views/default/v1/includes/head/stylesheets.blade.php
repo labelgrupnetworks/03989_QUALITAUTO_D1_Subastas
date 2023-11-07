@@ -30,6 +30,8 @@
 <link rel="stylesheet" href="/css/animate.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="/css/animate.min.css"></noscript>
 
+@stack('styles')
+
 <!-- Overwritable files -->
 <link href="{{ Tools::urlAssetsCache('/css/default/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
