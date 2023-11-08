@@ -1,4 +1,5 @@
 @php
+	use App\Models\V5\AucSessionsFiles;
     //eliminamos las sesiones
     $historicas = collect($data['auction_list'])
         ->unique('cod_sub')
@@ -45,6 +46,19 @@
                         } else {
                             $url = Tools::url_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions, $auction->reference);
                         }
+
+						$catalogUrl = "/catalogos/{$auction->cod_sub}";
+						if($auction->tipo_sub == 'O'){
+
+							$auctionFile = AucSessionsFiles::where([
+								['"auction"', $auction->cod_sub],
+								['"type"', 1]
+							])->first();
+
+							if($auctionFile){
+								$catalogUrl = $auctionFile->publicFilePath;
+							}
+						}
                     @endphp
                     <div class="col">
                         <article class="card auction-card">
@@ -60,7 +74,7 @@
                                 </div>
                                 <a href="{{ $url }}" @if ($isOldest) target="_blank" @endif
                                     class="stretched-link"></a>
-                                <a href="/catalogos/{{ $auction->cod_sub }}" target="_blank"
+                                <a href="{{ $catalogUrl }}" target="_blank"
                                     class="btn btn-outline-lb-primary h-auto" style="z-index: 1">
                                     {{ trans("$theme-app.lot_list.ver_catalogo") }}
                                 </a>
