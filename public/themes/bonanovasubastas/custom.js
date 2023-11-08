@@ -887,7 +887,7 @@ function seeLot(style, save = true) {
 		'small_img': see_img_samll
 	}
 
-	hideAllStylesLots();
+	//hideAllStylesLots();
 	options[style] ? options[style]() : options['img']();
 
 	if (!save) return;
@@ -902,14 +902,20 @@ function hideAllStylesLots() {
 }
 
 function see_desc() {
-	$(".large_square").removeClass("hidden");
-	$('.bar-lot-large').removeClass("hidden");
+	/* $(".large_square").removeClass("hidden");
+	$('.bar-lot-large').removeClass("hidden"); */
+	//to .list_lot add class .large_list
+	$('.list_lot').removeClass("small_list").addClass("large_list");
+
 }
 
 function see_img() {
-	$(".square").removeClass("hidden");
+	//$(".square").removeClass("hidden");
+	//to .list_lot only .list_lot class
+	$('.list_lot').removeClass("large_list").removeClass("small_list");
 }
 
 function see_img_samll() {
-	$(".small_square").removeClass("hidden");
+	//$(".small_square").removeClass("hidden");
+	$('.list_lot').removeClass("large_list").addClass("small_list");
 }
