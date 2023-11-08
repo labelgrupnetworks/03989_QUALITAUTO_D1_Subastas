@@ -8,6 +8,6 @@
 
 @yield('assets_components')
 
-{{-- @php
+@php
     Tools::personalJsCss();
-@endphp --}}
+@endphp

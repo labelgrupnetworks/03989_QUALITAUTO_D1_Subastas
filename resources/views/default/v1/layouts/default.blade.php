@@ -2,16 +2,11 @@
 <html lang="{{ config('app.language_complete')[config('app.locale')] }}">
 
 <head>
-    {{-- Eliminar cuando estén todos migrados --}}
-    @includeIf('includes.open_graph_head')
-    @includeIf('includes.google_head')
-
     @include('includes.head')
 </head>
 
 <body>
     @php
-        Tools::personalJsCss(); //mover al head cuando estén todos migrados
         $withNewsletters = Config::get('app.newsletter_in_all_pages', true);
     @endphp
 
