@@ -41,7 +41,6 @@
 @stack('scripts')
 
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
-<script src="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/custom.js') }}"></script>
 <script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>

@@ -416,15 +416,12 @@ function ajax_carousel(key, replace) {
 
 function format_date(fecha) {
 
-	var horas = fecha.getHours();
-	var minutos = fecha.getMinutes();
-	var mes;
-	if (horas < 10) {
-		horas = '0' + horas
-	}
-	if (minutos < 10) {
-		minutos = '0' + minutos
-	}
+	const horas = fecha.getHours().toString().padStart(2, '0');
+	const minutos = fecha.getMinutes().toString().padStart(2, '0');
+	const day = fecha.getDate();
+
+	const months = Object.keys(traduction_large);
+	const monthName = traductions[months[fecha.getMonth()]];
 
 	$.each(traductions, function (key, value) {
 		if (key == $.datepicker.formatDate("M", fecha)) {
@@ -432,7 +429,7 @@ function format_date(fecha) {
 		}
 	});
 
-	var formatted = $.datepicker.formatDate("dd ", fecha) + mes + " " + horas + ":" + minutos;
+	const formatted = `${day} ${monthName} ${horas}:${minutos} h`;
 	return formatted;
 }
 
@@ -519,37 +516,28 @@ function password_recovery(lang) {
 	});
 };
 
+/**
+ * @param {Date} fecha //ejemplo: Thu Dec 29 2022 13:00:00 GMT+0100
+ * @param {string} text //ejemplo: a partir de
+ * @returns //ejemplo: 29 Dic 2022 a partir de 13:00 h
+ */
 function format_date_large(fecha, text) {
 
-	var horas = fecha.getHours();
-	var minutos = fecha.getMinutes();
-	var mes;
-	if (horas < 10) {
-		horas = '0' + horas
-	}
-	if (minutos < 10) {
-		minutos = '0' + minutos
-	}
+	const horas = fecha.getHours().toString().padStart(2, '0');;
+	const minutos = fecha.getMinutes().toString().padStart(2, '0');
+	const day = fecha.getDate();
 
-	$.each(traduction_large, function (key, value) {
-		if (key == $.datepicker.formatDate("M", fecha)) {
-			mes = value;
-		}
-	});
+	const months = Object.keys(traduction_large);
+	const monthName = traduction_large[months[fecha.getMonth()]];
 
-	var formatted = $.datepicker.formatDate("dd ", fecha) + mes + " " + text + " " + horas + ":" + minutos + " h";
+	const formatted = `${day} ${monthName} ${text} ${horas}:${minutos} h`;
 	return formatted;
 }
-
-
 
 function close_modal_session() {
 
 	$("#closeResponsive").trigger("click");
 }
-
-
-
 
 function action_fav_modal(action) {
 

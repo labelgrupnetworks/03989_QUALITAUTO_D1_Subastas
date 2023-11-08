@@ -1,7 +1,5 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
 <link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/4.7.0/css/font-awesome.min.css') }}">
-
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
 <link rel="stylesheet" href="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.css') }}" />
 
 <!-- Slick / banner -->
