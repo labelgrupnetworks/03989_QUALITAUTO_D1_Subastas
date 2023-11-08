@@ -33,7 +33,6 @@
 <script src="{{ URL::asset('vendor/tiempo-real/pnotify/pnotify.custom.js') }}"></script>
 <script src="{{ URL::asset('vendor/tiempo-real/pnotify/modernizr.js') }}"></script>
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
-<script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 

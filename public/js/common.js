@@ -99,7 +99,8 @@ $(document).ready(function () {
 	}
 
 
-	$("time.timeago").timeago();
+	//solamente se utiliza en la página del tiempo real
+	$().timeago && $("time.timeago").timeago();
 
     /*
      |--------------------------------------------------------------------------
