@@ -192,6 +192,16 @@ header .navbar-toggler {
 	}
 }
 
+.banner_iframe {
+	text-align: center;
+}
+
+.banner_iframe iframe {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16/9;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Home

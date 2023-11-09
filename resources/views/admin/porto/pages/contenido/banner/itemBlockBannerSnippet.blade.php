@@ -32,7 +32,7 @@
                         <div class="">
                             {!! $item->texto !!}
                         </div>
-					@elseif(trim($tipo) == 'link')
+					@elseif(trim($tipo) == 'link' || trim($tipo) == 'iframe')
 						<div class="">
 							<a href="{{ $item->url }}" target="_blank" style="overflow-wrap: break-word;">{{ $item->url }}</a>
 						</div>
