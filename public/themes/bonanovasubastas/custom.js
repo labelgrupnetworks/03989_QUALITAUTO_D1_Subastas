@@ -344,7 +344,47 @@ $(document).ready(function () {
 		}
 	});
 
-	$('.content_item_mini').hover(function (e) {
+	function showElementInCenterToViewPort(event, element) {
+		var viewportHeight = $(window).height(),
+			viewportWidth = $(window).width(),
+			elementHeight = $(element).outerHeight(),
+			elementWidth = $(element).outerWidth(),
+			elementTop = (viewportHeight / 2) - (elementHeight / 2) + $(document).scrollTop(),
+			elementLeft = (viewportWidth / 2) - (elementWidth / 2);
+
+		//get mouse position
+		var mouseX = event.pageX;
+		var mouseY = event.pageY;
+
+		//if mouse inside new element position, move element to the bottom
+		const mouseIsInside = mouseX > elementLeft && mouseX < elementLeft + elementWidth && mouseY > elementTop && mouseY < elementTop + elementHeight;
+		if (mouseIsInside) {
+			elementTop = mouseY + 50;
+		}
+
+		$(element).css({
+			"top": elementTop + "px",
+			"left": elementLeft + "px"
+		});
+	}
+
+	$('.content_item_mini').hover(function (event) {
+
+		if (!$('.list_lot').hasClass('small_list')) return;
+
+		const target = event.currentTarget;
+		const largeImage = $(target).data('large-src');
+
+		$element = $('.capaOculta');
+		$element.find('img').attr('src', largeImage);
+		$element.show();
+		showElementInCenterToViewPort(event, $element);
+	}, function () {
+		$element = $('.capaOculta');
+		$element.hide();
+	});
+
+	/* $('.content_item_mini').hover(function (e) {
 
 		var el, newPos, capaOculta, vwCapaOculta, vwWindow;
 		el = $(this)
@@ -359,10 +399,7 @@ $(document).ready(function () {
 			newPos = posLeft - vwCapaOculta;
 			newpos2 = ($('.capaOculta').offset().left - vwCapaOculta) - 90
 			capaOculta.css("left", newpos2 + 'px');
-
-
 		} else {
-
 			newpos2 = 0
 		}
 		capaOculta.css("left", newpos2 + 'px');
@@ -371,22 +408,13 @@ $(document).ready(function () {
 		vhWindow = $(window).height() / 2
 
 		if (posElTop > vhWindow) {
-			console.log(vhWindow)
-			if ($(document).scrollTop() > 200) {
-
-			}
-
 			var newPosTop = -400 + ($(document).scrollTop());
-
 			capaOculta.css("top", '-400px');
-
 		}
-
-
 	}, function () {
 		var capaOculta = $(this).siblings($('.capaOculta'))
 		capaOculta.hide()
-	})
+	}) */
 
 });
 

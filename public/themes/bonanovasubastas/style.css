@@ -1439,13 +1439,13 @@ div.list_lot div.item_lot div.img_lot,
     overflow: hidden;
 }
 
-.content_item_mini .img_lot {
+/* .content_item_mini .img_lot {
     position: relative;
     text-align: center;
     position: relative;
     height: 115px;
     overflow: hidden;
-}
+} */
 
 /* div.list_lot div.item_lot div.img_lot img,
 .item_subasta a .img-lot img {
@@ -2021,7 +2021,7 @@ div.data-container-large {
     display: inherit !important;
 }
 
-.content_item_mini .img_lot img {
+/* .content_item_mini .img_lot img {
     max-width: 100%;
     max-height: 115px;
     top: 50%;
@@ -2032,7 +2032,7 @@ div.data-container-large {
     width: auto !important;
     margin: 0 auto !important;
     display: inherit !important;
-}
+} */
 
 .item_lot_large .content_item_img {
     border: 1px solid #d7d7d7;
@@ -2046,12 +2046,12 @@ div.data-container-large {
     height: 50%;
 }
 
-.item_lot_mini .content_item_mini {
+/* .item_lot_mini .content_item_mini {
     position: relative;
     border: 1px solid #ccc;
     min-height: 167px;
     margin-bottom: 12px;
-}
+} */
 
 .item_lot_mini .data_container {
     position: absolute;
@@ -2164,7 +2164,6 @@ div.data-container-large {
     text-align: center;
 }
 
-.small_square .item_lot_mini .content_item_mini,
 div.list_lot div.item_lot {
     border-bottom: 4px solid #494742;
     height: 490px;
@@ -2190,8 +2189,7 @@ div.list_lot.small_list div.item_lot {
 }
 
 .item_lot .border_img_lot a .retired,
-.item_lot_large .border_img_lot a .retired,
-.content_item_mini a .retired {
+.item_lot_large .border_img_lot a .retired {
     top: 5px;
     right: 24px;
     border-radius: 30px;
@@ -2534,7 +2532,6 @@ a#square_mobile,
 a#large_square_mobile,
 div.list_lot div.item_lot div.title_lot a,
 .data-container .title_lot a,
-.content_item_mini .title_lot a,
 a.btn-subasta,
 .item_home .title_lot,
 div.lotes_destacados div.item_home div.title_item a {
@@ -2553,8 +2550,6 @@ a#large_square:focus,
 a#small_square:focus,
 div.list_lot div.item_lot div.title_lot a:hover,
 .data-container .title_lot:hover a,
-.content_item_mini .title_lot:hover a,
-abtn-subasta:hover,
 .tabs-custom ul li:hover a,
 div.lotes_destacados div.item_home div.title_item a:hover {
     color: black;
@@ -2713,7 +2708,6 @@ td span input.form-control {
 
 .content_item_mini a .retired {
     font-size: 10px;
-    right: 5px;
 }
 
 .item-perfil {
@@ -3711,6 +3705,26 @@ div.content_faq a i {
 
 
 /* ---- RESULTADOS LOTES SUBASTAS ---*/
+
+.list_lot .square {
+	position: relative;
+}
+
+.capaOculta {
+	position: absolute;
+	background: white;
+	border: 1px solid #ccc;
+	display: none;
+	z-index: 999;
+}
+
+.capaOculta img {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+    object-fit: contain;
+}
 
 .list_lot_search_content a,
 .list_lot_search_content a p {

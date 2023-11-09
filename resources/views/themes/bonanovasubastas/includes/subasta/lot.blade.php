@@ -1,5 +1,5 @@
 <div class="square">
-    <div class="item_lot">
+    <div class="item_lot content_item_mini" data-large-src="{{Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1)}}">
         <div class="border_img_lot">
             <a title="{{ $titulo }}" <?= $url ?>>
                 <div class="img_lot">
@@ -168,6 +168,5 @@
             </div>
 
         </div>
-
     </div>
 </div>
