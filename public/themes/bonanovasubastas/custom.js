@@ -384,38 +384,6 @@ $(document).ready(function () {
 		$element.hide();
 	});
 
-	/* $('.content_item_mini').hover(function (e) {
-
-		var el, newPos, capaOculta, vwCapaOculta, vwWindow;
-		el = $(this)
-		posEl = el.offset()
-		capaOculta = $(this).siblings($('.capaOculta'))
-		capaOculta.show()
-		posLeft = posEl.left
-		vwWindow = $(window).width() / 2
-
-		if (posLeft > vwWindow) {
-			vwCapaOculta = ($('.capaOculta').width() / 2);
-			newPos = posLeft - vwCapaOculta;
-			newpos2 = ($('.capaOculta').offset().left - vwCapaOculta) - 90
-			capaOculta.css("left", newpos2 + 'px');
-		} else {
-			newpos2 = 0
-		}
-		capaOculta.css("left", newpos2 + 'px');
-
-		var posElTop = el.offset().top
-		vhWindow = $(window).height() / 2
-
-		if (posElTop > vhWindow) {
-			var newPosTop = -400 + ($(document).scrollTop());
-			capaOculta.css("top", '-400px');
-		}
-	}, function () {
-		var capaOculta = $(this).siblings($('.capaOculta'))
-		capaOculta.hide()
-	}) */
-
 });
 
 function cerrarLogin() {
@@ -807,9 +775,8 @@ function reload_facturas() {
 	} else {
 		$("#submit_fact").addClass('hidden');
 	}
-	$("#total_bills").html(change_currency(total));
-	// Hacer la línea $("#total_bills").html(change_currency(total)); sin jquery
 
+	$("#total_bills").html(format_money(total));
 }
 
 function payFacs(button) {
@@ -865,11 +832,6 @@ function payFacs(button) {
 		});
 
 	}
-};
-
-function change_currency(price) {
-	var price = numeral(price).format('0,0.00');
-	return price;
 };
 
 $(document).on("click", ".panel-collapse", openCloseToggle);
@@ -930,20 +892,13 @@ function hideAllStylesLots() {
 }
 
 function see_desc() {
-	/* $(".large_square").removeClass("hidden");
-	$('.bar-lot-large').removeClass("hidden"); */
-	//to .list_lot add class .large_list
 	$('.list_lot').removeClass("small_list").addClass("large_list");
-
 }
 
 function see_img() {
-	//$(".square").removeClass("hidden");
-	//to .list_lot only .list_lot class
 	$('.list_lot').removeClass("large_list").removeClass("small_list");
 }
 
 function see_img_samll() {
-	//$(".small_square").removeClass("hidden");
 	$('.list_lot').removeClass("large_list").addClass("small_list");
 }

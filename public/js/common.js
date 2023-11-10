@@ -931,11 +931,11 @@ function calculate_exchange(currency, price) {
 }
 
 function format_money(money) {
-	money = money.toFixed(2);
-	money = money.replace('.', ',');
-	money = money.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+	let formatPrice = parseFloat(money)
+		.toFixed(2)
+		.replace(".", ",");
 
-	return money;
+	return formatPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 }
 
 function formatMoney({money = 0, decimals = 2, symbol = '€'}){

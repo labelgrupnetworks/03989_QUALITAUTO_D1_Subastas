@@ -40,6 +40,5 @@
 
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/customized_tr_main.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/custom.js') }}"></script>
-<script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
