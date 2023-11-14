@@ -283,11 +283,11 @@ class AdminLotController extends Controller
 				$json = $this->saveImages($request->file('images'), $request->idorigin);
 				$result = json_decode($json);
 				if ($result->status == 'ERROR') {
-					return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => 1]))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
+					return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'lote' => 1]))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
 				}
 			}
 
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $request->reflot]))->with(['success' => array(trans('admin-app.title.created_ok'))]);
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'lote' => $request->reflot]))->with(['success' => array(trans('admin-app.title.created_ok'))]);
 		} catch (\Throwable $th) {
 			DB::rollBack();
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
@@ -438,7 +438,7 @@ class AdminLotController extends Controller
 			//return back()->withErrors(['errors' => [$json]])->withInput();
 			$response['warning']['Images'] = $json;
 			$response['success'][] = trans('admin-app.title.updated_ok');
-			return redirect(route("$this->parent_name.$this->resource_name.edit", ['subasta' => $cod_sub, 'lote' => $ref_asigl0]))
+			return redirect(route("$this->parent_name.$this->resource_name.edit", ['cod_sub' => $cod_sub, 'lote' => $ref_asigl0]))
 					->with($response);
 		}
 
@@ -1424,7 +1424,7 @@ class AdminLotController extends Controller
 		FgAsigl0::insert($newLotArray);
 
 		# Redirección a la ventana de edición del lote
-		return redirect(route('subastas.lotes.edit', ['subasta' => $request->newAuction, 'lote' => $newRefAsigl0]))->with(['warning' => array(trans('admin-app.title.warning_cloned_lot'))]);
+		return redirect(route('subastas.lotes.edit', ['cod_sub' => $request->newAuction, 'lote' => $newRefAsigl0]))->with(['warning' => array(trans('admin-app.title.warning_cloned_lot'))]);
 	}
 
 	public function addIdOrigin($cod, $ref, $numhces, $linhces)
@@ -1520,7 +1520,7 @@ class AdminLotController extends Controller
 		$house = new House();
 		$resJson = $house->catalogLots( $codSub, $sesionReference , $ref );
 		$res = json_decode($resJson);
-		return redirect(route("$this->parent_name.$this->resource_name.edit",['subasta' => $codSub, 'lote' => $ref]))->with(['success' => [$res->message]]);
+		return redirect(route("$this->parent_name.$this->resource_name.edit",['cod_sub' => $codSub, 'lote' => $ref]))->with(['success' => [$res->message]]);
 		}
 
 	public function export($cod_sub, $ref_asigl0, $service = null) :JsonResponse
