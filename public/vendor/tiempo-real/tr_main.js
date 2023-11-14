@@ -2348,8 +2348,8 @@ $(function () {
     lotesPausadosRefresh();
 
 
-
-    $("#ficha .content_box img").imageLens({lensSize: 100, borderSize: 2, borderColor: "#000"});
+	//efecto lupa en imagen
+    $().imageLens && $("#ficha .content_box img").imageLens({lensSize: 100, borderSize: 2, borderColor: "#000"});
 
 
     $('#cancelarPujaUser').click(function () {

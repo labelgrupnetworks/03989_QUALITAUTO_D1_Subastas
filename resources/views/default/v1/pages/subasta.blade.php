@@ -26,6 +26,7 @@
 
 
 @section('content')
+<main>
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 text-center">
@@ -45,4 +46,5 @@
     <input name="lot_see_configuration" type="hidden" value="{{ $styleLotSeeConfiguration }}">
 
     @include('content.subasta')
+</main>
 @stop

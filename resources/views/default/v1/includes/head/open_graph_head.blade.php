@@ -1,4 +1,3 @@
-{{-- Eliminar cuando esten migrados al layout de default --}}
 <!--Open Graph-->
 <meta property="og:locale" content="{{ config('app.locale') }}" />
 <meta property="og:type" content="website" />

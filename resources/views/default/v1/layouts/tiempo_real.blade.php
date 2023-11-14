@@ -9,7 +9,7 @@
 
         <title>@yield('title', '')</title>
 
-        @include('includes.google_head')
+		@includeFirst(['includes.google_head', 'includes.head.google_head'])
         <!-- Common Javascript -->
         <script>
             var fecha_server = <?= getdate()[0] * 1000 ?>;
