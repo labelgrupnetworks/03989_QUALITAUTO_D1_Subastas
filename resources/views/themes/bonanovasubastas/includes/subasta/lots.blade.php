@@ -61,7 +61,4 @@
 
     @include('includes.subasta.lot')
 
-    {{-- @include('includes.lotlist_large', ['class_square' => 'col-xs-12']) --}}
-
-    {{-- @include('includes.lotlist_mini', ['class_square' => 'col-xs-4 col-sm-3 col-md-2']) --}}
 @endforeach
