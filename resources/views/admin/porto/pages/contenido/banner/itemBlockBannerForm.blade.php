@@ -35,7 +35,7 @@
                         {!! $formulario[strtoupper($lang)]['texto2'] !!}
                     </div>
                 </div>
-            @elseif ($tipo == 'texto')
+            @elseif ($tipo == 'texto' || $tipo == 'iframe')
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
                         <label>Texto</label>

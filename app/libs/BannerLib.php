@@ -243,6 +243,16 @@ class BannerLib
 						$html .= '</div>';
 					}
 				}
+
+				if($tipo_item == 'iframe') {
+					foreach ($itemsPorBloque[$k] as $item) {
+						$hasUrl = !empty($item->url);
+						$iframe = $hasUrl ? str_replace('src=""', 'src="'.$item->url.'"', $item->texto) : $item->texto;
+						$html .= '<div class="item banner_iframe">';
+						$html .= $iframe;
+						$html .= '</div>';
+					}
+				}
 			}
 			$html .= '</div></div>';
 			if ($tipo_item == "imagen" ||  $tipo_item == "texto") {

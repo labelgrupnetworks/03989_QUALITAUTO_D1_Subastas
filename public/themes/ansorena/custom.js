@@ -56,6 +56,13 @@ $(() => {
 		if ($("#orderphone").val() == "S") {
 			tel1 = $("#phone1Bid_JS").val();
 			tel2 = $("#phone2Bid_JS").val();
+			if(tel1.length == 0 && tel2.length == 0){
+				$("#errorOrdenFicha").removeClass("hidden");
+				$("#errorOrdenFicha").html(messages.error["noPhoneInPhoneBid"]);
+				/* Evitamos que se cierre */
+				event.preventDefault();
+				return ;
+			}
 		} else {
 			tel1 = "";
 			tel2 = "";

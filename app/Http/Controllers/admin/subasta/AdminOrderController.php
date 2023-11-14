@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrlic;
+use App\Models\V5\SubAuchouse;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Str;
 use App\Exports\OrdersExport;
@@ -437,6 +438,50 @@ class AdminOrderController extends Controller
 			$orderController->createOrder($request->codcli, $request->sub, $request->ref, $request->imp);
 		}
 	}
+
+
+	#subalia llamara a una url que ejecutara esta funcion para poder llamar al web service
+	function subalia_send_ws(Request $request){
+
+		$hashSubalia = $request->hash;
+		#recuperamos el código de la casa desubastas dentro de subalia
+		$cliAuchouse = Config::get('app.subalia_cli');
+		#si es una casa de subastas con webservice y existe el código en subalia
+        if ( Config::get('app.WebServiceClient') && !empty($cliAuchouse) ) {
+
+            $key = SubAuchouse::select('COD_AUCHOUSE', 'HASH')
+                    ->where('CLI_AUCHOUSE', '=', $cliAuchouse)
+                    ->where('EMP_ORIGIN_AUCHOUSE', '=', Config::get('app.emp'))
+                    ->first();
+
+			$licit =$request->licit;
+			$sub = $request->sub;
+			$ref = $request->ref;
+			$imp = $request->imp;
+
+			#debe coincidir el hash de la llamada con el que generemos aquí para dar por buena la llamada
+			if($hashSubalia  ==	hash_hmac("sha256", "$licit $sub $ref $imp",  $key->hash)){
+					$theme  = Config::get('app.theme');
+					$rutaOrderController = "App\Http\Controllers\\externalws\\$theme\OrderController";
+
+					$orderController = new $rutaOrderController();
+
+					$licitador = fgLicit::where("cod_licit", $licit)->where("sub_licit", $sub)->first();
+
+					if(!empty($licitador)){
+						\Log::info("orden de subalia por curl licit=$licit sub=$sub ref=$ref imp=$imp codCli=".$licitador->cli_licit);
+						$orderController->createOrder($licitador->cli_licit, $sub, $ref, $imp);
+
+					}else{
+						\Log::info("Error orden de subalia por curl, no existe el licitador ".$licit. " para la subasta $sub");
+					}
+
+			}else{
+				\Log::info("Error orden de subalia por curl, el hash no coincider licit= $licit  sub= $sub  ref= $ref  imp=$imp  hash=$hashSubalia // hashcalculado=".hash_hmac("sha256", "$licit $sub $ref $imp",  $key->hash));
+			}
+		}
+	}
+
 
 
 }

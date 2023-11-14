@@ -9,8 +9,8 @@
  * Usario no logeado, Realizar login
  * @returns {metodo envair datos a controllador}
  */
-function landingLogin(e) {
-        
+function validarLogin(e) {
+
     $.ajax({
         type: "POST",
         url: '/login_post_ajax',
@@ -30,11 +30,11 @@ function landingLogin(e) {
 
 
 function construirDatos(datos) {
-    
+
     if(datos == undefined){
         datos = $('#formUserLogin').serialize();
     }
-    
+
     $.ajax({
         type: "POST",
         url: "subalia/valida",
@@ -50,21 +50,21 @@ function construirDatos(datos) {
                 showMessage(messages.error.hasErrors);
             }
         }
-    });   
+    });
 }
 
 
 /*
  * Rellenar formulario hidden con los datos recibidos, y enviar
- * 
+ *
  * @param info {object} info datos recibidos.
  */
 function formHidden(data) {
-    
+
 
     $("#info").val(JSON.stringify(data.info));
     $("#cod_auchouse").val(data.cod_auchouse);
     $("#redirectH").val(data.redirect);
-    
+
     document.getElementById("formToSubalia").submit();
 }

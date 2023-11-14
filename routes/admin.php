@@ -108,6 +108,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'newbanner'], function () {
 			Route::get('/', "contenido\BannerController@index");
+			Route::get('/download', "contenido\BannerController@download");
 			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
 			Route::get('/nuevo', "contenido\BannerController@nuevo");
 			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
@@ -460,4 +461,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('/login', 'AdminUserController@login_post');
 		Route::get('/logout', 'AdminUserController@logout');
 	});
+
+	#ruta a la cual se debe poder acceder desde fuera del admin y sin estar logeado ya que la llamada la hace subalia
+	Route::post('orders/subalia_send_ws', 'subasta\AdminOrderController@subalia_send_ws');
 });
