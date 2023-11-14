@@ -114,3 +114,8 @@ Deshacer un commit pero manteniendo el commit en el historial
 ```git
 git revert [id del commit]
 ```
+
+Eliminar ramas remotas en el repo local cuando ya han sido eliminadas en el repo remoto
+```git
+git fetch origin --prune
+```
