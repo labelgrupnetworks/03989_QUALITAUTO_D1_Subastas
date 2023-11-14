@@ -9,10 +9,10 @@
 		<form id="accerder-user-form-responsive">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="form-group">
-				<input type="text" name="email" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}">
+				<input type="text" name="email" class="form-control" autocomplete="username" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}">
 			</div>
 			<div class="form-group">
-				<input maxlength="20" name="password" type="password" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}">
+				<input maxlength="20" name="password" type="password" class="form-control" autocomplete="current-password" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}">
 			</div>
                         <p><a onclick="close_modal_session();" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}</a></p>
 			<h5 class="message-error-log text-danger"></h5></p>
@@ -114,14 +114,14 @@
                                             <div class=" text-center single_item_content_">
                                                 <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
                                                 <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
-                                                <span class="ref_orden hidden"></span>    
+                                                <span class="ref_orden hidden"></span>
                                                 </br>
                                                     <button id="confirm_orden_lotlist" class="btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
                                                     <div class='mb-10'></div>
                                                      <div class='mb-10'></div>
                                                     <ul class="items_list">
                                                         <li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
-                                                        
+
                                                     </ul>
                                             </div>
                                     </div>

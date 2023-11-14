@@ -30,11 +30,11 @@
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="form-group">
                                     <label for="usuario">{{ trans(\Config::get('app.theme').'-app.login_register.user') }}</label>
-                                        <input class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}" type="email" name="email" type="text">
+                                        <input id="usuario" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}" type="email" name="email" type="text" autocomplete="username">
                                     </div>
                                     <div class="form-group">
                                         <label for="contraseña">{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}</label>
-                                        <input class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20">
+                                        <input id="contraseña" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}" type="password" name="password" autocomplete="current-password" maxlength="20">
                                     </div>
                                     <p>
                                         <a
