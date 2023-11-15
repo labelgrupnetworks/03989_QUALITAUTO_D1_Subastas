@@ -77,7 +77,7 @@
 
                                     @if (!empty($suscription->cod_cli))
                                         <a class="btn btn-info btn-xs"
-                                            href="{{ route('clientes.edit', ['cod_cli' => $suscription->cod_cli]) }}">
+                                            href="{{ route('clientes.edit', ['cliente' => $suscription->cod_cli]) }}">
                                             <i class="fa fa-eye"></i>
                                             Show
                                         </a>
