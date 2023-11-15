@@ -159,7 +159,7 @@ class NewsletterController extends Controller
 	 */
 	public function migrateNewslettersToNewFormat()
 	{
-		//abort(404);
+		abort(404);
 		Fx_Newsletter_Suscription::query()->delete();
 		$fxCliWebQuery = FxCliWeb::query()->select("email_cliweb, idioma_cliweb, fecalta_cliweb");
 		foreach (range(1, 20) as $value) {

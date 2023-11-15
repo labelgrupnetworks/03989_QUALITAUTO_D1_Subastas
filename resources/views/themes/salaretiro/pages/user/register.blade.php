@@ -313,6 +313,7 @@ $data['families'][2] = "Arte";
 
 							<!-- con categorias newsletter -->
 							<big>{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}</big>
+							<input type="hidden" name="families[1]" value="1">
 							<br>
 							@foreach ($newsletters as $id_newsletters => $name_newsletters)
 								<div>
