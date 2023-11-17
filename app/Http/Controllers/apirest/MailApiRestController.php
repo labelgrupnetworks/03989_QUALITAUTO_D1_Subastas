@@ -18,12 +18,12 @@ class MailApiRestController extends ApiRestController {
 
     public function sendMail($lang)
 	{
+		Log::debug('sendMail', ['params' => request()->all()]);
+
         $validate = $this->validateParams(['type', 'apikey', 'user', 'passw']);
         if (count($validate) != 0) {
             return $this->responder(false, "Need the data params", $validate, 401);
         }
-
-		Log::debug('sendMail', ['params' => request()->all()]);
 
         $type = request('type');
 
