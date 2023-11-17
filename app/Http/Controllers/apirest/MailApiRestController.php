@@ -23,6 +23,8 @@ class MailApiRestController extends ApiRestController {
             return $this->responder(false, "Need the data params", $validate, 401);
         }
 
+		Log::debug('sendMail', ['params' => request()->all()]);
+
         $type = request('type');
 
         switch ($type){
