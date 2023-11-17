@@ -5,7 +5,7 @@
         <small>{{ trans('admin-app.general.max_file_size', ['size' => min(ini_get('upload_max_filesize'), ini_get('post_max_size'))]) }}</small>
 
         <input id="store_file_route" type="hidden"
-            value="{{ route('clientes.files.store', ['cod_cli' => $cliente->codcli]) }}">
+            value="{{ route('clientes.files.store', [$cliente->codcli]) }}">
     </div>
     <div class="table-responsive">
         <table class="table table-striped table-condensed table-files" style="width:100%">

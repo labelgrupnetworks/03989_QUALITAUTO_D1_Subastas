@@ -55,11 +55,15 @@ $pageName = Route::currentRouteName();
 
 					@if (!empty($categories))
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="categoriesHeader" data-bs-toggle="dropdown" aria-expanded="false">{{ trans("$theme-app.lot.categories") }}</a>
+						<a class="nav-link dropdown-toggle" href="#" id="categoriesHeader" data-bs-toggle="dropdown" aria-expanded="false">
+							{{ trans("$theme-app.lot.categories") }}
+						</a>
 						<ul class="dropdown-menu" aria-labelledby="categoriesHeader">
 							@foreach ($categories as $category)
 								<li>
-									<a class="dropdown-item" href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a>
+									<a class="dropdown-item" href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">
+										{{$category["des_ortsec0"]}}
+									</a>
 								</li>
 							@endforeach
 						</ul>

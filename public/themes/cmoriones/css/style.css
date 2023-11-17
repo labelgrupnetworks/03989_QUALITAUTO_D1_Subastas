@@ -9,11 +9,11 @@
 }
 
 .btn-outline-border-lb-primary {
-	--bs-btn-color: var(--lb-color-primary);
-	--bs-btn-active-color: var(--lb-color-primary);
-	--bs-btn-active-border-color: var(--lb-color-primary);
-	--bs-btn-hover-color: var(--lb-color-primary);
-	--bs-btn-hover-border-color: var(--lb-color-primary);
+	--bs-btn-color: var(--lb-color-primary-dark);
+	--bs-btn-active-color: var(--lb-color-primary-dark);
+	--bs-btn-active-border-color: var(--lb-color-primary-dark);
+	--bs-btn-hover-color: var(--lb-color-primary-dark);
+	--bs-btn-hover-border-color: var(--lb-color-primary-dark);
 }
 
 body> :is(header, footer, .subnav) {
@@ -42,23 +42,49 @@ h1, .h1 {
     font-weight: 700;
 }
 
-.navbar {
+header .navbar {
 	--bs-navbar-color: var(--lb-color-primary-contrast);
 	--bs-navbar-hover-color: var(--lb-color-primary);
 	--bs-navbar-disabled-color: rgba(0, 0, 0, 0.3);
 	--bs-navbar-active-color: rgba(0, 0, 0, 0.9);
+	text-transform: uppercase;
+	font-size: 14px;
+	letter-spacing: 2px;
 }
 
-.navbar-toggler {
+header .navbar .navbar-nav {
+	gap: .5rem;
+}
+
+header .navbar-toggler {
 	background-color: var(--lb-color-primary);
 }
 
 header .nav-link {
 	color: currentColor;
+	transition: color .4s ease-in-out;
 }
 
 header .nav-link.lb-text-primary {
 	color: var(--lb-color-primary);
+}
+
+header .nav-link:hover {
+	text-decoration: none;
+}
+
+header .nav-link span {
+	position: relative;
+}
+
+header .nav-link span::after {
+	content: '';
+    left: -10px;
+    top: 0;
+    position: absolute;
+    border-right: 2px solid;
+    height: 100%;
+	color: #fff;
 }
 
 .header-brand {
