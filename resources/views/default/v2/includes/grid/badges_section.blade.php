@@ -1,3 +1,11 @@
+@php
+	$allRequest = request()->collect()->filter();
+	$hasFeaturesFilter = collect($allRequest->get('features', []))->filter()->isNotEmpty();
+	$filters = collect(['description', 'reference', 'liveLots', 'noAward', 'award', 'typeSub', /* 'category', 'section', 'subsection', */ 'auchouse']);
+	$hasSimpleFilters = $filters->intersect($allRequest->keys())->isNotEmpty();
+@endphp
+
+@if($hasSimpleFilters || $hasFeaturesFilter)
 <section class="section-badges">
 
 	<p class="mb-1">Filtros activos</p>
@@ -8,7 +16,7 @@
 		</span>
 	@endif
 
-	@if(!empty(request('features')) && is_array(request('features')) && collect(request('features'))->filter()->isNotEmpty())
+	@if(!empty(request('features')) && is_array(request('features')) && $hasFeaturesFilter)
 		@foreach(request('features') as $idFeature=> $idValueFeature)
 			@if(!empty($idValueFeature))
 				<span data-del_filter="#feature_{{$idValueFeature}}" class="del_filter_js badge rounded-pill badge-custom-primary">
@@ -78,3 +86,4 @@
 		</span>
     @endif
 </section>
+@endif

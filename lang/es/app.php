@@ -1225,6 +1225,13 @@ $lang = [
 	'features' =>
 	array(
 		'features' => 'Características',
+		'direccion' => 'Dirección',
+		'poblacion' => 'Población',
+		'hab' => 'Habitaciones',
+		'wc' => 'Baños',
+		'mconst' => 'Metros construidos',
+		'alquiler' => 'Alquiler',
+		'demandas' => 'Demandas',
 	),
 	'test_js' =>
 	array(

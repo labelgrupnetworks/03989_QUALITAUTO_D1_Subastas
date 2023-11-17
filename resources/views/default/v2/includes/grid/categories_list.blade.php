@@ -10,7 +10,7 @@
         </svg>
     </div>
 
-    <div class="auction__filters-type-list mt-1 collapse filter-child-collapse" id="auction_categories">
+    <div class="auction__filters-type-list mt-2 collapse filter-child-collapse" id="auction_categories">
 
         <div class="input-category d-flex align-items-center d-none">
             <input id="all_categories" name="category" type="radio" value=""
@@ -27,7 +27,7 @@
             <?php # si una categoria no tiene lotes no puede estar marcada ni buscar las subcategorias
             ?>
             @if ($linOrtsec0 == $filters['category'] && $numCategoryLots > 0)
-                <div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between"
+                <div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between mb-1"
                     data-toggle="collapse" href="#sections_{{ $category['key_ortsec0'] }}" role="button"
                     aria-expanded="true" aria-controls="sections_{{ $category['key_ortsec0'] }}">
                     <div class="category_level_01 d-flex align-items-center justify-content-space-between">
@@ -44,7 +44,7 @@
 
                 @include('includes.grid.sections_list')
             @elseif($numCategoryLots > 0)
-                <div class="input-category d-flex align-items-center">
+                <div class="input-category d-flex align-items-center mb-1">
 
                     <div class="radio">
                         <input class="filter_lot_list_js" id="category_{{ $linOrtsec0 }}" name="category"

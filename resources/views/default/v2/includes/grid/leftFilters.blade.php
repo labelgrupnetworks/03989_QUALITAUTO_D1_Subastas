@@ -33,7 +33,9 @@
 
 				@include('includes.grid.categories_list')
 
-				@include('includes.grid.features_list')
+				@if(!empty($features))
+					@include('includes.grid.features_list')
+				@endif
 
 				@if(!empty($auction))
 

@@ -61,6 +61,11 @@
 							title="{{ trans($theme.'-app.foot.cookies') }}" class="nav-link p-0 text-muted">{{
 							trans($theme.'-app.foot.cookies') }}</a>
 					</li>
+					<li class="nav-item">
+						<button class="nav-link btn btn-link text-muted" type="button" data-bs-toggle="modal" data-bs-target="#cookiesPersonalize">
+							{{ trans("$theme-app.cookies.configure") }}
+						</button>
+					</li>
 				</ul>
 			</div>
 
@@ -84,7 +89,6 @@
 				<p><a class="nav-link" title="{{ trans($theme.'-app.foot.developedSoftware') }}"
 						href="{{ trans($theme.'-app.foot.developed_url') }}" target="_blank">{{
 						trans($theme.'-app.foot.developedBy') }}</a></p>
-				<p><a href="https://storyset.com/people">People illustrations by Storyset</a></p>
 			</div>
 
 

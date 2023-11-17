@@ -9,10 +9,10 @@ use Config;
 class FgCaracteristicas_Value extends Model
 {
     protected $table = 'fgcaracteristicas_value';
-    protected $primaryKey = ' EMP_CARACTERISTICAS_VALUE, ID_CARACTERISTICAS_VALUE';
+    protected $primaryKey = 'ID_CARACTERISTICAS_VALUE';
 
     public $timestamps = false;
-    public $incrementing = false;
+    public $incrementing = true;
 
     //permitimos crear un elemento apartir de todos los campos
     protected $guarded = [];

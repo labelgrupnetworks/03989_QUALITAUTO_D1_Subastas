@@ -1,4 +1,4 @@
-document.querySelector('[name="clid_cpostal"]').addEventListener('blur', searchCityForSecondAddress);
+document.querySelector('[name="clid_cpostal"]')?.addEventListener('blur', searchCityForSecondAddress);
 document.querySelector('[name="nif"]').addEventListener('blur', checkExistNif);
 document.getElementById('registerForm').addEventListener('submit', handleSubmitRegisterForm);
 handleCheckedAddressShipping(document.querySelector('[name="shipping_address"]'));
@@ -121,6 +121,9 @@ async function handleSubmitRegisterForm(event) {
 function copyPrincipalAddress() {
 	const inputsNames = ['pais', 'cpostal', 'provincia', 'poblacion', 'codigoVia', 'direccion'];
 	inputsNames.forEach((inputName) => {
+		if(document.querySelector(`[name='clid_${inputName}']`) == null) {
+			return;
+		}
 		document.querySelector(`[name='clid_${inputName}']`).value = document.querySelector(`[name='${inputName}']`).value;
 	});
 }

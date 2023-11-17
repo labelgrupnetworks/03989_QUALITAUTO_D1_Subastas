@@ -380,7 +380,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@getOrder')->name('subastas_concursales.lotes_concursales.order_edit');
 		Route::post('subastas_concursales/{cod_sub}/lotes_concursales/order', 'subasta\AdminLoteConcursalController@saveOrder')->name('subastas_concursales.lotes_concursales.order_store');
 		Route::resource('subastas_concursales.lotes_concursales', 'subasta\AdminLoteConcursalController')->except(['show'])->parameters([
-			'subastas_concursales' => 'subasta',
+			'subastas_concursales' => 'cod_sub',
 			'lotes_concursales' => 'lote'
 		]);
 

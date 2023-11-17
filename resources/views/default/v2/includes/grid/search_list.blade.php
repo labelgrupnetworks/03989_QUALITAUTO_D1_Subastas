@@ -10,15 +10,15 @@
 		</svg>
 	</div>
 
-	<div id="auction_search" class="mt-1 collapse show filter-child-collapse">
-		<label class="filters-auction-label w-100 mb-1">
+	<div id="auction_search" class="mt-3 collapse show filter-child-collapse">
+		<label class="filters-auction-label w-100 mb-2">
 			<p>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</p>
 			<input id="description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}"
 				name="description" type="text" class="form-control form-control-sm filter-auction-input search-input_js" value="{{ app('request')->input('description') }}">
 		</label>
 
 		@if(!empty($codSub) && !empty($refSession))
-		<label class="filters-auction-label w-100 mb-1">
+		<label class="filters-auction-label w-100 mb-2">
 			<p>{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</p>
 			<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}"
 				name="reference" type="text" class="form-control form-control-sm filter-auction-input search-input_js" value="{{ app('request')->input('reference') }}">

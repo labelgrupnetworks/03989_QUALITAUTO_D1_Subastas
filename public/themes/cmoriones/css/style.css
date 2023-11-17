@@ -24,7 +24,7 @@ body> :is(header, footer, .subnav) {
 body > header {
 	position: sticky;
     top: 0;
-    z-index: 999999;
+    z-index: 1021;
 	/* height: 96px; */
 }
 
@@ -71,8 +71,28 @@ header .nav-link.lb-text-primary {
 	padding-bottom: 1rem;
 }
 
+.section-grid-filters::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+}
+
+.section-grid-filters::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+.section-grid-filters {
+	border: 1px solid var(--lb-color-primary-light);
+	border-radius: 10px;
+	padding: .5rem;
+	scrollbar-gutter: stable;
+}
+
+
 @media(min-width: 992px) {
 	.section-grid-filters {
 		top: calc(96px + 1rem);
+		height: 85vh;
+		padding-right: .5rem;
 	}
 }
+
+

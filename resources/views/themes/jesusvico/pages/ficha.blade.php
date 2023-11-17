@@ -73,7 +73,7 @@ $(document).ready(function() {
 		default => trans("$theme-app.subastas.inf_subasta_subasta"),
 	};
 @endphp
-<main class="ficha">
+<main class="page-ficha">
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">

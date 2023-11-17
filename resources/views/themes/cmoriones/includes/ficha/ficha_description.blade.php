@@ -15,7 +15,9 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 
 		<div class="gird-features">
 			@foreach($caracteristicas as $caracteristica)
-				<p class="feature-name">{{$caracteristica->name_caracteristicas}}</p>
+				<p class="feature-name">
+					{{ trans("$theme-app.features.$caracteristica->name_caracteristicas") }}
+				</p>
 				<p class="feature-value">{{$caracteristica->value_caracteristicas_hces1}}</p>
 			@endforeach
 		</div>
