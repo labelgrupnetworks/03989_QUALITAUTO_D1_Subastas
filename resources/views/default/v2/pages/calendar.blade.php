@@ -19,7 +19,8 @@
 	$bread[] = array("name" =>trans(\Config::get('app.theme').'-app.home.calendar-news'));
 @endphp
 
-<div class="container">
+<main>
+	<div class="container">
 	<div class="row">
 		<div class="col-12">
 			@include('includes.breadcrumb')
@@ -83,7 +84,8 @@
 		</div>
 	</div>
 
-</div>
+	</div>
+</main>
 
 <script>
 	const auctionEvents = @json($auctionsEventsFormat);

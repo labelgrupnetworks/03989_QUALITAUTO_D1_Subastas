@@ -22,6 +22,7 @@
         $newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
     @endphp
 
+	<main>
     <section class="container create-account">
 
         <div class="mb-3">
@@ -361,6 +362,7 @@
 
     </section>
 
+
     @if (!empty($formulario->subalia))
         <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
             <input id="info_sent" name="info" type="hidden" value="">
@@ -369,4 +371,5 @@
         </form>
     @endif
 
+	</main>
 @stop

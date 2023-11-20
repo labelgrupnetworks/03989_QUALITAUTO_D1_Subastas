@@ -97,9 +97,6 @@ $pageName = Route::currentRouteName();
 					@endif
 
 					<li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'calendar']) title="" href="{{ route('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
-					</li>
-					<li class="nav-item">
 						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion']) title="" href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
 					</li>
 					<li class="nav-item">
