@@ -79,6 +79,14 @@ $pageName = Route::currentRouteName();
 					</li>
 					@endif
 
+					@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+					<li class="nav-item">
+						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'subastas.venta_directa'])
+							href="{{ route('subastas.venta_directa') }}">
+							<span>{{ trans($theme.'-app.foot.direct_sale') }}</span>
+						</a>
+					</li>
+					@endif
 
 					@if($global['subastas']->has('H'))
 					<li class="nav-item">
