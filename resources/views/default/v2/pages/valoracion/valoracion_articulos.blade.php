@@ -19,7 +19,7 @@
     @endphp
 
     <main class="valoracion-page">
-        <div class="containers">
+        <div class="container">
 
             @include('includes.breadcrumb')
 
