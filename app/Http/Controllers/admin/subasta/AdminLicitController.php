@@ -11,7 +11,7 @@ use App\Models\V5\FgLicit;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider as Tools;
-use Config;
+use Illuminate\Support\Facades\Config;
 
 class AdminLicitController extends Controller
 {
@@ -133,7 +133,10 @@ class AdminLicitController extends Controller
 		if((!$licitTemp) || (!empty($cod_licit))){
 
 			if(empty($cod_licit)){//comprovem si la pelata del formulari esta buida si ho esta li donem una
-				$cod_licit = FgLicit::select("max(cod_licit) max_cod_licit")->joinCli()->where("sub_licit",$idAuction )->first()->max_cod_licit +1;
+				$cod_licit = FgLicit::select("max(cod_licit) max_cod_licit")->joinCli()
+					->where("sub_licit",$idAuction)
+					->where("cod_licit", "<", Config::get('app.subalia_min_licit'))
+					->first()->max_cod_licit +1;
 			}else{
 				$exist_licit = FgLicit::select("cod_licit")->joinCli()->where("sub_licit",$idAuction )->where("cod_licit",$cod_licit)->first();
 
