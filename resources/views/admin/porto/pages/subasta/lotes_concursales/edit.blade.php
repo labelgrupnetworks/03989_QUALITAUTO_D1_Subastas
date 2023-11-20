@@ -23,11 +23,11 @@
 			@endif
 
 			@if ($anterior)
-			<a href="{{ route('subastas_concursales.lotes_concursales.edit', ['subasta' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
+			<a href="{{ route('subastas_concursales.lotes_concursales.edit', ['cod_sub' => $cod_sub, 'lote' => $anterior,'menu' => 'subastas', 'render' => $render ] ) }}"
 				class="btn btn-warning">{{ trans("admin-app.button.prev") }}</a>
 			@endif
 			@if ($siguiente)
-			<a href="{{ route('subastas_concursales.lotes_concursales.edit', ['subasta' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
+			<a href="{{ route('subastas_concursales.lotes_concursales.edit', ['cod_sub' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
 				class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
 			@endif
 
