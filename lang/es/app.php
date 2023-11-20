@@ -440,7 +440,13 @@ $lang = [
 		'expiration_date' => 'Fecha expiración',
 		'conditions' => 'Condiciones',
 		'genre_mr' => 'Sr.',
-		'genre_mrs' => 'Sra.'
+		'genre_mrs' => 'Sra.',
+		'include_documents' => 'En caso de ser necesario, incluya documentación:',
+		'contest_rules' => 'Nota: Al registrarse los interesados se someten y dan su conformidad a las BASES GENERALES del Concurso',
+		'representar' => 'Representar a Empresa',
+		'yes' => 'Si',
+		'no' => 'No',
+		'nif_dni_nie' => 'NIF / DNI / NIE',
 
 	),
 	'lot' =>
@@ -540,7 +546,8 @@ $lang = [
 		'accept_conditions' => 'He leido y acepto las <a href=":url" target="_blank">Bases Generales</a>',
 		//Aceptación de las bases de la subasta
 		'accept_conditions_auction' => 'Acepto las bases generales de la subasta',
-
+		'authorization' => 'Autorización de Puja para lote ',
+		'upload_document_size' => 'Los archivos no deben pesar más de 2Mb'
 	),
 	'lot_list' =>
 	array(

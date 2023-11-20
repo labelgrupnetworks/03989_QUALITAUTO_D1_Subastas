@@ -1,8 +1,9 @@
 /*
-   |--------------------------------------------------------------------------
-   | Repinta la caja de pujas
-   |--------------------------------------------------------------------------
-   */$(document).ready(function () {
+|--------------------------------------------------------------------------
+| Repinta la caja de pujas
+|--------------------------------------------------------------------------
+*/
+$(document).ready(function () {
 
 	$('.lot-action_pujar_on_line').on('click', function (e) {
 		e.stopPropagation();
@@ -47,10 +48,46 @@
 		}
 	});
 
+	$('.lot-action_pujar_no_licit').on('click', function(e){
+
+		let params = {
+			cod_sub : this.dataset.codsub,
+			cod_cli : this.dataset.codcli,
+			ref : this.dataset.ref,
+			lang : this.dataset.lang
+		};
+
+		requestDataForDeposit(params);
+	});
+
 	initSlick();
 });
 
 const frontCurrencies = ['$', 'US$', 'COP '];
+
+function requestDataForDeposit({cod_sub, cod_cli, ref, lang}) {
+	let params = {
+		cod_sub,
+		cod_cli,
+		ref,
+		lang
+	};
+
+	$.ajax({
+		type: "POST",
+		url: "/api-ajax/formulario-pujar",
+		data: params,
+		success: function (response) {
+			$("#insert_msg").html(response);
+			$.magnificPopup.open({ items: { src: '#modalFormularioFicha' }, type: 'inline' }, 0);
+		},
+		error: function (result) {
+			$("#insert_msg_title").html("");
+			$("#insert_msg").html(messages.error.no_licit);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+		}
+	});
+}
 
 function actionResponseDesign(data) {
 	if (auction_info.subasta.sub_tiempo_real == 'S') {
@@ -608,4 +645,12 @@ function reloadPujasButtons(codSub, actualBid){
 			}
 		}
 	});
+}
+
+function showStreaming() {
+	document.getElementById('nav-streaming').style.opacity = '1';
+}
+
+function hideStreaming() {
+	document.getElementById('nav-streaming').style.opacity = '0';
 }

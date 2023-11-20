@@ -119,3 +119,22 @@
         </div>
     </section>
 </div>
+
+<div class="modal-block mfp-hide" id="modalFormularioFicha">
+    <section class="panel">
+		<div class="panel-body">
+			<div class="modal-wrapper">
+				<div class="modal-header">
+					<h5 class="class_h1 mb2">{{ trans("$theme-app.lot.confirm_bid") }}</h5>
+				</div>
+				<div class="modal-body">
+					<p id="insert_msg"></p>
+				</div>
+				<div class="modal-footer">
+					<button id="send_form_ficha" class="btn btn-lb-primary modal-confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+					<button class="btn btn-lb-secondary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+				</div>
+			</div>
+		</div>
+    </section>
+</div>

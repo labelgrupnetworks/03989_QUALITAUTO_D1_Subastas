@@ -116,9 +116,12 @@ header .nav-link span::after {
 @media(min-width: 992px) {
 	.section-grid-filters {
 		top: calc(96px + 1rem);
-		height: 85vh;
+		height: auto;
+		max-height: 85vh;
 		padding-right: .5rem;
 	}
 }
 
-
+#modalFormularioFicha .modal-wrapper>div {
+	text-align: start;
+}
