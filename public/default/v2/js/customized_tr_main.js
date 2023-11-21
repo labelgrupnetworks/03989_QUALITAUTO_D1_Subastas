@@ -175,7 +175,8 @@ function reloadPujasList() {
 	if (auction_info.subasta.sub_tiempo_real == 'S') {
 		reloadPujasList_W()
 	} else {
-		reloadPujasList_O()
+		reloadPujasListO();
+		//reloadPujasList_O()
 	}
 	if(typeof loadDivisa === 'function') {
 		loadDivisa();
@@ -246,7 +247,6 @@ function reloadPujasListO() {
 	const licits = Object.assign({}, ...codsLicits.map((codLicit, index) => ({[codLicit]: index + 1})));
 
 	reloadHistory({subasta, pujas, licits, importeReserva: impres_asigl0, minPriceSurpass : min_price_surpass});
-
 }
 
 /**
@@ -256,6 +256,8 @@ function reloadPujasListO() {
  * @param {object} subasta
  */
 function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}){
+
+	const importeReservaFormatted = new Intl.NumberFormat("de", {minimumFractionDigits: 0, maximumFractionDigits: 2, style: 'currency', currency: 'EUR'}).format(parseFloat(importeReserva));
 
 	const historyList = document.getElementById('pujas_list');
 	historyList.innerHTML = '';
@@ -275,7 +277,7 @@ function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}
 	const iElement = `<span class="yo">${transTextI}</span>`;
 	const otherElement = (numLicit) => `<span class="otherLicit hint--top hint--medium" data-hint="${messages.neutral.puja_corresponde} ${numLicit}">${numLicit}</span>`;
 	const autoElement = ` <span class="dos hint--top hint--medium" data-hint="${transTextAuto}">A</span>`;
-	const reservePriceSurpassElement = `<p class="info">${transMinimalPrice}</p>`;
+	const reservePriceSurpassElement = `<p class="info">${transMinimalPrice} ${importeReservaFormatted}</p>`;
 
 	pujas.forEach((puja, index) => {
 
@@ -296,9 +298,15 @@ function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}
 		let pujaFormatted = puja.imp_asigl1.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 		pujaFormatted = frontCurrencies.includes(currencySimbol) ? `${currencySimbol} ${pujaFormatted}` : `${pujaFormatted} ${currencySimbol}`;
 
+		const licitUnit = puja.cod_licit.toString().slice(-1);
+
 		const line = `<p class="hist_item">
 					<span class="bidder">Pujador</span>
-					<span class="semi-colon">(</span>${bidderElement}${puja.type_asigl1 != 'A' ? '' : autoElement}<span class="semi-colon">)</span>
+					<span class="bidder-identifier" data-licitunit="${licitUnit}">
+						<span class="semi-colon">(</span>
+							${bidderElement}${puja.type_asigl1 != 'A' ? '' : autoElement}
+						<span class="semi-colon">)</span>
+					</span>
 					<span class="date">${dateFormatted}</span>
 					<span class="price ${pirceClass}">${pujaFormatted}</span>
 				</p>`;

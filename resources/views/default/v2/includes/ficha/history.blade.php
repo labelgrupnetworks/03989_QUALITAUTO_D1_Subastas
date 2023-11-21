@@ -20,7 +20,7 @@ $view_num_pujas = !empty(Config::get('app.max_bids')) ? Config::get('app.max_bid
 		{{ trans(\Config::get('app.theme').'-app.lot.history') }} (<span id="num_pujas" class="num_pujas"></span> {{ trim(trans(\Config::get('app.theme').'-app.lot.bidding')) }})
 	</h5>
 	<div class="hist card">
-		<div class="hist_content px-3" id="pujas_list" style="--max-lines: {{$view_num_pujas}}"></div>
+		<div class="hist_content lb-scroll" id="pujas_list" style="--max-lines: {{$view_num_pujas}}"></div>
 	</div>
 	<div id="view_more" class="more more-historic-bids hidden">
 		<a title="ver todas" data-toggle="collapse" data-target="#pujas-collapse" href="javascript:view_all_bids();">

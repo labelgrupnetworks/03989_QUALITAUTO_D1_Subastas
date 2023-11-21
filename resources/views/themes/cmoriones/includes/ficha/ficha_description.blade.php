@@ -3,15 +3,14 @@ $category = App\Models\V5\FgOrtsec1::select('lin_ortsec1', 'des_ortsec0', 'key_o
 $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual->num_hces1, $lote_actual->lin_hces1);
 @endphp
 
-
-
 <div class="description max-lines" style="--max-lines: 3; --line-height: 1.5">
 	<p>{!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}</p>
 </div>
+<button data-js="show-more" data-txt-showmore="Ver más" data-txt-showless="Ver menos" class="btn btn-link lb-link-primary px-0 text-decoration-none text-capitalize d-none">Ver más</button>
 
 @if(count($caracteristicas) !== 0)
 	<div class="features mt-3">
-		<h5>Caracteristicas</h5>
+		<h5>{{ trans("$theme-app.features.features") }}</h5>
 
 		<div class="gird-features">
 			@foreach($caracteristicas as $caracteristica)
@@ -34,3 +33,22 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 	</a>
 </div>
 @endif
+
+<script>
+
+	if(isDescriptionOverflow()) {
+		$('[data-js="show-more"]').removeClass('d-none');
+	}
+
+	$('[data-js="show-more"]').on('click', function() {
+		$(this).toggleClass('active');
+		$(this).text($(this).hasClass('active') ? $(this).data('txt-showless') : $(this).data('txt-showmore'));
+		$('.description').toggleClass('max-lines');
+	});
+
+	function isDescriptionOverflow() {
+		var description = document.querySelector('.description');
+		return description.scrollHeight > description.clientHeight;
+	}
+
+</script>

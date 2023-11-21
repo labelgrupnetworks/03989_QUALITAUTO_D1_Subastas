@@ -8,6 +8,11 @@
 	--bs-font-sans-serif: 'Montserrat', sans-serif;
 }
 
+.btn {
+	--bs-btn-font-weight: 700;
+	text-transform: uppercase;
+}
+
 .btn-outline-border-lb-primary {
 	--bs-btn-color: var(--lb-color-primary-dark);
 	--bs-btn-active-color: var(--lb-color-primary-dark);
@@ -21,14 +26,14 @@ body> :is(header, footer, .subnav) {
 	color: var(--lb-color-primary-contrast);
 }
 
-body > header {
+body>header {
 	position: sticky;
-    top: 0;
-    z-index: 1021;
+	top: 0;
+	z-index: 1021;
 	/* height: 96px; */
 }
 
-body > footer {
+body>footer {
 	--lb-text-color-rgb: 255 255 255;
 }
 
@@ -37,9 +42,10 @@ main {
 	padding-bottom: 2rem;
 }
 
-h1, .h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+h1,
+.h1 {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
 }
 
 header .navbar {
@@ -79,11 +85,11 @@ header .nav-link span {
 
 header .nav-link span::after {
 	content: '';
-    left: -10px;
-    top: 0;
-    position: absolute;
-    border-right: 2px solid;
-    height: 100%;
+	left: -10px;
+	top: 0;
+	position: absolute;
+	border-right: 2px solid;
+	height: 100%;
 	color: #fff;
 }
 
@@ -124,4 +130,101 @@ header .nav-link span::after {
 
 #modalFormularioFicha .modal-wrapper>div {
 	text-align: start;
+}
+
+.ficha-grid {
+	gap: 2rem;
+}
+
+.card.hist {
+	border: 0;
+}
+
+.hist_content {
+	--logo-size: 35px;
+	--padding-line-y: 1px;
+	--padding-line-x: 5px;
+	--gap-line: 5px;
+	max-height: calc((var(--logo-size) + (var(--padding-line-y) * 2) + var(--gap-line, 1px)) * var(--max-lines, 6));
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding-left: 0;
+	padding-right: 0.5rem;
+}
+
+.hist_content :is(.bidder, .semi-colon) {
+	display: none;
+}
+
+.hist_content .hist_item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--padding-line-y) var(--padding-line-x);
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.hist_content .info {
+	font-size: .9em;
+	padding: var(--padding-line-y) var(--padding-line-x);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--logo-size);
+    background-color: var(--lb-color-primary-light);
+}
+
+.hist_content .bidder-identifier {
+	background: bisque;
+	width: var(--logo-size);
+	height: var(--logo-size);
+	padding: 5px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--background-unit);
+	color: var(--color-unit, #000);
+}
+
+.bidder-identifier[data-licitunit="0"] {
+	--background-unit: #d2a38e;
+}
+
+.bidder-identifier[data-licitunit="1"] {
+	--background-unit: #ced28e;
+}
+
+.bidder-identifier[data-licitunit="2"] {
+	--background-unit: #d2b38e;
+}
+
+.bidder-identifier[data-licitunit="3"] {
+	--background-unit: #bdd28e;
+}
+
+.bidder-identifier[data-licitunit="4"] {
+	--background-unit: #d2c48e;
+}
+
+.bidder-identifier[data-licitunit="5"] {
+	--background-unit: #d28e9b;
+}
+
+.bidder-identifier[data-licitunit="6"] {
+	--background-unit: #c48ed2;
+}
+
+.bidder-identifier[data-licitunit="7"] {
+	--background-unit: #acd28e;
+}
+
+.bidder-identifier[data-licitunit="8"] {
+	--background-unit: #d28e9b;
+}
+
+.bidder-identifier[data-licitunit="9"] {
+	--background-unit: #c4886d;
 }

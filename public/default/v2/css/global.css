@@ -330,6 +330,14 @@ input {
 	--bs-btn-hover-border-color: var(--lb-color-secondary);
 }
 
+.lb-link-primary {
+	color: var(--lb-color-primary);
+}
+
+.lb-link-primary:hover, .lb-link-primary:focus, .lb-link-primary.active {
+	color: var(--lb-color-primary-dark);
+}
+
 .lb-text-primary {
 	color: var(--lb-color-primary);
 }
