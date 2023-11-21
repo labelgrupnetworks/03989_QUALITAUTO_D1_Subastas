@@ -37,7 +37,7 @@ class MailChimpExport implements FromCollection, WithHeadings, ShouldAutoSize
 		];
 
 		$users = Fx_Newsletter_Suscription::query()
-			->select('cod_cli, email_cli, nom_cli, pais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, codpais_cli, tel1_cli, lang_newsletter_suscription')
+			->select('cod_cli, email_newsletter_suscription, nom_cli, pais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, codpais_cli, tel1_cli, lang_newsletter_suscription')
 			->selectRaw("LISTAGG(name_newsletter, ', ') WITHIN GROUP (ORDER BY id_newsletter_suscription) grupo")
 			//->selectRaw("'Suscritos' as grupo")
 			->joinNewsletter()
@@ -46,7 +46,7 @@ class MailChimpExport implements FromCollection, WithHeadings, ShouldAutoSize
 			}, function($query){
 				return $query->leftJoinCli();
 			})
-			->groupBy('cod_cli, email_cli, nom_cli, pais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, codpais_cli, tel1_cli, lang_newsletter_suscription')
+			->groupBy('email_newsletter_suscription, cod_cli,  nom_cli, pais_cli, dir_cli, dir2_cli, pob_cli, pro_cli, cp_cli, codpais_cli, tel1_cli, lang_newsletter_suscription')
 			->get()
 			->map(function ($user) use ($languages, $mailChimpLanguage) {
 				$completName = array_map("trim", explode(",", $user->nom_cli));
@@ -59,7 +59,7 @@ class MailChimpExport implements FromCollection, WithHeadings, ShouldAutoSize
 				$shortLanguage = $mailChimpLanguage[$user->lang_newsletter_suscription] ?? 'es_ES';
 
 				return [
-					$user->email_cli,
+					$user->email_newsletter_suscription,
 					$name,
 					$lastName,
 					trim($user->pais_cli),
