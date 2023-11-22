@@ -27,10 +27,12 @@
             <?php # si una categoria no tiene lotes no puede estar marcada ni buscar las subcategorias
             ?>
             @if ($linOrtsec0 == $filters['category'] && $numCategoryLots > 0)
-                <div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between mb-1"
-                    data-toggle="collapse" href="#sections_{{ $category['key_ortsec0'] }}" role="button"
+
+				<div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between mb-1"
+					data-bs-toggle="collapse" href="#sections_{{ $category['key_ortsec0'] }}" role="button"
                     aria-expanded="true" aria-controls="sections_{{ $category['key_ortsec0'] }}">
-                    <div class="category_level_01 d-flex align-items-center justify-content-space-between">
+
+					<div class="category_level_01">
                         <div class="radio">
                             <input class="filter_lot_list_js" id="category_{{ $linOrtsec0 }}" name="category"
                                 type="radio" value="{{ $linOrtsec0 }}" checked="checked" />
@@ -40,8 +42,9 @@
 							</label>
                         </div>
                     </div>
-                    <i class="fa fa-sort-down" data-toggle="collapse" href="#sections_{{ $linOrtsec0 }}"
-                        role="button" aria-expanded="true" aria-controls="sections_{{ $linOrtsec0 }}"></i>
+
+					@include('components.boostrap_icon', ['icon' => 'caret-down-fill', 'size' => '16'])
+
                 </div>
 
                 @include('includes.grid.sections_list')

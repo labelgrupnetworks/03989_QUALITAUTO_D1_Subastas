@@ -241,6 +241,10 @@ header .nav-link span::after {
 	--background-unit: #c4886d;
 }
 
+.section-grid-filters .category_level_01 {
+	margin-right: auto;
+}
+
 .section-grid-filters .filters-types > div:last-child {
 	border-bottom: none;
 }
