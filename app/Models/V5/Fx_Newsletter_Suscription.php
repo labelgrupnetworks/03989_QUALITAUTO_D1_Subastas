@@ -51,11 +51,11 @@ class Fx_Newsletter_Suscription extends Model
 	static function scopeGetSuscriptionsCli($query)
 	{
 		return $query
-			->select('email_newsletter_suscription, lang_newsletter_suscription, cod_cli, nom_cli, pais_cli')
+			->select('email_newsletter_suscription, lang_newsletter_suscription, cod_cli, cod2_cli, nom_cli, pais_cli, max(create_newsletter_suscription) create_newsletter_suscription')
 			->selectRaw("LISTAGG(name_newsletter, ',') WITHIN GROUP (ORDER BY name_newsletter) suscriptions")
 			->leftJoinCli()
 			->joinNewsletter()
-			->groupBy('email_newsletter_suscription, lang_newsletter_suscription, cod_cli, nom_cli, pais_cli');
+			->groupBy('email_newsletter_suscription, lang_newsletter_suscription, cod_cli,cod2_cli,  nom_cli, pais_cli');
 	}
 
 	public function getUrlUnsuscribeAttribute()

@@ -34,12 +34,15 @@ class NewslettersExport implements FromCollection, WithHeadings, ShouldAutoSize,
 		$newsletters = $this->newsletters;
 		$suscriptions = Fx_Newsletter_Suscription::query()
 			->getSuscriptionsCli()
+			->orderby("create_newsletter_suscription", "desc")
 			->get()
 			->map(function($suscription) use ($newsletters) {
 				$data = [
 					$suscription->cod_cli,
+					$suscription->cod2_cli,
 					$suscription->nom_cli,
 					$suscription->email_newsletter_suscription,
+					$suscription->create_newsletter_suscription,
 					$suscription->lang_newsletter_suscription,
 					$suscription->pais_cli,
 				];
@@ -59,8 +62,10 @@ class NewslettersExport implements FromCollection, WithHeadings, ShouldAutoSize,
 	{
 		$heading = [
 			'Código Cliente',
+			'Id Origen',
 			'Nombre Cliente',
 			'Email',
+			'Fecha Alta',
 			'Idioma',
 			'País'
 		];
