@@ -133,18 +133,10 @@ input {
 
 .dropdown-menu {
 	z-index: 1021;
-}
-
-.dropdown-item:focus,
-.dropdown-item:hover {
-	color: var(--lb-color-primary-contrast);
-	background-color: var(--lb-color-primary-light);
-}
-
-.dropdown-item.active,
-.dropdown-item:active {
-	color: var(--lb-color-primary-contrast);
-	background-color: var(--lb-color-primary);
+	--bs-dropdown-link-hover-color: var(--lb-color-primary-contrast);
+	--bs-dropdown-link-hover-bg: var(--lb-color-primary-light);
+	--bs-dropdown-link-active-color: var(--lb-color-primary-contrast);
+    --bs-dropdown-link-active-bg: var(--lb-color-primary);
 }
 
 .text-muted {
