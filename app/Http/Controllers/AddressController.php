@@ -139,9 +139,14 @@ class AddressController extends Controller
 		$data['countries'] = DB::select("SELECT cod_paises, des_paises FROM FSPAISES ORDER BY des_paises ASC");
 		$data['new'] = false;
 
+		$coddCli =Request::input('codd_clid');
+		#controlamos que no esten insertando código malicioso, cómo el limite del campo son 4 caracteres usaremos esa caracteristica
+		if(strlen($coddCli)>4){
+			$coddCli ='W1';
+		}
 
 		//Si no viene codd_clid cremos nuevo codigo de envio
-		if (Request::input('codd_clid') == 'new') {
+		if ($coddCli == 'new') {
 			$addres->cod_cli = Session::get('user.cod');
 			$max_direcc_temp = $addres->getMaxShippingAddress();
 			if (!empty($max_direcc_temp)) {
@@ -153,8 +158,8 @@ class AddressController extends Controller
 			}
 			$data['new'] = true;
 			//Si viene asignamos codigo
-		} elseif (!empty(Request::input('codd_clid'))) {
-			$codd_clid = Request::input('codd_clid');
+		} elseif (!empty($coddCli)) {
+			$codd_clid = $coddCli;
 		} else {
 			$codd_clid = 'W1';
 		}
