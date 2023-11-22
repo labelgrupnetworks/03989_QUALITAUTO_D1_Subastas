@@ -259,7 +259,9 @@ return [
 		'nft_lot' => 'NFT',
 		'nfts' => 'Ventas NFT',
 		'bi_reports' => 'BI Reports',
-		'stock' => 'Stock'
+		'stock' => 'Stock',
+		'show_in_subalia' => 'Publicar en Subalia',
+		'hide_in_subalia' => 'Ocultar en Subalia'
 	),
 	'button' => array(
 		'export' => 'Exportar',

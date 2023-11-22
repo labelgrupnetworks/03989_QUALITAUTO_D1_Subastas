@@ -175,6 +175,28 @@
 									<a href="{{\Config::get('app.printExhibitionLabels')}}?empresa={{$emp}}&subasta={{$fgSub->cod_sub}}"
 									class="btn btn-info btn-sm" target="blank_"><i class="fa fa-print" aria-hidden="true"></i></a>
 								@endif
+
+
+
+							{{-- si esta en subalia --}}
+							@if(\Config::get("app.subalia_cli"))
+
+								@php
+									$auchouse = App\Models\V5\SubAuchouse::where("emp_auchouse", \Config::get("app.APP_SUBALIA_EMP","001"))->where("cli_auchouse",\Config::get("app.subalia_cli"))->first();
+									$hash = hash_hmac("sha256", \Config::get("app.emp")." ".$fgSub->cod_sub, "f5a7433f517028601d98d9f392d0A87b2df43h76jhty");
+
+
+								@endphp
+
+								<button data-url="{{ \Config::get("app.subalia_URL")}}/forceImportAuction?client={{$auchouse->cod_auchouse}}&cod_sub={{$fgSub->cod_sub}}&hash={{$hash}}" class="show_subalia_JS btn btn-warning btn-sm">
+									 {{ trans("admin-app.title.show_in_subalia") }}
+								</button>
+
+								<button data-url="{{ \Config::get("app.subalia_URL")}}/hideAuctionErp/{{$auchouse->cod_auchouse}}-{{\Config::get("app.emp")}}-{{$fgSub->cod_sub}}/{{$hash}}" class="hide_subalia_JS btn btn-info btn-sm">
+									{{ trans("admin-app.title.hide_in_subalia") }}
+								</button>
+
+							@endif
 						</td>
 					</tr>
 
