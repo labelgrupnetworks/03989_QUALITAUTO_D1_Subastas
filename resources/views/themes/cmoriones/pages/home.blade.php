@@ -10,7 +10,7 @@
 
 @php
 
-	header("Location: " . \URL::to(route('subastas.online', ['lang' => \Config::get('app.locale')])), true, 302);
+	header("Location: " . URL::to(route('allCategories'), true, 302));
 	exit();
 
 @endphp

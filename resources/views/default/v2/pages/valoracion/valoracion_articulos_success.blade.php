@@ -1,34 +1,26 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
+@php
+    $bread[] = ['name' => $data['title']];
+@endphp
+
 @section('content')
-<?php
-
-$bread[] = array("name" =>$data['title']  );
-?>
-
-
-    <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 text-center color-letter">
-                        <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</h1>
-
-                    @include('includes.breadcrumb')
-                </div>
-            </div>
+    <main>
+        <div class="container" id="return-valoracion">
+			@include('includes.breadcrumb')
+			<div class="py-5">
+				<h1 class="text-center">
+					{{ trans("$theme-app.valoracion_gratuita.succes_peticion") }}
+				</h1>
+			</div>
         </div>
-<div id="">
-	<div class="container" id="return-valoracion">
-                <div class="">
-                    <h1 class="titleSingle_corp text-center">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.succes_peticion') }}</h1>
-                </div>
-        </div>
-</div>
+    </main>
 
-<script>
-    ga('send', 'event', 'tasacion', 'confirmada');
-</script>
+    <script>
+        ga('send', 'event', 'tasacion', 'confirmada');
+    </script>
 @stop
