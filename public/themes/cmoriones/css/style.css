@@ -174,12 +174,36 @@ header .navbar-nav .dropdown-menu {
 	top: 0;
 }
 
+.section-grid-filters .input-type-auction--disabled {
+	display: none;
+}
+
+.label-grid.label-auction {
+	rotate: none;
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -ms-transform: rotate(0);
+    top: 0;
+    left: 0;
+    right: initial;
+    height: auto;
+    padding: 4px;
+    width: auto;
+    font-size: 14px;
+}
+
 #modalFormularioFicha .modal-wrapper>div {
 	text-align: start;
 }
 
 .ficha-grid {
 	gap: 2rem;
+}
+
+.ficha-date-closing {
+	font-size: .9em;
+	opacity: .8;
 }
 
 .card.hist {
