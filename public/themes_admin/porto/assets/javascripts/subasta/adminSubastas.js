@@ -95,6 +95,51 @@ window.addEventListener('load', function (event) {
 	});
 
 
+	$(".show_subalia_JS").on("click", function() {
+
+		$.ajax({
+			url: $(this).data("url"),
+			type: "get",
+
+			success: function (result) {
+				if(result.status == "success"){
+					saved("Subasta activa en subalia");
+				}else{
+					error(result.message);
+				}
+
+			},
+			error: function () {
+				//si hay problema de cors almenos mostramos mensaje positivo
+				saved("Subasta activa en subalia");
+
+			}
+		});
+	});
+
+	$(".hide_subalia_JS").on("click", function() {
+
+		$.ajax({
+			url: $(this).data("url"),
+			type: "get",
+
+			success: function (result) {
+				if(result.status == "success"){
+					saved("Subasta ocultada en subalia");
+				}else{
+					error(result.message);
+				}
+
+			},
+			error: function () {
+				//si hay problema de cors almenos mostramos mensaje positivo
+				saved("Subasta ocultada en subalia");
+
+			}
+		});
+	});
+
+
 	// Publicar nft
 	$("#js-nft-publish").on("click", updateAndPublishNft);
 	$("#js-nft-mint").on("click", mintNft);
