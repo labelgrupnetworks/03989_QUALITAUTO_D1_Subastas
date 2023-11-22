@@ -1,7 +1,8 @@
 @php
-    $featuresRequest = request('features');
+    $featuresRequest = request('features', []);
     $rangesIds = array_map('trim', explode(',', config('app.typeSelectorRange', '')));
     $radioIds = array_map('trim', explode(',', config('app.typeSelectorRadio', '')));
+    $pillsIds = array_map('trim', explode(',', config('app.typeSelectorPills', '')));
 
     $minMaxRanges = \App\Models\V5\FgCaracteristicas_Value::selectRaw('max(cast(value_caracteristicas_value as int)) as max, min(cast(value_caracteristicas_value as int)) as min')
         ->addSelect('idcar_caracteristicas_value')
@@ -10,20 +11,36 @@
         ->groupBy('idcar_caracteristicas_value')
         ->get()
         ->keyBy('idcar_caracteristicas_value');
+
+	$featuresRequest = array_filter($featuresRequest, function($value) {
+		if(is_array($value)) {
+			return array_filter($value);
+		}
+		return $value;
+	});
 @endphp
 
 
 @foreach ($features as $idFeature => $feature)
 
+    @if (!empty($featuresRequest[$idFeature]))
+        @if (is_array($featuresRequest[$idFeature]))
+            @foreach ($featuresRequest[$idFeature] as $requestValue)
+                <input id="feature_{{ $idFeature }}" name="features[{{ $idFeature }}][]" type="hidden" value="{{ $requestValue }}">
+            @endforeach
+        @else
+            <input id="feature_{{ $idFeature }}" name="features[{{ $idFeature }}]" type="hidden" value="{{ $featuresRequest[$idFeature] }}">
+        @endif
+    @endif
 
-    @if (!empty($featuresCount[$idFeature]) || in_array($idFeature, $rangesIds))
-        <div class="auction__filters-categories">
+    @if ((empty($featuresRequest[$idFeature]) && !empty($featuresCount[$idFeature])) || in_array($idFeature, $rangesIds))
+        <div class="auction__filters-features">
             <div class="auction__filters-collapse filter-parent-collapse d-flex align-items-center justify-content-between"
-                data-bs-toggle="collapse" href="#auction_feature_{{ $idFeature }}" role="button" aria-expanded="true"
-                aria-controls="auction_feature_{{ $idFeature }}">
+                data-bs-toggle="collapse" href="#auction_feature_{{ $idFeature }}" role="button"
+                aria-expanded="true" aria-controls="auction_feature_{{ $idFeature }}">
 
                 <div class="filter-title">
-					{{ trans("$theme-app.features.$feature") }}
+                    {{ trans("$theme-app.features.$feature") }}
                 </div>
 
                 <svg class="bi" width="16" height="16" fill="currentColor">
@@ -33,76 +50,97 @@
 
             <div class="auction__filters-type-list mt-2 collapse show" id="auction_feature_{{ $idFeature }}"
                 aria-expanded="true">
-                {{-- Si no han seleccionado esta caracteristica mostramos el combo --}}
-                @if (empty($featuresRequest[$idFeature]))
-                    @if (in_array($idFeature, $radioIds))
-                        <div class="radio-wrapper">
-                            @foreach ($featuresCount[$idFeature] as $featureValue)
-                                @php
-                                    $checked = !empty($featuresRequest[$idFeature]) && $featuresRequest[$idFeature] == $featureValue['id_caracteristicas_value'];
-                                @endphp
 
-                                <label class="radio-inline mb-1" style="gap: 5px">
-                                    <input class="select_lot_list_js"
-                                        id="feature_{{ $featureValue['id_caracteristicas_value'] }}"
-                                        name="features[{{ $idFeature }}]" type="radio"
-                                        value="{{ $featureValue['id_caracteristicas_value'] }}">
-                                    @php
-                                        #debemos quitar los espacion en blanco y las barras
-                                        $imgFeature = str_replace(['á', 'é', 'í', 'ó', 'ú'], ['a', 'e', 'i', 'o', 'u'], str_replace([' ', '/', '+'], ['', '', ''], mb_strtolower($featureValue['value_caracteristicas_value'])));
-                                    @endphp
-                                    @if (in_array($idFeature, [13, 35]))
-                                        <img src="/themes/{{ $theme }}/assets/features/{{ $idFeature }}/{{ $imgFeature }}.png"
-                                            alt=""
-                                            style="max-width: {{ in_array($idFeature, [13]) ? '45' : '25' }}px">
-                                    @endif
-                                    {{ $featureValue['value_caracteristicas_value'] }}
-                                    ({{ Tools::numberformat($featureValue['total']) }})
-                                </label>
-                            @endforeach
-                        </div>
-                    @elseif(in_array($idFeature, $rangesIds) && !empty($minMaxRanges[$idFeature]))
-                        @php
-                            $minSelect = $featuresRequest[$idFeature][0] ?? null;
-                            $maxSelect = $featuresRequest[$idFeature][1] ?? null;
-                        @endphp
+                @if (in_array($idFeature, $radioIds))
+                    <div class="radio-wrapper">
+                        @foreach ($featuresCount[$idFeature] as $featureValue)
+                            @php
+                                $checked = !empty($featuresRequest[$idFeature]) && $featuresRequest[$idFeature] == $featureValue['id_caracteristicas_value'];
+                            @endphp
 
-                        {!! \FormLib::SelectRange(
-                            "features[$idFeature]",
-                            "feature_$idFeature",
-                            'filter_range_js',
-                            $minMaxRanges[$idFeature]->min,
-                            $minSelect,
-                            $minMaxRanges[$idFeature]->max,
-                            $maxSelect,
-                        ) !!}
-                    @elseif(!empty($featuresCount[$idFeature]))
-                        <select class="select_lot_list_js form-select form-select-sm"
-                            name="features[{{ $idFeature }}]">
-                            <option value=""> </option>
-                            @foreach ($featuresCount[$idFeature] as $featureValue)
-                                <?php
-                                $selected = !empty($featuresRequest[$idFeature]) && $featuresRequest[$idFeature] == $featureValue['id_caracteristicas_value'] ? 'selected="selected"' : '';
-                                ?>
-                                <option id="feature_{{ $featureValue['id_caracteristicas_value'] }}"
-                                    value="{{ $featureValue['id_caracteristicas_value'] }}" {{ $selected }}>
-                                    {{ $featureValue['value_caracteristicas_value'] }}
+                            <label class="radio-inline mb-1" style="gap: 5px">
+                                <input class="select_lot_list_js"
+                                    id="feature_{{ $featureValue['id_caracteristicas_value'] }}"
+                                    name="features[{{ $idFeature }}]" type="radio"
+                                    value="{{ $featureValue['id_caracteristicas_value'] }}">
+
+                                {{ $featureValue['value_caracteristicas_value'] }}
+                                <span class="grid-count">
                                     ({{ Tools::numberformat($featureValue['total']) }})
-                                </option>
-                            @endforeach
-                        </select>
-                    @endif
-                    {{-- si han seleccionado esta caracteristica solo mostramos el valor seleccionado y permitimos eliminarlo --}}
-                @else
-                    @if (!empty($featuresCount[$idFeature]) && !empty($featuresCount[$idFeature][$featuresRequest[$idFeature]]))
-                        <input id="feature_{{ $featuresRequest[$idFeature] }}" name="features[{{ $idFeature }}]"
-                            type="hidden" value="{{ $featuresRequest[$idFeature] }}">
-                        <span class="del_filter_js del_filter filt-act cursor"
-                            data-del_filter="#feature_{{ $featuresRequest[$idFeature] }}"><i class="fas fa-times"></i>
-                            {{ $featuresCount[$idFeature][$featuresRequest[$idFeature]]['value_caracteristicas_value'] }}
-                        </span>
-                    @endif
+                                </span>
+                            </label>
+                        @endforeach
+                    </div>
+                @elseif(in_array($idFeature, $pillsIds))
+                    @php
+                        $maxValue = 3;
+                        $values = array_column($featuresCount[$idFeature], 'value_caracteristicas_value');
+                        $valuesMoreBiggerMax = array_filter($values, fn($value) => $value > $maxValue);
+                    @endphp
+                    <div class="pills-wrapper">
+                        @foreach (range(1, $maxValue) as $pillNumber)
+                            @php
+                                $inValues = in_array($pillNumber, $values);
+                            @endphp
+                            <label @class([
+                                'pill-input',
+                                'pill-input--disabled' => !$inValues,
+                            ])>
+
+                                <input class="select_lot_list_js d-none"
+                                    id="feature_{{ $idFeature }}_{{ $pillNumber }}"
+                                    name="features[{{ $idFeature }}]" type="radio" value="{{ $pillNumber }}">
+
+                                {{ $pillNumber }}
+                            </label>
+                        @endforeach
+
+                        @if (count($valuesMoreBiggerMax))
+                            <label @class(['pill-input', 'pill-input--active' => false])>
+
+                                <input class="select_lot_list_js d-none"
+                                    id="feature_{{ $idFeature }}_{{ $pillNumber + 1 }}"
+                                    name="features[{{ $idFeature }}][]" type="radio"
+                                    value="{{ $pillNumber + 1 }}">
+                                {{ $maxValue + 1 }}+
+                            </label>
+                        @endif
+                    </div>
+                @elseif(in_array($idFeature, $rangesIds) && !empty($minMaxRanges[$idFeature]))
+                    @php
+                        $minSelect = $featuresRequest[$idFeature][0] ?? null;
+                        $maxSelect = $featuresRequest[$idFeature][1] ?? null;
+                    @endphp
+
+                    {!! \FormLib::SelectRange(
+                        "features[$idFeature]",
+                        "feature_$idFeature",
+                        'filter_range_js',
+                        $minMaxRanges[$idFeature]->min,
+                        $minSelect,
+                        $minMaxRanges[$idFeature]->max,
+                        $maxSelect,
+                    ) !!}
+                @elseif(!empty($featuresCount[$idFeature]))
+                    <select class="select_lot_list_js form-select form-select-sm" name="features[{{ $idFeature }}]">
+                        <option value=""> </option>
+                        @foreach ($featuresCount[$idFeature] as $featureValue)
+                            <?php
+                            $selected = !empty($featuresRequest[$idFeature]) && $featuresRequest[$idFeature] == $featureValue['id_caracteristicas_value'] ? 'selected="selected"' : '';
+                            ?>
+                            <option id="feature_{{ $featureValue['id_caracteristicas_value'] }}"
+                                value="{{ $featureValue['id_caracteristicas_value'] }}" {{ $selected }}>
+                                {{ $featureValue['value_caracteristicas_value'] }}
+
+                                @if (Config::get('app.gridfilters_with_count', false))
+                                    ({{ Tools::numberformat($featureValue['total']) }})
+                                @endif
+
+                            </option>
+                        @endforeach
+                    </select>
                 @endif
+
             </div>
         </div>
     @endif

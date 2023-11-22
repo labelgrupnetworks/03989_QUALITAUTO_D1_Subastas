@@ -33,7 +33,11 @@
 					@class([
 						'radio-label',
 						'disabled' => $numLots == 0,
-					])>{{$desType}} ({{Tools::numberformat($numLots) }})
+					])>{{$desType}}
+
+					<span class="grid-count">
+					({{Tools::numberformat($numLots) }})
+					</span>
 				</label>
 
 			</div>

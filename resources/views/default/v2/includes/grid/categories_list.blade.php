@@ -34,8 +34,10 @@
                         <div class="radio">
                             <input class="filter_lot_list_js" id="category_{{ $linOrtsec0 }}" name="category"
                                 type="radio" value="{{ $linOrtsec0 }}" checked="checked" />
-                            <label class="radio-label" for="category_{{ $linOrtsec0 }}">{{ $category['des_ortsec0'] }}
-                                ({{ Tools::numberformat($numCategoryLots) }})</label>
+                            <label class="radio-label" for="category_{{ $linOrtsec0 }}">
+								{{ $category['des_ortsec0'] }}
+                                <span class="grid-count">({{ Tools::numberformat($numCategoryLots) }})</span>
+							</label>
                         </div>
                     </div>
                     <i class="fa fa-sort-down" data-toggle="collapse" href="#sections_{{ $linOrtsec0 }}"
@@ -52,7 +54,8 @@
                             <?= $numCategoryLots> 0 ? '' : 'disabled=disabled' ?> />
                         <label class="radio-label <?= $numCategoryLots > 0 ? '' : 'disabled-label' ?>"
                             for="category_{{ $linOrtsec0 }}">{{ $category['des_ortsec0'] }}
-                            ({{ Tools::numberformat($numCategoryLots) }})</label>
+							<span class="grid-count">({{ Tools::numberformat($numCategoryLots) }})</span>
+						</label>
                     </div>
 
                 </div>

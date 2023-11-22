@@ -103,7 +103,9 @@ header .nav-link span::after {
 	padding-bottom: 1rem;
 }
 
-.section-grid-filters::-webkit-scrollbar-thumb {
+/* con sticky y scroll */
+
+/* .section-grid-filters::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 }
 
@@ -118,7 +120,6 @@ header .nav-link span::after {
 	scrollbar-gutter: stable;
 }
 
-
 @media(min-width: 992px) {
 	.section-grid-filters {
 		top: calc(96px + 1rem);
@@ -126,6 +127,17 @@ header .nav-link span::after {
 		max-height: 85vh;
 		padding-right: .5rem;
 	}
+} */
+
+
+/* sin sticky ni scroll */
+.section-grid-filters {
+	height: auto;
+	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+    padding: 0.5rem;
+    border-radius: 10px;
+	position: relative;
+	top: 0;
 }
 
 #modalFormularioFicha .modal-wrapper>div {
@@ -227,4 +239,50 @@ header .nav-link span::after {
 
 .bidder-identifier[data-licitunit="9"] {
 	--background-unit: #c4886d;
+}
+
+.section-grid-filters .filters-types > div:last-child {
+	border-bottom: none;
+}
+
+.section-grid-filters .grid-count {
+	display: none;
+}
+
+.section-grid-filters .radio-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.section-grid-filters .pills-wrapper {
+	display: flex;
+	gap: .5rem;
+}
+
+.pill-input {
+	border: 3px solid var(--lb-color-primary-light);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--lb-color-primary-dark);
+	transition: background-color .4s ease-in-out, color .4s ease-in-out;
+	cursor: pointer;
+}
+
+.pill-input:not(.pill-input--active):hover {
+	background-color: var(--lb-color-primary-dark);
+	color: var(--lb-color-primary-contrast);
+}
+
+.pill-input.pill-input--disabled {
+	display: none;
+}
+
+.pill-input.pill-input--active {
+	background-color: var(--lb-color-primary-light);
 }
