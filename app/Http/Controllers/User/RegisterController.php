@@ -187,6 +187,8 @@ class RegisterController extends Controller
                 $data['formulario']->language = FormLib::Hidden("language", 1, strtoupper(\App::getLocale()));
                 $data['formulario']->condiciones = FormLib::Bool("condiciones", 1, 0, "on");
                 $data['formulario']->condicionesSubalia = FormLib::Bool("condicionesSubalia", 0, 0, "on");
+				$data['formulario']->newsletter = FormLib::Bool("newsletter",0,0,"on");
+				$data['formulario']->condiciones2 = FormLib::Bool("condiciones2",0,0,"on");
 
 
                 $data['formulario']->subalia = FormLib::Hidden("subalia", 0, "subalia");
