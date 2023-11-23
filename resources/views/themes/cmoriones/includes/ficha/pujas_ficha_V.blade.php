@@ -39,7 +39,7 @@
                 </label>
                 <input class="form-control" id="email__1__email" name="email" type="email"
                     value="{{ $email }}"
-                    placeholder="{{ trans("$theme-app.login_register.foot.newsletter_text_input") }}" required
+                    placeholder="{{ trans("$theme-app.foot.newsletter_text_input") }}" required
                     onblur="comprueba_campo(this)" autocomplete="off" />
 
             </div>

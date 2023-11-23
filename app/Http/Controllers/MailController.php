@@ -2248,7 +2248,7 @@ class MailController extends Controller
 		$email = new EmailLib('ASK_LOT_ADMIN');
         if (!empty($email->email)) {
 			$formFields ="";
-			$prohibidosAux= array("auction", "lot", "info_lot", "user_price", "lot_name");
+			$prohibidosAux= array("auction", "lot", "info_lot", "user_price", "lot_name", "captcha_token");
 			$formFields = $this->processPostVars($formFields, $prohibidosAux);
 
 			$email->setAtribute("AUCTION_NAME", $auction);
