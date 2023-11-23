@@ -14,7 +14,7 @@ $view_num_pujas = !empty(Config::get('app.max_bids')) ? Config::get('app.max_bid
 <input id="trans_lot_puja_automatica" type="hidden" value="{{ trans(\Config::get('app.theme').'-app.lot.puja_automatica') }}">
 <input id="trans_minimal_price" type="hidden" value="{{ trans(\Config::get('app.theme').'-app.lot.minimal-price') }}">
 
-<section id="historial_pujas" @class(['mt-3', 'hidden' => $num_pujas == 0])>
+<section id="historial_pujas" @class(['hidden' => $num_pujas == 0])>
 
 	<h5 class="hist_title">
 		{{ trans(\Config::get('app.theme').'-app.lot.history') }} (<span id="num_pujas" class="num_pujas"></span> {{ trim(trans(\Config::get('app.theme').'-app.lot.bidding')) }})

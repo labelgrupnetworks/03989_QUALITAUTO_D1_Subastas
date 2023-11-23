@@ -1,4 +1,4 @@
-<div class="insert-bid-input mt-3">
+<div class="insert-bid-input">
 
 	@if (Session::has('user') &&  Session::get('user.admin'))
 	<div class="mb-3">
@@ -30,7 +30,7 @@
 		</div>
 
 
-		<p class="mt-2">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}</p>
+		<p class="mt-4">{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}</p>
 		<div class="input-group">
 			<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}" aria-describedby="button-bid">
 			<span class="input-group-text currency-input">{{trans(\Config::get('app.theme').'-app.subastas.euros')}}</span>

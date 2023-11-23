@@ -66,7 +66,7 @@
 
     {{-- Reserva alcanzada  --}}
     <p @class([
-        'price_minim_reached',
+        'price price_minim_reached',
         'hidden' => empty($lote_actual->impres_asigl0),
     ])>
         <span>{{ trans(\Config::get('app.theme') . '-app.subastas.price_minim') }}</span>
