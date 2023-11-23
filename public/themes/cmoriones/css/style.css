@@ -202,6 +202,27 @@ header .navbar-nav .dropdown-menu {
 	gap: 2rem;
 }
 
+@media (min-width: 1200px) {
+	section.ficha-share {
+		grid-row: 4 / 5;
+	}
+
+	section.ficha-previous-next {
+		grid-column: 2 / 3;
+	}
+
+	section.ficha-files {
+		grid-column: 1 / 2;
+		grid-row: 3 / 4;
+	}
+}
+
+.list-group.ficha-files-list {
+	--bs-list-group-item-padding-x: .25rem;
+	--bs-list-group-border-color: rgb(211 162 144 / 40%);
+	--bs-list-group-action-active-bg: #dfbeaf54;
+}
+
 .ficha-date-closing {
 	font-size: .9em;
 	opacity: .8;

@@ -41,6 +41,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\externalAggregator\Invaluable\House;
+use App\Models\V5\FgHces1Files;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 
@@ -835,8 +836,8 @@ class AdminLotController extends Controller
 
 	protected function saveFiles($fgAsigl0, UploadedFile ...$files)
 	{
-		$relativePath = "/files/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
-		$path = getcwd() . $relativePath;
+		$relativePath = "/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
+		$path = getcwd() . "/files/$relativePath";
 
 		if (!is_dir(str_replace("\\", "/", $path))) {
 			mkdir(str_replace("\\", "/", $path), 0775, true);

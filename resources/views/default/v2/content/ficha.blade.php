@@ -1,5 +1,4 @@
 @php
-use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgDeposito;
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S';
@@ -31,7 +30,6 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 $userSession = session('user');
 $deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
-$files = FgHces1Files::getAllFilesByLotCanViewUser($userSession, $lote_actual->num_hces1, $lote_actual->lin_hces1, $deposito);
 
 # listamos los recursos que se hayan puesto en la carpeta de videos para mostrarlos en la imagen principal
 $resourcesList = [];
@@ -103,13 +101,7 @@ if($subasta_web){
 		</section>
 
 		<section class="ficha-files">
-			@foreach ($files as $file)
-			<p>
-				<a href="{{ $file->download_path }}" alt="{{ $file->name_hces1_files }}" target="_blank">
-					{{ $file->name_hces1_files }}
-				</a>
-			</p>
-			@endforeach
+			@include('includes.ficha.files')
 		</section>
 
 	</div>
