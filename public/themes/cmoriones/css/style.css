@@ -370,3 +370,19 @@ header .navbar-nav .dropdown-menu {
 .pill-input.pill-input--active {
 	background-color: var(--lb-color-primary-light);
 }
+
+.map-contact {
+	filter: none;
+}
+
+.contact-page-info-house-auction {
+    background: rgb(223 190 175 / 30%);
+    height: auto;
+    box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+    padding: 4rem 2rem;
+    border-radius: 10px;
+}
+
+.contact-page-info-house-auction h3 {
+	font-weight: 700;
+}
