@@ -53,7 +53,7 @@ class BidderController extends ApiLabelController
 
 					#si no existe el cliente devolvemos error
 					if(empty($client)){
-						$errorsItem["item_".($key +1)] = array("idoriginclient" => $item["idoriginclient"]);
+						$errorsItem["item_".($key +1)] = $item;
 						throw new ApiLabelException(trans('apilabel-app.errors.no_match'), $errorsItem);
 					}
 
