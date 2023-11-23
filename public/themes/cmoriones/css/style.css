@@ -95,7 +95,7 @@ header .navbar-nav .dropdown-menu {
 		--bs-dropdown-color: #fff;
 		--bs-dropdown-bg: var(--lb-color-primary);
 		--bs-dropdown-link-color: #fff;
-		--bs-dropdown-item-padding-y: 1rem;
+		--bs-dropdown-item-padding-y: .5rem;
 		--bs-dropdown-link-hover-bg: var(--lb-color-primary-dark);
 		--bs-dropdown-link-active-bg: var(--lb-color-primary-dark);
 		--bs-dropdown-padding-y: 0;
@@ -191,6 +191,7 @@ header .navbar-nav .dropdown-menu {
     padding: 4px;
     width: auto;
     font-size: 14px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 #modalFormularioFicha .modal-wrapper>div {
