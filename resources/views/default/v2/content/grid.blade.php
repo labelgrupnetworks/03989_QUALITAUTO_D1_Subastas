@@ -6,7 +6,7 @@
 <div class="info-auction-tab-contet">
     <div class="container">
 
-		<div class="row">
+		<div class="row gy-5">
 			<div id="js-filters-col" class="col-lg-3">
 				<aside class="section-grid-filters sticky-lg-top">
 					@include('includes.grid.leftFilters')
@@ -49,7 +49,13 @@
 					@foreach($filters as $nameFilter => $valueFilter)
 						@if (is_array($valueFilter))
 							@foreach($valueFilter as $kFilter => $vFilter)
-								<input type="hidden" name="{{$nameFilter}}[{{$kFilter}}]" value="{{$vFilter}}">
+								@if(is_array($vFilter))
+									@foreach ($vFilter as $valuesMultipleFilter)
+										<input type="hidden" name="{{$nameFilter}}[{{$kFilter}}][]" value="{{$valuesMultipleFilter}}">
+									@endforeach
+								@else
+									<input type="hidden" name="{{$nameFilter}}[{{$kFilter}}]" value="{{$vFilter}}">
+								@endif
 							@endforeach
 						@else
 							<input type="hidden" name="{{$nameFilter}}" value="{{$valueFilter}}">

@@ -1,29 +1,44 @@
 {{-- cargamos las secciones que dependen de este Tsec --}}
-<div class="category_level__02 collapse in" style="padding-left: 2rem;" id="sections_{{$category["key_ortsec0"]}}">
-    <div class="input-category d-flex align-items-center hidden">
+<div class="category_level__02 collapse show" id="sections_{{ $category['key_ortsec0'] }}" aria-expanded="true"
+    style="padding-left: 2rem;">
+
+	{{-- see all --}}
+	<div class="input-category hidden">
         <div class="radio">
-            <input type="radio" name="section" id="all_sections" value="" <?=   empty($filters["section"])? 'checked="checked"' : '' ?>  />
-            <label for="all_sections" class="ratio-label">
-                {{trans(\Config::get('app.theme').'-app.lot_list.all_subcategories')}} ({{$numCategoryLots }})
+            <input id="all_sections" name="section" type="radio" value="" @checked(empty($filters['section']))>
+            <label class="ratio-label" for="all_sections">
+				{{ trans("$theme-app.lot_list.all_subcategories") }}
+				<span class="grid-count">
+                	({{ $numCategoryLots }})
+				</span>
             </label>
         </div>
     </div>
-    @foreach($sections as $sec)
-     <?php $numSectionLots = Tools::showNumLots($numActiveFilters, $filters, "section", $sec["cod_sec"]); ?>
-        @if($numSectionLots > 0)
+
+    @foreach ($sections as $sec)
+        @php
+            $numSectionLots = Tools::showNumLots($numActiveFilters, $filters, 'section', $sec['cod_sec']);
+			$isSelected = $sec['cod_sec'] == $filters['section'];
+        @endphp
+        @if ($numSectionLots > 0)
             <div class="input-category d-flex align-items-center">
                 <div class="radio">
-                    <input type="radio" name="section" id="section_{{$sec["cod_sec"]}}" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js" <?= ($sec["cod_sec"] ==  $filters["section"])?  'checked="checked"' : '' ?> />
-                    <label for="section_{{$sec["cod_sec"]}}" class="radio-label">{{ucfirst(mb_strtolower($sec["des_sec"]))}}  ({{Tools::numberformat($numSectionLots)}})</label>
+                    <input class="filter_lot_list_js" id="section_{{ $sec['cod_sec'] }}" name="section" type="radio"
+                        value="{{ $sec['cod_sec'] }}" @checked($isSelected)>
+
+					<label class="radio-label" for="section_{{ $sec['cod_sec'] }}">
+                        {{ ucfirst(mb_strtolower($sec['des_sec'])) }}
+                        <span class="grid-count">
+                            ({{ Tools::numberformat($numSectionLots) }})
+                        </span>
+                    </label>
                 </div>
-			</div>
+            </div>
 
-			@if($sec["cod_sec"] ==  $filters["section"])
-				@include('includes.grid.subsections_list')
-			@endif
+            @if ($isSelected)
+                @include('includes.grid.subsections_list')
+            @endif
         @endif
-
     @endforeach
 
 </div>
-

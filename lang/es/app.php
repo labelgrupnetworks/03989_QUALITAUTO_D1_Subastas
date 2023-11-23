@@ -1171,7 +1171,7 @@ $lang = [
 		'mustLoginShippingCart' => "<a title=\"Registrarse\" href=\"javascript:openLogin();\" >Inicie sesión </a> o <a title=\"Registrarse\" href=\"/es/login\">regístrese </a> para poder continuar con la compra ",
 		'myCart' => "Mi carrito",
 		'article' => "Artículo",
-		'features' => "Caracteristicas",
+		'features' => "Características",
 		'total_articles' => "Total articulos:",
 		'total_pay' => "Total a pagar:",
 		'comment' => "<strong>Comentarios</strong> <i> (Si quiere incluir alguna aclaración sobre este envío introdúzcala en este campo):</i>",

@@ -11,7 +11,7 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 
 @if(count($caracteristicas) !== 0)
 	<div class="features mt-3">
-		<h5>Caracteristicas</h5>
+		<h5>{{ trans("$theme-app.features.features") }}</h5>
 
 		<div class="gird-features">
 			@foreach($caracteristicas as $caracteristica)

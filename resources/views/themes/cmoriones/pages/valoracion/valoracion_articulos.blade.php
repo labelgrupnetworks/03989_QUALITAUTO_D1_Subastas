@@ -16,6 +16,14 @@
 
     @php
         $bread[] = ['name' => $data['title']];
+		$entityRequest = request()->get('rep', 'AC');
+		$entityTypes = [
+			'AC' => trans("$theme-app.valoracion_gratuita.entity_ac"),
+			'EB' => trans("$theme-app.valoracion_gratuita.entity_eb"),
+			'FI' => trans("$theme-app.valoracion_gratuita.entity_fi"),
+		];
+
+		$entity = $entityTypes[$entityRequest] ?? $entityTypes['AC'];
     @endphp
 
     <main class="valoracion-page">
@@ -23,9 +31,12 @@
 
             @include('includes.breadcrumb')
 
-            <h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
+            <h1 class="titlePage">
+				{{ $entityTypes[$entity] ?? $entity }}
+				{{-- {{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }} --}}
+			</h1>
 
-            <p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p>
+            {{-- <p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p> --}}
 
             <form class="mt-3" id="form-valoracion-adv" action="">
                 @csrf
@@ -33,6 +44,8 @@
                     <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
                         value="">
                 @endif
+
+				<input type="hidden" name="entidad" value="{{$entity}}">
 
                 <p class="text-danger h4 hidden msg_valoracion">
                     {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.error') }}</p>
@@ -57,26 +70,23 @@
                             <input class="form-control" id="telf" name="telf" type="phone"
                                 placeholder="{{ trans("$theme-app.valoracion_gratuita.telf") }}" required>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label"
+                                for="propiedades">{{ trans("$theme-app.valoracion_gratuita.n_of_properties") }}</label>
+							<select class="form-select" name="propiedades">
+								<option value="0-100">Desde 0 a 100</option>
+								<option value="100-200">De 100 a 300</option>
+								<option value="300-1000">De 300 a 1000</option>
+								<option value="+1000">Más de mil</option>
+							</select>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label"
-                                for="descripcion">{{ trans("$theme-app.user_panel.description") }}</label>
-                            <textarea class="form-control" name="descripcion" rows="10" required
-                                placeholder="{{ trans("$theme-app.valoracion_gratuita.description") }}"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-10">
-                        <div class="position-relative" id="dropzone">
-                            <p class="text-danger error-dropzone" style="display:none">
-                                <small>{{ trans("$theme-app.msg_error.max_size") }}</small></p>
-                            <p class="text-dropzone">{!! trans("$theme-app.valoracion_gratuita.adj_IMG") !!}</p>
-                            <div class="mini-file-content d-flex align-items-center position-relative gap-2 mt-1"></div>
-                            <input id="images" name="imagen[]" type="file" multiple />
+                                for="descripcion">{{ trans("$theme-app.valoracion_gratuita.description") }}</label>
+                            <textarea class="form-control" name="descripcion" rows="12" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -95,20 +105,4 @@
             </form>
         </div>
     </main>
-
-    <script>
-        var imagesarr = [];
-
-        function myFunction(el) {
-            $(el).remove()
-        }
-        $(function() {
-
-            $('.mini-upload-image').click(function() {
-                alert()
-            })
-
-
-        });
-    </script>
 @stop

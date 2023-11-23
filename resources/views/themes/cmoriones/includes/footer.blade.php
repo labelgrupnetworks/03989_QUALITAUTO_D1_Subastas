@@ -62,7 +62,7 @@
 							trans($theme.'-app.foot.cookies') }}</a>
 					</li>
 					<li class="nav-item">
-						<button class="nav-link btn btn-link text-muted" type="button" data-bs-toggle="modal" data-bs-target="#cookiesPersonalize">
+						<button class="nav-link btn btn-link text-muted text-capitalize" type="button" data-bs-toggle="modal" data-bs-target="#cookiesPersonalize">
 							{{ trans("$theme-app.cookies.configure") }}
 						</button>
 					</li>

@@ -17,19 +17,39 @@
 	@endif
 
 	@if(!empty(request('features')) && is_array(request('features')) && $hasFeaturesFilter)
-		@foreach(request('features') as $idFeature=> $idValueFeature)
-			@if(!empty($idValueFeature))
-				<span data-del_filter="#feature_{{$idValueFeature}}" class="del_filter_js badge rounded-pill badge-custom-primary">
+
+		@foreach(request('features') as $idFeature => $idValueFeature)
+			@php
+				$name = $features[$idFeature];
+			@endphp
+			@if(!empty($idValueFeature) && !is_array($idValueFeature))
+				<span data-del_filter="#feature_{{$idFeature}}" class="del_filter_js badge rounded-pill badge-custom-primary">
 					<span>X</span>
 					<span>
 						@if(!empty($featuresCount[$idFeature]) && !empty($featuresCount[$idFeature][$idValueFeature]))
 							{{$featuresCount[$idFeature][$idValueFeature]["value_caracteristicas_value"]}}
 						@else
+							{{ trans("$theme-app.features.$name") }}
 							{{$idValueFeature}}
 						@endif
 					</span>
-
 				</span>
+			@elseif(!empty($idValueFeature))
+
+
+				@foreach ($idValueFeature as $valueFeature)
+				@if(!empty($valueFeature))
+				<span data-del_filter="#feature_{{$idFeature}}" class="del_filter_js badge rounded-pill badge-custom-primary">
+					<span>X</span>
+					<span>
+						{{ trans("$theme-app.features.$name") }}
+						{{$valueFeature}}
+					</span>
+				</span>
+				@endif
+				@endforeach
+
+
 			@endif
 		@endforeach
 	@endif
