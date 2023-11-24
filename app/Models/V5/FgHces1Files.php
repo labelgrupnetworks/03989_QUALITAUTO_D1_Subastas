@@ -6,6 +6,7 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Collection;
 
 class FgHces1Files extends Model
 {
@@ -22,8 +23,8 @@ class FgHces1Files extends Model
 	const ROOT_DIRECTORY = 'files';
 
     #definimos la variable emp para no tener que indicarla cada vez
-    public function __construct(array $vars = []){
-        $this->attributes=[
+    public function __construct(array $vars = []) {
+        $this->attributes = [
             'emp_hces1_files' => Config::get("app.emp")
         ];
         parent::__construct($vars);
@@ -61,17 +62,17 @@ class FgHces1Files extends Model
 		return route('lot_file_download', ['lang' => config('app.locale'),'file' => $this->id_hces1_files, 'numhces' => $this->numhces_hces1_files, 'linhces' => $this->linhces_hces1_files]);
 	}
 
-
-
 	/***
 	 * Recursos
 	 */
-	public static function getAllFilesByLot($num_hces1, $lin_hces1)
+	public static function getAllFilesByLot($num_hces1, $lin_hces1): Collection
 	{
-		return self::where('numhces_hces1_files', $num_hces1)
-					->where('linhces_hces1_files', $lin_hces1)
+		$withTable = Config::get('app.use_table_files', false);
+		return $withTable
+			? self::withNumhcesAndLinhces($num_hces1, $lin_hces1)
 					->orderBy('order_hces1_files')
-					->get();
+					->get()
+			: self::getOldFiles($num_hces1, $lin_hces1);
 	}
 
 	public static function getAllFilesByLotCanViewUser($userSession, $num_hces1, $lin_hces1, $validDeposit = false)
@@ -90,6 +91,52 @@ class FgHces1Files extends Model
 					->active()
 					->first();
 	}
+
+	private static function getOldFiles(string $num_hces1, string $lin_hces1): Collection
+	{
+		$emp = Config::get('app.emp');
+		$path = "/files/$emp/$num_hces1/$lin_hces1/files/";
+		$files = [];
+		if (is_dir(getcwd() . $path)) {
+			$files = array_diff(scandir(getcwd() . $path), ['.', '..']);
+		}
+
+		return self::mapperFiles($files, $num_hces1, $lin_hces1);
+	}
+
+	/**
+	 * @return \Illuminate\Support\Collection<TKey, FgHces1Files>
+	 * @template TKey of array-key
+	 * */
+	private static function mapperFiles(array $files, string $num_hces1, string $lin_hces1): Collection
+	{
+		$emp = Config::get('app.emp');
+		$filesInstances = [];
+		foreach ($files as $file) {
+			$nameFile = explode('.', $file)[0];
+			$nameFile = str_replace('-', ' ', $nameFile);
+
+			$routeFile = "\\$emp\\$num_hces1\\$lin_hces1\\files\\$file";
+
+			$filesInstances[] = new self([
+				'id_hces1_files' => '0',
+				'numhces_hces1_files' => $num_hces1,
+				'linhces_hces1_files' => $lin_hces1,
+				'lang_hces1_files' => null,
+				'path_hces1_files' => $routeFile,
+				'external_url_hces1_files' => null,
+				'name_hces1_files' => $nameFile,
+				'description_hces1_files' => null,
+				'order_hces1_files' => 1,
+				'image_hces1_files' => null,
+				'is_active_hces1_files' => 'S',
+				'permission_hces1_files' => 'N',
+			]);
+		}
+
+		return collect($filesInstances);
+	}
+
 
 	/***
 	 * Scopes y where's
@@ -142,9 +189,6 @@ class FgHces1Files extends Model
 	{
 		return $query->whereIn('permission_hces1_files', ['U', 'N']);
 	}
-
-
-
 
 	public function actulizarTablaFgHces1_FilesConArchivosDelServidor()
 	{

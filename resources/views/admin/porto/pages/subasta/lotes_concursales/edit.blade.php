@@ -71,6 +71,10 @@
 		</div>
 	</form>
 
+	<div class="row well">
+		@include('admin::pages.subasta.lot_files._table', ['files' => $files])
+	</div>
+
 </section>
 
 <script>
