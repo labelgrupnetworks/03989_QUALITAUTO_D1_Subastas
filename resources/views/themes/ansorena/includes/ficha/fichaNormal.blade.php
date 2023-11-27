@@ -34,18 +34,23 @@
     //0.autor, 1.fechas autor, 2.Nombre de obra, 3.Medidas
     //En vehículos solo hay 1 y es description
     $onlyDescription = strpos($lote_actual->desc_hces1, 'class="description"') !== false;
-    $notCleanTags = $onlyDescription ? '<br>' : '<span>';
+    $notCleanTags = $onlyDescription ? '<br><br />' : '<br><br /><span>';
 
     $htmlCleaned = strip_tags($lote_actual->desc_hces1, $notCleanTags);
 
-    $arrayDescriptions = $onlyDescription
-        ? explode('<br>', $htmlCleaned)
-        : Tools::decodeHtmlStringToArrayByTag($htmlCleaned, 'span', function ($element) use ($theme) {
+    $arrayDescriptions = [];
+	if($onlyDescription) {
+		$htmlCleaned = str_replace('<br />', '<br>', $htmlCleaned);
+		$arrayDescriptions = explode('<br>', $htmlCleaned);
+	}
+	else {
+		$arrayDescriptions = Tools::decodeHtmlStringToArrayByTag($htmlCleaned, 'span', function ($element) use ($theme) {
             if ($element->getAttribute('class') === 'medidas') {
                 $element->setAttribute('data-title', trans("$theme-app.lot.measures") . ': ');
             }
         });
 
+	}
 @endphp
 
     <div class="container">

@@ -1715,8 +1715,9 @@ function rejectAllCookies() {
 
 function savePreferencesCookies() {
 
-	const isAnalysisActive = document.querySelector("[name='permission_analysis']")?.checked;
-	const isAdvertisingActive = document.querySelector("[name='permission_advertising']")?.checked;
+	const isAnalysisActive = $("[name='permission_analysis']").is(":checked");
+	const isAdvertisingActive = $("[name='permission_advertising']").is(":checked");
+
 	const data = {
 		'analysis': isAnalysisActive ? 1 : 0,
 		'advertising': isAdvertisingActive ? 1 : 0

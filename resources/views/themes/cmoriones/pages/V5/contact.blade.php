@@ -79,8 +79,8 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 </div>
 
 <section class="container-fluid p-0 py-5 map-contact">
-	<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5993.038773666047!2d2.033268!3d41.31931800000001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x41a45e5c3be4fca8!2sLabelgrup%20Networks!5e0!3m2!1ses!2ses!4v1663759278691!5m2!1ses!2ses"
-		width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+	<iframe src="https://maps.google.com/maps?q=Coolab%20Coworking%20Space%20Calle%20Impresores%2C%2020.%20P.E.%20Prado%20del%20Espino%2028660%20-%20Boadilla%20del%20Monte%2C%20Madrid&t=m&z=17&output=embed&iwloc=near"
+		width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </section>
 </main>
 

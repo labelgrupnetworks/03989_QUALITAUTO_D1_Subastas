@@ -11,6 +11,8 @@ class FgHces1Files extends Model
 {
     protected $table = 'FGHCES1_FILES';
     protected $primaryKey = 'ID_HCES1_FILES';
+	public $incrementing = true;
+
 
     public $timestamps = false;
 

@@ -1,25 +1,26 @@
-<?php
+@php
 	$empre= new \App\Models\Enterprise;
 	$empresa = $empre->getEmpre();
- ?>
+	$activeAuctions = $global['subastas']->has('S') ? $global['subastas']['S']->flatten() : collect([]);
+ @endphp
 
 <footer class="py-5">
 	<div class="container">
 		<div class="row">
 			<div class="col-6 col-lg-2 mb-3">
 				<h5>{{ trans($theme.'-app.foot.auctions') }}</h5>
+
 				<ul class="nav flex-column">
-
-					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
-					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-online') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
-					@endif
-
-					@if($global['subastas']->has('H'))
-					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-historicas') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.historico')}}</a></li>
-					@endif
+					@foreach ($activeAuctions as $auction)
+					<li class="nav-item mb-2">
+						<a class="nav-link p-0 text-muted"
+							href="{{ Tools::url_auction($auction->cod_sub, $auction->name, null) }}">
+							{{ $auction->name }}
+						</a>
+					</li>
+					@endforeach
 				</ul>
+
 			</div>
 
 			<div class="col-6 col-lg-2 mb-3">

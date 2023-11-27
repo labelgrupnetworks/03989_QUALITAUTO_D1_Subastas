@@ -780,8 +780,22 @@ div.item_subasta div.item_subasta_item {
 	font-weight: bold;
 	font-size: 17px;
 	margin-bottom: 10px;
-        height: 48px;
+        height: auto;
 }
+
+
+@media (min-width: 768px) {
+	div.item_subasta div.item_subasta_item {
+		height: 120px;
+	}
+}
+
+@media (min-width: 992px) {
+	div.item_subasta div.item_subasta_item {
+		height: 100px;
+	}
+}
+
 div.item_subasta a.btn-lotes {
 	width: 100%;
 	background-color: #015BA9;
