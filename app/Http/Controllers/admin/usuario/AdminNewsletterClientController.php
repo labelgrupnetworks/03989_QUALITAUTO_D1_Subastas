@@ -92,6 +92,10 @@ class AdminNewsletterClientController extends Controller
 
 	public function show(Request $request, $newsletter)
 	{
+		if(empty($newsletter)) {
+			return $this->showAll($request);
+		}
+
 		$newsletterName = Fx_Newsletter::where([
 			['id_newsletter', $newsletter],
 			['lang_newsletter', 'ES']
@@ -114,6 +118,27 @@ class AdminNewsletterClientController extends Controller
 		]);
 
 		return view('admin::pages.usuario.newsletter.show', ['suscriptions' => $suscriptions, 'filters' => $filters, 'newsletterName' => $newsletterName, 'newsletterId' => $newsletter]);
+	}
+
+	public function showAll(Request $request)
+	{
+		$suscriptions = $this->newsletterModel
+			->getAllSuscriptorsQuery(false)
+			->whereFilters($request)
+			->orderBy($request->input('order', 'id_newsletter_suscription'), $request->get('order_dir', 'desc'))
+			->paginate(40);
+
+		$filters = ([
+			'id_newsletter_suscription' => FormLib::text('id_newsletter_suscription', 0, $request->id_newsletter_suscription),
+			'email_newsletter_suscription' => FormLib::text('email_newsletter_suscription', 0, $request->email_newsletter_suscription),
+			'cod_cli' => FormLib::text("cod_cli", 0, $request->cod_cli),
+			'nom_cli' => FormLib::text("nom_cli", 0, $request->nom_cli),
+			'pais_cli' => FormLib::text("pais_cli", 0, $request->pais_cli),
+			'lang_newsletter_suscription' => FormLib::Select("lang_newsletter_suscription", 0, $request->lang_newsletter_suscription, ['ES' => 'ES', 'EN' => 'EN']),
+			'create_newsletter_suscription' => FormLib::Date('create_newsletter_suscription', 0, $request->create_newsletter_suscription),
+		]);
+
+		return view('admin::pages.usuario.newsletter.show_all', ['suscriptions' => $suscriptions, 'filters' => $filters]);
 	}
 
 	public function destroy(Request $request, $email_cliweb)

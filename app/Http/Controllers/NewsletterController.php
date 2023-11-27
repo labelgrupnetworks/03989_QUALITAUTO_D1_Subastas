@@ -54,6 +54,13 @@ class NewsletterController extends Controller
 
 	private function setNewNewsletters($lang, $email, $families, $cehckForGroup)
 	{
+		if(empty($families)) {
+			return response()->json([
+				'status' => 'error',
+				"msg" => 'err-families_newsletter'
+			]);
+		}
+
 		$this->newsletterModel
 			->setAttributes($lang, $email, $families)
 			->suscribe($cehckForGroup);

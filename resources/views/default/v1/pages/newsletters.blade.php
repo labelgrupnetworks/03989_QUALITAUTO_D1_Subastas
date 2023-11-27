@@ -53,7 +53,7 @@
 
             </div>
 
-            <div class="col-xs-12 col-md-10 col-lg-8 mx-auto">
+            <div class="col-xs-12 col-md-10 col-lg-8 mx-auto d-none">
                 <p>{{ trans("$theme-app.foot.unsuscribe_from") }} <a class="popup-modal" id="unsuscribeMailChimp"
                         href="#confirm-unsuscribe"
                         data-href="{{ route('newsletter.unsuscribe', ['lang' => config('app.locale'), 'email' => request('email'), 'hash' => md5(request('email'))]) }}">{{ trans("$theme-app.foot.unsuscribe_link") }}</a>
