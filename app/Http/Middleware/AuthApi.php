@@ -33,7 +33,8 @@ class AuthApi
         $webApiLog["method_api_log"] = $request->method();
         $webApiLog["user_api_log"] = $auth[0];
         $webApiLog["info_api_log"] = "";
-        if($request->isMethod('delete') || env('APP_DEBUG') ) { // $request->isMethod('put') || $request->isMethod('post')
+		
+        if($request->isMethod('delete') || env('APP_DEBUG') || ( $request->isMethod('put') && \Config::get("app.api_debug_put")) || ( $request->isMethod('post') && \Config::get("app.api_debug_post"))) { // $request->isMethod('put') || $request->isMethod('post')
             $params = mb_substr(json_encode($request->all()), 0 , 2000);
 			$webApiLog["info_api_log"] = $params;
 			WebApiLog::create($webApiLog);
