@@ -56,6 +56,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\Web_Preferences;
 use App\Models\V5\Web_Favorites;
 use App\Models\V5\FgOrtsec0;
+use App\Models\V5\Fx_Newsletter;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
 
@@ -1204,6 +1205,10 @@ class UserController extends Controller
 
 					//Añadimos a newsletter controlando tanto el sistema nuevo como el antiguo
 					if(!empty(Request::input('newsletter')) || !empty($request->get('families'))){
+
+						if(empty($request->get('families'))) {
+							$request->merge(['families' => [Fx_Newsletter::GENERAL => 1]]);
+						}
 						(new NewsletterController())->setNewsletter($request, "add");
 					}
 

@@ -1225,7 +1225,21 @@ a.pass_recovery_login:hover{
     position: relative;
 }
 
+.newsletter-dialog {
+	border: 0;
+	margin: auto;
+	padding: 2rem 3rem;
+}
 
+.dialog-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.3);
+}
 
 
 /*************************FIN NEWSLETTER*******************/

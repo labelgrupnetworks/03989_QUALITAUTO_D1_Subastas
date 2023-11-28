@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter;
-use App\Models\V5\FxCli;
+use App\Models\V5\Fx_Newsletter_Suscription;
 use App\Models\V5\FxCli2;
 
 class AdminNewsletterController extends Controller
@@ -29,7 +29,9 @@ class AdminNewsletterController extends Controller
 
 		$catalogsCount = FxCli2::where('envcat_cli2', 'S')->count();
 
-		return view('admin::pages.usuario.newsletter.new_index', ['newsletters' => $newsletters, 'catalogsCount' => $catalogsCount]);
+		$allSuscriptors = Fx_Newsletter_Suscription::distinct('email_newsletter_suscription')->count('email_newsletter_suscription');
+
+		return view('admin::pages.usuario.newsletter.new_index', ['allSuscriptors' => $allSuscriptors, 'newsletters' => $newsletters, 'catalogsCount' => $catalogsCount]);
 	}
 
 	public function edit($id)

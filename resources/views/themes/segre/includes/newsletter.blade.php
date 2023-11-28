@@ -1,4 +1,4 @@
-<div class="newsletter">
+<div class="newsletter js-newletter-block">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
