@@ -1,7 +1,12 @@
+@php
+	$isGallery = in_array(Config::get('app.emp'), ['003', '004']);
+	$newsletterId = $isGallery ? 6 : 1;
+@endphp
+
 <div class="newsletter-form">
     <p class="fs-5 lh-sm ff-highlight">{{ trans("$theme-app.foot.newsletter_title") }}</p>
     <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
-	<input type="hidden" name="families[1]" value="1">
+	<input type="hidden" name="families[{{$newsletterId}}]" value="{{$newsletterId}}">
 
     <div class="position-relative">
         <div class="form-floating">
