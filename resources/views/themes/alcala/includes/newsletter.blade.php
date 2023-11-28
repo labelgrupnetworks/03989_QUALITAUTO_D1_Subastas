@@ -40,16 +40,16 @@
                     <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                 </div>
                 <div class="col-xs-10 col-sm-11">
-                    <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                    <label for="bool__1__condiciones"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
                 </div>
             </div>
 
             <div class="check_term row">
                 <div class="col-xs-2 col-sm-1">
-                    <input type="checkbox" name="families[1]" value="1" id="bool__0__comercial" autocomplete="off">
+                    <input type="checkbox" name="condiciones_2" value="on" id="bool__0__comercial" autocomplete="off" required>
                 </div>
                 <div class="col-xs-10 col-sm-11">
-                    <label for="bool__0__comercialFooter">{{ trans(\Config::get('app.theme').'-app.emails.accept_news') }}</label>
+                    <label for="bool__0__comercial">{{ trans(\Config::get('app.theme').'-app.emails.accept_news') }}</label>
                 </div>
             </div>
 

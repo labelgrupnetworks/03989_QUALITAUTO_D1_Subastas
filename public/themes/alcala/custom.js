@@ -1502,7 +1502,7 @@ function newsletterSuscription (event) {
 		return;
 	}
 
-	if (!$('.js-newletter-block [name=condiciones]').prop("checked")) {
+	if (!$('.js-newletter-block [name=condiciones]').is(":checked") || !$('.js-newletter-block [name=condiciones_2]').is(":checked")) {
 		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		return;
@@ -1562,7 +1562,12 @@ function addNewsletter(data) {
 			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 		},
 		error: function(error) {
-			$('.insert_msg').html(messages.error.message_500);
+			if (error.responseJSON) {
+				$('.insert_msg').html(error.responseJSON.message);
+			}
+			else {
+				$('.insert_msg').html(messages.error.generic);
+			}
 			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 		}
 	});
