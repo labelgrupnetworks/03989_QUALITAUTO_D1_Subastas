@@ -1,6 +1,8 @@
 <div class="newsletter-form">
     <p class="fs-5 lh-sm ff-highlight">{{ trans("$theme-app.foot.newsletter_title") }}</p>
     <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
+	<input type="hidden" name="families[1]" value="1">
+
     <div class="position-relative">
         <div class="form-floating">
             <input type="email" class="form-control newsletter-input" id="newsletter-input" name="email"
