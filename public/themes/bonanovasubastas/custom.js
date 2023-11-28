@@ -702,7 +702,7 @@ function newsletterSuscription(event) {
 
 	const newsletters = {};
 	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
-		if (element.checked) {
+		if (element.checked || element.type === "hidden") {
 			newsletters[`families[${element.value}]`] = '1';
 		}
 	});
