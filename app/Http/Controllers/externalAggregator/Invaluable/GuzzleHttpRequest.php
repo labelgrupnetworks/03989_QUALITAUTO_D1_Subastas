@@ -13,7 +13,7 @@ class GuzzleHttpRequest {
     {
 		$this->house = \Config::get("app.invaluableHouse");
 
-		
+
 
         //Si el token no esta en cache, llamar a getToken() para generar uno nuevo y guardando en cache durante 55 min
         if(1== 1 || !\Cache::has('token')){
@@ -28,7 +28,7 @@ class GuzzleHttpRequest {
 
         //Creando objeto para hacer las peticiones HTTP
         $this->client = new Client([
-            'base_uri' => 'https://stagecps.invaluableauctions.com',
+            'base_uri' => \Config::get("app.invaluable_API_URL"),
 			'verify' => false
         ]);
     }
@@ -56,8 +56,8 @@ class GuzzleHttpRequest {
             $headers = array('Content-Type' => 'application/json');
 
             $credenciales = '{
-                         "username":"rsanchez@labelgrup.com",
-                         "password":"1wb6C/s0G"
+                         "username":"'. \Config::get("app.invaluable_API_user") .'" ,
+                         "password":"'. \Config::get("app.invaluable_API_password") .'"
                         }';
 
             $response = $this->credencial->request('PUT','https://stage-tokengen.invaluable.com/ssa', ['headers' => $headers, 'body' => $credenciales]);
