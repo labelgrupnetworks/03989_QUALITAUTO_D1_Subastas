@@ -172,7 +172,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		
+
 	}
 
 	private function sendFailedJobs($fromId, $toId)

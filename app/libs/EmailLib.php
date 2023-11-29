@@ -1170,6 +1170,12 @@ private $debug = true;
 			return null;
 		}
 
+		public function getAtributes(){
+
+				return $this->atributes;
+
+		}
+
 
         public function setSexo_Cli($sexo_cli, $language) {
             if ($sexo_cli == 'M') {

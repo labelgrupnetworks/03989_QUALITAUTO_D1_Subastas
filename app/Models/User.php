@@ -509,14 +509,16 @@ class User
 
                 FROM FGLICIT l
                 LEFT JOIN FXCLIWEB cliweb on cliweb.emp_cliweb =  L.EMP_LICIT and  cliweb.cod_cliweb =  l.CLI_LICIT
-				JOIN FXCLI u  ON (l.CLI_LICIT = u.COD_CLI and u.GEMP_CLI = cliweb.GEMP_CLIWEB)
-				WHERE EMP_LICIT = :emp AND SUB_LICIT = :cod_sub AND COD_LICIT = :licit   $where_baja";
+				JOIN FXCLI u  ON (l.CLI_LICIT = u.COD_CLI)
+				WHERE EMP_LICIT = :emp  AND u.GEMP_CLI = :gemp AND SUB_LICIT = :cod_sub AND COD_LICIT = :licit   $where_baja";
 
         $bindings = array(
-                        'emp'           => Config::get('app.emp'),
+						'emp'           => Config::get('app.emp'),
+						'gemp'           => Config::get('app.gemp'),
                         'cod_sub'       => $this->cod,
                         'licit'         => $this->licit,
                         );
+						
         return DB::select($sql, $bindings);
     }
     //NUEVA FUNCION QUE COJE LSO DATOS DE CLI Y SI HAY DE CLIWEB
