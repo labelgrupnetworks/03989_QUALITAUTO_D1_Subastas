@@ -1,11 +1,11 @@
-<div class="row">
-	<div class="col-xs-12">
+<div class="row well">
+	<div class="col-xs-12 table-responsive">
 
-		<a id="create_session" class="btn btn-primary btn-sm pull-right">
-			Nuevo archivo
+		<a id="addFile" class="btn btn-primary btn-sm pull-right" data-url="{{ route('subastas.lotes.files.create', ['num_hces1' => $fgAsigl0->num_hces1, 'lin_hces1' => $fgAsigl0->lin_hces1 ]) }}">
+			+ Nuevo archivo
 		</a>
 
-		<table id="session" class="table table-striped table-condensed table-responsive" style="width:100%">
+		<table id="session" class="table table-striped table-condensed" style="width:100%">
 			<thead>
 				<tr>
 					<th>{{ trans("admin-app.fields.id_hces1_files") }}</th>
@@ -21,40 +21,8 @@
 				</tr>
 			</thead>
 
-			<tbody>
-
-				@forelse ($files as $file)
-
-				<tr id="fila_">
-					<td>{{ $file->id_hces1_files }}</td>
-					<td>{{ $file->name_hces1_files }}</td>
-					<td>{{ $file->order_hces1_files }}</td>
-					<td>{{ $file->is_active_hces1_files }}</td>
-					<td>{{ $file->permission_hces1_files }}</td>
-
-					<td>
-						<a title="{{ trans("admin-app.button.edit") }}" class="btn btn-success btn-sm" data-action="">
-							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								{{ trans("admin-app.button.edit") }}
-						</a>
-
-						<a title="{{ trans("admin-app.button.delete") }}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#">
-							<i class="fa fa-trash" aria-hidden="true"></i>
-								{{ trans("admin-app.button.delete") }}
-						</a>
-
-					</td>
-				</tr>
-
-				@empty
-
-				<tr>
-					<td colspan="6">
-						<h3 class="text-center">{{ trans("admin-app.title.without_results") }}</h3>
-					</td>
-				</tr>
-
-				@endforelse
+			<tbody id="lotFilesRows">
+				@include('admin::pages.subasta.lot_files._table_rows', ['files' => $files])
 			</tbody>
 		</table>
 
@@ -62,7 +30,7 @@
 </div>
 
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="modalCreateSession">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="addFileModal">
 	<div class="modal-dialog modal-lg" role="document">
 
 		<div class="modal-content">
@@ -77,7 +45,7 @@
 			<div class="modal-body" id="modal-create-body"></div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="modalSessionAccept">Save changes</button>
+				<button type="submit" form="save_lot_file" class="btn btn-primary" id="modalSessionAccept">Save changes</button>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 
@@ -116,74 +84,55 @@
 
 <script>
 
-	$('.edit').on('click', function(e){
+	function editFile(button) {
+		const url = button.dataset.action;
 
-		e.preventDefault();
-		if(!e.target.dataset.action){
-			return;
-		}
-
-		$('.edit').addClass("disabled");
-
-		$.ajax ({
-			url: e.target.dataset.action,
-			type: "get",
-
-			success: function(result) {
-				$('#modal-create-body').html(result);
-				$('#modalCreateSession').modal('show');
-			},
-			error: function(error) {
-				console.log(error);
-			},
-			complete: function() {
-				$('.edit').removeClass("disabled");
-			}
-		});
-	});
-
-
-	$('#create_session').on('click', function(){
-
-		$.ajax ({
-			url: "",
-			type: "get",
-
-			success: function(result) {
-				$('#modal-create-body').html(result);
-				$('#modalCreateSession').modal('show');
-			},
-			error: function() {
-				error();
-			}
-		});
-	});
-
-	$('#deleteSesionModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var reference = button.data('reference');
-            var action = $('#formDelete').attr('data-action').slice(0, -1) + reference;
-			$('#formDelete').attr('data-action', action);
-
-            var modal = $(this);
-            modal.find('.modal-title').text('Vas a borrar la sesión ' + reference);
-
-			$('#formDelete').on('click', function(){
-				deleteSession(action);
-			});
-    });
-
-	function deleteSession(url){
 		$.ajax ({
 			url: url,
-			type: "delete",
+			type: "get",
+
 			success: function(result) {
-				$('#subasta_sesiones').html(result);
+				$('#modal-create-body').html(result);
+				$('#addFileModal').modal('show');
 			},
 			error: function() {
 				error();
 			}
 		});
 	}
+
+	function removeFile(button) {
+		const url = button.dataset.action;
+
+		$.ajax ({
+			url: url,
+			type: "delete",
+
+			success: function(result) {
+				$('#lotFilesRows').html(result);
+				saved('Archivo borrado correctamente');
+			},
+			error: function() {
+				error();
+			}
+		});
+	}
+
+
+	$('#addFile').on('click', function(){
+
+		$.ajax ({
+			url: $(this).data('url'),
+			type: "get",
+
+			success: function(result) {
+				$('#modal-create-body').html(result);
+				$('#addFileModal').modal('show');
+			},
+			error: function() {
+				error();
+			}
+		});
+	});
 
 </script>

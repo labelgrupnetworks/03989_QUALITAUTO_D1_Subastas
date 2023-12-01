@@ -5,13 +5,14 @@ namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Collection;
 
 class FgHces1Files extends Model
 {
     protected $table = 'FGHCES1_FILES';
-    protected $primaryKey = 'ID_HCES1_FILES';
+    protected $primaryKey = 'id_hces1_files';
 	public $incrementing = true;
 
 
@@ -21,6 +22,9 @@ class FgHces1Files extends Model
     protected $guarded = [];
 
 	const ROOT_DIRECTORY = 'files';
+	const PERMISSION_EMPTY = 'N';
+	const PERMISSION_USER = 'U';
+	const PERMISSION_DEPOSIT = 'D';
 
     #definimos la variable emp para no tener que indicarla cada vez
     public function __construct(array $vars = []) {
@@ -39,7 +43,6 @@ class FgHces1Files extends Model
         });
     }
 
-
 	/***
 	 * Atributos
 	 */
@@ -50,16 +53,60 @@ class FgHces1Files extends Model
 		if(config('app.storage_path_active', false)){
 			return storage_path('app/' . self::ROOT_DIRECTORY . $path);
 		}
-		else{
-			return public_path('/'. self::ROOT_DIRECTORY . $path);
-		}
 
-
+		return public_path('/'. self::ROOT_DIRECTORY . $path);
 	}
 
 	public function getDownloadPathAttribute()
 	{
 		return route('lot_file_download', ['lang' => config('app.locale'),'file' => $this->id_hces1_files, 'numhces' => $this->numhces_hces1_files, 'linhces' => $this->linhces_hces1_files]);
+	}
+
+	public static function getRelativeStoragePath($num_hces1, $lin_hces1)
+	{
+		$emp = Config::get('app.emp');
+		$path = "/$emp/$num_hces1/$lin_hces1/files/";
+
+		return $path;
+	}
+
+	public static function uploadFile(UploadedFile $file, FgHces1Files $fgHces1File) : FgHces1Files
+	{
+		$relativePath = self::getRelativeStoragePath($fgHces1File->numhces_hces1_files, $fgHces1File->linhces_hces1_files);
+
+		$storagePath = public_path('/'. self::ROOT_DIRECTORY . $relativePath);
+		if(config('app.storage_path_active', false)){
+			$storagePath = storage_path('app/' . self::ROOT_DIRECTORY . $relativePath);
+		}
+
+		if (!is_dir(str_replace("\\", "/", $storagePath))) {
+			mkdir(str_replace("\\", "/", $storagePath), 0775, true);
+		}
+
+		$newfile = str_replace("\\", "/", $storagePath . '/' . $file->getClientOriginalName());
+
+		copy($file->getPathname(), $newfile);
+
+		$fgHces1File->path_hces1_files = $relativePath . $file->getClientOriginalName();
+		$fgHces1File->save();
+
+		return $fgHces1File;
+	}
+
+	public static function deleteFile(FgHces1Files $fgHces1File) : bool
+	{
+		$storagePath = public_path('/'. self::ROOT_DIRECTORY . $fgHces1File->path_hces1_files);
+		if(config('app.storage_path_active', false)){
+			$storagePath = storage_path('app/' . self::ROOT_DIRECTORY . $fgHces1File->path_hces1_files);
+		}
+
+		$file = str_replace("\\", "/", $storagePath);
+
+		if (file_exists($file)) {
+			unlink($file);
+		}
+
+		return true;
 	}
 
 	/***
@@ -90,6 +137,15 @@ class FgHces1Files extends Model
 					->withPermissions($userSession, $validDeposit)
 					->active()
 					->first();
+	}
+
+	public static function getPermissions()
+	{
+		return [
+			self::PERMISSION_EMPTY => trans('admin-app.values.empty_permission'),
+			self::PERMISSION_USER => trans('admin-app.values.user_permission'),
+			self::PERMISSION_DEPOSIT => trans('admin-app.values.deposit_permission')
+		];
 	}
 
 	private static function getOldFiles(string $num_hces1, string $lin_hces1): Collection
@@ -143,12 +199,11 @@ class FgHces1Files extends Model
 	 */
 	public function scopeWithPermissions($query, $userSession, $validDeposit)
 	{
-
-		$permissions = ['N'];
+		$permissions = [self::PERMISSION_EMPTY];
 
 		//si no es usuario se obtienen los que no tienen permisos
 		if(!$userSession){
-			return $query->where('permission_hces1_files', 'N');
+			return $query->where('permission_hces1_files', self::PERMISSION_EMPTY);
 		}
 
 		//si el usuario es un administrador, no se filtra por permisos (se obtienen todos)
@@ -158,11 +213,11 @@ class FgHces1Files extends Model
 
 		//si el usuario no tiene un depostio valido añadimos solo los de usuario
 		if(!$validDeposit){
-			array_push($permissions, 'U');
+			array_push($permissions, self::PERMISSION_USER);
 		}
 		//si el usuario si tiene un depostio valido añadimos los de usuario
 		else{
-			array_push($permissions, 'U', 'D');
+			array_push($permissions, self::PERMISSION_USER, self::PERMISSION_DEPOSIT);
 		}
 
 		return $query->whereIn('permission_hces1_files', $permissions);

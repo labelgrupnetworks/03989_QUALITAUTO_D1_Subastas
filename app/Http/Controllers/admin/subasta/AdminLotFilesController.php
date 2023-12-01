@@ -10,59 +10,94 @@ use Illuminate\Support\Facades\Config;
 
 class AdminLotFilesController extends Controller
 {
-	private $emp;
-
-	public function __construct()
-	{
-		$this->emp = Config::get('app.emp');
-	}
-
-	function create($num_hces1, $lin_hces1)
-	{
-		//formulario para añadir archivos
-		//lo mostraremos sobre un modal
-	}
-
 	function show($id)
 	{
 		//mostrar archivo
 	}
 
-	function edit($id)
+	function create(Request $request, $num_hces1, $lin_hces1)
 	{
-		//formulario para editar archivo
-		//lo mostraremos sobre un modal
-/* 		tabla
-		ID_HCES1_FILES	NUMBER(19,0)	No		1	Identificador de la tabla
-		EMP_HCES1_FILES	VARCHAR2(3 BYTE)	No		2	Codigo de la empresa
-		NUMHCES_HCES1_FILES	NUMBER(8,0)	No		3	Numero de HCES
-		LINHCES_HCES1_FILES	NUMBER(38,0)	No		4	Numero de linea de HCES
-		LANG_HCES1_FILES	VARCHAR2(8 CHAR)	Yes		5	Idioma
-		PATH_HCES1_FILES	VARCHAR2(600 CHAR)	Yes		6	Ruta del archivo
-		EXTERNAL_URL_HCES1_FILES	VARCHAR2(600 CHAR)	Yes		7	Url externa
-		NAME_HCES1_FILES	VARCHAR2(2000 CHAR)	Yes		8	Nombre del archivo
-		DESCRIPTION_HCES1_FILES	VARCHAR2(4000 CHAR)	Yes		9	Descripcion del archivo
-		ORDER_HCES1_FILES	NUMBER(11,0)	Yes	0	10	Orden
-		IMAGE_HCES1_FILES	VARCHAR2(600 CHAR)	Yes		11	Imagen
-		IS_ACTIVE_HCES1_FILES	VARCHAR2(1 CHAR)	Yes	'S'	12	Activo
-		PERMISSION_HCES1_FILES	VARCHAR2(1 CHAR)	Yes	'N'	13	Permisos: N-Sin permisos, U-Solo usuarios, A-Solo adminidinatores
-		TYPE_UPDATE_HCES1_FILES	VARCHAR2(20 CHAR)	Yes		14
-		DATE_UPDATE_HCES1_FILES	DATE	Yes		15
-		USR_UPDATE_HCES1_FILES	VARCHAR2(100 CHAR)	Yes		16	 */
-	}
-
-	function update(Request $request, $id)
-	{
-		//actualizar archivo
+		$formulario = $this->getFilesForm($request, new FgHces1Files());
+		return view('admin::pages.subasta.lot_files._create', ['formulario' => $formulario, 'num_hces1' => $num_hces1, 'lin_hces1' => $lin_hces1])->render();
 	}
 
 	function store(Request $request, $num_hces1, $lin_hces1)
 	{
-		//guardar archivo
+		//@todo validaciones
+
+		$file = $request->file('file_hces1_files');
+
+		$fgHces1File = new FgHces1Files([
+			'numhces_hces1_files' => $num_hces1,
+			'linhces_hces1_files' => $lin_hces1,
+			'lang_hces1_files' => $request->input('lang_hces1_files', null),
+			'path_hces1_files' => null,
+			'external_url_hces1_files' => $request->input('external_url_hces1_files', null),
+			'name_hces1_files' => $request->input('name_hces1_files', $file->getClientOriginalName()),
+			'description_hces1_files' => $request->input('description_hces1_files', null),
+			'order_hces1_files' => $request->input('order_hces1_files', 0),
+			'image_hces1_files' => null,
+			'is_active_hces1_files' => $request->input('is_active_hces1_files', 'N'),
+			'permission_hces1_files' => $request->input('permission_hces1_files', 'N')
+		]);
+
+		FgHces1Files::uploadFile($file, $fgHces1File);
+
+		$files = FgHces1Files::getAllFilesByLot($num_hces1, $lin_hces1);
+		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
 	}
 
-	function destroy($id)
+	function edit($id)
 	{
+		$fgHces1File = FgHces1Files::find($id);
+		$formulario = $this->getFilesForm(new Request(), $fgHces1File);
+		return view('admin::pages.subasta.lot_files._edit', ['formulario' => $formulario, 'id' => $id])->render();
+	}
 
+	function update(Request $request, FgHces1Files $fgHces1File)
+	{
+		//@todo validaciones
+		$file = $request->file('file_hces1_files');
+
+		$nameFile = $file ? $file->getClientOriginalName() : $fgHces1File->name_hces1_files;
+		$newName = $request->input('name_hces1_files', $nameFile);
+
+		$fgHces1File->name_hces1_files = $newName;
+		$fgHces1File->is_active_hces1_files = $request->input('is_active_hces1_files', 'N');
+		$fgHces1File->permission_hces1_files = $request->input('permission_hces1_files', 'N');
+
+		if ($fgHces1File->isDirty()) {
+			$fgHces1File->save();
+		}
+
+		//si se ha subido un archivo, se elimina el anterior y se sube el nuevo
+		if ($file) {
+			FgHces1Files::deleteFile($fgHces1File);
+			FgHces1Files::uploadFile($file, $fgHces1File);
+		}
+
+		$files = FgHces1Files::getAllFilesByLot($fgHces1File->numhces_hces1_files, $fgHces1File->linhces_hces1_files);
+		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
+	}
+
+	function destroy(FgHces1Files $fgHces1File)
+	{
+		FgHces1Files::deleteFile($fgHces1File);
+		$fgHces1File->delete();
+
+		$files = FgHces1Files::getAllFilesByLot($fgHces1File->numhces_hces1_files, $fgHces1File->linhces_hces1_files);
+		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
+	}
+
+	private function getFilesForm(Request $request, FgHces1Files $file)
+	{
+		$formulario = [
+			'file_hces1_files' => FormLib::File('file_hces1_files', 1),
+			'name_hces1_files' => FormLib::Text('name_hces1_files', 1, old('name_hces1_files', $file->name_hces1_files)),
+			'is_active_hces1_files' => FormLib::Select('is_active_hces1_files', true, old('is_active_hces1_files', $file->is_active_hces1_files), ['S' => 'Si', 'N' => 'No'], '', '', true),
+			'permission_hces1_files' => FormLib::Select('permission_hces1_files', true, old('permission_hces1_files', $file->permission_hces1_files), FgHces1Files::getPermissions(), '', '', true)
+		];
+
+		return $formulario;
 	}
 }

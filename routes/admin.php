@@ -384,6 +384,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			'lotes_concursales' => 'lote'
 		]);
 
+		Route::get('subastas/{num_hces1}/{lin_hces1}/files/create', 'subasta\AdminLotFilesController@create')->name('subastas.lotes.files.create');
+		Route::post('subastas/{num_hces1}/{lin_hces1}/files', 'subasta\AdminLotFilesController@store')->name('subastas.lotes.files.store');
+		Route::get('subastas/lotes/files/{id}/edit', 'subasta\AdminLotFilesController@edit')->name('subastas.lotes.files.edit');
+		Route::post('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@update')->name('subastas.lotes.files.update');
+		Route::delete('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@destroy')->name('subastas.lotes.files.destroy');
+
 		Route::get('subasta-conditions', 'subasta\AdminSubastaConditionsController@index')->name('subasta_conditions.index');
 		Route::get('subasta-conditions/download', 'subasta\AdminSubastaConditionsController@download')->name('subasta_conditions.download');
 
