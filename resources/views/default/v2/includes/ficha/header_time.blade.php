@@ -5,6 +5,8 @@
 		<h4 class="info-type-auction">
 			@if($subasta_online)
 			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+			@elseif($subasta_inversa)
+			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_inversa') }}
 			@elseif($subasta_web)
 			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
 			@elseif($subasta_venta)

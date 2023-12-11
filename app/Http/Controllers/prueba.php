@@ -172,7 +172,28 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$this->testInvaluable();
+/*
+		$subasta = new subasta();
+        $subasta->cod ="LABELP";
+        $subasta->ref =  2;
+        $subasta->lote =  2 ;
+		$subasta->page          = 1;
+		$subasta->itemsPerPage  = 100;
+		$pujas = $subasta->getPujasInversas();
+
+		echo "<pre>";
+		print_r($pujas);
+*/
+
+		$a = new Subasta();
+		$a->sin_pujas = false;
+		$imp_salida= 2000;
+		$imp_actual =25;
+		$first_ol = false;
+
+		echo "normal ". $a->NextScaleBid($imp_salida,$imp_actual, $first_ol);
+
+
 	}
 
 	private function testInvaluable(){

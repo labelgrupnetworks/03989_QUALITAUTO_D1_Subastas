@@ -516,9 +516,10 @@ function displayAlert_W(type, msg) {
 }
 
 function displayAlert_O(type, msg) {
+
+	$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 	$("#insert_msg_title").html("");
 	$("#insert_msg").html(msg);
-	$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 
 }
 

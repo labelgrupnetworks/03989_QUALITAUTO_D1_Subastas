@@ -1,17 +1,17 @@
 @php
 use App\Models\V5\FgDeposito;
-
 $cerrado = $lote_actual->cerrado_asigl0 == 'S';
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N';
 $hay_pujas = count($lote_actual->pujas) > 0;
 $devuelto= $lote_actual->cerrado_asigl0 == 'D';
 $remate = $lote_actual->remate_asigl0 =='S';
 $compra = $lote_actual->compra_asigl0 == 'S';
-$subasta_online = ($lote_actual->tipo_sub == 'P' || $lote_actual->tipo_sub == 'O');
+$subasta_online = ($lote_actual->tipo_sub == 'P' || ($lote_actual->tipo_sub == 'O' &&  $lote_actual->inversa_sub != 'S'));
+$subasta_inversa = ($lote_actual->tipo_sub == 'O' && $lote_actual->inversa_sub == 'S');
 $subasta_venta = $lote_actual->tipo_sub == 'V';
 $subasta_web = $lote_actual->tipo_sub == 'W';
 $subasta_make_offer = $lote_actual->tipo_sub == 'M';
-$subasta_inversa = $lote_actual->tipo_sub == 'I';
+
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O';
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P';
 $retirado = $lote_actual->retirado_asigl0 !='N';
@@ -87,7 +87,7 @@ if($subasta_web){
 		</section>
 
 		<section class="ficha-history">
-			@if(($subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
+			@if(($subasta_online || $subasta_inversa || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
 				@include('includes.ficha.history')
 			@endif
 		</section>

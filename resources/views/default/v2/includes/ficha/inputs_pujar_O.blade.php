@@ -1,3 +1,4 @@
+{{-- Tambien los usa la subasta inversa --}}
 <div class="insert-bid-input">
 
 	@if (Session::has('user') &&  Session::get('user.admin'))

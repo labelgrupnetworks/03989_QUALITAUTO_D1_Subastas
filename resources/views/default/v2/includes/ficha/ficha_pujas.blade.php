@@ -15,8 +15,10 @@
                 @endif
 
             {{-- si un lote cerrado no se ha vendido se podra comprar --}}
-            @elseif(($subasta_web || $subasta_online) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
+            @elseif(($subasta_web || $subasta_online || $subasta_inversa) && $cerrado && empty($lote_actual->himp_csub) && $compra && !$fact_devuelta)
                 @include('includes.ficha.pujas_ficha_V')
+			@elseif($subasta_inversa  && !$cerrado)
+                @include('includes.ficha.pujas_ficha_I')
 
             {{-- si una subasta es abierta p solo entraremso a la tipo online si no esta iniciada la subasta --}}
             @elseif(($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado)

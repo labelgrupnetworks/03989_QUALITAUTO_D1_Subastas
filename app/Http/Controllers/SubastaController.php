@@ -1360,22 +1360,44 @@ class SubastaController extends Controller
 		}
 
 
-		# Escalado de la puja y la siguiente
+
+
+		#En la subasta inversa el siguiente escalado debe ir al reves
+		if($subasta_info->lote_actual->inversa_sub == 'S'){
+			$la_escalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
+			$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
+
+			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
+			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
+			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
+				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
+			}
+			else{
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
+			}
+
+		}else{
+			# Escalado de la puja y la siguiente
 		//$la_escalado = $subasta->escalado();
 
 		$la_escalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
 		$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
 
-		$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
-		$siguienteEscalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
-		if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
-			$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
-			$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
+			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
+			$siguienteEscalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
+			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
+				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
+			}
+			else{
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
+			}
 		}
-		else{
-			$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
-			$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
-		}
+
+
 
 		# Ficha del lote mediante subasta sin tiempo real
 		$js_item['subasta']['cod_sub']  = $subastaObj->cod;
