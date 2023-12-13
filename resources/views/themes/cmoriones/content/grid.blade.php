@@ -6,7 +6,13 @@
 <div class="info-auction-tab-contet">
     <div class="container">
 
+		<div class="d-lg-none">
+			{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
+				autoplaySpeed: 5000, slidesToScroll:1}') !!}
+		</div>
+
 		<div class="row gy-5">
+
 			<div id="js-filters-col" class="col-lg-3">
 				<aside class="section-grid-filters sticky-lg-top">
 					@include('includes.grid.leftFilters')
@@ -15,12 +21,10 @@
 
 			<div id="js-lots-col" class="col-lg-9">
 
-				<div class="col-xs-12  ">
+				<div class="d-none d-lg-block">
 					{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
 						autoplaySpeed: 5000, slidesToScroll:1}') !!}
 				</div>
-
-
 
 				<div class="section-grid-top-filters">
 					@include('includes.grid.topFilters')
