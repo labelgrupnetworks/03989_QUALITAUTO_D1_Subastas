@@ -163,6 +163,9 @@ header .navbar-nav .dropdown-menu {
 	}
 } */
 
+main.grid .column_banner {
+	padding: 0;
+}
 
 /* sin sticky ni scroll */
 .section-grid-filters {
