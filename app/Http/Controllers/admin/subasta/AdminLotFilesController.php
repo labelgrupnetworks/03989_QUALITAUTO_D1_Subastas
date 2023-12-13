@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Config;
 
 class AdminLotFilesController extends Controller
 {
-	function show($id)
+	function show(FgHces1Files $fgHces1File)
 	{
-		//mostrar archivo
+		return response()->file($fgHces1File->storage_path);
 	}
 
 	function create(Request $request, $num_hces1, $lin_hces1)
@@ -26,6 +26,7 @@ class AdminLotFilesController extends Controller
 		//@todo validaciones
 
 		$file = $request->file('file_hces1_files');
+		$order = FgHces1Files::withNumhcesAndLinhces($num_hces1, $lin_hces1)->max('order_hces1_files') + 1;
 
 		$fgHces1File = new FgHces1Files([
 			'numhces_hces1_files' => $num_hces1,
@@ -33,9 +34,9 @@ class AdminLotFilesController extends Controller
 			'lang_hces1_files' => $request->input('lang_hces1_files', null),
 			'path_hces1_files' => null,
 			'external_url_hces1_files' => $request->input('external_url_hces1_files', null),
-			'name_hces1_files' => $request->input('name_hces1_files', $file->getClientOriginalName()),
+			'name_hces1_files' => $request->input('name_hces1_files') ?? pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
 			'description_hces1_files' => $request->input('description_hces1_files', null),
-			'order_hces1_files' => $request->input('order_hces1_files', 0),
+			'order_hces1_files' => $order,
 			'image_hces1_files' => null,
 			'is_active_hces1_files' => $request->input('is_active_hces1_files', 'N'),
 			'permission_hces1_files' => $request->input('permission_hces1_files', 'N')
@@ -47,11 +48,10 @@ class AdminLotFilesController extends Controller
 		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
 	}
 
-	function edit($id)
+	function edit(FgHces1Files $fgHces1File)
 	{
-		$fgHces1File = FgHces1Files::find($id);
 		$formulario = $this->getFilesForm(new Request(), $fgHces1File);
-		return view('admin::pages.subasta.lot_files._edit', ['formulario' => $formulario, 'id' => $id])->render();
+		return view('admin::pages.subasta.lot_files._edit', ['formulario' => $formulario, 'id' => $fgHces1File->id_hces1_files])->render();
 	}
 
 	function update(Request $request, FgHces1Files $fgHces1File)
@@ -80,6 +80,16 @@ class AdminLotFilesController extends Controller
 		return view('admin::pages.subasta.lot_files._table_rows', ['files' => $files])->render();
 	}
 
+	function updateOrder(Request $request)
+	{
+		$files = $request->input('order', []);
+		foreach ($files as $order => $id) {
+			FgHces1Files::where('id_hces1_files', $id)->update(['order_hces1_files' => $order + 1]);
+		}
+
+		return response()->json(['success' => true]);
+	}
+
 	function destroy(FgHces1Files $fgHces1File)
 	{
 		FgHces1Files::deleteFile($fgHces1File);
@@ -94,8 +104,8 @@ class AdminLotFilesController extends Controller
 		$formulario = [
 			'file_hces1_files' => FormLib::File('file_hces1_files', 1),
 			'name_hces1_files' => FormLib::Text('name_hces1_files', 1, old('name_hces1_files', $file->name_hces1_files)),
-			'is_active_hces1_files' => FormLib::Select('is_active_hces1_files', true, old('is_active_hces1_files', $file->is_active_hces1_files), ['S' => 'Si', 'N' => 'No'], '', '', true),
-			'permission_hces1_files' => FormLib::Select('permission_hces1_files', true, old('permission_hces1_files', $file->permission_hces1_files), FgHces1Files::getPermissions(), '', '', true)
+			'is_active_hces1_files' => FormLib::Select('is_active_hces1_files', true, old('is_active_hces1_files', $file->is_active_hces1_files), ['S' => 'Si', 'N' => 'No'], '', '', false),
+			'permission_hces1_files' => FormLib::Select('permission_hces1_files', true, old('permission_hces1_files', $file->permission_hces1_files), FgHces1Files::getPermissions(), '', '', false)
 		];
 
 		return $formulario;

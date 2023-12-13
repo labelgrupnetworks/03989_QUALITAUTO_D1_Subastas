@@ -979,8 +979,10 @@ return [
 	'general' => array(
 		'yes' => 'SI',
 		'not' => 'NO',
+		's' => 'Si',
+		'n' => 'No',
 		'cancel' => 'Cancelada',
-		'max_file_size' => 'El tamaño máximo permitido es de :size'
+		'max_file_size' => 'El tamaño máximo permitido es de :size',
 	),
 	'order' => array(
 		'orders' => 'Ordenes',

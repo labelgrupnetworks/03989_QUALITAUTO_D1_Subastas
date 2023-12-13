@@ -36,7 +36,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-xs-9">
+		<div class="col-xs-12">
 			<form action="{{ route('subastas_concursales.lotes_concursales.update', [$cod_sub, $fgAsigl0->ref_asigl0]) }}" method="POST"
 				id="loteUpdate" enctype="multipart/form-data">
 				@method('PUT')
@@ -62,9 +62,11 @@
 					@include('admin::pages.subasta.lotes._lot_images', compact('images'))
 				</div>
 
+				@if(!Config::get('app.use_table_files', false))
 				<div class="row well">
 					@include('admin::pages.subasta.lotes._lot_files', compact('formulario', 'files', 'fgAsigl0'))
 				</div>
+				@endif
 
 				<div class="row">
 					<div class="col-xs-12 text-center">
@@ -74,9 +76,11 @@
 			</form>
 		</div>
 
+		@if(Config::get('app.use_table_files', false))
 		<div class="col-xs-12">
 				@include('admin::pages.subasta.lot_files._table', ['files' => $files, 'fgAsigl0' => $fgAsigl0])
 		</div>
+		@endif
 	</div>
 
 

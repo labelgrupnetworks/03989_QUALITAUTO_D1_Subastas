@@ -222,3 +222,89 @@ function selectedAllLots(event) {
 
 	lots.forEach((element) => element.checked = true);
 }
+
+function editFile(button) {
+	const url = button.dataset.action;
+
+	$.ajax({
+		url: url,
+		type: "get",
+
+		success: function(result) {
+			$('#modal-create-body').html(result);
+			$('#addFileModal').modal('show');
+		},
+		error: function() {
+			error();
+		}
+	});
+}
+
+function removeFile(button) {
+	const url = button.dataset.action;
+
+	bootbox.confirm("¿Estás seguro que quieres borrar el archivo seleccionado?", function(result) {
+
+		if (!result) {
+			return;
+		}
+
+		$.ajax({
+			url: url,
+			type: "delete",
+
+			success: function(result) {
+				$('#lotFilesRows').html(result);
+				saved('Archivo borrado correctamente');
+			},
+			error: function() {
+				error();
+			}
+		});
+	});
+}
+
+
+$('#addFile').on('click', function() {
+
+	$.ajax({
+		url: $(this).data('url'),
+		type: "get",
+
+		success: function(result) {
+			$('#modal-create-body').html(result);
+			$('#addFileModal').modal('show');
+		},
+		error: function() {
+			error();
+		}
+	});
+});
+
+$('#lotFilesRows').sortable({
+	handle: '.js-soratble-button',
+	items: 'tr',
+	axis: 'y',
+	cursor: "grabbing",
+	cancel: '',
+	update: function(event, ui) {
+		const order = $(this).sortable('toArray', {
+			attribute: 'data-id'
+		});
+
+		$.ajax({
+			url: "/admin/subastas/lotes/files/order",
+			type: "post",
+			data: {
+				_token: $('[name="_token"]').val(),
+				order
+			},
+			success: function(result) {
+				saved('Orden actualizado correctamente');
+			},
+			error: function() {
+				error();
+			}
+		});
+	}
+});

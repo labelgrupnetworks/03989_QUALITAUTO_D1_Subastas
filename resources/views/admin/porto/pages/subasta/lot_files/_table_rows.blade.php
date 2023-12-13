@@ -1,13 +1,19 @@
 @forelse ($files as $file)
-    <tr id="fila_">
+    <tr data-id="{{ $file->id_hces1_files }}" id="fila_{{ $file->id_hces1_files }}">
+		<td>
+			<button class="btn btn-link js-soratble-button"><i class="fa fa-reorder"></i></button>
+		</td>
         <td>{{ $file->id_hces1_files }}</td>
-        <td>{{ $file->name_hces1_files }}</td>
-        <td>{{ $file->order_hces1_files }}</td>
-        <td>{{ $file->is_active_hces1_files }}</td>
-        <td>{{ $file->permission_hces1_files }}</td>
+        <td>
+			<a href="{{ route('subastas.lotes.files.show', ['fgHces1File' => $file->id_hces1_files]) }}" target="_blank">
+				{{ $file->name_hces1_files }}
+			</a>
+		</td>
+        <td>{{ trans("admin-app.general." . mb_strtolower($file->is_active_hces1_files)) }}</td>
+        <td>{{ $file->permission_value }}</td>
 
         <td>
-            <button class="btn btn-success btn-sm" data-action="{{ route('subastas.lotes.files.edit', ['id' => $file->id_hces1_files]) }}" title="{{ trans('admin-app.button.edit') }}"
+            <button class="btn btn-success btn-sm" data-action="{{ route('subastas.lotes.files.edit', ['fgHces1File' => $file]) }}" title="{{ trans('admin-app.button.edit') }}"
 			 onclick="editFile(this)">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 {{ trans('admin-app.button.edit') }}

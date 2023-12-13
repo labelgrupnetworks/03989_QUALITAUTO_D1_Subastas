@@ -68,11 +68,13 @@
 		<div class="row well">
 			@include('admin::pages.subasta.lotes._lot_features', compact('cod_sub'))
 		</div>
-		@if(!in_array("FILES", explode(',', config("app.HideEditLotOptions"))))
+
+		@if(!in_array("FILES", explode(',', config("app.HideEditLotOptions"))) && !Config::get('app.use_table_files', false))
 			<div class="row well">
 				@include('admin::pages.subasta.lotes._lot_files', compact('formulario', 'files', 'fgAsigl0'))
 			</div>
 		@endif
+
 		@if(!in_array("VIDEOS", explode(',', config("app.HideEditLotOptions"))))
 			<div class="row well">
 				@include('admin::pages.subasta.lotes._lot_videos', compact('formulario', 'videos', 'fgAsigl0'))
@@ -96,6 +98,12 @@
 			</div>
 		</div>
 	</form>
+
+	@if(!in_array("FILES", explode(',', config("app.HideEditLotOptions"))) && Config::get('app.use_table_files', false))
+		<div class="col-xs-12">
+			@include('admin::pages.subasta.lot_files._table', ['files' => $files, 'fgAsigl0' => $fgAsigl0])
+		</div>
+	@endif
 
 </section>
 

@@ -57,6 +57,12 @@ class FgHces1Files extends Model
 		return public_path('/'. self::ROOT_DIRECTORY . $path);
 	}
 
+	public function getPermissionValueAttribute()
+	{
+		$permission = $this->attributes['permission_hces1_files'];
+		return self::getPermissions()[$permission] ?? $permission;
+	}
+
 	public function getDownloadPathAttribute()
 	{
 		return route('lot_file_download', ['lang' => config('app.locale'),'file' => $this->id_hces1_files, 'numhces' => $this->numhces_hces1_files, 'linhces' => $this->linhces_hces1_files]);
@@ -83,11 +89,12 @@ class FgHces1Files extends Model
 			mkdir(str_replace("\\", "/", $storagePath), 0775, true);
 		}
 
-		$newfile = str_replace("\\", "/", $storagePath . '/' . $file->getClientOriginalName());
+		$fileName = md5($file->getClientOriginalName() . microtime()) . '.' . $file->getClientOriginalExtension();
+		$newfile = str_replace("\\", "/", $storagePath . '/' . $fileName);
 
 		copy($file->getPathname(), $newfile);
 
-		$fgHces1File->path_hces1_files = $relativePath . $file->getClientOriginalName();
+		$fgHces1File->path_hces1_files = $relativePath . $fileName;
 		$fgHces1File->save();
 
 		return $fgHces1File;
@@ -112,7 +119,7 @@ class FgHces1Files extends Model
 	/***
 	 * Recursos
 	 */
-	public static function getAllFilesByLot($num_hces1, $lin_hces1): Collection
+	public static function getAllFilesByLot($num_hces1, $lin_hces1)
 	{
 		$withTable = Config::get('app.use_table_files', false);
 		return $withTable
@@ -148,7 +155,7 @@ class FgHces1Files extends Model
 		];
 	}
 
-	private static function getOldFiles(string $num_hces1, string $lin_hces1): Collection
+	private static function getOldFiles(string $num_hces1, string $lin_hces1)
 	{
 		$emp = Config::get('app.emp');
 		$path = "/files/$emp/$num_hces1/$lin_hces1/files/";
@@ -157,7 +164,8 @@ class FgHces1Files extends Model
 			$files = array_diff(scandir(getcwd() . $path), ['.', '..']);
 		}
 
-		return self::mapperFiles($files, $num_hces1, $lin_hces1);
+		return $files;
+		//return self::mapperFiles($files, $num_hces1, $lin_hces1); //en caso de querer unificar respuesta
 	}
 
 	/**

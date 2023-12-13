@@ -312,8 +312,7 @@ class AdminLotController extends Controller
 
 		$images = $this->getImagesFgAsigl0($fgAsigl0);
 
-		//$files = $this->getFilesFgAsigl0($fgAsigl0);
-		$files = (new AdminLotFilesController)->index($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0)->render();
+		$files = FgHces1Files::getAllFilesByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 
 		$videos = $this->getVideosFgAsigl0($fgAsigl0);
 
