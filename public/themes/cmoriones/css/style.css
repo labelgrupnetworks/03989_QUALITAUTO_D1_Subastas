@@ -386,3 +386,7 @@ header .navbar-nav .dropdown-menu {
 .contact-page-info-house-auction h3 {
 	font-weight: 700;
 }
+
+.banner_grid {
+	padding:0 0 1rem 0;
+}

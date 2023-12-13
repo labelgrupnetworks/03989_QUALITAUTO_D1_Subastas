@@ -37,6 +37,7 @@ use App\Models\V5\FgCaracteristicas;
 use App\Models\V5\FgCaracteristicas_Value;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces0;
+use App\Models\V5\FxSecMap;
 use DateInterval;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -1248,6 +1249,11 @@ class SubastaController extends Controller
 
 		$maxReference = FgAsigl0::where('sub_asigl0', $idAuction)->max('ref_asigl0') ?? 0;
 
+		$fxSecMapDataArray = [];
+		if (\Config::get('app.use_fxsecmap_excel')) {
+			$fxSecMapDataArray = FxSecMap::getFxSecMapData();
+		}
+
 		$lots = array();
 		$newLots = array();
 		$updateLots = array();
@@ -1260,6 +1266,12 @@ class SubastaController extends Controller
 			}
 
 			$lot = $this->createLotObject($rows[$i], $cabeceras);
+
+			if (count($fxSecMapDataArray) > 0 && $lot['idsubcategory']) {
+				$lot['idsubcategory'] = mb_strtoupper($lot['idsubcategory']);
+				$existKeyInArray = array_key_exists($lot['idsubcategory'], $fxSecMapDataArray);
+				$lot['idsubcategory'] = $existKeyInArray ? $fxSecMapDataArray[$lot['idsubcategory']] : $lot['idsubcategory'];
+			}
 
 			$lot['idauction'] = $idAuction;
 
