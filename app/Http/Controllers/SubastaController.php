@@ -45,6 +45,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use Illuminate\Support\Str;
+use SplFileInfo;
 
 class SubastaController extends Controller
 {
@@ -2705,7 +2706,6 @@ class SubastaController extends Controller
 
 	public function getDownloadLotFile($lang, $idFile, $num_hces1, $lin_hces1)
 	{
-
 		$user = session('user');
 		$lot = FgAsigl0::select('sub_asigl0', 'ref_asigl0')->where([
 			['numhces_asigl0', $num_hces1],
@@ -2724,7 +2724,8 @@ class SubastaController extends Controller
 			abort(404);
 		}
 
-		return response()->download($file->storage_path);
+		$extension = (new SplFileInfo($file->storage_path))->getExtension();
+		return response()->download($file->storage_path, $file->name_hces1_files . '.' . $extension);
 	}
 
 	public function getAucSessionFiles(HttpRequest $request)

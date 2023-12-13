@@ -18,7 +18,7 @@
     @foreach ($files as $file)
         @if (is_object($file))
             <a class="list-group-item list-group-item-action" href="{{ $file->download_path }}"
-                alt="{{ $file->name_hces1_files }}" target="_blank">
+                alt="{{ $file->name_hces1_files }}" download>
                 {{ $file->name_hces1_files }}
             </a>
         @else
