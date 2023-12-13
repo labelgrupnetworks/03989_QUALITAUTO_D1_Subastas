@@ -49,7 +49,7 @@ class Newsletter
 			throw new Exception(trans(Config::get('app.theme') . "-app.msg_error.err-add_newsletter"));
 		}
 
-		$newslettersIds = array_keys($this->families ?? [Fx_Newsletter::GENERAL => 1]);
+		$newslettersIds = array_keys($this->families ?? []);
 
 		$this->deleteSuscriptions($this->email, $checkForGroup);
 
@@ -100,31 +100,30 @@ class Newsletter
 		return $suscriptionNames;
 	}
 
-	/**
-	 * Modificar request por un objeto con los posibles filtros.
-	 */
-	public function getSuscriptionsQueryWithCliInfoById($id_newsletter, $onlyRegisterClients) : Builder
+	public function getSuscriptionsQueryWithCliInfoById($id_newsletter, $onlyRegisterClients): Builder
 	{
 		return Fx_Newsletter_Suscription::query()
 			->select('id_newsletter_suscription, email_newsletter_suscription, create_newsletter_suscription, cod_cli, nom_cli, pais_cli, lang_newsletter_suscription, id_newsletter')
-
+			->where('id_newsletter', $id_newsletter)
 			->when($onlyRegisterClients, function ($query) {
 				return $query->joinCli();
 			}, function ($query) {
 				return $query->leftJoinCli();
-			})
-			->where('id_newsletter', $id_newsletter);
-			/* ->when($filters, function ($query, $filters) {
-				collect($filters)->map(function ($filter) use (&$query) {
-					$query->where($filter->field, $filter->operation, $filter->value);
-				});
-			}) */
-			/* ->when($suscriptions, function ($query, $suscriptions) {
-				$suscriptions->map(function ($suscription) use (&$query) {
-					$query->where('id_newsletter', $suscription);
-				});
-			}) */
+			});
+	}
 
+	public function getAllSuscriptorsQuery($onlyRegisterClients = false)
+	{
+		return Fx_Newsletter_Suscription::query()
+			->select('max(id_newsletter_suscription) id_newsletter_suscription, email_newsletter_suscription, lang_newsletter_suscription, cod_cli, cod2_cli, nom_cli, pais_cli, max(create_newsletter_suscription) create_newsletter_suscription')
+			->selectRaw("LISTAGG(name_newsletter, ',') WITHIN GROUP (ORDER BY name_newsletter) suscriptions")
+			->joinNewsletter()
+			->groupBy('email_newsletter_suscription, lang_newsletter_suscription, cod_cli, cod2_cli, nom_cli, pais_cli')
+			->when($onlyRegisterClients, function ($query) {
+				return $query->joinCli();
+			}, function ($query) {
+				return $query->leftJoinCli();
+			});
 	}
 
 	public function deleteSuscriptions(string $email, bool $checkForGroup = false)

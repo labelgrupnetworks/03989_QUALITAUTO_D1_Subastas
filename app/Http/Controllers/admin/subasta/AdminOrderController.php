@@ -71,7 +71,19 @@ class AdminOrderController extends Controller
 			$orders->where('tel1_orlic', 'like', "%". $request->tel1_orlic . "%" );
 		}
 
-		$orders = $orders->select("FGORLIC.sub_orlic", "FGASIGL0.ref_asigl0", "FGORLIC.tipop_orlic", "FGORLIC.licit_orlic", "FGHCES1.descweb_hces1", "FXCLI.nom_cli", "FXCLI.cod_cli", "FGORLIC.fec_orlic", "FGORLIC.himp_orlic", "FGORLIC.tel1_orlic")
+		if ($request->idorigen_hces1) {
+			$orders->where('upper(idorigen_hces1)', 'like', "%". mb_strtoupper($request->idorigen_hces1) . "%" );
+		}
+
+		if ($request->cod2_cli) {
+			$orders->where('upper(cod2_cli)', 'like', "%". mb_strtoupper($request->cod2_cli) . "%" );
+		}
+
+		if ($request->cod_licit) {
+			$orders->where('cod_licit', 'like', "%". $request->cod_licit . "%" );
+		}
+
+		$orders = $orders->select("FGORLIC.sub_orlic", "FGASIGL0.ref_asigl0", "FGORLIC.tipop_orlic", "FGORLIC.licit_orlic", "FGHCES1.descweb_hces1", "FXCLI.nom_cli", "FXCLI.cod_cli", "FGORLIC.fec_orlic", "FGORLIC.himp_orlic", "FGORLIC.tel1_orlic, FGHCES1.idorigen_hces1, FXCLI.cod2_cli, FGLICIT.cod_licit")
 			->JoinAsigl0()
 			->JoinCli()
 			->JoinFghces1()
@@ -87,6 +99,9 @@ class AdminOrderController extends Controller
 			'fec_orlic' => FormLib::Date('fec_orlic', 0, $request->fec_orlic),
 			'himp_orlic' => FormLib::text('himp_orlic', 0, $request->himp_orlic),
 			'tel1_orlic' => FormLib::Text('tel1_orlic', 0, $request->tel1_orlic),
+			'idorigen_hces1' => FormLib::text('idorigen_hces1', 0, $request->idorigen_hces1),
+			'cod2_cli' => FormLib::text('cod2_cli', 0, $request->cod2_cli),
+			'cod_licit' => FormLib::text('cod_licit', 0, $request->cod_licit),
 		];
 
 		if($this->isRender){

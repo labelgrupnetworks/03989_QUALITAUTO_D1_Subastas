@@ -2,10 +2,15 @@
 @php
     $resourcesList = [];
     foreach ($lote_actual->videos ?? [] as $key => $video) {
+		if (strtolower(substr($video, -5)) == '.html') {
+			continue;
+		}
+
         $resource = ['src' => $video, 'format' => 'VIDEO'];
         if (strtolower(substr($video, -4)) == '.gif') {
             $resource['format'] = 'GIF';
         }
+
         $resourcesList[] = $resource;
     }
 

@@ -1459,6 +1459,10 @@ section.ficha-info {
 	font-weight: 400;
 }
 
+.ficha-info-description {
+	text-align: justify;
+}
+
 .ficha-info-description p:nth-child(2) {
 	margin-bottom: 1rem;
 }

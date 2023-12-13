@@ -30,7 +30,7 @@
         <div class="data-container">
 
 			<div class="title_ref">
-				<a title="{!! $titulo !!}" {{ $url }}>
+				<a title="{!! $titulo !!}" {!! $url !!}>
 					{{ $item->ref_asigl0 }}
 				</a>
 			</div>
@@ -38,7 +38,7 @@
             @if (!empty($titulo))
                 <div class="title_lot">
                     <h4>
-                        <a title="{!! $titulo !!}" {{ $url }}>
+                        <a title="{!! $titulo !!}" {!! $url !!}>
 							{!! $titulo !!}
                         </a>
                     </h4>

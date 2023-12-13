@@ -71,10 +71,10 @@ class ClientController extends ApiLabelController
 
 						#se produce un error de clave duplicada cuando modifican un email asignando uno que ya existe como newsletter, por lo que si envian email, borramos el registro si este es de newsletter
 						FxCliWeb::where("usrw_cliweb",$item["email"])->where("cod_cliweb", 0)->delete();
-						$existEmail =FxCliWeb::select("count(usrw_cliweb) as cuantos")->where("usrw_cliweb",$item["email"])->where("cod_cliweb","!=", 0)->first();
+						$existEmail =FxCliWeb::select("count(usrw_cliweb) as cuantos, max(cod2_cliweb) cod2_cliweb")->where("usrw_cliweb",$item["email"])->where("cod_cliweb","!=", 0)->first();
 						if($existEmail->cuantos > 0){
 							$errorsItem["item_".($key +1)] = array("email" => $item["email"]);
-							throw new ApiLabelException(trans('apilabel-app.errors.unique_constraint_violated'), $errorsItem);
+							throw new ApiLabelException(trans('apilabel-app.errors.email_exist',["cod2Cli" => $existEmail->cod2_cliweb ]), $errorsItem);
 						}
 
 					}

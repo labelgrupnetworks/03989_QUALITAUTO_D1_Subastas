@@ -20,7 +20,6 @@
                                 <input type="hidden" id="lang-newsletter" name="lang"
                                     value="<?= \App::getLocale() ?>">
 
-								<input type="hidden" class="newsletter" name="families[1]" value="1">
 
                                 <button id="newsletter-btn" type="button"
                                     class="btn btn-custom newsletter-input">{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_button') }}</button>

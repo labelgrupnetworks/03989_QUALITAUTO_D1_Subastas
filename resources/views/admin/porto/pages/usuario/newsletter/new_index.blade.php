@@ -43,6 +43,20 @@
 
                     <tbody>
 
+						<tr id="fila_all">
+
+							<td>#</td>
+							<td>Todos</td>
+							<td>{{ $allSuscriptors }}</td>
+
+							<td>
+								<a class="btn btn-xs btn-default"
+									href="{{ route('user_newsletter.show', [0]) }}"><i
+										class="fa fa-list"></i> Ver suscriptores</a>
+
+							</td>
+						</tr>
+
                         @forelse ($newsletters as $newsletter)
                             <tr id="fila_{{ $newsletter->id }}">
 

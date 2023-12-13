@@ -41,6 +41,7 @@ class House extends GuzzleHttpRequest {
 		 return $response;
     }
 
+	#OJO si falla el catalogo revisar que la fecha de kla subasta sea a futuro, con subastas pasadas no funciona
     public function catalogs( $subasta, $sesionID){
 
         //consulta a la BD para obtener la informacion de session de la subasta
@@ -85,7 +86,6 @@ class House extends GuzzleHttpRequest {
 						"catalogTitle" => $infosubasta->name,
 						"addressID" => $addressID,
 						"catalogDateTime" => $fecha,
-
 						"avEnabled" => true,
 						"channels" =>   [
 							[
@@ -127,7 +127,7 @@ class House extends GuzzleHttpRequest {
     }
 
     public function catalogLots( $subasta, $sesionID , $ref = null){
-		
+
 
 		$asigl0 = new FgAsigl0();
 		$asigl0 = $asigl0->select("ref_asigl0,  impsalhces_asigl0, num_hces1, lin_hces1,  imptas_hces1, imptash_hces1, totalfotos_hces1 ")

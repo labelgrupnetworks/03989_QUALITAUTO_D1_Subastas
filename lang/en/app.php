@@ -713,7 +713,9 @@ $lang =[
 			//'login_too_many_attempts' => 'Too many login attempts. Please try again in :time.',
 			//'attempts_minutes_ago' => '{1} :time minute ago|[2,*] :time minutes ago',
 			'login_too_many_attempts' => 'Too many login attempts.<br>Please try again in 5 minutes.',
-			'invalid_strict_password' => 'The password must meet the following criteria:<br>More than :min characters, at least one uppercase letter, one lowercase, one symbol and one number.'
+			'invalid_strict_password' => 'The password must meet the following criteria:<br>More than :min characters, at least one uppercase letter, one lowercase, one symbol and one number.',
+			'err-families_newsletter' => 'No newsletter has been selected<br><br>If you want to unsubscribe, please contact us.',
+
 		),
 	'msg_neutral' =>
 		array (

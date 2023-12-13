@@ -16,14 +16,6 @@ $data['seo']->noindex_follow='true';
 	$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
 @endphp
 
-<?php
-
-$data['families'] = array();
-$data['families'][1] = "Joyas";
-$data['families'][2] = "Arte";
-
-?>
-
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
 <div class="create-account color-letter">
@@ -309,11 +301,9 @@ $data['families'][2] = "Arte";
 
 						<div class="datos_newsletter">
 
-							@if (!empty($newsletters) && count($newsletters) > 0)
-
+						@if (!empty($newsletters) && count($newsletters) > 0)
 							<!-- con categorias newsletter -->
 							<big>{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}</big>
-							<input type="hidden" name="families[1]" value="1">
 							<br>
 							@foreach ($newsletters as $id_newsletters => $name_newsletters)
 								<div>

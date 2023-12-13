@@ -738,7 +738,8 @@ $lang = [
 		//'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión. Por favor, inténtelo de nuevo en :time.',
 		//'attempts_minutes_ago' => '{1} :time minuto|[2,*] :time minutos',
 		'login_too_many_attempts' => 'Demasiados intentos de inicio de sesión.<br>Por favor, inténtelo de nuevo en 5 minutos.',
-		'invalid_strict_password' => 'La contraseña debe cumplir con los siguientes criterios:<br>Más de :min caracteres, al menos una letra mayúscula, una minúscula, un símbolo y un número.'
+		'invalid_strict_password' => 'La contraseña debe cumplir con los siguientes criterios:<br>Más de :min caracteres, al menos una letra mayúscula, una minúscula, un símbolo y un número.',
+		'err-families_newsletter' => 'No se ha seleccionado ninguna newsletter<br><br>En caso de querer darse de baja, por favor, contacte con nosotros.'
 	),
 	'msg_neutral' =>
 	array(

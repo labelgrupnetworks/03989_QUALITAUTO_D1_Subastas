@@ -130,6 +130,42 @@
 						</span>
 					@endif
 				</th>
+				<th class="idorigen_hces1" style="cursor: pointer" data-order="idorigen_hces1">
+					{{ trans("admin-app.fields.idorigen_hces1") }}
+					@if(request()->order_orders == 'idorigen_hces1')
+						<span style="margin-left: 5px; float: right;">
+							@if(request()->order_orders_dir == 'asc')
+								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+							@else
+								<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+							@endif
+						</span>
+					@endif
+				</th>
+				<th class="cod2_cli" style="cursor: pointer" data-order="cod2_cli">
+					{{ trans("admin-app.fields.cod2_cli") }}
+					@if(request()->order_orders == 'cod2_cli')
+						<span style="margin-left: 5px; float: right;">
+							@if(request()->order_orders_dir == 'asc')
+								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+							@else
+								<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+							@endif
+						</span>
+					@endif
+				</th>
+				<th class="cod_licit" style="cursor: pointer" data-order="cod_licit">
+					{{ trans("admin-app.fields.cod_licit") }}
+					@if(request()->order_orders == 'cod_licit')
+						<span style="margin-left: 5px; float: right;">
+							@if(request()->order_orders_dir == 'asc')
+								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+							@else
+								<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+							@endif
+						</span>
+					@endif
+				</th>
 				<th>
 					Acciones
 				</th>
@@ -173,6 +209,9 @@
 						<td class="fec_orlic">{{ \Tools::euroDate($order->fec_orlic) }}</td>
 					<td class="himp_orlic"> {{ \Tools::moneyFormat($order->himp_orlic, trans(\Config::get('app.theme').'-app.subastas.euros'), 2) }} </td>
 					<td class="tel1_orlic">{{$order->tel1_orlic}}</td>
+					<td class="idorigen_hces1">{{$order->idorigen_hces1}}</td>
+					<td class="cod2_cli">{{$order->cod2_cli}}</td>
+					<td class="cod_licit">{{$order->cod_licit}}</td>
 					<td style="">
 						<a title="{{ trans("admin-app.button.edit") }}"
 							href="{{ route('orders.edit', ['idAuction' => $order->sub_orlic, 'ref' => $order->ref_asigl0, 'licit' => $order->licit_orlic]) }}"
@@ -183,7 +222,7 @@
 						<a href="javascript:deleteOrder('{{$order->sub_orlic}}', '{{ $order->ref_asigl0 }}', '{{ $order->licit_orlic }}');"
 							class="btn btn-danger btn-sm">{{ trans("admin-app.button.delete") }}</a>
 
-							
+
 						@if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') )
 							<br/>
 							<a class="js-send_webservice_order btn btn-send-webservice btn-sm" data-sub="{{$order->sub_orlic}}" data-codcli="{{$order->cod_cli}}"  data-ref="{{$order->ref_asigl0}}"  data-imp="{{$order->himp_orlic}}" > {{ trans("admin-app.button.send_webservice",["empresa" => \Config::get("app.theme")]) }} </a>

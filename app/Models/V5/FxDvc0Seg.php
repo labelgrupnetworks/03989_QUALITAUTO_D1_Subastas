@@ -89,7 +89,8 @@ class FxDvc0Seg extends Model
 			[ 'application_date' => '2023-09-07', 'delivery_date' => '2023-09-24' ],
 			[ 'application_date' => '2023-10-10', 'delivery_date' => '2023-10-27' ],
 			[ 'application_date' => '2023-11-09', 'delivery_date' => '2023-11-26' ],
-			[ 'application_date' => '2023-12-12', 'delivery_date' => '2023-12-29' ]
+			[ 'application_date' => '2023-12-12', 'delivery_date' => '2023-12-29' ],
+			[ 'application_date' => '2024-01-12', 'delivery_date' => '2024-01-25' ]
 		];
 
 		return collect($dates);

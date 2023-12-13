@@ -54,6 +54,13 @@ class NewsletterController extends Controller
 
 	private function setNewNewsletters($lang, $email, $families, $cehckForGroup)
 	{
+		if(empty($families)) {
+			return response()->json([
+				'status' => 'error',
+				"msg" => 'err-families_newsletter'
+			]);
+		}
+
 		$this->newsletterModel
 			->setAttributes($lang, $email, $families)
 			->suscribe($cehckForGroup);
@@ -159,7 +166,7 @@ class NewsletterController extends Controller
 	 */
 	public function migrateNewslettersToNewFormat()
 	{
-		abort(404);
+		//abort(404);
 		Fx_Newsletter_Suscription::query()->delete();
 		$fxCliWebQuery = FxCliWeb::query()->select("email_cliweb, idioma_cliweb, fecalta_cliweb");
 		foreach (range(1, 20) as $value) {

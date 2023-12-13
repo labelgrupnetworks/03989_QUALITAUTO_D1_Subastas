@@ -773,6 +773,9 @@ return [
 		'is_active_hces1_files' => 'Activo',
 		'permission_hces1_files' => 'Permisos',
 		'file_hces1_files' => 'Archivo',
+		'idorigen_hces1' => 'Id Origen Lote',
+		'cod2_cli' => 'Id Origen Cliente',
+		'cod_licit' => 'Paleta Licitador',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',

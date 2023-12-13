@@ -172,7 +172,13 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		
+		$this->testInvaluable();
+	}
+
+	private function testInvaluable(){
+		$house = new App\Http\Controllers\externalAggregator\Invaluable\House();
+		$a = $house->catalogs( "2248", "001");
+		echo $a;
 	}
 
 	private function sendFailedJobs($fromId, $toId)

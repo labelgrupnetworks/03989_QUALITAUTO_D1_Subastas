@@ -163,6 +163,9 @@ header .navbar-nav .dropdown-menu {
 	}
 } */
 
+main.grid .column_banner {
+	padding: 0;
+}
 
 /* sin sticky ni scroll */
 .section-grid-filters {
@@ -385,4 +388,8 @@ header .navbar-nav .dropdown-menu {
 
 .contact-page-info-house-auction h3 {
 	font-weight: 700;
+}
+
+.banner_grid {
+	padding:0 0 1rem 0;
 }
