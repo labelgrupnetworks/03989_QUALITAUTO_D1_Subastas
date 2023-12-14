@@ -284,6 +284,10 @@ main.grid .column_banner {
 	color: var(--color-unit, #000);
 }
 
+.hist_item .bidder-identifier:has(.yo + .dos) {
+	font-size: .8em;
+}
+
 .bidder-identifier[data-licitunit="0"] {
 	--background-unit: #d2a38e;
 }
