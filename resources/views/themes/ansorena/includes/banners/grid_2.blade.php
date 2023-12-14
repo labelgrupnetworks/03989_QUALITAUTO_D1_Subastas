@@ -16,9 +16,9 @@
     <h2 class="grid-banner-title">{{ $bannerTemplete['title'] }}</h2>
 
     <h3 class="grid-banner-text-highlight">
-        {{ $bannerTemplete['text1'] }}
+        {!! $bannerTemplete['text1'] !!}
     </h3>
-    <p class="grid-banner-description">{{ $bannerTemplete['text2'] }}</p>
+    <p class="grid-banner-description">{!! $bannerTemplete['text2'] !!}</p>
     <p class="grid-banner-seemore">
         <a href="{{ $bannerTemplete['url'] }}">
             {{ trans("$theme-app.global.see_more") }}
