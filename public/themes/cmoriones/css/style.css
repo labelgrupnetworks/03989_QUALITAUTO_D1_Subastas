@@ -209,7 +209,7 @@ main.ficha h5 {
 	gap: 2rem;
 }
 
-.ficha-grid.shadow-grid > section:not(.ficha-title, .ficha-share, .ficha-previous-next) {
+.ficha-grid > section:not(.ficha-title, .ficha-share, .ficha-previous-next) {
 	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
     padding: 0.5rem;
     border-radius: 10px;
