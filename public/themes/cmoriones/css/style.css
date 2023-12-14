@@ -393,3 +393,7 @@ main.grid .column_banner {
 .banner_grid {
 	padding:0 0 1rem 0;
 }
+
+main.static-page * {
+	font-family: var(--bs-font-sans-serif) !important;
+}
