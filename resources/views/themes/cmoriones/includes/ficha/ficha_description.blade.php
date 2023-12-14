@@ -9,7 +9,7 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 <button data-js="show-more" data-txt-showmore="Ver más" data-txt-showless="Ver menos" class="btn btn-link lb-link-primary px-0 text-decoration-none text-capitalize d-none">Ver más</button>
 
 @if(count($caracteristicas) !== 0)
-	<div class="features mt-3">
+	<div class="features">
 		<h5>{{ trans("$theme-app.features.features") }}</h5>
 
 		<div class="gird-features">
@@ -25,7 +25,7 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 @endif
 
 @if(!empty($category))
-<div class="categories mt-3">
+<div class="categories">
 	<h5>{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</h5>
 
 	<a class="no-decoration" href="{{ route("category", ["keycategory" => $category->key_ortsec0]) }}" alt="{{$category->des_ortsec0}}">
