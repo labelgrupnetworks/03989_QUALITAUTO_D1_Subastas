@@ -389,7 +389,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('subastas/lotes/files/{fgHces1File}/', 'subasta\AdminLotFilesController@show')->name('subastas.lotes.files.show');
 		Route::get('subastas/lotes/files/{fgHces1File}/edit', 'subasta\AdminLotFilesController@edit')->name('subastas.lotes.files.edit');
 		Route::post('subastas/lotes/files/order', 'subasta\AdminLotFilesController@updateOrder')->name('subastas.lotes.files.update_order');
+		Route::post('subastas/lotes/files/update-selection', 'subasta\AdminLotFilesController@updateSelection')->name('subastas.lotes.files.update-selection');
+		Route::post('subastas/lotes/files/delete-selection', 'subasta\AdminLotFilesController@deleteSelection')->name('subastas.lotes.files.delete-selection');
 		Route::post('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@update')->name('subastas.lotes.files.update');
+		Route::post('subastas/lotes/files/{fgHces1File}/status', 'subasta\AdminLotFilesController@status')->name('subastas.lotes.files.status');
 		Route::delete('subastas/lotes/files/{fgHces1File}', 'subasta\AdminLotFilesController@destroy')->name('subastas.lotes.files.destroy');
 
 		Route::get('subasta-conditions', 'subasta\AdminSubastaConditionsController@index')->name('subasta_conditions.index');

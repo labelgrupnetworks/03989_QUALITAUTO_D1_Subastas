@@ -3,7 +3,7 @@
 		<legend>{{ trans("admin-app.title.features") }}</legend>
 		<div class="row mt-1" style="display: flex; flex-wrap: wrap;">
 			@foreach($features as $keyFeature=>$feature)
-				<div class="col-xs-6 col-md-3 mt-2 mb-2">
+				<div class="col-xs-6 col-md-4 mt-2 mb-2">
 
 
 

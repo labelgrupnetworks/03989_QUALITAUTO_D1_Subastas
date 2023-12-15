@@ -68,6 +68,11 @@ class FgHces1Files extends Model
 		return route('lot_file_download', ['lang' => config('app.locale'),'file' => $this->id_hces1_files, 'numhces' => $this->numhces_hces1_files, 'linhces' => $this->linhces_hces1_files]);
 	}
 
+	public function getUpdatedAtAttribute()
+	{
+		return date('d/m/Y H:i:s', strtotime($this->attributes['date_update_hces1_files']));
+	}
+
 	public static function getRelativeStoragePath($num_hces1, $lin_hces1)
 	{
 		$emp = Config::get('app.emp');

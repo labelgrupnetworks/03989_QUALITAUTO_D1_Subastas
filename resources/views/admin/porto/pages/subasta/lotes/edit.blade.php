@@ -40,6 +40,10 @@
 					<a href="{{ route('subastas.lotes.edit', ['cod_sub' => $cod_sub, 'lote' => $siguiente,'menu' => 'subastas', 'render' => $render]) }}"
 						class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
 					@endif
+
+					<a class="btn btn-info" href="{{ Tools::url_lot($cod_sub, null, "", $fgAsigl0->ref_asigl0, $fgAsigl0->num_hces1, $fgAsigl0->webfriend_hces1, $fgAsigl0->descweb_hces1) }}" target="_blank">
+						Ver ficha
+					</a>
 			@endif
 
 

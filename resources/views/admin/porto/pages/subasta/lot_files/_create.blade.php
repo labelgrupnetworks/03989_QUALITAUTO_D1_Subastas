@@ -2,6 +2,13 @@
 	id="save_lot_file" enctype="multipart/form-data">
 	@csrf
 
+	<div class="alert alert-warning alert-dismissible show" role="alert" id="alertMultipleFiles">
+		<strong>Atención!</strong> En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+		</button>
+	</div>
+
 	<div class="row">
 		@include('admin::pages.subasta.lot_files._form', ['formulario' => $formulario])
 	</div>

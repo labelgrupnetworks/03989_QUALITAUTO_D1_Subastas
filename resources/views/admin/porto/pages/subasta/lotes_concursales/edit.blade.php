@@ -31,12 +31,19 @@
 				class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
 			@endif
 
+			<a class="btn btn-info" href="{{ Tools::url_lot($cod_sub, null, "", $fgAsigl0->ref_asigl0, $fgAsigl0->num_hces1, $fgAsigl0->webfriend_hces1, $fgAsigl0->descweb_hces1) }}" target="_blank">
+				Ver ficha
+			</a>
 
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-xs-12">
+	<div @class([
+		'admin-grid' => Config::get('app.use_table_files', false),
+		'row' => !Config::get('app.use_table_files', false),
+	])>
+
+		<div class="col-xs-12 principal-section">
 			<form action="{{ route('subastas_concursales.lotes_concursales.update', [$cod_sub, $fgAsigl0->ref_asigl0]) }}" method="POST"
 				id="loteUpdate" enctype="multipart/form-data">
 				@method('PUT')
@@ -77,9 +84,9 @@
 		</div>
 
 		@if(Config::get('app.use_table_files', false))
-		<div class="col-xs-12">
+			<div class="col-xs-12 module-section files-section">
 				@include('admin::pages.subasta.lot_files._table', ['files' => $files, 'fgAsigl0' => $fgAsigl0])
-		</div>
+			</div>
 		@endif
 	</div>
 
