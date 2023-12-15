@@ -93,4 +93,4 @@
     </div>
 </div>
 
-@include('admin::pages.pages.subasta.lot_files._edit_selecteds')
+@include('admin::pages.subasta.lot_files._edit_selecteds')
