@@ -7,7 +7,7 @@
         </td>
         <td>
 
-            <button class="btn btn-link sortable-button"><i class="fa fa-reorder"></i></button>
+            <button class="btn btn-link sortable-button js-soratble-button"><i class="fa fa-reorder"></i></button>
         </td>
         <td>
             <a href="{{ route('subastas.lotes.files.show', ['fgHces1File' => $file->id_hces1_files]) }}" target="_blank">
