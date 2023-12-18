@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\libs\FormLib;
 use App\Models\V5\FgHces1Files;
+use App\Providers\ToolsServiceProvider;
 
 class AdminLotFilesController extends Controller
 {
@@ -22,7 +23,14 @@ class AdminLotFilesController extends Controller
 
 	function store(Request $request, $num_hces1, $lin_hces1)
 	{
-		//@todo validaciones
+		$maxSize = ToolsServiceProvider::serverFileSizeToKb();
+		$request->validate([
+			'file_hces1_files' => 'required',
+			'file_hces1_files.*' => [
+				'mimes:jpeg,jpg,png,pdf,doc,docx,xls,xlsx,zip,rar',
+				"max:$maxSize"
+			]
+		]);
 
 		$files = $request->file('file_hces1_files');
 		$order = FgHces1Files::withNumhcesAndLinhces($num_hces1, $lin_hces1)->max('order_hces1_files');
@@ -61,7 +69,14 @@ class AdminLotFilesController extends Controller
 
 	function update(Request $request, FgHces1Files $fgHces1File)
 	{
-		//@todo validaciones
+		$maxSize = ToolsServiceProvider::serverFileSizeToKb();
+		$request->validate([
+			'file_hces1_files.*' => [
+				'mimes:jpeg,jpg,png,pdf,doc,docx,xls,xlsx,zip,rar',
+				"max:$maxSize"
+			]
+		]);
+
 		$file = $request->file('file_hces1_files');
 
 		$nameFile = $file ? $file->getClientOriginalName() : $fgHces1File->name_hces1_files;

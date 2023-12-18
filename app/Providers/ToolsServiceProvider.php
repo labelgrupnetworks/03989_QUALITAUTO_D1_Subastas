@@ -1531,4 +1531,25 @@ class ToolsServiceProvider extends ServiceProvider
 		return true;
 	}
 
+	public static function serverFileSizeToKb()
+	{
+		$size = min(ini_get('upload_max_filesize'), ini_get('post_max_size'));
+		$sizeSuffix = substr($size, -1);
+		$sizeValue = substr($size, 0, -1);
+
+		$sizes = [
+			'M' => 1,
+			'G' => 2,
+			'T' => 3,
+		];
+
+		if (!isset($sizes[$sizeSuffix])) {
+			return $size;
+		}
+
+		$sizeValue = (int) $sizeValue;
+		$sizeValue = $sizeValue * pow(1024, $sizes[$sizeSuffix]);
+		return $sizeValue;
+	}
+
 }

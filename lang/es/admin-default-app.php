@@ -773,6 +773,7 @@ return [
 		'is_active_hces1_files' => 'Activo',
 		'permission_hces1_files' => 'Restricción',
 		'file_hces1_files' => 'Archivo/s',
+		'file_hces1_files.*' => 'Archivo',
 		'date_update_hces1_files' => 'Última modificación',
 		'idorigen_hces1' => 'Id Origen Lote',
 		'cod2_cli' => 'Id Origen Cliente',

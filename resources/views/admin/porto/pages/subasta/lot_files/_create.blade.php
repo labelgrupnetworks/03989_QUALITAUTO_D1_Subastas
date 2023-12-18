@@ -35,7 +35,11 @@
 				saved('Archivo creado correctamente');
 			},
 			error: function(error) {
-				error(error);
+				if(error.responseJSON?.message) {
+					globalThis.error(error.responseJSON.message);
+					return;
+				}
+				globalThis.error('Error al crear el archivo');
 			}
 		});
 	});

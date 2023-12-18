@@ -367,8 +367,8 @@ $('#edit_multple_files').on('submit', function(event){
 			$('#editMultpleFilesModal').modal('hide');
 			saved('Archivos actualizados correctamente');
 		},
-		error: function(error) {
-			error(error);
+		error: function() {
+			error();
 		}
 	});
 });
