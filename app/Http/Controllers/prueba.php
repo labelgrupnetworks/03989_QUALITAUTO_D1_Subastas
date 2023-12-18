@@ -187,11 +187,18 @@ class Prueba extends BaseController
 
 		$a = new Subasta();
 		$a->sin_pujas = false;
-		$imp_salida= 2000;
-		$imp_actual =25;
+		$imp_salida= 10;
+		$imp_actual =5;
 		$first_ol = false;
-
-		echo "normal ". $a->NextScaleBid($imp_salida,$imp_actual, $first_ol);
+		/*
+		if($a->validateScaleInverse($imp_salida,$imp_actual )){
+			echo "escalado valido";
+		}
+		else{
+			echo "escalado invalido";
+		}
+		*/
+		echo "normal ". $a->NextScaleInverseBid($imp_salida,$imp_actual, $first_ol);
 
 
 	}

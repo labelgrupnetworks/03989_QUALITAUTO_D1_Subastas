@@ -1324,7 +1324,7 @@ class SubastaController extends Controller
 		$subasta_info = new \stdClass();
 
 		$subasta_info->lote_actual    = $subastaObj->getAllLotesInfo($lote)[0];
-
+		//dd($subasta_info->lote_actual);
 		$subasta_info->lote_actual->comision = $subasta_info->lote_actual->comlhces_asigl0;
 
 		$subasta_info->lote_actual->favorito = $favorito;
@@ -1364,20 +1364,27 @@ class SubastaController extends Controller
 
 		#En la subasta inversa el siguiente escalado debe ir al reves
 		if($subasta_info->lote_actual->inversa_sub == 'S'){
-			$la_escalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
-			$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
 
-			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
-			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
-			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
-				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
-			}
-			else{
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
+			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
+
+			$subasta_info->lote_actual->importe_escalado_siguiente = $siguienteEscalado;
+			$siguientes_escalados=[];
+
+
+			$siguientes_escalados[0] = $siguienteEscalado;
+			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[0],true);
+			#si hemos llegando a 0 siempre devolvera el escalado anterior, por lo que debemos hacer que no se repita
+			if($siguienteEscalado != $siguientes_escalados[0]){
+				$siguientes_escalados[1] = $siguienteEscalado;
+				$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[1],true);
+				if($siguienteEscalado != $siguientes_escalados[1]){
+					$siguientes_escalados[2] = $siguienteEscalado;
+				}
 			}
 
+
+			$subasta_info->lote_actual->siguientes_escalados = $siguientes_escalados;
+			
 		}else{
 			# Escalado de la puja y la siguiente
 		//$la_escalado = $subasta->escalado();

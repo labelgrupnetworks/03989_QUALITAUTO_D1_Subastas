@@ -1,5 +1,6 @@
 @php
 use App\Models\V5\FgDeposito;
+
 $cerrado = $lote_actual->cerrado_asigl0 == 'S';
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N';
 $hay_pujas = count($lote_actual->pujas) > 0;
@@ -65,6 +66,7 @@ if($subasta_web){
 	$nameCountdown = "countdown";
 	$timeCountdown = $lote_actual->end_session;
 }
+
 @endphp
 
 <div class="ficha-content container">

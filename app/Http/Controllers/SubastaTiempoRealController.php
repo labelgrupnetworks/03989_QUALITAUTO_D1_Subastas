@@ -1604,22 +1604,28 @@ class subastaTiempoRealController extends Controller
 
 	#funcion de hacer puja pero en version subasta inversa
 	public function executeActionInversa($subasta,  $lote, $is_gestor){
-		$pujas  = $subasta->getPujasInversas();
 
 		\Log::info("Subasta inversa LICIT: ". $subasta->licit." SUBASTA: ". $subasta->cod." lote: ".$subasta->ref ." importe_validate " .$subasta->impsal." subasta.imp ".  $subasta->imp);
 
+		$pujas  = $subasta->getPujasInversas();
+
 		if($subasta->imp > $subasta->impsal   )
         {
-            $res = $this->error_puja('greater_bid_reverse', $subasta->licit, $is_gestor);
+			\Log::info("greater_bid_reverse importe introducido" . $subasta->imp." > ".$subasta->impsal . " importe salida" );
+            $res = $this->error_puja('greater_bid_inverse', $subasta->licit, $is_gestor);
             return $res;
         }
 
-		if(count($pujas)>0 && $subasta->imp > $pujas[0]->imp_asigl1){
+		#Las pujas deben ser menores que las actuales
+		if(count($pujas)>0 && $subasta->imp >= $pujas[0]->imp_asigl1){
+			\Log::info("small_bid_inverse numero pujas ".count($pujas). " importe introducido". $subasta->imp ." > ".$subasta->impsal );
 			$res = $this->error_puja('small_bid_inverse', $subasta->licit, $is_gestor);
             return $res;
 		}
 
-		if(count($pujas)>0 && $subasta->licit == $pujas[0]->licit_asigl1){
+
+		if(count($pujas)>0 && $subasta->licit == $pujas[0]->cod_licit){
+			\Log::info("same_bidder numero pujas ".count($pujas). " licitador". $subasta->licit ." > ".$pujas[0]->cod_licit. "antiguo licitador ganador" );
 			$res = $this->error_puja('same_bidder', $subasta->licit, $is_gestor);
             return $res;
 		}
@@ -1638,25 +1644,34 @@ class subastaTiempoRealController extends Controller
 					'is_gestor' => $is_gestor
                     );
 
+			if($is_gestor){
+				#queremos que el admin reciba el error de escalado solo si la puja la ha hecho el
+				$res['msg_1']='bid_scaling';
+			}
             return $res;
         }
 
+		$addPuja = $subasta->addPuja();
 
 		  $actual_bid = $subasta->imp;
 		  $siguiente = $subasta->NextScaleInverseBid($subasta->impsal,$actual_bid );
 
 		  $formatted_actual_bid = \Tools::moneyFormat($actual_bid);
-
+		  $imp_original_formatted = \Tools::moneyFormat($subasta->imp);
+		  $cod_licit_db = "";
+		  $resultado = array();
+		  array_push($resultado, 'addPuja');
 		  $res = array(
 				  'status'            => 'success',
 				  'msg_1'             => 'higher_bid',
 				  'msg_2'             => 'correct_bid',
-				  'cod_licit_actual'  => $cod_licit_actual,
+				  'cod_licit_actual'  => $subasta->licit,
 				  'cod_licit_db'      => $cod_licit_db,
 				  'actual_bid'        => $actual_bid,
 				  'formatted_actual_bid' => $formatted_actual_bid,
 				  'imp_original_formatted' => $imp_original_formatted,
 				  'siguiente'         => $siguiente,
+				  'test'              => $resultado,
 				  'type_bid'          => $subasta->type_bid,
 				  'winner'            => $subasta->licit,
 				  'sobrepuja'         => true,
@@ -1665,13 +1680,13 @@ class subastaTiempoRealController extends Controller
 			  );
 		  # Consultamos todas las pujas para las ordenes, para poder mostrar la lista entera en la lista de pujas
 		  $subasta->page      = 'all';
-		  $res['pujasAll']    = $subasta->getPujas();
+		  $res['pujasAll']    = $subasta->getPujasInversas();
 		  # Fin listado de pujas
 
 		  if (!empty($is_gestor)){
 			  $res['is_gestor'] = TRUE;
 		  }
-
+		  
 		  return json_encode($res);
 
 
@@ -3350,10 +3365,14 @@ class subastaTiempoRealController extends Controller
             $subasta->cod = $cod_sub;
         }
 
+		if(!empty($cod_sub)){
+			$subasta = Fgsub::select("inversa_sub")->where("cod_sub",$cod_sub)->first();
 
-		if(Input::get('inversa') == 'S'){
-			return $this->calculateAvailableInverseBids($next_bid, $new_bid,$cod_sub);
+			if( !empty($subasta) && $subasta->inversa_sub == 'S'){
+				return $this->calculateAvailableInverseBids($next_bid, $new_bid,$cod_sub);
+			}
 		}
+
 		$scaleRanges = $subasta->AllScales();
         $end = false;
         $scales = array();
@@ -3402,6 +3421,7 @@ class subastaTiempoRealController extends Controller
             for($i=0;$i<$y;$i++){
                 $propuesto = $subasta->NextScaleBid($next_bid,$propuesto);
                 $scales[] =$propuesto;
+
             }
         }
          return json_encode($scales);
@@ -3468,7 +3488,7 @@ class subastaTiempoRealController extends Controller
                 }
             }
         }
-		\Log::info("$seleccionado");
+
         if(!empty($seleccionado)){
             $propuesto = $seleccionado;
             $y=5;
@@ -3476,12 +3496,20 @@ class subastaTiempoRealController extends Controller
                 $scales[] =$propuesto;
                 $y=4;
             }
+			$anterior = 0;
             for($i=0;$i<$y;$i++){
                 $propuesto = $subasta->NextScaleInverseBid($next_bid,$propuesto);
+				/*
 				if($propuesto == 0){
 					break;
 				}
-                $scales[] =$propuesto;
+				*/
+				#cuando llega a 0 devuelve siempre la última puja, por lo que si viene varias veces la ultima puja no hay que ponerla
+				if($propuesto != $anterior){
+					$scales[] =$propuesto;
+				}
+				$anterior = $propuesto;
+
             }
         }
          return json_encode($scales);

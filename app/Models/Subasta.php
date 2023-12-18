@@ -796,7 +796,7 @@ class Subasta extends Model
 		}
 
    	#Listado de pujas inversas
-     public function getPujasInversas($licit = false,  $num = 100)
+     public function getPujasInversas($licit = false,$cod_sub = false,   $num = 100)
     {
 
 
@@ -813,7 +813,6 @@ class Subasta extends Model
         } else {
             $where_licit        = false;
         }
-
 
         #OJO SE va a permitir pujas iguales por ese motivo la que gana es la primera realizada(funciona al reves que las pujas normales), es importante que si algun día se hacen ordenes se cree primero la puja ganadora .
 		#la fecha contiene tanto fecha como hora, las lineas no se tendran en cuenta para el orden
@@ -2758,14 +2757,22 @@ class Subasta extends Model
 
 						//mientras el importe sea más pequeño que el importe actual
 						while ( $val >= $imp_actual ){
+
 							#vamos sumando
 							$val -=$scaleRanges[$i]->scale;
+
+							//Si hemos llegado a 0 no podemos devolver 0 y devolvemos el ultimo importe
+							if($val<= 0){
+								$val +=$scaleRanges[$i]->scale;
+								return $val;
+							}
 
 							#si pasamos de rango reducimos la i
 							if($val <= $scaleRanges[$i]->min){
 
 								$i --;
 							}
+
 						}
 
 						$end = true;
@@ -2894,14 +2901,15 @@ class Subasta extends Model
 				  return false;
 			 }
 			 else{
+
 				 $scaleRanges = $this->AllScales();
 
 				 $end = false;
 				 $validate = false;
-				 $i = 0;
+				 $i = count($scaleRanges)-1;
 				 while (!$end){
 
-					 if($imp_salida <= $scaleRanges[$i]->min){
+					 if($new_bid <= $scaleRanges[$i]->min){
 
 							 $i--;
 					}else{
@@ -2909,6 +2917,7 @@ class Subasta extends Model
 
 							//recorremos los rangos de escala  mientras no supere el max vamos sumando el escalado
 							while ($val >= $scaleRanges[$i]->min  && !$end){
+								
 								//si hemos superado el importe actual es que ya hemos encontrado la siguiente puja.
 								if($val < $new_bid){
 									 $validate = false;
@@ -2917,7 +2926,7 @@ class Subasta extends Model
 									 $validate = true;
 									 $end = true;
 								}
-								else{// mientras no superemso el importe actual vamos sumando el escalado
+								else{// mientras no superemso el importe actual vamos restando el escalado
 									$val -=$scaleRanges[$i]->scale;
 								}
 							}
@@ -3291,8 +3300,13 @@ class Subasta extends Model
                 //$this->itemsPerPage = Config::get('app.pujas_maximas_mostradas');
             }
             if($get_pujas){
-            # Son los valores que se usan en la aplicación de tr, se descartan el resto.
-                $lotes[$key]->pujas = $this->getPujas( false,  $value->cod_sub);
+            	# Son los valores que se usan en la aplicación de tr, se descartan el resto.
+				if(!empty($value->inversa_sub) && $value->inversa_sub == 'S'){
+					$lotes[$key]->pujas = $this->getPujasInversas( false,  $value->cod_sub);
+				}else{
+					$lotes[$key]->pujas = $this->getPujas( false,  $value->cod_sub);
+				}
+
             }else{
                 $lotes[$key]->pujas = array();
             }
