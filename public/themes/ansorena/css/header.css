@@ -1559,6 +1559,28 @@ footer img.logo {
 	line-height: 1.4;
 }
 
+footer .ext-logos-container {
+	display: grid;
+	grid-template-columns: 1fr 4fr 1fr;
+}
+
+footer .ext-logos {
+	grid-column: 2 / 3;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+footer .ext-logos > div {
+	flex: 1;
+}
+
+footer .ext-logos img {
+	max-width: 100%;
+	height: auto;
+}
+
 @media(min-width: 992px) {
 
 	.footer-block,
@@ -1592,6 +1614,10 @@ footer img.logo {
 	.separator {
 		--screen-width: 992px;
 		--multipler: 2.5;
+	}
+
+	footer .ext-logos-container {
+		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
