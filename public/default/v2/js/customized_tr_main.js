@@ -302,7 +302,7 @@ function reloadHistory({subasta, pujas, licits, importeReserva, minPriceSurpass}
 
 		const line = `<p class="hist_item">
 					<span class="bidder">Pujador</span>
-					<span class="bidder-identifier" data-licitunit="${licitUnit}">
+					<span class="bidder-identifier" data-licitunit="${licitUnit}" style="--multiplier:${licitUnit}">
 						<span class="semi-colon">(</span>
 							${bidderElement}${puja.type_asigl1 != 'A' ? '' : autoElement}
 						<span class="semi-colon">)</span>

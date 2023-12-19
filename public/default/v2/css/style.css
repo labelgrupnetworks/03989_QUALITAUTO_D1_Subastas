@@ -712,38 +712,65 @@ section.ficha-image {
 	left: 5px;
 }
 
+.card.hist {
+	border: 0;
+}
+
 .hist_content {
-	--line-heigth: 1.5;
-	line-height: var(--line-heigth);
-	max-height: calc(var(--line-heigth) * var(--max-lines, 6) * 1rem);
-	overflow: auto;
+	--logo-size: 35px;
+	--padding-line-y: 1px;
+	--padding-line-x: 5px;
+	--gap-line: 5px;
+	max-height: calc((var(--logo-size) + (var(--padding-line-y) * 2) + var(--gap-line, 1px)) * var(--max-lines, 6));
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding-left: 0;
+	padding-right: 0.5rem;
 }
 
-.hist_item {
-	display: block;
+.hist_content :is(.bidder, .semi-colon) {
+	display: none;
 }
 
-.hist_content p:first-of-type {
-	font-weight: 700;
+.hist_content .hist_item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--padding-line-y) var(--padding-line-x);
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
-.hist .price {
-	float: right;
-}
-
-.hist .price.winner,
-.hist .price.loser {
-	font-weight: 700;
+.hist_content .hist_item :is(.winner, .lose) {
 	color: inherit;
 }
 
-.hist .date {
-	color: rgb(var(--lb-text-color-rgb) / 0.54);
-	font-size: 0.8em;
+.hist_content .info {
+	font-size: .9em;
+	padding: var(--padding-line-y) var(--padding-line-x);
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--logo-size);
+	background-color: var(--lb-color-primary-light);
 }
 
-.hist [class*="hint--"] {
-	position: initial;
+.hist_content .bidder-identifier {
+	--h-color: 20;
+	width: var(--logo-size);
+	height: var(--logo-size);
+	padding: 5px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color:hsl(calc(var(--h-color) * var(--multiplier, 1)), 73%, 70%);
+	color: var(--color-unit, #000);
+}
+
+.hist_item .bidder-identifier:has(.yo + .dos) {
+	font-size: .8em;
 }
 
 .ficha-content .owl-carousel-responsive img {

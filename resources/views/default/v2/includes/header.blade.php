@@ -24,6 +24,8 @@ $pageName = Route::currentRouteName();
 
 				@include('components.search', ['classes' => 'me-auto d-none d-xxl-block'])
 
+				@yield('header-extend-buttons')
+
 				@if(!Session::has('user'))
 					<button class="btn btn-sm btn-lb-primary btn_login">{{ trans($theme.'-app.login_register.login') }}</button>
 				@else
