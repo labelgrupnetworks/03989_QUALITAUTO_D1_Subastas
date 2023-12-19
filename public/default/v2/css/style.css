@@ -717,16 +717,19 @@ section.ficha-image {
 }
 
 .hist_content {
+	--line-heigth: 1.5;
 	--logo-size: 35px;
 	--padding-line-y: 1px;
 	--padding-line-x: 5px;
 	--gap-line: 5px;
+	line-height: var(--line-heigth);
 	max-height: calc((var(--logo-size) + (var(--padding-line-y) * 2) + var(--gap-line, 1px)) * var(--max-lines, 6));
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
 	padding-left: 0;
 	padding-right: 0.5rem;
+	overflow: auto;
 }
 
 .hist_content :is(.bidder, .semi-colon) {
@@ -757,7 +760,8 @@ section.ficha-image {
 }
 
 .hist_content .bidder-identifier {
-	--h-color: 20;
+	--hue-color-increment: 20;
+	--hue: calc(var(--hue-color-increment) * var(--multiplier, 1));
 	width: var(--logo-size);
 	height: var(--logo-size);
 	padding: 5px;
@@ -765,7 +769,7 @@ section.ficha-image {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color:hsl(calc(var(--h-color) * var(--multiplier, 1)), 73%, 70%);
+	background-color:hsl(var(--hue), 73%, 70%);
 	color: var(--color-unit, #000);
 }
 

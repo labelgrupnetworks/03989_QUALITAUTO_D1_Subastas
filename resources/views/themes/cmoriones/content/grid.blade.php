@@ -8,7 +8,7 @@
 
 		<div class="d-lg-none">
 			{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
-				autoplaySpeed: 5000, slidesToScroll:1}') !!}
+				autoplaySpeed: 8000, slidesToScroll:1}') !!}
 		</div>
 
 		<div class="row gy-5">
@@ -23,7 +23,7 @@
 
 				<div class="d-none d-lg-block">
 					{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
-						autoplaySpeed: 5000, slidesToScroll:1}') !!}
+						autoplaySpeed: 8000, slidesToScroll:1}') !!}
 				</div>
 
 				<div class="section-grid-top-filters">
