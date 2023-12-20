@@ -28,18 +28,19 @@
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
                         <a class="nav-link p-0 text-muted"
-                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}"
+                            href="https://cristinamoriones.com/experta-subastas-publicas-inmobiliarias/" target="_blank"
                             title="{{ trans($theme . '-app.foot.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a class="nav-link p-0 text-muted"
+                            href="https://cristinamoriones.com/cita-subastas-inmobiliarias/" target="_blank"
+                            title="{{ trans("$theme-app.foot.schedule_consulting") }}">
+						{{ trans("$theme-app.foot.schedule_consulting") }}</a>
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link p-0 text-muted"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.contact') }}"
                             title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
-                            href="{{ Routing::translateSeo(trans($theme . '-app.links.faq')) }}"
-                            title="{{ trans($theme . '-app.foot.faq') }}">{{ trans($theme . '-app.foot.faq') }}</a>
                     </li>
                 </ul>
             </div>
