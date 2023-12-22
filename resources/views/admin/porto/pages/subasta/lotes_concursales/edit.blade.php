@@ -31,45 +31,65 @@
 				class="btn btn-warning">{{ trans("admin-app.button.next") }}</a>
 			@endif
 
+			<a class="btn btn-info" href="{{ Tools::url_lot($cod_sub, null, "", $fgAsigl0->ref_asigl0, $fgAsigl0->num_hces1, $fgAsigl0->webfriend_hces1, $fgAsigl0->descweb_hces1) }}" target="_blank">
+				Ver ficha
+			</a>
 
 		</div>
 	</div>
 
-	<form action="{{ route('subastas_concursales.lotes_concursales.update', [$cod_sub, $fgAsigl0->ref_asigl0]) }}" method="POST"
-		id="loteUpdate" enctype="multipart/form-data">
-		@method('PUT')
-		@csrf
+	<div @class([
+		'admin-grid' => Config::get('app.use_table_files', false),
+		'row' => !Config::get('app.use_table_files', false),
+	])>
 
-		<div class="row well">
-			@include('admin::pages.subasta.lotes_concursales._form', compact('formulario', 'fgAsigl0'))
+		<div class="col-xs-12 principal-section">
+			<form action="{{ route('subastas_concursales.lotes_concursales.update', [$cod_sub, $fgAsigl0->ref_asigl0]) }}" method="POST"
+				id="loteUpdate" enctype="multipart/form-data">
+				@method('PUT')
+				@csrf
+
+				<div class="row well">
+					@include('admin::pages.subasta.lotes_concursales._form', compact('formulario', 'fgAsigl0'))
+				</div>
+
+				@if(!in_array("TRANSL", explode(',', config("app.HideEditLotOptions"))) && !empty($formulario->translates))
+				<div class="row well">
+					@include('admin::pages.subasta.lotes._translates', compact('formulario'))
+				</div>
+				@endif
+
+				@if(in_array("FEATURE", explode(',', config("app.ShowEditLotOptions"))))
+				<div class="row well">
+					@include('admin::pages.subasta.lotes._lot_features', compact('cod_sub'))
+				</div>
+				@endif
+
+				<div class="row well">
+					@include('admin::pages.subasta.lotes._lot_images', compact('images'))
+				</div>
+
+				@if(!Config::get('app.use_table_files', false))
+				<div class="row well">
+					@include('admin::pages.subasta.lotes._lot_files', compact('formulario', 'files', 'fgAsigl0'))
+				</div>
+				@endif
+
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						{!! $formulario->submit !!}
+					</div>
+				</div>
+			</form>
 		</div>
 
-		@if(!in_array("TRANSL", explode(',', config("app.HideEditLotOptions"))) && !empty($formulario->translates))
-		<div class="row well">
-			@include('admin::pages.subasta.lotes._translates', compact('formulario'))
-		</div>
-		@endif
-
-		@if(in_array("FEATURE", explode(',', config("app.ShowEditLotOptions"))))
-		<div class="row well">
-			@include('admin::pages.subasta.lotes._lot_features', compact('cod_sub'))
-		</div>
-		@endif
-
-		<div class="row well">
-			@include('admin::pages.subasta.lotes._lot_images', compact('images'))
-		</div>
-
-		<div class="row well">
-			@include('admin::pages.subasta.lotes._lot_files', compact('formulario', 'files', 'fgAsigl0'))
-		</div>
-
-		<div class="row">
-			<div class="col-xs-12 text-center">
-				{!! $formulario->submit !!}
+		@if(Config::get('app.use_table_files', false))
+			<div class="col-xs-12 module-section files-section">
+				@include('admin::pages.subasta.lot_files._table', ['files' => $files, 'fgAsigl0' => $fgAsigl0])
 			</div>
-		</div>
-	</form>
+		@endif
+	</div>
+
 
 </section>
 

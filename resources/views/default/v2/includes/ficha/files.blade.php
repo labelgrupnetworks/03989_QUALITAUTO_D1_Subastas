@@ -16,9 +16,12 @@
 <div class="ficha-files-list list-group list-group-flush">
 
     @foreach ($files as $file)
+
         @if (is_object($file))
-            <a class="list-group-item list-group-item-action" href="{{ $file->download_path }}"
-                alt="{{ $file->name_hces1_files }}" target="_blank">
+            <a class="list-group-item list-group-item-action btn-icon" href="{{ $file->download_path }}"
+                alt="{{ $file->name_hces1_files }}" download>
+				@include('components.boostrap_icon', ['icon' => 'file-earmark-pdf', 'size' => '18', 'color' => 'red'])
+
                 {{ $file->name_hces1_files }}
             </a>
         @else

@@ -149,6 +149,18 @@
 
     </div>
 
+	<div class="container ext-logos-container">
+		<div class="ext-logos">
+			<div class="">
+				<img src="/themes/{{ $theme }}/assets/img/rtr_negative.png" alt="Plan de recuperación transformación y Resilencia">
+			</div>
+			<div class="">
+				<img src="/themes/{{ $theme }}/assets/img/eu_negative.png" alt="Funded by the European Union">
+			</div>
+		</div>
+	</div>
+
+
 </footer>
 
 @if (!Cookie::get((new App\Models\Cookies)->getCookieName()))

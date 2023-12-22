@@ -201,8 +201,36 @@ main.grid .column_banner {
 	text-align: start;
 }
 
+main.ficha h5 {
+	font-weight: 700;
+}
+
 .ficha-grid {
 	gap: 2rem;
+}
+
+.ficha-grid .ficha-files:not(:has(a)) {
+	display: none;
+}
+
+.ficha-grid .ficha-history:not(:has(.hist_item)) {
+	display: none;
+}
+
+.ficha-grid > section:not(.ficha-title, .ficha-share, .ficha-previous-next) {
+	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.ficha-description {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.ficha-description .categories {
+	margin-top: auto;
 }
 
 @media (min-width: 1200px) {
@@ -231,97 +259,8 @@ main.grid .column_banner {
 	opacity: .8;
 }
 
-.card.hist {
-	border: 0;
-}
-
-.hist_content {
-	--logo-size: 35px;
-	--padding-line-y: 1px;
-	--padding-line-x: 5px;
-	--gap-line: 5px;
-	max-height: calc((var(--logo-size) + (var(--padding-line-y) * 2) + var(--gap-line, 1px)) * var(--max-lines, 6));
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
-	padding-left: 0;
-	padding-right: 0.5rem;
-}
-
-.hist_content :is(.bidder, .semi-colon) {
-	display: none;
-}
-
-.hist_content .hist_item {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: var(--padding-line-y) var(--padding-line-x);
-	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-}
-
-.hist_content .info {
-	font-size: .9em;
-	padding: var(--padding-line-y) var(--padding-line-x);
-	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: var(--logo-size);
-	background-color: var(--lb-color-primary-light);
-}
-
 .hist_content .bidder-identifier {
-	background: bisque;
-	width: var(--logo-size);
-	height: var(--logo-size);
-	padding: 5px;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: var(--background-unit);
-	color: var(--color-unit, #000);
-}
-
-.bidder-identifier[data-licitunit="0"] {
-	--background-unit: #d2a38e;
-}
-
-.bidder-identifier[data-licitunit="1"] {
-	--background-unit: #ced28e;
-}
-
-.bidder-identifier[data-licitunit="2"] {
-	--background-unit: #d2b38e;
-}
-
-.bidder-identifier[data-licitunit="3"] {
-	--background-unit: #bdd28e;
-}
-
-.bidder-identifier[data-licitunit="4"] {
-	--background-unit: #d2c48e;
-}
-
-.bidder-identifier[data-licitunit="5"] {
-	--background-unit: #d28e9b;
-}
-
-.bidder-identifier[data-licitunit="6"] {
-	--background-unit: #c48ed2;
-}
-
-.bidder-identifier[data-licitunit="7"] {
-	--background-unit: #acd28e;
-}
-
-.bidder-identifier[data-licitunit="8"] {
-	--background-unit: #d28e9b;
-}
-
-.bidder-identifier[data-licitunit="9"] {
-	--background-unit: #c4886d;
+	--hue-color-increment: 42;
 }
 
 .section-grid-filters .category_level_01 {
@@ -392,4 +331,8 @@ main.grid .column_banner {
 
 .banner_grid {
 	padding:0 0 1rem 0;
+}
+
+main.static-page * {
+	font-family: var(--bs-font-sans-serif) !important;
 }

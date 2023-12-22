@@ -438,6 +438,7 @@ tr.shown td.details-control {
 
 .content-body {
 	min-height: calc(100vh - 110px);
+	padding: 25px;
 }
 .btn-block + .btn-block {
 	margin-top: 0;
@@ -456,4 +457,92 @@ tr.shown td.details-control {
 
 .row.d-flex::before, .row.d-flex::after {
 	content: none;
+}
+
+.admin-grid {
+	display: grid;
+    gap: 1rem;
+    grid-template-columns: 2fr 1fr;
+}
+
+.admin-grid .principal-section {
+	grid-row: 1 / -1;
+    grid-column: 1 / 2;
+}
+
+.admin-grid .module-section {
+	grid-column: 2 / 3;
+	overflow-x: auto;
+}
+
+.lb-nav li.lb-nav-items {
+	display: flex;
+	text-align: left;
+	align-items: center;
+	padding: 0;
+	color: #0088cc;
+	gap: .5rem;
+}
+
+.table-actions {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+}
+
+.lb-nav li.lb-nav-items.active {
+	background-color: #428bca;
+	color: #fff;
+}
+
+.lb-nav li.lb-nav-items:not(.active):is(:hover, :focus) {
+	background-color: #eeeeee;
+}
+
+/* .lb-nav > li.lb-nav-items > * {
+	background-color: inherit;
+	color: inherit;
+} */
+
+.lb-nav > li.lb-nav-items > a {
+	flex: 1;
+}
+
+.lb-nav > li.lb-nav-items > a:focus {
+	background-color: transparent;
+}
+
+.lb-nav .js-soratble-button {
+	cursor: grab;
+}
+
+.sortable-button {
+	cursor: grab;
+}
+
+.modal-title {
+	display: inline;
+}
+
+.dropdown-menu > li > button {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333333;
+    white-space: nowrap;
+	width: 100%;
+	text-align: start;
+	background-color: transparent;
+}
+
+.dropdown-menu > li > button:hover, .dropdown-menu > li > button:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5;
+	border-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+	border-radius: 0;
 }

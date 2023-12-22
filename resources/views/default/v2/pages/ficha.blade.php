@@ -26,8 +26,24 @@
 
     <script defer src="{{ Tools::urlAssetsCache('/vendor/openseadragon/openseadragon.js') }}"></script>
 
-    @if (\Config::get('app.exchange'))
+    @if (Config::get('app.exchange'))
+		<script defer src="{{ URL::asset('js/numeral.js') }}"></script>
         <script src="{{ URL::asset('js/default/divisas.js') }}"></script>
+
+		@section('header-extend-buttons')
+		<div>
+			{{ trans(\Config::get('app.theme').'-app.lot.foreignCurrencies') }}
+			<select id="currencyExchange">
+				@foreach($data['divisas'] as $divisa)
+					<option value='{{ $divisa->cod_div }}'
+						@selected($data['js_item']['subasta']['cod_div_cli'] == $divisa->cod_div || ($divisa->cod_div == 'USD' &&  ($data['js_item']['subasta']['cod_div_cli'] == 'EUR'  || $data['js_item']['subasta']['cod_div_cli'] == '')))
+						>
+						{{ $divisa->cod_div }}
+					</option>
+				@endforeach
+			</select>
+		</div>
+		@endsection
     @endif
 
 @endpush

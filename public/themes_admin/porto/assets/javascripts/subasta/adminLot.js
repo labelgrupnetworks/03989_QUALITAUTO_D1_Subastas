@@ -222,3 +222,198 @@ function selectedAllLots(event) {
 
 	lots.forEach((element) => element.checked = true);
 }
+
+$('[name="js-selectAll"').on('click', function () {
+	const isChecked = this.checked;
+	const objectiveInputs = this.dataset.objective;
+	isChecked ? selectAllTable(objectiveInputs) : unselectAllTable(objectiveInputs);
+});
+
+
+function selectedCheckItemsByName(name) {
+	return Array.from(document.getElementsByName(name))
+		.filter((element) => element.checked)
+		.map((element) => element.value);
+}
+
+function removeSelecteds({ objective, url, title, response }, callback) {
+
+	const ids = selectedCheckItemsByName(objective);
+
+	bootbox.confirm(title, function (result) {
+		if(!result) return;
+
+		$.ajax({
+			url,
+			type: "post",
+			data: {
+				_token: $('[name="_token"]').val(),
+				ids
+			},
+			success: function(result) {
+				saved(response);
+				if(callback){
+					callback(result);
+				}
+			},
+			error: function() {
+				error();
+			}
+		});
+
+	});
+}
+
+function refreshFilesRows(result) {
+	$('#lotFilesRows').html(result);
+}
+
+function selectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = true);
+}
+
+function unselectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = false);
+}
+
+function editFile(button) {
+	const url = button.dataset.action;
+
+	$.ajax({
+		url: url,
+		type: "get",
+
+		success: function(result) {
+			$('#modal-create-body').html(result);
+			$('#addFileModal').modal('show');
+		},
+		error: function() {
+			error();
+		}
+	});
+}
+
+function removeFile(button) {
+	const url = button.dataset.action;
+
+	bootbox.confirm("¿Estás seguro que quieres borrar el archivo seleccionado?", function(result) {
+
+		if (!result) {
+			return;
+		}
+
+		$.ajax({
+			url: url,
+			type: "delete",
+
+			success: function(result) {
+				$('#lotFilesRows').html(result);
+				saved('Archivo borrado correctamente');
+			},
+			error: function() {
+				error();
+			}
+		});
+	});
+}
+
+function changeStatusFile(button) {
+	const url = button.dataset.action;
+
+	$.ajax({
+		url: url,
+		type: "post",
+
+		success: function(result) {
+			$('#lotFilesRows').html(result);
+			saved('Archivo actualizado correctamente');
+		},
+		error: function() {
+			error();
+		}
+	});
+}
+
+$("#js-dropdownItems").on('show.bs.dropdown', function (event) {
+
+	const button = event.relatedTarget;
+	const objective = button.dataset.objective;
+	const ids = selectedCheckItemsByName(objective);
+
+	if(ids.length === 0){
+		bootbox.alert("Debes seleccionar al menos un elemento");
+		return false;
+	}
+});
+
+$('#edit_multple_files').on('submit', function(event){
+	event.preventDefault();
+
+	const ids = selectedCheckItemsByName("files_ids");
+	const formData = new FormData(edit_multple_files);
+	ids.forEach(id => formData.append('ids[]', id));
+
+	$.ajax ({
+		url: edit_multple_files.action,
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+
+		success: function(result) {
+			$('#lotFilesRows').html(result);
+			$('#editMultpleFilesModal').modal('hide');
+			saved('Archivos actualizados correctamente');
+		},
+		error: function() {
+			error();
+		}
+	});
+});
+
+
+$('#addFile').on('click', function() {
+
+	$.ajax({
+		url: $(this).data('url'),
+		type: "get",
+
+		success: function(result) {
+			$('#modal-create-body').html(result);
+			$('#addFileModal').modal('show');
+		},
+		error: function() {
+			error();
+		}
+	});
+});
+
+$('#lotFilesRows').sortable({
+	handle: '.js-soratble-button',
+	items: 'tr',
+	axis: 'y',
+	cursor: "grabbing",
+	cancel: '',
+	update: function(event, ui) {
+		const order = $(this).sortable('toArray', {
+			attribute: 'data-id'
+		});
+
+		$.ajax({
+			url: "/admin/subastas/lotes/files/order",
+			type: "post",
+			data: {
+				_token: $('[name="_token"]').val(),
+				order
+			},
+			success: function(result) {
+				saved('Orden actualizado correctamente');
+			},
+			error: function() {
+				error();
+			}
+		});
+	}
+});

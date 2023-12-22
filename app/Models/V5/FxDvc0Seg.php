@@ -76,21 +76,21 @@ class FxDvc0Seg extends Model
 	/**
 	 * Fechas de entrega estimada para Tauler
 	 */
-	private static function estimatedsDeliveryDates2022()
+	private static function estimatedsDeliveryDates()
 	{
 		$dates = [
-			[ 'application_date' => '2023-01-12', 'delivery_date' => '2022-01-29' ],
-			[ 'application_date' => '2023-02-07', 'delivery_date' => '2023-02-24' ],
-			[ 'application_date' => '2023-03-07', 'delivery_date' => '2023-03-24' ],
-			[ 'application_date' => '2023-04-11', 'delivery_date' => '2023-04-28' ],
-			[ 'application_date' => '2023-05-16', 'delivery_date' => '2023-06-02' ],
-			[ 'application_date' => '2023-06-13', 'delivery_date' => '2023-06-30' ],
-			[ 'application_date' => '2023-07-13', 'delivery_date' => '2023-07-30' ],
-			[ 'application_date' => '2023-09-07', 'delivery_date' => '2023-09-24' ],
-			[ 'application_date' => '2023-10-10', 'delivery_date' => '2023-10-27' ],
-			[ 'application_date' => '2023-11-09', 'delivery_date' => '2023-11-26' ],
 			[ 'application_date' => '2023-12-12', 'delivery_date' => '2023-12-29' ],
-			[ 'application_date' => '2024-01-12', 'delivery_date' => '2024-01-25' ]
+			[ 'application_date' => '2024-01-11', 'delivery_date' => '2024-01-28' ],
+			[ 'application_date' => '2024-02-15', 'delivery_date' => '2024-02-25' ],
+			[ 'application_date' => '2024-03-14', 'delivery_date' => '2024-03-24' ],
+			[ 'application_date' => '2024-04-11', 'delivery_date' => '2024-04-28' ],
+			[ 'application_date' => '2024-05-15', 'delivery_date' => '2024-06-02' ],
+			[ 'application_date' => '2024-06-12', 'delivery_date' => '2024-06-30' ],
+			[ 'application_date' => '2024-07-16', 'delivery_date' => '2024-08-02' ],
+			[ 'application_date' => '2024-09-10', 'delivery_date' => '2024-09-27' ],
+			[ 'application_date' => '2024-10-08', 'delivery_date' => '2024-10-25' ],
+			[ 'application_date' => '2024-11-07', 'delivery_date' => '2024-11-24' ],
+			[ 'application_date' => '2024-12-10', 'delivery_date' => '2024-12-27' ],
 		];
 
 		return collect($dates);
@@ -101,7 +101,7 @@ class FxDvc0Seg extends Model
 	 */
 	public static function getEstimatedDeliveryDate($auctionDate)
 	{
-		$deliveryDate = self::estimatedsDeliveryDates2022()->filter(function ($date) use ($auctionDate){
+		$deliveryDate = self::estimatedsDeliveryDates()->filter(function ($date) use ($auctionDate){
 			return $date['application_date'] > $auctionDate;
 		})->first();
 
