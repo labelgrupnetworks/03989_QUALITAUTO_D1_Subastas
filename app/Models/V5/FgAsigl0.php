@@ -392,13 +392,23 @@ class FgAsigl0 extends Model
 					$query = $query->addSelect('opcioncar_sub');
 				}
 
-
+				if(Config::get("app.show_rarity_in_grid", false)) {
+					$query->getRarity();
+				}
 
 				return	$query;
 	}
 
-	#listado de Carcateristicas
+	public function scopeGetRarity($query)
+	{
+		$locale = Config::get('app.language_complete')[Config::get('app.locale')];
+		return $query->addSelect('nvl(otv_lang."rarity_lang",otv."rarity") AS rarity')
+			->join('"object_types_values" otv', 'otv."company" = emp_asigl0 and otv."transfer_sheet_number" = numhces_asigl0 AND otv."transfer_sheet_line" = linhces_asigl0')
+			->leftJoin('"object_types_values_lang" otv_lang',
+				'otv_lang."company_lang" = emp_asigl0 and otv_lang."transfer_sheet_number_lang" = numhces_asigl0 AND otv_lang."transfer_sheet_line_lang" = linhces_asigl0 AND otv_lang."lang_object_types_values_lang" = \'' . $locale . '\'');
+	}
 
+	#listado de Carcateristicas
    public function scopeGetFeaturesAsigl0($query,   $codSub,  $refSession){
 
 	return  $query->selectRaw("ID_CARACTERISTICAS_VALUE, IDCAR_CARACTERISTICAS_VALUE,   count(VALUE_CARACTERISTICAS_VALUE) total")
