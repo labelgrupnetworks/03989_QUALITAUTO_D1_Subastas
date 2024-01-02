@@ -477,11 +477,10 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function querylog()
 	{
-
-		if (env('APP_DEBUG') || (!empty($_GET) && !empty($_GET['querylog']) && $_GET['querylog'] == 'active_log')) {
+		if (Config::get('app.debug') || (!empty($_GET) && !empty($_GET['querylog']) && $_GET['querylog'] == 'active_log')) {
 
 			//si miramos desde debug es por que estamos abajo y va más lento, por eso el limite es mayor
-			if (env('APP_DEBUG')) {
+			if (Config::get('app.debug') && Config::get('app.env') == 'local') {
 				$limit = 1000;
 			} else {
 				$limit = 10;
