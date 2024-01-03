@@ -1,4 +1,4 @@
-<?
+@php
 /**
  * Permite visualizar u ocultar columnas de una tabla y guardar el resultado en
  * el navegador
@@ -12,7 +12,7 @@
  * @todo pendiente
  * - añadir campos checkeados por defecto.
  */
-?>
+@endphp
 {{-- <a class="btn btn-default btn-sm"><i style="cursor: pointer" class="fa fa-cog" aria-hidden="true" data-toggle="modal" data-target="#modal_config_{{$id}}"></i></a> --}}
 <a class="btn btn-default btn-sm" aria-hidden="true" data-toggle="modal" data-target="#modal_config_{{$id}}"><i style="cursor: pointer" class="fa fa-cog"></i> Configurar Tabla</a>
 

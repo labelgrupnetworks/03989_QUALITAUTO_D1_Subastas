@@ -71,21 +71,20 @@ class RegisterController extends Controller
 				$vias[$item->cod_sg] = $item->des_sg;
 			}
 
-
 			$divisas_aux = DB::table('FSDIV')
-            ->select('cod_div','des_div','impd_div','symbolhtml_div')
-            ->get();
-			foreach( $divisas_aux as $key => $value) {
+            	->select('cod_div','des_div','impd_div','symbolhtml_div')
+            	->get();
+
+			foreach ($divisas_aux as $key => $value) {
 				$divisas[$value->cod_div] = $value->cod_div;
 			}
 
-                        if(!empty(FsIdioma::getArrayValues())){
-                            $idiomas = FsIdioma::getArrayValues();
-                        }else{
-                            foreach( Config::get('app.locales') as $key => $value) {
-				$idiomas[strtoupper($key)] = $value;
-                            }
-                        }
+			$idiomas = FsIdioma::getArrayValues();
+			if (empty($idiomas)) {
+				foreach (Config::get('app.locales') as $key => $value) {
+					$idiomas[strtoupper($key)] = $value;
+				}
+			}
 
 			// Construimos los campos de formulario
 

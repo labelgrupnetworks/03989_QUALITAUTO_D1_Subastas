@@ -1235,6 +1235,7 @@ $lang = [
 		'features' => 'Características',
 		'direccion' => 'Dirección',
 		'poblacion' => 'Población',
+		'provincia' => 'Provincia',
 		'hab' => 'Habitaciones',
 		'wc' => 'Baños',
 		'mconst' => 'Metros construidos',

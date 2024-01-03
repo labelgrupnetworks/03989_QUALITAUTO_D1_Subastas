@@ -219,6 +219,10 @@ class TradLib {
 
         $rutaSplit = explode('/', $rutaActual);
 
+		if (count($rutaSplit) == 1) {
+			return "/$rutaActual";
+		}
+
         foreach ($rutaSplit as $key => $value) {
 
             $traduccionSeo = TradLib::getSeoTranslate($value, $idiomaActual, $idiomaTraducir);

@@ -489,7 +489,7 @@ class AdminLotController extends Controller
 			return back()->withErrors(['errors' => [$json]])->withInput();
 		}
 
-		return redirect(route("$this->parent_name.show", ['cod_sub' => $cod_sub]))->with(['success' => array(trans('admin-app.title.deleted_ok'))]);
+		return redirect(route("$this->parent_name.show", ['subasta' => $cod_sub]))->with(['success' => array(trans('admin-app.title.deleted_ok'))]);
 	}
 
 	public function publishNft($cod_sub, $ref_asigl0)
