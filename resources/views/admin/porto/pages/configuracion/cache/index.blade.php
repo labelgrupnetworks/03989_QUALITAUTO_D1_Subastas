@@ -17,6 +17,7 @@
 					<thead>
 						<tr>
 							<th>Acción</th>
+							<th>Descripción</th>
 							<th>
 								<span>Ejecutar</span>
 							</th>
@@ -24,12 +25,13 @@
 					</thead>
 
 					<tbody>
-						@foreach ($actions as $action => $actionName)
-							<tr id="{{ $action }}">
-								<td>{{ $actionName }}</td>
+						@foreach ($actions as $action)
+							<tr id="{{ $action->action }}">
+								<td>{{ $action->title }}</td>
+								<td>{{ $action->description }}</td>
 
 								<td>
-									<button class="btn btn-xs btn-danger" title="Ejecutar" data-action="{{ $action }}" onclick="sendAction(this.dataset)">
+									<button class="btn btn-xs btn-danger" title="Ejecutar" data-action="{{ $action->action }}" onclick="sendAction(this.dataset)">
 										<i class="fa fa-paper-plane-o"></i>
 									</button>
 								</td>
