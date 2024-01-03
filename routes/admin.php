@@ -344,7 +344,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
 
 		Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
-		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features');
+		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features.post');
 
 
 		Route::get('subastas/lotes/printPdf/{codSub}', 'subasta\AdminLotController@pdfExhibition')->name('subastas.lotes.printPdf');
