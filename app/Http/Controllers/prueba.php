@@ -1761,4 +1761,109 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 
 			return $response;
 	}
+
+	/* PRUEBA DE OBTENCIÓN UBICACIÓN CON IP */
+
+	public function ObtenerPaísIP(HttpRequest $request) {
+		$ip = $request->ip();
+		$binaryIpAddress = implode('.', array_map(function ($octet) {
+			return str_pad(decbin($octet), 8, '0', STR_PAD_LEFT);
+		}, explode('.', $ip)));
+		$networkPortion = substr($binaryIpAddress, 0, strpos($binaryIpAddress, '0'));
+		$subnetBits = strlen($networkPortion);
+		$subnetMask = $ip . '/' . $subnetBits;
+
+		$subnetMask = '77.246.76.0/23'; // IP para pruebas.
+
+		$id_localizacion = $this->getLocalizationID($subnetMask);
+
+		$dataLocalization = null;
+		if ($id_localizacion != null) {
+			echo "<hr>";
+			$dataLocalization = $this->getDataLocalization($id_localizacion);
+		}
+
+
+		dd($dataLocalization);
+	}
+
+	private function getLocalizationID($ip, $rowsPerPage = 5000) {
+		$rutaArchivo = public_path('files/IPv4_blocks_processed.csv');
+
+		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
+			$fila = 0;
+			$filasPorPagina = $rowsPerPage;
+			$pagina = 1;
+			$i = 0;
+
+			while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
+				$fila++;
+				$i++;
+				if ($fila <= $pagina * $filasPorPagina) {
+					if ($fila > ($pagina - 1) * $filasPorPagina) {
+						if ($data[0] == $ip) {
+							echo"Ha llegado a los " . $i . " registros <br>";
+							echo "Ha llegado a las " . $pagina . " páginas <br>";
+							return $data[1];
+						}
+					}
+				} else {
+					$fila = $pagina * $filasPorPagina;
+					$pagina++;
+				}
+			}
+
+			fclose($handle);
+			return null;
+		}
+	}
+
+
+	private function getDataLocalization($id) {
+		$rutaArchivo = public_path('files/IP_Locations_es_processed.csv');
+
+		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
+			$filasPorPagina = 7000;
+			$fila = 0;
+			$pagina = 1;
+			$i = 0;
+
+			while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
+				$fila++;
+				$i++;
+				if ($fila <= $pagina * $filasPorPagina) {
+					if ($fila > ($pagina - 1) * $filasPorPagina) {
+						if ($data[0] == $id) {
+							echo"Localizaciones:<br>";
+							echo"Ha llegado a los " . $i . " registros <br>";
+							echo "Ha llegado a las " . $pagina . " páginas <br>";
+							return [
+								'continent' => $data[1],
+								'ISO_code' => $data[2],
+								'country' => $data[3],
+								'province_code' => $data[4],
+								'province' => $data[5],
+								'region_code' => $data[6],
+								'region' => $data[7],
+								'city' => $data[8],
+							];
+						}
+					}
+				} else {
+					$fila = $pagina * $filasPorPagina;
+					$pagina++;
+				}
+			}
+
+			echo"Localizaciones:<br>";
+			echo"Ha llegado a los " . $i . " registros <br>";
+			echo "Ha llegado a las " . $pagina . " páginas <br>";
+
+			return null;
+			fclose($handle);
+		}
+
+	}
+
 }
+
