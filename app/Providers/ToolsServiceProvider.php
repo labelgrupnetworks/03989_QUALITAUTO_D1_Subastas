@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use URL;
+use Illuminate\Support\Facades\URL;
 use Mail;
 use App\Models\Subasta;
 use App\Models\Payments;
@@ -1374,9 +1374,20 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function urlAssetsCache($path)
 	{
-		if (file_exists(public_path($path))) {
-			return URL::asset($path) . "?a=" . filemtime(public_path($path));
+		static $hash = null;
+		$publicPath = public_path($path);
+
+		if (!file_exists($publicPath)) {
+			return;
 		}
+
+		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
+		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
+		if (strpos($path, 'img') === false && !$hash) {
+			$hash = filemtime($publicPath);
+		}
+
+		return URL::asset($path) . "?a=$hash";
 	}
 
 	public static function preloadStylesheets($path, $isCritical)

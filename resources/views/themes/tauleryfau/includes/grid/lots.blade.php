@@ -28,7 +28,7 @@
 			$numLin->lin_hces1 = $item->lin_hces1;
 			$numFotos = count($subastaModel->getLoteImages($numLin));
 
-			$rarity = \App\Models\V5\FgHces1::getRarity()->where([ ['num_hces1', $item->num_hces1],['lin_hces1', $item->lin_hces1] ])->first()->rarity;
+			$rarity = $item->rarity;
 
 			if(!Session::has('user') || empty($item->user_have_bid)){
 				$winner = "gold";
