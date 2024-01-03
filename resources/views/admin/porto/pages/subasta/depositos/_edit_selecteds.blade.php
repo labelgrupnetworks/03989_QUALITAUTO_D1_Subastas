@@ -9,7 +9,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h5 class="modal-title">Archivo/s</h5>
+				<h5 class="modal-title">Deposito/s</h5>
 				<button class="close" data-dismiss="modal" type="button" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
