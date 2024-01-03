@@ -10,6 +10,26 @@
 			<h1>{{ trans("admin-app.title.deposits") }}</h1>
 		</div>
 		<div class="col-xs-3">
+			<div class="btn-group" id="js-dropdownItems">
+				<button class="btn btn-default btn-sm" type="button">Seleccionados</button>
+				<button
+					data-objective="desposit_ids"
+					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
+					aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+				</button>
+
+				<ul aria-labelledby="js-dropdownItems" class="dropdown-menu">
+
+					<li>
+						<button class="btn" data-toggle="modal" data-target="#editMultpleDepositsModal">
+							Modificar
+						</button>
+					</li>
+
+				</ul>
+			</div>
+
 			<a href="{{ route('deposito.create', ['menu' => 'subastas']) }}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.deposit") }}</a>
 		</div>
 	</div>
@@ -21,6 +41,12 @@
 				<thead>
 
 					<tr>
+						<th>
+							<label>
+								<input id="selectAllDeposits" name="js-selectAll" data-objective="desposit_ids" type="checkbox" value="true">
+								<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('subastas.deposit.ajax_get_deposits') }}">
+							</label>
+						</th>
 						<th>{{ trans("admin-app.fields.sub_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.ref_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.rsoc_cli") }}</th>
@@ -36,6 +62,7 @@
 
 					<tr id="filters">
 						<form class="form-group" action="">
+							<td></td>
 							<td>{!! $formulario->sub_deposito !!}</td>
 							<td>{!! $formulario->ref_deposito !!}</td>
 							<td>{!! $formulario->rsoc_cli !!}</td>
@@ -50,6 +77,11 @@
 					@forelse ($fgDepositos as $deposito)
 
 					<tr id="fila{{$deposito->cod_deposito}}">
+						<td>
+							<label>
+								<input type="checkbox" name="desposit_ids" value="{{$deposito->cod_deposito}}">
+							</label>
+						</td>
 						<td>{{$deposito->sub_deposito}}</td>
 						<td>{{$deposito->ref_deposito}}</td>
 						<td>{{$deposito->rsoc_cli}}</td>
@@ -80,5 +112,7 @@
 			{{ $fgDepositos->links() }}
 		</div>
 	</div>
+
+	@include('admin::pages.subasta.depositos._edit_selecteds')
 
 	@stop

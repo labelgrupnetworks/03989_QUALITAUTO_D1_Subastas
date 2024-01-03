@@ -10,6 +10,7 @@ use App\libs\FormLib;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdminDepositoController extends Controller
 {
@@ -21,28 +22,7 @@ class AdminDepositoController extends Controller
 	public function index(Request $request)
 	{
 		$fgDepositos = FgDeposito::query();
-		if ($request->sub_deposito) {
-			$fgDepositos->where('upper(sub_deposito)', 'like', "%" . mb_strtoupper($request->sub_deposito) . "%");
-		}
-		if ($request->ref_deposito) {
-			$fgDepositos->where('upper(ref_deposito)', 'like', "%" . mb_strtoupper($request->ref_deposito) . "%");
-		}
-		if ($request->rsoc_cli) {
-			$fgDepositos->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($request->rsoc_cli) . "%");
-		}
-		if ($request->estado_deposito) {
-			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
-		}
-		if ($request->importe_deposito) {
-			$fgDepositos->where('importe_deposito', '=', $request->importe_deposito);
-		}
-		if ($request->fecha_deposito) {
-			$fgDepositos->where('fecha_deposito', '>=', ToolsServiceProvider::getDateFormat($request->fecha_deposito, 'Y-m-d', 'Y/m/d'));
-		}
-		if ($request->cli_deposito) {
-			$fgDepositos->where('cli_deposito', 'like', "%" . mb_strtoupper($request->cli_deposito) . "%");
-		}
-
+		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
 		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
 		->JoinCli()
 			->orderBy("fecha_deposito", "desc")
@@ -142,6 +122,39 @@ class AdminDepositoController extends Controller
 		//
 	}
 
+	public function updateSelections(Request $request)
+	{
+		$ids = $request->input('ids', []);
+		$estado_deposito = $request->input('estado_deposito_edit', '');
+
+		$fgDepositos = FgDeposito::whereIn('cod_deposito', $ids)->get();
+
+		foreach ($fgDepositos as $fgDeposito) {
+			$fgDeposito->estado_deposito = $estado_deposito;
+			if ($fgDeposito->isDirty()) {
+				$fgDeposito->save();
+			}
+		}
+
+		return redirect(route('deposito.index'))->with('success', ['Depositos actualizados correctamente']);
+	}
+
+	public function getAjaxAllDepositsWithFilters(Request $request)
+	{
+		$fgDepositos = FgDeposito::query();
+		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
+		$fgDepositos = $fgDepositos->JoinCli()->orderBy("fecha_deposito", "desc")->get();
+
+		foreach ($fgDepositos as $fgDeposito) {
+			$fgDeposito->estado_deposito = $request->estado_deposito_edit;
+			if ($fgDeposito->isDirty()) {
+				$fgDeposito->save();
+			}
+		}
+
+		return redirect(route('deposito.index'))->with('success', ['Depositos actualizados correctamente']);
+	}
+
 
 	private function formFgDeposito(FgDeposito $fgDeposito)
 	{
@@ -161,5 +174,32 @@ class AdminDepositoController extends Controller
 			'importe_deposito' => FormLib::Text('importe_deposito', 1, $fgDeposito->importe_deposito, '', ''),
 			'cli_deposito' => FormLib::Select2WithArray('cli_deposito', 1, $fgDeposito->cli_deposito, $fxCli)
 		];
+	}
+
+	private function filtersDepositos(Builder $fgDepositos, Request $request)
+	{
+		if ($request->sub_deposito) {
+			$fgDepositos->where('upper(sub_deposito)', 'like', "%" . mb_strtoupper($request->sub_deposito) . "%");
+		}
+		if ($request->ref_deposito) {
+			$fgDepositos->where('upper(ref_deposito)', 'like', "%" . mb_strtoupper($request->ref_deposito) . "%");
+		}
+		if ($request->rsoc_cli) {
+			$fgDepositos->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($request->rsoc_cli) . "%");
+		}
+		if ($request->estado_deposito) {
+			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
+		}
+		if ($request->importe_deposito) {
+			$fgDepositos->where('importe_deposito', '=', $request->importe_deposito);
+		}
+		if ($request->fecha_deposito) {
+			$fgDepositos->where('fecha_deposito', '>=', ToolsServiceProvider::getDateFormat($request->fecha_deposito, 'Y-m-d', 'Y/m/d'));
+		}
+		if ($request->cli_deposito) {
+			$fgDepositos->where('cli_deposito', 'like', "%" . mb_strtoupper($request->cli_deposito) . "%");
+		}
+
+		return $fgDepositos;
 	}
 }

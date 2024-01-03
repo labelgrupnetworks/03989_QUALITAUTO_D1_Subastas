@@ -314,7 +314,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('clientes/{cod_cli}/dni', 'usuario\AdminClienteFilesController@storeDni')->name('admin.clientes.dni.store');
 		Route::resource('clientes.files', 'usuario\AdminClienteFilesController')->only(['store', 'show', 'destroy']);
 
+		Route::post('subastas/deposito/ajax-get-deposits', 'subasta\AdminDepositoController@getAjaxAllDepositsWithFilters')->name('subastas.deposit.ajax_get_deposits');
+		Route::post('subastas/deposito/update-selection', 'subasta\AdminDepositoController@updateSelections')->name('subastas.deposit.update_selection');
 		Route::resource('deposito', 'subasta\AdminDepositoController')->except(['show']);
+
 		Route::resource('visibilidad', 'subasta\AdminVisibilidadController')->except(['show']);
 
 		Route::get('winners/export/{cod_sub}', 'subasta\AdminWinnerController@winnersExport')->name('winners.export');

@@ -103,7 +103,7 @@ class FgDeposito extends Model
 			});
 	}
 
-	public function getEstados()
+	public static function getEstados()
 	{
 		return [
 			self::ESTADO_PENDIENTE => trans("admin-app.fields.estado_deposito_p"),
