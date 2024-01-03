@@ -172,7 +172,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$this->testInvaluable();
+		phpinfo();
 	}
 
 	private function testInvaluable(){
