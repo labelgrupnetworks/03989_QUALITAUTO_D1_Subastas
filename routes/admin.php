@@ -440,6 +440,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('jobs/failed/{id}', 'configuracion\AdminJobsController@showFailedJob')->name('admin.jobs.failed');
 		Route::post('jobs/failed/{id}', 'configuracion\AdminJobsController@reesendFailedJob')->name('admin.jobs.failed_retry');
 
+		Route::get('cache', 'configuracion\AdminCacheController@index')->name('admin.cache.index');
+		Route::post('cache', 'configuracion\AdminCacheController@action')->name('admin.cache.action');
+
 	});
 
 
