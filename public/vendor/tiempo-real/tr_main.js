@@ -2502,7 +2502,7 @@ function openBids() {
 
 function checkSumRatiosIsValid() {
 	const sumRatios = [...document.querySelectorAll('.bidder-wrap')].reduce((previousValue, currentValue) => {
-		return previousValue + parseInt(currentValue.querySelector('[name="ratio"]').value);
+		return previousValue + parseFloat(currentValue.querySelector('[name="ratio"]').value);
 	}, 0);
 
 	return sumRatios === 100;

@@ -1154,12 +1154,17 @@ class UserController extends Controller
                         $condiciones2 = 'N';
                     }
 
+					$newsletter2 = 'N';
+					if(!empty(Request::input('newsletter2'))){
+						$newsletter2 = 'S';
+					}
+
                     //Si existe el usuario es que es un usuario de newsletter y hay que actualizar en vez de insertar
                     if(is_array($check_if_exists) && count($check_if_exists)>0 && ($check_if_exists[0]->cod_cliweb == 0 || $check_if_exists[0]->cod_cliweb == -1 ))
                     {
 
                           $FXCLIWEB = DB::select("UPDATE FXCLIWEB SET
-                              GEMP_CLIWEB = :gemp, COD_CLIWEB = :cod_cliweb ,COD2_CLIWEB = :cod2   , PWDWENCRYPT_CLIWEB = :password_encrypt, EMP_CLIWEB = :emp, TIPACCESO_CLIWEB = 'N', TIPO_CLIWEB = 'C', NOM_CLIWEB = :usuario, NLLIST1_CLIWEB = :nllist1, IDIOMA_CLIWEB = :lang, PUBLI_CLIWEB = :publi
+                              GEMP_CLIWEB = :gemp, COD_CLIWEB = :cod_cliweb ,COD2_CLIWEB = :cod2   , PWDWENCRYPT_CLIWEB = :password_encrypt, EMP_CLIWEB = :emp, TIPACCESO_CLIWEB = 'N', TIPO_CLIWEB = 'C', NOM_CLIWEB = :usuario, NLLIST1_CLIWEB = :nllist1, NLLIST2_CLIWEB = :nllist2, IDIOMA_CLIWEB = :lang, PUBLI_CLIWEB = :publi
                               WHERE (LOWER(USRW_CLIWEB) = :email ) and EMP_CLIWEB = :emp and GEMP_CLIWEB = :gemp
                               ",
                                array(
@@ -1170,6 +1175,7 @@ class UserController extends Controller
                                   'password_encrypt'      => $password_encrypt,
                                   'usuario'       => $name,
                                   'nllist1' =>   $newsletter,
+								  'nllist2' =>  $newsletter2,
 								  'lang' => $languages,
 								  'cod2' => $cod2_cli,
 								  'publi' => $condiciones2
@@ -1182,9 +1188,9 @@ class UserController extends Controller
                     {
 
                           $FXCLIWEB = DB::select("INSERT INTO FXCLIWEB
-                              (GEMP_CLIWEB, COD_CLIWEB, USRW_CLIWEB, PWDWENCRYPT_CLIWEB, EMP_CLIWEB, TIPACCESO_CLIWEB, TIPO_CLIWEB, NOM_CLIWEB, EMAIL_CLIWEB, NLLIST1_CLIWEB,FECALTA_CLIWEB,IDIOMA_CLIWEB,COD2_CLIWEB,PUBLI_CLIWEB   )
+                              (GEMP_CLIWEB, COD_CLIWEB, USRW_CLIWEB, PWDWENCRYPT_CLIWEB, EMP_CLIWEB, TIPACCESO_CLIWEB, TIPO_CLIWEB, NOM_CLIWEB, EMAIL_CLIWEB, NLLIST1_CLIWEB, NLLIST2_CLIWEB, FECALTA_CLIWEB,IDIOMA_CLIWEB,COD2_CLIWEB,PUBLI_CLIWEB   )
                               VALUES
-                              (:gemp, :cod_cliweb, :email, :password_encrypt, :emp, 'N', 'C', :usuario, :email,:nllist1,:fecha_alta,:lang, :cod2, :publi)",
+                              (:gemp, :cod_cliweb, :email, :password_encrypt, :emp, 'N', 'C', :usuario, :email,:nllist1, :nllist2, :fecha_alta,:lang, :cod2, :publi)",
                                array(
                                   'gemp'          => Config::get('app.gemp'),
                                   'email'         => Request::input('email'),
@@ -1193,6 +1199,7 @@ class UserController extends Controller
                                   'password_encrypt'      => $password_encrypt,
                                   'usuario'       =>$name,
                                   'nllist1' =>   $newsletter,
+								  'nllist2' =>  $newsletter2,
                                   'fecha_alta'    => date("Y-m-d H:i:s"),
 								  'lang' => $languages,
 								  'cod2' => $cod2_cli,
@@ -1388,7 +1395,7 @@ class UserController extends Controller
                 if(!empty(Request::input('subalia'))){
 
                     $method = 'AES-256-ECB';
-                    $urlSubalia = "https://subalia.es";
+                    $urlSubalia = Config::get("app.subalia_URL", "https://subalia.es");
 
                     $cliAuchouse = Config::get('app.subalia_cli');
 

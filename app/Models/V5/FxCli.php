@@ -6,6 +6,8 @@ namespace App\Models\V5;
 use App\Models\V5\Traits\ScopeFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class FxCli extends Model
 {
@@ -241,13 +243,26 @@ class FxCli extends Model
 		return $this->dir_cli . $this->dir2_cli;
 	}
 
-	public function getTipoDocumento (){
+	public function getTipoDocumento ()
+	{
+		$document_type = DB::table('fsaux1')
+			->select('cod1_aux1', 'des_aux1')
+			->where([
+				['emp_aux1', Config::get('app.emp') ],
+				['idioma_aux1', mb_strtoupper(Config::get('app.locale') ) ],
+				['baja_aux1', 'N']
+			])
+			->pluck('des_aux1', 'cod1_aux1');
+
+		if($document_type->isNotEmpty()){
+			return $document_type;
+		}
+
 		return[
 			self::TIPO_DOC_DNI => 'DNI',
 			self::TIPO_DOC_NIE => 'NIE',
 			self::TIPO_DOC_NIF => 'NIF',
 			self::TIPO_DOC_PAS => trans("admin-app.fields.pasaporte"),
-
 		];
 	}
 

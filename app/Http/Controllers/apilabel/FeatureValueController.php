@@ -136,11 +136,11 @@ class FeatureValueController extends ApiLabelController
             DB::beginTransaction();
             $whereRules = $this->getItems($this->rules, array("idfeaturevalue"));
             $whereRename = $this->getItems($this->rename , array("idfeaturevalue"));
-            $this->erase($whereVars, $whereRules, $whereRename, new FgCaracteristicas_Value());
+            $this->erase($whereVars, $whereRules, $whereRename, new FgCaracteristicas_Value(), false);
 
 
             $whereRenameLang = $this->getItems($this->rename_lang , array("idfeaturevalue"));
-            $this->erase($whereVars, $whereRules, $whereRenameLang, new FgCaracteristicas_Value_Lang());
+            $this->erase($whereVars, $whereRules, $whereRenameLang, new FgCaracteristicas_Value_Lang(), false);
             DB::commit();
             return $this->responseSuccsess();
 

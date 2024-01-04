@@ -81,7 +81,7 @@ class ValoraliaController extends Controller
 				],
 				'UP' => [
 					'type' => 'Unidad productiva',
-					'subtype' => 'Unidad productiva',
+					'subtype' => 'Unidades productivas',
 				],
 				'VH' => [
 					'type' => 'Vehículo',

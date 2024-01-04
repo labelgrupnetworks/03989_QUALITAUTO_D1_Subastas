@@ -7,7 +7,7 @@
 
     //Obtener todos los archivos de las subastas
     $allFiles = AucSessionsFiles::query()
-        ->select('"auction"', '"description"', '"type"', '"path"', '"order"')
+        ->select('"auction"', '"description"', '"type"', '"path"', '"order"', '"url"')
         ->whereIn('"auction"', $codsSub)
         ->where('"lang"', Tools::getLanguageComplete(Config::get('app.locale')))
         ->orderBy('"order"')

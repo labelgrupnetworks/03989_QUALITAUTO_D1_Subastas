@@ -65,6 +65,12 @@ class Newsletter
 
 		$this->subscribeToExternalService($this->email);
 
+		//duran necesita tener en cliweb nllist1_cliweb = 'S' ya que lo envía al webservice
+		if(Config::get('app.save_newsletter_in_cliweb', false)) {
+			FxCliWeb::where('LOWER(USRW_CLIWEB)', strtolower($this->email))
+				->update(['NLLIST1_CLIWEB' => 'S']);
+		}
+
 		//Soporte Concursal queria que también se enviara el registro en la newsletter
 		$email = new EmailLib('USER_NEWSLETTER');
 		if (!empty($email->email)) {

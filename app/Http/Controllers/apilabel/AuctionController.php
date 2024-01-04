@@ -239,27 +239,28 @@ class AuctionController extends ApiLabelController
 
 		foreach($items as $key => $item){
 
-			#ponemos el código de la subasta en las sessiones
-			foreach($item["sessions"] as $keySession => $session){
-				$itemsSessionLang = array();
-				#idiomas sesion
-				if(!empty($session["sessionLanguages"])){
-					$sessionId = AucSessions::select('"id_auc_sessions"')->where('"auction"', $item["idauction"])->where('"reference"', $session["reference"])->first();
+			if(!empty($item["sessions"])){
+				#ponemos el código de la subasta en las sessiones
+				foreach($item["sessions"] as $keySession => $session){
+					$itemsSessionLang = array();
+					#idiomas sesion
+					if(!empty($session["sessionLanguages"])){
+						$sessionId = AucSessions::select('"id_auc_sessions"')->where('"auction"', $item["idauction"])->where('"reference"', $session["reference"])->first();
 
-					foreach($session["sessionLanguages"] as $sessionLang){
-						$sessionLang["lang"] =  \Tools::getLanguageComplete($sessionLang["lang"]);
-						$sessionLang["idauction"] =  $item["idauction"];
-						$sessionLang["reference"] =  $session["reference"];
-						#debemos recuperar su id de sesion
-						$sessionLang["id_auc_sessions"] =$sessionId->id_auc_sessions;
-						$itemsSessionLang[] = $sessionLang;
+						foreach($session["sessionLanguages"] as $sessionLang){
+							$sessionLang["lang"] =  \Tools::getLanguageComplete($sessionLang["lang"]);
+							$sessionLang["idauction"] =  $item["idauction"];
+							$sessionLang["reference"] =  $session["reference"];
+							#debemos recuperar su id de sesion
+							$sessionLang["id_auc_sessions"] =$sessionId->id_auc_sessions;
+							$itemsSessionLang[] = $sessionLang;
+						}
+
+						$this->erase(["id_auc_sessions" =>$sessionId->id_auc_sessions], [], $this->sessionLangRename, new AucSessions_Lang(), false);
+						$this->create($itemsSessionLang, $this->sessionLangRules , $this->sessionLangRename, new AucSessions_Lang());
 					}
-					
-					$this->erase(["id_auc_sessions" =>$sessionId->id_auc_sessions], [], $this->sessionLangRename, new AucSessions_Lang(), false);
-					$this->create($itemsSessionLang, $this->sessionLangRules , $this->sessionLangRename, new AucSessions_Lang());
 				}
 			}
-
 
 
 			/*

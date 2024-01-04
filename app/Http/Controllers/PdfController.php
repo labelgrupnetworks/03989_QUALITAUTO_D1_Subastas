@@ -193,8 +193,9 @@ class PdfController extends Controller
 			'prop' => $propetary,
 			'lot' => $ref_asigl0,
 			'award' => $this->licits[$cod_licit]->nom_cli,
-			'imp' => Tools::moneyFormat($import),
-			'bidders' => $bidders
+			'imp' => $import,
+			'bidders' => $bidders,
++			'tablaSubasta' => $this->tableInfo,
 		];
 
 
@@ -248,7 +249,9 @@ class PdfController extends Controller
 
 		$bids = $todos->each(function($item) {
 			$item->isBid = !empty($item->licit_asigl1);
-		})->sortBy(function($item){ return $item->ref_asigl1.'#'.$item->fec_asigl1; });
+		})->sortBy(function($item){
+			return str_pad($item->ref_asigl1, 3, '0', STR_PAD_LEFT) . '#' . $item->fec_asigl1;
+		});
 
 		$data = [
 			'owner' => $owner,
