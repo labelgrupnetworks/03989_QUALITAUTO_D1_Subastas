@@ -23,7 +23,7 @@ class DuranController extends Controller
 	protected function callWebService($xml, $function){
 
 		try{
-
+			$stringXML = str_replace('<?xml version="1.0"?>', "", $xml->asXML());
 			$endpoint = \Config::get("app.endpointWS") ; #"http://213.0.23.84/sa3/publico.svc";
 			$wsdlFile= $endpoint."?wsdl";
 			//Creación del cliente SOAP
@@ -32,7 +32,7 @@ class DuranController extends Controller
 			'trace'=>true,
 			'exceptions'=>true));
 
-			$stringXML = str_replace('<?xml version="1.0"?>', "", $xml->asXML());
+
 			$sequencia = new \stdClass();
 			$sequencia->parametro= new SoapVar($stringXML,XSD_STRING);
 			$sequencia->funcion= new SoapVar($function,XSD_STRING);
@@ -70,13 +70,11 @@ class DuranController extends Controller
 
 			return $xmlRes;
 		}catch (SoapFault $e){
-
-			$this->sendEmailError($function,"", $e->faultstring,true );
-			$this->ErrorLog($function ,$stringXML?? "",  "");
+			$this->sendEmailError($function,$stringXML? htmlspecialchars($stringXML) : "", $e->faultstring,true );
+			$this->ErrorLog($function ,$stringXML?htmlspecialchars($stringXML) : "",  "");
 		}catch (Exception $e){
-
-			$this->sendEmailError($function,"", $e->getMessage(),true );
-			$this->ErrorLog($function ,$stringXML?? "",  "");
+			$this->sendEmailError($function,$stringXML?htmlspecialchars($stringXML) : "", $e->getMessage(),true );
+			$this->ErrorLog($function ,$stringXML?htmlspecialchars($stringXML) : "",  "");
 		}
 
 	}
