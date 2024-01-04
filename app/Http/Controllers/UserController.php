@@ -1388,7 +1388,7 @@ class UserController extends Controller
                 if(!empty(Request::input('subalia'))){
 
                     $method = 'AES-256-ECB';
-                    $urlSubalia = "https://subalia.es";
+                    $urlSubalia = Config::get("app.subalia_URL", "https://subalia.es");
 
                     $cliAuchouse = Config::get('app.subalia_cli');
 

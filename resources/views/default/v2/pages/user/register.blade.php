@@ -364,7 +364,7 @@
 
 
     @if (!empty($formulario->subalia))
-        <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+        <form id="formToSubalia" method="post" action="{{Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
             <input id="info_sent" name="info" type="hidden" value="">
             <input id="cod_auchouse_sent" name="cod_auchouse" type="hidden" value="">
             <input id="redirect_sent" name="redirect" type="hidden" value="">
