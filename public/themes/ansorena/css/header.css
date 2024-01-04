@@ -1810,7 +1810,7 @@ h1.titlePage {
 
 @media(width > 500px) {
 	.message_modal {
-		right: 15px;
+		right: 25px;
 		left: auto;
 		bottom: 15px;
 		padding: 2rem;
