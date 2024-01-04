@@ -22,50 +22,16 @@ class AdminCacheController extends Controller
 
 	public function index()
 	{
-		$arrayActions = [
-			[
-				'action' => 'clear_cache',
-				'title' => 'Limpiar cache',
-				'description' => 'Elimina todos los archivos de la cache'
-			],
-			[
-				'action' => 'clear_config',
-				'title' => 'Limpiar configuración',
-				'description' => 'Elimina todos los archivos de configuración cacheados'
-			],
-			[
-				'action' => 'clear_route',
-				'title' => 'Limpiar rutas',
-				'description' => 'Elimina todos los archivos de rutas cacheados'
-			],
-			[
-				'action' => 'clear_view',
-				'title' => 'Limpiar vistas',
-				'description' => 'Elimina todos los archivos de vistas cacheados'
-			],
-			[
-				'action' => 'clear_all',
-				'title' => 'Limpiar todo',
-				'description' => 'Elimina todos los archivos de cache, configuración, rutas y vistas'
-			],
-			[
-				'action' => 'clear_optimize',
-				'title' => 'Limpiar optimización',
-				'description' => 'Elimina todos los archivos de optimización'
-			],
-			[
-				'action' => 'optimize',
-				'title' => 'Optimizar',
-				'description' => 'Optimiza la configuración, las rutas y las clases'
-			],
-			[
-				'action' => 'cache_routes',
-				'title' => 'Cachear rutas',
-				'description' => 'Cachear rutas'
-			],
+		$actions = [
+			$this->newAction('clear_cache', 'Limpiar cache', 'Elimina todos los archivos de la cache'),
+			$this->newAction('clear_config', 'Limpiar configuración', 'Elimina todos los archivos de configuración cacheados'),
+			$this->newAction('clear_route', 'Limpiar rutas', 'Elimina todos los archivos de rutas cacheados'),
+			$this->newAction('clear_view', 'Limpiar vistas', 'Elimina todos los archivos de vistas cacheados'),
+			$this->newAction('clear_all', 'Limpiar todo', 'Elimina todos los archivos de cache, configuración, rutas y vistas'),
+			$this->newAction('clear_optimize', 'Limpiar optimización', 'Elimina todos los archivos de optimización'),
+			$this->newAction('optimize', 'Optimizar', 'Optimiza la configuración, las rutas y las clases'),
+			$this->newAction('cache_routes', 'Cachear rutas', 'Cachear rutas')
 		];
-
-		$actions = array_map(fn ($item) => (object) $item, $arrayActions);
 
 		return view('admin::pages.configuracion.cache.index', compact('actions'));
 	}
@@ -86,31 +52,40 @@ class AdminCacheController extends Controller
 		};
 	}
 
-	public function clearCache()
+	private function newAction($action, $title, $description)
+	{
+		return (object) [
+			'action' => $action,
+			'title' => $title,
+			'description' => $description
+		];
+	}
+
+	private function clearCache()
 	{
 		Artisan::call('cache:clear');
 		return response()->json(['status' => 'success', 'message' => 'La cache se ha limpiado correctamente']);
 	}
 
-	public function clearConfig()
+	private function clearConfig()
 	{
 		Artisan::call('config:clear');
 		return response()->json(['status' => 'success', 'message' => 'La configuración se ha limpiado correctamente']);
 	}
 
-	public function clearRoute()
+	private function clearRoute()
 	{
 		Artisan::call('route:clear');
 		return response()->json(['status' => 'success', 'message' => 'Las rutas se han limpiado correctamente']);
 	}
 
-	public function clearView()
+	private function clearView()
 	{
 		Artisan::call('view:clear');
 		return response()->json(['status' => 'success', 'message' => 'Las vistas se han limpiado correctamente']);
 	}
 
-	public function clearAll()
+	private function clearAll()
 	{
 		Artisan::call('cache:clear');
 		Artisan::call('config:clear');
@@ -119,19 +94,19 @@ class AdminCacheController extends Controller
 		return response()->json(['status' => 'success', 'message' => 'Se ha limpiado todo correctamente']);
 	}
 
-	public function clearOptimize()
+	private function clearOptimize()
 	{
 		Artisan::call('optimize:clear');
 		return response()->json(['status' => 'success', 'message' => 'Se ha limpiado la optimización correctamente']);
 	}
 
-	public function optimize()
+	private function optimize()
 	{
 		Artisan::call('optimize');
 		return response()->json(['status' => 'success', 'message' => 'Se ha optimizado correctamente la configuración, las rutas y las clases']);
 	}
 
-	public function cacheRoutes()
+	private function cacheRoutes()
 	{
 		Artisan::call('route:cache');
 		return response()->json(['status' => 'success', 'message' => 'Se han cacheado las rutas correctamente']);
