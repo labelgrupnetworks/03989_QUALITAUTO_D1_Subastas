@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers\User;
 
-use Redirect;
-use Config;
-use Db;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 

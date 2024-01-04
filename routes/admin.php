@@ -347,7 +347,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('subastas/lote/addFeature', 'subasta\AdminLotController@addFeature');
 
 		Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
-		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features');
+		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features.post');
 
 
 		Route::get('subastas/lotes/printPdf/{codSub}', 'subasta\AdminLotController@pdfExhibition')->name('subastas.lotes.printPdf');
@@ -442,6 +442,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('jobs/pending/{id}', 'configuracion\AdminJobsController@showPendingJob')->name('admin.jobs.pending');
 		Route::get('jobs/failed/{id}', 'configuracion\AdminJobsController@showFailedJob')->name('admin.jobs.failed');
 		Route::post('jobs/failed/{id}', 'configuracion\AdminJobsController@reesendFailedJob')->name('admin.jobs.failed_retry');
+
+		Route::get('cache', 'configuracion\AdminCacheController@index')->name('admin.cache.index');
+		Route::post('cache', 'configuracion\AdminCacheController@action')->name('admin.cache.action');
 
 	});
 
