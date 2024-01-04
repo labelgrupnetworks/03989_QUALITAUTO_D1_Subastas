@@ -236,7 +236,7 @@ class test extends BaseController
 
 		$Auction = new stdClass();
 		$Auction->idauction = "testapi";
-
+		$Auction->phoneorders = "testapi";
 
 
 
@@ -284,7 +284,7 @@ class test extends BaseController
 			$sessionLang->description = "session description pt";
 			$session->sessionLanguages[]=(array)$sessionLang;
 */
-		$Auction->sessions[] = (array)$session;
+		//$Auction->sessions[] = (array)$session;
 /*
 			$session = new stdClass();
 			$session->reference = "001";

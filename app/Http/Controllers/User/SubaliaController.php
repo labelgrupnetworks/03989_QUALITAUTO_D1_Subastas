@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 # Controladores
 
 use App\Http\Controllers\Controller;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request as Input;
 
 
@@ -191,7 +191,7 @@ class SubaliaController extends Controller {
 
         $method = 'AES-256-ECB';
 
-        $urlSubalia = "https://subalia.es";
+        $urlSubalia = Config::get("app.subalia_URL", "https://subalia.es");
 
         $info = request('info');
         $cliAuchouse = Config::get('app.subalia_cli');
