@@ -44,7 +44,7 @@
 						<th>
 							<label>
 								<input id="selectAllDeposits" name="js-selectAll" data-objective="desposit_ids" type="checkbox" value="true">
-								<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('subastas.deposit.ajax_get_deposits') }}">
+								<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('subastas.deposit.update_filters') }}">
 							</label>
 						</th>
 						<th>{{ trans("admin-app.fields.sub_deposito") }}</th>

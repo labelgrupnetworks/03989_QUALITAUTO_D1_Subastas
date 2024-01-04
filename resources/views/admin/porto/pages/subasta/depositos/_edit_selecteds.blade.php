@@ -1,6 +1,6 @@
 @php
 	use App\Models\V5\FgDeposito;
-	$fieldEstadoDeposito = FormLib::Select('estado_deposito_edit', 1, '', (new FgDeposito())->getEstados());
+	$fieldEstadoDeposito = FormLib::Select('estado_deposito_edit', 1, '', (new FgDeposito())->getEstados(), '', '', false);
 @endphp
 
 <div class="modal fade" id="editMultpleDepositsModal" role="dialog" aria-hidden="true" tabindex="-1">
