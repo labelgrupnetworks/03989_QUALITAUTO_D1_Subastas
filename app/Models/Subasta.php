@@ -814,8 +814,7 @@ class Subasta extends Model
             $where_licit        = false;
         }
 
-        #OJO SE va a permitir pujas iguales por ese motivo la que gana es la primera realizada(funciona al reves que las pujas normales), es importante que si algun día se hacen ordenes se cree primero la puja ganadora .
-		#la fecha contiene tanto fecha como hora, las lineas no se tendran en cuenta para el orden
+        #OJO este listado es incompatible a dejar pujar por un importe que ya exista, si en algun momento se quiere hacer pujas inversas a ciegas, o se bloquean las pujas iguales o se crea un nuevo listado ya que interfieren con como se ha de ordenar las ordenes
         $pujas = DB::select("SELECT * FROM (
             SELECT * FROM (
                   SELECT rownum rn, pu.* FROM (
@@ -823,7 +822,7 @@ class Subasta extends Model
                       JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
 
                       WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
-                      ORDER BY IMP_ASIGL1 ASC, fec_asigl1 ASC
+                      ORDER BY IMP_ASIGL1 ASC, fec_asigl1 DESC, LIN_ASIGL1 DESC
                   ) pu
                 ) where ROWNUM <= $num)t".self::getOffset($this->page, $this->itemsPerPage)
                 ,$params
@@ -1225,6 +1224,42 @@ class Subasta extends Model
 
 
     # Ordenes de Licitación de un Lote en concreto
+    public function getOrdenesInversa()
+    {
+
+        $cod_sub = $this->cod;
+
+
+        //No se puede modificar el ORDER BY
+        $sql= "SELECT licitadores.cod_licit,ordenesLicitacion.tipop_orlic,ordenesLicitacion.himp_orlic,ordenesLicitacion.fec_orlic, licit_orlic, lots_conditional_orlic, num_conditional_orlic FROM FGORLIC ordenesLicitacion
+                                JOIN FGLICIT licitadores
+								JOIN FXCLI ON FXCLI.GEMP_CLI = :gemp AND  FXCLI.COD_CLI = licitadores.CLI_LICIT
+                                ON (licitadores.COD_LICIT = ordenesLicitacion.LICIT_ORLIC AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod)
+                            WHERE
+							(FXCLI.BAJA_TMP_CLI ='N' OR FXCLI.BAJA_TMP_CLI ='W')  AND
+                                ordenesLicitacion.EMP_ORLIC = :emp
+
+                                AND ordenesLicitacion.SUB_ORLIC = :cod
+                                AND ordenesLicitacion.REF_ORLIC = :lote
+                                AND ordenesLicitacion.FEC_ORLIC is not null
+                                AND ordenesLicitacion.HORA_ORLIC is not null
+                                ORDER BY ordenesLicitacion.HIMP_ORLIC ASC,
+                                TO_DATE(TO_CHAR(ordenesLicitacion.FEC_ORLIC, 'DD/MM/YY') || ' ' || ordenesLicitacion.HORA_ORLIC, 'DD/MM/YY HH24:MI:SS') ASC, LIN_ORLIC ASC";
+        $params = array('cod' => $cod_sub, 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
+
+
+        $ordenesTmp = DB::select($sql,$params);
+		$ordenes = array();
+        foreach ($ordenesTmp as $key => $value) {
+
+			$ordenesTmp[$key]->himp_orlic_formatted = \Tools::moneyFormat($value->himp_orlic);
+			$ordenes[]=$ordenesTmp[$key];
+        }
+
+        return $ordenes;
+	}
+
+	# Ordenes de Licitación de un Lote en concreto
     public function getOrdenes($where = '', $cod_sub=false)
     {
       if(!$cod_sub)
@@ -2917,7 +2952,7 @@ class Subasta extends Model
 
 							//recorremos los rangos de escala  mientras no supere el max vamos sumando el escalado
 							while ($val >= $scaleRanges[$i]->min  && !$end){
-								
+
 								//si hemos superado el importe actual es que ya hemos encontrado la siguiente puja.
 								if($val < $new_bid){
 									 $validate = false;

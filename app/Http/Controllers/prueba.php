@@ -172,18 +172,18 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-/*
+
 		$subasta = new subasta();
-        $subasta->cod ="LABELP";
-        $subasta->ref =  2;
-        $subasta->lote =  2 ;
+        $subasta->cod ="INV23";
+        $subasta->ref =  4;
+        $subasta->lote =  4 ;
 		$subasta->page          = 1;
 		$subasta->itemsPerPage  = 100;
 		$pujas = $subasta->getPujasInversas();
 
 		echo "<pre>";
 		print_r($pujas);
-*/
+
 
 		$a = new Subasta();
 		$a->sin_pujas = false;

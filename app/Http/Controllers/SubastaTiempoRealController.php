@@ -1604,11 +1604,16 @@ class subastaTiempoRealController extends Controller
 
 	#funcion de hacer puja pero en version subasta inversa
 	public function executeActionInversa($subasta,  $lote, $is_gestor){
-
+		#guardamos los valores originales de la puja
+		$impOriginalFormatted = \Tools::moneyFormat($subasta->imp);
+		$impOriginal = $subasta->imp;
+		$licitOriginal = $subasta->licit;
+		$typeBidOriginal = $subasta->type_bid;
 		\Log::info("Subasta inversa LICIT: ". $subasta->licit." SUBASTA: ". $subasta->cod." lote: ".$subasta->ref ." importe_validate " .$subasta->impsal." subasta.imp ".  $subasta->imp);
 
 		$pujas  = $subasta->getPujasInversas();
 
+		#La puja debe ser menor o igual que el importe de salida
 		if($subasta->imp > $subasta->impsal   )
         {
 			\Log::info("greater_bid_reverse importe introducido" . $subasta->imp." > ".$subasta->impsal . " importe salida" );
@@ -1624,7 +1629,45 @@ class subastaTiempoRealController extends Controller
 		}
 
 
+		# si el que puja ya es el ganador actual
 		if(count($pujas)>0 && $subasta->licit == $pujas[0]->cod_licit){
+
+			#comprobamos que no sea una orden, si es ese el caso la guardamos
+			if( $subasta->imp  <  $pujas[0]->imp_asigl1){
+				$subasta->addOrden();
+				$res = array(
+					'status'            => 'success',
+					'msg_2'             => 'add_bidding_order',
+					'cod_licit_actual'  => $subasta->licit,
+					'can_do'            => "orden",
+					'himp_formatted'    => \Tools::moneyFormat($subasta->imp), //resultado para ficha subasta normal
+					'sobreorden'    => true,
+					'imp_original_formatted' => $impOriginalFormatted,
+					'imp_original'      => $impOriginal,
+					  'imp'               =>  $impOriginal
+				);
+
+				#es posible que haya precio de reserva, si aun no se ha alcanzado debemos llevar la puja lo más proximo al precio de reserva
+				if($lote->impres_asigl0 > 0 && $lote->impres_asigl0 < $pujas[0]->imp_asigl1){
+
+					$subasta->imp = max($lote->impres_asigl0,$subasta->imp);
+					#Realizamos la puja
+					$addPuja = $subasta->addPuja();
+					$subasta->page      = 'all';
+					$res['pujasAll']    = $subasta->getPujasInversas();
+					$res['actual_bid']  = $subasta->imp ;
+
+					$res['formatted_actual_bid'] = \Tools::moneyFormat($subasta->imp);
+					
+					$res['siguiente']  = $subasta->NextScaleInverseBid($subasta->impsal,$subasta->imp );
+
+				}
+
+
+				return $res;
+
+			}
+			//si no es una orden damos un error
 			\Log::info("same_bidder numero pujas ".count($pujas). " licitador". $subasta->licit ." > ".$pujas[0]->cod_licit. "antiguo licitador ganador" );
 			$res = $this->error_puja('same_bidder', $subasta->licit, $is_gestor);
             return $res;
@@ -1642,6 +1685,7 @@ class subastaTiempoRealController extends Controller
                     'cod_licit_actual'  => $subasta->licit,
 					'no_interrupt_cd_time' => 'true',
 					'is_gestor' => $is_gestor
+
                     );
 
 			if($is_gestor){
@@ -1651,13 +1695,113 @@ class subastaTiempoRealController extends Controller
             return $res;
         }
 
-		$addPuja = $subasta->addPuja();
 
-		  $actual_bid = $subasta->imp;
-		  $siguiente = $subasta->NextScaleInverseBid($subasta->impsal,$actual_bid );
+		if(count($pujas)>0 ){
+			$actualBid =  $pujas[0]->imp_asigl1;
+		}else{
+			$actualBid = $subasta->impsal;
+		}
 
-		  $formatted_actual_bid = \Tools::moneyFormat($actual_bid);
-		  $imp_original_formatted = \Tools::moneyFormat($subasta->imp);
+
+		#cargamos las ordenes previas
+		$ordenes = $subasta->getOrdenesInversa();
+
+		$previousOrder = null;
+		if(count($ordenes) > 0 && $ordenes[0]->himp_orlic < $actualBid){
+			$previousOrder =$ordenes[0];
+		}
+		$nextBid = $subasta->NextScaleInverseBid($subasta->impsal,$actualBid );
+
+
+		#si no hay ordenes pendientes de ejecutarse
+		if (empty($previousOrder)){
+			#revisamos si el usuario ha realizado una orden, en ese caso realizamos la orden
+			if( $subasta->imp < $nextBid){
+					$subasta->addOrden();
+					#si hay precio de reserva miramos si se puede hacer una puja por  el precio de reserva
+					if($subasta->imp  <= $lote->impres_asigl0 ){
+						$subasta->imp = $lote->impres_asigl0;
+					}else{
+						$subasta->imp =  $nextBid;
+					}
+
+			}
+				#Realizamos la puja
+				$addPuja = $subasta->addPuja();
+		}
+		#si hay ordenes pendientes de realizarse
+		else{
+			#revisamos si el usuario ha realizado una orden,
+			if( $subasta->imp < $nextBid){
+				#creamos la orden del usuario
+				$subasta->addOrden();
+			}
+#Revisado
+				#si la puja actual es la ganadora hacemos una puja con la orden de base de datos
+				if ($subasta->imp < $previousOrder->himp_orlic){
+					\Log::info("puja actual ganadora");
+					$subasta->licit = $previousOrder->licit_orlic;
+
+					$subasta->imp   = $previousOrder->himp_orlic;
+					$subasta->type_bid = $previousOrder->tipop_orlic??  "W" ;
+
+					$addPuja = $subasta->addPuja(FALSE, 'A');
+					$nextBid =  $subasta->NextScaleInverseBid($subasta->impsal,$subasta->imp );
+
+                    $this->email_bid_confirmed($subasta,$addPuja,'AUTOMATICA', $previousOrder->himp_orlic);
+
+					#ponemos los valores originales de la puja
+					$subasta->licit = $licitOriginal;
+					$subasta->type_bid = $typeBidOriginal;
+
+					#calculamos cual debería ser el siguiente importe
+						#si aun no se ha llegado al precio de reserva
+
+					if($lote->impres_asigl0 > 0 && $previousOrder->himp_orlic >  $lote->impres_asigl0  ){
+						$subasta->imp = max($lote->impres_asigl0, $impOriginal );
+					}else{
+
+						#si no hay que tener en cuenta el importe de reserva, tendremos en cuenta que puede venir una orden o estar fuera de escalado
+						$subasta->imp = max($impOriginal, $nextBid);
+					}
+
+					#Realizamos la puja
+					$addPuja = $subasta->addPuja();
+
+				}
+#fin revisado
+				#si la ganadora es la orden de base de datos
+				else{
+					#Realizamos la puja
+					$addPuja = $subasta->addPuja();
+					#Ponemos los datos de la orden de base de datos
+					$subasta->licit = $previousOrder->licit_orlic;
+
+					$subasta->type_bid = $previousOrder->tipop_orlic??  "W" ;
+
+
+
+					$nextBid =  $subasta->NextScaleInverseBid($subasta->impsal,$subasta->imp );
+					$subasta->imp =max($previousOrder->himp_orlic, $nextBid);
+
+
+					#Realizamos la puja
+					$addPuja = $subasta->addPuja(FALSE, 'A');
+				}
+
+
+		}
+
+
+
+
+
+
+		  $actualBid = $subasta->imp;
+		  $siguiente = $subasta->NextScaleInverseBid($subasta->impsal,$actualBid );
+
+		  $formatted_actual_bid = \Tools::moneyFormat($actualBid);
+
 		  $cod_licit_db = "";
 		  $resultado = array();
 		  array_push($resultado, 'addPuja');
@@ -1667,16 +1811,17 @@ class subastaTiempoRealController extends Controller
 				  'msg_2'             => 'correct_bid',
 				  'cod_licit_actual'  => $subasta->licit,
 				  'cod_licit_db'      => $cod_licit_db,
-				  'actual_bid'        => $actual_bid,
+				  'actual_bid'        => $actualBid,
 				  'formatted_actual_bid' => $formatted_actual_bid,
-				  'imp_original_formatted' => $imp_original_formatted,
+
 				  'siguiente'         => $siguiente,
 				  'test'              => $resultado,
 				  'type_bid'          => $subasta->type_bid,
 				  'winner'            => $subasta->licit,
 				  'sobrepuja'         => true,
-				  'imp_original'      => $subasta->impsal,
-				  'imp'               =>  $subasta->imp
+				  'imp_original_formatted' => $impOriginalFormatted,
+				  'imp_original'      => $impOriginal,
+				  'imp'               => $subasta->imp
 			  );
 		  # Consultamos todas las pujas para las ordenes, para poder mostrar la lista entera en la lista de pujas
 		  $subasta->page      = 'all';
@@ -1686,7 +1831,7 @@ class subastaTiempoRealController extends Controller
 		  if (!empty($is_gestor)){
 			  $res['is_gestor'] = TRUE;
 		  }
-		  
+
 		  return json_encode($res);
 
 
@@ -3477,10 +3622,11 @@ class subastaTiempoRealController extends Controller
 						$seleccionado = $val;
 						$end = true;
 					}else{
-						\Log::info("val= $val , i = $i new bid=".  $new_bid);
+						$LastVal = $val;
 						$val = $subasta->NextScaleInverseBid($next_bid,$val);
 
-						if($val <0){
+						#si el ultimo numero se repite es por que nunca podemos llegar a 0
+						if($val <0 || $LastVal == $val){
 							$end = true;
 						}
 					}
