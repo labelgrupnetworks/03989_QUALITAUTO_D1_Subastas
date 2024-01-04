@@ -27,10 +27,9 @@ $idiomes = \Config::get('app.locales');
 							<span>Web</span>
 						</a>
 					</li>
+
 					@if(Session::get('user.admin'))
 
-
-					@if(in_array('usuarios', $config_menu_admin) || in_array('clientes', $config_menu_admin))
 					<li class="nav-parent @if(request('menu', '') == 'usuarios' || !empty($menu) && $menu == 'usuarios' ) nav-expanded @endif">
 						<a href="#">
 							<i class="fa fa-user" aria-hidden="true"></i>
@@ -66,8 +65,6 @@ $idiomes = \Config::get('app.locales');
 							</li>
 						</ul>
 					</li>
-
-					@endif
 
 					@if(in_array('subastas', $config_menu_admin) || in_array('newsubastas', $config_menu_admin) || in_array('concursal', $config_menu_admin) || in_array('ordenLotesDestacados', $config_menu_admin))
 					<li class="nav-parent @if(request('menu', '') == 'subastas' || !empty($menu) && $menu == 'subastas' ) nav-expanded @endif">

@@ -20,7 +20,7 @@
 					<ul class="dropdown-menu dropdown-menu-right">
 					  <li><a href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">Archivo Excel</a></li>
 					  <li><a href="{{ route('newsletter.export', ['format' => 'csv']) }}">Archivo CSV</a></li>
-					  <li><a href="{{ route('newsletter.export', ['format' => 'csv', 'service' => 'mailchimp']) }}">Formato para Mailchimp</a></li>
+					  {{-- <li><a href="{{ route('newsletter.export', ['format' => 'csv', 'service' => 'mailchimp']) }}">Formato para Mailchimp</a></li> --}}
 					</ul>
 				  </div>
             </div>

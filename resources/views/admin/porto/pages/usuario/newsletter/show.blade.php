@@ -75,7 +75,7 @@
 
                                 <td class="align-items-center d-flex gap-5 justify-content-space-between">
 
-                                    @if (!empty($suscription->cod_cli))
+                                    @if (!empty($suscription->cod_cli) && in_array('clientes', config('app.config_menu_admin')))
                                         <a class="btn btn-info btn-xs"
                                             href="{{ route('clientes.edit', ['cliente' => $suscription->cod_cli]) }}">
                                             <i class="fa fa-eye"></i>
