@@ -237,7 +237,7 @@ io.on('connection', function(socket) {
 		    //parámetros
 		    qs: {'params': params}
 		}, function (error, response, body) {
-			//console.log(response);
+			
 		    if (!error && response.statusCode === 200) {
 		    	$res = body;
 

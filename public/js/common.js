@@ -53,7 +53,7 @@ $(document).ready(function () {
 						xhr.abort();
 					} catch (e) {
 					}
-					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.importe_escalado_siguiente + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub, function (data) {
+					$.getJSON('/api-ajax/calculate_bids/' + auction_info.lote_actual.importe_escalado_siguiente + '/' + term + '?cod_sub=' + auction_info.subasta.cod_sub , function (data) {
 						var matches = [];
 						for (i = 0; i < data.length; i++) {
 							matches.push(data[i].toString());

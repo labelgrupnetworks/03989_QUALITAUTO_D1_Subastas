@@ -746,17 +746,63 @@ class Subasta extends Model
                                 );
 
     }
-    //copia de getPujas pero que envia menos información
-     public function getPujas($licit = false, $cod_sub = false, $num = 100)
+	    //copia de getPujas pero que envia menos información
+		public function getPujas($licit = false, $cod_sub = false, $num = 100)
+		{
+
+			if(!$cod_sub)
+			{
+			  $cod_sub = $this->cod;
+			}
+			$params = array(
+				'emp'       => Config::get('app.emp'),
+				'cod_sub'   => $cod_sub,
+				'ref'       => $this->ref
+			);
+
+
+			if($licit) {
+				$params['licit']    = $licit;
+				$where_licit        = " AND pujas1.LICIT_ASIGL1 = :licit";
+			} else {
+				$where_licit        = false;
+			}
+
+
+			//ES IMPORTANTE QUE SI HAY DOS PUJAS IGUALES COJA PRIMERO LA ULTIMA, PARA ESO HACE FALTA MIRAR LA FECHA Y HORA Y LIN_ASIGL1 POR SI LA FECHA Y HORA SON IGUALES.
+
+			$pujas = DB::select("SELECT * FROM (
+				SELECT * FROM (
+					  SELECT rownum rn, pu.* FROM (
+						  SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1,  concat(SUBSTR(pujas1.fec_asigl1,1,11),  pujas1.hora_asigl1) as bid_date, type_asigl1 FROM FGASIGL1 pujas1
+						  JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
+
+						  WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
+						  ORDER BY IMP_ASIGL1 DESC, TO_DATE(TO_CHAR(pujas1.FEC_ASIGL1, 'DD/MM/YY') || ' ' || pujas1.HORA_ASIGL1, 'DD/MM/YY HH24:MI:SS') DESC, LIN_ASIGL1 DESC
+					  ) pu
+					) where ROWNUM <= $num)t".self::getOffset($this->page, $this->itemsPerPage)
+					,$params
+				);
+
+			if(!$licit) {
+				foreach ($pujas as $key => $value) {
+					$pujas[$key]->formatted_imp_asigl1 = \Tools::moneyFormat($value->imp_asigl1);
+				}
+			} elseif (!empty($pujas[0])) {
+				$pujas[0]->formatted_imp_asigl1 = \Tools::moneyFormat($pujas[0]->imp_asigl1);
+			}
+
+			return $pujas;
+		}
+
+   	#Listado de pujas inversas
+     public function getPujasInversas($licit = false,$cod_sub = false,   $num = 100)
     {
 
-        if(!$cod_sub)
-        {
-          $cod_sub = $this->cod;
-        }
+
         $params = array(
             'emp'       => Config::get('app.emp'),
-            'cod_sub'   => $cod_sub,
+            'cod_sub'   => $this->cod,
             'ref'       => $this->ref
         );
 
@@ -768,17 +814,15 @@ class Subasta extends Model
             $where_licit        = false;
         }
 
-
-        //ES IMPORTANTE QUE SI HAY DOS PUJAS IGUALES COJA PRIMERO LA ULTIMA, PARA ESO HACE FALTA MIRAR LA FECHA Y HORA Y LIN_ASIGL1 POR SI LA FECHA Y HORA SON IGUALES.
-
+        #OJO este listado es incompatible a dejar pujar por un importe que ya exista, si en algun momento se quiere hacer pujas inversas a ciegas, o se bloquean las pujas iguales o se crea un nuevo listado ya que interfieren con como se ha de ordenar las ordenes
         $pujas = DB::select("SELECT * FROM (
             SELECT * FROM (
                   SELECT rownum rn, pu.* FROM (
-                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1,  concat(SUBSTR(pujas1.fec_asigl1,1,11),  pujas1.hora_asigl1) as bid_date, type_asigl1 FROM FGASIGL1 pujas1
+                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1, pujas1.fec_asigl1 as bid_date, type_asigl1 FROM FGASIGL1 pujas1
                       JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
 
                       WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
-                      ORDER BY IMP_ASIGL1 DESC, TO_DATE(TO_CHAR(pujas1.FEC_ASIGL1, 'DD/MM/YY') || ' ' || pujas1.HORA_ASIGL1, 'DD/MM/YY HH24:MI:SS') DESC, LIN_ASIGL1 DESC
+                      ORDER BY IMP_ASIGL1 ASC, fec_asigl1 DESC, LIN_ASIGL1 DESC
                   ) pu
                 ) where ROWNUM <= $num)t".self::getOffset($this->page, $this->itemsPerPage)
                 ,$params
@@ -1180,6 +1224,42 @@ class Subasta extends Model
 
 
     # Ordenes de Licitación de un Lote en concreto
+    public function getOrdenesInversa()
+    {
+
+        $cod_sub = $this->cod;
+
+
+        //No se puede modificar el ORDER BY
+        $sql= "SELECT licitadores.cod_licit,ordenesLicitacion.tipop_orlic,ordenesLicitacion.himp_orlic,ordenesLicitacion.fec_orlic, licit_orlic, lots_conditional_orlic, num_conditional_orlic FROM FGORLIC ordenesLicitacion
+                                JOIN FGLICIT licitadores
+								JOIN FXCLI ON FXCLI.GEMP_CLI = :gemp AND  FXCLI.COD_CLI = licitadores.CLI_LICIT
+                                ON (licitadores.COD_LICIT = ordenesLicitacion.LICIT_ORLIC AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod)
+                            WHERE
+							(FXCLI.BAJA_TMP_CLI ='N' OR FXCLI.BAJA_TMP_CLI ='W')  AND
+                                ordenesLicitacion.EMP_ORLIC = :emp
+
+                                AND ordenesLicitacion.SUB_ORLIC = :cod
+                                AND ordenesLicitacion.REF_ORLIC = :lote
+                                AND ordenesLicitacion.FEC_ORLIC is not null
+                                AND ordenesLicitacion.HORA_ORLIC is not null
+                                ORDER BY ordenesLicitacion.HIMP_ORLIC ASC,
+                                TO_DATE(TO_CHAR(ordenesLicitacion.FEC_ORLIC, 'DD/MM/YY') || ' ' || ordenesLicitacion.HORA_ORLIC, 'DD/MM/YY HH24:MI:SS') ASC, LIN_ORLIC ASC";
+        $params = array('cod' => $cod_sub, 'lote' => $this->ref, 'emp' => App('config')['app']['emp'], 'gemp' => \Config::get("app.gemp"));
+
+
+        $ordenesTmp = DB::select($sql,$params);
+		$ordenes = array();
+        foreach ($ordenesTmp as $key => $value) {
+
+			$ordenesTmp[$key]->himp_orlic_formatted = \Tools::moneyFormat($value->himp_orlic);
+			$ordenes[]=$ordenesTmp[$key];
+        }
+
+        return $ordenes;
+	}
+
+	# Ordenes de Licitación de un Lote en concreto
     public function getOrdenes($where = '', $cod_sub=false)
     {
       if(!$cod_sub)
@@ -2682,7 +2762,63 @@ class Subasta extends Model
 		}
 
 
-     }
+    }
+
+	//Devulve el valor que debería tener la siguiente puja teniendo en cuenta el valor actual y el escalado
+	public function NextScaleInverseBid($imp_salida,$imp_actual, $first_ol = FALSE)
+	{
+		if ( !empty($this->sin_pujas) &&  $this->sin_pujas && !$first_ol){
+			return $imp_salida;
+		}else{
+			$scaleRanges = $this->AllScales();
+
+			//$imp = max($imp_salida,$imp_actual);
+			$end = false;
+			$i = count($scaleRanges)-1;
+			$val = 0;
+			while (!$end){
+
+					if($imp_actual <= $scaleRanges[$i]->min ){
+						$i--;
+					}else{
+
+						if ($first_ol){
+							//19/02/2018 pasamos el valor del importe para que nos ponga un valor correcto en caso de que no lo sea.
+							$val = $this->NextScaleInverseBid($imp_salida,$imp_actual-1 , FALSE);
+
+						}else{
+							$val =$scaleRanges[$i]->max;
+						}
+
+						//mientras el importe sea más pequeño que el importe actual
+						while ( $val >= $imp_actual ){
+
+							#vamos sumando
+							$val -=$scaleRanges[$i]->scale;
+
+							//Si hemos llegado a 0 no podemos devolver 0 y devolvemos el ultimo importe
+							if($val<= 0){
+								$val +=$scaleRanges[$i]->scale;
+								return $val;
+							}
+
+							#si pasamos de rango reducimos la i
+							if($val <= $scaleRanges[$i]->min){
+
+								$i --;
+							}
+
+						}
+
+						$end = true;
+					}
+			}
+
+			return $val;
+		}
+	}
+
+
 
 	 private function NextScaleFromPrice($imp_salida,$imp_actual, $first_ol){
 
@@ -2781,6 +2917,65 @@ class Subasta extends Model
 		}
 	 }
 
+
+     //valida si el importe pasado respeta el escalado
+	 public function validateScaleInverse($imp_salida,$new_bid)
+	 {
+
+		try{
+
+			if (!is_numeric($new_bid )){
+				return false;
+			}
+			 //si es igual al valor de salida y aun no hay pujas es correcto
+			 if ($imp_salida == $new_bid && $this->sin_pujas){
+					return true;
+			 }
+			 //si hacen una puja por el valor de salida pero ya hay pujas
+			 elseif( ($imp_salida == $new_bid && !$this->sin_pujas) || $imp_salida < $new_bid  ){
+				  return false;
+			 }
+			 else{
+
+				 $scaleRanges = $this->AllScales();
+
+				 $end = false;
+				 $validate = false;
+				 $i = count($scaleRanges)-1;
+				 while (!$end){
+
+					 if($new_bid <= $scaleRanges[$i]->min){
+
+							 $i--;
+					}else{
+							$val = $scaleRanges[$i]->max;
+
+							//recorremos los rangos de escala  mientras no supere el max vamos sumando el escalado
+							while ($val >= $scaleRanges[$i]->min  && !$end){
+
+								//si hemos superado el importe actual es que ya hemos encontrado la siguiente puja.
+								if($val < $new_bid){
+									 $validate = false;
+									 $end = true;
+								}elseif($val == $new_bid){
+									 $validate = true;
+									 $end = true;
+								}
+								else{// mientras no superemso el importe actual vamos restando el escalado
+									$val -=$scaleRanges[$i]->scale;
+								}
+							}
+						}
+				 }
+
+				return $validate;
+			 }
+
+			}catch (\Exception $e) {
+				\Log::info('Error validateScale: $imp_salida importe salida  new bid:'.$new_bid);
+				  return false;
+			}
+	 }
      //valida si el importe pasado respeta el escalado
     public function validateScale($imp_salida,$new_bid)
     {
@@ -3140,8 +3335,13 @@ class Subasta extends Model
                 //$this->itemsPerPage = Config::get('app.pujas_maximas_mostradas');
             }
             if($get_pujas){
-            # Son los valores que se usan en la aplicación de tr, se descartan el resto.
-                $lotes[$key]->pujas = $this->getPujas( false,  $value->cod_sub);
+            	# Son los valores que se usan en la aplicación de tr, se descartan el resto.
+				if(!empty($value->inversa_sub) && $value->inversa_sub == 'S'){
+					$lotes[$key]->pujas = $this->getPujasInversas( false,  $value->cod_sub);
+				}else{
+					$lotes[$key]->pujas = $this->getPujas( false,  $value->cod_sub);
+				}
+
             }else{
                 $lotes[$key]->pujas = array();
             }
@@ -3447,6 +3647,12 @@ class Subasta extends Model
                 $lotes[$key]->contextra_hces1  = $value->contextra_hces1;
             }else{
                  $lotes[$key]->contextra_hces1  = NULL;
+            }
+
+			if(isset($value->inversa_sub)){
+                $lotes[$key]->inversa_sub  = $value->inversa_sub;
+            }else{
+                 $lotes[$key]->inversa_sub  = 'N';
             }
 
             $lotes[$key]->open_price = NULL;
