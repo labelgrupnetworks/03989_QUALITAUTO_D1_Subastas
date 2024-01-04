@@ -195,6 +195,7 @@ $(() => {
 	document.getElementById('toogleOrders')?.addEventListener('click', toogleGridOrders);
 	document.querySelector('.lots-filters .btn-close')?.addEventListener('click', closeGridMenu);
 
+	showMessageModalOneTimeToSession();
 
 	$('.order-auction-lot input[name="order"]').on('change', function (event) {
 		document.getElementById('form_lotlist').submit();
@@ -691,6 +692,17 @@ function showRematesModal() {
 		return;
 	}
 	$.magnificPopup.open({ items: { src: '#rematesModal' }, type: 'inline' }, 0);
+}
+
+function showMessageModalOneTimeToSession() {
+	if (!$('.message_modal').length) {
+		return;
+	}
+
+	if (!sessionStorage.getItem('message_modal')) {
+		$('.message_modal')[0].style.display = 'block';
+		sessionStorage.setItem('message_modal', true);
+	}
 }
 
 function showLoginFromModal() {
