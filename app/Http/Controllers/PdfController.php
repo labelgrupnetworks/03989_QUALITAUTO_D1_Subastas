@@ -194,7 +194,8 @@ class PdfController extends Controller
 			'lot' => $ref_asigl0,
 			'award' => $this->licits[$cod_licit]->nom_cli,
 			'imp' => Tools::moneyFormat($import),
-			'bidders' => $bidders
+			'bidders' => $bidders,
++			'tablaSubasta' => $this->tableInfo,
 		];
 
 
