@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang=”<?= \Config::get('app.language_complete')[\Config::get('app.locale')]; ?>“>
+<html lang="<?= \Config::get('app.language_complete')[\Config::get('app.locale')]; ?>">
 
 <head>
 	@include('includes.google_head')
@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<?php \Tools::personalJsCss();?>
+	{!! Tools::personalJsCss() !!}
 
 	@include('includes.google_body')
 	@include('includes.header')
@@ -22,9 +22,9 @@
 
 	<div class="button-up">
 		<i class="fa fa-chevron-up" aria-hidden="true"></i>
-
 	</div>
-	<?php Tools::querylog();  ?>
+
+	{!! Tools::querylog() !!}
 	@if(request("openLogin")=="S" && !Session::has('user') )
 		<script>
 			$(document).ready(function () {
