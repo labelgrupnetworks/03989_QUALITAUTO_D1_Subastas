@@ -172,35 +172,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-
-		$subasta = new subasta();
-        $subasta->cod ="INV23";
-        $subasta->ref =  4;
-        $subasta->lote =  4 ;
-		$subasta->page          = 1;
-		$subasta->itemsPerPage  = 100;
-		$pujas = $subasta->getPujasInversas();
-
-		echo "<pre>";
-		print_r($pujas);
-
-
-		$a = new Subasta();
-		$a->sin_pujas = false;
-		$imp_salida= 10;
-		$imp_actual =5;
-		$first_ol = false;
-		/*
-		if($a->validateScaleInverse($imp_salida,$imp_actual )){
-			echo "escalado valido";
-		}
-		else{
-			echo "escalado invalido";
-		}
-		*/
-		echo "normal ". $a->NextScaleInverseBid($imp_salida,$imp_actual, $first_ol);
-
-
+		echo('prueba');
 	}
 
 	private function testInvaluable(){
