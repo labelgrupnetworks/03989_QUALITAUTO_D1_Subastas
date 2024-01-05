@@ -198,7 +198,11 @@ class Prueba extends BaseController
 			echo "escalado invalido";
 		}
 		*/
-		echo "normal ". $a->NextScaleInverseBid($imp_salida,$imp_actual, $first_ol);
+
+		#
+		//echo $a."<br>";
+
+		echo "<br><a href='/prueba?q=fuentes+de+publicidad+y+marketing&'> link a prueba</a>";
 
 
 	}
