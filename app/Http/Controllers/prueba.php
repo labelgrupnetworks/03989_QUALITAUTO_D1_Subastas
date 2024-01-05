@@ -15,7 +15,7 @@ use App;
 use App\Http\Controllers\admin\bi\AdminBiController;
 use Request;
 use lessc;
-use DB;
+use Illuminate\Support\Facades\DB;
 use File;
 use Log;
 use View;
@@ -173,6 +173,16 @@ class Prueba extends BaseController
 	public function index()
 	{
 		echo('prueba');
+
+		if(request()->has('connection')){
+			echo '<br> test connection <br>';
+			echo $this->testConnection();
+		}
+	}
+
+	private function testConnection()
+	{
+		return DB::table('jobs')->get()->count();
 	}
 
 	private function testInvaluable(){
