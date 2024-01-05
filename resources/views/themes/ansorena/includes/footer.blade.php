@@ -170,7 +170,7 @@
 @include('includes.cookies_personalize')
 
 @if (Carbon\Carbon::now()->lessThan(Carbon\Carbon::create(2024, 1, 6, 0, 0, 0)))
-<div class="message_modal" data-style="popover" data-position="right" style="display: none">
+<div class="message_modal" data-style="popover" data-position="right">
     <p class="message_modal__title">Aviso</p>
 
     <div class="message_modal_content">
@@ -183,10 +183,16 @@
         </div>
 
         <div class="message_modal_buttons">
-            <button class="btn btn-lb-primary">
+            <button class="btn btn-lb-primary" onclick="closeMessageModal()">
                Cerrar
             </button>
         </div>
     </div>
 </div>
+
+<script>
+	function closeMessageModal() {
+		$('.message_modal')[0].style.display = 'none';
+	}
+</script>
 @endif

@@ -195,7 +195,7 @@ $(() => {
 	document.getElementById('toogleOrders')?.addEventListener('click', toogleGridOrders);
 	document.querySelector('.lots-filters .btn-close')?.addEventListener('click', closeGridMenu);
 
-	showMessageModalOneTimeToSession();
+	//showMessageModalOneTimeToSession();
 
 	$('.order-auction-lot input[name="order"]').on('change', function (event) {
 		document.getElementById('form_lotlist').submit();
