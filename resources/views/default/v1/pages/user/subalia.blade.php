@@ -12,7 +12,7 @@
 
     <div class="d-flex flex-column ">
 
-        <img class="img-responsive banner-landing mt-5" src="/themes/{{\Config::get('app.theme')}}/img/banner-landing-registro.jpg"  alt="{{(\Config::get( 'app.theme' ))}}">
+        <img class="img-responsive banner-landing mt-5" src="/themes/{{\Config::get('app.theme')}}/img/banner-landing-registro.jpg"  alt="{{(\Config::get( 'app.theme' ))}}"  onerror="this.style.display='none'">
 
         <p class="mt-3 text-center">{{ trans(\Config::get('app.theme').'-app.login_register.subalia_info') }}</p>
         <div class="first_line mr-3 ml-3"></div>
@@ -22,7 +22,7 @@
 
         <form id="formSubalia" method="post" action="javascript:landingLogin();">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            
+
             <div class="mt-5 formsLanding">
                 {!!$formulario->email!!}
             </div>
@@ -38,14 +38,14 @@
 
         @else
         <p class="mt-2 text-center">{{ trans(\Config::get('app.theme').'-app.login_register.share_data') }}</p>
-        
+
         <div class="mt-2 formsLanding">
                 {!!$formulario->submit!!}
         </div>
         <div class="mt-1 mb-5">
             <a title="" href="/{{ \Config::get("app.locale")}}"><button class="btn" style="background-color: transparent; min-width: 150px;color:black;" id="cancelarSubalia">{{ trans(\Config::get('app.theme').'-app.login_register.cancel') }}</button></a>
         </div>
-        
+
         <form id="formUserLogin" method="post" action="javascript:enviarDatos();">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="mt-5">
@@ -53,12 +53,8 @@
             </div>
         </form>
         @endif
-        
-        @if(\Config::get("app.locale") == 'en')
-        <form id="formEnvio" method="post" action="https://subalia.es/registercomplete">
-        @else
-        <form id="formEnvio" method="post" action="https://subalia.es/registercomplete">
-        @endif
+
+		<form id="formEnvio" method="post" action="{{Config::get("app.subalia_URL", "https://subalia.es")}}/registercomplete">
             <input type="hidden" name="info" id="info" value="">
             <input type="hidden" name="cod_ambassador" id="member" value="">
         </form>

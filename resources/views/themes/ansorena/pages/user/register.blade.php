@@ -406,17 +406,13 @@ foreach ($document_type as $key => $value) {
 
 			</form>
 			@if(!empty($formulario->subalia))
-			@if(\Config::get("app.locale") == 'en')
-			<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-				@else
-				<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
-					@endif
+				<form id="formToSubalia" method="post" action="{{Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
 					<input type="hidden" name="info" id="info_sent" value="">
 					<input type="hidden" name="cod_auchouse" id="cod_auchouse_sent" value="">
 					<input type="hidden" name="redirect" id="redirect_sent" value="">
 				</form>
-				@endif
-				<br><br><br><br><br><br><br><br>
+			@endif
+			<br><br><br><br><br><br><br><br>
 		</div>
 	</div>
 </div>

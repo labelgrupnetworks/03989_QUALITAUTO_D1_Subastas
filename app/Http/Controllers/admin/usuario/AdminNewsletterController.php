@@ -25,6 +25,7 @@ class AdminNewsletterController extends Controller
 	{
 		$newsletters = Fx_Newsletter::whereLang()
 			->withCount('suscriptors')
+			->orderBy('id')
 			->get();
 
 		$catalogsCount = FxCli2::where('envcat_cli2', 'S')->count();

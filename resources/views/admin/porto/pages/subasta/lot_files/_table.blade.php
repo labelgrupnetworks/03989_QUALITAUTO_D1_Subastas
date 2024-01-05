@@ -19,7 +19,7 @@
                         data-title="¿Estás seguro de eliminar todos los archivos seleccionados"
                         data-response="Se han eliminado los archivos seleccionados"
                         data-url="{{ route('subastas.lotes.files.delete-selection') }}"
-                        onclick="actionSelecteds(this.dataset, refreshFilesRows)">
+                        onclick="removeSelecteds(this.dataset, refreshFilesRows)">
                         Eliminar
                     </button>
                 </li>
