@@ -21,7 +21,7 @@
 				Acceso a canal privado
             </h1>
 
-            <form method="POST" action="{{ route('private_chanel.login') }}">
+            <form method="POST" action="{{ route('private_chanel.login.send') }}">
                 @csrf
 
                 <div class="form-floating">

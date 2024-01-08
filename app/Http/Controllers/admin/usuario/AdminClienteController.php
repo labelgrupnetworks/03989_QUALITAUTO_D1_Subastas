@@ -336,12 +336,12 @@ class AdminClienteController extends Controller
 				'password' => FormLib::Password("password", 0, "", 0, "Mín. 6 caracteres."),
 			],
 			'datosPersonales' => [
+				'legalentity' => FormLib::Select('legalentity', 0, old('legalentity', $cliente->legalentity ?? ''), $fxcli->getTipoFisJurTypes(), ''),
 				'registeredname' => FormLib::Text('registeredname', 0, old('registeredname', $cliente->registeredname ?? ''), 'maxlength="60"'),
 				'name' => FormLib::Text('name', 0, old('name', $cliente->name ?? ''), 'maxlength="60"'),
 				'language' => FormLib::Select('language', 0, old('language', $cliente->language ?? ''), FsIdioma::getArrayValues(), '', '', false),
 				'documenttype' => FormLib::Select('documenttype', 0, old('documenttype', $cliente->documenttype ?? ''), $fxcli->getTipoDocumento(), ''),
 				'idnumber' => FormLib::Text("idnumber", 0, old('idnumber', $cliente->idnumber ?? ''), 'maxlength="20"'),
-				'legalentity' => FormLib::Select('legalentity', 0, old('legalentity', $cliente->legalentity ?? ''), $fxcli->getTipoFisJurTypes(), ''),
 				'typerepresentative' => FormLib::Select('typerepresentative', 0, old('typerepresentative', $cliente->typerepresentative ?? ''), $fxcli->getTipoRep(), ''),
 				'docrepresentative' => FormLib::Text('docrepresentative', 0, old('docrepresentative', $cliente->docrepresentative ?? ''), 'maxlength="20"'),
 				'notes' => FormLib::Textarea('notes', 0, old('notes', $cliente->notes ?? ''), 'maxlength="200"'),

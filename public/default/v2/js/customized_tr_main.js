@@ -1,3 +1,4 @@
+
 /*
 |--------------------------------------------------------------------------
 | Repinta la caja de pujas
@@ -9,6 +10,8 @@ $(document).ready(function () {
 		e.stopPropagation();
 		$.magnificPopup.close();
 		//si pulsan el boton de puja donde viene un valor
+
+
 
 
 		if ($(e.currentTarget)[0].hasAttribute("value")) {
@@ -37,7 +40,13 @@ $(document).ready(function () {
 
 		} else {
 
-			if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente))) {
+			if (typeof auction_info.lote_actual.inversa_sub == 'undefined' || auction_info.lote_actual.inversa_sub != "S") {
+				var inversa = false;
+			} else{
+				var inversa = true;
+			}
+
+			if (!auction_info.user.is_gestor && (isNaN(parseInt($("#bid_amount").val())) || (parseInt($("#bid_amount").val()) < parseInt(auction_info.lote_actual.importe_escalado_siguiente)) && !inversa  )) {
 				$("#insert_msg_title").html(messages.error.lower_bid);
 				$("#insert_msg").html(messages.error.your_bid + " " + auction_info.lote_actual.importe_escalado_siguiente + " € " + messages.error.as_minimum);
 				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
@@ -236,7 +245,13 @@ function reloadPujasListO() {
 
 	const pujasReverse = [...pujas].reverse();
 
-	const firstBidToExceedReservePriece = pujasReverse.find((licitador) => parseInt(licitador.imp_asigl1) >= parseInt(loteActual.impres_asigl0));
+	if(typeof auction_info.lote_actual.inversa_sub != 'undefined' && auction_info.lote_actual.inversa_sub == 'S'){
+		 firstBidToExceedReservePriece = pujasReverse.find((licitador) => parseInt(licitador.imp_asigl1) <= parseInt(loteActual.impres_asigl0));
+	}else{
+		 firstBidToExceedReservePriece = pujasReverse.find((licitador) => parseInt(licitador.imp_asigl1) >= parseInt(loteActual.impres_asigl0));
+	}
+
+
 	const min_price_surpass = firstBidToExceedReservePriece?.imp_asigl1 || false;
 
 	//mostramso si se ha alcanzado el precio mínimo
@@ -516,9 +531,10 @@ function displayAlert_W(type, msg) {
 }
 
 function displayAlert_O(type, msg) {
+
+	$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 	$("#insert_msg_title").html("");
 	$("#insert_msg").html(msg);
-	$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 
 }
 
@@ -645,8 +661,14 @@ function reloadPujasButtons(codSub, actualBid){
 
 			for (let index = 0; index < 3; index++) {
 
-				$(`[data-escalado-position=${index}]`).attr('value', response[index]);
-				$(`[data-escalado-position=${index}] span`).attr('value', response[index]).text(new Intl.NumberFormat("de-DE").format(response[index]));
+				if(typeof response[index] != 'undefined'){
+					$(`[data-escalado-position=${index}]`).attr('value', response[index]);
+					$(`[data-escalado-position=${index}] span`).attr('value', response[index]).text(new Intl.NumberFormat("de-DE").format(response[index]));
+				}else{
+					$(`[data-escalado-position=${index}]`).addClass('hidden');
+
+				}
+
 
 				/* $(buttons[index]).attr('value', response[index]);
 				$(buttons[index].firstElementChild).attr('value', response[index]).text(new Intl.NumberFormat("de-DE").format(response[index])); */

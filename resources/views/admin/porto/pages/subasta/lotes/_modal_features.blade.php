@@ -12,7 +12,7 @@
 
 				<div class="modal-body" id="modal-create-body">
 
-					<form name="addFeatureForm" action="{{ route('multilanguage_features') }}" method="POST">
+					<form name="addFeatureForm" action="{{ route('multilanguage_features.post') }}" method="POST">
 						<input type="hidden" name="id_caracteristica" value="{{ $feature->id_caracteristicas }}">
 
 						<p>{{ config('app.locales.'.config('app.locale')) }}</p>

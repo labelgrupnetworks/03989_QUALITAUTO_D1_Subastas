@@ -111,50 +111,30 @@ class AdminDepositoController extends Controller
 				->with(['success' =>array(trans('admin-app.title.updated_ok')) ]);
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 	public function updateSelections(Request $request)
 	{
 		$ids = $request->input('ids', []);
-		$estado_deposito = $request->input('estado_deposito_edit', '');
+		$new_estado_deposito = $request->input('estado_deposito_edit', '');
 
-		$fgDepositos = FgDeposito::whereIn('cod_deposito', $ids)->get();
+		FgDeposito::whereIn('cod_deposito', $ids)
+			->update(['estado_deposito' => $new_estado_deposito]);
 
-		foreach ($fgDepositos as $fgDeposito) {
-			$fgDeposito->estado_deposito = $estado_deposito;
-			if ($fgDeposito->isDirty()) {
-				$fgDeposito->save();
-			}
-		}
-
-		return redirect(route('deposito.index'))->with('success', ['Depositos actualizados correctamente']);
+		return redirect(route('deposito.index'))->with('success', ['Depósitos actualizados correctamente']);
 	}
 
-	public function getAjaxAllDepositsWithFilters(Request $request)
+	public function updateWithFilters(Request $request)
 	{
+		$new_estado_deposito = $request->input('estado_deposito_edit', '');
+
 		$fgDepositos = FgDeposito::query();
 		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
-		$fgDepositos = $fgDepositos->JoinCli()->orderBy("fecha_deposito", "desc")->get();
+		$ids = $fgDepositos->joinCli()->pluck('cod_deposito');
 
-		foreach ($fgDepositos as $fgDeposito) {
-			$fgDeposito->estado_deposito = $request->estado_deposito_edit;
-			if ($fgDeposito->isDirty()) {
-				$fgDeposito->save();
-			}
-		}
+		FgDeposito::whereIn('cod_deposito', $ids)
+			->update(['estado_deposito' => $new_estado_deposito]);
 
-		return redirect(route('deposito.index'))->with('success', ['Depositos actualizados correctamente']);
+		return redirect(route('deposito.index'))->with('success', ['Depósitos actualizados correctamente']);
 	}
-
 
 	private function formFgDeposito(FgDeposito $fgDeposito)
 	{

@@ -17,16 +17,7 @@ Route::get('/img/load/{size}/{img}', 'ImageController@return_image');
 #load img url amigable
 Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController@return_image_friend');
 
-/* fin routes version 5.2 de laravel */
 
-
-
-# Nombres de espacios
-View::addNamespace('front', [
-	resource_path('/views/themes/' . App('config')['app']['theme']),
-	resource_path('/views/default/' . App('config')['app']['default_theme']),
-]);
-View::addNamespace('admin', realpath(base_path('resources/views/admin/' . Config::get('app.admin_theme'))));
 
 //redireccionamos de la raiz al idioma principal
 Route::get('', function () {
@@ -35,7 +26,7 @@ Route::get('', function () {
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
 Route::get('prueba', 'prueba@index')->name('prueba');
-Route::post('prueba', 'prueba@index')->name('prueba');
+Route::post('prueba', 'prueba@index');
 Route::get('prueba/componentes', [prueba::class, 'componentes'])->name('prueba.componentes');
 Route::get('AnsorenaValidateUnion', 'AnsorenaValidateUnion@validateUnion')->name('AnsorenaValidateUnion');
 Route::get('AnsorenaDecisionUnion', 'AnsorenaValidateUnion@decisionUnion');
@@ -710,11 +701,11 @@ require __DIR__ . '/web_service.php';
 /* Rutas para llamar al 404 */
 Route::get('404', function () {
 	exit(View::make('front::errors.404'));
-})->name('not_found');
+});
 
 Route::post('404', function () {
 	exit(View::make('front::errors.404'));
-})->name('not_found');
+});
 
 //Si no ha habido ningun resultado mostramos un 404
 Route::get('{any}', function () {

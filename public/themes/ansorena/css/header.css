@@ -1768,6 +1768,61 @@ h1.titlePage {
 .account-user .form-group :is(input, select) {
 	width: 100%;
 }
+/*
+|--------------------------------------------------------------------------
+| Message Modal
+|--------------------------------------------------------------------------
+*/
+
+.message_modal {
+	position: fixed;
+	z-index: 999998;
+	background: #fff;
+	padding: 1rem;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 7px;
+	box-shadow: rgba(0, 0, 0, .19) 0 10px 20px, rgba(0, 0, 0, .23) 0 6px 6px;
+	font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+	transition: display 1s ease-in-out;
+}
+
+.message_modal__title {
+	font-size: 1.2em;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.message_modal__message {
+	font-size: 1em;
+	margin-bottom: 1rem;
+	flex: 1;
+}
+
+.message_modal_buttons {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+@media(width > 500px) {
+	.message_modal {
+		right: 25px;
+		left: auto;
+		bottom: 15px;
+		padding: 2rem;
+		max-width: 500px;
+		width: 100%;
+	}
+
+	.message_modal_buttons {
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+}
 
 /*
 |--------------------------------------------------------------------------
