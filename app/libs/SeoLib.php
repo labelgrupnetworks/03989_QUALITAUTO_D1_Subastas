@@ -15,12 +15,12 @@ class SeoLib {
 
 		if(Config::get("app.keywords_search")){
 			\Log::info("keywords_search ACTIVO");
-			$referer = Request::header('referer');
+			//$referer = Request::header('referer');
 
-			\Log::info("referr: ". $referer);
-			if(!empty($referer)){
 
-				$url = parse_url($referer);
+			if(!empty($_SERVER['HTTP_REFERER'])){
+				\Log::info("referr: ". $_SERVER['HTTP_REFERER']);
+				$url = parse_url($_SERVER['HTTP_REFERER']);
 
 				$host= $url["host"];
 				\Log::info("url: ". $host);
