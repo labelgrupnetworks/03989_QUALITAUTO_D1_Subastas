@@ -307,6 +307,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('newsletter/export/', 'usuario\AdminNewsletterController@export')->name('newsletter.export');
 		Route::resource('newsletter', 'usuario\AdminNewsletterController');
 
+		Route::post('clientes/delete-with-filters', 'usuario\AdminClienteController@destroyWithFilters')->name('clientes.destroy_with_filters');
+		Route::post('clientes/delete-selection', 'usuario\AdminClienteController@destroySelections')->name('clientes.destroy_selections');
+		Route::post('clientes/update-with-filters', 'usuario\AdminClienteController@updateWithFilters')->name('clientes.update_with_filters');
+		Route::post('clientes/update-selection', 'usuario\AdminClienteController@updateSelections')->name('clientes.update_selections');
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
 		Route::post('clientes/send_ws', 'usuario\AdminClienteController@send_ws');

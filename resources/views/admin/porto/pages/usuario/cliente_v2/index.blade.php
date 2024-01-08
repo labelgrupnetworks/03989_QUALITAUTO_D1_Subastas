@@ -7,8 +7,6 @@
 
 	<div class="row well header-well d-flex align-items-center">
 
-		{{-- {{ dd(request()->all()) }} --}}
-
 
 		<div class="col-xs-12">
 			<h1>{{ trans_choice("admin-app.title.client", 2) }}</h1>
@@ -18,6 +16,38 @@
 	<div class="row well">
 
 		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
+
+			<div class="btn-group" id="js-dropdownItems">
+				<button class="btn btn-default btn-sm" type="button">Seleccionados</button>
+				<button
+					data-objective="cli_ids"
+					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
+					aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+				</button>
+
+				<ul aria-labelledby="js-dropdownItems" class="dropdown-menu">
+
+					<li>
+						<button class="btn" data-objective="cli_ids"
+							data-allselected="js-selectAll"
+							data-title="¿Estás seguro de eliminar todos los clientes seleccionados?"
+							data-response="Se han eliminado los clientes seleccionados"
+							data-url="{{ route('clientes.destroy_selections') }}"
+							data-urlwithfilters="{{ route('clientes.destroy_with_filters') }}"
+							onclick="removeSelecteds(this.dataset)">
+							Eliminar
+						</button>
+					</li>
+
+					<li>
+						<button class="btn" data-toggle="modal" data-target="#editMultpleClientsModal">
+							Modificar
+						</button>
+					</li>
+
+				</ul>
+			</div>
 
 			<a id="clientesExport" href="{{ route('clientes.export') }}" class="btn btn-sm btn-primary"
 			>{{ trans('admin-app.button.export') }}</a>
@@ -33,6 +63,12 @@
 			<table id="clientes" class="table table-striped table-condensed table-responsive" style="width:100%" data-order-name="order">
 				<thead>
 					<tr>
+						<th>
+							<label>
+								<input id="selectAllClients" name="js-selectAll" data-objective="cli_ids" type="checkbox" value="true">
+								<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('clientes.update_with_filters') }}">
+							</label>
+						</th>
 						@foreach ($tableParams as $param => $display)
 
 						<th class="{{$param}}"  style="cursor: pointer; @if(!$display) display: none; @endif" data-order="{{$param}}">
@@ -63,6 +99,7 @@
 							<input type="hidden" name="order" value="{{ request('order', 'cod_cli') }}">
 							<input type="hidden" name="order_dir" value="{{ request('order_dir', 'desc') }}">
 
+							<td></td>
 							@foreach ($tableParams as $param => $display)
 								<td class="{{$param}}" @if(!$display) style="display: none" @endif> {!! $formulario->$param ?? '' !!}</td>
 							@endforeach
@@ -79,6 +116,11 @@
 					@forelse ($clientes as $cliente)
 
 					<tr id="{{$cliente->cod_cli}}">
+						<td>
+							<label>
+								<input type="checkbox" name="cli_ids" value="{{$cliente->cod2_cli}}">
+							</label>
+						</td>
 						<td class="cod_cli" @if(!$tableParams['cod_cli']) style="display: none" @endif>{{$cliente->cod_cli}}</td>
 						<td class="cod2_cli" @if(!$tableParams['cod2_cli']) style="display: none" @endif>{{$cliente->cod2_cli}}</td>
 						<td class="tipo_cli" @if(!$tableParams['tipo_cli']) style="display: none" @endif>{{$cliente->tipoCli->des_tcli ?? ''}}</td>
@@ -142,5 +184,7 @@
 	</div>
 
 </section>
+
+@include('admin::pages.usuario.cliente_v2._edit_selecteds')
 
 @stop
