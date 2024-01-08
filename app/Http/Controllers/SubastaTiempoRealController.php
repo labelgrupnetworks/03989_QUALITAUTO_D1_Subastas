@@ -1658,7 +1658,7 @@ class subastaTiempoRealController extends Controller
 					$res['actual_bid']  = $subasta->imp ;
 
 					$res['formatted_actual_bid'] = \Tools::moneyFormat($subasta->imp);
-					
+
 					$res['siguiente']  = $subasta->NextScaleInverseBid($subasta->impsal,$subasta->imp );
 
 				}
@@ -2083,7 +2083,7 @@ class subastaTiempoRealController extends Controller
 
 
 		#PUJA EN SUBASTA INVERSA
-		if($lote->inversa_sub == "S"){
+		if(!empty($lote->inversa_sub) &&  $lote->inversa_sub == "S"){
 			\Log::info("subasta inversa");
 			return $this->executeActionInversa($subasta, $lote, $is_gestor);
 		}
