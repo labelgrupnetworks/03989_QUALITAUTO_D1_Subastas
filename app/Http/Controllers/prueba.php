@@ -180,6 +180,7 @@ class Prueba extends BaseController
 		}
 	}
 
+
 	private function testConnection()
 	{
 		return DB::table('jobs')->get()->count();

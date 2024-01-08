@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 
 use App\Models\User;
-
+use App\libs\SeoLib;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -26,6 +26,7 @@ class Controller extends BaseController
         }
 
         $this->validateUserSession();
+		SeoLib::KeywordsSearch();
 
     }
 
