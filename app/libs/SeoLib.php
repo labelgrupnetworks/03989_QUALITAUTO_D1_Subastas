@@ -15,6 +15,7 @@ class SeoLib {
 
 		if(Config::get("app.keywords_search")){
 			$referer = Request::header('referer');
+
 			if(!empty($referer)){
 				$url = parse_url($referer);
 				$host= $url["host"];
@@ -23,7 +24,7 @@ class SeoLib {
 				$host = str_replace("www.","",$host);
 				$host = str_replace(".com","",$host);
 
-				if($host == "google" || $host == "bing" || $host == "http://subastas.test" ){
+				if($host == "google" || $host == "bing" || $host == "subastas.test" ){
 					foreach($vars as $var){
 						$posicion = strpos($var, "q=");
 						if ($posicion !== false){
@@ -36,7 +37,7 @@ class SeoLib {
 										["engine_keywords_search" => $host,
 										"word_keywords_search" => $keyword,
 										"date_keywords_search" => date("Y-m-d H:i:s"),
-										"emp_keywords_search" => Config::get("app.main_emp")]
+										"emp_keywords_search" => Config::get("app.emp")]
 									);
 								}
 								break;

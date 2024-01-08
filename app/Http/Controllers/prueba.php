@@ -202,7 +202,7 @@ class Prueba extends BaseController
 		#
 		//echo $a."<br>";
 
-		echo "<br><a href='/prueba?q=fuentes+de+publicidad+y+marketing&'> link a prueba</a>";
+		echo "<br><a href='http://subastas.test'> link a prueba</a>";
 
 
 	}
