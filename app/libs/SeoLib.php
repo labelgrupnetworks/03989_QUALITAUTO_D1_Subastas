@@ -14,13 +14,18 @@ class SeoLib {
 	{
 
 		if(Config::get("app.keywords_search")){
+			\Log::info("keywords_search ACTIVO");
 			$referer = Request::header('referer');
 
+			\Log::info("referr: ". $referer);
 			if(!empty($referer)){
 
 				$url = parse_url($referer);
+
 				$host= $url["host"];
+				\Log::info("url: ". $host);
 				if(!empty($url["query"])){
+					\Log::info("query: ". $url["query"]);
 					$vars = explode("&", $url["query"]);
 					$keywords=array();
 					$host = str_replace("www.","",$host);
@@ -29,15 +34,17 @@ class SeoLib {
 					if(count($explodeHost)>0){
 						$host = $explodeHost[0];
 					}
-
+					\Log::info("host: ". $host);
 					if($host == "google" || $host == "bing" ){
 
 						foreach($vars as $var){
+							\Log::info("var: ". $var);
 							$posicion = strpos($var, "q=");
 							if ($posicion !== false){
 								$keywords = explode("+", str_replace("q=","",$var));
 
 								foreach ($keywords as $keyword){
+									\Log::info("keyword: ". $keyword);
 									#quitamos las palabras sin importancia que tengan 2 o menos caracteres
 									if(strlen($keyword)>=3){
 										Web_Keywords_Search::insert(
