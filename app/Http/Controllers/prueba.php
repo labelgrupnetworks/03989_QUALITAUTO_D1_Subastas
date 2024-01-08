@@ -15,7 +15,7 @@ use App;
 use App\Http\Controllers\admin\bi\AdminBiController;
 use Request;
 use lessc;
-use DB;
+use Illuminate\Support\Facades\DB;
 use File;
 use Log;
 use View;
@@ -172,39 +172,20 @@ class Prueba extends BaseController
 
 	public function index()
 	{
+		echo('prueba');
 
-		$subasta = new subasta();
-        $subasta->cod ="INV23";
-        $subasta->ref =  4;
-        $subasta->lote =  4 ;
-		$subasta->page          = 1;
-		$subasta->itemsPerPage  = 100;
-		$pujas = $subasta->getPujasInversas();
-
-		echo "<pre>";
-		print_r($pujas);
-
-
-		$a = new Subasta();
-		$a->sin_pujas = false;
-		$imp_salida= 10;
-		$imp_actual =5;
-		$first_ol = false;
-		/*
-		if($a->validateScaleInverse($imp_salida,$imp_actual )){
-			echo "escalado valido";
+		if(request()->has('connection')){
+			echo '<br> test connection <br>';
+			echo $this->testConnection();
 		}
-		else{
-			echo "escalado invalido";
-		}
-		*/
 
-		#
-		//echo $a."<br>";
-
-		echo "<br><a href='http://subastas.test'> link a prueba</a>";
+	}
 
 
+
+	private function testConnection()
+	{
+		return DB::table('jobs')->get()->count();
 	}
 
 	private function testInvaluable(){

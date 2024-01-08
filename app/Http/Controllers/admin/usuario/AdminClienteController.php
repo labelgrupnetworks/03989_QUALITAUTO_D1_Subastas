@@ -39,66 +39,13 @@ class AdminClienteController extends Controller
 			}) ;
 		}
 
-		$clientes = FxCli::with('tipoCli')->with('cli2:cod_cli2, envcat_cli2')
-			->leftJoinCliWebCli()
-			->leftJoinClid('W1')
-			->select("FXCLI.COD_CLI", "FXCLI.COD2_CLI", "FXCLI.TIPO_CLI", "FXCLI.RSOC_CLI", "FXCLI.EMAIL_CLI", "FXCLI.TEL1_CLI", "FXCLI.PAIS_CLI", "FXCLI.PRO_CLI", "FXCLI.IDIOMA_CLI", "FXCLI.FISJUR_CLI", "FXCLI.BAJA_TMP_CLI", "FXCLI.F_MODI_CLI")
-			->addSelect("NVL(FXCLI.NOM_CLI, FXCLIWEB.NOM_CLIWEB) as NOM_CLI" ,"NVL(FXCLI.F_ALTA_CLI,FXCLIWEB.FECALTA_CLIWEB) as FECALTA_CLIWEB")
-			->addSelect('FXCLID.EMAIL_CLID')
+		$clientes = self::clientsQueryBuilder()
+		->select("FXCLI.COD_CLI", "FXCLI.COD2_CLI", "FXCLI.TIPO_CLI", "FXCLI.RSOC_CLI", "FXCLI.EMAIL_CLI", "FXCLI.TEL1_CLI", "FXCLI.PAIS_CLI", "FXCLI.PRO_CLI", "FXCLI.IDIOMA_CLI", "FXCLI.FISJUR_CLI", "FXCLI.BAJA_TMP_CLI", "FXCLI.F_MODI_CLI")
+		->addSelect("NVL(FXCLI.NOM_CLI, FXCLIWEB.NOM_CLIWEB) as NOM_CLI" ,"NVL(FXCLI.F_ALTA_CLI,FXCLIWEB.FECALTA_CLIWEB) as FECALTA_CLIWEB")
+		->addSelect('FXCLID.EMAIL_CLID');
 
 
-			//para relacion con cli2
-			->when($request->envcat_cli2, function ($query, $envcat_cli2) {
-				return $query->whereHas('cli2', function ($query) use ($envcat_cli2) {
-					return $query->where('envcat_cli2', $envcat_cli2);
-				});
-			})
-
-			->when($request->cod_cli, function ($query, $cod_cli) {
-				return $query->where('cod_cli', 'like', "%" . $cod_cli . "%");
-			})
-			->when($request->cod2_cli, function ($query, $cod2_cli) {
-				return $query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
-			})
-			->when($request->tipo_cli, function ($query, $tipo_cli) {
-				return $query->where('tipo_cli', $tipo_cli);
-			})
-			->when($request->nom_cli, function ($query, $nom_cli) {
-				return $query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
-			})
-			->when($request->rsoc_cli, function ($query, $rsoc_cli) {
-				return $query->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($rsoc_cli) . "%");
-			})
-			->when($request->email_cli, function ($query, $email_cli) {
-				return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($email_cli) . "%");
-			})
-			->when($request->tel1_cli, function ($query, $tel1_cli) {
-				return $query->where('upper(tel1_cli)', 'like', "%" . mb_strtoupper($tel1_cli) . "%");
-			})
-			->when($request->pais_cli, function ($query, $pais_cli) {
-				return $query->where('upper(pais_cli)', 'like', "%" . mb_strtoupper($pais_cli) . "%");
-			})
-			->when($request->pro_cli, function ($query, $pro_cli) {
-				return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($pro_cli) . "%");
-			})
-			->when($request->idioma_cli, function ($query, $idioma_cli) {
-				return $query->where('upper(idioma_cli)', 'like', "%" . mb_strtoupper($idioma_cli) . "%");
-			})
-			->when($request->fisjur_cli, function ($query, $fisjur_cli) {
-				return $query->where('fisjur_cli', $fisjur_cli);
-			})
-			->when($request->fecalta_cliweb, function ($query, $fecalta_cliweb) {
-				return $query->where('fecalta_cliweb', '>=', ToolsServiceProvider::getDateFormat($fecalta_cliweb, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-			})
-			->when($request->f_modi_cli, function ($query, $f_modi_cli) {
-				return $query->where('f_modi_cli', '>=', ToolsServiceProvider::getDateFormat($f_modi_cli, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-			})
-			->when($request->baja_tmp_cli, function ($query, $baja_tmp_cli) {
-				return $query->where('baja_tmp_cli', $baja_tmp_cli);
-			})
-			->when($request->email_clid, function ($query, $email_clid) {
-				return $query->where('upper(email_clid)', 'like', "%" . mb_strtoupper($email_clid) . "%");
-			});
+			$clientes = self::clientsQueryFilters($clientes, $request);
 
 			//newsletters
 			if(!empty($newslettersSelect)){
@@ -111,8 +58,7 @@ class AdminClienteController extends Controller
 			}
 
 
-			$clientes = $clientes->where('cod_cli', '!=', 9999)
-			->orderBy(request('order', 'cast(fxcli.cod_cli as int)'), request('order_dir', 'desc'));
+			$clientes = $clientes->orderBy(request('order', 'cast(fxcli.cod_cli as int)'), request('order_dir', 'desc'));
 
 			/* $test = DB::select(Str::replaceArray('?', $clientes->getBindings(), $clientes->toSql()));
 			dd($test); */
@@ -519,6 +465,168 @@ class AdminClienteController extends Controller
 		});
 
 		FxCliOrigen::insert($origenes->toArray());
+	}
+
+	private function clientsQueryBuilder()
+	{
+		return FxCli::with('tipoCli')->with('cli2:cod_cli2, envcat_cli2')
+			->leftJoinCliWebCli()
+			->leftJoinClid('W1')
+			->where('cod_cli', '!=', 9999);
+	}
+
+	private function clientsQueryFilters($clientes, Request $request)
+	{
+		//para relacion con cli2
+		$clientes->when($request->envcat_cli2, function ($query, $envcat_cli2) {
+			return $query->whereHas('cli2', function ($query) use ($envcat_cli2) {
+				return $query->where('envcat_cli2', $envcat_cli2);
+			});
+		})
+
+		->when($request->cod_cli, function ($query, $cod_cli) {
+			return $query->where('cod_cli', 'like', "%" . $cod_cli . "%");
+		})
+		->when($request->cod2_cli, function ($query, $cod2_cli) {
+			return $query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
+		})
+		->when($request->tipo_cli, function ($query, $tipo_cli) {
+			return $query->where('tipo_cli', $tipo_cli);
+		})
+		->when($request->nom_cli, function ($query, $nom_cli) {
+			return $query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
+		})
+		->when($request->rsoc_cli, function ($query, $rsoc_cli) {
+			return $query->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($rsoc_cli) . "%");
+		})
+		->when($request->email_cli, function ($query, $email_cli) {
+			return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($email_cli) . "%");
+		})
+		->when($request->tel1_cli, function ($query, $tel1_cli) {
+			return $query->where('upper(tel1_cli)', 'like', "%" . mb_strtoupper($tel1_cli) . "%");
+		})
+		->when($request->pais_cli, function ($query, $pais_cli) {
+			return $query->where('upper(pais_cli)', 'like', "%" . mb_strtoupper($pais_cli) . "%");
+		})
+		->when($request->pro_cli, function ($query, $pro_cli) {
+			return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($pro_cli) . "%");
+		})
+		->when($request->idioma_cli, function ($query, $idioma_cli) {
+			return $query->where('upper(idioma_cli)', 'like', "%" . mb_strtoupper($idioma_cli) . "%");
+		})
+		->when($request->fisjur_cli, function ($query, $fisjur_cli) {
+			return $query->where('fisjur_cli', $fisjur_cli);
+		})
+		->when($request->fecalta_cliweb, function ($query, $fecalta_cliweb) {
+			return $query->where('fecalta_cliweb', '>=', ToolsServiceProvider::getDateFormat($fecalta_cliweb, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		})
+		->when($request->f_modi_cli, function ($query, $f_modi_cli) {
+			return $query->where('f_modi_cli', '>=', ToolsServiceProvider::getDateFormat($f_modi_cli, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		})
+		->when($request->baja_tmp_cli, function ($query, $baja_tmp_cli) {
+			return $query->where('baja_tmp_cli', $baja_tmp_cli);
+		})
+		->when($request->email_clid, function ($query, $email_clid) {
+			return $query->where('upper(email_clid)', 'like', "%" . mb_strtoupper($email_clid) . "%");
+		});
+
+		return $clientes;
+	}
+
+	public function updateSelections(Request $request)
+	{
+		$ids = $request->input('ids', []);
+
+		$clientes = [];
+		foreach ($ids as $id) {
+			$clientes[] =  $this->formattingDataForUpdate($request, $id);
+		}
+
+		$clientController = new ClientController();
+		$json = $clientController->updateClient($clientes);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return error($json);
+		}
+
+		return redirect(route('clientes.index'))->with('success', ['Clientes actualizados correctamente']);
+	}
+
+	public function updateWithFilters(Request $request)
+	{
+		$clientes = $this->clientsQueryBuilder()->select("FXCLI.COD2_CLI");
+		$clientes = self::clientsQueryFilters($clientes, $request);
+		$clientes = $clientes->get();
+
+		$clientesForUpdate = [];
+		foreach ($clientes as $cliente) {
+			$clientesForUpdate[] = $this->formattingDataForUpdate($request, $cliente->cod2_cli);
+		}
+
+		$clientController = new ClientController();
+		$json = $clientController->updateClient($clientesForUpdate);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return error($json);
+		}
+
+		return redirect(route('clientes.index'))->with('success', ['Clientes actualizados correctamente']);
+	}
+
+	private function formattingDataForUpdate(Request $request, $cod2_cli)
+	{
+		return [
+			'idorigincli' => $cod2_cli,
+			'source' => $request->input('tipo_select', ''),
+			'temporaryblock' => $request->input('bloq_temporal_select', ''),
+			'enviocatalogo' => $request->input('envio_catalogo_select', ''),
+		];
+	}
+
+	public function destroySelections(Request $request) {
+		$ids = $request->input('ids', []);
+
+		$json = $this->destroySelectedClients($ids);
+
+		if (json_decode($json)->status == 'ERROR') {
+			return error($json);
+		}
+
+		return redirect(route('clientes.index'))->with('success', ['Clientes eliminados correctamente']);
+	}
+
+	public function destroyWithFilters(Request $request)
+	{
+		$clientes = $this->clientsQueryBuilder()->select("FXCLI.COD2_CLI");
+		$clientes = self::clientsQueryFilters($clientes, $request);
+		$clientes = $clientes->get();
+
+		$cod2_clients = $clientes->pluck('cod2_cli')->toArray();
+
+		$json = $this->destroySelectedClients($cod2_clients);
+
+		if (json_decode($json)->status == 'ERROR') {
+			return error($json);
+		}
+
+		return redirect(route('clientes.index'))->with('success', ['Clientes eliminados correctamente']);
+	}
+
+	private function destroySelectedClients(array $ids)
+	{
+		$clientController = new ClientController();
+		foreach ($ids as $id) {
+			$json = $clientController->eraseClient(['idorigincli' => $id]);
+			$result = json_decode($json);
+
+			if ($result->status == 'ERROR') {
+				return $json;
+			}
+		}
+
+		return $json;
 	}
 
 }

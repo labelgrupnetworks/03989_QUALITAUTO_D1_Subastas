@@ -196,12 +196,13 @@ class BannerLib
 								}
 							}
 
-							$image = Image::make(public_path($pathImg));
+							/* $image = Image::make(public_path($pathImg));
 							$width = $image->width();
-							$height = $image->height();
+							$height = $image->height(); */
 							$publicPath = Tools::urlAssetsCache($pathImg);
 
-							$html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">";
+							/* $html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">"; */
+							$html .= "<img src=\"$publicPath\" alt=\"banner image\">";
 
 							if ($item->texto) {
 								$html .= "<span>" . $item->texto . "</span>";

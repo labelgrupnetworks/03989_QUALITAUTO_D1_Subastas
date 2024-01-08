@@ -404,3 +404,141 @@ function loadNotify(message = 'Cargando...') {
 		sticker: false
 	});
 }
+
+$('[name="js-selectAll"').on('click', function () {
+	const isChecked = this.checked;
+	const objectiveInputs = this.dataset.objective;
+	isChecked ? selectAllTable(objectiveInputs) : unselectAllTable(objectiveInputs);
+});
+
+function selectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = true);
+}
+
+function unselectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = false);
+}
+
+$("#js-dropdownItems").on('show.bs.dropdown', function (event) {
+
+	const button = event.relatedTarget;
+	const objective = button.dataset.objective;
+	const ids = selectedCheckItemsByName(objective);
+
+	if(ids.length === 0){
+		bootbox.alert("Debes seleccionar al menos un elemento");
+		return false;
+	}
+});
+
+$('#edit_multple_clients').on('submit', function(event){
+	event.preventDefault();
+
+    const formData = new FormData(edit_multple_clients);
+    const isSelectAllDepositsChecked = (document.getElementById('selectAllClients')).checked;
+
+    if (isSelectAllDepositsChecked) {
+        const urlSelected = document.getElementById('urlAllSelected').value;
+
+		const searchParams = new URLSearchParams(window.location.search);
+		for (const param of searchParams) {
+			formData.append(param[0], param[1]);
+		}
+
+		updateClientAjax(urlSelected, formData);
+    } else {
+        const ids = selectedCheckItemsByName("cli_ids");
+        ids.forEach(id => formData.append('ids[]', id));
+
+        updateClientAjax(edit_multple_clients.action, formData)
+    }
+});
+
+function updateClientAjax(url, formData) {
+	$.ajax({
+		url,
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+
+		success: function (result) {
+			$('#editMultpleClientsModal').modal('hide');
+			saved('Archivos actualizados correctamente');
+			location.reload(true);
+		},
+		error: function () {
+
+			error();
+		}
+	});
+}
+
+
+function selectedCheckItemsByName(name) {
+	return Array.from(document.getElementsByName(name))
+		.filter((element) => element.checked)
+		.map((element) => element.value);
+}
+
+$('input[name="cli_ids"]').on('change', function () {
+    const isSelectAllDepositsChecked = (document.getElementById('selectAllClients')).checked;
+
+    if (isSelectAllDepositsChecked) {
+        document.getElementById('selectAllClients').checked = false;
+    }
+});
+
+function getValueFromInput(inputName) {
+	const input = document.querySelector(`input[name="${inputName}"]`);
+	if(input.type == 'checkbox' && input.checked){
+		return input.value;
+	}
+	return false;
+}
+
+function getSearchParams() {
+	let params = [...new URLSearchParams(window.location.search).entries()];
+	params = params.filter(([key, value]) => value != '');
+	return params.reduce((acc, [key, value]) => {
+		return { ...acc, [key]: value }
+	}, {});
+}
+
+function makeDataToSendInRemoveSelecteds(ids) {
+	let data = {};
+	data['_token'] = $('[name="_token"]').val();
+	data['ids'] = ids;
+	const searchParams = getSearchParams();
+	for (const [key, value] of Object.entries(searchParams)) {
+		data[key] = value;
+	}
+	return data;
+}
+
+function removeSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
+
+	const valueAllSelected = getValueFromInput(allselected);
+	const urlAjax = valueAllSelected ? urlwithfilters : url;
+	const ids = !valueAllSelected ? selectedCheckItemsByName(objective) : '';
+
+	bootbox.confirm(title, function (result) {
+		if(!result) return;
+
+		$.ajax({
+			url: urlAjax,
+			type: "post",
+			data: makeDataToSendInRemoveSelecteds(ids),
+			success: function(result) {
+				saved(response);
+				location.reload(true);
+			},
+			error: function() {
+				error();
+			}
+		});
+
+	});
+}
