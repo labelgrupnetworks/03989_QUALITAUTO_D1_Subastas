@@ -17,31 +17,42 @@ class SeoLib {
 			$referer = Request::header('referer');
 
 			if(!empty($referer)){
+
 				$url = parse_url($referer);
 				$host= $url["host"];
-				$vars = explode("&", $url["query"]);
-				$keywords=array();
-				$host = str_replace("www.","",$host);
-				$host = str_replace(".com","",$host);
+				if(!empty($url["query"])){
+					$vars = explode("&", $url["query"]);
+					$keywords=array();
+					$host = str_replace("www.","",$host);
+					#cogemos el dominio sin extension
+					$explodeHost = explode(".",$host);
+					if(count($explodeHost)>0){
+						$host = $explodeHost[0];
+					}
 
-				if($host == "google" || $host == "bing" || $host == "subastas.test" ){
-					foreach($vars as $var){
-						$posicion = strpos($var, "q=");
-						if ($posicion !== false){
-							$keywords = explode("+", str_replace("q=","",$var));
+					if($host == "google" || $host == "bing" ){
 
-							foreach ($keywords as $index=>$keyword){
-								#quitamos las palabras sin importancia que tengan 2 o menos caracteres
-								if(strlen($keyword)>=3){
-									Web_Keywords_Search::insert(
-										["engine_keywords_search" => $host,
-										"word_keywords_search" => $keyword,
-										"date_keywords_search" => date("Y-m-d H:i:s"),
-										"emp_keywords_search" => Config::get("app.emp")]
-									);
+						foreach($vars as $var){
+							$posicion = strpos($var, "q=");
+							if ($posicion !== false){
+								$keywords = explode("+", str_replace("q=","",$var));
+
+								foreach ($keywords as $keyword){
+									#quitamos las palabras sin importancia que tengan 2 o menos caracteres
+									if(strlen($keyword)>=3){
+										Web_Keywords_Search::insert(
+											["engine_keywords_search" => $host,
+											"word_keywords_search" => $keyword,
+											"date_keywords_search" => date("Y-m-d H:i:s"),
+											"emp_keywords_search" => Config::get("app.emp")]
+										);
+									}
+
 								}
+								#solo nos interesa la variable "q"
 								break;
 							}
+
 						}
 					}
 				}
