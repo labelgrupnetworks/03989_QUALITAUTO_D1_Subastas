@@ -65,7 +65,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
-
+use App\libs\SeoLib;
 class UserController extends Controller
 {
 
@@ -1021,7 +1021,8 @@ class UserController extends Controller
 							   'origen_cli' => request('origen', null)
                                )
 						 );
-
+						#guardamos el evento SEO de registro de usuario
+						SeoLib::saveEvent("REGISTER");
 
 
                         //creamos la fxcli2 con ENVCAT_CLI2

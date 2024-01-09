@@ -4,11 +4,81 @@
 
 namespace App\libs;
 use Config;
-use Request;
 
+use Session;
 use App\Models\V5\Web_Keywords_Search;
-
+use App\Models\V5\Web_Seo_Events;
 class SeoLib {
+
+
+
+
+	static function saveEvent($event){
+
+
+			$UTM_SOURCE = "";
+			$UTM_MEDIUM = "";
+			$UTM_CAMPAIGN ="";
+			$UTM_TYPE = "";
+			$referer = "";
+
+			if(Session::has('UTM')){
+				$UTM_SOURCE = Session::get("UTM.source");
+				$UTM_MEDIUM = Session::get("UTM.medium");
+				$UTM_CAMPAIGN = Session::get("UTM.campaign");
+
+				$referer = Session::get("UTM.referer");
+			}
+
+			#tipo de trafico
+			if(!empty(Session::get("UTM.type"))){
+				if(Session::get("UTM.type") == "P" || Session::get("UTM.type") == "p"){
+					$UTM_TYPE = "PAID";
+				}elseif(Session::get("UTM.type") == "R" || Session::get("UTM.type") == "r"){
+					$UTM_TYPE = "REFERRAL";
+				}else{
+					#lo guardamos para poder avisar de que se está pasando mal y tener un comprobante
+					\Log::info("UTM type invalido ".Session::get("UTM.type"));
+					$UTM_TYPE = "INVALID";
+				}
+			}else{
+				if(empty($UTM_SOURCE) && empty($UTM_MEDIUM) && empty($UTM_CAMPAIGN) ){
+					if(empty($referer)){
+						$UTM_TYPE = "DIRECT";
+					}else{
+						$UTM_TYPE = "ORGANIC";
+					}
+
+				}else{
+					#si hemos llegado a este punto es que han pasado parametros UTM pero no el type
+					$UTM_TYPE = "UNINFORMED";
+				}
+			}
+			$codUser = null;
+			if (Session::has('user')){
+				$codUser =Session::get('user.cod');
+			}
+		try{
+			Web_Seo_Events::insert([
+				"EMP_SEO_EVENTS" =>  Config::get("app.emp"),
+				"USER_SEO_EVENTS" => $codUser,
+				"EVENT_SEO_EVENTS" => substr($event,0,20),
+				"TYPE_SEO_EVENTS" => substr($UTM_TYPE,0,20),
+				"REFERER_SEO_EVENTS" => substr($referer,0,255),
+				"UTM_SOURCE_SEO_EVENTS" => substr($UTM_SOURCE,0,255),
+				"UTM_MEDIUM_SEO_EVENTS" => substr($UTM_MEDIUM,0,255),
+				"UTM_CAMPAIGN_SEO_EVENTS" => substr($UTM_CAMPAIGN,0,255),
+				"DATE_SEO_EVENTS" => date("Y-m-d H:i:s")
+			]);
+
+		}catch(\Illuminate\Database\QueryException $e){
+			\Log::error($e);
+		}
+
+
+
+	}
+
     //put your code here
     static function KeywordsSearch()
 	{
