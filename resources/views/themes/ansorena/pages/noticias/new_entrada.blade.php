@@ -157,40 +157,4 @@
         @include('includes.newsletter')
 
     </main>
-
-	{{-- Para mostrar lotes relacionados. No lo utilizan --}}
-	{{--@php
-	$sub_categories_web = str_replace(',', "','", $data['news']->lot_sub_categories_web_blog);
-	$replace = [
-		'sec' => $sub_categories_web,
-		'lang' => Config::get('app.language_complete')[Config::get('app.locale')],
-		'emp' => Config::get('app.emp'),
-	];
-	@endphp
-
-    <script>
-
-        var replace = @json($replace);
-		$(document).ready(function() {
-            ajax_carousel('relacionados_noticia', replace);
-
-			if ($('.post_recents_list ul li').length < 4) {
-                $('.post_recents_button').hide();
-            }
-
-            $('.post_recents_button').on('click', function() {
-                $('.post_recents_list ul li').toggleClass('active');
-
-                if ($(this).attr('data-open') === 'open') {
-                    $(this).text('Ver más')
-                    $(this).attr('data-open', 'close')
-
-                } else {
-                    $(this).text('Ver menos')
-                    $(this).attr('data-open', 'open')
-                }
-            });
-
-        });
-    </script> --}}
 @stop

@@ -8,7 +8,7 @@ use DB;
 use Config;
 
 /**
- * @todo Eloy: 29/08
+ * Eloy: 29/08
  * Solamente se utiliza en grid de lotes antiguos y de estos
  * solo se esta utilizando por Sorolla.
  * Plantearse utilizar un config para no perjudicar el rendimiento del resto.
