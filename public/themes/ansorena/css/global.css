@@ -354,6 +354,12 @@ input {
 	--bs-btn-hover-border-color: var(--lb-color-secondary);
 }
 
+.btn.disabled, .btn:disabled {
+	background-color: hsl(0deg 0.51% 38.24%);
+    border-color: hsl(0deg 0.51% 38.24%);
+	opacity: 1;
+}
+
 .lb-text-primary {
 	color: var(--lb-color-primary);
 }
