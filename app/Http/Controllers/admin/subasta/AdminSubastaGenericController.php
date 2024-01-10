@@ -43,24 +43,7 @@ class AdminSubastaGenericController extends Controller
 		$artists = [];
 
 		$fgSubs = FgSub::query();
-		if ($request->cod_sub) {
-			$fgSubs->where('upper(cod_sub)', 'like', "%" . mb_strtoupper($request->cod_sub) . "%");
-		}
-		if ($request->des_sub) {
-			$fgSubs->where('upper(des_sub)', 'like', "%" . mb_strtoupper($request->des_sub) . "%");
-		}
-		if ($request->subc_sub) {
-			$fgSubs->where('subc_sub', '=', $request->subc_sub);
-		}
-		if ($request->tipo_sub) {
-			$fgSubs->where('tipo_sub', '=', $request->tipo_sub);
-		}
-		if ($request->dfec_sub) {
-			$fgSubs->where('dfec_sub', '>=', ToolsServiceProvider::getDateFormat($request->dfec_sub, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-		}
-		if ($request->hfec_sub) {
-			$fgSubs->where('hfec_sub', '<=', ToolsServiceProvider::getDateFormat($request->hfec_sub, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-		}
+		$fgSubs = $this->fgsubQueryFilters($fgSubs, $request);
 
 		$fgSubs = $fgSubs->select('COD_SUB', 'DES_SUB', 'SUBC_SUB', 'TIPO_SUB', 'DFEC_SUB', 'DHORA_SUB', 'HFEC_SUB', 'HHORA_SUB');
 
@@ -274,27 +257,8 @@ class AdminSubastaGenericController extends Controller
 				$update_array
 			);
 
-			if($request->upload_first_session){
-
-				$update = [
-					'"start"' => new DateTime($request->dfec_sub . ' ' . $request->dhora_sub), //new DateTime(request("start")),
-					'"end"' => new DateTime($request->hfec_sub . ' ' . $request->hhora_sub),
-					'"name"' => $request->des_sub,
-					'"description"' => mb_substr($request->descdet_sub, 0, 1000,'UTF-8')
-				];
-
-				if($request->tipo_sub == FgSub::TIPO_SUB_PRESENCIAL){
-					$update['"orders_start"'] = new DateTime($request->dfecorlic_sub . ' ' . $request->dhoraorlic_sub);
-					$update['"orders_end"'] = new DateTime($request->hfecorlic_sub . ' ' . $request->hhoraorlic_sub);
-				}
-
-
-
-				//session
-				AucSessions::where([
-					['"auction"', $cod_sub],
-					['"reference"', '001'],
-				])->update($update);
+			if ($request->upload_first_session) {
+				self::updateFirstSessions($request, [$cod_sub]);
 			}
 
 			//Actualizar o crear idiomas
@@ -558,6 +522,187 @@ class AdminSubastaGenericController extends Controller
 		return redirect(Route($this->resource_name.".edit",$codSub))->with(['success' => [$res->message]]);
 	}
 
+	#region filters
+
+	private function fgsubQueryFilters($query, Request $request)
+	{
+		if ($request->cod_sub) {
+			$query->where('upper(cod_sub)', 'like', "%" . mb_strtoupper($request->cod_sub) . "%");
+		}
+		if ($request->des_sub) {
+			$query->where('upper(des_sub)', 'like', "%" . mb_strtoupper($request->des_sub) . "%");
+		}
+		if ($request->subc_sub) {
+			$query->where('subc_sub', '=', $request->subc_sub);
+		}
+		if ($request->tipo_sub) {
+			$query->where('tipo_sub', '=', $request->tipo_sub);
+		}
+		if ($request->dfec_sub) {
+			$query->where('dfec_sub', '>=', ToolsServiceProvider::getDateFormat($request->dfec_sub, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		}
+		if ($request->hfec_sub) {
+			$query->where('hfec_sub', '<=', ToolsServiceProvider::getDateFormat($request->hfec_sub, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		}
+		return $query;
+	}
+
+	#endregion
+
+	#region validate the fields
+
+	private function validateEmptySelectionFields($fields)
+	{
+		$empty = true;
+		foreach ($fields as $key => $value) {
+			if (preg_match('/_select$/', $key) && !empty($value)) {
+				$empty = false;
+				return $empty;
+
+			}
+		}
+		return $empty;
+	}
+
+	#endregion
+
+	#region update with filters
+
+	public function updateSelections(Request $request)
+	{
+		$ids = $request->input('ids', '');
+
+		if (self::validateEmptySelectionFields($request->toArray())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
+		$request = self::erase_selectTextFromFields($request);
+
+		self::updateAuctionsWithSelects($request, $ids);
+
+		if ($request->upload_first_session) {
+			self::updateFirstSessions($request, $ids);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_auc")], 200);
+	}
+
+	public function updateWithFilters(Request $request)
+	{
+		$fgSub = FgSub::query();
+		$fgSub = self::fgsubQueryFilters($fgSub, $request);
+		$ids = ($fgSub->select('cod_sub')->get())->pluck('cod_sub')->toArray();
+
+		if (self::validateEmptySelectionFields($request->all())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
+		$request = self::erase_selectTextFromFields($request);
+
+		self::updateAuctionsWithSelects($request, $ids);
+
+		if ($request->upload_first_session) {
+			self::updateFirstSessions($request, $ids);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_auc")], 200);
+	}
+
+	private function erase_selectTextFromFields(Request $request)
+	{
+		foreach ($request->all() as $key => $value) {
+			if (preg_match('/_select$/', $key)) {
+				$request->merge([str_replace('_select', '', $key) => $value]);
+				unset($request[$key]);
+			}
+		}
+		return $request;
+	}
+
+	private function updateAuctionsWithSelects(Request $request, array $cod_subs)
+	{
+		$update = [];
+			if ($request->tipo_sub) {
+				$update['TIPO_SUB'] = $request->tipo_sub;
+			}
+			if ($request->subc_sub) {
+				$update['SUBC_SUB'] = $request->subc_sub;
+			}
+			if ($request->dfec_sub) {
+				$update['DFEC_SUB'] = new DateTime($request->dfec_sub . ' ' . $request->dhora_sub);
+			}
+			if ($request->dhora_sub) {
+				$update['DHORA_SUB'] = $request->dhora_sub;
+			}
+			if ($request->hfec_sub) {
+				$update['HFEC_SUB'] = new DateTime($request->hfec_sub . ' ' . $request->hhora_sub);
+			}
+			if ($request->hhora_sub) {
+				$update['HHORA_SUB'] = $request->hhora_sub;
+			}
+			if ($request->tipo_sub == FgSub::TIPO_SUB_PRESENCIAL) {
+				if ($request->dfecorlic_sub) {
+					$update['DFECORLIC_SUB'] = new DateTime($request->dfecorlic_sub . ' ' . $request->dhoraorlic_sub);
+				}
+				if ($request->dhoraorlic_sub) {
+					$update['DHORAORLIC_SUB'] = $request->dhoraorlic_sub;
+				}
+				if ($request->hfecorlic_sub) {
+					$update['HFECORLIC_SUB'] = new DateTime($request->hfecorlic_sub . ' ' . $request->hhoraorlic_sub);
+				}
+				if ($request->hhoraorlic_sub) {
+					$update['HHORAORLIC_SUB'] = $request->hhoraorlic_sub;
+				}
+			}
+
+			if (count($update) == 0) {
+				return true;
+			}
+
+			FgSub::whereIn('COD_SUB', $cod_subs)->update($update);
+
+	}
+
+	private function updateFirstSessions(Request $request, array $cod_subs, bool $updateDescription = true)
+	{
+		$update = [];
+
+		if ($request->dfec_sub && $request->dhora_sub) {
+			$update['"start"'] = new DateTime($request->dfec_sub . ' ' . $request->dhora_sub);
+		}
+		if ($request->hfec_sub && $request->hhora_sub) {
+			$update['"end"'] = new DateTime($request->hfec_sub . ' ' . $request->hhora_sub);
+		}
+
+		if ($updateDescription) {
+			if ($request->des_sub) {
+				$update['"name"'] = $request->des_sub;
+			}
+			if ($request->descdet_sub) {
+				$update['"description"'] = mb_substr($request->descdet_sub, 0, 1000,'UTF-8');
+			}
+		}
+
+		if ($request->tipo_sub == FgSub::TIPO_SUB_PRESENCIAL) {
+			if ($request->dfecorlic_sub && $request->dhoraorlic_sub) {
+				$update['"orders_start"'] = new DateTime($request->dfecorlic_sub . ' ' . $request->dhoraorlic_sub);
+			}
+			if ($request->hfecorlic_sub && $request->hhoraorlic_sub) {
+				$update['"orders_end"'] = new DateTime($request->hfecorlic_sub . ' ' . $request->hhoraorlic_sub);
+			}
+		}
+
+		if (count($update) == 0) {
+			return true;
+		}
+
+		//session
+		AucSessions::whereIn('"auction"', $cod_subs)->where('"reference"', '001')->update($update);
+
+		return true;
+	}
+
+	#endregion
 
 
 }
