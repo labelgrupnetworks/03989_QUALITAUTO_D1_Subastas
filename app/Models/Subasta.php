@@ -22,7 +22,7 @@ use App\Providers\ToolsServiceProvider;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-
+use App\libs\SeoLib;
 class Subasta extends Model
 {
     protected $table = 'FGSUB';
@@ -2139,6 +2139,8 @@ class Subasta extends Model
                     //'actual_bid' => \Tools::moneyFormat($this->imp),
                     //'ref' => $this->ref
                     );
+
+					SeoLib::saveEvent("ORDER");
             } else {
                 $result = array(
                 'status' => 'error',
@@ -2266,6 +2268,10 @@ class Subasta extends Model
                         'type_asigl1'        => $type_asigl1
                         )
                     );
+					#la puja no debe ser automatica  y debe ser de tipo web
+					if($type_asigl1 == 'N' && $this->type_bid =="W" ){
+						SeoLib::saveEvent("BID");
+					}
 
 
                     //la fghces1 y la asigl0 ya no van por subasta y referencia, para nocambiar todas las llamadas a esta funcion hago un join

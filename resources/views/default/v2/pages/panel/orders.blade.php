@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-<div class="container user-panel-page orders-page">
+<main class="container user-panel-page orders-page">
 
 	<div class="row">
 		<div class="col-lg-3">
@@ -122,7 +122,7 @@
 		</div>
 	</div>
 
-</div>
+</main>
 
 {{-- @if($inf_lot->tipop_orlic == 'T')
 	{{trans(\Config::get('app.theme').'-app.lot.puja_telefonica')}}<br/>

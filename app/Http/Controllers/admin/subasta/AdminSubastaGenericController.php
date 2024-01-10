@@ -150,7 +150,6 @@ class AdminSubastaGenericController extends Controller
 
 		/**
 		 * PUJAS
-		 * @todo
 		 * Para poder realizar una union con las pujas inferiores, las columnas de esta primera deben tener el mismo nombre
 		 * Y para poder ordenar, se debe hacer por el numero de columna y no por el nombre
 		 */

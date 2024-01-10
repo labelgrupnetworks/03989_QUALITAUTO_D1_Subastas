@@ -649,7 +649,7 @@ Route::get("preciofueraescalado/{codSub}","CustomControllers@preciosFueraEscalad
 Route::get("/api-ajax/newsletters/{service}/{action}", "NewsletterController@checkCallback");
 Route::post("/api-ajax/newsletters/{service}/{action}", "NewsletterController@callbackUnsuscribe");
 
-Route::post('api-ajax/newsletter/{opcion}', 'NewsletterController@setNewsletter');
+Route::post('api-ajax/newsletter/{opcion}', 'NewsletterController@setNewsletterAjax');
 Route::get("/{lang}/newsletter/{email}", "NewsletterController@configNewsletter")->where('lang', 'es|en');
 Route::get("/{lang}/newsletter-suscribe/{email}", "NewsletterController@suscribeOnlyToExternalService");
 Route::get("/{lang}/newsletter-unsuscribe/{email}", "NewsletterController@unsuscribeNewsletter")->name('newsletter.unsuscribe');
@@ -689,6 +689,9 @@ Route::get('/{lang}/returnPayPageDeposit/{codSub}/{ref}', 'V5\DepositController@
 Route::get("carga-catalogo-invaluable/{codSub}/{reference}", "externalAggregator\Invaluable\House@catalogs");
 Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregator\Invaluable\House@catalogLots");
 //responseRedsysMultiTpv
+
+#Eventos SEO
+Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z]+']);
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

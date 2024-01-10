@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <section class="container user-panel-page allotments-page">
+    <main class="container user-panel-page allotments-page">
 
         <div class="row">
             <div class="col-lg-3">
@@ -32,7 +32,7 @@
 
         </div>
 
-    </section>
+    </main>
 
     <script>
         $(document).ready(function() {

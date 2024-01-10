@@ -12,53 +12,15 @@
         }
         /**
          * @todo
-         * [x] Botón de activar / desactivar
-         * [x] Botón de vista previa
-         * [x] Botón de guardar
-         * [x] Subir o actualizar imagen
-         * [x] Subsecciones relacionadas, cargar según sección
-         * [x] Comprobar sin id
-         * [x] Los botónes de activar / desactivar y vista previa no deben aparecer en la creación
-         * [x] La selección de imágen al crear, debe ser enviada por el formulario, no por ajax
-         * [x] El formulario o creo una blade distinta para crear y editar o extraigo el form a los archivos edit y create
+		 * # Propiedades
+		 * [] Añadir categoría principal como relacionada si no se ha añadido
          *
          * # Editor de contenido
-         * [x] Crar bloque para banner
-         * [x] Crear bloque para html
-		 * 		[x] Añadir assets al html
-         * [x] Crear bloque para imagen
-		 * 		[x] Añadir imagen
-		 * 		[x] Editar imagen
-		 * 		[x] Eliminar imagen
-         * [x] Crear bloque para video
-		 * 		[x] Añadir video
-		 * 		[x] Editar video
-		 * 		[x] Eliminar video
-         * [x] Crear bloque para iframe
          * [?] Crear bloque para archivo
          *
-         * # General
-         * [x] Modificar rutas y metodos del controlador
-         *
-         * # Metodos blog
-         * [x] index - Ver todos
-         * [x] create
-         * [x] store
-         * [x] edit
-         * [x] update
-         * [~] show - Ver uno - solo idioma principal
-         *
-         * [x] añadir contenido
-         * [x] editar contenido
-         * [x] eliminar contenido
-         * [x] modificar orden de contenido
-         *
          * Mejoras
-         * [x] Añadir loaders
-         * [] Añadir puntos informativos
+         * [] Añadir puntos informativos en SEO
          * [] Duplicar bloques entre el mismo idioma y entre idiomas
-         * [x] Añadir botón de eliminar bloque
-         * [x] Seleccionar layout al crear html
          * */
     @endphp
 

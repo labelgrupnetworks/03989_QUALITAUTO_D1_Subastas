@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
+use App\libs\SeoLib;
 class CustomControllers extends Controller
 {
 	function exportPackengers($codSub)
@@ -387,5 +387,12 @@ class CustomControllers extends Controller
 		$emailLib->send_email();
 
 		return redirect(route('home'))->withErrors(['success' => 'Formulario enviado correctamente.']);
+	}
+
+	#funcion para guardar cualquier evento pasado por ajax, de esta manera permitimos que se creen eventos para acciones en la web, cómo por ejemplo descargar el catalogo
+	public function saveEvent($event){
+		# EJEMPLO URL PARA GUARDAR EVENTO DE DESCARGA DE CATALOGO : seo_event/CATALOG
+		
+		SeoLib::saveEvent($event);
 	}
 }

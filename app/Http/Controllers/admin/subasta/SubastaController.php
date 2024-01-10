@@ -180,7 +180,6 @@ class SubastaController extends Controller
 
 			/**
 			 * PUJAS
-			 * @todo
 			 * Para poder realizar una union con las pujas inferiores, las columnas de esta primera deben tener el mismo nombre
 			 * Y para poder ordenar, se debe hacer por el numero de columna y no por el nombre
 			 */
@@ -1230,13 +1229,8 @@ class SubastaController extends Controller
 	 return $loadFileLib->loadMotorFlash($xml);
 	}
 
-	/**
-	 * @todo comprobar que las cabeceras sean correctas
-	 * @todo ¿comprobar el tipo de datos que me llega? si son de texto funcionan
-	 */
 	function newSubirExcel()
 	{
-
 		$idAuction = request()->input('subasta');
 		$file = Input::file('file');
 		$rows = Excel::toArray(new ExcelImport, $file)[0];
@@ -1379,12 +1373,7 @@ class SubastaController extends Controller
 
 	function orderTitlesExcel($cabecera)
 	{
-
-		$array[] = array();
-		foreach ($cabecera as $column => $value) {
-			$array[$column] = $value;
-		}
-		return $array;
+		return array_map('mb_strtolower', $cabecera);
 	}
 
 	function createLotObject($rows, $propiedades)

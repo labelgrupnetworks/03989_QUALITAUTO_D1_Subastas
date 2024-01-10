@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use App\Models\V5\FxCliWeb;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter_Suscription;
+use App\libs\SeoLib;
 
 class NewsletterController extends Controller
 {
@@ -19,13 +20,25 @@ class NewsletterController extends Controller
 		$this->newsletterModel = new Newsletter();
 	}
 
+	#hago por ajax la funcion para poder guardar solo el evento al darse de alta en la newsletter desde la web
+	public function setNewsletterAjax(Request $request, $option = "add")
+	{
+		$res = $this->setNewsletter($request,$option);
+
+		if($res['status'] == 'success'){
+			#guardamos el evento SEO de creación de newsletter
+			SeoLib::saveEvent("NEWSLETTER");
+		}
+
+		return $res;
+	}
 	public function setNewsletter(Request $request, $option = "add")
 	{
 		if ($this->isNotValid($request)) {
-			return response()->json([
+			return [
 				'status' => 'error',
 				"msg" => 'err-add_newsletter'
-			]);
+			];
 		}
 
 		$email = trim($request->input('email'));
@@ -55,10 +68,10 @@ class NewsletterController extends Controller
 	private function setNewNewsletters($lang, $email, $families, $cehckForGroup)
 	{
 		if(empty($families)) {
-			return response()->json([
+			return [
 				'status' => 'error',
 				"msg" => 'err-families_newsletter'
-			]);
+			];
 		}
 
 		$this->newsletterModel

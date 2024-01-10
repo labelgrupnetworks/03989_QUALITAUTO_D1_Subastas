@@ -1,3 +1,9 @@
+checkTextFilters();
+
+$('#form_lotlist input[name="reference"]').on('keyup', checkTextFilters);
+$('#form_lotlist input[name="description"]').on('keyup', checkTextFilters);
+$('#form_lotlist').on('submit', disabledButtonSubmit);
+
 $("#order_selected").change(function(){
 	$("#hidden_order").val($("#order_selected").val());
 	$("#form_lotlist").submit();
@@ -185,3 +191,25 @@ function showHistoricLink(){
 }
 
 
+function checkTextFilters(){
+	const $inputReference = $('#form_lotlist input[name="reference"]');
+	const $inputDescription = $('#form_lotlist input[name="description"]');
+
+	const hasReference = $inputReference.length && $inputReference.val().length;
+	const hasDescription = $inputDescription.length && $inputDescription.val().length > 3;
+
+	if(hasReference || hasDescription) {
+		enabledButtonSubmit();
+	}
+	else {
+		disabledButtonSubmit();
+	}
+}
+
+function enabledButtonSubmit(){
+	$('#form_lotlist button[type="submit"]').removeClass('disabled').prop('disabled', false);
+}
+
+function disabledButtonSubmit(){
+	$('#form_lotlist button[type="submit"]').addClass('disabled').prop('disabled', true);
+}
