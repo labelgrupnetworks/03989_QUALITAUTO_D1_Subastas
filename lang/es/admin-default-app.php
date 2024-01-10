@@ -263,6 +263,7 @@ return [
 		'show_in_subalia' => 'Publicar en Subalia',
 		'hide_in_subalia' => 'Ocultar en Subalia',
 		'deposit_mass_update' => 'Deposito/s',
+		'client_mass_update' => 'Cliente/s',
 		'subasta_mass_update' => 'Subasta/s',
 	),
 	'button' => array(
