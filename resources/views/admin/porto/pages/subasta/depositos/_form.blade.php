@@ -13,5 +13,5 @@
 
 	{!! FormLib::Hidden('fecha_deposito', 1, date("Y-m-d H:i:s")) !!}
 
-	<input type="submit" class="btn btn-success" value="Guardar" style="margin-top: 1rem">
+	<input type="submit" class="btn btn-success" value="{{ trans("admin-app.button.save") }}"  style="margin-top: 1rem">
 </div>
