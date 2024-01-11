@@ -9,7 +9,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h5 class="modal-title">Deposito/s</h5>
+				<h5 class="modal-title">{{ trans("admin-app.title.deposit_mass_update") }}</h5>
 				<button class="close" data-dismiss="modal" type="button" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -36,9 +36,9 @@
 
 			<div class="modal-footer">
 				<button class="btn btn-primary" form="edit_multple_deposits" type="submit">
-					Guardar
+					{{ trans("admin-app.button.save") }}
 				</button>
-				<button class="btn btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+				<button class="btn btn-secondary" data-dismiss="modal" type="button">{{ trans("admin-app.button.close") }}</button>
 			</div>
 
 		</div>

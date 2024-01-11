@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-    <div class="container user-panel-page favorites-page">
+    <main class="container user-panel-page favorites-page">
         <div class="row">
             <div class="col-lg-3">
                 @include('pages.panel.menu_micuenta')
@@ -137,5 +137,5 @@
 
             </div>
         </div>
-    </div>
+    </main>
 @stop

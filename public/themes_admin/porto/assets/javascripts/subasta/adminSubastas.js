@@ -144,6 +144,7 @@ window.addEventListener('load', function (event) {
 	$("#js-nft-publish").on("click", updateAndPublishNft);
 	$("#js-nft-mint").on("click", mintNft);
 
+	$('select[name="tipo_sub_select"]').on("change", hideAndShowOrlinInputs);
 });
 
 function callCreateOrEditMultilanguageFeature(idFeature, idFeatureValue){
@@ -354,3 +355,190 @@ function mintNft(event) {
 
 	return;
 }
+
+$('#edit_multiple_auctions').on('submit', function (event) {
+	event.preventDefault();
+
+	if (validateDateFields(new FormData(this))) {
+		return;
+	}
+	const formData = new FormData(this);
+	const isSelectAllDepositsChecked = getValueFromInput('js-selectAll');
+	const uploadSession = $('input[name="upload_first_session"]')[0];
+
+
+
+	const url = isSelectAllDepositsChecked
+		? urlAllSelected.value
+		: edit_multiple_auctions.action;
+
+	isSelectAllDepositsChecked
+		? appendFiltersToFormData(formData)
+		: appendIdsToFormData(formData);
+
+	if(!uploadSession){
+		updateAuctionData(url, formData);
+		return;
+	}
+
+	const bootboxConfig = {
+		message: uploadSession.dataset.question,
+		buttons: {
+			confirm: {
+				label: 'Si',
+				className: 'btn-success'
+			},
+			cancel: {
+				label: 'No',
+				className: 'btn-danger'
+			}
+		},
+		callback: function (result) {
+			if (!result) {
+				uploadSession.value = "0";
+			}
+			appendInputToFormData(formData, uploadSession);
+			updateAuctionData(url, formData);
+		}
+	}
+
+	bootbox.confirm(bootboxConfig);
+});
+
+function validateDateFields(formData) {
+	const fields = {
+		dfec_sub_select: formData.get('dfec_sub_select'),
+		dhora_sub_select: formData.get('dhora_sub_select'),
+		hfec_sub_select: formData.get('hfec_sub_select'),
+		hhora_sub_select: formData.get('hhora_sub_select'),
+		dfecorlic_sub_select: formData.get('dfecorlic_sub_select'),
+		dhoraorlic_sub_select: formData.get('dhoraorlic_sub_select'),
+		hfecorlic_sub_select: formData.get('hfecorlic_sub_select'),
+		hhoraorlic_sub_select: formData.get('hhoraorlic_sub_select'),
+		tipo_sub_select: formData.get('tipo_sub_select'),
+	};
+	const orlicBlocks = $('[data-blockid="auc_dates_orlic"]');
+
+	let error = false;
+
+	function handleValidationError(fieldName) {
+		$(`input[name="${fieldName}"], select[name="${fieldName}"]`).addClass('has-error');
+		error = true;
+	}
+
+	if (fields.tipo_sub_select != 'W') {
+		const orlicData = $('[data-blockid="auc_dates_orlic"] input');
+		orlicData.val('');
+	}
+
+	let field = validateTwoFields(fields, ['dfec_sub_select', 'dhora_sub_select']);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	field = validateTwoFields(fields, ['hfec_sub_select', 'hhora_sub_select']);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	field = validateTwoFields(fields, ['dfecorlic_sub_select', 'dhoraorlic_sub_select']) && hasDnoneClass(orlicBlocks);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	field = validateTwoFields(fields, ['hfecorlic_sub_select', 'hhoraorlic_sub_select']) && hasDnoneClass(orlicBlocks);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	return error;
+}
+
+function validateTwoFields(fields, [field1, field2]) {
+    if (fields[field1] === '' && fields[field2] === '') {
+        return false;
+    } else if (fields[field1] === '' || fields[field2] === '') {
+        const campo = fields[field1] === '' ? field1 : field2;
+        return campo;
+    } else {
+        return false;
+    }
+}
+
+
+function appendFiltersToFormData(formData) {
+	const searchParams = new URLSearchParams(window.location.search);
+	const params = [...searchParams.entries()];
+	const cleanParams = params.filter(param => param[1] !== '');
+
+	// Add params to formData
+	cleanParams.forEach((entryParams) => {
+		const [key, value] = entryParams;
+		formData.append(key, value);
+	});
+}
+
+function appendIdsToFormData(formData) {
+	const ids = selectedCheckItemsByName("auc_ids");
+	ids.forEach(id => formData.append('ids[]', id));
+}
+
+function appendInputToFormData(formData, input) {
+	formData.append(input.name, input.value);
+}
+
+function updateAuctionData(url, formData) {
+
+	$.ajax({
+		url,
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+
+		success: function (result) {
+			$('#editMultpleAuctionsModal').modal('hide');
+			saved('Subastas actualizadas correctamente');
+			location.reload();
+		},
+		error: function (result) {
+			error(result.responseJSON.message);
+		}
+	});
+}
+
+$('input[name="auc_ids"]').on('change', function () {
+	const isSelectAllDepositsChecked = (document.querySelector('[name=js-selectAll]')).checked;
+
+	if (isSelectAllDepositsChecked) {
+		document.querySelector('[name=js-selectAll]').checked = false;
+	}
+});
+
+function getValueFromInput(inputName) {
+	const input = document.querySelector(`input[name="${inputName}"]`);
+	if(input.type == 'checkbox' && input.checked){
+		return input.value;
+	}
+	return false;
+}
+
+function hideAndShowOrlinInputs()
+{
+	if ($('select[name="tipo_sub_select"]')) {
+		const tipo_sub_select = $('select[name="tipo_sub_select"]');
+		const orlicData = $('[data-blockid="auc_dates_orlic"]');
+
+		if (tipo_sub_select.val() == 'W') {
+			orlicData.removeClass('d-none');
+		} else {
+			orlicData.addClass('d-none');
+		}
+	}
+
+}
+
+function hasDnoneClass(element) {
+	return element.hasClass('d-none');
+}
+

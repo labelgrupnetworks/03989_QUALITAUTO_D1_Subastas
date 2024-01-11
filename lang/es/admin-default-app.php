@@ -261,7 +261,10 @@ return [
 		'bi_reports' => 'BI Reports',
 		'stock' => 'Stock',
 		'show_in_subalia' => 'Publicar en Subalia',
-		'hide_in_subalia' => 'Ocultar en Subalia'
+		'hide_in_subalia' => 'Ocultar en Subalia',
+		'deposit_mass_update' => 'Deposito/s',
+		'client_mass_update' => 'Cliente/s',
+		'subasta_mass_update' => 'Subasta/s',
 	),
 	'button' => array(
 		'export' => 'Exportar',
@@ -290,7 +293,10 @@ return [
 		'invaluable_load' => 'Subir a Invaluable',
 		'invaluable_delete' => 'Eliminar de Invaluable',
 		'send_webservice' => 'Send to :empresa  WS',
-		'send_close_lot_webservice' => 'Send close lot to :empresa  WS'
+		'send_close_lot_webservice' => 'Send close lot to :empresa  WS',
+		'selecteds' => 'Seleccionados',
+		'erase' => 'Eliminar',
+		'modify' => 'Modificar',
 
 	),
 	'bi' => array(
@@ -1068,6 +1074,8 @@ return [
 	),
 	'success' => array(
 		'import' => "Datos importados correctamente",
+		'update' => "Datos actualizados correctamente",
+		'update_mass_auc' => "Subastas actualizadas correctamente.",
 	),
 	'error' => array(
 		'no_id_delete' => "No se ha podido borrar  ya que falta informar de su id",
@@ -1075,6 +1083,7 @@ return [
 		'no_create' => "No se ha podido crear, por favor vuelva a intentarlo más adelante",
 		'no_file' => "No se ha podido leer el archivo subido",
 		'no_id_cli' => "El id de cliente nº :cod2_cli no existe",
+		'no_data_form' => "Debe introducir datos en el formulario.",
 
 		'cod_pro' => 'Id',
 		'nom_pro' => 'Nombre',

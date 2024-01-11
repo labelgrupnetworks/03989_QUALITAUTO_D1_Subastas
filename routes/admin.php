@@ -332,6 +332,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('artist/createarticle', 'V5\AdminArtistController@createArticle');
 		Route::post('artist/deletearticle', 'V5\AdminArtistController@deleteArticle');
 
+		Route::post('subastas/update-with-filters', 'subasta\AdminSubastaGenericController@updateWithFilters')->name('subastas.update_with_filters');
+		Route::post('subastas/update-selection', 'subasta\AdminSubastaGenericController@updateSelections')->name('subastas.update_selections');
 		Route::post('subastas/update/image', 'subasta\AdminSubastaGenericController@updateImage')->name('subastas.update.image');
 		Route::resource('subastas', 'subasta\AdminSubastaGenericController');
 

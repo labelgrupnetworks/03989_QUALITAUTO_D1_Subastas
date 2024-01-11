@@ -15,7 +15,7 @@ if ($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null) {
 @endphp
 
 @section('content')
-    <section class="container user-panel-page account-page">
+    <main class="container user-panel-page account-page">
         <div class="row">
             <div class="col-lg-3">
                 @include('pages.panel.menu_micuenta')
@@ -231,5 +231,5 @@ if ($data['user']->fisjur_cli == 'F' || $data['user']->fisjur_cli == null) {
 
             </div>
         </div>
-    </section>
+    </main>
 @stop

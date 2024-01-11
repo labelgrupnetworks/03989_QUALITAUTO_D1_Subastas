@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('content')
-    <section class="container user-panel-page account-address-page">
+    <main class="container user-panel-page account-address-page">
 
         <div class="row">
 
@@ -59,7 +59,7 @@
 
             </div>
         </div>
-    </section>
+    </main>
 
     <div class="modal fade" id="editAddress" aria-labelledby="editAddressLabel" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-lg">

@@ -4614,7 +4614,7 @@ class UserController extends Controller
 	}
 
 	/**
-	 * @todo posibles respuestas
+	 * posibles respuestas
 	 * 1. ?success=false&error=user_cancel
 	 * 2. ?success=true&walletAddress={walletAddress}
 	 */

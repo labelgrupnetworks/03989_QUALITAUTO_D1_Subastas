@@ -218,7 +218,7 @@ class AdminClienteController extends Controller
 		];
 
 		/**
-		 * @todo ojo, no se puede editar el email hasta que el cliente no tenga idorigincli
+		 * Ojo, no se puede editar el email hasta que el cliente no tenga idorigincli
 		 * */
 		//Si no tiene idorigincli, debemos enviar setidorigincli para poder añadirlo
 		if(empty($request->idorigincli)){

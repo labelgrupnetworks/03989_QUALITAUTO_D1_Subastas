@@ -23,6 +23,26 @@
 				class="btn btn-sm btn-warning">{{ trans("admin-app.button.sort") }}
 				{{ trans("admin-app.title.lot_auction_destacadas") }}</a> --}}
 
+			<div class="btn-group" id="js-dropdownItems">
+				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
+				<button
+					data-objective="auc_ids"
+					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
+					aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+				</button>
+
+				<ul aria-labelledby="js-dropdownItems" class="dropdown-menu">
+
+					<li>
+						<button class="btn" data-toggle="modal" data-target="#editMultpleAuctionsModal">
+							{{ trans("admin-app.button.modify") }}
+						</button>
+					</li>
+
+				</ul>
+			</div>
+
 			<a href="{{ route("$resource_name.create") }}"
 				class="btn btn-sm btn-primary">{{ trans("admin-app.button.new_fem") }}
 				{{ trans("admin-app.title.auction") }}</a>
@@ -35,6 +55,12 @@
 				<thead>
 
 					<tr>
+						<th>
+							<label>
+								<input name="js-selectAll" data-objective="auc_ids" type="checkbox" value="true">
+								<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('subastas.update_with_filters') }}">
+							</label>
+						</th>
 						<th class="cod_sub" style="cursor: pointer" data-order="cod_sub">
 							{{ trans("admin-app.fields.cod_sub") }}
 							@if(request()->order == 'cod_sub')
@@ -131,6 +157,7 @@
 
 					<tr id="filters">
 						<form class="form-group" action="">
+							<td></td>
 							<input type="hidden" name="order" value="{{ request('order', 'dfec_sub') }}">
 							<input type="hidden" name="order_dir" value="{{ request('order_dir', 'desc') }}">
 							<td class="cod_sub">{!! $formulario->cod_sub !!}</td>
@@ -154,6 +181,11 @@
 					@forelse ($fgSubs as $fgSub)
 
 					<tr id="fila{{$fgSub->cod_sub}}">
+						<td>
+							<label>
+								<input type="checkbox" name="auc_ids" value="{{$fgSub->cod_sub}}">
+							</label>
+						</td>
 						<td class="cod_sub">{{$fgSub->cod_sub}}</td>
 						<td class="des_sub">{{$fgSub->des_sub}}</td>
 						@if (config("app.ArtistInExibition", false))
@@ -200,8 +232,6 @@
 						</td>
 					</tr>
 
-{{-- https://webcore.ansorena.com/Etiquetas --}}
-
 					@empty
 
 					<tr>
@@ -221,4 +251,7 @@
 	</div>
 
 </section>
+
+@include('admin::pages.subasta.subastas._edit_selecteds')
+
 @stop
