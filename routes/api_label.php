@@ -94,9 +94,9 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 
 	#INVALUABLE
 		#put y post hacen lo mismo, crear y editar
-	Route::POST('/invaluable/catalog', 'InvaluableController@catalog');
-	Route::PUT('/invaluable/catalog', 'InvaluableController@catalog');
-	Route::POST('/invaluable/lot', 'InvaluableController@lot');
-	Route::PUT('/invaluable/lot', 'InvaluableController@lot');
-	Route::DELETE('/invaluable/lot', 'InvaluableController@deleteLot');
+	Route::POST('/invaluable_catalog', 'InvaluableController@catalog');
+	Route::PUT('/invaluable_catalog', 'InvaluableController@catalog');
+	Route::POST('/invaluable_lot', 'InvaluableController@lot');
+	Route::PUT('/invaluable_lot', 'InvaluableController@lot');
+	Route::DELETE('/invaluable_lot', 'InvaluableController@deleteLot');
 });

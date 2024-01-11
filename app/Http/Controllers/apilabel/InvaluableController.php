@@ -17,11 +17,18 @@ class InvaluableController extends ApiLabelController
 	protected  $rulesCatalog = array('idauction' => "required|alpha_num|max:8", 'reference' => "required|alpha_num|max:3");
 	protected  $rulesLot = array('idauction' => "required|alpha_num|max:8", 'reference' => "required|alpha_num|max:3", 'reflot' => "required|numeric|max:999999999");
 	#crea y updatea el catalogo
-	public function catalog(){
+	public function catalog($parameters = array()){
 		try {
-			$parameters = request("parameters");
+			if(empty($parameters)){
+				$parameters = request("parameters");
+				if(empty($parameters)){#las pruebas con test envian la variable items
+					$parameters = request("items");
+				}
+			}
+			//\Log::info(print_r($parameters,true));
 			$this->validator($parameters, $this->rulesCatalog);
 			$house = new House();
+
 			$resJson = $house->catalogs( $parameters["idauction"], $parameters["reference"]);
 			$res = json_decode($resJson);
 			if($res->success){
@@ -36,13 +43,19 @@ class InvaluableController extends ApiLabelController
 		}
     }
 
-	public function lot(){
+	public function lot($parameters = array()){
 		try {
-			$parameters = request("parameters");
+			if(empty($parameters)){
+				$parameters = request("parameters");
+				if(empty($parameters)){#las pruebas con test envian la variable items
+					$parameters = request("items");
+				}
+			}
 			$this->validator($parameters, $this->rulesCatalog);
 			$house = new House();
 			$resJson = $house->catalogLots( $parameters["idauction"], $parameters["reference"], $parameters["reflot"]);
 			$res = json_decode($resJson);
+			
 			if($res->success){
 				return  $this->responseSuccsess();
 			}else{
