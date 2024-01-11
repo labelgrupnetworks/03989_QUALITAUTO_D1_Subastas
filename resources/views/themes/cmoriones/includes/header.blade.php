@@ -164,11 +164,11 @@
     <div class="container header-brand">
         <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.png"
-                alt="{{ \Config::get('app.name') }}" width="200">
+                alt="{{ \Config::get('app.name') }}" width="400">
         </a>
         <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo_white.jpg"
-                alt="{{ \Config::get('app.name') }}" width="300">
+                alt="{{ \Config::get('app.name') }}" width="250">
         </a>
     </div>
 </section>
