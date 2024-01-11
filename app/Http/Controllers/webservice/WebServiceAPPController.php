@@ -348,11 +348,20 @@ class WebServiceAPPController  extends WebServiceController{
 			$localeTemp = \App::getLocale();
 			#si el parametro lang viene vacio por defecto ponemos ES
 			$this->parameters["lang"] = isset($this->parameters["lang"]) ? $this->parameters["lang"] : "ES";
-			\App::setLocale($this->parameters["lang"]);
+
 
 			#mandamos query para conseguir todas las sesiones
-			$sessions = FgSub::select("SUBC_SUB")->joinLangSub()->joinSessionSub()->where('subc_sub', '=', $status)
-			->orderBy('session_start', 'desc')->get();
+
+			$sessions = FgSub::select('COD_SUB, SUBC_SUB, "id_auc_sessions", "reference",  TIPO_SUB, SUBC_SUB')
+			->addSelect(' max(NVL("auc_sessions_lang"."name_lang","auc_sessions"."name")) as name')
+			->addSelect(' max("auc_sessions"."start") as session_start')
+			->addSelect(' max("auc_sessions"."end") as session_end')
+			->join('"auc_sessions"','"auc_sessions"."company" = FGSUB.EMP_SUB AND "auc_sessions"."auction" = FGSUB.COD_SUB')
+        	->leftJoin('"auc_sessions_lang"',' "auc_sessions_lang"."id_auc_session_lang" = "auc_sessions"."id_auc_sessions"   AND "auc_sessions"."company" = "auc_sessions_lang"."company_lang" AND "auc_sessions"."auction" = "auc_sessions_lang"."auction_lang" AND "auc_sessions_lang"."lang_auc_sessions_lang" = \''.$this->parameters["lang"] .'\'')
+			->join("fgasigl0",'emp_asigl0 = EMP_SUB AND  SUB_ASIGL0= COD_SUB and ref_asigl0 >=  "init_lot"  and ref_asigl0 <=  "end_lot"')
+			->where('subc_sub', '=', $status)
+			->groupby('emp_sub , cod_sub , "reference",SUBC_SUB,"id_auc_sessions", TIPO_SUB')
+			->orderBy('max("start")', 'desc')->get();
 
 			#inicializamos el array de subastas
 			$sessionsResponse = [];
@@ -373,8 +382,7 @@ class WebServiceAPPController  extends WebServiceController{
 				$sessionsResponse[] =$sessionRes;
 			}
 
-			#restauramos el locale
-			\App::setLocale($localeTemp);
+
 
 			return $sessionsResponse;
 		}
@@ -537,10 +545,13 @@ class WebServiceAPPController  extends WebServiceController{
 
 			$fgasigl0 = $fgasigl0->ActiveLotAsigl0();
 
-			$filters = $this->getInputFilters($this->parameters['filters']);
+
+				$filters = $this->getInputFilters($this->parameters['filters']??[]);
+
 
 
 			$fgasigl0 = $lotListController->setFilters($fgasigl0, $filters);
+
 			$lots =   $fgasigl0
 				->select("NUM_HCES1, LIN_HCES1 ,IMPSALHCES_ASIGL0 , SUB_ASIGL0, REF_ASIGL0, IMPLIC_HCES1, RETIRADO_ASIGL0, CERRADO_ASIGL0, LIC_HCES1, TIPO_SUB,COMPRA_ASIGL0, IMPRES_ASIGL0, REMATE_ASIGL0, FFIN_ASIGL0, HFIN_ASIGL0, SUBABIERTA_SUB,FAC_HCES1 ")
 				->addSelect(" NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1) AS TITLE,   NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1")
@@ -556,7 +567,7 @@ class WebServiceAPPController  extends WebServiceController{
 
 			$lotes = array();
 			foreach($lots as $key =>$lot){
-				
+
 				$lote = array();
 				$lote["codauction"] = $lot->sub_asigl0;
 				$lote["lotref"] = $lot->ref_asigl0;
