@@ -136,6 +136,7 @@ header .navbar-nav .dropdown-menu {
 .header-brand {
 	display: flex;
 	align-items: flex-end;
+	justify-content: space-between;
 	gap: 1rem;
 }
 
