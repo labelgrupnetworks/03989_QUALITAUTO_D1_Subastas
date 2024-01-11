@@ -2,9 +2,17 @@
 	use App\Models\V5\FxCli;
 	use App\Models\V5\FxTcli;
     $formularioFiles = [
-        'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli'), '', '', false),
-        'temporaryblock' => FormLib::Select('bloq_temporal_select', 0, '', (new FxCli)->getTipoBajaTmpTypes(), '', '', false),
-		'enviocatalogo' => FormLib::Select('envio_catalogo_select', 0, 'S', ['S' => 'Si', 'N' => 'No'], '', '', false)
+		[
+			'id' => 'cli_options',
+			'title' => 'Opciones',
+			'class' => '',
+	    	'inputs' => [
+				'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli')),
+        		'temporaryblock' => FormLib::Select('bloq_temporal_select', 0, '', (new FxCli)->getTipoBajaTmpTypes()),
+				'enviocatalogo' => FormLib::Select('envio_catalogo_select', 0, '', ['S' => 'Si', 'N' => 'No'])
+			]
+		],
+
     ];
 @endphp
 

@@ -533,8 +533,25 @@ class AdminClienteController extends Controller
 		return $clientes;
 	}
 
+	private function validateEmptySelectionFields($fields)
+	{
+		$empty = true;
+		foreach ($fields as $key => $value) {
+			if (preg_match('/_select$/', $key) && !empty($value)) {
+				$empty = false;
+				return $empty;
+
+			}
+		}
+		return $empty;
+	}
+
 	public function updateSelections(Request $request)
 	{
+		if (self::validateEmptySelectionFields($request->toArray())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
 		$ids = $request->input('ids', []);
 
 		$clientes = [];
@@ -547,14 +564,18 @@ class AdminClienteController extends Controller
 		$result = json_decode($json);
 
 		if ($result->status == 'ERROR') {
-			return error($json);
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
 
-		return redirect(route('clientes.index'))->with('success', ['Clientes actualizados correctamente']);
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_cli")], 200);
 	}
 
 	public function updateWithFilters(Request $request)
 	{
+		if (self::validateEmptySelectionFields($request->toArray())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
 		$clientes = $this->clientsQueryBuilder()->select("FXCLI.COD2_CLI");
 		$clientes = self::clientsQueryFilters($clientes, $request);
 		$clientes = $clientes->get();
@@ -569,20 +590,26 @@ class AdminClienteController extends Controller
 		$result = json_decode($json);
 
 		if ($result->status == 'ERROR') {
-			return error($json);
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
 
-		return redirect(route('clientes.index'))->with('success', ['Clientes actualizados correctamente']);
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_cli")], 200);
 	}
 
 	private function formattingDataForUpdate(Request $request, $cod2_cli)
 	{
-		return [
-			'idorigincli' => $cod2_cli,
-			'source' => $request->input('tipo_select', ''),
-			'temporaryblock' => $request->input('bloq_temporal_select', ''),
-			'enviocatalogo' => $request->input('envio_catalogo_select', ''),
-		];
+		$update = [];
+		$update['idorigincli'] = $cod2_cli;
+		if ($request->input('tipo_select', '') != '') {
+			$update['source'] = $request->input('tipo_select', '');
+		}
+		if ($request->input('bloq_temporal_select', '') != '') {
+			$update['temporaryblock'] = $request->input('bloq_temporal_select', '');
+		}
+		if ($request->input('envio_catalogo_select', '') != '') {
+			$update['enviocatalogo'] = $request->input('envio_catalogo_select', '');
+		}
+		return $update;
 	}
 
 	public function destroySelections(Request $request) {
