@@ -15,18 +15,6 @@ $('#edit_multple_deposits').on('submit', function (event) {
 	updataDepositStatus(url, formData);
 });
 
-function appendFiltersToFormData(formData) {
-	const searchParams = new URLSearchParams(window.location.search);
-	const params = [...searchParams.entries()];
-	const cleanParams = params.filter(param => param[1] !== '');
-
-	// Add params to formData
-	cleanParams.forEach((entryParams) => {
-		const [key, value] = entryParams;
-		formData.append(key, value);
-	});
-}
-
 function appendIdsToFormData(formData) {
 	const ids = selectedCheckItemsByName("desposit_ids");
 	ids.forEach(id => formData.append('ids[]', id));
