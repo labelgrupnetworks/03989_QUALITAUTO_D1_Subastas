@@ -26,6 +26,11 @@ body> :is(header, footer, .subnav) {
 	color: var(--lb-color-primary-contrast);
 }
 
+body> :is(header, .subnav) {
+	background-color: #fff;
+	color: rgba(0, 0, 0, 0.9);
+}
+
 body>header {
 	position: sticky;
 	top: 0;
@@ -49,10 +54,11 @@ h1,
 }
 
 header .navbar {
-	--bs-navbar-color: var(--lb-color-primary-contrast);
+	--bs-navbar-color: rgba(0, 0, 0, 0.9);
 	--bs-navbar-hover-color: var(--lb-color-primary);
 	--bs-navbar-disabled-color: rgba(0, 0, 0, 0.3);
 	--bs-navbar-active-color: rgba(0, 0, 0, 0.9);
+	background-color: #fff;
 	text-transform: uppercase;
 	font-size: 14px;
 	letter-spacing: 2px;

@@ -92,9 +92,6 @@
         <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
             <div>
                 <p>© {{ now()->format('Y') }} {!! trans($theme . '-app.foot.rights') !!}.</p>
-                <p><a class="nav-link" href="{{ trans($theme . '-app.foot.developed_url') }}"
-                        title="{{ trans($theme . '-app.foot.developedSoftware') }}"
-                        target="_blank">{{ trans($theme . '-app.foot.developedBy') }}</a></p>
             </div>
 
 
