@@ -46,7 +46,7 @@ use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use Illuminate\Support\Str;
 use SplFileInfo;
-
+use  App\libs\SeoLib;
 class SubastaController extends Controller
 {
 
@@ -1385,7 +1385,7 @@ class SubastaController extends Controller
 
 
 			$subasta_info->lote_actual->siguientes_escalados = $siguientes_escalados;
-			
+
 		}else{
 			# Escalado de la puja y la siguiente
 		//$la_escalado = $subasta->escalado();
@@ -1520,6 +1520,7 @@ class SubastaController extends Controller
 
 		$data['divisas'] =  $currency->getAllCurrencies($js_item['subasta']['currency']->name);
 
+		SeoLib::saveVisit($subasta_info->lote_actual->sub_hces1, null, $subasta_info->lote_actual->sec_hces1, $subasta_info->lote_actual->ref_asigl0);
 
 		/* FIN  codigo temporal */
 		return \View::make('front::pages.ficha', array('data' => $data));
