@@ -232,7 +232,7 @@ main.grid .column_banner {
 }
 
 .label-grid.label-auction[data-auction="COMDEUDA"] {
-	--bg-auction: #495057;
+	--bg-auction: #f76800;
 }
 
 #modalFormularioFicha .modal-wrapper>div {
