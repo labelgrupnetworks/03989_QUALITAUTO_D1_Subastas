@@ -7,7 +7,7 @@
     content="{{ strip_tags(str_replace('"', "'", $data['seo']->meta_description ?? trans("$theme-app.head.meta_description"))) }}" />
 <meta property="og:url" content="{{ str_replace('http:', 'https:', Request::url()) }}" />
 <meta property="og:image"
-    content="{{ $data['seo']->openGraphImagen ?? URL::asset("/themes/$theme/assets/img/foto_logo_white.png") }}" />
+    content="{{ $data['seo']->openGraphImagen ?? URL::asset("/themes/$theme/assets/img/og_logo.jpg") }}" />
 
 
 <!-- Twitter Meta Tags -->
@@ -15,4 +15,4 @@
 <meta property="twitter:url" content="{{ str_replace('http:', 'https:', Request::url()) }}" />
 <meta name="twitter:title" content="Cristina Moriones - {{ $data['seo']->meta_title ?? trans("$theme-app.head.title_app") }}" >
 <meta name="twitter:description" content="{{ strip_tags(str_replace('"', "'", $data['seo']->meta_description ?? trans("$theme-app.head.meta_description"))) }}" >
-<meta name="twitter:image" content="{{ $data['seo']->openGraphImagen ?? URL::asset("/themes/$theme/assets/img/foto_logo_white.png") }}">
+<meta name="twitter:image" content="{{ $data['seo']->openGraphImagen ?? URL::asset("/themes/$theme/assets/img/og_logo.jpg") }}">
