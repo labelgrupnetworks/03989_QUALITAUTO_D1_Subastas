@@ -1,3 +1,13 @@
+html {
+	font-size: 16px;
+}
+
+@media (min-width: 1200px) {
+	html {
+		font-size: 18px;
+	}
+}
+
 :root {
 	--lb-color-primary-hsl: 18.53deg 43.05%;
 	--lb-color-primary-rgb: 210 163 142;
@@ -144,6 +154,9 @@ header .navbar-nav .dropdown-menu {
 	padding-bottom: 1rem;
 }
 
+footer .nav-link {
+	overflow-wrap: break-word;
+}
 /* con sticky y scroll */
 
 /* .section-grid-filters::-webkit-scrollbar-thumb {
@@ -189,6 +202,7 @@ main.grid .column_banner {
 }
 
 .label-grid.label-auction {
+	--bg-auction: var(--lb-color-primary);
 	rotate: none;
     transform: rotate(0);
     -webkit-transform: rotate(0);
@@ -200,8 +214,25 @@ main.grid .column_banner {
     height: auto;
     padding: 4px;
     width: auto;
-    font-size: 14px;
+    font-size: .9em;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+	background-color: var(--bg-auction);
+}
+
+.label-grid.label-auction[data-auction="REPRE"] {
+	--bg-auction: #0a4579;
+}
+
+.label-grid.label-auction[data-auction="CEREMATE"] {
+	--bg-auction: #0d6efd;
+}
+
+.label-grid.label-auction[data-auction="REOS"] {
+	--bg-auction: #198754;
+}
+
+.label-grid.label-auction[data-auction="COMDEUDA"] {
+	--bg-auction: #495057;
 }
 
 #modalFormularioFicha .modal-wrapper>div {

@@ -29,6 +29,6 @@
 	</div>
 @endif
 
-<div class="label-grid label-auction">
+<div class="label-grid label-auction" data-auction="{{$item->sub_asigl0}}">
 	<span>{{ $item->name }}</span>
 </div>
