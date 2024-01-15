@@ -156,7 +156,7 @@ class AdminPedidosController extends Controller
 				);
 
 		#importe que ha indicado el usuario, debemos quitarle el iva
-		$importeTotalForzadoSinIva = round($importeTotalForzado /(1+ ($iva_cli/100)),2);
+		$importeTotalForzadoSinIva = round($importeTotalForzado /(1+ ($iva_cli/100)),4);
 		#variable en la que sumamos los importes que llevamos para en el último calcular la diferencia con el total y así que no haya perdida de decimales
 		$importeactual = 0;
 		$contador = 0;
@@ -166,10 +166,10 @@ class AdminPedidosController extends Controller
 			# si no es el ultimo calculamos el importe
 			if($contador != count($lots)){
 				#calculamos el procentaje que representa este lote respecto al total
-				$porcentaje = round(($lot->impsalhces_asigl0) / $precioBaseTotal,2);
+				$porcentaje = round(($lot->impsalhces_asigl0) / $precioBaseTotal,4);
 				#echo "<br>porcentaje:".$porcentaje;
 
-				$lot->impArticulo = round($importeTotalForzadoSinIva*$porcentaje,2);
+				$lot->impArticulo = round($importeTotalForzadoSinIva*$porcentaje,4);
 				$importeactual += $lot->impArticulo;
 			}else{
 				# si es el último restamos el importe que falte, así no descuadran decimales
