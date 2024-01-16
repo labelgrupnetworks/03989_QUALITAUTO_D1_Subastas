@@ -90,9 +90,8 @@
 						{{ $empresa->dir_emp ?? '' }}
 					</p>
 					<p>
-						(Junto Hotel Ritz Plaza España)
+						{{ trans("$theme-app.foot.address_expansion") }}
 					</p>
-
 					<p>{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }},
 						{{ $empresa->pais_emp ?? '' }}</p>
 				</a>
