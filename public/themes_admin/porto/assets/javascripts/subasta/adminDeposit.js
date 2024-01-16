@@ -10,15 +10,10 @@ $('#edit_multple_deposits').on('submit', function (event) {
 
 	isSelectAllDepositsChecked
 		? appendFiltersToFormData(formData)
-		: appendIdsToFormData(formData);
+		: appendIdsToFormData(formData, "desposit_ids");
 
 	updataDepositStatus(url, formData);
 });
-
-function appendIdsToFormData(formData) {
-	const ids = selectedCheckItemsByName("desposit_ids");
-	ids.forEach(id => formData.append('ids[]', id));
-}
 
 function updataDepositStatus(url, formData) {
 

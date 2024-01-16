@@ -374,7 +374,7 @@ $('#edit_multiple_auctions').on('submit', function (event) {
 
 	isSelectAllDepositsChecked
 		? appendFiltersToFormData(formData)
-		: appendIdsToFormData(formData);
+		: appendIdsToFormData(formData, "auc_ids");
 
 	if(!uploadSession){
 		updateAuctionData(url, formData);
@@ -454,25 +454,6 @@ function validateAucDateFields(formData) {
 	return error;
 }
 
-function validateTwoFields(fields, [field1, field2]) {
-    if (fields[field1] === '' && fields[field2] === '') {
-        return false;
-    } else if (fields[field1] === '' || fields[field2] === '') {
-        const campo = fields[field1] === '' ? field1 : field2;
-        return campo;
-    } else {
-        return false;
-    }
-}
-
-function appendIdsToFormData(formData) {
-	const ids = selectedCheckItemsByName("auc_ids");
-	ids.forEach(id => formData.append('ids[]', id));
-}
-
-function appendInputToFormData(formData, input) {
-	formData.append(input.name, input.value);
-}
 
 function updateAuctionData(url, formData) {
 

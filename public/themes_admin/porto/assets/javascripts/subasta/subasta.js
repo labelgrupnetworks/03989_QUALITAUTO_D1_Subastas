@@ -368,3 +368,27 @@ function handleFetchingErrorWithBootbox(error) {
 	console.error(error);
 	bootbox.alert("Ha ocurrido un error");
 }
+
+//#region Mass destroy and update common functions
+
+function appendIdsToFormData(formData, name) {
+	const ids = selectedCheckItemsByName(name);
+	ids.forEach(id => formData.append('ids[]', id));
+}
+
+function validateTwoFields(fields, [field1, field2]) {
+    if (fields[field1] === '' && fields[field2] === '') {
+        return false;
+    } else if (fields[field1] === '' || fields[field2] === '') {
+        const campo = fields[field1] === '' ? field1 : field2;
+        return campo;
+    } else {
+        return false;
+    }
+}
+
+function appendInputToFormData(formData, input) {
+	formData.append(input.name, input.value);
+}
+
+//#endregion
