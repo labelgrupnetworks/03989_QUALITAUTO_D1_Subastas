@@ -26,11 +26,11 @@ function updataDepositStatus(url, formData) {
 
 		success: function (result) {
 			$('#editMultpleDepositsModal').modal('hide');
-			saved('Depósitos actualizados correctamente');
+			saved(result.message);
 			location.reload();
 		},
 		error: function () {
-			error();
+			error('Error inesperado, refesque la página e intente nuevamente.');
 		}
 	});
 }

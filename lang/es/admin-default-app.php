@@ -1077,6 +1077,7 @@ return [
 	'success' => array(
 		'import' => "Datos importados correctamente",
 		'update' => "Datos actualizados correctamente",
+		'update_mass_deposits' => "Depósitos actualizados correctamente.",
 		'update_mass_auc' => "Subastas actualizadas correctamente.",
 		'update_mass_cli' => "Clientes actualizados correctamente.",
 		'update_mass_lot' => "Lotes actualizados correctamente.",
