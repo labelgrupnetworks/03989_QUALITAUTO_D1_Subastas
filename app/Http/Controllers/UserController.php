@@ -343,11 +343,12 @@ class UserController extends Controller
 				$password = Request::input('password');
 				Cookie::queue('user', '' . $email . '%' . $password . '', '525600');
 			}
-
+			#guardo Las session UTM para que no se pierda al hacer invalidate()
+			$UTM = $request->session()->get("UTM");
 			//Eliminamos los tokens de sesion anteriores
 			$request->session()->invalidate();
 			$request->session()->regenerateToken();
-
+			$request->session()->put("UTM",$UTM );
 			$this->SaveSession($login);
 			$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
@@ -1793,8 +1794,11 @@ class UserController extends Controller
             $goto = false;
         }
 
-        # Eliminamos la sesión y redirigimos a login
-       Session::flush();
+			#Guardamos los valores de UTM para que no se pierdan al hacer el flush
+			$UTM = session()->get("UTM");
+			# Eliminamos la sesión y redirigimos a login
+			Session::flush();
+			session()->put("UTM",$UTM );
 
 		if(!empty(Cookie::get('user'))){
 			Cookie::queue('user',null);
