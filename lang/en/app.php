@@ -437,7 +437,8 @@ $lang =[
 			'expiration_date' => 'Expiration date',
 			'conditions' => 'Conditions',
 			'genre_mr' => 'Mr.',
-			'genre_mrs' => 'Mrs.'
+			'genre_mrs' => 'Mrs.',
+			'files' => 'Files',
 		),
 	'lot' =>
 		array (

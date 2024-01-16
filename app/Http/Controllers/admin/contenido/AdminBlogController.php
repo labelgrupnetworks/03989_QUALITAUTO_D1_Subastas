@@ -95,7 +95,12 @@ class AdminBlogController extends Controller
 			'author_web_blog' => $request->author
 		]);
 
-		$this->addRelationsBlog($new_id, $request->categ_blog);
+		$relationalCategories = $request->input('categ_blog', []);
+		if (!in_array($request->categ_blog_principal, $relationalCategories)) {
+			$relationalCategories[] = $request->categ_blog_principal;
+		}
+
+		$this->addRelationsBlog($new_id, $relationalCategories);
 
 		$langs = array_keys($this->lang);
 
@@ -202,7 +207,12 @@ class AdminBlogController extends Controller
 			'author_web_blog' => $request->author
 		]);
 
-		$this->addRelationsBlog($id, $request->categ_blog);
+		$relationalCategories = $request->input('categ_blog', []);
+		if (!in_array($request->categ_blog_principal, $relationalCategories)) {
+			$relationalCategories[] = $request->categ_blog_principal;
+		}
+
+		$this->addRelationsBlog($id, $relationalCategories);
 
 		$langs = array_keys($this->lang);
 		$webBlogsLang = Web_Blog_Lang::where('idblog_web_blog_lang', $id)->get();

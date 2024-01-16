@@ -1479,6 +1479,16 @@ class UserController extends Controller
 		$this->saveDni($request, $cod_cli, 'dni2');
 	}
 
+	private function dniPath($cod_cli)
+	{
+		$emp = Config::get('app.emp');
+		if(Config::get('app.dni_in_storage', false)) {
+			return storage_path("app/files/dni/$emp/$cod_cli/files/");
+		}
+
+		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+	}
+
 	public function saveDni($request, $cod_cli, $fileName)
 	{
 		try {
@@ -1488,7 +1498,7 @@ class UserController extends Controller
 			}
 
 			$filename = $fileName . '.' . $file->getClientOriginalExtension();
-			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+			$destinationPath = $this->dniPath($cod_cli);
 
 			if(!is_dir($destinationPath)){
 				mkdir($destinationPath, 0755, true);
@@ -1529,7 +1539,7 @@ class UserController extends Controller
 
 			$dni1 = "dni1";
 			$dni2 = "dni2";
-			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+			$destinationPath = $this->dniPath($cod_cli);
 
 			if (isset($request[$dni1])) {
 				$file = $request[$dni1];
@@ -1559,7 +1569,7 @@ class UserController extends Controller
 	public function getCIFImages($cod_cli)
 	{
 		try {
-			$destinationPath = base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+			$destinationPath = $this->dniPath($cod_cli);
 
 			$files = glob($destinationPath . '*', GLOB_BRACE);
 

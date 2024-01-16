@@ -2187,7 +2187,7 @@ class Subasta extends Model
                         return $res;
                     }
 
-                    $expire = DB::select("SELECT FGASIGL0.FFIN_ASIGL0, FGASIGL0.HFIN_ASIGL0, FGASIGL0.FFIN_ORIGINAL_ASIGL0, FGASIGL0.HFIN_ORIGINAL_ASIGL0 FROM FGASIGL0
+                    $expire = DB::select("SELECT FGASIGL0.FFIN_ASIGL0, FGASIGL0.HFIN_ASIGL0, FGASIGL0.FFIN_ORIGINAL_ASIGL0, FGASIGL0.HFIN_ORIGINAL_ASIGL0, FGASIGL0.IMPRES_ASIGL0 FROM FGASIGL0
                                             JOIN FGSUB ON  FGSUB.EMP_SUB =  FGASIGL0.EMP_ASIGL0   AND   FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0
                                             WHERE
                                                 FGASIGL0.EMP_ASIGL0 = :emp
@@ -2308,6 +2308,28 @@ class Subasta extends Model
 
 				#llamar a webservice externo notificando la puja
 				$this->webServiceBid($this->licit, $this->cod, $this->ref, $this->imp, $type_asigl1, "PUJA");
+
+				 // si no esta vacio es que la subasta es de tipo 'O' o tipo 'P'
+				 if( \Config::get("app.adjudicacion_reserva") && !empty($expire) && !empty(head($expire)->impres_asigl0) &&  head($expire)->impres_asigl0 <= $this->imp){
+					
+					$this->cerrarLote();
+					$email = new EmailLib('LOT_AWARD');
+					if (!empty($email->email)) {
+						$email->setUserByLicit($this->cod, $this->licit, true);
+						$email->setLot($this->cod, $this->ref);
+						$email->setPriceAdjudication($this->cod, $this->ref);
+						$email->send_email();
+					}
+
+					$result = array(
+						'status' => 'close',
+						'msg' => 'correct_bid',
+						'formatted_actual_bid' => \Tools::moneyFormat($this->imp),
+						'actual_bid' => $this->imp,
+						'ref' => $this->ref
+						);
+					return $result;
+				 }
 
                 $this->sin_pujas = false;
                 $result = array(

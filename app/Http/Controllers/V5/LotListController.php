@@ -536,7 +536,8 @@ class LotListController extends Controller
 
 
 	private function getLots($category, $section, $subsection,  $codSub,  $refSession){
-
+		
+		SeoLib::saveVisit($codSub,request('category', $category ), request('section', $section));
 
 		#No es necesario el search ya que vendra por variables
 		$search = "" ;

@@ -2168,10 +2168,12 @@ class subastaTiempoRealController extends Controller
                 $orden = NULL;
                 $cod_licit_actual = $subasta->licit;
                 if(count($ordenes) > 0){
+
                     $orden = head($subasta->getOrden());
                     $type_bid_orlic = (empty($orden->tipop_orlic))?  "W" :   $orden->tipop_orlic;
                     //si hay ordenes y son mayores a la puja actual
                     if( !empty($orden->himp_orlic) && $orden->himp_orlic > $max_puja && $orden->licit_orlic != $cod_licit_actual) {
+
                         if($orden->himp_orlic >= $subasta->imp){
                             //puja en firme
 
@@ -2205,6 +2207,7 @@ class subastaTiempoRealController extends Controller
 
                             $cod_licit_db = $subasta->licit;
                         }else{
+
                             //guardamso los datos para usarlos luego
                             $cod_licit_actual = $subasta->licit;
                             $imp_actual = $subasta->imp;
@@ -2247,11 +2250,16 @@ class subastaTiempoRealController extends Controller
 							}
                         }
                     }else{
+
                         $addPuja = $subasta->addPuja();
 
 						if ($addPuja['status'] == 'error'){
 							$res = $this->error_puja($addPuja['msg'],  $subasta->licit, $is_gestor);
 							return $res;
+						}
+
+						if ($addPuja['status'] == 'close'){
+							$status = 'close';
 						}
 
                         $cod_licit_db = "";
@@ -2265,6 +2273,7 @@ class subastaTiempoRealController extends Controller
                     }
 
                 }else{
+
                     $addPuja = $subasta->addPuja();
                     $cod_licit_db = "";
 					$cod_licit_actual = $subasta->licit;
@@ -2279,6 +2288,10 @@ class subastaTiempoRealController extends Controller
 						$this->email_bid_confirmed($subasta, $addPuja);
 						$this->sendEmailSobrepuja($subasta->cod,$cod_licit_actual, $subasta->ref, "puja");
 					}
+					if ($addPuja['status'] == 'close'){
+						$status = 'close';
+					}
+
                 }
 
                 /* fin codigo nuevo */
@@ -2289,10 +2302,14 @@ class subastaTiempoRealController extends Controller
                 $formatted_actual_bid = \Tools::moneyFormat($actual_bid);
                 $resultado = array();
                 array_push($resultado, 'addPuja');
+				if(empty($status)){
+					$status = 'success';
+				}
                 $res = array(
-                        'status'            => 'success',
+                        'status'            => $status,
                         'msg_1'             => 'higher_bid',
                         'msg_2'             => 'correct_bid',
+						'msg_close'			=>  trans(\Config::get('app.theme').'-app.msg_success.makeOfferBuyLot',['lot' => $lote->descweb_hces1]),
                         'cod_licit_actual'  => $cod_licit_actual,
                         'cod_licit_db'      => $cod_licit_db,
                         'actual_bid'        => $actual_bid,
@@ -3511,14 +3528,14 @@ class subastaTiempoRealController extends Controller
         }
 
 		if(!empty($cod_sub)){
-			$subasta = Fgsub::select("inversa_sub")->where("cod_sub",$cod_sub)->first();
+			$fgsub = Fgsub::select("inversa_sub")->where("cod_sub",$cod_sub)->first();
 
-			if( !empty($subasta) && $subasta->inversa_sub == 'S'){
+			if( !empty($fgsub) && $fgsub->inversa_sub == 'S'){
 				return $this->calculateAvailableInverseBids($next_bid, $new_bid,$cod_sub);
 			}
 		}
 
-		$scaleRanges = $subasta->AllScales();
+		$scaleRanges = $subasta->allScales();
         $end = false;
         $scales = array();
         //marco un limite superior para no realizar calculos innecesarios

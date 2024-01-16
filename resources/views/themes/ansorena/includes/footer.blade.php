@@ -149,7 +149,7 @@
 
     </div>
 
-	{{-- <div class="container ext-logos-container">
+	<div class="container ext-logos-container">
 		<div class="ext-logos">
 			<div class="">
 				<img src="/themes/{{ $theme }}/assets/img/rtr_negative.png" alt="Plan de recuperación transformación y Resilencia">
@@ -158,7 +158,7 @@
 				<img src="/themes/{{ $theme }}/assets/img/eu_negative.png" alt="Funded by the European Union">
 			</div>
 		</div>
-	</div> --}}
+	</div>
 
 
 </footer>
@@ -168,31 +168,3 @@
 @endif
 
 @include('includes.cookies_personalize')
-
-@if (Carbon\Carbon::now()->lessThan(Carbon\Carbon::create(2024, 1, 6, 0, 0, 0)))
-<div class="message_modal" data-style="popover" data-position="right">
-    <p class="message_modal__title">Aviso</p>
-
-    <div class="message_modal_content">
-        <div class="message_modal__messages">
-            <p class="message_modal__message">
-                El día 5 de enero nuestro horario será de 10 a 16h, ininterrumpido.
-				<br>No dude en contactarnos en el teléfono 91 532 85 15.
-				<br>Muchas gracias
-            </p>
-        </div>
-
-        <div class="message_modal_buttons">
-            <button class="btn btn-lb-primary" onclick="closeMessageModal()">
-               Cerrar
-            </button>
-        </div>
-    </div>
-</div>
-
-<script>
-	function closeMessageModal() {
-		$('.message_modal')[0].style.display = 'none';
-	}
-</script>
-@endif

@@ -447,6 +447,7 @@ $lang = [
 		'yes' => 'Si',
 		'no' => 'No',
 		'nif_dni_nie' => 'NIF / DNI / NIE',
+		'files' => 'Archivos',
 
 	),
 	'lot' =>

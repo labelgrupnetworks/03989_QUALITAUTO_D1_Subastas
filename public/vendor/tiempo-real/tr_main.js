@@ -239,6 +239,15 @@ $(function () {
         }
         if (typeof auction_info.user != 'undefined') {
 
+			if (data.status == 'close') {
+				if (parseInt(auction_info.user.cod_licit) == parseInt(data.cod_licit_actual)){
+					displayAlert(1, data.msg_close);
+
+				}
+				setTimeout(() => {window.location.reload()}, 3000);
+				return;
+			}
+
             if (data.status == 'error') {
 
                 if (data.msg_1) {

@@ -45,7 +45,7 @@ if (strpos($fullname, ',')) {
                             @endphp
                             @foreach ($categories as $k => $category)
                                 <div class="categoryOption"><a
-                                        href="{{ route('category', ['category' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
+                                        href="{{ route('category', ['keycategory' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
                                 </div>
                             @endforeach
                         </div>

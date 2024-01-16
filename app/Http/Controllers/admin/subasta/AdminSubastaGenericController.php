@@ -25,6 +25,7 @@ use App\Models\V5\FgSub_lang;
 use App\Models\V5\FxPro;
 use App\Models\V5\Web_Artist;
 use App\Http\Controllers\externalAggregator\Invaluable\House;
+use Illuminate\Database\Eloquent\Collection;
 
 class AdminSubastaGenericController extends Controller
 {
@@ -433,11 +434,11 @@ class AdminSubastaGenericController extends Controller
 
 	}
 
-	protected function addFgPujasSubForm($formulario, $fgPujasSubs){
-
+	protected function addFgPujasSubForm(object $formulario, Collection $fgPujasSubs)
+	{
 		$formulario->escalado = [];
 
-		if(empty($fgPujasSubs)){
+		if($fgPujasSubs->isEmpty()){
 			$formulario->escalado[] = [
 				'imp_pujassub' => FormLib::Float("imp_pujassub[]", 0, 0),
 				'puja_pujassub' => FormLib::Float("puja_pujassub[]", 0, 0)

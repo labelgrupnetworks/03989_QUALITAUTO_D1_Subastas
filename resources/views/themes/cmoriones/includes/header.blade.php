@@ -52,7 +52,7 @@
     <nav class="navbar navbar-expand-xxl">
         <div class="container">
             <a class="navbar-brand d-xxl-none" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-                <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo.png"
+                <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo.svg"
                     alt="{{ \Config::get('app.name') }}" width="200">
             </a>
             <button class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
@@ -162,12 +162,13 @@
 
 <section class="subnav d-none d-xxl-block">
     <div class="container header-brand">
-        <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-            <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_transp.png"
-                alt="{{ \Config::get('app.name') }}" width="200">
+		<a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+            <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.svg"
+                alt="{{ \Config::get('app.name') }}" width="250">
         </a>
+
         <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-            <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.png"
+            <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.png"
                 alt="{{ \Config::get('app.name') }}" width="300">
         </a>
     </div>

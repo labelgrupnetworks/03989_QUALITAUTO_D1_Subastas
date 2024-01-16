@@ -1089,6 +1089,36 @@ class test extends BaseController
 	}
 	#FIN DEPOSIT
 
+	#INVALUABLE
+	#http://www.newsubastas.test/apilabel/test?function=postInvaluableCatalog&testmode=CONTROLLER
+	public function postInvaluableCatalog(){
+
+		$invaluable = new stdClass();
+		$invaluable->idauction = "BBBO";
+		$invaluable->reference = "001";
+
+
+
+		#los dos últimos parametros son solo para lanzar los controladores
+		$this->excuteMode((array)$invaluable ,"POST","invaluable_catalog", new InvaluableController(false),"catalog");
+
+
+	}
+	#http://www.newsubastas.test/apilabel/test?function=postInvaluableLot&testmode=CONTROLLER
+	public function postInvaluableLot(){
+
+		$invaluable = new stdClass();
+		$invaluable->idauction = "BBBO";
+		$invaluable->reference = "001";
+		$invaluable->reflot = 1;
+
+
+		#los dos últimos parametros son solo para lanzar los controladores
+		$this->excuteMode((array)$invaluable ,"POST","invaluable_lot", new InvaluableController(false),"lot");
+
+
+	}
+	# FIN INVALUABLE
 
     #fin de test peticiones api
 

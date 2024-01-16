@@ -223,6 +223,29 @@
                 </div>
             </div>
 
+			<div class="row mb-5">
+                <div class="col-md-4">
+                    <h4>{{ trans("$theme-app.login_register.files") }}</h4>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="row gy-1">
+                        <div class="col-12">
+                            <label class="form-label">
+                                {{ trans("$theme-app.login_register.dni_obverse") }}
+                                {!! FormLib::File('dni1', 1) !!}
+                            </label>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">
+                                {{ trans("$theme-app.login_register.dni_reverse") }}
+                                {!! FormLib::File('dni2', 1) !!}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mb-5">
                 <div class="col-md-4">
                     <h4>{{ trans("$theme-app.login_register.cuenta") }}</h4>
