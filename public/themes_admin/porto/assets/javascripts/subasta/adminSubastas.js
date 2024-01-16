@@ -359,7 +359,7 @@ function mintNft(event) {
 $('#edit_multiple_auctions').on('submit', function (event) {
 	event.preventDefault();
 
-	if (validateDateFields(new FormData(this))) {
+	if (validateAucDateFields(new FormData(this))) {
 		return;
 	}
 	const formData = new FormData(this);
@@ -405,7 +405,7 @@ $('#edit_multiple_auctions').on('submit', function (event) {
 	bootbox.confirm(bootboxConfig);
 });
 
-function validateDateFields(formData) {
+function validateAucDateFields(formData) {
 	const fields = {
 		dfec_sub_select: formData.get('dfec_sub_select'),
 		dhora_sub_select: formData.get('dhora_sub_select'),
@@ -465,19 +465,6 @@ function validateTwoFields(fields, [field1, field2]) {
     }
 }
 
-
-function appendFiltersToFormData(formData) {
-	const searchParams = new URLSearchParams(window.location.search);
-	const params = [...searchParams.entries()];
-	const cleanParams = params.filter(param => param[1] !== '');
-
-	// Add params to formData
-	cleanParams.forEach((entryParams) => {
-		const [key, value] = entryParams;
-		formData.append(key, value);
-	});
-}
-
 function appendIdsToFormData(formData) {
 	const ids = selectedCheckItemsByName("auc_ids");
 	ids.forEach(id => formData.append('ids[]', id));
@@ -514,14 +501,6 @@ $('input[name="auc_ids"]').on('change', function () {
 		document.querySelector('[name=js-selectAll]').checked = false;
 	}
 });
-
-function getValueFromInput(inputName) {
-	const input = document.querySelector(`input[name="${inputName}"]`);
-	if(input.type == 'checkbox' && input.checked){
-		return input.value;
-	}
-	return false;
-}
 
 function hideAndShowOrlinInputs()
 {
