@@ -16,7 +16,7 @@
             @endif
         </div>
     @endif
-
+	<input type="hidden" id="tipo_puja_gestor" value="firme" >
     {{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
     @if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
         <div class="require-wallet">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
