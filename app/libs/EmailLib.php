@@ -294,6 +294,8 @@ private $debug = true;
             $this->atributes['ZIP_CODE'] = $inf_user->cp_cli;
             $this->atributes['COUNTRY'] = $inf_user->pais_cli;
 			$this->atributes['RSOC_CLI'] = $inf_user->rsoc_cli;
+			$this->atributes['FISJUR'] = $inf_user->fisjur_cli;
+
             if (isset($inf_user->sexo_cli)) {
                 $this->setSexo_Cli($inf_user->sexo_cli, \App::getLocale());
             }
@@ -1163,11 +1165,12 @@ private $debug = true;
             $this->atributes[$atribute] = $value;
         }
 
-		public function getAtribute($atribute){
+		public function getAtribute($atribute, $default = null)
+		{
 			if(isset($this->atributes[$atribute])){
 				return $this->atributes[$atribute];
 			}
-			return null;
+			return $default;
 		}
 
 		public function getAtributes(){
@@ -1234,6 +1237,26 @@ private $debug = true;
 				$this->atributes['BIDDERS'] .= trans("$theme-app.emails.multiple_bidder", ['name' => $bidder->full_name, 'ratio' => $bidder->ratio_asigl1mt, 'value' => $stringValue]);
 			}
 			return;
+		}
+
+		/**
+		 * En cmoriones necesitamos adjuntar documentación a rellenar por el adjudicatario.
+		 * Por el momento esta solo pensado para este cliente, pero se puede ampliar desde
+		 * este punto si fuera necesario
+		 */
+		public function addAwardAttachedDocumentation()
+		{
+			$theme = Config::get('app.theme');
+			$legalPersonality = $this->getAtribute('FISJUR', 'F');
+
+			if(!is_array($this->attachments)){
+				$this->attachments = [];
+			}
+
+			$path = "themes/$theme/assets/files/";
+			$nameFile = $legalPersonality == 'F' ? 'oferta web física.pdf' : 'oferta web jurídica.pdf';
+
+			$this->attachments[] = public_path($path . $nameFile);
 		}
 
 }
