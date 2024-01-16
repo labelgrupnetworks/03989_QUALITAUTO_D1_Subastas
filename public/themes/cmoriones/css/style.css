@@ -155,6 +155,7 @@ header .navbar-nav .dropdown-menu {
 }
 
 footer .nav-link {
+	--bs-nav-link-hover-color: var(--lb-color-primary);
 	overflow-wrap: break-word;
 }
 /* con sticky y scroll */
@@ -373,4 +374,27 @@ main.ficha h5 {
 
 main.static-page * {
 	font-family: var(--bs-font-sans-serif) !important;
+}
+
+.lot-card .card-title {
+	display: flex;
+	gap: 5px;
+}
+
+.lot-card .card-title > p {
+	background: black;
+    color: white;
+    padding: 2px 3px;
+    align-self: flex-start;
+    line-height: 1;
+}
+
+.lot-card :is(.lot-salida-price, .lot-actual-bid) {
+	padding: 2px 5px;
+	margin-bottom: 5px;
+}
+
+.lot-card .lot-salida-price {
+	font-weight: 700;
+	border: 1px solid #198754;
 }
