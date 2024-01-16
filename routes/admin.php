@@ -356,6 +356,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features.post');
 
 
+		Route::post('subastas/lotes/delete-with-filters', 'subasta\AdminLotController@destroyWithFilters')->name('subastas.lotes.destroy_with_filters');
+		Route::post('subastas/lotes/delete-selection', 'subasta\AdminLotController@destroySelections')->name('subastas.lotes.destroy_selections');
+		Route::post('subastas/lotes/update-with-filters', 'subasta\AdminLotController@updateWithFilters')->name('subastas.lotes.update_with_filters');
+		Route::post('subastas/lotes/update-selection', 'subasta\AdminLotController@updateSelections')->name('subastas.lotes.update_selections');
 		Route::get('subastas/lotes/printPdf/{codSub}', 'subasta\AdminLotController@pdfExhibition')->name('subastas.lotes.printPdf');
 		Route::get('subastas/lotes/printExcel/{codSub}', 'subasta\AdminLotController@excelExhibition')->name('subastas.lotes.printExcel');
 		Route::get('subastas/{cod_sub}/lotes/order', 'subasta\AdminLotController@getOrder')->name('subastas.lotes.order_edit');

@@ -1,4 +1,3 @@
-
 $(document).on('ready', function () {
 
 	$('[name=starthour], [name=endhour]').on('blur', function (e) {
@@ -53,6 +52,9 @@ $(document).on('ready', function () {
 		});
 	});
 
+	$('input[name="lot_ids"]').on('change', verifyUncheckAllSelected);
+	$('input[name="lot_ids"]').on('change', hideLotMassDestroyButton);
+	$('input[name="js-selectAll"]').on('change', hideLotMassDestroyButton);
 });
 
 const OPERATION_TYPES = {
@@ -417,3 +419,173 @@ $('#lotFilesRows').sortable({
 		});
 	}
 });
+
+$('#edit_multiple_lots').on('submit', function (event) {
+	event.preventDefault();
+
+	if (validateLotDateFields(new FormData(this))) {
+		return;
+	}
+	const formData = new FormData(this);
+	const isSelectAllDepositsChecked = getValueFromInput('js-selectAll');
+
+	const url = isSelectAllDepositsChecked
+		? urlAllSelected.value
+		: edit_multiple_lots.action;
+
+	isSelectAllDepositsChecked
+		? appendFiltersToFormData(formData)
+		: appendLotIdsToFormData(formData);
+
+	appendAucIdToFormData(formData);
+
+	updateLotsAjax(url, formData);
+});
+
+function appendFiltersToFormData(formData) {
+	const searchParams = new URLSearchParams(window.location.search);
+	const params = [...searchParams.entries()];
+	const cleanParams = params.filter(param => param[1] !== '');
+
+	// Add params to formData
+	cleanParams.forEach((entryParams) => {
+		const [key, value] = entryParams;
+		formData.append(key, value);
+	});
+}
+
+function appendLotIdsToFormData(formData) {
+	const ids = selectedCheckItemsByName("lot_ids");
+	ids.forEach(id => formData.append('ids[]', id));
+}
+
+function appendAucIdToFormData(formData) {
+	const id = getValueFromInput("auc_id");
+	formData.append('auc_id', id);
+}
+
+function updateLotsAjax(url, formData) {
+	$.ajax({
+		url,
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+
+		success: function (result) {
+			$('#editMultpleLotsModal').modal('hide');
+			saved(result.message);
+			location.reload(true);
+		},
+		error: function (result) {
+			error(result.responseJSON.message);
+		}
+	});
+}
+
+function verifyUncheckAllSelected() {
+	const isSelectAllDepositsChecked = getValueFromInput('js-selectAll');
+
+	if (isSelectAllDepositsChecked) {
+		document.querySelector('input[name="js-selectAll"]').checked = false;
+	}
+}
+
+function getValueFromInput(inputName) {
+	const input = document.querySelector(`input[name="${inputName}"]`);
+	if(input.type == 'checkbox' && input.checked){
+		return input.value;
+	}
+	if(input.type == 'hidden' && input.value != null && input.value != ''){
+		return input.value;
+	}
+	return null;
+}
+function getSearchParams() {
+	let params = [...new URLSearchParams(window.location.search).entries()];
+	params = params.filter(([key, value]) => value != '');
+	return params.reduce((acc, [key, value]) => {
+		return { ...acc, [key]: value }
+	}, {});
+}
+
+function makeDataToSendInRemoveSelecteds(ids) {
+	let data = {};
+	data['_token'] = $('[name="_token"]').val();
+	data['auc_id'] = getValueFromInput('auc_id');
+	data['ids'] = ids;
+	const searchParams = getSearchParams();
+	for (const [key, value] of Object.entries(searchParams)) {
+		data[key] = value;
+	}
+	return data;
+}
+
+function validateLotDateFields(formData) {
+	const fields = {
+		startdate_select: formData.get('startdate_select'),
+		starthour_select: formData.get('starthour_select'),
+		enddate_select: formData.get('enddate_select'),
+		endhour_select: formData.get('endhour_select'),
+	};
+
+	let error = false;
+
+	function handleValidationError(fieldName) {
+		$(`input[name="${fieldName}"], select[name="${fieldName}"]`).addClass('has-error');
+		error = true;
+	}
+
+	let field = validateTwoFields(fields, ['startdate_select', 'starthour_select']);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	field = validateTwoFields(fields, ['enddate_select', 'endhour_select']);
+	if (field) {
+		handleValidationError(field);
+	}
+
+	return error;
+}
+
+function removeLotsSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
+
+	const valueAllSelected = getValueFromInput(allselected);
+	const urlAjax = valueAllSelected ? urlwithfilters : url;
+	const ids = !valueAllSelected ? selectedCheckItemsByName(objective) : '';
+
+	bootbox.confirm(title, function (result) {
+		if(!result) return;
+
+		$.ajax({
+			url: urlAjax,
+			type: "post",
+			data: makeDataToSendInRemoveSelecteds(ids),
+			success: function(result) {
+				saved(response);
+				location.reload(true);
+			},
+			error: function() {
+				error();
+			}
+		});
+
+	});
+}
+
+function hideLotMassDestroyButton() {
+	const ids = selectedCheckItemsByName("lot_ids");
+	const hasBidsAndOrders = $('input[name="has_orders_or_bids"]');
+	const massDeleteButton = document.querySelector('[data-id="mass_delete_button"]');
+
+	massDeleteButton.classList.remove('hidden');
+
+	ids.forEach(id => {
+		let input = hasBidsAndOrders.filter(`[data-lot_ref="${id}"]`);
+		if (input.val() == 1) {
+			massDeleteButton.classList.add('hidden');
+		}
+	});
+
+}

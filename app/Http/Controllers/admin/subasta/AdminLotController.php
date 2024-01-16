@@ -70,71 +70,7 @@ class AdminLotController extends Controller
 
 		$tipo_sub = FgSub::where('cod_sub', $cod_sub)->first()->tipo_sub;
 
-		$lotes = FgAsigl0::query();
-		if ($request->obsdet_hces1) {
-			$lotes->where('upper(obsdet_hces1)', 'like', "%" . mb_strtoupper($request->obsdet_hces1) . "%");
-		}
-		if ($request->des_alm) {
-			$lotes->where('upper(des_alm)', 'like', "%" . mb_strtoupper($request->des_alm) . "%");
-		}
-		if ($request->fecalta_asigl0) {
-			$lotes->where('fecalta_asigl0', '=', $request->fecalta_asigl0);
-		}
-
-		if ($request->stock_hces1) {
-			$lotes->where('stock_hces1', '=', $request->stock_hces1);
-		}
-		if ($request->ref_asigl0) {
-			$lotes->where('ref_asigl0', '=', $request->ref_asigl0);
-		}
-		if ($request->idorigen_asigl0) {
-			$lotes->where('upper(idorigen_asigl0)', 'like', "%" . mb_strtoupper($request->idorigen_asigl0) . "%");
-		}
-		if ($request->cerrado_asigl0) {
-			$lotes->where('cerrado_asigl0', '=', $request->cerrado_asigl0);
-		}
-		if ($request->impsalhces_asigl0) {
-			$lotes->where('impsalhces_asigl0', '=', $request->impsalhces_asigl0);
-		}
-		if ($request->destacado_asigl0) {
-			$lotes->where('destacado_asigl0', '=', $request->destacado_asigl0);
-		}
-		if ($request->retirado_asigl0) {
-			$lotes->where('retirado_asigl0', '=', $request->retirado_asigl0);
-		}
-		if ($request->oculto_asigl0) {
-			$lotes->where('oculto_asigl0', '=', $request->oculto_asigl0);
-		}
-		if ($request->impres_asigl0) {
-			$lotes->where('impres_asigl0', '=', $request->impres_asigl0);
-		}
-		if ($request->impres_asigl0) {
-			$lotes->where('impres_asigl0', '=', $request->impres_asigl0);
-		}
-		if ($request->imptas_asigl0) {
-			$lotes->where('imptas_asigl0', '=', $request->imptas_asigl0);
-		}
-		if ($request->imptash_asigl0) {
-			$lotes->where('imptash_asigl0', '=', $request->imptash_asigl0);
-		}
-		if ($request->comlhces_asigl0) {
-			$lotes->where('comlhces_asigl0', '=', $request->comlhces_asigl0);
-		}
-		if ($request->comphces_asigl0) {
-			$lotes->where('comphces_asigl0', '=', $request->comphces_asigl0);
-		}
-		if ($request->prop_hces1) {
-			$lotes->where('prop_hces1', '=', $request->prop_hces1);
-		}
-		if ($request->descweb_hces1) {
-			$lotes->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($request->descweb_hces1) . "%");
-		}
-		if ($request->fini_asigl0) {
-			$lotes->where('fini_asigl0', '>=' ,$request->fini_asigl0);
-		}
-		if ($request->ffin_asigl0) {
-			$lotes->where('ffin_asigl0', '<=',$request->ffin_asigl0);
-		}
+		$lotes = self::fgAsigl0QueryFilters($request, FgAsigl0::query());
 
 		$select = ['SUB_ASIGL0', 'REF_ASIGL0', 'IDORIGEN_ASIGL0', 'CERRADO_ASIGL0', 'IMPSALHCES_ASIGL0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0', 'comlhces_asigl0', 'comphces_asigl0', 'DESTACADO_ASIGL0', 'RETIRADO_ASIGL0', 'OCULTO_ASIGL0', 'NUMHCES_ASIGL0', 'LINHCES_ASIGL0', 'PROP_HCES1', 'DESCWEB_HCES1', 'fini_asigl0', 'ffin_asigl0','STOCK_HCES1','OBSDET_HCES1','FECALTA_ASIGL0', 'DES_ALM'];
 
@@ -1560,5 +1496,324 @@ class AdminLotController extends Controller
 			'data' => $results ?? [],
 		]);
 	}
+
+	#region lot filters
+
+	private function fgAsigl0QueryFilters(Request $request, $query)
+	{
+		if ($request->obsdet_hces1) {
+			$query->where('upper(obsdet_hces1)', 'like', "%" . mb_strtoupper($request->obsdet_hces1) . "%");
+		}
+		if ($request->des_alm) {
+			$query->where('upper(des_alm)', 'like', "%" . mb_strtoupper($request->des_alm) . "%");
+		}
+		if ($request->fecalta_asigl0) {
+			$query->where('fecalta_asigl0', '=', $request->fecalta_asigl0);
+		}
+		if ($request->stock_hces1) {
+			$query->where('stock_hces1', '=', $request->stock_hces1);
+		}
+		if ($request->ref_asigl0) {
+			$query->where('ref_asigl0', '=', $request->ref_asigl0);
+		}
+		if ($request->idorigen_asigl0) {
+			$query->where('upper(idorigen_asigl0)', 'like', "%" . mb_strtoupper($request->idorigen_asigl0) . "%");
+		}
+		if ($request->cerrado_asigl0) {
+			$query->where('cerrado_asigl0', '=', $request->cerrado_asigl0);
+		}
+		if ($request->impsalhces_asigl0) {
+			$query->where('impsalhces_asigl0', '=', $request->impsalhces_asigl0);
+		}
+		if ($request->destacado_asigl0) {
+			$query->where('destacado_asigl0', '=', $request->destacado_asigl0);
+		}
+		if ($request->retirado_asigl0) {
+			$query->where('retirado_asigl0', '=', $request->retirado_asigl0);
+		}
+		if ($request->oculto_asigl0) {
+			$query->where('oculto_asigl0', '=', $request->oculto_asigl0);
+		}
+		if ($request->impres_asigl0) {
+			$query->where('impres_asigl0', '=', $request->impres_asigl0);
+		}
+		if ($request->impres_asigl0) {
+			$query->where('impres_asigl0', '=', $request->impres_asigl0);
+		}
+		if ($request->imptas_asigl0) {
+			$query->where('imptas_asigl0', '=', $request->imptas_asigl0);
+		}
+		if ($request->imptash_asigl0) {
+			$query->where('imptash_asigl0', '=', $request->imptash_asigl0);
+		}
+		if ($request->comlhces_asigl0) {
+			$query->where('comlhces_asigl0', '=', $request->comlhces_asigl0);
+		}
+		if ($request->comphces_asigl0) {
+			$query->where('comphces_asigl0', '=', $request->comphces_asigl0);
+		}
+		if ($request->prop_hces1) {
+			$query->where('prop_hces1', '=', $request->prop_hces1);
+		}
+		if ($request->descweb_hces1) {
+			$query->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($request->descweb_hces1) . "%");
+		}
+		if ($request->fini_asigl0) {
+			$query->where('fini_asigl0', '>=' ,$request->fini_asigl0);
+		}
+		if ($request->ffin_asigl0) {
+			$query->where('ffin_asigl0', '<=',$request->ffin_asigl0);
+		}
+
+		return $query;
+	}
+
+	#endregion
+
+	#region validate the fields
+
+	private function validateEmptySelectionFields($fields)
+	{
+		$empty = true;
+		foreach ($fields as $key => $value) {
+			if (preg_match('/_select$/', $key) && !empty($value)) {
+				return $empty = false;
+
+			}
+		}
+		if ($fields['biddercommission_select'] == 0 && $fields['ownercommission_select'] == 0) {
+			return $empty = true;
+		}
+		return $empty;
+	}
+
+	#endregion
+
+	#region mass update and delete
+
+	private function erase_selectTextFromFields(Request $request)
+	{
+		foreach ($request->all() as $key => $value) {
+			if (preg_match('/_select$/', $key)) {
+				$request->merge([str_replace('_select', '', $key) => $value]);
+				unset($request[$key]);
+			}
+		}
+		return $request;
+	}
+
+	private function formattingDataForUpdate(Request $request, $lot)
+	{
+		if ($request->owner != '') {
+			$lot['owner'] = $request->owner;
+		}
+		if ($request->idsubcategory != '') {
+			$lot['idsubcategory'] = $request->idsubcategory;
+		}
+		if ($request->withstock != '') {
+			$lot['withstock'] = $request->withstock;
+		}
+		if ($request->highlight != '') {
+			$lot['highlight'] = $request->highlight;
+		}
+		if ($request->retired != '') {
+			$lot['retired'] = $request->retired;
+		}
+		if ($request->close != '') {
+			$lot['close'] = $request->close;
+		}
+		if ($request->soldprice != '') {
+			$lot['soldprice'] = $request->soldprice;
+		}
+		if ($request->buyoption != '') {
+			$lot['buyoption'] = $request->buyoption;
+		}
+		if ($request->hidden != '') {
+			$lot['hidden'] = $request->hidden;
+		}
+		if ($request->disclaimed != '') {
+			$lot['disclaimed'] = $request->disclaimed;
+		}
+		if ($request->startdate != '') {
+			$lot['startdate'] = date('Y-m-d', strtotime($request->startdate));
+		}
+		if ($request->starthour != '') {
+			$lot['starthour'] = date('H:i:s', strtotime($request->starthour));
+		}
+		if ($request->enddate != '') {
+			$lot['enddate'] = date('Y-m-d', strtotime($request->enddate));
+		}
+		if ($request->endhour != '') {
+			$lot['endhour'] = date('H:i:s', strtotime($request->endhour));
+		}
+		if ($request->biddercommission != '') {
+			$lot['biddercommission'] = $request->biddercommission;
+		}
+		if ($request->ownercommission != '') {
+			$lot['ownercommission'] = $request->ownercommission;
+		}
+
+		return $lot;
+	}
+
+	private function getSelectedLotsQueryBuilder(Request $request, $cod_sub, $ids = null)
+	{
+		$lots = FgAsigl0::query();
+		$lots->joinFghces1Asigl0();
+		$lots->select(
+			'idorigen_asigl0 as idorigin',
+			'sub_asigl0 as idauction',
+			'ref_asigl0 as reflot',
+			'sec_hces1 as idsubcategory',
+			'descweb_hces1 as title',
+			'desc_hces1 as description',
+			'impsalhces_asigl0 as startprice'
+		);
+		$lots->where('sub_asigl0', $cod_sub);
+
+		if ($ids) {
+			$lots->whereIn('ref_asigl0', $ids);
+		} else {
+			$lots = self::fgAsigl0QueryFilters($request, $lots);
+		}
+
+		return $lots;
+	}
+
+	private function unsetSelectedLots($cod_sub, $refLots, $lots)
+	{
+		$ordenes = FgOrlic::where('sub_orlic', $cod_sub)->whereIn('ref_orlic', $refLots)->get();
+		$pujas = FgAsigl1::where('sub_asigl1', $cod_sub)->whereIn('ref_asigl1', $refLots)->get();
+
+		if (count($ordenes) == 0 && count($pujas) == 0) {
+			return $lots;
+		}
+
+		$withExternalApi = Config::get('app.lot_api_integrations', false);
+
+		foreach ($lots as $key => $lot) {
+			$hasBids = !($pujas->where('ref_asigl1', $lot->reflot)->max('imp_asigl1') ?? 0) == 0;
+			$hasOrderds = !($ordenes->where('ref_orlic', $lot->reflot)->max('himp_orlic') ?? 0) == 0;
+
+			if ($hasBids || $hasOrderds || $withExternalApi) {
+				unset($lots[$key]);
+			}
+		}
+
+		return $lots;
+	}
+
+	public function updateSelections(Request $request)
+	{
+		if (self::validateEmptySelectionFields($request->toArray())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
+		$ids = $request->input('ids', []);
+		$cod_sub = $request->input('auc_id', '');
+
+		$lots = self::getSelectedLotsQueryBuilder($request, $cod_sub, $ids);
+		$lots = ($lots->get())->toArray();
+
+		$request = self::erase_selectTextFromFields($request);
+
+		$lotsForUpdate = [];
+		foreach ($lots as $lot) {
+			$lotsForUpdate[] = $this->formattingDataForUpdate($request, $lot);
+		}
+
+		$lotControler = new LotController();
+		$json = $lotControler->updateLot($lotsForUpdate);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_lot")], 200);
+	}
+
+	public function updateWithFilters(Request $request)
+	{
+		if (self::validateEmptySelectionFields($request->toArray())) {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_data_form")], 500);
+		}
+
+		$cod_sub = $request->input('auc_id', '');
+
+		$lots = $this->getSelectedLotsQueryBuilder($request, $cod_sub)->get();
+		$lots = $lots->toArray();
+
+		$request = self::erase_selectTextFromFields($request);
+		$lotsForUpdate = [];
+		foreach ($lots as $lot) {
+			$lotsForUpdate[] = $this->formattingDataForUpdate($request, $lot);
+		}
+
+		$lotControler = new LotController();
+		$json = $lotControler->updateLot($lotsForUpdate);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_lot")], 200);
+	}
+
+	private function destroySelectedLots(array $idorigins)
+	{
+		$lotControler = new LotController();
+		foreach ($idorigins as $idorigin) {
+			$json = $lotControler->eraseLot(['idorigin' => $idorigin]);
+			$result = json_decode($json);
+
+			if ($result->status == 'ERROR') {
+				return $json;
+			}
+		}
+
+		return $json;
+	}
+
+	public function destroySelections(Request $request)
+	{
+		$ids = $request->input('ids', []);
+		$cod_sub = $request->input('auc_id', '');
+
+		$lots = $this->getSelectedLotsQueryBuilder($request, $cod_sub, $ids);
+		$idorigins = $lots->pluck('idorigin')->toArray();
+
+		$json = $this->destroySelectedLots($idorigins);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_lot")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_lot")], 200);
+	}
+
+	public function destroyWithFilters(Request $request)
+	{
+		$cod_sub = $request->input('auc_id', '');
+
+		$lots = $this->getSelectedLotsQueryBuilder($request, $cod_sub)->get();
+		$lotsRef = $lots->pluck('reflot')->toArray();
+
+		$lots = $this->unsetSelectedLots($cod_sub, $lotsRef, $lots);
+		$idorigins = $lots->pluck('idorigin')->toArray();
+
+		$json = $this->destroySelectedLots($idorigins);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_lot")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_lot")], 200);
+	}
+
+	#endregion
 
 }

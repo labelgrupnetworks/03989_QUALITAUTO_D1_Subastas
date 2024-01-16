@@ -265,6 +265,7 @@ return [
 		'deposit_mass_update' => 'Deposito/s',
 		'client_mass_update' => 'Cliente/s',
 		'subasta_mass_update' => 'Subasta/s',
+		'lot_mass_update' => 'Lote/s',
 	),
 	'button' => array(
 		'export' => 'Exportar',
@@ -1007,6 +1008,7 @@ return [
 	),
 	'questions' => array(
 		'delete_newsletter' => '¿Seguro que desea eliminar esta suscripción?',
+		'erase_mass_lot' => '¿Estás seguro de eliminar todos los lotes seleccionados?',
 	),
     'placeholder' => array(
          'fecha_publicacion'=>'Fecha de publicacion',
@@ -1077,6 +1079,8 @@ return [
 		'update' => "Datos actualizados correctamente",
 		'update_mass_auc' => "Subastas actualizadas correctamente.",
 		'update_mass_cli' => "Clientes actualizados correctamente.",
+		'update_mass_lot' => "Lotes actualizados correctamente.",
+		'erase_mass_lot' => "Los lotes se han borrado correctamente.",
 	),
 	'error' => array(
 		'no_id_delete' => "No se ha podido borrar  ya que falta informar de su id",
@@ -1086,6 +1090,7 @@ return [
 		'no_id_cli' => "El id de cliente nº :cod2_cli no existe",
 		'no_data_form' => "Debe introducir datos en el formulario.",
 		'no_update_data' => "No se han podido actualizar los datos.",
+		'erase_mass_lot' => "No se han podido eliminar los lotes seleccionados.",
 
 		'cod_pro' => 'Id',
 		'nom_pro' => 'Nombre',
@@ -1180,5 +1185,6 @@ return [
 			)
 
 
-		)
+		),
+
 ];
