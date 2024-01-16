@@ -165,6 +165,7 @@ use App\Http\Controllers\V5\DepositController;
 use App\models\V5\AppUsersToken;
 use App\models\V5\AppPush;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Prueba extends BaseController
@@ -172,13 +173,9 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		echo('prueba');
-
-		if(request()->has('connection')){
-			echo '<br> test connection <br>';
-			echo $this->testConnection();
-		}
-
+		dump('test1');
+		dump(FacadesConfig::get('app.env'));
+		dd(FacadesConfig::get('app.url'));
 	}
 
 

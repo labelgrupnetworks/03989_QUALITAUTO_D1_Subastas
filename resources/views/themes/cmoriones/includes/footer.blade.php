@@ -79,7 +79,14 @@
 
             <div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
                 <h5>{{ $empresa->nom_emp ?? '' }}</h5>
-                <p class="text-muted">{{ $empresa->dir_emp ?? '' }}</p>
+				<a href="https://www.google.com/maps/dir//C.+de+Ferraz,+2,+Moncloa+-+Aravaca,+28008+Madrid/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xd42286fe7e7cb7d:0x75aedbce67571564?sa=X&ved=2ahUKEwjQpOWj4tWDAxXFT6QEHaTqDgsQwwV6BAgQEAA" target="_blank">
+					<p>
+						{{ $empresa->dir_emp ?? '' }}
+					</p>
+					<p>
+						(Junto Hotel Ritz Plaza España)
+					</p>
+				</a>
                 <p class="text-muted">{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }},
                     {{ $empresa->pais_emp ?? '' }}</p>
                 <p class="text-muted"><a class="nav-link"
