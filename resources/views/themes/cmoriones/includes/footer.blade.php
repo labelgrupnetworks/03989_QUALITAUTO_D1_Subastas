@@ -58,6 +58,11 @@
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.privacy') }}"
                             title="{{ trans($theme . '-app.foot.privacy') }}">{{ trans($theme . '-app.foot.privacy') }}</a>
                     </li>
+					<li class="nav-item mb-2">
+                        <a class="nav-link p-0"
+                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.legal_warning') }}"
+                            title="{{ trans($theme . '-app.foot.legal_warning') }}">{{ trans($theme . '-app.foot.legal_warning') }}</a>
+                    </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.cookies') }}"
