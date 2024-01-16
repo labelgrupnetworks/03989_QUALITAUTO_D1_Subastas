@@ -618,10 +618,10 @@ class AdminClienteController extends Controller
 		$json = $this->destroySelectedClients($ids);
 
 		if (json_decode($json)->status == 'ERROR') {
-			return error($json);
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_cli")], 500);
 		}
 
-		return redirect(route('clientes.index'))->with('success', ['Clientes eliminados correctamente']);
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_cli")], 200);
 	}
 
 	public function destroyWithFilters(Request $request)
@@ -635,10 +635,10 @@ class AdminClienteController extends Controller
 		$json = $this->destroySelectedClients($cod2_clients);
 
 		if (json_decode($json)->status == 'ERROR') {
-			return error($json);
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_cli")], 500);
 		}
 
-		return redirect(route('clientes.index'))->with('success', ['Clientes eliminados correctamente']);
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_cli")], 200);
 	}
 
 	private function destroySelectedClients(array $ids)
