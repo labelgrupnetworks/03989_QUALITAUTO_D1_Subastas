@@ -244,7 +244,7 @@ $(function () {
 					displayAlert(1, data.msg_close);
 
 				}
-				setTimeout(() => {window.location.reload()}, 4000);
+				setTimeout(() => {window.location.reload()}, 3000);
 				return;
 			}
 
