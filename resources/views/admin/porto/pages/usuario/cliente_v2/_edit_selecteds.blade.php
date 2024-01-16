@@ -4,7 +4,7 @@
     $formulario = [
 		[
 			'id' => 'cli_options',
-			'title' => 'Opciones',
+			'title' => trans("admin-app.title.options"),
 			'class' => '',
 	    	'inputs' => [
 				'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli')),

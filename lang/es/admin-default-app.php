@@ -266,6 +266,8 @@ return [
 		'client_mass_update' => 'Cliente/s',
 		'subasta_mass_update' => 'Subasta/s',
 		'lot_mass_update' => 'Lote/s',
+		'date_and_hour_auctions' => 'Fecha y hora subasta/s',
+		'date_and_hour_orders' => 'Fecha y hora órdenes',
 	),
 	'button' => array(
 		'export' => 'Exportar',

@@ -7,7 +7,7 @@
 	$formulario = [
 	    [
 			'id' => 'lot_info',
-			'title' => 'Info',
+			'title' => trans("admin-app.title.info"),
 			'class' => '',
 	    	'inputs' => [
 				'owner' => FormLib::Select2WithAjax('owner_select', 0, '', '', config('app.useProviders', 0) ? route('provider.list') : route('client.list'), trans('admin-app.placeholder.owner'), 'editMultpleLotsModal'),
@@ -17,7 +17,7 @@
 		],
 	    [
 			'id' => 'lot_states',
-			'title' => 'Estados',
+			'title' => trans("admin-app.title.states"),
 			'class' => '',
 	    	'inputs' => [
 				'highlight' => FormLib::Select('highlight_select', 0, '', $boolValues),
@@ -31,7 +31,7 @@
 		],
 	    [
 			'id' => 'lot_dates',
-			'title' => 'Fechas',
+			'title' => trans("admin-app.title.dates"),
 			'class' => '',
 	    	'inputs' => [
 				'startdate' => FormLib::Date("startdate_select", 0),
@@ -42,7 +42,7 @@
 		],
 	    [
 			'id' => 'lot_prices',
-			'title' => 'Precios',
+			'title' => trans("admin-app.title.prices"),
 			'class' => '',
 	    	'inputs' => [
 				'biddercommission' => FormLib::Int('biddercommission_select', 0, ''),
