@@ -438,8 +438,9 @@ class FormLib
 		return $aux;
 	}
 
-	static function Select2WithAjax($strNombre, $boolObligatorio = false, $strValue = '', $strValueHtml = '', $ruta = '', $placeholder = '')
+	static function Select2WithAjax($strNombre, $boolObligatorio = false, $strValue = '', $strValueHtml = '', $ruta = '', $placeholder = '', $modalId = '')
 	{
+		if ($modalId) $modalId = "dropdownParent: $('#".$modalId."'),";
 
 		$id = $boolObligatorio . "__" . $strNombre;
 		$aux = "<select id='select__" . $id . "' onblur='comprueba_campo(this)' class='form-control' name='" . $strNombre . "' style='width: 100%;'>";
@@ -450,6 +451,7 @@ class FormLib
 			placeholder: '" .$placeholder ."',
 			minimumInputLength: 3,
 			language: 'es',
+			" . $modalId . "
 			ajax: {
 				url: `$ruta`,
 				dataType: 'json',

@@ -144,7 +144,7 @@ window.addEventListener('load', function (event) {
 	$("#js-nft-publish").on("click", updateAndPublishNft);
 	$("#js-nft-mint").on("click", mintNft);
 
-	$('select[name="tipo_sub_select"]').on("change", hideAndShowOrlinInputs);
+	$('select[name="tipo_sub_select"]').on("change", hideAndShowOrlicInputs);
 });
 
 function callCreateOrEditMultilanguageFeature(idFeature, idFeatureValue){
@@ -359,7 +359,7 @@ function mintNft(event) {
 $('#edit_multiple_auctions').on('submit', function (event) {
 	event.preventDefault();
 
-	if (validateDateFields(new FormData(this))) {
+	if (validateAucDateFields(new FormData(this))) {
 		return;
 	}
 	const formData = new FormData(this);
@@ -374,7 +374,7 @@ $('#edit_multiple_auctions').on('submit', function (event) {
 
 	isSelectAllDepositsChecked
 		? appendFiltersToFormData(formData)
-		: appendIdsToFormData(formData);
+		: appendIdsToFormData(formData, "auc_ids");
 
 	if(!uploadSession){
 		updateAuctionData(url, formData);
@@ -405,7 +405,7 @@ $('#edit_multiple_auctions').on('submit', function (event) {
 	bootbox.confirm(bootboxConfig);
 });
 
-function validateDateFields(formData) {
+function validateAucDateFields(formData) {
 	const fields = {
 		dfec_sub_select: formData.get('dfec_sub_select'),
 		dhora_sub_select: formData.get('dhora_sub_select'),
@@ -454,38 +454,6 @@ function validateDateFields(formData) {
 	return error;
 }
 
-function validateTwoFields(fields, [field1, field2]) {
-    if (fields[field1] === '' && fields[field2] === '') {
-        return false;
-    } else if (fields[field1] === '' || fields[field2] === '') {
-        const campo = fields[field1] === '' ? field1 : field2;
-        return campo;
-    } else {
-        return false;
-    }
-}
-
-
-function appendFiltersToFormData(formData) {
-	const searchParams = new URLSearchParams(window.location.search);
-	const params = [...searchParams.entries()];
-	const cleanParams = params.filter(param => param[1] !== '');
-
-	// Add params to formData
-	cleanParams.forEach((entryParams) => {
-		const [key, value] = entryParams;
-		formData.append(key, value);
-	});
-}
-
-function appendIdsToFormData(formData) {
-	const ids = selectedCheckItemsByName("auc_ids");
-	ids.forEach(id => formData.append('ids[]', id));
-}
-
-function appendInputToFormData(formData, input) {
-	formData.append(input.name, input.value);
-}
 
 function updateAuctionData(url, formData) {
 
@@ -515,15 +483,7 @@ $('input[name="auc_ids"]').on('change', function () {
 	}
 });
 
-function getValueFromInput(inputName) {
-	const input = document.querySelector(`input[name="${inputName}"]`);
-	if(input.type == 'checkbox' && input.checked){
-		return input.value;
-	}
-	return false;
-}
-
-function hideAndShowOrlinInputs()
+function hideAndShowOrlicInputs()
 {
 	if ($('select[name="tipo_sub_select"]')) {
 		const tipo_sub_select = $('select[name="tipo_sub_select"]');

@@ -119,7 +119,8 @@ class AdminDepositoController extends Controller
 		FgDeposito::whereIn('cod_deposito', $ids)
 			->update(['estado_deposito' => $new_estado_deposito]);
 
-		return redirect(route('deposito.index'))->with('success', ['Depósitos actualizados correctamente']);
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_deposits")], 200);
 	}
 
 	public function updateWithFilters(Request $request)
@@ -133,7 +134,7 @@ class AdminDepositoController extends Controller
 		FgDeposito::whereIn('cod_deposito', $ids)
 			->update(['estado_deposito' => $new_estado_deposito]);
 
-		return redirect(route('deposito.index'))->with('success', ['Depósitos actualizados correctamente']);
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_deposits")], 200);
 	}
 
 	private function formFgDeposito(FgDeposito $fgDeposito)

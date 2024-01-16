@@ -1,10 +1,18 @@
 @php
 	use App\Models\V5\FxCli;
 	use App\Models\V5\FxTcli;
-    $formularioFiles = [
-        'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli'), '', '', false),
-        'temporaryblock' => FormLib::Select('bloq_temporal_select', 0, '', (new FxCli)->getTipoBajaTmpTypes(), '', '', false),
-		'enviocatalogo' => FormLib::Select('envio_catalogo_select', 0, 'S', ['S' => 'Si', 'N' => 'No'], '', '', false)
+    $formulario = [
+		[
+			'id' => 'cli_options',
+			'title' => trans("admin-app.title.options"),
+			'class' => '',
+	    	'inputs' => [
+				'source' => FormLib::Select('tipo_select', 0, '', FxTcli::pluck('des_tcli', 'cod_tcli')),
+        		'temporaryblock' => FormLib::Select('bloq_temporal_select', 0, '', (new FxCli)->getTipoBajaTmpTypes()),
+				'enviocatalogo' => FormLib::Select('envio_catalogo_select', 0, '', ['S' => 'Si', 'N' => 'No'])
+			]
+		],
+
     ];
 @endphp
 
@@ -24,7 +32,7 @@
                 <form id="edit_multple_clients" name="edit_multple_clients"
                     action="{{ route('clientes.update_selections') }}" method="POST">
                     <div class="row">
-                        @include('admin::pages.usuario.cliente_v2._form_selecteds', ['formulario' => $formularioFiles])
+                        @include('admin::pages.usuario.cliente_v2._form_selecteds', ['formulario' => $formulario])
                     </div>
                 </form>
             </div>

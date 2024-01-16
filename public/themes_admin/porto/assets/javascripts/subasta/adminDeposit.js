@@ -10,27 +10,10 @@ $('#edit_multple_deposits').on('submit', function (event) {
 
 	isSelectAllDepositsChecked
 		? appendFiltersToFormData(formData)
-		: appendIdsToFormData(formData);
+		: appendIdsToFormData(formData, "desposit_ids");
 
 	updataDepositStatus(url, formData);
 });
-
-function appendFiltersToFormData(formData) {
-	const searchParams = new URLSearchParams(window.location.search);
-	const params = [...searchParams.entries()];
-	const cleanParams = params.filter(param => param[1] !== '');
-
-	// Add params to formData
-	cleanParams.forEach((entryParams) => {
-		const [key, value] = entryParams;
-		formData.append(key, value);
-	});
-}
-
-function appendIdsToFormData(formData) {
-	const ids = selectedCheckItemsByName("desposit_ids");
-	ids.forEach(id => formData.append('ids[]', id));
-}
 
 function updataDepositStatus(url, formData) {
 
@@ -43,11 +26,11 @@ function updataDepositStatus(url, formData) {
 
 		success: function (result) {
 			$('#editMultpleDepositsModal').modal('hide');
-			saved('Depósitos actualizados correctamente');
+			saved(result.message);
 			location.reload();
 		},
 		error: function () {
-			error();
+			error('Error inesperado, refesque la página e intente nuevamente.');
 		}
 	});
 }

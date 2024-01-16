@@ -439,22 +439,29 @@ $('#edit_multple_clients').on('submit', function(event){
     const formData = new FormData(edit_multple_clients);
     const isSelectAllDepositsChecked = (document.getElementById('selectAllClients')).checked;
 
-    if (isSelectAllDepositsChecked) {
-        const urlSelected = document.getElementById('urlAllSelected').value;
+	const url = isSelectAllDepositsChecked
+	? urlAllSelected.value
+	: this.action;
 
-		const searchParams = new URLSearchParams(window.location.search);
-		for (const param of searchParams) {
-			formData.append(param[0], param[1]);
-		}
+	isSelectAllDepositsChecked
+	? appendFiltersToFormData(formData)
+	: appendIdsToFormData(formData, "cli_ids");
 
-		updateClientAjax(urlSelected, formData);
-    } else {
-        const ids = selectedCheckItemsByName("cli_ids");
-        ids.forEach(id => formData.append('ids[]', id));
+    updateClientAjax(url, formData);
 
-        updateClientAjax(edit_multple_clients.action, formData)
-    }
 });
+
+function appendFiltersToFormData(formData) {
+	const searchParams = new URLSearchParams(window.location.search);
+	for (const param of searchParams) {
+		formData.append(param[0], param[1]);
+	}
+}
+
+function appendIdsToFormData(formData, name) {
+	const ids = selectedCheckItemsByName(name);
+	ids.forEach(id => formData.append('ids[]', id));
+}
 
 function updateClientAjax(url, formData) {
 	$.ajax({
@@ -466,12 +473,11 @@ function updateClientAjax(url, formData) {
 
 		success: function (result) {
 			$('#editMultpleClientsModal').modal('hide');
-			saved('Archivos actualizados correctamente');
+			saved(result.message);
 			location.reload(true);
 		},
-		error: function () {
-
-			error();
+		error: function (result) {
+			error(result.responseJSON.message);
 		}
 	});
 }
@@ -532,11 +538,11 @@ function removeSelecteds({ objective, allselected, url, urlwithfilters, title, r
 			type: "post",
 			data: makeDataToSendInRemoveSelecteds(ids),
 			success: function(result) {
-				saved(response);
+				saved(result.message);
 				location.reload(true);
 			},
-			error: function() {
-				error();
+			error: function(result) {
+				error(result.responseJSON.message);
 			}
 		});
 
