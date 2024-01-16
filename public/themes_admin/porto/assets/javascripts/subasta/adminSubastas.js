@@ -144,7 +144,7 @@ window.addEventListener('load', function (event) {
 	$("#js-nft-publish").on("click", updateAndPublishNft);
 	$("#js-nft-mint").on("click", mintNft);
 
-	$('select[name="tipo_sub_select"]').on("change", hideAndShowOrlinInputs);
+	$('select[name="tipo_sub_select"]').on("change", hideAndShowOrlicInputs);
 });
 
 function callCreateOrEditMultilanguageFeature(idFeature, idFeatureValue){
@@ -483,7 +483,7 @@ $('input[name="auc_ids"]').on('change', function () {
 	}
 });
 
-function hideAndShowOrlinInputs()
+function hideAndShowOrlicInputs()
 {
 	if ($('select[name="tipo_sub_select"]')) {
 		const tipo_sub_select = $('select[name="tipo_sub_select"]');
