@@ -169,7 +169,7 @@
 
         <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.png"
-                alt="{{ \Config::get('app.name') }}" width="400">
+                alt="{{ \Config::get('app.name') }}" width="300">
         </a>
     </div>
 </section>

@@ -13,7 +13,7 @@
                 <ul class="nav flex-column">
                     @foreach ($activeAuctions as $auction)
                         <li class="nav-item mb-2">
-                            <a class="nav-link p-0 text-muted"
+                            <a class="nav-link p-0"
                                 href="{{ Tools::url_auction($auction->cod_sub, $auction->name, null) }}">
                                 {{ $auction->name }}
                             </a>
@@ -27,18 +27,18 @@
                 <h5>{{ trans($theme . '-app.foot.enterprise') }}</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="https://cristinamoriones.com/experta-subastas-publicas-inmobiliarias/" target="_blank"
                             title="{{ trans($theme . '-app.foot.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="https://cristinamoriones.com/cita-subastas-inmobiliarias/" target="_blank"
                             title="{{ trans("$theme-app.foot.schedule_consulting") }}">
 						{{ trans("$theme-app.foot.schedule_consulting") }}</a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.contact') }}"
                             title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
@@ -49,22 +49,22 @@
                 <h5>{{ trans($theme . '-app.foot.term_condition') }}</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') }}"
                             title="{{ trans($theme . '-app.foot.term_condition') }}">{{ trans($theme . '-app.foot.term_condition') }}</a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.privacy') }}"
                             title="{{ trans($theme . '-app.foot.privacy') }}">{{ trans($theme . '-app.foot.privacy') }}</a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link p-0 text-muted"
+                        <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.cookies') }}"
                             title="{{ trans($theme . '-app.foot.cookies') }}">{{ trans($theme . '-app.foot.cookies') }}</a>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link btn btn-link text-muted text-capitalize" data-bs-toggle="modal"
+                        <button class="nav-link btn btn-link text-capitalize" data-bs-toggle="modal"
                             data-bs-target="#cookiesPersonalize" type="button">
                             {{ trans("$theme-app.cookies.configure") }}
                         </button>
@@ -79,19 +79,21 @@
 
             <div class="col-6 col-lg-3 mb-3 order-5 order-lg-last text-lg-end">
                 <h5>{{ $empresa->nom_emp ?? '' }}</h5>
-				<a href="https://www.google.com/maps/dir//C.+de+Ferraz,+2,+Moncloa+-+Aravaca,+28008+Madrid/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xd42286fe7e7cb7d:0x75aedbce67571564?sa=X&ved=2ahUKEwjQpOWj4tWDAxXFT6QEHaTqDgsQwwV6BAgQEAA" target="_blank">
+				<a href="https://www.google.com/maps/dir//C.+de+Ferraz,+2,+Moncloa+-+Aravaca,+28008+Madrid/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xd42286fe7e7cb7d:0x75aedbce67571564?sa=X&ved=2ahUKEwjQpOWj4tWDAxXFT6QEHaTqDgsQwwV6BAgQEAA"
+					class="nav-link" target="_blank">
 					<p>
 						{{ $empresa->dir_emp ?? '' }}
 					</p>
 					<p>
 						(Junto Hotel Ritz Plaza España)
 					</p>
+
+					<p>{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }},
+						{{ $empresa->pais_emp ?? '' }}</p>
 				</a>
-                <p class="text-muted">{{ $empresa->cp_emp ?? '' }} {{ $empresa->pob_emp ?? '' }},
-                    {{ $empresa->pais_emp ?? '' }}</p>
-                <p class="text-muted"><a class="nav-link"
+                <p><a class="nav-link"
                         href="tel:{{ $empresa->tel1_emp ?? '' }}">{{ $empresa->tel1_emp ?? '' }}</a></p>
-                <p class="text-muted"><a class="nav-link"
+                <p><a class="nav-link"
                         href="mailto:{{ $empresa->email_emp ?? '' }}">{{ $empresa->email_emp ?? '' }}</a></p>
             </div>
         </div>
