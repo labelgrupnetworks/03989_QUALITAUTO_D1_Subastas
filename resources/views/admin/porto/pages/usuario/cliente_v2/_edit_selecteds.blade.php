@@ -1,7 +1,7 @@
 @php
 	use App\Models\V5\FxCli;
 	use App\Models\V5\FxTcli;
-    $formularioFiles = [
+    $formulario = [
 		[
 			'id' => 'cli_options',
 			'title' => 'Opciones',
@@ -32,7 +32,7 @@
                 <form id="edit_multple_clients" name="edit_multple_clients"
                     action="{{ route('clientes.update_selections') }}" method="POST">
                     <div class="row">
-                        @include('admin::pages.usuario.cliente_v2._form_selecteds', ['formulario' => $formularioFiles])
+                        @include('admin::pages.usuario.cliente_v2._form_selecteds', ['formulario' => $formulario])
                     </div>
                 </form>
             </div>
