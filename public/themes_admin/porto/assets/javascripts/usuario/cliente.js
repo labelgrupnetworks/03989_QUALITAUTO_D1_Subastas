@@ -445,7 +445,7 @@ $('#edit_multple_clients').on('submit', function(event){
 
 	isSelectAllDepositsChecked
 	? appendFiltersToFormData(formData)
-	: appendIdsToFormData(formData);
+	: appendIdsToFormData(formData, "cli_ids");
 
     updateClientAjax(url, formData);
 
@@ -458,8 +458,8 @@ function appendFiltersToFormData(formData) {
 	}
 }
 
-function appendIdsToFormData(formData) {
-	const ids = selectedCheckItemsByName("cli_ids");
+function appendIdsToFormData(formData, name) {
+	const ids = selectedCheckItemsByName(name);
 	ids.forEach(id => formData.append('ids[]', id));
 }
 
@@ -538,11 +538,11 @@ function removeSelecteds({ objective, allselected, url, urlwithfilters, title, r
 			type: "post",
 			data: makeDataToSendInRemoveSelecteds(ids),
 			success: function(result) {
-				saved(response);
+				saved(result.message);
 				location.reload(true);
 			},
-			error: function() {
-				error();
+			error: function(result) {
+				error(result.responseJSON.message);
 			}
 		});
 
