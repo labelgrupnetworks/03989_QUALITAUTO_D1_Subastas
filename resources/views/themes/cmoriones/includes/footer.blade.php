@@ -39,7 +39,7 @@
                     </li>
                     <li class="nav-item mb-2">
                         <a class="nav-link p-0"
-                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.contact') }}"
+                            href="{{ route('contact_page') }}"
                             title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
                 </ul>
