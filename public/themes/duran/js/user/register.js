@@ -74,6 +74,31 @@ function login_session(){
 	});
 }
 
+particular = function() {
+	$("#pri_emp").val("F");
+	$(".tipo_usuario .empresa").removeClass("selected");
+	$(".tipo_usuario .particular").addClass("selected");
+	$(".registerParticular").show();
+	$(".registerEnterprise").hide();
+	$(".datos_contacto .cif").hide();
+	$(".datos_contacto .nif").show();
+	$(`select[name='tdocid_cli']`).prop("id", `select__1__tdocid_cli`);
+	inputRequired('last_name', true);
+
+};
+empresa = function() {
+
+	$("#pri_emp").val("J");
+	$(".tipo_usuario .empresa").addClass("selected");
+	$(".tipo_usuario .particular").removeClass("selected");
+	$(".registerParticular").hide();
+	$(".registerEnterprise").show();
+	$(".datos_contacto .cif").show();
+	$(".datos_contacto .nif").hide();
+	$(`select[name='tdocid_cli']`).prop("id", `select__0__tdocid_cli`);
+	inputRequired('last_name', false);
+};
+
 
 /**
  * ¿Deprecated?

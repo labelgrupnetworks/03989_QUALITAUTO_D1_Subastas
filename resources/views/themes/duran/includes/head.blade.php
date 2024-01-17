@@ -59,6 +59,8 @@ header("X-Frame-Options:     DENY");
 	<meta name="keywords" content="{{ $seo->meta_keywords }}">
 @endif
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 @if(!empty($data['seo']->canonical) || !empty($seo->canonical))
   	<link rel="canonical" href="{{ $data['seo']->canonical ?? $seo->canonical }}" />
 @else
@@ -66,7 +68,7 @@ header("X-Frame-Options:     DENY");
 @endif
 
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ Tools::urlAssetsCache('vendor/font-awesome/5.4.2/css/all.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('/css/owl.carousel.min.css') }}" >
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('/css/owl.theme.default.min.css') }}" >
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
@@ -118,7 +120,6 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/jquery-countdown/jquery.countdown.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/timeago/timeago.js') }}"></script>
 <script src="{{ URL::asset('js/validator.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.cookie.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap/3.4.1/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('vendor/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 <script src='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.js') }}'></script>
@@ -164,7 +165,3 @@ header("X-Frame-Options:     DENY");
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Teko:300,600"
       rel="stylesheet">
 
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->

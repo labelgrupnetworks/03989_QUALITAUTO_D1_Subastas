@@ -75,6 +75,52 @@
 									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.metas.title_historic'))  }}</a></li>
 									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.compra_ahora')) }}</a></li>
 									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</a></li>
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-rolex">{{ mb_strtoupper ("subasta ROLEX"  ) }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-patek-philippe">{{ mb_strtoupper ("subasta Patek Philippe") }}</a>
+									</li>
+
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-tag-hauer">{{ mb_strtoupper ("subasta Tag Hauer") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-omega">{{ mb_strtoupper ("subasta Omega") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-cartier">{{ mb_strtoupper ("subasta Cartier") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-longines">{{ mb_strtoupper ("subasta Longines") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-audermars-piguet">{{ mb_strtoupper ("Audermars Piguet") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-van-cleef-&-arpels">{{ mb_strtoupper ("subasta Van Cleef & Arpels") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-hermes">{{ mb_strtoupper ("subasta Hermes") }}</a>
+									</li>
+
+									<li>
+										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-louis-vuitton">{{ mb_strtoupper ("subasta Louis Vuitton") }}</a>
+									</li>
+
+									</ul>
+							</div>
+							<div class="col-xs-12 col-md-6">
+								<ul class="ul-format footer-ul">
+
 									<li><a class="footer-link"  href="{{ \Routing::translateSeo('calendar') }}">{{ mb_strtoupper (trans($theme.'-app.foot.calendar')) }}</a></li>
 									<li>
 											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.how_to_buy')  ) }}</a>
@@ -85,11 +131,6 @@
 									<li>
 											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</a>
 									</li>
-
-									</ul>
-							</div>
-							<div class="col-xs-12 col-md-6">
-								<ul class="ul-format footer-ul">
 									<li>
 											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.informacion-general')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.informacion-general')  ) }}</a>
 									</li>
@@ -115,6 +156,14 @@
 									<li>
 										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.envios')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.envios')  ) }}</a>
 									</li>
+									<li>
+										<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+											{{ trans("$theme-app.cookies.configure") }}
+										</button>
+									</li>
+
+
+
 
 
 									</ul>
@@ -194,7 +243,8 @@
 #  \Tools::querylog();
 ?>
 
-@if (!Cookie::get("cookie_law"))
-	@include("includes.cookie")
-<script>cookie_law();</script>
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+    @include('includes.cookie', ['style' => 'popover'])
 @endif
+
+@include('includes.cookies_personalize')

@@ -20,37 +20,11 @@
 		</div>
 
 		<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
-        <input type="hidden" class="newsletter" id="newsletter-input" name="families[3]" value="3">
+		<input type="hidden" class="newsletter" name="families[]" value="1">
         <button id="newsletter-btn-duranNFT" type="button" class="button-principal button-newsletter">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
-
-
-		{{-- <div>
-			<p class="legal-text text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium aliquam similique exercitationem sint, architecto delectus placeat sed! Quibusdam doloribus nisi ut. Id, nobis. Tempora vero ducimus hic modi laboriosam commodi. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam a amet suscipit. In aperiam quisquam dolores numquam. Voluptatem, illo! Obcaecati cupiditate quia nihil vero, ducimus modi eum reprehenderit pariatur harum.</p>
-		</div> --}}
 
 	</div>
 
 </div>
-
-{{-- <div class="col-12 block-social-links mt-3 mb-3">
-	<ul class="d-flex justify-content-center">
-		<li><span class="linea"></span></li>
-		<li>
-
-			<ul class="social-links _footer">
-
-				<li class="facebook"><a itemprop="sameAs" href="{{ \Config::get('app.facebook') }}"
-						target="_blank" rel="noreferrer noopener"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-				</li>
-				<li class="instagram"><a itemprop="sameAs" href="{{ \Config::get('app.instagram') }}"
-						target="_blank" rel="noreferrer noopener"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-				</li>
-
-			</ul>
-
-		</li>
-		<li><span class="linea"></span></li>
-	</ul>
-</div> --}}
 
 

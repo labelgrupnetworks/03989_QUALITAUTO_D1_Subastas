@@ -11,7 +11,7 @@
     --primary-color-text: var(--color-black);
     --secondary-color-text: #46494f;
     --btn-primary-background: #414145;
-    --btn-primary-background-hover: #BF9814;
+    --btn-primary-background-hover: #2B2B2B;
     --btn-primary-text: white;
     --btn-primary-text-hover: white;
     --btn-secondary-background: white;
@@ -1442,19 +1442,6 @@ section.panel {
     text-transform: uppercase;
 }
 
-#cookie_law {
-	position: fixed;
-	z-index: 10;
-	bottom: 0;
-	width: 100%;
-	padding: 30px;
-	border-top: #f0eeee 2px solid;
-	background: rgb(25, 25, 25.8);
-	color: #b7b7b7;
-	text-align: center;
-	text-align: center;
-  }
-
   .ficha-content .pre .pre-price-estimate {
 	font-size: 20px;
 }
@@ -1501,4 +1488,23 @@ color:#FFF;
 .newsletters-page .list-group-item {
 	background-color: inherit;
 	accent-color: var(--links-color);
+}
+
+/********** COOKIES **********/
+.cookies {
+	background-color: #333;
+}
+
+.modal-cookies .close {
+	color: #fff;
+}
+
+.modal-cookies .modal-content {
+	background-color: #333;
+	color: #fff;
+}
+
+.cookie-type_content {
+	background-color: #777777;
+	border-color: #777777;
 }
