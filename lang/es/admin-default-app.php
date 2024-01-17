@@ -302,6 +302,7 @@ return [
 		'erase' => 'Eliminar',
 		'modify' => 'Modificar',
 		'new_file' => '+ Nuevo archivo',
+		'cross' => '×',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -1112,6 +1113,10 @@ return [
 		'pob_pro' => 'Población',
 		'cif_pro' => 'CIF',
 		'contacto_pro' => 'Contacto',
+	),
+	'warning' => array(
+		'caution' => '¡Atención!',
+		'several_files_name' => 'En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.',
 	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',
