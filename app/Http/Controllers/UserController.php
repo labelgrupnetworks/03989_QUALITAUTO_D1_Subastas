@@ -345,9 +345,9 @@ class UserController extends Controller
 			}
 
 			//Eliminamos los tokens de sesion anteriores
-			$request->session()->invalidate();
-			$request->session()->regenerateToken();
 
+			$request->session()->regenerateToken();
+			
 			$this->SaveSession($login);
 			$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
@@ -1793,8 +1793,12 @@ class UserController extends Controller
             $goto = false;
         }
 
-        # Eliminamos la sesión y redirigimos a login
-       Session::flush();
+
+			# Eliminamos la sesión de usuario y redirigimos a login
+
+			Session::forget('user');
+			Session::forget('_token');
+
 
 		if(!empty(Cookie::get('user'))){
 			Cookie::queue('user',null);
