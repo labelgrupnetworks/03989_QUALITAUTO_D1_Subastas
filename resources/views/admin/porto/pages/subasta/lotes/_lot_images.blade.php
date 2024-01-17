@@ -37,7 +37,7 @@
 		<div class="modal-body text-center">
 		  <div class="custom-spinner"></div>
 		  <div clas="custom-spinner-text">
-			<p>Procesando datos... <br><br></p>
+			<p>{{ trans("$theme-app.information.processing_data") }} <br><br></p>
 		  </div>
 		</div>
 	  </div>

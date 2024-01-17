@@ -3,9 +3,9 @@
 	@csrf
 
 	<div class="alert alert-warning alert-dismissible show" role="alert" id="alertMultipleFiles">
-		<strong>Atención!</strong> En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.
+		<strong>{{ trans("admin-app.warning.caution") }}</strong> {{ trans("admin-app.warning.several_files_name") }}
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">×</span>
+			<span aria-hidden="true">{{ trans("admin-app.button.cross") }}</span>
 		</button>
 	</div>
 

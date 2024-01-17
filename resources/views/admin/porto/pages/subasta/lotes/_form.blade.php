@@ -81,7 +81,7 @@
 @if(!in_array("DATES", explode(',', config("app.HideEditLotOptions"))))
 	<div class="col-xs-12 col-md-6 mb-3 mt-3">
 		<fieldset>
-			<legend>Fechas</legend>
+			<legend>{{ trans("admin-app.title.dates") }}</legend>
 			<div class="row d-flex flex-wrap">
 				@foreach ($formulario->fechas as $field => $input)
 					{{-- No mostramos los campos que se han definido como no mostrar en el config --}}
@@ -103,7 +103,7 @@
 @if(!in_array("PRICE", explode(',', config("app.HideEditLotOptions"))))
 	<div class="col-xs-12 mb-3 mt-3">
 		<fieldset>
-			<legend>Precios</legend>
+			<legend>{{ trans("admin-app.title.prices") }}</legend>
 			<div class="row d-flex flex-wrap">
 				@foreach ($formulario->precios as $field => $input)
 				{{-- No mostramos los campos que se han definido como no mostrar en el config --}}
@@ -128,7 +128,7 @@
 @if(in_array("OTHERS", explode(',', config("app.showEditLotOptions"))))
 	<div class="col-xs-12 mb-3 mt-3">
 		<fieldset>
-			<legend>Otros</legend>
+			<legend>{{ trans("admin-app.title.others") }}</legend>
 			<div class="row d-flex flex-wrap">
 				@foreach ($formulario->otros as $field => $input)
 				{{-- No mostramos los campos que se han definido como no mostrar en el config --}}

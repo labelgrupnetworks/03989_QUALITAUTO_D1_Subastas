@@ -23,7 +23,7 @@
 				class="btn btn-sm btn-warning">{{ trans("admin-app.button.sort") }}
 				{{ trans("admin-app.title.lot_auction_destacadas") }}</a> --}}
 
-			<div class="btn-group" id="js-dropdownItems">
+			<div class="btn-group left" id="js-dropdownItems">
 				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="auc_ids"
@@ -177,6 +177,11 @@
 							</td>
 						</form>
 					</tr>
+					@php
+						if (\Config::get("app.subalia_cli")) {
+							$auchouse = App\Models\V5\SubAuchouse::where("emp_auchouse", \Config::get("app.APP_SUBALIA_EMP","001"))->where("cli_auchouse",\Config::get("app.subalia_cli"))->first();
+						}
+					@endphp
 
 					@forelse ($fgSubs as $fgSub)
 
@@ -214,10 +219,7 @@
 							@if(\Config::get("app.subalia_cli"))
 
 								@php
-									$auchouse = App\Models\V5\SubAuchouse::where("emp_auchouse", \Config::get("app.APP_SUBALIA_EMP","001"))->where("cli_auchouse",\Config::get("app.subalia_cli"))->first();
 									$hash = hash_hmac("sha256", \Config::get("app.emp")." ".$fgSub->cod_sub, "f5a7433f517028601d98d9f392d0A87b2df43h76jhty");
-
-
 								@endphp
 
 								<button data-url="{{ \Config::get("app.subalia_URL")}}/forceImportAuction?client={{$auchouse->cod_auchouse}}&cod_sub={{$fgSub->cod_sub}}&hash={{$hash}}" class="show_subalia_JS btn btn-warning btn-sm">

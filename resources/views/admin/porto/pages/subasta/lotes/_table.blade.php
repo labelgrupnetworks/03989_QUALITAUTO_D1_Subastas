@@ -32,28 +32,28 @@
 				</li>
 
 				@if (Config::get('app.stockIni') > 0)
-					<li><a class="js-actionSelectedLots"
+					<li><a class="js-actionSelectedLots btn"
 							data-title="¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?"
 							data-respuesta="Se ha puesto el stock a  0 en las obras seleccionados"
-							href="{{ route('subastas.lotes.stockRemove_selection', ['cod_sub' => $cod_sub]) }}">Poner Stock a 0</a></li>
-					<li><a class="js-actionSelectedLots"
+							href="{{ route('subastas.lotes.stockRemove_selection', ['cod_sub' => $cod_sub]) }}">{{ trans("admin-app.button.put_stock_to_zero") }}</a></li>
+					<li><a class="js-actionSelectedLots btn"
 							data-title="¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?"
 							data-respuesta="Se ha puesto en Fondo de Galeria las obras seleccionados"
-							href="{{ route('subastas.lotes.setToSellSelection', ['cod_sub' => $cod_sub]) }}">Poner en Fondo de Galeria</a>
+							href="{{ route('subastas.lotes.setToSellSelection', ['cod_sub' => $cod_sub]) }}">{{ trans("admin-app.button.gallery_background") }}</a>
 					</li>
 				@endif
 
 				@if (Config::get('app.lot_api_integrations', false))
 					<li class="dropdown-submenu">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">Exportar</a>
+							aria-expanded="false">{{ trans("admin-app.button.export") }}</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a class="js-actionSelectedLots"
+								<a class="js-actionSelectedLots btn"
 									href="{{ route('subastas.lotes.multiple_export', ['cod_sub' => $cod_sub, 'service' => 'bbd']) }}"
 									data-title="¿Estás seguro de exportar todas las obras seleccionadas?"
 									data-respuesta="Se han exportado las obras seleccionados">
-									Diario de Subastas
+									{{ trans("admin-app.button.auctions_diary") }}
 								</a>
 							</li>
 						</ul>
@@ -229,12 +229,12 @@
 						@if (
 							\Config::get('app.moveLot') &&
 								($actualLot->sub_asigl0 != $actualLot->sub_hces1 || $actualLot->ref_asigl0 != $actualLot->ref_hces1))
-							<p>MOVIDO</p>
+							<p>{{ mb_strtoupper(trans("admin-app.information.moved")) }}</p>
 						@else
 							<a title="{{ trans('admin-app.button.edit') }}"
 								href="{{ route("$parent_name.$resource_name.edit", [$lote->sub_asigl0, $lote->ref_asigl0, 'render' => $render]) }}"
 								class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-								Editar
+								{{ trans("admin-app.button.edit") }}
 							</a>
 							@if (\Config::get('app.moveLot'))
 								<button id="clone-lot" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#moveLotModal"
@@ -264,13 +264,13 @@
 								<div class="btn-group">
 									<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="false">
-										Export <span class="caret"></span>
+										{{ trans("admin-app.button.export") }} <span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu dropdown-menu-right">
 										<li>
 											<a class="export-lot" type="button" href="#"
 												data-route="{{ route('subastas.lotes.export', ['cod_sub' => $lote->sub_asigl0, 'ref_asigl0' => $lote->ref_asigl0, 'service' => 'bbd']) }}">
-												Diario de Subastas
+												{{ trans("admin-app.button.auctions_diary") }}
 											</a>
 										</li>
 									</ul>

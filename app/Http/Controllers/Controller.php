@@ -41,7 +41,8 @@ class Controller extends BaseController
                 $this->userLoged     = $user->getUser();
 
                 if(empty($this->userLoged)){
-                    Session::flush();
+					Session::forget('user');
+					Session::forget('_token');
                 }
 
             }
@@ -51,15 +52,22 @@ class Controller extends BaseController
 
 	function UTMSession(){
 
+		$this->middleware(function ($request, $next) {
+
 			# se debe crear la sesion siempre la primera vez que entras en la web, ya que estos valores no se pueden alterar durante la navegación por la web
-            if (!Session::has('UTM') ) # && ( !empty(Request::header('referer')) || !empty(request("UTM_SOURCE")) || !empty(request("UTM_MEDIUM")) || !empty(request("UTM_CAMPAIGN"))  || !empty(request("UTM_TYPE")) )
+            if (!session()->has('UTM') )
             {
-				Session::put('UTM.source', request("UTM_SOURCE")); /* el origen del tráfico, es decir, de qué sitio, anunciante o publicación vino el usuario */
-				Session::put('UTM.medium', request("UTM_MEDIUM")); /*  los medios de publicidad o marketing utilizados para llegar a su sitio (ejemplos: banner, cpc, newsletter). */
-				Session::put('UTM.campaign', request("UTM_CAMPAIGN")); /* el nombre de la campaña que define determinado contexto de marketing (ejemplos: natal, lanzamiento, promo01).  */
-				Session::put('UTM.type', request("UTM_TYPE"));
-				Session::put('UTM.referer', Request::header('referer'));
+
+				session()->put('UTM.source', request("UTM_SOURCE")); // el origen del tráfico, es decir, de qué sitio, anunciante o publicación vino el usuario
+				session()->put('UTM.medium', request("UTM_MEDIUM")); //  los medios de publicidad o marketing utilizados para llegar a su sitio (ejemplos: banner, cpc, newsletter).
+				session()->put('UTM.campaign', request("UTM_CAMPAIGN")); // el nombre de la campaña que define determinado contexto de marketing (ejemplos: natal, lanzamiento, promo01).
+				session()->put('UTM.type', request("UTM_TYPE"));
+				session()->put('UTM.referer', parse_url(Request::header('referer'), PHP_URL_HOST));
+
             }
+
+			return $next($request);
+		});
 
 
 	}
