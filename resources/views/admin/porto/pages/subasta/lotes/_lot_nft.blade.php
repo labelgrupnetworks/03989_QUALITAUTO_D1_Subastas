@@ -30,7 +30,7 @@
 	<a id="js-nft-unpublish" href="{{ route('subastas.lotes.unpublish_nft', ['cod_sub' => $cod_sub, 'ref_asigl0' => $fgAsigl0->ref_asigl0]) }}" class="btn btn-danger">Despublicar</a>
 </div>
 <div class="col-xs-6 text-right mt-2">
-	<a id="js-nft-mint"  class="btn btn-success ">Mintear</a>
+	<a id="js-nft-mint"  class="btn btn-success ">{{ trans("admin-app.vottun.button.mint") }}</a>
 
 </div>
 @endif
