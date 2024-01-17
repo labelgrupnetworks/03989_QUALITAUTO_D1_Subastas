@@ -1449,7 +1449,10 @@ class MailController extends Controller
 					if(!empty($contactDirection->email_clid)){
 						$email->setBcc($contactDirection->email_clid);
 					}
+				}
 
+				if(Config::get('app.award_attached_documentation', false)) {
+					$email->addAwardAttachedDocumentation();
 				}
 
                 $email->send_email();
@@ -1510,6 +1513,17 @@ class MailController extends Controller
             $this->error_email_exception('sendEmailCerrado', $e->getMessage(), $emp, $cod_sub, $ref);
             return;
         }
+	}
+
+	private function getAwardAttachedDocumentation($legalPersonality)
+	{
+		$theme = Config::get('app.theme');
+		$legalPersonality = $legalPersonality ?? 'person';
+
+		return  $legalPersonality == 'F'
+			? public_path("themes/$theme/assets/files/oferta web física.pdf")
+			: public_path("themes/$theme/assets/files/oferta web jurídica.pdf");
+
 	}
 
     //Email de cancelar puja

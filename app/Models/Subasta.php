@@ -2311,15 +2311,8 @@ class Subasta extends Model
 
 				 // si no esta vacio es que la subasta es de tipo 'O' o tipo 'P'
 				 if( \Config::get("app.adjudicacion_reserva") && !empty($expire) && !empty(head($expire)->impres_asigl0) &&  head($expire)->impres_asigl0 <= $this->imp){
-					
+
 					$this->cerrarLote();
-					$email = new EmailLib('LOT_AWARD');
-					if (!empty($email->email)) {
-						$email->setUserByLicit($this->cod, $this->licit, true);
-						$email->setLot($this->cod, $this->ref);
-						$email->setPriceAdjudication($this->cod, $this->ref);
-						$email->send_email();
-					}
 
 					$result = array(
 						'status' => 'close',

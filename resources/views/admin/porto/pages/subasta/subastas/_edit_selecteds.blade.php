@@ -3,7 +3,7 @@
 	$formularioFiles = [
 	    [
 			'id' => 'auc_options',
-			'title' => 'Opciones',
+			'title' => trans("admin-app.title.options"),
 			'class' => '',
 	    	'inputs' => [
 				'tipo_sub' => FormLib::Select('tipo_sub_select', 0, 0, (new FgSub())->getTipoSubTypes()),
@@ -12,7 +12,7 @@
 		],
 	    [
 			'id' => 'auc_dates',
-			'title' => 'Fecha y hora subasta/s',
+			'title' => trans("admin-app.title.date_and_hour_auctions"),
 			'class' => '',
 	    	'inputs' => [
 				'dfec_sub' => FormLib::Date('dfec_sub_select'),
@@ -23,7 +23,7 @@
 		],
 	    [
 			'id' => 'auc_dates_orlic',
-			'title' => 'Fecha y hora ordenes',
+			'title' => trans("admin-app.title.date_and_hour_orders"),
 			'class' => 'd-none',
 	    	'inputs' => [
 				'dfecorlic_sub' => FormLib::Date('dfecorlic_sub_select'),

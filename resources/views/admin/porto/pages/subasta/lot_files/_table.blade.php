@@ -4,7 +4,7 @@
 
     <div class="mb-3">
         <div class="btn-group" id="js-dropdownItems">
-            <button class="btn btn-default btn-sm" type="button">Seleccionados</button>
+            <button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
             <button
 				data-objective="files_ids"
 				class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
@@ -20,13 +20,13 @@
                         data-response="Se han eliminado los archivos seleccionados"
                         data-url="{{ route('subastas.lotes.files.delete-selection') }}"
                         onclick="removeSelecteds(this.dataset, refreshFilesRows)">
-                        Eliminar
+                        {{ trans("admin-app.button.erase") }}
                     </button>
                 </li>
 
                 <li>
                     <button class="btn" data-toggle="modal" data-target="#editMultpleFilesModal">
-                        Modificar
+                        {{ trans("admin-app.button.modify") }}
                     </button>
                 </li>
 

@@ -18,7 +18,7 @@
 		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
 
 			<div class="btn-group" id="js-dropdownItems">
-				<button class="btn btn-default btn-sm" type="button">Seleccionados</button>
+				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="cli_ids"
 					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
@@ -31,18 +31,18 @@
 					<li>
 						<button class="btn" data-objective="cli_ids"
 							data-allselected="js-selectAll"
-							data-title="¿Estás seguro de eliminar todos los clientes seleccionados?"
-							data-response="Se han eliminado los clientes seleccionados"
+							data-title="{{ trans("admin-app.questions.erase_mass_cli") }}" 
+							data-response="{{ trans("admin-app.success.erase_mass_cli") }}"
 							data-url="{{ route('clientes.destroy_selections') }}"
 							data-urlwithfilters="{{ route('clientes.destroy_with_filters') }}"
 							onclick="removeSelecteds(this.dataset)">
-							Eliminar
+							{{ trans("admin-app.button.erase") }}
 						</button>
 					</li>
 
 					<li>
 						<button class="btn" data-toggle="modal" data-target="#editMultpleClientsModal">
-							Modificar
+							{{ trans("admin-app.button.modify") }}
 						</button>
 					</li>
 

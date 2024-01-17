@@ -10,8 +10,10 @@
 			<h1>{{ trans("admin-app.title.deposits") }}</h1>
 		</div>
 		<div class="col-xs-3">
-			<div class="btn-group" id="js-dropdownItems">
-				<button class="btn btn-default btn-sm" type="button">Seleccionados</button>
+			<a href="{{ route('deposito.create', ['menu' => 'subastas']) }}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.deposit") }}</a>
+
+			<div class="btn-group right mr-1" id="js-dropdownItems">
+				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="desposit_ids"
 					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
@@ -23,14 +25,12 @@
 
 					<li>
 						<button class="btn" data-toggle="modal" data-target="#editMultpleDepositsModal">
-							Modificar
+							{{ trans("admin-app.button.modify") }}
 						</button>
 					</li>
 
 				</ul>
 			</div>
-
-			<a href="{{ route('deposito.create', ['menu' => 'subastas']) }}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.deposit") }}</a>
 		</div>
 	</div>
 
