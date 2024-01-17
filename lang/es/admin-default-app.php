@@ -225,6 +225,7 @@ return [
 		'winners' => 'Ganadores',
 		'licit' => 'Licitador',
 		'licits' => 'Licitadores',
+		'new_licit' => 'Nuevo licitador',
 		'translates' => 'Traducciones',
 		'scaled' => 'Escalado',
 		'name_description' => 'Nombre y descripción',
@@ -1117,6 +1118,10 @@ return [
 	'warning' => array(
 		'caution' => '¡Atención!',
 		'several_files_name' => 'En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.',
+	),
+	'information' => array(
+		'obligatory_fields' => 'Los campos señalados con * son obligatorios',
+		'obligatory_select_auction' => 'La selección de la subasta es obligatoria',
 	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',

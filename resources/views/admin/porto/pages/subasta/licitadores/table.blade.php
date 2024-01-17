@@ -2,15 +2,15 @@
 <div class="row well">
 	<div class="col-xs-12">
 
-		<h1>Licitadores</h1>
-		<a href="{{$formularioCreate}}" class="btn btn-primary right">Nuevo Licitador</a>
+		<h1>{{ trans("admin-app.title.licits") }}</h1>
+		<a href="{{$formularioCreate}}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.licit") }}</a>
 		<form id="idAuctionForExport" name="idAuctionForExport" action="/admin/licit/export-licits" method="POST">
 			<input id="idAuctionForExcel" type="hidden" name="idAuctionExcel" value="">
-			<a id="submitLicitExport" onclick="javascript:submit_form(document.getElementById('idAuctionForExport'),0);" class="btn btn-warning right mr-2 d-none">Exportar licitadores</a>
+			<a id="submitLicitExport" onclick="javascript:submit_form(document.getElementById('idAuctionForExport'),0);" class="btn btn-warning right mr-2 d-none">{{ trans("admin-app.button.export") }} {{ mb_strtolower(trans("admin-app.title.licits")) }}</a>
 		</form>
 
 		<p><i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;<span class="badge">
-				La selección de la subasta es obligatoria</span></p>
+				{{ trans("admin-app.information.obligatory_select_auction") }}</span></p>
 		<br>
 
 		<form name="whereLicits" id="whereLicits" action="/admin/licit/show" method="GET" class="col-11">
@@ -48,10 +48,10 @@
 	<div class="col-xs-12">
 		<table id="tableLicits" class="table table-striped table-bordered hover" style="width:100%">
 			<thead>
-				<th>Cod Cli</th>
-				<th>Id Origen Cli</th>
-				<th>Cod Licitador</th>
-				<th>Rsoc Cli</th>
+				<th>{{ trans("admin-app.fields.cod_cli") }}</th>
+				<th>{{ trans("admin-app.fields.idorigincli") }}</th>
+				<th>{{ trans("admin-app.fields.cod_licit") }}</th>
+				<th>{{ trans("admin-app.fields.rsoc_cli") }}</th>
 				{{--<th>Acc.</th>--}}
 			</thead>
 		</table>
