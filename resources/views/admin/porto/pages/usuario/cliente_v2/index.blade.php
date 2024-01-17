@@ -17,7 +17,7 @@
 
 		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
 
-			<div class="btn-group" id="js-dropdownItems">
+			<div class="btn-group left" id="js-dropdownItems">
 				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="cli_ids"
@@ -31,7 +31,7 @@
 					<li>
 						<button class="btn" data-objective="cli_ids"
 							data-allselected="js-selectAll"
-							data-title="{{ trans("admin-app.questions.erase_mass_cli") }}" 
+							data-title="{{ trans("admin-app.questions.erase_mass_cli") }}"
 							data-response="{{ trans("admin-app.success.erase_mass_cli") }}"
 							data-url="{{ route('clientes.destroy_selections') }}"
 							data-urlwithfilters="{{ route('clientes.destroy_with_filters') }}"

@@ -23,7 +23,7 @@
 				class="btn btn-sm btn-warning">{{ trans("admin-app.button.sort") }}
 				{{ trans("admin-app.title.lot_auction_destacadas") }}</a> --}}
 
-			<div class="btn-group" id="js-dropdownItems">
+			<div class="btn-group left" id="js-dropdownItems">
 				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="auc_ids"

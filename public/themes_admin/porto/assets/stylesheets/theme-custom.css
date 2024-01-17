@@ -546,3 +546,5 @@ tr.shown td.details-control {
     box-shadow: none;
 	border-radius: 0;
 }
+
+.left{float:left;}
