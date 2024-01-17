@@ -262,6 +262,7 @@ return [
 		'stock' => 'Stock',
 		'show_in_subalia' => 'Publicar en Subalia',
 		'hide_in_subalia' => 'Ocultar en Subalia',
+		'files_mass_update' => 'Archivo/s',
 		'deposit_mass_update' => 'Deposito/s',
 		'client_mass_update' => 'Cliente/s',
 		'subasta_mass_update' => 'Subasta/s',
@@ -300,7 +301,7 @@ return [
 		'selecteds' => 'Seleccionados',
 		'erase' => 'Eliminar',
 		'modify' => 'Modificar',
-
+		'new_file' => '+ Nuevo archivo',
 	),
 	'bi' => array(
 		'family' => 'Familia',

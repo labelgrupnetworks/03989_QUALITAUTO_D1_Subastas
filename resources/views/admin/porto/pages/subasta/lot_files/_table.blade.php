@@ -35,7 +35,7 @@
 
         <a class="btn btn-primary btn-sm" id="addFile"
             data-url="{{ route('subastas.lotes.files.create', ['num_hces1' => $fgAsigl0->num_hces1, 'lin_hces1' => $fgAsigl0->lin_hces1]) }}">
-            + Nuevo archivo
+            {{ trans("admin-app.button.new_file") }}
         </a>
     </div>
 
@@ -73,7 +73,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title">Archivo/s</h5>
+                <h5 class="modal-title">{{ trans("admin-app.title.files_mass_update") }}</h5>
                 <button class="close" data-dismiss="modal" type="button" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -83,9 +83,9 @@
 
             <div class="modal-footer">
                 <button class="btn btn-primary" id="modalSessionAccept" form="save_lot_file" type="submit">
-                    Guardar
+                    {{ trans("admin-app.button.save") }}
                 </button>
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cerrar</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">{{ trans("admin-app.button.close") }}</button>
             </div>
 
         </div>
