@@ -383,7 +383,7 @@ class CustomControllers extends Controller
 
 		$emailLib->setAtribute('IMPECHMENT_TYPE', $impechmentType);
 		$emailLib->setAtribute('MESSAGE', $message);
-		$emailLib->setTo('luis.gasset@ansorena.com;jaimemato@ansorena.com');
+		$emailLib->setTo('luis.gasset@ansorena.com;jaimemato@ansorena.com;carloszolle@ansorena.com');
 		$emailLib->send_email();
 
 		return redirect(route('home'))->withErrors(['success' => 'Formulario enviado correctamente.']);
@@ -392,7 +392,7 @@ class CustomControllers extends Controller
 	#funcion para guardar cualquier evento pasado por ajax, de esta manera permitimos que se creen eventos para acciones en la web, cómo por ejemplo descargar el catalogo
 	public function saveEvent($event){
 		# EJEMPLO URL PARA GUARDAR EVENTO DE DESCARGA DE CATALOGO : seo_event/CATALOG
-		
+
 		SeoLib::saveEvent($event);
 	}
 }
