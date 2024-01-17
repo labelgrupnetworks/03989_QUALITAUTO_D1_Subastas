@@ -41,7 +41,8 @@ class Controller extends BaseController
                 $this->userLoged     = $user->getUser();
 
                 if(empty($this->userLoged)){
-                    Session::flush();
+					Session::forget('user');
+					Session::forget('_token');
                 }
 
             }
