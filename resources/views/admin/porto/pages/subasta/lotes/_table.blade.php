@@ -21,7 +21,7 @@
 						data-url="{{ route('subastas.lotes.destroy_selections') }}"
 						data-urlwithfilters="{{ route('subastas.lotes.destroy_with_filters') }}"
 						onclick="removeLotsSelecteds(this.dataset)">
-						{{ trans("admin-app.button.erase") }}
+						{{ trans("admin-app.button.destroy") }}
 					</button>
 				</li>
 

@@ -13,7 +13,7 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<li><a id="js-deleteSelectedOrders" href="{{ route('orders.delete_selection', ['idAuction' => $cod_sub]) }}">{{ trans("admin-app.button.erase") }}</a></li>
+						<li><a id="js-deleteSelectedOrders" href="{{ route('orders.delete_selection', ['idAuction' => $cod_sub]) }}">{{ trans("admin-app.button.destroy") }}</a></li>
 
 						<li role="separator" class="divider"></li>
 						<li><a id="js-selectAllOrders" href="#">{{ trans("admin-app.button.select_all") }}</a></li>

@@ -306,7 +306,7 @@ return [
 		'send_close_lot_webservice' => 'Send close lot to :empresa  WS',
 		'selecteds' => 'Seleccionados',
 		'select_all' => 'Seleccionar todos',
-		'erase' => 'Eliminar',
+		'destroy' => 'Eliminar',
 		'modify' => 'Modificar',
 		'new_file' => '+ Nuevo archivo',
 		'cross' => '×',

@@ -20,7 +20,7 @@
                         data-response="Se han eliminado los archivos seleccionados"
                         data-url="{{ route('subastas.lotes.files.delete-selection') }}"
                         onclick="removeSelecteds(this.dataset, refreshFilesRows)">
-                        {{ trans("admin-app.button.erase") }}
+                        {{ trans("admin-app.button.destroy") }}
                     </button>
                 </li>
 
