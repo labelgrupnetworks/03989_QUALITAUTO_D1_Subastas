@@ -7,16 +7,16 @@
 		@if($isRender)
 			<div style="flex:1">
 				<div class="btn-group">
-					<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
+					<button type="button" class="btn btn-default btn-sm">{{ trans("admin-app.button.selecteds") }}</button>
 					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="caret"></span>
 					</button>
 
 					<ul class="dropdown-menu">
-						<li><a id="js-deleteSelectedOrders" href="{{ route('orders.delete_selection', ['idAuction' => $cod_sub]) }}">Eliminar</a></li>
+						<li><a id="js-deleteSelectedOrders" href="{{ route('orders.delete_selection', ['idAuction' => $cod_sub]) }}">{{ trans("admin-app.button.erase") }}</a></li>
 
 						<li role="separator" class="divider"></li>
-						<li><a id="js-selectAllOrders" href="#">Seleccionar todos</a></li>
+						<li><a id="js-selectAllOrders" href="#">{{ trans("admin-app.button.select_all") }}</a></li>
 					</ul>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 		<thead>
 
 			<tr>
-				<th>Sel.</th>
+				<th>{{ trans("admin-app.fields.select") }}</th>
 				<th class="sub_orlic" style="cursor: pointer" data-order="sub_orlic">
 					 {{ trans("admin-app.title.auction") }}
 					@if(request()->order_orders == 'sub_orlic')
@@ -167,7 +167,7 @@
 					@endif
 				</th>
 				<th>
-					Acciones
+					{{ trans("admin-app.fields.actions") }}
 				</th>
 			</tr>
 

@@ -303,6 +303,7 @@ return [
 		'send_webservice' => 'Send to :empresa  WS',
 		'send_close_lot_webservice' => 'Send close lot to :empresa  WS',
 		'selecteds' => 'Seleccionados',
+		'select_all' => 'Seleccionar todos',
 		'erase' => 'Eliminar',
 		'modify' => 'Modificar',
 		'new_file' => '+ Nuevo archivo',
@@ -797,6 +798,7 @@ return [
 		'idorigen_hces1' => 'Id Origen Lote',
 		'cod2_cli' => 'Id Origen Cliente',
 		'cod_licit' => 'Paleta Licitador',
+		'select' => 'Sel.',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -1134,7 +1136,8 @@ return [
 		'moved' => 'Movido',
 		'obligatory_fields' => 'Los campos señalados con * son obligatorios',
 		'obligatory_select_auction' => 'La selección de la subasta es obligatoria',
-		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos'
+		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos',
+		'obligatory_field_sub_reflot_cli' => 'El campo subasta, referencia de lote y cliente son obligatorios',
 	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',
