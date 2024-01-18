@@ -383,7 +383,7 @@ class CustomControllers extends Controller
 
 		$emailLib->setAtribute('IMPECHMENT_TYPE', $impechmentType);
 		$emailLib->setAtribute('MESSAGE', $message);
-		$emailLib->setTo('luis.gasset@ansorena.com;jaimemato@ansorena.com;carloszolle@ansorena.com');
+		$emailLib->setTo('llandeira12@labelgrup.com;llandeira15@labelgrup.com' . ($impechment == 'bc' ? ';llandeira@labelgrup.com' : '')); //luis.gasset@ansorena.com;jaimemato@ansorena.com		;carloszolle@ansorena.com
 		$emailLib->send_email();
 
 		return redirect(route('home'))->withErrors(['success' => 'Formulario enviado correctamente.']);
