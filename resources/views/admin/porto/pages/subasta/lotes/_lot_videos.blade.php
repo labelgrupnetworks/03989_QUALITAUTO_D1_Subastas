@@ -38,7 +38,7 @@
 							<a
 								onclick="javascript:deleteVideo('{{$fgAsigl0->num_hces1}}', '{{$fgAsigl0->lin_hces1}}', '{{$file}}', '{{$loop->index}}')"
 								class="btn btn-danger">
-								<b>X</b>
+								<b>{{ mb_strtoupper(trans("admin-app.button.x_symbol")) }}</b>
 							</a>
 						</td>
 
