@@ -22,7 +22,7 @@
 	<div class="row well" style="position:relative;">
 
 		<div class="loader-block">
-			... Cargando
+			{{ trans("admin-app.information.charging") }}
 		</div>
 
 		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
@@ -42,9 +42,9 @@
 							<th class="{{$field}}">{{ trans("admin-app.fields.$field") }}</th>
 						@endforeach
 
-						<th><span>Estado Mintado</span></th>
-						<th><span>Mintar</span></th>
-						<th><span>Transferir</span></th>
+						<th><span>{{ trans("admin-app.vottun.fields.state_minted") }}</span></th>
+						<th><span>{{ trans("admin-app.vottun.fields.mint") }}</span></th>
+						<th><span>{{ trans("admin-app.vottun.fields.transfier") }}</span></th>
 
 					</tr>
 				</thead>
@@ -57,7 +57,7 @@
 						<td>
 							@if(!$nft->has_all_wallets)
 								<i class="fa fa-exclamation-circle text-danger" data-toggle="tooltip" data-placement="top"
-								title="Es necesario que tanto comprador como vendedor tengan un wallet antes de poder mintear el Nft" aria-hidden="true"></i>
+								title="{{ trans("admin-app.vottun.info.wallet_obligatory") }}" aria-hidden="true"></i>
 							@endif
 						</td>
 
@@ -78,7 +78,7 @@
 						<td>
 							@if(!$nft->has_all_wallets)
 							<button class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top"
-								title="Es necesario que tanto comprador como vendedor tengan un wallet antes de poder mintear el Nft">
+								title="{{ trans("admin-app.vottun.info.wallet_obligatory") }}">
 								<i class="fa fa-cloud-upload" aria-hidden="true"></i>
 							</button>
 							@elseif($nft->mint_state == 'notminted')
@@ -95,11 +95,11 @@
 						<td>
 							@if(!$nft->has_all_wallets)
 							<button class="btn btn-dark btn-sm disabled" data-toggle="tooltip" data-placement="top"
-								title="Es necesario que tanto comprador como vendedor tengan un wallet antes de poder mintear el Nft">
+								title="{{ trans("admin-app.vottun.info.wallet_obligatory") }}">
 								<i class="fa fa-exchange" aria-hidden="true"></i>
 							</button>
 							@elseif($nft->transfer_id_nft)
-							<span class="text-success">NFT transfer</span>
+							<span class="text-success">{{ trans("admin-app.vottun.info.nft_transfer") }}</span>
 
 							@elseif($nft->mint_state == 'minted')
 							<button class="btn btn-success btn-sm js-transfer-button">
@@ -109,7 +109,7 @@
 
 							@else
 							<button class="btn btn-success btn-sm js-transfer-button hidden"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-							<span class="transfer-result hidden">NFT transfer</span>
+							<span class="transfer-result hidden">{{ trans("admin-app.vottun.info.nft_transfer") }}</span>
 							@endif
 						</td>
 					</tr>

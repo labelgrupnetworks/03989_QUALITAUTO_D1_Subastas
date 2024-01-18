@@ -1129,6 +1129,7 @@ return [
 		'several_files_name' => 'En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.',
 	),
 	'information' => array(
+		'charging' => '... Cargando',
 		'processing_data' => 'Procesando datos...',
 		'moved' => 'Movido',
 		'obligatory_fields' => 'Los campos señalados con * son obligatorios',
@@ -1165,10 +1166,15 @@ return [
 		"button" => array(
 			'mint' => 'Mintear',
 		),
+		"fields" => array(
+			'state_minted' => 'Estado Mintado',
+			'mint' => 'Mintear',
+			'transfier' => 'Transferir',
+		),
 		"success" => array(
 			"uploadFile" => "Archivo subido a la red de Vottun con éxito",
 			"uploadMetadata" => "Metadatos asociados con éxito",
-			"mint" => "Se ha realizado el Minteo con éxito"
+			"mint" => "Se ha realizado el Minteo con éxito",
 		),
 		"errors" => array(
 			"noFile" => "El NFT no tiene un archivo asociado",
@@ -1180,11 +1186,13 @@ return [
 			"getTokenId" => "El token Id no es un valor entero o válido",
 			"buyerNoWallet" => "Es necesario que el comprador tenga un wallet para pdoerle hacer la transferencia",
 			"transaction" => "Error al recuperar la transaccion",
-			"lotNotSelled" =>"El lote no se ha vendido"
+			"lotNotSelled" =>"El lote no se ha vendido",
 		),
 		"info" => array(
+			'nft_transfer' => 'NFT transfer',
 			"mintTransactionIsPending" => "El acuñamiento aun no ha finalizado",
 			"transferTransactionIsPending" => "El acuñamiento aun no ha finalizado",
+			'wallet_obligatory' => 'Es necesario que tanto comprador como vendedor tengan un wallet antes de poder mintear el Nft',
 		)
 		),
 	'reportsBi' => array(
