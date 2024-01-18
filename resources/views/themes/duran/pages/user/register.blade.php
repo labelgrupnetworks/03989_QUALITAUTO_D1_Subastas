@@ -13,6 +13,8 @@ if($isGalleryPage) {
 elseif ($isNftPage) {
 	$origen = 4;
 }
+
+$document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 @endphp
 
 @push('styles')
@@ -109,19 +111,7 @@ elseif ($isNftPage) {
 
 						<div class="registerParticular datos_left">
 							<label>{{ trans(\Config::get('app.theme').'-app.login_register.document_type') }} </label>
-							<select data-placement="right" class="form-control select2 has-content" type="select"
-								name="tdocid_cli" id="select__0__tdocidcli" onblur="comprueba_campo(this)">
-
-								<option value="1">
-									{{ trans(\Config::get('app.theme').'-app.login_register.nif_document') }}</option>
-								<option value="1">
-									{{ trans(\Config::get('app.theme').'-app.login_register.cif_document') }}</option>
-								<option value="4">
-									{{ trans(\Config::get('app.theme').'-app.login_register.nie_document') }}</option>
-								<option value="3">
-									{{ trans(\Config::get('app.theme').'-app.login_register.passport_document') }}
-								</option>
-							</select>
+							{!!FormLib::Select("tdocid_cli", 1, "", $document_type, '', '', true)!!}
 						</div>
 
 						<div class="registerEnterprise datos_left">
@@ -392,17 +382,15 @@ elseif ($isNftPage) {
 						<div class="clearfix"></div>
 
 						<div class="datos_newsletter">
-							<input type="hidden" name="newsletter" value="1">
-							<!-- sin categorias newsletter -->
 							<span>
-								<input type="checkbox" name="families[{{$origen}}]" value="{{$origen}}">
+								<input type="checkbox" name="newsletter" value="1">
 							</span>
 							<label for="bool__1__condiciones">
 								{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
 							</label>
 							<br>
 							<span>
-								<input type="checkbox" name="families[1]" value="1">
+								<input type="checkbox" name="newsletter2" value="1">
 							</span>
 							<label for="bool__1__condiciones">
 								{{ trans(\Config::get('app.theme').'-app.login_register.informacion_comercial') }}
@@ -456,9 +444,9 @@ elseif ($isNftPage) {
 				</form>
 				@if(!empty($formulario->subalia))
 				@if(\Config::get("app.locale") == 'en')
-				<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+				<form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
 					@else
-					<form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+					<form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
 						@endif
 						<input type="hidden" name="info" id="info_sent" value="">
 						<input type="hidden" name="cod_auchouse" id="cod_auchouse_sent" value="">

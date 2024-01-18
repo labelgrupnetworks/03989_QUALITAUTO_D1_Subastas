@@ -31,6 +31,11 @@ html {
 	--bs-btn-hover-border-color: var(--lb-color-primary-dark);
 }
 
+.btn[data-escalado-position] {
+	--bs-btn-padding-x: 0.5rem;
+	font-size: .9em;
+}
+
 body> :is(header, footer, .subnav) {
 	background-color: #000;
 	color: var(--lb-color-primary-contrast);

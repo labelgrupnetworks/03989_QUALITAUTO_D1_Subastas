@@ -47,7 +47,9 @@
 									<div class=" widget full-screen d-inline-flex pt-2" style="">
 										<div class="bid-online"></div>
 										<div class="bid-online animationPulseRed"></div>
-										<a href="{{ \Tools::url_real_time_auction($session->auction,$session->name,$session->id_auc_sessions)}}" target="_blank" class="bid-live grid-icon-square color-letter d-flex"><?= trans(\Config::get('app.theme').'-app.lot_list.bid_live') ?></a>
+										<a href="{{ \Tools::url_real_time_auction($session->auction,$session->name,$session->id_auc_sessions)}}" target="_blank" class=" d-flex">
+											<img  src="/themes/duran/assets/img/duran_live.png" style="width: 250px;">
+										</a>
 									</div>
 								</center>
 								@break;

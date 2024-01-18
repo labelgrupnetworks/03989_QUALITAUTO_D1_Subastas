@@ -97,8 +97,6 @@ class SeoLib {
 						"DATE_SEO_VISITS" => date("Y-m-d")
 					],$insertData);
 
-				}else{
-					\Log::info("no hay usuario logeado");
 				}
 
 			}catch(\Illuminate\Database\QueryException $e){
