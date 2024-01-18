@@ -27,7 +27,7 @@
                             <thead>
                                 <tr>
                                     <th style="border-right: 1px solid lightgray">#</th>
-                                    <th>{{-- {{ trans('admin-app.fields.orden_asigl0') }} --}} Subasta</th>
+                                    <th>{{-- {{ trans('admin-app.fields.orden_asigl0') }} --}} {{ trans("admin-app.fields.subasta") }}</th>
                                     <th>{{ trans('admin-app.fields.reflot') }}</th>
                                     <th>{{ trans('admin-app.fields.descweb_hces1') }}</th>
                                 </tr>

@@ -12,7 +12,7 @@
     --secondary-color-text: #46494f;
     --container-width: 90%;
 }
-
+/*
 @font-face {
     font-family: 'Gobold';
     src: url('fonts/Gobold-Thin.eot');
@@ -28,7 +28,14 @@
     font-weight: bold;
     font-style: bold;
 }
+*/
 
+@font-face {
+    font-family: 'Kepler';
+
+    src:  url('fonts/keplerstd-lightsubh-webfont.woff') format('woff'), url('fonts/KeplerStd-LightSubh.otf') format('opentype') ;
+
+}
 .d-flex {
     display: flex;
 }
@@ -52,9 +59,10 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
-html {
+/* Si activamos esta propiedad los modales no bloquean el scroll */
+/* html {
     overflow-x: hidden;
-}
+} */
 
 a {
     cursor: pointer;
@@ -274,7 +282,7 @@ div#owl-carousel-responsive-home {
 }
 
 .teko-font {
-    font-family: 'Gobold';
+    font-family: 'Kepler';
 }
 
 #owl-carousel-responsive-home .card h4 img {
@@ -875,7 +883,7 @@ div.style-5 {
 }
 
 span.ref {
-    font-family: Gobold;
+    font-family: Kepler;
     display: block;
     text-transform: uppercase;
     line-height: 13px;
@@ -1170,8 +1178,8 @@ footer .logo-company {
 }
 
 .submenu h5 {
-    font-family: Gobold;
-    font-weight: bold;
+    font-family: Kepler;
+
     color: #585858;
     margin-bottom: 20px;
 }
@@ -2066,8 +2074,8 @@ a.pass_recovery_login:hover {
     color: #7b7b7b;
     display: inline-block;
     font-size: 30px;
-    font-family: Gobold;
-    font-weight: 500;
+    font-family: Kepler;
+
     float: right;
     margin-bottom: 5px;
     text-decoration: none;
@@ -2165,10 +2173,10 @@ a.pass_recovery_login:hover {
 }
 
 .footer-title {
-    font-family: Gobold;
+    font-family: Kepler;
     text-transform: uppercase;
     font-size: 18px !important;
-    font-weight: 900 !important;
+
     border-bottom: 1px solid #ccc;
     line-height: 25px;
 }
@@ -2251,8 +2259,8 @@ footer .redes-sociales {
 }
 
 .lote {
-    font-weight: 500;
-    font-family: Gobold;
+
+    font-family: Kepler;
     font-size: 15px;
     margin: 5px 0;
     overflow: hidden;
@@ -2263,9 +2271,9 @@ footer .redes-sociales {
 }
 
 .lotes-destacados-tittle {
-    font-weight: 900;
+
     font-size: 23px;
-    font-family: 'Gobold';
+    font-family: 'Kepler';
     text-transform: uppercase;
     color: #4a4a4a;
     border-bottom: 1px solid #b9b9b9;
@@ -2616,7 +2624,17 @@ footer {
     margin-bottom: 6px;
 }
 
+.footer-link-button {
+	all: unset;
+	cursor: pointer;
+}
+
+.footer-link-button:is(::selection, :active, :focus) {
+	text-decoration: underline;
+}
+
 .footer-link {
+	text-transform: uppercase;
     color: var(--primary-color-text);
     text-decoration: none;
     transition: 0.3s linear all;
@@ -2762,11 +2780,11 @@ div.pujar:hover {
 }
 
 .banner-home .how-to-buy-title {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 73px;
     color: #bcbcbc;
     text-transform: uppercase;
-    font-weight: 900;
+
     line-height: 73px;
 }
 
@@ -3467,7 +3485,7 @@ hr {
 .banner-categorias {
     margin: 20px auto;
     text-align: center;
-    font-family: 'Gobold';
+    font-family: 'Kepler';
 }
 
 .banner-categorias a span {
@@ -4419,7 +4437,7 @@ a.bid-live {
 }
 
 .menu-principal.open .menu-principal-content a {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 30px;
     line-height: 50px;
 }
@@ -5143,7 +5161,7 @@ input.radio-filtro {
 }
 
 #registerForm .tit {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 30px;
     text-transform: uppercase;
     border-top: 1px solid #999;
@@ -5184,7 +5202,7 @@ input.radio-filtro {
 }
 
 .contact-page-info-house-auction .titulo {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 24px;
     text-transform: uppercase;
 }
@@ -6845,20 +6863,6 @@ header.fixed .close-svg {
 
 
 /* V5 */
-
-#cookie_law {
-    position: fixed;
-    z-index: 10;
-    bottom: 0;
-    width: 100%;
-    padding: 30px;
-    border-top: #f0eeee 2px solid;
-    background: rgba(255, 250, 250, 0.8);
-    color: #464646;
-    text-align: center;
-    text-align: center;
-}
-
 .popover {
     border: #eeeeee 1px solid;
     background: rgba(255, 255, 255, 0.8);
@@ -7140,10 +7144,10 @@ h1.titlePage,
 h1.titlePage-custom,
 .mas-pujados-title {
     text-align: left;
-    font-family: Gobold;
+    font-family: Kepler;
     text-transform: uppercase;
     font-size: 39px;
-    font-weight: 900;
+
     color: #7b7b7b;
     line-height: 50px;
     margin-top: 20px;
@@ -7287,11 +7291,11 @@ h1.titlePage-custom,
 }
 
 .banner-home-2-title {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 73px;
     color: #bcbcbc;
     text-transform: uppercase;
-    font-weight: 900;
+
     line-height: 73px;
 }
 
@@ -7312,10 +7316,10 @@ h1.titlePage-custom,
 }
 
 .banner-home-3-title {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 51px;
     color: #bcbcbc;
-    font-weight: 900;
+
     /*line-height: 51px;*/
 }
 
@@ -7731,4 +7735,226 @@ h1.titlePage-custom,
 
 dialog::backdrop {
 	background: rgba(0, 0, 0, 0.3);
+}
+
+/********** COOKIES **********/
+.cookies {
+	position: fixed;
+	z-index: 999999;
+	background: #fff;
+	padding: 1rem;
+}
+
+.cookies[data-style="popover"] {
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 7px;
+	box-shadow: rgba(0, 0, 0, .19) 0 10px 20px, rgba(0, 0, 0, .23) 0 6px 6px;
+}
+
+.cookies[data-style="bar"] {
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+
+.cookies__title {
+	font-size: 1.2em;
+	font-weight: 700;
+	margin-bottom: 1rem;
+}
+
+.cookies__message {
+	font-size: 1em;
+	margin-bottom: 1rem;
+	flex: 1;
+}
+
+.cookies_buttons {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+.cookies[data-style="bar"] .cookies_content {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+
+.cookies_buttons button {
+	flex: 1;
+	padding: .75rem 1.25rem;
+	font-weight: 500;
+	line-height: 1.2;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	color: #fff;
+	border: 1px solid var(--primary-color);
+	border-radius: 0.25rem;
+	background-color: var(--primary-color);
+	transition: all 0.3s;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cookies_buttons button:hover {
+	background-color: #222;
+}
+
+.cookies_links {
+	display: flex;
+	gap: 2rem;
+	justify-content: center;
+	text-transform: uppercase;
+	margin-top: 1rem;
+	flex-wrap: wrap;
+	text-wrap: balance;
+	font-size: 0.8em;
+}
+
+@media(width > 768px) {
+	.cookies[data-style="bar"] .cookies_content {
+		flex-direction: row;
+	}
+}
+
+@media(width > 500px) {
+	.cookies[data-style="popover"] {
+		left: 15px;
+		bottom: 15px;
+		padding: 2rem;
+		max-width: 500px;
+		width: 100%;
+	}
+
+	.cookies_buttons {
+		flex-direction: row;
+	}
+
+	.cookies[data-style="bar"] .cookies_buttons {
+		align-self: flex-start;
+	}
+}
+
+.modal-cookies .modal-body {
+	max-height: 60vh;
+	overflow-y: scroll;
+}
+
+.modal-cookies .modal-footer {
+	border-top: 0;
+}
+
+.cookie-type {
+	margin-top: 2rem;
+	padding-top: 2rem;
+	border-top: 1px solid #f4f4f4;
+}
+
+.cookie-type_header_wrap {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-bottom: .5rem;
+}
+
+.cookie-type_header {
+	display: flex;
+	gap: .5rem;
+}
+
+.cookie-type_header_text {
+	flex: 1;
+	font-weight: 600;
+}
+
+.cookie-type_header_arrow i {
+	transition: all .3s;
+}
+
+.cookie-type_header_arrow.active i {
+	rotate: 90deg;
+}
+
+.cookie-type_content {
+	padding: 0.5rem 1rem;
+	background-color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.cookie-wrapper {
+	padding: .5rem 0;
+	border-bottom: 1px solid #f4f4f4;
+}
+
+.cookie-wrapper p {
+	margin: 0;
+}
+
+.cookie-wrapper p span:first-child {
+	font-weight: 600;
+}
+
+.cookie-type input[type=checkbox] {
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.cookie-type label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 60px;
+	height: 30px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+	margin: 0;
+}
+
+.cookie-type label:after {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 20px;
+	height: 20px;
+	background: #fff;
+	border-radius: 99999px;
+	transition: 0.2s;
+}
+
+.cookie-type input:checked+label {
+	background: #bada55;
+}
+
+.cookie-type input:checked+label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+.cookie-type label:active:after {
+	width: 30px;
+}
+
+.slick-slide img {
+	width: 100%;
+	height: auto;
 }

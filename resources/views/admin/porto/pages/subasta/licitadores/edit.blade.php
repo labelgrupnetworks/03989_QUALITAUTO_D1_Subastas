@@ -26,9 +26,9 @@
 	<div class="row well">
 		<div class="col-xs12">
 
-			<h1> Nuevo Licitador</h1>
+			<h1>{{ trans("admin-app.title.new_licit") }}</h1>
 	<p><i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;<span class="badge">
-		Los campos señalados con * son obligatorios</span></p>
+		{{ trans("admin-app.information.obligatory_fields") }}</span></p>
 	<br>
 
 	@if(session('errors'))

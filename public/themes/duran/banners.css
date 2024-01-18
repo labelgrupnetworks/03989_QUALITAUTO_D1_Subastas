@@ -12,20 +12,20 @@ flex-wrap: wrap;
 
 
 .column_banner  .title{
-	font-family: Gobold;
+	font-family: Kepler;
     font-size: 73px;
     color: #bcbcbc;
     text-transform: uppercase;
-    font-weight: 900;
+
     line-height: 73px;
 }
 
 .column_banner .subtitle {
-    font-family: Gobold;
+    font-family: Kepler;
     font-size: 40px;
     color: #bcbcbc;
     text-transform: uppercase;
-	font-weight: 900;
+
 }
 
 

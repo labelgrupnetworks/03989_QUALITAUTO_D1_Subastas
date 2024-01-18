@@ -38,10 +38,10 @@
                                     </div>
                                 </div>
                             </form>
-            
+
             </div>
-                     
-                        
+
+
                     </div>
                     </div>
             <div class="col-xs-8 col-xs-offset-2">
@@ -61,7 +61,7 @@
     </div>
 </div>
 <div class="container mb-25">
-    
+
     <div class="row">
         <div class="col-xs-12">
 
@@ -71,7 +71,7 @@
                         @foreach ($data['subastas'] as $key => $item)
                         <?php
                                         $url_lotes=\Routing::translateSeo('subasta').$item->cod_sub."-".str_slug($item->name)."-".$item->id_auc_sessions;
-                                    ?> 
+                                    ?>
                         <div class="col-xs-12 col-sm-4 col-md-3 pb-15">
                                 <a href="{{$url_lotes}}?description={{$data['search']}}" class="color-letter" target="_blank" >
 
@@ -87,18 +87,18 @@
                                                 @else
                                                     {{$item->cuantos}} {{trans(\Config::get('app.theme').'-app.lot_list.lots')}}
                                                 @endif
-                                            </p> 
+                                            </p>
                                     <div class="caption">
-                                        
+
                                         <p>{{$item->name}}</p>
-                                       
+
 
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </a>
-                            
+
                         </div>
                     @endforeach
                 </div>
@@ -107,17 +107,17 @@
                         <?php
                           $url = "";
                             //Si no esta retirado tendrá enlaces
-                            if($item->retirado_asigl0 =='N'){  
+                            if($item->retirado_asigl0 =='N'){
                                 $url_friendly = str_slug($item->webfriend_hces1);
                                 $url_friendly = \Routing::translateSeo('lote').$item->cod_sub."-".str_slug($item->name).'-'.$item->id_auc_sessions."/".$item->ref_asigl0.'-'.$item->num_hces1.'-'.$url_friendly;
-                                 $url = "href='$url_friendly'";    
+                                 $url = "href='$url_friendly'";
                             }
 
                             $class_square = 'col-xs-12 col-sm-3';
 
-                                                       
+
                             $titulo ="$item->ref_asigl0  -  $item->titulo_hces1";
-                            
+
 
                             $precio_venta=NULL;
                             if (!empty($item->himp_csub)){
@@ -130,27 +130,20 @@
                             //en el buscador no miraremos si el usuario actual es el ganador de la subasta ya que hay varias subastas y por cada una tiene un códig ode licitador
                             $winner = "";
                             $img = Tools::url_img('lote_medium',$item->num_hces1,$item->lin_hces1);
-                            ?> 
+                            ?>
                         @include('includes.lotlist')
                     @endforeach
-                    
+
                 @endif
             </div>
         </div>
-        
+
         @if(isset($data['subastas.paginator']))
             <?= $data['subastas.paginator'] ?>
         @endif
-        
+
     </div>
-    
+
 </div>
-	
-<script>
-    see_img();    
-</script>
-
-			
-
 
 @stop

@@ -20,9 +20,9 @@
                 </div>
         </header>
 
-    <h1>Importar lotes</h1>
+    <h1>{{ trans("admin-app.button.import") }} {{ mb_strtolower(trans("admin-app.title.lots")) }}</h1>
 
-	<a href="{{ url()->previous() }}" class="btn btn-primary right">Volver</a>
+	<a href="{{ url()->previous() }}" class="btn btn-primary right">{{ trans("admin-app.button.back") }}</a>
 
 	<br><br>
 
@@ -30,10 +30,10 @@
 
 		@csrf
 
-		<h3>Subir fichero {{$type}}</h3>
+		<h3>{{ trans("admin-app.title.upload_file") }} {{$type}}</h3>
 		<i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;
 		<span class="badge">
-			Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos
+			{{ trans("admin-app.information.upload_image_size_quantity") }}
 		</span>
 		<br>
 
@@ -45,7 +45,7 @@
 				<input type="file" id="file" name="file">
 				<input type="hidden" id="subasta" name="subasta" value="{{$subasta}}">
 				<br><br>
-				<button class="btn btn-primary" type="submit">Cargar</button>
+				<button class="btn btn-primary" type="submit">{{ trans("admin-app.button.load") }}</button>
 			</div>
 			<div class="col-xs-12 col-md-8 text-center">
 				<div id="div_log" class="log">
@@ -53,7 +53,7 @@
 				</div>
 				<div class="progress">
 					<div id="progressBarImg" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-					  <span class="sr-only"><span id="progressBarValue">0%</span> <span>Completado</span></span>
+					  <span class="sr-only"><span id="progressBarValue">{{ trans("admin-app.general.zero_percent") }}</span> <span>{{ trans("admin-app.success.completed") }}</span></span>
 					</div>
 				</div>
 			</div>

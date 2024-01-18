@@ -225,6 +225,7 @@ return [
 		'winners' => 'Ganadores',
 		'licit' => 'Licitador',
 		'licits' => 'Licitadores',
+		'new_licit' => 'Nuevo licitador',
 		'translates' => 'Traducciones',
 		'scaled' => 'Escalado',
 		'name_description' => 'Nombre y descripción',
@@ -269,8 +270,11 @@ return [
 		'lot_mass_update' => 'Lote/s',
 		'date_and_hour_auctions' => 'Fecha y hora subasta/s',
 		'date_and_hour_orders' => 'Fecha y hora órdenes',
+		'upload_file' => 'Subir fichero',
+		'others' => 'Otros',
 	),
 	'button' => array(
+		'import' => 'Importar',
 		'export' => 'Exportar',
 		'new' => 'Nuevo',
 		'new_fem' => 'Nueva',
@@ -303,6 +307,10 @@ return [
 		'modify' => 'Modificar',
 		'new_file' => '+ Nuevo archivo',
 		'cross' => '×',
+		'back' => 'Volver',
+		'auctions_diary' => 'Diario de Subastas',
+		'gallery_background' => 'Poner en Fondo de Galeria',
+		'put_stock_to_zero' => 'Poner Stock a 0',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -1001,6 +1009,7 @@ return [
 		'not' => 'NO',
 		's' => 'Si',
 		'n' => 'No',
+		'zero_percent' => '0%',
 		'cancel' => 'Cancelada',
 		'max_file_size' => 'El tamaño máximo permitido es de :size',
 	),
@@ -1080,6 +1089,7 @@ return [
         'auth_denied' => 'Email o contraseña incorrectos.',
 	),
 	'success' => array(
+		'completed' => "Completado",
 		'import' => "Datos importados correctamente",
 		'update' => "Datos actualizados correctamente",
 		'update_mass_deposits' => "Depósitos actualizados correctamente.",
@@ -1118,6 +1128,13 @@ return [
 		'caution' => '¡Atención!',
 		'several_files_name' => 'En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.',
 	),
+	'information' => array(
+		'processing_data' => 'Procesando datos...',
+		'moved' => 'Movido',
+		'obligatory_fields' => 'Los campos señalados con * son obligatorios',
+		'obligatory_select_auction' => 'La selección de la subasta es obligatoria',
+		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos'
+	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',
 		'pujrep_B' => 'Comprar en venta directa',
@@ -1145,6 +1162,9 @@ return [
     'labels' => array(),
     'page' => array(),
 	'vottun' =>array(
+		"button" => array(
+			'mint' => 'Mintear',
+		),
 		"success" => array(
 			"uploadFile" => "Archivo subido a la red de Vottun con éxito",
 			"uploadMetadata" => "Metadatos asociados con éxito",
