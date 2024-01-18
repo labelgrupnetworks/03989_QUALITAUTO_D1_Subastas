@@ -315,6 +315,9 @@ return [
 		'gallery_background' => 'Poner en Fondo de Galeria',
 		'put_stock_to_zero' => 'Poner Stock a 0',
 		'upload_to_priceless' => 'Subir a Invaluable',
+		'excel_works' => 'Excel Obras',
+		'pdf_works' => 'PDF Obras',
+		'download_excel_template' => 'Descargar plantilla Excel',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -1030,6 +1033,9 @@ return [
 		'erase_mass_lot' => '¿Estás seguro de eliminar todos los lotes seleccionados?',
 		'delete_selected_register' => '¿Seguro que desea borrar el registro seleccionado?',
 		'session_to_priceless' => '¿Deseas subir la sessión a Invaluable?',
+		'put_selected_stock_in_zero' => '¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?',
+		'put_selected_works_background' => '¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?',
+		'export_selected_works' => '¿Estás seguro de exportar todas las obras seleccionadas?',
 	),
     'placeholder' => array(
          'fecha_publicacion'=>'Fecha de publicacion',
@@ -1105,6 +1111,9 @@ return [
 		'update_mass_lot' => "Lotes actualizados correctamente.",
 		'erase_mass_cli' => "Los clientes se han borrado correctamente.",
 		'erase_mass_lot' => "Los lotes se han borrado correctamente.",
+		'works_stock_zero' => 'Se ha puesto el stock a 0 en las obras seleccionados',
+		'galery_background_works' => 'Se ha puesto en Fondo de Galeria las obras seleccionados',
+		'export_selected_works' => 'Se han exportado las obras seleccionadas',
 	),
 	'error' => array(
 		'no_id_delete' => "No se ha podido borrar  ya que falta informar de su id",
