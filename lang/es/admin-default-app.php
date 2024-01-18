@@ -272,6 +272,7 @@ return [
 		'date_and_hour_orders' => 'Fecha y hora órdenes',
 		'upload_file' => 'Subir fichero',
 		'others' => 'Otros',
+		'sessions' => 'Sesión',
 	),
 	'button' => array(
 		'import' => 'Importar',
@@ -287,6 +288,7 @@ return [
 		'download_excel' => 'Descargar Excel',
 		'load' => 'Cargar',
 		'save' => 'Guardar',
+		'save_changes' => 'Guardar cambios',
 		'restart' => 'Reiniciar',
 		'search' => 'Buscar',
 		'close' => 'Cerrar',
@@ -312,6 +314,7 @@ return [
 		'auctions_diary' => 'Diario de Subastas',
 		'gallery_background' => 'Poner en Fondo de Galeria',
 		'put_stock_to_zero' => 'Poner Stock a 0',
+		'upload_to_priceless' => 'Subir a Invaluable',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -1025,6 +1028,8 @@ return [
 		'delete_newsletter' => '¿Seguro que desea eliminar esta suscripción?',
 		'erase_mass_cli' => '¿Estás seguro de eliminar todos los clientes seleccionados?',
 		'erase_mass_lot' => '¿Estás seguro de eliminar todos los lotes seleccionados?',
+		'delete_selected_register' => '¿Seguro que desea borrar el registro seleccionado?',
+		'session_to_priceless' => '¿Deseas subir la sessión a Invaluable?',
 	),
     'placeholder' => array(
          'fecha_publicacion'=>'Fecha de publicacion',
