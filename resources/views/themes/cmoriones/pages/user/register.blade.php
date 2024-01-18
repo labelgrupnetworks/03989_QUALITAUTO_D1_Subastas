@@ -233,13 +233,13 @@
                         <div class="col-12">
                             <label class="form-label">
                                 {{ trans("$theme-app.login_register.dni_obverse") }}
-                                {!! FormLib::File('dni1', 1) !!}
+                                {!! FormLib::File('dni1', 1, 'accept="image/*,application/pdf"') !!}
                             </label>
                         </div>
                         <div class="col-12">
                             <label class="form-label">
                                 {{ trans("$theme-app.login_register.dni_reverse") }}
-                                {!! FormLib::File('dni2', 1) !!}
+                                {!! FormLib::File('dni2', 1, 'accept="image/*,application/pdf"') !!}
                             </label>
                         </div>
                     </div>

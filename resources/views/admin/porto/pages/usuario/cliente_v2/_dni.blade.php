@@ -28,8 +28,11 @@
             </div>
 
             <div class="dni-img">
-                <img class="img-responsive" alt="image to dni" id="{{ $dni }}-img"
-                    src="{{ $has ? "data:image/jpeg;base64,{$dnis[$dni]['base64']}" : "{$base_url}/images/dni_placeholder.png" }}">
+				@if(!$has)
+				<img class="img-responsive" alt="image to dni" id="{{ $dni }}-img" src="{{ "$base_url/images/dni_placeholder.png" }}">
+				@else
+				<iframe src="{{ "data:{$dnis[$dni]['mime']};base64,{$dnis[$dni]['base64']}" }}" width="100%" height="400"></iframe>
+				@endif
             </div>
         </div>
     @endforeach
