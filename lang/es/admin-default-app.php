@@ -273,6 +273,7 @@ return [
 		'upload_file' => 'Subir fichero',
 		'others' => 'Otros',
 		'sessions' => 'Sesión',
+		'identity_document' => 'Documento Identidad',
 	),
 	'button' => array(
 		'import' => 'Importar',
@@ -322,6 +323,7 @@ return [
 		'excel_works' => 'Excel Obras',
 		'pdf_works' => 'PDF Obras',
 		'download_excel_template' => 'Descargar plantilla Excel',
+		'add_files' => 'Añadir archivos',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -809,6 +811,8 @@ return [
 		'cod2_cli' => 'Id Origen Cliente',
 		'cod_licit' => 'Paleta Licitador',
 		'select' => 'Sel.',
+		'size' => 'Tamaño',
+		'date_mod' => 'Fecha mod.',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
