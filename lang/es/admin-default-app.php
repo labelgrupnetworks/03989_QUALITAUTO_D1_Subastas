@@ -324,6 +324,10 @@ return [
 		'pdf_works' => 'PDF Obras',
 		'download_excel_template' => 'Descargar plantilla Excel',
 		'add_files' => 'Añadir archivos',
+		'see_suscriptors' => 'Ver suscriptores',
+		'file_excel' => 'Archivo Excel',
+		'file_csv' => 'Archivo CSV',
+		'add' => 'Añadir',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -813,6 +817,11 @@ return [
 		'select' => 'Sel.',
 		'size' => 'Tamaño',
 		'date_mod' => 'Fecha mod.',
+		'id' => 'Id',
+		'suscribers' => 'Suscriptores',
+		'numeral_sign' => '#',
+		'all' => 'Todos',
+		'catalogue' => 'Catálogo',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
