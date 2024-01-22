@@ -598,7 +598,7 @@ $idiomes = \Config::get('app.locales');
 						</ul>
 						<ul class="nav nav-children">
 							<li>
-								<a href="/admin/log-viewer">
+								<a href="/admin/log-viewer" target="_blank">
 									<span>Logs</span>
 								</a>
 							</li>
