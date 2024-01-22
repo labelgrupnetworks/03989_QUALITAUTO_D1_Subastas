@@ -26,7 +26,7 @@
         <div class="container py-1 bk-gray">
             <div class="d-flex justify-content-end align-items-center gap-3">
 
-                @include('components.search', ['classes' => 'me-auto d-none d-xxl-block'])
+                @include('components.search', ['classes' => 'me-auto d-none d-xl-block'])
 
                 @if (!Session::has('user'))
                     <button
@@ -49,9 +49,9 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-xxl">
+    <nav class="navbar navbar-expand-xl">
         <div class="container">
-            <a class="navbar-brand d-xxl-none" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+            <a class="navbar-brand d-xl-none" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
                 <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo.svg"
                     alt="{{ \Config::get('app.name') }}" width="200">
             </a>
@@ -153,16 +153,16 @@
                     </li>
                 </ul>
 
-                @include('components.search', ['classes' => 'me-auto d-xxl-none'])
+                @include('components.search', ['classes' => 'me-auto d-xl-none'])
             </div>
         </div>
     </nav>
 
 </header>
 
-<section class="subnav d-none d-xxl-block">
-    <div class="container header-brand">
-		<a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+<section class="subnav">
+    <div class="container header-brand justify-content-center justify-content-xl-between">
+		<a class="navbar-brand d-none d-xl-block" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.svg"
                 alt="{{ \Config::get('app.name') }}" width="250">
         </a>

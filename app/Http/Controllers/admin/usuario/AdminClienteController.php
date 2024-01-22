@@ -198,6 +198,7 @@ class AdminClienteController extends Controller
 		$dnis = array_map(function($dni){
 			return [
 				'path' => $dni,
+				'mime' => mime_content_type($dni),
 				'filename' => basename($dni),
 				'base64' => base64_encode(file_get_contents($dni)),
 
