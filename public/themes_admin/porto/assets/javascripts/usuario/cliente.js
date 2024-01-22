@@ -524,7 +524,7 @@ function makeDataToSendInRemoveSelecteds(ids) {
 	return data;
 }
 
-function removeSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
+function removeClientSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
 
 	const valueAllSelected = getValueFromInput(allselected);
 	const urlAjax = valueAllSelected ? urlwithfilters : url;
