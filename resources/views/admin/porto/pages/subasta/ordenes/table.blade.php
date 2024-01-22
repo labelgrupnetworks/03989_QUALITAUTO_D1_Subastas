@@ -61,7 +61,6 @@
 				<th>
 					<label>
 						<input name="js-selectAllOrders" data-objective="orders_ids" type="checkbox" value="true">
-						<input id="urlAllSelected" name="url-allSelected"  type="hidden" value="{{ route('subastas.lotes.update_with_filters') }}">
 						<input name="auc_id" type="hidden" value="{{ $cod_sub }}">
 					</label>
 				</th>
