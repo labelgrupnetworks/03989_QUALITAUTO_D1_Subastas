@@ -272,6 +272,8 @@ return [
 		'date_and_hour_orders' => 'Fecha y hora órdenes',
 		'upload_file' => 'Subir fichero',
 		'others' => 'Otros',
+		'sessions' => 'Sesión',
+		'identity_document' => 'Documento Identidad',
 	),
 	'button' => array(
 		'import' => 'Importar',
@@ -287,6 +289,7 @@ return [
 		'download_excel' => 'Descargar Excel',
 		'load' => 'Cargar',
 		'save' => 'Guardar',
+		'save_changes' => 'Guardar cambios',
 		'restart' => 'Reiniciar',
 		'search' => 'Buscar',
 		'close' => 'Cerrar',
@@ -296,6 +299,8 @@ return [
 		'next' => 'Siguiente',
 		'delete_subscription' => 'Eliminar suscripción',
 		'sort' => 'Ordenar',
+		'publish' => 'Publicar',
+		'unpublish' => 'Despublicar',
 		'download_preferences' => 'Descargar preferencias de usuarios',
 		'check_scale' => 'Revisar Escalado',
 		'invaluable_load' => 'Subir a Invaluable',
@@ -303,14 +308,26 @@ return [
 		'send_webservice' => 'Send to :empresa  WS',
 		'send_close_lot_webservice' => 'Send close lot to :empresa  WS',
 		'selecteds' => 'Seleccionados',
-		'erase' => 'Eliminar',
+		'select_all' => 'Seleccionar todos',
+		'destroy' => 'Eliminar',
 		'modify' => 'Modificar',
 		'new_file' => '+ Nuevo archivo',
 		'cross' => '×',
+		'add_symbol' => '+',
+		'x_symbol' => 'x',
 		'back' => 'Volver',
 		'auctions_diary' => 'Diario de Subastas',
 		'gallery_background' => 'Poner en Fondo de Galeria',
 		'put_stock_to_zero' => 'Poner Stock a 0',
+		'upload_to_priceless' => 'Subir a Invaluable',
+		'excel_works' => 'Excel Obras',
+		'pdf_works' => 'PDF Obras',
+		'download_excel_template' => 'Descargar plantilla Excel',
+		'add_files' => 'Añadir archivos',
+		'see_suscriptors' => 'Ver suscriptores',
+		'file_excel' => 'Archivo Excel',
+		'file_csv' => 'Archivo CSV',
+		'add' => 'Añadir',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -797,6 +814,14 @@ return [
 		'idorigen_hces1' => 'Id Origen Lote',
 		'cod2_cli' => 'Id Origen Cliente',
 		'cod_licit' => 'Paleta Licitador',
+		'select' => 'Sel.',
+		'size' => 'Tamaño',
+		'date_mod' => 'Fecha mod.',
+		'id' => 'Id',
+		'suscribers' => 'Suscriptores',
+		'numeral_sign' => '#',
+		'all' => 'Todos',
+		'catalogue' => 'Catálogo',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -1023,6 +1048,11 @@ return [
 		'delete_newsletter' => '¿Seguro que desea eliminar esta suscripción?',
 		'erase_mass_cli' => '¿Estás seguro de eliminar todos los clientes seleccionados?',
 		'erase_mass_lot' => '¿Estás seguro de eliminar todos los lotes seleccionados?',
+		'delete_selected_register' => '¿Seguro que desea borrar el registro seleccionado?',
+		'session_to_priceless' => '¿Deseas subir la sessión a Invaluable?',
+		'put_selected_stock_in_zero' => '¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?',
+		'put_selected_works_background' => '¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?',
+		'export_selected_works' => '¿Estás seguro de exportar todas las obras seleccionadas?',
 	),
     'placeholder' => array(
          'fecha_publicacion'=>'Fecha de publicacion',
@@ -1098,6 +1128,9 @@ return [
 		'update_mass_lot' => "Lotes actualizados correctamente.",
 		'erase_mass_cli' => "Los clientes se han borrado correctamente.",
 		'erase_mass_lot' => "Los lotes se han borrado correctamente.",
+		'works_stock_zero' => 'Se ha puesto el stock a 0 en las obras seleccionados',
+		'galery_background_works' => 'Se ha puesto en Fondo de Galeria las obras seleccionados',
+		'export_selected_works' => 'Se han exportado las obras seleccionadas',
 	),
 	'error' => array(
 		'no_id_delete' => "No se ha podido borrar  ya que falta informar de su id",
@@ -1129,11 +1162,13 @@ return [
 		'several_files_name' => 'En caso de subir varios archivos, el nombre utilizado será el que tenga el propio archivo.',
 	),
 	'information' => array(
+		'charging' => '... Cargando',
 		'processing_data' => 'Procesando datos...',
 		'moved' => 'Movido',
 		'obligatory_fields' => 'Los campos señalados con * son obligatorios',
 		'obligatory_select_auction' => 'La selección de la subasta es obligatoria',
-		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos'
+		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos',
+		'obligatory_field_sub_reflot_cli' => 'El campo subasta, referencia de lote y cliente son obligatorios',
 	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',
@@ -1165,10 +1200,15 @@ return [
 		"button" => array(
 			'mint' => 'Mintear',
 		),
+		"fields" => array(
+			'state_minted' => 'Estado Mintado',
+			'mint' => 'Mintear',
+			'transfier' => 'Transferir',
+		),
 		"success" => array(
 			"uploadFile" => "Archivo subido a la red de Vottun con éxito",
 			"uploadMetadata" => "Metadatos asociados con éxito",
-			"mint" => "Se ha realizado el Minteo con éxito"
+			"mint" => "Se ha realizado el Minteo con éxito",
 		),
 		"errors" => array(
 			"noFile" => "El NFT no tiene un archivo asociado",
@@ -1180,11 +1220,13 @@ return [
 			"getTokenId" => "El token Id no es un valor entero o válido",
 			"buyerNoWallet" => "Es necesario que el comprador tenga un wallet para pdoerle hacer la transferencia",
 			"transaction" => "Error al recuperar la transaccion",
-			"lotNotSelled" =>"El lote no se ha vendido"
+			"lotNotSelled" =>"El lote no se ha vendido",
 		),
 		"info" => array(
+			'nft_transfer' => 'NFT transfer',
 			"mintTransactionIsPending" => "El acuñamiento aun no ha finalizado",
 			"transferTransactionIsPending" => "El acuñamiento aun no ha finalizado",
+			'wallet_obligatory' => 'Es necesario que tanto comprador como vendedor tengan un wallet antes de poder mintear el Nft',
 		)
 		),
 	'reportsBi' => array(

@@ -9,7 +9,7 @@
 		<div class="col-xs-12">
 			<h1>{{ trans("admin-app.button.new_fem") }} {{ trans("admin-app.title.order") }}</h1>
 			<p><i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;<span class="badge">
-					El campo subasta, referencia de lote y cliente son obligatorios</span></p>
+					{{ trans("admin-app.information.obligatory_field_sub_reflot_cli") }}</span></p>
 		</div>
 		<div class="col-xs-6 text-right">
 			<a href="{{ url()->previous() }}" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>

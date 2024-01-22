@@ -36,7 +36,7 @@
 							data-url="{{ route('clientes.destroy_selections') }}"
 							data-urlwithfilters="{{ route('clientes.destroy_with_filters') }}"
 							onclick="removeSelecteds(this.dataset)">
-							{{ trans("admin-app.button.erase") }}
+							{{ trans("admin-app.button.destroy") }}
 						</button>
 					</li>
 

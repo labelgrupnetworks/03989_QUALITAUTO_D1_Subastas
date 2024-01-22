@@ -1,5 +1,5 @@
 <fieldset>
-    <legend>Documento Identidad</legend>
+    <legend>{{ trans("admin-app.title.identity_document") }}</legend>
 
     <input type="hidden" name="route_dni"
         value="{{ route('admin.clientes.dni.store', ['cod_cli' => $cliente->codcli]) }}">
