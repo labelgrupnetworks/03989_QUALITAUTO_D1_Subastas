@@ -68,6 +68,8 @@ $(document).on('ready', function () {
 		});
 	});
 
+	$("#js-dropdownOrders").on('show.bs.dropdown', verifyAllSelected);
+	$('[name="js-selectAllOrders"').on('click', unselectOrSelectAllInputs);
 });
 
 function deleteSelectedOrders(event) {
@@ -181,6 +183,43 @@ function deleteOrder(idauction, ref, licit) {
 	return;
 }
 
+
+function makeDataToSendInRemoveOrdersSelecteds(ids) {
+	let data = {};
+	data['_token'] = $('[name="_token"]').val();
+	data['auc_id'] = getValueFromInput('auc_id');
+	data['ids'] = ids;
+	const searchParams = getSearchParams();
+	for (const [key, value] of Object.entries(searchParams)) {
+		data[key] = value;
+	}
+	return data;
+}
+
+function removeOrdersSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
+
+	const valueAllSelected = getValueFromInput(allselected);
+	const urlAjax = valueAllSelected ? urlwithfilters : url;
+	const ids = !valueAllSelected ? selectedCheckItemsByName(objective) : '';
+
+	bootbox.confirm(title, function (result) {
+		if(!result) return;
+
+		$.ajax({
+			url: urlAjax,
+			type: "post",
+			data: makeDataToSendInRemoveOrdersSelecteds(ids),
+			success: function(result) {
+				saved(result.message);
+				location.reload(true);
+			},
+			error: function(result) {
+				error(result.responseJSON.message);
+			}
+		});
+
+	});
+}
 
 
 

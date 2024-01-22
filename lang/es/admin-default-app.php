@@ -1048,6 +1048,7 @@ return [
 		'delete_newsletter' => '¿Seguro que desea eliminar esta suscripción?',
 		'erase_mass_cli' => '¿Estás seguro de eliminar todos los clientes seleccionados?',
 		'erase_mass_lot' => '¿Estás seguro de eliminar todos los lotes seleccionados?',
+		'erase_mass_orders' => '¿Estás seguro de eliminar todas las órdenes seleccionadas?',
 		'delete_selected_register' => '¿Seguro que desea borrar el registro seleccionado?',
 		'session_to_priceless' => '¿Deseas subir la sessión a Invaluable?',
 		'put_selected_stock_in_zero' => '¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?',
@@ -1128,6 +1129,7 @@ return [
 		'update_mass_lot' => "Lotes actualizados correctamente.",
 		'erase_mass_cli' => "Los clientes se han borrado correctamente.",
 		'erase_mass_lot' => "Los lotes se han borrado correctamente.",
+		'erase_mass_orders' => "Las órdenes se han borrado correctamente.",
 		'works_stock_zero' => 'Se ha puesto el stock a 0 en las obras seleccionados',
 		'galery_background_works' => 'Se ha puesto en Fondo de Galeria las obras seleccionados',
 		'export_selected_works' => 'Se han exportado las obras seleccionadas',
@@ -1142,6 +1144,7 @@ return [
 		'no_update_data' => "No se han podido actualizar los datos.",
 		'erase_mass_cli' => "No se han podido eliminar los clientes.",
 		'erase_mass_lot' => "No se han podido eliminar los lotes seleccionados.",
+		'erase_mass_orders' => "No se han podido eliminar las órdenes seleccionadas.",
 
 		'cod_pro' => 'Id',
 		'nom_pro' => 'Nombre',

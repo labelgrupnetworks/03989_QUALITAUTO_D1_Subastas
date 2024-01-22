@@ -242,6 +242,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/export/{idAuction}', 'subasta\AdminOrderController@export')->name('orders.export');
 			Route::post('/delete-selection/{idAuction}', 'subasta\AdminOrderController@deleteSelection')->name('orders.delete_selection');
 			Route::post('/send_ws', 'subasta\AdminOrderController@send_ws');
+			Route::post('/delete-with-filters', 'subasta\AdminOrderController@destroyWithFilters')->name('orders.destroy_with_filters');
+			Route::post('/delete-selection', 'subasta\AdminOrderController@destroySelections')->name('orders.destroy_selections');
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
 
