@@ -14,7 +14,10 @@ use App\Models\V5\FgOrtsec0;
 class AdminCategoryController extends Controller
 {
 
-	/*index, create, show, edit, store, update, destroy*/
+	public function __construct()
+	{
+		view()->share(['menu' => 'subastas']);
+	}
 
 	/**
 	 * Mostrar página incial

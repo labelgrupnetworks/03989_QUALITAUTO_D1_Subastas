@@ -12,6 +12,11 @@ use Intervention\Image\Facades\Image;
 class AdminPagesController extends Controller
 {
 
+	public function __construct()
+	{
+		view()->share(['menu' => 'contenido']);
+	}
+
     public function index()
     {
 

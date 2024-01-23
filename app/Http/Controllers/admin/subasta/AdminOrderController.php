@@ -30,7 +30,7 @@ class AdminOrderController extends Controller
 	{
 		$this->isRender = $isRender;
 
-		view()->share(['isRender' => $this->isRender]);
+		view()->share(['isRender' => $this->isRender, 'menu' => 'subastas']);
 	}
 
 	function index(Request $request, $cod_sub = null){

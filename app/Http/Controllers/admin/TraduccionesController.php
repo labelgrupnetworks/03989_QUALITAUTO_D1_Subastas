@@ -23,6 +23,7 @@ class TraduccionesController extends Controller
     {
         $this->emp = Config::get('app.main_emp');
         $this->content = new Translate();
+		view()->share(['menu' => 'translates']);
     }
 
     /**

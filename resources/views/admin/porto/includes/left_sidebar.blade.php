@@ -499,7 +499,7 @@ $idiomes = \Config::get('app.locales');
 					</li>
 					@endif
 					@if(in_array('traducciones',$config_menu_admin))
-					<li class="nav-parent" style="">
+					<li class="nav-parent @if(!empty($menu) && $menu == 'translates') nav-expanded @endif" style="">
 						<a href="#">
 							<i class="fa fa-columns" aria-hidden="true"></i>
 							<span>{{ trans('admin-app.title.traducciones') }}</span>
@@ -543,7 +543,7 @@ $idiomes = \Config::get('app.locales');
 					</li>
 					@endif
 					@if(in_array('blog',$config_menu_admin))
-					<li class="nav-parent" style="">
+					<li class="nav-parent @if(!empty($menu) && $menu == 'blog') nav-expanded @endif" style="">
 						<a href="#">
 							<i class="fa fa-columns" aria-hidden="true"></i>
 							<span>{{ trans('admin-app.title.blog') }}</span>
