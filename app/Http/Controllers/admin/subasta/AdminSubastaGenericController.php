@@ -26,11 +26,14 @@ use App\Models\V5\FxPro;
 use App\Models\V5\Web_Artist;
 use App\Http\Controllers\externalAggregator\Invaluable\House;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Session;
 
 class AdminSubastaGenericController extends Controller
 {
 	protected $isGeneric;
 	protected $resource_name;
+
+	private $userSession;
 
 	public function __construct()
 	{
@@ -252,6 +255,8 @@ class AdminSubastaGenericController extends Controller
 					$update_array[$key]=$val;
 				}
 			}
+
+			$update_array = $this->addUserUpdatedAucFields($update_array);
 
 			FgSub::where('cod_sub', $cod_sub)->update(
 				$update_array
@@ -659,8 +664,22 @@ class AdminSubastaGenericController extends Controller
 				return true;
 			}
 
+			$update = $this->addUserUpdatedAucFields($update);
+
 			FgSub::whereIn('COD_SUB', $cod_subs)->update($update);
 
+	}
+
+	private function addUserUpdatedAucFields(array $update)
+	{
+		$this->userSession = Session::get('user');
+
+		if ($this->userSession != null) {
+			$update['USR_UPDATE_SUB'] = $this->userSession['usrw'];
+			$update['DATE_UPDATE_SUB'] = new DateTime();
+		}
+
+		return $update;
 	}
 
 	private function updateFirstSessions(Request $request, array $cod_subs, bool $updateDescription = true)
@@ -696,10 +715,24 @@ class AdminSubastaGenericController extends Controller
 			return true;
 		}
 
+		$update = $this->addUserUpdatedSessionFields($update);
+
 		//session
 		AucSessions::whereIn('"auction"', $cod_subs)->where('"reference"', '001')->update($update);
 
 		return true;
+	}
+
+	private function addUserUpdatedSessionFields(array $update)
+	{
+		$this->userSession = Session::get('user');
+
+		if ($this->userSession != null) {
+			$update['"usr_update_sessions"'] = $this->userSession['usrw'];
+			$update['"date_update_sessions"'] = new DateTime();
+		}
+
+		return $update;
 	}
 
 	#endregion
