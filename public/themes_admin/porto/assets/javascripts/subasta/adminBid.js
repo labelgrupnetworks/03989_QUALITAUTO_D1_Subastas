@@ -2,6 +2,9 @@ $(document).on('ready', function () {
 
 	$('#js-deleteSelectedBids').on('click', deleteSelectedBids);
 	$('#js-selectAllBids').on('click', selecteAllBids);
+
+	$("#js-dropdownBids").on('show.bs.dropdown', verifyAllSelected);
+	$('[name="js-selectAllBids"').on('click', unselectOrSelectAllInputs);
 });
 
 function selecteAllBids(event) {
@@ -51,5 +54,30 @@ function deleteSelectedBids(event) {
 			}
 		})
 		.catch(handleFetchingErrorWithBootbox);
+	});
+}
+
+function removeBidsSelecteds({ objective, allselected, url, urlwithfilters, title, response }) {
+
+	const valueAllSelected = getValueFromInput(allselected);
+	const urlAjax = valueAllSelected ? urlwithfilters : url;
+	const ids = !valueAllSelected ? selectedCheckItemsByName(objective) : '';
+
+	bootbox.confirm(title, function (result) {
+		if(!result) return;
+
+		$.ajax({
+			url: urlAjax,
+			type: "post",
+			data: makeDataToSendInRemoveOrdersSelecteds(ids),
+			success: function(result) {
+				saved(result.message);
+				location.reload(true);
+			},
+			error: function(result) {
+				error(result.responseJSON.message);
+			}
+		});
+
 	});
 }

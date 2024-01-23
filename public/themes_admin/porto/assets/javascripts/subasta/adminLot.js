@@ -222,7 +222,7 @@ function removeStockSelectedLots(event) {
 }
 */
 
-function removeSelecteds({ objective, url, title, response }, callback) {
+function removeLotFilesSelecteds({ objective, url, title, response }, callback) {
 
 	const ids = selectedCheckItemsByName(objective);
 
