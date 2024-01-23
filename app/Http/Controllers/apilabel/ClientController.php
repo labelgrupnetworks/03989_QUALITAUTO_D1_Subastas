@@ -308,7 +308,7 @@ class ClientController extends ApiLabelController
             #Borrar FXCLI
 				$this->erase($whereVars, $rules, $this->cliRename, new FxCli());
 			#Borrar FXCLID
-				$this->erase($whereVars, $rules, $this->clidRename, new FxClid());
+				$this->erase($whereVars, $rules, $this->clidRename, new FxClid(), false);
 			#Borrar FXCLI2
 				$this->erase($whereVars, $rules, $this->cli2Rename, new FxCli2());
 
