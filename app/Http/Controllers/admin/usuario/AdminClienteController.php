@@ -22,8 +22,12 @@ use App\Providers\ToolsServiceProvider;
 use App\Models\V5\FxTcli;
 use stdClass;
 use App\Models\V5\FsParams;
+use App\Models\V5\FxCliWeb;
+use Illuminate\Support\Facades\Session;
+
 class AdminClienteController extends Controller
 {
+	private $userSession;
 
 	function __construct()
 	{
@@ -243,6 +247,8 @@ class AdminClienteController extends Controller
 			return redirect()->back()
 				->withErrors($json)->withInput();
 		}
+
+		$this->modifyUserUpdate([$cliente['idorigincli']]);
 
 		//Origen de datos los guardamos directamente en su tabla
 		if(FsOrigen::first()){
@@ -568,6 +574,8 @@ class AdminClienteController extends Controller
 			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
 
+		$this->modifyUserUpdate($ids);
+
 		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_cli")], 200);
 	}
 
@@ -594,6 +602,8 @@ class AdminClienteController extends Controller
 			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
 
+		$this->modifyUserUpdate($clientes->pluck('cod2_cli')->toArray());
+
 		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_cli")], 200);
 	}
 
@@ -611,6 +621,20 @@ class AdminClienteController extends Controller
 			$update['enviocatalogo'] = $request->input('envio_catalogo_select', '');
 		}
 		return $update;
+	}
+
+	private function modifyUserUpdate(array $cod2_dli)
+	{
+		$fxClis = FxCli::select('cod_cliweb')->whereIn('cod2_cli', $cod2_dli)->joinCliWebCli()->get()->toArray();
+
+		$this->userSession = Session::get('user');
+
+		$update = [
+			'USR_UPDATE_CLIWEB' => $this->userSession['usrw'],
+			'DATE_UPDATE_CLIWEB' => date("Y-m-d h:i:s"),
+		];
+
+		FxCliWeb::whereIn('cod_cliweb', array_column($fxClis, 'cod_cliweb'))->update($update);
 	}
 
 	public function destroySelections(Request $request) {
