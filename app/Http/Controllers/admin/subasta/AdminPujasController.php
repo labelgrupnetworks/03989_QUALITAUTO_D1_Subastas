@@ -31,49 +31,11 @@ class AdminPujasController extends Controller
 			$pujas =$pujas->addselect( "asigl0_aux");
 
 		}
-		$pujas = $pujas->where('sub_asigl1', $cod_sub)
 
-					->when($request->ref_asigl1, function($query, $ref_asigl1){
-						$query->where('ref_asigl1', $ref_asigl1);
-					})
-					->when($request->lin_asigl1, function($query, $lin_asigl1){
-						$query->where('lin_asigl1', $lin_asigl1);
-					})
-					->when($request->licit_asigl1, function($query, $licit_asigl1){
-						$query->where('licit_asigl1', $licit_asigl1);
-					})
-					->when($request->imp_asigl1, function($query, $imp_asigl1){
-						$query->where('imp_asigl1', $imp_asigl1);
-					})
-					->when($request->fec_asigl1, function($query, $fec_asigl1){
-						$query->where('fec_asigl1', '>=', ToolsServiceProvider::getDateFormat($fec_asigl1, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-					})
-					->when($request->idorigen_asigl0, function($query, $idorigen_asigl0){
-						$query->where('upper(idorigen_asigl0)', 'like', "%" . mb_strtoupper($idorigen_asigl0) . "%");
-					})
-					->when($request->nom_cli, function($query, $nom_cli){
-						$query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
-					})
-					->when($request->descweb_hces1, function($query, $descweb_hces1){
-						$query->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($descweb_hces1) . "%");
-					})
-					->when($request->cod2_cli, function($query, $cod2_cli){
-						$query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
-					})
-					->when($request->pujrep_asigl1, function($query, $pujrep_asigl1){
-						$query->where('pujrep_asigl1', $pujrep_asigl1);
-					})
-					->when($request->type_asigl1, function($query, $type_asigl1){
-						$query->where('type_asigl1', $type_asigl1);
-					})
-					->when($request->retirado_asigl0, function($query, $retirado_asigl0){
-						$query->where('retirado_asigl0', $retirado_asigl0);
-					})
-					->when($request->ffin_asigl0, function($query, $ffin_asigl0){
-						$query->where('ffin_asigl0', $ffin_asigl0);
-					})
-					->orderby(request('order_pujas', 'fec_asigl1'), request('order_pujas_dir', 'desc'))
-					->paginate($this->perPage, ['*'], 'pujasPage');
+		$pujas = $this->filtersQueryBuilder($request, $cod_sub, $pujas);
+
+		$pujas = $pujas->orderby(request('order_pujas', 'fec_asigl1'), request('order_pujas_dir', 'desc'))
+		->paginate($this->perPage, ['*'], 'pujasPage');
 
 
 		//añadir array con los tipos de puja (pujrep y type) para poder utilizar en el select del filtro y para mostrar el nombre en la tabla
@@ -184,5 +146,103 @@ class AdminPujasController extends Controller
 		]);
 
 	}
+
+	#region filters
+
+	private function filtersQueryBuilder(Request $request, $cod_sub, $bids)
+	{
+		$bids->where('sub_asigl1', $cod_sub)
+		->when($request->ref_asigl1, function($query, $ref_asigl1){
+			$query->where('ref_asigl1', $ref_asigl1);
+		})
+		->when($request->lin_asigl1, function($query, $lin_asigl1){
+			$query->where('lin_asigl1', $lin_asigl1);
+		})
+		->when($request->licit_asigl1, function($query, $licit_asigl1){
+			$query->where('licit_asigl1', $licit_asigl1);
+		})
+		->when($request->imp_asigl1, function($query, $imp_asigl1){
+			$query->where('imp_asigl1', $imp_asigl1);
+		})
+		->when($request->fec_asigl1, function($query, $fec_asigl1){
+			$query->where('fec_asigl1', '>=', ToolsServiceProvider::getDateFormat($fec_asigl1, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		})
+		->when($request->idorigen_asigl0, function($query, $idorigen_asigl0){
+			$query->where('upper(idorigen_asigl0)', 'like', "%" . mb_strtoupper($idorigen_asigl0) . "%");
+		})
+		->when($request->nom_cli, function($query, $nom_cli){
+			$query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
+		})
+		->when($request->descweb_hces1, function($query, $descweb_hces1){
+			$query->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($descweb_hces1) . "%");
+		})
+		->when($request->cod2_cli, function($query, $cod2_cli){
+			$query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
+		})
+		->when($request->pujrep_asigl1, function($query, $pujrep_asigl1){
+			$query->where('pujrep_asigl1', $pujrep_asigl1);
+		})
+		->when($request->type_asigl1, function($query, $type_asigl1){
+			$query->where('type_asigl1', $type_asigl1);
+		})
+		->when($request->retirado_asigl0, function($query, $retirado_asigl0){
+			$query->where('retirado_asigl0', $retirado_asigl0);
+		})
+		->when($request->ffin_asigl0, function($query, $ffin_asigl0){
+			$query->where('ffin_asigl0', $ffin_asigl0);
+		});
+
+		return $bids;
+	}
+
+	#endregion
+
+	#region destroy orders in mass
+
+	private function sendBidsToDestroy($bids)
+	{
+		foreach ($bids as $bid) {
+			$this->deleteBid($bid['sub_asigl1'], $bid['ref_asigl1'], $bid['lin_asigl1']);
+		}
+	}
+
+	private function sortBidFields($ids)
+	{
+		$idsSorted = [];
+		foreach ($ids as  $id) {
+			$idTemp = explode('_', $id);
+			$idsSorted[] = [
+				'sub_asigl1' => $idTemp[0],
+				'ref_asigl1' => $idTemp[1],
+				'lin_asigl1' => $idTemp[2]
+			];
+		}
+
+		return $idsSorted;
+	}
+
+	public function destroySelections(Request $request)
+	{
+		$pujas = $this->sortBidFields($request->input('ids', []));
+
+		$this->sendBidsToDestroy($pujas);
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_bids")], 200);
+	}
+
+	public function destroyWithFilters(Request $request)
+	{
+		$cod_sub = $request->auc_id;
+
+		$pujas = $this->pujasInstance();
+		$pujas = $this->filtersQueryBuilder($request, $cod_sub, $pujas);
+		$pujas = $pujas->select('sub_asigl1', 'ref_asigl1', 'lin_asigl1')->get()->toArray();
+
+		$this->sendBidsToDestroy($pujas);
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_bids")], 200);
+	}
+
+	#endregion
 
 }

@@ -357,6 +357,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('features/{idFeature}/{idFeatureValue}', 'subasta\AdminLotController@createOrEditMultilanguageFeature')->name('multilanguage_features');
 		Route::post('features', 'subasta\AdminLotController@storeMultilanguageFeature')->name('multilanguage_features.post');
 
+		Route::post('subastas/bids/delete-with-filters', 'subasta\AdminPujasController@destroyWithFilters')->name('subastas.pujas.destroy_with_filters');
+		Route::post('subastas/bids/delete-selection', 'subasta\AdminPujasController@destroySelections')->name('subastas.pujas.destroy_selections');
 
 		Route::post('subastas/lotes/delete-with-filters', 'subasta\AdminLotController@destroyWithFilters')->name('subastas.lotes.destroy_with_filters');
 		Route::post('subastas/lotes/delete-selection', 'subasta\AdminLotController@destroySelections')->name('subastas.lotes.destroy_selections');
