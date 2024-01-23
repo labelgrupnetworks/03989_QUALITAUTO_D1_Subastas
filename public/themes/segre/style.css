@@ -416,6 +416,11 @@ p {
 	padding: 0px;
 }
 
+.all-page-banner-container .BANNER_banner-all-page img {
+	width: 100%;
+	height: auto;
+}
+
 .video-resolution-responsive {
 	width: 450px;
 	height: 253px;
