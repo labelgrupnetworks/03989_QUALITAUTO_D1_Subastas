@@ -19,25 +19,26 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule)
 	{
 		$queueEnv = Config::get('app.queue_env');
-		$schedule->command("queue:monitor database:$queueEnv --max=5")
+		$schedule->command("queue:monitor database:$queueEnv --max=1")
 			->name('Monitorizar jobs')
-			->hourly();
+			->everyTwoMinutes();
+			//->hourly();
 		//->sendOutputTo(storage_path('logs/queue-monitor.log'));
 
 		$schedule->call(new CheckFailedJobsAction)
 			->name('Comprobar jobs fallidos')
 			//->dailyAt('9:00');
-			->everyMinute();
+			->everyTwoMinutes();
 
 		$schedule->call(new HasAuctionAction, ['when' => 'week'])
 			->name('Comprobar si subasta en una semana')
-			//->dailyAt('9:00');
-			->everyMinute();
+			->dailyAt('9:00');
+			//->everyMinute();
 
 		$schedule->call(new HasAuctionAction, ['when' => 'day'])
 			->name('Comprobar si subasta hoy')
-			//->dailyAt('9:00');
-			->everyMinute();
+			->dailyAt('9:00');
+			//->everyMinute();
 	}
 
 	/**
