@@ -57,7 +57,7 @@ class AdminLotController extends Controller
 	const PREVIOUS_LOT = 1;
 	const NEXT_LOT = 2;
 
-	private $userSession;
+	private static $userSession;
 
 	public function __construct($isRender = false)
 	{
@@ -1743,11 +1743,11 @@ class AdminLotController extends Controller
 		$json = $lotControler->updateLot($lotsForUpdate);
 		$result = json_decode($json);
 
-		$this->saveUserInfoInUpdatedLots($cod_sub, $lots->pluck('reflot')->toArray());
-
 		if ($result->status == 'ERROR') {
 			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
+
+		$this->saveUserInfoInUpdatedLots($cod_sub, $lots->pluck('reflot')->toArray());
 
 		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_lot")], 200);
 	}

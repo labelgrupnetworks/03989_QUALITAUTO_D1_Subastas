@@ -623,9 +623,9 @@ class AdminClienteController extends Controller
 		return $update;
 	}
 
-	private function modifyUserUpdate(array $cod2_dli)
+	private function modifyUserUpdate(array $cod2_cli)
 	{
-		$fxClis = FxCli::select('cod_cliweb')->whereIn('cod2_cli', $cod2_dli)->joinCliWebCli()->get()->toArray();
+		$fxClis = FxCli::select('cod_cliweb')->whereIn('cod2_cli', $cod2_cli)->joinCliWebCli()->get()->toArray();
 
 		$this->userSession = Session::get('user');
 
