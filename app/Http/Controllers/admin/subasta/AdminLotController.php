@@ -1708,12 +1708,12 @@ class AdminLotController extends Controller
 		return $lots;
 	}
 
-	private function saveUserInfoInUpdatedLots($cod_sub, $refLots)
+	public static function saveUserInfoInUpdatedLots($cod_sub, $refLots)
 	{
-		$this->userSession = Session::get('user');
+		self::$userSession = Session::get('user');
 
 		$update = [
-			'usr_update_asigl0' => strval($this->userSession['usrw']),
+			'usr_update_asigl0' => strval(self::$userSession['usrw']),
 			'date_update_asigl0' => date('Y-m-d H:i:s'),
 		];
 

@@ -1252,6 +1252,7 @@ class SubastaController extends Controller
 		$newLots = array();
 		$updateLots = array();
 		$addTime = 0;
+		$reflots = array();
 
 		for ($i = 1; $i < count($rows); $i++) {
 
@@ -1288,6 +1289,7 @@ class SubastaController extends Controller
 			$exist = (array_key_exists($lot['idorigin'], $idOrigins)) ? true : false;
 
 			if ($exist) {
+				$reflots[] = $lot['reflot'];
 				$updateLots[] = $lot;
 			} else {
 				$newLots[] = $lot;
@@ -1316,6 +1318,8 @@ class SubastaController extends Controller
 				Log::emergency($json);
 				return response($json, 400);
 			}
+
+			AdminLotController::saveUserInfoInUpdatedLots($idAuction, $reflots);
 		}
 
 		$img = $this->createImgObject($lots);
