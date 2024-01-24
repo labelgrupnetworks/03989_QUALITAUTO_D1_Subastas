@@ -3,6 +3,10 @@
 if(\Config::get("app.emp") == '003' || \Config::get("app.emp") == '004'){
 	return [
 
+		'nav_menu' => array(
+			'auctions'=>'Exposiciones',
+			'blog' => 'Noticias',
+		),
 		'title' => array(
 			'auctions'=>'Exposiciones',
 			'auction'=>'Exposición',
