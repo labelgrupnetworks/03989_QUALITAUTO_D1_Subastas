@@ -625,7 +625,7 @@ class AdminClienteController extends Controller
 
 	private function modifyUserUpdate(array $cod2_cli)
 	{
-		$fxClis = FxCli::select('cod_cliweb')->whereIn('cod2_cli', $cod2_cli)->joinCliWebCli()->get()->toArray();
+		$cods_cliweb = FxCli::select('cod_cliweb')->whereIn('cod2_cli', $cod2_cli)->joinCliWebCli()->pluck('cod_cliweb');
 
 		$this->userSession = Session::get('user');
 
@@ -634,7 +634,7 @@ class AdminClienteController extends Controller
 			'DATE_UPDATE_CLIWEB' => date("Y-m-d h:i:s"),
 		];
 
-		FxCliWeb::whereIn('cod_cliweb', array_column($fxClis, 'cod_cliweb'))->update($update);
+		FxCliWeb::whereIn('cod_cliweb', $cods_cliweb)->update($update);
 	}
 
 	public function destroySelections(Request $request) {
