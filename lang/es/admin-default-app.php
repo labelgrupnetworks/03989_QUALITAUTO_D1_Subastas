@@ -895,6 +895,11 @@ return [
 		'execute' => 'Ejecutar',
 		'up_to_import' => 'Hasta importe',
 		'bid_import' => 'Importe puja',
+		'disable_register' => 'Deshabilitar registro',
+		'yes' => 'Si',
+		'no' => 'No',
+		'buyer_comision' => 'Comisión de comprador',
+		'percent_bid_comision' => 'Porcentaje comisión de puja',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
