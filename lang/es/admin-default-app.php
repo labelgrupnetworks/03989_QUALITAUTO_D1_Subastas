@@ -1125,6 +1125,7 @@ return [
 		'put_selected_stock_in_zero' => '¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?',
 		'put_selected_works_background' => '¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?',
 		'export_selected_works' => '¿Estás seguro de exportar todas las obras seleccionadas?',
+		'max_credit' => '¿Cual es el credito máximo que quiere establecer?'
 	),
     'placeholder' => array(
          'fecha_publicacion'=>'Fecha de publicacion',
