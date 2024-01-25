@@ -282,6 +282,7 @@ return [
 		'queues_pending_to_send' => 'Colas pendientes de enviar',
 		'failed_queues' => 'Colas fallidas',
 		'infoextra' => 'Información extra',
+		'related_articles' => 'Artículos relacionados',
 	),
 	'nav_menu' => array(
 		'web' => 'Web',

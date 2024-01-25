@@ -38,7 +38,7 @@
 	</div>
 
 	<div class="row well">
-		Articulos relacionados
+		{{ trans("admin-app.title.related_articles") }}
 		<form id="artistArticleFrm" method="POST" enctype="multipart/form-data">
 			<div class="col-xs-12" style="text-align: right;margin-top: 1rem">
 				<input type="button" id="artistCreate_JS" class="btn btn-success" value="Nuevo" >
