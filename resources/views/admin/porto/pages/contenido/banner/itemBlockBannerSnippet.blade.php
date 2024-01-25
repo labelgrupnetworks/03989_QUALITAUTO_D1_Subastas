@@ -6,17 +6,17 @@
                 <div class="bannerItem" id="item{{ $item->id }}">
 
 					<div class="text-right">
-                        <a title="Editar" href="javascript:editaItemBloque({{ $item->id }})"
+                        <a title="{{ trans("admin-app.button.edit") }}" href="javascript:editaItemBloque({{ $item->id }})"
                             class="btn btn-primary"><i class="fa fa-edit"></i></a>
 
-                        <a title="Eliminar" href="javascript:borraItemBloque({{ $item->id }})"
+                        <a title="{{ trans("admin-app.button.destroy") }}" href="javascript:borraItemBloque({{ $item->id }})"
                             class="btn btn-danger"><i class="fa fa-times"></i></a>
 
                         @if ($item->activo)
-                            <a title="Desactivar" href="javascript:desactivaItemBloque({{ $item->id }})"
+                            <a title="{{ trans("admin-app.button.desactive") }}" href="javascript:desactivaItemBloque({{ $item->id }})"
                                 class="btn btn-success"><i class="fa fa-power-off"></i></a>
                         @else
-                            <a title="Activar" href="javascript:activaItemBloque({{ $item->id }})"
+                            <a title="{{ trans("admin-app.button.active") }}" href="javascript:activaItemBloque({{ $item->id }})"
                                 class="btn btn-danger"><i class="fa fa-power-off"></i></a>
                         @endif
                     </div>

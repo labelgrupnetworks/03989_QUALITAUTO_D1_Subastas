@@ -10,35 +10,35 @@
 
         <div class="right">
             @if (request('ubicacion') == 'HOME')
-                <a href="/admin/newbanner/ubicacionhome" class="btn btn-primary">Volver</a>
+                <a href="/admin/newbanner/ubicacionhome" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
             @else
-                <a href="/admin/newbanner" class="btn btn-primary">Volver</a>
+                <a href="/admin/newbanner" class="btn btn-primary">{{ trans("admin-app.button.return") }}</a>
             @endif
 
             &nbsp;&nbsp;&nbsp;
-            <a href="javascript:vista_previa('{{ $banner->key }}')" class="btn btn-primary">Vista previa</a>
+            <a href="javascript:vista_previa('{{ $banner->key }}')" class="btn btn-primary">{{ trans("admin-app.button.preview") }}</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="javascript:editar_run()" class="btn btn-success">Guardar</a>
+            <a href="javascript:editar_run()" class="btn btn-success">{{ trans("admin-app.button.save") }}</a>
         </div>
 
-        <h1>Editar banner</h1>
+        <h1>{{ trans("admin-app.title.edit_banner") }}</h1>
         <br>
         <div class="row">
             {!! $token !!}
             {!! $id !!}
 
             <div class="col-xs-12 col-md-6">
-                <label>Key:</label>
+                <label>{{ trans("admin-app.fields.key_word") }}:</label>
                 {!! $nombre !!}
             </div>
 
             <div class="col-xs-12 col-md-2">
-                <label>Orden:</label>
+                <label>{{ trans("admin-app.fields.order") }}:</label>
                 {!! $orden !!}
             </div>
 
             <div class="col-xs-12 col-md-2 text-center">
-                <label>Activo:</label>
+                <label>{{ trans("admin-app.fields.active") }}:</label>
                 {!! $activo !!}
             </div>
 
@@ -46,12 +46,12 @@
         <br>
         <div class="row">
             <div class="col-xs-12 col-md-6">
-                <label>Descripción:</label>
+                <label>{{ trans("admin-app.fields.description") }}:</label>
                 {!! $descripcion !!}
             </div>
 
             <div class="col-xs-12 col-md-6">
-                <label>Ubicación:</label>
+                <label>{{ trans("admin-app.fields.location") }}:</label>
                 {!! $ubicacion !!}
                 <small><i>Posibles ubicaciones: {{ $ubicaciones }}</i></small>
             </div>
@@ -63,13 +63,12 @@
     <br>
     <hr>
     <br>
-    <p>*Se puede modificar el orden arrastrando los elementos
-    <p>
+    <p>{{ trans("admin-app.information.order_drag_items") }}<p>
     <div class="bloquesBanner">
         @foreach ($bloques as $k => $bloque)
 		<div class="bloqueBanner">
 			<a href="javascript:nuevoItemBloque('{{ $banner->id }}',{{ $k }})"
-				class="btn btn-primary">Nuevo</a>
+				class="btn btn-primary">{{ trans("admin-app.button.new") }}</a>
 			<h4>{{ ucfirst($bloque) }}</h4>
 			<br>
 			<div class="bannerItems" id="bannerItems{{ $k }}"></div>
@@ -95,7 +94,7 @@
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
                 </div>
             </div>
 

@@ -283,6 +283,8 @@ return [
 		'failed_queues' => 'Colas fallidas',
 		'infoextra' => 'Información extra',
 		'related_articles' => 'Artículos relacionados',
+		'new_banner' => 'Nuevo banner',
+		'edit_banner' => 'Editar banner',
 	),
 	'nav_menu' => array(
 		'web' => 'Web',
@@ -401,6 +403,8 @@ return [
 		'logout' => 'Logout',
 		'print' => 'Imprimir',
 		'excel' => 'Excel',
+		'preview' => 'Vista previa',
+		'download_copy' => 'Descargar copia',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -911,6 +915,21 @@ return [
 		'tries' => 'Intentos',
 		'disponibility_date' => 'Fecha Disponibilidad',
 		'created_date' => 'Fecha Creación',
+		'key_word' => 'Key',
+		'active' => 'Activo',
+		'desactive' => 'Desactivar',
+		'location' => 'Ubicación',
+		'type' => 'Tipo',
+		'by_default' => 'Por defecto',
+		'img_abbreviated' => 'Img',
+		'design' => 'Diseño',
+		'options' => 'Opciones',
+		'image' => 'Imagen',
+		'mobile_image' => 'Imagen mobile',
+		'text' => 'Texto',
+		'url_yt_video' => 'URL Video Youtube',
+		'url_abbreviated' => 'Url',
+		'open_url_new_windows' => 'Abrir url en ventana nueva',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
@@ -1265,6 +1284,7 @@ return [
 		'obligatory_select_auction' => 'La selección de la subasta es obligatoria',
 		'upload_image_size_quantity' => 'Según la cantidad y el tamaño de las imágenes, el proceso puede tardar varios minutos',
 		'obligatory_field_sub_reflot_cli' => 'El campo subasta, referencia de lote y cliente son obligatorios',
+		'order_drag_items' => '*Se puede modificar el orden arrastrando los elementos'
 	),
 	'values' => array(
 		'pujrep_A' => 'Adjudicación directa',

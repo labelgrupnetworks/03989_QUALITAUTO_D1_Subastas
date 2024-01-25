@@ -21,21 +21,21 @@
 	<div id="newbanner">
 		@if($pos = strpos(mb_strtoupper(Session::get('user.usrw')), '@LABELGRUP'))
 		<div class="d-flex gap-5 justify-content-end">
-			<a href="/admin/newbanner/download" class="btn btn-warning" download>Descargar Copia</a>
-			<a href="/admin/newbanner/nuevo?ubicacion={{$ubicacion}}" class="btn btn-primary">Nuevo</a>
+			<a href="/admin/newbanner/download" class="btn btn-warning" download>{{ trans("admin-app.button.download_copy") }}</a>
+			<a href="/admin/newbanner/nuevo?ubicacion={{$ubicacion}}" class="btn btn-primary">{{ trans("admin-app.button.new") }}</a>
 		</div>
 		@endif
-		<h1>Banners {{$ubicacion}}</h1>
+		<h1>{{ trans("admin-app.title.banners") }} {{$ubicacion}}</h1>
 
 		@if (!empty($ubicaciones))
 
 		<form action="" name="form_ubicacion">
 			<select name="ubicacion">
-				<option value="">Todos</option>
+				<option value="">{{ trans("admin-app.fields.all") }}</option>
 				@foreach ($ubicaciones as $key => $value)
 
 				@if (empty($value))
-					<option value="{{$value}}" @if(request('ubicacion') == '0') selected @endif>POR DEFECTO</option>
+					<option value="{{$value}}" @if(request('ubicacion') == '0') selected @endif>{{ mb_strtoupper(trans("admin-app.fields.by_default")) }}</option>
 				@else
 					<option value="{{$value}}" @if(request('ubicacion') == $value) selected @endif>{{$value}}</option>
 				@endif
@@ -53,25 +53,25 @@
 
 		<div class="row ">
 			<div class="col-12 col-md-1 text-center">
-				<b>ID</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.id")) }}</b>
 			</div>
 			<div class="col-12 col-md-1 text-center">
-				<b>IMG</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.img_abbreviated")) }}</b>
 			</div>
 			<div class="col-12 col-md-1 text-center">
-				<b>DISEÑO</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.design")) }}</b>
 			</div>
 			<div class="col-12 col-md-2">
-				<b>UBICACION</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.location")) }}</b>
 			</div>
 			<div class="col-12 col-md-2">
-				<b>KEY</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.key_word")) }}</b>
 			</div>
 			<div class="col-12 col-md-3">
-				<b>DESCRIPCIÓN</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.description")) }}</b>
 			</div>
 			<div class="col-12 col-md-2 text-right">
-				<b>OPCIONES</b>
+				<b>{{ mb_strtoupper(trans("admin-app.fields.options")) }}</b>
 			</div>
 		</div>
 		<input type="hidden" id = "ubicacion" value="{{$ubicacion}}">
