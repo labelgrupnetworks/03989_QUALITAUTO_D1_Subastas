@@ -276,6 +276,7 @@ return [
 		'identity_document' => 'Documento Identidad',
 		'table_columns' => 'Columnas de tabla',
 		'navigation' => 'Navigation',
+		'cache' => 'Cache',
 	),
 	'nav_menu' => array(
 		'web' => 'Web',
@@ -889,6 +890,8 @@ return [
 		'all' => 'Todos',
 		'catalogue' => 'Catálogo',
 		'without_data' => 'Sin datos',
+		'action' => 'Acción',
+		'execute' => 'Ejecutar',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
