@@ -23,12 +23,12 @@
 		<form name="escalado" id="formEscalado" method="post" action="/admin/escalado/save">
 
 			@csrf
-			<h1>Escalado general de las subastas (por defecto)</h1>
+			<h1>{{ trans("admin-app.title.general_scaling") }}</h1>
 			<br>
 
 			<div class="row">
 				<div class="col-12 col-md-4 col-md-offset-8">
-					<a class="btn btn-primary" id="addEscalado">Añadir</a>
+					<a class="btn btn-primary" id="addEscalado">{{ trans("admin-app.button.add") }}</a>
 					&nbsp;&nbsp;
 					<input type="submit" value="Guardar" class="btn btn-success">
 				</div>
@@ -38,10 +38,10 @@
 			<div class="row">
 				<div class="col-12 col-md-2"></div>
 				<div class="col-12 col-md-4">
-					<b>HASTA IMPORTE</b>
+					<b>{{ trans("admin-app.fields.up_to_import") }}</b>
 				</div>
 				<div class="col-12 col-md-4">
-					<b>IMPORTE PUJA</b>
+					<b>{{ trans("admin-app.fields.bid_import") }}</b>
 				</div>
 
 			</div>
