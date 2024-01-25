@@ -277,7 +277,11 @@ return [
 		'table_columns' => 'Columnas de tabla',
 		'navigation' => 'Navigation',
 		'cache' => 'Cache',
-		'general_scaling' => 'Escalado general de las subastas (por defecto)'
+		'general_scaling' => 'Escalado general de las subastas (por defecto)',
+		'queues' => 'Colas',
+		'queues_pending_to_send' => 'Colas pendientes de enviar',
+		'failed_queues' => 'Colas fallidas',
+		'infoextra' => 'Información extra',
 	),
 	'nav_menu' => array(
 		'web' => 'Web',
@@ -900,6 +904,12 @@ return [
 		'no' => 'No',
 		'buyer_comision' => 'Comisión de comprador',
 		'percent_bid_comision' => 'Porcentaje comisión de puja',
+		'class_name' => 'Nombre de clase',
+		'failed_date' => 'Fecha fallo',
+		'environment' => 'Entorno',
+		'tries' => 'Intentos',
+		'disponibility_date' => 'Fecha Disponibilidad',
+		'created_date' => 'Fecha Creación',
 	),
 	'help_fields' => array(
 		'deposito' => 'Los depósitos actuarán en función de los campos rellenados, a más campos, más restrictivo.<br>Los campos de estado y cliente son obligatorios, y una vez el estado se rellene como valido existen 3 posibilidades:<br>- Si solamente se rellena el cliente, el usuario podrá pujar en todas las subastas.<br>- Si se rellenan nombre y subasta, el usuario podrá pujar en todos los lotes de esa subasta.<br>- Si se rellenan nombre, subasta y referencia, el usuario solamente podrá pujar por ese lote<br>',
