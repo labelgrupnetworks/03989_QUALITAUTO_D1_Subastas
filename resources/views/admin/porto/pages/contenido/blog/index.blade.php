@@ -6,11 +6,11 @@
 
         <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-9">
-                <h1>Blog CMS</h1>
+                <h1>{{ trans("admin-app.title.blog_cms") }}</h1>
             </div>
             <div class="col-xs-3">
                 <a href="{{ route('admin.contenido.blog.create') }}"
-                    class="btn btn-primary right">{{ trans('admin-app.button.new') }} Blog</a>
+                    class="btn btn-primary right">{{ trans('admin-app.button.new') }} {{ trans("admin-app.title.blog") }}</a>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
 
             <div class="col-xs-3 categories-block">
                 <div class="categories-list">
-                    <h4>Categorias</h4>
+                    <h4>{{ trans("admin-app.title.categories") }}</h4>
                     <ul id="categoires-navs" class="nav nav-pills nav-stacked">
                         @forelse (collect($categories)->sortBy('order_category_blog') as $category)
                             <li data-id="{{ $category->id_category_blog }}" role="presentation"
@@ -39,21 +39,21 @@
                                         class="fa fa-trash fa-2x"></i></button>
                             </li>
                         @empty
-                            <li class="list-group-item">No hay categorias</li>
+                            <li class="list-group-item">{{ trans("admin-app.information.no_categories") }}</li>
                         @endforelse
 
                         @if ($blogsWithoutCategory->count() > 0)
                             <li>
                                 <a href="#tab_without_category" aria-controls="Sin categoria" role="tab"
                                     data-toggle="tab">
-                                    Sin categoria <span class="badge">{{ $blogsWithoutCategory->count() }}</span>
+                                    {{ trans("admin-app.information.without_categories") }} <span class="badge">{{ $blogsWithoutCategory->count() }}</span>
                                 </a>
                             </li>
                         @endif
 
                         <li>
                             <a class="js-add-new-category" href="" data-target="#category-modal" data-toggle="modal">
-                                <i class="fa fa-plus"></i> Nueva Categoria
+                                <i class="fa fa-plus"></i> {{ trans("admin-app.button.new") }} {{ trans("admin-app.title.category") }}
                             </a>
                         </li>
 
@@ -96,7 +96,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Nueva Categoria</h4>
+                    <h4 class="modal-title">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.category") }}</h4>
                 </div>
                 <div class="modal-body">
                     <form id="form-category" name="form-category"
@@ -190,8 +190,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button form="form-category" type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
+                    <button form="form-category" type="submit" class="btn btn-primary">{{ trans("admin-app.button.save") }}</button>
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Editar Categoria <span id="category-title"></span></h4>
+                    <h4 class="modal-title">{{ trans("admin-app.button.edit") }} {{ trans("admin-app.title.category") }} <span id="category-title"></span></h4>
                 </div>
                 <div class="modal-body">
                     <form id="form-category-update" name="form-category-update" method="POST"
@@ -214,8 +214,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button form="form-category-update" type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
+                    <button form="form-category-update" type="submit" class="btn btn-primary">{{ trans("admin-app.button.save") }}</button>
                 </div>
             </div>
         </div>
