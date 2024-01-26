@@ -14,28 +14,39 @@ class CheckCertificateAction
 {
 	use ActionNotificable;
 
+	private const DAYS_TO_FINISH = 30;
+
 	public function __invoke()
 	{
 		$urls = [
 			Config::get('app.url'),
-			Config::get('app.node_url')
+			Config::get('app.node_url'),
 		];
 
 		$recipients = (new RecipientsNotificationList)->getWebAlerts();
 
 		foreach ($urls as $url) {
 			$daysToFinishCertificate = $this->checkCertificate($url);
+			$notificationToSend = $this->getNotificationToExpired($daysToFinishCertificate);
+
+			if(!$notificationToSend) {
+				continue;
+			}
 
 			foreach ($recipients as $recipient) {
-
 				$notification = Notification::route('mail', $recipient);
-				if ($daysToFinishCertificate === 0) {
-					$this->sendNotification($notification, new ExpiredCertificate($url));
-				} elseif ($daysToFinishCertificate <= 30) {
-					$this->sendNotification($notification, new TimeToFinishCertificate($url, $daysToFinishCertificate));
-				}
+				$this->sendNotification($notification, new $notificationToSend($url, $daysToFinishCertificate));
 			}
 		}
+	}
+
+	private function getNotificationToExpired($daysToFinishCertificate)
+	{
+		return match (true) {
+			$daysToFinishCertificate === 0 => ExpiredCertificate::class,
+			$daysToFinishCertificate <= self::DAYS_TO_FINISH => TimeToFinishCertificate::class,
+			default => null,
+		};
 	}
 
 	private function checkCertificate($url)
