@@ -2,6 +2,7 @@
 
 namespace App\Actions\Observability;
 
+use App\Actions\Traits\ActionNotificable;
 use App\Notifications\FailedJobs;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Notification;
 
 class CheckFailedJobsAction
 {
+	use ActionNotificable;
+
 	public function __invoke()
 	{
 		$failedJobs = DB::table('FAILED_JOBS')->get();
@@ -25,12 +28,7 @@ class CheckFailedJobsAction
 
 		foreach ($recipients as $recipient) {
 			$notification = Notification::route('mail', $recipient);
-
-			if (Config::get('app.debug')) {
-				$notification->notifyNow(new FailedJobs($numberToFailedJobs));
-			} else {
-				$notification->notify(new FailedJobs($numberToFailedJobs));
-			}
+			$this->sendNotification($notification, new FailedJobs($numberToFailedJobs));
 		}
 	}
 }

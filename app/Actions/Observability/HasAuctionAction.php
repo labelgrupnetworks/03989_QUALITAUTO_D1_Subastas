@@ -2,13 +2,15 @@
 
 namespace App\Actions\Observability;
 
+use App\Actions\Traits\ActionNotificable;
 use App\Models\V5\FgSub;
 use App\Notifications\AuctionInTime;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 
 class HasAuctionAction
 {
+	use ActionNotificable;
+
 	public function __invoke($when)
 	{
 		$datesBetween = match ($when) {
@@ -30,12 +32,7 @@ class HasAuctionAction
 
 		foreach ($recipients as $recipient) {
 			$notification = Notification::route('mail', $recipient);
-
-			if (Config::get('app.debug')) {
-				$notification->notifyNow(new AuctionInTime($auction, $when));
-			} else {
-				$notification->notify(new AuctionInTime($auction, $when));
-			}
+			$this->sendNotification($notification, new AuctionInTime($auction, $when));
 		}
 	}
 }

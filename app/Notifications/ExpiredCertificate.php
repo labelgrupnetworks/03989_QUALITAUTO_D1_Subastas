@@ -8,22 +8,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Config;
 
-class FailedJobs extends Notification implements ShouldQueue
+class ExpiredCertificate extends Notification implements ShouldQueue
 {
 	use Queueable;
-
-	private $queueEnviorment;
-	private $numberToFailedJobs;
 
 	/**
 	 * Create a new notification instance.
 	 *
 	 * @return void
 	 */
-	public function __construct($numberToFailedJobs)
-	{
-		$this->numberToFailedJobs = $numberToFailedJobs;
-		$this->queueEnviorment = Config::get('app.queue_env');
+	public function __construct(
+		private string $url
+	) {
 	}
 
 	/**
@@ -47,11 +43,11 @@ class FailedJobs extends Notification implements ShouldQueue
 	{
 		$theme = mb_strtoupper(Config::get('app.theme'));
 		return (new MailMessage)->mailer('log_mail')
-			->subject("🧐 [$theme] - Failed Jobs")
-			->greeting('Psst!')
-			->line("Se han detectado jobs fallidos en la cola **{$this->queueEnviorment}**.")
-			->line("Existen **{$this->numberToFailedJobs}** jobs fallidos")
-			->action('Revisar', route('admin.jobs.index'))
+			->subject("💥 [$theme] - El certificado ha caducado")
+			->greeting('Ojo!')
+			->line("El certificado de **{$this->url}** ha caducado.")
+			->line("Por favor, renovar el certificado.")
+			->line("PD: Este mensaje se enviará cada día hasta que se renueve el certificado.")
 			->salutation('Saludos');
 	}
 
