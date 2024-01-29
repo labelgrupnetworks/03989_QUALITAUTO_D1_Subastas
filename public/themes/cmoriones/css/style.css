@@ -116,7 +116,7 @@ header .navbar-nav .dropdown-menu {
 	--bs-dropdown-link-active-bg: transparent;
 }
 
-@media(min-width: 1400px) {
+@media(min-width: 1200px) {
 	header .navbar-nav .dropdown-menu {
 		--bs-dropdown-border-radius: 0;
 		--bs-dropdown-min-width: 15rem;
