@@ -388,6 +388,11 @@ main.static-page * {
 	font-family: var(--bs-font-sans-serif) !important;
 }
 
+main.static-page img {
+	width: 100%;
+	height: auto;
+}
+
 .lot-card .card-title {
 	display: flex;
 	gap: 5px;
