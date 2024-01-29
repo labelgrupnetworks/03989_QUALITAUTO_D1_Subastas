@@ -346,12 +346,17 @@ class LotController extends ApiLabelController
 				}
 
 				#Añadimos la fecha y hora de cierre origial, que no sera modificada por las pujas de últimos minutos
-				if(!empty($items[$key]['enddate'])){
-				$items[$key]['enddateoriginal'] = $items[$key]['enddate'];
+				// La fecha original no debe ser modificada,
+				// para modificarla hay que usar expresamente los campos enddateoriginal y endhouroriginal
+
+				/* if(!empty($items[$key]['enddate'])){
+					$items[$key]['enddateoriginal'] = $items[$key]['enddate'];
 				}
 				if(!empty($items[$key]['endhour'])){
 					$items[$key]['endhouroriginal'] = $items[$key]['endhour'];
-				}
+				} */
+
+
 				// Se ha modificado para que se guarde por trigger
 				/* if(empty($items[$key]['dateupdate'])){
 					$items[$key]['dateupdate'] = date("Y-m-d H:i:s ");
