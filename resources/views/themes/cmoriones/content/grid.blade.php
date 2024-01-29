@@ -7,8 +7,13 @@
     <div class="container">
 
 		<div class="d-lg-none">
-			{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
-				autoplaySpeed: 8000, slidesToScroll:1}') !!}
+			@if(!$codSub)
+				{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
+					autoplaySpeed: 8000, slidesToScroll:1}') !!}
+			@else
+				{!! \BannerLib::bannersPorKey("banner_$codSub", 'banner_grid', '{dots:false, arrows:false, autoplay: true,
+					autoplaySpeed: 8000, slidesToScroll:1}') !!}
+			@endif
 		</div>
 
 		<div class="row gy-5">
@@ -22,8 +27,13 @@
 			<div id="js-lots-col" class="col-lg-9">
 
 				<div class="d-none d-lg-block">
+					@if(!$codSub)
 					{!! \BannerLib::bannersPorKey('GRID_LOTES', 'banner_grid', '{dots:false, arrows:false, autoplay: true,
 						autoplaySpeed: 8000, slidesToScroll:1}') !!}
+					@else
+					{!! \BannerLib::bannersPorKey("banner_$codSub", 'banner_grid', '{dots:false, arrows:false, autoplay: true,
+						autoplaySpeed: 8000, slidesToScroll:1}') !!}
+					@endif
 				</div>
 
 				<div class="section-grid-top-filters">
