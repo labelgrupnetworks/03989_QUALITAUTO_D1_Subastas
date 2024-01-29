@@ -36,6 +36,14 @@ html {
 	font-size: .9em;
 }
 
+.modal.auction-modal {
+	--bs-modal-padding: .25rem;
+}
+
+.modal.auction-modal img {
+	border-radius: var(--bs-modal-border-radius) var(--bs-modal-border-radius) 0 0;
+}
+
 body> :is(header, footer, .subnav) {
 	background-color: #000;
 	color: var(--lb-color-primary-contrast);
