@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Actions\Observability\CheckCertificateAction;
 use App\Actions\Observability\CheckFailedJobsAction;
 use App\Actions\Observability\HasAuctionAction;
 use Illuminate\Console\Scheduling\Schedule;
@@ -21,14 +22,14 @@ class Kernel extends ConsoleKernel
 		$queueEnv = Config::get('app.queue_env');
 		$schedule->command("queue:monitor database:$queueEnv --max=1")
 			->name('Monitorizar jobs')
-			->everyTwoMinutes();
-			//->hourly();
+			//->everyTwoMinutes();
+			->hourly();
 		//->sendOutputTo(storage_path('logs/queue-monitor.log'));
 
 		$schedule->call(new CheckFailedJobsAction)
 			->name('Comprobar jobs fallidos')
-			//->dailyAt('9:00');
-			->everyTwoMinutes();
+			->dailyAt('9:00');
+			//->everyTwoMinutes();
 
 		$schedule->call(new HasAuctionAction, ['when' => 'week'])
 			->name('Comprobar si subasta en una semana')
@@ -38,6 +39,11 @@ class Kernel extends ConsoleKernel
 		$schedule->call(new HasAuctionAction, ['when' => 'day'])
 			->name('Comprobar si subasta hoy')
 			->dailyAt('9:00');
+			//->everyMinute();
+
+		$schedule->call(new CheckCertificateAction)
+			->name('Comprobar certificado')
+			->dailyAt('9:30');
 			//->everyMinute();
 	}
 
