@@ -5,6 +5,7 @@ namespace App\Actions\Observability;
 use App\Actions\Traits\ActionNotificable;
 use App\Notifications\ExpiredCertificate;
 use App\Notifications\TimeToFinishCertificate;
+use Illuminate\Notifications\Notification as NotificationClass;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
@@ -27,7 +28,7 @@ class CheckCertificateAction
 
 		foreach ($urls as $url) {
 			$daysToFinishCertificate = $this->checkCertificate($url);
-			$notificationToSend = $this->getNotificationToExpired($daysToFinishCertificate);
+			$notificationToSend = $this->getNotificationAccordingToExpired($daysToFinishCertificate);
 
 			if(!$notificationToSend) {
 				continue;
@@ -40,7 +41,7 @@ class CheckCertificateAction
 		}
 	}
 
-	private function getNotificationToExpired($daysToFinishCertificate)
+	private function getNotificationAccordingToExpired(int $daysToFinishCertificate) : ?NotificationClass
 	{
 		return match (true) {
 			$daysToFinishCertificate === 0 => ExpiredCertificate::class,
@@ -49,7 +50,7 @@ class CheckCertificateAction
 		};
 	}
 
-	private function checkCertificate($url)
+	private function checkCertificate(string $url) : int
 	{
 		$dateToFinish = now();
 		try {
