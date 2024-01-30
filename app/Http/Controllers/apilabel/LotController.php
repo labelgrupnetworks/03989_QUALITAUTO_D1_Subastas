@@ -24,12 +24,12 @@ class LotController extends ApiLabelController
     #arrays que sirve para traducir las variables que envian y las de busqueda
     protected  $asigl0Rename = array("idorigin"=>"idorigen_asigl0","idauction"=>"sub_asigl0",  "reflot"=>"ref_asigl0", "close"=>"cerrado_asigl0",  "highlight" => "destacado_asigl0", "buyoption" => "compra_asigl0", "soldprice" => "remate_asigl0", "startprice" => "impsalhces_asigl0", "lowprice" => "imptas_asigl0", "highprice" => "imptash_asigl0", "reserveprice" => "impres_asigl0", "retired" => "retirado_asigl0", "hidden" => "oculto_asigl0",  "disclaimed" => "desadju_asigl0", "startdate" => "fini_asigl0", "enddate" => "ffin_asigl0", "starthour" => "hini_asigl0", "endhour" => "hfin_asigl0", "ownercommission" => "comphces_asigl0" , "biddercommission" => "comlhces_asigl0", "enddateoriginal" => "ffin_original_asigl0", "endhouroriginal" => "hfin_original_asigl0", "label" => "oferta_asigl0", "createdate" =>"fecalta_asigl0" );
     protected  $hces1Rename = array("idorigin"=>"idorigen_hces1",  "idauction"=>"sub_hces1",  "reflot"=>"ref_hces1",  "idsubcategory" => "sec_hces1", "title" => "descweb_hces1", "description" => "desc_hces1",  "extrainfo" => "descdet_hces1",   "htmlcontent" => "contextra_hces1",  "search" => "search_hces1", "startprice" => "impsal_hces1", "lowprice" => "imptasini_hces1",  "highprice" => "imptash_hces1","reserveprice" => "impres_hces1", "costprice" => "pc_hces1" ,"biddercommission" => "coml_hces1" ,"biddercommissionini" => "comlini_hces1" ,"ownercommission" => "comp_hces1" ,"ownercommissionini" => "compini_hces1" ,"warehouse" =>"alm_hces1", "numberobjects" => "nobj_hces1","high" => "alto_hces1", "width" => "ancho_hces1", "diameter" => "diam_hces1","thickness" => "grueso_hces1" , "weight" => "peso_hces1", "volumetricweight" => "pesovol_hces1", "video" => "img360_hces1", "ministry"=>"ministerio_hces1", "exportpermission"=>"permisoexp_hces1", "urlfriendly" => "webfriend_hces1", "order" => "orden_hces1", "maxbid" =>"implic_hces1", "infoforauctioner" => "infotr_hces1",  "owner" => "prop_hces1",  "imgfriendly" => "imgfriendly_hces1", "metatitle" => "webmetat_hces1", "metadescription" => "webmetad_hces1", "withstock" => "controlstock_hces1", "stock" => "stock_hces1", "transport" => "transport_hces1", "other_id" => "loteaparte_hces1", "note" => "obsdet_hces1", "idsubsubcategory" => "subfam_hces1" );
-    protected  $featuresRename = array("idfeature"=>"idcar_caracteristicas_hces1",  "num"=>"numhces_caracteristicas_hces1",   "lin"=>"linhces_caracteristicas_hces1", "idvaluefeature" => "idvalue_caracteristicas_hces1", "value" => "value_caracteristicas_hces1", "orden" => "orden_caracteristicas_hces1"  );
+    protected  $featuresRename = array("idfeature"=>"idcar_caracteristicas_hces1",  "num"=>"numhces_caracteristicas_hces1",   "lin"=>"linhces_caracteristicas_hces1", "idvaluefeature" => "idvalue_caracteristicas_hces1", "idfeaturevalue" => "idvalue_caracteristicas_hces1", "value" => "value_caracteristicas_hces1", "orden" => "orden_caracteristicas_hces1"  );
 	protected  $featuresLangRename = array("idfeature"=>"idcar_car_hces1_lang",  "num"=>"numhces_car_hces1_lang",   "lin"=>"linhces_car_hces1_lang",  "value" => "value_car_hces1_lang", "lang" => "lang_car_hces1_lang"  );
 
 	protected  $hces1LangRename = array( "lang" => "lang_hces1_lang", "num" => "num_hces1_lang", "lin" => "lin_hces1_lang",  "title" => "descweb_hces1_lang", "description" => "desc_hces1_lang",  "extrainfo" => "descdet_hces1_lang",  "search" => "search_hces1_lang", "urlfriendly" => "webfriend_hces1_lang", "metatitle" => "webmetat_hces1_lang", "metadescription" => "webmetad_hces1_lang");
 
-    protected  $featuresRules = array('idfeature' => "filled|numeric|max:9999999", "idvaluefeature" => "numeric|nullable","value" => "nullable" );
+    protected  $featuresRules = array('idfeature' => "filled|numeric|max:9999999", "idvaluefeature" => "numeric|nullable", "idfeaturevalue" => "numeric|nullable","value" => "nullable" );
     protected  $rules = array('idorigin' => "required|max:255",'idauction' => "required|alpha_num|max:8", 'reflot' => "required|numeric|max:999999999", 'idsubcategory' => "required|alpha_num|max:2",'title' => "required", 'description' => "required", 'search' => "nullable|max:3000",  'startprice' => "required|numeric", 'lowprice' => "numeric|nullable", 'highprice' => "numeric|nullable",  'reserveprice' => "numeric|nullable",  'highlight' => "filled|alpha|max:1",'buyoption' => "filled|alpha|max:1",'soldprice' => "filled|alpha|max:1",'retired' => "filled|alpha|max:1",'hidden' => "filled|alpha|max:1",'disclaimed' => "filled|alpha|max:1",'startdate' => "date_format:Y-m-d|nullable",'enddate' => "date_format:Y-m-d|nullable",'starthour' => "date_format:H:i:s|nullable",'endhour' => "date_format:H:i:s|nullable",'feature' => "array", "costprice" => "numeric|nullable","biddercommission" => "numeric|nullable" ,"biddercommissionini" => "numeric|nullable", "ownercommission" => "numeric|nullable" ,"ownercommissionini" => "numeric|nullable" ,"warehouse" =>"alpha_num|max:9|nullable","numberobjects" => "numeric|nullable","high" => "numeric|nullable", "width" => "numeric|nullable", "diameter" => "numeric|nullable","thickness" => "numeric|nullable" , "weight" => "numeric|nullable", "volumetricweight" => "numeric|nullable", "video" =>  "filled|alpha|max:1", "ministry" =>"alpha_num|max:1|nullable", "exportpermission" =>"alpha_num|max:1|nullable", "order" =>"numeric|nullable", "maxbid" => "numeric|nullable", "infoforauctioner" =>"max:2000|nullable" , "owner" =>"alpha_num|max:8|nullable", "imgfriendly" =>"max:256|nullable", "label" =>"numeric|nullable", "withstock" => "alpha_num|max:1|nullable", "stock" => "numeric|nullable", 'idsubsubcategory' => "numeric|nullable",);
 	protected  $hces1LangRules = array('lang' => "required");
 
@@ -292,6 +292,7 @@ class LotController extends ApiLabelController
 
 
     public function putLot(){
+
         $items =  request("items");
         return $this->updateLot( $items );
 
@@ -370,7 +371,10 @@ class LotController extends ApiLabelController
 
             #limpiamos los required menos de idorigen
                 $rules = $this->cleanRequired($this->rules, array("idorigin"));
+
                 $this->updateFeature($items);
+
+
 				$this->updateHces1Lang($items);
 
                 $this->update($items, $rules, $this->asigl0Rename, new FgAsigl0());
@@ -380,6 +384,7 @@ class LotController extends ApiLabelController
 
         } catch(\Exception $e){
             DB::rollBack();
+
            return $this->exceptionApi($e);
         }
 
@@ -458,7 +463,15 @@ class LotController extends ApiLabelController
 	public function updateHces1Lang($items){
 		$codSub = $items[0]["idauction"];
 		#pongo el num como num_hces1_lang para luego el delete
-		$hces1_lang = FgHces1::select("IDORIGEN_HCES1, NUM_HCES1 , LIN_HCES1  ")->get();
+		$fghces1 = FgHces1::select("IDORIGEN_HCES1, NUM_HCES1 , LIN_HCES1  ");
+		$or="";
+		$where="";
+		foreach($items as $item){
+			$where.=$or." IDORIGEN_HCES1 = '".$item["idorigin"]."' ";
+			$or=" or ";
+		}
+		$hces1_lang =$fghces1->whereraw($where)->get();
+		
 	 /*	->leftjoin("FGHCES1_LANG", " EMP_HCES1_LANG = EMP_HCES1  AND  NUM_HCES1_LANG = NUM_HCES1  AND  LIN_HCES1_LANG = LIN_HCES1") */
 		$lots = array();
 
