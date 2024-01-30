@@ -32,15 +32,8 @@ $jobs = array(
 	'PARTICULAR' =>	'Particular',
 	'SANIDAD' =>	'Medicos'
 	);
-
-
-$document_type = DB::table('fsaux1')->select('cod1_aux1', 'des_aux1')->where('emp_aux1', \Config::get('app.emp'))->where('idioma_aux1', mb_strtoupper(\Config::get('app.locale') ) )->pluck('des_aux1', 'cod1_aux1');
-
-foreach ($document_type as $key => $value) {
-	$document_type[$key] = trans($theme.'-app.login_register.tdocid_'.$key);
-}
-
 ?>
+
 
 <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
@@ -127,7 +120,14 @@ foreach ($document_type as $key => $value) {
 					</div>
 					<div class="datos_left">
 						<label>{{ trans(\Config::get('app.theme').'-app.login_register.document_type') }}</label>
-						{!!FormLib::Select("tdocid_cli", 1, "", $document_type, '', '', true)!!}
+						<select data-placement="right" class="form-control select2" type="select" name="tdocid_cli_select"
+							id="select__1__tdocid_cli_select" onblur="comprueba_campo(this)" data-content="">
+							<option value=""></option>
+							<option value="02">{{ trans("$theme-app.login_register.tdocid_C") }}</option>
+							<option value="02">{{ trans("$theme-app.login_register.tdocid_N") }}</option>
+							<option value="03">{{ trans("$theme-app.login_register.tdocid_P") }}</option>
+						</select>
+						<input type="hidden" name="tdocid_cli" value="">
 					</div>
 					<div class="datos_right">
 							<label class="nif">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
