@@ -302,7 +302,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                                             @foreach ($categorys as $category)
                                                 <div class="categoryOption">
                                                     {{-- <a href="#{{$category["key_ortsec0"]}}" aria-controls="{{$category["key_ortsec0"]}}" role="tab" data-toggle="tab">{{$category["des_ortsec0"]}}</a> --}}
-                                                    <a href="{{ route('category', ['category' => $category['key_ortsec0']]) }}"
+                                                    <a href="{{ route('category', ['keycategory' => $category['key_ortsec0']]) }}"
                                                         aria-controls="{{ $category['key_ortsec0'] }}"
                                                         {{-- role="tab" data-toggle="tab" --}}>{{ $category['des_ortsec0'] }}</a>
                                                 </div>
