@@ -104,7 +104,7 @@ $subCategorys = FxSec::joinFgOrtsecFxSec()
                             @foreach ($categorys as $category)
                                 <li>
                                     <a
-                                        href="{{ route('category', ['category' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
+                                        href="{{ route('category', ['keycategory' => $category['key_ortsec0']]) }}">{{ $category['des_ortsec0'] }}</a>
                                 </li>
                             @endforeach
                             <li><a href="{{ route('allCategories') }}">TODOS</a></li>
