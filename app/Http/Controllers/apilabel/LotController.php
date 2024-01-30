@@ -292,6 +292,7 @@ class LotController extends ApiLabelController
 
 
     public function putLot(){
+
         $items =  request("items");
         return $this->updateLot( $items );
 
@@ -365,7 +366,10 @@ class LotController extends ApiLabelController
 
             #limpiamos los required menos de idorigen
                 $rules = $this->cleanRequired($this->rules, array("idorigin"));
+
                 $this->updateFeature($items);
+
+
 				$this->updateHces1Lang($items);
 
                 $this->update($items, $rules, $this->asigl0Rename, new FgAsigl0());
@@ -375,6 +379,7 @@ class LotController extends ApiLabelController
 
         } catch(\Exception $e){
             DB::rollBack();
+
            return $this->exceptionApi($e);
         }
 
@@ -453,7 +458,15 @@ class LotController extends ApiLabelController
 	public function updateHces1Lang($items){
 		$codSub = $items[0]["idauction"];
 		#pongo el num como num_hces1_lang para luego el delete
-		$hces1_lang = FgHces1::select("IDORIGEN_HCES1, NUM_HCES1 , LIN_HCES1  ")->get();
+		$fghces1 = FgHces1::select("IDORIGEN_HCES1, NUM_HCES1 , LIN_HCES1  ");
+		$or="";
+		$where="";
+		foreach($items as $item){
+			$where.=$or." IDORIGEN_HCES1 = '".$item["idorigin"]."' ";
+			$or=" or ";
+		}
+		$hces1_lang =$fghces1->whereraw($where)->get();
+		
 	 /*	->leftjoin("FGHCES1_LANG", " EMP_HCES1_LANG = EMP_HCES1  AND  NUM_HCES1_LANG = NUM_HCES1  AND  LIN_HCES1_LANG = LIN_HCES1") */
 		$lots = array();
 
