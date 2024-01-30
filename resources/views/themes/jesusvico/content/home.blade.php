@@ -22,7 +22,7 @@
     <!-- Inicio lotes destacados -->
     <section class="section-destacados bg-lb-color-backgorund-dark py-4 my-5">
         <div class="container">
-            <h2 class="h1 mb-4">Remates destacados</h2>
+            <h2 class="h1 mb-4">{{ trans("$theme-app.foot.featured_auctions") }}</h2>
             <div class="lotes_destacados">
                 <div class="carrousel-wrapper" id="ventas_destacadas"></div>
             </div>

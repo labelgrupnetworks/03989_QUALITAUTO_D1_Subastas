@@ -9,14 +9,16 @@
 @endsection
 
 @section('title')
-{{ $data['name_web_page'] }}
+{{ trans("$theme-app.{$data['name_web_page']}") }}
 @stop
 
 @section('content')
     <main id="page-banner" class="page-banner">
 
         <div class="container">
-            <h1> {{ $data['name_web_page'] }}</h1>
+            <h1>
+				{{ trans("$theme-app.{$data['name_web_page']}") }}
+			</h1>
         </div>
 
         <div id="content-page-banner" class="content-page-banner mb-5">
