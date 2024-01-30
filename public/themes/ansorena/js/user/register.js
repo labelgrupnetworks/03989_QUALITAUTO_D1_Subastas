@@ -39,6 +39,11 @@ function addTdocidValue() {
 
 	const value = (pais === 'ES' || tdocid === '03') ? tdocid : '04';
 	$tdocidInput.val(value);
+
+	// Si el valor es 02, el campo es obligatorio, en caso contrario no
+	if(value !== '02') {
+		inputRequired('nif', false);
+	}
 }
 
 
