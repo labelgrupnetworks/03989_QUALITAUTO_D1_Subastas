@@ -1,185 +1,199 @@
 <div class="col-xs-12">
 	<div class="col-xs-12 d-flex mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap:5px; flex-wrap: wrap">
 		<div style="flex:1">
-			<div class="btn-group">
-				<button type="button" class="btn btn-default btn-sm">Seleccionados</button>
-				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="btn-group" id="js-dropdownBids">
+				<button class="btn btn-default btn-sm" type="button">{{ trans('admin-app.button.selecteds') }}</button>
+				<button data-objective="bid_ids" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+					type="button" aria-haspopup="true" aria-expanded="false">
 					<span class="caret"></span>
 				</button>
 
-				<ul class="dropdown-menu">
-					<li><a id="js-deleteSelectedBids" href="{{ route('subastas.pujas.delete_selection', ['cod_sub' => $cod_sub]) }}">Eliminar</a></li>
+				<ul aria-labelledby="js-dropdownBids" class="dropdown-menu">
 
-					<li role="separator" class="divider"></li>
-					<li><a id="js-selectAllBids" href="#">Seleccionar todos</a></li>
+					<li>
+						<button class="btn" data-id="mass_delete_button" data-objective="bid_ids"
+							data-allselected="js-selectAllBids" data-title="{{ trans('admin-app.questions.erase_mass_bids') }}"
+							data-response="{{ trans('admin-app.success.erase_mass_bids') }}"
+							data-url="{{ route('subastas.pujas.destroy_selections') }}"
+							data-urlwithfilters="{{ route('subastas.pujas.destroy_with_filters') }}" onclick="removeBidsSelecteds(this.dataset)">
+							{{ trans('admin-app.button.destroy') }}
+						</button>
+					</li>
 				</ul>
 			</div>
 		</div>
 
-		<a class="btn btn-success btn-sm" href="{{ route('lote.export', ['cod_sub' => $cod_sub]) }}">{{ trans('admin-app.button.download_excel') }}</a>
+		<a class="btn btn-success btn-sm"
+			href="{{ route('lote.export', ['cod_sub' => $cod_sub]) }}">{{ trans('admin-app.button.download_excel') }}</a>
 		@include('admin::includes.config_table', ['id' => 'tablePujas', 'params' => ((array) $filter)])
 
 	</div>
 </div>
 
 <div class="col-xs-12">
-	<table id="tablePujas" class="table table-striped table-condensed table-responsive" style="width:100%" data-order-name="order_pujas">
+	<table id="tablePujas" class="table table-striped table-condensed table-responsive" style="width:100%"
+		data-order-name="order_pujas">
 		<thead>
 
-			<th>Sel.</th>
-
-			<th class="ref_asigl1"  style="cursor: pointer" data-order="ref_asigl1">
-				{{trans('admin-app.title.reference_lot')}}
-				   @if(request()->order_pujas == 'ref_asigl1')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
-							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+			<th>
+				<label>
+					<input name="js-selectAllBids" data-objective="bid_ids" type="checkbox" value="true">
+					<input name="auc_id" type="hidden" value="{{ $cod_sub }}">
+				</label>
 			</th>
-			<th class="idorigen_asigl0"  style="cursor: pointer" data-order="idorigen_asigl0">
-				{{trans('admin-app.fields.idorigen_asigl0')}}
-				   @if(request()->order_pujas == 'idorigen_asigl0')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+
+			<th class="ref_asigl1" style="cursor: pointer" data-order="ref_asigl1">
+				{{ trans('admin-app.title.reference_lot') }}
+				@if (request()->order_pujas == 'ref_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
+			</th>
+			<th class="idorigen_asigl0" style="cursor: pointer" data-order="idorigen_asigl0">
+				{{ trans('admin-app.fields.idorigen_asigl0') }}
+				@if (request()->order_pujas == 'idorigen_asigl0')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="lin_asigl1" style="cursor: pointer" data-order="lin_asigl1">
- 				{{trans('admin-app.fields.lot.lin_asigl1')}}
- 			   @if(request()->order_pujas == 'lin_asigl1')
-				   <span style="margin-left: 5px; float: right;">
-					   @if(request()->order_pujas_dir == 'asc')
+				{{ trans('admin-app.fields.lot.lin_asigl1') }}
+				@if (request()->order_pujas == 'lin_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
 							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-						   @else
-						<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-					   @endif
-				   </span>
-			   @endif
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="pujrep_asigl1" style="cursor: pointer" data-order="pujrep_asigl1">
 
 
-				{{trans_choice('admin-app.fields.pujrep_asigl1', $tipo_sub ?? '')}}
+				{{ trans_choice('admin-app.fields.pujrep_asigl1', $tipo_sub ?? '') }}
 
-			   @if(request()->order_pujas == 'pujrep_asigl1')
-				  <span style="margin-left: 5px; float: right;">
-					  @if(request()->order_pujas_dir == 'asc')
-						   <i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-						  @else
-					   <i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-					  @endif
-				  </span>
-			  @endif
-		   </th>
-			<th class="type_asigl1" style="cursor: pointer" data-order="type_asigl1">
-				{{trans('admin-app.fields.type_asigl1')}}
-			   @if(request()->order_pujas == 'type_asigl1')
-				  <span style="margin-left: 5px; float: right;">
-					  @if(request()->order_pujas_dir == 'asc')
-						   <i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-						  @else
-					   <i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-					  @endif
-				  </span>
-			  @endif
-		   </th>
-			<th class="descweb_hces1">
- 				{{trans('admin-app.fields.descweb_hces1')}}
-			</th>
-			<th class="nom_cli"  style="cursor: pointer" data-order="nom_cli">
-				{{trans('admin-app.fields.nom_cli')}}
-				   @if(request()->order_pujas == 'nom_cli')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+				@if (request()->order_pujas == 'pujrep_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
+			</th>
+			<th class="type_asigl1" style="cursor: pointer" data-order="type_asigl1">
+				{{ trans('admin-app.fields.type_asigl1') }}
+				@if (request()->order_pujas == 'type_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
+			</th>
+			<th class="descweb_hces1">
+				{{ trans('admin-app.fields.descweb_hces1') }}
+			</th>
+			<th class="nom_cli" style="cursor: pointer" data-order="nom_cli">
+				{{ trans('admin-app.fields.nom_cli') }}
+				@if (request()->order_pujas == 'nom_cli')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="licit_asigl1" style="cursor: pointer" data-order="licit_asigl1">
- 				{{trans('admin-app.fields.licit_asigl1')}}
- 				   @if(request()->order_pujas == 'licit_asigl1')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+				{{ trans('admin-app.fields.licit_asigl1') }}
+				@if (request()->order_pujas == 'licit_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="cod2_cli" style="cursor: pointer" data-order="cod2_cli">
- 				{{trans('admin-app.fields.cod2_cli')}}
- 				   @if(request()->order_pujas == 'cod2_cli')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+				{{ trans('admin-app.fields.cod2_cli') }}
+				@if (request()->order_pujas == 'cod2_cli')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="fec_asigl1" style="cursor: pointer" data-order="fec_asigl1">
-				{{trans('admin-app.fields.fecfra_csub')}}
- 				   @if(request()->order_pujas == 'fec_asigl1')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+				{{ trans('admin-app.fields.fecfra_csub') }}
+				@if (request()->order_pujas == 'fec_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="imp_asigl1" style="cursor: pointer" data-order="imp_asigl1">
- 				{{trans('admin-app.fields.himp_orlic')}}
- 				   @if(request()->order_pujas == 'imp_asigl1')
-					   <span style="margin-left: 5px; float: right;">
-						   @if(request()->order_pujas_dir == 'asc')
-								<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							   @else
+				{{ trans('admin-app.fields.himp_orlic') }}
+				@if (request()->order_pujas == 'imp_asigl1')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
 							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						   @endif
-					   </span>
-				   @endif
+						@endif
+					</span>
+				@endif
 			</th>
 			<th class="imp_asigl1" style="cursor: pointer" data-order="retirado_asigl0">
-				{{trans('admin-app.fields.retired')}}
-				   @if(request()->order_pujas == 'retirado_asigl0')
-					  <span style="margin-left: 5px; float: right;">
-						  @if(request()->order_pujas_dir == 'asc')
-							   <i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-							  @else
-						   <i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-						  @endif
-					  </span>
-				  @endif
-		   </th>
-		   <th class="ffin_asigl0" style="cursor: pointer" data-order="ffin_asigl0">
-			{{trans('admin-app.fields.enddate')}}
-				@if(request()->order_pujas == 'ffin_asigl0')
-				   <span style="margin-left: 5px; float: right;">
-					   @if(request()->order_pujas_dir == 'asc')
+				{{ trans('admin-app.fields.retired') }}
+				@if (request()->order_pujas == 'retirado_asigl0')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
 							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
-						   @else
-						<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
-					   @endif
-				   </span>
-			   @endif
-		</th>
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
+			</th>
+			<th class="ffin_asigl0" style="cursor: pointer" data-order="ffin_asigl0">
+				{{ trans('admin-app.fields.enddate') }}
+				@if (request()->order_pujas == 'ffin_asigl0')
+					<span style="margin-left: 5px; float: right;">
+						@if (request()->order_pujas_dir == 'asc')
+							<i class="fa fa-arrow-up" style="color:green" aria-hidden="true"></i>
+						@else
+							<i class="fa fa-arrow-down" style="color:red" aria-hidden="true"></i>
+						@endif
+					</span>
+				@endif
+			</th>
 
-			<th>Acciones</th>
+			<th>{{ trans("admin-app.fields.actions") }}</th>
 		</thead>
 		<tbody>
 			<tr id="filters">
@@ -188,26 +202,25 @@
 					<input type="hidden" name="order_pujas_dir" value="{{ request('order_pujas_dir', 'desc') }}">
 
 					<td></td>
-					@foreach($filter as $index => $item)
-						<td class="{{$index}}">{!! $item !!}</td>
+					@foreach ($filter as $index => $item)
+						<td class="{{ $index }}">{!! $item !!}</td>
 					@endforeach
 					<td class="d-flex">
-						<input type="submit" class="btn btn-info w-100"
-							value="{{ trans("admin-app.button.search") }}">
-							<a
-							href="{{ route( request()->route()->getName(), ['subasta' => $cod_sub, 'menu' => 'subastas'])}}"
-
-							class="btn btn-warning w-100">{{ trans("admin-app.button.restart") }}</a>
+						<input type="submit" class="btn btn-info w-100" value="{{ trans('admin-app.button.search') }}">
+						<a href="{{ route(request()->route()->getName(),['subasta' => $cod_sub, 'menu' => 'subastas']) }}"
+							class="btn btn-warning w-100">{{ trans('admin-app.button.restart') }}</a>
 					</td>
 				</form>
 			</tr>
 
-			@foreach($pujas as $k => $item)
-
-				<tr id="puja---{{$item->lin_asigl1}}---{{$item->ref_asigl1}}" style=" @if($item->retirado_asigl0=='S') color:red @endif">
+			@foreach ($pujas as $k => $item)
+				<tr id="puja---{{ $item->lin_asigl1 }}---{{ $item->ref_asigl1 }}"
+					style=" @if ($item->retirado_asigl0 == 'S') color:red @endif">
 
 					<td>
-						<input type="checkbox" name="bids" data-instance="{{ last(explode('\\', get_class($item))) }}" data-ref="{{ $item->ref_asigl1 }}" value="{{ $item->lin_asigl1 }}">
+						<label>
+							<input type="checkbox" name="bid_ids" value="{{ $cod_sub . '_' . $item->ref_asigl1 . '_' . $item->lin_asigl1 }}">
+						</label>
 					</td>
 
 					<td class="ref_asigl1">{!! $item->ref_asigl1 !!}</td>
@@ -221,18 +234,19 @@
 					@else
 						<td class="nom_cli">No se ha encontrado el licitador en la subasta</td>
 					@endif
-					<td class="licit_asigl1">{{$item->licit_asigl1}}</td>
-					<td class="cod2_cli">{{$item->cod2_cli}}</td>
+					<td class="licit_asigl1">{{ $item->licit_asigl1 }}</td>
+					<td class="cod2_cli">{{ $item->cod2_cli }}</td>
 					<td class="fec_asigl1">{!! \Tools::Construir_fecha($item->fec_asigl1) !!} {!! $item->hora_asigl1 !!}</td>
-					<td class="imp_asigl1">{!! \Tools::moneyFormat($item->imp_asigl1, trans(\Config::get('app.theme').'-app.subastas.euros'), 2) !!}</td>
-					<td class="retirado_asigl0" >{{$item->retirado_asigl0}}</td>
-					<td class="ffin_asigl0" > {!! \Tools::Construir_fecha($item->ffin_asigl0) !!} {!! $item->hfin_asigl0 !!} </td>
-					<td><a href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!!$cod_sub!!}---{!!$item->asigl0_aux??'NO'!!}');"
-							class="btn btn-danger">Borrar</a></td>
+					<td class="imp_asigl1">{!! \Tools::moneyFormat($item->imp_asigl1, trans(\Config::get('app.theme') . '-app.subastas.euros'), 2) !!}</td>
+					<td class="retirado_asigl0">{{ $item->retirado_asigl0 }}</td>
+					<td class="ffin_asigl0"> {!! \Tools::Construir_fecha($item->ffin_asigl0) !!} {!! $item->hfin_asigl0 !!} </td>
+					<td><a
+							href="javascript:borrarPuja('{!! $item->ref_asigl1 !!}---{!! $item->lin_asigl1 !!}---{!! $cod_sub !!}---{!! $item->asigl0_aux ?? 'NO' !!}');"
+							class="btn btn-danger">{{ trans("admin-app.button.delete") }}</a></td>
 
 				</tr>
 			@endforeach
 		</tbody>
 	</table>
-	{{ $pujas->appends(array_except(Request::query(), ['pujasPage']))->links()}}
+	{{ $pujas->appends(array_except(Request::query(), ['pujasPage']))->links() }}
 </div>

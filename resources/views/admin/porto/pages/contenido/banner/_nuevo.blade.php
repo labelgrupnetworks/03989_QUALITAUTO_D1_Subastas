@@ -9,7 +9,7 @@
 		@csrf
 
 		@if(!$is_iframe)
-        <h1>Nuevo banner</h1>
+        <h1>{{ trans("admin-app.title.new_banner") }}</h1>
 		<br>
 		@else
 		{!! $ubicacion !!}
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-xs-12 col-md-3">
 
-                <label>Key:</label>
+                <label>{{ trans("admin-app.fields.key_word") }}:</label>
                 {!! $nombre !!}
                 {!! $tipo !!}
             </div>
@@ -28,7 +28,7 @@
 
         <br>
 
-        <label>Tipo:</label>
+        <label>{{ trans("admin-app.fields.type") }}:</label>
         <div class="row">
             @foreach ($tipos as $item)
                 <div class="col-xs-12 col-sm-3">

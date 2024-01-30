@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Config;
 
 class EscaladoController extends Controller
 {
+	public function __construct()
+	{
+		view()->share(['menu' => 'subastas']);
+	}
+
 	public function index()
 	{
 

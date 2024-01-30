@@ -30,7 +30,7 @@ class AdminOrderController extends Controller
 	{
 		$this->isRender = $isRender;
 
-		view()->share(['isRender' => $this->isRender]);
+		view()->share(['isRender' => $this->isRender, 'menu' => 'subastas']);
 	}
 
 	function index(Request $request, $cod_sub = null){
@@ -40,53 +40,9 @@ class AdminOrderController extends Controller
 		$fgorlic = new FgOrlic();
 		$orders = FgOrlic::query();
 
-
-		if(!empty($cod_sub)){
-			$orders->where('sub_orlic', '=', $cod_sub);
-		}
-		else if ($request->sub_orlic) {
-			$orders->where('sub_orlic', '=', $request->sub_orlic);
-		}
-		if ($request->ref_asigl0) {
-			$orders->where('ref_asigl0', '=', $request->ref_asigl0);
-		}
-		if ($request->tipop_orlic) {
-			$orders->where('upper(tipop_orlic)', "=", $request->tipop_orlic );
-		}
-		if ($request->descweb_hces1) {
-			$orders->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($request->descweb_hces1) . "%");
-		}
-		if ($request->nom_cli) {
-			$orders->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($request->nom_cli) . "%");
-		}
-		if ($request->fec_orlic) {
-			$orders->where('fec_orlic', '>=', ToolsServiceProvider::getDateFormat($request->fec_orlic, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-		}
-		if ($request->himp_orlic) {
-
-			$import = Str::replaceFirst(',', '.', $request->himp_orlic);
-			$orders->where('himp_orlic', "=", $import );
-		}
-		if ($request->tel1_orlic) {
-			$orders->where('tel1_orlic', 'like', "%". $request->tel1_orlic . "%" );
-		}
-
-		if ($request->idorigen_hces1) {
-			$orders->where('upper(idorigen_hces1)', 'like', "%". mb_strtoupper($request->idorigen_hces1) . "%" );
-		}
-
-		if ($request->cod2_cli) {
-			$orders->where('upper(cod2_cli)', 'like', "%". mb_strtoupper($request->cod2_cli) . "%" );
-		}
-
-		if ($request->cod_licit) {
-			$orders->where('cod_licit', 'like', "%". $request->cod_licit . "%" );
-		}
+		$orders = $this->filtersQueryBuilder($request, $orders, $cod_sub);
 
 		$orders = $orders->select("FGORLIC.sub_orlic", "FGASIGL0.ref_asigl0", "FGORLIC.tipop_orlic", "FGORLIC.licit_orlic", "FGHCES1.descweb_hces1", "FXCLI.nom_cli", "FXCLI.cod_cli", "FGORLIC.fec_orlic", "FGORLIC.himp_orlic", "FGORLIC.tel1_orlic, FGHCES1.idorigen_hces1, FXCLI.cod2_cli, FGLICIT.cod_licit")
-			->JoinAsigl0()
-			->JoinCli()
-			->JoinFghces1()
 			->orderby(request('order_orders', 'FGORLIC.fec_orlic'), request('order_orders_dir', 'desc'))
 			->paginate(20);
 
@@ -156,8 +112,8 @@ class AdminOrderController extends Controller
 			'ref' => request('ref'),
 			'licit' => request('licit')
 		];
-		$lotControler = new OrderController();
-		$json = $lotControler->showOrder($where);
+		$orderController = new OrderController();
+		$json = $orderController->showOrder($where);
 		$order = json_decode($json);
 		$order = $order->items[0];
 
@@ -497,6 +453,126 @@ class AdminOrderController extends Controller
 		}
 	}
 
+	#region filters
+
+	private function filtersQueryBuilder(Request $request, $orders, $cod_sub = null)
+	{
+
+		$orders->JoinAsigl0()
+		->JoinCli()
+		->JoinFghces1();
+
+		if(!empty($cod_sub)){
+			$orders->where('sub_orlic', '=', $cod_sub);
+		}
+		else if ($request->sub_orlic) {
+			$orders->where('sub_orlic', '=', $request->sub_orlic);
+		}
+		if ($request->ref_asigl0) {
+			$orders->where('ref_asigl0', '=', $request->ref_asigl0);
+		}
+		if ($request->tipop_orlic) {
+			$orders->where('upper(tipop_orlic)', "=", $request->tipop_orlic );
+		}
+		if ($request->descweb_hces1) {
+			$orders->where('upper(descweb_hces1)', 'like', "%" . mb_strtoupper($request->descweb_hces1) . "%");
+		}
+		if ($request->nom_cli) {
+			$orders->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($request->nom_cli) . "%");
+		}
+		if ($request->fec_orlic) {
+			$orders->where('fec_orlic', '>=', ToolsServiceProvider::getDateFormat($request->fec_orlic, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+		}
+		if ($request->himp_orlic) {
+
+			$import = Str::replaceFirst(',', '.', $request->himp_orlic);
+			$orders->where('himp_orlic', "=", $import );
+		}
+		if ($request->tel1_orlic) {
+			$orders->where('tel1_orlic', 'like', "%". $request->tel1_orlic . "%" );
+		}
+
+		if ($request->idorigen_hces1) {
+			$orders->where('upper(idorigen_hces1)', 'like', "%". mb_strtoupper($request->idorigen_hces1) . "%" );
+		}
+
+		if ($request->cod2_cli) {
+			$orders->where('upper(cod2_cli)', 'like', "%". mb_strtoupper($request->cod2_cli) . "%" );
+		}
+
+		if ($request->cod_licit) {
+			$orders->where('cod_licit', 'like', "%". $request->cod_licit . "%" );
+		}
+
+		return $orders;
+	}
+
+	#endregion
+
+	#region destroy orders in mass
+
+	private function destroySelectedOrders(array $ordersData)
+	{
+		$orderController = new OrderController();
+		foreach ($ordersData as $data) {
+			$json = $orderController->eraseOrder($data);
+			$result = json_decode($json);
+
+			if ($result->status == 'ERROR') {
+				return $json;
+			}
+		}
+
+		return $json;
+	}
+
+	private function sortOrderFields($ids)
+	{
+		$idsSorted = [];
+		foreach ($ids as  $id) {
+			$idTemp = explode('_', $id);
+			$idsSorted[] = [
+				'idauction' => $idTemp[0],
+				'ref' => $idTemp[1],
+				'licit' => $idTemp[2]
+			];
+		}
+
+		return $idsSorted;
+	}
+
+	public function destroySelections(Request $request)
+	{
+		$ordersData = $this->sortOrderFields($request->input('ids', []));
+
+		$json = $this->destroySelectedOrders($ordersData);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_orders")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_orders")], 200);
+	}
+
+	public function destroyWithFilters(Request $request)
+	{
+		$orders = FgOrlic::query();
+		$orders = $this->filtersQueryBuilder($request, $orders, $request->auc_id);
+		$orders->select('SUB_ORLIC as idauction', 'REF_ORLIC as ref', 'LICIT_ORLIC as licit');
+		$ordersData = $orders->get()->toArray();
+
+		$json = $this->destroySelectedOrders($ordersData);
+		$result = json_decode($json);
+
+		if ($result->status == 'ERROR') {
+			return response()->json(['success' => false, 'message' => trans("admin-app.error.erase_mass_orders")], 500);
+		}
+
+		return response()->json(['success' => true, 'message' => trans("admin-app.success.erase_mass_orders")], 200);
+	}
+
+	#endregion
 
 
 }

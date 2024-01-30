@@ -72,33 +72,33 @@
 																data-toggle="modal" data-target="#edit-block-modal"
 																data-id="{{ $content->id_content_page }}"
 																data-rel-id="{{ $noticia->id_web_blog_lang }}">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</button>
 														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_TEXT)
 															<button type="button" class="btn btn-xs btn-info"
 																data-toggle="modal" data-target="#text-modal"
 																data-id="{{ $content->id_content_page }}"
 																data-rel-id="{{ $noticia->id_web_blog_lang }}">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</button>
 														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_BANNER)
 															<button type="button" class="btn btn-xs btn-info"
 																onclick="editBlockBanner({{ $content->rel_id_content_page }}, {{ $content->id_content_page }}, {{ $content->type_id_content_page }})">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</button>
 														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_IMAGE)
 															<label type="button" class="btn btn-xs btn-info"
 																for="uploadFile_{{ $content->id_content_page }}">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</label>
 														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_VIDEO)
 															<label type="button" class="btn btn-xs btn-info"
 																for="uploadFile_{{ $content->id_content_page }}">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</label>
 														@elseif($content->type_content_page == Web_Content_Page::TYPE_CONTENT_PAGE_IFRAME)
 															<button type="button" class="btn btn-xs btn-info">
-																Editar
+																{{ trans("admin-app.button.edit") }}
 															</button>
 														@endif
 
@@ -112,7 +112,7 @@
 
 														<button type="button" class="btn btn-xs btn-danger"
 															onclick="deleteBlock({{ $noticia->id_web_blog_lang }}, {{ $content->id_content_page }})">
-															Borrar
+															{{ trans("admin-app.button.delete") }}
 														</button>
 													</div>
 
@@ -136,21 +136,21 @@
 
 																<div class="d-flex align-items-center p-1">
 																	<div class="mr-5">
-																		<p>Tipo:</p>
+																		<p>{{ trans("admin-app.fields.type") }}:</p>
 																		<img src="/themes_admin/porto/assets/img/tipo{{ $banner['id_web_newbanner_tipo'] }}.jpg"
 																			alt=""
 																			style="width: 100px; height: 100px; object-fit: cover;">
 																	</div>
 
 																	<div>
-																		<p>Imágen principal:</p>
+																		<p>{{ trans("admin-app.fields.principal_image") }}:</p>
 																		<img src="{{ $banner['image'] }}" alt=""
 																			style="width: 200px; height: 100px; object-fit: cover;">
 																	</div>
 
 																</div>
 															@else
-																<h4>Pendiente de crear...</h4>
+																<h4>{{ trans("admin-app.information.pending_to_create") }}</h4>
 															@endif
 
 														@elseif(in_array($content->type_content_page, [Web_Content_Page::TYPE_CONTENT_PAGE_IMAGE, Web_Content_Page::TYPE_CONTENT_PAGE_VIDEO]))
@@ -158,7 +158,7 @@
 															<div
 																class="uploadOuter @if (!empty($content->content)) d-none @endif">
 																<span class="dragBox">
-																	Haga click o arrastre una imagen
+																	{{ trans("admin-app.fields.click_or_drag_image") }}
 																	<input type="file" onchange="dragNdrop(event)"
 																		ondragenter="drag(this)" ondrop="dropOrLeave(this)"
 																		ondragleave="dropOrLeave(this)"

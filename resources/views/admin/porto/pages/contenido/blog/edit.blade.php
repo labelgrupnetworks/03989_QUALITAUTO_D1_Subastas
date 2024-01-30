@@ -54,7 +54,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Contenido HTML</h4>
+                    <h4 class="modal-title">{{ trans("admin-app.title.html_content") }}</h4>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id_content_page_modal" value="">
@@ -62,8 +62,8 @@
                     <div id="gjs" style="position: relative"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveHtmlBlock()">Guardar Cambios</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
+                    <button type="button" class="btn btn-primary" onclick="saveHtmlBlock()">{{ trans("admin-app.button.save_changes") }}</button>
                 </div>
             </div>
         </div>
@@ -75,13 +75,13 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Banner</h4>
+                    <h4 class="modal-title">{{ trans("admin-app.title.banner") }}</h4>
                 </div>
                 <div class="modal-body">
                     <iframe width="100" id="content-frame" style="width: 100%; height: calc(100vh - 22rem); "></iframe>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Texto</h4>
+                    <h4 class="modal-title">{{ trans("admin-app.title.text") }}</h4>
                 </div>
                 <div class="modal-body">
 					<input type="hidden" name="id_content_page_modal" value="">
@@ -101,8 +101,8 @@
                     {!! FormLib::TextAreaTiny('', false, '', "", "", '600') !!}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary" onclick="saveTextEditor()">Guardar Cambios</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
+					<button type="button" class="btn btn-primary" onclick="saveTextEditor()">{{ trans("admin-app.button.save_changes") }}</button>
                 </div>
             </div>
         </div>
@@ -114,10 +114,10 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Layout</h4>
+                    <h4 class="modal-title">{{ trans("admin-app.title.layout") }}</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Seleccionar la plantilla inicial:</p>
+                    <p>{{ trans("admin-app.fields.select_initial_template") }}:</p>
                     <div class="grid-layouts">
                         <button class="btn btn-default js-btn-layout" type="button" data-layout="1" data-rel-id=""
                             data-type-content="">
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
                 <div class="modal-body text-center">
                     <div class="custom-spinner"></div>
                     <div clas="custom-spinner-text">
-                        <p>Procesando datos... <br><br></p>
+                        <p>{{ trans("admin-app.information.processing_data") }} <br><br></p>
                     </div>
                 </div>
             </div>

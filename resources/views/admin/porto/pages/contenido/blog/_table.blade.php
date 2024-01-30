@@ -1,12 +1,12 @@
 <table id="" class="table table-striped table-condensed table-responsive" style="width:100%">
     <thead>
         <tr>
-            <th>Id</th>
+            <th>{{ trans("admin-app.fields.id") }}</th>
             {{-- <th>Imagen</th> --}}
-            <th>Título</th>
-            <th>Fecha de publicación</th>
-            <th>Visible</th>
-            <th>Acciones</th>
+            <th>{{ trans("admin-app.fields.title") }}</th>
+            <th>{{ trans("admin-app.fields.publication_date") }}</th>
+            <th>{{ trans("admin-app.fields.visible") }}</th>
+            <th>{{ trans("admin-app.fields.actions") }}</th>
         </tr>
     </thead>
 

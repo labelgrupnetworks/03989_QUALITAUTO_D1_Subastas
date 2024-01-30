@@ -22,7 +22,7 @@ $pageName = Route::currentRouteName();
 		<div class="container py-1 bk-gray">
 			<div class="d-flex justify-content-end align-items-center gap-3">
 
-				@include('components.search', ['classes' => 'me-auto d-none d-xxl-block'])
+				@include('components.search', ['classes' => 'me-auto d-none d-xxl-block', 'searchAction' => $searchAction])
 
 				@yield('header-extend-buttons')
 

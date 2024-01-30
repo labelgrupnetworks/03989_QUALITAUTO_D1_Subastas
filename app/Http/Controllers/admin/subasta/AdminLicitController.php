@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Config;
 class AdminLicitController extends Controller
 {
 
-	/*index, create, show, edit, store, update, destroy*/
+	public function __construct()
+	{
+		view()->share(['menu' => 'subastas']);
+	}
 
 	/**
 	 * Mostrar página incial

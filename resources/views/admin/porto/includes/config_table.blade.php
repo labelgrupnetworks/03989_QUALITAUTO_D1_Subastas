@@ -14,7 +14,7 @@
  */
 @endphp
 {{-- <a class="btn btn-default btn-sm"><i style="cursor: pointer" class="fa fa-cog" aria-hidden="true" data-toggle="modal" data-target="#modal_config_{{$id}}"></i></a> --}}
-<a class="btn btn-default btn-sm" aria-hidden="true" data-toggle="modal" data-target="#modal_config_{{$id}}"><i style="cursor: pointer" class="fa fa-cog"></i> Configurar Tabla</a>
+<a class="btn btn-default btn-sm" aria-hidden="true" data-toggle="modal" data-target="#modal_config_{{$id}}"><i style="cursor: pointer" class="fa fa-cog"></i> {{ trans("admin-app.button.config_table") }}</a>
 
 <div class="modal fade text-left" id="modal_config_{{$id}}" role="dialog">
 	<div class="modal-dialog modal-sm">
@@ -22,7 +22,7 @@
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Columnas de tabla</h4>
+				<h4 class="modal-title">{{ trans("admin-app.title.table_columns") }}</h4>
 			</div>
 
 			<div class="modal-body">
@@ -48,9 +48,9 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
 				<button type="submit" form="table_config_{{$id}}"
-					class="btn btn-success">Aceptar</button>
+					class="btn btn-success">{{ trans("admin-app.button.accept") }}</button>
 			</div>
 
 		</div>

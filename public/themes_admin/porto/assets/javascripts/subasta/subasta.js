@@ -371,6 +371,40 @@ function handleFetchingErrorWithBootbox(error) {
 
 //#region Mass destroy and update common functions
 
+function verifyAllSelected(event) {
+	const button = event.relatedTarget;
+	const objective = button.dataset.objective;
+	const ids = selectedCheckItemsByName(objective);
+
+	if(ids.length === 0){
+		bootbox.alert("Debes seleccionar al menos un elemento");
+		return false;
+	}
+}
+
+function selectedAllLots(event) {
+	event.preventDefault();
+	const lots = Array.from(document.getElementsByName('lote'));
+
+	lots.forEach((element) => element.checked = true);
+}
+
+function unselectOrSelectAllInputs() {
+	const isChecked = this.checked;
+	const objectiveInputs = this.dataset.objective;
+	isChecked ? selectAllTable(objectiveInputs) : unselectAllTable(objectiveInputs);
+}
+
+function selectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = true);
+}
+
+function unselectAllTable(inputName) {
+	const inputs = Array.from(document.getElementsByName(inputName));
+	inputs.forEach((element) => element.checked = false);
+}
+
 function appendIdsToFormData(formData, name) {
 	const ids = selectedCheckItemsByName(name);
 	ids.forEach(id => formData.append('ids[]', id));
@@ -389,6 +423,12 @@ function validateTwoFields(fields, [field1, field2]) {
 
 function appendInputToFormData(formData, input) {
 	formData.append(input.name, input.value);
+}
+
+function selectedCheckItemsByName(name) {
+	return Array.from(document.getElementsByName(name))
+		.filter((element) => element.checked)
+		.map((element) => element.value);
 }
 
 //#endregion

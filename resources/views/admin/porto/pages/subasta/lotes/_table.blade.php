@@ -21,7 +21,7 @@
 						data-url="{{ route('subastas.lotes.destroy_selections') }}"
 						data-urlwithfilters="{{ route('subastas.lotes.destroy_with_filters') }}"
 						onclick="removeLotsSelecteds(this.dataset)">
-						{{ trans("admin-app.button.erase") }}
+						{{ trans("admin-app.button.destroy") }}
 					</button>
 				</li>
 
@@ -33,12 +33,12 @@
 
 				@if (Config::get('app.stockIni') > 0)
 					<li><a class="js-actionSelectedLots btn"
-							data-title="¿Estás seguro de poner el stock a 0 en todos las Obras seleccionadas?"
-							data-respuesta="Se ha puesto el stock a  0 en las obras seleccionados"
+							data-title="{{ trans("admin-app.questions.put_selected_stock_in_zero") }}"
+							data-respuesta="{{ trans("admin-app.success.works_stock_zero") }}"
 							href="{{ route('subastas.lotes.stockRemove_selection', ['cod_sub' => $cod_sub]) }}">{{ trans("admin-app.button.put_stock_to_zero") }}</a></li>
 					<li><a class="js-actionSelectedLots btn"
-							data-title="¿Estás seguro de poner en Fondo de Galeria todas las obras seleccionadas?"
-							data-respuesta="Se ha puesto en Fondo de Galeria las obras seleccionados"
+							data-title="{{ trans("admin-app.questions.put_selected_works_background") }}"
+							data-respuesta="{{ trans("admin-app.success.galery_background_works") }}"
 							href="{{ route('subastas.lotes.setToSellSelection', ['cod_sub' => $cod_sub]) }}">{{ trans("admin-app.button.gallery_background") }}</a>
 					</li>
 				@endif
@@ -51,8 +51,8 @@
 							<li>
 								<a class="js-actionSelectedLots btn"
 									href="{{ route('subastas.lotes.multiple_export', ['cod_sub' => $cod_sub, 'service' => 'bbd']) }}"
-									data-title="¿Estás seguro de exportar todas las obras seleccionadas?"
-									data-respuesta="Se han exportado las obras seleccionados">
+									data-title="{{ trans("admin-app.questions.export_selected_works") }}"
+									data-respuesta="{{ trans("admin-app.success.export_selected_works") }}">
 									{{ trans("admin-app.button.auctions_diary") }}
 								</a>
 							</li>
@@ -66,20 +66,19 @@
 
 	@if (\Config::get('app.exportExcelExhibition'))
 		<a class="btn btn-success btn-sm" href="{{ route("$parent_name.$resource_name.printExcel", ['codSub' => $cod_sub]) }}"
-			target="_blank">Excel
-			Obras</a>
+			target="_blank">{{ trans("admin-app.button.excel_works") }}</a>
 	@endif
 	@if (\Config::get('app.exportPdfExhibition'))
 		<a class="btn btn-success btn-sm" href="{{ route("$parent_name.$resource_name.printPdf", ['codSub' => $cod_sub]) }}"
-			target="_blank">Pdf Obras</a>
+			target="_blank">{{ trans("admin-app.button.pdf_works") }}</a>
 	@endif
 	<a class="btn btn-success btn-sm"
 		href="{{ route("$parent_name.$resource_name.order_edit", ['cod_sub' => $cod_sub]) }}">Ordenar</a>
 
 	<a class="btn btn-success btn-sm" href="/themes_admin/porto/assets/files/plantillaejemplo.xlsx"
-		download="plantilla.xlsx">Descargar plantilla Excel</a>
+		download="plantilla.xlsx">{{ trans("admin-app.button.download_excel_template") }}</a>
 
-	<a href="/admin/lote/file/{{ $cod_sub }}" class="btn btn-success btn-sm">Subir Excel</a>
+	<a href="/admin/lote/file/{{ $cod_sub }}" class="btn btn-success btn-sm">{{ trans("admin-app.button.upload_excel") }}</a>
 
 	@if (\Config::get('app.uploadLotFile'))
 		@foreach (explode(',', \Config::get('app.uploadLotFile')) as $typeUploadFile)

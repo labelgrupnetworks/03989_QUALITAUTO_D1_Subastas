@@ -63,9 +63,9 @@
 						</div> --}}
 					</form>
 
-					<button class="btn btn-sm btn-warning" onclick="window.print()">Imprimir</button>
+					<button class="btn btn-sm btn-warning" onclick="window.print()">{{ trans("admin-app.button.print") }}</button>
 
-					<a href="{{Request::fullUrlWithQuery(["export" => "excel"])}}" target="_blank" class="btn btn-sm btn-primary">Exportar EXCEL</a>
+					<a href="{{Request::fullUrlWithQuery(["export" => "excel"])}}" target="_blank" class="btn btn-sm btn-primary">{{ trans("admin-app.button.export") }} {{ mb_strtoupper(trans("admin-app.button.excel")) }}</a>
 
 				</div>
 				{{-- FIN FILTRO --}}
@@ -77,7 +77,7 @@
 							<div class="col-xs-12  col-md-{{ 12/$chart->columns}} mt-2 mb-2">
 								<h2 class="text-center"> {{$chart->name}}</h2>
 								@if (count($chart->datasets) ==0)
-									<div class="col-xs-12 mt-2 mb-2">	<center> SIN DATOS  </center></div>
+									<div class="col-xs-12 mt-2 mb-2">	<center> {{ mb_strtoupper(trans("admin-app.fields.without_data")) }}  </center></div>
 								@endif
 								{{-- si le indicamos que es un gráfico de una columna debemos darle una altura de 100 para que no sea muy alto--}}
 								<canvas id="report_{{$keyChart}}_{{$type}}" width="400" height="{{ ($chart->columns==1)?  "100" : "400"  }}" ></canvas>

@@ -6,7 +6,7 @@
 
         <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
-                <h1>Configuración</h1>
+                <h1>{{ trans("admin-app.title.config") }}</h1>
             </div>
         </div>
 
@@ -26,27 +26,22 @@
                         <tbody>
 
                             <tr role="row" class="odd">
-                                <td style="width: 75%">Deshabilitar registro</td>
+                                <td style="width: 75%">{{ trans("admin-app.fields.disable_register") }}</td>
                                 <td class="text-center">
                                     <select class="form-control" id="select_registration" name="registration_disabled">
-                                        @if ($data['registration_disabled'])
-                                            <option value="1">Si</option>
-                                            <option value="0" selected>No</option>
-                                        @else
-                                            <option value="1" selected>Si</option>
-                                            <option value="0">No</option>
-                                        @endif
+                                        <option value="1" {{ $data['registration_disabled'] ? '' : 'selected' }}>{{ trans("admin-app.fields.yes") }}</option>
+                                        <option value="0" {{ $data['registration_disabled'] ? 'selected' : '' }}>{{ trans("admin-app.fields.no") }}</option>
                                     </select>
                                 </td>
                             </tr>
 
 							@if(isset($data['buyer_premium_active']))
 								<tr role="row" class="odd">
-									<td style="width: 75%">Comisión de comprador</td>
+									<td style="width: 75%">{{ trans("admin-app.fields.buyer_comision") }}</td>
 									<td class="text-center">
 										<select class="form-control" id="select_registration" name="buyer_premium_active">
-											<option value="1" {{ $data['buyer_premium_active'] ? 'selected' : '' }}>Si</option>
-											<option value="0" {{ $data['buyer_premium_active'] ? '' : 'selected' }}>No</option>
+											<option value="1" {{ $data['buyer_premium_active'] ? 'selected' : '' }}>{{ trans("admin-app.fields.yes") }}</option>
+											<option value="0" {{ $data['buyer_premium_active'] ? '' : 'selected' }}>{{ trans("admin-app.fields.no") }}</option>
 										</select>
 									</td>
 								</tr>
@@ -54,7 +49,7 @@
 
 							@if(isset($data['addComisionEmailBid']))
 								<tr role="row" class="odd">
-									<td style="width: 75%">Porcentaje comisión de puja</td>
+									<td style="width: 75%">{{ trans("admin-app.fields.percent_bid_comision") }}</td>
 									<td class="text-center">
 										<input type="number" class="form-control" name="addComisionEmailBid" value="{{ $data['addComisionEmailBid'] }}">
 									</td>

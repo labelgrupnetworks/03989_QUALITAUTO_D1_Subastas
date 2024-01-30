@@ -88,7 +88,7 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h5 class="modal-title">Modal title</h5>
+				<h5 class="modal-title">{{ trans("admin-app.title.sessions") }}</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -97,8 +97,8 @@
 			<div class="modal-body" id="modal-create-body"></div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="modalSessionAccept">Save changes</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="modalSessionAccept">{{ trans("admin-app.button.save_changes") }}</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
 			</div>
 
 		</div>
@@ -118,14 +118,14 @@
             </div>
 
             <div class="modal-body">
-                <p>¿Seguro que desea borrar el registro seleccionado?</p>
+                <p>{{ trans("admin-app.questions.delete_selected_register") }}</p>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
 				<a id="formDelete"
 					data-action="{{ route('subastas.sesiones.destroy', ['subasta' => $aucSession->auction, 'sesione' => 0]) }}"
-					class="btn btn-danger">Borrar
+					class="btn btn-danger">{{ trans("admin-app.button.delete") }}
 				</a>
 
             </div>
@@ -147,7 +147,7 @@
 			</div>
 
 			<div class="modal-body">
-				<p> ¿Deseas subir la sessión a Invaluable?</p>
+				<p>{{ trans("admin-app.questions.session_to_priceless") }}</p>
 			</div>
 
 			<div class="modal-footer">
@@ -155,7 +155,7 @@
 
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
-					<a href="{{ Route("loadCatalogInvaluable",["codsub" => $aucSession->auction]) }}" class="btn btn-info">Subir a Invaluable</a>
+					<a href="{{ Route("loadCatalogInvaluable",["codsub" => $aucSession->auction]) }}" class="btn btn-info">{{ trans("admin-app.button.upload_to_priceless") }}</a>
 
 			</div>
 

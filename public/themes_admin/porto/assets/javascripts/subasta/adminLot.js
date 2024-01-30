@@ -23,6 +23,7 @@ $(document).on('ready', function () {
 
 	$('.js-actionSelectedLots').on('click', actionSelectedLots);
 	$('#js-selectAllLots').on('click', selectedAllLots);
+	$('[name="js-selectAll"').on('click', unselectOrSelectAllInputs);
 
 
 	$(".js-send_webservice_close_lot").on('click', function (event) {
@@ -51,6 +52,8 @@ $(document).on('ready', function () {
 			}
 		});
 	});
+
+	$("#js-dropdownItems").on('show.bs.dropdown', verifyAllSelected);
 
 	$('input[name="lot_ids"]').on('change', verifyUncheckAllSelected);
 	$('input[name="lot_ids"]').on('change', hideLotMassDestroyButton);
@@ -218,27 +221,8 @@ function removeStockSelectedLots(event) {
 
 }
 */
-function selectedAllLots(event) {
-	event.preventDefault();
-	const lots = Array.from(document.getElementsByName('lote'));
 
-	lots.forEach((element) => element.checked = true);
-}
-
-$('[name="js-selectAll"').on('click', function () {
-	const isChecked = this.checked;
-	const objectiveInputs = this.dataset.objective;
-	isChecked ? selectAllTable(objectiveInputs) : unselectAllTable(objectiveInputs);
-});
-
-
-function selectedCheckItemsByName(name) {
-	return Array.from(document.getElementsByName(name))
-		.filter((element) => element.checked)
-		.map((element) => element.value);
-}
-
-function removeSelecteds({ objective, url, title, response }, callback) {
+function removeLotFilesSelecteds({ objective, url, title, response }, callback) {
 
 	const ids = selectedCheckItemsByName(objective);
 
@@ -268,16 +252,6 @@ function removeSelecteds({ objective, url, title, response }, callback) {
 
 function refreshFilesRows(result) {
 	$('#lotFilesRows').html(result);
-}
-
-function selectAllTable(inputName) {
-	const inputs = Array.from(document.getElementsByName(inputName));
-	inputs.forEach((element) => element.checked = true);
-}
-
-function unselectAllTable(inputName) {
-	const inputs = Array.from(document.getElementsByName(inputName));
-	inputs.forEach((element) => element.checked = false);
 }
 
 function editFile(button) {
@@ -338,17 +312,6 @@ function changeStatusFile(button) {
 	});
 }
 
-$("#js-dropdownItems").on('show.bs.dropdown', function (event) {
-
-	const button = event.relatedTarget;
-	const objective = button.dataset.objective;
-	const ids = selectedCheckItemsByName(objective);
-
-	if(ids.length === 0){
-		bootbox.alert("Debes seleccionar al menos un elemento");
-		return false;
-	}
-});
 
 $('#edit_multple_files').on('submit', function(event){
 	event.preventDefault();

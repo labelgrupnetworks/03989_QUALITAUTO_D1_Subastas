@@ -6,7 +6,7 @@
 
         <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
-                <h1 class="m-0">Cache</h1>
+                <h1 class="m-0">{{ trans("admin-app.title.cache") }}</h1>
             </div>
         </div>
 
@@ -16,10 +16,10 @@
 				<table id="clientes" class="table table-striped table-condensed table-responsive" style="width:100%">
 					<thead>
 						<tr>
-							<th>Acción</th>
-							<th>Descripción</th>
+							<th>{{ trans("admin-app.fields.action") }}</th>
+							<th>{{ trans("admin-app.fields.description") }}</th>
 							<th>
-								<span>Ejecutar</span>
+								<span>{{ trans("admin-app.fields.execute") }}</span>
 							</th>
 						</tr>
 					</thead>

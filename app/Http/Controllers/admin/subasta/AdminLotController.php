@@ -44,6 +44,7 @@ use App\Http\Controllers\externalAggregator\Invaluable\House;
 use App\Models\V5\FgHces1Files;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 
 class AdminLotController extends Controller
 {
@@ -55,6 +56,8 @@ class AdminLotController extends Controller
 
 	const PREVIOUS_LOT = 1;
 	const NEXT_LOT = 2;
+
+	private static $userSession;
 
 	public function __construct($isRender = false)
 	{
@@ -326,6 +329,8 @@ class AdminLotController extends Controller
 		if ($result->status == 'ERROR') {
 			return back()->withErrors(['errors' => [$json]])->withInput();
 		}
+
+		$this->saveUserInfoInUpdatedLots($cod_sub, [$ref_asigl0]);
 
 		//Nft
 		$resultNftProcess = null;
@@ -1703,6 +1708,18 @@ class AdminLotController extends Controller
 		return $lots;
 	}
 
+	public static function saveUserInfoInUpdatedLots($cod_sub, $refLots)
+	{
+		self::$userSession = Session::get('user');
+
+		$update = [
+			'usr_update_asigl0' => strval(self::$userSession['usrw']),
+			'date_update_asigl0' => date('Y-m-d H:i:s'),
+		];
+
+		FgAsigl0::where('sub_asigl0', $cod_sub)->whereIn('ref_asigl0', $refLots)->update($update);
+	}
+
 	public function updateSelections(Request $request)
 	{
 		if (self::validateEmptySelectionFields($request->toArray())) {
@@ -1712,13 +1729,13 @@ class AdminLotController extends Controller
 		$ids = $request->input('ids', []);
 		$cod_sub = $request->input('auc_id', '');
 
-		$lots = self::getSelectedLotsQueryBuilder($request, $cod_sub, $ids);
-		$lots = ($lots->get())->toArray();
+		$lots = self::getSelectedLotsQueryBuilder($request, $cod_sub, $ids)->get();
+		$lotsData = $lots->toArray();
 
 		$request = self::erase_selectTextFromFields($request);
 
 		$lotsForUpdate = [];
-		foreach ($lots as $lot) {
+		foreach ($lotsData as $lot) {
 			$lotsForUpdate[] = $this->formattingDataForUpdate($request, $lot);
 		}
 
@@ -1729,6 +1746,8 @@ class AdminLotController extends Controller
 		if ($result->status == 'ERROR') {
 			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
+
+		$this->saveUserInfoInUpdatedLots($cod_sub, $lots->pluck('reflot')->toArray());
 
 		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_lot")], 200);
 	}
@@ -1742,11 +1761,11 @@ class AdminLotController extends Controller
 		$cod_sub = $request->input('auc_id', '');
 
 		$lots = $this->getSelectedLotsQueryBuilder($request, $cod_sub)->get();
-		$lots = $lots->toArray();
+		$lotsData = $lots->toArray();
 
 		$request = self::erase_selectTextFromFields($request);
 		$lotsForUpdate = [];
-		foreach ($lots as $lot) {
+		foreach ($lotsData as $lot) {
 			$lotsForUpdate[] = $this->formattingDataForUpdate($request, $lot);
 		}
 
@@ -1757,6 +1776,8 @@ class AdminLotController extends Controller
 		if ($result->status == 'ERROR') {
 			return response()->json(['success' => false, 'message' => trans("admin-app.error.no_update_data")], 500);
 		}
+
+		$this->saveUserInfoInUpdatedLots($cod_sub, $lots->pluck('reflot')->toArray());
 
 		return response()->json(['success' => true, 'message' => trans("admin-app.success.update_mass_lot")], 200);
 	}

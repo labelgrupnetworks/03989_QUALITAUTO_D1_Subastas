@@ -15,11 +15,11 @@
             <div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
 				<div class="btn-group">
 					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					  Exportar <span class="caret"></span>
+					  {{ trans("admin-app.button.export") }} <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right">
-					  <li><a href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">Archivo Excel</a></li>
-					  <li><a href="{{ route('newsletter.export', ['format' => 'csv']) }}">Archivo CSV</a></li>
+					  <li><a href="{{ route('newsletter.export', ['format' => 'xlsx']) }}">{{ trans("admin-app.button.file_excel") }}</a></li>
+					  <li><a href="{{ route('newsletter.export', ['format' => 'csv']) }}">{{ trans("admin-app.button.file_csv") }}</a></li>
 					  {{-- <li><a href="{{ route('newsletter.export', ['format' => 'csv', 'service' => 'mailchimp']) }}">Formato para Mailchimp</a></li> --}}
 					</ul>
 				  </div>
@@ -31,9 +31,9 @@
                     <thead>
                         <tr>
 
-                            <th>Id</th>
-                            <th>Nombre</th>
-                            <th>Suscriptores</th>
+                            <th>{{ trans("admin-app.fields.id") }}</th>
+                            <th>{{ trans("admin-app.fields.name") }}</th>
+                            <th>{{ trans("admin-app.fields.suscribers") }}</th>
 
                             <th>
                                 <span>{{ trans('admin-app.fields.actions') }}</span>
@@ -45,14 +45,14 @@
 
 						<tr id="fila_all">
 
-							<td>#</td>
-							<td>Todos</td>
+							<td>{{ trans("admin-app.fields.numeral_sign") }}</td>
+							<td>{{ trans("admin-app.fields.all") }}</td>
 							<td>{{ $allSuscriptors }}</td>
 
 							<td>
 								<a class="btn btn-xs btn-default"
 									href="{{ route('user_newsletter.show', [0]) }}"><i
-										class="fa fa-list"></i> Ver suscriptores</a>
+										class="fa fa-list"></i> {{ trans("admin-app.button.see_suscriptors") }}</a>
 
 							</td>
 						</tr>
@@ -67,16 +67,16 @@
                                 <td>
                                     <button class="btn btn-xs btn-default"
                                         onclick="editNewsletter('{{ route('newsletter.edit', ['newsletter' => $newsletter->id]) }}')">
-                                        <i class="fa fa-edit"></i> Editar</button>
+                                        <i class="fa fa-edit"></i> {{ trans("admin-app.button.edit") }}</button>
 
                                     <a class="btn btn-xs btn-default"
                                         href="{{ route('user_newsletter.show', [$newsletter->id_newsletter]) }}"><i
-                                            class="fa fa-list"></i> Ver suscriptores</a>
+                                            class="fa fa-list"></i> {{ trans("admin-app.button.see_suscriptors") }}</a>
 
                                     <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteModal"
 										data-id="{{ $newsletter->id_newsletter }}" data-name="{{ $newsletter->name_newsletter }}">
                                         <i class="fa fa-trash-o"></i>
-										Eliminar
+										{{ trans("admin-app.button.destroy") }}
 									</button>
                                 </td>
                             </tr>
@@ -93,14 +93,14 @@
 						@if($catalogsCount)
 						<tr id="fila_catalogs">
 
-							<td>#</td>
-							<td>Cátalogo</td>
+							<td>{{ trans("admin-app.fields.numeral_sign") }}</td>
+							<td>{{ trans("admin-app.fields.catalogue") }}</td>
 							<td>{{ $catalogsCount }}</td>
 
 							<td>
 								<a class="btn btn-xs btn-default"
 									href=""><i
-										class="fa fa-list"></i> Ver suscriptores</a>
+										class="fa fa-list"></i> {{ trans("admin-app.button.see_suscriptors") }}</a>
 
 							</td>
 						</tr>
@@ -112,7 +112,7 @@
 
                 <button class="btn btn-sm btn-success" onclick="createNewsletter()">
                     <i class="fa fa-plus"></i>
-                    Añadir
+                    {{ trans("admin-app.button.add") }}
                 </button>
             </div>
 
@@ -140,14 +140,14 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="name_newsletter" class="control-label">Nombre:</label>
+                            <label for="name_newsletter" class="control-label">{{ trans("admin-app.title.nombre") }}:</label>
                             <input name="newsletter[{{ mb_strtoupper(config('app.locale')) }}]" type="text"
                                 class="form-control" id="name_newsletter"
                                 data-lang="{{ mb_strtoupper(config('app.locale')) }}">
                         </div>
 
                         <fieldset>
-                            <legend class="scheduler-border">Traducciones</legend>
+                            <legend class="scheduler-border">{{ trans("admin-app.title.translates") }}</legend>
                             @if (isMultilanguage())
                                 @foreach (Tools::getOtherLanguages() as $key => $locale)
                                     <div class="form-group">

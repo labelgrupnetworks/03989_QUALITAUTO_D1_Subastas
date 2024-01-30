@@ -9,12 +9,12 @@
 				<div class="panel-body">
 
 					<fieldset>
-						<legend>Propiedades</legend>
+						<legend>{{ trans("admin-app.title.propieties") }}</legend>
 						<div class="row">
 							<div class="col-md-5">
 
 								<div class="form-group">
-									<label>Portada</label>
+									<label>{{ trans("admin-app.title.front_page") }}</label>
 									{!! FormLib::File('url_img', false) !!}
 								</div>
 
@@ -40,7 +40,7 @@
 										{{ trans('admin-app.placeholder.nombre') }}
 										<i class="fa fa-info-circle" aria-hidden="true"
 											data-toggle="tooltip" data-placement="right"
-											data-original-title="Nombre con el que se guardará la página, solo se mostrará en el panel de administración.">
+											data-original-title="{{ trans("admin-app.title.blog_name_save_page") }}">
 										</i>
 									</label>
 									{!! FormLib::Text('title', true, $noticiaLocale->title_web_blog) !!}
@@ -52,7 +52,7 @@
 										{{ trans('admin-app.placeholder.fecha_publicacion') }}
 										<i class="fa fa-info-circle" aria-hidden="true"
 											data-toggle="tooltip" data-placement="right"
-											data-original-title="Para poder mostrar la página, debe tener fecha de publicación y esta debe ser inferior a la actual.">
+											data-original-title="{{ trans("admin-app.title.blog_show_page_public_data") }}">
 										</i>
 									</label>
 									<div class="input-group">
@@ -85,7 +85,7 @@
 								</div>
 
 								<div class="form-group">
-									<label>Categorías relacionadas</label>
+									<label>{{ trans("admin-app.fields.related_categories") }}</label>
 									{!! FormLib::Select2WithArray(
 										'categ_blog',
 										false,
@@ -97,20 +97,20 @@
 								</div>
 
 								<div class="form-group">
-									<label>Tipo de sección
+									<label>{{ trans("admin-app.fields.section_type") }}
 										<i class="fa fa-info-circle" aria-hidden="true"
 											data-toggle="tooltip" data-placement="right"
-											data-original-title="Sección relacionada con la entrada, determinara los lotes relacionados que pueden aparecer">
+											data-original-title="{{ trans("admin-app.title.blog_section_related_entry") }}">
 										</i>
 									</label>
 									{!! FormLib::Select2WithArray('sec', false, $noticia['lot_categories_web_blog'] ?? null, $data['sec'], false, true) !!}
 								</div>
 
 								<div class="form-group">
-									<label>Sección
+									<label>{{ trans("admin-app.fields.section") }}
 										<i class="fa fa-info-circle" aria-hidden="true"
 											data-toggle="tooltip" data-placement="right"
-											data-original-title="Sección relacionada con la entrada, determinara los lotes relacionados que pueden aparecer">
+											data-original-title="{{ trans("admin-app.title.blog_section_related_entry") }}">
 										</i>
 									</label>
 									{!! FormLib::Select2WithArray(
@@ -142,17 +142,17 @@
 						<div class="d-flex" style="gap: 1rem">
 							<button type="button" class="btn btn-block {{ $noticiaLocale->enabled_web_blog_lang ? 'btn-danger' : 'btn-success' }}"
 								data-is-enabled="{{ $noticiaLocale->enabled_web_blog_lang == 1 ? 'true' : 'false' }}"
-								data-enabled-message="Activar"
-								data-disabled-message="Desactivar"
+								data-enabled-message="{{ trans("admin-app.fields.activate") }}"
+								data-disabled-message="{{ trans("admin-app.fields.deactivate") }}"
 								onclick="handleClickChangeEnabledStatus(this)"
 							>
-							{{ $noticiaLocale->enabled_web_blog_lang ? 'Desactivar' : 'Activar' }}
+							{{ $noticiaLocale->enabled_web_blog_lang ? trans("admin-app.fields.deactivate") : trans("admin-app.fields.activate") }}
 							</button>
 
 							@if($noticiaLocale->url_web_blog_lang && $noticiaLocale->publication_date_web_blog)
-							<a href="{{ $noticiaLocale->link }}" target="_blank" class="btn btn-block btn-info">Vista previa</a>
+							<a href="{{ $noticiaLocale->link }}" target="_blank" class="btn btn-block btn-info">{{ trans("admin-app.button.preview") }}</a>
 							@else
-							<button type="button" class="btn btn-block btn-info" onclick="handleClickShowPage()">Vista previa</button>
+							<button type="button" class="btn btn-block btn-info" onclick="handleClickShowPage()">{{ trans("admin-app.button.preview") }}</button>
 							@endif
 						</div>
 						@endif
@@ -170,7 +170,7 @@
 				<div class="panel-body">
 
 					<fieldset>
-						<legend>SEO</legend>
+						<legend>{{ mb_strtoupper(trans("admin-app.title.seo")) }}</legend>
 
 						<div class="tabs tabs-bottom tabs-primary">
 							<ul class="nav nav-tabs nav-justified">

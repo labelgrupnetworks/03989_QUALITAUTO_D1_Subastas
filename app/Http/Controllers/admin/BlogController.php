@@ -19,6 +19,7 @@ class BlogController extends Controller
         $this->categorysBlog = new CategorysBlog();
         $this->category = new Category();
         $this->lang = Config::get('app.locales');
+		view()->share(['menu' => 'blog']);
     }
     public function index($id = null)
     {

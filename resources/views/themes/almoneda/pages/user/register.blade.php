@@ -22,8 +22,7 @@ $families = array();
 				</div>
 
 				<div class="alert alert-danger" role="alert">
-					<p><span class="bold">IMPORTANTE:</span> Si va usted a participar en representación de un <span class="bold">acreedor</span>
-						con privilegio especial le rogamos se ponga en contacto con nosotros de manera previa a través de nuestro teéfono de atención al usuario 963 504 476</p>
+					<p>{!! trans("$theme-app.login_register.important_message") !!}</p>
 				</div>
 
 				<form method="post" id="registerForm" action="javascript:submit_register_form()">

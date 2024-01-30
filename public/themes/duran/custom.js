@@ -440,7 +440,7 @@ $(document).ready(function () {
 		nav: false,
 		animateOut: 'fadeOut',
 		slideTransition: 'ease',
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 	});
 
 	$(".owl-carousel-home").owlCarousel({
@@ -452,7 +452,7 @@ $(document).ready(function () {
 		dots: false,
 		nav: true,
 		responsiveClass: true,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 		responsive: {
 			0: {
 				items: 1
@@ -478,7 +478,7 @@ $(document).ready(function () {
 		dots: true,
 		nav: true,
 		responsiveClass: true,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 		responsive: {
 			0: {
 				items: 1
@@ -507,7 +507,7 @@ $(document).ready(function () {
 		mouseDrag: false,
 		touchDrag: true,
 		checkVisible: false,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 		responsiveClass: true,
 		responsive: {
 			0: {
@@ -534,7 +534,7 @@ $(document).ready(function () {
 		loop: true,
 		mouseDrag: false,
 		touchDrag: true,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 		checkVisible: false,
 		responsiveClass: true,
 		responsive: {
@@ -560,7 +560,7 @@ $(document).ready(function () {
 		dots: true,
 		nav: true,
 		responsiveClass: true,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 	});
 
 
@@ -1494,7 +1494,7 @@ function carrousel_molon(carrousel) {
 		margin: 0,
 		dots: false,
 		nav: true,
-		navText: ['<img src="themes/duran/img/back.svg">', '<img src="themes/duran/img/next.svg">'],
+		navText: ['<img src="/themes/duran/img/back.svg">', '<img src="/themes/duran/img/next.svg">'],
 		responsiveClass: true,
 		responsive: {
 			0: {

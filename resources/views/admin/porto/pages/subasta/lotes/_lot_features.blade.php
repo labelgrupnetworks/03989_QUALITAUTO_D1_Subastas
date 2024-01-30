@@ -93,7 +93,7 @@
 								<input type="text" id="feature_input_{{$keyFeature}}"  name="feature_input[{{$keyFeature}}]" value="{{$valueFeature }}" class="form-control">
 							</div>
 							<div class="col-xs-3 text-right">
-								<a class=" addFeatureValue_JS btn btn-success" data-feature="{{$keyFeature}}"> + </a>
+								<a class=" addFeatureValue_JS btn btn-success" data-feature="{{$keyFeature}}"> {{ trans("admin-app.button.add_symbol") }} </a>
 							</div>
 						@endif
 					@endif

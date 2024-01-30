@@ -29,7 +29,7 @@
 
 	@endforeach
 	<br/>
-	<input type="submit" class="btn btn-success" value="Guardar" style="margin-top: 1rem">
+	<input type="submit" class="btn btn-success" value="{{ trans("admin-app.button.save") }}" style="margin-top: 1rem">
 
 
 </div>

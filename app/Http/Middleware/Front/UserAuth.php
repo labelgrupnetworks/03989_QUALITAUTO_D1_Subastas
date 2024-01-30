@@ -26,12 +26,12 @@ class UserAuth
                 $res = array(
                     'status' => 'error',
                     'redirect' => \Routing::slug('login'),
-                    'msg' => trans(\Config::get('app.theme').'-admin.ajax.session_timeout')
+                    'msg' => trans("admin-app.login.session_timeout")
                 );
 
                 die(json_encode($res));
             }
-            
+
             if(\Config::get('app.modal_login')){
                 $view_login = "?view_login=true";
             }else{

@@ -35,8 +35,8 @@
 							data-response="{{ trans("admin-app.success.erase_mass_cli") }}"
 							data-url="{{ route('clientes.destroy_selections') }}"
 							data-urlwithfilters="{{ route('clientes.destroy_with_filters') }}"
-							onclick="removeSelecteds(this.dataset)">
-							{{ trans("admin-app.button.erase") }}
+							onclick="removeClientSelecteds(this.dataset)">
+							{{ trans("admin-app.button.destroy") }}
 						</button>
 					</li>
 
