@@ -1,3 +1,7 @@
+@php
+	$page_settings->tempDumpRouteData()
+@endphp
+
 <header class="header">
 	<div class="logo-container">
 		<a href="javascript:;" class="logo">
