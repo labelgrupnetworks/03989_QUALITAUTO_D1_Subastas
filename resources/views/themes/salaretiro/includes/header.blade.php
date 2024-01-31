@@ -225,13 +225,11 @@
 					<li>
 						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_jewelry')}}</a>
 					</li>
-					@endif
-					@if(!empty($subastas['ADJDIR21']))
+					@elseif(!empty($subastas['ADJDIR21']))
 					<li>
 						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_art')}}</a>
 					</li>
-					@endif
-					@if(!empty($subastas['RASTRILL']))
+					@elseif(!empty($subastas['RASTRILL']))
 						@php
 							$rastrillAuction = $subastas['RASTRILL']->first();
 						@endphp
@@ -240,6 +238,12 @@
 								{{ trans("$theme-app.foot.jumble_sale") }}
 							</a>
 						</li>
+					@else
+						<li>
+							<a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}
+							</a>
+						</li>
+
 					@endif
 				@endif
 				<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}"
