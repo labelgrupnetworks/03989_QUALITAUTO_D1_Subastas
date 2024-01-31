@@ -517,7 +517,7 @@ class LotListController extends Controller
 				if(!empty($infoSubSec)){
 					#si se trata de una  landing
 					if(!empty($this->landing_page)){
-						$urlSubSection =  route("landing-subastas",[ "subfam" =>  $infoSubSec->key_subsec]);
+						$urlSubSection = route("landing-subastas", ["keySubSection" => $infoSubSec->key_subsec]);
 					}else{
 						$urlSubSection =  route("subsection",[ "keycategory" => $infoOrtsec->key_ortsec0 , "keysection" => $infoSec->key_sec, "keysubsection" => $infoSubSec->key_subsec]);
 					}

@@ -2449,8 +2449,29 @@ class SubastaController extends Controller
 		return $paymentsController->hasIvaReturnIva($tipo_iva->tipo, $iva);
 	}
 
+	private function calendarV1Controller()
+	{
+		$data = $this->subastas_activas(true);
+		if (!empty($data)) {
+			$data = head($data);
+		}
+
+		$seoExist = TradLib::getWebTranslateWithStringKey('metas', 'title_calendar', config('app.locale', 'es'));
+		$seo = new \stdClass();
+		if(!empty($seoExist)){
+			$seo->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_calendar');
+			$seo->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_calendar');
+		}
+		$seo->canonical=$_SERVER['HTTP_HOST'].\Routing::slugSeo('calendar');
+		return \View::make('front::pages.calendar', array('data' => $data, 'seo' => $seo));
+	}
+
 	public function calendarController(HttpRequest $request)
 	{
+		if(Config::get('app.default_theme', 'v1') === 'v1') {
+			return $this->calendarV1Controller();
+		}
+
 		$auctions = $this->subastas_activas(true);
 		if (!empty($auctions)) {
 			$auctions = head($auctions);

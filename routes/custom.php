@@ -31,7 +31,7 @@ Route::get(\Routing::slugSeo('subasta-numismatica'), 'ValoracionController@Subas
 
 #VICO
 // Estaticas con banner
-Route::view(\Routing::slugSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'Tienda Online', 'banner' => 'tienda-banner']]);
+Route::view(\Routing::translateSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'foot.direct_sale', 'banner' => 'tienda-banner']]);
 Route::view(\Routing::slugSeo('servicios-numismatica'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'Servicios', 'banner' => 'servicios-banner']]);
 
 
