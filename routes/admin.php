@@ -281,11 +281,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 
 		Route::group(['prefix' => 'category'], function () {
-			Route::get('/', 'subasta\AdminCategoryController@index');
+			Route::get('/', 'subasta\AdminCategoryController@index')->name('category.index');
 			#Route::get('/show', 'subasta\AdminCategoryController@show');
 			#Route::get('/create', 'subasta\AdminCategoryController@create');
 			#Route::post('/store', 'subasta\AdminCategoryController@store');
-			Route::get('/edit', 'subasta\AdminCategoryController@edit');
+			Route::get('/edit', 'subasta\AdminCategoryController@edit')->name('category.edit');
 			Route::post('/update', 'subasta\AdminCategoryController@update');
 			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
 
@@ -294,11 +294,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::group(['prefix' => 'subcategory'], function () {
-			Route::get('/', 'subasta\AdminSubCategoryController@index');
+			Route::get('/', 'subasta\AdminSubCategoryController@index')->name('subcategory.index');
 			#Route::get('/show', 'subasta\AdminSubCategoryController@show');
 			#Route::get('/create', 'subasta\AdminSubCategoryController@create');
 			#Route::post('/store', 'subasta\AdminSubCategoryController@store');
-			Route::get('/edit', 'subasta\AdminSubCategoryController@edit');
+			Route::get('/edit', 'subasta\AdminSubCategoryController@edit')->name('subcategory.edit');
 			Route::post('/update', 'subasta\AdminSubCategoryController@update');
 			Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
 		});

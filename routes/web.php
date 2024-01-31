@@ -105,7 +105,7 @@ Route::post('/subasta/modal_images_fullscreen', 'SubastaController@modalImagesFu
 #lotes
 Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 #NewLotes
-Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.lote.ficha');
 
 
 //2017-11-08  no parece que se use

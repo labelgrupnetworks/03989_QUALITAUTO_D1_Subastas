@@ -244,7 +244,13 @@ $lang = [
 		'subscriptions' => 'Suscripciones',
 		'agree_notifications' => 'Deseo y acepto recibir notificaciones de sobre los siguientes temas/eventos:',
 		'unsuscribe_from' => 'En caso de querer de suscribirse y no recibir más notificaciones puede darse de baja desde ',
-		'unsuscribe_link' => 'este enlace'
+		'unsuscribe_link' => 'este enlace',
+		'admin_edit_lots' => 'Editar Lotes',
+		'admin_edit_lot' => 'Editar Lote',
+		'admin_edit_auctions' => 'Editar Subastas',
+		'admin_edit_auction' => 'Editar Subasta',
+		'admin_edit_categories' => 'Editar Categorías',
+		'admin_edit_category' => 'Editar Categoría',
 	),
 	'global' =>
 	array(
