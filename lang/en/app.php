@@ -242,7 +242,18 @@ $lang =[
 			'subscriptions' => 'Subscriptions',
 			'agree_notifications' => 'I wish and agree to receive notifications about the following topics/events:',
 			'unsuscribe_from' => 'If you want to subscribe and no longer receive notifications, you can unsubscribe from ',
-			'unsuscribe_link' => 'this link'
+			'unsuscribe_link' => 'this link',
+			'admin_edit_lots' => 'Edit lots',
+			'admin_edit_lot' => 'Edit this lot',
+			'admin_edit_auctions' => 'Edit cuctions',
+			'admin_edit_auction' => 'Edit this auction',
+			'admin_edit_categories' => 'Edit categories',
+			'admin_edit_category' => 'Edit this category',
+			'admin_edit_resources_calendar' => 'Edit calendar cesources',
+			'admin_edit_banner_calendar' => 'Edit calendar',
+			'admin_edit_static_pages' => 'Edit pages',
+			'admin_edit_static_page' => 'Edit this page',
+			'admin_edit_faqs' => 'Edit faqs',
 		),
 	'global' =>
 		array (

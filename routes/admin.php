@@ -27,10 +27,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('/bloque', 'BloqueConfigController@index');
 		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
 
-		Route::get('/resources', 'ResourceController@index');
+		Route::get('/resources', 'ResourceController@index')->name('resources.index');
 		Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
 
-		Route::get('/banner', 'BannerController@index');
+		Route::get('/banner', 'BannerController@index')->name('banner.index');
 		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
 
 		Route::get('/auc-index', 'AucIndexController@index');
@@ -49,8 +49,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/traducciones/search', 'TraduccionesController@search');
 
-		Route::get('/content', 'ContentController@index');
-		Route::get('/content/name/{id}', 'ContentController@getPage');
+		Route::get('/content', 'ContentController@index')->name('content.index');
+		Route::get('/content/name/{id}', 'ContentController@getPage')->name('content.page');
 		Route::get('/email_clients', 'AdminEmailsController@index');
 		Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
 
@@ -95,7 +95,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 				Route::post('/{lang}/editRun', 'AdminFaqController@editRun');
 				Route::post('/delete', 'AdminFaqController@delete');
 				Route::post('/{lang}/order', 'AdminFaqController@saveOrder');
-				Route::get('/{lang?}/', 'AdminFaqController@index');
+				Route::get('/{lang?}/', 'AdminFaqController@index')->name('admin.faqs.index');
 				Route::post('/{lang}/categories/newRun', 'AdminFaqController@categoriesNewRun');
 				Route::post('/categories/delete', 'AdminFaqController@categoriesDelete');
 				Route::get('/{lang}/categories/edit/{cod}', 'AdminFaqController@categoriesEdit');

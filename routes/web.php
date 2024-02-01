@@ -124,7 +124,7 @@ Route::get(Routing::translateSeo('presenciales'), 'SubastaController@subastas_pr
 Route::get(Routing::translateSeo('subastas-historicas'), 'SubastaController@subastas_historicas')->name('subastas.historicas');
 Route::get(Routing::translateSeo('subastas-historicas-presenciales'), 'SubastaController@subastas_historicas_presenciales')->name('subastas.historicas_presenciales');
 Route::get(Routing::translateSeo('subastas-historicas-online'), 'SubastaController@subastas_historicas_online')->name('subastas.historicas_online');
-Route::get(Routing::translateSeo('subastas-online'), 'SubastaController@subastas_online')->name('subastas.online');;
+Route::get(Routing::translateSeo('subastas-online'), 'SubastaController@subastas_online')->name('subastas.online');
 Route::get(Routing::translateSeo('subastas-permanentes'), 'SubastaController@subastas_permanentes')->name('subastas.permanentes');
 Route::get(Routing::translateSeo('venta-directa'), 'SubastaController@venta_directa')->name('subastas.venta_directa');
 Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones');
@@ -298,7 +298,7 @@ Route::get(Routing::slug('thanks'), function () {
 # CMS / Gestor de contenido
 #Route::get(Routing::slug('pagina').'/{pagina}', 'ContentController@getPagina');
 #  Route::get(Routing::slugSeo('pagina',true).'/{pagina}', 'ContentController@getPagina');
-Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', 'PageController@getPagina');
+Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', 'PageController@getPagina')->name('staticPage');
 Route::get('/article/{id}', 'PageController@getArticle');
 Route::get(Routing::translateSeo('mapa-web'), 'PageController@siteMapPage');
 

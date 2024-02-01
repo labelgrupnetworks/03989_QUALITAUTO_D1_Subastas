@@ -3,19 +3,24 @@
 namespace App\Models;
 
 use App\Models\V5\FgOrtsec0;
+use App\Models\V5\FgSub;
+use App\Models\V5\Web_Page;
+use Illuminate\Support\Facades\Config;
 
 class PageSetting
 {
 
 	public $settings = [];
 
-	private $tipo_sub = '';
+	private $auc_parameters = [];
+	private $config_menu_admin = [];
 
 	public function __construct()
 	{
+		$this->config_menu_admin = Config::get('app.config_menu_admin');
 	}
 
-	public function getSettings() : array
+	public function getSettings(): array
 	{
 		if (empty(session()->all()['user'])) {
 			return [];
@@ -37,6 +42,8 @@ class PageSetting
 			($routeName == 'urlAuctionInfo') => $this->auctionInfoSettings($routeParams),
 			($routeName == 'category') => $this->categorySettings($routeParams),
 			($routeName == 'calendar') => $this->calendarSettings(),
+			($routeName == 'staticPage') => $this->staticPagesSettings($routeParams),
+			($routeName == 'faqs_page') => $this->faqsSettings(),
 			default => [],
 		};
 
@@ -53,18 +60,23 @@ class PageSetting
 
 	private function gridAuctionsSettings()
 	{
-		$this->tipo_sub = explode('.', $this->getRouteName())[1] ?? '';
-		$this->tipo_sub = $this->calculateTipoSub($this->tipo_sub);
+		$auc_params = explode('.', $this->getRouteName())[1] ?? '';
+		$this->auc_parameters = $this->aucQueryParams($auc_params);
+		$canAccess = in_array('newsubastas', $this->config_menu_admin);
 		return [
-			$this->newRoute('edit_auctions', route('subastas.index') . '?tipo_sub=' . $this->tipo_sub),
+			$canAccess ? $this->newRoute('edit_auctions', route('subastas.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']])) : null,
 		];
 	}
 
 	private function auctionInfoSettings(array $params)
 	{
+		$canAccess = in_array('newsubastas', $this->config_menu_admin);
 		return [
-			$this->newRoute('edit_auctions', route('subastas.index') . '?tipo_sub=' . $this->tipo_sub),
-			$this->newRoute('edit_auction', route('subastas.edit', ['subasta' => $params['cod']])),
+			$canAccess ? $this->newRoute('edit_auctions', route('subastas.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']])) : null,
+			$canAccess ? $this->newRoute('edit_auction', route('subastas.edit',
+				['subasta' => $params['cod']])) : null,
 		];
 	}
 
@@ -77,16 +89,19 @@ class PageSetting
 		if (empty($params['cod'])) {
 			return [];
 		}
+		$canAccess = in_array('newsubastas', $this->config_menu_admin);
 		return [
-			$this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])),
+			$canAccess ? $this->newRoute('edit_auction', route('subastas.edit', ['subasta' => $params['cod']])) : null,
+			$canAccess ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
 		];
 	}
 
 	private function lotFichaSettings(array $params)
 	{
+		$canAccess = in_array('newsubastas', $this->config_menu_admin);
 		return [
-			$this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])),
-			$this->newRoute('edit_lot', route('subastas.lotes.edit', ['cod_sub' => $params['cod'], 'lote' => $params['ref']])),
+			$canAccess ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
+			$canAccess ? $this->newRoute('edit_lot', route('subastas.lotes.edit', ['cod_sub' => $params['cod'], 'lote' => $params['ref']])) : null,
 		];
 	}
 
@@ -96,10 +111,51 @@ class PageSetting
 
 	private function categorySettings(array $params)
 	{
-		$id_category = (new FgOrtsec0())->getOrtsec0IDbyKey($params['keycategory'])->lin_ortsec0;
+		$canAccess = !in_array('noCategories', $this->config_menu_admin);
+		$id_category = (new FgOrtsec0())->getOrtsec0LinFromKey($params['keycategory']);
 		return [
-			$this->newRoute('edit_categories', route('category.index')),
-			$this->newRoute('edit_category', route('category.edit') . '?idcategory=' . $id_category),
+			$canAccess ? $this->newRoute('edit_categories', route('category.index')) : null,
+			$canAccess ? $this->newRoute('edit_category', route('category.edit', ['idcategory' => $id_category])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Calendario
+
+	private function calendarSettings()
+	{
+		$canAccess = in_array('calendar', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('edit_resources_calendar', route('resources.index', ['see' => 'C'])) : null,
+			$canAccess ? $this->newRoute('edit_banner_calendar', route('banner.index', ['see' => 'C'])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Static Pages
+
+	private function staticPagesSettings($params)
+	{
+		$id_page = Web_Page::getPageIDfromKey($params['pagina']);
+		$canAccess = in_array('dev', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('edit_static_pages', route('content.index')) : null,
+			$canAccess ? $this->newRoute('edit_static_page', route('content.page', ['id' => $id_page])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Faqs
+
+	private function faqsSettings()
+	{
+		$lang = $this->getLangFromURL();
+		$canAccess = in_array('faqs', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('edit_faqs', route('admin.faqs.index', ['lang' => $lang])) : null,
 		];
 	}
 
@@ -129,18 +185,71 @@ class PageSetting
 
 	#region Helpers
 
-	private function calculateTipoSub(string $tipo_sub)
+	private function aucQueryParams(string $params): array
 	{
-		switch ($tipo_sub) {
-			case 'presenciales':
-				return 'W';
-			case 'online':
-				return 'O';
-			case 'venta_directa':
-				return 'V';
+		$paramsExploded = explode('_', $params);
+
+		if (count($paramsExploded) == 1) {
+			$paramSubc = $this->calculateSubcSub($params);
+			$paramTipo = $this->calculateTipoSub($params);
+			return [
+				'subc_sub' => $paramSubc,
+				'tipo_sub' => $paramTipo,
+			];
+		}
+
+		if ($paramsExploded[0] == 'venta' || $paramsExploded[1] == 'oferta') {
+			return [
+				'subc_sub' => '',
+				'tipo_sub' => $this->calculateTipoSub($params),
+			];
+		}
+
+		$paramSubc = $this->calculateSubcSub($paramsExploded[0]);
+		$paramTipo = $this->calculateTipoSub($paramsExploded[1]);
+		return [
+			'subc_sub' => $paramSubc,
+			'tipo_sub' => $paramTipo,
+		];
+	}
+
+	private function calculateSubcSub(string $subc_sub): string
+	{
+		switch ($subc_sub) {
+			case 'activas':
+				return FgSub::SUBC_SUB_ACTIVO;
+			case 'historicas':
+				return FgSub::SUBC_SUB_HISTORICO;
 			default:
 				return '';
 		}
+	}
+
+	private function calculateTipoSub(string $tipo_sub): string
+	{
+		switch ($tipo_sub) {
+			case 'presenciales':
+				return FgSub::TIPO_SUB_PRESENCIAL;
+			case 'online':
+				return FgSub::TIPO_SUB_ONLINE;
+			case 'venta_directa':
+				return FgSub::TIPO_SUB_VENTA_DIRECTA;
+			case 'permanentes':
+				return FgSub::TIPO_SUB_PERMANENTE;
+			case 'especiales':
+				return FgSub::TIPO_SUB_ESPECIAL;
+			case 'haz_oferta':
+				return FgSub::TIPO_SUB_MAKE_OFFER;
+			default:
+				return '';
+		}
+	}
+
+	private function getLangFromURL(): string
+	{
+		$uri = request()->route()->uri;
+		$uri = explode('/', $uri);
+		return $uri[0];
 	}
 
 	#endregion
