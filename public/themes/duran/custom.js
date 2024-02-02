@@ -859,6 +859,7 @@ $(document).ready(function () {
 	});
 
 	$('.descargaPDF_JS').on('click', function () {
+		registerSeoEvent("DESCARGA_CATALOGO");
 		gtag('event','Clic',{'event_category':'Descarga_Catalogo'});
 	});
 
