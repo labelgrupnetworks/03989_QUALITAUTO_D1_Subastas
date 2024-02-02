@@ -58,6 +58,7 @@ $currency = "B/.";
 			</div>
 		</div>
 	</div>
+	@include('includes.ficha.modals_ficha')
 @elseif(!$deposito)
 	<div class="container">
 		<div class="row mt-5">
@@ -215,7 +216,7 @@ $currency = "B/.";
 								@include('includes.ficha.history')
 							@endif
 						</div>
-						
+
 					@endif
 				</div>
 			</div>

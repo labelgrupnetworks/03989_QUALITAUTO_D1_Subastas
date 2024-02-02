@@ -61,7 +61,10 @@
 					<button type="button" data-from="modal"
 						class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
 						type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+						codsub="{{ $lote_actual->cod_sub }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							{{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}
+						</button>
 				@endif
             @endif
         </div>
