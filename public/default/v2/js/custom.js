@@ -1369,3 +1369,18 @@ async function executeCaptchaV3() {
 ajax_shipping = function(cod_ship, lang) {
 	return true;
 }
+
+function executeOnceToDay(storageName, callback){
+	if (!window.localStorage) {
+		return;
+	}
+
+	const storage = window.localStorage;
+	const today = new Date().toDateString();
+	const executed = storage.getItem(storageName);
+
+	if(executed !== today) {
+		callback();
+		storage.setItem(storageName, today);
+	}
+}

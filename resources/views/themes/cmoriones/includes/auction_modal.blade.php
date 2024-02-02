@@ -14,6 +14,10 @@
 </div>
 
 <script>
-    const auctionModal = new bootstrap.Modal(document.getElementById('repre_auction_modal'));
-    auctionModal.show();
+	const showRepreModal = () => {
+		const auctionModal = new bootstrap.Modal(document.getElementById('repre_auction_modal'));
+		auctionModal.show();
+	}
+
+	executeOnceToDay('repre_auction_modal', showRepreModal);
 </script>
