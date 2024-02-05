@@ -4164,3 +4164,45 @@ main.private-page form {
 main.private-page .form-check-label {
 	line-height: 1.5;
 }
+
+/* ----------------- DESPLEGABLE -------------------- */
+
+#admin_settings_box .desplegable
+{
+	position: absolute;
+	right: -33px;
+	top: 40%;
+	padding: 10px 6px;
+	cursor: pointer;
+	border-radius: 0 3px 3px 0;
+	background: #2b373a;
+	color: #fff;
+}
+
+#admin_settings_box .desplegable
+{
+	cursor: pointer;
+	color: #fff;
+}
+
+#admin_settings_box
+{
+	position: fixed;
+	left: -250px;
+	top: 45%;
+	transform: translateY(-50%);
+	bottom: 0;
+	width: 250px;
+	border: 1px solid #2b373a;
+	border-left: 0;
+	transition: 1s;
+	padding: 10px;
+	z-index: 1021;
+	background: #fff;
+}
+
+#admin_settings_box.opened_box
+{
+	transition: 1s;
+	left: 0;
+}
