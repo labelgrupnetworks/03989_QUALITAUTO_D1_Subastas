@@ -76,7 +76,7 @@
         </p>
         @if (Session::has('user'))
             <button class="btn btn-lb-primary w-100">
-                Solicitar valoración
+                Sí, quiero una valoración real
             </button>
         @endif
     </section>
