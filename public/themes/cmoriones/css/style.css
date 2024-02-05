@@ -343,6 +343,10 @@ section.ficha-login {
 
 @media (min-width: 1200px) {
 
+	.ficha-grid {
+		grid-auto-rows: auto 50px auto;
+	}
+
 	section.ficha-description {
 		grid-row: 2 / 4;
 	}
