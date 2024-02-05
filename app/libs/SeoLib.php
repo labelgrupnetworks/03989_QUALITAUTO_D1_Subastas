@@ -35,7 +35,6 @@ class SeoLib {
 				$UTM_TYPE = "REFERRAL";
 			}else{
 				#Si el tipo no es referral es que es de pago, ya que solo llevaria UTM si es de pago o referral
-
 				$UTM_TYPE = "PAID";
 			}
 		}else{
@@ -47,8 +46,8 @@ class SeoLib {
 				}
 
 			}else{
-				#si hemos llegado a este punto es que han pasado parametros UTM pero no el type
-				$UTM_TYPE = "UNINFORMED";
+				#si hemos llegado a este punto es que han pasado parametros UTM pero no el type por lo que es de pago
+				$UTM_TYPE = "PAID";
 			}
 		}
 		$codUser = null;
