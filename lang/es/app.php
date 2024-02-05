@@ -261,6 +261,8 @@ $lang = [
 		'admin_edit_concurs_auction' => 'Editar esta subasta concursal',
 		'admin_edit_concurs_lots' => 'Editar lotes concursales',
 		'admin_edit_concurs_lot' => 'Editar este lote concursal',
+		'admin_edit_blogs' => 'Editar blogs',
+		'admin_edit_blog_post' => 'Editar este blog',
 	),
 	'global' =>
 	array(

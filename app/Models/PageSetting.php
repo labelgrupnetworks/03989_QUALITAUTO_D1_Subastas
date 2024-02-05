@@ -46,6 +46,8 @@ class PageSetting
 			($routeName == 'calendar') => $this->calendarSettings(),
 			($routeName == 'staticPage') => $this->staticPagesSettings($routeParams),
 			($routeName == 'faqs_page') => $this->faqsSettings(),
+			($routeName == 'blog.index') => $this->blogsSettings(),
+			($routeName == 'blog.news') => $this->blogSettings($routeParams),
 			default => [],
 		};
 
@@ -193,6 +195,35 @@ class PageSetting
 		$canAccess = in_array('faqs', $this->config_menu_admin);
 		return [
 			$canAccess ? $this->newRoute('edit_faqs', route('admin.faqs.index', ['lang' => $lang])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Blog
+
+	private function blogsSettings()
+	{
+		$canAccess = !empty(array_intersect(['blog_cms', 'dev'], $this->config_menu_admin));
+		return [
+			$canAccess ? $this->newRoute('edit_blog', route('admin.contenido.blog.index')) : null,
+		];
+	}
+
+	private function blogSettings(array $params)
+	{
+		$canAccess = !empty(array_intersect(['blog_cms', 'dev'], $this->config_menu_admin));
+		if (!$canAccess) {
+			return [];
+		}
+
+		$blog = new Blog();
+		$blog->lang = strtoupper(Config::get('app.locale'));
+		$news = $blog->getNoticia($params['key_categ'], $params['key_news']);
+
+		return [
+			$canAccess ? $this->newRoute('edit_blogs', route('admin.contenido.blog.index')) : null,
+			$canAccess ? $this->newRoute('edit_blog_post', route('admin.contenido.blog.edit', ['id' => $news->id_web_blog])) : null,
 		];
 	}
 

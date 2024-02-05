@@ -400,8 +400,8 @@ Route::get('/email_fact_generated', 'MailController@emailFacturaGenerated');
 Route::get('/disbandment_lot', 'MailController@disbandment_lot');
 
 /* Blog */
-Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index');
-Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', 'NoticiasController@news');
+Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index')->name('blog.index');
+Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', 'NoticiasController@news')->name('blog.news');
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@mosaicBlog');
 
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@museumPieces');
