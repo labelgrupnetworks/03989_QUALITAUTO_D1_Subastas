@@ -321,6 +321,10 @@ section.ficha-share {
     gap: 1rem;
 }
 
+section.ficha-previous-next {
+	display: none;
+}
+
 @media (min-width: 992px) {
 
 	section.ficha-contact {
