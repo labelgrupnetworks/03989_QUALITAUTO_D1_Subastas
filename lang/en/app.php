@@ -254,6 +254,7 @@ $lang =[
 			'admin_edit_static_pages' => 'Edit pages',
 			'admin_edit_static_page' => 'Edit this page',
 			'admin_edit_faqs' => 'Edit faqs',
+			'admin_banner_edit' => 'Edit :key banner',
 		),
 	'global' =>
 		array (

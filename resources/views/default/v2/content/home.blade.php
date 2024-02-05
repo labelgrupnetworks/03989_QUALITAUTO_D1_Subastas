@@ -3,7 +3,7 @@
 		<h1 class="text-center">SUBASTAS <span class="lb-text-primary">LABELGRUP</span></h1>
 		<a class="btn btn-lb-primary text-wrap">MOSTRAR SUBASTA</a>
 	</div>
-	{!! BannerLib::bannersPorKey('new_home', 'home-top-banner', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false]) !!}
+	{!! BannerLib::bannersPorKey('new_home', 'home-top-banner', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false], null, false, '', $page_settings) !!}
 </div>
 
 
@@ -21,7 +21,7 @@
 </section>
 
 <div class="about-us-banner my-5">
-	{!! BannerLib::bannersPorKey('about_us', 'about_banner', '{dots: false}') !!}
+	{!! BannerLib::bannersPorKey('about_us', 'about_banner', '{dots: false}', null, false, '', $page_settings) !!}
 </div>
 
 @php

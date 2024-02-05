@@ -12,7 +12,10 @@ class PageSetting
 
 	public $settings = [];
 
-	private $auc_parameters = [];
+	private $auc_parameters = [
+		'tipo_sub' => '',
+		'subc_sub' => ''
+	];
 	private $config_menu_admin = [];
 
 	public function __construct()
@@ -163,10 +166,11 @@ class PageSetting
 
 	#region Making routes
 
-	private function newRoute(string $name, string $url)
+	private function newRoute(string $name, string $url, array $name_val = [])
 	{
 		return [
 			'name' => $name,
+			'name_val' => $name_val,
 			'url' => $url,
 		];
 	}

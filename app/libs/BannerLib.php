@@ -5,6 +5,7 @@ namespace App\libs;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use \App\libs\MobileDetect;
+use App\Models\PageSetting;
 use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
 use Intervention\Image\Facades\Image;
@@ -14,6 +15,8 @@ use Intervention\Image\Facades\Image;
  */
 class BannerLib
 {
+	const BANNER_DEFAULT_OPTIONS = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1];
+
 	static function bannerParallax($key = 0, $class = "", $height = '100%', $emp = null){
 
 		if (!$key){
@@ -89,17 +92,17 @@ class BannerLib
 		return $html;
 	}
 
-	static function bannerPorId($id, $class = "", $options = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1], $emp = null, $event = false, $methodEvent = '')
+	static function bannerPorId($id, $class = "", $options = self::BANNER_DEFAULT_OPTIONS, $emp = null, $event = false, $methodEvent = '', PageSetting $page_settings = null)
 	{
 		$banner = WebNewbannerModel::where('id', $id)->first();
 		if (!$banner){
 			return false;
 		}
-		return self::bannersPorKey($banner->key, $class, $options, $emp, $event, $methodEvent);
+		return self::bannersPorKey($banner->key, $class, $options, $emp, $event, $methodEvent, $page_settings);
 	}
 
 
-	static function bannersPorKey($key = 0, $class = "", $options = ['dots' => true, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1], $emp = null, $event = false, $methodEvent = '')
+	static function bannersPorKey($key = 0, $class = "", $options = self::BANNER_DEFAULT_OPTIONS, $emp = null, $event = false, $methodEvent = '', PageSetting $page_settings = null)
 	{
 		if (!$key){
 			return false;
@@ -286,24 +289,30 @@ class BannerLib
 			}
 		}
 
+		if ($page_settings != null) {
+			$page_settings->addSettings([
+				['name' => "banner_edit", 'url' => route('newbanner.edit', ['id' => $banner->id]), 'name_val' => ['key' => $banner->key]]
+			]);
+		}
+
 		$html .= "</div></div>";
 
 		return $html;
 	}
 
-	static function bannersPorUbicacion($ubicacion = 0, $class = 0)
+	static function bannersPorUbicacion($ubicacion = 0, $class = 0, PageSetting $page_settings = null)
 	{
 		$banners = DB::table("WEB_NEWBANNER")->where("UBICACION", "LIKE", "%" . $ubicacion . "%")->where("activo", 1)->orderBy("orden")->orderBy("WEB_NEWBANNER.id")->get();
 		$html = "";
 		foreach ($banners as $item) {
-			$html .= BannerLib::bannersPorKey($item->key, $class);
+			$html .= BannerLib::bannersPorKey($item->key, $class, self::BANNER_DEFAULT_OPTIONS, null, false, '', $page_settings);
 			$html .= "<div class='clearfix'></div>";
 		}
 
 		return $html;
 	}
 
-	static function bannersPorUbicacionKeyAsClass($ubicacion = 0, $options = array())
+	static function bannersPorUbicacionKeyAsClass($ubicacion = 0, $options = array(), PageSetting $page_settings = null)
 	{
 		$banners = DB::table("WEB_NEWBANNER")->where("UBICACION",  $ubicacion )->where("activo", 1)->orderBy("orden")->orderBy("WEB_NEWBANNER.ID")->get();
 		$html = "";
@@ -311,7 +320,7 @@ class BannerLib
 			$class= $item->key;
 			$option = $options[$item->key]?? null;
 
-			$html .= BannerLib::bannersPorKey($item->key, $class, $option);
+			$html .= BannerLib::bannersPorKey($item->key, $class, $option, null, false, '', $page_settings);
 			$html .= "<div class='clearfix'></div>";
 		}
 
