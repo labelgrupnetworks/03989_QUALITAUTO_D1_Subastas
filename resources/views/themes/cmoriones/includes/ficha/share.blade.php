@@ -18,7 +18,7 @@
 
         <li class="ms-3">
             <a class="lb-text-primary"
-                href="http://www.facebook.com/sharer.php?u={{ $linkToShare }}"
+                href="https://www.facebook.com/sharer.php?u={{ $linkToShare }}"
                 title="{{ trans(\Config::get('app.theme') . '-app.lot.share_facebook') }}" target="_blank">
                 <svg class="bi" width="24" height="24" fill="currentColor">
                     <use xlink:href="/bootstrap-icons.svg#facebook"></use>
@@ -28,7 +28,7 @@
 
         <li class="ms-3">
             <a class="lb-text-primary"
-                href="http://twitter.com/share?text=<?= $titulo . ' ' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>&url={{ $linkToShare }}"
+                href="https://twitter.com/share?text=<?= $titulo . ' ' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>&url={{ $linkToShare }}"
                 title="{{ trans(\Config::get('app.theme') . '-app.lot.share_twitter') }}" target="_blank">
                 @include('components.x-icon', ['size' => '24'])
             </a>
@@ -44,7 +44,7 @@
 
         <li class="ms-3">
             <a class="lb-text-primary"
-                href="https://www.linkedin.com/sharing/share-offsite/?url={{ $linkToShare }}"
+				href="https://www.linkedin.com/cws/share?url={{ $linkToShare }}"
                 title="{{ trans(\Config::get('app.theme') . '-app.lot.share_twitter') }}" target="_blank">
 				@include('components.boostrap_icon', ['icon' => 'linkedin', 'size' => 24])
             </a>
