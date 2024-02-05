@@ -27,7 +27,7 @@
 
 			<div
 				class="slider-new-banner col-xs-12 p-0 @if(!Session::has('user'))col-md-9 col-lg-9  @else col-xs-12 @endif">
-				{!! \BannerLib::bannersPorKey('new_home', 'home-top-banner') !!}
+				{!! \BannerLib::bannersPorKey('new_home', 'home-top-banner', \BannerLib::BANNER_DEFAULT_OPTIONS, null, false, '', $page_settings) !!}
 			</div>
 
 
