@@ -292,19 +292,73 @@ main.ficha h5 {
 	margin-top: auto;
 }
 
+.ficha-grid section:is(.ficha-login, .ficha-contact) {
+	box-shadow: none;
+	padding: 0;
+}
+
+section.ficha-contact {
+	grid-row: 3 / 4;
+}
+
+section.ficha-previous-next {
+	grid-column: 1 / -1;
+}
+
+section.ficha-contact a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	gap: 10px;
+}
+
+@media (min-width: 992px) {
+	section.ficha-login {
+		grid-column: 1 / -1;
+	}
+
+	section.ficha-contact {
+		grid-column: 3 / 4;
+		grid-row: 2 / 3;
+	}
+}
+
 @media (min-width: 1200px) {
+
+	section.ficha-description {
+		grid-row: 2 / 8;
+	}
+
+	section.ficha-pujas {
+		grid-row: 3 / 4;
+	}
+
+	section.ficha-history {
+		grid-row: 4 / 5;
+	}
+
+
 	section.ficha-share {
+		grid-column: 2 / 3;
 		grid-row: 4 / 5;
 	}
 
 	section.ficha-previous-next {
 		grid-column: 2 / 3;
+		grid-row: 6 / 7;
 	}
 
 	section.ficha-files {
-		grid-column: 1 / 2;
-		grid-row: 3 / 4;
+		grid-column: 3 / 4;
+		grid-row: 5 / 6;
 	}
+
+	section.ficha-login {
+		grid-column: 2 / 3;
+    	grid-row: 5 / 6;
+	}
+
 }
 
 .list-group.ficha-files-list {

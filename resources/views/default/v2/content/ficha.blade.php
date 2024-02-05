@@ -106,6 +106,8 @@ if($subasta_web){
 			@include('includes.ficha.files')
 		</section>
 
+		@includeIf('includes.ficha.custom_sections')
+
 	</div>
 
 	<section class="ficha-recomendados mt-3">

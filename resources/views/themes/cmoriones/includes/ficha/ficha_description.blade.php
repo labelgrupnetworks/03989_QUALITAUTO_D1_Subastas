@@ -3,10 +3,13 @@ $category = App\Models\V5\FgOrtsec1::select('lin_ortsec1', 'des_ortsec0', 'key_o
 $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual->num_hces1, $lote_actual->lin_hces1);
 @endphp
 
-<div class="description max-lines" style="--max-lines: 3; --line-height: 1.5">
+<div class="description" style="--max-lines: 3; --line-height: 1.5">
 	<p>{!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}</p>
 </div>
-<button data-js="show-more" data-txt-showmore="Ver más" data-txt-showless="Ver menos" class="btn btn-link lb-link-primary px-0 text-decoration-none text-capitalize d-none">Ver más</button>
+
+<button data-js="show-more" data-txt-showmore="Ver más" data-txt-showless="Ver menos" class="btn btn-outline-lb-primary active d-none">
+	Ver menos
+</button>
 
 @if(count($caracteristicas) !== 0)
 	<div class="features">
@@ -42,13 +45,24 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 
 	$('[data-js="show-more"]').on('click', function() {
 		$(this).toggleClass('active');
+
 		$(this).text($(this).hasClass('active') ? $(this).data('txt-showless') : $(this).data('txt-showmore'));
 		$('.description').toggleClass('max-lines');
 	});
 
 	function isDescriptionOverflow() {
-		var description = document.querySelector('.description');
-		return description.scrollHeight > description.clientHeight;
+		const description = document.querySelector('.description');
+
+		// esta condición es para que se muestre el botón de ver más si el texto es muy largo
+		// pero la última petición es que por defecto se muestre el texto completo
+		//return description.scrollHeight > description.clientHeight;
+		const coputedStyle = window.getComputedStyle(description);
+
+		const maxLines = parseInt(coputedStyle.getPropertyValue('--max-lines'));
+		const lineHeight = parseFloat(coputedStyle.getPropertyValue('--line-height'));
+		const fontSize = parseFloat(coputedStyle.getPropertyValue('font-size'));
+
+		return description.clientHeight > (maxLines * lineHeight * fontSize);
 	}
 
 </script>
