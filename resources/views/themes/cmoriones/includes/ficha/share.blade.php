@@ -28,7 +28,7 @@
 
         <li class="ms-3">
             <a class="lb-text-primary"
-                href="https://twitter.com/share?text=<?= $titulo . ' ' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>&url={{ $linkToShare }}"
+				href="https://twitter.com/intent/tweet?url={{ $linkToShare }}&text={{ $titulo }}"
                 title="{{ trans(\Config::get('app.theme') . '-app.lot.share_twitter') }}" target="_blank">
                 @include('components.x-icon', ['size' => '24'])
             </a>
