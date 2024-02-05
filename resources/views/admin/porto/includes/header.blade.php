@@ -1,5 +1,6 @@
 @php
-	$page_settings->tempDumpRouteData()
+	// This function is used to view in page the route and route parameters
+	// $page_settings->tempDumpRouteData()
 @endphp
 
 <header class="header">

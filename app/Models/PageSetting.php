@@ -50,7 +50,8 @@ class PageSetting
 			default => [],
 		};
 
-		$this->tempDumpRouteData();
+		//// This function is used to view in page the route and route parameters
+		// $this->tempDumpRouteData();
 		return array_merge($this->settings, $settings);
 	}
 
