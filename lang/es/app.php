@@ -257,6 +257,10 @@ $lang = [
 		'admin_edit_static_page' => 'Editar esta página',
 		'admin_edit_faqs' => 'Editar faqs',
 		'admin_banner_edit' => 'Editar :key banner',
+		'admin_edit_concurs_auctions' => 'Editar subastas concursales',
+		'admin_edit_concurs_auction' => 'Editar esta subasta concursal',
+		'admin_edit_concurs_lots' => 'Editar lotes concursales',
+		'admin_edit_concurs_lot' => 'Editar este lote concursal',
 	),
 	'global' =>
 	array(

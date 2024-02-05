@@ -36,7 +36,6 @@ class PageSetting
 
 		$routeName = request()->route()->getName();
 		$routeParams = request()->route()->parameters();
-		// $routeQuery = request()->query();
 
 		$settings = match (true) {
 			($routeName == 'urlAuction') => $this->gridLotSettings($routeParams),
@@ -66,21 +65,45 @@ class PageSetting
 	{
 		$auc_params = explode('.', $this->getRouteName())[1] ?? '';
 		$this->auc_parameters = $this->aucQueryParams($auc_params);
-		$canAccess = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAuc = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAucCon = in_array('concursal', $this->config_menu_admin);
 		return [
-			$canAccess ? $this->newRoute('edit_auctions', route('subastas.index',
-				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']])) : null,
+			// Subastas
+			$canAccessAuc ? $this->newRoute('edit_auctions', route(
+				'subastas.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']]
+			)) : null,
+			// Subastas Concursales
+			$canAccessAucCon ? $this->newRoute('edit_concurs_auctions', route(
+				'subastas_concursales.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']]
+			)) : null,
 		];
 	}
 
 	private function auctionInfoSettings(array $params)
 	{
-		$canAccess = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAuc = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAucCon = in_array('concursal', $this->config_menu_admin);
 		return [
-			$canAccess ? $this->newRoute('edit_auctions', route('subastas.index',
-				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']])) : null,
-			$canAccess ? $this->newRoute('edit_auction', route('subastas.edit',
-				['subasta' => $params['cod']])) : null,
+			// Subastas
+			$canAccessAuc ? $this->newRoute('edit_auctions', route(
+				'subastas.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']]
+			)) : null,
+			$canAccessAuc ? $this->newRoute('edit_auction', route(
+				'subastas.edit',
+				['subasta' => $params['cod']]
+			)) : null,
+			// Subastas Concursales
+			$canAccessAucCon ? $this->newRoute('edit_concurs_auctions', route(
+				'subastas_concursales.index',
+				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']]
+			)) : null,
+			$canAccessAucCon ? $this->newRoute('edit_concurs_auction', route(
+				'subastas_concursales.edit',
+				['subasta' => $params['cod']]
+			)) : null,
 		];
 	}
 
@@ -93,19 +116,29 @@ class PageSetting
 		if (empty($params['cod'])) {
 			return [];
 		}
-		$canAccess = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAuc = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAucCon = in_array('concursal', $this->config_menu_admin);
 		return [
-			$canAccess ? $this->newRoute('edit_auction', route('subastas.edit', ['subasta' => $params['cod']])) : null,
-			$canAccess ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
+			// Subastas
+			$canAccessAuc ? $this->newRoute('edit_auction', route('subastas.edit', ['subasta' => $params['cod']])) : null,
+			$canAccessAuc ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
+			// Subastas Concursales
+			$canAccessAucCon ? $this->newRoute('edit_concurs_auction', route('subastas_concursales.edit', ['subasta' => $params['cod']])) : null,
+			$canAccessAucCon ? $this->newRoute('edit_concurs_lots', route('subastas_concursales.show', ['subasta' => $params['cod']])) : null,
 		];
 	}
 
 	private function lotFichaSettings(array $params)
 	{
-		$canAccess = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAuc = in_array('newsubastas', $this->config_menu_admin);
+		$canAccessAucCon = in_array('concursal', $this->config_menu_admin);
 		return [
-			$canAccess ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
-			$canAccess ? $this->newRoute('edit_lot', route('subastas.lotes.edit', ['cod_sub' => $params['cod'], 'lote' => $params['ref']])) : null,
+			// Subastas
+			$canAccessAuc ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
+			$canAccessAuc ? $this->newRoute('edit_lot', route('subastas.lotes.edit', ['cod_sub' => $params['cod'], 'lote' => $params['ref']])) : null,
+			// Subastas Concursales
+			$canAccessAucCon ? $this->newRoute('edit_concurs_lots', route('subastas_concursales.show', ['subasta' => $params['cod']])) : null,
+			$canAccessAucCon ? $this->newRoute('edit_concurs_lot', route('subastas_concursales.lotes_concursales.edit', ['cod_sub' => $params['cod'], 'lote' => $params['ref']])) : null,
 		];
 	}
 

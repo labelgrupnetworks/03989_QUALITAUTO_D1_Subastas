@@ -255,6 +255,10 @@ $lang =[
 			'admin_edit_static_page' => 'Edit this page',
 			'admin_edit_faqs' => 'Edit faqs',
 			'admin_banner_edit' => 'Edit :key banner',
+			'admin_edit_concurs_auctions' => 'Edit concursal auctions',
+			'admin_edit_concurs_auction' => 'Edit this concursal auction',
+			'admin_edit_concurs_lots' => 'Edit concursal lots',
+			'admin_edit_concurs_lot' => 'Edit this concursal lot',
 		),
 	'global' =>
 		array (
