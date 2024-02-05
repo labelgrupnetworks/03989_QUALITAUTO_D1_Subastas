@@ -147,6 +147,7 @@ class ValoracionController extends Controller
 			$htmlFields = false;
 			$prohibidos = array('_token', 'imagen', 'email_category', 'name', 'email', 'telf', 'post', 'g-recaptcha-response', 'captcha_token');
 
+			$htmlFieldsArray = array_diff_key(request()->all(), array_flip($prohibidos));
 			foreach ($_POST as $key => $value) {
 
 				// Inputs prohibidos de mostrar
@@ -175,6 +176,7 @@ class ValoracionController extends Controller
 					'email' =>  $email,
 					'telf' => $telf,
 					'camposHtml' => $htmlFields,
+					'camposHtmlArray' => $htmlFieldsArray,
 				);
 
 				$emailOptions['user'] = Request::input('name');
@@ -185,6 +187,7 @@ class ValoracionController extends Controller
 					'email' => Request::input('email'),
 					'telf' => Request::input('telf'),
 					'camposHtml' => $htmlFields,
+					'camposHtmlArray' => $htmlFieldsArray,
 
 				);
 
