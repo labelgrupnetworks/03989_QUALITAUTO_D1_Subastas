@@ -17,7 +17,7 @@
 				name="description" type="text" class="form-control form-control-sm filter-auction-input search-input_js" value="{{ app('request')->input('description') }}">
 		</label>
 
-		@if(!empty($codSub) && !empty($refSession))
+		@if(!empty($codSub) && !empty($refSession) || Config::get('app.search_by_reference_in_grid', false))
 		<label class="filters-auction-label w-100 mb-2">
 			<p>{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</p>
 			<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}"

@@ -5,7 +5,7 @@
 @stop
 
 @php
-	$bread[0]['url'] = url()->current();
+    $bread[0]['url'] = url()->current();
 @endphp
 
 @section('content')
@@ -26,4 +26,8 @@
 
         @include('content.grid')
     </main>
+
+    @if (!empty($codSub) && $codSub == 'REPRE')
+        @include('includes.auction_modal')
+    @endif
 @stop

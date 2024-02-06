@@ -690,8 +690,8 @@ Route::get("carga-catalogo-invaluable/{codSub}/{reference}", "externalAggregator
 Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregator\Invaluable\House@catalogLots");
 //responseRedsysMultiTpv
 
-#Eventos SEO
-Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z]+']);
+#Eventos SEO, permite pasar letras numeros y el simbolo _
+Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z_]+']);
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

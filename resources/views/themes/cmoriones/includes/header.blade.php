@@ -26,7 +26,7 @@
         <div class="container py-1 bk-gray">
             <div class="d-flex justify-content-end align-items-center gap-3">
 
-                @include('components.search', ['classes' => 'me-auto d-none d-xl-block'])
+                @include('components.search', ['classes' => 'me-auto d-none d-xl-block', 'searchAction' => $searchAction])
 
                 @if (!Session::has('user'))
                     <button

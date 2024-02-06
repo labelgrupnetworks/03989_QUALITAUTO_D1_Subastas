@@ -31,14 +31,11 @@ class SeoLib {
 
 		#tipo de trafico
 		if(!empty(Session::get("UTM.type"))){
-			if(Session::get("UTM.type") == "P" || Session::get("UTM.type") == "p"){
-				$UTM_TYPE = "PAID";
-			}elseif(Session::get("UTM.type") == "R" || Session::get("UTM.type") == "r"){
+			if(Session::get("UTM.type") == "R" || Session::get("UTM.type") == "r"){
 				$UTM_TYPE = "REFERRAL";
 			}else{
-				#lo guardamos para poder avisar de que se está pasando mal y tener un comprobante
-				\Log::info("UTM type invalido ".Session::get("UTM.type"));
-				$UTM_TYPE = "INVALID";
+				#Si el tipo no es referral es que es de pago, ya que solo llevaria UTM si es de pago o referral
+				$UTM_TYPE = "PAID";
 			}
 		}else{
 			if(empty($UTM_SOURCE) && empty($UTM_MEDIUM) && empty($UTM_CAMPAIGN) ){
@@ -49,8 +46,8 @@ class SeoLib {
 				}
 
 			}else{
-				#si hemos llegado a este punto es que han pasado parametros UTM pero no el type
-				$UTM_TYPE = "UNINFORMED";
+				#si hemos llegado a este punto es que han pasado parametros UTM pero no el type por lo que es de pago
+				$UTM_TYPE = "PAID";
 			}
 		}
 		$codUser = null;

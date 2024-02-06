@@ -102,7 +102,7 @@ $pageName = Route::currentRouteName();
 
 
 					<li class="nav-item">
-						<a class="nav-link" href="{{ \Routing::translateSeo('venta-directa') }}">
+						<a class="nav-link" href="{{ \Routing::translateSeo('tienda-online') }}">
 							<span style="white-space: nowrap;">{{ trans($theme.'-app.foot.direct_sale')}}</span>
 						</a>
 					</li>

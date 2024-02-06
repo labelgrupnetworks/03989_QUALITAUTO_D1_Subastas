@@ -96,7 +96,7 @@
 <script>
 	$(document).ready(function() {
 
-		showPostVentaModal(auction_info.lote_actual);
+		//showPostVentaModal(auction_info.lote_actual);
 
         //calculamos la fecha de cierre
         //$("#cierre_lote").html(format_date(new Date("{{$lote_actual->close_at}}".replace(/-/g, "/"))));
