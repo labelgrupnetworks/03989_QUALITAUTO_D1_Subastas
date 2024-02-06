@@ -87,7 +87,7 @@ Route::get(Routing::slug('logout') . '/tr', 'UserController@logout'); // logout 
 # Subastas @ SubastaController
 # 2017/10/25 no se esta usando
 #Route::get(Routing::slug('subasta').'-{cod}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-Route::get(Routing::slugSeo('indice-subasta') . '/{cod}-{texto}', 'SubastaController@indice_subasta')->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::get(Routing::slugSeo('indice-subasta') . '/{cod}-{texto}', 'SubastaController@indice_subasta')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.indice');
 
 
 Route::post('/subasta/reproducciones', 'SubastaController@reproducciones');

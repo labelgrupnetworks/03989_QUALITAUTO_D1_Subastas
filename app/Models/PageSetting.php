@@ -38,11 +38,10 @@ class PageSetting
 		$routeParams = request()->route()->parameters();
 
 		$settings = match (true) {
-			($routeName == 'urlAuction') => $this->gridLotSettings($routeParams),
-			($routeName == 'urlAuctionOld') => $this->gridLotSettings($routeParams),
+			($routeName == 'urlAuction' || $routeName == 'urlAuctionOld') => $this->gridLotSettings($routeParams),
 			str_contains($routeName, 'subastas.') => $this->gridAuctionsSettings(),
 			($routeName == 'subasta.lote.ficha') => $this->lotFichaSettings($routeParams),
-			($routeName == 'urlAuctionInfo') => $this->auctionInfoSettings($routeParams),
+			($routeName == 'urlAuctionInfo' || $routeName == 'subasta.indice') => $this->auctionInfoSettings($routeParams),
 			($routeName == 'category') => $this->categorySettings($routeParams),
 			($routeName == 'allCategories') => $this->allCategoriesSettings(),
 			($routeName == 'calendar') => $this->calendarSettings(),
@@ -68,7 +67,8 @@ class PageSetting
 	private function gridAuctionsSettings()
 	{
 		$auc_params = explode('.', $this->getRouteName())[1] ?? '';
-		$this->auc_parameters = $this->aucQueryParams($auc_params);
+		$isFinished = isset((request()->query())['finished']) ? (request()->query())['finished'] : null;
+		$this->auc_parameters = $this->aucQueryParams($auc_params, $isFinished);
 		$canAccessAuc = in_array('newsubastas', $this->config_menu_admin);
 		$canAccessAucCon = in_array('concursal', $this->config_menu_admin);
 		return [
@@ -270,32 +270,33 @@ class PageSetting
 
 	#region Helpers
 
-	private function aucQueryParams(string $params): array
+	private function aucQueryParams(string $params, bool|null $isFinished = null): array
 	{
 		$paramsExploded = explode('_', $params);
+
+		$aucParams = [
+			'subc_sub' => $isFinished !== null && $isFinished ? FgSub::SUBC_SUB_HISTORICO : '',
+			'tipo_sub' => '',
+		];
 
 		if (count($paramsExploded) == 1) {
 			$paramSubc = $this->calculateSubcSub($params);
 			$paramTipo = $this->calculateTipoSub($params);
-			return [
-				'subc_sub' => $paramSubc,
-				'tipo_sub' => $paramTipo,
-			];
+			$aucParams['subc_sub'] = $paramSubc ? $paramSubc : $aucParams['subc_sub'];
+			$aucParams['tipo_sub'] = $paramTipo ? $paramTipo : $aucParams['tipo_sub'];
+			return $aucParams;
 		}
 
 		if ($paramsExploded[0] == 'venta' || $paramsExploded[1] == 'oferta') {
-			return [
-				'subc_sub' => '',
-				'tipo_sub' => $this->calculateTipoSub($params),
-			];
+			$paramTipo = $this->calculateTipoSub($params);
+			$aucParams['tipo_sub'] = $paramTipo ? $paramTipo : $aucParams['tipo_sub'];
+			return $aucParams;
 		}
 
-		$paramSubc = $this->calculateSubcSub($paramsExploded[0]);
-		$paramTipo = $this->calculateTipoSub($paramsExploded[1]);
-		return [
-			'subc_sub' => $paramSubc,
-			'tipo_sub' => $paramTipo,
-		];
+		$aucParams['subc_sub'] = $this->calculateSubcSub($paramsExploded[0]);
+		$aucParams['tipo_sub'] = $this->calculateTipoSub($paramsExploded[1]);
+
+		return $aucParams;
 	}
 
 	private function calculateSubcSub(string $subc_sub): string
