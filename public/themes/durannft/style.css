@@ -1508,3 +1508,9 @@ color:#FFF;
 	background-color: #777777;
 	border-color: #777777;
 }
+
+/* ----------------- DESPLEGABLE -------------------- */
+
+#admin_settings_box {
+	background: #ffffffab;
+}
