@@ -39,6 +39,7 @@ class PageSetting
 
 		$settings = match (true) {
 			($routeName == 'urlAuction') => $this->gridLotSettings($routeParams),
+			($routeName == 'urlAuctionOld') => $this->gridLotSettings($routeParams),
 			str_contains($routeName, 'subastas.') => $this->gridAuctionsSettings(),
 			($routeName == 'subasta.lote.ficha') => $this->lotFichaSettings($routeParams),
 			($routeName == 'urlAuctionInfo') => $this->auctionInfoSettings($routeParams),

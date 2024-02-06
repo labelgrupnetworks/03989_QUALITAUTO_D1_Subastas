@@ -533,13 +533,13 @@ if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new")
 	#nuevo
 	Route::get(Routing::slugSeo('subasta') . '/{texto?}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 	#version antigua
-	Route::get(Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	Route::get(Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
 } else {
 	#ver version nueva con URL test
 	Route::get(Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 
 	#antiguo
-	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
 	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}/page-{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 }
 
