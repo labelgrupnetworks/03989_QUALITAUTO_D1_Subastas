@@ -674,7 +674,23 @@ $(document).ready(function () {
 	$("#frmRegister-adv input, #frmRegister-adv select").blur(function () {
 		verifyFormLoginContent();
 	});
+
+
+
+	$('.seoAction_JS').click(function (event) {
+		seoEvent= $(this).data("event");
+		registerSeoEvent(seoEvent);
+	})
 });
+//SE PUEDE AÑADIR LA CLASE seoAction_JS Y UN CAMPO DATA-EVENT CON EL NOMBRE DEL EVENTO PARA QUE LO REGISTRE GRACIAS A UNA FUNCION CREADA
+function registerSeoEvent(seoEvent){
+	console.log(seoEvent);
+		$.ajax({
+			type: "GET",
+
+			url: '/seo_event/'+seoEvent,
+		});
+}
 
 function emailSobrePuja(cod, licit, lote) {
 
