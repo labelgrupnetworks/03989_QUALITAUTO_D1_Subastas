@@ -51,7 +51,7 @@ class PageSetting
 			default => [],
 		};
 
-		//// This function is used to view in page the route and route parameters
+		// This function is used to view in page the route and route parameters
 		// $this->tempDumpRouteData();
 		return array_merge($this->settings, $settings);
 	}
@@ -92,11 +92,12 @@ class PageSetting
 			$canAccessAuc ? $this->newRoute('edit_auctions', route(
 				'subastas.index',
 				['tipo_sub' => $this->auc_parameters['tipo_sub'], 'subc_sub' => $this->auc_parameters['subc_sub']]
-			)) : null,
-			$canAccessAuc ? $this->newRoute('edit_auction', route(
-				'subastas.edit',
-				['subasta' => $params['cod']]
-			)) : null,
+				)) : null,
+				$canAccessAuc ? $this->newRoute('edit_auction', route(
+					'subastas.edit',
+					['subasta' => $params['cod']]
+				)) : null,
+				$canAccessAuc ? $this->newRoute('edit_lots', route('subastas.show', ['subasta' => $params['cod']])) : null,
 			// Subastas Concursales
 			$canAccessAucCon ? $this->newRoute('edit_concurs_auctions', route(
 				'subastas_concursales.index',
@@ -106,6 +107,7 @@ class PageSetting
 				'subastas_concursales.edit',
 				['subasta' => $params['cod']]
 			)) : null,
+			$canAccessAucCon ? $this->newRoute('edit_concurs_lots', route('subastas_concursales.show', ['subasta' => $params['cod']])) : null,
 		];
 	}
 
