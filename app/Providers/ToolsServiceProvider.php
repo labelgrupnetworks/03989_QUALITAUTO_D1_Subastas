@@ -1386,6 +1386,9 @@ class ToolsServiceProvider extends ServiceProvider
 		if (strpos($path, 'img') === false && !$hash) {
 			$hash = filemtime($publicPath);
 		}
+		elseif(!$hash) {
+			return URL::asset($path) . "?a=" . filemtime($publicPath);
+		}
 
 		return URL::asset($path) . "?a=$hash";
 	}
