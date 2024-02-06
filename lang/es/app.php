@@ -263,6 +263,8 @@ $lang = [
 		'admin_edit_concurs_lot' => 'Editar este lote concursal',
 		'admin_edit_blogs' => 'Editar blogs',
 		'admin_edit_blog_post' => 'Editar este blog',
+		'admin_edit_artists' => 'Editar artistas',
+		'admin_edit_artist' => 'Editar este artista',
 	),
 	'global' =>
 	array(

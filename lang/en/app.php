@@ -261,6 +261,8 @@ $lang =[
 			'admin_edit_concurs_lot' => 'Edit this concursal lot',
 			'admin_edit_blogs' => 'Edit blogs',
 			'admin_edit_blog_post' => 'Edit this blog post',
+			'admin_edit_artists' => 'Edit artists',
+			'admin_edit_artist' => 'Edit this artist',
 		),
 	'global' =>
 		array (

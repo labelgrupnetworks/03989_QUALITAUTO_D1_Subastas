@@ -49,6 +49,8 @@ class PageSetting
 			($routeName == 'faqs_page') => $this->faqsSettings(),
 			($routeName == 'blog.index') => $this->blogsSettings(),
 			($routeName == 'blog.news') => $this->blogSettings($routeParams),
+			($routeName == 'artists') => $this->artistsSettings(),
+			($routeName == 'artist') => $this->artistSettings($routeParams),
 			default => [],
 		};
 
@@ -240,6 +242,27 @@ class PageSetting
 		return [
 			$canAccess ? $this->newRoute('edit_blogs', route('admin.contenido.blog.index')) : null,
 			$canAccess ? $this->newRoute('edit_blog_post', route('admin.contenido.blog.edit', ['id' => $news->id_web_blog])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Artists
+
+	private function artistsSettings()
+	{
+		$canAccess = in_array('artist', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('edit_artists', route('artist.index')) : null,
+		];
+	}
+
+	private function artistSettings(array $params)
+	{
+		$canAccess = in_array('artist', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('edit_artists', route('artist.index')) : null,
+			$canAccess ? $this->newRoute('edit_artist', route('artist.edit', ['artist' => $params['idArtist']])) : null,
 		];
 	}
 
