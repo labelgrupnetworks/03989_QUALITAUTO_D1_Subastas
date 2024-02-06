@@ -265,7 +265,21 @@ main.ficha h5 {
 }
 
 .ficha-grid {
-	gap: 2rem;
+	display: flex;
+}
+
+.ficha-grid .ficha-title {
+	text-wrap: balance;
+}
+
+.ficha-grid > div > section {
+	margin-bottom: 1rem;
+}
+
+.ficha-grid > div > section:not(.ficha-title, .ficha-share, .ficha-previous-next, .ficha-contact) {
+	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+    padding: 0.5rem;
+    border-radius: 10px;
 }
 
 .ficha-grid .ficha-files:not(:has(a)) {
@@ -339,9 +353,6 @@ section.ficha-previous-next {
 
 @media (min-width: 1200px) {
 
-	.ficha-grid {
-		grid-auto-rows: auto 50px auto auto auto auto auto;
-	}
 
 	section.ficha-description {
 		grid-row: 2 / 4;
