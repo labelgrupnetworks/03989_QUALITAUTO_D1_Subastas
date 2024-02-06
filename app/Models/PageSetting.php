@@ -55,7 +55,7 @@ class PageSetting
 
 		// This function is used to view in page the route and route parameters
 		// $this->tempDumpRouteData();
-		return array_merge($this->settings, $settings);
+		return array_merge($this->settings, array_filter($settings));
 	}
 
 	public function addSettings(array $settings)
