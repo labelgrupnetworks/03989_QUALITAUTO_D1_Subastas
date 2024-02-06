@@ -8,7 +8,6 @@ use \App\libs\MobileDetect;
 use App\Models\PageSetting;
 use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
-use Intervention\Image\Facades\Image;
 
 /**
  * @method static array getOnlyContentForBanner(WebNewbannerModel|null $banner)
