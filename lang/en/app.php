@@ -264,6 +264,7 @@ $lang =[
 			'admin_edit_artists' => 'Edit artists',
 			'admin_edit_artist' => 'Edit this artist',
 			'admin_see_all_articles' => 'See all articles',
+			'admin_edit_calendar_events' => 'Edit calendar events',
 		),
 	'global' =>
 		array (

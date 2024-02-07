@@ -164,7 +164,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		#CONTENIDO
 		Route::group(['prefix' => 'calendar'], function () {
-			Route::get('/', 'contenido\AdminCalendarController@index');
+			Route::get('/', 'contenido\AdminCalendarController@index')->name('calendar.index');
 			#Route::get('/show', 'contenido\AdminCalendarController@show');
 			#Route::get('/create', 'contenido\AdminCalendarController@create');
 			#Route::post('/store', 'contenido\AdminCalendarController@store');

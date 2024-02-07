@@ -175,10 +175,12 @@ class PageSetting
 
 	private function calendarSettings()
 	{
-		$canAccess = in_array('calendar', $this->config_menu_admin);
+		$canAccessOldCal = in_array('calendar', $this->config_menu_admin);
+		$canAccessNewCal = in_array('new_calendar', $this->config_menu_admin);
 		return [
-			$canAccess ? $this->newRoute('edit_resources_calendar', route('resources.index', ['see' => 'C'])) : null,
-			$canAccess ? $this->newRoute('edit_banner_calendar', route('banner.index', ['see' => 'C'])) : null,
+			$canAccessOldCal ? $this->newRoute('edit_resources_calendar', route('resources.index', ['see' => 'C'])) : null,
+			$canAccessOldCal ? $this->newRoute('edit_banner_calendar', route('banner.index', ['see' => 'C'])) : null,
+			$canAccessNewCal ? $this->newRoute('edit_calendar_events', route('calendar.index')) : null,
 		];
 	}
 
