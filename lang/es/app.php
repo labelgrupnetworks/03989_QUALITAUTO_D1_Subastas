@@ -265,6 +265,7 @@ $lang = [
 		'admin_edit_blog_post' => 'Editar este blog',
 		'admin_edit_artists' => 'Editar artistas',
 		'admin_edit_artist' => 'Editar este artista',
+		'admin_see_all_articles' => 'Ver todos los artículos',
 	),
 	'global' =>
 	array(

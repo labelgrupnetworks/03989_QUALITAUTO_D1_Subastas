@@ -51,7 +51,8 @@ class PageSetting
 			($routeName == 'blog.news') => $this->blogSettings($routeParams),
 			($routeName == 'artists') => $this->artistsSettings(),
 			($routeName == 'artist') => $this->artistSettings($routeParams),
-			default => [],
+			($routeName == 'articles' || $routeName == 'article') => $this->articlesSettings($routeParams),
+			default => []
 		};
 
 		// This function is used to view in page the route and route parameters
@@ -255,6 +256,18 @@ class PageSetting
 		return [
 			$canAccess ? $this->newRoute('edit_artists', route('artist.index')) : null,
 			$canAccess ? $this->newRoute('edit_artist', route('artist.edit', ['artist' => $params['idArtist']])) : null,
+		];
+	}
+
+	#endregion
+
+	#region Articles
+
+	private function articlesSettings()
+	{
+		$canAccess = in_array('articles', $this->config_menu_admin);
+		return [
+			$canAccess ? $this->newRoute('see_all_articles', route('articles.index')) : null,
 		];
 	}
 
