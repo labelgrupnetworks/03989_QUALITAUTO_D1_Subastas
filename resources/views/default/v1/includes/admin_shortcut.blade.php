@@ -7,7 +7,9 @@
 		<div class="gestor_buttons">
 			@foreach ($settings as $setting)
 				<a class="btn button-principal w-100 mb-1" href="{{ $setting['url'] }}" title="{{ $setting['name'] }}" target="_blank">
-					{{ trans("$theme-app.foot.admin_" . $setting['name'], $setting['name_val'] ? $setting['name_val'] : []) }}
+					<span>
+						{{ trans("$theme-app.foot.admin_" . $setting['name'], $setting['name_val'] ? $setting['name_val'] : []) }}
+					</span>
 				</a>
 			@endforeach
 		</div>
