@@ -103,7 +103,7 @@ Route::post('/subasta/modal_images_fullscreen', 'SubastaController@modalImagesFu
             */
 
 #lotes
-Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
+Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',))->name('subasta.lote_old.ficha');
 #NewLotes
 Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.lote.ficha');
 
@@ -127,7 +127,7 @@ Route::get(Routing::translateSeo('subastas-historicas-online'), 'SubastaControll
 Route::get(Routing::translateSeo('subastas-online'), 'SubastaController@subastas_online')->name('subastas.online');
 Route::get(Routing::translateSeo('subastas-permanentes'), 'SubastaController@subastas_permanentes')->name('subastas.permanentes');
 Route::get(Routing::translateSeo('venta-directa'), 'SubastaController@venta_directa')->name('subastas.venta_directa');
-Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones');
+Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones')->name('subastas.all');
 Route::get(Routing::translateSeo('subastas-activas'), 'SubastaController@subastas_activas')->name('subastas.activas');
 Route::get(Routing::translateSeo('subastas-especiales'), 'SubastaController@subastas_especiales')->name('subastas.especiales');
 
