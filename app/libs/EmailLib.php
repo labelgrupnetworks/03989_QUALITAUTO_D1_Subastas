@@ -7,27 +7,31 @@
  */
 
 namespace App\libs;
-use Illuminate\Support\Facades\Config;
-use DB;
-use Mail;
-use App\Models\User;
-use App\Models\Subasta;
-use App\Models\MailQueries;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\V5\CarlandiaPayController;
-use App\libs\TradLib as TradLib;
 use App\Jobs\MailJob;
+use App\libs\TradLib;
+use App\Models\MailQueries;
+use App\Models\Subasta;
+use App\Models\User;
 use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+
 /**
  * Description of Str_lib
  *
  * @author LABEL-RSANCHEZ
  */
+#[\AllowDynamicProperties]
 class EmailLib {
 
 private $atributes = array();
@@ -43,15 +47,18 @@ private $pdfs = array();
 public $old_lang = NULL;
 private $cc = array();
 private $debug = true;
-    public function __construct($cod_email){
-		#si existe la variable debug_email es la que manda, si no se usará APP_DEBUG
-		$this->debug = env('APP_DEBUG_EMAIL')??env('APP_DEBUG');
 
-        if ( $this->debug) {
-            $this->from = env('MAIL_FROM_ADDRESS') ?? Config::get('app.from_email');
-        }else{
-            $this->from = Config::get('app.from_email');
+	public function __construct($cod_email)
+	{
+		#si existe la variable debug_email es la que manda, si no se usará APP_DEBUG
+		$this->debug = Config::get('mail.debug_email') ?: Config::get('app.debug');
+
+        if ($this->debug) {
+			$this->from = Config::get('mail.from.address') ?: Config::get('app.from_email');
+		} else {
+			$this->from = Config::get('app.from_email');
         }
+
         $this->lang = Config::get('app.locale');
 
         $this->inicialize_atributes();
@@ -60,6 +67,7 @@ private $debug = true;
         $this->get_design($cod_email);
 
     }
+
     //generamos un archivo por cada cliente con los correos que le corresponden
     public function test_design($url, $cod_email = null) {
         //configuramso idiomas del cliente
@@ -122,38 +130,34 @@ private $debug = true;
         echo $text;
     }
 
-    public function send_email(){
-        //si no existe email cargado no se puede enviar
-        if(empty($this->email)){
-            return false;
-        }
-		$this->replace();
-		#quitado 11/01/2023 \Config::get("app.queueEmails") &&
-		if(env("QUEUE_CONNECTION") != "sync" && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)){
-			MailJob::dispatch($this)->onQueue( Config::get('app.queue_env'));
-			return true;
-		}else{
-			try{
-
-				return $this->send();
-
-			}catch (\Exception $e) {
-				if(!empty($this->email)){
-					\Log::error("Error Send email: ". $this->email->cod_email);
-					$this->setEmailLog('E');
-				}
-				\Log::error($e);
-				if(!empty($this->old_lang)){
-					\App::setLocale($this->old_lang);
-				}
-				return false;
-			}
+	public function send_email()
+	{
+		//si no existe email cargado no se puede enviar
+		if (empty($this->email)) {
+			return false;
 		}
 
+		$this->replace();
+		#quitado 11/01/2023 \Config::get("app.queueEmails") &&
+		if (Config::get('queue.default') != "sync" && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)) {
+			MailJob::dispatch($this)->onQueue(Config::get('app.queue_env'));
+			return true;
+		}
 
+		try {
+			return $this->send();
 
-
-       //
+		} catch (\Exception $e) {
+			if (!empty($this->email)) {
+				Log::error("Error Send email: " . $this->email->cod_email);
+				$this->setEmailLog('E');
+			}
+			Log::error($e);
+			if (!empty($this->old_lang)) {
+				App::setLocale($this->old_lang);
+			}
+			return false;
+		}
 	}
 
 	public function send_email_queue(){
@@ -173,7 +177,7 @@ private $debug = true;
 
 
     public function get_design($cod_email ){
-        $sql="select  NVL(LANG.SUBJECT_LANG,EMAIL.SUBJECT_EMAIL) SUBJECT_EMAIL, NVL(LANG.BODY_LANG,EMAIL.BODY_EMAIL) BODY_EMAIL, UTM_EMAIL, DESIGN_TEMPLATE, COD_EMAIL, TYPE_EMAIL from FSEMAIL EMAIL
+		$sql = "select  NVL(LANG.SUBJECT_LANG,EMAIL.SUBJECT_EMAIL) SUBJECT_EMAIL, NVL(LANG.BODY_LANG,EMAIL.BODY_EMAIL) BODY_EMAIL, UTM_EMAIL, DESIGN_TEMPLATE, COD_EMAIL, TYPE_EMAIL, TO_EMAIL, BCC_EMAIL from FSEMAIL EMAIL
             left join FSEMAIL_TEMPLATE TEMPLATE ON TEMPLATE.EMP_TEMPLATE = EMAIL.EMP_EMAIL AND TEMPLATE.COD_TEMPLATE = EMAIL.COD_TEMPLATE_EMAIL
             LEFT JOIN  FSEMAIL_LANG LANG ON LANG.EMP_LANG = EMAIL.EMP_EMAIL AND LANG.CODEMAIL_LANG = EMAIL.COD_EMAIL AND LANG.LANG_LANG = :lang
             where emp_email= :emp AND cod_email = :cod_email and enabled_email=1";
@@ -532,104 +536,109 @@ private $debug = true;
 
     }
 
+	private function send()
+	{
+		if (!Config::get('app.enable_emails')) {
+			return false;
+		}
 
+		$this->checkTo();
 
-    private function send(){
+		//si esta configurada la opcción envio de copias y existe el mailbox, envia una copia a ese mailbox
+		//bcc de la tabla Config
+		if (
+			Config::get('app.copies_emails')
+			&& !empty(Config::get('app.copies_emails_mailbox'))
+			&& $this->to != Config::get('app.debug_to_email')
+		) {
+			$emailsEnCopia = explode(";", Config::get('app.copies_emails_mailbox'));
+			foreach ($emailsEnCopia as $item) {
+				$this->bcc[] = $item;
+			}
+		}
 
+		//añadimos los bcc de base de datos
+		if($this->email->bcc_email) {
+			$bcc_emails = explode(";", $this->email->bcc_email);
+			foreach ($bcc_emails as $bcc_email) {
+				$this->bcc[] = $bcc_email;
+			}
+		}
 
+		// KIKE - Añadido el 31/05/2019. Controlamos si relamente hay un receptor del email. Se envian mails a usuarios
+		// dados de alta desde ERP sin email. Así evitamos estos envíos.
+		if (!empty($this->to)) {
 
-            if (!Config::get('app.enable_emails')){
-                return False;
-            }
+			Mail::send('emails.' . $this->blade, array("HTML_email" => $this->HTML_email), function ($m) {
+				$m->from($this->from, Config::get('app.name'));
+				$m->to($this->to, $this->to_name)->subject($this->email->subject_email);
+				if (!$this->debug) {
 
-            $this->checkTo();
+					foreach ($this->bcc as $bcc) {
+						$m->bcc(trim($bcc), trim($bcc));
+					}
 
-             //si esta configurada la opcción envio de copias y existe el mailbox, envia una copia a ese mailbox
+					foreach ($this->cc as $cc) {
+						$m->cc(trim($cc), trim($cc));
+					}
+				}
 
-            // KIKE - Permitimos enviar a mas de un usuario las copias de los emails (BELIVE)
-            // Emails separados por ;
+				if (!empty($this->attachments)) {
+					foreach ($this->attachments as $item) {
+						$m->attach($item);
+					}
+				}
 
-            if (Config::get('app.copies_emails') && !empty(Config::get('app.copies_emails_mailbox')) && !$this->debug && $this->to != Config::get('app.debug_to_email')) {
-                $emailsEnCopia = explode(";",Config::get('app.copies_emails_mailbox'));
-                foreach($emailsEnCopia as $item) {
-                    $this->bcc[] = $item;
-                }
+				if (!empty($this->pdfs)) {
+					foreach ($this->pdfs as $key => $pdf) {
+						$m->attachData($pdf->output(), "$key.pdf");
+					}
+				}
+				if (!empty($this->attachmentsFiles)) {
+					foreach ($this->attachmentsFiles as $file) {
+						$m->attach(
+							$file->getRealPath(),
+							[
+								'as' => $file->getClientOriginalName(),
+								'mime' => $file->getClientMimeType(),
+							]
+						);
+					}
+				}
+			});
+			$this->setEmailLog('S');
+		} else {
+			$this->setEmailLog('E');
+		}
+		if (!empty($this->old_lang)) {
+			App::setLocale($this->old_lang);
+		}
+		return true;
+	}
 
-            }
-
-            // KIKE - Añadido el 31/05/2019. Controlamos si relamente hay un receptor del email. Se envian mails a usuarios
-            // dados de alta desde ERP sin email. Así evitamos estos envíos.
-
-
-            if (!empty($this->to)) {
-
-                Mail::send('emails.'.$this->blade, array("HTML_email"=>$this->HTML_email), function ($m)  {
-                        $m->from($this->from, Config::get('app.name'));
-                        $m->to($this->to, $this->to_name)->subject($this->email->subject_email);
-                        if(!$this->debug){
-                            foreach ($this->bcc as $bcc){
-                                $m->bcc( trim($bcc), trim($bcc));
-                            }
-                            foreach ($this->cc as $cc){
-                                $m->cc( trim($cc), trim($cc));
-                            }
-                        }
-
-                        if (!empty($this->attachments)) {
-                            foreach($this->attachments as $item) {
-                                $m->attach($item);
-                            }
-						}
-
-						if(!empty($this->pdfs)){
-							foreach($this->pdfs as $key => $pdf) {
-								$m->attachData($pdf->output(), "$key.pdf");
-							}
-						}
-						if(!empty($this->attachmentsFiles)){
-							foreach($this->attachmentsFiles as $file) {
-								$m->attach($file->getRealPath(),
-								[
-									'as' => $file->getClientOriginalName(),
-									'mime' => $file->getClientMimeType(),
-								]);
-							}
-						}
-
-                    });
-                    $this->setEmailLog('S');
-
-            } else  {
-                 $this->setEmailLog('E');
-            }
-            if(!empty($this->old_lang)){
-                \App::setLocale($this->old_lang);
-            }
-            return true;
-
-
-    }
-
-    private function checkTo(){
-
+    private function checkTo()
+	{
         if ($this->debug) {
-            $this->to = !empty(env('MAIL_TO')) ? env('MAIL_TO') : explode(";", Config::get('app.debug_to_email'));
-
-        }else{
-            if(strpos($this->to, ';') > 0){
-                $explode_email = explode(";", $this->to);
-                foreach($explode_email as $key=> $email){
-                    if($key==0){
-                        $this->to = trim($email);
-                    }else{
-                        $this->cc[]=trim($email);
-                    }
-
-                }
-
-            }
+			$this->to = Config::get('mail.mail_to') ?: explode(";", Config::get('app.debug_to_email'));
+			return;
         }
 
+		// Si esta configurado en la base de datos el email de destino, lo usamos
+		if($this->email->type_email === "A" && $this->email->to_email) {
+			$this->to = $this->email->to_email;
+		}
+
+		if (strpos($this->to, ';') === false) {
+			return;
+		}
+
+		$explode_email = explode(";", $this->to);
+
+		$this->to = trim(array_shift($explode_email));
+		foreach ($explode_email as $email) {
+			$this->cc[] = $email;
+		}
+		return;
     }
 
     private function setEmailLog($sended){
@@ -763,7 +772,7 @@ private $debug = true;
             'LOT_TITLE'=> NULL,
 			'LOT_OPEN' => NULL,
             'NAME'=> NULL,
-            'NAME_EMP'=> \Config::get("app.name"),
+            'NAME_EMP'=> Config::get("app.name"),
             'ORDER_ID'=> NULL,
             'PASSWORD'=> NULL,
             'PHONE'=> NULL,
