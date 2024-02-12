@@ -81,44 +81,26 @@
                 @include('includes.ficha.ficha_description')
             </section>
 
-            @php
-                $category = App\Models\V5\FgOrtsec1::select('lin_ortsec1', 'des_ortsec0', 'key_ortsec0')
-                    ->JoinFgOrtsec0()
-                    ->where('sec_ortsec1', $lote_actual->sec_hces1)
-                    ->first();
-                $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual->num_hces1, $lote_actual->lin_hces1);
-            @endphp
-
             <section class="ficha-features">
-
-                @if (count($caracteristicas) !== 0)
-                    <div class="features mb-3">
-                        <h5>{{ trans("$theme-app.features.features") }}</h5>
-
-                        <div class="gird-features">
-                            @foreach ($caracteristicas as $caracteristica)
-                                <p class="feature-name">
-                                    {{ trans("$theme-app.features.$caracteristica->name_caracteristicas") }}
-                                </p>
-                                <p class="feature-value">{{ $caracteristica->value_caracteristicas_hces1 }}</p>
-                            @endforeach
-                        </div>
-
-                    </div>
-                @endif
-
-                @if (!empty($category))
-                    <div class="categories">
-                        <h5>{{ trans(\Config::get('app.theme') . '-app.lot.categories') }}</h5>
-
-                        <a class="no-decoration"
-                            href="{{ route('category', ['keycategory' => $category->key_ortsec0]) }}"
-                            alt="{{ $category->des_ortsec0 }}">
-                            <span class="badge badge-custom-primary">{{ $category->des_ortsec0 }}</span>
-                        </a>
-                    </div>
-                @endif
+				@include('includes.ficha.features')
             </section>
+
+			@if (in_array($lote_actual->cod_sub, ['CEREMATE', 'COMDEUDA', 'REOS']))
+				<section class="ficha-login">
+					<p class="mb-2">
+						Si quieres tener una VALORACIÓN REAL de este activo a fecha de hoy por el que muestras interés de forma
+						TOTALMENTE GRATUITA, ve a <button class="btn btn-primary btn_login">login</button> completa los datos y
+						solicita más información. Uno de nuestros expertos
+						valorará el activo con el máximo detalle y precisión y se pondrá en contacto contigo para transmitirte el
+						resultado de la valoración.
+					</p>
+					@if (Session::has('user'))
+						<button class="btn btn-lb-primary w-100">
+							Sí, quiero una valoración real
+						</button>
+					@endif
+				</section>
+			@endif
 
         </div>
 
@@ -126,10 +108,6 @@
 
 			<section class="ficha-image">
 				@include('includes.ficha.ficha_image')
-			</section>
-
-			<section class="ficha-share d-none d-md-flex">
-				@include('includes.ficha.share')
 			</section>
 
 			<section class="ficha-previous-next">
@@ -150,6 +128,17 @@
                 </a>
             </section>
 
+			<section class="ficha-countdown">
+				@if($cerrado_N && !empty($timeCountdown) && strtotime($timeCountdown) > getdate()[0])
+				<p class="ficha-info-clock">
+					<span class="timer"
+						data-{{$nameCountdown}}="{{ strtotime($timeCountdown) - getdate()[0] }}"
+						data-format="<?= \Tools::down_timer($timeCountdown, "complete"); ?>">
+					</span>
+				</p>
+				@endif
+			</section>
+
 			<section class="ficha-pujas">
 				@include('includes.ficha.ficha_pujas')
 			</section>
@@ -167,7 +156,7 @@
 				@include('includes.ficha.files')
 			</section>
 
-			<section class="ficha-share d-md-none">
+			<section class="ficha-share">
 				@include('includes.ficha.share')
 			</section>
 		</div>

@@ -36,14 +36,31 @@ html {
 	accent-color: var(--lb-color-primary);
 }
 
-.form-select, .form-control {
+.form-select,
+.form-control {
 	border: 1px solid var(--bs-border-color);
 }
 
-.form-select:focus, .form-control:focus {
+.form-select:focus,
+.form-control:focus {
 	border-color: var(--bs-border-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, .25);
+	outline: 0;
+	box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, .25);
+}
+
+.input-group-text {
+	border: 1px solid var(--bs-border-color);
+}
+
+/* .input-group .btn.btn-lb-primary { */
+.btn-lb-primary {
+	--bs-btn-border-color: #4e4e4e;
+	--bs-btn-hover-border-color: #4e4e4e;
+	--bs-btn-active-border-color: #4e4e4e;
+	--bs-btn-border-width: 2px;
+	--bs-btn-active-bg: #000;
+	--bs-btn-hover-bg: #000;
+	border-radius: 10px;
 }
 
 .btn {
@@ -57,6 +74,17 @@ html {
 	--bs-btn-active-border-color: var(--lb-color-primary-dark);
 	--bs-btn-hover-color: var(--lb-color-primary-dark);
 	--bs-btn-hover-border-color: var(--lb-color-primary-dark);
+}
+
+.btn-light {
+	--bs-btn-border-color: #4e4e4e;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #000;
+	--bs-btn-hover-border-color: #4e4e4e;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #000;
+	--bs-btn-active-border-color: #4e4e4e;
+	border-width: 2px;
 }
 
 .btn[data-escalado-position] {
@@ -77,7 +105,7 @@ body> :is(header, footer, .subnav) {
 	color: var(--lb-color-primary-contrast);
 }
 
-body> :is(header, .subnav) {
+body> :is(.subnav) {
 	background-color: #fff;
 	color: rgba(0, 0, 0, 0.9);
 }
@@ -95,6 +123,7 @@ body>footer {
 
 main {
 	padding-bottom: 2rem;
+	padding-top: 1rem;
 }
 
 h1,
@@ -130,7 +159,14 @@ header .navbar .navbar-nav {
 header .nav-link {
 	--bs-nav-link-color: var(--bs-navbar-color);
 	color: var(--bs-nav-link-color);
+	border: 0;
+	outline-offset: 0;
 	transition: color .4s ease-in-out;
+}
+
+header .nav-link:is(:focus, ::selection, :focus-visible) {
+	border: 0;
+	outline-offset: 0;
 }
 
 header .nav-link.lb-text-primary {
@@ -143,10 +179,10 @@ header .nav-link:hover {
 
 header .navbar-nav .dropdown-menu {
 	--bs-dropdown-border-radius: 0;
-    --bs-dropdown-color: currentColor;
-    --bs-dropdown-bg: transparent;
-    --bs-dropdown-link-color: currentColor;
-    --bs-dropdown-link-hover-bg: transparent;
+	--bs-dropdown-color: currentColor;
+	--bs-dropdown-bg: transparent;
+	--bs-dropdown-link-color: currentColor;
+	--bs-dropdown-link-hover-bg: transparent;
 	--bs-dropdown-link-active-bg: transparent;
 }
 
@@ -168,7 +204,8 @@ header .navbar-nav .dropdown-menu {
 	}
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.dropdown-item:focus,
+.dropdown-item:hover {
 	text-decoration: none;
 }
 
@@ -178,7 +215,7 @@ header .navbar-nav .dropdown-menu {
 		position: relative;
 	}
 
-/* 	header .nav-link span::after {
+	/* 	header .nav-link span::after {
 		content: '';
 		left: -10px;
 		top: 0;
@@ -222,7 +259,7 @@ header .navbar-nav .dropdown-menu {
 	flex-wrap: wrap;
 }
 
-.header-brand > .navbar-brand {
+.header-brand>.navbar-brand {
 	display: flex;
 	justify-content: center;
 	flex: 1;
@@ -235,18 +272,18 @@ header .navbar-nav .dropdown-menu {
 }
 
 @media(min-width: 768px) {
-	.header-brand > .navbar-brand {
+	.header-brand>.navbar-brand {
 		width: auto;
 	}
 }
 
 header .navbar-toggler {
-    padding: 4px;
+	padding: 4px;
 	width: auto;
 	aspect-ratio: 1;
-    color: var(--bs-navbar-color);
-    background-color: transparent;
-    border: 2px solid var(--bs-navbar-color);
+	color: var(--bs-navbar-color);
+	background-color: transparent;
+	border: 2px solid var(--bs-navbar-color);
 }
 
 footer .nav-link {
@@ -256,10 +293,10 @@ footer .nav-link {
 
 main.grid .btn-outline-border-lb-primary {
 	--bs-btn-color: #000;
-    --bs-btn-active-color: #000;
-    --bs-btn-active-border-color: #000;
-    --bs-btn-hover-color: #000;
-    --bs-btn-hover-border-color: #000;
+	--bs-btn-active-color: #000;
+	--bs-btn-active-border-color: #000;
+	--bs-btn-hover-color: #000;
+	--bs-btn-hover-border-color: #000;
 }
 
 main.grid .column_banner {
@@ -269,25 +306,27 @@ main.grid .column_banner {
 .grid-auction-title {
 	display: flex;
 	align-items: center;
-	width: 66%;
+	width: 50%;
 	margin: auto;
 	display: flex;
+	gap: 0.5rem
 }
 
 .grid-auction-title h2 {
 	font-size: 17px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    line-height: 1.8em;
-    text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	line-height: 1.8em;
+	text-align: center;
 }
 
-.grid-auction-title::before, .grid-auction-title::after {
+.grid-auction-title::before,
+.grid-auction-title::after {
 	display: block;
-    content: "";
-    border-block-end: 0;
-    flex-grow: 1;
-    border-block-start: 5px dotted #000;
+	content: "";
+	border-block-end: 0;
+	flex-grow: 1;
+	border-block-start: 5px dotted #000;
 }
 
 /* sin sticky ni scroll */
@@ -308,17 +347,17 @@ main.grid .column_banner {
 .label-grid.label-auction {
 	--bg-auction: var(--lb-color-primary);
 	rotate: none;
-    transform: rotate(0);
-    -webkit-transform: rotate(0);
-    -webkit-transform: rotate(0);
-    -ms-transform: rotate(0);
-    top: 0;
-    left: 0;
-    right: initial;
-    height: auto;
-    padding: 4px;
-    width: auto;
-    font-size: .9em;
+	transform: rotate(0);
+	-webkit-transform: rotate(0);
+	-webkit-transform: rotate(0);
+	-ms-transform: rotate(0);
+	top: 0;
+	left: 0;
+	right: initial;
+	height: auto;
+	padding: 4px;
+	width: auto;
+	font-size: .9em;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 	background-color: var(--bg-auction);
 }
@@ -355,14 +394,22 @@ main.ficha h5 {
 	text-wrap: balance;
 }
 
-.ficha-grid > div > section {
+.ficha-grid>div>section {
 	margin-bottom: 1rem;
 }
 
-.ficha-grid > div > section:not(.ficha-title, .ficha-share, .ficha-previous-next, .ficha-contact) {
-	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
-    padding: 0.5rem;
-    border-radius: 10px;
+.ficha-grid>div>section:not(.ficha-title, .ficha-previous-next, .ficha-contact, .ficha-countdown) {
+	/* box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+    border-radius: 10px; */
+	padding: 0.5rem;
+	box-shadow: none;
+	border: 2px solid #000;
+	border-radius: 0;
+}
+
+.ficha-grid>div>section.ficha-features {
+	background-color: #000;
+	color: #fff;
 }
 
 .ficha-grid .ficha-files:not(:has(a)) {
@@ -373,10 +420,10 @@ main.ficha h5 {
 	display: none;
 }
 
-.ficha-grid > section:not(.ficha-title, .ficha-share, .ficha-previous-next) {
+.ficha-grid>section:not(.ficha-title, .ficha-share, .ficha-previous-next) {
 	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
-    padding: 0.5rem;
-    border-radius: 10px;
+	padding: 0.5rem;
+	border-radius: 10px;
 }
 
 .ficha-description {
@@ -412,14 +459,25 @@ section.ficha-features {
 
 section.ficha-share {
 	display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    justify-content: space-between;
-    gap: 1rem;
+	flex-direction: column;
+	align-self: stretch;
+	justify-content: space-between;
+	gap: 1rem;
 }
 
-section.ficha-previous-next {
-	display: none;
+section.ficha-share a {
+	display: inline-block;
+	line-height: 1;
+	border: 1px solid var(--color-share);
+	color: var(--color-share);
+	border-radius: 50%;
+	padding: 10px;
+	transition: background-color .4s ease-in-out, color .4s ease-in-out;
+}
+
+section.ficha-share a:hover {
+	background-color: var(--color-share);
+	color: #fff;
 }
 
 @media (min-width: 992px) {
@@ -478,6 +536,35 @@ section.ficha-previous-next {
 .ficha-date-closing {
 	font-size: .9em;
 	opacity: .8;
+}
+
+.ficha-info-clock .timer {
+	display: flex;
+	justify-content: center;
+	gap: .5rem;
+}
+
+.ficha-info-clock .timer>* {
+	flex: 1 1 0px;
+	width: 0;
+	max-width: 85px;
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	/* border: 1px solid black; */
+	box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+	border-radius: 10px;
+}
+
+.ficha-info-clock .timer>*>:first-child {
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.ficha-info-clock .timer>*>:not(:first-child) {
+	font-size: 12px;
 }
 
 .hist_content .bidder-identifier {
@@ -539,11 +626,11 @@ section.ficha-previous-next {
 }
 
 .contact-page-info-house-auction {
-    background: rgb(223 190 175 / 30%);
-    height: auto;
-    box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
-    padding: 4rem 2rem;
-    border-radius: 10px;
+	background: rgb(223 190 175 / 30%);
+	height: auto;
+	box-shadow: var(--lb-color-primary-light) 0px 1px 4px, var(--lb-color-primary-light) 0px 3px 4px;
+	padding: 4rem 2rem;
+	border-radius: 10px;
 }
 
 .contact-page-info-house-auction h3 {
@@ -551,7 +638,7 @@ section.ficha-previous-next {
 }
 
 .banner_grid {
-	padding:0 0 1rem 0;
+	padding: 0 0 1rem 0;
 }
 
 main.static-page * {
@@ -573,12 +660,12 @@ main.static-page img {
 	gap: 5px;
 }
 
-.lot-card .card-title > p {
+.lot-card .card-title>p {
 	background: black;
-    color: white;
-    padding: 2px 3px;
-    align-self: flex-start;
-    line-height: 1;
+	color: white;
+	padding: 2px 3px;
+	align-self: flex-start;
+	line-height: 1;
 }
 
 .lot-card :is(.lot-salida-price, .lot-actual-bid) {
@@ -589,4 +676,52 @@ main.static-page img {
 .lot-card .lot-salida-price {
 	font-weight: 700;
 	border: 1px solid #198754;
+}
+
+@media (min-width: 200px) {
+	.animate {
+		animation-duration: 0.3s;
+		-webkit-animation-duration: 0.3s;
+		animation-fill-mode: both;
+		-webkit-animation-fill-mode: both;
+	}
+}
+
+@keyframes slideIn {
+	0% {
+		transform: translateY(1rem);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0rem);
+		opacity: 1;
+	}
+
+	0% {
+		transform: translateY(1rem);
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes slideIn {
+	0% {
+		-webkit-transform: transform;
+		-webkit-opacity: 0;
+	}
+
+	100% {
+		-webkit-transform: translateY(0);
+		-webkit-opacity: 1;
+	}
+
+	0% {
+		-webkit-transform: translateY(1rem);
+		-webkit-opacity: 0;
+	}
+}
+
+.slideIn {
+	-webkit-animation-name: slideIn;
+	animation-name: slideIn;
 }

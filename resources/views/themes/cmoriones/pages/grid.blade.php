@@ -14,7 +14,7 @@
         <div class="container grid-header">
             <div class="row">
 
-				<div class="col-12 py-2">
+				<div class="col-12 py-3">
 					<div class="grid-auction-title">
 						<h2 class="">
 							La Web DE LOS EXPERTOS EN <br>Subastas Inmobiliarias y  NPLS  en españa. <br> Y TODO LO QUE NECESITAS PARA CONVERTIRTE <br>EN UN INVERSOR inmobiliario

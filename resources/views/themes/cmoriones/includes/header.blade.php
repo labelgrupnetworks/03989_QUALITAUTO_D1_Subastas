@@ -11,54 +11,52 @@
 @endphp
 
 <div class="first-header-wrapper">
-	<div class="container py-1 bk-gray">
-		<div class="d-flex justify-content-end align-items-center gap-3">
+    <div class="container py-1 bk-gray">
+        <div class="d-flex justify-content-end align-items-center gap-3">
 
-			@include('components.search', [
-				'classes' => 'me-auto d-none d-xl-block',
-				'searchAction' => $searchAction,
-			])
+            @include('components.search', [
+                'classes' => 'me-auto d-none d-xl-block',
+                'searchAction' => $searchAction,
+            ])
 
-			@if (!Session::has('user'))
-				<button
-					class="btn btn-sm btn-lb-primary btn_login">{{ trans($theme . '-app.login_register.login') }}</button>
-			@else
-				<a class="btn btn-sm btn-lb-primary"
-					href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme . '-app.login_register.my_panel') }}</a>
+            @if (!Session::has('user'))
+                <button
+                    class="btn btn-sm btn-lb-primary btn_login">{{ trans($theme . '-app.login_register.login') }}</button>
+            @else
+                <a class="btn btn-sm btn-lb-primary"
+                    href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme . '-app.login_register.my_panel') }}</a>
 
-				@if (Session::get('user.admin'))
-					<a class="btn btn-sm btn-lb-primary" href="/admin" target = "_blank">
-						{{ trans($theme . '-app.login_register.admin') }}</a>
-				@endif
+                @if (Session::get('user.admin'))
+                    <a class="btn btn-sm btn-lb-primary" href="/admin" target = "_blank">
+                        {{ trans($theme . '-app.login_register.admin') }}</a>
+                @endif
 
-				<a class="btn btn-sm btn-lb-primary"
-					href="{{ \Routing::slug('logout') }}">{{ trans($theme . '-app.login_register.logout') }}</a>
-			@endif
+                <a class="btn btn-sm btn-lb-primary"
+                    href="{{ \Routing::slug('logout') }}">{{ trans($theme . '-app.login_register.logout') }}</a>
+            @endif
 
-			@include('includes.header.language_selector')
-		</div>
-	</div>
+            @include('includes.header.language_selector')
+        </div>
+    </div>
 </div>
 
 <section class="container-fluid subnav">
-	<div class="header-brand">
-		<a class="navbar-brand d-none d-lg-block" href="/{{ $lang }}"
-			title="{{ \Config::get('app.name') }}">
-			<img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/hammer.webp"
-				alt="{{ \Config::get('app.name') }}" width="400">
-		</a>
+    <div class="header-brand">
+        <a class="navbar-brand d-none d-lg-block" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+            <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/hammer.webp"
+                alt="{{ \Config::get('app.name') }}" width="400">
+        </a>
 
-		<a class="navbar-brand" href="/{{ $lang }}"
-			title="{{ \Config::get('app.name') }}">
-			<img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.webp"
-				alt="{{ \Config::get('app.name') }}" width="400">
-		</a>
+        <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+            <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.webp"
+                alt="{{ \Config::get('app.name') }}" width="400">
+        </a>
 
-		<a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-			<img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.webp"
-				alt="{{ \Config::get('app.name') }}" width="200" height="300">
-		</a>
-	</div>
+        <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+            <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.webp"
+                alt="{{ \Config::get('app.name') }}" width="200" height="300">
+        </a>
+    </div>
 </section>
 
 <header>
@@ -84,12 +82,13 @@
                     @if (!empty($categories))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="categoriesHeader" data-bs-toggle="dropdown"
-                                href="#" aria-expanded="false">
+                                data-lb-trigger="hover" data-bs-auto-close="outside" href="#"
+                                aria-expanded="false">
                                 <span>
                                     {{ trans("$theme-app.lot.categories") }}
                                 </span>
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="categoriesHeader">
+                            <ul class="dropdown-menu animate slideIn" aria-labelledby="categoriesHeader">
                                 @foreach ($categories as $category)
                                     <li>
                                         <a class="dropdown-item"
@@ -103,14 +102,14 @@
                     @endif
 
                     <li class="nav-item dropdown">
-                        <a id="auctionsHeader" data-bs-toggle="dropdown" href="#" aria-expanded="false"
-                            @class([
+                        <a id="auctionsHeader" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                            data-lb-trigger="hover" href="#" aria-expanded="false" @class([
                                 'nav-link dropdown-toggle',
                                 'lb-text-primary' => $pageName === 'urlAuction',
                             ])>
                             <span>subastas</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="auctionsHeader">
+                        <ul class="dropdown-menu animate slideIn" aria-labelledby="auctionsHeader">
 
                             @foreach ($activeAuctions as $auction)
                                 <li>
@@ -124,14 +123,15 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a id="auctionsHeader" data-bs-toggle="dropdown" href="#" aria-expanded="false"
+                        <a id="auctionsHeader" data-bs-toggle="dropdown" data-lb-trigger="hover"
+                            data-bs-auto-close="outside" href="#" aria-expanded="false"
                             @class([
                                 'nav-link dropdown-toggle',
                                 'lb-text-primary' => $pageName === 'valoracion',
                             ])>
                             <span>Publique con nosotros</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="auctionsHeader">
+                        <ul class="dropdown-menu animate slideIn" aria-labelledby="auctionsHeader">
                             <li>
                                 <a class="dropdown-item"
                                     href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale'), 'rep' => 'AC']) }}">

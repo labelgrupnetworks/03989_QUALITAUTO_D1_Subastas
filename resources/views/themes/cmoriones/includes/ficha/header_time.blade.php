@@ -6,14 +6,7 @@
 			{{ $lote_actual->name }}
 		</h4>
 
-		@if($cerrado_N && !empty($timeCountdown) && strtotime($timeCountdown) > getdate()[0])
-		<p class="ficha-info-clock">
-			<span class="timer"
-				data-{{$nameCountdown}}="{{ strtotime($timeCountdown) - getdate()[0] }}"
-				data-format="<?= \Tools::down_timer($timeCountdown); ?>">
-			</span>
-		</p>
-		@elseif($cerrado)
+		@if($cerrado)
 		<p class="ficha-info-clock">{{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}</p>
 		@endif
 	</div>
