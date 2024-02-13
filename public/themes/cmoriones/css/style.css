@@ -390,6 +390,7 @@ main.ficha h5 {
 
 .ficha-grid {
 	display: flex;
+	gap: 0;
 }
 
 .ficha-grid .ficha-title {

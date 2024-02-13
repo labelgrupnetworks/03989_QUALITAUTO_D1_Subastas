@@ -104,7 +104,7 @@
 
         </div>
 
-        <div class="col order-0 order-md-1">
+        <div class="col-12 col-md-7 col-xl-6 order-0 order-md-1">
 
 			<section class="ficha-image">
 				@include('includes.ficha.ficha_image')
