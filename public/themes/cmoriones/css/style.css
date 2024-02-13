@@ -167,6 +167,7 @@ header .nav-link {
 header .nav-link:is(:focus, ::selection, :focus-visible) {
 	border: 0;
 	outline-offset: 0;
+	outline: none;
 }
 
 header .nav-link.lb-text-primary {
@@ -184,6 +185,7 @@ header .navbar-nav .dropdown-menu {
 	--bs-dropdown-link-color: currentColor;
 	--bs-dropdown-link-hover-bg: transparent;
 	--bs-dropdown-link-active-bg: transparent;
+	top: 35px;
 }
 
 @media(min-width: 1200px) {
