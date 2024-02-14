@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1 class="titlePage title-80 bold my-4">{{ trans(\Config::get('app.theme') . '-app.artist.artists') }}
+                <h1 class="titlePage title-80 bold my-4">{{ trans($theme . '-app.artist.artists') }}
                 </h1>
             </div>
         </div>

@@ -1,19 +1,19 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.foot.faq') }}
+    {{ trans($theme . '-app.foot.faq') }}
 @stop
 
 @section('content')
     <?php
-    $bread[] = ['name' => trans(\Config::get('app.theme') . '-app.foot.contact')];
+    $bread[] = ['name' => trans($theme . '-app.foot.contact')];
     ?>
     <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 contact-data text-center">
-				<h1 class="">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
+				<h1 class="">{{ trans($theme . '-app.foot.contact') }}</h1>
 			</div>
 		</div>
 	</div>
@@ -38,28 +38,28 @@
                     <div class="form-group row">
                         <div class="input-effect col-xs-12 col-md-9">
                             {!! $data['formulario']['nombre'] !!}
-                            <label>{{ trans(\Config::get('app.theme') . '-app.login_register.contact') }}</label>
+                            <label>{{ trans($theme . '-app.login_register.contact') }}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="input-effect col-xs-12 col-md-9">
                             {!! $data['formulario']['email'] !!}
-                            <label>{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_text_input') }}</label>
+                            <label>{{ trans($theme . '-app.foot.newsletter_text_input') }}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="input-effect col-xs-12 col-md-9">
                             {!! $data['formulario']['telefono'] !!}
-                            <label>{{ trans(\Config::get('app.theme') . '-app.user_panel.phone') }}</label>
+                            <label>{{ trans($theme . '-app.user_panel.phone') }}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="input-effect col-xs-12">
                             {!! $data['formulario']['comentario'] !!}
-                            <label>{{ trans(\Config::get('app.theme') . '-app.global.coment') }}</label>
+                            <label>{{ trans($theme . '-app.global.coment') }}</label>
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
             <div class="col-xs-12 col-md-4">
                 <div class="contact-data">
 
-                    <h1 class="title-80">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
+                    <h1 class="title-80">{{ trans($theme . '-app.foot.contact') }}</h1>
                     <h2 class="title-30">{{ trans("$theme-app.login_register.direccion") }}</h2>
                     <p>{!! trans("$theme-app.global.gallery_address") !!}</p>
 

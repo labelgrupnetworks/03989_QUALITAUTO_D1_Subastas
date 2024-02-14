@@ -19,7 +19,7 @@
 
 
             </div>
-            <p> {{ $cuantos->cuantos }} {{ trans(\Config::get('app.theme') . '-app.subastas.obras') }}
+            <p> {{ $cuantos->cuantos }} {{ trans($theme . '-app.subastas.obras') }}
         </div>
 
     </div>
