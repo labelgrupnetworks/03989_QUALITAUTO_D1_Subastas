@@ -6,7 +6,7 @@
                 <div class="form-group has-feedback">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-                        <input data-error="{{ trans(\Config::get('app.theme').'-app.login_register.write_valid_email') }}" type="email" name="email" class="form-control" placeholder="Email" required>
+                        <input data-error="{{ trans($theme.'-app.login_register.write_valid_email') }}" type="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
                     <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                     <div class="help-block with-errors"></div>
@@ -21,7 +21,7 @@
                     <div class="help-block with-errors"></div>
                 </div>
                 <span class="message-error-log"></span>
-                <input onclick="javascript:login_web()" class="btn btn-primary btn-block btnLogin " type="button" value="{{ trans(\Config::get('app.theme').'-app.login_register.sign_in') }}">
+                <input onclick="javascript:login_web()" class="btn btn-primary btn-block btnLogin " type="button" value="{{ trans($theme.'-app.login_register.sign_in') }}">
             </form>
         </div>
     </div>
@@ -32,9 +32,9 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy_lot_question') }}</p>
-                    <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
+                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_stopped') }} <br /></p>
-                    <button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+                    <p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_stopped') }} <br /></p>
+                    <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -60,8 +60,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_pendiente') }}</p>
-                    <button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+                    <p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_pendiente') }}</p>
+                    <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_disconnected') }}</p>
+                    <p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.auction_disconnected') }}</p>
                     <div class="loader"></div>
                 </div>
             </div>
@@ -85,10 +85,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid_question') }}</p>
+                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_bid_question') }}</p>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -100,8 +100,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.loading') }} </p>
-                    <p class="txt_esperando_sala hidden"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.esperando_sala') }} </p> 
+                    <p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.loading') }} </p>
+                    <p class="txt_esperando_sala hidden"> {{ trans($theme.'-app.sheet_tr.esperando_sala') }} </p> 
                     <div class="loader"></div>
                 </div>
             </div>
@@ -114,11 +114,11 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.order_amount') }}</p>
+                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.order_amount') }}</p>
                     <input id="order_amount" autocomplete="off" class="form-control bid_amount_gestor" type="text">
                     <br />
-                    <button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -132,7 +132,7 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text">
-                    <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <span class="i_lot"></span></p>
+                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.lot') }} <span class="i_lot"></span></p>
                     <div class="row">
                         <div class="col-lg-4 img">
                             <img class="img-responsive" src="">
@@ -141,27 +141,27 @@
                             <p class="i_title"></p>
                             <p class="i_desc"></p>
                             <p>
-                                <span>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}</span>
+                                <span>{{ trans($theme.'-app.sheet_tr.start_price') }}</span>
                                 <span class="i_imp"></span>
                                 <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
                             </p>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" class="add_to_fav" data-from="modal"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.add_to_fav') }}
+                                    <input type="checkbox" class="add_to_fav" data-from="modal"> {{ trans($theme.'-app.sheet_tr.add_to_fav') }}
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="text-center">
-                        <span class="lot-msg_adjudicado hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i>  {{ trans(\Config::get('app.theme').'-app.sheet_tr.awarded') }}</b> <span class="imp_adj"></span></span>
-                        <span class="lot-msg_ensubasta hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}</b></span>
+                        <span class="lot-msg_adjudicado hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i>  {{ trans($theme.'-app.sheet_tr.awarded') }}</b> <span class="imp_adj"></span></span>
+                        <span class="lot-msg_ensubasta hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.in_auction') }}</b></span>
 
-                        <button data-from="modal" class="lot-action_comprar btn btn-primary pull-left hidden" type="button" ref="" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy') }}</button>
+                        <button data-from="modal" class="lot-action_comprar btn btn-primary pull-left hidden" type="button" ref="" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans($theme.'-app.sheet_tr.buy') }}</button>
 
-                        <button data-from="modal" class="lot-order_importe btn btn-primary  hidden" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.import_order') }}</button>  
+                        <button data-from="modal" class="lot-order_importe btn btn-primary  hidden" type="button">{{ trans($theme.'-app.sheet_tr.import_order') }}</button>  
                     </div>
                     <div >
-                        <button class="btn btn-primary modal-dismiss pull-right">{{ trans(\Config::get('app.theme').'-app.sheet_tr.close') }}</button>
+                        <button class="btn btn-primary modal-dismiss pull-right">{{ trans($theme.'-app.sheet_tr.close') }}</button>
                     </div>
                 </div>
             </div>
@@ -185,7 +185,7 @@
                                         <!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
                                         <!-- <p id="insert_msg"></p><br/> -->
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>

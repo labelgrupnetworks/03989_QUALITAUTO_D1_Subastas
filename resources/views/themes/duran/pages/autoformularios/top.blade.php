@@ -48,7 +48,7 @@
 						@elseif ($data['formulario'][$k]['type'] == "TextArea")
 							<div class="input-effect col-xs-12">
 								{!! $data['formulario'][$k]['formulario']!!}
-								<label><b class="red">*</b>{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+								<label><b class="red">*</b>{{ trans($theme.'-app.global.'.$k) }}</label>
 							</div>
 						
 						@elseif ($data['formulario'][$k]['type'] == "Image")
@@ -58,7 +58,7 @@
 						@else
 							<div class="input-effect col-xs-12 col-md-4">
 								{!! $data['formulario'][$k]['formulario']!!}
-								<label><b class="red">*</b>{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+								<label><b class="red">*</b>{{ trans($theme.'-app.global.'.$k) }}</label>
 							</div>
 						@endif
 
@@ -71,7 +71,7 @@
                                     <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                                 </div>
                                 <div class="col-xs-10 col-md-11">
-                                    <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                                    <label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                                 </div>
                             </div>
 						</div>

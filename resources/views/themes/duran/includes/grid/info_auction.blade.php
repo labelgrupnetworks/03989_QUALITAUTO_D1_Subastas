@@ -64,12 +64,12 @@
 					<div class="col-xs-12">
 					@foreach($sessions as $session)
 						<p><strong> {{$session->name_lang??$session->name}}.  <span style="color: #760043;">  {{ date_format(date_create_from_format('Y-m-d H:i:s',$session->start),'d/m/Y H:i') }}</span> </strong></p>
-						<p>{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_desde',["ini" =>$session->init_lot,"fin" =>$session->end_lot]) }}</strong></p>
+						<p>{{ trans($theme.'-app.lot_list.lotes_desde',["ini" =>$session->init_lot,"fin" =>$session->end_lot]) }}</strong></p>
 
 
 						<br/>
 					@endforeach
-					<p><strong>{{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.info')) }}</strong></p>
+					<p><strong>{{ mb_strtoupper(trans($theme.'-app.lot_list.info')) }}</strong></p>
 					</div>
 
 					<div  class=" col-xs-12  ">
@@ -98,8 +98,8 @@
 					<div class="col-xs-6 col-sm-3 col-md-6 pb-1" style="float: left;text-align: center;">
 					<img class="pr-1" style="height:182px;" src="/files/{{ $file->img }}">
 						<div class="botones-v w-100 d-flex">
-							<a class="ver" href="{{ $file->url }}" target="_blank">{{ mb_strtoupper(trans(\Config::get('app.theme').'-app.sheet_tr.view')) }}</a>
-							<a class="descargar" href="/files/{{ $file->path }}"  target="_blank">{{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.download')) }}</a>
+							<a class="ver" href="{{ $file->url }}" target="_blank">{{ mb_strtoupper(trans($theme.'-app.sheet_tr.view')) }}</a>
+							<a class="descargar" href="/files/{{ $file->path }}"  target="_blank">{{ mb_strtoupper(trans($theme.'-app.lot_list.download')) }}</a>
 						</div>
 					</div>
 				@endforeach
@@ -113,10 +113,10 @@
 					<img src="{{ $file->img }}">
 					<div class="d-flex justify-content-space-between">
 						{{-- @if ($auction->cod_sub <=616) --}}
-							<a class="ver" href="{{ $file->url }}" target="_blank">{{ mb_strtoupper(trans(\Config::get('app.theme').'-app.sheet_tr.view')) }}</a>
-							<a  class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.download')) }}  </a>
+							<a class="ver" href="{{ $file->url }}" target="_blank">{{ mb_strtoupper(trans($theme.'-app.sheet_tr.view')) }}</a>
+							<a  class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans($theme.'-app.lot_list.download')) }}  </a>
 						{{-- @else
-							<a style="width: 100%;text-align: center;" class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans(\Config::get('app.theme').'-app.lot_list.download')) }}  </a>
+							<a style="width: 100%;text-align: center;" class="descargar descargaPDF_JS" href="/files/{{ $file->path }}"  target="_blank"> {{ mb_strtoupper(trans($theme.'-app.lot_list.download')) }}  </a>
 						@endif --}}
 
 					</div>
@@ -135,8 +135,8 @@
 
 function ReadMore (jObj, lineNum) { //class
 
-var READ_MORE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.viewMore') }}";
-var HIDE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.hideMore') }}";
+var READ_MORE_LABEL = "{{ trans($theme.'-app.lot.viewMore') }}";
+var HIDE_LABEL = "{{ trans($theme.'-app.lot.hideMore') }}";
 
 
 

@@ -83,33 +83,33 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                             <div class="col-xs-12 col-lg-6 d-flex views widgets-auction pull-right">
                                     <select id="order_selected" name="order" class="form-control submit_on_change">
                                             <option value="name" @if (app('request')->input('order') == 'name') selected @endif >
-                                                 {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
+                                                 {{ trans($theme.'-app.lot_list.order') }}:   {{ trans($theme.'-app.lot_list.name') }}
                                             </option>
                                             <option value="price_asc" @if (app('request')->input('order') == 'price_asc') selected @endif >
-                                                 {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
+                                                 {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.price_asc') }}
                                             </option>
                                             <option value="price_desc" @if (app('request')->input('order') == 'price_desc') selected @endif >
-                                                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
+                                                {{ trans($theme.'-app.lot_list.order') }}:      {{ trans($theme.'-app.lot_list.price_desc') }}
                                             </option>
                                             <option value="ref" @if (empty(app('request')->input('order')) || app('request')->input('order') == 'ref') selected @endif >
-                                                 {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+                                                 {{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.reference') }}
                                             </option>
                                             @if(!empty( $data['subastas']) && ($data['subastas'][0]->tipo_sub == 'O' || $data['subastas'][0]->tipo_sub == 'P'))
                                                 <option value="ffin" @if (app('request')->input('order') == 'ffin') selected @endif >
-                                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
+                                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_near') }} </b>
                                                 </option>
                         
                                                 <option value="mbids" @if (app('request')->input('order') == 'mbids') selected @endif >
-                                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }} </b>
+                                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_bids') }} </b>
                                                 </option>
                         
                                                 <option value="hbids" @if (app('request')->input('order') == 'hbids') selected @endif >
-                                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }} </b>
+                                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.higher_bids') }} </b>
                                                 </option>
                         
                         
                                                 <option value="fecalta" @if (app('request')->input('order') == 'fecalta') selected @endif >
-                                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.more_recent') }} 
+                                                        {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.more_recent') }} 
                                                 </option>
                                             @endif
                                     </select>
@@ -117,13 +117,13 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                                 <?php // si es uan subasta w y abierta o si es uan subasta tipo O o P ?>
                                 @if(!empty( $data['subastas']) && ( ($data['subastas'][0]->tipo_sub == 'W' && $data['subastas'][0]->subabierta_sub == 'S') || $data['subastas'][0]->tipo_sub == 'P'  || $data['subastas'][0]->tipo_sub == 'O' )  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  )
                                     <div class="full-screen widget d-inline-flex">    
-                                        <a class="refresh d-block color-letter" href=""> {{ trans(\Config::get('app.theme').'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                                        <a class="refresh d-block color-letter" href=""> {{ trans($theme.'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
                                     </div>
                                 @endif
                                 @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
                                     <div class="full-screen widget d-inline-flex">
                                         @if(Session::has('user'))
-                                            <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans(\Config::get('app.theme').'-app.lot_list.ver_ofertas') ?></a>
+                                            <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
                                         @endif
                                     </div>
                                 @endif
@@ -161,11 +161,11 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                                     <div class=" widget full-screen d-inline-flex" style="position: relative">
                                         <div class="bid-online"></div>
                                         <div class="bid-online animationPulseRed"></div>
-                                        <a href="{{ $url_tiempo_real }}" target="_blank" class="bid-live grid-icon-square color-letter d-flex">{{ trans(\Config::get('app.theme').'-app.lot_list.bid_live') }}</a>
+                                        <a href="{{ $url_tiempo_real }}" target="_blank" class="bid-live grid-icon-square color-letter d-flex">{{ trans($theme.'-app.lot_list.bid_live') }}</a>
                                     </div>
                                 @endif
                                 <div class="views-content d-inline-flex">
-                                        {{-- <div class="title-views d-flex align-items-center justify-content-center color-letter">{{ trans(\Config::get('app.theme').'-app.lot_list.view') }}</div> --}}
+                                        {{-- <div class="title-views d-flex align-items-center justify-content-center color-letter">{{ trans($theme.'-app.lot_list.view') }}</div> --}}
                                         <a id="square" class=" boton-lista grid-icon-square color-letter d-block activo" href="javascript:;"><i class="fas fa-th"></i> GALERIA</a>
                                         <a id="large_square" class="boton-lista grid-icon-square d-block color-letter" href="javascript:;"><i class="fas fa-bars"></i> LISTA</a>
                                 </div>
