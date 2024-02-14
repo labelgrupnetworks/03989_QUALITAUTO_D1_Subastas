@@ -68,7 +68,7 @@
             </button>
 
             <div class="navbar-collapse collapse justify-content-lg-center" id="navbarHeader" style="">
-                <ul class="navbar-nav mb-2 mb-lg-0 fw-bold">
+                <ul class="navbar-nav mb-2 mb-lg-0">
 
                     <li class="nav-item">
                         <a href="{{ route('allCategories') }}" title="" @class([

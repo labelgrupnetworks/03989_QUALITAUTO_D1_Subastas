@@ -77,13 +77,18 @@
         </section>
 
         <div class="col-12 col-md-5 col-xl-3 order-1 order-md-0">
-            <section class="ficha-description">
-                @include('includes.ficha.ficha_description')
-            </section>
 
             <section class="ficha-features">
 				@include('includes.ficha.features')
             </section>
+
+			<section class="ficha-share">
+				@include('includes.ficha.share')
+			</section>
+
+        </div>
+
+        <div class="col-12 col-md-7 col-xl-6 order-0 order-md-1">
 
 			@if (in_array($lote_actual->cod_sub, ['CEREMATE', 'COMDEUDA', 'REOS']))
 				<section class="ficha-login">
@@ -102,13 +107,13 @@
 				</section>
 			@endif
 
-        </div>
-
-        <div class="col-12 col-md-7 col-xl-6 order-0 order-md-1">
-
 			<section class="ficha-image">
 				@include('includes.ficha.ficha_image')
 			</section>
+
+			<section class="ficha-description">
+                @include('includes.ficha.ficha_description')
+            </section>
 
 			<section class="ficha-previous-next">
 				@include('includes.ficha.previous_next')
@@ -156,9 +161,7 @@
 				@include('includes.ficha.files')
 			</section>
 
-			<section class="ficha-share">
-				@include('includes.ficha.share')
-			</section>
+
 		</div>
 
         {{-- @includeIf('includes.ficha.custom_sections') --}}
