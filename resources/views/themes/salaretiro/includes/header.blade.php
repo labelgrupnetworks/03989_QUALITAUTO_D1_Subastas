@@ -5,48 +5,48 @@
 				<div class="signup-content text-center">
 					<div class="signup-title">
 						<h2 style="color:white; font-weight: 900;">
-							<?= trans(\Config::get('app.theme').'-app.login_register.register') ?></h2>
+							<?= trans($theme.'-app.login_register.register') ?></h2>
 					</div>
 					<a href="{{ \Routing::slug('login') }}"
-						class="btn btn-color"><?= trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') ?></a>
+						class="btn btn-color"><?= trans($theme.'-app.login_register.crear_cuenta') ?></a>
 				</div>
 			</div>
 			<div class="signin">
 				<div class="login_desktop_title">
-					<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>
+					<?= trans($theme.'-app.login_register.login') ?>
 				</div>
-				<img class="closedd" src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png" alt="Close">
+				<img class="closedd" src="/themes/{{$theme}}/assets/img/shape.png" alt="Close">
 				<form data-toggle="validator" id="accerder-user-form">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="form-group">
-						<label for="usuario">{{ trans(\Config::get('app.theme').'-app.login_register.user') }}</label>
+						<label for="usuario">{{ trans($theme.'-app.login_register.user') }}</label>
 						<input class="form-control"
-							placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}" type="email"
+							placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email"
 							name="email" type="text">
 					</div>
 					<div class="form-group">
 						<label
-							for="contraseña">{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}</label>
+							for="contraseña">{{ trans($theme.'-app.login_register.contraseña') }}</label>
 						<input class="form-control"
-							placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}"
+							placeholder="{{ trans($theme.'-app.login_register.contraseña') }}"
 							type="password" name="password" maxlength="20">
 					</div>
 					<p>
 						<a onclick="cerrarLogin();" class="c_bordered"
 							data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery"
-							data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}"
+							data-title="{{ trans($theme.'-app.login_register.forgotten_pass_question')}}"
 							href="javascript:;" data-toggle="modal"
-							data-target="#modalAjax">{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}</a>
+							data-target="#modalAjax">{{ trans($theme.'-app.login_register.forgotten_pass_question')}}</a>
 					</p>
 					<h5 class="message-error-log text-danger"></h5>
 					</p>
 					<button id="accerder-user" class="btn btn-login-desktop"
-						type="button">{{ trans(\Config::get('app.theme').'-app.login_register.acceder') }}</button>
+						type="button">{{ trans($theme.'-app.login_register.acceder') }}</button>
 					@if(!empty(\Config::get('app.coregistroSubalia')) && \Config::get('app.coregistroSubalia'))
 					<br>
 					<p style="margin-top:1rem;"><a class="subalia-button"
-							href="/{{\Config::get('app.locale')}}/login/subalia"><?= trans(\Config::get('app.theme').'-app.login_register.register_subalia_in_login') ?>
-							{{ trans(\Config::get('app.theme').'-app.login_register.here') }}</a></p>
+							href="/{{\Config::get('app.locale')}}/login/subalia"><?= trans($theme.'-app.login_register.register_subalia_in_login') ?>
+							{{ trans($theme.'-app.login_register.here') }}</a></p>
 					<br>
 					@endif
 				</form>
@@ -65,7 +65,7 @@
                             $lang = Config::get('app.locale');
                         ?>
 						<a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}"><img
-								src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
+								src="/themes/{{$theme}}/assets/img/logo.png"
 								style="max-height: 95px;" alt="{{(\Config::get( 'app.name' ))}}"></a>
 					</div>
 					<div class="menu-access">
@@ -73,27 +73,27 @@
 							@if(!Session::has('user'))
 							<li style="min-width: 124px;">
 								<a class="btn_login_desktop"
-									title="<?= trans(\Config::get('app.theme').'-app.login_register.login') ?>"
-									href="javascript:;"><?= trans(\Config::get('app.theme').'-app.login_register.login') ?></a>
+									title="<?= trans($theme.'-app.login_register.login') ?>"
+									href="javascript:;"><?= trans($theme.'-app.login_register.login') ?></a>
 							</li>
 							<li>
-								<a title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}"
-									href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+								<a title="{{ trans($theme.'-app.login_register.register') }}"
+									href="{{ \Routing::slug('register') }}">{{ trans($theme.'-app.login_register.register') }}</a>
 							</li>
 							@else
 							<li>
 								<a
-									href="{{ \Routing::slug('user/panel/orders') }}">{{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }}</a>
+									href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme.'-app.login_register.my_panel') }}</a>
 							</li>
 							@if(Session::get('user.admin'))
 							<li>
 								<a href="/admin" target="_blank">
-									{{ trans(\Config::get('app.theme').'-app.login_register.admin') }}</a>
+									{{ trans($theme.'-app.login_register.admin') }}</a>
 							</li>
 							@endif
 							<li>
 								<a
-									href="{{ \Routing::slug('logout') }}">{{ trans(\Config::get('app.theme').'-app.login_register.logout') }}</a>
+									href="{{ \Routing::slug('logout') }}">{{ trans($theme.'-app.login_register.logout') }}</a>
 							</li>
 							@endif
 						</ul>
@@ -108,7 +108,7 @@
 							<li style="margin: 0;"><a
 									style="margin:  0;background: #154360;color: white;padding:  5px 10px;"
 									href="/admin" target="_blank">
-									{{ trans(\Config::get('app.theme').'-app.login_register.admin') }}</a></li>
+									{{ trans($theme.'-app.login_register.admin') }}</a></li>
 							@endif
 							@endif
 						</ul>
@@ -118,7 +118,7 @@
 								class="search-component-form">
 								<div class="form-group">
 									<input class="form-control input-custom"
-										placeholder="{{ trans(\Config::get('app.theme').'-app.head.search_label') }}"
+										placeholder="{{ trans($theme.'-app.head.search_label') }}"
 										type="text" name="texto" />
 								</div>
 								<button type="submit" class="btn btn-custom-search"><i class="fa fa-search"></i>
@@ -131,8 +131,8 @@
 						@if (!\Config::get( 'app.enable_language_selector' ))
 						<select id="selectorIdioma" actuallang="/{{ \App::getLocale() }}/" name="idioma"
 							class="form-control" style="width:100px; height:27px; font-size:11px;">
-							<option value="es"><?= trans(\Config::get('app.theme').'-app.head.language_es') ?></option>
-							<option value="en"><?= trans(\Config::get('app.theme').'-app.head.language_en') ?></option>
+							<option value="es"><?= trans($theme.'-app.head.language_es') ?></option>
+							<option value="en"><?= trans($theme.'-app.head.language_en') ?></option>
 						</select>
 						@elseif(\Config::get( 'app.google_translate' ))
 						<div class="google_translate1">
@@ -178,7 +178,7 @@
 				<li class="info <?= empty($has_subasta_online) && empty($has_subasta_presenciales)?'hidden':''; ?>">
 					<a title="" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
 						aria-haspopup="true"
-						aria-expanded="false">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}} <span
+						aria-expanded="false">{{ trans($theme.'-app.foot.auctions')}} <span
 							class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<div class="dropdown-container">
@@ -186,7 +186,7 @@
 							<li class="box">
 								<ul>
 									<li><a
-											href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions-presenciales')}}</a>
+											href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions-presenciales')}}</a>
 									</li>
 								</ul>
 							</li>
@@ -195,7 +195,7 @@
 							<li class="box">
 								<ul>
 									<li><a
-											href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a>
+											href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
 									</li>
 								</ul>
 							</li>
@@ -207,7 +207,7 @@
 				?>
 				@if(!empty($has_subasta))
 				<li><a
-					href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
+					href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 				</li>
 				@endif
 				<?php
@@ -223,11 +223,11 @@
 				@if(!empty($has_subasta))
 					@if(!empty($subastas['VDRESTOS']))
 					<li>
-						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_jewelry')}}</a>
+						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans($theme.'-app.foot.direct_sale_jewelry')}}</a>
 					</li>
 					@elseif(!empty($subastas['ADJDIR21']))
 					<li>
-						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_art')}}</a>
+						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
 					</li>
 					@elseif(!empty($subastas['RASTRILL']))
 						@php
@@ -246,14 +246,14 @@
 
 					@endif
 				@endif
-				<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}"
-						href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy') ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy')}}</a>
+				<li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}"
+						href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy') ?>">{{ trans($theme.'-app.foot.how_to_buy')}}</a>
 				</li>
-				<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}"
-						href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell') ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}</a>
+				<li><a title="{{ trans($theme.'-app.foot.how_to_sell') }}"
+						href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_sell') ?>">{{ trans($theme.'-app.foot.how_to_sell')}}</a>
 				</li>
-				<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}"
-						href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a>
+				<li><a title="{{ trans($theme.'-app.foot.contact')}}"
+						href="<?= \Routing::translateSeo('pagina').trans($theme.'-app.links.contact')?>">{{ trans($theme.'-app.foot.contact')}}</a>
 				</li>
 			</ul>
 		</div>
@@ -262,13 +262,13 @@
 <div id="menuResponsive" class="hidden-lg">
 	<div class="me">
 		<a id="btnResponsiveClose" title="Cerrar" href="javascript:;">
-			<img src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png" alt="Cerrar">
+			<img src="/themes/{{$theme}}/assets/img/shape.png" alt="Cerrar">
 		</a>
 	</div>
 	<div class="clearfix"></div>
 	<ul class="nav navbar-nav navbar-right navbar-responsive">
-		<li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}"
-				href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li>
+		<li><a title="{{ trans($theme.'-app.home.home')}}"
+				href="/">{{ trans($theme.'-app.home.home')}}</a></li>
 		<?php
 
                    $subastaObj        = new \App\Models\Subasta();
@@ -280,7 +280,7 @@
                 ?>
 		@if(!empty($has_subasta))
 		<li><a
-				href="{{ \Routing::translateSeo('presenciales') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+				href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
 		</li>
 		@endif
 		<?php
@@ -288,7 +288,7 @@
         ?>
 		@if(!empty($has_subasta))
 		<li><a
-			href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
+			href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 		</li>
 		@endif
 
@@ -300,7 +300,7 @@
                 ?>
 		@if(!empty($has_subasta))
 		<li><a
-				href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a>
+				href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
 		</li>
 		@endif
 		<?php
@@ -316,12 +316,12 @@
 				@if(!empty($has_subasta))
 					@if(!empty($subastas['VDRESTOS']))
 					<li>
-						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_jewelry')}}</a>
+						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans($theme.'-app.foot.direct_sale_jewelry')}}</a>
 					</li>
 					@endif
 					@if(!empty($subastas['ADJDIR21']))
 					<li>
-						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale_art')}}</a>
+						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
 					</li>
 					@endif
 					@if(!empty($subastas['RASTRILL']))
@@ -335,15 +335,15 @@
 						</li>
 					@endif
 				@endif
-		<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}"
-				href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy') ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy')}}</a>
+		<li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}"
+				href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy') ?>">{{ trans($theme.'-app.foot.how_to_buy')}}</a>
 		</li>
-		<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}"
-				href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell') ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell')}}</a>
+		<li><a title="{{ trans($theme.'-app.foot.how_to_sell') }}"
+				href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_sell') ?>">{{ trans($theme.'-app.foot.how_to_sell')}}</a>
 		</li>
 
-		<li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}"
-				href="<?= \Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')?>">{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</a>
+		<li><a title="{{ trans($theme.'-app.foot.contact')}}"
+				href="<?= \Routing::translateSeo('pagina').trans($theme.'-app.links.contact')?>">{{ trans($theme.'-app.foot.contact')}}</a>
 		</li>
 
 	</ul>

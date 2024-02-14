@@ -1,16 +1,16 @@
     <div class="col-xs-12 col-md-12 info_single">
         <div class="info_single_title col-xs-12">
             @if($lote_actual->cerrado_asigl0 == 'S' && empty($lote_actual->himp_csub) && $lote_actual->subc_sub == 'H')
-                {{ trans(\Config::get('app.theme').'-app.subastas.consult_disp') }} 
+                {{ trans($theme.'-app.subastas.consult_disp') }} 
             @else
-                {{ trans(\Config::get('app.theme').'-app.lot.lot-price-consult') }}
+                {{ trans($theme.'-app.lot.lot-price-consult') }}
             @endif
         </div>
          @if($lote_actual->cerrado_asigl0 == 'S' && empty($lote_actual->himp_csub) && $lote_actual->subc_sub == 'H')
             <div class="info_single_title col-xs-12">
-                <p class="pre">{{  trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
+                <p class="pre">{{  trans($theme.'-app.subastas.price_sale') }}</p>
                             <div class="pre">
-                                    {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                                    {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}
                             </div>
             </div>
          @endif
@@ -19,19 +19,19 @@
             <input type="hidden" value="{{$lote_actual->ref_asigl0}}" required name="lot">
             <input type="hidden" value="{{$lote_actual->cod_sub}}" required name="subasta">
             <div class="col-xs-12 col-sm-6 form-group">
-                <label>{{trans(\Config::get('app.theme').'-app.user_panel.name') }}</label>
+                <label>{{trans($theme.'-app.user_panel.name') }}</label>
                 <input type="text" class="form-control" required="" name="name">
             </div>
             <div class="col-xs-12 col-sm-6 form-group" >
-                <label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+                <label>{{trans($theme.'-app.user_panel.phone') }}</label>
                 <input type="text" class="form-control" required="" name="telf">
             </div>
             <div class="col-xs-12 form-group">
-                <label>{{trans(\Config::get('app.theme').'-app.user_panel.email') }}</label>
+                <label>{{trans($theme.'-app.user_panel.email') }}</label>
                 <input type="email" class="form-control" required="" name="email">
             </div>
             <div class="col-xs-12 form-group">
-                <label>{{trans(\Config::get('app.theme').'-app.lot.commentary') }}</label>
+                <label>{{trans($theme.'-app.lot.commentary') }}</label>
             <textarea required class="form-control" rows='4' name="comentario"></textarea>
             </div>
             <div class="col-xs-12">
@@ -48,13 +48,13 @@
                      style="margin-left: 0;"
                 />
                 <label for="recibir-newletter">
-                    <?= trans(\Config::get('app.theme').'-app.login_register.read_conditions') ?>                                
+                    <?= trans($theme.'-app.login_register.read_conditions') ?>                                
                 </label>
             </div>
             </div>
             <div class="col-xs-12 ol-sm-5 col-lg-4">
                 
-                <button id="buttonSend" disabled class="btn btn-contact" type="submit">{{trans(\Config::get('app.theme').'-app.login_register.send_email') }}</button>
+                <button id="buttonSend" disabled class="btn btn-contact" type="submit">{{trans($theme.'-app.login_register.send_email') }}</button>
             </div>
         </form>
 

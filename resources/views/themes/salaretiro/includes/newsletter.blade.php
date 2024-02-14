@@ -11,7 +11,7 @@
                         <div class="newsletter-icon-title">
                             <i class="fa hide fa-2x fa-envelope"></i>
                             <div class="tit_newsletter">
-                                {{ trans(\Config::get('app.theme') . '-app.foot.newsletter_title') }}
+                                {{ trans($theme . '-app.foot.newsletter_title') }}
                             </div>
                         </div>
                         <div class="input-group ">
@@ -22,7 +22,7 @@
 
 
                                 <button id="newsletter-btn" type="button"
-                                    class="btn btn-custom newsletter-input">{{ trans(\Config::get('app.theme') . '-app.foot.newsletter_button') }}</button>
+                                    class="btn btn-custom newsletter-input">{{ trans($theme . '-app.foot.newsletter_button') }}</button>
                             </div>
 
                             <div class="group-check-categories">
@@ -43,7 +43,7 @@
                             <label for="accept_new">
                                 <input name="accept_news" required type="checkbox" class="form-control"
                                     id="accept_new" /><span
-                                    style="color: #555">{{ trans(\Config::get('app.theme') . '-app.emails.accept_news') }}</span>
+                                    style="color: #555">{{ trans($theme . '-app.emails.accept_news') }}</span>
                             </label>
                         </div>
 
@@ -51,7 +51,7 @@
                             <label for="condiciones">
                                 <input name="condiciones" required type="checkbox" class="form-control"
                                     id="condiciones" /><span
-                                    style="color: #555"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></a></span>
+                                    style="color: #555"><?= trans($theme . '-app.emails.privacy_conditions') ?></a></span>
                             </label>
                         </div>
                     </div>

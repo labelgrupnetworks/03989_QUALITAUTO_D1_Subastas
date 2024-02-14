@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -10,11 +10,11 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 text-center">
             <br><br><br><br>
-            <h3 class="titlePage">{{ trans(\Config::get('app.theme').'-app.login_register.success_register')}}</h3>
+            <h3 class="titlePage">{{ trans($theme.'-app.login_register.success_register')}}</h3>
             <br><br>
             @if(!empty(\Config::get('app.coregistroSubalia')) && \Config::get('app.coregistroSubalia'))
             <br>
-                <p>{{ trans(\Config::get('app.theme').'-app.login_register.register_subalia') }} <a href="/{{ Config::get('app.locale') }}/login/subalia">{{ trans(\Config::get('app.theme').'-app.login_register.here') }}</a></p>
+                <p>{{ trans($theme.'-app.login_register.register_subalia') }} <a href="/{{ Config::get('app.locale') }}/login/subalia">{{ trans($theme.'-app.login_register.here') }}</a></p>
             @endif
             <br><br><br><br><br><br>
         </div>
