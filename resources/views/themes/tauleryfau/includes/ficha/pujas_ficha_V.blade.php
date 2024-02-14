@@ -1,12 +1,12 @@
 <div>
     <div class="single-lot-desc-title desc">
-        <h3>{{ trans(\Config::get('app.theme').'-app.lot.description') }}</h3>
+        <h3>{{ trans($theme.'-app.lot.description') }}</h3>
         <p class="sub-o">
             <?php // entraran tanto lotes de subastas V como cerrados de otra con posibilidad de compra  ?>
             @if($lote_actual->tipo_sub == 'W')
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
             @elseif($lote_actual->tipo_sub == 'O')
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_online') }}
             @endif
         </p>
     </div>
@@ -37,12 +37,12 @@
         <?php /* PRECIO ESTIMADO Comentado por cambio de diseño por del cliente 01/12/2019 Eloy
             <div class="price">
                 @if(!empty($lote_actual->oferta_asigl0) && ($lote_actual->oferta_asigl0 == 1 || $lote_actual->oferta_asigl0 == 2))
-                    <span class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.price_salida_venta') }}</span>
+                    <span class="pre title">{{ trans($theme.'-app.subastas.price_salida_venta') }}</span>
                 @else
-                    <span class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.precio_estimado') }} </span>
+                    <span class="pre title">{{ trans($theme.'-app.subastas.precio_estimado') }} </span>
                 @endif
                 <div class="text-right">
-                <span class="pre <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>">{{ $lote_actual->formatted_imptas_asigl0 }}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                <span class="pre <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>">{{ $lote_actual->formatted_imptas_asigl0 }}  {{ trans($theme.'-app.subastas.euros') }}</span>
                 <div class="vertical-bar" >|</div>
                 <span id="impsalexchange-tas" class="currency-trnas <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>"></span>
 
@@ -61,18 +61,18 @@
 
                 <div class="price precio-venta">
                     @if(!empty($lote_actual->oferta_asigl0) && ($lote_actual->oferta_asigl0 == 1 || $lote_actual->oferta_asigl0 == 2))
-                        <span class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.nuestro_precio') }}</span>
+                        <span class="pre title">{{ trans($theme.'-app.subastas.nuestro_precio') }}</span>
                     @else
-                        <span class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+                        <span class="pre title">{{ trans($theme.'-app.subastas.price_sale') }}</span>
                     @endif
                     <div class="text-right">
-                    <span class="">{{$lote_actual->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span>
+                    <span class="">{{$lote_actual->formatted_actual_bid}}  {{ trans($theme.'-app.subastas.euros') }} </span>
                             <div class="vertical-bar" >|</div>
                             <span id="impsalexchange-actual" class="currency-trnas"></span>
 
                     </div>
                 </div>
-            <?php /* no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> */ ?>
+            <?php /* no ponemos CET   <span id="cet_o"> {{ trans($theme.'-app.lot.cet') }}</span> */ ?>
         </div>
     <?php
     //   capturando la conversion de la moneda
@@ -83,7 +83,7 @@
 
     <div class="botones-puja-vetadirecta">
             <div class="input-group direct-puja">
-                <button data-from="modal" class="lot-action_comprar_lot btn-color" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+                <button data-from="modal" class="lot-action_comprar_lot btn-color" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ trans($theme.'-app.subastas.buy_lot') }}</button>
             </div>
 
             </div>

@@ -15,7 +15,7 @@
             <div class="logo-responsive-adapted d-flex align-items-center h-100">
 
                 <a title="{{ \Config::get('app.name') }}" href="/{{ $lang }}">
-                    <img class="img-responsive" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo.png"
+                    <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo.png"
                         alt="{{ \Config::get('app.name') }}">
                 </a>
 
@@ -71,7 +71,7 @@
 
                         <a title="{{ \Config::get('app.name') }}" href="/{{ $lang }}">
                             <img class="img-responsive"
-                                src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo.png"
+                                src="/themes/{{ $theme }}/assets/img/logo.png"
                                 alt="{{ \Config::get('app.name') }}">
                         </a>
 
@@ -81,7 +81,7 @@
                             <form role="search" action="{{ \Routing::slug('busqueda') }}">
                                 <div class="search-button-content flex">
                                     <input
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.head.search_label') }}"
+                                        placeholder="{{ trans($theme . '-app.head.search_label') }}"
                                         type="text" name="texto" class="form-control">
                                     <button type="submit" class="btn">
                                         <i class="fa fa-search"></i>
@@ -93,19 +93,19 @@
                             <ul class="panel-principal flex">
                                 @if (!Session::has('user'))
                                     <li class="prueba session-start">
-                                        <a title="<?= trans(\Config::get('app.theme') . '-app.login_register.login') ?>"
+                                        <a title="<?= trans($theme . '-app.login_register.login') ?>"
                                             class="btn btn-color flex valign" data-toggle="modal"
-                                            data-target="#modalLogin"><?= trans(\Config::get('app.theme') . '-app.login_register.login') ?></a>
+                                            data-target="#modalLogin"><?= trans($theme . '-app.login_register.login') ?></a>
                                     </li>
                                 @else
                                     <li class="prueba myAccount">
                                         <a href="{{ \Routing::slug('user/panel/orders') }}"
-                                            class="btn btn-color btn-account flex">{{ trans(\Config::get('app.theme') . '-app.login_register.my_panel') }}</a>
+                                            class="btn btn-color btn-account flex">{{ trans($theme . '-app.login_register.my_panel') }}</a>
                                     </li>
                                     @if (Session::get('user.admin'))
                                         <li class="prueba admin">
                                             <a class="btn btn-color" href="/admin" target="_blank">
-                                                {{ trans(\Config::get('app.theme') . '-app.login_register.admin') }}</a>
+                                                {{ trans($theme . '-app.login_register.admin') }}</a>
                                         </li>
                                     @endif
 
@@ -115,19 +115,19 @@
                         <div class="lenguaje">
                             <div class="selector" onclick="javascript:$('#selector_lenguaje').toggle();">
                                 <img class="img-responsive"
-                                    src="/themes/{{ \Config::get('app.theme') }}/assets/img/flag_{{ \Config::get('app.locale') }}.png" />
+                                    src="/themes/{{ $theme }}/assets/img/flag_{{ \Config::get('app.locale') }}.png" />
                                 {{ \Config::get('app.locales')[\Config::get('app.locale')] }}
                                 <i class="fa fa-sort-down"></i>
                             </div>
                             <div id="selector_lenguaje">
                                 @foreach (Config::get('app.locales') as $key => $value)
                                     @if ($key != \Config::get('app.locale'))
-                                        <a title="<?= trans(\Config::get('app.theme') . '-app.head.language_es') ?>"
+                                        <a title="<?= trans($theme . '-app.head.language_es') ?>"
                                             href="{{ "/$key" . \App\libs\TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $key) }}">
                                             <div class="row">
                                                 <div class="col-xs-4">
                                                     <img alt="<?= $key ?>" class="img-responsive"
-                                                        src="/themes/{{ \Config::get('app.theme') }}/assets/img/flag_<?= $key ?>.png" />
+                                                        src="/themes/{{ $theme }}/assets/img/flag_<?= $key ?>.png" />
                                                 </div>
                                                 <div class="col-xs-8">
                                                     {{ \Config::get('app.locales')[$key] }}
@@ -140,7 +140,7 @@
                                 {{-- <a href="/{{\Config::get('app.locale')}}?#googtrans(es|ru)">
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <img alt="ru" class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/flag_ru.png"/>
+                                            <img alt="ru" class="img-responsive" src="/themes/{{$theme}}/assets/img/flag_ru.png"/>
                                         </div>
                                         <div class="col-xs-8">
                                             pусский
@@ -195,21 +195,21 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <div class="menu-title hidden-lg hidden-md">{{ trans(\Config::get('app.theme') . '-app.head.menu') }}
+                <div class="menu-title hidden-lg hidden-md">{{ trans($theme . '-app.head.menu') }}
                 </div>
                 <div class="nav navbar">
                     <ul class="flex valign">
 
                         <li>
-                            <a title="{{ trans(\Config::get('app.theme') . '-app.home.home') }}"
-                                href="/{{ $lang }}"><i class="fas fa-home"></i><?php /*trans(\Config::get('app.theme').'-app.home.home')*/ ?></a>
+                            <a title="{{ trans($theme . '-app.home.home') }}"
+                                href="/{{ $lang }}"><i class="fas fa-home"></i><?php /*trans($theme.'-app.home.home')*/ ?></a>
                         </li>
 
                         @if (Session::has('user'))
                             <li class="hidden-md hidden-lg">
 
                                 <a href="{{ \Routing::slug('user/panel/orders') }}">
-                                    {{ trans(\Config::get('app.theme') . '-app.user_panel.orders') }}
+                                    {{ trans($theme . '-app.user_panel.orders') }}
                                 </a>
 
                             </li>
@@ -237,7 +237,7 @@
                         @if (!empty($has_subasta))
                             <li class="auctions">
                                 <a
-                                    href="{{ $url_subasta }}">{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}</a>
+                                    href="{{ $url_subasta }}">{{ trans($theme . '-app.foot.auctions') }}</a>
                             </li>
                         @endif
 
@@ -251,7 +251,7 @@
                         @if (!empty($has_subasta))
                             <li>
                                 <a
-                                    href="{{ \Routing::translateSeo('subastas-permanentes') }}">{{ trans(\Config::get('app.theme') . '-app.foot.online_auction') }}</a>
+                                    href="{{ \Routing::translateSeo('subastas-permanentes') }}">{{ trans($theme . '-app.foot.online_auction') }}</a>
                             </li>
                         @endif
 
@@ -261,7 +261,7 @@
                         @endphp
                         @if (!empty($has_subasta))
                             <li>
-                                <a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans(\Config::get('app.theme').'-app.foot.historico')}}</a>
+                                <a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
                             </li>
                         @endif --}}
                         <?php
@@ -280,13 +280,13 @@
                         @if (!empty($has_subasta))
                             <li>
                                 <a
-                                    href="{{ $url_lotes }}">{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}</a>
+                                    href="{{ $url_lotes }}">{{ trans($theme . '-app.foot.direct_sale') }}</a>
                             </li>
                         @endif
 
                         <li>
                             <a
-                                href="<?= \Routing::translateSeo(trans(\Config::get('app.theme') . '-app.links.services')) ?>">{{ trans(\Config::get('app.theme') . '-app.services.title') }}</a>
+                                href="<?= \Routing::translateSeo(trans($theme . '-app.links.services')) ?>">{{ trans($theme . '-app.services.title') }}</a>
                         </li>
 
                         @php
@@ -298,21 +298,21 @@
 
                         <li>
                             <a
-                                href="{{ $urlCalendar }}">{{ trans(\Config::get('app.theme') . '-app.services.calendar') }}</a>
+                                href="{{ $urlCalendar }}">{{ trans($theme . '-app.services.calendar') }}</a>
                         </li>
                         <li><a
-                                href="{{ \Routing::translateSeo('blog') }} ">{{ trans(\Config::get('app.theme') . '-app.blog.blogTitle') }}</a>
+                                href="{{ \Routing::translateSeo('blog') }} ">{{ trans($theme . '-app.blog.blogTitle') }}</a>
                         </li>
                         <?php /*
-                                                    <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  ?>
-                        ?>">{{ trans(\Config::get('app.theme') . '-app.foot.how_to_buy') }}</a></li>
-                        <li><a title="{{ trans(\Config::get('app.theme') . '-app.foot.how_to_sell') }}"
-                                href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.how_to_sell'); ?>">{{ trans(\Config::get('app.theme') . '-app.foot.how_to_sell') }}</a>
+                                                    <li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy')  ?>
+                        ?>">{{ trans($theme . '-app.foot.how_to_buy') }}</a></li>
+                        <li><a title="{{ trans($theme . '-app.foot.how_to_sell') }}"
+                                href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.how_to_sell'); ?>">{{ trans($theme . '-app.foot.how_to_sell') }}</a>
                         </li>
                         */ ?>
                         <li>
-                            <a title="{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}"
-                                href="<?= \Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.contact') ?>">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</a>
+                            <a title="{{ trans($theme . '-app.foot.contact') }}"
+                                href="<?= \Routing::translateSeo('pagina') . trans($theme . '-app.links.contact') ?>">{{ trans($theme . '-app.foot.contact') }}</a>
                         </li>
 
                     </ul>
@@ -327,10 +327,10 @@
                         <div class="d-flex">
                             @foreach (Config::get('app.locales') as $key => $value)
                                 <li>
-                                    <a title="{{ trans(\Config::get('app.theme') . '-app.head.language_' . $key) }}"
+                                    <a title="{{ trans($theme . '-app.head.language_' . $key) }}"
                                         href="{{ "/$key" . \App\libs\TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $key) }}">
                                         <img alt="{{ $key }}" class="img-responsive"
-                                            src="/themes/{{ \Config::get('app.theme') }}/assets/img/flag_<?= $key ?>.png" />
+                                            src="/themes/{{ $theme }}/assets/img/flag_<?= $key ?>.png" />
                                     </a>
                                 </li>
                             @endforeach
@@ -357,7 +357,7 @@
             <i class="far fa-2x fa-times-circle"></i>
         </div>
         <div class="calendar-title">
-            <?= trans(\Config::get('app.theme') . '-app.home.calendar_title') ?>
+            <?= trans($theme . '-app.home.calendar_title') ?>
         </div>
         <div class="calendar-year">
             <div class="button-calendar">

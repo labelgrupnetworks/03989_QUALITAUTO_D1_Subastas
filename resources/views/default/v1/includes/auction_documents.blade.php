@@ -12,7 +12,7 @@
 <div class="snippet_documentacion" id="docs{{ $subasta->id_auc_sessions }}">
     <a onclick="javascript:$('#docs{{ $subasta->id_auc_sessions }}').toggle('slide', {direction:'right'}, 500)"
         style="color:#000;font-size:18px;position:absolute;right:10px;top:10px;cursor:pointer;">x</a>
-    <b>{{ trans(\Config::get('app.theme') . '-app.subastas.documentacion') }}:</b>
+    <b>{{ trans($theme . '-app.subastas.documentacion') }}:</b>
 
     @foreach ($files as $file)
         <div class="row">

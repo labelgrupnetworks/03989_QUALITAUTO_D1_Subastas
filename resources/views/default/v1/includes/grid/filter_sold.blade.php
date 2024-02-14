@@ -1,6 +1,6 @@
 <div class="auction__filters-estado-lote">
         <div class="auction__filters-collapse d-flex align-items-center justify-content-space-between" role="button" data-toggle="collapse" href="#estado_lotes" aria-expanded="true" aria-controls="estado_lotes">
-            <div>{{ trans(\Config::get('app.theme').'-app.lot_list.lots_status') }}</div>
+            <div>{{ trans($theme.'-app.lot_list.lots_status') }}</div>
             <i class="fa fa-sort-down"></i>
         </div>
 
@@ -10,7 +10,7 @@
                     <div class="radio">
                         <input type="radio" class="js-check-award" name="liveLots" id="liveLots" value="1" <?=  !empty(request('liveLots'))? 'checked="checked"' : '' ?>  />
                         <label for="liveLots" class="radio-label">
-                            {{trans(\Config::get('app.theme').'-app.lot_list.live_lots_filter')}}
+                            {{trans($theme.'-app.lot_list.live_lots_filter')}}
                         </label>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                       <div class="radio">
                         <input type="radio" class="js-check-award" name="noAward" id="no-award" value="1" <?=  !empty(request('noAward'))? 'checked="checked"' : '' ?>  />
                         <label for="no-award" class="radio-label">
-                            {{trans(\Config::get('app.theme').'-app.lot_list.no_award_filter')}}
+                            {{trans($theme.'-app.lot_list.no_award_filter')}}
                         </label>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="radio">
                         <input type="radio" class="js-check-award" name="award" id="award" value="1" <?=  !empty(request('award'))? 'checked="checked"' : '' ?>  />
                         <label for="award" class="radio-label">
-                            {{trans(\Config::get('app.theme').'-app.lot_list.award_filter')}}
+                            {{trans($theme.'-app.lot_list.award_filter')}}
                         </label>
                     </div>
                 </div>

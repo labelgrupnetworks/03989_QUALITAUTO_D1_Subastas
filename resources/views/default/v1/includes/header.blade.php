@@ -115,7 +115,7 @@ use App\libs\TradLib as TradLib;
 
 
 					<li>
-						<a class="color-letter d-flex link-header justify-content-center align-items-center category-button"  href="#"><span>{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</span></a>
+						<a class="color-letter d-flex link-header justify-content-center align-items-center category-button"  href="#"><span>{{ trans($theme.'-app.lot.categories') }}</span></a>
 						<div class="submenuDefault ">
 							<div class="  pt-2 pb-2" >
 								@php

@@ -1,14 +1,14 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+	{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @section('content')
 
 <?php 
 
-    $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.comprar_catalogo') );
+    $bread[] = array("name" => trans($theme.'-app.foot.comprar_catalogo') );
 
 ?>
 
@@ -18,12 +18,12 @@
   
     <div class="container">
 	
-    	<h1 class="color-letter">{{trans(\Config::get('app.theme').'-app.foot.comprar_catalogo') }}</h1>
+    	<h1 class="color-letter">{{trans($theme.'-app.foot.comprar_catalogo') }}</h1>
 
         <section id="content" class="contacto">
         <br>
 
-        <h3>{{trans(\Config::get('app.theme').'-app.global.informacion_contacto') }}</h3>
+        <h3>{{trans($theme.'-app.global.informacion_contacto') }}</h3>
         <hr>
 
         
@@ -36,67 +36,67 @@
                         
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['nombre'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.name') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.name') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['apellidos'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.surname') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.surname') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['nif'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.nif') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.nif') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['profesion'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.profesion') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.profesion') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['direccion'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.direccion') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.direccion') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['poblacion'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.poblacion') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.poblacion') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['provincia'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.provincia') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.provincia') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['cp'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.cp') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.cp') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['pais'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.pais') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.pais') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['email'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.email') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.email') }}</label>
                             </div>
 
                             <div class="input-effect col-xs-12">
                                 {!! $data['formulario']['telefono'] !!}
-                                <label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+                                <label>{{trans($theme.'-app.user_panel.phone') }}</label>
                             </div>
 
                             <div class="clearfix"></div>
                            
                             <div style="border:#CCC 1px solid;background:#FAFAFA;padding:20px;margin:20px;">
-                                <b>{{trans(\Config::get('app.theme').'-app.global.datos_envio') }}</b>
+                                <b>{{trans($theme.'-app.global.datos_envio') }}</b>
                                 <br><br>
-                                {{trans(\Config::get('app.theme').'-app.global.espana') }}  - 90 €<br>
-                                {{trans(\Config::get('app.theme').'-app.global.europa') }} 150 €<br>
-                                {{trans(\Config::get('app.theme').'-app.global.resto_paises') }} 200 €<br>
+                                {{trans($theme.'-app.global.espana') }}  - 90 €<br>
+                                {{trans($theme.'-app.global.europa') }} 150 €<br>
+                                {{trans($theme.'-app.global.resto_paises') }} 200 €<br>
                             </div>
                             <div class="clearfix"></div>
                             <br>

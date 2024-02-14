@@ -51,19 +51,19 @@ border-radius: 15px;
 font-size: 19px;
 font-weight: 900;
 padding-top: 6px;
-                
+
             }
             .go-home{
-                
+
                 background: #283747;
-                
-                
+
+
             }
         .go-contact{
-                
+
                 background: #bc9c7e;
-                
-                
+
+
             }
             .text404{
                 font-size: 26vh;
@@ -76,7 +76,7 @@ font-weight: 900;
             }
         </style>
     </head>
-    <body style="    
+    <body style="
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -91,23 +91,23 @@ font-weight: 900;
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="content">
-                        <img 
-                            class="logo" 
-                            class="img-responsive" 
-                            style="max-height: 200px;" 
-                            src="/themes/<?= \Config::get('app.theme')?>/assets/img/logo.png" alt="Balclis">
-                        
-                        <div 
-                            class="title" 
-                            style="font-size: 32px;margin-bottom: 40px;font-weight: 400;color: black;">{{ trans(\Config::get('app.theme').'-app.global.page_not_found') }}
+                        <img
+                            class="logo"
+                            class="img-responsive"
+                            style="max-height: 200px;"
+                            src="/themes/<?= $theme?>/assets/img/logo.png" alt="Balclis">
+
+                        <div
+                            class="title"
+                            style="font-size: 32px;margin-bottom: 40px;font-weight: 400;color: black;">{{ trans($theme.'-app.global.page_not_found') }}
                         </div>
                         <div class="error-btn">
-                            <a href="/{{\App::getLocale()}}" class="go-home">{{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a>    
-  
-                            
+                            <a href="/{{\App::getLocale()}}" class="go-home">{{ trans($theme.'-app.global.go_home') }}</a>
+
+
                         </div>
-                        
-                        
+
+
                         <a href="/{{\App::getLocale()}}" style="font-size: 20px;font-weight: 900;"></a>
                     </div>
                 </div>

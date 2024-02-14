@@ -4,7 +4,7 @@
             <div class="col-xs-12">
             <div class="princiapl-bar-wrapper">
                     <div class="principal-bar-title">
-                        <h3 class="titlePage">{{$sub_data->name}} > {{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</h3>
+                        <h3 class="titlePage">{{$sub_data->name}} > {{ trans($theme.'-app.lot_list.indice_auction') }}</h3>
                     </div>
                 </div>
             </div>
@@ -21,9 +21,9 @@
                 <table class="table-custom" style="width: 100%">
                     <thead>
                         <tr>
-                            <th class="first-column-orders btn-color color-table">{{ trans(\Config::get('app.theme').'-app.lot_list.name') }}</th>
-                            <th class="second-column-orders btn-color color-table">{{ trans(\Config::get('app.theme').'-app.lot_list.from') }}</th>
-                            <th class="third-column-orders btn-color color-table">{{ trans(\Config::get('app.theme').'-app.lot_list.to') }}</th>
+                            <th class="first-column-orders btn-color color-table">{{ trans($theme.'-app.lot_list.name') }}</th>
+                            <th class="second-column-orders btn-color color-table">{{ trans($theme.'-app.lot_list.from') }}</th>
+                            <th class="third-column-orders btn-color color-table">{{ trans($theme.'-app.lot_list.to') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +31,7 @@
                             <td class="class-content-orders" onclick="window.location='{{$data['url']}}'">
                                 <div class="nt-block-th left">
                                     <span>
-                                       {{ trans(\Config::get('app.theme').'-app.subastas.see-all') }}
+                                       {{ trans($theme.'-app.subastas.see-all') }}
                                     </span>
                                 </div>
                             </td>
@@ -49,7 +49,7 @@
 
                             </td>
                         </tr>
-                        <?php 
+                        <?php
                             $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
                         ?> @foreach($indices as $indice)
                         <tr id="order-row-tpl" style="display: table-row;">

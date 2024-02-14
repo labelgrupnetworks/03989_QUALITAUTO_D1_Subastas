@@ -14,16 +14,16 @@
                 <div class=" ml-1 mr-1" >
 
 					<div class="title_lot max-line-3">
-						{{ trans(\Config::get('app.theme').'-app.lot.lot-name') }} {{ $lot->ref_asigl0}}: 	{{ $lot->descweb_hces1}}
+						{{ trans($theme.'-app.lot.lot-name') }} {{ $lot->ref_asigl0}}: 	{{ $lot->descweb_hces1}}
 					</div>
 					<div class="desc_lot max-line-3">
 						<?= $lot->desc_hces1 ?>
 					</div>
 
 					<div class="price_lot">
-						{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}: {{\Tools::moneyFormat($lot->impsalhces_asigl0,"€",0)}}
+						{{ trans($theme.'-app.lot.lot-price') }}: {{\Tools::moneyFormat($lot->impsalhces_asigl0,"€",0)}}
 						<br/>
-						<span>{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}: {{\Tools::moneyFormat($lot->implic_hces1,"€",0)}} </span>
+						<span>{{ trans($theme.'-app.user_panel.price') }}: {{\Tools::moneyFormat($lot->implic_hces1,"€",0)}} </span>
 					</div>
             	</div>
         	</div>

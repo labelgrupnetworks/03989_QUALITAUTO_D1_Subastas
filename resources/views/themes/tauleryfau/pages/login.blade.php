@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -129,7 +129,7 @@ $active_lots = DB::select($sql,$bindings);
                     <div class="col-xs-12">
                     <div class="princiapl-bar-wrapper">
                             <div class="principal-bar-title ">
-                                <h3 class="titlePage" style="text-align:center;"> {{ trans(\Config::get('app.theme').'-app.login_register.register_blocked') }}</h3>
+                                <h3 class="titlePage" style="text-align:center;"> {{ trans($theme.'-app.login_register.register_blocked') }}</h3>
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ $active_lots = DB::select($sql,$bindings);
                     <div class="col-xs-12">
                     <div class="princiapl-bar-wrapper">
                             <div class="principal-bar-title">
-                                <h3 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}</h3>
+                                <h3 class="titlePage"> {{ trans($theme.'-app.login_register.crear_cuenta') }}</h3>
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@ $active_lots = DB::select($sql,$bindings);
                 <div class="row">
                     <div class="col-xs-12">
                         <p class="error-form-validation">
-                            {{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}
+                            {{ trans($theme.'-app.login_register.all_fields_are_required') }}
                         </p>
                     </div>
                     <form method="post" class="frmLogin" id="frmRegister-adv" data-toggle="validator">
@@ -179,7 +179,7 @@ $active_lots = DB::select($sql,$bindings);
                                             type="radio"
                                         />
                                             <div class="modern-button"></div>
-                                            <p>{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}</p>
+                                            <p>{{ trans($theme.'-app.login_register.particular') }}</p>
                                         </label>
                                     </div>
                                     <div class="form-group">
@@ -193,7 +193,7 @@ $active_lots = DB::select($sql,$bindings);
                                             @if ($fisjur_cli=='J') checked="checked" @endif
                                             type="radio"
                                         />
-                                            <p>{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}</p>
+                                            <p>{{ trans($theme.'-app.login_register.empresa') }}</p>
                                             <div class="modern-button"></div>
                                         </label>
                                     </div>
@@ -201,20 +201,20 @@ $active_lots = DB::select($sql,$bindings);
 
                                 <div class="contact-data">
                                     <div class="titles-form-login">
-                                        <h3>{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}</h3>
+                                        <h3>{{ trans($theme.'-app.login_register.personal_information') }}</h3>
                                     </div>
 
                                     <div class="genere hidden flex flex-row">
                                         <div class="input-group">
                                         <div class="form-group input-gener">
                                             <input class="form-control" style="display: none;" id="inlineRadio1" value="H" name="sexo" @if ($sexo_cli=='H') checked="checked" @endif type="radio">
-                                            <label class="input-check-custom" for="inlineRadio1"><i class="fa fa-2x fa-male"></i>{{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}</label>
+                                            <label class="input-check-custom" for="inlineRadio1"><i class="fa fa-2x fa-male"></i>{{ trans($theme.'-app.login_register.hombre') }}</label>
                                         </div>
                                     </div>
                                     <div class="input-group">
                                         <div class="form-group input-gener">
                                             <input class="form-control" style="display: none;" id="inlineRadio2" name="sexo" value="M" @if ($sexo_cli=='M') checked="checked" @endif type="radio">
-                                            <label class="input-check-custom" for="inlineRadio2"><i class="fa fa-2x fa-female"></i>{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}</label>
+                                            <label class="input-check-custom" for="inlineRadio2"><i class="fa fa-2x fa-female"></i>{{ trans($theme.'-app.login_register.mujer') }}</label>
                                         </div>
                                     </div>
                                     </div>
@@ -223,24 +223,24 @@ $active_lots = DB::select($sql,$bindings);
                                     <div class="data-wrapper flex">
                                         <div class="block-divider">
                                             <div class="form-group input-group name_client">
-                                                <label for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.nombre_apellido') }}</label>
-                                                <input class="form-control" id="nombre" name="usuario" value="{!! $nombre1 !!} {!! $nombre2 !!}" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.nombre_apellido') }}" required="" type="text">
+                                                <label for="nombre">{{ trans($theme.'-app.login_register.nombre_apellido') }}</label>
+                                                <input class="form-control" id="nombre" name="usuario" value="{!! $nombre1 !!} {!! $nombre2 !!}" placeholder="{{ trans($theme.'-app.login_register.nombre_apellido') }}" required="" type="text">
                                             </div>
                                             <div class="form-group input-group hidden rsoc_cli">
-                                                <label for="">{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
-                                                <input class="form-control" name="rsoc_cli" value="{!! $nom_cli !!}" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.company') }}" type="text">
+                                                <label for="">{{ trans($theme.'-app.login_register.company') }}</label>
+                                                <input class="form-control" name="rsoc_cli" value="{!! $nom_cli !!}" placeholder="{{ trans($theme.'-app.login_register.company') }}" type="text">
                                             </div>
                                             <div class="form-group input-group hidden rsoc_cli">
-                                                <label for="">{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
-                                                <input class="form-control" name="contact" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}" type="text" value="{!! $nombre1 !!}">
+                                                <label for="">{{ trans($theme.'-app.login_register.contact') }}</label>
+                                                <input class="form-control" name="contact" placeholder="{{ trans($theme.'-app.login_register.contact') }}" type="text" value="{!! $nombre1 !!}">
                                             </div>
 
                                             <div class="form-group input-group">
-                                                <label for="telefono">{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
+                                                <label for="telefono">{{ trans($theme.'-app.login_register.phone') }}</label>
                                                 <input
                                                     name="telefono"
                                                     class="form-control"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.phone') }}"
                                                     required=""
                                                     maxlength="40"
                                                     type="text"
@@ -248,12 +248,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 />
                                             </div>
                                             <div  class="form-group input-group">
-                                                <label class="dni_txt" for="nif">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
-                                                <label for="nif" class="cif_txt hidden">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
+                                                <label class="dni_txt" for="nif">{{ trans($theme.'-app.login_register.dni') }}</label>
+                                                <label for="nif" class="cif_txt hidden">{{ trans($theme.'-app.login_register.cif') }}</label>
 
                                                 <input
                                                     id="dni"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.dni') }}"
                                                     class="form-control dni"
                                                     size="10"
                                                     name="nif"
@@ -264,11 +264,11 @@ $active_lots = DB::select($sql,$bindings);
                                                 />
                                             </div>
                                             <div  class="form-group input-group">
-                                                <label>{{ trans(\Config::get('app.theme').'-app.login_register.observacion') }}</label>
-                                                <textarea style="background: #f1ece6;  max-width: 100%; max-height:100px;"  maxlength="200" class="form-control" name="obscli"  placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.observacion_holder') }}"></textarea>
+                                                <label>{{ trans($theme.'-app.login_register.observacion') }}</label>
+                                                <textarea style="background: #f1ece6;  max-width: 100%; max-height:100px;"  maxlength="200" class="form-control" name="obscli"  placeholder="{{ trans($theme.'-app.login_register.observacion_holder') }}"></textarea>
                                             </div>
                                             <div class="form-group input-group <?= count(Config::get('app.locales'))==1?'hidden':''; ?> ">
-                                                <label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
+                                                <label>{{ trans($theme.'-app.login_register.language') }}</label>
                                                 <select name="language" class="form-control" required>
                                                     @foreach( $data['language'] as $key => $value)
                                                         <option value="{{strtoupper($key)}}">{{$value}}</option>
@@ -276,7 +276,7 @@ $active_lots = DB::select($sql,$bindings);
                                                 </select>
                                             </div>
                                             <div class="form-group input-group">
-                                                <label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+                                                <label>{{ trans($theme.'-app.login_register.currency') }}</label>
                                                 <select name="divisa" class="form-control" required>
                                                     @foreach( $data['divisa'] as $key => $value)
                                                         <option value="{{$value->cod_div}}">{{$value->cod_div}}</option>
@@ -286,7 +286,7 @@ $active_lots = DB::select($sql,$bindings);
                                         </div>
                                         <div class="block-divider">
                                             <div class="form-group input-group">
-                                                <label for="codigoVia">{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+                                                <label for="codigoVia">{{ trans($theme.'-app.login_register.via') }}</label>
                                                 <select id="codigoVia" name="codigoVia" class="form-control">
                                                     <option value="">---</option>
                                                     @if (!empty($data) && !empty($data["via"]) )
@@ -297,12 +297,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 </select>
                                             </div>
                                             <div class="form-group input-group">
-                                                <label for="direccion">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+                                                <label for="direccion">{{ trans($theme.'-app.login_register.direccion') }}</label>
                                                 <input
                                                 name="direccion"
                                                     class="form-control"
                                                     id="direccion"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.direccion') }}"
                                                     required=""
                                                     maxlength="60"
                                                     type="text"
@@ -310,7 +310,7 @@ $active_lots = DB::select($sql,$bindings);
                                                 />
                                             </div>
                                             <div class="form-group input-group">
-                                                <label for="country">{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+                                                <label for="country">{{ trans($theme.'-app.login_register.pais') }}</label>
                                                 <select id="country" name="pais" class="form-control notranslate" required>
                                                     <option value="">---</option>
                                                     @if (!empty($data) && !empty($data["countries"]) )
@@ -321,12 +321,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 </select>
                                             </div>
                                             <div class="form-group input-group">
-                                                <label for="codigo_postal">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+                                                <label for="codigo_postal">{{ trans($theme.'-app.login_register.cod_postal') }}</label>
                                                 <input
                                                     id="cpostal"
                                                     name="cpostal"
                                                     class="form-control"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.cod_postal') }}"
                                                     required=""
                                                     maxlength="10"
                                                     type="text"
@@ -334,12 +334,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 />
                                             </div>
                                             <div class="form-group input-group">
-                                                <label for="Ciudad">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+                                                <label for="Ciudad">{{ trans($theme.'-app.login_register.ciudad') }}</label>
                                                 <input
                                                     name="poblacion"
                                                     class="form-control"
                                                     id="Ciudad"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.ciudad') }}"
                                                     required=""
                                                     maxlength="30"
                                                     type="text"
@@ -347,12 +347,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 />
                                             </div>
                                             <div class="form-group input-group">
-                                                <label for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+                                                <label for="provincia">{{ trans($theme.'-app.login_register.provincia') }}</label>
                                                 <input
                                                     name="provincia"
                                                     class="form-control"
                                                     id="provincia"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.provincia') }}"
                                                     maxlength="30"
                                                     type="text"
                                                     value="{!! $pro_cli!!}"
@@ -367,7 +367,7 @@ $active_lots = DB::select($sql,$bindings);
                                 <div class="divider-prices"></div>
                                     <div class="address-data">
                                         <div class="titles-form-login">
-                                            <h3>{{ trans(\Config::get('app.theme').'-app.login_register.title_direccion_envio') }}</h3>
+                                            <h3>{{ trans($theme.'-app.login_register.title_direccion_envio') }}</h3>
                                         </div>
                                         <div class="ship-check">
                                             <input
@@ -376,12 +376,12 @@ $active_lots = DB::select($sql,$bindings);
                                                 name="shipping_address"
                                                 type="checkbox"
                                             />
-                                            <label for="shipping_address">{{ trans(\Config::get('app.theme').'-app.login_register.utilizar_direcc_direccenv') }}</label>
+                                            <label for="shipping_address">{{ trans($theme.'-app.login_register.utilizar_direcc_direccenv') }}</label>
                                         </div>
                                         <div class="data-wrapper flex">
                                             <div class="block-divider">
                                                 <div class="form-group input-group">
-                                                    <label for="country_envio">{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+                                                    <label for="country_envio">{{ trans($theme.'-app.login_register.pais') }}</label>
                                                     <select
                                                         id="country_envio"
                                                         name="clid_pais"
@@ -398,19 +398,19 @@ $active_lots = DB::select($sql,$bindings);
                                                         </select>
                                                 </div>
                                                 <div class="form-group input-group">
-                                                    <label >{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+                                                    <label >{{ trans($theme.'-app.login_register.provincia') }}</label>
                                                     <input id="clid_provincia"
                                                         name="clid_provincia"
                                                         class="form-control"
                                                         id="provincia"
                                                         maxlength="30"
                                                         type="text"
-                                                        placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}"
+                                                        placeholder="{{ trans($theme.'-app.login_register.provincia') }}"
                                                     />
                                                 </div>
 
                                                 <div class="form-group input-group">
-                                                    <label for="codigoVia">{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+                                                    <label for="codigoVia">{{ trans($theme.'-app.login_register.via') }}</label>
                                                         <select id="clid_codigoVia" name="clid_codigoVia" class="form-control">
                                                             <option value="">---</option>
                                                             @if (!empty($data) && !empty($data["via"]) )
@@ -423,11 +423,11 @@ $active_lots = DB::select($sql,$bindings);
                                             </div>
                                             <div class="block-divider">
                                                 <div class="form-group input-group">
-                                                    <label for="cpostal_envio">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+                                                    <label for="cpostal_envio">{{ trans($theme.'-app.login_register.cod_postal') }}</label>
                                                     <input id="codigo_postal"
                                                         name="clid_cpostal"
                                                         class="form-control"
-                                                        placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}"
+                                                        placeholder="{{ trans($theme.'-app.login_register.cod_postal') }}"
                                                         required=""
                                                         maxlength="10"
                                                         type="text"
@@ -435,17 +435,17 @@ $active_lots = DB::select($sql,$bindings);
                                                 </div>
 
                                                 <div class="form-group input-group">
-                                                    <label for="nombre">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
-                                                    <input id="clid_poblacion" type="text" name="clid_poblacion" class="form-control" required required maxlength="30" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}">
+                                                    <label for="nombre">{{ trans($theme.'-app.login_register.ciudad') }}</label>
+                                                    <input id="clid_poblacion" type="text" name="clid_poblacion" class="form-control" required required maxlength="30" placeholder="{{ trans($theme.'-app.login_register.ciudad') }}">
                                                 </div>
 
                                                 <div class="form-group input-group">
-                                                    <label for="direccion_envio">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+                                                    <label for="direccion_envio">{{ trans($theme.'-app.login_register.direccion') }}</label>
                                                     <input
                                                         name="clid_direccion"
                                                         class="form-control"
                                                         id="direccion_envio"
-                                                        placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}"
+                                                        placeholder="{{ trans($theme.'-app.login_register.direccion') }}"
                                                         required=""
                                                         maxlength="60"
                                                         type="text"
@@ -458,17 +458,17 @@ $active_lots = DB::select($sql,$bindings);
                                 <div class="divider-prices"></div>
                                 <div class="account-data">
                                     <div class="titles-form-login">
-                                        <h3>{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</h3>
+                                        <h3>{{ trans($theme.'-app.login_register.cuenta') }}</h3>
                                     </div>
                                     <div class="data-wrapper flex">
                                         <div class="account-container flex">
                                             <div class="form-group form-group-custom" style="margin-bottom: 20px;">
-                                                <label for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
+                                                <label for="email">{{ trans($theme.'-app.login_register.email') }}</label>
                                                 <span id="erroremail" class="text-danger"></span>
                                                 <input
                                                     class="form-control"
                                                     id="email"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.email') }}"
                                                     name="email"
                                                     required=""
                                                     type="text"
@@ -480,11 +480,11 @@ $active_lots = DB::select($sql,$bindings);
                                             </div>
                                         <div class="account-container flex">
                                              <div class="form-group form-group-custom">
-                                                <label for="emailconfirm">{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}</label>
+                                                <label for="emailconfirm">{{ trans($theme.'-app.login_register.email_confirmacion') }}</label>
                                                 <input data-match="#email"
                                                     class="form-control"
                                                     id="emailconfirm"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.email_confirmacion') }}"
                                                     required=""
                                                     type="text"
                                                     value="{!! $email_cli !!}"
@@ -494,29 +494,29 @@ $active_lots = DB::select($sql,$bindings);
 
                                         <div class="account-container flex">
                                             <div class="form-group form-group-custom">
-                                                <label for="contrasena">{{ trans(\Config::get('app.theme').'-app.login_register.password') }}</label>
+                                                <label for="contrasena">{{ trans($theme.'-app.login_register.password') }}</label>
                                                 <input
                                                     maxlength="20"
                                                     id="password"
                                                     name="password"
                                                     class="form-control"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.password') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.password') }}"
                                                     data-minlength="5"
                                                     required=""
                                                     type="password" />
-                                                <small class="" style="color: #5bc0de">{{ trans(\Config::get('app.theme').'-app.login_register.max_characters') }}</small>
+                                                <small class="" style="color: #5bc0de">{{ trans($theme.'-app.login_register.max_characters') }}</small>
                                             </div>
                                                </div>
                                     <div class="account-container flex">
                                             <div class="form-group form-group-custom">
-                                                <label for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}</label>
+                                                <label for="confirmcontrasena">{{ trans($theme.'-app.login_register.confirm_password') }}</label>
                                                 <input
                                                     maxlength="20"
                                                     name="confirm_password"
                                                     class="form-control"
                                                     data-match="#password"
                                                     id="confirmcontrasena"
-                                                    placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}"
+                                                    placeholder="{{ trans($theme.'-app.login_register.confirm_password') }}"
                                                     required=""
                                                     type="password">
                                             </div>
@@ -526,7 +526,7 @@ $active_lots = DB::select($sql,$bindings);
                             </div>
                         </div>
                             <div class="col-xs-12">
-                                <p>{{ trans(\Config::get('app.theme').'-app.login_register.more_addres_user_panel') }}</p>
+                                <p>{{ trans($theme.'-app.login_register.more_addres_user_panel') }}</p>
                     <div class="checkbox">
                         <input
                             name="condiciones"
@@ -536,13 +536,13 @@ $active_lots = DB::select($sql,$bindings);
                             id="recibir-newletter"
                         />
                         <label for="recibir-newletter">
-                            {{ trans(\Config::get('app.theme').'-app.login_register.read_conditions') }} (<a href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition') ?>" target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)
+                            {{ trans($theme.'-app.login_register.read_conditions') }} (<a href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition') ?>" target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)
                         </label>
                             </div>
                         <div class="col-xs-12 text-center">
                             <div class="input-button-register">
                                 <p id="error-form-validation" class="text-danger" style="font-size: 18px;"></p>
-                                <button type="submit" class="btn btn-registro btn-color">{{ trans(\Config::get('app.theme').'-app.login_register.finalizar') }}</button>
+                                <button type="submit" class="btn btn-registro btn-color">{{ trans($theme.'-app.login_register.finalizar') }}</button>
                             </div>
                                                 <div class="col-xs-12 col-sm-12 text-center">
                                 <div id="regCallback" class="alert alert-danger"></div>
@@ -551,7 +551,7 @@ $active_lots = DB::select($sql,$bindings);
                             <div class="tit_page">
                                 <h1 class="step"><span class="col_reg_form"></span></h1>
                             </div>
-                                 <p class="error-form-validation hidden">{{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}</p>
+                                 <p class="error-form-validation hidden">{{ trans($theme.'-app.login_register.all_fields_are_required') }}</p>
 
                         </div>
                         </div>

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -13,7 +13,7 @@
         $url_subasta=\Routing::translateSeo('info-subasta').$sub_data->cod_sub."-".str_slug($sub_data->name);
         $bread = array();
         $bread[] = array("url" =>$url_subasta, "name" =>$sub_data->name  );
-        $bread[] = array( "name" =>trans(\Config::get('app.theme').'-app.lot_list.indice_auction'));
+        $bread[] = array( "name" =>trans($theme.'-app.lot_list.indice_auction'));
    
  
     /*
@@ -28,7 +28,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 text-center color-letter">
-                    <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</h1>
+                    <h1 class="titlePage"> {{ trans($theme.'-app.lot_list.indice_auction') }}</h1>
 
                 @include('includes.breadcrumb')
             </div>

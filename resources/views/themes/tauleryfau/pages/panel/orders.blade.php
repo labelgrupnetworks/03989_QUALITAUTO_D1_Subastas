@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -58,9 +58,9 @@
 
 				<div role="tabpanel" class="user-datas-title">
 					@if(!empty($data['favorites']))
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.favorites') }}</p>
 					@else
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.orders') }}</p>
 					@endif
 				</div>
 
@@ -75,12 +75,12 @@
 
 						<div class="title-collapse" data-toggle="collapse" data-target="#auctions_accordion">
 							<p>
-								{{ trans(\Config::get('app.theme').'-app.foot.auctions-active') }}
+								{{ trans($theme.'-app.foot.auctions-active') }}
 								<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
 							</p>
 						</div>
 
-						{{--<div class="auctions-list-title"><strong>{{ trans(\Config::get('app.theme').'-app.subastas.next_auctions') }}</strong></div>--}}
+						{{--<div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.next_auctions') }}</strong></div>--}}
 						<div class="collapse js-title-collapse in" id="auctions_accordion">
 						@foreach($data['values'] as $key_sub => $all_inf)
 
@@ -123,7 +123,7 @@
 
 						<div class="title-collapse mt-3" data-toggle="collapse" data-target="#auctions_fin_accordion">
 							<p>
-								{{ trans(\Config::get('app.theme').'-app.subastas.finished_auctions') }}
+								{{ trans($theme.'-app.subastas.finished_auctions') }}
 								<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
 							</p>
 						</div>
@@ -149,15 +149,15 @@
 					<div class="panel-body">
 							<div class="modal-wrapper">
 									<div class=" text-center single_item_content_">
-										<p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-										<span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio"></span> €</strong><br/>
+										<p class="class_h1">{{ trans($theme.'-app.lot.confirm_bid') }}</p><br/>
+										<span for="bid" class='desc_auc'>{{ trans($theme.'-app.lot.you_are_bidding') }} </span> <strong><span class="precio"></span> €</strong><br/>
 										<span class="ref_orden hidden"></span>
 										<br>
-											<button id="confirm_puja_panel" class="btn btn-color button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
+											<button id="confirm_puja_panel" class="btn btn-color button_modal_confirm btn-custom">{{ trans($theme.'-app.lot.confirm') }}</button>
 											<div class='mb-10'></div>
 											 <div class='mb-10'></div>
 											<ul class="items_list">
-												<li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
+												<li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
 
 											</ul>
 									</div>

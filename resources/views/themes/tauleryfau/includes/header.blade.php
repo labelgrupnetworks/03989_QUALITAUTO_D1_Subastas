@@ -21,7 +21,7 @@ function wpLink($code) {
 
 		<div style="flex: 3" class="d-flex align-items-center">
 			<a title="{{ \Config::get('app.name') }}" href="/{{ $lang }}">
-				<img class="img-responsive" src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo-footer.png"
+				<img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo-footer.png"
 				alt="{{ \Config::get('app.name') }}" style="width: 300px">
 			</a>
 		</div>
@@ -52,7 +52,7 @@ function wpLink($code) {
             <div class="logo" style="flex:1">
                 <a title="{{ \Config::get('app.name') }}" href="/{{ $lang }}">
                     <img class="img-responsive" width="250" height="40"
-                        src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo-web.png"
+                        src="/themes/{{ $theme }}/assets/img/logo-web.png"
                         alt="{{ \Config::get('app.name') }}">
                 </a>
             </div>
@@ -63,19 +63,19 @@ function wpLink($code) {
                     <ul class="panel-principal flex">
                         @if (!Session::has('user'))
                             <li class="prueba session-start">
-                                <a title="<?= trans(\Config::get('app.theme') . '-app.login_register.login') ?>"
+                                <a title="<?= trans($theme . '-app.login_register.login') ?>"
                                     class="btn btn-color flex valign" data-toggle="modal"
-                                    data-target="#modalLogin"><?= trans(\Config::get('app.theme') . '-app.login_register.login') ?></a>
+                                    data-target="#modalLogin"><?= trans($theme . '-app.login_register.login') ?></a>
                             </li>
                         @else
                             <li class="prueba myAccount">
                                 <a href="{{ \Routing::slug('user/panel/orders') }}"
-                                    class="btn btn-color btn-account flex">{{ trans(\Config::get('app.theme') . '-app.login_register.my_panel') }}</a>
+                                    class="btn btn-color btn-account flex">{{ trans($theme . '-app.login_register.my_panel') }}</a>
                             </li>
                             @if (Session::get('user.admin'))
                                 <li class="prueba admin">
                                     <a class="btn btn-color" href="/admin" target="_blank">
-                                        {{ trans(\Config::get('app.theme') . '-app.login_register.admin') }}</a>
+                                        {{ trans($theme . '-app.login_register.admin') }}</a>
                                 </li>
                             @endif
 
@@ -158,17 +158,17 @@ function wpLink($code) {
 
 
                 <li>
-                    <a title="{{ trans(\Config::get('app.theme') . '-app.home.home') }}"
+                    <a title="{{ trans($theme . '-app.home.home') }}"
                         href="{{ wpLink('wp_home') }}"><i class="icon_house"></i></a>
                 </li>
 
                 <li class="auctions">
                     <a
-                        href="{{ wpLink('wp_auctions') }}">{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}</a>
+                        href="{{ wpLink('wp_auctions') }}">{{ trans($theme . '-app.foot.auctions') }}</a>
                 </li>
 
 				<li>
-                    <a href="{{ wpLink('wp_calendar') }}">{{ trans(\Config::get('app.theme') . '-app.services.calendar') }}
+                    <a href="{{ wpLink('wp_calendar') }}">{{ trans($theme . '-app.services.calendar') }}
                         <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
                     </a>
 
@@ -199,16 +199,16 @@ function wpLink($code) {
 				</div>
 
                 <li>
-                    <a title="{{ trans(\Config::get('app.theme') . '-app.foot.how_to_sell') }}"
-                        href="{{ wpLink('wp_sell_coins') }}">{{ trans(\Config::get('app.theme') . '-app.foot.how_to_sell') }}</a>
+                    <a title="{{ trans($theme . '-app.foot.how_to_sell') }}"
+                        href="{{ wpLink('wp_sell_coins') }}">{{ trans($theme . '-app.foot.how_to_sell') }}</a>
                 </li>
 
                 <li>
-                    <a title="{{ trans(\Config::get('app.theme') . '-app.foot.how_to_buy') }}" href="{{ wpLink('wp_buy_coins') }}">{{ trans(\Config::get('app.theme') . '-app.foot.how_to_buy') }}</a>
+                    <a title="{{ trans($theme . '-app.foot.how_to_buy') }}" href="{{ wpLink('wp_buy_coins') }}">{{ trans($theme . '-app.foot.how_to_buy') }}</a>
                 </li>
 
                 <li>
-                    <a href="{{ wpLink('wp_services') }}">{{ trans(\Config::get('app.theme') . '-app.services.title') }}
+                    <a href="{{ wpLink('wp_services') }}">{{ trans($theme . '-app.services.title') }}
                         <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
                     </a>
 
@@ -248,7 +248,7 @@ function wpLink($code) {
 				</div>
 
 				<li>
-                    <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans(\Config::get('app.theme') . '-app.foot.onzas_macuquinas') }}
+                    <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans($theme . '-app.foot.onzas_macuquinas') }}
                         <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
                     </a>
 
@@ -321,8 +321,8 @@ function wpLink($code) {
 				</div>
 
                 <li>
-                    <a title="{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}"
-                        href="{{ wpLink('wp_contact') }}">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</a>
+                    <a title="{{ trans($theme . '-app.foot.contact') }}"
+                        href="{{ wpLink('wp_contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
                 </li>
 
 				<div class="hidden-lg hidden-md w-100">
@@ -344,7 +344,7 @@ function wpLink($code) {
 						@foreach (Config::get('app.locales') as $key => $value)
 							@if ($key != \Config::get('app.locale'))
 							<li>
-								<a title="{{ trans(\Config::get('app.theme') . '-app.head.language_' . $key) }}"
+								<a title="{{ trans($theme . '-app.head.language_' . $key) }}"
 									href="{{ "/$key" . $urlToOtherLanguage }}">
 
 									<img src="{{ $flagsLanguage[$key] }}" alt="{{ \Config::get('app.locales')[$key] }}" width="16"

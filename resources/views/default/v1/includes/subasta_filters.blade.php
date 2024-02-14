@@ -2,14 +2,14 @@
     
         <div class="form-group">
             <div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-                    <span>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</span><span id="texts" data-active='open' class="filters-auction-plus" role="button">+</span>
+                    <span>{{ trans($theme.'-app.lot_list.filters') }}</span><span id="texts" data-active='open' class="filters-auction-plus" role="button">+</span>
             </div>
             <div class="filters-auction-texts">
-                <label class="filters-auction-label" for="input_description"><span>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</span></label>
-                <input id="input_description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('description') }}">    
+                <label class="filters-auction-label" for="input_description"><span>{{ trans($theme.'-app.lot_list.search') }}</span></label>
+                <input id="input_description" placeholder="{{ trans($theme.'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('description') }}">    
                 <div class="filters-auction-divider-small"></div>
-                <label class="filters-auction-label" for="input_reference">{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</label>
-                <input id="input_reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('reference') }}">
+                <label class="filters-auction-label" for="input_reference">{{ trans($theme.'-app.lot_list.reference') }}</label>
+                <input id="input_reference" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('reference') }}">
             </div>
                 
             
@@ -36,11 +36,11 @@
                 @if( count($categories) > 0) 
                     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">   
                         <div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-                            <span>{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</span><span id="selects" data-active='open' class="filters-auction-plus" role="button">+</span>
+                            <span>{{ trans($theme.'-app.lot_list.categories') }}</span><span id="selects" data-active='open' class="filters-auction-plus" role="button">+</span>
                         </div>       
                         <div class="filters-auction-selects">            
                         <select class="form-control filters-auction-select" id="category" name="lin_ortsec" >                       
-                            <option value="" >{{ trans(\Config::get('app.theme').'-app.lot_list.all_categories') }}</option>
+                            <option value="" >{{ trans($theme.'-app.lot_list.all_categories') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{$category->lin_ortsec1}}" <?=   $lin_ortsec_selected == $category->lin_ortsec1? "selected='selected'" : ""  ?> >{{ $category->des_ortsec0 }} ({{$category->cuantos}})</option>
                             @endforeach
@@ -68,9 +68,9 @@
                                     
                         ?>
                         @if( count($subcategories) > 0)
-                            <label class="filters-auction-label">{{ trans(\Config::get('app.theme').'-app.lot_list.subcategories') }}  </label>
+                            <label class="filters-auction-label">{{ trans($theme.'-app.lot_list.subcategories') }}  </label>
                             <select class="form-control filters-auction-select" id="subcategory" name="cod_sec" >                                   
-                                <option value="" >{{ trans(\Config::get('app.theme').'-app.lot_list.all_subcategory') }} </option>
+                                <option value="" >{{ trans($theme.'-app.lot_list.all_subcategory') }} </option>
                                 @foreach($subcategories as $subcategory)                                    
                                     <option value="{{$subcategory->cod_sec}}" <?= $subcategory->cod_sec == app('request')->input('cod_sec')? "selected='selected'" : ""  ?> >{{ ucfirst(mb_strtolower(trim ($subcategory->des_sec)))}} ({{$subcategory->cuantos}})  </option>
                                 @endforeach
@@ -86,7 +86,7 @@
             </div>
             <div class="filters-auction-divider-big"></div>
             
-                <button class="btn btn-filter color-letter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+                <button class="btn btn-filter color-letter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
                 
         </div>
     
@@ -112,9 +112,9 @@
 
             @if(!empty($indices))                
                 <div class="block_filters text">
-                    <label for="input_description">{{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</label>
+                    <label for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
                     <div class="tcenter">
-                          <a title="{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}</a>
+                          <a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
                     </div>
                 </div>
                 

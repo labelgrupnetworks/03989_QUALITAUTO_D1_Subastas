@@ -15,18 +15,18 @@
 	<div class="custom-head-wrapper hidden-xs hidden-sm flex">
 		<div class="img-data-custom flex "></div>
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.lot') }}</p>
 		</div>
 		<div class="name-data-custom" style="font-weight: 900 !important;">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+			<p>{{ trans($theme.'-app.lot.description') }}</p>
 		</div>
 
 		<div class="remat-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+			<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 		</div>
 		<div class="auc-data-custom">
 			@if ($finalizada)
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.award_price') }}</p>
 			@else
 			<p>{{ trans("$theme-app.lot.current_bid") }}</p>
 			@endif
@@ -34,14 +34,14 @@
 		</div>
 		<div class="auc-data-custom">
 			@if ($finalizada)
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.increase') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.increase') }}</p>
 			@else
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.bids_bidders') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.bids_bidders') }}</p>
 			@endif
 		</div>
 		<div class="auc-data-custom">
 			@if ($finalizada)
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.settlement') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.settlement') }}</p>
 			@else
 			<p></p>
 			@endif
@@ -80,7 +80,7 @@
 	{{-- Vista mobile --}}
 	<div class="custom-wrapper-responsive  hidden-md hidden-lg {{$lot->ref_asigl0}}-{{$lot->cod_sub}}">
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+			<p>{{ trans($theme.'-app.user_panel.lot') }}
 				{{$lot->ref_asigl0}} - <span>{{$lot->titulo_hces1}}</span>
 			</p>
 		</div>
@@ -97,9 +97,9 @@
 		<div class="flex justify-content-space-bettween">
 
 			<div class="auc-data-custom">
-				<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+				<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 				<p>
-					{{$lot->impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+					{{$lot->impsalhces_asigl0}} {{ trans($theme.'-app.lot.eur') }}
 				</p>
 
 				@if($divisa !='EUR')
@@ -112,13 +112,13 @@
 
 			<div class="auc-data-custom">
 
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.award_price') }}</p>
 
 				<p class="gold">
 
 					<?php //todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas ?>
 					<span class="actual-price">{{$lot->implic_hces1 }}</span>
-					{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+					{{ trans($theme.'-app.lot.eur') }}
 
 				</p>
 				@if($divisa !='EUR')
@@ -130,12 +130,12 @@
 			<div class="auc-data-custom text-right">
 
 				@if ($finalizada)
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.increase') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.increase') }}</p>
 					<p class="mine">{{ \Tools::moneyFormat($revalorizacion, '%', 1) }}</p>
 				@else
 					<p>{{ trans("$theme-app.user_panel.bids_bidders") }}</p>
-					<p><img src="/themes/{{\Config::get('app.theme')}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{$lot->bids}}
-                    <img src="/themes/{{\Config::get('app.theme')}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{$lot->licits}}</p>
+					<p><img src="/themes/{{$theme}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{$lot->bids}}
+                    <img src="/themes/{{$theme}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{$lot->licits}}</p>
 				@endif
 
 			</div>
@@ -149,8 +149,8 @@
 			<div class="auc-data-custom text-right">
 				@if ($finalizada)
 
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.settlement') }}</p>
-					<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.settlement') }}</p>
+					<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans($theme.'-app.lot.eur') }}</p>
 					@if($divisa !='EUR')
 					<p class="divisa_fav">
 						{!!$currency->getPriceSymbol(2, $liquidacion)!!}
@@ -158,7 +158,7 @@
 					@endif
 				@else
 					<a class="btn btn-color btn-puja-panel btn-blue d-flex align-items-center justify-content-center"
-						href="{{$url_friendly}}">{{trans(\Config::get('app.theme').'-app.lot.view_lot')}}</a>
+						href="{{$url_friendly}}">{{trans($theme.'-app.lot.view_lot')}}</a>
 				@endif
 			</div>
 		</div>
@@ -185,7 +185,7 @@
 
 		<div class="auc-data-custom">
 			<p>{{$lot->impsalhces_asigl0}}
-				{{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+				{{ trans($theme.'-app.lot.eur') }}</p>
 			@if($divisa !='EUR')
 			<p class="divisa_fav">
 				{!!$currency->getPriceSymbol(2,$lot->impsalhces_asigl0)!!} </p>
@@ -197,7 +197,7 @@
 			<p class="gold">
 				{{-- todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas --}}
 				<span class="actual-price">{{$lot->implic_hces1 }}</span>
-				{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+				{{ trans($theme.'-app.lot.eur') }}
 			</p>
 
 			@if($divisa !='EUR')
@@ -212,15 +212,15 @@
 			@if ($finalizada)
 				<p class="mine">{{ \Tools::moneyFormat($revalorizacion, '%', 1) }}</p>
 			@else
-				<img src="/themes/{{\Config::get('app.theme')}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{$lot->bids}}
-				<img src="/themes/{{\Config::get('app.theme')}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{$lot->licits}}
+				<img src="/themes/{{$theme}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{$lot->bids}}
+				<img src="/themes/{{$theme}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{$lot->licits}}
 			@endif
 
 		</div>
 
 		<div class="auc-data-custom">
 			@if ($finalizada)
-				<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+				<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans($theme.'-app.lot.eur') }}</p>
 				@if($divisa !='EUR')
 				<p class="divisa_fav">
 					{!!$currency->getPriceSymbol(2, $liquidacion)!!}
@@ -228,7 +228,7 @@
 				@endif
 			@else
 				<a class="btn btn-color btn-puja-panel btn-blue d-flex align-items-center justify-content-center"
-					href="{{$url_friendly}}">{{trans(\Config::get('app.theme').'-app.lot.view_lot')}}</a>
+					href="{{$url_friendly}}">{{trans($theme.'-app.lot.view_lot')}}</a>
 			@endif
 		</div>
 

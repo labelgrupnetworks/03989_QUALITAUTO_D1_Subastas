@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-<?php 
+<?php
 	$bread[] = array("name" => $data['title']  );
 ?>
 
@@ -16,10 +16,10 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 text-center color-letter">
-			
+
 			<h1 class="titlePage"> {{ $data['title'] }}</h1>
 			@include('includes.breadcrumb')
-			
+
 		</div>
 	</div>
 
@@ -32,7 +32,7 @@
 			</div>
 		@endif
 
-	   
+
 	   <div class="col-xs-7">
 			<div class="row form-group">
 				<form name="autoformulario" id="autoformulario" method="post" action="javascript:sendAutoformulario()">
@@ -42,28 +42,28 @@
 					@foreach($data['formulario'] as $k => $item)
 
 						@if ($data['formulario'][$k]['type'] == "Hidden")
-						
+
 							{!! $data['formulario'][$k]['formulario']!!}
-						
+
 						@elseif ($data['formulario'][$k]['type'] == "TextArea")
 							<div class="input-effect col-xs-12">
 								{!! $data['formulario'][$k]['formulario']!!}
-								<label><b class="red">*</b>{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+								<label><b class="red">*</b>{{ trans($theme.'-app.global.'.$k) }}</label>
 							</div>
-						
+
 						@elseif ($data['formulario'][$k]['type'] == "Image")
 							<div class="col-xs-12">
-								{!! $data['formulario'][$k]['formulario']!!}		
+								{!! $data['formulario'][$k]['formulario']!!}
 							</div>
 						@else
 							<div class="input-effect col-xs-12 col-md-12">
 								{!! $data['formulario'][$k]['formulario']!!}
-								<label><b class="red">*</b>{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+								<label><b class="red">*</b>{{ trans($theme.'-app.global.'.$k) }}</label>
 							</div>
 						@endif
 
 					@endforeach
-					
+
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="check_term row">
@@ -71,7 +71,7 @@
                                     <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                                 </div>
                                 <div class="col-xs-10 col-md-11">
-                                    <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                                    <label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                                 </div>
                             </div>
 						</div>
@@ -87,19 +87,19 @@
 						</div>
 					</div>
 					<br><br><br>
-					
+
 
 
 					<div class="col-xs-12 text-center">
 						{!! $data['submit'] !!}
-						
+
 					</div>
 
 			</form>
 		</div>
-		
+
 	</div>
-</div>   
+</div>
 
 <br><br><br>
 

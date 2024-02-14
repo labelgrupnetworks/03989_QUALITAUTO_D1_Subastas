@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<link href="{{ Tools::urlAssetsCache('/themes/'.\Config::get('app.theme').'/style_up.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style_up.css') }}" rel="stylesheet" type="text/css">
 
 <style>
     *{
@@ -43,7 +43,7 @@
 
 <body>
 <div class="header">
-    <img src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+    <img src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
 </div>
     <div class="content">
         @yield('content')

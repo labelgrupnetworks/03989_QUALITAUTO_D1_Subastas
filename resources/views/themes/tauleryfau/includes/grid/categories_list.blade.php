@@ -3,7 +3,7 @@
 <div class="auction__filters-categories">
 
 	<div class="filter-section-head">
-		<h4>{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</h4>
+		<h4>{{ trans($theme.'-app.lot_list.categories') }}</h4>
 	</div>
 	<div class="filters-padding">
 <?php /* Las categorias no apareceran ya que solo tienen una  */ ?>

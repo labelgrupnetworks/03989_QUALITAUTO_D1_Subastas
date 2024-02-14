@@ -7,8 +7,8 @@ $clientsCookies = json_decode(\Config::get('app.config_cookies', '{"google":["_g
 		<div class='container-fluid'>
 			<div class='row'>
 				<div class='col-xs-12 col-sm-12'>
-					<p class="cookie-title">{{ trans(\Config::get('app.theme').'-app.cookies.cookies_policy') }}</p>
-					{!! trans(\Config::get('app.theme').'-app.msg_neutral.cookie_law') !!}
+					<p class="cookie-title">{{ trans($theme.'-app.cookies.cookies_policy') }}</p>
+					{!! trans($theme.'-app.msg_neutral.cookie_law') !!}
 				</div>
 			</div>
 			<form class="form-inline" method="POST"
@@ -17,20 +17,20 @@ $clientsCookies = json_decode(\Config::get('app.config_cookies', '{"google":["_g
 				@csrf
 				<div class="row mt-2 cookies-form" id="form-cookies" style="display: none">
 					<div class="col-xs-12">
-						<p class="cookie-title">{{ trans(\Config::get('app.theme').'-app.cookies.select_cookies') }}</p>
+						<p class="cookie-title">{{ trans($theme.'-app.cookies.select_cookies') }}</p>
 						<div class="row">
 							<div class="col-xs-6 col-md-3">
 								<div class="form-check form-check-inline">
 									<input class="form-control filled-in" type="checkbox" id="inlineCheckbox_esentyals"
 										value="1" checked="checked" disabled>
-									<label class="form-check-label d-flex align-items-center cookies-label disabled" for="inlineCheckbox_esentyals">{{ trans(\Config::get('app.theme')."-app.cookies.cookie_name_esentials") }}</label>
+									<label class="form-check-label d-flex align-items-center cookies-label disabled" for="inlineCheckbox_esentyals">{{ trans($theme."-app.cookies.cookie_name_esentials") }}</label>
 								</div>
 							</div>
 							<div class="col-xs-6 col-md-3">
 								<div class="form-check form-check-inline">
 									<input class="form-contro filled-in" type="checkbox" id="inlineCheckbox_esentyals"
 										value="1" checked="checked" disabled>
-									<label class="form-check-label d-flex align-items-center cookies-label disabled" for="inlineCheckbox_esentyals">{{ trans(\Config::get('app.theme')."-app.cookies.cookie_name_preferences") }}</label>
+									<label class="form-check-label d-flex align-items-center cookies-label disabled" for="inlineCheckbox_esentyals">{{ trans($theme."-app.cookies.cookie_name_preferences") }}</label>
 								</div>
 							</div>
 						</div>
@@ -41,7 +41,7 @@ $clientsCookies = json_decode(\Config::get('app.config_cookies', '{"google":["_g
 								<div class="form-check form-check-inline">
 									<input class="form-contro filled-in" name="{{ $value }}" type="checkbox"
 										id="inlineCheckbox{{$value}}" value="1" checked="checked">
-									<label class="form-check-label d-flex align-items-center cookies-label" for="inlineCheckbox{{$value}}">{{ trans(\Config::get('app.theme')."-app.cookies.cookie_name_$value") }}</label>
+									<label class="form-check-label d-flex align-items-center cookies-label" for="inlineCheckbox{{$value}}">{{ trans($theme."-app.cookies.cookie_name_$value") }}</label>
 								</div>
 							</div>
 
@@ -49,7 +49,7 @@ $clientsCookies = json_decode(\Config::get('app.config_cookies', '{"google":["_g
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
-							<p><a href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{trans(\Config::get('app.theme')."-app.cookies.view_more")}}</a></p>
+							<p><a href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{trans($theme."-app.cookies.view_more")}}</a></p>
 							</div>
 						</div>
 
@@ -61,11 +61,11 @@ $clientsCookies = json_decode(\Config::get('app.config_cookies', '{"google":["_g
 
 						<a class='button-principal btn btn-cookies'
 							href="javascript:$('#form-cookies').toggle('slow');">
-							{{ trans(\Config::get('app.theme').'-app.cookies.configure') }}
+							{{ trans($theme.'-app.cookies.configure') }}
 						</a>
 
 						<input type="submit" class='button-principal btn btn-cookies' id='accept_form_cookies'
-							value="{{ trans(\Config::get('app.theme').'-app.cookies.accept') }}">
+							value="{{ trans($theme.'-app.cookies.accept') }}">
 
 					</div>
 				</div>

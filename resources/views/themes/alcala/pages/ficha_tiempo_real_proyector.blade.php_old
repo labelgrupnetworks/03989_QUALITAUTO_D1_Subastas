@@ -1,7 +1,7 @@
 @extends('layouts.tiempo_real')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -163,13 +163,13 @@ header > nav.navbar.first .navbar-brand{
     <div style="margin-top:20px; background:white">
 
             <div id="clock" style="color: black;">
-                <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"  data-format="%D {{trans(\Config::get('app.theme')."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans(\Config::get('app.theme')."-app.msg_neutral.hours")}}" data-txtend ="{{trans(\Config::get('app.theme')."-app.msg_neutral.auction_coming_soon")}}" class="tiempo"></div>
+                <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"  data-format="%D {{trans($theme."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans($theme."-app.msg_neutral.hours")}}" data-txtend ="{{trans($theme."-app.msg_neutral.auction_coming_soon")}}" class="tiempo"></div>
             </div>
 
 
             @if(!empty($data['js_item']['user']['is_gestor']))
             <div class="botonclock">
-                <button class="btn btn-primary btn-lg start" data-to="iniciar_subasta"  start='1'>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_auction') }}</button>
+                <button class="btn btn-primary btn-lg start" data-to="iniciar_subasta"  start='1'>{{ trans($theme.'-app.sheet_tr.start_auction') }}</button>
             </div>
             @endif
 
@@ -184,7 +184,7 @@ header > nav.navbar.first .navbar-brand{
                             <div id="main_image_box">
 
                                 <!-- INICIADA -->
-                                <span id="lote_actual_main" class="pull-left">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">{{ $data['subasta_info']->lote_actual->ref_asigl0 }} </span></strong> <?php /*<span id="actual_titulo"></span>*/ ?> </span>
+                                <span id="lote_actual_main" class="pull-left">{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">{{ $data['subasta_info']->lote_actual->ref_asigl0 }} </span></strong> <?php /*<span id="actual_titulo"></span>*/ ?> </span>
 
 
                                 <div class="img">
@@ -223,7 +223,7 @@ header > nav.navbar.first .navbar-brand{
                         <?php /* quitar preico estimado
                       <div id="precioestimado" class="text-center" style=" padding-top: 10px;">
                                 <p>
-                                    <strong>{{ trans(\Config::get('app.theme').'-app.subastas.estimate') }}:</strong>
+                                    <strong>{{ trans($theme.'-app.subastas.estimate') }}:</strong>
                                     <span id="imptas" >{{ $data['subasta_info']->lote_actual->formatted_imptas_asigl0}} </span>-<span id="imptash" >  {{ $data['subasta_info']->lote_actual->formatted_imptash_asigl0}} </span> {{ $data['js_item']['subasta']['currency']->symbol }}
                                 </p>
                             </div>
@@ -231,7 +231,7 @@ header > nav.navbar.first .navbar-brand{
 
                     <div id="precioSalida" class="precioSalida salida text-center">
                                 <p >
-                                    <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:</strong><br>
+                                    <strong>{{ trans($theme.'-app.sheet_tr.start_price') }}:</strong><br>
                                     <span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}
                                 </p>
                             </div>
@@ -240,10 +240,10 @@ header > nav.navbar.first .navbar-brand{
                             <div class="salida text-center">
                                 <p style="font-size: 32px!important;">
                                     <span id="text_actual_max_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0? '' : 'hidden' ?> ">
-                                            {{ trans(\Config::get('app.theme').'-app.sheet_tr.max_actual_bid') }}
+                                            {{ trans($theme.'-app.sheet_tr.max_actual_bid') }}
                                     </span>
                                     <span id="text_actual_no_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0? 'hidden' : '' ?> ">
-                                        {{ trans(\Config::get('app.theme').'-app.sheet_tr.pending_bid') }}
+                                        {{ trans($theme.'-app.sheet_tr.pending_bid') }}
                                     </span>
                                     <br/>
                                     <span id="actual_max_bid" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) mine @else other @endif">
@@ -261,7 +261,7 @@ header > nav.navbar.first .navbar-brand{
                 <div class="started hidden">
                     <div class="aside pujas">
 
-                        <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</h2>
+                        <h2>{{ trans($theme.'-app.sheet_tr.last_bids') }}</h2>
                             <div id="pujas_list" style="height: 320px !important;">
 
                             <?php foreach ($data['subasta_info']->lote_actual->pujas as $puja) : ?>
@@ -320,13 +320,13 @@ header > nav.navbar.first .navbar-brand{
             @if (\Config::get('app.tr_show_adjudicaciones') and Session::has('user') && empty($data['js_item']['user']['is_gestor']))
             <div class="col-sm-4 col-lg-4 started hidden">
                 <div class="aside adjudicaciones">
-                    <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_adjudications') }}</h2>
+                    <h2>{{ trans($theme.'-app.sheet_tr.your_adjudications') }}</h2>
                     <div id="adjudicaciones_list">
                         @if (!empty($data['js_item']['user']) && !empty($data['js_item']['user']['adjudicaciones']))
                             <?php foreach ($data['js_item']['user']['adjudicaciones'] as $key => $val): ?>
                                 <div class="adjudicaciones_model">
                                     <div class="col-lg-6 adj_ref">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span>{{ $val->ref_asigl1 }}</span></p>
+                                        <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span>{{ $val->ref_asigl1 }}</span></p>
                                     </div>
                                     <div class="col-lg-6">
                                         <p><span class="adj_imp">{{ $val->imp_asigl1 }}</span> <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span></p>
@@ -339,7 +339,7 @@ header > nav.navbar.first .navbar-brand{
                         @endif
                         <div class="adjudicaciones_model hidden" id="type_adj_model">
                                 <div class="col-lg-6 adj_ref">
-                                    <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span></span></p>
+                                    <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span></span></p>
                                 </div>
                                 <div class="col-lg-6">
                                     <p><span class="adj_imp"></span> <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span></p>

@@ -13,14 +13,14 @@
         <ul class="nav nav-tabs">
             @if($hasWatchStreaming)
             <li class="{{ $streamingByDefault ? '' : 'active' }}">
-                <a data-toggle="tab" href="#ultimas_pujas">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</a>
+                <a data-toggle="tab" href="#ultimas_pujas">{{ trans($theme.'-app.sheet_tr.last_bids') }}</a>
             </li>
             <li class="{{ $streamingByDefault ? 'active' : '' }}">
-                <a data-toggle="tab" href="#streaming">{{ trans(\Config::get('app.theme').'-app.sheet_tr.streaming') }}</a>
+                <a data-toggle="tab" href="#streaming">{{ trans($theme.'-app.sheet_tr.streaming') }}</a>
             </li>
             @else
             <li class="active" style="width: 100%; margin-bottom: 1px;">
-                <a data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</a>
+                <a data-toggle="tab">{{ trans($theme.'-app.sheet_tr.last_bids') }}</a>
             </li>
             @endif
         </ul>

@@ -4,11 +4,11 @@
             <div class="info-type-auction">
 
                  @if($subasta_online)
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_online') }}
                 @elseif($subasta_web)
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
                 @elseif($subasta_venta)
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_venta') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_venta') }}
                 @endif
             </div>
 
@@ -40,7 +40,7 @@
    </span>
 </div>
 @elseif($cerrado)
-<div class="info-type-auction">{{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}</div>
+<div class="info-type-auction">{{ trans($theme.'-app.subastas.finalized') }}</div>
 
 @endif
 

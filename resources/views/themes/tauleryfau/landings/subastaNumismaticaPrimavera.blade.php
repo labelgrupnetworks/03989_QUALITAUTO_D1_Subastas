@@ -1,7 +1,7 @@
 @extends('layouts.tasacion')
 @include('includes.google_head')
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 
 @stop
 
@@ -20,7 +20,7 @@
 
                             <a title="Tauler y Fau" href="/es">
                                 <img class="img-responsive"
-                                    src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/logo.png"
+                                    src="/themes/<?= $theme ?>/img/comprar-monedas/logo.png"
                                     alt="Tauler y Fau">
                             </a>
                         </div>
@@ -35,7 +35,7 @@
                 <div class="col-md-8 col-md-offset-2 col-xs-12 text-center">
                    <a href="https://www.tauleryfau.com/es/info-subasta/29052019-subasta-30-sala-29-mayo-2019">
                     <img class="img-responsive"
-                        src="/themes/{{\Config::get('app.theme')}}/img/slider-S30-espan%CC%83ol.jpg"
+                        src="/themes/{{$theme}}/img/slider-S30-espan%CC%83ol.jpg"
                         alt="{{(\Config::get( 'app.name' ))}}" /></a>
                 </div>
             </div>

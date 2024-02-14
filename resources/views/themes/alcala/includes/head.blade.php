@@ -8,7 +8,7 @@ header("X-Frame-Options:     DENY");
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="initial-scale=1,minimum-scale=0.15, maximum-scale=2, user-scalable=yes">
-<meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
 
 <title>
 @if(!empty($data['seo']->meta_title))

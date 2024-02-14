@@ -41,8 +41,8 @@
                                             </div>
 
                                             <div class="col-lg-4">
-                                                <button type="button" class="btn-primary btn btn-warning btn-chat-pre btn-enviar" id_mensaje="<?php echo $item->id_web_chat ?>"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-send') }}</button>
-                                                <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="<?php echo $item->id_web_chat ?>" predefinido="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-delete') }}</button>
+                                                <button type="button" class="btn-primary btn btn-warning btn-chat-pre btn-enviar" id_mensaje="<?php echo $item->id_web_chat ?>"> {{ trans($theme.'-app.sheet_tr.chat-send') }}</button>
+                                                <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="<?php echo $item->id_web_chat ?>" predefinido="1">{{ trans($theme.'-app.sheet_tr.chat-delete') }}</button>
                                             </div>
 
                                         </div>

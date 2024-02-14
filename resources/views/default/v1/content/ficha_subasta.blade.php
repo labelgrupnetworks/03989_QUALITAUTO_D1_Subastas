@@ -17,34 +17,34 @@
                         </div>
                         <div class="info-auction-info-address">
                                 @if( (!empty($data["auction"]->expofechas_sub)) ||  (!empty($data["auction"]->expohorario_sub)) || (!empty($data["auction"]->expolocal_sub)) || (!empty($data["auction"]->expomaps_sub)))
-                                <div class="info-auction-info-address-title">{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_exposicion') }}</div>
+                                <div class="info-auction-info-address-title">{{ trans($theme.'-app.subastas.inf_subasta_exposicion') }}</div>
                                 @endif
                                 @if(!empty($data["auction"]->expofechas_sub))
                                     <p><?= $data["auction"]->expofechas_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->expohorario_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->expohorario_sub ?> </p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->expohorario_sub ?> </p>
                                 @endif
                                 @if(!empty($data["auction"]->expolocal_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->expolocal_sub ?></p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->expolocal_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->expomaps_sub))
                                     <p class="how_to_get_content"><a target="_blank" class="color-letter how_to_get" title="cómo llegar" href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>"><i class="fas fa-map-marker-alt" style="font-size: 17px;"></i></a></p>
                                 @endif
                                 @if((!empty($data["auction"]->sesfechas_sub)) || (!empty($data["auction"]->seshorario_sub)) || (!empty($data["auction"]->seslocal_sub)) || (!empty($data["auction"]->sesmaps_sub)))
-                            <div class="info-auction-info-address-title">{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_subasta') }}</div>
+                            <div class="info-auction-info-address-title">{{ trans($theme.'-app.subastas.inf_subasta_subasta') }}</div>
                             @endif
                             @if(!empty($data["auction"]->sesfechas_sub))
                                <p> <?= $data["auction"]->sesfechas_sub ?></p>
                             @endif
                             @if(!empty($data["auction"]->seshorario_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
+                            <p>{{ trans($theme.'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
                             @endif
                             @if(!empty($data["auction"]->seslocal_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
+                            <p>{{ trans($theme.'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
                             @endif
                             @if(!empty($data["auction"]->sesmaps_sub))
-                                <p class="how_to_get_content"><a target="_blank" class="color-letter how_to_get" title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>"><i class="fas fa-map-marker-alt" style="font-size: 17px;"></i></a></p>
+                                <p class="how_to_get_content"><a target="_blank" class="color-letter how_to_get" title="{{ trans($theme.'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>"><i class="fas fa-map-marker-alt" style="font-size: 17px;"></i></a></p>
                             @endif
 
 
@@ -81,19 +81,19 @@
                         </div>
                         <div class="block-auction exposition-des">
                             @if((!empty($data["auction"]->sesfechas_sub)) || (!empty($data["auction"]->seshorario_sub)) || (!empty($data["auction"]->seslocal_sub)) || (!empty($data["auction"]->sesmaps_sub)))
-                            <div class="info-auction-info-address-title">{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_subasta') }}</div>
+                            <div class="info-auction-info-address-title">{{ trans($theme.'-app.subastas.inf_subasta_subasta') }}</div>
                             @endif
                             @if(!empty($data["auction"]->sesfechas_sub))
                                <p> <?= $data["auction"]->sesfechas_sub ?></p>
                             @endif
                             @if(!empty($data["auction"]->seshorario_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
+                            <p>{{ trans($theme.'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
                             @endif
                             @if(!empty($data["auction"]->seslocal_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
+                            <p>{{ trans($theme.'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
                             @endif
                             @if(!empty($data["auction"]->sesmaps_sub))
-                                <p><a target="_blank" title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
+                                <p><a target="_blank" title="{{ trans($theme.'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">{{ trans($theme.'-app.subastas.how_to_get') }}</a></p>
                             @endif
 
 
@@ -104,7 +104,7 @@
                         <div class="links-aution">
                             @foreach ($data['sessions'] as $session)
                             <div class="link-auction">
-                                <p>{{$session->name}}</p><a></a><a class="btn btn-view-lot btn-color" title="Ver lotes" href="<?= Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions) ?>">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
+                                <p>{{$session->name}}</p><a></a><a class="btn btn-view-lot btn-color" title="Ver lotes" href="<?= Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions) ?>">{{ trans($theme.'-app.subastas.see_lotes') }}</a>
                             </div>
                             @endforeach
                         </div>
@@ -129,7 +129,7 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-4">
 			<div class="single_auction">
-				<h1 class="titleSingle">{{trans(\Config::get('app.theme').'-app.lot.auction_not_found')}}</h1>
+				<h1 class="titleSingle">{{trans($theme.'-app.lot.auction_not_found')}}</h1>
                         </div>
                 </div>
         </div>

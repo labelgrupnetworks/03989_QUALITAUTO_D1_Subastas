@@ -1,4 +1,4 @@
-<?php 
+<?php
     //Mostrar el historico de pujas del lote
     $cont=0;
     //si se ha superado el precio minimo
@@ -13,9 +13,9 @@
 <input id="view_all_pujas_active" type="hidden" value="0">
 <div id="historial_pujas" class="historial-content hist  <?= ($num_pujas == 0) ? 'hidden' : '' ?>">
         <div class="hist_title historial-title">
-            <p>{{ trans(\Config::get('app.theme').'-app.lot.history') }} (<span class="num_pujas"></span> {{ trans(\Config::get('app.theme').'-app.lot.bidding') }})</p>
+            <p>{{ trans($theme.'-app.lot.history') }} (<span class="num_pujas"></span> {{ trans($theme.'-app.lot.bidding') }})</p>
         </div>
-        <div class="hist_content historial-list" id="pujas_list" >                       
+        <div class="hist_content historial-list" id="pujas_list" >
 
         </div>
 </div>

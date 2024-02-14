@@ -1,7 +1,7 @@
 @extends('layouts.tiempo_real')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -159,18 +159,18 @@ html {
             <div id="clock" style="display: block">
                 <div style="margin-top: 10px;border-bottom: 1px solid #283747">
                     <img style="display: block;max-width: 300px; margin: 0 auto"
-                        src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
+                        src="/themes/{{$theme}}/assets/img/logo.png"
                         alt="{{(\Config::get( 'app.name' ))}}">
                 </div>
                 <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"
-                    data-format="%D {{trans(\Config::get('app.theme')."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans(\Config::get('app.theme')."-app.msg_neutral.hours")}}"
-                    data-txtend="{{trans(\Config::get('app.theme')."-app.msg_neutral.auction_coming_soon")}}"
+                    data-format="%D {{trans($theme."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans($theme."-app.msg_neutral.hours")}}"
+                    data-txtend="{{trans($theme."-app.msg_neutral.auction_coming_soon")}}"
                     class="tiempo wait-time text-center"></div>
             </div>
             @if(!empty($data['js_item']['user']['is_gestor']))
             <div class="botonclock">
                 <button class="btn btn-primary btn-lg start" data-to="iniciar_subasta"
-                    start='1'>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_auction') }}</button>
+                    start='1'>{{ trans($theme.'-app.sheet_tr.start_auction') }}</button>
             </div>
             @endif
              @if(Session::has('user') && $data['js_item']['user']['is_gestor'])

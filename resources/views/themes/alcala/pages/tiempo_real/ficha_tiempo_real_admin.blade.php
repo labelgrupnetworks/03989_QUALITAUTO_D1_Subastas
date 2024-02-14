@@ -1,7 +1,7 @@
 @extends('layouts.tiempo_real')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -164,17 +164,17 @@ body, html {
             <div id="clock" style="display: block">
 
                 <div style="margin-top: 50px">
-                    <img style="display: block;max-width: 300px; margin: 0 auto" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                    <img style="display: block;max-width: 300px; margin: 0 auto" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
                 </div>
 
-                 <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"  data-format="%D {{trans(\Config::get('app.theme')."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans(\Config::get('app.theme')."-app.msg_neutral.hours")}}" data-txtend ="{{trans(\Config::get('app.theme')."-app.msg_neutral.auction_coming_soon")}}" class="tiempo wait-time text-center"></div>
+                 <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"  data-format="%D {{trans($theme."-app.msg_neutral.days")}} <br> %H:%M:%S  {{trans($theme."-app.msg_neutral.hours")}}" data-txtend ="{{trans($theme."-app.msg_neutral.auction_coming_soon")}}" class="tiempo wait-time text-center"></div>
 
 
             </div>
 
             @if(!empty($data['js_item']['user']['is_gestor']))
             <div class="botonclock">
-                <button class="btn btn-primary btn-lg start" data-to="iniciar_subasta"  start='1'>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_auction') }}</button>
+                <button class="btn btn-primary btn-lg start" data-to="iniciar_subasta"  start='1'>{{ trans($theme.'-app.sheet_tr.start_auction') }}</button>
             </div>
             @endif
 
@@ -203,7 +203,7 @@ body, html {
                     </div>
 
 					<div class="col-lg-6" style="border-left:0;">
-						<span id="lote_actual_main" class="" style="display:block">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">{{ $data['subasta_info']->lote_actual->ref_asigl0 }}</span></strong> </span>
+						<span id="lote_actual_main" class="" style="display:block">{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">{{ $data['subasta_info']->lote_actual->ref_asigl0 }}</span></strong> </span>
 						<div class="scrollable">
 							<div class="title-container">
 								<span id="actual_descweb" style="font-size: 20px;">
@@ -219,8 +219,8 @@ body, html {
 								<div id="salidaResponsive" class="salidaResponsive hidden-sm hidden-md hidden-lg"></div>
 
 								<div id="tusOrdenes" class="tusOrdenes hidden-sm hidden-md hidden-lg">
-									<p class="yourBid">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_bid') }}: </p>
-									<p class="yourOrder">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_order') }}: </p>
+									<p class="yourBid">{{ trans($theme.'-app.sheet_tr.your_actual_bid') }}: </p>
+									<p class="yourOrder">{{ trans($theme.'-app.sheet_tr.your_actual_order') }}: </p>
 								</div>
 								<div id="actualResponsive" class="actualResponsive hidden-sm hidden-md hidden-lg"></div>
 								<div id="" class="pujarResponsive">
@@ -241,7 +241,7 @@ body, html {
 
                             <div id="precioSalida" class="precioSalida salida text-center">
                                 <p>
-                                    <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:</strong>
+                                    <strong>{{ trans($theme.'-app.sheet_tr.start_price') }}:</strong>
                                     <span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}
                                 </p>
                             </div>
@@ -252,10 +252,10 @@ body, html {
                             <div class="pactual salida text-center">
                                 <p>
                                     <span id="text_actual_max_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0? '' : 'hidden' ?> ">
-                                            {{ trans(\Config::get('app.theme').'-app.sheet_tr.max_actual_bid') }}
+                                            {{ trans($theme.'-app.sheet_tr.max_actual_bid') }}
                                     </span>
                                     <span id="text_actual_no_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0? 'hidden' : '' ?> ">
-                                        {{ trans(\Config::get('app.theme').'-app.sheet_tr.pending_bid') }}
+                                        {{ trans($theme.'-app.sheet_tr.pending_bid') }}
                                     </span>
 
                                     <span id="actual_max_bid" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) mine @else other @endif">
@@ -268,13 +268,13 @@ body, html {
 
                                     @if(Session::has('user') && $data['js_item']['user']['is_gestor'])
 
-                                        <span id="cancelarPuja" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
-                                        <span id="cancelarOrden" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order') }}</span>
+                                        <span id="cancelarPuja" >{{ trans($theme.'-app.sheet_tr.cancel_bid') }}</span>
+                                        <span id="cancelarOrden" >{{ trans($theme.'-app.sheet_tr.cancel_order') }}</span>
 
                                     @endif
                                     @if(\Config::get('app.tr_show_canel_bid_client') && Session::has('user') && !$data['js_item']['user']['is_gestor'])
 
-                                    <span id="cancelarPujaUser" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
+                                    <span id="cancelarPujaUser" class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif" >{{ trans($theme.'-app.sheet_tr.cancel_bid') }}</span>
                                     @endif
                                 </p>
 
@@ -283,9 +283,9 @@ body, html {
 
 
                             @if(Session::has('user') && !$data['js_item']['user']['is_gestor'])
-                                <div class="col-lg-6">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_bid') }}: <span id="tupuja"><?php if (!empty($data['js_item']['user']['maxPuja']))  { echo $data['js_item']['user']['maxPuja']->formatted_imp_asigl1; } ?></span></div>
+                                <div class="col-lg-6">{{ trans($theme.'-app.sheet_tr.your_actual_bid') }}: <span id="tupuja"><?php if (!empty($data['js_item']['user']['maxPuja']))  { echo $data['js_item']['user']['maxPuja']->formatted_imp_asigl1; } ?></span></div>
 
-                                <div class="col-lg-6">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_order') }}: <span id="tuorden"><?php if (!empty($data['js_item']['user']['maxOrden']))  { echo $data['js_item']['user']['maxOrden']->himp_orlic; } ?></span></div>
+                                <div class="col-lg-6">{{ trans($theme.'-app.sheet_tr.your_actual_order') }}: <span id="tuorden"><?php if (!empty($data['js_item']['user']['maxOrden']))  { echo $data['js_item']['user']['maxOrden']->himp_orlic; } ?></span></div>
                             @endif
 
                             <!-- controles -->
@@ -321,10 +321,10 @@ body, html {
 
                                                     <div class="gestor_radios">
                                                         <label class="radio">
-                                                            <input checked="checked" type="radio" name="puja_opts" value="normal"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.order_bid') }}
+                                                            <input checked="checked" type="radio" name="puja_opts" value="normal"> {{ trans($theme.'-app.sheet_tr.order_bid') }}
                                                         </label>
                                                         <label class="radio">
-                                                            <input type="radio" name="puja_opts" value="firme"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.direct_bid') }}
+                                                            <input type="radio" name="puja_opts" value="firme"> {{ trans($theme.'-app.sheet_tr.direct_bid') }}
                                                         </label>
                                                     </div>
 
@@ -340,7 +340,7 @@ body, html {
 
                                             @if(empty($data['js_item']['user']['is_gestor']) and Session::has('user'))
                                             <div class="col-lg-6">
-                                                <a class="add_bid btn btn-success btn-custom-save"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
+                                                <a class="add_bid btn btn-success btn-custom-save"><i class="fa fa-gavel"></i> {{ trans($theme.'-app.sheet_tr.place_bid') }}</a>
                                                 <input type="hidden" id="tiempo_real" value="1" readonly>
                                             </div>
                                             @endif
@@ -362,7 +362,7 @@ body, html {
                 <div class="started hidden">
                     <div class="aside pujas">
 
-                        <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</h2>
+                        <h2>{{ trans($theme.'-app.sheet_tr.last_bids') }}</h2>
                             <div id="pujas_list">
 
                             <?php
@@ -381,17 +381,17 @@ body, html {
                                 ?>
                                     <div class="pujas_model col-xs-12">
                                         <div class="col-lg-6 tipoPuja">
-                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                            <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
-                                            <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
-                                            <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i>  {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
+                                            <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
+                                            <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
+                                            <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i>  {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
 
-                                            <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                            <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
 
                                             <p data-type="U" @if ($puja->pujrep_asigl1 != 'U')class="hidden" @endif><i class="fab fa-stripe-s" aria-hidden="true"></i> Subalia</p>
 
-                                            <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-											<p data-type="R" class=" trBidReserve @if ($puja->pujrep_asigl1 != 'R') hidden @endif " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-reserve') }}</p>
+                                            <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+											<p data-type="R" class=" trBidReserve @if ($puja->pujrep_asigl1 != 'R') hidden @endif " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-reserve') }}</p>
 
 										</div>
                                         <div class="col-lg-6 importePuja">
@@ -409,16 +409,16 @@ body, html {
 
                             <div class="pujas_model hidden col-xs-12" id="type_bid_model">
                                 <div class="col-lg-6 tipoPuja">
-                                    <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                    <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
-                                    <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
-									<p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
-                                    <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-                                    <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-                                    <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
-                                    <p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                    <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
+                                    <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
+                                    <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
+									<p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
+                                    <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                                    <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                                    <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
+                                    <p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
                                     <p data-type="U" class="hidden"><i class="fab fa-stripe-s" aria-hidden="true"></i> SUBALIA</p>
-									<p data-type="R" class=" trBidReserve " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-reserve') }}</p>
+									<p data-type="R" class=" trBidReserve " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-reserve') }}</p>
 
 									</div>
                                 <div class="col-lg-6 importePuja">
@@ -444,13 +444,13 @@ body, html {
             @if (\Config::get('app.tr_show_adjudicaciones') and Session::has('user') && empty($data['js_item']['user']['is_gestor']))
             <div class="col-sm-4 col-lg-4 started hidden">
                 <div class="aside adjudicaciones">
-                    <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_adjudications') }}</h2>
+                    <h2>{{ trans($theme.'-app.sheet_tr.your_adjudications') }}</h2>
                     <div id="adjudicaciones_list">
                         @if (!empty($data['js_item']['user']) && !empty($data['js_item']['user']['adjudicaciones']))
                             <?php foreach ($data['js_item']['user']['adjudicaciones'] as $key => $val): ?>
                                 <div class="adjudicaciones_model">
                                     <div class="col-lg-6 adj_ref">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span>{{ $val->ref_asigl1 }}</span></p>
+                                        <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span>{{ $val->ref_asigl1 }}</span></p>
                                     </div>
                                     <div class="col-lg-6">
                                         <p><span class="adj_imp">{{ $val->imp_asigl1 }}</span> <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span></p>
@@ -463,7 +463,7 @@ body, html {
                         @endif
                         <div class="adjudicaciones_model hidden" id="type_adj_model">
                                 <div class="col-lg-6 adj_ref">
-                                    <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span></span></p>
+                                    <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span></span></p>
                                 </div>
                                 <div class="col-lg-6">
                                     <p><span class="adj_imp"></span> <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span></p>
@@ -479,7 +479,7 @@ body, html {
             <div class="col-lg-4 started hidden">
                 <div class="aside ol">
 
-                    <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.orders') }}</h2>
+                    <h2>{{ trans($theme.'-app.sheet_tr.orders') }}</h2>
                         <div id="ol_list">
 
                         <?php foreach ($data['subasta_info']->lote_actual->ordenes as $orden) : ?>
@@ -493,14 +493,14 @@ body, html {
                                 ?>
                                 <div class="ol_model">
                                     <div class="col-lg-6 tipoOrden">
-                                        <p data-type="I" @if ($orden->tipop_orlic != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                        <p data-type="W" @if ($orden->tipop_orlic != 'W')class="hidden" @endif ><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
-                                        <p data-type="S" @if ($orden->tipop_orlic != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
-                                        <p data-type="T" @if ($orden->tipop_orlic != 'T')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
-                                        <p data-type="E" @if ($orden->tipop_orlic != 'E' && $orden->tipop_orlic != 'P')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-                                        <p data-type="O" @if ($orden->tipop_orlic != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                        <p data-type="I" @if ($orden->tipop_orlic != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
+                                        <p data-type="W" @if ($orden->tipop_orlic != 'W')class="hidden" @endif ><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
+                                        <p data-type="S" @if ($orden->tipop_orlic != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
+                                        <p data-type="T" @if ($orden->tipop_orlic != 'T')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
+                                        <p data-type="E" @if ($orden->tipop_orlic != 'E' && $orden->tipop_orlic != 'P')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                                        <p data-type="O" @if ($orden->tipop_orlic != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
 										<p data-type="U" @if ($orden->tipop_orlic != 'U')class="hidden" @endif><i class="fab fa-stripe-s" aria-hidden="true"></i> SUBALIA</p>
-                                        <p data-type="R" class=" trBidReserve @if ($orden->tipop_orlic != 'R') hidden @endif " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-reserve') }}</p>
+                                        <p data-type="R" class=" trBidReserve @if ($orden->tipop_orlic != 'R') hidden @endif " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-reserve') }}</p>
                                  </div>
 
                                     <div class="col-lg-6 importeOrden">
@@ -518,16 +518,16 @@ body, html {
 
                         <div class="ol_model hidden" id="type_bid_model_order">
                             <div class="col-lg-6 tipoOrden">
-                                <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-internacional') }}</p>
-                                <p data-type="W"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
-                                <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
-                                <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
-                                <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-                                <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
-								<p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
+                                <p data-type="W"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
+                                <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
+                                <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
+                                <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                                <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+								<p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
 								<p data-type="U" class="hidden"><i class="fab fa-stripe-s" aria-hidden="true"></i> SUBALIA</p>
 
-								<p data-type="R" class=" trBidReserve " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-reserve') }}</p>
+								<p data-type="R" class=" trBidReserve " ><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-reserve') }}</p>
 
                             </div>
                             <div class="col-lg-6 importeOrden">
@@ -590,22 +590,22 @@ body, html {
     @if(!empty($data['js_item']['user']['is_gestor']))
        <div id="controles_gestor_box">
            <div class="gestor_buttons">
-               <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.user_conectet') }} <span id="users_conectet"></span></p>
-                <button class="change_end_lot btn" data-status="end" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.end_lot') }}</button>
+               <p>{{ trans($theme.'-app.sheet_tr.user_conectet') }} <span id="users_conectet"></span></p>
+                <button class="change_end_lot btn" data-status="end" type="button">{{ trans($theme.'-app.sheet_tr.end_lot') }}</button>
 
-				<button class="change_end_lot btn hidden" data-status="cancel" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_end_lot') }}</button>
+				<button class="change_end_lot btn hidden" data-status="cancel" type="button">{{ trans($theme.'-app.sheet_tr.cancel_end_lot') }}</button>
 
-                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'stopped') hidden @endif" data-status="stopped" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.stop_auction') }}</button>
-                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'stopped') hidden @endif" data-status="stopped-time" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.put_off_auction') }}</button>
-                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'in_progress') hidden @endif" data-status="in_progress" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.restart_lot') }}</button>
+                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'stopped') hidden @endif" data-status="stopped" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.stop_auction') }}</button>
+                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'stopped') hidden @endif" data-status="stopped-time" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.put_off_auction') }}</button>
+                <button class="change_auction_status btn @if ($data['js_item']['subasta']['status'] == 'in_progress') hidden @endif" data-status="in_progress" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.restart_lot') }}</button>
 
-                <button id="msg_predef" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.msg_predef') }}</button>
-                <button id="show_stopped_lots" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.show_stopped_lots') }}</button>
-                <button id="show_stopped_lots_disabled" class="btn hidden" style="background:red" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.show_stopped_lots') }}</button>
-                <button id="jump_to_lots" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.jump_to_lots') }}</button>
-                <button id="jump_to_lots_disabled" class="btn hidden" style="background:red" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.jump_to_lots') }}</button>
-                <button id="baja_client" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.baja_client') }}</button>
-                <button id="baja_client_disabled" class="btn hidden" style="background:red" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.baja_client') }}</button>
+                <button id="msg_predef" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.msg_predef') }}</button>
+                <button id="show_stopped_lots" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.show_stopped_lots') }}</button>
+                <button id="show_stopped_lots_disabled" class="btn hidden" style="background:red" type="button">{{ trans($theme.'-app.sheet_tr.show_stopped_lots') }}</button>
+                <button id="jump_to_lots" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.jump_to_lots') }}</button>
+                <button id="jump_to_lots_disabled" class="btn hidden" style="background:red" type="button">{{ trans($theme.'-app.sheet_tr.jump_to_lots') }}</button>
+                <button id="baja_client" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.baja_client') }}</button>
+                <button id="baja_client_disabled" class="btn hidden" style="background:red" type="button">{{ trans($theme.'-app.sheet_tr.baja_client') }}</button>
 
 				@if (\Config::get('app.tr_fairwarning'))
 					<button class="fairwarning_js btn" style="background: #b11b0c;"  type="button">Fair Warning</button>
@@ -614,7 +614,7 @@ body, html {
                 <?php /*automátic auctions */ ?>
                 @if (\Config::get('app.tr_show_automatic_auction'))
                 <div>
-                    <button id="automatic_auction" style="background: #337ab7;    display: inline-block;    width: 170px;" class="btn" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.automatic_auction') }}</button>
+                    <button id="automatic_auction" style="background: #337ab7;    display: inline-block;    width: 170px;" class="btn" type="button">{{ trans($theme.'-app.sheet_tr.automatic_auction') }}</button>
                     <input style="display: inline-block; width: 55px;height: 34px;vertical-align: bottom;padding-left: 5px;" id="seconds_automatic_auctions" type="text" placeholder="Segundos" value="<?= !empty(Config::get('app.seconds_automatic_auction'))? Config::get('app.seconds_automatic_auction') : '5'  ?>" >
                 </div>
                 <div style="height: 20px">

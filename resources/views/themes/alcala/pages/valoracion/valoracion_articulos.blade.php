@@ -1,18 +1,18 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
-<?php 
+<?php
 
 $bread[] = array("name" =>$data['title']  );
 ?>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 text-center color-letter">
-            <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</h1>
+            <h1 class="titlePage"> {{ trans($theme.'-app.home.free-valuations') }}</h1>
                 @include('includes.breadcrumb')
             </div>
         </div>
@@ -21,78 +21,78 @@ $bread[] = array("name" =>$data['title']  );
 	    <div class="container" id="return-valoracion">
             <div class="row">
                 <div class="col-xs-12">
-                    <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.desc_assessment')  ?>            
-                </div> 
+                    <?=  trans($theme.'-app.valoracion_gratuita.desc_assessment')  ?>
+                </div>
                 <form id="form-valoracion-adv" class="form">
                     <div class=" col-xs-12 col-lg-8 col-lg-offset-2">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">        
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class=" col-xs-12 content-form-valuations">
-                        <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</p>
+                        <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans($theme.'-app.valoracion_gratuita.error') }}</p>
                         <div class="col-xs-12 col-lg-6  no-padding d-flex flex-direction-column inputs-custom-group">
                             <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?></label>
-                                <input 
-                                    class="form-control" 
-                                    id="name" 
+                                <label class="" for="name"><?=  trans($theme.'-app.valoracion_gratuita.name')  ?></label>
+                                <input
+                                    class="form-control"
+                                    id="name"
                                     name="name"
-                                    required="" 
-                                    type="text" 
+                                    required=""
+                                    type="text"
                                 />
                             </div>
 
                             <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="name"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?></label>
-                                <input 
-                                    class="form-control" 
-                                    id="email" 
+                                <label class="" for="name"><?=  trans($theme.'-app.valoracion_gratuita.email')  ?></label>
+                                <input
+                                    class="form-control"
+                                    id="email"
                                     name="email"
-                                    required="" 
-                                    type="email" 
+                                    required=""
+                                    type="email"
                                 />
                             </div>
 
                             <div class="form-group form-group-custom col-xs-12 col-xs-12">
-                                <label class="" for="telf"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?></label>
-                                <input 
-                                    class="form-control" 
-                                    id="telf" 
+                                <label class="" for="telf"><?=  trans($theme.'-app.valoracion_gratuita.telf')  ?></label>
+                                <input
+                                    class="form-control"
+                                    id="telf"
                                     name="telf"
-                                    required="" 
-                                    type="phone" 
+                                    required=""
+                                    type="phone"
                                 />
                             </div>
-                            
-                            
-                            
-                           
+
+
+
+
                         </div>
                         <div class="col-lg-6 col-xs-12 inputs-custom-group d-flex flex-column">
-                                <label class="" style="font-size: 10px; font-weight: 100"><?=  trans(\Config::get('app.theme').'-app.user_panel.description')  ?></label>
+                                <label class="" style="font-size: 10px; font-weight: 100"><?=  trans($theme.'-app.user_panel.description')  ?></label>
 
-                            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion" required placeholder="{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.description') }}"></textarea>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion" required placeholder="{{ trans($theme.'-app.valoracion_gratuita.description') }}"></textarea>
                         </div>
-                    </div>  
+                    </div>
                     <div class="form-group form-group-custom col-xs-12">
-                                
+
                             <div id="dropzone">
-                                <small class="text-danger error-dropzone" style="display:none">{{ trans(\Config::get('app.theme').'-app.msg_error.max_size') }}</small>
-                                <div class="color-letter text-dropzone"><?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.adj_IMG')  ?></div>
+                                <small class="text-danger error-dropzone" style="display:none">{{ trans($theme.'-app.msg_error.max_size') }}</small>
+                                <div class="color-letter text-dropzone"><?=  trans($theme.'-app.valoracion_gratuita.adj_IMG')  ?></div>
                                 <div class="mini-file-content d-flex align-items-center" style="position:relative"></div>
-                                    
+
                                     <input id="images" type="file" name="imagen[]" />
                                   </div>
-                    </div>  
+                    </div>
                             <div class="col-xs-12 text-right no-padding">
-                                <button type="submit" id="valoracion-adv" class="button-send-valorate button-principal">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.send') }}</button>
-                            </div>   
+                                <button type="submit" id="valoracion-adv" class="button-send-valorate button-principal">{{ trans($theme.'-app.valoracion_gratuita.send') }}</button>
+                            </div>
                 </div>
-               
+
                 <div class="col-xs-12 info">
-                </div>        
+                </div>
             </form>
         </div>
     </div>
-</div>   
+</div>
 
 
 <script>
@@ -104,24 +104,24 @@ $(function() {
 
 $('.mini-upload-image').click(function (){
     alert()
-}) 
+})
   $('#dropzone').on('dragover', function() {
     $(this).addClass('hover');
   });
-  
+
   $('#dropzone').on('dragleave', function() {
     $(this).removeClass('hover');
   });
-  
+
   $('#dropzone #images').on('change', function(e) {
-    
+
     max_size = 2000;
     var size = 0
-    $("#form-valoracion-adv").find('input[type="file"]').each(function (index, element) {     
+    $("#form-valoracion-adv").find('input[type="file"]').each(function (index, element) {
             $(element.files).each(function(index, el){
                 size = size + ((el.size / 1024))
             })
-            
+
         });
     if(Math.floor(size) < max_size){
         var idrandom = 'image-'+Math.random();
@@ -144,11 +144,11 @@ $('.mini-upload-image').click(function (){
         var file = this.files[i];
     $('#dropzone').removeClass('hover');
 
-    
+
     if ((/image\/(gif|png|jpeg|jpg)$/i).test(file.type)) {
         var reader = new FileReader(file);
         reader.readAsDataURL(file);
-        
+
         reader.onload = function(e) {
         var data = e.target.result,
             $img = $('<img class="img-responsive" />').attr('src', data).fadeIn();
@@ -159,7 +159,7 @@ $('.mini-upload-image').click(function (){
             $div.append($img)
             $('#images').val('')
         $('#dropzone .mini-file-content').append($div);
-       
+
       };
     } else {
       alert('Archivo no permitido')

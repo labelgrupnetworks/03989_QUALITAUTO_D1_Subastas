@@ -47,7 +47,7 @@
         <p class="ti"><?=  !empty($filters_name_lang[$key_filter])? $filters_name_lang[$key_filter] : '' ?>  </p>
            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">    
                <select class="form-control filter_recharge_on_change" id="{{$key_filter}}_select" name="{{$key_filter}}_select" > 
-                   <option value="" >{{ trans(\Config::get('app.theme').'-app.lot_list.no_filters') }} </option>                           
+                   <option value="" >{{ trans($theme.'-app.lot_list.no_filters') }} </option>                           
                    @foreach($filter_fields as $field=> $count_field)               
                         <option value="{{$field}}"  <?= app('request')->input($key_filter.'_select') == $field ? "selected='selected'" : "" ?> >{{ $field }} ({{$count_field}}) </option>
                    @endforeach

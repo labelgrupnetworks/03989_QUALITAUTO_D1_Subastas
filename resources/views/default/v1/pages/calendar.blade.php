@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
 @section('content')
 
-@php ($bread[] = array("name" =>trans(\Config::get('app.theme').'-app.home.calendar-news'))) @endphp
+@php ($bread[] = array("name" =>trans($theme.'-app.home.calendar-news'))) @endphp
 
 
 <?php
@@ -49,7 +49,7 @@ $events = $webCalendar->get();
   <div class="col-xs-12 col-sm-12 text-center color-letter">
     @include('includes.breadcrumb')
     <div class="container">
-      <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.home.calendar-news') }}</h1>
+      <h1 class="titlePage">{{ trans($theme.'-app.home.calendar-news') }}</h1>
     </div>
   </div>
 </div>
@@ -72,20 +72,20 @@ if( is_numeric($year) && $year > 2000 & $year < 2100){
 <div class="container content calendar-page">
     <div class="row">
 		<div class="col-md-9 text-center" >
-			<a class="previous_year" href="?year={{$year-1}}"  > {{ trans(\Config::get('app.theme').'-app.calendar.year') }} {{$year-1}} </a>
+			<a class="previous_year" href="?year={{$year-1}}"  > {{ trans($theme.'-app.calendar.year') }} {{$year-1}} </a>
 			<span class="actual_year"> {{$year}} </span>
-			<a class="next_year" href="?year={{$year+1}}"> {{ trans(\Config::get('app.theme').'-app.calendar.year') }} {{$year+1}} </a>
+			<a class="next_year" href="?year={{$year+1}}"> {{ trans($theme.'-app.calendar.year') }} {{$year+1}} </a>
 		</div>
 		<div class='col-md-3'>
 		</div>
         <div class='col-md-9'>
             <div id='calendar'></div>
-             <div> <strong> {{ trans(\Config::get('app.theme').'-app.calendar.holidays') }}</strong></div>
+             <div> <strong> {{ trans($theme.'-app.calendar.holidays') }}</strong></div>
         </div>
 		<div class='col-md-3'>
 			@foreach($events as $event)
 				@if ( array_key_exists($event->cod_calendar_event,$eventInCalendar))
-					<p> <span class="calendar_event_label" style="background-color:{{$event->color_calendar_event}}"> </span> {{ trans(\Config::get('app.theme').'-app.calendar.'.$event->cod_calendar_event.'_event') }} </p>
+					<p> <span class="calendar_event_label" style="background-color:{{$event->color_calendar_event}}"> </span> {{ trans($theme.'-app.calendar.'.$event->cod_calendar_event.'_event') }} </p>
 				@endif
 			@endforeach
 			@php
@@ -98,13 +98,13 @@ if( is_numeric($year) && $year > 2000 & $year < 2100){
 					<div class="bs-callout bs-callout-default AUCTION_calendar_border" id="callout-alerts-dismiss-plugin" >
 						<h5>{{$sub->des_sub}}</h5>
 						@if (!empty($sub->calini_sub))
-							<p>{{ trans(\Config::get('app.theme').'-app.calendar.start_expo') }} {{ date("d/m/Y ", strtotime($sub->calini_sub))}} </p>
+							<p>{{ trans($theme.'-app.calendar.start_expo') }} {{ date("d/m/Y ", strtotime($sub->calini_sub))}} </p>
 						@endif
 						@if (!empty($sub->calfin_sub))
-							<p>{{ trans(\Config::get('app.theme').'-app.calendar.end_expo') }} {{ date("d/m/Y ", strtotime($sub->calfin_sub))}} </p>
+							<p>{{ trans($theme.'-app.calendar.end_expo') }} {{ date("d/m/Y ", strtotime($sub->calfin_sub))}} </p>
 						@endif
 						@if (!empty($sub->session_start))
-							<p>{{ trans(\Config::get('app.theme').'-app.calendar.start_rt') }} {{ date("d/m/Y H:i:s", strtotime($sub->session_start))}} </p>
+							<p>{{ trans($theme.'-app.calendar.start_rt') }} {{ date("d/m/Y H:i:s", strtotime($sub->session_start))}} </p>
 						@endif
 					</div>
 					@php  $fechasSesiones[strtotime($sub->session_start)] = 1 @endphp

@@ -11,7 +11,7 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="secondary-button" data-dismiss="modal">{{ trans(\Config::get('app.theme').'-app.head.close') }}</button>
+        <button type="button" class="secondary-button" data-dismiss="modal">{{ trans($theme.'-app.head.close') }}</button>
       </div>
     </div>
 
@@ -23,7 +23,7 @@
 			<div class="modal-wrapper">
 				<div class="modal-text text-center maxw">
 					<p class="insert_msg"></p>
-					<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.home.confirm') }}</button>
+					<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.home.confirm') }}</button>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
                                         <span class="class_h1"><p id="insert_msg_title"></p></span><br/>
                                        <p id="insert_msgweb"></p><br/>
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>
@@ -68,7 +68,7 @@
                                         <span class="class_h1"><p id="insert_msg_title"></p></span><br/>
                                        <p id="insert_msg"></p><br/>
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>
@@ -82,16 +82,16 @@
                             <div class="panel-body">
                                     <div class="modal-wrapper">
                                             <div class=" text-center single_item_content_">
-                                                <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
-                                                <span class="ref_orden hidden"></span>    
+                                                <p class="class_h1">{{ trans($theme.'-app.lot.confirm_bid') }}</p><br/>
+                                                <span for="bid" class='desc_auc'>{{ trans($theme.'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
+                                                <span class="ref_orden hidden"></span>
                                                 </br>
-                                                    <button id="confirm_orden_lotlist" class="btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
+                                                    <button id="confirm_orden_lotlist" class="btn button_modal_confirm btn-custom">{{ trans($theme.'-app.lot.confirm') }}</button>
                                                     <div class='mb-10'></div>
                                                      <div class='mb-10'></div>
                                                     <ul class="items_list">
-                                                        <li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
-                                                        
+                                                        <li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
+
                                                     </ul>
                                             </div>
                                     </div>

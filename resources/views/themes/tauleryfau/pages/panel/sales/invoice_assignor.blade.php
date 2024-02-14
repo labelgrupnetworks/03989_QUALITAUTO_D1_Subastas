@@ -15,20 +15,20 @@
 	<div class="custom-head-wrapper hidden-xs hidden-sm flex">
 		<div class="img-data-custom flex "></div>
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.lot') }}</p>
 		</div>
 		<div class="name-data-custom" style="font-weight: 900 !important;">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+			<p>{{ trans($theme.'-app.lot.description') }}</p>
 		</div>
 
 		<div class="remat-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+			<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 		</div>
 		<div class="auc-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.award_price') }}</p>
 		</div>
 		<div class="auc-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.revaluation') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.revaluation') }}</p>
 		</div>
 		<div class="auc-data-custom">
 			<p>Liquidación</p>
@@ -58,7 +58,7 @@
 	{{-- Vista mobile --}}
 	<div class="custom-wrapper-responsive  hidden-md hidden-lg {{$lot->ref_hces1}}-{{$lot->cod_sub}}">
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+			<p>{{ trans($theme.'-app.user_panel.lot') }}
 				{{$lot->ref_hces1}} - <span>{{$lot->titulo_hces1}}</span>
 			</p>
 		</div>
@@ -68,7 +68,7 @@
 			@if (!true)
 			<div class="auc-data-custom">
 				<a class="btn btn-color btn-puja-panel btn-blue d-flex align-items-center justify-content-center"
-					href="{{$url_friendly}}">{{trans(\Config::get('app.theme').'-app.lot.view_lot')}}
+					href="{{$url_friendly}}">{{trans($theme.'-app.lot.view_lot')}}
 				</a>
 			</div>
 			@endif
@@ -87,9 +87,9 @@
 		<div class="flex justify-content-space-bettween">
 
 			<div class="auc-data-custom">
-				<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+				<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 				<p>
-					{{$lot->impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+					{{$lot->impsalhces_asigl0}} {{ trans($theme.'-app.lot.eur') }}
 				</p>
 
 				@if($divisa !='EUR')
@@ -102,13 +102,13 @@
 
 			<div class="auc-data-custom">
 
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.award_price') }}</p>
 
 				<p class="gold">
 
 					<?php //todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas ?>
 					<span class="actual-price">{{$lot->implic_hces1 }}</span>
-					{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+					{{ trans($theme.'-app.lot.eur') }}
 
 				</p>
 				@if($divisa !='EUR')
@@ -119,7 +119,7 @@
 
 			<div class="auc-data-custom">
 
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.revaluation') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.revaluation') }}</p>
 					<p class="mine">{{ \Tools::moneyFormat($revalorizacion, '%', 1) }}</p>
 
 			</div>
@@ -132,7 +132,7 @@
 
 			<div class="auc-data-custom">
 				<p>Liquidación</p>
-					<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+					<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans($theme.'-app.lot.eur') }}</p>
 					@if($divisa !='EUR')
 					<p class="divisa_fav">
 						{!!$currency->getPriceSymbol(2, $liquidacion)!!}
@@ -163,7 +163,7 @@
 
 		<div class="auc-data-custom">
 			<p>{{$lot->impsalhces_asigl0}}
-				{{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+				{{ trans($theme.'-app.lot.eur') }}</p>
 			@if($divisa !='EUR')
 			<p class="divisa_fav">
 				{!!$currency->getPriceSymbol(2,$lot->impsalhces_asigl0)!!} </p>
@@ -175,7 +175,7 @@
 			<p class="gold">
 				{{-- todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas --}}
 				<span class="actual-price">{{$lot->implic_hces1 }}</span>
-				{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+				{{ trans($theme.'-app.lot.eur') }}
 			</p>
 
 			@if($divisa !='EUR')
@@ -191,7 +191,7 @@
 		</div>
 
 		<div class="auc-data-custom">
-			<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+			<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans($theme.'-app.lot.eur') }}</p>
 			@if($divisa !='EUR')
 			<p class="divisa_fav">
 					{!!$currency->getPriceSymbol(2, $liquidacion)!!}
@@ -219,7 +219,7 @@
 								<span class="titlecat" style="margin-left: auto">
 									<span>Total a liquidar: </span>
 									<span class="precio_final_{{$cod_sub}}">{{\Tools::moneyFormat($totalAdjudicacion - $lot->base_dvc0, false, 2)}}</span>
-									<span>{{ trans(\Config::get('app.theme').'-app.lot.eur') }} |</span>
+									<span>{{ trans($theme.'-app.lot.eur') }} |</span>
 									<span class="divisa_fav">
 										{!!$currency->getPriceSymbol(2, $totalAdjudicacion - $lot->base_dvc0)!!}
 									</span>
@@ -251,7 +251,7 @@
 							<br>
 							<div class="price flex justify-content-space-bettween">
 								<div class="title">Adjudicación total</div>
-								<div class="money">{!!\Tools::moneyFormat($totalAdjudicacion,false,2)!!} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+								<div class="money">{!!\Tools::moneyFormat($totalAdjudicacion,false,2)!!} {{ trans($theme.'-app.lot.eur') }}
 								&nbsp;|&nbsp;&nbsp;
 								<span class="divisa_fav">
 										{!!$currency->getPriceSymbol(0, $totalAdjudicacion)!!}
@@ -260,7 +260,7 @@
 							</div>
 							<div class="price flex justify-content-space-bettween">
 								<div class="title">Comisión (Base Imponible)</div>
-								<div class="money">{!!\Tools::moneyFormat($lot->base_dvc0, false, 2)!!} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+								<div class="money">{!!\Tools::moneyFormat($lot->base_dvc0, false, 2)!!} {{ trans($theme.'-app.lot.eur') }}
 								&nbsp;|&nbsp;&nbsp;
 								<span class="divisa_fav">
 									{!!$currency->getPriceSymbol(0, $lot->base_dvc0)!!}
@@ -269,7 +269,7 @@
 							</div>
 							<div class="price flex justify-content-space-bettween">
 								<div class="title">Comisión IVA ({{ $lot->iva_dvc0 }}%)</div>
-								<div class="money">{!!\Tools::moneyFormat($lot->impiva_dvc0,false,2)!!} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+								<div class="money">{!!\Tools::moneyFormat($lot->impiva_dvc0,false,2)!!} {{ trans($theme.'-app.lot.eur') }}
 								&nbsp;|&nbsp;&nbsp;
 								<span class="divisa_fav">
 									{!!$currency->getPriceSymbol(0, $lot->impiva_dvc0)!!}

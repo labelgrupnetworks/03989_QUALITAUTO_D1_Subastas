@@ -101,10 +101,10 @@ if (!empty($aux_user)) {
                 <div class="container">
                 <div class="col-xs-12 no-padding favoritos visible-xs hidden-sm hidden-md hidden-ls">
                     <a  class="secondary-button  <?= $lote_actual->favorito ? 'hidden' : '' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                        {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
+                        {{ trans($theme.'-app.lot.add_to_fav') }}
                     </a>
                     <a class="secondary-button  <?= $lote_actual->favorito ? '' : 'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                        {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
+                        {{ trans($theme.'-app.lot.del_from_fav') }}
                     </a>
                 </div>
                     </div>
@@ -120,7 +120,7 @@ if (!empty($aux_user)) {
                         </div>
                     @elseif($cerrado &&  (!empty($lote_actual->himp_csub) || ($sub_historica && !empty($lote_actual->impadj_asigl0))))
                         <div class="retired" style ="">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                            {{ trans($theme.'-app.subastas.buy') }}
                         </div>
                     @endif
 
@@ -147,10 +147,10 @@ if (!empty($aux_user)) {
                         @if(Session::has('user') &&  !$retirado)
                         <div class="col-xs-12 no-padding favoritos">
                            <a  class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
+                               {{ trans($theme.'-app.lot.add_to_fav') }}
                            </a>
                            <a class="secondary-button  <?= $lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
+                               {{ trans($theme.'-app.lot.del_from_fav') }}
                            </a>
                         </div>
                         @endif
@@ -197,7 +197,7 @@ if (!empty($aux_user)) {
             ?>
             @if(count($tipo_sec) !== 0)
                 <div class="col-xs-12 no-padding fincha-info-cats">
-                    <div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
+                    <div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
                     @foreach($tipo_sec as $sec)
                         <span class="badge">{{$sec->des_tsec}}</span>
                     @endforeach
@@ -265,7 +265,7 @@ if (!empty($aux_user)) {
     <div class="@if($subasta_online && !$cerrado) col-sm-7 @endif col-xs-12 no-padding ficha-tipo-v">
 
             <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
-                    <p class="desc-lot-profile-title">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+                    <p class="desc-lot-profile-title">{{ trans($theme.'-app.lot.description') }}</p>
 
             </div>
             <div class="col-xs-12 no-padding desc-lot-profile-content">
@@ -292,7 +292,7 @@ if (!empty($aux_user)) {
 
 
                 <div class="col-xs-12 col-sm-12">
-                    <center><h3 class="color-letter">{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</h3></center>
+                    <center><h3 class="color-letter">{{ trans($theme.'-app.lot.recommended_lots') }}</h3></center>
 
                     <br>
                     <div class='loader hidden'></div>
