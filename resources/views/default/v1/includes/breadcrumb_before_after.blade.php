@@ -11,12 +11,12 @@
 			<div class="col-xs-12 col-sm-5 no-padding follow">
 				<div class="next  align-item-center @if(!empty($data['previous'])) d-flex justify-content-space-between @endif text-right">
 					@if(!empty($data['previous']))
-						<a class="color-letter nextLeft" title="{{ trans(\Config::get('app.theme').'-app.subastas.last') }}" href="{{$data['previous']}}"><i class="fa fa-angle-left fa-angle-custom"></i> {{ trans(\Config::get('app.theme').'-app.subastas.last') }}</a>
+						<a class="color-letter nextLeft" title="{{ trans($theme.'-app.subastas.last') }}" href="{{$data['previous']}}"><i class="fa fa-angle-left fa-angle-custom"></i> {{ trans($theme.'-app.subastas.last') }}</a>
 					@endif
 
 
 					@if(!empty($data['next']))
-						<a class="color-letter nextRight" title="{{ trans(\Config::get('app.theme').'-app.subastas.next') }}" href="{{$data['next']}}">{{ trans(\Config::get('app.theme').'-app.subastas.next') }} <i class="fa fa-angle-right fa-angle-custom"></i></a>
+						<a class="color-letter nextRight" title="{{ trans($theme.'-app.subastas.next') }}" href="{{$data['next']}}">{{ trans($theme.'-app.subastas.next') }} <i class="fa fa-angle-right fa-angle-custom"></i></a>
 					@endif
 
 
@@ -26,7 +26,7 @@
 		</div>
 		@if(\Config::get("app.exchange"))
 			<div class="col-xs-12 text-right">
-				{{ trans(\Config::get('app.theme').'-app.lot.foreignCurrencies') }}
+				{{ trans($theme.'-app.lot.foreignCurrencies') }}
 					<select id="currencyExchange">
 						@foreach($data['divisas'] as $divisa)
 

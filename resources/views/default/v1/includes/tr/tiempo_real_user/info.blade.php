@@ -4,7 +4,7 @@
 		{{-- currency --}}
 		@if(\Config::get("app.exchange"))
 			<div class="col-xs-12 text-right info-currency">
-				{{ trans(\Config::get('app.theme').'-app.lot.foreignCurrencies') }}
+				{{ trans($theme.'-app.lot.foreignCurrencies') }}
 					<select id="currencyExchange">
 						@foreach($divisas as $divisa)
 
@@ -26,7 +26,7 @@
         @if(!empty(\Config::get('app.tr_show_estimate_price')))
         <div id="precioestimado" class="precio_estimado">
 
-            <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.estimate_price') }}: </p>
+            <p>{{ trans($theme.'-app.sheet_tr.estimate_price') }}: </p>
 			@if($data['js_item']['subasta']['currency']->symbol == "$")
 				<p>{{ $data['js_item']['subasta']['currency']->symbol }}</p>
 			@endif
@@ -45,7 +45,7 @@
         <!-- precio de salida -->
         <div id="precioSalida" class="precioSalida salida">
             <p>
-                {{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:
+                {{ trans($theme.'-app.sheet_tr.start_price') }}:
             </p>
 			@if($data['js_item']['subasta']['currency']->symbol == "$")
 			{{ $data['js_item']['subasta']['currency']->symbol }}<span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span>
@@ -62,10 +62,10 @@
         <div class="pactual salida">
             <p>
                 <span id="text_actual_max_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0 ? '' : 'hidden' ?> ">
-                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.max_actual_bid') }}
+                    {{ trans($theme.'-app.sheet_tr.max_actual_bid') }}
                 </span>
                 <span id="text_actual_no_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0 ? 'hidden' : '' ?> ">
-                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.pending_bid') }}
+                    {{ trans($theme.'-app.sheet_tr.pending_bid') }}
                 </span>
             </p>
             @if(!Session::has('user'))
@@ -98,7 +98,7 @@
         <!-- panel pujar -->
         <div class="pujar">
             <div class="tuorden">
-                {{ trans(\Config::get('app.theme').'-app.sheet_tr.your_actual_order') }}:
+                {{ trans($theme.'-app.sheet_tr.your_actual_order') }}:
 				@if($data['js_item']['subasta']['currency']->symbol == "$")
                		 {{ $data['js_item']['subasta']['currency']->symbol }}
 				@endif
@@ -121,7 +121,7 @@
 				|	<span  id="yourOrderExchange_JS" class="exchange"> </span>
 			    @endif
 				@if(Session::has('user') && !empty(\Config::get("app.DeleteOrdersAnyTime")))
-					<input id="cancelarOrdenUser"  class="btn  @if(empty($data['js_item']['user']['maxOrden']))  hidden @endif" type="button" ref="{{$data['subasta_info']->lote_actual->ref_asigl0}}" sub="{{$data['subasta_info']->lote_actual->cod_sub}}" value="{{ trans(\Config::get('app.theme').'-app.user_panel.delete_orden') }}">
+					<input id="cancelarOrdenUser"  class="btn  @if(empty($data['js_item']['user']['maxOrden']))  hidden @endif" type="button" ref="{{$data['subasta_info']->lote_actual->ref_asigl0}}" sub="{{$data['subasta_info']->lote_actual->cod_sub}}" value="{{ trans($theme.'-app.user_panel.delete_orden') }}">
 				@endif
 			</div>
 
@@ -134,15 +134,15 @@
             </div>
 
             @if(Session::has('user'))
-           		<a class="add_bid btn button btn-custom-save"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
+           		<a class="add_bid btn button btn-custom-save"><i class="fa fa-gavel"></i> {{ trans($theme.'-app.sheet_tr.place_bid') }}</a>
             	<input type="hidden" id="tiempo_real" value="1" readonly>
             @else
-            	<a class="btn button btn-custom-save add_bid_nologin" onclick="initSesion();"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
+            	<a class="btn button btn-custom-save add_bid_nologin" onclick="initSesion();"><i class="fa fa-gavel"></i> {{ trans($theme.'-app.sheet_tr.place_bid') }}</a>
             @endif
 
         </div>
 		@if(\Config::get("app.trAuctionConditions"))
-			<div class="auction_conditions">{!! trans(\Config::get('app.theme').'-app.sheet_tr.auctionConditions') !!}</div>
+			<div class="auction_conditions">{!! trans($theme.'-app.sheet_tr.auctionConditions') !!}</div>
 		@endif
     </div>
 

@@ -26,22 +26,22 @@
 							<p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 								@if(!$subasta_make_offer)
 									@if($subasta_venta)
-										<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+										<span class="salida-title">{{ trans($theme.'-app.subastas.price_sale') }}</span>
 									@else
-										<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+										<span class="salida-title">{{ trans($theme.'-app.lot.lot-price') }}</span>
 									@endif
 									@if($precio_salida ==0)
-										{{ trans(\Config::get('app.theme').'-app.lot.free') }}
+										{{ trans($theme.'-app.lot.free') }}
 									@else
-										<span class="salida-price">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+										<span class="salida-price">{{$precio_salida}}  {{ trans($theme.'-app.subastas.euros') }}</span>
 									@endif
 								@endif
 							</p>
 							@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
 
 							<p>
-								<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
-								<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+								<span class="salida-title">{{ trans($theme.'-app.lot.puja_actual') }}</span>
+								<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans($theme.'-app.subastas.euros') }}</span>
 							</p>
 
 
@@ -52,12 +52,12 @@
 										@php($precio_venta = $item->impadj_asigl0)@endphp
 									@endif
 									<p>
-										<span class="salida-title soldGrid">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</span>
-										<span class="salida-price  soldGrid">{{ $precio_venta }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+										<span class="salida-title soldGrid">{{ trans($theme.'-app.subastas.buy_to') }}</span>
+										<span class="salida-price  soldGrid">{{ $precio_venta }} {{ trans($theme.'-app.subastas.euros') }}</span>
 									</p>
 
 								@elseif($cerrado &&  empty($precio_venta) && !$compra)
-									<p> <span class="salida-title notSold">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</span></p>
+									<p> <span class="salida-title notSold">{{ trans($theme.'-app.subastas.dont_buy') }}</span></p>
 								@endif
 							@endif
 					@endif
@@ -65,14 +65,14 @@
 
 				@if (!$devuelto && !$retirado && !$sub_historica)
 					@if($cerrado &&  empty($precio_venta) && $compra)
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
+						<p class="btn-bid-lotlist">{{ trans($theme.'-app.subastas.buy_lot') }}</p>
 					@elseif($subasta_venta  && !$cerrado)
 						@if(!$end_session)
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</p>
+						<p class="btn-bid-lotlist">{{ trans($theme.'-app.subastas.buy_lot') }}</p>
 						@endif
 					@elseif(!$cerrado && (!$subasta_online || $inicio_pujas_online))
 						@php /* Si no está cerrado saldrá el botón o si la subasta online está abierta y es superior a la fecha de inicio también aparecerá */ @endphp
-						<p class="btn-bid-lotlist">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</p>
+						<p class="btn-bid-lotlist">{{ trans($theme.'-app.lot.pujar') }}</p>
 					@endif
 				@endif
 

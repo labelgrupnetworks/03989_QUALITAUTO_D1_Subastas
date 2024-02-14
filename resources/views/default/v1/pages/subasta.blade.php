@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @php
@@ -35,7 +35,7 @@
                 @if (empty($data['subastas']))
                     <h1 class="titlePage-custom color-letter text-center">{{ $data['name'] }}</h1>
                 @else
-                    <h1 class="titlePage-custom color-letter">{{ trans(\Config::get('app.theme') . '-app.lot_list.lots') }}
+                    <h1 class="titlePage-custom color-letter">{{ trans($theme . '-app.lot_list.lots') }}
                     </h1>
                 @endif
                 @include('includes.breadcrumb')

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -21,13 +21,13 @@
 			$imp =  base64_decode($importe);
 
 			if( $control == $md5 ){
-				echo trans(\Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => \Tools::moneyFormat($imp,null,2),"idtrans" => $idtrans,"cuenta" => \Config::get('app.tranferCount')]) ;
+				echo trans($theme.'-app.user_panel.text_transfer', ["pago" => \Tools::moneyFormat($imp,null,2),"idtrans" => $idtrans,"cuenta" => \Config::get('app.tranferCount')]) ;
 			}
 
 		}
 		#si cargamos la vista directamente
 		else{
-			echo trans(\Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => \Tools::moneyFormat($importe,null,2),"idtrans" => $idtrans,"cuenta" => \Config::get('app.tranferCount')]);
+			echo trans($theme.'-app.user_panel.text_transfer', ["pago" => \Tools::moneyFormat($importe,null,2),"idtrans" => $idtrans,"cuenta" => \Config::get('app.tranferCount')]);
 		}
 		?>
 

@@ -43,7 +43,7 @@
 
 <body>
 <div class="header">
-    <img src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+    <img src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
 </div>
     <div class="content">
         @yield('content')

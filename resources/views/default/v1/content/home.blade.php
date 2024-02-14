@@ -4,22 +4,22 @@
 			@if(!Session::has('user'))
 			<div class="col-xs-3 home-slider-control hidden-xs hidden-sm hidden-md">
 				<div class="banner-register text-center">
-					<div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.not_account') }}
+					<div class="banner-register-title">{{ trans($theme.'-app.home.not_account') }}
 					</div>
 					<div class="banner-register-sub-title hidden">
-						{{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}</div>
+						{{ trans($theme.'-app.login_register.crear_cuenta') }}</div>
 					<div class="banner-register-btn text-center">
 						<a class="button-principal"
-							title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}"
-							href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+							title="{{ trans($theme.'-app.login_register.register') }}"
+							href="{{ \Routing::slug('register') }}">{{ trans($theme.'-app.login_register.register') }}</a>
 					</div>
 					<div class="banner-register-hr">
 						<hr>
 					</div>
-					<div class="banner-register-title">{{ trans(\Config::get('app.theme').'-app.home.account') }}</div>
+					<div class="banner-register-title">{{ trans($theme.'-app.home.account') }}</div>
 					<div class="banner-register-btn text-center">
 						<a class="secondary-button user-account btn_login"
-							href="javascript:;">{{ trans(\Config::get('app.theme').'-app.login_register.generic_name') }}</a>
+							href="javascript:;">{{ trans($theme.'-app.login_register.generic_name') }}</a>
 					</div>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 		<div class="row flex-display flex-wrap">
 			<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
 				<div class="lotes-destacados-tittle color-letter">
-					{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
+					{{ trans($theme.'-app.lot_list.lotes_destacados') }}
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-10 col-md-12 text-center">

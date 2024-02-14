@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -9,7 +9,7 @@
     
     <div class="row">
         <div class="col-xs-12 col-sm-12 resultok">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.home.specialist-contact') }}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.home.specialist-contact') }}</h1>
         </div>
         <div class="col-lg-12">
             
@@ -24,7 +24,7 @@
                     $name_archive = '/img/PER/'.Config::get('app.gemp').$esp->per_especial1.'.jpg';
 
                     if (!file_exists($name_archive)) {
-                       $name_archive = '/themes/'.\Config::get('app.theme').'/img/items/no_photo.png';
+                       $name_archive = '/themes/'.$theme.'/img/items/no_photo.png';
                     }
                     ?>
 

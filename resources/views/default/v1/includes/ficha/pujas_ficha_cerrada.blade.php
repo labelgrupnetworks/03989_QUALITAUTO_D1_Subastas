@@ -17,28 +17,28 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
             <div class="col-xs-8 col-sm-12 no-padding text-center">
                 @if($cerrado && !empty($precio_venta) && $remate )
                     <div class="pre">
-                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>
-                        <p class="pre-price">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                        <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.buy_to') }}</p>
+                        <p class="pre-price">{{ \Tools::moneyFormat($precio_venta) }} {{ trans($theme.'-app.subastas.euros') }}</p>
                     </div>
 
                 @elseif($cerrado && !empty($precio_venta) &&  !$remate)
 
                 <div class="pre">
-                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
+                        <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.buy') }}</p>
                 </div>
                 @elseif($subasta_venta && !$cerrado && $lote_actual->end_session > time())
                     <div class="pre">
-                            <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+                            <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
                     </div>
 
                 @elseif($cerrado && empty($precio_venta))
                     <div class="pre">
-                            <p class="pre-title-principal adj-text ">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+                            <p class="pre-title-principal adj-text ">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
                     </div>
 
                 @elseif($devuelto)
                     <div class="pre">
-                            <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                            <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.dont_available') }}</p>
                     </div>
                 @endif
 
