@@ -7,7 +7,7 @@
              ${$key} = $value;
          }
 
-         $titulo = trans(\Config::get('app.theme') . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
+         $titulo = trans($theme . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
 
          $class_square = '';
 

@@ -217,7 +217,7 @@
 			</li>
 			@else
 			<li>
-				<a title="{{ trans(\Config::get('app.theme').'-app.head.language_'.$key) }}" href="/{{ $key }}">
+				<a title="{{ trans($theme.'-app.head.language_'.$key) }}" href="/{{ $key }}">
 					<p style="text-transform: uppercase">{{ $key }}</p>
 				</a>
 			</li>

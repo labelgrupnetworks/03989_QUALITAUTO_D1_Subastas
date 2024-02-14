@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('framework-css')
@@ -31,9 +31,9 @@
     $bread = [];
     if (!empty(\Config::get('app.uniqueArtCategory'))) {
         #hace falta tener en links la traducción montada con el nombre de la categoria y _category
-        $bread[] = ['url' => route('articles-category', ['category' => trans(\Config::get('app.theme') . '-app.links.' . \Config::get('app.uniqueArtCategory') . '_category')]), 'name' => trans(\Config::get('app.theme') . '-app.articles.articles')];
+        $bread[] = ['url' => route('articles-category', ['category' => trans($theme . '-app.links.' . \Config::get('app.uniqueArtCategory') . '_category')]), 'name' => trans($theme . '-app.articles.articles')];
     } else {
-        $bread[] = ['url' => Route('articles'), 'name' => trans(\Config::get('app.theme') . '-app.articles.articles')];
+        $bread[] = ['url' => Route('articles'), 'name' => trans($theme . '-app.articles.articles')];
     }
     $bread[] = ['name' => $article->model_art0];
 @endphp

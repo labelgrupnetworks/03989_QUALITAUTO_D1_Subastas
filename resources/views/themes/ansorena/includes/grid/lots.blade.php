@@ -1,5 +1,5 @@
 @if (empty($lots))
-    <h3 class="text-center">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_results') }}</h3>
+    <h3 class="text-center">{{ trans($theme . '-app.lot_list.no_results') }}</h3>
 @else
     @foreach ($lots as $item)
         <?php
@@ -19,7 +19,7 @@
             $codeScrollBack = '';
         }
 
-        $titulo = trans(\Config::get('app.theme') . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
+        $titulo = trans($theme . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
         $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($item->num_hces1, $item->lin_hces1);
 
         ?>

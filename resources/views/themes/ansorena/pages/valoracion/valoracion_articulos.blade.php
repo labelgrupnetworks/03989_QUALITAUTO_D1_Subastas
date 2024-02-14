@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -77,18 +77,18 @@
 					</label> --}}
                     <select class="form-select h-100" name="categoria" id="categoria">
                         <option value="artes_decorativas" selected="">
-                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.artes_decorativas') }}
+                            {{ trans($theme . '-app.valoracion_gratuita.artes_decorativas') }}
                         </option>
                         <option value="joyas">
-                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.joyas') }}</option>
+                            {{ trans($theme . '-app.valoracion_gratuita.joyas') }}</option>
                         <option value="muebles">
-                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.muebles') }}
+                            {{ trans($theme . '-app.valoracion_gratuita.muebles') }}
                         </option>
                         <option value="pintura_antigua">
-                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.pintura_antigua') }}
+                            {{ trans($theme . '-app.valoracion_gratuita.pintura_antigua') }}
                         </option>
                         <option value="pintura">
-                            {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.pintura') }}
+                            {{ trans($theme . '-app.valoracion_gratuita.pintura') }}
                         </option>
                     </select>
                 </div>

@@ -1,19 +1,19 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
 
 <?php
 $families = array(
-	"2" => trans(\Config::get('app.theme').'-app.login_register.newsletter_joyeria'),
-	"3" => trans(\Config::get('app.theme').'-app.login_register.newsletter_subasta_pintura'),
-	"7" => trans(\Config::get('app.theme').'-app.login_register.newsletter_condecoraciones'),
-	"5" => trans(\Config::get('app.theme').'-app.login_register.newsletter_subasta_joyas'),
-	"6" => trans(\Config::get('app.theme').'-app.login_register.newsletter_galeria'),
-	"4" => trans(\Config::get('app.theme').'-app.login_register.newsletter_subasta_muebles'),
+	"2" => trans($theme.'-app.login_register.newsletter_joyeria'),
+	"3" => trans($theme.'-app.login_register.newsletter_subasta_pintura'),
+	"7" => trans($theme.'-app.login_register.newsletter_condecoraciones'),
+	"5" => trans($theme.'-app.login_register.newsletter_subasta_joyas'),
+	"6" => trans($theme.'-app.login_register.newsletter_galeria'),
+	"4" => trans($theme.'-app.login_register.newsletter_subasta_muebles'),
 
 );
 $jobs = array(
@@ -42,8 +42,8 @@ $jobs = array(
 		<div class="row d-flex align-items-center justify-content-center">
 			<div class="col-xs-12 general-container">
 				<center>
-					<h3>{{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}</h3>
-					<p>{{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}</p>
+					<h3>{{ trans($theme.'-app.login_register.crear_cuenta') }}</h3>
+					<p>{{ trans($theme.'-app.login_register.all_fields_are_required') }}</p>
 				</center>
 
 				<form method="post" id="registerForm" action="javascript:submit_register_form()">
@@ -54,10 +54,10 @@ $jobs = array(
 
 					<div class="tipo_usuario">
 						<div class="particular selected" onclick="javascript:particular();">
-							{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}
+							{{ trans($theme.'-app.login_register.particular') }}
 						</div>
 						<div class="empresa" onclick="javascript:empresa();">
-							{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}
+							{{ trans($theme.'-app.login_register.empresa') }}
 						</div>
 					</div>
 
@@ -74,16 +74,16 @@ $jobs = array(
 					<div class="well">
 
 						<div class="tit">
-							{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}
+							{{ trans($theme.'-app.login_register.personal_information') }}
 						</div>
 
 
 						<div class="tipo_sexo">
 							<div class="hombre selected" onclick="javascript:hombre();">
-								{{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}
+								{{ trans($theme.'-app.login_register.hombre') }}
 							</div>
 							<div class="mujer" onclick="javascript:mujer();">
-								{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}
+								{{ trans($theme.'-app.login_register.mujer') }}
 							</div>
 						</div>
 
@@ -95,31 +95,31 @@ $jobs = array(
 
 
 						<div class="registerParticular datos_left">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.nombre') }}</label>
+							<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
 							{!! $formulario->usuario !!}
 						</div>
 						<div class="registerParticular apellidos datos_right">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
+							<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
 							{!!$formulario->last_name!!}
 						</div>
 
 
 
 					<div class="registerEnterprise datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
+						<label>{{ trans($theme.'-app.login_register.company') }}</label>
 						{!!$formulario->rsoc_cli!!}
 					</div>
 					<div class=" datos_right">
-						<label class="registerParticular">{{ trans(\Config::get('app.theme').'-app.login_register.position') }}</label>
-						<label class="registerEnterprise">{{ trans(\Config::get('app.theme').'-app.login_register.activity') }}</label>
+						<label class="registerParticular">{{ trans($theme.'-app.login_register.position') }}</label>
+						<label class="registerEnterprise">{{ trans($theme.'-app.login_register.activity') }}</label>
 						{!!FormLib::Select("cargo", 1, "", $jobs, '', '', true)!!}
 					</div>
 					<div class="registerEnterprise datos_right">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+						<label>{{ trans($theme.'-app.login_register.contact') }}</label>
 						{!!$formulario->contact!!}
 					</div>
 					<div class="datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.document_type') }}</label>
+						<label>{{ trans($theme.'-app.login_register.document_type') }}</label>
 						<select data-placement="right" class="form-control select2" type="select" name="tdocid_cli_select"
 							id="select__1__tdocid_cli_select" onblur="comprueba_campo(this)" data-content="">
 							<option value=""></option>
@@ -130,73 +130,73 @@ $jobs = array(
 						<input type="hidden" name="tdocid_cli" value="">
 					</div>
 					<div class="datos_right">
-							<label class="nif">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
+							<label class="nif">{{ trans($theme.'-app.login_register.dni') }}</label>
 							<label class="cif"
-								style="display:none">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
+								style="display:none">{{ trans($theme.'-app.login_register.cif') }}</label>
 							{!!$formulario->cif!!}
 					</div>
 					<div class="datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
+						<label>{{ trans($theme.'-app.login_register.phone') }}</label>
 						{!!$formulario->telefono!!}
 					</div>
 					<div class="movil">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.mobile') }}</label>
+						<label>{{ trans($theme.'-app.login_register.mobile') }}</label>
 						{!!$formulario->movil!!}
 					</div>
 					<div class="observaciones">
 						<label
-							class="pt-3">{{ trans(\Config::get('app.theme').'-app.login_register.observacion') }}</label>
+							class="pt-3">{{ trans($theme.'-app.login_register.observacion') }}</label>
 						{!!$formulario->obscli!!}
 					</div>
 					<br>
 					<div class="checkbox-container condiciones2">
 						{!! $formulario->condiciones2!!}
 						<label for="bool__0__condiciones2">{!!
-							trans(\Config::get('app.theme').'-app.login_register.read_conditions2') !!}
+							trans($theme.'-app.login_register.read_conditions2') !!}
 						</label>
 					</div>
 					<div class="moneda">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+						<label>{{ trans($theme.'-app.login_register.currency') }}</label>
 						{!!$formulario->divisa!!}
 					</div>
 					<br>
 					<div class="datos_left">
-						<labeL>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+						<labeL>{{ trans($theme.'-app.login_register.pais') }}</label>
 						{!!$formulario->pais!!}
 					</div>
 
 					<div class="datos_right">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+						<label>{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 						{!!$formulario->cpostal!!}
 					</div>
 
 
 					<div class="datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+						<label>{{ trans($theme.'-app.login_register.via') }}</label>
 						{!!$formulario->vias!!}
 					</div>
 					<div class="datos_right">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+						<label>{{ trans($theme.'-app.login_register.direccion') }}</label>
 						{!!$formulario->direccion!!}
 					</div>
 
 
 					<div class="datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+						<label>{{ trans($theme.'-app.login_register.ciudad') }}</label>
 						{!!$formulario->poblacion!!}
 					</div>
 					<div class="datos_right">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+						<label>{{ trans($theme.'-app.login_register.provincia') }}</label>
 						{!!$formulario->provincia!!}
 					</div>
 
 					<div class="datos_left">
-						<label>{{ trans(\Config::get('app.theme').'-app.user_panel.date_birthday') }}</label>
+						<label>{{ trans($theme.'-app.user_panel.date_birthday') }}</label>
 						{!!$formulario->fecha_nacimiento!!}
 					</div>
 
 					<div class="idioma datos_right">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
+						<label>{{ trans($theme.'-app.login_register.language') }}</label>
 						{!!$formulario->language!!}
 					</div>
 
@@ -228,14 +228,14 @@ $jobs = array(
 
 			<div class="well">
 				<div class="tit">
-					{{ trans(\Config::get('app.theme').'-app.login_register.title_direccion_envio') }}
+					{{ trans($theme.'-app.login_register.title_direccion_envio') }}
 				</div>
 
 				<div>
 					<input id="shipping_address" class="form-contro" name="shipping_address" type="checkbox"
 						checked="true" />
 					<label
-						for="shipping_address">{{ trans(\Config::get('app.theme').'-app.login_register.utilizar_direcc_direccenv') }}</label>
+						for="shipping_address">{{ trans($theme.'-app.login_register.utilizar_direcc_direccenv') }}</label>
 				</div>
 
 				<div class="clearfix"></div>
@@ -245,35 +245,35 @@ $jobs = array(
 
 					{!!$formulario->clid!!}
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+						<label>{{ trans($theme.'-app.login_register.pais') }}</label>
 						{!!$formulario->clid_pais!!}
 					</div>
 
 					<div>
 						<label
-							for="cpostal">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+							for="cpostal">{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 						{!!$formulario->clid_cpostal!!}
 					</div>
 
 					<div>
 						<label
-							for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+							for="provincia">{{ trans($theme.'-app.login_register.provincia') }}</label>
 						{!!$formulario->clid_provincia!!}
 					</div>
 
 					<div>
 						<label
-							for="poblacion">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+							for="poblacion">{{ trans($theme.'-app.login_register.ciudad') }}</label>
 						{!!$formulario->clid_poblacion!!}
 					</div>
 
 					<div>
-						<label for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+						<label for="provincia">{{ trans($theme.'-app.login_register.via') }}</label>
 						{!!$formulario->clid_codigoVia!!}
 					</div>
 					<div>
 						<label
-							for="direccion">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+							for="direccion">{{ trans($theme.'-app.login_register.direccion') }}</label>
 						{!!$formulario->clid_direccion!!}
 					</div>
 
@@ -300,17 +300,17 @@ $jobs = array(
 
 
 			<div class="well">
-				<div class="tit">{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</div>
+				<div class="tit">{{ trans($theme.'-app.login_register.cuenta') }}</div>
 
 				<div class="datos_cuenta">
 
 					<div>
-						<label for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
+						<label for="email">{{ trans($theme.'-app.login_register.email') }}</label>
 						{!!$formulario->email!!}
 					</div>
 					<div>
 						<label
-							for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}</label>
+							for="email">{{ trans($theme.'-app.login_register.email_confirmacion') }}</label>
 						{!!$formulario->confirm_email!!}
 					</div>
 
@@ -318,13 +318,13 @@ $jobs = array(
 
 					<div>
 						<label
-							for="contrasena">{{ trans(\Config::get('app.theme').'-app.login_register.password') }}</label>
+							for="contrasena">{{ trans($theme.'-app.login_register.password') }}</label>
 						{!!$formulario->password!!}
 					</div>
 
 					<div>
 						<label
-							for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}</label>
+							for="confirmcontrasena">{{ trans($theme.'-app.login_register.confirm_password') }}</label>
 						{!!$formulario->confirm_password!!}
 					</div>
 
@@ -338,7 +338,7 @@ $jobs = array(
 					@if(!empty($families) && count($families) > 0)
 
 					<!-- con categorias newsletter -->
-					<big>{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</big>
+					<big>{{ trans($theme.'-app.login_register.recibir_newsletter') }}</big>
 					<br><br>
 
 					@foreach($families as $t => $item)
@@ -354,7 +354,7 @@ $jobs = array(
 					<div class="checkbox-container col-xs-12">
 						{!! $formulario->newsletter!!}
 						<label for="bool__0__newsletter">
-							{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
+							{{ trans($theme.'-app.login_register.recibir_newsletter') }}
 						</label>
 					</div>
 
@@ -372,9 +372,9 @@ $jobs = array(
 					<div class="checkbox-container condiciones col-xs-12">
 						{!! $formulario->condiciones!!}
 						<label for="bool__1__condiciones">{!!
-							trans(\Config::get('app.theme').'-app.login_register.read_conditions') !!} (<a
-								href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.term_condition') ?>"
-								target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)
+							trans($theme.'-app.login_register.read_conditions') !!} (<a
+								href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') ?>"
+								target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)
 						</label>
 					</div>
 					<br>
@@ -393,7 +393,7 @@ $jobs = array(
 
 			<div class="col-xs-12 text-center">
 				<button type="submit" class="submitButton button-principal">
-					{{ trans(\Config::get('app.theme').'-app.login_register.register') }}
+					{{ trans($theme.'-app.login_register.register') }}
 				</button>
 			</div>
 

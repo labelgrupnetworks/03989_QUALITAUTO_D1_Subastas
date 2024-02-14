@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @php
@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
                 </div>
             </div>
         </div>
@@ -34,14 +34,14 @@
             <div class="col-xs-12 col-md-9 col-lg-9 ">
 
 			@if(!Session::has('user'))
-				<h2 class="text-center">{!! trans(\Config::get('app.theme').'-app.shopping_cart.mustLoginShippingCart') !!} </h2>
+				<h2 class="text-center">{!! trans($theme.'-app.shopping_cart.mustLoginShippingCart') !!} </h2>
 
 			@elseif(count($articles)==0)
-				<h2 class="text-center">{{ trans(\Config::get('app.theme').'-app.shopping_cart.noLots') }} </h2>
+				<h2 class="text-center">{{ trans($theme.'-app.shopping_cart.noLots') }} </h2>
 
 			@else
                 <div class="user-account-title-content">
-					<div class="user-account-menu-title">{{ trans(\Config::get('app.theme').'-app.shopping_cart.myCart') }}</div>
+					<div class="user-account-menu-title">{{ trans($theme.'-app.shopping_cart.myCart') }}</div>
 
                 </div>
 
@@ -51,17 +51,17 @@
 						@csrf
 						<div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
 							<div class="col-xs-12 col-sm-6  col-one user-account-item">
-								{{ trans(\Config::get('app.theme').'-app.shopping_cart.article') }}
+								{{ trans($theme.'-app.shopping_cart.article') }}
 							</div>
 							<div class="col-xs-12 col-sm-1 col-one user-account-fecha" style="text-align:center">
-								{{ trans(\Config::get('app.theme').'-app.user_panel.units') }}
+								{{ trans($theme.'-app.user_panel.units') }}
 							</div>
 							<div class="col-xs-12 col-sm-2 col-one user-account-fecha" style="text-align:center">
-								{{ trans(\Config::get('app.theme').'-app.user_panel.unit_price') }}
+								{{ trans($theme.'-app.user_panel.unit_price') }}
 							</div>
 
 							<div class="col-xs-12 col-sm-2  col-one user-account-max-bid" style="text-align:center">
-								{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
+								{{ trans($theme.'-app.user_panel.price_clean') }}
 							</div>
 							<div class="col-xs-12 col-sm-1  col-one user-account-max-bid" style="text-align:center">
 
@@ -82,7 +82,7 @@
 											</div>
 											<div class="col-xs-12 col-sm-9 col-sm-offset-1 no-padding">
 
-												<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.units') }}</div>
+												<div class="visible-xs">{{ trans($theme.'-app.user_panel.units') }}</div>
 												<div class="user-account-item-title">
 													<a href="{{ Route("article", ["idArticle" => $article->id_art0, "friendly" =>\Str::slug($article->model_art0) ])}}">
 													{{$article->model_art0  }}
@@ -94,15 +94,15 @@
 													</a>
 													<br/>
 													@if(in_array($article->sec_art, $personalizableSections))
-													<label class="labelGrabasdo">{{ trans(\Config::get('app.theme').'-app.articles.engraveTitle') }} </label>
-													<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="/es/pagina/personaliza-anillo?modal=1" data-title="{{ trans(\Config::get('app.theme').'-app.articles.engraveTitle') }}">   <i class="fas fa-info-circle"></i></a>
+													<label class="labelGrabasdo">{{ trans($theme.'-app.articles.engraveTitle') }} </label>
+													<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="/es/pagina/personaliza-anillo?modal=1" data-title="{{ trans($theme.'-app.articles.engraveTitle') }}">   <i class="fas fa-info-circle"></i></a>
 													@endif
 													{{--  loteauto_art es temporal hasta que tengamos el real para hacer esto --}}
 													@if($article->personalizado_art0 == 'S')
-														<input type="text" name="grabados[{{$article->id_art}}][0]" value="" placeholder="{{ trans(\Config::get('app.theme').'-app.articles.engravePlaceHolder') }}" class="inputGrabado">
+														<input type="text" name="grabados[{{$article->id_art}}][0]" value="" placeholder="{{ trans($theme.'-app.articles.engravePlaceHolder') }}" class="inputGrabado">
 														<div id="grabados_JS" >
 															@for($i=1;$i<$units[$article->id_art];$i++ )
-																<input type="text" name="grabados[{{$article->id_art}}][{{$i}}]" value="" placeholder="{{ trans(\Config::get('app.theme').'-app.articles.engravePlaceHolder') }}" class="inputGrabado">
+																<input type="text" name="grabados[{{$article->id_art}}][{{$i}}]" value="" placeholder="{{ trans($theme.'-app.articles.engravePlaceHolder') }}" class="inputGrabado">
 															@endfor
 														</div>
 													@endif
@@ -130,7 +130,7 @@
 										</div>
 										<div class="col-xs-12 col-sm-2  account-item-border">
 											<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-												<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.unit_price') }}</div>
+												<div class="visible-xs">{{ trans($theme.'-app.user_panel.unit_price') }}</div>
 												<p>{{ \Tools::moneyFormat($imp,'', 2) }} </p>
 												<input type="hidden" name="pvp_{{$article->id_art}}"	value="{{ $imp}}" >
 											</div>
@@ -138,17 +138,17 @@
 
 										<div class="col-xs-12 col-sm-2  account-item-border">
 												<div class="user-account-item-price  d-flex align-items-center justify-content-center">
-													<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
+													<div class="visible-xs">{{ trans($theme.'-app.user_panel.price_clean') }}</div>
 													<div>
 														<strong>
-															<span class="toPayArticle_{{$article->id_art}}_JS">	{{ \Tools::moneyFormat($imp * $units[$article->id_art],trans(\Config::get('app.theme').'-app.subastas.euros'), 2) }}
+															<span class="toPayArticle_{{$article->id_art}}_JS">	{{ \Tools::moneyFormat($imp * $units[$article->id_art],trans($theme.'-app.subastas.euros'), 2) }}
 														</strong>
 													</div>
 												</div>
 										</div>
 										<div class="col-xs-12 col-sm-1  account-item-border">
 											<div class="user-account-item-price  d-flex align-items-center justify-content-center">
-												<div class="deleteArticle_JS cursor" data-idart="{{$article->id_art}}"  style="color:red">{{ trans(\Config::get('app.theme').'-app.user_panel.delete') }}</div>
+												<div class="deleteArticle_JS cursor" data-idart="{{$article->id_art}}"  style="color:red">{{ trans($theme.'-app.user_panel.delete') }}</div>
 
 											</div>
 									</div>
@@ -164,13 +164,13 @@
 
 							<div class="adj color-letter  align-items-center justify-content-space-between">
 								<br>
-								{!! trans(\Config::get('app.theme').'-app.shopping_cart.comment')  !!}
+								{!! trans($theme.'-app.shopping_cart.comment')  !!}
 								<br>
 								<textarea name="comments" rows="5" style="width: 100%;"> </textarea>
 								@if( !empty(Config::get('app.web_gastos_envio')))
 								<?PHP /* Calculo de gastos de envio
 									<div class="col-xs-12 col-sm-5 gastos_envio" >
-										<strong> {{ trans(\Config::get('app.theme').'-app.user_panel.direccion-facturacion') }}</strong>
+										<strong> {{ trans($theme.'-app.user_panel.direccion-facturacion') }}</strong>
 											<select id="clidd_carrito"  name="clidd_carrito" class="change_address_carrito_js "   data-sub="carrito" style="width: 90%;">
 											@foreach($address as $key => $value)
 												<option value="{{ $key}}">{{$value}} </option>
@@ -181,30 +181,30 @@
 
 									</div>
 									<div class="col-xs-12 col-sm-3 gastos_envio" >
-										<strong> {{ trans(\Config::get('app.theme').'-app.user_panel.envio_agencia') }} </strong>
+										<strong> {{ trans($theme.'-app.user_panel.envio_agencia') }} </strong>
 										<br>
 										<?php #Debe estar checkeado almenos uno de los dos radio buttons ?>
 										<div id="envioPosible_carrito_js" <?= ($gastosEnvio== "-1")? 'class="hidden"' :''   ?>>
 											<input type="radio" <?= ($gastosEnvio== "-1")? '' :'checked="checked"'   ?>  class=" change_envio_carrito_js" data-sub="carrito" id="envio_agencia_carrito_js" name="envio_carrito"  value="1">
-											<label for="envio_agencia_carrito_js"> {{ trans(\Config::get('app.theme').'-app.user_panel.gastos_envio') }}:  <span id="coste-envio-carrito_js"> {{ \Tools::moneyFormat($gastosEnvio,false,2)}} </span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</label>
+											<label for="envio_agencia_carrito_js"> {{ trans($theme.'-app.user_panel.gastos_envio') }}:  <span id="coste-envio-carrito_js"> {{ \Tools::moneyFormat($gastosEnvio,false,2)}} </span> {{ trans($theme.'-app.lot.eur') }}</label>
 
 											@if (!empty(Config::get("app.porcentaje_seguro_envio")))
 												<br>
 												<input type="checkbox" style="top: 0px;height: 10px;margin-right: 0px;"  class="check_seguro_js" data-sub="carrito" id="seguro_carrito_js" name="seguro_carrito"  value="1">
-												<label for="seguro_carrito_js"> {{ trans(\Config::get('app.theme').'-app.user_panel.seguro_envio') }}:  <span id="coste-seguro-carrito_js"> {{ \Tools::moneyFormat($totalSeguro,false,2)}} </span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</label>
+												<label for="seguro_carrito_js"> {{ trans($theme.'-app.user_panel.seguro_envio') }}:  <span id="coste-seguro-carrito_js"> {{ \Tools::moneyFormat($totalSeguro,false,2)}} </span> {{ trans($theme.'-app.lot.eur') }}</label>
 
 											@endif
 
 										</div>
 										<div id="envioNoDisponible_carrito_js" <?= ($gastosEnvio== "-1")? '' :'class="hidden"'   ?>>
-											{{ trans(\Config::get('app.theme').'-app.user_panel.envio_no_disponible') }}
+											{{ trans($theme.'-app.user_panel.envio_no_disponible') }}
 										</div>
 
 										<br>
 
-										<strong> {{ trans(\Config::get('app.theme').'-app.user_panel.recogida_producto') }} </strong>
+										<strong> {{ trans($theme.'-app.user_panel.recogida_producto') }} </strong>
 										<br>
-										<input type="radio" class=" change_envio_carrito_js" <?= ($gastosEnvio== "-1")? 'checked="checked"' :''   ?> data-sub="carrito" id="recogida_almacen_carrito_js" name="envio_carrito" value="0"> <label  for="recogida_almacen">{{ trans(\Config::get('app.theme').'-app.user_panel.sala_almacen') }}</label>
+										<input type="radio" class=" change_envio_carrito_js" <?= ($gastosEnvio== "-1")? 'checked="checked"' :''   ?> data-sub="carrito" id="recogida_almacen_carrito_js" name="envio_carrito" value="0"> <label  for="recogida_almacen">{{ trans($theme.'-app.user_panel.sala_almacen') }}</label>
 
 									</div>
 									 */ ?>
@@ -216,14 +216,14 @@
 
 								<div class="col-xs-12 col-sm-4 total-price" >
 
-									{{ trans(\Config::get('app.theme').'-app.shopping_cart.total_articles') }} <br> <span class="totalArticulos_JS " > </span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+									{{ trans($theme.'-app.shopping_cart.total_articles') }} <br> <span class="totalArticulos_JS " > </span> {{ trans($theme.'-app.subastas.euros') }}
 
 
-									<br><br>{{ trans(\Config::get('app.theme').'-app.shopping_cart.esimationTime') }}
+									<br><br>{{ trans($theme.'-app.shopping_cart.esimationTime') }}
 									@if( !empty(Config::get('app.web_gastos_envio')))
 										<br>	<br><br>
 
-										{{ trans(\Config::get('app.theme').'-app.shopping_cart.total_pay') }} <br><span class="totalPagar_JS"></span> {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+										{{ trans($theme.'-app.shopping_cart.total_pay') }} <br><span class="totalPagar_JS"></span> {{ trans($theme.'-app.subastas.euros') }}
 									@endif
 
 
@@ -233,17 +233,17 @@
 											<div style="flex:1"></div>
 											<div class="mt-1 text-left">
 												<input id="paycreditcard"  type="radio" name="paymethod" value="creditcard" checked="checked">
-												<label for="paycreditcard"> <span class="fab fa-cc-visa" style="font-size: 20px;margin: 0px 3px;"></span> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}     </label>
+												<label for="paycreditcard"> <span class="fab fa-cc-visa" style="font-size: 20px;margin: 0px 3px;"></span> {{ trans($theme.'-app.user_panel.pay_creditcard') }}     </label>
 												<br>
 												@if(\Config::get("app.PayBizum") )
 													<input id="paybizum"    type="radio" name="paymethod" value="bizum">
-													<label for="paybizum" > <img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_bizum') }}   </label>
+													<label for="paybizum" > <img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans($theme.'-app.user_panel.pay_bizum') }}   </label>
 												@endif
 
 												<br>
 												@if(\Config::get("app.PayTransfer"))
 													<input id="paytransfer"    type="radio" name="paymethod" value="transfer">
-													<label for="paytransfer"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_transfer') }} </label>
+													<label for="paytransfer"> {{ trans($theme.'-app.user_panel.pay_transfer') }} </label>
 												@endif
 
 
@@ -258,7 +258,7 @@
 									@endif
 									<br><br>
 
-									<button style="margin-left: 15px;" type="button" class="secondary-button   submitArticleCart_JS "  cod_sub="carrito" class="btn btn-step-reg" >{{ trans(\Config::get('app.theme').'-app.user_panel.pay') }}</button>
+									<button style="margin-left: 15px;" type="button" class="secondary-button   submitArticleCart_JS "  cod_sub="carrito" class="btn btn-step-reg" >{{ trans($theme.'-app.user_panel.pay') }}</button>
 									<br><br>
 								</div>
 
