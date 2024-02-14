@@ -34,7 +34,7 @@
 	<div class="row mb-5">
 		<div class="col-xs-12">
 			<div class="title-home text-center">
-				<h3>{{ trans(\Config::get('app.theme').'-app.home.contact_our_experts') }}</h3>
+				<h3>{{ trans($theme.'-app.home.contact_our_experts') }}</h3>
 			</div>
 		</div>
 	</div>
@@ -76,7 +76,7 @@
 				</div>
 				<div class="blog_enlace">
 					<a
-						href="{{\Routing::slugSeo('blog').'/'.$noticia->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans(\Config::get('app.theme').'-app.home.learn_more') }}</a>
+						href="{{\Routing::slugSeo('blog').'/'.$noticia->url_category_blog_lang.'/'.$noticia->url_web_blog_lang}}">{{ trans($theme.'-app.home.learn_more') }}</a>
 				</div>
 			</div>
 			@endforeach
@@ -93,7 +93,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="title-home text-center">
-				<h3>{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}</h3>
+				<h3>{{ trans($theme.'-app.lot_list.lotes_destacados') }}</h3>
 			</div>
 		</div>
 	</div>
@@ -111,7 +111,7 @@
 @section('seo_block')
 <div class="seo-container">
 	<div class="container">
-		<p>{!! trans(\Config::get('app.theme').'-app.home.seo') !!}</p>
+		<p>{!! trans($theme.'-app.home.seo') !!}</p>
 	</div>
 </div>
 @endsection

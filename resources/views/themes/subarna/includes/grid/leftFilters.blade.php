@@ -1,9 +1,9 @@
 @if($auction && $codSub && $codSub != 'VDJ')
 <div class="expo-container">
-		<h4><b>{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}</b></h4>
-		<p>{{ trans(\Config::get('app.theme').'-app.subastas.auction_day') }} {{ $auction->sesfechas_sub }} - {{ $auction->seshorario_sub }}</p>
-		<p>{{ trans(\Config::get('app.theme').'-app.calendar.expo') }} {{$auction->expofechas_sub}}</p>
-		<p>{{ trans(\Config::get('app.theme').'-app.lot.location') }}: {{$auction->seslocal_sub}}</p>
+		<h4><b>{{ trans($theme.'-app.subastas.see_subasta') }}</b></h4>
+		<p>{{ trans($theme.'-app.subastas.auction_day') }} {{ $auction->sesfechas_sub }} - {{ $auction->seshorario_sub }}</p>
+		<p>{{ trans($theme.'-app.calendar.expo') }} {{$auction->expofechas_sub}}</p>
+		<p>{{ trans($theme.'-app.lot.location') }}: {{$auction->seslocal_sub}}</p>
 </div>
 @elseif($auction && $codSub && $codSub == 'VDJ')
 <div class="expo-container">
@@ -26,22 +26,22 @@
 		<input type="hidden" name="total" id="hidden_total" value="{{request('total')}}"   />
 
 			<div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-					<span>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</span>
+					<span>{{ trans($theme.'-app.lot_list.filters') }}</span>
 			</div>
 			<div class="filters-auction-texts">
-				<label class="filters-auction-label" for="description"><span>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</span></label>
-				<input id="description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('description') }}">
+				<label class="filters-auction-label" for="description"><span>{{ trans($theme.'-app.lot_list.search') }}</span></label>
+				<input id="description" placeholder="{{ trans($theme.'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('description') }}">
 				<div class="filters-auction-divider-medium"></div>
 
 				@if( (!empty($codSub) && !empty($refSession)) || request()->typeSub == 'P')
-					<label class="filters-auction-label" for="reference">{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</label>
-					<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('reference') }}">
+					<label class="filters-auction-label" for="reference">{{ trans($theme.'-app.lot_list.reference') }}</label>
+					<input id="reference" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input search-input_js" value="{{ app('request')->input('reference') }}">
 
 				@endif
 
 
 			<div class="filters-auction-divider-medium"></div>
-			<button class="btn btn-filter color-letter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+			<button class="btn btn-filter color-letter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
 
 			</div>
 

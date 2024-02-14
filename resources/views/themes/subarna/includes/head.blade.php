@@ -9,7 +9,7 @@ header("X-Frame-Options:     DENY");
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="initial-scale=1,minimum-scale=0.15, maximum-scale=2, user-scalable=yes">
 <!--<meta name="viewport" content="width=device-width, minimum-scale=0.15, maximum-scale=1.6">-->
-<meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
 <meta name="p:domain_verify" content="4e38f27a47f58c387a339c6cdbd03c9d"/>
 
 <title>

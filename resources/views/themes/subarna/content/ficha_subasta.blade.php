@@ -19,36 +19,36 @@
                         <div class="content-auction-desc">
                             <div class="block-auction exposition-des">
                                 @if( (!empty($data["auction"]->expofechas_sub)) ||  (!empty($data["auction"]->expohorario_sub)) || (!empty($data["auction"]->expolocal_sub)) || (!empty($data["auction"]->expomaps_sub)))
-                                    <h4>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_exposicion') }}</h4>
+                                    <h4>{{ trans($theme.'-app.subastas.inf_subasta_exposicion') }}</h4>
                                 @endif
                                 @if(!empty($data["auction"]->expofechas_sub))
                                     <p><?= $data["auction"]->expofechas_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->expohorario_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->expohorario_sub ?> </p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->expohorario_sub ?> </p>
                                 @endif
                                 @if(!empty($data["auction"]->expolocal_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->expolocal_sub ?></p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->expolocal_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->expomaps_sub))
-                                    <p><a target="_blank" title="cómo llegar" href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
+                                    <p><a target="_blank" title="cómo llegar" href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>">{{ trans($theme.'-app.subastas.how_to_get') }}</a></p>
                                 @endif
                             </div>
                             <div class="block-auction exposition-des">
                                 @if((!empty($data["auction"]->sesfechas_sub)) || (!empty($data["auction"]->seshorario_sub)) || (!empty($data["auction"]->seslocal_sub)) || (!empty($data["auction"]->sesmaps_sub)))
-                                    <h4>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_subasta') }}</h4>
+                                    <h4>{{ trans($theme.'-app.subastas.inf_subasta_subasta') }}</h4>
                                 @endif
                                 @if(!empty($data["auction"]->sesfechas_sub))
                                    <p> <?= $data["auction"]->sesfechas_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->seshorario_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
                                 @endif
                                 @if(!empty($data["auction"]->seslocal_sub))
-                                    <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
+                                    <p>{{ trans($theme.'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
                                 @endif
                                 @if(!empty($data["auction"]->sesmaps_sub))
-                                    <p><a target="_blank" title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
+                                    <p><a target="_blank" title="{{ trans($theme.'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">{{ trans($theme.'-app.subastas.how_to_get') }}</a></p>
                                 @endif
                             </div>
                         </div>
@@ -81,18 +81,18 @@
                                         @else
                                         href="{{\Tools::url_auction($session->auction,$session->name,$session->id_auc_sessions,$session->reference)}}"
                                         @endif
-                                        title="{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}" target="_blank">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
+                                        title="{{ trans($theme.'-app.subastas.see_lotes') }}" target="_blank">{{ trans($theme.'-app.subastas.see_lotes') }}</a>
                                 </p>
 
                                 <?php  $file_code = $session->company . '_' .  $session->auction . '_' . $session->reference ?>
                                 @if($session ->upcatalogo == 'S')
                                     <p class="" style="background-color:#ecedef;padding: 5px; margin-top:10px">
-                                        <a style="display:block;color:#333" title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_catalog') }}" target="_blank" href="{{\Tools::url_pdf($data["auction"]->cod_sub,$session->reference,'cat')}}"><i class="fa-2x	fa fa-file-pdf-o" style="color: #333;margin-right:  5px;"></i> {{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a>
+                                        <a style="display:block;color:#333" title="{{ trans($theme.'-app.grid.pdf_catalog') }}" target="_blank" href="{{\Tools::url_pdf($data["auction"]->cod_sub,$session->reference,'cat')}}"><i class="fa-2x	fa fa-file-pdf-o" style="color: #333;margin-right:  5px;"></i> {{ trans($theme.'-app.subastas.pdf_catalog') }}</a>
                                     </p>
                                 @endif
                                 @if( $session ->uppdfadjudicacion == 'S')
                                     <p class=""  style="background-color:#ecedef;padding: 5px; margin-top:10px">
-                                        <a style="display:block;color:#333" title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($data["auction"]->cod_sub,$session->reference,'pre')}}"><i class="fa-2x	fa fa-file-pdf-o" style="color: #333;margin-right:  5px;"></i> {{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</a>
+                                        <a style="display:block;color:#333" title="{{ trans($theme.'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($data["auction"]->cod_sub,$session->reference,'pre')}}"><i class="fa-2x	fa fa-file-pdf-o" style="color: #333;margin-right:  5px;"></i> {{ trans($theme.'-app.subastas.pdf_adj') }}</a>
                                     </p>
                                 @endif
                                 <?php
@@ -109,7 +109,7 @@
                                         font-weight: 900;
                                         border-radius: 40px; "
                                 >
-                                    <a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$data['auction']->start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$data['auction']->end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+                                    <a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$data['auction']->start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$data['auction']->end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
                                 </p>
                                 @endif
                             @endforeach
@@ -127,7 +127,7 @@
 	<div class="row">
             <div class="col-xs-12 col-sm-4">
                 <div class="single_auction">
-                    <h1 class="titleSingle">{{trans(\Config::get('app.theme').'-app.lot.auction_not_found')}}</h1>
+                    <h1 class="titleSingle">{{trans($theme.'-app.lot.auction_not_found')}}</h1>
                 </div>
             </div>
         </div>

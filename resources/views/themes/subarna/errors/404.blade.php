@@ -52,13 +52,13 @@
                             class="logo" 
                             class="img-responsive" 
                             style="max-height: 200px;" 
-                            src="/themes/<?= \Config::get('app.theme')?>/assets/img/logo.png" alt="">
+                            src="/themes/<?= $theme?>/assets/img/logo.png" alt="">
                         <div 
                             class="title" 
-                            style="font-size: 32px;margin-bottom: 40px;font-weight: 900;color: #101010;">{{ trans(\Config::get('app.theme').'-app.global.page_not_found') }}
+                            style="font-size: 32px;margin-bottom: 40px;font-weight: 900;color: #101010;">{{ trans($theme.'-app.global.page_not_found') }}
                         </div>
                             
-                        <a href="/{{\App::getLocale()}}" style="font-size: 20px;font-weight: 900;">{{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a>
+                        <a href="/{{\App::getLocale()}}" style="font-size: 20px;font-weight: 900;">{{ trans($theme.'-app.global.go_home') }}</a>
                     </div>
                 </div>
             </div>

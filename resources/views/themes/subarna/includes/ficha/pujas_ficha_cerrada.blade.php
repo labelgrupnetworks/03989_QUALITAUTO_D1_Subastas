@@ -14,30 +14,30 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 ?>
 <div class="info_single col-xs-12">
         <div class="info_single_title col-xs-12">
-                {{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}
+                {{ trans($theme.'-app.subastas.finalized') }}
         </div>
         <div class="row">
                 <div class="col-xs-12 col-sm-6">
                         @if($lote_actual->tipo_sub != 'V')
                             @if( \Config::get('app.estimacion'))
-                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span> {{$lote_actual->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span></p>
+                                <p class="salida">{{ trans($theme.'-app.lot.estimate') }} <span> {{$lote_actual->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</span></p>
                             @elseif( \Config::get('app.impsalhces_asigl0'))
-                                <p class="salida">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span> {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span> </p>
+                                <p class="salida">{{ trans($theme.'-app.lot.lot-price') }}  <span> {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</span> </p>
                             @endif
                         @endif
                         @if($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' && (!empty($precio_venta)  || $lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0)) )
                             @if($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))
                                 @php($precio_venta = $lote_actual->impadj_asigl0)
                             @endif
-                            <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+                            <p class="pre">{{ trans($theme.'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat($precio_venta) }} {{ trans($theme.'-app.subastas.euros') }}</div>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && (!empty($precio_venta) || $lote_actual->desadju_asigl0 =='S') )
-                        <p class="pre"> {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
+                        <p class="pre"> {{ trans($theme.'-app.subastas.buy') }}</p>
                         @elseif(strtoupper($lote_actual->tipo_sub) == 'V' && $lote_actual->cerrado_asigl0 == 'N' && $lote_actual->end_session > date("now"))
-                            <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+                            <p class="pre">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && empty($precio_venta))
-                        <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+                        <p class="pre">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
                         @elseif($lote_actual->cerrado_asigl0 == 'D')
-                        <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                        <p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}</p>
                         @endif
 						<p class="pre"></p>
 				</div>

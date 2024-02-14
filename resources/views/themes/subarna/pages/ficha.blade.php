@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -54,7 +54,7 @@ $lote_actual = $data['subasta_info']->lote_actual;
 		$bread = array();
 
 		if($lote_actual->tipo_sub == 'P'){
-			$bread[] = array("url" => route("allCategories", ['typeSub'=>'P']), "name" => trans(\Config::get('app.theme').'-app.foot.online_auction')  );
+			$bread[] = array("url" => route("allCategories", ['typeSub'=>'P']), "name" => trans($theme.'-app.foot.online_auction')  );
 		}
 		else{
 			$bread[] = array("url" => $lote_actual->url_subasta, "name" =>$lote_actual->title_url_subasta  );
