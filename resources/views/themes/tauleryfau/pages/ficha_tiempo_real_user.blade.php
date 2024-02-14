@@ -30,7 +30,7 @@
                                 <div class="col-xs-12">
                                     <div class=" descripcion started hidden">
                                         <span id="lote_actual_main" class="desc-whith-scroll" style="display:block">
-                                            <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <span
+                                            <strong>{{ trans($theme.'-app.sheet_tr.lot') }} <span
                                                     id="info_lot_actual">{{ $data['subasta_info']->lote_actual->ref_asigl0 }}</span></strong>
                                         </span>
                                          <span id="actual_titulo"   class="hidden-xs" style="font-size: 20px;">
@@ -49,7 +49,7 @@
                                     <?php //PRECIO DE SALIDA LOTE // ?>
                                     <div class="col-xs-6 prices-lots">
                                         <div id="precioSalida" class="precioSalida salida">
-                                            <strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:</strong>
+                                            <strong>{{ trans($theme.'-app.sheet_tr.start_price') }}:</strong>
                                             <span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span>
                                             {{ $data['js_item']['subasta']['currency']->symbol }}
                                         </div>
@@ -60,7 +60,7 @@
 
                                         <div class="content-your-order text-right salida hidden">
                                             <div class="">
-                                                {{ trans(\Config::get('app.theme').'-app.subastas.precio_estimado') }}:
+                                                {{ trans($theme.'-app.subastas.precio_estimado') }}:
                                                 <span id="imptas">{{ $data['subasta_info']->lote_actual->formatted_imptas_asigl0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}
                                             </div>
                                         </div>
@@ -77,11 +77,11 @@
                                     <div class="text-center info-actual-content">
                                         <div id="text_actual_max_bid"
                                             class="fs-20 text-center <?= count($data['subasta_info']->lote_actual->pujas) > 0? '' : 'hidden' ?> ">
-                                            {{ trans(\Config::get('app.theme').'-app.sheet_tr.max_actual_bid') }}
+                                            {{ trans($theme.'-app.sheet_tr.max_actual_bid') }}
                                         </div>
                                         <span id="text_actual_no_bid"
                                             class=" fs-30 text-center <?= count($data['subasta_info']->lote_actual->pujas) > 0? 'hidden' : '' ?> ">
-                                            {{ trans(\Config::get('app.theme').'-app.sheet_tr.pending_bid') }}
+                                            {{ trans($theme.'-app.sheet_tr.pending_bid') }}
                                         </span>
                                         <span id="actual_max_bid"
                                             class="fs-30 text-center @if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) mine @else other @endif">
@@ -92,7 +92,7 @@
                                         </span>
                                         @if(\Config::get('app.tr_show_canel_bid_client') && Session::has('user'))
                                         <span id="cancelarPujaUser"
-                                            class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid') }}</span>
+                                            class="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])  @else hidden  @endif">{{ trans($theme.'-app.sheet_tr.cancel_bid') }}</span>
                                         @endif
                                     </div>
 
@@ -112,7 +112,7 @@
                                         <div>
                                             <a class="add_bid btn btn-success btn-custom-save">
                                                 <div class="ls-2 fs-20 font-weight-900 title-bid-button" style="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) display:none @else @endif">
-                                                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</div>
+                                                    {{ trans($theme.'-app.sheet_tr.place_bid') }}</div>
                                                 <div class="input-gestor-content" style="position: relative; @if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) display:none @else @endif">
                                                     <div id="value-view">
                                                         {{ \Tools::moneyFormat($data['subasta_info']->lote_actual->importe_escalado_siguiente) }}
@@ -123,9 +123,9 @@
                                                         style="position: absolute; right: 0; top: -3"></span>
 												</div>
 												<div class="user-higher-bidder" style="@if (!empty($data['js_item']['user']) && !empty($data['subasta_info']->lote_actual->max_puja) &&  $data['subasta_info']->lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit']) @else display:none @endif">
-													<p class="m-0" style="margin: 0">{{ trans(\Config::get('app.theme').'-app.sheet_tr.higher_bid_es') }}</p>
+													<p class="m-0" style="margin: 0">{{ trans($theme.'-app.sheet_tr.higher_bid_es') }}</p>
 													<hr style="margin: 0">
-													<p class="m-0" style="margin: 0">{{ trans(\Config::get('app.theme').'-app.sheet_tr.higher_bid_en') }}</p>
+													<p class="m-0" style="margin: 0">{{ trans($theme.'-app.sheet_tr.higher_bid_en') }}</p>
 												</div>
                                             </a>
                                         </div>
@@ -146,7 +146,7 @@
                                             color: white;
                                             font-weight: bold;
                                             text-align: center;
-                                            font-size: 20px;" data-ref="login">{{ trans(\Config::get('app.theme').'-app.login_register.ini_tr') }}</div>
+                                            font-size: 20px;" data-ref="login">{{ trans($theme.'-app.login_register.ini_tr') }}</div>
                                     </div>
                                     @endif
                                 </div>
@@ -173,7 +173,7 @@
                     <div class="started hidden h-100 last-bids">
                         <div class="aside pujas h-100">
 
-                                <h2>{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</h2>
+                                <h2>{{ trans($theme.'-app.sheet_tr.last_bids') }}</h2>
                                 <div id="pujas_list">
 
                                     <?php
@@ -194,24 +194,24 @@
                                         <div class="col-xs-4 no-padding tipoPuja">
                                             <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i
                                                     class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}
+                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}
                                             </p>
                                             <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i
                                                     class="fa fa-hand-paper-o" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
                                             <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i
                                                     class="fa fa-phone" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
                                             <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 !=
                                                 'P') class="hidden" @endif><i class="fa fa-desktop"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
                                             <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i
                                                     class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
                                             <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i
                                                     class="fa fa-desktop" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
                                              <p data-type="U" @if ($puja->pujrep_asigl1 != 'U')class="hidden" @endif><i
                                                     class="fa fa-wikipedia-w" aria-hidden="true"></i>
                                                 Subalia</p>
@@ -226,7 +226,7 @@
 
                                         <div class="col-xs-4 no-padding ordenes">
                                             @if($lat_order)
-                                            <span>{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_order') }}</span>
+                                            <span>{{ trans($theme.'-app.sheet_tr.last_order') }}</span>
                                             @endif
                                         </div>
 
@@ -237,29 +237,29 @@
                                     <div class="pujas_model no-padding hidden col-xs-12" id="type_bid_model">
                                         <div class="col-xs-4 no-padding tipoPuja">
                                             <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}
+                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}
                                             </p>
                                             <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-sala') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
 												<p data-type="T" class="hidden"><i class="fa fa-phone"
 														aria-hidden="true"></i>
-													{{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
+													{{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
 												<p data-type="B" class="hidden"><i class="fa fa-phone"
 															aria-hidden="true"></i>
-													{{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-telf') }}</p>
+													{{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
                                             <p data-type="E" class="hidden"><i class="fa fa-desktop"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
                                             <p data-type="P" class="hidden"><i class="fa fa-desktop"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
                                             <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.bid-web') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
                                             <p data-type="O" class="hidden"><i class="fa fa-desktop"
                                                     aria-hidden="true"></i>
-                                                {{ trans(\Config::get('app.theme').'-app.sheet_tr.books_bid') }}</p>
+                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
 
                                             <p data-type="U" class="hidden"><i class="fa fa-wikipedia-w"
                                                     aria-hidden="true"></i>
@@ -275,7 +275,7 @@
                                         </div>
                                         <div class="col-xs-4 no-padding ordenes">
                                             <span
-                                                class="orden hidden">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_order') }}</span>
+                                                class="orden hidden">{{ trans($theme.'-app.sheet_tr.last_order') }}</span>
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -296,18 +296,18 @@
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a class="trigger_hist" href="#historic" aria-controls="historic"
-                                    role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.historic') }}</a>
+                                    role="tab" data-toggle="tab">{{ trans($theme.'-app.sheet_tr.historic') }}</a>
                                 </li>
                                     @if((Session::has('user')))
                                         <li id="tab-adj" role="presentation"><a class="trigger_adj" href="#win-bids" aria-controls="win-bids" role="tab"
-										data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.my_bids') }}</a>
+										data-toggle="tab">{{ trans($theme.'-app.sheet_tr.my_bids') }}</a>
 										<div class="alert-adj"></div>
 									</li>
                                         <li role="presentation"><a class="trigger_favs" href="#favorites" aria-controls="favorites" role="tab"
-                                        data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.my_favorites') }}</a></li>
+                                        data-toggle="tab">{{ trans($theme.'-app.sheet_tr.my_favorites') }}</a></li>
 
                                         <li id="tab-messages" role="presentation"><a href="#messages" aria-controls="favorites" role="tab"
-                                                data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.mesagges') }}</a>
+                                                data-toggle="tab">{{ trans($theme.'-app.sheet_tr.mesagges') }}</a>
                                             <div class="alert-messages" ></div>
                                             </li>
                                     @endif
@@ -319,14 +319,14 @@
                         <div class="tab-content">
                             <!-- HISTORICO -->
                             <div role="tabpanel" class="tab-pane active" id="historic">
-                                <div   class="update-hist trigger_hist"><span class="hover-gold"  role="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.update_tab') }}</span></div>
+                                <div   class="update-hist trigger_hist"><span class="hover-gold"  role="button">{{ trans($theme.'-app.sheet_tr.update_tab') }}</span></div>
                                 <div class="started hidden zone-tabs">
                                     <div class="adjudicaciones-header">
                                         <div class="adjudicaciones aside col-xs-12" style="padding: 0; border: 0">
                                         <div class="header-tr_tabs col-xs-12 no-padding">
-                                            <div class="col-md-2 col-lg-1 col-xs-2 title-tables">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</div>
-                                            <div class="col-xs-10 col-sm-8 col-xs-7 col-lg-9 title-tables">{{ trans(\Config::get('app.theme').'-app.sheet_tr.description') }}</div>
-                                            <div class=" col-lg-2 col-sm-2 col-xs-3 col-lg-2  title-tables text-right">{{ trans(\Config::get('app.theme').'-app.sheet_tr.adjudicate') }}</div>
+                                            <div class="col-md-2 col-lg-1 col-xs-2 title-tables">{{ trans($theme.'-app.sheet_tr.lot') }}</div>
+                                            <div class="col-xs-10 col-sm-8 col-xs-7 col-lg-9 title-tables">{{ trans($theme.'-app.sheet_tr.description') }}</div>
+                                            <div class=" col-lg-2 col-sm-2 col-xs-3 col-lg-2  title-tables text-right">{{ trans($theme.'-app.sheet_tr.adjudicate') }}</div>
                                         </div>
                                         <div id="historic_list" class="col-xs-12 no-padding">
 
@@ -339,15 +339,15 @@
                             @if((Session::has('user')))
                                <!-- ADJUDICACIONES -->
                                <div role="tabpanel" class="tab-pane" id="win-bids">
-                               <div    class="update-hist trigger_adj"><span class="hover-gold" role="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.update_tab') }}</span></div>
+                               <div    class="update-hist trigger_adj"><span class="hover-gold" role="button">{{ trans($theme.'-app.sheet_tr.update_tab') }}</span></div>
 
                                 <div class="started hidden zone-tabs">
                                     <div class="adjudicaciones-header">
                                         <div class="adjudicaciones aside col-xs-12" style="padding: 0; border: 0">
                                         <div class="header-tr_tabs col-xs-12 no-padding">
-                                            <div class="col-md-2 col-lg-1 col-xs-2 title-tables">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</div>
-                                            <div class="col-xs-10 col-sm-8 col-xs-7 col-lg-9 title-tables">{{ trans(\Config::get('app.theme').'-app.sheet_tr.description') }}</div>
-                                            <div class=" col-lg-2 col-sm-2 col-xs-3 col-lg-2  title-tables text-right">{{ trans(\Config::get('app.theme').'-app.sheet_tr.adjudicate') }}</div>
+                                            <div class="col-md-2 col-lg-1 col-xs-2 title-tables">{{ trans($theme.'-app.sheet_tr.lot') }}</div>
+                                            <div class="col-xs-10 col-sm-8 col-xs-7 col-lg-9 title-tables">{{ trans($theme.'-app.sheet_tr.description') }}</div>
+                                            <div class=" col-lg-2 col-sm-2 col-xs-3 col-lg-2  title-tables text-right">{{ trans($theme.'-app.sheet_tr.adjudicate') }}</div>
                                         </div>
                                         <div id="adjudicaciones_list" class="col-xs-12 no-padding">
 
@@ -359,7 +359,7 @@
 
                                <!-- FAVORITES -->
                                <div role="tabpanel" class="tab-pane" id="favorites">
-                                       <div id="update-fav" role="button" class="update-hist trigger_favs"><span class="hover-gold" role="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.update_tab') }}</span></div>
+                                       <div id="update-fav" role="button" class="update-hist trigger_favs"><span class="hover-gold" role="button">{{ trans($theme.'-app.sheet_tr.update_tab') }}</span></div>
                                        <div class="started hidden zone-tabs ">
                                             <div id="favoritos_list" class="adjudicaciones tabs-favorites-content mt-1">
 

@@ -13,13 +13,13 @@ $precio_remapte = $lot->himp_csub;
         </div>
         <div class="img-data-customs flex "></div>
         <div class="lot-data-custon">
-            <p>{{ trans(\Config::get('app.theme') . '-app.user_panel.lot') }}</p>
+            <p>{{ trans($theme . '-app.user_panel.lot') }}</p>
         </div>
         <div class="name-data-custom">
-            <p style="font-weight: 900">{{ trans(\Config::get('app.theme') . '-app.lot.description') }}</p>
+            <p style="font-weight: 900">{{ trans($theme . '-app.lot.description') }}</p>
         </div>
         <div class="remat-data-custom">
-            <p>{{ trans(\Config::get('app.theme') . '-app.user_panel.price') }}</p>
+            <p>{{ trans($theme . '-app.user_panel.price') }}</p>
         </div>
     </div>
 @endif
@@ -32,7 +32,7 @@ $precio_remapte = $lot->himp_csub;
     </div>
 
     <div class="account-lot-wrapper font-data-custom" style="grid-area: lot;">
-        <p><span class="visible-expand">{{ trans(\Config::get('app.theme') . '-app.lot.lot-name') }}</span>
+        <p><span class="visible-expand">{{ trans($theme . '-app.lot.lot-name') }}</span>
             {{ $lot->ref_asigl1 }}</p>
     </div>
 
@@ -44,25 +44,25 @@ $precio_remapte = $lot->himp_csub;
         style="grid-area: price;">
         <div>
             <p class="visible-expand" style="font-weight: 900">
-                {{ trans(\Config::get('app.theme') . '-app.user_panel.price') }}</p>
+                {{ trans($theme . '-app.user_panel.price') }}</p>
             <p class="font-data-custom">
                 {{ \Tools::moneyFormat($precio_remapte, false, 2) }}
-                {{ trans(\Config::get('app.theme') . '-app.lot.eur') }}
+                {{ trans($theme . '-app.lot.eur') }}
                 &nbsp;|&nbsp;<span value="{{ $precio_remapte }}" class="js-divisa"></span>
             </p>
         </div>
 
         @if (!$isPayed)
             <a
-                class="btn btn-color btn-puja-panel btn-disabled d-flex align-items-center justify-content-center">{{ trans(\Config::get('app.theme') . '-app.user_panel.high_quality_photography') }}</a>
+                class="btn btn-color btn-puja-panel btn-disabled d-flex align-items-center justify-content-center">{{ trans($theme . '-app.user_panel.high_quality_photography') }}</a>
             <a
-                class="btn btn-color btn-puja-panel btn-disabled d-flex align-items-center justify-content-center">{{ trans(\Config::get('app.theme') . '-app.user_panel.certificate') }}</a>
+                class="btn btn-color btn-puja-panel btn-disabled d-flex align-items-center justify-content-center">{{ trans($theme . '-app.user_panel.certificate') }}</a>
         @else
             <a href="/img/load/real/{{ $lot->imagen }}" download="{{ $lot->ref_asigl0 }}_{{ $lot->name }}"
                 alt="{{ $lot->titulo_hces1 }}"
-                class="btn btn-color btn-puja-panel btn-gold d-flex align-items-center justify-content-center">{{ trans(\Config::get('app.theme') . '-app.user_panel.high_quality_photography') }}</a>
+                class="btn btn-color btn-puja-panel btn-gold d-flex align-items-center justify-content-center">{{ trans($theme . '-app.user_panel.high_quality_photography') }}</a>
             <a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}"
-                class="btn btn-color btn-puja-panel btn-blue d-flex align-items-center justify-content-center js-btn-certificate">{{ trans(\Config::get('app.theme') . '-app.user_panel.certificate') }}</a>
+                class="btn btn-color btn-puja-panel btn-blue d-flex align-items-center justify-content-center js-btn-certificate">{{ trans($theme . '-app.user_panel.certificate') }}</a>
         @endif
     </div>
 
@@ -80,7 +80,7 @@ $precio_remapte = $lot->himp_csub;
 
             @if (!empty($lot->prefactura))
                 <a href="/prefactura/{{ $codSub }}" download
-                    class="btn btn-color factura-button mb-1">{{ trans(\Config::get('app.theme') . '-app.user_panel.proforma_invoice') }}</a>
+                    class="btn btn-color factura-button mb-1">{{ trans($theme . '-app.user_panel.proforma_invoice') }}</a>
             @endif
 
             @if ($auction->compraweb_sub == 'S')
@@ -93,18 +93,18 @@ $precio_remapte = $lot->himp_csub;
 
                 <a class="btn btn-color btn-blue mb-1"
                     href="{{ route('panel.allotment.sub', ['cod_sub' => $codSub, 'lang' => Config::get('app.locale')]) }}"
-                    cod_sub="{{ $codSub }}">{{ trans(\Config::get('app.theme') . '-app.user_panel.pay_now') }}</a>
+                    cod_sub="{{ $codSub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
             @endif
         @else
             <a class="btn btn-color btn-blue mb-1 js-btn-shipment" data-afral_csub="{{ $lot->afral_csub }}"
                 data-nfral_csub="{{ $lot->nfral_csub }}" cod_sub="{{ $codSub }}" data-toggle="modal"
                 data-target="#modal_shipment">
-                {{ trans(\Config::get('app.theme') . '-app.user_panel.shipment_tracking') }}
+                {{ trans($theme . '-app.user_panel.shipment_tracking') }}
             </a>
 
             @if (!empty($lot->factura))
                 <a href="/factura/{{ $lot->afral_csub . '-' . $lot->nfral_csub }}" download
-                    class="btn btn-color factura-button mb-1">{{ trans(\Config::get('app.theme') . '-app.user_panel.invoice_pdf') }}</a>
+                    class="btn btn-color factura-button mb-1">{{ trans($theme . '-app.user_panel.invoice_pdf') }}</a>
             @endif
 
         @endif

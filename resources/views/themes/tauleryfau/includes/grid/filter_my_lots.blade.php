@@ -1,6 +1,6 @@
 <div class="auction__filters-estado-lote">
     <div class="filter-section-head">
-        <h4>{{ trans(\Config::get('app.theme') . '-app.lot_list.my_lots') }}</h4>
+        <h4>{{ trans($theme . '-app.lot_list.my_lots') }}</h4>
     </div>
 
     <div class="auction__filters-type-list" id="estado_lotes">
@@ -10,7 +10,7 @@
 					<input type="radio" class="js-check-my-lots" name="myLotsClient" id="myLotsClient" value="1"
 					<?= !empty(request('myLotsClient')) ? 'checked="checked"' : '' ?> />
                     <label for="myLotsClient" class="radio-label">
-						{{ trans(\Config::get('app.theme') . '-app.lot_list.my_lots_clients') }}
+						{{ trans($theme . '-app.lot_list.my_lots_clients') }}
                     </label>
                 </div>
             </div>
@@ -19,7 +19,7 @@
 					<input type="radio" class="js-check-my-lots" name="myLotsProperty" id="myLotsProperty" value="1"
 						<?= !empty(request('myLotsProperty')) ? 'checked="checked"' : '' ?> />
 					<label for="myLotsProperty" class="radio-label">
-						{{ trans(\Config::get('app.theme') . '-app.lot_list.my_lots_property') }}
+						{{ trans($theme . '-app.lot_list.my_lots_property') }}
 					</label>
 				</div>
 			</div>

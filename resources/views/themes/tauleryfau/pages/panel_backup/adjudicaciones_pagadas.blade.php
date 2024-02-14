@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -35,7 +35,7 @@ $divisas = $currency->getAllCurrencies();
             <div class="col-xs-12">
                 <div class="princiapl-bar-wrapper">
                     <div class="principal-bar-title">
-                        <h3>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h3>
+                        <h3>{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h3>
                     </div>
                 </div>
             </div>
@@ -50,12 +50,12 @@ $divisas = $currency->getAllCurrencies();
             </div>
             <div class="col-xs-10 col-sm-10 col-md-9">
                 <div class="user-datas-title flex align-items-center">
-                    <p style="margin: 0px">{{ trans(\Config::get('app.theme').'-app.user_panel.allotments') }}</p>
+                    <p style="margin: 0px">{{ trans($theme.'-app.user_panel.allotments') }}</p>
                     <div class="col_reg_form"></div>
                     <div class="btns-pay flex">
 
-                        <a href="{{ \Routing::slug('user/panel/allotments/outstanding') }}" class="btn-color btn-forpay">{{ trans(\Config::get('app.theme').'-app.user_panel.still_paid') }}</a>
-						<a href="{{ \Routing::slug('user/panel/allotments/paid') }}" class="btn-payed" >{{ trans(\Config::get('app.theme').'-app.user_panel.bills') }}</a>
+                        <a href="{{ \Routing::slug('user/panel/allotments/outstanding') }}" class="btn-color btn-forpay">{{ trans($theme.'-app.user_panel.still_paid') }}</a>
+						<a href="{{ \Routing::slug('user/panel/allotments/paid') }}" class="btn-payed" >{{ trans($theme.'-app.user_panel.bills') }}</a>
 
 
                         <select id="actual_currency" >
@@ -98,19 +98,19 @@ $divisas = $currency->getAllCurrencies();
                                     </div>
                                     <div class="img-data-customs flex "></div>
                                     <div class="lot-data-custon">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.lot') }}</p>
                                     </div>
                                     <div class="name-data-custom">
-                                        <p style="font-weight: 900">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+                                        <p style="font-weight: 900">{{ trans($theme.'-app.lot.description') }}</p>
                                     </div>
                                     <div class="remat-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.price') }}</p>
                                     </div>
                                     <div class="auc-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.price_comision') }}</p>
                                     </div>
                                     <div class="auc-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.price_clean') }}</p>
                                     </div>
                                 </div>
                              <form id="pagar_lotes_{{$all_inf['inf']->cod_sub}}">
@@ -159,20 +159,20 @@ $divisas = $currency->getAllCurrencies();
 
                                     <div class="remat-data-custom">
                                         <p>
-                                            <?= \Tools::moneyFormat($precio_remapte,false,2) ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                            <?= \Tools::moneyFormat($precio_remapte,false,2) ?> {{ trans($theme.'-app.lot.eur') }}
                                             &nbsp;|&nbsp;<span value="{{$precio_remapte}}" class="js-divisa"></span>
                                         </p>
 
                                     </div>
                                     <div class="auc-data-custom">
                                         <p>
-                                            <?=  \Tools::moneyFormat($comision,false,2) ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                            <?=  \Tools::moneyFormat($comision,false,2) ?> {{ trans($theme.'-app.lot.eur') }}
                                             &nbsp;|&nbsp;<span value="{{$comision}}" class="js-divisa"></span>
                                         </p>
                                     </div>
                                      <div class="auc-data-custom">
                                          <p>
-                                            <?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                            <?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}
                                             &nbsp;|&nbsp;<span value="{{$precio_limpio_calculo}}" class="js-divisa"></span>
                                         </p>
                                      </div>
@@ -182,49 +182,49 @@ $divisas = $currency->getAllCurrencies();
                             @endforeach
                                 <div class="adj" >
                                     <h1 class="titlecat">
-                                        <span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span>{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                        <span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span>{{ trans($theme.'-app.lot.eur') }}
                                         &nbsp;|&nbsp;<span value="" class="js-divisa precio_final_{{$all_inf['inf']->cod_sub}}"></span>
                                         &nbsp;&nbsp;
                                     </h1>
                                     <br>
                                     <div class="info-modal-pay" style="margin-left: 10px;">
-                                        <div  class="open-modal-info btn info">{{ trans(\Config::get('app.theme').'-app.user_panel.info_modal') }}</div>
+                                        <div  class="open-modal-info btn info">{{ trans($theme.'-app.user_panel.info_modal') }}</div>
                                         <div class="info-pay-modal" style="display: none">
                                             <div class="info-pay-modal-close" role="button"><i class="fas fa-times"></i></div>
                                             <div class="price flex">
-                                                <div class="title">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
-                                                <div class="money">{{\Tools::moneyFormat($total_remate,false,2)}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                                <div class="title">{{ trans($theme.'-app.user_panel.price') }}</div>
+                                                <div class="money">{{\Tools::moneyFormat($total_remate,false,2)}} {{ trans($theme.'-app.lot.eur') }}
                                                 &nbsp;|&nbsp;&nbsp;<span value="{{$total_remate}}" class="js-divisa">
                                                 </div>
                                             </div>
                                             <div class="price flex">
-                                                <div class="title">{{ trans(\Config::get('app.theme').'-app.user_panel.base') }}</div>
-                                                <div class="money">{{\Tools::moneyFormat($total_base,false,2)}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                                <div class="title">{{ trans($theme.'-app.user_panel.base') }}</div>
+                                                <div class="money">{{\Tools::moneyFormat($total_base,false,2)}} {{ trans($theme.'-app.lot.eur') }}
                                                 &nbsp;|&nbsp;&nbsp;<span value="{{$total_base}}" class="js-divisa"></span>
                                                 </div>
                                             </div>
                                             <div class="price flex">
-                                                <div class="title">{{ trans(\Config::get('app.theme').'-app.user_panel.tax') }}</div>
-                                                <div class="money">{{\Tools::moneyFormat($total_iva,false,2)}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                                <div class="title">{{ trans($theme.'-app.user_panel.tax') }}</div>
+                                                <div class="money">{{\Tools::moneyFormat($total_iva,false,2)}} {{ trans($theme.'-app.lot.eur') }}
                                                 &nbsp;|&nbsp;&nbsp;<span value="{{$total_iva}}" class="js-divisa"></span>
                                                 </div>
 											</div>
 											<div class="price flex">
-                                                <div class="title">{{ trans(\Config::get('app.theme').'-app.user_panel.export_license') }}</div>
-                                                <div class="money">{{\Tools::moneyFormat($total_licencia_exportacion,false,2)}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+                                                <div class="title">{{ trans($theme.'-app.user_panel.export_license') }}</div>
+                                                <div class="money">{{\Tools::moneyFormat($total_licencia_exportacion,false,2)}} {{ trans($theme.'-app.lot.eur') }}
                                                 &nbsp;|&nbsp;&nbsp;<span value="{{$total_licencia_exportacion}}" class="js-divisa"></span>
                                                 </div>
                                             </div>
                                             <div class="price flex hidden">
-                                                <div class="title">{{ trans(\Config::get('app.theme').'-app.user_panel.ship_tax') }}</div>
+                                                <div class="title">{{ trans($theme.'-app.user_panel.ship_tax') }}</div>
                                                 <div class="money">
                                                     <span class='text-gasto-envio'></span>
                                                     &nbsp;|&nbsp;&nbsp;<span value="" class="js-divisa text-gasto-envio-{{$all_inf['inf']->cod_sub}}"></span>
                                                 </div>
                                             </div>
                                             <div class="price flex text-bold">
-                                                <div class="title"><b>{{ trans(\Config::get('app.theme').'-app.user_panel.total') }}</b></div>
-                                                <div class="money flex"><b style="display: inline-block" class='precio_final_{{$all_inf['inf']->cod_sub}}'></b><b style="display: inline-block"> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</b>
+                                                <div class="title"><b>{{ trans($theme.'-app.user_panel.total') }}</b></div>
+                                                <div class="money flex"><b style="display: inline-block" class='precio_final_{{$all_inf['inf']->cod_sub}}'></b><b style="display: inline-block"> {{ trans($theme.'-app.lot.eur') }}</b>
                                                     &nbsp;|&nbsp;&nbsp;<span value="" class="js-divisa precio_final_{{$all_inf['inf']->cod_sub}}"></span>
                                                 </div>
                                             </div>
@@ -232,11 +232,11 @@ $divisas = $currency->getAllCurrencies();
                                     </div>
                                     <div style="margin-left:10px">
                                     @if(!empty($all_inf['lotes'][0]))
-                                        {{ trans(\Config::get('app.theme').'-app.user_panel.fecha_fact') }}
+                                        {{ trans($theme.'-app.user_panel.fecha_fact') }}
 
                                         <?=!empty($all_inf['lotes'][0]->fecfra_csub)?date("d/m/Y", strtotime($all_inf['lotes'][0]->fecfra_csub)):'-' ?>
                                         <br>
-                                        {{ trans(\Config::get('app.theme').'-app.user_panel.cod_factura') }}
+                                        {{ trans($theme.'-app.user_panel.cod_factura') }}
                                         <?=!empty($all_inf['lotes'][0]->afral_csub)?$all_inf['lotes'][0]->afral_csub:'-' ?> / <?=!empty($all_inf['lotes'][0]->nfral_csub)?$all_inf['lotes'][0]->nfral_csub:'-' ?>
                                     @endif
                                     </div>

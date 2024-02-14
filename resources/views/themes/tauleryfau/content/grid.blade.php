@@ -34,7 +34,7 @@
 		<div class="row mb-1 mt-1">
 			<div class="col-xs-12 col-md-4 col-lg-3 col-md-offset-5 col-lg-offset-6">
 				<a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">
-					{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}
+					{{ trans($theme.'-app.subastas.bid_online_now') }}
 				</a>
 			</div>
 		</div>
@@ -46,8 +46,8 @@
 
 				<div class="filters-if-show">
 					<button class="btn btn-default switcher">
-						<span class="title-filt">{{ trans(\Config::get('app.theme').'-app.lot_list.show_filters') }}</span>
-						<span class="title-filt">{{ trans(\Config::get('app.theme').'-app.lot_list.hide_filters') }}</span>
+						<span class="title-filt">{{ trans($theme.'-app.lot_list.show_filters') }}</span>
+						<span class="title-filt">{{ trans($theme.'-app.lot_list.hide_filters') }}</span>
 						<span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QzczMTRFODdCMEM2MTFFNzgwNTdDMDU0RjJCRTNGN0QiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QzczMTRFODhCMEM2MTFFNzgwNTdDMDU0RjJCRTNGN0QiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpDNzMxNEU4NUIwQzYxMUU3ODA1N0MwNTRGMkJFM0Y3RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDNzMxNEU4NkIwQzYxMUU3ODA1N0MwNTRGMkJFM0Y3RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PnHXpV0AAACBSURBVHjaYvz//z8DtQETAw3AqKHUByy4JPz8/Ig2ZNOmTQPv/UNA7IZF3AmIT5Nr6EwgXgfE5khi5lCxGSSHKRQsBWJBIN4JxLZADMp+m4G4BYjnkmsoCEwBYmGowX+hhvWQFftooBHqYlYgriQ7SWEBBQOa+BlHi74RbChAgAEAcGMXwkehP00AAAAASUVORK5CYII=" alt=""></span>
 					</button>
 				</div>
@@ -183,24 +183,24 @@
         </div>
         <div class="col-md-8 col-xs-12">
             <div class="modal-name-aution mb-2 title-modal-current-auction">
-                {{ trans(\Config::get('app.theme').'-app.lot_list.la') }} {{ $auction->name }} {{ trans(\Config::get('app.theme').'-app.lot_list.isBegin') }}
+                {{ trans($theme.'-app.lot_list.la') }} {{ $auction->name }} {{ trans($theme.'-app.lot_list.isBegin') }}
             </div>
             <div class="modal-desc-auction mb-2 title-modal-current-auction text-underline">
                     {{ $auction->description }}
 
             </div>
             <div class="modal-desc-auction mb-2 title-modal-current-auction">
-                    {{ trans(\Config::get('app.theme').'-app.lot_list.begin_auction') }}
+                    {{ trans($theme.'-app.lot_list.begin_auction') }}
             </div>
             <div class="modal-button-auction mb-3 d-flex align-items-center justify-content-space-bettween flex-wrap">
                 <div class="btn-current-action gotoauction col-md-6 col-xs-12 ">
                     @php
                     $url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
 					@endphp
-					<a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+					<a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
                 </div>
                 <div class="btn-current-action continue-here col-md-6 col-xs-12">
-                    <a href="javascript:($('#modal-current-auction_{{$auction->cod_sub }}').modal('hide'))" class="bid-large-button-view view">{{ trans(\Config::get('app.theme').'-app.lot_list.continue_here') }}</a>
+                    <a href="javascript:($('#modal-current-auction_{{$auction->cod_sub }}').modal('hide'))" class="bid-large-button-view view">{{ trans($theme.'-app.lot_list.continue_here') }}</a>
                 </div>
             </div>
 

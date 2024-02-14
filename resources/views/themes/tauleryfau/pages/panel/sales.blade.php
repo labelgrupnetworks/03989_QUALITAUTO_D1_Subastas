@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 <style>
@@ -35,7 +35,7 @@
 
 			<div class="col-xs-12">
 				<div class="user-datas-title">
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.my_assignments') }}<span style="float: right">{{Session::get('user.cod')}} -
+					<p>{{ trans($theme.'-app.user_panel.my_assignments') }}<span style="float: right">{{Session::get('user.cod')}} -
 							{{ \Session::get('user.name') }}</span></p>
 
 				</div>
@@ -77,13 +77,13 @@
 
 				<ul class="nav nav-tabs nav-justified">
 					<li>
-						<a data-toggle="tab" href="#finalizados">{{ trans(\Config::get('app.theme').'-app.user_panel.finished_lots') }}</a>
+						<a data-toggle="tab" href="#finalizados">{{ trans($theme.'-app.user_panel.finished_lots') }}</a>
 					</li>
 					<li class="active">
-						<a data-toggle="tab" href="#activos">{{ trans(\Config::get('app.theme').'-app.user_panel.active_lots') }}</a>
+						<a data-toggle="tab" href="#activos">{{ trans($theme.'-app.user_panel.active_lots') }}</a>
 					</li>
 					<li>
-						<a {{--data-toggle="tab"--}} href="{{ \Routing::translateSeo('valoracion-articulos') }}">{{ trans(\Config::get('app.theme').'-app.user_panel.consign') }}</a>
+						<a {{--data-toggle="tab"--}} href="{{ \Routing::translateSeo('valoracion-articulos') }}">{{ trans($theme.'-app.user_panel.consign') }}</a>
 					</li>
 				</ul>
 

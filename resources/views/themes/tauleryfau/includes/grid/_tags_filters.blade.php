@@ -30,19 +30,19 @@
 @endif
 @if (!empty(request('liveLots')))
 	<span data-del_filter="#liveLots" class="del_filter_js  badge "
-		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans(\Config::get('app.theme') . '-app.lot_list.live_lots_filter') }}
+		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans($theme . '-app.lot_list.live_lots_filter') }}
 	</span>
 	<?php $show_hr = true; ?>
 @endif
 @if (!empty(request('noAward')))
 	<span data-del_filter="#no-award" class="del_filter_js  badge "
 		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;
-		{{ trans(\Config::get('app.theme') . '-app.lot_list.no_award_filter') }} </span>
+		{{ trans($theme . '-app.lot_list.no_award_filter') }} </span>
 	<?php $show_hr = true; ?>
 @endif
 @if (!empty(request('award')))
 	<span data-del_filter="#award" class="del_filter_js  badge "
-		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans(\Config::get('app.theme') . '-app.lot_list.award_filter') }}
+		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans($theme . '-app.lot_list.award_filter') }}
 	</span>
 	<?php $show_hr = true; ?>
 @endif
@@ -85,14 +85,14 @@
 
 @if (!empty(request('myLotsProperty')))
 	<span data-del_filter="#myLotsProperty" class="del_filter_js  badge "
-		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans(\Config::get('app.theme') . '-app.lot_list.my_lots_property') }}
+		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans($theme . '-app.lot_list.my_lots_property') }}
 	</span>
 	<?php $show_hr = true; ?>
 @endif
 
 @if (!empty(request('myLotsClient')))
 	<span data-del_filter="#myLotsClient" class="del_filter_js  badge "
-		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans(\Config::get('app.theme') . '-app.lot_list.my_lots_clients') }}
+		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ trans($theme . '-app.lot_list.my_lots_clients') }}
 	</span>
 	<?php $show_hr = true; ?>
 @endif

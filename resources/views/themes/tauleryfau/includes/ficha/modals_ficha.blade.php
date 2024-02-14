@@ -4,17 +4,17 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class=" text-center single_item_content">
-						<p class="class_h1"><?=trans(\Config::get('app.theme').'-app.lot.confirm_bid')?></p><br />
-						<span for="bid" class='desc_auc'>{{trans(\Config::get('app.theme').'-app.lot.bidding_for')}}
+						<p class="class_h1"><?=trans($theme.'-app.lot.confirm_bid')?></p><br />
+						<span for="bid" class='desc_auc'>{{trans($theme.'-app.lot.bidding_for')}}
 						</span> <strong><span class="precio_orden"></span> €</strong><br />
 						</br>
 						<button id="confirm_orden"
-							class="btn btn-color button_modal_confirm btn-custom"><?=trans(\Config::get('app.theme').'-app.lot.confirm')?>
+							class="btn btn-color button_modal_confirm btn-custom"><?=trans($theme.'-app.lot.confirm')?>
 						</button>
 
 						<div class='mb-10'></div>
 						<ul class="items_list">
-							<li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
+							<li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
 						</ul>
 					</div>
 				</div>
@@ -30,17 +30,17 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class=" text-center single_item_content_">
-						<p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br />
+						<p class="class_h1">{{ trans($theme.'-app.lot.confirm_bid') }}</p><br />
 						<span for="bid"
-							class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span>
+							class='desc_auc'>{{ trans($theme.'-app.lot.you_are_bidding') }} </span>
 						<strong><span class="precio_orden"></span> €</strong><br />
 						</br>
 						<button
-							class="confirm_puja btn btn-color button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
+							class="confirm_puja btn btn-color button_modal_confirm btn-custom">{{ trans($theme.'-app.lot.confirm') }}</button>
 						<div class='mb-10'></div>
 						<div class='mb-10'></div>
 						<ul class="items_list">
-							<li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
+							<li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
 
 						</ul>
 					</div>
@@ -64,9 +64,9 @@
 		<div class="panel-body">
 			<div class="modal-wrapper">
 				<div class="modal-text text-center">
-					<p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.lot.loading') }}</p>
+					<p class="txt_loading"> {{ trans($theme.'-app.lot.loading') }}</p>
 					<p class="txt_esperando_sala hidden">
-						{{ trans(\Config::get('app.theme').'-app.sheet_tr.esperando_sala') }} </p>
+						{{ trans($theme.'-app.sheet_tr.esperando_sala') }} </p>
 					<div class="loader"></div>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 		<div class="panel-body">
 			<div class="modal-wrapper">
 				<div class="modal-text text-center">
-					<p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.lot.connect_to_serv') }}</p>
+					<p class="txt_loading"> {{ trans($theme.'-app.lot.connect_to_serv') }}</p>
 					<div class="loader"></div>
 				</div>
 			</div>
@@ -90,11 +90,11 @@
 		<div class="panel-body">
 			<div class="modal-wrapper">
 				<div class="modal-text text-center">
-					<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy_lot_question') }}</p>
+					<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
 					<button
-						class="btn btn-color modal-confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+						class="btn btn-color modal-confirm btn-custom">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
 					<button
-						class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 				</div>
 			</div>
 		</div>
@@ -105,16 +105,16 @@
 <?php  //estructura necesaria para crear lso elementos del listado de pujas  ?>
 <div id="duplicalte_list_pujas" class="hist_item hidden">
 	<span>
-		<span class="yo">{{ trans(\Config::get('app.theme').'-app.lot.my_bid') }}</span>
-		<span class="otro">{{ trans(\Config::get('app.theme').'-app.lot.bidder') }}</span>
+		<span class="yo">{{ trans($theme.'-app.lot.my_bid') }}</span>
+		<span class="otro">{{ trans($theme.'-app.lot.bidder') }}</span>
 		(
-			<!-- <span class="yo">{{ trans(\Config::get('app.theme').'-app.lot.I') }}</span> -->
+			<!-- <span class="yo">{{ trans($theme.'-app.lot.I') }}</span> -->
 			<span class="uno"></span>
-			<span class="dos" data-hint="<?= nl2br(trans(\Config::get('app.theme').'-app.lot.puja_automatica')) ?>">A</span>
+			<span class="dos" data-hint="<?= nl2br(trans($theme.'-app.lot.puja_automatica')) ?>">A</span>
 		)
 	</span>
 	<span class="date"></span>
-	<span class="tres_item"><em class="price "> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</em></span>
+	<span class="tres_item"><em class="price "> {{ trans($theme.'-app.lot.eur') }}</em></span>
 </div>
 
 <div id="view_more" class="more hidden col-xs-12 text-right">
@@ -149,7 +149,7 @@
 			<div class="modal-body">
 				<div class="modal-img">
 
-					<img class="" src="/themes/{{\Config::get('app.theme')}}/assets/img/tabla-conversion_new.png"
+					<img class="" src="/themes/{{$theme}}/assets/img/tabla-conversion_new.png"
 						alt="{{(\Config::get( 'app.name' ))}}">
 				</div>
 			</div>
@@ -179,7 +179,7 @@
 					<br>
 
 					<div class="single-lot-desc-title desc">
-						<h4>{{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}</h4>
+						<h4>{{trans($theme.'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}</h4>
 					</div>
 					<div class="single-lot-desc-content" id="box2"
 						style="background:#FFF;z-index:99999992;width:100%;position:relative;">
@@ -228,14 +228,14 @@
 									class="price  <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>">
 									@if(!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1)
 									<span
-										class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.price_salida') }}</span>
+										class="pre">{{ trans($theme.'-app.subastas.price_salida') }}</span>
 									@elseif((empty( $lote_actual->oferta_asigl0)) || (!empty(
 									$lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 2))
 									<span
-										class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.precio_estimado') }}</span>
+										class="pre">{{ trans($theme.'-app.subastas.precio_estimado') }}</span>
 									@endif
 									<span class="pre">{{$lote_actual->formatted_imptas_asigl0}}
-										{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+										{{ trans($theme.'-app.subastas.euros') }}</span>
 								</div>
 								<div class="divider-prices"></div>
 								@endif
@@ -244,21 +244,21 @@
 									@if($lote_actual->tipo_sub == 'V' &&!empty($lote_actual->oferta_asigl0) &&
 									($lote_actual->oferta_asigl0 == 1 || $lote_actual->oferta_asigl0 == 2))
 									<span
-										class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.nuestro_precio') }}</span>
+										class="pre">{{ trans($theme.'-app.subastas.nuestro_precio') }}</span>
 									@elseif($lote_actual->tipo_sub == 'V' )
 									<span
-										class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+										class="pre">{{ trans($theme.'-app.subastas.price_sale') }}</span>
 									@else
-									<span class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+									<span class="pre">{{ trans($theme.'-app.lot.lot-price') }}</span>
 									@endif
 									<span id="impsalexchange2" class="currency-trnas"
 										style="float:right; margin-top:4px;">
-										{{ trans(\Config::get('app.theme').'-app.subastas.dolares') }}
+										{{ trans($theme.'-app.subastas.dolares') }}
 										{{ $lote_actual->formatted_impsalhces_asigl0}}
 									</span>
 									<span class="pre" style="float:right;">
 										{{$lote_actual->formatted_impsalhces_asigl0}}
-										{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} |
+										{{ trans($theme.'-app.subastas.euros') }} |
 									</span>
 
 								</div>
@@ -268,7 +268,7 @@
 								@elseif($lote_actual->cerrado_asigl0 == 'S' && ((!empty($precio_venta) &&
 								$lote_actual->remate_asigl0 !='S') || $lote_actual->desadju_asigl0 =='S' ))
 								<div class="price price-awarded" style="text-align: center;">
-									<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
+									<p class="pre">{{ trans($theme.'-app.subastas.buy') }}</p>
 								</div>
 								@elseif($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' &&
 								(!empty($precio_venta))|| ($lote_actual->subc_sub == 'H' &&
@@ -277,7 +277,7 @@
 								@php($precio_venta = $lote_actual->impadj_asigl0)
 								@endif
 								<div class="price price-awarded">
-									<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}:
+									<p class="pre">{{ trans($theme.'-app.subastas.buy') }}:
 										{{\Tools::moneyFormat($precio_venta)}} €</p>
 								</div>
 								<div class="price-awarded-salechange">
@@ -287,19 +287,19 @@
 								&& $lote_actual->end_session > date("now"))
 
 								<div class="price" style="text-align: center;">
-									<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+									<p class="pre">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
 								</div>
 								@elseif($lote_actual->cerrado_asigl0 == 'S' && empty($precio_venta) )
 
 								<div class="price text-center">
-									<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+									<p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}
 									</p>
 
 								</div>
 								@elseif($lote_actual->cerrado_asigl0 == 'D')
 
 								<div class="price text-center">
-									<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+									<p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}
 									</p>
 
 								</div>
@@ -348,16 +348,16 @@
 									@if(!empty($lote_actual->oferta_asigl0) && ($lote_actual->oferta_asigl0 == 1 ||
 									$lote_actual->oferta_asigl0 == 2))
 									<span
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.price_salida_venta') }}</span>
+										class="pre title">{{ trans($theme.'-app.subastas.price_salida_venta') }}</span>
 									@else
 									<span
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.precio_estimado') }}
+										class="pre title">{{ trans($theme.'-app.subastas.precio_estimado') }}
 									</span>
 									@endif
 									<div class="text-right">
 										<span
 											class="pre <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>">{{ $lote_actual->formatted_imptas_asigl0 }}
-											{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+											{{ trans($theme.'-app.subastas.euros') }}</span>
 										<div class="vertical-bar">|</div>
 										<span id="impsalexchange-tas2"
 											class="currency-trnas <?=!empty( $lote_actual->oferta_asigl0) && $lote_actual->oferta_asigl0 == 1?'tachado':'';?>"></span>
@@ -375,14 +375,14 @@
 									@if(!empty($lote_actual->oferta_asigl0) && ($lote_actual->oferta_asigl0 == 1 ||
 									$lote_actual->oferta_asigl0 == 2))
 									<span
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.nuestro_precio') }}</span>
+										class="pre title">{{ trans($theme.'-app.subastas.nuestro_precio') }}</span>
 									@else
 									<span
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+										class="pre title">{{ trans($theme.'-app.subastas.price_sale') }}</span>
 									@endif
 									<div class="text-right">
 										<span class="">{{$lote_actual->formatted_actual_bid}}
-											{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span>
+											{{ trans($theme.'-app.subastas.euros') }} </span>
 										<div class="vertical-bar">|</div>
 										<span id="impsalexchange-actual2" class="currency-trnas"></span>
 
@@ -397,7 +397,7 @@
 									ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
 									codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}"><i
 										class="fa fa-shopping-cart" aria-hidden="true"></i>
-									{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+									{{ trans($theme.'-app.subastas.buy_lot') }}</button>
 							</div>
 							@endif
 
@@ -429,10 +429,10 @@
 
 								<div class="price">
 									<span
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+										class="pre title">{{ trans($theme.'-app.lot.lot-price') }}</span>
 									<div class="text-center">
 										<span>{{$lote_actual->formatted_impsalhces_asigl0}}
-											{{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </span>
+											{{ trans($theme.'-app.subastas.euros') }} </span>
 										<div class="vertical-bar">|</div>
 										<span id="impsalexchange2" class="currency-trnas"></span>
 									</div>
@@ -452,7 +452,7 @@
 										?>
 									@if (count($lote_actual->pujas) > 0 && Session::has('user') && $you_bid == true)
 									<span id="text_actual_max_bid"
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
+										class="pre title">{{ trans($theme.'-app.lot.puja_actual') }}</span>
 									<div>
 										<span id="actual_max_bid"
 											class="<?=  ($lote_actual->max_puja->cod_licit == $data['js_item']['user']['cod_licit'])? 'mine':'other' ?>">{{ $lote_actual->formatted_actual_bid }}
@@ -464,9 +464,9 @@
 									@elseif(count($lote_actual->pujas) == 0)
 
 									<span id="text_actual_no_bid">
-										{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </span>
+										{{ trans($theme.'-app.lot_list.no_bids') }} </span>
 									<span id="text_actual_max_bid"
-										class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
+										class="hidden">{{ trans($theme.'-app.lot.puja_actual') }}</span>
 									<div>
 										<span id="actual_max_bid" class="hidden"></span>
 										<div class="vertical-bar hidden">|</div>
@@ -474,7 +474,7 @@
 									</div>
 									@elseif($lote_actual->pujas > 0 && $you_bid == false)
 									<span id="text_actual_max_bid"
-										class="pre title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
+										class="pre title">{{ trans($theme.'-app.lot.puja_actual') }}</span>
 									<div>
 										<span id="actual_max_bid" class="gold">{{ $lote_actual->formatted_actual_bid }}
 											€</span>
@@ -502,7 +502,7 @@
 										<a target="_blank"
 											href='{{  Routing::translateSeo('api/subasta').$data['subasta_info']->lote_actual->cod_sub."-".str_slug($data['subasta_info']->lote_actual->name)."-".$data['subasta_info']->lote_actual->id_auc_sessions }}'>
 											<span
-												class="btn btn-custom live-btn"><?=trans(\Config::get('app.theme').'-app.lot.bid_live')?></span>
+												class="btn btn-custom live-btn"><?=trans($theme.'-app.lot.bid_live')?></span>
 										</a>
 									</div>
 								</div>
@@ -519,29 +519,29 @@
 										@if(strtotime("now") < strtotime($lote_actual->start_session))
 											<input id="bid_amount" class="form-control" type="hidden"
 												value="{{ $data['precio_salida'] }}" type="text"
-												placeholder="{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}">
+												placeholder="{{ trans($theme.'-app.lot.insert_max_puja') }}">
 											<div class="currency-input">
 												<span class="currency-simbol"></span>
 												<div class="col-xs-7 no-padding">
 													<input maxlength="6"
 														class="form-control control-number input-currency" type="text"
 														type="text"
-														placeholder="{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}"
+														placeholder="{{ trans($theme.'-app.lot.insert_max_puja') }}"
 														onchange="javascript:$('#bid_amount_libre').val($(this).val())">
 												</div>
 												<div class="col-xs-5 no-padding">
 													<button type="button" data-from="modal"
 														class="btn-color lot-action_pujar_on_line <?= Session::has('user')?'add_favs':''; ?>"
-														style="width:100%">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+														style="width:100%">{{ trans($theme.'-app.lot.pujar') }}</button>
 												</div>
 											</div>
 
 											<div class="escalados-container d-flex justify-content-space-between">
 												@foreach ($lote_actual->siguientes_escalados as $escalado)
 												<button type="button" data-escalado-position="{{$loop->index}}" data-from="modal" value="{{$escalado}}" class="btn-color lot-action_pujar_on_line js-lot-action_pujar_escalado <?= Session::has('user')?'add_favs':''; ?>">
-														{{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}
+														{{ trans($theme.'-app.sheet_tr.place_bid') }}
 														<span value="{{$escalado}}" id="button-escalado">{{ \Tools::moneyFormat($escalado) }}</span>
-														{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+														{{trans($theme.'-app.subastas.euros')}}
 												</button>
 												@endforeach
 											</div>
@@ -578,10 +578,10 @@
 						<div class="info_single">
 							<div class="exit-price prices">
 								<div class="price">
-									<span class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+									<span class="pre">{{ trans($theme.'-app.lot.lot-price') }}</span>
 									<span class="pre">
 										{{$lote_actual->formatted_impsalhces_asigl0}}
-										{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+										{{ trans($theme.'-app.subastas.euros') }}
 									</span>
 								</div>
 								<div class="divider-prices"></div>
@@ -590,15 +590,15 @@
 									$lote_actual->cerrado_asigl0 == 'N' )
 									<div class="price">
 										<span id="text_actual_max_bid"
-											class="pre <?=  $lote_actual->open_price >0? '':'hidden' ?>">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
+											class="pre <?=  $lote_actual->open_price >0? '':'hidden' ?>">{{ trans($theme.'-app.lot.puja_actual') }}</span>
 										<span id="actual_max_bid"
 											class="pre <?= (count($data['ordenes']) > 0 && head($data['ordenes'])->cod_licit == $data['js_item']['user']['cod_licit'])? 'winner':'no_winner' ?>">{{\Tools::moneyFormat($lote_actual->open_price) }}
-											{{trans(\Config::get('app.theme').'-app.subastas.euros')}}</span>
+											{{trans($theme.'-app.subastas.euros')}}</span>
 									</div>
 									<div class="info_single_title">
 										<div id="text_actual_no_bid"
 											class=" <?=  $lote_actual->open_price >0? 'hidden':'' ?>">
-											{{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </div>
+											{{ trans($theme.'-app.lot_list.no_bids') }} </div>
 									</div>
 
 									@endif
@@ -618,7 +618,7 @@
 								strtotime("now") > strtotime($lote_actual->orders_start) && strtotime("now") <
 									strtotime($lote_actual->orders_end))
 									<small
-										style="display: block;margin-bottom:5px;"><strong><?=trans(\Config::get('app.theme').'-app.lot.insert_max_puja_start')?></strong></small>
+										style="display: block;margin-bottom:5px;"><strong><?=trans($theme.'-app.lot.insert_max_puja_start')?></strong></small>
 									<div class="input-group direct-puja row" style="display:block;">
 										<div class="col-xs-7" style="padding-right:0;">
 											<input placeholder="{{ $data['precio_salida'] }}"
@@ -628,7 +628,7 @@
 										</div>
 										<div class="col-xs-5 no-padding">
 											<button type="button" class="btn-color" style="width:100%;"
-												onclick="javascript:$('#pujar_ordenes_w').trigger('click');">{{strtolower( trans(\Config::get('app.theme').'-app.lot.place_bid')) }}</button>
+												onclick="javascript:$('#pujar_ordenes_w').trigger('click');">{{strtolower( trans($theme.'-app.lot.place_bid')) }}</button>
 										</div>
 									</div>
 									@endif
@@ -640,7 +640,7 @@
 											<a
 												href='{{  Routing::translateSeo('api/subasta').$data['subasta_info']->lote_actual->cod_sub."-".str_slug($data['subasta_info']->lote_actual->name)."-".$data['subasta_info']->lote_actual->id_auc_sessions }}'>
 												<span
-													class="btn btn-custom live-btn"><?=trans(\Config::get('app.theme').'-app.lot.bid_live')?></span>
+													class="btn btn-custom live-btn"><?=trans($theme.'-app.lot.bid_live')?></span>
 											</a>
 										</div>
 										@endif
@@ -677,17 +677,17 @@
 						<div class="exit-price prices">
 							<div class="price starting-price" >
 							@if($lote_actual->tipo_sub == 'V' &&!empty($lote_actual->oferta_asigl0) && ($lote_actual->oferta_asigl0 == 1 || $lote_actual->oferta_asigl0 == 2))
-								<span class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.nuestro_precio') }}</span>
+								<span class="pre">{{ trans($theme.'-app.subastas.nuestro_precio') }}</span>
 							@elseif($lote_actual->tipo_sub == 'V' )
-								<span class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</span>
+								<span class="pre">{{ trans($theme.'-app.subastas.price_sale') }}</span>
 							@else
-								<span class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</span>
+								<span class="pre">{{ trans($theme.'-app.lot.lot-price') }}</span>
 							@endif
 							<span id="impsalexchange" class="currency-trnas" style="float:right; margin-top:4px; margin-left: 5px;" >
-								{{ trans(\Config::get('app.theme').'-app.subastas.dolares') }} {{ $lote_actual->formatted_impsalhces_asigl0}}
+								{{ trans($theme.'-app.subastas.dolares') }} {{ $lote_actual->formatted_impsalhces_asigl0}}
 							</span>
 							<span class="pre" style="float:right;">
-								{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}  |
+								{{$lote_actual->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}  |
 							</span>
 
 							</div>
@@ -700,7 +700,7 @@
 						@elseif($lote_actual->cerrado_asigl0 == 'S' && ((!empty($precio_venta) &&
 						$lote_actual->remate_asigl0 !='S') || $lote_actual->desadju_asigl0 =='S' ))
 						<div class="price price-awarded" style="text-align: center;">
-							<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
+							<p class="pre">{{ trans($theme.'-app.subastas.buy') }}</p>
 						</div>
 						@elseif($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' &&
 						(!empty($precio_venta))|| ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))
@@ -709,7 +709,7 @@
 						@php($precio_venta = $lote_actual->impadj_asigl0)
 						@endif
 						<div class="price prices price-awarded">
-							<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}:
+							<p class="pre">{{ trans($theme.'-app.subastas.buy') }}:
 								{{\Tools::moneyFormat($precio_venta)}} €</p>
 						</div>
 						<div class="price-awarded-salechange prices">
@@ -720,18 +720,18 @@
 						$lote_actual->end_session > date("now"))
 
 						<div class="price" style="text-align: center;">
-							<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+							<p class="pre">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
 						</div>
 						@elseif($lote_actual->cerrado_asigl0 == 'S' && empty($precio_venta) )
 
 						<div class="price text-center">
-							<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+							<p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}</p>
 
 						</div>
 						@elseif($lote_actual->cerrado_asigl0 == 'D')
 
 						<div class="price text-center">
-							<p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+							<p class="pre">{{ trans($theme.'-app.subastas.dont_available') }}</p>
 
 						</div>
 						@endif
@@ -751,15 +751,15 @@
 						<div class="col-xs-7">
 
 							{{-- <span id="reproducciones"></span>
-							{{trans(\Config::get('app.theme').'-app.lot.reproducciones')}} --}}
+							{{trans($theme.'-app.lot.reproducciones')}} --}}
 
 						</div>
 						<div class="col-xs-5 text-right" style="font-style: normal">
 							@if ($lote_actual->tipo_sub != 'V')
-							<img src="/themes/{{\Config::get('app.theme')}}/assets/img/auction.png" width="16px"
+							<img src="/themes/{{$theme}}/assets/img/auction.png" width="16px"
 								height="16px" style="margin-right: 2px;" /><span
 								class="tot_pujas">{{ $lote_actual->total_pujas }}</span>
-							<img src="/themes/{{\Config::get('app.theme')}}/assets/img/man-user.png" width="16px"
+							<img src="/themes/{{$theme}}/assets/img/man-user.png" width="16px"
 								height="16px" style="margin-left: 10px; margin-right: 2px;" /><span
 								class="total_postores">{{ $lote_actual->total_postores }}</span>
 							@endif
@@ -778,7 +778,7 @@
 									<span id="corazon"></span>
 
 									<span id="megusta"></span>
-									{{trans(\Config::get('app.theme').'-app.lot.megusta')}}
+									{{trans($theme.'-app.lot.megusta')}}
 								</a>
 						</div>
 					</div> --}}

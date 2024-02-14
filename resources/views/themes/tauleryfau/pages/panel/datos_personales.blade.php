@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@ $countries = array();
 $prefix = array();
 
 $divisas = $data['divisa']->mapWithKeys(function ($item) {
-	return [$item->cod_div => $item->cod_div . " (" . trans(\Config::get('app.theme').'-app.user_panel.' . $item->cod_div) . ")" ];
+	return [$item->cod_div => $item->cod_div . " (" . trans($theme.'-app.user_panel.' . $item->cod_div) . ")" ];
 });
 
 $countries_aux = \App\Models\V5\FsPaises::JoinLangPaises()->addSelect('preftel_paises')->orderby("des_paises")->get();
@@ -46,9 +46,9 @@ $families = [
 			<div class="col-xs-12">
 
 				<div class="user-datas-title">
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.datos_contacto') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.datos_contacto') }}</p>
 					{{-- <p class="error-form-validation" style="font-size: 12px; font-weight: 400;">
-						{{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}
+						{{ trans($theme.'-app.login_register.all_fields_are_required') }}
 					</p>
 					--}}
 					<div class="col_reg_form"></div>
@@ -73,12 +73,12 @@ $families = [
 						@if($data['user']->fisjur_cli == 'J' )
 
 						<div class="col-xs-12 col-md-3 mb-2">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
+							<label>{{ trans($theme.'-app.login_register.company') }}</label>
 							{!! \FormLib::Text('rsoc_cli', 1, $data['user']->rsoc_cli) !!}
 						</div>
 
 						<div class="col-xs-12 col-md-3 mb-2">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+							<label>{{ trans($theme.'-app.login_register.contact') }}</label>
 							{!! \FormLib::Text('usuario', 1, $data['user']->nom_cli) !!}
 						</div>
 
@@ -92,7 +92,7 @@ $families = [
 						@endif
 
 						<div class="col-xs-12 col-md-6 mb-2">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+							<label>{{ trans($theme.'-app.login_register.pais') }}</label>
 
 							{!! \FormLib::SelectWithCountries('pais', $data['user']->codpais_cli, $countries) !!}
 						</div>
@@ -111,13 +111,13 @@ $families = [
 
 							<div class="row">
 								<div class="col-xs-3">
-									<label>{{ trans(\Config::get('app.theme').'-app.login_register.prefix') }}</label>
+									<label>{{ trans($theme.'-app.login_register.prefix') }}</label>
 									{!! \FormLib::Text("preftel_cli", 1, $data['user']->preftel_cli ?? '', 'maxlength="4"') !!}
 								</div>
 								<div class="col-xs-9">
 
 									<label
-										for="telefono">{{ trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+										for="telefono">{{ trans($theme.'-app.user_panel.phone') }}</label>
 									{!! \FormLib::Text("telefono",1,$data['user']->tel1_cli,0) !!}
 								</div>
 							</div>
@@ -125,7 +125,7 @@ $families = [
 						</div>
 
 						<div class="col-xs-12 col-md-5 mb-2">
-							<label>{{ trans(\Config::get('app.theme').'-app.user_panel.email') }}</label>
+							<label>{{ trans($theme.'-app.user_panel.email') }}</label>
 							{!! \FormLib::TextReadOnly('email', 1, $data['user']->usrw_cliweb) !!}
 						</div>
 
@@ -141,12 +141,12 @@ $families = [
 						</div>
 
 						<div class="col-xs-12 col-md-4 mb-2 @if(count(Config::get('app.locales')) == 1) hidden @endif">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
+							<label>{{ trans($theme.'-app.login_register.language') }}</label>
 							{!! \FormLib::SelectWithCountries('language', $data['user']->idioma_cli, $data['language']) !!}
 						</div>
 
 						<div class="col-xs-12 col-md-4 mb-2">
-							<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+							<label>{{ trans($theme.'-app.login_register.currency') }}</label>
 							{!! FormLib::Select("divisa", 1, $data['user']->cod_div_cli, $divisas, 0, '', false) !!}
 						</div>
 
@@ -165,7 +165,7 @@ $families = [
 
 						<div class="col-xs-12 text-center">
 							<button type="submit"
-								class="btn btn-color btn-update">{{ trans(\Config::get('app.theme').'-app.user_panel.save') }}</button>
+								class="btn btn-color btn-update">{{ trans($theme.'-app.user_panel.save') }}</button>
 						</div>
 
 					</div>
@@ -181,7 +181,7 @@ $families = [
 				<div class="row">
 					<div class="col-xs-12 mb-1">
 						<div class="user-datas-title">
-							<p>{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</p>
+							<p>{{ trans($theme.'-app.login_register.cuenta') }}</p>
 						</div>
 					</div>
 				</div>
@@ -196,14 +196,14 @@ $families = [
 
 						<div class="col-xs-12 col-md-4 mb-2">
 							<label
-								for="contrasena">{{ trans(\Config::get('app.theme').'-app.user_panel.pass') }}</label>
+								for="contrasena">{{ trans($theme.'-app.user_panel.pass') }}</label>
 							<input maxlength="20" name="last_password" type="password" class="form-control"
 								placeholder="Contraseña" data-minlength="4" required maxlength="8">
 						</div>
 
 						<div class="col-xs-12 col-md-4 mb-2">
 							<label
-								for="contrasena">{{ trans(\Config::get('app.theme').'-app.user_panel.new_pass') }}</label>
+								for="contrasena">{{ trans($theme.'-app.user_panel.new_pass') }}</label>
 							<input maxlength="20" type="password" id="password" name="password" type="password"
 								class="form-control" id="contrasena" placeholder="Contraseña" data-minlength="5"
 								required maxlength="8">
@@ -211,7 +211,7 @@ $families = [
 
 						<div class="col-xs-12 col-md-4 mb-2">
 							<label
-								for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.user_panel.new_pass_repeat') }}</label>
+								for="confirmcontrasena">{{ trans($theme.'-app.user_panel.new_pass_repeat') }}</label>
 							<input maxlength="20" type="password" name="confirm_password" class="form-control"
 								data-match="#password" id="confirmcontrasena" placeholder="Confirma contraseña"
 								required>
@@ -219,7 +219,7 @@ $families = [
 
 						<div class="col-xs-12 text-center">
 							<button class="btn btn-color btn-update"
-								type="submit">{{ trans(\Config::get('app.theme').'-app.user_panel.save') }}</button>
+								type="submit">{{ trans($theme.'-app.user_panel.save') }}</button>
 						</div>
 
 					</form>

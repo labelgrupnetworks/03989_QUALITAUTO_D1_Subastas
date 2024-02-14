@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -16,7 +16,7 @@
             <div class="col-xs-12">
                 <div class="princiapl-bar-wrapper">
                     <div class="principal-bar-title">
-                        <h3>{{ trans(\Config::get('app.theme').'-app.services.encapsulacion') }}</h3>
+                        <h3>{{ trans($theme.'-app.services.encapsulacion') }}</h3>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-sm-6 col-xs-12 ">
                 <div class="valoracion-imagen">
-                    <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/servicios/certificados.png">
+                    <img class="img-responsive" src="/themes/{{$theme}}/img/servicios/certificados.png">
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <div>{{ trans(\Config::get('app.theme').'-app.services.rellene_formulario_calcule_presupuesto') }}</div>
+                    <div>{{ trans($theme.'-app.services.rellene_formulario_calcule_presupuesto') }}</div>
                 </div>
             </div>
         </div>
@@ -61,39 +61,39 @@
                     <form id="encap-service">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group col-sm-4 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_name') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_name') }}</label>
                             <input type="text" name="nombre"  required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-8 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_address') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_address') }}</label>
                             <input type="text" name="lugar" required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-2 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_cp') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_cp') }}</label>
                             <input type="text" name="cp" required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-4 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_city') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_city') }}</label>
                             <input type="text" name="ciudad"  required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-4 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_pro') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_pro') }}</label>
                             <input type="text" name="provincia" required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-2 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_country') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_country') }}</label>
                             <input type="text" name="pais" required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-3 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_phone') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_phone') }}</label>
                             <input type="text" name="telf"  required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-6 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_email') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_email') }}</label>
                             <input type="text" name="email"  required class="form-control custom-input-encapsulacion">
                         </div>
                         <div class="form-group col-sm-3 col-xs-12 mb-1 ">
-                            <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_service') }}</label>
+                            <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_service') }}</label>
                             <select name="servicio" class="d-block w-100">
                                 <option value="NGC">NGC</option>
                                 <option value="PMG">PMG</option>
@@ -120,11 +120,11 @@
 
                             <div class="line-programed line-custom line-custom position-relative col-xs-12 p-0">
                                 <div class="form-group col-xs-7 col-sm-8 col-md-9 mb-1 pr-1 position-relative">
-                                    <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_description') }}</label>
+                                    <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_description') }}</label>
                                     <input type="text" name="descripcion[]"  required class="form-control custom-input-encapsulacion">
                                 </div>
                                 <div class="form-group col-xs-3 mb-1 pl-0">
-                                    <label class="form-custom-encapsulacion-label">{{ trans(\Config::get('app.theme').'-app.services.label_precio') }}</label>
+                                    <label class="form-custom-encapsulacion-label">{{ trans($theme.'-app.services.label_precio') }}</label>
                                     <input type="text" name="valor[]" required class="form-control custom-input-encapsulacion">
                                 </div>
                                 <div id="add-new-encap" class="add-encapsulacion d-flex align-items-center justify-content-center"><i class="fas fa-plus"></i></div>
@@ -132,13 +132,13 @@
                         </div>
                         <div class="form-encapsulacion-buttons col-xs-12 mb-2 mt-2 ">
 							<div class="row">
-                            <div class="button-tarifas col-xs-12 col-sm-3 pr-1"> <button data-toggle="modal" data-target="#myModal" type="button" class="w-100">{{ trans(\Config::get('app.theme').'-app.services.tarifas') }}</button></div>
-							<div class="button-calcular col-xs-12 col-sm-9 pl-0"><button type="submit" class=" w-100">{{ trans(\Config::get('app.theme').'-app.services.calcular_presupuesto') }}</button></div>
+                            <div class="button-tarifas col-xs-12 col-sm-3 pr-1"> <button data-toggle="modal" data-target="#myModal" type="button" class="w-100">{{ trans($theme.'-app.services.tarifas') }}</button></div>
+							<div class="button-calcular col-xs-12 col-sm-9 pl-0"><button type="submit" class=" w-100">{{ trans($theme.'-app.services.calcular_presupuesto') }}</button></div>
 							</div>
                         </div>
                         <div class="col-xs-12 mb-2">
-                        <div class="label label-success labels-form  d-none ">{{ trans(\Config::get('app.theme').'-app.services.form_success') }}</div>
-                        <div class="label label-danger labels-form  d-none">{{ trans(\Config::get('app.theme').'-app.services.form_error') }}</div>
+                        <div class="label label-success labels-form  d-none ">{{ trans($theme.'-app.services.form_success') }}</div>
+                        <div class="label label-danger labels-form  d-none">{{ trans($theme.'-app.services.form_error') }}</div>
                         </div>
 
                     </form>
@@ -151,7 +151,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-                <iframe id="myFrame" width="100%" height="700" src="/themes/{{\Config::get('app.theme')}}/img/servicios/rates.pdf">
+                <iframe id="myFrame" width="100%" height="700" src="/themes/{{$theme}}/img/servicios/rates.pdf">
 
                 </iframe>
 

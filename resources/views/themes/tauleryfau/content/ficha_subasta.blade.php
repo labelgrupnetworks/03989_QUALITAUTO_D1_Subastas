@@ -32,7 +32,7 @@ $user = (Session::get('user'));
 							(!empty($data["auction"]->seshorario_sub)) ||
 							(!empty($data["auction"]->seslocal_sub)) || (!empty($data["auction"]->sesmaps_sub)))
 							<h5 style="color: #a37a4c; text-transform: uppercase;">
-								<strong>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_subasta') }}</strong>
+								<strong>{{ trans($theme . '-app.subastas.inf_subasta_subasta') }}</strong>
 							</h5>
 							@endif
 							@if(!empty($data["auction"]->seslocal_sub))
@@ -51,9 +51,9 @@ $user = (Session::get('user'));
 					@if(!empty($data["auction"]->sesmaps_sub))
 					<div class="col-xs-12 col-md-3 google-howGet no-padding">
 						<a class="" target="_blank"
-							title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}"
+							title="{{ trans($theme . '-app.subastas.how_to_get') }}"
 							href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">
-							{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}
+							{{ trans($theme . '-app.subastas.how_to_get') }}
 						</a>
 					</div>
 					@endif
@@ -66,7 +66,7 @@ $user = (Session::get('user'));
 							(!empty($data["auction"]->expolocal_sub)) ||
 							(!empty($data["auction"]->expomaps_sub)))
 							<h5 style="">
-								<strong>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_exposicion') }}</strong>
+								<strong>{{ trans($theme . '-app.subastas.inf_subasta_exposicion') }}</strong>
 							</h5>
 							@endif
 							@if(!empty($data["auction"]->expolocal_sub))
@@ -85,9 +85,9 @@ $user = (Session::get('user'));
 					@if(!empty($data["auction"]->expomaps_sub))
 					<div class="col-xs-12 col-md-3 google-howGet no-padding">
 						<a class="" target="_blank"
-							title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}"
+							title="{{ trans($theme . '-app.subastas.how_to_get') }}"
 							href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>">
-							{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}
+							{{ trans($theme . '-app.subastas.how_to_get') }}
 						</a>
 					</div>
 					@endif
@@ -116,7 +116,7 @@ $user = (Session::get('user'));
 					<a class="" style=""
 						{{-- href="{{Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name)."-".$session->id_auc_sessions }}" --}}
 						href="{{\Tools::url_auction($data['auction']->cod_sub,$data['auction']->name,$session->id_auc_sessions,$session->reference) }}"
-						title="{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
+						title="{{ trans($theme . '-app.subastas.see_lotes') }}">{{ trans($theme . '-app.subastas.see_lotes') }}</a>
 				</div>
 				@endif
 
@@ -127,7 +127,7 @@ $user = (Session::get('user'));
 				@if( $data['auction']->tipo_sub =='W' && $subasta_finalizada == false)
 				<div class="btn-view-lot-new-online" style=" width: 48%">
 					<a style="" href="{{ $url_tiempo_real }}"
-						target="_blank">{{ trans(\Config::get('app.theme').'-app.lot.bid_live') }}</a>
+						target="_blank">{{ trans($theme . '-app.lot.bid_live') }}</a>
 				</div>
 				@endif
 			</div>
@@ -156,11 +156,11 @@ $user = (Session::get('user'));
 					<li class="">
 						@if($data['auction']->tipo_sub != 'V')
 						<a class="d-flex justify-content-center align-items-center" style="height:52px" target="_blank"
-							href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition_sub')?>"><span>{{ trans(\Config::get('app.theme').'-app.foot.term_condition_sub') }}</span></a>
+							href="<?php echo Routing::translateSeo('pagina').trans($theme . '-app.links.term_condition_sub')?>"><span>{{ trans($theme . '-app.foot.term_condition_sub') }}</span></a>
 						<br>
 						<a class="d-flex justify-content-center align-items-center hidden" style="height:52px;cursor:pointer;"
 							href="/files/politica de envíos-2021.pdf"
-							target="_blank">{{ trans(\Config::get('app.theme').'-app.foot.shipping_terms') }}</a>
+							target="_blank">{{ trans($theme . '-app.foot.shipping_terms') }}</a>
 						@endif
 					</li>
 
@@ -168,11 +168,11 @@ $user = (Session::get('user'));
 					<li class="">
 						@if(!Session::has('user'))
 						<a data-toggle="modal" data-target="#modalLogin"
-							role="button"><span>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</span></a>
+							role="button"><span>{{ trans($theme . '-app.subastas.pdf_adj') }}</span></a>
 						@else
 						<a style="height:32px" data-subasta="{{$data['auction']->cod_sub}}" id="catalogue"
 							data-lang="{{Config::get('app.locale')}}"
-							role="button"><span>{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</span><i
+							role="button"><span>{{ trans($theme . '-app.subastas.pdf_adj') }}</span><i
 								class="fas fa-check-circle"></i></a>
 						@endif
 					</li>
@@ -183,18 +183,18 @@ $user = (Session::get('user'));
 					@if( ($session->upcatalogo == 'S'))
 					<li class="col-md-12 col-xs-6"><a target="_blank" class="cat-pdf"
 							href="{{Tools::url_pdf($session->auction,$session->reference,'cat')}}"
-							role="button">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a>
+							role="button">{{ trans($theme . '-app.subastas.pdf_catalog') }}</a>
 					</li>
 					@endif
 					@if( $session->upmanualuso == 'S')
 					<li class="col-md-12 col-xs-6"><a target="_blank"
 							href="{{Tools::url_pdf($session->auction,$session->reference,'man')}}"
-							role="button">{{ trans(\Config::get('app.theme').'-app.subastas.manual') }}</a></li>
+							role="button">{{ trans($theme . '-app.subastas.manual') }}</a></li>
 					@endif
 					@if( $session->uppreciorealizado == 'S')
 					<li class="col-md-12 col-xs-6"><a target="_blank"
 							href="{{Tools::url_pdf($session->auction,$session->reference,'pre')}}" class="price-done"
-							role="button">{{ trans(\Config::get('app.theme').'-app.subastas.price_auction') }}</a>
+							role="button">{{ trans($theme . '-app.subastas.price_auction') }}</a>
 					</li>
 					@endif
 
@@ -219,11 +219,11 @@ $user = (Session::get('user'));
 			{{-- shared --}}
 			<div class="shared hidden-xs">
 				<div class="text-center" style="margin-top: 10px;font-weight: 900;">
-					{{ trans(\Config::get('app.theme').'-app.subastas.shared_auctions') }}</div>
+					{{ trans($theme . '-app.subastas.shared_auctions') }}</div>
 				<ul class="red inline-flex valign">
 					<li class="valign flex">
 						<a title="Compartir por e-mail" target="_blank"
-							href="mailto:?Subject={{ trans(\Config::get('app.theme').'-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
+							href="mailto:?Subject={{ trans($theme . '-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
 							<i class="fa fa-envelope"></i>
 						</a>
 					</li>
@@ -255,7 +255,7 @@ $user = (Session::get('user'));
 		<div class="row">
 			<div class="col-xs-12 col-sm-4">
 				<div class="single_auction">
-					<h1 class="titleSingle">{{trans(\Config::get('app.theme').'-app.lot.auction_not_found')}}</h1>
+					<h1 class="titleSingle">{{trans($theme . '-app.lot.auction_not_found')}}</h1>
 				</div>
 			</div>
 		</div>

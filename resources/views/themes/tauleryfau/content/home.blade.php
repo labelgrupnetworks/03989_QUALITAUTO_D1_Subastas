@@ -28,7 +28,7 @@
                 <div class='slide-carousel' style='background-image:url(\"{img}\")'>
                 <div class='content-slide'>
                         {html}
-                        <a href=\"{url}\" {target} class='btn btn-white-img' {hidden}>".trans(\Config::get('app.theme').'-app.home.see')."<i class='fa fa-chevron-circle-right'></i></a>
+                        <a href=\"{url}\" {target} class='btn btn-white-img' {hidden}>".trans($theme.'-app.home.see')."<i class='fa fa-chevron-circle-right'></i></a>
 
                     </div></div></div>";
             $content = \Tools::slider($key, $html);
@@ -66,7 +66,7 @@
                                         'lang' => Config::get('app.language_complete')[''.Config::get('app.locale').''] , 'emp' => Config::get('app.emp') ,
                                         );
                                     ?>
-                                <li role="presentation" class="active lotes_destacados"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)' >{{ trans(\Config::get('app.theme').'-app.home.finalizando') }}</a></li>
+                                <li role="presentation" class="active lotes_destacados"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)' >{{ trans($theme.'-app.home.finalizando') }}</a></li>
                                     <?php
                                         $key = "last_bids";
                                         $replace = array(
@@ -74,7 +74,7 @@
                                         );
                                     ?>
                                 @if(!empty($has_subasta) && $session_end_sub)
-                                    <li role="presentation" class="last_bids" ><a class="selector" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)' >{{ trans(\Config::get('app.theme').'-app.home.last_bids') }}</a></li>
+                                    <li role="presentation" class="last_bids" ><a class="selector" href="#profile" aria-controls="profile" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)' >{{ trans($theme.'-app.home.last_bids') }}</a></li>
                                 @endif
                                 <?php
                                     $key = "mas_pujado";
@@ -83,7 +83,7 @@
                                     );
                                 ?>
                                 @if(!empty($has_subasta) && $session_end_sub)
-                                    <li role="presentation" onclick=""><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans(\Config::get('app.theme').'-app.home.mas_pujado') }}</a></li>
+                                    <li role="presentation" onclick=""><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans($theme.'-app.home.mas_pujado') }}</a></li>
                                 @endif
                                     <?php
                                         $key = "mas_altas";
@@ -92,7 +92,7 @@
                                         );
                                     ?>
                                 @if(!empty($has_subasta) && $session_end_sub)
-                                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans(\Config::get('app.theme').'-app.home.mas_altas') }}</a></li>
+                                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans($theme.'-app.home.mas_altas') }}</a></li>
                                 @endif
                                  <?php
                                         $key = "lotes_360";
@@ -102,7 +102,7 @@
                                     ?>
                                 @if(!empty($has_subasta) && $session_end_sub)
                                     <li role="presentation">
-                                        <a href="#pic360" aria-controls="pic360" role="tab" data-toggle="tab"onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans(\Config::get('app.theme').'-app.home.pic360') }}</a>
+                                        <a href="#pic360" aria-controls="pic360" role="tab" data-toggle="tab"onclick='ajax_carousel("<?= $key ?>",<?= json_encode($replace) ?>)'>{{ trans($theme.'-app.home.pic360') }}</a>
                                     </li>
                                 @endif
 
@@ -185,30 +185,30 @@
                     <div class="col-xs-12">
                         <div class="col-xs-12 col-lg-6 col-lg-offset-3 text-center">
                             <div class="title-contact">
-                                <div class="h1_seo">{{trans(\Config::get('app.theme').'-app.home.have_questions')}}</div>
+                                <div class="h1_seo">{{trans($theme.'-app.home.have_questions')}}</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
                             <form action="/api-ajax/mail" method="post">
 
                                 <div class="input-group">
-                                    <input type="text" placeholder="<?= trans(\Config::get('app.theme').'-app.login_register.nombre_apellido') ?>" name="name" required>
-                                    <input type="email" placeholder="{{trans(\Config::get('app.theme').'-app.home.have_questions_email')}}" name="email" required>
-                                    <input type="text" placeholder="{{trans(\Config::get('app.theme').'-app.home.have_questions_telf')}}" name="telf" required>
+                                    <input type="text" placeholder="<?= trans($theme.'-app.login_register.nombre_apellido') ?>" name="name" required>
+                                    <input type="email" placeholder="{{trans($theme.'-app.home.have_questions_email')}}" name="email" required>
+                                    <input type="text" placeholder="{{trans($theme.'-app.home.have_questions_telf')}}" name="telf" required>
 
                                 </div>
 
                                 <div class="text-area">
-                                    <textarea placeholder="{{trans(\Config::get('app.theme').'-app.home.have_questions_coment')}}" required name="comentario"></textarea>
+                                    <textarea placeholder="{{trans($theme.'-app.home.have_questions_coment')}}" required name="comentario"></textarea>
                                 </div>
                                 <div class="checkbox" style="text-align: left;">
                                     <label>
-                                        <input name="condiciones" required="" style="opacity: 1" type="checkbox"><?= trans(\Config::get('app.theme').'-app.home.teminos_contacto') ?>
+                                        <input name="condiciones" required="" style="opacity: 1" type="checkbox"><?= trans($theme.'-app.home.teminos_contacto') ?>
                                     </label>
                                 </div>
                                 <div id="html_element" style="position:absolute"></div>
                                 <div class="send-button">
-                                    <button id="buttonSend" class="btn btn-color" disabled>{{trans(\Config::get('app.theme').'-app.home.have_questions_send')}} <i class="fa fa-paper-plane"></i></button>
+                                    <button id="buttonSend" class="btn btn-color" disabled>{{trans($theme.'-app.home.have_questions_send')}} <i class="fa fa-paper-plane"></i></button>
                                 </div>
 
                             </form>

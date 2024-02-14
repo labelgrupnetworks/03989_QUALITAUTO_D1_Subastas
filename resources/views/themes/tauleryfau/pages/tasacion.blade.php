@@ -2,17 +2,17 @@
 @include('includes.google_head')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
-@section('content')  
- 
+@section('content')
+
 <body class="landing">
 
 <header>
-   
-  
+
+
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -20,7 +20,7 @@
                     <div class="logo col-xs-12 col-md-12 text-center">
 
                         <a title="Tauler y Fau" href="/es">
-                            <img class="img-responsive" src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/logo-simple.png"  alt="Tauler y Fau">
+                            <img class="img-responsive" src="/themes/<?= $theme ?>/img/comprar-monedas/logo-simple.png"  alt="Tauler y Fau">
                         </a>
                     </div>
                 </div>
@@ -38,10 +38,10 @@
             </div>
         </div>
     </div>
-</section>    
+</section>
 <section class="ventajas-landing">
     <div class="background-title"></div>
-        <div class="container">            
+        <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 no-padding">
                     <div class="ventajas-title col-xs-12">
@@ -62,7 +62,7 @@
                             </ul>
                             </div>
                         </div>
-                            
+
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6 no-padding">
@@ -73,7 +73,7 @@
                             <ul class="ventajas-box-lista2">
                                 <li>
                                     <p>
-                                        <img style="margin-right: 10px;position: relative;width: 20px;" src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" >
+                                        <img style="margin-right: 10px;position: relative;width: 20px;" src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" >
                                     </p>
                                     <p>
                                         <b>Nuestros expertos valoran</b> el material de acuerdo a la situación actual del mercado
@@ -81,13 +81,13 @@
                                 </li>
                                 <li>
                                     <p>
-                                        <img style="    margin-right: 10px;    position: relative;   width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p><b>Recogida</b> del material en su domicilio en <b>24h</b></p>
+                                        <img style="    margin-right: 10px;    position: relative;   width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p><b>Recogida</b> del material en su domicilio en <b>24h</b></p>
                                 </li>
                                 <li>
                                     <p>
-                                        <img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p>Casi un <b>90%</b> de lotes vendidos en nuestras subastas</p></li>
+                                        <img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p>Casi un <b>90%</b> de lotes vendidos en nuestras subastas</p></li>
                                 <li>
-                                    <p><img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p><b>Liquidación</b> a los <b>30 días</b>, descontando la comisión acordada previamente en el contrato</p>
+                                    <p><img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p><b>Liquidación</b> a los <b>30 días</b>, descontando la comisión acordada previamente en el contrato</p>
                                 </li>
                             </ul>
                         </div>
@@ -183,7 +183,7 @@
                             </div>
                         </form>
                 </div>
-                
+
             </div>
             <div class="slogan-form col-xs-12">
                 "Combinamos la experiencia de los profesionales con la pasión de los coleccionistas"
@@ -243,18 +243,18 @@
         color: #283847;
         margin: 0;
     }
-    
+
     .href-cell{
         color: white;
         text-decoration: underline;
-        
+
     }
-    
+
     .box-align{
         width: 315px;
         margin: 0 auto;
     }
-   
+
      .logo{
         margin-top:0px;
     }
@@ -314,7 +314,7 @@
         left: 0;
         bottom: -3px;
     }
-    
+
     .ventajas-box-lista2 li{
         display: -webkit-inline-box;
         display: -webkit-inline-flex;
@@ -333,21 +333,21 @@
         font-weight: 400;
         line-height: 29px;
     }
-    
+
     .slogan-form{
         text-align: center;
         font-size: 18px;
         font-weight: 900;
         margin-top: 21px;
     }
-    
+
     .ventajas-box-lista{
         margin-left: 80px;
     }
-    
+
     ul.ventajas-box-lista li{
        font-size: 17px;
-        font-weight: 900; 
+        font-weight: 900;
         margin-bottom: 10px;
     }
 
@@ -356,15 +356,15 @@
         margin-top: 50px;
         color: #283847;
     }
-    
-    
+
+
     body.landing .form-landing {
         background-color: #fff;
         border: 1px solid #283747;
         width: 460px;
         margin: 20px auto;
     }
-    
+
     body.landing form.upload{
         padding: 35px 16px 87px;
     }
@@ -479,7 +479,7 @@
         margin: auto;
         margin-bottom: 40px;
         padding-left: 56px;
-        background-image: url('/themes/<?= \Config::get('app.theme') ?>/assets/img/comprar-monedas/items.png');
+        background-image: url('/themes/<?= $theme ?>/assets/img/comprar-monedas/items.png');
         background-repeat: no-repeat;
         background-position: 0 11px;
     }
@@ -496,12 +496,12 @@
         margin-top: 20px;
         margin-bottom: 70px;
     }
-    
+
     .banner-landing span a{
         color: white;
-        
+
     }
-    
+
     .background-title{
         content: '';
         position: absolute;
@@ -511,16 +511,16 @@
         background: white;
         z-index: 0;
     }
-    
 
-    
+
+
     .banner-landing-title, .banner-landing-cell{
         font-size: 28px;
         font-weight: 900;
     }
-        
+
     .href-cell{
-       text-decoration: none; 
+       text-decoration: none;
     }
     ::-webkit-input-placeholder {
         color: black;
@@ -549,7 +549,7 @@
             padding-top: 8px;
 
         }
-        
+
         @media screen and (max-width: 1200px)
             .ventajas-landing .ventajas-title h2 {
                     font-size: 20px;
@@ -564,14 +564,14 @@
             }
 
 
-        
+
     }
-    
+
     @media screen and (width: 768px){
         body.landing header {
             margin-top: 0;
         }
-        
+
 
         body.landing .form-landing {
             margin-top: 50px;
@@ -583,14 +583,14 @@
     @media screen and (min-width: 1200px){
         .banner-landing {
             width: 30%;
- 
+
         }
     }
-    
+
     @media screen and (max-width: 1200px){
         .banner-landing {
             width: 44%;
- 
+
         }
         .ventajas-landing .ventajas-title h2{
             font-size: 22px;
@@ -604,8 +604,8 @@
         .href-cell{
             text-decoration: underline;
         }
-        
-        
+
+
         .banner-landing {
             padding: 18px 0px;
             background: #a88c69;
@@ -640,7 +640,7 @@
         body.landing .no-principal-landing .col-xs-12 {
             padding: 0;
         }
-       
+
         body.landing div.text-landing {
             padding: 40px 0 50px;
         }
@@ -650,7 +650,7 @@
         }
     }
 @media screen and (max-width: 480px){
-    
+
     .box-align {
     width: 280px;
     margin: 0 auto;
@@ -659,7 +659,7 @@
 
     padding-top: 6px;
 }
-    
+
         .banner-landing-title, .banner-landing-cell {
             font-size: 14px;
             font-weight: 900;
@@ -675,7 +675,7 @@
 
 
         }
-        
+
         .banner-landing-box{
             padding-left: 5px;
         }

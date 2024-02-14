@@ -4,34 +4,34 @@
 
 		<div class="row">
 			<div class="col-xs-4 col-sm-4 cir-pro-wra">
-				<div id="cp-sales" role="button" title="{{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}" data-toggle="popover" data-placement="auto right"
+				<div id="cp-sales" role="button" title="{{ trans($theme.'-app.lot_list.sold_lots') }}" data-toggle="popover" data-placement="auto right"
 				data-trigger="hover" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}</p>
+				<p>{{ trans($theme.'-app.lot_list.sold_lots') }}</p>
 			</div>
 			<div class="col-xs-4 cir-pro-wra">
-				<div id="cp-revalorizacion" role="button" title="{{ trans(\Config::get('app.theme').'-app.user_panel.revaluation') }}" data-toggle="popover"
+				<div id="cp-revalorizacion" role="button" title="{{ trans($theme.'-app.user_panel.revaluation') }}" data-toggle="popover"
 				data-trigger="hover" data-placement="auto bottom" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.revaluation') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.revaluation') }}</p>
 			</div>
 			<div class="col-xs-4 cir-pro-wra">
-				<div id="cp-pujas" role="button" title="{{ trans(\Config::get('app.theme').'-app.user_panel.bids_per_lot') }}" data-toggle="popover" data-placement="auto right"
+				<div id="cp-pujas" role="button" title="{{ trans($theme.'-app.user_panel.bids_per_lot') }}" data-toggle="popover" data-placement="auto right"
 				data-trigger="hover" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.bids_per_lot') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.bids_per_lot') }}</p>
 			</div>
 			<div class="col-xs-4 mt-1 cir-pro-wra">
-				<div id="cp-consignados" role="button" title="{{ trans(\Config::get('app.theme').'-app.user_panel.consigned_lots') }}" data-toggle="popover"
+				<div id="cp-consignados" role="button" title="{{ trans($theme.'-app.user_panel.consigned_lots') }}" data-toggle="popover"
 				data-trigger="hover" data-placement="auto right" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.consigned_lots') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.consigned_lots') }}</p>
 			</div>
 			<div class="col-xs-4 mt-1 cir-pro-wra">
-				<div id="cp-adjudicado" role="button" title="{{ trans(\Config::get('app.theme').'-app.user_panel.awarded_amount') }}" data-toggle="popover" data-placement="auto bottom"
+				<div id="cp-adjudicado" role="button" title="{{ trans($theme.'-app.user_panel.awarded_amount') }}" data-toggle="popover" data-placement="auto bottom"
 				data-trigger="hover" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.awarded_amount') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.awarded_amount') }}</p>
 			</div>
 			<div class="col-xs-4 mt-1 cir-pro-wra">
-				<div id="cp-pujadores" role="button" title="{{ trans(\Config::get('app.theme').'-app.user_panel.bidders_per_lot') }}" data-toggle="popover" data-placement="auto right"
+				<div id="cp-pujadores" role="button" title="{{ trans($theme.'-app.user_panel.bidders_per_lot') }}" data-toggle="popover" data-placement="auto right"
 				data-trigger="hover" data-content=""></div>
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.bidders_per_lot') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.bidders_per_lot') }}</p>
 			</div>
 		</div>
 
@@ -48,7 +48,7 @@
 
 								<select id="auctions-select-multiple" multiple="multiple" name="">
 
-									<option data-type="all" value="">{{ trans(\Config::get('app.theme').'-app.lot.see-all') }}</option>
+									<option data-type="all" value="">{{ trans($theme.'-app.lot.see-all') }}</option>
 
 									<optgroup label="{{ trans("$theme-app.user_panel.for_time") }}" class="time-group">
 										<option data-type="time" value="1">30 {{ trans("$theme-app.msg_neutral.days") }}</option>
@@ -75,25 +75,25 @@
 							<span id="panel-subasta">
 								{{ $infoSales->auctions }}
 							</span>
-							{{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}
+							{{ trans($theme.'-app.subastas.auctions') }}
 						</th>
 					</tr>
 					<tr>
 						<th><span
 								id="panel-adjudicacion">{{ \Tools::moneyFormat($infoSales->sumPrecioAdjudicacionProp) }}</span>
-								{{ trans(\Config::get('app.theme').'-app.user_panel.EUR') }} {{ trans(\Config::get('app.theme').'-app.sheet_tr.awarded') }}</th>
+								{{ trans($theme.'-app.user_panel.EUR') }} {{ trans($theme.'-app.sheet_tr.awarded') }}</th>
 					</tr>
 					<tr>
-						<th><span id="panel-lotes">{{ $infoSales->lotesProp }}</span> {{ trans(\Config::get('app.theme').'-app.user_panel.consigned_lots') }}</th>
+						<th><span id="panel-lotes">{{ $infoSales->lotesProp }}</span> {{ trans($theme.'-app.user_panel.consigned_lots') }}</th>
 					</tr>
 					<tr>
-						<th><span id="panel-vendidos">{{ $infoSales->lotesVendidosProp }}</span> {{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}</th>
+						<th><span id="panel-vendidos">{{ $infoSales->lotesVendidosProp }}</span> {{ trans($theme.'-app.lot_list.sold_lots') }}</th>
 					</tr>
 					<tr>
-						<th><span id="panel-pujas">{{ $infoSales->pujasProp }}</span> {{ trans(\Config::get('app.theme').'-app.sheet_tr.bids') }}</th>
+						<th><span id="panel-pujas">{{ $infoSales->pujasProp }}</span> {{ trans($theme.'-app.sheet_tr.bids') }}</th>
 					</tr>
 					<tr>
-						<th><span id="panel-pujadores">{{ $infoSales->pujadoresProp }}</span> {{ trans(\Config::get('app.theme').'-app.user_panel.bidders') }}</th>
+						<th><span id="panel-pujadores">{{ $infoSales->pujadoresProp }}</span> {{ trans($theme.'-app.user_panel.bidders') }}</th>
 					</tr>
 				</tbody>
 			</table>
@@ -231,7 +231,7 @@ function selectButtonText(options, select){
 		return 'Sin selección';
 	}
 	else if (options.length > 2) {
-		return `${options.length} {{ trans(\Config::get('app.theme').'-app.user_panel.options') }}`;
+		return `${options.length} {{ trans($theme.'-app.user_panel.options') }}`;
 	}
 	else {
 		var labels = [];
@@ -329,9 +329,9 @@ function reloadPopovers(infoSales){
 	c = infoSales;
 
 	let salesSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.lot_list.lots') }}", infoSales.lotesProp, '', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}", infoSales.lotesVendidosProp, '', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.lot_list.dont_sold_lots') }}", infoSales.lotesProp - infoSales.lotesVendidosProp, '', true)
+		spanElement("{{ trans($theme.'-app.lot_list.lots') }}", infoSales.lotesProp, '', true),
+		spanElement("{{ trans($theme.'-app.lot_list.sold_lots') }}", infoSales.lotesVendidosProp, '', true),
+		spanElement("{{ trans($theme.'-app.lot_list.dont_sold_lots') }}", infoSales.lotesProp - infoSales.lotesVendidosProp, '', true)
 	];
 
 	$('#cp-sales').on('shown.bs.popover', function () {
@@ -345,12 +345,12 @@ function reloadPopovers(infoSales){
 	let revalorizaciónTauler = ((infoSales.sumPrecioAdjudicacion) / infoSales.sumPrecioSalida) * 100;
 
 	let revalorizacionSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.subastas.price_salida') }}", infoSales.sumPrecioSalidaProp, '€', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}", infoSales.sumPrecioAdjudicacionProp, '€', true)
+		spanElement("{{ trans($theme.'-app.subastas.price_salida') }}", infoSales.sumPrecioSalidaProp, '€', true),
+		spanElement("{{ trans($theme.'-app.user_panel.award_price') }}", infoSales.sumPrecioAdjudicacionProp, '€', true)
 	];
 
 	let revealorizacionExtras = [
-		extraParrafElement(Math.round(revalorizacion) + ' % ' + "{{ trans(\Config::get('app.theme').'-app.user_panel.revaluation') }}")
+		extraParrafElement(Math.round(revalorizacion) + ' % ' + "{{ trans($theme.'-app.user_panel.revaluation') }}")
 	];
 
 	$('#cp-revalorizacion').on('shown.bs.popover', function () {
@@ -358,8 +358,8 @@ function reloadPopovers(infoSales){
 	});
 
 	let pujasSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.average_in_tauler') }}", infoSales.pujas / infoSales.lotes, '', false),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.own_average') }}", infoSales.pujasProp / infoSales.lotesProp, '', false)
+		spanElement("{{ trans($theme.'-app.user_panel.average_in_tauler') }}", infoSales.pujas / infoSales.lotes, '', false),
+		spanElement("{{ trans($theme.'-app.user_panel.own_average') }}", infoSales.pujasProp / infoSales.lotesProp, '', false)
 	];
 
 	$('#cp-pujas').on('shown.bs.popover', function () {
@@ -367,12 +367,12 @@ function reloadPopovers(infoSales){
 	});
 
 	let consignadosSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.lots_in_tauler') }}", infoSales.lotes, '', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.your_lots') }}", infoSales.lotesProp, '', true)
+		spanElement("{{ trans($theme.'-app.user_panel.lots_in_tauler') }}", infoSales.lotes, '', true),
+		spanElement("{{ trans($theme.'-app.user_panel.your_lots') }}", infoSales.lotesProp, '', true)
 	];
 
 	let consignadosExtras = [
-		extraParrafElement(Math.round((infoSales.lotesProp / infoSales.lotes) * 100) + ' % ' + "{{ trans(\Config::get('app.theme').'-app.user_panel.consigned') }}")
+		extraParrafElement(Math.round((infoSales.lotesProp / infoSales.lotes) * 100) + ' % ' + "{{ trans($theme.'-app.user_panel.consigned') }}")
 	];
 
 	$('#cp-consignados').on('shown.bs.popover', function () {
@@ -380,9 +380,9 @@ function reloadPopovers(infoSales){
 	});
 
 	let adjudicadosSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}", infoSales.sumPrecioSalidaProp, '€', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.sheet_tr.not_awarded') }}", infoSales.sumPrecioNoAdjudicacionProp, '€', true),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.award_price') }}", infoSales.sumPrecioAdjudicacionProp, '€', true)
+		spanElement("{{ trans($theme.'-app.lot.lot-price') }}", infoSales.sumPrecioSalidaProp, '€', true),
+		spanElement("{{ trans($theme.'-app.sheet_tr.not_awarded') }}", infoSales.sumPrecioNoAdjudicacionProp, '€', true),
+		spanElement("{{ trans($theme.'-app.user_panel.award_price') }}", infoSales.sumPrecioAdjudicacionProp, '€', true)
 	];
 
 	$('#cp-adjudicado').on('shown.bs.popover', function () {
@@ -390,8 +390,8 @@ function reloadPopovers(infoSales){
 	});
 
 	let pujadoresSpans = [
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.average_in_tauler') }}", infoSales.pujadores / infoSales.lotes, '', false),
-		spanElement("{{ trans(\Config::get('app.theme').'-app.user_panel.own_average') }}", infoSales.pujadoresProp / infoSales.lotesProp, '', false),
+		spanElement("{{ trans($theme.'-app.user_panel.average_in_tauler') }}", infoSales.pujadores / infoSales.lotes, '', false),
+		spanElement("{{ trans($theme.'-app.user_panel.own_average') }}", infoSales.pujadoresProp / infoSales.lotesProp, '', false),
 	]
 
 	$('#cp-pujadores').on('shown.bs.popover', function () {

@@ -5,7 +5,7 @@
 
             <div class="footer-logo-wrapper">
                 <img class="img-responsive" alt="{{ Config::get('app.name') }}"
-                    src="/themes/{{ \Config::get('app.theme') }}/assets/img/logo-footer.png">
+                    src="/themes/{{ $theme }}/assets/img/logo-footer.png">
 
                 <div class="contacts-wrapper">
                     <ul>
@@ -108,7 +108,7 @@
             <div class="col-xs-12"></div>
 
             <div class="col-xs-12 col-md-6">
-                <p class="term-pol">&copy; <?= trans(\Config::get('app.theme') . '-app.foot.rights') ?></p>
+                <p class="term-pol">&copy; <?= trans($theme . '-app.foot.rights') ?></p>
             </div>
             <div class="col-xs-12 col-md-6 text-right links-redes">
 				<a href="https://www.facebook.com/tauleryfau" target="_blank">

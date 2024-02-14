@@ -4,7 +4,7 @@
         <div class="radio">
             <input type="radio" name="section" id="all_sections" value="" class="filter_lot_list_js" <?=   empty($filters["section"])? 'checked="checked"' : '' ?>  />
             <label for="all_sections" class="ratio-label">
-                {{trans(\Config::get('app.theme').'-app.lot_list.all_categories')}} ({{$numCategoryLots }})
+                {{trans($theme.'-app.lot_list.all_categories')}} ({{$numCategoryLots }})
             </label>
         </div>
 	</div>

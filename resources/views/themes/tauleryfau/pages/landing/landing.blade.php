@@ -1,12 +1,12 @@
 @extends('layouts.tasacion')
 @include('includes.google_head')
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
 
-<link href="/themes/{{\Config::get('app.theme')}}/css/landing.css" rel="stylesheet" type="text/css">
+<link href="/themes/{{$theme}}/css/landing.css" rel="stylesheet" type="text/css">
 <section>
     <!-- barra azul -->
     <div class="custom-bar-logo">
@@ -15,7 +15,7 @@
                 <div class="col-xs-12 col-md-4 text-center"></div>
                 <div class="col-xs-12 col-md-4 text-center">
                     <a title="{{(\Config::get( 'app.name' ))}}" href="/">
-                        <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                        <img class="img-responsive" src="/themes/{{$theme}}/img/landing/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
                     </a>
                 </div>
                 <div class="col-xs-12 col-md-4 text-center"></div>
@@ -37,14 +37,14 @@
 <section>
     <div class="img-cabecera">
         <div class="container-fluid">
-            <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/monedas-antiguas.jpg">
+            <img class="img-responsive" src="/themes/{{$theme}}/img/landing/monedas-antiguas.jpg">
         </div>
     </div>
 </section>
 
 <section class="especialistas" style="margin-top: 3rem;">
     <div class="container">
-        
+
         <div class="container-fluid">
             <div class="col-xs-12 text-center">
                 <div style="text-align: justify">Si buscas expertos en <strong>Numismática Madrid</strong> podemos ayudarte. En Tauler & Fau llevamos más de 50 años trabajando en el sector de la numismática.
@@ -64,7 +64,7 @@
 
             <div class="col-xs-12 col-md-5" style="float:left;margin-bottom: 1rem;">
 
-                <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/moneda-espanola.jpg">
+                <img class="img-responsive" src="/themes/{{$theme}}/img/landing/moneda-espanola.jpg">
                 <div class="container col-xs-12">
                     <div class="titles-border">
                         <h2>Moneda española</h2>
@@ -78,7 +78,7 @@
 
             <div class="col-xs-12 col-md-5" style="float:right;margin-bottom: 1rem;">
 
-                <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/subasta-monedas-madrid.jpg">
+                <img class="img-responsive" src="/themes/{{$theme}}/img/landing/subasta-monedas-madrid.jpg">
                 <div class="container col-xs-12">
                     <div class="titles-border">
                         <h2>Subastas Madrid</h2>
@@ -166,17 +166,17 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-md-12 col-lg-4">
-                            <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/tasacion-monedas.jpg">
+                            <img class="img-responsive" src="/themes/{{$theme}}/img/landing/tasacion-monedas.jpg">
                         </div>
 
                         <div class="col-xs-12 col-md-12 col-lg-8">
                             <div class="titles-border" style="text-align: left; margin: 0px; padding: 0px;"><li style="list-style: none"><h3>Tasaciones o valoraciones</h3></li></div>
                             <div style="margin-top:2rem; text-align: justify; font-size: 15px; font-weight: normal">
-                                Sin duda una de las ventajas que ofrecemos a nuestros clientes es la <strong>profesionalidad y experiencia de nuestro equipo.</strong> 
-                                Combinamos la experiencia de los profesionales de la venta con la pasión de los coleccionistas. Nos avala una larga trayectoria en el sector, 
-                                y además seguimos creciendo y apostando por la innovación y la creación de nuevas oportunidades de venta. Combinamos la esencia de las subastas 
+                                Sin duda una de las ventajas que ofrecemos a nuestros clientes es la <strong>profesionalidad y experiencia de nuestro equipo.</strong>
+                                Combinamos la experiencia de los profesionales de la venta con la pasión de los coleccionistas. Nos avala una larga trayectoria en el sector,
+                                y además seguimos creciendo y apostando por la innovación y la creación de nuevas oportunidades de venta. Combinamos la esencia de las subastas
                                 presenciales con las nuevas subastas online en nuestra web. Así podrás pujar por nuestros lotes donde quieras que estés.
-                            </div>  
+                            </div>
                         </div>
                     </div>
 
@@ -185,7 +185,7 @@
                 <div class="tarjeta container">
 
                     <div class="row">
-                        <div class="col-xs-12 col-md-4"><img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/subasta-monedas-antiguas.jpg"></div>
+                        <div class="col-xs-12 col-md-4"><img class="img-responsive" src="/themes/{{$theme}}/img/landing/subasta-monedas-antiguas.jpg"></div>
 
                         <div class="col-xs-12 col-md-8">
                             <div class="titles-border" style="text-align: left; margin: 0px; padding: 0px;"><li style="list-style: none"><h3>Fotografiamos tu colección</h3></li></div>
@@ -194,7 +194,7 @@
                                 Rellena este formulario señalando el tipo de monedas que forman su colección, la cantidad de piezas que desea fotografiar,
                                 el servicio que quiere solicitar, en que formato desea recibirlas le enviaremos un presupuesto personalizado.
                                 Disponemos de <strong>servicios de recogida y entrega</strong> con todas las garantías de seguridad para que podamos realizar las fotografías de su colección.
-                            </div>  
+                            </div>
                         </div>
                     </div>
 
@@ -203,15 +203,15 @@
                 <div class="tarjeta container">
 
                     <div class="row">
-                        <div class="col-xs-12 col-md-4"><img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/encapsular-monedas.jpg"></div>
+                        <div class="col-xs-12 col-md-4"><img class="img-responsive" src="/themes/{{$theme}}/img/landing/encapsular-monedas.jpg"></div>
 
                         <div class="col-xs-12 col-md-8">
                             <div class="titles-border" style="text-align: left; margin: 0px; padding: 0px;"><li style="list-style: none"><h3>Servicio de encapsulado</h3></li></div>
                             <div style="margin-top:2rem; text-align: justify; font-size: 15px; font-weight: normal">
-                                Tauler & Fau te ofrece un servicio de encapsulado para monedas o billetes de forma profesional. 
-                                <strong>Rellena el formulario</strong> ofreciéndonos información su colección y le enviaremos un presupuesto personalizado. 
+                                Tauler & Fau te ofrece un servicio de encapsulado para monedas o billetes de forma profesional.
+                                <strong>Rellena el formulario</strong> ofreciéndonos información su colección y le enviaremos un presupuesto personalizado.
                                 Trabajamos con las empresas de certificación más importantes del mundo como son: NGC y PCGS.
-                            </div>  
+                            </div>
                         </div>
                     </div>
 
@@ -258,7 +258,7 @@
 
                                 <div class="row">
                                     <div class="col-xs-1" style="padding: 0px;"><span style="font-size: 2.5em; color: white;">
-                                            <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/icon_1.png">
+                                            <img class="img-responsive" src="/themes/{{$theme}}/img/landing/icon_1.png">
                                         </span></div>
                                     <div class="col-xs-10">
                                         Calle Marqués de Urquijo, 34<br>
@@ -283,7 +283,7 @@
 
                                 <div class="row">
                                     <div class="col-xs-1" style="padding: 0px;"><span style="font-size: 2.5em; color: white;">
-                                            <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/icon_2.png">
+                                            <img class="img-responsive" src="/themes/{{$theme}}/img/landing/icon_2.png">
                                         </span></div>
                                     <div class="col-xs-10"  style="margin-left: 5px;">
                                         <a style="text-decoration: none;color:white" href="mailto:Info@tauleryfau.com">Info@tauleryfau.com</a>
@@ -305,7 +305,7 @@
                             <div class="col-xs-6">
                                 <div class="row">
                                     <div class="col-xs-1" style="padding: 0px;"><span style="font-size: 2.5em; color: white;">
-                                            <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/img/landing/icon_3.png">
+                                            <img class="img-responsive" src="/themes/{{$theme}}/img/landing/icon_3.png">
                                         </span></div>
                                     <div class="col-xs-10"  style="margin-left: 5px;">
                                         <a style="text-decoration: none;color:white" href="tel:+34914221444">+34 914 221 444</a>

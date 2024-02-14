@@ -32,10 +32,10 @@ $MobileDetect = new MobileDetect();
             <div class="discount {{$class_color}}">
                 @if($item->oferta_asigl0 == 1)
                     <div>{{$porcentaje}}%</div>
-                    <div>{{ trans(\Config::get('app.theme').'-app.lot_list.discount') }}</div>
+                    <div>{{ trans($theme.'-app.lot_list.discount') }}</div>
                 @elseif($item->oferta_asigl0 == 2)
-                    <div>{{ trans(\Config::get('app.theme').'-app.lot_list.gran') }}</div>
-                    <div>{{ trans(\Config::get('app.theme').'-app.lot_list.hot_sale') }}</div>
+                    <div>{{ trans($theme.'-app.lot_list.gran') }}</div>
+                    <div>{{ trans($theme.'-app.lot_list.hot_sale') }}</div>
                 @endif
             </div>
 
@@ -45,15 +45,15 @@ $MobileDetect = new MobileDetect();
             <a title="{{ $titulo }}" <?= ($item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')?$url:'';?> ></a>
 
 			@if( Config::get('app.icon_multiple_images') && count($item->imagenes) > 1)
-				<span class="more-picture @if (count($item->videos) > 0) more-picture2 @endif" href="#" data-toggle="tooltip" title="{{ trans(\Config::get('app.theme').'-app.lot_list.more_pictures') }}">
-					<span>{{ trans(\Config::get('app.theme').'-app.lot_list.more_pictures') }}</span>
-					<img src="/themes/{{\Config::get('app.theme')}}/assets/img/more-picture.png" />
+				<span class="more-picture @if (count($item->videos) > 0) more-picture2 @endif" href="#" data-toggle="tooltip" title="{{ trans($theme.'-app.lot_list.more_pictures') }}">
+					<span>{{ trans($theme.'-app.lot_list.more_pictures') }}</span>
+					<img src="/themes/{{$theme}}/assets/img/more-picture.png" />
 			    </span>
 			@endif
 
                 @if(!empty($item->contextra_hces1))
                     <div class="more-360">
-                        <div class="sobreimg">{{ trans(\Config::get('app.theme').'-app.home.hover360') }}</div>
+                        <div class="sobreimg">{{ trans($theme.'-app.home.hover360') }}</div>
                         <img width="32px" src="data:image/png;base64,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" />
                     </div>
                 @endif
@@ -65,13 +65,13 @@ $MobileDetect = new MobileDetect();
 
                 @if($item->destacado_asigl0 == 'S')
                     <div class="destacado" role="button">
-                        <img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/destacado.png"  alt="{{(\Config::get( 'app.name' ))}}" style="width:85px; margin-bottom: 20px; position:relative"/>
+                        <img class="img-responsive" src="/themes/{{$theme}}/assets/img/destacado.png"  alt="{{(\Config::get( 'app.name' ))}}" style="width:85px; margin-bottom: 20px; position:relative"/>
                     </div>
                 @endif
 
                 <div class="lot-title">
                     <a title="{{ $titulo }}" <?= ($item->fac_hces1 != 'D' && $item->fac_hces1 != 'R')?$url:'';?>  >
-                        <span>{{ trans(\Config::get('app.theme').'-app.lot.lot-name') }} {{ $item->ref_asigl0 }}</span>
+                        <span>{{ trans($theme.'-app.lot.lot-name') }} {{ $item->ref_asigl0 }}</span>
                     </a>
                 </div>
                 <div class="lot-img">
@@ -100,13 +100,13 @@ $MobileDetect = new MobileDetect();
 
                                 @if( \Config::get('app.estimacion'))
 
-                                    <p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.estimate') }}</p>
-                                    <p class="price">{{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                                    <p class="puja">{{ trans($theme.'-app.lot.estimate') }}</p>
+                                    <p class="price">{{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</p>
 
                                 @elseif( \Config::get('app.impsalhces_asigl0'))
 
-                                    <p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.lot-price')}}</p>
-                                    <p class="price">{{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                                    <p class="puja">{{ trans($theme.'-app.lot.lot-price')}}</p>
+                                    <p class="price">{{$item->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</p>
 
                                 @endif
                             </div>
@@ -114,20 +114,20 @@ $MobileDetect = new MobileDetect();
 
                         	<div class="price-content">
                             	@if(!empty($item->oferta_asigl0) && ($item->oferta_asigl0 == 1 || $item->oferta_asigl0 == 2))
-                                	<p class="puja">{{ trans(\Config::get('app.theme').'-app.subastas.price_salida_venta') }}</p>
+                                	<p class="puja">{{ trans($theme.'-app.subastas.price_salida_venta') }}</p>
                             	@else
-                                	<p class="puja">{{ trans(\Config::get('app.theme').'-app.subastas.precio_estimado') }}</p>
+                                	<p class="puja">{{ trans($theme.'-app.subastas.precio_estimado') }}</p>
                             	@endif
-                            	<p class="price <?=!empty($item->oferta_asigl0) && $item->oferta_asigl0 == 1?'tachado':'';?> gold">{{$item->formatted_imptas_asigl0}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                            	<p class="price <?=!empty($item->oferta_asigl0) && $item->oferta_asigl0 == 1?'tachado':'';?> gold">{{$item->formatted_imptas_asigl0}}  {{ trans($theme.'-app.subastas.euros') }}</p>
                         	</div>
 
                         	<div class="price-content">
                             	@if(!empty($item->oferta_asigl0) && ($item->oferta_asigl0 == 1 || $item->oferta_asigl0 == 2))
-                                	<p class="puja">{{ trans(\Config::get('app.theme').'-app.subastas.nuestro_precio') }}</p>
+                                	<p class="puja">{{ trans($theme.'-app.subastas.nuestro_precio') }}</p>
                             	@else
-	                                <p class="puja">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
+	                                <p class="puja">{{ trans($theme.'-app.subastas.price_sale') }}</p>
     	                        @endif
-        	                        <p class="price gold">{{$item->formatted_actual_bid}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+        	                        <p class="price gold">{{$item->formatted_actual_bid}}  {{ trans($theme.'-app.subastas.euros') }}</p>
             	            </div>
                     	@endif
                     	<?php  $sub_ref= $item->cod_sub.'-'.$item->ref_asigl0; ?>
@@ -135,8 +135,8 @@ $MobileDetect = new MobileDetect();
                     	@if( ($item->tipo_sub== 'P' || $item->tipo_sub== 'O' || ($item->tipo_sub == 'W' && $item->subabierta_sub == 'P')) && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
 
                         	<div class="price-content">
-                            	<p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
-                            	<p class="{{$sub_ref}} {{$winner}} price">{{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                            	<p class="puja">{{ trans($theme.'-app.lot.puja_actual') }}</p>
+                            	<p class="{{$sub_ref}} {{$winner}} price">{{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }} {{ trans($theme.'-app.subastas.euros') }}</p>
                         	</div>
 
                     	@elseif ($item->tipo_sub== 'P' || $item->tipo_sub== 'O' || ($item->tipo_sub == 'W' && $item->subabierta_sub == 'P') )
@@ -144,19 +144,19 @@ $MobileDetect = new MobileDetect();
                         	<div class="price-content remove-bid-tr-{{$sub_ref}}">
                             	<p class="puja {{$sub_ref}}">
                                 	@if($item->cerrado_asigl0 == 'N')
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }}
+                                        {{ trans($theme.'-app.lot_list.no_bids') }}
                                     @endif
                               	</p>
                         	</div>
                         	<div class="price-content update-bid-tr-{{$sub_ref}} hidden">
-                            	<p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
+                            	<p class="puja">{{ trans($theme.'-app.lot.puja_actual') }}</p>
                             	<p class="{{$sub_ref}} {{$winner}} price"> </p>
                         	</div>
                     		<?php /* 2018_04_10 lo quito por que la W abierta funcionará como la O
                     		@elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'P' && $item->cerrado_asigl0 == 'N'  )
                         	<div class="price-content">
-                            <p class="puja">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
-                            <p class="price gold">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                            <p class="puja">{{ trans($theme.'-app.lot.puja_actual') }}
+                            <p class="price gold">{{ \Tools::moneyFormat($item->open_price) }} {{ trans($theme.'-app.subastas.euros') }}</p>
                         	</div>
                     		@elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'P' && $item->cerrado_asigl0 != 'N'  )<?php //ponemos el espacio para que no descuadre ?>
                         	<div class="price-content">
@@ -170,7 +170,7 @@ $MobileDetect = new MobileDetect();
 
                             	@if($item->cerrado_asigl0 == 'S' && (!empty($precio_venta) ||$item->desadju_asigl0 =='S') && $item->tipo_sub == 'V' )
 
-                                	<a class="btn btn-custom" style="background: #bc9c7e;color: white; border-radius: 0" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.subastas.sold_lot') }}</a>
+                                	<a class="btn btn-custom" style="background: #bc9c7e;color: white; border-radius: 0" <?= $url?>>{{ trans($theme.'-app.subastas.sold_lot') }}</a>
 
                             	@elseif($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 =='S' &&  (!empty($precio_venta) ) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)) )
 
@@ -178,23 +178,23 @@ $MobileDetect = new MobileDetect();
                                     	@php($precio_venta = $item->impadj_asigl0)
                                 	@endif
 
-                                	<a class="btn btn-custom buy-to" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}: <span >{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</a>
+                                	<a class="btn btn-custom buy-to" <?= $url?>>{{ trans($theme.'-app.subastas.buy_to') }}: <span >{{ \Tools::moneyFormat($precio_venta) }} {{ trans($theme.'-app.subastas.euros') }}</a>
 
                             	@elseif($item->cerrado_asigl0 == 'S' &&  (!empty($precio_venta) ||$item->desadju_asigl0 =='S'))
 
-                                	<a class="btn btn-custom" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</a>
+                                	<a class="btn btn-custom" <?= $url?>>{{ trans($theme.'-app.subastas.buy') }}</a>
 
                             	@elseif($item->cerrado_asigl0 == 'S' &&  empty($precio_venta) && $item->compra_asigl0 == 'N')
 
-                                	<a class="btn btn-custom " <?= $url?>> {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</a>
+                                	<a class="btn btn-custom " <?= $url?>> {{ trans($theme.'-app.subastas.dont_available') }}</a>
 
                             	@elseif($item->cerrado_asigl0 == 'S' &&  empty($precio_venta))
 
-                                	<a style="border-radius: 0px" class="btn btn-custom buy-especial" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }} <i class="fa fa-shopping-cart"></i></a>
+                                	<a style="border-radius: 0px" class="btn btn-custom buy-especial" <?= $url?>>{{ trans($theme.'-app.subastas.dont_buy') }} <i class="fa fa-shopping-cart"></i></a>
 
                             	@elseif ($item->tipo_sub == 'V'  )
 
-                                	<a class="btn btn-custom" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }} <i class="fa fa-shopping-cart"></i></a>
+                                	<a class="btn btn-custom" <?= $url?>>{{ trans($theme.'-app.subastas.buy_lot') }} <i class="fa fa-shopping-cart"></i></a>
 
                             	@elseif(!empty($data['sub_data']) && $data['sub_data']->tipo_sub =='W' && strtotime($data['sub_data']->end) > time() && strtotime($data['sub_data']->start) < time() && $subasta_finalizada == false)
 
@@ -203,11 +203,11 @@ $MobileDetect = new MobileDetect();
                                     //avisa al cliente y lo dirige a pujar en vivo.
                                     $url_tiempo_real=\Routing::translateSeo('api/subasta').$data['sub_data']->cod_sub."-".str_slug($data['sub_data']->name)."-".$data['sub_data']->id_auc_sessions;
                                 	?>
-                                	<a href="{{ $url_tiempo_real }}" target="_blank" class="btn btn-custom">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+                                	<a href="{{ $url_tiempo_real }}" target="_blank" class="btn btn-custom">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
 
                             	@else
 
-                                	<a class="btn btn-custom" <?= $url?>>{{ trans(\Config::get('app.theme').'-app.lot.pujar') }} <i class="fa fa-hand-paper-o"></i></a>
+                                	<a class="btn btn-custom" <?= $url?>>{{ trans($theme.'-app.lot.pujar') }} <i class="fa fa-hand-paper-o"></i></a>
 
                             	@endif
 
@@ -250,21 +250,21 @@ $MobileDetect = new MobileDetect();
 
 									<a href="javascript:loadVideoMobileGrid('{{$item->videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}')" class="d-flex align-items-center view-video js-video-mobile hidden-lg">
 										<i class="fa fa-play" aria-hidden="true"></i>
-										{{--<img src="/themes/{{\Config::get('app.theme')}}/assets/img/more-video.png" />--}}
+										{{--<img src="/themes/{{$theme}}/assets/img/more-video.png" />--}}
 									</a>
 
 									<a class="d-flex align-items-center btn view-video d-flex align-items-center hidden-xs hidden-sm hidden-md"
-								href="javascript:modalVideo('{{$item->videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}', '{{$titulo}}', '{{$item->descweb_hces1}}', '{{ $item->cerrado_asigl0 == 'S' ? trans(\Config::get('app.theme').'-app.lot.view_lot') : trans(\Config::get('app.theme').'-app.lot.pujar') }}', '{{$url_friendly}}')">
-										{{--<img src="/themes/{{\Config::get('app.theme')}}/assets/img/more-video.png" />--}}
+								href="javascript:modalVideo('{{$item->videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}', '{{$titulo}}', '{{$item->descweb_hces1}}', '{{ $item->cerrado_asigl0 == 'S' ? trans($theme.'-app.lot.view_lot') : trans($theme.'-app.lot.pujar') }}', '{{$url_friendly}}')">
+										{{--<img src="/themes/{{$theme}}/assets/img/more-video.png" />--}}
 										<i class="fa fa-play" aria-hidden="true"></i>
-										<p class="video-text">{{ trans(\Config::get('app.theme').'-app.lot_list.watch_video') }}</p>
+										<p class="video-text">{{ trans($theme.'-app.lot_list.watch_video') }}</p>
 									</a>
 								@else
 								<a class="d-flex align-items-center view-video"></a>
 								@endif
 
-                                <img src="/themes/{{\Config::get('app.theme')}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{ $item->total_pujas }}
-                                <img src="/themes/{{\Config::get('app.theme')}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{ $item->total_postores }}
+                                <img src="/themes/{{$theme}}/assets/img/auction.png" width="16px" height="16px" style="margin-right: 5px;"/>{{ $item->total_pujas }}
+                                <img src="/themes/{{$theme}}/assets/img/man-user.png" width="16px" height="16px" style="margin-left: 10px; margin-right: 5px;" />{{ $item->total_postores }}
                             @endif
                         </div>
 
@@ -282,7 +282,7 @@ $MobileDetect = new MobileDetect();
 						<div class="price-content"></div>
                         <div class="btn-pujar">
                             <a class="btn btn-custom">
-                                {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+                                {{ trans($theme.'-app.lot.retired') }}
                             </a>
                         </div>
 
@@ -291,7 +291,7 @@ $MobileDetect = new MobileDetect();
 						<div class="price-content"></div>
                         <div class="btn-pujar">
                             <a class="btn btn-custom">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                                {{ trans($theme.'-app.subastas.dont_available') }}
                             </a>
                         </div>
                     @else

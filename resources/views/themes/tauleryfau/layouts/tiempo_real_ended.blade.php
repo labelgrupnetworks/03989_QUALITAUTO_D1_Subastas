@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-   <title>{{ trans(\Config::get('app.theme').'-app.head.title_app') }}</title>
+   <title>{{ trans($theme.'-app.head.title_app') }}</title>
 
     <style>
     html,body
@@ -17,9 +17,9 @@
 
 <body>
 <div style="color: white;font-size: 64px;text-align: center;margin-top: 200px;">
-                                    <div><img style="max-width:300px; display: block; margin: 2px auto; margin-top: 100px; margin-bottom: 50px;" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}"></div>
+                                    <div><img style="max-width:300px; display: block; margin: 2px auto; margin-top: 100px; margin-bottom: 50px;" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}"></div>
 
-    {{ trans(\Config::get('app.theme').'-app.msg_neutral.auction_end') }}
+    {{ trans($theme.'-app.msg_neutral.auction_end') }}
 
 </div>
 </body>
