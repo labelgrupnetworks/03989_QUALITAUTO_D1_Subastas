@@ -11,7 +11,7 @@
             <div class="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn btn-lb-secondary" data-bs-dismiss="modal"
-                    type="button">{{ trans(\Config::get('app.theme') . '-app.head.close') }}</button>
+                    type="button">{{ trans($theme . '-app.head.close') }}</button>
             </div>
         </div>
     </div>
@@ -77,19 +77,19 @@
             <div class="panel-body">
                 <div class="modal-wrapper">
                     <div class=" text-center single_item_content_">
-                        <p class="class_h1">{{ trans(\Config::get('app.theme') . '-app.lot.confirm_bid') }}</p><br />
+                        <p class="class_h1">{{ trans($theme . '-app.lot.confirm_bid') }}</p><br />
                         <span class='desc_auc'
-                            for="bid">{{ trans(\Config::get('app.theme') . '-app.lot.you_are_bidding') }} </span>
+                            for="bid">{{ trans($theme . '-app.lot.you_are_bidding') }} </span>
                         <strong><span class="precio_orden"></span>
-                            {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</strong><br />
+                            {{ trans($theme . '-app.subastas.euros') }}</strong><br />
                         <span class="ref_orden hidden"></span>
                         </br>
                         <button class="btn button_modal_confirm btn-custom"
-                            id="confirm_orden_lotlist">{{ trans(\Config::get('app.theme') . '-app.lot.confirm') }}</button>
+                            id="confirm_orden_lotlist">{{ trans($theme . '-app.lot.confirm') }}</button>
                         <div class='mb-10'></div>
                         <div class='mb-10'></div>
                         <ul class="items_list">
-                            <li> {{trans(\Config::get('app.theme') . '-app.lot.tax_not_included')}} </li>
+                            <li> {{trans($theme . '-app.lot.tax_not_included')}} </li>
 
                         </ul>
                     </div>

@@ -38,7 +38,7 @@
 						<span id="art-{{$keyArticulo}}_JS" class="art-price_JS hide" >{{ \Tools::moneyFormat($precioArticulo,'' , 0)}} </span>
 					@endforeach
 
-					{{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+					{{trans($theme.'-app.subastas.euros')}}
 				</div>
 				@php
 					#solo recargaremos el segundo select de variantes con la eleccion del primero y ñle pondremso la clase PrincipalTallaColor_JS
@@ -54,7 +54,7 @@
 						</select>
 
 					@if ($variante == "TALLAS")
-					{!! trans(\Config::get('app.theme').'-app.articles.consultar_tallas') !!}</a>
+					{!! trans($theme.'-app.articles.consultar_tallas') !!}</a>
 					@endif
 				</div>
 				@php $numVariante++; @endphp
@@ -66,26 +66,26 @@
 
 					<div class="siStock_JS col-xs-12 mt-1">
 
-						<button style="width: 100%;" class="button-principal addCartButton addArticleCard_JS" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.addCart') }}</button>
+						<button style="width: 100%;" class="button-principal addCartButton addArticleCard_JS" type="button" >{{ trans($theme.'-app.articles.addCart') }}</button>
 
 					</div>
 					<div class="col-xs-12 mt-1  noStock_JS hidden">
 						{{--
 							Ansorena Han pedido que no aparezca el no disponible
-							<button style="width: 100%;"  disabled="disabled" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.outStock') }}</button> --}}
-						<br/><br/>{{ trans(\Config::get('app.theme').'-app.articles.contactenos') }}<br/><br/>
+							<button style="width: 100%;"  disabled="disabled" type="button" >{{ trans($theme.'-app.articles.outStock') }}</button> --}}
+						<br/><br/>{{ trans($theme.'-app.articles.contactenos') }}<br/><br/>
 
 					</div>
 
 					<div class=" col-xs-6 mt-1">
-						<a  href="{{ trans(\Config::get('app.theme').'-app.articles.hrefMoreInfo',["joya" =>$titulo]) }}">
-							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans(\Config::get('app.theme').'-app.articles.moreInfo') }}</button>
+						<a  href="{{ trans($theme.'-app.articles.hrefMoreInfo',["joya" =>$titulo]) }}">
+							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans($theme.'-app.articles.moreInfo') }}</button>
 						</a>
 					</div>
 
 					<div class=" col-xs-6 mt-1">
-						<a  href="{{ trans(\Config::get('app.theme').'-app.articles.hrefCreatujoya',["joya" =>$titulo] ) }}">
-							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans(\Config::get('app.theme').'-app.articles.creaTujoya') }}</button>
+						<a  href="{{ trans($theme.'-app.articles.hrefCreatujoya',["joya" =>$titulo] ) }}">
+							<button style="width: 100%;" class="button-secondary " type="button" >{{ trans($theme.'-app.articles.creaTujoya') }}</button>
 						</a>
 					</div>
 
@@ -100,7 +100,7 @@
 	</div>
 
 	<div class="col-xs-12 relatedArticles">
-		<h2 class="text-center titleReatedArticles">  {{ trans(\Config::get('app.theme').'-app.articles.more') }}  </h2>
+		<h2 class="text-center titleReatedArticles">  {{ trans($theme.'-app.articles.more') }}  </h2>
 		@php
 			$relatedArticles = App\Models\articles\FgArt0::select("ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0")->where("ID_ART0","!=", $article->id_art0)->where("SEC_ART0","=", $article->sec_art0)->Activo()->orderby(" DBMS_RANDOM.VALUE")->take(3)->get();
 		@endphp

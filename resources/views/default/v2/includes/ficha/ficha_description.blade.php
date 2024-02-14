@@ -25,7 +25,7 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 
 @if(!empty($category))
 <div class="categories mt-3">
-	<h5>{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</h5>
+	<h5>{{ trans($theme.'-app.lot.categories') }}</h5>
 
 	<a class="no-decoration" href="{{ route("category", ["keycategory" => $category->key_ortsec0]) }}" alt="{{$category->des_ortsec0}}">
 		<span class="badge badge-custom-primary">{{$category->des_ortsec0}}</span>
