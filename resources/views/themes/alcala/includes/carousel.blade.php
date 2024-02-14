@@ -35,17 +35,17 @@
 
                 <div class="row">
                     <div class="salida col-xs-12 text-center mb-1">
-                        <p class="salida-title mb-0">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                        <p class="salida-title mb-0">{{ trans($theme.'-app.lot.lot-price') }}</p>
                         @if(strpos($bann->impsalhces_asigl0, '.'))
-                        <div class="salida-title mt-1 letter-price-salida"> {{$bann->impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+                        <div class="salida-title mt-1 letter-price-salida"> {{$bann->impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</div>
                         @else
-                        <div class="salida-title mt-1 letter-price-salida"> {{\Tools::Moneyformat($bann->impsalhces_asigl0)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+                        <div class="salida-title mt-1 letter-price-salida"> {{\Tools::Moneyformat($bann->impsalhces_asigl0)}} {{ trans($theme.'-app.subastas.euros') }}</div>
                         @endif
                     </div>
                      @if ( ($subasta_online || $subasta_abierta_P) &&  $hay_pujas && $bann->cerrado_asigl0 == 'N')
                         <div class="salida fs-12 col-xs-12 text-center">
 
-                                <p class="mb-0 salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
+                                <p class="mb-0 salida-title extra-color-one">{{ trans($theme.'-app.lot.puja_actual') }}</p>
                                 <div class="letter-price-salida salida-title mt-1">{{ \Tools::Moneyformat($bann->max_puja)}} €</div>
 
 
@@ -54,8 +54,8 @@
                     @if($bann->cerrado_asigl0 == 'S' && !empty($bann->max_puja) && $bann->remate_asigl0 =='S' )
                         <div class="salida fs-12 col-xs-12 text-center">
 
-                                <p class="mb-0 salida-title extra-color-one">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>
-                                <div class="letter-price-salida salida-title mt-1">{{ \Tools::Moneyformat($bann->max_puja)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+                                <p class="mb-0 salida-title extra-color-one">{{ trans($theme.'-app.subastas.buy_to') }}</p>
+                                <div class="letter-price-salida salida-title mt-1">{{ \Tools::Moneyformat($bann->max_puja)}} {{ trans($theme.'-app.subastas.euros') }}</div>
 
 
                         </div>

@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-   <title>{{ trans(\Config::get('app.theme').'-app.head.title_app') }}</title>
-   
+   <title>{{ trans($theme.'-app.head.title_app') }}</title>
+
     <style>
     @import url('https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,700,700i,900,900i');
     html,body
@@ -12,8 +12,8 @@
           font-family: 'Rubik', sans-serif;
           color: #414145;
 
-    }   
-    
+    }
+
     .center-body{
         display: -webkit-box;
         display: -ms-flexbox;
@@ -30,26 +30,26 @@
                 flex-direction: column;
         height: 100%;
     }
-        
+
     .center-body p{
         font-size: 4vw;
         font-weight: 100;
         text-transform: uppercase;
     }
-        
-        
 
-  
+
+
+
     </style>
- 
+
 </head>
-    
-<body>	
+
+<body>
 
 <div style="" class="center-body">
-   <img style="max-width: 100%" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
-    <p>{{ trans(\Config::get('app.theme').'-app.msg_neutral.auction_end') }}</p>
-    
-</div>	                    
+   <img style="max-width: 100%" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+    <p>{{ trans($theme.'-app.msg_neutral.auction_end') }}</p>
+
+</div>
 </body>
 </html>

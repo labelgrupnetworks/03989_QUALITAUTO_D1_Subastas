@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -9,7 +9,7 @@
 <div class="container color-letter">
         <div class="row">
             <div class="col-xs-12 col-sm-12 text-center color-letter">
-                    <h1 class="titlePage search-title">{{ trans(\Config::get('app.theme').'-app.subastas.search-results') }} - {{$data['search']}}</h1>
+                    <h1 class="titlePage search-title">{{ trans($theme.'-app.subastas.search-results') }} - {{$data['search']}}</h1>
             </div>
         </div>
     </div>
@@ -25,14 +25,14 @@
                                     <div class="col-xs-12 col-md-6 text-center">
                                         <div class="switch_content">
                                             <label class="switcher <?= ($data['history'] == 'H')?'switcher-active':'';?>" for="onlyHistoric"><small></small></label>
-                                            <small>{{ trans(\Config::get('app.theme').'-app.head.search_historic') }}</small>
+                                            <small>{{ trans($theme.'-app.head.search_historic') }}</small>
                                             <input type="checkbox" name="history" class="js-switch submit_on_change" id="onlyHistoric" style="display:none" value="H" <?= ($data['history'] == 'H')?'checked':'';?>/>
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-md-6">
                                         <div class="inputs-custom-group">
                                         
-                                            <input class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.head.search_label') }}" type="text" name="texto" id="textSearch" value="{{$data['search']}}">
+                                            <input class="form-control" placeholder="{{ trans($theme.'-app.head.search_label') }}" type="text" name="texto" id="textSearch" value="{{$data['search']}}">
                                             <button type="submit" class="secondary-button"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
             <div class="col-xs-8 col-xs-offset-2">
                     @if(count($data['subastas']) == 0 )
                     <div class="row">
-                        <div  class="alert alert-danger" >{{trans(\Config::get('app.theme').'-app.subastas.search-no_results')}}</div>
+                        <div  class="alert alert-danger" >{{trans($theme.'-app.subastas.search-no_results')}}</div>
                     </div>
                 @endif
             </div>
@@ -84,9 +84,9 @@
                                     </div>
                                      <p class="num_lot">
                                                 @if ($item->cuantos == '1')
-                                                    {{$item->cuantos}} {{trans(\Config::get('app.theme').'-app.lot_list.reference')}}
+                                                    {{$item->cuantos}} {{trans($theme.'-app.lot_list.reference')}}
                                                 @else
-                                                    {{$item->cuantos}} {{trans(\Config::get('app.theme').'-app.lot_list.lots')}}
+                                                    {{$item->cuantos}} {{trans($theme.'-app.lot_list.lots')}}
                                                 @endif
                                             </p> 
                                     <div class="caption">

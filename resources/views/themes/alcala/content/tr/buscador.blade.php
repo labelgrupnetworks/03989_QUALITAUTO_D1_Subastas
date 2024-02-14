@@ -2,13 +2,13 @@
     <div>
 
         <div class="aside" id="loteAjax">
-            <h2 class="full-left">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <span id="slote_title">{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}</span></h2>
+            <h2 class="full-left">{{ trans($theme.'-app.sheet_tr.lot') }} <span id="slote_title">{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}</span></h2>
 
             <div class="search-lot">
                 <div class="input-group" style="margin-top:0;">
-                    <input type="text" id="search_item_field" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.sheet_tr.insert_item') }}">
+                    <input type="text" id="search_item_field" class="form-control" placeholder="{{ trans($theme.'-app.sheet_tr.insert_item') }}">
                     <span class="input-group-btn">
-                        <button id="search_item" class="btn btn-primary" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.view') }}</button>
+                        <button id="search_item" class="btn btn-primary" type="button">{{ trans($theme.'-app.sheet_tr.view') }}</button>
                     </span>
                 </div>
             </div>
@@ -35,30 +35,30 @@
                 <div class="col-lg-6">
                     <span>
                         <h4>{{ $data['subasta_info']->lote_siguiente->titulo_hces1 }}</h4>
-                        {{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}: <span class="precio">{{ \Tools::moneyFormat($data['subasta_info']->lote_siguiente->impsalhces_asigl0) }}</span>
+                        {{ trans($theme.'-app.sheet_tr.start_price') }}: <span class="precio">{{ \Tools::moneyFormat($data['subasta_info']->lote_siguiente->impsalhces_asigl0) }}</span>
                         <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
                     </span><br>
 
-                    <span class="lot-msg_adjudicado @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 != 'S' || ( $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' && $data['subasta_info']->lote_siguiente->max_puja == 0 ) ) hidden @endif"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.awarded') }}:</b> <span class="imp_adj"></span></span>
+                    <span class="lot-msg_adjudicado @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 != 'S' || ( $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' && $data['subasta_info']->lote_siguiente->max_puja == 0 ) ) hidden @endif"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.awarded') }}:</b> <span class="imp_adj"></span></span>
 
-                    <span class="lot-msg_ensubasta @if ($data['subasta_info']->lote_siguiente->ref_asigl0 != $data['subasta_info']->lote_actual->ref_asigl0) hidden @endif"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}</b>  </span>
+                    <span class="lot-msg_ensubasta @if ($data['subasta_info']->lote_siguiente->ref_asigl0 != $data['subasta_info']->lote_actual->ref_asigl0) hidden @endif"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.in_auction') }}</b>  </span>
 
-                    <button data-from="buscador" class="lot-action_comprar btn btn-primary pull-left @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'J' || $data['subasta_info']->lote_siguiente->cerrado_asigl0 != 'S' || ( $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' && $data['subasta_info']->lote_siguiente->max_puja != 0 ) ) hidden @endif" type="button" ref="{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy') }}</button>
+                    <button data-from="buscador" class="lot-action_comprar btn btn-primary pull-left @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'J' || $data['subasta_info']->lote_siguiente->cerrado_asigl0 != 'S' || ( $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' && $data['subasta_info']->lote_siguiente->max_puja != 0 ) ) hidden @endif" type="button" ref="{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans($theme.'-app.sheet_tr.buy') }}</button>
 
-                    <button data-from="buscador" class="lot-order_importe btn btn-primary pull-right @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' || $data['subasta_info']->lote_siguiente->ref_asigl0 == $data['subasta_info']->lote_actual->ref_asigl0) hidden @endif" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.import_order') }}</button>
+                    <button data-from="buscador" class="lot-order_importe btn btn-primary pull-right @if ($data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S' || $data['subasta_info']->lote_siguiente->ref_asigl0 == $data['subasta_info']->lote_actual->ref_asigl0) hidden @endif" type="button">{{ trans($theme.'-app.sheet_tr.import_order') }}</button>
                     <div class="clearfix"></div>
                     @if(!empty($data['js_item']['user']['is_gestor']))
 
-                            <button id="lot-pausar" style="margin-right:3px;" class="btn btn-danger pull-left pausarLote pausarLote{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }} <?= $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S'? 'hidden' : '' ?>" data-orden="{{ $data['subasta_info']->lote_siguiente->orden_hces1 }}" ref="{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.stop_lot') }}</button>
+                            <button id="lot-pausar" style="margin-right:3px;" class="btn btn-danger pull-left pausarLote pausarLote{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }} <?= $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'S'? 'hidden' : '' ?>" data-orden="{{ $data['subasta_info']->lote_siguiente->orden_hces1 }}" ref="{{ $data['subasta_info']->lote_siguiente->ref_asigl0 }}" type="button">{{ trans($theme.'-app.sheet_tr.stop_lot') }}</button>
 
-                            <button id="abrirLote" style="margin-right:3px;" class="btn btn-danger pull-left <?= $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'N' && $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'J'? 'hidden' : '' ?>"   type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.open_lot') }}</button>
+                            <button id="abrirLote" style="margin-right:3px;" class="btn btn-danger pull-left <?= $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'N' && $data['subasta_info']->lote_siguiente->cerrado_asigl0 == 'J'? 'hidden' : '' ?>"   type="button">{{ trans($theme.'-app.sheet_tr.open_lot') }}</button>
 
                     @endif
 
 					<div class="clearfix"></div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" class="add_to_fav" data-from="buscador"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.add_to_fav') }}
+                            <input type="checkbox" class="add_to_fav" data-from="buscador"> {{ trans($theme.'-app.sheet_tr.add_to_fav') }}
                         </label>
                     </div>
                 </div>

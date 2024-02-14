@@ -55,25 +55,25 @@
 
                     <div class="text-center tour-video">
                         <div class="tour-video-wrapper">
-                            <iframe src='{{ trans(\Config::get('app.theme') . '-app.home.video_matteport_9') }}'
+                            <iframe src='{{ trans($theme . '-app.home.video_matteport_9') }}'
                                 frameborder='0' allowfullscreen allow='xr-spatial-tracking'></iframe>
                             {{-- <iframe src="https://www.youtube.com/embed/M9IHbzEukIE" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> --}}
                         </div>
                     </div>
                     <div class="text-center tour-video">
                         <div class="tour-video-wrapper">
-                            <iframe src='{{ trans(\Config::get('app.theme') . '-app.home.video_matteport_10') }}'
+                            <iframe src='{{ trans($theme . '-app.home.video_matteport_10') }}'
                                 frameborder='0' allowfullscreen allow='xr-spatial-tracking'></iframe>
                             {{-- <iframe src="https://www.youtube.com/embed/M9IHbzEukIE" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> --}}
                         </div>
                     </div>
 
                     <div class="tour-access d-flex flex-column align-items-center">
-                        <h2>{{ trans(\Config::get('app.theme') . '-app.home.tour_title') }}</h2>
+                        <h2>{{ trans($theme . '-app.home.tour_title') }}</h2>
                         <div>
-                            <a href="{{ trans(\Config::get('app.theme') . '-app.home.video_matteport_9') }}"
+                            <a href="{{ trans($theme . '-app.home.video_matteport_9') }}"
                                 class="button-principal" target="_blank">Núñez de Balboa 9</a>
-                            <a href="{{ trans(\Config::get('app.theme') . '-app.home.video_matteport_10') }}"
+                            <a href="{{ trans($theme . '-app.home.video_matteport_10') }}"
                                 class="button-principal" target="_blank">Núñez de Balboa 10</a>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
             <div class="heading" style="position: relative">
                 <div class="line"></div>
                 <h3 class="background extra-font-family">
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.lotes_destacados') }}</h3>
+                    {{ trans($theme . '-app.lot_list.lotes_destacados') }}</h3>
                 <br><br>
             </div>
 
@@ -186,10 +186,10 @@
             <div class="heading" style="position: relative">
                 <div class="line"></div>
                 <h3 class="background extra-font-family">
-                    {{ trans(\Config::get('app.theme') . '-app.foot.newsletter_title') }}</h3>
+                    {{ trans($theme . '-app.foot.newsletter_title') }}</h3>
             </div>
             <p class="grey-color" style="font-size: 12px">
-                {{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}
+                {{ trans($theme . '-app.login_register.recibir_newsletter') }}
             </p>
             @include('includes.newsletter')
         </div>

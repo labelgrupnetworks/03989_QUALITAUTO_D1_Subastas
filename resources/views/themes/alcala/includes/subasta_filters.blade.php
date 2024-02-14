@@ -2,21 +2,21 @@
 
     <div class="form-group">
         <div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-            <span>{{ trans(\Config::get('app.theme') . '-app.lot_list.filters') }}</span><span
+            <span>{{ trans($theme . '-app.lot_list.filters') }}</span><span
                 class="filters-auction-plus" id="texts" data-active='open' role="button">+</span>
         </div>
         <div class="filters-auction-texts">
             <label class="filters-auction-label"
-                for="input_description"><span>{{ trans(\Config::get('app.theme') . '-app.lot_list.search') }}</span></label>
+                for="input_description"><span>{{ trans($theme . '-app.lot_list.search') }}</span></label>
             <input class="form-control input-sm filter-auction-input" id="input_description" name="description"
                 type="text" value="{{ app('request')->input('description') }}"
-                placeholder="{{ trans(\Config::get('app.theme') . '-app.lot_list.search_placeholder') }}">
+                placeholder="{{ trans($theme . '-app.lot_list.search_placeholder') }}">
             <div class="filters-auction-divider-small"></div>
             <label class="filters-auction-label"
-                for="input_reference">{{ trans(\Config::get('app.theme') . '-app.lot_list.reference') }}</label>
+                for="input_reference">{{ trans($theme . '-app.lot_list.reference') }}</label>
             <input class="form-control input-sm filter-auction-input" id="input_reference" name="reference"
                 type="text" value="{{ app('request')->input('reference') }}"
-                placeholder="{{ trans(\Config::get('app.theme') . '-app.lot_list.reference') }}">
+                placeholder="{{ trans($theme . '-app.lot_list.reference') }}">
             <div class="filter-section-checks filters-auction-label" style="margin-top: 2rem;">
                 <ul>
                     <li style="align-items: center;display: flex;">
@@ -24,14 +24,14 @@
                             onclick="javascript:checkfilter('no_award')"
                             <?= !empty(app('request')->input('no_award')) ? "checked='checked'" : '' ?>>
                         <label for="no_award"
-                            style="font-size: 15px;font-weight: 500">{{ trans(\Config::get('app.theme') . '-app.lot_list.dont_sold_lots') }}</label>
+                            style="font-size: 15px;font-weight: 500">{{ trans($theme . '-app.lot_list.dont_sold_lots') }}</label>
                     </li>
                     <li style="align-items: center;display: flex;">
                         <input class="filled-in" id="award" name="award" type="checkbox"
                             onclick="javascript:checkfilter('award')"
                             <?= !empty(app('request')->input('award')) ? "checked='checked'" : '' ?>>
                         <label for="award"
-                            style="font-size: 15px;font-weight: 500">{{ trans(\Config::get('app.theme') . '-app.lot_list.sold_lots') }}</label>
+                            style="font-size: 15px;font-weight: 500">{{ trans($theme . '-app.lot_list.sold_lots') }}</label>
                     </li>
 
                 </ul>
@@ -69,7 +69,7 @@
             <div class="panel-collapse collapse in" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="filters-auction-title d-flex align-items-center justify-content-space-between">
                     <label
-                        class="filters-auction-label">{{ trans(\Config::get('app.theme') . '-app.lot_list.categories') }}</label>
+                        class="filters-auction-label">{{ trans($theme . '-app.lot_list.categories') }}</label>
                     <span></span><span class="filters-auction-plus" id="selects" data-active='open'
                         role="button">+</span>
                 </div>
@@ -96,7 +96,7 @@
 
 
         <button class="btn btn-filter color-letter"
-            type="submit">{{ trans(\Config::get('app.theme') . '-app.lot_list.filter') }}</button>
+            type="submit">{{ trans($theme . '-app.lot_list.filter') }}</button>
 
     </div>
 
@@ -111,9 +111,9 @@
 
 		@if (!empty($indices))
 			<div class="block_filters text">
-				<label for="input_description">{{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</label>
+				<label for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
 				<div class="tcenter">
-						<a title="{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}</a>
+						<a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
 				</div>
 			</div>
 		@endif
