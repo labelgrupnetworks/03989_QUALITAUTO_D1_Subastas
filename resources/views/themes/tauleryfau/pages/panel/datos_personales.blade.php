@@ -12,7 +12,7 @@
 $countries = array();
 $prefix = array();
 
-$divisas = $data['divisa']->mapWithKeys(function ($item) {
+$divisas = $data['divisa']->mapWithKeys(function ($item) use ($theme) {
 	return [$item->cod_div => $item->cod_div . " (" . trans($theme.'-app.user_panel.' . $item->cod_div) . ")" ];
 });
 
