@@ -26,6 +26,11 @@
 			success: function(result) {
 				$('#modalCreateSession').modal('hide');
 				$('#subasta_sesiones').html(result);
+
+				//por alguna razón no se esta eliminando la clase modal-open
+				//al cerrar el modal, por lo que se elimina manualmente
+				//si se consigue una solución mejor, se puede eliminar esta linea
+				$('body').removeClass('modal-open');
 			},
 			error: function(error) {
 				console.log('error');

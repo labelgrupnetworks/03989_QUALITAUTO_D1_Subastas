@@ -11,10 +11,10 @@ use App\Providers\ToolsServiceProvider;
 class AucSessions extends Model
 {
     protected $table = '"auc_sessions"';
-    protected $primaryKey = '"company", "auction", "reference"';
+    protected $primaryKey = '"id_auc_sessions"';
 
     public $timestamps = false;
-    public $incrementing = false;
+    public $incrementing = true;
 
     protected $guarded = [];
 
