@@ -142,7 +142,7 @@ h1,
 }
 
 header .navbar {
-	--bs-navbar-color: rgba(255, 255, 255, 0.9);
+	--bs-navbar-color: rgba(255, 255, 255, 1);
 	--bs-navbar-hover-color: var(--lb-color-primary);
 	--bs-navbar-disabled-color: rgba(0, 0, 0, 0.3);
 	--bs-navbar-active-color: rgba(0, 0, 0, 0.9);
