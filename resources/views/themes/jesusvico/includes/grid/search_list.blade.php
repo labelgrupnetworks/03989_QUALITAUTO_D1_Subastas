@@ -9,7 +9,7 @@
         <div class="input-group mb-2">
             <input class="form-control filter-auction-input search-input_js" id="description" name="description"
                 type="text" value="{{ app('request')->input('description') }}"
-                placeholder="{{ trans(\Config::get('app.theme') . '-app.lot_list.search_placeholder') }}">
+                placeholder="{{ trans($theme . '-app.lot_list.search_placeholder') }}">
             <button class="btn btn-sm btn-lb-primary d-flex align-items-center" type="submit">
                 @include('components.boostrap_icon', ['icon' => 'search'])
             </button>
@@ -20,7 +20,7 @@
             <div class="input-group mb-2">
                 <input class="form-control filter-auction-input search-input_js" id="reference" name="reference"
                     type="text" value="{{ app('request')->input('reference') }}"
-                    placeholder="{{ trans(\Config::get('app.theme') . '-app.lot_list.reference') }}">
+                    placeholder="{{ trans($theme . '-app.lot_list.reference') }}">
                 <button class="btn btn-sm btn-lb-primary d-flex align-items-center" type="submit">
                     @include('components.boostrap_icon', ['icon' => 'search'])
                 </button>
@@ -31,7 +31,7 @@
             <select class="form-select form-select-sm" id="total_selected">
                 @foreach (\Config::get('app.filter_total_shown_options') as $numLots)
                     <option value="{{ $numLots }}" @if (request('total') == $numLots) selected @endif>
-                        {{ trans(\Config::get('app.theme') . '-app.lot_list.see_num_lots', ['num' => $numLots]) }}
+                        {{ trans($theme . '-app.lot_list.see_num_lots', ['num' => $numLots]) }}
                     </option>
                 @endforeach
             </select>
@@ -40,47 +40,47 @@
         <div class="input-group">
             <select class="form-select filter-auction-input" id="order_selected">
                 <option value="name" @if ($filters['order'] == 'name') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.name') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.name') }}
                 </option>
                 <option value="price_asc" @if ($filters['order'] == 'price_asc') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.price_asc') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.price_asc') }}
                 </option>
                 <option value="price_desc" @if ($filters['order'] == 'price_desc') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.price_desc') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.price_desc') }}
                 </option>
                 <option value="ref" @if ($filters['order'] == 'ref' || empty($filters['order'])) selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.reference') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.reference') }}
                 </option>
 
                 <option value="date_asc" @if ($filters['order'] == 'date_asc') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.date_asc') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.date_asc') }}
                 </option>
                 <option value="date_desc" @if ($filters['order'] == 'date_desc') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.date_desc') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.date_desc') }}
                 </option>
                 <option value="hbids" @if ($filters['order'] == 'hbids') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.higher_bids') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.higher_bids') }}
                 </option>
                 <option value="mbids" @if ($filters['order'] == 'mbids') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.more_bids') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.more_bids') }}
                 </option>
                 <option value="lastbids" @if ($filters['order'] == 'lastbids') selected @endif>
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}:
-                    {{ trans(\Config::get('app.theme') . '-app.lot_list.last_bids') }}
+                    {{ trans($theme . '-app.lot_list.order') }}:
+                    {{ trans($theme . '-app.lot_list.last_bids') }}
                 </option>
 
                 @if (!empty($auction) && $auction->tipo_sub == 'O')
                     <option value="ffin" @if ($filters['order'] == 'ffin') selected @endif>
-                        {{ trans(\Config::get('app.theme') . '-app.lot_list.order') }}: <b>
-                            {{ trans(\Config::get('app.theme') . '-app.lot_list.more_near') }} </b>
+                        {{ trans($theme . '-app.lot_list.order') }}: <b>
+                            {{ trans($theme . '-app.lot_list.more_near') }} </b>
                     </option>
                 @endif
             </select>

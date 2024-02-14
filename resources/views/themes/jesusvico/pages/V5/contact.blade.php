@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.foot.faq') }}
+    {{ trans($theme . '-app.foot.faq') }}
 @stop
 
 @push('scripts')
@@ -16,7 +16,7 @@
 
     <main class="contact-page">
         <div class="container">
-            <h1>{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</h1>
+            <h1>{{ trans($theme . '-app.foot.contact') }}</h1>
         </div>
 
         <div class="container">

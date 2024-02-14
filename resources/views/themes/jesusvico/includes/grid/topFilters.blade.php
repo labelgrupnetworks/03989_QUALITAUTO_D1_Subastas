@@ -6,7 +6,7 @@
 		</svg>
 	</button>
 
-	<p class="cantidad-res me-auto">{{ Tools::numberformat($count_lots) }} {{ trans(\Config::get('app.theme').'-app.lot_list.results') }}</p>
+	<p class="cantidad-res me-auto">{{ Tools::numberformat($count_lots) }} {{ trans($theme.'-app.lot_list.results') }}</p>
 
 	<button class="btn btn-sm btn-outline-border-lb-primary d-none d-sm-flex align-items-center align-self-stretch" data-grid="grid" onclick="changeGrid(event)">
 		<svg class="bi" width="16" height="16" fill="currentColor">
@@ -33,12 +33,12 @@
 			@endphp
 
 			<span id="seeHistoricLots_JS" class="gridFilterHistoric d-none">
-				{!! trans(\Config::get('app.theme').'-app.lot_list.see_historic_lots') !!}
+				{!! trans($theme.'-app.lot_list.see_historic_lots') !!}
 			</span>
 
 				@if(request('historic'))
 					<span id="seeActiveLots_JS" class="gridFilterHistoric">
-						{{ trans(\Config::get('app.theme').'-app.lot_list.return_active_lots') }}
+						{{ trans($theme.'-app.lot_list.return_active_lots') }}
 					</span>
 						{{-- solo haremos la llamada si estamos en categorias y han buscado texto   && !empty(request('description')--}}
 				@elseif(empty($auction))
