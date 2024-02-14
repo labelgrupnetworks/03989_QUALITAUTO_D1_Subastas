@@ -7,8 +7,8 @@
 @section('content')
         <div class="container">
             <div class="content text-center">
-                <div class="title"><h1>{{ trans(\Config::get('app.theme').'-app.emails.thanks') }} </h1><br /> </div>
-                <a href="/" class="btn-valoracion btn-color" style="padding: 0 5px;">{{ trans(\Config::get('app.theme').'-app.emails.back') }}</a>
+                <div class="title"><h1>{{ trans($theme.'-app.emails.thanks') }} </h1><br /> </div>
+                <a href="/" class="btn-valoracion btn-color" style="padding: 0 5px;">{{ trans($theme.'-app.emails.back') }}</a>
             </div>
         </div>
 @stop

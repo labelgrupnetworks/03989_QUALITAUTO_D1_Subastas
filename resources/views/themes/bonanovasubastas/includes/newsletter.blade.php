@@ -5,17 +5,17 @@
                 <div class="section-title">
                     <i class="fa fa-5x fa-envelope"></i>
                             <div class="tit_newsletter">
-                                    {{trans(\Config::get('app.theme').'-app.foot.newsletter_title')}}
+                                    {{trans($theme.'-app.foot.newsletter_title')}}
                             </div>
                 </div>
                 <div class="section-input">
                     <div class="input-group">
-                        <input class="form-control input-lg newsletter-input" type="text" placeholder="{{trans(\Config::get('app.theme').'-app.emails.write_email')}}">
+                        <input class="form-control input-lg newsletter-input" type="text" placeholder="{{trans($theme.'-app.emails.write_email')}}">
                         <div class="input-group-btn">
                             <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
 							<input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
 
-                            <button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
+                            <button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans($theme.'-app.foot.newsletter_button')}}</button>
                         </div>
                     </div>
                 </div>
