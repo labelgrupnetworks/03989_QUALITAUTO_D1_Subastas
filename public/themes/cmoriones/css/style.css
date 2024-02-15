@@ -309,7 +309,7 @@ main.grid .column_banner {
 .grid-auction-title {
 	display: flex;
 	align-items: center;
-	width: 50%;
+	width: 100%;
 	margin: auto;
 	display: flex;
 	gap: 0.5rem
@@ -321,15 +321,32 @@ main.grid .column_banner {
 	letter-spacing: 2px;
 	line-height: 1.8em;
 	text-align: center;
+	text-wrap: balance;
+	flex: 5;
 }
 
-.grid-auction-title::before,
-.grid-auction-title::after {
-	display: block;
-	content: "";
-	border-block-end: 0;
-	flex-grow: 1;
-	border-block-start: 5px dotted #000;
+@media(min-width: 768px) {
+
+	.grid-auction-title::before,
+	.grid-auction-title::after {
+		display: block;
+		content: "";
+		border-block-end: 0;
+		flex-grow: 1;
+		border-block-start: 5px dotted #000;
+	}
+}
+
+@media(min-width: 992px) {
+	.grid-auction-title {
+		width: 75%;
+	}
+}
+
+@media(min-width: 1200px) {
+	.grid-auction-title {
+		width: 50%;
+	}
 }
 
 /* sin sticky ni scroll */

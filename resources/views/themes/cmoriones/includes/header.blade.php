@@ -43,8 +43,8 @@
 <section class="container-fluid subnav">
     <div class="header-brand">
         <a class="navbar-brand d-none d-lg-block" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
-            <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/hammer.webp"
-                alt="{{ \Config::get('app.name') }}" width="300">
+            <img class="img-responsive logo-brand m-auto" src="/themes/{{ $theme }}/assets/img/hammer.webp"
+                alt="{{ \Config::get('app.name') }}" width="250">
         </a>
 
         <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
