@@ -55,70 +55,7 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
                     </div>
 					@endif
 
-					<p class="pre-title-principal adj-text">	{{ trans(\Config::get('app.theme').'-app.galery.request_information') }} </p>
-					<form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
-						<input type="hidden" name="auction" value="{{ $lote_actual->cod_sub}} - {{ $lote_actual->des_sub}}">
-						<input type="hidden" name="lot" value="   {{$lote_actual->descweb_hces1 }} ">
-
-						<div class="form-group">
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
-								<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
-								<input type="text" class="form-control  " name="email" id="email__1__email" value="{{$email}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
-								<input type="text" class="form-control  " name="telefono" id="texto__1__telefono" value="{{$phone}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
-
-							</div>
-
-							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.global.coment') }}</label>
-								<textarea  class="form-control  " name="comentario"  id="textogrande__0__comentario"   rows="10">  </textarea>
-
-							</div>
-							@php
-								/*
-
-							<div class="check_term col-xs-12 mt-2">
-								<div class="row">
-									<div class="col-xs-2 col-md-1">
-										<input type="checkbox" class="newsletter" name="condiciones" value="on"
-											id="bool__1__condiciones" autocomplete="off">
-									</div>
-									<div class="col-xs-10 col-md-11">
-										<label
-											for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
-									</div>
-								</div>
-							</div>
-							*/
-							@endphp
-							<div class="col-xs-12 mt-3">
-								<div class="row">
-									<div class="g-recaptcha col-xs-6"
-										data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-										data-callback="onSubmit">
-									</div>
-								</div>
-							</div>
-
-							<div class="col-xs-12 mt-3 mb-3">
-								<div class="row">
-									<div class="col-xs-6">
-										<a onclick="javascript:submit_form(document.getElementById('infoLotForm'),0);" class="button-principal submitButton">Enviar</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
+					
 
                 @endif
 
