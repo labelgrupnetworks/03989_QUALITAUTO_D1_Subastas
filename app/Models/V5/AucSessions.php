@@ -66,6 +66,10 @@ class AucSessions extends Model
 		return ToolsServiceProvider::url_auction($this->auction, $this->name, $this->id_auc_sessions, $this->reference);
 	}
 
+	public function getUrlIndiceAttribute()
+	{
+		return ToolsServiceProvider::url_indice_auction($this->auction, $this->name, $this->id_auc_sessions);
+	}
 
 	public function scopelog($query){
         return $query->joinUsr()->select('FSUSR.NOM_USR, "auc_sessions".*');
