@@ -34,7 +34,7 @@ class MailApiRestController extends ApiRestController {
                 if (count($validate) != 0) {
                     return $this->responder(false, "Need the data params", $validate, 401);
                 }
-                return $this->acctiveAcount($type);
+                return $this->activeAccount($type);
 
             case "PAY_BILL":
 
@@ -352,7 +352,7 @@ class MailApiRestController extends ApiRestController {
 
 
 	/**Metodo de Tauler */
-    public function acctiveAcount($type){
+    public function activeAccount($type){
 
         $email = request('email');
         $user = new User();
@@ -372,6 +372,7 @@ class MailApiRestController extends ApiRestController {
         if (!empty($email->email)) {
 
             $email->setUserByCod($mail_exists[0]->cod_cli, true, 'en');
+			$email->setAtribute('RIES_CLI', $mail_exists[0]->ries_cli);
             $email->setLink_pssw($url);
             $email->setTo($mail_exists[0]->usrw_cliweb, $mail_exists[0]->nom_cli);
             $email->send_email();
