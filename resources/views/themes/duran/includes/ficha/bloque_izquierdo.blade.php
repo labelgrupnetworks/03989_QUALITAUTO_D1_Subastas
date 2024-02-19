@@ -20,14 +20,14 @@
 
 
 		@endphp
-		<a href="{{ $url_subasta }}"><i class="fas fa-arrow-left"></i>   {{ trans(\Config::get('app.theme').'-app.lot.volver_listado') }}</a>
+		<a href="{{ $url_subasta }}"><i class="fas fa-arrow-left"></i>   {{ trans($theme.'-app.lot.volver_listado') }}</a>
 	</div>
 	<div>
 
 	<?php
 
 		#es posible que no haya texto, en ese caso, la funcion trans muestra lo mismo que la clave, hay que hacer que no muestre nada si no tiene traduccion
-		$key_trans = \Config::get('app.theme').'-app.lot.texto_destacado_lote_'.$data['subasta_info']->lote_actual->tipo_sub;
+		$key_trans = $theme.'-app.lot.texto_destacado_lote_'.$data['subasta_info']->lote_actual->tipo_sub;
 
 		$trans = trans($key_trans);
 		if ($trans != $key_trans){
@@ -76,9 +76,9 @@
 	<div class="referencia-ficha">
 	<span>
 		@if($subasta_web )
-			{{ trans(\Config::get('app.theme').'-app.lot.lot-name') }}:
+			{{ trans($theme.'-app.lot.lot-name') }}:
 		@else
-			{{ trans(\Config::get('app.theme').'-app.lot.referencia') }}
+			{{ trans($theme.'-app.lot.referencia') }}
 		@endif
 		@php
 			#si hay separador decimal ponemos los bises
@@ -111,8 +111,8 @@
 	<div class="single-lot-desc-content col-xs-12 no-padding desc-lot-profile-content  pb-2 pt-2">
 		<p>{!! $lote_actual->desc_hces1 !!}</p>
 	</div>
-	<a href="javascript:seeMoreInfo();"><span class="seemore hidden-md hidden-lg">{{ trans(\Config::get('app.theme').'-app.lot.see_more') }}</span></a>
-	<a href="javascript:seeLessInfo();"><span class="seeless" style="display: none">{{ trans(\Config::get('app.theme').'-app.lot.see_less') }}</span></a>
+	<a href="javascript:seeMoreInfo();"><span class="seemore hidden-md hidden-lg">{{ trans($theme.'-app.lot.see_more') }}</span></a>
+	<a href="javascript:seeLessInfo();"><span class="seeless" style="display: none">{{ trans($theme.'-app.lot.see_less') }}</span></a>
 
 
 <div class="info-lot-extra">
@@ -163,7 +163,7 @@
 		@if($lote_actual->permisoexp_hces1=='S')
 			<div class="col-xs-12 no-padding desc-lot-profile-content pt-1">
 				<p>
-					{!! trans(\Config::get('app.theme').'-app.lot.permiso_exportacion') !!}
+					{!! trans($theme.'-app.lot.permiso_exportacion') !!}
 				</p>
 			</div>
 		@endif
@@ -178,7 +178,7 @@
 
 		@if(!empty($linOrtsec1))
 			<div class="col-xs-12 no-padding fincha-info-cats">
-				<div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
+				<div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
 					<span class="badge"><img class="img-responsive" src="{{ asset('themes/duran/assets/img/categorias/cat-'.$linOrtsec1->lin_ortsec1.'.png')}}">{{$linOrtsec1->des_ortsec0}}</span>
 			</div>
 		@endif
@@ -186,19 +186,19 @@
 
 		@if(!empty($data['subasta_info']->almacen))
 			<div class="horarios">
-			<span><strong>{{ trans(\Config::get('app.theme').'-app.lot.puede_visitar') }}</strong></span><br>
+			<span><strong>{{ trans($theme.'-app.lot.puede_visitar') }}</strong></span><br>
 			<span>{{$data['subasta_info']->almacen->dir_alm}} {{$data['subasta_info']->almacen->cp_alm}}  {{$data['subasta_info']->almacen->pob_alm}} </span><br>
-			<a href="{{$data['subasta_info']->almacen->maps_alm}}" target="blank">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a><br><br>
-			{!! trans(\Config::get('app.theme').'-app.lot.horario_almacen_'.$data['subasta_info']->almacen->cod_alm) !!}
+			<a href="{{$data['subasta_info']->almacen->maps_alm}}" target="blank">{{ trans($theme.'-app.subastas.how_to_get') }}</a><br><br>
+			{!! trans($theme.'-app.lot.horario_almacen_'.$data['subasta_info']->almacen->cod_alm) !!}
 			</div>
 		@endif
 		<div class="cms-product">
-		@php /* cambio el enlace	{{  Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }} */ @endphp
-		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}">{{ trans(\Config::get('app.theme').'-app.lot.quiere_valorar_bienes') }} </a>
-		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')  }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}</a>
-		<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  }}">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a>
+		@php /* cambio el enlace	{{  Routing::translateSeo('pagina').trans($theme.'-app.links.valorar_producto')  }} */ @endphp
+		<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.valorar_producto')  }}">{{ trans($theme.'-app.lot.quiere_valorar_bienes') }} </a>
+		<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_sell')  }}">{{ trans($theme.'-app.foot.how_to_sell') }}</a>
+		<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy')  }}">{{ trans($theme.'-app.foot.how_to_buy') }}</a>
 		@if ($subasta_web)
-			<a href="{{ Routing::translateSeo('calendar')  }}">{{ trans(\Config::get('app.theme').'-app.foot.calendar') }}</a>
+			<a href="{{ Routing::translateSeo('calendar')  }}">{{ trans($theme.'-app.foot.calendar') }}</a>
 		@endif
 
 		</div>

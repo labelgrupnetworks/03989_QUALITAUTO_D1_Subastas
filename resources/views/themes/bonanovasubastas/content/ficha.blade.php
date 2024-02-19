@@ -9,7 +9,7 @@
             @elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
                 {{$lote_actual->titulo_hces1}}
             @elseif(\Config::get('app.ref_asigl0'))
-                {{trans(\Config::get('app.theme').'-app.lot.lot-name')}}  {{$lote_actual->ref_asigl0}}
+                {{trans($theme.'-app.lot.lot-name')}}  {{$lote_actual->ref_asigl0}}
             @endif
 
             </h1>
@@ -33,25 +33,25 @@
                         </div>
                         @if(Session::has('user') &&  $lote_actual->retirado_asigl0 =='N')
                             <a  class="btn hidden-xs <?= $data['subasta_info']->lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                                <p>{{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }} </p><i class="fa fa-star-o" aria-hidden="true"></i>
+                                <p>{{ trans($theme.'-app.lot.add_to_fav') }} </p><i class="fa fa-star-o" aria-hidden="true"></i>
                             </a>
                             <a class="btn  hidden-xs <?= $data['subasta_info']->lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                                <p>{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}} </p><i class="fa fa-star" aria-hidden="true"></i>
+                                <p>{{trans($theme.'-app.lot.del_from_fav')}} </p><i class="fa fa-star" aria-hidden="true"></i>
                             </a>
                         @endif
 
 
                         @if( $lote_actual->retirado_asigl0 !='N')
                             <div class="retired ">
-                                {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+                                {{ trans($theme.'-app.lot.retired') }}
                             </div>
                         @elseif($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R')
                                     <div class="retired" style ="text-transform: lowercase;">
-                                       {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                                       {{ trans($theme.'-app.subastas.dont_available') }}
                                    </div>
                     @elseif($lote_actual->cerrado_asigl0 == 'S' &&  (!empty($lote_actual->himp_csub) || $lote_actual->desadju_asigl0 =='S' || ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))))
                             <div class="retired" style ="background:#2b373a;">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                                {{ trans($theme.'-app.subastas.buy') }}
                             </div>
                         @endif
                         <div id="img_main" class="img_single">
@@ -159,7 +159,7 @@
                 <div class="col-xs-12 col-sm-12 col-lg-7">
                     <div class="desc">
                         <div class="desc_tit">
-                                {{ trans(\Config::get('app.theme').'-app.lot.description') }}
+                                {{ trans($theme.'-app.lot.description') }}
                         </div>
                         <div class="desc_content">
                           @if( \Config::get('app.descweb_hces1'))
@@ -176,7 +176,7 @@
 
                 <div class="col-xs-12 col-sm-12 lotes_destacados">
                     <div class="title_single">
-                             {{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}
+                             {{ trans($theme.'-app.lot.recommended_lots') }}
                     </div>
                     <script>
                     <?php

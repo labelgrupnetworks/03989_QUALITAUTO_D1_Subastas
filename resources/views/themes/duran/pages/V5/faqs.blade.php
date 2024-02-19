@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+	{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @section('content')
 <?php
     $bread[] = [
-        "name" => trans(\Config::get('app.theme').'-app.foot.faq') ,
+        "name" => trans($theme.'-app.foot.faq') ,
         "url" => URL::current(),
         "title" => "title",
     ];
@@ -17,7 +17,7 @@
 		<div class="col-xs-12 col-sm-12 text-center color-letter">
 			@include('includes.breadcrumb')
 			<div class="container">
-				<h1 class="titlePage">{{trans(\Config::get('app.theme').'-app.foot.faq') }}</h1>
+				<h1 class="titlePage">{{trans($theme.'-app.foot.faq') }}</h1>
 
 
 

@@ -52,7 +52,7 @@
                                     </svg>
                                 </span>
                                 <input class="form-control" name="email"
-                                    data-error="{{ trans(\Config::get('app.theme') . '-app.login_register.write_valid_email') }}"
+                                    data-error="{{ trans($theme . '-app.login_register.write_valid_email') }}"
                                     type="email" placeholder="{{ trans($theme . '-app.login_register.user') }}">
                             </div>
                             <div class="input-group mb-2">
@@ -72,7 +72,7 @@
 
                             <span class="message-error-log text-danger"></span>
                             <input class="btn btn-lb-primary w-100" type="button"
-                                value="{{ trans(\Config::get('app.theme') . '-app.login_register.sign_in') }}"
+                                value="{{ trans($theme . '-app.login_register.sign_in') }}"
                                 onclick="javascript:login_web()">
                         </form>
                     </div>

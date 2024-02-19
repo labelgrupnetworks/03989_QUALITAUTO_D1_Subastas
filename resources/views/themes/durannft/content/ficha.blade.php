@@ -125,15 +125,15 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                 <div class="col-xs-12 no-padding hidden-xs">
                     @if( $retirado)
                         <div class="retired">
-                            {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+                            {{ trans($theme.'-app.lot.retired') }}
                         </div>
                     @elseif($fact_devuelta)
                         <div class="retired" style ="">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                            {{ trans($theme.'-app.subastas.dont_available') }}
                         </div>
                     @elseif($cerrado &&  (!empty($lote_actual->himp_csub) || ($sub_historica && !empty($lote_actual->impadj_asigl0))))
                         <div class="retired" style ="">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                            {{ trans($theme.'-app.subastas.buy') }}
                         </div>
                     @endif
 					<div id="resource_main_wrapper" class="text-center" style="display:none"></div>
@@ -239,7 +239,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
             ?>
             @if(count($tipo_sec) !== 0)
                 <div class="col-xs-12 no-padding fincha-info-cats">
-                    <div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
+                    <div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
                     @foreach($tipo_sec as $sec)
                         <span class="badge">{{$sec->des_tsec}}</span>
                     @endforeach
@@ -263,10 +263,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 					</div>
 				</div>
 				<p id="js-read-more" class="read-more">
-					<small>{{ trans(\Config::get('app.theme').'-app.blog.more') }}</small>
+					<small>{{ trans($theme.'-app.blog.more') }}</small>
 				</p>
 				<p id="js-read-less" class="hidden read-less">
-					<small>{{ trans(\Config::get('app.theme').'-app.blog.less') }}</small>
+					<small>{{ trans($theme.'-app.blog.less') }}</small>
 				</p>
             </div>
 
@@ -353,7 +353,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 		<div class="col-xs-12 ficha-tipo-v">
 
             {{-- <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
-                    <p class="desc-lot-profile-title">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+                    <p class="desc-lot-profile-title">{{ trans($theme.'-app.lot.description') }}</p>
             </div> --}}
 
 		</div>
@@ -383,7 +383,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
         <div class="single">
 
                 <div class="col-xs-12 col-sm-12 lotes_destacados" id="lotes_recomendados-content">
-                        <div class="mas-pujados-title color-letter"><span>{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</span></div>
+                        <div class="mas-pujados-title color-letter"><span>{{ trans($theme.'-app.lot.recommended_lots') }}</span></div>
 
                     <div class='loader hidden'></div>
 					<div id="lotes_recomendados" class="owl-theme owl-carousel"></div>

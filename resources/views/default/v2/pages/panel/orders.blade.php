@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="col-lg-9">
-			<h1>{{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}</h1>
+			<h1>{{ trans($theme.'-app.user_panel.orders') }}</h1>
 
 
 			<div class="accordion">
@@ -66,13 +66,13 @@
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat provident eum repellendus aliquid unde ex exercitationem itaque voluptates error odit veniam earum quod, voluptas vel beatae laborum minus ea maxime.</span>
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
-												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans($theme.'-app.subastas.euros') }}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">
 												@if(empty($inf_lot->implic_hces1) || $all_inf["inf"]->tipo_sub == 'W' && $all_inf["inf"]->subabierta_sub == 'N')
 													-
 												@else
-													{{ \Tools::moneyFormat($inf_lot->implic_hces1, trans(\Config::get('app.theme').'-app.subastas.euros')) }}
+													{{ \Tools::moneyFormat($inf_lot->implic_hces1, trans($theme.'-app.subastas.euros')) }}
 												@endif
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.mi_puja") }}"
@@ -81,7 +81,7 @@
 													'other' => !($inf_lot->cod_licit == $inf_lot->licit_winner_bid && ($all_inf["inf"]->tipo_sub=='O' || $all_inf["inf"]->subabierta_sub=='P')) || ($inf_lot->cod_licit == $inf_lot->licit_winner_order && ($all_inf["inf"]->tipo_sub=='W' && $all_inf["inf"]->subabierta_sub == 'O'))
 												])
 											>
-											{{$inf_lot->formatted_imp }} {{trans(\Config::get('app.theme').'-app.subastas.euros')}}
+											{{$inf_lot->formatted_imp }} {{trans($theme.'-app.subastas.euros')}}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.bid_date") }}">
 												{{$inf_lot->date}}
@@ -125,7 +125,7 @@
 </main>
 
 {{-- @if($inf_lot->tipop_orlic == 'T')
-	{{trans(\Config::get('app.theme').'-app.lot.puja_telefonica')}}<br/>
+	{{trans($theme.'-app.lot.puja_telefonica')}}<br/>
 @endif --}}
 
 

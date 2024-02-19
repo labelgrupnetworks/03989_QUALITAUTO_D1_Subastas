@@ -22,7 +22,7 @@
         } elseif (!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')) {
             $titulo = $item->titulo_hces1;
         } elseif (\Config::get('app.ref_asigl0')) {
-            $titulo = trans(\Config::get('app.theme') . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
+            $titulo = trans($theme . '-app.lot.lot-name') . ' ' . $item->ref_asigl0;
         }
 
         $precio_venta = null;

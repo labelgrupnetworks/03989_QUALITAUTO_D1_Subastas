@@ -54,9 +54,9 @@
 								{{-- Precio de salida --}}
 								<span class="salida-price" style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden'}}">
 									@if($compra)
-										{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($item->impsalhces_asigl0,\Session::get('user.cod')),false,2) }}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+										{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($item->impsalhces_asigl0,\Session::get('user.cod')),false,2) }}  {{ trans($theme.'-app.subastas.euros') }}
 									@else
-										{{ trans(\Config::get('app.theme').'-app.galery.request_information') }}
+										{{ trans($theme.'-app.galery.request_information') }}
 									@endif
 
 								</span>
@@ -65,8 +65,8 @@
 								{{-- No tienen subasta --}}
 								{{-- @if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
 								<p>
-									<span class="salida-title">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</span>
-									<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+									<span class="salida-title">{{ trans($theme.'-app.lot.puja_actual') }}</span>
+									<span class="salida-price {{$winner}}">{{ $maxPuja }} {{ trans($theme.'-app.subastas.euros') }}</span>
 								</p>
 								@endif --}}
 
@@ -77,7 +77,7 @@
 											@php($precio_venta = $item->impadj_asigl0)@endphp
 										@endif
 										<span class="salida-title soldGrid">
-											{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+											{{ trans($theme.'-app.subastas.buy') }}
 										</span>
 									@endif
 								@endif

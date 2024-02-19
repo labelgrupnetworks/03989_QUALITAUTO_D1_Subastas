@@ -24,9 +24,9 @@
                         <span class="ref">
 
 							@if($subasta_web )
-								{{ trans(\Config::get('app.theme').'-app.lot.lot-name') }}
+								{{ trans($theme.'-app.lot.lot-name') }}
 							@else
-								{{ trans(\Config::get('app.theme').'-app.lot.referencia') }}
+								{{ trans($theme.'-app.lot.referencia') }}
 							@endif
 							@php
 							$refLot  = $item->ref_asigl0;
@@ -65,12 +65,12 @@
 						</p>
 					@elseif($subasta_web && !$cerrado && !$retirado && !$devuelto)
 						<div class="date_lot">
-							{{ trans(\Config::get('app.theme').'-app.lot_list.auction_date') }}<br>
+							{{ trans($theme.'-app.lot_list.auction_date') }}<br>
 						<span class="date-color">{{  date("d/m/Y H:i:s", strtotime($item->start)) }} </span>
 						</div>
 					@elseif($subasta_venta && !$cerrado && !$retirado && !$devuelto)
 					<p class="salida-title mb-0 mt-2 col-xs-12 text-center" style="font-size:16px">
-						<strong>	{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }} </strong>
+						<strong>	{{ trans($theme.'-app.subastas.price_sale') }} </strong>
 					</p>
 
 					@endif
@@ -83,13 +83,13 @@
 							@if($subasta_venta)
 
 								<p class="precio-venta mb-0 col-xs-12 text-center">
-									<strong> {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }} </strong>
+									<strong> {{$precio_salida}} {{ trans($theme.'-app.subastas.euros') }} </strong>
 								</p>
 							@else
 								<p class="salida-title mb-0 col-xs-7 text-left">
-									{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}
+									{{ trans($theme.'-app.lot.lot-price') }}
 								</p>
-								<div class="salida-title mt-0 letter-price-salida col-xs-5 text-right">{{$precio_salida}}  {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+								<div class="salida-title mt-0 letter-price-salida col-xs-5 text-right">{{$precio_salida}}  {{ trans($theme.'-app.subastas.euros') }}</div>
 							@endif
 
 						</div>
@@ -97,8 +97,8 @@
 
 						@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
 							<div class="salida col-xs-12 ">
-								<p class="mb-0 salida-title col-xs-7 text-left">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
-								<div class="salida-title mt-0 letter-price-salida col-xs-5 text-right {{$winner}} ">{{ $maxPuja}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+								<p class="mb-0 salida-title col-xs-7 text-left">{{ trans($theme.'-app.lot.puja_actual') }}</p>
+								<div class="salida-title mt-0 letter-price-salida col-xs-5 text-right {{$winner}} ">{{ $maxPuja}} {{ trans($theme.'-app.subastas.euros') }}</div>
 							</div>
 						@endif
 
@@ -107,13 +107,13 @@
 
 								@if($cerrado && $remate &&  !empty($precio_venta)   )
 									<div class="salida col-xs-12 text-center ">
-										<p class="mb-0 salida-title col-xs-7 text-left">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>
-										<div class="letter-price-salida salida-title mt-0 col-xs-5  text-right">{{ $precio_venta }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
+										<p class="mb-0 salida-title col-xs-7 text-left">{{ trans($theme.'-app.subastas.buy_to') }}</p>
+										<div class="letter-price-salida salida-title mt-0 col-xs-5  text-right">{{ $precio_venta }} {{ trans($theme.'-app.subastas.euros') }}</div>
 									</div>
 
 								@elseif($cerrado &&  empty($precio_venta) && !$compra)
 									<div class="salida col-xs-12 text-center ">
-										<p class="mb-0 salida-title col-xs-7 text-left">{{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}</p>
+										<p class="mb-0 salida-title col-xs-7 text-left">{{ trans($theme.'-app.subastas.dont_buy') }}</p>
 										<div class="letter-price-salida salida-title mt-0 col-xs-5 text-right"></div>
 									</div>
 
@@ -130,12 +130,12 @@
 				@if (!$devuelto && !$retirado && !$sub_historica)
 					@if($cerrado &&  empty($precio_venta) && $compra)
 					<div class="pujar style-1">
-						{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
+						{{ trans($theme.'-app.subastas.buy_lot') }}
 					</div>
 					@elseif($subasta_venta  && !$cerrado )
 
 					<div class="pujar style-1">
-						{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
+						{{ trans($theme.'-app.subastas.buy_lot') }}
 					</div>
 					@elseif(!$cerrado )
 
@@ -145,7 +145,7 @@
 							@elseif($subasta_online )
 								<div class="pujar style-5">
 							@endif
-							{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}
+							{{ trans($theme.'-app.lot.pujar') }}
 							</div>
 						@endif
 					@endif

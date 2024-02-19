@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('assets_components')
@@ -22,7 +22,7 @@
 
 				<?php
 			$bread = array();
-			$bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url' => "/" . \Routing::slugSeo('blog'));
+			$bread[] = array("name" => trans($theme.'-app.blog.name'), 'url' => "/" . \Routing::slugSeo('blog'));
 			if(!empty ($data['categ'])){
 				$categoria = $data['categ']->title_category_blog_lang;
 				$bread[] = array("name" => $categoria );
@@ -30,7 +30,7 @@
 		?>
 
 				@if(empty ($data['categ']))
-				<h1 class="titlePage"><?= trans(\Config::get('app.theme').'-app.blog.principal_title') ?>
+				<h1 class="titlePage"><?= trans($theme.'-app.blog.principal_title') ?>
 				</h1>
 				@else
 				<h1 class="titlePage">{{ $data['categ']->title_category_blog_lang }}</h1>
@@ -83,7 +83,7 @@
 
 					</div>
 					<div class="button-post">
-						<a href="{{ $url }}"><?= trans(\Config::get('app.theme').'-app.blog.more') ?></a>
+						<a href="{{ $url }}"><?= trans($theme.'-app.blog.more') ?></a>
 					</div>
 				</div>
 				</div>

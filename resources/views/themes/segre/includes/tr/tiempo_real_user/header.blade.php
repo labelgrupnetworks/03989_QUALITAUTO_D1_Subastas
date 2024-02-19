@@ -4,8 +4,8 @@
     <nav class="nav_tr">
         <div class="language hidden-xs hidden-sm">
             <select class="selectIdioma" id="selectorIdioma" actuallang="/{{ \App::getLocale() }}/" name="idioma" class="form-control">
-                <option value="es"><?= trans(\Config::get('app.theme') . '-app.head.language_es') ?></option>
-                <option value="en"><?= trans(\Config::get('app.theme') . '-app.head.language_en') ?></option>
+                <option value="es"><?= trans($theme . '-app.head.language_es') ?></option>
+                <option value="en"><?= trans($theme . '-app.head.language_en') ?></option>
             </select>
         </div>
         <div class="header_content @if(!Session::has('user')) {{"header_nologin"}} @endif">
@@ -21,17 +21,17 @@
                 <ul>
                     @if(!Session::has('user'))
                     <li>
-                        <button class="btn button open_own_box" data-ref="login">{{ trans(\Config::get('app.theme').'-app.login_register.generic_name') }}</button>
+                        <button class="btn button open_own_box" data-ref="login">{{ trans($theme.'-app.login_register.generic_name') }}</button>
                     </li>
                     <li>
-                        <a href="https://www.subastassegre.com/default/customer/account/create/" class="btn button btn-register">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+                        <a href="https://www.subastassegre.com/default/customer/account/create/" class="btn button btn-register">{{ trans($theme.'-app.login_register.register') }}</a>
                     </li>
                     @else
                     <li class="group user_session">
-                        <a href="{{ \Routing::slug('logout') }}/tr" class="btn button btn-danger" >{{ trans(\Config::get('app.theme').'-app.login_register.logout') }}</a>
+                        <a href="{{ \Routing::slug('logout') }}/tr" class="btn button btn-danger" >{{ trans($theme.'-app.login_register.logout') }}</a>
                     </li>
                     <li class="group user_session hidden-xs">
-                        <a onclick="toggleFullScreen()" class="btn button" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.full_screen') }}</a>
+                        <a onclick="toggleFullScreen()" class="btn button" >{{ trans($theme.'-app.sheet_tr.full_screen') }}</a>
                     </li>
                     <li class="group user_verified">
                         <div>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="u_data">
                             <div class="u_name">{{ Session::get('user.name') }}</div>
-                            <div class="u_verified">{{ trans_choice(\Config::get('app.theme').'-app.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
+                            <div class="u_verified">{{ trans_choice($theme.'-app.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
                         </div>
                     </li>
                     @endif

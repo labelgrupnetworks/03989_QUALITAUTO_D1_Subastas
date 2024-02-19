@@ -1,12 +1,12 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.artist.artists') }}
+	{{ trans($theme.'-app.artist.artists') }}
 @stop
 
 @section('content')
 <?php
-$bread[] = array("name" =>trans(\Config::get('app.theme').'-app.artist.artists')  );
+$bread[] = array("name" =>trans($theme.'-app.artist.artists')  );
 ?>
 
 
@@ -21,11 +21,11 @@ $bread[] = array("name" =>trans(\Config::get('app.theme').'-app.artist.artists')
 		<div class="col-xs-12 col-sm-12 text-center color-letter">
 			@include('includes.breadcrumb')
 			<div class="container">
-				<h1 class="titlePage">{{trans(\Config::get('app.theme').'-app.artist.artists')}}</h1>
+				<h1 class="titlePage">{{trans($theme.'-app.artist.artists')}}</h1>
 				<div class="col-xs-12 col-sm-12   px-xs-0 filter-col mb-3 mt-3">
 					<form id="artistForm_JS" method="get" action="artistas"  >
 						<div class=" col-xs-12 col-md-11 ">
-							<input name="description" id="description_filter_grid" class="form-control input-sm search-input search-input_js" type="text" placeholder="{{trans(\Config::get('app.theme').'-app.artist.searchText')}}" value="{{request("description")}}">
+							<input name="description" id="description_filter_grid" class="form-control input-sm search-input search-input_js" type="text" placeholder="{{trans($theme.'-app.artist.searchText')}}" value="{{request("description")}}">
 							<button   type="submit" class="button-principal button-search search-btn_js"><i class="fas fa-search"></i></button>
 						</div>
 						<div class=" col-xs-12 col-md-1 ">

@@ -6,7 +6,7 @@
 
 @section('content')
 <?php 
-$bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
+$bread[] = array("name" => trans($theme.'-app.foot.faq') );
 ?>
 @include('includes.breadcrumb')
 
@@ -16,7 +16,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
     <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12">
-			<h1 class="titleSingle_corp">{{trans(\Config::get('app.theme').'-app.foot.faq') }}</h1>
+			<h1 class="titleSingle_corp">{{trans($theme.'-app.foot.faq') }}</h1>
 		</div>
 	</div>  
 

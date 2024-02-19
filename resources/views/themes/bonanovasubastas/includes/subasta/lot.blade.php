@@ -9,11 +9,11 @@
                 </div>
                 @if ($item->retirado_asigl0 != 'N')
                     <div class="retired ">
-                        {{ trans(\Config::get('app.theme') . '-app.lot.retired') }}
+                        {{ trans($theme . '-app.lot.retired') }}
                     </div>
                 @elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
                     <div class="retired" style ="text-transform: lowercase;">
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.dont_available') }}
+                        {{ trans($theme . '-app.subastas.dont_available') }}
                     </div>
                 @elseif(
                     \Config::get('app.awarded') &&
@@ -22,7 +22,7 @@
                             $item->desadju_asigl0 == 'S' ||
                             ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
                     <div class="retired" style ="background:#2b373a;">
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
+                        {{ trans($theme . '-app.subastas.buy') }}
                     </div>
                 @endif
             </a>
@@ -59,44 +59,44 @@
                     @if ($item->tipo_sub != 'V')
 
                         @if (\Config::get('app.estimacion'))
-                            <p class="salida">{{ trans(\Config::get('app.theme') . '-app.lot.estimate') }} <span>
+                            <p class="salida">{{ trans($theme . '-app.lot.estimate') }} <span>
                                     {{ $item->formatted_imptas_asigl0 }} - {{ $item->formatted_imptash_asigl0 }}
-                                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span></p>
+                                    {{ trans($theme . '-app.subastas.euros') }}</span></p>
                         @elseif(\Config::get('app.impsalhces_asigl0'))
                             <p class="salida salida_price"
                                 style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden' }}">
 								<span class="price_field">
-                                	{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}
+                                	{{ trans($theme . '-app.lot.lot-price') }}
 								</span>
 								<span class="price_value">
                                     {{ $precio_salida }}
-                                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+                                    {{ trans($theme . '-app.subastas.euros') }}
 								</span>
 							</p>
                         @endif
                     @else
-                        <p class="salida">{{ trans(\Config::get('app.theme') . '-app.subastas.price_sale') }}
+                        <p class="salida">{{ trans($theme . '-app.subastas.price_sale') }}
                             <span>
                                 {{ $item->formatted_actual_bid }}
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+                                {{ trans($theme . '-app.subastas.euros') }}
                             </span>
                         </p>
                     @endif
 
                     @if (($item->tipo_sub == 'P' || $item->tipo_sub == 'O') && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
-                        <p class="salida">{{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}<span>
+                        <p class="salida">{{ trans($theme . '-app.lot.puja_actual') }}<span>
                                 {{ \Tools::moneyFormat($item->max_puja->imp_asigl1) }}
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span></p>
+                                {{ trans($theme . '-app.subastas.euros') }}</span></p>
                     @elseif ($item->tipo_sub == 'P' || ($item->tipo_sub == 'O' && $item->cerrado_asigl0 == 'N' && empty($item->max_puja)))
-                        <p class="salida">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_bids') }} </p>
+                        <p class="salida">{{ trans($theme . '-app.lot_list.no_bids') }} </p>
                     @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'O' && $item->cerrado_asigl0 == 'N' && $item->open_price != 0)
-                        <p class="salida">{{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}
+                        <p class="salida">{{ trans($theme . '-app.lot.puja_actual') }}
                             <span class="{{ $winner }}"> {{ \Tools::moneyFormat($item->open_price) }}
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+                                {{ trans($theme . '-app.subastas.euros') }}
                             </span>
                         </p>
                     @elseif($item->tipo_sub == 'W' && $item->subabierta_sub == 'O' && $item->cerrado_asigl0 == 'N' && $item->open_price == 0)
-                        <p class="salida">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_bids') }} </p>
+                        <p class="salida">{{ trans($theme . '-app.lot_list.no_bids') }} </p>
                     @elseif ($item->tipo_sub == 'W' && $item->subabierta_sub == 'O' && $item->cerrado_asigl0 != 'N')
                         <?php //ponemos el espacio para que no descuadre
                         ?>
@@ -109,20 +109,20 @@
                     @if (\Config::get('app.awarded'))
                         <p class="salida">
                             @if ($item->cerrado_asigl0 == 'D')
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.dont_available') }}
+                                {{ trans($theme . '-app.subastas.dont_available') }}
                             @elseif(
                                 ($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 == 'S' && !empty($precio_venta)) ||
                                     ($item->subc_sub == 'H' && !empty($item->impadj_asigl0)))
                                 @if ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))
                                     @php($precio_venta = $item->impadj_asigl0)
                                 @endif
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.buy_to') }}:
+                                {{ trans($theme . '-app.subastas.buy_to') }}:
                                 <span>{{ \Tools::moneyFormat($precio_venta) }}
-                                    {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span>
+                                    {{ trans($theme . '-app.subastas.euros') }}</span>
                             @elseif($item->cerrado_asigl0 == 'S' && (!empty($precio_venta) || $item->desadju_asigl0 == 'S'))
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
+                                {{ trans($theme . '-app.subastas.buy') }}
                             @elseif($item->cerrado_asigl0 == 'S' && empty($precio_venta))
-                                {{ trans(\Config::get('app.theme') . '-app.subastas.dont_buy') }}
+                                {{ trans($theme . '-app.subastas.dont_buy') }}
                             @endif
                         </p>
                     @endif

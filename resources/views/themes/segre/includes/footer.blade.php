@@ -56,13 +56,13 @@
                     <div class="footer-content">
                         <a href="{{ trans($theme . '-app.segre-enlaces.segre_app_apple') }}" target="_blank">
                             <img class=""
-                                src="/themes/{{ \Config::get('app.theme') }}/assets/img/1logoapple200.png"
+                                src="/themes/{{ $theme }}/assets/img/1logoapple200.png"
                                 alt="" width="200" height="72">
                         </a>
 
                         <a href="{{ trans($theme . '-app.segre-enlaces.segre_app_android') }}" target="_blank">
                             <img class=""
-                                src="/themes/{{ \Config::get('app.theme') }}/assets/img/1logoandroid200.png"
+                                src="/themes/{{ $theme }}/assets/img/1logoandroid200.png"
                                 alt="" width="200" height="72">
                         </a>
                     </div>
@@ -144,10 +144,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
-                <p>&copy; <?= trans(\Config::get('app.theme') . '-app.foot.rights') ?> </p>
+                <p>&copy; <?= trans($theme . '-app.foot.rights') ?> </p>
             </div>
             {{-- <div class="col-xs-12 col-sm-6 social-links">
-				<span class="social-links-title">< ?= trans(\Config::get('app.theme') . '-app.foot.follow_us') ?></span>
+				<span class="social-links-title">< ?= trans($theme . '-app.foot.follow_us') ?></span>
 
 				<a class="social-link color-letter"><i class="fab fa-2x fa-facebook-square"></i></a>
 				&nbsp;
@@ -158,9 +158,9 @@
 			</div> --}}
 
             <div class="col-xs-12 col-sm-6 text-right">
-                <a class="color-letter" href="{{ trans(\Config::get('app.theme') . '-app.foot.developed_url') }}"
-                    title="{{ trans(\Config::get('app.theme') . '-app.foot.developedSoftware') }}" role="button"
-                    target="no_blank">{{ trans(\Config::get('app.theme') . '-app.foot.developedBy') }}</a>
+                <a class="color-letter" href="{{ trans($theme . '-app.foot.developed_url') }}"
+                    title="{{ trans($theme . '-app.foot.developedSoftware') }}" role="button"
+                    target="no_blank">{{ trans($theme . '-app.foot.developedBy') }}</a>
             </div>
         </div>
     </div>

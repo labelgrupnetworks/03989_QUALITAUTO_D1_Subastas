@@ -48,7 +48,7 @@
 
  {!! \BannerLib::bannersPorKey('TESTLABEL', 'banner_video_home', ['dots' => false]) !!}
 <div class="container mt-3 mb-3">
-	<h1 class="titlePage lotes-destacados-tittle">{{ trans(\Config::get('app.theme').'-app.home.stories') }}</h1>
+	<h1 class="titlePage lotes-destacados-tittle">{{ trans($theme.'-app.home.stories') }}</h1>
 	<div class="row d-flex flex-wrap">
 		<div class="col-xs-12 col-md-5 col-md-offset-2">
 			{!! \BannerLib::bannersPorKey('HISTORIAS-IZQ', 'banner_home_historias') !!}

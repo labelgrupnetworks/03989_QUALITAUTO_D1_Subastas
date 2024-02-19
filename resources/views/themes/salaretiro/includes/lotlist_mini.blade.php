@@ -4,7 +4,7 @@
                     @if( $item->retirado_asigl0 !='N' || ($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R') || (\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' &&  !empty($precio_venta)) )
                     <div class="no_dispo-band">
                             <div class="no_dispo"></div>
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                            <p>{{ trans($theme.'-app.subastas.dont_available') }}</p>
                         </div>
                     @endif
                     <a title="{{ $titulo }}" <?= $url;?>  >
@@ -23,11 +23,11 @@
                     <?php //si no hay ordenes mostramos el precio de salida, ya que solo  ?>
                     @if ($item->tipo_sub == 'W' && $item->subabierta_sub == 'S' && $item->cerrado_asigl0 == 'N' && !empty($item->open_price) && $item->open_price > $item->impsalhces_asigl0 )
 
-                            <span class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            <span class="{{$winner}}">{{ \Tools::moneyFormat($item->open_price) }} {{ trans($theme.'-app.subastas.euros') }}</span>
                     @elseif($item->tipo_sub == 'V' || \Config::get('app.impsalhces_asigl0'))
-                        <span > {{$item->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                        <span > {{$item->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</span>
                     @elseif( \Config::get('app.estimacion'))
-                            <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            <span > {{$item->formatted_imptas_asigl0}} -  {{$item->formatted_imptash_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</span>
                     @endif
                 @endif
              </div>

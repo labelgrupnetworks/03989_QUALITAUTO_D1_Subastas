@@ -18,7 +18,7 @@
 				<div class="title_item">
 					<p class="max-line-1 m-0 bold">{{$artist->name_artist}}</p>
 					@if(!empty($lotsByArtist[$artist->id_artist]))
-						<p>{{ $lotsByArtist[$artist->id_artist] }} {{ trans(\Config::get('app.theme') . '-app.subastas.obras') }}</p>
+						<p>{{ $lotsByArtist[$artist->id_artist] }} {{ trans($theme . '-app.subastas.obras') }}</p>
 					@endif
 				</div>
             </div>

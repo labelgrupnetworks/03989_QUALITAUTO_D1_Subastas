@@ -31,7 +31,7 @@
 					</li> --}}
 					<li>
 						<a class="footer-link"
-							href="<?= Routing::translateSeo('preguntas-frecuentes') ?>"><span>{{ trans(\Config::get('app.theme').'-app.foot.faq') }}</span></a>
+							href="<?= Routing::translateSeo('preguntas-frecuentes') ?>"><span>{{ trans($theme.'-app.foot.faq') }}</span></a>
 					</li>
 					{{-- <li><a class="footer-link" title="{{ trans($theme.'-app.foot.faq')}}"
 							href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.refund_withdrawal') }}"><span>{{ trans($theme.'-app.foot.refund_withdrawal')}}</span></a>

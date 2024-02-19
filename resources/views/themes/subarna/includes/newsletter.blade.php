@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3">
                 <div class="tit_newsletter">
-                    <h3>{{trans(\Config::get('app.theme').'-app.foot.newsletter_title')}}</h3>
+                    <h3>{{trans($theme.'-app.foot.newsletter_title')}}</h3>
                 </div>
                 <div class="form-group">
                         <input class="form-control input-lg newsletter-input" type="email" placeholder="E-mail">
                         <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>">
                         <input type="hidden" class="newsletter" name="families" value="1">
-                        <button id="newsletter-btn" type="button" class="btn-custom btn">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button>
+                        <button id="newsletter-btn" type="button" class="btn-custom btn">{{trans($theme.'-app.foot.newsletter_button')}}</button>
 				</div>
 
 				<div class="form-check mt-2">
@@ -18,7 +18,7 @@
 						type="checkbox"
 						id="condiciones"
 						type="checkbox" class="form-check-input">
-				<label class="form-check-label" for="condiciones">{!! trans(\Config::get('app.theme').'-app.login_register.read_conditions') !!} <a href="{{Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')}}">({{trans(\Config::get('app.theme').'-app.login_register.more_info')}})</a></label>
+				<label class="form-check-label" for="condiciones">{!! trans($theme.'-app.login_register.read_conditions') !!} <a href="{{Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')}}">({{trans($theme.'-app.login_register.more_info')}})</a></label>
 				</div>
 				<div class="form-check mt-1">
 					<input
@@ -26,7 +26,7 @@
 						type="checkbox"
 						id="comercial"
 						type="checkbox" class="form-check-input">
-					<label class="form-check-label" for="comercial">{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</label>
+					<label class="form-check-label" for="comercial">{{ trans($theme.'-app.login_register.recibir_newsletter') }}</label>
 				</div>
 
                 <ul class="redes d-flex align-items-center justify-content-space-between mt-3">

@@ -115,7 +115,7 @@ foreach($all_adj as $key_inf => $value){
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
-												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans($theme.'-app.subastas.euros') }}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.price") }}">
 												{{$precio_remate}}
@@ -171,11 +171,11 @@ foreach($all_adj as $key_inf => $value){
 										<p><strong> {{ trans("$theme-app.user_panel.envio_agencia") }} </strong></p>
 										<?php #Debe estar checkeado almenos uno de los dos radio buttons ?>
 										<div id="envioPosible_{{$all_inf['inf']->cod_sub}}_js">
-											<input type="radio" checked="checked" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="envio_agencia_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="envio_agencia_{{$all_inf['inf']->cod_sub}}_js"> {{ trans(\Config::get('app.theme').'-app.user_panel.gastos_envio') }}:  <span id="coste-envio-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</label>
+											<input type="radio" checked="checked" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="envio_agencia_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="envio_agencia_{{$all_inf['inf']->cod_sub}}_js"> {{ trans($theme.'-app.user_panel.gastos_envio') }}:  <span id="coste-envio-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans($theme.'-app.lot.eur') }}</label>
 
 											@if (!empty(Config::get("app.porcentaje_seguro_envio")))
 												<br>
-												<input type="checkbox" style="top: 0px;height: 10px;margin-right: 0px;"  class="check_seguro_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="seguro_{{$all_inf['inf']->cod_sub}}_js" name="seguro_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="seguro_{{$all_inf['inf']->cod_sub}}_js"> {{ trans(\Config::get('app.theme').'-app.user_panel.seguro_envio') }}:  <span id="coste-seguro-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</label>
+												<input type="checkbox" style="top: 0px;height: 10px;margin-right: 0px;"  class="check_seguro_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="seguro_{{$all_inf['inf']->cod_sub}}_js" name="seguro_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="seguro_{{$all_inf['inf']->cod_sub}}_js"> {{ trans($theme.'-app.user_panel.seguro_envio') }}:  <span id="coste-seguro-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans($theme.'-app.lot.eur') }}</label>
 												<input type="hidden" id="porcentaje-seguro-{{$all_inf['inf']->cod_sub}}_js" value="{{ \Config::get("app.porcentaje_seguro_envio")}}">
 												<input type="hidden" id="iva_aplicable-{{$all_inf['inf']->cod_sub}}_js" value="{{ $data["ivaAplicable"]}}">
 
@@ -183,12 +183,12 @@ foreach($all_adj as $key_inf => $value){
 
 										</div>
 										<div id="envioNoDisponible_{{$all_inf['inf']->cod_sub}}_js" class="hidden">
-											{{ trans(\Config::get('app.theme').'-app.user_panel.envio_no_disponible') }}
+											{{ trans($theme.'-app.user_panel.envio_no_disponible') }}
 										</div>
 
-										<strong> {{ trans(\Config::get('app.theme').'-app.user_panel.recogida_producto') }} </strong>
+										<strong> {{ trans($theme.'-app.user_panel.recogida_producto') }} </strong>
 
-										<input type="radio" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="recogida_almacen_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}" value="0"> <label  for="recogida_almacen">{{ trans(\Config::get('app.theme').'-app.user_panel.sala_almacen') }}</label>
+										<input type="radio" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="recogida_almacen_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}" value="0"> <label  for="recogida_almacen">{{ trans($theme.'-app.user_panel.sala_almacen') }}</label>
 
 										<script>
 											const hasShowSeguro = "{{config('app.porcentaje_seguro_envio', false)}}";
@@ -206,8 +206,8 @@ foreach($all_adj as $key_inf => $value){
 
 							<div class="total-price checkout mb-2">
 								<div>
-									<h4>{{ trans(\Config::get('app.theme').'-app.user_panel.total_price') }}</h4>
-									<h4><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</h4>
+									<h4>{{ trans($theme.'-app.user_panel.total_price') }}</h4>
+									<h4><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans($theme.'-app.lot.eur') }}</h4>
 								</div>
 
 								@if(\Config::get("app.PayBizum") || \Config::get("app.PayTransfer") || \Config::get("app.paymentPaypal"))
@@ -218,14 +218,14 @@ foreach($all_adj as $key_inf => $value){
 										@if(Config::get("app.paymentUP2")  || Config::get('app.paymentRedsys') )
 											<input type="radio" class="btn-check" name="paymethod" id="paycreditcard" value="creditcard" autocomplete="off" checked>
 											<label class="btn btn-outline-lb-secondary" for="paycreditcard">
-												{{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}
+												{{ trans($theme.'-app.user_panel.pay_creditcard') }}
 											</label>
 										@endif
 
 										@if(Config::get("app.PayBizum", false))
 										<input type="radio" class="btn-check" name="paymethod" id="paybizum" value="bizum" autocomplete="off">
 										<label class="btn btn-outline-lb-secondary" for="paybizum">
-											<img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_bizum') }}
+											<img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans($theme.'-app.user_panel.pay_bizum') }}
 										</label>
 										@endif
 
@@ -233,14 +233,14 @@ foreach($all_adj as $key_inf => $value){
 										@if(Config::get("app.PayTransfer", false))
 											<input type="radio" class="btn-check" name="paymethod" id="paytransfer" value="transfer" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paytransfer">
-												{{ trans(\Config::get('app.theme').'-app.user_panel.pay_transfer') }}
+												{{ trans($theme.'-app.user_panel.pay_transfer') }}
 											</label>
 										@endif
 
 										@if(Config::get("app.paymentPaypal", false))
 											<input type="radio" class="btn-check" name="paymethod" id="paypaypal" value="paypal" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paypaypal">
-												<i class="fa fa-paypal" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.user_panel.pay_paypal') }}
+												<i class="fa fa-paypal" aria-hidden="true"></i> {{ trans($theme.'-app.user_panel.pay_paypal') }}
 											</label>
 										@endif
 									</div>
@@ -268,7 +268,7 @@ foreach($all_adj as $key_inf => $value){
 								@endif
 
 								<button type="button" class="submit_carrito btn btn-lb-primary" cod_sub="{{$all_inf['inf']->cod_sub}}" class="btn btn-step-reg" disabled>
-									{{ trans(\Config::get('app.theme').'-app.user_panel.pay') }}
+									{{ trans($theme.'-app.user_panel.pay') }}
 								</button>
 
 							</div>

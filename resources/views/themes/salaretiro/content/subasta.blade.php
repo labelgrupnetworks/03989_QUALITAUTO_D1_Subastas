@@ -12,7 +12,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 @if(empty($data['subastas']))
                     <h1 class="titlePage-custom"> {{$data['name']}} </h1>
                 @else
-                     <h1 class="titlePage-custom">{{ trans(\Config::get('app.theme').'-app.lot_list.lots') }}</h1>
+                     <h1 class="titlePage-custom">{{ trans($theme.'-app.lot_list.lots') }}</h1>
                 @endif
             </div>
             <div class="col-xs-7 col-sm-5 col-md-4 col-lg-5 lot-count">
@@ -27,12 +27,12 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 <?php // si es uan subasta w y abierta o si es uan subasta tipo O o P ?>
                 @if(!empty( $data['subastas']) && ( ($data['subastas'][0]->tipo_sub == 'W' && $data['subastas'][0]->subabierta_sub == 'S') || $data['subastas'][0]->tipo_sub == 'P'  || $data['subastas'][0]->tipo_sub == 'O' )  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  )
 
-                    <a href=""> {{ trans(\Config::get('app.theme').'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                    <a href=""> {{ trans($theme.'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
 
                 @endif
                  @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
                     @if(Session::has('user'))
-                       <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans(\Config::get('app.theme').'-app.lot_list.ver_ofertas') ?></a>
+                       <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
                     @endif
                 @endif
 
@@ -115,7 +115,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                         }elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
                             $titulo = $item->descweb_hces1;
                         }elseif(\Config::get('app.ref_asigl0')){
-                            $titulo = trans(\Config::get('app.theme').'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
+                            $titulo = trans($theme.'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
                         }
 						*/
                         $precio_venta=NULL;

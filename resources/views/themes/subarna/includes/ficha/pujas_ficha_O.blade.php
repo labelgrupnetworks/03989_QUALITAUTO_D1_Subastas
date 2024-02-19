@@ -3,13 +3,13 @@
 <div class="info_single col-xs-12 ficha-puja-o">
 	<div>
 		<div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima'])?'':'hidden'; ?> ">
-			{{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
+			{{trans($theme.'-app.lot.max_puja')}}
 			<strong><span id="tuorden">
 					@if ( !empty($data['js_item']['user']['ordenMaxima']))
 					{{ $data['js_item']['user']['ordenMaxima']}}
 					@endif
 				</span>
-				{{trans(\Config::get('app.theme').'-app.subastas.euros')}}</strong>
+				{{trans($theme.'-app.subastas.euros')}}</strong>
 		</div>
 	</div>
 
@@ -20,7 +20,7 @@
 
 					<a	href='{{  Routing::translateSeo('api/subasta').$data['subasta_info']->lote_actual->cod_sub."-".str_slug($data['subasta_info']->lote_actual->name)."-".$data['subasta_info']->lote_actual->id_auc_sessions }}'>
 							<button
-								class="btn btn-lg btn-custom live-btn"><?=trans(\Config::get('app.theme').'-app.lot.bid_live')?></button>
+								class="btn btn-lg btn-custom live-btn"><?=trans($theme.'-app.lot.bid_live')?></button>
 					</a>
 
 			@endif
@@ -33,23 +33,23 @@
 					<button type="button" data-from="modal"
 						class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user')?'add_favs':''; ?>"
 						type="button" ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+						codsub="{{ $lote_actual->cod_sub }}">{{ trans($theme.'-app.lot.pujar') }}</button>
 				</div>
 			</div>
 			<div class="insert_bid">
 
 				<p style="font-size: 12px">
-					{{ trans(\Config::get('app.theme').'-app.lot.insert_max_puja') }}
+					{{ trans($theme.'-app.lot.insert_max_puja') }}
 					<br>
 					<span class='explanation_bid t_insert'>
 						@if (count($lote_actual->pujas) >0)
-						{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}
+						{{ trans($theme.'-app.lot.next_min_bid') }}
 						@else
-						{{ trans(\Config::get('app.theme').'-app.lot.min_puja') }}
+						{{ trans($theme.'-app.lot.min_puja') }}
 						@endif
 
 						<span class="siguiente_puja"></span>
-						{{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+						{{ trans($theme.'-app.subastas.euros') }}
 					</span>
 				</p>
 

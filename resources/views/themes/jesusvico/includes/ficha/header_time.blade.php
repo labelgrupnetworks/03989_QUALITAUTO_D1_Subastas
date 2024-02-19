@@ -14,7 +14,7 @@
         <div class="px-3 py-2 float-end bg-lb-color-backgorund-light d-flex alig-items-center gap-3"
             style="margin-right: -1rem">
             <img class="mb-1" src="/themes/{{ $theme }}/assets/icons/hammer.svg" alt="hammer">
-            <p class="ficha-info-clock">{{ trans(\Config::get('app.theme') . '-app.subastas.finalized') }}</p>
+            <p class="ficha-info-clock">{{ trans($theme . '-app.subastas.finalized') }}</p>
         </div>
     @endif
 </div>

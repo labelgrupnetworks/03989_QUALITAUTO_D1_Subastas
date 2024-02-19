@@ -131,8 +131,8 @@
 					<p id="insert_msg"></p>
 				</div>
 				<div class="modal-footer">
-					<button id="send_form_ficha" class="btn btn-lb-primary modal-confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-					<button class="btn btn-lb-secondary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+					<button id="send_form_ficha" class="btn btn-lb-primary modal-confirm btn-custom">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+					<button class="btn btn-lb-secondary modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 				</div>
 			</div>
 		</div>

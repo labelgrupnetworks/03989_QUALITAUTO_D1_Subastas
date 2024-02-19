@@ -3,8 +3,8 @@
 @section('seo')
 @php
 	$data['seo'] = new \stdClass();
-	$data['seo']->meta_title = trans(\Config::get('app.theme').'-app.metas.title_'. $data['banner']);
-	$data['seo']->meta_description = trans(\Config::get('app.theme').'-app.metas.description_' . $data['banner']);
+	$data['seo']->meta_title = trans($theme.'-app.metas.title_'. $data['banner']);
+	$data['seo']->meta_description = trans($theme.'-app.metas.description_' . $data['banner']);
 @endphp
 @endsection
 

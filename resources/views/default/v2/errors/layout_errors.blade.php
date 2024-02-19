@@ -3,7 +3,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -15,7 +15,7 @@
 	<h1>
 		@yield('error_message')
 	</h1>
-	<a href="/{{\App::getLocale()}}">{{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a>
+	<a href="/{{\App::getLocale()}}">{{ trans($theme.'-app.global.go_home') }}</a>
 </div>
 
 @stop
