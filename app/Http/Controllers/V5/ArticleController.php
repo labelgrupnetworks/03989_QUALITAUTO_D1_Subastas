@@ -435,7 +435,7 @@ class ArticleController extends Controller
 
 		if(request("search") && !in_array("search", $omitir)){
 			#FALTA que hacer bien la query, con indice y que no tenga en cuenta mayusculas ni acentos
-			if(Config::get('app.local') != 'es') {
+			if(Config::get('app.locale') != 'es') {
 				$fgArt0 = $fgArt0->where("upper(DES_ART0_LANG)","like","%". strtoupper(request("search")) . "%"  );
 			}
 			else {
