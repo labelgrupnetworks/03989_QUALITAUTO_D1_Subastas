@@ -323,6 +323,7 @@ private $debug = true;
                         if (isset($inf_user->sexo_cli)) {
                             $this->setSexo_Cli($inf_user->sexo_cli, $lang);
                         }
+						$this->lang = $default_lang;
                         $this->get_design($this->email->cod_email);
                     }
                 }
