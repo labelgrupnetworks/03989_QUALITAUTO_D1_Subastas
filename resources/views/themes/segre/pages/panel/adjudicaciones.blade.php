@@ -198,10 +198,12 @@ $packengersMoneyValue = 0;
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
                                                                 <div class="visible-xs">{{ trans($theme.'-app.user_panel.price') }}</div>
 																<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
+																{{--
 																@if ($inf_lot->base_csub !=0)
 																	<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																	<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																@endif
+																--}}
                                                             </div>
                                                         </div>
 
@@ -465,11 +467,12 @@ $packengersMoneyValue = 0;
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																		
+																		{{--
 																		@if ($inf_lot->base_csub !=0)
 																			<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																		@endif
+																		--}}
 																	</div>
 																</div>
 

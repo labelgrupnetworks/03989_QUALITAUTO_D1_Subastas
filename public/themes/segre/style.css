@@ -797,3 +797,21 @@ footer {
 	line-height: 1.5;
 	margin: 0;
 }
+
+
+.ficha-info-items-buy {
+	margin-top: 10px;
+  }
+  .ficha-content .pre .pre-price {
+	font-size: 25px;
+	font-weight: bold;
+	margin:0;
+  }
+
+
+  .ficha-content .pre .pre-title-principal {
+	margin-bottom: 0;
+	color: var(--primary-color-text);
+	font-size: 22px;
+
+  }
