@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @push('stylesheets')
@@ -32,7 +32,7 @@
 
 		@section('header-extend-buttons')
 		<div>
-			{{ trans(\Config::get('app.theme').'-app.lot.foreignCurrencies') }}
+			{{ trans($theme.'-app.lot.foreignCurrencies') }}
 			<select id="currencyExchange">
 				@foreach($data['divisas'] as $divisa)
 					<option value='{{ $divisa->cod_div }}'

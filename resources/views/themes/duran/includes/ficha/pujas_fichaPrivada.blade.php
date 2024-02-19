@@ -21,19 +21,19 @@ if(!empty($data['usuario'])){
   		@csrf
 	<div class="form-group ">
 		<div class="input-effect col-xs-12">
-			<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+			<label>{{trans($theme.'-app.login_register.contact') }}</label>
 			<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 		</div>
 
 		<div class="input-effect col-xs-12">
-			<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
+			<label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
 			<input type="text" class="form-control  " name="email" id="email__1__email" value="{{$email}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 		</div>
 
 		<div class="input-effect col-xs-12">
-			<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+			<label>{{trans($theme.'-app.user_panel.phone') }}</label>
 			<input type="text" class="form-control  " name="telefono" id="texto__1__telefono" value="{{$phone}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 		</div>
@@ -52,7 +52,7 @@ if(!empty($data['usuario'])){
 				</div>
 				<div class="col-xs-10 col-md-11">
 					<label
-						for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+						for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
 				</div>
 			</div>
 		</div>

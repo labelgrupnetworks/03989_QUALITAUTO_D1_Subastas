@@ -1,6 +1,6 @@
 {{-- <div class="auction__filters-categories">
         <div class="auction__filters-collapse d-flex align-items-center justify-content-space-between" role="button" data-toggle="collapse" href="#auction_categories" aria-expanded="true" aria-controls="auction_categories">
-            <div class="filters_titles">{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</div>
+            <div class="filters_titles">{{ trans($theme.'-app.lot_list.categories') }}</div>
             <i class="fa fa-sort-down"></i>
         </div>
 

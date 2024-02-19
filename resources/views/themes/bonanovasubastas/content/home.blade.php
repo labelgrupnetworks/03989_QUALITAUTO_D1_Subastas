@@ -13,7 +13,7 @@
 <div class="lotes_destacados">
 	<div class="container">
 		<div class="title_lotes_destacados">
-			{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
+			{{ trans($theme.'-app.lot_list.lotes_destacados') }}
 		</div>
 
 		<div class="row">
@@ -56,7 +56,7 @@
                     margin: 10px auto;
                     border-radius: 40px;
                     color: #ABB2B9;">
-						{{ trans(\Config::get('app.theme').'-app.home.calendar-news') }}
+						{{ trans($theme.'-app.home.calendar-news') }}
 					</h2>
 					<div class="scroll-buttons hidden">
 						<div class="calendar-up" role="button"><i class="fa fa-chevron-up"></i></div>

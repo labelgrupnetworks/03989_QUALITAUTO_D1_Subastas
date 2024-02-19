@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -21,7 +21,7 @@ var lang = '{{ \Config::get("app.locale")}}';
         $bread = array();
 	if( !empty(\Config::get("app.uniqueArtCategory"))){
 		#hace falta tener en links la traducción montada con el nombre de la categoria y _category
-		$bread[] = array("url" => route('articles-category',["category" => trans(\Config::get('app.theme').'-app.links.'.\Config::get("app.uniqueArtCategory").'_category')]), "name" =>trans(\Config::get("app.theme")."-app.articles.articles") );
+		$bread[] = array("url" => route('articles-category',["category" => trans($theme.'-app.links.'.\Config::get("app.uniqueArtCategory").'_category')]), "name" =>trans(\Config::get("app.theme")."-app.articles.articles") );
 	}else{
         $bread[] = array("url" => Route("articles"), "name" =>trans(\Config::get("app.theme")."-app.articles.articles") );
 	}

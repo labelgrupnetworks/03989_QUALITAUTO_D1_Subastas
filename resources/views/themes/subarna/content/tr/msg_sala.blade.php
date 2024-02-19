@@ -11,9 +11,9 @@
 
                 <div class="col-lg-4">
                     <button type="button" class="btn-primary btn btn-warning btn-enviar btn-chat-pre" id_mensaje="">
-                        {{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-send') }}
+                        {{ trans($theme.'-app.sheet_tr.chat-send') }}
                     </button>
-                    <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="" predefinido="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-delete') }}</button>
+                    <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="" predefinido="1">{{ trans($theme.'-app.sheet_tr.chat-delete') }}</button>
                 </div>
 
         </div>
@@ -59,8 +59,8 @@
                                                 </div>
 
                                                 <div class="col-lg-4">
-                                                    <button type="button" class="btn-primary btn btn-warning btn-chat-pre btn-enviar" id_mensaje="<?php echo $item->id_web_chat ?>"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-send') }}</button>
-                                                    <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="<?php echo $item->id_web_chat ?>" predefinido="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-delete') }}</button>
+                                                    <button type="button" class="btn-primary btn btn-warning btn-chat-pre btn-enviar" id_mensaje="<?php echo $item->id_web_chat ?>"> {{ trans($theme.'-app.sheet_tr.chat-send') }}</button>
+                                                    <button type="button" class="btn btn-danger btn-eliminar" id_mensaje="<?php echo $item->id_web_chat ?>" predefinido="1">{{ trans($theme.'-app.sheet_tr.chat-delete') }}</button>
                                                 </div>
                                                 
                                         </div>
@@ -74,7 +74,7 @@
                     </ul>
                         
 
-                        <!--<button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.tr.confirm') }}</button>-->
+                        <!--<button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.tr.confirm') }}</button>-->
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
         <div class="col-lg-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h2 class="msj">{{ trans(\Config::get('app.theme').'-app.sheet_tr.room_msg') }} ({{ strtoupper(\App::getLocale()) }})</h2>
+                    <h2 class="msj">{{ trans($theme.'-app.sheet_tr.room_msg') }} ({{ strtoupper(\App::getLocale()) }})</h2>
                 </div>
                 
                 <div class="panel-body">
@@ -214,14 +214,14 @@
                             </div>
 
                             <br />
-                            <button type="button" class="btn btn-warning btn-sm" id="btn-chat">{{ trans(\Config::get('app.theme').'-app.sheet_tr.chat-send') }}</button>
+                            <button type="button" class="btn btn-warning btn-sm" id="btn-chat">{{ trans($theme.'-app.sheet_tr.chat-send') }}</button>
                             <div class="col-lg-6 pull-right" style="text-align:right;">Predefinido: <input type="checkbox" name="predefinido" id="predefinido" autocomplete="off"></div>
                         </div>
                         <!--
                         <div class="input-group">
                             <input id="btn-input" type="text" class="form-control input-sm" placeholder="Escribe aquí el mensaje..." />
                             <span class="input-group-btn">
-                                <button class="btn btn-warning btn-sm" id="btn-chat">{{ trans(\Config::get('app.theme').'-app.tr.chat.send') }}</button>
+                                <button class="btn btn-warning btn-sm" id="btn-chat">{{ trans($theme.'-app.tr.chat.send') }}</button>
                             </span>
                         </div>
                     -->

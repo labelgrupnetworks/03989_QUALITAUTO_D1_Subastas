@@ -54,13 +54,13 @@
                             <th style="font-size:11px;font-family:'Helvetica',Arial,sans-serif;color:#6e6c6d;font-weight:normal;padding-top:10px;"> Any questions? Get in touch <a style="color:#6e6c6d;" href="https://www.subarna.net/es/pagina/contacto"> here</a> with our <br>customer service team.<br><hr style="border-left:none;border-top:none;border-right:none;border-bottom:1px solid #a7966c;height:1px;width:40%;margin:0 auto;margin-top:14px;"></th>
 			</tr>
 			<tr>
-                            <th style="font-size:11px;font-family:'Helvetica',Arial,sans-serif;color:#6e6c6d;font-weight:normal;padding-top:10px;"><?= trans(\Config::get('app.theme').'-app.emails.footer_ubicacion'); ?><br> <hr style="border-left:none;border-top:none;border-right:none;border-bottom:1px solid #a7966c;height:1px;width:40%;margin:0 auto;padding-top:10px;"></th>
+                            <th style="font-size:11px;font-family:'Helvetica',Arial,sans-serif;color:#6e6c6d;font-weight:normal;padding-top:10px;"><?= trans($theme.'-app.emails.footer_ubicacion'); ?><br> <hr style="border-left:none;border-top:none;border-right:none;border-bottom:1px solid #a7966c;height:1px;width:40%;margin:0 auto;padding-top:10px;"></th>
 			</tr>
 			<tr>
 				<th style="font-size:11px;font-family:'Helvetica',Arial,sans-serif;color:#6e6c6d;font-weight:normal;padding-top:10px;">
-					<a title="{{ trans(\Config::get('app.theme').'-app.foot.faq') }}" style="color:#6e6c6d;text-decoration:none;" href="<?=Config::get('app.url')."/".\App::getLocale()."/".trans(\Config::get('app.theme').'-app.links.faq') ?>">FAQ</a> |
-					<a title="{{ trans(\Config::get('app.theme').'-app.foot.privacy') }}" style="color:#6e6c6d;text-decoration:none;" href="<?php echo Config::get('app.url').Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')?>">Privacy Policy</a> |
-					<a title="{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}" style="color:#6e6c6d;text-decoration:none;" href="<?php echo Config::get('app.url').Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">Terms and conditions</a> |
+					<a title="{{ trans($theme.'-app.foot.faq') }}" style="color:#6e6c6d;text-decoration:none;" href="<?=Config::get('app.url')."/".\App::getLocale()."/".trans($theme.'-app.links.faq') ?>">FAQ</a> |
+					<a title="{{ trans($theme.'-app.foot.privacy') }}" style="color:#6e6c6d;text-decoration:none;" href="<?php echo Config::get('app.url').Routing::translateSeo('pagina').trans($theme.'-app.links.privacy')?>">Privacy Policy</a> |
+					<a title="{{ trans($theme.'-app.foot.term_condition') }}" style="color:#6e6c6d;text-decoration:none;" href="<?php echo Config::get('app.url').Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">Terms and conditions</a> |
 					<a title="Perfil" style="color:#6e6c6d;text-decoration:none;" href="{{ Config::get('app.url').\Routing::slug('login') }}">Profile</a>
 				</th>
 			</tr>

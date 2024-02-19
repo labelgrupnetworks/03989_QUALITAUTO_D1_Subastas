@@ -6,21 +6,21 @@
 			<input type="hidden" name="order" id="hidden_order" value="{{request('order')}}"   />
 
 			<div class="filters-auction-title d-flex align-items-center justify-content-space-between">
-					<span>{{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}</span>
+					<span>{{ trans($theme.'-app.lot_list.filters') }}</span>
 			</div>
 			<div class="filters-auction-texts">
-				<label class="filters-auction-label" for="description"><span>{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</span></label>
-				<input id="description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('description') }}">
+				<label class="filters-auction-label" for="description"><span>{{ trans($theme.'-app.lot_list.search') }}</span></label>
+				<input id="description" placeholder="{{ trans($theme.'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('description') }}">
 				<div class="filters-auction-divider-medium"></div>
 				@if(!empty($codSub) && !empty($refSession))
-					<label class="filters-auction-label" for="reference">{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</label>
-					<input id="reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('reference') }}">
+					<label class="filters-auction-label" for="reference">{{ trans($theme.'-app.lot_list.reference') }}</label>
+					<input id="reference" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm filter-auction-input" value="{{ app('request')->input('reference') }}">
 
 				@endif
 
 
 			<div class="filters-auction-divider-medium"></div>
-			<button class="btn btn-filter color-letter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+			<button class="btn btn-filter color-letter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
 
 			</div>
 

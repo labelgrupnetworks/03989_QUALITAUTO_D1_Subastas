@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @push('scripts')
@@ -35,7 +35,7 @@
                 @endif
 
                 <p class="text-danger h4 hidden msg_valoracion">
-                    {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.error') }}</p>
+                    {{ trans($theme . '-app.valoracion_gratuita.error') }}</p>
 
                 <div class="row">
                     <div class="col-md-4">

@@ -36,10 +36,10 @@ if (strpos($fullname, ',')) {
 								}
 								?>
 								<li>
-									<a translate="no" title="<?= trans(\Config::get('app.theme') . '-app.head.language_es') ?>"
+									<a translate="no" title="<?= trans($theme . '-app.head.language_es') ?>"
 										class="link-lang  color-letter {{ empty($ruta) ? 'active' : '' }} " {{ empty($ruta) ? '' : "href=$ruta" }}>
 
-										<span translate="no">{{ trans(\Config::get('app.theme') . '-app.home.' . $key) }}</span>
+										<span translate="no">{{ trans($theme . '-app.home.' . $key) }}</span>
 									</a>
 								</li>
 							</ul>
@@ -60,11 +60,11 @@ if (strpos($fullname, ',')) {
 				class="search-component-form flex-inline position-relative">
 				<div class="form-group">
 					<input class="form-control input-custom br-100"
-						placeholder="{{ trans(\Config::get('app.theme') . '-app.head.search_label') }}" type="text"
+						placeholder="{{ trans($theme . '-app.head.search_label') }}" type="text"
 						name="description" />
 				</div>
 				<button role="button" type="submit"
-					class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans(\Config::get('app.theme') . '-app.head.search_button') }}</button>
+					class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans($theme . '-app.head.search_button') }}</button>
 			</form>
 		</div>
 	@else
@@ -73,10 +73,10 @@ if (strpos($fullname, ',')) {
 				class="search-component-form flex-inline position-relative">
 				<div class="form-group">
 					<input class="form-control input-custom br-100"
-						placeholder="{{ trans(\Config::get('app.theme') . '-app.head.search_label') }}" type="text" name="texto" />
+						placeholder="{{ trans($theme . '-app.head.search_label') }}" type="text" name="texto" />
 				</div>
 				<button role="button" type="submit"
-					class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans(\Config::get('app.theme') . '-app.head.search_button') }}</button>
+					class="br-100 right-0 position-absolute btn btn-custom-search background-principal">{{ trans($theme . '-app.head.search_button') }}</button>
 			</form>
 		</div>
 	@endif
@@ -85,31 +85,31 @@ if (strpos($fullname, ',')) {
 	@endphp
 	<div class="logo-header mt-1 mb-1">
 		<a title="{{(\Config::get( 'app.name' ))}}" href="/">
-			<img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png"
+			<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png"
 				alt="{{(\Config::get( 'app.name' ))}}">
 		</a>
 		{{-- <div class="menu-responsive hidden-lg">
 			<div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">
-				<img class="img-responsive" style="max-width: 40px" src="/themes/{{\Config::get('app.theme')}}/assets/img/menu_icon.png" alt="">
+				<img class="img-responsive" style="max-width: 40px" src="/themes/{{$theme}}/assets/img/menu_icon.png" alt="">
 			</div>
 		</div> --}}
 	</div>
 	<nav class="menu-header">
 		<div class="menu-responsive">
 			<div role="button" class="menu-text d-flex justify-content-center align-items-center color-letter ">
-				{{ trans(\Config::get('app.theme') . '-app.head.menu') }}</div>
+				{{ trans($theme . '-app.head.menu') }}</div>
 		</div>
 
 		<div class="menu-principal">
 
 			<ul class="menu-principal-content d-flex justify-content-center align-items-center">
 				<span role="button"
-					class="close-menu-reponsive hidden-lg">{{ trans(\Config::get('app.theme') . '-app.head.close') }}</span>
-				<?php //   <li><a title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/">{{ trans(\Config::get('app.theme').'-app.home.home')}}</a></li>
+					class="close-menu-reponsive hidden-lg">{{ trans($theme . '-app.head.close') }}</span>
+				<?php //   <li><a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a></li>
 				?>
 				{{-- <li class="flex-display">
-                        <a class="color-letter flex-display link-header justify-center align-items-center" title="{{ trans(\Config::get('app.theme').'-app.home.home')}}" href="/{{$lang}}">
-                            <span>{{ trans(\Config::get('app.theme').'-app.home.home')}}</span>
+                        <a class="color-letter flex-display link-header justify-center align-items-center" title="{{ trans($theme.'-app.home.home')}}" href="/{{$lang}}">
+                            <span>{{ trans($theme.'-app.home.home')}}</span>
                         </a>
 					</li> --}}
 				@php
@@ -121,34 +121,34 @@ if (strpos($fullname, ',')) {
 
 					{{-- Botón de desktop --}}
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-xs hidden-sm hidden-md">
-						{{ trans(\Config::get('app.theme') . '-app.foot.know_us') }}
+						{{ trans($theme . '-app.foot.know_us') }}
 					</a>
 
 					{{-- Botón de móvil --}}
 					<a class="color-letter flex-display link-header justify-center align-items-center hidden-lg"
 						onclick="javascript:$('#menu_desp_conozcanos').toggle('blind',100)">
-						{{ trans(\Config::get('app.theme') . '-app.foot.know_us') }}
+						{{ trans($theme . '-app.foot.know_us') }}
 					</a>
 
 					<div class="menu-especial" id="menu_desp_conozcanos">
 						<p class="item">
 							<a href="{{ Routing::translateSeo(trans($theme . '-app.links.contact')) }}">
-								{{ trans(\Config::get('app.theme') . '-app.foot.contact_address') }}
+								{{ trans($theme . '-app.foot.contact_address') }}
 							</a>
 						</p>
 						<p class="item">
 							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.business') }}">
-								{{ trans(\Config::get('app.theme') . '-app.foot.business') }}
+								{{ trans($theme . '-app.foot.business') }}
 							</a>
 						</p>
 						<p class="item">
 							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.experts') }}">
-								{{ trans(\Config::get('app.theme') . '-app.foot.experts') }}
+								{{ trans($theme . '-app.foot.experts') }}
 							</a>
 						</p>
 						<p class="item">
 							<a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.segre-enlaces.other_services') }}">
-								{{ trans(\Config::get('app.theme') . '-app.foot.other_services') }}
+								{{ trans($theme . '-app.foot.other_services') }}
 							</a>
 						</p>
 
@@ -555,7 +555,7 @@ if (strpos($fullname, ',')) {
 					<li>
 						<a class="color-letter d-flex link-header justify-content-center align-items-center"
 							href="{{ \Routing::translateSeo('presenciales') }}">
-							<span>{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}</span>
+							<span>{{ trans($theme . '-app.foot.auctions') }}</span>
 						</a>
 					</li>
 				@endif
@@ -566,7 +566,7 @@ if (strpos($fullname, ',')) {
 				@if (!empty($has_subasta))
 					<li>
 						<a class="color-letter flex-display link-header justify-center align-items-center"
-							href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans(\Config::get('app.theme') . '-app.foot.historico') }}</span>
+							href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme . '-app.foot.historico') }}</span>
 						</a>
 					</li>
 				@endif --}}
@@ -574,32 +574,32 @@ if (strpos($fullname, ',')) {
 
 				{{-- <li class="li-color">
 					<a onclick="javascript:$('#menu_desp').toggle('blind',100)" style="cursor: pointer;">
-						{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}
+						{{ trans($theme . '-app.foot.auctions') }}
 						&nbsp;
 						<span class="caret"></span>
 					</a>
 
 					<div id="menu_desp">
 						<p><a href="{{ \Routing::translateSeo('presenciales') }}?finished=false"
-				 class="item"			>{{ trans(\Config::get('app.theme') . '-app.foot.auctions') }}</a></p>
+				 class="item"			>{{ trans($theme . '-app.foot.auctions') }}</a></p>
 						<p><a
-								href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans(\Config::get('app.theme') . '-app.foot.auctions-finished') }}</a>
+								href="{{ \Routing::translateSeo('presenciales') }}?finished=true">{{ trans($theme . '-app.foot.auctions-finished') }}</a>
 						</p>
 					</div>
 				</li> --}}
 
 
 				{{-- <li>
-					<a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+					<a href="{{ \Routing::translateSeo('todas-subastas') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
 				</li>
 				<li>
-                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.calendar')}}</span></a>
+                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
                 </li>
                  <li>
-                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos') }}"><span> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</span></a>
+                    <a class="color-letter flex-display link-header justify-center align-items-center" title="" href="{{ \Routing::translateSeo('valoracion-articulos') }}"><span> {{ trans($theme.'-app.home.free-valuations') }}</span></a>
                 </li>
                 <li>
-                    <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans(\Config::get('app.theme').'-app.foot.contact')}}" href="{{ \Routing::translateSeo(trans(\Config::get('app.theme').'-app.links.contact')) }}"><span>{{ trans(\Config::get('app.theme').'-app.foot.contact')}}</span></a>
+                    <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="{{ \Routing::translateSeo(trans($theme.'-app.links.contact')) }}"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
 				</li> --}}
 
 			</ul>
@@ -643,39 +643,39 @@ if (strpos($fullname, ',')) {
 			@if (!Session::has('user'))
 				<div class="user-account-login">
 					<a class="flex-display justify-center align-items-center btn_login_desktop btn_login"
-						title="<?= trans(\Config::get('app.theme') . '-app.login_register.login') ?>" href="javascript:;">
-						<?= trans(\Config::get('app.theme') . '-app.login_register.login') ?>
+						title="<?= trans($theme . '-app.login_register.login') ?>" href="javascript:;">
+						<?= trans($theme . '-app.login_register.login') ?>
 					</a>
 				</div>
 			@else
 				<div class="my-account">
-					<img width="25px;" class="logo-company" src="/themes/{{ \Config::get('app.theme') }}/assets/img/user.png"
+					<img width="25px;" class="logo-company" src="/themes/{{ $theme }}/assets/img/user.png"
 								alt="{{ \Config::get('app.name') }}">
 
 					<div class="text-center visible-lg">
 						@if (!empty($name))
 							<div style='font-size: 11px'><b><?= $name ?></b></div>
 						@endif
-						<span>{{ trans(\Config::get('app.theme') . '-app.login_register.my_panel') }}</span>
+						<span>{{ trans($theme . '-app.login_register.my_panel') }}</span>
 					</div>
 
 					<div class="mega-menu menu-especial">
 						<div class="item">
 							<a href="{{ \Routing::slug('user/panel/orders') }}" >
-                            	{{ trans(\Config::get('app.theme').'-app.login_register.my_panel') }}
+                            	{{ trans($theme.'-app.login_register.my_panel') }}
 							</a>
 						</div>
 
 						@if (Session::get('user.admin'))
 						<div class="item">
 							<a href="/admin" target="_blank">
-								{{ trans(\Config::get('app.theme') . '-app.login_register.admin') }}</a>
+								{{ trans($theme . '-app.login_register.admin') }}</a>
 						</div>
 						@endif
 
 						<div class="item">
 							<a href="{{ \Routing::slug('logout') }}">
-								{{ trans(\Config::get('app.theme') . '-app.login_register.logout') }}</a>
+								{{ trans($theme . '-app.login_register.logout') }}</a>
 						</div>
 
 					</div>
@@ -689,10 +689,10 @@ if (strpos($fullname, ',')) {
 	<div class="login_desktop_content">
 		<div class="only-login white-background">
 			<div class="login-content-form">
-				<img class="closedd" role="button" src="/themes/{{ \Config::get('app.theme') }}/assets/img/shape.png"
+				<img class="closedd" role="button" src="/themes/{{ $theme }}/assets/img/shape.png"
 					alt="Close">
 				<div class="login_desktop_title">
-					<?= trans(\Config::get('app.theme') . '-app.login_register.login') ?>
+					<?= trans($theme . '-app.login_register.login') ?>
 				</div>
 				<form data-toggle="validator" id="accerder-user-form"
 					class="flex-display justify-center align-items-center flex-column">
@@ -700,7 +700,7 @@ if (strpos($fullname, ',')) {
 					<div class="form-group">
 						<div class="input-login-group">
 							<i class="fa fa-user"></i>
-							<input class="form-control" placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.user') }}"
+							<input class="form-control" placeholder="{{ trans($theme . '-app.login_register.user') }}"
 								type="email" name="email" type="text">
 						</div>
 					</div>
@@ -708,7 +708,7 @@ if (strpos($fullname, ',')) {
 						<div class="input-login-group">
 							<i class="fa fa-key"></i>
 							<input class="form-control"
-								placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.contraseña') }}" type="password"
+								placeholder="{{ trans($theme . '-app.login_register.contraseña') }}" type="password"
 								name="password" maxlength="20">
 							<img class="view_password eye-password"
 								src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
@@ -718,26 +718,26 @@ if (strpos($fullname, ',')) {
 					<div class="pass-login-content">
 						<div class="text-center">
 							<button id="accerder-user" class="button-principal" type="button">
-								<div>{{ trans(\Config::get('app.theme') . '-app.login_register.acceder') }}</div>
+								<div>{{ trans($theme . '-app.login_register.acceder') }}</div>
 							</button>
 						</div>
 						<a onclick="cerrarLogin();" class="c_bordered pass_recovery_login"
 							data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery"
-							data-title="{{ trans(\Config::get('app.theme') . '-app.login_register.forgotten_pass_question') }}"
+							data-title="{{ trans($theme . '-app.login_register.forgotten_pass_question') }}"
 							href="javascript:;" data-toggle="modal"
-							data-target="#modalAjax">{{ trans(\Config::get('app.theme') . '-app.login_register.forgotten_pass_question') }}</a>
+							data-target="#modalAjax">{{ trans($theme . '-app.login_register.forgotten_pass_question') }}</a>
 
 					</div>
 				</form>
 				<div class="login-separator"></div>
-				<p class="text-center">{{ trans(\Config::get('app.theme') . '-app.login_register.not_account') }}</p>
+				<p class="text-center">{{ trans($theme . '-app.login_register.not_account') }}</p>
 				<div class="create-account-link">
 					@if (empty($registration_disabled))
-						<a class="" title="{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}"
-							href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme') . '-app.login_register.register') }}</a>
+						<a class="" title="{{ trans($theme . '-app.login_register.register') }}"
+							href="{{ \Routing::slug('register') }}">{{ trans($theme . '-app.login_register.register') }}</a>
 					@else
 						<p class="text-center" style="color: darkred;">
-							{{ trans(\Config::get('app.theme') . '-app.login_register.registration_disabled') }}</p>
+							{{ trans($theme . '-app.login_register.registration_disabled') }}</p>
 					@endif
 				</div>
 			</div>

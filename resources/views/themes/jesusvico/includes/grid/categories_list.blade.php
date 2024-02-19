@@ -3,7 +3,7 @@
     <div class="auction__filters-collapse filter-parent-collapse with-caret text-center bg-lb-primary-150" data-bs-toggle="collapse"
         href="#auction_categories" role="button" aria-expanded="true" aria-controls="auction_categories">
 
-		<div class="filter-title">{{ trans(\Config::get('app.theme') . '-app.lot_list.categories') }}</div>
+		<div class="filter-title">{{ trans($theme . '-app.lot_list.categories') }}</div>
     </div>
 
     <div class="auction__filters-type-list show filter-child-collapse p-0" id="auction_categories">
@@ -12,7 +12,7 @@
 			<div class="form-check">
 				<input type="radio" name="category" id="all_categories" value="" class="filter_lot_list_js form-check-input" @checked(empty($filters["category"]))/>
 				<label for="all_categories" class="form-check-label">
-					{{trans(\Config::get('app.theme').'-app.lot_list.all_categories')}}
+					{{trans($theme.'-app.lot_list.all_categories')}}
 					({{ Tools::numberformat($count_lots) }})
 				</label>
 			</div>

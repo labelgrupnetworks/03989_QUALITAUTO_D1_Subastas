@@ -88,7 +88,7 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.lot.loading') }}</p>
+						<p class="txt_loading"> {{ trans($theme.'-app.lot.loading') }}</p>
 						<div class="loader"></div>
 					</div>
 				</div>
@@ -100,7 +100,7 @@
                 <div class="panel-body">
                         <div class="modal-wrapper">
                                 <div class="modal-text text-center">
-                                        <p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.lot.connect_to_serv') }}</p>
+                                        <p class="txt_loading"> {{ trans($theme.'-app.lot.connect_to_serv') }}</p>
                                         <div class="loader"></div>
                                 </div>
                         </div>
@@ -112,9 +112,9 @@
 		<div class="panel-body">
 			<div class="modal-wrapper">
 				<div class="modal-text text-center">
-					<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy_lot_question') }}</p>
-					<button class="btn btn-primary modal-confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-					<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+					<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
+					<button class="btn btn-primary modal-confirm btn-custom">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+					<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 				</div>
 			</div>
 		</div>
@@ -125,22 +125,22 @@
 <?php  //estructura necesaria para crear lso elementos del listado de pujas  ?>
     <div id="duplicalte_list_pujas" class="hist_item hidden">
         <span class="col-xs-8">
-            <span>{{ trans(\Config::get('app.theme').'-app.lot.bidder') }}</span> (
-            <span class="yo">{{ trans(\Config::get('app.theme').'-app.lot.I') }}</span>
+            <span>{{ trans($theme.'-app.lot.bidder') }}</span> (
+            <span class="yo">{{ trans($theme.'-app.lot.I') }}</span>
             <span class="uno hint--bottom-right hint--medium" data-hint=""></span>
-            <span class="dos hint--bottom-right hint--medium" data-hint="<?= nl2br(trans(\Config::get('app.theme').'-app.lot.puja_automatica')) ?>">A</span>)
+            <span class="dos hint--bottom-right hint--medium" data-hint="<?= nl2br(trans($theme.'-app.lot.puja_automatica')) ?>">A</span>)
             <span class="date"></span>
         </span>
         <span class="col-xs-4">
-            <span class="tres_item"><span class="price "> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</span></span>
+            <span class="tres_item"><span class="price "> {{ trans($theme.'-app.lot.eur') }}</span></span>
         </span>
    </div>
 
-<!--<div id="price_min_surpass" class="info hidden"><div class="col-xs-12 ">{{ trans(\Config::get('app.theme').'-app.lot.minimal-price') }} <strong> {{$lote_actual->impres_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div></div>-->
+<!--<div id="price_min_surpass" class="info hidden"><div class="col-xs-12 ">{{ trans($theme.'-app.lot.minimal-price') }} <strong> {{$lote_actual->impres_asigl0}} {{ trans($theme.'-app.lot.eur') }}</strong></div></div>-->
 <?php  //view more debe llevar el hidden para que funcione correctamente, el customized_tr_main ya se lo quitara si es necesario ?>
 <div id="view_more" class="more more-historic-bids hidden col-xs-12 text-right hidden">
     <a title="ver todas"  data-toggle="collapse" data-target="#pujas-collapse" href="javascript:view_all_bids();">
-     <span id="view_more_text">{{ trans(\Config::get('app.theme').'-app.lot.see-all') }} </span>
-    <span id="hide_bids_text" class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
+     <span id="view_more_text">{{ trans($theme.'-app.lot.see-all') }} </span>
+    <span id="hide_bids_text" class="hidden">{{ trans($theme.'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
 
 </div>

@@ -46,9 +46,9 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="content">
-                        <img class="logo" src="/themes/<?= \Config::get('app.theme')?>/assets/img/logo.png" alt="">
-                        <div class="title">{{ trans(\Config::get('app.theme').'-app.global.page_not_found') }}</div>
-                        <a href="/{{\App::getLocale()}}">{{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a>
+                        <img class="logo" src="/themes/<?= $theme?>/assets/img/logo.png" alt="">
+                        <div class="title">{{ trans($theme.'-app.global.page_not_found') }}</div>
+                        <a href="/{{\App::getLocale()}}">{{ trans($theme.'-app.global.go_home') }}</a>
                     </div>
                 </div>
             </div>

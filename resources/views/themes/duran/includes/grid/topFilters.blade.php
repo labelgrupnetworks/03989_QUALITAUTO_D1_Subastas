@@ -31,15 +31,15 @@
 
 					@endif
 					@if(!empty(request('liveLots')))
-						<span data-del_filter="#liveLots" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i> {{trans(\Config::get('app.theme').'-app.lot_list.live_lots_filter')}}       </span>
+						<span data-del_filter="#liveLots" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i> {{trans($theme.'-app.lot_list.live_lots_filter')}}       </span>
 
 					@endif
 					@if(!empty(request('noAward')))
-						<span data-del_filter="#no-award" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i>  {{trans(\Config::get('app.theme').'-app.lot_list.no_award_filter')}}       </span>
+						<span data-del_filter="#no-award" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i>  {{trans($theme.'-app.lot_list.no_award_filter')}}       </span>
 
 					@endif
 					@if(!empty(request('award')))
-						<span data-del_filter="#award" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i> {{trans(\Config::get('app.theme').'-app.lot_list.award_filter')}}       </span>
+						<span data-del_filter="#award" class="del_filter_js  filt-act cursor" ><i class="fas fa-times"></i> {{trans($theme.'-app.lot_list.award_filter')}}       </span>
 
 					@endif
 					<?php //el filtro de tipo de subasta solo debe aparecer por categorias , no por subasta ya que no se podrá quitar   ?>
@@ -84,20 +84,20 @@
 							}
 						}
 						   // ponemos puntos de millar            ?>
-						{{ Tools::numberformat($count_lots) }}  {{ trans(\Config::get('app.theme').'-app.lot_list.results') }}
+						{{ Tools::numberformat($count_lots) }}  {{ trans($theme.'-app.lot_list.results') }}
 					</span>
 
 					{{-- FILTRO DE SUBASTAS HISTÓRICAS --}}
 						{{-- estará oculto a no ser que haya lotes en el historico --}}
 							<span id="seeHistoricLots_JS" class="gridFilterHistoric hidden">
-								{!! trans(\Config::get('app.theme').'-app.lot_list.see_historic_lots') !!}
+								{!! trans($theme.'-app.lot_list.see_historic_lots') !!}
 							</span>
 
 
 
 								@if(request('historic'))
 									<span id="seeActiveLots_JS" class="gridFilterHistoric">
-										{{ trans(\Config::get('app.theme').'-app.lot_list.return_active_lots') }}
+										{{ trans($theme.'-app.lot_list.return_active_lots') }}
 									</span>
 										{{-- solo haremos la llamada si estamos en categorias y han buscado texto   && !empty(request('description')--}}
 								@elseif(empty($auction))
@@ -116,39 +116,39 @@
 					<select class="form-control" id="order_selected" >
 
 						<option value="nameweb" @if ($filters["order"] == 'nameweb') selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
+							{{ trans($theme.'-app.lot_list.order') }}:   {{ trans($theme.'-app.lot_list.name') }}
 						</option>
 						<option value="price_asc" @if ($filters["order"] == 'price_asc') selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
+							{{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.price_asc') }}
 						</option>
 						<option value="price_desc" @if ($filters["order"] == 'price_desc') selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
+							{{ trans($theme.'-app.lot_list.order') }}:      {{ trans($theme.'-app.lot_list.price_desc') }}
 						</option>
 						<option value="ref" @if ($filters["order"] == 'ref' || empty($filters["order"]) ) selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+							{{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.reference') }}
 						</option>
 						<option value="hbids" @if ($filters["order"] == 'hbids') selected  @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }}
+							{{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.higher_bids') }}
 						</option>
 						<option value="mbids" @if ($filters["order"] == 'mbids') selected  @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }}
+							{{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.more_bids') }}
 						</option>
 						<option value="lastbids" @if ($filters["order"] == 'lastbids') selected  @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.last_bids') }}
+							{{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.last_bids') }}
 						</option>
 						@if(!empty($auction) && $auction->tipo_sub == 'O')
 							<option value="ffin" @if ($filters["order"] == 'ffin') selected @endif >
-								{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
+								{{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_near') }} </b>
 							</option>
 
 						@endif
 
 						@if(!empty($auction) && ($auction->tipo_sub == 'O' || $auction->tipo_sub == 'V'  || $auction->tipo_sub == 'E' ))
 						<option value="orden_asc" @if ($filters["order"] == 'orden_asc') selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b> {{ trans(\Config::get('app.theme').'-app.lot_list.ordenacion_menor') }}   </b>
+							{{ trans($theme.'-app.lot_list.order') }}:   <b> {{ trans($theme.'-app.lot_list.ordenacion_menor') }}   </b>
 						</option>
 						<option value="orden_desc" @if ($filters["order"] == 'orden_desc') selected @endif >
-							{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b> {{ trans(\Config::get('app.theme').'-app.lot_list.ordenacion_mayor') }}   </b>
+							{{ trans($theme.'-app.lot_list.order') }}:   <b> {{ trans($theme.'-app.lot_list.ordenacion_mayor') }}   </b>
 						</option>
 
 						@endif

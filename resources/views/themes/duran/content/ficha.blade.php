@@ -139,7 +139,7 @@ if($subasta_venta){
 
 									@if($lote_actual->ministerio_hces1=='S')
 									<div class="col-xs-12 pt-2">
-										{!! trans(\Config::get('app.theme').'-app.lot.info-ministerio') !!}
+										{!! trans($theme.'-app.lot.info-ministerio') !!}
 									</div>
 									@endif
 
@@ -161,7 +161,7 @@ if($subasta_venta){
 
 
 												<div class="col-xs-12 col-sm-12 lotes_destacados">
-													<div class="mas-pujados-title color-letter"><span> {{ trans(\Config::get('app.theme').'-app.artist.relatedLots') }}</span>
+													<div class="mas-pujados-title color-letter"><span> {{ trans($theme.'-app.artist.relatedLots') }}</span>
 													</div>
 
 													<div class='loader hidden'></div>
@@ -210,18 +210,18 @@ if($subasta_venta){
 												class="info-type-auction @if($subasta_online) sub-online @elseif($subasta_web) sub-web @elseif($subasta_venta) sub-venta @endif">
 
 												@if($subasta_online)
-												{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+												{{ trans($theme.'-app.subastas.lot_subasta_online') }}
 												@elseif($subasta_web)
-												{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+												{{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
 												@elseif($subasta_venta)
-												{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_venta') }}
+												{{ trans($theme.'-app.subastas.lot_subasta_venta') }}
 												@endif
 											</div>
 										</div>
 										{{-- De moment ose oculta
 												<div class="col-md-4 text-right">
 														<div class="seguir-lotes d-flex align-items-center justify-content-flex-end">
-														<a href="">  {{ trans(\Config::get('app.theme').'-app.lot.seguir_similares') }} </a>
+														<a href="">  {{ trans($theme.'-app.lot.seguir_similares') }} </a>
 													<i class="fas fa-info-circle"></i>
 												</div>
 											</div>
@@ -239,9 +239,9 @@ if($subasta_venta){
 								<div class="no-padding">
 									<div class="fecha-subasta">
 										@if($subasta_web)
-										{{ trans(\Config::get('app.theme').'-app.lot.subasta_empieza') }}
+										{{ trans($theme.'-app.lot.subasta_empieza') }}
 										@else
-										{{ trans(\Config::get('app.theme').'-app.lot.subasta_cierra') }}
+										{{ trans($theme.'-app.lot.subasta_cierra') }}
 										@endif
 									</div>
 								</div>
@@ -264,7 +264,7 @@ if($subasta_venta){
 									</div>
 									@elseif($cerrado)
 									<div class="info-type-auction finalizado">
-										{{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}</div>
+										{{ trans($theme.'-app.subastas.finalized') }}</div>
 
 									@endif
 
@@ -305,22 +305,22 @@ if($subasta_venta){
 									@endif
 
 
-									<div class="terminos">{!! trans(\Config::get('app.theme').'-app.lot.terminos_condiciones') !!}</div>
+									<div class="terminos">{!! trans($theme.'-app.lot.terminos_condiciones') !!}</div>
 
 									@if(!Session::has('user') && !$cerrado && !$subasta_venta)
-									<div class="info-compra">{!! trans(\Config::get('app.theme').'-app.msg_error.mustLogin') !!}</div>
+									<div class="info-compra">{!! trans($theme.'-app.msg_error.mustLogin') !!}</div>
 									@endif
 									<div class="metodos-pago">
 
 										<a href="javascript:;" data-toggle="modal" data-target="#modalAjax"
 											class="info-ficha-lot c_bordered"
 											data-ref="{{ Routing::translateSeo('pagina')."info-metodos-pago"  }}?modal=1"
-											data-title="{{ trans(\Config::get('app.theme').'-app.lot.title_info_metodos_pago') }}"><i
+											data-title="{{ trans($theme.'-app.lot.title_info_metodos_pago') }}"><i
 												class="fas fa-info-circle"></i></a>
-										<p>{{ trans(\Config::get('app.theme').'-app.lot.metodos_pago') }}</p>
+										<p>{{ trans($theme.'-app.lot.metodos_pago') }}</p>
 										<i class="fab fa-cc-visa"></i>
 										<i class="fab fa-cc-mastercard"></i>
-										<span>{!! trans(\Config::get('app.theme').'-app.lot.transferencia') !!}</span>
+										<span>{!! trans($theme.'-app.lot.transferencia') !!}</span>
 										<span style='margin-left: 15px;'><img src="/default/img/logos/bizum-ico.png" style="height: 35px;"> <strong>	Bizum </strong>
 									</div>
 								</div>
@@ -366,7 +366,7 @@ if($subasta_venta){
 				</span>
 			</div>
 			@elseif($cerrado)
-			<div class="info-type-auction finalizado">{{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}
+			<div class="info-type-auction finalizado">{{ trans($theme.'-app.subastas.finalized') }}
 			</div>
 
 			@endif

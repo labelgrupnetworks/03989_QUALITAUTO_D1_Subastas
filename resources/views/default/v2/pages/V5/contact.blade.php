@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @push('scripts')
@@ -15,14 +15,14 @@
 @section('content')
 
 @php
-$bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') );
+$bread[] = array("name" => trans($theme.'-app.foot.contact') );
 @endphp
 
 <main>
 <div class="container">
 	@include('includes.breadcrumb')
 
-	<h1>{{trans(\Config::get('app.theme').'-app.foot.contact') }}</h1>
+	<h1>{{trans($theme.'-app.foot.contact') }}</h1>
 </div>
 
 <div class="container">

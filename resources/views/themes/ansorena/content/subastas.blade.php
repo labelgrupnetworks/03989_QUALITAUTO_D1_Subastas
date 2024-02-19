@@ -52,7 +52,7 @@ foreach ($data['auction_list'] as $value) {
                             </div>
                             <div class="textAuctionList">
                                 <p class="textAuctionList-auction">
-                                    {{ trans(\Config::get('app.theme') . '-app.subastas.inf_subasta_subasta') }}
+                                    {{ trans($theme . '-app.subastas.inf_subasta_subasta') }}
                                     {{ $subasta->cod_sub }}
                                 </p>
                                 <p class="textAuctionList-date">
@@ -67,7 +67,7 @@ foreach ($data['auction_list'] as $value) {
                                         <a class=" btn realTimeButton"
                                             href="{{ \Tools::url_real_time_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions) }}"
                                             target="_blank">
-                                            {{ trans(\Config::get('app.theme') . '-app.lot_list.bid_live') }}
+                                            {{ trans($theme . '-app.lot_list.bid_live') }}
                                         </a>
                                     </p>
                                 @endif

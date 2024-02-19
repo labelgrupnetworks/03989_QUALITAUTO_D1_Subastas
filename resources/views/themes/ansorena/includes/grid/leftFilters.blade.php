@@ -20,7 +20,7 @@
                 class="timer mt-1"></p>
         </b>
         <p>{{ \Tools::getDateFormat($auction->session_start, 'Y-m-d H:i:s', 'd/m/Y H:i') }}
-            {{ trans(\Config::get('app.theme') . '-app.lot_list.time_zone') }}</p>
+            {{ trans($theme . '-app.lot_list.time_zone') }}</p>
     </div>
 @endif
 

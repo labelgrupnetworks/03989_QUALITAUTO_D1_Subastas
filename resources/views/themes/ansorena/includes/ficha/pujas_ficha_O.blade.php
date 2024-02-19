@@ -86,7 +86,7 @@
                 href='{{ \Tools::url_real_time_auction($data['subasta_info']->lote_actual->cod_sub, $data['subasta_info']->lote_actual->name, $data['subasta_info']->lote_actual->id_auc_sessions) }}'>
                 <div class="bid-online"></div>
                 <div class="bid-online animationPulseRed"></div>
-                <?= trans(\Config::get('app.theme') . '-app.lot.bid_live') ?>
+                <?= trans($theme . '-app.lot.bid_live') ?>
             </a>
         </div>
     @endif
@@ -106,7 +106,7 @@
 
             {{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
             @if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
-                <p class="require-wallet">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</p>
+                <p class="require-wallet">{!! trans($theme . '-app.lot.require_wallet') !!}</p>
             @else
                 <p class="insert-bid insert-max-bid mb-1">
                     {{ trans("$theme-app.lot.insert_max_puja") }}

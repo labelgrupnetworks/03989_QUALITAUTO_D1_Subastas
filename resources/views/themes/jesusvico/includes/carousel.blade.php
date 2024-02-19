@@ -35,7 +35,7 @@
             </h4>
 
             <h4 class="lot-buy-to">
-                <span>{{ trans(\Config::get('app.theme') . '-app.subastas.buy_to') }}</span>
+                <span>{{ trans($theme . '-app.subastas.buy_to') }}</span>
                 <span>{{ $awardPrice }}</span>
             </h4>
         </div>

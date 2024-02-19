@@ -15,7 +15,7 @@
         <div class="carrousel-lots-check d-flex justify-content-end">
             <input class="check-input" id="j-followCarrousel" type="checkbox" value="" checked>
             <label class="check-label" for="j-followCarrousel">
-                {{ trans(\Config::get('app.theme') . '-app.sheet_tr.follow') }}
+                {{ trans($theme . '-app.sheet_tr.follow') }}
             </label>
         </div>
     </div>

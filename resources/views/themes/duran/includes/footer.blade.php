@@ -14,7 +14,7 @@
 
 					<div class="col-xs-12 col-md-12 col-lg-4 text-center mt-3 mb-3">
 
-							<img class="logo-company" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.png"  alt="{{(\Config::get( 'app.name' ))}}" width="90%">
+							<img class="logo-company" src="/themes/{{$theme}}/assets/img/logo_footer.png"  alt="{{(\Config::get( 'app.name' ))}}" width="90%">
 
 							<ul  class="ul-format list-lang d-inline-flex redes-sociales d-flex justify-content-center">
 								<li class="facebook">
@@ -38,7 +38,7 @@
 									</a>
 								</li>
 								<li class="email">
-									<a href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact')  }}" >
+									<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.contact')  }}" >
 										<i class="fas fa-envelope"></i>
 									</a>
 								</li>
@@ -52,7 +52,7 @@
 
 							<div class="col-xs-12">
 								<div class="footer-title">
-									{{ trans(\Config::get('app.theme').'-app.foot.enlaces_interes') }}
+									{{ trans($theme.'-app.foot.enlaces_interes') }}
 								</div>
 							</div>
 
@@ -70,11 +70,11 @@
 										@endforeach
 								   @endif
 
-								   	<li><a class="footer-link"  href="/en/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.online_auction')) }} </a></li>
+								   	<li><a class="footer-link"  href="/en/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans($theme.'-app.foot.online_auction')) }} </a></li>
 
-									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans(\Config::get('app.theme').'-app.metas.title_historic'))  }}</a></li>
-									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans(\Config::get('app.theme').'-app.foot.compra_ahora')) }}</a></li>
-									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.ventas_privadas')  ) }}</a></li>
+									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans($theme.'-app.metas.title_historic'))  }}</a></li>
+									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans($theme.'-app.foot.compra_ahora')) }}</a></li>
+									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans($theme.'-app.foot.ventas_privadas')  ) }}</a></li>
 									<li>
 										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-rolex">{{ mb_strtoupper ("subasta ROLEX"  ) }}</a>
 									</li>
@@ -123,38 +123,38 @@
 
 									<li><a class="footer-link"  href="{{ \Routing::translateSeo('calendar') }}">{{ mb_strtoupper (trans($theme.'-app.foot.calendar')) }}</a></li>
 									<li>
-											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.how_to_buy')  ) }}</a>
+											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.how_to_buy')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.how_to_sell')  ) }}</a>
+											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_sell')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.how_to_sell')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.valorar_producto')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.tasaciones')  ) }}</a>
+											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.valorar_producto')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.tasaciones')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.informacion-general')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.informacion-general')  ) }}</a>
+											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.informacion-general')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.informacion-general')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.informacion-comprador')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.informacion-comprador')  ) }}</a>
+											<a class="footer-link" href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.informacion-comprador')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.informacion-comprador')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.informacion-vendedor')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.informacion-vendedor')  ) }}</a>
+											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.informacion-vendedor')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.informacion-vendedor')  ) }}</a>
 									</li>
 
 									<li>
-												<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cambios-devoluciones')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.cambios_devoluciones')  ) }}</a>
+												<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.cambios-devoluciones')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.cambios_devoluciones')  ) }}</a>
 									</li>
 									<li>
-										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.privacy')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.privacy')  ) }}</a>
+										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.privacy')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.privacy')  ) }}</a>
 									</li>
 									<li>
-										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.cookies')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.cookies')  ) }}</a>
+										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.cookies')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.cookies')  ) }}</a>
 									</li>
 									<li>
-										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.aviso_legal')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.aviso_legal')  ) }}</a>
+										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.aviso_legal')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.aviso_legal')  ) }}</a>
 									</li>
 									<li>
-										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.envios')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.envios')  ) }}</a>
+										<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.envios')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.envios')  ) }}</a>
 									</li>
 									<li>
 										<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
@@ -177,7 +177,7 @@
 						<div class="row">
 							<div class="col-xs-12 col-md-6">
 								<div class="footer-title">
-									{{trans(\Config::get('app.theme').'-app.lot.categories')}}
+									{{trans($theme.'-app.lot.categories')}}
 								</div>
 								<ul class="ul-format footer-ul">
 
@@ -193,23 +193,23 @@
 							</div>
 							<div class="col-xs-12 col-md-6 mb-3">
 								<div class="footer-title">
-									{{ trans(\Config::get('app.theme').'-app.foot.duran_subastas') }}
+									{{ trans($theme.'-app.foot.duran_subastas') }}
 								</div>
 								<ul class="ul-format footer-ul">
 									<li>
-											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.about_us')  ) }}</a>
+											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.about_us')  ) }}</a>
 									</li>
 									<?php /*
 									<li>
-											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.buzon-sugerencias')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.buzon_sugerencias')  ) }}</a>
+											<a class="footer-link"href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.buzon-sugerencias')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.buzon_sugerencias')  ) }}</a>
 									</li>
 									*/
 									?>
 									<li>
-											<a class="footer-link"href="/{{\Config::get('app.locale')}}/{{ trans(\Config::get('app.theme').'-app.links.faq')  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.faq')  ) }}</a>
+											<a class="footer-link"href="/{{\Config::get('app.locale')}}/{{ trans($theme.'-app.links.faq')  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.faq')  ) }}</a>
 									</li>
 									<li>
-											<a class="footer-link"href="{{ Routing::translateSeo(trans(\Config::get('app.theme').'-app.links.contact'))  }}">{{ mb_strtoupper ( trans(\Config::get('app.theme').'-app.foot.contact')  ) }}</a>
+											<a class="footer-link"href="{{ Routing::translateSeo(trans($theme.'-app.links.contact'))  }}">{{ mb_strtoupper ( trans($theme.'-app.foot.contact')  ) }}</a>
 									</li>
 
 								</ul>
@@ -232,7 +232,7 @@
 			<div class="col-xs-12 col-sm-12">
 			<p>Durán Sala de Arte {{ date("Y")}}</p>
 				<p>
-				<a style="text-transform: uppercase" class="color-letter" role="button" title="{{ trans(\Config::get('app.theme').'-app.foot.developedSoftware') }}" href="{{ trans(\Config::get('app.theme').'-app.foot.developed_url') }}" target="no_blank">{{ trans(\Config::get('app.theme').'-app.foot.developedBy')   }}</a>
+				<a style="text-transform: uppercase" class="color-letter" role="button" title="{{ trans($theme.'-app.foot.developedSoftware') }}" href="{{ trans($theme.'-app.foot.developed_url') }}" target="no_blank">{{ trans($theme.'-app.foot.developedBy')   }}</a>
 				</p>
 			</div>
 		</div>

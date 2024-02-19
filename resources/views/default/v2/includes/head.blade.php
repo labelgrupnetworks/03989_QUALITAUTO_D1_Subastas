@@ -10,7 +10,7 @@ header("X-Frame-Options:     DENY");
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
 
 @yield('seo')
 

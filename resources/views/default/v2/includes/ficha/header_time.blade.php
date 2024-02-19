@@ -4,17 +4,17 @@
 
 		<h4 class="info-type-auction">
 			@if($subasta_online)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_online') }}
 			@elseif($subasta_inversa)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_inversa') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_inversa') }}
 			@elseif($subasta_web)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
 			@elseif($subasta_venta)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_venta') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_venta') }}
 			@elseif($subasta_make_offer)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_make_offer') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_make_offer') }}
 			@elseif($subasta_inversa)
-			{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_inversa') }}
+			{{ trans($theme.'-app.subastas.lot_subasta_inversa') }}
 			@endif
 		</h4>
 
@@ -26,13 +26,13 @@
 			</span>
 		</p>
 		@elseif($cerrado)
-		<p class="ficha-info-clock">{{ trans(\Config::get('app.theme').'-app.subastas.finalized') }}</p>
+		<p class="ficha-info-clock">{{ trans($theme.'-app.subastas.finalized') }}</p>
 		@endif
 	</div>
 
 	@if(!$subasta_make_offer)
 	<div class="ficha-date-closing">
-		{{ trans(\Config::get('app.theme').'-app.lot.closing_date') }} <span id="cierre_lote"></span>
+		{{ trans($theme.'-app.lot.closing_date') }} <span id="cierre_lote"></span>
 	</div>
 	@endif
 

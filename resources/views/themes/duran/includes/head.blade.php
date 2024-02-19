@@ -8,7 +8,7 @@ header("X-Frame-Options:     DENY");
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="initial-scale=1,minimum-scale=0.15, maximum-scale=2, user-scalable=yes">
-<meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
 
 <title>
 
@@ -17,7 +17,7 @@ header("X-Frame-Options:     DENY");
 	@elseif(!empty($seo->meta_title))
 		{{ $seo->meta_title }}
     @else
-        {{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+        {{ trans($theme.'-app.head.title_app') }}
     @endif
 
 
@@ -45,7 +45,7 @@ header("X-Frame-Options:     DENY");
 @elseif(!empty($seo->meta_title))
 	<meta name="title" content="{{ $seo->meta_title }}">
 @else
-<meta name="title" content="{{ trans(\Config::get('app.theme').'-app.head.title_app') }}">
+<meta name="title" content="{{ trans($theme.'-app.head.title_app') }}">
 @endif
 
 @if(!empty($data['seo']->meta_description))
@@ -53,7 +53,7 @@ header("X-Frame-Options:     DENY");
 @elseif(!empty($seo->meta_description))
 	<meta name="description" content="{{ $seo->meta_description }}">
 @else
-    <meta name="description" content="{{ trans(\Config::get('app.theme').'-app.head.meta_description') }}">
+    <meta name="description" content="{{ trans($theme.'-app.head.meta_description') }}">
 @endif
 @if(!empty($seo->meta_keywords))
 	<meta name="keywords" content="{{ $seo->meta_keywords }}">

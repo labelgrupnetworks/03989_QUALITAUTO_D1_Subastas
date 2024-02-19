@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -19,7 +19,7 @@
                         <a class="stretched-link" data-bs-toggle="modal" data-bs-target="#eventModal"
                             data-bs-id="{{ $id }}"></a>
                         <img class="event-popup-img"
-                            src="/img/banner/{{ \Config::get('app.theme') }}/{{ \Config::get('app.emp') }}/{{ $banner->id }}/{{ $id }}/ES.jpg"
+                            src="/img/banner/{{ $theme }}/{{ \Config::get('app.emp') }}/{{ $banner->id }}/{{ $id }}/ES.jpg"
                             alt="{{ $text }}">
                     </div>
                 @endforeach

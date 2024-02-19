@@ -27,7 +27,7 @@ $bread[] = array( "name" => $data['title']  );
     <div class="row">
 
         <div class="col-xs-12">
-            {!! trans(\Config::get('app.theme').'-app.valoracion_gratuita.text_no_loged') !!}
+            {!! trans($theme.'-app.valoracion_gratuita.text_no_loged') !!}
         </div>
     </div>
 

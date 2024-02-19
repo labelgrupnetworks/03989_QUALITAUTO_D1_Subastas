@@ -1,12 +1,12 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
 <?php
-	$bread[] = array("name" =>trans(\Config::get('app.theme').'-app.foot.departments'),"url" =>\Routing::translateSeo('departamentos')  );
+	$bread[] = array("name" =>trans($theme.'-app.foot.departments'),"url" =>\Routing::translateSeo('departamentos')  );
 ?>
 
 
@@ -34,7 +34,7 @@
                     <div class="container">
                         <div class="title_lotes_destacados principal-color">
 							<h3 class="title-home text-center">
-								{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.our_experts') }}
+								{{ trans($theme.'-app.valoracion_gratuita.our_experts') }}
 							</h3>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     $name_archive = '/img/PER/'.Config::get('app.gemp').$esp->per_especial1.'.jpg';
 
                     if (file_exists($name_archive)) {
-                       $name_archive = '/themes/'.\Config::get('app.theme').'/img/items/no_photo.png';
+                       $name_archive = '/themes/'.$theme.'/img/items/no_photo.png';
                     }
                     ?>
 
@@ -73,7 +73,7 @@
                     <div class="container">
                             <div class="title_lotes_destacados principal-color">
 								<h3 class="title-home text-center">
-									{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.contact_us') }}
+									{{ trans($theme.'-app.valoracion_gratuita.contact_us') }}
 								</h3>
 
                             </div>
@@ -84,30 +84,30 @@
 
 					<div class="col-xs-12 col-md-8 mt-3">
 
-						<p>{!! trans(\Config::get('app.theme').'-app.valoracion_gratuita.desc_assessment') !!}</p>
+						<p>{!! trans($theme.'-app.valoracion_gratuita.desc_assessment') !!}</p>
 
 						<form class="form" id="form-valoracion-adv">
 						   <input type="hidden" name="_token" value="{{ csrf_token() }}">
-						   <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion" required placeholder="{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.description') }}"></textarea>
+						   <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion" required placeholder="{{ trans($theme.'-app.valoracion_gratuita.description') }}"></textarea>
 						   <div class="row mt-3">
 							   <div class="col-md-12 form-group">
 								  <input class="form-control" id="files" type="file" accept="image/png, image/jpeg" name="imagen[]" multiple required>
 							   </div>
 							   <div class="col-md-12">
-								   <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.desc_img')  ?>
+								   <?=  trans($theme.'-app.valoracion_gratuita.desc_img')  ?>
 							   </div>
 						   </div>
 						   <div class="row mt-3">
 							   <div class="col-md-12 form-group">
-								   <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')  ?>
+								   <?=  trans($theme.'-app.valoracion_gratuita.name')  ?>
 								   <input type="text" name="name" required class="form-control">
 							   </div>
 							   <div class="col-md-12 form-group">
-								   <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')  ?>
+								   <?=  trans($theme.'-app.valoracion_gratuita.email')  ?>
 								   <input type="email" name="email" required class="form-control">
 							   </div>
 							   <div class="col-md-12 form-group">
-								   <?=  trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')  ?>
+								   <?=  trans($theme.'-app.valoracion_gratuita.telf')  ?>
 								   <input type="text" name="telf" required class="form-control">
 							   </div>
 						   </div>
@@ -117,13 +117,13 @@
 								<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"  id="html_element" data-callback="recaptcha_callback" ></div>
 								<div class="checkbox">
 									<label>
-										<input name="condiciones" required="" type="checkbox">{!! trans(\Config::get('app.theme').'-app.login_register.read_conditions_politic') !!}
+										<input name="condiciones" required="" type="checkbox">{!! trans($theme.'-app.login_register.read_conditions_politic') !!}
 
 									</label>
 					  			</div>
-				   					<div>* {{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}</div>
-								   <button type="submit" id="valoracion-adv" class="btn-valoracion  btn btn-primary mt-2" disabled=""><div class='loader hidden'></div>{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.send') }}</button>
-								   <h4 class="valoracion-h4 hidden msg_valoracion">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.error') }}</h4>
+				   					<div>* {{ trans($theme.'-app.login_register.all_fields_are_required') }}</div>
+								   <button type="submit" id="valoracion-adv" class="btn-valoracion  btn btn-primary mt-2" disabled=""><div class='loader hidden'></div>{{ trans($theme.'-app.valoracion_gratuita.send') }}</button>
+								   <h4 class="valoracion-h4 hidden msg_valoracion">{{ trans($theme.'-app.valoracion_gratuita.error') }}</h4>
 							  </div>
 						  </div>
 					 </form>

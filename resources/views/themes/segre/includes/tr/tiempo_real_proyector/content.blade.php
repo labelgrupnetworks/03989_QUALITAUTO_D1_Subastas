@@ -5,7 +5,7 @@
         </div>
 
 		<div class="lot">
-			<span id="lote_actual_main" class="">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
+			<span id="lote_actual_main" class="">{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
 
 				@if(\Config::get("app.bis") && \Config::get("app.bis")=="A")
 						{{ str_replace(array(".1",".2",".3", ".4", ".5", ".6"), array("-A", "-B", "-C", "-D", "-E"),  $data['subasta_info']->lote_actual->ref_asigl0)}}
