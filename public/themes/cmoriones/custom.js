@@ -18,7 +18,7 @@ async function sendInfoLot(event) {
 		url: '/api-ajax/ask-info-lot',
 		success: function(res) {
 
-			showMessage("¡Gracias! Hemos sido notificados.  ");
+			showMessage(messages.success.mensaje_enviado);
 			$("input[name=nombre]").val('');
 			$("input[name=email]").val('');
 			$("input[name=telefono]").val('');

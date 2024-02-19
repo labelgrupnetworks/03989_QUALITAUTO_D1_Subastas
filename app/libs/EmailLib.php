@@ -299,6 +299,7 @@ private $debug = true;
             $this->atributes['COUNTRY'] = $inf_user->pais_cli;
 			$this->atributes['RSOC_CLI'] = $inf_user->rsoc_cli;
 			$this->atributes['FISJUR'] = $inf_user->fisjur_cli;
+			$this->atributes['RIES_CLI'] = $inf_user->ries_cli;
 
             if (isset($inf_user->sexo_cli)) {
                 $this->setSexo_Cli($inf_user->sexo_cli, \App::getLocale());
@@ -323,6 +324,7 @@ private $debug = true;
                         if (isset($inf_user->sexo_cli)) {
                             $this->setSexo_Cli($inf_user->sexo_cli, $lang);
                         }
+						$this->lang = $default_lang;
                         $this->get_design($this->email->cod_email);
                     }
                 }

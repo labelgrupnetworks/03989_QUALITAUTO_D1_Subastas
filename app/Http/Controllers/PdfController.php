@@ -332,6 +332,12 @@ class PdfController extends Controller
 				if($hasMultiple){
 
 					foreach ($multipleBidder as $bidder) {
+
+						if($bidder->ratio_asigl1mt == 0) {
+							//Si el ratio es 0 no se muestra
+							continue;
+						}
+
 						$multiple[] = [
 							'ref' => $adjudicacion->ref,
 							'is_award' => !empty($adjudicacion->licit_csub),

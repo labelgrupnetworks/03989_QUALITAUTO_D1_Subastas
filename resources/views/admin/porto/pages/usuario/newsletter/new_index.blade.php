@@ -99,8 +99,9 @@
 
 							<td>
 								<a class="btn btn-xs btn-default"
-									href=""><i
-										class="fa fa-list"></i> {{ trans("admin-app.button.see_suscriptors") }}</a>
+									href="{{ route('user_newsletter.catalog') }}">
+									<i class="fa fa-list"></i> {{ trans("admin-app.button.see_suscriptors") }}
+								</a>
 
 							</td>
 						</tr>
