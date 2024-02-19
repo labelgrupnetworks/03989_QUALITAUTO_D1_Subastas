@@ -426,7 +426,8 @@ class BannerController extends Controller
 				$constraint->upsize();
 			});
 		}
-		$imageSave->save($path, 80, $extension);
+		$imageQuality = Config::get('app.banner_image_quality', 90);
+		$imageSave->save($path, $imageQuality, $extension);
 	}
 
 	function editar_run()

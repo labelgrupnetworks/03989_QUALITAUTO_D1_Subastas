@@ -304,6 +304,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
+		Route::get('user_newsletter/catalog', 'usuario\AdminNewsletterClientController@showCatalogSuscriptors')->name('user_newsletter.catalog');
 		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'show', 'destroy']);
 
 		Route::get('newsletter/export/', 'usuario\AdminNewsletterController@export')->name('newsletter.export');
