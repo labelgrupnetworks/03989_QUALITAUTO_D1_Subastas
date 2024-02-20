@@ -42,17 +42,17 @@
 
 <section class="container-fluid subnav">
     <div class="header-brand">
-        <a class="navbar-brand d-none d-lg-block" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+        <a class="navbar-brand brand-hammer" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive logo-brand m-auto" src="/themes/{{ $theme }}/assets/img/hammer.webp"
-                alt="{{ \Config::get('app.name') }}" width="250">
+                alt="{{ \Config::get('app.name') }}" width="200">
         </a>
 
-        <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+        <a class="navbar-brand brand-logo" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive logo-brand" src="/themes/{{ $theme }}/assets/img/logo.webp"
                 alt="{{ \Config::get('app.name') }}" width="400">
         </a>
 
-        <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
+        <a class="navbar-brand brand-photo" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
             <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/foto_logo_white.webp"
                 alt="{{ \Config::get('app.name') }}" width="200" height="300">
         </a>
