@@ -10,6 +10,7 @@ use App\Models\V5\Web_Keywords_Search;
 use App\Models\V5\Web_Seo_Events;
 use App\Models\V5\Web_Seo_Visits;
 use App\Models\V5\FgOrtsec1;
+use App\Http\Controllers\UserController;
 class SeoLib {
 
 
@@ -57,11 +58,13 @@ class SeoLib {
 		return compact("UTM_SOURCE", "UTM_MEDIUM", "UTM_CAMPAIGN", "UTM_TYPE", "referer", "codUser" );
 	}
 
-	static function saveVisit($sub, $category = null, $section = null, $ref = null){
+	static function saveVisit($sub = null, $category = null, $section = null, $ref = null){
 		if(\Config::get("app.seoVisit")){
 			$vars = SeoLib::sessionsVars();
 			try{
-				if(!empty($vars["codUser"])){
+				$userController = new UserController();
+				$ip = $userController->getUserIP();
+
 
 					if( empty($category) && !empty($section)){
 
@@ -82,6 +85,7 @@ class SeoLib {
 						"UTM_SOURCE_SEO_VISITS" => substr($vars["UTM_SOURCE"],0,255),
 						"UTM_MEDIUM_SEO_VISITS" => substr($vars["UTM_MEDIUM"],0,255),
 						"UTM_CAMPAIGN_SEO_VISITS" => substr($vars["UTM_CAMPAIGN"],0,255),
+						"IP_SEO_VISITS" => substr($ip,0,255),
 						"DATE_SEO_VISITS" => date("Y-m-d")
 					];
 					Web_Seo_Visits::updateOrInsert([
@@ -91,10 +95,9 @@ class SeoLib {
 						"FAMILY_SEO_VISITS" => $category,
 						"SUBFAMILY_SEO_VISITS" => $section,
 						"REF_SEO_VISITS" => $ref,
+						"IP_SEO_VISITS" => substr($ip,0,255),
 						"DATE_SEO_VISITS" => date("Y-m-d")
 					],$insertData);
-
-				}
 
 			}catch(\Illuminate\Database\QueryException $e){
 				\Log::error($e);
@@ -130,6 +133,6 @@ class SeoLib {
 
 	}
 
-   
+
 
 }
