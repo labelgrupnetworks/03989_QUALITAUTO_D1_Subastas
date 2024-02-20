@@ -730,6 +730,14 @@ main.static-page img {
 	border: 1px solid #198754;
 }
 
+.subastas_vendidas .slick-list {
+	margin: 0 -10px;
+}
+
+.subastas_vendidas .slick-slide {
+	margin: 0 10px;
+}
+
 @media (min-width: 200px) {
 	.animate {
 		animation-duration: 0.3s;
