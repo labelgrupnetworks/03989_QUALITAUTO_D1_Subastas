@@ -29,6 +29,8 @@
     $start_orders = strtotime('now') > strtotime($lote_actual->orders_start);
     $end_orders = strtotime('now') > strtotime($lote_actual->orders_end);
 
+	$isEndLot = strtotime('now') > strtotime($lote_actual->close_at);
+
     $userSession = session('user');
     $deposito = (new FgDeposito())->isValid($userSession['cod'] ?? null, $lote_actual->cod_sub, $lote_actual->ref_asigl0);
 
@@ -56,7 +58,7 @@
     if ($subasta_web) {
         $nameCountdown = 'countdown';
         $timeCountdown = $lote_actual->start_session;
-    } elseif ($subasta_online) {
+    } elseif ($subasta_online || $subasta_venta) {
         $nameCountdown = 'countdownficha';
         $timeCountdown = $lote_actual->close_at;
     } elseif ($subasta_inversa) {
