@@ -505,7 +505,7 @@ class User
             $where_baja= "AND u.BAJA_TMP_CLI = 'N'";
         }
 
-        $sql = "SELECT u.sexo_cli, u.cod_cli,  l.cod_licit,l.cli_licit,nvl(cliweb.email_cliweb,u.email_cli) email_cli,l.rsoc_licit, u.fisjur_cli, u.nom_cli,  u.baja_tmp_cli,u.cif_cli,u.tel1_cli,nvl(cliweb.idioma_cliweb,u.idioma_cli) idioma_cli, u.pob_cli, u.cp_cli, u.pais_cli, u.rsoc_cli, u.cod2_cli
+        $sql = "SELECT u.sexo_cli, u.cod_cli,  l.cod_licit,l.cli_licit,nvl(cliweb.email_cliweb,u.email_cli) email_cli,l.rsoc_licit, u.fisjur_cli, u.nom_cli,  u.baja_tmp_cli,u.cif_cli,u.tel1_cli,nvl(cliweb.idioma_cliweb,u.idioma_cli) idioma_cli, u.pob_cli, u.cp_cli, u.pais_cli, u.rsoc_cli, u.cod2_cli, u.ries_cli
 
                 FROM FGLICIT l
                 LEFT JOIN FXCLIWEB cliweb on cliweb.emp_cliweb =  L.EMP_LICIT and  cliweb.cod_cliweb =  l.CLI_LICIT
@@ -525,7 +525,7 @@ class User
     public function getCliInfo($check_baja = true){
 
         $db = DB::table("FXCLI CLI")
-                ->select("CLI.SEXO_CLI, CLI.COD_CLI, CLI.COD2_CLI, CLI.NOM_CLI, CLI.BAJA_TMP_CLI, CLI.CIF_CLI, CLI.TEL1_CLI, CLI.POB_CLI,CLI.CP_CLI, CLI.PAIS_CLI, NVL(WEB.EMAIL_CLIWEB,CLI.EMAIL_CLI) EMAIL_CLI, NVL(WEB.IDIOMA_CLIWEB,CLI.IDIOMA_CLI) IDIOMA_CLI, CLI.RSOC_CLI, CLI.FISJUR_CLI")
+                ->select("CLI.SEXO_CLI, CLI.COD_CLI, CLI.COD2_CLI, CLI.NOM_CLI, CLI.BAJA_TMP_CLI, CLI.CIF_CLI, CLI.TEL1_CLI, CLI.POB_CLI,CLI.CP_CLI, CLI.PAIS_CLI, NVL(WEB.EMAIL_CLIWEB,CLI.EMAIL_CLI) EMAIL_CLI, NVL(WEB.IDIOMA_CLIWEB,CLI.IDIOMA_CLI) IDIOMA_CLI, CLI.RSOC_CLI, CLI.FISJUR_CLI, CLI.RIES_CLI")
                 ->leftjoin("FXCLIWEB WEB", function($join){
                   $join->on("WEB.GEMP_CLIWEB", "=", "CLI.GEMP_CLI")
                        ->on("WEB.COD_CLIWEB", "=", "CLI.COD_CLI")

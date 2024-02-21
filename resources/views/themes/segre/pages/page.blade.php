@@ -4,12 +4,12 @@
 	{{ $data['data']->name_web_page }}
 @stop
 
+@php
+	$isCatalogPage = in_array($data['data']->id_web_page, [24, 46]);
+@endphp
+
 @section('content')
-
-
-
-{{-- si la página de  catalogo que contiene los iframes --}}
-@if($data['data']->id_web_page == 24)
+@if($isCatalogPage)
 	<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web container-iframe-catalogo">
 @else
 	<?php
