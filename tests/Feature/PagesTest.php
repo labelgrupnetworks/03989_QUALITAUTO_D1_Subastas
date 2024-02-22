@@ -11,6 +11,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use App\Models\V5\FxSubSec;
 use App\Models\V5\Web_Artist;
+use App\Models\V5\Web_Page;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
@@ -45,7 +46,7 @@ class PagesTest extends TestCase
 	 * @param string $orderBy
 	 * @return mixed
 	 */
-	private function getDatabaseValues($dataTable, $whereCases = [], $whereIsNotNullCases = [], $orderBy = '')
+	private function getDatabaseSingleValues($dataTable, $whereCases = [], $whereIsNotNullCases = [], $orderBy = '')
 	{
 		if (count($whereCases) > 0) {
 			$dataTable = $dataTable->where($whereCases);
@@ -222,7 +223,7 @@ class PagesTest extends TestCase
 	{
 		self::setHTTP_HOST(route('subastas.todas'));
 
-		$response = $this->get(route('subastas.todas'));
+		$response = $this->get(route('subastas.all'));
 
 		$response->assertSuccessful();
 	}
@@ -283,7 +284,7 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_with_cod_text_friendly_is_succesful()
 	{
-		$category = self::getDatabaseValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
+		$category = self::getDatabaseSingleValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
 
 		if ($category == null) {
 			$this->markTestSkipped('The category is empty.');
@@ -300,7 +301,7 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_is_succesful()
 	{
-		$category = self::getDatabaseValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
+		$category = self::getDatabaseSingleValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
 
 		if ($category == null) {
 			$this->markTestSkipped('The category is empty.');
@@ -317,19 +318,19 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_and_section_is_succesful()
 	{
-		$category = self::getDatabaseValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
+		$category = self::getDatabaseSingleValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
 
 		if ($category == null) {
 			$this->markTestSkipped('The category is empty.');
 		}
 
-		$subcategory = self::getDatabaseValues(new FgOrtsec1(), ['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0], [], 'lin_ortsec1');
+		$subcategory = self::getDatabaseSingleValues(new FgOrtsec1(), ['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0], [], 'lin_ortsec1');
 
 		if ($subcategory == null) {
 			$this->markTestSkipped('The subcategory is empty.');
 		}
 
-		$section = self::getDatabaseValues(new FxSec(), ['cod_sec' => $subcategory->sec_ortsec1], ['key_sec'], 'cod_sec');
+		$section = self::getDatabaseSingleValues(new FxSec(), ['cod_sec' => $subcategory->sec_ortsec1], ['key_sec'], 'cod_sec');
 
 		if ($section == null) {
 			$this->markTestSkipped('The section is empty.');
@@ -475,7 +476,7 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_family_is_succesful()
 	{
-		$family = self::getDatabaseValues(new FgFamart(), [], ['cod_famart'], 'id_famart');
+		$family = self::getDatabaseSingleValues(new FgFamart(), [], ['cod_famart'], 'id_famart');
 
 		if ($family == null) {
 			$this->markTestSkipped('The family is empty.');
@@ -493,7 +494,7 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_category_is_succesful()
 	{
-		$category = self::getDatabaseValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
+		$category = self::getDatabaseSingleValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
 
 		if ($category == null) {
 			$this->markTestSkipped('The category is empty.');
@@ -510,19 +511,19 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_category_and_subcategory()
 	{
-		$category = self::getDatabaseValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
+		$category = self::getDatabaseSingleValues(new FgOrtsec0(), ['sub_ortsec0' => 0], ['key_ortsec0'], 'lin_ortsec0');
 
 		if	 ($category == null) {
 			$this->markTestSkipped('The category is empty.');
 		}
 
-		$subcategory = self::getDatabaseValues(new FgOrtsec1(), ['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0], [], 'lin_ortsec1');
+		$subcategory = self::getDatabaseSingleValues(new FgOrtsec1(), ['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0], [], 'lin_ortsec1');
 
 		if ($subcategory == null) {
 			$this->markTestSkipped('The subcategory is empty.');
 		}
 
-		$section = self::getDatabaseValues(new FxSec(), ['cod_sec' => $subcategory->sec_ortsec1], ['key_sec'], 'cod_sec');
+		$section = self::getDatabaseSingleValues(new FxSec(), ['cod_sec' => $subcategory->sec_ortsec1], ['key_sec'], 'cod_sec');
 
 		if ($section == null) {
 			$this->markTestSkipped('The section is empty.');
@@ -535,7 +536,7 @@ class PagesTest extends TestCase
 
 	public function test_article_page_is_succesful()
 	{
-		$article = self::getDatabaseValues(new FgArt0(), [], ['des_art0'], 'id_art0');
+		$article = self::getDatabaseSingleValues(new FgArt0(), [], ['des_art0'], 'id_art0');
 
 		if ($article == null) {
 			$this->markTestSkipped('The article is empty.');
@@ -548,7 +549,11 @@ class PagesTest extends TestCase
 
 	public function test_static_page_is_succesful()
 	{
+		$page = self::getDatabaseSingleValues(new Web_Page(), [], ['CONTENT_WEB_PAGE'], 'ID_WEB_PAGE');
 
+		$response = $this->get(route('staticPage', ['lang' => mb_strtolower($page->lang_web_page), 'pagina' => $page->key_web_page]));
+
+		$response->assertSuccessful();
 	}
 
 }
