@@ -262,6 +262,7 @@ $(function () {
 function ajax_newcarousel(key, replace, lang, options) {
 
 	const $carrouselElement = $(`#${key}`);
+	const container = $carrouselElement.data('container');
 
 	$.ajax({
 		type: "POST",
@@ -269,8 +270,14 @@ function ajax_newcarousel(key, replace, lang, options) {
 		data: { key, replace, lang },
 		success: (result) => {
 
-			if (result === '') {
+			if (!result) {
 				$carrouselElement.hide();
+
+				if (container) {
+					//change visibility of the container
+					$(`#${container}`).css('visibility', 'hidden');
+				}
+
 			}
 
 			$carrouselElement.siblings('.loader').addClass('hidden');

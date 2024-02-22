@@ -107,6 +107,10 @@
         @include('content.ficha')
     </main>
 
+	<section class="container-sm google-reviews-section">
+		@include('includes.google_cards')
+	</section>
+
 	@if($lote_actual->cod_sub == 'REPRE')
 		@include('includes.auction_modal')
 	@endif

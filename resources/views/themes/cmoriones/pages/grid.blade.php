@@ -31,9 +31,12 @@
                 </div>
             </div>
         </div>
-
         @include('content.grid')
     </main>
+
+	<section class="container-sm google-reviews-section">
+		@include('includes.google_cards')
+	</section>
 
     @if (!empty($codSub) && $codSub == 'REPRE')
         @include('includes.auction_modal')
