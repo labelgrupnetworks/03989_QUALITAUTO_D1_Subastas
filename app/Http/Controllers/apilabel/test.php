@@ -34,7 +34,7 @@ class test extends BaseController
 	}
 
 	#Bidders (licitadores)
-	#http://www.newsubastas.test/apilabel/test?function=postBidder&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postBidder&testmode=CONTROLLER
 	public function postBidder(){
 
 		$bidder = new stdClass();
@@ -49,13 +49,13 @@ class test extends BaseController
 
 	}
 
-	#http://www.newsubastas.test/apilabel/test?function=getBidder&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=getBidder&testmode=CONTROLLER
 	public function getBidder(){
 		$parameters = array("idauction" => "SUBALO");
 		$this->excuteMode($parameters,"GET","bidder", new BidderController(false),"showBidder");
 	}
 
-	#http://www.newsubastas.test/apilabel/test?function=deleteBidder&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=deleteBidder&testmode=CONTROLLER
 	public function deleteBidder(){
 		$parameters = array("idauction" => "582", "codbidder" => "1");
 		$this->excuteMode($parameters,"DELETE","bidder", new BidderController(false),"eraseBidder");
@@ -67,7 +67,7 @@ class test extends BaseController
 
 
 	#PAYMENT
-	#http://www.newsubastas.test/apilabel/test?function=postPayment&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postPayment&testmode=CONTROLLER
 	public function postPayment(){
 				$pdf = "https://auctions-duran.enpreproduccion.com/arte.pdf";
 				$pdf64 = "https://auctions-duran.enpreproduccion.com/portadalibro.pdf";
@@ -93,21 +93,21 @@ class test extends BaseController
 
 			}
 
-	#http://www.newsubastas.test/apilabel/test?function=getPayment&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=getPayment&testmode=CONTROLLER
 	public function getPayment(){
 		$parameters = array("serial" => "T20", "number" => "53");
 		$this->excuteMode($parameters,"GET","payment", new PaymentController(false),"showPayment");
 	}
 
 
-	#http://www.newsubastas.test/apilabel/test?function=deletePayment&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=deletePayment&testmode=CONTROLLER
 	public function deletePayment(){
 		$parameters = array("serial" => "T20", "number" => "20230005");
 		$this->excuteMode($parameters,"DELETE","payment", new PaymentController(false),"erasePayment");
 	}
 
 
-	#http://www.newsubastas.test/apilabel/test?function=putPayment&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=putPayment&testmode=CONTROLLER
 	public function putPayment(){
 		//$pdf = "https://auctions-duran.enpreproduccion.com/arte.pdf";
 		//$pdf64 = "https://auctions-duran.enpreproduccion.com/portadalibro.pdf";
@@ -133,7 +133,7 @@ class test extends BaseController
 	}
 
 	#BIDS
-	#http://www.newsubastas.test/apilabel/test?function=getBid&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=getBid&testmode=CONTROLLER
 	public function getBid(){
 		$parameters=array("idauction" => "00001009"); //, "min_date" => "2020-05-15 00:00:00", "max_date" => "2020-06-05 00:00:00" , "idoriginlot" => "2pa" , "idoriginclient" => "90045"
 		#, "idoriginlot" => "Origen5", "idoriginclient" => 45964
@@ -142,7 +142,7 @@ class test extends BaseController
 
 
 	#AUCTION
-	#http://www.newsubastas.test/apilabel/test?function=postAuction&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postAuction&testmode=CONTROLLER
 	public function postAuction(){
 
 				#añado campos como si hicieramos desde admin
@@ -222,14 +222,14 @@ class test extends BaseController
 
 			}
 
-			#http://www.newsubastas.test/apilabel/test?function=getAuction&testmode=CONTROLLER
+			#http://subastas.test/apilabel/test?function=getAuction&testmode=CONTROLLER
 	 public function getAuction(){
 		$parameters=array("idauction" => "20211100" );
 		$this->excuteMode($parameters,"GET","auction", new AuctionController(false),"showAuction");
 	}
 
 
-	#http://www.newsubastas.test/apilabel/test?function=putAuction&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=putAuction&testmode=CONTROLLER
 	public function putAuction(){
 
 		#añado campos como si hicieramos desde admin
@@ -356,7 +356,7 @@ class test extends BaseController
 
 
 	}
-		 #http://www.newsubastas.test/apilabel/test?function=deleteAward&testmode=CONTROLLER
+		 #http://subastas.test/apilabel/test?function=deleteAward&testmode=CONTROLLER
 		 public function deleteAuction(){
 			$parameters=array( "reference" => "001");
 			$this->excuteMode($parameters,"DELETE","auction", new AuctionController(false),"eraseAuction");
@@ -364,7 +364,7 @@ class test extends BaseController
 
 
 	#AWARD
-	#http://www.newsubastas.test/apilabel/test?function=postAward&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postAward&testmode=CONTROLLER
 	public function postAward(){
 
 		$Award = new stdClass();
@@ -405,14 +405,14 @@ class test extends BaseController
 
 	}
 
-	 #http://www.newsubastas.test/apilabel/test?function=getAward&testmode=CONTROLLER
+	 #http://subastas.test/apilabel/test?function=getAward&testmode=CONTROLLER
 	 public function getAward(){
 		$parameters=array("idauction" => "582", "idoriginlot" => "SS05820720463" );
 		#, "idoriginlot" => "Origen5", "idoriginclient" => SS05820720463
 		$this->excuteMode($parameters,"GET","award", new AwardController(false),"showAward");
 	}
 
-	 #http://www.newsubastas.test/apilabel/test?function=deleteAward&testmode=CONTROLLER
+	 #http://subastas.test/apilabel/test?function=deleteAward&testmode=CONTROLLER
 	public function deleteAward(){
 	    $parameters=array("idauction" => "582", "idoriginlot" => "SS05820723127", "idoriginclient" => "62543");//, "idoriginlot" => "Origen20", "idoriginclient" => 45964
 	 //$parameters=array("idauction" => "TIPOLOTE", "ref" => "10", "licit" => 1003);
@@ -426,7 +426,7 @@ class test extends BaseController
 
 	 #CLIENT
 
-        #http://www.newsubastas.test/apilabel/test?function=postClient&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=postClient&testmode=CONTROLLER
         public function postClient(){
 
             $Client = new stdClass();
@@ -469,7 +469,7 @@ class test extends BaseController
 
 
         }
-        #http://www.newsubastas.test/apilabel/test?function=getClient&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=getClient&testmode=CONTROLLER
         public function getClient(){
 
             $parameters=array("idorigincli"=> "000001"); //"idorigincli" => 280999
@@ -478,7 +478,7 @@ class test extends BaseController
 			#$parameters=array();
             $this->excuteMode($parameters,"GET","client", new ClientController(false),"showClient");
         }
-        #http://www.newsubastas.test/apilabel/test?function=putClient&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=putClient&testmode=CONTROLLER
         public function putClient(){
 			#prueba de modificar usuario
 			/*
@@ -515,7 +515,7 @@ class test extends BaseController
 
 
         }
-         #http://www.newsubastas.test/apilabel/test?function=deleteClient&testmode=CONTROLLER
+         #http://subastas.test/apilabel/test?function=deleteClient&testmode=CONTROLLER
         public function deleteClient(){
             $parameters=array("idorigincli" => "a76351");
             $this->excuteMode($parameters,"DELETE","client", new ClientController(false),"eraseClient");
@@ -526,12 +526,12 @@ class test extends BaseController
 
  #Order
 
-        #http://www.newsubastas.test/apilabel/test?function=postOrder&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=postOrder&testmode=CONTROLLER
         public function postOrder(){
 			$Order = new stdClass();
             $Order->idoriginlot = "9000046";
             $Order->idauction = "00000901";
-            $Order->idoriginclient = '81675';#1WW2W3
+            $Order->idoriginclient = '10a';#1WW2W3
             $Order->order = 180;
             $Order->date = "2021-12-10 00:00:00";
 			$Order->num_award_conditional =1;
@@ -559,14 +559,14 @@ class test extends BaseController
 
 
         }
-        #http://www.newsubastas.test/apilabel/test?function=getOrder&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=getOrder&testmode=CONTROLLER
         public function getOrder(){
             $parameters=array("idauction" => "LABELP"); #, "type" =>"O", "min_date" => "2021-05-10 00:00"
             #, "idoriginlot" => "Origen5", "idoriginclient" => 45964
             $this->excuteMode($parameters,"GET","order", new OrderController(false),"showOrder");
         }#Y-m-d H:i:s
 
-         #http://www.newsubastas.test/apilabel/test?function=deleteOrder&testmode=CONTROLLER
+         #http://subastas.test/apilabel/test?function=deleteOrder&testmode=CONTROLLER
         public function deleteOrder(){
          //   $parameters=array("idauction" => "ONLINE2", "idoriginlot" => "Origen5", "idoriginclient" => 4);//, "idoriginlot" => "Origen20", "idoriginclient" => 45964
 		 $parameters=array("idauction" => "ONLINE2AA", "ref" => "3", "licit" => 99915);
@@ -579,7 +579,7 @@ class test extends BaseController
 
     #FeatureValue
 
-        #http://www.newsubastas.test/apilabel/test?function=postFeatureValue&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=postFeatureValue&testmode=CONTROLLER
         public function postFeatureValue(){
 
             $featureValue = new stdClass();
@@ -603,12 +603,12 @@ class test extends BaseController
 
 
         }
-        #http://www.newsubastas.test/apilabel/test?function=getFeatureValue&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=getFeatureValue&testmode=CONTROLLER
         public function getfeatureValue(){
             $parameters=array("idfeature" => "10");
             $this->excuteMode($parameters,"GET","featurevalue", new featureValueController(false),"showfeatureValue");
         }
-        #http://www.newsubastas.test/apilabel/test?function=putFeatureValue&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=putFeatureValue&testmode=CONTROLLER
         public function putfeatureValue(){
             $featureValue = new stdClass();
             $featureValue->idfeaturevalue = 19;
@@ -630,7 +630,7 @@ class test extends BaseController
 
 
         }
-         #http://www.newsubastas.test/apilabel/test?function=deleteFeatureValue&testmode=CONTROLLER
+         #http://subastas.test/apilabel/test?function=deleteFeatureValue&testmode=CONTROLLER
         public function deletefeatureValue(){
             $parameters=array("idfeaturevalue" => 19);
             $this->excuteMode($parameters,"DELETE","featurevalue", new featureValueController(false),"erasefeatureValue");
@@ -645,7 +645,7 @@ class test extends BaseController
 
          #IMG
 
-        #http://www.newsubastas.test/apilabel/test?function=postImg
+        #http://subastas.test/apilabel/test?function=postImg
         public function postImg(){
             $url = "https://duran.enpreproduccion.com/img/load/real/002-4-1086.jpg";
             $url64 = "https://duran.enpreproduccion.com/img/load/real/002-4-1087.jpg";
@@ -674,7 +674,7 @@ class test extends BaseController
             $parameters=array("idoriginlot" => "Origesfsdferfen6", "order" => "0");
             $this->excuteMode($parameters,"DELETE","img", new ImgController(false),"eraseImg");
         }
- #http://www.newsubastas.test/apilabel/test?function=deleteAllImg&testmode=CONTROLLER
+ #http://subastas.test/apilabel/test?function=deleteAllImg&testmode=CONTROLLER
 		public function deleteAllImg(){
             $parameters=array("idoriginlot" => "MOTORV-8306242");
             $this->excuteMode($parameters,"DELETE","img", new ImgController(false),"eraseAllImg");
@@ -684,7 +684,7 @@ class test extends BaseController
 
      #LOTES
 
-        #http://www.newsubastas.test/apilabel/test?function=postLot&testmode=CONTROLLER
+        #http://subastas.test/apilabel/test?function=postLot&testmode=CONTROLLER
         public function postLot(){
 /*
 			$a = '{"idorigin": "SS05040649395", "idauction": "504", "reflot": 24.0, "idsubcategory": "78", "title": "Lorenzo Aguirre Sánchez. \"Encierro en Pamplona\"", "description": "\"\"Encierro en Pamplona\"\". \"Encierro en Pamplona\". Óleo sobre tabla. 68 x 46. Firmado en el ángulo inferior izquierdo. Ligeras faltas de pintura. Ligera grieta en la tabla en el ángulo inferior izquierdo. 68 x 46.", "search": "Lorenzo Aguirre Sánchez. \"Encierro en Pamplona\" \"\"Encierro en Pamplona\"\". \"Encierro en Pamplona\". Óleo sobre tabla. 68 x 46. Firmado en el ángulo inferior izquierdo. Ligeras faltas de pintura. Ligera grieta en la tabla en el ángulo inferior izquierdo. 68 x 46. AGUIRRE SANCHEZ, LORENZO Si \"Encierro en Pamplona\" 68 x 46. Óleo sobre tabla Ligeras faltas 24.0", "startprice": 700.00, "buyoption": "N", "soldprice": "S", "features": [{"idfeature": 289, "idvaluefeature": 32553, "value": "AGUIRRE SANCHEZ, LORENZO"},{"idfeature": 392, "value": "Si"},{"idfeature": 393, "value": "\"Encierro en Pamplona\""},{"idfeature": 398, "value": "68 x 46."},{"idfeature": 399, "value": "Óleo sobre tabla"},{"idfeature": 401, "value": "Ligeras faltas"}], "biddercommission": 22.00, "warehouse": "3", "numberobjects": 1, "weight": 10.00, "volumetricweight": 181.00, "exportpermission": "S", "ministry": "N"}';
@@ -767,12 +767,12 @@ class test extends BaseController
 
             $this->excuteMode($items,"POST","lot", new LotController(),"createLot");
         }
-		#http://www.newsubastas.test/apilabel/test?function=getLot&testmode=CONTROLLER
+		#http://subastas.test/apilabel/test?function=getLot&testmode=CONTROLLER
         public function getLot(){
             $parameters=array("idauction" =>"LABELP");
             $this->excuteMode($parameters,"GET","lot", new LotController(),"showlot");
         }
-		#http://www.newsubastas.test/apilabel/test?function=putLot&testmode=CONTROLLER
+		#http://subastas.test/apilabel/test?function=putLot&testmode=CONTROLLER
         public function putLot(){
 			$lot = new stdClass();
 			$lot->idorigin = "1671623786";
@@ -880,7 +880,7 @@ class test extends BaseController
 
     #SUBCATEGORY
 
-        #http://www.newsubastas.test/apilabel/test?function=postCategory
+        #http://subastas.test/apilabel/test?function=postCategory
         public function postSubCategory(){
 
             $SubCategory = new stdClass();
@@ -950,7 +950,7 @@ class test extends BaseController
 
     #CATEGORY
 
-        #http://www.newsubastas.test/apilabel/test?function=postCategory
+        #http://subastas.test/apilabel/test?function=postCategory
         public function postCategory(){
 
             $category = new stdClass();
@@ -1038,7 +1038,7 @@ class test extends BaseController
     #FIN CATEGORY
 
 	#DEPOSIT
-	#http://www.newsubastas.test/apilabel/test?function=postDeposit&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postDeposit&testmode=CONTROLLER
 	public function postDeposit(){
 
 		$deposit = new stdClass();
@@ -1057,7 +1057,7 @@ class test extends BaseController
 
 
 	}
-	#http://www.newsubastas.test/apilabel/test?function=putDeposit&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=putDeposit&testmode=CONTROLLER
 	public function putDeposit(){
 
 		$deposit = new stdClass();
@@ -1075,13 +1075,13 @@ class test extends BaseController
 
 	}
 
-	#http://www.newsubastas.test/apilabel/test?function=getDeposit&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=getDeposit&testmode=CONTROLLER
 	public function getDeposit(){
 		$parameters = array("idauction" => "BBBO", "reflot" => "20");
 		$this->excuteMode($parameters,"GET","bidder", new DepositController(false),"showDeposit");
 	}
 
-	#http://www.newsubastas.test/apilabel/test?function=deleteDeposit&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=deleteDeposit&testmode=CONTROLLER
 	public function deleteDeposit(){
 		$parameters = array("idauction" => "BBBO", "idoriginlot" => "EJEMPLO1","idoriginclient" => "3");
 
@@ -1090,7 +1090,7 @@ class test extends BaseController
 	#FIN DEPOSIT
 
 	#INVALUABLE
-	#http://www.newsubastas.test/apilabel/test?function=postInvaluableCatalog&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postInvaluableCatalog&testmode=CONTROLLER
 	public function postInvaluableCatalog(){
 
 		$invaluable = new stdClass();
@@ -1104,7 +1104,7 @@ class test extends BaseController
 
 
 	}
-	#http://www.newsubastas.test/apilabel/test?function=postInvaluableLot&testmode=CONTROLLER
+	#http://subastas.test/apilabel/test?function=postInvaluableLot&testmode=CONTROLLER
 	public function postInvaluableLot(){
 
 		$invaluable = new stdClass();
