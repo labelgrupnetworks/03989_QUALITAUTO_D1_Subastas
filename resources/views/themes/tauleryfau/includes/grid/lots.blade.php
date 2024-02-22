@@ -1,6 +1,6 @@
 @if (empty($lots))
 <br><br>
-<center><big><big>{{ trans(\Config::get('app.theme').'-app.lot_list.no_results') }}</big></big></center>
+<center><big><big>{{ trans($theme.'-app.lot_list.no_results') }}</big></big></center>
 @else
 @foreach ($lots as $item)
 <?php

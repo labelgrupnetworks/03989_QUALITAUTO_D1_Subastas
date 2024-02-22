@@ -304,7 +304,7 @@ $idiomes = \Config::get('app.locales');
 					@if(in_array('cms',$config_menu_admin))
 					<li>
 						<a href="/admin/cms">
-							<i class="fa fa-folder" aria-hidden="true"></i>
+							<i class="fa fa-laptop" aria-hidden="true"></i>
 							<span>{{ trans("admin-app.nav_menu.cms_content") }}</span>
 						</a>
 					</li>
@@ -437,13 +437,13 @@ $idiomes = \Config::get('app.locales');
 					@if(in_array('calendar',$config_menu_admin))
 					<li>
 						<a href="/admin/banner?see=C">
-							<i class="fa fa-calendar" aria-hidden="true"></i>
+							<i class="fa fa-ban fa-calendar-o" aria-hidden="true"></i>
 							<span>{{ trans('admin-app.nav_menu.calendar') }}</span>
 						</a>
 					</li>
 					<li>
 						<a href="/admin/resources?see=C">
-							<i class="fa fa-calendar-o" aria-hidden="true"></i>
+							<i class="fa fa-ban fa-calendar-o" aria-hidden="true"></i>
 							<span>{{ trans("admin-app.nav_menu.calendar_resource") }}</span>
 						</a>
 					</li>
@@ -523,7 +523,7 @@ $idiomes = \Config::get('app.locales');
 					@if(in_array('new_calendar',$config_menu_admin))
 					<li>
 						<a href="/admin/calendar">
-							<i class="fa fa-folder" aria-hidden="true"></i>
+							<i class="fa fa-calendar" aria-hidden="true"></i>
 							<span>{{ trans('admin-app.nav_menu.calendar') }}</span>
 						</a>
 					</li>

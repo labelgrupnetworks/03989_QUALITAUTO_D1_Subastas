@@ -43,9 +43,9 @@
 			$endDate =  Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $auction->hfec_sub)->locale(\Tools::getLanguageComplete(\Config::get('app.locale')));
 				@endphp
 
-				{{$startDate->day}} {{ trans(\Config::get('app.theme').'-app.galery.de') }} {{$startDate->monthName}}
+				{{$startDate->day}} {{ trans($theme.'-app.galery.de') }} {{$startDate->monthName}}
 				-
-				{{$endDate->day}}  {{ trans(\Config::get('app.theme').'-app.galery.de') }} {{$endDate->monthName}}
+				{{$endDate->day}}  {{ trans($theme.'-app.galery.de') }} {{$endDate->monthName}}
 				<br/>
 			{{$endDate->year}}
 		</td>

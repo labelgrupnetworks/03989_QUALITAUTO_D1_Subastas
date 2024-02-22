@@ -10,20 +10,20 @@
 	<div class="custom-head-wrapper hidden-xs hidden-sm flex">
 		<div class="img-data-custom flex "></div>
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.lot') }}</p>
 		</div>
 		<div class="name-data-custom" style="font-weight: 900 !important;">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+			<p>{{ trans($theme.'-app.lot.description') }}</p>
 		</div>
 
 		<div class="remat-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+			<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 		</div>
 		<div class="auc-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
+			<p>{{ trans($theme.'-app.lot.puja_actual') }}</p>
 		</div>
 		<div class="auc-data-custom">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</p>
+			<p>{{ trans($theme.'-app.user_panel.mi_puja') }}</p>
 
 		</div>
 		<div class="view-data view-fav"></div>
@@ -37,13 +37,13 @@
 
 	<div class="custom-wrapper-responsive  hidden-md hidden-lg ">
 		<div class="lot-data-custon">
-			<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+			<p>{{ trans($theme.'-app.user_panel.lot') }}
 				{{$inf_lot->ref_asigl0}} - <span>{{$inf_lot->titulo_hces1}}</span></p>
 		</div>
 		<div class="view-data flex view-fav auc-data-custom">
 			<p></p>
 			@if(!empty($data['favorites']))
-			<a title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="delete-fav btn-del"
+			<a title="{{trans($theme.'-app.lot.del_from_fav')}}" class="delete-fav btn-del"
 				href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i
 					class="fas fa-minus"></i></a>
 			@endif
@@ -51,9 +51,9 @@
 		</div>
 		<div class="flex justify-content-space-bettween">
 			<div class="auc-data-custom">
-				<p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+				<p>{{ trans($theme.'-app.lot.lot-price') }}</p>
 				<p>{{$inf_lot->formatted_impsalhces_asigl0}}
-					{{ trans(\Config::get('app.theme').'-app.lot.eur') }} </p>
+					{{ trans($theme.'-app.lot.eur') }} </p>
 				@if($divisa !='EUR')
 				<p class="divisa_fav">
 					{!!$currency->getPriceSymbol(0,$inf_lot->impsalhces_asigl0)!!}</p>
@@ -62,7 +62,7 @@
 			</div>
 			<div class="auc-data-custom">
 
-				<p>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
+				<p>{{ trans($theme.'-app.lot.puja_actual') }}</p>
 				@if($inf_lot->cod_licit == $inf_lot->licit_winner_bid)
 				<p class="mine">
 
@@ -76,7 +76,7 @@
 							<?php //todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas ?>
 
 							{{$inf_lot->implic_hces1 }}
-							{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+							{{ trans($theme.'-app.lot.eur') }}
 
 						</p>
 						@if($divisa !='EUR')
@@ -85,10 +85,10 @@
 						@endif
 			</div>
 			<div class="auc-data-custom">
-				<p>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</p>
+				<p>{{ trans($theme.'-app.user_panel.mi_puja') }}</p>
 
 				<p> {{$inf_lot->formatted_imp }}
-					{{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+					{{ trans($theme.'-app.lot.eur') }}</p>
 				@if($divisa !='EUR')
 				<p class="divisa_fav" ' > {!!$currency->getPriceSymbol(0,$inf_lot->imp)!!}</p>
 							@endif
@@ -120,7 +120,7 @@
 				<div class="auc-data-custom">
 
 					<p>{{$inf_lot->impsalhces_asigl0}}
-						{{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+						{{ trans($theme.'-app.lot.eur') }}</p>
 					@if($divisa !='EUR')
 					<p class="divisa_fav">
 						{!!$currency->getPriceSymbol(2,$inf_lot->impsalhces_asigl0)!!} </p>
@@ -162,7 +162,7 @@
 												<?php //todas las subastas de tauler tendran pujas, ya que las w ahora seran abiertas ?>
 
 												{{$inf_lot->implic_hces1 }}
-												{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+												{{ trans($theme.'-app.lot.eur') }}
 
 											</p>
 											@if($divisa !='EUR')
@@ -174,7 +174,7 @@
 				<div class="auc-data-custom">
 					<p>
 						{{$inf_lot->formatted_imp }}
-						{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+						{{ trans($theme.'-app.lot.eur') }}
 					</p>
 					@if($divisa !='EUR')
 					<p class="divisa_fav"> {!!$currency->getPriceSymbol(2,$inf_lot->imp)!!}</p>
@@ -182,7 +182,7 @@
 				</div>
 				<div class="view-data view-fav flex hidden-xs hidden-sm">
 					@if(!empty($data['favorites']))
-					<a title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="delete-fav btn-del"
+					<a title="{{trans($theme.'-app.lot.del_from_fav')}}" class="delete-fav btn-del"
 						href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i
 							class="fas fa-minus"></i></a>
 					@endif

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('assets_components')
@@ -17,7 +17,7 @@
 
 		use App\Models\V5\Web_Content_Page;
 
-        $bread[] = ['name' => trans(\Config::get('app.theme') . '-app.blog.name'), 'url' => \Routing::slugSeo('blog')];
+        $bread[] = ['name' => trans($theme . '-app.blog.name'), 'url' => \Routing::slugSeo('blog')];
         $titulo_post = $data['news']->titulo_web_blog_lang;
         $bread[] = ['name' => $titulo_post];
 
@@ -25,7 +25,7 @@
 
         if (\App::getLocale() != 'en') {
             $array_fecha = explode(' ', $fecha);
-            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1], trans(\Config::get('app.theme') . '-app.global.month_large'));
+            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1], trans($theme . '-app.global.month_large'));
             $fecha = $array_fecha[0] . ' ' . $array_fecha[1] . ' ' . $array_fecha[2];
         }
     @endphp
@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="article-categoria-titulo">
-                        {{ trans(\Config::get('app.theme') . '-app.blog.post_related') }}:
+                        {{ trans($theme . '-app.blog.post_related') }}:
                     </div>
                     <div class="entradas-relacionadas-lista">
                         @foreach ($data['relationship_new'] as $key => $rel_link)
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="button-post">
                                     <a href="{{ $url }}"
-                                        role="button"><?= trans(\Config::get('app.theme') . '-app.blog.more') ?></a>
+                                        role="button"><?= trans($theme . '-app.blog.more') ?></a>
                                 </div>
                             </div>
 

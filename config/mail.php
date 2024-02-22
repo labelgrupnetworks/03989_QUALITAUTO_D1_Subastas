@@ -2,6 +2,18 @@
 
 return [
 
+	/*
+    |--------------------------------------------------------------------------
+    | Custom Configuration
+    |--------------------------------------------------------------------------
+    |
+	| Configuración personalizada para el envío o teste de correos electrónicos.
+    |
+    */
+
+	'debug_email' => (bool) env('APP_DEBUG_EMAIL', false),
+	'mail_to' => env('MAIL_TO', false),
+
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
@@ -46,6 +58,9 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+			/* 'allow_self_signed' => true,
+			'verify_peer' => false,
+			'verify_peer_name' => false, */
         ],
 
         'ses' => [

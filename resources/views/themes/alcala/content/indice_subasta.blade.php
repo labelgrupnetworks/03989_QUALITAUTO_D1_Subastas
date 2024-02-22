@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 title-head-grid">
             <div class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
-                <h3 class="titlePage-custom">{{trans(\Config::get('app.theme').'-app.lot_list.indice_auction')}}</h3>
+                <h3 class="titlePage-custom">{{trans($theme.'-app.lot_list.indice_auction')}}</h3>
             </div>
             <div class="col-xs-7 col-sm-6 col-md-4 col-lg-6 lot-count"></div>
         </div>
@@ -16,9 +16,9 @@
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th class="first-column-orders btn-color">{{ trans(\Config::get('app.theme').'-app.lot_list.name') }}</th>
-                            <th class="second-column-orders btn-color">{{ trans(\Config::get('app.theme').'-app.lot_list.from') }}</th>
-                            <th class="third-column-orders btn-color">{{ trans(\Config::get('app.theme').'-app.lot_list.to') }}</th>
+                            <th class="first-column-orders btn-color">{{ trans($theme.'-app.lot_list.name') }}</th>
+                            <th class="second-column-orders btn-color">{{ trans($theme.'-app.lot_list.from') }}</th>
+                            <th class="third-column-orders btn-color">{{ trans($theme.'-app.lot_list.to') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,7 +26,7 @@
                             <td class="class-content-orders" onclick="window.location='{{$data['url']}}'">
                                 <div class="nt-block-th left">
                                     <span>
-                                       {{ trans(\Config::get('app.theme').'-app.subastas.see-all') }}
+                                       {{ trans($theme.'-app.subastas.see-all') }}
                                     </span>
                                 </div>
                             </td>
@@ -44,7 +44,7 @@
 
                             </td>
                         </tr>
-                        <?php 
+                        <?php
                             $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
                         ?> @foreach($indices as $indice)
                         <tr id="order-row-tpl" style="display: table-row;">

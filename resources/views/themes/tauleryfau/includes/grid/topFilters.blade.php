@@ -16,7 +16,7 @@
             <select id="total_selected" class="form-control submit_on_change">
                 @foreach (\Config::get('app.filter_total_shown_options') as $option)
                     <option value="{{ $option }}" @if (app('request')->input('total') == $option) selected @endif>
-                        {{ trans(\Config::get('app.theme') . '-app.lot_list.to_show') }}: {{ $option }}
+                        {{ trans($theme . '-app.lot_list.to_show') }}: {{ $option }}
                     </option>
                 @endforeach
             </select>

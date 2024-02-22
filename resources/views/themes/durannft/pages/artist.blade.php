@@ -10,7 +10,7 @@
 
         <div class="row">
             <div class="col-xs-12 text-center">
-                <h1 class="titlePage title-80 bold my-4">{{ trans(\Config::get('app.theme') . '-app.artist.artists') }}
+                <h1 class="titlePage title-80 bold my-4">{{ trans($theme . '-app.artist.artists') }}
                 </h1>
             </div>
         </div>
@@ -39,13 +39,13 @@
                 {{-- Pestañas --}}
                 <ul class="nav nav-tabs artist-nav-tab" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#obras" aria-controls="obras" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.subastas.obras') }}</a>
+                        <a href="#obras" aria-controls="obras" role="tab" data-toggle="tab">{{ trans($theme . '-app.subastas.obras') }}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#bio" class="" aria-controls="bio" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.galery.biography') }}</a>
+                        <a href="#bio" class="" aria-controls="bio" role="tab" data-toggle="tab">{{ trans($theme . '-app.galery.biography') }}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#proxeventos" aria-controls="proxeventos" role="tab" data-toggle="tab">{{ trans(\Config::get('app.theme') . '-app.galery.upcoming_events') }}</a>
+                        <a href="#proxeventos" aria-controls="proxeventos" role="tab" data-toggle="tab">{{ trans($theme . '-app.galery.upcoming_events') }}</a>
                     </li>
                 </ul>
 

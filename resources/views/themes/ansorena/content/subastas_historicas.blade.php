@@ -34,7 +34,7 @@
         </form>
 
         @if ($historicasPagination->isEmpty())
-            <h2 class="text-center py-5">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_results') }}</h2>
+            <h2 class="text-center py-5">{{ trans($theme . '-app.lot_list.no_results') }}</h2>
         @else
             <div class="row row-cols-1 row-cols-lg-3 gx-0 gy-5 gx-lg-5">
                 @foreach ($historicasPagination as $auction)

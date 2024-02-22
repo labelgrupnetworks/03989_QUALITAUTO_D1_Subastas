@@ -6,7 +6,7 @@ $seo->meta_description = $data['subasta_info']->lote_actual->descweb_hces1;
 $seo->meta_keywords = $data['subasta_info']->lote_actual->descweb_hces1;
 @endphp
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 

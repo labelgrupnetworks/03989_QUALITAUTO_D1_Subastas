@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -10,7 +10,7 @@
 <div class="container">
 	<div class="row">
         <div class="col-xs-12 col-sm-12 resultok">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.subastas.search-results') }} - {{$data['search']}}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.subastas.search-results') }} - {{$data['search']}}</h1>
         </div>
         <div class="onlyHistoric col-xs-12">
             <div class="onlyHistoric ">
@@ -18,11 +18,11 @@
                     <div class="option-historic">
                         <div class="switch_content">
                             <label class="switcher <?= ($data['history'] == 'H')?'switcher-active':'';?>" for="onlyHistoric"><small></small></label>
-                            <small>{{ trans(\Config::get('app.theme').'-app.head.search_historic') }}</small>
+                            <small>{{ trans($theme.'-app.head.search_historic') }}</small>
                             <input type="checkbox" name="history" class="js-switch submit_on_change" id="onlyHistoric" style="display:none" value="H" <?= ($data['history'] == 'H')?'checked':'';?>/>
                         </div>
                         <div class="form-group search_content">
-                            <input class="form-control input-custom" placeholder="{{ trans(\Config::get('app.theme').'-app.head.search_label') }}" type="text" name="texto" id="textSearch" value="{{$data['search']}}">
+                            <input class="form-control input-custom" placeholder="{{ trans($theme.'-app.head.search_label') }}" type="text" name="texto" id="textSearch" value="{{$data['search']}}">
                             <button type="submit" class="btn btn-custom-search"><i class="fa fa-search"></i></button>
 
                         </div>
@@ -38,7 +38,7 @@
 <div class="container">
     @if(count($data['subastas']) == 0 )
             <div class="row">
-                <div  class="alert alert-danger" >{{trans(\Config::get('app.theme').'-app.subastas.search-no_results')}}</div>
+                <div  class="alert alert-danger" >{{trans($theme.'-app.subastas.search-no_results')}}</div>
             </div>
         @endif
     <div class="row">
@@ -68,9 +68,9 @@
                                     </div>
                                     <p class="num_lot">
                                         @if ($item->cuantos == '1')
-                                            {{$item->cuantos}} {{trans(\Config::get('app.theme').'-app.lot_list.reference')}}
+                                            {{$item->cuantos}} {{trans($theme.'-app.lot_list.reference')}}
                                         @else
-                                            {{$item->cuantos}} {{trans(\Config::get('app.theme').'-app.lot_list.lots')}}
+                                            {{$item->cuantos}} {{trans($theme.'-app.lot_list.lots')}}
                                         @endif
                                     </p>
                                 </div>
@@ -100,7 +100,7 @@
                             }elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
                                 $titulo = $item->titulo_hces1;
                             }elseif(\Config::get('app.ref_asigl0')){
-                                $titulo = trans(\Config::get('app.theme').'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
+                                $titulo = trans($theme.'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
                             }
 
                             $precio_venta=NULL;

@@ -7,9 +7,9 @@
                         <h3>
                             @if(!empty($data['auction_list']) && count($data['auction_list']) > 0 &&
                             $data['auction_list'][0]->tipo_sub == 'V')
-                            {{ trans(\Config::get('app.theme').'-app.subastas.direct_sale') }}
+                            {{ trans($theme.'-app.subastas.direct_sale') }}
                             @else
-                            {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}
+                            {{ trans($theme.'-app.subastas.auctions') }}
                             @endif
                         </h3>
                     </div>
@@ -22,7 +22,7 @@
     <div class="row">
             @if(!(!empty($data['auction_list']) && count($data['auction_list']) > 0 && $data['auction_list'][0]->tipo_sub == 'V'))
             <div class="col-xs-12">
-                    <div class="auctions-list-title"><strong>{{ trans(\Config::get('app.theme').'-app.subastas.next_auctions') }}</strong></div>
+                    <div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.next_auctions') }}</strong></div>
                 </div>
             @endif
         <div class="auctions-list col-xs-12 no-padding">
@@ -59,7 +59,7 @@
                                 $fecha = strftime('%d %b %Y',strtotime($subasta->session_start));
                                 if(\App::getLocale() != 'en'){
                                     $array_fecha = explode(" ",$fecha);
-                                    $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
+                                    $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans($theme."-app.global.month_large"));
                                     $fecha = $array_fecha[0].' '. str_replace('"', " ",$array_fecha[1]).' '.$array_fecha[2];
                                 }
                                 $hours =  date("H:i", strtotime($subasta->session_start));
@@ -72,9 +72,9 @@
                                     {{ $fecha }}
                                 </div>
                                 <div class="bid-large-date">
-                                    {{ $hours }} {{ trans(\Config::get('app.theme').'-app.subastas.hours') }} -
+                                    {{ $hours }} {{ trans($theme.'-app.subastas.hours') }} -
                                     @if( $subasta->tipo_sub =='O')
-                                        {{ trans(\Config::get('app.theme').'-app.subastas.only-online') }}
+                                        {{ trans($theme.'-app.subastas.only-online') }}
                                     @else
                                         {{ $subasta->seslocal_sub }}
                                     @endif
@@ -87,12 +87,12 @@
                             <div class="bid-large-buttons col-xs-12" style="position:relative; zIndex: 9999999">
                                 <div class="bid-large-button-views">
                                     <a title="{{ $subasta->name }}" href="{{ $url_lotes }}"
-                                        class="bid-large-button-view view">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}
+                                        class="bid-large-button-view view">{{ trans($theme.'-app.subastas.see_lotes') }}
                                     </a>
                                 </div>
                                 <div class="bid-large-button-info">
                                     <a title="{{ $subasta->name }}" href="{{ $url_subasta }}"
-                                        class="bid-large-button-view info">{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+                                        class="bid-large-button-view info">{{ trans($theme.'-app.subastas.see_subasta') }}
                                     </a>
                                 </div>
                                 @if( $subasta->tipo_sub =='W' && strtotime($subasta->session_end) > time() && $subasta_finalizada == false )
@@ -100,10 +100,10 @@
                                         <?php //Si la puja en tiempo real ha comenzado el boton parpadea ?>
                                             <a class="bid-large-button-view bid-online <?= strtotime($subasta->session_start) > time() ? '' : 'puja-online' ?>"
                                                 style="color:#FFFFFF" href="{{ $url_tiempo_real }}"
-                                                title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}"
+                                                title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}"
                                                 target="_blank"
                                             >
-                                                {{ trans(\Config::get('app.theme').'-app.lot.bid_live') }}
+                                                {{ trans($theme.'-app.lot.bid_live') }}
                                             </a>
                                     </div>
                                 @else
@@ -112,7 +112,7 @@
                                             <a class="bid-large-button-view bid-online" href="{{ $url_lotes_novendidos }}"
                                                 target="_blank"
                                             >
-                                                {{ trans(\Config::get('app.theme').'-app.lot.lots_disp') }}
+                                                {{ trans($theme.'-app.lot.lots_disp') }}
                                             </a>
                                         </div>
                                     @endif
@@ -128,7 +128,7 @@
 @if(count($finalized) > 0)
     <div class="row">
             <div class="col-xs-12">
-                <div class="auctions-list-title"><strong>{{ trans(\Config::get('app.theme').'-app.subastas.finished_auctions') }}</strong></div>
+                <div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.finished_auctions') }}</strong></div>
             </div>
             <div class="auctions-list col-xs-12 no-padding">
                 <?php krsort($finalized); ?>
@@ -161,7 +161,7 @@
                                     $fecha = strftime('%d %b %Y',strtotime($subasta->session_start));
                                     if(\App::getLocale() != 'en'){
                                         $array_fecha = explode(" ",$fecha);
-                                        $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
+                                        $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans($theme."-app.global.month_large"));
                                         $fecha = $array_fecha[0].' '. str_replace('"', " ",$array_fecha[1]).' '.$array_fecha[2];
                                     }
                                     $hours =  date("H:i", strtotime($subasta->session_start));
@@ -174,9 +174,9 @@
                                         {{ $fecha }}
                                     </div>
                                     <div class="bid-large-date">
-                                        {{ $hours }} {{ trans(\Config::get('app.theme').'-app.subastas.hours') }} -
+                                        {{ $hours }} {{ trans($theme.'-app.subastas.hours') }} -
                                         @if( $subasta->tipo_sub =='O')
-                                            {{ trans(\Config::get('app.theme').'-app.subastas.only-online') }}
+                                            {{ trans($theme.'-app.subastas.only-online') }}
                                         @else
                                             {{ $subasta->seslocal_sub }}
                                         @endif
@@ -189,12 +189,12 @@
                                 <div class="bid-large-buttons col-xs-12" style="position:relative; zIndex: 9999999">
                                     <div class="bid-large-button-views">
                                         <a title="{{ $subasta->name }}" href="{{ $url_lotes }}"
-                                            class="bid-large-button-view view">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}
+                                            class="bid-large-button-view view">{{ trans($theme.'-app.subastas.see_lotes') }}
                                         </a>
                                     </div>
                                     <div class="bid-large-button-info">
                                         <a title="{{ $subasta->name }}" href="{{ $url_subasta }}"
-                                            class="bid-large-button-view info">{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+                                            class="bid-large-button-view info">{{ trans($theme.'-app.subastas.see_subasta') }}
                                         </a>
                                     </div>
                                     @if( $subasta->tipo_sub =='W' && strtotime($subasta->session_end) > time() && $subasta_finalizada == false )
@@ -202,10 +202,10 @@
                                             <?php //Si la puja en tiempo real ha comenzado el boton parpadea ?>
                                                 <a class="bid-large-button-view bid-online <?= strtotime($subasta->session_start) > time() ? '' : 'puja-online' ?>"
                                                     style="color:#FFFFFF" href="{{ $url_tiempo_real }}"
-                                                    title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}"
+                                                    title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}"
                                                     target="_blank"
                                                 >
-                                                    {{ trans(\Config::get('app.theme').'-app.lot.bid_live') }}
+                                                    {{ trans($theme.'-app.lot.bid_live') }}
                                                 </a>
                                         </div>
                                     @else
@@ -214,7 +214,7 @@
                                                 <a class="bid-large-button-view bid-online" href="{{ $url_lotes_novendidos }}"
                                                     target="_blank"
                                                 >
-                                                    {{ trans(\Config::get('app.theme').'-app.lot.lots_disp') }}
+                                                    {{ trans($theme.'-app.lot.lots_disp') }}
                                                 </a>
                                             </div>
                                         @endif

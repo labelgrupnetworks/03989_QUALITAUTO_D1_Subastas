@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -11,7 +11,7 @@
 			<div class="col-xs-12">
 				<div class="princiapl-bar-wrapper">
 					<div class="principal-bar-title">
-						<h3>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h3>
+						<h3>{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h3>
 					</div>
 				</div>
 			</div>
@@ -49,12 +49,12 @@
 			<div class="col-xs-10 col-sm-9">
 				<div role="tabpanel" class="user-datas-title">
 					@if(!empty($data['favorites']))
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.favorites') }}</p>
 					@else
-					<p>{{ trans(\Config::get('app.theme').'-app.user_panel.orders') }}</p>
+					<p>{{ trans($theme.'-app.user_panel.orders') }}</p>
 					@endif
 					<small
-						style="font-weight: 100;color: red;font-size: 12px;line-height: 0;">*{{ trans(\Config::get('app.theme').'-app.msg_neutral.noRT') }}</small>
+						style="font-weight: 100;color: red;font-size: 12px;line-height: 0;">*{{ trans($theme.'-app.msg_neutral.noRT') }}</small>
 					<div class="col_reg_form"></div>
 				</div>
 				<div class="panel-group" id="accordion">
@@ -65,7 +65,7 @@
 						$notFinalized = [];
 						@endphp
 
-						<div class="auctions-list-title"><strong>{{ trans(\Config::get('app.theme').'-app.subastas.next_auctions') }}</strong></div>
+						<div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.next_auctions') }}</strong></div>
 						@foreach($data['values'] as $key_sub => $all_inf)
 
 						@php
@@ -95,7 +95,7 @@
 						@endforeach
 
 						@if(count($finalized) > 0)
-						<div class="auctions-list-title"><strong>{{ trans(\Config::get('app.theme').'-app.subastas.finished_auctions') }}</strong></div>
+						<div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.finished_auctions') }}</strong></div>
 						@foreach ($finalized as $all_inf)
 						@include('pages.panel.orders_auction')
 						@endforeach

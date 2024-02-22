@@ -7,15 +7,15 @@
 
         <div class="filter-section">
             <div class="filter-section-head">
-                <h4>{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}</h4>
+                <h4>{{ trans($theme.'-app.lot_list.search_placeholder') }}</h4>
             </div>
             <div class="filter-section-checks">
                 <div class="input-search-text">
-                            <input type="text" class="form-control text search-text"  placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" id="filterDescription" value="{{ app('request')->input('description') }}">
+                            <input type="text" class="form-control text search-text"  placeholder="{{ trans($theme.'-app.lot_list.search_placeholder') }}" name="description" id="filterDescription" value="{{ app('request')->input('description') }}">
                         </div>
             </div>
             <div class="btn-filt">
-                <button class="btn btn-filter btn-color" type="submit" id="filterDescriptionButton">{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</button>
+                <button class="btn btn-filter btn-color" type="submit" id="filterDescriptionButton">{{ trans($theme.'-app.lot_list.search') }}</button>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
 
  <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 
-     <label class="filter-section-head"><h4>{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}  </h4></label>
+     <label class="filter-section-head"><h4>{{ trans($theme.'-app.lot_list.categories') }}  </h4></label>
      <div class="filter-section-checks">
         <ul style="width:100%">
 
@@ -90,7 +90,7 @@
  @if(!empty($data['sub_data']) && strtotime($data['sub_data']->start) < time())
         <div class="filter-section">
             <div class="filter-section-head">
-                <h4>{{ trans(\Config::get('app.theme').'-app.lot_list.status_lots') }}</h4>
+                <h4>{{ trans($theme.'-app.lot_list.status_lots') }}</h4>
             </div>
             @if(empty($data['sub_data']) || $data['sub_data']->tipo_sub != 'V')
 
@@ -99,15 +99,15 @@
                         <li>
                             <input type="checkbox" id="open" name="open" class="filled-in" onclick="javascript:checkfilter('open')" <?= !empty(app('request')->input('open'))? "checked='checked'" : "" ?>>
 
-                            <label for="open">{{ trans(\Config::get('app.theme').'-app.lot_list.progress_lots') }}</label>
+                            <label for="open">{{ trans($theme.'-app.lot_list.progress_lots') }}</label>
                         </li>
                         <li>
                             <input type="checkbox" id="no_award" name="no_award" class="filled-in " onclick="javascript:checkfilter('no_award')" <?= !empty(app('request')->input('no_award'))? "checked='checked'" : "" ?>>
-                            <label for="no_award">{{ trans(\Config::get('app.theme').'-app.lot_list.dont_sold_lots') }}</label>
+                            <label for="no_award">{{ trans($theme.'-app.lot_list.dont_sold_lots') }}</label>
                         </li>
                         <li>
                             <input type="checkbox" id="award" name="award" class="filled-in" onclick="javascript:checkfilter('award')" <?= !empty(app('request')->input('award'))? "checked='checked'" : "" ?>>
-                            <label for="award">{{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}</label>
+                            <label for="award">{{ trans($theme.'-app.lot_list.sold_lots') }}</label>
                         </li>
 
                     </ul>
@@ -118,15 +118,15 @@
                 <ul>
                     <li>
                         <input type="checkbox" id="open" name="open" class="filled-in" onclick="javascript:checkfilter('open')" <?= !empty(app('request')->input('open'))? "checked='checked'" : "" ?>>
-                        <label for="open">{{ trans(\Config::get('app.theme').'-app.lot_list.dont_sold_lots') }}</label>
+                        <label for="open">{{ trans($theme.'-app.lot_list.dont_sold_lots') }}</label>
                     </li>
                     <li>
                         <input type="checkbox" id="exclusive_offers" name="offers" value='2' class="filled-in " onclick="javascript:checkfilter('exclusive_offers')" <?= !empty(app('request')->input('offers') && app('request')->input('offers') == 2)? "checked='checked'" : "" ?>>
-                        <label for="exclusive_offers">{{ trans(\Config::get('app.theme').'-app.lot_list.exclusive_offers') }}</label>
+                        <label for="exclusive_offers">{{ trans($theme.'-app.lot_list.exclusive_offers') }}</label>
                     </li>
                     <li>
                         <input type="checkbox" id="discounts" name="offers" value='1' class="filled-in" onclick="javascript:checkfilter('discounts')" <?= !empty(app('request')->input('offers') && app('request')->input('offers') == 1)? "checked='checked'" : "" ?>>
-                        <label for="discounts">{{ trans(\Config::get('app.theme').'-app.lot_list.discounts') }}</label>
+                        <label for="discounts">{{ trans($theme.'-app.lot_list.discounts') }}</label>
                     </li>
                 </ul>
             </div>
@@ -136,18 +136,18 @@
     @if(Session::has('user'))
          <div class="filter-section">
             <div class="filter-section-head">
-                <h4>{{ trans(\Config::get('app.theme').'-app.lot_list.my_lots') }}</h4>
+                <h4>{{ trans($theme.'-app.lot_list.my_lots') }}</h4>
             </div>
 
             <div class="filter-section-checks">
                 <ul>
                     <li>
                         <input type="checkbox" id="my_lots_property" name="my_lots_property" class="filled-in " onclick="javascript:checkfilter('my_lots_property');" <?= !empty(app('request')->input('my_lots_property'))? "checked='checked'" : "" ?>>
-                        <label for="my_lots_property">{{ trans(\Config::get('app.theme').'-app.lot_list.my_lots_property') }}</label>
+                        <label for="my_lots_property">{{ trans($theme.'-app.lot_list.my_lots_property') }}</label>
                     </li>
                     <li>
                         <input type="checkbox" id="my_lots_client" name="my_lots_client" class="filled-in" onclick="javascript:checkfilter('my_lots_client');" <?= !empty(app('request')->input('my_lots_client'))? "checked='checked'" : "" ?>>
-                        <label for="my_lots_client">{{ trans(\Config::get('app.theme').'-app.lot_list.my_lots_clients') }}</label>
+                        <label for="my_lots_client">{{ trans($theme.'-app.lot_list.my_lots_clients') }}</label>
                     </li>
                 </ul>
             </div>
@@ -159,11 +159,11 @@
               </div>
               <div class="buttons-filt flex">
                 <div class="btn-filt">
-                  <button class="btn btn-filter btn-color" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+                  <button class="btn btn-filter btn-color" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
 
                 </div>
                 <div class="btn-filt">
-                  <a class="btn btn-filter btn-danger" style="border-radius: 0" href="{{ $data['url'] }}<?= !empty(app('request')->input('s'))? "?s=" . app('request')->input('s'):"" ?> ">{{ trans(\Config::get('app.theme').'-app.lot_list.reset_filter') }}</a>
+                  <a class="btn btn-filter btn-danger" style="border-radius: 0" href="{{ $data['url'] }}<?= !empty(app('request')->input('s'))? "?s=" . app('request')->input('s'):"" ?> ">{{ trans($theme.'-app.lot_list.reset_filter') }}</a>
 
                 </div>
               </div>
@@ -181,9 +181,9 @@
 
             @if(!empty($indices))
                 <div class="block_filters text">
-                    <label class="filter-section-head" for="input_description">{{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</label>
+                    <label class="filter-section-head" for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
                     <div class="text-center">
-                          <a title="{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}</a>
+                          <a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
                     </div>
                 </div>
 

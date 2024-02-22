@@ -5,8 +5,8 @@
 
             <ul itemscope itemtype="https://schema.org/BreadcrumbList">
                 <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                    <a class="color-letter bread-link" itemtype="https://schema.org/Thing" itemprop="item" title="{{ trans(\Config::get('app.theme').'-app.subastas.breadcrumb') }}" href="https://{{ \Request::getHttpHost() }}">
-                        <span itemprop="name">{{ trans(\Config::get('app.theme').'-app.subastas.breadcrumb') }}</span>
+                    <a class="color-letter bread-link" itemtype="https://schema.org/Thing" itemprop="item" title="{{ trans($theme.'-app.subastas.breadcrumb') }}" href="https://{{ \Request::getHttpHost() }}">
+                        <span itemprop="name">{{ trans($theme.'-app.subastas.breadcrumb') }}</span>
                     </a>
                     <meta itemprop="position" content="1" />
                 </li>

@@ -49,7 +49,7 @@
         </div>
 
         <div id="text_actual_no_bid" class="pre <?= $lote_actual->open_price > 0 ? 'hidden' : '' ?>">
-            <p class="pre-title-principal">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_bids') }}</p>
+            <p class="pre-title-principal">{{ trans($theme . '-app.lot_list.no_bids') }}</p>
         </div>
     </div>
 @endif

@@ -1,4 +1,4 @@
-<span class="titulo-filtro">{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}</span>
+<span class="titulo-filtro">{{ trans($theme.'-app.lot_list.categories') }}</span>
 	<div class="filtros-caja">
 
 		<div class="input-radio-div d-flex- align-items-center hidden">

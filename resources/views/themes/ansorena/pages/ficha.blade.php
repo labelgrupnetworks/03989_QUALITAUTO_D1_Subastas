@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @php
@@ -94,7 +94,7 @@
             //ponemos bien el nombre del autor para que se vea bien en la ficha del lote
             $caracteristicas[1]->value_caracteristicas_hces1 = $autor;
 
-            $name = trans(\Config::get('app.theme') . '-app.galery.volverArtistaFondoGaleria') . ' ' . $autor;
+            $name = trans($theme . '-app.galery.volverArtistaFondoGaleria') . ' ' . $autor;
             $bread[] = ['url' => route('artistaFondoGaleria', ['id_artist' => $artistaFondoGaleria]), 'name' => $name];
         } elseif (!empty($lote_actual)) {
             if ($lote_actual->tipo_sub == 'E') {

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
                 </div>
             </div>
         </div>
@@ -31,15 +31,15 @@
                 </div>
                 <div class="col-xs-12 col-md-9 col-lg-9 ">
                     <div class="user-account-title-content">
-                        <div class="user-account-menu-title">{{ trans(\Config::get('app.theme').'-app.user_panel.pending_bills') }}</div>
+                        <div class="user-account-menu-title">{{ trans($theme.'-app.user_panel.pending_bills') }}</div>
                     </div>
 
                     <div class="user-accounte-titles-link" data-id="collapse_pays">
                         <ul class="ul-format d-flex justify-content-space-between align-items-center" role="tablist"  role="button" data-toggle="collapse" href="#collapse_pays" aria-expanded="false" aria-controls="collapse_pays">
-                            <li role="pagar"class="active" ><a class="color-letter" href="{{ \Routing::slug('user/panel/pending_bills') }}" style="text-transform: uppercase">{{ trans(\Config::get('app.theme').'-app.user_panel.still_paid') }}</a></li>
+                            <li role="pagar"class="active" ><a class="color-letter" href="{{ \Routing::slug('user/panel/pending_bills') }}" style="text-transform: uppercase">{{ trans($theme.'-app.user_panel.still_paid') }}</a></li>
                             <span>
-                                    <span class="label-open" style="display: none" >{{ trans(\Config::get('app.theme').'-app.user_panel.open') }}</span>
-                                    <span class="label-close" >{{ trans(\Config::get('app.theme').'-app.user_panel.hide') }}</span>
+                                    <span class="label-open" style="display: none" >{{ trans($theme.'-app.user_panel.open') }}</span>
+                                    <span class="label-close" >{{ trans($theme.'-app.user_panel.hide') }}</span>
                                 <img width=10 src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDk2LjE1NCA5Ni4xNTQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDk2LjE1NCA5Ni4xNTQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMC41NjEsMjAuOTcxbDQ1Ljk1MSw1Ny42MDVjMC43NiwwLjk1MSwyLjM2NywwLjk1MSwzLjEyNywwbDQ1Ljk1Ni01Ny42MDljMC41NDctMC42ODksMC43MDktMS43MTYsMC40MTQtMi42MSAgIGMtMC4wNjEtMC4xODctMC4xMjktMC4zMy0wLjE4Ni0wLjQzN2MtMC4zNTEtMC42NS0xLjAyNS0xLjA1Ni0xLjc2NS0xLjA1NkgyLjA5M2MtMC43MzYsMC0xLjQxNCwwLjQwNS0xLjc2MiwxLjA1NiAgIGMtMC4wNTksMC4xMDktMC4xMjcsMC4yNTMtMC4xODQsMC40MjZDLTAuMTUsMTkuMjUxLDAuMDExLDIwLjI4LDAuNTYxLDIwLjk3MXoiIGZpbGw9IiMwMDAwMDAiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
                                 </span>
                         </ul>
@@ -50,13 +50,13 @@
                         <div class="col-xs-12" style="padding-left:39px;">
                             <div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
                                     <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
-                                            {{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+                                            {{ trans($theme.'-app.user_panel.lot') }}
                                     </div>
                                     <div class="col-xs-12 col-sm-2 col-one user-account-fecha text-right">
-                                            {{ trans(\Config::get('app.theme').'-app.user_panel.total_fact') }}
+                                            {{ trans($theme.'-app.user_panel.total_fact') }}
                                     </div>
                                     <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid text-right">
-                                            {{ trans(\Config::get('app.theme').'-app.user_panel.total_price_fact') }}
+                                            {{ trans($theme.'-app.user_panel.total_price_fact') }}
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="factura_datos col-xs-6 col-md-6">
                                         <div class="factura_titulo">
-                                            <div>{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{date('d-m-Y',strtotime ($pendiente->fec_pcob))}} )</div>
+                                            <div>{{ trans($theme.'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{date('d-m-Y',strtotime ($pendiente->fec_pcob))}} )</div>
                                         </div>
                                         <div class="factura_gastos">
                                             @php($precio_total = 0)
@@ -134,11 +134,11 @@
                                     <div class="facturacion_info_data">
 
                                         <div class="importe_total adj" style="">
-                                            <span>{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay_fact') }} </span>
+                                            <span>{{ trans($theme.'-app.user_panel.total_pay_fact') }} </span>
                                             <span id="total_bills">00</span><span> €</span>
                                         </div>
                                         <div class="mt-1">
-                                        <button id="submit_fact" style="" type="button" class="secondary-button " >{{ trans(\Config::get('app.theme').'-app.user_panel.pay') }}</button>
+                                        <button id="submit_fact" style="" type="button" class="secondary-button " >{{ trans($theme.'-app.user_panel.pay') }}</button>
                                         <button  class="btn btn-custom hidden" type="button"><div class="loader"></div></button>
                                         </div>
 
@@ -150,10 +150,10 @@
 
                     <div class="user-accounte-titles-link col-xs-12 no-padding" data-id="collapse_fac_pag">
                             <ul class="ul-format d-flex justify-content-space-between align-items-center" style="text-transform: uppercase" role="tablist"  role="button" data-toggle="collapse" href="#collapse_fac_pag" aria-expanded="false" aria-controls="collapse_fac_pag">
-                                    <li role="pagadas"  ><a class="color-letter" style="text-transform: uppercase">{{ trans(\Config::get('app.theme').'-app.user_panel.bills') }}</a></li>
+                                    <li role="pagadas"  ><a class="color-letter" style="text-transform: uppercase">{{ trans($theme.'-app.user_panel.bills') }}</a></li>
                                     <span>
-                                        <span class="label-open"  >{{ trans(\Config::get('app.theme').'-app.user_panel.open') }}</span>
-                                        <span class="label-close" style="display: none">{{ trans(\Config::get('app.theme').'-app.user_panel.hide') }}</span>
+                                        <span class="label-open"  >{{ trans($theme.'-app.user_panel.open') }}</span>
+                                        <span class="label-close" style="display: none">{{ trans($theme.'-app.user_panel.hide') }}</span>
                                     <img width=10 src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDk2LjE1NCA5Ni4xNTQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDk2LjE1NCA5Ni4xNTQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMC41NjEsMjAuOTcxbDQ1Ljk1MSw1Ny42MDVjMC43NiwwLjk1MSwyLjM2NywwLjk1MSwzLjEyNywwbDQ1Ljk1Ni01Ny42MDljMC41NDctMC42ODksMC43MDktMS43MTYsMC40MTQtMi42MSAgIGMtMC4wNjEtMC4xODctMC4xMjktMC4zMy0wLjE4Ni0wLjQzN2MtMC4zNTEtMC42NS0xLjAyNS0xLjA1Ni0xLjc2NS0xLjA1NkgyLjA5M2MtMC43MzYsMC0xLjQxNCwwLjQwNS0xLjc2MiwxLjA1NiAgIGMtMC4wNTksMC4xMDktMC4xMjcsMC4yNTMtMC4xODQsMC40MjZDLTAuMTUsMTkuMjUxLDAuMDExLDIwLjI4LDAuNTYxLDIwLjk3MXoiIGZpbGw9IiMwMDAwMDAiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
                                     </span>
                             </ul>
@@ -163,13 +163,13 @@
                                 <div class="col-xs-12" style="padding-left:39px;">
                                     <div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
                                             <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
-                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+                                                    {{ trans($theme.'-app.user_panel.lot') }}
                                             </div>
                                             <div class="col-xs-12 col-sm-2 col-one user-account-fecha text-right">
-                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.total_fact') }}
+                                                    {{ trans($theme.'-app.user_panel.total_fact') }}
                                             </div>
                                             <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid text-right">
-                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.total_price_fact') }}
+                                                    {{ trans($theme.'-app.user_panel.total_price_fact') }}
                                             </div>
                                         </div>
                                     </div>
@@ -195,7 +195,7 @@
                                             @endif                                  </div>
                                         <div class="factura_datos col-xs-12 col-md-6">
                                             <div class="factura_titulo">
-                                                <div>{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{date('d-m-Y',strtotime ($pendiente->fec_pcob))}} )</div>
+                                                <div>{{ trans($theme.'-app.user_panel.n_bill') }} {{$pendiente->anum_pcob}}/{{$pendiente->num_pcob}} ( {{date('d-m-Y',strtotime ($pendiente->fec_pcob))}} )</div>
                                             </div>
                                             <div class="factura_gastos">
                                                     @php($precio_total = 0)

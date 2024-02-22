@@ -27,7 +27,7 @@
 					{{-- texto de la factura de texto --}}
 					@if(!empty($info_factura["T"] [$anum][$num]))
 
-						{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }}
+						{{ trans($theme.'-app.user_panel.n_bill') }}
 						{{$anum}}/{{$num}}
 						<br>
 
@@ -35,7 +35,7 @@
 							{{$dvc2t->des_dvc2t ?? ''}}
 						@endforeach
 					@else
-						{{ trans(\Config::get('app.theme').'-app.user_panel.n_bill') }}
+						{{ trans($theme.'-app.user_panel.n_bill') }}
 						{{$anum}}/{{$num}}
 					@endif
 
@@ -69,14 +69,14 @@
 		<div class="col-sm-2   account-item-border hidden-xs ">
 				<div class="user-account-item-date d-flex align-items-center">
 						<div class="producto_resumen_info w-100">
-								<div class="w-100 text-right">{{\Tools::moneyFormat($precio_total, trans(\Config::get('app.theme').'-app.subastas.euros'), 2)}}</div>
+								<div class="w-100 text-right">{{\Tools::moneyFormat($precio_total, trans($theme.'-app.subastas.euros'), 2)}}</div>
 							</div>
 				</div>
 		</div>
 		<div class="  col-xs-12  col-sm-2  account-item-border">
 			<div class="user-account-item-date d-flex align-items-center">
 				<div class="producto_resumen_info w-100">
-					<div class="w-100 text-right"><strong><span>{{\Tools::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros'), 2)}}</span></strong></div>
+					<div class="w-100 text-right"><strong><span>{{\Tools::moneyFormat($imp, trans($theme.'-app.subastas.euros'), 2)}}</span></strong></div>
 				</div>
 			</div>
 		</div>

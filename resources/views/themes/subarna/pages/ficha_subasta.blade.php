@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -23,7 +23,7 @@
 
         $bread = array();
 
-        $bread[] = array("url" =>$url, "name" =>"".trans(\Config::get('app.theme').'-app.subastas.auctions').""  );
+        $bread[] = array("url" =>$url, "name" =>"".trans($theme.'-app.subastas.auctions').""  );
         $bread[] = array( "name" =>$data['auction']->des_sub );
     ?>
     @include('includes.breadcrumb_before_after')

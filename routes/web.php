@@ -136,7 +136,7 @@ Route::get(Routing::translateSeo('subasta-inversa'), 'SubastaController@subasta_
 Route::post('/api-ajax/sessions/files', 'subastaController@getAucSessionFiles')->name('apiajax.sessions.files');
 
 Route::get(Routing::slug('sub') . '/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
-Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAuctionList');
+Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAuctionList')->name('subastas.tematicas');
 
 Route::post('/consult-lot/email', 'MailController@emailConsultLot');
 Route::get('/{lang?}/accept_news', 'MailController@acceptNews');
@@ -348,9 +348,10 @@ Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys'
 
 
 // Valoraciones
+// **Deprecated**
 Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos');
-Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess');
-Route::get(Routing::slugSeo('especialistas'), 'EnterpriseController@index');
+Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
+Route::get(Routing::slugSeo('especialistas'), 'EnterpriseController@index')->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv');
 Route::post('/valoracion/upload', 'ValoracionController@uploadFile');
 Route::get('/{lang}/valoracion-{key}', 'ValoracionController@GetValoracionGratuita')->name('valoracion');

@@ -23,7 +23,7 @@ $files = $sub->getFiles($subasta->cod_sub);
             <div class="snippet_documentacion" id="docs{{ $subasta->id_auc_sessions }}">
                 <a onclick="javascript:$('#docs{{ $subasta->id_auc_sessions }}').toggle('slide', {direction:'right'}, 500)"
                     style="color:#000;font-size:18px;position:absolute;right:10px;top:10px;cursor:pointer;">x</a>
-                <b>{{ trans(\Config::get('app.theme') . '-app.subastas.documentacion') }}:</b>
+                <b>{{ trans($theme . '-app.subastas.documentacion') }}:</b>
 
                 @if (!empty($files))
                     @foreach ($files as $file)
@@ -102,7 +102,7 @@ $files = $sub->getFiles($subasta->cod_sub);
                                     role="button">
                                     <div class="text-center"><i class="fas  fa-file-download"></i>
                                     </div>
-                                    <small>{{ trans(\Config::get('app.theme') . '-app.subastas.pdf_catalog') }}</small>
+                                    <small>{{ trans($theme . '-app.subastas.pdf_catalog') }}</small>
                                 </a>
                             </li>
                         @endif
@@ -112,7 +112,7 @@ $files = $sub->getFiles($subasta->cod_sub);
                                     role="button">
                                     <div class="text-center"><i class="fas fa-file-download"></i>
                                     </div>
-                                    <small>{{ trans(\Config::get('app.theme') . '-app.subastas.pdf_man') }}</small>
+                                    <small>{{ trans($theme . '-app.subastas.pdf_man') }}</small>
                                 </a>
                             </li>
                         @endif
@@ -123,7 +123,7 @@ $files = $sub->getFiles($subasta->cod_sub);
                                     role="button">
                                     <div class="text-center"><i class="fas fa-file-download"></i>
                                     </div>
-                                    <small>{{ trans(\Config::get('app.theme') . '-app.subastas.pdf_pre') }}</small>
+                                    <small>{{ trans($theme . '-app.subastas.pdf_pre') }}</small>
                                 </a>
                             </li>
                         @endif
@@ -134,7 +134,7 @@ $files = $sub->getFiles($subasta->cod_sub);
                                     role="button">
                                     <div class="text-center"><i class="fas fa-file-download"></i>
                                     </div>
-                                    <small>{{ trans(\Config::get('app.theme') . '-app.subastas.pdf_adj') }}</small>
+                                    <small>{{ trans($theme . '-app.subastas.pdf_adj') }}</small>
                                 </a>
                             </li>
                         @endif
@@ -148,25 +148,25 @@ $files = $sub->getFiles($subasta->cod_sub);
             <div class="auction-item-links w-100">
                 <div class="auction-item-icon-desc d-block">
                     <a title="{{ $subasta->name }}" href="{{ $url_lotes }}"
-                        class=" btn-view-lots button-principal">{{ trans(\Config::get('app.theme') . '-app.subastas.see_lotes') }}</a>
+                        class=" btn-view-lots button-principal">{{ trans($theme . '-app.subastas.see_lotes') }}</a>
                 </div>
                 <div class="auction-item-icon-desc  d-block">
                     <a title="{{ $subasta->name }}" href="{{ $url_subasta }}"
-                        class="btn-info-auction secondary-button">{{ trans(\Config::get('app.theme') . '-app.subastas.see_subasta') }}</a>
+                        class="btn-info-auction secondary-button">{{ trans($theme . '-app.subastas.see_subasta') }}</a>
 
                 </div>
                 <div class="auction-item-icon-desc d-block">
                     <a onclick="javascript:$('#docs{{ $subasta->id_auc_sessions }}').toggle('slide', {direction:'right'}, 500)"
                         class="btn-info-auction secondary-button" style="cursor:pointer;">
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.documentacion') }}
+                        {{ trans($theme . '-app.subastas.documentacion') }}
                     </a>
                 </div>
 
                 @if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time())
                     <div class="bid-life d-block">
                         <a style="color:#FFFFFF" class="btn-bid-life d-block " href="{{ $url_tiempo_real }}"
-                            title="{{ trans(\Config::get('app.theme') . '-app.lot_list.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') }} {{ trans(\Config::get('app.theme') . '-app.lot_list.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
-                            target="_blank">{{ trans(\Config::get('app.theme') . '-app.lot.bid_live') }}</a>
+                            title="{{ trans($theme . '-app.lot_list.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') }} {{ trans($theme . '-app.lot_list.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
+                            target="_blank">{{ trans($theme . '-app.lot.bid_live') }}</a>
                     </div>
                 @endif
 

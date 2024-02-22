@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -56,7 +56,7 @@ $codPais_clid = $data['user']->codpais_clid ?? $data['user']->codpais_cli ?? 'ES
 
 				{{-- Title --}}
 				<div class="user-datas-title flex align-items-center mb-3">
-					<p style="margin: 0px">{{ trans(\Config::get('app.theme').'-app.user_panel.my_pending_bills') }}
+					<p style="margin: 0px">{{ trans($theme.'-app.user_panel.my_pending_bills') }}
 					</p>
 					<div class="col_reg_form"></div>
 					<div class="btns-pay flex">
@@ -78,7 +78,7 @@ $codPais_clid = $data['user']->codpais_clid ?? $data['user']->codpais_cli ?? 'ES
 				{{-- Pendientes --}}
 				<div class="title-collapse" data-toggle="collapse" data-target="#pendings_bills">
 					<p>
-						{{ trans(\Config::get('app.theme').'-app.user_panel.still_paid') }}
+						{{ trans($theme.'-app.user_panel.still_paid') }}
 						<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
 					</p>
 				</div>
@@ -97,7 +97,7 @@ $codPais_clid = $data['user']->codpais_clid ?? $data['user']->codpais_cli ?? 'ES
 				{{-- Pagadas --}}
 				<div class="title-collapse" data-toggle="collapse" data-target="#bills">
 					<p>
-						{{ trans(\Config::get('app.theme').'-app.user_panel.bills') }}
+						{{ trans($theme.'-app.user_panel.bills') }}
 						<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
 					</p>
 				</div>

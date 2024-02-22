@@ -4,7 +4,7 @@
 	<div class="account-user color-letter  pendientes_pago mb-2">
 
 			<div class="row">
-				<h2>{!! trans(\Config::get('app.theme').'-app.user_panel.title_pending_mint_pays_NFT') !!}</h2>
+				<h2>{!! trans($theme.'-app.user_panel.title_pending_mint_pays_NFT') !!}</h2>
 
 				@php
 
@@ -21,20 +21,20 @@
 
 					@endphp
 					<div class="col-xs-12  ">
-						<div class="col-xs-12 col-md-9 payment-text-cell"> <strong> {{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}:</strong>  {{$pending->descweb_hces1}} </div>
+						<div class="col-xs-12 col-md-9 payment-text-cell"> <strong> {{ trans($theme.'-app.user_panel.lot') }}:</strong>  {{$pending->descweb_hces1}} </div>
 						<div class="col-xs-12 col-md-3 payment-money-cell">{{\Tools::moneyFormat($pending->cost_mint_nft,"€",2)}}</div>
 					</div>
 
 
 				@endforeach
 				<div class="col-xs-12 ">
-					<div class="col-xs-12 col-md-9  payment-total-cell">{{ trans(\Config::get('app.theme').'-app.user_panel.total_pay') }}:</div>
+					<div class="col-xs-12 col-md-9  payment-total-cell">{{ trans($theme.'-app.user_panel.total_pay') }}:</div>
 					<div class="col-xs-12 col-md-3 payment-money-cell">{{\Tools::moneyFormat($total,"€",2)}}</div>
 				</div>
 
 
 				<div class="col-xs-12 mt-4 mb-4 text-right">
-					<a href="{{ Route("mintPayUrl", ["operationId" => implode("_",$mintsIds)])}}" class="button-principal"> {!! trans(\Config::get('app.theme').'-app.user_panel.pay') !!} </a>
+					<a href="{{ Route("mintPayUrl", ["operationId" => implode("_",$mintsIds)])}}" class="button-principal"> {!! trans($theme.'-app.user_panel.pay') !!} </a>
 
 
 				</div>

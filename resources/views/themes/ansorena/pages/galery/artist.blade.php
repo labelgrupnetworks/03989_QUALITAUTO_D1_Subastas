@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.galery.exhibitions') }}
+    {{ trans($theme . '-app.galery.exhibitions') }}
 @stop
 
 @section('framework-css')

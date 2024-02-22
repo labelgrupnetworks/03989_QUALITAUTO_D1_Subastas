@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -10,24 +10,24 @@
 
 $families = array();
 /*
-$families[2] = trans(\Config::get('app.theme').'-app.subastas.proximas_subastas'); // Próximas subastas
-$families[3] = trans(\Config::get('app.theme').'-app.subastas.abanicos');    // Abanicos
-$families[4] = trans(\Config::get('app.theme').'-app.subastas.alfombras');   // Alfombras
-$families[5] = trans(\Config::get('app.theme').'-app.subastas.ceramica');    // Cerámica
-$families[6] = trans(\Config::get('app.theme').'-app.subastas.contemporaneo');    // Contemporáneo
-$families[7] = trans(\Config::get('app.theme').'-app.subastas.cristal');     // Cristal
-$families[8] = trans(\Config::get('app.theme').'-app.subastas.escultura');   // Escultura
-$families[9] = trans(\Config::get('app.theme').'-app.subastas.joyas');       // Joyas
-$families[10] = trans(\Config::get('app.theme').'-app.subastas.lamparas');   // Lámparas
-$families[11] = trans(\Config::get('app.theme').'-app.subastas.miniaturas'); // Miniaturas
-$families[12] = trans(\Config::get('app.theme').'-app.subastas.muebles');    // Muebles
-$families[13] = trans(\Config::get('app.theme').'-app.subastas.oriental');   // Oriental
-$families[14] = trans(\Config::get('app.theme').'-app.subastas.pintura');    // Pintura
-$families[15] = trans(\Config::get('app.theme').'-app.subastas.plata');      // Plata
-$families[16] = trans(\Config::get('app.theme').'-app.subastas.porcelana');  // Porcelana
-$families[17] = trans(\Config::get('app.theme').'-app.subastas.relojes');    // Relojes
-$families[18] = trans(\Config::get('app.theme').'-app.subastas.tapices');    // Tapices
-$families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // Varios
+$families[2] = trans($theme.'-app.subastas.proximas_subastas'); // Próximas subastas
+$families[3] = trans($theme.'-app.subastas.abanicos');    // Abanicos
+$families[4] = trans($theme.'-app.subastas.alfombras');   // Alfombras
+$families[5] = trans($theme.'-app.subastas.ceramica');    // Cerámica
+$families[6] = trans($theme.'-app.subastas.contemporaneo');    // Contemporáneo
+$families[7] = trans($theme.'-app.subastas.cristal');     // Cristal
+$families[8] = trans($theme.'-app.subastas.escultura');   // Escultura
+$families[9] = trans($theme.'-app.subastas.joyas');       // Joyas
+$families[10] = trans($theme.'-app.subastas.lamparas');   // Lámparas
+$families[11] = trans($theme.'-app.subastas.miniaturas'); // Miniaturas
+$families[12] = trans($theme.'-app.subastas.muebles');    // Muebles
+$families[13] = trans($theme.'-app.subastas.oriental');   // Oriental
+$families[14] = trans($theme.'-app.subastas.pintura');    // Pintura
+$families[15] = trans($theme.'-app.subastas.plata');      // Plata
+$families[16] = trans($theme.'-app.subastas.porcelana');  // Porcelana
+$families[17] = trans($theme.'-app.subastas.relojes');    // Relojes
+$families[18] = trans($theme.'-app.subastas.tapices');    // Tapices
+$families[19] = trans($theme.'-app.subastas.varios');     // Varios
 */
 ?>
 
@@ -39,7 +39,7 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 			<div class="col-xs-12 general-container">
 				<div class="title-register">
 					<center>
-						<p>{{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}</p>
+						<p>{{ trans($theme.'-app.login_register.crear_cuenta') }}</p>
 					</center>
 				</div>
 
@@ -51,10 +51,10 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 					<div class="tipo_usuario">
 						<div class="particular selected" onclick="javascript:particular();">
-							{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}
+							{{ trans($theme.'-app.login_register.particular') }}
 						</div>
 						<div class="empresa" onclick="javascript:empresa();">
-							{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}
+							{{ trans($theme.'-app.login_register.empresa') }}
 						</div>
 					</div>
 
@@ -71,16 +71,16 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 					<div class="well">
 
 						<div class="tit">
-							{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}
+							{{ trans($theme.'-app.login_register.personal_information') }}
 						</div>
 
 
 						<div class="tipo_sexo">
 							<div class="hombre selected" onclick="javascript:hombre();">
-								{{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}
+								{{ trans($theme.'-app.login_register.hombre') }}
 							</div>
 							<div class="mujer" onclick="javascript:mujer();">
-								{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}
+								{{ trans($theme.'-app.login_register.mujer') }}
 							</div>
 						</div>
 
@@ -90,51 +90,51 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 						<div class="datos_contacto">
 
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.user_panel.date_birthday') }}</label>
+								<label>{{ trans($theme.'-app.user_panel.date_birthday') }}</label>
 								{!!$formulario->fecha_nacimiento!!}
 							</div>
 
 							<div class="registerParticular">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.nombre') }}</label>
+								<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
 								{!!$formulario->usuario!!}
 							</div>
 							<div class="registerParticular apellidos">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
+								<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
 								{!!$formulario->last_name!!}
 							</div>
 							<div class="registerEnterprise">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
+								<label>{{ trans($theme.'-app.login_register.company') }}</label>
 								{!!$formulario->rsoc_cli!!}
 							</div>
 							<div class="registerEnterprise">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+								<label>{{ trans($theme.'-app.login_register.contact') }}</label>
 								{!!$formulario->contact!!}
 							</div>
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
+								<label>{{ trans($theme.'-app.login_register.phone') }}</label>
 								{!!$formulario->telefono!!}
 							</div>
 							<div class="movil">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.mobile') }}</label>
+								<label>{{ trans($theme.'-app.login_register.mobile') }}</label>
 								{!!$formulario->movil!!}
 							</div>
 							<div>
 								<label
-									class="nif">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
+									class="nif">{{ trans($theme.'-app.login_register.dni') }}</label>
 								<label class="cif"
-									style="display:none">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
+									style="display:none">{{ trans($theme.'-app.login_register.cif') }}</label>
 								{!!$formulario->cif!!}
 							</div>
 							<div class="observaciones">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.observacion') }}</label>
+								<label>{{ trans($theme.'-app.login_register.observacion') }}</label>
 								{!!$formulario->obscli!!}
 							</div>
 							<div class="idioma">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
+								<label>{{ trans($theme.'-app.login_register.language') }}</label>
 								{!!$formulario->language!!}
 							</div>
 							<div class="moneda">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+								<label>{{ trans($theme.'-app.login_register.currency') }}</label>
 								{!!$formulario->divisa!!}
 							</div>
 						</div>
@@ -142,27 +142,27 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 						<div class="datos_direccion">
 
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+								<label>{{ trans($theme.'-app.login_register.via') }}</label>
 								{!!$formulario->vias!!}
 							</div>
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+								<label>{{ trans($theme.'-app.login_register.direccion') }}</label>
 								{!!$formulario->direccion!!}
 							</div>
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+								<label>{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 								{!!$formulario->cpostal!!}
 							</div>
 							<div>
-								<labeL>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+								<labeL>{{ trans($theme.'-app.login_register.pais') }}</label>
 								{!!$formulario->pais!!}
 							</div>
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+								<label>{{ trans($theme.'-app.login_register.ciudad') }}</label>
 								{!!$formulario->poblacion!!}
 							</div>
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+								<label>{{ trans($theme.'-app.login_register.provincia') }}</label>
 								{!!$formulario->provincia!!}
 							</div>
 						</div>
@@ -194,14 +194,14 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 					<div class="well">
 						<div class="tit">
-							{{ trans(\Config::get('app.theme').'-app.login_register.title_direccion_envio') }}
+							{{ trans($theme.'-app.login_register.title_direccion_envio') }}
 						</div>
 
 						<div>
 							<input id="shipping_address" class="form-contro" name="shipping_address" type="checkbox"
 								checked="true" />
 							<label
-								for="shipping_address">{{ trans(\Config::get('app.theme').'-app.login_register.utilizar_direcc_direccenv') }}</label>
+								for="shipping_address">{{ trans($theme.'-app.login_register.utilizar_direcc_direccenv') }}</label>
 						</div>
 
 						<div class="clearfix"></div>
@@ -211,36 +211,36 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 							{!!$formulario->clid!!}
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+								<label>{{ trans($theme.'-app.login_register.pais') }}</label>
 								{!!$formulario->clid_pais!!}
 							</div>
 
 							<div>
 								<label
-									for="cpostal">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+									for="cpostal">{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 								{!!$formulario->clid_cpostal!!}
 							</div>
 
 							<div>
 								<label
-									for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+									for="provincia">{{ trans($theme.'-app.login_register.provincia') }}</label>
 								{!!$formulario->clid_provincia!!}
 							</div>
 
 							<div>
 								<label
-									for="poblacion">{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+									for="poblacion">{{ trans($theme.'-app.login_register.ciudad') }}</label>
 								{!!$formulario->clid_poblacion!!}
 							</div>
 
 							<div>
 								<label
-									for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+									for="provincia">{{ trans($theme.'-app.login_register.via') }}</label>
 								{!!$formulario->clid_codigoVia!!}
 							</div>
 							<div>
 								<label
-									for="direccion">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+									for="direccion">{{ trans($theme.'-app.login_register.direccion') }}</label>
 								{!!$formulario->clid_direccion!!}
 							</div>
 
@@ -267,18 +267,18 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 
 					<div class="well">
-						<div class="tit">{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</div>
+						<div class="tit">{{ trans($theme.'-app.login_register.cuenta') }}</div>
 
 						<div class="datos_cuenta">
 
 							<div>
 								<label
-									for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
+									for="email">{{ trans($theme.'-app.login_register.email') }}</label>
 								{!!$formulario->email!!}
 							</div>
 							<div>
 								<label
-									for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}</label>
+									for="email">{{ trans($theme.'-app.login_register.email_confirmacion') }}</label>
 								{!!$formulario->confirm_email!!}
 							</div>
 
@@ -286,13 +286,13 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 							<div>
 								<label
-									for="contrasena">{{ trans(\Config::get('app.theme').'-app.login_register.password') }}</label>
+									for="contrasena">{{ trans($theme.'-app.login_register.password') }}</label>
 								{!!$formulario->password!!}
 							</div>
 
 							<div>
 								<label
-									for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}</label>
+									for="confirmcontrasena">{{ trans($theme.'-app.login_register.confirm_password') }}</label>
 								{!!$formulario->confirm_password!!}
 							</div>
 
@@ -306,7 +306,7 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 							@if(!empty($families) && count($families) > 0)
 
 							<!-- con categorias newsletter -->
-							<big>{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}</big>
+							<big>{{ trans($theme.'-app.login_register.recibir_newsletter') }}</big>
 							<br>
 
 							@foreach($families as $t => $item)
@@ -322,7 +322,7 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 							<div>
 								{!! $formulario->newsletter!!}
 								<label for="bool__1__condiciones">
-									{{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
+									{{ trans($theme.'-app.login_register.recibir_newsletter') }}
 								</label>
 							</div>
 
@@ -336,9 +336,9 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 							<div>
 								{!! $formulario->condiciones!!}
 								<label for="bool__1__condiciones">{!!
-									trans(\Config::get('app.theme').'-app.login_register.read_conditions') !!} (<a
-										href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.term_condition') ?>"
-										target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)
+									trans($theme.'-app.login_register.read_conditions') !!} (<a
+										href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') ?>"
+										target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)
 								</label>
 							</div>
 							<br>
@@ -356,7 +356,7 @@ $families[19] = trans(\Config::get('app.theme').'-app.subastas.varios');     // 
 
 					<div class="col-xs-12 text-center">
 						<button type="submit" class="button-principal submitButton">
-							{{ trans(\Config::get('app.theme').'-app.login_register.register') }}
+							{{ trans($theme.'-app.login_register.register') }}
 						</button>
 					</div>
 

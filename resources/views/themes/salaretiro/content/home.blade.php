@@ -6,7 +6,7 @@
 <div class="lotes_destacados">
 	<div class="container">
 		<div class="title_lotes_destacados">
-			 {{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
+			 {{ trans($theme.'-app.lot_list.lotes_destacados') }}
 		</div>
                 <div class="loader"></div>
 		<div class="owl-theme owl-carousel" id="lotes_destacados"></div>

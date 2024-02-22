@@ -1,12 +1,12 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @section('content')
 <?php
-$bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') );
+$bread[] = array("name" => trans($theme.'-app.foot.contact') );
 ?>
 
 
@@ -15,7 +15,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 
 <div class="container">
 
-	<h1 class="titlePage">{{trans(\Config::get('app.theme').'-app.foot.contact') }}</h1>
+	<h1 class="titlePage">{{trans($theme.'-app.foot.contact') }}</h1>
 
 	<div class="row">
 		<div class="col-xs-12 col-md-4 contact-page-form">
@@ -25,22 +25,22 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 				<div class="form-group">
 					<div class="input-effect col-xs-12">
 						{!! $data['formulario']['nombre'] !!}
-						<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+						<label>{{trans($theme.'-app.login_register.contact') }}</label>
 					</div>
 
 					<div class="input-effect col-xs-12">
 						{!! $data['formulario']['email'] !!}
-						<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
+						<label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
 					</div>
 
 					<div class="input-effect col-xs-12">
 						{!! $data['formulario']['telefono'] !!}
-						<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+						<label>{{trans($theme.'-app.user_panel.phone') }}</label>
 					</div>
 
 					<div class="input-effect col-xs-12">
 						{!! $data['formulario']['comentario'] !!}
-						<label>{{trans(\Config::get('app.theme').'-app.global.coment') }}</label>
+						<label>{{trans($theme.'-app.global.coment') }}</label>
 					</div>
 
 					<div class="check_term row">
@@ -50,7 +50,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 						</div>
 						<div class="col-xs-10 col-md-11">
 							<label
-								for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+								for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
 						</div>
 					</div>
 

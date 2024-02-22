@@ -18,6 +18,7 @@ use App\Models\V5\FgSub;
 use App\libs\FormLib;
 use DateTime;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class AdminAucSessionsController extends Controller
 {
@@ -205,7 +206,7 @@ class AdminAucSessionsController extends Controller
 	{
 		$auc_session_attributes = [
 			'"auction"' => $cod_sub,
-			'"id_auc_sessions"' => $request->id_auc_sessions,
+			//'"id_auc_sessions"' => $request->id_auc_sessions,
 			'"reference"' => $request->reference,
 			'"start"' => $request->start,
 			'"end"' => $request->end,
@@ -220,7 +221,8 @@ class AdminAucSessionsController extends Controller
 		try {
 
 			DB::beginTransaction();
-			$auc_session = AucSessions::create($auc_session_attributes);
+			$auc_session = AucSessions::query()->create($auc_session_attributes);
+			$auc_session = AucSessions::where('"auction"', $cod_sub)->where('"id_auc_sessions"', $auc_session['"id_auc_sessions"'])->first();
 
 			$image = '';
 			if($request->has('image_session')){
@@ -244,7 +246,7 @@ class AdminAucSessionsController extends Controller
 			DB::rollBack();
 
 			//eliminar la foto de la sesion
-
+			Log::error($th->getMessage());
 			return response($th->getMessage(), 400);
 		}
 	}

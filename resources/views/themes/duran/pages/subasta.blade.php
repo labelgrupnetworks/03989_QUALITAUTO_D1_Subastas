@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -42,7 +42,7 @@
 				@if(empty($data['subastas']))
 					<h1 class="titlePage-custom color-letter text-center">{{$data['name']}}</h1>
 				@else
-					<h1 class="titlePage-custom color-letter">{{ trans(\Config::get('app.theme').'-app.lot_list.lots') }}</h1>
+					<h1 class="titlePage-custom color-letter">{{ trans($theme.'-app.lot_list.lots') }}</h1>
 				@endif
 				<a class="comopujar" target="_blank" href="#">Como pujar <i class="fas fa-info-circle"></i></a>
 			</div>

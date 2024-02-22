@@ -15,18 +15,18 @@ if(!empty($data['usuario'])){
 	<div class="pre prices-wrapper mt-1">
 		@if($compra)
 			<div class="shop-price">
-				<p class="pre-price m-0">{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean( $lote_actual->impsalhces_asigl0,\Session::get('user.cod')),false,2) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+				<p class="pre-price m-0">{{  \Tools::moneyFormat(\Tools::PriceWithTaxForEuropean( $lote_actual->impsalhces_asigl0,\Session::get('user.cod')),false,2) }} {{ trans($theme.'-app.subastas.euros') }}</p>
 			</div>
 
 			@if(Session::has('user'))
 			<button data-from="modal" class="button-principal addShippingCart_JS" type="button">
 				<i class="fa fa-shopping-bag" aria-hidden="true"></i>
-				{{trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
+				{{trans($theme.'-app.subastas.buy_lot') }}
 			</button>
 			@else
 			<button data-from="modal" class="button-principal" type="button" id="js-ficha-login">
 				<i class="fa fa-shopping-bag" aria-hidden="true"></i>
-				{{trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}
+				{{trans($theme.'-app.subastas.buy_lot') }}
 			</button>
 			@endif
 
@@ -34,7 +34,7 @@ if(!empty($data['usuario'])){
 		<div  class="col-xs-12 ">
 			<div id="RequestInformationView" class="cursor">
 				<strong>
-				{{trans(\Config::get('app.theme').'-app.galery.request_information') }}
+				{{trans($theme.'-app.galery.request_information') }}
 				</strong>
 				<span id="desplegableOFF"><img src="/default/img/icons/flechaDer.png"> </span>
 				<span id="desplegableON" class=" hidden"><img src="/default/img/icons/flechaAba.png"> </span>
@@ -49,25 +49,25 @@ if(!empty($data['usuario'])){
 						@csrf
 					<div class="form-group ">
 						<div class="input-effect col-xs-12">
-							<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+							<label>{{trans($theme.'-app.login_register.contact') }}</label>
 							<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 						</div>
 
 						<div class="input-effect col-xs-12">
-							<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
+							<label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
 							<input type="text" class="form-control  " name="email" id="email__1__email" value="{{$email}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 						</div>
 
 						<div class="input-effect col-xs-12">
-							<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+							<label>{{trans($theme.'-app.user_panel.phone') }}</label>
 							<input type="text" class="form-control  " name="telefono" id="texto__1__telefono" value="{{$phone}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 						</div>
 
 						<div class="input-effect col-xs-12">
-							<label>{{trans(\Config::get('app.theme').'-app.global.coment') }}</label>
+							<label>{{trans($theme.'-app.global.coment') }}</label>
 							<textarea  class="form-control  " name="comentario"  id="textogrande__0__comentario"   rows="10">  </textarea>
 
 						</div>
@@ -93,7 +93,7 @@ if(!empty($data['usuario'])){
 								</div>
 								<div class="col-xs-10 col-md-11">
 									<label
-										for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+										for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
 								</div>
 							</div>
 						</div>

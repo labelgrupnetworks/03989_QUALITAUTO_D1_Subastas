@@ -8,6 +8,7 @@ use App\Exports\NewsletterClientExport;
 use App\libs\FormLib;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter;
+use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Config;
@@ -139,6 +140,42 @@ class AdminNewsletterClientController extends Controller
 		]);
 
 		return view('admin::pages.usuario.newsletter.show_all', ['suscriptions' => $suscriptions, 'filters' => $filters]);
+	}
+
+	public function showCatalogSuscriptors(Request $request)
+	{
+		$suscriptions = FxCli::query()
+		->select('cod_cli', 'email_cli', 'nom_cli', 'pais_cli', 'idioma_cli')
+		->whereHas('cli2', function ($query) {
+			$query->where('envcat_cli2', 'S');
+		})
+		->when($request->cod_cli, function ($query, $cod_cli) {
+			return $query->where('cod_cli', 'like', '%' . $cod_cli . '%');
+		})
+		->when($request->email_cli, function ($query, $email_cli) {
+			return $query->where('lower(email_cli)', 'like', '%' . mb_strtolower($email_cli) . '%');
+		})
+		->when($request->nom_cli, function ($query, $nom_cli) {
+			return $query->where('lower(nom_cli)', 'like', '%' . mb_strtolower($nom_cli) . '%');
+		})
+		->when($request->pais_cli, function ($query, $pais_cli) {
+			return $query->where('lower(pais_cli)', 'like', '%' . mb_strtolower($pais_cli) . '%');
+		})
+		->when($request->idioma_cli, function ($query, $idioma_cli) {
+			return $query->where('idioma_cli', $idioma_cli);
+		})
+		->orderBy($request->input('order', 'cod_cli'), $request->get('order_dir', 'desc'))
+		->paginate(40);
+
+		$filters = ([
+			'cod_cli' => FormLib::text("cod_cli", 0, $request->cod_cli),
+			'email_cli' => FormLib::text('email_cli', 0, $request->email_cli),
+			'nom_cli' => FormLib::text("nom_cli", 0, $request->nom_cli),
+			'pais_cli' => FormLib::text("pais_cli", 0, $request->pais_cli),
+			'idioma_cli' => FormLib::Select("idioma_cli", 0, $request->idioma_cli, ['ES' => 'ES', 'EN' => 'EN'])
+		]);
+
+		return view('admin::pages.usuario.newsletter.show_catalog', ['suscriptions' => $suscriptions, 'filters' => $filters]);
 	}
 
 	public function destroy(Request $request, $email_cliweb)

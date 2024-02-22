@@ -50,7 +50,7 @@
 							<div class="input-effect col-xs-12">
 								<label>
 									@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+									{{ trans($theme.'-app.global.'.$k) }}</label>
 								{!! $data['formulario'][$k]['formulario']!!}
 
 							</div>
@@ -63,7 +63,7 @@
 							<div class="input-effect col-xs-12 col-md-4">
 								<label>
 									@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+									{{ trans($theme.'-app.global.'.$k) }}</label>
 								{!! $data['formulario'][$k]['formulario']!!}
 
 							</div>
@@ -71,7 +71,7 @@
 							<div class="input-effect col-xs-12 col-md-4">
 								<label>
 								@if($data['formulario'][$k]['mandatory'])<b class="red">*</b>@endif
-									{{ trans(\Config::get('app.theme').'-app.global.'.$k) }}</label>
+									{{ trans($theme.'-app.global.'.$k) }}</label>
 								{!! $data['formulario'][$k]['formulario']!!}
 
 							</div>
@@ -86,7 +86,7 @@
                                     <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                                 </div>
                                 <div class="col-xs-10 col-md-11">
-                                    <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                                    <label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                                 </div>
                             </div>
 						</div>

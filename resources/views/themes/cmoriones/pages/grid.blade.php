@@ -14,6 +14,14 @@
         <div class="container grid-header">
             <div class="row">
 
+				<div class="col-12 py-3">
+					<div class="grid-auction-title">
+						<h2 class="">
+							{!! trans("$theme-app.lot_list.grid_seo_subtitle") !!}
+						</h2>
+					</div>
+                </div>
+
                 <div class="col-12">
                     @include('includes.breadcrumb')
                 </div>

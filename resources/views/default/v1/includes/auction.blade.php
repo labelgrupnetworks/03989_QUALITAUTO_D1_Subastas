@@ -42,22 +42,22 @@
 
     <div class="auction-card__buttons">
         <a title="{{ $subasta->name }}" href="{{ $url_lotes }}" class="btn btn-block auction-card__button_principal">
-            {{ trans(\Config::get('app.theme') . '-app.subastas.see_lotes') }}
+            {{ trans($theme . '-app.subastas.see_lotes') }}
         </a>
 
         <a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-block auction-card__button_secondary">
-            {{ trans(\Config::get('app.theme') . '-app.subastas.see_subasta') }}
+            {{ trans($theme . '-app.subastas.see_subasta') }}
         </a>
 
         <button onclick="$('#docs{{ $subasta->id_auc_sessions }}').toggle('slide', {direction:'right'}, 500)"
             class="btn btn-block auction-card__button_secondary">
-            {{ trans(\Config::get('app.theme') . '-app.subastas.documentacion') }}
+            {{ trans($theme . '-app.subastas.documentacion') }}
         </button>
 
         @if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time())
             <a style="color:#FFFFFF" class="btn btn-block btn-bid-life" href="{{ $url_tiempo_real }}"
-                title="{{ trans(\Config::get('app.theme') . '-app.lot_list.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') }} {{ trans(\Config::get('app.theme') . '-app.lot_list.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
-                target="_blank">{{ trans(\Config::get('app.theme') . '-app.lot.bid_live') }}</a>
+                title="{{ trans($theme . '-app.lot_list.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') }} {{ trans($theme . '-app.lot_list.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
+                target="_blank">{{ trans($theme . '-app.lot.bid_live') }}</a>
         @endif
 
         @if ($calendarLinks)

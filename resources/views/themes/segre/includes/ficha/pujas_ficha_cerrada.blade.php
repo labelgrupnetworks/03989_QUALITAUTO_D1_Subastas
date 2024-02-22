@@ -29,58 +29,58 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
             <div class="col-xs-8 col-sm-12 no-padding ">
                 @if($cerrado && !empty($precio_venta) && $remate )
                     <div class="pre">
-                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}</p>
-                        <p class="pre-price">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                        <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.buy_to') }}</p>
+                        <p class="pre-price">{{ \Tools::moneyFormat($precio_venta) }} {{ trans($theme.'-app.subastas.euros') }}</p>
                     </div>
 
                 @elseif($cerrado && !empty($precio_venta) &&  !$remate)
 
                 <div class="pre">
-                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
+                        <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.buy') }}</p>
                 </div>
                 @elseif($devuelto)
                     <div class="pre">
-                            <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                            <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.dont_available') }}</p>
                     </div>
 				@elseif($retirado)
                     <div class="pre">
-                            <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                            <p class="pre-title-principal adj-text">{{ trans($theme.'-app.subastas.dont_available') }}</p>
                     </div>
 				@else {{--if(!$sub_historica && !$sub_cerrada ) --}}
 					{{-- Formulario de  petición de información--}}
 					@if(!empty($lote_actual->impsalhces_asigl0))
 					<div class="pre lot-sold_impsal">
-                        <p class="pre-title-principal adj-text">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                        <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</p>
+                        <p class="pre-title-principal adj-text">{{ trans($theme.'-app.lot.lot-price') }}</p>
+                        <p class="pre-price">{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0) }} {{ trans($theme.'-app.subastas.euros') }}</p>
                     </div>
 					@endif
 
-					<p class="pre-title-principal adj-text">	{{ trans(\Config::get('app.theme').'-app.galery.request_information') }} </p>
+					<p class="pre-title-principal adj-text">	{{ trans($theme.'-app.galery.request_information') }} </p>
 					<form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
 						<input type="hidden" name="auction" value="{{ $lote_actual->cod_sub}} - {{ $lote_actual->des_sub}}">
 						<input type="hidden" name="lot" value="   {{$lote_actual->descweb_hces1 }} ">
 
 						<div class="form-group">
 							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+								<label>{{trans($theme.'-app.login_register.contact') }}</label>
 								<input type="text" class="form-control  " name="nombre" id="texto__1__nombre" value="{{$name}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 							</div>
 
 							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
+								<label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
 								<input type="text" class="form-control  " name="email" id="email__1__email" value="{{$email}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 							</div>
 
 							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+								<label>{{trans($theme.'-app.user_panel.phone') }}</label>
 								<input type="text" class="form-control  " name="telefono" id="texto__1__telefono" value="{{$phone}}" onblur="comprueba_campo(this)" data-placement="right" placeholder="" autocomplete="off" data-content="">
 
 							</div>
 
 							<div class="input-effect col-xs-12">
-								<label>{{trans(\Config::get('app.theme').'-app.global.coment') }}</label>
+								<label>{{trans($theme.'-app.global.coment') }}</label>
 								<textarea  class="form-control  " name="comentario"  id="textogrande__0__comentario"   rows="10">  </textarea>
 
 							</div>
@@ -95,7 +95,7 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 									</div>
 									<div class="col-xs-10 col-md-11">
 										<label
-											for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+											for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
 									</div>
 								</div>
 							</div>

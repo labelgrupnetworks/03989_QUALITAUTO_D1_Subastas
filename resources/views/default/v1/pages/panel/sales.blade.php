@@ -1,14 +1,14 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+	{{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
-				<h1 class="titlePage">{{ trans(\Config::get('app.theme') . '-app.user_panel.mi_cuenta') }}</h1>
+				<h1 class="titlePage">{{ trans($theme . '-app.user_panel.mi_cuenta') }}</h1>
 			</div>
 		</div>
 	</div>
@@ -55,11 +55,11 @@
 															<th class="no-sort sorting_disabled"> </th>
 															<th class="hidden">Index</th>
 															<th>{{ trans("$theme-app.user_panel.reference") }}</th>
-															<th>{{ trans(\Config::get('app.theme') . '-app.user_panel.lot') }}</th>
-															<th>{{ trans(\Config::get('app.theme') . '-app.user_panel.status') }}</th>
-															<th>{{ trans(\Config::get('app.theme') . '-app.lot.lot-price') }}</th>
+															<th>{{ trans($theme . '-app.user_panel.lot') }}</th>
+															<th>{{ trans($theme . '-app.user_panel.status') }}</th>
+															<th>{{ trans($theme . '-app.lot.lot-price') }}</th>
 															<th>{{ trans("$theme-app.user_panel.bids_numbers") }}</th>
-															<th>{{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}</th>
+															<th>{{ trans($theme . '-app.lot.puja_actual') }}</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -99,14 +99,14 @@
 
 																<td>
 																	@if (strtotime($lote->end) < time() && $hay_pujas)
-																		{{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
+																		{{ trans($theme . '-app.subastas.buy') }}
 
 																		{{-- @elseif($cerrado && empty($lote->implic_hces1))
-																		{{ trans(\Config::get('app.theme').'-app.user_panel.closed') }} --}}
+																		{{ trans($theme.'-app.user_panel.closed') }} --}}
 																	@elseif(strtotime($lote->orders_start) > time())
-																		{{ trans(\Config::get('app.theme') . '-app.user_panel.soon') }}
+																		{{ trans($theme . '-app.user_panel.soon') }}
 																	@elseif(strtotime($lote->orders_start) < time())
-																		{{ trans(\Config::get('app.theme') . '-app.sheet_tr.in_auction') }}
+																		{{ trans($theme . '-app.sheet_tr.in_auction') }}
 																	@endif
 																</td>
 

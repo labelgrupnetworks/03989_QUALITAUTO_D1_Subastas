@@ -38,7 +38,7 @@ $bread[] = array("name" =>$page->name_web_page  );
 						@if(!empty($files))
 
 							<div class=" ficheros_adj mb-3" >
-								<p> {{ trans(\Config::get('app.theme').'-app.lot.documents') }}</p>
+								<p> {{ trans($theme.'-app.lot.documents') }}</p>
 								@foreach($files as $file)
 								@php
 									$path_icon = "";

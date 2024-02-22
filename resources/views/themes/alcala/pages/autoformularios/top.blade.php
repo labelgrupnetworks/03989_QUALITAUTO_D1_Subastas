@@ -48,7 +48,7 @@
                                 <div class="input-effect col-xs-12">
                                     {!! $data['formulario'][$k]['formulario'] !!}
                                     <label><b
-                                            class="red">*</b>{{ trans(\Config::get('app.theme') . '-app.global.' . $k) }}</label>
+                                            class="red">*</b>{{ trans($theme . '-app.global.' . $k) }}</label>
                                 </div>
                             @elseif ($data['formulario'][$k]['type'] == 'Image')
                                 <div class="col-xs-12">
@@ -58,7 +58,7 @@
                                 <div class="input-effect col-xs-12 col-md-4">
                                     {!! $data['formulario'][$k]['formulario'] !!}
                                     <label><b
-                                            class="red">*</b>{{ trans(\Config::get('app.theme') . '-app.global.' . $k) }}</label>
+                                            class="red">*</b>{{ trans($theme . '-app.global.' . $k) }}</label>
                                 </div>
                             @endif
                         @endforeach
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="col-xs-10 col-md-11">
                                         <label
-                                            for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                                            for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                                     </div>
                                 </div>
                             </div>

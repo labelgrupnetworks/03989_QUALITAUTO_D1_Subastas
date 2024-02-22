@@ -6,9 +6,9 @@
             <p class="">
 
               @if($lote_actual->subabierta_sub == 'P' )
-                {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+                {{ trans($theme.'-app.subastas.lot_subasta_online') }}
               @else
-                 {{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+                 {{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
             @endif
             </p>
 @if(strtotime($lote_actual->start_session) > time())
@@ -18,26 +18,26 @@
         </div>
         <div class="date_top_side_small">
             <span class="cierre_lote"></span>
-          <?php /* no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> */ ?>
+          <?php /* no ponemos CET   <span id="cet_o"> {{ trans($theme.'-app.lot.cet') }}</span> */ ?>
         </div>
     </div>
 
     <div class="col-xs-10 col-sm-6 exit-price">
                         @if( \Config::get('app.estimacion'))
-                            <p class="pre">{{ trans(\Config::get('app.theme').'-app.subastas.estimate') }}</p>
+                            <p class="pre">{{ trans($theme.'-app.subastas.estimate') }}</p>
                             <div class="pre">
-                                    {{$lote_actual->formatted_imptas_asigl0}} -  {{$lote_actual->formatted_imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                                    {{$lote_actual->formatted_imptas_asigl0}} -  {{$lote_actual->formatted_imptash_asigl0}} {{ trans($theme.'-app.subastas.euros') }}
                             </div>
                         @elseif( \Config::get('app.impsalhces_asigl0'))
-                            <p class="pre">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                            <p class="pre">{{ trans($theme.'-app.lot.lot-price') }}</p>
                             <div class="pre">
-                                    {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                                    {{$lote_actual->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.subastas.euros') }}
                             </div>
                         @endif
     </div>
 
     <div class="col-xs-12 col-sm-6">
-            <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
+            <p class="cat">{{ trans($theme.'-app.lot.categories') }}</p>
             <?php
                $categorys = new \App\Models\Category();
                $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
@@ -47,7 +47,7 @@
                    {{$sec->des_tsec}}
                @endforeach
             </p>
-          <p class="shared">{{ trans(\Config::get('app.theme').'-app.lot.share_lot') }}</p>
+          <p class="shared">{{ trans($theme.'-app.lot.share_lot') }}</p>
             @include('includes.ficha.share')
 
     </div>
@@ -65,13 +65,13 @@
 <div class="info_single col-xs-12 ficha-puja">
     <div class="col-lg-12">
         <div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima'])?'':'hidden'; ?> ">
-        {{trans(\Config::get('app.theme').'-app.lot.max_puja')}}
+        {{trans($theme.'-app.lot.max_puja')}}
             <strong><span id="tuorden">
             @if ( !empty($data['js_item']['user']['ordenMaxima']))
             {{ $data['js_item']['user']['ordenMaxima']}}
             @endif
             </span>
-        {{trans(\Config::get('app.theme').'-app.subastas.euros')}}</strong>
+        {{trans($theme.'-app.subastas.euros')}}</strong>
         </div>
     </div>
     @if ($lote_actual->tipo_sub == 'W' && $lote_actual->subabierta_sub == 'O' && $lote_actual->cerrado_asigl0 == 'N'  )
@@ -89,10 +89,10 @@
                     ?>
 
                 @endif
-                {{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }} <strong class="<?= $licit_win ?>"><span id="actual_max_bid" >{{\Tools::moneyFormat($lote_actual->open_price) }}  </span> {{trans(\Config::get('app.theme').'-app.subastas.euros')}}</strong>
+                {{ trans($theme.'-app.lot.puja_actual') }} <strong class="<?= $licit_win ?>"><span id="actual_max_bid" >{{\Tools::moneyFormat($lote_actual->open_price) }}  </span> {{trans($theme.'-app.subastas.euros')}}</strong>
 
             </div>
-            <div  id="text_actual_no_bid" class=" <?=  $lote_actual->open_price >0? 'hidden':'' ?>"> {{ trans(\Config::get('app.theme').'-app.lot_list.no_bids') }} </div>
+            <div  id="text_actual_no_bid" class=" <?=  $lote_actual->open_price >0? 'hidden':'' ?>"> {{ trans($theme.'-app.lot_list.no_bids') }} </div>
         </div>
     </div>
     @endif
@@ -101,7 +101,7 @@
             <div class="info_single_content">
                 @if( $lote_actual->cerrado_asigl0=='N' && $lote_actual->fac_hces1=='N' && time() > strtotime($lote_actual->start_session)  &&  time()  < strtotime($lote_actual->end_session) )
                      <a href='{{  Routing::translateSeo('api/subasta').$data['subasta_info']->lote_actual->cod_sub."-".str_slug($data['subasta_info']->lote_actual->name)."-".$data['subasta_info']->lote_actual->id_auc_sessions }}'>
-                            <button class="btn btn-lg btn-custom live-btn btn-color"><?=trans(\Config::get('app.theme').'-app.lot.bid_live')?></button>
+                            <button class="btn btn-lg btn-custom live-btn btn-color"><?=trans($theme.'-app.lot.bid_live')?></button>
                      </a>
                 @endif
                 @if( $lote_actual->cerrado_asigl0=='N' && $lote_actual->fac_hces1=='N' &&  (time() > strtotime($lote_actual->orders_start))  &&   (time() < strtotime($lote_actual->orders_end)) && $lote_actual->subabierta_sub != 'P')
@@ -118,11 +118,11 @@
 
                     ?>
 
-                    <p><strong><?=trans(\Config::get('app.theme').'-app.lot.insert_max_puja_start')?></strong></p>
+                    <p><strong><?=trans($theme.'-app.lot.insert_max_puja_start')?></strong></p>
                     <div class="input-group group-pujar-custom">
                             <input id="bid_modal_pujar" placeholder="<?= $siguiente_puja ?>" class="form-control input-lg control-number" value="<?= $siguiente_puja ?>" type="text">
                             <div class="input-group-btn">
-                                    <button id="pujar_ordenes_w" data-from="modal" type="button" class="btn btn-lg btn-custom btn-color" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.lot.place_bid') }}</button>
+                                    <button id="pujar_ordenes_w" data-from="modal" type="button" class="btn btn-lg btn-custom btn-color" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans($theme.'-app.lot.place_bid') }}</button>
                             </div>
                     </div>
                 @endif
@@ -141,7 +141,7 @@
 <script>
    $(document).ready(function() {
         //calculamos la fecha de cierre
-        $(".cierre_lote").html(format_date_large(new Date("{{$lote_actual->start_session}}".replace(/-/g, "/")),'{{ trans(\Config::get('app.theme').'-app.lot.from') }}'));
+        $(".cierre_lote").html(format_date_large(new Date("{{$lote_actual->start_session}}".replace(/-/g, "/")),'{{ trans($theme.'-app.lot.from') }}'));
     });
 </script>
 

@@ -58,17 +58,17 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 						@if( $lote_actual->retirado_asigl0 !='N')
 						<div class="retired ">
-							{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+							{{ trans($theme.'-app.lot.retired') }}
 						</div>
 						@elseif($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R')
 						<div class="retired" style="background:#777777;text-transform: lowercase;">
-							{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+							{{ trans($theme.'-app.subastas.dont_available') }}
 						</div>
 						@elseif($lote_actual->cerrado_asigl0 == 'S' && (!empty($lote_actual->himp_csub) ||
 						$lote_actual->desadju_asigl0 =='S' || ($lote_actual->subc_sub == 'H' &&
 						!empty($lote_actual->impadj_asigl0))))
 						<div class="retired" style="background:#777777;text-transform: lowercase;">
-							{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+							{{ trans($theme.'-app.subastas.buy') }}
 						</div>
 						@endif
 						<div id="img_main" class="img_single">
@@ -208,7 +208,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 			<div class="col-xs-12 col-sm-12 col-lg-7">
 				<div class="desc">
 					<div class="desc_tit">
-						{{ trans(\Config::get('app.theme').'-app.lot.description') }}
+						{{ trans($theme.'-app.lot.description') }}
 					</div>
 					<div class="desc_content">
 						<p><?= $lote_actual->desc_hces1 ?></p>
@@ -222,7 +222,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 			<div class="col-xs-12 col-sm-12 lotes_destacados">
 				<div class="title_single">
-					{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}
+					{{ trans($theme.'-app.lot.recommended_lots') }}
 				</div>
 
 				@php

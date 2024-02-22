@@ -3,7 +3,7 @@
 	<div class="auction__filters-collapse filter-parent-collapse with-caret text-center bg-lb-primary-150" data-bs-toggle="collapse"
 		href="#auction_type" role="button" aria-expanded="true" aria-controls="auction_type">
 
-		<div class="filter-title">{{ trans(\Config::get('app.theme').'-app.lot_list.auction_type') }}</div>
+		<div class="filter-title">{{ trans($theme.'-app.lot_list.auction_type') }}</div>
 	</div>
 
 	<div class="input-category d-flex align-items-center d-none">

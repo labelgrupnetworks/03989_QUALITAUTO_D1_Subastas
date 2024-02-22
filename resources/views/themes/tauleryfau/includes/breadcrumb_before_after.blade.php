@@ -8,10 +8,10 @@
 		<div class="col-xs-12 col-sm-6 text-right">
 			<div class="next">
                             @if(!empty($data['previous']))
-				<a class="nextLeft" title="{{ trans(\Config::get('app.theme').'-app.subastas.last') }}" href="{{$data['previous']}}"><i class="fa fa-angle-left fa-angle-custom"></i> {{ trans(\Config::get('app.theme').'-app.subastas.last') }}</a>
+				<a class="nextLeft" title="{{ trans($theme.'-app.subastas.last') }}" href="{{$data['previous']}}"><i class="fa fa-angle-left fa-angle-custom"></i> {{ trans($theme.'-app.subastas.last') }}</a>
                             @endif
                             @if(!empty($data['next']))
-				<a class="nextRight" title="{{ trans(\Config::get('app.theme').'-app.subastas.next') }}" href="{{$data['next']}}">{{ trans(\Config::get('app.theme').'-app.subastas.next') }} <i class="fa fa-angle-right fa-angle-custom"></i></a>
+				<a class="nextRight" title="{{ trans($theme.'-app.subastas.next') }}" href="{{$data['next']}}">{{ trans($theme.'-app.subastas.next') }} <i class="fa fa-angle-right fa-angle-custom"></i></a>
                             @endif
 			</div>
 		</div>

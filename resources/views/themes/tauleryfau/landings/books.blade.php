@@ -2,7 +2,7 @@
 @include('includes.google_head')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -34,7 +34,7 @@
                     <ul>
                         <li>
                             <a title="Español" href="/en">
-                                <img class="img-responsive" src="/themes/<?= \Config::get('app.theme') ?>/assets/img/flag_en.png" />
+                                <img class="img-responsive" src="/themes/<?= $theme ?>/assets/img/flag_en.png" />
                             </a>
                         </li>
                     </ul>
@@ -59,7 +59,7 @@
                         <div class="logo col-xs-12 col-md-12 text-center">
 
                             <a title="Tauler y Fau" href="/es">
-                                <img class="img-responsive" src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/logo.png"
+                                <img class="img-responsive" src="/themes/<?= $theme ?>/img/comprar-monedas/logo.png"
                                     alt="Tauler y Fau">
                             </a>
                         </div>
@@ -376,7 +376,7 @@
 
                         </p>
 
-                   
+
                     <ul style="    list-style: unset; padding-left: 70px">
                         <li>
                                 Catálogos que se centran en un tipo de moneda, como por ejemplo, “Los Maravedís de los Borbones”, “Oro Macuquino”,
@@ -393,7 +393,7 @@
                         </li>
                     </ul>
 
-    
+
                 </div>
             </div>
             <div class="col-xs-12">

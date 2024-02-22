@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+	{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @section('content')
@@ -18,7 +18,7 @@
 
         <div class="featured-auctions-title">
             <p class="theme-subalia secondary-color">
-                {{trans(\Config::get('app.theme').'-app.foot.faq') }}
+                {{trans($theme.'-app.foot.faq') }}
             </p>
         </div>
 
@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-4">
 
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_category') }}</h4>
+                    <h4 class="hidden-xs">{{trans($theme.'-app.faq.select_category') }}</h4>
                     <hr class="hidden-xs">
                     <div class="block">
                         @foreach ($data['cats'] as $item)
@@ -45,7 +45,7 @@
 
                 <div class="col-xs-12 col-sm-4">
 
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_sub_category') }}</h4>
+                    <h4 class="hidden-xs">{{trans($theme.'-app.faq.select_sub_category') }}</h4>
 					<hr class="hidden-xs">
                     <div class="block">
                         @foreach ($data['cats'] as $item)
@@ -66,7 +66,7 @@
 
                 <div class="col-xs-12 col-sm-4">
 
-                    <h4 class="hidden-xs">{{trans(\Config::get('app.theme').'-app.faq.select_question') }}</h4>
+                    <h4 class="hidden-xs">{{trans($theme.'-app.faq.select_question') }}</h4>
 					<hr class="hidden-xs">
                     <div class="block">
                         @foreach ($data['items'] as $item)

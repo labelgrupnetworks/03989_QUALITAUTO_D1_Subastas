@@ -4,7 +4,7 @@
         <?php foreach ($data['js_item']['user']['adjudicaciones'] as $key => $val): ?>
             <div class="adjudicaciones_model">
                 <div class="adj_ref">
-                    <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span>
+                    <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span>
 
 						{{ str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"), $val->ref_asigl1)}}
 
@@ -20,7 +20,7 @@
 
         <div class="adjudicaciones_model hidden" id="type_adj_model">
             <div class="adj_ref">
-                <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }}</i> <span></span></p>
+                <p>{{ trans($theme.'-app.sheet_tr.lot') }}</i> <span></span></p>
             </div>
             <div class="">
                 <p><span class="adj_imp"></span> <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span></p>

@@ -12,7 +12,7 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 @if(empty($data['subastas']))
                     <h1 class="titlePage-custom"> {{$data['name']}} </h1>
                 @else
-                     <h1 class="titlePage-custom">{{ trans(\Config::get('app.theme').'-app.lot_list.lots') }}</h1>
+                     <h1 class="titlePage-custom">{{ trans($theme.'-app.lot_list.lots') }}</h1>
                 @endif
             </div>
             <div class="col-xs-7 col-sm-5 col-md-4 col-lg-5 lot-count">
@@ -27,12 +27,12 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 <?php // si es uan subasta w y abierta o si es uan subasta tipo O o P ?>
                 @if(!empty( $data['subastas']) && ( ($data['subastas'][0]->tipo_sub == 'W' && $data['subastas'][0]->subabierta_sub == 'S') || $data['subastas'][0]->tipo_sub == 'P'  || $data['subastas'][0]->tipo_sub == 'O' )  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  )
 
-                    <a href=""> {{ trans(\Config::get('app.theme').'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                    <a href=""> {{ trans($theme.'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
 
                 @endif
                  @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
                     @if(Session::has('user'))
-                       <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans(\Config::get('app.theme').'-app.lot_list.ver_ofertas') ?></a>
+                       <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
                     @endif
                 @endif
 
@@ -53,10 +53,10 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="expo-container">
-							<h4><b>{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}</b></h4>
-							<p>{{ trans(\Config::get('app.theme').'-app.subastas.auction_day') }} {{ $data['sub_data']->sesfechas_sub }} - {{ $data['sub_data']->seshorario_sub }}</p>
-							<p>{{ trans(\Config::get('app.theme').'-app.calendar.expo') }} {{$data['sub_data']->expofechas_sub}}</p>
-							<p>{{ trans(\Config::get('app.theme').'-app.lot.location') }}: {{$data['sub_data']->seslocal_sub}}</p>
+							<h4><b>{{ trans($theme.'-app.subastas.see_subasta') }}</b></h4>
+							<p>{{ trans($theme.'-app.subastas.auction_day') }} {{ $data['sub_data']->sesfechas_sub }} - {{ $data['sub_data']->seshorario_sub }}</p>
+							<p>{{ trans($theme.'-app.calendar.expo') }} {{$data['sub_data']->expofechas_sub}}</p>
+							<p>{{ trans($theme.'-app.lot.location') }}: {{$data['sub_data']->seslocal_sub}}</p>
 						</div>
 					</div>
 				</div>

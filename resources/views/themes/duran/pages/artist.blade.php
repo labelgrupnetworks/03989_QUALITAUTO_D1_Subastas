@@ -6,7 +6,7 @@
 
 @section('content')
 <?php
-$bread[] = array("name" =>trans(\Config::get('app.theme').'-app.artist.artists'), "url" => route("artists")  );
+$bread[] = array("name" =>trans($theme.'-app.artist.artists'), "url" => route("artists")  );
 $bread[] = array("name" => $artist->name_artist  );
 ?>
 
@@ -38,7 +38,7 @@ $bread[] = array("name" => $artist->name_artist  );
 						</div>
 						<div>
 							<a style="float:right" href="/es/valoracion-articulos?tipo=valoracion">
-								<button type="button" class="button-como-vender">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.vender_duran_consulta')}}</button>
+								<button type="button" class="button-como-vender">{{trans($theme.'-app.valoracion_gratuita.vender_duran_consulta')}}</button>
 							</a>
 						</div>
 
@@ -51,17 +51,17 @@ $bread[] = array("name" => $artist->name_artist  );
 							<ul class="nav nav-tabs">
 								@if(count($activeLots)>0)
 									<li class="active">
-										<a data-toggle="tab" href="#activeLots" aria-expanded="false">{{trans(\Config::get('app.theme').'-app.artist.actualAuctions')}}</a>
+										<a data-toggle="tab" href="#activeLots" aria-expanded="false">{{trans($theme.'-app.artist.actualAuctions')}}</a>
 									</li>
 								@endif
 								@if(count($historyLots)>0)
 									<li class="@if(count($activeLots)==0)  active @endif">
-										<a data-toggle="tab" href="#historyLots" aria-expanded="true">{{trans(\Config::get('app.theme').'-app.artist.passAuctions')}}</a>
+										<a data-toggle="tab" href="#historyLots" aria-expanded="true">{{trans($theme.'-app.artist.passAuctions')}}</a>
 									</li>
 								@endif
 								@if(count($articles)>0)
 									<li class="@if(count($activeLots)==0 && count($historyLots)==0)   active @endif">
-										<a data-toggle="tab" href="#articles" aria-expanded="true">{{trans(\Config::get('app.theme').'-app.artist.relatedArticles')}}</a>
+										<a data-toggle="tab" href="#articles" aria-expanded="true">{{trans($theme.'-app.artist.relatedArticles')}}</a>
 									</li>
 								@endif
 							</ul>
@@ -124,8 +124,8 @@ $("input[name=order]").on("click", function(){
 
 function ReadMore (_jObj, lineNum) { //class
 
-var READ_MORE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.viewMore') }}";
-var HIDE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.hideMore') }}";
+var READ_MORE_LABEL = "{{ trans($theme.'-app.lot.viewMore') }}";
+var HIDE_LABEL = "{{ trans($theme.'-app.lot.hideMore') }}";
 
 var jObj = _jObj;
 

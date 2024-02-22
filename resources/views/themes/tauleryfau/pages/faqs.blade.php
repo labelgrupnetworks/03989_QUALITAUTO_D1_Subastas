@@ -5,8 +5,8 @@
 @stop
 
 @section('content')
-<?php 
-$bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
+<?php
+$bread[] = array("name" => trans($theme.'-app.foot.faq') );
 ?>
 @include('includes.breadcrumb')
 
@@ -16,9 +16,9 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
     <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12">
-			<h1 class="titleSingle_corp">{{trans(\Config::get('app.theme').'-app.foot.faq') }}</h1>
+			<h1 class="titleSingle_corp">{{trans($theme.'-app.foot.faq') }}</h1>
 		</div>
-	</div>  
+	</div>
 
         <div class="row">
             <div class="col-xs-12 col-sm-3">
@@ -35,23 +35,23 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
                     </ul>
                 </div>
             </div>
-            <?php 
+            <?php
                 $x = 0;
                 $y = 0;
             ?>
             <div class="col-xs-12 col-sm-9">
                 <div class="secondary-list">
-                    <div class="secondary-item">   
+                    <div class="secondary-item">
                         <ul class="list-content">
                             @foreach($data['faqs'] as $key => $value)
                             <ul class="lists" data-index="{{$x}}">
                                 @foreach($value as $key_faq => $value_faq)
-                                <ul class="" > 
+                                <ul class="" >
                                     <div class="secondary-item-title"><?= $key_faq ?></div>
 
-                                        @foreach($value_faq as $key_questions => $value_questions)  
+                                        @foreach($value_faq as $key_questions => $value_questions)
                                             <li>
-                                                <div class="secondary-item-sub" data-open="0"><span><?= $key_questions ?></span></div>                   
+                                                <div class="secondary-item-sub" data-open="0"><span><?= $key_questions ?></span></div>
                                                 <div class="secondary-item-dec"><?= nl2br($value_questions) ?></div>
                                             </li>
                                         @endforeach
@@ -68,8 +68,8 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.faq') );
                 </div>
             </div>
         </div>
-	</div>            
-</div>    
+	</div>
+</div>
 
 
 @stop

@@ -13,7 +13,7 @@
         </div>
         <div class="col-xs-12 no-padding">
             <fieldset>
-                <legend>{{trans(\Config::get('app.theme').'-app.foot.send_info')}}</legend>
+                <legend>{{trans($theme.'-app.foot.send_info')}}</legend>
 
                 @foreach ($newsletters  as $id_newsletters => $name_newsletters)
                     <div class="check_term">
@@ -40,7 +40,7 @@
                     <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                 </div>
                 <div class="col-xs-10 col-sm-11">
-                    <label for="bool__1__condiciones"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                    <label for="bool__1__condiciones"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                 </div>
             </div>
 
@@ -49,12 +49,12 @@
                     <input type="checkbox" name="condiciones_2" value="on" id="bool__0__comercial" autocomplete="off" required>
                 </div>
                 <div class="col-xs-10 col-sm-11">
-                    <label for="bool__0__comercial">{{ trans(\Config::get('app.theme').'-app.emails.accept_news') }}</label>
+                    <label for="bool__0__comercial">{{ trans($theme.'-app.emails.accept_news') }}</label>
                 </div>
             </div>
 
             <br>
-            <center><button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans(\Config::get('app.theme').'-app.foot.newsletter_button')}}</button></center>
+            <center><button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans($theme.'-app.foot.newsletter_button')}}</button></center>
             <br><br>
         </div>
     </div>

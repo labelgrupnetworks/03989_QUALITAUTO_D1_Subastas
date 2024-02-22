@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@ $bread[] = array("name" =>$data['title']  );
 <div id="">
 	<div class="container" id="return-valoracion">
                 <div class="">
-                    <h1 class="titleSingle_corp">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.succes_peticion') }}</h1>
+                    <h1 class="titleSingle_corp">{{ trans($theme.'-app.valoracion_gratuita.succes_peticion') }}</h1>
                 </div>               
         </div>
 </div>

@@ -14,10 +14,10 @@
 				</div>
 				<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
 
-					<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.units') }}</div>
+					<div class="visible-xs">{{ trans($theme.'-app.user_panel.units') }}</div>
 					<div class="user-account-item-lot">
 						
-						<span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+						<span>{{ trans($theme.'-app.user_panel.lot') }}
 						@php
 							$refLot =$lot->ref_asigl0;
 							#si  tiene el . decimal hay que ver si se debe separar
@@ -41,7 +41,7 @@
 					@if($lot->permisoexp_hces1=='S')
 					<div class="user-account-item-title">
 
-						<br>	{!! trans(\Config::get('app.theme').'-app.lot.permiso_exportacion') !!}
+						<br>	{!! trans($theme.'-app.lot.permiso_exportacion') !!}
 
 					</div>
 				@endif
@@ -57,20 +57,20 @@
 			</div>
 			<div class="col-xs-12 col-sm-2  account-item-border">
 				<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-					<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.unit_price') }}</div>
-					<p>{{ \Tools::moneyFormat($lot->impsalhces_asigl0, trans(\Config::get('app.theme').'-app.subastas.euros'), 2) }} </p>
+					<div class="visible-xs">{{ trans($theme.'-app.user_panel.unit_price') }}</div>
+					<p>{{ \Tools::moneyFormat($lot->impsalhces_asigl0, trans($theme.'-app.subastas.euros'), 2) }} </p>
 
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-2  account-item-border">
 					<div class="user-account-item-price  d-flex align-items-center justify-content-center">
-						<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}</div>
-						<div><strong>{{ \Tools::moneyFormat($lot->impsalhces_asigl0, trans(\Config::get('app.theme').'-app.subastas.euros'), 2) }} </strong></div>
+						<div class="visible-xs">{{ trans($theme.'-app.user_panel.price_clean') }}</div>
+						<div><strong>{{ \Tools::moneyFormat($lot->impsalhces_asigl0, trans($theme.'-app.subastas.euros'), 2) }} </strong></div>
 					</div>
 			</div>
 			<div class="col-xs-12 col-sm-1  account-item-border">
 				<div class="user-account-item-price  d-flex align-items-center justify-content-center">
-					<div class="deleteLot_JS cursor" data-sub="{{$lot->sub_asigl0}}" data-ref="{{$lot->ref_asigl0}}" style="color:red">{{ trans(\Config::get('app.theme').'-app.user_panel.delete') }}</div>
+					<div class="deleteLot_JS cursor" data-sub="{{$lot->sub_asigl0}}" data-ref="{{$lot->ref_asigl0}}" style="color:red">{{ trans($theme.'-app.user_panel.delete') }}</div>
 
 				</div>
 		</div>

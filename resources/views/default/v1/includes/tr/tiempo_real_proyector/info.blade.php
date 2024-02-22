@@ -1,6 +1,6 @@
 <div class="tr_proyector_info">
     <div class="lot">
-        <span id="lote_actual_main" class="">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
+        <span id="lote_actual_main" class="">{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
 
 
 			{{ str_replace(array(".1",".2",".3", ".4", ".5"), array("-A", "-B", "-C", "-D", "-E"),  $data['subasta_info']->lote_actual->ref_asigl0)}}
@@ -11,7 +11,7 @@
     </div>
     <div class="starting-price">
         <div id="precioSalida" class="precioSalida salida text-center">
-            <p>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}:</p>
+            <p>{{ trans($theme.'-app.sheet_tr.start_price') }}:</p>
             <p><span>{{ $data['subasta_info']->lote_actual->formatted_impsalhces_asigl0 }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}</p>
         </div>
     </div>
@@ -19,10 +19,10 @@
         <div class="salida text-center">
             <p>
                 <span id="text_actual_max_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0 ? '' : 'hidden' ?> ">
-                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.max_actual_bid') }}
+                    {{ trans($theme.'-app.sheet_tr.max_actual_bid') }}
                 </span>
                 <span id="text_actual_no_bid" class="<?= count($data['subasta_info']->lote_actual->pujas) > 0 ? 'hidden' : '' ?> ">
-                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.pending_bid') }}
+                    {{ trans($theme.'-app.sheet_tr.pending_bid') }}
                 </span>
             </p>
             <p><strong>
@@ -38,7 +38,7 @@
 	</div>
 	<div class="next-bid">
         <div id="next-bid_JS" class=" text-center">
-            <p>{{ trans(\Config::get('app.theme').'-app.lot.next_min_bid') }}:</p>
+            <p>{{ trans($theme.'-app.lot.next_min_bid') }}:</p>
             <p><span id="next_bid_JS">{{ \Tools::moneyFormat($data['subasta_info']->lote_actual->importe_escalado_siguiente) }}</span> {{ $data['js_item']['subasta']['currency']->symbol }}</p>
         </div>
     </div>
@@ -48,7 +48,7 @@
             <div class="started hidden">
                 <div class="aside pujas">
 
-                    <p class="last-bids-title">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</p>
+                    <p class="last-bids-title">{{ trans($theme.'-app.sheet_tr.last_bids') }}</p>
                     <div id="pujas_list" class="pujas_list" style="height: 320px">
 
                         <?php foreach ($data['subasta_info']->lote_actual->pujas as $puja) : ?>

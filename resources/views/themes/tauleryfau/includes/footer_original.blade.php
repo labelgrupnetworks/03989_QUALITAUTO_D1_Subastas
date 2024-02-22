@@ -2,16 +2,16 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-                 <img alt="<?= Config::get('app.name') ?>" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo-footer.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                 <img alt="<?= Config::get('app.name') ?>" src="/themes/{{$theme}}/assets/img/logo-footer.png"  alt="{{(\Config::get( 'app.name' ))}}">
             </div>
             <div class="col-xs-12 footer-navbar">
                     <ul class="nav navbar">
                         <?php
                             $lang = Config::get('app.locale');
                         ?>
-                            <li><a href="/{{$lang}}"><i class="fas fa-home"></i><?php /*trans(\Config::get('app.theme').'-app.home.home')*/ ?></a></li>
+                            <li><a href="/{{$lang}}"><i class="fas fa-home"></i><?php /*trans($theme.'-app.home.home')*/ ?></a></li>
                             <li>
-                                <a title="{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}</a>
+                                <a title="{{ trans($theme.'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.about_us')  ?>">{{ trans($theme.'-app.foot.about_us') }}</a>
                             </li>
 
                             <?php
@@ -25,7 +25,7 @@
                             ?>
                             @if(!empty($has_subasta))
                                 <li class="auctions">
-                                    <a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans(\Config::get('app.theme').'-app.foot.auctions')}}</a>
+                                    <a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
                                 </li>
                             @endif
                             <?php
@@ -36,7 +36,7 @@
                             ?>
                             @if(!empty($has_subasta))
                                 <li>
-                                    <a href="{{ \Routing::translateSeo('subastas-permanentes') }}">{{ trans(\Config::get('app.theme').'-app.foot.online_auction')}}</a>
+                                    <a href="{{ \Routing::translateSeo('subastas-permanentes') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
                                 </li>
                             @endif
                             <?php
@@ -50,41 +50,41 @@
                             }
                         ?>
                             @if(!empty($has_subasta))
-                            <li><a href="{{$url_lotes}}">{{ trans(\Config::get('app.theme').'-app.foot.direct_sale')}}</a></li>
+                            <li><a href="{{$url_lotes}}">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
                             @endif
-                            <li><a href="<?=\Routing::translateSeo('valoracion-articulos')?>">{{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</a></li>
-                            <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_buy')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_buy') }}</a></li>
-                            <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.how_to_sell')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.how_to_sell') }}</a></li>
+                            <li><a href="<?=\Routing::translateSeo('valoracion-articulos')?>">{{ trans($theme.'-app.home.free-valuations') }}</a></li>
+                            <li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy')  ?>">{{ trans($theme.'-app.foot.how_to_buy') }}</a></li>
+                            <li><a title="{{ trans($theme.'-app.foot.how_to_sell') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_sell')  ?>">{{ trans($theme.'-app.foot.how_to_sell') }}</a></li>
                             <li>
-                                <a title="{{ trans(\Config::get('app.theme').'-app.foot.contact') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact') ?>">{{ trans(\Config::get('app.theme').'-app.foot.contact') }}</a>
+                                <a title="{{ trans($theme.'-app.foot.contact') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.contact') ?>">{{ trans($theme.'-app.foot.contact') }}</a>
                             </li>
 
                     </ul>
             </div>
             <div class="col-xs-12 col-sm-4 text-left">
-                <p class="term-pol"><a>&copy; <?= trans(\Config::get('app.theme').'-app.foot.rights') ?></a></p>
+                <p class="term-pol"><a>&copy; <?= trans($theme.'-app.foot.rights') ?></a></p>
             </div>
             <div class="col-xs-12 col-sm-8 text-right">
                 <p>
 
                     <span class="term-pol" style="margin-right: 10px;">
-                        <a title="{{ trans(\Config::get('app.theme').'-app.foot.shipping_terms') }}" href="/files/politica de envíos-2021.pdf" target="_blank">{{ trans(\Config::get('app.theme').'-app.foot.shipping_terms') }}</a>
+                        <a title="{{ trans($theme.'-app.foot.shipping_terms') }}" href="/files/politica de envíos-2021.pdf" target="_blank">{{ trans($theme.'-app.foot.shipping_terms') }}</a>
                     </span>
                     <span class="term-pol" style="margin-right: 10px;">
-                    <a  title="{{ trans(\Config::get('app.theme').'-app.foot.term_condition_sub') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition_sub')?>">{{ trans(\Config::get('app.theme').'-app.foot.term_condition_sub') }}</a>
+                    <a  title="{{ trans($theme.'-app.foot.term_condition_sub') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition_sub')?>">{{ trans($theme.'-app.foot.term_condition_sub') }}</a>
                     </span>
                     <span class="term-pol" style="margin-right: 10px;">
-                    <a class="term-pol" title="{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.term_condition')?>">{{ trans(\Config::get('app.theme').'-app.foot.term_condition') }}</a>
+                    <a class="term-pol" title="{{ trans($theme.'-app.foot.term_condition') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')?>">{{ trans($theme.'-app.foot.term_condition') }}</a>
 					</span>
 					<span class="term-pol">
-						<a class="term-pol" title="{{ trans(\Config::get('app.theme').'-app.cookies.title') }}" href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{ trans(\Config::get('app.theme').'-app.cookies.title') }}</a>
+						<a class="term-pol" title="{{ trans($theme.'-app.cookies.title') }}" href="{{route('cookieConfig', ['lang' => \Config::get('app.locale')])}}">{{ trans($theme.'-app.cookies.title') }}</a>
 					</span>
                     </p>
                 <p class="term-pol">
                 </p>
             </div>
             <div class="col-xs-12 developedBy hidden">
-                <a role="button" title="{{ trans(\Config::get('app.theme').'-app.foot.developedSoftware') }}" href="<?= Config::get('app.developed_url') ?>" target="no_blank">{{ trans(\Config::get('app.theme').'-app.foot.developedBy') }}</a>
+                <a role="button" title="{{ trans($theme.'-app.foot.developedSoftware') }}" href="<?= Config::get('app.developed_url') ?>" target="no_blank">{{ trans($theme.'-app.foot.developedBy') }}</a>
             </div>
         </div>
     </div>

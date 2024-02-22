@@ -27,7 +27,7 @@ class Controller extends BaseController
 
         $this->validateUserSession();
 		$this->UTMSession();
-		SeoLib::KeywordsSearch();
+
 
     }
 
@@ -63,6 +63,7 @@ class Controller extends BaseController
 				session()->put('UTM.campaign', request("utm_campaign",request("UTM_CAMPAIGN"))); // el nombre de la campaña que define determinado contexto de marketing (ejemplos: natal, lanzamiento, promo01).
 				session()->put('UTM.type', request("utm_type",request("UTM_TYPE")));
 				session()->put('UTM.referer', parse_url(Request::header('referer'), PHP_URL_HOST));
+				
 
             }
 

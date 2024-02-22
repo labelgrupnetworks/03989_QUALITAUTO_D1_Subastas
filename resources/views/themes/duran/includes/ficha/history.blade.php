@@ -10,7 +10,7 @@
 <input id="view_all_pujas_active" type="hidden" value="0">
 <div id="historial_pujas" class="hist col-xs-12 no-padding  mb-2 <?= ($num_pujas == 0) ? 'hidden' : '' ?>">
         <div class="hist_title col-xs-12 no-padding ">
-                {{ trans(\Config::get('app.theme').'-app.lot.history') }} (<span class="num_pujas"></span> {{ trans(\Config::get('app.theme').'-app.lot.bidding') }})
+                {{ trans($theme.'-app.lot.history') }} (<span class="num_pujas"></span> {{ trans($theme.'-app.lot.bidding') }})
         </div>
         <div class="hist_content col-xs-12 no-padding" id="pujas_list" >                       
 

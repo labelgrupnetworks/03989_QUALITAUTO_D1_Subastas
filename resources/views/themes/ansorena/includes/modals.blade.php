@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-lb-primary" data-bs-dismiss="modal"
-                    data-dismiss="modal">{{ trans(\Config::get('app.theme') . '-app.head.close') }}</button>
+                    data-dismiss="modal">{{ trans($theme . '-app.head.close') }}</button>
             </div>
         </div>
 
@@ -134,15 +134,15 @@
             <div class="panel-body">
                 <div class="modal-wrapper">
                     <div class=" text-center single_item_content_">
-                        <p class="class_h1">{{ trans(\Config::get('app.theme') . '-app.lot.confirm_bid') }}</p><br />
+                        <p class="class_h1">{{ trans($theme . '-app.lot.confirm_bid') }}</p><br />
                         <span for="bid"
-                            class='desc_auc'>{{ trans(\Config::get('app.theme') . '-app.lot.you_are_bidding') }} </span>
+                            class='desc_auc'>{{ trans($theme . '-app.lot.you_are_bidding') }} </span>
                         <strong><span class="precio_orden"></span>
-                            {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</strong><br />
+                            {{ trans($theme . '-app.subastas.euros') }}</strong><br />
                         <span class="ref_orden hidden"></span>
                         </br>
                         <button id="confirm_orden_lotlist"
-                            class="btn button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.confirm') }}</button>
+                            class="btn button_modal_confirm btn-custom">{{ trans($theme . '-app.lot.confirm') }}</button>
                         <div class='mb-10'></div>
                         <div class='mb-10'></div>
                         <ul class="items_list">
@@ -166,7 +166,7 @@
                         <p id="insert_msg_delete"></p><br />
 
                         <button class=" btn confirm_delete modal-dismiss btn-custom " ref=''
-                            sub=''>{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
+                            sub=''>{{ trans($theme . '-app.lot.accept') }}</button>
 
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                         <p id="msg_delete_order"></p><br />
 
                         <button class=" btn confirm_delete_order modal-dismiss btn-custom " ref=''
-                            sub=''>{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
+                            sub=''>{{ trans($theme . '-app.lot.accept') }}</button>
 
                     </div>
                 </div>
@@ -204,13 +204,13 @@
                             <p id="msg_title_ShoppingCart"></p>
                         </span><br />
                         <p id="insert_msgweb"></p><br />
-                        <a href="{{ trans(\Config::get('app.theme') . '-app.lot.href_continue_buying') }}">
+                        <a href="{{ trans($theme . '-app.lot.href_continue_buying') }}">
                             <button
-                                class=" btn modal-dismiss   btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.continue_buying') }}</button>
+                                class=" btn modal-dismiss   btn-custom">{{ trans($theme . '-app.lot.continue_buying') }}</button>
                         </a>
                         <a href="{{ route('showShoppingCart', ['lang' => \Config::get('app.locale')]) }}">
                             <button
-                                class=" btn  btn-custom">{{ trans(\Config::get('app.theme') . '-app.lot.go_to_cart') }}</button>
+                                class=" btn  btn-custom">{{ trans($theme . '-app.lot.go_to_cart') }}</button>
                         </a>
 
                     </div>

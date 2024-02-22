@@ -3,13 +3,13 @@
 <head>
 
     <meta charset="utf-8">
-<meta name="description" content="{{ trans(\Config::get('app.theme').'-app.head.meta_description') }}">
-<meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+<meta name="description" content="{{ trans($theme.'-app.head.meta_description') }}">
+<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
 <meta name="viewport" content="width=device-width, user-scalable=no">
 <meta name="robots" content="noindex">
 
 <title>@yield('title', 'Tauler y fau')</title>
-<link rel="shortcut icon" href="{{ URL::asset('/themes/'.\Config::get('app.theme').'/img/favicon.ico') }}">
+<link rel="shortcut icon" href="{{ URL::asset('/themes/'.$theme.'/img/favicon.ico') }}">
 
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/bootstrap/3.4.1/dist/css/bootstrap.min.css') }}" >
 
@@ -41,19 +41,19 @@
 
 	var messages = {
 		'error': {
-			<?php foreach (trans(\Config::get('app.theme')."-app.msg_error") as $key => $value) : ?>
+			<?php foreach (trans($theme."-app.msg_error") as $key => $value) : ?>
 				'<?php echo $key; ?>': '<?php echo $value;?>',
 			<?php endforeach; ?>
 		},
 
 		'success': {
-			<?php foreach (trans(\Config::get('app.theme')."-app.msg_success") as $key => $value) : ?>
+			<?php foreach (trans($theme."-app.msg_success") as $key => $value) : ?>
 				'<?php echo $key; ?>': '<?php echo $value;?>',
 			<?php endforeach; ?>
 		},
 
 		'neutral': {
-			<?php foreach (trans(\Config::get('app.theme')."-app.msg_neutral") as $key => $value) : ?>
+			<?php foreach (trans($theme."-app.msg_neutral") as $key => $value) : ?>
 				'<?php echo $key; ?>': '<?php echo $value;?>',
 			<?php endforeach; ?>
 		}
@@ -87,8 +87,8 @@
 <link rel="stylesheet" type="text/css" href="/vendor/slick/slick-theme.css" >
 <script src="{{ URL::asset('vendor/slick/slick.js') }}"></script>
 
-<link rel="stylesheet" href="{{ URL::asset('/themes/'.\Config::get('app.theme').'/css/components/carrousel_tr.css') }}?a=<?= rand(); ?>" />
-<script src="{{ URL::asset('/themes/'.\Config::get('app.theme').'/js/components/carrousel_tr.js') }}?a=<?= rand(); ?>"></script>
+<link rel="stylesheet" href="{{ URL::asset('/themes/'.$theme.'/css/components/carrousel_tr.css') }}?a=<?= rand(); ?>" />
+<script src="{{ URL::asset('/themes/'.$theme.'/js/components/carrousel_tr.js') }}?a=<?= rand(); ?>"></script>
 
 
 
@@ -230,8 +230,8 @@
 										class="form-control"
 										style="width: 100px;height: 27px;font-size: 12px;padding: 0;background:#eee;color: black;border: 0;"
 									>
-										<option value="es" style="background-image:url(/themes/{{\Config::get('app.theme')}}/assets/img/flag_es.png)"><?= trans(\Config::get('app.theme').'-app.head.language_es') ?></option>
-										<option value="en"><?= trans(\Config::get('app.theme').'-app.head.language_en') ?></option>
+										<option value="es" style="background-image:url(/themes/{{$theme}}/assets/img/flag_es.png)"><?= trans($theme.'-app.head.language_es') ?></option>
+										<option value="en"><?= trans($theme.'-app.head.language_en') ?></option>
 									</select>     */ ?>
 
 									<div class="dropdown">
@@ -239,8 +239,8 @@
 												<?php foreach(Config::get('app.locales') as $key => $value) { ?>
 													@if(\App::getLocale() == $key)
 
-													<a  title="<?= trans(\Config::get('app.theme').'-app.head.language_'.$key) ?>" href="#">
-                                                                                                            <img alt="<?=$key;?>" class="img-responsive" style="display: inline-block" src="/themes/tauleryfau/assets/img/flag_<?= $key ?>.png" width="15px"> <?= trans(\Config::get('app.theme').'-app.head.language_'.$key) ?>
+													<a  title="<?= trans($theme.'-app.head.language_'.$key) ?>" href="#">
+                                                                                                            <img alt="<?=$key;?>" class="img-responsive" style="display: inline-block" src="/themes/tauleryfau/assets/img/flag_<?= $key ?>.png" width="15px"> <?= trans($theme.'-app.head.language_'.$key) ?>
                                                                                                         </a>
 												@endif
 												<?php } ?>
@@ -255,8 +255,8 @@
                                                                                                             $url_tiempo_real="/$key/api/subasta/".$data['subasta_info']->lote_siguiente->cod_sub."-".str_slug($data['subasta_info']->lote_siguiente->name)."-".$data['subasta_info']->lote_siguiente->id_auc_sessions;
                                                                                                             ?>
                                                                                                             <li>
-                                                                                                                <a  title="<?= trans(\Config::get('app.theme').'-app.head.language_'.$key) ?>" href="{{$url_tiempo_real}}">
-                                                                                                                    <img alt="<?=$key;?>" class="img-responsive" style="display: inline-block" src="/themes/tauleryfau/assets/img/flag_<?= $key ?>.png" width="15px"> <?= trans(\Config::get('app.theme').'-app.head.language_'.$key) ?>
+                                                                                                                <a  title="<?= trans($theme.'-app.head.language_'.$key) ?>" href="{{$url_tiempo_real}}">
+                                                                                                                    <img alt="<?=$key;?>" class="img-responsive" style="display: inline-block" src="/themes/tauleryfau/assets/img/flag_<?= $key ?>.png" width="15px"> <?= trans($theme.'-app.head.language_'.$key) ?>
                                                                                                                 </a>
                                                                                                             </li>
                             @endif
@@ -283,11 +283,11 @@
 				<nav>
 					<div class="nav-content">
 						<div class="logo hidden-xs hidden-sm">
-							<a class="brand" style="max-width: 300px;" href="{{ \Routing::slug('/') }}"><img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png" ></a>
+							<a class="brand" style="max-width: 300px;" href="{{ \Routing::slug('/') }}"><img class="img-responsive" src="/themes/{{$theme}}/assets/img/logo.png" ></a>
 						</div>
 						<div class="subasta">
 							<div class="logo hidden-md hidden-lg">
-								<a class="brand" href="{{ \Routing::slug('/') }}"><img class="img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo.png" ></a>
+								<a class="brand" href="{{ \Routing::slug('/') }}"><img class="img-responsive" src="/themes/{{$theme}}/assets/img/logo.png" ></a>
                             </div>
 							<h3 class="auction_number">{{ $data['name'] }}</h3>
 						</div>
@@ -301,17 +301,17 @@
 									</li>
 									@if(!Session::has('user'))
 										<li>
-											<button class="btn btn-primary btn-xs open_own_box" data-ref="login">{{ trans(\Config::get('app.theme').'-app.login_register.ini_tr') }}</button>
+											<button class="btn btn-primary btn-xs open_own_box" data-ref="login">{{ trans($theme.'-app.login_register.ini_tr') }}</button>
 										</li>
 										<li>
-											<a href="{{ \Routing::slug('login') }}" class="btn btn-primary btn-xs btn-register">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+											<a href="{{ \Routing::slug('login') }}" class="btn btn-primary btn-xs btn-register">{{ trans($theme.'-app.login_register.register') }}</a>
 										</li>
 									@else
 										<li class="group user_session">
-											<a href="{{ \Routing::slug('logout') }}/tr" class="btn btn-danger btn-xs" >{{ trans(\Config::get('app.theme').'-app.login_register.logout') }}</a>
+											<a href="{{ \Routing::slug('logout') }}/tr" class="btn btn-danger btn-xs" >{{ trans($theme.'-app.login_register.logout') }}</a>
 										</li>
 										<li class="group user_session hidden-xs">
-											<a onclick="toggleFullScreen()" class="btn btn-primary  btn-xs" >{{ trans(\Config::get('app.theme').'-app.sheet_tr.full_screen') }}</a>
+											<a onclick="toggleFullScreen()" class="btn btn-primary  btn-xs" >{{ trans($theme.'-app.sheet_tr.full_screen') }}</a>
 										</li>
 										<li class="group user_verified">
 											<div>
@@ -323,7 +323,7 @@
 											</div>
 											<div class="u_data">
 												<div class="u_name">{{ Session::get('user.name') }}</div>
-												<div class="u_verified">{{ trans_choice(\Config::get('app.theme').'-app.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
+												<div class="u_verified">{{ trans_choice($theme.'-app.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
 											</div>
 										</li>
 									@endif
@@ -359,7 +359,7 @@
 		            	<div class="form-group has-feedback">
 						    <div class="input-group">
 						      <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
-						      <input data-error="{{ trans(\Config::get('app.theme').'-app.login_register.write_valid_email') }}" type="email" name="email" class="form-control" placeholder="Email" required>
+						      <input data-error="{{ trans($theme.'-app.login_register.write_valid_email') }}" type="email" name="email" class="form-control" placeholder="Email" required>
 						    </div>
 						    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 						    <div class="help-block with-errors"></div>
@@ -374,7 +374,7 @@
 						    <div class="help-block with-errors"></div>
 						</div>
                                         <span class="message-error-log"></span>
-			    		<input onclick="javascript:login_web()" class="btn btn-primary btn-block btnLogin " type="button" value="{{ trans(\Config::get('app.theme').'-app.login_register.sign_in') }}">
+			    		<input onclick="javascript:login_web()" class="btn btn-primary btn-block btnLogin " type="button" value="{{ trans($theme.'-app.login_register.sign_in') }}">
 				</form>
 			</div>
 		</div>
@@ -385,9 +385,9 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy_lot_question') }}</p>
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -413,7 +413,7 @@
                                                     <div class="input-append date " >
                                                             <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                                                                 <div class="col-xs-4">
-                                                                        <div>{{ ucwords (trans(\Config::get('app.theme').'-app.msg_neutral.days')) }}</div>
+                                                                        <div>{{ ucwords (trans($theme.'-app.msg_neutral.days')) }}</div>
                                                                         <select class="form-control pause_auction" id="days_pause" style='padding: 0; padding-left: 3px;'  >
                                                                                 @for($dp = 0;$dp < 50; $dp++)
                                                                                 <option value="{{$dp}}"  <?=   $dp == $days_default? "selected='selected'" : ""  ?>>{{ $dp }} </option>
@@ -421,7 +421,7 @@
                                                                         </select>
                                                                 </div>
                                                                 <div class="col-xs-4">
-                                                                        <div>{{ ucwords (trans(\Config::get('app.theme').'-app.msg_neutral.hours')) }}</div>
+                                                                        <div>{{ ucwords (trans($theme.'-app.msg_neutral.hours')) }}</div>
                                                                         <select class="form-control pause_auction" id="hours_pause" style='padding: 0; padding-left: 3px;'  >
                                                                                 @for($hp = 0;$hp < 24; $hp++)
                                                                                     <option value="{{$hp}}" <?=   $hp == $hours_default? "selected='selected'" : ""  ?>>{{ $hp }} </option>
@@ -429,7 +429,7 @@
                                                                         </select>
                                                                 </div>
                                                                 <div class="col-xs-4">
-                                                                        <div>{{ ucwords (trans(\Config::get('app.theme').'-app.msg_neutral.minutes')) }}</div>
+                                                                        <div>{{ ucwords (trans($theme.'-app.msg_neutral.minutes')) }}</div>
                                                                         <select class="form-control pause_auction" id="minutes_pause" style='padding: 0; padding-left: 3px;'  >
                                                                                 @for($mp = 0;$mp < 60; $mp++)
                                                                                         <option value="{{$mp}}"  <?=   $mp == $minutes_default? "selected='selected'" : ""  ?>>{{ $mp }} </option>
@@ -438,7 +438,7 @@
                                                                 </div>
                                                             </div>
                                                             <div style="margin-top: 10px;" class="col-xs-12">
-                                                                    {{ trans(\Config::get('app.theme').'-app.sheet_tr.activate_auctions') }} <br>
+                                                                    {{ trans($theme.'-app.sheet_tr.activate_auctions') }} <br>
                                                                     <span id="restart_auc_date" style="font-size: 16px;"> </span>
                                                                     <input id="total_minutes_pause" type="hidden" value="<?= !empty(Config::get('app.default_minuts_pause'))? Config::get('app.default_minuts_pause') : 0 ?>" >
 															</div>
@@ -447,8 +447,8 @@
                                                             </div>
                                                     </div>
                                                     <div class="col-xs-12" style='margin-top: 20px'>
-                                                            <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                                                            <button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                                                            <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                                                            <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                                                     </div>
                                         </div>
                                 </div>
@@ -460,26 +460,26 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.activate_auctions') }}   <br /> </p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.activate_auctions') }}   <br /> </p>
                                                     <div class="input-append date " >
                                                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                                                             <div class="col-xs-12">
-                                                               {{ trans(\Config::get('app.theme').'-app.user_panel.date') }}
+                                                               {{ trans($theme.'-app.user_panel.date') }}
                                                                 <input type="text" id="date_pause" value="<?= date('d m Y' ) ?>" data-inputmask="'mask': '99/99/2099'" class="inputmask" style="width:100px">
                                                             </div>
 
 
                                                              <div class="col-xs-12">
                                                                  <br>
-                                                                {{ trans(\Config::get('app.theme').'-app.msg_neutral.hour') }}
+                                                                {{ trans($theme.'-app.msg_neutral.hour') }}
                                                                 <input type="text" id="hour_pause" value="{{ Config::get('app.put_off_auction') }}" data-inputmask="'mask': '99:99:00'" class="inputmask" style="width:70px">
                                                             </div>
                                                         </div>
 
                                                                                                                </div>
                                                     <div class="col-xs-12" style='margin-top: 20px'>
-                                                            <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-                                                            <button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+                                                            <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                                                            <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                                                     </div>
                                         </div>
                                 </div>
@@ -506,8 +506,8 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_stopped') }} <br /></p>
-						<button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+						<p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_stopped') }} <br /></p>
+						<button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
 					</div>
 				</div>
 			</div>
@@ -519,8 +519,8 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_pendiente') }}</p>
-						<button class="btn btn-primary modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
+						<p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_pendiente') }}</p>
+						<button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
 					</div>
 				</div>
 			</div>
@@ -532,7 +532,7 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.auction_disconnected') }}</p>
+						<p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.auction_disconnected') }}</p>
 						<div class="loader"></div>
 					</div>
 				</div>
@@ -544,10 +544,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid_question') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_bid_question') }}</p>
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -559,10 +559,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.want_audio_activated') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.want_audio_activated') }}</p>
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -574,8 +574,8 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.loading') }} </p>
-                                                <p class="txt_esperando_sala hidden"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.esperando_sala') }} </p>
+						<p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.loading') }} </p>
+                                                <p class="txt_esperando_sala hidden"> {{ trans($theme.'-app.sheet_tr.esperando_sala') }} </p>
 						<div class="loader"></div>
 					</div>
 				</div>
@@ -603,7 +603,7 @@
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
 						<div class="winner_undefined hidden">
-							<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.winner_undefined') }}</p>
+							<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.winner_undefined') }}</p>
 							<div class="col-sm-6 col-sm-offset-3">
 								<input type="text" class="form-control" name="w_undefined" id="w_undefined">
 							</div>
@@ -612,10 +612,10 @@
 							<br>
 						</div>
 
-						<p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans(\Config::get('app.theme').'-app.msg_error.no_licit') }}</p>
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.end_lot_question') }}</p>
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss cancelasignlicit">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans($theme.'-app.msg_error.no_licit') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.end_lot_question') }}</p>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss cancelasignlicit">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -627,9 +627,9 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_auction_question') }}</p>
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.start_auction_question') }}</p>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -640,10 +640,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.open_lot') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.open_lot') }}</p>
 
-						<button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -654,10 +654,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.pause_lot') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.pause_lot') }}</p>
 
-						<button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -669,13 +669,13 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.resume_lot') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_lot') }}</p>
 
 						<input id="lotOrden" autocomplete="off" class="form-control" type="hidden">
 						<br />
 
-						<button class="btn btn-primary modal-confirm lotResume" data-status="N">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm lotResume" data-status="N">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -687,10 +687,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_bid_question') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_bid_question') }}</p>
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -702,10 +702,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel_order_question') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_order_question') }}</p>
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -719,14 +719,14 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.stopped_lots') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.stopped_lots') }}</p>
 						<br />
 						<div id="reanudarList">
 
 						</div>
 						<br />
 
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -737,7 +737,7 @@
 	<div id="reanudarListModel" style="text-align:left; margin-bottom: 10px;" class="hidden">
 		<div class="row">
 			<div class="col-lg-10 titulo"></div>
-			<div class="col-lg-2 boton"><button class="btn btn-primary reanudarLote" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.continue') }}</button></div>
+			<div class="col-lg-2 boton"><button class="btn btn-primary reanudarLote" type="button">{{ trans($theme.'-app.sheet_tr.continue') }}</button></div>
 		</div>
 	</div>
 
@@ -746,13 +746,13 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.jump_to_lots') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.jump_to_lots') }}</p>
 
 						<input id="jumpLot" autocomplete="off" class="form-control" type="text">
 						<br />
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -765,24 +765,24 @@
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
                                             <div class='col-md-12'>
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.resume_licit_baja') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_licit_baja') }}</p>
 
 						<input id="licit_baja" autocomplete="off" class="form-control" type="text">
 						<br />
 
-						<button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
                                             </div>
                                             <div class='col-md-12'>
                                                 <hr>
-                                                <span class='text-center'><strong>{{ trans(\Config::get('app.theme').'-app.sheet_tr.users_bloqued') }}</strong></span>
+                                                <span class='text-center'><strong>{{ trans($theme.'-app.sheet_tr.users_bloqued') }}</strong></span>
                                                  <table style="width:100%">
                                                     <thead>
                                                     <tr>
-                                                      <th>{{ trans(\Config::get('app.theme').'-app.sheet_tr.cod_licit') }}</th>
-                                                      <th>{{ trans(\Config::get('app.theme').'-app.sheet_tr.name_licit') }}</th>
-                                                      <th>{{ trans(\Config::get('app.theme').'-app.sheet_tr.cod_cli_licit') }}</th>
-                                                      <th>{{ trans(\Config::get('app.theme').'-app.sheet_tr.reactivar') }}</th>
+                                                      <th>{{ trans($theme.'-app.sheet_tr.cod_licit') }}</th>
+                                                      <th>{{ trans($theme.'-app.sheet_tr.name_licit') }}</th>
+                                                      <th>{{ trans($theme.'-app.sheet_tr.cod_cli_licit') }}</th>
+                                                      <th>{{ trans($theme.'-app.sheet_tr.reactivar') }}</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody class='clientes_baja'></tbody>
@@ -800,10 +800,10 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.resume_alta_client') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_alta_client') }}</p>
 
-						<button id="alta_client" class="btn btn-primary modal-confirm" cli_licit="">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button id="alta_client" class="btn btn-primary modal-confirm" cli_licit="">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -819,11 +819,11 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text text-center">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.order_amount') }}</p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.order_amount') }}</p>
 						<input id="order_amount" autocomplete="off" class="form-control bid_amount_gestor" type="text">
 						<br />
-						<button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
-						<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>
+						<button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
 					</div>
 				</div>
 			</div>
@@ -837,7 +837,7 @@
 			<div class="panel-body">
 				<div class="modal-wrapper">
 					<div class="modal-text">
-						<p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.lot') }} <span class="i_lot"></span></p>
+						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.lot') }} <span class="i_lot"></span></p>
 						<div class="row">
 							<div class="col-lg-4 img">
 								<img class="img-responsive" src="">
@@ -846,27 +846,27 @@
 								<p class="i_title"></p>
 								<p class="i_desc"></p>
 								<p>
-									<span>{{ trans(\Config::get('app.theme').'-app.sheet_tr.start_price') }}</span>
+									<span>{{ trans($theme.'-app.sheet_tr.start_price') }}</span>
 									<span class="i_imp"></span>
 									<span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
 								</p>
 								<div class="checkbox">
 								    <label>
-								      <input type="checkbox" class="add_to_fav" data-from="modal"> {{ trans(\Config::get('app.theme').'-app.sheet_tr.add_to_fav') }}
+								      <input type="checkbox" class="add_to_fav" data-from="modal"> {{ trans($theme.'-app.sheet_tr.add_to_fav') }}
 								    </label>
 								</div>
 							</div>
 						</div>
 						<div class="text-center">
-							<span class="lot-msg_adjudicado hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i>  {{ trans(\Config::get('app.theme').'-app.sheet_tr.awarded') }}</b> <span class="imp_adj"></span></span>
-							<span class="lot-msg_ensubasta hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.in_auction') }}</b></span>
+							<span class="lot-msg_adjudicado hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i>  {{ trans($theme.'-app.sheet_tr.awarded') }}</b> <span class="imp_adj"></span></span>
+							<span class="lot-msg_ensubasta hidden"><b><i class="fa fa-exclamation" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.in_auction') }}</b></span>
 
-		                    <button data-from="modal" class="lot-action_comprar btn btn-primary pull-left hidden" type="button" ref="" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.sheet_tr.buy') }}</button>
+		                    <button data-from="modal" class="lot-action_comprar btn btn-primary pull-left hidden" type="button" ref="" codsub="{{ $data['subasta_info']->lote_siguiente->cod_sub }}">{{ trans($theme.'-app.sheet_tr.buy') }}</button>
 
-		                <?php /*   <button data-from="modal" class="lot-order_importe btn btn-primary  hidden" type="button">{{ trans(\Config::get('app.theme').'-app.sheet_tr.import_order') }}</button>  */ ?>
+		                <?php /*   <button data-from="modal" class="lot-order_importe btn btn-primary  hidden" type="button">{{ trans($theme.'-app.sheet_tr.import_order') }}</button>  */ ?>
 						</div>
 						<div >
-							<button class="btn btn-primary modal-dismiss pull-right">{{ trans(\Config::get('app.theme').'-app.sheet_tr.close') }}</button>
+							<button class="btn btn-primary modal-dismiss pull-right">{{ trans($theme.'-app.sheet_tr.close') }}</button>
 						</div>
 					</div>
 				</div>

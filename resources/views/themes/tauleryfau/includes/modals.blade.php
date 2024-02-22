@@ -9,10 +9,10 @@
 				<div class="no-account-wrapper d-flex align-items-center justify-content-center h-100 w-100">
 					<div>
                         <div class="signin-title">
-                            <div class="seo_h1"><?= trans(\Config::get('app.theme').'-app.login_register.no_account') ?></div>
+                            <div class="seo_h1"><?= trans($theme.'-app.login_register.no_account') ?></div>
                         </div>
 						<div class="text-center">
-							<a title="{{ trans(\Config::get('app.theme').'-app.login_register.register') }}" class="btn-signup flex valign" href="{{ \Routing::slug('register') }}">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+							<a title="{{ trans($theme.'-app.login_register.register') }}" class="btn-signup flex valign" href="{{ \Routing::slug('register') }}">{{ trans($theme.'-app.login_register.register') }}</a>
 						</div>
 					</div>
 				</div>
@@ -30,24 +30,24 @@
 					</div>
 
 					<div class="signin-subtitle">
-						{{ trans(\Config::get('app.theme').'-app.login_register.generic_name') }}
+						{{ trans($theme.'-app.login_register.generic_name') }}
 					</div>
 
 					<form data-toggle="validator" id="accerder-user-form">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<div class="input-group">
-							<input required class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}" type="email" name="email" type="text">
-							<input required class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20">
+							<input required class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email" type="text">
+							<input required class="form-control" placeholder="{{ trans($theme.'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20">
 						</div>
 						<p><span class="message-error-log text-danger"></span></p>
-						<button class="btn-signin btn-color btn-login-desktop" id="accerder-user"  type="button"><div class="loader mini" style="display:none;"></div><span>{{ trans(\Config::get('app.theme').'-app.login_register.acceder') }}</span></button>
+						<button class="btn-signin btn-color btn-login-desktop" id="accerder-user"  type="button"><div class="loader mini" style="display:none;"></div><span>{{ trans($theme.'-app.login_register.acceder') }}</span></button>
 						<div class="options_login">
 
 							<?php /* Activar cuenta. Desactivado hasta que se defina un comportamiento concreto
-							<small data-dismiss="modal" aria-label="Close" class="activate_account c_bordered" data-ref="{{ \Routing::slug('activate_account') }}" id="activate_account" data-title="{{ trans(\Config::get('app.theme').'-app.login_register.activate_account')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans(\Config::get('app.theme').'-app.login_register.activate_account')}}</small>
+							<small data-dismiss="modal" aria-label="Close" class="activate_account c_bordered" data-ref="{{ \Routing::slug('activate_account') }}" id="activate_account" data-title="{{ trans($theme.'-app.login_register.activate_account')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans($theme.'-app.login_register.activate_account')}}</small>
 							*/ ?>
 							<div class="remenber-pass">
-							<p data-dismiss="modal" aria-label="Close" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}</p>
+							<p data-dismiss="modal" aria-label="Close" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans($theme.'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans($theme.'-app.login_register.forgotten_pass_question')}}</p>
 							</div>
 						</div>
 					</form>
@@ -62,29 +62,29 @@
 <div id="loginResponsive">
     <div class="contentLogin">
         <a class="closeBtn" id="closeResponsive" title="Cerrar" href="javascript:;">
-            <img src="/themes/{{\Config::get('app.theme')}}/assets/img/shape.png" alt="Cerrar">
+            <img src="/themes/{{$theme}}/assets/img/shape.png" alt="Cerrar">
         </a>
         <div class="title_login">
-            <?= trans(\Config::get('app.theme').'-app.login_register.login') ?>
+            <?= trans($theme.'-app.login_register.login') ?>
         </div>
         <form id="accerder-user-form-responsive">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
-                <input type="text" name="email" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.user') }}">
+                <input type="text" name="email" class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}">
             </div>
             <div class="form-group">
-                <input name="password" type="password" class="form-control" placeholder="{{ trans(\Config::get('app.theme').'-app.login_register.contraseña') }}" maxlength="20" >
+                <input name="password" type="password" class="form-control" placeholder="{{ trans($theme.'-app.login_register.contraseña') }}" maxlength="20" >
             </div>
             <p>
-                <a onclick="close_modal_session();" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans(\Config::get('app.theme').'-app.login_register.forgotten_pass_question')}}</a><
+                <a onclick="close_modal_session();" class="c_bordered" data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery" data-title="{{ trans($theme.'-app.login_register.forgotten_pass_question')}}" href="javascript:;" data-toggle="modal" data-target="#modalAjax" >{{ trans($theme.'-app.login_register.forgotten_pass_question')}}</a><
             </p>
             <h5 class="message-error-log text-danger"></h5></p>
             <button id="accerder-user-responsive" class="btn btn-registro" type="button">Enviar</button>
         </form>
         <div class="title_login mt30">
-            {{ trans(\Config::get('app.theme').'-app.login_register.no_account') }}
+            {{ trans($theme.'-app.login_register.no_account') }}
         </div>
-        <a href="{{ \Routing::slug('login') }}" class="btn btn-registro-responsive">{{ trans(\Config::get('app.theme').'-app.login_register.register') }}</a>
+        <a href="{{ \Routing::slug('login') }}" class="btn btn-registro-responsive">{{ trans($theme.'-app.login_register.register') }}</a>
     </div>
 </div>
  */ ?>
@@ -115,7 +115,7 @@
 			<div class="modal-wrapper">
 				<div class="modal-text text-center maxw">
 					<p class="insert_msg"></p>
-					<button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.home.confirm') }}</button>
+					<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.home.confirm') }}</button>
 				</div>
 			</div>
 		</div>
@@ -142,7 +142,7 @@
                                         <span class="class_h1"><p id="insert_msg_title">X</p></span><br/>
                                        <p id="insert_msgweb"></p><br/>
 
-                                            <button  class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>
@@ -159,7 +159,7 @@
 					<div class="single_item_content_">
 						<p id="insert_msgweb" class="text-left"></p>
 						<button
-							class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+							class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 					</div>
 				</div>
 			</div>
@@ -176,7 +176,7 @@
                                         <span class="class_h1"><p id="insert_msg_title"></p></span><br/>
                                        <p id="insert_msg"></p><br/>
 
-                                            <button  class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.accept') }}</button>
+                                            <button  class=" btn btn-color button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
 
                                     </div>
                             </div>
@@ -190,15 +190,15 @@
                             <div class="panel-body">
                                     <div class="modal-wrapper">
                                             <div class=" text-center single_item_content_">
-                                                <p class="class_h1">{{ trans(\Config::get('app.theme').'-app.lot.confirm_bid') }}</p><br/>
-                                                <span for="bid" class='desc_auc'>{{ trans(\Config::get('app.theme').'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
+                                                <p class="class_h1">{{ trans($theme.'-app.lot.confirm_bid') }}</p><br/>
+                                                <span for="bid" class='desc_auc'>{{ trans($theme.'-app.lot.you_are_bidding') }} </span> <strong><span class="precio_orden"></span> €</strong><br/>
                                                 <span class="ref_orden hidden"></span>
                                                 </br>
-                                                    <button id="confirm_orden_lotlist" class="btn btn-color button_modal_confirm btn-custom">{{ trans(\Config::get('app.theme').'-app.lot.confirm') }}</button>
+                                                    <button id="confirm_orden_lotlist" class="btn btn-color button_modal_confirm btn-custom">{{ trans($theme.'-app.lot.confirm') }}</button>
                                                     <div class='mb-10'></div>
                                                      <div class='mb-10'></div>
                                                     <ul class="items_list">
-                                                        <li><?=trans(\Config::get('app.theme').'-app.lot.tax_not_included')?> </li>
+                                                        <li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
 
                                                     </ul>
                                             </div>
@@ -212,7 +212,7 @@
                 <div class="panel-body">
                         <div class="modal-wrapper">
                                 <div class="modal-text text-center">
-                                        <p class="txt_loading"> {{ trans(\Config::get('app.theme').'-app.lot.connect_to_serv') }}</p>
+                                        <p class="txt_loading"> {{ trans($theme.'-app.lot.connect_to_serv') }}</p>
                                         <div class="loader"></div>
                                 </div>
                         </div>
@@ -227,10 +227,10 @@
                             <div class="modal-wrapper">
                                     <div class=" text-center single_item_content_">
                                         <span class="class_h1"><p id="insert_msg_title"></p></span><br/>
-                                       <p id="insert_msg">{{ trans(\Config::get('app.theme').'-app.msg_error.email_exist') }}</p><br/>
+                                       <p id="insert_msg">{{ trans($theme.'-app.msg_error.email_exist') }}</p><br/>
 
                                         <button  class=" btn btn-color button_modal_confirm modal-dismiss btn-custom" onclick="javascript:sendRecoveryPassword();">
-                                            {{ trans(\Config::get('app.theme').'-app.msg_neutral.activar_cuenta') }}
+                                            {{ trans($theme.'-app.msg_neutral.activar_cuenta') }}
                                         </button>
 
                                     </div>

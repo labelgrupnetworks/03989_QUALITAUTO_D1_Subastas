@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -45,7 +45,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 
 			<div class="col-xs-12">
 				<div class="user-datas-title flex align-items-center">
-					<p style="margin: 0px">{{ trans(\Config::get('app.theme').'-app.user_panel.my_invoice') }}</p>
+					<p style="margin: 0px">{{ trans($theme.'-app.user_panel.my_invoice') }}</p>
 					<div class="col_reg_form"></div>
 					<div class="btns-pay flex justify-content-space-bettween" style="flex: 1">
 						<select id="actual_currency">
@@ -69,9 +69,9 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 			<div class="col-xs-12 address-adj-wrapper mt-2">
 
 				<div class="user-datas-title title-collapse d-flex justify-content-space-bettween flex-wrap" style="margin-bottom: 0; gap:10px;">
-					<p>1.{{ trans(\Config::get('app.theme').'-app.user_panel.billing_address') }}</p>
+					<p>1.{{ trans($theme.'-app.user_panel.billing_address') }}</p>
 					<small><i class="fa fa-info-circle" aria-hidden="true"></i> {!!
-						trans(\Config::get('app.theme').'-app.user_panel.billing_address_info') !!}</small>
+						trans($theme.'-app.user_panel.billing_address_info') !!}</small>
 
 				</div>
 
@@ -104,7 +104,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 				<div class="col-xs-12 address-adj-wrapper mt-2">
 
 					<div class="user-datas-title title-collapse" style="margin-bottom: 0">
-						<p>2.{{ trans(\Config::get('app.theme').'-app.user_panel.title_envio') }}</p>
+						<p>2.{{ trans($theme.'-app.user_panel.title_envio') }}</p>
 					</div>
 
 					<div class="addresses-adj-wrapper" style="position: relative">
@@ -128,7 +128,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 						@endforeach
 
 						<a class="btn btn-color new-address-adj" type="btn"
-							href="{{ route('panel.addresses', ['lang' => Config::get('app.locale'), 'cod_sub' => head($all_adj)['inf']->cod_sub]) }}">{{ trans(\Config::get('app.theme').'-app.user_panel.new_address') }}</a>
+							href="{{ route('panel.addresses', ['lang' => Config::get('app.locale'), 'cod_sub' => head($all_adj)['inf']->cod_sub]) }}">{{ trans($theme.'-app.user_panel.new_address') }}</a>
 					</div>
 
 				</div>
@@ -138,7 +138,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 				<div class="col-xs-12 payments-adj-wrapper mt-2">
 
 					<div class="user-datas-title title-collapse" style="margin-bottom: 0">
-						<p>3.{{ trans(\Config::get('app.theme').'-app.user_panel.shipping_form') }}</p>
+						<p>3.{{ trans($theme.'-app.user_panel.shipping_form') }}</p>
 					</div>
 
 					<div class="payment-adj-wrapper" style="position: relative">
@@ -147,7 +147,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 						<label class="w-100 d-flex align-items-center payment-name-wrapper mb-1" for="shipping_express">
 							<input id="shipping_express" type="radio" name="shipping" value="express" checked="checked">
 							<span
-								class="payment-adj">{{ trans(\Config::get('app.theme').'-app.user_panel.shipping_express') }}</span><span
+								class="payment-adj">{{ trans($theme.'-app.user_panel.shipping_express') }}</span><span
 								class="gasto-envio-express-{{head($all_adj)['inf']->cod_sub}}_JS"></span> €
 
 						</label>
@@ -157,7 +157,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 							for="shipping_express_min">
 							<input id="shipping_express_min" type="radio" name="shipping" value="min">
 							<span
-								class="payment-adj">{{ trans(\Config::get('app.theme').'-app.user_panel.shipping_express_min') }}
+								class="payment-adj">{{ trans($theme.'-app.user_panel.shipping_express_min') }}
 							</span><span class="gasto-envio-min-{{head($all_adj)['inf']->cod_sub}}_JS"></span> €
 
 						</label>
@@ -182,7 +182,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 				<div class="col-xs-12 payments-adj-wrapper mt-2">
 
 					<div class="user-datas-title title-collapse" style="margin-bottom: 0">
-						<p>4.{{ trans(\Config::get('app.theme').'-app.user_panel.payment_method') }}</p>
+						<p>4.{{ trans($theme.'-app.user_panel.payment_method') }}</p>
 					</div>
 
 					<div class="payment-adj-wrapper" style="position: relative">
@@ -191,7 +191,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 							<input id="paycreditcard" type="radio" name="paymethod" value="creditcard"
 								checked="checked">
 							<span
-								class="payment-adj" style="margin-right: 5px">{{ trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard') }}</span>
+								class="payment-adj" style="margin-right: 5px">{{ trans($theme.'-app.user_panel.pay_creditcard') }}</span>
 							<div>
 								<img src="/img/icons/visa.png" alt="Visa" class="mt-1">
 								<img src="/img/icons/mastercard_1.png" alt="Mastercard" class="mt-1">
@@ -203,7 +203,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 						<label class="w-100 d-flex align-items-center payment-name-wrapper flex-wrap mb-1" for="paybizum">
 							<input id="paybizum" type="radio" name="paymethod" value="bizum">
 							<span
-								class="payment-adj" style="margin-right: 5px">{{ trans(\Config::get('app.theme').'-app.user_panel.pay_bizum') }}</span>
+								class="payment-adj" style="margin-right: 5px">{{ trans($theme.'-app.user_panel.pay_bizum') }}</span>
 								<img src="/img/icons/bizum.png" alt="Bizum" class="mt-1">
 						</label>
 
@@ -211,7 +211,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 					@if(\Config::get("app.PayTransfer"))
 					<label class="w-100 d-flex align-items-center payment-name-wrapper mb-1" for="paytransfer">
 						<input id="paytransfer"  type="radio" name="paymethod" value="transfer">
-						<span class="payment-adj">{{ trans(\Config::get('app.theme').'-app.user_panel.pay_transfer') }}</span>
+						<span class="payment-adj">{{ trans($theme.'-app.user_panel.pay_transfer') }}</span>
 						</label>
 						@endif
 						--}}
@@ -252,17 +252,17 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 									</div>
 									<div class="img-data-customs flex "></div>
 									<div class="lot-data-custon">
-										<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+										<p>{{ trans($theme.'-app.user_panel.lot') }}</p>
 									</div>
 									<div class="name-data-custom">
 										<p style="font-weight: 900">
-											{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+											{{ trans($theme.'-app.lot.description') }}</p>
 									</div>
 									<div class="remat-data-custom">
-										<p>{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</p>
+										<p>{{ trans($theme.'-app.user_panel.price') }}</p>
 									</div>
 									<div class="auc-data-custom">
-										<p>{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</p>
+										<p>{{ trans($theme.'-app.user_panel.price_comision') }}</p>
 									</div>
 								</div>
 
@@ -291,7 +291,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 								<div class="custom-wrapper-responsive  hidden-md hidden-lg {{$inf_lot->ref_asigl0}}-{{$inf_lot->cod_sub}}" style="padding: 10px">
 
 									<div class="lot-data-custon">
-										<p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+										<p>{{ trans($theme.'-app.user_panel.lot') }}
 											{{$inf_lot->ref_asigl0}}
 										</p>
 									</div>
@@ -307,18 +307,18 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 									<div class="flex justify-content-space-bettween mb-1 mt-1">
 
 										<div class="auc-data-custom">
-											<p>{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</p>
+											<p>{{ trans($theme.'-app.user_panel.price') }}</p>
 											<p>
-												{{$precio_remapte}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+												{{$precio_remapte}} {{ trans($theme.'-app.lot.eur') }}
 											</p>
 											<p><span value="{{$precio_remapte}}" class="js-divisa"></span></p>
 										</div>
 
 										<div class="auc-data-custom">
-											<p>{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</p>
+											<p>{{ trans($theme.'-app.user_panel.price_comision') }}</p>
 
 											<p>
-												{{ \Tools::moneyFormat($comision,false,2) }} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+												{{ \Tools::moneyFormat($comision,false,2) }} {{ trans($theme.'-app.lot.eur') }}
 											</p>
 											<p><span value="{{$comision}}" class="js-divisa"></span></p>
 										</div>
@@ -353,14 +353,14 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 									<div class="remat-data-custom">
 										<p>
 											<?= \Tools::moneyFormat($precio_remapte,false,2) ?>
-											{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+											{{ trans($theme.'-app.lot.eur') }}
 											&nbsp;|&nbsp;<span value="{{$precio_remapte}}" class="js-divisa"></span>
 										</p>
 									</div>
 									<div class="auc-data-custom">
 										<p>
 											<?= \Tools::moneyFormat($comision,false,2) ?>
-											{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+											{{ trans($theme.'-app.lot.eur') }}
 											&nbsp;|&nbsp;<span value="{{$comision}}" class="js-divisa"></span>
 										</p>
 									</div>
@@ -392,10 +392,10 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 														href="#adj_fact">
 														<label class="w-100 d-flex align-items-center" for="">
 															<span class="titlecat" style="margin-left: auto">
-																<span>{{ trans(\Config::get('app.theme').'-app.shopping_cart.total_pay') }}</span>
+																<span>{{ trans($theme.'-app.shopping_cart.total_pay') }}</span>
 																<span
 																	class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span>
-																<span>{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																<span>{{ trans($theme.'-app.lot.eur') }}
 																	|</span>
 																<span value=""
 																	class="js-divisa precio_final_{{$all_inf['inf']->cod_sub}}"></span>
@@ -415,7 +415,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
+																			{{ trans($theme.'-app.user_panel.price') }}
 																		</div>
 																	</div>
 																</div>
@@ -425,7 +425,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																		<div
 																			class="money col-xs-12 col-sm-7 text-right">
 																			{{\Tools::moneyFormat($total_remate,false,2)}}
-																			{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																			{{ trans($theme.'-app.lot.eur') }}
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -443,7 +443,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			{{ trans(\Config::get('app.theme').'-app.user_panel.base') }}
+																			{{ trans($theme.'-app.user_panel.base') }}
 																		</div>
 																	</div>
 																</div>
@@ -452,7 +452,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																		<div
 																			class="money col-xs-12 col-sm-7 text-right">
 																			{{\Tools::moneyFormat($total_base,false,2)}}
-																			{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																			{{ trans($theme.'-app.lot.eur') }}
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -468,7 +468,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			{{ trans(\Config::get('app.theme').'-app.user_panel.tax') }}
+																			{{ trans($theme.'-app.user_panel.tax') }}
 																		</div>
 																	</div>
 																</div>
@@ -477,7 +477,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																		<div
 																			class="money col-xs-12 col-sm-7 text-right">
 																			{{\Tools::moneyFormat($total_iva,false,2)}}
-																			{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																			{{ trans($theme.'-app.lot.eur') }}
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -493,7 +493,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			{{ trans(\Config::get('app.theme').'-app.user_panel.export_license') }}
+																			{{ trans($theme.'-app.user_panel.export_license') }}
 																		</div>
 																	</div>
 																</div>
@@ -502,7 +502,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																		<div
 																			class="money col-xs-12 col-sm-7 text-right">
 																			{{\Tools::moneyFormat($total_licencia_exportacion,false,2)}}
-																			{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																			{{ trans($theme.'-app.lot.eur') }}
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -519,7 +519,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			{{ trans(\Config::get('app.theme').'-app.user_panel.ship_tax') }}
+																			{{ trans($theme.'-app.user_panel.ship_tax') }}
 																		</div>
 																	</div>
 																</div>
@@ -529,7 +529,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																			class="money col-xs-12 col-sm-7 text-right">
 																			<span
 																				class='text-gasto-envio-{{$all_inf['inf']->cod_sub}}'></span>
-																			{{ trans(\Config::get('app.theme').'-app.lot.eur') }}
+																			{{ trans($theme.'-app.lot.eur') }}
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -545,7 +545,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																<div class="col-xs-5">
 																	<div class="row">
 																		<div class="title col-xs-12">
-																			<b>{{ trans(\Config::get('app.theme').'-app.user_panel.total') }}</b>
+																			<b>{{ trans($theme.'-app.user_panel.total') }}</b>
 																		</div>
 																	</div>
 																</div>
@@ -556,7 +556,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 																			<b style="display: inline-block"
 																				class='precio_final_{{$all_inf['inf']->cod_sub}}'></b><b
 																				style="display: inline-block">
-																				{{ trans(\Config::get('app.theme').'-app.lot.eur') }}</b>
+																				{{ trans($theme.'-app.lot.eur') }}</b>
 																			&nbsp;|&nbsp;&nbsp;
 																		</div>
 																		<div class="col-xs-12 col-sm-5 text-right">
@@ -577,7 +577,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 									@if($all_inf['inf']->compraweb_sub == 'S')
 									<button type="button" cod_sub="{{$all_inf['inf']->cod_sub}}"
 										class="btn btn-color btn-blue btn-step-reg submit_carrito"
-										disabled>{{ trans(\Config::get('app.theme').'-app.user_panel.pay_now') }}</button>
+										disabled>{{ trans($theme.'-app.user_panel.pay_now') }}</button>
 									@endif
 								</div>
 
@@ -587,7 +587,7 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
 							@elseif($data['user']->envcorr_cli == 'B')
 							<div class="adj">
 								<p style="color: #283747;font-size: 18px;">
-									{{ trans(\Config::get('app.theme').'-app.user_panel.contact_tauler') }}</p>
+									{{ trans($theme.'-app.user_panel.contact_tauler') }}</p>
 							</div>
 							@endif
 						</div>

@@ -16,8 +16,8 @@ if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_a
 
         <div class="col-xs-12 no-padding ficha-info-items-buy">
             <div class="pre">
-                    <p class="pre-title-principal">{{ trans(\Config::get('app.theme').'-app.subastas.price_sale') }}</p>
-                    <p class="pre-price">{{$importe}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}
+                    <p class="pre-title-principal">{{ trans($theme.'-app.subastas.price_sale') }}</p>
+                    <p class="pre-price">{{$importe}} {{ trans($theme.'-app.subastas.euros') }}
 						@if(\Config::get("app.exchange"))
 						|   <span id="directSaleExchange_JS" class="exchange"> </span>
 							<input id="startPriceDirectSale" type="hidden" value="{{$importeExchange}}">
@@ -29,11 +29,11 @@ if(!empty($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 >  $lote_a
                     @if (!$retirado && empty($lote_actual->himp_csub) && !$sub_cerrada)
 						{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
 						@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
-							<div class="require-wallet">{!! trans(\Config::get('app.theme').'-app.lot.require_wallet') !!}</div>
+							<div class="require-wallet">{!! trans($theme.'-app.lot.require_wallet') !!}</div>
 						@elseif(!Session::has('user'))
-							<button data-from="modal" class="button-principal" type="button" id="js-ficha-login">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+							<button data-from="modal" class="button-principal" type="button" id="js-ficha-login">{{ trans($theme.'-app.subastas.buy_lot') }}</button>
 						@else
-                        	<button data-from="modal" class="button-principal lot-action_comprar_lot" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+                        	<button data-from="modal" class="button-principal lot-action_comprar_lot" type="button" ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">{{ trans($theme.'-app.subastas.buy_lot') }}</button>
 						@endif
 					@endif
                 </div>

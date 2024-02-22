@@ -187,7 +187,12 @@ class AwardController extends ApiLabelController
 				$this->updateImplic($award->numhces_asigl0, $award->linhces_asigl0 ,0,"N");
 				$this->deleteBid($award->sub_csub, $award->ref_csub);
             }else{  # si no hay award con esos identificadores
-                    throw new ApiLabelException(trans('apilabel-app.errors.delete'));
+				if(empty($whereVars["ref"]) ||  empty($whereVars["licit"]) ){
+					$errorsItem["item_1"] = array("idoriginlot" => $whereVars["idoriginlot"],"idauction" => $whereVars["idauction"] );
+				}else{
+					$errorsItem["item_1"] = array("ref" => $whereVars["ref"],"idauction" => $whereVars["idauction"] ,"licit" => $whereVars["licit"]  );
+				}
+                    throw new ApiLabelException(trans('apilabel-app.errors.delete'),$errorsItem);
             }
 
             DB::commit();
