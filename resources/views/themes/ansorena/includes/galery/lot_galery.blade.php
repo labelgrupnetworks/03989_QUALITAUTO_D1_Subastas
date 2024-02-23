@@ -11,8 +11,10 @@
 	if(count($descweb_hces1) == 2){
 		$year = $descweb_hces1[1];
 	}
+	if ($withMultipleArtists) {
+		$artistName = (new App\Http\Controllers\V5\GaleriaArte)->explodeComillas($lot->value_caracteristicas_value);
+	}
 	$descweb_hces1 = $descweb_hces1[0];
-
 @endphp
 
 <div class="gallery-lot position-relative {{ $class }}">
@@ -20,7 +22,12 @@
 		<img class="" src="{{ $image }}" alt="" {{-- loading="lazy" --}}>
 	</div>
     <div class="card-body-lot d-none d-lg-block">
-        <p class="card-title ff-highlight fs-20">{{ $descweb_hces1 }}</p>
+        <p class="card-title ff-highlight fs-20">
+			{{ $descweb_hces1 }}
+			@if ($withMultipleArtists)
+				 - {{ $artistName }}
+			@endif
+		</p>
 		<p>{{ $year }}</p>
     </div>
     <a class="stretched-link" href="{{ $url }}"></a>
