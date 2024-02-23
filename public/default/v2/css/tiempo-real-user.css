@@ -437,7 +437,15 @@ header .navbar-brand img {
 }
 
 header .navbar-brand img.logo {
-	width: 100%;
+	width: 50%;
+	margin: auto
+}
+
+@media(min-width: 768px) {
+	header .navbar-brand img.logo {
+		width: 100%;
+		object-position: left;
+	}
 }
 
 

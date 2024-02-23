@@ -2,18 +2,18 @@
     $lang = config('app.locale');
 @endphp
 <header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-between px-2 py-1">
+    class="d-flex flex-wrap gap-1 flex-column flex-md-row align-items-center justify-content-center justify-content-lg-between px-2 py-1">
 
-	<a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand flex-grow-1" href="/{{ $lang }}">
+	<a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" href="/{{ $lang }}" style="flex: 1;">
 		<img class="img-fluid logo" src="/themes/{{ $theme }}/assets/img/logo.png"
             alt="{{ \Config::get('app.name') }}">
     </a>
 
-    <div class="nav mb-2 justify-content-center mb-lg-0 flex-grow-1">
+    <div class="nav mb-2 justify-content-center mb-lg-0" style="flex: 2;">
         <h2 class="auction_title text-center h1 no-decoration m-0 p-0">{{ $data['name'] }}</h2>
     </div>
 
-    <div class="text-center text-lg-end flex-grow-1">
+    <div class="text-center text-lg-end" style="flex: 1;">
         @if (!Session::has('user'))
             <div class="dropdown-center">
                 <a class="btn btn-sm btn-lb-primary dropdown-toggle" id="dropdownLogin" data-bs-toggle="dropdown"
