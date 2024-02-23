@@ -3,9 +3,9 @@
 
 
 namespace App\libs;
-use Config;
-
-use Session;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use App\Models\V5\Web_Keywords_Search;
 use App\Models\V5\Web_Seo_Events;
 use App\Models\V5\Web_Seo_Visits;
@@ -59,7 +59,12 @@ class SeoLib {
 	}
 
 	static function saveVisit($sub = null, $category = null, $section = null, $ref = null){
-		if(\Config::get("app.seoVisit")){
+
+		if(Config::get('app.env') == "testing") {
+			return;
+		}
+
+		if(Config::get("app.seoVisit")){
 
 			if(!SeoLib::isRobotAgent($_SERVER['HTTP_USER_AGENT'])){
 
@@ -103,7 +108,7 @@ class SeoLib {
 					],$insertData);
 
 				}catch(\Illuminate\Database\QueryException $e){
-					\Log::error($e);
+					Log::error($e);
 				}
 			}
 
@@ -130,7 +135,7 @@ class SeoLib {
 			]);
 
 		}catch(\Illuminate\Database\QueryException $e){
-			\Log::error($e);
+			Log::error($e);
 		}
 
 
