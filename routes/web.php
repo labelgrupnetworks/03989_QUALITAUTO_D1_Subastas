@@ -348,8 +348,7 @@ Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys'
 
 
 // Valoraciones
-// **Deprecated**
-Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos');
+Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
 Route::get(Routing::slugSeo('especialistas'), 'EnterpriseController@index')->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv');
@@ -614,7 +613,7 @@ Route::group(['prefix' => 'api'], function () {
 
 Route::get(Routing::translateSeo('exposicion') . '{texto}_{cod}-{reference}', 'V5\GaleriaArte@getGalery')->name('exposicion')->where(array('cod' => '[0-9a-zA-Z]+', 'reference' => '[0-9]+'));
 Route::get(Routing::translateSeo('exposiciones'), 'V5\GaleriaArte@exhibitons')->name('exposiciones');
-#la comento por que de momento no se usará
+#la comento por que de momento no se usarálogin_post_ajax
 # Route::get(Routing::translateSeo('exposiciones-anteriores'), 'V5\GaleriaArte@previousExhibitons')->name('exposiciones-anteriores');
 Route::get(Routing::translateSeo('artistas-galeria'), 'V5\GaleriaArte@artists')->name('artistasGaleria');
 Route::get(Routing::translateSeo('artista-galeria') . '{id_artist}', 'V5\GaleriaArte@artist')->name('artistaGaleria')->where(array('id_artist' => '[0-9]+'));

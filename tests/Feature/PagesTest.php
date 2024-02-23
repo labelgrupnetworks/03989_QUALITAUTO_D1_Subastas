@@ -11,6 +11,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use App\Models\V5\FxSubSec;
 use App\Models\V5\Web_Artist;
+use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Page;
 use Tests\TestCase;
 
@@ -44,9 +45,10 @@ class PagesTest extends TestCase
 	 * @param array $whereCases
 	 * @param array $whereIsNotNullCases
 	 * @param string $orderBy
+	 * @param array $joins
 	 * @return mixed
 	 */
-	private function getDatabaseSingleValues($dataTable, $whereCases = [], $whereIsNotNullCases = [], $orderBy = '')
+	private function getDatabaseSingleValues($dataTable, $whereCases = [], $whereIsNotNullCases = [], $orderBy = '', $joins = [])
 	{
 		if (count($whereCases) > 0) {
 			$dataTable = $dataTable->where($whereCases);
@@ -56,6 +58,11 @@ class PagesTest extends TestCase
 		}
 		if ($orderBy != '') {
 			$dataTable = $dataTable->orderBy($orderBy, 'asc');
+		}
+		if (count($joins) > 0) {
+			foreach ($joins as $join) {
+				$dataTable = $dataTable->join($join['table'], $join['first'], $join['operator'], $join['second']);
+			}
 		}
 		return $dataTable->first();
 	}
@@ -221,7 +228,7 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_todas_is_succesful()
 	{
-		self::setHTTP_HOST(route('subastas.todas'));
+		self::setHTTP_HOST(route('subastas.all'));
 
 		$response = $this->get(route('subastas.all'));
 
@@ -340,6 +347,12 @@ class PagesTest extends TestCase
 
 		$response->assertSuccessful();
 	}
+
+	public function test_old_ficha_lot_page_id_succesful()
+	{
+		
+	}
+
 
 	/**
 	 * A test for the success evaluation page.
@@ -534,6 +547,10 @@ class PagesTest extends TestCase
 		$response->assertSuccessful();
 	}
 
+	/**
+	 * A test for the article page.
+	 * @return void
+	 */
 	public function test_article_page_is_succesful()
 	{
 		$article = self::getDatabaseSingleValues(new FgArt0(), [], ['des_art0'], 'id_art0');
@@ -547,11 +564,54 @@ class PagesTest extends TestCase
 		$response->assertSuccessful();
 	}
 
+	/**
+	 * A test for the static pages
+	 * @return void
+	 */
 	public function test_static_page_is_succesful()
 	{
 		$page = self::getDatabaseSingleValues(new Web_Page(), [], ['CONTENT_WEB_PAGE'], 'ID_WEB_PAGE');
 
 		$response = $this->get(route('staticPage', ['lang' => mb_strtolower($page->lang_web_page), 'pagina' => $page->key_web_page]));
+
+		$response->assertSuccessful();
+	}
+
+	/**
+	 * A test for the faqs page.
+	 * @return void
+	 */
+	public function test_faqs_page_is_succesful()
+	{
+		$response = $this->get(route('faqs_page'));
+
+		$response->assertSuccessful();
+	}
+
+	/**
+	 * A test for the calendar page.
+	 * @return void
+	 */
+	public function test_calendar_page_is_succesful()
+	{
+		$response = $this->get(route('calendar'));
+
+		$response->assertSuccessful();
+	}
+
+	/**
+	 * A test for the blog index page.
+	 * @return void
+	 */
+	public function test_blog_index_page_is_succesful()
+	{
+		$existsView = view()->exists('front::content.slider');
+
+		if (!$existsView) {
+			$this->markTestSkipped('The view "content.slider" does not exist.');
+		}
+
+		$response = $this->get(route('blog.index', ['lang' => \Config::get('app.locale')]));
 
 		$response->assertSuccessful();
 	}
