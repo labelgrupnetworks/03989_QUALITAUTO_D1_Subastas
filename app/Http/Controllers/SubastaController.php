@@ -1394,14 +1394,20 @@ class SubastaController extends Controller
 		$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
 
 			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
+
 			$siguienteEscalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
+			if (Config::get('app.force_correct_price')) {
+				$siguienteEscalado = $subastaObj->NextScaleBid(0, $subasta_info->lote_actual->impsalhces_asigl0 - 1);
+				$subasta_info->lote_actual->siguientes_escalados[0] = $siguienteEscalado;
+			}
+
 			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
 				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
 			}
 			else{
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
 			}
 		}
 
