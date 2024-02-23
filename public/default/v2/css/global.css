@@ -11,7 +11,7 @@
 	/* h-> color, s-> saturacion, l-> brillo / a-> alpha */
 	/*en pruebas*/
 	--lb-color-primary-hsl: 360deg 72%;
-	--lb-color-primary-rgb: 205 33 34;
+	--lb-color-primary-rgb: 205, 33, 34;
 	--lb-color-primary: #cd2122;
 	--lb-color-primary-light: #D74D4E;
 	--lb-color-primary-dark: #8F1717;

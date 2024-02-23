@@ -61,8 +61,9 @@ return
 		'no_array' => "Error in the field :field, must be an array",
 		'array_no_numeric' => "Error in the field :field, the elements of array it must be numerical ",
 		'unique_constraint_violated' => "Unique constraint has been violated ",
-		'email_exist' => "The email is already in use by the user :cod2Cli"
-  
+		'email_exist' => "The email is already in use by the user :cod2Cli",
+		'client_blocked' => "client pending activation"
+
     ),
 
 

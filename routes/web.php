@@ -133,7 +133,7 @@ Route::get(Routing::translateSeo('subastas-especiales'), 'SubastaController@suba
 
 Route::get(Routing::translateSeo('haz-oferta'), 'SubastaController@haz_oferta')->name('subastas.haz_oferta');
 Route::get(Routing::translateSeo('subasta-inversa'), 'SubastaController@subasta_inversa')->name('subastas.subasta_inversa');
-Route::post('/api-ajax/sessions/files', 'subastaController@getAucSessionFiles')->name('apiajax.sessions.files');
+Route::post('/api-ajax/sessions/files', 'SubastaController@getAucSessionFiles')->name('apiajax.sessions.files');
 
 Route::get(Routing::slug('sub') . '/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
 Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAuctionList')->name('subastas.tematicas');

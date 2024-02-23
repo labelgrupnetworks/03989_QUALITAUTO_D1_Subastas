@@ -11,19 +11,21 @@
     {{-- currency --}}
     @if (Config::get('app.exchange', 0))
         <div class="text-right info-currency">
-            {{ trans("$theme-app.lot.foreignCurrencies") }}
-            <select id="currencyExchange">
-                @foreach ($divisas as $divisa)
-                    @php
-                        //quieren que salgan los dolares por defecto (sin no hay nada o hay euros)
-                        $cod_div_cli = $data['js_item']['subasta']['cod_div_cli'];
-                        $isDivisaSelected = $cod_div_cli == $divisa->cod_div || ($divisa->cod_div == 'USD' && ($cod_div_cli == 'EUR' || $cod_div_cli == ''));
-                    @endphp
-                    <option value='{{ $divisa->cod_div }}' @selected($isDivisaSelected)>
-                        {{ $divisa->cod_div }}
-                    </option>
-                @endforeach
-            </select>
+			<label class="form-label w-100">
+				{{ trans("$theme-app.lot.foreignCurrencies") }}
+				<select id="currencyExchange" class="form-select">
+					@foreach ($divisas as $divisa)
+						@php
+							//quieren que salgan los dolares por defecto (sin no hay nada o hay euros)
+							$cod_div_cli = $data['js_item']['subasta']['cod_div_cli'];
+							$isDivisaSelected = $cod_div_cli == $divisa->cod_div || ($divisa->cod_div == 'USD' && ($cod_div_cli == 'EUR' || $cod_div_cli == ''));
+						@endphp
+						<option value='{{ $divisa->cod_div }}' @selected($isDivisaSelected)>
+							{{ $divisa->cod_div }}
+						</option>
+					@endforeach
+				</select>
+			</label>
         </div>
     @endif
 

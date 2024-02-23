@@ -80,11 +80,14 @@
     <p class="price next-price">
         <span>{{ $hay_pujas ? trans($theme . '-app.lot.next_min_bid') : trans($theme . '-app.lot.min_puja') }}</span>
         <span class="value">
-            <span class="siguiente_puja"></span>
-            <span>&nbsp;{{ trans($theme . '-app.subastas.euros') }}</span>
+			<span>
+				<span class="siguiente_puja"></span>
+				<span>{{ trans($theme . '-app.subastas.euros') }}</span>
+			</span>
 
             @if (\Config::get('app.exchange'))
-                | <span class="exchange" id="nextBidExchange_JS"> </span>
+                <span>|</span>
+				<span class="exchange ml-1" id="nextBidExchange_JS"> </span>
             @endif
 
         </span>

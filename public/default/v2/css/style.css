@@ -693,7 +693,7 @@ section.ficha-image {
 	flex-direction: column;
 }
 
-.ficha-pujas .price span:nth-of-type(2) {
+.ficha-pujas .price:not(.next-price) span:nth-of-type(2) {
 	float: right;
 }
 

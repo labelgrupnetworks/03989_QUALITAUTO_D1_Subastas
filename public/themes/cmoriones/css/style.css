@@ -105,7 +105,7 @@ body> :is(header, footer) {
 	color: var(--lb-color-primary-contrast);
 }
 
-body> .subnav {
+body>.subnav {
 	background-color: #fff;
 	color: rgba(0, 0, 0, 0.9);
 }
@@ -437,6 +437,14 @@ main.ficha h5 {
 	font-weight: 700;
 }
 
+.ficha .ficha-bread-header {
+	padding-bottom: 1.5rem;
+}
+
+.ficha .ficha-title {
+	padding-bottom: .75rem;
+}
+
 .ficha-grid {
 	display: flex;
 	gap: 0;
@@ -503,6 +511,7 @@ section.ficha-contact a {
 	justify-content: center;
 	height: 100%;
 	gap: 10px;
+	font-size: 1.1rem;
 }
 
 section.ficha-features {
@@ -736,6 +745,121 @@ main.static-page img {
 
 .subastas_vendidas .slick-slide {
 	margin: 0 10px;
+}
+
+.google-reviews-section {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+.google-reviews .slick-track {
+	display: flex !important;
+}
+
+.google-reviews .slick-slide {
+	height: inherit !important;
+	margin: 0 10px;
+}
+
+.google-reviews .slick-list {
+	margin: 0 -10px;
+}
+
+.google-reviews .slick-prev:before {
+	content: "\2039";
+	color: rgb(0, 0, 0, .8);
+	font-size: 30px;
+}
+
+.google-reviews .slick-next:before {
+	content: "\203A";
+	color: rgb(0, 0, 0, .8);
+	font-size: 30px;
+}
+
+.card.card-google {
+	--bs-card-cap-bg: #fff;
+}
+
+.card-google img {
+	width: 36px;
+	height: 36px;
+}
+
+.card-google .card-header {
+	display: flex;
+	gap: 10px;
+}
+
+.card-google .card-header-user {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.card-google .card-user-rating {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.card-google .card-user-name {
+	font-weight: 700;
+}
+
+.card-google .card-header-google-brand {
+	background: #dd4b39;
+	align-self: flex-start;
+	width: 24px;
+	border-radius: 50%;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 24px;
+	color: #fff;
+}
+
+.card-google img.emoji {
+	display: inline;
+	width: 1em;
+	height: 1em;
+}
+
+.card-google .card-body {
+	font-size: 14px;
+}
+
+.google-divider {
+	text-align: center;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.google-divider-separator {
+	display: flex;
+	align-items: center;
+	width: 50%;
+	margin: 0 auto;
+}
+
+.google-divider-separator::before,
+.google-divider-separator::after {
+	display: block;
+	content: "";
+	border-block-end: 0;
+	flex-grow: 1;
+	border-block-start: 1px solid #000;
+}
+
+.google-divider-icon {
+	margin: 0 10px;
+	flex-shrink: 0;
+	display: inline-block;
+	line-height: 1;
+	color: #69727d;
+	text-align: center;
 }
 
 @media (min-width: 200px) {

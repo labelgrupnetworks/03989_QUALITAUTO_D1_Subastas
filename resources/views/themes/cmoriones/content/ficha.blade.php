@@ -88,15 +88,24 @@
 				@include('includes.ficha.share')
 			</section>
 
+			<section class="ficha-contact">
+                <a class="btn btn-success"
+                    href="https://wa.me/34602252061?text=Estoy%20interesado%20es%20el%20siguiente%20activo%20{{ URL::current() }}"
+                    style="--lb-border-radius:.375rem" target="_blank">
+					@include('components.boostrap_icon', ['icon' => 'whatsapp', 'size' => 32])
+                    Contacta con nosotros
+                </a>
+            </section>
+
         </div>
 
         <div class="col-12 col-md-7 col-xl-6 order-0 order-md-1">
 
 			@if (in_array($lote_actual->cod_sub, ['CEREMATE', 'COMDEUDA', 'REOS']))
-				<section class="ficha-login">
+				<section class="ficha-login bg-primary text-white">
 					<p class="mb-2">
 						Si quieres tener una VALORACIÓN REAL de este activo a fecha de hoy por el que muestras interés de forma
-						TOTALMENTE GRATUITA, ve a <button class="btn btn-primary btn_login">login</button> completa los datos y
+						TOTALMENTE GRATUITA, ve a <button class="btn btn-dark btn_login">login</button> completa los datos y
 						solicita más información. Uno de nuestros expertos
 						valorará el activo con el máximo detalle y precisión y se pondrá en contacto contigo para transmitirte el
 						resultado de la valoración.
@@ -113,7 +122,7 @@
 				@include('includes.ficha.ficha_image')
 			</section>
 
-			<section class="ficha-description">
+			<section class="ficha-description bg-black bg-opacity-10">
                 @include('includes.ficha.ficha_description')
             </section>
 
@@ -128,9 +137,7 @@
                 <a class="btn btn-success"
                     href="https://wa.me/34602252061?text=Estoy%20interesado%20es%20el%20siguiente%20activo%20{{ URL::current() }}"
                     style="--lb-border-radius:.375rem" target="_blank">
-                    <svg class="bi" width="24" height="24" fill="currentColor">
-                        <use xlink:href="/bootstrap-icons.svg#whatsapp"></use>
-                    </svg>
+                    @include('components.boostrap_icon', ['icon' => 'whatsapp', 'size' => 32])
                     Contacta con nosotros
                 </a>
             </section>
@@ -170,12 +177,12 @@
 
     </div>
 
-    <section class="ficha-recomendados mt-3">
-        <div class="lotes_destacados" id="lotes_recomendados-content">
+    <section id="lotes_recomendados-content" class="ficha-recomendados mt-3">
+        <div class="lotes_destacados">
             <h1 class="mas-pujados-title">{{ trans(\Config::get('app.theme') . '-app.lot.recommended_lots') }}</h1>
 
             <div class='loader d-none'></div>
-            <div class="owl-theme owl-carousel" id="lotes_recomendados"></div>
+            <div class="owl-theme owl-carousel" id="lotes_recomendados" data-container="lotes_recomendados-content"></div>
 
             <div class="m-0 pl-10" id="navs-arrows">
                 <div class="owl-nav">

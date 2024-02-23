@@ -32,16 +32,18 @@
 
 		@section('header-extend-buttons')
 		<div>
-			{{ trans($theme.'-app.lot.foreignCurrencies') }}
-			<select id="currencyExchange">
-				@foreach($data['divisas'] as $divisa)
-					<option value='{{ $divisa->cod_div }}'
-						@selected($data['js_item']['subasta']['cod_div_cli'] == $divisa->cod_div || ($divisa->cod_div == 'USD' &&  ($data['js_item']['subasta']['cod_div_cli'] == 'EUR'  || $data['js_item']['subasta']['cod_div_cli'] == '')))
-						>
-						{{ $divisa->cod_div }}
-					</option>
-				@endforeach
-			</select>
+			<label class="form-label d-inline-flex align-items-center gap-2 mb-0">
+				{{ trans($theme.'-app.lot.foreignCurrencies') }}
+				<select id="currencyExchange" class="form-select">
+					@foreach($data['divisas'] as $divisa)
+						<option value='{{ $divisa->cod_div }}'
+							@selected($data['js_item']['subasta']['cod_div_cli'] == $divisa->cod_div || ($divisa->cod_div == 'USD' &&  ($data['js_item']['subasta']['cod_div_cli'] == 'EUR'  || $data['js_item']['subasta']['cod_div_cli'] == '')))
+							>
+							{{ $divisa->cod_div }}
+						</option>
+					@endforeach
+				</select>
+			</label>
 		</div>
 		@endsection
     @endif
