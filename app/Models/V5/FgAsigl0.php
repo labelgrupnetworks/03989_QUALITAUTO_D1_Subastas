@@ -196,7 +196,10 @@ class FgAsigl0 extends Model
 
 	public function scopejoinFgCaracteristicasValueAsigl0($query){
 		return $query->join("FGCARACTERISTICAS_VALUE" , "EMP_CARACTERISTICAS_VALUE = EMP_ASIGL0 AND IDCAR_CARACTERISTICAS_VALUE = ID_CARACTERISTICAS AND  ID_CARACTERISTICAS_VALUE = IDVALUE_CARACTERISTICAS_HCES1");
+	}
 
+	public function scopeLeftJoinFgCaracteristicasValueHces1Asigl0($query){
+		return $query->leftjoin("FGCARACTERISTICAS_VALUE", "EMP_CARACTERISTICAS_VALUE = EMP_ASIGL0 AND IDCAR_CARACTERISTICAS_VALUE = IDCAR_CARACTERISTICAS_HCES1 AND ID_CARACTERISTICAS_VALUE = IDVALUE_CARACTERISTICAS_HCES1");
 	}
 	public function scopeJoinLangCaracteristicasValueAsigl0($query){
 		$lang =  ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
