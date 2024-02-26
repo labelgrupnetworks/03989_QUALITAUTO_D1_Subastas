@@ -70,8 +70,14 @@ class SeoLib {
 
 				$vars = SeoLib::sessionsVars();
 				try{
+
 					$userController = new UserController();
 					$ip = $userController->getUserIP();
+
+					#guardamos el user agent para analizarlo y ver is hay que bloquear mas
+					if(Config::get("app.logUserAgent") ){
+						\Log::info("User Agent: ". $_SERVER['HTTP_USER_AGENT']. " ip: " .$ip );
+					}
 
 
 					if( empty($category) && !empty($section)){
