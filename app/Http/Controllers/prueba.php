@@ -173,9 +173,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		dump('test1');
-		dump(FacadesConfig::get('app.env'));
-		dd(FacadesConfig::get('app.url'));
+		dd('Este cambio ha sido subido solamente al git en la rama main y desplegado en prodcucción');
 	}
 
 
