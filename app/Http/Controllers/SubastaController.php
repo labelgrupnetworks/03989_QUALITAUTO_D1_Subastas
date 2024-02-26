@@ -1396,7 +1396,7 @@ class SubastaController extends Controller
 			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
 
 			$siguienteEscalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
-			if (Config::get('app.force_correct_price')) {
+			if ($subasta_info->lote_actual->importe_escalado_siguiente  == $subasta_info->lote_actual->impsalhces_asigl0 && Config::get('app.force_correct_price')) {
 				$siguienteEscalado = $subastaObj->NextScaleBid(0, $subasta_info->lote_actual->impsalhces_asigl0 - 1);
 				$subasta_info->lote_actual->siguientes_escalados[0] = $siguienteEscalado;
 			}
