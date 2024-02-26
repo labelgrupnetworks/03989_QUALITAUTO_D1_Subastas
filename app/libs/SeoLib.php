@@ -64,7 +64,8 @@ class SeoLib
 	static function saveVisit($sub = null, $category = null, $section = null, $ref = null)
 	{
 		$userAgent = request()->userAgent();
-		if (!$userAgent) {
+		$isTesting = Config::get("app.env") == "testing";
+		if ($isTesting || !$userAgent) {
 			return;
 		}
 
