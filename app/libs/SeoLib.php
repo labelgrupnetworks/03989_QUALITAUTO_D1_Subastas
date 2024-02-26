@@ -64,9 +64,11 @@ class SeoLib {
 			return;
 		}
 
-		if(Config::get("app.seoVisit")){
+		$userAgent = request()->userAgent();
 
-			if(!SeoLib::isRobotAgent($_SERVER['HTTP_USER_AGENT'])){
+		if(Config::get("app.seoVisit") && $userAgent){
+
+			if(!SeoLib::isRobotAgent($userAgent)){
 
 				$vars = SeoLib::sessionsVars();
 				try{
