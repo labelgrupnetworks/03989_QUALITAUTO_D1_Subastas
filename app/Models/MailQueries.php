@@ -219,7 +219,7 @@ class MailQueries {
                      'numhces' => $numhces,
                      'linhces' => $linhces,
                      'codcli' => $codcli,
-                     'email' => trim($email ?? ''),
+                     'email' => $email,
                      'type' => $type,
                      'sended' => $sended
                      );
