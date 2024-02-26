@@ -63,8 +63,8 @@ class SeoLib {
 		if(Config::get('app.env') == "testing") {
 			return;
 		}
-
-		if(Config::get("app.seoVisit")){
+		#Si solo queremos guardar visitas únicas, solo guardaremos si el resto de campos está nulo
+		if(Config::get("app.seoVisit") ||( Config::get("app.seoUniqueVisit") && empty($sub) && empty($category) && empty($section) && empty($ref)) ){
 
 			if(!SeoLib::isRobotAgent($_SERVER['HTTP_USER_AGENT'])){
 
