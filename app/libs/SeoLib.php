@@ -3,9 +3,9 @@
 
 
 namespace App\libs;
-use Config;
-
-use Session;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use App\Models\V5\Web_Keywords_Search;
 use App\Models\V5\Web_Seo_Events;
 use App\Models\V5\Web_Seo_Visits;
@@ -59,14 +59,25 @@ class SeoLib {
 	}
 
 	static function saveVisit($sub = null, $category = null, $section = null, $ref = null){
-		if(\Config::get("app.seoVisit")){
+
+		if(Config::get('app.env') == "testing") {
+			return;
+		}
+		#Si solo queremos guardar visitas únicas, solo guardaremos si el resto de campos está nulo
+		if(Config::get("app.seoVisit") ||( Config::get("app.seoUniqueVisit") && empty($sub) && empty($category) && empty($section) && empty($ref)) ){
 
 			if(!SeoLib::isRobotAgent($_SERVER['HTTP_USER_AGENT'])){
 
 				$vars = SeoLib::sessionsVars();
 				try{
+
 					$userController = new UserController();
 					$ip = $userController->getUserIP();
+
+					#guardamos el user agent para analizarlo y ver is hay que bloquear mas
+					if(Config::get("app.logUserAgent") ){
+						\Log::info("User Agent: ". $_SERVER['HTTP_USER_AGENT']. " ip: " .$ip );
+					}
 
 
 					if( empty($category) && !empty($section)){
@@ -103,7 +114,7 @@ class SeoLib {
 					],$insertData);
 
 				}catch(\Illuminate\Database\QueryException $e){
-					\Log::error($e);
+					Log::error($e);
 				}
 			}
 
@@ -130,7 +141,7 @@ class SeoLib {
 			]);
 
 		}catch(\Illuminate\Database\QueryException $e){
-			\Log::error($e);
+			Log::error($e);
 		}
 
 
