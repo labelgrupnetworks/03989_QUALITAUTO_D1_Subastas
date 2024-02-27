@@ -63,10 +63,8 @@ class SeoLib
 
 	static function saveVisit($sub = null, $category = null, $section = null, $ref = null)
 	{
-
 		$userAgent = request()->userAgent();
-
-		if (Config::get('app.env') == "testing" || !$userAgent) {
+		if (!$userAgent) {
 			return;
 		}
 
@@ -83,7 +81,9 @@ class SeoLib
 
 					#guardamos el user agent para analizarlo y ver is hay que bloquear mas
 					if (Config::get("app.logUserAgent")) {
-						\Log::info("User Agent: " . $userAgent. " ip: " . $ip);
+
+						\Log::info("User Agent: " . $userAgent . " ip: " . $ip);
+
 					}
 
 

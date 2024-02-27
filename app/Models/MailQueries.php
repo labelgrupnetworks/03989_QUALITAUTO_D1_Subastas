@@ -14,15 +14,10 @@ namespace App\Models;
  * @author LABEL-RSANCHEZ
  */
 
-use Illuminate\Database\Eloquent\Model;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
-use Config;
-use Routing;
-use App\Models\Content;
 class MailQueries {
 
 
@@ -204,34 +199,44 @@ class MailQueries {
    }
 
 
-   public function setEmailLogs($codtxt,$sub,$ref,$numhces, $linhces, $codcli, $email, $type, $sended = 'S' ){
+	public function setEmailLogs($codtxt, $sub, $ref, $numhces, $linhces, $codcli, $email, $type, $sended = 'S')
+	{
+		// si existe la variable debug_email es la que manda, si no se usará APP_DEBUG
+		$isDebugMode = Config::get('mail.debug_email') ?: Config::get('app.debug');
+		if ($isDebugMode) {
+			return false;
+		}
 
-       if( !env('APP_DEBUG')){
-            try{
-            $sql = "INSERT INTO WEB_EMAIL_LOGS (ID_EMAIL_LOGS, EMP_EMAIL_LOGS, CODTXT_EMAIL_LOGS, SUB_EMAIL_LOGS, REF_EMAIL_LOGS, NUMHCES_EMAIL_LOGS, LINHCES_EMAIL_LOGS, CODCLI_EMAIL_LOGS, EMAIL_EMAIL_LOGS, TYPE_EMAIL_LOGS,DATE_EMAIL_LOGS,SENDED_EMAIL_LOGS)
+		try {
+			$sql = "INSERT INTO WEB_EMAIL_LOGS (ID_EMAIL_LOGS, EMP_EMAIL_LOGS, CODTXT_EMAIL_LOGS, SUB_EMAIL_LOGS, REF_EMAIL_LOGS, NUMHCES_EMAIL_LOGS, LINHCES_EMAIL_LOGS, CODCLI_EMAIL_LOGS, EMAIL_EMAIL_LOGS, TYPE_EMAIL_LOGS,DATE_EMAIL_LOGS,SENDED_EMAIL_LOGS)
                     VALUES ((select nvl(max(id_email_logs)+1,1) from web_email_logs), :emp, :codtxt, :sub, :ref, :numhces, :linhces, :codcli, :email, :type, sysdate, :sended)";
 
-            $params = array(
-                     'emp'       =>  Config::get('app.emp'),
-                     'codtxt' => $codtxt,
-                     'sub' => $sub,
-                     'ref' => $ref,
-                     'numhces' => $numhces,
-                     'linhces' => $linhces,
-                     'codcli' => $codcli,
-                     'email' => $email,
-                     'type' => $type,
-                     'sended' => $sended
-                     );
-            DB::select($sql, $params);
-            return true;
-            }  catch (\Exception $e) {
-                return false;
-             }
-        }else{
-            return false;
-        }
-   }
+			if (is_string($email)) {
+				$email = trim($email);
+			}
+
+			$params = array(
+				'emp'       =>  Config::get('app.emp'),
+				'codtxt' => $codtxt,
+				'sub' => $sub,
+				'ref' => $ref,
+				'numhces' => $numhces,
+				'linhces' => $linhces,
+				'codcli' => $codcli,
+				'email' => $email,
+				'type' => $type,
+				'sended' => $sended
+			);
+
+			DB::select($sql, $params);
+
+			return true;
+
+		} catch (\Exception $e) {
+			Log::error('Error al insertar en WEB_EMAIL_LOGS: ', ['error' => $e->getMessage()]);
+			return false;
+		}
+	}
 
    public function updateWebEmailCloslot($emp,$cod_sub,$ref,$type = 'S'){
         DB::table('WEB_EMAIL_CLOSLOT')

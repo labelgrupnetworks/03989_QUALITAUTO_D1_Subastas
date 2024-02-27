@@ -571,13 +571,13 @@ a.lb-text-primary:hover {
 	font-size: 0.8em;
 }
 
-@media(width > 768px) {
+@media(min-width: 768px) {
 	.cookies[data-style="bar"] .cookies_content {
 		flex-direction: row;
 	}
 }
 
-@media(width > 500px) {
+@media(min-width: 500px) {
 	.cookies[data-style="popover"] {
 		left: 15px;
 		bottom: 15px;
