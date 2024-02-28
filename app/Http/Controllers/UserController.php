@@ -347,7 +347,7 @@ class UserController extends Controller
 			//Eliminamos los tokens de sesion anteriores
 
 			$request->session()->regenerateToken();
-			
+
 			$this->SaveSession($login);
 			$user->logLogin($login->cod_cliweb, Config::get('app.emp'), date("Y-m-d H:i:s"), $ip);
 
@@ -735,7 +735,7 @@ class UserController extends Controller
             }
 
             $user->email = Request::input('email');
-            $user->nif = trim(Request::input('nif'));
+            $user->nif = str_replace(' ', '', trim(Request::input('nif')));
             $user->gemp = Config::get('app.gemp');
             $check_if_exists = $user->getUserByEmail(true);
 
@@ -997,7 +997,7 @@ class UserController extends Controller
                                'telf'          => Request::input('telefono'),
                                'mobile'          => !empty(Request::input('mobile'))?Request::input('mobile'):null,
                                'pais'          => Request::input('pais'),
-                               'dni'           => strtoupper(trim(Request::input('nif'))),
+                               'dni'           => str_replace(' ', '', trim(Request::input('nif'))),
                                'trabajo'       => $strToDefault ? Request::input('trabajo') : strtoupper(Request::input('trabajo')),
                                'nombrepais'    => $strToDefault ? $nombre_pais : strtoupper($nombre_pais),
                                'nombre_trabajo'=> $strToDefault ? $job_name : strtoupper($job_name),
