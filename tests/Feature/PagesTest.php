@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\ClientTest\DemoTests;
 use App\Models\articles\FgArt0;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgFamart;
@@ -14,10 +15,13 @@ use App\Models\V5\Web_Artist;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Page;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
+	#TODO: Hacer en cada test un match con cada uno de los clientes y lógica de cada cliente.
+
 	#region Helper methods
 
 	private function setHTTP_HOST($route)
@@ -33,7 +37,7 @@ class PagesTest extends TestCase
 		return FgSub::joinSessionSub()->orderBy('"start"', 'desc')->first();
 	}
 
-	private function getAnArtist()
+	protected function getAnArtist()
 	{
 		return Web_Artist::select("NAME_ARTIST, ID_ARTIST")
 		->where("ACTIVE_ARTIST",1)
@@ -51,7 +55,7 @@ class PagesTest extends TestCase
 	 * @param array $scopes
 	 * @return mixed
 	 */
-	private function getDatabaseSingleValues(
+	protected function getDatabaseSingleValues(
 		$dataTable,
 		$whereCases = [],
 		$whereIsNotNullCases = [],
@@ -82,18 +86,19 @@ class PagesTest extends TestCase
 		return $dataTable->first();
 	}
 
-	private function getLotData(string $tipo_sub = '')
+	protected function getLotData(array $whereCasesToAdd = [])
 	{
 		$whereCases = [];
-
-		if ($tipo_sub != '') {
-			$whereCases['tipo_sub'] = $tipo_sub;
-		}
-
 		$whereCases['subc_sub'] = 'S';
 		$whereCases['cerrado_asigl0'] = 'N';
 		$whereCases['retirado_asigl0'] = 'N';
 		$whereCases['oculto_asigl0'] = 'N';
+
+		if (count($whereCasesToAdd) > 0) {
+			foreach ($whereCasesToAdd as $field => $value) {
+				$whereCases[$field] = $value;
+			}
+		}
 
 		return self::getDatabaseSingleValues(
 			new FgAsigl0(),
@@ -105,6 +110,13 @@ class PagesTest extends TestCase
 		);
 	}
 
+	private function markThisTestAsSkippedIfHasThisThemes(array $themes)
+	{
+		if (in_array(Config::get('app.theme'), $themes)) {
+			$this->markTestSkipped('The theme is ' . Config::get('app.theme') . '.');
+		}
+	}
+
 	#endregion
 
     /**
@@ -113,7 +125,15 @@ class PagesTest extends TestCase
      */
     public function test_home_page_is_successful()
     {
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('home'));
+
+		match (Config::get('app.theme')) {
+			'demo' => (new DemoTests($this))->testHomePageIsSuccessful(),
+			default => $this->markTestIncomplete('The theme is not defined.')
+		};
+
 
         $response = $this->get(route('home'));
 
@@ -143,6 +163,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subasta_actual_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subasta.actual'));
 
 		$response = $this->get(route('subasta.actual'));
@@ -156,6 +178,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subasta_actual_online_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subasta.actual-online'));
 
 		$response = $this->get(route('subasta.actual-online'));
@@ -174,6 +198,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_presenciales_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.presenciales'));
 
 		$response = $this->get(route('subastas.presenciales'));
@@ -188,6 +214,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.historicas'));
 
 		$response = $this->get(route('subastas.historicas'));
@@ -201,6 +229,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_presenciales_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.historicas_presenciales'));
 
 		$response = $this->get(route('subastas.historicas_presenciales'));
@@ -214,6 +244,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_online_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.historicas_online'));
 
 		$response = $this->get(route('subastas.historicas_online'));
@@ -227,6 +259,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_online_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.online'));
 
 		$response = $this->get(route('subastas.online'));
@@ -240,6 +274,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_permanentes_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.permanentes'));
 
 		$response = $this->get(route('subastas.permanentes'));
@@ -253,6 +289,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_venta_directa_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.venta_directa'));
 
 		$response = $this->get(route('subastas.venta_directa'));
@@ -266,6 +304,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_todas_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.all'));
 
 		$response = $this->get(route('subastas.all'));
@@ -279,6 +319,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_activas_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		$response = $this->get(route('subastas.activas'));
 
 		$response->assertSuccessful();
@@ -290,6 +332,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_especiales_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.haz_oferta'));
 
 		$response = $this->get(route('subastas.especiales'));
@@ -303,6 +347,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_haz_oferta_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.haz_oferta'));
 
 		$response = $this->get(route('subastas.haz_oferta'));
@@ -316,6 +362,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_inversas_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('subastas.subasta_inversa'));
 
 		$response = $this->get(route('subastas.subasta_inversa'));
@@ -329,6 +377,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_with_cod_text_friendly_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		$category = self::getDatabaseSingleValues(
 			new FgOrtsec0(),
 			['sub_ortsec0' => 0],
@@ -350,6 +400,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		$category = self::getDatabaseSingleValues(
 			new FgOrtsec0(),
 			['sub_ortsec0' => 0],
@@ -372,6 +424,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_and_section_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		$category = self::getDatabaseSingleValues(
 			new FgOrtsec0(),
 			['sub_ortsec0' => 0],
@@ -420,7 +474,10 @@ class PagesTest extends TestCase
 
 		$lot = self::getLotData();
 
-		echo "\n\nOld ficha lot\n";
+		$titleLog = "\n\nOld ficha lot\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -433,9 +490,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_PRESENCIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_PRESENCIAL]);
 
-		echo "\n\nOld ficha lot type presencial\n";
+		$titleLog = "\n\nOld ficha lot type presencial\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -448,9 +508,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ONLINE);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ONLINE]);
 
-		echo "\n\nOld ficha lot type online\n";
+		$titleLog = "\n\nOld ficha lot type online\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -463,9 +526,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_VENTA_DIRECTA);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_VENTA_DIRECTA]);
 
-		echo "\n\nOld ficha lot type venta directa\n";
+		$titleLog = "\n\nOld ficha lot type venta directa\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -478,9 +544,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_PERMANENTE);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_PERMANENTE]);
 
-		echo "\n\nOld ficha lot type permanente\n";
+		$titleLog = "\n\nOld ficha lot type permanente\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 
@@ -494,9 +563,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ESPECIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ESPECIAL]);
 
-		echo "\n\nOld ficha lot type especial\n";
+		$titleLog = "\n\nOld ficha lot type especial\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -509,9 +581,30 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 0);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ESPECIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ESPECIAL]);
 
-		echo "\n\nOld ficha lot type make offer\n";
+		$titleLog = "\n\nOld ficha lot type make offer\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
+
+		$this->testLotFicha($lot);
+	}
+
+	/**
+	 * A test for the old lot ficha page with state closed.
+	 * @return void
+	 */
+	public function test_old_ficha_lot_state_closed_page_id_succesful()
+	{
+		Config::set("app.newUrlLot", 0);
+
+		$lot = self::getLotData(['cerrado_asigl0' => 'S']);
+
+		$titleLog = "\n\nOld ficha lot state closed\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -526,7 +619,10 @@ class PagesTest extends TestCase
 
 		$lot = self::getLotData();
 
-		echo "\n\nNew ficha lot\n";
+		$titleLog = "\n\nNew ficha lot\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -539,9 +635,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_PRESENCIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_PRESENCIAL]);
 
-		echo "\n\nNew ficha lot type presencial\n";
+		$titleLog = "\n\nNew ficha lot type presencial\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -554,9 +653,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ONLINE);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ONLINE]);
 
-		echo "\n\nNew ficha lot type online\n";
+		$titleLog = "\n\nNew ficha lot type online\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -569,9 +671,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_VENTA_DIRECTA);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_VENTA_DIRECTA]);
 
-		echo "\n\nNew ficha lot type venta directa\n";
+		$titleLog = "\n\nNew ficha lot type venta directa\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -584,9 +689,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_PERMANENTE);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_PERMANENTE]);
 
-		echo "\n\nNew ficha lot type permanente\n";
+		$titleLog = "\n\nNew ficha lot type permanente\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -599,9 +707,12 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ESPECIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ESPECIAL]);
 
-		echo "\n\nNew ficha lot type especial\n";
+		$titleLog = "\n\nNew ficha lot type especial\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -614,9 +725,30 @@ class PagesTest extends TestCase
 	{
 		Config::set("app.newUrlLot", 1);
 
-		$lot = self::getLotData(FgSub::TIPO_SUB_ESPECIAL);
+		$lot = self::getLotData(['tipo_sub' => FgSub::TIPO_SUB_ESPECIAL]);
 
-		echo "\n\nNew ficha lot type make offer\n";
+		$titleLog = "\n\nNew ficha lot type make offer\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
+
+		$this->testLotFicha($lot);
+	}
+
+	/**
+	 * A test for the new lot ficha page with state closed.
+	 * @return void
+	 */
+	public function test_new_ficha_lot_state_closed_page_id_succesful()
+	{
+		Config::set("app.newUrlLot", 1);
+
+		$lot = self::getLotData(['cerrado_asigl0' => 'S']);
+
+		$titleLog = "\n\nNew ficha lot state closed\n";
+
+		Log::info($titleLog);
+		echo $titleLog;
 
 		$this->testLotFicha($lot);
 	}
@@ -624,7 +756,9 @@ class PagesTest extends TestCase
 	private function testLotFicha($lot)
 	{
 		if ($lot == null) {
-			echo "\nNo hay lote\n";
+			$messageInfo = "\nNo hay lote.\n";
+			Log::info($messageInfo);
+			echo $messageInfo;
 			$this->markTestIncomplete('The lot is empty.');
 		}
 
@@ -634,13 +768,10 @@ class PagesTest extends TestCase
 
 		self::setHTTP_HOST($request_uri);
 
-		echo "\n";
-		echo "Lot cod and ref: " . $lot->cod_sub . " - " . $lot->ref_asigl0 . "\n";
-		echo "Lot tipo_sub: " . $lot->tipo_sub . "\n";
-		echo "Lot subc_sub: " . $lot->subc_sub . "\n";
-		echo "Lot cerrado_asigl0: " . $lot->cerrado_asigl0 . "\n";
-		echo "Lot retirado_asigl0: " . $lot->retirado_asigl0 . "\n";
-		echo "Lot oculto_asigl0: " . $lot->oculto_asigl0 . "\n";
+		$datos_lot = "\nLot cod and ref: " . $lot->cod_sub . " - " . $lot->ref_asigl0 . "\nLot tipo_sub: " . $lot->tipo_sub . "\nLot subc_sub: " . $lot->subc_sub . "\nLot cerrado_asigl0: " . $lot->cerrado_asigl0 . "\nLot retirado_asigl0: " . $lot->retirado_asigl0 . "\nLot oculto_asigl0: " . $lot->oculto_asigl0 . "\n";
+
+		Log::info($datos_lot);
+		echo $datos_lot;
 
 		$response = $this->get($url);
 
@@ -706,6 +837,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_lot_grid_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		$aucSession = self::getMostRecientAucSession();
 
 		$url = \Tools::url_auction($aucSession->cod_sub, $aucSession->name, $aucSession->id_auc_sessions, $aucSession->reference);
@@ -721,6 +854,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_lot_grid_with_all_categories_is_succesful()
 	{
+		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
+
 		self::setHTTP_HOST(route('allCategories'));
 
 		$response = $this->get(route('allCategories'));
