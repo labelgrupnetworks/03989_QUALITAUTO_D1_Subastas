@@ -447,6 +447,7 @@ main.ficha h5 {
 
 .ficha-grid {
 	display: flex;
+	--bs-gutter-x: 2rem;
 	gap: 0;
 }
 
@@ -455,7 +456,7 @@ main.ficha h5 {
 }
 
 .ficha-grid>div>section {
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
 }
 
 .ficha-grid>div>section:not(.ficha-title, .ficha-previous-next, .ficha-contact, .ficha-countdown) {
@@ -750,6 +751,7 @@ main.static-page img {
 .google-reviews-section {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+	text-align: center;
 }
 
 .google-reviews .slick-track {
