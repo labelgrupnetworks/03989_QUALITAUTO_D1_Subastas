@@ -20,7 +20,6 @@ use Tests\TestCase;
 
 class PagesTest extends TestCase
 {
-	#TODO: Hacer en cada test un match con cada uno de los clientes y lógica de cada cliente.
 
 	#region Helper methods
 
@@ -37,7 +36,7 @@ class PagesTest extends TestCase
 		return FgSub::joinSessionSub()->orderBy('"start"', 'desc')->first();
 	}
 
-	protected function getAnArtist()
+	private function getAnArtist()
 	{
 		return Web_Artist::select("NAME_ARTIST, ID_ARTIST")
 		->where("ACTIVE_ARTIST",1)
@@ -55,7 +54,7 @@ class PagesTest extends TestCase
 	 * @param array $scopes
 	 * @return mixed
 	 */
-	protected function getDatabaseSingleValues(
+	private function getDatabaseSingleValues(
 		$dataTable,
 		$whereCases = [],
 		$whereIsNotNullCases = [],
@@ -86,7 +85,7 @@ class PagesTest extends TestCase
 		return $dataTable->first();
 	}
 
-	protected function getLotData(array $whereCasesToAdd = [])
+	private function getLotData(array $whereCasesToAdd = [])
 	{
 		$whereCases = [];
 		$whereCases['subc_sub'] = 'S';
@@ -127,20 +126,16 @@ class PagesTest extends TestCase
     {
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('home'));
+		$url = route('home');
 
-		match (Config::get('app.theme')) {
-			'demo' => (new DemoTests($this))->testHomePageIsSuccessful(),
-			default => $this->markTestIncomplete('The theme is not defined.')
-		};
+		self::setHTTP_HOST($url);
 
-
-        $response = $this->get(route('home'));
+        $response = $this->get($url);
 
 		if ($response->baseResponse->getStatusCode() == 200) {
 			$response->assertSuccessful();
 		} else {
-			$response->assertRedirect(route('home'));
+			$response->assertRedirect($url);
 		}
     }
 
@@ -150,9 +145,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_user_registered_is_successful()
 	{
-		self::setHTTP_HOST(route('user.registered'));
+		$url = route('user.registered');
 
-		$response = $this->get(route('user.registered'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -165,9 +162,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subasta.actual'));
+		$url = route('subasta.actual');
 
-		$response = $this->get(route('subasta.actual'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -180,14 +179,16 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subasta.actual-online'));
+		$url = route('subasta.actual-online');
 
-		$response = $this->get(route('subasta.actual-online'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		if ($response->baseResponse->getStatusCode() == 200) {
 			$response->assertSuccessful();
 		} else {
-			$response->assertRedirect(route('subasta.actual-online'));
+			$response->assertRedirect($url);
 		}
 
 	}
@@ -200,9 +201,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.presenciales'));
+		$url = route('subastas.presenciales');
 
-		$response = $this->get(route('subastas.presenciales'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 
@@ -216,9 +219,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.historicas'));
+		$url = route('subastas.historicas');
 
-		$response = $this->get(route('subastas.historicas'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -231,9 +236,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.historicas_presenciales'));
+		$url = route('subastas.historicas_presenciales');
 
-		$response = $this->get(route('subastas.historicas_presenciales'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -246,9 +253,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.historicas_online'));
+		$url = route('subastas.historicas_online');
 
-		$response = $this->get(route('subastas.historicas_online'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -261,9 +270,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.online'));
+		$url = route('subastas.online');
 
-		$response = $this->get(route('subastas.online'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -276,9 +287,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.permanentes'));
+		$url = route('subastas.permanentes');
 
-		$response = $this->get(route('subastas.permanentes'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -291,9 +304,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.venta_directa'));
+		$url = route('subastas.venta_directa');
 
-		$response = $this->get(route('subastas.venta_directa'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -306,9 +321,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.all'));
+		$url = route('subastas.all');
 
-		$response = $this->get(route('subastas.all'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -321,7 +338,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		$response = $this->get(route('subastas.activas'));
+		$url = route('subastas.activas');
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -334,9 +355,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.haz_oferta'));
+		$url = route('subastas.especiales');
 
-		$response = $this->get(route('subastas.especiales'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -349,9 +372,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.haz_oferta'));
+		$url = route('subastas.haz_oferta');
 
-		$response = $this->get(route('subastas.haz_oferta'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -364,9 +389,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('subastas.subasta_inversa'));
+		$url = route('subastas.subasta_inversa');
 
-		$response = $this->get(route('subastas.subasta_inversa'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -389,7 +416,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The category is empty.');
 		}
 
-		$response = $this->get(route('categoryTexFriendly', ['keycategory' => $category->key_ortsec0, 'texto' => \Str::slug($category->des_ortsec0)]));
+		$url = route('categoryTexFriendly', ['keycategory' => $category->key_ortsec0, 'texto' => \Str::slug($category->des_ortsec0)]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -413,7 +444,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The category is empty.');
 		}
 
-		$response = $this->get(route('category', ['keycategory' => $category->key_ortsec0]));
+		$url = route('category', ['keycategory' => $category->key_ortsec0]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -459,7 +494,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The section is empty.');
 		}
 
-		$response = $this->get(route('section', ['keycategory' => $category->key_ortsec0, 'keysubcategory' => $section->key_sec]));
+		$url = route('section', ['keycategory' => $category->key_ortsec0, 'keysubcategory' => $section->key_sec]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -753,7 +792,12 @@ class PagesTest extends TestCase
 		$this->testLotFicha($lot);
 	}
 
-	private function testLotFicha($lot)
+	/**
+	 * This is a method to execute the test for the lot ficha.
+	 * @param FgAsigl0|null $lot
+	 * @return void
+	 */
+	private function testLotFicha(FgAsigl0|null $lot)
 	{
 		if ($lot == null) {
 			$messageInfo = "\nNo hay lote.\n";
@@ -787,7 +831,11 @@ class PagesTest extends TestCase
 	{
 		self::setHTTP_HOST(route('valoracion-success'));
 
-		$response = $this->get(route('valoracion-success'));
+		$url = route('valoracion-success');
+
+		$response = $this->get($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -798,9 +846,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_especialistas_is_succesful()
 	{
-		self::setHTTP_HOST(route('especialistas'));
+		$url = route('especialistas');
 
-		$response = $this->get(route('especialistas'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -811,9 +861,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_contacto_is_succesful()
 	{
-		self::setHTTP_HOST(route('contact_page'));
+		$url = route('contact_page');
 
-		$response = $this->get(route('contact_page'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -824,9 +876,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_register_is_succesful()
 	{
-		self::setHTTP_HOST(route('register', ['lang' => Config::get('app.locale')]));
+		$url = route('register', ['lang' => Config::get('app.locale')]);
 
-		$response = $this->get(route('register', ['lang' => Config::get('app.locale')]));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -856,9 +910,11 @@ class PagesTest extends TestCase
 	{
 		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
 
-		self::setHTTP_HOST(route('allCategories'));
+		$url = route('allCategories');
 
-		$response = $this->get(route('allCategories'));
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -874,9 +930,11 @@ class PagesTest extends TestCase
 		if (!$existsView) {
 			$this->markTestIncomplete('The view does not exist.');
 		} else {
-			self::setHTTP_HOST(route('artists'));
+			$url = route('artists');
 
-			$response = $this->get(route('artists'));
+			self::setHTTP_HOST($url);
+
+			$response = $this->get($url);
 
 			$response->assertSuccessful();
 		}
@@ -895,7 +953,15 @@ class PagesTest extends TestCase
 		} else {
 			$artist = self::getAnArtist();
 
-			$response = $this->get(route('artist', ['name' => \Str::slug($artist->name_artist), 'idArtist' => $artist->id_artist]));
+			if ($artist == null) {
+				$this->markTestIncomplete('The artist is empty.');
+			}
+
+			$url = route('artist', ['name' => \Str::slug($artist->name_artist), 'idArtist' => $artist->id_artist]);
+
+			self::setHTTP_HOST($url);
+
+			$response = $this->get($url);
 
 			$response->assertSuccessful();
 		}
@@ -907,7 +973,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_is_successful()
 	{
-		$response = $this->get(route('articles'));
+		$url = route('articles');
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -929,7 +999,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The family is empty.');
 		}
 
-		$response = $this->get(route('articles_family', ['family' => $family->cod_famart]));
+		$url = route('articles_family', ['family' => $family->cod_famart]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 
@@ -952,7 +1026,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The category is empty.');
 		}
 
-		$response = $this->get(route('articles-category', ['category' => $category->key_ortsec0]));
+		$url = route('articles-category', ['category' => $category->key_ortsec0]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -961,7 +1039,7 @@ class PagesTest extends TestCase
 	 * A test for the articles page with category and subcategory.
 	 * @return void
 	 */
-	public function test_articles_page_with_category_and_subcategory()
+	public function test_articles_page_with_category_and_subcategory_is_succesful()
 	{
 		$category = self::getDatabaseSingleValues(
 			new FgOrtsec0(),
@@ -996,7 +1074,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The section is empty.');
 		}
 
-		$response = $this->get(route('articles-subcategory', ['category' => $category->key_ortsec0, 'subcategory' => $section->key_sec]));
+		$url = route('articles-subcategory', ['category' => $category->key_ortsec0, 'subcategory' => $section->key_sec]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -1018,7 +1100,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The article is empty.');
 		}
 
-		$response = $this->get(route('article', ['idArticle' => $article->id_art0, 'friendly' => \Str::slug($article->des_art0)]));
+		$url = route('article', ['idArticle' => $article->id_art0, 'friendly' => \Str::slug($article->des_art0)]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -1036,7 +1122,15 @@ class PagesTest extends TestCase
 			'ID_WEB_PAGE'
 		);
 
-		$response = $this->get(route('staticPage', ['lang' => mb_strtolower($page->lang_web_page), 'pagina' => $page->key_web_page]));
+		if ($page == null) {
+			$this->markTestIncomplete('The page is empty.');
+		}
+
+		$url = route('staticPage', ['lang' => mb_strtolower($page->lang_web_page), 'pagina' => $page->key_web_page]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -1047,7 +1141,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_faqs_page_is_succesful()
 	{
-		$response = $this->get(route('faqs_page'));
+		$url = route('faqs_page');
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -1058,7 +1156,11 @@ class PagesTest extends TestCase
 	 */
 	public function test_calendar_page_is_succesful()
 	{
-		$response = $this->get(route('calendar'));
+		$url = route('calendar');
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
@@ -1075,7 +1177,11 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The view "content.slider" does not exist.');
 		}
 
-		$response = $this->get(route('blog.index', ['lang' => Config::get('app.locale')]));
+		$url = route('blog.index', ['lang' => Config::get('app.locale')]);
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->get($url);
 
 		$response->assertSuccessful();
 	}
