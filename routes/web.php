@@ -23,6 +23,7 @@ Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController
 Route::get('', function () {
 	return redirect("/" . App::getLocale(), 301);
 });
+
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
 Route::get('prueba', 'prueba@index')->name('prueba');
@@ -694,6 +695,10 @@ Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregat
 #Eventos SEO, permite pasar letras numeros y el simbolo _
 Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z_]+']);
 
+
+#Lleida Net, como n ose si devuelven post o get pngo lso dos
+Route::get('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
+Route::post('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';
