@@ -4206,3 +4206,14 @@ main.private-page .form-check-label {
 	transition: 1s;
 	left: 0;
 }
+
+@media(max-width: 992px) {
+	.h-md-360px {
+		height: 360px;
+	}
+
+	.max-w-md-25ch {
+		max-width: 25ch;
+	}
+
+}

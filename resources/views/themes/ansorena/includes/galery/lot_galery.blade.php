@@ -21,8 +21,8 @@
 	<div class="galery-lot-image-wrapper h-100">
 		<img class="" src="{{ $image }}" alt="" {{-- loading="lazy" --}}>
 	</div>
-    <div class="card-body-lot d-none d-lg-block">
-        <p class="card-title ff-highlight fs-20">
+    <div class="card-body-lot ms-3 ms-lg-0 {{-- d-none d-lg-block --}}">
+        <p class="card-title ff-highlight fs-20 max-w-md-25ch">
 			{{ $descweb_hces1 }}
 			@if ($withMultipleArtists)
 				 - {{ $artistName }}
