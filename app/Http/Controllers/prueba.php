@@ -174,7 +174,11 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		dd('Este cambio ha sido subido solamente al git en la rama main y desplegado en prodcucción');
+		Artisan::call('cache:clear');
+		//clear sessions
+		Artisan::call('session:clear');
+
+		dd('limpio');
 	}
 
 
