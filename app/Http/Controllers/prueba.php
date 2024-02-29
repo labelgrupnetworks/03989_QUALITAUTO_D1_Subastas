@@ -167,15 +167,24 @@ use App\models\V5\AppPush;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Spatie\SslCertificate\SslCertificate;
 
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		dump('test1');
-		dump(FacadesConfig::get('app.env'));
-		dd(FacadesConfig::get('app.url'));
+		$url = Config::get('app.url');
+		$dateToFinish = now();
+		try {
+			$certificate = SslCertificate::createForHostName($url);
+			$dateToFinish = $certificate->expirationDate();
+			dd($dateToFinish->diffInDays());
+		} catch (\Exception $e) {
+			Log::error('Error al obtener el certificado de ' . $url);
+		}
+
+		return $dateToFinish->diffInDays();
 	}
 
 
