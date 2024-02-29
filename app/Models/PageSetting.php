@@ -51,7 +51,7 @@ class PageSetting
 			($routeName == 'blog.news') => $this->blogSettings($routeParams),
 			($routeName == 'artists') => $this->artistsSettings(),
 			($routeName == 'artist') => $this->artistSettings($routeParams),
-			($routeName == 'articles' || $routeName == 'article') => $this->articlesSettings($routeParams),
+			($routeName == 'articles' || $routeName == 'article') => $this->articlesSettings(),
 			default => []
 		};
 
