@@ -148,8 +148,8 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/zoom/jquery.imageLens.js') }}"></script>
 {{-- <script src="{{ URL::asset('js/jquery.lazy.min.js') }}"></script> --}}
 
-{{-- <script src="{{ URL::asset('js/numeral.js') }}"></script> --}}
-
+{{-- Se utiliza en customized_tr_main.js --}}
+<script src="{{ URL::asset('js/numeral.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
