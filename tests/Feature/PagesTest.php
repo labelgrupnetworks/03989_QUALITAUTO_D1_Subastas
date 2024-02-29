@@ -14,6 +14,7 @@ use App\Models\V5\FxSubSec;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Page;
+use App\Providers\ToolsServiceProvider as Tools;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
@@ -114,6 +115,13 @@ class PagesTest extends TestCase
 		if (in_array(Config::get('app.theme'), $themes)) {
 			$this->markTestSkipped('The theme is ' . Config::get('app.theme') . '.');
 		}
+	}
+
+	private function disbleRecaptcha()
+	{
+		Config::set('app.codRecaptcha', false);
+		Config::set('app.captcha_v3', false);
+		Config::set('app.codRecaptchaEmail', false);
 	}
 
 	#endregion
@@ -806,7 +814,7 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The lot is empty.');
 		}
 
-		$url = \Tools::url_lot($lot->sub_asigl0, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->title_hces1 ?? $lot->descweb_hces1);
+		$url = Tools::url_lot($lot->sub_asigl0, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->title_hces1 ?? $lot->descweb_hces1);
 
 		$request_uri = str_replace(Config::get('app.url'),"",$url);
 
@@ -895,7 +903,7 @@ class PagesTest extends TestCase
 
 		$aucSession = self::getMostRecientAucSession();
 
-		$url = \Tools::url_auction($aucSession->cod_sub, $aucSession->name, $aucSession->id_auc_sessions, $aucSession->reference);
+		$url = Tools::url_auction($aucSession->cod_sub, $aucSession->name, $aucSession->id_auc_sessions, $aucSession->reference);
 
 		$response = $this->get($url);
 
@@ -1185,5 +1193,30 @@ class PagesTest extends TestCase
 
 		$response->assertSuccessful();
 	}
+
+	/**
+	 * A test for verify if the contact form works correctly.
+	 * @return void
+	 */
+	public function test_send_contact_form_ajax_is_succesful()
+	{
+		$this->disbleRecaptcha();
+
+		$url = route('contactSendmail');
+
+		self::setHTTP_HOST($url);
+
+		$response = $this->post($url, [
+			"_token" => csrf_token(),
+			"nombre" => "Test de parte de los tests",
+			"email" => Config::get('app.admin_email'),
+			"telefono" => "123456789",
+			"comentario" => "Nam vitae egestas massa. Aenean luctus imperdiet velit non ultrices.",
+			"condiciones" => null
+		]);
+
+		$response->assertSuccessful();
+	}
+
 
 }

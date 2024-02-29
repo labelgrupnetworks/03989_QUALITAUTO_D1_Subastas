@@ -485,7 +485,7 @@ Route::post('api-ajax/accept-auction-conditions', 'SubastaController@acceptAucti
 Route::get(Routing::translateSeo('contacto'), 'V5\ContactController@index')->name('contact_page');
 
 Route::get(Routing::slugSeo('administradores-concursales', true), 'V5\ContactController@admin');
-Route::post('contactSendmail', 'V5\ContactController@contactSendmail');
+Route::post('contactSendmail', 'V5\ContactController@contactSendmail')->name('contactSendmail');
 
 //Route::get(Routing::slugSeo('register',true), 'V5\UserAccessController@register');
 Route::get(Routing::slugSeo('register', true), 'User\RegisterController@index')->name('register');
