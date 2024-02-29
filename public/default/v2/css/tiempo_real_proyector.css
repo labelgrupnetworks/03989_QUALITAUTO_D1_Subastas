@@ -1,0 +1,181 @@
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--font-size-responive: clamp(3.75rem, 1.1932rem + 3.4091vw, 9.375rem);
+	height: 100vh;
+	font-size: var(--font-size-responive);
+	line-height: 1;
+}
+
+span {
+	display: inline-block;
+}
+
+body > .tiempo_real_content {
+	height: 100vh;
+	padding: 10px;
+	display: grid;
+	grid-template-columns: 65% 35%;
+	grid-template-rows: auto 10% repeat(3, 1fr) 20%;
+	row-gap: 10px;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	grid-column: 1 / 3;
+	font-size: inherit;
+	overflow: hidden;
+	font-size: .9em;
+}
+
+header a {
+	display: block;
+	height: calc(.9em * 1.5);
+	min-height: 50px;
+}
+
+header img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+h1 {
+	font-size: inherit;
+	font-family: inherit;
+
+	-webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+}
+
+#main_lot_box {
+	grid-column: 1 / 2;
+	grid-row: 2 / end;
+}
+
+#main_lot_box div {
+	height: 100%;
+}
+
+#img-proyector {
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.tiempo_real_content>div:not(#main_lot_box) {
+	border: 1px solid #DBDBDB;
+	padding-left: 5px;
+	padding-right: 0;
+}
+
+/* Estilo para el último elemento */
+div:last-child {}
+
+.last-bids-container {
+	height: 100%;
+	overflow-y: auto;
+	font-size: .6em;
+}
+
+link{
+    display: none;
+}
+
+.own_box{
+    display: none;
+}
+
+.clock-page{
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1;
+}
+
+.wait-time {
+    text-align: center;
+    color: grey;
+    margin-top: 40px;
+    font-size: 35px;
+}
+
+.ui-pnotify-container{
+	font-size: 20px;
+}
+
+
+.autor_tr{
+	-webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Info
+|--------------------------------------------------------------------------
+*/
+
+.current-bid{
+    background-color: rgba(0, 0, 0, 0.15);
+	font-weight: 800;
+}
+
+.pujas_model {
+	justify-content: space-evenly;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Cuenta atras
+|--------------------------------------------------------------------------
+*/
+
+.count_down_msg {
+    position: absolute;
+    top: 0;
+    background: rgba(219, 219, 219, 0.789);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.count_down_msg p {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 20vw;
+    color: #c30e16;
+}
