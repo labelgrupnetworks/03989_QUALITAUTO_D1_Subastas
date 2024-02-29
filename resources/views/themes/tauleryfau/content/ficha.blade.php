@@ -30,12 +30,12 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 							<div class="title-lot">
 								<h2>
 									@if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-									{{trans(\Config::get('app.theme').'-app.lot.lot-name')}}
+									{{trans($theme .'-app.lot.lot-name')}}
 									{{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
 									@elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
 									{{$lote_actual->titulo_hces1}}
 									@elseif(\Config::get('app.ref_asigl0'))
-									{{trans(\Config::get('app.theme').'-app.lot.lot-name')}}
+									{{trans($theme .'-app.lot.lot-name')}}
 									{{$lote_actual->ref_asigl0}}
 									@endif
 								</h2>
@@ -46,19 +46,19 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 								<div class="prev-lot">
 									@if(!empty($data['previous']))
 									<a class="nextLeft"
-										title="{{ trans(\Config::get('app.theme').'-app.subastas.last') }}"
+										title="{{ trans($theme .'-app.subastas.last') }}"
 										href="{{$data['previous']}}">
 										<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-										<span>{{ trans(\Config::get('app.theme').'-app.subastas.last') }}</span>
+										<span>{{ trans($theme .'-app.subastas.last') }}</span>
 									</a>
 									@endif
 								</div>
 								<div class="next-lot">
 									@if(!empty($data['next']))
 									<a class="nextRight"
-										title="{{ trans(\Config::get('app.theme').'-app.subastas.next') }}"
+										title="{{ trans($theme .'-app.subastas.next') }}"
 										href="{{$data['next']}}">
-										<span>{{ trans(\Config::get('app.theme').'-app.subastas.next') }}</span>
+										<span>{{ trans($theme .'-app.subastas.next') }}</span>
 										<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 									</a>
 									@endif
@@ -101,12 +101,12 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 					@if($lote_actual->oferta_asigl0 == 1)
 					<div class="discount {{$class_color}}">
 						<div>{{$porcentaje}}%</div>
-						<div>{{ trans(\Config::get('app.theme').'-app.lot_list.discount') }}</div>
+						<div>{{ trans($theme .'-app.lot_list.discount') }}</div>
 					</div>
 					@elseif($lote_actual->oferta_asigl0 == 2)
 					<div class="discount {{$class_color}}">
-						<div>{{ trans(\Config::get('app.theme').'-app.lot_list.gran') }}</div>
-						<div>{{ trans(\Config::get('app.theme').'-app.lot_list.hot_sale') }}</div>
+						<div>{{ trans($theme .'-app.lot_list.gran') }}</div>
+						<div>{{ trans($theme .'-app.lot_list.hot_sale') }}</div>
 					</div>
 					@endif
 					@endif
@@ -173,7 +173,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 							<a
 								href="javascript:loadVideoMobileGrid('{{$lote_actual->videos[0]}}', '{{$lote_actual->ref_asigl0}}', '{{$lote_actual->cod_sub}}')">
 								<button class="currency-show-button video-button">
-									{{ trans(\Config::get('app.theme').'-app.lot.pic360') }}
+									{{ trans($theme .'-app.lot.pic360') }}
 								</button>
 							</a>
 							@endif
@@ -181,9 +181,9 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 							<div id="btn-360Responsive" class="btn-360 hidden">
 								<div class="btn-360-logo flex valign">
-									<div class="btn-360-text">{{ trans(\Config::get('app.theme').'-app.lot.photo') }}
+									<div class="btn-360-text">{{ trans($theme .'-app.lot.photo') }}
 									</div>
-									<div class="btn-360-close">{{ trans(\Config::get('app.theme').'-app.lot.close') }}
+									<div class="btn-360-close">{{ trans($theme .'-app.lot.close') }}
 									</div>
 									<i class="fas fa-2x fa-times" style="display:none"></i>
 									<svg version="1.1" id="Layer_1" xmlns="https://www.w3.org/2000/svg"
@@ -235,7 +235,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 							@if (!empty ($lote_actual->descdet_hces1))
 							<div class="btn-context hidden flex valign">
 								<a>
-									<p><?= trans(\Config::get('app.theme').'-app.lot.context') ?></p>
+									<p><?= trans($theme .'-app.lot.context') ?></p>
 								</a>
 							</div>
 							@endif
@@ -279,7 +279,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 								class="video-btn flex valign">
 								{{--<img src="{{ asset('/themes/tauleryfau/assets/img/play.png') }}" style="border: 1px
 								solid #b79d81"/>--}}
-								<p>{{ trans(\Config::get('app.theme').'-app.lot.pic360') }}</p>
+								<p>{{ trans($theme .'-app.lot.pic360') }}</p>
 							</a>
 							@endif
 
@@ -297,7 +297,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 											d="M7.47 21.49C4.2 19.93 1.86 16.76 1.5 13H0c.51 6.16 5.66 11 11.95 11 .23 0 .44-.02.66-.03L8.8 20.15l-1.33 1.34zM12.05 0c-.23 0-.44.02-.66.04l3.81 3.81 1.33-1.33C19.8 4.07 22.14 7.24 22.5 11H24c-.51-6.16-5.66-11-11.95-11zM16 14h2V8c0-1.11-.9-2-2-2h-6v2h6v6zm-8 2V4H6v2H4v2h2v8c0 1.1.89 2 2 2h8v2h2v-2h2v-2H8z" />
 									</svg>
 								</div>
-								<span>{{ trans(\Config::get('app.theme').'-app.lot.pic360') }}</span>
+								<span>{{ trans($theme .'-app.lot.pic360') }}</span>
 							</div>
 
 							<!-- Conservación -->
@@ -322,7 +322,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 							@if (!empty ($lote_actual->descdet_hces1))
 							<div class="btn-context hidden flex valign">
 								<a>
-									<p><?= trans(\Config::get('app.theme').'-app.lot.context') ?></p>
+									<p><?= trans($theme .'-app.lot.context') ?></p>
 								</a>
 							</div>
 							@endif
@@ -333,12 +333,12 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 								<div class="loader mini" style="display: none"></div>
 								<a class="inline-flex valign btn hidden-xs <?= $data['subasta_info']->lote_actual->favorito? 'hidden':'' ?>"
 									id="add_fav" href="javascript:action_fav_modal('add')">
-									<p class="hidden">{{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}</p>
+									<p class="hidden">{{ trans($theme .'-app.lot.add_to_fav') }}</p>
 									<i class="far fa-star"></i>
 								</a>
 								<a class="inline-flex valign btn  hidden-xs <?= $data['subasta_info']->lote_actual->favorito? '':'hidden' ?>"
 									id="del_fav" href="javascript:action_fav_modal('remove')">
-									{{--<p class="hidden-xs hidden-sm"> trans(\Config::get('app.theme').'-app.lot.add_to_fav') </p>--}}
+									{{--<p class="hidden-xs hidden-sm"> trans($theme .'-app.lot.add_to_fav') </p>--}}
 									<i class="fas fa-star heart"></i>
 								</a>
 							</div>
@@ -356,7 +356,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 						<div class="context-content" style="display:none">
 							<div role="button" class="context-close">X</div>
 							@if (!empty ($lote_actual->descdet_hces1))
-							<h4 class="context-title">{{ trans(\Config::get('app.theme').'-app.lot.context') }}</h4>
+							<h4 class="context-title">{{ trans($theme .'-app.lot.context') }}</h4>
 							<div class="context-text">
 								<?= $lote_actual->descdet_hces1 ?>
 							</div>
@@ -380,7 +380,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 						@elseif(($lote_actual->tipo_sub == 'O' || $lote_actual->tipo_sub == 'P' ||
 						$lote_actual->subabierta_sub == 'P')&& $lote_actual->cerrado_asigl0 != 'S')
-						
+
 						@include('includes.ficha.pujas_ficha_O')
 
 						@elseif( $lote_actual->tipo_sub == 'W' && $lote_actual->cerrado_asigl0 != 'S')
@@ -420,7 +420,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 					class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 interest-wrapper lotes_destacados">
 					<div class="interest-title text-center title_single">
 						<div class="interest-line"></div>
-						<p>{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</p>
+						<p>{{ trans($theme .'-app.lot.recommended_lots') }}</p>
 						<div class="interest-line"></div>
 					</div>
 				</div>
@@ -675,8 +675,8 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
     function ReadMore (_jObj, lineNum) { //class
 
-    var READ_MORE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.viewMore') }}";
-    var HIDE_LABEL = "{{ trans(\Config::get('app.theme').'-app.lot.hideMore') }}";
+    var READ_MORE_LABEL = "{{ trans($theme .'-app.lot.viewMore') }}";
+    var HIDE_LABEL = "{{ trans($theme .'-app.lot.hideMore') }}";
 
     var jObj = _jObj;
 
@@ -826,7 +826,7 @@ readMore( $("#box"), 2);
   "brand": {
     "@type": "Brand",
     "name": "{{ \Config::get('app.name') }}",
-    "logo": "<?= url('themes/'.\Config::get('app.theme').'/assets/img/logo.png') ?>"
+    "logo": "<?= url('themes/'.$theme .'/assets/img/logo.png') ?>"
   },
     "sku": "{{\Config::get('app.emp')."-".$lote_actual->num_hces1."-".$lote_actual->lin_hces1}}",
   "offers": {

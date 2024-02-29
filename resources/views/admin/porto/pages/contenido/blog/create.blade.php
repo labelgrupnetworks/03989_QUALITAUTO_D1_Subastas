@@ -6,8 +6,6 @@
         use App\Models\V5\Web_Blog;
         $noticia = $data['noticia'] ?? [];
 
-		//dd($noticia);
-
         $noticiaLocale = new Web_Blog();
         if (!empty($noticia['lang'])) {
             $noticiaLocale = $noticia['lang']->where('lang_web_blog_lang', mb_strtoupper(Config::get('app.locale')))->first();

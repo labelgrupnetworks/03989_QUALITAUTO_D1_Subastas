@@ -7,7 +7,7 @@
             <input id="all_sections" name="section" type="radio" value=""
                 <?= empty($filters['section']) ? 'checked="checked"' : '' ?> />
             <label class="ratio-label" for="all_sections">
-                {{ trans(\Config::get('app.theme') . '-app.lot_list.all_subcategories') }} ({{ $numCategoryLots }})
+                {{ trans($theme . '-app.lot_list.all_subcategories') }} ({{ $numCategoryLots }})
             </label>
         </div>
     </div>

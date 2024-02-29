@@ -64,15 +64,15 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
                 <div class="col-xs-12 no-padding hidden-xs">
                     @if( $retirado)
                         <div class="retired">
-                            {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+                            {{ trans($theme.'-app.lot.retired') }}
                         </div>
                     @elseif($fact_devuelta)
                         <div class="retired" style ="">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                            {{ trans($theme.'-app.subastas.dont_available') }}
                         </div>
                     @elseif($cerrado &&  (!empty($lote_actual->himp_csub) || ($sub_historica && !empty($lote_actual->impadj_asigl0))))
                         <div class="retired" style ="">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                            {{ trans($theme.'-app.subastas.buy') }}
                         </div>
                     @endif
 
@@ -84,10 +84,10 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
                         @if(Session::has('user') &&  !$retirado)
                         <div class="col-xs-12 no-padding favoritos">
                            <a  class="secondary-button  <?= $lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }}
+                               {{ trans($theme.'-app.lot.add_to_fav') }}
                            </a>
                            <a class="secondary-button  <?= $lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                               {{ trans(\Config::get('app.theme').'-app.lot.del_from_fav') }}
+                               {{ trans($theme.'-app.lot.del_from_fav') }}
                            </a>
                         </div>
                         @endif
@@ -124,7 +124,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
             ?>
             @if(count($tipo_sec) !== 0)
                 <div class="col-xs-12 no-padding fincha-info-cats">
-                    <div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
+                    <div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
                     @foreach($tipo_sec as $sec)
                         <span class="badge">{{$sec->des_tsec}}</span>
                     @endforeach
@@ -192,7 +192,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
     <div class="@if($subasta_online && !$cerrado) col-sm-7 @endif col-xs-12 no-padding ficha-tipo-v">
 
             <div class="col-xs-12 no-padding desc-lot-title d-flex justify-content-space-between">
-                    <p class="desc-lot-profile-title">{{ trans(\Config::get('app.theme').'-app.lot.description') }}</p>
+                    <p class="desc-lot-profile-title">{{ trans($theme.'-app.lot.description') }}</p>
 
             </div>
             <div class="col-xs-12 no-padding desc-lot-profile-content">
@@ -207,7 +207,7 @@ $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
 
 
                 <div class="col-xs-12 col-sm-12 lotes_destacados">
-                        <div class="mas-pujados-title color-letter"><span>{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</span></div>
+                        <div class="mas-pujados-title color-letter"><span>{{ trans($theme.'-app.lot.recommended_lots') }}</span></div>
 
                     <div class='loader hidden'></div>
                     <div id="lotes_recomendados" class="owl-theme owl-carousel"></div>

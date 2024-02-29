@@ -27,7 +27,8 @@ class ApiLabelController extends BaseController
     /*Grupo Empresa*/
     public $gemp;
 	public $index;
-
+	public $maxCodLicit;
+	public $request;
 	# reglas para wheres speciales
 	protected  $rulesSpecialWhere = array('min_date' => "date_format:Y-m-d H:i:s", 'max_date' => "date_format:Y-m-d H:i:s" );
 	protected  $rawSpecialWhere = array('min_date' => ">=", 'max_date' => "<=" );
@@ -391,15 +392,21 @@ class ApiLabelController extends BaseController
             return $licits[$item["idoriginclient"]];
         }
         else{
-            $client = FxCli::select("cod_cli,nvl(rsoc_cli, nom_cli) rsoc_cli")->where("cod2_cli", $item["idoriginclient"])->first();
+            $client = FxCli::select("cod_cli,nvl(rsoc_cli, nom_cli) rsoc_cli, baja_tmp_cli")->where("cod2_cli", $item["idoriginclient"])->first();
 
             #si no existe el cliente devolvemos error
             if(empty($client)){
 				$messageBag = new MessageBag();
 				$messageBag->add("idoriginclient",$item["idoriginclient"] );
                 $errorsItem["item_".($key +1)] =$messageBag;
-                throw new ApiLabelException(trans('apilabel-app.errors.no_match'), $errorsItem);
+                throw new ApiLabelException(trans('apilabel-app.errors.no_exist_client'), $errorsItem);
             }
+			if($client->baja_tmp_cli !="N" && $client->baja_tmp_cli !="W"){
+				$messageBag = new MessageBag();
+				$messageBag->add("idoriginclient",$item["idoriginclient"] );
+                $errorsItem["item_".($key +1)] =$messageBag;
+                throw new ApiLabelException(trans('apilabel-app.errors.client_blocked'), $errorsItem);
+			}
             #sumamos uno al maximo que habia para usar el siguiente
             $this->maxCodLicit++;
 

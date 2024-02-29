@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="col-xs-12">
                 <div class="princiapl-bar-wrapper">
                     <div class="principal-bar-title">
-                        <h3>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h3>
+                        <h3>{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h3>
                     </div>
                 </div>
             </div>
@@ -29,8 +29,8 @@
             </div>
             <div class="col-xs-10 col-md-9">
                 <div role="tabpanel" class="user-datas-title">
-                    <p>{{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}</p>
-                    <small style="font-weight: 100;color: red;font-size: 12px;line-height: 0;">*{{ trans(\Config::get('app.theme').'-app.msg_neutral.noRT') }}</small>
+                    <p>{{ trans($theme.'-app.user_panel.favorites') }}</p>
+                    <small style="font-weight: 100;color: red;font-size: 12px;line-height: 0;">*{{ trans($theme.'-app.msg_neutral.noRT') }}</small>
                     <div class="col_reg_form"></div>
                 </div>
                 <div class="panel-group" id="accordion">
@@ -48,17 +48,17 @@
                                 <div class="custom-head-wrapper hidden-xs flex">
                                     <div class="img-data-custom flex "></div>
                                     <div class="lot-data-custon">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.lot') }}</p>
                                     </div>
                                     <div class="name-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.name') }}</p>
+                                        <p>{{ trans($theme.'-app.user_panel.name') }}</p>
                                     </div>
 
                                     <div class="remat-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
+                                        <p>{{ trans($theme.'-app.lot.lot-price') }}</p>
                                     </div>
                                     <div class="auc-data-custom">
-                                        <p>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
+                                        <p>{{ trans($theme.'-app.lot.puja_actual') }}</p>
                                     </div>
 
                                     <div class="view-data view-fav"></div>
@@ -72,20 +72,20 @@
                                             <div class="{{$inf_lot->ref_asigl0}}-{{$inf_lot->cod_sub}}">
                                                 <div class="custom-wrapper-responsive hidden-sm hidden-md hidden-lg">
                                                     <div class="lot-data-custon">
-                                                        <p>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}} - <span>{{$inf_lot->titulo_hces1}}</span></p>
+                                                        <p>{{ trans($theme.'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}} - <span>{{$inf_lot->titulo_hces1}}</span></p>
                                                     </div>
                                                     <div class="flex" style="justify-content: space-between;">
                                                         <div class="auc-data-custom">
-                                                            <p>{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-                                                            <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+                                                            <p>{{ trans($theme.'-app.lot.lot-price') }}</p>
+                                                            <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.lot.eur') }}</p>
                                                         </div>
                                                         <div class="auc-data-custom">
-                                                            <p>{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</p>
-                                                            <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+                                                            <p>{{ trans($theme.'-app.lot.puja_actual') }}</p>
+                                                            <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.lot.eur') }}</p>
                                                         </div>
 
                                                         <div class="view-data flex">
-                                                            <a  title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="delete-fav btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i class="fas fa-minus"></i></a>
+                                                            <a  title="{{trans($theme.'-app.lot.del_from_fav')}}" class="delete-fav btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i class="fas fa-minus"></i></a>
                                                             <a href="{{$url_friendly}}"><i class="fas fa-eye"></i></a>
                                                         </div>
                                                     </div>
@@ -107,13 +107,13 @@
                                                         <p>{{$inf_lot->titulo_hces1}} </p>
                                                     </div>
                                                     <div class="auc-data-custom">
-                                                        <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+                                                        <p>{{$inf_lot->formatted_impsalhces_asigl0}} {{ trans($theme.'-app.lot.eur') }}</p>
                                                     </div>
                                                     <div class="auc-data-custom">
-                                                        <p>{{$inf_lot->actual_bid}} {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+                                                        <p>{{$inf_lot->actual_bid}} {{ trans($theme.'-app.lot.eur') }}</p>
                                                     </div>
                                                     <div class="view-data view-fav flex hidden-xs" >
-                                                        <a  title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="delete-fav btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i class="fas fa-minus"></i></a>
+                                                        <a  title="{{trans($theme.'-app.lot.del_from_fav')}}" class="delete-fav btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"><i class="fas fa-minus"></i></a>
                                                         <a href="{{$url_friendly}}"><i class="fas fa-eye"></i></a>
                                                     </div>
                                                 </div>

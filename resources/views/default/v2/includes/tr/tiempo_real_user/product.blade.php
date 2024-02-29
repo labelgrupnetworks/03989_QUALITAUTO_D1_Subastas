@@ -1,6 +1,6 @@
   <!-- numero lote -->
   <div class="product_lot">
-      <h2 class="" id="lote_actual_main">{{ trans(\Config::get('app.theme') . '-app.sheet_tr.lot') }}
+      <h2 class="" id="lote_actual_main">{{ trans($theme . '-app.sheet_tr.lot') }}
           <span id="info_lot_actual">
               {{ str_replace(['.1', '.2', '.3', '.4', '.5'], ['-A', '-B', '-C', '-D', '-E'], $data['subasta_info']->lote_actual->ref_asigl0) }}
           </span>
@@ -27,7 +27,7 @@
           <h6 class="text-lb-gray">{!! $data['text_lang'][$data['js_item']['lang_code']]->desc_hces1 !!}</h6>
       </div>
       <div class="hidden notranslate count_down_msg" id="count_down_msg">
-          <span class="final_auction">{{ trans(\Config::get('app.theme') . '-app.sheet_tr.final_auction') }}</span>
+          <span class="final_auction">{{ trans($theme . '-app.sheet_tr.final_auction') }}</span>
           <p class="count"></p>
       </div>
       <div class="" id="fairwarning">

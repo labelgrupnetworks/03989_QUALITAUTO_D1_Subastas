@@ -65,7 +65,7 @@
 							</a>
 
 							<a href="{{ route('artist.edit', $artist->id_artist) }}" class="btn btn-primary btn-sm btn-block mt-0">{{ trans("admin-app.button.edit") }}</a>
-							<a href="javascript:deleteArtist('{{$artist->id_artist}}');" class="btn btn-danger btn-sm btn-block mt-0">Borrar</a>
+							<a href="javascript:deleteArtist('{{$artist->id_artist}}');" class="btn btn-danger btn-sm btn-block mt-0">{{ trans("admin-app.button.delete") }}</a>
 						</td>
 					</tr>
 

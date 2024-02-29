@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @push('scripts')
@@ -31,12 +31,10 @@
             </div>
             <div class="col-12 col-lg-5 ps-lg-5 d-flex flex-column">
 
-                <h3 class="lb-fadeIn lb-fadeInRight mt-lg-5">¿Desea obtener una valoración de sus artículos?</h3>
+                <h3 class="lb-fadeIn lb-fadeInRight mt-lg-5">{{ trans("$theme-app.valoracion_gratuita.desc_assessment") }}</h3>
 
                 <p class="fw-lighter my-auto lb-fadeIn lb-fadeInRight" style="--delay: 0.4s;">
-                    Uno de nuestros expertos valorará los objetos que detalle a continuación, y se podrá en contacto con
-                    usted para
-                    transmitirle los resultados.
+                    {{ trans("$theme-app.valoracion_gratuita.our_experts") }}
                 </p>
 
                 {{-- Flecha --}}
@@ -61,8 +59,7 @@
             <div class="row">
 
                 <div class="pt-5 mt-3 mb-5">
-                    <h4 class="fw-lighter">Por favor, añada la máxima información posible para garantizar una revisión más
-                        precisa.</h4>
+                    <h4 class="fw-lighter">{{ trans("$theme-app.valoracion_gratuita.description") }}</h4>
                 </div>
 
                 <form class="mt-3" id="form-valoracion-adv" action="">
@@ -72,7 +69,7 @@
 					@endif
 
                     <p class="text-danger h4 hidden msg_valoracion">
-                        {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.error') }}</p>
+                        {{ trans($theme . '-app.valoracion_gratuita.error') }}</p>
 
                     <div class="row">
                         <div class="col-12">

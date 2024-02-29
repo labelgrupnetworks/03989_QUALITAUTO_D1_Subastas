@@ -2,7 +2,7 @@
 @include('includes.google_head')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -11,8 +11,8 @@
 <body class="landing">
 
 <header>
-   
-   
+
+
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
@@ -20,7 +20,7 @@
                     <div class="logo col-xs-12 col-md-12 text-center">
 
                         <a title="Tauler y Fau" href="/es">
-                            <img class="img-responsive" src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/logo-simple.png"  alt="Tauler y Fau">
+                            <img class="img-responsive" src="/themes/<?= $theme ?>/img/comprar-monedas/logo-simple.png"  alt="Tauler y Fau">
                         </a>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                             <ul class="ventajas-box-lista2">
                                 <li>
                                     <p>
-                                        <img style="margin-right: 10px;position: relative;width: 20px;" src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" >
+                                        <img style="margin-right: 10px;position: relative;width: 20px;" src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" >
                                     </p>
                                     <p>
                                         <b>Nuestros expertos valorarán el material de acuerdo a la situación actual del mercado.</b>
@@ -83,13 +83,13 @@
                                 </li>
                                 <li>
                                     <p>
-                                        <img style="    margin-right: 10px;    position: relative;   width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p><b>Recogida</b> del material en su domicilio en <b>24h</b></p>
+                                        <img style="    margin-right: 10px;    position: relative;   width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p><b>Recogida</b> del material en su domicilio en <b>24h</b></p>
                                 </li>
                                 <li>
                                     <p>
-                                        <img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p>Casi un <b>90%</b> de lotes vendidos en nuestras subastas</p></li>
+                                        <img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p>Casi un <b>90%</b> de lotes vendidos en nuestras subastas</p></li>
                                 <li>
-                                    <p><img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= \Config::get('app.theme') ?>/img/comprar-monedas/icon.png" ></p><p><b>Liquidación</b> a los <b>30 días</b>, descontando la comisión acordada previamente en el contrato</p>
+                                    <p><img style="    margin-right: 10px;    position: relative;    top: -3px;    width: 20px;"src="/themes/<?= $theme ?>/img/comprar-monedas/icon.png" ></p><p><b>Liquidación</b> a los <b>30 días</b>, descontando la comisión acordada previamente en el contrato</p>
                                 </li>
                             </ul>
                         </div>
@@ -483,7 +483,7 @@
         margin: auto;
         margin-bottom: 40px;
         padding-left: 56px;
-        background-image: url('/themes/<?= \Config::get('app.theme') ?>/assets/img/comprar-monedas/items.png');
+        background-image: url('/themes/<?= $theme ?>/assets/img/comprar-monedas/items.png');
         background-repeat: no-repeat;
         background-position: 0 11px;
     }
@@ -644,7 +644,7 @@
         body.landing .no-principal-landing .col-xs-12 {
             padding: 0;
         }
-       
+
         body.landing div.text-landing {
             padding: 40px 0 50px;
         }

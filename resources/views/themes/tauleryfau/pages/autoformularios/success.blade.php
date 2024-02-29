@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-<?php 
+<?php
 
 $bread[] = array( "name" => $data['title']  );
 
@@ -16,23 +16,23 @@ $bread[] = array( "name" => $data['title']  );
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 text-center color-letter">
-            <h1 class="titlePage"> {!! trans(\Config::get('app.theme').'-app.global.form_success') !!}</h1>
+            <h1 class="titlePage"> {!! trans($theme.'-app.global.form_success') !!}</h1>
         </div>
     </div>
 
     <br><br>
-    
+
     <div class="row">
 
         <div class="col-xs-12">
-            <center>{!! trans(\Config::get('app.theme').'-app.global.text_success') !!}</center>
+            <center>{!! trans($theme.'-app.global.text_success') !!}</center>
         </div>
     </div>
 
 
     <br><br><br><br><br>
 
-</div>   
+</div>
 
 
 

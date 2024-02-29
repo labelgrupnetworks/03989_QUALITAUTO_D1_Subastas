@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.foot.featured_auctions') }}
+{{ trans($theme.'-app.foot.featured_auctions') }}
 @stop
 
 
@@ -15,13 +15,13 @@
 					@php
 					$bread = array();
 
-					$bread[] = array( "name" =>trans(\Config::get('app.theme').'-app.foot.featured_auctions') );
+					$bread[] = array( "name" =>trans($theme.'-app.foot.featured_auctions') );
 					@endphp
 					
 					@include('includes.breadcrumb')
                     <?php //Si quieren mostrar nombre de la subasta o que se vea texto Lotes ?>
 
-                        <h1 class=" color-letter text-center">{{ trans(\Config::get('app.theme').'-app.foot.featured_auctions') }}</h1>
+                        <h1 class=" color-letter text-center">{{ trans($theme.'-app.foot.featured_auctions') }}</h1>
 						@if(count($sessions)>0)
 							<h2 class=" color-letter text-center">{{ head($sessions)[0]->des_sub  }}</h2>
 						@endif

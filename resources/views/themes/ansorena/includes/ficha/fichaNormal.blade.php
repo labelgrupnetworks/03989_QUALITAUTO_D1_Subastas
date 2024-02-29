@@ -37,8 +37,8 @@
     $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual->num_hces1, $lote_actual->lin_hces1);
 
     //0.autor, 1.fechas autor, 2.Nombre de obra, 3.Medidas
-    //En vehículos solo hay 1 y es description
-    $onlyDescription = strpos($lote_actual->desc_hces1, 'class="description"') !== false;
+    //En vehículos solo hay 1 y es description. En algunos relojes han añadido el campo de peso, pero sigue siendo parte de la descripción
+    $onlyDescription = strpos($lote_actual->desc_hces1, 'class="description"') !== false || strpos($lote_actual->desc_hces1, 'class="PESO_HCES1"') !== false;
     $notCleanTags = $onlyDescription ? '<br><br />' : '<br><br /><span>';
 
     $htmlCleaned = strip_tags($lote_actual->desc_hces1, $notCleanTags);

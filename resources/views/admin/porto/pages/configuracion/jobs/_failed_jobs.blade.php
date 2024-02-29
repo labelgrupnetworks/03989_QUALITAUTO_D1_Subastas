@@ -2,9 +2,9 @@
     <table id="clientes" class="table table-striped table-condensed table-responsive" style="width:100%">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nombre de clase</th>
-                <th>Fecha fallo</th>
+                <th>{{ trans("admin-app.fields.id") }}</th>
+                <th>{{ trans("admin-app.fields.class_name") }}</th>
+                <th>{{ trans("admin-app.fields.failed_date") }}</th>
                 <th>
                     <span>{{ trans('admin-app.fields.actions') }}</span>
                 </th>

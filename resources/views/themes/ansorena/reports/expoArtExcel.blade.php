@@ -20,10 +20,10 @@
 
 				<br>
 
-                {{ $startDate->day }} {{ trans(\Config::get('app.theme') . '-app.galery.de') }}
+                {{ $startDate->day }} {{ trans($theme . '-app.galery.de') }}
                 {{ $startDate->monthName }}
                 -
-                {{ $endDate->day }} {{ trans(\Config::get('app.theme') . '-app.galery.de') }} {{ $endDate->monthName }}
+                {{ $endDate->day }} {{ trans($theme . '-app.galery.de') }} {{ $endDate->monthName }}
                 <br />
                 {{ $endDate->year }}
             </td>

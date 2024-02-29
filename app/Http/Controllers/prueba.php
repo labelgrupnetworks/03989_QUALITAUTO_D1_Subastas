@@ -174,17 +174,7 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$url = Config::get('app.url');
-		$dateToFinish = now();
-		try {
-			$certificate = SslCertificate::createForHostName($url);
-			$dateToFinish = $certificate->expirationDate();
-			dd($dateToFinish->diffInDays());
-		} catch (\Exception $e) {
-			Log::error('Error al obtener el certificado de ' . $url);
-		}
-
-		return $dateToFinish->diffInDays();
+		dd('Este cambio ha sido subido solamente al git en la rama main y desplegado en prodcucción');
 	}
 
 

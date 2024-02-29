@@ -1,11 +1,11 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
-<?php 
+<?php
 
 $bread[] = array("name" =>$data['title']  );
 ?>
@@ -15,7 +15,7 @@ $bread[] = array("name" =>$data['title']  );
             <div class="col-xs-12">
             <div class="princiapl-bar-wrapper">
                     <div class="principal-bar-title">
-                        <h3>{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.solicitud_valoracion') }}</h3>
+                        <h3>{{ trans($theme.'-app.valoracion_gratuita.solicitud_valoracion') }}</h3>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,8 @@ $bread[] = array("name" =>$data['title']  );
 <div id="" class="body-auctions">
 	<div class="container" id="return-valoracion">
                 <div class="">
-                    <h1 class="titleSingle_corp text-center">{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.succes_peticion') }}</h1>
-                </div>               
+                    <h1 class="titleSingle_corp text-center">{{ trans($theme.'-app.valoracion_gratuita.succes_peticion') }}</h1>
+                </div>
         </div>
 </div>
 

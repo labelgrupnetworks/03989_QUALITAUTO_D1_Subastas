@@ -45,7 +45,7 @@
 					</li>
 					-->
 					<li>
-						<a role="menuitem" tabindex="-1" href="/admin/logout"><i class="fa fa-power-off"></i> Logout</a>
+						<a role="menuitem" tabindex="-1" href="/admin/logout"><i class="fa fa-power-off"></i> {{ trans("admin-app.button.logout") }}</a>
 					</li>
 				</ul>
 			</div>

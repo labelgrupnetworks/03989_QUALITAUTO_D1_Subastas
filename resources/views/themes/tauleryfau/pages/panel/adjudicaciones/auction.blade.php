@@ -39,7 +39,7 @@ $pdfBills = [];
 
 				@foreach ($pdfBills as $url)
 				<a href="{{ $url }}" download
-					class="btn btn-color factura-button mb-1">{{ trans(\Config::get('app.theme') . '-app.user_panel.invoice_pdf') }}</a>
+					class="btn btn-color factura-button mb-1">{{ trans($theme . '-app.user_panel.invoice_pdf') }}</a>
 				@endforeach
 
                 <a class="btn btn-color btn-gold mb-1" data-toggle="modal" data-target="#largeModal" data-type="bill"

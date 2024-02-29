@@ -12,7 +12,7 @@
 
     {{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
     @if ($lote_actual->es_nft_asigl0 == 'S' && !empty($data['usuario']) && empty($data['usuario']->wallet_cli))
-        <div class="require-wallet">{!! trans(\Config::get('app.theme') . '-app.lot.require_wallet') !!}</div>
+        <div class="require-wallet">{!! trans($theme . '-app.lot.require_wallet') !!}</div>
     @else
         <p>{{ trans("$theme-app.lot.quick_bid") }}</p>
         <div class="escalados-container d-flex justify-content-between gap-1 flex-wrap">
@@ -33,20 +33,20 @@
         </div>
 
 
-        <p class="mt-3">{{ trans(\Config::get('app.theme') . '-app.lot.insert_max_puja') }}</p>
+        <p class="mt-3">{{ trans($theme . '-app.lot.insert_max_puja') }}</p>
         <div class="">
             <div class="input-group">
                 <input class="form-control control-number" id="bid_amount" type="text"
                     value="{{ $data['precio_salida'] }}" aria-describedby="button-bid"
                     placeholder="{{ $data['precio_salida'] }}">
                 <span
-                    class="input-group-text currency-input">{{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}</span>
+                    class="input-group-text currency-input">{{ trans($theme . '-app.subastas.euros') }}</span>
                 <button id="button-bid" data-from="modal" type="button" @class([
                     'lot-action_pujar_on_line btn btn-lb-primary w-50',
                     'add_favs' => Session::has('user'),
                 ])
                     ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}">
-                    {{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}
+                    {{ trans($theme . '-app.lot.pujar') }}
                 </button>
             </div>
 

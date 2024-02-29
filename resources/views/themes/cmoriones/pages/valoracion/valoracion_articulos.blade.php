@@ -46,6 +46,9 @@
                 @endif
 
 				<input type="hidden" name="entidad" value="{{$entity}}">
+				<input type="hidden" name="operacion" value="Venta">
+				<input type="hidden" name="campana" value="subastasonline">
+
 
                 <p class="text-danger h4 hidden msg_valoracion">
                     {{ trans(\Config::get('app.theme') . '-app.valoracion_gratuita.error') }}</p>

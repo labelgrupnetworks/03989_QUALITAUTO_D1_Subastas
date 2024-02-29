@@ -46,7 +46,7 @@
 
 @if (!empty($category))
     <div class="categories">
-        <h5>{{ trans(\Config::get('app.theme') . '-app.lot.categories') }}</h5>
+        <h5>{{ trans($theme . '-app.lot.categories') }}</h5>
 
         <a class="no-decoration" href="{{ route('category', ['keycategory' => $category->key_ortsec0]) }}"
             alt="{{ $category->des_ortsec0 }}">

@@ -10,11 +10,11 @@
             {{-- entraran tanto lotes de subastas V como cerrados de otra con posibilidad de compra --}}
             <p>
                 @if ($lote_actual->tipo_sub == 'V')
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.lot_subasta_venta') }}
+                    {{ trans($theme . '-app.subastas.lot_subasta_venta') }}
                 @elseif($lote_actual->tipo_sub == 'W')
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.lot_subasta_presencial') }}
+                    {{ trans($theme . '-app.subastas.lot_subasta_presencial') }}
                 @elseif($lote_actual->tipo_sub == 'O')
-                    {{ trans(\Config::get('app.theme') . '-app.subastas.lot_subasta_online') }}
+                    {{ trans($theme . '-app.subastas.lot_subasta_online') }}
                 @endif
             </p>
 
@@ -30,17 +30,17 @@
             @if ($lote_actual->cerrado_asigl0 == 'N')
                 <span class="cierre_lote"></span>
             @endif
-            {{-- no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> --}}
+            {{-- no ponemos CET   <span id="cet_o"> {{ trans($theme.'-app.lot.cet') }}</span> --}}
 
         </div>
     </div>
 
     <div class="col-xs-12 col-sm-6">
-        <p class="pre">{{ trans(\Config::get('app.theme') . '-app.subastas.price_sale') }}</p>
+        <p class="pre">{{ trans($theme . '-app.subastas.price_sale') }}</p>
 
 		<div class="pre">
 			{{$pvp}}
-			{{-- {{ $lote_actual->formatted_actual_bid }} {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }} --}}
+			{{-- {{ $lote_actual->formatted_actual_bid }} {{ trans($theme . '-app.subastas.euros') }} --}}
 		</div>
 
         <div class="info_single_content info_single_button">
@@ -54,14 +54,17 @@
 						<button data-from="modal" class="lot-action_comprar_lot btn btn-lg btn-custom" type="button"
 							ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}" codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}">
 							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-							{{ trans(\Config::get('app.theme') . '-app.subastas.buy_lot') }}
+							{{ trans($theme . '-app.subastas.buy_lot') }}
 						</button>
 					@endif
 				@else
 					<button type="button" data-from="modal"
 						class="lot-action_pujar_on_line btn btn-lg btn-custom <?= Session::has('user') ? 'add_favs' : '' ?>"
 						type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}"
-						codsub="{{ $lote_actual->cod_sub }}">{{ trans(\Config::get('app.theme') . '-app.lot.pujar') }}</button>
+						codsub="{{ $lote_actual->cod_sub }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							{{ trans($theme . '-app.subastas.buy_lot') }}
+						</button>
 				@endif
             @endif
         </div>
@@ -69,7 +72,7 @@
     </div>
     <div class="col-xs-12 col-sm-6">
 
-        <p class="cat">{{ trans(\Config::get('app.theme') . '-app.lot.categories') }}</p>
+        <p class="cat">{{ trans($theme . '-app.lot.categories') }}</p>
         <?php
         $category = new \App\Models\Category();
         $tipo_sec = $category->getSecciones($data['js_item']['lote_actual']->sec_hces1);
@@ -79,7 +82,7 @@
                 {{ $sec->des_tsec }}
             @endforeach
         </p>
-        <p class="shared">{{ trans(\Config::get('app.theme') . '-app.lot.share_lot') }}</p>
+        <p class="shared">{{ trans($theme . '-app.lot.share_lot') }}</p>
         @include('includes.ficha.share')
 
     </div>
@@ -111,7 +114,7 @@
     <div class="col-xs-12">
         <div class="checkbox">
             <label for="recibir-newletter">
-                <?= trans(\Config::get('app.theme') . '-app.subastas.read_conditions') ?>
+                <?= trans($theme . '-app.subastas.read_conditions') ?>
             </label>
         </div>
     </div>

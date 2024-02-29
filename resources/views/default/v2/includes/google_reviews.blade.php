@@ -10,7 +10,7 @@
 		<div class="col-xs-4 col-sm-3 col-md-2">
 			<img class="img-responsive" src="{{ URL::asset('/img/icons/google_logo_png.png') }}" alt="google">
 		</div>
-		<h1>{{ trans(\Config::get('app.theme').'-app.home.google_rating') }}</h1>
+		<h1>{{ trans($theme.'-app.home.google_rating') }}</h1>
 	</div>
 
 	<div class="row mb-3">
@@ -32,9 +32,9 @@
 
 
 			<span class="">{{$googleReviews["user_rating_total"]}}
-				{{ trans(\Config::get('app.theme').'-app.home.google_reviews') }}</span>
+				{{ trans($theme.'-app.home.google_reviews') }}</span>
 			<a class="btn btn-google-review" href="{{$googleReviews["url_write_review"]}}"
-				target="_blank">{{ trans(\Config::get('app.theme').'-app.home.google_write_review') }}</a>
+				target="_blank">{{ trans($theme.'-app.home.google_write_review') }}</a>
 
 		</div>
 	</div>
@@ -94,7 +94,7 @@
 											alt="Google">
 									</div>
 									<div class="col-xs-3 p-0">
-										<p class="m-0">{{ trans(\Config::get('app.theme').'-app.home.google_view') }}
+										<p class="m-0">{{ trans($theme.'-app.home.google_view') }}
 										</p>
 										<p class="m-0">Google</p>
 									</div>

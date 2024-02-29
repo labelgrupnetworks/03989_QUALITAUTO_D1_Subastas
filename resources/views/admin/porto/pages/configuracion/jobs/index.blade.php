@@ -6,7 +6,7 @@
 
         <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
-                <h1 class="m-0">Colas</h1>
+                <h1 class="m-0">{{ trans("admin-app.title.queues") }}</h1>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                         <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" href="#collapseOne" aria-expanded="true"
                                 aria-controls="collapseOne">
-                                Colas pendientes de enviar
+                                {{ trans("admin-app.title.queues_pending_to_send") }}
                             </a>
                         </h4>
                         <span class="badge badge-danger">{{ $pendigJobs->count() }}</span>
@@ -36,7 +36,7 @@
                         <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" href="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
-                                Colas fallidas
+                                {{ trans("admin-app.title.failed_queues") }}
                             </a>
                         </h4>
                         <span class="badge badge-danger">{{ $failedJobs->count() }}</span>
@@ -60,13 +60,13 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Información extra</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{ trans("admin-app.title.infoextra") }}</h4>
                 </div>
                 <div class="modal-body" style="overflow-wrap: break-word;">
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans("admin-app.button.close") }}</button>
                 </div>
             </div>
         </div>

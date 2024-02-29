@@ -3,7 +3,7 @@
 @section('content')
     <p>
         
-            <?= trans_choice(\Config::get('app.theme').'-app.emails.email_overbid',
+            <?= trans_choice($theme.'-app.emails.email_overbid',
             1,
             ['name' => $emailOptions['user'],
             'bid' => $emailOptions['importe'],

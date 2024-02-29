@@ -4164,3 +4164,14 @@ main.private-page form {
 main.private-page .form-check-label {
 	line-height: 1.5;
 }
+
+@media(max-width: 992px) {
+	.h-md-360px {
+		height: 360px;
+	}
+
+	.max-w-md-25ch {
+		max-width: 25ch;
+	}
+
+}

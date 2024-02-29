@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -45,13 +45,13 @@ if(!empty($auction) && count($bread)>0){
 									{{$seo_data->h1_seo}}
 								@else
 
-									{{trans(\Config::get('app.theme').'-app.lot_list.available_lots')}}
+									{{trans($theme.'-app.lot_list.available_lots')}}
 								@endif
 							@endif
 
 						</h1>
 						@if(!empty($auction) && $auction->tipo_sub !="V" && $auction->subc_sub !="H" )
-							<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="{{ Routing::translateSeo('pagina')."info-pujas-online"  }}?modal=1" data-title="{{ trans(\Config::get('app.theme').'-app.lot.title_info_pujas') }}">  {{ trans(\Config::get('app.theme').'-app.lot_list.como_pujar') }} <i class="fas fa-info-circle"></i></a>
+							<a href="javascript:;" data-toggle="modal" data-target="#modalAjax" class="info-ficha-lot pt-1 c_bordered" data-ref="{{ Routing::translateSeo('pagina')."info-pujas-online"  }}?modal=1" data-title="{{ trans($theme.'-app.lot.title_info_pujas') }}">  {{ trans($theme.'-app.lot_list.como_pujar') }} <i class="fas fa-info-circle"></i></a>
 						@endif
 					</div>
 				</div>

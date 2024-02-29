@@ -262,6 +262,7 @@ $(function () {
 function ajax_newcarousel(key, replace, lang, options) {
 
 	const $carrouselElement = $(`#${key}`);
+	const container = $carrouselElement.data('container');
 
 	$.ajax({
 		type: "POST",
@@ -269,8 +270,14 @@ function ajax_newcarousel(key, replace, lang, options) {
 		data: { key, replace, lang },
 		success: (result) => {
 
-			if (result === '') {
+			if (!result) {
 				$carrouselElement.hide();
+
+				if (container) {
+					//change visibility of the container
+					$(`#${container}`).css('visibility', 'hidden');
+				}
+
 			}
 
 			$carrouselElement.siblings('.loader').addClass('hidden');
@@ -1368,4 +1375,19 @@ async function executeCaptchaV3() {
 // En la version dos este metodo no aplica, y se llama desde common.js
 ajax_shipping = function(cod_ship, lang) {
 	return true;
+}
+
+function executeOnceToDay(storageName, callback){
+	if (!window.localStorage) {
+		return;
+	}
+
+	const storage = window.localStorage;
+	const today = new Date().toDateString();
+	const executed = storage.getItem(storageName);
+
+	if(executed !== today) {
+		callback();
+		storage.setItem(storageName, today);
+	}
 }

@@ -98,7 +98,7 @@
                             </div>
 
                             @if ($variante == 'TALLAS')
-                                {!! trans(\Config::get('app.theme') . '-app.articles.consultar_tallas') !!}</a>
+                                {!! trans($theme . '-app.articles.consultar_tallas') !!}</a>
                             @endif
                         </div>
                     @endforeach
@@ -122,7 +122,7 @@
                         {{-- 07-07-22 Mónica ha pedido que los articulos de la seccion joyas únicas muestre siempre el cotactenos, lo saco del circuito de js que mlo muestra is hay stock  --}}
                         @if ($article->sec_art0 == 'JX' || $article->imp == 0)
                             <p class="descriptionArticlePage">
-                                {!! trans(\Config::get('app.theme') . '-app.articles.contactenos') !!}
+                                {!! trans($theme . '-app.articles.contactenos') !!}
                             </p>
                         @else
                             {{-- Es posible que no haya variamtes, en ese caso miramso el stock del único articulo y lo usamos para hacer que se vea o no el botón de compra --}}
@@ -132,9 +132,9 @@
                             </button>
 
                             {{-- Ansorena Han pedido que no aparezca el no disponible --}}
-                            {{-- <button style="width: 100%;"  disabled="disabled" type="button" >{{ trans(\Config::get('app.theme').'-app.articles.outStock') }}</button> --}}
+                            {{-- <button style="width: 100%;"  disabled="disabled" type="button" >{{ trans($theme.'-app.articles.outStock') }}</button> --}}
                             <p class="noStock_JS @if ($article->stock) hidden @endif">
-                                {!! trans(\Config::get('app.theme') . '-app.articles.contactenos') !!}
+                                {!! trans($theme . '-app.articles.contactenos') !!}
                             </p>
                         @endif
 

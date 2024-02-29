@@ -118,6 +118,8 @@ function actionResponseDesign_W(data) {
 		$('#actual_max_bid').html(data.formatted_actual_bid + " "+ auction_info.subasta.currency.symbol);
 	}
 
+	$('#value-view').html(numeral(data.siguiente).format('0,0' ) + " €");
+
 	$('#text_actual_no_bid').addClass('hidden');
 	$('#text_actual_max_bid, .text_actual_max_bid').removeClass('hidden');
 

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-xs-12 col-md-9 col-lg-9 ">
                             <div class="user-account-title-content">
-                                <div class="user-account-menu-title">{{ trans(\Config::get('app.theme').'-app.user_panel.favorites') }}</div>
+                                <div class="user-account-menu-title">{{ trans($theme.'-app.user_panel.favorites') }}</div>
                             </div>
                             <div class="col-xs-12 no-padding ">
                                 <div class="panel-group" id="accordion">
@@ -43,10 +43,10 @@
 
                                                         <div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
                                                             <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
-                                                                    {{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+                                                                    {{ trans($theme.'-app.user_panel.lot') }}
                                                             </div>
                                                             <div class="col-xs-12 col-sm-2 col-one user-account-fecha">
-                                                                    {{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}
+                                                                    {{ trans($theme.'-app.lot.puja_actual') }}
                                                             </div>
                                                             <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
 
@@ -67,18 +67,18 @@
                                                                                 </div>
                                                                                 <div class="col-xs-12 col-sm-9 no-padding">
                                                                                         @if(strtoupper($inf_lot->tipo_sub) == 'O' || strtoupper($inf_lot->tipo_sub) == 'P')
-                                                                                            <div class="user-account-item-auction text-right"><small>{{ trans(\Config::get('app.theme').'-app.user_panel.auctions_online') }}</small></div>
+                                                                                            <div class="user-account-item-auction text-right"><small>{{ trans($theme.'-app.user_panel.auctions_online') }}</small></div>
                                                                                         @endif
                                                                                         <div class="user-account-item-title">{{$inf_lot->titulo_hces1}}</div>
 
-                                                                                        <div class="user-account-item-lot"><span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
+                                                                                        <div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
                                                                                         <div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
                                                                         <div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
                                                                             <div class="user-account-item-price d-flex align-items-center">
-                                                                                <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.lot.puja_actual') }}</div>
+                                                                                <div class="visible-xs">{{ trans($theme.'-app.lot.puja_actual') }}</div>
                                                                                 <div
                                                                                     @if (!empty($inf_lot->pujas[0]) && !empty($data["codigos_licitador"][$inf_lot->cod_sub]) &&  $data["codigos_licitador"][$inf_lot->cod_sub] == $inf_lot->pujas[0]->cod_licit)
                                                                                         class="mine"
@@ -90,7 +90,7 @@
                                                                         </div>
                                                                         <div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
                                                                                 <div class="user-account-item-price  d-flex align-items-center">
-                                                                                <div><a title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="d-block" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}</a></div>
+                                                                                <div><a title="{{trans($theme.'-app.lot.del_from_fav')}}" class="d-block" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">{{trans($theme.'-app.lot.del_from_fav')}}</a></div>
                                                                                 </div>
                                                                             </div>
                                                                     </div>
@@ -135,11 +135,11 @@
                                                 <tr>
                                                     <tr>
                                                         <th> </th>
-                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}</th>
-                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.auction') }}</th>
-                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.name') }}</th>
-                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</th>
-                                                        <th>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</th>
+                                                        <th>{{ trans($theme.'-app.user_panel.lot') }}</th>
+                                                        <th>{{ trans($theme.'-app.user_panel.auction') }}</th>
+                                                        <th>{{ trans($theme.'-app.user_panel.name') }}</th>
+                                                        <th>{{ trans($theme.'-app.user_panel.date') }}</th>
+                                                        <th>{{ trans($theme.'-app.user_panel.mi_puja') }}</th>
                                                     </tr>
                                                 </tr>
                                             </thead>
@@ -154,13 +154,13 @@
                                                     <td><img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" height="42" width="42"></td>
                                                     <td>{{$inf_lot->ref_asigl0}}</td>
                                                     @if(strtoupper($inf_lot->tipo_sub) == 'O' || strtoupper($inf_lot->tipo_sub) == 'P')
-                                                        <td>{{ trans(\Config::get('app.theme').'-app.user_panel.auctions_online') }}</td>
+                                                        <td>{{ trans($theme.'-app.user_panel.auctions_online') }}</td>
                                                     @else
                                                         <td>{{$inf_lot->cod_sub}}</td>
                                                     @endif
                                                     <td>{{$inf_lot->titulo_hces1}}</td>
                                                     <td><?= empty($inf_lot->pujas->formatted_imp_asigl1)? '-': $inf_lot->pujas->formatted_imp_asigl1.' €' ; ?></td>
-                                                    <td><a title="{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}" class="btn btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}}</a></td>
+                                                    <td><a title="{{trans($theme.'-app.lot.del_from_fav')}}" class="btn btn-del" href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{$inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')">{{trans($theme.'-app.lot.del_from_fav')}}</a></td>
                                                 </tr>
                                             @endforeach
                                            </tbody>

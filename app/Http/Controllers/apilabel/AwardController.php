@@ -28,7 +28,7 @@ class AwardController extends ApiLabelController
 	protected  $renameAsigl1 = array("licit"=>"licit_asigl1","lin"=>"lin_asigl1", "idauction"=>"sub_asigl1",  "ref"=>"ref_asigl1",  "bid"=>"imp_asigl1", "type" => "type_asigl1", "date" => "fec_asigl1","hour" => "hora_asigl1");
 
     protected  $rules = array('idoriginlot' => "required|max:255", "idauction" => "required|max:8","idoriginclient" => "required|max:8", "bid" => "required|numeric", "date" => "date_format:Y-m-d H:i:s|nullable", "hour" => "date_format:H:i:s|nullable","commission" => "numeric|nullable", "invoice" => "alpha_num|max:1|nullable", "serialpay" => "alpha_num|max:3|nullable", "numberpay" => "numeric|nullable|max:99999999" );
-	protected $maxCodLicit;
+	
     public function postAward(){
         $items =  request("items");
         return $this->createAward( $items );
@@ -187,7 +187,12 @@ class AwardController extends ApiLabelController
 				$this->updateImplic($award->numhces_asigl0, $award->linhces_asigl0 ,0,"N");
 				$this->deleteBid($award->sub_csub, $award->ref_csub);
             }else{  # si no hay award con esos identificadores
-                    throw new ApiLabelException(trans('apilabel-app.errors.delete'));
+				if(empty($whereVars["ref"]) ||  empty($whereVars["licit"]) ){
+					$errorsItem["item_1"] = array("idoriginlot" => $whereVars["idoriginlot"],"idauction" => $whereVars["idauction"] );
+				}else{
+					$errorsItem["item_1"] = array("ref" => $whereVars["ref"],"idauction" => $whereVars["idauction"] ,"licit" => $whereVars["licit"]  );
+				}
+                    throw new ApiLabelException(trans('apilabel-app.errors.delete'),$errorsItem);
             }
 
             DB::commit();

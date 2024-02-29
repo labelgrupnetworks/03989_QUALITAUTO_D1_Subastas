@@ -3,14 +3,14 @@
         <ul class="nav nav-tabs">
             @if(!empty(\Config::get('app.tr_show_streaming')))
             <li class="active">
-                <a data-toggle="tab" href="#ultimas_pujas">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</a>
+                <a data-toggle="tab" href="#ultimas_pujas">{{ trans($theme.'-app.sheet_tr.last_bids') }}</a>
             </li>
             <li>
                 <a data-toggle="tab" href="#streaming">Streaming</a>
             </li>
             @else
             <li class="active" style="width: 100%; margin-bottom: 1px;">
-                <a data-toggle="tab">{{ trans(\Config::get('app.theme').'-app.sheet_tr.last_bids') }}</a>
+                <a data-toggle="tab">{{ trans($theme.'-app.sheet_tr.last_bids') }}</a>
             </li>
             @endif
 

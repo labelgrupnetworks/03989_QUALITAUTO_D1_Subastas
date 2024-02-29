@@ -6,11 +6,11 @@
 
 			<p>
 				@if ($lote_actual->tipo_sub == 'V')
-				{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_venta') }}
+				{{ trans($theme.'-app.subastas.lot_subasta_venta') }}
 				@elseif($lote_actual->tipo_sub == 'W')
-				{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_presencial') }}
+				{{ trans($theme.'-app.subastas.lot_subasta_presencial') }}
 				@elseif($lote_actual->tipo_sub == 'O')
-				{{ trans(\Config::get('app.theme').'-app.subastas.lot_subasta_online') }}
+				{{ trans($theme.'-app.subastas.lot_subasta_online') }}
 				@endif
 			</p>
 
@@ -19,12 +19,12 @@
 		<div class="date_top_side_small">
 
 
-			<?php /* no ponemos CET   <span id="cet_o"> {{ trans(\Config::get('app.theme').'-app.lot.cet') }}</span> */ ?>
+			<?php /* no ponemos CET   <span id="cet_o"> {{ trans($theme.'-app.lot.cet') }}</span> */ ?>
 		</div>
 	</div>
 
 	<div class="col-xs-12 col-sm-6">
-		<p class="pre">{{ trans(\Config::get('app.theme').'-app.lot.total_pagar') }}</p>
+		<p class="pre">{{ trans($theme.'-app.lot.total_pagar') }}</p>
 		{{-- Precio con comision + iva de la comision --}}
 		<div class="pre">
 			@if($lote_actual->sub_hces1 == 'VDJ')
@@ -55,16 +55,16 @@
 			<button data-from="modal" class="lot-action_comprar_lot btn btn-lg btn-custom" type="button"
 				ref="{{ $data['subasta_info']->lote_actual->ref_asigl0 }}"
 				codsub="{{ $data['subasta_info']->lote_actual->cod_sub }}"><i class="fa fa-shopping-cart"
-					aria-hidden="true"></i> {{ trans(\Config::get('app.theme').'-app.subastas.buy_lot') }}</button>
+					aria-hidden="true"></i> {{ trans($theme.'-app.subastas.buy_lot') }}</button>
 			@endif
 		</div>
 	</div>
 
 	<div class="col-xs-12 mb-1" style=" margin-top:10px ; font-size: 12px;">
 		@if($lote_actual->sub_hces1 == 'VDJ')
-			{!! trans(\Config::get('app.theme').'-app.lot.price_commission_vdj') !!}
+			{!! trans($theme.'-app.lot.price_commission_vdj') !!}
 		@else
-			<?= trans(\Config::get('app.theme').'-app.lot.price_commission',array("precio_salida" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0), "comision" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0 * ($lote_actual->comlhces_asigl0/100)),  "iva_comision" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0 * ($lote_actual->comlhces_asigl0/100) *0.21,"",2)  )) ?>
+			<?= trans($theme.'-app.lot.price_commission',array("precio_salida" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0), "comision" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0 * ($lote_actual->comlhces_asigl0/100)),  "iva_comision" =>\Tools::moneyFormat($lote_actual->impsalhces_asigl0 * ($lote_actual->comlhces_asigl0/100) *0.21,"",2)  )) ?>
 		@endif
 
 	</div>

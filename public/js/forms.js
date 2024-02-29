@@ -38,6 +38,9 @@ function comprueba_nif(nif, obligatorio) {
                 return true;
             }
         }
+		else if($("[name='tdocid_cli']").val() == "P"){
+			return true;
+		}
         return false;
     }
 }

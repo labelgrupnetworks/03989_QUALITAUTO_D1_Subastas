@@ -15,7 +15,7 @@
     }elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
         $titulo = $bann->titulo_hces1;
     }elseif(\Config::get('app.ref_asigl0')){
-        $titulo = trans(\Config::get('app.theme').'-app.lot.lot-name') ." ".$bann->ref_asigl0 ;
+        $titulo = trans($theme.'-app.lot.lot-name') ." ".$bann->ref_asigl0 ;
     }
     $precio_salida = (!empty($bann->impsalweb_asigl0) && $bann->impsalweb_asigl0) ? \Tools::Moneyformat($bann->impsalweb_asigl0) : $bann->impsalhces_asigl0;
     $precio_venta = (!empty($bann->impsalweb_asigl0) && $bann->impsalweb_asigl0) ? $bann->impsalweb_asigl0 : $bann->max_puja;
@@ -27,10 +27,10 @@
                     <div class="item_img">
                         <img src="{{Tools::url_img('lote_medium',$bann->num_hces1,$bann->lin_hces1)}}" alt="{{ $titulo}}">
                         @if( $bann->retirado_asigl0 !='N')
-                            <div class="retired">{{ trans(\Config::get('app.theme').'-app.lot.retired') }}</div>
+                            <div class="retired">{{ trans($theme.'-app.lot.retired') }}</div>
                         @elseif(\Config::get('app.awarded') && $bann->cerrado_asigl0 == 'S' &&  !empty($bann->max_puja) )
                             <div class="retired" style ="background:#494742;">
-                                {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                                {{ trans($theme.'-app.subastas.buy') }}
                             </div>
                         @endif
                     </div>
@@ -58,30 +58,30 @@
                 @if( \Config::get('app.estimacion') || \Config::get('app.impsalhces_asigl0'))
                     <p class="salida">
                         @if( \Config::get('app.estimacion'))
-                            {{ trans(\Config::get('app.theme').'-app.lot.estimate') }} <span class=""> {{$bann->imptas_asigl0}} -  {{$bann->imptash_asigl0}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            {{ trans($theme.'-app.lot.estimate') }} <span class=""> {{$bann->imptas_asigl0}} -  {{$bann->imptash_asigl0}} {{ trans($theme.'-app.subastas.euros') }}</span>
                         @elseif( \Config::get('app.impsalhces_asigl0'))
-                            {{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}  <span class=""> {{$precio_salida}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            {{ trans($theme.'-app.lot.lot-price') }}  <span class=""> {{$precio_salida}} {{ trans($theme.'-app.subastas.euros') }}</span>
                         @endif
                     </p>
                 @endif
                 <p class="salida">
                     @if (($bann->tipo_sub == 'O' ||   $bann->tipo_sub == 'P') &&  $bann->max_puja > 0)
-                        {{ trans(\Config::get('app.theme').'-app.home.puja_actual') }} <span>{{ $bann->max_puja}} €</span>
+                        {{ trans($theme.'-app.home.puja_actual') }} <span>{{ $bann->max_puja}} €</span>
                     @elseif($bann->tipo_sub == 'O' ||   $bann->tipo_sub == 'P')
-                        {{ trans(\Config::get('app.theme').'-app.home.sin_pujas') }}
+                        {{ trans($theme.'-app.home.sin_pujas') }}
                     @endif
                 </p>
 
                 @if( \Config::get('app.awarded'))
                     <p class="salida">
                         @if($bann->cerrado_asigl0 == 'D')
-                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+                            {{ trans($theme.'-app.subastas.dont_available') }}
                         @elseif($bann->cerrado_asigl0 == 'S' && !empty($bann->max_puja) && $bann->remate_asigl0 =='S' )
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}: <span >{{\Tools::Moneyformat($precio_venta)}} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</span>
+                            {{ trans($theme.'-app.subastas.buy_to') }}: <span >{{\Tools::Moneyformat($precio_venta)}} {{ trans($theme.'-app.subastas.euros') }}</span>
                         @elseif($bann->cerrado_asigl0 == 'S' &&  !empty($bann->max_puja) &&  $bann->remate_asigl0 !='S')
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+                            {{ trans($theme.'-app.subastas.buy') }}
                         @elseif($bann->cerrado_asigl0 == 'S' &&  empty($bann->max_puja))
-                            {{ trans(\Config::get('app.theme').'-app.subastas.dont_buy') }}
+                            {{ trans($theme.'-app.subastas.dont_buy') }}
 
                         @endif
                     </p>

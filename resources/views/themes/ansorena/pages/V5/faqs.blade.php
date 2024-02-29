@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.foot.faq') }}
+    {{ trans($theme . '-app.foot.faq') }}
 @stop
 
 @section('framework-css')

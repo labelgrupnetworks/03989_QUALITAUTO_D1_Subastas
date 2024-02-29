@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -10,7 +10,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 text-center">
-				<h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+				<h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-3">{{ trans("$theme-app.shopping_cart.shopping_order_number") }} {{ $idShoppingOrder }}</div>
 							<div class="col-xs-12 col-sm-5">{{ trans("$theme-app.user_panel.date") }}: {{ date_format(date_create_from_format('Y-m-d H:i:s', $shoppingOrder['info']['fecaccpto_pedc0']),'d/m/Y') }}</div>
-							<div class="col-xs-10 col-sm-3">{{ trans("$theme-app.user_panel.total_pay") }}: {{ \Tools::moneyFormat($shoppingOrder['info']['total_pedc0'], trans(\Config::get('app.theme').'-app.lot.eur'), 2)}} </div>
+							<div class="col-xs-10 col-sm-3">{{ trans("$theme-app.user_panel.total_pay") }}: {{ \Tools::moneyFormat($shoppingOrder['info']['total_pedc0'], trans($theme.'-app.lot.eur'), 2)}} </div>
 							<div class="col-xs-2 col-sm-1 text-right"><i class="fa fa-caret-right" aria-hidden="true"></i></div>
 						</div>
 					</div>
@@ -95,21 +95,21 @@
 							<div class="col-xs-12 col-sm-2 account-item-border d-flex justify-content-center orders-line">
 								<p>
 									<span class="visible-xs line-attribute">{{ trans("$theme-app.user_panel.iva") }}:</span>
-									<span class="value-attribute">{{ \Tools::moneyFormat($article->imp_pedc1, trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span>
+									<span class="value-attribute">{{ \Tools::moneyFormat($article->imp_pedc1, trans($theme.'-app.lot.eur'), 2) }}</span>
 								</p>
 							</div>
 
 							<div class="col-xs-12 col-sm-2 account-item-border d-flex justify-content-center orders-line">
 								<p>
 									<span class="visible-xs line-attribute">{{ trans("$theme-app.articles.price") }}:</span>
-									<span class="value-attribute">{{ \Tools::moneyFormat($article->impiva_pedc1, trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span>
+									<span class="value-attribute">{{ \Tools::moneyFormat($article->impiva_pedc1, trans($theme.'-app.lot.eur'), 2) }}</span>
 								</p>
 							</div>
 
 							<div class="col-xs-12 col-sm-2 account-item-border d-flex justify-content-center orders-line">
 								<p>
 									<span class="visible-xs line-attribute">{{ trans("$theme-app.user_panel.total_pay") }}:</span>
-									<span class="value-attribute">{{ \Tools::moneyFormat(($article->imp_pedc1 + $article->impiva_pedc1), trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span>
+									<span class="value-attribute">{{ \Tools::moneyFormat(($article->imp_pedc1 + $article->impiva_pedc1), trans($theme.'-app.lot.eur'), 2) }}</span>
 								</p>
 							</div>
 
@@ -122,9 +122,9 @@
 								<hr class="m-1">
 							</div>
 							<div class="col-xs-12 col-md-3 col-md-offset-9 orders-totals">
-								<p>{{ trans("$theme-app.shopping_cart.base_price") }}: <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['base_pedc0']), trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span></p>
-								<p>{{ trans("$theme-app.user_panel.iva") }}: <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['impiva_pedc0']), trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span></p>
-								<p>{{ trans("$theme-app.user_panel.total_price") }} <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['total_pedc0']), trans(\Config::get('app.theme').'-app.lot.eur'), 2) }}</span></p>
+								<p>{{ trans("$theme-app.shopping_cart.base_price") }}: <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['base_pedc0']), trans($theme.'-app.lot.eur'), 2) }}</span></p>
+								<p>{{ trans("$theme-app.user_panel.iva") }}: <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['impiva_pedc0']), trans($theme.'-app.lot.eur'), 2) }}</span></p>
+								<p>{{ trans("$theme-app.user_panel.total_price") }} <span>{{ \Tools::moneyFormat(($shoppingOrder['info']['total_pedc0']), trans($theme.'-app.lot.eur'), 2) }}</span></p>
 							</div>
 						</div>
 

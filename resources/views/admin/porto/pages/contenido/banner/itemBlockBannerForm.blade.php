@@ -21,31 +21,31 @@
             @if ($tipo == 'imagen' || $tipo == 'imgSingle' || $tipo == 'imgBlock')
                 <div class="row">
                     <div class="col-xs-12 col-md-4">
-                        <label>Imagen</label>
+                        <label>{{ trans("admin-app.fields.image") }}</label>
                         {!! $formulario[strtoupper($lang)]['imagen'] !!}
                     </div>
                     <div class="col-xs-12 col-md-4">
-                        <label>Imagen mobile</label>
+                        <label>{{ trans("admin-app.fields.mobile_image") }}</label>
                         {!! $formulario[strtoupper($lang)]['imagen_mobile'] !!}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-md-8">
-                        <label>Texto</label>
+                        <label>{{ trans("admin-app.fields.text") }}</label>
                         {!! $formulario[strtoupper($lang)]['texto2'] !!}
                     </div>
                 </div>
             @elseif ($tipo == 'texto' || $tipo == 'iframe')
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <label>Texto</label>
+                        <label>{{ trans("admin-app.fields.text") }}</label>
                         {!! $formulario[strtoupper($lang)]['texto2'] !!}
                     </div>
                 </div>
             @elseif ($tipo == 'video')
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <label> URL Video Youtube</label>
+                        <label>{{ trans("admin-app.fields.url_yt_video") }}</label>
                         {!! $formulario[strtoupper($lang)]['texto'] !!}
                     </div>
                 </div>
@@ -55,11 +55,11 @@
             @if ($tipo != 'video')
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <label>Url</label>
+                        <label>{{ trans("admin-app.fields.url_abbreviated") }}</label>
                         {!! $formulario[strtoupper($lang)]['url'] !!}
                     </div>
                     <div class="col-xs-12 col-md-3 text-center">
-                        <label>Abrir url en ventana nueva</label>
+                        <label>{{ trans("admin-app.fields.open_url_new_windows") }}</label>
                         {!! $formulario[strtoupper($lang)]['ventana_nueva'] !!}
                     </div>
                 </div>
@@ -71,6 +71,6 @@
     <br><br>
 
     <center><button id="btnGuardarItem" data-lang="formLenguaje{{ strtoupper($lang) }}"
-            class="btn btn-success">Guardar</button></center>
+            class="btn btn-success">{{ trans("admin-app.button.save") }}</button></center>
 
 </form>

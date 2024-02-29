@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h1 class="titlePage">{{ trans(\Config::get('app.theme') . '-app.user_panel.mi_cuenta') }}</h1>
+                    <h1 class="titlePage">{{ trans($theme . '-app.user_panel.mi_cuenta') }}</h1>
                 </div>
             </div>
         </div>
@@ -34,14 +34,14 @@
 
                     <div class="user-account-title-content">
                         <div class="user-account-menu-title">
-                            {{ trans(\Config::get('app.theme') . '-app.user_panel.datos_contacto') }}
+                            {{ trans($theme . '-app.user_panel.datos_contacto') }}
                         </div>
                     </div>
 
                     <div class="col-xs-12">
 
                         <div class="user-account-menu-title extra-account">
-                            {{ trans(\Config::get('app.theme') . '-app.user_panel.info') }}</div>
+                            {{ trans($theme . '-app.user_panel.info') }}</div>
 
                         <form method="post" class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" class="form-control">
@@ -52,104 +52,104 @@
                                 @if ($data['user']->fisjur_cli == 'J')
                                     <div class="form-group input-group name_client col-xs-12 col-sm-6">
                                         <label class=""
-                                            for="">{{ trans(\Config::get('app.theme') . '-app.login_register.company') }}</label>
+                                            for="">{{ trans($theme . '-app.login_register.company') }}</label>
                                         <input disabled type="text" class="form-control"
-                                            placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.company') }}"
+                                            placeholder="{{ trans($theme . '-app.login_register.company') }}"
                                             type="text" value="{{ $data['user']->rsoc_cli }}">
                                         {{-- pongo oculto el nombre ya que hemos deshabilitado que se pueda modificar y el input visible no es el que se envia --}}
                                         <input type="hidden" class="form-control" type="hidden" name="rsoc_cli"
                                             value="{{ $data['user']->rsoc_cli }}">
                                         <input type="hidden" class="form-control" name="title_rsoc_cli"
-                                            value="{{ trans(\Config::get('app.theme') . '-app.login_register.company') }}">
+                                            value="{{ trans($theme . '-app.login_register.company') }}">
                                     </div>
                                     <div class="form-group input-group name_client col-xs-12 col-sm-6">
                                         <label class=""
-                                            for="apellido">{{ trans(\Config::get('app.theme') . '-app.login_register.contact') }}</label>
+                                            for="apellido">{{ trans($theme . '-app.login_register.contact') }}</label>
                                         <input disabled type="text" class="form-control"
-                                            placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.contact') }}"
+                                            placeholder="{{ trans($theme . '-app.login_register.contact') }}"
                                             type="text" value="{{ $data['user']->nom_cli }}">
                                         {{-- pongo oculto el nombre ya que hemos deshabilitado que se pueda modificar y el input visible no es el que se envia --}}
                                         <input type="hidden" class="form-control" type="text" name="usuario"
                                             value="{{ $data['user']->nom_cli }}">
                                         <input type="hidden" class="form-control" name="title_contact"
-                                            value="{{ trans(\Config::get('app.theme') . '-app.login_register.contact') }}">
+                                            value="{{ trans($theme . '-app.login_register.contact') }}">
 
                                     </div>
                                 @else
                                     <div class="form-group input-group name_client col-xs-12 col-sm-6">
                                         <label class=""
-                                            for="nombre">{{ trans(\Config::get('app.theme') . '-app.user_panel.surname_name') }}</label>
+                                            for="nombre">{{ trans($theme . '-app.user_panel.surname_name') }}</label>
                                         <input disabled type="text" class="form-control"
-                                            placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.surname_name') }}"
+                                            placeholder="{{ trans($theme . '-app.user_panel.surname_name') }}"
                                             value="<?= str_replace(',', '', $data['user']->nom_cli) ?>">
                                         {{-- pongo oculto el nombre ya que hemos deshabilitado que se pueda modificar y el input visible no es el que se envia --}}
                                         <input type="hidden" class="form-control" name="usuario"
                                             value="<?= str_replace(',', '', $data['user']->nom_cli) ?>">
 
                                         <input type="hidden" class="form-control" name="title_name"
-                                            value="{{ trans(\Config::get('app.theme') . '-app.user_panel.surname_name') }}">
+                                            value="{{ trans($theme . '-app.user_panel.surname_name') }}">
 
                                     </div>
                                     <div class="form-group input-group name_client col-xs-12 col-sm-3">
                                         <label class=""
-                                            for="genero">{{ trans(\Config::get('app.theme') . '-app.login_register.genre') }}</label>
+                                            for="genero">{{ trans($theme . '-app.login_register.genre') }}</label>
                                         <select name="genero" class="form-control">
                                             <option value="H" <?= $data['user']->sexo_cli == 'H' ? 'selected' : '' ?>>
-                                                {{ trans(\Config::get('app.theme') . '-app.login_register.hombre') }}
+                                                {{ trans($theme . '-app.login_register.hombre') }}
                                             </option>
                                             <option value="M" <?= $data['user']->sexo_cli == 'M' ? 'selected' : '' ?>>
-                                                {{ trans(\Config::get('app.theme') . '-app.login_register.mujer') }}
+                                                {{ trans($theme . '-app.login_register.mujer') }}
                                             </option>
 
                                         </select>
                                         <input type="hidden" class="form-control" name="title_name"
-                                            value="{{ trans(\Config::get('app.theme') . '-app.login_register.genre') }}">
+                                            value="{{ trans($theme . '-app.login_register.genre') }}">
 
                                     </div>
                                     <div class="form-group input-group name_client col-xs-12 col-sm-3">
                                         <label class=""
-                                            for="genero">{{ trans(\Config::get('app.theme') . '-app.user_panel.date_birthday') }}</label>
+                                            for="genero">{{ trans($theme . '-app.user_panel.date_birthday') }}</label>
                                         <input type="date" class="form-control" name="nacimiento"
                                             value="<?= !empty($data['user']->fecnac_cli) ? date('Y-m-d', strtotime($data['user']->fecnac_cli)) : '' ?>"
                                             data-content="">
                                         <input type="hidden" class="form-control" name="title_name"
-                                            value="{{ trans(\Config::get('app.theme') . '-app.user_panel.date_birthday') }}">
+                                            value="{{ trans($theme . '-app.user_panel.date_birthday') }}">
 
                                     </div>
                                 @endif
 
                                 <div class="form-group form-group-custom col-xs-12 col-sm-3">
                                     <label class=""
-                                        for="telefono">{{ trans(\Config::get('app.theme') . '-app.login_register.phone') }}</label>
+                                        for="telefono">{{ trans($theme . '-app.login_register.phone') }}</label>
                                     <input type="text" name="telefono" class="form-control"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.phone') }}"
+                                        placeholder="{{ trans($theme . '-app.user_panel.phone') }}"
                                         required="" maxlength="40" value="{{ $data['user']->tel1_cli }}">
                                     <input type="hidden" name="title_telefono" class="form-control"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.phone') }}">
+                                        value="{{ trans($theme . '-app.user_panel.phone') }}">
                                 </div>
                                 <div class="form-group form-group-custom col-xs-12 col-sm-3">
                                     <label class=""
-                                        for="movil">{{ trans(\Config::get('app.theme') . '-app.login_register.mobile') }}</label>
+                                        for="movil">{{ trans($theme . '-app.login_register.mobile') }}</label>
                                     <input type="text" name="telefono2" class="form-control"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.mobile') }}"
+                                        placeholder="{{ trans($theme . '-app.login_register.mobile') }}"
                                         maxlength="40" value="{{ $data['user']->tel2_cli }}">
                                     <input type="hidden" name="title_movil" class="form-control"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.login_register.mobile') }}">
+                                        value="{{ trans($theme . '-app.login_register.mobile') }}">
                                 </div>
                                 <div class="form-group form-group-custom col-xs-12 col-sm-6">
 
                                     <label class=""
-                                        for="email">{{ trans(\Config::get('app.theme') . '-app.login_register.email') }}</label>
+                                        for="email">{{ trans($theme . '-app.login_register.email') }}</label>
                                     <input type="text" class="form-control" id="email"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.email') }}"
+                                        placeholder="{{ trans($theme . '-app.user_panel.email') }}"
                                         type="email" disabled name="email" value="{{ $data['user']->usrw_cliweb }}"
                                         required>
                                     <input type="hidden" class="form-control" name="title_email"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.email') }}">
+                                        value="{{ trans($theme . '-app.user_panel.email') }}">
                                 </div>
                                 <div class="col-xs-12 hidden">
                                     <label
-                                        for="i-want-news">{{ trans(\Config::get('app.theme') . '-app.login_register.recibir_newsletter') }}</label>
+                                        for="i-want-news">{{ trans($theme . '-app.login_register.recibir_newsletter') }}</label>
                                     <div class="checkbox">
                                         <input checked="checked" type="checkbox" class="form-control"
                                             id="i-want-news" />
@@ -158,17 +158,17 @@
 
                                 <div class="form-group form-group-custom col-xs-12 col-sm-5">
                                     <label
-                                        for="direccion">{{ trans(\Config::get('app.theme') . '-app.user_panel.address') }}</label>
+                                        for="direccion">{{ trans($theme . '-app.user_panel.address') }}</label>
                                     <input type="text" name="direccion" class="form-control" id="direccion"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.address') }}"
+                                        placeholder="{{ trans($theme . '-app.user_panel.address') }}"
                                         required maxlength="60"
                                         value="{{ $data['user']->dir_cli }}{{ $data['user']->dir2_cli }}">
                                     <input type="hidden" name="title_direccion" class="form-control"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.address') }}">
+                                        value="{{ trans($theme . '-app.user_panel.address') }}">
                                 </div>
                                 <div class="form-group input-group col-xs-12 col-sm-4 col-md-4">
                                     <label
-                                        for="pais">{{ trans(\Config::get('app.theme') . '-app.user_panel.pais') }}</label>
+                                        for="pais">{{ trans($theme . '-app.user_panel.pais') }}</label>
                                     <select id="country" name="pais" class="form-control notranslate" required>
                                         <option value="">---</option>
                                         @if (!empty($data) && !empty($data['countries']))
@@ -181,43 +181,43 @@
                                         @endif
                                     </select>
                                     <input type="hidden" name="title_pais"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.pais') }}">
+                                        value="{{ trans($theme . '-app.user_panel.pais') }}">
                                 </div>
                                 <div class="form-group input-group col-xs-12 col-sm-4 col-md-2">
                                     <label
-                                        for="codigo_postal">{{ trans(\Config::get('app.theme') . '-app.user_panel.zip_code') }}</label>
+                                        for="codigo_postal">{{ trans($theme . '-app.user_panel.zip_code') }}</label>
                                     <input id="cpostal" type="text" name="cpostal" class="form-control"
                                         id="codigo_postal"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.zip_code') }}"
+                                        placeholder="{{ trans($theme . '-app.user_panel.zip_code') }}"
                                         required maxlength="10" value="{{ $data['user']->cp_cli }}">
                                     <input type="hidden" name="title_codigo_postal"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.zip_code') }}">
+                                        value="{{ trans($theme . '-app.user_panel.zip_code') }}">
                                 </div>
 
                                 <div class="form-group input-group col-xs-12 col-sm-4 col-md-5">
                                     <label
-                                        for="provincia">{{ trans(\Config::get('app.theme') . '-app.login_register.provincia') }}</label>
+                                        for="provincia">{{ trans($theme . '-app.login_register.provincia') }}</label>
                                     <input name="provincia" class="form-control"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.login_register.provincia') }}"
+                                        placeholder="{{ trans($theme . '-app.login_register.provincia') }}"
                                         maxlength="30" type="text" value="{{ $data['user']->pro_cli }}" />
                                     <input type="hidden" name="title_provincia"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.login_register.provincia') }}">
+                                        value="{{ trans($theme . '-app.login_register.provincia') }}">
                                 </div>
                                 <div class="form-group input-group col-xs-12 col-sm-4 col-md-5">
                                     <label
-                                        for="nombre">{{ trans(\Config::get('app.theme') . '-app.user_panel.city') }}</label>
+                                        for="nombre">{{ trans($theme . '-app.user_panel.city') }}</label>
                                     <input type="text" name="poblacion" class="form-control" id="Ciudad"
-                                        placeholder="{{ trans(\Config::get('app.theme') . '-app.user_panel.city') }}"
+                                        placeholder="{{ trans($theme . '-app.user_panel.city') }}"
                                         required required maxlength="30" value="{{ $data['user']->pob_cli }}">
                                     <input type="hidden" name="title_poblacion"
-                                        value="{{ trans(\Config::get('app.theme') . '-app.user_panel.city') }}">
+                                        value="{{ trans($theme . '-app.user_panel.city') }}">
                                 </div>
 
 
 
                                 <div class="col-xs-12">
                                     <button type="submit"
-                                        class="button-principal">{{ trans(\Config::get('app.theme') . '-app.user_panel.save') }}</button>
+                                        class="button-principal">{{ trans($theme . '-app.user_panel.save') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -286,13 +286,13 @@
                         <div class="panel-body">
                             <div class="modal-wrapper">
                                 <div class=" text-center single_item_content_">
-                                    <p>{{ trans(\Config::get('app.theme') . '-app.user_panel.delete_address') }}</p><br />
+                                    <p>{{ trans($theme . '-app.user_panel.delete_address') }}</p><br />
                                     <input name="_token" type="hidden" id="_token" value="{{ csrf_token() }}" />
                                     <input value="" name="cod" type="hidden" id="cod_delete">
                                     <input value="<?= Config::get('app.locale') ?>" name="lang" type="hidden"
                                         id="lang">
                                     <button
-                                        class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans(\Config::get('app.theme') . '-app.lot.accept') }}</button>
+                                        class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans($theme . '-app.lot.accept') }}</button>
 
                                 </div>
                             </div>

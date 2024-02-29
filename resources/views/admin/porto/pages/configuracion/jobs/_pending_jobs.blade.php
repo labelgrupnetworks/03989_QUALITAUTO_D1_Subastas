@@ -3,12 +3,12 @@
 		style="width:100%">
 		<thead>
 			<tr>
-				<th>Id</th>
-				<th>Entorno</th>
-				<th>Nombre de clase</th>
-				<th>Intentos</th>
-				<th>Fecha Disponibilidad</th>
-				<th>Fecha Creación</th>
+				<th>{{ trans("admin-app.fields.id") }}</th>
+				<th>{{ trans("admin-app.fields.environment") }}</th>
+				<th>{{ trans("admin-app.fields.class_name") }}</th>
+				<th>{{ trans("admin-app.fields.tries") }}</th>
+				<th>{{ trans("admin-app.fields.disponibility_date") }}</th>
+				<th>{{ trans("admin-app.fields.created_date") }}</th>
 				<th>
 					<span>{{ trans('admin-app.fields.actions') }}</span>
 				</th>

@@ -26,16 +26,16 @@
                         </div>
                         @if(Session::has('user') &&  $lote_actual->retirado_asigl0 =='N')
                             <a  class="btn hidden-xs <?= $data['subasta_info']->lote_actual->favorito? 'hidden':'' ?>" id="add_fav" href="javascript:action_fav_modal('add')">
-                                <p>{{ trans(\Config::get('app.theme').'-app.lot.add_to_fav') }} </p><i class="fa fa-star-o" aria-hidden="true"></i>
+                                <p>{{ trans($theme.'-app.lot.add_to_fav') }} </p><i class="fa fa-star-o" aria-hidden="true"></i>
                             </a>
                             <a class="btn  hidden-xs <?= $data['subasta_info']->lote_actual->favorito? '':'hidden' ?>" id="del_fav" href="javascript:action_fav_modal('remove')">
-                                <p>{{trans(\Config::get('app.theme').'-app.lot.del_from_fav')}} </p><i class="fa fa-star" aria-hidden="true"></i>
+                                <p>{{trans($theme.'-app.lot.del_from_fav')}} </p><i class="fa fa-star" aria-hidden="true"></i>
                             </a>
                         @endif
                         @if(($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->lic_hces1 == 'S' && $lote_actual->subc_sub == 'H') ||( $lote_actual->retirado_asigl0 !='N') || ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R')|| ($lote_actual->cerrado_asigl0 == 'S' &&  !empty($lote_actual->himp_csub)))
                             <div class="no_dispo-band">
                                 <div class="no_dispo"></div>
-                                <p>{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                                <p>{{ trans($theme.'-app.subastas.dont_available') }}</p>
                             </div>
                         @endif
                         <div id="img_main" class="img_single">
@@ -84,7 +84,7 @@
                                 @if(($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->lic_hces1 == 'S' && $lote_actual->subc_sub == 'H') ||  ( $lote_actual->retirado_asigl0 !='N') || ($lote_actual->fac_hces1 == 'D' || $lote_actual->fac_hces1 == 'R')|| ($lote_actual->cerrado_asigl0 == 'S' &&  !empty($lote_actual->himp_csub)))
                                     <div class="no_dispo-band">
                                         <div class="no_dispo"></div>
-                                        <p>{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}</p>
+                                        <p>{{ trans($theme.'-app.subastas.dont_available') }}</p>
                                     </div>
                                 @endif
                                        <img style="    max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important;    display: inherit !important;    margin: 0 auto !important;" class="img-responsive" src="/img/thumbs/500/{{\Config::get("app.emp")}}/{{$lote_actual->num_hces1}}/<?php echo $imagen?>" alt="{{$lote_actual->titulo_hces1}}">
@@ -144,7 +144,7 @@
             <div class="col-xs-12 col-sm-12 col-lg-7">
                 <div class="desc">
                       <div class="desc_tit">
-                              {{ trans(\Config::get('app.theme').'-app.lot.description') }}
+                              {{ trans($theme.'-app.lot.description') }}
                       </div>
                       <div class="desc_content">
                         @if( \Config::get('app.descweb_hces1'))
@@ -157,7 +157,7 @@
             </div>
             {{-- <div class="col-xs-12 col-sm-12 lotes_destacados">
                 <div class="title_single">
-                         {{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}
+                         {{ trans($theme.'-app.lot.recommended_lots') }}
                 </div>
                 <script>
                 < ?php

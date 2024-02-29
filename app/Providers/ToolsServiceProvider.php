@@ -460,7 +460,26 @@ class ToolsServiceProvider extends ServiceProvider
 			} elseif ($fecha > 3600) {
 				$date_time = '%Hh' . $date_time;
 			}
-		} elseif ($type == 'small') {
+		}
+		elseif ($type == 'complete') {
+			$stringSeconds = "Segundos";
+			$stringMinutes = "Minutos";
+			$stringHours = "Hrs";
+			$stringDays = "Días";
+
+			$secondsElement = "<p class='timer-seconds'><span>%S</span><span>$stringSeconds</span></p>";
+			$minutesElement = "<p class='timer-minutes'><span>%M</span><span>$stringMinutes</span></p>";
+			$hoursElement = "<p class='timer-hours'><span>%H</span><span>$stringHours</span></p>";
+			$daysElement = "<p class='timer-days'><span>%D</span><span>$stringDays</span></p>";
+
+			$date_time = "$minutesElement $secondsElement";
+			if ($fecha > 86400) {
+				$date_time = "$daysElement $hoursElement $date_time";
+			} elseif ($fecha > 3600) {
+				$date_time = "$hoursElement $date_time";
+			}
+		}
+		elseif ($type == 'small') {
 			$date_time = " %Ss";
 			if ($fecha > 86400) {
 				$date_time = '%Dd %Hh';
@@ -1385,6 +1404,9 @@ class ToolsServiceProvider extends ServiceProvider
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
 		if (strpos($path, 'img') === false && !$hash) {
 			$hash = filemtime($publicPath);
+		}
+		elseif(!$hash) {
+			return URL::asset($path) . "?a=" . filemtime($publicPath);
 		}
 
 		return URL::asset($path) . "?a=$hash";

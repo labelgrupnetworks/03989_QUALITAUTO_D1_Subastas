@@ -329,5 +329,21 @@ class ImageController extends BaseController
             }
             return $images_generates;
     }
+
+	public function converterImage($imagePathToBase64Url)
+	{
+		$image = base64_decode(strtr($imagePathToBase64Url, '-_.', '+/='));
+
+		$imageWebp = public_path($image);
+
+		if(!file_exists($imageWebp)){
+			return response('Image not found', 404);
+		}
+
+		$imageJpgPath = str_replace('.webp', '.jpg', $imageWebp);
+		Image::make($imageWebp)->save($imageJpgPath, 100, 'jpg');
+
+		return response()->file($imageJpgPath);
+	}
 }
 

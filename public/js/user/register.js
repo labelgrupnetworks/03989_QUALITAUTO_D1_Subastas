@@ -188,7 +188,9 @@ function submit_register_form() {
     if ($("#select__1__pais").val() == "ES" && $('[name="nif"]').val() == "") {
         error++;
         muestra_error_input(document.getElementById($('[name="nif"]').attr("id")));
-    }
+    } else {
+		eraseSpacesOnNif();
+	}
 
     if ($("#email__1__email").hasClass("email-error")) {
         error++;
@@ -286,4 +288,8 @@ function successRegister(response, aux) {
 function inputRequired(name, required) {
 	let valRequired = required ? 1 : 0;
 	$(`input[name='${name}']`).prop("id", `texto__${valRequired}__${name}`);
+}
+
+function eraseSpacesOnNif() {
+	$('[name="nif"]').val($('[name="nif"]').val().replace(/\s/g, ''));
 }

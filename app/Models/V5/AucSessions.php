@@ -11,10 +11,10 @@ use App\Providers\ToolsServiceProvider;
 class AucSessions extends Model
 {
     protected $table = '"auc_sessions"';
-    protected $primaryKey = '"company", "auction", "reference"';
+    protected $primaryKey = '"id_auc_sessions"';
 
     public $timestamps = false;
-    public $incrementing = false;
+    public $incrementing = true;
 
     protected $guarded = [];
 
@@ -61,6 +61,15 @@ class AucSessions extends Model
 		return ToolsServiceProvider::getDateFormat($this->end, 'Y-m-d H:i:s', 'd/m/Y H:i');
 	}
 
+	public function getUrlSessionAttribute()
+	{
+		return ToolsServiceProvider::url_auction($this->auction, $this->name, $this->id_auc_sessions, $this->reference);
+	}
+
+	public function getUrlIndiceAttribute()
+	{
+		return ToolsServiceProvider::url_indice_auction($this->auction, $this->name, $this->id_auc_sessions);
+	}
 
 	public function scopelog($query){
         return $query->joinUsr()->select('FSUSR.NOM_USR, "auc_sessions".*');
@@ -80,6 +89,29 @@ class AucSessions extends Model
 	public function scopeLeftJoinWebSubastas($query){
 		return $query->leftJoin('WEB_SUBASTAS','WEB_SUBASTAS.ID_EMP = "auc_sessions"."company" AND WEB_SUBASTAS.ID_SUB = "auc_sessions"."auction" AND WEB_SUBASTAS.SESSION_REFERENCE = "auc_sessions"."reference"');
 	}
+
+	public function scopeWhereAuction($query, $auction)
+	{
+		return $query->where('"auction"', $auction);
+	}
+
+	public static function previousReference($auction, $reference)
+    {
+        return self::whereAuction($auction)
+			->where('"reference"', '<', $reference)
+			->select('"reference"', '"id_auc_sessions"', '"auction"', '"name"')
+			->orderBy('"reference"', 'desc')
+			->first();
+    }
+
+    public static function nextReference($auction, $reference)
+    {
+        return self::whereAuction($auction)
+			->where('"reference"', '>', $reference)
+			->select('"reference"', '"id_auc_sessions"', '"auction"', '"name"')
+			->orderBy('"reference"')
+			->first();
+    }
 
 }
 

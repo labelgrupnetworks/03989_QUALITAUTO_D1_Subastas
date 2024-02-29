@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -35,7 +35,7 @@ $active_lots = DB::select($sql, $bindings);
 				<div class="princiapl-bar-wrapper">
 					<div class="principal-bar-title ">
 						<h3 class="titlePage" style="text-align:center;">
-							{{ trans(\Config::get('app.theme').'-app.login_register.register_blocked') }}</h3>
+							{{ trans($theme.'-app.login_register.register_blocked') }}</h3>
 					</div>
 				</div>
 			</div>
@@ -50,7 +50,7 @@ $active_lots = DB::select($sql, $bindings);
 			<div class="col-xs-12">
 				<div class="princiapl-bar-wrapper">
 					<div class="principal-bar-title">
-						<h3 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.login_register.crear_cuenta') }}
+						<h3 class="titlePage"> {{ trans($theme.'-app.login_register.crear_cuenta') }}
 						</h3>
 					</div>
 				</div>
@@ -67,7 +67,7 @@ $active_lots = DB::select($sql, $bindings);
 
 
 		<p class="error-form-validation">
-			{{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}</p>
+			{{ trans($theme.'-app.login_register.all_fields_are_required') }}</p>
 
 		<form method="post" id="registerForm" action="javascript:submit_register_form()">
 
@@ -87,7 +87,7 @@ $active_lots = DB::select($sql, $bindings);
 							type="radio"
 							/>
 							<div class="modern-button"></div>
-							<p>{{ trans(\Config::get('app.theme').'-app.login_register.particular') }}</p>
+							<p>{{ trans($theme.'-app.login_register.particular') }}</p>
 						</label>
 					</div>
 					<div class="form-group" onclick="javascript:empresa();">
@@ -97,7 +97,7 @@ $active_lots = DB::select($sql, $bindings);
 							$data['postUser']->fisjur_cli=='J') checked="checked" @endif
 							type="radio"
 							/>
-							<p>{{ trans(\Config::get('app.theme').'-app.login_register.empresa') }}</p>
+							<p>{{ trans($theme.'-app.login_register.empresa') }}</p>
 							<div class="modern-button"></div>
 						</label>
 					</div>
@@ -111,16 +111,16 @@ $active_lots = DB::select($sql, $bindings);
 			<div class="well">
 
 				<div class="tit">
-					{{ trans(\Config::get('app.theme').'-app.login_register.personal_information') }}
+					{{ trans($theme.'-app.login_register.personal_information') }}
 				</div>
 
 
 				<div class="tipo_sexo">
 					<div class="hombre selected" onclick="javascript:hombre();">
-						{{ trans(\Config::get('app.theme').'-app.login_register.hombre') }}
+						{{ trans($theme.'-app.login_register.hombre') }}
 					</div>
 					<div class="mujer" onclick="javascript:mujer();">
-						{{ trans(\Config::get('app.theme').'-app.login_register.mujer') }}
+						{{ trans($theme.'-app.login_register.mujer') }}
 					</div>
 				</div>
 
@@ -130,50 +130,50 @@ $active_lots = DB::select($sql, $bindings);
 				<div class="datos_contacto">
 
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+						<label>{{ trans($theme.'-app.login_register.pais') }}</label>
 						{!!$formulario->pais!!}
 					</div>
 
 					<div class="registerParticular nombre">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.nombre') }}</label>
+						<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
 						{!!$formulario->usuario!!}
 					</div>
 					<div class="registerParticular apellidos">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
+						<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
 						{!!$formulario->last_name!!}
 					</div>
 					<div class="registerEnterprise rsoc_cli">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.company') }}</label>
+						<label>{{ trans($theme.'-app.login_register.company') }}</label>
 						{!!$formulario->rsoc_cli!!}
 					</div>
 					<div class="registerEnterprise contact">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+						<label>{{ trans($theme.'-app.login_register.contact') }}</label>
 						{!!$formulario->contact!!}
 					</div>
 					<div class="via" style="@if(\Config::get('app.locale') != 'es') display: none; @endif">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+						<label>{{ trans($theme.'-app.login_register.via') }}</label>
 						{!!$formulario->vias!!}
 					</div>
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+						<label>{{ trans($theme.'-app.login_register.direccion') }}</label>
 						{!!$formulario->direccion!!}
 					</div>
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+						<label>{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 						{!!$formulario->cpostal!!}
 					</div>
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}</label>
+						<label>{{ trans($theme.'-app.login_register.ciudad') }}</label>
 						{!!$formulario->poblacion!!}
 					</div>
 
 					<div class="movil">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.mobile') }}</label>
+						<label>{{ trans($theme.'-app.login_register.mobile') }}</label>
 						{!!$formulario->movil!!}
 					</div>
 
 					<div>
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+						<label>{{ trans($theme.'-app.login_register.provincia') }}</label>
 						{!!$formulario->provincia!!}
 					</div>
 
@@ -183,49 +183,49 @@ $active_lots = DB::select($sql, $bindings);
 
 				<div class="datos_direccion">
 					<div class="col-xs-3">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.prefix') }}</label>
+						<label>{{ trans($theme.'-app.login_register.prefix') }}</label>
 						{!!$formulario->prefix!!}
 					</div>
 					<div class="col-xs-9">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
+						<label>{{ trans($theme.'-app.login_register.phone') }}</label>
 						{!!$formulario->telefono!!}
 					</div>
 					<div>
 						@if(\Config::get('app.locale') != 'es')
 						<label class="nif labelDni"
-							style="display: none">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
+							style="display: none">{{ trans($theme.'-app.login_register.dni') }}</label>
 						@else
 						<label class="nif labelDni"
-							style="display: inline-block">{{ trans(\Config::get('app.theme').'-app.login_register.dni') }}</label>
+							style="display: inline-block">{{ trans($theme.'-app.login_register.dni') }}</label>
 						@endif
 
 						<label class="cif labelDni"
-							style="display: none">{{ trans(\Config::get('app.theme').'-app.login_register.cif') }}</label>
+							style="display: none">{{ trans($theme.'-app.login_register.cif') }}</label>
 
 						@if(\Config::get('app.locale') != 'es')
 						<label class="passport labelDni"
-							style="display: inline-block">{{ trans(\Config::get('app.theme').'-app.login_register.passport') }}</label>
+							style="display: inline-block">{{ trans($theme.'-app.login_register.passport') }}</label>
 						@else
 						<label class="passport labelDni"
-							style="display: none">{{ trans(\Config::get('app.theme').'-app.login_register.passport') }}</label>
+							style="display: none">{{ trans($theme.'-app.login_register.passport') }}</label>
 						@endif
 
 						<label class="vat labelDni"
-							style="display: none">{{ trans(\Config::get('app.theme').'-app.login_register.vat') }}</label>
+							style="display: none">{{ trans($theme.'-app.login_register.vat') }}</label>
 						{!!$formulario->cif!!}
 					</div>
 					<div class="idioma">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.language') }}</label>
+						<label>{{ trans($theme.'-app.login_register.language') }}</label>
 						{!!$formulario->language!!}
 					</div>
 					<div class="moneda">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.currency') }}</label>
+						<label>{{ trans($theme.'-app.login_register.currency') }}</label>
 						{!!$formulario->divisa!!}
 					</div>
 					<div class="observaciones">
-						<label>{{ trans(\Config::get('app.theme').'-app.login_register.observacion') }}</label>
+						<label>{{ trans($theme.'-app.login_register.observacion') }}</label>
 						<label
-							class="hidden">{{ trans(\Config::get('app.theme').'-app.login_register.observacion_holder') }}</label>
+							class="hidden">{{ trans($theme.'-app.login_register.observacion_holder') }}</label>
 						{!!$formulario->obscli!!}
 					</div>
 
@@ -258,19 +258,19 @@ $active_lots = DB::select($sql, $bindings);
 
 			<div class="well">
 				<div class="tit">
-					{{ trans(\Config::get('app.theme').'-app.login_register.title_direccion_envio') }}
+					{{ trans($theme.'-app.login_register.title_direccion_envio') }}
 				</div>
 
 				<div>
 					<input id="shipping_address" class="form-contro filled-in" name="shipping_address" type="checkbox"
 						checked="true" />
 					<label
-						for="shipping_address">{{ trans(\Config::get('app.theme').'-app.login_register.utilizar_direcc_direccenv') }}</label>
+						for="shipping_address">{{ trans($theme.'-app.login_register.utilizar_direcc_direccenv') }}</label>
 
 					<input id="shipping_address_required" class="form-contro filled-in" name="shipping_address_required"
 						type="checkbox" />
 					<label class="shipping_address_required"
-						for="shipping_address_required">{{ trans(\Config::get('app.theme').'-app.login_register.add_addres') }}</label>
+						for="shipping_address_required">{{ trans($theme.'-app.login_register.add_addres') }}</label>
 				</div>
 
 				<div class="clearfix"></div>
@@ -284,30 +284,30 @@ $active_lots = DB::select($sql, $bindings);
 
 						<div class="form-group col-xs-12 col-md-6">
 							<div>
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.pais') }}</label>
+								<label>{{ trans($theme.'-app.login_register.pais') }}</label>
 								{!!$formulario->clid_pais!!}
 							</div>
 
 							{!! \FormLib::Hidden("usuario_clid", 0) !!}
 
 							<div class="nombre">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.nombre') }}</label>
+								<label>{{ trans($theme.'-app.login_register.nombre') }}</label>
 								{!! \FormLib::Text("name_clidTemp", 0) !!}
 							</div>
 
 							<div class="apellidos">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.apellidos') }}</label>
+								<label>{{ trans($theme.'-app.login_register.apellidos') }}</label>
 								{!! \FormLib::Text("lastName_clidTemp", 0) !!}
 							</div>
 
 							<div class="clid-via" style="@if(\Config::get('app.locale') != 'es') display: none; @endif">
-								<label>{{ trans(\Config::get('app.theme').'-app.login_register.via') }}</label>
+								<label>{{ trans($theme.'-app.login_register.via') }}</label>
 								{!!$formulario->clid_codigoVia!!}
 							</div>
 
 							<div>
 								<label
-									for="direccion">{{ trans(\Config::get('app.theme').'-app.login_register.direccion') }}</label>
+									for="direccion">{{ trans($theme.'-app.login_register.direccion') }}</label>
 								{!!$formulario->clid_direccion!!}
 							</div>
 
@@ -316,32 +316,32 @@ $active_lots = DB::select($sql, $bindings);
 						<div class="form-group col-xs-12 col-md-6">
 							<div>
 								<label
-									for="cpostal">{{ trans(\Config::get('app.theme').'-app.login_register.cod_postal') }}</label>
+									for="cpostal">{{ trans($theme.'-app.login_register.cod_postal') }}</label>
 								{!!$formulario->clid_cpostal!!}
 							</div>
 
 							<div>
 								<label for="poblacion">
-									{{ trans(\Config::get('app.theme').'-app.login_register.ciudad') }}
+									{{ trans($theme.'-app.login_register.ciudad') }}
 								</label>
 								{!!$formulario->clid_poblacion!!}
 							</div>
 
 							<div>
 								<label
-								for="provincia">{{ trans(\Config::get('app.theme').'-app.login_register.provincia') }}</label>
+								for="provincia">{{ trans($theme.'-app.login_register.provincia') }}</label>
 								{!!$formulario->clid_provincia!!}
 							</div>
 
 
 							<div class="phone_address">
 								<div>
-									<label>{{ trans(\Config::get('app.theme').'-app.login_register.prefix') }}</label>
+									<label>{{ trans($theme.'-app.login_register.prefix') }}</label>
 									{!! \FormLib::Int("preftel_clid", 0, '') !!}
 								</div>
 
 								<div>
-									<label>{{ trans(\Config::get('app.theme').'-app.login_register.phone') }}</label>
+									<label>{{ trans($theme.'-app.login_register.phone') }}</label>
 									{!! \FormLib::Int("tele_clid", 0, '') !!}
 								</div>
 
@@ -362,17 +362,17 @@ $active_lots = DB::select($sql, $bindings);
 
 
 			<div class="well">
-				<div class="tit">{{ trans(\Config::get('app.theme').'-app.login_register.cuenta') }}</div>
+				<div class="tit">{{ trans($theme.'-app.login_register.cuenta') }}</div>
 
 				<div class="datos_cuenta">
 
 					<div class="left">
-						<label for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email') }}</label>
+						<label for="email">{{ trans($theme.'-app.login_register.email') }}</label>
 						{!!$formulario->email!!}
 					</div>
 					<div class="right">
 						<label
-							for="email">{{ trans(\Config::get('app.theme').'-app.login_register.email_confirmacion') }}</label>
+							for="email">{{ trans($theme.'-app.login_register.email_confirmacion') }}</label>
 						{!!$formulario->confirm_email!!}
 					</div>
 
@@ -380,13 +380,13 @@ $active_lots = DB::select($sql, $bindings);
 
 					<div class="left">
 						<label
-							for="contrasena">{{ trans(\Config::get('app.theme').'-app.login_register.password') }}</label>
+							for="contrasena">{{ trans($theme.'-app.login_register.password') }}</label>
 						{!!$formulario->password!!}
 					</div>
 
 					<div class="right">
 						<label
-							for="confirmcontrasena">{{ trans(\Config::get('app.theme').'-app.login_register.confirm_password') }}</label>
+							for="confirmcontrasena">{{ trans($theme.'-app.login_register.confirm_password') }}</label>
 						{!!$formulario->confirm_password!!}
 					</div>
 
@@ -409,9 +409,9 @@ $active_lots = DB::select($sql, $bindings);
 							<input id="bool__1__condiciones" class="form-contro filled-in" name="condiciones"
 								type="checkbox" checked="true" />
 							<label for="bool__1__condiciones">
-								<span>{!! trans(\Config::get('app.theme').'-app.login_register.read_conditions') !!}
-									(<a href="<?php echo Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.term_condition') ?>"
-										target="_blank">{{ trans(\Config::get('app.theme').'-app.login_register.more_info') }}</a>)</span>
+								<span>{!! trans($theme.'-app.login_register.read_conditions') !!}
+									(<a href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') ?>"
+										target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)</span>
 							</label>
 
 						</div>
@@ -436,7 +436,7 @@ $active_lots = DB::select($sql, $bindings);
 
 			<div class="col-xs-12 text-center">
 				<button type="submit" class="btn btn-primary submitButton">
-					{{ trans(\Config::get('app.theme').'-app.login_register.register') }}
+					{{ trans($theme.'-app.login_register.register') }}
 				</button>
 			</div>
 

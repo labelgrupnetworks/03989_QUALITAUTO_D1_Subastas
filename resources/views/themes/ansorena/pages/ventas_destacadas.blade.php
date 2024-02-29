@@ -40,7 +40,7 @@
                 </form>
 
                 @if (empty($lots))
-                    <h3 class="text-center">{{ trans(\Config::get('app.theme') . '-app.lot_list.no_results') }}</h3>
+                    <h3 class="text-center">{{ trans($theme . '-app.lot_list.no_results') }}</h3>
                 @else
                     <div class="section-grid-lots row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 gy-4">
 

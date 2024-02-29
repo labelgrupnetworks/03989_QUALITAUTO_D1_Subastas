@@ -11,14 +11,14 @@
 				$url_subasta = $lote_actual->url_subasta."?order=orden_desc";
 			}
 		@endphp
-		<a href="{{ $url_subasta }}"><i class="fas fa-arrow-left"></i>   {{ trans(\Config::get('app.theme').'-app.lot.volver_listado') }}</a>
+		<a href="{{ $url_subasta }}"><i class="fas fa-arrow-left"></i>   {{ trans($theme.'-app.lot.volver_listado') }}</a>
 	</div>
 	<div>
 
 	<?php
 
 		#es posible que no haya texto, en ese caso, la funcion trans muestra lo mismo que la clave, hay que hacer que no muestre nada si no tiene traduccion
-		$key_trans = \Config::get('app.theme').'-app.lot.texto_destacado_lote_'.$data['subasta_info']->lote_actual->tipo_sub;
+		$key_trans = $theme.'-app.lot.texto_destacado_lote_'.$data['subasta_info']->lote_actual->tipo_sub;
 
 		$trans = trans($key_trans);
 		if ($trans != $key_trans){
@@ -113,7 +113,7 @@
 		?>
 		@if(!empty($files))
 		<div role="tabpanel" class="tab-pane ficheros_adj " id="ficheros">
-		{{-- 	<p> {{ trans(\Config::get('app.theme').'-app.lot.documents') }}</p>--}}
+		{{-- 	<p> {{ trans($theme.'-app.lot.documents') }}</p>--}}
 			@foreach($files as $file)
 			<img src="/img/icons/pdf.png" style="float: left;" width="20px">
 			 <a role="button" href="/{{$ruta."/".$file}}" target="_blank" style="display: block; font-weight: 600">{{str_replace (".pdf","",$file)}}</a>

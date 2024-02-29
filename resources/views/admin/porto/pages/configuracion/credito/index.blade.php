@@ -111,7 +111,7 @@
 				<form id="formUpdate" action="{{ route('credito.update', 0) }}"
 					data-action="{{ route('credito.update', 0) }}" method="POST">
 					<div class="modal-body">
-						<p>¿Cual es el credito máximo que quiere establecer?</p>
+						<p>{{ trans("admin-app.questions.max_credit") }}</p>
 						<input class="form-control" type="number" name="riesmax_cli">
 					</div>
 

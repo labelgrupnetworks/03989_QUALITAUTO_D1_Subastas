@@ -14,21 +14,10 @@
 	--bs-gutter-y: 1rem;
 }
 
-main.home,
-main.subastas,
-main.grid,
-main.ficha,
-main.static-page,
-main.valoracion-page,
 .user-panel-page,
-main.contact-page,
-main.museum-page,
-main.press-page,
-main.events-page,
-main.event-page,
 .home-static-page,
 .create-account,
-main.page-banner {
+main {
 	padding-top: var(--pading-pages);
 	padding-bottom: var(--pading-pages);
 }

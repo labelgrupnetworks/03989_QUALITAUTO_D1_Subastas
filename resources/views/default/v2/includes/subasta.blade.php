@@ -62,8 +62,8 @@ $files = $sub->getFiles($subasta->cod_sub);
 			<div class="activity"></div>
 
 			<img
-				{{-- src="{{\Tools::url_img_session('subasta_medium',$subasta->cod_sub,$subasta->reference)}}" --}}
-				src="https://demoauction.labelgrup.com/img/load/subasta_medium/SESSION_002_1340_001.jpg?a={{$loop->index}}"
+				 src="{{\Tools::url_img_session('subasta_medium',$subasta->cod_sub,$subasta->reference)}}"
+
 				class="w-100 h-100" alt="{{ $subasta->name }}"
 				@if($loop->index > 2)
 				loading="lazy"

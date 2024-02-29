@@ -80,7 +80,7 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                             </td>
                                             <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
                                                 {{ $inf_lot->impsalhces_asigl0 ?? 0 }}
-                                                {{ trans(\Config::get('app.theme') . '-app.subastas.euros') }}
+                                                {{ trans($theme . '-app.subastas.euros') }}
                                             </td>
                                             <td data-title="{{ trans("$theme-app.user_panel.price") }}">
                                                 {{ $precio_remate }}

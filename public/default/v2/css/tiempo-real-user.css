@@ -169,7 +169,7 @@ body {
 	gap: 5px;
 }
 
-.prices>.block-price>p {
+.prices>.block-price>p:first-of-type {
 	flex: 1;
 }
 
@@ -406,4 +406,68 @@ body {
 
 .insert_msg {
 	margin-bottom: 1rem;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Header
+|--------------------------------------------------------------------------
+*/
+header {
+	border-bottom: 1px solid var(--lb-color-secondary);
+}
+
+
+.navbar > .navbar-container > * {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+header .navbar-brand {
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0;
+}
+
+header .navbar-brand img {
+	object-fit: contain;
+	height: 100%;
+}
+
+header .navbar-brand img.logo {
+	width: 50%;
+	margin: auto
+}
+
+@media(min-width: 768px) {
+	header .navbar-brand img.logo {
+		width: 100%;
+		object-position: left;
+	}
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| tr_user_info
+|--------------------------------------------------------------------------
+*/
+.input-puja input {
+	border-right: 0;
+	font-size: 24px;
+	/*font size in pixels*/
+
+}
+
+.input-puja .input-group-text {
+	background: transparent;
+    border-left: 0;
+    border-right: 0;
+	font-size: 24px;
+}
+
+.tr_user_streaming iframe{
+	max-width: 100%;
 }

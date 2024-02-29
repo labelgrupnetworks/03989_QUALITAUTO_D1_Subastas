@@ -3,8 +3,8 @@
     <head>
 
         <meta charset="utf-8">
-        <meta name="description" content="{{ trans(\Config::get('app.theme').'-app.head.meta_description') }}">
-        <meta name="author" content="{{ trans(\Config::get('app.theme').'-app.head.meta_author') }}">
+        <meta name="description" content="{{ trans($theme.'-app.head.meta_description') }}">
+        <meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
         <meta name="viewport" content="width=device-width, user-scalable=no">
 
         <title>@yield('title', '')</title>        
@@ -21,17 +21,17 @@
             };
             var messages = {
             'error': {
-<?php foreach (trans(\Config::get('app.theme') . "-app.msg_error") as $key => $value) : ?>
+<?php foreach (trans($theme . "-app.msg_error") as $key => $value) : ?>
                 '<?php echo $key; ?>': '<?php echo $value; ?>',
 <?php endforeach; ?>
             },
                     'success': {
-<?php foreach (trans(\Config::get('app.theme') . "-app.msg_success") as $key => $value) : ?>
+<?php foreach (trans($theme . "-app.msg_success") as $key => $value) : ?>
                         '<?php echo $key; ?>': '<?php echo $value; ?>',
 <?php endforeach; ?>
                     },
                     'neutral': {
-<?php foreach (trans(\Config::get('app.theme') . "-app.msg_neutral") as $key => $value) : ?>
+<?php foreach (trans($theme . "-app.msg_neutral") as $key => $value) : ?>
                         '<?php echo $key; ?>': '<?php echo $value; ?>',
 <?php endforeach; ?>
                     }

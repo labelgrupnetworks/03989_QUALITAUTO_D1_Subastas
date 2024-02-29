@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -22,7 +22,7 @@
                                 @endif
                                 <div class="form" style="position:relative">
                                     <label
-                                        for="contrasena">{{ trans(\Config::get('app.theme') . '-app.user_panel.new_pass') }}</label>
+                                        for="contrasena">{{ trans($theme . '-app.user_panel.new_pass') }}</label>
                                     <input class="form-control" id="password" id="contrasena" name="password"
                                         data-minlength="5" type="password" type="password" maxlength="20" required>
                                     <img class="view_password eye-password"
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <div class="form" style="position: relative">
                                     <label
-                                        for="confirmcontrasena">{{ trans(\Config::get('app.theme') . '-app.user_panel.new_pass_repeat') }}</label>
+                                        for="confirmcontrasena">{{ trans($theme . '-app.user_panel.new_pass_repeat') }}</label>
                                     <input class="form-control" id="confirmcontrasena" name="confirm_password"
                                         data-match="#password" data-minlength="5" type="password" maxlength="20" required>
                                     <img class="view_password eye-password"
@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="text-center mt-2">
                                     <button class="btn btn-step-reg"
-                                        type="submit">{{ trans(\Config::get('app.theme') . '-app.user_panel.save') }}</button>
+                                        type="submit">{{ trans($theme . '-app.user_panel.save') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -52,7 +52,7 @@
         <section class="permanentAuctions">
             <div class="container">
                 <div class="alert alert-success">
-                    <?= trans(\Config::get('app.theme') . '-app.login_register.pass_sent') ?>
+                    <?= trans($theme . '-app.login_register.pass_sent') ?>
                 </div>
             </div>
         </section>

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('assets_components')
@@ -21,7 +21,7 @@
 			$bread = array();
 			if($filters['typeSub'] == 'P'){
 				$urlAllCategories =  route("allCategories", ['typeSub'=>'P']);
-				$bread[] = array("url" =>$urlAllCategories, "name" => trans(\Config::get('app.theme').'-app.foot.online_auction') );
+				$bread[] = array("url" =>$urlAllCategories, "name" => trans($theme.'-app.foot.online_auction') );
 			}
 			?>
 

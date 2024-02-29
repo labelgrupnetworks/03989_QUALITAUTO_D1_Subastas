@@ -21,7 +21,7 @@
         <div class="row">
             @if(!empty($data['auction_list']) && head($data['auction_list'])->tipo_sub != 'V')
                 <div class="col-xs-12 col-sm-12">
-                    <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</h1>
+                    <h1 class="titlePage"> {{ trans($theme.'-app.subastas.auctions') }}</h1>
                 </div>
             @endif
             @foreach (array_reverse($data['auction_list']) as  $subasta)
@@ -61,18 +61,18 @@
                             href="{{ $url_lotes }}"
                             class="btn btn-lotes"
                         >
-                            {{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}
+                            {{ trans($theme.'-app.subastas.see_lotes') }}
                         </a>
                         <a
                             title="{{ $subasta->name }}"
                             href="{{ $url_subasta }}"
                             class="btn btn-subasta"
                         >
-                            {{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+                            {{ trans($theme.'-app.subastas.see_subasta') }}
                         </a>
                         <?php // 06/02/2019 han pedido mostrar una frase para algunas de las usbastas de tipo V ?>
                         @if($subasta->tipo_sub == 'V')
-                            <p style="text-align: justify; color: black; font-style: oblique;">@if(in_array($subasta->cod_sub,array('VDWDEC18','VDWMOB18','VDWESC18','CINE2019','VDWP19'))) {{trans(\Config::get('app.theme').'-app.subastas.auctions_alert') }}  @endif</p>
+                            <p style="text-align: justify; color: black; font-style: oblique;">@if(in_array($subasta->cod_sub,array('VDWDEC18','VDWMOB18','VDWESC18','CINE2019','VDWP19'))) {{trans($theme.'-app.subastas.auctions_alert') }}  @endif</p>
                         @endif
                         @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
 							@if (\Session::has('user'))
@@ -81,14 +81,14 @@
 								@endphp
 								@if ($userController->getCreditCardAndCIFImages(\Session::get('user.cod')))
 									<p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
-										<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+										<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
 									</p>
 								@else
 									<p class="color-red text-center">{!! trans("$theme-app.lot.info_no_cc_and_cif") !!}</p>
 								@endif
 							@else
 								<p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
-									<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+									<a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
 								</p>
 							@endif
                         @endif
@@ -112,7 +112,7 @@
 
                         @if( $subasta->uppreciorealizado == 'S')
                             <p class="text-center "  style="background-color:#ecedef;padding: 5px 0; margin-top:10px">
-                                <a title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'pre')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</a> <br>
+                                <a title="{{ trans($theme.'-app.grid.pdf_adj') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'pre')}}">{{ trans($theme.'-app.subastas.pdf_adj') }}</a> <br>
                             </p>
                         @endif
 
@@ -156,26 +156,26 @@
                             <div class="item_subasta_item text-center">
                                {{ $subasta->name }}
                             </div>
-                            <a title="{{ $subasta->name }}" href="{{ $url_lotes }}" class="btn btn-lotes">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
-                            <a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}</a>
+                            <a title="{{ $subasta->name }}" href="{{ $url_lotes }}" class="btn btn-lotes">{{ trans($theme.'-app.subastas.see_lotes') }}</a>
+                            <a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">{{ trans($theme.'-app.subastas.see_subasta') }}</a>
                             @if( file_exists("files/". $subasta->file_code ."_cat.pdf"))
                                 <p class="text-center " style="background-color:#ecedef;padding: 5px 0; margin-top:10px">
-                                    <a title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_catalog') }}" target="_blank" href="/files/{{ $subasta->file_code }}_cat.pdf?a=<?= rand();?>">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a> <br>
+                                    <a title="{{ trans($theme.'-app.grid.pdf_catalog') }}" target="_blank" href="/files/{{ $subasta->file_code }}_cat.pdf?a=<?= rand();?>">{{ trans($theme.'-app.subastas.pdf_catalog') }}</a> <br>
                                 </p>
                             @endif
                             @if( file_exists("files/". $subasta->file_code ."_adj.pdf"))
                                 <p class="text-center "  style="background-color:#ecedef;padding: 5px 0; margin-top:10px">
-                                    <a title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="/files/{{ $subasta->file_code }}_adj.pdf?a=<?= rand();?>">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_adj') }}</a> <br>
+                                    <a title="{{ trans($theme.'-app.grid.pdf_adj') }}" target="_blank" href="/files/{{ $subasta->file_code }}_adj.pdf?a=<?= rand();?>">{{ trans($theme.'-app.subastas.pdf_adj') }}</a> <br>
                                 </p>
                             @endif
                             @if( file_exists("files/". $subasta->file_code ."_pre.pdf"))
                                 <p class="text-center "  style="background-color:#ecedef;padding: 5px 0; margin-top:10px">
-                                    <a title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_adj') }}" target="_blank" href="/files/{{ $subasta->file_code }}_adj.pdf?a=<?= rand();?>">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_pre') }}</a> <br>
+                                    <a title="{{ trans($theme.'-app.grid.pdf_adj') }}" target="_blank" href="/files/{{ $subasta->file_code }}_adj.pdf?a=<?= rand();?>">{{ trans($theme.'-app.subastas.pdf_pre') }}</a> <br>
                                 </p>
                             @endif
                             @if( $subasta->tipo_sub =='W' &&   strtotime($subasta->session_end) > time() )
                                 <p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
-                                    <a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans(\Config::get('app.theme').'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans(\Config::get('app.theme').'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
+                                    <a  style="color:#FFFFFF"   href="{{ $url_tiempo_real }}" title="{{ trans($theme.'-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_start),'d/m/Y H:i') }} {{ trans($theme.'-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s',$subasta->session_end),'d/m/Y H:i') }}" target="_blank">Puja en vivo</a>
                                 </p>
                             @endif
                         </div>

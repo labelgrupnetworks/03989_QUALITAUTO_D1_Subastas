@@ -5,7 +5,7 @@
 			<div class="title-wrapper valign">
 				<div class="title-lot">
 					<h2>
-						{{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$ref_asigl0}} - {{$titulo ?? ''}}
+						{{trans($theme.'-app.lot.lot-name')}} {{$ref_asigl0}} - {{$titulo ?? ''}}
 					</h2>
 				</div>
 			</div>

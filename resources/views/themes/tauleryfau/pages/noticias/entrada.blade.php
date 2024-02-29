@@ -3,16 +3,16 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
 
-   
+
 
 <section class="blog_bread">
-    <?php 
-    $bread[] = array("name" => trans(\Config::get('app.theme').'-app.blog.name'), 'url'=>\Routing::slugSeo('blog') );
+    <?php
+    $bread[] = array("name" => trans($theme.'-app.blog.name'), 'url'=>\Routing::slugSeo('blog') );
     $titulo_post = $data['news']->titulo_web_blog_lang;
     $bread[] = array("name" => $titulo_post) ;
     ?>
@@ -36,22 +36,22 @@
             <div class="col-xs-12 blog_title_container">
 
                <div class="article-title text-center"><h1>{{ $data['news']->titulo_web_blog_lang }}</h1></div>
-                
-                
+
+
             </div>
             <div class="col-xs-12 text-center">
                 <div class="date-post-principal article-data text-center">
-                    <?php  
+                    <?php
 
                         $fecha = strftime('%d %b %Y',strtotime($data['news']->publication_date_web_blog));
-                                    
+
                         if(\App::getLocale() != 'en'){
                             $array_fecha = explode(" ",$fecha);
-                            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
+                            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans($theme."-app.global.month_large"));
                             $fecha = $array_fecha[0].' '.$array_fecha[1].' '.$array_fecha[2];
                         }
 
-                        ?>    
+                        ?>
                     <p>{{ $fecha }}</p>
                 </div>
             </div>
@@ -59,7 +59,7 @@
 
                 <div class="col-md-12 col-xs-12">
                 <div class="post_body_image">
-                        
+
                         @if(!empty($data['news']->video_web_blog_lang) && str_is('*youtu*',$data['news']->video_web_blog_lang) == true)
                             <?php
                                 $cod_video = $data['news']->video_web_blog_lang;
@@ -68,13 +68,13 @@
                             <iframe class="video_post" style="width: 100%;min-height: 462px;" width="560" height="315" src="{{ $cod_video }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                         @else
                             <img class="img-responsive" src="{{ $data['news']->img_web_blog }}" >
-                            
+
                         @endif
-                        
+
                     </div>
             </div>
                 </div>
-            
+
         </div>
     </div>
 </section>
@@ -84,7 +84,7 @@
             <div class="col-sm-8 col-sm-offset-2 col-xs-12">
                  <ul class="share-article">
                         <li class="facebook">
-                            <a title="{{ trans(\Config::get('app.theme').'-app.lot.share_on') }} Facebook" href='javascript:abrirNuevaVentana("http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
+                            <a title="{{ trans($theme.'-app.lot.share_on') }} Facebook" href='javascript:abrirNuevaVentana("http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
                                 <svg xmlns="https://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 44 44">
                                     <g fill="none" fill-rule="evenodd">
                                         <ellipse class="border"  cx="21.811" cy="22.579" stroke="#AA966E" rx="20.632" ry="20.263"/>
@@ -94,7 +94,7 @@
                             </a>
                         </li>
                         <li class="twitter">
-                            <a title="{{ trans(\Config::get('app.theme').'-app.lot.share_on') }} Twitter" href='javascript:abrirNuevaVentana("http://twitter.com/share?text=<?= $data['news']->titulo_web_blog_lang?> <?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?> &url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
+                            <a title="{{ trans($theme.'-app.lot.share_on') }} Twitter" href='javascript:abrirNuevaVentana("http://twitter.com/share?text=<?= $data['news']->titulo_web_blog_lang?> <?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?> &url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
                                 <svg xmlns="https://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 44 44">
                                     <g fill="none" fill-rule="evenodd" transform="translate(.25)">
                                         <ellipse class="border" cx="21.811" cy="22.579" stroke="#AA966E" rx="20.632" ry="20.263"/>
@@ -103,9 +103,9 @@
                                 </svg>
                             </a>
                         </li>
-                            
+
                             <li class="gplus">
-                                <a title="{{ trans(\Config::get('app.theme').'-app.lot.share_on') }} google+" href='javascript:abrirNuevaVentana("https://plus.google.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
+                                <a title="{{ trans($theme.'-app.lot.share_on') }} google+" href='javascript:abrirNuevaVentana("https://plus.google.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")'>
                                     <svg xmlns="https://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 45 44">
                                         <g fill="none" fill-rule="evenodd" transform="translate(.75)">
                                             <ellipse class="border" cx="21.811" cy="22.579" stroke="#AA966E" rx="20.632" ry="20.263"/>
@@ -115,7 +115,7 @@
                                 </a>
                             </li>
                             <li class="gplus">
-                                <a title="{{ trans(\Config::get('app.theme').'-app.lot.share_on') }} pinterest" href=javascript:abrirNuevaVentana("https://pinterest.com/pin/create/button/?media=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")>
+                                <a title="{{ trans($theme.'-app.lot.share_on') }} pinterest" href=javascript:abrirNuevaVentana("https://pinterest.com/pin/create/button/?media=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>")>
                                     <svg xmlns="https://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 45 44">
                                         <g fill="none" fill-rule="evenodd" transform="translate(.75)">
                                             <ellipse class="border" cx="21.811" cy="22.579" stroke="#AA966E" rx="20.632" ry="20.263"/>
@@ -130,34 +130,34 @@
                                 </a>
                             </li>
                     </ul>
-             <?php 
+             <?php
                         $data['news']->texto_web_blog_lang = str_replace("a:visited", ".post_body a:visited", $data['news']->texto_web_blog_lang);
                         $data['news']->texto_web_blog_lang = str_replace("a:link", ".post_body a:link", $data['news']->texto_web_blog_lang);
                         $data['news']->texto_web_blog_lang = str_replace("<style>", "<style>/*", $data['news']->texto_web_blog_lang);
                         $data['news']->texto_web_blog_lang = str_replace("</style>", "*/</style>", $data['news']->texto_web_blog_lang);
- 
-                        
+
+
                         ?>
-                        <p class="cuerpo-del-articulos"><?= $data['news']->texto_web_blog_lang ?></p>       
+                        <p class="cuerpo-del-articulos"><?= $data['news']->texto_web_blog_lang ?></p>
         </div>
-            
+
         </div>
     </div>
-    
+
 </section>
 <section class="categ-related">
     <div class="container">
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2 col-xs-12">
                 <div class="article-categoria-titulo">
-                    {{ trans(\Config::get('app.theme').'-app.blog.cat_related') }}:
+                    {{ trans($theme.'-app.blog.cat_related') }}:
                 </div>
             <div class="categorias-relacionadas-items">
-                
-                    @foreach($data['categorys_web'] as $rel_cat)       
-                    <a class="categoria-sidebar item-categoria-article" href="<?= \Routing::translateSeo('subastas').$rel_cat->key_ortsec0 ?>" role="button">{{ $rel_cat->des_ortsec0 }}</a>                   
+
+                    @foreach($data['categorys_web'] as $rel_cat)
+                    <a class="categoria-sidebar item-categoria-article" href="<?= \Routing::translateSeo('subastas').$rel_cat->key_ortsec0 ?>" role="button">{{ $rel_cat->des_ortsec0 }}</a>
                         @endforeach
-                    
+
                 </div>
             </div>
         </div>
@@ -170,11 +170,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="article-categoria-titulo">
-                    {{ trans(\Config::get('app.theme').'-app.blog.post_related') }}:
+                    {{ trans($theme.'-app.blog.post_related') }}:
                 </div>
                 <div class="entradas-relacionadas-lista">
-                    @foreach($data['relationship_new'] as $rel_link)               
-                                <?php 
+                    @foreach($data['relationship_new'] as $rel_link)
+                                <?php
                                     $url = \Routing::slugSeo('blog').'/'.$data['categorys'][$rel_link->primary_category_web_blog]->url_category_blog_lang.'/'.$rel_link->url_web_blog_lang
                                 ?>
                     <div class="col-md-4 entrada-relacionada-item col-xs-6">
@@ -185,11 +185,11 @@
                             <img class="img-responsive" src="{{ $rel_link->img_web_blog }}" >
                         </div>
                         <div class="button-post">
-                                <a href="{{ $url }}" role="button"><?= trans(\Config::get('app.theme').'-app.blog.more') ?></a>
+                                <a href="{{ $url }}" role="button"><?= trans($theme.'-app.blog.more') ?></a>
                         </div>
                     </div>
-                                   
-                                        
+
+
 
                         @endforeach
                 </div>
@@ -199,7 +199,7 @@
 </section>
 
 <script>
-    
+
     <?php
             $sub_categories_web = str_replace(",","','",$data['news']->lot_sub_categories_web_blog);
 
@@ -213,15 +213,15 @@
         var replace = <?= json_encode($replace) ?>;
         var key ="<?= $key ?>";
     $( document ).ready(function() {
-        
-        ajax_carousel(key,replace); 
+
+        ajax_carousel(key,replace);
         if($('.post_recents_list ul li').length < 4){
             $('.post_recents_button').hide();
         }
-        
+
         $('.post_recents_button').on('click', function(){
                 $('.post_recents_list ul li').toggleClass('active');
-            
+
                 if($(this).attr('data-open') === 'open'){
                     $(this).text('Ver más')
                     $(this).attr('data-open', 'close')
@@ -231,11 +231,11 @@
                     $(this).attr('data-open', 'open')
                 }
             });
-        
+
     });
-    
-    
-    
+
+
+
 
 
 </script>

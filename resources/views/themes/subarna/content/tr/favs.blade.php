@@ -1,5 +1,5 @@
 <div class="aside hidden started" id="favs_box">
-	<h2 class="msj">{{ trans(\Config::get('app.theme').'-app.sheet_tr.your_favs') }}</h2>
+	<h2 class="msj">{{ trans($theme.'-app.sheet_tr.your_favs') }}</h2>
 	<div class="row fav_list">
 		<?php foreach ($data['js_item']['user']['favorites'] as $key => $value) : ?>
 			<div class="col-sm-3">

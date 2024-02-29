@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans(\Config::get('app.theme') . '-app.user_panel.favorites') }}</h1>
+                <h1>{{ trans($theme . '-app.user_panel.favorites') }}</h1>
 
                 <div class="accordion">
                     @foreach ($data['favoritos'] as $all_inf)
@@ -84,14 +84,14 @@
                                                             {{ trans(Config::get('app.theme') . '-app.subastas.euros') }}
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">
-                                                            {{ \Tools::moneyFormat($inf_lot->actual_bid ?? 0, trans(\Config::get('app.theme') . '-app.subastas.euros')) }}
+                                                            {{ \Tools::moneyFormat($inf_lot->actual_bid ?? 0, trans($theme . '-app.subastas.euros')) }}
                                                         </td>
                                                         <td data-title="{{ trans("$theme-app.user_panel.mi_puja") }}"
                                                             @class([
                                                                 'mine' => $myMaxBid?->rn == 1,
                                                                 'other' => $myMaxBid?->rn != 1,
                                                             ])>
-                                                            {{ Tools::moneyFormat($maxValue, trans(\Config::get('app.theme') . '-app.subastas.euros')) }}
+                                                            {{ Tools::moneyFormat($maxValue, trans($theme . '-app.subastas.euros')) }}
                                                         </td>
 
                                                         <td>
@@ -113,7 +113,7 @@
                                                                     <li>
                                                                         <a class="dropdown-item"
                                                                             href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}', '{{ $myCodLicitInThisAuction }}')">
-                                                                            {{ trans(\Config::get('app.theme') . '-app.lot.del_from_fav') }}
+                                                                            {{ trans($theme . '-app.lot.del_from_fav') }}
                                                                         </a>
                                                                     </li>
 

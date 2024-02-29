@@ -26,7 +26,7 @@ class AdminAuth
                 $res = array(
                     'status' => 'error',
                     'redirect' => '/admin',
-                    'msg' => trans(\Config::get('app.theme').'-admin.ajax.session_timeout')
+                    'msg' => trans("admin-app.login.session_timeout")
                 );
 
                 die(json_encode($res));

@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
 <?php
-	$bread[] = array("name" =>trans(\Config::get('app.theme').'-app.foot.departments'),"url" =>\Routing::translateSeo('departamentos')  );
-	$theme = \Config::get('app.theme');
+	$bread[] = array("name" =>trans($theme.'-app.foot.departments'),"url" =>\Routing::translateSeo('departamentos')  );
+	$theme = $theme;
 ?>
 
 
@@ -35,7 +35,7 @@
                     <div class="container">
                         <div class="title_lotes_destacados principal-color">
 							<h3 class="title-home text-center">
-								{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.our_experts') }}
+								{{ trans($theme.'-app.valoracion_gratuita.our_experts') }}
 							</h3>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     $name_archive = '/img/PER/'.Config::get('app.gemp').$esp->per_especial1.'.jpg';
 
                     if (file_exists($name_archive)) {
-                       $name_archive = '/themes/'.\Config::get('app.theme').'/img/items/no_photo.png';
+                       $name_archive = '/themes/'.$theme.'/img/items/no_photo.png';
                     }
                     ?>
 
@@ -74,7 +74,7 @@
                     <div class="container">
                             <div class="title_lotes_destacados principal-color">
 								<h3 class="title-home text-center">
-									{{ trans(\Config::get('app.theme').'-app.valoracion_gratuita.contact_us') }}
+									{{ trans($theme.'-app.valoracion_gratuita.contact_us') }}
 								</h3>
 
                             </div>
@@ -87,29 +87,29 @@
 
                         <form action="/api-ajax/mail" method="post">
                              <div class="form-group">
-							 	<label for="Nombre"><strong>{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.name')}}</strong></label>
+							 	<label for="Nombre"><strong>{{trans($theme.'-app.valoracion_gratuita.name')}}</strong></label>
                                      <input placeholder="Nombre" class="form-control" type="text" name="nombre" required aria-required="true">
                              </div>
                              <div class="form-group">
-                                     <label for="E-mail">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.email')}}</label>
+                                     <label for="E-mail">{{trans($theme.'-app.valoracion_gratuita.email')}}</label>
                                              <input placeholder="E-mail" class="form-control" type="text" name="email" required aria-required="true">
                              </div>
                              <div class="form-group">
-                                     <label for="Teléfono">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.telf')}}</label>
+                                     <label for="Teléfono">{{trans($theme.'-app.valoracion_gratuita.telf')}}</label>
                                      <input placeholder="Teléfono" class="form-control" type="text" name="telefono" required aria-required="true">
                              </div>
                              <div class="form-group">
-                                     <label for="Comentario">{{trans(\Config::get('app.theme').'-app.valoracion_gratuita.description')}}</label>
+                                     <label for="Comentario">{{trans($theme.'-app.valoracion_gratuita.description')}}</label>
                                      <textarea name="comentario"  required aria-required="true" id="" cols="30" rows="4" class="form-control"></textarea>
                              </div>
                             <div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"  id="html_element" data-callback="recaptcha_callback" ></div>
                                          <div class="checkbox">
                                  <label>
-                                     <input name="condiciones" required="" type="checkbox">{!! trans(\Config::get('app.theme').'-app.login_register.read_conditions_politic') !!}
+                                     <input name="condiciones" required="" type="checkbox">{!! trans($theme.'-app.login_register.read_conditions_politic') !!}
                                  </label>
                                </div>
-                            * {{ trans(\Config::get('app.theme').'-app.login_register.all_fields_are_required') }}
-							<button style="cursor:pointer;" id="buttonSend" type="submit" class="btn btn-contact btn-color" disabled="" >{{ trans(\Config::get('app.theme').'-app.login_register.acceder')}}</button>
+                            * {{ trans($theme.'-app.login_register.all_fields_are_required') }}
+							<button style="cursor:pointer;" id="buttonSend" type="submit" class="btn btn-contact btn-color" disabled="" >{{ trans($theme.'-app.login_register.acceder')}}</button>
                      </form>
                     </div>
                     <div class="col-lg-2"></div>

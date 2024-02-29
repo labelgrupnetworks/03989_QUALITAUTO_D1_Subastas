@@ -190,7 +190,7 @@
             foreach($periods as $k => $item) {
 
                 if (empty($item->subperiod_1)) {
-                    $item->subperiod_1 = trans(\Config::get('app.theme').'-app.lot_list.sin_periodo');
+                    $item->subperiod_1 = trans($theme.'-app.lot_list.sin_periodo');
                 }
 
                 $data['periodos'][\Tools::Seo_url($item->subperiod_1)] = $item;
@@ -228,7 +228,7 @@
                         </div>
                         <div class="bar-filters flex">
                         <div class="input-order-reference">
-                            <label class="hidden-xs">{{ trans(\Config::get('app.theme').'-app.lot_list.order') }}</label>
+                            <label class="hidden-xs">{{ trans($theme.'-app.lot_list.order') }}</label>
                             <?php
                             $s = null;
                             if(!empty(app('request')->input('s'))){
@@ -241,53 +241,53 @@
                             <select id="order_selected" name="order" class="form-control submit_on_change">
                                 <!-- Eloy: Desactivado por pettición del cliente 16/09/2019
                                 <option value="name" @if (app('request')->input('order') == 'name') selected @endif >
-                                    {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
+                                    {{ trans($theme.'-app.lot_list.order') }}:   {{ trans($theme.'-app.lot_list.name') }}
                                </option>
                                 -->
                                <option value="price_asc" @if (app('request')->input('order') == 'price_asc') selected @endif >
-                                    {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
+                                    {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.price_asc') }}
                                </option>
                                <option value="price_desc" @if (app('request')->input('order') == 'price_desc') selected @endif >
-                                   {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
+                                   {{ trans($theme.'-app.lot_list.order') }}:      {{ trans($theme.'-app.lot_list.price_desc') }}
                                </option>
                                <option value="ref" @if (empty(app('request')->input('order')) || app('request')->input('order') == 'ref') selected @endif >
-                                    {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+                                    {{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.reference') }}
                                </option>
                               <?php /*
                                 <option value="ffin" @if (app('request')->input('order') == 'ffin') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
+                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_near') }} </b>
                                 </option>
                                 */ ?>
                                 <option value="mbids" @if (app('request')->input('order') == 'mbids') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }} </b>
+                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_bids') }} </b>
                                 </option>
 
                                 <option value="hbids" @if (app('request')->input('order') == 'hbids') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }} </b>
+                                        {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.higher_bids') }} </b>
                                 </option>
 
 <?php /*
                                 <option value="fecalta" @if (app('request')->input('order') == 'fecalta') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.more_recent') }}
+                                        {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.more_recent') }}
                                 </option>
  */ ?>
                                 <option value="lastbids" @if (app('request')->input('order') == 'lastbids') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.last_bids') }}
+                                        {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.last_bids') }}
                                 </option>
                                 <option value="360" @if (app('request')->input('order') == '360') selected @endif >
-                                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.lots_360') }}
+                                        {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.lots_360') }}
                                 </option>
 
                                <?php //si son subastas presenciales y ya ha empezado que permita filtrar por lotes?>
                                @if(!empty($data['sub_data']) && $data['sub_data']->tipo_sub == 'W' && ($data['sub_data']->subc_sub == 'S' ||   $data['sub_data']->subc_sub == 'A') && strtotime($data['sub_data']->start) < strtotime("now") )
                                    <option value="fbuy" @if (empty(app('request')->input('order')) || app('request')->input('order') == 'fbuy') selected @endif >
-                                           {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.filter_by_buy') }} </b>
+                                           {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.filter_by_buy') }} </b>
                                    </option>
                                @endif
                             </select>
                         </div>
                         <div class="input-order-quantity hidden-xs">
-                            <label>{{ trans(\Config::get('app.theme').'-app.lot_list.to_show') }}</label>
+                            <label>{{ trans($theme.'-app.lot_list.to_show') }}</label>
                             <select id="total_selected" class="form-control submit_on_change">
                                 @foreach (\Config::get('app.filter_total_shown_options') as $option)
                                     <option value="{{ $option }}" @if (app('request')->input('total') == $option) selected @endif >
@@ -297,9 +297,9 @@
                             </select>
                         </div>
                         <div class="input-lot">
-                            <label>{{ trans(\Config::get('app.theme').'-app.lot.go_to_lot') }}</label>
+                            <label>{{ trans($theme.'-app.lot.go_to_lot') }}</label>
                             <input id="input_reference" placeholder="" name="reference" type="text" class="form-control input-sm" value="{{ app('request')->input('reference') }}">
-                            <button class="btn btn-color btn-bar-filters">{{ trans(\Config::get('app.theme').'-app.lot.ver') }}</button>
+                            <button class="btn btn-color btn-bar-filters">{{ trans($theme.'-app.lot.ver') }}</button>
                         </div>
 
 
@@ -336,14 +336,14 @@
                             //en caso de que este el tiempo real pujando en ese momento, activamos un texto que le avisa al cliente y lo dirige a pujar en vivo.
                             $url_tiempo_real=\Routing::translateSeo('api/subasta').$data['sub_data']->cod_sub."-".str_slug($data['sub_data']->name)."-".$data['sub_data']->id_auc_sessions;
                         ?>
-                            <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+                            <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
 
                         @elseif(!empty($data['cod_sub_aux']) && $data['cod_sub_aux']->tipo_sub =='W' && strtotime($data['cod_sub_aux']->end) > time() && strtotime($data['cod_sub_aux']->start) < time() && $subasta_finalizada == false)
                         <?php
                             //en caso de que este el tiempo real pujando en ese momento, activamos un texto que le avisa al cliente y lo dirige a pujar en vivo.
                             $url_tiempo_real=\Routing::translateSeo('api/subasta').$data['cod_sub_aux']->cod_sub."-".str_slug($data['cod_sub_aux']->name)."-".$data['cod_sub_aux']->id_auc_sessions;
                         ?>
-                            <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+                            <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
 
                         @endif
                 </div>
@@ -357,7 +357,7 @@
                 <div class="col-xs-9 col-sm-4 col-md-3 col-lg-3 refresh text-right">
                      @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
                         @if(Session::has('user'))
-                           <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans(\Config::get('app.theme').'-app.lot_list.ver_ofertas') ?></a>
+                           <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
                         @endif
                     @endif
                 </div>
@@ -406,7 +406,7 @@
                     @if(\Config::get('app.filter_period') && isset($data['periodos']) && !empty( $data['periodos']) && head($data['periodos'])->lin_ortsec1 != 15)
 
                         <span class="badge">
-                            <a href="{!! \Routing::translateSeo('subastas') !!}{{ trans(\Config::get('app.theme').'-app.links.todas-categorias') }}{{\Tools::generateUrlGet($getValue)}}">
+                            <a href="{!! \Routing::translateSeo('subastas') !!}{{ trans($theme.'-app.links.todas-categorias') }}{{\Tools::generateUrlGet($getValue)}}">
                                 <i class="fa fa-times"></i>
                                 &nbsp;&nbsp;
                                 {{head($data['periodos'])->des_ortsec0}}
@@ -447,7 +447,7 @@
                             <a href="javascript:$('#open').trigger('click');">
                                 <i class="fa fa-times"></i>
                                 &nbsp;&nbsp;
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.progress_lots') }}
+                                {{ trans($theme.'-app.lot_list.progress_lots') }}
                             </a>
                         </span>
 
@@ -459,7 +459,7 @@
                             <a href="javascript:$('#award').trigger('click');">
                                 <i class="fa fa-times"></i>
                                 &nbsp;&nbsp;
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.sold_lots') }}
+                                {{ trans($theme.'-app.lot_list.sold_lots') }}
                             </a>
                         </span>
 
@@ -471,7 +471,7 @@
                             <a href="javascript:$('#no_award').trigger('click');">
                                 <i class="fa fa-times"></i>
                                 &nbsp;&nbsp;
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.dont_sold_lots') }}
+                                {{ trans($theme.'-app.lot_list.dont_sold_lots') }}
                             </a>
                         </span>
 
@@ -483,8 +483,8 @@
 
 						<div class="switch-filt hidden-lg hidden-md hidden-sm">
                     	    <label class="switcher" for="onlyHistoric"><small></small></label>
-							<small class="title-filt">{{ trans(\Config::get('app.theme').'-app.lot_list.show_filters') }}</small>
-							<small class="title-filt" style="display: none;">{{ trans(\Config::get('app.theme').'-app.lot_list.hide_filters') }}</small>
+							<small class="title-filt">{{ trans($theme.'-app.lot_list.show_filters') }}</small>
+							<small class="title-filt" style="display: none;">{{ trans($theme.'-app.lot_list.hide_filters') }}</small>
                     	    <input type="checkbox" name="" class="js-switch" style="display:none"/>
                     	</div>
 
@@ -512,7 +512,7 @@
 
                 <div class="list_lot">
                     @if (count($data['subastas']) == 0)
-                        <h2>{{ trans(\Config::get('app.theme').'-app.msg_error.noHayLotes') }}</h2>
+                        <h2>{{ trans($theme.'-app.msg_error.noHayLotes') }}</h2>
                     @endif
                     @foreach ($data['subastas'] as $key => $item)
                         <?php
@@ -536,7 +536,7 @@
                             }elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
                                 $titulo = $item->titulo_hces1;
                             }elseif(\Config::get('app.ref_asigl0')){
-                                $titulo = trans(\Config::get('app.theme').'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
+                                $titulo = trans($theme.'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
                             }
                             $precio_venta=NULL;
                             if (!empty($item->himp_csub)){
@@ -603,14 +603,14 @@
         </div>
         <div class="col-md-8 col-xs-12">
             <div class="modal-name-aution mb-2 title-modal-current-auction">
-                {{ trans(\Config::get('app.theme').'-app.lot_list.la') }} {{ $ficha_subasta->name }} {{ trans(\Config::get('app.theme').'-app.lot_list.isBegin') }}
+                {{ trans($theme.'-app.lot_list.la') }} {{ $ficha_subasta->name }} {{ trans($theme.'-app.lot_list.isBegin') }}
             </div>
             <div class="modal-desc-auction mb-2 title-modal-current-auction text-underline">
                     {{ $ficha_subasta->description }}
 
             </div>
             <div class="modal-desc-auction mb-2 title-modal-current-auction">
-                    {{ trans(\Config::get('app.theme').'-app.lot_list.begin_auction') }}
+                    {{ trans($theme.'-app.lot_list.begin_auction') }}
             </div>
             <div class="modal-button-auction mb-3 d-flex align-items-center justify-content-space-bettween flex-wrap">
                 <div class="btn-current-action gotoauction col-md-6 col-xs-12 ">
@@ -618,19 +618,19 @@
                         if($data['type'] !== 'category'){
                             $url_tiempo_real=\Routing::translateSeo('api/subasta').$data['sub_data']->cod_sub."-".str_slug($data['sub_data']->name)."-".$data['sub_data']->id_auc_sessions;
                         ?>
-                        <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+                        <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
                     <?php } ?>
 
                     <?php
                         if(isset($_GET['s'])){
                             $url_tiempo_real=\Routing::translateSeo('api/subasta').$data['cod_sub_aux']->cod_sub."-".str_slug($data['cod_sub_aux']->name)."-".$data['cod_sub_aux']->id_auc_sessions;
                         ?>
-                        <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans(\Config::get('app.theme').'-app.subastas.bid_online_now') }}</a>
+                        <a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
                     <?php } ?>
 
                 </div>
                 <div class="btn-current-action continue-here col-md-6 col-xs-12">
-                    <a href="" class="bid-large-button-view view">{{ trans(\Config::get('app.theme').'-app.lot_list.continue_here') }}</a>
+                    <a href="" class="bid-large-button-view view">{{ trans($theme.'-app.lot_list.continue_here') }}</a>
                 </div>
             </div>
 

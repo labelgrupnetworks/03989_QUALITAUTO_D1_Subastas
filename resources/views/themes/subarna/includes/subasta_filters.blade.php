@@ -1,48 +1,48 @@
  <div class="sidebar_lot">
     <div class="sidebar_lot_title">
-           {{ trans(\Config::get('app.theme').'-app.lot_list.filters') }}
+           {{ trans($theme.'-app.lot_list.filters') }}
 
     </div>
     <form id="form_lotlist" method="get" action="{{ $data['url'] }}">
         <div class="form-group">
-            <label for="input_description">{{ trans(\Config::get('app.theme').'-app.lot_list.search') }}</label>
-            <input id="input_description" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm" value="{{ app('request')->input('description') }}">
+            <label for="input_description">{{ trans($theme.'-app.lot_list.search') }}</label>
+            <input id="input_description" placeholder="{{ trans($theme.'-app.lot_list.search_placeholder') }}" name="description" type="text" class="form-control input-sm" value="{{ app('request')->input('description') }}">
 
-             <label for="input_reference">{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}</label>
-            <input id="input_reference" placeholder="{{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm" value="{{ app('request')->input('reference') }}">
+             <label for="input_reference">{{ trans($theme.'-app.lot_list.reference') }}</label>
+            <input id="input_reference" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm" value="{{ app('request')->input('reference') }}">
             @if ($data['sub_data']->tipo_sub == 'V')
             <input type="hidden" id="input_salable" name="only_salable" class="form-control input-sm" value="on" >
             @endif
                     <div class="divider"></div>
                     <select id="order_selected" name="order" class="form-control submit_on_change">
                     <option value="name" @if (app('request')->input('order') == 'name') selected @endif >
-                         {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   {{ trans(\Config::get('app.theme').'-app.lot_list.name') }}
+                         {{ trans($theme.'-app.lot_list.order') }}:   {{ trans($theme.'-app.lot_list.name') }}
                     </option>
                     <option value="price_asc" @if (app('request')->input('order') == 'price_asc') selected @endif >
-                         {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.price_asc') }}
+                         {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.price_asc') }}
                     </option>
                     <option value="price_desc" @if (app('request')->input('order') == 'price_desc') selected @endif >
-                        {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:      {{ trans(\Config::get('app.theme').'-app.lot_list.price_desc') }}
+                        {{ trans($theme.'-app.lot_list.order') }}:      {{ trans($theme.'-app.lot_list.price_desc') }}
                     </option>
                     <option value="ref" @if (empty(app('request')->input('order')) || app('request')->input('order') == 'ref') selected @endif >
-                         {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:     {{ trans(\Config::get('app.theme').'-app.lot_list.reference') }}
+                         {{ trans($theme.'-app.lot_list.order') }}:     {{ trans($theme.'-app.lot_list.reference') }}
                     </option>
                     @if(!empty( $data['subastas']) && ($data['subastas'][0]->tipo_sub == 'O' || $data['subastas'][0]->tipo_sub == 'P'))
                         <option value="ffin" @if (app('request')->input('order') == 'ffin') selected @endif >
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_near') }} </b>
+                                {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_near') }} </b>
                         </option>
 
                         <option value="mbids" @if (app('request')->input('order') == 'mbids') selected @endif >
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.more_bids') }} </b>
+                                {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.more_bids') }} </b>
                         </option>
 
                         <option value="hbids" @if (app('request')->input('order') == 'hbids') selected @endif >
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:   <b>   {{ trans(\Config::get('app.theme').'-app.lot_list.higher_bids') }} </b>
+                                {{ trans($theme.'-app.lot_list.order') }}:   <b>   {{ trans($theme.'-app.lot_list.higher_bids') }} </b>
                         </option>
 
 
                         <option value="fecalta" @if (app('request')->input('order') == 'fecalta') selected @endif >
-                                {{ trans(\Config::get('app.theme').'-app.lot_list.order') }}:    {{ trans(\Config::get('app.theme').'-app.lot_list.more_recent') }} 
+                                {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.more_recent') }} 
                         </option>
                     @endif
             </select>
@@ -76,13 +76,13 @@
  @if( count($categories) > 0) 
  <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
    
-      <label>{{ trans(\Config::get('app.theme').'-app.lot_list.categories') }}  </label>
+      <label>{{ trans($theme.'-app.lot_list.categories') }}  </label>
                
 
 
 
                     <select class="form-control " id="category" name="lin_ortsec" >                       
-                         <option value="" >{{ trans(\Config::get('app.theme').'-app.lot_list.all_categories') }}</option>
+                         <option value="" >{{ trans($theme.'-app.lot_list.all_categories') }}</option>
                         @foreach($categories as $category)
                              <option value="{{$category->lin_ortsec1}}" <?=   $lin_ortsec_selected == $category->lin_ortsec1? "selected='selected'" : ""  ?> >{{ $category->des_ortsec0 }} ({{$category->cuantos}})</option>
                         @endforeach
@@ -111,9 +111,9 @@
                             
                         ?>
                         @if( count($subcategories) > 0)
-                         <label>{{ trans(\Config::get('app.theme').'-app.lot_list.subcategories') }}  </label>
+                         <label>{{ trans($theme.'-app.lot_list.subcategories') }}  </label>
                             <select class="form-control " id="subcategory" name="cod_sec" >                                   
-                                   <option value="" >{{ trans(\Config::get('app.theme').'-app.lot_list.all_subcategory') }} </option>
+                                   <option value="" >{{ trans($theme.'-app.lot_list.all_subcategory') }} </option>
                                        @foreach($subcategories as $subcategory)                                    
                                            <option value="{{$subcategory->cod_sec}}" <?=  $data['subcategory'] == $subcategory->cod_sec? "selected='selected'" : ""  ?> >{{ ucfirst(mb_strtolower(trim ($subcategory->des_sec)))}} ({{$subcategory->cuantos}})  </option>
                                        @endforeach
@@ -126,7 +126,7 @@
               <div id="select_filters">
                     @include('includes.select_filters')
               </div>
-              <button class="btn btn-filter" type="submit">{{ trans(\Config::get('app.theme').'-app.lot_list.filter') }}</button>
+              <button class="btn btn-filter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
              
         <?php 
                 $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
@@ -140,9 +140,9 @@
 
             @if(!empty($indices))                
                 <div class="block_filters text">
-                    <label for="input_description">{{ trans(\Config::get('app.theme').'-app.lot_list.indice_auction') }}</label>
+                    <label for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
                     <div class="tcenter">
-                          <a title="{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans(\Config::get('app.theme').'-app.lot_list.open_indice') }}</a>
+                          <a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
                     </div>
                 </div>
                 

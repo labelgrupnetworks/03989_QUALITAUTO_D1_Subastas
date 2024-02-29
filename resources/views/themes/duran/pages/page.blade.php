@@ -62,7 +62,7 @@ foreach($matches[0] as $key => $replace){
 									<div class="row">
 
 
-										<h4> {{ trans(\Config::get('app.theme').'-app.foot.faq')}}  </h4>
+										<h4> {{ trans($theme.'-app.foot.faq')}}  </h4>
 											<p>
 												@foreach ($faqs as $item)
 															<div class="parentFaq parentFaq{{ $item->cod_faqcat }}">

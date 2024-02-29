@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 @section('content')
@@ -41,7 +41,7 @@ foreach($all_adj_pag as $key_inf => $value){
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
+                <h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ foreach($all_adj_pag as $key_inf => $value){
             </div>
             <div class="col-xs-12 col-md-9 col-lg-9 ">
                 <div class="user-account-title-content">
-                    <div class="user-account-menu-title">{{ trans(\Config::get('app.theme').'-app.user_panel.allotments') }}</div>
+                    <div class="user-account-menu-title">{{ trans($theme.'-app.user_panel.allotments') }}</div>
 				</div>
 
 
@@ -86,13 +86,13 @@ foreach($all_adj_pag as $key_inf => $value){
 
 												<div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
 													<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }}
+															{{ trans($theme.'-app.user_panel.lot') }}
 													</div>
 													<div class="col-xs-12 col-sm-2 col-one user-account-fecha">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}
+															{{ trans($theme.'-app.user_panel.price') }}
 													</div>
 													<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-															{{ trans(\Config::get('app.theme').'-app.user_panel.price_clean') }}
+															{{ trans($theme.'-app.user_panel.price_clean') }}
 													</div>
 												</div>
 
@@ -136,26 +136,26 @@ foreach($all_adj_pag as $key_inf => $value){
 																	</div>
 																	<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
 
-																		<div class="user-account-item-lot"><span>{{ trans(\Config::get('app.theme').'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
+																		<div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
 																		<div class="user-account-item-title">{{$inf_lot->titulo_hces1?? $inf_lot->descweb_hces1  }}</div>
 																		{{--	<div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div> --}}
 																	</div>
 																</div>
 																<div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.date') }}</div>
-																		<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
+																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.date') }}</div>
+																		<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
 																		@if ($comision !=0)
-																			<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
-																			<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>
+																			<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
+																			<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																		@endif
 																	</div>
 																</div>
 																<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
 																		<div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-																				<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_puja') }}</div>
-																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</strong></div>
+																				<div class="visible-xs">{{ trans($theme.'-app.user_panel.mi_puja') }}</div>
+																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}</strong></div>
 																		</div>
 																	</div>
 																	<input class="hide" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][envios]" value='1'>

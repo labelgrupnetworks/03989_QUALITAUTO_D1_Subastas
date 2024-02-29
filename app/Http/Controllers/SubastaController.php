@@ -1394,14 +1394,20 @@ class SubastaController extends Controller
 		$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
 
 			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
+
 			$siguienteEscalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0]);
+			if ($subasta_info->lote_actual->importe_escalado_siguiente  == $subasta_info->lote_actual->impsalhces_asigl0 && Config::get('app.force_correct_price')) {
+				$siguienteEscalado = $subastaObj->NextScaleBid(0, $subasta_info->lote_actual->impsalhces_asigl0 - 1);
+				$subasta_info->lote_actual->siguientes_escalados[0] = $siguienteEscalado;
+			}
+
 			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
 				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
 			}
 			else{
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
-				$subasta_info->lote_actual->siguientes_escalados[] = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
+				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
 			}
 		}
 
@@ -2449,8 +2455,29 @@ class SubastaController extends Controller
 		return $paymentsController->hasIvaReturnIva($tipo_iva->tipo, $iva);
 	}
 
+	private function calendarV1Controller()
+	{
+		$data = $this->subastas_activas(true);
+		if (!empty($data)) {
+			$data = head($data);
+		}
+
+		$seoExist = TradLib::getWebTranslateWithStringKey('metas', 'title_calendar', config('app.locale', 'es'));
+		$seo = new \stdClass();
+		if(!empty($seoExist)){
+			$seo->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_calendar');
+			$seo->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_calendar');
+		}
+		$seo->canonical=$_SERVER['HTTP_HOST'].\Routing::slugSeo('calendar');
+		return \View::make('front::pages.calendar', array('data' => $data, 'seo' => $seo));
+	}
+
 	public function calendarController(HttpRequest $request)
 	{
+		if(Config::get('app.default_theme', 'v1') === 'v1') {
+			return $this->calendarV1Controller();
+		}
+
 		$auctions = $this->subastas_activas(true);
 		if (!empty($auctions)) {
 			$auctions = head($auctions);

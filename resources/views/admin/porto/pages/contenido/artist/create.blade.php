@@ -23,7 +23,7 @@
 				<div><input class="form-control effect-16" type="file" name="img_artist"></div>
 			</div>
 
-			@include('admin::pages.contenido.artist._form', compact('formulario', 'fgArtist'))
+			@include('admin::pages.contenido.artist._form', compact('formulario', 'webArtist'))
 		</form>
 
 	</div>

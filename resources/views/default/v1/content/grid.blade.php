@@ -13,7 +13,7 @@
                             <div class="col-lg-3 col-xs-4 p-0">
                                 <a href="{{ $url_info }}" class="button-follow extra-three-background info-button btn-default" style="width:100%">
                                     <i class="fa fa-info text-center"></i>
-                                    <span class="hidden-xs hidden-md">{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}</span>
+                                    <span class="hidden-xs hidden-md">{{ trans($theme.'-app.subastas.see_subasta') }}</span>
                                 </a>
                             </div>
                             <div class="col-lg-2 hidden-sm hidden-xs"></div>

@@ -11,7 +11,7 @@
 @endpush
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -55,7 +55,7 @@
 
 		//$bread["url"] =  \Routing::translateSeo('subasta').$lote_actual->cod_sub."-".str_slug($lote_actual->name)."-".str_slug($lote_actual->id_auc_sessions);
 		$bread["url"] = $lote_actual->url_subasta;
-        $bread["name"] = ($lote_actual->tipo_sub == 'V')?trans(\Config::get('app.theme').'-app.global.go_shop'): trans(\Config::get('app.theme').'-app.global.go_auction');
+        $bread["name"] = ($lote_actual->tipo_sub == 'V')?trans($theme.'-app.global.go_shop'): trans($theme.'-app.global.go_auction');
         if(stripos(\Config::get('app.auction_in_categories'),$lote_actual->tipo_sub) !== false){
             $in_category=true;
         }
@@ -153,31 +153,31 @@ $(document).ready(function() {
 							<div class="prev-lot hidden-md hidden-lg">
 								<p class="prev-lot">
 									@if(!empty($data['previous']))
-									<a class="nextLeft" title="{{ trans(\Config::get('app.theme').'-app.subastas.last') }}"
+									<a class="nextLeft" title="{{ trans($theme.'-app.subastas.last') }}"
 										href="{{$data['previous']}}">
 										<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-										<span>{{ trans(\Config::get('app.theme').'-app.subastas.last') }}</span>
+										<span>{{ trans($theme.'-app.subastas.last') }}</span>
 									</a>
 									@endif
 							</p>
 							</div>
-                            <p class="hidden-xs hidden-sm"><a title="Home" href="/">{{ trans(\Config::get('app.theme').'-app.subastas.breadcrumb') }}</a></p>
+                            <p class="hidden-xs hidden-sm"><a title="Home" href="/">{{ trans($theme.'-app.subastas.breadcrumb') }}</a></p>
                             <span class="divVertical hidden-xs hidden-sm"></span>
                             <p><a href="{{$bread['url']}}">{{$bread['name']}}</a></p>
                            <?php //oculto  ?>
                             @if(1 != 1 && $in_category)
 								<span class="divVertical hidden-xs"></span>
-                                <p class="cat-in-ficha hidden-xs"><a href="{{$lote_actual->url_subasta}}">{{ trans(\Config::get('app.theme').'-app.global.go_to')." ".$lote_actual->title_url_subasta}}</a></p>
+                                <p class="cat-in-ficha hidden-xs"><a href="{{$lote_actual->url_subasta}}">{{ trans($theme.'-app.global.go_to')." ".$lote_actual->title_url_subasta}}</a></p>
                             @endif
                             <span class="divVertical"></span>
-							<p><a href="javascript:history.back()"> {{ trans(\Config::get('app.theme').'-app.global.go_home') }}</a></p>
+							<p><a href="javascript:history.back()"> {{ trans($theme.'-app.global.go_home') }}</a></p>
 
 							<div class="next-lot hidden-md hidden-lg">
 								<p class="next-lot">
 									@if(!empty($data['next']))
-									<a class="nextRight" title="{{ trans(\Config::get('app.theme').'-app.subastas.next') }}"
+									<a class="nextRight" title="{{ trans($theme.'-app.subastas.next') }}"
 										href="{{$data['next']}}">
-										<span>{{ trans(\Config::get('app.theme').'-app.subastas.next') }}</span>
+										<span>{{ trans($theme.'-app.subastas.next') }}</span>
 										<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 									</a>
 									@endif
@@ -203,9 +203,9 @@ $(document).ready(function() {
                                   </div>
 
                                 <div class="input-lot">
-                                    <label>{{ trans(\Config::get('app.theme').'-app.lot.go_to_lot') }}</label>
+                                    <label>{{ trans($theme.'-app.lot.go_to_lot') }}</label>
                                     <input class="single-lot" type="number" name="reference" url-redirect="{{Config::get('app.url')}}{{$bread['url']}}">
-                                    <button id="single-lot" class="btn btn-color btn-bar-filters" type="submit">{{ trans(\Config::get('app.theme').'-app.lot.ver') }}</button>
+                                    <button id="single-lot" class="btn btn-color btn-bar-filters" type="submit">{{ trans($theme.'-app.lot.ver') }}</button>
                                 </div>
 
                             </div>

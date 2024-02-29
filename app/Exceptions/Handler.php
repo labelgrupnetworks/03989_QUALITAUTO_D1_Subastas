@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Session;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +47,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+	protected function context()
+    {
+        try {
+            return array_merge(parent::context(), array_filter([
+				'route' => request()->url() ?? '',
+                'userId' => Session::has('user') ? Session::get('user')['cod'] : null,
+            ]));
+        } catch (Throwable $e) {
+            return [];
+        }
     }
 }

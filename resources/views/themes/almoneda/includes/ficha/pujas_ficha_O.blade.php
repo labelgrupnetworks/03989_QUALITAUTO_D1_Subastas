@@ -1,5 +1,5 @@
 @php
-	$depositComision = $lote_actual->impsalhces_asigl0 * $lote_actual->comlhces_asigl0 * 0.01;
+	$depositComision = $lote_actual->imptash_asigl0 * 5 * 0.01;
 @endphp
 <div id="reload_inf_lot" class="col-xs-12 info-ficha-buy-info no-padding">
     <div class="col-xs-12">

@@ -32,8 +32,9 @@ class GaleriaArte extends Controller
 
 			$fgasigl0 = new FgAsigl0();
 
-			$lots = $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1,  WEBFRIEND_HCES1, DESCWEB_HCES1, REF_ASIGL0,   DES_SUB, DESCDET_SUB, DFEC_SUB, HFEC_SUB, COD_SUB,auc."reference" , auc."id_auc_sessions", auc."name",IDVALUE_CARACTERISTICAS_HCES1')
+			$lots = $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1,  WEBFRIEND_HCES1, DESCWEB_HCES1, REF_ASIGL0,   DES_SUB, DESCDET_SUB, DFEC_SUB, HFEC_SUB, COD_SUB,auc."reference" , auc."id_auc_sessions", auc."name",IDVALUE_CARACTERISTICAS_HCES1, VALUE_CARACTERISTICAS_VALUE')
 							->leftjoin('FGCARACTERISTICAS_HCES1', "FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0 AND FGCARACTERISTICAS_HCES1.IDCAR_CARACTERISTICAS_HCES1 = '". \Config::get("app.ArtistCode")."'" )
+							->leftJoinFgCaracteristicasValueHces1Asigl0()
 							->where("COD_SUB", $codSub)
 			 				#ordenamos por orden, pero tambien tenemos en cuenta la referencia ya que por defecto el orden esta a nully rompia la ordenacion
 							->ActiveLotAsigl0()->orderby("nvl(orden_hces1,ref_hces1), nvl(orden_hces1,99999999999) ")->get();

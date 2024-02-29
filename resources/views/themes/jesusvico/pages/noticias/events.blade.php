@@ -1,14 +1,14 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('seo')
     @php
         $data['seo'] = new \stdClass();
-        $data['seo']->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_events');
-        $data['seo']->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_events');
+        $data['seo']->meta_title = trans($theme . '-app.metas.title_events');
+        $data['seo']->meta_description = trans($theme . '-app.metas.description_events');
     @endphp
 @endsection
 

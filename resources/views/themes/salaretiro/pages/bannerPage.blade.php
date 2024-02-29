@@ -3,8 +3,8 @@
 @section('seo')
 @php
 	$data['seo'] = new \stdClass();
-	$data['seo']->meta_title = trans(\Config::get('app.theme').'-app.foot.direct_sale_art');
-	$data['seo']->meta_description = trans(\Config::get('app.theme').'-app.foot.direct_sale_art');
+	$data['seo']->meta_title = trans($theme.'-app.foot.direct_sale_art');
+	$data['seo']->meta_description = trans($theme.'-app.foot.direct_sale_art');
 @endphp
 @endsection
 
@@ -17,7 +17,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 color-letter titlepage-contenidoweb">
-			<h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.foot.direct_sale_art') }}</h1>
+			<h1 class="titlePage"> {{ trans($theme.'-app.foot.direct_sale_art') }}</h1>
 		</div>
 	</div>
 </div>

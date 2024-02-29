@@ -4,7 +4,7 @@ use Closure;
 use Session;
 use Request;
 
-    class SessionTimeout 
+    class SessionTimeout
     {
         /**
          * Handle an incoming request.
@@ -25,14 +25,14 @@ use Request;
                         $res = array(
                             'status' => 'error',
                             'redirect' => '/admin',
-                            'msg' => trans(\Config::get('app.theme').'-admin.ajax.session_timeout')
+                            'msg' => trans("admin-app.login.session_timeout")
                         );
 
                         die(json_encode($res));
                     }
-                    return redirect('admin/login')->withErrors(trans(\Config::get('app.theme').'-admin.login.session_timeout'));
+                    return redirect('admin/login')->withErrors(trans("admin-app.login.session_timeout"));
                 }else{
-                    return redirect(\Routing::slug('/'))->withErrors(trans(\Config::get('app.theme').'-app.login.session_timeout'));
+                    return redirect(\Routing::slug('/'))->withErrors(trans("admin-app.login.session_timeout"));
                 }
             }
 

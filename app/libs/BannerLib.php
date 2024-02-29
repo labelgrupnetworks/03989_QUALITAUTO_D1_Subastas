@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use \App\libs\MobileDetect;
 use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
-use Intervention\Image\Facades\Image;
 
 /**
  * @method static array getOnlyContentForBanner(WebNewbannerModel|null $banner)
@@ -171,6 +170,10 @@ class BannerLib
 									? "{$rutaImg}{$locale}_mobile.$extension"
 									: "{$rutaImg}{$locale}.{$extension}";
 
+								$backup = $isMobile
+									? "{$rutaImg}{$locale}_mobile.jpg"
+									: "{$rutaImg}{$locale}.jpg";
+
 								if(file_exists(public_path($pathImg))){
 									break 2;
 
@@ -196,13 +199,18 @@ class BannerLib
 								}
 							}
 
-							/* $image = Image::make(public_path($pathImg));
-							$width = $image->width();
-							$height = $image->height(); */
 							$publicPath = Tools::urlAssetsCache($pathImg);
+							$publicPathBackup = Tools::urlAssetsCache($backup);
 
-							/* $html .= "<img src=\"$publicPath\" width=\"$width\" height=\"$height\" alt=\"banner image\">"; */
-							$html .= "<img src=\"$publicPath\" alt=\"banner image\">";
+							//pathImg in base 64 url
+							$pathImgConverter = strtr(base64_encode($pathImg), '+/=', '-_.');
+
+							//change to picture tag
+							$html .= "<picture>";
+							$html .= "<source srcset=\"$publicPath\" type=\"image/webp\">";
+							$html .= "<source srcset=\"$publicPathBackup\" type=\"image/jpg\">";
+							$html .= "<img src=\"/img/converter/$pathImgConverter\" alt=\"banner image\">";
+							$html .= "</picture>";
 
 							if ($item->texto) {
 								$html .= "<span>" . $item->texto . "</span>";

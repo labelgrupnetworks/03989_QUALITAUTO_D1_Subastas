@@ -13,7 +13,7 @@
 
 <div class="stream-block">
 
-	<p class="delay">{{ trans(\Config::get('app.theme').'-app.sheet_tr.delay') }}</p>
+	<p class="delay">{{ trans($theme.'-app.sheet_tr.delay') }}</p>
 	<div class="stream-wrapper">
 
 		<div id='video-overlay'>

@@ -1,12 +1,12 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans(\Config::get('app.theme').'-app.foot.faq') }}
+{{ trans($theme.'-app.foot.faq') }}
 @stop
 
 @section('content')
 <?php
-$bread[] = array("name" => trans(\Config::get('app.theme') . '-app.foot.contact'));
+$bread[] = array("name" => trans($theme . '-app.foot.contact'));
 ?>
 
 
@@ -19,7 +19,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme') . '-app.foot.contact'
         <div class="col-xs-12">
             <div class="col-xs-12">
 
-                <h1 class="titlePage">{{trans(\Config::get('app.theme').'-app.foot.contact') }}</h1>
+                <h1 class="titlePage">{{trans($theme.'-app.foot.contact') }}</h1>
             </div>
         </div>
     </div>
@@ -32,22 +32,22 @@ $bread[] = array("name" => trans(\Config::get('app.theme') . '-app.foot.contact'
                 {!! $data['formulario']['_token'] !!}
                 <div class="form-group">
                     <div class="input-effect col-xs-12">
-                        <label>{{trans(\Config::get('app.theme').'-app.login_register.contact') }}</label>
+                        <label>{{trans($theme.'-app.login_register.contact') }}</label>
                         {!! $data['formulario']['nombre'] !!}
                     </div>
 
                     <div class="input-effect col-xs-12">
-                        <label>{{trans(\Config::get('app.theme').'-app.foot.newsletter_text_input') }}</label>
+                        <label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
                         {!! $data['formulario']['email'] !!}
                     </div>
 
                     <div class="input-effect col-xs-12">
-                        <label>{{trans(\Config::get('app.theme').'-app.user_panel.phone') }}</label>
+                        <label>{{trans($theme.'-app.user_panel.phone') }}</label>
                         {!! $data['formulario']['telefono'] !!}
                     </div>
 
                     <div class="input-effect col-xs-12">
-                        <label>{{trans(\Config::get('app.theme').'-app.global.coment') }}</label>
+                        <label>{{trans($theme.'-app.global.coment') }}</label>
                         {!! $data['formulario']['comentario'] !!}
                     </div>
 
@@ -57,7 +57,7 @@ $bread[] = array("name" => trans(\Config::get('app.theme') . '-app.foot.contact'
                                 <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
                             </div>
                             <div class="col-xs-10 col-md-11">
-                                <label for="accept_new"><?= trans(\Config::get('app.theme') . '-app.emails.privacy_conditions') ?></label>
+                                <label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
                             </div>
                         </div>
                     </div>

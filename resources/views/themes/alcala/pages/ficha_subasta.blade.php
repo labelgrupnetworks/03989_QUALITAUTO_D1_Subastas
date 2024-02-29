@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
 
@@ -15,7 +15,7 @@
     <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 text-center color-letter">
-                        <h1 class="titlePage"> {{ trans(\Config::get('app.theme').'-app.subastas.auctions') }}</h1>
+                        <h1 class="titlePage"> {{ trans($theme.'-app.subastas.auctions') }}</h1>
 
                     @include('includes.breadcrumb')
                 </div>

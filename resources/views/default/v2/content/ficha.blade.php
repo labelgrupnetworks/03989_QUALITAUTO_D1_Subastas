@@ -71,7 +71,7 @@ if($subasta_web){
 
 <div class="ficha-content container">
 
-	<div class="ficha-grid">
+	<div class="ficha-grid" data-tipe-sub="{{ $lote_actual->tipo_sub }}">
 		<section class="ficha-title">
 			<h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1>
 		</section>
@@ -106,11 +106,13 @@ if($subasta_web){
 			@include('includes.ficha.files')
 		</section>
 
+		@includeIf('includes.ficha.custom_sections')
+
 	</div>
 
 	<section class="ficha-recomendados mt-3">
 		<div class="lotes_destacados" id="lotes_recomendados-content">
-			<h1 class="mas-pujados-title">{{ trans(\Config::get('app.theme').'-app.lot.recommended_lots') }}</h1>
+			<h1 class="mas-pujados-title">{{ trans($theme.'-app.lot.recommended_lots') }}</h1>
 
 			<div class='loader d-none'></div>
 			<div id="lotes_recomendados" class="owl-theme owl-carousel"></div>

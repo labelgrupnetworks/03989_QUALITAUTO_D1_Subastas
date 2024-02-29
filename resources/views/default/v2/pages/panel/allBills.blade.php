@@ -80,7 +80,7 @@
 											<input type="radio" class="btn-check" name="paymethod" id="paycreditcard"
 												value="creditcard" autocomplete="off" checked>
 											<label class="btn btn-outline-lb-secondary" for="paycreditcard">
-												{{ trans(\Config::get('app.theme') . '-app.user_panel.pay_creditcard') }}
+												{{ trans($theme . '-app.user_panel.pay_creditcard') }}
 											</label>
 										@endif
 
@@ -90,7 +90,7 @@
 											<label class="btn btn-outline-lb-secondary" for="paybizum">
 												<img src="/default/img/logos/bizum-blue.png"
 													style="height: 20px;margin: 0px 6px;">
-												{{ trans(\Config::get('app.theme') . '-app.user_panel.pay_bizum') }}
+												{{ trans($theme . '-app.user_panel.pay_bizum') }}
 											</label>
 										@endif
 
@@ -98,7 +98,7 @@
 											<input type="radio" class="btn-check" name="paymethod" id="paytransfer"
 												value="transfer" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paytransfer">
-												{{ trans(\Config::get('app.theme') . '-app.user_panel.pay_transfer') }}
+												{{ trans($theme . '-app.user_panel.pay_transfer') }}
 											</label>
 										@endif
 
@@ -107,7 +107,7 @@
 												value="paypal" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paypaypal">
 												<i class="fa fa-paypal" aria-hidden="true"></i>
-												{{ trans(\Config::get('app.theme') . '-app.user_panel.pay_paypal') }}
+												{{ trans($theme . '-app.user_panel.pay_paypal') }}
 											</label>
 										@endif
 
