@@ -17,6 +17,8 @@ Route::get('/img/load/{size}/{img}', 'ImageController@return_image');
 #load img url amigable
 Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController@return_image_friend');
 
+Route::get('/img/converter/{imagePathToBase64Url}', 'ImageController@converterImage');
+
 
 
 //redireccionamos de la raiz al idioma principal

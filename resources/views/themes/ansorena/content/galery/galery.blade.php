@@ -78,7 +78,7 @@
 
 		<p class="ff-highlight fs-24-32 text-uppercase text-center d-lg-none">{{ trans("$theme-app.subastas.in_pictures") }}</p>
 
-        <section class="gallery-lots">
+        <section class="gallery-lots h-md-360px">
 
             <div class="position-relative d-none d-lg-flex" style="min-width: 500px">
 
