@@ -41,7 +41,7 @@
 
 <h2 class="mb-5">{{ trans("$theme-app.lot.our_clients_rate_us") }}</h2>
 
-<img class="img-fluid mb-5" src="/themes/{{$theme}}/assets/img/logo_Google.png" alt="Logotipo de Google" width="500">
+<img class="img-fluid mb-5" src="/themes/{{$theme}}/assets/img/logo_Google.png" alt="Logotipo de Google" width="250">
 
 <div class="google-reviews">
 
