@@ -38,9 +38,10 @@ class Kernel extends ConsoleKernel
 			->name('Comprobar si subasta hoy')
 			->dailyAt('9:00');
 
-		$schedule->call(new CheckCertificateAction)
-			->name('Comprobar certificado')
-			->dailyAt('9:30');
+		// activar cuando se pueda intstalar el paquete "spatie/ssl-certificate": "2.4"
+		// $schedule->call(new CheckCertificateAction)
+		// 	->name('Comprobar certificado')
+		// 	->dailyAt('9:30');
 	}
 
 	/**
