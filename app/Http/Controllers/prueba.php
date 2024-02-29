@@ -167,6 +167,7 @@ use App\models\V5\AppPush;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Spatie\SslCertificate\SslCertificate;
 
 class Prueba extends BaseController
 {
