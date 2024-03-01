@@ -661,6 +661,15 @@ ul.style-diamond li p {
 	justify-content: flex-end;
 }
 
+.nav-link.p-nav-items-auc {
+	padding: 8px 10px 0px 10px;
+}
+
+.year-border.m-nav-items-auc {
+	margin: 9px 11px 8px 11px;
+}
+
+
 /*
 |--------------------------------------------------------------------------
 | GRID - LOT
