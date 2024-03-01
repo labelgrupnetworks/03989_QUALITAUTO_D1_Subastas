@@ -167,13 +167,18 @@ use App\models\V5\AppPush;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Spatie\SslCertificate\SslCertificate;
 
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		dd('Este cambio ha sido subido solamente al git en la rama main y desplegado en prodcucción');
+		Artisan::call('cache:clear');
+		//clear sessions
+		Artisan::call('session:clear');
+
+		dd('limpio');
 	}
 
 
