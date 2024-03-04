@@ -16,7 +16,7 @@
 
 <div class="auctions-wrapper mt-3">
 	<div class="container">
-		<ul class="nav nav-tabs" id="yearAuctionTabs" role="tablist">
+		<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
 			@foreach ($auctionsForYears as $year => $auctions)
 				<li class="nav-item" role="presentation">
 					@if ($isHistoric)
