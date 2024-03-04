@@ -746,6 +746,20 @@ simbolos:: %3e == /> | %3c == < | %23 == #
 	background-size: 20px 18px;
 }
 
+.nav-grid-pages {
+	float: none;
+	display: flex;
+	justify-content: center;
+}
+
+@media (min-width: 992px) {
+	.nav-grid-pages {
+		display: block;
+		float: right;
+		justify-content: start;
+	}
+}
+
 /*
 |--------------------------------------------------------------------------
 | FICHA
