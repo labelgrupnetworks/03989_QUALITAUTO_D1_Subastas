@@ -944,6 +944,19 @@ section.ficha-pujas {
 	width: 190px;
 }
 
+.ficha-previous-next .btn:not(.btn-sm, .btn-link) {
+	font-size: 14pt;
+}
+
+.ficha-previous-next .search-lot-bar-input  {
+	height: 38px;
+}
+
+.ficha-previous-next .search-lot-bar-button {
+	height: 38px;
+	padding: 6px 11px 6px 13px;
+}
+
 @media (min-width: 382px) {
 	.ficha-info .ficha-info-justify-content {
 		justify-content: space-between;
