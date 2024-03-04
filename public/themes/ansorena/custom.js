@@ -676,6 +676,10 @@ function newsletterDay(){
 		return;
 	}
 
+	if (window.location.pathname.includes('register')) {
+		return;
+	}
+
 	const now = new Date();
 	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 	localStorage.setItem('nextNewsletter', expires);
