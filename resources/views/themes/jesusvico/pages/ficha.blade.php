@@ -73,12 +73,12 @@ $(document).ready(function() {
 		default => trans("$theme-app.subastas.inf_subasta_subasta"),
 	};
 @endphp
-<main class="page-ficha">
+<main class="page-ficha pt-3">
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">
 				{{-- <p class="h1">{{ $titleName }} | <b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b></p> --}}
-				<p class="h1"><b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> | <a class="back-link" href="javascript:navigation.back();">{{ trans("$theme-app.global.back") }}</a>  </p>
+				<p class="h1 pb-1"><b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> | <a class="back-link" href="javascript:navigation.back();">{{ trans("$theme-app.global.back") }}</a>  </p>
 			</div>
 		</div>
 	</div>
