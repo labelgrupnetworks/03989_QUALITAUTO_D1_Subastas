@@ -948,13 +948,23 @@ section.ficha-pujas {
 	font-size: 14pt;
 }
 
-.ficha-previous-next .search-lot-bar-input  {
-	height: 38px;
+.grid-previous-and-next {
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: 1fr 1fr 1fr;
+	height: 40px;
 }
 
-.ficha-previous-next .search-lot-bar-button {
-	height: 38px;
-	padding: 6px 11px 6px 13px;
+.grid-previous-and-next section.previous-button {
+	grid-column: 1 / 1;
+}
+
+.grid-previous-and-next section.search-lot-bar {
+	grid-column: 2 / 2;
+}
+
+.grid-previous-and-next section.next-button {
+	grid-column: 3 / 3;
 }
 
 main.page-ficha p.h1 {
@@ -982,7 +992,7 @@ main.page-ficha p.h1 {
 	}
 
 	section.ficha-image {
-		grid-row: 3 / 4;
+		grid-row: 2 / 4;
 	}
 
 	section.ficha-pujas {

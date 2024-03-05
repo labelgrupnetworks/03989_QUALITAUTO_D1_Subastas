@@ -1,3 +1,7 @@
+@if (!$isTiendaOnline)
+	@include('includes.ficha.header_time')
+@endif
+
 <div class="ficha-info-content">
 
     @if (!$retirado && !$devuelto && !$fact_devuelta)
@@ -30,9 +34,3 @@
         </div>
     @endif
 </div>
-
-{{-- TODO: ESTO A LO MEJOR VUELVE A ARRIBA --}}
-
-@if (!$isTiendaOnline)
-	@include('includes.ficha.header_time')
-@endif
