@@ -1,7 +1,7 @@
 <div class="ficha-info pb-3">
 	<div class="d-flex ficha-info-justify-content flex-wrap">
 
-		<p>{{ trans("$theme-app.lot.auction_date") }}</p>
+		<p>{{ trans("$theme-app.lot.auction_date_shortened") }}</p>
 		<div>
 			<p>{{ Tools::getDateFormat($lote_actual->start_session, 'Y-m-d H:i:s', 'd-m-Y H:i') }}
 				{{ trans("$theme-app.lot_list.time_zone") }}</p>

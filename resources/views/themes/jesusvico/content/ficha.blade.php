@@ -76,7 +76,8 @@ if($subasta_web){
 
 <div class="ficha-content container">
 
-	<div class="ficha-grid">
+	<div class="header-ficha-grid">
+
 		<section class="ficha-title">
 			<h2 class="m-0">{{ trans("$theme-app.lot.lot-name") }} {{$refLot}}</h2>
 			{{-- <h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1> --}}
@@ -85,6 +86,10 @@ if($subasta_web){
 		<section class="ficha-previous-next">
 			@include('includes.ficha.previous_next')
 		</section>
+		
+	</div>
+
+	<div class="ficha-grid">
 
 		<section class="ficha-image">
 			@include('includes.ficha.ficha_image')
