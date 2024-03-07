@@ -747,7 +747,7 @@ l´évasion, 1977<br> Ceras y lápiz sobre papel<br> 90 x 62,5 cm.</p>
 						<div class="co-form">
 							<h2 class="text-uppercase">Contacto</h2>
 							<p class="mb-5">EXPOSICIÓN “COLECCIONES”</p>
-							<form action="/themes/ansorena/landing/data/contacto.php" method="post">
+							<form action="https://www.pickandroll.company/clientes/ansorena/2024/marzo/colecciones/data/contacto.php" method="post">
 								<div class="row">
 								    <div class="col-12 mb-4">
 								      <input type="text" class="form-control form-control-lg" placeholder="*Nombre" name="nombre" id="nombre" required>
