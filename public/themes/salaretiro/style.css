@@ -769,7 +769,7 @@ div.map_contact {
 	margin-bottom: 40px;
 }
 div.item_subasta {
-	min-height: 547px;
+	min-height: 610px;
 	margin-bottom: 30px;
 }
 div.item_subasta img {
@@ -992,16 +992,18 @@ div.list_lot div.item_lot div.img_lot img,
 	transform: translateY(-50%);
     position: relative;
     width: auto !important;
-    margin: 0; /* auto !important; */
+
     display: inherit !important;
 }
 
 .item_subasta a .img-lot img {
 	max-height: 370px;
+	margin: 0 ;
 }
 
-.div.list_lot div.item_lot div.img_lot img {
+div.list_lot div.item_lot div.img_lot img {
 	max-height: 215px;
+	margin: 0 auto !important;
 }
 
 div.single div.img_single_border {
