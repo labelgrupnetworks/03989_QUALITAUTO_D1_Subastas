@@ -20,31 +20,27 @@
 			@foreach ($auctionsForYears as $year => $auctions)
 				<li class="nav-item" role="presentation">
 					@if ($isHistoric)
-
 						<button class="nav-link p-nav-items-auc {{ $loop->last ? 'active' : '' }}" id="tab-{{ $year }}"
 							data-bs-toggle="tab" data-bs-target="#tab-panel-{{ $year }}" type="button" role="tab"
 							aria-controls="tab-panel-{{ $year }}" aria-selected="{{ $loop->last ? 'true' : 'false' }}">
 							<h2>{{ $year }}</h2>
 						</button>
-
 					@else
-
 						<div class="year-border m-nav-items-auc">
 							<h2>{{ $year }}</h2>
 						</div>
-
 					@endif
 				</li>
 			@endforeach
 		</ul>
+
 		@if ($isHistoric)
 
 			<div class="tab-content mb-3" id="yearAuctionTabsContent">
 				@foreach ($auctionsForYears as $year => $auctions)
 					<div class="tab-pane fade {{ $isHistoric ? ($loop->last ? 'show active' : '') : 'show active' }}"
 						id="tab-panel-{{ $year }}" role="tabpanel" aria-labelledby="tab-{{ $year }}" tabindex="0">
-						<div
-							class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 gy-3 {{-- mb-3 --}} align-items-stretch">
+						<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 gy-3 align-items-stretch">
 							@foreach ($auctions as $subasta)
 								<div class="col">
 									@include('includes.subasta_historic', ['subasta' => $subasta, 'year' => $year])
@@ -54,10 +50,8 @@
 					</div>
 				@endforeach
 			</div>
-
 		@else
-
-			<div class="row row-cols-1 row-cols-md-2 gy-3 {{-- mb-3 --}} align-items-stretch mb-3">
+			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3">
 				@foreach ($auctionsForYears as $year => $auctions)
 					@foreach ($auctions as $subasta)
 						<div class="col">
