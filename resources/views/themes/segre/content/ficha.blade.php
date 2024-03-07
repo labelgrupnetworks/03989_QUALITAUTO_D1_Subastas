@@ -278,8 +278,8 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                             $timeCountdown = $lote_actual->end_session;
 						 }
                     ?>
-
-                        @if ($sub_cerrada)
+						{{-- quieren que se pueda comprar en históricas --}}
+                        @if ($sub_cerrada && !$sub_historica)
                             @include('includes.ficha.pujas_ficha_cerrada')
 
                         @elseif($subasta_venta && !$cerrado && !$end_session)
