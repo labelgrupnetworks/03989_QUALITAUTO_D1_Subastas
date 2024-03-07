@@ -1,0 +1,206 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300;400;500;600;700&display=swap');
+
+
+/* CSS Document */
+.ac-overlay {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .8);
+  z-index: 99998;
+  opacity: 0;
+  cursor: wait
+}
+.ac-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 500px;
+  position: fixed;
+  padding: 30px 20px 40px 20px;
+  background: #fff;
+  z-index: 99999;
+  opacity: 0;
+  text-align: center;
+  border-radius: 0;
+  box-shadow: 0 0 5px #000;
+  font-weight: 400
+}
+.ac-container h2 {
+  box-sizing: border-box;
+  margin: 0 0 10px 0;
+  font-size: 26px;
+}
+
+.ac-container h2::before {
+  content:'';
+  width: 70%;
+  max-width: 320px;
+  height: 100px;
+  display: block;
+  margin: 0 auto;
+  background: url(../images/logo.svg) no-repeat center center;
+  margin-top: 20px;
+
+}
+.ac-container h3 {
+  box-sizing: border-box;
+  color: #649d09;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  font-size: 26px
+}
+
+.ac-container p {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  box-sizing: border-box;
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.3
+}
+.ac-container p strong {
+  color: #ff1f1f
+}
+::placeholder {
+  color: #ccc;
+}
+.ac-container input, .ac-container select {
+  box-sizing: border-box;
+  color: #555;
+  padding: 5px 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-right: 5px;
+  border: 1px solid #ccc
+}
+.ac-container input.day {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  box-sizing: border-box;
+  width: 80px;
+  height: 52px;
+  text-align: center;
+}
+.ac-container input.year {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  box-sizing: border-box;
+  width: 80px;
+  height: 52px;
+  text-align: center;
+}
+.ac-container select {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  box-sizing: border-box;
+  height: 52px;
+  padding-left: 4px
+}
+.ac-container button {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+	flex-basis: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 12px 18px 12px 18px;
+    font-size: 16px;
+    line-height: 1.6;
+    width: 120px;
+    background: #ab1c2e;
+    color: #fff;
+}
+.ac-container button:hover {
+  box-sizing: border-box;
+  background: black
+}
+.ac-container .errors {
+  box-sizing: border-box;
+  margin: 0 0 20px 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #ff1f1f
+}
+.ac-container .errors li, .ac-container .errors ul {
+  box-sizing: border-box;
+  padding: 0 0 3px 0;
+  margin: 0;
+  list-style: none
+}
+.ac-container .errors li span {
+  box-sizing: border-box;
+  font-size: 9px;
+  background: #ebebeb;
+  border: 1px solid #ccc;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: inline-block;
+  color: #ff1f1f;
+  font-weight: 700;
+  text-align: center;
+  margin-right: 5px;
+  line-height: 13px;
+  position: relative;
+  top: -2px;
+  text-shadow: 1px 1px 0 #fff;
+  font-family: arial
+}
+.ac-container .fields {
+  box-sizing: border-box;
+  clear: both;
+  margin: 10px 0 10px 0;
+
+}
+.co-ag {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+}
+.ac-container .firstrow {
+	display: flex;
+	  align-items: flex-start;
+	  gap: 10px;
+	  justify-content: center;
+    margin-bottom: 12px;
+}
+.ac-container .fields label {
+  font-family: "Signika Negative", Tahoma, Geneva, sans-serif;
+  font-weight: bold;
+}
+@media (max-width:500px) {
+  .ac-container {
+    box-sizing: border-box;
+    width: auto;
+    margin-right: 20px;
+    margin-left: 1px
+  }
+  .ac-container input.day, .ac-container input.year, .ac-container select {
+    box-sizing: border-box;
+    display: block;
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+  .ac-container button {
+    box-sizing: border-box;
+    display: block;
+    width: 100%
+  }
+}

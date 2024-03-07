@@ -174,11 +174,9 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		Artisan::call('cache:clear');
-		//clear sessions
-		Artisan::call('session:clear');
-
-		dd('limpio');
+		$a = new MailController();
+		$a->sendCompletLotReport('2024JUME',1);
+		die();
 	}
 
 
