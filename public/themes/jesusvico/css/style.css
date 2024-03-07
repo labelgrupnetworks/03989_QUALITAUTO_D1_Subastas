@@ -1001,6 +1001,10 @@ main.page-ficha p.h1 {
 	font-size: calc(1rem + 1.5vw);
 }
 
+.ficha-previous-next .btn.arrow-button {
+	padding: 10px 12px;
+}
+
 @media (min-width: 295px) {
 	.ficha-info .ficha-info-justify-content {
 		justify-content: space-between;

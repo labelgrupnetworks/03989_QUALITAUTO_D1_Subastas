@@ -13,17 +13,17 @@
 <div class="grid-previous-and-next">
 	@if ($previuos)
 		<section class="previous-button d-flex align-items-start">
-			<div class="btn-group me-auto">
-				<a class="btn btn-lb-primary d-flex align-items-center" href="{{ $previuos }}">
+			<div class="btn-group me-auto h-100">
+				<a class="btn btn-lb-primary d-flex align-items-center arrow-button" href="{{ $previuos }}">
 					@include('components.boostrap_icon', ['icon' => 'chevron-left'])
 				</a>
-				<a class="btn btn-light" href="{{ $previuos }}">{{ trans("$theme-app.subastas.last") }}</a>
+				<a class="btn btn-light d-none d-sm-block" href="{{ $previuos }}">{{ trans("$theme-app.subastas.last") }}</a>
 			</div>
 		</section>
 	@endif
 
 	<section class="search-lot-bar d-flex flex-column align-items-center">
-		<div class="btn-group search-lot-container d-none d-md-block">
+		<div class="btn-group search-lot-container h-100">
 			<form id="searchLot" class="form-single-lot samsung-visual" method="get" action="{{ $searchUrl }}">
 
 				<div class="input-group">
@@ -43,9 +43,9 @@
 
 	@if ($next)
 		<section class="next-button d-flex align-items-end">
-			<div class="btn-group ms-auto">
-				<a class="btn btn-light" href="{{ $next }}">{{ trans("$theme-app.subastas.next") }}</a>
-				<a class="btn btn-lb-primary d-flex align-items-center" href="{{ $next }}">
+			<div class="btn-group ms-auto h-100">
+				<a class="btn btn-light d-none d-sm-block" href="{{ $next }}">{{ trans("$theme-app.subastas.next") }}</a>
+				<a class="btn btn-lb-primary d-flex align-items-center arrow-button" href="{{ $next }}">
 					@include('components.boostrap_icon', ['icon' => 'chevron-right'])
 				</a>
 			</div>
