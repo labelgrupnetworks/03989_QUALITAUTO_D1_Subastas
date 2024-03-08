@@ -40,7 +40,18 @@
 
                 @if (config('app.paginacion_grid_lotes'))
                     <div class="pagination-wrapper">
-                        {{ $paginator->links() }}
+						<div class="row">
+							<div class="col-12 col-lg-6">
+								<div class="mb-2">
+									@include('includes.grid.badges_section')
+								</div>
+							</div>
+							<div class="col-12 col-lg-6">
+								<div class="nav-grid-pages">
+									{{ $paginator->links() }}
+								</div>
+							</div>
+						</div>
                     </div>
 
                     <div class="section-grid-lots mb-2 {{ $styleLotSeeConfiguration }}">

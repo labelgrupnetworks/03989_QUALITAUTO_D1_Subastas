@@ -395,4 +395,11 @@ class CustomControllers extends Controller
 
 		SeoLib::saveEvent($event);
 	}
+
+	public function response_ocr(Request $request){
+		\Log::info(print_r($request->all(),true));
+
+
+
+	}
 }

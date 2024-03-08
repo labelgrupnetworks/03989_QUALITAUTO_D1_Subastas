@@ -30,6 +30,8 @@ $(function () {
 			behavior: 'smooth'
 		});
 	});
+
+	$('#searchLot').on('submit', sendSearchLotForm);
 })
 
 function createObservers() {
@@ -116,4 +118,17 @@ carrousel_molon_new = function (carrousel, newOptions = {}) {
 function resizeGridBanner() {
 	const slickBanner = $('.banner_lotes').slick('getSlick');
 	slickBanner.refresh();
+}
+
+function sendSearchLotForm(event) {
+	event.preventDefault();
+
+		const reference = $("[name=reference]").val();
+		if(!reference){
+			return;
+		}
+
+		let action = event.target.action;
+		const goTo = action.replace(":ref", reference.trim())
+		window.location = goTo;
 }
