@@ -3,9 +3,14 @@
 		<div id="count_down_msg" class="hidden notranslate count_down_msg">
             <p></p>
         </div>
+		<div class="product_desc" style="height:100px;">
+			<span id="actual_descweb" class="actual_titulo @if(config('app.tr_hidden_title', false)) hidden @endif">
+				<?php echo $data['text_lang'][$data['js_item']['lang_code']]->descweb_hces1 ?>
+			</span>
 
-		<div class="lot">
-			<span id="lote_actual_main" class="">{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
+		</div>
+		<div class="lot hidden" >
+			<span id="lote_actual_main" >{{ trans($theme.'-app.sheet_tr.lot') }} <strong><span id="info_lot_actual">
 
 				@if(\Config::get("app.bis") && \Config::get("app.bis")=="A")
 						{{ str_replace(array(".1",".2",".3", ".4", ".5", ".6"), array("-A", "-B", "-C", "-D", "-E"),  $data['subasta_info']->lote_actual->ref_asigl0)}}
