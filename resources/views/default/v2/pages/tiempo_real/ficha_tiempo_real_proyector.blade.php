@@ -46,10 +46,6 @@
                 $(".subasta h3").show();
 
                 $('.started').removeClass('hidden');
-
-                // si aun no esta iniciada se verá la imagen en grande
-                $('.colimagen').addClass('col-lg-6');
-                $('.colimagen').removeClass('col-lg-12');
             }
 
             $(document).ready(function() {

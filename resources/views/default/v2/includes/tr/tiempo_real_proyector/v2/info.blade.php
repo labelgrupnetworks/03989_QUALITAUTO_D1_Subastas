@@ -23,7 +23,7 @@
 <div class="starting-price">
     <div class="precioSalida column-block" id="precioSalida">
         <p>{{ trans($theme . '-app.sheet_tr.start_price') }}</p>
-        <p>
+        <p class="number-value">
             <span>{{ $loteActual->formatted_impsalhces_asigl0 }}</span>
             {{ $simbol }}
         </p>
@@ -42,7 +42,7 @@
             </span>
         </p>
 
-        <p>
+        <p class="number-value">
             <span id="actual_max_bid" @class([
                 'mine' => $iWinner,
                 'other' => !$iWinner,
@@ -59,7 +59,7 @@
 <div class="next-bid">
     <div class="column-block" id="next-bid_JS">
         <p>{{ trans($theme . '-app.lot.next_min_bid') }}</p>
-        <p>
+        <p class="number-value">
             <span id="next_bid_JS">{{ Tools::moneyFormat($loteActual->importe_escalado_siguiente) }}</span>
             {{ $simbol }}
         </p>
