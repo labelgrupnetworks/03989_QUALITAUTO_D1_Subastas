@@ -7,15 +7,6 @@
 @section('content')
 
 <?php
-$families = array(
-	"2" => trans($theme.'-app.login_register.newsletter_joyeria'),
-	"3" => trans($theme.'-app.login_register.newsletter_subasta_pintura'),
-	"7" => trans($theme.'-app.login_register.newsletter_condecoraciones'),
-	"5" => trans($theme.'-app.login_register.newsletter_subasta_joyas'),
-	"6" => trans($theme.'-app.login_register.newsletter_galeria'),
-	"4" => trans($theme.'-app.login_register.newsletter_subasta_muebles'),
-
-);
 $jobs = array(
 	'ANTICUARIO' =>	'Anticuario',
 	'ARQUITECTO' =>	'Arquitecto',
