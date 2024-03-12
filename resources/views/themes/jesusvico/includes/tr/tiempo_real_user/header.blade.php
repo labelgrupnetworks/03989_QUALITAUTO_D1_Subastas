@@ -2,21 +2,22 @@
     $lang = config('app.locale');
 @endphp
 <header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-between px-2">
-    <a class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" href="/{{ $lang }}">
+    class="row m-0 flex-nowrap flex-column flex-lg-row align-items-center justify-content-center justify-content-lg-between px-2 dropdown-center">
+
+	<a class="d-flex align-items-center col-auto mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" href="/{{ $lang }}">
         <img class="img-fluid" src="/themes/{{ $theme }}/assets/img/logo_numismatica.png" alt="numismática"
             width="80">
         <img class="img-fluid logo" src="/themes/{{ $theme }}/assets/img/logo.png"
             alt="{{ \Config::get('app.name') }}">
     </a>
 
-    <div class="nav col-12 col-lg-auto mb-2 justify-content-center mb-lg-0">
-        <h2 class="auction_title text-center h1 no-decoration m-0 p-0">{{ $data['name'] }}</h2>
+    <div class="nav col-12 flex-fill mb-2 justify-content-center mb-lg-0">
+        <h2 class="auction_title text-center h1 no-decoration m-0 p-0 text-balance">{{ $data['name'] }}</h2>
     </div>
 
-    <div class="col-12 col-lg-4 text-center text-lg-end">
+    <div class="col-auto py-2">
         @if (!Session::has('user'))
-            <div class="dropdown-center">
+            <div class="">
                 <a class="nav-link dropdown-toggle" id="dropdownLogin" data-bs-toggle="dropdown"
                     data-bs-auto-close="false" href="#" role="button" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29"

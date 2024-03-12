@@ -2101,3 +2101,6 @@ function addNewsletter(data) {
 	});
 }
 
+function backpage() {
+	window.history.back();
+}
