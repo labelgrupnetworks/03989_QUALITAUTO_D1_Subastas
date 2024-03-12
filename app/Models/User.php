@@ -113,7 +113,7 @@ class User
     {
 
         //devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
-         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,cw.* FROM FXCLIWEB cw
+         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,c.rsoc_cli,cw.* FROM FXCLIWEB cw
                      JOIN FXCLI c
                                 ON (c.COD_CLI = cw.COD_CLIWEB and c.GEMP_CLI = cw.GEMP_CLIWEB)
                             WHERE

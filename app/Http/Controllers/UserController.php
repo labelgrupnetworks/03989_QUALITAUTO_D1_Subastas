@@ -185,6 +185,7 @@ class UserController extends Controller
         $user = new User();
         # Seteamos la sesión
         Session::put('user.name', $login->nom_cli);
+		Session::put('user.rsoc', $login->rsoc_cli);
         Session::put('user.usrw', $login->usrw_cliweb);
         Session::put('user.cod',  $login->cod_cliweb);
         Session::put('user.emp',  $login->emp_cliweb);
