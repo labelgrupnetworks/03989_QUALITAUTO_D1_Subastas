@@ -258,8 +258,9 @@ $currency = "B/.";
 
 <script>
             //Mostramos la fecha
-
+	$(document).ready(function () {
             $("#cierre_lote").html(format_date_large(new Date("{{$timeCountdown}}".replace(/-/g, "/")),''));
+	});
 
 
 

@@ -48,7 +48,7 @@ $importe =  \Tools::moneyFormat($importe,false,2);
 			</div>
 			<div class="col-xs-6 ">
                 <div class="info_single_content info_single_button ficha-button-buy">
-                    @if (!$retirado && empty($lote_actual->himp_csub) && !$sub_cerrada)
+                    @if (!$retirado && empty($lote_actual->himp_csub))
 						{{-- Si el lote es NFT y el usuario está logeado pero no tiene wallet --}}
 						@if ($lote_actual->es_nft_asigl0 == "S" &&  !empty($data["usuario"])  && empty($data["usuario"]->wallet_cli) )
 							<div class="require-wallet">{!! trans($theme.'-app.lot.require_wallet') !!}</div>

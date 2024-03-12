@@ -1225,13 +1225,13 @@ class subastaTiempoRealController extends Controller
         $lote = head($l);
         //comprobamos que el lote se puede comprar, la subastas de tipo V tienen que tener el lote abierto y no hace falta que tengan el campo compra_asigl0 como S, en cambio las otras el lote debe estar cerrado y los deben tener el campo comprar a S
 
-        if( ($lote->tipo_sub=='V'  && $lote->cerrado_asigl0!='N'  )  ||    ( $lote->tipo_sub!='V' && $lote->cerrado_asigl0!='S' )  || ( $lote->tipo_sub!='V' && $lote->compra_asigl0!='S') || $lote->retirado_asigl0!='N'  || $lote->lic_hces1 !='N' || ( $lote->subc_sub!='S' && $lote->subc_sub!='C' && $lote->subc_sub!='A')  ){
+        if( ($lote->tipo_sub=='V'  && $lote->cerrado_asigl0!='N'  )  ||    ( $lote->tipo_sub!='V' && $lote->cerrado_asigl0!='S' )  || ( $lote->tipo_sub!='V' && $lote->compra_asigl0!='S') || $lote->retirado_asigl0!='N'  || $lote->lic_hces1 !='N' || ( $lote->subc_sub!='S' && $lote->subc_sub!='C' && $lote->subc_sub!='A' && !(\Config::get('app.buy_historic') && $lote->subc_sub=='H') ) ){
 
             $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.buying'),NULL, FALSE);
             return $res;
         }
 		//impsal_hces1
-
+		
 		$importe =  $lote->impsalhces_asigl0;
 		if(!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0 ){
 			$importe =  $lote->impres_asigl0;
