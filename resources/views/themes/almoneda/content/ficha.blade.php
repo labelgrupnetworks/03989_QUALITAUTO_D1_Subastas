@@ -493,7 +493,7 @@ var key ="<?= $key ?>";
         }
         OpenSeadragon({
         id:"img_main",
-        prefixUrl: "/img/opendragon/",
+        prefixUrl: "/default/img/opendragon/",
 
         showReferenceStrip:  true,
 
