@@ -30,6 +30,11 @@ class PageSetting
 		}
 
 		$userSession = session()->all()['user'];
+
+		if (!isset($userSession['admin'])) {
+			return [];
+		}
+
 		$isAdmin = $userSession['admin'][0];
 
 		if (!$isAdmin) return [];
