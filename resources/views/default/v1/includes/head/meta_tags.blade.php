@@ -13,6 +13,8 @@
 
 @yield('seo')
 
+@includeIf('includes.head.custom_meta_tags')
+
 <title>
     @if (!empty($data['seo']->meta_title))
         {{ $data['seo']->meta_title }}
