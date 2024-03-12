@@ -1391,3 +1391,7 @@ function executeOnceToDay(storageName, callback){
 		storage.setItem(storageName, today);
 	}
 }
+
+function backpage() {
+	window.history.back();
+}
