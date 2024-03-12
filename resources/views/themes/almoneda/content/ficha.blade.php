@@ -24,7 +24,7 @@ $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
-
+$inicio_pujas = strtotime("now") > strtotime($lote_actual->fini_asigl0);
 $path = "/files/".Config::get('app.emp')."/$lote_actual->num_hces1/$lote_actual->lin_hces1/files/";
 $files = [];
 if(is_dir(getcwd() . $path)){
@@ -493,7 +493,7 @@ var key ="<?= $key ?>";
         }
         OpenSeadragon({
         id:"img_main",
-        prefixUrl: "/img/opendragon/",
+        prefixUrl: "/default/img/opendragon/",
 
         showReferenceStrip:  true,
 
