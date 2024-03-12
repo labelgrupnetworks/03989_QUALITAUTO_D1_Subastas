@@ -72,7 +72,7 @@ $idiomes = \Config::get('app.locales');
 							<i class="fa fa-gavel" aria-hidden="true"></i>
 							<span>{{ trans('admin-app.nav_menu.auctions') }}</span>
 						</a>
-						@if(in_array('subastas',$config_menu_admin))
+							@if(in_array('subastas', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
 								<a href="/admin/subasta">

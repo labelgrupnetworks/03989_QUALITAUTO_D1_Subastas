@@ -155,7 +155,7 @@ class LotListController extends Controller
 				$subasta  = new Subasta();
 				$subasta->cod   = $codSub;
 				$subasta->cli_licit = Session::get('user.cod');
-				$subasta->rsoc      = Session::get('user.name');
+				$subasta->rsoc      = Session::get('user.rsoc');
 				$licit = $subasta->checkLicitador();
 			}
 			/* fin genera licitador */
@@ -536,7 +536,7 @@ class LotListController extends Controller
 
 
 	private function getLots($category, $section, $subsection,  $codSub,  $refSession){
-		
+
 		SeoLib::saveVisit($codSub,request('category', $category ), request('section', $section));
 
 		#No es necesario el search ya que vendra por variables

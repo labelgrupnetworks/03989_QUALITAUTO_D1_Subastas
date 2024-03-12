@@ -71,6 +71,12 @@ class FgOrtsec0 extends Model
         return $query->leftjoin('FGORTSEC0_LANG',"FGORTSEC0_LANG.EMP_ORTSEC0_LANG = FGORTSEC0.EMP_ORTSEC0 AND FGORTSEC0_LANG.SUB_ORTSEC0_LANG = FGORTSEC0.SUB_ORTSEC0 AND FGORTSEC0_LANG.LIN_ORTSEC0_LANG = FGORTSEC0.LIN_ORTSEC0 AND LANG_ORTSEC0_LANG  = '". $lang ."'");
 	}
 
+	public function getOrtsec0LinFromKey($key){
+		return ($this->select("LIN_ORTSEC0")
+				->where("KEY_ORTSEC0", $key)
+				->first())->lin_ortsec0;
+	}
+
 
 	 #INFO de categorias
 	 public function GetInfoFgOrtsec0( $key, $sub_ortsec = 0){
