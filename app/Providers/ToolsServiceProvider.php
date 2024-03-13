@@ -20,6 +20,7 @@ use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -1582,6 +1583,47 @@ class ToolsServiceProvider extends ServiceProvider
 		$sizeValue = (int) $sizeValue;
 		$sizeValue = $sizeValue * pow(1024, $sizes[$sizeSuffix]);
 		return $sizeValue;
+	}
+
+	/**
+	 * Get values from single row in the database.
+	 * @param Builder $dataTable new query instance of the model
+	 * @param array $whereCases where cases
+	 * @param array $whereIsNotNullCases where is not null cases
+	 * @param string $orderBy order is asc
+	 * @param array $joins [table, first, operator, second]
+	 * @param array $scopes scopes
+	 * @return mixed
+	 */
+	public static function getDatabaseSingleValues(
+		$dataTable,
+		$whereCases = [],
+		$whereIsNotNullCases = [],
+		$orderBy = '',
+		$joins = [],
+		$scopes = []
+		)
+	{
+		if (count($whereCases) > 0) {
+			$dataTable = $dataTable->where($whereCases);
+		}
+		if (count($whereIsNotNullCases) > 0) {
+			$dataTable = $dataTable->whereNotNull($whereIsNotNullCases);
+		}
+		if ($orderBy != '') {
+			$dataTable = $dataTable->orderBy($orderBy, 'asc');
+		}
+		if (count($joins) > 0) {
+			foreach ($joins as $join) {
+				$dataTable = $dataTable->join($join['table'], $join['first'], $join['operator'], $join['second']);
+			}
+		}
+		if (count($scopes) > 0) {
+			foreach ($scopes as $scope) {
+				$dataTable = $dataTable->$scope();
+			}
+		}
+		return $dataTable->first();
 	}
 
 }

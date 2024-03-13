@@ -148,7 +148,7 @@ function unpublishNft(event) {
 function actionSelectedLots(event) {
 	event.preventDefault();
 
-	const lots = selectedCheckItemsByName('lote');
+	const lots = selectedCheckItemsByName('lot_ids');
 
 	if(lots.length === 0){
 		bootbox.alert("Debes seleccionar al menos un lote");

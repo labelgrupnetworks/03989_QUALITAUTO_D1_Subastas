@@ -51,13 +51,27 @@
 				@endforeach
 			</div>
 		@else
-			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3">
+			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3 d-none d-md-flex">
 				@foreach ($auctionsForYears as $year => $auctions)
 					@foreach ($auctions as $subasta)
 						<div class="col">
 							@include('includes.subasta', ['subasta' => $subasta, 'year' => $year])
 						</div>
 					@endforeach
+				@endforeach
+			</div>
+
+			<div class="row row-cols-1 gy-3 align-items-stretch mb-3 d-block d-md-none">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<div class="col">
+						<article class="card card-custom-large h-100">
+							@foreach ($auctions as $subasta)
+								<div class="col d-block d-md-none">
+									@include('includes.subasta_mobile', ['subasta' => $subasta, 'year' => $year])
+								</div>
+							@endforeach
+						</article>
+					</div>
 				@endforeach
 			</div>
 
