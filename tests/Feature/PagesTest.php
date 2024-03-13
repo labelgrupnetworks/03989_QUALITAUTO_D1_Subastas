@@ -45,47 +45,6 @@ class PagesTest extends TestCase
 		->first();
 	}
 
-	/**
-	 * Get the values from the database.
-	 * @param mixed $dataTable
-	 * @param array $whereCases
-	 * @param array $whereIsNotNullCases
-	 * @param string $orderBy
-	 * @param array $joins [table, first, operator, second]
-	 * @param array $scopes
-	 * @return mixed
-	 */
-	private function getDatabaseSingleValues(
-		$dataTable,
-		$whereCases = [],
-		$whereIsNotNullCases = [],
-		$orderBy = '',
-		$joins = [],
-		$scopes = []
-		)
-	{
-		if (count($whereCases) > 0) {
-			$dataTable = $dataTable->where($whereCases);
-		}
-		if (count($whereIsNotNullCases) > 0) {
-			$dataTable = $dataTable->whereNotNull($whereIsNotNullCases);
-		}
-		if ($orderBy != '') {
-			$dataTable = $dataTable->orderBy($orderBy, 'asc');
-		}
-		if (count($joins) > 0) {
-			foreach ($joins as $join) {
-				$dataTable = $dataTable->join($join['table'], $join['first'], $join['operator'], $join['second']);
-			}
-		}
-		if (count($scopes) > 0) {
-			foreach ($scopes as $scope) {
-				$dataTable = $dataTable->$scope();
-			}
-		}
-		return $dataTable->first();
-	}
-
 	private function getLotData(array $whereCasesToAdd = [])
 	{
 		$whereCases = [];
@@ -100,21 +59,14 @@ class PagesTest extends TestCase
 			}
 		}
 
-		return self::getDatabaseSingleValues(
-			new FgAsigl0(),
+		return Tools::getDatabaseSingleValues(
+			(new FgAsigl0())->query(),
 			$whereCases,
 			['TITULO_HCES1'],
 			'fini_asigl0',
 			[],
 			['joinFghces1Asigl0', 'joinSessionAsigl0', 'joinSubastaAsigl0']
 		);
-	}
-
-	private function markThisTestAsSkippedIfHasThisThemes(array $themes)
-	{
-		if (in_array(Config::get('app.theme'), $themes)) {
-			$this->markTestSkipped('The theme is ' . Config::get('app.theme') . '.');
-		}
 	}
 
 	private function disbleRecaptcha()
@@ -132,8 +84,6 @@ class PagesTest extends TestCase
      */
     public function test_home_page_is_successful()
     {
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('home');
 
 		self::setHTTP_HOST($url);
@@ -162,14 +112,12 @@ class PagesTest extends TestCase
 		$response->assertSuccessful();
 	}
 
-	/**
+    /**
 	 * A test for the actual auction page.
 	 * @return void
 	 */
 	public function test_subasta_actual_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subasta.actual');
 
 		self::setHTTP_HOST($url);
@@ -185,8 +133,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subasta_actual_online_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subasta.actual-online');
 
 		self::setHTTP_HOST($url);
@@ -207,8 +153,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_presenciales_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.presenciales');
 
 		self::setHTTP_HOST($url);
@@ -225,8 +169,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.historicas');
 
 		self::setHTTP_HOST($url);
@@ -242,8 +184,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_presenciales_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.historicas_presenciales');
 
 		self::setHTTP_HOST($url);
@@ -259,8 +199,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_historicas_online_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.historicas_online');
 
 		self::setHTTP_HOST($url);
@@ -276,8 +214,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_online_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.online');
 
 		self::setHTTP_HOST($url);
@@ -293,8 +229,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_permanentes_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.permanentes');
 
 		self::setHTTP_HOST($url);
@@ -310,8 +244,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_venta_directa_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.venta_directa');
 
 		self::setHTTP_HOST($url);
@@ -327,8 +259,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_todas_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.all');
 
 		self::setHTTP_HOST($url);
@@ -344,8 +274,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_activas_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.activas');
 
 		self::setHTTP_HOST($url);
@@ -361,8 +289,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_especiales_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.especiales');
 
 		self::setHTTP_HOST($url);
@@ -378,8 +304,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_haz_oferta_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.haz_oferta');
 
 		self::setHTTP_HOST($url);
@@ -395,8 +319,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_subastas_inversas_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('subastas.subasta_inversa');
 
 		self::setHTTP_HOST($url);
@@ -412,10 +334,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_with_cod_text_friendly_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
-		$category = self::getDatabaseSingleValues(
-			new FgOrtsec0(),
+		$category = Tools::getDatabaseSingleValues(
+			(new FgOrtsec0())->query(),
 			['sub_ortsec0' => 0],
 			['key_ortsec0'],
 			'lin_ortsec0');
@@ -439,10 +359,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
-		$category = self::getDatabaseSingleValues(
-			new FgOrtsec0(),
+		$category = Tools::getDatabaseSingleValues(
+			(new FgOrtsec0())->query(),
 			['sub_ortsec0' => 0],
 			['key_ortsec0'],
 			'lin_ortsec0'
@@ -467,10 +385,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_grid_lot_by_category_and_section_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
-		$category = self::getDatabaseSingleValues(
-			new FgOrtsec0(),
+		$category = Tools::getDatabaseSingleValues(
+			(new FgOrtsec0())->query(),
 			['sub_ortsec0' => 0],
 			['key_ortsec0'],
 			'lin_ortsec0'
@@ -480,8 +396,8 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The category is empty.');
 		}
 
-		$subcategory = self::getDatabaseSingleValues(
-			new FgOrtsec1(),
+		$subcategory = Tools::getDatabaseSingleValues(
+			(new FgOrtsec1())->query(),
 			['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0],
 			[],
 			'lin_ortsec1'
@@ -491,8 +407,8 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The subcategory is empty.');
 		}
 
-		$section = self::getDatabaseSingleValues(
-			new FxSec(),
+		$section = Tools::getDatabaseSingleValues(
+			(new FxSec())->query(),
 			['cod_sec' => $subcategory->sec_ortsec1],
 			['key_sec'],
 			'cod_sec'
@@ -899,8 +815,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_lot_grid_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$aucSession = self::getMostRecientAucSession();
 
 		$url = Tools::url_auction($aucSession->cod_sub, $aucSession->name, $aucSession->id_auc_sessions, $aucSession->reference);
@@ -916,8 +830,6 @@ class PagesTest extends TestCase
 	 */
 	public function test_lot_grid_with_all_categories_is_succesful()
 	{
-		$this->markThisTestAsSkippedIfHasThisThemes(['tauleryfau']);
-
 		$url = route('allCategories');
 
 		self::setHTTP_HOST($url);
@@ -996,8 +908,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_family_is_succesful()
 	{
-		$family = self::getDatabaseSingleValues(
-			new FgFamart(),
+		$family = Tools::getDatabaseSingleValues(
+			(new FgFamart())->query(),
 			[],
 			['cod_famart'],
 			'id_famart'
@@ -1023,8 +935,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_category_is_succesful()
 	{
-		$category = self::getDatabaseSingleValues(
-			new FgOrtsec0(),
+		$category = Tools::getDatabaseSingleValues(
+			(new FgOrtsec0())->query(),
 			['sub_ortsec0' => 0],
 			['key_ortsec0'],
 			'lin_ortsec0'
@@ -1049,8 +961,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_articles_page_with_category_and_subcategory_is_succesful()
 	{
-		$category = self::getDatabaseSingleValues(
-			new FgOrtsec0(),
+		$category = Tools::getDatabaseSingleValues(
+			(new FgOrtsec0())->query(),
 			['sub_ortsec0' => 0],
 			['key_ortsec0'],
 			'lin_ortsec0'
@@ -1060,8 +972,8 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The category is empty.');
 		}
 
-		$subcategory = self::getDatabaseSingleValues(
-			new FgOrtsec1(),
+		$subcategory = Tools::getDatabaseSingleValues(
+			(new FgOrtsec1())->query(),
 			['lin_ortsec1' => $category->lin_ortsec0, 'sub_ortsec1' => 0],
 			[],
 			'lin_ortsec1'
@@ -1071,8 +983,8 @@ class PagesTest extends TestCase
 			$this->markTestIncomplete('The subcategory is empty.');
 		}
 
-		$section = self::getDatabaseSingleValues(
-			new FxSec(),
+		$section = Tools::getDatabaseSingleValues(
+			(new FxSec())->query(),
 			['cod_sec' => $subcategory->sec_ortsec1],
 			['key_sec'],
 			'cod_sec'
@@ -1097,8 +1009,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_article_page_is_succesful()
 	{
-		$article = self::getDatabaseSingleValues(
-			new FgArt0(),
+		$article = Tools::getDatabaseSingleValues(
+			(new FgArt0())->query(),
 			[],
 			['des_art0'],
 			'id_art0'
@@ -1123,8 +1035,8 @@ class PagesTest extends TestCase
 	 */
 	public function test_static_page_is_succesful()
 	{
-		$page = self::getDatabaseSingleValues(
-			new Web_Page(),
+		$page = Tools::getDatabaseSingleValues(
+			(new Web_Page())->query(),
 			[],
 			['CONTENT_WEB_PAGE'],
 			'ID_WEB_PAGE'
