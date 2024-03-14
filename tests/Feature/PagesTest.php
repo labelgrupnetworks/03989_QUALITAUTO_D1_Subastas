@@ -24,6 +24,7 @@ class PagesTest extends TestCase
 		$http_host = end($url);
 		$_SERVER['HTTP_HOST'] = $http_host;
 		$_SERVER['REQUEST_URI'] = $route;
+		$_SERVER['REMOTE_ADDR'] = '172.0.0.1';
 	}
 
 	private function getAnArtist()
