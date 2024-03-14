@@ -45,18 +45,21 @@
 
             <div class="footer-banner">
 
-				<div class="wrapper-footer">
-					<div class="container">
-						<div class="seo-container">
-							<p>{!! trans($theme.'-app.home.seo') !!}</p>
-						</div>
-					</div>
+                <div class="wrapper-footer">
+                    <div class="container">
+                        <div class="seo-container">
+                            <p>{!! trans($theme . '-app.home.seo') !!}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-					@include('includes.newsletter')
+            <div class="footer-banner">
+                <div class="wrapper-footer">
+                    @include('includes.newsletter')
 
-					@include('includes.footer-section')
-				</div>
-
+                    @include('includes.footer-section')
+                </div>
             </div>
 
         </div>
@@ -70,11 +73,9 @@
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
-            //fade: true,
             dots: true,
             infinite: false,
             autoplay: false,
-            //autoplaySpeed: 4000,
             ...bladeOptions
         };
 
@@ -91,12 +92,12 @@
         }));
 
         //slider.on('afterChange', invertHeaderColors);
-		slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-			const $nextSlideDom = $(slick.$slides.get(nextSlide));
-			invertHeaderColors($nextSlideDom[0]);
-		});
+        slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+            const $nextSlideDom = $(slick.$slides.get(nextSlide));
+            invertHeaderColors($nextSlideDom[0]);
+        });
 
-		invertHeaderColors(document.querySelector('.slick-current'));
+        invertHeaderColors(document.querySelector('.slick-current'));
 
         function invertHeaderColors(domElement) {
             const isInvert = domElement.hasAttribute("data-invert");
