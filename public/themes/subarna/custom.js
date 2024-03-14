@@ -92,12 +92,14 @@ $(document).ready(function () {
 	$('#closeResponsive').on('click', function () {
 		$('#loginResponsive').addClass('animated fadeOutDown').removeClass('fadeInDown');
 	})
+
 	$('#btnResponsive').on('click', function () {
-		$('#menuResponsive').show().addClass('animated fadeInRight').removeClass('fadeOutRight');
+		$('#menuResponsive').show().addClass('animated fadeInLeft').removeClass('fadeOutLeft');
 	});
 	$('#btnResponsiveClose').on('click', function () {
-		$('#menuResponsive').addClass('animated fadeOutRight').removeClass('fadeInRight');
+		$('#menuResponsive').addClass('animated fadeOutLeft').removeClass('fadeInLeft');
 	});
+
 	$('.btn_login_desktop').on('click', function () {
 		$.magnificPopup.close();
 		$('.login_desktop').fadeToggle("fast");
