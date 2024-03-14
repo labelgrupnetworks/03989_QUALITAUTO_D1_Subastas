@@ -6,7 +6,6 @@ use App\Models\articles\FgArt0;
 use App\Models\V5\FgFamart;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgOrtsec1;
-use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\Web_Page;

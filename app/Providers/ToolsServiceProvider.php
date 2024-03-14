@@ -1293,14 +1293,14 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function exit404IfEmpty($var = null)
 	{
 		if (empty($var)) {
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 	}
 	#sirve para arrays tambien
 	public static function exit404IfEmptyCollection($collection = null)
 	{
 		if (count($collection) == 0) {
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 	}
 

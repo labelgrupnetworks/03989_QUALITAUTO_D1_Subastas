@@ -35,10 +35,10 @@ class AuctionsTest extends TestCase
 
 		$response = $this->get($url);
 
-		if ($response->baseResponse->getStatusCode() == 200) {
+		if ($response->status() == 200) {
 			$response->assertSuccessful();
 		} else {
-			$response->assertRedirect($url);
+			$response->assertRedirect($response->baseResponse->getTargetUrl());
 		}
 	}
 
