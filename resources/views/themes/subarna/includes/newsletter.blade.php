@@ -1,44 +1,55 @@
-<div class="newsletter js-newletter-block">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-                <div class="tit_newsletter">
-                    <h3>{{trans($theme.'-app.foot.newsletter_title')}}</h3>
-                </div>
-                <div class="form-group">
-                        <input class="form-control input-lg newsletter-input" type="email" placeholder="E-mail">
-                        <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>">
-                        <input type="hidden" class="newsletter" name="families" value="1">
-                        <button id="newsletter-btn" type="button" class="btn-custom btn">{{trans($theme.'-app.foot.newsletter_button')}}</button>
-				</div>
+@php
+    $locale = Config::get('app.locale');
 
-				<div class="form-check mt-2">
-					<input
-						name="condiciones"
-						type="checkbox"
-						id="condiciones"
-						type="checkbox" class="form-check-input">
-				<label class="form-check-label" for="condiciones">{!! trans($theme.'-app.login_register.read_conditions') !!} <a href="{{Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition')}}">({{trans($theme.'-app.login_register.more_info')}})</a></label>
-				</div>
-				<div class="form-check mt-1">
-					<input
-						name="comercial"
-						type="checkbox"
-						id="comercial"
-						type="checkbox" class="form-check-input">
-					<label class="form-check-label" for="comercial">{{ trans($theme.'-app.login_register.recibir_newsletter') }}</label>
-				</div>
+    /***
+	@todo
+	- [] se debé cambiar la acción del botón por un formulario
 
-                <ul class="redes d-flex align-items-center justify-content-space-between mt-3">
-                    <li><a title="Facebook" href="<?= Config::get('app.facebook') ?>"><i class="fa fa-3x fa-facebook"></i></a></li>
-                    <li><a title="Twitter" href="<?= Config::get('app.twitter') ?>">
-						@include('components.x-icon', ['size' => '42'])
-						</a></li>
-                    <li><a title="Instagram" href="<?= Config::get('app.instagram') ?>"><i class="fa fa-3x fa-instagram"></i></a></li>
-                    <li><a title="Linkedin" href="<?= Config::get('app.linkedin') ?>"><i class="fa fa-3x fa-linkedin"></i></a></li>
-            </ul>
-            </div>
+	*/
+
+@endphp
+
+<div class="container newsletter js-newletter-block">
+    <div class="form-block">
+        <div class="form-group">
+            <input class="form-control newsletter-input" type="email"
+                placeholder="{{ trans("$theme-app.foot.newsletter_title") }}">
+            <input id="lang-newsletter" type="hidden" value="{{ $locale }}">
+            <input class="newsletter" name="families" type="hidden" value="1">
+            {{-- <button class="btn-custom btn" id="newsletter-btn"
+                type="button">{{ trans($theme . '-app.foot.newsletter_button') }}</button> --}}
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" id="condiciones" name="condiciones" type="checkbox" type="checkbox">
+            <label class="form-check-label" for="condiciones">{!! trans($theme . '-app.login_register.read_conditions') !!}
+                <a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') }}">
+                    ({{ trans($theme . '-app.login_register.more_info') }})</a>
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" id="comercial" name="comercial" type="checkbox" type="checkbox">
+            <label class="form-check-label"
+                for="comercial">{{ trans($theme . '-app.login_register.recibir_newsletter') }}</label>
         </div>
     </div>
-</div>
 
+
+    <ul class="redes">
+        <li>
+            <a href="{{ config('app.facebook') }}" title="Facebook"><i class="fa fa-3x fa-facebook"></i></a>
+        </li>
+        <li>
+            <a href="{{ config('app.twitter') }}" title="Twitter">
+                @include('components.x-icon', ['size' => '42'])
+            </a>
+        </li>
+        <li>
+            <a href="{{ config('app.instagram') }}" title="Instagram"><i class="fa fa-3x fa-instagram"></i></a>
+        </li>
+        <li>
+            <a href="<?= Config::get('app.linkedin') ?>" title="Linkedin"><i class="fa fa-3x fa-linkedin"></i></a>
+        </li>
+    </ul>
+</div>
+</div>

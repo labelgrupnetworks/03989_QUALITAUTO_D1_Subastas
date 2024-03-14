@@ -7,18 +7,6 @@
 	}
 }
 
-@media (max-width: 1424px) {
-
-	.navbar-nav>li>a{
-		padding-left: 14px;
-		padding-right: 14px;
-	}
-	.navbar-nav>li{
-		font-size: 12px;
-	}
-
-}
-
 
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
@@ -391,9 +379,7 @@
         .menu-nab-top{
             justify-content: center;
         }
-	.navbar-nav>li:nth-child(1) a {
-		border-left: none;
-	}
+
 	.mt_re {
 		margin-top: 35px;
 	}

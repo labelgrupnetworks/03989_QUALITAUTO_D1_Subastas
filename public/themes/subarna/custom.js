@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 	let bansParallax = $('.bann-parallax');
-
 	if(typeof bansParallax != 'undefined'){
 		window.addEventListener('scroll', function(){
 			if(window.innerWidth > 768){
