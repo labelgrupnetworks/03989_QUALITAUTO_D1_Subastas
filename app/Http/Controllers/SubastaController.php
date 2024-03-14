@@ -631,7 +631,7 @@ class SubastaController extends Controller
 	{
 
 		if (!empty($onlySalable)) { //si es V debe estar abierto, si no da igual
-			$subastaObj->where_filter .= "AND (SUB.TIPO_SUB != 'V' OR cerrado_asigl0 = 'N') AND ASIGL0.RETIRADO_ASIGL0 = 'N' AND  HCES1.FAC_HCES1 = 'N'";
+			$subastaObj->where_filter .= "AND (SUB.TIPO_SUB != 'V' OR cerrado_asigl0 = 'N') AND ASIGL0.RETIRADO_ASIGL0 = 'N' AND NOT HCES1.FAC_HCES1 = 'D' AND NOT HCES1.FAC_HCES1 = 'R'";
 		}
 	}
 

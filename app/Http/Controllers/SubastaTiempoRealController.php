@@ -1231,7 +1231,7 @@ class subastaTiempoRealController extends Controller
             return $res;
         }
 		//impsal_hces1
-		
+
 		$importe =  $lote->impsalhces_asigl0;
 		if(!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0 ){
 			$importe =  $lote->impres_asigl0;
@@ -1402,7 +1402,7 @@ class subastaTiempoRealController extends Controller
         //comprobamos que se pueda hacer una orden de licitación en el lote,
         //que el lote no este cerrado && no esté facturado && que haya empezado el periodo de ordenes de licitacion && que no haya acabado el periodod de ordenes de licitación && que la subasta esté activa
 
-        if($lote->cerrado_asigl0!='N'   ||  $lote->fac_hces1!='N' || time() < strtotime($lote->orders_start) || time() > strtotime($lote->orders_end)  || ($lote->subc_sub != 'S' && $lote->subc_sub != 'A') ){
+        if($lote->cerrado_asigl0!='N'   ||  $lote->fac_hces1 == 'R' || $lote->fac_hces1 == 'D' || time() < strtotime($lote->orders_start) || time() > strtotime($lote->orders_end)  || ($lote->subc_sub != 'S' && $lote->subc_sub != 'A') ){
             $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.generic'),NULL, FALSE);
             return $res;
         }
