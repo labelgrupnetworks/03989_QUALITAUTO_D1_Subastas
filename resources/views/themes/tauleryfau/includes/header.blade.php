@@ -247,12 +247,18 @@ function wpLink($code) {
 					</li>
 				</div>
 
-				<li>
+
+				@php
+					# TEMPORALMENTE OCULTO POR PETICIÓN DE TAULER Y FAU
+				@endphp
+				{{-- <li>
                     <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans($theme . '-app.foot.onzas_macuquinas') }}
                         <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
                     </a>
 
-					{{-- enlaces desplegables en escritorio --}}
+					@php
+						# enlaces desplegables en escritorio
+					@endphp
                     <div id="" class="menu_desp hidden-xs hidden-sm">
                         <a href="{{ wpLink('wp_onzas_macuquinas') }}"
                             class="color-letter flex-display link-header justify-center align-items-center"
@@ -262,10 +268,10 @@ function wpLink($code) {
                             class="color-letter flex-display link-header justify-center align-items-center"
                             style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
                     </div>
-                </li>
+                </li> --}}
 
 				{{-- enlaces desplegables en móvil --}}
-				<div id="" class="menu_desp-xs hidden-md hidden-lg">
+				{{-- <div id="" class="menu_desp-xs hidden-md hidden-lg">
 					<li>
 						<a href="{{ wpLink('wp_onzas_macuquinas') }}"
 						class="color-letter flex-display link-header justify-center align-items-center"
@@ -276,7 +282,7 @@ function wpLink($code) {
                             class="color-letter flex-display link-header justify-center align-items-center"
                             style="cursor: pointer;">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
 					</li>
-				</div>
+				</div> --}}
 
                 <li>
                     <a href="{{ wpLink('wp_about_us') }}">{{ trans("$theme-app.foot.about_us") }}

@@ -2316,6 +2316,26 @@ footer img{
 	color: var(--text-gold-color);
 }
 
+footer a.btn-date {
+	padding: 9px 12px;
+	font-size: 14px;
+	display: inline;
+	margin-left: 30px;
+	color: #fff;
+	background-color: var(--btn-gold);
+	transition: 0.2s all linear;
+}
+
+footer a.btn-date span {
+	font-size: 12px !important;
+}
+
+footer a.btn-date:hover {
+	background-color: #fff;
+	color: var(--btn-gold-hover);
+	padding: 11px 9px;
+}
+
 /**********************************
 FIN FOOTER
 **********************************/
