@@ -24,7 +24,11 @@ class LoginTest extends TestCase
 			"password" => "Magno22"
 		]);
 
-		$response->assertRedirect($response->baseResponse->getTargetUrl());
+		$user = [];
+		$user = session()->get('user');
+		$userLoged = $user ? count($user) > 0 : false;
+
+		$this->assertTrue($userLoged); # Probbably the user 'subastas@labelgrup.com' not exists.
 	}
 
 	/**

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Tests\Feature\PagesTest;
 
 class AuctionsTest extends TestCase
 {

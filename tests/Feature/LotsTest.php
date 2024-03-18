@@ -10,7 +10,6 @@ use App\Models\V5\FxSec;
 use App\Providers\ToolsServiceProvider as Tools;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use Tests\Feature\PagesTest;
 use Tests\TestCase;
 
 class LotsTest extends TestCase
@@ -57,6 +56,8 @@ class LotsTest extends TestCase
 		$aucSession = self::getMostRecientAucSession();
 
 		$url = Tools::url_auction($aucSession->cod_sub, $aucSession->name, $aucSession->id_auc_sessions, $aucSession->reference);
+
+		PagesTest::setHTTP_HOST($url);
 
 		$response = $this->get($url);
 

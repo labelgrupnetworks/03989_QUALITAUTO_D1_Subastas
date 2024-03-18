@@ -1547,7 +1547,7 @@ class Subasta extends Model
         //Lote no es numerico 404
         if(!is_numeric($this->lote)){
 
-            exit (\View::make('front::errors.404'));
+			return abort(404);
 
         }
 
