@@ -18,7 +18,7 @@ class LoginTest extends TestCase
 
 		PagesTest::setHTTP_HOST($url);
 
-		$response = $this->post($url, [
+		$this->post($url, [
 			"_token" => csrf_token(),
 			"email" => "subastas@labelgrup.com",
 			"password" => "Magno22"

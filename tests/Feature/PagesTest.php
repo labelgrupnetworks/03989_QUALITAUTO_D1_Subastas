@@ -35,7 +35,7 @@ class PagesTest extends TestCase
 		->first();
 	}
 
-	private function disbleRecaptcha()
+	public static function disbleRecaptcha()
 	{
 		Config::set('app.codRecaptcha', false);
 		Config::set('app.captcha_v3', false);

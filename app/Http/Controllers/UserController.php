@@ -698,13 +698,18 @@ class UserController extends Controller
           }
         }
 
+		$correos_diferentes = false;
+		if (!empty(Request::input('email')) && !empty(Request::input('confirm_email') && (Request::input('email') != Request::input('confirm_email')))) {
+			$correos_diferentes = true;
+		}
+		
         # Tipo de registro, almacenado en WEB_CONFIG dentro de app
         //Request::input('regtype');
 
         // run the validation rules on the inputs from the form
         $validator = Validator::make(Input::all(), $rules);
 		#multipleNif es un config que permite repetir el dni al registar
-        if ( ($ya_existe_nif_pais && !\Config::get("app.multipleNif")) || $ya_existe_cliweb || $validator->fails())
+        if ( ($ya_existe_nif_pais && !\Config::get("app.multipleNif")) || $ya_existe_cliweb || $correos_diferentes || $validator->fails())
         {
 
 
