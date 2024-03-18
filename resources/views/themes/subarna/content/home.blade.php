@@ -1,5 +1,5 @@
 
-{!! BannerLib::bannerWithView('home', 'fluid') !!}
+{!! BannerLib::bannerWithView('home_banner', 'fluid') !!}
 
 {{-- script para botón de mensaje --}}
 @if((new App\Models\Cookies)->isAnalysisAllowed())

@@ -388,7 +388,7 @@
                 title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a></li>
 
         <li><a
-                href="<?= \Routing::translateSeo('valoracion-articulos') ?>">{{ trans($theme . '-app.home.free-valuations') }}</a>
+                href="{{ Routing::translateSeo('valoracion-articulos') }}">{{ trans($theme . '-app.home.free-valuations') }}</a>
         </li>
         <li><a href="<?= \Routing::translateSeo('departamentos') ?>">{{ trans($theme . '-app.foot.departments') }}</a>
         </li>

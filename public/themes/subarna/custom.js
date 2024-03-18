@@ -605,7 +605,7 @@ function ajax_carousel(key, replace, centerMode = false) {
 	$("#" + key).siblings().removeClass('hidden');
 	$.ajax({
 		type: "POST",
-		url: "/api-ajax/carousel",
+		url: "/api-ajax/newcarousel",
 		data: { key: key, replace: replace },
 		success: function (result) {
 			$("#" + key).siblings('.loader').addClass('hidden');
@@ -620,6 +620,36 @@ function ajax_carousel(key, replace, centerMode = false) {
 				$(this).data('ini', new Date().getTime());
 				countdown_timer($(this));
 			});
+		}
+
+	});
+};
+
+function ajax_newcarousel(key, replace, lang) {
+	$.ajax({
+		type: "POST",
+		url: "/api-ajax/newcarousel",
+		data: { key: key, replace: replace, lang: lang },
+		success: function (result) {
+
+			if (result === '') {
+				$("#" + key + '-content').hide();
+			}
+			$("#" + key).siblings('.loader').addClass('hidden');
+			$("#" + key).html(result);
+
+			$('[data-countdown]').each(function (event) {
+				var countdown = $(this);
+				countdown.data('ini', new Date().getTime());
+				countdown_timer(countdown);
+			});
+
+			if (key === 'lotes_destacados') {
+				carrousel_molon($("#" + key));
+			} else {
+				carrousel_molon_new($("#" + key));
+			}
+
 		}
 
 	});
@@ -726,33 +756,109 @@ function carrousel_centerMode(carrousel) {
 	carrousel.data('hasSlick', true);
 }
 
-
 function carrousel_molon(carrousel) {
-	carrousel.owlCarousel({
-		items: 4,
-		loop: false,
+
+	if (carrousel.data('hasSlick')) {
+		carrousel.slick('unslick');
+	}
+
+	var rows = 1;
+	/*Si se añaden más de una fila, estas no cambian al reducir pantalla
+	//Establecer desde el inicio
+	if(window.innerWidth < 1024){
+		rows = 1;
+	}*/
+
+	/**
+	 * Si se utilizan más de un row, se tiene en cuenta slidesPerRow
+	 * En caso de usar un solo row, se utiliza slidesToShow
+	 * Utilizar los dos, crea conflictos...
+	 */
+
+	carrousel.slick({
+		slidesToScroll: 1,
+		rows: rows,
 		autoplay: true,
-		margin: 20,
+		/*slidesPerRow: 4,*/
+		slidesToShow: 4,
+		arrows: true,
 		dots: true,
-		nav: false,
-		lazyLoad: true,
-		responsiveClass: true,
-		responsive: {
-			0: {
-				items: 1
+		prevArrow: $('.fa-chevron-left'),
+		nextArrow: $('.fa-chevron-right'),
+		responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: true,
+
+					rows: 1,
+					slidesPerRow: 3,
+				}
 			},
-			600: {
-				items: 2
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					rows: 1,
+					slidesPerRow: 2,
+
+				}
 			},
-			1000: {
-				items: 4
-			},
-			1200: {
-				items: 4
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					rows: 1,
+					slidesPerRow: 1,
+				}
 			}
-		}
+
+		]
 	});
-};
+
+	carrousel.data('hasSlick', true);
+}
+
+function carrousel_molon_new(carrousel) {
+
+	if (carrousel.data('hasSlick')) {
+		carrousel.slick('unslick');
+	}
+
+	carrousel.slick({
+		slidesToScroll: 3,
+		slidesToShow: 3,
+		arrows: false,
+		dots: true,
+		infinite: true,
+		swipeToSlide: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					dots: false,
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					dots: false,
+				}
+			}
+		]
+	});
+
+	carrousel.data('hasSlick', true);
+}
+
 
 function password_recovery(lang) {
 	var pass_recov = $("#password_recovery").serialize();

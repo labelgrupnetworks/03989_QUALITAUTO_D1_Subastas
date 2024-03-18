@@ -11,9 +11,12 @@
 
 <div class="container newsletter js-newletter-block">
     <div class="form-block">
-        <div class="form-group">
-            <input class="form-control newsletter-input" type="email"
-                placeholder="{{ trans("$theme-app.foot.newsletter_title") }}">
+        <div class="form-floating floating-center">
+			<input class="form-control newsletter-input" type="email">
+			<label>
+				{{ trans("$theme-app.foot.newsletter_title") }}
+			</label>
+
             <input id="lang-newsletter" type="hidden" value="{{ $locale }}">
             <input class="newsletter" name="families" type="hidden" value="1">
             {{-- <button class="btn-custom btn" id="newsletter-btn"
@@ -37,7 +40,7 @@
 
     <ul class="redes">
         <li>
-            <a href="{{ config('app.facebook') }}" title="Facebook"><i class="fa fa-3x fa-facebook"></i></a>
+            <a href="{{ config('app.facebook') }}" title="Facebook"><i class="fa fa-facebook"></i></a>
         </li>
         <li>
             <a href="{{ config('app.twitter') }}" title="Twitter">
@@ -45,10 +48,10 @@
             </a>
         </li>
         <li>
-            <a href="{{ config('app.instagram') }}" title="Instagram"><i class="fa fa-3x fa-instagram"></i></a>
+            <a href="{{ config('app.instagram') }}" title="Instagram"><i class="fa fa-instagram"></i></a>
         </li>
         <li>
-            <a href="<?= Config::get('app.linkedin') ?>" title="Linkedin"><i class="fa fa-3x fa-linkedin"></i></a>
+            <a href="<?= Config::get('app.linkedin') ?>" title="Linkedin"><i class="fa fa-linkedin"></i></a>
         </li>
     </ul>
 </div>
