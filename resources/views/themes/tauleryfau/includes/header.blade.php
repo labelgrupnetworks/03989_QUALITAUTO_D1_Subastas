@@ -299,6 +299,10 @@ function wpLink($code) {
                             class="color-letter flex-display link-header justify-center align-items-center"
                             style="cursor: pointer;">{{ trans("$theme-app.foot.faq") }}</a>
 
+						<a href="{{ wpLink('wp_blog') }}"
+							class="color-letter flex-display link-header justify-center align-items-center"
+							style="cursor: pointer;">{{ trans("$theme-app.foot.blog") }}</a>
+
 						<a href="{{ wpLink('wp_term_condition') }}"
                             class="color-letter flex-display link-header justify-center align-items-center"
                             style="cursor: pointer;">{{ trans("$theme-app.foot.auctions_conditions") }}</a>
@@ -318,7 +322,11 @@ function wpLink($code) {
 						class="color-letter flex-display link-header justify-center align-items-center"
 						style="cursor: pointer;">{{ trans("$theme-app.foot.faq") }}</a>
 					</li>
-
+					<li>
+						<a href="{{ wpLink('wp_blog') }}"
+						class="color-letter flex-display link-header justify-center align-items-center"
+						style="cursor: pointer;">{{ trans("$theme-app.foot.blog") }}</a>
+					</li>
 					<li>
 						<a href="{{ wpLink('wp_term_condition') }}"
                             class="color-letter flex-display link-header justify-center align-items-center"
