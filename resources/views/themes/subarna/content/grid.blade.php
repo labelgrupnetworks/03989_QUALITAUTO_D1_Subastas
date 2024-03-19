@@ -30,7 +30,7 @@
                 <div class="clearfix"></div>
 
                 <div class="col-xs-12 p-0">
-                    <div class="list_lot" id="lotsGrid">
+                    <div class="lots-grid" id="lotsGrid">
                     </div>
                 </div>
 
