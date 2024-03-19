@@ -4927,6 +4927,10 @@ Estilos page preguntas frequentes
 
 }
 
+.RightlabelGrid_devuelto {
+	font-size: 10px;
+}
+
 .soldGrid{
 	font-weight: bold;
 }

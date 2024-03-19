@@ -10,6 +10,10 @@ $(document).ready(function () {
 	});
 	*/
 
+	if ($('.auction-lots-view-expo').length) {
+		dinamicTopSticky();
+	}
+
 	$("#country").change(function () {
 		var selected_country = $("#frmRegister-adv #country").val();
 		if (selected_country == "ES") {
@@ -342,6 +346,10 @@ $(document).ready(function () {
 	$(window).resize(function () {
 		if ($(window).width() < 1200) {
 			$('.small_square .item_lot').removeClass('col');
+		}
+
+		if ($('.auction-lots-view-expo').length) {
+			dinamicTopSticky();
 		}
 	});
 
@@ -1219,3 +1227,17 @@ $(document).on("click", "#button-open-user-menu", function () {
 	$('#user-account-ul').toggle()
 });
 
+/**
+ * Mantiene los filtros del grid en la posición correcta
+ * @returns {void}
+ */
+function dinamicTopSticky() {
+	if (window.innerWidth < 992) {
+		return;
+	}
+
+	const heightExpoElement = document.querySelector('.expo-container').offsetHeight;
+	const stickyElement = document.querySelector('.auction-lots-view-expo');
+	const top = heightExpoElement + 30;
+	stickyElement.style.setProperty('--top-position', `-${top}px`);
+}

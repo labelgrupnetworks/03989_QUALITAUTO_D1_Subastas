@@ -1,3 +1,5 @@
+@import url('css/lot.css');
+
 @font-face {
 	font-family: 'Jost';
 	font-style: normal;
@@ -46,14 +48,23 @@
 
 	--error-form-color: #b21416;
 
+	--color-gray: #e2e2e2;
+	--color-dark-gray: #bcbcbc;
+
 	--ff-default: 'Jost', sans-serif;
 	--ff-highlight: 'Cormorant', serif;
+	--fw-default-light: 200;
 	--fw-default-normal: 300;
 	--fw-default-bold: 400;
 	--fw-highlight-normal: 400;
 	--fw-highlight-bold: 700;
 
+	--fs-xsmall: clamp(0.875rem, 0.7298rem + 0.6452vw, 1rem);
+
+	/*14px to 22px*/
 	--fs-small: clamp(0.875rem, 0.7298rem + 0.6452vw, 1.375rem);
+
+	/* 16px to 24px */
 	--fs-default: clamp(1rem, 0.8548rem + 0.6452vw, 1.5rem);
 
 	/* 18px to 28px */
@@ -68,6 +79,14 @@
 	/*  */
 	--fs-xxxxlarge: clamp(1.875rem, 1.4758rem + 1.7742vw, 3.25rem);
 
+	--space-xsmall: clamp(0.5rem, 0.5rem + 0.6452vw, 1rem);
+
+	--space-small: clamp(0.5rem, 0.3548rem + 0.6452vw, 1rem);
+	--space-small-medium: clamp(0.5rem, 0.0645rem + 1.9355vw, 2rem);
+
+	--space-medium: clamp(1rem, 0.7097rem + 1.2903vw, 2rem);
+
+	--space-medium-large: clamp(1rem, 0.4194rem + 2.5806vw, 3rem);
 
 	--space-large: clamp(1.6875rem, 1.5rem + 0.8333vw, 2.5rem);
 }
@@ -98,6 +117,10 @@ button {
 	border-radius: 0;
 }
 
+.bold, span.bold {
+	font-weight: var(--fw-default-bold);
+}
+
 .ff-highlight {
 	font-family: var(--ff-highlight);
 }
@@ -106,6 +129,10 @@ button {
 .ff-highlight strong,
 .ff-highlight.bold {
 	font-weight: var(--fw-highlight-bold);
+}
+
+.fs-small {
+	font-size: var(--fs-small);
 }
 
 .form-floating.floating-center>label {
@@ -138,24 +165,30 @@ button {
 	}
 }
 
+.btn {
+	font-size: inherit;
+	font-weight: var(--fw-default-normal);
+	text-transform: uppercase;
+	border-radius: 0;
+}
+
 .btn-xl {
 	padding: 20px 48px;
 	font-size: inherit;
 	text-transform: uppercase;
 }
 
-.btn-lb-primary {
-	background-color: #bcbcbc;
-	color: #fff;
+.btn-lb-primary, .btn-lb-primary:hover {
+	background-color: var(--bg-btn, var(--color-dark-gray));
+	color: var(--color-btn, #fff);
 }
 
-.btn-lb-primary:hover {
-	background-color: #9E9E9E;
-	color: #fff;
+.btn.text-dark {
+	--color-btn: #000;
 }
 
 button.btn-registro {
-	background-color: #9E9E9E;
+	background-color: var(--color-dark-gray);
 	padding: 8px 84px;
 	color: #fff;
 	margin-top: 36px;
@@ -777,13 +810,6 @@ div.map_contact {
 div.item_subasta {
 	min-height: 496px;
 	margin-bottom: 30px;
-}
-
-div.expo-container {
-	border: 1px solid #ccc;
-	padding: 20px 15px;
-	margin-bottom: 30px;
-	font-size: 13px;
 }
 
 div.item_subasta img {
@@ -1491,42 +1517,7 @@ span.clock {
 	height: 66.40px;
 }
 
-div.data-container,
-div.data-container-large {
-	padding: 0 10px;
-}
 
-.data-container .desc_lot {
-	overflow: hidden;
-	-o-text-overflow: ellipsis;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	line-height: 20px;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	display: -webkit-box;
-	height: 38px;
-	margin-bottom: 10px;
-
-}
-
-
-.item_lot .data-container .data-price,
-.item_lot_large .data-container .data-price {
-	font-weight: 900;
-	margin: 5px 0;
-
-}
-
-.item_home .data-price {
-	font-weight: 900;
-}
-
-.item_lot_large .data-container .data-price {
-	padding: 20px 10px;
-	font-size: 14px;
-
-}
 
 .item_lot_large .data-container .data-price p span {
 	font-weight: 900;
@@ -4372,5 +4363,3 @@ section.lotes_destacados {
 	transform-origin: 0 0;
 	transition: opacity .1s ease-in-out, transform .1s ease-in-out;
 }
-
-

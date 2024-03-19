@@ -1,41 +1,40 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
-@section('assets_components')
-<link href="{{ Tools::urlAssetsCache('/css/default/grid.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/grid.css') }}" rel="stylesheet" type="text/css">
-@endsection
+@php
+    $count_lots = 0;
+    foreach ($tipos_sub as $typeSub => $desType) {
+        $numLots = Tools::showNumLots($numActiveFilters, $filters, 'typeSub', $typeSub);
 
+        if (empty($filters['typeSub'])) {
+            $count_lots += $numLots;
+        } elseif ($typeSub == $filters['typeSub']) {
+            $count_lots = $numLots;
+        }
+    }
+@endphp
+
+
+
+@section('assets_components')
+    <link type="text/css" href="{{ Tools::urlAssetsCache('/css/default/grid.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/grid.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12">
+    <main class="grid-page">
+        <div class="container-fluid">
+            <h1 class="ff-highlight bold">{{ $seo_data->h1_seo }}</h1>
 
+			<p class="fs-small bold">
+				{{ Tools::numberformat($count_lots) . ' ' . trans("$theme-app.lot_list.results") }}
+			</p>
 
-			<?php
-			$bread = array();
-			if($filters['typeSub'] == 'P'){
-				$urlAllCategories =  route("allCategories", ['typeSub'=>'P']);
-				$bread[] = array("url" =>$urlAllCategories, "name" => trans($theme.'-app.foot.online_auction') );
-			}
-			?>
-
-			@include('includes.breadcrumb')
-
-			<?php //Si quieren mostrar nombre de la subasta o que se vea texto Lotes ?>
-
-				<h1 class="titlePage-custom color-letter">{{$seo_data->h1_seo}}</h1>
-
-
-		</div>
-	</div>
-</div>
-
-    @include('content.grid')
+            @include('content.grid')
+        </div>
+    </main>
 @stop
-

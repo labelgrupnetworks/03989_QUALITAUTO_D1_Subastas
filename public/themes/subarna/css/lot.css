@@ -1,0 +1,75 @@
+
+.square {
+	position: relative;
+}
+
+.lot-square .salida-time, .lot-square .RightlabelGrid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--color-gray);
+    padding: 1px 10px;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-default-bold);
+    font-variant-numeric: tabular-nums;
+	z-index: 1;
+}
+
+.lot-square a {
+	display: block;
+	height: 100%;
+	text-decoration: none;
+	color: inherit;
+}
+
+.lot-square a:hover,
+.lot-square a:focus {
+	text-decoration: none;
+	color: inherit;
+}
+
+.lot-square .item_lot {
+	display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
+
+.lot-square .item_img {
+	text-align: center;
+	position: relative;
+}
+
+.lot-square .item_img img {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: contain;
+}
+
+.lot-square .seo_h4 {
+	font-size: inherit;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	font-weight: var(--fw-default-normal);
+	margin-bottom: 3rem;
+}
+
+.lot-square .item_lot .salida-price {
+	float: none;
+	font-weight: var(--fw-default-bold);
+}
+
+.lot-square .data-price {
+	margin-top: auto;
+}
+
+.lot-square .data-container {
+	display: flex;
+    flex-direction: column;
+    flex: 1;
+}
