@@ -662,6 +662,7 @@ $lang =[
 			'error_contact_emp' => 'It is not possible to register for more information please <a href="/en/page/contact">contact us</a>',
 			'error_delete_order' => 'Error at deleting the order',
 			'error_exist_dni' => 'You already have an account with us. You can only have an account associated with your ID Number. Restore the password by clicking on "¿Forgot your password?" or contact us if you do not remember your user (email) with which you registered in.',
+			'error_nif' => 'The NIF / CIF (ID) is not valid',
 			'error_no_image' => 'It is necessary to attach an image',
 			'error_no_mail' => 'It is necessary to attach an mail',
 			'error_register' => 'Access denied',
