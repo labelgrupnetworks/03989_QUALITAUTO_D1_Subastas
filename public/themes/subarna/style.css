@@ -59,6 +59,7 @@
 	--fw-highlight-normal: 400;
 	--fw-highlight-bold: 700;
 
+	/*14px to 16px*/
 	--fs-xsmall: clamp(0.875rem, 0.7298rem + 0.6452vw, 1rem);
 
 	/*14px to 22px*/
@@ -69,25 +70,20 @@
 
 	/* 18px to 28px */
 	--fs-large: clamp(1.125rem, 0.9435rem + 0.8065vw, 1.75rem);
-	/*
-	--fs-xlarge: clamp(1.5rem, 1.1848rem + 0.6452vw, 2rem);
-	--fs-xxlarge: clamp(1.75rem, 1.3498rem + 0.6452vw, 2.25rem); */
 
 	/* 28px to 41px */
 	--fs-xxxlarge: clamp(1.75rem, 1.496rem + 1.129vw, 2.625rem);
+
+	--fs-big-title: clamp(2.5rem, 1.6641rem + 3.7152vw, 6.25rem);
 
 	/*  */
 	--fs-xxxxlarge: clamp(1.875rem, 1.4758rem + 1.7742vw, 3.25rem);
 
 	--space-xsmall: clamp(0.5rem, 0.5rem + 0.6452vw, 1rem);
-
 	--space-small: clamp(0.5rem, 0.3548rem + 0.6452vw, 1rem);
 	--space-small-medium: clamp(0.5rem, 0.0645rem + 1.9355vw, 2rem);
-
 	--space-medium: clamp(1rem, 0.7097rem + 1.2903vw, 2rem);
-
 	--space-medium-large: clamp(1rem, 0.4194rem + 2.5806vw, 3rem);
-
 	--space-large: clamp(1.6875rem, 1.5rem + 0.8333vw, 2.5rem);
 }
 
@@ -201,9 +197,9 @@ span.bold {
 }
 
 .btn-live {
-    color: #fff;
-    background-color: #b70000;
-    border-color: #b70000;
+	color: #fff;
+	background-color: #b70000;
+	border-color: #b70000;
 }
 
 .btn-live:is(:hover, :focus) {
@@ -3839,7 +3835,7 @@ footer ul {
 }
 
 .department-page_title h1 {
-	font-size: clamp(2.5rem, 1.6641rem + 3.7152vw, 6.25rem);
+	font-size: var(--fs-big-title);
 	font-weight: var(--fw-highlight-normal);
 }
 
@@ -4041,8 +4037,6 @@ main.ficha-subasta-page {
 	gap: 1rem;
 }
 
-.ficha-subasta_links > * {
+.ficha-subasta_links>* {
 	flex: 1;
 }
-
-
