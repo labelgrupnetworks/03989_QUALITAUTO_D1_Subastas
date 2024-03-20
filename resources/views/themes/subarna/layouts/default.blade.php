@@ -29,7 +29,9 @@
 
 	@if(!$isHomePage)
     <div class="button-up">
-        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+		<div class="icon-wrap">
+        	<i class="fa fa-chevron-up" aria-hidden="true"></i>
+		</div>
     </div>
 	@endif
 

@@ -1450,6 +1450,20 @@ class ToolsServiceProvider extends ServiceProvider
 	}
 
 	/**
+	 * return date in format day month. Example: 12 de enero / January 12th
+	 * @param string $dateValue
+	 */
+	public static function getDateFormatDayMonthLocale($dateValue)
+	{
+		$completeLocale = self::getLanguageComplete(Config::get('app.locale'));
+   	 	$localeToTime = str_replace('-', '_', $completeLocale);
+		$dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM' : 'MMMM Do';
+
+		$carbonDate = Carbon::parse($dateValue);
+		return $carbonDate->locale($localeToTime)->isoFormat($dateFormat);
+	}
+
+	/**
 	 * Obtener feed rss de wordpress.
 	 * Si el certificado esta caducado, no se puede acceder al
 	 * contenido.

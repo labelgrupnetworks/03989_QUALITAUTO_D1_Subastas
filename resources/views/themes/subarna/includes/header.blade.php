@@ -305,6 +305,7 @@
 
                 <form class="navbar-form" action="{{ Routing::slug('busqueda') }}">
                     <div class="form-group">
+						<i class="fa fa-search"></i>
                         <input class="form-control" name="texto" type="text" placeholder="Buscar en subarna">
                     </div>
                 </form>

@@ -117,7 +117,8 @@ button {
 	border-radius: 0;
 }
 
-.bold, span.bold {
+.bold,
+span.bold {
 	font-weight: var(--fw-default-bold);
 }
 
@@ -178,13 +179,38 @@ button {
 	text-transform: uppercase;
 }
 
-.btn-lb-primary, .btn-lb-primary:hover {
+.btn-lb-primary,
+.btn-lb-primary:hover {
 	background-color: var(--bg-btn, var(--color-dark-gray));
 	color: var(--color-btn, #fff);
+	transition: color 0.3s, background-color 0.3s;
+}
+
+.btn-light {
+	--bg-btn: var(--color-gray);
+	--color-btn: #000;
+}
+
+.btn-light:hover {
+	--bg-btn: var(--color-dark-gray);
+	--color-btn: #000;
 }
 
 .btn.text-dark {
 	--color-btn: #000;
+}
+
+.btn-live {
+    color: #fff;
+    background-color: #b70000;
+    border-color: #b70000;
+}
+
+.btn-live:is(:hover, :focus) {
+	color: #fff;
+	background-color: #711416;
+	border-color: #711416;
+
 }
 
 button.btn-registro {
@@ -811,8 +837,7 @@ header ul.items_top li:hover a,
 div button.btn-step-reg:hover,
 .link-auction a:hover,
 div.newsletter button.btn-custom:hover,
-.navbar-form .btn-custom-search:hover,
-.share-panel-auction ul li:hover {
+.navbar-form .btn-custom-search:hover {
 	background-color: #747474;
 	color: #fff;
 	text-decoration: none;
@@ -1451,22 +1476,17 @@ span.pill {
 	background: #101010;
 	color: white;
 	z-index: 99999;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
 	opacity: .5;
 	display: none;
+	cursor: pointer;
+}
+
+.icon-wrap {
+	width: 100%;
+	height: 100%;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding-top: 9px;
-	text-align: center;
-	cursor: pointer;
 }
 
 .button-up:hover {
@@ -1574,60 +1594,6 @@ tbody tr {
 	margin-right: 30px;
 }
 
-.it_ro {
-	margin-top: 50px;
-}
-
-.desc-panel-aution {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	background: #f6f6f6;
-	width: 100%;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-o-box-sizing: border-box;
-	line-height: 22px;
-	font-weight: 300;
-}
-
-.links-aution {
-	margin-top: 20px;
-	margin-bottom: 10px;
-}
-
-.link-auction {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	margin-bottom: 10px;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-
-}
-
-.link-auction p {
-	margin: 0 10px 0 0px;
-
-}
-
-.link-auction a {
-	cursor: pointer;
-	text-decoration: none;
-	-webkit-transition: .3s background linear;
-	-o-transition: .3s background linear;
-	transition: .3s background linear;
-
-
-}
-
-.link-auction a {
-	background: #9E9E9E;
-	color: white;
-	border-radius: 0;
-}
-
 .img-border-auction {
 	border: 1px solid #ccc;
 	padding: 10px;
@@ -1648,31 +1614,27 @@ tbody tr {
 	align-items: center
 }
 
-.share-auction-component .share-auction-list li {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: #9E9E9E;
-	display: flex;
+.share-auction-component .share-auction-list a {
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-}
-
-.share-auction-component .share-auction-list a {
-	display: inline-block;
 	color: white;
 	line-height: 1;
-	height: 14px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: var(--color-dark-gray);
+	transition: background-color 0.3s linear;
 }
 
-.it_ro h1.titleSingle {
-	margin-top: 0;
-	margin-bottom: 0;
-	text-transform: uppercase;
+.share-auction-component .share-auction-list a:is(:hover, :focus) {
+	background-color: #747474;
+	text-decoration: none;
 }
 
-.exposition-des h4 {
-	font-weight: bold;
+.share-auction-component .share-auction-list svg {
+	width: 22px;
+	height: 22px;
 }
 
 .spinner {
@@ -3634,14 +3596,28 @@ header.fixed .navbar-custom {
 }
 
 .navbar-list .navbar-nav {
-	flex: 1;
+	flex: 3;
 	display: flex;
 	justify-content: space-around;
 }
 
 .navbar-list .navbar-form {
+	flex: 1;
 	margin: 0;
 	padding: 0;
+}
+
+.navbar-form .form-group {
+	width: 100%;
+	position: relative;
+}
+
+.navbar-form .form-group i {
+	position: absolute;
+	left: 10px;
+	display: flex;
+	align-items: center;
+	opacity: .5;
 }
 
 .navbar-list .navbar-form * {
@@ -3650,6 +3626,8 @@ header.fixed .navbar-custom {
 }
 
 .navbar-custom .navbar-form .form-control {
+	width: 100%;
+	padding-left: 24px;
 	font-size: var(--lb-nav-fs);
 	text-align: right;
 	background-color: transparent;
@@ -3759,6 +3737,11 @@ footer ul {
 
 .seo-container * {
 	font-size: inherit;
+}
+
+.home_text {
+	padding-top: var(--space-large);
+	padding-bottom: var(--space-large);
 }
 
 .newsletter {
@@ -3994,7 +3977,7 @@ section.lotes_destacados {
 }
 
 .form-floating {
-    position: relative;
+	position: relative;
 	margin-bottom: 1rem;
 }
 
@@ -4009,3 +3992,57 @@ section.lotes_destacados {
 	transform-origin: 0 0;
 	transition: opacity .1s ease-in-out, transform .1s ease-in-out;
 }
+
+main.ficha-subasta-page {
+	padding-top: var(--space-medium-large);
+	padding-bottom: var(--space-medium-large);
+}
+
+.ficha-subasta_info h1 {
+	margin-top: 0;
+	text-transform: uppercase;
+	font-size: var(--fs-xxxlarge);
+}
+
+.ficha-subasta_info h2 {
+	font-size: inherit;
+	font-weight: var(--fw-default-bold);
+}
+
+.ficha-subasta_info .ficha-subasta_date {
+	font-size: var(--fs-small);
+	text-transform: uppercase;
+	text-decoration: underline;
+}
+
+.ficha-subasta_title,
+.ficha-suasta-expo,
+.ficha-subasta_links {
+	border-bottom: 1px solid var(--color-dark-gray);
+}
+
+.ficha-subasta_title {
+	margin-bottom: 3rem;
+	padding-bottom: 1rem;
+}
+
+.ficha-suasta-expo {
+	margin-bottom: 1rem;
+	padding-bottom: 3rem;
+}
+
+.ficha-subasta_links {
+	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+}
+
+.ficha-subasta_links {
+	display: flex;
+	gap: 1rem;
+}
+
+.ficha-subasta_links > * {
+	flex: 1;
+}
+
+
