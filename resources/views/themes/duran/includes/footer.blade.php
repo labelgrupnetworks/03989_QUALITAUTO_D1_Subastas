@@ -161,6 +161,9 @@
 											{{ trans("$theme-app.cookies.configure") }}
 										</button>
 									</li>
+									<li>
+										<a class="footer-link" href="https://grupoduran-canaletico.appcore.es/" target="_blank">{{ mb_strtoupper ( trans($theme.'-app.foot.ethical_channel')  ) }}</a>
+									</li>
 
 
 
