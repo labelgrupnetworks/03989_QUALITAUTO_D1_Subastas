@@ -582,7 +582,7 @@ class UserController extends Controller
 				return json_encode(array(
 					"err"       => 1,
 					"msg"       => 'max_size_img'
-				  ));
+				));
 			}
 		}
 
@@ -650,64 +650,72 @@ class UserController extends Controller
 
         if(!empty($nif) && !empty(Request::input('pais')) && Request::input('pais') == 'ES')
         {
-          #$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cl.CODPAIS_CLI='".Request::input('pais')."' AND cw.USRW_CLIWEB ='".Request::input('email')."' AND EMP_CLIWEB='". Config::get('app.emp')."'");
-		  $existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) =  upper(:nif) AND cl.GEMP_CLI=:gemp AND cl.CODPAIS_CLI= :codPais AND  upper(cw.USRW_CLIWEB) =  upper(:email) AND EMP_CLIWEB=:emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'), "codPais" => Request::input('pais'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
+			#$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cl.CODPAIS_CLI='".Request::input('pais')."' AND cw.USRW_CLIWEB ='".Request::input('email')."' AND EMP_CLIWEB='". Config::get('app.emp')."'");
+			$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) =  upper(:nif) AND cl.GEMP_CLI=:gemp AND cl.CODPAIS_CLI= :codPais AND  upper(cw.USRW_CLIWEB) =  upper(:email) AND EMP_CLIWEB=:emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'), "codPais" => Request::input('pais'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
 
-		  if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
-          {
-            $ya_existe_nif_pais = true;
-          }
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
+			{
+				$ya_existe_nif_pais = true;
+			}
 
-          if (!self::validateNifNieCif($nif)) {
-            $user_id_incorrecto = true;
-          }
+			if (!self::validateNifNieCif($nif)) {
+				$user_id_incorrecto = true;
+			}
         }
 
         //debemos comprobar que este usuario no tenga ya creado el usuario y asociado un correo, esta asociando varios correos a un mism ousuario
          if(!empty($nif) && !empty(Request::input('email')))
         {
-          #$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cw.EMP_CLIWEB='".Config::get('app.emp')."'");
-		  $existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI= :gemp AND cw.EMP_CLIWEB= :emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'),  "emp" => Config::get('app.emp')));
-		  if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
-          {
-            $ya_existe_nif_pais = true;
-          }
+			#$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cw.EMP_CLIWEB='".Config::get('app.emp')."'");
+			$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI= :gemp AND cw.EMP_CLIWEB= :emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'),  "emp" => Config::get('app.emp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
+			{
+				$ya_existe_nif_pais = true;
+			}
         }
 
         //Comprobamos si este dni esta de baja si es a si no se puede registrar
-		/**
-		 * @todo Eloy, 25/08/2023
-		 * Esto no sirve de nada si nada más salir se vuelve a reasinar la
-		 * variable $ya_existe_cliweb a false ¿?
-		 */
+		$ya_existe_cliweb=false;
         if(!empty($nif))
         {
-             $existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
-             if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli)){
-                 $ya_existe_cliweb = true;
-             }
+			$existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli)){
+				$ya_existe_cliweb = true;
+			}
 
         }
 
-		/**
-		 * @todo Eloy, 25/08/2023
-		 * A parte de reasignar la variable $ya_existe_cliweb a false e invalidar el bloque anterior,
-		 * Se asigna el select a la variable $existe_dni_arr pero no se usa para nada,
-		 * Se busca en $ya_existe_cliweb como array cuando lo acabamos de asignar como booleano
-		 */
-        $ya_existe_cliweb=false;
         if(!empty(Request::input('email')))
         {
-          $existe_dni_arr = DB::select(" select * from fxcliweb where LOWER(USRW_CLIWEB) = LOWER(:email) AND GEMP_CLIWEB= :gemp and EMP_CLIWEB= :emp   and COD_CLIWEB != '-1' and COD_CLIWEB != '0' ", array( "gemp" => Config::get('app.gemp'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
-          if(isset($ya_existe_cliweb[0]) && isset($ya_existe_cliweb[0]->cod_cliweb) && strlen($ya_existe_cliweb[0]->cod_cliweb))
-          {
-            $ya_existe_cliweb = true;
-          }
+			$existe_dni_arr = DB::select(" select * from fxcliweb where LOWER(USRW_CLIWEB) = LOWER(:email) AND GEMP_CLIWEB= :gemp and EMP_CLIWEB= :emp   and COD_CLIWEB != '-1' and COD_CLIWEB != '0' ", array( "gemp" => Config::get('app.gemp'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cliweb) && strlen($existe_dni_arr[0]->cod_cliweb))
+			{
+				$ya_existe_cliweb = true;
+			}
         }
 
 		$correos_diferentes = false;
 		if (!empty(Request::input('email')) && !empty(Request::input('confirm_email') && (Request::input('email') != Request::input('confirm_email')))) {
 			$correos_diferentes = true;
+		}
+
+
+		$fechas_exageradas = false;
+		if (!empty(Request::input('date'))) {
+			if (strtotime(Request::input('date')) > strtotime('now')) {
+				$fechas_exageradas = true;
+			}
+			if (strtotime(Request::input('date')) < strtotime('1900-01-01')){
+				$fechas_exageradas = true;
+			}
+		}
+
+		$info_nombres_vacios = false;
+		if (Request::input('pri_emp') == 'F' && (empty(Request::input('usuario')) || empty(Request::input('last_name')))) {
+			$info_nombres_vacios = true;
+		}
+		if (Request::input('pri_emp') == 'J' && (empty(Request::input('contact')) || empty(Request::input('rsoc_cli')))) {
+			$info_nombres_vacios = true;
 		}
 
         # Tipo de registro, almacenado en WEB_CONFIG dentro de app
@@ -716,45 +724,51 @@ class UserController extends Controller
         // run the validation rules on the inputs from the form
         $validator = Validator::make(Input::all(), $rules);
 		#multipleNif es un config que permite repetir el dni al registar
-        if ( ($ya_existe_nif_pais && !\Config::get("app.multipleNif")) || $ya_existe_cliweb || $correos_diferentes || $user_id_incorrecto || $validator->fails())
+        if (
+			($ya_existe_nif_pais && !\Config::get("app.multipleNif"))
+			|| $ya_existe_cliweb
+			|| $correos_diferentes
+			|| $user_id_incorrecto
+			|| $fechas_exageradas
+			|| $info_nombres_vacios
+			|| $validator->fails()
+		)
         {
-
-
             if($ya_existe_nif_pais)
             {
                 Log::info('REGISTRO_ERRONEO NIF existe : '.print_r(Input::all(), true) );
 
-              $response = array(
-                  "err"       => 1,
-                  "msg"       => 'error_exist_dni'
-              );
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_exist_dni'
+				);
             }
             elseif ($user_id_incorrecto)
             {
                 Log::info('REGISTRO_ERRONEO NIF incorrecto : '.print_r(Input::all(), true) );
 
-              $response = array(
-                  "err"       => 1,
-                  "msg"       => 'error_nif'
-              );
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_nif'
+				);
             }
             else
             {
                 Log::info('REGISTRO_ERRONEO validator fails or existe cliweb : '.print_r(Input::all(), true) );
-              $response = array(
-                  "err"       => 1,
-                  "msg"       => 'error_register'
-              );
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_register'
+				);
             }
 
         }
         else
         {
 
-            $shipping_label = \Config::get("app.shipping_label");
-            if (empty($shipping_label)) {
-              $shipping_label = 'W1';
-            }
+			$shipping_label = \Config::get("app.shipping_label");
+			if (empty($shipping_label)) {
+				$shipping_label = 'W1';
+			}
 
             $user->email = Request::input('email');
             $user->nif = str_replace($characters_to_remove, '', trim(Request::input('nif')));
@@ -771,16 +785,16 @@ class UserController extends Controller
             if(Request::input('sexo')){
                 $sexo = Request::input('sexo');
             }else{
-                 $sexo = NULL;
+				$sexo = NULL;
             }
 
 
             if (!empty($check_if_exists[0]) && !empty($check_if_exists[0]->usrw_cliweb)) {
                 Log::info('REGISTRO_ERRONEO email exist : '.print_r(Input::all(), true) );
                 $response = array(
-                            "err"       => 1,
-                            "msg"       => 'email_already_exists'
-                        );
+					"err"       => 1,
+					"msg"       => 'email_already_exists'
+				);
             } else {
                 # Auto increment
 
@@ -791,12 +805,12 @@ class UserController extends Controller
                 if(Config::get('app.registro_user_w')){
 
                     $num_temp = head(DB::select( "select CONTADOR2_ORA(:nom,:gemp,:fecha,:letra) as contador from dual",
-                    array(
-                            'nom'   => 'c01',
-                            'gemp'       => Config::get('app.gemp'),
-                            'fecha' => '2000-01-01 00:00:00',
-                            'letra' => 'Z'
-                            )
+						array(
+							'nom'   => 'c01',
+							'gemp'       => Config::get('app.gemp'),
+							'fecha' => '2000-01-01 00:00:00',
+							'letra' => 'Z'
+						)
                     ));
                     $num = 'W'.str_pad($num_temp->contador, $longitud, 0, STR_PAD_LEFT);
 
