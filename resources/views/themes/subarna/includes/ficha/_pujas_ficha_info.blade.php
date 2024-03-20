@@ -1,13 +1,29 @@
+@php
+	$isNotFinish = $cerrado_N && !empty($lote_actual->close_at) && strtotime($lote_actual->close_at) > getdate()[0];
+
+	$closeDate = $lote_actual->start_session;
+	if($isNotFinish && $subasta_online){
+		$closeDate = $lote_actual->close_at;
+	}
+
+	$closeDateFormat = Tools::getDateFormat($closeDate, 'Y-mm-dd H:i:s', 'd/m/yy');
+	dd($closeDateFormat);
+
+	$nowDate = getdate()[0];
+
+@endphp
+
+<div class="">
+	<div class="">
+		<p>Fecha de cierre</p>
+		<p></p>
+	</div>
+	<div class=""></div>
+</div>
+
 <div class="col-xs-12 info_single">
 	<div class="info_single_title col-xs-12">
 		<div class="sub-o sub-w">
-
-
-			@if ($lote_actual->tipo_sub == 'P')
-			<p class="sub-title">{{ trans($theme.'-app.foot.online_auction') }}</p>
-			@else
-			<p class="sub-title">{{ trans($theme.'-app.subastas.lot_subasta_presencial') }}</p>
-			@endif
 
 			@if($cerrado_N && $subasta_online && !empty($lote_actual->close_at) && strtotime($lote_actual->close_at) > getdate()[0])
 				<span class="clock text-right">

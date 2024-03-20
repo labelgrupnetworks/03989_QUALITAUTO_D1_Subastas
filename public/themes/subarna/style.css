@@ -4040,3 +4040,28 @@ main.ficha-subasta-page {
 .ficha-subasta_links>* {
 	flex: 1;
 }
+
+.ficha-grid {
+	display: grid;
+	grid-template-columns: 1fr 100px 1fr;
+	gap: 1rem;
+}
+
+.ficha-image {
+	grid-column: 1 / 2;
+	grid-row: span 2;
+}
+
+.ficha-miniatures {
+	grid-column: 2 / 3;
+	grid-row: span 2;
+}
+
+.ficha-title {
+	grid-column: 3 / 4;
+}
+
+.ficha-pujas {
+	grid-column: 3 / 4;
+	grid-row: 2 / 3;
+}
