@@ -70,34 +70,6 @@
 
 
 
-@if (!Cookie::get("cookie_config"))
-	@include("includes.cookie")
-@endif
-
-<script>
-	let domain = window.location.hostname;
-</script>
-
-@if (empty($cookiesState['google']) && empty($cookiesState['all']))
-<script>
-	deleteGoogleCookies(domain);
-
-	if(domain.includes('www')){
-		deleteGoogleCookies(domain.split('www')[1]);
-	}
-</script>
-@endif
-
-@if (empty($cookiesState['facebook']) && empty($cookiesState['all']))
-<script>
-	deleteFacebookCookies(domain);
-
-	if(domain.includes('www')){
-		deleteFacebookCookies(domain.split('www')[1]);
-	}
-</script>
-@endif
-
 
 <script>
 	@if(request("recoveryPassword"))
