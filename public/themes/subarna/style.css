@@ -4185,8 +4185,9 @@ main:is(.ficha-subasta-page, .ficha-page) {
 	text-align: right;
 }
 
-.ficha-puja_insert-bid {
+.ficha-puja_insert-bid, .ficha-commision {
 	min-width: 100%;
+	font-size: var(--fs-xsmall);
 }
 
 .ficha-puja_admin-licit {
@@ -4194,9 +4195,7 @@ main:is(.ficha-subasta-page, .ficha-page) {
 	text-align: right;
 }
 
-.ficha-puja_insert-bid {
-	font-size: var(--fs-xsmall);
-}
+
 
 .ficha-galery-responsive .item_content_img_single {
 	position: relative;
@@ -4216,6 +4215,8 @@ main:is(.ficha-subasta-page, .ficha-page) {
 
 .ficha-details {
 	padding-top: 1rem;
+	border-top: 1px solid var(--color-gray);
+	margin-bottom: 1rem;
 }
 
 .ficha-details details {
