@@ -46,7 +46,7 @@ Route::get('send_new_password/{num_mails?}', 'MailController@send_new_password')
 # Login @ UserController
 Route::get(Routing::slug('login'), 'UserController@login');
 Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered')->name('user.registered');
-Route::post(Routing::slug('login'), 'UserController@login_post');
+Route::post(Routing::slug('login'), 'UserController@login_post')->name('post_login');
 Route::post('/login_post_ajax', 'UserController@login_post_ajax');
 Route::post(Routing::slug('registro'), 'UserController@registro')->name('send_register');
 Route::get(Routing::slug('logout'), 'UserController@logout');

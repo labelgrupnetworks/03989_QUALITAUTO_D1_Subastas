@@ -686,6 +686,7 @@ $lang = [
 		'error_delete_order' => 'Error en el momento de eliminar la orden',
 		'error_delete_order_online' => 'No es posible eliminar la puja máxima si es la puja actual o si ya ha sido superada',
 		'error_exist_dni' => 'Ya existe una cuenta con este DNI/NIE/NIF. Si ha olvidado su contraseña, puede restablecerla pulsando sobre ¿Ha olvidado su contraseña? o contactando con nosotros.',
+		'error_nif' => 'El NIF/CIF introducido no es válido',
 		'error_no_image' => 'Es necesario adjuntar una imágen',
 		'error_no_mail' => 'Es necesario adjuntar mail de contacto',
 		'error_register' => 'Acceso denegado',

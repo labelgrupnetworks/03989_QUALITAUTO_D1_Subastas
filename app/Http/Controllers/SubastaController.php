@@ -234,7 +234,7 @@ class SubastaController extends Controller
 
 		$data['subasta'] = $subasta->getInfSubasta();
 		if (empty($data['subasta'])) {
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 		return \View::make('front::pages.indice_subasta', array('data' => $data));
 	}
@@ -631,7 +631,7 @@ class SubastaController extends Controller
 	{
 
 		if (!empty($onlySalable)) { //si es V debe estar abierto, si no da igual
-			$subastaObj->where_filter .= "AND (SUB.TIPO_SUB != 'V' OR cerrado_asigl0 = 'N') AND ASIGL0.RETIRADO_ASIGL0 = 'N' AND  HCES1.FAC_HCES1 = 'N'";
+			$subastaObj->where_filter .= "AND (SUB.TIPO_SUB != 'V' OR cerrado_asigl0 = 'N') AND ASIGL0.RETIRADO_ASIGL0 = 'N' AND NOT HCES1.FAC_HCES1 = 'D' AND NOT HCES1.FAC_HCES1 = 'R'";
 		}
 	}
 
@@ -1074,7 +1074,7 @@ class SubastaController extends Controller
 			if(config('app.redirect_home_nolot', false)){
 				return redirect(route('home'), 302);
 			}
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 		$session_slug = $lote[0]->id_auc_sessions;
 		$subastaObj->id_auc_sessions = $session_slug;
@@ -1140,7 +1140,7 @@ class SubastaController extends Controller
 			$customize_values = $auc->getAucIndexByKeyname($key_name, \Config::get('app.locale'));
 
 			if (empty($customize_values)) {
-				exit(\View::make('front::errors.404'));
+				return abort(404);
 			}
 
 			$this->set_customize_values_filter($customize_values, $subastaObj);
@@ -1705,7 +1705,7 @@ class SubastaController extends Controller
 			if(config('app.redirect_auction_finish_to_home')){
 				return redirect()->route('home', [], 301);
 			}
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 		$data['seo'] = new \stdClass();
 		$data['seo']->meta_title = $auction->des_sub;
@@ -2041,7 +2041,7 @@ class SubastaController extends Controller
 			$auc = new AucIndex();
 			$customize_values = $auc->getAucIndexByKeyname($key_customize, \Config::get('app.locale'));
 			if (empty($customize_values)) {
-				exit(\View::make('front::errors.404'));
+				return abort(404);
 			}
 
 			$this->set_customize_values_filter($customize_values, $subastaObj);
@@ -2104,7 +2104,7 @@ class SubastaController extends Controller
 				$sec_obj =  new Sec();
 				$ortsec = $sec_obj->getOrtsecByKey('0', $category);
 				if (empty($ortsec)) {
-					exit(\View::make('front::errors.404'));
+					return abort(404);
 				}
 
 				//Filtarr por subastas categories
@@ -2147,7 +2147,7 @@ class SubastaController extends Controller
 				if (!empty($subcategory)) {
 					$sec = $sec_obj->getSecByKey($subcategory);
 					if (empty($sec) && !\Config::get('app.filter_period')) {
-						exit(\View::make('front::errors.404'));
+						return abort(404);
 					} elseif (!\Config::get('app.filter_period')) {
 						$subastaObj->where_filter  .= " AND (HCES1.SEC_HCES1 = '$sec->cod_sec')";
 						$SEO_metas->url = \Routing::translateSeo($route_customize) . $category;
@@ -2170,7 +2170,7 @@ class SubastaController extends Controller
 				$auc = new AucIndex();
 				$customize_values = $auc->getAucIndexByKeyname($key_customize, \Config::get('app.locale'));
 				if (empty($customize_values)) {
-					exit(\View::make('front::errors.404'));
+					return abort(404);
 				}
 
 				$this->set_customize_values_filter($customize_values, $subastaObj);

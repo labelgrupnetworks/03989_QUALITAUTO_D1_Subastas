@@ -33,6 +33,12 @@
 								<span>{!! trans("$theme-app.foot.schedule") !!}</span>
 							</a>
 
+							@if (Config::get('app.locale') == 'es')
+								<a class="btn-color btn-date" href="https://tauleryfau.as.me/schedule.php">
+									<span><i aria-hidden="true" class="fa fa-calendar"></i> {{ trans("$theme-app.foot.order_a_date") }}</span>
+								</a>
+							@endif
+
                         </li>
                     </ul>
                 </div>
@@ -54,7 +60,7 @@
                 <p class="divider"></p>
 
                 <ul>
-                    <li><a href="{{ \Routing::translateSeo('subastas-activas') }}">{{ trans("$theme-app.foot.auctions") }}</a></li>
+                    <li><a href="{{ \Routing::translateSeo('subastas') }}">{{ trans("$theme-app.foot.auctions") }}</a></li>
                     <li><a href="{{ wpLink('wp_calendar') }}">{{ trans("$theme-app.subastas.next_auctions") }}</a></li>
                     <li><a href="{{ wpLink('wp_valuations') }}">{{ trans("$theme-app.foot.free_valuations") }}</a></li>
                     <li><a href="{{ wpLink('wp_sell_coins') }}">{{ trans("$theme-app.foot.consign_coins") }}</a></li>
@@ -86,12 +92,17 @@
                     <li><a
                             href="{{ wpLink('wp_term_condition') }}">{{ trans("$theme-app.foot.auctions_conditions") }}</a>
                     </li>
-                    <li><a href="{{ wpLink('wp_valuations') }}">{{ trans("$theme-app.foot.shipping_terms") }}</a>
+                    <li><a href="{{ wpLink('wp_shipping_terms') }}">{{ trans("$theme-app.foot.shipping_terms") }}</a>
                     </li>
                     <li><a href="{{ wpLink('wp_privacy') }}">{{ trans("$theme-app.foot.privacy") }}</a>
                     </li>
                     <li><a href="{{ wpLink('wp_cookie_policy') }}">{{ trans("$theme-app.cookies.title") }}</a>
                     </li>
+					@if (Config::get('app.locale') == 'es')
+						<li>
+							<a href="{{ wpLink('wp_legal') }}">{{ trans("$theme-app.foot.legal") }}</a>
+						</li>
+					@endif
 					<li>
 						<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
 							{{ trans("$theme-app.cookies.configure") }}
