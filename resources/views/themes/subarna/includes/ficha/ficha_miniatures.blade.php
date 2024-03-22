@@ -24,21 +24,14 @@
         @endforeach
     </div>
 
-    <!-- Inicio Galeria Desktop -->
     <div class="row-down control" onClick="clickControl(this)">
         <i class="fa fa-chevron-down" aria-hidden="true"></i>
     </div>
 
-    {{--  <script>
-        if ($('.slider-thumnail')[0].scrollHeight > 486) {
-            $('.control').show()
-        }
-
-		 /* if ($('.slider-thumnail')[0].scrollHeight > 485) {
-        $('.control').show()
-    } else {
-        $('.control').hide()
-    } */
-    </script> --}}
-
 </div>
+
+<script>
+    if ($('.ficha-thumnail').length <= 6) {
+        $('.control').hide();
+    }
+</script>
