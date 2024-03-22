@@ -879,143 +879,6 @@ div.single div.img_single img {
 	display: inherit !important;
 }
 
-div.info_single {
-	/*border: 1px solid #ccc;*/
-	padding: 15px 15px 0px 15px;
-	/*margin-bottom: 20px;*/
-	background-color: #f6f3eb;
-}
-
-div.info_single_title {
-	padding: 8px 0px;
-	border-bottom: 1px solid #ccc;
-	font-size: 18px;
-	margin-bottom: 10px;
-}
-
-div.separator-ficha {
-	border-bottom: 1px solid #ccc;
-	margin: 10px 0px 0px 0px;
-}
-
-div.info_single_title span {
-
-	font-weight: bold;
-	font-size: 14px;
-}
-
-div.info_single_title span.clock {
-	float: right;
-
-}
-
-ficha_V div.info_single_content {
-	padding: 20px 16px;
-}
-
-.ficha_V .info_single_title {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-.info_single_button:hover {
-	color: #bf9814;
-	background: white;
-}
-
-
-div.info_single_content ul.puja_rapida {
-	margin: 0 0 20px 0;
-	padding: 0;
-}
-
-div.info_single_content a.btn-success {
-	border-radius: 0;
-	margin-right: 10px;
-	font-weight: bold;
-}
-
-div.info_single_content ul.puja_rapida li {
-	display: inline-block;
-}
-
-div.info_single_content button.btn-custom {
-	width: 100%;
-	background: #fff;
-	color: #707070;
-	border: 1px solid #707070;
-	border-radius: 0px;
-}
-
-
-.info_single p.pre {
-	padding-top: 6px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-.info_single p.cat {
-	padding-top: 6px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-.info_single p.min {
-	padding-top: 4px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-.info_single p.shared {
-	font-weight: bold;
-	padding-top: 4px;
-	margin-bottom: 0;
-}
-
-.info_single ul.red {
-	margin-left: 0;
-	padding-left: 0;
-}
-
-.info_single ul.red li {
-	display: inline-block;
-	margin-right: 10px;
-	margin-top: 10px;
-}
-
-.info_single ul.red li a {
-	color: #000;
-}
-
-.info_single div.min {
-	background-color: #921919;
-	color: #fff;
-	padding: 6px 0;
-	text-align: center;
-	font-size: 16px;
-	margin-bottom: 10px;
-}
-
-.info_single div.min_alc {
-	background-color: #138d32;
-	color: #fff;
-	width: 100%;
-	padding: 6px 0;
-	text-align: center;
-	font-size: 16px;
-}
-
-.single info_single {
-	padding: 10px;
-}
-
-.info_single div.pre {
-	color: #000;
-	font-size: 24px;
-	font-weight: 700;
-	width: 100%;
-}
-
 div.desc div.desc_tit {
 	border-bottom: 1px solid #ccc;
 	padding: 4px 10px;
@@ -1109,10 +972,6 @@ div.hist .hist_item em {
 	font-style: normal;
 }
 
-div.info_single_title .siguiente_puja {
-	float: none;
-}
-
 div#view_more span {
 	color: black;
 }
@@ -1191,12 +1050,6 @@ div button.btn-step-reg {
 	margin-bottom: 60px;
 }
 
-
-div.info_single_title span#tuorden {
-	float: none;
-	font-size: 18px;
-}
-
 div.openseadragon-container div:nth-child(2) {
 	top: 20px;
 }
@@ -1211,13 +1064,6 @@ div.openseadragon-container div:nth-child(4) {
 
 div.openseadragon-container div:nth-child(5) {
 	top: 20px;
-}
-
-div.info_single_button {
-	padding-bottom: 0px;
-	-webkit-transition: .2s all linear;
-	-o-transition: .2s all linear;
-	transition: .2s all linear;
 }
 
 button.btn-primary {
@@ -1740,19 +1586,6 @@ tbody tr {
 	right: 0;
 }
 
-.ficha-puja-o .input-group.puja-online {
-	gap: 20px;
-	width: 100%;
-}
-
-.ficha-puja-o .input-group.puja-online:after {
-	content: '\f0dd';
-	font: normal normal normal 14px/1 FontAwesome;
-	position: absolute;
-	top: 8px;
-	right: 15px;
-}
-
 .ficha-puja-o .bid_amount-wrapper {
 	width: 55%;
 	position: relative;
@@ -1778,10 +1611,6 @@ tbody tr {
 	text-align: center;
 	height: 100%;
 	font-size: inherit;
-}
-
-.ficha-puja-o .input-group.puja-online .input-group-btn {
-	flex: 1;
 }
 
 td span .form-control {
@@ -1818,32 +1647,6 @@ td span input.form-control {
 .insert_bid {
 	font-size: 11px;
 }
-
-.sub-o {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: row;
-	flex-direction: row;
-}
-
-.sub-o .sub-title {
-	margin: 0;
-}
-
-.sub-o .clock .timer {
-	font-size: 18px;
-}
-
-.sub-o .cierre_lote {
-	color: #909090;
-}
-
 
 .switcher {
 	background-color: #fff;
@@ -4194,8 +3997,6 @@ main:is(.ficha-subasta-page, .ficha-page) {
 	min-width: 100%;
 	text-align: right;
 }
-
-
 
 .ficha-galery-responsive .item_content_img_single {
 	position: relative;

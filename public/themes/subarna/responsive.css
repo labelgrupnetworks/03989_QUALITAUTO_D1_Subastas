@@ -260,10 +260,8 @@
             opacity: 1;
         }
 
-        .info_single div.pre,
         .precio_minimo_no_alcanzado,
-        .precio_minimo_alcanzado,
-        .ficha_V .info_single_button{
+        .precio_minimo_alcanzado {
             width: 200px;
         }
         .capaOculta{
@@ -398,14 +396,8 @@
             font-size: 30px;
     }
 
-    .it_ro h1.titleSingle{
-        font-size:25px;
-    }
-
-    .info_single div.pre,
     .precio_minimo_no_alcanzado,
-    .precio_minimo_alcanzado,
-    .ficha_V .info_single_button{
+    .precio_minimo_alcanzado {
         width: 200px;
     }
 
@@ -421,11 +413,6 @@
         flex-direction: column;
         align-items: center;
     }
-
-	.info_single .actual-bid-container{
-		padding: 0;
-		margin-top: 10px;
-	}
 
 	.account-item-border {
 		border: none;
@@ -620,23 +607,6 @@
 	.btn-registro {
 		width: 100%
 	}
-        /*.sub-o{
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                    flex-direction: column;
-            -webkit-box-pack: center;
-                -ms-flex-pack: center;
-                    justify-content: center;
-        }
-		*/
-		.sub-o .clock .timer{
-			font-size: 15px;
-		}
-        .content_item_mini a .retired{
-            font-size: 10px;
-            right: 14px;
-        }
 
 		.account-item-border {
 			border: none;
