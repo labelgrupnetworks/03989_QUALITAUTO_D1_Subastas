@@ -37,3 +37,7 @@
         @include('includes.ficha.history')
     @endif
 </div>
+
+<div class="">
+	@include('includes.ficha.ficha_sumamry')
+</div>
