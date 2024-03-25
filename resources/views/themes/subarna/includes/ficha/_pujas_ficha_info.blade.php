@@ -6,7 +6,7 @@
         $closeDate = $lote_actual->close_at;
     }
 
-    $closeDateFormat = Tools::getDateFormat($closeDate, 'Y-m-d H:i:s', 'd/m/Y');
+    $closeDateFormat = Tools::getParseDateFormat($closeDate, 'd/m/Y');
     $nowDate = getdate()[0];
     $difference = strtotime($closeDate) - $nowDate;
 
