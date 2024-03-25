@@ -227,7 +227,7 @@
                                 <i class="fa fa-user"></i>
                             </a>
                         @else
-                            <button class="btn-link btn_login_desktop">
+                            <button class="btn-link login">
                                 <i class="fa fa-user"></i>
                             </button>
                         @endif
