@@ -813,8 +813,9 @@ div.item_subasta {
 }
 
 div.item_subasta img {
-	margin-bottom: 10px;
-	min-height: 168px;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 
 div.item_subasta div.item_subasta_item {
@@ -1564,8 +1565,10 @@ tbody tr {
 }
 
 .btn-subasta {
+	color: inherit;
 	width: 100%;
 	text-align: center;
+	text-wrap: wrap;
 }
 
 .ficha-puja {
@@ -3341,6 +3344,7 @@ header.fixed .navbar-custom {
 	background-color: var(--lb-dropdown-bg-color);
 	border-color: var(--lb-border-color);
 	color: var(--lb-nav-text-color);
+	font-size: .8em;
 }
 
 .navbar-custom .dropdown-menu>li>a {
@@ -3828,7 +3832,7 @@ section.lotes_destacados {
 	transition: opacity .1s ease-in-out, transform .1s ease-in-out;
 }
 
-main:is(.ficha-subasta-page, .ficha-page) {
+main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .static-page) {
 	padding-top: var(--space-medium-large);
 	padding-bottom: var(--space-medium-large);
 }
@@ -4030,4 +4034,39 @@ main:is(.ficha-subasta-page, .ficha-page) {
 
 .ficha-details p {
 	font-size: .8em;
+}
+
+.modal-cookies {
+	font-size: .7em;
+}
+
+:is(.subastas-page, .register-page) .page-title {
+	text-transform: uppercase;
+	font-family: var(--ff-highlight);
+	font-size: var(--fs-xxxxlarge);
+	margin-bottom: var(--space-medium-large);
+}
+
+.static-page * {
+	font-family: var(--ff-default) !important;
+	font-weight: var(--fw-default-normal) !important;
+	font-size: var(--fs-default) !important;
+}
+
+.static-page .contenido:is(#pagina-6, #pagina-4) {
+	max-width: 90ch;
+	margin: auto;
+}
+
+.static-page span {
+	background-color: transparent !important;
+}
+
+.static-page .precios {
+	height: auto;
+	width: 600px;
+	max-width: 100%;
+	justify-content: space-between;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }

@@ -1,14 +1,66 @@
-
-#registerForm {color:#464646;}
-
-#registerForm .tipo_usuario div.selected {border:0;background:#101010;color:#FFF;}
-#registerForm .tipo_sexo div.selected {border:0;background:#101010;color:#FFF;}
-
-.eye-password {
-    position:absolute;
-    top:34px !important;
-    right:10px;
-    cursor:pointer;
+#registerForm {
+	color: #464646;
 }
 
-.apellidos, .idioma {display:block;}
+#registerForm .tipo_usuario div.selected {
+	border: 0;
+	background: #101010;
+	color: #FFF;
+}
+
+#registerForm .tipo_sexo div.selected {
+	border: 0;
+	background: #101010;
+	color: #FFF;
+}
+
+.eye-password {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.apellidos,
+.idioma {
+	display: block;
+}
+
+#registerForm .tipo_usuario div {
+	width: auto;
+	height: auto;
+	padding: 2rem 5px;
+}
+
+#registerForm .form-control {
+	height: auto;
+	font-size: .8em;
+}
+
+input[type=date].form-control, input[type=datetime-local].form-control, input[type=month].form-control, input[type=time].form-control {
+	line-height: normal;
+}
+
+#registerForm div.form-group {
+	width: 100%;
+    position: relative;
+}
+
+#registerForm .form-check {
+	display: flex;
+	align-items: center;
+}
+
+#registerForm .form-check * {
+	line-height: 1;
+	margin: 0;
+}
+
+#registerForm .form-check input[type=checkbox] {
+	top: 0;
+}
+
+#registerForm .datos_newsletter div label {
+	top: 0;
+}
+

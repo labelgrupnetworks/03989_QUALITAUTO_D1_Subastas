@@ -52,6 +52,11 @@
                                 {{ trans("$theme-app.foot.about_us") }}
                             </a>
                         </li>
+						<li>
+                            <a href="{{ Routing::translateSeo('departamentos') }}">
+                                Departamentos
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ Routing::translateSeo('valoracion-articulos') }}">
                                 {{ trans("$theme-app.home.free-valuations") }}

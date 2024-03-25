@@ -1,12 +1,6 @@
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
-    visible-lg-custom{
-        display: inline-block;
-    }
-    div.item_subasta img {
-       margin-bottom: 10px;
-        min-height: 150px;
-    }
+
     .lot-count{
         position: relative;
     }
@@ -267,10 +261,7 @@
         .capaOculta{
             visibility: hidden;
         }
-        div.item_subasta img {
-            margin-bottom: 10px;
-            min-height: 126px;
-        }
+
         .menu-nab-top{
             justify-content: center;
         }
@@ -399,11 +390,6 @@
     .precio_minimo_no_alcanzado,
     .precio_minimo_alcanzado {
         width: 200px;
-    }
-
-    div.item_subasta img {
-        margin-bottom: 10px;
-        min-height: 126px;
     }
 
     .refresh{
