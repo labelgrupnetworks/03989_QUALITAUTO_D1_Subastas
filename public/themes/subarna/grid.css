@@ -184,6 +184,13 @@ input.input-sm {
 	padding: 10px 16px;
 }
 
+.empty-grid-text {
+	grid-column: 1 / -1;
+    text-align: center;
+    font-weight: var(--fw-default-bold);
+    text-wrap: balance;
+}
+
 @media(min-width: 992px) {
 	.auction-lots-view i {
 		display: none;

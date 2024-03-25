@@ -22,7 +22,7 @@
             </div>
         </section>
 
-		@include('includes.expert-contact', ['title' => '¿NECESITAS CONTACTAR CON UN EXPERTO?' ,'specialist' => null])
+		@include('includes.expert-contact', ['title' => trans("$theme-app.valoracion_gratuita.need_contact") ,'specialist' => null])
 
 		<section id="lotes_departamentos-content" class="lotes_destacados">
 			<div class="container">
@@ -45,6 +45,7 @@
     </main>
 
     @php
+		$lang = Config::get('app.locale');
         $replace = [
             'departamento' => $ortsec->lin_ortsec0,
             'lang' => Config::get('app.language_complete')[Config::get('app.locale')],
@@ -55,8 +56,9 @@
 
     <script type="text/javascript">
         const replace = @json($replace);
+		const lang = @json($lang);
         $(document).ready(function() {
-            ajax_newcarousel('lotes_departamentos', replace);
+            ajax_newcarousel('lotes_departamentos', replace, lang);
         });
     </script>
 

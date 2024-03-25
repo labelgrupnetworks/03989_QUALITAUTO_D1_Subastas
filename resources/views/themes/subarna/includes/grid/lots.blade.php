@@ -1,6 +1,7 @@
 @if (empty($lots))
-    <br><br>
-    <center><big><big>{{ trans($theme . '-app.lot_list.no_results') }}</big></big></center>
+	<h2 class="empty-grid-text">
+		{{ trans("$theme-app.lot_list.no_results") }}
+	</h2>
 @else
     @foreach ($lots as $item)
         @php

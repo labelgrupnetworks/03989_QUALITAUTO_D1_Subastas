@@ -1,6 +1,6 @@
 @php
     //$name_archive = '/img/PER/' . Config::get('app.gemp') . $esp->per_especial1 . '.jpg';
-    $title = $title ?? '¿NECESITAS CONTACTAR CON UN EXPERTO?';
+    $title = $title ?? trans("$theme-app.valoracion_gratuita.need_contact");
     $specialist =
         $specialist ??
         (object) [
@@ -45,7 +45,7 @@
 
     <div class="text-center p-2">
         <a class="btn btn-xl btn-lb-primary" href="{{ Routing::translateSeo('valoracion-articulos') }}">
-            Tasación online
+			{{ trans("$theme-app.valoracion_gratuita.online_appraisal") }}
         </a>
     </div>
 
