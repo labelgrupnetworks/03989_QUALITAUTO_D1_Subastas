@@ -17,6 +17,7 @@ class FgEspecial1 extends Model
 	public $incrementing = false;
 
 	protected $guarded = [];
+	protected $appends = ['description'];
 
 
 	#definimos la variable emp para no tener que indicarla cada vez
@@ -48,6 +49,14 @@ class FgEspecial1 extends Model
 		return self::withSpecialty()->get();
 	}
 
+	public static function getSpecialistsByOrtsec($lin_ortsec0)
+	{
+		return self::withSpecialty()
+			->whereOrtsec($lin_ortsec0)
+			->orderBy('orden_especial1', 'asc')
+			->get();
+	}
+
 	public function specialty()
 	{
 		return $this->belongsTo(FgEspecial0::class, 'lin_especial1', 'lin_especial0');
@@ -55,7 +64,7 @@ class FgEspecial1 extends Model
 
 	public function specialistLang()
 	{
-		return $this->hasOne(FgEspecial1_Lang::class, 'lin_especial1_lang', 'lin_especial1');
+		return $this->hasOne(FgEspecial1_Lang::class, 'per_especial1_lang', 'per_especial1');
 	}
 
 	public function scopeWithSpecialty($query)
@@ -68,5 +77,10 @@ class FgEspecial1 extends Model
 			->when($longLocale != 'es-ES', function ($query) {
 				$query->with('specialistLang');
 			});
+	}
+
+	public function scopeWhereOrtsec($query, $lin_ortsec0)
+	{
+		return $query->where('lin_especial1', $lin_ortsec0);
 	}
 }

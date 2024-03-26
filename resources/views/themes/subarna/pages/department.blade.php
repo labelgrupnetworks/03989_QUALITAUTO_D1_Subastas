@@ -22,30 +22,33 @@
             </div>
         </section>
 
-		@include('includes.expert-contact', ['title' => trans("$theme-app.valoracion_gratuita.need_contact") ,'specialist' => null])
+        @include('includes.expert-contact', [
+            'title' => trans("$theme-app.valoracion_gratuita.need_contact"),
+            'specialist' => $especialistas->first(),
+        ])
 
-		<section id="lotes_departamentos-content" class="lotes_destacados">
-			<div class="container">
-				<h3 class="title_lotes_destacados">
-					{{ trans("$theme-app.valoracion_gratuita.destacados") }}
-				</h3>
+        <section class="lotes_destacados" id="lotes_departamentos-content">
+            <div class="container">
+                <h3 class="title_lotes_destacados">
+                    {{ trans("$theme-app.valoracion_gratuita.destacados") }}
+                </h3>
 
-				<div>
-					<div class="lds-ellipsis loader">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-					<div class="owl-theme owl-carousel" id="lotes_departamentos"></div>
-				</div>
-			</div>
-		</section>
+                <div>
+                    <div class="lds-ellipsis loader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="owl-theme owl-carousel" id="lotes_departamentos"></div>
+                </div>
+            </div>
+        </section>
 
     </main>
 
     @php
-		$lang = Config::get('app.locale');
+        $lang = Config::get('app.locale');
         $replace = [
             'departamento' => $ortsec->lin_ortsec0,
             'lang' => Config::get('app.language_complete')[Config::get('app.locale')],
@@ -56,7 +59,7 @@
 
     <script type="text/javascript">
         const replace = @json($replace);
-		const lang = @json($lang);
+        const lang = @json($lang);
         $(document).ready(function() {
             ajax_newcarousel('lotes_departamentos', replace, lang);
         });

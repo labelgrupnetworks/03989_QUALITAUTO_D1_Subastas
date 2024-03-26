@@ -162,4 +162,29 @@ class Enterprise {
 		return FgEspecial1::getSpecialists();
 	}
 
+	public function getSpecialistsByOrtsec($lin_ortsec0)
+	{
+		if(Config::get('app.specialists_model', false)) {
+			return FgEspecial1::getSpecialistsByOrtsec($lin_ortsec0);
+		}
+		return $this->getSpecialistsWithoutModel($lin_ortsec0);
+	}
+
+	/**
+	 * @deprecated
+	 * Se utiliza por soler. No se debe utilizar en nuevos desarrollos
+	 */
+	private function getSpecialistsWithoutModel($lin_ortsec0): array
+	{
+		$specialists = [];
+		$especial = $this->infEspecialistas();
+
+		foreach ($especial as $esp) {
+			if ($esp->lin_especial1 == $lin_ortsec0) {
+				$specialists[$esp->per_especial1] = $esp;
+			}
+		}
+		return $specialists;
+	}
+
 }
