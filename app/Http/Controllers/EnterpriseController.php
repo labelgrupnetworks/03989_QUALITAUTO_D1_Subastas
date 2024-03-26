@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\View;
 class EnterpriseController extends Controller
 {
 
+	function __construct(
+		private Enterprise $enterpriseRepository
+	) {
+	}
+
 	public function index()
 	{
 		$enterprise = new Enterprise();
@@ -61,5 +66,16 @@ class EnterpriseController extends Controller
 		];
 
 		return view('front::pages.team', ['data' => $data]);
+	}
+
+	public function aboutUsPage()
+	{
+		if (!View::exists('front::pages.about_us')) {
+			abort(404);
+		}
+
+		$specialists = $this->enterpriseRepository->getAllSpecialists();
+
+		return view('front::pages.about_us', ['specialists' => $specialists]);
 	}
 }
