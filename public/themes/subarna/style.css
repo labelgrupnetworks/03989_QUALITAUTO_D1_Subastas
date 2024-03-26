@@ -3786,25 +3786,25 @@ footer ul {
 	flex: 1;
 }
 
-.expert-card_name,
+.expert-card_name_block,
 .expert-card_contact {
 	flex: 0 0 auto;
 }
 
-.expert-card img {
+.expert-card img.expert-card_image {
 	flex: 0 1 0;
 	max-width: 200px;
 	width: 100%;
 }
 
-.expert-card_name h2 {
+.expert-card_name_block .expert-card_name {
 	font-family: var(--ff-highlight);
 	font-size: var(--fs-xxxlarge);
 	font-weight: var(--fw-highlight-bold);
 	margin: 0;
 }
 
-.expert-card_name p {
+.expert-card_name_block .expert-card_specilty {
 	text-transform: uppercase;
 }
 
@@ -4114,4 +4114,95 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	justify-content: space-between;
 	padding-left: 1rem;
 	padding-right: 1rem;
+}
+
+.about-us-page {
+	--bg-light: #f0efeb;
+	--bg-dark: #d8d9d8;
+	text-align: center;
+	background-color: var(--bg-light);
+	font-size: var(--fs-large);
+}
+
+.about-us-page section {
+	padding: var(--space-medium-large) 0;
+}
+
+.about-us-page h1 {
+	font-family: var(--ff-highlight);
+	font-weight: var(--fw-highlight-bold);
+	font-size: calc(var(--fs-xxxlarge) * 1.25);
+	margin-bottom: var(--space-medium);
+}
+
+.about-us-page h2 {
+	margin-bottom: var(--space-medium-large);
+}
+
+.about-us-page p {
+	max-width: 60ch;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.about-us-page img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: auto;
+
+}
+
+.about-us-page .about-us_header h1 {
+	font-size: calc(var(--fs-big-title) * 1.25);
+	text-transform: uppercase;
+	margin-bottom: var(--space-medium-large);
+}
+
+.about-us-page .about-us_subtitle {
+	margin-bottom: var(--space-medium-large);
+}
+
+.about-us-page .about-us_history {
+	background-color: var(--bg-dark);
+}
+
+.about-us_achieved_grid img {
+	margin: auto;
+}
+
+.about-us-page .achieved_row {
+	display: flex;
+	flex-direction: column;
+}
+
+.about-us-page .achieved_row>* {
+	flex: 1;
+	padding: 2rem 3rem;
+	border: 1px solid var(--color-gray);
+}
+
+.about-us_achieved_grid .archived-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+@media(min-width: 992px) {
+	.about-us-page .achieved_row {
+		flex-direction: row;
+	}
+
+	.about-us-page .achieved_row:first-of-type {
+		flex-direction: row-reverse;
+	}
+}
+
+.experts-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 650px));
+	justify-content: center;
+	gap: 2rem;
+	padding: 2rem;
 }

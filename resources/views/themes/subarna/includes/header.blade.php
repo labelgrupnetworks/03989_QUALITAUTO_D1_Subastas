@@ -47,7 +47,7 @@
                         aria-expanded="false"><span class="caret"></span> {{ trans("$theme-app.foot.about_us2") }}</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.about_us") }}">
+                            <a href="{{ route('landing-about-us') }}">
                                 {{ trans("$theme-app.foot.about_us") }}
                             </a>
                         </li>

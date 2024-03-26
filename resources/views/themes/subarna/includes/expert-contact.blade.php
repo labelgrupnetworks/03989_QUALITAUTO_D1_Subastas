@@ -24,23 +24,8 @@
                 alt="muestra un ejemplo de tasación" loading="lazy">
         </div>
 
-        <div class="expert-card">
-            <img src="/themes/subarna/assets/img/placeholder_round.svg" alt="">
-            <div class="expert-card_name">
-                <h2>{{ $specialist->nom_especial1 }} </h2>
-                <p>{{ $specialist->pos_especial1 }}</p>
-            </div>
-            <div class="expert-card_desc">
-                <p>
-                    {{ $specialist->desc_especial1 }}
-                </p>
-            </div>
-            <p class="expert-card_contact">
-                <a href="mailto:{{ $specialist->email_especial1 }}">{{ $specialist->email_especial1 }}</a>
-                <br>
-                <a href="tel:{{ $specialist->phone_especial1 }}">{{ $specialist->phone_especial1 }}</a>
-            </p>
-        </div>
+		@include('includes.expert', ['specialist' => $specialist])
+
     </div>
 
     <div class="text-center p-2">
