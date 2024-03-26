@@ -46,7 +46,9 @@ class FgEspecial1 extends Model
 
 	public static function getSpecialists()
 	{
-		return self::withSpecialty()->get();
+		return self::withSpecialty()
+			->withOrtsec()
+			->get();
 	}
 
 	public static function getSpecialistsByOrtsec($lin_ortsec0)
@@ -67,6 +69,18 @@ class FgEspecial1 extends Model
 		return $this->hasOne(FgEspecial1_Lang::class, 'per_especial1_lang', 'per_especial1');
 	}
 
+	public function ortsec()
+	{
+		if ($this->isLocale()) {
+			return $this->belongsTo(FgOrtsec0::class, 'lin_especial1', 'lin_ortsec0')
+				->where('sub_ortsec0', FgOrtsec0::SUB_ORTSEC0_DEPARTAMENTOS);
+		}
+
+		return $this->belongsTo(FgOrtsec0_Lang::class, 'lin_especial1', 'lin_ortsec0_lang')
+			->where('sub_ortsec0_lang', FgOrtsec0_Lang::SUB_ORTSEC0_DEPARTAMENTOS)
+			->where('lang_ortsec0_lang', Config::get('app.language_complete')[Config::get('app.locale')]);
+	}
+
 	public function scopeWithSpecialty($query)
 	{
 		$longLocale = Config::get('app.language_complete')[Config::get('app.locale')];
@@ -79,8 +93,19 @@ class FgEspecial1 extends Model
 			});
 	}
 
+	public function scopeWithOrtsec($query)
+	{
+		return $query->with('ortsec');
+	}
+
 	public function scopeWhereOrtsec($query, $lin_ortsec0)
 	{
 		return $query->where('lin_especial1', $lin_ortsec0);
+	}
+
+	private function isLocale()
+	{
+		$longLocale = Config::get('app.language_complete')[Config::get('app.locale')];
+		return $longLocale == 'es-ES';
 	}
 }

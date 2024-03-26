@@ -3531,8 +3531,8 @@ header.fixed .navbar-custom {
 
 	.navbar-custom_first-nav {
 		display: flex;
-		padding-top: 2rem;
-		padding-bottom: 1rem;
+		padding-top: var(--space-small-medium);
+		padding-bottom: var(--space-small);
 		border-bottom: var(--lb-border-color) 1px solid;
 	}
 
@@ -3764,12 +3764,25 @@ footer ul {
 
 .expert-section_body>* {
 	flex: 1;
+	text-align: center;
 }
 
 .expert-section_generic {
-	width: 100%;
+	width: 75%;
+	max-width: 500px;
 	height: 100%;
-	object-fit: contain;
+	object-fit: cover;
+	aspect-ratio: 1;
+	margin: auto;
+	margin-bottom: 1rem;
+}
+
+.expert-section .expert-card>* {
+	flex: 1;
+}
+
+.expert-section .expert-card>*:not(.expert-card_desc) {
+	flex-grow: 0;
 }
 
 .expert-card {
@@ -3780,10 +3793,6 @@ footer ul {
 	align-items: center;
 	text-align: center;
 	gap: 1rem;
-}
-
-.expert-card>* {
-	flex: 1;
 }
 
 .expert-card_name_block,
@@ -3837,6 +3846,10 @@ footer ul {
 	margin-top: auto;
 }
 
+.expert-card_link {
+	font-weight: var(--fw-default-bold);
+}
+
 @media(min-width: 1200px) {
 	.expert-section {
 		height: 100vh;
@@ -3844,6 +3857,13 @@ footer ul {
 
 	.expert-section_body {
 		flex-direction: row;
+	}
+
+	.expert-section_generic {
+		width: 100%;
+		max-width: initial;
+		aspect-ratio: initial;
+		object-fit: contain;
 	}
 }
 
@@ -4139,18 +4159,11 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	margin-bottom: var(--space-medium-large);
 }
 
-.about-us-page p {
-	max-width: 60ch;
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .about-us-page img {
 	display: block;
 	max-width: 100%;
 	height: auto;
 	margin: auto;
-
 }
 
 .about-us-page .about-us_header h1 {
@@ -4161,6 +4174,9 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .about-us-page .about-us_subtitle {
 	margin-bottom: var(--space-medium-large);
+	max-width: 60ch;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .about-us-page .about-us_history {

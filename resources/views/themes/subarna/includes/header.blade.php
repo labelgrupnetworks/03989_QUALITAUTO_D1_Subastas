@@ -157,7 +157,7 @@
                                 <li>
                                     <a href="/?#googtrans(es|{{ $value }})"
                                         title="{{ trans("$theme-app.head.language_$value") }}" translate="no">
-                                        {{ $value }}
+                                        {{ trans("$theme-app.head.language_$value") }}
                                     </a>
                                 </li>
                             @endforeach
