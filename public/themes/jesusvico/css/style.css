@@ -977,7 +977,23 @@ section.ficha-pujas {
 	display: grid;
 	gap: 0.5rem;
 	grid-template-columns: 1fr 1fr 1fr;
-	height: 44px;
+	height: 28px;
+}
+
+.grid-previous-and-next section.previous-button,
+.grid-previous-and-next section.next-button,
+.grid-previous-and-next section.search-lot-bar {
+	height: 36px;
+}
+
+.grid-previous-and-next .search-bar,
+.grid-previous-and-next .search-lot-bar-input,
+.grid-previous-and-next .search-lot-bar-button {
+	height: 36px;
+}
+
+.grid-previous-and-next .search-lot-bar-button {
+	padding: 3px 10px;
 }
 
 .grid-previous-and-next section.previous-button {
@@ -1073,7 +1089,7 @@ main.page-ficha p.h1 {
 	}
 
 	.grid-previous-and-next {
-		height: 34px;
+		height: 24px;
 	}
 
 }
