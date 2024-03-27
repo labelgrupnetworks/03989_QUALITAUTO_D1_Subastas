@@ -1,114 +1,186 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans($theme.'-app.foot.faq') }}
+	{{ trans($theme . '-app.foot.faq') }}
 @stop
 
 @section('content')
-<?php
-$bread[] = array("name" => trans($theme . '-app.foot.contact'));
-?>
+	<?php
+	$bread[] = ['name' => trans($theme . '-app.foot.contact')];
+	?>
 
+	<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
+	<div class="contact-page">
+		<div class="background-light-green">
+			<div class="container padding-contact-sections">
+				@include('includes.breadcrumb')
+				<div class="row top-align-items-center">
+					<div class="col-xs-12 col-md-6">
+						<h1 class="fs-big-title">
+							¿Aun no nos <br>
+							conocemos?
+						</h1>
+					</div>
+					<div class="col-xs-6">
+						<img class="header-image height-image img-responsive" src="/themes/{{ $theme }}/assets/img/top_banner_image_rounded.png">
+					</div>
+				</div>
+			</div>
+		</div>
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
+		<div class="container padding-contact-sections">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="contacts-articles">
+						<div class="column-contacts">
+							<div class="single-contact">
+								<p><span class="default-bold">Pintura</span></p>
+								<p>
+									pintura@subarna.net <br>
+									<span class="default-bold">Whatsapp:</span> 616 26 38 09
+								</p>
+							</div>
+							<div class="single-contact">
+								<p><span class="default-bold">Logística</span></p>
+								<p>
+									logistica@subarna.net <br>
+									932156518 - EXT: 3002
+								</p>
+							</div>
+						</div>
+						<div class="column-contacts">
+							<div class="single-contact">
+								<p><span class="default-bold">Antigüedades</span></p>
+								<p>
+									antigüedades@subarna.net <br>
+									<span class="default-bold">Whatsapp:</span> 649 35 34 23
+								</p>
+							</div>
+							<div class="single-contact">
+								<p><span class="default-bold">Administración</span></p>
+								<p>
+									antigüedades@subarna.net <br>
+									93 880 62 48
+								</p>
+							</div>
+						</div>
+						<div class="column-contacts">
+							<div class="single-contact">
+								<p><span class="default-bold">Joyas</span></p>
+								<p>
+									joyas@subarna.net <br>
+									<span class="default-bold">Whatsapp:</span> 649 35 34 23
+								</p>
+							</div>
+							<div class="single-contact">
+								<p><span class="default-bold">Tasaciones</span></p>
+								<p>
+									antigüedades@subarna.net <br>
+									93 880 62 48
+								</p>
+							</div>
+						</div>
+						<div class="border-left"></div>
+						<div class="column-contacts">
+							<div class="single-contact">
+								<p>
+									C/ Diputació, 278 <br>
+									08009 Barcelona <br>
+									Tlf. (+34) 932156518
+								</p>
+							</div>
+							<div class="single-contact">
+								<p>
+									<span class="default-bold">Horario: </span> <br>
+									De La V: 9.30h a 14h y 16h a 19h <br>
+									Previo a subasta presencial, fin <br>
+									de semana abierto (consultar).
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div class="container">
-@include('includes.breadcrumb')
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="col-xs-12">
+		<div class="background-contact-form">
+			<div class="container padding-contact-sections">
+				<h2 class="fs-xxxlarge">TE LEEMOS AQUÍ</h2>
+				<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
+					{!! $data['formulario']['_token'] !!}
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="input-margin">
+								<label class="d-block" for="texto__1__nombre">
+									Nombre y apellidos *
+								</label>
+								{!! $data['formulario']['nombre'] !!}
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6">
+							<div class="input-margin">
+								<label class="d-block" for="email__1__email">
+									Email *
+								</label>
+								{!! $data['formulario']['email'] !!}
+							</div>
+						</div>
+						<div class="col-xs-12 col-md-6">
+							<div class="input-margin">
+								<label class="d-block" for="texto__1__telefono">
+									Teléfono *
+								</label>
+								{!! $data['formulario']['telefono'] !!}
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="input-margin">
+								<label class="d-block" for="textogrande__1__comentario">
+									¿En qué te podemos ayudar?
+								</label>
+								{!! $data['formulario']['comentario'] !!}
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="input-margin">
+								<label>
+									<p>¿Necesitas adjuntarnos fotos?</p>
+								</label>
+								<div>
+									<label class="btn btn-lb-primary" for="files">
+										Elegir Archivos
+									</label>
+									<div>
+										<p>Recuerda añadir el máximo número de imágenes posibles.
+											Rogamos que sean fotografías luminosas y bién enfocadas.
+											Tamaño total, no superior a 20MB.</p>
+									</div>
+								</div>
+								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="imagen[]" multiple="" required="">
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="captcha-and-terms">
+								<div class="check_term">
+										<input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones"
+											autocomplete="off">
+										<label for="bool__1__condiciones"><?= trans($theme . '-app.emails.privacy_conditions') ?>
+								</div>
 
-                <h1 class="titlePage">{{trans($theme.'-app.foot.contact') }}</h1>
-            </div>
-        </div>
-    </div>
+								<div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
+									data-callback="onSubmit">
+								</div>
+							</div>
+						</div>
 
-
-    <div class="row">
-        <div class="col-xs-12 col-md-5 contact-page-form">
-            <form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
-
-                {!! $data['formulario']['_token'] !!}
-                <div class="form-group">
-                    <div class="input-effect col-xs-12">
-                        <label>{{trans($theme.'-app.login_register.contact') }}</label>
-                        {!! $data['formulario']['nombre'] !!}
-                    </div>
-
-                    <div class="input-effect col-xs-12">
-                        <label>{{trans($theme.'-app.foot.newsletter_text_input') }}</label>
-                        {!! $data['formulario']['email'] !!}
-                    </div>
-
-                    <div class="input-effect col-xs-12">
-                        <label>{{trans($theme.'-app.user_panel.phone') }}</label>
-                        {!! $data['formulario']['telefono'] !!}
-                    </div>
-
-                    <div class="input-effect col-xs-12">
-                        <label>{{trans($theme.'-app.global.coment') }}</label>
-                        {!! $data['formulario']['comentario'] !!}
-                    </div>
-
-                    <div class="check_term row">
-                        <div class="col-xs-12">
-                            <div class="col-xs-2 col-md-1">
-                                <input type="checkbox" class="newsletter" name="condiciones" value="on" id="bool__1__condiciones" autocomplete="off">
-                            </div>
-                            <div class="col-xs-10 col-md-11">
-                                <label for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br>
-                    <div class="g-recaptcha col-xs-6"
-                         data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-                         data-callback="onSubmit"
-                         >
-                    </div>
-                    <div class="col-xs-12 text-center">
-                        {!! $data['formulario']['SUBMIT'] !!}
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-
-
-
-            </form>
-
-            <br><br><br><br><br><br>
-
-        </div>
-
-        <div class="col-xs-12 col-md-7">
-
-            {!! $data['content'] !!}
-
-        </div>
-    </div>
-
-</div>
-
-<script>
-
-$('#button-map').click(function () {
-
-if ($(this).hasClass('active')) {
-    $('.maps-house-auction').animate({left: '100%'}, 300)
-    $(this)
-            .removeClass('active')
-            .find('i').addClass('fa-map-marker-alt').removeClass('fa-times')
-} else {
-    $('.maps-house-auction').animate({left: 0}, 300)
-    $(this)
-            .addClass('active')
-            .find('i').removeClass('fa-map-marker-alt').addClass('fa-times')
-}
-
-})
-</script>
+						<div class="col-xs-12 text-center">
+							{!! $data['formulario']['SUBMIT'] !!}
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 @stop
-

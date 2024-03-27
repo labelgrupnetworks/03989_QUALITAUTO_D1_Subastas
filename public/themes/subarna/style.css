@@ -51,6 +51,20 @@
 	--color-gray: #e2e2e2;
 	--color-dark-gray: #bcbcbc;
 
+	--color-background-light-green: #ebe9dc;
+	--color-background-more-light-green: #f4f4ef;
+
+	--color-background-input: #ecebe4;
+
+	--color-form-background: var(--color-background-more-light-green);
+	--color-border: #b4b6b6;
+
+	--padding-contact-top-bottom: 3rem 1rem 3rem 1rem;
+
+	--min-width-contacts: 273px;
+
+	--height-top-image: 420px;
+
 	--ff-default: 'Jost', sans-serif;
 	--ff-highlight: 'Cormorant', serif;
 	--fw-default-light: 200;
@@ -3947,6 +3961,177 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .ficha-subasta_links>* {
 	flex: 1;
+}
+
+/* -------------------------------------------------------
+----------------WIP Contact Page -------------------------
+------------------------------------------------------- */
+
+/* TODO: poner como variables los valores en píxeles. */
+
+.contact-page .background-light-green {
+	background-color: var(--color-background-light-green);
+}
+
+.contact-page .background-contact-form {
+	background-color: var(--color-form-background);
+}
+
+.contact-page .padding-contact-sections {
+	padding: var(--padding-contact-top-bottom);
+}
+
+.contact-page .top-align-items-center {
+	display: flex;
+	align-items: center;
+}
+
+.contact-page .height-image {
+	height: var(--height-top-image);
+}
+
+/* .contact-page .border-left {
+	display: none;
+} */
+
+/* @media (min-width: 845px) {
+	.contact-page .border-left {
+		display: block;
+		visibility: hidden;
+	}
+} */
+
+@media (min-width: 1440px) {
+	.contact-page .border-left {
+		border: 1px solid var(--color-border);
+		height: 100%;
+		/* display: block; */
+	}
+}
+
+.contact-page .contacts-articles .single-contact {
+	min-width: var(--min-width-contacts);
+	margin-bottom: 1rem;
+}
+
+.contact-page .contacts-articles {
+	display: flex;
+	gap: 10%;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+	.contact-page .contacts-articles {
+		display: flex;
+		gap: 2%;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		flex-direction: row;
+	}
+}
+
+/* .contact-page .contacts-articles {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 620px) {
+	.contact-page .contacts-articles {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (min-width: 845px) {
+	.contact-page .contacts-articles {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+@media (min-width: 1200px) {
+	.contact-page .contacts-articles {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	}
+} */
+
+.contact-page .column-contacts {
+	display: flex;
+	flex-direction: column;
+}
+
+.contact-page .input-margin {
+	margin: 6px 0px;
+}
+
+.contact-page .form-control {
+	background-color: var(--color-background-light-green);
+	border: none;
+	box-shadow: none;
+	border-radius: 0px;
+	padding: 20px 18px;
+}
+
+.contact-page input[type="file"].form-control {
+	padding: 6px 12px;
+}
+
+.contact-page .captcha-and-terms {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+@media (min-width: 768px) {
+	.contact-page .captcha-and-terms {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+	}
+}
+
+.contact-page .check_term {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.contact-page .check_term input,
+.contact-page .check_term label {
+	margin: 0;
+}
+
+
+.header-image {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	.header-image {
+		display: block;
+	}
+
+	.contact-page .header-image {
+		margin-left: auto;
+	}
+}
+
+/* -------------------------------------------------------
+----------------END Contact Page -------------------------
+------------------------------------------------------- */
+
+.default-bold {
+	font-weight: var(--fw-default-bold);
+}
+
+.fs-xxxlarge {
+	font-size: var(--fs-xxxlarge);
+}
+
+.fs-big-title {
+	font-size: var(--fs-big-title);
 }
 
 .ficha-page {
