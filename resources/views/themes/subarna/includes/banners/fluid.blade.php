@@ -111,6 +111,8 @@
         function invertHeaderColors(domElement) {
             const isInvert = domElement.hasAttribute("data-invert");
             document.querySelector('.navbar-custom').classList.toggle('inverted', isInvert);
+
+			$('.wrapper-footer').css('padding-top', $('header').height());
         }
     </script>
 @endif

@@ -3570,7 +3570,7 @@ header.fixed .navbar-custom {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: space-evenly;
 	padding-bottom: 50px;
 }
 

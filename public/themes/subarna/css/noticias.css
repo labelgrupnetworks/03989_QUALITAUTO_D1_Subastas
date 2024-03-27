@@ -1,0 +1,37 @@
+section:first-of-type {
+	padding-top: var(--space-medium-large);
+}
+
+.titlepage-contenidoweb > :not(h1) {
+	display: none;
+}
+
+.titlepage-contenidoweb h1.titlePage {
+	font-family: var(--ff-highlight);
+	font-size: var(--fs-xxxlarge);
+	font-weight: var(--fw-highlight-bold);
+	text-wrap: balance;
+	border: 0;
+}
+
+.title-post-principal {
+	font-size: 1.2em;
+	font-weight: var(--fw-default-bold);
+	color: inherit;
+}
+
+.date-post-principal {
+	font-size: .8em;
+	color: inherit;
+	opacity: .7;
+}
+
+.entrada-post {
+	margin-top: 0;
+	margin-bottom: var(--space-medium);
+}
+
+.cuerpo-del-articulos {
+	max-width: 90ch;
+	margin: auto;
+}

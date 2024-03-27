@@ -9,6 +9,10 @@
 
 @endphp
 
+@push('scripts')
+	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+@endpush
+
 <div class="container newsletter js-newletter-block">
     <div class="form-block">
         <div class="form-floating floating-center">
