@@ -45,25 +45,18 @@
 				</div>
 			@endif
 
-			<div class="w-100 d-flex alig-items-center justify-content-between">
-				<div class="col d-flex align-items-center">
-					<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $url_lotes }}" aria-label="Plus">
-						<svg class="bi" width="12" height="12" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#plus"></use>
-						</svg>
-						{{ trans("$theme-app.subastas.see_subasta") }}
-					</a>
+			@if (!empty($files))
+				<div class="w-100 d-flex alig-items-center justify-content-between">
+					<div class="col d-flex align-items-center">
+						<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
+							<svg class="bi" width="12" height="12" fill="currentColor">
+								<use xlink:href="/bootstrap-icons.svg#plus"></use>
+							</svg>
+							{{ trans("$theme-app.subastas.see_subasta") }}
+						</a>
+					</div>
 				</div>
-
-				@if ($subasta->upcatalogo == 'S')
-					<a class="btn btn-sm btn-outline-border-lb-primary" href="">
-						<svg class="bi" width="12" height="12" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#file-pdf"></use>
-						</svg>
-						{{ trans("$theme-app.subastas.pdf_catalog") }}
-					</a>
-				@endif
-			</div>
+			@endif
 
 		</div>
 	</div>

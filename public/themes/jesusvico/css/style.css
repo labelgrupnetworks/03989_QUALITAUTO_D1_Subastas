@@ -691,6 +691,9 @@ ul.style-diamond li p {
 	border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 
+.card-custom-large {
+	min-height: 195px !important;
+}
 /*
 |--------------------------------------------------------------------------
 | GRID - LOT
