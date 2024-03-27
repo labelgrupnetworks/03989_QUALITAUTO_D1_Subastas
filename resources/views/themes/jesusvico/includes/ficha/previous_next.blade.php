@@ -27,7 +27,7 @@
 			<form id="searchLot" class="form-single-lot samsung-visual" method="get" action="{{ $searchUrl }}">
 
 				<div class="input-group search-bar">
-					<input class="form-control control-number search-lot-bar-input" type="number" name="reference">
+					<input class="form-control control-number search-lot-bar-input" type="number" name="reference" placeholder="{{ trans("$theme-app.lot.lot_num") }}">
 					<button id="single-lot" class="btn btn-lb-primary search-lot-bar-button" type="submit">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
 							viewBox="0 0 20 20">
