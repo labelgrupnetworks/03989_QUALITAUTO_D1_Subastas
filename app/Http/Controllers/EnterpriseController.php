@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\View;
 class EnterpriseController extends Controller
 {
 
+	function __construct(
+		private Enterprise $enterpriseRepository
+	) {
+	}
+
 	public function index()
 	{
 		$enterprise = new Enterprise();
@@ -33,15 +38,7 @@ class EnterpriseController extends Controller
 			exit(View::make('front::errors.404'));
 		}
 
-		$enterprise = new Enterprise();
-		$especialistas = array();
-		$especial = $enterprise->infEspecialistas();
-
-		foreach ($especial as $esp) {
-			if ($esp->lin_especial1 == $ortsec->lin_ortsec0) {
-				$especialistas[$esp->per_especial1] = $esp;
-			}
-		}
+		$especialistas = $this->enterpriseRepository->getSpecialistsByOrtsec($ortsec->lin_ortsec0);
 
 		$data['seo'] = new \stdClass();
 		$data['seo']->meta_title = $ortsec->meta_titulo_ortsec0 ?? trans(\Config::get('app.theme') . '-app.head.title_app');
@@ -61,5 +58,16 @@ class EnterpriseController extends Controller
 		];
 
 		return view('front::pages.team', ['data' => $data]);
+	}
+
+	public function aboutUsPage()
+	{
+		if (!View::exists('front::pages.about_us')) {
+			abort(404);
+		}
+
+		$specialists = $this->enterpriseRepository->getAllSpecialists();
+
+		return view('front::pages.about_us', ['specialists' => $specialists]);
 	}
 }

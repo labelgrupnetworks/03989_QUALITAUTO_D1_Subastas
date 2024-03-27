@@ -1449,6 +1449,14 @@ class ToolsServiceProvider extends ServiceProvider
 		return Carbon::createFromFormat($formatOrigin, $dateValue)->format($formatReturn);
 	}
 
+	public static function getParseDateFormat($dateValue, $formatReturn)
+	{
+		if(empty($dateValue)){
+			return '';
+		}
+		return Carbon::parse($dateValue)->format($formatReturn);
+	}
+
 	/**
 	 * return date in format day month. Example: 12 de enero / January 12th
 	 * @param string $dateValue

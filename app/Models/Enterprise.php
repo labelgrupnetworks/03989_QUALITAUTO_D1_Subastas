@@ -14,15 +14,10 @@ namespace App\Models;
  * @author LABEL-RSANCHEZ
  */
 
-use Illuminate\Database\Eloquent\Model;
-use DB;
-
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
-use Config;
-use Routing;
-use App\Models\Content;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use App\Models\V5\FgEspecial1;
+use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
     //put your code here
@@ -41,7 +36,7 @@ class Enterprise {
                       . "order by FGSG.des_sg asc";
 
              $params = array(
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                 );
 
               return DB::select($sql, $params);
@@ -56,7 +51,7 @@ class Enterprise {
                         LEFT JOIN FSPAISES_LANG ON (FSPAISES_LANG.COD_PAISES_LANG = FSPAISES.cod_paises AND FSPAISES_LANG.LANG_PAISES_LANG = :lang)
                         ORDER BY nvl(FSPAISES_LANG.DES_PAISES_LANG,FSPAISES.des_paises) ASC";
         $params = array(
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                 );
 
               return DB::select($sql, $params);
@@ -74,7 +69,7 @@ class Enterprise {
 
             $bindings = array(
                     'emp'             => Config::get('app.emp'),
-                    'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                    'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                     );
         return DB::select($sql, $bindings);
     }
@@ -88,7 +83,7 @@ class Enterprise {
                 array(
                         'emp'       => Config::get('app.emp'),
                         'cod_alm'   => $cod_alm,
-                        'lang' => \Tools::getLanguageComplete(Config::get('app.locale'))
+                        'lang' => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                         )
                     );
         if(count($almacen) > 0){
@@ -161,4 +156,35 @@ class Enterprise {
             ->select('cod_div','des_div','impd_div','symbolhtml_div')
             ->get();
     }
+
+	public function getAllSpecialists()
+	{
+		return FgEspecial1::getSpecialists();
+	}
+
+	public function getSpecialistsByOrtsec($lin_ortsec0)
+	{
+		if(Config::get('app.specialists_model', false)) {
+			return FgEspecial1::getSpecialistsByOrtsec($lin_ortsec0);
+		}
+		return $this->getSpecialistsWithoutModel($lin_ortsec0);
+	}
+
+	/**
+	 * @deprecated
+	 * Se utiliza por soler. No se debe utilizar en nuevos desarrollos
+	 */
+	private function getSpecialistsWithoutModel($lin_ortsec0): array
+	{
+		$specialists = [];
+		$especial = $this->infEspecialistas();
+
+		foreach ($especial as $esp) {
+			if ($esp->lin_especial1 == $lin_ortsec0) {
+				$specialists[$esp->per_especial1] = $esp;
+			}
+		}
+		return $specialists;
+	}
+
 }

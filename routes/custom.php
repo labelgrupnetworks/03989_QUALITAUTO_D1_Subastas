@@ -19,6 +19,8 @@ Route::get(\Routing::translateSeo('departamento') . '{text}', 'EnterpriseControl
 Route::get(\Routing::translateSeo('video-subastas'), 'CustomControllers@videoAuctions');
 Route::get(\Routing::translateSeo('equipo'), 'EnterpriseController@team')->name('enterprise.team');
 
+//Subarna
+Route::get(RoutingServiceProvider::translateSeo('about-us'), 'EnterpriseController@aboutUsPage')->name('landing-about-us');
 
 #TAULER
 //Landings

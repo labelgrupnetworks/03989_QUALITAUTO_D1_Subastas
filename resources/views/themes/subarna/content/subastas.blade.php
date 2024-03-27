@@ -1,26 +1,13 @@
 <div class="container">
+	<h1 class="page-title">
+		{{ trans("$theme-app.subastas.auctions") }}
+	</h1>
     <div class="row">
-        <div class="col-xs-12 col-sm-12">
-                <h1 class="titlePage"> {{ trans($theme.'-app.subastas.auctions') }}</h1>
-        </div>
         @foreach ($data['auction_list'] as  $subasta)
             <?php
-
-                 // $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                /*$indices = array();
-                if(count($indices) > 0 ){
-                    $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                }else{
-                    $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                }
-              $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-			  $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
-			  */
-			$indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
             $url_lotes= \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,$subasta->reference);
             $url_tiempo_real=\Tools::url_real_time_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions);
 			$url_subasta=\Tools::url_info_auction($subasta->cod_sub,$subasta->name);
-
             ?>
             <div class="col-xs-12 col-sm-4 col-lg-3">
                 <div class="item_subasta">

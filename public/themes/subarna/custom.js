@@ -1241,3 +1241,18 @@ function dinamicTopSticky() {
 	const top = heightExpoElement + 30;
 	stickyElement.style.setProperty('--top-position', `-${top}px`);
 }
+
+function clickControl(el){
+
+	const posScroll = $('.slider-thumnail-container').scrollTop();
+
+	let positionMove = $('.ficha-thumnail').outerHeight();
+	if($(el).hasClass('row-up')) {
+		positionMove = -positionMove;
+	}
+
+	$('.slider-thumnail-container').animate({
+		scrollTop: posScroll + positionMove,
+	}, 200);
+
+}

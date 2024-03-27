@@ -4,12 +4,8 @@
 	{{ trans($theme.'-app.head.title_app') }}
 @stop
 
-
 @section('content')
-    <?php 
-    $bread[] = array("name" => $data['name'] );
-    ?>
-    @include('includes.breadcrumb')
-    
+<main class="subastas-page">
     @include('content.subastas')
+</main>
 @stop

@@ -43,16 +43,25 @@
                 </div>
             @endforeach
 
-            <div class="footer-banner">
+			@php
+				$cutLine = "<p><strong>&nbsp;</strong></p>";
+				$text = trans("$theme-app.home.seo");
+				$seoBlocks = explode($cutLine, $text);
+			@endphp
 
+
+			@foreach ($seoBlocks as $seo)
+			<div class="footer-banner">
                 <div class="wrapper-footer">
                     <div class="container">
                         <div class="seo-container">
-                            <p>{!! trans($theme . '-app.home.seo') !!}</p>
+                            {!! $seo !!}
                         </div>
                     </div>
                 </div>
             </div>
+			@endforeach
+
 
             <div class="footer-banner">
                 <div class="wrapper-footer">

@@ -3,7 +3,7 @@
     $languages = Config::get('app.locales');
     $google_langs = ['de', 'ca', 'fr'];
 
-	$isHomePage = Route::currentRouteName() == 'home';
+    $isHomePage = Route::currentRouteName() == 'home';
 
     $hasPresencial = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
     $urlPresencial = Routing::translateSeo('presenciales');
@@ -24,9 +24,8 @@
             Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference) .
             '?only_salable=on';
 
-			$global['subastas']['S']['V']->forget('VDJ');
+        $global['subastas']['S']['V']->forget('VDJ');
     }
-
 
     $hasVentaDirecta = $hasVentaDirecta && $global['subastas']['S']['V']->count() > 0;
     $urlVentaDirecta = route('subastas.venta_directa');
@@ -45,11 +44,16 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                        aria-expanded="false"><span class="caret"></span> Sobre nosotros</a>
+                        aria-expanded="false"><span class="caret"></span> {{ trans("$theme-app.foot.about_us2") }}</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.about_us") }}">
+                            <a href="{{ route('landing-about-us') }}">
                                 {{ trans("$theme-app.foot.about_us") }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ Routing::translateSeo('departamentos') }}">
+                                {{ trans("$theme-app.foot.departments") }}
                             </a>
                         </li>
                         <li>
@@ -66,7 +70,8 @@
                 </li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                        aria-expanded="false"><span class="caret"></span> Vender-comprar</a>
+                        aria-expanded="false"><span class="caret"></span>
+                        {{ trans("$theme-app.foot.how_to_buy_slug") }}</a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
@@ -152,7 +157,7 @@
                                 <li>
                                     <a href="/?#googtrans(es|{{ $value }})"
                                         title="{{ trans("$theme-app.head.language_$value") }}" translate="no">
-                                        {{ $value }}
+                                        {{ trans("$theme-app.head.language_$value") }}
                                     </a>
                                 </li>
                             @endforeach
@@ -213,8 +218,9 @@
 
                 <ul class="nav navbar-nav navbar-icons">
                     <li>
-                        <a class="search_btn" href="{{ Routing::slug('busqueda') }}" title="Buscar"><i
-                                class="fa fa-search"></i></a>
+                        <button class="search_btn btn-link" data-toggle="modal" data-target="#searchModal"
+                            title="Buscar">
+                            <i class="fa fa-search"></i></button>
                     </li>
                     <li>
                         @if (Session::has('user'))
@@ -222,7 +228,7 @@
                                 <i class="fa fa-user"></i>
                             </a>
                         @else
-                            <button class="btn-link btn_login_desktop">
+                            <button class="btn-link login">
                                 <i class="fa fa-user"></i>
                             </button>
                         @endif
@@ -303,10 +309,11 @@
                     </li>
                 </ul>
 
-                <form class="navbar-form" action="{{ Routing::slug('busqueda') }}">
+                <form class="navbar-form" action="{{ route('allCategories') }}">
                     <div class="form-group">
-						<i class="fa fa-search"></i>
-                        <input class="form-control" name="texto" type="text" placeholder="Buscar en subarna">
+                        <i class="fa fa-search"></i>
+                        <input class="form-control" name="description" type="text"
+                            placeholder="{{ trans("$theme-app.head.search_in_subarna") }}">
                     </div>
                 </form>
             </div><!-- /.navbar-collapse -->
@@ -428,4 +435,30 @@
 
         </div>
     </ul>
+</div>
+
+<div class="modal fade" id="searchModal" role="dialog" aria-labelledby="searchModalLabel" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="searchModalLabel">{{ trans("$theme-app.head.search_in_subarna") }}</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('allCategories') }}">
+                    <div class="form-group has-feedback">
+                        <div class="input-group">
+                            <input class="form-control" name="description" type="text"
+                                placeholder="{{ trans("$theme-app.head.search_in_subarna") }}">
+
+                            <span class="input-group-btn" type="submit" role="button">
+                                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
