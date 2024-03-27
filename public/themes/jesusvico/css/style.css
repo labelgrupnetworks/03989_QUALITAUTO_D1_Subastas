@@ -786,6 +786,23 @@ simbolos:: %3e == /> | %3c == < | %23 == #
 | FICHA
 |--------------------------------------------------------------------------
 */
+
+main.page-ficha p.h1.lot-ficha-title {
+	font-size: calc(0.8rem + 1.5vw);
+}
+
+@media (min-width: 992px) {
+	main.page-ficha p.h1.lot-ficha-title {
+		font-size: calc(0.5em + 1.5vw);
+	}
+}
+
+@media (min-width: 1200px) {
+	main.page-ficha p.h1.lot-ficha-title {
+		font-size: calc(0.8rem + 1vw);
+	}
+}
+
 a.back-link {
 	text-transform: none;
 }
@@ -967,6 +984,7 @@ section.ficha-pujas {
 
 .search-lot-container {
 	width: 190px;
+	justify-content: center;
 }
 
 .ficha-previous-next .btn:not(.btn-sm, .btn-link) {
@@ -977,19 +995,7 @@ section.ficha-pujas {
 	display: grid;
 	gap: 0.5rem;
 	grid-template-columns: 1fr 1fr 1fr;
-	height: 28px;
-}
-
-.grid-previous-and-next section.previous-button,
-.grid-previous-and-next section.next-button,
-.grid-previous-and-next section.search-lot-bar {
-	height: 36px;
-}
-
-.grid-previous-and-next .search-bar,
-.grid-previous-and-next .search-lot-bar-input,
-.grid-previous-and-next .search-lot-bar-button {
-	height: 36px;
+	height: 41px;
 }
 
 .grid-previous-and-next input.search-lot-bar-input {
@@ -1034,6 +1040,22 @@ section.ficha-pujas {
 	height: 38px;
 	padding: 6px 11px 6px 13px;
 	margin-top: 1px;
+}
+
+.grid-previous-and-next section.previous-button,
+.grid-previous-and-next section.next-button,
+.grid-previous-and-next section.search-lot-bar {
+	height: 36px;
+}
+
+.grid-previous-and-next div.search-bar,
+.grid-previous-and-next input.search-lot-bar-input,
+.grid-previous-and-next button.search-lot-bar-button {
+	height: 36px;
+}
+
+.grid-previous-and-next input.search-lot-bar-input {
+	width: 90px;
 }
 
 main.page-ficha p.h1 {
@@ -1085,12 +1107,16 @@ main.page-ficha p.h1 {
 	}
 
 	section.ficha-previous-next {
-		grid-column: 2 / 2;
+		grid-column: 3 / 4;
 		grid-row: 1 / 1;
 	}
 
+	.grid-previous-and-next {
+		height: 36px;
+	}
+
 	.header-ficha-grid {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 2fr 2fr;
 	}
 
 	.grid-previous-and-next {
@@ -1129,7 +1155,7 @@ main.page-ficha p.h1 {
 	}
 
 	section.ficha-previous-next {
-		grid-column: 2 / 2;
+		grid-column: 3 / 4;
 		grid-row: 1 / 1;
 	}
 
@@ -1142,6 +1168,10 @@ main.page-ficha p.h1 {
 
 	.ficha-info .ficha-info-justify-content {
 		justify-content: space-between;
+	}
+
+	.header-ficha-grid {
+		grid-template-columns: 3fr 5fr 3fr;
 	}
 }
 

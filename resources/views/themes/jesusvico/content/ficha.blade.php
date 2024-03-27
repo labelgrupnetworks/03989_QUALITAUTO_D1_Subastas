@@ -83,6 +83,9 @@ if($subasta_web){
 			{{-- <h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1> --}}
 		</section>
 
+		<section class="ficha-previous-next">
+			@include('includes.ficha.previous_next')
+		</section>
 
 	</div>
 
@@ -93,7 +96,6 @@ if($subasta_web){
 		</section>
 
 		<section class="ficha-pujas text-lb-gray">
-			@include('includes.ficha.previous_next')
 			@include('includes.ficha.ficha_pujas')
 		</section>
 
