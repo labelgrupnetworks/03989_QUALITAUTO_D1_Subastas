@@ -51,9 +51,9 @@
 							</a>
 						@endif
 					</div>
-					@if ($subasta->upcatalogo == 'S')
+					@if (!empty($files))
 						<div class="col">
-							<a class="btn btn-sm btn-outline-border-lb-primary" href="">
+							<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
 								<svg class="bi" width="12" height="12" fill="currentColor">
 									<use xlink:href="/bootstrap-icons.svg#file-pdf"></use>
 								</svg>
