@@ -1199,8 +1199,11 @@ class SubastaController extends Controller
         $this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_medium']);
         $imageGenerate->generateMini($name_img,$sizes['lote_medium']);
         $this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_medium_large']);
-
         $imageGenerate->generateMini($name_img,$sizes['lote_medium_large']);
+		if (!empty($sizes['lote_large'])) {
+			$this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_large']);
+			$imageGenerate->generateMini($name_img,$sizes['lote_large']);
+		}
     }
 
 	function lotFile($subasta)
