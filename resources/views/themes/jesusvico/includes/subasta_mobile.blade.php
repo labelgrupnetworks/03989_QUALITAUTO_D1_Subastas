@@ -35,26 +35,33 @@
 				</header>
 			</a>
 
-			@if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion)
-				<div class="w-100 mb-3">
-					<a class="btn btn-lb-primary bg-danger border-0 live-btn" href="{{ $url_tiempo_real }}"
-						title="{{ trans("$theme-app.global.since") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') . ' ' . trans("$theme-app.global.to") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
-						target="_blank">
-						LIVE
-					</a>
-				</div>
-			@endif
+			<div class="w-100 mb-3">
+				<a href="{{ $url_lotes }}"
+					class="btn btn-lb-primary mt-auto see-lots-button">{{ trans("$theme-app.subastas.see_lotes") }}</a>
+			</div>
+
+			{{-- <div class="w-100 mb-3">
+				<a class="btn btn-lb-primary bg-danger border-0 live-btn" href="{{ $url_tiempo_real }}"
+				title="{{ trans("$theme-app.global.since") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') . ' ' . trans("$theme-app.global.to") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
+				target="_blank">
+				LIVE
+			</a> --}}
 
 			@if (!empty($files))
 				<div class="w-100 d-flex alig-items-center justify-content-between">
-					<div class="col d-flex align-items-center">
-						<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
-							<svg class="bi" width="12" height="12" fill="currentColor">
-								<use xlink:href="/bootstrap-icons.svg#plus"></use>
-							</svg>
-							{{ trans("$theme-app.subastas.see_subasta") }}
+					<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
+						<svg class="bi" width="12" height="12" fill="currentColor">
+							<use xlink:href="/bootstrap-icons.svg#plus"></use>
+						</svg>
+						{{ trans("$theme-app.subastas.see_subasta") }}
+					</a>
+					@if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion)
+						<a class="btn btn-lb-primary bg-danger border-0 live-btn" href="{{ $url_tiempo_real }}"
+							title="{{ trans("$theme-app.global.since") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') . ' ' . trans("$theme-app.global.to") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
+							target="_blank">
+							LIVE
 						</a>
-					</div>
+					@endif
 				</div>
 			@endif
 

@@ -674,6 +674,11 @@ ul.style-diamond li p {
 
 .mobile-subastas .btn.live-btn {
 	font-size: 14pt;
+	padding: 5px 31px;
+}
+
+.mobile-subastas .see-lots-button {
+	font-size: 14pt;
 	padding: 5px 0px;
 	width: 100%;
 }
