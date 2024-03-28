@@ -31,12 +31,16 @@
 
 
         @foreach ($lote_actual->imagenes as $key => $imagen)
+			@php
+				$emp = Config::get('app.emp');
+				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1.jpg";
+			@endphp
             <div class="image-wrapper">
                 <a class="js-smartPhoto" data-caption="{{ $lote_actual->titulo_hces1 }}"
                     data-id="id-{{ $key + 1 }}"
-                    href="{{ Tools::url_img('lote_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+                    href="{{ $url_image }}">
                     <img class="lazy" data-group="nogroup"
-                        src="{{ Tools::url_img('lote_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+                        src="{{ $url_image }}">
                 </a>
             </div>
         @endforeach
