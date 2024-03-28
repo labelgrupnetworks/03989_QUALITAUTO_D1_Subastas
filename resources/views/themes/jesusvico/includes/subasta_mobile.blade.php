@@ -20,7 +20,7 @@
 	<div class="col-12 card-img-wrapper{{ !$loop->first ? ' d-none' : '' }}">
 		<a href="{{ $url_lotes }}">
 			<div class="activity"></div>
-			<img src="{{ \Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}" class="w-100 h-100"
+			<img src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}" class="w-100 h-100"
 				alt="{{ $subasta->name }}" @if ($loop->index > 2) loading="lazy" @endif>
 		</a>
 	</div>
