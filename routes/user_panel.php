@@ -1,4 +1,8 @@
 <?php
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
+
 # Obligatorio estar registrado.
 Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
@@ -15,6 +19,8 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	# Deprecated revisar
 	//Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
+
+	Route::get('{lang}/user/panel/summary', 'UserController@summary')->name('panel.summary');
 
 	# Lista de Favoritos
 	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');
@@ -98,7 +104,7 @@ Route::get('{lang}/user/panel/showShoppingOrders', 'V5\ArticleController@showSho
 #pago por transferencia
 
 Route::get('{lang}/user/panel/transferpayment', function () {
-	exit(\View::make('front::pages.panel.transferpayment'));
+	exit(View::make('front::pages.panel.transferpayment'));
 })->name("transferpayment");
 
 #NFT

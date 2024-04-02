@@ -4902,5 +4902,10 @@ class UserController extends Controller
 
 	#endregion
 
+	public function summary(HttpRequest $request)
+	{
+		return view('front::pages.panel.summary');
+	}
+
 }
 
