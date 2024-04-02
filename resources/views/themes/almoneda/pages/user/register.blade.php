@@ -169,7 +169,7 @@ $families = array();
 
 							<div class="user_files">
 								<label>{{ trans("$theme-app.login_register.other_files") }}</label>
-								{!! FormLib::File('user_files[]', $boolObligatorio = 1, $strExtra = "multiple") !!}
+								{!! FormLib::File('user_files[]', $boolObligatorio = 0, $strExtra = "multiple") !!}
 							</div>
 
 						<div class="clearfix"></div>
