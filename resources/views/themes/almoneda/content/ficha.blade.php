@@ -53,7 +53,12 @@ if(is_dir(getcwd() . $path)){
                 }
            ?>
 
+				<div class="col-xs-12 no-padding">
+					<p>{{ trans("$theme-app.lot.start_date") }} <span>{{ date('d/m/Y H:i:s', strtotime($lote_actual->fini_asigl0)) }}</span></p>
+				</div>
+
                 @include('includes.ficha.header_time')
+
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
