@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
 	{{ trans($theme.'-app.head.title_app') }}
@@ -22,15 +22,11 @@ $codPais_clid = $data['user']->codpais_clid ?? $data['user']->codpais_cli ?? 'ES
     var currency = @JSON($divisas);
 </script>
 
-@include('pages.panel.principal_bar')
 
 <section class="account payment">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12">
-				<?php $tab="allotments";?>
-				@include('pages.panel.menu')
-			</div>
+
 
 			<div class="col-xs-12">
 

@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
 {{ trans($theme.'-app.head.title_app') }}
@@ -6,7 +6,6 @@
 
 @section('content')
 
-@include('pages.panel.principal_bar')
 
 @php
 $countries = array();
@@ -37,11 +36,7 @@ $families = [
 <section class="account">
 	<div class="container">
 		<div class="row">
-			<?php $tab="datos-personales"; ?>
 
-			<div class="col-xs-12">
-				@include('pages.panel.menu')
-			</div>
 
 			<div class="col-xs-12">
 

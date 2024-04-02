@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
 {{ trans($theme.'-app.head.title_app') }}
