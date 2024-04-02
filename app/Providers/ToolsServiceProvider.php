@@ -507,6 +507,8 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 			$time = 0;
 			$count = 0;
+
+			echo "<div class='query-log'>";
 			foreach (DB::getQueryLog() as $query) {
 				$count++;
 				$color = "";
@@ -521,6 +523,7 @@ class ToolsServiceProvider extends ServiceProvider
 				echo "<div style='border:1px solid grey; margin:30px;padding: 10px;word-break: break-all; $color'> (" . $query['time'] . ")<br> " . nl2br($query['query']) . "</div> ";
 			}
 			echo "<h1> Total: $time , TotalQuerys: $count</h1>";
+			echo "</div>";
 		}
 	}
 
