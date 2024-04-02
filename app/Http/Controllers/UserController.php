@@ -1518,8 +1518,10 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if(Config::get('app.dni_in_storage', false)) {
+		if (Config::get('app.dni_in_storage', false) == "dni-files") {
 			return storage_path("app/files/dni/$emp/$cod_cli/files/");
+		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			return storage_path("app/files/CLI/$emp/$cod_cli/documentation/");
 		}
 
 		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
