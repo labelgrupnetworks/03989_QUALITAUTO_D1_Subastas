@@ -169,6 +169,9 @@ $families = array();
 
 							<div class="user_files">
 								<label>{{ trans("$theme-app.login_register.other_files") }}</label>
+								<div>
+									<span>{{ trans("$theme-app.login_register.if_upload_multiple_files") }}</span>
+								</div>
 								{!! FormLib::File('user_files[]', $boolObligatorio = 0, $strExtra = "multiple") !!}
 							</div>
 
