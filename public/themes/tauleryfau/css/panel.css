@@ -71,21 +71,22 @@ main {
 	margin: 0;
 }
 
-.orders-auction {
-	/* --grid-columns: repeat(9, 1fr); */
-	/* --grid-columns: 12% 8% 32% repeat(4, 8%) auto; */
-	--grid-columns: 12% 5% 32% repeat(3, 1fr) 10% 8%;
+.orders-page {
 	margin-bottom: 3rem;
 }
 
-.orders-auction .table-grid {
-	width: 100%;
+.orders-auction {
+	margin-bottom: 2rem;
+}
+
+.orders-auction_header,
+.orders-auction_lot {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	align-items: center;
 }
 
-.orders-auction .table-grid.table-grid_header {
+.orders-auction_header {
 	font-size: 13px;
 	font-weight: 500;
 	color: #000;
@@ -95,17 +96,17 @@ main {
 	border-bottom: 1px solid #AF9C81A1;
 }
 
-.orders-auction .table-header {
+.orders-auction_header > *:not(.orders-auction_title) {
 	display: none;
 }
 
-.orders-auction .table-grid.table-grid_body {
+.orders-auction_lot {
 	color: #283747;
 	font-weight: 500;
 	gap: 5px;
 	padding-bottom: 1rem;
-    border-bottom: 1px solid #AF9C81A1;
-    margin-bottom: 1rem;
+	border-bottom: 1px solid #AF9C81A1;
+	margin-bottom: 1rem;
 	grid-template-areas: "lot icons buttons buttons buttons"
 		"desc desc desc desc desc"
 		"image image image label-salida price-salida"
@@ -113,28 +114,16 @@ main {
 		"image image image label-bid price-bid";
 }
 
-
-
-.orders-title-auction {
+.orders-auction_title {
 	border: 1px solid #9b8a72;
 	padding: 5px;
 }
 
-.orders-auction .table-grid>div:not(:first-child) {
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.orders-auction .table-grid p {
+.orders-auction p {
 	margin: 0;
 }
 
-.orders-auction .table-grid i {
-	margin-left: 3px;
-	margin-right: 3px;
-}
-
-.orders-auction .table-grid .js-divisa {
+.orders-auction_lot .js-divisa {
 	color: inherit;
 	font-weight: inherit;
 }
@@ -230,36 +219,44 @@ main {
 
 .lot-icons .lot-icons-see {
 	display: inline-block;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    line-height: 1;
+	align-items: center;
+	justify-content: center;
+	font-size: 25px;
+	line-height: 1;
 }
 
 .btn-del {
 	background-color: #DF4140;
-    color: #fff;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    aspect-ratio: 1;
+	color: #fff;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	border: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	aspect-ratio: 1;
 }
 
 @media (min-width: 992px) {
 
-	.orders-auction .table-grid {
-		grid-template-columns: var(--grid-columns);
-		align-items: center;
-		padding-top: .5rem;
-		padding-bottom: .5rem;
+	.orders-auction {
+		--grid-columns-desktop: 12% 5% 32% repeat(3, 1fr) 10% 8%;
 	}
 
-	.orders-auction .table-grid.table-grid_body {
+	.orders-auction_header {
+		grid-template-columns: var(--grid-columns-desktop);
+		align-items: center;
+	}
+
+	.orders-auction_header > *:not(.orders-auction_title) {
+		display: block;
+	}
+
+	.orders-auction_lot {
+		grid-template-columns: var(--grid-columns-desktop);
+		align-items: center;
 		gap: 0;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
@@ -267,12 +264,17 @@ main {
 		border: 0;
 	}
 
-	.orders-auction .table-grid.table-grid_body:nth-child(odd) {
+	:is(.orders-auction_header, .orders-auction_lot)>*:not(:first-child) {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.orders-auction_lot:nth-child(odd) {
 		background-color: #9B9B9B1F;
 	}
 
-	.orders-auction .table-header {
-		display: block;
+	.orders-auction_lot>* {
+		grid-area: auto;
 	}
 
 	.order-label {
@@ -281,10 +283,6 @@ main {
 
 	.lot-image img {
 		max-height: 90px;
-	}
-
-	.table-grid.table-grid_body > div {
-		grid-area: auto;
 	}
 
 	.lot-actions {

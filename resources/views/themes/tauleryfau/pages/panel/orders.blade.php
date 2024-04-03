@@ -9,7 +9,6 @@
     $currency = new Currency();
     $divisa = Session::get('user.currency', 'EUR');
     $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
-
     $isFavoritePage = !empty($data['favorites']);
 @endphp
 
@@ -37,7 +36,7 @@
         <div class="panel-title">
             <h1>
                 @if ($isFavoritePage)
-                    {{ trans("$theme-app..user_panel.favorites") }}
+                    {{ trans("$theme-app.user_panel.favorites") }}
                 @else
                     {{ trans("$theme-app.user_panel.orders") }}
                 @endif
@@ -52,7 +51,7 @@
             </select>
         </div>
 
-        <div class="orders-auctions">
+        <div class="orders-auctions-block">
             @php
                 $finalized = [];
                 $notFinalized = [];
@@ -85,14 +84,12 @@
                         rooms.push('{{ $key_sub }}');
                     </script>
 
-
-
-                    @include('pages.panel.orders_auction', ['subasta_finalizada' => false])
+                    @include('pages.panel.orders.auction', ['subasta_finalizada' => false])
                 @endif
             @endforeach
 
             @foreach ($finalized as $all_inf)
-                @include('pages.panel.orders_auction', ['subasta_finalizada' => true])
+                @include('pages.panel.orders.auction', ['subasta_finalizada' => true])
             @endforeach
 
 
@@ -108,7 +105,7 @@
                         <div class=" text-center single_item_content_">
                             <p class="class_h1">{{ trans($theme . '-app.lot.confirm_bid') }}</p><br />
                             <span class='desc_auc' for="bid">{{ trans($theme . '-app.lot.you_are_bidding') }} </span>
-                            <strong><span class="precio"></span> €</strong><br />
+                            <strong><span class="precio"></span> €</strong><br>
                             <span class="ref_orden hidden"></span>
                             <br>
                             <button class="btn btn-color button_modal_confirm btn-custom"
@@ -116,8 +113,9 @@
                             <div class='mb-10'></div>
                             <div class='mb-10'></div>
                             <ul class="items_list">
-                                <li><?= trans($theme . '-app.lot.tax_not_included') ?> </li>
-
+                                <li>
+                                    {!! trans("$theme-app.lot.tax_not_included") !!}
+                                </li>
                             </ul>
                         </div>
                     </div>
