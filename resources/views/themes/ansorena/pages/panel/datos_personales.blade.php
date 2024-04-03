@@ -202,6 +202,22 @@
                         </div>
                     </div>
 
+					@if (Config::get('app.user_panel_cif', false))
+						<div class="form-group col-xs-12 col-sm-6">
+							<label for="dni1">{{ trans($theme . '-app.login_register.dni_obverse') }}</label>
+							{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = '') !!}
+							<p style="color: green; display: {{ isset($data['cifImages']['dni1']) ? 'block' : 'none' }};">
+								{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+						</div>
+
+						<div class="form-group col-xs-12 col-md-6">
+							<label for="dni2">{{ trans($theme . '-app.login_register.dni_reverse') }}</label>
+							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
+							<p style="color: green; display: {{ isset($data['cifImages']['dni2']) ? 'block' : 'none' }};">
+								{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+						</div>
+					@endif
+
                     <div class="form-group input-group col-xs-12 col-sm-3">
                         <label for="codigoVia">{{ trans($theme.'-app.login_register.via') }}</label>
                         <select name="codigoVia" class="form-control" >

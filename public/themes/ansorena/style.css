@@ -950,8 +950,10 @@ z-index: 10;
 	text-decoration: none;
   }
 
+.frmLogin input[type="file"].form-control,
 #registerForm input[type="file"].form-control {
 	background: transparent;
   	box-shadow: none;
   	border-radius: 0;
+	border-bottom: #cccccc 1px solid;
 }
