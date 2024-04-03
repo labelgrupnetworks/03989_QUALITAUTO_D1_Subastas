@@ -711,12 +711,12 @@ class UserController extends Controller
 		}
 
 		$info_nombres_vacios = false;
-		if (Request::input('pri_emp') == 'F' && (empty(Request::input('usuario')) || empty(Request::input('last_name')))) {
+		/* if (Request::input('pri_emp') == 'F' && (empty(Request::input('usuario')) || empty(Request::input('last_name')))) {
 			$info_nombres_vacios = true;
 		}
 		if (Request::input('pri_emp') == 'J' && (empty(Request::input('contact')) || empty(Request::input('rsoc_cli')))) {
 			$info_nombres_vacios = true;
-		}
+		} */
 
         # Tipo de registro, almacenado en WEB_CONFIG dentro de app
         //Request::input('regtype');
