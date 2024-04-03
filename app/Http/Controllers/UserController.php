@@ -1518,8 +1518,10 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if(Config::get('app.dni_in_storage', false)) {
+		if (Config::get('app.dni_in_storage', false) == "dni-files") {
 			return storage_path("app/files/dni/$emp/$cod_cli/files/");
+		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			return storage_path("app/files/CLI/$emp/$cod_cli/documentation/");
 		}
 
 		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
@@ -4847,10 +4849,10 @@ class UserController extends Controller
 		}
 	  }
 
-	private function checkValidCIF ($cif) {
+	  private function checkValidCIF ($cif) {
 		$cif_codes = 'JABCDEFGHI';
-
-		$pattern = "/^[A-Z]{1}\d{5,8}[A-Z]{1}?$/";
+		#hay que permitir dos tipos de CIF, los que acaban con letra y los que no
+		$pattern = "/^[A-Z]{1}\d{5,8}[A-Z]?$/";
 		if (!preg_match ($pattern, $cif)) {
 		  return false;
 		}
@@ -4860,6 +4862,7 @@ class UserController extends Controller
 
 		if (preg_match ('/^[ABCDEFGHJNPQRSUVW]{1}/', $cif)) {
 		  if (in_array ($cif[0], array ('A', 'B', 'E', 'H'))) {
+
 			// Numerico
 			return ($cif[8] == $n);
 		  } elseif (in_array ($cif[0], array ('K', 'P', 'Q', 'S'))) {
