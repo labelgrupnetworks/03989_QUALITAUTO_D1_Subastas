@@ -22,9 +22,9 @@
         var currency = @JSON($divisas);
         var divisa = @JSON($divisa);
 
-		$(function() {
-			$("#actual_currency").trigger('change');
-		});
+        $(function() {
+            $("#actual_currency").trigger('change');
+        });
     </script>
 
     <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}">
@@ -91,27 +91,11 @@
                 @endif
             @endforeach
 
-            {{-- <div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.next_auctions') }}</strong></div> --}}
-            <div class="collapse js-title-collapse in" id="auctions_accordion">
+            @foreach ($finalized as $all_inf)
+                @include('pages.panel.orders_auction', ['subasta_finalizada' => true])
+            @endforeach
 
-            </div>
 
-            @if (count($finalized) > 0)
-
-                <div class="title-collapse mt-3" data-toggle="collapse" data-target="#auctions_fin_accordion">
-                    <p>
-                        {{ trans($theme . '-app.subastas.finished_auctions') }}
-                        <span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-                    </p>
-                </div>
-
-                <div class="collapse js-title-collapse" id="auctions_fin_accordion">
-                    @foreach ($finalized as $all_inf)
-                        @include('pages.panel.orders_auction', ['subasta_finalizada' => true])
-                    @endforeach
-                </div>
-
-            @endif
         </div>
     </section>
 
@@ -141,18 +125,4 @@
             </section>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('.js-title-collapse').on('show.bs.collapse', function(e) {
-                $(`[data-target^='#${e.target.id}'] i.fa.fa-caret-right`).removeClass('fa-caret-right')
-                    .addClass('fa-caret-down');
-            });
-
-            $('.js-title-collapse').on('hide.bs.collapse', function(e) {
-                $(`[data-target^='#${e.target.id}'] i.fa.fa-caret-down`).removeClass('fa-caret-down')
-                    .addClass('fa-caret-right');
-            });
-        });
-    </script>
 @stop

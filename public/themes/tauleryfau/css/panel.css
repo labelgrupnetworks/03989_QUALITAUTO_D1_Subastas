@@ -64,7 +64,7 @@ main {
 	align-items: center;
 	gap: 2rem;
 	margin-top: 20px;
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .panel-title h1 {
@@ -74,42 +74,53 @@ main {
 .orders-auction {
 	/* --grid-columns: repeat(9, 1fr); */
 	/* --grid-columns: 12% 8% 32% repeat(4, 8%) auto; */
-	--grid-columns: 12% 5% 32% repeat(3, auto) 10% 8%;
+	--grid-columns: 12% 5% 32% repeat(3, 1fr) 10% 8%;
 	margin-bottom: 3rem;
 }
 
 .orders-auction .table-grid {
 	width: 100%;
-    display: grid;
-    grid-template-columns: var(--grid-columns);
-    align-items: center;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	align-items: center;
 }
 
 .orders-auction .table-grid.table-grid_header {
 	font-size: 13px;
 	font-weight: 500;
 	color: #000;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #AF9C81A1;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid #AF9C81A1;
+}
+
+.orders-auction .table-header {
+	display: none;
 }
 
 .orders-auction .table-grid.table-grid_body {
 	color: #283747;
 	font-weight: 500;
+	gap: 5px;
+	padding-bottom: 1rem;
+    border-bottom: 1px solid #AF9C81A1;
+    margin-bottom: 1rem;
+	grid-template-areas: "lot icons buttons buttons buttons"
+		"desc desc desc desc desc"
+		"image image image label-salida price-salida"
+		"image image image label-actual price-actual"
+		"image image image label-bid price-bid";
 }
 
-.orders-auction .table-grid.table-grid_body:nth-child(odd) {
-	background-color: #9B9B9B1F;
-}
+
 
 .orders-title-auction {
 	border: 1px solid #9b8a72;
-    padding: 5px;
+	padding: 5px;
 }
 
-.orders-auction .table-grid > div:not(:first-child) {
+.orders-auction .table-grid>div:not(:first-child) {
 	padding-left: 10px;
 	padding-right: 10px;
 }
@@ -129,32 +140,66 @@ main {
 }
 
 .lot-image {
+	grid-area: image;
+}
+
+.lot-image img {
 	width: 100%;
 	height: 100%;
-	max-height: 90px;
+	max-height: 150px;
 	object-fit: contain;
 	object-position: center;
 	margin: auto;
 }
 
+.lot-ref {
+	grid-area: lot;
+}
+
 .lot-desc {
 	font-weight: 200;
 	-webkit-line-clamp: 3;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: block;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: block;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	grid-area: desc;
 }
 
 .lot-actions {
 	display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: flex-start;
-    font-size: 12px;
+	flex-direction: row;
+	gap: 5px;
+	align-items: flex-start;
+	font-size: 12px;
+	grid-area: buttons;
+}
+
+.lot-price-salida {
+	grid-area: price-salida;
+}
+
+.lot-price-actual {
+	grid-area: price-actual;
+}
+
+.lot-price-bid {
+	grid-area: price-bid;
+}
+
+.label-price-salida {
+	grid-area: label-salida;
+}
+
+.label-price-actual {
+	grid-area: label-actual;
+}
+
+.label-price-bid {
+	grid-area: label-bid;
 }
 
 .lot-actions .btn-puja-panel {
@@ -163,6 +208,7 @@ main {
 	width: 100%;
 	font-size: inherit;
 	background-color: #283747;
+	max-width: none;
 }
 
 .lot-actions .btn-puja-panel.btn-live {
@@ -171,4 +217,77 @@ main {
 
 .lot-actions .btn-puja-panel.bid-mine {
 	background-color: var(--btn-green);
+}
+
+.lot-icons {
+	grid-area: icons;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	gap: 10px;
+	padding: 0;
+}
+
+.lot-icons .lot-icons-see {
+	display: inline-block;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.btn-del {
+	background-color: #DF4140;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    aspect-ratio: 1;
+}
+
+@media (min-width: 992px) {
+
+	.orders-auction .table-grid {
+		grid-template-columns: var(--grid-columns);
+		align-items: center;
+		padding-top: .5rem;
+		padding-bottom: .5rem;
+	}
+
+	.orders-auction .table-grid.table-grid_body {
+		gap: 0;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+		margin-bottom: 0;
+		border: 0;
+	}
+
+	.orders-auction .table-grid.table-grid_body:nth-child(odd) {
+		background-color: #9B9B9B1F;
+	}
+
+	.orders-auction .table-header {
+		display: block;
+	}
+
+	.order-label {
+		display: none;
+	}
+
+	.lot-image img {
+		max-height: 90px;
+	}
+
+	.table-grid.table-grid_body > div {
+		grid-area: auto;
+	}
+
+	.lot-actions {
+		flex-direction: column;
+	}
 }
