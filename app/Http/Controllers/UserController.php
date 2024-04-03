@@ -1511,6 +1511,11 @@ class UserController extends Controller
 
 	private function saveImages($request, $cod_cli)
 	{
+		if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			$this->saveDni($request, $cod_cli, 'dni1', User::getUserNIF($cod_cli) . 'A');
+			$this->saveDni($request, $cod_cli, 'dni2', User::getUserNIF($cod_cli) . 'R');
+			return;
+		}
 		$this->saveDni($request, $cod_cli, 'dni1');
 		$this->saveDni($request, $cod_cli, 'dni2');
 	}
@@ -1527,7 +1532,7 @@ class UserController extends Controller
 		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
 	}
 
-	public function saveDni($request, $cod_cli, $fileName)
+	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
 	{
 		try {
 			$file = $request->file($fileName);
@@ -1535,7 +1540,7 @@ class UserController extends Controller
 				return false;
 			}
 
-			$filename = $fileName . '.' . $file->getClientOriginalExtension();
+			$filename = ($nameOfFile ? $nameOfFile : $fileName) . '.' . $file->getClientOriginalExtension();
 			$destinationPath = $this->dniPath($cod_cli);
 
 			if(!is_dir($destinationPath)){
@@ -1569,7 +1574,7 @@ class UserController extends Controller
 		}
 	}
 
-	public function updateCIFImages($request, $cod_cli)
+	public function updateCIFImages($request, $cod_cli, $nif)
 	{
 		try {
 
@@ -1577,6 +1582,12 @@ class UserController extends Controller
 
 			$dni1 = "dni1";
 			$dni2 = "dni2";
+
+			if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+				$dni1 = $nif."A";
+				$dni2 = $nif."R";
+			}
+
 			$destinationPath = $this->dniPath($cod_cli);
 
 			if (isset($request[$dni1])) {
@@ -2270,7 +2281,9 @@ class UserController extends Controller
 			$news->newFamilies();
         }
 
-		$Update->nif = Request::input('nif', null);
+		if (Request::input('nif', null)) {
+			$Update->nif = Request::input('nif');
+		}
 
 		//Separo los configs ya que algunos clientes solo necesitan actualizar una de las dos cosas
 		if(Config::get('app.user_panel_cc', false)) {
@@ -2279,7 +2292,7 @@ class UserController extends Controller
 
 		if(Config::get('app.user_panel_cif', false)) {
 			if (Request::file('dni1') || Request::file('dni2')) {
-				$this->updateCIFImages(Request::all(), $Update->cod_cli);
+				$this->updateCIFImages(Request::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
 
