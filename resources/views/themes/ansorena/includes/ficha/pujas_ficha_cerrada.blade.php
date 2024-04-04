@@ -31,6 +31,13 @@
             {{--   EL USUARIO DEBE ESTAR LOGEADO PARA QUE PUEDA VER EL RESULTADO DE LA SUBASTA --}}
         @elseif($cerrado && Session::has('user') && empty($precio_venta))
             {{ trans("$theme-app.subastas.dont_buy") }}
+			<div class="mt-3">
+				<a class="btn btn-outline-lb-primary btn-medium"
+					href="mailto:{{Config::get('app.email-buy-lot-not-selled', '')}}?subject={{ trans("$theme-app.lot.mail_not_selled_subject") . $lote_actual->ref_asigl0 }}">
+					{{ trans("$theme-app.lot.buy") }}
+				</a>
+				<p>{{ trans("$theme-app.lot.info_num_tel") }}</p>
+			</div>
         @elseif($devuelto)
             {{ trans("$theme-app.subastas.dont_available") }}
         @endif

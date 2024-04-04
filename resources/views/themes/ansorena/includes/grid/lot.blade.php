@@ -34,7 +34,7 @@
             <div class="lot-data mt-4">
 
                 @if (!$retirado && !$devuelto)
-                    <div class="lot-prices">
+                    <div class="lot-prices w-100">
 
                         <p style="visibility: {{ $item->ocultarps_asigl0 != 'S' ? 'visible' : 'hidden' }}">
                             @if ($subasta_venta)
@@ -67,9 +67,13 @@
                                 <p class="lb-text-capitalize">{{ trans("$theme-app.subastas.buy") }}
                                 </p>
                             @elseif($cerrado && empty($precio_venta) && !$compra)
-                                <p class="lb-text-capitalize">{{ trans("$theme-app.subastas.dont_buy") }}</p>
+								<div class="d-flex align-items-center justify-content-between">
+									<p class="lb-text-capitalize">{{ trans("$theme-app.subastas.dont_buy") }}</p>
+									<p class="text-uppercase"><a class="text-decoration-none" {!! $url !!}>{{ trans("$theme-app.lot.buy") }}</a></p>
+								</div>
+
                             @endif
-                        @endif
+						@endif
 
                     </div>
 
