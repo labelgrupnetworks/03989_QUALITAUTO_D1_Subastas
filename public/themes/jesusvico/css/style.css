@@ -699,11 +699,65 @@ ul.style-diamond li p {
 	padding: 5px 31px;
 } */
 
-.mobile-subastas .btn.live-btn,
-.mobile-subastas .see-lots-btn {
+.card-body .btn.live-btn,
+.card-body .see-lots-btn {
 	font-size: 14pt;
 	padding: 5px 0px;
-	width: 150px;
+	width: 130px;
+}
+
+@media (min-width: 768px) {
+	.card-body .btn.live-btn,
+	.card-body .see-lots-btn {
+		width: 78px;
+	}
+}
+
+@media (min-width: 992px) {
+	.card-body .btn.live-btn,
+	.card-body .see-lots-btn {
+		width: 100px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.card-body .btn.live-btn,
+	.card-body .see-lots-btn {
+		width: 130px;
+	}
+}
+
+@media (min-width: 1400px) {
+	.card-body .btn.live-btn,
+	.card-body .see-lots-btn {
+		width: 150px;
+	}
+}
+
+.mobile-subastas .card-body h5.card-title {
+	font-size: 1.7rem;
+}
+
+article.card-custom-large .card-body .card-title {
+	font-size: 1.5rem;
+}
+
+@media (min-width: 992px) {
+	article.card-custom-large .card-body .card-title {
+		font-size: 1.9rem;
+	}
+}
+
+@media (min-width: 1200px) {
+	article.card-custom-large .card-body .card-title {
+		font-size: 2.1rem;
+	}
+}
+
+@media (min-width: 1400px) {
+	article.card-custom-large .card-body .card-title {
+		font-size: 2.5em;
+	}
 }
 
 .mobile-subastas a.grid-lot-link:hover,
