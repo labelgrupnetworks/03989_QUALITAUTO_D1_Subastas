@@ -1029,6 +1029,12 @@ section.ficha-pujas {
 	height: 41px;
 }
 
+.grid-previous-and-next input.search-lot-bar-input::-webkit-inner-spin-button,
+.grid-previous-and-next input.search-lot-bar-input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+  	margin: 0;
+}
+
 .grid-previous-and-next input.search-lot-bar-input {
 	-moz-appearance: textfield;
 	padding-top: 9px;
