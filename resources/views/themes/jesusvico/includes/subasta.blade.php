@@ -29,7 +29,7 @@
 
 				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description ?? '') }}</p>
 
-				<div class="mt-auto d-flex align-items-center justify-content-around w-85">
+				<div class="mt-auto d-flex align-items-center justify-content-between w-85">
 					<a href="{{ $url_lotes }}" class="btn btn-lb-primary see-lots-btn">{{ trans("$theme-app.subastas.see_lotes") }}</a>
 
 					@if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion)
