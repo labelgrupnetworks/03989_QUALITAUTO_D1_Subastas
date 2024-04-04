@@ -15,8 +15,6 @@
 	$status = $SubastaTR->getStatus();
 	$isFinished = !empty($status) && $status[0]->estado == 'ended';
 
-	$showCardFooter = (!empty($files)) || ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion);
-
 @endphp
 <article class="card card-custom-large h-100">
 	<div class="row g-0 h-100">
@@ -31,32 +29,30 @@
 
 				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description ?? '') }}</p>
 
-				<a href="{{ $url_lotes }}" class="btn btn-lb-primary mt-auto">{{ trans("$theme-app.subastas.see_lotes") }}</a>
+				<div class="mt-auto d-flex align-items-center justify-content-around w-85">
+					<a href="{{ $url_lotes }}" class="btn btn-lb-primary see-lots-btn">{{ trans("$theme-app.subastas.see_lotes") }}</a>
+
+					@if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion)
+						<a class="btn btn-lb-primary bg-danger border-0 live-btn" href="{{ $url_tiempo_real }}"
+							title="{{ trans("$theme-app.global.since") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') . ' ' . trans("$theme-app.global.to") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
+							target="_blank">
+							LIVE
+						</a>
+					@endif
+				</div>
 			</div>
 
-			@if ($showCardFooter)
+			@if (!empty($files))
 				<footer class="card-footer">
-					<div class="row row-cols-2 gy-1 card-links">
-						<div class="col d-flex align-items-center">
-							@if (!empty($files))
-								<a class="btn btn-sm btn-outline-border-lb-primary" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
-									<svg class="bi" width="12" height="12" fill="currentColor">
-										<use xlink:href="/bootstrap-icons.svg#plus"></use>
-									</svg>
-									{{ trans("$theme-app.subastas.see_subasta") }}
-								</a>
-							@endif
+						<div class="d-flex justify-center w-85">
+							<a class="btn btn-sm info-btn w-100" target="_blank" href="{{ $fileUrl }}"
+								title="{{ $subasta->name }}">
+								<svg class="bi" width="12" height="12" fill="currentColor">
+									<use xlink:href="/bootstrap-icons.svg#plus"></use>
+								</svg>
+								{{ trans("$theme-app.subastas.see_subasta") }}
+							</a>
 						</div>
-						<div class="col">
-							@if ($subasta->tipo_sub == 'W' && strtotime($subasta->session_end) > time() && !$isExternalAucion)
-								<a class="btn btn-lb-primary bg-danger border-0 live-btn" href="{{ $url_tiempo_real }}"
-									title="{{ trans("$theme-app.global.since") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') . ' ' . trans("$theme-app.global.to") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
-									target="_blank">
-									LIVE
-								</a>
-							@endif
-						</div>
-					</div>
 				</footer>
 			@endif
 
@@ -65,8 +61,8 @@
 
 			<div class="activity"></div>
 
-			<img src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}" class="w-100 h-100"
-				alt="{{ $subasta->name }}" @if ($loop->index > 2) loading="lazy" @endif>
+			<img src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}"
+				class="w-100 h-100" alt="{{ $subasta->name }}" @if ($loop->index > 2) loading="lazy" @endif>
 
 		</div>
 	</div>

@@ -32,6 +32,12 @@ $(function () {
 	});
 
 	$('#searchLot').on('submit', sendSearchLotForm);
+	$('#searchLot input[name="reference"]').keydown(function (e) {
+		if((e.keyCode ? e.keyCode : e.which) == 13) {
+			e.preventDefault();
+			$('#searchLot').submit();
+		}
+	});
 })
 
 function createObservers() {

@@ -17,7 +17,7 @@
 				<a class="btn btn-lb-primary d-flex align-items-center arrow-button" href="{{ $previuos }}">
 					@include('components.boostrap_icon', ['icon' => 'chevron-left'])
 				</a>
-				{{-- <a class="btn btn-light d-none d-sm-block" href="{{ $previuos }}">{{ trans("$theme-app.subastas.last") }}</a> --}}
+				<a class="btn btn-light prev-next-btn d-none d-sm-block" href="{{ $previuos }}">{{ trans("$theme-app.subastas.last") }}</a>
 			</div>
 		</section>
 	@endif
@@ -44,7 +44,7 @@
 	@if ($next)
 		<section class="next-button d-flex align-items-end">
 			<div class="btn-group ms-auto h-100">
-				{{-- <a class="btn btn-light d-none d-sm-block" href="{{ $next }}">{{ trans("$theme-app.subastas.next") }}</a> --}}
+				<a class="btn btn-light prev-next-btn d-none d-sm-block" href="{{ $next }}">{{ trans("$theme-app.subastas.next") }}</a>
 				<a class="btn btn-lb-primary d-flex align-items-center arrow-button" href="{{ $next }}">
 					@include('components.boostrap_icon', ['icon' => 'chevron-right'])
 				</a>

@@ -597,10 +597,32 @@ ul.style-diamond li p {
 	}
 }
 
-.btn.live-btn {
+
+/* .btn.live-btn {
 	font-size: 14pt;
   	padding: 6px 40px 4px 40px;
+} */
+
+.btn.see-lots-btn,
+.btn.live-btn {
+	font-size: 14pt;
+	width: 166px;
+	padding: 6px 0px;
 }
+
+.btn.see-lots-btn {
+	border: 0px;
+}
+
+.w-85 {
+	width: 85%;
+}
+
+.info-btn {
+	border: var(--bs-card-border-color) 1px solid;
+}
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -672,15 +694,16 @@ ul.style-diamond li p {
 	margin: 9px 11px 8px 11px;
 }
 
-.mobile-subastas .btn.live-btn {
+/* .mobile-subastas .btn.live-btn {
 	font-size: 14pt;
 	padding: 5px 31px;
-}
+} */
 
-.mobile-subastas .see-lots-button {
+.mobile-subastas .btn.live-btn,
+.mobile-subastas .see-lots-btn {
 	font-size: 14pt;
 	padding: 5px 0px;
-	width: 100%;
+	width: 150px;
 }
 
 .mobile-subastas a.grid-lot-link:hover,
@@ -991,7 +1014,7 @@ section.ficha-pujas {
 }
 
 .search-lot-container {
-	width: 190px;
+	width: 122px;
 	justify-content: center;
 }
 
@@ -1046,7 +1069,7 @@ section.ficha-pujas {
 
 .ficha-previous-next .search-lot-bar-button {
 	height: 38px;
-	padding: 6px 11px 6px 13px;
+	padding: 6px 6px 6px 8px;
 	margin-top: 1px;
 }
 
@@ -1062,6 +1085,10 @@ section.ficha-pujas {
 	height: 36px;
 }
 
+.prev-next-btn {
+	padding: 6px;
+}
+
 .grid-previous-and-next input.search-lot-bar-input {
 	width: 90px;
 }
@@ -1071,7 +1098,7 @@ main.page-ficha p.h1 {
 }
 
 .ficha-previous-next .btn.arrow-button {
-	padding: 10px 12px;
+	padding: 10px 6px;
 }
 
 @media (min-width: 295px) {
