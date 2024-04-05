@@ -1,120 +1,137 @@
 @extends('layouts.panel')
 
 @section('title')
-{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
-<style>
-	.container-503 {
-		text-align: center;
-		vertical-align: middle;
-	}
+@php
+    use App\Models\SubastaTiempoReal;
+    use App\libs\Currency;
+    $currency = new Currency();
+    $divisa = Session::get('user.currency', 'EUR');
+    $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
 
-	.container-503 .content {
-		text-align: center;
-		display: inline-block;
-	}
+    $activeAuctions = $subastas->filter(function ($lotes) {
 
-	.container-503 .title {
-		font-size: 72px;
-		margin-bottom: 40px;
-	}
-</style>
+		return true; //ahora mismo para mostrar todas y tener datos de prueba
+
+        $firtsLot = $lotes->first();
+        $sessionReference = $firtsLot->reference;
+
+		//esta comprobación se hace en varios sitios, valorar encapsular en una clase
+		$subasta = new SubastaTiempoReal();
+        $subasta->cod = $firtsLot->cod_sub;
+        $subasta->session_reference = $sessionReference;
+        $status = $subasta->getStatus();
+
+        return $firtsLot->subc_sub == 'S' && $status != 'ended';
+    });
+
+    //devemos mostrar las subastas activas y que el tiempo real no haya finalizado.
+    //una vez finalizadas las pasamos a la vista de subastas finalizadas
+    $statistics = [];
+    $statistics['auction'] = collect([]);
+
+    foreach ($activeAuctions as $cod_sub => $lotes) {
+        $statistics['auction']->put($cod_sub, [
+            'actual_price' => $lotes->sum(function ($lote) {
+                return $lote->implic_hces1 ?? $lote->impsalhces_asigl0;
+            }),
+            'consigned_lots' => $lotes->count(),
+            'count_lots_with_bids' => $lotes
+                ->filter(function ($lote) {
+                    return $lote->bids > 0;
+                })
+                ->count(),
+            'estimate_price' => $lotes->sum('imptas_asigl0'),
+            'starting_price' => $lotes->sum('impsalhces_asigl0'),
+        ]);
+    }
+
+    $statistics['total'] = [
+        'actual_price' => $statistics['auction']->sum('actual_price'),
+        'bid_lots' => $statistics['auction']->sum('count_lots_with_bids'),
+        'consigned_lots' => $statistics['auction']->sum('consigned_lots'),
+        'percentage_lots_bid' =>
+            ($statistics['auction']->sum('count_lots_with_bids') / Tools::numberClamp($statistics['auction']->sum('consigned_lots'), 1)) * 100,
+        'revaluation' =>
+            ($statistics['auction']->sum('actual_price') / Tools::numberClamp($statistics['auction']->sum('starting_price'), 1)) * 100,
+        'start_price' => $statistics['auction']->sum('starting_price'),
+    ];
+@endphp
 
 @section('content')
 
-<section class="account cesiones">
-	<div class="container">
-		<div class="row">
+    <script>
+        var currency = @JSON($divisas);
+        var divisa = @JSON($divisa);
+        var replaceZeroDecimals = true;
+		const statistics = @JSON($statistics);
+    </script>
 
+    <section class="sales-page">
+        <div class="sticky-section">
+            <div class="panel-title">
+                <h1>{{ trans("$theme-app.user_panel.my_assignments") }}</h1>
 
-			<div class="col-xs-12">
-				<div class="user-datas-title">
-					<p>{{ trans($theme.'-app.user_panel.my_assignments') }}<span style="float: right">{{Session::get('user.cod')}} -
-							{{ \Session::get('user.name') }}</span></p>
+                <select id="actual_currency">
+                    @foreach ($divisas as $divisaOption)
+                        <option value='{{ $divisaOption->cod_div }}' @selected($divisaOption->cod_div == $divisa)>
+                            {{ $divisaOption->cod_div }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-				</div>
-			</div>
+            <div class="sales-menu">
+                <a class="btn btn-lb btn-lb-outline btn-large" href="">Pendientes de subastar</a>
+                <a class="btn btn-lb btn-lb-primary btn-large" href="#">Subastas activas</a>
+                <a class="btn btn-lb btn-lb-outline btn-large" href="">Subastas Finalizadas</a>
+            </div>
 
-			<div class="col-xs-12 cesiones-bi">
-				@include('pages.panel.sales.cesiones_bi')
-			</div>
+            <div class="sales-summary">
+                <div class="sales-summary_detail">
+                    <span id="actualPrice" class="js-divisa sales-counter" value="{{ $statistics['total']['actual_price'] }}">
+                        0
+                    </span>
+                    <p>Precio Actual</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <div class="number-wrapper">
+                        <span id="percentage_lots_bid" class="sales-counter" value="{{ $statistics['total']['percentage_lots_bid'] }}">
+                            0
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <p>Pujado</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <div class="number-wrapper">
+                        <span id="revaluation" class="sales-counter" value="{{ $statistics['total']['revaluation'] }}">
+                            0
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <p>Revalorización</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <span id="consigned_lots" class="sales-counter" value="{{ $statistics['total']['consigned_lots'] }}">
+                        0
+                    </span>
+                    <p>Lotes consignados</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <span id="bid_lots" class="sales-counter" value="{{ $statistics['total']['bid_lots'] }}">0</span>
+                    <p>Lotes pujados</p>
+                </div>
+            </div>
+        </div>
 
-			@php
-					use App\libs\Currency;
-                    $currency = new Currency();
-                    $divisa = !empty(Session::get('user.currency'))? Session::get('user.currency') : 'EUR';
-                    $currency->setDivisa($divisa);
-					$divisas = $currency->getAllCurrencies();
+        <div class="sales-auctions-block">
+            @include('pages.panel.sales.active_auctions', [
+                'subastas' => $activeAuctions,
+            ])
+        </div>
 
-					$subastasActivasTr = [];
-					$subastasActivasFinalizadas = [];
-
-					$SubastaTR = new \App\Models\SubastaTiempoReal();
-
-					foreach ($subastas as $cod_sub => $lotes) {
-
-						$SubastaTR->cod = $cod_sub;
-						$SubastaTR->session_reference = $lotes->first()->reference;
-						$status  = $SubastaTR->getStatus();
-
-						if (!empty($status) && $status[0]->estado == "ended" && in_array($lotes->first()->subc_sub, ['S', 'H']) && $lotes->first()->tipo_sub != 'V') {
-							$subastasActivasFinalizadas[$cod_sub] = $subastas[$cod_sub];
-						}
-						elseif($lotes->first()->subc_sub == 'S'){
-							$subastasActivasTr[$cod_sub] = $subastas[$cod_sub];
-						}
-					}
-			@endphp
-
-
-			<div class="col-xs-12 mt-2">
-
-				<ul class="nav nav-tabs nav-justified">
-					<li>
-						<a data-toggle="tab" href="#finalizados">{{ trans($theme.'-app.user_panel.finished_lots') }}</a>
-					</li>
-					<li class="active">
-						<a data-toggle="tab" href="#activos">{{ trans($theme.'-app.user_panel.active_lots') }}</a>
-					</li>
-					<li>
-						<a {{--data-toggle="tab"--}} href="{{ \Routing::translateSeo('valoracion-articulos') }}">{{ trans($theme.'-app.user_panel.consign') }}</a>
-					</li>
-				</ul>
-
-				<div class="tab-content">
-
-					<div id="finalizados" class="tab-pane fade">
-
-
-						<div class="panel-group" id="accordion">
-							<div class="panel panel-default panel-payment" id="panel-payment-finish">
-								@include('pages.panel.sales.invoice_assignor_cabecera', ['subastas' => $facturas])
-							</div>
-						</div>
-					</div>
-					<div id="activos" class="tab-pane fade in active">
-						<div class="panel-group" id="accordion">
-							<div class="panel panel-default panel-payment">
-								@include('pages.panel.sales.auctions', ['subastas' => $subastasActivasTr, 'finalizada' => false])
-								@include('pages.panel.sales.auctions', ['subastas' => $subastasActivasFinalizadas, 'finalizada' => true])
-							</div>
-						</div>
-					</div>
-					<div id="consignar" class="tab-pane fade">
-						<div class="container-503">
-							<div class="content">
-								<div class="title">Coming soon.</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div>
-
-		</div>
-	</div>
-</section>
-
-
+    </section>
 @stop

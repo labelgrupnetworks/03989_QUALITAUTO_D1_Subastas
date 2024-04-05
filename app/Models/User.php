@@ -897,7 +897,7 @@ class User
 
 			->selectRaw('FGSUB.cod_sub, FGSUB.des_sub, FGSUB.tipo_sub, FGSUB.subc_sub, FGSUB.dfec_sub, FGSUB.hfec_sub, auc."name", auc."id_auc_sessions", auc."start", auc."end", auc."reference", auc."orders_start",
 				FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1, FGHCES1.titulo_hces1, FGHCES1.fac_hces1, FGHCES1.webfriend_hces1, FGHCES1.titulo_hces1,
-				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0')
+				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0, ASIGL0.imptas_asigl0')
 			->addSelect($clobParams)
          	->Join('FGASIGL0 ASIGL0',function($join){
             	$join->on('ASIGL0.EMP_ASIGL0','=','FGHCES1.EMP_HCES1')

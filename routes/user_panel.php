@@ -31,6 +31,9 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/sales', 'UserController@getSales')->name('panel.sales');
 	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
 	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
+
+	Route::get('{lang}/user/panel/sales/finish', 'UserController@finishSales');
+
 	#CARLANDIA
 	//Mis vehiculos en venta
 	Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');

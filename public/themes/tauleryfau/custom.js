@@ -1884,3 +1884,89 @@ function addNewsletter(data) {
 		}
 	});
 }
+
+function salesAnimationCounter() {
+	$('.sales-counter').each(function () {
+		const element = this;
+
+		const options = {
+			finalValue: $(element).attr('value'),
+		}
+
+		const updateWithCurrency = (now) => {
+			const text = changeCurrencyNew(now, $('#actual_currency').val(), $(element));
+			$(element).text(text);
+		};
+
+		const methodToUpdate = $(element).hasClass('js-divisa') ? updateWithCurrency : null;
+
+		animationCounter(element, options, methodToUpdate);
+	});
+
+}
+
+function animationCounter(element, options = {}, callback) {
+	options = {
+		initValue: options.initValue || 0,
+		finalValue: options.finalValue || 100,
+		duration: options.duration || 1000,
+	};
+
+	callback = callback || ((now) => $(element).text(Math.ceil(now)));
+
+	$(element).prop('Counter', options.initValue)
+		.animate({
+			Counter: options.finalValue
+		}, {
+			duration: options.duration,
+			easing: 'swing',
+			step: callback
+		});
+}
+
+$(function() {
+
+	salesAnimationCounter();
+
+	$('.sales-auction-wrapper').on('click', function(event) {
+		//event.target //posicion donde se ha hecho click, puede que lo necesite para el detalle
+		//event.currentTarget //elemento del evento donde se ha hecho click
+
+		const isActive = $(this).hasClass('active');
+		$('.sales-auction-wrapper').removeClass('active');
+
+		if (!isActive) {
+			$(this).addClass('active');
+			const cod_sub = $(this).data('sub');
+			refreshSummary(cod_sub);
+		}
+		else {
+			refreshSummaryWithTotals();
+		}
+
+	});
+
+	$('.sales-auction-wrapper a').on('click', function(event) {
+		const element = document.getElementById('auction-details');
+		element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+	});
+});
+
+function refreshSummaryWithTotals() {
+	$('#actualPrice').attr('value', statistics.total.actual_price);
+	$('#percentage_lots_bid').attr('value', statistics.total.percentage_lots_bid);
+	$('#revaluation').attr('value', statistics.total.revaluation);
+	$('#consigned_lots').text(statistics.total.consigned_lots);
+	$('#bid_lots').text(statistics.total.bid_lots);
+	salesAnimationCounter();
+}
+
+function refreshSummary(cod_sub) {
+	const auction = statistics.auction[`${cod_sub}`];
+	$('#actualPrice').attr('value', auction.actual_price);
+	$('#percentage_lots_bid').attr('value', auction.count_lots_with_bids / auction.consigned_lots * 100);
+	$('#revaluation').attr('value', auction.actual_price / auction.starting_price * 100);
+	$('#consigned_lots').text(auction.consigned_lots);
+	$('#bid_lots').text(auction.count_lots_with_bids);
+	salesAnimationCounter();
+}

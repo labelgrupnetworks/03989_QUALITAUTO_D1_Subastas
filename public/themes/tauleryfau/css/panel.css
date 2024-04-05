@@ -1,3 +1,60 @@
+:root {
+	--color-gold: #b79d81;
+	--color-blue: #283747;
+
+	--btn-gold: #AF9C81;
+	--btn-gold-hover: #9B8A72;
+	--btn-red: #DF4140;
+	--btn-green: #4CAF50;
+}
+
+.btn-lb {
+	--btn-bg: var(--color-gold);
+	--btn-bc: var(--color-gold);
+	--btn-color: #fff;
+	--btn-radius: 0;
+
+	font-weight: 700;
+	padding: 6px 12px;
+	font-size: inherit;
+	text-transform: uppercase;
+
+	background-color: var(--btn-bg);
+	color: var(--btn-color);
+	border-radius: var(--btn-radius);
+	border: 1px solid var(--btn-bc, var(--color-gold));
+
+	transition: background-color .3s, color .3s, border-color .3s;
+}
+
+.btn-lb:is(:hover, :focus) {
+	background-color: var(--btn-bg-hover, var(--color-blue));
+	color: var(--btn-color-hover, #fff);
+	border: 1px solid var(--btn-bc-hover, var(--color-blue));
+}
+
+.btn-lb-primary {
+	--btn-bg: var(--color-gold);
+	--btn-bc: var(--color-gold);
+	--btn-color: #fff;
+	--btn-bg-hover: var(--color-blue);
+	--btn-bc-hover: var(--color-blue);
+	--btn-color-hover: #fff;
+}
+
+.btn-lb-outline {
+	--btn-bg: transparent;
+	--btn-bc: var(--color-gold);
+	--btn-color: var(--color-blue);
+	--btn-bg-hover: var(--color-gold);
+	--btn-bc-hover: var(--color-gold);
+	--btn-color-hover: #fff;
+}
+
+.btn-large {
+	padding: 6px 20px;
+}
+
 header {
 	background-color: #fff;
 	box-shadow: 0 0 7px 0 rgba(0, 0, 0, .5);
@@ -40,7 +97,6 @@ aside li.active {
 
 main {
 	grid-area: main;
-	padding: 15px;
 }
 
 @media(min-width: 992px) {
@@ -72,7 +128,7 @@ main {
 }
 
 .orders-page {
-	margin-bottom: 3rem;
+	padding: 15px;
 }
 
 .orders-auction {
@@ -123,7 +179,7 @@ main {
 	margin: 0;
 }
 
-.orders-auction_lot .js-divisa {
+.js-divisa {
 	color: inherit;
 	font-weight: inherit;
 }
@@ -288,4 +344,136 @@ main {
 	.lot-actions {
 		flex-direction: column;
 	}
+}
+
+.sales-page {
+	/* padding: 15px;
+	padding-top: 0; */
+	color: var(--color-blue);
+	padding-bottom: 15px;
+
+}
+
+.sales-page .sticky-section {
+	position: sticky;
+	background-color: #fff;
+	top: 70px;
+	padding: 15px;
+}
+
+.sales-menu {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 2rem;
+}
+
+.sales-summary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 25px;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.sales-summary_detail {
+	min-width: 150px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 12px;
+}
+
+.sales-summary_detail > :first-child {
+	font-size: 30px;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+}
+
+
+.sales-auctions {
+	--grid-columns-desktop: 8% 16% 8% repeat(3, 16%) 1fr;
+	--max-width: 1200px;
+	--line-height: 1.2;
+	--min-height: calc(2 * var(--line-height) * 1em);
+	--gap: 1rem;
+	line-height: var(--line-height);
+}
+
+.sales-auctions p {
+	margin: 0;
+}
+
+.sales-auctions .separator-line {
+	margin-left: -15px;
+	margin-right: -15px;
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.sales-header-wrapper {
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.sales-auction-wrapper {
+	cursor: pointer;
+}
+
+.sales-auction-wrapper:nth-child(odd) {
+	background-color: #9B9B9B1F;
+}
+
+.sales-auction-wrapper:last-child {
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.sales-auction-wrapper.active {
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+	font-weight: 500;
+}
+
+.sales-auctions_header {
+	box-sizing: content-box;
+	max-width: var(--max-width);
+	min-height: var(--min-height);
+	margin: auto;
+	font-weight: 500;
+	display: grid;
+	grid-template-columns: var(--grid-columns-desktop);
+	align-items: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	gap: var(--gap);
+}
+
+.sales-auction {
+	box-sizing: content-box;
+	max-width: var(--max-width);
+	min-height: var(--min-height);
+	margin: auto;
+	display: grid;
+	grid-template-columns: var(--grid-columns-desktop);
+	align-items: center;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	gap: var(--gap);
+}
+
+.sales-auction .btn {
+	text-transform: inherit;
+	font-weight: inherit;
+}
+
+#auction-details {
+	padding-top: 3rem;
+	scroll-margin-top: 150px;
+}
+
+#auction-details.tab-content {
+    margin-top: initial;
+    max-height: initial;
 }

@@ -1629,4 +1629,15 @@ class ToolsServiceProvider extends ServiceProvider
 		return $dataTable->first();
 	}
 
+	/**
+	 * Obtener numero entre dos valores delimitando su rango.
+	 */
+	public static function numberClamp($number, $min, $max = 0)
+	{
+		if(!$max){
+			return max($min, $number);
+		}
+		return max($min, min($number, $max));
+	}
+
 }

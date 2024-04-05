@@ -2975,7 +2975,6 @@ class UserController extends Controller
 			->orderBy('imp_asigl1', 'desc')
 			->orderBy('fec_asigl1', 'desc')->get();
 
-
 		$infoSales = [];
 		$facturas = [];
 		$subastasActivas = [];
@@ -3019,6 +3018,11 @@ class UserController extends Controller
 
 		return view('front::pages.panel.sales', $data);
     }
+
+	public function finishSales()
+	{
+		return response()->json(['test' => 'test']);
+	}
 
 	public function getFacturasPropietarioLineas()
 	{

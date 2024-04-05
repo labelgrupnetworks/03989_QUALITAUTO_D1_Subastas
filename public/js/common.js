@@ -1604,6 +1604,11 @@ function changeCurrencyNew(price, exchange, object) {
 
 	newPrice = numeral(price).format('0,0.00');
 
+	// si Tauler quiere que no se muestren decimales
+	// if(typeof replaceZeroDecimals != 'undefined' && replaceZeroDecimals == true){
+	// 	newPrice = newPrice.replace(',00', '');
+	// }
+
 	if (currency[exchange].pos_div == 'R') {
 		newPrice += " " + currency[exchange].symbolhtml_div;
 	} else {
