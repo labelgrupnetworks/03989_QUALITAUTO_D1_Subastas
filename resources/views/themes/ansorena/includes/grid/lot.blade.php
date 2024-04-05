@@ -1,6 +1,7 @@
 @php
     $showActualBid = ($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas;
     $showResult = $awarded && Session::has('user');
+	$showClosedAndNotBuyed = $cerrado && empty($precio_venta) && !$compra;
 @endphp
 
 <div class="col">
@@ -66,12 +67,10 @@
                             @elseif(($cerrado && !empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0)))
                                 <p class="lb-text-capitalize">{{ trans("$theme-app.subastas.buy") }}
                                 </p>
-                            @elseif($cerrado && empty($precio_venta) && !$compra)
+                            @elseif($showClosedAndNotBuyed)
 								<div class="d-flex align-items-center justify-content-between">
 									<p class="lb-text-capitalize">{{ trans("$theme-app.subastas.dont_buy") }}</p>
-									<p class="text-uppercase"><a class="text-decoration-none" {!! $url !!}>{{ trans("$theme-app.lot.buy") }}</a></p>
 								</div>
-
                             @endif
 						@endif
 
@@ -96,6 +95,10 @@
                         @endif
                     @endif
                 @endif
+
+				@if ($showClosedAndNotBuyed)
+					<p class="text-uppercase"><a class="btn btn-outline-lb-primary btn-xsmall" {!! $url !!}>{{ trans("$theme-app.lot.buy") }}</a></p>
+				@endif
             </div>
 
         </div>
