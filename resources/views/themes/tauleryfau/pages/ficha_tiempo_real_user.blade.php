@@ -165,128 +165,16 @@
 
             </div>
             <div class="row info-rows">
-                <div class="col-lg-3 col-xs-12 h-100" style="float:right">
 
-
-                    <?php //********HISTORICO DE PUJAS************* ?>
+				<div class="col-lg-3 col-xs-12 h-100" style="float:right">
                     @if (\Config::get('app.tr_show_pujas'))
-                    <div class="started hidden h-100 last-bids">
-                        <div class="aside pujas h-100">
+                    	<div class="started hidden h-100 last-bids">
 
-                                <h2>{{ trans($theme.'-app.sheet_tr.last_bids') }}</h2>
-                                <div id="pujas_list">
-
-                                    <?php
-                            $ultima_orden =false;
-                            foreach ($data['subasta_info']->lote_actual->pujas as $puja) : ?>
-
-                                    <?php
-                                    $lat_order = false;
-                                    foreach($data['subasta_info']->lote_actual->ordenes as $ordenes){
-                                        if(!$ultima_orden && $puja->cod_licit == $ordenes->cod_licit && $puja->formatted_imp_asigl1 == $ordenes->himp_orlic_formatted &&  $puja->type_asigl1 == 'A')
-                                         $lat_order = true;
-                                        $ultima_orden = true;
-                                    }
-
-
-                                ?>
-                                    <div class="pujas_model no_padding no-padding col-xs-12">
-                                        <div class="col-xs-4 no-padding tipoPuja">
-                                            <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i
-                                                    class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}
-                                            </p>
-                                            <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i
-                                                    class="fa fa-hand-paper-o" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
-                                            <p data-type="T" @if ($puja->pujrep_asigl1 != 'T' && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i
-                                                    class="fa fa-phone" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-                                            <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 !=
-                                                'P') class="hidden" @endif><i class="fa fa-desktop"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                                            <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i
-                                                    class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
-                                            <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i
-                                                    class="fa fa-desktop" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                                             <p data-type="U" @if ($puja->pujrep_asigl1 != 'U')class="hidden" @endif><i
-                                                    class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                Subalia</p>
-                                        </div>
-                                        <div class="col-xs-4 importePuja text-right">
-                                            <p>
-                                                <span>{{ $puja->formatted_imp_asigl1 }}</span>
-                                                <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
-
-                                            </p>
-                                        </div>
-
-                                        <div class="col-xs-4 no-padding ordenes">
-                                            @if($lat_order)
-                                            <span>{{ trans($theme.'-app.sheet_tr.last_order') }}</span>
-                                            @endif
-                                        </div>
-
-                                    </div>
-
-                                    <?php endforeach;?>
-
-                                    <div class="pujas_model no-padding hidden col-xs-12" id="type_bid_model">
-                                        <div class="col-xs-4 no-padding tipoPuja">
-                                            <p data-type="I"><i class="fa fa-wikipedia-w" aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}
-                                            </p>
-                                            <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
-												<p data-type="T" class="hidden"><i class="fa fa-phone"
-														aria-hidden="true"></i>
-													{{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-												<p data-type="B" class="hidden"><i class="fa fa-phone"
-															aria-hidden="true"></i>
-													{{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-                                            <p data-type="E" class="hidden"><i class="fa fa-desktop"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                                            <p data-type="P" class="hidden"><i class="fa fa-desktop"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                                            <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
-                                            <p data-type="O" class="hidden"><i class="fa fa-desktop"
-                                                    aria-hidden="true"></i>
-                                                {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-
-                                            <p data-type="U" class="hidden"><i class="fa fa-wikipedia-w"
-                                                    aria-hidden="true"></i>
-                                                Subalia</p>
-                                        </div>
-                                        <div class="col-xs-4 importePuja">
-                                            <p>
-                                                <span class="puj_imp"></span>
-                                                <span>{{ $data['js_item']['subasta']['currency']->symbol }}</span>
-
-
-                                            </p>
-                                        </div>
-                                        <div class="col-xs-4 no-padding ordenes">
-                                            <span
-                                                class="orden hidden">{{ trans($theme.'-app.sheet_tr.last_order') }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
+							@include('includes.tr.tiempo_real_user.streaming')
                         </div>
-                        @endif
+                    @endif
+                </div>
 
-
-
-                    </div>
                 <div class="col-lg-9 col-xs-12 tr-tabs h-100">
 					<!-- Carrusel de lotes -->
 					@include('includes.tr.carrousel_tr')

@@ -2480,7 +2480,7 @@ NUEVO DISEÑO MOBILE
 }
 
 .info-rows{
-  height: 300px;
+ /*  height: 300px; */
   margin-top: 40px;
 }
 
@@ -2516,6 +2516,7 @@ position: relative;
   color: gray;
   font-weight: bold;
 }
+
 #actual_descripcion{
   height: 60px;
   overflow: auto;
@@ -2559,7 +2560,7 @@ position: relative;
 }
 
 .zone-user .info-rows{
-  height: 220px;
+ /*  height: 220px; */
   margin-top: 20px;
 }
 
@@ -2603,15 +2604,6 @@ position: relative;
     z-index: 1;
   }
 }
-
-
-
-
-
-
-
-
-
 
 .zone-user .tr-tabs .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
   color: white;
@@ -2890,7 +2882,7 @@ opacity: 1;
 }
 
 .zone-user .info-rows {
-  height: 261px;
+  /* height: 261px; */
 }
 #ficha .zone-user #pujas_list {
   height: 200px;
@@ -2934,7 +2926,7 @@ opacity: 1;
     height: auto;
 }
 .zone-user .info-rows {
-  height: 431px;
+  /* height: 431px; */
   margin-top: 10px;
 }
 
@@ -3000,7 +2992,7 @@ header.enc h3 {
   height: 200px;
 }
 .zone-user .info-rows {
-  height: 431px;
+  /* height: 431px; */
   margin-top: 10px;
 }
 
@@ -3365,4 +3357,69 @@ color: black !important;
 	.auction_number{
 		text-align: left;
 	}
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Streaming
+|--------------------------------------------------------------------------
+ */
+.tr_user_streaming {
+	margin-bottom: 3rem;
+	border: 1px solid #ddd;
+}
+
+.tr_user_streaming .nav-tabs {
+	border-bottom: 1px solid #ddd;
+}
+
+.tr_user_streaming .nav.nav-tabs a{
+	background: lightgray;
+	border-radius: 0;
+	color: gray;
+	font-weight: bold;
+}
+
+.tr_user_streaming .pujas.aside {
+	border: 0;
+}
+
+.stream-block {
+	display: flex;
+    flex-direction: column;
+    height: 100%;
+	border: 1px solid #ebebeb;
+    padding: 10px;
+}
+
+.stream-wrapper {
+	flex: 1;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+	/* aspect-ratio: 4 / 3; */
+    aspect-ratio: 16 / 9;
+}
+
+#streaming #video_info {
+	font-size: inherit !important;
+	-webkit-transform: none;
+	transform: none;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#remoteVideo {
+	object-fit: contain;
+}
+
+.zone-user .aside {
+    background-color: #fff;
+    border: 1px solid #ebebeb;
+    padding: 10px;
+    margin: 10px 0;
+    overflow: hidden;
 }
