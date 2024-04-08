@@ -49,7 +49,7 @@
 
 		@if ($not_buyed_with_user_logged)
 			<a class="btn btn-lb-primary btn-medium"
-				href="mailto:{{ Config::get('app.email-buy-lot-not-selled', '') }}?subject={{ trans("$theme-app.lot.mail_not_selled_subject") . $lote_actual->ref_asigl0 }}">
+				href="mailto:{{ Config::get('app.email-buy-lot-not-selled', '') }}?subject={{ trans("$theme-app.lot.mail_not_selled_subject", ['cod_sub' => $lote_actual->sub_hces1, 'ref' => $lote_actual->ref_asigl0]) }}">
 				{{ trans("$theme-app.lot.buy") }}
 			</a>
 		@endif
