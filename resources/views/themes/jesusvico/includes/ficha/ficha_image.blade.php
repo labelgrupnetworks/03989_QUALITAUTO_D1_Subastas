@@ -33,7 +33,8 @@
         @foreach ($lote_actual->imagenes as $key => $imagen)
 			@php
 				$emp = Config::get('app.emp');
-				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$key}.jpg";
+				$path_img_num = "_" . sprintf("%02d", $key);
+				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$path_img_num}.jpg";
 			@endphp
             <div class="image-wrapper">
                 <a class="js-smartPhoto" data-caption="{{ $lote_actual->titulo_hces1 }}"
