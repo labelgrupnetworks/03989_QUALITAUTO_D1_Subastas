@@ -1,5 +1,6 @@
 :root {
 	--color-gold: #b79d81;
+	--color-gold-dark: #9c8974;
 	--color-blue: #283747;
 
 	--btn-gold: #AF9C81;
@@ -15,7 +16,7 @@
 	--btn-radius: 0;
 
 	font-weight: 700;
-	padding: 6px 12px;
+	padding: 6px 6px;
 	font-size: inherit;
 	text-transform: uppercase;
 
@@ -52,7 +53,18 @@
 }
 
 .btn-large {
-	padding: 6px 20px;
+	/* padding: 6px 20px; */
+}
+
+@media(min-width: 992px) {
+
+	.btn-lb {
+		padding: 6px 12px;
+	}
+
+	.btn-large {
+		padding: 6px 20px;
+	}
 }
 
 header {
@@ -152,7 +164,7 @@ main {
 	border-bottom: 1px solid #AF9C81A1;
 }
 
-.orders-auction_header > *:not(.orders-auction_title) {
+.orders-auction_header>*:not(.orders-auction_title) {
 	display: none;
 }
 
@@ -306,7 +318,7 @@ main {
 		align-items: center;
 	}
 
-	.orders-auction_header > *:not(.orders-auction_title) {
+	.orders-auction_header>*:not(.orders-auction_title) {
 		display: block;
 	}
 
@@ -355,9 +367,7 @@ main {
 }
 
 .sales-page .sticky-section {
-	position: sticky;
 	background-color: #fff;
-	top: 70px;
 	padding: 15px;
 }
 
@@ -366,36 +376,73 @@ main {
 	align-items: center;
 	justify-content: center;
 	flex-wrap: wrap;
-	gap: 2rem;
+	gap: 1rem;
+}
+
+.sales-menu>* {
+	flex: 1;
 }
 
 .sales-summary {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-around;
 	flex-wrap: wrap;
-	gap: 25px;
+	gap: 5px;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 }
 
 .sales-summary_detail {
-	min-width: 150px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	font-size: 12px;
 }
 
-.sales-summary_detail > :first-child {
+.sales-summary_detail.sales-summary_detail_lots {
+	display: none;
+}
+
+.sales-summary_detail> :first-child {
 	font-size: 30px;
 	font-weight: 500;
 	font-variant-numeric: tabular-nums;
 }
 
+@media(min-width: 992px) {
+
+	.sales-menu {
+		gap: 2rem;
+	}
+
+	.sales-menu>* {
+		flex: none;
+	}
+
+	.sales-page .sticky-section {
+		position: sticky;
+		top: 70px;
+	}
+
+	.sales-summary {
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 25px;
+	}
+
+	.sales-summary_detail {
+		min-width: 150px;
+	}
+
+	.sales-summary_detail.sales-summary_detail_lots {
+		display: flex;
+	}
+}
 
 .sales-auctions {
 	--grid-columns-desktop: 8% 16% 8% repeat(3, 16%) 1fr;
+	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
 	--max-width: 1200px;
 	--line-height: 1.2;
 	--min-height: calc(2 * var(--line-height) * 1em);
@@ -405,6 +452,10 @@ main {
 
 .sales-auctions p {
 	margin: 0;
+}
+
+.sales-auctions_actual-price {
+	grid-column: span 2;
 }
 
 .sales-auctions .separator-line {
@@ -441,7 +492,7 @@ main {
 	margin: auto;
 	font-weight: 500;
 	display: grid;
-	grid-template-columns: var(--grid-columns-desktop);
+	grid-template-columns: var(--grid-columns-mobile);
 	align-items: center;
 	padding-left: 1rem;
 	padding-right: 1rem;
@@ -454,7 +505,7 @@ main {
 	min-height: var(--min-height);
 	margin: auto;
 	display: grid;
-	grid-template-columns: var(--grid-columns-desktop);
+	grid-template-columns: var(--grid-columns-mobile);
 	align-items: center;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
@@ -473,7 +524,188 @@ main {
 	scroll-margin-top: 150px;
 }
 
+@media(min-width: 992px) {
+	.sales-auctions_header {
+		grid-template-columns: var(--grid-columns-desktop);
+	}
+
+	.sales-auction {
+		grid-template-columns: var(--grid-columns-desktop);
+	}
+}
+
 #auction-details.tab-content {
-    margin-top: initial;
-    max-height: initial;
+	margin-top: initial;
+	max-height: initial;
+}
+
+.sales-lots-title {
+	text-align: center;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.sales-lots-wrapper p {
+	margin: 0;
+}
+
+.sales-lots-header-wrapper {
+	display: none;
+	border-bottom: 1px solid var(--color-gold);
+	border-top: 1px solid var(--color-gold);
+}
+
+.sales-lots-wrapper {
+	--grid-columns-desktop: 16% 8% 1fr repeat(4, 12%);
+	--grid-columns-mobile: 3fr 1fr 1fr;
+	--gap: 1rem;
+	--max-width: 1300px;
+}
+
+.sales-lots-header {
+	display: grid;
+	box-sizing: content-box;
+	max-width: var(--max-width);
+	grid-template-columns: var(--grid-columns-desktop);
+	gap: var(--gap);
+	align-items: center;
+	font-weight: 500;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+	margin: auto;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.sales-lot {
+	display: grid;
+	gap: var(--gap);
+	align-items: center;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid var(--color-gold);
+	grid-template-columns: var(--grid-columns-mobile);
+	grid-template-areas:
+		"ref . bids"
+		"desc desc desc"
+		"img label-salida price-salida"
+		"img label-actual price-actual"
+		"img label-increment increment";
+}
+
+.sales-lot_img {
+	grid-area: img;
+}
+
+.sales-lot_img img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	max-height: 150px;
+}
+
+.sales-lot_ref {
+	font-weight: 500;
+	grid-area: ref;
+}
+
+.sales-lot_desc {
+	font-weight: 300;
+	-webkit-line-clamp: 3;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: block;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	grid-area: desc;
+}
+
+.sales-lot_price-salida {
+	grid-area: price-salida;
+}
+
+.sales-lot_actual-price {
+	grid-area: price-actual;
+	color: var(--color-green, #4CAF50);
+	font-weight: 500;
+}
+
+.label-increment {
+	grid-area: label-increment;
+}
+
+.sales-lot_increment {
+	grid-area: increment;
+}
+
+.sales-lot_bids {
+	grid-area: bids;
+	display: flex;
+	align-items: center;
+	font-weight: 500;
+	gap: 10px;
+	grid-area: bids;
+}
+
+.sales-lot_bids p {
+	line-height: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+}
+
+.sales-lot_bids svg {
+	color: var(--color-gold-dark);
+}
+
+.sales-lot_bids svg:last-child {
+	margin-left: 5px;
+}
+
+@media(min-width: 992px) {
+
+	.sales-lots-title {
+		padding-bottom: 0;
+		border-bottom: 0;
+	}
+
+	.sales-lots-header-wrapper {
+		display: block;
+	}
+
+	.sales-lot-wrapper:nth-child(odd) {
+		background-color: #9B9B9B1F;
+	}
+
+	.sales-lot {
+		box-sizing: content-box;
+		max-width: var(--max-width);
+		grid-template-columns: var(--grid-columns-desktop);
+		grid-template-areas: none;
+		align-items: center;
+		padding: .5rem 1rem;
+		margin: auto;
+		border-bottom: 0;
+	}
+
+	.sale-label {
+		display: none;
+	}
+
+	.sales-lot_img img {
+		max-height: 90px;
+	}
+
+	.sales-lot_img,
+	.sales-lot_desc,
+	.sales-lot_ref,
+	.sales-lot_price-salida,
+	.sales-lot_actual-price,
+	.sales-lot_increment,
+	.sales-lot_bids {
+		grid-area: auto;
+	}
 }

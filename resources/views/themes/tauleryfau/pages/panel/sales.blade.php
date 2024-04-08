@@ -12,14 +12,13 @@
     $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
 
     $activeAuctions = $subastas->filter(function ($lotes) {
-
-		return true; //ahora mismo para mostrar todas y tener datos de prueba
+        return true; //ahora mismo para mostrar todas y tener datos de prueba
 
         $firtsLot = $lotes->first();
         $sessionReference = $firtsLot->reference;
 
-		//esta comprobación se hace en varios sitios, valorar encapsular en una clase
-		$subasta = new SubastaTiempoReal();
+        //esta comprobación se hace en varios sitios, valorar encapsular en una clase
+        $subasta = new SubastaTiempoReal();
         $subasta->cod = $firtsLot->cod_sub;
         $subasta->session_reference = $sessionReference;
         $status = $subasta->getStatus();
@@ -53,9 +52,13 @@
         'bid_lots' => $statistics['auction']->sum('count_lots_with_bids'),
         'consigned_lots' => $statistics['auction']->sum('consigned_lots'),
         'percentage_lots_bid' =>
-            ($statistics['auction']->sum('count_lots_with_bids') / Tools::numberClamp($statistics['auction']->sum('consigned_lots'), 1)) * 100,
+            ($statistics['auction']->sum('count_lots_with_bids') /
+                Tools::numberClamp($statistics['auction']->sum('consigned_lots'), 1)) *
+            100,
         'revaluation' =>
-            ($statistics['auction']->sum('actual_price') / Tools::numberClamp($statistics['auction']->sum('starting_price'), 1)) * 100,
+            ($statistics['auction']->sum('actual_price') /
+                Tools::numberClamp($statistics['auction']->sum('starting_price'), 1)) *
+            100,
         'start_price' => $statistics['auction']->sum('starting_price'),
     ];
 @endphp
@@ -66,7 +69,7 @@
         var currency = @JSON($divisas);
         var divisa = @JSON($divisa);
         var replaceZeroDecimals = true;
-		const statistics = @JSON($statistics);
+        const statistics = @JSON($statistics);
     </script>
 
     <section class="sales-page">
@@ -84,21 +87,32 @@
             </div>
 
             <div class="sales-menu">
-                <a class="btn btn-lb btn-lb-outline btn-large" href="">Pendientes de subastar</a>
-                <a class="btn btn-lb btn-lb-primary btn-large" href="#">Subastas activas</a>
-                <a class="btn btn-lb btn-lb-outline btn-large" href="">Subastas Finalizadas</a>
+                <a class="btn btn-lb btn-lb-outline btn-large" href="">
+                    <span class="visible-md visible-lg">Pendientes de subastar</span>
+                    <span class="hidden-md hidden-lg">Pendientes</span>
+                </a>
+                <a class="btn btn-lb btn-lb-primary btn-large" href="#">
+                    <span class="visible-md visible-lg">Subastas activas</span>
+                    <span class="hidden-md hidden-lg">Activas</span>
+                </a>
+                <a class="btn btn-lb btn-lb-outline btn-large" href="">
+                    <span class="visible-md visible-lg">Subastas Finalizadas</span>
+                    <span class="hidden-md hidden-lg">Finalizadas</span>
+                </a>
             </div>
 
             <div class="sales-summary">
                 <div class="sales-summary_detail">
-                    <span id="actualPrice" class="js-divisa sales-counter" value="{{ $statistics['total']['actual_price'] }}">
+                    <span class="js-divisa sales-counter" id="actualPrice"
+                        value="{{ $statistics['total']['actual_price'] }}">
                         0
                     </span>
                     <p>Precio Actual</p>
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
-                        <span id="percentage_lots_bid" class="sales-counter" value="{{ $statistics['total']['percentage_lots_bid'] }}">
+                        <span class="sales-counter" id="percentage_lots_bid"
+                            value="{{ $statistics['total']['percentage_lots_bid'] }}">
                             0
                         </span>
                         <span>%</span>
@@ -107,21 +121,21 @@
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
-                        <span id="revaluation" class="sales-counter" value="{{ $statistics['total']['revaluation'] }}">
+                        <span class="sales-counter" id="revaluation" value="{{ $statistics['total']['revaluation'] }}">
                             0
                         </span>
                         <span>%</span>
                     </div>
                     <p>Revalorización</p>
                 </div>
-                <div class="sales-summary_detail">
-                    <span id="consigned_lots" class="sales-counter" value="{{ $statistics['total']['consigned_lots'] }}">
+                <div class="sales-summary_detail sales-summary_detail_lots">
+                    <span class="sales-counter" id="consigned_lots" value="{{ $statistics['total']['consigned_lots'] }}">
                         0
                     </span>
                     <p>Lotes consignados</p>
                 </div>
-                <div class="sales-summary_detail">
-                    <span id="bid_lots" class="sales-counter" value="{{ $statistics['total']['bid_lots'] }}">0</span>
+                <div class="sales-summary_detail sales-summary_detail_lots">
+                    <span class="sales-counter" id="bid_lots" value="{{ $statistics['total']['bid_lots'] }}">0</span>
                     <p>Lotes pujados</p>
                 </div>
             </div>

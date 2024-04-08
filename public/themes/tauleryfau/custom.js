@@ -1924,40 +1924,47 @@ function animationCounter(element, options = {}, callback) {
 		});
 }
 
+/**
+ * user panel sales events
+ */
 $(function() {
-
 	salesAnimationCounter();
-
-	$('.sales-auction-wrapper').on('click', function(event) {
-		//event.target //posicion donde se ha hecho click, puede que lo necesite para el detalle
-		//event.currentTarget //elemento del evento donde se ha hecho click
-
-		const isActive = $(this).hasClass('active');
-		$('.sales-auction-wrapper').removeClass('active');
-
-		if (!isActive) {
-			$(this).addClass('active');
-			const cod_sub = $(this).data('sub');
-			refreshSummary(cod_sub);
-		}
-		else {
-			refreshSummaryWithTotals();
-		}
-
-	});
-
-	$('.sales-auction-wrapper a').on('click', function(event) {
-		const element = document.getElementById('auction-details');
-		element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-	});
+	$('.sales-auction-wrapper').on('click', salesAuctionOnClickHandler);
+	$('.sales-auction-wrapper a').on('click', salesAuctionDetailsOnClickHandler);
 });
+
+function salesAuctionOnClickHandler(event) {
+
+	const $wrapperElement = $(event.currentTarget);
+	const isActive = $(this).hasClass('active');
+
+	if (event.target instanceof HTMLAnchorElement && isActive) {
+		return;
+	}
+
+	$('.sales-auction-wrapper').removeClass('active');
+
+	if (isActive) {
+		refreshSummaryWithTotals();
+		return;
+	}
+
+	$($wrapperElement).addClass('active');
+	const cod_sub = $($wrapperElement).data('sub');
+	refreshSummary(cod_sub);
+}
+
+function salesAuctionDetailsOnClickHandler() {
+	const element = document.getElementById('auction-details');
+	element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+}
 
 function refreshSummaryWithTotals() {
 	$('#actualPrice').attr('value', statistics.total.actual_price);
 	$('#percentage_lots_bid').attr('value', statistics.total.percentage_lots_bid);
 	$('#revaluation').attr('value', statistics.total.revaluation);
-	$('#consigned_lots').text(statistics.total.consigned_lots);
-	$('#bid_lots').text(statistics.total.bid_lots);
+	$('#consigned_lots').attr('value', statistics.total.consigned_lots);
+	$('#bid_lots').attr('value', statistics.total.bid_lots);
 	salesAnimationCounter();
 }
 
@@ -1966,7 +1973,7 @@ function refreshSummary(cod_sub) {
 	$('#actualPrice').attr('value', auction.actual_price);
 	$('#percentage_lots_bid').attr('value', auction.count_lots_with_bids / auction.consigned_lots * 100);
 	$('#revaluation').attr('value', auction.actual_price / auction.starting_price * 100);
-	$('#consigned_lots').text(auction.consigned_lots);
-	$('#bid_lots').text(auction.count_lots_with_bids);
+	$('#consigned_lots').attr('value', auction.consigned_lots);
+	$('#bid_lots').attr('value', auction.count_lots_with_bids);
 	salesAnimationCounter();
 }
