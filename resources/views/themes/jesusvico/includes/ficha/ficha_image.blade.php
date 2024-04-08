@@ -40,7 +40,7 @@
                     data-id="id-{{ $key + 1 }}"
                     href="{{ $url_image }}">
                     <img class="lazy" data-group="nogroup"
-                        src="{{ $url_image }}">
+                        src="{{ Tools::url_img('lote_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                 </a>
             </div>
         @endforeach
@@ -146,14 +146,9 @@
     <div class="minis-content d-flex gap-1 mt-auto">
 
         @foreach ($lote_actual->imagenes as $key => $imagen)
-		@php
-			$emp = Config::get('app.emp');
-			$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$key}.jpg";
-		@endphp
             <div class="mini-img-ficha no-360">
                 <button onclick="goToImage({{ $key }})">
-                    <img
-                        src="{{ $url_image }}">
+                    <img src="{{ \Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                 </button>
             </div>
         @endforeach
