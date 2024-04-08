@@ -33,7 +33,10 @@
         @foreach ($lote_actual->imagenes as $key => $imagen)
 			@php
 				$emp = Config::get('app.emp');
-				$path_img_num = "_" . sprintf("%02d", $key);
+				$path_img_num = "";
+				if ($key != 0) {
+					$path_img_num = "_" . sprintf("%02d", $key);
+				}
 				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$path_img_num}.jpg";
 			@endphp
             <div class="image-wrapper">
