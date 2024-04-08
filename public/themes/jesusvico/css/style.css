@@ -702,21 +702,28 @@ ul.style-diamond li p {
 .card-body .btn.live-btn,
 .card-body .see-lots-btn {
 	font-size: 14pt;
-	padding: 5px 0px;
-	width: 130px;
+	padding: 6px 0px;
+	width: 140px;
+}
+
+@media (min-width: 576px) {
+	.card-body .btn.live-btn,
+	.card-body .see-lots-btn {
+		width: 190px;
+	}
 }
 
 @media (min-width: 768px) {
 	.card-body .btn.live-btn,
 	.card-body .see-lots-btn {
-		width: 78px;
+		width: 80px;
 	}
 }
 
 @media (min-width: 992px) {
 	.card-body .btn.live-btn,
 	.card-body .see-lots-btn {
-		width: 100px;
+		width: 106px;
 	}
 }
 
@@ -730,7 +737,7 @@ ul.style-diamond li p {
 @media (min-width: 1400px) {
 	.card-body .btn.live-btn,
 	.card-body .see-lots-btn {
-		width: 150px;
+		width: 155px;
 	}
 }
 
@@ -756,7 +763,7 @@ article.card-custom-large .card-body .card-title {
 
 @media (min-width: 1400px) {
 	article.card-custom-large .card-body .card-title {
-		font-size: 2.5em;
+		font-size: 2.5rem;
 	}
 }
 
