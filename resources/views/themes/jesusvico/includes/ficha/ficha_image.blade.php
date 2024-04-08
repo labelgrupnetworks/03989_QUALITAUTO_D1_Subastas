@@ -33,7 +33,7 @@
         @foreach ($lote_actual->imagenes as $key => $imagen)
 			@php
 				$emp = Config::get('app.emp');
-				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1.jpg";
+				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$key}.jpg";
 			@endphp
             <div class="image-wrapper">
                 <a class="js-smartPhoto" data-caption="{{ $lote_actual->titulo_hces1 }}"
@@ -146,10 +146,14 @@
     <div class="minis-content d-flex gap-1 mt-auto">
 
         @foreach ($lote_actual->imagenes as $key => $imagen)
+		@php
+			$emp = Config::get('app.emp');
+			$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$key}.jpg";
+		@endphp
             <div class="mini-img-ficha no-360">
                 <button onclick="goToImage({{ $key }})">
                     <img
-                        src="{{ \Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+                        src="{{ $url_image }}">
                 </button>
             </div>
         @endforeach
