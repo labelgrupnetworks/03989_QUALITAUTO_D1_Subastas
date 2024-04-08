@@ -32,9 +32,9 @@
 
 		</div>
 
-		<div class="row mt-2">
+		{{-- <div class="row mt-2">
 			{!! \BannerLib::bannersPorKey('new_home_2', '', ['dots' => false]) !!}
-		</div>
+		</div> --}}
 
 	</div>
 </div>
@@ -43,7 +43,7 @@
 <br><br>
 
 <!-- Inicio lotes destacados -->
-{{-- <div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
+<div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
 	<div class="container">
 		<div class="row flex-display flex-wrap">
 			<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 	</div>
-</div> --}}
+</div>
 
 
 @php
@@ -76,10 +76,10 @@
 @endphp
 
 {{-- JS de lotes destacados --}}
-{{-- <script>
+<script>
 	var replace = @json($replace);
 
     $( document ).ready(function() {
         ajax_newcarousel("lotes_destacados", replace);
     });
-</script> --}}
+</script>
