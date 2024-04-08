@@ -749,9 +749,21 @@ article.card-custom-large .card-body .card-title {
 	font-size: 1.5rem;
 }
 
+@media (min-width: 576px) {
+	article.card-custom-large .card-body .card-title {
+		font-size: 2rem;
+	}
+}
+
+@media (min-width: 768px) {
+	article.card-custom-large .card-body .card-title {
+		font-size: 1.3rem;
+	}
+}
+
 @media (min-width: 992px) {
 	article.card-custom-large .card-body .card-title {
-		font-size: 1.9rem;
+		font-size: 1.8rem;
 	}
 }
 
