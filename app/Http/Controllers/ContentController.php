@@ -235,6 +235,44 @@ class ContentController extends Controller
 		return \View::make('front::includes.new_carrousel', ["lots"  => $lots]);
 	}
 
+	function getAjaxGridLotesDestacados() {
+		Config::set('app.locale', request('lang', 'es'));
+		$bloque         = new Bloques();
+		$contents = "";
+		$lots = null;
+		$lotsQuery = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
+
+		$lotlistcontroller = new LotListController();
+		$lotlist = $lotlistcontroller->setRef($lotsQuery);
+
+		#cargamos los datos de los lotes
+		if (!empty($lotlist) && !empty($lotlist->refLots)) {
+
+			$fgasigl0 = new FgAsigl0();
+			$lots = $fgasigl0->GetLotsByRefAsigl0($lotlist->refLots)
+			->when(request('order'), function ($query, $order) {
+				return $query->orderBy($order);
+			})
+			->when(request('orders'), function ($query, $ordersString) {
+				$orders = explode(',', $ordersString);
+				foreach ($orders as $order) {
+					$query->orderBy($order);
+				}
+				return $query;
+			})
+			->get();
+
+			#seteamos las variables para la blade
+			$lots = $lotlistcontroller->setVarsLot($lots);
+		}
+
+		if (empty($lots)) {
+			return "";
+		}
+
+		return \View::make('front::includes.grid.lots', ["lots"  => $lots]);
+	}
+
 	public function faqs()
 	{
 

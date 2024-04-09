@@ -42,7 +42,7 @@
 <div class="clearfix"></div>
 <br><br>
 
-<!-- Inicio lotes destacados -->
+<!-- Inicio grid lotes destacados -->
 <div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
 	<div class="container">
 		<div class="row flex-display flex-wrap">
@@ -51,6 +51,7 @@
 					{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
 				</div>
 			</div>
+
 			<div class="col-xs-12 col-sm-10 col-md-12 text-center">
 				<div class="lds-ellipsis loader">
 					<div></div>
@@ -58,13 +59,7 @@
 					<div></div>
 					<div></div>
 				</div>
-				<div class="owl-theme owl-carousel" id="lotes_destacados"></div>
-				<div class="owl-theme owl-carousel owl-loaded owl-drag m-0 pl-10" id="navs-arrows">
-					<div class="owl-nav">
-						<div class="owl-prev"><i class="fas fa-chevron-left"></i></div>
-						<div class="owl-next"><i class="fas fa-chevron-right"></i></div>
-					</div>
-				</div>
+				<div id="lotes_destacados"></div>
 			</div>
 		</div>
 	</div>
@@ -76,10 +71,18 @@
 @endphp
 
 {{-- JS de lotes destacados --}}
-<script>
+{{-- <script>
 	var replace = @json($replace);
 
     $( document ).ready(function() {
         ajax_newcarousel("lotes_destacados", replace);
+    });
+</script> --}}
+
+<script>
+	var replace = @json($replace);
+
+    $( document ).ready(function() {
+        ajax_lotes_destacados_grid("lotes_destacados", replace);
     });
 </script>
