@@ -1571,30 +1571,35 @@ class UserController extends Controller
 
 			$images = $this->getCIFImages($cod_cli);
 
-			$dni1 = "dni1";
-			$dni2 = "dni2";
+			$dni1Input = "dni1";
+			$dni2Input = "dni2";
 
-			if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			# Esta ruta es la ruta que usa Ansorena y el nombre de los archivos para enlazar con el ERP
+			$routeCliDocumentation =Config::get('app.dni_in_storage', false) == "cli-documentation";
+
+			if ($routeCliDocumentation) {
 				$dni1 = $nif."A";
 				$dni2 = $nif."R";
 			}
 
 			$destinationPath = $this->dniPath($cod_cli);
 
-			if (isset($request[$dni1])) {
-				$file = $request[$dni1];
-				$filename = $dni1 . '.' . $file->getClientOriginalExtension();
-				if (isset($images[$dni1])) {
-					unlink($images[$dni1]);
+			if (isset($request[$dni1Input])) {
+				$file = $request[$dni1Input];
+				$dni1name = $routeCliDocumentation ? $dni1 : $dni1Input;
+				$filename = $dni1name . '.' . $file->getClientOriginalExtension();
+				if (isset($images[$dni1name])) {
+					unlink($images[$dni1name]);
 				}
 				$file->move($destinationPath, $filename);
 			}
 
-			if (isset($request[$dni2])) {
-				$file2 = $request[$dni2];
-				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
-				if (isset($images[$dni2])) {
-					unlink($images[$dni2]);
+			if (isset($request[$dni2Input])) {
+				$file2 = $request[$dni2Input];
+				$dni2name = $routeCliDocumentation ? $dni2 : $dni2Input;
+				$filename2 = $dni2name . '.' . $file2->getClientOriginalExtension();
+				if (isset($images[$dni2name])) {
+					unlink($images[$dni2name]);
 				}
 				$file2->move($destinationPath, $filename2);
 			}
@@ -2282,7 +2287,7 @@ class UserController extends Controller
 		}
 
 		if(Config::get('app.user_panel_cif', false)) {
-			if (Request::file('dni1') || Request::file('dni2')) {
+			if (Request::has('dni1') || Request::has('dni2')) {
 				$this->updateCIFImages(Request::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
@@ -2363,6 +2368,13 @@ class UserController extends Controller
 
              $email->setTo(Config::get('app.admin_email'));
              $email->setHtml($emailOptions['camposHtml']);
+
+			 if (Config::get('app.user_panel_cif', false)) {
+				$nifAdjuntos = $this->getCIFImages($Update->cod_cli);
+				if(!empty($nifAdjuntos)){
+					$email->setAttachments($nifAdjuntos);
+				}
+			 }
 
               if ($email->send_email()){
                   $response = array(
