@@ -142,10 +142,47 @@
         </div>
 
         <div class="sales-auctions-block">
-            @include('pages.panel.sales.active_auctions', [
-                'subastas' => $activeAuctions,
-            ])
+
+			<div class="sales-auctions sales-active-auctions">
+
+				<div class="sales-header-wrapper">
+					<div class="sales-auctions_header">
+						<p>Fecha</p>
+						<p>Subasta</p>
+						<p>
+							<span class="visible-md visible-lg">Nº Lotes</span>
+							<span class="hidden-md hidden-lg">Lotes</span>
+						</p>
+						<p class="visible-md visible-lg">Total Precio Salida</p>
+						<p class="visible-md visible-lg">Total Estimado</p>
+						<p class="sales-auctions_actual-price">
+							<span class="visible-md visible-lg">Total Precio Actual</span>
+							<span class="hidden-md hidden-lg">Total P. Actual</span>
+						</p>
+					</div>
+				</div>
+
+				@foreach ($subastas as $cod_sub => $auctions)
+					@include('pages.panel.sales.auction_active', [
+						'auctions' => $auctions,
+						'auctionStatistics' => $statistics['auction'][$cod_sub],
+					])
+				@endforeach
+
+			</div>
         </div>
+
+		<section class="tab-content" id="auction-details">
+
+			@foreach ($subastas as $cod_sub => $lots)
+				@include('pages.panel.sales.auction_details', [
+					'id' => $cod_sub,
+					'title' => $lots->first()->des_sub,
+					'lotes' => $lots,
+				])
+			@endforeach
+
+		</section>
 
     </section>
 @stop
