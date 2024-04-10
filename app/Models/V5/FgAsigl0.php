@@ -55,14 +55,24 @@ class FgAsigl0 extends Model
 
 	public static function getLotsAwardedWithoutInvoiceByOwnerQuery($ownerCode)
 	{
+		$isLocale = Config::get('app.locale') == Config::get('app.fallback_locale');
+
 		return self::query()
-			->select('FGASIGL0.impsalhces_asigl0', 'FGASIGL0.ref_asigl0', 'FGASIGL0.sub_asigl0', 'FGASIGL0.comphces_asigl0','FGHCES1.implic_hces1', 'FGHCES1.num_hces1', 'FGHCES1.lin_hces1', 'FGHCES1.webfriend_hces1')
-			->addSelect('auc."end"', 'fgsub.des_sub')
-			->addSelect('FGHCES1.descweb_hces1', 'FGHCES1.desc_hces1')
+			->select('FGASIGL0.impsalhces_asigl0', 'FGASIGL0.ref_asigl0', 'FGASIGL0.sub_asigl0', 'FGASIGL0.comphces_asigl0', 'FGHCES1.implic_hces1', 'FGHCES1.num_hces1', 'FGHCES1.lin_hces1')
+			->addSelect('auc."end"')
 			->addCountLicits()
 			->addCountBids()
+			->when($isLocale, function ($query) {
+				return $query->addSelect('fgsub.des_sub', 'FGHCES1.desc_hces1', 'FGHCES1.descweb_hces1', 'FGHCES1.webfriend_hces1');
+			}, function ($query) {
+				return $query->selectRaw('NVL(FGSUB_LANG.des_sub_lang, fgsub.des_sub) des_sub')
+				->selectRaw('NVL(FGHCES1_LANG.webfriend_hces1_lang, fghces1.webfriend_hces1) webfriend_hces1')
+				->selectRaw('NVL(FGHCES1_LANG.descweb_hces1_lang, fghces1.descweb_hces1) descweb_hces1')
+				->selectRaw('NVL(FGHCES1_LANG.desc_hces1_lang, fghces1.desc_hces1) desc_hces1')
+				->joinFghces1LangAsigl0()
+					->joinSubastaLangAsigl0();
+			})
 			->joinFghces1Asigl0()
-			//->joinFghces1LangAsigl0()
 			->joinSubastaAsigl0()
 			->joinSessionAsigl0()
 			->WhereAuctionStatusIs('ended')
@@ -219,8 +229,15 @@ class FgAsigl0 extends Model
 		return $query;
     }
 
-	public function scopeJoinSubastaAsigl0($query){
+	public function scopeJoinSubastaAsigl0($query)
+	{
         return $query->join('FGSUB','FGSUB.EMP_SUB = FGASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0');
+	}
+
+	public function scopeJoinSubastaLangAsigl0($query)
+	{
+		$lang =  ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+		return $query->leftjoin('FGSUB_LANG', "FGSUB_LANG.EMP_SUB_LANG = FGASIGL0.EMP_ASIGL0 AND FGSUB_LANG.COD_SUB_LANG = FGASIGL0.SUB_ASIGL0 AND FGSUB_LANG.LANG_SUB_LANG = '$lang'");
 	}
 
 	 #Devolvemos la session que pertenece a la referencia del lote, no se debe usar le where con referencia

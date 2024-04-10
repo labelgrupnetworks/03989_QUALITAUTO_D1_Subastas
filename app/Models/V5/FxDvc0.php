@@ -60,7 +60,7 @@ class FxDvc0 extends Model
 	{
 		return self::query()
 			->select('anum_dvc0', 'num_dvc0', 'fecha_dvc0', 'base_dvc0', 'impiva_dvc0', 'total_dvc0', 'iva_dvc0', 'basea_dvc1l')
-			->addSelect('impsalhces_asigl0', 'ref_asigl0', 'sub_asigl0', 'implic_hces1', 'num_hces1', 'lin_hces1', 'des_sub')
+			->addSelect('impsalhces_asigl0', 'ref_asigl0', 'sub_asigl0', 'implic_hces1', 'num_hces1', 'lin_hces1')
 			->addSelect(DB::raw('(select sum(imp_pcob) from fxpcob where emp_pcob = emp_dvc0 and anum_pcob = anum_dvc0 and num_pcob = num_dvc0) as imp_pending'))
 			->joinDvc1lDvc0()
 			->joinLotesDvc1L()
@@ -113,23 +113,36 @@ class FxDvc0 extends Model
 	 */
 	public function scopeJoinLotesDvc1L($query)
 	{
-		$isDebug = (Config::get('app.debug') || Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"));
-		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+		$isLocale = Config::get('app.locale') == Config::get('app.fallback_locale');
+		//$isDebug = (Config::get('app.debug') || Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"));
 
 		return $query->addSelect("NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1")
-			->when($isDebug, function ($query) {
-				return $query->addSelect("dbms_lob.substr(NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1), 4000, 1 ) DESCWEB_HCES1")
-				->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1), 4000, 1 ) DESC_HCES1");
-			}, function ($query) {
-				return $query->addSelect(" NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1) DESCWEB_HCES1")
-				->addSelect(" NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1) DESC_HCES1");
-			})
-			->leftjoin('FGHCES1', 'FGHCES1.EMP_HCES1 = FGDVC1L.EMP_DVC1L AND FGHCES1.NUM_HCES1 = FGDVC1L.NUMHCES_DVC1L AND FGHCES1.LIN_HCES1 = FGDVC1L.LINHCES_DVC1L')
-			->leftjoin('FGHCES1_LANG', "FGHCES1_LANG.EMP_HCES1_LANG = FGHCES1.EMP_HCES1 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'")
-			->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0')
-			->leftjoin('FGSUB', 'FGSUB.EMP_SUB = FGASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0')
-			->join('"auc_sessions" auc', 'auc."company" = FGASIGL0.EMP_ASIGL0 AND auc."auction" = FGASIGL0.SUB_ASIGL0 and auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0')
-			->selectRaw("(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) licits")
-			->selectRaw("(SELECT COUNT(LIN_ASIGL1) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) bids");
+		->leftjoin('FGHCES1', 'FGHCES1.EMP_HCES1 = FGDVC1L.EMP_DVC1L AND FGHCES1.NUM_HCES1 = FGDVC1L.NUMHCES_DVC1L AND FGHCES1.LIN_HCES1 = FGDVC1L.LINHCES_DVC1L')
+		->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0')
+		->leftjoin('FGSUB', 'FGSUB.EMP_SUB = FGASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0')
+		->join('"auc_sessions" auc', 'auc."company" = FGASIGL0.EMP_ASIGL0 AND auc."auction" = FGASIGL0.SUB_ASIGL0 and auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0')
+		->selectRaw("(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) licits")
+		->selectRaw("(SELECT COUNT(LIN_ASIGL1) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) bids")
+		->when($isLocale, function ($query) {
+			return $query->addSelect('fgsub.des_sub', 'FGHCES1.desc_hces1', 'FGHCES1.descweb_hces1', 'FGHCES1.webfriend_hces1');
+		}, function ($query) {
+			$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+			return $query->selectRaw('NVL(FGSUB_LANG.des_sub_lang, fgsub.des_sub) des_sub')
+			->selectRaw('NVL(FGHCES1_LANG.webfriend_hces1_lang, fghces1.webfriend_hces1) webfriend_hces1')
+			->selectRaw('NVL(FGHCES1_LANG.descweb_hces1_lang, fghces1.descweb_hces1) descweb_hces1')
+			->selectRaw('NVL(FGHCES1_LANG.desc_hces1_lang, fghces1.desc_hces1) desc_hces1')
+			->leftjoin('FGHCES1_LANG', "FGHCES1_LANG.EMP_HCES1_LANG = FGHCES1.EMP_HCES1 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '$lang'")
+			->leftjoin('FGSUB_LANG', "FGSUB_LANG.EMP_SUB_LANG = FGASIGL0.EMP_ASIGL0 AND FGSUB_LANG.COD_SUB_LANG = FGASIGL0.SUB_ASIGL0 AND FGSUB_LANG.LANG_SUB_LANG = '$lang'");
+		});
+
+		/*
+		->leftjoin('FGHCES1_LANG', "FGHCES1_LANG.EMP_HCES1_LANG = FGHCES1.EMP_HCES1 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'")
+		->when($isDebug, function ($query) {
+			return $query->addSelect("dbms_lob.substr(NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1), 4000, 1 ) DESCWEB_HCES1")
+			->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1), 4000, 1 ) DESC_HCES1");
+		}, function ($query) {
+			return $query->addSelect(" NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1) DESCWEB_HCES1")
+			->addSelect(" NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1) DESC_HCES1");
+		}); */
 	}
 }

@@ -3019,16 +3019,9 @@ class UserController extends Controller
 		return view('front::pages.panel.sales', $data);
     }
 
-	/**
-	 * @todo
-	 * [] Añadir traducciones de subastas y lotes
-	 * [x] Comprobar subastas con importes pendientes (imp_pending)
-	 */
 	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
 	{
-		//$cod_cli = Session::get('user.cod');
-		//$cod_cli = '020047'; //jfau
-		$cod_cli = '002560';
+		$cod_cli = Session::get('user.cod');
 
 		$paymentController = new PaymentsController();
 		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
