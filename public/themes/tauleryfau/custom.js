@@ -1941,7 +1941,7 @@ $(function() {
 
 function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {
 	const $wrapperElement = $(event.currentTarget);
-	const isActive = $(this).hasClass('active');
+	const isActive = $wrapperElement.hasClass('active');
 
 	if (event.target instanceof HTMLAnchorElement && isActive) {
 		return;
@@ -1954,8 +1954,8 @@ function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {
 		return;
 	}
 
-	$($wrapperElement).addClass('active');
-	const cod_sub = $($wrapperElement).data('sub');
+	$wrapperElement.addClass('active');
+	const cod_sub = $wrapperElement.data('sub');
 	callbackAnAuction(cod_sub);
 }
 
