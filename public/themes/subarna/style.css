@@ -4118,6 +4118,41 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	}
 }
 
+.contact-images-preview ul {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+}
+
+.contact-images-preview li {
+	width: 100px;
+}
+
+@media (min-width: 768px) {
+	.contact-images-preview li {
+		width: 220px;
+	}
+}
+
+.contact-images-preview img {
+	max-height: 110px;
+	max-width: 100px;
+	margin: auto;
+  	display: block;
+}
+
+@media (min-width: 768px) {
+	.contact-images-preview img {
+		max-height: 190px;
+		max-width: 220px;
+	}
+}
+
+.contact-images-preview p {
+	font-size: 16px;
+}
+
 /* -------------------------------------------------------
 ----------------END Contact Page -------------------------
 ------------------------------------------------------- */

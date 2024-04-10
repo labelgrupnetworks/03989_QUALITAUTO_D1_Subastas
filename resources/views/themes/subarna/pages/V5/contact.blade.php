@@ -205,14 +205,15 @@
 				para.textContent = "No files currently selected for upload";
 				preview.appendChild(para);
 			} else {
-				const list = document.createElement("ol");
+				const list = document.createElement("ul");
 				preview.appendChild(list);
 
 				for (const file of curFiles) {
 					const listItem = document.createElement("li");
 					const para = document.createElement("p");
 					if (validFileType(file)) {
-						para.textContent = `File name ${file.name}, file size ${returnFileSize(
+						// para.textContent = `File name ${file.name}, file size ${returnFileSize(
+						para.textContent = `File size ${returnFileSize(
           					file.size,
         				)}.`;
 						const image = document.createElement("img");
@@ -257,14 +258,6 @@
 				return `${(number / 1048576).toFixed(1)} MB`;
 			}
 		}
-
-		const button = document.querySelector("form button");
-		button.addEventListener("click", (e) => {
-			e.preventDefault();
-			const para = document.createElement("p");
-			para.append("Image uploaded!");
-			preview.replaceChildren(para);
-		});
 	</script>
 
 @stop
