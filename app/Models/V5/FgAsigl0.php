@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class FgAsigl0 extends Model
@@ -49,10 +50,73 @@ class FgAsigl0 extends Model
         'impsalhces_asigl0' => 'float',
         'imptash_asigl0' => 'float',
         'imptas_asigl0' => 'float',
-        'impres_asigl0' => 'float',
-
-
+        'impres_asigl0' => 'float'
     ];
+
+	public static function getLotsAwardedWithoutInvoiceByOwnerQuery($ownerCode)
+	{
+		return self::query()
+			->select('FGASIGL0.impsalhces_asigl0', 'FGASIGL0.ref_asigl0', 'FGASIGL0.sub_asigl0', 'FGASIGL0.comphces_asigl0','FGHCES1.implic_hces1', 'FGHCES1.num_hces1', 'FGHCES1.lin_hces1', 'FGHCES1.webfriend_hces1')
+			->addSelect('auc."end"', 'fgsub.des_sub')
+			->addSelect('FGHCES1.descweb_hces1', 'FGHCES1.desc_hces1')
+			->addCountLicits()
+			->addCountBids()
+			->joinFghces1Asigl0()
+			//->joinFghces1LangAsigl0()
+			->joinSubastaAsigl0()
+			->joinSessionAsigl0()
+			->WhereAuctionStatusIs('ended')
+			->whereOwner($ownerCode)
+			->where('FGSUB.SUBC_SUB', FgSub::SUBC_SUB_ACTIVO)
+			->where('FGASIGL0.CERRADO_ASIGL0', 'S')
+			->where('FGHCES1.LIC_HCES1', 'S')
+			->where('FGHCES1.FAC_HCES1', 'N');
+	}
+
+	public static function getAuctionsResultsByOwnerQuery($auctionsCodes, $ownerCode)
+	{
+		return self::query()
+			->select(DB::raw('count(*) as total_lots, sum(implic_hces1) as total_award, sum(impsalhces_asigl0) as total_impsalhces, sub_asigl0'))
+			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' AND cerrado_asigl0 = 'S' then 1 else 0 end) as total_awarded_lots"))
+			->whereIn('sub_asigl0', $auctionsCodes)
+			->joinFghces1Asigl0()
+			->whereOwner($ownerCode, false)
+			->groupBy('sub_asigl0');
+	}
+
+	public function scopeAddCountLicits($query)
+	{
+		return $query->selectRaw("(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) licits");
+	}
+
+	public function scopeAddCountBids($query)
+	{
+		return $query->selectRaw("(SELECT COUNT(LIN_ASIGL1) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) bids");
+	}
+
+	public function scopeWhereOwner($query, $cod_cli, $withRatio = true)
+	{
+		return $query
+			->when($withRatio, fn ($query) => $query->addSelect('COALESCE(FGHCESMT.ratio_hcesmt, MT0.ratio_hcesmt) as ratio_hcesmt'))
+			->leftJoin('FGHCESMT', "FGHCESMT.EMP_HCESMT = FGASIGL0.EMP_ASIGL0 AND FGHCESMT.NUM_HCESMT = FGASIGL0.NUMHCES_ASIGL0 AND FGHCESMT.CLI_HCESMT = '$cod_cli' AND FGHCESMT.LIN_HCESMT = FGASIGL0.LINHCES_ASIGL0")
+			->leftJoin('FGHCESMT MT0', "MT0.EMP_HCESMT = FGASIGL0.EMP_ASIGL0 AND MT0.NUM_HCESMT = FGASIGL0.NUMHCES_ASIGL0 AND MT0.CLI_HCESMT = '$cod_cli' AND MT0.LIN_HCESMT = 0")
+			->whereNotNull('COALESCE(FGHCESMT.ratio_hcesmt, MT0.ratio_hcesmt)');
+	}
+
+	public function scopeWhereAuctionStatusIs($query, $status)
+	{
+		return $query
+			->when(!$query->isJoined('auc'), function ($query) {
+				return $query->joinSessionAsigl0();
+			})
+			->join('WEB_SUBASTAS', 'WEB_SUBASTAS.ID_EMP = FGASIGL0.EMP_ASIGL0 AND WEB_SUBASTAS.ID_SUB = FGASIGL0.SUB_ASIGL0 AND WEB_SUBASTAS.session_reference = auc."reference"')
+			->where('WEB_SUBASTAS.ESTADO', $status);
+	}
+
+	public function scopeIsJoined($query, $table)
+	{
+		return Collection::make($query->getQuery()->joins)->pluck('table')->contains($table);
+	}
 
      #esta funcion espera un objeto y coje los valores que necesita la APi para hacer un update
      public function scopeWhereUpdateApi($query, $item){
@@ -607,6 +671,15 @@ class FgAsigl0 extends Model
 			where("CLI_DEPOSITO", \Session::get('user.cod'));
 
 		}
+	}
+
+	public function scopeLeftJoinFgDvc1lAsigl0($query)
+	{
+		return $query->when(!$query->isJoined('FGHCES1'), function ($query) {
+					return $query->joinFghces1Asigl0();
+				})
+				->leftJoin('FGDVC1L', 'FGDVC1L.emp_dvc1l = FGHCES1.emp_hces1 and FGDVC1L.numhces_dvc1l = FGHCES1.num_hces1 and FGDVC1L.linhces_dvc1l = FGHCES1.lin_hces1 and FGDVC1L.COD_DVC1L = FGHCES1.PROP_HCES1')
+				->leftJoin('FXDVC0', 'FGDVC1L.EMP_DVC1L = FXDVC0.EMP_DVC0 AND FGDVC1L.ANUM_DVC1L = FXDVC0.ANUM_DVC0 AND FGDVC1L.NUM_DVC1L = FXDVC0.NUM_DVC0');
 	}
 
 	public function ventasDestacadas($order = 'orden_destacado_asigl0', $orderDirection = "asc", $paginate = 12, $limit = 0)

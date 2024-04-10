@@ -6,11 +6,11 @@ use Redirect;
 //use Controller;
 
 //opcional
-use DB;
+use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
-use Session;
+use Illuminate\Support\Facades\Session;
 use View;
 use Routing;
 use Illuminate\Support\Facades\Config;
@@ -3019,9 +3019,63 @@ class UserController extends Controller
 		return view('front::pages.panel.sales', $data);
     }
 
-	public function finishSales()
+	/**
+	 * @todo
+	 * [] Añadir traducciones de subastas y lotes
+	 * [x] Comprobar subastas con importes pendientes (imp_pending)
+	 */
+	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
 	{
-		return response()->json(['test' => 'test']);
+		//$cod_cli = Session::get('user.cod');
+		//$cod_cli = '020047'; //jfau
+		$cod_cli = '002560';
+
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
+		$tipo_iva = $paymentController->user_has_Iva(Config::get('app.gemp'), $cod_cli);
+
+		//Lotes sin factura
+		$lotsWithoutInvoice = FgAsigl0::getLotsAwardedWithoutInvoiceByOwnerQuery($cod_cli)
+			->orderBy('auc."end"', 'desc')
+			->get()
+			->each(function ($item) use ($paymentController, $iva, $tipo_iva){
+				$item->imp_award = ($item->implic_hces1 * $item->ratio_hcesmt) / 100;
+				$item->imp_comision = ($item->imp_award * $item->comphces_asigl0) / 100;
+				$item->imp_tax = $paymentController->calculate_iva($tipo_iva->tipo, $iva, $item->imp_comision);
+				$item->imp_liquidacion = $item->imp_award - $item->imp_comision - $item->imp_tax;
+			});
+
+		$auctionsWithoutInvoice = $lotsWithoutInvoice->groupBy('sub_asigl0');
+		$activeAuctions = $auctionsWithoutInvoice->keys()->all();
+
+		$auctionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($activeAuctions, $cod_cli)
+			->get()
+			->each(function ($item) use ($lotsWithoutInvoice) {
+				$item->total_liquidation = $lotsWithoutInvoice->where('sub_asigl0', $item->sub_asigl0)->sum('imp_liquidacion');
+			});
+
+		//Facturas
+		$owerInvoicesLots = FxDvc0::getInvoicesByOwnerQuery($cod_cli)
+			->whereDateIsGreaterThan($request->input('date'))
+			->orderBy('fecha_dvc0', 'desc')
+			->get();
+
+		$invoiceAuctions = $owerInvoicesLots->pluck('sub_asigl0')->unique()->all();
+		$ownerInvoices = $owerInvoicesLots->groupBy(fn ($item) => "$item->anum_dvc0/$item->num_dvc0");
+		$invoiceResults = FgAsigl0::getAuctionsResultsByOwnerQuery($invoiceAuctions, $cod_cli)
+			->get()
+			->each(function ($item) use ($owerInvoicesLots) {
+				$totalDvc0 = $owerInvoicesLots->where('sub_asigl0', $item->sub_asigl0)->value('total_dvc0');
+				$item->total_liquidation = $item->total_award - $totalDvc0;
+			});
+
+		$data = [
+			'auctionsWithoutInvoice' => $auctionsWithoutInvoice,
+			'ownerInvoices' => $ownerInvoices,
+			'auctionsResults' => $auctionsResults->concat($invoiceResults),
+		];
+
+		return view('front::pages.panel.sales_finish', $data);
 	}
 
 	public function getFacturasPropietarioLineas()

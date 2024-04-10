@@ -3,8 +3,10 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 
 
 class FgDvc1l extends Model
@@ -29,7 +31,7 @@ class FgDvc1l extends Model
 
 	public function __construct(array $vars = []){
         $this->attributes=[
-			'emp_dvc1' => \Config::get("app.emp")
+			'emp_dvc1' => Config::get("app.emp")
 
         ];
         parent::__construct($vars);
@@ -41,7 +43,7 @@ class FgDvc1l extends Model
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-			$builder->where('emp_dvc1l', \Config::get("app.emp"));
+			$builder->where('emp_dvc1l', Config::get("app.emp"));
         });
 	}
 
@@ -85,13 +87,13 @@ class FgDvc1l extends Model
 
 	public function scopeJoinLotesDvc1L($query)
 	{
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 		$query->addSelect("NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1");
 
 
 
 		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
-		if ( (env('APP_DEBUG') || \Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"))) {
+		if ( (env('APP_DEBUG') || Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"))) {
 			$query = $query->addSelect("dbms_lob.substr(NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1), 4000, 1 ) DESCWEB_HCES1")
 							->addSelect(" dbms_lob.substr(NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1), 4000, 1 ) DESC_HCES1");
 		}else{

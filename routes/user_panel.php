@@ -32,7 +32,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
 	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
 
-	Route::get('{lang}/user/panel/sales/finish', 'UserController@finishSales');
+	Route::get('{lang}/user/panel/sales/finish', 'UserController@invoiceSalesOfFinishAuctions');
 
 	#CARLANDIA
 	//Mis vehiculos en venta
