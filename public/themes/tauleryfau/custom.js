@@ -1929,12 +1929,17 @@ function animationCounter(element, options = {}, callback) {
  */
 $(function() {
 	salesAnimationCounter();
-	$('.sales-auction-wrapper').on('click', salesAuctionOnClickHandler);
+	$('.sales-auction-wrapper[data-type=active]').on('click', (event) => {
+		salesAuctionOnClickHandler(event, refreshActiveSummary, refreshActiveSummaryWithTotals);
+	});
+	$('.sales-auction-wrapper[data-type=finish]').on('click', (event) => {
+		salesAuctionOnClickHandler(event, refreshFinishSummary, refreshFinishSummaryWithTotals);
+	});
+
 	$('.sales-auction-wrapper a').on('click', salesAuctionDetailsOnClickHandler);
 });
 
-function salesAuctionOnClickHandler(event) {
-
+function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {
 	const $wrapperElement = $(event.currentTarget);
 	const isActive = $(this).hasClass('active');
 
@@ -1945,13 +1950,13 @@ function salesAuctionOnClickHandler(event) {
 	$('.sales-auction-wrapper').removeClass('active');
 
 	if (isActive) {
-		refreshSummaryWithTotals();
+		callbackTotals();
 		return;
 	}
 
 	$($wrapperElement).addClass('active');
 	const cod_sub = $($wrapperElement).data('sub');
-	refreshSummary(cod_sub);
+	callbackAnAuction(cod_sub);
 }
 
 function salesAuctionDetailsOnClickHandler() {
@@ -1959,7 +1964,27 @@ function salesAuctionDetailsOnClickHandler() {
 	element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
 }
 
-function refreshSummaryWithTotals() {
+function refreshFinishSummaryWithTotals() {
+	const total = statistics.total;
+	$('#settlementPrice').attr('value', total.total_liquidation);
+	$('#percentageAwards').attr('value', total.total_awarded_lots / total.total_lots * 100);
+	$('#revaluation').attr('value', total.total_award / total.total_impsalhces * 100);
+	$('#consignedLots').attr('value', total.total_lots);
+	$('#awardedLots').attr('value', total.total_awarded_lots);
+	salesAnimationCounter();
+}
+
+function refreshFinishSummary(cod_sub) {
+	const auction = statistics.auction[`${cod_sub}`];
+	$('#settlementPrice').attr('value', auction.total_liquidation);
+	$('#percentageAwards').attr('value', auction.total_awarded_lots / auction.total_lots * 100);
+	$('#revaluation').attr('value', auction.total_award / auction.total_impsalhces * 100);
+	$('#consignedLots').attr('value', auction.total_lots);
+	$('#awardedLots').attr('value', auction.total_awarded_lots);
+	salesAnimationCounter();
+}
+
+function refreshActiveSummaryWithTotals() {
 	$('#actualPrice').attr('value', statistics.total.actual_price);
 	$('#percentage_lots_bid').attr('value', statistics.total.percentage_lots_bid);
 	$('#revaluation').attr('value', statistics.total.revaluation);
@@ -1968,7 +1993,7 @@ function refreshSummaryWithTotals() {
 	salesAnimationCounter();
 }
 
-function refreshSummary(cod_sub) {
+function refreshActiveSummary(cod_sub) {
 	const auction = statistics.auction[`${cod_sub}`];
 	$('#actualPrice').attr('value', auction.actual_price);
 	$('#percentage_lots_bid').attr('value', auction.count_lots_with_bids / auction.consigned_lots * 100);

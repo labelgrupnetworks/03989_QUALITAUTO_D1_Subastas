@@ -137,6 +137,7 @@ main {
 
 .panel-title h1 {
 	margin: 0;
+	font-size: 32px;
 }
 
 .orders-page {
@@ -441,13 +442,21 @@ main {
 }
 
 .sales-auctions {
-	--grid-columns-desktop: 8% 16% 8% repeat(3, 16%) 1fr;
-	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
 	--max-width: 1200px;
 	--line-height: 1.2;
 	--min-height: calc(2 * var(--line-height) * 1em);
 	--gap: 1rem;
 	line-height: var(--line-height);
+}
+
+.sales-auctions.sales-finish-auctions {
+	--grid-columns-desktop: 8% 16% 8% repeat(2, 16%) 8% 8% 1fr;
+	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
+}
+
+.sales-auctions.sales-active-auctions {
+	--grid-columns-desktop: 8% 16% 8% repeat(3, 16%) 1fr;
+	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
 }
 
 .sales-auctions p {
@@ -461,10 +470,6 @@ main {
 .sales-auctions .separator-line {
 	margin-left: -15px;
 	margin-right: -15px;
-	border-bottom: 1px solid var(--color-gold);
-}
-
-.sales-header-wrapper {
 	border-bottom: 1px solid var(--color-gold);
 }
 
@@ -483,6 +488,10 @@ main {
 .sales-auction-wrapper.active {
 	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 	font-weight: 500;
+}
+
+.sales-header-wrapper {
+	border-bottom: 1px solid var(--color-gold);
 }
 
 .sales-auctions_header {
