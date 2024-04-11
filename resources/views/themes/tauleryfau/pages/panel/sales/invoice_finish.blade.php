@@ -21,21 +21,23 @@
             <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
             <span class="hidden-md hidden-lg">{{ $auctionData->sub_asigl0 }}</span>
         </p>
-        <p>
-            {{ $invoiceId }}
+        <p class="visible-md visible-lg">
+            {{ str_replace('-', '/', $invoiceId) }}
         </p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $totalSettlement }}">
+        <p class="js-divisa" value="{{ $totalSettlement }}">
             {!! $currency->getPriceSymbol(2, $totalSettlement ?? 0) !!}
         </p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $totalPending  ?? 0 }}">
+        <p class="js-divisa" value="{{ $totalPending  ?? 0 }}">
             {!! $currency->getPriceSymbol(2, $totalPending  ?? 0) !!}
         </p>
         <p>
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
 
         </p>
-        <p>
-            PDF
+        <p class="sales-auction_invoice">
+			<a target="_blank" href="/factura/{{ $invoiceId }}">
+				<i class="fas fa-file-pdf fa-2x"></i>
+			</a>
         </p>
         <div class="actions">
             <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $invoiceId }}"

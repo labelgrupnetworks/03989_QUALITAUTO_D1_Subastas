@@ -110,11 +110,10 @@
                     <div class="sales-auctions_header">
                         <p>Fecha</p>
                         <p>Subasta</p>
-                        <p>Nº Factura</p>
-
-                        <p class="visible-md visible-lg">Total Liquidación</p>
-                        <p class="visible-md visible-lg">Total pendiente</p>
-                        <p>Estado</p>
+                        <p p class="visible-md visible-lg">Nº Factura</p>
+                        <p>Total Liquidación</p>
+                        <p>Total pendiente</p>
+                        <p class="visible-md visible-lg">Estado</p>
                     </div>
                 </div>
 
@@ -126,7 +125,7 @@
 
                 @foreach ($ownerInvoices as $invoiceId => $invoices)
                     @include('pages.panel.sales.invoice_finish', [
-                        'invoiceId' => str_replace('/', '-', $invoiceId),
+                        'invoiceId' => $invoiceId,
                         'invoicesAuctions' => $invoices,
                     ])
                 @endforeach

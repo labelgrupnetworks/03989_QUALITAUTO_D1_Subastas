@@ -19,11 +19,11 @@
             <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
             <span class="hidden-md hidden-lg">{{ $auctionData->sub_asigl0 }}</span>
         </p>
-        <p>-</p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $totalSettlement }}">
+        <p class="visible-md visible-lg">-</p>
+        <p class="js-divisa" value="{{ $totalSettlement }}">
             {!! $currency->getPriceSymbol(2, $totalSettlement ?? 0) !!}
         </p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $totalPending  ?? 0 }}">
+        <p class="js-divisa" value="{{ $totalPending  ?? 0 }}">
             {!! $currency->getPriceSymbol(2, $totalPending  ?? 0) !!}
         </p>
         <p>
