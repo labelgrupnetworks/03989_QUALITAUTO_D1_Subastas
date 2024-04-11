@@ -129,6 +129,7 @@ main {
 
 .panel-title {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 2rem;
 	margin-top: 20px;
@@ -381,9 +382,9 @@ select#actual_currency {
 .sales-filter {
 	margin-left: auto;
 	display: flex;
-    gap: 1rem;
-    align-items: center;
-    align-self: stretch;
+	gap: 1rem;
+	align-items: center;
+	align-self: stretch;
 }
 
 .sales-filter label {
@@ -391,19 +392,19 @@ select#actual_currency {
 	font-weight: 400;
 }
 
-.sales-filter button.custom-select{
+.sales-filter button.custom-select {
 	background-color: #fff;
-    border: 1px solid var(--color-gold);
-    height: 100%;
-    padding-left: 18px;
-    padding-right: 18px;
+	border: 1px solid var(--color-gold);
+	height: 100%;
+	padding-left: 18px;
+	padding-right: 18px;
 	position: relative;
 }
 
-.sales-filter .dropdown-menu{
+.sales-filter .dropdown-menu {
 	padding-left: 2rem;
-    padding-right: 2rem;
-    min-width: auto;
+	padding-right: 2rem;
+	min-width: auto;
 }
 
 .sales-filter input {
@@ -565,15 +566,17 @@ select#actual_currency {
 .sales-auction .badge {
 	font-weight: 400;
 	padding: 6px 12px;
-    border-radius: 8px;
+	border-radius: 8px;
 }
 
 .sales-auction .badge.badge-alert {
 	background-color: #A81313;
 }
+
 .sales-auction .badge.badge-warning {
 	background-color: #C07914D9;
 }
+
 .sales-auction .badge.badge-success {
 	background-color: #23A455;
 }
@@ -642,11 +645,21 @@ select#actual_currency {
 	border-top: 1px solid var(--color-gold);
 }
 
+.pending-lots .sales-lots-header-wrapper {
+	border-top: 0;
+}
+
 .sales-lots-wrapper {
 	--grid-columns-desktop: 16% 8% 1fr repeat(4, 12%);
 	--grid-columns-mobile: 3fr 1fr 1fr;
 	--gap: 1rem;
 	--max-width: 1300px;
+}
+
+.sales-lots-wrapper.pending-lots {
+	--grid-columns-desktop: 16% 8% 8% 2fr 1fr 1fr;
+	--grid-columns-mobile: 3fr 1fr 1fr;
+	--max-width: 1000px;
 }
 
 .sales-lots-header {
@@ -679,6 +692,15 @@ select#actual_currency {
 		"img label-salida price-salida"
 		"img label-actual price-actual"
 		"img label-increment increment";
+}
+
+.sales-lot[data-type="pending"] {
+	grid-template-areas:
+		"sheet line-sheet ."
+		"desc desc desc"
+		"img label-salida price-salida"
+		"img label-estimate price-estimate"
+		"img . .";
 }
 
 .sales-lot_img {
@@ -752,6 +774,22 @@ select#actual_currency {
 	margin-left: 5px;
 }
 
+.sales-lot_sheet {
+	grid-area: sheet;
+}
+
+.sale-lot_line-sheet {
+	grid-area: line-sheet;
+}
+
+.label-price-estimate {
+	grid-area: label-estimate;
+}
+
+.sales-lot_estimate-price {
+	grid-area: price-estimate;
+}
+
 @media(min-width: 992px) {
 
 	.sales-lots-title {
@@ -767,7 +805,7 @@ select#actual_currency {
 		background-color: #9B9B9B1F;
 	}
 
-	.sales-lot {
+	.sales-lot, .sales-lot[data-type="pending"] {
 		box-sizing: content-box;
 		max-width: var(--max-width);
 		grid-template-columns: var(--grid-columns-desktop);
@@ -792,7 +830,9 @@ select#actual_currency {
 	.sales-lot_price-salida,
 	.sales-lot_actual-price,
 	.sales-lot_increment,
-	.sales-lot_bids {
+	.sales-lot_bids,
+	.sales-lot_sheet,
+	.sales-lot_estimate-price {
 		grid-area: auto;
 	}
 }

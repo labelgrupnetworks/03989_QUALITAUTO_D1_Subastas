@@ -70,7 +70,7 @@ class FgAsigl0 extends Model
 				->selectRaw('NVL(FGHCES1_LANG.descweb_hces1_lang, fghces1.descweb_hces1) descweb_hces1')
 				->selectRaw('NVL(FGHCES1_LANG.desc_hces1_lang, fghces1.desc_hces1) desc_hces1')
 				->joinFghces1LangAsigl0()
-					->joinSubastaLangAsigl0();
+				->joinSubastaLangAsigl0();
 			})
 			->joinFghces1Asigl0()
 			->joinSubastaAsigl0()

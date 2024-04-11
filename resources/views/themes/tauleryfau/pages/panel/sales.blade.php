@@ -87,15 +87,15 @@
             </div>
 
             <div class="sales-menu">
-                <a class="btn btn-lb btn-lb-outline btn-large" href="">
+                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">Pendientes de subastar</span>
                     <span class="hidden-md hidden-lg">Pendientes</span>
                 </a>
-                <a class="btn btn-lb btn-lb-primary btn-large" href="#">
+                <a class="btn btn-lb btn-lb-primary btn-large" href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">Subastas activas</span>
                     <span class="hidden-md hidden-lg">Activas</span>
                 </a>
-                <a class="btn btn-lb btn-lb-outline btn-large" href="">
+                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">Subastas Finalizadas</span>
                     <span class="hidden-md hidden-lg">Finalizadas</span>
                 </a>

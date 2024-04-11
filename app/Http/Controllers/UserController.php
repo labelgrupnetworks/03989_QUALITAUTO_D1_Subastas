@@ -3076,6 +3076,37 @@ class UserController extends Controller
 		return view('front::pages.panel.sales_finish', $data);
 	}
 
+	public function getLotsSalesPendingToBeAssign(HttpRequest $request)
+	{
+		$cod_cli = Session::get('user.cod');
+		$sheetsSelected = $request->input('sheets', []);
+
+		$lotsQuery = FgHces1::query()
+			->whereOwner($cod_cli, false)
+			->notInAuction();
+
+		$numsHces = $lotsQuery->clone()
+			->select('num_hces1')
+			->distinct()
+			->pluck('num_hces1');
+
+		$lots = $lotsQuery->clone()
+			->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'imptas_hces1')
+			->addSelectTranslationsAttributes()
+			->when($sheetsSelected, fn ($query, $sheetsSelected) => $query->whereIn('num_hces1', $sheetsSelected))
+			->orderBy('num_hces1')
+			->orderBy('lin_hces1')
+			->get();
+
+		$data = [
+			'lots' => $lots,
+			'numsHces' => $numsHces,
+			'sheetsSelected' => $sheetsSelected
+		];
+
+		return view('front::pages.panel.sales_pending', $data);
+	}
+
 	public function getFacturasPropietarioLineas()
 	{
 		$anum = request('anum');
