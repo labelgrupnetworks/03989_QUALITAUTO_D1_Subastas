@@ -3021,7 +3021,7 @@ class UserController extends Controller
 
 	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
 	{
-		$cod_cli = Session::get('user.cod');
+		$yearSelected = $request->input('years', [date('Y'), date('Y') - 1]);
 
 		$paymentController = new PaymentsController();
 		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
@@ -3030,6 +3030,7 @@ class UserController extends Controller
 		//Lotes sin factura
 		$lotsWithoutInvoice = FgAsigl0::getLotsAwardedWithoutInvoiceByOwnerQuery($cod_cli)
 			->orderBy('auc."end"', 'desc')
+			->whereYearsDates('auc."end"', $yearSelected)
 			->get()
 			->each(function ($item) use ($paymentController, $iva, $tipo_iva){
 				$item->imp_award = ($item->implic_hces1 * $item->ratio_hcesmt) / 100;
@@ -3049,12 +3050,12 @@ class UserController extends Controller
 
 		//Facturas
 		$owerInvoicesLots = FxDvc0::getInvoicesByOwnerQuery($cod_cli)
-			->whereDateIsGreaterThan($request->input('date'))
+			->whereYearsDates($yearSelected)
 			->orderBy('fecha_dvc0', 'desc')
 			->get();
 
 		$invoiceAuctions = $owerInvoicesLots->pluck('sub_asigl0')->unique()->all();
-		$ownerInvoices = $owerInvoicesLots->groupBy(fn ($item) => "$item->anum_dvc0/$item->num_dvc0");
+		$ownerInvoices = $owerInvoicesLots->groupBy(fn ($item) => "$item->anum_dvc0-$item->num_dvc0");
 		$invoiceResults = FgAsigl0::getAuctionsResultsByOwnerQuery($invoiceAuctions, $cod_cli)
 			->get()
 			->each(function ($item) use ($owerInvoicesLots) {
@@ -3062,10 +3063,14 @@ class UserController extends Controller
 				$item->total_liquidation = $item->total_award - $totalDvc0;
 			});
 
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli);
+
 		$data = [
 			'auctionsWithoutInvoice' => $auctionsWithoutInvoice,
 			'ownerInvoices' => $ownerInvoices,
 			'auctionsResults' => $auctionsResults->concat($invoiceResults),
+			'invoicesYearsAvailables' => $invoicesYearsAvailables,
+			'yearSelected' => $yearSelected
 		];
 
 		return view('front::pages.panel.sales_finish', $data);

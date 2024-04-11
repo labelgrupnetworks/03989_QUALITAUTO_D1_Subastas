@@ -123,6 +123,22 @@ class FgAsigl0 extends Model
 			->where('WEB_SUBASTAS.ESTADO', $status);
 	}
 
+	public function scopeWhereYearsDates($query, $attribute, $yearDates)
+	{
+		$datesIntervals = array_map(function($year){
+			return [
+				$year . '-01-01',
+				$year . '-12-31'
+			];
+		}, $yearDates);
+
+		return $query->where(function($query) use ($datesIntervals, $attribute){
+			foreach($datesIntervals as $interval){
+				$query->orWhereBetween($attribute, $interval);
+			}
+		});
+	}
+
 	public function scopeIsJoined($query, $table)
 	{
 		return Collection::make($query->getQuery()->joins)->pluck('table')->contains($table);

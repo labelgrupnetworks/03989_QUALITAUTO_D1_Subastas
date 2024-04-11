@@ -68,6 +68,15 @@ class FxDvc0 extends Model
 			->whereOwner($ownerCod);
 	}
 
+	public static function getInvoicesYearsAvailables($ownerCod)
+	{
+		return self::selectRaw('to_char(fecha_dvc0, \'YYYY\') as year')
+			->whereOwner($ownerCod)
+			->groupBy('to_char(fecha_dvc0, \'YYYY\')')
+			->orderBy('to_char(fecha_dvc0, \'YYYY\')', 'desc')
+			->pluck('year');
+	}
+
 	public function getFacturasCabecerasPropietario($cod_cli, $period = null)
 	{
 		$facturas = self::select('anum_dvc0', 'num_dvc0')
@@ -87,6 +96,22 @@ class FxDvc0 extends Model
 			$date = date("Y-m-d", strtotime("-1 year"));
 		}
 		return $query->where('fecha_dvc0', '>=', $date);
+	}
+
+	public function scopeWhereYearsDates($query, $yearDates)
+	{
+		$datesIntervals = array_map(function($year){
+			return [
+				$year . '-01-01',
+				$year . '-12-31'
+			];
+		}, $yearDates);
+
+		return $query->where(function($query) use ($datesIntervals){
+			foreach($datesIntervals as $interval){
+				$query->orWhereBetween('fecha_dvc0', $interval);
+			}
+		});
 	}
 
 	public function scopeWhereOwner($query, $cod_cli)

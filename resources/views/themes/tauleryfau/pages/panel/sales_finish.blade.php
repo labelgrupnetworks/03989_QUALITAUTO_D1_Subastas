@@ -43,6 +43,33 @@
                         </option>
                     @endforeach
                 </select>
+
+                <div class="dropdown sales-filter">
+                    <span>Filtros</span>
+                    <button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button"
+                        aria-haspopup="true" aria-expanded="false">
+                        Año
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
+                        <form action="">
+                            @foreach ($invoicesYearsAvailables as $year)
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="years[]" type="checkbox" value="{{ $year }}"
+                                                @checked(in_array($year, $yearSelected))>{{ $year }}
+                                        </label>
+                                    </div>
+                                </li>
+                            @endforeach
+                            <li class="divider" role="separator"></li>
+                            <li>
+                                <button class="btn btn-lb btn-lb-primary" type="submit">Filtrar</button>
+                            </li>
+                        </form>
+                    </ul>
+                </div>
             </div>
 
             <div class="sales-menu">
@@ -110,7 +137,7 @@
                     <div class="sales-auctions_header">
                         <p>Fecha</p>
                         <p>Subasta</p>
-                        <p p class="visible-md visible-lg">Nº Factura</p>
+                        <p class="visible-md visible-lg">Nº Factura</p>
                         <p>Total Liquidación</p>
                         <p>Total pendiente</p>
                         <p class="visible-md visible-lg">Estado</p>
