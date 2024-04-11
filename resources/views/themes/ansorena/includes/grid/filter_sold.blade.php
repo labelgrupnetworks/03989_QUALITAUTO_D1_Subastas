@@ -4,14 +4,16 @@
 		<legend class="ff-highlight">{{ trans("$theme-app.lot_list.lots_status") }}</legend>
 
 		<div class="auction__filters-type-list bg-lb-primary-50">
-			<div class="form-check">
-				<input class="js-check-award form-check-input" id="liveLots" name="liveLots" type="radio" value="1"
-					@checked(!empty(request('liveLots'))) />
+			@if ($auction->subc_sub == App\Models\V5\FgSub::SUBC_SUB_ACTIVO)
+				<div class="form-check">
+					<input class="js-check-award form-check-input" id="liveLots" name="liveLots" type="radio" value="1"
+						@checked(!empty(request('liveLots'))) />
 
-				<label class="radio-label form-check-label" for="liveLots">
-					{{ trans("$theme-app.lot_list.live_lots_filter") }}
-				</label>
-			</div>
+					<label class="radio-label form-check-label" for="liveLots">
+						{{ trans("$theme-app.lot_list.live_lots_filter") }}
+					</label>
+				</div>
+			@endif
 			<div class="form-check">
 				<input class="js-check-award form-check-input" id="no-award" name="noAward" type="radio" value="1"
 					@checked(!empty(request('noAward'))) />
