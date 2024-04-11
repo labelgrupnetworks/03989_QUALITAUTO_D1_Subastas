@@ -116,7 +116,7 @@ class FxDvc0 extends Model
 		$isLocale = Config::get('app.locale') == Config::get('app.fallback_locale');
 		//$isDebug = (Config::get('app.debug') || Config::get("app.clobToVarchar")) && empty(Config::get("app.NoclobToVarchar"));
 
-		return $query->addSelect("NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1")
+		return $query
 		->leftjoin('FGHCES1', 'FGHCES1.EMP_HCES1 = FGDVC1L.EMP_DVC1L AND FGHCES1.NUM_HCES1 = FGDVC1L.NUMHCES_DVC1L AND FGHCES1.LIN_HCES1 = FGDVC1L.LINHCES_DVC1L')
 		->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0')
 		->leftjoin('FGSUB', 'FGSUB.EMP_SUB = FGASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0')
