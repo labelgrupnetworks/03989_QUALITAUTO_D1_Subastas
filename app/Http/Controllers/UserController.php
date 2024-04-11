@@ -66,6 +66,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
 use App\libs\SeoLib;
+use App\Models\V5\FgHces1;
+
 class UserController extends Controller
 {
 
@@ -3021,6 +3023,7 @@ class UserController extends Controller
 
 	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
 	{
+		$cod_cli = Session::get('user.cod');
 		$yearSelected = $request->input('years', [date('Y'), date('Y') - 1]);
 
 		$paymentController = new PaymentsController();

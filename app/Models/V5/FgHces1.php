@@ -120,10 +120,10 @@ class FgHces1 extends Model
 			->when(Config::get('app.locale') != Config::get('app.fallback_locale'), function ($query) {
 				return $query
 					//->selectRaw('NVL(FGHCES1_LANG.TITULO_HCES1_LANG, FGHCES1.TITULO_HCES1) AS TITULO_HCES1')
-					->selectRaw('NVL(FGHCES1_LANG.DES_HCES1_LANG, FGHCES1.DES_HCES1) AS DESC_HCES1')
-					->selectRaw('NVL(FGHCES1_LANG.DESWEB_HCES1_LANG, FGHCES1.DESWEB_HCES1) AS DESCWEB_HCES1')
+					->selectRaw('NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1) AS DESC_HCES1')
+					->selectRaw('NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1) AS DESCWEB_HCES1')
 					->selectRaw('NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) AS WEBFRIEND_HCES1')
-					->joinFghces1LangAsigl0();
+					->joinFghces1LangHces1();
 			}, function ($query) {
 				return $query->addSelect('DESC_HCES1', 'DESCWEB_HCES1', 'WEBFRIEND_HCES1');
 			});
@@ -132,6 +132,6 @@ class FgHces1 extends Model
 	public function scopeJoinFghces1LangHces1($query)
 	{
 		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
-		return $query->leftjoin('FGHCES1_LANG', "FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
+		return $query->leftjoin('FGHCES1_LANG', "FGHCES1_LANG.EMP_HCES1_LANG = FGHCES1.EMP_HCES1 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
 	}
 }
