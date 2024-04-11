@@ -3990,22 +3990,22 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	height: var(--height-top-image);
 }
 
-/* .contact-page .border-left {
+/* .contact-page .stretch-line {
 	display: none;
 } */
 
 /* @media (min-width: 845px) {
-	.contact-page .border-left {
+	.contact-page .stretch-line {
 		display: block;
 		visibility: hidden;
 	}
 } */
 
 @media (min-width: 1440px) {
-	.contact-page .border-left {
-		border: 1px solid var(--color-border);
-		height: 100%;
-		/* display: block; */
+	.contact-page .stretch-line {
+		width: 1px;
+		align-self: stretch;
+		background-color: var(--color-border);
 	}
 }
 
@@ -4118,11 +4118,32 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	}
 }
 
+.input-files-contact {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+@media (min-width: 768px) {
+	.input-files-contact {
+		flex-direction: row;
+	}
+}
+
+
 .contact-images-preview ul {
 	list-style: none;
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: center;
 	gap: 3px;
+}
+
+@media (min-width: 768px) {
+	.contact-images-preview ul {
+		justify-content: flex-start;
+	}
 }
 
 .contact-images-preview li {

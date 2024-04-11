@@ -82,7 +82,7 @@
 								</p>
 							</div>
 						</div>
-						<div class="border-left"></div>
+						<div class="stretch-line"></div>
 						<div class="column-contacts">
 							<div class="single-contact">
 								<p>
@@ -148,7 +148,7 @@
 								<label>
 									<p>¿Necesitas adjuntarnos fotos?</p>
 								</label>
-								<div>
+								<div class="input-files-contact">
 									<label class="btn btn-lb-primary" for="files">
 										Elegir Archivos
 									</label>
@@ -158,11 +158,9 @@
 											Tamaño total, no superior a 20MB.</p>
 									</div>
 								</div>
-								<div class="contact-images-preview">
-
-								</div>
 								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="imagen[]" multiple=""
 									required="">
+								<div class="contact-images-preview"></div>
 							</div>
 						</div>
 						<div class="col-xs-12">
