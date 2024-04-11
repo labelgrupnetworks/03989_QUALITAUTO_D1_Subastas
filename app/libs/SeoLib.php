@@ -129,23 +129,25 @@ class SeoLib
 
 	static function saveEvent($event)
 	{
-		$vars = SeoLib::sessionsVars();
+		if (Config::get("app.seoEvent")){
+			$vars = SeoLib::sessionsVars();
 
 
-		try {
-			Web_Seo_Events::insert([
-				"EMP_SEO_EVENTS" =>  Config::get("app.emp"),
-				"USER_SEO_EVENTS" => $vars["codUser"],
-				"EVENT_SEO_EVENTS" => substr($event, 0, 20),
-				"TYPE_SEO_EVENTS" => substr($vars["UTM_TYPE"], 0, 20),
-				"REFERER_SEO_EVENTS" => substr($vars["referer"], 0, 255),
-				"UTM_SOURCE_SEO_EVENTS" => substr($vars["UTM_SOURCE"], 0, 255),
-				"UTM_MEDIUM_SEO_EVENTS" => substr($vars["UTM_MEDIUM"], 0, 255),
-				"UTM_CAMPAIGN_SEO_EVENTS" => substr($vars["UTM_CAMPAIGN"], 0, 255),
-				"DATE_SEO_EVENTS" => date("Y-m-d H:i:s")
-			]);
-		} catch (\Illuminate\Database\QueryException $e) {
-			Log::error($e);
+			try {
+				Web_Seo_Events::insert([
+					"EMP_SEO_EVENTS" =>  Config::get("app.emp"),
+					"USER_SEO_EVENTS" => $vars["codUser"],
+					"EVENT_SEO_EVENTS" => substr($event, 0, 20),
+					"TYPE_SEO_EVENTS" => substr($vars["UTM_TYPE"], 0, 20),
+					"REFERER_SEO_EVENTS" => substr($vars["referer"], 0, 255),
+					"UTM_SOURCE_SEO_EVENTS" => substr($vars["UTM_SOURCE"], 0, 255),
+					"UTM_MEDIUM_SEO_EVENTS" => substr($vars["UTM_MEDIUM"], 0, 255),
+					"UTM_CAMPAIGN_SEO_EVENTS" => substr($vars["UTM_CAMPAIGN"], 0, 255),
+					"DATE_SEO_EVENTS" => date("Y-m-d H:i:s")
+				]);
+			} catch (\Illuminate\Database\QueryException $e) {
+				Log::error($e);
+			}
 		}
 	}
 

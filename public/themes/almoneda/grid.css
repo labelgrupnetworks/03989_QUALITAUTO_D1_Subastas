@@ -31,15 +31,11 @@
 	margin: 0;
 	text-align: end;
 	height: auto;
-	padding: .5rem 0;
+	padding: .5rem 15px;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: space-between;
 	gap: .5rem;
-}
-
-.item_lot .salida-time span {
-	margin-right: 20px;
 }
 
 .item_lot .lot-description :is(ol, ul) {

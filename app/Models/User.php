@@ -1378,4 +1378,13 @@ class User
 		return true;
 	}
 
+	/**
+	 * @param string $cod_cli
+	 * @return string
+	 */
+	public static function getUserNIF(string $cod_cli): string
+	{
+		return FxCli::select('cif_cli')->where('cod_cli', $cod_cli)->first()->cif_cli;
+	}
+
 }

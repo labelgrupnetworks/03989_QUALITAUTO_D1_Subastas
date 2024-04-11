@@ -238,7 +238,7 @@ function muestra_error_input(campo,error) {
 
     id = $(campo).attr("id");
 
-	$("label[for="+id+"]").addClass('has-error');
+	$("label[for='"+id+"']").addClass('has-error');
     $(campo).addClass('has-error');
 	$(campo).addClass('is-invalid');
 

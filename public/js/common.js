@@ -1705,6 +1705,7 @@ $(document).ready(function () {
 /*************************** FUNCIONES SOBRE MODAL DE COOKIES **************************/
 /***************************************************************************************/
 function acceptAllCookies() {
+	updateConsent();
 	fetch('/accept-all-cookies', {
 		method: 'POST',
 		headers: {
@@ -1738,7 +1739,9 @@ function savePreferencesCookies() {
 
 	const isAnalysisActive = $("[name='permission_analysis']").is(":checked");
 	const isAdvertisingActive = $("[name='permission_advertising']").is(":checked");
-
+	if(isAnalysisActive){
+		updateConsent();
+	}
 	const data = {
 		'analysis': isAnalysisActive ? 1 : 0,
 		'advertising': isAdvertisingActive ? 1 : 0
@@ -1771,6 +1774,17 @@ function saveConfigurationCookies(data) {
 	});
 }
 
+function updateConsent(){
+	if (typeof gtag === 'function') {
+		gtag('consent', 'update', {
+			'ad_storage': 'granted',
+			'ad_user_data': 'granted',
+			'ad_personalization': 'granted',
+			'analytics_storage': 'granted'
+		});
+	}
+
+}
 
 //
 //  Función creada para poder debugar mostrando objetos

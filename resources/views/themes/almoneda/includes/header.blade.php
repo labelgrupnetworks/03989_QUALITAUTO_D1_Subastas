@@ -52,6 +52,10 @@ if (strpos($fullname, ',')) {
                     </div>
 
                 </li>
+				@if($global['subastas']->has('H'))
+					<li><a class="color-letter flex-display link-header justify-center align-items-center"
+						href="{{ \Routing::translateSeo('subastas-historicas') }}"><span>{{ trans($theme.'-app.foot.historico')}}</span></a></li>
+                @endif
                 <li>
                     <a class="color-letter flex-display link-header justify-center align-items-center"
                         title="{{ trans($theme . '-app.foot.about-us') }}"

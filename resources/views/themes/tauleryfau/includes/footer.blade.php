@@ -60,7 +60,7 @@
                 <p class="divider"></p>
 
                 <ul>
-                    <li><a href="{{ \Routing::translateSeo('subastas') }}">{{ trans("$theme-app.foot.auctions") }}</a></li>
+                    <li><a href="{{ wpLink('wp_subastas') }}">{{ trans("$theme-app.foot.auctions") }}</a></li>
                     <li><a href="{{ wpLink('wp_calendar') }}">{{ trans("$theme-app.subastas.next_auctions") }}</a></li>
                     <li><a href="{{ wpLink('wp_valuations') }}">{{ trans("$theme-app.foot.free_valuations") }}</a></li>
                     <li><a href="{{ wpLink('wp_sell_coins') }}">{{ trans("$theme-app.foot.consign_coins") }}</a></li>

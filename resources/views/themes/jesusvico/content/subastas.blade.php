@@ -16,23 +16,19 @@
 
 <div class="auctions-wrapper mt-3">
 	<div class="container">
-		<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
-			@foreach ($auctionsForYears as $year => $auctions)
-				<li class="nav-item" role="presentation">
-					@if ($isHistoric)
+		@if ($isHistoric)
+			<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<li class="nav-item" role="presentation">
 						<button class="nav-link p-nav-items-auc {{ $loop->last ? 'active' : '' }}" id="tab-{{ $year }}"
 							data-bs-toggle="tab" data-bs-target="#tab-panel-{{ $year }}" type="button" role="tab"
 							aria-controls="tab-panel-{{ $year }}" aria-selected="{{ $loop->last ? 'true' : 'false' }}">
 							<h2>{{ $year }}</h2>
 						</button>
-					@else
-						<div class="year-border m-nav-items-auc">
-							<h2>{{ $year }}</h2>
-						</div>
-					@endif
-				</li>
-			@endforeach
-		</ul>
+					</li>
+				@endforeach
+			</ul>
+		@endif
 
 		@if ($isHistoric)
 

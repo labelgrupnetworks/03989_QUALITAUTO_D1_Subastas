@@ -96,3 +96,6 @@ Route::get('/auth/zoho', 'externalws\bogota\ZohoController@getTokensWithGrantCod
 Route::get('/zoho/export', 'externalws\bogota\ZohoController@exportClientsToZoho')->name('zoho.export');
 
 
+#ALMONEDA
+Route::post('/api-ajax/lots-destacados-grid', 'ContentController@getAjaxGridLotesDestacados');
+

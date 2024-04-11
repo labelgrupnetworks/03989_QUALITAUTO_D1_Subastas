@@ -236,6 +236,70 @@ $(() => {
 			$(this).removeClass("has-content");
 		}
 	})
+
+	$('#ansoFrmUpdateUserInfoADV').validator().on('submit', function (e) {
+
+		if (e.isDefaultPrevented()) {
+			var text = $(".error-form-validation").html();
+			$("#insert_msgweb").html('');
+			$("#insert_msgweb").html(text);
+			$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		} else {
+
+			e.preventDefault();
+			var $this = $(this);
+
+			var error = 0;
+
+			// Validamos el nif
+			if ($('input[name=nif]').val() == '') {
+				$('input[name=nif]').addClass('effect-26').addClass('has-error');
+				error++;
+			} else {
+				$('input[name=nif]').removeClass('effect-26').removeClass('has-error');
+			}
+
+			if (error > 0) {
+				// Mostrar popup de error
+				var text = $(".error-form-validation").html();
+				$("#insert_msgweb").html('');
+				$("#insert_msgweb").html(text);
+				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+				return false;
+			}
+
+			$('button', $this).attr('disabled', 'disabled');
+			// Datos correctos enviamos ajax
+			var form_update_data = new FormData($this[0]);
+			console.log(form_update_data);
+			$.ajax({
+				type: "POST",
+				url: '/api-ajax/client/update',
+				data: form_update_data,
+				contentType: false,
+    			processData: false,
+				beforeSend: function () {
+					$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
+				},
+				success: function (response) {
+
+					$('button', $this).attr('disabled', false);
+
+					res = jQuery.parseJSON(response);
+
+					if (res.err == 1) {
+						$('.col_reg_form').html('<div class="alert alert-danger">' + messages.error[res.msg] + '</div>');
+					} else {
+						$('.col_reg_form').html('<div class="alert alert-success">' + messages.success[res.msg] + '</div>');
+					}
+				}
+
+			});
+
+			$('button', $this).attr('disabled', false);
+
+		}
+	});
 });
 
 function toogleAccordionFaqs(event) {

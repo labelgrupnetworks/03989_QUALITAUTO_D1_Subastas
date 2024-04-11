@@ -712,14 +712,6 @@ class UserController extends Controller
 			}
 		}
 
-		$info_nombres_vacios = false;
-		if (Request::input('pri_emp') == 'F' && (empty(Request::input('usuario')) || empty(Request::input('last_name')))) {
-			$info_nombres_vacios = true;
-		}
-		if (Request::input('pri_emp') == 'J' && (empty(Request::input('contact')) || empty(Request::input('rsoc_cli')))) {
-			$info_nombres_vacios = true;
-		}
-
         # Tipo de registro, almacenado en WEB_CONFIG dentro de app
         //Request::input('regtype');
 
@@ -732,7 +724,6 @@ class UserController extends Controller
 			|| $correos_diferentes
 			|| $user_id_incorrecto
 			|| $fechas_exageradas
-			|| $info_nombres_vacios
 			|| $validator->fails()
 		)
         {
@@ -1513,6 +1504,11 @@ class UserController extends Controller
 
 	private function saveImages($request, $cod_cli)
 	{
+		if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			$this->saveDni($request, $cod_cli, 'dni1', User::getUserNIF($cod_cli) . 'A');
+			$this->saveDni($request, $cod_cli, 'dni2', User::getUserNIF($cod_cli) . 'R');
+			return;
+		}
 		$this->saveDni($request, $cod_cli, 'dni1');
 		$this->saveDni($request, $cod_cli, 'dni2');
 	}
@@ -1520,14 +1516,16 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if(Config::get('app.dni_in_storage', false)) {
+		if (Config::get('app.dni_in_storage', false) == "dni-files") {
 			return storage_path("app/files/dni/$emp/$cod_cli/files/");
+		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			return storage_path("app/files/CLI/$emp/$cod_cli/documentation/");
 		}
 
 		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
 	}
 
-	public function saveDni($request, $cod_cli, $fileName)
+	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
 	{
 		try {
 			$file = $request->file($fileName);
@@ -1535,7 +1533,7 @@ class UserController extends Controller
 				return false;
 			}
 
-			$filename = $fileName . '.' . $file->getClientOriginalExtension();
+			$filename = ($nameOfFile ? $nameOfFile : $fileName) . '.' . $file->getClientOriginalExtension();
 			$destinationPath = $this->dniPath($cod_cli);
 
 			if(!is_dir($destinationPath)){
@@ -1569,30 +1567,41 @@ class UserController extends Controller
 		}
 	}
 
-	public function updateCIFImages($request, $cod_cli)
+	public function updateCIFImages($request, $cod_cli, $nif)
 	{
 		try {
 
 			$images = $this->getCIFImages($cod_cli);
 
-			$dni1 = "dni1";
-			$dni2 = "dni2";
+			$dni1Input = "dni1";
+			$dni2Input = "dni2";
+
+			# Esta ruta es la ruta que usa Ansorena y el nombre de los archivos para enlazar con el ERP
+			$routeCliDocumentation =Config::get('app.dni_in_storage', false) == "cli-documentation";
+
+			if ($routeCliDocumentation) {
+				$dni1 = $nif."A";
+				$dni2 = $nif."R";
+			}
+
 			$destinationPath = $this->dniPath($cod_cli);
 
-			if (isset($request[$dni1])) {
-				$file = $request[$dni1];
-				$filename = $dni1 . '.' . $file->getClientOriginalExtension();
-				if (isset($images[$dni1])) {
-					unlink($images[$dni1]);
+			if (isset($request[$dni1Input])) {
+				$file = $request[$dni1Input];
+				$dni1name = $routeCliDocumentation ? $dni1 : $dni1Input;
+				$filename = $dni1name . '.' . $file->getClientOriginalExtension();
+				if (isset($images[$dni1name])) {
+					unlink($images[$dni1name]);
 				}
 				$file->move($destinationPath, $filename);
 			}
 
-			if (isset($request[$dni2])) {
-				$file2 = $request[$dni2];
-				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
-				if (isset($images[$dni2])) {
-					unlink($images[$dni2]);
+			if (isset($request[$dni2Input])) {
+				$file2 = $request[$dni2Input];
+				$dni2name = $routeCliDocumentation ? $dni2 : $dni2Input;
+				$filename2 = $dni2name . '.' . $file2->getClientOriginalExtension();
+				if (isset($images[$dni2name])) {
+					unlink($images[$dni2name]);
 				}
 				$file2->move($destinationPath, $filename2);
 			}
@@ -2270,7 +2279,9 @@ class UserController extends Controller
 			$news->newFamilies();
         }
 
-		$Update->nif = Request::input('nif', null);
+		if (Request::input('nif', null)) {
+			$Update->nif = Request::input('nif');
+		}
 
 		//Separo los configs ya que algunos clientes solo necesitan actualizar una de las dos cosas
 		if(Config::get('app.user_panel_cc', false)) {
@@ -2278,8 +2289,8 @@ class UserController extends Controller
 		}
 
 		if(Config::get('app.user_panel_cif', false)) {
-			if (Request::file('dni1') || Request::file('dni2')) {
-				$this->updateCIFImages(Request::all(), $Update->cod_cli);
+			if (Request::has('dni1') || Request::has('dni2')) {
+				$this->updateCIFImages(Request::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
 
@@ -2359,6 +2370,13 @@ class UserController extends Controller
 
              $email->setTo(Config::get('app.admin_email'));
              $email->setHtml($emailOptions['camposHtml']);
+
+			 if (Config::get('app.user_panel_cif', false)) {
+				$nifAdjuntos = $this->getCIFImages($Update->cod_cli);
+				if(!empty($nifAdjuntos)){
+					$email->setAttachments($nifAdjuntos);
+				}
+			 }
 
               if ($email->send_email()){
                   $response = array(
@@ -4937,10 +4955,10 @@ class UserController extends Controller
 		}
 	  }
 
-	private function checkValidCIF ($cif) {
+	  private function checkValidCIF ($cif) {
 		$cif_codes = 'JABCDEFGHI';
-
-		$pattern = "/^[A-Z]{1}\d{5,8}[A-Z]{1}?$/";
+		#hay que permitir dos tipos de CIF, los que acaban con letra y los que no
+		$pattern = "/^[A-Z]{1}\d{5,8}[A-Z]?$/";
 		if (!preg_match ($pattern, $cif)) {
 		  return false;
 		}
@@ -4950,6 +4968,7 @@ class UserController extends Controller
 
 		if (preg_match ('/^[ABCDEFGHJNPQRSUVW]{1}/', $cif)) {
 		  if (in_array ($cif[0], array ('A', 'B', 'E', 'H'))) {
+
 			// Numerico
 			return ($cif[8] == $n);
 		  } elseif (in_array ($cif[0], array ('K', 'P', 'Q', 'S'))) {
