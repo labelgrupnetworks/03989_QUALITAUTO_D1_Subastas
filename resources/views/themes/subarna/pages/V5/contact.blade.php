@@ -108,7 +108,7 @@
 		<div class="background-contact-form">
 			<div class="container padding-contact-sections">
 				<h2 class="fs-xxxlarge">TE LEEMOS AQUÍ</h2>
-				<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
+				<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()" enctype="multipart/form-data">
 					{!! $data['formulario']['_token'] !!}
 					<div class="row">
 						<div class="col-xs-12">
@@ -158,7 +158,7 @@
 											Tamaño total, no superior a 20MB.</p>
 									</div>
 								</div>
-								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="imagen[]" multiple=""
+								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="imagenes[]" multiple=""
 									required="">
 								<div class="contact-images-preview"></div>
 							</div>

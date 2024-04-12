@@ -59,12 +59,17 @@ class ContactController extends Controller
 		// Recogemos la info
 		$data = $request->all();
 
+		#TODO: Poner un config para activar todo esto
+		$files = $request->file('imagenes');
+
 		// Lista de emails baneados por spam y que no son captados por el recaptcha
 		$bannedsEmails = ['eric.jones.z.mail@gmail.com'];
 		$isEmailBanned = in_array(trim($data['email']), $bannedsEmails);
 		if ($isEmailBanned) {
 			return MessageLib::errorMessage("recaptcha_incorrect");
 		}
+
+
 
 		if (Config::get('app.codRecaptchaEmail', false) || Config::get('app.captcha_v3', false)) {
 			$token = $request->input('captcha_token');
@@ -101,9 +106,14 @@ class ContactController extends Controller
 				$email->setCc($data['email_cc']);
 			}
 
+			if ($files) {
+				$email->attachments = self::setFilesToAttach($files);
+			}
+
 			$email->send_email();
 		}
 
+		self::deleteTempAttachFiles();
 
 		// Enviamos el email de confirmación al usuario
 
@@ -135,5 +145,62 @@ class ContactController extends Controller
 		$data['formulario']['SUBMIT'] = Formlib::Submit(trans(Config::get('app.theme') . '-app.login_register.acceder'), "contactForm");
 
 		return View::make('pages.V5.administradores_concursales', array('data' => $data));
+	}
+
+	private function setFilesToAttach($files)
+	{
+		$filesToAttach = array();
+		if ($files) {
+
+			$pathToStore = storage_path('app/temp/contact/attach/files/');
+
+			if (!is_dir($pathToStore)) {
+				mkdir($pathToStore, 0755, true);
+			}
+
+			foreach ($files as $key => $file) {
+				$filename = $key . '.' . $file->getClientOriginalExtension();
+
+				$file->move($pathToStore, $filename);
+
+				$filesToAttach[$key] = $pathToStore . $filename;
+
+				/* $pathexploded = explode('\\', $file->getRealPath());
+				$pathexploded[count($pathexploded) - 1] = $file->getClientOriginalName();
+				$newPath = implode('/', $pathexploded);
+                $filesToAttach[$key] = $newPath;
+                $filesToAttach[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $file->getRealPath(),
+                    'mime' => $file->getClientMimeType()
+                ]; */
+            }
+		}
+		return $filesToAttach;
+	}
+
+	private function deleteTempAttachFiles()
+	{
+		$filesToDelete = self::getTempAttachFiles();
+		if ($filesToDelete) {
+			foreach ($filesToDelete as $file) {
+				if (file_exists($file)) {
+					unlink($file);
+				}
+			}
+		}
+	}
+
+	private function getTempAttachFiles() {
+		$files = glob(storage_path('temp/contact/attach/files/') . '*', GLOB_BRACE);
+
+		$existingFiles = [];
+
+		foreach ($files as $file) {
+			$filename = pathinfo($file, PATHINFO_FILENAME);
+			$existingFiles[$filename] = $file;
+		}
+
+		return $existingFiles;
 	}
 }

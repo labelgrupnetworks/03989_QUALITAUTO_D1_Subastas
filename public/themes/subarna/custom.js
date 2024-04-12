@@ -1256,3 +1256,61 @@ function clickControl(el){
 	}, 200);
 
 }
+
+/****************************************************************************************/
+/*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
+/****************************************************************************************/
+
+function sendContact() {
+
+	var contact_form_data = new FormData($('#contactForm')[0]);
+	$.ajax({
+		type: "POST",
+		url: "/contactSendmail",
+		data: contact_form_data,
+		processData: false,
+        contentType: false,
+		success: function (response) {
+			if (response.status == "error") {
+				showMessage(response.message);
+			} else {
+				showMessage(response, "");
+				setTimeout("location.reload()", 4000);
+			}
+		},
+		error: function (response) {
+			showMessage("Error");
+		}
+	});
+
+}
+
+/* function sendContact() {
+
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+
+	response = $("#g-recaptcha-response").val();
+
+	if (response) {
+		$.ajax({
+			type: "POST",
+			url: "/contactSendmail",
+			data: $(contactForm).serialize(),
+			success: function (response) {
+				if (response.status == "error") {
+					showMessage(response.message);
+				} else {
+					showMessage(response, "");
+					setTimeout("location.reload()", 4000);
+				}
+			},
+			error: function (response) {
+				showMessage("Error");
+			}
+		});
+	} else {
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+		showMessage(messages.error.hasErrors);
+	}
+
+} */
