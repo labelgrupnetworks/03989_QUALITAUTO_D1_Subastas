@@ -191,15 +191,17 @@ $jobs = array(
 						{!!$formulario->language!!}
 					</div>
 
-					<div class="dni-1 datos_right">
-						<label>{{ trans($theme.'-app.login_register.dni_obverse') }}</label>
-						{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = "") !!}
-					</div>
+					@if (Config::get('app.dni_in_storage', false))
+						<div class="dni-1 datos_right">
+							<label>{{ trans($theme.'-app.login_register.dni_obverse') }}</label>
+							{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = "") !!}
+						</div>
 
-					<div class="dni-2 datos_left">
-						<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
-						{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
-					</div>
+						<div class="dni-2 datos_left">
+							<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
+							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
+						</div>
+					@endif
 
 
 					<div class="clearfix"></div>
