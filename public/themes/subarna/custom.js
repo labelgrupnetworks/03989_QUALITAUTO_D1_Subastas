@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+	$(".form-control").on("focus",function() {
+        oculta_error_input_contact($(this));
+    });
+
 	//home
 	//initParallaxBanners();
 	//initBannerBlog();
@@ -1254,6 +1258,27 @@ function clickControl(el){
 	$('.slider-thumnail-container').animate({
 		scrollTop: posScroll + positionMove,
 	}, 200);
+
+}
+
+
+function oculta_error_input_contact(campo) {
+
+	id = $(campo).attr("id");
+
+    $(campo).addClass('has-content');
+
+	$("label[for="+id+"]").removeClass('has-error');
+    $(campo).removeClass('has-error');
+	$(campo).removeClass('is-invalid');
+
+    if (campo.value != "" && campo.value != null) {
+        $(campo).addClass('has-content');
+    }
+    else {
+        $(campo).removeClass('has-content');
+        $(campo).parent().removeClass('has-content');
+    }
 
 }
 
