@@ -18,8 +18,7 @@
 				<div class="row top-align-items-center">
 					<div class="col-xs-12 col-md-6">
 						<h1 class="fs-big-title">
-							¿Aun no nos <br>
-							conocemos?
+							{!! trans("$theme-app.contact.title") !!}
 						</h1>
 					</div>
 					<div class="col-xs-6">
@@ -36,26 +35,26 @@
 					<div class="contacts-articles">
 						<div class="column-contacts">
 							<div class="single-contact">
-								<p><span class="default-bold">Pintura</span></p>
+								<p><span class="default-bold">{{ trans("$theme-app.contact.paint_title") }}</span></p>
 								<p>
-									pintura@subarna.net <br>
-									<span class="default-bold">Whatsapp:</span> 616 26 38 09
+									{{ trans("$theme-app.contact.paint_mail") }} <br>
+									{!! trans("$theme-app.contact.paint_num") !!}
 								</p>
 							</div>
 							<div class="single-contact">
-								<p><span class="default-bold">Logística</span></p>
+								<p><span class="default-bold">{{ trans("$theme-app.contact.logistic_title") }}</span></p>
 								<p>
-									logistica@subarna.net <br>
-									932156518 - EXT: 3002
+									{{ trans("$theme-app.contact.logistic_mail") }} <br>
+									{{ trans("$theme-app.contact.logistic_num") }}
 								</p>
 							</div>
 						</div>
 						<div class="column-contacts">
 							<div class="single-contact">
-								<p><span class="default-bold">Antigüedades</span></p>
+								<p><span class="default-bold">{{ trans("$theme-app.contact.antiques_title") }}</span></p>
 								<p>
-									antigüedades@subarna.net <br>
-									<span class="default-bold">Whatsapp:</span> 649 35 34 23
+									{{ trans("$theme-app.contact.antiques_mail") }} <br>
+									{{ trans("$theme-app.contact.antiques_num") }}
 								</p>
 							</div>
 							<div class="single-contact">
