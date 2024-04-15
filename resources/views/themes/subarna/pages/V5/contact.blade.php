@@ -155,7 +155,7 @@
 										<p>{{ trans("$theme-app.contact.form_field_files_info") }}</p>
 									</div>
 								</div>
-								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="imagenes[]" multiple=""
+								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="images[]" multiple=""
 									required="">
 								<div class="contact-images-preview"></div>
 							</div>
