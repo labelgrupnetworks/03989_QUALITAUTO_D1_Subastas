@@ -85,6 +85,7 @@ Route::get('{lang}/user/panel/orders' . '/page/{page}', 'UserController@orderbid
 Route::get('{lang}/user/panel/allotments/outstanding', 'UserController@getAdjudicacionesPendientePago');
 Route::get('{lang}/user/panel/allotments/paid', 'UserController@getAdjudicacionesPagadas');
 Route::get('{lang}/user/panel/allotments/shopping-cart', 'UserController@getDirectSaleAdjudicaciones')->name('panel.allotment.diectsale');
+Route::get('{lang}/user/panel/allotments/proforma/{apre}-{npre}', 'UserController@getAdjudicacionesPendientePagoByProforma')->name('panel.allotment.proforma');
 Route::get('{lang}/user/panel/allotments/{cod_sub}', 'UserController@getAdjudicacionesPendientePagoBySub')->name('panel.allotment.sub');
 Route::get('{lang}/user/panel/allotments', 'UserController@getAllAdjudicaciones')->name('panel.allotments');
 Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generateAuthenticityCertificate')->name('panel.allotment.certifiacte');
@@ -93,7 +94,7 @@ Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generate
 Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
 
 Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
-Route::get('{lang}/user/panel/allotments-bills', 'UserController@getAllAllotmentsAndBills')->name('panel.allotment-bills');
+Route::get('{lang}/user/panel/allotments-bills', 'UserController@getInvoiceOverviewView')->name('panel.allotment-bills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');

@@ -11,7 +11,7 @@ use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
-use View;
+use Illuminate\Support\Facades\View;
 use Routing;
 use Illuminate\Support\Facades\Config;
 use Route;
@@ -4222,6 +4222,14 @@ class UserController extends Controller
 
     }
 
+	/**
+	 * @deprecated - Substituido por el metodo getInvoiceOverviewView
+	 * Mantener durante las pruebas por si surje alguna diferencia o duda.
+	 *
+	 * Pagina para gestionar adjudicaciones y facturas desde un solo lugar
+	 * Por el momento (04/2024) solamente lo utiliza Tauler.
+	 * @return \Illuminate\View\View
+	 */
 	public function getAllAllotmentsAndBills()
 	{
 		$seo = new \Stdclass();
@@ -4258,11 +4266,11 @@ class UserController extends Controller
 
 		//extraer variables para acomodar datos
 		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
-		['adjudicaciones' => $pendingAllotments, 'js_item' => $allotmetsForJs] = $pendingAllotmentsData;
+		['adjudicaciones' => $pendingAllotments] = $pendingAllotmentsData;
 		['adjudicaciones_pag' => $payedAllotments] = $payedAllotmentsData;
 
 		//billsForJs solo sería necesario si permitimos checkear las facturas
-		['pending' => $pendingBills, 'js_item' => $billsForJs] = $pendingBillsData;
+		['pending' => $pendingBills] = $pendingBillsData;
 
 		//agrupaciones por subasta
 		$auctionsIdsPending = $pendingAllotments->pluck('sub_csub')->merge($pendingBills->where('tipo_tv', 'L')->pluck('cod_sub'));
@@ -4292,8 +4300,95 @@ class UserController extends Controller
 			'envio' => $envio,
 			'currency' => (new Subasta())->getCurrency(),
 			'payedForAuctions' => $payedForAuctions,
-			'pendingForAuctions' => $pendingForAuctions,
-			'allotmetsForJs' => $allotmetsForJs,
+			'pendingForAuctions' => $pendingForAuctions
+		];
+
+		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
+	}
+
+	public function getInvoiceOverviewView(HttpRequest $request)
+	{
+		$seo = new \Stdclass();
+		$seo->noindex_follow = true;
+
+		if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data['data'] = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+			$data['seo'] = $seo;
+            return View::make('front::pages.not-logged', $data);
+        }
+
+		$cod_cli = session('user.cod');
+
+		//user data
+		$userModel = User::factory()
+			->setCodCli($cod_cli)
+			->setItemsPerPage('all');
+
+		$user =	$userModel->getUser();
+
+		$addres = new Address();
+        $addres->cod_cli = $user->cod_cli;
+        $envio = $addres->getUserShippingAddress();
+
+		//allotments
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio);
+
+		//bills
+		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
+		//por lo que obtener las dos en esta página sería duplicar información
+
+		$pendingBillsData = $this->getPendingBillsData($user);
+		$payedBillsData =  $this->getPayedBillsData($user);
+
+		//extraer variables para acomodar datos
+		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
+		['adjudicaciones' => $pendingAllotments] = $pendingAllotmentsData;
+		['adjudicaciones_pag' => $payedAllotments] = $payedAllotmentsData;
+
+		['pending' => $pendingBills] = $pendingBillsData;
+		['bills' => $billsPayeds] = $payedBillsData;
+
+		//extract array with only afra and nfra from payedBills
+		$billsIds = $billsPayeds->map(function($item) {
+			return [
+				'afra' => $item->afra_cobro1,
+				'nfra' => $item->nfra_cobro1
+			];
+		});
+
+		$billsPayedFollowUps = FxDvc0Seg::getFollowUpByBills($billsIds);
+		$billsPayeds->each(function($item) use ($billsPayedFollowUps) {
+			$followUp = $billsPayedFollowUps->where('anum_dvc0seg', $item->afra_cobro1)
+				->where('num_dvc0seg', $item->nfra_cobro1)
+				->first();
+
+			$item->followUp = $followUp;
+		});
+
+		$profomaInvoicesPendings = $pendingAllotments->groupBy(function($item) {
+			return "$item->apre_csub-$item->npre_csub";
+		});
+
+		//prefacturas pagadas pero aún no facturadas
+		$profomaInvoicesPayeds = $payedAllotments->where('fac_csub', '!=', 'S')->groupBy(function($item) {
+			return "$item->apre_csub-$item->npre_csub";
+		});
+
+		//Las facturas tipo T (de texto) no se están mostrando.
+		//En caso de necesitarlas clonar el pendingBills y obtener solo las de tipo T
+		//ya que los campos obtenidos son distintos
+		$billsPending = $pendingBills->where('tipo_tv', 'L');
+
+		$data = [
+            'user' => $user,
+			'seo' => $seo,
+			'envio' => $envio,
+			'profomaInvoicesPendings' => $profomaInvoicesPendings,
+			'profomaInvoicesPayeds' => $profomaInvoicesPayeds,
+			'billsPending' => $billsPending,
+			'billsPayeds' => $billsPayeds
 		];
 
 		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
@@ -4400,6 +4495,10 @@ class UserController extends Controller
 			$adjudicacionFormat->licencia_exportacion = $pagoController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
 		}
 
+		$adjudicacionFormat->imp_invoice = $adjudicacion->himp_csub + $adjudicacion->base_csub + $adjudicacionFormat->base_csub_iva;
+		$adjudicacionFormat->imp_envio = $pagoController->gastosEnvio($adjudicacionFormat->imp_invoice);
+		$adjudicacionFormat->total_imp_invoice = $adjudicacionFormat->imp_invoice + $adjudicacionFormat->imp_envio['imp'] + $adjudicacionFormat->imp_envio['iva'] + $adjudicacionFormat->licencia_exportacion;
+
 		return $adjudicacionFormat;
 	}
 
@@ -4409,9 +4508,10 @@ class UserController extends Controller
 		$facturas->cod_cli = $user->cod_cli;
 
         $pendientes = $facturas->pending_bills();
-		$inf_fact = array();
-        $tipo_tv = array();
-        $js_fact = array();
+
+		$inf_fact = [];
+        $tipo_tv = [];
+        $js_fact = [];
 
 		foreach($pendientes as $val_pendiente){
 
@@ -4459,7 +4559,8 @@ class UserController extends Controller
 					}
 					//=== L
 					else {
-						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+						$linePrice = $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+						$totalPrice += $linePrice;
 					}
 				}
 			}
@@ -4485,7 +4586,7 @@ class UserController extends Controller
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-		$pagado = $facturas->paid_bill();
+		$pagado = $facturas->paid_bill(false);
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
 		$totalPrice = 0;
@@ -4511,6 +4612,8 @@ class UserController extends Controller
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}
 
+				$fact_pag->inf_fact = $facturaTexto;
+
 
 			}elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
 
@@ -4529,6 +4632,7 @@ class UserController extends Controller
 					}
 				}
 
+				$fact_pag->inf_fact = $facturasSubasta;
 			}
 
 			$fact_pag->total_price = $totalPrice;
@@ -4654,56 +4758,90 @@ class UserController extends Controller
 	}
 
 
-	public function getAdjudicacionesPendientePagoBySub()
+	public function getAdjudicacionesPendientePagoBySub($lang, $cod_sub)
     {
-        $subasta = new Subasta();
-        $parametrosSub= $subasta->getParametersSub();
-        if(!Session::has('user')){
+		if(!Session::has('user')){
             $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
-            $data = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+            $data = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
             return View::make('front::pages.not-logged', array('data' => $data));
         }
-
-        $emp  = Config::get('app.emp');
-        $gemp  = Config::get('app.gemp');
-        # Lista de códigos de licitacion del usuario en sesion
 
         $User = new User();
         $User->cod_cli = Session::get('user.cod');
         $User->itemsPerPage = 'all';
 
-        $adjudicaciones = $User->getAdjudicacionesPagar('N', request('cod_sub'));
+        $adjudicaciones = $User->getAdjudicacionesPagar('N', $cod_sub);
 
 		if($adjudicaciones->count() == 0){
 			return view('errors.404');
 		}
 
-		$user_cli=$User->getUser($User->cod_cli);
+		$data = $this->getAdjudicacionesPendiente($User, $adjudicaciones);
 
-        $pago_controller = new PaymentsController();
-        $pago_modelo = new Payments();
+        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', ['data' => $data]);
+	}
 
-        $user_cod = $User->cod_cli;
+	public function getAdjudicacionesPendientePagoByProforma(HttpRequest $request, $lang, $apre, $npre)
+    {
+        if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+            return View::make('front::pages.not-logged', array('data' => $data));
+        }
 
-        $addres = new Address();
-        $addres->cod_cli = $User->cod_cli;
-        $envio = $addres->getUserShippingAddress();
+        $User = new User();
+        $User->cod_cli = Session::get('user.cod');
+        $User->itemsPerPage = 'all';
 
-        $iva = $pago_controller->getIva($emp,date ("Y-m-d"));
-		$tipo_iva = $pago_controller->user_has_Iva($gemp,$user_cod);
+		$criteria = [
+			'apre_csub' => $apre,
+			'npre_csub' => $npre,
+		];
+
+        $adjudicaciones = $User->getAdjudicacionesPagar('N', null, $criteria);
+
+		if($adjudicaciones->count() == 0){
+			return view('errors.404');
+		}
+
+		$data = $this->getAdjudicacionesPendiente($User, $adjudicaciones);
+
+        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', ['data' => $data]);
+	}
+
+	private function getAdjudicacionesPendiente($User, $adjudicaciones)
+	{
+		$emp  = Config::get('app.emp');
+		$gemp  = Config::get('app.gemp');
+		$subasta = new Subasta();
+		$parametrosSub = $subasta->getParametersSub();
+
+		$user_cli = $User->getUser($User->cod_cli);
+
+		$pago_controller = new PaymentsController();
+		//$pago_modelo = new Payments();
+
+		$user_cod = $User->cod_cli;
+
+		$addres = new Address();
+		$addres->cod_cli = $User->cod_cli;
+		$envio = $addres->getUserShippingAddress();
+
+		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
+		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user_cod);
 
 		/**
 		 * Aunque solamente tenga una adjudicación, algunos metodos que la reciben esperan un array
 		 * por lo que no se puede convertir en un objecto individual
 		 * */
-        foreach($adjudicaciones as $adj){
-            $adj->formatted_imp_asigl1 = \Tools::moneyFormat($adj->himp_csub);
-            $adj->imagen = $subasta->getLoteImg($adj);
-            $adj->date = \Tools::euroDate($adj->fec_asigl1, $adj->hora_asigl1 );
-            $adj->imp_asigl1 = $adj->himp_csub;
-            $adj->base_csub_iva = $pago_controller->calculate_iva($tipo_iva->tipo,$iva,$adj->base_csub);
-            //Modificamos ref_asigl0 de . a _ porque si hay punto el js de calclulo de pagar no calcula bien
-            $adj->ref_asigl0 = str_replace('.','_',$adj->ref_asigl0);
+		foreach ($adjudicaciones as $adj) {
+			$adj->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($adj->himp_csub);
+			$adj->imagen = $subasta->getLoteImg($adj);
+			$adj->date = ToolsServiceProvider::euroDate($adj->fec_asigl1, $adj->hora_asigl1);
+			$adj->imp_asigl1 = $adj->himp_csub;
+			$adj->base_csub_iva = $pago_controller->calculate_iva($tipo_iva->tipo, $iva, $adj->base_csub);
+			//Modificamos ref_asigl0 de . a _ porque si hay punto el js de calclulo de pagar no calcula bien
+			$adj->ref_asigl0 = str_replace('.', '_', $adj->ref_asigl0);
 			$adj->days_extras_alm = $this->days_extras_almacen($adj->fecha_csub);
 
 			//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
@@ -4711,15 +4849,13 @@ class UserController extends Controller
 			$exportacion = $subasta->hasExportLicense($adj->num_hces1, $adj->lin_hces1);
 
 			$adj->licencia_exportacion = 0;
-			if($exportacion){
+			if ($exportacion) {
 				$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
 				$adj->licencia_exportacion = $pago_controller->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user_cli->codpais_cli, $adj->himp_csub);
 			}
-
-
 		}
-        //Podemos saber que iva va a tener el cliente
-        $user_cli->iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo,$iva);
+		//Podemos saber que iva va a tener el cliente
+		$user_cli->iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo, $iva);
 
 		//paises
 		$countries = FsPaises::select('cod_paises', 'des_paises')->JoinLangPaises()->orderby("des_paises")->pluck('des_paises', 'cod_paises');
@@ -4729,18 +4865,15 @@ class UserController extends Controller
 		 * @todo pendiente
 		 */
 
-        $sub = new Subasta();
-        $data = array(
-                    'adjudicaciones' => $adjudicaciones,
-                    'currency'       => $sub->getCurrency(),
-                    'envio'    =>$envio,
-                    'user'  => $user_cli,
-                    'js_item'=>$this->generatePreciosLotAdj($adjudicaciones),
-					'price_exportacion' => floatval($parametrosSub->licexp_prmsub),
-					'countries' => $countries
-				);
-
-        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', array('data' => $data));
+		return [
+			'adjudicaciones' => $adjudicaciones,
+			'currency'       => $subasta->getCurrency(),
+			'envio'    => $envio,
+			'user'  => $user_cli,
+			'js_item' => $this->generatePreciosLotAdj($adjudicaciones),
+			'price_exportacion' => floatval($parametrosSub->licexp_prmsub),
+			'countries' => $countries
+		];
 	}
 
 	public function updateWallet(HttpRequest $request)

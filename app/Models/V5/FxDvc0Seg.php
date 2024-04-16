@@ -73,6 +73,37 @@ class FxDvc0Seg extends Model
 		 */
 	}
 
+	public static function getFollowUpByBills($billsIds)
+	{
+		return self::select('anum_dvc0seg','num_dvc0seg', 'des_estadosseg', 'fecha_dvc0seg', 'lin_dvc0seg', 'idseg_dvc0seg')
+			->joinFxEstadosSeg()
+			->whereBills($billsIds)
+			->whereOnlyMaxLine()
+			->orderBy('lin_dvc0seg', 'desc')
+			->get();
+	}
+
+	 function scopeWhereOnlyMaxLine($query)
+	{
+		$query->where('lin_dvc0seg', function($query){
+			$query->selectRaw('max(FXDVC0SEG2.lin_dvc0seg)')
+				->from('FXDVC0SEG as FXDVC0SEG2')
+				->whereColumn('FXDVC0SEG.anum_dvc0seg', 'FXDVC0SEG2.anum_dvc0seg')
+				->whereColumn('FXDVC0SEG.num_dvc0seg', 'FXDVC0SEG2.num_dvc0seg')
+				->whereColumn('FXDVC0SEG.emp_dvc0seg', 'FXDVC0SEG2.emp_dvc0seg');
+		});
+	}
+
+	public function scopeWhereBills($query, $billsIds)
+	{
+		foreach ($billsIds as $bill) {
+			$query->orWhere([
+				['anum_dvc0seg', $bill['afra']],
+				['num_dvc0seg', $bill['nfra']]
+			]);
+		}
+	}
+
 	/**
 	 * Fechas de entrega estimada para Tauler
 	 */

@@ -26,7 +26,7 @@ class Facturas extends Model
 
         $gemp = config('app.gemp');
         $sql = DB::table('FXPCOB')
-                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
+                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FGSUB.DES_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
                 ->Join('FXCLI',function($join) use($gemp){
                     $join->on('FXPCOB.COD_PCOB','=','FXCLI.COD_CLI')
                     ->where('GEMP_CLI','=',$gemp);
@@ -78,7 +78,7 @@ class Facturas extends Model
                ->first();
     }
 
-    public function paid_bill(){
+    public function paid_bill($showWhenPending = true){
         $sql =  DB::TABLE('FXCOBRO1')
                 ->select('afra_cobro1,nfra_cobro1,tv_contav,imp_cobro1,fec_cobro1')
                 ->Join('FSCONTAV',function($join){
@@ -86,8 +86,13 @@ class Facturas extends Model
                     ->on('FSCONTAV.PER_CONTAV','=','SUBSTR(FXCOBRO1.afra_cobro1,2)')
                     ->where('EMP_contav','=',Config::get('app.emp'));
                 })
+
                 ->where('EMP_COBRO1',\Config::get('app.emp'))
-                ->where('CLI_COBRO1',$this->cod_cli);
+                ->where('CLI_COBRO1',$this->cod_cli)
+				->when(!$showWhenPending, function ($query) {
+					$query->leftjoin('FXPCOB', 'FXPCOB.ANUM_PCOB = FXCOBRO1.AFRA_COBRO1 AND FXPCOB.NUM_PCOB = FXCOBRO1.NFRA_COBRO1 AND FXPCOB.EMP_PCOB = FXCOBRO1.EMP_COBRO1')
+						->whereNull('FXPCOB.ANUM_PCOB');
+				});
                 if(!empty(\Config::get('app.allBills'))){
                     $sql->whereIn('tv_contav',[\Config::get('app.allBills')]);
                 }

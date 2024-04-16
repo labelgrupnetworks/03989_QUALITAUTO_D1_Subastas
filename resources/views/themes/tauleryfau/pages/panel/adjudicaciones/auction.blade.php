@@ -1,63 +1,44 @@
-{{-- al acabar comprobar el numero de consultas total del nuevo metodo y el antiguo --}}
-
 @php
-$withAuction = !empty($auction);
-$codSub = $withAuction ? $auction->cod_sub : 'withoutsub';
-$name = $withAuction ? $auction->name : 'Sin subasta';
-$totalBillsImport = 0;
-$pdfBills = [];
+    $totalInvoice = $document->himp_csub + $document->base_csub + $document->base_csub_iva;
+    $state = ['class' => 'alert', 'text' => 'Pendiente'];
 @endphp
 
-<a aria-expanded="true" data-toggle="collapse" href="#{{ $codSub }}_{{ $isPayed }}">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            {{ $name }}
-        </h4>
-        <i class="fas fa-sort-down"></i>
+<div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}">
+    <div class="invoice-auction">
+        <p>
+            {{ date('d/m/Y', strtotime($document->fecha_csub)) }}
+        </p>
+        <p class="allotment-invoice_cod">
+            <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
+            <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+        </p>
+        <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
+
+        <p class="js-divisa" value="{{ $document->total_imp_invoice ?? 0 }}">
+            {!! $currency->getPriceSymbol(2, $document->total_imp_invoice ?? 0) !!}
+        </p>
+        <p class="allotment-invoice_state">
+            <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
+        </p>
+        <p class="allotment-invoice_pay-buttons">
+            @if ($document->compraweb_sub == 'S')
+
+                <a class="btn btn-color btn-blue"
+                    href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+                    cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+
+                @if (!empty($document->prefactura))
+                    <a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>
+                        <i class="fas fa-file-pdf fa-2x"></i>
+                    </a>
+                @endif
+            @endif
+        </p>
+        <div class="actions">
+            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $document->cod_sub }}"
+                role="tab" aria-controls="settings">
+                Ver detalle
+            </a>
+        </div>
     </div>
-</a>
-
-<div id="{{ $codSub }}_{{ $isPayed }}"
-    class="table-responsive-custom panel-collapse collapse js-auction-block">
-
-    <form class="js-pay-bill" action="/gateway/pagarFacturasWeb" method="POST">
-
-		@foreach ($bills as $bill)
-            @php
-                $totalBillsImport += $bill->imp_pcob;
-				if(!empty($bill->factura)){
-					$pdfBills[] = "/factura/$bill->anum_pcob-$bill->num_pcob";
-				}
-            @endphp
-
-            @include('pages.panel.adjudicaciones.bill', ['bill' => $bill, 'isPayed' => $isPayed])
-
-			{{-- Bótones --}}
-			@if($loop->last && $totalBillsImport > 0)
-			<div class="text-right factura-buttons">
-                <input type="hidden" name="paymethod" value="creditcard">
-
-				@foreach ($pdfBills as $url)
-				<a href="{{ $url }}" download
-					class="btn btn-color factura-button mb-1">{{ trans($theme . '-app.user_panel.invoice_pdf') }}</a>
-				@endforeach
-
-                <a class="btn btn-color btn-gold mb-1" data-toggle="modal" data-target="#largeModal" data-type="bill"
-                    data-codsub="{{ $codSub }}" data-value={{$totalBillsImport}}
-                    data-concept="{{ explode('-', $name)[0] }}-{{ \Session::get('user.cod') }}">{{ trans("$theme-app.user_panel.bank_transfer") }}</a>
-
-                <button type="submit"
-                    class="btn btn-color btn-blue mb-1">{{ trans("$theme-app.user_panel.pay_now") }}</a>
-
-            </div>
-			@endif
-
-        @endforeach
-
-    </form>
-
-    @foreach ($allotments as $allotment)
-        @include('pages.panel.adjudicaciones.allotment', ['lot' => $allotment, 'isPayed' => $isPayed])
-    @endforeach
-
 </div>

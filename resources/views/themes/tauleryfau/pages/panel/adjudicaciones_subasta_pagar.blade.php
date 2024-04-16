@@ -33,15 +33,10 @@ $codPais_clid = $envioPorDefecto->codpais_clid ?? $data['user']->codpais_cli ?? 
     var currency = $.parseJSON('<?php  echo str_replace("\u0022","\\\\\"",json_encode($divisas,JSON_HEX_QUOT)); ?>');
 </script>
 
-@include('pages.panel.principal_bar')
 
 <section class="payment">
 	<div class="container">
 		<div class="row">
-
-			{{--<div class="col-xs-12">
-				@include('pages.panel.menu')
-            </div>--}}
 
 			<div class="col-xs-12">
 				<div class="user-datas-title flex align-items-center">

@@ -43,6 +43,15 @@
 	--btn-color-hover: #fff;
 }
 
+.btn-lb-secondary {
+	--btn-bg: var(--color-blue);
+	--btn-bc: var(--color-blue);
+	--btn-color: #fff;
+	--btn-bg-hover: var(--color-gold);
+	--btn-bc-hover: var(--color-gold);
+	--btn-color-hover: #fff;
+}
+
 .btn-lb-outline {
 	--btn-bg: transparent;
 	--btn-bc: var(--color-gold);
@@ -366,12 +375,16 @@ select#actual_currency {
 	}
 }
 
-.sales-page {
+.sales-page, .allotments-page {
 	/* padding: 15px;
 	padding-top: 0; */
 	color: var(--color-blue);
 	padding-bottom: 15px;
+}
 
+.allotments-page .panel-title {
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 .sales-page .sticky-section {
@@ -480,7 +493,7 @@ select#actual_currency {
 	}
 }
 
-.sales-auctions {
+.sales-auctions, .alltoments-auctions {
 	--max-width: 1200px;
 	--line-height: 1.2;
 	--min-height: calc(2 * var(--line-height) * 1em);
@@ -499,7 +512,12 @@ select#actual_currency {
 	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
 }
 
-.sales-auctions p {
+.alltoments-auctions {
+	--grid-columns-desktop: 8% 16% 8% 12% minmax(16%, auto) 16% 1fr;
+	--grid-columns-mobile: repeat(3, 1fr) 2fr;
+}
+
+.sales-auctions, .alltoments-auctions p {
 	margin: 0;
 }
 
@@ -517,11 +535,11 @@ select#actual_currency {
 	cursor: pointer;
 }
 
-.sales-auction-wrapper:nth-child(odd) {
+:is(.sales-auction-wrapper, .invoice-wrapper):nth-child(odd) {
 	background-color: #9B9B9B1F;
 }
 
-.sales-auction-wrapper:last-child {
+:is(.sales-auction-wrapper, .invoice-wrapper):last-child {
 	border-bottom: 1px solid var(--color-gold);
 }
 
@@ -530,11 +548,11 @@ select#actual_currency {
 	font-weight: 500;
 }
 
-.sales-header-wrapper {
+.sales-header-wrapper, .alltoments-header-wrapper {
 	border-bottom: 1px solid var(--color-gold);
 }
 
-.sales-auctions_header {
+.sales-auctions_header, .alltoments-auctions_header {
 	box-sizing: content-box;
 	max-width: var(--max-width);
 	min-height: var(--min-height);
@@ -548,7 +566,7 @@ select#actual_currency {
 	gap: var(--gap);
 }
 
-.sales-auction {
+.sales-auction, .invoice-auction {
 	box-sizing: content-box;
 	max-width: var(--max-width);
 	min-height: var(--min-height);
@@ -563,41 +581,72 @@ select#actual_currency {
 	gap: var(--gap);
 }
 
-.sales-auction .badge {
+.allotment-auctions_header-imp {
+	grid-column: span 2;
+}
+
+.invoice-auction {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+:is(.sales-auction, .invoice-auction) .badge {
 	font-weight: 400;
 	padding: 6px 12px;
 	border-radius: 8px;
 }
 
-.sales-auction .badge.badge-alert {
+:is(.sales-auction, .invoice-auction) .badge.badge-alert {
 	background-color: #A81313;
 }
 
-.sales-auction .badge.badge-warning {
+:is(.sales-auction, .invoice-auction) .badge.badge-warning {
 	background-color: #C07914D9;
 }
 
-.sales-auction .badge.badge-success {
+:is(.sales-auction, .invoice-auction) .badge.badge-success {
 	background-color: #23A455;
 }
 
-.sales-auction_invoice a {
+.panel-pdf-icon {
 	display: inline-block;
 	color: #A81313;
+	transition: filter .3s linear;
 }
 
-.sales-auction_invoice a:is(:hover, :focus) {
+.panel-pdf-icon:is(:hover, :focus) {
 	color: #A81313;
+	filter: brightness(0.75);
 }
 
-.sales-auction .actions {
+:is(.sales-auction, .invoice-auction) .actions {
 	grid-column-end: -1;
 }
 
-.sales-auction .btn {
+:is(.sales-auction, .invoice-auction) .btn {
 	text-transform: inherit;
 	font-weight: inherit;
 	width: 100%;
+}
+
+.invoice-auction .allotment-invoice_state {
+	order: 5;
+	grid-column: span 2;
+}
+
+.invoice-auction .allotment-invoice_pay-buttons {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.invoice-auction .panel-pdf-icon {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.invoice-auction .actions {
+	order: 6;
 }
 
 #auction-details {
@@ -611,16 +660,25 @@ select#actual_currency {
 		text-align: left;
 	}
 
-	.sales-auctions_header {
+	.sales-auctions_header, .alltoments-auctions_header {
 		grid-template-columns: var(--grid-columns-desktop);
 	}
 
-	.sales-auction {
+	.sales-auction, .invoice-auction {
 		grid-template-columns: var(--grid-columns-desktop);
 	}
 
-	.sales-auction .btn {
+	.sales-auction .btn, .invoice-auction .btn {
 		width: auto;
+	}
+
+	.allotment-auctions_header-imp {
+		grid-column: span 1;
+	}
+
+	.invoice-auction .allotment-invoice_state, .invoice-auction .actions {
+		order: initial;
+		grid-column: span 1;
 	}
 }
 
@@ -836,3 +894,7 @@ select#actual_currency {
 		grid-area: auto;
 	}
 }
+
+/**
+ * MARK: Adjudicaciones
+ */

@@ -1,80 +1,81 @@
 {{-- Facturas --}}
 @php
-//Tauler solo recibe facturas por pagar, pero me sirve como componente para otro cliente
-$anum = ($isPayed) ? $bill->afra_cobro1 : $bill->anum_pcob;
-$num = ($isPayed) ? $bill->nfra_cobro1 : $bill->num_pcob;
-$efec = ($isPayed) ? null : $bill->efec_pcob;
-$fec = ($isPayed) ? $bill->fec_cobro1 : $bill->fec_pcob;
-$imp = ($isPayed) ? $bill->imp_cobro1 : $bill->imp_pcob;
+    //Tauler solo recibe facturas por pagar, pero me sirve como componente para otro cliente
+    $anum = $isPayed ? $document->afra_cobro1 : $document->anum_pcob;
+    $num = $isPayed ? $document->nfra_cobro1 : $document->num_pcob;
+    $efec = $isPayed ? null : $document->efec_pcob;
+    $fec = $isPayed ? $document->fec_cobro1 : $document->fec_pcob;
+    $imp = $isPayed ? $document->imp_cobro1 : $document->imp_pcob;
+
+	$url = "/factura/$anum-$num";
+
+	$state = match(true) {
+		(empty($document->followUp)) => ['class' => 'alert', 'text' => 'Pendiente'],
+		($document->followUp->idseg_dvc0seg == 1) => ['class' => 'success', 'text' => 'Pagado'],
+		($document->followUp->idseg_dvc0seg == 2) => ['class' => 'warning', 'text' => 'Tramitando exportación'],
+		($document->followUp->idseg_dvc0seg == 4) => ['class' => 'success', 'text' => 'Recogido en tienda'],
+	}
 @endphp
 
-@if ($loop->first)
+{{-- @php
+$totalBillsImport += $bill->imp_pcob;
+if(!empty($bill->factura)){
+	$pdfBills[] = "/factura/$bill->anum_pcob-$bill->num_pcob";
+}
+@endphp --}}
 
-    {{-- Cabeceras Facturas --}}
-    <div class="custom-head-wrapper bill-head">
-        <div class="bill-pdf"></div>
-        <div class="bill-description">
-            <p>{{ trans("$theme-app.user_panel.factura") }}</p>
+
+<div class="invoice-wrapper" data-type="pending-bill" data-id="{{ $id }}" data-anum="{{ $anum }}"
+    data-num="{{ $num }}" data-efec="{{ $efec ?? '' }}">
+
+
+    <div class="invoice-auction">
+        <p>
+            {{ date('d/m/Y', strtotime($fec)) }}
+        </p>
+        <p>
+            <span class="visible-md visible-lg">{{ $document->des_sub ?? '' }}</span>
+            <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+        </p>
+        <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
+        <p class="js-divisa" value="{{ $document->total_price ?? 0 }}">
+            {!! $currency->getPriceSymbol(2, $document->total_price ?? 0) !!}
+        </p>
+
+        {{-- importe pendiente de pago --}}
+        {{-- <p class="js-divisa" value="{{ $document->imp ?? 0 }}">
+            {!! $currency->getPriceSymbol(2, $document->imp ?? 0) !!}
+        </p> --}}
+
+        <p class="allotment-invoice_state">
+            <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
+        </p>
+
+        <div class="allotment-invoice_pay-buttons">
+            @if (!$isPayed)
+                @if (!empty($efec) && $document->compraweb_sub != 'N')
+                    <form class="js-pay-bill w-100" action="/gateway/pagarFacturasWeb" method="POST">
+                        <input name="factura[{{ $anum }}][{{ $num }}]" type="hidden" value="1">
+                        <button class="btn btn-lb btn-lb-secondary"
+                            type="submit">{{ trans("$theme-app.user_panel.pay_now") }}</button>
+                    </form>
+                @endif
+            @else
+                <span class="badge badge-success">Pagado</span>
+
+				@if ($isPayed || !empty($document->factura) && file_exists($document->factura))
+				<a class="panel-pdf-icon" target="_blank" href="/prefactura/{{ $url }}" download>
+					<i class="fas fa-file-pdf fa-2x"></i>
+				</a>
+            	@endif
+            @endif
         </div>
-        <div class="bill-date">
-            <p>{{ trans("$theme-app.user_panel.date") }}</p>
-        </div>
-        <div class="bill-price text-right">
-            <p>{{ trans("$theme-app.user_panel.total_fact") }}</p>
-        </div>
-        <div class="bill-pending-price text-right">
-            <p>{{ trans("$theme-app.user_panel.total_price_fact") }}</p>
-        </div>
-    </div>
-@endif
 
-<div class="bill-wrapper" data-anum="{{ $anum }}" data-num="{{ $num }}" data-efec="{{ $efec ?? '' }}">
-
-    <div class="factura_check hidden">
-        @if (!empty($efec) && $bill->compraweb_sub != 'N')
-			<input type="hidden" name="factura[{{ $anum }}][{{ $num }}]" value="1">
-        @endif
-    </div>
-
-    <div class="bill-image h-100">
-		<a target="_blank" href="/factura/{{ $anum }}-{{ $num }}" class="h-100 p-0 btn {{!empty($bill->factura) && file_exists($bill->factura) ? '' : 'disabled' }}">
-			<img class="img-responsive" src="/img/icons/pdf.png">
-		</a>
-    </div>
-
-    <div class="description" data-label="{{ trans("$theme-app.user_panel.factura") }}">
-        {{-- texto de la factura de texto --}}
-        @if (!empty($bill->inf_fact['T'][$anum][$num]))
-
-            {{ trans("$theme-app.user_panel.n_bill") }}
-            {{ $anum }}/{{ $num }}
-            <br>
-
-            @foreach ($bill->inf_fact['T'][$anum][$num] as $dvc2t)
-                {{ $dvc2t->des_dvc2t ?? '' }}
-            @endforeach
-        @else
-            {{ trans("$theme-app.user_panel.n_bill") }}
-            {{ $anum }}/{{ $num }}
-        @endif
-    </div>
-    <div class="description" data-label="{{ trans("$theme-app.user_panel.date") }}">
-        {{ date('d-m-Y', strtotime($fec)) }}
-    </div>
-
-    <div class="price" data-label="{{ trans("$theme-app.user_panel.total_fact") }}">
-        <div class="w-100 text-right">
-            {{ \Tools::moneyFormat($bill->total_price, trans("$theme-app.subastas.euros"), 2) }}
-			&nbsp;|&nbsp;<span value="{{$bill->total_price}}" class="js-divisa"></span>
-		</div>
-    </div>
-
-    <div class="price" data-label="{{ trans("$theme-app.user_panel.total_price_fact") }}">
-        <div class="w-100 text-right">
-			<strong>
-				{{ \Tools::moneyFormat($imp, trans("$theme-app.subastas.euros"), 2) }}
-				&nbsp;|&nbsp;<span value="{{$imp}}" class="js-divisa"></span>
-			</strong>
+        <div class="actions">
+            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $document->cod_sub }}"
+                role="tab" aria-controls="settings">
+                Ver detalle
+            </a>
         </div>
     </div>
 </div>

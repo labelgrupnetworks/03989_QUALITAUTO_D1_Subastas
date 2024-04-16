@@ -35,7 +35,7 @@
 
         </p>
         <p class="sales-auction_invoice">
-			<a target="_blank" href="/factura/{{ $invoiceId }}">
+			<a class="panel-pdf-icon" target="_blank" href="/factura/{{ $invoiceId }}">
 				<i class="fas fa-file-pdf fa-2x"></i>
 			</a>
         </p>

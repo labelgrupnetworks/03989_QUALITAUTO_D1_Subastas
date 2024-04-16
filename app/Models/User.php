@@ -755,7 +755,7 @@ class User
     }
 
      # Adjudicaciones de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
-    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '')
+    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '', $criteria = [])
     {
 
         $lang = Config::get("app.language_complete")[Config::get("app.locale")];
@@ -763,7 +763,7 @@ class User
                 ->select('C.SUB_CSUB,C.REF_CSUB, C.HIMP_CSUB,C.BASE_CSUB,C.FAC_CSUB,C.AFRAL_CSUB,C.NFRAL_CSUB,C.fecfra_csub,P.REF_ASIGL1')
                 ->addSelect('NVL(lotes_lang.titulo_hces1_lang, LO.titulo_hces1) titulo_hces1,LO.NUM_HCES1 ,  LO.LIN_HCES1, P.FEC_ASIGL1, P.HORA_ASIGL1, LO.COB_HCES1')
                 ->addSelect('C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1')
-                ->addSelect('SUB.cod_sub,sub.tipo_sub,auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
+                ->addSelect('SUB.cod_sub,sub.tipo_sub, sub.compraweb_sub, auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
                 ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0,FGC0.impgas_csub0,FGC0.tax_csub0 ')
                 ->Join('FGASIGL0 ASIGL0',function($join){
                     $join->on('ASIGL0.EMP_ASIGL0','=','C.EMP_CSUB')
@@ -818,7 +818,14 @@ class User
                 ->where('C.EMP_CSUB',Config::get('app.emp'))
                 ->where('C.CLIFAC_CSUB',$this->cod_cli)
                 ->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
-                ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"');
+                ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"')
+				->when($criteria, function($query, $criteria){
+					foreach($criteria as $key => $value){
+						$query->where($key, $value);
+					}
+					return $query;
+				});
+
                 if($value == 'S'){
 					//Modificado 21/09/22 Eloy: añadimos facturas y efectos pendientes para comprobar que realmente esta pagado.
 					//Si el lote esta en factura pero la factura no esta pagada, el lote no aparecera como pagado.
