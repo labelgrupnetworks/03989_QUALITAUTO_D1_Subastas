@@ -48,7 +48,7 @@ $packengersMoneyValue = 0;
     var info_lots = $.parseJSON('<?php echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
 </script>
 
-
+<main class="adjudicaciones-page">
 <div class="color-letter">
         <div class="container">
             <div class="row">
@@ -513,6 +513,7 @@ $packengersMoneyValue = 0;
             </div>
         </div>
     </div>
+</main>
 
 
 
