@@ -1,44 +1,44 @@
-<div class="sales-lot-wrapper">
-	<div class="sales-lot">
-		<div class="sales-lot_img">
+<div class="panel-lot-wrapper">
+	<div class="panel-lot sales-lot">
+		<div class="panel-lot_img">
 			<img class="img-responsive"
 				src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1) }}"
 				alt="">
 		</div>
-		<div class="sales-lot_ref">
+		<div class="panel-lot_ref">
 			<p>
-				<span class="sale-label">Lote</span>
+				<span class="panel-lot_label">Lote</span>
 				{{ $lot->ref_asigl0 }}
 			</p>
 		</div>
-		<div class="sales-lot_desc">
+		<div class="panel-lot_desc">
 			<p>{!! $lot->descweb_hces1 !!}</p>
 		</div>
-		<div class="sale-label label-price-salida">
+		<div class="panel-lot_label label-price-salida">
 			<span>P. Salida</span>
 		</div>
-		<div class="sales-lot_price-salida">
+		<div class="panel-lot_price-salida">
 			<p class="js-divisa" value="{{ $lot->impsalhces_asigl0 }}">
 				{!! $currency->getPriceSymbol(2, $lot->impsalhces_asigl0) !!}
 			</p>
 		</div>
-		<div class="sale-label label-price-actual">
+		<div class="panel-lot_label label-price-actual">
 			<span>
 				P. actual
 			</span>
 		</div>
-		<div class="sales-lot_actual-price">
+		<div class="panel-lot_actual-price">
 			<p class="js-divisa" value="{{ $lot->implic_hces1 }}">
 				{!! $currency->getPriceSymbol(2, $lot->implic_hces1) !!}
 			</p>
 		</div>
 
-		<div class="sale-label label-increment">
+		<div class="panel-lot_label label-increment">
 			<span>
 				Incremento
 			</span>
 		</div>
-		<div class="sales-lot_increment">
+		<div class="panel-lot_increment">
 			<p>
 				{{ ceil(($lot->implic_hces1 / max($lot->impsalhces_asigl0, 1)) * 100) }}
 				<span> %</span>
@@ -46,7 +46,7 @@
 
 		</div>
 
-		<div class="sales-lot_bids">
+		<div class="panel-lot_bids">
 			<p>
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 491.54 491.54" width="15px"
 					height="15px" xml:space="preserve">

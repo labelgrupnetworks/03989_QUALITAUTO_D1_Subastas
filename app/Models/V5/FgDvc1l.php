@@ -28,10 +28,9 @@ class FgDvc1l extends Model
 	public const TIPO_GASTO = "G";
 	public const FECHA_MIN_FACTURA = "2017-01-01";
 
-
 	public function __construct(array $vars = []){
         $this->attributes=[
-			'emp_dvc1' => Config::get("app.emp")
+			'emp_dvc1l' => Config::get("app.emp")
 
         ];
         parent::__construct($vars);
@@ -105,6 +104,48 @@ class FgDvc1l extends Model
 		$query->leftjoin('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGHCES1.EMP_HCES1 AND FGHCES1_LANG.NUM_HCES1_LANG = FGHCES1.NUM_HCES1 AND FGHCES1_LANG.LIN_HCES1_LANG = FGHCES1.LIN_HCES1 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
 		$query->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0');
 		return $query->join('"auc_sessions" auc','auc."company" = FGASIGL0.EMP_ASIGL0 AND auc."auction" = FGASIGL0.SUB_ASIGL0 and auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0');
+	}
+
+	public function scopeWithBuyerLotsInfo($query)
+	{
+		return $query->addSelect('FGASIGL0.IMPSALHCES_ASIGL0')
+		->leftJoin('FGHCES1 HCES1', function ($join) {
+			$join->on('tl_dvc1l', '=', "'P'")
+				->on('HCES1.emp_hces1', '=', 'EMP_DVC1L')
+				->on('HCES1.num_hces1', '=', 'numhces_dvc1l')
+				->on('HCES1.lin_hces1', '=', 'linhces_dvc1l');
+		})
+		->leftJoin('FGSUB', 'FGSUB.EMP_SUB = EMP_DVC1L AND FGSUB.COD_SUB = SUB_DVC1L')
+		->leftJoin('FGASIGL0', 'FGASIGL0.EMP_ASIGL0 = EMP_DVC1L AND FGASIGL0.NUMHCES_ASIGL0 = NUMHCES_DVC1L AND FGASIGL0.LINHCES_ASIGL0 = LINHCES_DVC1L AND FGASIGL0.SUB_ASIGL0 = SUB_DVC1L')
+		->when(Config::get('app.locale') != Config::get('app.fallback_locale'), function ($query) {
+			$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+			return $query
+				->selectRaw('NVL(FGHCES1_LANG.TITULO_HCES1_LANG, FGHCES1.TITULO_HCES1) AS TITULO_HCES1')
+				->selectRaw('NVL(FGHCES1_LANG.DESC_HCES1_LANG, FGHCES1.DESC_HCES1) AS DESC_HCES1')
+				->selectRaw('NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, FGHCES1.DESCWEB_HCES1) AS DESCWEB_HCES1')
+				->selectRaw('NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, FGHCES1.WEBFRIEND_HCES1) AS WEBFRIEND_HCES1')
+				->selectRaw('NVL(FGSUB_LANG.DES_SUB, FGSUB.DES_SUB) AS DES_SUB')
+				->leftJoin('FGHCES1_LANG', "HCES1_LANG.EMP_HCES1_LANG = HCES1.EMP_HCES1 AND HCES1_LANG.NUM_HCES1_LANG =  HCES1.NUM_HCES1 AND HCES1_LANG.LIN_HCES1_LANG = HCES1.LIN_HCES1 AND HCES1_LANG.LANG_HCES1_LANG = '$lang'")
+				->leftJoin('FGSUB_LANG', "FGSUB_LANG.EMP_SUB_LANG = FGSUB.EMP_SUB AND FGSUB_LANG.COD_SUB = FGSUB.COD_SUB AND FGSUB_LANG.LANG_SUB_LANG = '$lang'");
+		}, function ($query) {
+			return $query->addSelect('HCES1.TITULO_HCES1','HCES1.DESC_HCES1', 'HCES1.DESCWEB_HCES1', 'HCES1.WEBFRIEND_HCES1')
+				->addSelect('FGSUB.DES_SUB');
+		});
+	}
+
+	public function scopeWhereMultiplesSeriesAndLines($query, $seriesAndLines = [])
+	{
+		return $query->when($seriesAndLines, function ($query, $seriesAndLines) {
+			foreach ($seriesAndLines as $serieAndLine) {
+				$query->orWhere(function ($query) use ($serieAndLine) {
+						$query->where('ANUM_DVC1L', $serieAndLine['serie'])
+							->where('NUM_DVC1L', $serieAndLine['line']);
+				});
+			}
+			return $query;
+		}, function ($query) {
+			return $query;
+		});
 	}
 
 }

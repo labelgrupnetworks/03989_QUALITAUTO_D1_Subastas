@@ -107,11 +107,101 @@
                     @include('pages.panel.adjudicaciones.bill', [
                         'id' => "$bill->afra_cobro1-$bill->nfra_cobro1",
                         'document' => $bill,
-                        'isPayed' => true
+                        'isPayed' => true,
                     ])
                 @endforeach
             </div>
         </div>
+
+
+        <section class="tab-content" id="auction-details">
+
+
+            @foreach ($data['profomaInvoicesPendings'] as $proformaId => $profomaInvoiceLots)
+				@php
+					$title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pendiente sin lotes';
+				@endphp
+                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
+                    @foreach ($profomaInvoiceLots as $lot)
+                        @include('pages.panel.adjudicaciones.lot', [
+                            'num' => $lot->num_hces1,
+                            'lin' => $lot->lin_hces1,
+                            'ref' => $lot->ref_asigl0,
+							'title' => $lot->titulo_hces1,
+                            'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
+                            'imp_sal' => $lot->impsalhces_asigl0,
+                            'imp_award' => $lot->himp_csub,
+                            'isPayed' => false,
+                        ])
+                    @endforeach
+                </x-panel.adjudicaciones_details>
+            @endforeach
+
+            @foreach ($data['billsPending'] as $bill)
+                @php
+                    $lots = !empty($bill->inf_fact['S']) ? $bill->inf_fact['S'] : [];
+                    $title = !empty($lots) ? $lots[0]->des_sub : 'factura pendiente sin lotes';
+                    $id = "$bill->anum_pcob-$bill->num_pcob";
+                @endphp
+                <x-panel.adjudicaciones_details :title="$title" :id="$id">
+                    @foreach ($lots as $lot)
+                        @include('pages.panel.adjudicaciones.lot', [
+                            'num' => $lot->numhces_dvc1l,
+                            'lin' => $lot->linhces_dvc1l,
+                            'ref' => $lot->ref_dvc1l,
+							'title' => $lot->titulo_hces1,
+                            'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
+                            'imp_sal' => $lot->impsalhces_asigl0,
+                            'imp_award' => $lot->padj_dvc1l,
+                            'isPayed' => false,
+                        ])
+                    @endforeach
+                </x-panel.adjudicaciones_details>
+            @endforeach
+
+            @foreach ($data['profomaInvoicesPayeds'] as $proformaId => $profomaInvoiceLots)
+				@php
+					$title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pagada sin lotes';
+				@endphp
+                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
+                    @foreach ($profomaInvoiceLots as $lot)
+                        @include('pages.panel.adjudicaciones.lot', [
+                            'num' => $lot->num_hces1,
+                            'lin' => $lot->lin_hces1,
+                            'ref' => $lot->ref_asigl0,
+							'title' => $lot->titulo_hces1,
+                            'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
+                            'imp_sal' => $lot->impsalhces_asigl0,
+                            'imp_award' => $lot->himp_csub,
+                            'isPayed' => true,
+                        ])
+                    @endforeach
+                </x-panel.adjudicaciones_details>
+            @endforeach
+
+            @foreach ($data['billsPayeds'] as $bill)
+                @php
+                    $lots = !empty($bill->inf_fact['S']) ? $bill->inf_fact['S'] : [];
+                    $title = !empty($lots) ? $lots[0]->des_sub : 'factura sin lotes';
+                    $id = "$bill->afra_cobro1-$bill->nfra_cobro1";
+                @endphp
+                <x-panel.adjudicaciones_details :title="$title" :id="$id">
+                    @foreach ($lots as $lot)
+                        @include('pages.panel.adjudicaciones.lot', [
+                            'num' => $lot->numhces_dvc1l,
+                            'lin' => $lot->linhces_dvc1l,
+                            'ref' => $lot->ref_dvc1l,
+							'title' => $lot->titulo_hces1,
+                            'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
+                            'imp_sal' => $lot->impsalhces_asigl0,
+                            'imp_award' => $lot->padj_dvc1l,
+                            'isPayed' => true,
+                        ])
+                    @endforeach
+                </x-panel.adjudicaciones_details>
+            @endforeach
+        </section>
+
     </section>
 
     <script>

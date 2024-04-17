@@ -763,7 +763,7 @@ class User
                 ->select('C.SUB_CSUB,C.REF_CSUB, C.HIMP_CSUB,C.BASE_CSUB,C.FAC_CSUB,C.AFRAL_CSUB,C.NFRAL_CSUB,C.fecfra_csub,P.REF_ASIGL1')
                 ->addSelect('NVL(lotes_lang.titulo_hces1_lang, LO.titulo_hces1) titulo_hces1,LO.NUM_HCES1 ,  LO.LIN_HCES1, P.FEC_ASIGL1, P.HORA_ASIGL1, LO.COB_HCES1')
                 ->addSelect('C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1')
-                ->addSelect('SUB.cod_sub,sub.tipo_sub, sub.compraweb_sub, auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
+                ->addSelect('SUB.cod_sub,sub.tipo_sub, sub.compraweb_sub, SUB.DES_SUB, auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0, ASIGL0.IMPSALHCES_ASIGL0, NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
                 ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0,FGC0.impgas_csub0,FGC0.tax_csub0 ')
                 ->Join('FGASIGL0 ASIGL0',function($join){
                     $join->on('ASIGL0.EMP_ASIGL0','=','C.EMP_CSUB')

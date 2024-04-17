@@ -35,7 +35,7 @@
             @endif
         </p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $document->cod_sub }}"
+            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
                 role="tab" aria-controls="settings">
                 Ver detalle
             </a>

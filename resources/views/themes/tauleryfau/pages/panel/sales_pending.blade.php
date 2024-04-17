@@ -104,9 +104,9 @@
         </div>
 
 
-        <div class="sales-lots-wrapper pending-lots">
-            <div class="sales-lots-header-wrapper">
-                <div class="sales-lots-header">
+        <div class="panel-lots pending-lots">
+            <div class="panel-lots_header-wrapper">
+                <div class="panel-lots_header">
                     <p></p>
                     <p>Cesión</p>
                     <p>Línea</p>
@@ -117,41 +117,41 @@
             </div>
 
             @foreach ($lots as $lot)
-                <div class="sales-lot-wrapper">
-                    <div class="sales-lot" data-type="pending">
-                        <div class="sales-lot_img">
+                <div class="panel-lot-wrapper">
+                    <div class="panel-lot sales-lot" data-type="pending">
+                        <div class="panel-lot_img">
                             <img class="img-responsive"
                                 src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1) }}" alt="">
                         </div>
-                        <div class="sales-lot_sheet">
+                        <div class="panel-lot_sheet">
                             <p>
-                                <span class="sale-label">Cesión</span>
+                                <span class="panel-lot_label">Cesión</span>
                                 {{ $lot->num_hces1 }}
                             </p>
                         </div>
-                        <div class="sales-lot_line-sheet">
+                        <div class="panel-lot_line-sheet">
                             <p>
-                                <span class="sale-label">Línea</span>
+                                <span class="panel-lot_label">Línea</span>
                                 {{ $lot->lin_hces1 }}
                             </p>
                         </div>
-                        <div class="sales-lot_desc">
+                        <div class="panel-lot_desc">
                             <p>{!! $lot->descweb_hces1 !!}</p>
                         </div>
-                        <div class="sale-label label-price-salida">
+                        <div class="panel-lot_label label-price-salida">
                             <span>P. Salida</span>
                         </div>
-                        <div class="sales-lot_price-salida">
+                        <div class="panel-lot_price-salida">
                             <p class="js-divisa" value="{{ $lot->impsal_hces1 }}">
                                 {!! $currency->getPriceSymbol(2, $lot->impsal_hces1) !!}
                             </p>
                         </div>
-                        <div class="sale-label label-price-estimate">
+                        <div class="panel-lot_label label-price-estimate">
                             <span>
                                 Esimación
                             </span>
                         </div>
-                        <div class="sales-lot_estimate-price">
+                        <div class="panel-lot_estimate-price">
                             <p class="js-divisa" value="{{ $lot->imptas_hces1 }}">
                                 {!! $currency->getPriceSymbol(2, $lot->imptas_hces1) !!}
                             </p>

@@ -4107,6 +4107,10 @@ class UserController extends Controller
     }
 
     //Facturas del cliente
+	/**
+	 * @deprecated 04/2024
+	 * No lo esta usando nadie.
+	 */
      public function myBills(){
          if(!Session::has('user')){
             $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
@@ -4507,7 +4511,16 @@ class UserController extends Controller
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-        $pendientes = $facturas->pending_bills();
+        $pendientes = $facturas->pending_bills(true, 'L');
+
+		$sheets = $pendientes->map(function($item) {
+			return [
+				'serie' => $item->anum_pcob,
+				'line' => $item->num_pcob
+			];
+		})->toArray();
+
+		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
 
 		$inf_fact = [];
         $tipo_tv = [];
@@ -4535,25 +4548,23 @@ class UserController extends Controller
 				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturaTexto;
 				$val_pendiente->inf_fact = ['T'];
 				$val_pendiente->inf_fact['T'] = $facturaTexto;
-				/* Las facturas de texto no tienen código de subasta
-				if(!empty($val_pendiente->inf_fact['T'])){
-					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['T'])->where('sub_dvc1l', '!=', 'null')->first()->sub_dvc1l;
-				}
-				*/
+
 				foreach ($facturaTexto as $factura) {
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}
 
 			}elseif($tipo_tv_contav == 'L' || $tipo_tv_contav == 'P'){
 
-				$facutraSubasta = $facturas->getFactSubasta();
-				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facutraSubasta;
-				$val_pendiente->inf_fact['S'] = $facutraSubasta;
+				//$facutraSubasta = $facturas->getFactSubasta();
+				$facturasSubasta = $facturasSubastas->where('anum_dvc1l', $val_pendiente->anum_pcob)->where('num_dvc1l', $val_pendiente->num_pcob);//->values()->all();
+				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturasSubasta;
+
+				$val_pendiente->inf_fact['S'] = $facturasSubasta->where('tl_dvc1l', 'P')->values()->all();
 				if(!empty($val_pendiente->inf_fact['S'])){
-					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['S'])->where('sub_dvc1l', '!=', null)->first()->sub_dvc1l;
+					$val_pendiente->cod_sub = $facturasSubasta->first()->sub_dvc1l ?? null;;
 				}
 
-				foreach ($facutraSubasta as $factura) {
+				foreach ($facturasSubasta as $factura) {
 					if($tipo_tv_contav === 'P'){
 						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
 					}
@@ -4586,10 +4597,19 @@ class UserController extends Controller
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-		$pagado = $facturas->paid_bill(false);
+		$pagado = $facturas->paid_bill(false, 'L');
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
 		$totalPrice = 0;
+
+		$sheets = $pagado->map(function($item) {
+			return [
+				'serie' => $item->afra_cobro1,
+				'line' => $item->nfra_cobro1
+			];
+		})->toArray();
+
+		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
 
 		foreach($pagado as $fact_pag){
 
@@ -4612,15 +4632,15 @@ class UserController extends Controller
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}
 
-				$fact_pag->inf_fact = $facturaTexto;
+			} elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
 
+				//$facturasSubasta = $facturas->getFactSubasta();
+				$facturasSubasta = $facturasSubastas->where('anum_dvc1l', $fact_pag->afra_cobro1)->where('num_dvc1l', $fact_pag->nfra_cobro1);//->values()->all();
 
-			}elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
-
-				$facturasSubasta = $facturas->getFactSubasta();
 				//Puede existir mas de una subasta en cada factura, pero ahora mismo solamente necesito la primera. (Eloy)
-				$fact_pag->cod_sub = (count($facturasSubasta) > 0) ? $facturasSubasta[0]->sub_dvc1l : null;
-				$inf_fact_pag['S'][$facturas->serie][$facturas->numero] = $facturasSubasta;
+				$fact_pag->cod_sub = $facturasSubasta->first()->sub_dvc1l ?? null;
+
+				$inf_fact_pag['S'][$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $facturasSubasta->values()->all();
 
 				foreach ($facturasSubasta as $factura) {
 					if($fact_pag->tv_contav == 'P'){
@@ -4632,12 +4652,12 @@ class UserController extends Controller
 					}
 				}
 
-				$fact_pag->inf_fact = $facturasSubasta;
+				$fact_pag->inf_fact['S'] = $facturasSubasta->where('tl_dvc1l', 'P')->values()->all();
 			}
 
 			$fact_pag->total_price = $totalPrice;
 			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
-			$tipo_tv_pag[$facturas->serie][$facturas->numero] = $fact_pag->tv_contav;
+			$tipo_tv_pag[$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $fact_pag->tv_contav;
 		}
 
         return [

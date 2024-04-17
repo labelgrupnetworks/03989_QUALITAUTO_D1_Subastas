@@ -1,9 +1,9 @@
 <div class="tab-pane" id="auction-details-{{ $id }}" role="tabpanel">
-	<h4 class="sales-lots-title">{{ $title }}</h4>
+	<h4 class="auction-details_title">{{ $title }}</h4>
 
-	<div class="sales-lots-wrapper">
-		<div class="sales-lots-header-wrapper">
-			<div class="sales-lots-header">
+	<div class="panel-lots">
+		<div class="panel-lots_header-wrapper">
+			<div class="panel-lots_header">
 				<p></p>
 				<p>Lote</p>
 				<p>Descripción</p>

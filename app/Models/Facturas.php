@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgDvc1l;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,13 @@ class Facturas extends Model
     public $imp;
     public $tk;
 
-    public function pending_bills($all = true)
+
+	/**
+	 * Obtiene las pagos pendientes
+	 * @param bool $all
+	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
+	 */
+    public function pending_bills($all = true, $type = '')
 	{
 
         $gemp = config('app.gemp');
@@ -46,7 +53,10 @@ class Facturas extends Model
                     ->on('SUB_DVC02','=','COD_SUB');
                 })
                 ->where('COD_PCOB', $this->cod_cli)
-                ->where('EMP_PCOB', Config::get('app.emp'));
+                ->where('EMP_PCOB', Config::get('app.emp'))
+				->when(!empty($type), function ($query) use ($type) {
+					return $query->where('FXDVC0.tipo_dvc0', $type);
+				});
                 if(!empty($this->serie)){
                     $sql->where('anum_pcob',$this->serie);
                 }
@@ -78,7 +88,12 @@ class Facturas extends Model
                ->first();
     }
 
-    public function paid_bill($showWhenPending = true){
+	/**
+	 * Obtiene la cobros de facturas
+	 * @param bool $showWhenPending
+	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
+	 */
+    public function paid_bill($showWhenPending = true, $type = ''){
         $sql =  DB::TABLE('FXCOBRO1')
                 ->select('afra_cobro1,nfra_cobro1,tv_contav,imp_cobro1,fec_cobro1')
                 ->Join('FSCONTAV',function($join){
@@ -87,11 +102,16 @@ class Facturas extends Model
                     ->where('EMP_contav','=',Config::get('app.emp'));
                 })
 
+
                 ->where('EMP_COBRO1',\Config::get('app.emp'))
                 ->where('CLI_COBRO1',$this->cod_cli)
 				->when(!$showWhenPending, function ($query) {
-					$query->leftjoin('FXPCOB', 'FXPCOB.ANUM_PCOB = FXCOBRO1.AFRA_COBRO1 AND FXPCOB.NUM_PCOB = FXCOBRO1.NFRA_COBRO1 AND FXPCOB.EMP_PCOB = FXCOBRO1.EMP_COBRO1')
+					return $query->leftjoin('FXPCOB', 'FXPCOB.ANUM_PCOB = FXCOBRO1.AFRA_COBRO1 AND FXPCOB.NUM_PCOB = FXCOBRO1.NFRA_COBRO1 AND FXPCOB.EMP_PCOB = FXCOBRO1.EMP_COBRO1')
 						->whereNull('FXPCOB.ANUM_PCOB');
+				})
+				->when(!empty($type), function ($query) use ($type) {
+					return $query->join('FXDVC0', 'FXDVC0.EMP_DVC0 = FXCOBRO1.EMP_COBRO1 and FXDVC0.ANUM_DVC0 = FXCOBRO1.AFRA_COBRO1 and FXDVC0.NUM_DVC0 = FXCOBRO1.NFRA_COBRO1')
+						->where('FXDVC0.tipo_dvc0', $type);
 				});
                 if(!empty(\Config::get('app.allBills'))){
                     $sql->whereIn('tv_contav',[\Config::get('app.allBills')]);
@@ -118,9 +138,8 @@ class Facturas extends Model
                 ->first();
     }
 
-    public function getFactSubasta(){
-
-
+    public function getFactSubasta()
+	{
         $bindings = array(
             'emp'       => Config::get('app.emp'),
             'anum'       =>$this->serie,
@@ -138,8 +157,26 @@ class Facturas extends Model
             WHERE EMP_DVC1L = :emp AND NUM_DVC1L = :num AND ANUM_DVC1L = :anum";
 
         return DB::select($sql,$bindings);
-
     }
+
+	/**
+	 * Copia del metodo @see getFactSubasta()
+	 * pero permitiendo obtener varias facturas a la vez.
+	 */
+	public function getFacturaLotsByMultipleSheets(array $seriesAndLines)
+	{
+		if(empty($seriesAndLines)){
+			return collect();
+		}
+
+		$invoiceLots = FgDvc1l::query()
+			->select('FGDVC1L.*')
+			->withBuyerLotsInfo()
+			->whereMultiplesSeriesAndLines($seriesAndLines)
+			->get();
+
+		return $invoiceLots;
+	}
 
     public function getFactTexto(){
 
