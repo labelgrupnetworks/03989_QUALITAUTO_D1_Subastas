@@ -62,6 +62,11 @@
 @endif
 */
 ?>
+@if (!empty(request('filter_session')) )
+<span class="del_filter_session_js  badge "
+	style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp; {{trans($theme.'-app.lot_list.sesion')}} {{abs(request('filter_session'))}} </span>
+<?php $show_hr = true; ?>
+@endif
 @if (!empty($filters['section']) && !empty($infoSec))
 	<span class="del_filter_section_js  badge "
 		style="padding: 1rem; cursor: pointer;">X&nbsp;&nbsp;&nbsp;{{ $infoSec->des_sec }} </span>

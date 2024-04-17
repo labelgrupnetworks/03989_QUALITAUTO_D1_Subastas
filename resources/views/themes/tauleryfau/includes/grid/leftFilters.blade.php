@@ -148,7 +148,7 @@
 				   @include('includes.grid.filter_sold')
 			   	@endif
 
-				@include('includes.grid.categories_list')
+				@include('includes.grid.session_list')
 
 				@include('includes.grid.features_list')
 

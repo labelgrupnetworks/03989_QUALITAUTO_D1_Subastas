@@ -1307,8 +1307,13 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
+		if ( \Config::get("app.gridAllSessions") ){
+			$filter_session = array("typeSub", "session" );
+		}else{
+			$filter_session = array("typeSub");
+		}
 		#listado de los filtros que usamos
-		$name_filter = array("typeSub",  "category", "section", "subsection");
+		$name_filter =  array_merge($filter_session,array( "category", "section", "subsection"));
 		$index = "";
 		$concat = "";
 		foreach ($name_filter as $filter) {
