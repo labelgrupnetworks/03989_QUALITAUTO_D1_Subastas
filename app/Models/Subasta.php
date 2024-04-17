@@ -149,7 +149,7 @@ class Subasta extends Model
         $sql ="SELECT auc.*,
                 NVL(auc_lang.\"name_lang\",  auc.\"name\") name
                 FROM \"auc_sessions\" auc
-               LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = :cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
+               LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = :cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang and auc.\"id_auc_sessions\" = auc_lang.\"id_auc_session_lang\")
               WHERE \"auction\"= :cod_sub AND \"company\"= :emp AND  \"start\" IS NOT NULL AND  \"end\" IS NOT NULL AND \"init_lot\" > 0 AND \"end_lot\" > 0";
         $sesiones = DB::select($sql, $params);
 
@@ -604,6 +604,7 @@ class Subasta extends Model
 				NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
 				sub.sesmaps_sub,sub.expomaps_sub,
 				auc.*,
+				NVL(auc_lang.\"name_lang\", auc.\"name\") name,
 				auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
 				FROM FGSUB sub
 				LEFT JOIN FGSUB_LANG fgsublang ON (sub.EMP_SUB = fgsublang.EMP_SUB_LANG AND sub.COD_SUB = fgsublang.COD_SUB_LANG AND  fgsublang.LANG_SUB_LANG = :lang)
