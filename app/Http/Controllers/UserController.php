@@ -6,7 +6,7 @@ use Redirect;
 //use Controller;
 
 //opcional
-use DB;
+use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
@@ -1023,9 +1023,9 @@ class UserController extends Controller
 
                              //se inserta el nuevo cliente
                         $FXCLI = DB::select("INSERT INTO FXCLI
-                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI )
+                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI, BLOCKPUJ_CLI )
                            VALUES
-                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli)",
+                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli, :blockpuj_cli)",
                             array(
                                //'gemp'          => "'Config::get('app.gemp')'",
                                'email'         => $strToDefault ? Request::input('email') : strtoupper(Request::input('email')),
@@ -1062,7 +1062,8 @@ class UserController extends Controller
 							   'tipv_cli' =>  $tipv_cli,
 							   'cod2_cli' => $cod2_cli,
 							   'preftel_cli' => request('preftel_cli', ''),
-							   'origen_cli' => request('origen', null)
+							   'origen_cli' => request('origen', null),
+							   'blockpuj_cli' => $this->defaultBidBlocking()
                                )
 						 );
 						#guardamos el evento SEO de registro de usuario
@@ -4954,5 +4955,29 @@ class UserController extends Controller
 
 	#endregion
 
+
+	/**
+	 * Valor por defecto para blockpuj_cli.
+	 * En soler utilizamos S por el registro W, en el resto de clientes utilizamos
+	 * el que tienen en la base de datos por defecto
+	 * @return string
+	 */
+	private function defaultBidBlocking()
+	{
+		if(Config::get('app.registro_user_w', false)) {
+			return 'S';
+		}
+
+		$defaultValue = null;
+		try {
+			$defaultValueInTable = DB::select("Select DATA_DEFAULT from DBA_TAB_COLUMNS where TABLE_NAME = 'FXCLI' AND COLUMN_NAME = 'BLOCKPUJ_CLI'");
+			$defaultValue = trim(str_replace("'", '', $defaultValueInTable[0]->data_default));
+		} catch (\Throwable $th) {
+			Log::debug('Error al obtener el valor por defecto de blockpuj_cli', ['error' => $th->getMessage()]);
+			$defaultValue = 'N';
+		}
+
+		return $defaultValue;
+	}
 }
 
