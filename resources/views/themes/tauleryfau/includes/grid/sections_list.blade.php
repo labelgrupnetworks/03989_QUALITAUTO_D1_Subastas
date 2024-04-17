@@ -1,10 +1,10 @@
 
-<div class="category_level__02 collapse in" style="padding-left: 2rem;" id="sections_{{$category["key_ortsec0"]}}">
-	<div class="input-category d-flex align-items-center hidden">
+<div class="category_level__02 collapse in" style=" @php echo !empty($ses)? 'padding-left: 2rem;': '' @endphp " id="sections_{{$category["key_ortsec0"]}}">
+	<div class="input-category d-flex align-items-center @php echo !empty($ses)? 'hidden':'' @endphp">
         <div class="radio">
             <input type="radio" name="section" id="all_sections" value="" class="filter_lot_list_js" <?=   empty($filters["section"])? 'checked="checked"' : '' ?>  />
             <label for="all_sections" class="ratio-label">
-                {{trans($theme.'-app.lot_list.all_categories')}} 
+                {{trans($theme.'-app.lot_list.all_categories')}}
             </label>
         </div>
 	</div>
@@ -29,10 +29,12 @@
 						//->orderby("NVL(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC)")
 						->get()
 						->toarray();
+				#forzamos la session actual del bucle para que el contador lo haga bien
+				$filters["session"]=$ses->reference;
 
 			}
-			#forzamos la session actual del bucle para que el contador lo haga bien
-			$filters["session"]=$ses->reference;
+
+
 		?>
 
 		@foreach($sections as $sec)
@@ -40,7 +42,7 @@
 			@if($numSectionLots > 0)
 				<div class="input-category d-flex align-items-center">
 					<div class="radio">
-						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js" data-session="{{$ses->reference}}" <?= ($sec["cod_sec"] ==  $filters["section"])?  'checked="checked"' : '' ?> />
+						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js"  @php !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp <?= ($sec["cod_sec"] ==  $filters["section"])?  'checked="checked"' : '' ?> />
 						<label for="section_{{$sec["cod_sec"]}}" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
 					</div>
 				</div>

@@ -6,6 +6,8 @@
 	</div>
 	<div class="filters-padding">
 		<div class="auction__filters-type-list mt-1  " id="auction_sessions" >
+		@if(!empty($codSub))
+
 
 
 
@@ -14,9 +16,10 @@
 				$filtersForSession = $filters;
 				$filtersForSession["section"]="";
 				$filtersForSession["subsection"]="";
-				if(!empty($codSub)){
+				$sesiones = Array();
+
 					$sesiones = App\Models\V5\AucSessions::WhereAuction($codSub)->get()	;
-				}
+
 
 				$totalLotes=0;
 				foreach($sesiones as $ses){
@@ -47,6 +50,10 @@
 			{{-- cargamos directamente secciones en vez de categorias por que solo hay 1 categoria --}}
 				@include('includes.grid.categories_list')
 			@endforeach
+
+		@else
+			@include('includes.grid.categories_list')
+		@endif
 		</div>
 	</div>
 </div>
