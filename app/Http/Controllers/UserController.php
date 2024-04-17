@@ -564,15 +564,19 @@ class UserController extends Controller
     # Registrar un usuario
     public function registro(HttpRequest $request)
     {
-		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
-		{
+		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"])) {
+
 			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
+			$errorsResponse = [
+				"err"       => 1,
+				"msg"       => 'error_register'
+			];
+
+
 			foreach ($camposFormNoNullables as $campo) {
 				if (empty($request[$campo])) {
-					return json_encode(array(
-						"err"       => 1,
-						"msg"       => 'error_register'
-					));
+					$errorsResponse['check'] = $campo;
+					return json_encode($errorsResponse);
 				}
 			}
 		}
@@ -583,6 +587,19 @@ class UserController extends Controller
 					"err"       => 1,
 					"msg"       => 'max_size_img'
 				));
+			}
+		}
+
+		if($request->has('files_email')) {
+			$rules = [
+				'files_email.*' => 'max:20000|mimes:jpg,jpeg,png,tiff,bmp,gif,pdf'
+			];
+
+			if(!$this->validateFiles($request->file(), $rules)){
+				return json_encode([
+					"err"       => 1,
+					"msg"       => 'error_register_file'
+				  ]);
 			}
 		}
 
@@ -1281,6 +1298,11 @@ class UserController extends Controller
 							$email->setAtribute("JOB_CLI", $job_name);
 						}
 
+						if($request->has('files_email')) {
+							$files = $request->file('files_email');
+							$email->setAttachmentsFiles($files);
+						}
+
 						$email->setTo(Config::get('app.admin_email'));
 						$email->send_email();
 					}
@@ -1497,6 +1519,17 @@ class UserController extends Controller
 		}
 
 		Log::error($validator->errors());
+		return false;
+	}
+
+	private function validateFiles($files, $rules)
+	{
+		$validator = Validator::make($files, $rules);
+
+		if (!$validator->fails()) {
+			return true;
+		}
+
 		return false;
 	}
 
