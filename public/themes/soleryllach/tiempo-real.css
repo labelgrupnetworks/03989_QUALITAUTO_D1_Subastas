@@ -1776,11 +1776,6 @@ header.enc h3 {
 .object_title {
     font-weight: bold;
     font-size: 26px;
-<<<<<<< HEAD
-
-}
-=======
->>>>>>> develop
 
 }
 
@@ -2310,4 +2305,10 @@ NUEVO DISEÑO MOBILE
 #actual_descripcion{
 	height: 160px;
 	overflow: auto;
+}
+
+.lot-itp-mark {
+	font-family: inherit;
+	font-size: 1.5em;
+	top: 1px;
 }

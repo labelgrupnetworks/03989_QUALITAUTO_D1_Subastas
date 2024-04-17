@@ -1,22 +1,52 @@
+@php
+$resourcesList = [];
+foreach( ($lote_actual->videos ?? []) as $key => $video){
+	$resource=["src"=>$video, "format" => "VIDEO"];
+	if (strtolower(substr($video, -4)) == ".gif" ){
+		$resource  ["format"] = "GIF";
+	}
+	$resourcesList[] = $resource;
+}
+@endphp
+
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <h1 class="titlePage">
+	<div class="row">
+        <div class="col-xs-12">
+            <div class="grid-title-wrapper">
+                <h1 class="grid-title">
+                    @if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
+					{{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
+					@elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
+					{{$lote_actual->titulo_hces1}}
+					@elseif(\Config::get('app.ref_asigl0'))
+					{{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}
+					@endif
+					@if ($lote_actual->isItp)
+						<span class="lot-itp-mark">*</span>
+					@endif
+                </h1>
 
-
-                @if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                {{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
-                @elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                {{$lote_actual->titulo_hces1}}
-                @elseif(\Config::get('app.ref_asigl0'))
-                {{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}
-                @endif
-
-            </h1>
+                <div class="next">
+                    @if(!empty($data['previous']))
+                        <a class="nextLeft" title="{{ trans("$theme-app.subastas.last") }}"
+                            href="{{ $data['previous'] }}">
+                            <i class="fa fa-angle-left fa-angle-custom"></i>
+                            {{ trans("$theme-app.subastas.last") }}
+                        </a>
+                    @endif
+					@if(!empty($data['next']))
+                        <a class="nextRight" title="{{ trans("$theme-app.subastas.next") }}"
+                            href="{{ $data['next'] }}">
+                            {{ trans("$theme-app.subastas.next") }}
+                            <i class="fa fa-angle-right fa-angle-custom"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container lot-ficha">
     <div class="row">
         <div class="single">
             <div class="col-xs-12 col-md-7">
@@ -44,17 +74,24 @@
                         </a>
                         @endif
 
-
                         @if( $lote_actual->retirado_asigl0 !='N')
-                        <div class="retired ">
-                            {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
-                        </div>
+							<div class="retired-border">
+								<div class="retired">
+									<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+										{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+									</span>
+								</div>
+							</div>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && (!empty($lote_actual->himp_csub) ||
                         $lote_actual->desadju_asigl0 =='S' || ($lote_actual->subc_sub == 'H' &&
                         !empty($lote_actual->impadj_asigl0))))
-                        <div class="retired" style="background:#2b373a;text-transform: lowercase;">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
-                        </div>
+							<div class="retired-border">
+								<div class="retired selled">
+									<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+										{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+									</span>
+								</div>
+							</div>
                         @endif
 
 						<div id="toolbarDiv">
@@ -66,7 +103,10 @@
 							</div>
 						</div>
 
-                        <div id="img_main" class="img_single"></div>
+                        <div id="resource_main_wrapper" class="text-center" style="display:none"></div>
+						<div class="img-global-content position-relative">
+							<div id="img_main" class="img_single"></div>
+						</div>
 
                     </div>
                 </div>
@@ -79,14 +119,29 @@
 
                     <div class="miniImg row hidden-xs slider-thumnail">
 
-
                         @foreach($lote_actual->imagenes as $key => $imagen)
-                        <div class="col-sm-3-custom">
-							<button onclick="seed.goToPage(parseInt('{{ $key }}'))" data-image="{{ $imagen }}" class="img-openDragon"
-								style="background-color:transparent; background-image:url('{{Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key)}}'); background-size: contain; background-position: center; background-repeat: no-repeat;">
-							</button>
+                        <div class="col-sm-3-custom col-img">
+							<a href="javascript:seed.goToPage(parseInt('{{ $key }}'));">
+                                <div class="img-openDragon" data-pos="{{ $key }}"
+                                    style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>'); background-size: contain; background-position: center; background-repeat: no-repeat;"
+                                    alt="{{$lote_actual->titulo_hces1}}"
+									data-image="{{ $imagen }}">
+								</div>
+							</a>
+
                         </div>
                         @endforeach
+						@foreach( $resourcesList as $key => $resource)
+							<div class="col-sm-3-custom col-video">
+								<a href="javascript:viewResourceFicha('<?=$resource["src"]?>', '<?=$resource["format"]?>');">
+									@if($resource["format"]=="GIF")
+										<div class="img-openDragon" style="background-image:url('{{$resource["src"]}}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+									@elseif($resource["format"]=="VIDEO")
+										<div class="img-openDragon" style="background-image:url('{{ asset('/img/icons/video_thumb.png') }}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
+									@endif
+								</a>
+							</div>
+						@endforeach
                     </div>
 
                     <!-- Inicio Galeria Desktop -->
@@ -112,6 +167,21 @@
 										alt="{{$lote_actual->titulo_hces1}}">
                         </div>
                         @endforeach
+						@foreach($resourcesList as $resource)
+							<div class="item_content_img_single" style="position: relative;">
+								@if($resource["format"]=="GIF")
+									<img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
+									class="img-responsive"
+									src="{{$resource["src"]}}"
+									alt="{{$lote_actual->titulo_hces1}}">
+								@elseif($resource["format"]=="VIDEO")
+									<video width="100%" controls>
+										<source src="{{$resource["src"]}}" type="video/mp4">
+									</video>
+
+								@endif
+							</div>
+						@endforeach
                     </div>
                     @if(Session::has('user') && $lote_actual->retirado_asigl0 =='N')
                     <a class="btn hidden-sm hidden-md hidden-lg <?= $data['subasta_info']->lote_actual->favorito? 'hidden':'' ?>"
@@ -229,6 +299,13 @@
 <script>
 	var seed;
 	loadSeaDragon();
+
+	$('.col-img').on('click', () => {
+		$('#resource_main_wrapper').empty();
+		$('#resource_main_wrapper').hide();
+		$('#toolbarDiv').show();
+		$('.img-global-content').show();
+	})
 
 	function loadSeaDragon(img, position){
 

@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+<main class="perfil-page">
 <div class="color-letter">
     <div class="container">
         <div class="row">
@@ -313,4 +314,5 @@
 	</div>
 	@endif
 </div>
+</main>
 @stop

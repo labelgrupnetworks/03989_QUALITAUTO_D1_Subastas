@@ -195,8 +195,6 @@ function reloadAdminCredit() {
         }else {
             reloadPujasList_O()
         }
-
-
     }
 
     function reloadPujasList_W(){
@@ -461,4 +459,28 @@ function view_all_bids(){
 		}
 
 	}
+
+	function reloadMainLotInfoCustom() {
+		const mark = document.querySelector('#lote_actual_main .lot-itp-mark');
+		markWhenIsItp(auction_info.lote_actual, mark);
+	}
+
+	function reloadBuscadorCustom() {
+		const mark = document.querySelector('.num-lot-search .lot-itp-mark');
+		markWhenIsItp(auction_info.buscador, mark);
+	}
+
+	/**
+	 * Mostrar o no el icono de ITP
+	 * @param {*} lot
+	 * @param {HTMLElement} element
+	 */
+	function markWhenIsItp(lot, element) {
+		if(!element) return;
+		element.classList.toggle('hidden', !lot.isItp);
+	}
+
+
+
+
 

@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+<main class="orders-page">
 	<div class="color-letter">
 		<div class="container">
 			<div class="row">
@@ -184,5 +185,5 @@
 		</div>
 	</div>
 
-
+</main>
 @stop
