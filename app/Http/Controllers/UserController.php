@@ -966,11 +966,7 @@ class UserController extends Controller
 					$rsoc = $strToDefault ? $rsoc : mb_strtoupper($rsoc,'UTF-8');
 					$nomd_clid = $strToDefault ? $nomd_clid : mb_strtoupper($nomd_clid,'UTF-8');
 
-                    if(Config::get('app.fpag_default')){
-                        $forma_pago = Config::get('app.fpag_default');
-                    }else{
-                        $forma_pago = 0;
-                    }
+					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
                     $parametros = new Enterprise();
                     $param = $parametros->getParameters();
