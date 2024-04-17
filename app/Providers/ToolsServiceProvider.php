@@ -23,6 +23,7 @@ use App\Http\Helpers\Helper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class ToolsServiceProvider extends ServiceProvider
@@ -1624,6 +1625,25 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 		return $dataTable->first();
+	}
+
+	public static function isITPLot($cod_sub, $ref) :bool
+	{
+		if(!Config::get('app.checkItp', false)){
+			return false;
+		}
+
+		$cod_cli = Session::get('user.cod', 0);
+		if(!$cod_cli){
+			return false;
+		}
+
+		return DB::executeFunction('LOTE_ITP', [
+			'EMPRESA' => Config::get('app.emp'),
+			'SUBASTA' => $cod_sub,
+			'LOTE' => $ref,
+			'CLIENTE' => $cod_cli
+		]);
 	}
 
 }
