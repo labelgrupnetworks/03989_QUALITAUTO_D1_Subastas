@@ -30,9 +30,10 @@
 						->get()
 						->toarray();
 				#forzamos la session actual del bucle para que el contador lo haga bien
-				$filters["session"]=$ses->reference;
 
+			$filters["session"]=$ses->reference;
 			}
+
 
 
 		?>
@@ -42,12 +43,18 @@
 			@if($numSectionLots > 0)
 				<div class="input-category d-flex align-items-center">
 					<div class="radio">
-						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js"  @php !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp <?= ($sec["cod_sec"] ==  $filters["section"])?  'checked="checked"' : '' ?> />
-						<label for="section_{{$sec["cod_sec"]}}" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
+						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js"  @php echo !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp
+						@if($sec["cod_sec"] ==  $filters["section"] && (empty($ses) || $ses->reference== request("filter_session")))
+							checked="checked"
+						@endif
+
+						/>
+						
+						<label for="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
 					</div>
 				</div>
 
-				@if($sec["cod_sec"] ==  $filters["section"])
+				@if($sec["cod_sec"] ==  $filters["section"] && (empty($ses) || $ses->reference== request("filter_session")))
 					@include('includes.grid.subsections_list')
 				@endif
 			@endif
