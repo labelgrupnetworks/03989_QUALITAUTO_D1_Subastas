@@ -60,7 +60,7 @@
 	--color-background-input: #ecebe4;
 
 	--color-form-background: var(--color-background-more-light-green);
-	--color-border: #b4b6b6;
+	--color-vertical-line: #b4b6b6;
 
 	--padding-contact-top-bottom: 3rem 1rem 3rem 1rem;
 
@@ -3967,7 +3967,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 }
 
 /* -------------------------------------------------------
-----------------WIP Contact Page -------------------------
+------------------- Contact Page -------------------------
 ------------------------------------------------------- */
 
 /* TODO: poner como variables los valores en píxeles. */
@@ -3993,7 +3993,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	.contact-page .stretch-line {
 		width: 1px;
 		align-self: stretch;
-		background-color: var(--color-border);
+		background-color: var(--color-vertical-line);
 	}
 }
 
@@ -4096,7 +4096,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	}
 }
 
-
 .contact-images-preview ul {
 	list-style: none;
 	display: flex;
@@ -4144,67 +4143,15 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ------------------------------------------------------- */
 
 /* -------------------------------------------------------
----------------- Estática ¿Cómo vender? ------------------
+-------- Estáticas ¿Cómo vender?/¿Cómo comprar? ----------
 ------------------------------------------------------- */
 
-.how-to-sell .title-spacing {
+.static-how-to-page .title-spacing {
 	display: none;
 }
 
 @media (min-width: 1200px) {
-	.how-to-sell .title-spacing {
-		display: inline;
-	}
-}
-
-.how-to-sell .title-container {
-	margin: 0px;
-}
-
-@media (min-width: 992px) {
-	.how-to-sell .title-container {
-		margin: 0px 1rem;
-	}
-
-}
-
-@media (min-width: 1200px) {
-	.how-to-sell .title-container {
-		margin: 0px 3rem;
-	}
-
-}
-
-.how-to-sell .image-column {
-	max-height: 210px;
-  	margin: auto;
-}
-
-.how-to-sell .info-card {
-	margin: 1rem 0px;
-}
-
-@media (min-width: 992px) {
-	.how-to-sell .info-card {
-		margin: 0px;
-	}
-}
-
-
-/* -------------------------------------------------------
---------------END Estática ¿Cómo vender? -----------------
-------------------------------------------------------- */
-
-/* -------------------------------------------------------
---------------- Estática ¿Cómo comprar? ------------------
-------------------------------------------------------- */
-
-.how-to-buy .title-spacing {
-	display: none;
-}
-
-@media (min-width: 1200px) {
-	.how-to-buy .title-spacing {
+	.static-how-to-page .title-spacing {
 		display: inline;
 	}
 }
@@ -4214,41 +4161,41 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	align-items: center;
 }
 
-.how-to-buy .title-container {
+.static-how-to-page .title-container {
 	margin: 0px;
 }
 
 @media (min-width: 992px) {
-	.how-to-buy .title-container {
+	.static-how-to-page .title-container {
 		margin: 0px 1rem;
 	}
 
 }
 
 @media (min-width: 1200px) {
-	.how-to-buy .title-container {
+	.static-how-to-page .title-container {
 		margin: 0px 3rem;
 	}
 
 }
 
-.how-to-buy .image-column {
+.static-how-to-page .image-column {
 	max-height: 210px;
   	margin: auto;
 }
 
-.how-to-buy .info-card {
+.static-how-to-page .info-card {
 	margin: 1rem 0px;
 }
 
 @media (min-width: 992px) {
-	.how-to-buy .info-card {
+	.static-how-to-page .info-card {
 		margin: 0px;
 	}
 }
 
 /* -------------------------------------------------------
---------------END Estática ¿Cómo comprar? ----------------
+------ END Estáticas ¿Cómo vender?/¿Cómo comprar? --------
 ------------------------------------------------------- */
 
 /* -------------------------------------------------------
