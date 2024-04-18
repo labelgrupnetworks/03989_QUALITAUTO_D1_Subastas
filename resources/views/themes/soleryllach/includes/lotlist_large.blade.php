@@ -8,43 +8,35 @@
 <div class="{{ $class_square }} large_square">
     {{-- he puesto aquí los iconos por que el video tiene enlace y si lo meto dentro del otro enlace el html genera un momton de elementos a href abriendolos y cerrandolos --}}
 
-	<div class="lot-large-icons-wrapper">
-		@if (!empty($item->contextra_hces1))
-			<div>
-				<a href="{{ $item->contextra_hces1 }}" target="_blank">
-					<img src="/default/img/icons/video.png" style="height:16px" />
-				</a>
-			</div>
-		@endif
-		@if (Config::get('app.icon_multiple_images') && !empty($item->imagenes) && count($item->imagenes) > 1)
-			<div class="lot-large-camera-wrapper">
-				<a title="{{ $titulo }}" {!! $url !!} style='text-decoration: none;'>
-					<img class="lot-large-camera" src="/default/img/icons/camara.png"/>
-					<img class="lot-large-plus" src="/default/img/icons/mas.png"/>
-				</a>
-			</div>
-		@endif
-	</div>
-
-
     <div class="container-lot-large row">
 
 		<div class="image-lot-large col-xs-12 col-sm-4 h-100">
 			<a title="{{ $titulo }}" <?= $url ?> style='text-decoration: none;'>
-
-                @if ($item->retirado_asigl0 != 'N')
-                    <div class="retired">
-                        {{ trans(\Config::get('app.theme') . '-app.lot.retired') }}
-                    </div>
-                @elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
-                    <div class="retired">
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.dont_available') }}
-                    </div>
-                @elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' && (!empty($precio_venta) || $item->desadju_asigl0 == 'S' || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
-                    <div class="retired">
-                        {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
-                    </div>
-                @endif
+				@if ($item->retirado_asigl0 != 'N')
+					<div class="retired-border">
+						<div class="retired">
+							<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+								{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+							</span>
+						</div>
+					</div>
+				@elseif($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R')
+					<div class="retired-border">
+						<div class="retired">
+							<span class="dont_available-text lang-{{ \Config::get('app.locale') }}">
+								{{ trans(\Config::get('app.theme').'-app.subastas.dont_available') }}
+							</span>
+						</div>
+					</div>
+				@elseif(\Config::get('app.awarded') && $item->cerrado_asigl0 == 'S' && (!empty($precio_venta) || $item->desadju_asigl0 == 'S' || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
+					<div class="retired-border">
+						<div class="retired selled">
+							<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+								{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+							</span>
+						</div>
+					</div>
+				@endif
                 <div class="img_lot h-100">
                     <img class="img-responsive lazy"
                         data-src="{{ Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1) }}"
@@ -54,10 +46,36 @@
         </div>
         <div class="col-xs-12 col-sm-8">
             <div class="lot-desc">
-                <h3 class="lot-title">
-                    {{ trans(\Config::get('app.theme') . '-app.lot.lot-name') }}
-                    {{ $item->ref_asigl0 }}
-                </h3>
+				<div class="row">
+					<div class="col-xs-10">
+						<h3 class="lot-title">
+							{{ trans(\Config::get('app.theme') . '-app.lot.lot-name') }}
+							{{ $item->ref_asigl0 }}
+							@if ($item->isItp)
+								<span class="lot-itp-mark">*</span>
+							@endif
+						</h3>
+					</div>
+					<div class="col-xs-2">
+						<div class="lot-large-icons-wrapper">
+							@if (!empty($item->contextra_hces1))
+								<div>
+									<a href="{{ $item->contextra_hces1 }}" target="_blank">
+										<img src="/default/img/icons/video.png" style="height:16px" />
+									</a>
+								</div>
+							@endif
+							@if (Config::get('app.icon_multiple_images') && !empty($item->imagenes) && count($item->imagenes) > 1)
+								<div class="lot-large-camera-wrapper">
+									<a title="{{ $titulo }}" {!! $url !!} style='text-decoration: none;'>
+										<img class="lot-large-camera" src="/default/img/icons/camara.png"/>
+										<img class="lot-large-plus" src="/default/img/icons/mas.png"/>
+									</a>
+								</div>
+							@endif
+						</div>
+					</div>
+				</div>
                 <div class="desc-lot-large">
                     @if ($item->retirado_asigl0 == 'N' || ($item->cerrado_asigl0 == 'S' && !empty($precio_venta)))
 
@@ -127,7 +145,7 @@
                 <div class="puja-actual">
 
 					<span class="top-title">
-                        @if(($item->tipo_sub == 'P' || $item->tipo_sub== 'O' || $item->subabierta_sub == 'P') && $item->cerrado_asigl0 == 'N' && !empty($item->max_puja))
+                        @if (($item->tipo_sub == 'P' || $item->tipo_sub == 'O' || $item->subabierta_sub == 'P' || $item->subabierta_sub == 'O') && $item->cerrado_asigl0 == 'N')
                             {{ trans(\Config::get('app.theme') . '-app.lot.puja_actual') }}
                         @elseif($item->cerrado_asigl0 == 'S' && $item->remate_asigl0 =='S' && (!empty($precio_venta) || ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
 							{{ trans(\Config::get('app.theme') . '-app.subastas.buy_to') }}:

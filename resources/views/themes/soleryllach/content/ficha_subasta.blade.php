@@ -1,117 +1,90 @@
-@if (!empty($data["auction"]))
-<div class="container">
-	<div class="row it_ro">
-            <div class="col-xs-12">
-                <div class="col-sm-7 col-xs-12">
-                    <div class="img-subasta">
-                        <div class="img-border-auction">
+@php
+    $ficha_subasta = $data['auction'];
+@endphp
 
-                            <img  width="100%" src="/img/load/subasta_large/AUCTION_{{ $data["auction"]->emp_sub }}_{{ $data["auction"]->cod_sub }}.jpg" class="img-responsive">
-
-                        </div>
-
-                    </div>
+<div class="container mb-1">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="grid-title-wrapper">
+                <h1 class="grid-title">
+                    {{ trans("$theme-app.subastas.inf_subasta_subasta") }} {{ $ficha_subasta->des_sub }}
+                </h1>
+                <div class="next">
+                    @if ($data['previous'])
+                        <a class="nextLeft" title="{{ trans("$theme-app.subastas.previous_auction") }}"
+                            href="{{ $data['previous'] }}">
+                            <i class="fa fa-angle-left fa-angle-custom"></i>
+                            {{ trans("$theme-app.subastas.previous_auction") }}
+                        </a>
+                    @endif
+                    @if ($data['next'])
+                        <a class="nextRight" title="{{ trans("$theme-app.subastas.next_auction") }}"
+                            href="{{ $data['next'] }}">
+                            {{ trans("$theme-app.subastas.next_auction") }}
+                            <i class="fa fa-angle-right fa-angle-custom"></i>
+                        </a>
+                    @endif
                 </div>
-                <div class="col-sm-5 col-xs-12">
-                    <div class="col-xs-12">
-                         <h1 class="titleSingle">{{ $data["auction"]->des_sub}}</h1>
-                         <p><?= empty($data["auction"]->descdet_sub)? ' ' : $data["auction"]->descdet_sub; ?></p>
+            </div>
+        </div>
+    </div>
 
-                    </div>
-                    <div class="col-xs-12 desc-panel-aution">
+    <div class="auction-cover">
+        <div class="auction-cover-image">
+            <img width="100%"
+                src="/img/load/subasta_large/SESSION_{{ $ficha_subasta->emp_sub }}_{{ $ficha_subasta->cod_sub }}_{{ $ficha_subasta->reference }}.jpg"
+                class="img-responsive">
+        </div>
+        <div class="auction-cover-info">
+            <div class="session-desc">
+                <p>{!! $ficha_subasta->session_info ?? ($ficha_subasta->descdet_sub ?? '') !!}</p>
+            </div>
+        </div>
+        <div class="auction-cover-links">
 
+            <div class="links-auction">
+                <h5 class="text-uppercase bold mb-1">{{ trans("$theme-app.subastas.sessions") }}</h5>
 
-                        <div class="content-auction-desc">
-                        <div class="block-auction exposition-des">
-                            @if( (!empty($data["auction"]->expofechas_sub)) ||  (!empty($data["auction"]->expohorario_sub)) || (!empty($data["auction"]->expolocal_sub)) || (!empty($data["auction"]->expomaps_sub)))
-                            <h4>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_exposicion') }}</h4>
-                            @endif
-                            @if(!empty($data["auction"]->expofechas_sub))
-                                <p><?= $data["auction"]->expofechas_sub ?></p>
-                            @endif
-                            @if(!empty($data["auction"]->expohorario_sub))
-                                <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->expohorario_sub ?> </p>
-                            @endif
-                            @if(!empty($data["auction"]->expolocal_sub))
-                                <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->expolocal_sub ?></p>
-                            @endif
-                            @if(!empty($data["auction"]->expomaps_sub))
-                                <p><a target="_blank" title="cómo llegar" href="https://maps.google.com/?q=<?= $data['auction']->expomaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
-                            @endif
-                        </div>
-                        <div class="block-auction exposition-des">
-                            @if((!empty($data["auction"]->sesfechas_sub)) || (!empty($data["auction"]->seshorario_sub)) || (!empty($data["auction"]->seslocal_sub)) || (!empty($data["auction"]->sesmaps_sub)))
-                            <h4>
-                                @if($data["auction"]->tipo_sub == 'V')
-                                    {{trans(\Config::get('app.theme').'-app.foot.direct_sale')}}
-                                @else
-                                    {{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_subasta') }}
-                                @endif
-                            </h4>
-                            @endif
-                            @if(!empty($data["auction"]->sesfechas_sub))
-                               <p> <?= $data["auction"]->sesfechas_sub ?></p>
-                            @endif
-                            @if(!empty($data["auction"]->seshorario_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_horario') }}: <?= $data["auction"]->seshorario_sub ?> </p>
-                            @endif
-                            @if(!empty($data["auction"]->seslocal_sub))
-                            <p>{{ trans(\Config::get('app.theme').'-app.subastas.inf_subasta_location') }}: <?= $data["auction"]->seslocal_sub ?></p>
-                            @endif
-                            @if(!empty($data["auction"]->sesmaps_sub))
-                                <p><a target="_blank" title="{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}" href="https://maps.google.com/?q=<?= $data['auction']->sesmaps_sub ?>">{{ trans(\Config::get('app.theme').'-app.subastas.how_to_get') }}</a></p>
-                            @endif
+                <ul class="list-content">
+                    @foreach ($data['sessions'] as $session)
+                        <li class="link-auction">
+                            <a title="Ver lotes"
+                                href="{{ Tools::url_indice_auction($session->auction, $session->name, $session->id_auc_sessions) }}">
 
-
-                        </div>
-
-                    </div>
-
-                        <div class="links-aution">
-                            @foreach ($data['sessions'] as $session)
-                            <div class="link-auction">
-                                <p>{{$session->name}}</p><a></a><a class="btn btn-view-lot btn-color" title="Ver lotes" href="<?= Routing::translateSeo('subasta').$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions) ?>">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                   <div class="col-xs-12 share-panel-auction">
-                       <ul>
-
-                           <li class="btn-color"><a href="http://www.facebook.com/sharer.php?u=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-                                <i class="fa fa-facebook"></i>
-                               </a>
-                           </li>
-                           <li class="btn-color">
-                            	<a title="Compartir por e-mail" href="http://twitter.com/share?url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>&amp;text=<?= $data["auction"]->des_sub?>&url=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>">
-									@include('components.x-icon', ['size' => '14'])
-								</a>
-                           </li>
-                           <li class="btn-color">
-                              <a title="Compartir por e-mail" href="mailto:?Subject={{ trans(\Config::get('app.theme').'-app.head.title_app') }}&body=<?=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] ?>"><i class="fa fa-envelope"></i></a>
-                           </li>
-                       </ul>
-                   </div>
-
-
-
-                </div>
-
+                                {{ $session->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
-	</div>
-</div>
+            @if ($ficha_subasta->tipo_sub == 'W' && strtotime($ficha_subasta->end) > time())
+                <a class="btn btn-block btn-color"
+                    href="{{ Routing::translateSeo('api/subasta') . $ficha_subasta->cod_sub . '-' . str_slug($ficha_subasta->name) . '-' . $ficha_subasta->id_auc_sessions }}"
+                    target="_blank">{{ trans("$theme-app.subastas.lot_subasta_online") }}
+                </a>
+            @endif
 
+            @if ($ficha_subasta->upcatalogo == 'S')
+                <a class="btn btn-block btn-subasta" title="{{ trans("$theme-app.subastas.pdf_catalog") }}"
+                    target="_blank"
+                    href="{{ \Tools::url_pdf($ficha_subasta->cod_sub, $ficha_subasta->reference, 'cat') }}">
+                    {{ trans("$theme-app.subastas.pdf_catalog") }}
+                </a>
+            @endif
+            <a class="btn btn-block btn-subasta" title="{{ trans("$theme-app.foot.term_condition") }}" target="_blank"
+                href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.term_condition") }}">
+                {{ trans("$theme-app.foot.term_condition") }}
+            </a>
 
-@else
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12 col-sm-4">
-			<div class="single_auction">
-				<h1 class="titleSingle">{{trans(\Config::get('app.theme').'-app.lot.auction_not_found')}}</h1>
-                        </div>
-                </div>
+            <div class="share-panel-auction">
+                @include('includes.share_list', [
+                    'url' => url()->full(),
+                    'text' => $ficha_subasta->des_sub,
+                ])
+            </div>
+
         </div>
-</div>
+    </div>
 
-@endif
+</div>

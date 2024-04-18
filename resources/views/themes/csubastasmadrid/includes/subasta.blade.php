@@ -20,21 +20,12 @@
 		</div>
 
 		<div class="col-xs-12 col-md-3">
-			{{-- <p>
-				<a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">
-					@if ($subasta->tipo_sub == 'V')
-						{{ trans(\Config::get('app.theme') . '-app.subastas.see_venta_directa') }}
-					@else
-						{{ trans(\Config::get('app.theme') . '-app.subastas.see_subasta') }}
-					@endif
-				</a>
-			</p> --}}
 
-			@if ($subasta->subc_sub != 'N')
+			{{-- @if ($subasta->subc_sub != 'N')
 				<p><a title="{{ $subasta->name }}" href="{{ $url_subasta }}"
 						class="btn btn-lotes btn-3">{{ trans(\Config::get('app.theme') . '-app.subastas.see_subasta') }}</a>
 				</p>
-			@endif
+			@endif --}}
 
 			<p><a title="{{ $subasta->name }}" href="{{ $url_lotes }}"
 					class=" btn btn-lotes btn-3">{{ trans(\Config::get('app.theme') . '-app.subastas.see_lotes') }}</a>

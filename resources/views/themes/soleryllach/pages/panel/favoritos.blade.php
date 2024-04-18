@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-
+<main class="favorites-page">
 	<div class="color-letter">
 		<div class="container">
 			<div class="row">
@@ -150,5 +150,5 @@
 	</div>
 
 
-
+</main>
 @stop
