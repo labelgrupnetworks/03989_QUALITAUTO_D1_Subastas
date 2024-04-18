@@ -4222,6 +4222,19 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ---------END Static pages important overwrite ------------
 ------------------------------------------------------- */
 
+/* -------------------------------------------------------
+--------------- Valoraciones/Tasaciones ------------------
+------------------------------------------------------- */
+
+.tasaciones .top-align-items-center {
+	display: flex;
+	align-items: center;
+}
+
+/* -------------------------------------------------------
+------------- END Valoraciones/Tasaciones ----------------
+------------------------------------------------------- */
+
 .default-bold {
 	font-weight: var(--fw-default-bold);
 }
@@ -4236,6 +4249,10 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .fs-big-title {
 	font-size: var(--fs-big-title);
+}
+
+.fs-italic {
+	font-style: italic;
 }
 
 .background-light-green {
