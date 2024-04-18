@@ -32,7 +32,7 @@
 			<div class="input-category d-flex align-items-center">
 				<div class="radio">
 					<input type="radio" name="filter_session" id="all_sessions" value="" class="filter_lot_list_js" <?=   empty(request("filter_session"))? 'checked="checked"' : '' ?>  />
-					<label for="all_sesions" class="ratio-label">
+					<label for="all_sessions" class="ratio-label">
 						{{trans($theme.'-app.lot_list.all_categories')}} ({{$totalLotes}})
 					</label>
 				</div>
