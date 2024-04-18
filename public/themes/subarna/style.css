@@ -51,6 +51,9 @@
 	--color-gray: #e2e2e2;
 	--color-dark-gray: #bcbcbc;
 
+	--color-background-very-light-brown: #f2f2eb;
+	--color-background-almost-white: #fafaf8;
+
 	--color-background-light-green: #ebe9dc;
 	--color-background-more-light-green: #f4f4ef;
 
@@ -3969,10 +3972,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 /* TODO: poner como variables los valores en píxeles. */
 
-.contact-page .background-light-green {
-	background-color: var(--color-background-light-green);
-}
-
 .contact-page .background-contact-form {
 	background-color: var(--color-form-background);
 }
@@ -3989,17 +3988,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 .contact-page .height-image {
 	height: var(--height-top-image);
 }
-
-/* .contact-page .stretch-line {
-	display: none;
-} */
-
-/* @media (min-width: 845px) {
-	.contact-page .stretch-line {
-		display: block;
-		visibility: hidden;
-	}
-} */
 
 @media (min-width: 1440px) {
 	.contact-page .stretch-line {
@@ -4033,29 +4021,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 		flex-direction: row;
 	}
 }
-
-/* .contact-page .contacts-articles {
-	display: grid;
-	grid-template-columns: 1fr;
-}
-
-@media (min-width: 620px) {
-	.contact-page .contacts-articles {
-		grid-template-columns: 1fr 1fr;
-	}
-}
-
-@media (min-width: 845px) {
-	.contact-page .contacts-articles {
-		grid-template-columns: 1fr 1fr 1fr;
-	}
-}
-
-@media (min-width: 1200px) {
-	.contact-page .contacts-articles {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	}
-} */
 
 .contact-page .column-contacts {
 	display: flex;
@@ -4178,8 +4143,144 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ----------------END Contact Page -------------------------
 ------------------------------------------------------- */
 
+/* -------------------------------------------------------
+---------------- Estática ¿Cómo vender? ------------------
+------------------------------------------------------- */
+
+.how-to-sell .title-spacing {
+	display: none;
+}
+
+@media (min-width: 1200px) {
+	.how-to-sell .title-spacing {
+		display: inline;
+	}
+}
+
+.how-to-sell .title-container {
+	margin: 0px;
+}
+
+@media (min-width: 992px) {
+	.how-to-sell .title-container {
+		margin: 0px 1rem;
+	}
+
+}
+
+@media (min-width: 1200px) {
+	.how-to-sell .title-container {
+		margin: 0px 3rem;
+	}
+
+}
+
+.how-to-sell .image-column {
+	max-height: 210px;
+  	margin: auto;
+}
+
+.how-to-sell .info-card {
+	margin: 1rem 0px;
+}
+
+@media (min-width: 992px) {
+	.how-to-sell .info-card {
+		margin: 0px;
+	}
+}
+
+
+/* -------------------------------------------------------
+--------------END Estática ¿Cómo vender? -----------------
+------------------------------------------------------- */
+
+/* -------------------------------------------------------
+--------------- Estática ¿Cómo comprar? ------------------
+------------------------------------------------------- */
+
+.how-to-buy .title-spacing {
+	display: none;
+}
+
+@media (min-width: 1200px) {
+	.how-to-buy .title-spacing {
+		display: inline;
+	}
+}
+
+.how-to-buy .top-align-items-center {
+	display: flex;
+	align-items: center;
+}
+
+.how-to-buy .title-container {
+	margin: 0px;
+}
+
+@media (min-width: 992px) {
+	.how-to-buy .title-container {
+		margin: 0px 1rem;
+	}
+
+}
+
+@media (min-width: 1200px) {
+	.how-to-buy .title-container {
+		margin: 0px 3rem;
+	}
+
+}
+
+.how-to-buy .image-column {
+	max-height: 210px;
+  	margin: auto;
+}
+
+.how-to-buy .info-card {
+	margin: 1rem 0px;
+}
+
+@media (min-width: 992px) {
+	.how-to-buy .info-card {
+		margin: 0px;
+	}
+}
+
+/* -------------------------------------------------------
+--------------END Estática ¿Cómo comprar? ----------------
+------------------------------------------------------- */
+
+/* -------------------------------------------------------
+------------ Static pages important overwrite ------------
+------------------------------------------------------- */
+
+.static-page .default-bold {
+	font-weight: var(--fw-default-bold) !important;
+}
+
+.static-page .fs-default {
+	font-size: var(--fs-default) !important;
+}
+
+.static-page .fs-xxxlarge {
+	font-size: var(--fs-xxxlarge) !important;
+}
+
+.static-page .fs-big-title {
+	font-size: var(--fs-big-title) !important;
+}
+
+/* -------------------------------------------------------
+---------END Static pages important overwrite ------------
+------------------------------------------------------- */
+
 .default-bold {
 	font-weight: var(--fw-default-bold);
+}
+
+.fs-default {
+	font-size: var(--fs-default);
 }
 
 .fs-xxxlarge {
@@ -4188,6 +4289,22 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .fs-big-title {
 	font-size: var(--fs-big-title);
+}
+
+.background-light-green {
+	background-color: var(--color-background-light-green);
+}
+
+.background-very-light-brown {
+	background-color: var(--color-background-very-light-brown);
+}
+
+.background-almost-white {
+	background-color: var(--color-background-almost-white);
+}
+
+.padding-contact-sections {
+	padding: var(--padding-contact-top-bottom);
 }
 
 .ficha-page {
