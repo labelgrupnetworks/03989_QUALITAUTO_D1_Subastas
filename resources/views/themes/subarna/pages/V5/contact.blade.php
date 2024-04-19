@@ -35,14 +35,14 @@
 					<div class="contacts-articles">
 						<div class="column-contacts">
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.paint_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.paint_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.paint_mail") }} <br>
 									{!! trans("$theme-app.contact.paint_num") !!}
 								</p>
 							</div>
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.logistic_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.logistic_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.logistic_mail") }} <br>
 									{{ trans("$theme-app.contact.logistic_num") }}
@@ -51,14 +51,14 @@
 						</div>
 						<div class="column-contacts">
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.antiques_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.antiques_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.antiques_mail") }} <br>
 									{!! trans("$theme-app.contact.antiques_num") !!}
 								</p>
 							</div>
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.administration_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.administration_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.antiques_mail") }} <br>
 									{{ trans("$theme-app.contact.administration_num") }}
@@ -67,14 +67,14 @@
 						</div>
 						<div class="column-contacts">
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.jewels_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.jewels_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.jewels_mail") }} <br>
 									{!! trans("$theme-app.contact.jewels_num") !!}
 								</p>
 							</div>
 							<div class="single-contact">
-								<p><span class="default-bold">{{ trans("$theme-app.contact.valuations_title") }}</span></p>
+								<p><span class="bold">{{ trans("$theme-app.contact.valuations_title") }}</span></p>
 								<p>
 									{{ trans("$theme-app.contact.antiques_mail") }} <br>
 									{{ trans("$theme-app.contact.valuations_num") }}
@@ -92,7 +92,7 @@
 							</div>
 							<div class="single-contact">
 								<p>
-									<span class="default-bold">{{ trans("$theme-app.contact.schedule_subtitle") }} </span> <br>
+									<span class="bold">{{ trans("$theme-app.contact.schedule_subtitle") }} </span> <br>
 									{{ trans("$theme-app.contact.shedule_lin1") }} <br>
 									{{ trans("$theme-app.contact.shedule_lin2") }} <br>
 									{{ trans("$theme-app.contact.shedule_lin3") }}
@@ -152,7 +152,7 @@
 										{{ trans("$theme-app.contact.form_field_files_button") }}
 									</label>
 									<div>
-										<p>{{ trans("$theme-app.contact.form_field_files_info") }}</p>
+										<p>{!! trans("$theme-app.contact.form_field_files_info") !!}</p>
 									</div>
 								</div>
 								<input class="hidden" id="files" type="file" accept="image/png, image/jpeg" name="images[]" multiple=""

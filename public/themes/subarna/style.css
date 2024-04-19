@@ -138,8 +138,17 @@ span.bold {
 	font-weight: var(--fw-default-bold);
 }
 
+.fw-normal,
+span.fw-normal {
+	font-weight: var(--fw-default-normal);
+}
+
 .ff-highlight {
 	font-family: var(--ff-highlight);
+}
+
+.ff-highlight .fw-normal {
+	font-weight: var(--fw-highlight-normal);
 }
 
 .ff-highlight b,
@@ -4093,6 +4102,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 @media (min-width: 768px) {
 	.input-files-contact {
 		flex-direction: row;
+		gap: 5rem;
 	}
 }
 
@@ -4202,7 +4212,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ------------ Static pages important overwrite ------------
 ------------------------------------------------------- */
 
-.static-page .default-bold {
+.static-page .bold {
 	font-weight: var(--fw-default-bold) !important;
 }
 
@@ -4231,13 +4241,84 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	align-items: center;
 }
 
+.image-column {
+	max-height: 210px;
+  	margin: auto;
+}
+
+.flex-tasaciones-info {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.flex-tasaciones-info section {
+	margin: auto;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+	.flex-tasaciones-info section {
+		margin: 0px;
+	}
+
+	.flex-tasaciones-info section:last-child {
+		margin: auto;
+	}
+}
+
+@media (min-width: 1200px) {
+	.flex-tasaciones-info section:last-child,
+	.flex-tasaciones-info section {
+		margin: 0px;
+	}
+}
+
+.tasaciones .title-spacing {
+	display: none;
+}
+
+@media (min-width: 1200px) {
+	.tasaciones .title-spacing {
+		display: inline;
+	}
+}
+
+.input-margin {
+	margin: 6px 0px;
+}
+
+.tasaciones .form-control {
+	background-color: var(--color-background-light-green);
+	border: none;
+	box-shadow: none;
+	border-radius: 0px;
+	padding: 20px 18px;
+}
+
+#form-valoracion-adv .submitButton {
+	background-color: #9E9E9E;
+	padding: 8px;
+	float: left;
+	color: #fff !important;
+	font-size: 18px;
+	width: 100%;
+	margin-bottom: 40px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+#form-valoracion-adv .submitButton:hover {
+	text-decoration: none;
+}
+
 /* -------------------------------------------------------
 ------------- END Valoraciones/Tasaciones ----------------
 ------------------------------------------------------- */
-
-.default-bold {
-	font-weight: var(--fw-default-bold);
-}
 
 .fs-default {
 	font-size: var(--fs-default);
@@ -4257,6 +4338,10 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .background-light-green {
 	background-color: var(--color-background-light-green);
+}
+
+.background-more-light-green {
+	background-color: var(--color-background-more-light-green);
 }
 
 .background-very-light-brown {
