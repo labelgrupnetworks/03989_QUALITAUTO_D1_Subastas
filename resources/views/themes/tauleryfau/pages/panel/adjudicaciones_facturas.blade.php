@@ -67,7 +67,7 @@
             <div class="alltoments-auctions">
 
                 <div class="alltoments-header-wrapper">
-                    <div class="alltoments-auctions_header">
+                    <div class="table-grid_header alltoments-auctions_header">
                         <p>Fecha</p>
                         <p>Subasta</p>
                         <p class="visible-md visible-lg">Nº Factura</p>

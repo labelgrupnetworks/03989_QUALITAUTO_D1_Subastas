@@ -1,12 +1,22 @@
-:root {
+.panel-body {
+	color: #000;
+
 	--color-gold: #b79d81;
 	--color-gold-dark: #9c8974;
 	--color-blue: #283747;
+	--color-green: #1b986a;
 
 	--btn-gold: #AF9C81;
 	--btn-gold-hover: #9B8A72;
 	--btn-red: #DF4140;
-	--btn-green: #4CAF50;
+	--btn-green: #1DAA76;
+
+	font-size: 12px;
+	--fs-s: .9em;
+	--fs-m: 1em;
+	--fs-l: 1.25em;
+	--fs-xl: 1.5em;
+	--fs-xxl: 1.75em;
 }
 
 .btn-lb {
@@ -61,6 +71,22 @@
 	--btn-color-hover: #fff;
 }
 
+.btn-lb-success {
+	--btn-bg: var(--btn-green);
+	--btn-bc: var(--btn-green);
+	--btn-color: #fff;
+	--btn-bg-hover: var(--color-blue);
+	--btn-bc-hover: var(--color-blue);
+	--btn-color-hover: #fff;
+	--btn-radius: 8px;
+}
+
+.btn-lb-success.btn-sm {
+	padding: 5px 10px;
+	font-size: inherit;
+	line-height: 1.5;
+}
+
 .btn-large {
 	/* padding: 6px 20px; */
 }
@@ -76,12 +102,13 @@
 	}
 }
 
-header {
+body>header {
 	background-color: #fff;
 	box-shadow: 0 0 7px 0 rgba(0, 0, 0, .5);
 	position: sticky;
 	top: 0;
 	z-index: 1;
+	font-size: var(--fs-l);
 }
 
 .navbar-default {
@@ -110,6 +137,10 @@ aside {
 
 aside a {
 	color: inherit
+}
+
+aside ul {
+	font-size: var(--fs-l);
 }
 
 aside li.active {
@@ -143,17 +174,22 @@ main {
 	gap: 2rem;
 	margin-top: 20px;
 	margin-bottom: 10px;
+	font-size: inherit;
 }
 
 .panel-title h1 {
 	margin: 0;
-	font-size: 32px;
+	font-size: var(--fs-xxl)
 }
 
 select#actual_currency {
 	align-self: stretch;
 	padding-left: 6px;
 	padding-right: 6px;
+}
+
+.table-grid_header {
+	font-size: var(--fs-l);
 }
 
 .orders-page {
@@ -172,7 +208,6 @@ select#actual_currency {
 }
 
 .orders-auction_header {
-	font-size: 13px;
 	font-weight: 500;
 	color: #000;
 	padding-top: .5rem;
@@ -186,7 +221,6 @@ select#actual_currency {
 }
 
 .orders-auction_lot {
-	color: #283747;
 	font-weight: 500;
 	gap: 5px;
 	padding-bottom: 1rem;
@@ -200,8 +234,9 @@ select#actual_currency {
 }
 
 .orders-auction_title {
-	border: 1px solid #9b8a72;
+	border: 1px solid var(--color-gold-dark);
 	padding: 5px;
+	font-size: 12px;
 }
 
 .orders-auction p {
@@ -210,7 +245,8 @@ select#actual_currency {
 
 .js-divisa {
 	color: inherit;
-	font-weight: inherit;
+	font-weight: 500;
+	font-size: var(--fs-l);
 }
 
 .lot-image {
@@ -231,7 +267,7 @@ select#actual_currency {
 }
 
 .lot-desc {
-	font-weight: 200;
+	font-weight: 400;
 	-webkit-line-clamp: 3;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -248,7 +284,6 @@ select#actual_currency {
 	flex-direction: row;
 	gap: 5px;
 	align-items: flex-start;
-	font-size: 12px;
 	grid-area: buttons;
 }
 
@@ -281,7 +316,7 @@ select#actual_currency {
 	text-wrap: wrap;
 	width: 100%;
 	font-size: inherit;
-	background-color: #283747;
+	background-color: var(--color-blue);
 	max-width: none;
 }
 
@@ -306,21 +341,19 @@ select#actual_currency {
 	display: inline-block;
 	align-items: center;
 	justify-content: center;
-	font-size: 25px;
+	font-size: var(--fs-xxl);
 	line-height: 1;
 }
 
 .btn-del {
 	background-color: #DF4140;
 	color: #fff;
-	width: 25px;
-	height: 25px;
+	width: var(--fs-xxl);
 	border-radius: 50%;
 	border: 0;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 12px;
 	aspect-ratio: 1;
 }
 
@@ -375,7 +408,8 @@ select#actual_currency {
 	}
 }
 
-.sales-page, .allotments-page {
+.sales-page,
+.allotments-page {
 	/* padding: 15px;
 	padding-top: 0; */
 	color: var(--color-blue);
@@ -450,7 +484,6 @@ select#actual_currency {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-size: 12px;
 }
 
 .sales-summary_detail.sales-summary_detail_lots {
@@ -493,7 +526,8 @@ select#actual_currency {
 	}
 }
 
-.sales-auctions, .alltoments-auctions {
+.sales-auctions,
+.alltoments-auctions {
 	--max-width: 1200px;
 	--line-height: 1.2;
 	--min-height: calc(2 * var(--line-height) * 1em);
@@ -517,7 +551,8 @@ select#actual_currency {
 	--grid-columns-mobile: repeat(3, 1fr) 2fr;
 }
 
-.sales-auctions, .alltoments-auctions p {
+.sales-auctions,
+.alltoments-auctions p {
 	margin: 0;
 }
 
@@ -548,11 +583,13 @@ select#actual_currency {
 	font-weight: 500;
 }
 
-.sales-header-wrapper, .alltoments-header-wrapper {
+.sales-header-wrapper,
+.alltoments-header-wrapper {
 	border-bottom: 1px solid var(--color-gold);
 }
 
-.sales-auctions_header, .alltoments-auctions_header {
+.sales-auctions_header,
+.alltoments-auctions_header {
 	box-sizing: content-box;
 	max-width: var(--max-width);
 	min-height: var(--min-height);
@@ -566,7 +603,8 @@ select#actual_currency {
 	gap: var(--gap);
 }
 
-.sales-auction, .invoice-auction {
+.sales-auction,
+.invoice-auction {
 	box-sizing: content-box;
 	max-width: var(--max-width);
 	min-height: var(--min-height);
@@ -594,6 +632,7 @@ select#actual_currency {
 	font-weight: 400;
 	padding: 6px 12px;
 	border-radius: 8px;
+	font-size: inherit;
 }
 
 :is(.sales-auction, .invoice-auction) .badge.badge-alert {
@@ -660,15 +699,18 @@ select#actual_currency {
 		text-align: left;
 	}
 
-	.sales-auctions_header, .alltoments-auctions_header {
+	.sales-auctions_header,
+	.alltoments-auctions_header {
 		grid-template-columns: var(--grid-columns-desktop);
 	}
 
-	.sales-auction, .invoice-auction {
+	.sales-auction,
+	.invoice-auction {
 		grid-template-columns: var(--grid-columns-desktop);
 	}
 
-	.sales-auction .btn, .invoice-auction .btn {
+	.sales-auction .btn,
+	.invoice-auction .btn {
 		width: auto;
 	}
 
@@ -676,7 +718,8 @@ select#actual_currency {
 		grid-column: span 1;
 	}
 
-	.invoice-auction .allotment-invoice_state, .invoice-auction .actions {
+	.invoice-auction .allotment-invoice_state,
+	.invoice-auction .actions {
 		order: initial;
 		grid-column: span 1;
 	}
@@ -725,6 +768,11 @@ select#actual_currency {
 	--max-width: 1200px;
 }
 
+.panel-lots.payment-lots {
+	--grid-columns-desktop: 16% 8% 1fr repeat(3, 12%);
+	--max-width: 100%;
+}
+
 .panel-lots_header {
 	display: grid;
 	box-sizing: content-box;
@@ -758,6 +806,15 @@ select#actual_currency {
 		"img label-salida price-salida"
 		"img label-actual price-actual"
 		"buttons buttons buttons";
+}
+
+.payment-lot {
+	grid-template-areas:
+		"ref . ."
+		"desc desc desc"
+		"img label-actual price-actual"
+		"img label-commission price-commission"
+		"img label-total price-total";
 }
 
 .sales-lot {
@@ -795,7 +852,7 @@ select#actual_currency {
 }
 
 .panel-lot_desc {
-	font-weight: 300;
+	font-weight: 400;
 	-webkit-line-clamp: 3;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -872,8 +929,24 @@ select#actual_currency {
 	gap: 10px;
 }
 
-.panel-lot_buttons > :is(a, button) {
+.panel-lot_buttons> :is(a, button) {
 	width: 100%;
+}
+
+.label-price-commission {
+	grid-area: label-commission;
+}
+
+.panel-lot_commission-price {
+	grid-area: price-commission;
+}
+
+.label-price-total {
+	grid-area: label-total;
+}
+
+.panel-lot_total-price {
+	grid-area: price-total;
 }
 
 @media(min-width: 992px) {
@@ -891,9 +964,11 @@ select#actual_currency {
 		background-color: #9B9B9B1F;
 	}
 
-	.panel-lot, .panel-lot.sales-lot
+	.panel-lot,
+	.panel-lot.sales-lot
+
 	/* , .sales-lot[data-type="pending"] */
-	{
+		{
 		box-sizing: content-box;
 		max-width: var(--max-width);
 		grid-template-columns: var(--grid-columns-desktop);
@@ -912,11 +987,223 @@ select#actual_currency {
 		max-height: 90px;
 	}
 
-	.panel-lot > [class^="panel-lot_"] {
+	.panel-lot>[class^="panel-lot_"] {
 		grid-area: auto;
 	}
 }
 
-/**
- * MARK: Adjudicaciones
- */
+.payment-page {
+	padding: 15px;
+}
+
+.payment-page .panel-title a {
+	margin-left: auto;
+}
+
+.payment-page h4 {
+	font-size: var(--fs-l);
+	font-weight: 500;
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.payment-page p {
+	margin: 0;
+}
+
+.payment-body {
+	display: grid;
+	grid-template-columns: 1fr;
+	row-gap: 4rem;
+}
+
+.payment_details {
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+}
+
+.detail_header {
+	position: relative;
+	padding-bottom: 2px;
+	margin-bottom: 1rem;
+}
+
+.detail_header_action {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}
+
+.detail_header::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: var(--lb-bw, 25%);
+	height: 1px;
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.detail_form {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.detail_form input {
+	accent-color: var(--color-green);
+	cursor: pointer;
+}
+
+.detail_form label {
+	cursor: pointer;
+	display: flex;
+	align-items: flex-start;
+	gap: 2rem;
+	font-weight: 400;
+	margin: 0;
+}
+
+.payment_summary {
+	display: none;
+}
+
+.payment_summary .summary-header {
+	position: relative;
+	margin-bottom: 2rem;
+	padding-bottom: 1rem;
+}
+
+.payment_summary .summary-header::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px solid var(--color-gold);
+}
+
+
+.payment_profoma-summary .summary-header {
+	display: none;
+}
+
+.summary_total {
+	position: relative;
+	display: flex;
+	gap: 5px;
+	justify-content: flex-end;
+	font-size: var(--fs-l);
+	font-weight: 500;
+	padding-top: 2rem;
+}
+
+.payment_summary .summary_total::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px solid var(--color-gold);
+}
+
+.summary_total_imports {
+	text-align: right;
+}
+
+.summary_total_imports i {
+	margin-right: 5px;
+}
+
+.summary-body {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.summary_line {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.summary_separator {
+	flex: 1;
+	border-top: 1px dotted #000;
+	/* border-block-start: 1px dotted #000; */
+}
+
+.summary_buttons {
+	display: flex;
+	gap: 5px;
+}
+
+.payment_profoma-summary a {
+	display: none;
+}
+
+.payment_profoma-details .auction-details_title {
+	text-align: left;
+}
+
+@media (min-width: 768px) {
+
+	.payment-body {
+		grid-template-columns: 3fr 2fr;
+		grid-template-rows: minmax(80vh, auto) auto auto;
+		gap: 1rem;
+		padding-top: 4rem;
+	}
+
+	.payment_profoma-details {
+		grid-row: 2 / 3;
+		grid-column: 1 / -1;
+	}
+
+	.payment_profoma-summary {
+		grid-row: 3 / 4;
+		grid-column: 2 / -1;
+	}
+
+	.payment_summary {
+		display: block;
+	}
+
+	.summary-section {
+		max-width: 320px;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.payment_summary .summary-section {
+		padding-left: 3rem;
+		border-left: 1px solid var(--color-gold);
+	}
+
+	.payment_profoma-summary .summary-section {
+		padding-right: 3rem;
+		border-right: 1px solid var(--color-gold);
+		margin-left: auto;
+	}
+}
+
+@media (min-width: 1200px) {
+
+	.payment-page .panel-title {
+		padding-left: 65px;
+	}
+
+	.payment-body {
+		/* grid-template-columns: 2fr 1fr 1fr; */
+		padding-left: 65px;
+	}
+
+	/* .payment_profoma-summary {
+		grid-row: 3 / 4;
+		grid-column: 3 / -1;
+	} */
+}

@@ -23,7 +23,7 @@
         <p class="allotment-invoice_pay-buttons">
             @if ($document->compraweb_sub == 'S')
 
-                <a class="btn btn-color btn-blue"
+                <a class="btn btn-lb btn-lb-secondary"
                     href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
                     cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
 

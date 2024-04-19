@@ -134,7 +134,7 @@
             <div class="sales-auctions sales-finish-auctions">
 
                 <div class="sales-header-wrapper">
-                    <div class="sales-auctions_header">
+                    <div class="table-grid_heder header sales-auctions_header">
                         <p>Fecha</p>
                         <p>Subasta</p>
                         <p class="visible-md visible-lg">Nº Factura</p>

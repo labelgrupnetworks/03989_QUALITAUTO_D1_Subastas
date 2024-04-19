@@ -106,7 +106,7 @@
 
         <div class="panel-lots pending-lots">
             <div class="panel-lots_header-wrapper">
-                <div class="panel-lots_header">
+                <div class="table-grid_header panel-lots_header">
                     <p></p>
                     <p>Cesión</p>
                     <p>Línea</p>
