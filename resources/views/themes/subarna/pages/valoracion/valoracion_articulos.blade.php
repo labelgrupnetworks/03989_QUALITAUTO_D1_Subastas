@@ -19,10 +19,7 @@
 					<div class="col-xs-12 col-md-7 col-lg-9">
 						<div class="title-container">
 							<h1 class="fs-big-title bold">
-								Tasa <span class="ff-highlight bold fs-italic">online</span> tus <br class="title-spacing">
-								joyas, relojes, <br class="title-spacing">
-								pintura y <br class="title-spacing">
-								antigüedades
+								{!! trans("$theme-app.valoracion_gratuita.page_title") !!}
 							</h1>
 						</div>
 					</div>
@@ -40,9 +37,7 @@
 							src="/themes/{{ $theme }}/assets/img/static_pages/smart_cropped.png">
 						<div class="ff-highlight fs-xxxlarge">
 							<p class="text-center">
-								Envianos fotos <br>
-								y despcripciones <br>
-								de tus piezas.
+								{!! trans("$theme-app.valoracion_gratuita.first_column_desc_info") !!}
 							</p>
 						</div>
 					</section>
@@ -50,9 +45,7 @@
 						<img class="img-responsive image-column" src="/themes/{{ $theme }}/assets/img/static_pages/pc.png">
 						<div class="ff-highlight fs-xxxlarge">
 							<p class="text-center">
-								Nuestros expertos <br>
-								estudiarán la cotización y <br>
-								posibilidad de venta.
+								{!! trans("$theme-app.valoracion_gratuita.second_column_desc_info") !!}
 							</p>
 						</div>
 					</section>
@@ -60,9 +53,7 @@
 						<img class="img-responsive image-column" src="/themes/{{ $theme }}/assets/img/static_pages/up-hand.png">
 						<div class="ff-highlight fs-xxxlarge">
 							<p class="text-center">
-								Si aceptas la propuesta <br>
-								de precio de salida, <br>
-								lo incluiremos a subasta.
+								{!! trans("$theme-app.valoracion_gratuita.third_column_desc_info") !!}
 							</p>
 						</div>
 					</section>
@@ -72,7 +63,7 @@
 		</div>
 
 		<div class="background-more-light-green">
-			<div class="container padding-contact-sections">
+			<div class="container padding-contact-sections pb-0">
 				<form class="form" id="form-valoracion-adv">
 					<div class="hidden hidden-inputs">
 						<input type="hidden" value="tasaciones@subarna.net" name="email_category">
@@ -104,8 +95,8 @@
 						</div>
 						<div class="col-xs-12">
 							<div class="input-margin">
-								<label>
-									<p>¿Qué quieres que valoremos?</p>
+								<label class="fs-15em">
+									<p>{{ trans("$theme-app.valoracion_gratuita.form_field_files") }}</p>
 								</label>
 								<div class="input-files-contact">
 									<label class="btn btn-lb-primary" for="files">
@@ -123,7 +114,7 @@
 						<div class="col-xs-12">
 							<div class="input-margin">
 								<label class="d-block fw-normal" for="textogrande__1__descripcion">
-									Descripción (recomendamos medidas, información de procedencia, etc.)
+									{{ trans("$theme-app.valoracion_gratuita.form_field_description") }}
 								</label>
 								<textarea class="form-control effect-16" name="descripcion" rows="10" id="textogrande__1__descripcion"
 								 placeholder="" autocomplete="off"></textarea>
@@ -139,83 +130,14 @@
 			</div>
 		</div>
 
-		{{-- @include('includes.expert-contact') --}}
+		@if (!empty($data['especialistas']) && $data['especialistas']->count() > 0)
+			@include('includes.expert-contact', [
+				'title' => trans("$theme-app.valoracion_gratuita.need_contact"),
+				'specialist' => $data['especialistas']->first(),
+			])
+		@endif
 
 	</div>
 
-
-
-
-	<script>
-		const input = document.querySelector("input[type=file]#files");
-		const preview = document.querySelector(".contact-images-preview");
-
-		input.addEventListener("change", updateImageDisplay);
-
-		function updateImageDisplay() {
-			while (preview.firstChild) {
-				preview.removeChild(preview.firstChild);
-			}
-
-			const curFiles = input.files;
-			if (curFiles.length === 0) {
-				const para = document.createElement("p");
-				para.textContent = "No files currently selected for upload";
-				preview.appendChild(para);
-			} else {
-				const list = document.createElement("ul");
-				preview.appendChild(list);
-
-				for (const file of curFiles) {
-					const listItem = document.createElement("li");
-					const para = document.createElement("p");
-					if (validFileType(file)) {
-						// para.textContent = `File name ${file.name}, file size ${returnFileSize(
-					para.textContent = `File size ${returnFileSize(
-								          					file.size,
-								        				)}.`;
-					const image = document.createElement("img");
-					image.src = URL.createObjectURL(file);
-					image.alt = image.title = file.name;
-
-					listItem.appendChild(image);
-					listItem.appendChild(para);
-				} else {
-					para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
-					listItem.appendChild(para);
-				}
-
-				list.appendChild(listItem);
-			}
-		}
-	}
-
-	const fileTypes = [
-		"image/apng",
-		"image/bmp",
-		"image/gif",
-		"image/jpeg",
-		"image/pjpeg",
-		"image/png",
-		"image/svg+xml",
-		"image/tiff",
-		"image/webp",
-		"image/x-icon",
-	];
-
-	function validFileType(file) {
-		return fileTypes.includes(file.type);
-	}
-
-	function returnFileSize(number) {
-		if (number < 1024) {
-			return `${number} bytes`;
-		} else if (number >= 1024 && number < 1048576) {
-			return `${(number / 1024).toFixed(1)} KB`;
-		} else if (number >= 1048576) {
-			return `${(number / 1048576).toFixed(1)} MB`;
-			}
-		}
-	</script>
 
 @stop

@@ -524,6 +524,8 @@ $(document).ready(function () {
 		capaOculta.hide()
 	})
 
+	$('input[type=file]#files').change(updateImageDisplay)
+
 });
 
 /**
@@ -1286,41 +1288,21 @@ function oculta_error_input_contact(campo) {
 /*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
 /****************************************************************************************/
 
+
 function sendContact() {
-
-	var contact_form_data = new FormData($('#contactForm')[0]);
-	$.ajax({
-		type: "POST",
-		url: "/contactSendmail",
-		data: contact_form_data,
-		processData: false,
-        contentType: false,
-		success: function (response) {
-			if (response.status == "error") {
-				showMessage(response.message);
-			} else {
-				showMessage(response, "");
-				setTimeout("location.reload()", 4000);
-			}
-		},
-		error: function (response) {
-			showMessage("Error");
-		}
-	});
-
-}
-
-/* function sendContact() {
 
 	$(".g-recaptcha").find("iframe").removeClass("has-error");
 
 	response = $("#g-recaptcha-response").val();
 
 	if (response) {
+		var contact_form_data = new FormData($('#contactForm')[0]);
 		$.ajax({
 			type: "POST",
 			url: "/contactSendmail",
-			data: $(contactForm).serialize(),
+			data: contact_form_data,
+			processData: false,
+			contentType: false,
 			success: function (response) {
 				if (response.status == "error") {
 					showMessage(response.message);
@@ -1338,4 +1320,77 @@ function sendContact() {
 		showMessage(messages.error.hasErrors);
 	}
 
-} */
+}
+
+
+/****************************************************************************************/
+/************************* FIN FUNCIONES SOBRE PANTALLA CONTACTO ************************/
+/****************************************************************************************/
+
+function updateImageDisplay() {
+	const preview = document.querySelector(".contact-images-preview");
+	const input = document.querySelector("input[type=file]#files");
+
+	while (preview.firstChild) {
+		preview.removeChild(preview.firstChild);
+	}
+
+	const curFiles = input.files;
+	if (curFiles.length === 0) {
+		const para = document.createElement("p");
+		para.textContent = "No files currently selected for upload";
+		preview.appendChild(para);
+	} else {
+		const list = document.createElement("ul");
+		preview.appendChild(list);
+
+		for (const file of curFiles) {
+			const listItem = document.createElement("li");
+			const para = document.createElement("p");
+			if (validFileType(file)) {
+				para.textContent = `File size ${returnFileSize(
+					  file.size,
+				)}.`;
+				const image = document.createElement("img");
+				image.src = URL.createObjectURL(file);
+				image.alt = image.title = file.name;
+
+				listItem.appendChild(image);
+				listItem.appendChild(para);
+			} else {
+				para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+				listItem.appendChild(para);
+			}
+
+			list.appendChild(listItem);
+		}
+	}
+}
+
+const fileTypes = [
+	"image/apng",
+	"image/bmp",
+	"image/gif",
+	"image/jpeg",
+	"image/pjpeg",
+	"image/png",
+	"image/svg+xml",
+	"image/tiff",
+	"image/webp",
+	"image/x-icon",
+];
+
+function validFileType(file) {
+	return fileTypes.includes(file.type);
+}
+
+function returnFileSize(number) {
+	if (number < 1024) {
+		return `${number} bytes`;
+	} else if (number >= 1024 && number < 1048576) {
+		return `${(number / 1024).toFixed(1)} KB`;
+	} else if (number >= 1048576) {
+		return `${(number / 1048576).toFixed(1)} MB`;
+	}
+}
+

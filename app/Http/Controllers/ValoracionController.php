@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
 # Cargamos el modelo
 use App\Models\User;
+use App\Models\V5\FgEspecial1;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Config;
@@ -45,6 +46,11 @@ class ValoracionController extends Controller
 			'seo'   => $SEO_metas,
 			'lang' => $lang,
 		);
+
+		if (config('app.experts_in_valoration', false)) {
+			$especialistas = FgEspecial1::orderBy('orden_especial1', 'asc')->withSpecialty()->get();
+			$data['especialistas'] = $especialistas;
+		}
 
 		if (!config('app.assessment_registered', false)) {
 			return view('pages.valoracion.valoracion_articulos', array('data' => $data));

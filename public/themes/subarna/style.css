@@ -4332,6 +4332,10 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	font-size: var(--fs-big-title);
 }
 
+.fs-15em {
+	font-size: 1.5em;
+}
+
 .fs-italic {
 	font-style: italic;
 }
@@ -4354,6 +4358,10 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .padding-contact-sections {
 	padding: var(--padding-contact-top-bottom);
+}
+
+.padding-contact-sections.pb-0 {
+	padding-bottom: 0;
 }
 
 .ficha-page {
