@@ -432,7 +432,7 @@ $(function () {
 
 	$("#owl-carousel-responsive").owlCarousel({
 		items: 1,
-		autoplay: true,
+		autoplay: false,
 		margin: 20,
 		dots: true,
 		nav: false,

@@ -1,5 +1,6 @@
 
 <div class="category_level__02 collapse in" style=" @php echo !empty($ses)? 'padding-left: 2rem;': '' @endphp " id="sections_{{$category["key_ortsec0"]}}">
+	{{-- todas las secciones--}}
 	<div class="input-category d-flex align-items-center @php echo !empty($ses)? 'hidden':'' @endphp">
         <div class="radio">
             <input type="radio" name="section" id="all_sections" value="" class="filter_lot_list_js" <?=   empty($filters["section"])? 'checked="checked"' : '' ?>  />
@@ -41,7 +42,13 @@
 		@foreach($sections as $sec)
 		<?php $numSectionLots = Tools::showNumLots($numActiveFilters, $filters, "section", $sec["cod_sec"]); ?>
 			@if($numSectionLots > 0)
-				<div class="input-category d-flex align-items-center">
+			{{-- en movil solo quieren que se vea las secciones si estas en la seccion --}}
+				<div class="input-category d-flex align-items-center
+					@if (!empty($ses) &&  request("filter_session") != $ses->reference)
+					hidden-xs hidden-sm
+					@endif
+
+				 ">
 					<div class="radio">
 						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js"  @php echo !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp
 						@if($sec["cod_sec"] ==  $filters["section"] && (empty($ses) || $ses->reference== request("filter_session")))
@@ -49,7 +56,7 @@
 						@endif
 
 						/>
-						
+
 						<label for="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
 					</div>
 				</div>

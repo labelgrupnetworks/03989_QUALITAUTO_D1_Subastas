@@ -4291,7 +4291,7 @@ FILTROS
     -ms-flex-pack: center;
     justify-content: center;
     height: 38px;
-
+	
 }
 
 
@@ -4737,13 +4737,28 @@ LOTES
 	background: linear-gradient(180deg, rgba(83,115,149,1) 0%, rgba(40,55,71,1) 49%, rgba(25,34,45,1) 100%);*/
     width: 100%;
 }
+.nameAuctLeft{
+	font-weight: bold;
+
+    font-size: 16px;
+	background: #283747;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.sessionLeft {
+	background: #283747;
+	padding-top: 10px;
+	text-align: center;
+	color: #FFF !important;
+}
 
 .timeLeftOnLeft {
     margin: 0;
     text-align: center;
     font-size: 16px;
     font-weight: 600;
-    color: #283747;
+    color: #FFF;
 }
 .timeLeftOnLeft .fa {color:#b79d81;margin:2px 5px 0 15px;font-size:16px;}
 .timeLeftOnLeft .clock::before {
