@@ -147,5 +147,4 @@ class FgDvc1l extends Model
 			return $query;
 		});
 	}
-
 }

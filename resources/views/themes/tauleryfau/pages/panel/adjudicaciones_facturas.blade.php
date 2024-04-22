@@ -10,9 +10,6 @@
     $currency = new Currency();
     $divisa = Session::get('user.currency', 'EUR');
     $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
-
-    //temporales
-    $yearSelected = '2024';
 @endphp
 
 @section('content')
@@ -42,12 +39,12 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
                     <form action="">
-                        @foreach ($data['invoicesYearsAvailables'] as $year)
+                        @foreach ($data['yearsAvailables'] as $year)
                             <li>
                                 <div class="checkbox">
                                     <label>
                                         <input name="years[]" type="checkbox" value="{{ $year }}"
-                                            @checked(in_array($year, $yearSelected))>{{ $year }}
+                                            @checked(in_array($year, $data['yearsSelected']))>{{ $year }}
                                     </label>
                                 </div>
                             </li>

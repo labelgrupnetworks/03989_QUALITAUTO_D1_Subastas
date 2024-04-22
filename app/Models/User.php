@@ -755,7 +755,7 @@ class User
     }
 
      # Adjudicaciones de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
-    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '', $criteria = [])
+    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '', $criteria = [], $whereIntervalDates = [])
     {
 
         $lang = Config::get("app.language_complete")[Config::get("app.locale")];
@@ -824,6 +824,13 @@ class User
 						$query->where($key, $value);
 					}
 					return $query;
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fecha_csub', $interval);
+						}
+					});
 				});
 
                 if($value == 'S'){

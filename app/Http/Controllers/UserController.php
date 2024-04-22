@@ -66,6 +66,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
 use App\libs\SeoLib;
+use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 
 class UserController extends Controller
@@ -4317,12 +4318,20 @@ class UserController extends Controller
 
 		if(!Session::has('user')){
             $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
-            $data['data'] = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+            $data['data'] = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
 			$data['seo'] = $seo;
             return View::make('front::pages.not-logged', $data);
         }
 
 		$cod_cli = session('user.cod');
+		$yearsSelected = $request->input('years', [date('Y'), date('Y') - 1]);
+
+		$datesIntervals = array_map(function($year){
+			return [
+				$year . '-01-01',
+				$year . '-12-31'
+			];
+		}, $yearsSelected);
 
 		//user data
 		$userModel = User::factory()
@@ -4336,15 +4345,15 @@ class UserController extends Controller
         $envio = $addres->getUserShippingAddress();
 
 		//allotments
-		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio);
-		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio);
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $datesIntervals);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $datesIntervals);
 
 		//bills
 		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
 		//por lo que obtener las dos en esta página sería duplicar información
 
-		$pendingBillsData = $this->getPendingBillsData($user);
-		$payedBillsData =  $this->getPayedBillsData($user);
+		$pendingBillsData = $this->getPendingBillsData($user, $datesIntervals);
+		$payedBillsData =  $this->getPayedBillsData($user, $datesIntervals);
 
 		//extraer variables para acomodar datos
 		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
@@ -4386,7 +4395,8 @@ class UserController extends Controller
 		$billsPending = $pendingBills->where('tipo_tv', 'L');
 
 		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, 'L');
-
+		$profomaYearsAvailables = FgCsub::getYearsToAllAwardsAvailables($cod_cli);
+		$yearsAvailables = $invoicesYearsAvailables->merge($profomaYearsAvailables)->unique()->sortDesc();
 
 		$data = [
             'user' => $user,
@@ -4396,20 +4406,21 @@ class UserController extends Controller
 			'profomaInvoicesPayeds' => $profomaInvoicesPayeds,
 			'billsPending' => $billsPending,
 			'billsPayeds' => $billsPayeds,
-			'invoicesYearsAvailables' => $invoicesYearsAvailables,
+			'yearsAvailables' => $yearsAvailables,
+			'yearsSelected' => $yearsSelected,
 		];
 
 		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
 	}
 
-	private function getPayedAllotmentsData($user, $envio)
+	private function getPayedAllotmentsData($user, $envio, $datesIntervals)
 	{
 		$emp = config('app.emp');
 		$gemp = config('app.gemp');
 
 		$pago_controller = new PaymentsController();
 
-        $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S');
+        $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S', null, null, $datesIntervals);
 
 		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
 		$referencesByAction = $adjudicaciones_pag->groupBy('sub_csub')
@@ -4433,7 +4444,7 @@ class UserController extends Controller
 		];
 	}
 
-	private function getPendingAllotmentsData($user, $envio)
+	private function getPendingAllotmentsData($user, $envio, $datesIntervals)
 	{
 		$emp = config('app.emp');
 		$gemp = config('app.gemp');
@@ -4441,7 +4452,7 @@ class UserController extends Controller
 		$subasta = new Subasta();
 		$parametrosSub = $subasta->getParametersSub();
 
-		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N');
+		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N', null, null, $datesIntervals);
 		$pago_controller = new PaymentsController();
 
 		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
@@ -4510,12 +4521,12 @@ class UserController extends Controller
 		return $adjudicacionFormat;
 	}
 
-	private function getPendingBillsData($user)
+	private function getPendingBillsData($user, $datesIntervals = [])
 	{
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-        $pendientes = $facturas->pending_bills(true, 'L');
+        $pendientes = $facturas->pending_bills(true, 'L', $datesIntervals);
 
 		$sheets = $pendientes->map(function($item) {
 			return [
@@ -4596,12 +4607,12 @@ class UserController extends Controller
 		];
 	}
 
-	private function getPayedBillsData($user)
+	private function getPayedBillsData($user, $datesIntervals = [])
 	{
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-		$pagado = $facturas->paid_bill(false, 'L');
+		$pagado = $facturas->paid_bill(false, 'L', $datesIntervals);
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
 		$totalPrice = 0;

@@ -28,7 +28,7 @@ class Facturas extends Model
 	 * @param bool $all
 	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
 	 */
-    public function pending_bills($all = true, $type = '')
+    public function pending_bills($all = true, $type = '', $whereIntervalDates = [])
 	{
 
         $gemp = config('app.gemp');
@@ -56,6 +56,13 @@ class Facturas extends Model
                 ->where('EMP_PCOB', Config::get('app.emp'))
 				->when(!empty($type), function ($query) use ($type) {
 					return $query->where('FXDVC0.tipo_dvc0', $type);
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fecha_dvc0', $interval);
+						}
+					});
 				});
                 if(!empty($this->serie)){
                     $sql->where('anum_pcob',$this->serie);
@@ -93,7 +100,7 @@ class Facturas extends Model
 	 * @param bool $showWhenPending
 	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
 	 */
-    public function paid_bill($showWhenPending = true, $type = ''){
+    public function paid_bill($showWhenPending = true, $type = '', $whereIntervalDates = []){
         $sql =  DB::TABLE('FXCOBRO1')
                 ->select('afra_cobro1,nfra_cobro1,tv_contav,imp_cobro1,fec_cobro1')
                 ->Join('FSCONTAV',function($join){
@@ -103,7 +110,7 @@ class Facturas extends Model
                 })
 
 
-                ->where('EMP_COBRO1',\Config::get('app.emp'))
+                ->where('EMP_COBRO1', Config::get('app.emp'))
                 ->where('CLI_COBRO1',$this->cod_cli)
 				->when(!$showWhenPending, function ($query) {
 					return $query->leftjoin('FXPCOB', 'FXPCOB.ANUM_PCOB = FXCOBRO1.AFRA_COBRO1 AND FXPCOB.NUM_PCOB = FXCOBRO1.NFRA_COBRO1 AND FXPCOB.EMP_PCOB = FXCOBRO1.EMP_COBRO1')
@@ -112,9 +119,16 @@ class Facturas extends Model
 				->when(!empty($type), function ($query) use ($type) {
 					return $query->join('FXDVC0', 'FXDVC0.EMP_DVC0 = FXCOBRO1.EMP_COBRO1 and FXDVC0.ANUM_DVC0 = FXCOBRO1.AFRA_COBRO1 and FXDVC0.NUM_DVC0 = FXCOBRO1.NFRA_COBRO1')
 						->where('FXDVC0.tipo_dvc0', $type);
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fec_cobro1', $interval);
+						}
+					});
 				});
-                if(!empty(\Config::get('app.allBills'))){
-                    $sql->whereIn('tv_contav',[\Config::get('app.allBills')]);
+                if(!empty(Config::get('app.allBills'))){
+                    $sql->whereIn('tv_contav',[Config::get('app.allBills')]);
                 }
                 if(Request::input('order') == 'lasted'){
                     $sql->orderBy('fec_cobro1','asc');
