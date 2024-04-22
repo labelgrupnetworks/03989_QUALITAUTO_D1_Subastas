@@ -16,14 +16,14 @@
 
 			<div class="container padding-contact-sections">
 				<div class="row top-align-items-center">
-					<div class="col-xs-12 col-md-7 col-lg-9">
+					<div class="col-xs-12 col-md-7 col-lg-8">
 						<div class="title-container">
 							<h1 class="fs-big-title bold">
 								{!! trans("$theme-app.valoracion_gratuita.page_title") !!}
 							</h1>
 						</div>
 					</div>
-					<div class="col-xs-0 col-md-5 col-lg-3">
+					<div class="col-xs-0 col-md-5 col-lg-4">
 						<img class="header-image height-image img-responsive"
 							src="/themes/{{ $theme }}/assets/img/top_banner_image_rounded.png">
 					</div>

@@ -66,8 +66,6 @@
 
 	--min-width-contacts: 273px;
 
-	--height-top-image: 420px;
-
 	--ff-default: 'Jost', sans-serif;
 	--ff-highlight: 'Cormorant', serif;
 	--fw-default-light: 200;
@@ -3979,8 +3977,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ------------------- Contact Page -------------------------
 ------------------------------------------------------- */
 
-/* TODO: poner como variables los valores en píxeles. */
-
 .contact-page .background-contact-form {
 	background-color: var(--color-form-background);
 }
@@ -3992,10 +3988,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 .contact-page .top-align-items-center {
 	display: flex;
 	align-items: center;
-}
-
-.contact-page .height-image {
-	height: var(--height-top-image);
 }
 
 @media (min-width: 1440px) {

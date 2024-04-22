@@ -11,17 +11,18 @@
 
 	<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
+	@include('includes.breadcrumb')
+
 	<div class="contact-page">
 		<div class="background-light-green">
 			<div class="container padding-contact-sections">
-				@include('includes.breadcrumb')
 				<div class="row top-align-items-center">
-					<div class="col-xs-12 col-md-6">
+					<div class="col-xs-12 col-md-8">
 						<h1 class="fs-big-title">
 							{!! trans("$theme-app.contact.title") !!}
 						</h1>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-4">
 						<img class="header-image height-image img-responsive"
 							src="/themes/{{ $theme }}/assets/img/top_banner_image_rounded.png">
 					</div>
