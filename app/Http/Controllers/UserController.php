@@ -1505,8 +1505,8 @@ class UserController extends Controller
 	{
 
 		$rules = [
-			'dni1' => 'max:10000|mimes:jpg,jpeg,png,pdf', //a required, max 10000kb, doc or docx file
-			'dni2' => 'max:10000|mimes:jpg,jpeg,png,pdf'
+			'dni1' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF', //a required, max 10000kb, doc or docx file
+			'dni2' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF'
 		];
 
 		$validator = Validator::make($request->file(), $rules);
