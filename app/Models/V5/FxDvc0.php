@@ -68,10 +68,11 @@ class FxDvc0 extends Model
 			->whereOwner($ownerCod);
 	}
 
-	public static function getInvoicesYearsAvailables($ownerCod)
+	public static function getInvoicesYearsAvailables($codCli, $typeCli)
 	{
 		return self::selectRaw('to_char(fecha_dvc0, \'YYYY\') as year')
-			->whereOwner($ownerCod)
+			->where('cod_dvc0', $codCli)
+			->where('tipo_dvc0', $typeCli)
 			->groupBy('to_char(fecha_dvc0, \'YYYY\')')
 			->orderBy('to_char(fecha_dvc0, \'YYYY\')', 'desc')
 			->pluck('year');

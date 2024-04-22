@@ -17,6 +17,11 @@
 	--fs-l: 1.25em;
 	--fs-xl: 1.5em;
 	--fs-xxl: 1.75em;
+
+	--min-padding-to-page: 15px;
+	--max-content-width: 1500px;
+	--max-content-borderbox: calc(var(--max-content-width) + 2 * var(--min-padding-to-page));
+	--max-content-contentbox: var(--max-content-width);
 }
 
 .btn-lb {
@@ -149,6 +154,7 @@ aside li.active {
 
 main {
 	grid-area: main;
+	padding-top: 35px;
 }
 
 @media(min-width: 992px) {
@@ -172,9 +178,15 @@ main {
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 2rem;
-	margin-top: 20px;
-	margin-bottom: 10px;
 	font-size: inherit;
+
+	max-width: var(--max-content-borderbox);
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0;
+	padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 24px;
 }
 
 .panel-title h1 {

@@ -3084,7 +3084,7 @@ class UserController extends Controller
 				$item->total_liquidation = $item->total_award - $totalDvc0;
 			});
 
-		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli);
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, FxDvc0::TIPO_PROPIETARIO);
 
 		$data = [
 			'auctionsWithoutInvoice' => $auctionsWithoutInvoice,
@@ -4385,6 +4385,9 @@ class UserController extends Controller
 		//ya que los campos obtenidos son distintos
 		$billsPending = $pendingBills->where('tipo_tv', 'L');
 
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, 'L');
+
+
 		$data = [
             'user' => $user,
 			'seo' => $seo,
@@ -4392,7 +4395,8 @@ class UserController extends Controller
 			'profomaInvoicesPendings' => $profomaInvoicesPendings,
 			'profomaInvoicesPayeds' => $profomaInvoicesPayeds,
 			'billsPending' => $billsPending,
-			'billsPayeds' => $billsPayeds
+			'billsPayeds' => $billsPayeds,
+			'invoicesYearsAvailables' => $invoicesYearsAvailables,
 		];
 
 		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
