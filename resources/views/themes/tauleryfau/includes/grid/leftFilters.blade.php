@@ -11,7 +11,7 @@ use Carbon\Carbon;
 		@php
 
 
-		$sql = 'SELECT ESTADO, "reference", "start", "end", "name", "id_auc_sessions" FROM "auc_sessions" join WEB_SUBASTAS  on ID_EMP="company" and ID_SUB="auction" WHERE "company" = :emp and "auction" = :cod_sub order by "reference"';
+		$sql = 'SELECT ESTADO, "reference", "start", "end", "name", "id_auc_sessions" FROM "auc_sessions" left join WEB_SUBASTAS  on ID_EMP="company" and ID_SUB="auction" and SESSION_REFERENCE="reference" WHERE "company" = :emp and "auction" = :cod_sub order by "reference"';
         $bindings = array(
                     'emp'           => Config::get('app.emp'),
                     'cod_sub'       => $auction->cod_sub
@@ -38,8 +38,7 @@ use Carbon\Carbon;
 
 				@foreach($sessiones as $session)
 					@php
-					if($session->id_auc_sessions== 3741)
-						
+
 						$fecha = Carbon::parse($session->start);
 					@endphp
 					<div class=" sessionLeft ">

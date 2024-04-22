@@ -14,19 +14,22 @@
 		@php
 		$subasta_finalizada = false;
 		if(!empty($auction)){
-			//ver si la subasta está cerrada
-			$SubastaTR = new \App\Models\SubastaTiempoReal();
-			$SubastaTR->cod = $auction->id_auc_sessions;
-			$SubastaTR->session_reference = $auction->reference;
-			$status = $SubastaTR->getStatus();
+			
+			$sql = 'SELECT ESTADO, "reference", "start", "end", "name", "id_auc_sessions" FROM "auc_sessions" left join WEB_SUBASTAS  on ID_EMP="company" and ID_SUB="auction" and SESSION_REFERENCE="reference" WHERE "company" = :emp and "auction" = :cod_sub order by "reference"';
+       $bindings = array(
+						'emp'           => Config::get('app.emp'),
+						'cod_sub'       => $auction->cod_sub
+						);
 
-			if(!empty($status) && $status[0]->estado == "ended"){
-				$subasta_finalizada = true;
+			$sessiones = DB::select($sql, $bindings);
+			foreach($sessiones as $session){
+				if($auction->tipo_sub == 'W' && strtotime($session->end) > time() && strtotime($auction->session_start) < time() && $session->estado != "ended"){
+					$url_tiempo_real=Tools::url_real_time_auction($auction->cod_sub, $session->name, $session->id_auc_sessions);
+					break;
+				}
 			}
 
-			if($auction->tipo_sub =='W' && strtotime($auction->session_end) > time() && strtotime($auction->session_start) < time() && $subasta_finalizada==false){
-				$url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
-			}
+
 		}
 		@endphp
 
