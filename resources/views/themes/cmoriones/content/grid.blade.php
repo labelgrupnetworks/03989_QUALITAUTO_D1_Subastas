@@ -65,8 +65,8 @@
 				@endif
 
 				@if($codSub == 'REPRE' || $codSub == 'COMDEUDA' ||  $codSub == 'CEREMATE')
-					<div class="awars-banner pt-2 pb-5">
-						<h3>{{ trans("$theme-app.lot_list.sold_auctions") }}</h3>
+					<div class="awars-banner pt-4 pb-5">
+						<h3 class="text-center">{{ trans("$theme-app.lot_list.sold_auctions") }}</h3>
 						{!! BannerLib::bannersPorKey("subastas_vendidas", 'subastas_vendidas', '{dots:false, arrows:false, autoplay: true,
 							autoplaySpeed: 8000,  slidesToShow: 3, slidesToScroll:1, responsive: [{breakpoint: 1200, settings: {slidesToShow: 2} }, {breakpoint: 768, settings: {slidesToShow: 1} }]}') !!}
 					</div>
