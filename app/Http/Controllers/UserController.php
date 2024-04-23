@@ -1551,6 +1551,7 @@ class UserController extends Controller
 			return storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/");
 		}
 
+		#TODO: Lluc (23/04/2024) : Cambiar la ruta de la base_path a storage_path que esta no se borra tras cada deploy
 		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
 	}
 
