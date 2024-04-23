@@ -1408,7 +1408,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
-		if (strpos($path, 'img') === false && !$hash) {
+		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
 			$hash = filemtime($publicPath);
 		}
 		elseif(!$hash) {

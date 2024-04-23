@@ -4249,7 +4249,7 @@ ICONOS ORDERNAR
     margin: 0;
     background: #283747;
     color: white;
-    padding: 10px 0;
+    padding: 4px 0 10px 0;
     width: 100%;
     z-index: 1;
 
@@ -4291,7 +4291,7 @@ FILTROS
     -ms-flex-pack: center;
     justify-content: center;
     height: 38px;
-	
+
 }
 
 
