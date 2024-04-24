@@ -1571,7 +1571,7 @@ function cambiarDireccion(thi) {
 }
 
 function ajax_shipping(cod_ship, lang) {
-	$.ajax({
+	return $.ajax({
 		type: "GET",
 		url: '/' + lang + '/seeShippingAddress',
 		data: { codd_clid: cod_ship },
@@ -1579,8 +1579,10 @@ function ajax_shipping(cod_ship, lang) {
 			$("#ajax_shipping_add").html('');
 			$("#ajax_shipping_add").html(response);
 		}
+	})
+	.then((response) => {
+		return response;
 	});
-
 }
 
 function changeCurrency(price, exchange, object) {
@@ -1991,3 +1993,18 @@ function sharePage({ text, title, url }) {
 		window.open(shareUrl, '_blank');
 	}
 }
+
+
+// Retrasar la ejecución de una función hasta que el usuario deje de escribir
+let debounceTimeoutId;
+function debounce(func, delay) {
+	clearTimeout(debounceTimeoutId);
+	debounceTimeoutId = setTimeout(func, delay);
+}
+
+ /* inputElement.addEventListener('input', function() {
+	debounce(function() {
+		// Aquí puedes agregar el código para enviar el formulario
+		console.log('Enviar formulario');
+	}, 500); // 500 milisegundos (0.5 segundos) de pausa
+}); */

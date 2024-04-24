@@ -2002,3 +2002,95 @@ function refreshActiveSummary(cod_sub) {
 	$('#bid_lots').attr('value', auction.count_lots_with_bids);
 	salesAnimationCounter();
 }
+
+
+/**
+ * user panel profile events
+ * @todo
+ * [] - modificar selectores para que sean más específicos
+ */
+$(function() {
+	$('.address-form-section [data-toggle="collapse"]').click(addressCollapsesClickHandler);
+	$('select[name="pais"]').on('change', () => reloadPrefix('pais', 'preftel_cli'));
+});
+
+function reloadPrefix(fromNameElement, toNameElement) {
+
+	if(typeof prefix === 'undefined' || !prefix) {
+		return;
+	}
+
+	$(`input[name=${toNameElement}]`).val(prefix[$(`select[name=${fromNameElement}]`).val()]);
+}
+
+function addressCollapsesClickHandler(event) {
+	event.preventDefault();
+	event.stopPropagation();
+
+	const element = event.currentTarget;
+
+	if ($(element).hasClass('active')) {
+		$('.collapse').collapse('hide');
+		$('.address-form-section [data-toggle="collapse"]').removeClass('active');
+		return false;
+	}
+
+	$('.collapse').collapse('hide');
+
+	$('.address-form-section [data-toggle="collapse"]').not(element).removeClass('active');
+	$(element).toggleClass('active');
+
+	const addressCod = $(element).attr('cod');
+	$.when(ajax_shipping(addressCod, locale)).done(function(data) {
+		$('.collapse').collapse('show');
+	});
+}
+
+function saveAddress(buttonElement) {
+	buttonElement.disabled = true;
+	const data = $('#ajax_shipping_add').find('input, select').serialize();
+	$.when(submit_shipping_addres(data)).done((response) => {
+		buttonElement.disabled = false;
+		$('#modalMensaje .button_modal_confirm').on('click', function(){
+			location.reload();
+		});
+	});
+}
+
+function deleteAddress(buttonElement) {
+	buttonElement.disabled = true;
+	$.when(delete_shipping_addres(buttonElement)).done(() => {
+		buttonElement.disabled = false;
+		$('#modalMensaje .button_modal_confirm').on('click', function(){
+			location.reload();
+		});
+	});
+}
+
+function favAddress(buttonElement) {
+	buttonElement.disabled = true;
+	$.when(fav_addres(buttonElement)).done(() => {
+		buttonElement.disabled = false;
+		$('#modalMensaje .button_modal_confirm').on('click', function(){
+			location.reload();
+		});
+	});
+}
+
+submit_shipping_addres = function (data) {
+	return $.ajax({
+		type: "POST",
+		url: '/change_address_shipping',
+		data,
+		success: function (response) {
+			if (response.status == 'success' || response.status == 'new') {
+				$("#modalMensaje #insert_msg").html('');
+				$("#modalMensaje #insert_msg").html(messages.success.success_saved);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				return response;
+			}
+		}
+	}).then((response) => {
+		return response;
+	});
+}

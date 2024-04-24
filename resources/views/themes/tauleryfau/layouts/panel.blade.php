@@ -22,6 +22,8 @@
         </main>
     </div>
 
+	@include('includes.modals')
+
     {!! Tools::querylog() !!}
 </body>
 

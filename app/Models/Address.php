@@ -5,8 +5,8 @@ namespace App\Models;
 
 use App\Models\V5\FxClid;
 use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 
 class Address extends Model
@@ -33,9 +33,9 @@ class Address extends Model
 		}
 
         DB::select("INSERT INTO FXCLID
-                (GEMP_CLID, CLI_CLID, CODD_CLID, NOMD_CLID,TIPO_CLID,CP_CLID,DIR_CLID,DIR2_CLID,POB_CLID,PAIS_CLID,CODPAIS_CLID,SG_CLID,PRO_CLID,TEL1_CLID,RSOC_CLID, CLI2_CLID, EMAIL_CLID, PREFTEL_CLID)
+                (GEMP_CLID, CLI_CLID, CODD_CLID, NOMD_CLID,TIPO_CLID,CP_CLID,DIR_CLID,DIR2_CLID,POB_CLID,PAIS_CLID,CODPAIS_CLID,SG_CLID,PRO_CLID,TEL1_CLID,RSOC_CLID, CLI2_CLID, EMAIL_CLID, PREFTEL_CLID, OBS_CLID)
                 VALUES
-                (:emp,:num,:max_direcc,:usuario,'E',:cpostal,:direccion,:direccion2,:poblacion,:pais,:cod_pais,:via,:provincia,:telf,:rsoc, :cod2, :email, :preftel_clid)",
+                (:emp,:num,:max_direcc,:usuario,'E',:cpostal,:direccion,:direccion2,:poblacion,:pais,:cod_pais,:via,:provincia,:telf,:rsoc, :cod2, :email, :preftel_clid, :obs_clid)",
                  array(
                     'emp' => Config::get('app.gemp'),
                      'num' => $num,
@@ -53,7 +53,8 @@ class Address extends Model
                     'telf'   => $envio['clid_telf'],
                     'cod2'   => !empty($envio['cod2_clid']) ? strtoupper($envio['cod2_clid']) : null,
 					'email' => $strToDefault ? $envio['email_clid'] ?? '' : strtoupper($envio['email_clid'] ?? ''),
-					'preftel_clid' => $envio['preftel_clid']
+					'preftel_clid' => $envio['preftel_clid'],
+					'obs_clid' => $envio['obs_clid'] ?? ''
                     )
       );
     }
@@ -101,7 +102,7 @@ class Address extends Model
 
          DB::select("UPDATE FXCLID
         SET CP_CLID = :cpostal, DIR_CLID = :direccion,DIR2_CLID = :direccion2, POB_CLID = :poblacion, PAIS_CLID = :pais, CODPAIS_CLID = :cod_pais, SG_CLID = :via,
-        PRO_CLID = :provincia, NOMD_CLID = :name, TEL1_CLID = :telf, RSOC_CLID = :rsoc, EMAIL_CLID  = :email, PREFTEL_CLID = :preftel_clid
+        PRO_CLID = :provincia, NOMD_CLID = :name, TEL1_CLID = :telf, RSOC_CLID = :rsoc, EMAIL_CLID  = :email, PREFTEL_CLID = :preftel_clid, OBS_CLID = :obs_clid
         WHERE GEMP_CLID = :gemp and CLI_CLID = :num and CODD_CLID = :codd_clid",
              array(
                     'gemp' => Config::get('app.gemp'),
@@ -119,7 +120,8 @@ class Address extends Model
                     'telf'   => $envio['clid_telf'],
 					'rsoc'	=> $strToDefault ? $envio['clid_rsoc'] : strtoupper($envio['clid_rsoc']),
 					'email' => $strToDefault ? $envio['email_clid'] : strtoupper($envio['email_clid']),
-					'preftel_clid' => $envio['preftel_clid']
+					'preftel_clid' => $envio['preftel_clid'],
+					'obs_clid' => $envio['obs_clid'] ?? null
                     )
        );
 

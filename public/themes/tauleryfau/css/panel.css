@@ -86,6 +86,15 @@
 	--btn-radius: 8px;
 }
 
+.btn-lb-danger {
+	--btn-bg: var(--btn-red);
+	--btn-bc: var(--btn-red);
+	--btn-color: #fff;
+	--btn-bg-hover: #A81313;
+	--btn-bc-hover: #A81313;
+	--btn-color-hover: #fff;
+}
+
 .btn-lb-success.btn-sm {
 	padding: 5px 10px;
 	font-size: inherit;
@@ -112,7 +121,7 @@ body>header {
 	box-shadow: 0 0 7px 0 rgba(0, 0, 0, .5);
 	position: sticky;
 	top: 0;
-	z-index: 1;
+	z-index: 3;
 	font-size: var(--fs-l);
 }
 
@@ -181,6 +190,8 @@ main {
 	font-size: inherit;
 
 	max-width: var(--max-content-borderbox);
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
     margin-left: auto;
     margin-right: auto;
     padding-top: 0;
@@ -204,10 +215,6 @@ select#actual_currency {
 	font-size: var(--fs-l);
 }
 
-.orders-page {
-	padding: 15px;
-}
-
 .orders-auction {
 	margin-bottom: 2rem;
 }
@@ -217,15 +224,16 @@ select#actual_currency {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	align-items: center;
+	max-width: var(--max-content-borderbox);
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
+	margin: auto;
+	gap: 5px;
 }
 
 .orders-auction_header {
-	font-weight: 500;
-	color: #000;
 	padding-top: .5rem;
 	padding-bottom: .5rem;
-	margin-bottom: 1rem;
-	border-bottom: 1px solid #AF9C81A1;
 }
 
 .orders-auction_header>*:not(.orders-auction_title) {
@@ -234,7 +242,6 @@ select#actual_currency {
 
 .orders-auction_lot {
 	font-weight: 500;
-	gap: 5px;
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #AF9C81A1;
 	margin-bottom: 1rem;
@@ -387,21 +394,17 @@ select#actual_currency {
 	.orders-auction_lot {
 		grid-template-columns: var(--grid-columns-desktop);
 		align-items: center;
-		gap: 0;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
 		margin-bottom: 0;
 		border: 0;
+		grid-template-areas: none;
 	}
 
-	:is(.orders-auction_header, .orders-auction_lot)>*:not(:first-child) {
+	/* :is(.orders-auction_header, .orders-auction_lot)>*:not(:first-child) {
 		padding-left: 10px;
 		padding-right: 10px;
-	}
-
-	.orders-auction_lot:nth-child(odd) {
-		background-color: #9B9B9B1F;
-	}
+	} */
 
 	.orders-auction_lot>* {
 		grid-area: auto;
@@ -540,7 +543,7 @@ select#actual_currency {
 
 .sales-auctions,
 .alltoments-auctions {
-	--max-width: 1200px;
+	--max-width: var(--max-content-contentbox);
 	--line-height: 1.2;
 	--min-height: calc(2 * var(--line-height) * 1em);
 	--gap: 1rem;
@@ -563,7 +566,7 @@ select#actual_currency {
 	--grid-columns-mobile: repeat(3, 1fr) 2fr;
 }
 
-.sales-auctions,
+.sales-auctions, p,
 .alltoments-auctions p {
 	margin: 0;
 }
@@ -610,8 +613,8 @@ select#actual_currency {
 	display: grid;
 	grid-template-columns: var(--grid-columns-mobile);
 	align-items: center;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
 	gap: var(--gap);
 }
 
@@ -626,18 +629,13 @@ select#actual_currency {
 	align-items: center;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
 	gap: var(--gap);
 }
 
 .allotment-auctions_header-imp {
 	grid-column: span 2;
-}
-
-.invoice-auction {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
 }
 
 :is(.sales-auction, .invoice-auction) .badge {
@@ -756,6 +754,10 @@ select#actual_currency {
 	display: none;
 	border-bottom: 1px solid var(--color-gold);
 	border-top: 1px solid var(--color-gold);
+}
+
+.orders-auction .panel-lots_header-wrapper {
+	border-top: none;
 }
 
 .pending-lots .panel-lots_header-wrapper {
@@ -1219,3 +1221,103 @@ select#actual_currency {
 		grid-column: 3 / -1;
 	} */
 }
+
+.profile-page {
+	--lb-gutter-x: 6px;
+}
+
+.profile-page :is(input, textarea) {
+	font-size: inherit;
+	font-weight: 400;
+}
+
+.profile-page .row {
+	margin-right: calc(var(--lb-gutter-x) * -1);
+	margin-left: calc(var(--lb-gutter-x) * -1);
+}
+
+.profile-page div[class^="col-"] {
+	padding-right: var(--lb-gutter-x);
+	padding-left: var(--lb-gutter-x);
+}
+
+.profile-page .form-group {
+	margin-bottom: 15px;
+}
+
+.profile-container {
+	max-width: 500px;
+	margin: auto;
+}
+
+.profile-page .panel-title {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.profile-form legend {
+	font-size: var(--fs-l);
+    color: inherit;
+    font-weight: 500;
+    margin-bottom: 1rem;
+	padding-top: 1rem;
+	border-bottom: 0;
+}
+
+.bootstrap-select button {
+	border-radius: 0;
+	border-width: 1px;
+}
+
+.profile-page select {
+	border: 1px solid #ccc;
+}
+
+.profile-page .checkbox {
+	margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.profile-page .checkbox + .checkbox {
+	margin-top: 0;
+}
+
+.profile-page .btn-wrapp {
+	text-align: center;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.profile-page .list-group-item:is(.active, .active:hover) {
+	background-color: var(--color-gold);
+	border-color: var(--color-gold);
+}
+
+.profile-page .list-group-item:is(:hover, :focus) {
+	border-color: var(--color-gold);
+}
+
+.profile-page .list-group-item {
+	border-radius: 0;
+	margin-bottom: 5px;
+}
+
+.profile-page .form-control.has-error {
+	border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.profile-page .form-group:has(.form-control.has-error) label, .profile-page .has-error label {
+	color: #a94442;
+}
+
+.profile-page .tab-content {
+	margin-top: 0;
+	max-height: none;
+}
+
+.address-form label {
+	width: 100%;
+}
+
