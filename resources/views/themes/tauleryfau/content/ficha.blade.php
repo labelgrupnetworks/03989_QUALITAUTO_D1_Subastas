@@ -19,6 +19,10 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 	}
 </style>
 <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="/vendor/photoswipe/photoswipe.umd.min.js"></script>
+<script src="/vendor/photoswipe/photoswipe-lightbox.umd.min.js"></script>
+<link href="/vendor/photoswipe/photoswipe.css" rel="stylesheet">
+
 <input type="hidden" name="_token" id="token" value="{{ Session::token() }}" />
 <section class="title-ficha">
 	<div class="container">
@@ -134,18 +138,23 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 					@endforeach
 					@endif
 
-					<div class="owl-theme owl-carousel visible-xs visible-sm visible-md" id="owl-carousel-responsive">
+					<div class="ficha-lot-galery owl-theme owl-carousel visible-xs visible-sm visible-md" id="owl-carousel-responsive">
 						@if(count($lote_actual->imagenes) > 0)
 						@foreach($lote_actual->imagenes as $key => $imagen)
-						<div class="item_content_img_single"
-							style="position: relative; height: 250px; overflow: hidden;">
-							<img onclick="javascript:moreImagesGridMobile('{{$lote_actual->num_hces1}}', '{{$lote_actual->lin_hces1}}', {{$key}})"
-								loading="lazy" style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
-								class="img-responsive" data-pos="{{ $key }}"
-								src="{{ \Tools::url_img("lote_medium_large", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
-								alt="{{$lote_actual->titulo_hces1}}">
+						@php
+							$imageUrl = Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
+							$imageSize = getimagesize($imageUrl);
+						@endphp
+						<a class="d-block" data-pswp-width="{{ $imageSize[0] }}" data-pswp-height="{{ $imageSize[1] }}"
+							href="{{ $imageUrl }}">
+							<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
+								<img loading="lazy" style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
+									class="img-responsive" data-pos="{{ $key }}"
+									src="{{ $imageUrl }}"
+									alt="{{$lote_actual->titulo_hces1}}">
 
-						</div>
+							</div>
+						</a>
 						@endforeach
 						@endif
 
@@ -474,6 +483,13 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 </div> --}}
 
 <script>
+	var lightbox = new PhotoSwipeLightbox({
+        gallery: '.ficha-lot-galery',
+        children: 'a',
+        pswpModule: PhotoSwipe
+    });
+    lightbox.init();
+
 	$(window).ready(function(){
 
 		if($('.context-text p span').text().length > 10){
