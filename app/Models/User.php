@@ -12,6 +12,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class User
 {
@@ -1390,6 +1391,49 @@ class User
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param \Illuminate\Http\UploadedFile|null $file
+	 * @param string $cod_cli
+	 * @return bool
+	 */
+	public function storeAvatar($fileImage, $cod_cli = null)
+	{
+		$notValidation = (!$cod_cli && !$this->cod_cli) || !$fileImage;
+
+		if($notValidation) {
+			return false;
+		}
+
+		if(!$cod_cli) {
+			$cod_cli = $this->cod_cli;
+		}
+
+		$extension = 'png';
+		$nameFile = $cod_cli . '.' . $extension;
+
+		Image::make($fileImage)
+			->resize(100, null, function ($constraint) {
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			})
+			->save(Storage::disk('avatars')->path($nameFile), 90);
+
+		return true;
+	}
+
+	public function getAvatar($cod_cli = null)
+	{
+		if(!$cod_cli) {
+			$cod_cli = $this->cod_cli;
+		}
+
+		$storage = Storage::disk('avatars');
+		$avatarImageName = $cod_cli . '.png';
+		$avatar = $storage->exists($avatarImageName) ? $storage->url($avatarImageName) : asset("/themes/$theme/assets/img/default-avatar.png");
+
+		return $avatar;
 	}
 
 	/**

@@ -5,9 +5,13 @@
 @stop
 
 @php
+	use App\Models\User;
     use App\Models\V5\FgSg;
+	use Illuminate\Support\Facades\Storage;
 
-    $countries = [];
+	$avatar = (new User)->getAvatar($data['user']->cod_cliweb);
+
+	$countries = [];
     $prefix = [];
     $divisas = $data['divisa']->mapWithKeys(function ($item) use ($theme) {
         return [$item->cod_div => $item->cod_div . ' (' . trans($theme . '-app.user_panel.' . $item->cod_div) . ')'];
@@ -49,8 +53,19 @@
             </div>
 
             <div class="profile-form">
-                <form class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator" method="post">
+                <form class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator" method="post" enctype="multipart/form-data">
                     @csrf
+
+					<fieldset class="profile-avatar">
+						<legend>Foto de perfil</legend>
+
+						<img src="{{$avatar}}" alt="avatar del usuario" width="75px" style="aspect-ratio: 1">
+
+						<label>
+							Subir fotografía
+							<input type="file" name="avatar" style="display: none">
+						</label>
+					</fieldset>
 
                     <fieldset>
                         <legend>Dirección de facturación</legend>

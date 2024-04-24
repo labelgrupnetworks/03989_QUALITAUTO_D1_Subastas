@@ -609,11 +609,16 @@ $(function () {
 			var $this = $(this);
 
 			$('button', $this).attr('disabled', 'disabled');
+
+			const formData = new FormData(this);
+
 			// Datos correctos enviamos ajax
 			$.ajax({
 				type: "POST",
 				url: '/api-ajax/client/update',
-				data: $('#frmUpdateUserInfoADV').serialize(),
+				data: formData,
+				contentType: false,
+        		processData: false,
 				beforeSend: function () {
 					$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
 				},
@@ -2012,6 +2017,17 @@ function refreshActiveSummary(cod_sub) {
 $(function() {
 	$('.address-form-section [data-toggle="collapse"]').click(addressCollapsesClickHandler);
 	$('select[name="pais"]').on('change', () => reloadPrefix('pais', 'preftel_cli'));
+
+	$('input[name="avatar"]').on('change', function() {
+		const file = this.files[0];
+		const reader = new FileReader();
+
+		reader.onload = function(e) {
+			$('.profile-avatar img').attr('src', e.target.result);
+		}
+
+		reader.readAsDataURL(file);
+	});
 });
 
 function reloadPrefix(fromNameElement, toNameElement) {

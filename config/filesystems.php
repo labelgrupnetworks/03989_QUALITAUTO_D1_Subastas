@@ -66,7 +66,13 @@ return [
 			'root' => storage_path('app/files/CLI/') . config('app.emp'),
 			'url' => config('app.url').'/admin/clientes',
 			'visibility' => 'public' //establece los permisos del directorio o archivo, en privado solo se puede acceder desde la aplicacion
-		]
+		],
+		'avatars' => [
+			'driver' => 'local',
+			'root' => storage_path('app/public/avatars'),
+			'url' => config('app.url').'/storage/avatars',
+			'visibility' => 'public'
+		],
 
     ],
 

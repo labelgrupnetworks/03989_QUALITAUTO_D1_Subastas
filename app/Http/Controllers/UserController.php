@@ -2218,7 +2218,7 @@ class UserController extends Controller
 
 
     # Actualizamos la información del perfil del usuario
-    public function updateClientInfo()
+    public function updateClientInfo(HttpRequest $request)
     {
 
 		//Textos por defecto o toUpper
@@ -2362,6 +2362,11 @@ class UserController extends Controller
                 $Update->email = Input::get('email');
             }
         }
+
+		if($request->has('avatar')) {
+			(new User)->storeAvatar($request->file('avatar'), $Update->cod_cli);
+		}
+
             //Administrador recibe un correo que este cliente quiere modificar su información
 
           $emailOptions = $email->processVars();
