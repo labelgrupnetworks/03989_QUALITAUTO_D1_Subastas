@@ -8,6 +8,8 @@
 	<script>
 		var pendientes = @json($data['pending'])
 	</script>
+
+	<main class="bills-page">
 	<!-- titulo -->
 	<div class="color-letter">
 		<div class="container">
@@ -198,6 +200,7 @@
 			</div>
 		</div>
 	</div>
+	</main>
 
 
 	<script>

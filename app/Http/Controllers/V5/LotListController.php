@@ -868,7 +868,7 @@ class LotListController extends Controller
 			}
 
             #SIEMPRE ORDENAM0S AL FINAL POR REFERENCIA,SI NO HAY FILTRO SE ORDENA POR DEFECTO Y SI LO HAY SE ORDENA  AUNQUE SEA COMO SEGUNDA O TERCERA ORDENACIÓN
-            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0","ASC");
+            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0", Config::get('app.lotlist_default_order', 'asc'));
 
 
             return   $fgasigl0;

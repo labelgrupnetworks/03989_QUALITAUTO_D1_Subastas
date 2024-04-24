@@ -21,7 +21,7 @@
 		$userIsNotAdmin = !session('user.admin');
 		$redirectToTaulerSubastas = $userIsNotAdmin && $data['subc_sub'] == App\Models\V5\FgSub::SUBC_SUB_ACTIVO;
 		if ($redirectToTaulerSubastas) {
-			$redirect(Config::get('app.locale') == 'es' ?  'proximas-subastas' : 'upcoming-auctions');
+			$redirect(Config::get('app.locale') == 'es' ?  'subastas' : 'auctions');
 		}
 	@endphp
 
