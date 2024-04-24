@@ -25,8 +25,8 @@ class AdminDiskStatusController extends Controller
 
 	public function index(Request $request)
 	{
-		/* $depth = $request->input('depth', 1);
-		$directories = $this->exploreDirectories('', $depth); */
+		//$depth = $request->input('depth', 1);
+		//$directories = $this->exploreDirectories('', $depth);
 
 		$data = [
 			//'directories' => $directories,
@@ -56,9 +56,7 @@ class AdminDiskStatusController extends Controller
 		$directories = [];
 		$subDirectories = [];
 
-		$items = Storage::disk('all-public')->directories($path);
-		$exclude = ['vendor'];
-		$items = array_diff($items, $exclude);
+		$items = $this->getDirs($path);
 
 		//exclude simbolic links
 		$items = array_filter($items, function ($item) {
@@ -85,6 +83,31 @@ class AdminDiskStatusController extends Controller
 		}
 
 		return $directories;
+	}
+
+	private function getDirs($path)
+	{
+		$items = scandir(public_path($path));
+
+		// Filtrar solo los directorios
+		$items = array_filter($items, function ($item) {
+			return is_dir(public_path($item));
+		});
+
+		// Eliminar los directorios "." y ".."
+		$items = array_diff($items, array('.', '..'));
+
+		// Eliminar links
+		$items = array_filter($items, function ($item) {
+			return !is_link(public_path($item));
+		});
+
+		//excluir reservados
+		$exclude = ['vendor'];
+
+		$items = array_diff($items, $exclude);
+
+		return $items;
 	}
 
 	public function getDirectorySize($path, $unit = null)
