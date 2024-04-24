@@ -25,8 +25,10 @@ class AdminDiskStatusController extends Controller
 
 	public function index(Request $request)
 	{
-		//$depth = $request->input('depth', 1);
-		//$directories = $this->exploreDirectories('', $depth);
+		/* $depth = $request->input('depth', 3);
+		$directories = $this->exploreDirectories('', $depth);
+
+		dd($directories); */
 
 		$data = [
 			//'directories' => $directories,
@@ -58,14 +60,16 @@ class AdminDiskStatusController extends Controller
 
 		$items = $this->getDirs($path);
 
-		//exclude simbolic links
-		$items = array_filter($items, function ($item) {
-			return !is_link(public_path($item));
-		});
+		/* if($path == ''){
+			$items = array_diff($items, ['blog']);
+		} */
 
 		foreach ($items as $item) {
 
 			$publicPath = public_path($item);
+
+			//relaitve path:
+			$name = basename($item);
 
 			// Obtener el tamaño del directorio
 			$size = $this->getDirectorySize($publicPath, 'KB');
@@ -76,7 +80,8 @@ class AdminDiskStatusController extends Controller
 			}
 
 			$directories[] = [
-				'name' => $item,
+				'path' => $item,
+				'name' => $name,
 				'size' => $size,
 				'subdirectories' => $subDirectories
 			];
@@ -89,23 +94,23 @@ class AdminDiskStatusController extends Controller
 	{
 		$items = scandir(public_path($path));
 
-		// Filtrar solo los directorios
-		$items = array_filter($items, function ($item) {
-			return is_dir(public_path($item));
-		});
-
 		// Eliminar los directorios "." y ".."
 		$items = array_diff($items, array('.', '..'));
-
-		// Eliminar links
-		$items = array_filter($items, function ($item) {
-			return !is_link(public_path($item));
-		});
 
 		//excluir reservados
 		$exclude = ['vendor'];
 
 		$items = array_diff($items, $exclude);
+
+		//add path to items
+		$items = array_map(function ($item) use ($path) {
+			return "$path/$item";
+		}, $items);
+
+		// Filtrar solo los directorios y eliminar los links
+		$items = array_filter($items, function ($item) {
+			return is_dir(public_path("$item")) && !is_link(public_path($item));
+		});
 
 		return $items;
 	}
