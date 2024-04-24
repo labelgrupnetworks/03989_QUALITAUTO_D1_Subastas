@@ -60,6 +60,11 @@ class AdminDiskStatusController extends Controller
 		$exclude = ['vendor'];
 		$items = array_diff($items, $exclude);
 
+		//exclude simbolic links
+		$items = array_filter($items, function ($item) {
+			return !is_link(public_path($item));
+		});
+
 		foreach ($items as $item) {
 
 			$publicPath = public_path($item);
