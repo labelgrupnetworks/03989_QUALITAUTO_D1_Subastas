@@ -44,6 +44,11 @@
 					<input type="radio" name="filter_session" id="sesion_{{$ses->reference}}" value="{{$ses->reference}}" class="filter_lot_list_js" <?= ($ses->reference == request("filter_session"))?  'checked="checked"' : '' ?>  />
 					<label for="sesion_{{$ses->reference}}" class="ratio-label">
 						{{trans($theme.'-app.lot_list.sesion')}} {{abs($ses->reference)}}  ({{$numSessionLots[$ses->reference] }})
+
+						@if($estadoSesiones[$ses->reference] == "ended" )
+							<b>	{{trans($theme.'-app.subastas.finalized')}}</b>
+						@endif
+
 					</label>
 				</div>
 			</div>

@@ -5,6 +5,7 @@ use Carbon\Carbon;
    $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
    $localeToTime = str_replace('-', '_', $completeLocale);
    $dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM YYYY - HH:mm [h]' : 'MMMM Do YYYY - HH:mm [h]';
+   $dateFormat_foot = $localeToTime === 'es_ES' ? 'D [de] MMMM YYYY'  : 'MMMM Do YYYY';
 @endphp
 
 	@if(!empty($auction))
@@ -25,21 +26,25 @@ use Carbon\Carbon;
 			if ($pos !== false) {
 				$auction->name = substr_replace($auction->name, '<br>', $pos, strlen('-'));
 			}
+
 	@endphp
 
+
+<div class="filters" >
 		<div class="hidden-md hidden-lg " style="margin-top: 10px"></div>
 		<div class="filter-section-head filter-name-auction ">
 			<h4 class="text-center">{!! $auction->name !!}</h4>
 		</div>
-
 
 			<div >
 
 
 				@foreach($sessiones as $session)
 					@php
+						$estadoSesiones[$session->reference] =$session->estado;
 
 						$fecha = Carbon::parse($session->start);
+					
 					@endphp
 					<div class=" sessionLeft ">
 
@@ -55,16 +60,46 @@ use Carbon\Carbon;
 
 							@if( $session->estado != "ended")
 								<span data-countdown="{{ strtotime($session->start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($session->start); ?>" data-closed="{{ 0 }}" class="timer"></span>
+								<span class="clock "></span>
 							@else
 								<span>	{{trans($theme.'-app.subastas.finalized')}}</span>
 							@endif
 
-							<span class="clock "></span>
+
 						</span>
 					</div>
 				@endforeach
 
 			</div>
+</div>
+
+<div class="lot-count hidden-md hidden-lg">
+	<div  class="text-center timeLeftOnLeft online-time online-time-foot">
+		<span class=" hidden-md hidden-lg"> {{ explode('-', $auction->des_sub)[1] ?? $auction->des_sub }} </span>
+		<span class="hidden-md hidden-lg"> | </span>
+		<span>
+
+			@if(count($sessiones) == 1)
+							@if( $session->estado != "ended")
+								<span  class="hidden-md hidden-lg" data-countdown="{{ strtotime($session->start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($session->start); ?>" data-closed="{{ 0 }}" class="timer"></span>
+								<span class="clock hidden-md hidden-lg"></span>
+							@else
+								<span  class="hidden-md hidden-lg">	{{trans($theme.'-app.subastas.finalized')}}</span>
+							@endif
+
+
+			@else
+				@foreach($sessiones as $session)
+					@php
+
+						$fecha = Carbon::parse($session->start);
+					@endphp
+						<span class="hidden-md hidden-lg"> {{ $fecha->locale($localeToTime)->isoFormat($dateFormat_foot) }}</span></br>
+				@endforeach
+			@endif
+		</span>
+	</div>
+</div>
 
 
 		<div class="filters filters-padding filters-info-auciton ">
