@@ -1547,7 +1547,6 @@ class UserController extends Controller
 		if (Config::get('app.dni_in_storage', false) == "dni-files") {
 			return storage_path("app/files/dni/$emp/$cod_cli/files/");
 		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
-			/* return storage_path("app/files/CLI/$emp/$cod_cli/documentation/"); */
 			return storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/");
 		}
 
