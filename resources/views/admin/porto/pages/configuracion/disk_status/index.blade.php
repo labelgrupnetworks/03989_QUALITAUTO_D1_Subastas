@@ -19,6 +19,7 @@
 
             <p>Espacio total: {{ $spaceInDisk }}</p>
             <p>Espacio libre: {{ $freeSpaceInDisk }}</p>
+            <p>% Utilizado: {{ $usedSpacePercent }}</p>
 
             <div class="directories" id="directories-tree">
             </div>

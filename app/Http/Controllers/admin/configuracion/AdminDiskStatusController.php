@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\admin\configuracion;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use FilesystemIterator;
 use Illuminate\Http\Request;
 use RecursiveIteratorIterator;
@@ -23,20 +22,9 @@ class AdminDiskStatusController extends Controller
 		view()->share(['menu' => 'configuracion_admin']);
 	}
 
-	public function index(Request $request)
+	public function index()
 	{
-		/* $depth = $request->input('depth', 3);
-		$directories = $this->exploreDirectories('', $depth);
-
-		dd($directories); */
-
-		$data = [
-			//'directories' => $directories,
-			'freeSpaceInDisk' => $this->unitConvert(disk_free_space('/')),
-			'spaceInDisk' => $this->unitConvert(disk_total_space('/'))
-		];
-
-		return view('admin::pages.configuracion.disk_status.index', $data);
+		return view('admin::pages.configuracion.disk_status.index', $this->generateDiskUsageData());
 	}
 
 	public function getDirectoryInPath(Request $request)
@@ -49,6 +37,14 @@ class AdminDiskStatusController extends Controller
 		return view('admin::pages.configuracion.disk_status.node', ['directories' => $directories]);
 	}
 
+	/**
+	 * Explorar directorios,
+	 * $depth no se esta utilizando, pero nos sirve por si qusieramos explorar mas de una llamada.
+	 *
+	 * @param string $path
+	 * @param int $depth Profundidad de exploración, no se esta utilizando por ahora pero nos sirve por si qusieramos explorar mas de un nivel
+	 * @return array
+	 */
 	private function exploreDirectories($path, $depth)
 	{
 		if ($depth == 0) {
@@ -60,19 +56,12 @@ class AdminDiskStatusController extends Controller
 
 		$items = $this->getDirs($path);
 
-		/* if($path == ''){
-			$items = array_diff($items, ['blog']);
-		} */
-
 		foreach ($items as $item) {
 
 			$publicPath = public_path($item);
-
-			//relaitve path:
 			$name = basename($item);
 
-			// Obtener el tamaño del directorio
-			$size = $this->getDirectorySize($publicPath, 'KB');
+			$size = $this->getDirectorySize($publicPath);
 
 			// Recursivamente explorar subdirectorios si hay más profundidad
 			if ($depth > 1) {
@@ -94,12 +83,8 @@ class AdminDiskStatusController extends Controller
 	{
 		$items = scandir(public_path($path));
 
-		// Eliminar los directorios "." y ".."
-		$items = array_diff($items, array('.', '..'));
-
 		//excluir reservados
-		$exclude = ['vendor'];
-
+		$exclude = ['.', '..', 'vendor'];
 		$items = array_diff($items, $exclude);
 
 		//add path to items
@@ -109,13 +94,26 @@ class AdminDiskStatusController extends Controller
 
 		// Filtrar solo los directorios y eliminar los links
 		$items = array_filter($items, function ($item) {
-			return is_dir(public_path("$item")) && !is_link(public_path($item));
+			return is_dir(public_path("$item")); //&& !is_link(public_path($item));
 		});
 
 		return $items;
 	}
 
-	public function getDirectorySize($path, $unit = null)
+	private function generateDiskUsageData()
+	{
+		$fileSystem = PHP_OS_FAMILY === 'Windows' ? '/' : '/DATA';
+		$freeSpaceInDisk = disk_free_space($fileSystem);
+		$spaceInDisk = disk_total_space($fileSystem);
+
+		return [
+			'freeSpaceInDisk' => $this->unitConvert($freeSpaceInDisk),
+			'spaceInDisk' => $this->unitConvert($spaceInDisk),
+			'usedSpacePercent' => ($spaceInDisk <= 0) ? 0 : (($spaceInDisk - $freeSpaceInDisk) / $spaceInDisk) * 100
+		];
+	}
+
+	private function getDirectorySize($path)
 	{
 		$bytestotal = 0;
 		$path = realpath($path);
@@ -126,27 +124,45 @@ class AdminDiskStatusController extends Controller
 		}
 
 		return $this->unitConvert($bytestotal);
-
-		/* return match ($unit) {
-			'KB' => round($bytestotal / 1024, 2),
-			'MB' => round($bytestotal / 1048576, 2),
-			'GB' => round($bytestotal / 1073741824, 2),
-			default => $bytestotal
-		}; */
 	}
 
 	private function unitConvert($size)
 	{
-		if ($size >= 1073741824) {
-			$size = number_format($size / 1073741824, 2) . ' GB';
-		} elseif ($size >= 1048576) {
-			$size = number_format($size / 1048576, 2) . ' MB';
-		} elseif ($size >= 1024) {
-			$size = number_format($size / 1024, 2) . ' KB';
-		} else {
-			$size = $size . ' bytes';
+		return match (true) {
+			$size >= 1073741824 => number_format($size / 1073741824, 2) . ' GB',
+			$size >= 1048576 => number_format($size / 1048576, 2) . ' MB',
+			$size >= 1024 => number_format($size / 1024, 2) . ' KB',
+			default => $size . ' bytes'
+		};
+	}
+
+	private function generateDiskUsageForAllFileSystems()
+	{
+		$diskUsageData = [];
+		foreach ($this->getListOfFileSystems() as $mounted_file_system) {
+
+			$freeSpace = disk_free_space($mounted_file_system);
+			$totalSpace = disk_total_space($mounted_file_system);
+			$usedSpacePercentage =  ($totalSpace <= 0) ? 0 : (($totalSpace - $freeSpace) / $totalSpace) *  100;
+
+			$diskUsageData[] = [
+				'fs_name' => $mounted_file_system,
+				'disk_free_space' => $freeSpace,
+				'disk_total_space' => $totalSpace,
+				'used_space_percent' => $usedSpacePercentage,
+			];
 		}
 
-		return $size;
+		return $diskUsageData;
+	}
+
+	private function getListOfFileSystems()
+	{
+		$mounted_file_systems = [];
+		exec('findmnt -l -o TARGET', $mounted_file_systems);
+		array_shift($mounted_file_systems); // remove output header
+		sort($mounted_file_systems);
+
+		return $mounted_file_systems;
 	}
 }
