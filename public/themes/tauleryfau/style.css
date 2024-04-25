@@ -6162,6 +6162,24 @@ FICHA LOTE
     text-align: right;
 }
 
+.image-lot-miniature-container {
+	display: flex;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 1000000;
+	overflow-x: auto;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.image-lot-miniature-container .micro-image {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+}
+
+
 /**********************************
 FIN FICHA LOTE
 **********************************/

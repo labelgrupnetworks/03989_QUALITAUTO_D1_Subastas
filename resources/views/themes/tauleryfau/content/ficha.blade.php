@@ -163,6 +163,16 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 
 					</div>
 
+					@if(count($lote_actual->imagenes) > 0)
+						<div class="image-lot-miniature-container d-none">
+							@foreach($lote_actual->imagenes as $key => $imagen)
+								<a class="image-selector" data-key-image="{{ $key }}">
+									<img class="micro-image" src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+								</a>
+							@endforeach
+						</div>
+					@endif
+
 					<div class="col-xs-12 no-padding hidden-lg">
 						<div class="btn-responsive flex">
 							@if($lote_actual->retirado_asigl0 =='N')
@@ -483,14 +493,32 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()->where('SUB_ASIGL0', $
 </div> --}}
 
 <script>
-	var lightbox = new PhotoSwipeLightbox({
-        gallery: '.ficha-lot-galery',
-        children: 'a',
-        pswpModule: PhotoSwipe
-    });
-    lightbox.init();
+
 
 	$(window).ready(function(){
+		var lightbox = new PhotoSwipeLightbox({
+			gallery: '.ficha-lot-galery',
+			children: 'a',
+			pswpModule: PhotoSwipe
+
+		});
+		lightbox.init();
+
+		lightbox.on('beforeOpen', () => {
+			$('.image-lot-miniature-container').removeClass('d-none');
+		});
+
+		lightbox.on('close', () => {
+			$('.image-lot-miniature-container').addClass('d-none');
+		});
+
+		$('a.image-selector').click(openThatImage);
+
+		function openThatImage(){
+			let index = $(this).data('key-image');
+			const pswp = lightbox.pswp;
+			pswp.goTo(index)
+		}
 
 		if($('.context-text p span').text().length > 10){
             $('.btn-context').removeClass('hidden')
