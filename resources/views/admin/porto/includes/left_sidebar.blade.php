@@ -603,6 +603,13 @@ $idiomes = \Config::get('app.locales');
 								</a>
 							</li>
 						</ul>
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('admin.disk-status.index') }}">
+									<span>Comprobar disco</span>
+								</a>
+							</li>
+						</ul>
 
 					</li>
 					@endif
