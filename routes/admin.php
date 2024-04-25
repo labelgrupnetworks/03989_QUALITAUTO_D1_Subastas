@@ -461,6 +461,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('cache', 'configuracion\AdminCacheController@index')->name('admin.cache.index');
 		Route::post('cache', 'configuracion\AdminCacheController@action')->name('admin.cache.action');
 
+		Route::get('disk-status', 'configuracion\AdminDiskStatusController@index')->name('admin.disk-status.index');
+		Route::get('disk-status/folder', 'configuracion\AdminDiskStatusController@getDirectoryInPath')->name('admin.disk-status.folder');
 	});
 
 
