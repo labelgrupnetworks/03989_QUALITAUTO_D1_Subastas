@@ -6179,9 +6179,15 @@ FICHA LOTE
 }
 
 .image-lot-miniature-container .micro-image {
+	transition: ease-in 0.07s;
 	width: 80px;
 	height: 80px;
 	object-fit: cover;
+}
+
+.image-lot-miniature-container .image-selector:hover .micro-image {
+	width: 120px;
+	height: 120px;
 }
 
 

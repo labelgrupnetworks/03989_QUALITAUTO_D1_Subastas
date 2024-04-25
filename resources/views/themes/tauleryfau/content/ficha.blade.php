@@ -533,12 +533,15 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 
 		lightbox.on('beforeOpen', () => {
 			const container = $('.image-lot-miniature-container');
-			container.slideDown();
-			container.css('display', 'flex');
+			container.slideDown(400, function() {
+				$(this).css('display', 'flex');
+				$(this).css('align-items', 'flex-end');
+			});
 		});
 
 		lightbox.on('close', () => {
-			$('.image-lot-miniature-container').slideUp()
+			$('.image-lot-miniature-container').css('align-items', 'initial');
+			$('.image-lot-miniature-container').slideUp(400);
 		});
 
 		$('a.image-selector').click(openThatImage);
