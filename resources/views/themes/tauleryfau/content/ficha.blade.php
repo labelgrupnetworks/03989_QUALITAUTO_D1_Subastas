@@ -162,7 +162,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 					</div>
 
 					@if(count($lote_actual->imagenes) > 0)
-						<div class="image-lot-miniature-container d-none">
+						<div class="image-lot-miniature-container" style="display: none">
 							@foreach($lote_actual->imagenes as $key => $imagen)
 								<a class="image-selector" data-key-image="{{ $key }}">
 									<img class="micro-image" src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
@@ -532,11 +532,13 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 		lightbox.init();
 
 		lightbox.on('beforeOpen', () => {
-			$('.image-lot-miniature-container').removeClass('d-none');
+			const container = $('.image-lot-miniature-container');
+			container.slideDown();
+			container.css('display', 'flex');
 		});
 
 		lightbox.on('close', () => {
-			$('.image-lot-miniature-container').addClass('d-none');
+			$('.image-lot-miniature-container').slideUp()
 		});
 
 		$('a.image-selector').click(openThatImage);

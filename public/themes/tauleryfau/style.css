@@ -6162,9 +6162,14 @@ FICHA LOTE
     text-align: right;
 }
 
+.pswp {
+	background-color: black;
+}
+
 .image-lot-miniature-container {
 	display: flex;
 	position: fixed;
+	gap: 5px;
 	bottom: 0;
 	left: 0;
 	z-index: 1000000;
