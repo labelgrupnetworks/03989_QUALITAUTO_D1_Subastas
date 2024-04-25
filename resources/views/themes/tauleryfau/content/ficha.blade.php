@@ -484,7 +484,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 </div> --}}
 
 <script>
-	
+
 	const fichaCarousel = $("#owl-carousel-responsive-ficha").owlCarousel({
 		items: 1,
 		autoplay: false,
@@ -521,7 +521,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 		} */
 
 
-		/* (function($) {
+		(function($) {
 			var carouselThumnail = {
 				init: function() {
 					this.cache()
@@ -585,12 +585,12 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 			}
 
 			carouselThumnail.init()
-		})($); */
+		})($);
 
 
 
 		//mostrar 360 en contenedor de carousel
-		/* @if (!empty($lote_actual->contextra_hces1))
+		@if (!empty($lote_actual->contextra_hces1))
 			(function($) {
 				var image360Mobile = {
 					init: function() {
@@ -643,7 +643,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 				image360Mobile.init()
 			})($)
 		@endif
- */
+
 
 
 	});
