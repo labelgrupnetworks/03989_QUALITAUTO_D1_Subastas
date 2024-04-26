@@ -5,7 +5,7 @@ use Carbon\Carbon;
    $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
    $localeToTime = str_replace('-', '_', $completeLocale);
    $dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM YYYY - HH:mm [h]' : 'MMMM Do YYYY - HH:mm [h]';
-   $dateFormat_foot = $localeToTime === 'es_ES' ? 'D [de] MMMM YYYY'  : 'MMMM Do YYYY';
+   $dateFormat_foot = $localeToTime === 'es_ES' ? 'D  MMMM YYYY'  : 'MMMM Do YYYY';
 @endphp
 
 	@if(!empty($auction))
@@ -44,7 +44,7 @@ use Carbon\Carbon;
 						$estadoSesiones[$session->reference] =$session->estado;
 
 						$fecha = Carbon::parse($session->start);
-					
+
 					@endphp
 					<div class=" sessionLeft ">
 
@@ -93,9 +93,14 @@ use Carbon\Carbon;
 					@php
 
 						$fecha = Carbon::parse($session->start);
+						#cojemos el día de la primera sesion para mostrarlo despues concatenado con al fecha de la segunda sesión
+						if(empty($primerDia)){
+							$primerDia= $fecha->isoFormat("D");
+						}
 					@endphp
-						<span class="hidden-md hidden-lg"> {{ $fecha->locale($localeToTime)->isoFormat($dateFormat_foot) }}</span></br>
+
 				@endforeach
+				<span class="hidden-md hidden-lg">{{$primerDia}}-{{ $fecha->locale($localeToTime)->isoFormat($dateFormat_foot) }}</span></br>
 			@endif
 		</span>
 	</div>
