@@ -1,49 +1,123 @@
+@php
+use Carbon\Carbon;
 
 
+   $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
+   $localeToTime = str_replace('-', '_', $completeLocale);
+   $dateFormat = $localeToTime === 'es_ES' ? 'D  MMMM YYYY - HH:mm [h]' : 'MMMM Do YYYY - HH:mm [h]';
+   $dateFormat_foot = $localeToTime === 'es_ES' ? 'D  MMMM YYYY'  : 'MMMM Do YYYY';
+@endphp
 
 	@if(!empty($auction))
-
 		@php
-			$SubastaTR = new \App\Models\SubastaTiempoReal();
-			$SubastaTR->cod =$auction->cod_sub;
-			$SubastaTR->session_reference =  $auction->reference;
-			$status  = $SubastaTR->getStatus();
-			$subasta_finalizada = false;
-			if(!empty($status) && $status[0]->estado == "ended"){
-				$subasta_finalizada = true;
-			}
 
+
+		$sql = 'SELECT ESTADO, "reference", "start", "end", "name", "id_auc_sessions" FROM "auc_sessions" left join WEB_SUBASTAS  on ID_EMP="company" and ID_SUB="auction" and SESSION_REFERENCE="reference" WHERE "company" = :emp and "auction" = :cod_sub order by "reference"';
+        $bindings = array(
+                    'emp'           => Config::get('app.emp'),
+                    'cod_sub'       => $auction->cod_sub
+                    );
+
+        $sessiones = DB::select($sql, $bindings);
+
+
+		$subasta_finalizada = false;
 			$pos = strpos($auction->name, '-');
 			if ($pos !== false) {
 				$auction->name = substr_replace($auction->name, '<br>', $pos, strlen('-'));
 			}
-		@endphp
 
-		<div class="filter-section-head filter-name-auction hidden-xs hidden-sm">
+	@endphp
+
+
+<div class="filters" >
+		<div class="hidden-md hidden-lg " style="margin-top: 10px"></div>
+		<div class="filter-section-head filter-name-auction ">
 			<h4 class="text-center">{!! $auction->name !!}</h4>
 		</div>
 
-		<div class="lot-count">
-			<div  class="text-center timeLeftOnLeft online-time">
-				<span class=" hidden-md hidden-lg"> {{ explode('-', $auction->des_sub)[1] ?? $auction->des_sub }} </span>
-				<span class="hidden-md hidden-lg"> | </span>
-				<span>
-					<span class="clock hidden-md hidden-lg"></span>
-					<span data-countdown="{{ strtotime($auction->session_start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($auction->session_start); ?>" data-closed="{{ 0 }}" class="timer"></span>
-					<span class="clock hidden-xs hidden-sm"></span>
-				</span>
-			</div>
-		</div>
+			<div >
 
-		<div class="filters filters-padding filters-info-auciton hidden-xs hidden-sm">
+
+				@foreach($sessiones as $session)
+					@php
+						$estadoSesiones[$session->reference] =$session->estado;
+
+						$fecha = Carbon::parse($session->start);
+
+					@endphp
+					<div class=" sessionLeft ">
+
+							{{trans($theme.'-app.lot_list.sesion')}} {{abs($session->reference)}} |
+
+							{{ ucwords($fecha->locale($localeToTime)->isoFormat($dateFormat)) }}
+
+					</div>
+
+					<div class=" text-center timeLeftOnLeft online-time">
+
+						<span>
+
+							@if( $session->estado != "ended")
+								<span data-countdown="{{ strtotime($session->start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($session->start); ?>" data-closed="{{ 0 }}" class="timer"></span>
+								<span class="clock "></span>
+							@else
+								<span>	{{trans($theme.'-app.subastas.finalized')}}</span>
+							@endif
+
+
+						</span>
+					</div>
+				@endforeach
+
+			</div>
+</div>
+
+<div class="lot-count hidden-md hidden-lg">
+	<div  class="text-center timeLeftOnLeft online-time online-time-foot">
+		<span class=" hidden-md hidden-lg"> {{ explode('-', $auction->des_sub)[1] ?? $auction->des_sub }} </span>
+		<span class="hidden-md hidden-lg"> | </span>
+		<span>
+
+			@if(count($sessiones) == 1)
+							@if( $session->estado != "ended")
+								<span  class="hidden-md hidden-lg" data-countdown="{{ strtotime($session->start) - getdate()[0] }}"  data-format="<?= \Tools::down_timer($session->start); ?>" data-closed="{{ 0 }}" class="timer"></span>
+								<span class="clock hidden-md hidden-lg"></span>
+							@else
+								<span  class="hidden-md hidden-lg">	{{trans($theme.'-app.subastas.finalized')}}</span>
+							@endif
+
+
+			@else
+				@foreach($sessiones as $session)
+					@php
+
+						$fecha = Carbon::parse($session->start);
+						#cojemos el día de la primera sesion para mostrarlo despues concatenado con al fecha de la segunda sesión
+						if(empty($primerDia)){
+							$primerDia= $fecha->isoFormat("D");
+						}
+					@endphp
+
+				@endforeach
+				<span class="hidden-md hidden-lg">{{$primerDia}}-{{ ucwords($fecha->locale($localeToTime)->isoFormat($dateFormat_foot)) }}</span></br>
+			@endif
+		</span>
+	</div>
+</div>
+
+
+		<div class="filters filters-padding filters-info-auciton ">
 			<div class="filter-buttons-info">
 
 				<a href="{{  $auction->descdet_sub }}" class="btn btn-color" type="submit">{{ trans("$theme-app.lot_list.info_sub") }}</a>
 
-				@if($auction->tipo_sub == 'W' && strtotime($auction->session_end) > time() && !$subasta_finalizada)
-					<a href="{{ Tools::url_real_time_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions) }}" class="btn btn-live">{{ trans($theme.'-app.lot.bid_live') }}</a>
-				@endif
-
+				@foreach($sessiones as $session)
+					@if($auction->tipo_sub == 'W' && strtotime($session->end) > time() && $session->estado != "ended")
+						<a href="{{ Tools::url_real_time_auction($auction->cod_sub, $session->name, $session->id_auc_sessions) }}" class="btn btn-live">{{ trans($theme.'-app.lot.bid_live') }}</a>
+						@break
+					@endif
+				@endforeach
 			</div>
 		</div>
 	@endif
@@ -148,7 +222,7 @@
 				   @include('includes.grid.filter_sold')
 			   	@endif
 
-				@include('includes.grid.categories_list')
+				@include('includes.grid.session_list')
 
 				@include('includes.grid.features_list')
 
@@ -158,19 +232,7 @@
 		</div>
 
 	</div>
-@if(!empty($auction))
-	<div class="filters filters-padding filters-info-auciton hidden-md hidden-lg">
-		<div class="filter-buttons-info">
 
-			<a href="{{ $auction->descdet_sub }}" class="btn btn-color" type="submit">{{ trans("$theme-app.lot_list.info_sub") }}</a>
-
-			@if($auction->tipo_sub == 'W' && strtotime($auction->session_end) > time() && !$subasta_finalizada)
-				<a href="{{ Tools::url_real_time_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions) }}" class="btn btn-live">{{ trans($theme.'-app.lot.bid_live') }}</a>
-			@endif
-
-		</div>
-	</div>
-@endif
 
 <script>
     if (screen.width>768) {

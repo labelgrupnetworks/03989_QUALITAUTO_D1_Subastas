@@ -1308,8 +1308,13 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
+		if ( \Config::get("app.gridAllSessions") ){
+			$filter_session = array("typeSub", "session" );
+		}else{
+			$filter_session = array("typeSub");
+		}
 		#listado de los filtros que usamos
-		$name_filter = array("typeSub",  "category", "section", "subsection");
+		$name_filter =  array_merge($filter_session,array( "category", "section", "subsection"));
 		$index = "";
 		$concat = "";
 		foreach ($name_filter as $filter) {
@@ -1404,7 +1409,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
-		if (strpos($path, 'img') === false && !$hash) {
+		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
 			$hash = filemtime($publicPath);
 		}
 		elseif(!$hash) {
