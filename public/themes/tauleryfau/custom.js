@@ -1941,7 +1941,7 @@ $(function() {
 		salesAuctionOnClickHandler(event, refreshFinishSummary, refreshFinishSummaryWithTotals);
 	});
 
-	$('.sales-auction-wrapper a').on('click', salesAuctionDetailsOnClickHandler);
+	$('.sales-auction-wrapper a, .invoice-wrapper a').on('click', salesAuctionDetailsOnClickHandler);
 });
 
 function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {

@@ -1,5 +1,5 @@
-<header>
-    <nav class="navbar navbar-default">
+<header class="layout_header">
+    <nav class="navbar navbar-default navbar-panel">
         <div class="panel-container">
 
             <div class="navbar-header">
@@ -13,9 +13,7 @@
                 @include('includes.header-nav')
             </div>
 
-            <a class="btn btn-default navbar-btn">
-                sesión
-            </a>
+			<a class="btn btn-lb btn-lb-outline btn-lb-session" href="{{ \Routing::slug('logout') }}">{{ trans($theme.'-app.user_panel.exit') }}</a>
 
         </div>
     </nav>

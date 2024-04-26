@@ -1,17 +1,33 @@
 @php
     use App\Models\User;
-    $avatar = (new User())->getAvatar(Session::get('user.cod'));
+    $userMenu = Session::get('user');
+    $userAvatar = (new User())->getAvatar($userMenu['cod']);
+    $userName = mb_convert_case($userMenu['name'], MB_CASE_TITLE);
 @endphp
 
-<div class="panel_user">
-    <img src="{{$avatar}}" alt="avatar del usuario">
-    <div class="panel_user-data">
-        <p>Nombre</p>
-        <small>Cliente </small>
+<div class="submenu-header-panel">
+    <div class="panel_user">
+        <img src="{{ $userAvatar }}" alt="avatar del usuario" style="aspect-ratio: 1" width="60">
+        <div class="panel_user-data">
+            <p>{{ $userName }}</p>
+            <small>Cliente {{ $userMenu['cod'] }}</small>
+        </div>
+    </div>
+
+    <div class="submenu-links hidden-md hidden-lg">
+        <a href="{{ wpLink('wp_home') }}" title="{{ trans($theme . '-app.home.home') }}" style="margin-bottom: 2px">
+            <i class="icon_house fa-3x"></i>
+        </a>
+
+        {{-- hamburger-menu --}}
+        <a data-toggle="collapse" href="#collapseSubMenu" role="button" aria-expanded="false"
+            aria-controls="collapseSubMenu">
+            <i class="fa fa-bars fa-3x" aria-hidden="true"></i>
+        </a>
     </div>
 </div>
 
-<ul>
+<ul class="collapse" id="collapseSubMenu">
     <li @class(['active' => Route::currentRouteName() === 'panel.summary'])>
         <a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">
             Resumen
