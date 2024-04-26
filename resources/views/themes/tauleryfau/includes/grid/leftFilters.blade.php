@@ -50,7 +50,7 @@ use Carbon\Carbon;
 
 							{{trans($theme.'-app.lot_list.sesion')}} {{abs($session->reference)}} |
 
-							{{ $fecha->locale($localeToTime)->isoFormat($dateFormat) }}
+							{{ ucwords($fecha->locale($localeToTime)->isoFormat($dateFormat)) }}
 
 					</div>
 
@@ -100,7 +100,7 @@ use Carbon\Carbon;
 					@endphp
 
 				@endforeach
-				<span class="hidden-md hidden-lg">{{$primerDia}}-{{ $fecha->locale($localeToTime)->isoFormat($dateFormat_foot) }}</span></br>
+				<span class="hidden-md hidden-lg">{{$primerDia}}-{{ ucwords($fecha->locale($localeToTime)->isoFormat($dateFormat_foot)) }}</span></br>
 			@endif
 		</span>
 	</div>
