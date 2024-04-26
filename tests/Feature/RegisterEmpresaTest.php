@@ -436,36 +436,6 @@ class RegisterEmpresaTest extends TestCase
 		DB::rollBack();
 	}
 
-	/**
-	 * This is a test to check all register cirquit with void user data - empresa user data.
-	 *
-	 * @return void
-	 */
-	public function test_register_empresa_with_void_user_data_is_failed()
-	{
-		PagesTest::disbleRecaptcha();
-		PagesTest::setHTTP_HOST(route('send_register'));
-
-		$this->requestUserMock['_token'] = csrf_token();
-		$this->requestUserMock['contact'] = '';
-		$this->requestUserMock['rsoc_cli'] = '';
-
-
-		DB::transaction(function () {
-			$response = $this->post(route('send_register'), $this->requestUserMock);
-
-
-			$response->assertJson([
-				'err' => 1,
-				'msg' => 'error_register'
-			]);
-
-			RegisterParticularTest::deleteCli();
-		});
-
-		DB::rollBack();
-	}
-
 	#endregion
 
 

@@ -1,55 +1,72 @@
-{{-- cargamos las secciones que dependen de este Tsec --}}
-<div class="category_level__02 collapse in"  id="sections_{{$category["key_ortsec0"]}}">
-    <div class="input-category d-flex align-items-center">
+
+<div class="category_level__02 collapse in" style=" @php echo !empty($ses)? 'padding-left: 2rem;': '' @endphp " id="sections_{{$category["key_ortsec0"]}}">
+	{{-- todas las secciones--}}
+	<div class="input-category d-flex align-items-center @php echo !empty($ses)? 'hidden':'' @endphp">
         <div class="radio">
             <input type="radio" name="section" id="all_sections" value="" class="filter_lot_list_js" <?=   empty($filters["section"])? 'checked="checked"' : '' ?>  />
             <label for="all_sections" class="ratio-label">
-                {{trans($theme.'-app.lot_list.all_categories')}} ({{$numCategoryLots }})
+                {{trans($theme.'-app.lot_list.all_categories')}}
             </label>
         </div>
 	</div>
-	<?php
+		<?php
 
-		if(!empty($codSub)){
+			if(!empty($codSub)){
 
-			$sections = App\Models\V5\FxSec::JoinLangFxSec()
-                    ->addselect("FXSEC.COD_SEC")
-                    ->addselect("max(NVL(FXSEC_LANG.KEY_SEC_LANG, FXSEC.KEY_SEC)) KEY_SEC")
-                    ->addselect("max(NVL(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC)) DES_SEC")
-					->JoinFgOrtsecFxSec()
-					->join("FGHCES1", " FGHCES1.SEC_HCES1 =  FXSEC.COD_SEC ")
-					->join("FGASIGL0", " FGASIGL0.NUMHCES_ASIGL0 = FGHCES1.NUM_HCES1  AND FGASIGL0.LINHCES_ASIGL0 = FGHCES1.LIN_HCES1 ")
-					->where("FGORTSEC1.LIN_ORTSEC1", $filters["category"])
-					->where("FGORTSEC1.SUB_ORTSEC1", "0")
-					->where("FGHCES1.EMP_HCES1", \Config::get("app.emp"))
-					->where("FGASIGL0.EMP_ASIGL0", \Config::get("app.emp"))
-					->where("FGASIGL0.SUB_ASIGL0", $codSub)
-					->groupby("FXSEC.COD_SEC")
-                    ->orderby("min(REF_ASIGL0)")
-                    //->orderby("NVL(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC)")
-                    ->get()
-					->toarray();
+				$sections = App\Models\V5\FxSec::JoinLangFxSec()
+						->addselect("FXSEC.COD_SEC")
+						->addselect("max(NVL(FXSEC_LANG.KEY_SEC_LANG, FXSEC.KEY_SEC)) KEY_SEC")
+						->addselect("max(NVL(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC)) DES_SEC")
+						->JoinFgOrtsecFxSec()
+						->join("FGHCES1", " FGHCES1.SEC_HCES1 =  FXSEC.COD_SEC ")
+						->join("FGASIGL0", " FGASIGL0.NUMHCES_ASIGL0 = FGHCES1.NUM_HCES1  AND FGASIGL0.LINHCES_ASIGL0 = FGHCES1.LIN_HCES1 ")
+						->where("FGORTSEC1.LIN_ORTSEC1", $filters["category"])
+						->where("FGORTSEC1.SUB_ORTSEC1", "0")
+						->where("FGHCES1.EMP_HCES1", \Config::get("app.emp"))
+						->where("FGASIGL0.EMP_ASIGL0", \Config::get("app.emp"))
+						->where("FGASIGL0.SUB_ASIGL0", $codSub)
+						->groupby("FXSEC.COD_SEC")
+						->orderby("min(REF_ASIGL0)")
+						//->orderby("NVL(FXSEC_LANG.DES_SEC_LANG, FXSEC.DES_SEC)")
+						->get()
+						->toarray();
+				#forzamos la session actual del bucle para que el contador lo haga bien
 
-		}
+			$filters["session"]=$ses->reference;
+			}
 
-	?>
 
-    @foreach($sections as $sec)
-     <?php $numSectionLots = Tools::showNumLots($numActiveFilters, $filters, "section", $sec["cod_sec"]); ?>
-        @if($numSectionLots > 0)
-            <div class="input-category d-flex align-items-center">
-                <div class="radio">
-                    <input type="radio" name="section" id="section_{{$sec["cod_sec"]}}" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js" <?= ($sec["cod_sec"] ==  $filters["section"])?  'checked="checked"' : '' ?> />
-                    <label for="section_{{$sec["cod_sec"]}}" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
-                </div>
-			</div>
 
-			@if($sec["cod_sec"] ==  $filters["section"])
-				@include('includes.grid.subsections_list')
+		?>
+
+		@foreach($sections as $sec)
+		<?php $numSectionLots = Tools::showNumLots($numActiveFilters, $filters, "section", $sec["cod_sec"]); ?>
+			@if($numSectionLots > 0)
+			{{-- en movil solo quieren que se vea las secciones si estas en la seccion --}}
+				<div class="input-category d-flex align-items-center
+					@if (!empty($ses) &&  request("filter_session") != $ses->reference)
+					hidden-xs hidden-sm
+					@endif
+
+				 ">
+					<div class="radio">
+						<input type="radio" name="section" id="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" value="{{$sec["cod_sec"]}}" class="filter_lot_list_js"  @php echo !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp
+						@if($sec["cod_sec"] ==  $filters["section"] && (empty($ses) || $ses->reference== request("filter_session")))
+							checked="checked"
+						@endif
+
+						/>
+
+						<label for="section_{{$sec["cod_sec"]}}@php echo !empty($ses)? '-'.$ses->reference: '' @endphp" class="radio-label">{{ $sec["des_sec"] }}  ({{Tools::numberformat($numSectionLots)}})</label>
+					</div>
+				</div>
+
+				@if($sec["cod_sec"] ==  $filters["section"] && (empty($ses) || $ses->reference== request("filter_session")))
+					@include('includes.grid.subsections_list')
+				@endif
 			@endif
-        @endif
 
-    @endforeach
+		@endforeach
 
 </div>
 
