@@ -4,7 +4,7 @@ use Carbon\Carbon;
 
    $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
    $localeToTime = str_replace('-', '_', $completeLocale);
-   $dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM YYYY - HH:mm [h]' : 'MMMM Do YYYY - HH:mm [h]';
+   $dateFormat = $localeToTime === 'es_ES' ? 'D  MMMM YYYY - HH:mm [h]' : 'MMMM Do YYYY - HH:mm [h]';
    $dateFormat_foot = $localeToTime === 'es_ES' ? 'D  MMMM YYYY'  : 'MMMM Do YYYY';
 @endphp
 
