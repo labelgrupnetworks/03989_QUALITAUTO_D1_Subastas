@@ -44,7 +44,7 @@
 			@if($numSectionLots > 0)
 			{{-- en movil solo quieren que se vea las secciones si estas en la seccion --}}
 				<div class="input-category d-flex align-items-center
-					@if (!empty($ses) &&  request("filter_session") != $ses->reference)
+					@if (!empty($ses) &&  request("filter_session") != $ses->reference && count($sesiones) >=2)
 					hidden-xs hidden-sm
 					@endif
 
