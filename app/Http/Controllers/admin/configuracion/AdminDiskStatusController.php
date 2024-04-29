@@ -32,9 +32,9 @@ class AdminDiskStatusController extends Controller
 		$path = $request->input('path', '');
 		$depth = $request->input('depth', 1);
 
-		$directories = $this->exploreDirectories($path, $depth);
+		$data = $this->exploreDirectories($path, $depth);
 
-		return view('admin::pages.configuracion.disk_status.node', ['directories' => $directories]);
+		return view('admin::pages.configuracion.disk_status.node', $data);
 	}
 
 	/**
@@ -52,34 +52,66 @@ class AdminDiskStatusController extends Controller
 		}
 
 		$directories = [];
-		$subDirectories = [];
+		$files = [];
 
-		$items = $this->getDirs($path);
+		$items = $this->getDirsContent($path);
 
-		foreach ($items as $item) {
+		$directoriesFilter = array_filter($items, function ($item) {
+			return is_dir(public_path($item));
+		});
 
-			$publicPath = public_path($item);
-			$name = basename($item);
+		$filesFilter = array_filter($items, function ($item) {
+			$isImage = preg_match('/\.(jpg|jpeg|png|gif|bmp|webp)$/i', $item);
+			return !is_dir(public_path($item)) && $isImage;
+		});
 
-			$size = $this->getDirectorySize($publicPath);
+		$directories = array_map(fn ($item) => $this->getDirectoriesData($item), $directoriesFilter);
+		$files = array_map(fn ($item) => $this->getImageFileData($item), $filesFilter);
 
-			// Recursivamente explorar subdirectorios si hay más profundidad
-			if ($depth > 1) {
-				$subDirectories = $this->exploreDirectories($item, $depth - 1);
-			}
-
-			$directories[] = [
-				'path' => $item,
-				'name' => $name,
-				'size' => $size,
-				'subdirectories' => $subDirectories
-			];
-		}
-
-		return $directories;
+		return [
+			'directories' => $directories,
+			'files' => $files
+		];
 	}
 
-	private function getDirs($path)
+	private function getDirectoriesData ($directoryPath, $depth = 1)
+	{
+		$publicPath = public_path($directoryPath);
+		$name = basename($directoryPath);
+		$size = $this->getDirectorySize($publicPath);
+		// Recursivamente explorar subdirectorios si hay más profundidad
+		$subDirectories = [];
+		if ($depth > 1) {
+			$subDirectories = $this->exploreDirectories($directoryPath, $depth - 1);
+		}
+
+		return [
+			'path' => $directoryPath,
+			'name' => $name,
+			'size' => $size,
+			'subdirectories' => $subDirectories
+		];
+	}
+
+	private function getImageFileData ($imagePath)
+	{
+		$publicPath = public_path($imagePath);
+		$name = basename($imagePath);
+
+		$size = $this->unitConvert(filesize($publicPath));
+
+		$lastModified = filemtime($publicPath);
+
+		return [
+			'path' => $imagePath,
+			'name' => $name,
+			'size' => $size,
+			'lastModified' => date('d-m-Y H:i:s', $lastModified),
+			'link' => $imagePath
+		];
+	}
+
+	private function getDirsContent($path)
 	{
 		$items = scandir(public_path($path));
 
@@ -91,11 +123,6 @@ class AdminDiskStatusController extends Controller
 		$items = array_map(function ($item) use ($path) {
 			return "$path/$item";
 		}, $items);
-
-		// Filtrar solo los directorios y eliminar los links
-		$items = array_filter($items, function ($item) {
-			return is_dir(public_path("$item")); //&& !is_link(public_path($item));
-		});
 
 		return $items;
 	}
