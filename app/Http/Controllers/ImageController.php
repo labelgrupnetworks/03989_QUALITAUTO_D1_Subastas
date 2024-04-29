@@ -269,15 +269,15 @@ class ImageController extends BaseController
                          set_time_limit(60);
 
                         //si se crea gurdamos com oque se ha creado
-                        if($imageGenerate->generateMini($name_img,$sizes['lote_small'])){
+                        if(!empty($sizes['lote_small']) && $imageGenerate->generateMini($name_img,$sizes['lote_small'])){
 
                             $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . "-NV$x"]=$lot;
                         }
-                        if($imageGenerate->generateMini($name_img,$sizes['lote_medium'])){
+                        if(!empty($sizes['lote_medium']) &&  $imageGenerate->generateMini($name_img,$sizes['lote_medium'])){
 
                             $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . "-NV$x"]=$lot;
                         }
-                        if($imageGenerate->generateMini($name_img,$sizes['lote_medium_large'])){
+                        if(!empty($sizes['lote_medium_large']) &&  $imageGenerate->generateMini($name_img,$sizes['lote_medium_large'])){
 
                             $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . "-NV$x"]=$lot;
                         }
@@ -302,19 +302,19 @@ class ImageController extends BaseController
                      set_time_limit(60);
 
                     //si se crea gurdamos com oque se ha creado
-                    if($imageGenerate->generateMini($name_img,$sizes['lote_small'])){
+                    if(!empty($sizes['lote_small']) && $imageGenerate->generateMini($name_img,$sizes['lote_small'])){
 
                         $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . $y]=$lot;
                     }
-                    if($imageGenerate->generateMini($name_img,$sizes['lote_medium'])){
+                    if(!empty($sizes['lote_medium']) && $imageGenerate->generateMini($name_img,$sizes['lote_medium'])){
 
                         $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . $y]=$lot;
                     }
-                    if($imageGenerate->generateMini($name_img,$sizes['lote_medium_large'])){
+                    if(!empty($sizes['lote_medium_large']) && $imageGenerate->generateMini($name_img,$sizes['lote_medium_large'])){
 
                         $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . $y]=$lot;
                     }
-                    if($imageGenerate->generateMini($name_img,$sizes['lote_large'])){
+                    if(!empty($sizes['lote_large']) && $imageGenerate->generateMini($name_img,$sizes['lote_large'])){
 
                         $images_generates[$lot->num_hces1. '-' .$lot->lin_hces1 . $y]=$lot;
                     }
