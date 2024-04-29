@@ -335,6 +335,12 @@ class ImageGenerate {
 								//	echo "$original_start_X, $original_start_Y, $imgMaxWidth, $imgMaxHeight, $imgWidth, $imgHeight"; die();
 
 								}
+								
+								#si es el tamaño real, modificamos la original
+								if($size == "real"){
+									$imagenThumbs=  $imagenOriginal;
+									$image_to_load = $imagenOriginal;
+								}
 
 								$this->image_quality($image_type, $image_p, $imagenThumbs, $imgQuality);
 								chmod($imagenThumbs,0777);
