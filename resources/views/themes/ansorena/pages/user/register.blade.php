@@ -200,6 +200,7 @@ $jobs = array(
 						<div class="dni-2 datos_left">
 							<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
 							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
+							<p class="text-right" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
 						</div>
 					@endif
 

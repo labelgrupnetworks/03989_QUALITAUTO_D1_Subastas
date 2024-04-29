@@ -54,6 +54,23 @@
     </section>
 </div>
 
+<div class="container modal-block mfp-hide" id="nifFilePopUpInformation">
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+				<div class="align-items-center mt-4">
+					<p>{{ trans("$theme-app.login_register.nif_info_description") }}</p>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.head.close") }}
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
 <div class="container modal-block mfp-hide" id="rematesModal">
     <section class="panel">
         <div class="modal-wrapper">

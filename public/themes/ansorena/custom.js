@@ -729,6 +729,10 @@ $(() => {
 	}
 });
 
+function showNIFMessage() {
+	$.magnificPopup.open({ items: { src: '#nifFilePopUpInformation' }, type: 'inline' }, 0);
+}
+
 function newsletterDay(){
 	// First check, if localStorage is supported.
 	if (!window.localStorage) {
