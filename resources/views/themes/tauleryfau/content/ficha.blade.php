@@ -526,22 +526,29 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 		var lightbox = new PhotoSwipeLightbox({
 			gallery: '.ficha-lot-galery',
 			children: 'a',
-			pswpModule: PhotoSwipe
-
+			pswpModule: PhotoSwipe,
+			loop: false
 		});
 		lightbox.init();
 
 		lightbox.on('beforeOpen', () => {
+			selectGaleryMiniature(lightbox.pswp.currIndex);
 			const container = $('.image-lot-miniature-container');
-			container.slideDown(400, function() {
+			container.css('align-items', 'flex-end');
+			container.fadeIn(400, function() {
 				$(this).css('display', 'flex');
-				$(this).css('align-items', 'flex-end');
 			});
 		});
 
+		lightbox.on('change', () => {
+			fichaCarousel.trigger('to.owl.carousel', [lightbox.pswp.currIndex, 0])
+			selectGaleryMiniature(lightbox.pswp.currIndex);
+		});
+
 		lightbox.on('close', () => {
-			$('.image-lot-miniature-container').css('align-items', 'initial');
+			deselectAllGaleryMiniature();
 			$('.image-lot-miniature-container').slideUp(400);
+			$('.image-lot-miniature-container').css('align-items', 'initial');
 		});
 
 		$('a.image-selector').click(openThatImage);
@@ -550,10 +557,22 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 			let index = $(this).data('key-image');
 			const pswp = lightbox.pswp;
 			pswp.goTo(index)
+			fichaCarousel.trigger('to.owl.carousel', [pswp.currIndex, 0])
 		}
 
 		if ($('.context-text p span').text().length > 10) {
 			$('.btn-context').removeClass('hidden')
+		}
+
+		function selectGaleryMiniature(idx)
+		{
+			$('.image-lot-miniature-container .image-selector .micro-image').removeClass('selected');
+			$('.image-lot-miniature-container .image-selector').eq(idx).find('.micro-image').addClass('selected');
+		}
+
+		function deselectAllGaleryMiniature()
+		{
+			$('.image-lot-miniature-container .image-selector .micro-image').removeClass('selected');
 		}
 
 		let containerSingleLot = document.querySelector('.single-lot-bar');
