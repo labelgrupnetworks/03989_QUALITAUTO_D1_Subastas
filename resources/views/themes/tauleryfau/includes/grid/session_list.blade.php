@@ -39,19 +39,21 @@
 			</div>
 
 			@foreach($sesiones as $ses)
-			<div class="input-category d-flex align-items-center">
-				<div class="radio">
-					<input type="radio" name="filter_session" id="sesion_{{$ses->reference}}" value="{{$ses->reference}}" class="filter_lot_list_js" <?= ($ses->reference == request("filter_session"))?  'checked="checked"' : '' ?>  />
-					<label for="sesion_{{$ses->reference}}" class="ratio-label">
-						{{trans($theme.'-app.lot_list.sesion')}} {{abs($ses->reference)}}  ({{$numSessionLots[$ses->reference] }})
+				@if(count($sessiones)>1)
+					<div class="input-category d-flex align-items-center">
+						<div class="radio">
+							<input type="radio" name="filter_session" id="sesion_{{$ses->reference}}" value="{{$ses->reference}}" class="filter_lot_list_js" <?= ($ses->reference == request("filter_session"))?  'checked="checked"' : '' ?>  />
+							<label for="sesion_{{$ses->reference}}" class="ratio-label">
+								{{trans($theme.'-app.lot_list.sesion')}} {{abs($ses->reference)}}  ({{$numSessionLots[$ses->reference] }})
 
-						@if($estadoSesiones[$ses->reference] == "ended" )
-							<b>	{{trans($theme.'-app.subastas.finalized')}}</b>
-						@endif
+								@if($estadoSesiones[$ses->reference] == "ended" )
+									<b>	{{trans($theme.'-app.subastas.finalized')}}</b>
+								@endif
 
-					</label>
-				</div>
-			</div>
+							</label>
+						</div>
+					</div>
+				@endif
 			{{-- cargamos directamente secciones en vez de categorias por que solo hay 1 categoria --}}
 				@include('includes.grid.categories_list')
 			@endforeach

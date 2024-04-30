@@ -47,9 +47,9 @@ use Carbon\Carbon;
 
 					@endphp
 					<div class=" sessionLeft ">
-
+						@if(count($sessiones)>1)
 							{{trans($theme.'-app.lot_list.sesion')}} {{abs($session->reference)}} |
-
+						@endif
 							{{ ucwords($fecha->locale($localeToTime)->isoFormat($dateFormat)) }}
 
 					</div>

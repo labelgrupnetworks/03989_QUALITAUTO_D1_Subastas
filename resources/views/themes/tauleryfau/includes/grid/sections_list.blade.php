@@ -1,5 +1,5 @@
 
-<div class="category_level__02 collapse in" style=" @php echo !empty($ses)? 'padding-left: 2rem;': '' @endphp " id="sections_{{$category["key_ortsec0"]}}">
+<div class="category_level__02 collapse in" style=" @php echo (!empty($sesiones) && count($sesiones)>1)? 'padding-left: 2rem;': '' @endphp " id="sections_{{$category["key_ortsec0"]}}">
 	{{-- todas las secciones--}}
 	<div class="input-category d-flex align-items-center @php echo !empty($ses)? 'hidden':'' @endphp">
         <div class="radio">
