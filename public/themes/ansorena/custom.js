@@ -315,6 +315,11 @@ $(() => {
 		}
 	});
 
+	//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
+	$('#newsletterDailyModal').on('click', '.modal-dismiss', function (e) {
+		$.magnificPopup.open({ items: { src: '#infoFestivosPopup' }, type: 'inline' }, 0);
+	});
+
 });
 
 function toogleAccordionFaqs(event) {

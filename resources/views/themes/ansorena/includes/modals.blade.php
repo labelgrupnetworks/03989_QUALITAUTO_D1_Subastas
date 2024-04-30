@@ -72,6 +72,26 @@
     </section>
 </div>
 
+<div class="container modal-block mfp-hide" id="infoFestivosPopup">
+    <section class="panel">
+        <div class="modal-wrapper">
+            <div class="modal-body">
+				<div class="align-items-center mt-4">
+					<h3 class="mb-3">{{ trans("$theme-app.home.holidays_popup_title") }}</h4>
+					<p>
+						{!! trans("$theme-app.home.holidays_popup_message") !!}
+					</p>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-dismiss btn-lb-primary">
+                    {{ trans("$theme-app.head.close") }}
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
 <div class="container modal-block mfp-hide" id="rematesModal">
     <section class="panel">
         <div class="modal-wrapper">
