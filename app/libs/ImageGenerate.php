@@ -224,7 +224,9 @@ class ImageGenerate {
                     }
                 //comprobamos que exista la carpeta de la hoja de cesion
                 $pathImagenesThumbsSize.="$numhces/";
-                if (!file_exists($pathImagenesThumbsSize))
+				#ya n ose generan las imagenes en la carpeta real, ahora se sustituyen las originales
+				if($size != "real"){
+                	if (!file_exists($pathImagenesThumbsSize))
                     {
                             try {
                                     mkdir($pathImagenesThumbsSize, 0775, true);
@@ -234,6 +236,7 @@ class ImageGenerate {
                                 echo $e->getMessage();
                             }
                     }
+				}
             }
             $imagenThumbs = $pathImagenesThumbsSize. $img;
 
@@ -335,7 +338,7 @@ class ImageGenerate {
 								//	echo "$original_start_X, $original_start_Y, $imgMaxWidth, $imgMaxHeight, $imgWidth, $imgHeight"; die();
 
 								}
-								
+
 								#si es el tamaño real, modificamos la original
 								if($size == "real"){
 									$imagenThumbs=  $imagenOriginal;
