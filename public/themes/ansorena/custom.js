@@ -316,8 +316,10 @@ $(() => {
 	});
 
 	//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
-	$('#newsletterDailyModal').on('click', '.modal-dismiss', function (e) {
-		$.magnificPopup.open({ items: { src: '#infoFestivosPopup' }, type: 'inline' }, 0);
+	$('#infoFestivosPopup').on('click', '.modal-dismiss', function () {
+		window.setTimeout(function(){
+			newsletterDay();
+		}, 1000);
 	});
 
 });
@@ -773,6 +775,20 @@ function newsletterDay(){
 	localStorage.setItem('nextNewsletter', expires);
 
 	$.magnificPopup.open({ items: { src: '#newsletterDailyModal' }, type: 'inline' }, 0);
+}
+
+//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
+function openHollidayPopup() {
+	$.magnificPopup.open(
+		{
+			items: {
+				src: '#infoFestivosPopup'
+			},
+			type: 'inline',
+			showCloseBtn: false,
+		},
+		0);
+
 }
 
 function showRematesModal() {
