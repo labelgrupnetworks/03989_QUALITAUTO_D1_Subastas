@@ -59,6 +59,7 @@
         <div class="modal-wrapper">
             <div class="modal-body">
 				<div class="align-items-center mt-4">
+					<h3 class="mb-4">{{ trans("$theme-app.login_register.nif_question_info") }}</h4>
 					<p>{{ trans("$theme-app.login_register.nif_info_description") }}</p>
 				</div>
             </div>

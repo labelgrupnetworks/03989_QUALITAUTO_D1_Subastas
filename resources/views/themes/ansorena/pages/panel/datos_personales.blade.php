@@ -223,7 +223,6 @@
 									{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
 									{{-- <p style="color: green !important; display: {{ isset($data['cifImages'][$data['user']->cif_cli.'R']) ? 'block' : 'none' }};">
 										{{ trans("$theme-app.user_panel.uploaded_file") }}</p> --}}
-									<p class="text-right" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
 								</div>
 							</div>
 						</div>
