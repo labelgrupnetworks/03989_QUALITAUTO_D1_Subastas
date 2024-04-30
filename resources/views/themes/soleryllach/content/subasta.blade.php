@@ -235,7 +235,7 @@
     $(function() {
         $(".thumbPop").thumbPopup({
             imgSmallFlag: "lote_medium",
-            imgLargeFlag: "lote_large",
+            imgLargeFlag: "lote_medium_large",
             cursorTopOffset: 0,
             cursorLeftOffset: 20
 
@@ -256,7 +256,7 @@
                     'background': '#FFFFFF'
                 },
                 imgSmallFlag: "lote_medium",
-                imgLargeFlag: "lote_large",
+                imgLargeFlag: "lote_medium_large",
                 cursorTopOffset: 15,
                 cursorLeftOffset: 15,
                 loadingHtml: "<span style='padding: 5px;'>Loading</span>"

@@ -163,7 +163,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                         <div class="item_content_img_single"style="position: relative; height: 290px; overflow: hidden;">
                             <img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
 										class="img-responsive" data-pos="{{ $key }}"
-										src="{{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}"
+										src="{{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}"
 										alt="{{$lote_actual->titulo_hces1}}">
                         </div>
                         @endforeach

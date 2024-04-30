@@ -39,7 +39,7 @@
 				@endif
                 <div class="img_lot h-100">
                     <img class="img-responsive lazy"
-                        data-src="{{ Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1) }}"
+                        data-src="{{ Tools::url_img('lote_medium_large', $item->num_hces1, $item->lin_hces1) }}"
                         alt="{{ $titulo }}">
                 </div>
 			</a>
