@@ -4,7 +4,7 @@
 
     function particular() {
 
-        $("#pri_emp").val("F");
+        $("#pri_emp").val("F").trigger("change");
         $(".tipo_usuario .empresa").removeClass("selected");
         $(".tipo_usuario .particular").addClass("selected");
         $(".registerParticular").show();
@@ -16,7 +16,7 @@
     };
     function empresa() {
 
-        $("#pri_emp").val("J");
+        $("#pri_emp").val("J").trigger("change");
         $(".tipo_usuario .empresa").addClass("selected");
         $(".tipo_usuario .particular").removeClass("selected");
         $(".registerParticular").hide();

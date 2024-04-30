@@ -300,6 +300,28 @@ $(() => {
 
 		}
 	});
+
+	$('#registerForm input[name="pri_emp"]').on('change', function (event) {
+		const pri_emp = $(this).val();
+		if (pri_emp == 'J') {
+			const tipo_sexo_container = $('#registerForm .tipo_sexo');
+			tipo_sexo_container.addClass('d-none');
+			tipo_sexo_container.find('.hombre').removeClass('selected');
+			tipo_sexo_container.find('.mujer').removeClass('selected');
+			tipo_sexo_container.find('.hombre').addClass('selected');
+			$('#registerForm input[name="sexo"]').val('H');
+		} else {
+			$('#registerForm .tipo_sexo').removeClass('d-none');
+		}
+	});
+
+	//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
+	$('#infoFestivosPopup').on('click', '.modal-dismiss', function () {
+		window.setTimeout(function(){
+			newsletterDay();
+		}, 1000);
+	});
+
 });
 
 function toogleAccordionFaqs(event) {
@@ -729,6 +751,10 @@ $(() => {
 	}
 });
 
+function showNIFMessage() {
+	$.magnificPopup.open({ items: { src: '#nifFilePopUpInformation' }, type: 'inline' }, 0);
+}
+
 function newsletterDay(){
 	// First check, if localStorage is supported.
 	if (!window.localStorage) {
@@ -749,6 +775,37 @@ function newsletterDay(){
 	localStorage.setItem('nextNewsletter', expires);
 
 	$.magnificPopup.open({ items: { src: '#newsletterDailyModal' }, type: 'inline' }, 0);
+}
+
+//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
+function openHollidayPopup() {
+	if (!window.localStorage) {
+		return;
+	}
+
+	const nextPopup = localStorage.getItem('hollidayPopup');
+	if (new Date(nextPopup) > new Date()) {
+		return;
+	}
+
+	if (window.location.pathname.includes('register')) {
+		return;
+	}
+
+	const now = new Date();
+	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 2);
+	localStorage.setItem('hollidayPopup', expires);
+
+	$.magnificPopup.open(
+		{
+			items: {
+				src: '#infoFestivosPopup'
+			},
+			type: 'inline',
+			showCloseBtn: false,
+		},
+		0);
+
 }
 
 function showRematesModal() {
