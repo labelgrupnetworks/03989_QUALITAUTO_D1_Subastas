@@ -76,9 +76,9 @@
     <section class="panel">
         <div class="modal-wrapper">
             <div class="modal-body">
-				<div class="align-items-center mt-4">
+				<div class="align-items-center">
 					<h3 class="mb-3">{{ trans("$theme-app.home.holidays_popup_title") }}</h4>
-					<p>
+					<p class="text-justify">
 						{!! trans("$theme-app.home.holidays_popup_message") !!}
 					</p>
 				</div>
