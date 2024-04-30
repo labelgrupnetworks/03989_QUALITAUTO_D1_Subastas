@@ -543,6 +543,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 		lightbox.on('change', () => {
 			fichaCarousel.trigger('to.owl.carousel', [lightbox.pswp.currIndex, 0])
 			selectGaleryMiniature(lightbox.pswp.currIndex);
+			moveMiniatureScroll(lightbox.pswp.currIndex);
 		});
 
 		lightbox.on('close', () => {
@@ -550,6 +551,15 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 			$('.image-lot-miniature-container').slideUp(400);
 			$('.image-lot-miniature-container').css('align-items', 'initial');
 		});
+
+		function moveMiniatureScroll(idx) {
+			const container = $('.image-lot-miniature-container');
+			const image = container.find('.image-selector').eq(idx);
+			const scroll = image.position().left - (container.width() / 2) + (image.width() / 2);
+			container.animate({
+				scrollLeft: scroll
+			}, 'fast');
+		}
 
 		$('a.image-selector').click(openThatImage);
 
