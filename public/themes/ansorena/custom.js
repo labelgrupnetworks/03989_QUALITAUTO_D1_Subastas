@@ -315,13 +315,6 @@ $(() => {
 		}
 	});
 
-	//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
-	$('#infoFestivosPopup').on('click', '.modal-dismiss', function () {
-		window.setTimeout(function(){
-			newsletterDay();
-		}, 1000);
-	});
-
 });
 
 function toogleAccordionFaqs(event) {
@@ -775,37 +768,6 @@ function newsletterDay(){
 	localStorage.setItem('nextNewsletter', expires);
 
 	$.magnificPopup.open({ items: { src: '#newsletterDailyModal' }, type: 'inline' }, 0);
-}
-
-//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
-function openHollidayPopup() {
-	if (!window.localStorage) {
-		return;
-	}
-
-	const nextPopup = localStorage.getItem('hollidayPopup');
-	if (new Date(nextPopup) > new Date()) {
-		return;
-	}
-
-	if (window.location.pathname.includes('register')) {
-		return;
-	}
-
-	const now = new Date();
-	const expires = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 2);
-	localStorage.setItem('hollidayPopup', expires);
-
-	$.magnificPopup.open(
-		{
-			items: {
-				src: '#infoFestivosPopup'
-			},
-			type: 'inline',
-			showCloseBtn: false,
-		},
-		0);
-
 }
 
 function showRematesModal() {

@@ -30,9 +30,7 @@
 
 <script>
 	window.setTimeout(function(){
-		//TODO: BORRAR EL JUEVES 2 EN EL REPO ORIGIN Y SUBIR EL VIERNES POR LA MAÑANA
-		openHollidayPopup();
-		/* newsletterDay(); */
+		newsletterDay();
 	}, 3000);
 </script>
 
