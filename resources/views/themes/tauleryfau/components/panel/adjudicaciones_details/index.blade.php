@@ -7,10 +7,10 @@
         <div class="panel-lots_header-wrapper">
             <div class="panel-lots_header">
                 <p></p>
-                <p>Lote</p>
-                <p>Descripción</p>
-                <p>Precio Salida</p>
-                <p>Adjudicado</p>
+                <p>{{ trans("$theme-app.user_panel.lot") }}</p>
+                <p>{{ trans("$theme-app.user_panel.description") }}</p>
+                <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
+                <p>{{ trans("$theme-app.user_panel.awarded") }}</p>
                 <p></p>
             </div>
         </div>

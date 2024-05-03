@@ -84,7 +84,7 @@
                                         <p></p>
                                         <p>{{ trans("$theme-app.user_panel.lot") }}</p>
                                         <p>{{ trans("$theme-app.user_panel.description") }}</p>
-                                        <p>Adjudicación</p>
+                                        <p>{{ trans("$theme-app.sheet_tr.adjudicate") }}</p>
                                         <p>{{ trans("$theme-app.user_panel.price_comision") }}</p>
                                         <p>Total</p>
                                     </div>

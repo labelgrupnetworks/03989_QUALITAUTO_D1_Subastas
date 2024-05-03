@@ -86,7 +86,7 @@
 
         function getAllotmentsAndBills() {
             $.ajax({
-                url: '/es/user/panel/allotments-bills',
+                url: `/${appLocale}/user/panel/allotments-bills`,
                 type: 'GET',
                 success: function(response) {
                     const $block = $('#summary-allotments_table');
@@ -102,7 +102,7 @@
 
         function getFavorites() {
             $.ajax({
-                url: '/es/user/panel/summary/favorites',
+                url: `/${appLocale}/user/panel/summary/favorites`,
                 type: 'GET',
                 success: function(response) {
 
@@ -119,17 +119,17 @@
 
         function getSales(anchorElement) {
             refreshAnchorActive(anchorElement);
-			getSalesTab('/es/user/panel/summary/active-sales');
+			getSalesTab(`/${appLocale}/user/panel/summary/active-sales`);
         }
 
         function getFinishSales(anchorElement) {
             refreshAnchorActive(anchorElement);
-			getSalesTab('/es/user/panel/summary/finish-sales');
+			getSalesTab(`/${appLocale}/user/panel/summary/finish-sales`);
         }
 
         function getPendingSales(anchorElement) {
             refreshAnchorActive(anchorElement);
-			getSalesTab('/es/user/panel/summary/pending-sales');
+			getSalesTab(`/${appLocale}/user/panel/summary/pending-sales`);
         }
 
         function getSalesTab(url) {

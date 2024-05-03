@@ -139,7 +139,7 @@
                         <p>{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
                         <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
-                        <p>Total pendiente</p>
+                        <p>Total {{ trans("$theme-app.user_panel.pending") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
                     </div>
                 </div>

@@ -248,7 +248,7 @@
 							</div>
 							<br>
 							<div class="price flex justify-content-space-bettween">
-								<div class="title">Adjudicación total</div>
+								<div class="title">{{ trans("$theme-app.sheet_tr.adjudicate") }} total</div>
 								<div class="money">{!!\Tools::moneyFormat($totalAdjudicacion,false,2)!!} {{ trans($theme.'-app.lot.eur') }}
 								&nbsp;|&nbsp;&nbsp;
 								<span class="divisa_fav">

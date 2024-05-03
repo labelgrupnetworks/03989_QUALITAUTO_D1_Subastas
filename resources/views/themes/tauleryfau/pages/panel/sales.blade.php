@@ -150,7 +150,7 @@
 						<p>{{ trans("$theme-app.user_panel.date") }}</p>
 						<p>{{ trans("$theme-app.user_panel.auction") }}</p>
 						<p>
-							<span class="visible-md visible-lg">{{ trans("$theme-app.use_panel.no") }} {{ trans("$theme-app.user_panel.lots") }}</span>
+							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no") }} {{ trans("$theme-app.user_panel.lots") }}</span>
 							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.lots") }}</span>
 						</p>
 						<p class="visible-md visible-lg">Total {{ trans("$theme-app.user_panel.starting_price") }}</p>
