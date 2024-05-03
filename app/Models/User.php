@@ -3,7 +3,9 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgHces1;
+use App\Models\V5\FgSub;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Config;
@@ -902,6 +904,20 @@ class User
 		return $lotWithSale ? true : false;
 	}
 
+	public function getSalesToNotFinishAuctions()
+	{
+		$auctions = FgAsigl0::getNotEndedAuctionsWithOwnerLots($this->cod_cli);
+		$acutionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($auctions->pluck('sub_asigl0'), $this->cod_cli, false)->get();
+
+		//merge auctions with results
+		$auctions = $auctions->map(function($auction) use ($acutionsResults){
+			$results = $acutionsResults->where('sub_asigl0', $auction->sub_asigl0)->first();
+			return array_merge($auction->toArray(), $results->toArray());
+		});
+
+		return $auctions;
+	}
+
     #Ventas de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
     public function getSales($filters = null)
     {
@@ -1429,6 +1445,7 @@ class User
 			$cod_cli = $this->cod_cli;
 		}
 
+		$theme = Config::get('app.theme');
 		$storage = Storage::disk('avatars');
 		$avatarImageName = $cod_cli . '.png';
 		$avatar = $storage->exists($avatarImageName) ? $storage->url($avatarImageName) : asset("/themes/$theme/assets/img/default-avatar.png");

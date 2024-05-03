@@ -55,27 +55,16 @@ class FgAsigl0 extends Model
 
 	public static function getLotsAwardedWithoutInvoiceByOwnerQuery($ownerCode)
 	{
-		$isLocale = Config::get('app.locale') == Config::get('app.fallback_locale');
-
 		return self::query()
+			->joinFghces1Asigl0()
+			->joinSubastaAsigl0()
+			->joinSessionAsigl0()
 			->select('FGASIGL0.impsalhces_asigl0', 'FGASIGL0.ref_asigl0', 'FGASIGL0.sub_asigl0', 'FGASIGL0.comphces_asigl0', 'FGHCES1.implic_hces1', 'FGHCES1.num_hces1', 'FGHCES1.lin_hces1')
 			->addSelect('auc."end"')
 			->addCountLicits()
 			->addCountBids()
-			->when($isLocale, function ($query) {
-				return $query->addSelect('fgsub.des_sub', 'FGHCES1.desc_hces1', 'FGHCES1.descweb_hces1', 'FGHCES1.webfriend_hces1');
-			}, function ($query) {
-				return $query->selectRaw('NVL(FGSUB_LANG.des_sub_lang, fgsub.des_sub) des_sub')
-				->selectRaw('NVL(FGHCES1_LANG.webfriend_hces1_lang, fghces1.webfriend_hces1) webfriend_hces1')
-				->selectRaw('NVL(FGHCES1_LANG.descweb_hces1_lang, fghces1.descweb_hces1) descweb_hces1')
-				->selectRaw('NVL(FGHCES1_LANG.desc_hces1_lang, fghces1.desc_hces1) desc_hces1')
-				->joinFghces1LangAsigl0()
-				->joinSubastaLangAsigl0();
-			})
-			->joinFghces1Asigl0()
-			->joinSubastaAsigl0()
-			->joinSessionAsigl0()
-			->WhereAuctionStatusIs('ended')
+			->addSelectFgSubDescriptionsAttributes()
+			->whereAuctionStatusIs('ended')
 			->whereOwner($ownerCode)
 			->where('FGSUB.SUBC_SUB', FgSub::SUBC_SUB_ACTIVO)
 			->where('FGASIGL0.CERRADO_ASIGL0', 'S')
@@ -83,14 +72,17 @@ class FgAsigl0 extends Model
 			->where('FGHCES1.FAC_HCES1', 'N');
 	}
 
-	public static function getAuctionsResultsByOwnerQuery($auctionsCodes, $ownerCode)
+	public static function getAuctionsResultsByOwnerQuery($auctionsCodes, $ownerCode, $isMutlipleOwner = true)
 	{
 		return self::query()
 			->select(DB::raw('count(*) as total_lots, sum(implic_hces1) as total_award, sum(impsalhces_asigl0) as total_impsalhces, sub_asigl0'))
 			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' AND cerrado_asigl0 = 'S' then 1 else 0 end) as total_awarded_lots"))
+			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' then 1  else 0 end) as total_bids_lots"))
 			->whereIn('sub_asigl0', $auctionsCodes)
 			->joinFghces1Asigl0()
-			->whereOwner($ownerCode, false)
+			->when($isMutlipleOwner,
+				fn ($query) => $query->whereOwner($ownerCode, false),
+				fn ($query) => $query->wherePropOwner($ownerCode))
 			->groupBy('sub_asigl0');
 	}
 
@@ -102,6 +94,11 @@ class FgAsigl0 extends Model
 	public function scopeAddCountBids($query)
 	{
 		return $query->selectRaw("(SELECT COUNT(LIN_ASIGL1) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) bids");
+	}
+
+	public function scopeWherePropOwner($query, $ownerCode)
+	{
+		return $query->where('PROP_HCES1', $ownerCode);
 	}
 
 	public function scopeWhereOwner($query, $cod_cli, $withRatio = true)
@@ -121,6 +118,16 @@ class FgAsigl0 extends Model
 			})
 			->join('WEB_SUBASTAS', 'WEB_SUBASTAS.ID_EMP = FGASIGL0.EMP_ASIGL0 AND WEB_SUBASTAS.ID_SUB = FGASIGL0.SUB_ASIGL0 AND WEB_SUBASTAS.session_reference = auc."reference"')
 			->where('WEB_SUBASTAS.ESTADO', $status);
+	}
+
+	public function scopeWhereAuctionStatusNotIs($query, $status)
+	{
+		return $query
+			->when(!$query->isJoined('auc'), function ($query) {
+				return $query->joinSessionAsigl0();
+			})
+			->join('WEB_SUBASTAS', 'WEB_SUBASTAS.ID_EMP = FGASIGL0.EMP_ASIGL0 AND WEB_SUBASTAS.ID_SUB = FGASIGL0.SUB_ASIGL0 AND WEB_SUBASTAS.session_reference = auc."reference"')
+			->where('WEB_SUBASTAS.ESTADO', '!=', $status);
 	}
 
 	public function scopeWhereYearsDates($query, $attribute, $yearDates)
@@ -253,7 +260,9 @@ class FgAsigl0 extends Model
 	public function scopeJoinSubastaLangAsigl0($query)
 	{
 		$lang =  ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
-		return $query->leftjoin('FGSUB_LANG', "FGSUB_LANG.EMP_SUB_LANG = FGASIGL0.EMP_ASIGL0 AND FGSUB_LANG.COD_SUB_LANG = FGASIGL0.SUB_ASIGL0 AND FGSUB_LANG.LANG_SUB_LANG = '$lang'");
+		return $query->when(!$query->isJoined('FGSUB_LANG'), function ($query) use ($lang) {
+			return $query->leftjoin('FGSUB_LANG', "FGSUB_LANG.EMP_SUB_LANG = FGASIGL0.EMP_ASIGL0 AND FGSUB_LANG.COD_SUB_LANG = FGASIGL0.SUB_ASIGL0 AND FGSUB_LANG.LANG_SUB_LANG = '$lang'");
+		});
 	}
 
 	 #Devolvemos la session que pertenece a la referencia del lote, no se debe usar le where con referencia
@@ -527,6 +536,8 @@ class FgAsigl0 extends Model
         return $query->leftjoin('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
 	}
 
+
+
 	/**
 	 * Obtiene información de lotes de una o más subastas
 	 * @param array|string $cod_subs id de una subasta o array de varias
@@ -649,29 +660,38 @@ class FgAsigl0 extends Model
 
 		}
         return $query;
-
 	}
 
+	public static function getNotEndedAuctionsWithOwnerLots($cod_cli)
+	{
+		return self::getAuctionsWithOwnerLotsQuery($cod_cli)
+			->where('FGSUB.SUBC_SUB', FgSub::SUBC_SUB_ACTIVO)
+			->whereAuctionStatusNotIs('ended')
+			->select('SUB_ASIGL0', 'auc."start"')
+			->addSelectFgSubDescriptionsAttributes()
+			->distinct()
+			->get();
+	}
 
-	public function getActiveAuctionsWithPropietary($cod_cli, $isAdmin, $period = null){
-
-		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
-
-		$lots = self::select('SUB_ASIGL0', 'auc."start"')
-			->addSelect('NVL("auc_sessions_lang"."name_lang", auc."name")as name')
+	private static function getAuctionsWithOwnerLotsQuery($cod_cli)
+	{
+		return self::query()
 			->joinSubastaAsigl0()
 			->joinSessionAsigl0()
-			->leftJoin('"auc_sessions_lang"',' "auc_sessions_lang"."id_auc_session_lang" = auc."id_auc_sessions"   AND auc."company" = "auc_sessions_lang"."company_lang" AND auc."auction" = "auc_sessions_lang"."auction_lang" AND "auc_sessions_lang"."lang_auc_sessions_lang" = \''.$lang.'\'')
 			->joinFghces1Asigl0()
-			->where('PROP_HCES1', $cod_cli)
+			->where('PROP_HCES1', $cod_cli);
+	}
 
+	public function getActiveAuctionsWithPropietary($cod_cli, $isAdmin, $period = null)
+	{
+		$lots = self::getAuctionsWithOwnerLotsQuery($cod_cli)
+			->select('SUB_ASIGL0', 'auc."start"')
+			->addSelectFgSubDescriptionsAttributes()
 			->where(function ($query) use ($isAdmin){
-
 				$types = ['S', 'H'];
 				if($isAdmin){
 					$types[] = ['A'];
 				}
-
 				$query->whereIn('SUBC_SUB', $types);
 			})
 			->where('cerrado_asigl0', 'S');
@@ -683,6 +703,33 @@ class FgAsigl0 extends Model
 		$lots = $lots->distinct()->orderBy('auc."start"', 'desc')->get();
 
 		return $lots;
+	}
+
+	public function scopeAddSelectLotDesctiptionsAttributes($query)
+	{
+		return $query
+			->when(Config::get('app.locale') != Config::get('app.fallback_locale'), function ($query) {
+				return $query
+					->joinFghces1LangAsigl0()
+					->selectRaw('NVL(FGHCES1_LANG.TITULO_HCES1_LANG, fghces1.titulo_hces1) titulo_hces1')
+					->selectRaw('NVL(FGHCES1_LANG.WEBFRIEND_HCES1_LANG, fghces1.WEBFRIEND_HCES1) webfriend_hces1')
+					->selectRaw('NVL(FGHCES1_LANG.DESCWEB_HCES1_LANG, fghces1.descweb_hces1) descweb_hces1')
+					->selectRaw('NVL(FGHCES1_LANG.DESC_HCES1_LANG, fghces1.desc_hces1) desc_hces1');
+			}, function ($query) {
+				return $query->addSelect('fghces1.titulo_hces1', 'fghces1.webfriend_hces1', 'fghces1.descweb_hces1', 'fghces1.desc_hces1');
+			});
+	}
+
+	public function scopeAddSelectFgSubDescriptionsAttributes($query)
+	{
+		return $query
+			->when(Config::get('app.locale') != Config::get('app.fallback_locale'), function ($query) {
+				return $query
+					->selectRaw('NVL(FGSUB_LANG.des_sub_lang, fgsub.des_sub) des_sub')
+					->JoinSubastaLangAsigl0();
+			}, function ($query) {
+				return $query->addSelect('fgsub.des_sub');
+			});
 	}
 
 	public function scopelog($query){

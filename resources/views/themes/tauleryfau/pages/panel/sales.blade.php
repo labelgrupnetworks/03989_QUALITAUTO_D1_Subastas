@@ -6,7 +6,7 @@
 
 @php
     use App\Models\SubastaTiempoReal;
-    use App\libs\Currency;
+	use App\libs\Currency;
     $currency = new Currency();
     $divisa = Session::get('user.currency', 'EUR');
     $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
@@ -185,4 +185,13 @@
 		</section>
 
     </section>
+
+	<script>
+		$(document).ready(function () {
+			if (window.location.hash) {
+				const hash = window.location.hash;
+				$(`[href="${hash}"]`).trigger('click');
+			}
+		});
+	</script>
 @stop

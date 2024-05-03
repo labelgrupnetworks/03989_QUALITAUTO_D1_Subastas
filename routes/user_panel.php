@@ -21,6 +21,10 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
 	Route::get('{lang}/user/panel/summary', 'UserController@summary')->name('panel.summary');
+	Route::get('{lang}/user/panel/summary/active-sales', 'UserController@summaryActiveSales')->name('panel.summary.active-sales');
+	Route::get('{lang}/user/panel/summary/finish-sales', 'UserController@summaryFinishSales')->name('panel.summary.finish-sales');
+	Route::get('{lang}/user/panel/summary/pending-sales', 'UserController@summaryPendingToBeAssigned')->name('panel.summary.pending-sales');
+	Route::get('{lang}/user/panel/summary/favorites', 'UserController@favoritesCarrousel');
 
 	# Lista de Favoritos
 	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');

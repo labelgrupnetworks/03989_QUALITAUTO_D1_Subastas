@@ -7,16 +7,16 @@
     $fec = $isPayed ? $document->fec_cobro1 : $document->fec_pcob;
     $imp = $isPayed ? $document->imp_cobro1 : $document->imp_pcob;
 
-	$url = "/factura/$anum-$num";
+    $url = "/factura/$anum-$num";
 
-	$state = match(true) {
-		(empty($document->followUp)) => ['class' => 'alert', 'text' => 'Pendiente'],
-		($document->followUp->idseg_dvc0seg == 1) => ['class' => 'success', 'text' => 'Pagado'],
-		($document->followUp->idseg_dvc0seg == 2) => ['class' => 'warning', 'text' => 'Tramitando exportación'],
-		($document->followUp->idseg_dvc0seg == 4) => ['class' => 'success', 'text' => 'Recogido en tienda'],
-	};
+    $state = match (true) {
+        empty($document->followUp) => ['class' => 'alert', 'text' => 'Pendiente'],
+        $document->followUp->idseg_dvc0seg == 1 => ['class' => 'success', 'text' => 'Pagado'],
+        $document->followUp->idseg_dvc0seg == 2 => ['class' => 'warning', 'text' => 'Tramitando exportación'],
+        $document->followUp->idseg_dvc0seg == 4 => ['class' => 'success', 'text' => 'Recogido en tienda'],
+    };
 
-	$description = $document->des_sub ?? $document->inf_fact['S'][0]->des_sub ?? '';
+    $description = $document->des_sub ?? ($document->inf_fact['S'][0]->des_sub ?? '');
 @endphp
 
 {{-- @php
@@ -64,11 +64,11 @@ if(!empty($bill->factura)){
             @else
                 <span class="badge badge-success">Pagado</span>
 
-				@if (!empty($document->factura) && file_exists($document->factura))
-				<a class="panel-pdf-icon" target="_blank" href="/prefactura/{{ $url }}" download>
-					<i class="fas fa-file-pdf fa-2x"></i>
-				</a>
-            	@endif
+                @if (!empty($document->factura) && file_exists($document->factura))
+                    <a class="panel-pdf-icon" href="/prefactura/{{ $url }}" target="_blank" download>
+                        <i class="fas fa-file-pdf fa-2x"></i>
+                    </a>
+                @endif
             @endif
         </div>
 
