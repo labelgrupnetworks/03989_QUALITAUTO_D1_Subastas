@@ -5,12 +5,12 @@
 		<div class="panel-lots_header-wrapper">
 			<div class="table-grid_header panel-lots_header">
 				<p></p>
-				<p>Lote</p>
-				<p>Descripción</p>
-				<p>Precio Salida</p>
-				<p>Precio Actual</p>
-				<p>Incremento</p>
-				<p>Pujas / Pujadores</p>
+				<p>{{ trans("$theme-app.user_panel.lot") }}</p>
+				<p>{{ trans("$theme-app.user_panel.description") }}</p>
+				<p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
+				<p>{{ trans("$theme-app.user_panel.actual_price") }}</p>
+				<p>{{ trans("$theme-app.user_panel.increase") }}</p>
+				<p>{{ trans("$theme-app.user_panel.bids") }} / {{ trans("$theme-app.user_panel.bidders") }}</p>
 			</div>
 		</div>
 

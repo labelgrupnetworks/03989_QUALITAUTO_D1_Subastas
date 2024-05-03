@@ -57,18 +57,18 @@
                     @csrf
 
 					<fieldset class="profile-avatar">
-						<legend>Foto de perfil</legend>
+						<legend>{{ trans("$theme-app.user_panel.profile_picture") }}</legend>
 
 						<img src="{{$avatar}}" alt="avatar del usuario" width="75px" style="aspect-ratio: 1">
 
 						<label>
-							Subir fotografía
+							{{ trans("$theme-app.user_panel.upload_photo") }}
 							<input type="file" name="avatar" style="display: none">
 						</label>
 					</fieldset>
 
                     <fieldset>
-                        <legend>Dirección de facturación</legend>
+                        <legend>{{ trans("$theme-app.user_panel.billing_address") }}</legend>
 
                         <div class="">
                             <label>{{ trans($theme . '-app.login_register.pais') }}</label>
@@ -149,7 +149,7 @@
                     </fieldset>
 
                     <fieldset class="address-form-section">
-                        <legend>Mis Direcciones de Envío</legend>
+                        <legend>{{ trans("$theme-app.user_panel.my_shipping_addresses") }}</legend>
                         <div class="list-group" role="tablist">
 
                             @foreach ($data['shippingaddress'] as $address)
@@ -158,14 +158,14 @@
                                     cod="{{ $address->codd_clid }}">
                                     {{ $address->obs_clid ?? $address->dir_clid }}
                                     @if ($address->codd_clid == 'W1')
-                                        <span>*Predeterminada</span>
+                                        <span>*{{ trans("$theme-app.user_panel.default") }}</span>
                                     @endif
                                 </a>
                             @endforeach
 
                             <a class="list-group-item" data-toggle="collapse" type="button" href="#address_form_html"
                                 aria-controls="address_new" aria-expanded="false" cod="new">
-                                + Añadir nueva dirección
+                                + {{ trans("$theme-app.user_panel.add_new_address") }}
                             </a>
                         </div>
 
@@ -178,7 +178,7 @@
                     </fieldset>
 
                     <fieldset>
-                        <legend>Contacto</legend>
+                        <legend>{{ trans("$theme-app.login_register.contact") }}</legend>
 
                         <div class="row">
                             <div class="col-xs-3">
@@ -202,7 +202,7 @@
                     </fieldset>
 
                     <fieldset>
-                        <legend>Preferencias</legend>
+                        <legend>{{ trans("$theme-app.user_panel.preferences") }}</legend>
 
                         <div class="form-group">
                             <label>{{ trans($theme . '-app.login_register.currency') }}</label>
@@ -216,7 +216,7 @@
                     </fieldset>
 
                     <fieldset>
-                        <legend>Tipo de subasta preferida</legend>
+                        <legend>{{ trans("$theme-app.user_panel.preferred_auction") }}</legend>
 
                         @foreach ($families as $key => $item)
                             @php($prop = 'nllist' . $key . '_cliweb')
@@ -244,7 +244,7 @@
                     <input name="email" type="email" value="{{ Session::get('user.usrw') }}" style="display:none">
 
                     <fieldset>
-                        <legend>Cambiar contraseña</legend>
+                        <legend>{{ trans("$theme-app.user_panel.change_password") }}</legend>
 
                         <div class="form-group">
                             <label for="contrasena">{{ trans($theme . '-app.user_panel.pass') }}</label>

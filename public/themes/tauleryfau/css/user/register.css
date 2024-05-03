@@ -13,7 +13,7 @@
 	font-weight: 400;
 }
 
-.row {
+.register-page .row {
 	margin-right: calc(var(--lb-gutter-x) * -1);
 	margin-left: calc(var(--lb-gutter-x) * -1);
 	display: flex;

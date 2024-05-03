@@ -32,7 +32,7 @@
             </div>
 
             <div>
-                <p>Mi puja actual</p>
+                <p>{{ trans("$theme-app.user_panel.my_current_bid") }}</p>
             </div>
         </div>
     </div>

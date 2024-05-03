@@ -31,7 +31,7 @@
 			<p>{{ trans($theme.'-app.user_panel.revaluation') }}</p>
 		</div>
 		<div class="auc-data-custom">
-			<p>Liquidación</p>
+			<p>{{ trans("$theme-app.user_panel.settlement") }}</p>
 		</div>
 	</div>
 
@@ -131,7 +131,7 @@
 
 
 			<div class="auc-data-custom">
-				<p>Liquidación</p>
+				<p>{{ trans("$theme-app.user_panel.settlement") }}</p>
 					<p>{{ \Tools::moneyFormat($liquidacion, false, 2) }} {{ trans($theme.'-app.lot.eur') }}</p>
 					@if($divisa !='EUR')
 					<p class="divisa_fav">
@@ -142,8 +142,6 @@
 		</div>
 
 	</div>
-
-	{{--<div class="divider-prices hidden-md hidden-lg"></div>--}}
 
 	{{-- Vista desktop --}}
 	<div class="custom-wrapper hidden-xs hidden-sm flex valign {{$lot->ref_hces1}}-{{$cod_sub}}">
@@ -206,7 +204,7 @@
 	<div class="adj adj-panel-wrapper">
 
 		<div class="text-right factura-buttons">
-			<a class="btn btn-color factura-button">Descargar Factura en PDF</a>
+			<a class="btn btn-color factura-button">{{ trans("$theme-app.user_panel.download_invoice") }}</a>
 		</div>
 
 		<div class="adj-panel w-100">
@@ -217,7 +215,7 @@
 						<a class="" data-toggle="collapse" data-parent="#fact_accordion" href="#adj_fact_{{$cod_sub}}">
 							<label class="w-100 d-flex align-items-center" for="">
 								<span class="titlecat" style="margin-left: auto">
-									<span>Total a liquidar: </span>
+									<span>{{ trans("$theme-app.user_panel.total_settled") }}: </span>
 									<span class="precio_final_{{$cod_sub}}">{{\Tools::moneyFormat($totalAdjudicacion - $lot->base_dvc0, false, 2)}}</span>
 									<span>{{ trans($theme.'-app.lot.eur') }} |</span>
 									<span class="divisa_fav">

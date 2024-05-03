@@ -4,7 +4,7 @@
             <span class="js-divisa sales-counter" id="actualPrice" value="{{ $summary['total_liquidation'] }}">
                 0
             </span>
-            <p>Total Liquidación</p>
+            <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
@@ -14,7 +14,7 @@
                 </span>
                 <span>%</span>
             </div>
-            <p>Adjudicado</p>
+            <p>{{ trans("$theme-app.user_panel.awarded") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
@@ -24,13 +24,13 @@
                 </span>
                 <span>%</span>
             </div>
-            <p>Revalorización</p>
+            <p>{{ trans("$theme-app.user_panel.revaluation") }}</p>
         </div>
         <div class="sales-summary_detail sales-summary_detail_lots">
             <span class="sales-counter" id="consignedLots" value="{{ $summary['total_lots'] }}">
                 0
             </span>
-            <p>Lotes consignados</p>
+            <p>{{ trans("$theme-app.user_panel.consigned_lots") }}</p>
         </div>
     </div>
 
@@ -39,11 +39,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Subasta</th>
-                    <th scope="col">Nº Factura</th>
-                    <th scope="col">Total Liquidación</th>
-                    <th scope="col">Estado</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.total_liquidation") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -120,7 +120,7 @@
 
 				@if($auctionsWithoutInvoice->isEmpty() && $ownerInvoices->isEmpty())
 					<tr>
-						<td colspan="6" class="text-center">Sin ventas</td>
+						<td colspan="6" class="text-center">{{ trans("$theme-app.user_panel.no_sales") }}</td>
 					</tr>
 				@endif
             </tbody>

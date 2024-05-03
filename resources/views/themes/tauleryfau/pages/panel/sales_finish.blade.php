@@ -45,10 +45,10 @@
                 </select>
 
                 <div class="dropdown sales-filter">
-                    <span>Filtros</span>
+                    <span>{{ trans("$theme-app.user_panel.filters") }}</span>
                     <button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button"
                         aria-haspopup="true" aria-expanded="false">
-                        Año
+                        {{ trans("$theme-app.user_panel.year") }}
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
@@ -65,7 +65,7 @@
                             @endforeach
                             <li class="divider" role="separator"></li>
                             <li>
-                                <button class="btn btn-lb btn-lb-primary" type="submit">Filtrar</button>
+                                <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
                             </li>
                         </form>
                     </ul>
@@ -74,16 +74,16 @@
 
             <div class="sales-menu">
                 <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Pendientes de subastar</span>
-                    <span class="hidden-md hidden-lg">Pendientes</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.pending_auction") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.pendings") }}</span>
                 </a>
                 <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Subastas activas</span>
-                    <span class="hidden-md hidden-lg">Activas</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
                 </a>
                 <a class="btn btn-lb btn-lb-primary btn-large" href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Subastas Finalizadas</span>
-                    <span class="hidden-md hidden-lg">Finalizadas</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.finished") }}</span>
                 </a>
             </div>
 
@@ -93,7 +93,7 @@
                         value="{{ $statistics['total']['total_liquidation'] }}">
                         0
                     </span>
-                    <p>Total Liquidación</p>
+                    <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
@@ -103,7 +103,7 @@
                         </span>
                         <span>%</span>
                     </div>
-                    <p>Adjudicado</p>
+                    <p>{{ trans("$theme-app.user_panel.awarded") }}</p>
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
@@ -113,18 +113,18 @@
                         </span>
                         <span>%</span>
                     </div>
-                    <p>Revalorización</p>
+                    <p>{{ trans("$theme-app.user_panel.revaluation") }}</p>
                 </div>
                 <div class="sales-summary_detail sales-summary_detail_lots">
                     <span class="sales-counter" id="consignedLots" value="{{ $statistics['total']['total_lots'] }}">
                         0
                     </span>
-                    <p>Lotes consignados</p>
+                    <p>{{ trans("$theme-app.user_panel.consigned_lots") }}</p>
                 </div>
                 <div class="sales-summary_detail sales-summary_detail_lots">
                     <span class="sales-counter" id="awardedLots"
                         value="{{ $statistics['total']['total_awarded_lots'] }}">0</span>
-                    <p>Lotes Vendidos</p>
+                    <p>{{ trans("$theme-app.user_panel.lots_sold") }}</p>
                 </div>
             </div>
         </div>
@@ -135,12 +135,12 @@
 
                 <div class="sales-header-wrapper">
                     <div class="table-grid_heder header sales-auctions_header">
-                        <p>Fecha</p>
-                        <p>Subasta</p>
-                        <p class="visible-md visible-lg">Nº Factura</p>
-                        <p>Total Liquidación</p>
+                        <p>{{ trans("$theme-app.user_panel.date") }}</p>
+                        <p>{{ trans("$theme-app.user_panel.auction") }}</p>
+                        <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
+                        <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
                         <p>Total pendiente</p>
-                        <p class="visible-md visible-lg">Estado</p>
+                        <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
                     </div>
                 </div>
 

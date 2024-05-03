@@ -9,13 +9,13 @@
 @if (!$isCorrCli)
     <div class="summary-section">
         <div class="summary-header">
-            <h4>Resumen</h4>
+            <h4>{{ trans("$theme-app.user_panel.summary") }}</h4>
             <p>{{ $title }}</p>
         </div>
 
         <div class="summary-body">
             <div class="summary_line">
-                <span>Lotes</span>
+                <span>{{ trans("$theme-app.user_panel.lots") }}</span>
                 <span class="summary_separator"></span>
                 <span>{{ $lots_count }}</span>
             </div>
@@ -66,7 +66,7 @@
 
             <div class="summary_buttons">
 				<a class="btn btn-lb btn-lb-outline w-100" href="#auction-details-{{ $cod_sub }}">
-					Ver Detalles
+					{{ trans("$theme-app.user_panel.see_detail") }}s
 				</a>
 
                 @if ($isCompraWeb)

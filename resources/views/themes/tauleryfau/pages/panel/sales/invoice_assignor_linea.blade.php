@@ -194,7 +194,7 @@ $totalAdjudicacion += $lot->implic_hces1;
 					<a class="" data-toggle="collapse" data-parent="#fact_accordion" href="#adj_fact_{{$lot->sub_hces1}}">
 						<label class="w-100 d-flex align-items-center" for="">
 							<span class="titlecat" style="margin-left: auto">
-								<span>Total a liquidar: </span>
+								<span>{{ trans("$theme-app.user_panel.total_settled") }}: </span>
 								<span
 									class="precio_final_{{$lot->sub_hces1}}">{{\Tools::moneyFormat($totalAdjudicacion - $lot->base_dvc0, false, 2)}}</span>
 								<span>{{ trans($theme.'-app.lot.eur') }} |</span>

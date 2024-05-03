@@ -10,7 +10,7 @@
         </div>
         <div class="panel-lot_ref">
             <p>
-                <span class="panel-lot_label">Lote</span>
+                <span class="panel-lot_label">{{ trans("$theme-app.user_panel.lot") }}</span>
                 {{ $ref }}
             </p>
         </div>
@@ -18,7 +18,7 @@
             <p>{{ strip_tags($description) }}</p>
         </div>
         <div class="panel-lot_label label-price-salida">
-            <span>P. Salida</span>
+            <span>{{ trans("$theme-app.user_panel.starting_price_min") }}</span>
         </div>
         <div class="panel-lot_price-salida">
             <p class="js-divisa" value="{{ $imp_sal }}">
@@ -27,7 +27,7 @@
         </div>
         <div class="panel-lot_label label-price-actual">
             <span>
-                Adjudicado
+                {{ trans("$theme-app.user_panel.awarded") }}
             </span>
         </div>
         <div class="panel-lot_actual-price">
@@ -40,7 +40,7 @@
             <a class="btn btn-lb btn-lb-primary" href="{{ $urlHqPhoto }}"
                 @if ($isPayed) download="{{ $ref }}_{{ $title }}" @endif
                 @disabled(!$isPayed)>
-                FOTOGRAFIA
+                {{ trans("$theme-app.lot.photo") }}
             </a>
 
 			<a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}" @disabled(!$isPayed)

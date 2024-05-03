@@ -11,11 +11,11 @@
 
         <thead>
             <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Subasta</th>
-                <th scope="col" class="hidden-xs">Nº Factura</th>
-                <th scope="col">Total Factura</th>
-                <th scope="col">Estado</th>
+                <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                <th scope="col" class="hidden-xs">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
+                <th scope="col">{{ trans("$theme-app.user_panel.total_bill") }}</th>
+                <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
                 <th scope="col"></th>
             </tr>
         </thead>

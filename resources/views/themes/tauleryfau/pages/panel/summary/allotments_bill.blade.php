@@ -10,8 +10,8 @@
 	$url = "/factura/$anum-$num";
 
 	$state = match(true) {
-		(empty($document->followUp)) => ['class' => 'alert', 'text' => 'Pendiente'],
-		($document->followUp->idseg_dvc0seg == 1) => ['class' => 'success', 'text' => 'Pagado'],
+		(empty($document->followUp)) => ['class' => 'alert', 'text' =>  trans("$theme-app.user_panel.pending")],
+		($document->followUp->idseg_dvc0seg == 1) => ['class' => 'success', 'text' => trans("$theme-app.user_panel.estado_seg_1")],
 		($document->followUp->idseg_dvc0seg == 2) => ['class' => 'warning', 'text' => 'Tramitando exportación'],
 		($document->followUp->idseg_dvc0seg == 4) => ['class' => 'success', 'text' => 'Recogido en tienda'],
 	};

@@ -31,10 +31,10 @@
             </select>
 
             <div class="dropdown sales-filter">
-                <span>Filtros</span>
+                <span>{{ trans("$theme-app.user_panel.filters") }}</span>
                 <button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button" aria-haspopup="true"
                     aria-expanded="false">
-                    Año
+                    {{ trans("$theme-app.user_panel.year") }}
                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
@@ -51,7 +51,7 @@
                         @endforeach
                         <li class="divider" role="separator"></li>
                         <li>
-                            <button class="btn btn-lb btn-lb-primary" type="submit">Filtrar</button>
+                            <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
                         </li>
                     </form>
                 </ul>
@@ -64,11 +64,11 @@
 
                 <div class="alltoments-header-wrapper">
                     <div class="table-grid_header alltoments-auctions_header">
-                        <p>Fecha</p>
-                        <p>Subasta</p>
-                        <p class="visible-md visible-lg">Nº Factura</p>
-                        <p class="allotment-auctions_header-imp">Total Factura</p>
-                        <p class="visible-md visible-lg">Estado</p>
+                        <p>{{ trans("$theme-app.user_panel.date") }}</p>
+                        <p>{{ trans("$theme-app.user_panel.auction") }}</p>
+                        <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
+                        <p class="allotment-auctions_header-imp">{{ trans("$theme-app.user_panel.total_bill") }}</p>
+                        <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
                         <p></p>
                         <p></p>
                         <p></p>

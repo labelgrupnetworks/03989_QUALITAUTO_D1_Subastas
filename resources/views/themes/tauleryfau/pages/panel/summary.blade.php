@@ -12,7 +12,7 @@
 
     <section class="summary-page">
         <div class="panel-title">
-            <h1>Resumen</h1>
+            <h1>{{ trans("$theme-app.user_panel.summary") }}</h1>
 
             <select id="actual_currency">
                 @foreach ($divisas as $divisaOption)
@@ -25,7 +25,7 @@
 
         <div class="summary_body">
             <div class="summary-allotments">
-                <h4 class="summary-subtitle">Mis Compras</h4>
+                <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.my_pending_bills") }}</h4>
                 <div class="loader-box">
                     <div class="loading-wrapper">
                         <div class="loader-a">
@@ -47,16 +47,16 @@
                     </div>
                 </div>
                 <div class="summary-sales_header">
-                    <h4 class="summary-subtitle">Mis ventas</h4>
+                    <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.my_assignments") }}</h4>
                     <div class="sales-menu">
                         <a class="btn btn-lb btn-lb-outline" onclick="getPendingSales(this)">
-                            <span>Pendientes</span>
+                            <span>{{ trans("$theme-app.user_panel.pendings") }}</span>
                         </a>
                         <a class="btn btn-lb btn-lb-primary" onclick="getSales(this)">
-                            <span>Subastas activas</span>
+                            <span>{{ trans("$theme-app.user_panel.active_auctions") }}</span>
                         </a>
                         <a class="btn btn-lb btn-lb-outline" onclick="getFinishSales(this)">
-                            <span>Subastas Finalizadas</span>
+                            <span>{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
                         </a>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
             </div>
 
             <div class="summary-orders">
-                <h4 class="summary-subtitle">Mis Pujas | Favoritos</h4>
+                <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.orders") }} | {{ trans("$theme-app.user_panel.favorites") }}</h4>
                 <div class="loader-box">
                     <div class="loading-wrapper">
                         <div class="loader-a">

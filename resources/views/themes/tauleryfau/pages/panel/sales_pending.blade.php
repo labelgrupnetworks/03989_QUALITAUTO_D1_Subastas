@@ -32,10 +32,10 @@
                 </select>
 
                 <div class="dropdown sales-filter">
-                    <span>Filtros</span>
+                    <span>{{ trans("$theme-app.user_panel.filters") }}</span>
                     <button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button"
                         aria-haspopup="true" aria-expanded="false">
-                        Cesión
+                        {{ trans("$theme-app.user_panel.assignment") }}
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
@@ -52,7 +52,7 @@
                             @endforeach
                             <li class="divider" role="separator"></li>
                             <li>
-                                <button class="btn btn-lb btn-lb-primary" type="submit">Filtrar</button>
+                                <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
                             </li>
                         </form>
                     </ul>
@@ -62,18 +62,18 @@
             <div class="sales-menu">
                 <a class="btn btn-lb btn-lb-primary btn-large"
                     href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Pendientes de subastar</span>
-                    <span class="hidden-md hidden-lg">Pendientes</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.pending_auction") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.pendings") }}</span>
                 </a>
                 <a class="btn btn-lb btn-lb-outline btn-large"
                     href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Subastas activas</span>
-                    <span class="hidden-md hidden-lg">Activas</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
                 </a>
                 <a class="btn btn-lb btn-lb-outline btn-large"
                     href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
-                    <span class="visible-md visible-lg">Subastas Finalizadas</span>
-                    <span class="hidden-md hidden-lg">Finalizadas</span>
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.finished") }}</span>
                 </a>
             </div>
 
@@ -82,7 +82,7 @@
                     <span class="js-divisa sales-counter" id="impsalPrice" value="{{ $lots->sum('impsal_hces1') }}">
                         0
                     </span>
-                    <p>Precio de salida</p>
+                    <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
@@ -90,7 +90,7 @@
                             0
                         </span>
                     </div>
-                    <p>Precio de estimación</p>
+                    <p>{{ trans("$theme-app.user_panel.estimate_price") }}</p>
                 </div>
                 <div class="sales-summary_detail">
                     <div class="number-wrapper">
@@ -98,7 +98,7 @@
                             0
                         </span>
                     </div>
-                    <p>Lotes pendientes</p>
+                    <p>{{ trans("$theme-app.user_panel.pending_lots") }}</p>
                 </div>
             </div>
         </div>
@@ -108,11 +108,11 @@
             <div class="panel-lots_header-wrapper">
                 <div class="table-grid_header panel-lots_header">
                     <p></p>
-                    <p>Cesión</p>
-                    <p>Línea</p>
-                    <p>Descripción</p>
-                    <p>Precio Salida</p>
-                    <p>Estimado</p>
+                    <p>{{ trans("$theme-app.user_panel.assignment") }}</p>
+                    <p>{{ trans("$theme-app.user_panel.line") }}</p>
+                    <p>{{ trans("$theme-app.user_panel.description") }}</p>
+                    <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
+                    <p>{{ trans("$theme-app.user_panel.estimated") }}</p>
                 </div>
             </div>
 
@@ -125,13 +125,13 @@
                         </div>
                         <div class="panel-lot_sheet">
                             <p>
-                                <span class="panel-lot_label">Cesión</span>
+                                <span class="panel-lot_label">{{ trans("$theme-app.user_panel.assignment") }}</span>
                                 {{ $lot->num_hces1 }}
                             </p>
                         </div>
                         <div class="panel-lot_line-sheet">
                             <p>
-                                <span class="panel-lot_label">Línea</span>
+                                <span class="panel-lot_label">{{ trans("$theme-app.user_panel.line") }}</span>
                                 {{ $lot->lin_hces1 }}
                             </p>
                         </div>
@@ -139,7 +139,7 @@
                             <p>{!! $lot->descweb_hces1 !!}</p>
                         </div>
                         <div class="panel-lot_label label-price-salida">
-                            <span>P. Salida</span>
+                            <span>{{ trans("$theme-app.user_panel.starting_price_min") }}</span>
                         </div>
                         <div class="panel-lot_price-salida">
                             <p class="js-divisa" value="{{ $lot->impsal_hces1 }}">
@@ -148,7 +148,7 @@
                         </div>
                         <div class="panel-lot_label label-price-estimate">
                             <span>
-                                Esimación
+                                {{ trans("$theme-app.user_panel.estimate") }}
                             </span>
                         </div>
                         <div class="panel-lot_estimate-price">

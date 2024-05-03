@@ -7,7 +7,7 @@
 		</div>
 		<div class="panel-lot_ref">
 			<p>
-				<span class="panel-lot_label">Lote</span>
+				<span class="panel-lot_label">{{ trans("$theme-app.user_panel.lot") }}</span>
 				{{ $lot->ref_asigl0 }}
 			</p>
 		</div>
@@ -15,7 +15,7 @@
 			<p>{!! $lot->descweb_hces1 !!}</p>
 		</div>
 		<div class="panel-lot_label label-price-salida">
-			<span>P. Salida</span>
+			<span>{{ trans("$theme-app.user_panel.starting_price_min") }}</span>
 		</div>
 		<div class="panel-lot_price-salida">
 			<p class="js-divisa" value="{{ $lot->impsalhces_asigl0 }}">
@@ -24,7 +24,7 @@
 		</div>
 		<div class="panel-lot_label label-price-actual">
 			<span>
-				P. actual
+				{{ trans("$theme-app.user_panel.actual_price_min") }}
 			</span>
 		</div>
 		<div class="panel-lot_actual-price">
@@ -35,7 +35,7 @@
 
 		<div class="panel-lot_label label-increment">
 			<span>
-				Incremento
+				{{ trans("$theme-app.user_panel.increase") }}
 			</span>
 		</div>
 		<div class="panel-lot_increment">

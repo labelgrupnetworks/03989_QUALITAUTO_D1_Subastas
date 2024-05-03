@@ -42,7 +42,7 @@
         </div>
 
         <div class="lot-ref">
-            <p><span class="order-label">Lote</span> {{ $inf_lot->ref_asigl0 }}</p>
+            <p><span class="order-label">{{ trans("$theme-app.user_panel.lot") }}</span> {{ $inf_lot->ref_asigl0 }}</p>
         </div>
 
         <div class="lot-desc">
@@ -63,7 +63,7 @@
         <div class="order-label label-price-actual">
             <span>
                 @if ($subasta_finalizada)
-                    Adjudicado
+					{{ trans("$theme-app.user_panel.awarded") }}
                 @else
                     {{ trans($theme . '-app.lot.puja_actual') }}
                 @endif
@@ -122,9 +122,9 @@
             @if ((false && $subasta_finalizada) || !$isNotClose)
                 <button class="btn btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif">
                     @if ($bid_mine)
-                        Ganado
+                        {{ trans("$theme-app.user_panel.won") }}
                     @else
-                        Perdido
+						{{ trans("$theme-app.user_panel.lost") }}
                     @endif
                 </button>
             @endif

@@ -41,7 +41,7 @@
         </p>
         <div class="actions">
             <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $invoiceId }}"
-                role="tab" aria-controls="settings">Ver detalle</a>
+                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a>
         </div>
     </div>
 </div>

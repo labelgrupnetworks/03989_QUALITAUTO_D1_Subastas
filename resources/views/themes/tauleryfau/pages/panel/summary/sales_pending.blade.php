@@ -5,7 +5,7 @@
 			<span class="js-divisa sales-counter" id="impsalPrice" value="{{ $summary->sum_impsalhces }}">
 				0
 			</span>
-			<p>Precio de salida</p>
+			<p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
 		</div>
 		<div class="sales-summary_detail">
 			<div class="number-wrapper">
@@ -13,7 +13,7 @@
 					0
 				</span>
 			</div>
-			<p>Precio de estimación</p>
+			<p>{{ trans("$theme-app.user_panel.estimate_price") }}</p>
 		</div>
 		<div class="sales-summary_detail">
 			<div class="number-wrapper">
@@ -21,7 +21,7 @@
 					0
 				</span>
 			</div>
-			<p>Lotes pendientes</p>
+			<p>{{ trans("$theme-app.user_panel.pending_lots") }}</p>
 		</div>
 	</div>
 
@@ -30,11 +30,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Cesión</th>
-                    <th scope="col">Línea</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Precio Salida</th>
-                    <th scope="col">Estimado</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.assignment") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.line") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.description") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.starting_price") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.estimated") }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -72,7 +72,7 @@
                 @empty
 					<tr>
 						<td colspan="6" class="text-center">
-							No hay lotes pendientes
+							{{ trans("$theme-app.user_panel.no_pending_lots") }}
 						</td>
 					</tr>
 				@endforelse

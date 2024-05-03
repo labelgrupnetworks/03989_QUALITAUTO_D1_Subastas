@@ -19,7 +19,7 @@
         </div>
         <div class="panel-lot_ref">
             <p>
-                <span class="panel-lot_label">Lote</span>
+                <span class="panel-lot_label">{{ trans("$theme-app.user_panel.lot") }}</span>
                 {{ $ref }}
             </p>
         </div>
@@ -27,7 +27,7 @@
             <p>{{ strip_tags($description) }}</p>
         </div>
         <div class="panel-lot_label label-price-actual">
-            <span>Adjudicado</span>
+            <span>{{ trans("$theme-app.user_panel.awarded") }}</span>
         </div>
         <div class="panel-lot_actual-price">
             <p>

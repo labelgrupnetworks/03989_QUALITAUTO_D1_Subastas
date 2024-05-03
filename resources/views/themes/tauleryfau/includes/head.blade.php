@@ -120,6 +120,7 @@ header("X-Frame-Options:     DENY");
     var traduction_large = { {!!trans("$theme-app.global.month_large")!!} };
     var traductions = { {!!trans("$theme-app.global.month")!!} };
 	var exchanges = {'{{$curency_usd->getCod()}}': {{$curency_usd->getExchange()}}};
+	let appLocale = '{{ config("app.locale") }}';
 
 	var routing = {
 		subastashome: 	"{{ \Routing::slug('subastashome') }}",

@@ -11,7 +11,7 @@
             <span class="js-divisa sales-counter" id="actualPrice" value="{{ $summary['total_award'] }}">
                 0
             </span>
-            <p>Precio Actual</p>
+            <p>{{ trans("$theme-app.user_panel.actual_price") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
@@ -21,7 +21,7 @@
                 </span>
                 <span>%</span>
             </div>
-            <p>Pujado</p>
+            <p>{{ trans("$theme-app.user_panel.bid") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
@@ -31,7 +31,7 @@
                 </span>
                 <span>%</span>
             </div>
-            <p>Revalorización</p>
+            <p>{{ trans("$theme-app.user_panel.revaluation") }}</p>
         </div>
     </div>
 
@@ -40,11 +40,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Subasta</th>
-                    <th scope="col">Lotes</th>
-                    <th scope="col">Precio Salida</th>
-                    <th scope="col">Precio Actual</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.lots") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.starting_price") }}</th>
+                    <th scope="col">{{ trans("$theme-app.user_panel.actual_price") }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
