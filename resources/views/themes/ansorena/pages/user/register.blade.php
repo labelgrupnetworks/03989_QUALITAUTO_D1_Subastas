@@ -195,11 +195,13 @@ $jobs = array(
 						<div class="dni-1 datos_right">
 							<label>{{ trans($theme.'-app.login_register.dni_obverse') }}</label>
 							{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = "") !!}
+							<p class="m-0 {{ Config::get('app.locale') == 'es' ? '' : 'hidden' }}" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
 						</div>
 
 						<div class="dni-2 datos_left">
 							<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
 							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
+							<p class="m-0 {{ Config::get('app.locale') == 'en' ? '' : 'hidden' }}" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
 						</div>
 					@endif
 
