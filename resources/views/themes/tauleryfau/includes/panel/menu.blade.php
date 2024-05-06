@@ -73,5 +73,5 @@
 </ul>
 
 <div class="panel_banner">
-
+	{!! \BannerLib::bannersPorKey('user_panel', 'user_panel', ['arrows' => false, 'dots' => false, 'autoplay' => true, 'autoplaySpeed' => 4000]) !!}
 </div>

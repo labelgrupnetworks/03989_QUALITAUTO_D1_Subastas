@@ -210,7 +210,8 @@ body>header {
 }
 
 aside {
-	display: block;
+	display: flex;
+	flex-direction: column;
 	grid-area: aside;
 	background-color: #303a47;
 	color: #fff;
@@ -241,6 +242,10 @@ aside li :is(a, a:hover) {
 	color: inherit;
 	display: block;
 	padding: 12px 36px;
+}
+
+aside .panel_banner {
+	display: none;
 }
 
 main {
@@ -279,6 +284,11 @@ main {
 	}
 
 	aside ul.collapse {
+		display: block;
+	}
+
+	aside .panel_banner {
+		margin-top: auto;
 		display: block;
 	}
 }
