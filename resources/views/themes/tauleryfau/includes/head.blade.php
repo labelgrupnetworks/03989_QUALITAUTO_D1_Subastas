@@ -77,7 +77,7 @@ header("X-Frame-Options:     DENY");
 
 {!! Tools::preloadStylesheets("vendor/font-awesome/4.7.0/css/font-awesome.min.css", true) !!}
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="{{ URL::asset('vendor/bootstrap-select/1.13.14/css/bootstrap-select.min.css') }}">
 <link rel="stylesheet" type="text/css" href="/css/owl.carousel.min.css" >
 <link rel="stylesheet" type="text/css" href="/css/owl.theme.default.min.css" >
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('vendor/jquery-ui/1.13.1/jquery-ui.min.css') }}" >
@@ -98,13 +98,8 @@ header("X-Frame-Options:     DENY");
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/grid.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ Tools::urlAssetsCache('/themes/'.$theme.'/responsive.css') }}" rel="stylesheet" type="text/css" >
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900|Lato:400,700,900" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-
-<link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet">
+<link href="{{ URL::asset('vendor/font-awesome/6.5.2/css/all.min.css') }}" rel="stylesheet">
 <link href='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.css') }}' rel='stylesheet' />
 
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"

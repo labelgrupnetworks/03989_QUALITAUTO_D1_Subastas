@@ -1,50 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap');
+@font-face{
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+}
 
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-ExtraLight.otf');
-	font-weight: 200;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Light.otf');
-	font-weight: 300;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Light.otf');
-	font-weight: 300;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Regular.otf');
-	font-weight: 400;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Medium.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Medium.ttf') format('truetype');
 	font-weight: 500;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-SemiBold.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-SemiBold.ttf') format('truetype');
 	font-weight: 600;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Bold.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Bold.ttf') format('truetype');
 	font-weight: 700;
+	font-style: normal;
 }
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-SemiBold.otf');
-	font-weight: 900;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Black.otf');
-	font-weight: bold;
-}
+
 
 @font-face {
 	font-family: 'ElegantIcons';
