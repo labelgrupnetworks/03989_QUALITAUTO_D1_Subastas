@@ -6,8 +6,6 @@
 
 @php
 	use App\Models\User;
-    use App\Models\V5\FgSg;
-	use Illuminate\Support\Facades\Storage;
 
 	$avatar = (new User)->getAvatar($data['user']->cod_cliweb);
 
@@ -35,14 +33,12 @@
     ];
 
 	$vias = collect($data['via'])->pluck('des_sg', 'cod_sg');
-	$locale = Config::get('app.locale');
 @endphp
 
 @section('content')
 
     <script>
         const prefix = @json($prefix);
-		let locale = @json($locale);
     </script>
 
     <section class="profile-page">

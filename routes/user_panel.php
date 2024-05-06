@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Panel\SummaryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
@@ -20,11 +22,13 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
-	Route::get('{lang}/user/panel/summary', 'UserController@summary')->name('panel.summary');
-	Route::get('{lang}/user/panel/summary/active-sales', 'UserController@summaryActiveSales')->name('panel.summary.active-sales');
-	Route::get('{lang}/user/panel/summary/finish-sales', 'UserController@summaryFinishSales')->name('panel.summary.finish-sales');
-	Route::get('{lang}/user/panel/summary/pending-sales', 'UserController@summaryPendingToBeAssigned')->name('panel.summary.pending-sales');
-	Route::get('{lang}/user/panel/summary/favorites', 'UserController@favoritesCarrousel');
+	Route::prefix('{lang}/user/panel/summary')->group(function () {
+		Route::get('/', [SummaryController::class, 'summary'])->name('panel.summary');
+		Route::get('/active-sales', [SummaryController::class, 'summaryActiveSales'])->name('panel.summary.active-sales');
+		Route::get('/finish-sales', [SummaryController::class, 'summaryFinishSales'])->name('panel.summary.finish-sales');
+		Route::get('/pending-sales', [SummaryController::class, 'summaryPendingToBeAssigned'])->name('panel.summary.pending-sales');
+		Route::get('/favorites', [SummaryController::class, 'favoritesCarrousel']);
+	});
 
 	# Lista de Favoritos
 	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');

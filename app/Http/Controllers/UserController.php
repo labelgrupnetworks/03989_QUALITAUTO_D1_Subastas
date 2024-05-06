@@ -35,7 +35,6 @@ Use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
-use App\libs\Currency;
 use App\libs\EmailLib;
 use App\Models\V5\SubAuchouse;
 use App\libs\FormLib;
@@ -60,9 +59,7 @@ use App\Models\V5\FgOrtsec0;
 use App\Models\V5\Fx_Newsletter;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
-
 use Illuminate\Http\Request as HttpRequest;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
@@ -5223,177 +5220,6 @@ class UserController extends Controller
 	  }
 
 	#endregion
-
-	public function summary(HttpRequest $request)
-	{
-		$currency = new Currency();
-		$divisa = Session::get('user.currency', 'EUR');
-		$divisas = $currency->setDivisa($divisa)->getAllCurrencies();
-
-		$data = [
-			'divisas' => $divisas,
-			'divisa' => $divisa,
-		];
-
-		return view('front::pages.panel.summary', $data);
-	}
-
-	public function summaryActiveSales(HttpRequest $request)
-	{
-		$user = new User();
-		$cod_cli = Session::get('user.cod');
-
-		if(config('app.permission_to_view_seller_panel', false)){
-			$cliweb = FxCliWeb::where('cod_cliweb', $cod_cli)->whereNotNull('permission_id_cliweb')->first();
-			abort_if(!$cliweb, 404);
-		}
-
-		$auctions = $user->setCodCli($cod_cli)
-			->getSalesToNotFinishAuctions();
-
-		$summary = [
-			'total_lots' => $auctions->sum('total_lots'),
-			'total_award' => $auctions->sum('total_award'),
-			'total_impsalhces' => $auctions->sum('total_impsalhces'),
-			'total_bids_lots' => $auctions->sum('total_bids_lots'),
-		];
-
-		$currency = new Currency();
-		$divisa = Session::get('user.currency', 'EUR');
-		$currency->setDivisa($divisa);
-
-		$data = [
-			'auctions' => $auctions,
-			'summary' => $summary,
-			'currency' => $currency
-		];
-
-		return view('front::pages.panel.summary.sales_active', $data);
-	}
-
-	public function summaryFinishSales(HttpRequest $request)
-	{
-		$cod_cli = Session::get('user.cod');
-		$maxLines = 3;
-
-		$paymentController = new PaymentsController();
-		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
-		$tipo_iva = $paymentController->user_has_Iva(Config::get('app.gemp'), $cod_cli);
-
-		//Lotes sin factura
-		$allLotsWithoutInvoice = FgAsigl0::getLotsAwardedWithoutInvoiceByOwnerQuery($cod_cli)
-		->orderBy('auc."end"', 'desc')
-		->get()
-		->each(function ($item) use ($paymentController, $iva, $tipo_iva) {
-			$item->imp_award = ($item->implic_hces1 * $item->ratio_hcesmt) / 100;
-			$item->imp_comision = ($item->imp_award * $item->comphces_asigl0) / 100;
-			$item->imp_tax = $paymentController->calculate_iva($tipo_iva->tipo, $iva, $item->imp_comision);
-			$item->imp_liquidacion = $item->imp_award - $item->imp_comision - $item->imp_tax;
-		});
-
-		$auctionsWithoutInvoice = $allLotsWithoutInvoice->groupBy('sub_asigl0');
-		$activeAuctions = $auctionsWithoutInvoice->keys()->all();
-
-		$auctionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($activeAuctions, $cod_cli)
-			->get()
-			->each(function ($item) use ($allLotsWithoutInvoice) {
-				$item->total_liquidation = $allLotsWithoutInvoice->where('sub_asigl0', $item->sub_asigl0)->sum('imp_liquidacion');
-			});
-
-		$auctionsWithoutInvoice = $auctionsWithoutInvoice->take($maxLines);
-
-		//Facturas
-		$owerInvoicesLots = FxDvc0::getInvoicesByOwnerQuery($cod_cli)
-			->orderBy('fecha_dvc0', 'desc')
-			->get();
-
-		$invoiceAuctions = $owerInvoicesLots->pluck('sub_asigl0')->unique()->all();
-		$ownerInvoices = $owerInvoicesLots->groupBy(fn ($item) => "$item->anum_dvc0-$item->num_dvc0");
-		$invoiceResults = FgAsigl0::getAuctionsResultsByOwnerQuery($invoiceAuctions, $cod_cli)
-			->get()
-			->each(function ($item) use ($owerInvoicesLots) {
-				$totalDvc0 = $owerInvoicesLots->where('sub_asigl0', $item->sub_asigl0)->value('total_dvc0');
-				$item->total_liquidation = $item->total_award - $totalDvc0;
-			});
-
-		$auctionsResults = $auctionsResults->concat($invoiceResults);
-
-		$summary = [
-			'total_lots' => $auctionsResults->sum('total_lots'),
-			'total_awarded_lots' => $auctionsResults->sum('total_awarded_lots'),
-			'total_award' => $auctionsResults->sum('total_award'),
-			'total_impsalhces' => $auctionsResults->sum('total_impsalhces'),
-			'total_liquidation' => $auctionsResults->sum('total_liquidation'),
-		];
-
-		$currency = new Currency();
-		$divisa = Session::get('user.currency', 'EUR');
-		$currency->setDivisa($divisa);
-
-		$data = [
-			'auctionsWithoutInvoice' => $auctionsWithoutInvoice,
-			'ownerInvoices' => $ownerInvoices->take($maxLines - $auctionsWithoutInvoice->count()),
-			'summary' => $summary,
-			'currency' => $currency
-		];
-
-		return view('front::pages.panel.summary.sales_finish', $data);
-	}
-
-	public function summaryPendingToBeAssigned(HttpRequest $request)
-	{
-		$cod_cli = Session::get('user.cod');
-		$maxLines = 3;
-
-		$lotsQuery = FgHces1::query()
-			->whereOwner($cod_cli, false)
-			->notInAuction();
-
-
-		$summary = $lotsQuery->clone()
-			->select('count(*) as count_lots', 'nvl(sum(impsal_hces1), 0) as sum_impsalhces', 'nvl(sum(imptas_hces1), 0) as sum_imptashces')
-			->get();
-
-		$lots = $lotsQuery->clone()
-			->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'imptas_hces1')
-			->addSelectTranslationsAttributes()
-			->orderBy('num_hces1')
-			->orderBy('lin_hces1')
-			->limit($maxLines)
-			->get();
-
-		$currency = new Currency();
-		$divisa = Session::get('user.currency', 'EUR');
-		$currency->setDivisa($divisa);
-
-		$data = [
-			'lots' => $lots,
-			'currency' => $currency,
-			'summary' => $summary->first()
-		];
-
-		return view('front::pages.panel.summary.sales_pending', $data);
-	}
-
-	public function favoritesCarrousel(HttpRequest $request)
-	{
-		$sub = new Subasta();
-        $sub->licit = Session::get('user.cod');
-        $sub->page  = 'all';
-
-		$lots = $sub->getAllBidsAndOrders(true);
-		$currency = new Currency();
-		$divisa = Session::get('user.currency', 'EUR');
-		$currency->setDivisa($divisa);
-
-		$data = [
-			'lots' => $lots,
-			'currency' => $currency
-		];
-
-		return view('front::pages.panel.summary.favorites', $data);
-	}
-
 
 	/**
 	 * Valor por defecto para blockpuj_cli.

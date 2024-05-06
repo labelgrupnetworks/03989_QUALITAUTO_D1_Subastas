@@ -22,7 +22,7 @@
     <div class="detail_header detail_header_action">
         <h4>{{ trans("$theme-app.user_panel.title_envio") }}</h4>
         <a class="btn btn-sm btn-lb btn-lb-success"
-            href="{{ route('panel.addresses', ['lang' => Config::get('app.locale'), 'cod_sub' => $cod_sub]) }}">
+            {{-- href="{{ route('panel.addresses', ['lang' => Config::get('app.locale'), 'cod_sub' => $cod_sub]) }}" --}}>
             {{ trans($theme . '-app.user_panel.new_address') }}
         </a>
     </div>
@@ -105,3 +105,21 @@
         </label>
     </div>
 </div>
+
+
+{{-- modal to new address --}}
+<div class="modal" id="modal_new_address">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4>Nueva dirección</h4>
+			<span class="close" onclick="closeModal('modal_new_address')">&times;</span>
+		</div>
+		<div class="modal-body">
+			<div id="#ajax_shipping_add"></div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+</script>
