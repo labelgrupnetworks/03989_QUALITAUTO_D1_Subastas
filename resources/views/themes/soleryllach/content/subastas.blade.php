@@ -8,33 +8,45 @@
             @endif
         </div>
 	</div>
-        <?php
+        @php
+			$seeFinish = request('finished') == "true" ? true : false;
             if(!empty($_GET['finished'])){
                 foreach($data['auction_list'] as $key => $sub_finished){
-                    if(strtotime($sub_finished->session_end) <= time() && $_GET['finished'] == 'false'){
+                    if(strtotime($sub_finished->session_end) <= time() && !$seeFinish){
                         unset($data['auction_list'][$key]);
                     }
-                    elseif(strtotime($sub_finished->session_end) > time() && $_GET['finished'] == 'true'){
+                    elseif(strtotime($sub_finished->session_end) > time() && $seeFinish){
                         unset($data['auction_list'][$key]);
-						krsort($data["auction_list"]);
                     }
                 }
-
             }
 
-        ?>
+			if($seeFinish) {
+
+				usort($data['auction_list'], function ($a, $b) {
+					$compareDate = strcmp(substr($b->session_start, 0, 10), substr($a->session_start, 0, 10));
+					$compareAuction = strcmp($a->cod_sub, $b->cod_sub);
+					$compareReference = strcmp($a->reference, $b->reference);
+
+					//ordenar de más reciente a más antiguo pero si son de la misma subasta ordenar por referencia
+					if($compareAuction == 0) {
+						//sumar compareReference a compareDate como decimales para que se ordene por referencia
+						//sin afectar a la comparacion de fecha
+						$compareDate += $compareReference;
+					}
+
+					return $compareDate;
+				});
+			}
+        @endphp
+
 		<div class="row d-flex flex-wrap">
         @if($data['subc_sub'] != 'H')
             @foreach ($data['auction_list'] as  $subasta)
                 <?php
-					$indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                    if(count($indices) > 0 ){
-                        $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                    }else{
-                        $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                    }
+					$url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
                     $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                    $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
+					$url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
 
 					$url_lotes_no_vendidos=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions.'?no_award=1';
                 ?>
@@ -138,18 +150,11 @@
                 </div>
                 @foreach ($sub as  $sessions)
                     @foreach($sessions as $subasta)
-                    <?php
-
-                        $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                        if(count($indices) > 0 ){
-                            $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                        }else{
-                            $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                        }
-                        $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                        $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
-
-                    ?>
+					@php
+						$url_lotes= \Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
+                        $url_tiempo_real= \Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
+						$url_subasta= \Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
+                    @endphp
                     <div class="col-xs-12 col-sm-4 col-lg-3">
                         <div class="item_subasta">
                             <div class="date-sub-content">
@@ -161,7 +166,7 @@
                             <div class="date-sub">{{ $fecha }}</div>
                             @endif
                             </div>
-                            <a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
+                            <a title="{{ $subasta->name }}" href="{{ $url_lotes }}">
                                 <div class="img-lot">
                                         <img
                                             src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code}}.jpg"
@@ -174,15 +179,17 @@
                                        {{ $subasta->name }}
                                 </div>
 
-								<p><a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}</a></p>
+								<p>
+									<a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">
+										@if($subasta->tipo_sub == 'V')
+											{{ trans(\Config::get('app.theme').'-app.subastas.see_venta_directa') }}
+										@else
+											{{ trans(\Config::get('app.theme').'-app.subastas.see_subasta') }}
+										@endif
+									</a>
+								</p>
 
                                 <p><a title="{{ $subasta->name }}" href="{{  $url_lotes }}" class=" btn btn-lotes btn-color">{{ trans(\Config::get('app.theme').'-app.subastas.see_lotes') }}</a></p>
-
-								@if($subasta->upcatalogo == 'S')
-                                    <p class="text-center">
-                                        <a class="btn btn-subasta" title="{{ trans(\Config::get('app.theme').'-app.grid.pdf_catalog') }}" target="_blank" href="{{\Tools::url_pdf($subasta->cod_sub,$subasta->reference,'cat')}}">{{ trans(\Config::get('app.theme').'-app.subastas.pdf_catalog') }}</a> <br>
-                                    </p>
-                                @endif
 
                                 @if( $subasta->uppreciorealizado == 'S')
                                     <p class="text-center">

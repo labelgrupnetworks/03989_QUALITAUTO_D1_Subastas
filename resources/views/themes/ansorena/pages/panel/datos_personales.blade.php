@@ -214,15 +214,15 @@
 								<div class="form-group col-xs-12 col-sm-6">
 									<label for="dni1">{{ trans($theme . '-app.login_register.dni_obverse') }}</label>
 									{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = '') !!}
-									<p style="color: green; display: {{ isset($data['cifImages']['dni1']) ? 'block' : 'none' }};">
-										{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+									{{-- <p style="color: green !important; display: {{ isset($data['cifImages'][$data['user']->cif_cli.'A']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}</p> --}}
 								</div>
 
 								<div class="form-group col-xs-12 col-md-6">
 									<label for="dni2">{{ trans($theme . '-app.login_register.dni_reverse') }}</label>
 									{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
-									<p style="color: green; display: {{ isset($data['cifImages']['dni2']) ? 'block' : 'none' }};">
-										{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+									{{-- <p style="color: green !important; display: {{ isset($data['cifImages'][$data['user']->cif_cli.'R']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}</p> --}}
 								</div>
 							</div>
 						</div>

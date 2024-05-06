@@ -5,10 +5,8 @@ namespace App\Models;
 
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgHces1;
-use App\Models\V5\FgSub;
-use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use \Request;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
@@ -1460,6 +1458,20 @@ class User
 	public static function getUserNIF(string $cod_cli): string
 	{
 		return FxCli::select('cif_cli')->where('cod_cli', $cod_cli)->first()->cif_cli;
+	}
+
+	/**
+	 * @param string $country
+	 * Foma de pago establecida en el registro
+	 * @return string
+	 */
+	public function getDefaultPayhmentMethod($country)
+	{
+		if(Config::get('app.fpag_foreign_default', 0) && $country != 'ES'){
+			return Config::get('app.fpag_foreign_default');
+		}
+
+		return Config::get('app.fpag_default', 0);
 	}
 
 }

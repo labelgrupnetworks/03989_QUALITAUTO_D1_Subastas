@@ -1104,6 +1104,10 @@ $(function () {
             }
 
         }
+
+		if (typeof reloadBuscadorCustom == 'function') {
+			reloadBuscadorCustom();
+		}
     }
 
 
@@ -1760,6 +1764,10 @@ $(function () {
 
 		if (typeof reloadCarrousel === "function") {
 			reloadCarrousel();
+		}
+
+		if (typeof reloadMainLotInfoCustom === "function") {
+			reloadMainLotInfoCustom();
 		}
 
         if (typeof auction_info.user != 'undefined' && typeof auction_info.lote_actual.max_puja != 'undefined' && typeof auction_info.lote_actual.max_puja.cod_licit != 'undefined' && auction_info.lote_actual.max_puja.cod_licit == auction_info.user.cod_licit) {

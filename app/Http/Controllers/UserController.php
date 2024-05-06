@@ -568,15 +568,19 @@ class UserController extends Controller
     # Registrar un usuario
     public function registro(HttpRequest $request)
     {
-		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
-		{
+		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"])) {
+
 			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
+			$errorsResponse = [
+				"err"       => 1,
+				"msg"       => 'error_register'
+			];
+
+
 			foreach ($camposFormNoNullables as $campo) {
 				if (empty($request[$campo])) {
-					return json_encode(array(
-						"err"       => 1,
-						"msg"       => 'error_register'
-					));
+					$errorsResponse['check'] = $campo;
+					return json_encode($errorsResponse);
 				}
 			}
 		}
@@ -587,6 +591,19 @@ class UserController extends Controller
 					"err"       => 1,
 					"msg"       => 'max_size_img'
 				));
+			}
+		}
+
+		if($request->has('files_email')) {
+			$rules = [
+				'files_email.*' => 'max:20000|mimes:jpg,jpeg,png,tiff,bmp,gif,pdf'
+			];
+
+			if(!$this->validateFiles($request->file(), $rules)){
+				return json_encode([
+					"err"       => 1,
+					"msg"       => 'error_register_file'
+				  ]);
 			}
 		}
 
@@ -953,11 +970,7 @@ class UserController extends Controller
 					$rsoc = $strToDefault ? $rsoc : mb_strtoupper($rsoc,'UTF-8');
 					$nomd_clid = $strToDefault ? $nomd_clid : mb_strtoupper($nomd_clid,'UTF-8');
 
-                    if(Config::get('app.fpag_default')){
-                        $forma_pago = Config::get('app.fpag_default');
-                    }else{
-                        $forma_pago = 0;
-                    }
+					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
                     $parametros = new Enterprise();
                     $param = $parametros->getParameters();
@@ -1010,9 +1023,9 @@ class UserController extends Controller
 
                              //se inserta el nuevo cliente
                         $FXCLI = DB::select("INSERT INTO FXCLI
-                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI )
+                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI, BLOCKPUJ_CLI )
                            VALUES
-                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli)",
+                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli, :blockpuj_cli)",
                             array(
                                //'gemp'          => "'Config::get('app.gemp')'",
                                'email'         => $strToDefault ? Request::input('email') : strtoupper(Request::input('email')),
@@ -1049,7 +1062,8 @@ class UserController extends Controller
 							   'tipv_cli' =>  $tipv_cli,
 							   'cod2_cli' => $cod2_cli,
 							   'preftel_cli' => request('preftel_cli', ''),
-							   'origen_cli' => request('origen', null)
+							   'origen_cli' => request('origen', null),
+							   'blockpuj_cli' => $this->defaultBidBlocking()
                                )
 						 );
 						#guardamos el evento SEO de registro de usuario
@@ -1285,6 +1299,11 @@ class UserController extends Controller
 							$email->setAtribute("JOB_CLI", $job_name);
 						}
 
+						if($request->has('files_email')) {
+							$files = $request->file('files_email');
+							$email->setAttachmentsFiles($files);
+						}
+
 						$email->setTo(Config::get('app.admin_email'));
 						$email->send_email();
 					}
@@ -1490,8 +1509,8 @@ class UserController extends Controller
 	{
 
 		$rules = [
-			'dni1' => 'max:10000|mimes:jpg,jpeg,png,pdf', //a required, max 10000kb, doc or docx file
-			'dni2' => 'max:10000|mimes:jpg,jpeg,png,pdf'
+			'dni1' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF', //a required, max 10000kb, doc or docx file
+			'dni2' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF'
 		];
 
 		$validator = Validator::make($request->file(), $rules);
@@ -1501,6 +1520,17 @@ class UserController extends Controller
 		}
 
 		Log::error($validator->errors());
+		return false;
+	}
+
+	private function validateFiles($files, $rules)
+	{
+		$validator = Validator::make($files, $rules);
+
+		if (!$validator->fails()) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -1518,13 +1548,14 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if (Config::get('app.dni_in_storage', false) == "dni-files") {
-			return storage_path("app/files/dni/$emp/$cod_cli/files/");
-		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
-			return storage_path("app/files/CLI/$emp/$cod_cli/documentation/");
-		}
+		$path = storage_path("app/files/dni/$emp/$cod_cli/files/");
+		match (Config::get('app.dni_in_storage', false)) {
+			"dni-files" => $path = storage_path("app/files/dni/$emp/$cod_cli/files/"),
+			"cli-documentation" => $path = storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
+			"base-dni-files" => $path = base_path("dni/$emp/$cod_cli/files/"),
+		};
 
-		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+		return $path;
 	}
 
 	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
@@ -5363,5 +5394,29 @@ class UserController extends Controller
 		return view('front::pages.panel.summary.favorites', $data);
 	}
 
+
+	/**
+	 * Valor por defecto para blockpuj_cli.
+	 * En soler utilizamos S por el registro W, en el resto de clientes utilizamos
+	 * el que tienen en la base de datos por defecto
+	 * @return string
+	 */
+	private function defaultBidBlocking()
+	{
+		if(Config::get('app.registro_user_w', false)) {
+			return 'S';
+		}
+
+		$defaultValue = null;
+		try {
+			$defaultValueInTable = DB::select("Select DATA_DEFAULT from DBA_TAB_COLUMNS where TABLE_NAME = 'FXCLI' AND COLUMN_NAME = 'BLOCKPUJ_CLI'");
+			$defaultValue = trim(str_replace("'", '', $defaultValueInTable[0]->data_default));
+		} catch (\Throwable $th) {
+			Log::debug('Error al obtener el valor por defecto de blockpuj_cli', ['error' => $th->getMessage()]);
+			$defaultValue = 'N';
+		}
+
+		return $defaultValue;
+	}
 }
 

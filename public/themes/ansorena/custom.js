@@ -300,6 +300,21 @@ $(() => {
 
 		}
 	});
+
+	$('#registerForm input[name="pri_emp"]').on('change', function (event) {
+		const pri_emp = $(this).val();
+		if (pri_emp == 'J') {
+			const tipo_sexo_container = $('#registerForm .tipo_sexo');
+			tipo_sexo_container.addClass('d-none');
+			tipo_sexo_container.find('.hombre').removeClass('selected');
+			tipo_sexo_container.find('.mujer').removeClass('selected');
+			tipo_sexo_container.find('.hombre').addClass('selected');
+			$('#registerForm input[name="sexo"]').val('H');
+		} else {
+			$('#registerForm .tipo_sexo').removeClass('d-none');
+		}
+	});
+
 });
 
 function toogleAccordionFaqs(event) {
@@ -728,6 +743,10 @@ $(() => {
 		});
 	}
 });
+
+function showNIFMessage() {
+	$.magnificPopup.open({ items: { src: '#nifFilePopUpInformation' }, type: 'inline' }, 0);
+}
 
 function newsletterDay(){
 	// First check, if localStorage is supported.

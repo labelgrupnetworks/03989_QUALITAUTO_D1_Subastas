@@ -19,9 +19,8 @@ foreach($all_adj as $key_inf => $value){
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 titlePage">
-			<h1 {{-- class="titlePage" --}}>{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
-			<p class="mini-underline"></p>
+		<div class="col-xs-12">
+			<h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.user_panel.mi_cuenta') }}</h1>
 		</div>
 	</div>
 </div>

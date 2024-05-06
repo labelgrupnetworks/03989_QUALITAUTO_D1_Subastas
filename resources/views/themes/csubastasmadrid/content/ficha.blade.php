@@ -10,25 +10,40 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 @endphp
 
 <div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 titlePage">
-            <h1>
+	<div class="row">
+        <div class="col-xs-12">
+            <div class="grid-title-wrapper">
+                <h1 class="grid-title">
+                    @if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
+					{{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
+					@elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
+					{{$lote_actual->titulo_hces1}}
+					@elseif(\Config::get('app.ref_asigl0'))
+					{{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}
+					@endif
+                </h1>
 
-
-                @if(\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                {{$lote_actual->ref_asigl0}} - {{$lote_actual->titulo_hces1}}
-                @elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1'))
-                {{$lote_actual->titulo_hces1}}
-                @elseif(\Config::get('app.ref_asigl0'))
-                {{trans(\Config::get('app.theme').'-app.lot.lot-name')}} {{$lote_actual->ref_asigl0}}
-                @endif
-
-            </h1>
-			<p class="mini-underline"></p>
+                <div class="next">
+                    @if(!empty($data['previous']))
+                        <a class="nextLeft" title="{{ trans("$theme-app.subastas.last") }}"
+                            href="{{ $data['previous'] }}">
+                            <i class="fa fa-angle-left fa-angle-custom"></i>
+                            {{ trans("$theme-app.subastas.last") }}
+                        </a>
+                    @endif
+					@if(!empty($data['next']))
+                        <a class="nextRight" title="{{ trans("$theme-app.subastas.next") }}"
+                            href="{{ $data['next'] }}">
+                            {{ trans("$theme-app.subastas.next") }}
+                            <i class="fa fa-angle-right fa-angle-custom"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container lot-ficha">
     <div class="row">
         <div class="single">
             <div class="col-xs-12 col-md-7">
@@ -56,17 +71,24 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                         </a>
                         @endif
 
-
                         @if( $lote_actual->retirado_asigl0 !='N')
-                        <div class="retired ">
-                            {{ trans(\Config::get('app.theme').'-app.lot.retired') }}
-                        </div>
+							<div class="retired-border">
+								<div class="retired">
+									<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+										{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+									</span>
+								</div>
+							</div>
                         @elseif($lote_actual->cerrado_asigl0 == 'S' && (!empty($lote_actual->himp_csub) ||
                         $lote_actual->desadju_asigl0 =='S' || ($lote_actual->subc_sub == 'H' &&
                         !empty($lote_actual->impadj_asigl0))))
-                        <div class="retired" style="background:#2b373a;text-transform: lowercase;">
-                            {{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
-                        </div>
+							<div class="retired-border">
+								<div class="retired selled">
+									<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+										{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+									</span>
+								</div>
+							</div>
                         @endif
 
 						<div id="toolbarDiv">
@@ -138,7 +160,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
                         <div class="item_content_img_single"style="position: relative; height: 290px; overflow: hidden;">
                             <img style="max-width: 100%; height: auto; position: relative; display: inherit !important;    margin: 0 auto !important;"
 										class="img-responsive" data-pos="{{ $key }}"
-										src="{{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}"
+										src="{{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1, $key)}}"
 										alt="{{$lote_actual->titulo_hces1}}">
                         </div>
                         @endforeach

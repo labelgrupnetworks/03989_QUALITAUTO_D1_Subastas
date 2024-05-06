@@ -22,7 +22,7 @@
                             $item->desadju_asigl0 == 'S' ||
                             ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
                     <div class="retired" style ="background:#2b373a;">
-                        {{ trans($theme . '-app.subastas.buy') }}
+                        {{ trans($theme . '-app.subastas.buy') }} 
                     </div>
                 @endif
             </a>
