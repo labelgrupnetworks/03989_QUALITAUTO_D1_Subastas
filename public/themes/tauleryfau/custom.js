@@ -2093,6 +2093,13 @@ function favAddress(buttonElement) {
 	});
 }
 
+function showModalAddNewAddress() {
+	const addressCod = 'new';
+	$.when(ajax_shipping(addressCod, locale)).done(function(data) {
+		$('#modal_new_address').modal('show');
+	});
+}
+
 submit_shipping_addres = function (data) {
 	return $.ajax({
 		type: "POST",
@@ -2109,4 +2116,83 @@ submit_shipping_addres = function (data) {
 	}).then((response) => {
 		return response;
 	});
+}
+
+function getAllotmentsAndBills() {
+	$.ajax({
+		url: `/${locale}/user/panel/allotments-bills`,
+		type: 'GET',
+		success: function(response) {
+			const $block = $('#summary-allotments_table');
+			const $loader = $block.parent().find('.loader-box');
+			$loader.hide();
+			$block.html(response);
+		},
+		error: function(error) {
+			console.log(error);
+		}
+	});
+}
+
+function getFavorites() {
+	$.ajax({
+		url: `/${locale}/user/panel/summary/favorites`,
+		type: 'GET',
+		success: function(response) {
+
+			const $block = $('#summary-favorites');
+			const $loader = $block.parent().find('.loader-box');
+			$loader.hide();
+			$block.html(response);
+		},
+		error: function(error) {
+			console.log(error);
+		}
+	});
+}
+
+function getSales(anchorElement) {
+	refreshAnchorActive(anchorElement);
+	getSalesTab(`/${locale}/user/panel/summary/active-sales`);
+}
+
+function getFinishSales(anchorElement) {
+	refreshAnchorActive(anchorElement);
+	getSalesTab(`/${locale}/user/panel/summary/finish-sales`);
+}
+
+function getPendingSales(anchorElement) {
+	refreshAnchorActive(anchorElement);
+	getSalesTab(`/${locale}/user/panel/summary/pending-sales`);
+}
+
+function getSalesTab(url) {
+
+	const $block = $('#summary-sales');
+	const $loader = $block.parent().find('.loader-box');
+
+	$.ajax({
+		url: url,
+		type: 'GET',
+		beforeSend: function() {
+			$loader.show();
+		},
+		success: function(response) {
+			$block.html(response);
+		},
+		error: function(error) {
+			console.log(error);
+		},
+		complete: function() {
+			$loader.hide();
+		}
+	});
+}
+
+function refreshAnchorActive(anchorElement) {
+	if (typeof anchorElement === 'undefined') {
+		return;
+	}
+	$('.sales-menu a').removeClass('btn-lb-primary').addClass('btn-lb-outline');
+	$(anchorElement).addClass('btn-lb-primary').removeClass('btn-lb-outline');
 }

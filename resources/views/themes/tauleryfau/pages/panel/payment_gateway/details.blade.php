@@ -21,10 +21,9 @@
 <div class="detail">
     <div class="detail_header detail_header_action">
         <h4>{{ trans("$theme-app.user_panel.title_envio") }}</h4>
-        <a class="btn btn-sm btn-lb btn-lb-success"
-            {{-- href="{{ route('panel.addresses', ['lang' => Config::get('app.locale'), 'cod_sub' => $cod_sub]) }}" --}}>
-            {{ trans($theme . '-app.user_panel.new_address') }}
-        </a>
+        <button class="btn btn-sm btn-lb btn-lb-success" type="button" onclick="showModalAddNewAddress()">
+            {{ trans("$theme-app.user_panel.add_addres_btn") }}
+        </button>
     </div>
 
     <div class="detail_form">
@@ -33,7 +32,11 @@
                 <input id="clidd_{{ $address->codd_clid }}_{{ $cod_sub }}" name="clidd" type="radio"
                     value="{{ $address->codd_clid }}" @checked($address->codd_clid == 'W1')>
 
+
                 <span>
+                    @if (!empty($address->obs_clid))
+                        <b>{{ mb_strtoupper($address->obs_clid) }} | </b>
+                    @endif
                     {{ $address->nomd_clid }} - {{ $address->dir_clid }}{{ $address->dir2_clid }} -
                     {{ $address->cp_clid }}, {{ $address->pro_clid }} -
                     {{ $countries[strtoupper($address->codpais_clid)] }}
@@ -108,18 +111,17 @@
 
 
 {{-- modal to new address --}}
-<div class="modal" id="modal_new_address">
-	<div class="modal-content">
-		<div class="modal-header">
-			<h4>Nueva dirección</h4>
-			<span class="close" onclick="closeModal('modal_new_address')">&times;</span>
-		</div>
-		<div class="modal-body">
-			<div id="#ajax_shipping_add"></div>
-		</div>
-	</div>
+<div class="modal fade" id="modal_new_address" role="dialog" aria-labelledby="modal_new_address" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"> {{ trans($theme . '-app.user_panel.new_address') }}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="ajax_shipping_add"></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script>
-
-</script>
