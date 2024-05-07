@@ -582,7 +582,7 @@ class UserController extends Controller
 		}
 
 		if(Request::has('dni1') && Request::has('dni2')){
-			if(!$this->validateImages(request())){
+			if(!$this->validateNIFImages(request())){
 				return json_encode(array(
 					"err"       => 1,
 					"msg"       => 'max_size_img'
@@ -1501,7 +1501,7 @@ class UserController extends Controller
     return json_encode($response);
     }
 
-	private function validateImages($request)
+	private function validateNIFImages($request)
 	{
 
 		$rules = [
@@ -1544,14 +1544,14 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
+		$path = match (Config::get('app.dni_in_storage', false)) {
+			"dni-files" => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+			"cli-documentation" => storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
+			"base-dni-files" => base_path("dni/$emp/$cod_cli/files/"),
+			default => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+		};
 
-		if (Config::get('app.dni_in_storage', false) == "dni-files") {
-			return storage_path("app/files/dni/$emp/$cod_cli/files/");
-		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
-			return storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/");
-		}
-
-		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+		return $path;
 	}
 
 	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
@@ -1606,7 +1606,7 @@ class UserController extends Controller
 			$dni2Input = "dni2";
 
 			# Esta ruta es la ruta que usa Ansorena y el nombre de los archivos para enlazar con el ERP
-			$routeCliDocumentation =Config::get('app.dni_in_storage', false) == "cli-documentation";
+			$routeCliDocumentation = Config::get('app.dni_in_storage', false) == "cli-documentation";
 
 			if ($routeCliDocumentation) {
 				$dni1 = $nif."A";
