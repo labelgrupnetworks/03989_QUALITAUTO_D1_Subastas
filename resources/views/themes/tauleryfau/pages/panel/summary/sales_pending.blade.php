@@ -32,7 +32,7 @@
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.assignment") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.line") }}</th>
-                    <th scope="col">{{ trans("$theme-app.user_panel.description") }}</th>
+                    <th scope="col" style="width: 45%">{{ trans("$theme-app.user_panel.description") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.starting_price") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.estimated") }}</th>
                     <th scope="col"></th>
@@ -48,9 +48,9 @@
 							{{ $lot->lin_hces1 }}
                         </td>
                         <td>
-                            <p class="max-line-2">
+                            <div class="max-line-2">
                                 {!! $lot->descweb_hces1 !!}
-                            </p>
+                            </div>
                         </td>
                         <td>
 							<p class="js-divisa" value="{{ $lot->impsal_hces1 }}">

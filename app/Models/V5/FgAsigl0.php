@@ -98,8 +98,8 @@ class FgAsigl0 extends Model
 			->select('ref_asigl0, impsalhces_asigl0, cerrado_asigl0, sub_asigl0, imptas_asigl0')
 			->addSelect('FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1')
 			->addSelectLotDesctiptionsAttributes()
-			->addSelect(DB::raw("(SELECT count(distinct(licit_asigl1)) from FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) COUNT_LICITS"))
-			->addSelect(DB::raw("(SELECT count(lin_asigl1) from FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) COUNT_BIDS"));
+			->addCountLicits()
+			->addCountBids();
 	}
 
 	public function scopeAddCountLicits($query)

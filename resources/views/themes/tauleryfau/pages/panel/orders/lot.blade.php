@@ -38,7 +38,7 @@
 
         <div class="lot-image">
             <img class="img-responsive"
-                src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}">
+                src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" loading="lazy">
         </div>
 
         <div class="lot-ref">
@@ -63,7 +63,7 @@
         <div class="order-label label-price-actual">
             <span>
                 @if ($subasta_finalizada)
-					{{ trans("$theme-app.user_panel.awarded") }}
+                    {{ trans("$theme-app.user_panel.awarded") }}
                 @else
                     {{ trans($theme . '-app.lot.puja_actual') }}
                 @endif
@@ -124,7 +124,7 @@
                     @if ($bid_mine)
                         {{ trans("$theme-app.user_panel.won") }}
                     @else
-						{{ trans("$theme-app.user_panel.lost") }}
+                        {{ trans("$theme-app.user_panel.lost") }}
                     @endif
                 </button>
             @endif

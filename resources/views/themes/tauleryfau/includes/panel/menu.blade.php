@@ -58,8 +58,8 @@
             {{ trans("$theme-app.user_panel.my_pending_bills") }}
         </a>
     </li>
-    <li @class(['active' => Route::currentRouteName() === 'panel.sales'])>
-        <a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}">
+    <li @class(['active' => in_array(Route::currentRouteName(), ['panel.sales.active', 'panel.sales.finish', 'panel.sales.pending-assign'])])>
+        <a href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
             {{ trans("$theme-app.user_panel.my_assignments") }}
         </a>
     </li>

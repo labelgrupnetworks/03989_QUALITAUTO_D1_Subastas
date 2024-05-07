@@ -52,7 +52,8 @@
                             @endforeach
                             <li class="divider" role="separator"></li>
                             <li>
-                                <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
+                                <button class="btn btn-lb btn-lb-primary"
+                                    type="submit">{{ trans("$theme-app.global.filter") }}</button>
                             </li>
                         </form>
                     </ul>
@@ -121,7 +122,8 @@
                     <div class="panel-lot sales-lot" data-type="pending">
                         <div class="panel-lot_img">
                             <img class="img-responsive"
-                                src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1) }}" alt="">
+                                src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1) }}" alt=""
+                                loading="lazy">
                         </div>
                         <div class="panel-lot_sheet">
                             <p>

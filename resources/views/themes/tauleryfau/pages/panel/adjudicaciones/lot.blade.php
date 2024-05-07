@@ -6,7 +6,7 @@
 <div class="panel-lot-wrapper">
     <div class="panel-lot allotment-lot">
         <div class="panel-lot_img">
-            <img class="img-responsive" src="{{ Tools::url_img('lote_medium', $num, $lin) }}" alt="">
+            <img class="img-responsive" src="{{ Tools::url_img('lote_medium', $num, $lin) }}" alt="" loading="lazy">
         </div>
         <div class="panel-lot_ref">
             <p>
@@ -43,7 +43,7 @@
                 {{ trans("$theme-app.lot.photo") }}
             </a>
 
-			<a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}" @disabled(!$isPayed)
+            <a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}" @disabled(!$isPayed)
                 @class([
                     'btn btn-lb btn-lb-secondary',
                     'js-btn-certificate' => $isPayed,
