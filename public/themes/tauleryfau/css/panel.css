@@ -774,22 +774,22 @@ p,
 	grid-column: span 2;
 }
 
-:is(.sales-auction, .invoice-auction) .badge {
+.badge {
 	font-weight: 400;
 	padding: 6px 12px;
 	border-radius: 8px;
 	font-size: inherit;
 }
 
-:is(.sales-auction, .invoice-auction) .badge.badge-alert {
+.badge.badge-alert {
 	background-color: #A81313;
 }
 
-:is(.sales-auction, .invoice-auction) .badge.badge-warning {
+.badge.badge-warning {
 	background-color: #C07914D9;
 }
 
-:is(.sales-auction, .invoice-auction) .badge.badge-success {
+.badge.badge-success {
 	background-color: #23A455;
 }
 
@@ -1530,7 +1530,7 @@ p,
 	overflow: hidden;
 }
 
-.summary-allotments-auctions-block tbody:nth-child(n + 6) {
+.summary-allotments-auctions-block tbody :nth-child(n + 6) {
 	display: none;
 }
 
