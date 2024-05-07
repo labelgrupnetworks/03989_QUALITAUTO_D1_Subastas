@@ -1,4 +1,4 @@
-.panel-body {
+.user-panel-body {
 	color: #000;
 
 	--color-gold: #b79d81;
@@ -283,6 +283,12 @@ main {
 		display: block;
 	}
 
+	aside {
+		position: sticky;
+		height: calc(100vh - var(--header-height, 70px));
+		top: var(--header-height, 70px);
+	}
+
 	aside ul.collapse {
 		display: block;
 	}
@@ -290,6 +296,11 @@ main {
 	aside .panel_banner {
 		margin-top: auto;
 		display: block;
+	}
+
+	aside img {
+		width: 100%;
+		height: auto;
 	}
 }
 

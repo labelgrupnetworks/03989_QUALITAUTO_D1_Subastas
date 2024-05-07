@@ -7,7 +7,7 @@
 	<link href="{{ Tools::urlAssetsCache("/themes/$theme/css/panel.css") }}" rel="stylesheet" type="text/css">
 </head>
 
-<body class="panel-body">
+<body class="user-panel-body">
     @include('includes.google_body')
 
     @include('includes.panel.header')

@@ -1890,6 +1890,23 @@ function addNewsletter(data) {
 	});
 }
 
+/**
+ * eventos panel de usuario
+ */
+$(function() {
+	if($('.user-panel-body').length == 0) {
+		return;
+	}
+
+	addHeaderHeight();
+	$(window).resize(addHeaderHeight);
+});
+
+function addHeaderHeight() {
+	$headerHeight = $('body > header').height();
+	$('aside').css('--header-height', $headerHeight + 'px');
+}
+
 function salesAnimationCounter() {
 	$('.sales-counter').each(function () {
 		const element = this;
