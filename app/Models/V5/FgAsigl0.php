@@ -75,7 +75,7 @@ class FgAsigl0 extends Model
 	public static function getAuctionsResultsByOwnerQuery($auctionsCodes, $ownerCode, $isMutlipleOwner = true)
 	{
 		return self::query()
-			->select(DB::raw('count(*) as total_lots, sum(implic_hces1) as total_award, sum(impsalhces_asigl0) as total_impsalhces, sub_asigl0'))
+			->select(DB::raw('count(*) as total_lots, sum(implic_hces1) as total_award, sum(impsalhces_asigl0) as total_impsalhces, sum(imptas_asigl0) as total_imptas, sub_asigl0'))
 			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' AND cerrado_asigl0 = 'S' then 1 else 0 end) as total_awarded_lots"))
 			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' then 1  else 0 end) as total_bids_lots"))
 			->whereIn('sub_asigl0', $auctionsCodes)
@@ -84,6 +84,22 @@ class FgAsigl0 extends Model
 				fn ($query) => $query->whereOwner($ownerCode, false),
 				fn ($query) => $query->wherePropOwner($ownerCode))
 			->groupBy('sub_asigl0');
+	}
+
+	public static function getActiveLotsSalesByOwnerQuery($auctionsCodes, $ownerCode, $isMutlipleOwner = true)
+	{
+		return self::query()
+			->joinFghces1Asigl0()
+			->whereIn('sub_asigl0', $auctionsCodes)
+			->when($isMutlipleOwner,
+				fn ($query) => $query->whereOwner($ownerCode, false),
+				fn ($query) => $query->wherePropOwner($ownerCode))
+
+			->select('ref_asigl0, impsalhces_asigl0, cerrado_asigl0, sub_asigl0, imptas_asigl0')
+			->addSelect('FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1')
+			->addSelectLotDesctiptionsAttributes()
+			->addSelect(DB::raw("(SELECT count(distinct(licit_asigl1)) from FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) COUNT_LICITS"))
+			->addSelect(DB::raw("(SELECT count(lin_asigl1) from FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) COUNT_BIDS"));
 	}
 
 	public function scopeAddCountLicits($query)
@@ -537,7 +553,13 @@ class FgAsigl0 extends Model
         return $query->leftjoin('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
 	}
 
-
+	public function scopeWhereAuctionIsActive($query)
+	{
+		return $query->when(session('user.admin'),
+			fn ($query) => $query->whereIn('FGSUB.SUBC_SUB', [FgSub::SUBC_SUB_ACTIVO, FgSub::SUBC_SUB_ADMINISITRADOR]),
+			fn ($query) => $query->where('FGSUB.SUBC_SUB', FgSub::SUBC_SUB_ACTIVO)
+		);
+	}
 
 	/**
 	 * Obtiene información de lotes de una o más subastas
@@ -666,7 +688,7 @@ class FgAsigl0 extends Model
 	public static function getNotEndedAuctionsWithOwnerLots($cod_cli)
 	{
 		return self::getAuctionsWithOwnerLotsQuery($cod_cli)
-			->where('FGSUB.SUBC_SUB', FgSub::SUBC_SUB_ACTIVO)
+			->whereAuctionIsActive()
 			->whereAuctionStatusNotIs('ended')
 			->select('SUB_ASIGL0', 'auc."start"')
 			->addSelectFgSubDescriptionsAttributes()

@@ -1,25 +1,25 @@
-<div class="sales-auction-wrapper" data-type="active" data-sub="{{ $cod_sub }}">
+<div class="sales-auction-wrapper" data-type="active" data-sub="{{ $auction['sub_asigl0'] }}">
     <div class="sales-auction">
         <p>
-            {{ date('d/m/Y', strtotime($auctions->first()->start)) }}
+            {{ date('d/m/Y', strtotime($auction['start'])) }}
         </p>
         <p>
-            <span class="visible-md visible-lg">{{ $auctions->first()->des_sub }}</span>
-            <span class="hidden-md hidden-lg">{{ $auctions->first()->cod_sub }}</span>
+            <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
+            <span class="hidden-md hidden-lg">{{ $auction['sub_asigl0'] }}</span>
 
         </p>
-        <p>{{ $auctionStatistics['consigned_lots'] }}</p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $auctionStatistics['starting_price'] }}">
-            {!! $currency->getPriceSymbol(2, $auctionStatistics['starting_price']) !!}
+        <p>{{ $auction['total_lots'] }}</p>
+        <p class="js-divisa visible-md visible-lg" value="{{ $auction['total_impsalhces'] }}">
+            {!! $currency->getPriceSymbol(2, $auction['total_impsalhces']) !!}
         </p>
-        <p class="js-divisa visible-md visible-lg" value="{{ $auctionStatistics['estimate_price'] }}">
-            {!! $currency->getPriceSymbol(2, $auctionStatistics['estimate_price']) !!}
+        <p class="js-divisa visible-md visible-lg" value="{{ $auction['total_imptas'] }}">
+            {!! $currency->getPriceSymbol(2, $auction['total_imptas']) !!}
         </p>
-        <p class="js-divisa" value="{{ $auctionStatistics['actual_price'] }}">
-            {!! $currency->getPriceSymbol(2, $auctionStatistics['actual_price']) !!}
+        <p class="js-divisa" value="{{ $auction['total_award'] }}">
+            {!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
         </p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $cod_sub }}"
+            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auction['sub_asigl0'] }}"
                 role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a>
         </div>
     </div>

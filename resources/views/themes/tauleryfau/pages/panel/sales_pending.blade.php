@@ -66,7 +66,7 @@
                     <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.pendings") }}</span>
                 </a>
                 <a class="btn btn-lb btn-lb-outline btn-large"
-                    href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}">
+                    href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
                     <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
                 </a>

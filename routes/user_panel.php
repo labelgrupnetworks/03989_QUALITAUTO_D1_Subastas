@@ -40,6 +40,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
 	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
 
+	Route::get('{lang}/user/panel/sales/active', 'UserController@getSalesToActiveAuctions')->name('panel.sales.active');
 	Route::get('{lang}/user/panel/sales/finish', 'UserController@invoiceSalesOfFinishAuctions')->name('panel.sales.finish');
 	Route::get('{lang}/user/panel/sales/pending-assign', 'UserController@getLotsSalesPendingToBeAssign')->name('panel.sales.pending-assign');
 

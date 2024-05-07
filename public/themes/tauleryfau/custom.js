@@ -1990,21 +1990,23 @@ function refreshFinishSummary(cod_sub) {
 }
 
 function refreshActiveSummaryWithTotals() {
-	$('#actualPrice').attr('value', statistics.total.actual_price);
-	$('#percentage_lots_bid').attr('value', statistics.total.percentage_lots_bid);
-	$('#revaluation').attr('value', statistics.total.revaluation);
-	$('#consigned_lots').attr('value', statistics.total.consigned_lots);
-	$('#bid_lots').attr('value', statistics.total.bid_lots);
+	const total = statistics.total;
+	$('#actualPrice').attr('value', total.total_award);
+	$('#percentage_lots_bid').attr('value', total.percentage_lots_with_bid);
+	$('#revaluation').attr('value', total.revaluation);
+	$('#consigned_lots').attr('value', total.total_lots);
+	$('#bid_lots').attr('value', total.total_bids_lots);
 	salesAnimationCounter();
 }
 
 function refreshActiveSummary(cod_sub) {
 	const auction = statistics.auction[`${cod_sub}`];
-	$('#actualPrice').attr('value', auction.actual_price);
-	$('#percentage_lots_bid').attr('value', auction.count_lots_with_bids / auction.consigned_lots * 100);
-	$('#revaluation').attr('value', auction.actual_price / auction.starting_price * 100);
-	$('#consigned_lots').attr('value', auction.consigned_lots);
-	$('#bid_lots').attr('value', auction.count_lots_with_bids);
+
+	$('#actualPrice').attr('value', auction.total_award);
+	$('#percentage_lots_bid').attr('value', auction.total_bids_lots / auction.total_lots * 100);
+	$('#revaluation').attr('value', auction.total_award / auction.total_impsalhces * 100);
+	$('#consigned_lots').attr('value', auction.total_lots);
+	$('#bid_lots').attr('value', auction.total_bids_lots);
 	salesAnimationCounter();
 }
 

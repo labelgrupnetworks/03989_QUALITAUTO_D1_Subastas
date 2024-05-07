@@ -35,6 +35,7 @@ Use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
+use App\libs\Currency;
 use App\libs\EmailLib;
 use App\Models\V5\SubAuchouse;
 use App\libs\FormLib;
@@ -3030,30 +3031,7 @@ class UserController extends Controller
 			->orderBy('imp_asigl1', 'desc')
 			->orderBy('fec_asigl1', 'desc')->get();
 
-		$infoSales = [];
-		$facturas = [];
-		$subastasActivas = [];
-
-		//La información de las facturas solamente la utilizar tauler, por lo que encapsulo en un config
-		if(config('app.userpanel_sales_extends', false)){
-			$defaultMonthPeriod = 6;
-			$fgAsigl0 = new FgAsigl0();
-			$subastasActivas = $fgAsigl0->getActiveAuctionsWithPropietary($cod_cli, Session::get('user.admin'));
-			$infoSales = $fgAsigl0->getLotsInfoSales($subastasActivas->where('start', '>=', date("Y-m-d", strtotime("-$defaultMonthPeriod months")))->pluck('sub_asigl0')->toArray(), $cod_cli);
-
-			//toda la informacion. Facturas y lineas incluidas
-			//$facturas = (new FxDvc0())->getFacturasPropietario('$cod_cli')->groupBy('sub_hces1');
-
-			//cabeceras y lineas por separado
-			$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $defaultMonthPeriod);
-			$fgDvc1l = new FgDvc1l();
-			foreach ($facturasCabeceras as $key => $cabecera) {
-				$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0);
-			}
-			$facturas = $facturasCabeceras->keyBy('linea.sub_hces1');
-		}
-
-        foreach($lotes as $key => $lot){
+        foreach($lotes as $lot){
 
             //$pujas = $subasta->getPujas(null,$lot->sub_asigl0);
             $lot->pujas = $pujas->where('ref_asigl1', $lot->ref_asigl0)->where('sub_asigl1', $lot->cod_sub);
@@ -3069,10 +3047,55 @@ class UserController extends Controller
 			return [$item->cod_sub => $item];
 		});
 
-		$data = array('subastas' => $subastas, 'subastasActivas' => $subastasActivas, 'infoSales' => (object)$infoSales, 'facturas' => $facturas);
+		$data = array('subastas' => $subastas);
 
 		return view('front::pages.panel.sales', $data);
     }
+
+	public function getSalesToActiveAuctions(HttpRequest $request)
+	{
+		$user = new User();
+		$cod_cli = Session::get('user.cod');
+
+		if (config('app.permission_to_view_seller_panel', false)) {
+			$cliweb = FxCliWeb::where('cod_cliweb', $cod_cli)->whereNotNull('permission_id_cliweb')->first();
+			abort_if(!$cliweb, 404);
+		}
+
+		$auctions = $user->setCodCli($cod_cli)
+			->getSalesToNotFinishAuctions();
+
+		$summary = [
+			'total_lots' => $auctions->sum('total_lots'),
+			'total_award' => $auctions->sum('total_award'),
+			'total_impsalhces' => $auctions->sum('total_impsalhces'),
+			'total_bids_lots' => $auctions->sum('total_bids_lots'),
+			'total_imptas' => $auctions->sum('total_imptas'),
+		];
+
+		$summary['percentage_lots_with_bid'] = ($summary['total_bids_lots'] / max($summary['total_lots'], 1)) * 100;
+		$summary['revaluation'] = ($summary['total_award'] / max($summary['total_impsalhces'], 1)) * 100;
+
+		$lots = FgAsigl0::getActiveLotsSalesByOwnerQuery($auctions->pluck('sub_asigl0'), $cod_cli, false)
+			->orderby("sub_asigl0, ref_asigl0")
+			->get()
+			->groupBy('sub_asigl0');
+
+		$currency = new Currency();
+		$divisa = Session::get('user.currency', 'EUR');
+		$divisas = $currency->setDivisa($divisa)->getAllCurrencies();
+
+		$data = [
+			'auctions' => $auctions,
+			'lots' => $lots,
+			'summary' => $summary,
+			'currency' => $currency,
+			'divisa' => $divisa,
+			'divisas' => $divisas,
+		];
+
+		return view('front::pages.panel.sales', $data);
+	}
 
 	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
 	{
