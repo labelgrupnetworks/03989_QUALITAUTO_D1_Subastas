@@ -26,6 +26,10 @@ class DbConfigServiceProvider extends ServiceProvider
 
 	public function register()
 	{
+		if ($this->app->runningInConsole()) {
+			Config::set('logging.default', 'cli');
+		}
+
 		$emp = $this->app->config->get('app.emp');
 		$config  = DB::select(
 			"SELECT KEY, VALUE FROM WEB_CONFIG where emp=:EMP",
