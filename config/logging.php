@@ -74,6 +74,13 @@ return [
             'days' => 30,
         ],
 
+		'cli' => [
+			'driver' => 'daily',
+			'path' => storage_path('logs/cli.log'),
+			'level' => 'debug',
+			'days' => 15,
+		],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

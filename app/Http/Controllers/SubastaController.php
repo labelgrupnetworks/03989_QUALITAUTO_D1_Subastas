@@ -1569,8 +1569,11 @@ class SubastaController extends Controller
 			}
 		}
 
-
-
+		if (empty($cod_sub) || empty($cod_licit) || empty($ref)) {
+			return array(
+				'status'    => 'error',
+			);
+		}
 
 		$res = array();
 
