@@ -26,9 +26,11 @@ class DbConfigServiceProvider extends ServiceProvider
 
 	public function register()
 	{
-		if ($this->app->runningInConsole()) {
-			Config::set('logging.default', 'cli');
-		}
+
+		// Configuración de logs dependiendo de si estamos en consola o no
+		$this->app->runningInConsole()
+			? Config::set('logging.default', 'cli') //colas, comandos y tareas programadas
+			: Config::set('logging.default', 'daily'); //web
 
 		$emp = $this->app->config->get('app.emp');
 		$config  = DB::select(
