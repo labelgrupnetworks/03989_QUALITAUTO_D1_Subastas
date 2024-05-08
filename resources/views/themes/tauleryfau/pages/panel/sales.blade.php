@@ -108,11 +108,17 @@
 					</div>
 				</div>
 
-				@foreach ($auctions as $auction)
+				@forelse ($auctions as $auction)
 					@include('pages.panel.sales.auction_active', [
 						'auctions' => $auction,
 					])
-				@endforeach
+				@empty
+				<div class="sales-auction-wrapper empty-auction">
+					<div class="sales-auction">
+						<p>{{ trans("$theme-app.user_panel.no_sales") }}</p>
+					</div>
+				</div>
+				@endforelse
 
 			</div>
         </div>
@@ -130,13 +136,4 @@
 		</section>
 
     </section>
-
-	<script>
-		$(document).ready(function () {
-			if (window.location.hash) {
-				const hash = window.location.hash;
-				$(`[href="${hash}"]`).trigger('click');
-			}
-		});
-	</script>
 @stop

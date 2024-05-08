@@ -620,7 +620,7 @@ ul {
     letter-spacing: 0px;
 }
 
-.session ul li.prueba.admin a {
+.session ul li.admin a {
     width: 100%;
 }
 
@@ -629,10 +629,10 @@ ul {
     position: relative;
 }
 
-.session ul li.prueba.session-start {
+.session ul li.session-start {
     width: 100%;
 }
-.session ul li.prueba.logout {
+.session ul li.logout {
     width: 40px;
 }
 

@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($auctions as $auction)
+                @forelse ($auctions as $auction)
                     <tr>
                         <td>
 							{{ date('d/m/Y', strtotime($auction['start'])) }}
@@ -76,7 +76,11 @@
                             </a>
                         </td>
                     </tr>
-                @endforeach
+				@empty
+					<tr>
+						<td colspan="6" class="text-center">{{ trans("$theme-app.user_panel.no_sales") }}</td>
+					</tr>
+                @endforelse
             </tbody>
         </table>
     </div>

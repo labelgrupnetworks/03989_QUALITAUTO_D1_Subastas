@@ -1947,7 +1947,7 @@ function animationCounter(element, options = {}, callback) {
 }
 
 /**
- * user panel sales events
+ * user panel sales and adjudicaciones events
  */
 $(function() {
 	salesAnimationCounter();
@@ -1958,7 +1958,13 @@ $(function() {
 		salesAuctionOnClickHandler(event, refreshFinishSummary, refreshFinishSummaryWithTotals);
 	});
 
-	$('.sales-auction-wrapper a, .invoice-wrapper a').on('click', salesAuctionDetailsOnClickHandler);
+	//en ventas y compras desplazar la pantalla a la sección de detalles de la subasta
+	$('a[data-toggle="tab"][href^="#auction-details"]').on('shown.bs.tab', salesAuctionDetailsOnClickHandler);
+
+	if ($('a[data-toggle="tab"][href^="#auction-details"]').length > 0 && window.location.hash) {
+		const hash = window.location.hash;
+		$(`[href="${hash}"]`).tab('show');
+	}
 });
 
 function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {

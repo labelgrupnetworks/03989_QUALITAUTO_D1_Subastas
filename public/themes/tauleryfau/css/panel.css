@@ -286,6 +286,7 @@ main {
 	aside {
 		position: sticky;
 		height: calc(100vh - var(--header-height, 70px));
+		overflow-y: auto;
 		top: var(--header-height, 70px);
 	}
 
@@ -779,6 +780,12 @@ p,
 	padding-left: var(--min-padding-to-page);
 	padding-right: var(--min-padding-to-page);
 	gap: var(--gap);
+}
+
+.sales-auction-wrapper.empty-auction :is(.sales-auction, .invoice-auction) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .allotment-auctions_header-imp {
@@ -1541,7 +1548,7 @@ p,
 	overflow: hidden;
 }
 
-.summary-allotments-auctions-block tbody :nth-child(n + 6) {
+.summary-allotments-auctions-block tbody tr:nth-child(n + 6) {
 	display: none;
 }
 

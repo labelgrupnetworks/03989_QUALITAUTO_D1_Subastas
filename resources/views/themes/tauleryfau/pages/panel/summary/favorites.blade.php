@@ -1,57 +1,64 @@
 <section class="summary-favorites">
-    @foreach (range(0, 4) as $range)
-        @foreach ($lots as $inf_lot)
-            @php
-                $tileFriendly = str_slug($inf_lot->titulo_hces1);
-                $sesionFriendly = str_slug($inf_lot->session_name);
-                $lotUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions/$inf_lot->ref_asigl0-$inf_lot->num_hces1-$tileFriendly";
-                $lotLiveUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions";
 
-                $url_friendly = Routing::translateSeo('lote') . $lotUrl;
-                $urlLive = Routing::translateSeo('api/subasta') . $lotLiveUrl;
+    @foreach ($lots as $inf_lot)
+        @php
+            $tileFriendly = str_slug($inf_lot->titulo_hces1);
+            $sesionFriendly = str_slug($inf_lot->session_name);
+            $lotUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions/$inf_lot->ref_asigl0-$inf_lot->num_hces1-$tileFriendly";
+            $lotLiveUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions";
 
-                $style = 'other';
-                $bid_mine = false;
-                if ($inf_lot->cod_licit == $inf_lot->licit_winner_bid) {
-                    $style = 'mine';
-                    $bid_mine = true;
-                } elseif (!Config::get('app.notice_over_bid') && $inf_lot->tipo_sub == 'W') {
-                    $style = 'gold';
-                }
+            $url_friendly = Routing::translateSeo('lote') . $lotUrl;
+            $urlLive = Routing::translateSeo('api/subasta') . $lotLiveUrl;
 
-                $escalado = new \App\Models\Subasta();
-                $escalado->cod = $inf_lot->cod_sub;
-                $escalado->sin_pujas = true;
-                if (!empty($inf_lot->licit_winner_bid)) {
-                    $escalado->sin_pujas = false;
-                }
+            $style = 'other';
+            $bid_mine = false;
+            if ($inf_lot->cod_licit == $inf_lot->licit_winner_bid) {
+                $style = 'mine';
+                $bid_mine = true;
+            } elseif (!Config::get('app.notice_over_bid') && $inf_lot->tipo_sub == 'W') {
+                $style = 'gold';
+            }
 
-                $nextScale = $escalado->NextScaleBid($inf_lot->impsalhces_asigl0, $inf_lot->implic_hces1);
-            @endphp
+            $escalado = new \App\Models\Subasta();
+            $escalado->cod = $inf_lot->cod_sub;
+            $escalado->sin_pujas = true;
+            if (!empty($inf_lot->licit_winner_bid)) {
+                $escalado->sin_pujas = false;
+            }
 
-            <a href="{{ $url_friendly }}">
-                <div class="summary-lot">
-                    <div class="lot-image">
-                        <img class="img-responsive"
-                            src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
-                            loading="lazy">
-                    </div>
+            $nextScale = $escalado->NextScaleBid($inf_lot->impsalhces_asigl0, $inf_lot->implic_hces1);
 
-                    <p class="lot-ref">{{ trans("$theme-app.user_panel.lot") }} {{ $inf_lot->ref_asigl0 }}</p>
+            $isClose = $inf_lot->cerrado_asigl0 == 'S' || $inf_lot->retirado_asigl0 == 'S';
+        @endphp
 
-                    <div class="lot-desc">
-                        {!! $inf_lot->desc_hces1 !!}
-                    </div>
+        <a href="{{ $url_friendly }}">
+            <div class="summary-lot">
+                <div class="lot-image">
+                    <img class="img-responsive"
+                        src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
+                        loading="lazy">
+                </div>
 
-                    <p class="lot-actual">
-                        <span>
+                <p class="lot-ref">{{ trans("$theme-app.user_panel.lot") }} {{ $inf_lot->ref_asigl0 }}</p>
+
+                <div class="lot-desc">
+                    {!! $inf_lot->desc_hces1 !!}
+                </div>
+
+                <p class="lot-actual">
+                    <span>
+                        @if ($isClose)
+                            {{ trans("$theme-app.user_panel.awarded") }}
+                        @else
                             {{ trans("$theme-app.lot.puja_actual") }}
-                        </span>
-                        <span class="js-divisa" value="{{ $inf_lot->implic_hces1 }}">
-                            {!! $currency->getPriceSymbol(2, $inf_lot->implic_hces1) !!}
-                        </span>
-                    </p>
+                        @endif
+                    </span>
+                    <span class="js-divisa" value="{{ $inf_lot->implic_hces1 }}">
+                        {!! $currency->getPriceSymbol(2, $inf_lot->implic_hces1) !!}
+                    </span>
+                </p>
 
+                @if (!$isClose)
                     <button @class(['btn btn-lb btn-lb-secondary', 'bid-mine' => $bid_mine])>
                         @if ($bid_mine)
                             {{ trans("$theme-app.user_panel.higher_bid_es") }}
@@ -60,9 +67,14 @@
                             {!! $currency->getPriceSymbol(2, $nextScale) !!}
                         @endif
                     </button>
-                </div>
-            </a>
-        @endforeach
+                @else
+                    <button class="btn btn-lb btn-lb-secondary">
+						{{ trans("$theme-app.user_panel.awarded") }}
+                    </button>
+                @endif
+
+            </div>
+        </a>
     @endforeach
 </section>
 
