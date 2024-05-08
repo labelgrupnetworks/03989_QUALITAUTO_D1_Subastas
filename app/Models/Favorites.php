@@ -143,21 +143,12 @@ class Favorites extends Model
             return $result;
         }
 
-         $test =array(
-                        'cod_sub'   => ($this->cod_sub),
-                        'emp'       => Config::get('app.emp'),
-                        'cli_licit' => $this->cod_licit,
-                        'ref'       => $this->ref
-                        );
-
         try  {
-            $user_temp = Session::get('user.cod');
-
             $res = DB::select("INSERT INTO WEB_FAVORITES (ID_LICIT, ID_SUB, ID_EMP, ID_REF, FECHA, COD_CLI) VALUES (:cli_licit, :cod_sub, :emp, :ref, to_char(sysdate, 'yyyy/mm/dd hh24:mi:ss'), :user_cod)",
                     array(
+                        'cli_licit' => $this->cod_licit,
                         'cod_sub'   => ($this->cod_sub),
                         'emp'       => Config::get('app.emp'),
-                        'cli_licit' => $this->cod_licit,
                         'ref'       => $this->ref,
                         'user_cod'  => Session::get('user.cod')
                         )
