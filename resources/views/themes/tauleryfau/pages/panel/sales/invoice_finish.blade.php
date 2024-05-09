@@ -4,7 +4,7 @@
     $dateValue = date('d/m/Y', strtotime($date));
 
 	$totalSettlement = $invoicesAuctions->sum('implic_hces1') - $auctionData->total_dvc0;
-	$totalPending = $invoicesAuctions->sum('imp_pending');
+	$totalPending = abs($invoicesAuctions->sum('imp_pending'));
 
     $state = match (true) {
         ($totalPending != 0) => ['class' => 'warning', 'text' => 'En curso'],

@@ -10,7 +10,7 @@
         <img src="{{ $userAvatar }}" alt="avatar del usuario" style="aspect-ratio: 1" width="60">
         <div class="panel_user-data">
             <p>{{ $userName }}</p>
-            <small>Cliente {{ $userMenu['cod'] }}</small>
+            <small>{{ trans("$theme-app.user_panel.client") }} {{ $userMenu['cod'] }}</small>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
 <ul class="collapse" id="collapseSubMenu">
     <li @class(['active' => Route::currentRouteName() === 'panel.summary'])>
         <a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">
-            Resumen
+            {{ trans("$theme-app.user_panel.summary") }}
         </a>
     </li>
     <li @class([

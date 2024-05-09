@@ -25,6 +25,10 @@
 	--max-content-contentbox: var(--max-content-width);
 }
 
+i.fa.fa-gbp, i.fa.fa-dollar {
+	margin-right: 2px;
+}
+
 .btn-lb {
 	--btn-bg: var(--color-gold);
 	--btn-bc: var(--color-gold);
@@ -782,10 +786,11 @@ p,
 	gap: var(--gap);
 }
 
-.sales-auction-wrapper.empty-auction :is(.sales-auction, .invoice-auction) {
+.empty-auction :is(.sales-auction, .invoice-auction) {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-size: var(--fs-l);
 }
 
 .allotment-auctions_header-imp {
@@ -955,6 +960,15 @@ p,
 	margin: auto;
 	padding-left: 1rem;
 	padding-right: 1rem;
+}
+
+.empty-auction .panel-lot {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	font-size: var(--fs-l);
 }
 
 .panel-lot {

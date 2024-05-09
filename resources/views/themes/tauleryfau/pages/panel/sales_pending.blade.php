@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            @foreach ($lots as $lot)
+            @forelse ($lots as $lot)
                 <div class="panel-lot-wrapper">
                     <div class="panel-lot sales-lot" data-type="pending">
                         <div class="panel-lot_img">
@@ -160,7 +160,13 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+			@empty
+			<div class="panel-lot-wrapper empty-auction">
+				<div class="panel-lot sales-lot">
+					<p>{{ trans("$theme-app.user_panel.no_sales_pendig") }}</p>
+				</div>
+			</div>
+            @endforelse
         </div>
 
     </section>

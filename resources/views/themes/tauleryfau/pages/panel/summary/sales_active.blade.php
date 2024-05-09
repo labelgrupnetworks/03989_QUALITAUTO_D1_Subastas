@@ -71,7 +71,7 @@
 							</p>
 						</td>
                         <td>
-							<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+							<a href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>

@@ -51,7 +51,8 @@
                         @endforeach
                         <li class="divider" role="separator"></li>
                         <li>
-                            <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
+                            <button class="btn btn-lb btn-lb-primary"
+                                type="submit">{{ trans("$theme-app.global.filter") }}</button>
                         </li>
                     </form>
                 </ul>
@@ -106,6 +107,19 @@
                         'isPayed' => true,
                     ])
                 @endforeach
+
+                @if (
+                    $data['profomaInvoicesPendings']->isEmpty() &&
+                        $data['billsPending']->isEmpty() &&
+                        $data['profomaInvoicesPayeds']->isEmpty() &&
+                        $data['billsPayeds']->isEmpty())
+
+					<div class="invoice-wrapper empty-auction">
+						<div class="invoice-auction">
+                            <p>{{ trans("$theme-app.user_panel.no_purchases_during_selecteds") }}</p>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -114,16 +128,16 @@
 
 
             @foreach ($data['profomaInvoicesPendings'] as $proformaId => $profomaInvoiceLots)
-				@php
-					$title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pendiente sin lotes';
-				@endphp
+                @php
+                    $title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pendiente sin lotes';
+                @endphp
                 <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->num_hces1,
                             'lin' => $lot->lin_hces1,
                             'ref' => $lot->ref_asigl0,
-							'title' => $lot->titulo_hces1,
+                            'title' => $lot->titulo_hces1,
                             'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
                             'imp_sal' => $lot->impsalhces_asigl0,
                             'imp_award' => $lot->himp_csub,
@@ -145,7 +159,7 @@
                             'num' => $lot->numhces_dvc1l,
                             'lin' => $lot->linhces_dvc1l,
                             'ref' => $lot->ref_dvc1l,
-							'title' => $lot->titulo_hces1,
+                            'title' => $lot->titulo_hces1,
                             'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
                             'imp_sal' => $lot->impsalhces_asigl0,
                             'imp_award' => $lot->padj_dvc1l,
@@ -156,16 +170,16 @@
             @endforeach
 
             @foreach ($data['profomaInvoicesPayeds'] as $proformaId => $profomaInvoiceLots)
-				@php
-					$title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pagada sin lotes';
-				@endphp
+                @php
+                    $title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pagada sin lotes';
+                @endphp
                 <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->num_hces1,
                             'lin' => $lot->lin_hces1,
                             'ref' => $lot->ref_asigl0,
-							'title' => $lot->titulo_hces1,
+                            'title' => $lot->titulo_hces1,
                             'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
                             'imp_sal' => $lot->impsalhces_asigl0,
                             'imp_award' => $lot->himp_csub,
@@ -187,7 +201,7 @@
                             'num' => $lot->numhces_dvc1l,
                             'lin' => $lot->linhces_dvc1l,
                             'ref' => $lot->ref_dvc1l,
-							'title' => $lot->titulo_hces1,
+                            'title' => $lot->titulo_hces1,
                             'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
                             'imp_sal' => $lot->impsalhces_asigl0,
                             'imp_award' => $lot->padj_dvc1l,

@@ -29,6 +29,7 @@
             $nextScale = $escalado->NextScaleBid($inf_lot->impsalhces_asigl0, $inf_lot->implic_hces1);
 
             $isClose = $inf_lot->cerrado_asigl0 == 'S' || $inf_lot->retirado_asigl0 == 'S';
+            $actualPrice = !empty($inf_lot->implic_hces1) ? $inf_lot->implic_hces1 : $inf_lot->impsalhces_asigl0;
         @endphp
 
         <a href="{{ $url_friendly }}">
@@ -47,14 +48,10 @@
 
                 <p class="lot-actual">
                     <span>
-                        @if ($isClose)
-                            {{ trans("$theme-app.user_panel.awarded") }}
-                        @else
-                            {{ trans("$theme-app.lot.puja_actual") }}
-                        @endif
+                        {{ trans("$theme-app.lot.puja_actual") }}
                     </span>
-                    <span class="js-divisa" value="{{ $inf_lot->implic_hces1 }}">
-                        {!! $currency->getPriceSymbol(2, $inf_lot->implic_hces1) !!}
+                    <span class="js-divisa" value="{{ $actualPrice }}">
+                        {!! $currency->getPriceSymbol(2, $actualPrice) !!}
                     </span>
                 </p>
 
@@ -68,8 +65,16 @@
                         @endif
                     </button>
                 @else
-                    <button class="btn btn-lb btn-lb-secondary">
-						{{ trans("$theme-app.user_panel.awarded") }}
+                    <button @class([
+                        'btn btn-lb',
+                        'btn-lb-danger' => !$bid_mine,
+                        'bid-mine' => $bid_mine,
+                    ])>
+                        @if ($bid_mine)
+                            {{ trans("$theme-app.user_panel.won") }}
+                        @else
+                            {{ trans("$theme-app.user_panel.lost") }}
+                        @endif
                     </button>
                 @endif
 

@@ -13,7 +13,7 @@
             <tr>
                 <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
                 <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
-                <th scope="col" class="hidden-xs">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
+                <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
                 <th scope="col">{{ trans("$theme-app.user_panel.total_bill") }}</th>
                 <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
                 <th scope="col"></th>
@@ -52,6 +52,19 @@
                     'isPayed' => true,
                 ])
             @endforeach
+
+            @if (
+                $data['profomaInvoicesPendings']->isEmpty() &&
+                    $data['billsPending']->isEmpty() &&
+                    $data['profomaInvoicesPayeds']->isEmpty() &&
+                    $data['billsPayeds']->isEmpty())
+                <tr>
+                    <td class="text-center" colspan="6">
+                        <p>{{ trans("$theme-app.user_panel.not_lots_purchased_last_year") }}</p>
+                    </td>
+                </tr>
+            @endif
+
         </tbody>
     </table>
 </div>

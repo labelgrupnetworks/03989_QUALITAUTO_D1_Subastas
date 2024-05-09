@@ -4408,9 +4408,6 @@ class UserController extends Controller
 		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $datesIntervals);
 
 		//bills
-		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
-		//por lo que obtener las dos en esta página sería duplicar información
-
 		$pendingBillsData = $this->getPendingBillsData($user, $datesIntervals);
 		$payedBillsData =  $this->getPayedBillsData($user, $datesIntervals);
 
@@ -4422,7 +4419,6 @@ class UserController extends Controller
 		['pending' => $pendingBills] = $pendingBillsData;
 		['bills' => $billsPayeds] = $payedBillsData;
 
-		//extract array with only afra and nfra from payedBills
 		$billsIds = $billsPayeds->map(function($item) {
 			return [
 				'afra' => $item->afra_cobro1,

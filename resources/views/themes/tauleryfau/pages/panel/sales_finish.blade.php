@@ -65,7 +65,8 @@
                             @endforeach
                             <li class="divider" role="separator"></li>
                             <li>
-                                <button class="btn btn-lb btn-lb-primary" type="submit">{{ trans("$theme-app.global.filter") }}</button>
+                                <button class="btn btn-lb btn-lb-primary"
+                                    type="submit">{{ trans("$theme-app.global.filter") }}</button>
                             </li>
                         </form>
                     </ul>
@@ -73,15 +74,18 @@
             </div>
 
             <div class="sales-menu">
-                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
+                <a class="btn btn-lb btn-lb-outline btn-large"
+                    href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.pending_auction") }}</span>
                     <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.pendings") }}</span>
                 </a>
-                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
+                <a class="btn btn-lb btn-lb-outline btn-large"
+                    href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
                     <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
                 </a>
-                <a class="btn btn-lb btn-lb-primary btn-large" href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
+                <a class="btn btn-lb btn-lb-primary btn-large"
+                    href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
                     <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
                     <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.finished") }}</span>
                 </a>
@@ -156,6 +160,14 @@
                         'invoicesAuctions' => $invoices,
                     ])
                 @endforeach
+
+                @if ($auctionsWithoutInvoice->isEmpty() && $ownerInvoices->isEmpty())
+                    <div class="sales-auction-wrapper empty-auction">
+                        <div class="sales-auction">
+                            <p>{{ trans("$theme-app.user_panel.no_sales") }}</p>
+                        </div>
+                    </div>
+                @endif
 
             </div>
 
