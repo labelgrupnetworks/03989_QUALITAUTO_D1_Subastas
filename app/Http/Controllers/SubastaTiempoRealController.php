@@ -1223,11 +1223,18 @@ class subastaTiempoRealController extends Controller
 			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.buying'), NULL, FALSE);
 			return $res;
 		}
-		//impsal_hces1
 
 		$importe =  $lote->impsalhces_asigl0;
 		if (!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0) {
 			$importe =  $lote->impres_asigl0;
+		}
+
+		//comprobar si tenemos credito disponible en la sesión? para realizar la compra
+		if(Config::get('app.use_credit', false)) {
+			$hasAvailableCredit = Subasta::allowBidCredit($cod_sub, $lote->reference, $licit, $importe);
+			if(!$hasAvailableCredit){
+				return $this->error_puja(trans(Config::get('app.theme') . '-app.subastas.not_have_credit'), null, false);
+			}
 		}
 
 		//datos para hacer la puja
