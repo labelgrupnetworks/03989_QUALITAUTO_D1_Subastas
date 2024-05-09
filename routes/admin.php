@@ -27,10 +27,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('/bloque', 'BloqueConfigController@index');
 		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
 
-		Route::get('/resources', 'ResourceController@index');
+		Route::get('/resources', 'ResourceController@index')->name('resources.index');
 		Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
 
-		Route::get('/banner', 'BannerController@index');
+		Route::get('/banner', 'BannerController@index')->name('banner.index');
 		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
 
 		Route::get('/auc-index', 'AucIndexController@index');
@@ -49,8 +49,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/traducciones/search', 'TraduccionesController@search');
 
-		Route::get('/content', 'ContentController@index');
-		Route::get('/content/name/{id}', 'ContentController@getPage');
+		Route::get('/content', 'ContentController@index')->name('content.index');
+		Route::get('/content/name/{id}', 'ContentController@getPage')->name('content.page');
 		Route::get('/email_clients', 'AdminEmailsController@index');
 		Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
 
@@ -95,7 +95,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 				Route::post('/{lang}/editRun', 'AdminFaqController@editRun');
 				Route::post('/delete', 'AdminFaqController@delete');
 				Route::post('/{lang}/order', 'AdminFaqController@saveOrder');
-				Route::get('/{lang?}/', 'AdminFaqController@index');
+				Route::get('/{lang?}/', 'AdminFaqController@index')->name('admin.faqs.index');
 				Route::post('/{lang}/categories/newRun', 'AdminFaqController@categoriesNewRun');
 				Route::post('/categories/delete', 'AdminFaqController@categoriesDelete');
 				Route::get('/{lang}/categories/edit/{cod}', 'AdminFaqController@categoriesEdit');
@@ -107,12 +107,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::group(['prefix' => 'newbanner'], function () {
-			Route::get('/', "contenido\BannerController@index");
+			Route::get('/', "contenido\BannerController@index")->name('newbanner.index');
 			Route::get('/download', "contenido\BannerController@download");
 			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
 			Route::get('/nuevo', "contenido\BannerController@nuevo");
 			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
-			Route::get('/editar/{id}', "contenido\BannerController@editar");
+			Route::get('/editar/{id}', "contenido\BannerController@editar")->name('newbanner.edit');
 			Route::get('/borrar/{id}', "contenido\BannerController@borrar");
 			Route::post('/activar', "contenido\BannerController@activar");
 			Route::post('/editar_run', "contenido\BannerController@editar_run");
@@ -164,7 +164,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		#CONTENIDO
 		Route::group(['prefix' => 'calendar'], function () {
-			Route::get('/', 'contenido\AdminCalendarController@index');
+			Route::get('/', 'contenido\AdminCalendarController@index')->name('calendar.index');
 			#Route::get('/show', 'contenido\AdminCalendarController@show');
 			#Route::get('/create', 'contenido\AdminCalendarController@create');
 			#Route::post('/store', 'contenido\AdminCalendarController@store');
@@ -281,11 +281,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 
 		Route::group(['prefix' => 'category'], function () {
-			Route::get('/', 'subasta\AdminCategoryController@index');
+			Route::get('/', 'subasta\AdminCategoryController@index')->name('category.index');
 			#Route::get('/show', 'subasta\AdminCategoryController@show');
 			#Route::get('/create', 'subasta\AdminCategoryController@create');
 			#Route::post('/store', 'subasta\AdminCategoryController@store');
-			Route::get('/edit', 'subasta\AdminCategoryController@edit');
+			Route::get('/edit', 'subasta\AdminCategoryController@edit')->name('category.edit');
 			Route::post('/update', 'subasta\AdminCategoryController@update');
 			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
 
@@ -294,11 +294,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::group(['prefix' => 'subcategory'], function () {
-			Route::get('/', 'subasta\AdminSubCategoryController@index');
+			Route::get('/', 'subasta\AdminSubCategoryController@index')->name('subcategory.index');
 			#Route::get('/show', 'subasta\AdminSubCategoryController@show');
 			#Route::get('/create', 'subasta\AdminSubCategoryController@create');
 			#Route::post('/store', 'subasta\AdminSubCategoryController@store');
-			Route::get('/edit', 'subasta\AdminSubCategoryController@edit');
+			Route::get('/edit', 'subasta\AdminSubCategoryController@edit')->name('subcategory.edit');
 			Route::post('/update', 'subasta\AdminSubCategoryController@update');
 			Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
 		});
@@ -461,6 +461,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('cache', 'configuracion\AdminCacheController@index')->name('admin.cache.index');
 		Route::post('cache', 'configuracion\AdminCacheController@action')->name('admin.cache.action');
 
+		Route::get('disk-status', 'configuracion\AdminDiskStatusController@index')->name('admin.disk-status.index');
+		Route::get('disk-status/folder', 'configuracion\AdminDiskStatusController@getDirectoryInPath')->name('admin.disk-status.folder');
 	});
 
 

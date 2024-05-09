@@ -82,6 +82,7 @@ foreach($all_adj_pag as $key_inf => $value){
                             <?php $i=0 ?>
                             @foreach($all_adj as $key_sub => $all_inf)
                             <?php
+
                                 $total_remate = 0;
                                 $total_base = 0;
                                 $total_iva = 0;
@@ -104,15 +105,21 @@ foreach($all_adj_pag as $key_inf => $value){
                                     <form id="pagar_lotes_{{$all_inf['inf']->cod_sub}}" >
                                         @endif
                                         <div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
-                                            <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
+											@if($all_inf['inf']->tipo_sub == "O")
+                                            	<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
+											@else
+												<div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item">
+											@endif
                                                     {{ trans($theme.'-app.user_panel.lot') }}
                                             </div>
                                             <div class="col-xs-12 col-sm-2 col-one user-account-fecha">
                                                     {{ trans($theme.'-app.user_panel.price') }}
                                             </div>
-                                            <div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-                                                    {{ trans($theme.'-app.user_panel.price_clean') }}
-                                            </div>
+											@if($all_inf['inf']->tipo_sub == "O")
+												<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
+														{{ trans($theme.'-app.user_panel.price_clean') }}
+												</div>
+											@endif
                                         </div>
 
                                         <div class="user-accout-items-content   ">
@@ -136,70 +143,76 @@ foreach($all_adj_pag as $key_inf => $value){
                                             ?>
                                                     <div class="user-accout-item-wrapper  col-xs-12 no-padding">
                                                         <div class="d-flex">
-                                                        <div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
-                                                            <div class="col-xs-12 col-sm-1 no-padding">
-																<?php //Oculto los check con una clase hidden ?>
-                                                                     <div class="checkbox hidden" style="margin-top: 0px;">
-                                                                        @if($all_inf['inf']->compraweb_sub == 'S')
-                                                                            <input type="checkbox" checked="" id="add-carrito-{{$inf_lot->cod_sub}}-{{$inf_lot->ref_asigl0}}" class="filled-in add-carrito form-control" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][pagar]" >
-                                                                        @endif
-                                                                    </div>
-                                                            </div>
-                                                            <div class="col-xs-12 col-sm-2 no-padding ">
-                                                                <img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
-                                                            </div>
-                                                            <div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
-                                                                    @if(strtoupper($inf_lot->tipo_sub) == 'O' || strtoupper($inf_lot->tipo_sub) == 'P')
-                                                                        <div class="user-account-item-auction text-right"><small>{{ trans($theme.'-app.user_panel.auctions_online') }}</small></div>
-																	@endif
+														@if($all_inf['inf']->tipo_sub == "O")
+															<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
+														@else
+															<div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item ">
+														@endif
+																<div class="col-xs-12 col-sm-1 no-padding">
+																	<?php //Oculto los check con una clase hidden ?>
+																		<div class="checkbox hidden" style="margin-top: 0px;">
+																			@if($all_inf['inf']->compraweb_sub == 'S')
+																				<input type="checkbox" checked="" id="add-carrito-{{$inf_lot->cod_sub}}-{{$inf_lot->ref_asigl0}}" class="filled-in add-carrito form-control" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][pagar]" >
+																			@endif
+																		</div>
+																</div>
+																<div class="col-xs-12 col-sm-2 no-padding ">
+																	<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
+																</div>
+																<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
+																		@if(strtoupper($inf_lot->tipo_sub) == 'O' || strtoupper($inf_lot->tipo_sub) == 'P')
+																			<div class="user-account-item-auction text-right"><small>{{ trans($theme.'-app.user_panel.auctions_online') }}</small></div>
+																		@endif
 
-                                                                    <div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }}
-																		@php
-																			 //Modificamos ref_asigl0 de _ a . porque se ha hecho al reves en el controlador por un tema de javascript
-																		 	$refLot  = str_replace('_','.',$inf_lot->ref_asigl0);
+																		<div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }}
+																			@php
+																				//Modificamos ref_asigl0 de _ a . porque se ha hecho al reves en el controlador por un tema de javascript
+																				$refLot  = str_replace('_','.',$inf_lot->ref_asigl0);
 
-																			#si hay separador decimal ponemos los bises
-																			#OJO hay que poner _ por que en el controlador se sustituye el . por _
-																			if(strpos($refLot ,'.')){
-																				if($inf_lot->tipo_sub=="W"){
-																					$refLot = str_replace(array(".1",".2",".3",".4",".5"), array(" A"," B", " C", " D", " E"),  $refLot );
-																				}else{
-																					#solo en las subastas presenciales pueden verse los bises, en el resto hay que quitarlo
-																					$refLot = str_replace(array(".1",".2",".3",".4",".5",".6",".7",".8",".9"), array("", "", "", "", "", "", "", "", "", ""),  $refLot);
+																				#si hay separador decimal ponemos los bises
+																				#OJO hay que poner _ por que en el controlador se sustituye el . por _
+																				if(strpos($refLot ,'.')){
+																					if($inf_lot->tipo_sub=="W"){
+																						$refLot = str_replace(array(".1",".2",".3",".4",".5"), array(" A"," B", " C", " D", " E"),  $refLot );
+																					}else{
+																						#solo en las subastas presenciales pueden verse los bises, en el resto hay que quitarlo
+																						$refLot = str_replace(array(".1",".2",".3",".4",".5",".6",".7",".8",".9"), array("", "", "", "", "", "", "", "", "", ""),  $refLot);
+																						$refLot = substr($refLot ,-\config::get("app.substrRef"))+0;
+																					}
+
+																				}elseif( \config::get("app.substrRef")){
+																					#si no cogemos solo los últimos 7 numeros, ya que se usaran hasta 9, los dos primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
+																					# le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
+
 																					$refLot = substr($refLot ,-\config::get("app.substrRef"))+0;
 																				}
+																			@endphp
+																			{{$refLot}}
+																			</span></div>
+																		<div class="user-account-item-title">{{$inf_lot->titulo_hces1?? $inf_lot->descweb_hces1}}</div>
 
-																			}elseif( \config::get("app.substrRef")){
-																				#si no cogemos solo los últimos 7 numeros, ya que se usaran hasta 9, los dos primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
-																				# le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
-
-																				$refLot = substr($refLot ,-\config::get("app.substrRef"))+0;
-																			}
-																		@endphp
-																		{{$refLot}}
-																		</span></div>
-                                                                    <div class="user-account-item-title">{{$inf_lot->titulo_hces1?? $inf_lot->descweb_hces1}}</div>
-
-                                                                 {{--   <div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div> --}}
-                                                            </div>
-                                                        </div>
+																	{{--   <div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div> --}}
+																</div>
+															</div>
                                                         <div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
                                                                 <div class="visible-xs">{{ trans($theme.'-app.user_panel.date') }}</div>
 																<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																@if ($comision !=0)
+																@if ($inf_lot->base_csub !=0)
 																	<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																	<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																@endif
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
-                                                                <div class="user-account-item-price  d-flex align-items-center justify-content-center">
+														@if($all_inf['inf']->tipo_sub == "O")
+															<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
+																<div class="user-account-item-price  d-flex align-items-center justify-content-center">
 
-                                                                        <div class="visible-xs">{{ trans($theme.'-app.user_panel.mi_puja') }}</div>
-                                                                <div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}</strong></div>
-                                                                </div>
-                                                            </div>
+																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.mi_puja') }}</div>
+																	<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}</strong></div>
+																</div>
+															</div>
+														@endif
 														<input class="hide envios_{{$inf_lot->sub_csub}}_js" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][envios]" value='{{ Config::get('app.web_gastos_envio')? '5' : '1' }}'>
 														<input class="hide seguro_lote_{{$inf_lot->sub_csub}}_js" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][seguro]" value='0'>
 
@@ -390,15 +403,23 @@ foreach($all_adj_pag as $key_inf => $value){
 											<div id="{{$all_inf['inf']->cod_sub}}_pag"  class="table-responsive panel-collapse collapse">
 
 												<div class="user-account-heading hidden-xs d-flex align-items-center justify-content-space-between">
-													<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
-															{{ trans($theme.'-app.user_panel.lot') }}
-													</div>
+													@if($all_inf['inf']->tipo_sub == "O")
+														<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item">
+													@else
+														<div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item">
+													@endif
+																{{ trans($theme.'-app.user_panel.lot') }}
+														</div>
+
 													<div class="col-xs-12 col-sm-2 col-one user-account-fecha">
 															{{ trans($theme.'-app.user_panel.price') }}
 													</div>
-													<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
-															{{ trans($theme.'-app.user_panel.price_clean') }}
-													</div>
+													@if($all_inf['inf']->tipo_sub == "O")
+														<div class="col-xs-12 col-sm-3 col-lg-2 col-one user-account-max-bid">
+																{{ trans($theme.'-app.user_panel.price_clean') }}
+														</div>
+													@endif
+
 												</div>
 
 												<div class="user-accout-items-content">
@@ -422,39 +443,44 @@ foreach($all_adj_pag as $key_inf => $value){
 													?>
 															<div class="user-accout-item-wrapper  col-xs-12 no-padding">
 																<div class="d-flex">
-																<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
-																	<div class="col-xs-12 col-sm-1 no-padding">
-																			<div class="checkbox" style="margin-top: 0px;">
+																@if($all_inf['inf']->tipo_sub == "O")
+																	<div class="col-xs-12 col-sm-7 col-lg-8 col-one user-account-item ">
+																@else
+																	<div class="col-xs-12 col-sm-10 col-lg-10 col-one user-account-item ">
+																@endif
+																		<div class="col-xs-12 col-sm-1 no-padding">
+																				<div class="checkbox" style="margin-top: 0px;">
 
-																			</div>
-																	</div>
-																	<div class="col-xs-12 col-sm-2 no-padding ">
-																		<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
-																	</div>
-																	<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
+																				</div>
+																		</div>
+																		<div class="col-xs-12 col-sm-2 no-padding ">
+																			<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
+																		</div>
+																		<div class="col-xs-12 col-sm-8 col-sm-offset-1 no-padding">
 
-																		<div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
-																		<div class="user-account-item-title">{{$inf_lot->titulo_hces1?? $inf_lot->descweb_hces1  }}</div>
-																		{{--	<div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div> --}}
+																			<div class="user-account-item-lot"><span>{{ trans($theme.'-app.user_panel.lot') }} {{$inf_lot->ref_asigl0}}</span></div>
+																			<div class="user-account-item-title">{{$inf_lot->titulo_hces1?? $inf_lot->descweb_hces1  }}</div>
+																			{{--	<div class="user-account-item-text"><div>{{$inf_lot->cod_sub}}</div></div> --}}
+																		</div>
 																	</div>
-																</div>
 																<div class="col-xs-12 col-sm-2 col-lg-2 account-item-border">
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
-																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.date') }}</div>
+																		<div class="visible-xs">	{{ trans($theme.'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																		@if ($comision !=0)
+																		@if ($inf_lot->base_csub !=0)
 																			<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																		@endif
 																	</div>
 																</div>
-																<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
-																		<div class="user-account-item-price  d-flex align-items-center justify-content-center">
-
-																				<div class="visible-xs">{{ trans($theme.'-app.user_panel.mi_puja') }}</div>
-																		<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}</strong></div>
-																		</div>
+																@if($all_inf['inf']->tipo_sub == "O")
+																	<div class="col-xs-12 col-sm-3 col-lg-2 account-item-border">
+																			<div class="user-account-item-price  d-flex align-items-center justify-content-center">
+																				<div class="visible-xs">{{ trans($theme.'-app.user_panel.price_clean') }}</div>
+																				<div><strong><?= \Tools::moneyFormat($precio_limpio_calculo,false,2); ?> {{ trans($theme.'-app.lot.eur') }}</strong></div>
+																			</div>
 																	</div>
+																@endif
 																	<input class="hide" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][envios]" value='1'>
 															</div>
 															</div>

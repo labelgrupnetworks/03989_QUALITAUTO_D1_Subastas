@@ -71,9 +71,21 @@
         <div class="info_single_title hist_new <?= !empty($data['js_item']['user']['ordenMaxima'])?'':'hidden'; ?> ">
         {{trans($theme.'-app.lot.max_puja')}}
             <strong><span id="tuorden">
-            @if ( !empty($data['js_item']['user']['ordenMaxima']))
-            {{ $data['js_item']['user']['ordenMaxima']}}
-            @endif
+				@php
+					if (!empty($data['js_item']['user']['ordenMaxima']) && !empty($data['js_item']['user']['pujaMaxima']) ) {
+						$ordenMax = $data['js_item']['user']['ordenMaxima'];
+						$pujaMax = $data['js_item']['user']['pujaMaxima']->formatted_imp_asigl1;
+						if ($ordenMax > $pujaMax) {
+							echo $ordenMax;
+						} else {
+							echo $pujaMax;
+						}
+					} elseif (!empty($data['js_item']['user']['ordenMaxima'])) {
+						echo $data['js_item']['user']['ordenMaxima'];
+					} else {
+						echo '';
+					}
+				@endphp
             </span>
         {{trans($theme.'-app.subastas.euros')}}</strong>
         </div>

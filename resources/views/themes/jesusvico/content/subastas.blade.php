@@ -16,23 +16,19 @@
 
 <div class="auctions-wrapper mt-3">
 	<div class="container">
-		<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
-			@foreach ($auctionsForYears as $year => $auctions)
-				<li class="nav-item" role="presentation">
-					@if ($isHistoric)
+		@if ($isHistoric)
+			<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<li class="nav-item" role="presentation">
 						<button class="nav-link p-nav-items-auc {{ $loop->last ? 'active' : '' }}" id="tab-{{ $year }}"
 							data-bs-toggle="tab" data-bs-target="#tab-panel-{{ $year }}" type="button" role="tab"
 							aria-controls="tab-panel-{{ $year }}" aria-selected="{{ $loop->last ? 'true' : 'false' }}">
 							<h2>{{ $year }}</h2>
 						</button>
-					@else
-						<div class="year-border m-nav-items-auc">
-							<h2>{{ $year }}</h2>
-						</div>
-					@endif
-				</li>
-			@endforeach
-		</ul>
+					</li>
+				@endforeach
+			</ul>
+		@endif
 
 		@if ($isHistoric)
 
@@ -51,13 +47,27 @@
 				@endforeach
 			</div>
 		@else
-			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3">
+			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3 d-none d-md-flex">
 				@foreach ($auctionsForYears as $year => $auctions)
 					@foreach ($auctions as $subasta)
 						<div class="col">
 							@include('includes.subasta', ['subasta' => $subasta, 'year' => $year])
 						</div>
 					@endforeach
+				@endforeach
+			</div>
+
+			<div class="row row-cols-1 gy-3 align-items-stretch mb-3 d-block d-md-none">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<div class="col">
+						<article class="card card-custom-large h-100">
+							@foreach ($auctions as $subasta)
+								<div class="col d-block d-md-none">
+									@include('includes.subasta_mobile', ['subasta' => $subasta, 'year' => $year])
+								</div>
+							@endforeach
+						</article>
+					</div>
 				@endforeach
 			</div>
 

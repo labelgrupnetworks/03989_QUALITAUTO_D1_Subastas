@@ -21,28 +21,45 @@ $subastaModel->cod = $bann->sub_asigl0;
 $subastaModel->ref = $bann->ref_asigl0;
 $ordenes = $subastaModel->getOrdenes();
 $max_puja = $subastaModel->price_open_auction($bann->impsalhces_asigl0, $ordenes);
+
+$isItp = Tools::isITPLot($bann->sub_asigl0, $bann->ref_asigl0);
 ?>
 <div>
     <div class="item_home">
+		@if ($bann->retirado_asigl0 != 'N')
+			<div class="retired-border">
+				<div class="retired">
+					<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+						{{ trans(\Config::get('app.theme').'-app.lot.retired') }}
+					</span>
+				</div>
+			</div>
+		@elseif(\Config::get('app.awarded') && $bann->cerrado_asigl0 == 'S' && !empty($bann->max_puja))
+			<div class="retired-border">
+				<div class="retired selled">
+					<span class="retired-text lang-{{ \Config::get('app.locale') }}">
+						{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}
+					</span>
+				</div>
+			</div>
+		@endif
         <a title="{{ $titulo }}" <?= $url ?>>
             <div>
                 <div class="item_img">
                     <img src="{{ Tools::url_img('lote_medium', $bann->num_hces1, $bann->lin_hces1) }}"
                         alt="{{ $titulo }}">
-                    @if ($bann->retirado_asigl0 != 'N')
-                        <div class="retired">{{ trans(\Config::get('app.theme') . '-app.lot.retired') }}</div>
-                    @elseif(\Config::get('app.awarded') && $bann->cerrado_asigl0 == 'S' && !empty($bann->max_puja))
-                        <div class="retired" style ="background:#777777;text-transform: lowercase;">
-                            {{ trans(\Config::get('app.theme') . '-app.subastas.buy') }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </a>
         @if (!empty($titulo))
             <div class="title_item">
                 <a title="{{ $titulo }}" <?= $url ?>>
-                    <h4>{{ $titulo }}</h4>
+                    <h4>
+						{{ $titulo }}
+						@if($isItp)
+						<sup class="lot-itp-mark">*</sup>
+						@endif
+					</h4>
                 </a>
             </div>
         @endif

@@ -4,9 +4,8 @@
 namespace App\Models;
 
 use App\Models\V5\FgHces1;
-use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use \Request;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
@@ -113,7 +112,7 @@ class User
     {
 
         //devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
-         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,cw.* FROM FXCLIWEB cw
+         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,c.rsoc_cli,cw.* FROM FXCLIWEB cw
                      JOIN FXCLI c
                                 ON (c.COD_CLI = cw.COD_CLIWEB and c.GEMP_CLI = cw.GEMP_CLIWEB)
                             WHERE
@@ -1376,6 +1375,29 @@ class User
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string $cod_cli
+	 * @return string
+	 */
+	public static function getUserNIF(string $cod_cli): string
+	{
+		return FxCli::select('cif_cli')->where('cod_cli', $cod_cli)->first()->cif_cli;
+	}
+
+	/**
+	 * @param string $country
+	 * Foma de pago establecida en el registro
+	 * @return string
+	 */
+	public function getDefaultPayhmentMethod($country)
+	{
+		if(Config::get('app.fpag_foreign_default', 0) && $country != 'ES'){
+			return Config::get('app.fpag_foreign_default');
+		}
+
+		return Config::get('app.fpag_default', 0);
 	}
 
 }

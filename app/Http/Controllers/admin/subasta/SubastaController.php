@@ -1191,6 +1191,7 @@ class SubastaController extends Controller
 
     private function createThumbs($emp_hces1, $num_hces1, $name_img){
         $sizes = Web_Images_Size::getSizes();
+
         $imageGenerate = new ImageGenerate();
         $path = "img/thumbs/";
 
@@ -1199,8 +1200,19 @@ class SubastaController extends Controller
         $this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_medium']);
         $imageGenerate->generateMini($name_img,$sizes['lote_medium']);
         $this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_medium_large']);
-
         $imageGenerate->generateMini($name_img,$sizes['lote_medium_large']);
+		if (!empty($sizes['lote_large'])) {
+			$this->createPath($emp_hces1, $num_hces1,  $path.$sizes['lote_large']);
+			$imageGenerate->generateMini($name_img,$sizes['lote_large']);
+		}
+		if (!empty($sizes['square_medium'])) {
+			$this->createPath($emp_hces1, $num_hces1,  $path.$sizes['square_medium']);
+			$imageGenerate->generateMini($name_img,$sizes['square_medium']);
+		}
+		if (!empty($sizes['square_large'])) {
+			$this->createPath($emp_hces1, $num_hces1,  $path.$sizes['square_large']);
+			$imageGenerate->generateMini($name_img,$sizes['square_large']);
+		}
     }
 
 	function lotFile($subasta)

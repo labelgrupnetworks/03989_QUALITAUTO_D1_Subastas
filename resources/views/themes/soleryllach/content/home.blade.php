@@ -1,4 +1,7 @@
-{!! \BannerLib::bannersPorKey('HOME_SUPERIOR', 'banner_home') !!}
+<section class="home-principal-banner">
+	{!! \BannerLib::bannersPorKey('PRINCIPAL', 'banner_home banner-home-principal') !!}
+</section>
+
 {!! \BannerLib::bannersPorKey('BANNER_HOME_TRIPLE', 'banner_home') !!}
 {!! \BannerLib::bannersPorKey('BANNER_HOME_TRIPLE_2', 'banner_home') !!}
 

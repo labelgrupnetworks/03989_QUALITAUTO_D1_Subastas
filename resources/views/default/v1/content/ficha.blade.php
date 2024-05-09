@@ -144,7 +144,7 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
                     <div id="img_main" class="img_single">
                             <a title="{{$lote_actual->titulo_hces1}}" href="javascript:action_fav_modal_new('remove')">
-                            <img class="img-responsive" src="@php /* {{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}} */ @endphp " alt="{{$lote_actual->titulo_hces1}}">
+                            <img class="img-responsive" src="@php /* {{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}} */ @endphp " alt="{{$lote_actual->titulo_hces1}}">
                             </a>
                         </div>
 

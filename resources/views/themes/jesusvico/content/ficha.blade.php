@@ -86,7 +86,7 @@ if($subasta_web){
 		<section class="ficha-previous-next">
 			@include('includes.ficha.previous_next')
 		</section>
-		
+
 	</div>
 
 	<div class="ficha-grid">

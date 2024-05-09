@@ -1,89 +1,68 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans(\Config::get('app.theme').'-app.head.title_app') }}
+    {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
+@php
+    use App\Models\Cookies;
+    $styleLotSeeConfiguration = (new Cookies())->getLotConfiguration();
 
-@section('content')
- <?php
-    if(empty($data['type']) && !empty($data['sub_data']) ){
+    if (empty($data['type']) && !empty($data['sub_data'])) {
         $sub_data = $data['sub_data'];
-        $url_subasta=\Routing::translateSeo('info-subasta').$sub_data->cod_sub."-".str_slug($sub_data->des_sub);
+        $url_subasta = \Routing::translateSeo('info-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub);
 
-        $url_indice=\Routing::translateSeo('indice-subasta').$sub_data->cod_sub.'-'.str_slug($sub_data->des_sub.'-'.$sub_data->id_auc_sessions);
-        $indice = trans(\Config::get('app.theme').'-app.lot_list.indice_auction');
-        $name= trans(\Config::get('app.theme').'-app.subastas.auctions');
-        $bread = array();
-        if($data['sub_data']->subc_sub == 'H'){
-             $url = \Routing::translateSeo('subastas-historicas');
-        }elseif($data['sub_data']->tipo_sub == 'W'){
+        $url_indice = \Routing::translateSeo('indice-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub . '-' . $sub_data->id_auc_sessions);
+        $indice = trans(\Config::get('app.theme') . '-app.lot_list.indice_auction');
+        $name = trans(\Config::get('app.theme') . '-app.subastas.auctions');
 
-            if(strtotime($data['sub_data']->end) <= time()){
-               $url = \Routing::translateSeo('todas-subastas').'?finished=true';
-            }else{
-               $url = \Routing::translateSeo('todas-subastas').'?finished=false';
+        if ($data['sub_data']->subc_sub == 'H') {
+            $url = \Routing::translateSeo('subastas-historicas');
+        } elseif ($data['sub_data']->tipo_sub == 'W') {
+            if (strtotime($data['sub_data']->end) <= time()) {
+                $url = \Routing::translateSeo('todas-subastas') . '?finished=true';
+            } else {
+                $url = \Routing::translateSeo('todas-subastas') . '?finished=false';
             }
-
-        }elseif($data['sub_data']->tipo_sub == 'O'){
+        } elseif ($data['sub_data']->tipo_sub == 'O') {
             $url = \Routing::translateSeo('subastas-online');
-        }elseif($data['sub_data']->tipo_sub == 'V'){
+        } elseif ($data['sub_data']->tipo_sub == 'V') {
             $url = \Routing::translateSeo('venta-directa');
-            $indice = trans(\Config::get('app.theme').'-app.lot_list.indice_venta_directa');
-            $name = trans(\Config::get('app.theme').'-app.foot.direct_sale');
-        }
-        $bread[] = array("url" =>$url, "name" =>$name  );
-        $bread[] = array("url" =>$url_subasta, "name" =>$sub_data->des_sub  );
-        $bread[] = array("url" =>$url_indice, "name" =>$indice  );
-        $bread[] = array( "name" =>"Lotes" );
-    }elseif(!empty($data['seo']->webname)){
-        $bread = array();
-        if(!empty($data['seo']->subcategory)){
-            $bread[] = array("url" =>$data['seo']->url, "name" =>$data['seo']->webname  );
-            $bread[] = array( "name" =>$data['seo']->subcategory  );
-        }else{
-            $bread[] = array( "name" =>$data['seo']->webname  );
+            $indice = trans(\Config::get('app.theme') . '-app.lot_list.indice_venta_directa');
+            $name = trans(\Config::get('app.theme') . '-app.foot.direct_sale');
         }
     }
 
-    /*
-    $sub_data = $data['sub_data'];
-    $url_subasta=\Routing::translateSeo('info-subasta').$sub_data->cod_sub."-".str_slug($sub_data->des_sub);
-    $url_lotes=\Routing::translateSeo('subasta').$data['cod_sub']."-".str_slug($data['sub_data']->des_sub)."-".$data['id_auc_sessions'];
-    $bread = array();
-    $bread[] = array("url" =>$url_lotes, "name" =>$sub_data->des_sub  );
-    $bread[] = array( "name" =>"Lotes" );
-    */
-    ?>
-	@include('includes.breadcrumb')
-	<?php
+    foreach ($data['subastas'] as $k => $item) {
+        $data['subastas'][$k]->total_pujas = 0;
+        $data['subastas'][$k]->total_postores = 0;
+        $aux_postores = [];
+        if (isset($item->pujas)) {
+            $data['subastas'][$k]->total_pujas = sizeof($item->pujas);
+            foreach ($item->pujas as $key => $value) {
+                $aux_postores[$value->cod_licit] = $value->cod_licit;
+            }
+        }
 
-	foreach($data['subastas'] as $k => $item) {
+        if (isset($item->ordenes)) {
+            $data['subastas'][$k]->total_pujas += sizeof($item->ordenes);
+            foreach ($item->ordenes as $key => $value) {
+                $aux_postores[$value->cod_licit] = $value->cod_licit;
+            }
+        }
 
-		$data['subastas'][$k]->total_pujas = 0;
-		$data['subastas'][$k]->total_postores = 0;
-		$aux_postores = array();
-		if (isset($item->pujas)) {
+        $data['subastas'][$k]->total_postores = sizeof($aux_postores);
 
-			$data['subastas'][$k]->total_pujas = sizeof($item->pujas);
-			foreach ($item->pujas as $key => $value) {
-				$aux_postores[$value->cod_licit] = $value->cod_licit;
-			}
-
-
+		$favorites = [];
+		if (Session::has('user') && !empty($data['favs']['lot'][$item->cod_sub])) {
+			$favorites = array_keys($data['favs']['lot'][$item->cod_sub]);
 		}
+    }
+@endphp
 
-		if(isset($item->ordenes)){
-			$data['subastas'][$k]->total_pujas += sizeof($item->ordenes);
-			foreach ($item->ordenes as $key => $value) {
-				$aux_postores[$value->cod_licit] = $value->cod_licit;
-			}
-		}
-
-		$data['subastas'][$k]->total_postores = sizeof($aux_postores);
-	}
-
-     ?>
-    @include('content.subasta')
+@section('content')
+    <main class="grid">
+        <input type="hidden" name="lot_see_configuration" value="{{ $styleLotSeeConfiguration }}">
+        @include('content.subasta')
+    </main>
 @stop
-

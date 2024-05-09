@@ -49,4 +49,9 @@ class Web_Page extends Model
 
 		return str_replace('/es/', "/" . mb_strtolower($this->lang_web_page) . "/", $provisionalUrl);
 	}
+
+	public static function getPageIDfromKey(string $key)
+	{
+		return self::where('key_web_page', $key)->first()->id_web_page;
+	}
 }

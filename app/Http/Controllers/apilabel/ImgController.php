@@ -252,9 +252,19 @@ class ImgController extends ApiLabelController
         $this->createPath($lot->emp_hces1, $lot->num_hces1,  $path.$sizes['lote_medium']);
         $imageGenerate->generateMini($name_img,$sizes['lote_medium']);
         $this->createPath($lot->emp_hces1, $lot->num_hces1,  $path.$sizes['lote_medium_large']);
-
         $imageGenerate->generateMini($name_img,$sizes['lote_medium_large']);
-
+		if (!empty($sizes['lote_large'])) {
+			$this->createPath($lot->emp_hces1, $lot->num_hces1,  $path.$sizes['lote_large']);
+			$imageGenerate->generateMini($name_img,$sizes['lote_large']);
+		}
+		if (!empty($sizes['square_medium'])) {
+			$this->createPath($lot->emp_hces1, $lot->num_hces1,  $path.$sizes['square_medium']);
+			$imageGenerate->generateMini($name_img,$sizes['square_medium']);
+		}
+		if (!empty($sizes['square_large'])) {
+			$this->createPath($lot->emp_hces1, $lot->num_hces1,  $path.$sizes['square_large']);
+			$imageGenerate->generateMini($name_img,$sizes['square_large']);
+		}
     }
 
     private function deleteThumbs($lot, $name_img){
@@ -264,6 +274,15 @@ class ImgController extends ApiLabelController
         unlink ($path.$sizes['lote_small']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
         unlink ($path.$sizes['lote_medium']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
         unlink ($path.$sizes['lote_medium_large']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
+		if (!empty($sizes['lote_large'])) {
+			unlink ($path.$sizes['lote_large']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
+		}
+		if (!empty($sizes['square_medium'])) {
+			unlink ($path.$sizes['square_medium']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
+		}
+		if (!empty($sizes['square_large'])) {
+			unlink ($path.$sizes['square_large']."/".$lot->emp_hces1."/".$lot->num_hces1."/". $name_img );
+		}
     }
 
 

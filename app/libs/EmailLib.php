@@ -43,6 +43,7 @@ private $lang =NULL;
 private $from =NULL;
 private $blade = "bbdd_email";
 public $attachments = NULL;
+public $attachmentsFiles = [];
 private $pdfs = array();
 public $old_lang = NULL;
 private $cc = array();
@@ -324,7 +325,7 @@ private $debug = true;
                         if (isset($inf_user->sexo_cli)) {
                             $this->setSexo_Cli($inf_user->sexo_cli, $lang);
                         }
-						$this->lang = $default_lang;
+						$this->lang = $lang;
                         $this->get_design($this->email->cod_email);
                     }
                 }
@@ -1270,4 +1271,17 @@ private $debug = true;
 			$this->attachments[] = public_path($path . $nameFile);
 		}
 
+		public function setAttachments($attachments)
+		{
+			$this->attachments = $attachments;
+		}
+
+		/**
+		 * Archivos en plano sin necesidad de tener path en el servidor
+		 */
+		public function setAttachmentsFiles($attachments)
+		{
+			$this->attachmentsFiles = $attachments;
+			return $this;
+		}
 }

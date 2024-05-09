@@ -20,8 +20,10 @@ use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class ToolsServiceProvider extends ServiceProvider
@@ -1298,22 +1300,27 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function exit404IfEmpty($var = null)
 	{
 		if (empty($var)) {
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 	}
 	#sirve para arrays tambien
 	public static function exit404IfEmptyCollection($collection = null)
 	{
 		if (count($collection) == 0) {
-			exit(\View::make('front::errors.404'));
+			return abort(404);
 		}
 	}
 
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
+		if ( \Config::get("app.gridAllSessions") ){
+			$filter_session = array("typeSub", "session" );
+		}else{
+			$filter_session = array("typeSub");
+		}
 		#listado de los filtros que usamos
-		$name_filter = array("typeSub",  "category", "section", "subsection");
+		$name_filter =  array_merge($filter_session,array( "category", "section", "subsection"));
 		$index = "";
 		$concat = "";
 		foreach ($name_filter as $filter) {
@@ -1408,7 +1415,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
-		if (strpos($path, 'img') === false && !$hash) {
+		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
 			$hash = filemtime($publicPath);
 		}
 		elseif(!$hash) {
@@ -1610,6 +1617,66 @@ class ToolsServiceProvider extends ServiceProvider
 		$sizeValue = (int) $sizeValue;
 		$sizeValue = $sizeValue * pow(1024, $sizes[$sizeSuffix]);
 		return $sizeValue;
+	}
+
+	/**
+	 * Get values from single row in the database.
+	 * @param Builder $dataTable new query instance of the model
+	 * @param array $whereCases where cases
+	 * @param array $whereIsNotNullCases where is not null cases
+	 * @param string $orderBy order is asc
+	 * @param array $joins [table, first, operator, second]
+	 * @param array $scopes scopes
+	 * @return mixed
+	 */
+	public static function getDatabaseSingleValues(
+		$dataTable,
+		$whereCases = [],
+		$whereIsNotNullCases = [],
+		$orderBy = '',
+		$joins = [],
+		$scopes = []
+		)
+	{
+		if (count($whereCases) > 0) {
+			$dataTable = $dataTable->where($whereCases);
+		}
+		if (count($whereIsNotNullCases) > 0) {
+			$dataTable = $dataTable->whereNotNull($whereIsNotNullCases);
+		}
+		if ($orderBy != '') {
+			$dataTable = $dataTable->orderBy($orderBy, 'asc');
+		}
+		if (count($joins) > 0) {
+			foreach ($joins as $join) {
+				$dataTable = $dataTable->join($join['table'], $join['first'], $join['operator'], $join['second']);
+			}
+		}
+		if (count($scopes) > 0) {
+			foreach ($scopes as $scope) {
+				$dataTable = $dataTable->$scope();
+			}
+		}
+		return $dataTable->first();
+	}
+
+	public static function isITPLot($cod_sub, $ref) :bool
+	{
+		if(!Config::get('app.checkItp', false)){
+			return false;
+		}
+
+		$cod_cli = Session::get('user.cod', 0);
+		if(!$cod_cli){
+			return false;
+		}
+
+		return DB::executeFunction('LOTE_ITP', [
+			'EMPRESA' => Config::get('app.emp'),
+			'SUBASTA' => $cod_sub,
+			'LOTE' => $ref,
+			'CLIENTE' => $cod_cli
+		]);
 	}
 
 }

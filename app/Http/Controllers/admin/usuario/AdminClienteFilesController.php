@@ -36,7 +36,7 @@ class AdminClienteFilesController extends Controller
 		$fileName = basename($file);
 		return [
 			'link' => $storage->url($file),
-			'unlink' => route('clientes.files.destroy', ['cod_cli' => $cod_cli , 'name' => $fileName]),
+			'unlink' => route('clientes.files.destroy', ['cliente' => $cod_cli , 'file' => $fileName]),
 			'name' => $fileName,
 			'size_kb' => round($storage->size($file) / 1024, 2) . ' KB',
 			'last_modified_human' => Carbon::createFromTimestamp($storage->lastModified($file))->format('d/m/Y H:i:s'),

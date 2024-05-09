@@ -149,7 +149,7 @@ class Subasta extends Model
         $sql ="SELECT auc.*,
                 NVL(auc_lang.\"name_lang\",  auc.\"name\") name
                 FROM \"auc_sessions\" auc
-               LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = :cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
+               LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = :cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang and auc.\"id_auc_sessions\" = auc_lang.\"id_auc_session_lang\")
               WHERE \"auction\"= :cod_sub AND \"company\"= :emp AND  \"start\" IS NOT NULL AND  \"end\" IS NOT NULL AND \"init_lot\" > 0 AND \"end_lot\" > 0";
         $sesiones = DB::select($sql, $params);
 
@@ -565,71 +565,72 @@ class Subasta extends Model
     }
 */
 
-    public function getInfSubasta()
-    {
-
+	public function getInfSubasta()
+	{
 		$params = array();
+		$cacheName = "info_subasta_" . $this->cod;
 
-        $sql_where = '';
-        if(!empty($this->id_auc_sessions)){
-        $sql_where = " AND auc.\"id_auc_sessions\" = ".$this->id_auc_sessions;
-        }
+		$sql_where = '';
+		if (!empty($this->id_auc_sessions)) {
+			$cacheName .= "_".$this->id_auc_sessions;
+			$sql_where = " AND auc.\"id_auc_sessions\" = " . $this->id_auc_sessions;
+		}
 
-		$join ="";
+		$join = "";
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
-		if(\Config::get("app.restrictVisibility")){
+		if (\Config::get("app.restrictVisibility")) {
 			//si no hay usuario logeado devolvemos vacio
-			if(empty(\Session::get('user.cod'))){
+			if (empty(\Session::get('user.cod'))) {
 				return null;
 			}
 
 			$join = $this->restrictVisibilityAuction("join");
-			$sql_where =  $sql_where ."  ". $this->restrictVisibilityAuction("where");
+			$sql_where =  $sql_where . "  " . $this->restrictVisibilityAuction("where");
 			$params['codCli'] = \Session::get('user.cod');
 		}
 
 
-        $sql = "       SELECT sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub, sub.SUBC_SUB, sub.tipo_sub,sub.subabierta_sub,sub.opcioncar_sub,
-                       sub.subastatr_sub,sub.COMPRAWEB_SUB,
-                       NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB) des_sub,
-                       NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub) expofechas_sub,
-                       NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub) expohorario_sub,
-                       NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub) expolocal_sub,
-                       NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub) sesfechas_sub,
-                       NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub) seshorario_sub,
-                       NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
-                       NVL(fgsublang.descdet_SUB_LANG,  sub.descdet_sub) descdet_sub,
-                       NVL(fgsublang.obs_sub_lang,  sub.obs_sub) obs_sub,
-					   NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
-                       sub.sesmaps_sub,sub.expomaps_sub,
-                       auc.*,
-                       auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
-                       FROM FGSUB sub
-                       LEFT JOIN FGSUB_LANG fgsublang ON (sub.EMP_SUB = fgsublang.EMP_SUB_LANG AND sub.COD_SUB = fgsublang.COD_SUB_LANG AND  fgsublang.LANG_SUB_LANG = :lang)
-                       JOIN \"auc_sessions\" auc ON (auc.\"auction\" = :cod_sub AND auc.\"company\" = :emp)
-                       LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = sub.cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
+		$sql = "SELECT sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub, sub.SUBC_SUB, sub.tipo_sub,sub.subabierta_sub,sub.opcioncar_sub,
+				sub.subastatr_sub,sub.COMPRAWEB_SUB,
+				NVL(fgsublang.DES_SUB_LANG,  sub.DES_SUB) des_sub,
+				NVL(fgsublang.EXPOFECHAS_SUB_LANG,  sub.expofechas_sub) expofechas_sub,
+				NVL(fgsublang.EXPOHORARIO_SUB_LANG,  sub.expohorario_sub) expohorario_sub,
+				NVL(fgsublang.EXPOLOCAL_SUB_LANG,  sub.expolocal_sub) expolocal_sub,
+				NVL(fgsublang.SESFECHAS_SUB_LANG,  sub.sesfechas_sub) sesfechas_sub,
+				NVL(fgsublang.SESHORARIO_SUB_LANG,  sub.seshorario_sub) seshorario_sub,
+				NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
+				NVL(fgsublang.descdet_SUB_LANG,  sub.descdet_sub) descdet_sub,
+				NVL(fgsublang.obs_sub_lang,  sub.obs_sub) obs_sub,
+				NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
+				sub.sesmaps_sub,sub.expomaps_sub,
+				auc.*,
+				NVL(auc_lang.\"name_lang\", auc.\"name\") name,
+				auc_lang.\"upCatalogo_lang\" upcatalogo_lang,auc_lang.\"upPrecioRealizado_lang\" uppreciorealizado_lang, auc_lang.\"upManualUso_lang\" upmanualuso_lang
+				FROM FGSUB sub
+				LEFT JOIN FGSUB_LANG fgsublang ON (sub.EMP_SUB = fgsublang.EMP_SUB_LANG AND sub.COD_SUB = fgsublang.COD_SUB_LANG AND  fgsublang.LANG_SUB_LANG = :lang)
+				JOIN \"auc_sessions\" auc ON (auc.\"auction\" = :cod_sub AND auc.\"company\" = :emp)
+				LEFT JOIN \"auc_sessions_lang\" auc_lang
+					ON (auc_lang.\"id_auc_session_lang\" = auc.\"id_auc_sessions\" and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang)
 
-					   $join
+				$join
 
-					   where sub.EMP_SUB = :emp
-                       $sql_where
-                       and sub.cod_sub = :cod_sub
-                ";
+				where sub.EMP_SUB = :emp
+				$sql_where
+				and sub.cod_sub = :cod_sub";
+
 		$params['emp'] = Config::get('app.emp');
 		$params['cod_sub'] = $this->cod;
 		$params['lang'] = \Tools::getLanguageComplete(Config::get('app.locale'));
 
-        //pongo solo un minuto por que no tarda mucho y es posible que necesiten cambiar la subasta de tipo carrito a otro
-        $auctions = \CacheLib::useCache('info_subasta_'.$this->cod,$sql, $params,1);
+		//pongo solo un minuto por que no tarda mucho y es posible que necesiten cambiar la subasta de tipo carrito a otro
+		$auctions = \CacheLib::useCache($cacheName, $sql, $params,1);
 
-        if(!empty($auctions)){
-            return head($auctions);
-        }else{
-            return NULL;
-        }
-
-
-    }
+		if (!empty($auctions)) {
+			return head($auctions);
+		} else {
+			return NULL;
+		}
+	}
 
 
 
@@ -1547,7 +1548,7 @@ class Subasta extends Model
         //Lote no es numerico 404
         if(!is_numeric($this->lote)){
 
-            exit (\View::make('front::errors.404'));
+			return abort(404);
 
         }
 
@@ -3721,6 +3722,8 @@ class Subasta extends Model
             }
 
 			$lotes[$key]->ocultarps_asigl0 = $value->ocultarps_asigl0 ?? 'N';
+
+			$lotes[$key]->isItp = ToolsServiceProvider::isITPLot($lotes[$key]->sub_hces1, $lotes[$key]->ref_asigl0);
 
              $this->CleanStrLote($lotes[$key]);
 

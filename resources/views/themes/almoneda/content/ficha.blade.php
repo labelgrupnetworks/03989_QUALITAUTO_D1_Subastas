@@ -24,7 +24,7 @@ $end_session = strtotime("now")  > strtotime($lote_actual->end_session);
 
 $start_orders =strtotime("now") > strtotime($lote_actual->orders_start);
 $end_orders = strtotime("now") > strtotime($lote_actual->orders_end);
-
+$inicio_pujas = strtotime("now") > strtotime($lote_actual->fini_asigl0);
 $path = "/files/".Config::get('app.emp')."/$lote_actual->num_hces1/$lote_actual->lin_hces1/files/";
 $files = [];
 if(is_dir(getcwd() . $path)){
@@ -53,7 +53,12 @@ if(is_dir(getcwd() . $path)){
                 }
            ?>
 
+				<div class="col-xs-12 no-padding">
+					<p>{{ trans("$theme-app.lot.start_date") }} <span>{{ date('d/m/Y H:i:s', strtotime($lote_actual->fini_asigl0)) }}</span></p>
+				</div>
+
                 @include('includes.ficha.header_time')
+
                 <div class="col-xs-12 no-padding col-sm-2 col-md-2 slider-thumnail-container">
 
                         <div class="owl-theme owl-carousel visible-xs" id="owl-carousel-responsive">
@@ -114,7 +119,7 @@ if(is_dir(getcwd() . $path)){
 						<div id="img_main" class="img_single">
 
 							<a title="{{$lote_actual->titulo_hces1}}" href="javascript:action_fav_modal('remove')">
-								<img class="img-responsive" src="@php /* {{Tools::url_img('lote_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}} */ @endphp" alt="{{$lote_actual->titulo_hces1}}">
+								<img class="img-responsive" src="@php /* {{Tools::url_img('lote_medium_large',$lote_actual->num_hces1,$lote_actual->lin_hces1)}} */ @endphp" alt="{{$lote_actual->titulo_hces1}}">
 							</a>
 
 						</div>
@@ -493,7 +498,7 @@ var key ="<?= $key ?>";
         }
         OpenSeadragon({
         id:"img_main",
-        prefixUrl: "/img/opendragon/",
+        prefixUrl: "/default/img/opendragon/",
 
         showReferenceStrip:  true,
 

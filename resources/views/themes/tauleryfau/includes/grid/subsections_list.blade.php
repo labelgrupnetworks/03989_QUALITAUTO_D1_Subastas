@@ -27,8 +27,11 @@
                     ->orderby("min(REF_ASIGL0)")
                     ->get()
 					->toarray();
+					#forzamos la session actual del bucle para que el contador lo haga bien
+			$filters["session"]=$ses->reference;
 
 		}
+
 
 	?>
     @foreach($subsections as $subsec)
@@ -36,7 +39,7 @@
         @if($numsubsectionLots > 0)
             <div class="input-category d-flex align-items-center">
                 <div class="radio">
-                    <input type="radio" name="subsection" id="subsection_{{$subsec["cod_subsec"]}}" value="{{$subsec["cod_subsec"]}}" class="filter_lot_list_js" <?= ($subsec["cod_subsec"] ==  $filters["subsection"])?  'checked="checked"' : '' ?> />
+                    <input type="radio" name="subsection" id="subsection_{{$subsec["cod_subsec"]}}" @php echo !empty($ses)? 'data-session="'.$ses->reference.'"': '' @endphp  value="{{$subsec["cod_subsec"]}}" class="filter_lot_list_js" <?= ($subsec["cod_subsec"] ==  $filters["subsection"])?  'checked="checked"' : '' ?> />
                     <label for="subsection_{{$subsec["cod_subsec"]}}" class="radio-label">{{ $subsec["des_subsec"] }}  ({{Tools::numberformat($numsubsectionLots)}})</label>
                 </div>
             </div>

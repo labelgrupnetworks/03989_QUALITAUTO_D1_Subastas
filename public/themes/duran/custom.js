@@ -1354,6 +1354,20 @@ $(document).ready(function () {
 		fichablockiz = $(".ficha-left");
 		fichablockiz.css('padding-left', posicb.left + "px");
 	*/
+
+	$('#admin_settings_box').on('click', '.desplegable', function () {
+        if ($('#admin_settings_box').hasClass('opened_box')) {
+            $('#admin_settings_box').removeClass('opened_box');
+            $('[data-id="left"]', this).addClass('hidden');
+            $('[data-id="right"]', this).removeClass('hidden');
+        } else {
+			$('#admin_settings_box').addClass('opened_box');
+            $('[data-id="right"]', this).addClass('hidden');
+            $('[data-id="left"]', this).removeClass('hidden');
+
+        }
+    });
+
 });
 
 function externalLogin(context, data){

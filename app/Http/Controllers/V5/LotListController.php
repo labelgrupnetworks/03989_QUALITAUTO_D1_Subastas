@@ -155,7 +155,7 @@ class LotListController extends Controller
 				$subasta  = new Subasta();
 				$subasta->cod   = $codSub;
 				$subasta->cli_licit = Session::get('user.cod');
-				$subasta->rsoc      = Session::get('user.name');
+				$subasta->rsoc      = Session::get('user.rsoc');
 				$licit = $subasta->checkLicitador();
 			}
 			/* fin genera licitador */
@@ -536,7 +536,7 @@ class LotListController extends Controller
 
 
 	private function getLots($category, $section, $subsection,  $codSub,  $refSession){
-		
+
 		SeoLib::saveVisit($codSub,request('category', $category ), request('section', $section));
 
 		#No es necesario el search ya que vendra por variables
@@ -750,6 +750,13 @@ class LotListController extends Controller
 			#filtro de precios
 			$filters['prices'] = request('prices');
 
+			if(!empty(\Config::get("app.gridAllSessions") )){
+				$filters['session'] = request('session');
+			}else{
+				#creamos una variable de sesiones diferente para poderla usar en los filtros
+				$filters['session'] = request('filter_session');
+			}
+
             return $filters;
         }
 
@@ -868,7 +875,7 @@ class LotListController extends Controller
 			}
 
             #SIEMPRE ORDENAM0S AL FINAL POR REFERENCIA,SI NO HAY FILTRO SE ORDENA POR DEFECTO Y SI LO HAY SE ORDENA  AUNQUE SEA COMO SEGUNDA O TERCERA ORDENACIÓN
-            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0","ASC");
+            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0", Config::get('app.lotlist_default_order', 'asc'));
 
 
             return   $fgasigl0;
@@ -1144,7 +1151,14 @@ class LotListController extends Controller
             #contiene TSEC_SEC, COD_SEC, TIPO_SUB, SUBFAM_HCES1
             $numLotsPerFilter_array = $asigl0->get()->toarray();
 
-            $filters = array("typeSub" => "tipo_sub",  "category" =>"lin_ortsec1", "section" => "sec_ortsec1" , "subsection" => "subfam_hces1" );
+			if ( \Config::get("app.gridAllSessions") ){
+				$filters = array("typeSub" => "tipo_sub", "session" => "reference");
+			}else{
+				$filters = array("typeSub" => "tipo_sub");
+			}
+
+
+            $filters = array_merge($filters,array( "category" =>"lin_ortsec1", "section" => "sec_ortsec1" , "subsection" => "subfam_hces1" ));
             $countLots = array();
             #generamos un array con cada combinatoria posible indicando el numero de lotes.
             foreach($numLotsPerFilter_array as $numLotsPerFilter){
