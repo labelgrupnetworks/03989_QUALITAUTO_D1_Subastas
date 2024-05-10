@@ -143,15 +143,16 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 						@if(count($lote_actual->imagenes) > 0)
 						@foreach($lote_actual->imagenes as $key => $imagen)
 						@php
-							$imageUrl = Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
-							$imageSize = getimagesize($imageUrl);
+							$imageUrlCompressed = Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
+							$imageUrlReal = Config::get('app.url').Tools::url_img('real', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
+							$imageSize = getimagesize($imageUrlReal);
 						@endphp
 						<a class="d-block" data-pswp-width="{{ $imageSize[0] }}" data-pswp-height="{{ $imageSize[1] }}"
-							href="{{ $imageUrl }}">
+							href="{{ $imageUrlCompressed }}">
 							<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
 								<img loading="lazy" style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
 									class="img-responsive" data-pos="{{ $key }}"
-									src="{{ $imageUrl }}"
+									src="{{ $imageUrlCompressed }}"
 									alt="{{$lote_actual->titulo_hces1}}">
 
 							</div>
@@ -165,7 +166,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 						<div class="image-lot-miniature-container" style="display: none">
 							@foreach($lote_actual->imagenes as $key => $imagen)
 								<a class="image-selector" data-key-image="{{ $key }}">
-									<img class="micro-image" src="{{ Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+									<img class="micro-image" src="{{ Tools::url_img('lote_medium', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
 								</a>
 							@endforeach
 						</div>
@@ -531,35 +532,27 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 		});
 		lightbox.init();
 
+		const imageMiniatureContainer = $('.image-lot-miniature-container');
+
 		lightbox.on('beforeOpen', () => {
-			selectGaleryMiniature(lightbox.pswp.currIndex);
-			const container = $('.image-lot-miniature-container');
-			container.css('align-items', 'flex-end');
-			container.fadeIn(400, function() {
+			selectGaleryMiniature(lightbox.pswp.currIndex, imageMiniatureContainer);
+			imageMiniatureContainer.css('align-items', 'flex-end');
+			imageMiniatureContainer.fadeIn(400, function() {
 				$(this).css('display', 'flex');
 			});
 		});
 
 		lightbox.on('change', () => {
 			fichaCarousel.trigger('to.owl.carousel', [lightbox.pswp.currIndex, 0])
-			selectGaleryMiniature(lightbox.pswp.currIndex);
-			moveMiniatureScroll(lightbox.pswp.currIndex);
+			selectGaleryMiniature(lightbox.pswp.currIndex, imageMiniatureContainer);
+			moveMiniatureScroll(lightbox.pswp.currIndex, imageMiniatureContainer);
 		});
 
 		lightbox.on('close', () => {
-			deselectAllGaleryMiniature();
-			$('.image-lot-miniature-container').slideUp(400);
-			$('.image-lot-miniature-container').css('align-items', 'initial');
+			deselectAllGaleryMiniature(imageMiniatureContainer);
+			imageMiniatureContainer.slideUp(400);
+			imageMiniatureContainer.css('align-items', 'initial');
 		});
-
-		function moveMiniatureScroll(idx) {
-			const container = $('.image-lot-miniature-container');
-			const image = container.find('.image-selector').eq(idx);
-			const scroll = image.position().left - (container.width() / 2) + (image.width() / 2);
-			container.animate({
-				scrollLeft: scroll
-			}, 'fast');
-		}
 
 		$('a.image-selector').click(openThatImage);
 
@@ -572,17 +565,6 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 
 		if ($('.context-text p span').text().length > 10) {
 			$('.btn-context').removeClass('hidden')
-		}
-
-		function selectGaleryMiniature(idx)
-		{
-			$('.image-lot-miniature-container .image-selector .micro-image').removeClass('selected');
-			$('.image-lot-miniature-container .image-selector').eq(idx).find('.micro-image').addClass('selected');
-		}
-
-		function deselectAllGaleryMiniature()
-		{
-			$('.image-lot-miniature-container .image-selector .micro-image').removeClass('selected');
 		}
 
 		let containerSingleLot = document.querySelector('.single-lot-bar');

@@ -283,9 +283,77 @@
 								</a>
 
 								{{-- mobile --}}
-								<a href="javascript:moreImagesGridMobile('{{$item->num_hces1}}', '{{$item->lin_hces1}}', 0)" class="d-flex align-items-center view-video more-images-grid-js hidden-sm hidden-md hidden-lg">
+								<a class="d-flex align-items-center view-video more-images-grid-js hidden-sm hidden-md hidden-lg open-lot-gallery-{{$item->num_hces1}}-{{$item->lin_hces1}}">
 									<span class="btn-play" style="font-size: 13px;">{{ trans($theme.'-app.lot_list.more_images') }}</span>
 								</a>
+
+								@php
+									$lotImages = [];
+									for ($i = 0; $i < $numFotos; $i++) {
+										$imageURL = Config::get('app.url').Tools::url_img('real', $item->num_hces1, $item->lin_hces1, $i);
+										$imageSize = getimagesize($imageURL);
+										$imageData = [
+											'src' => $imageURL,
+											'width' => $imageSize[0],
+											'height' => $imageSize[1]
+										];
+										array_push($lotImages, $imageData);
+									}
+									$imagestojs = json_encode($lotImages)
+								@endphp
+
+								<div class="image-lot-miniature-container image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}}" style="display: none">
+									@for ($i = 0; $i < $numFotos; $i++)
+										<a class="image-selector" data-key-image="{{ $i }}">
+											<img class="micro-image" loading="lazy" src="{{ Tools::url_img('lote_medium', $item->num_hces1, $item->lin_hces1, $i) }}">
+										</a>
+									@endfor
+								</div>
+
+								<script>
+									const images{{$item->num_hces1}}_{{$item->lin_hces1}} = {!! $imagestojs !!};
+									const options{{$item->num_hces1}}_{{$item->lin_hces1}} = {
+										dataSource: images{{$item->num_hces1}}_{{$item->lin_hces1}},
+										pswpModule: PhotoSwipe,
+										loop: false
+									};
+									const lightbox{{$item->num_hces1}}_{{$item->lin_hces1}} = new PhotoSwipeLightbox(options{{$item->num_hces1}}_{{$item->lin_hces1}})
+									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.init();
+
+									document.querySelector('.open-lot-gallery-{{$item->num_hces1}}-{{$item->lin_hces1}}').onclick = () => {
+										options{{$item->num_hces1}}_{{$item->lin_hces1}}.index = 0;
+										lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.loadAndOpen(0);
+									};
+
+									const imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}} = $('.image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}}');
+
+									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('beforeOpen', () => {
+										selectGaleryMiniature(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
+										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.css('align-items', 'flex-end');
+										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.fadeIn(400, function() {
+											$(this).css('display', 'flex');
+										});
+									});
+
+									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('change', () => {
+										selectGaleryMiniature(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
+										moveMiniatureScroll(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
+									});
+
+									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('close', () => {
+										deselectAllGaleryMiniature(imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
+										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.slideUp(400);
+										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.css('align-items', 'initial');
+									});
+
+									$('.image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}} a.image-selector').click(openThatImage);
+
+									function openThatImage(){
+										let index = $(this).data('key-image');
+										lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.goTo(index);
+									}
+
+								</script>
 
 								@else
 								<a class="d-flex align-items-center view-video"></a>

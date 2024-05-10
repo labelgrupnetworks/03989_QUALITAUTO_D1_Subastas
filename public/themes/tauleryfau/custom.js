@@ -1884,3 +1884,20 @@ function addNewsletter(data) {
 		}
 	});
 }
+
+function selectGaleryMiniature(idx, imgcontainer) {
+	imgcontainer.find('.image-selector .micro-image').removeClass('selected');
+	imgcontainer.find('.image-selector').eq(idx).find('.micro-image').addClass('selected');
+}
+
+function deselectAllGaleryMiniature(imgcontainer) {
+	imgcontainer.find('.image-selector .micro-image').removeClass('selected');
+}
+
+function moveMiniatureScroll(idx, imgcontainer) {
+	const image = imgcontainer.find('.image-selector').eq(idx);
+	const scroll = image.position().left - (imgcontainer.width() / 2) + (image.width() / 2);
+	imgcontainer.animate({
+		scrollLeft: scroll
+	}, 'fast');
+}
