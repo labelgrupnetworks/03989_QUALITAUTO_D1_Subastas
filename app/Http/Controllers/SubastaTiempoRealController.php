@@ -464,12 +464,14 @@ class subastaTiempoRealController extends Controller
 				$creditUsed += $subasta_info->lote_actual->max_puja->imp_asigl1;
 			}
 
-			foreach($adjudicaciones as $adj){
-                $creditUsed += $adj->himp_csub;
-			}
+			//Para la primera carga, necesitamos las sumas de adjudicaciones de TODAS las sesiones de la subasta
+			$sumAward = (new User)->getSumAdjudicacionesSubasta($subasta_info->cod_sub, $js_item['user']['cod_licit']);
+			$creditUsed += $sumAward;
 
-			//usuarios con más credito /usuarios con mas credito a que mas hayan pedido??
-			//$usersCredit = FgCreditoSub::where('SUB_CREDITOSUB', $subasta_info->cod_sub)->orderBy();
+			//Para actualizar en tiempo real, necesitamos las sumas de adjudicaciones de las otras sesiones, las de la actual ya más las pujas se suman en el js
+			$sumAwardInOtherSessions = (new User)->getSumAdjudicacionesInOtherSessions($subasta_info->cod_sub, $js_item['user']['cod_licit'], $subasta_info->reference);
+
+			$js_item['user']['sum_award_previous_sessions'] = $sumAwardInOtherSessions;
 
 			$credit_info = [
 				'current_credit' => intval($currentCredit),
@@ -1231,7 +1233,7 @@ class subastaTiempoRealController extends Controller
 
 		//comprobar si tenemos credito disponible en la sesión? para realizar la compra
 		if(Config::get('app.use_credit', false)) {
-			$hasAvailableCredit = Subasta::allowBidCredit($cod_sub, $lote->reference, $licit, $importe);
+			$hasAvailableCredit = Subasta::allowBidCredit($cod_sub, null, $licit, $importe);
 			if(!$hasAvailableCredit){
 				return $this->error_puja(trans(Config::get('app.theme') . '-app.subastas.not_have_credit'), null, false);
 			}
@@ -1933,7 +1935,7 @@ class subastaTiempoRealController extends Controller
 			#Credito- SOLER- comprobación de puja , solo subasta presenciales,
 			#no deja pujar si la puja más lo que tienes adjudicado supera tu credito
 			if( (\Config::get('app.use_credit'))  && count($u) > 0 && $lote->tipo_sub == 'W' ){
-				$puedePujar =Subasta::allowBidCredit($subasta->cod, $lote->reference, $subasta->licit,$subasta->imp  );
+				$puedePujar =Subasta::allowBidCredit($subasta->cod, null, $subasta->licit,$subasta->imp);
 				if(!$puedePujar ){
 					$res = $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
                     return $res;

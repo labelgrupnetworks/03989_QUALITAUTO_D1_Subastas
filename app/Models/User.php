@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
@@ -657,6 +658,29 @@ class User
         }
 
     }
+
+	public function getSumAdjudicacionesSubasta($cod_sub, $licit)
+	{
+		return FgCsub::query()
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit]
+			])
+			->sum('himp_csub');
+	}
+
+	public function getSumAdjudicacionesInOtherSessions($cod_sub, $licit, $reference)
+	{
+		return FgCsub::query()
+			->join('"auc_sessions" auc', 'auc."company" = EMP_CSUB AND auc."auction" = SUB_CSUB and auc."init_lot" <= REF_CSUB and auc."end_lot" >= REF_CSUB')
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit],
+				['auc."reference"', '!=', "'$reference'"]
+			])
+			->sum('himp_csub');
+	}
+
     public function getAllAdjudicacionesSession($cod_sub, $reference, $licit)
     {
         $bindings = array(

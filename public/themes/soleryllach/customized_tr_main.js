@@ -116,7 +116,7 @@ function reloadAdminCredit() {
         $('#text_actual_no_bid').addClass('hidden');
 		$('#text_actual_max_bid').removeClass('hidden');
 
-		reloadCredit(data.actual_bid, data.winner)
+		reloadCredit();
 
         if (typeof auction_info.user != 'undefined' && data.winner == auction_info.user.cod_licit) {
                 $('#tupuja').html(data.formatted_actual_bid);
@@ -190,6 +190,7 @@ function reloadAdminCredit() {
 
     function reloadPujasList()
     {
+		reloadCredit();
         if( auction_info.subasta.sub_tiempo_real == 'S'){
             reloadPujasList_W()
         }else {
@@ -430,12 +431,7 @@ function view_all_bids(){
     |--------------------------------------------------------------------------
     */
 
-	/**
-	 *
-	 * @param {*} actual_bid
-	 * @param {*} cod_licit_actual
-	 */
-	function reloadCredit(actual_bid, cod_licit_actual){
+	function reloadCredit(){
 
 		if(typeof auction_info.user != 'undefined' && typeof auction_info.user.adjudicaciones != 'undefined'){
 
@@ -449,12 +445,21 @@ function view_all_bids(){
 
 			creditUsed = userAdjudicaciones;
 
-			if(auction_info.user.cod_licit == cod_licit_actual){
-				creditUsed += parseInt(actual_bid);
+			if(typeof auction_info.user.sum_award_previous_sessions != 'undefined'){
+				creditUsed += parseInt(auction_info.user.sum_award_previous_sessions);
 			}
 
-			$('#credit_used').html(new Intl.NumberFormat("de", {}).format(creditUsed));
-			$("#available_credit").html(new Intl.NumberFormat("de", {}).format(currentCredit - creditUsed));
+			const myMaxBid = auction_info.lote_actual.pujas.find((puja) => {
+				return puja.cod_licit == auction_info.user.cod_licit
+			});
+
+			if(typeof myMaxBid != 'undefined' && myMaxBid.rn == 1){
+				creditUsed += parseInt(myMaxBid.imp_asigl1);
+			}
+
+			const formater = new Intl.NumberFormat("de", {});
+			$('#credit_used').html(formater.format(creditUsed));
+			$("#available_credit").html(formater.format(currentCredit - creditUsed));
 
 		}
 
@@ -479,8 +484,3 @@ function view_all_bids(){
 		if(!element) return;
 		element.classList.toggle('hidden', !lot.isItp);
 	}
-
-
-
-
-
