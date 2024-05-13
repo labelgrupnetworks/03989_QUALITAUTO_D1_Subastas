@@ -438,10 +438,22 @@ function view_all_bids(){
 			let userAdjudicaciones = 0;
 			let creditUsed = 0;
 			let currentCredit = parseInt($('#current_credit').data('currentCredit'));
+			let awards = []
 
-			for (const adjudicaciones of auction_info.user.adjudicaciones) {
-				userAdjudicaciones += parseInt(adjudicaciones.imp_asigl1);
-			}
+			auction_info.user.adjudicaciones.forEach(function(adjudicacion){
+				//cuando se reabren lotes, si el mismo usuario se los vuelve a adjudicar, se duplican las adjudicaciones
+				if (awards.indexOf(adjudicacion.ref_asigl1) != -1) {
+					return;
+				}
+
+				//si la adjudicacion es del lote actual no se tiene en cuenta
+				if(auction_info.lote_actual.ref_asigl0 == adjudicacion.ref_asigl1){
+					return;
+				}
+
+				awards.push(adjudicacion.ref_asigl1);
+				userAdjudicaciones += parseInt(adjudicacion.imp_asigl1);
+			});
 
 			creditUsed = userAdjudicaciones;
 

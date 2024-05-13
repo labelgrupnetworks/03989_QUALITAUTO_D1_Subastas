@@ -676,7 +676,7 @@ class User
 			->where([
 				['sub_csub', $cod_sub],
 				['licit_csub', $licit],
-				['auc."reference"', '!=', "'$reference'"]
+				['auc."reference"', '!=', "$reference"]
 			])
 			->sum('himp_csub');
 	}
