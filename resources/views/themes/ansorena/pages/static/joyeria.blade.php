@@ -69,13 +69,8 @@
 
 		<div class="article-banner">
 			<h2 class="h2 ff-highlight fs-24-48 mb-4 mb-lg-5">CASILDA SE CASA</h2>
-			{{-- <ul class="articles-list px-lg-5">
-				<li>
-					<a class="lb-link-underline" href="/es/articulos-joyeria/sortijas?search=casilda+se+casa">VER TODO</a>
-				</li>
-			</ul> --}}
 			<div class="banner-col">
-                [*BANNER-joyeria-unicas*]
+                [*BANNER-joyeria-csc*]
             </div>
 		</div>
 

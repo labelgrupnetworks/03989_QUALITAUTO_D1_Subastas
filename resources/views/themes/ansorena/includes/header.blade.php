@@ -343,7 +343,7 @@
                             <div class="d-flex flex-column justify-content-between gap-4">
                                 <div>
                                     <p class="ff-highlight subnav-title-highlight">
-                                        {{-- {{ trans("$theme-app.articles.high_jelwelry") }} --}}
+										 {{-- {{ trans("$theme-app.articles.high_jelwelry") }} --}}
 										Casilda se casa
                                     </p>
                                     <div class="d-flex flex-wrap subnav-list">
