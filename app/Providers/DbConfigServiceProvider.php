@@ -29,9 +29,7 @@ class DbConfigServiceProvider extends ServiceProvider
 	{
 
 		// Configuración de logs dependiendo de si estamos en consola o no
-		$this->app->runningInConsole()
-			? Config::set('logging.default', 'cli') //colas, comandos y tareas programadas
-			: Config::set('logging.default', 'daily'); //web
+		$this->setConfigLoggingChannelToConsoleCommands();
 
 		$emp = $this->app->config->get('app.emp');
 		$config  = DB::select(
@@ -56,14 +54,27 @@ class DbConfigServiceProvider extends ServiceProvider
 
 	/**
 	 * Set the logging channel according to the running environment
-	 * Por el momento determinamos el loggin setando el config de logging.default,
-	 * pero si diese problemas se podría modificar el canal de loggin directamente
 	 */
-	private function setConfigLoggingChannel()
+	private function setConfigLoggingChannelToConsoleCommands()
 	{
-		if ($this->app->runningInConsole()) {
-			$logManager = $this->app->make('log');
-            $logManager->setDefaultDriver('cli');
-        }
+		if(!$this->app->runningInConsole()){
+			return;
+		}
+
+		$logManager = $this->app->make('log');
+
+		$this->isRootUser()
+			? $logManager->setDefaultDriver('root')
+			: $logManager->setDefaultDriver('cli');
+	}
+
+	private function isRootUser()
+	{
+		$username = '';
+		if (function_exists('posix_getpwuid')) {
+			$pwu_data = posix_getpwuid(posix_geteuid());
+			$username = $pwu_data['name'];
+		}
+		return $username == 'root';
 	}
 }
