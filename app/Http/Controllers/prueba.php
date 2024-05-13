@@ -174,8 +174,14 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$a = new MailController();
-		$a->sendCompletLotReport('2024JUME',1);
+		$pwu_data = '';
+		$username = '';
+		if (function_exists('posix_getpwuid')){
+			$pwu_data = posix_getpwuid(posix_geteuid());
+			$username = $pwu_data['name'];
+		}
+
+		dd($pwu_data, $username);
 		die();
 	}
 
