@@ -57,11 +57,12 @@ class DbConfigServiceProvider extends ServiceProvider
 	 */
 	private function setConfigLoggingChannelToConsoleCommands()
 	{
+		$logManager = $this->app->make('log');
+
 		if(!$this->app->runningInConsole()){
+			$logManager->setDefaultDriver('daily');
 			return;
 		}
-
-		$logManager = $this->app->make('log');
 
 		$this->isRootUser()
 			? $logManager->setDefaultDriver('root')
