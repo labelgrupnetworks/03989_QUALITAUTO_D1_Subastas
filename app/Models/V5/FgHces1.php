@@ -104,6 +104,11 @@ class FgHces1 extends Model
 		return $query->where('sub_hces1', 'AGRUP17');
 	}
 
+	public function scopeIsVisibleWeb($query)
+	{
+		return $query->where('web_hces1', 'S');
+	}
+
 	public function scopelog($query)
 	{
 		return $query->joinUsr()->select("FSUSR.NOM_USR, FGHCES1.*");
