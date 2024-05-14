@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
+
 class DbConfigServiceProvider extends ServiceProvider
 {
 	/**
@@ -26,6 +27,10 @@ class DbConfigServiceProvider extends ServiceProvider
 
 	public function register()
 	{
+
+		// Configuración de logs dependiendo de si estamos en consola o no
+		$this->setConfigLoggingChannelToConsoleCommands();
+
 		$emp = $this->app->config->get('app.emp');
 		$config  = DB::select(
 			"SELECT KEY, VALUE FROM WEB_CONFIG where emp=:EMP",
@@ -45,5 +50,31 @@ class DbConfigServiceProvider extends ServiceProvider
 		$default = [resource_path('/views/default/' . Config::get('app.default_theme'))];
 
 		Config::set('view.paths', array_merge(Config::get('view.paths'), $default));
+	}
+
+	/**
+	 * Set the logging channel according to the running environment
+	 */
+	private function setConfigLoggingChannelToConsoleCommands()
+	{
+		if(!$this->app->runningInConsole()){
+			return;
+		}
+
+		$logManager = $this->app->make('log');
+
+		$this->isRootUser()
+			? $logManager->setDefaultDriver('root')
+			: $logManager->setDefaultDriver('cli');
+	}
+
+	private function isRootUser()
+	{
+		$username = '';
+		if (function_exists('posix_getpwuid')) {
+			$pwu_data = posix_getpwuid(posix_geteuid());
+			$username = $pwu_data['name'];
+		}
+		return $username == 'root';
 	}
 }
