@@ -2,6 +2,10 @@
 <br><br>
 <center><big><big>{{ trans($theme.'-app.lot_list.no_results') }}</big></big></center>
 @else
+
+<script src="/vendor/photoswipe/photoswipe.umd.min.js"></script>
+<script src="/vendor/photoswipe/photoswipe-lightbox.umd.min.js"></script>
+<link href="/vendor/photoswipe/photoswipe.css" rel="stylesheet">
 @foreach ($lots as $item)
 <?php
 				#transformo el array en variables para conservar los nombres antiguos

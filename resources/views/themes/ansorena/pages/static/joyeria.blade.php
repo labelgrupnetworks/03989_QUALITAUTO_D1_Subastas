@@ -68,6 +68,13 @@
         </div>
 
 		<div class="article-banner">
+			<h2 class="h2 ff-highlight fs-24-48 mb-4 mb-lg-5">CASILDA SE CASA</h2>
+			<div class="banner-col">
+                [*BANNER-joyeria-csc*]
+            </div>
+		</div>
+
+		<div class="article-banner">
 			<h2 class="h2 ff-highlight fs-24-48 mb-4 mb-lg-5">JOYAS ÚNICAS</h2>
 			<ul class="articles-list px-lg-5">
 				<li>

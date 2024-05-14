@@ -1343,7 +1343,7 @@ class Subasta extends Model
 			$credit = FxCli::getCurrentCredit($this->cod, $orden->licit_orlic);
 
 			$user = new User();
-			$totalAdjudicado = $user->getTotalAdjudicado($this->cod, $sessionReference, $orden->licit_orlic);
+			$totalAdjudicado = $user->getSumAdjudicacionesSubasta($this->cod, $orden->licit_orlic);
 			$disponible = $credit - $totalAdjudicado ;
 			//echo $orden->licit_orlic."<br> Credito disponible: ".$disponible."<br> Orden: ".$orden->himp_orlic."<br><br><br>";
 
@@ -4690,19 +4690,25 @@ class Subasta extends Model
         return $files;
 	}
 
-
-	public static function allowBidCredit($codSub, $referenceSession, $licit, $imp ){
+	/**
+	 * Comprueba si un usuario tiene crédito suficiente para realizar una puja
+	 * En el caso de no pasar referencia de sesión, se comprueba el crédito utilizado
+	 * en todas las sesiones de la subasta
+	 */
+	public static function allowBidCredit($codSub, $referenceSession, $licit, $imp)
+	{
 			$credit = FxCli::getCurrentCredit($codSub,$licit);
+
 			#ya adjudicado
 			$user = new User();
-			$totalAdjudicado = $user->getTotalAdjudicado($codSub, $referenceSession, $licit);
+			$totalAdjudicado = empty($referenceSession)
+				? $user->getSumAdjudicacionesSubasta($codSub, $licit)
+				: $user->getTotalAdjudicado($codSub, $referenceSession, $licit);
+
 			# si al sumar esta puja se han pasado del credito devolvemos error
-			if(($imp + $totalAdjudicado) > $credit ){
-				return false;
-			}else{
-				return true;
-			}
+			return ($imp + $totalAdjudicado) <= $credit;
 	}
+
 	#sobre puja inicial de subasta en caso de que haya credito, funcion recursiva
 	public function sobrePujaOrdenCredit($ordenes,$precio_salida, $codSub, $referenceSession, $ref ){
 		if($precio_salida== 0){
@@ -4715,9 +4721,9 @@ class Subasta extends Model
 		foreach($ordenes as $orden){
 
 			$credit = FxCli::getCurrentCredit($codSub,$orden->cod_licit);
-			$totalAdjudicado = $user->getTotalAdjudicado($codSub, $referenceSession,$orden->cod_licit );
+			$totalAdjudicado = $user->getSumAdjudicacionesSubasta($codSub, $orden->cod_licit);
 			#como minimo será cero, no deberia salir numero negativos pero por si acaso.
-			$disponible = max($credit -$totalAdjudicado,0);
+			$disponible = max($credit - $totalAdjudicado, 0);
 
 			#cogemos el credito disponible si es más pequeño que la orden
 			if($orden->himp_orlic > $disponible){

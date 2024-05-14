@@ -174,12 +174,8 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$a = new MailController();
-		$a->sendCompletLotReport('2024JUME',1);
 		die();
 	}
-
-
 
 	private function testConnection()
 	{

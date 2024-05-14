@@ -750,11 +750,12 @@ class LotListController extends Controller
 			#filtro de precios
 			$filters['prices'] = request('prices');
 
-			if(!empty(\Config::get("app.gridAllSessions") )){
+			if(empty(\Config::get("app.gridAllSessions") )){
 				$filters['session'] = request('session');
 			}else{
 				#creamos una variable de sesiones diferente para poderla usar en los filtros
-				$filters['session'] = request('filter_session');
+				$filters['filter_session'] = request('filter_session');
+
 			}
 
             return $filters;
@@ -772,6 +773,10 @@ class LotListController extends Controller
             if($organize){
                 $fgasigl0 =  $this->setFilterOrder($fgasigl0, $filters['order']);
             }
+			#filtro creado para tauler que quieren poder ver en el grid las sesiones
+			if(!empty($filters['filter_session'] )){
+				$fgasigl0 =  $this->setFilterSession($fgasigl0, $filters['filter_session']);
+			}
             $fgasigl0 =  $this->setFilterReference($fgasigl0, $filters['reference']);
             $fgasigl0 =  $this->setFilterDescription($fgasigl0, $filters['description']);
             $fgasigl0 =  $this->setFilterCategory($fgasigl0, $filters['category']);
@@ -882,6 +887,17 @@ class LotListController extends Controller
 
         }
 
+
+		public function setFilterSession($fgasigl0, $filter_session ){
+            if(!empty($filter_session) ){
+				#si tienen este config es que se deben quitar los deicmales y los códigos  mayores que \Config::get("app.substrRef")
+
+                $fgasigl0 =  $fgasigl0->where('"reference"', $filter_session);
+
+            }
+
+            return  $fgasigl0;
+        }
 
         public function setFilterReference($fgasigl0, $reference ){
             if(!empty($reference) && is_numeric($reference)){
