@@ -6177,6 +6177,35 @@ FICHA LOTE
     text-align: right;
 }
 
+.pswp {
+	background-color: black;
+}
+
+.image-lot-miniature-container {
+	display: flex;
+	position: fixed;
+	gap: 5px;
+	bottom: 0;
+	left: 0;
+	z-index: 1000000;
+	overflow-x: auto;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.image-lot-miniature-container .micro-image {
+	transition: ease-in 0.07s;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+}
+
+.image-lot-miniature-container .image-selector .micro-image.selected {
+	transition: ease-in 0.07s;
+	width: 100px;
+	height: 100px;
+}
+
 /**********************************
 FIN FICHA LOTE
 **********************************/
