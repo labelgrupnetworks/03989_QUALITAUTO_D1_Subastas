@@ -4,6 +4,7 @@
 namespace App\Models;
 
 use App\Models\V5\FgDvc1l;
+use App\Models\V5\FxDvc02;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -30,10 +31,11 @@ class Facturas extends Model
 	 */
     public function pending_bills($all = true, $type = '', $whereIntervalDates = [])
 	{
-
+		//añadir select tv_contav de fscontav
         $gemp = config('app.gemp');
         $sql = DB::table('FXPCOB')
                 ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FGSUB.DES_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
+				->selectRaw("(select tv_contav from FSCONTAV where SER_CONTAV = SUBSTR(FXPCOB.anum_pcob, 0, 1) and PER_CONTAV = SUBSTR(FXPCOB.anum_pcob, 2, 3) AND EMP_CONTAV = FXPCOB.EMP_PCOB) as tv_contav")
                 ->Join('FXCLI',function($join) use($gemp){
                     $join->on('FXPCOB.COD_PCOB','=','FXCLI.COD_CLI')
                     ->where('GEMP_CLI','=',$gemp);
@@ -445,5 +447,34 @@ class Facturas extends Model
         DB::select($sql,$binding);
     }
 
+	public function getBillsFilesFromMultipleSheets(array $seriesAndLines)
+	{
+		if (empty($seriesAndLines)) {
+			return collect();
+		}
+
+		$bills = FxDvc02::query()
+			->joinDvc0()
+			->whereUser($this->cod_cli)
+			->whereMultiplesSeriesAndLines($seriesAndLines)
+			->whereNotNull('fich_dvc02')
+			->select('anum_dvc02', 'num_dvc02', 'fich_dvc02', 'fecha_dvc0')
+			->get();
+
+		$billsData = $bills->map(function ($bill) {
+			$emp = Config::get('app.emp');
+			$fileName = "bills/{$emp}/{$bill->fich_dvc02}.PDF";
+			$date = date('d-m-Y', strtotime($bill->fecha_dvc0));
+
+			return [
+				'filname' => $fileName,
+				'date' => $date,
+				'anum_dvc02' => $bill->anum_dvc02,
+				'num_dvc02' => $bill->num_dvc02,
+			];
+		});
+
+		return $billsData;
+	}
 
 }

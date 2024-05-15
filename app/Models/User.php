@@ -790,6 +790,7 @@ class User
                 ->addSelect('C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1')
                 ->addSelect('SUB.cod_sub,sub.tipo_sub, sub.compraweb_sub, SUB.DES_SUB, auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0, ASIGL0.IMPSALHCES_ASIGL0, NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
                 ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0,FGC0.impgas_csub0,FGC0.tax_csub0 ')
+				->addSelect('otv."exportacion"')
                 ->Join('FGASIGL0 ASIGL0',function($join){
                     $join->on('ASIGL0.EMP_ASIGL0','=','C.EMP_CSUB')
                     ->on('ASIGL0.SUB_ASIGL0','=','C.SUB_CSUB')
@@ -840,6 +841,7 @@ class User
                     ->on('FGC0.APRE_CSUB0','=','C.APRE_CSUB')
                     ->on('FGC0.NPRE_CSUB0','=','C.NPRE_CSUB');
 				})
+				->leftJoin('"object_types_values" otv', 'otv."company" = C.EMP_CSUB and otv."transfer_sheet_number" = ASIGL0.NUMHCES_ASIGL0 and otv."transfer_sheet_line" = ASIGL0.LINHCES_ASIGL0')
                 ->where('C.EMP_CSUB',Config::get('app.emp'))
                 ->where('C.CLIFAC_CSUB',$this->cod_cli)
                 ->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')

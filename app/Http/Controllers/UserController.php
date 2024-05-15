@@ -3753,6 +3753,7 @@ class UserController extends Controller
         return $value;
 
     }
+
     // Saber si existe pdf de factruas
     public function bills($afral,$nfral,$exist_file = false){
         $user = new User();
@@ -4320,9 +4321,22 @@ class UserController extends Controller
         $addres->cod_cli = $user->cod_cli;
         $envio = $addres->getUserShippingAddress();
 
+		//payments data
+		/**
+		 * @todo La siguiente sección no tiene sentido que sea un controlador.
+		 * Por no modificar en exceso el código, se ha dejado así.
+		 * Pero en cuanto se pueda se debería modificar a un servicio o modelo.
+		 */
+		$emp = Config::get('app.emp');
+		$gemp = Config::get('app.gemp');
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva($emp, date("Y-m-d"));
+        $tipo_iva = $paymentController->user_has_Iva($gemp, $user->cod_cli);
+		$paymentController->setIva($iva)->setTipoIva($tipo_iva)->setUser($user);
+
 		//allotments
-		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio);
-		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio);
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $paymentController);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $paymentController);
 
 		//bills
 		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
@@ -4373,6 +4387,8 @@ class UserController extends Controller
 
 	public function getInvoiceOverviewView(HttpRequest $request)
 	{
+		$emp = Config::get('app.emp');
+		$gemp = Config::get('app.gemp');
 		$seo = new \Stdclass();
 		$seo->noindex_follow = true;
 
@@ -4404,9 +4420,20 @@ class UserController extends Controller
         $addres->cod_cli = $user->cod_cli;
         $envio = $addres->getUserShippingAddress();
 
+		//payments data
+		/**
+		 * @todo La siguiente sección no tiene sentido que sea un controlador.
+		 * Por no modificar en exceso el código, se ha dejado así.
+		 * Pero en cuanto se pueda se debería modificar a un servicio o modelo.
+		 */
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva($emp, date("Y-m-d"));
+        $tipo_iva = $paymentController->user_has_Iva($gemp, $user->cod_cli);
+		$paymentController->setIva($iva)->setTipoIva($tipo_iva)->setUser($user);
+
 		//allotments
-		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $datesIntervals);
-		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $datesIntervals);
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $paymentController, $datesIntervals);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $paymentController, $datesIntervals);
 
 		//bills
 		$pendingBillsData = $this->getPendingBillsData($user, $datesIntervals);
@@ -4475,14 +4502,11 @@ class UserController extends Controller
 		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
 	}
 
-	private function getPayedAllotmentsData($user, $envio, $datesIntervals)
+	private function getPayedAllotmentsData($user, $envio, $paymentController, $datesIntervals = [])
 	{
-		$emp = config('app.emp');
-		$gemp = config('app.gemp');
-
-		$pago_controller = new PaymentsController();
-
         $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S', null, null, $datesIntervals);
+
+		$bills = $this->getUniqueBills($adjudicaciones_pag);
 
 		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
 		$referencesByAction = $adjudicaciones_pag->groupBy('sub_csub')
@@ -4492,43 +4516,35 @@ class UserController extends Controller
 
 		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
 
-		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
-        $tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
-
-		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
+		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $paymentController, $gastosExtra, $bills) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $paymentController, $gastosExtra, $bills);
 		});
 
 		return [
 			'adjudicaciones_pag' => $adjudicaciones_pag,
 			#al pasar le valor 1 devolvera el iva que hay que aplicar, por ejemplo 0,21
-			'ivaAplicable' => $pago_controller->calculate_iva($tipo_iva->tipo, $iva, 1),
+			'ivaAplicable' => $paymentController->calculate_iva($paymentController->tipo_iva->tipo, $paymentController->iva, 1),
 		];
 	}
 
-	private function getPendingAllotmentsData($user, $envio, $datesIntervals)
+	private function getPendingAllotmentsData($user, $envio, $paymentController, $datesIntervals = [])
 	{
-		$emp = config('app.emp');
-		$gemp = config('app.gemp');
-
 		$subasta = new Subasta();
 		$parametrosSub = $subasta->getParametersSub();
 
 		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N', null, null, $datesIntervals);
-		$pago_controller = new PaymentsController();
-
-		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
-		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
 
 		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
 		$referencesByAction = $adjudicaciones_pendientes->groupBy('sub_csub')
 			->map(function($adjudicaciones){
 				return $adjudicaciones->pluck('ref_asigl0');
 			});
-		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
 
-		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
+		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
+		$bills = $this->getUniqueBills($adjudicaciones_pendientes);
+
+		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $paymentController, $gastosExtra, $bills) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $paymentController, $gastosExtra, $bills);
 		});
 
 		$adjudicaciones = $adjudicaciones_temporales->where('estado_csub0', '!=', 'T');
@@ -4543,22 +4559,39 @@ class UserController extends Controller
 		];
 	}
 
-	private function allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastos)
+	private function getUniqueBills($adjudicaciones)
+	{
+		$bills = collect();
+		foreach ($adjudicaciones as $adjudicacion) {
+
+			if($bills->where('afral_csub', $adjudicacion->afral_csub)->where('nfral_csub')->isNotEmpty()){
+				continue;
+			}
+
+			$bills->push([
+				'afral_csub' => $adjudicacion->afral_csub,
+				'nfral_csub' => $adjudicacion->nfral_csub,
+				'file' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub, true)
+			]);
+		}
+		return $bills;
+	}
+
+	private function allotmentFormat($adjudicacion, $user, $envio, PaymentsController $paymentController, $gastos, $bills)
 	{
 		$subastaClass = new Subasta();
-		$pagoController = new PaymentsController();
 
-		$withNotIva = \Config::get("app.noIVAOnlineAuction") && $adjudicacion->tipo_sub == 'O';
+		$withNotIva = Config::get("app.noIVAOnlineAuction") && $adjudicacion->tipo_sub == 'O';
 
 		$adjudicacionFormat = (object) array_merge(get_object_vars($adjudicacion), [
-			'formatted_imp_asigl1' => \Tools::moneyFormat($adjudicacion->himp_csub),
+			'formatted_imp_asigl1' => ToolsServiceProvider::moneyFormat($adjudicacion->himp_csub),
 			'imagen' => $subastaClass->getLoteImg($adjudicacion),
-			'date' => \Tools::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
+			'date' => ToolsServiceProvider::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
 			'imp_asigl1' => $adjudicacion->himp_csub,
-			'base_csub_iva' => $withNotIva ? 0 : $pagoController->calculate_iva($tipo_iva->tipo, $iva, $adjudicacion->base_csub),
+			'base_csub_iva' => $withNotIva ? 0 : $paymentController->calculate_iva($paymentController->tipo_iva->tipo, $paymentController->iva, $adjudicacion->base_csub),
 			//'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
 			'extras' => $gastos->where('sub_asigl2', $adjudicacion->sub_csub)->where('ref_asigl2', $adjudicacion->ref_asigl0),
-            'factura' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub, true),
+            'factura' => $bills->where('afral_csub', $adjudicacion->afral_csub)->where('nfral_csub')->first()->file ?? null,
             //'pending_fact' => (new Facturas())->pending_bills(false), //no le he encontrado sentido
 			'days_extras_alm' => $this->days_extras_almacen($adjudicacion->fecha_csub),
 			'prefactura' => $this->proformaInvoiceFile($adjudicacion->sub_csub, true),
@@ -4567,17 +4600,14 @@ class UserController extends Controller
 		]);
 
 		//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
-		//03/11/2021 - Eloy
-		$exportacion = $subastaClass->hasExportLicense($adjudicacion->num_hces1, $adjudicacion->lin_hces1);
-
 		$adjudicacionFormat->licencia_exportacion = 0;
-		if($exportacion){
+		if($adjudicacion->exportacion != 'N'){
 			$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
-			$adjudicacionFormat->licencia_exportacion = $pagoController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
+			$adjudicacionFormat->licencia_exportacion = $paymentController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
 		}
 
 		$adjudicacionFormat->imp_invoice = $adjudicacion->himp_csub + $adjudicacion->base_csub + $adjudicacionFormat->base_csub_iva;
-		$adjudicacionFormat->imp_envio = $pagoController->gastosEnvio($adjudicacionFormat->imp_invoice);
+		$adjudicacionFormat->imp_envio = $paymentController->gastosEnvio($adjudicacionFormat->imp_invoice);
 		$adjudicacionFormat->total_imp_invoice = $adjudicacionFormat->imp_invoice + $adjudicacionFormat->imp_envio['imp'] + $adjudicacionFormat->imp_envio['iva'] + $adjudicacionFormat->licencia_exportacion;
 
 		return $adjudicacionFormat;
@@ -4597,6 +4627,7 @@ class UserController extends Controller
 			];
 		})->toArray();
 
+		$billFiles = $facturas->getBillsFilesFromMultipleSheets($sheets);
 		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
 
 		$inf_fact = [];
@@ -4607,14 +4638,14 @@ class UserController extends Controller
 
 			$facturas->serie = $val_pendiente->anum_pcob;
 			$facturas->numero = $val_pendiente->num_pcob;
-			$fact_temp = $this->bills($val_pendiente->anum_pcob,$val_pendiente->num_pcob,true);
+
+			$fact_temp = $billFiles->where('anum_dvc02', $val_pendiente->anum_pcob)->where('num_dvc02', $val_pendiente->num_pcob)->first();
 
 			$val_pendiente->date = $fact_temp['date'] ?? null;
 			$val_pendiente->factura = $fact_temp['filname'] ?? null;
 
 			//buscamos si la factura esta generada
-			$tipo_fact = $facturas->bill_text_sub(substr($facturas->serie, 0, 1), substr($facturas->serie, 1));
-			$tipo_tv_contav = $tipo_fact->tv_contav;
+			$tipo_tv_contav = $val_pendiente->tv_contav;
 			$val_pendiente->tipo_tv = $tipo_tv_contav;
 			$totalPrice = 0;
 
@@ -4686,11 +4717,12 @@ class UserController extends Controller
 			];
 		})->toArray();
 
+		$billFiles = $facturas->getBillsFilesFromMultipleSheets($sheets);
 		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
 
 		foreach($pagado as $fact_pag){
 
-			$fact_temp = $this->bills($fact_pag->afra_cobro1,$fact_pag->nfra_cobro1,true);
+			$fact_temp = $billFiles->where('anum_dvc02', $fact_pag->afra_cobro1)->where('num_dvc02', $fact_pag->nfra_cobro1)->first();
 			$fact_pag->date = $fact_temp['date'] ?? null;
 			$fact_pag->factura = $fact_temp['filname'] ?? null;
 			$facturas->serie = $fact_pag->afra_cobro1;

@@ -136,13 +136,15 @@ class FgDvc1l extends Model
 	public function scopeWhereMultiplesSeriesAndLines($query, $seriesAndLines = [])
 	{
 		return $query->when($seriesAndLines, function ($query, $seriesAndLines) {
-			foreach ($seriesAndLines as $serieAndLine) {
-				$query->orWhere(function ($query) use ($serieAndLine) {
-						$query->where('ANUM_DVC1L', $serieAndLine['serie'])
-							->where('NUM_DVC1L', $serieAndLine['line']);
-				});
-			}
-			return $query;
+			return $query->where(function ($query) use ($seriesAndLines) {
+				foreach ($seriesAndLines as $serieAndLine) {
+					$query->orWhere(function ($query) use ($serieAndLine) {
+							$query->where('ANUM_DVC1L', $serieAndLine['serie'])
+								->where('NUM_DVC1L', $serieAndLine['line']);
+					});
+				}
+				return $query;
+			});
 		}, function ($query) {
 			return $query;
 		});
