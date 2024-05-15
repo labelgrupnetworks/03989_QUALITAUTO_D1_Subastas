@@ -13,7 +13,7 @@
 
 	$galleryDomains = [
         'local' => Config::get('app.url'),
-        'develop' => "https://www.preprodgaleria.enpreproduccion.com",
+        'develop' => "https://preprodgaleria.enpreproduccion.com",
         'production' => "https://galeria.ansorena.com",
     ];
     $domain = $domains[$envioroment];
