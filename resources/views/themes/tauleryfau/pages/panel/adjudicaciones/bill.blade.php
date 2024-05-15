@@ -65,7 +65,7 @@ if(!empty($bill->factura)){
                 <span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
 
                 @if (!empty($document->factura) && file_exists($document->factura))
-                    <a class="panel-pdf-icon" href="/prefactura/{{ $url }}" target="_blank" download>
+                    <a class="panel-pdf-icon" href="{{ $url }}" target="_blank" download>
                         <i class="fas fa-file-pdf fa-2x"></i>
                     </a>
                 @endif

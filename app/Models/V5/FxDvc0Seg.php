@@ -8,7 +8,8 @@ use Carbon\Carbon;
 use Carbon\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Config;
+use Illuminate\Support\Facades\Config;
+
 class FxDvc0Seg extends Model
 {
     protected $table = 'FXDVC0SEG';
@@ -75,6 +76,10 @@ class FxDvc0Seg extends Model
 
 	public static function getFollowUpByBills($billsIds)
 	{
+		if((is_array($billsIds) && !$billsIds) || (is_collection($billsIds) && $billsIds->isEmpty())){
+			return collect();
+		}
+
 		return self::select('anum_dvc0seg','num_dvc0seg', 'des_estadosseg', 'fecha_dvc0seg', 'lin_dvc0seg', 'idseg_dvc0seg')
 			->joinFxEstadosSeg()
 			->whereBills($billsIds)
@@ -96,12 +101,15 @@ class FxDvc0Seg extends Model
 
 	public function scopeWhereBills($query, $billsIds)
 	{
-		foreach ($billsIds as $bill) {
-			$query->orWhere([
-				['anum_dvc0seg', $bill['afra']],
-				['num_dvc0seg', $bill['nfra']]
-			]);
-		}
+		return $query->where(function($query) use ($billsIds){
+			foreach ($billsIds as $bill) {
+				$query->orWhere([
+					['anum_dvc0seg', $bill['afra']],
+					['num_dvc0seg', $bill['nfra']]
+				]);
+			}
+			return $query;
+		});
 	}
 
 	/**
