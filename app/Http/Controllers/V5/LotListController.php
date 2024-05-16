@@ -934,6 +934,9 @@ class LotListController extends Controller
 
                     foreach($words as $key => $word ){
 
+						#quitamos los corchetes que puedan venir
+						$word = str_replace(array("[","]"), "", $word);
+
 						#que no sea una palabra escluida por Catsearctch
                       	if(!in_array($word,$excludedWords)){
 						#ponemos el comodin de busqueda % para que busque cualquier texto despues de la palabra y dolar $ para que busque por stem (raiz, origen de una palabra)
