@@ -24,7 +24,7 @@ class AuctionInTime extends Notification implements ShouldQueue
 	 * @return void
 	 */
 	public function __construct(
-		private FgSub $auction,
+		private $auction,
 		private string $whenTime
 	) {
 	}
