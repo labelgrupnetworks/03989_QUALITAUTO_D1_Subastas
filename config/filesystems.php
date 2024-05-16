@@ -69,7 +69,7 @@ return [
 		'avatars' => [
 			'driver' => 'local',
 			'root' => storage_path('app/public/avatars/') . config('app.emp'),
-			'url' => config('app.url').'/storage/avatars',
+			'url' => config('app.url') . '/storage/avatars/' . config('app.emp'),
 			'visibility' => 'public'
 		],
 
