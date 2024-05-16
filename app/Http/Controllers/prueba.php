@@ -175,8 +175,6 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$a = new HasAuctionAction();
-		$a('week');
 		die();
 	}
 
