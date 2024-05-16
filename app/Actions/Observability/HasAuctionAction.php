@@ -32,7 +32,25 @@ class HasAuctionAction
 
 		foreach ($recipients as $recipient) {
 			$notification = Notification::route('mail', $recipient);
-			$this->sendNotification($notification, new AuctionInTime($auction, $when));
+			$this->sendNotification($notification, new AuctionInTime($this->auctionValueObject($auction), $when));
 		}
+	}
+
+	private function auctionValueObject($auction)
+	{
+		return (object) [
+			'cod_sub' => $auction->cod_sub,
+			'agrsub_sub' => $auction->agrsub_sub,
+			'orders_start' => $auction->orders_start,
+			'orders_end' => $auction->orders_end,
+			'tipo_sub' => $auction->tipo_sub,
+			'reference' => $auction->reference,
+			'name' => $auction->name,
+			'description' => $auction->description,
+			'id_auc_sessions' => $auction->id_auc_sessions,
+			'session_start' => $auction->session_start,
+			'session_end' => $auction->session_end,
+			'emp_sub' => $auction->emp_sub
+		];
 	}
 }
