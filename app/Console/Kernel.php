@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
 		$schedule->call(new HasAuctionAction, ['when' => 'week'])
 			->name('Comprobar si subasta en una semana')
 			->days([Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY, Schedule::FRIDAY])
-			->dailyAt('9:00');
+			->dailyAt('10:00');
 
 		$schedule->call(new HasAuctionAction, ['when' => 'day'])
 			->name('Comprobar si subasta hoy')
