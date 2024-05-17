@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>{{ trans("admin-app.fields.id") }}</th>
+				<th>{{ trans("admin-app.fields.environment") }}</th>
                 <th>{{ trans("admin-app.fields.class_name") }}</th>
                 <th>{{ trans("admin-app.fields.failed_date") }}</th>
                 <th>
@@ -16,11 +17,16 @@
             @forelse ($failedJobs as $job)
                 <tr id="{{ $job->id }}">
                     <td>{{ $job->id }}</td>
+					<td>{{ $job->queue }}</td>
                     <td>{{ $job->job_name }}</td>
                     <td>{{ $job->failed_at_format }}</td>
 
                     <td>
-                        <button class="btn btn-xs btn-success" title="Ver más" data-toggle="modal" data-target="#jobModal"
+						<button class="btn btn-xs btn-warning" title="Ver excepción" data-toggle="modal" data-target="#jobModal"
+                            data-route="{{ route('admin.jobs.failed', ['id' => $job->id]) }}" data-type="exception">
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </button>
+                        <button class="btn btn-xs btn-success" title="Ver contenido" data-toggle="modal" data-target="#jobModal"
                             data-route="{{ route('admin.jobs.failed', ['id' => $job->id]) }}">
                             <i class="fa fa-eye"></i>
                         </button>

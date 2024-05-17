@@ -50,6 +50,7 @@ class AdminJobsController extends Controller
 	{
 		$failedJob = DB::table('failed_jobs')->where('id', $id)->first();
 		$failedJob->payload = json_decode($failedJob->payload);
+		$failedJob->exception = str_replace("\n", "<br>", $failedJob->exception);
 		return response()->json(['status' => 'success', 'data' => $failedJob]);
 	}
 
