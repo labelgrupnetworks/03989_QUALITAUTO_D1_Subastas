@@ -4946,7 +4946,7 @@ class UserController extends Controller
 	  private function checkValidFormatPassport($passport)
 	  {
 		$passport = strtoupper($passport);
-		$pattern = "/^[A-Z]{3}[0-9]{6}[A-Z]{1}$/";
+		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);
 	  }
 
