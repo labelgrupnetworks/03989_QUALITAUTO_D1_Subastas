@@ -2,6 +2,8 @@
 	--primary-color: #c8ad89;
 	--primary-color-hover: #977f60;
 
+	--primary-color-low-opacity: #c8ad8909;
+
 	--secondary-button-color: #707B7C;
 	--secondary-button-border: #707B7C;
 	--secondary-button-background: #fff;
@@ -5168,6 +5170,7 @@ ul.sub_menu_adj {
 
 .panel-default > .panel-heading {
 	color: #333;
+	background-color: var(--primary-color-low-opacity);
 }
 
 .panel-heading {
@@ -5686,4 +5689,8 @@ reinicializo estilo para no afectar al resto de páginas
 
 .register-dni-section :is(.form-group, p) {
 	padding: 0 15px;
+}
+
+.panel-default>.panel-heading+.panel-collapse>.panel-body {
+	border-top: 2px solid var(--primary-color);
 }
