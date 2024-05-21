@@ -959,6 +959,10 @@ class User
 				});
 			});
 
+			if (config('app.sellAuctionsStartDateOrder', false)) {
+				$query->orderBy('auc."start"', config('app.sellAuctionsStartDateOrder'));
+			}
+
 			if(\Config::get("app.number_bids_lotlist") ){
 				$query = $query->selectRaw(" (SELECT COUNT(DISTINCT(LICIT_ASIGL1))  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) LICITS")
 				->selectRaw(" (SELECT COUNT(LIN_ASIGL1)  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) BIDS");
