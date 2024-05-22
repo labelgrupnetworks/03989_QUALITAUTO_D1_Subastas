@@ -5170,6 +5170,9 @@ ul.sub_menu_adj {
 
 .panel-default > .panel-heading {
 	color: #333;
+}
+
+.sales-panel .panel-default>.panel-heading {
 	background-color: var(--primary-color-low-opacity);
 	border-bottom: 2px solid var(--primary-color);
 	margin-bottom: 6px;
@@ -5693,6 +5696,6 @@ reinicializo estilo para no afectar al resto de páginas
 	padding: 0 15px;
 }
 
-.panel-default>.panel-heading+.panel-collapse>.panel-body {
+.sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
 	border-top: 0px;
 }
