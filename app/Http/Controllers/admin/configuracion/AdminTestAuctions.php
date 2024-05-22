@@ -40,9 +40,16 @@ class AdminTestAuctions extends Controller
 			return $lots->min('ref_asigl0');
 		});
 
-		$defaultAuctions->transform(function (array $defaultAuction) use ($auctions, $firstLots) {
+		$fgSub = new FgSub();
+
+		$defaultAuctions->transform(function (array $defaultAuction) use ($auctions, $firstLots, $fgSub) {
 			$defaultAuction['isCreated'] = $auctions->contains($defaultAuction['idauction']);
 			$defaultAuction['isFirstLotCreated'] = $firstLots->has($defaultAuction['idauction']);
+
+			$defaultAuction['status_description'] = $fgSub->getSubcSubTypes()[$defaultAuction['status']];
+			$defaultAuction['type_description'] = $fgSub->getTipoSubTypes()[$defaultAuction['type']];
+			$defaultAuction['visiblebids_description'] = $fgSub->getSubAbiertaTypes()[$defaultAuction['visiblebids']];
+
 			return $defaultAuction;
 		});
 
