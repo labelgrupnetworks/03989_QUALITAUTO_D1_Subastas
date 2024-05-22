@@ -68,6 +68,6 @@ class RecipientsNotificationList
 
 	private function whenLocalEnv()
 	{
-		return [env('MAIL_TO')];
+		return [Config::get('mail.mail_to')];
 	}
 }

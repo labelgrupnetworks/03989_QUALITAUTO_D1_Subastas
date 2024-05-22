@@ -43,6 +43,7 @@ class CheckCertificateAction
 
 	private function getNotificationAccordingToExpired(int $daysToFinishCertificate) : ?NotificationClass
 	{
+		Log::info('Días para finalizar el certificado: ' . $daysToFinishCertificate);
 		return match (true) {
 			$daysToFinishCertificate === 0 => ExpiredCertificate::class,
 			$daysToFinishCertificate <= self::DAYS_TO_FINISH => TimeToFinishCertificate::class,
