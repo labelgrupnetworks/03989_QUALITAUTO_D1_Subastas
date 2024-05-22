@@ -28,7 +28,7 @@ class CheckCertificateAction
 
 		foreach ($urls as $url) {
 			$daysToFinishCertificate = $this->checkCertificate($url);
-			$notificationToSend = $this->getNotificationAccordingToExpired($daysToFinishCertificate);
+			$notificationToSend = $this->getNotificationAccordingToExpired($daysToFinishCertificate, $url);
 
 			if(!$notificationToSend) {
 				continue;
@@ -36,19 +36,21 @@ class CheckCertificateAction
 
 			foreach ($recipients as $recipient) {
 				$notification = Notification::route('mail', $recipient);
-				$this->sendNotification($notification, new $notificationToSend($url, $daysToFinishCertificate));
+				$this->sendNotification($notification, $notificationToSend);
 			}
 		}
 	}
 
-	private function getNotificationAccordingToExpired(int $daysToFinishCertificate) : ?NotificationClass
+	private function getNotificationAccordingToExpired(int $daysToFinishCertificate, string $url) : ?NotificationClass
 	{
 		Log::info('Días para finalizar el certificado: ' . $daysToFinishCertificate);
-		return match (true) {
-			$daysToFinishCertificate === 0 => ExpiredCertificate::class,
-			$daysToFinishCertificate <= self::DAYS_TO_FINISH => TimeToFinishCertificate::class,
+		$notification =  match (true) {
+			$daysToFinishCertificate === 0 => new ExpiredCertificate($url),
+			$daysToFinishCertificate <= self::DAYS_TO_FINISH => new TimeToFinishCertificate($url, $daysToFinishCertificate),
 			default => null,
 		};
+
+		return $notification;
 	}
 
 	private function checkCertificate(string $url) : int

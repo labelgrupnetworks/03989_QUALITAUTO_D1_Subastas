@@ -2,13 +2,9 @@
 
 namespace App\Console;
 
-use App\Actions\Observability\CheckCertificateAction;
-use App\Actions\Observability\CheckFailedJobsAction;
-use App\Actions\Observability\HasAuctionAction;
 use App\Models\V5\Web_Scheduled_Task;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Config;
 
 class Kernel extends ConsoleKernel
 {
