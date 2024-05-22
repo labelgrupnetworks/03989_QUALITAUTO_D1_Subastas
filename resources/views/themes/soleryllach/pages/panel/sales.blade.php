@@ -35,7 +35,7 @@
 								@foreach ($subastas as $key_sub => $subasta)
 									<div class="panel-heading">
 
-										<a data-toggle="collapse" href="#{{ $key_sub }}" aria-expanded="true'">
+										<a data-toggle="collapse" href="#{{ $key_sub }}" aria-expanded="false">
 											<h4 class="panel-title">
 												{{ $key_sub }} - {{ $subasta[0]->des_sub }} - {{ trans("$theme-app.global.from") }}
 												{{ \Tools::getDateFormat($subasta[0]->dfec_sub, 'Y-m-d H:i:s', 'd/m/Y') }}
@@ -45,8 +45,8 @@
 										</a>
 									</div>
 
-									<div id="{{ $key_sub }}" class="panel-collapse collapse in"
-										aria-expanded="true">
+									<div id="{{ $key_sub }}" class="panel-collapse collapse"
+										aria-expanded="false">
 										<div class="panel-body">
 											<div class="table-responsive">
 												<table class="table table-striped table-custom" style="width:100%">
