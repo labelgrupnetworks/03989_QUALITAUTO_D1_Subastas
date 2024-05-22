@@ -1284,4 +1284,13 @@ private $debug = true;
 			$this->attachmentsFiles = $attachments;
 			return $this;
 		}
+
+		public function setAddress($address)
+		{
+			if(empty($address)){
+				return;
+			}
+
+			$this->setAtribute('DIR_ENVIO', "{$address->pob_clid} ({$address->cp_clid}) {$address->pais_clid}");
+		}
 }
