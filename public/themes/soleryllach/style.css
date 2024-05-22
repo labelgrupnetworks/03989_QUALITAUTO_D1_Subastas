@@ -5171,6 +5171,8 @@ ul.sub_menu_adj {
 .panel-default > .panel-heading {
 	color: #333;
 	background-color: var(--primary-color-low-opacity);
+	border-bottom: 2px solid var(--primary-color);
+	margin-bottom: 6px;
 }
 
 .panel-heading {
@@ -5692,5 +5694,5 @@ reinicializo estilo para no afectar al resto de páginas
 }
 
 .panel-default>.panel-heading+.panel-collapse>.panel-body {
-	border-top: 2px solid var(--primary-color);
+	border-top: 0px;
 }
