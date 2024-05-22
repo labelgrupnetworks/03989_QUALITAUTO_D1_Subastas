@@ -1,5 +1,6 @@
 @extends('admin::layouts.logged')
 @section('content')
+
     <section class="content-body" role="main">
         @include('admin::includes.header_content')
         @csrf
@@ -30,9 +31,9 @@
                             <tr id="{{ $auction['idauction'] }}">
                                 <td>{{ $auction['idauction'] }}</td>
                                 <td>{{ $auction['name'] }}</td>
-                                <td>{{ $auction['status'] }}</td>
-                                <td>{{ $auction['type'] }}</td>
-                                <td>{{ $auction['visiblebids'] }}</td>
+                                <td>{{ $auction['status_description'] }}</td>
+                                <td>{{ $auction['type_description'] }}</td>
+                                <td>{{ $auction['visiblebids_description'] }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-xs btn-default dropdown-toggle" id="dropdownMenu1"

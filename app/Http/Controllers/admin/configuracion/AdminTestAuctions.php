@@ -40,9 +40,16 @@ class AdminTestAuctions extends Controller
 			return $lots->min('ref_asigl0');
 		});
 
-		$defaultAuctions->transform(function (array $defaultAuction) use ($auctions, $firstLots) {
+		$fgSub = new FgSub();
+
+		$defaultAuctions->transform(function (array $defaultAuction) use ($auctions, $firstLots, $fgSub) {
 			$defaultAuction['isCreated'] = $auctions->contains($defaultAuction['idauction']);
 			$defaultAuction['isFirstLotCreated'] = $firstLots->has($defaultAuction['idauction']);
+
+			$defaultAuction['status_description'] = $fgSub->getSubcSubTypes()[$defaultAuction['status']];
+			$defaultAuction['type_description'] = $fgSub->getTipoSubTypes()[$defaultAuction['type']];
+			$defaultAuction['visiblebids_description'] = $fgSub->getSubAbiertaTypes()[$defaultAuction['visiblebids']];
+
 			return $defaultAuction;
 		});
 
@@ -52,12 +59,11 @@ class AdminTestAuctions extends Controller
 	public function createAuction($idauction)
 	{
 		$auction = $this->getDefaultAuctions()->where('idauction', $idauction)->first();
-		if(!$auction) {
+		if (!$auction) {
 			return redirect()->back()->with('errors', ['Subasta no encontrada']);
 		}
 
 		DB::beginTransaction();
-		$images = $this->getFakeImage();
 
 		$isCreated = $this->createApiAuction($auction);
 		if (!$isCreated) {
@@ -66,7 +72,7 @@ class AdminTestAuctions extends Controller
 		}
 
 		try {
-			$this->addImageToAuction($auction['idauction'], $images[0]->download_url);
+			$this->addImageToAuction($auction['idauction']);
 		} catch (\Throwable $th) {
 			Log::debug("Error al guardar la imagen", ["error" => $th->getMessage()]);
 		}
@@ -77,7 +83,7 @@ class AdminTestAuctions extends Controller
 			return redirect()->back()->with('errors', ['Error al crear los lotes']);
 		}
 
-		$isCreated = $this->addLotImages($auction, $images);
+		$isCreated = $this->addLotImages($auction);
 		if (!$isCreated) {
 			DB::rollBack();
 			return redirect()->back()->with('errors', ['Error al añadir las imágenes']);
@@ -90,12 +96,11 @@ class AdminTestAuctions extends Controller
 	public function resetAuction($idauction)
 	{
 		$auction = $this->getDefaultAuctions()->where('idauction', $idauction)->first();
-		if(!$auction) {
+		if (!$auction) {
 			return redirect()->back()->with('errors', ['Subasta no encontrada']);
 		}
 
 		DB::beginTransaction();
-		$images = $this->getFakeImage();
 
 		$isReset = $this->resetApiAuction($auction);
 		if (!$isReset) {
@@ -106,7 +111,7 @@ class AdminTestAuctions extends Controller
 		$this->resetLive($auction);
 
 		try {
-			$this->addImageToAuction($auction['idauction'], $images[0]->download_url);
+			$this->addImageToAuction($auction['idauction']);
 		} catch (\Throwable $th) {
 			Log::debug("Error al guardar la imagen", ["error" => $th->getMessage()]);
 		}
@@ -123,7 +128,7 @@ class AdminTestAuctions extends Controller
 			return redirect()->back()->with('errors', ['Error al actualizar los lotes']);
 		}
 
-		$isCreated = $this->addLotImages($auction, $images);
+		$isCreated = $this->addLotImages($auction);
 		if (!$isCreated) {
 			DB::rollBack();
 			return redirect()->back()->with('errors', ['Error al añadir las imágenes']);
@@ -136,7 +141,7 @@ class AdminTestAuctions extends Controller
 	public function createLots($idauction)
 	{
 		$auction = $this->getDefaultAuctions()->where('idauction', $idauction)->first();
-		if(!$auction) {
+		if (!$auction) {
 			return redirect()->back()->with('errors', ['Subasta no encontrada']);
 		}
 
@@ -152,7 +157,7 @@ class AdminTestAuctions extends Controller
 	public function resetLots($idauction)
 	{
 		$auction = $this->getDefaultAuctions()->where('idauction', $idauction)->first();
-		if(!$auction) {
+		if (!$auction) {
 			return redirect()->back()->with('errors', ['Subasta no encontrada']);
 		}
 
@@ -190,7 +195,7 @@ class AdminTestAuctions extends Controller
 
 	private function resetLive($auction)
 	{
-		if($auction['type'] != Fgsub::TIPO_SUB_PRESENCIAL){
+		if ($auction['type'] != Fgsub::TIPO_SUB_PRESENCIAL) {
 			return;
 		}
 
@@ -225,16 +230,18 @@ class AdminTestAuctions extends Controller
 		return $responseJson->status != 'ERROR';
 	}
 
-	private function addLotImages($auction, $images)
+	private function addLotImages($auction)
 	{
 		$lots = FgAsigl0::where('sub_asigl0', $auction['idauction'])->get();
 
 		$lotImges = [];
-		foreach ($lots as $key => $lot) {
+		foreach ($lots as $lot) {
+
+			$image = base64_encode(file_get_contents($this->getRandomImage()));
 			$lotImges[] = [
 				'idoriginlot' => "{$auction['idauction']}-{$lot->ref_asigl0}",
 				'order' => 0,
-				'img' => $images[$key]->download_url,
+				'img64' => $image,
 			];
 		}
 
@@ -242,7 +249,6 @@ class AdminTestAuctions extends Controller
 		$responseJson = json_decode($response);
 
 		return $responseJson->status != 'ERROR';
-
 	}
 
 	private function resetLotsStates($auction)
@@ -250,7 +256,7 @@ class AdminTestAuctions extends Controller
 		try {
 			$this->deleteOrders($auction['idauction']);
 			$this->deleteBids($auction['idauction']);
-			$this->opernLotAndDeleteAwardsWhenNotInvoiced($auction['idauction']);
+			$this->openLotAndDeleteAwardsWhenNotInvoiced($auction['idauction']);
 		} catch (\Throwable $th) {
 			Log::debug("reset lot", ["error" => $th->getMessage(), "idauction" => $auction['idauction']]);
 			return false;
@@ -263,7 +269,7 @@ class AdminTestAuctions extends Controller
 	{
 		//En caso de ser una subasta online se añade tiempo extra a cada lote
 		$dateEnd = $auction['finishauction'];
-		if($auction['type'] == Fgsub::TIPO_SUB_ONLINE){
+		if ($auction['type'] == Fgsub::TIPO_SUB_ONLINE) {
 			$addTime = Config::get('app.increment_endlot_online', 60) * $ref;
 			$dateEnd = date('Y-m-d H:i:s', strtotime($dateEnd . " + {$addTime} seconds"));
 		}
@@ -277,10 +283,10 @@ class AdminTestAuctions extends Controller
 			'description' => "Descripción del lote {$ref}",
 			'extrainfo' => '',
 			'search' => '',
-			'startprice' => $starPrice = $this->getRandomNumber(),
-			'lowprice' => $lowPrice = $this->getRandomNumber($starPrice),
-			'highprice' => $this->getRandomNumber($lowPrice),
-			'reserveprice' => $this->getRandomNumber($starPrice),
+			'startprice' => $starPrice = $this->getRandomPrice(),
+			'lowprice' => $lowPrice = $this->getRandomPrice($starPrice),
+			'highprice' => $this->getRandomPrice($lowPrice),
+			'reserveprice' => $this->getRandomPrice($starPrice),
 			'close' => 'N',
 			'buyoption' => 'S',
 			'startdate' => date('Y-m-d', strtotime($auction['startauction'])),
@@ -290,7 +296,7 @@ class AdminTestAuctions extends Controller
 		];
 	}
 
-	private function getRandomNumber($min = 10, $max = 1000)
+	private function getRandomPrice($min = 10, $max = 1000)
 	{
 		$random = rand($min, $max);
 		$random -= $random % 10;
@@ -315,7 +321,7 @@ class AdminTestAuctions extends Controller
 		]);
 	}
 
-	private function opernLotAndDeleteAwardsWhenNotInvoiced($cod_sub)
+	private function openLotAndDeleteAwardsWhenNotInvoiced($cod_sub)
 	{
 		FgAsigl0::where('sub_asigl0', $cod_sub)->update([
 			'cerrado_asigl0' => 'N'
@@ -327,31 +333,16 @@ class AdminTestAuctions extends Controller
 		])->delete();
 	}
 
-	private function getFakeImage()
+	private function getRandomImage()
 	{
-		$url = "https://picsum.photos/v2/list?limit=10&page=1";
-		$contents = file_get_contents($url);
-		$contents = mb_convert_encoding($contents, 'UTF-8');
-    	return json_decode($contents);
+		$randomNumber = rand(1, 18);
+		return public_path("/default/img/lot_images/{$randomNumber}.jpg");
 	}
 
-	private function addImageToAuction($idauction, $url)
+	private function addImageToAuction($idauction)
 	{
-		#SIMULO UN ENCABEZADO POR SI TIENEN CAPADOS LOS SCRIPTS, así se piensa que entramos desde un navegador
-		$context = stream_context_create(
-			[
-				"ssl" => [
-					"verify_peer"      => false,
-					"verify_peer_name" => false
-				],
-				"http" => [
-					"header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
-				]
-			]
-		);
-
-		$fileContent = file_get_contents($url, false, $context);
-		$img = imagecreatefromstring($fileContent);
+		$imagePath = $this->getRandomImage();
+		$img = imagecreatefromjpeg($imagePath);
 
 		$emp = Config::get('app.emp', '001');
 		$destinationPath = public_path("img/AUCTION_{$emp}_{$idauction}.JPEG");
