@@ -754,7 +754,7 @@ nav.navbar-default {
 	border-color: #ebebeb;
 	position: sticky;
 	top: 40px;
-	z-index: 10;
+	z-index: 9;
 }
 nav.navbar {
 	min-height: 66px;
