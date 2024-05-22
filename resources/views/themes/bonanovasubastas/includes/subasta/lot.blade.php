@@ -1,5 +1,5 @@
 <div class="square">
-    <div class="item_lot content_item_mini" data-large-src="{{Tools::url_img('lote_large', $item->num_hces1, $item->lin_hces1)}}">
+    <div class="item_lot content_item_mini" data-large-src="{{Tools::url_img('lote_medium_large', $item->num_hces1, $item->lin_hces1)}}">
         <div class="border_img_lot">
             <a title="{{ $titulo }}" <?= $url ?>>
                 <div class="img_lot">
@@ -22,7 +22,7 @@
                             $item->desadju_asigl0 == 'S' ||
                             ($item->subc_sub == 'H' && !empty($item->impadj_asigl0))))
                     <div class="retired" style ="background:#2b373a;">
-                        {{ trans($theme . '-app.subastas.buy') }} 
+                        {{ trans($theme . '-app.subastas.buy') }}
                     </div>
                 @endif
             </a>

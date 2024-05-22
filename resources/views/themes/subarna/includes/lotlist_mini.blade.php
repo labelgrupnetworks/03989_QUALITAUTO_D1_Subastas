@@ -4,7 +4,7 @@
 
                     <a title="{{ $titulo }}" <?= $url;?>  >
                         <div class="img_lot">
-<img class="img-responsive lazy" data-src="{{Tools::url_img('lote_small',$item->num_hces1,$item->lin_hces1)}}" xoriginal="{{Tools::url_img('lote_large',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
+<img class="img-responsive lazy" data-src="{{Tools::url_img('lote_small',$item->num_hces1,$item->lin_hces1)}}" xoriginal="{{Tools::url_img('lote_medium_large',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
                         </div>
                         @if( $item->retirado_asigl0 !='N')
                             <div class="retired ">
@@ -42,7 +42,7 @@
          </div>
 
         <div class="capaOculta " style="top: 200px;position: absolute; background: white;   border: 1px solid #ccc;display: none;z-index:999;">
-            <img style="max-width:638px;max-height: 400px;" src="{{Tools::url_img('lote_large',$item->num_hces1,$item->lin_hces1)}}">
+            <img style="max-width:638px;max-height: 400px;" src="{{Tools::url_img('lote_medium_large',$item->num_hces1,$item->lin_hces1)}}">
 
         </div>
     </div>
