@@ -26,7 +26,7 @@ class RecipientsNotificationList
 				'subastas@labelgrup.com'
 			],
 			'sistemas' => [
-				'sistemas@labelgurp.com',
+				'sistemas@labelgrup.com',
 				'subastas@labelgrup.com'
 			],
 		];
