@@ -2,6 +2,8 @@
     --primary-color: #c8ad89;
     --primary-color-hover: #977f60;
 
+	--primary-color-low-opacity: #c8ad8909;
+
 	/* Gray Scale */
     --white-color: #ffffff;
     --gray-color-1: #CACFCB;
@@ -4404,13 +4406,13 @@ div.content_faq a i {
 } */
 
 
-.panel-heading .panel-title:after {
+/* .panel-heading .panel-title:after {
 	content: '\f0dd';
     font: normal normal normal 14px/1 FontAwesome;
     position: absolute;
     top: 8px;
     right: 15px;
-}
+} */
 
 
 /* ---- RESULTADOS LOTES SUBASTAS ---*/
@@ -5803,6 +5805,11 @@ ul.sub_menu_adj {
 	color: #333;
 }
 
+.sales-panel .panel-default > .panel-heading {
+	background-color: var(--primary-color-low-opacity);
+	margin-bottom: 6px;
+}
+
 .panel-heading {
 	padding: 10px 15px;
 	border-bottom: 1px solid transparent;
@@ -6303,4 +6310,9 @@ reinicializo estilo para no afectar al resto de páginas
 
 .register-dni-section :is(.form-group, p) {
 	padding: 0 15px;
+}
+
+.sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
+	margin-top: -6px;
+	border-top: 2px solid var(--primary-color);
 }
