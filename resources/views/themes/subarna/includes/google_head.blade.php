@@ -5,9 +5,11 @@
     Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE, Cookies::THIRD_HOTJAR, Cookies::THIRD_LIVEAGENT]);
 @endphp
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-463062636"></script>
+
 @if($cookiesPreferences->isAnalysisAllowed())
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-463062636"></script>
+{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=AW-463062636"></script> --}}
 <script>
     window.dataLayer = window.dataLayer || [];
 
