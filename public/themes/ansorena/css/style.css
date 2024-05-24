@@ -2650,6 +2650,8 @@ a.accordion-show::after {
 .valuation-page section.fluid-banner {
 	height: auto;
 	position: relative;
+	display: flex;
+	flex-direction: column-reverse;
 }
 
 .valuation-page section.fluid-banner img {
@@ -2657,11 +2659,12 @@ a.accordion-show::after {
 }
 
 .valuation-page section.fluid-banner .slider-title {
-	position: absolute;
-	top: 50%;
-	bottom: initial;
-	transform: translateY(-50%);
+	position: relative;
 	padding: 0 1rem;
+	padding-top: 1rem;
+	color: currentColor;
+	top: 0;
+	bottom: 0;
 }
 
 .valuation-page section.fluid-banner .slider-title h1 {
