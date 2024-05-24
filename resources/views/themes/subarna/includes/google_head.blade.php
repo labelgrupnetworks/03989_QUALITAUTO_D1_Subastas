@@ -7,7 +7,7 @@
 
 @if($cookiesPreferences->isAnalysisAllowed())
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176775918-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-463062636"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -16,7 +16,7 @@
     }
     gtag('js', new Date());
 
-    gtag('config', 'UA-176775918-1');
+    gtag('config', 'AW-463062636');
 </script>
 
 <!-- Hotjar Tracking Code for www.subarna.net -->
@@ -39,5 +39,6 @@
 @else
 <script>
 	ga = () => {};
+	gtag = () => {};
 </script>
 @endif
