@@ -1408,3 +1408,33 @@ function returnFileSize(number) {
 	}
 }
 
+/**
+ * @var {int} timer - Tiempo en segundos
+ */
+time_format = function(timer, format) {
+	const days = calc_day(timer);
+	const hours = calc_hour(timer);
+	const totalHours = timer / 3600;
+	const minutes = calc_minute(timer);
+	const seconds = calc_seconds(timer);
+
+	if(totalHours >= 24) {
+		return format.replace('%D', days)
+			.replace('%H', hours)
+			.replace('%Mm', '')
+			.replace('%Ss', '');
+	}
+	else if(totalHours >= 1) {
+		return format.replace('%H', hours)
+			.replace('%M', minutes)
+			.replace('%Dd', '')
+			.replace('%Ss', '');
+	}
+	else {
+		return format.replace('%M', minutes)
+			.replace('%S', seconds)
+			.replace('%Dd', '')
+			.replace('%Hh', '');
+
+	}
+}
