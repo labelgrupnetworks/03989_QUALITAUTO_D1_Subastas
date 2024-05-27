@@ -1243,7 +1243,7 @@ nav.menu-header a:hover:after {
 	.submenu-wrapper {
 		position: sticky;
 		top: 180px;
-		z-index: 2;
+		z-index: 6;
 	}
 
 	.submenu-block {
