@@ -4525,6 +4525,21 @@ class subastaTiempoRealController extends Controller
         }
         $jumpToOrder = (int)$actual_lot->orden_hces1;
 
+		$openLot = Request::input('open_lot', 0);
+		if ($openLot) {
+			$SubastaTR->ref = $ref;
+			$res_open = $SubastaTR->openLot();
+
+			if(!$res_open){
+				$res = array(
+					'status' => 'error',
+					'msg' => 'open_lot_error'
+				);
+				return $res;
+			}
+		}
+
+
         $subasta->lote            = $ref_actual;
         $actual_lot = $subasta->getLoteLight();
         if(empty($actual_lot)){
