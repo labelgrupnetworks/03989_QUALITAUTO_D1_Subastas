@@ -5,20 +5,14 @@
 @stop
 
 @section('content')
-	<?php
-	$bread[] = ['name' => trans($theme . '-app.foot.contact')];
-	?>
-
 	<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
-	@include('includes.breadcrumb')
 
 	<div class="contact-page">
 		<div class="background-light-green">
 			<div class="container padding-contact-sections">
 				<div class="row top-align-items-center">
 					<div class="col-xs-12 col-md-8">
-						<h1 class="fs-big-title">
+						<h1>
 							{!! trans("$theme-app.contact.title") !!}
 						</h1>
 					</div>

@@ -5,12 +5,6 @@
 @stop
 
 @section('content')
-	<?php
-
-	$bread[] = ['name' => $data['title']];
-	?>
-	@include('includes.breadcrumb')
-
 	<div class="tasaciones">
 		<div class="background-light-green">
 
@@ -18,7 +12,7 @@
 				<div class="row top-align-items-center">
 					<div class="col-xs-12 col-md-7 col-lg-8">
 						<div class="title-container">
-							<h1 class="fs-big-title bold">
+							<h1>
 								{!! trans("$theme-app.valoracion_gratuita.page_title") !!}
 							</h1>
 						</div>

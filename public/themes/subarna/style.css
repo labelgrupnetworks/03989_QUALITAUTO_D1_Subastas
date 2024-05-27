@@ -4002,6 +4002,16 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 ------------------- Contact Page -------------------------
 ------------------------------------------------------- */
 
+.contact-page h1 {
+	font-size: var(--fs-big-title);
+	font-family: var(--ff-highlight);
+	font-weight: var(--fw-highlight-bold);
+}
+
+.contact-page .default-bold {
+	font-weight: var(--fw-default-bold);
+}
+
 .contact-page .background-contact-form {
 	background-color: var(--color-form-background);
 }
@@ -4256,6 +4266,12 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 .tasaciones .top-align-items-center {
 	display: flex;
 	align-items: center;
+}
+
+.tasaciones h1 {
+	font-size: var(--fs-big-title);
+	font-family: var(--ff-highlight);
+	font-weight: var(--fw-highlight-bold);
 }
 
 .image-column {
