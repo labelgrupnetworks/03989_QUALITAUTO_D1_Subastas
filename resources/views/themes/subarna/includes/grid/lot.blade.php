@@ -40,7 +40,7 @@
                         </p>
 
 
-                        @if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
+                       {{--  @if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
                             <p>
                                 <span class="salida-title">
                                     {{ trans($theme . '-app.lot.puja_actual') }}
@@ -53,11 +53,11 @@
                             <p>
                                 <span class="salida-title">{{ trans($theme . '-app.lot_list.no_bids') }} </span>
                             </p>
-                        @endif
+                        @endif --}}
 
 
 
-                        @if ($awarded)
+                        {{-- @if ($awarded)
                             <p>
                                 @if ($devuelto)
                                     <span
@@ -82,7 +82,7 @@
                                     </span>
                                 @endif
                             </p>
-                        @endif
+                        @endif --}}
 
 
                         @if ($subasta_online && !$cerrado)

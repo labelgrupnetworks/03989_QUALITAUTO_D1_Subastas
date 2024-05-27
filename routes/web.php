@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Config;
 require __DIR__ . '/redirect.php';
 //require __DIR__ . '/test.php'; //Para mostrar momento de las consultas en el navegador
 
+Route::get('/design', function () {
+	return view('pages.design');
+});
+
 Route::get('/{lang}/img/load/{size}/{img}', 'ImageController@return_image_lang');
 Route::get('/img/load/{size}/{img}', 'ImageController@return_image');
 #load img url amigable

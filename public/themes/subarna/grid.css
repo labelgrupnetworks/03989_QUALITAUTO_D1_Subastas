@@ -3,10 +3,15 @@ main.grid-page {
 	padding-bottom: var(--space-medium-large);
 }
 
+.grid-page .container-fluid {
+	padding-left: var(--space-medium-large);
+	padding-right: var(--space-medium-large);
+}
+
 .lots-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	row-gap: var(--space-medium-large);
+	row-gap: var(--space-xlarge);
 	column-gap: 2rem;
 	margin-bottom: 2rem;
 }

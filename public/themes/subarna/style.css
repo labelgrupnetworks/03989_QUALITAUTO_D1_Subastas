@@ -77,11 +77,11 @@
 	/*14px to 16px*/
 	--fs-xsmall: clamp(0.875rem, 0.7298rem + 0.6452vw, 1rem);
 
-	/*14px to 22px*/
-	--fs-small: clamp(0.875rem, 0.7298rem + 0.6452vw, 1.375rem);
+	/*14px to 18px*/
+	--fs-small: clamp(0.875rem, 0.8173rem + 0.2564vw, 1.125rem);
 
-	/* 16px to 24px */
-	--fs-default: clamp(1rem, 0.8548rem + 0.6452vw, 1.5rem);
+	/* 16px to 21px */
+	--fs-default: clamp(1rem, 0.9279rem + 0.3205vw, 1.3125rem);
 
 	/* 18px to 28px */
 	--fs-large: clamp(1.125rem, 0.9435rem + 0.8065vw, 1.75rem);
@@ -100,6 +100,7 @@
 	--space-medium: clamp(1rem, 0.7097rem + 1.2903vw, 2rem);
 	--space-medium-large: clamp(1rem, 0.4194rem + 2.5806vw, 3rem);
 	--space-large: clamp(1.6875rem, 1.5rem + 0.8333vw, 2.5rem);
+	--space-xlarge: clamp(1.5rem, 0.6923rem + 3.5897vw, 5rem);
 }
 
 html {
@@ -835,7 +836,7 @@ div.map_contact {
 
 div.item_subasta {
 	min-height: 496px;
-	margin-bottom: 30px;
+	margin-bottom: var(--space-medium-large);
 }
 
 div.item_subasta img {
@@ -1595,6 +1596,7 @@ tbody tr {
 	width: 100%;
 	text-align: center;
 	text-wrap: wrap;
+	text-transform: initial;
 }
 
 .ficha-puja {
@@ -3921,9 +3923,26 @@ section.lotes_destacados {
 	transition: opacity .1s ease-in-out, transform .1s ease-in-out;
 }
 
-main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .static-page) {
+main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .static-page, .design-page) {
 	padding-top: var(--space-medium-large);
 	padding-bottom: var(--space-medium-large);
+}
+
+.ficha-subasta_content {
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+	gap: 3rem;
+}
+
+.ficha-subasta_image {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.ficha-subasta_info {
+	max-width: 750px;
 }
 
 .ficha-subasta_info h1 {
@@ -3971,6 +3990,12 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .ficha-subasta_links>* {
 	flex: 1;
+}
+
+@media(min-width: 992px) {
+	.ficha-subasta_content {
+		flex-direction: row;
+	}
 }
 
 /* -------------------------------------------------------
@@ -4358,6 +4383,11 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .ficha-page {
 	font-size: var(--fs-small);
+}
+
+.ficha-page .container-fluid {
+	padding-left: var(--space-medium-large);
+	padding-right: var(--space-medium-large);
 }
 
 .ficha-page h2 {

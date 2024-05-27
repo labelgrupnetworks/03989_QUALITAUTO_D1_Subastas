@@ -2,9 +2,9 @@
 <div class="top-filters-wrapper">
 
     <div class="pagination-wrapper">
-        @if (\Config::get('app.paginacion_grid_lotes'))
+        {{-- @if (\Config::get('app.paginacion_grid_lotes'))
             {{ $paginator->links('front::includes.grid.paginator_pers') }}
-        @endif
+        @endif --}}
     </div>
 
     <div class="order-auction-lot">
