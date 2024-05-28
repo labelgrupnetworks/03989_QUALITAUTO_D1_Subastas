@@ -15,7 +15,7 @@ class CheckCertificateAction
 {
 	use ActionNotificable;
 
-	private const DAYS_TO_FINISH = 30;
+	private const DAYS_TO_FINISH = 15;
 
 	public function __invoke()
 	{
