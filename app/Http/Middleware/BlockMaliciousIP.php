@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class BlockMaliciousIP
@@ -33,7 +33,7 @@ class BlockMaliciousIP
 	private function isValidSessionCookie($request)
 	{
 		$cookie = $request->cookie(
-			Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
+			Config::get('session.cookie')
 		);
 
 		try {
