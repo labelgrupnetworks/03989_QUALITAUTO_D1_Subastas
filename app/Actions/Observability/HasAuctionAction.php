@@ -28,7 +28,11 @@ class HasAuctionAction
 			return;
 		}
 
-		$recipients = (new RecipientsNotificationList)->getAllTeams();
+		$recipientsList = new RecipientsNotificationList;
+		$recipients = $recipientsList->getWebTeam();
+		if($when === 'day') {
+			$recipients = $recipientsList->getAllTeams();
+		}
 
 		foreach ($recipients as $recipient) {
 			$notification = Notification::route('mail', $recipient);
