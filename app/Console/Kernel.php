@@ -17,9 +17,9 @@ class Kernel extends ConsoleKernel
 	protected function schedule(Schedule $schedule)
 	{
 		Web_Scheduled_Task::whereActive()->get()->each(function ($task) use ($schedule) {
-			$schedule->command($task->command_scheduled_tasks)
-				->name($task->task_name_scheduled_tasks)
-				->cron($task->cron_expression_scheduled_tasks);
+			$schedule->command($task->command)
+				->name($task->task_name)
+				->cron($task->cron_expression);
 		});
 	}
 

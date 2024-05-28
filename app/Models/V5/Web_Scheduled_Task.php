@@ -10,22 +10,22 @@ use Illuminate\Support\Facades\Config;
 class Web_Scheduled_Task extends Model
 {
 	protected $table = 'web_scheduled_tasks';
-	protected $primaryKey = 'id_scheduled_tasks';
+	protected $primaryKey = 'id';
 
 	public $timestamps = false;
 
 	protected $fillable = [
-		'emp_scheduled_tasks',
-		'task_name_scheduled_tasks',
-		'command_scheduled_tasks',
-		'cron_expression_scheduled_tasks',
-		'is_active_scheduled_tasks'
+		'emp',
+		'task_name',
+		'command',
+		'cron_expression',
+		'is_active'
 	];
 
 	public function __construct(array $vars = [])
 	{
 		$this->attributes = [
-			'emp_scheduled_tasks' => Config::get("app.emp"),
+			'emp' => Config::get("app.emp"),
 		];
 		parent::__construct($vars);
 	}
@@ -35,12 +35,12 @@ class Web_Scheduled_Task extends Model
 		parent::boot();
 
 		static::addGlobalScope('emp', function (Builder $builder) {
-			$builder->where('emp_scheduled_tasks', Config::get("app.emp"));
+			$builder->where('emp', Config::get("app.emp"));
 		});
 	}
 
 	public function scopeWhereActive($query)
 	{
-		return $query->where('is_active_scheduled_tasks', 1);
+		return $query->where('is_active', 1);
 	}
 }
