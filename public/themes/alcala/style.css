@@ -5244,6 +5244,17 @@ header {border-bottom:lightgray 1px solid;}
 
 #contactForm input[type="checkbox"] {height:20px;display:inline-block;width:20px;position:relative;top:0;left:15px;margin-right:10px;}
 
+@media (max-width: 420px) {
+	.g-recaptcha {
+		position: absolute;
+		left: 2px;
+	}
+
+	.first_check {
+		margin-top: 80px;
+	}
+}
+
 @media (max-width: 375px){
 
     fieldset {margin-bottom:50px;}
@@ -5251,7 +5262,7 @@ header {border-bottom:lightgray 1px solid;}
         transform:scale(0.65);-webkit-transform:scale(0.65);
         transform-origin: ;-webkit-transform-origin: ;
         position: absolute;
-        left:-35px;
+		left: -13px;
     }
     .first_check {margin-top:70px;}
 }

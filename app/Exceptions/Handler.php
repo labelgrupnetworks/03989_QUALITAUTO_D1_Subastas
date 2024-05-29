@@ -54,6 +54,8 @@ class Handler extends ExceptionHandler
         try {
             return array_merge(parent::context(), array_filter([
 				'route' => request()->url() ?? '',
+				'query' => request()->query() ?? '',
+				'post' => request()->post() ?? '',
                 'userId' => Session::has('user') ? Session::get('user')['cod'] : null,
             ]));
         } catch (Throwable $e) {
