@@ -3481,20 +3481,28 @@ class UserController extends Controller
     }
 
 
-    public function sendPasswordRecovery()
+    public function sendPasswordRecovery(HttpRequest $request)
     {
-        $email = Request::input('email');
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email'
+		]);
+
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
+		if($validator->fails()){
+			return $successResponse;
+		}
+
+        $email = $request->input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
 
         $user = new User();
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
-
-		$successResponse = [
-			'status' => 'succes',
-			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-		];
 
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
 

@@ -23,6 +23,7 @@
 - gd
 - mbstring
 - exif
+- intl (para comprobar certificados)
 - oci8_12c
 
 <a name="download"></a>
