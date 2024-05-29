@@ -198,9 +198,9 @@
             <div class="modal-button-auction mb-3 d-flex align-items-center justify-content-space-bettween flex-wrap">
                 <div class="btn-current-action gotoauction col-md-6 col-xs-12 ">
                     @php
-						if(empty($url_tiempo_real))
-                   		 $url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
-						@endif
+						if(empty($url_tiempo_real)){
+                   		 	$url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
+						}
 					@endphp
 					<a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
                 </div>
