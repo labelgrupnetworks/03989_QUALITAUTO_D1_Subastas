@@ -1,4 +1,5 @@
 @php
+	use App\Models\articles\FgArt0;
 
     $titulo = $article->model_art0;
     $img = $article->img;
@@ -6,9 +7,11 @@
     $images = $article->images;
     $images[] = '/themes/ansorena/assets/img/pages/generico-joyeria.jpg';
 
-    $relatedArticles = App\Models\articles\FgArt0::select('ID_ART0, MODEL_ART0,   DES_ART0, PVP_ART0, SEC_ART0')
-        ->where('ID_ART0', '!=', $article->id_art0)
-        ->where('SEC_ART0', '=', $article->sec_art0)
+    $relatedArticles = FgArt0::select('FGART0.ID_ART0, FGART0.PVP_ART0, FGART0.SEC_ART0')
+		->selectRaw('NVL(FGART0_LANG.MODEL_ART0_LANG, FGART0.MODEL_ART0) as model_art0')
+		->leftJoinFgArt0Lang()
+        ->where('FGART0.ID_ART0', '!=', $article->id_art0)
+        ->where('FGART0.SEC_ART0', '=', $article->sec_art0)
         ->activo()
         ->orderby(' DBMS_RANDOM.VALUE')
         ->take(3)

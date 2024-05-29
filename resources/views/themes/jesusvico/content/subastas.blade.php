@@ -1,23 +1,76 @@
 @php
-    $auctionsForYears = collect($data['auction_list'])->sortByDesc('session_start')->groupBy(fn($auction) => (new Carbon\Carbon($auction->session_start))->year);
+	$isHistoric = $data['subc_sub'] == App\Models\V5\FgSub::SUBC_SUB_HISTORICO;
+
+	$auctionsForYears = collect($data['auction_list']);
+
+	if ($isHistoric) {
+	    $auctionsForYears = $auctionsForYears->sortByDesc('session_start');
+	} else {
+	    $auctionsForYears = $auctionsForYears->sortBy('session_start');
+	}
+
+	$auctionsForYears = $auctionsForYears->groupBy(fn($auction) => (new Carbon\Carbon($auction->session_start))->year);
+
+	$auctionsForYears = $auctionsForYears->sortKeys();
 @endphp
 
-<div class="auctions-wrapper">
-    <div class="container">
-        @foreach ($auctionsForYears as $year => $auctions)
+<div class="auctions-wrapper mt-3">
+	<div class="container">
+		@if ($isHistoric)
+			<ul class="nav nav-tabs mb-3" id="yearAuctionTabs" role="tablist">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<li class="nav-item" role="presentation">
+						<button class="nav-link p-nav-items-auc {{ $loop->last ? 'active' : '' }}" id="tab-{{ $year }}"
+							data-bs-toggle="tab" data-bs-target="#tab-panel-{{ $year }}" type="button" role="tab"
+							aria-controls="tab-panel-{{ $year }}" aria-selected="{{ $loop->last ? 'true' : 'false' }}">
+							<h2>{{ $year }}</h2>
+						</button>
+					</li>
+				@endforeach
+			</ul>
+		@endif
 
-			<div class="year-border">
-				<h2>{{ $year }}</h2>
-				<hr>
+		@if ($isHistoric)
+
+			<div class="tab-content mb-3" id="yearAuctionTabsContent">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<div class="tab-pane fade {{ $isHistoric ? ($loop->last ? 'show active' : '') : 'show active' }}"
+						id="tab-panel-{{ $year }}" role="tabpanel" aria-labelledby="tab-{{ $year }}" tabindex="0">
+						<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 gy-3 align-items-stretch">
+							@foreach ($auctions as $subasta)
+								<div class="col">
+									@include('includes.subasta_historic', ['subasta' => $subasta, 'year' => $year])
+								</div>
+							@endforeach
+						</div>
+					</div>
+				@endforeach
+			</div>
+		@else
+			<div class="row row-cols-1 row-cols-md-2 gy-3 align-items-stretch mb-3 d-none d-md-flex">
+				@foreach ($auctionsForYears as $year => $auctions)
+					@foreach ($auctions as $subasta)
+						<div class="col">
+							@include('includes.subasta', ['subasta' => $subasta, 'year' => $year])
+						</div>
+					@endforeach
+				@endforeach
 			</div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 gy-3 mb-3 align-items-stretch">
-                @foreach ($auctions as $subasta)
-                    <div class="col">
-                        @include('includes.subasta', ['subasta' => $subasta])
-                    </div>
-                @endforeach
-            </div>
-        @endforeach
-    </div>
+			<div class="row row-cols-1 gy-3 align-items-stretch mb-3 d-block d-md-none">
+				@foreach ($auctionsForYears as $year => $auctions)
+					<div class="col">
+						<article class="card card-custom-large h-100">
+							@foreach ($auctions as $subasta)
+								<div class="col d-block d-md-none">
+									@include('includes.subasta_mobile', ['subasta' => $subasta, 'year' => $year])
+								</div>
+							@endforeach
+						</article>
+					</div>
+				@endforeach
+			</div>
+
+		@endif
+	</div>
 </div>

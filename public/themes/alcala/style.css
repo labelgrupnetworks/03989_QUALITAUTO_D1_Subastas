@@ -5244,6 +5244,17 @@ header {border-bottom:lightgray 1px solid;}
 
 #contactForm input[type="checkbox"] {height:20px;display:inline-block;width:20px;position:relative;top:0;left:15px;margin-right:10px;}
 
+@media (max-width: 420px) {
+	.g-recaptcha {
+		position: absolute;
+		left: 2px;
+	}
+
+	.first_check {
+		margin-top: 80px;
+	}
+}
+
 @media (max-width: 375px){
 
     fieldset {margin-bottom:50px;}
@@ -5251,7 +5262,7 @@ header {border-bottom:lightgray 1px solid;}
         transform:scale(0.65);-webkit-transform:scale(0.65);
         transform-origin: ;-webkit-transform-origin: ;
         position: absolute;
-        left:-35px;
+		left: -13px;
     }
     .first_check {margin-top:70px;}
 }
@@ -5607,4 +5618,57 @@ width: 100%;
 
 .footer-link-button:is(::selection, :active, :focus) {
 	text-decoration: underline;
+}
+
+
+/* ----------------- DESPLEGABLE -------------------- */
+
+#admin_settings_box .desplegable
+{
+	position: absolute;
+	right: -33px;
+	top: 40%;
+	padding: 10px 6px;
+	cursor: pointer;
+	border-radius: 0 3px 3px 0;
+	background: #2b373a;
+	color: #fff;
+}
+
+#admin_settings_box .desplegable
+{
+	cursor: pointer;
+	color: #fff;
+}
+
+#admin_settings_box
+{
+	position: fixed;
+	left: -250px;
+	top: 45%;
+	transform: translateY(-50%);
+	bottom: 0;
+	width: 250px;
+	border: 1px solid #2b373a;
+	border-left: 0;
+	transition: 1s;
+	padding: 10px;
+	z-index: 1021;
+	background: #fff;
+}
+
+#admin_settings_box.opened_box
+{
+	transition: 1s;
+	left: 0;
+}
+
+#admin_settings_box .button-principal {
+	display: flex;
+	align-items: center;
+	padding: 12px 0px;
+}
+
+#admin_settings_box .button-principal span {
+	margin: 0 auto;
 }

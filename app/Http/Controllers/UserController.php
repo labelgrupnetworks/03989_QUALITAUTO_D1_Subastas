@@ -6,7 +6,7 @@ use Redirect;
 //use Controller;
 
 //opcional
-use DB;
+use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
@@ -185,6 +185,7 @@ class UserController extends Controller
         $user = new User();
         # Seteamos la sesión
         Session::put('user.name', $login->nom_cli);
+		Session::put('user.rsoc', $login->rsoc_cli);
         Session::put('user.usrw', $login->usrw_cliweb);
         Session::put('user.cod',  $login->cod_cliweb);
         Session::put('user.emp',  $login->emp_cliweb);
@@ -563,25 +564,42 @@ class UserController extends Controller
     # Registrar un usuario
     public function registro(HttpRequest $request)
     {
-		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
-		{
+		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"])) {
+
 			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
+			$errorsResponse = [
+				"err"       => 1,
+				"msg"       => 'error_register'
+			];
+
+
 			foreach ($camposFormNoNullables as $campo) {
 				if (empty($request[$campo])) {
-					return json_encode(array(
-						"err"       => 1,
-						"msg"       => 'error_register'
-					));
+					$errorsResponse['check'] = $campo;
+					return json_encode($errorsResponse);
 				}
 			}
 		}
 
 		if(Request::has('dni1') && Request::has('dni2')){
-			if(!$this->validateImages(request())){
+			if(!$this->validateNIFImages(request())){
 				return json_encode(array(
 					"err"       => 1,
 					"msg"       => 'max_size_img'
-				  ));
+				));
+			}
+		}
+
+		if($request->has('files_email')) {
+			$rules = [
+				'files_email.*' => 'max:20000|mimes:jpg,jpeg,png,tiff,bmp,gif,pdf'
+			];
+
+			if(!$this->validateFiles($request->file(), $rules)){
+				return json_encode([
+					"err"       => 1,
+					"msg"       => 'error_register_file'
+				  ]);
 			}
 		}
 
@@ -642,60 +660,72 @@ class UserController extends Controller
         //VALIDAR SI EXISTE EL DADO DE ALTA PARA ESTA EMPRESA Y GRUPO DE EMPRESAS
 
 		$ya_existe_nif_pais=false;
-		$nif = mb_strtoupper(trim(Request::input('nif')));
+        $user_id_incorrecto = false;
+		$nif = mb_strtoupper(Request::input('nif'));
+		$characters_to_remove = array(" ", "_", "-");
+		$nif = str_replace($characters_to_remove, "", $nif);
 
         if(!empty($nif) && !empty(Request::input('pais')) && Request::input('pais') == 'ES')
         {
-          #$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cl.CODPAIS_CLI='".Request::input('pais')."' AND cw.USRW_CLIWEB ='".Request::input('email')."' AND EMP_CLIWEB='". Config::get('app.emp')."'");
-		  $existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) =  upper(:nif) AND cl.GEMP_CLI=:gemp AND cl.CODPAIS_CLI= :codPais AND  upper(cw.USRW_CLIWEB) =  upper(:email) AND EMP_CLIWEB=:emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'), "codPais" => Request::input('pais'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
+			#$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cl.CODPAIS_CLI='".Request::input('pais')."' AND cw.USRW_CLIWEB ='".Request::input('email')."' AND EMP_CLIWEB='". Config::get('app.emp')."'");
+			$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI WHERE upper(cl.CIF_CLI) =  upper(:nif) AND cl.GEMP_CLI=:gemp AND cl.CODPAIS_CLI= :codPais AND  upper(cw.USRW_CLIWEB) =  upper(:email) AND EMP_CLIWEB=:emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'), "codPais" => Request::input('pais'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
 
-		  if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
-          {
-            $ya_existe_nif_pais = true;
-          }
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
+			{
+				$ya_existe_nif_pais = true;
+			}
+
+			if (!self::validateNifNieCif($nif)) {
+				$user_id_incorrecto = true;
+			}
         }
 
         //debemos comprobar que este usuario no tenga ya creado el usuario y asociado un correo, esta asociando varios correos a un mism ousuario
          if(!empty($nif) && !empty(Request::input('email')))
         {
-          #$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cw.EMP_CLIWEB='".Config::get('app.emp')."'");
-		  $existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI= :gemp AND cw.EMP_CLIWEB= :emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'),  "emp" => Config::get('app.emp')));
-		  if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
-          {
-            $ya_existe_nif_pais = true;
-          }
+			#$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = '$nif' AND cl.GEMP_CLI='". Config::get('app.gemp')."' AND cw.EMP_CLIWEB='".Config::get('app.emp')."'");
+			$existe_dni_arr = DB::select("SELECT cod_cli  FROM FXCLI cl JOIN FXCLIWEB cw on cw.COD_CLIWEB = cl.COD_CLI  WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI= :gemp AND cw.EMP_CLIWEB= :emp", array("nif" => $nif, "gemp" => Config::get('app.gemp'),  "emp" => Config::get('app.emp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli))
+			{
+				$ya_existe_nif_pais = true;
+			}
         }
 
         //Comprobamos si este dni esta de baja si es a si no se puede registrar
-		/**
-		 * @todo Eloy, 25/08/2023
-		 * Esto no sirve de nada si nada más salir se vuelve a reasinar la
-		 * variable $ya_existe_cliweb a false ¿?
-		 */
+		$ya_existe_cliweb=false;
         if(!empty($nif))
         {
-             $existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
-             if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli)){
-                 $ya_existe_cliweb = true;
-             }
+			$existe_dni_arr = DB::select("SELECT cod_cli,BAJA_TMP_CLI  FROM FXCLI cl WHERE upper(cl.CIF_CLI) = :nif AND cl.GEMP_CLI=:gemp AND BAJA_TMP_CLI != 'N'", array("nif" => $nif, "gemp" => Config::get('app.gemp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cli) && strlen($existe_dni_arr[0]->cod_cli)){
+				$ya_existe_cliweb = true;
+			}
 
         }
 
-		/**
-		 * @todo Eloy, 25/08/2023
-		 * A parte de reasignar la variable $ya_existe_cliweb a false e invalidar el bloque anterior,
-		 * Se asigna el select a la variable $existe_dni_arr pero no se usa para nada,
-		 * Se busca en $ya_existe_cliweb como array cuando lo acabamos de asignar como booleano
-		 */
-        $ya_existe_cliweb=false;
         if(!empty(Request::input('email')))
         {
-          $existe_dni_arr = DB::select(" select * from fxcliweb where LOWER(USRW_CLIWEB) = LOWER(:email) AND GEMP_CLIWEB= :gemp and EMP_CLIWEB= :emp   and COD_CLIWEB != '-1' and COD_CLIWEB != '0' ", array( "gemp" => Config::get('app.gemp'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
-          if(isset($ya_existe_cliweb[0]) && isset($ya_existe_cliweb[0]->cod_cliweb) && strlen($ya_existe_cliweb[0]->cod_cliweb))
-          {
-            $ya_existe_cliweb = true;
-          }
+			$existe_dni_arr = DB::select(" select * from fxcliweb where LOWER(USRW_CLIWEB) = LOWER(:email) AND GEMP_CLIWEB= :gemp and EMP_CLIWEB= :emp   and COD_CLIWEB != '-1' and COD_CLIWEB != '0' ", array( "gemp" => Config::get('app.gemp'), "email" => Request::input('email'), "emp" => Config::get('app.emp')));
+			if(isset($existe_dni_arr[0]) && isset($existe_dni_arr[0]->cod_cliweb) && strlen($existe_dni_arr[0]->cod_cliweb))
+			{
+				$ya_existe_cliweb = true;
+			}
         }
+
+		$correos_diferentes = false;
+		if (!empty(Request::input('email')) && !empty(Request::input('confirm_email') && (Request::input('email') != Request::input('confirm_email')))) {
+			$correos_diferentes = true;
+		}
+
+
+		$fechas_exageradas = false;
+		if (!empty(Request::input('date'))) {
+			if (strtotime(Request::input('date')) > strtotime('now')) {
+				$fechas_exageradas = true;
+			}
+			if (strtotime(Request::input('date')) < strtotime('1900-01-01')){
+				$fechas_exageradas = true;
+			}
+		}
 
         # Tipo de registro, almacenado en WEB_CONFIG dentro de app
         //Request::input('regtype');
@@ -703,39 +733,53 @@ class UserController extends Controller
         // run the validation rules on the inputs from the form
         $validator = Validator::make(Input::all(), $rules);
 		#multipleNif es un config que permite repetir el dni al registar
-        if ( ($ya_existe_nif_pais && !\Config::get("app.multipleNif")) || $ya_existe_cliweb || $validator->fails())
+        if (
+			($ya_existe_nif_pais && !\Config::get("app.multipleNif"))
+			|| $ya_existe_cliweb
+			|| $correos_diferentes
+			|| $user_id_incorrecto
+			|| $fechas_exageradas
+			|| $validator->fails()
+		)
         {
-
-
             if($ya_existe_nif_pais)
             {
                 Log::info('REGISTRO_ERRONEO NIF existe : '.print_r(Input::all(), true) );
 
-              $response = array(
-                  "err"       => 1,
-                  "msg"       => 'error_exist_dni'
-              );
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_exist_dni'
+				);
+            }
+            elseif ($user_id_incorrecto)
+            {
+                Log::info('REGISTRO_ERRONEO NIF incorrecto : '.print_r(Input::all(), true) );
+
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_nif'
+				);
             }
             else
             {
                 Log::info('REGISTRO_ERRONEO validator fails or existe cliweb : '.print_r(Input::all(), true) );
-              $response = array(
-                  "err"       => 1,
-                  "msg"       => 'error_register'
-              );
+				$response = array(
+					"err"       => 1,
+					"msg"       => 'error_register'
+				);
             }
 
         }
         else
         {
 
-            $shipping_label = \Config::get("app.shipping_label");
-            if (empty($shipping_label)) {
-              $shipping_label = 'W1';
-            }
+			$shipping_label = \Config::get("app.shipping_label");
+			if (empty($shipping_label)) {
+				$shipping_label = 'W1';
+			}
 
             $user->email = Request::input('email');
-            $user->nif = str_replace(' ', '', trim(Request::input('nif')));
+            $user->nif = str_replace($characters_to_remove, '', trim(Request::input('nif')));
             $user->gemp = Config::get('app.gemp');
             $check_if_exists = $user->getUserByEmail(true);
 
@@ -749,16 +793,16 @@ class UserController extends Controller
             if(Request::input('sexo')){
                 $sexo = Request::input('sexo');
             }else{
-                 $sexo = NULL;
+				$sexo = NULL;
             }
 
 
             if (!empty($check_if_exists[0]) && !empty($check_if_exists[0]->usrw_cliweb)) {
                 Log::info('REGISTRO_ERRONEO email exist : '.print_r(Input::all(), true) );
                 $response = array(
-                            "err"       => 1,
-                            "msg"       => 'email_already_exists'
-                        );
+					"err"       => 1,
+					"msg"       => 'email_already_exists'
+				);
             } else {
                 # Auto increment
 
@@ -769,12 +813,12 @@ class UserController extends Controller
                 if(Config::get('app.registro_user_w')){
 
                     $num_temp = head(DB::select( "select CONTADOR2_ORA(:nom,:gemp,:fecha,:letra) as contador from dual",
-                    array(
-                            'nom'   => 'c01',
-                            'gemp'       => Config::get('app.gemp'),
-                            'fecha' => '2000-01-01 00:00:00',
-                            'letra' => 'Z'
-                            )
+						array(
+							'nom'   => 'c01',
+							'gemp'       => Config::get('app.gemp'),
+							'fecha' => '2000-01-01 00:00:00',
+							'letra' => 'Z'
+						)
                     ));
                     $num = 'W'.str_pad($num_temp->contador, $longitud, 0, STR_PAD_LEFT);
 
@@ -922,11 +966,7 @@ class UserController extends Controller
 					$rsoc = $strToDefault ? $rsoc : mb_strtoupper($rsoc,'UTF-8');
 					$nomd_clid = $strToDefault ? $nomd_clid : mb_strtoupper($nomd_clid,'UTF-8');
 
-                    if(Config::get('app.fpag_default')){
-                        $forma_pago = Config::get('app.fpag_default');
-                    }else{
-                        $forma_pago = 0;
-                    }
+					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
                     $parametros = new Enterprise();
                     $param = $parametros->getParameters();
@@ -957,7 +997,7 @@ class UserController extends Controller
 						}
 
 
-                        $envio= array(
+                        $envio = array(
                         'clid_direccion'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),0,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),0,30,'UTF-8')),
                         'clid_direccion_2'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),30,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),30,30,'UTF-8')),
                         'clid_cod_pais'   => Input::get('clid_pais'),
@@ -971,7 +1011,8 @@ class UserController extends Controller
                         'clid_rsoc'=> $rsoc,
                         'codd_clid'=> $shipping_label,
                         'cod2_clid'=> $cod2_cli,
-						'preftel_clid' => request('preftel_clid', request('preftel_cli', ''))
+						'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
+						'mater_clid' => request('mater_clid', 'N'),
                         );
 
 
@@ -979,9 +1020,9 @@ class UserController extends Controller
 
                              //se inserta el nuevo cliente
                         $FXCLI = DB::select("INSERT INTO FXCLI
-                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI )
+                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI, BLOCKPUJ_CLI )
                            VALUES
-                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli)",
+                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli, :blockpuj_cli)",
                             array(
                                //'gemp'          => "'Config::get('app.gemp')'",
                                'email'         => $strToDefault ? Request::input('email') : strtoupper(Request::input('email')),
@@ -997,7 +1038,7 @@ class UserController extends Controller
                                'telf'          => Request::input('telefono'),
                                'mobile'          => !empty(Request::input('mobile'))?Request::input('mobile'):null,
                                'pais'          => Request::input('pais'),
-                               'dni'           => str_replace(' ', '', trim(Request::input('nif'))),
+                               'dni'           => str_replace($characters_to_remove, '', trim(Request::input('nif'))),
                                'trabajo'       => $strToDefault ? Request::input('trabajo') : strtoupper(Request::input('trabajo')),
                                'nombrepais'    => $strToDefault ? $nombre_pais : strtoupper($nombre_pais),
                                'nombre_trabajo'=> $strToDefault ? $job_name : strtoupper($job_name),
@@ -1018,7 +1059,8 @@ class UserController extends Controller
 							   'tipv_cli' =>  $tipv_cli,
 							   'cod2_cli' => $cod2_cli,
 							   'preftel_cli' => request('preftel_cli', ''),
-							   'origen_cli' => request('origen', null)
+							   'origen_cli' => request('origen', null),
+							   'blockpuj_cli' => $this->defaultBidBlocking()
                                )
 						 );
 						#guardamos el evento SEO de registro de usuario
@@ -1044,8 +1086,7 @@ class UserController extends Controller
 								}
 							}
 							else{
-								$max_direcc = $shipping_label;
-								$addres->addDirEnvio($envio,$num,$name);
+								$addres->addDirEnvio($envio, $num, $name);
 							}
 
                          }
@@ -1239,6 +1280,12 @@ class UserController extends Controller
                             $email = new EmailLib('USER_ASSOCIATED');
                             if(!empty($email->email)){
                                 $email->setUserByCod($num);
+
+								if(Config::get('app.delivery_address', 0)) {
+									$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+									$email->setAddress(head($addressToEmail));
+								}
+
                                 $email->setTo(Config::get('app.admin_email'));
                                 $email->send_email();
                             }
@@ -1250,8 +1297,18 @@ class UserController extends Controller
 						$email->setUserByCod($num);
 						$email->setAtribute("OBS",Request::input('obscli'));
 
+						if(Config::get('app.delivery_address', 0)) {
+							$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+							$email->setAddress(head($addressToEmail));
+						}
+
 						if(!empty($job_name)){
 							$email->setAtribute("JOB_CLI", $job_name);
+						}
+
+						if($request->has('files_email')) {
+							$files = $request->file('files_email');
+							$email->setAttachmentsFiles($files);
 						}
 
 						$email->setTo(Config::get('app.admin_email'));
@@ -1455,12 +1512,12 @@ class UserController extends Controller
     return json_encode($response);
     }
 
-	private function validateImages($request)
+	private function validateNIFImages($request)
 	{
 
 		$rules = [
-			'dni1' => 'max:10000|mimes:jpg,jpeg,png,pdf', //a required, max 10000kb, doc or docx file
-			'dni2' => 'max:10000|mimes:jpg,jpeg,png,pdf'
+			'dni1' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF', //a required, max 10000kb, doc or docx file
+			'dni2' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF'
 		];
 
 		$validator = Validator::make($request->file(), $rules);
@@ -1473,8 +1530,24 @@ class UserController extends Controller
 		return false;
 	}
 
+	private function validateFiles($files, $rules)
+	{
+		$validator = Validator::make($files, $rules);
+
+		if (!$validator->fails()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private function saveImages($request, $cod_cli)
 	{
+		if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			$this->saveDni($request, $cod_cli, 'dni1', User::getUserNIF($cod_cli) . 'A');
+			$this->saveDni($request, $cod_cli, 'dni2', User::getUserNIF($cod_cli) . 'R');
+			return;
+		}
 		$this->saveDni($request, $cod_cli, 'dni1');
 		$this->saveDni($request, $cod_cli, 'dni2');
 	}
@@ -1482,14 +1555,17 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if(Config::get('app.dni_in_storage', false)) {
-			return storage_path("app/files/dni/$emp/$cod_cli/files/");
-		}
+		$path = match (Config::get('app.dni_in_storage', false)) {
+			"dni-files" => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+			"cli-documentation" => storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
+			"base-dni-files" => base_path("dni/$emp/$cod_cli/files/"),
+			default => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+		};
 
-		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+		return $path;
 	}
 
-	public function saveDni($request, $cod_cli, $fileName)
+	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
 	{
 		try {
 			$file = $request->file($fileName);
@@ -1497,7 +1573,7 @@ class UserController extends Controller
 				return false;
 			}
 
-			$filename = $fileName . '.' . $file->getClientOriginalExtension();
+			$filename = ($nameOfFile ? $nameOfFile : $fileName) . '.' . $file->getClientOriginalExtension();
 			$destinationPath = $this->dniPath($cod_cli);
 
 			if(!is_dir($destinationPath)){
@@ -1531,30 +1607,41 @@ class UserController extends Controller
 		}
 	}
 
-	public function updateCIFImages($request, $cod_cli)
+	public function updateCIFImages($request, $cod_cli, $nif)
 	{
 		try {
 
 			$images = $this->getCIFImages($cod_cli);
 
-			$dni1 = "dni1";
-			$dni2 = "dni2";
+			$dni1Input = "dni1";
+			$dni2Input = "dni2";
+
+			# Esta ruta es la ruta que usa Ansorena y el nombre de los archivos para enlazar con el ERP
+			$routeCliDocumentation = Config::get('app.dni_in_storage', false) == "cli-documentation";
+
+			if ($routeCliDocumentation) {
+				$dni1 = $nif."A";
+				$dni2 = $nif."R";
+			}
+
 			$destinationPath = $this->dniPath($cod_cli);
 
-			if (isset($request[$dni1])) {
-				$file = $request[$dni1];
-				$filename = $dni1 . '.' . $file->getClientOriginalExtension();
-				if (isset($images[$dni1])) {
-					unlink($images[$dni1]);
+			if (isset($request[$dni1Input])) {
+				$file = $request[$dni1Input];
+				$dni1name = $routeCliDocumentation ? $dni1 : $dni1Input;
+				$filename = $dni1name . '.' . $file->getClientOriginalExtension();
+				if (isset($images[$dni1name])) {
+					unlink($images[$dni1name]);
 				}
 				$file->move($destinationPath, $filename);
 			}
 
-			if (isset($request[$dni2])) {
-				$file2 = $request[$dni2];
-				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
-				if (isset($images[$dni2])) {
-					unlink($images[$dni2]);
+			if (isset($request[$dni2Input])) {
+				$file2 = $request[$dni2Input];
+				$dni2name = $routeCliDocumentation ? $dni2 : $dni2Input;
+				$filename2 = $dni2name . '.' . $file2->getClientOriginalExtension();
+				if (isset($images[$dni2name])) {
+					unlink($images[$dni2name]);
 				}
 				$file2->move($destinationPath, $filename2);
 			}
@@ -2232,7 +2319,9 @@ class UserController extends Controller
 			$news->newFamilies();
         }
 
-		$Update->nif = Request::input('nif', null);
+		if (Request::input('nif', null)) {
+			$Update->nif = Request::input('nif');
+		}
 
 		//Separo los configs ya que algunos clientes solo necesitan actualizar una de las dos cosas
 		if(Config::get('app.user_panel_cc', false)) {
@@ -2240,8 +2329,8 @@ class UserController extends Controller
 		}
 
 		if(Config::get('app.user_panel_cif', false)) {
-			if (Request::file('dni1') || Request::file('dni2')) {
-				$this->updateCIFImages(Request::all(), $Update->cod_cli);
+			if (Request::has('dni1') || Request::has('dni2')) {
+				$this->updateCIFImages(Request::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
 
@@ -2321,6 +2410,13 @@ class UserController extends Controller
 
              $email->setTo(Config::get('app.admin_email'));
              $email->setHtml($emailOptions['camposHtml']);
+
+			 if (Config::get('app.user_panel_cif', false)) {
+				$nifAdjuntos = $this->getCIFImages($Update->cod_cli);
+				if(!empty($nifAdjuntos)){
+					$email->setAttachments($nifAdjuntos);
+				}
+			 }
 
               if ($email->send_email()){
                   $response = array(
@@ -3385,20 +3481,28 @@ class UserController extends Controller
     }
 
 
-    public function sendPasswordRecovery()
+    public function sendPasswordRecovery(HttpRequest $request)
     {
-        $email = Request::input('email');
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email'
+		]);
+
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
+		if($validator->fails()){
+			return $successResponse;
+		}
+
+        $email = $request->input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
 
         $user = new User();
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
-
-		$successResponse = [
-			'status' => 'succes',
-			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-		];
 
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
 
@@ -4752,5 +4856,144 @@ class UserController extends Controller
 		return null;
 	}
 
+	#region Validator for ID Documents
+
+	private function validateNifNieCif($nif)
+	{
+		if(Request::input('pri_emp') == 'F' && $this->checkValidNIF($nif)){
+			return true;
+		}
+		if(Request::input('pri_emp') == 'F' && $this->checkValidNIE($nif)){
+			return true;
+		}
+		if(Request::input('pri_emp') == 'J' && $this->checkValidCIF($nif)){
+			return true;
+		}
+		if(Request::input('pri_emp') == 'F' && $this->checkValidFormatPassport($nif)){
+			return true;
+		}
+
+		return false;
+	}
+
+
+	private function checkValidNIF($nif)
+	{
+		$pattern = "/^[XYZ]?\d{5,8}[A-Z]$/";
+        $dni = strtoupper($nif);
+        if(preg_match($pattern, $dni))
+        {
+            $number = substr($dni, 0, -1);
+            $number = str_replace('X', 0, $number);
+            $number = str_replace('Y', 1, $number);
+            $number = str_replace('Z', 2, $number);
+            $dni = substr($dni, -1, 1);
+            $start = $number % 23;
+            $letter = 'TRWAGMYFPDXBNJZSQVHLCKET';
+            $letter = substr('TRWAGMYFPDXBNJZSQVHLCKET', $start, 1);
+            if($letter != $dni) {
+              return false;
+            } else {
+              return true;
+            }
+        }else{
+            return false;
+        }
+	}
+
+	private function checkValidNIE($nif){
+		if (preg_match('/^[XYZT][0-9][0-9][0-9][0-9][0-9][0-9][0-9][A-Z0-9]/', $nif)) {
+		  for ($i = 0; $i < 9; $i ++){
+			$num[$i] = substr($nif, $i, 1);
+		  }
+
+		  if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X','Y','Z'), array('0','1','2'), $nif), 0, 8) % 23, 1)) {
+			return true;
+		  } else {
+			return false;
+		  }
+		}
+	  }
+
+	  private function checkValidCIF ($cif) {
+		$cif_codes = 'JABCDEFGHI';
+		#hay que permitir dos tipos de CIF, los que acaban con letra y los que no
+		$pattern = "/^[A-Z]{1}\d{5,8}[A-Z]?$/";
+		if (!preg_match ($pattern, $cif)) {
+		  return false;
+		}
+
+		$sum = (string) $this->getCifSum ($cif);
+		$n = (10 - substr ($sum, -1)) % 10;
+
+		if (preg_match ('/^[ABCDEFGHJNPQRSUVW]{1}/', $cif)) {
+		  if (in_array ($cif[0], array ('A', 'B', 'E', 'H'))) {
+
+			// Numerico
+			return ($cif[8] == $n);
+		  } elseif (in_array ($cif[0], array ('K', 'P', 'Q', 'S'))) {
+			// Letras
+			return ($cif[8] == $cif_codes[$n]);
+		  } else {
+			// Alfanumérico
+			if (is_numeric ($cif[8])) {
+			  return ($cif[8] == $n);
+			} else {
+			  return ($cif[8] == $cif_codes[$n]);
+			}
+		  }
+		}
+
+		return false;
+
+	  }
+
+	  private function getCifSum($cif) {
+		$sum = $cif[2] + $cif[4] + $cif[6];
+
+		for ($i = 1; $i<8; $i += 2) {
+		  $tmp = (string) (2 * $cif[$i]);
+
+		  $tmp = $tmp[0] + ((strlen ($tmp) == 2) ?  $tmp[1] : 0);
+
+		  $sum += $tmp;
+		}
+
+		return $sum;
+	  }
+
+	  private function checkValidFormatPassport($passport)
+	  {
+		$passport = strtoupper($passport);
+		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
+		return preg_match($pattern, $passport);
+	  }
+
+	#endregion
+
+
+	/**
+	 * Valor por defecto para blockpuj_cli.
+	 * En soler utilizamos S por el registro W, en el resto de clientes utilizamos
+	 * el que tienen en la base de datos por defecto
+	 * @return string
+	 */
+	private function defaultBidBlocking()
+	{
+		if(Config::get('app.registro_user_w', false)) {
+			return 'S';
+		}
+
+		$defaultValue = null;
+		try {
+			$defaultValueInTable = DB::select("Select DATA_DEFAULT from DBA_TAB_COLUMNS where TABLE_NAME = 'FXCLI' AND COLUMN_NAME = 'BLOCKPUJ_CLI'");
+			$defaultValue = trim(str_replace("'", '', $defaultValueInTable[0]->data_default));
+		} catch (\Throwable $th) {
+			Log::debug('Error al obtener el valor por defecto de blockpuj_cli', ['error' => $th->getMessage()]);
+			$defaultValue = 'N';
+		}
+
+		return $defaultValue;
+	}
 }
 

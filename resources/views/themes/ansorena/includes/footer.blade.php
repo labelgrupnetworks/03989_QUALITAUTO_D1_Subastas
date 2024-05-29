@@ -152,10 +152,13 @@
 	<div class="container ext-logos-container">
 		<div class="ext-logos">
 			<div class="">
-				<img src="/themes/{{ $theme }}/assets/img/rtr_negative.png" alt="Plan de recuperación transformación y Resilencia">
+				<img src="/themes/{{ $theme }}/assets/img/rtr_color.png" alt="Plan de recuperación transformación y Resilencia">
 			</div>
 			<div class="">
-				<img src="/themes/{{ $theme }}/assets/img/eu_negative.png" alt="Funded by the European Union">
+				<img src="/themes/{{ $theme }}/assets/img/eu_color.png" alt="Funded by the European Union">
+			</div>
+			<div class="">
+				<img src="/themes/{{ $theme }}/assets/img/cm_color.png" alt="Comunidad de Madrid">
 			</div>
 		</div>
 	</div>

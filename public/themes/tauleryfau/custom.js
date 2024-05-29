@@ -2,7 +2,7 @@
 
 window.onscroll =
 	function () {
-		if ($('.online-time').length > 0) {
+		if ($('.online-time-foot').length > 0) {
 			timeForAuctions()
 		}
 	}
@@ -432,7 +432,7 @@ $(function () {
 
 	$("#owl-carousel-responsive").owlCarousel({
 		items: 1,
-		autoplay: true,
+		autoplay: false,
 		margin: 20,
 		dots: true,
 		nav: false,
@@ -1018,6 +1018,19 @@ $(function () {
 		window.location = goTo;
 	})
 
+	$('#admin_settings_box').on('click', '.desplegable', function () {
+        if ($('#admin_settings_box').hasClass('opened_box')) {
+            $('#admin_settings_box').removeClass('opened_box');
+            $('[data-id="left"]', this).addClass('hidden');
+            $('[data-id="right"]', this).removeClass('hidden');
+        } else {
+			$('#admin_settings_box').addClass('opened_box');
+            $('[data-id="right"]', this).addClass('hidden');
+            $('[data-id="left"]', this).removeClass('hidden');
+
+        }
+    });
+
 });
 
 
@@ -1517,7 +1530,7 @@ function open_secondpanel() {
 function timeForAuctions() {
 
 	if ($(window).width() > 991 < 1200) {
-		$('.online-time').css('width', '100%');
+		$('.online-time-foot').css('width', '100%');
 	}
 
 	if ($('footer').offset() == 'undefined') {
@@ -1526,7 +1539,7 @@ function timeForAuctions() {
 
 	if ($(window).width() > 1575) {
 		if ($(document).scrollTop() > $('.lot-count').offset().top) {
-			$('.online-time')
+			$('.online-time-foot')
 				.css('position', 'fixed')
 				.css('top', '0')
 				.css('bottom', '')
@@ -1535,13 +1548,13 @@ function timeForAuctions() {
 
 		}
 		if ($(document).scrollTop() < $('.lot-count').offset().top) {
-			$('.online-time').css('position', 'relative')
+			$('.online-time-foot').css('position', 'relative')
 		}
 	}
 	if ($(window).width() < 1576 && $(window).width() > 600) {
 
 		if ($(document).scrollTop() > $('.lot-count').offset().top) {
-			$('.online-time')
+			$('.online-time-foot')
 				.css('position', 'fixed')
 				.css('bottom', '0')
 				.css('top', '')
@@ -1550,8 +1563,8 @@ function timeForAuctions() {
 				.css('z-index', '5')
 		}
 		if ($(document).scrollTop() < $('.lot-count').offset().top) {
-			$('.online-time').css('position', 'relative')
-			$('.online-time').css('width', '100%')
+			$('.online-time-foot').css('position', 'relative')
+			$('.online-time-foot').css('width', '100%')
 		}
 	}
 	if ($(window).width() < 600) {
@@ -1559,13 +1572,13 @@ function timeForAuctions() {
 			$('.lot-count')
 				.css('background', 'white')
 				.css('color', '#283747')
-			$('.online-time').css('color', '#283747')
+			$('.online-time-foot').css('color', '#283747')
 		}
 		if ($(document).scrollTop() < ($('footer').offset().top - $('footer').height())) {
 			$('.lot-count')
 				.css('background', '#283747')
 				.css('color', 'white')
-			$('.online-time').css('color', 'white')
+			$('.online-time-foot').css('color', 'white')
 		}
 	}
 }
@@ -1870,4 +1883,21 @@ function addNewsletter(data) {
 			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 		}
 	});
+}
+
+function selectGaleryMiniature(idx, imgcontainer) {
+	imgcontainer.find('.image-selector .micro-image').removeClass('selected');
+	imgcontainer.find('.image-selector').eq(idx).find('.micro-image').addClass('selected');
+}
+
+function deselectAllGaleryMiniature(imgcontainer) {
+	imgcontainer.find('.image-selector .micro-image').removeClass('selected');
+}
+
+function moveMiniatureScroll(idx, imgcontainer) {
+	const image = imgcontainer.find('.image-selector').eq(idx);
+	const scroll = image.position().left - (imgcontainer.width() / 2) + (image.width() / 2);
+	imgcontainer.animate({
+		scrollLeft: scroll
+	}, 'fast');
 }

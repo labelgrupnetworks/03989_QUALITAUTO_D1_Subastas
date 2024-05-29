@@ -57,9 +57,9 @@ Route::post('/custom_login', 'UserController@customLogin');
 
 #PACKANGERS
 //Exportación en Excel de subasta
-Route::get('/exportPackengers/{codSub}', 'CustomControllers@exportPackengers');
 
 #ANSORENA
+Route::view(\Routing::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
 Route::view(\Routing::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
 Route::get('/'. Config::get('app.locale') .'/private-chanel/login', 'CustomControllers@privateChanelLogin')->name('private_chanel.login');
 Route::post('/'. Config::get('app.locale') .'/private-chanel/login', 'CustomControllers@loginInPrivateChanel')->name('private_chanel.login.send');
@@ -95,4 +95,7 @@ Route::get('/'.\Config::get('app.locale').'/catalog-newsleter', function () {
 Route::get('/auth/zoho', 'externalws\bogota\ZohoController@getTokensWithGrantCode')->name('auth.zoho');
 Route::get('/zoho/export', 'externalws\bogota\ZohoController@exportClientsToZoho')->name('zoho.export');
 
+
+#ALMONEDA
+Route::post('/api-ajax/lots-destacados-grid', 'ContentController@getAjaxGridLotesDestacados');
 

@@ -48,7 +48,7 @@ $packengersMoneyValue = 0;
     var info_lots = $.parseJSON('<?php echo str_replace("\u0022","\\\\\"",json_encode($data["js_item"],JSON_HEX_QUOT)); ?>');
 </script>
 
-
+<main class="adjudicaciones-page">
 <div class="color-letter">
         <div class="container">
             <div class="row">
@@ -203,7 +203,7 @@ $packengersMoneyValue = 0;
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
                                                                 <div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
-																@if ($comision !=0)
+																@if ($inf_lot->base_csub != 0)
 																	<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
 																	<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>
 																@endif
@@ -470,7 +470,7 @@ $packengersMoneyValue = 0;
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans(\Config::get('app.theme').'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</p>
-																		@if ($comision !=0)
+																		@if ($inf_lot->base_csub != 0)
 																			<small class="comision-title">{{ trans(\Config::get('app.theme').'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans(\Config::get('app.theme').'-app.lot.eur') }}</div>
 																		@endif
@@ -513,6 +513,7 @@ $packengersMoneyValue = 0;
             </div>
         </div>
     </div>
+</main>
 
 
 

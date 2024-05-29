@@ -98,8 +98,8 @@ class MailController extends Controller
         $htmlFields = false;
 
         # Si tenemos session de usuario lo añadimos al contenido
-        if (!empty(Session::get('user.name'))) {
-            $emailOptions['user'] = Session::get('user.name');
+        if (!empty(Session::get('user.rsoc'))) {
+            $emailOptions['user'] = Session::get('user.rsoc');
             $htmlFields .= '<span style="color:#333"><strong>User:</strong></span> ' . Session::get('user.cod') . ' <br />';
         }
 		$prohibidos = array( 'confirm_password', 'departamento');
@@ -114,8 +114,8 @@ class MailController extends Controller
 
         $emailOptions['user'] = '';
 
-        if (!empty(Session::get('user.name'))) {
-            $emailOptions['user'] = Session::get('user.name');
+        if (!empty(Session::get('user.rsoc'))) {
+            $emailOptions['user'] = Session::get('user.rsoc');
         }
 
         $emailOptions['subject'] = trans(\Config::get('app.theme') . '-app.emails.email_received_from') . Config::get('app.name');

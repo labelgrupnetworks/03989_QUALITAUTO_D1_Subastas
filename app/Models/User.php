@@ -3,10 +3,10 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
-use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use \Request;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
@@ -113,7 +113,7 @@ class User
     {
 
         //devolvemos el usuario siempre que no sea baja temporal (BAJA_TMP_CLI = 'N')
-         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,cw.* FROM FXCLIWEB cw
+         return head(DB::select("SELECT c.baja_tmp_cli,c.cod_div_cli,c.nom_cli,c.rsoc_cli,cw.* FROM FXCLIWEB cw
                      JOIN FXCLI c
                                 ON (c.COD_CLI = cw.COD_CLIWEB and c.GEMP_CLI = cw.GEMP_CLIWEB)
                             WHERE
@@ -658,6 +658,29 @@ class User
         }
 
     }
+
+	public function getSumAdjudicacionesSubasta($cod_sub, $licit)
+	{
+		return FgCsub::query()
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit]
+			])
+			->sum('himp_csub');
+	}
+
+	public function getSumAdjudicacionesInOtherSessions($cod_sub, $licit, $reference)
+	{
+		return FgCsub::query()
+			->join('"auc_sessions" auc', 'auc."company" = EMP_CSUB AND auc."auction" = SUB_CSUB and auc."init_lot" <= REF_CSUB and auc."end_lot" >= REF_CSUB')
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit],
+				['auc."reference"', '!=', "$reference"]
+			])
+			->sum('himp_csub');
+	}
+
     public function getAllAdjudicacionesSession($cod_sub, $reference, $licit)
     {
         $bindings = array(
@@ -935,6 +958,10 @@ class User
 					});
 				});
 			});
+
+			if (config('app.sellAuctionsStartDateOrder', false)) {
+				$query->orderBy('auc."start"', config('app.sellAuctionsStartDateOrder'));
+			}
 
 			if(\Config::get("app.number_bids_lotlist") ){
 				$query = $query->selectRaw(" (SELECT COUNT(DISTINCT(LICIT_ASIGL1))  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) LICITS")
@@ -1376,6 +1403,29 @@ class User
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string $cod_cli
+	 * @return string
+	 */
+	public static function getUserNIF(string $cod_cli): string
+	{
+		return FxCli::select('cif_cli')->where('cod_cli', $cod_cli)->first()->cif_cli;
+	}
+
+	/**
+	 * @param string $country
+	 * Foma de pago establecida en el registro
+	 * @return string
+	 */
+	public function getDefaultPayhmentMethod($country)
+	{
+		if(Config::get('app.fpag_foreign_default', 0) && $country != 'ES'){
+			return Config::get('app.fpag_foreign_default');
+		}
+
+		return Config::get('app.fpag_default', 0);
 	}
 
 }

@@ -38,8 +38,6 @@
 			<input type="hidden" name="historic" id="hidden_historic" value="{{request('historic')}}"   />
 
 			<div class="filters-types mb-1 mt-1">
-				@include('includes.grid.badges_section')
-
 				@include('includes.grid.search_list')
 
 				@if($isTiendaOnline)

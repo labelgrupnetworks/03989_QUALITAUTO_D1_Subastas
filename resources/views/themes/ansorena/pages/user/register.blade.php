@@ -7,15 +7,6 @@
 @section('content')
 
 <?php
-$families = array(
-	"2" => trans($theme.'-app.login_register.newsletter_joyeria'),
-	"3" => trans($theme.'-app.login_register.newsletter_subasta_pintura'),
-	"7" => trans($theme.'-app.login_register.newsletter_condecoraciones'),
-	"5" => trans($theme.'-app.login_register.newsletter_subasta_joyas'),
-	"6" => trans($theme.'-app.login_register.newsletter_galeria'),
-	"4" => trans($theme.'-app.login_register.newsletter_subasta_muebles'),
-
-);
 $jobs = array(
 	'ANTICUARIO' =>	'Anticuario',
 	'ARQUITECTO' =>	'Arquitecto',
@@ -200,6 +191,20 @@ $jobs = array(
 						{!!$formulario->language!!}
 					</div>
 
+					@if (Config::get('app.dni_in_storage', false))
+						<div class="dni-1 datos_right">
+							<label>{{ trans($theme.'-app.login_register.dni_obverse') }}</label>
+							{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = "") !!}
+							<p class="m-0 {{ Config::get('app.locale') == 'es' ? '' : 'hidden' }}" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
+						</div>
+
+						<div class="dni-2 datos_left">
+							<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
+							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
+							<p class="m-0 {{ Config::get('app.locale') == 'en' ? '' : 'hidden' }}" onclick="javascript:showNIFMessage()">{{ trans("$theme-app.login_register.nif_question_info") }}</p>
+						</div>
+					@endif
+
 
 					<div class="clearfix"></div>
 			</div>
@@ -276,7 +281,6 @@ $jobs = array(
 							for="direccion">{{ trans($theme.'-app.login_register.direccion') }}</label>
 						{!!$formulario->clid_direccion!!}
 					</div>
-
 
 				</div>
 				<div class="clearfix"></div>

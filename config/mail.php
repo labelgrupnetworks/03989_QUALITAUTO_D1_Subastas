@@ -62,7 +62,22 @@ return [
 			'verify_peer' => false,
 			'verify_peer_name' => false, */
         ],
-
+		'log_mail' => [
+            'transport' => 'smtp',
+            'host' => env('LOG_MAIL_HOST', 'smtp.office365.com'),
+            'port' => env('LOG_MAIL_PORT', 587),
+            'encryption' => env('LOG_MAIL_ENCRYPTION', 'tls'),
+            'username' => env('LOG_MAIL_USERNAME'),
+            'password' => env('LOG_MAIL_PASSWORD'),
+            'timeout' => null,
+			'from' => [
+				'address' => env('LOG_MAIL_USERNAME'),
+				'name' => 'Subastas',
+			],
+			/* 'allow_self_signed' => true,
+			'verify_peer' => false,
+			'verify_peer_name' => false, */
+        ],
         'ses' => [
             'transport' => 'ses',
         ],

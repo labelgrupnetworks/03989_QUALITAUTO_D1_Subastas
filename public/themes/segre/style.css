@@ -815,3 +815,41 @@ footer {
 	font-size: 22px;
 
   }
+
+.filters-auction-content {
+	margin-bottom: 1rem;
+}
+
+.top-pagination {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.top-pagination .cantidad-res {
+	width: 100%;
+	margin: 0px;
+	text-align: center;
+}
+
+@media (min-width: 992px) {
+	.top-pagination {
+		flex-direction: row;
+	}
+
+	.top-pagination .cantidad-res {
+		width: 170px;
+		text-align: left;
+		margin: 0px 2rem 0px 0px;
+	}
+}
+
+.foot-pagination-grid {
+	margin-bottom: 3rem;
+}
+
+@media (min-width: 548px) {
+	.foot-pagination-grid {
+		margin-bottom: 0px;
+	}
+}

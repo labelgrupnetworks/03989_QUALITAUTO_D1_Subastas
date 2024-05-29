@@ -116,7 +116,7 @@ function reloadAdminCredit() {
         $('#text_actual_no_bid').addClass('hidden');
 		$('#text_actual_max_bid').removeClass('hidden');
 
-		reloadCredit(data.actual_bid, data.winner)
+		reloadCredit();
 
         if (typeof auction_info.user != 'undefined' && data.winner == auction_info.user.cod_licit) {
                 $('#tupuja').html(data.formatted_actual_bid);
@@ -190,13 +190,12 @@ function reloadAdminCredit() {
 
     function reloadPujasList()
     {
+		reloadCredit();
         if( auction_info.subasta.sub_tiempo_real == 'S'){
             reloadPujasList_W()
         }else {
             reloadPujasList_O()
         }
-
-
     }
 
     function reloadPujasList_W(){
@@ -432,33 +431,68 @@ function view_all_bids(){
     |--------------------------------------------------------------------------
     */
 
-	/**
-	 *
-	 * @param {*} actual_bid
-	 * @param {*} cod_licit_actual
-	 */
-	function reloadCredit(actual_bid, cod_licit_actual){
+	function reloadCredit(){
 
 		if(typeof auction_info.user != 'undefined' && typeof auction_info.user.adjudicaciones != 'undefined'){
 
 			let userAdjudicaciones = 0;
 			let creditUsed = 0;
 			let currentCredit = parseInt($('#current_credit').data('currentCredit'));
+			let awards = []
 
-			for (const adjudicaciones of auction_info.user.adjudicaciones) {
-				userAdjudicaciones += parseInt(adjudicaciones.imp_asigl1);
-			}
+			auction_info.user.adjudicaciones.forEach(function(adjudicacion){
+				//cuando se reabren lotes, si el mismo usuario se los vuelve a adjudicar, se duplican las adjudicaciones
+				if (awards.indexOf(adjudicacion.ref_asigl1) != -1) {
+					return;
+				}
+
+				//si la adjudicacion es del lote actual no se tiene en cuenta
+				if(auction_info.lote_actual.ref_asigl0 == adjudicacion.ref_asigl1){
+					return;
+				}
+
+				awards.push(adjudicacion.ref_asigl1);
+				userAdjudicaciones += parseInt(adjudicacion.imp_asigl1);
+			});
 
 			creditUsed = userAdjudicaciones;
 
-			if(auction_info.user.cod_licit == cod_licit_actual){
-				creditUsed += parseInt(actual_bid);
+			if(typeof auction_info.user.sum_award_previous_sessions != 'undefined'){
+				creditUsed += parseInt(auction_info.user.sum_award_previous_sessions);
 			}
 
-			$('#credit_used').html(new Intl.NumberFormat("de", {}).format(creditUsed));
-			$("#available_credit").html(new Intl.NumberFormat("de", {}).format(currentCredit - creditUsed));
+			const myMaxBid = auction_info.lote_actual.pujas.find((puja) => {
+				return puja.cod_licit == auction_info.user.cod_licit
+			});
+
+			if(typeof myMaxBid != 'undefined' && myMaxBid.rn == 1){
+				creditUsed += parseInt(myMaxBid.imp_asigl1);
+			}
+
+			const formater = new Intl.NumberFormat("de", {});
+			$('#credit_used').html(formater.format(creditUsed));
+			$("#available_credit").html(formater.format(currentCredit - creditUsed));
 
 		}
 
 	}
 
+	function reloadMainLotInfoCustom() {
+		const mark = document.querySelector('#lote_actual_main .lot-itp-mark');
+		markWhenIsItp(auction_info.lote_actual, mark);
+	}
+
+	function reloadBuscadorCustom() {
+		const mark = document.querySelector('.num-lot-search .lot-itp-mark');
+		markWhenIsItp(auction_info.buscador, mark);
+	}
+
+	/**
+	 * Mostrar o no el icono de ITP
+	 * @param {*} lot
+	 * @param {HTMLElement} element
+	 */
+	function markWhenIsItp(lot, element) {
+		if(!element) return;
+		element.classList.toggle('hidden', !lot.isItp);
+	}

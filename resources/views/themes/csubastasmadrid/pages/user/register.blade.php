@@ -353,9 +353,9 @@ $families[6] = trans(\Config::get('app.theme').'-app.foot.coleccionismo');
 				</form>
                             @if(!empty($formulario->subalia))
                                 @if(\Config::get("app.locale") == 'en')
-                            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+                            <form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
                                 @else
-                            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+                            <form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
                                 @endif
                                     <input type="hidden" name="info" id="info_sent" value="">
                                     <input type="hidden" name="cod_auchouse" id="cod_auchouse_sent" value="">

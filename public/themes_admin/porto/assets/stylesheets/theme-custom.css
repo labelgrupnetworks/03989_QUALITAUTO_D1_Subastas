@@ -524,6 +524,7 @@ tr.shown td.details-control {
 	display: inline;
 }
 
+.dropdown-menu > li > a.btn,
 .dropdown-menu > li > button {
     display: block;
     padding: 3px 20px;
@@ -537,6 +538,7 @@ tr.shown td.details-control {
 	background-color: transparent;
 }
 
+.dropdown-menu > li > a.btn:hover, .dropdown-menu > li > a.btn:focus,
 .dropdown-menu > li > button:hover, .dropdown-menu > li > button:focus {
     text-decoration: none;
     color: #262626;
@@ -548,3 +550,4 @@ tr.shown td.details-control {
 }
 
 .left{float:left;}
+

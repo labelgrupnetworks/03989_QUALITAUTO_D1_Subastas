@@ -8,9 +8,8 @@
 @section('content')
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 titlePage">
-                             <h1 {{-- class="titlePage" --}}>{{ trans(\Config::get('app.theme').'-app.login_register.success_register')}}</h1>
-							 <p class="mini-underline"></p>
+		<div class="col-xs-12">
+                             <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.login_register.success_register')}}</h1>
                              <p><?= trans(\Config::get('app.theme').'-app.login_register.success_register_msg')?></p>
 
 		</div>

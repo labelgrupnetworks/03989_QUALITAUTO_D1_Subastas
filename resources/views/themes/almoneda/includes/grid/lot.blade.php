@@ -74,13 +74,23 @@
 
             </div>
 
-            @if ($subasta_online && !$cerrado)
-                <p class="salida-time">
-                    <i class="fa fa-clock-o"></i>
-                    <span data-countdown="{{ strtotime($item->close_at) - getdate()[0] }}"
-                        data-format="<?= \Tools::down_timer($item->close_at) ?>" class="timer"></span>
-                </p>
-            @endif
+			@if ($subasta_online)
+			<div class="salida-time">
+
+				<div class="init-time">
+					<span>{{ trans("$theme-app.lot.start_date") }}</span>
+					<span>{{ date('d/m/Y H:i:s', strtotime($item->fini_asigl0)) }}</span>
+				</div>
+
+				@if(!$cerrado)
+				<div class="close-time">
+					<i class="fa fa-clock-o"></i>
+					<span data-countdown="{{ strtotime($item->close_at) - getdate()[0] }}"
+						data-format="<?= \Tools::down_timer($item->close_at) ?>" class="timer"></span>
+				</div>
+				@endif
+			</div>
+			@endif
 
         </div>
     </a>

@@ -8,9 +8,8 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-xs-12 col-sm-12 resultok titlePage">
-                <h1 {{-- class="titlePage" --}}>{{ trans(\Config::get('app.theme').'-app.subastas.credit') }}</h1>
-				<p class="mini-underline"></p>
+        <div class="col-xs-12 resultok">
+                <h1 class="titlePage">{{ trans(\Config::get('app.theme').'-app.subastas.credit') }}</h1>
         </div>
 	</div>
 

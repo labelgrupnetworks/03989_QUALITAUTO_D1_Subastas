@@ -180,11 +180,16 @@ class ArticleController extends Controller
 			->select("nvl(DP_STOCK_PROD.STOCK,0) stock")
 			->where("ID_ART0", $idArticle)
 			->first();
-
+			#se consulta si hay qeu comprobar stock
 			if($article->cstk_art0 == 'S'){
-				$article->stock = $stkArt->stock >0;
+				if(!empty($stkArt)){
+					$article->stock = $stkArt->stock >0;
+				}else{
+					$article->stock = false;
+				}
+
 			}else{
-				$article->stock = 'S';
+				$article->stock = true;
 			}
 
 

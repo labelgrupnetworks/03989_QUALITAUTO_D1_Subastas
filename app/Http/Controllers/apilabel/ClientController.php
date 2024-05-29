@@ -38,7 +38,7 @@ class ClientController extends ApiLabelController
     public function createClient($items)
 	{
 		if(Config::get('app.strict_password_in_api', false)){
-			$this->rules['password'] = ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
+			$this->rules['password'] = [ Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
 		}
         try {
 
@@ -183,7 +183,9 @@ class ClientController extends ApiLabelController
         try {
             DB::beginTransaction();
 
-
+			if(Config::get('app.strict_password_in_api', false)){
+				$this->rules['password'] = [ Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'max:256'];
+			}
             if(empty($items) || empty($items[0])){
                 throw new ApiLabelException(trans('apilabel-app.errors.no_items'));
 			}

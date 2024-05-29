@@ -7,7 +7,7 @@
 
     $envioroment = Config::get('app.env');
     $domains = [
-        'local' => 'http://www.newsubastas.test',
+        'local' => 'http://subastas.test',
         'develop' => 'https://auctions-ansorena.labelgrup.com',
         'production' => 'https://www.ansorena.com',
     ];

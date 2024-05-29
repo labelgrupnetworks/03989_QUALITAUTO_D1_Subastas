@@ -20,7 +20,7 @@
             <div class="row">
 
                 <div class="col-12">
-                    <h1 class="text-uppercase">{{ $titleName }} | <b>{{ $seo_data->h1_seo }}</b></h1>
+                    <h1 class="text-uppercase">{{ $titleName }} | <b>{{ $seo_data->h1_seo }}</b> | <a class="back-link" href="javascript:backpage();">{{ trans("$theme-app.global.back") }}</a> </h1>
                 </div>
             </div>
         </div>

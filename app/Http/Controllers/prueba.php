@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //opcional
 use SimpleXMLElement;
 use App;
+use App\Actions\Observability\HasAuctionAction;
 use App\Http\Controllers\admin\bi\AdminBiController;
 use Request;
 use lessc;
@@ -167,16 +168,15 @@ use App\models\V5\AppPush;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Spatie\SslCertificate\SslCertificate;
 
 class Prueba extends BaseController
 {
 
 	public function index()
 	{
-		dd('Este cambio ha sido subido solamente al git en la rama main y desplegado en prodcucción');
+		die();
 	}
-
-
 
 	private function testConnection()
 	{

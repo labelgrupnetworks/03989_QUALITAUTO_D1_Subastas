@@ -20,9 +20,9 @@ class PageController extends Controller
    {
         $pagina = new Page();
 
-         $data  = $pagina->getPagina($lang,$key);
+        $data  = $pagina->getPagina($lang,$key);
         if(empty( $data )) {
-            exit (\View::make('front::errors.404'));
+            return abort(404);
         }
 
        # Asignamos

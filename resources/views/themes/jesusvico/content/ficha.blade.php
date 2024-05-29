@@ -74,13 +74,22 @@ if($subasta_web){
 
 @endphp
 
-<div class="ficha-content container mt-3">
+<div class="ficha-content container">
 
-	<div class="ficha-grid">
+	<div class="header-ficha-grid">
+
 		<section class="ficha-title">
-			<h2>{{ trans("$theme-app.lot.lot-name") }} {{$refLot}}</h2>
+			<h2 class="m-0">{{ trans("$theme-app.lot.lot-name") }} {{$refLot}}</h2>
 			{{-- <h1 class="max-line-1">{{$refLot}} - {!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1> --}}
 		</section>
+
+		<section class="ficha-previous-next">
+			@include('includes.ficha.previous_next')
+		</section>
+
+	</div>
+
+	<div class="ficha-grid">
 
 		<section class="ficha-image">
 			@include('includes.ficha.ficha_image')
@@ -98,10 +107,6 @@ if($subasta_web){
 			@if(($subasta_online  || ($subasta_web && $subasta_abierta_P ) || $subasta_make_offer ) && !$cerrado &&  !$retirado)
 				@include('includes.ficha.history')
 			@endif
-		</section>
-
-		<section class="ficha-previous-next">
-			@include('includes.ficha.previous_next')
 		</section>
 
 		<section class="ficha-share">

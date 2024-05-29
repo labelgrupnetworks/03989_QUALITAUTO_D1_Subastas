@@ -25,6 +25,7 @@ Route::get('/img/converter/{imagePathToBase64Url}', 'ImageController@converterIm
 Route::get('', function () {
 	return redirect("/" . App::getLocale(), 301);
 });
+
 //Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
 Route::get('prueba', 'prueba@index')->name('prueba');
@@ -45,7 +46,7 @@ Route::get('send_new_password/{num_mails?}', 'MailController@send_new_password')
 # Login @ UserController
 Route::get(Routing::slug('login'), 'UserController@login');
 Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered')->name('user.registered');
-Route::post(Routing::slug('login'), 'UserController@login_post');
+Route::post(Routing::slug('login'), 'UserController@login_post')->name('post_login');
 Route::post('/login_post_ajax', 'UserController@login_post_ajax');
 Route::post(Routing::slug('registro'), 'UserController@registro')->name('send_register');
 Route::get(Routing::slug('logout'), 'UserController@logout');
@@ -89,7 +90,7 @@ Route::get(Routing::slug('logout') . '/tr', 'UserController@logout'); // logout 
 # Subastas @ SubastaController
 # 2017/10/25 no se esta usando
 #Route::get(Routing::slug('subasta').'-{cod}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-Route::get(Routing::slugSeo('indice-subasta') . '/{cod}-{texto}', 'SubastaController@indice_subasta')->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::get(Routing::slugSeo('indice-subasta') . '/{cod}-{texto}', 'SubastaController@indice_subasta')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.indice');
 
 
 Route::post('/subasta/reproducciones', 'SubastaController@reproducciones');
@@ -105,9 +106,9 @@ Route::post('/subasta/modal_images_fullscreen', 'SubastaController@modalImagesFu
             */
 
 #lotes
-Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
+Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',))->name('subasta.lote_old.ficha');
 #NewLotes
-Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.lote.ficha');
 
 
 //2017-11-08  no parece que se use
@@ -129,7 +130,7 @@ Route::get(Routing::translateSeo('subastas-historicas-online'), 'SubastaControll
 Route::get(Routing::translateSeo('subastas-online'), 'SubastaController@subastas_online')->name('subastas.online');
 Route::get(Routing::translateSeo('subastas-permanentes'), 'SubastaController@subastas_permanentes')->name('subastas.permanentes');
 Route::get(Routing::translateSeo('venta-directa'), 'SubastaController@venta_directa')->name('subastas.venta_directa');
-Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones')->name('subastas.todas');
+Route::get(Routing::translateSeo('todas-subastas'), 'SubastaController@listaSubastasSesiones')->name('subastas.all');
 Route::get(Routing::translateSeo('subastas-activas'), 'SubastaController@subastas_activas')->name('subastas.activas');
 Route::get(Routing::translateSeo('subastas-especiales'), 'SubastaController@subastas_especiales')->name('subastas.especiales');
 
@@ -300,7 +301,7 @@ Route::get(Routing::slug('thanks'), function () {
 # CMS / Gestor de contenido
 #Route::get(Routing::slug('pagina').'/{pagina}', 'ContentController@getPagina');
 #  Route::get(Routing::slugSeo('pagina',true).'/{pagina}', 'ContentController@getPagina');
-Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', 'PageController@getPagina');
+Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', 'PageController@getPagina')->name('staticPage');
 Route::get('/article/{id}', 'PageController@getArticle');
 Route::get(Routing::translateSeo('mapa-web'), 'PageController@siteMapPage');
 
@@ -350,8 +351,7 @@ Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys'
 
 
 // Valoraciones
-// **Deprecated**
-Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos');
+Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
 Route::get(Routing::slugSeo('especialistas'), 'EnterpriseController@index')->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv');
@@ -403,8 +403,8 @@ Route::get('/email_fact_generated', 'MailController@emailFacturaGenerated');
 Route::get('/disbandment_lot', 'MailController@disbandment_lot');
 
 /* Blog */
-Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index');
-Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', 'NoticiasController@news');
+Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index')->name('blog.index');
+Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', 'NoticiasController@news')->name('blog.news');
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@mosaicBlog');
 
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@museumPieces');
@@ -488,7 +488,7 @@ Route::post('api-ajax/accept-auction-conditions', 'SubastaController@acceptAucti
 Route::get(Routing::translateSeo('contacto'), 'V5\ContactController@index')->name('contact_page');
 
 Route::get(Routing::slugSeo('administradores-concursales', true), 'V5\ContactController@admin');
-Route::post('contactSendmail', 'V5\ContactController@contactSendmail');
+Route::post('contactSendmail', 'V5\ContactController@contactSendmail')->name('contactSendmail');
 
 //Route::get(Routing::slugSeo('register',true), 'V5\UserAccessController@register');
 Route::get(Routing::slugSeo('register', true), 'User\RegisterController@index')->name('register');
@@ -536,13 +536,13 @@ if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new")
 	#nuevo
 	Route::get(Routing::slugSeo('subasta') . '/{texto?}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 	#version antigua
-	Route::get(Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	Route::get(Routing::slugSeo('subastaOld') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
 } else {
 	#ver version nueva con URL test
 	Route::get(Routing::slugSeo('subastaTest') . '/{texto}_{cod}-{session}', 'V5\LotListController@getLotsList')->name('urlAuction')->where(array('cod' => '[0-9a-zA-Z]+', 'session' => '[0-9]+'));
 
 	#antiguo
-	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
+	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'))->name('urlAuctionOld');
 	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}/page-{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 }
 
@@ -616,7 +616,7 @@ Route::group(['prefix' => 'api'], function () {
 
 Route::get(Routing::translateSeo('exposicion') . '{texto}_{cod}-{reference}', 'V5\GaleriaArte@getGalery')->name('exposicion')->where(array('cod' => '[0-9a-zA-Z]+', 'reference' => '[0-9]+'));
 Route::get(Routing::translateSeo('exposiciones'), 'V5\GaleriaArte@exhibitons')->name('exposiciones');
-#la comento por que de momento no se usará
+#la comento por que de momento no se usarálogin_post_ajax
 # Route::get(Routing::translateSeo('exposiciones-anteriores'), 'V5\GaleriaArte@previousExhibitons')->name('exposiciones-anteriores');
 Route::get(Routing::translateSeo('artistas-galeria'), 'V5\GaleriaArte@artists')->name('artistasGaleria');
 Route::get(Routing::translateSeo('artista-galeria') . '{id_artist}', 'V5\GaleriaArte@artist')->name('artistaGaleria')->where(array('id_artist' => '[0-9]+'));
@@ -696,6 +696,10 @@ Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregat
 #Eventos SEO, permite pasar letras numeros y el simbolo _
 Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z_]+']);
 
+
+#Lleida Net, como n ose si devuelven post o get pngo lso dos
+Route::get('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
+Route::post('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';
