@@ -637,7 +637,7 @@ Route::get('/auth/google/callback', function () {
     // $user->token
 });
 
-Route::get(\Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
+Route::get(Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
 
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
-use Session;
+use Illuminate\Support\Facades\Session;
 use View;
 use Routing;
 use Illuminate\Support\Facades\Config;
