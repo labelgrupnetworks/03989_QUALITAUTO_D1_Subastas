@@ -15,34 +15,17 @@
             {!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}
         </div>
 
-		@if (!empty($lote_actual->descdet_hces1))
+		@if (count($caracteristicas) !== 0)
 			<div class="provenance">
-				{!! $lote_actual->descdet_hces1 !!}
+				@foreach ($caracteristicas as $caracteristica)
+					{{ $caracteristica->value_caracteristicas_hces1 }}
+                @endforeach
 			</div>
     	@endif
 
     </div>
 </div>
 
-
-
-@if (count($caracteristicas) !== 0)
-    <div class="features mt-3">
-        <h5>{{ trans("$theme-app.features.features") }}</h5>
-
-        <table class="w-100">
-            <tbody>
-                @foreach ($caracteristicas as $caracteristica)
-                    <tr>
-                        <td>{{ $caracteristica->name_caracteristicas }}</td>
-                        <td>{{ $caracteristica->value_caracteristicas_hces1 }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-    </div>
-@endif
 
 @if (!empty($category))
     <div class="categories">
