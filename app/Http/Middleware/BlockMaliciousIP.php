@@ -31,11 +31,8 @@ class BlockMaliciousIP
             return response('Your IP is temporarily blocked due to suspicious activity.', 403);
         }
 
-        return $next($request);
-
 		$isValid = $this->isValidSessionCookie($request);
 		if (!$isValid) {
-
 			$attempts = Cache::get($attemptsKey, 0) + 1;
             Cache::put($attemptsKey, $attempts, $this->decayMinutes * 60);
 
