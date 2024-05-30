@@ -80,12 +80,7 @@ class SeoLib
 					$userController = new UserController();
 					$ip = $userController->getUserIP();
 
-					#guardamos el user agent para analizarlo y ver is hay que bloquear mas
-					if (Config::get("app.logUserAgent")) {
-
-						\Log::info("User Agent: " . $userAgent . " ip: " . $ip);
-
-					}
+					
 
 
 					if (empty($category) && !empty($section)) {
