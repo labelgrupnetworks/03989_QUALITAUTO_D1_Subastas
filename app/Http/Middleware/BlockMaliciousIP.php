@@ -3,11 +3,17 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class BlockMaliciousIP
 {
+
+	protected $maxAttempts = 2;
+    protected $decayMinutes = 10;
+    protected $blockDurationMinutes = 60;
+
 	/**
 	 * Handle an incoming request.
 	 *
@@ -17,14 +23,27 @@ class BlockMaliciousIP
 	 */
 	public function handle($request, Closure $next)
 	{
+		$ip = $request->ip();
+		$blockedKey = 'blocked_ip_' . $ip;
+		$attemptsKey = 'ip_attempts_' . $ip;
+
+        if (Cache::has($blockedKey)) {
+            return response('Your IP is temporarily blocked due to suspicious activity.', 403);
+        }
+
+        return $next($request);
 
 		$isValid = $this->isValidSessionCookie($request);
 		if (!$isValid) {
-			$ip = $request->ip();
-			Log::warning("IP {$ip} sospechosa de modificar cookies.");
 
-			// Bloquear la IP o tomar otra acción
-			//abort(403, "Acceso denegado");
+			$attempts = Cache::get($attemptsKey, 0) + 1;
+            Cache::put($attemptsKey, $attempts, $this->decayMinutes * 60);
+
+			if ($attempts > $this->maxAttempts) {
+                Cache::put($blockedKey, true, $this->blockDurationMinutes * 60);
+                Log::warning('Blocked IP ' . $ip . ' due to suspicious activity.');
+            }
+
 		}
 
 		return $next($request);
