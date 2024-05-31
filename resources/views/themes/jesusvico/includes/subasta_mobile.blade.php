@@ -17,7 +17,8 @@
 
 @endphp
 <div class="row g-0 h-100 mobile-subastas">
-	<div class="col-12 card-img-wrapper{{ !$loop->first ? ' d-none' : '' }}">
+
+	<div class="col-12 card-img-wrapper">
 		<a href="{{ $url_lotes }}">
 			<div class="activity"></div>
 			<img src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}" class="w-100 h-100"
