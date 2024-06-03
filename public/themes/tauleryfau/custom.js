@@ -2238,3 +2238,25 @@ function refreshAnchorActive(anchorElement) {
 	$('.sales-menu a').removeClass('btn-lb-primary').addClass('btn-lb-outline');
 	$(anchorElement).addClass('btn-lb-primary').removeClass('btn-lb-outline');
 }
+
+changeCurrencyNew = function(price, exchange, object) {
+
+	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
+	newPrice = numeral(price).format('0,0.00');
+
+	if(typeof replaceZeroDecimals != 'undefined' && replaceZeroDecimals == true){
+		const isMobile = window.matchMedia("(max-width: 760px)").matches;
+		if(isMobile){
+			price = roundNumber(price);
+			newPrice = numeral(price).format('0,0');
+		}
+	}
+
+	if (currency[exchange].pos_div == 'R') {
+		newPrice += " " + currency[exchange].symbolhtml_div;
+	} else {
+		newPrice = currency[exchange].symbolhtml_div + newPrice;
+	}
+
+	$(object).html(newPrice);
+}
