@@ -55,9 +55,9 @@
 @endif
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-463062636"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2W5SBMTKG2"></script>
 <script>
 	gtag('js', new Date());
-	gtag('config', 'AW-463062636');
+	gtag('config', 'G-2W5SBMTKG2');
 </script>
 
