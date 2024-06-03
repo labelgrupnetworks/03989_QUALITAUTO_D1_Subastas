@@ -80,7 +80,7 @@
                 <select id="locale-select" name="">
                     @foreach (array_keys(Config::get('app.locales')) as $lang)
                         <option
-                            value="{{ "/$lang" . TradLib::getRouteTranslate($currentPath, config('app.locale'), $lang) }}"
+                            value="{{ "/$lang" . TradLib::getRouteTranslate($currentPath, config('app.locale'), $lang) }}" data-lang="{{ $lang }}"
                             @if ($locale === $lang) selected @endif>
                             {{ $lang }}
                         </option>
