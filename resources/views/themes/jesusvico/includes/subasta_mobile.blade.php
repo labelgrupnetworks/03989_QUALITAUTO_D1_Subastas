@@ -14,10 +14,10 @@
 	$SubastaTR->session_reference = $subasta->reference;
 	$status = $SubastaTR->getStatus();
 	$isFinished = !empty($status) && $status[0]->estado == 'ended';
-
 @endphp
 <div class="row g-0 h-100 mobile-subastas">
-	<div class="col-12 card-img-wrapper{{ !$loop->first ? ' d-none' : '' }}">
+
+	<div @class(['col-12 card-img-wrapper', 'd-none' => $subasta->reference != '001'])>
 		<a href="{{ $url_lotes }}">
 			<div class="activity"></div>
 			<img src="{{ \Tools::url_img_session('subasta_large', $subasta->cod_sub, $subasta->reference) }}" class="w-100 h-100"

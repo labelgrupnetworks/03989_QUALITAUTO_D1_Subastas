@@ -85,7 +85,7 @@
                 <div class="card history-card">
                     <img src="/themes/ansorena/assets/img/pages/libro-ansorena.jpg" alt="" class="card-img-top">
                     <div class="card-body">
-                        <h3 class="ff-highlight fs-32-48 mb-3 mb-lg-5">Ansorena - madrid’s jewellers celebrate 150th
+                        <h3 class="ff-highlight fs-32-48 mb-3 mb-lg-5">Ansorena - Madrid’s jewellers celebrate 150th
                             anniversary</h3>
                         <p class="ff-highlight mb-4 mb-lg-5">Work in the publishing field continued and in 1995 a book
                             was published on the history of the jewellery shop, celebrating Ansorena’s 150 years as

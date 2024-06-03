@@ -63,25 +63,27 @@
                             @endif
                         @endforeach
 
-                        <div class="row">
-                            <div class="col-xs-12 col-md-8">
-                                <div class="check_term row">
-                                    <div class="col-xs-2 col-md-1">
-                                        <input class="newsletter form-control" id="bool__1__condiciones" name="condiciones"
-                                            type="checkbox" value="on" autocomplete="off">
-                                    </div>
-                                    <div class="col-xs-10 col-md-11">
-                                        <label
-                                            for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-md-4">
-                                <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
-                                    data-callback="onSubmit">
-                                </div>
-                            </div>
-                        </div>
+						<div class="col-xs-12">
+							<div class="row mb-2">
+								<div class="col-xs-12 col-md-8">
+									<div class="check_term row">
+										<div class="col-xs-2 col-md-1">
+											<input class="newsletter form-control" id="bool__1__condiciones" name="condiciones"
+												type="checkbox" value="on" autocomplete="off">
+										</div>
+										<div class="col-xs-10 col-md-11">
+											<labelcheck_term 
+												for="accept_new"><?= trans($theme . '-app.emails.privacy_conditions') ?></label>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-md-4">
+									<div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
+										data-callback="onSubmit">
+									</div>
+								</div>
+							</div>
+						</div>
                         <br><br><br>
                         <div class="col-xs-12 text-center">
                             {!! $data['submit'] !!}
