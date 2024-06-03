@@ -13,7 +13,7 @@
     'row_1',
     [
         'id' => 'banner-tasaciones',
-        'title1' => 'TASACIONES',
+        'title1' => trans("$theme-app.home.valuations-title"),
         'url1' => Routing::translateSeo('valoracion-articulos', null, $domain),
         'title2' => trans("$theme-app.foot.condecoraciones"),
         'url2' => $pagina . trans("$theme-app.links.condecoraciones"),
