@@ -333,6 +333,10 @@ main {
 	font-weight: 500;
 }
 
+.panel_user .panel_user-data small {
+	font-weight: 200;
+}
+
 .panel-title {
 	display: flex;
 	flex-wrap: wrap;
@@ -358,8 +362,9 @@ main {
 
 select#actual_currency {
 	align-self: stretch;
-	padding-left: 6px;
-	padding-right: 6px;
+	font-size: 12px;
+	padding: 6px;
+	background-color: #fff;
 }
 
 .table-grid_header {
@@ -367,13 +372,13 @@ select#actual_currency {
 }
 
 .orders-auction {
-	margin-bottom: 2rem;
+	margin-bottom: 3rem;
 }
 
 .orders-auction_header,
 .orders-auction_lot {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: auto auto 1fr 1fr 1fr 1fr;
 	align-items: center;
 	max-width: var(--max-content-borderbox);
 	padding-left: var(--min-padding-to-page);
@@ -392,21 +397,22 @@ select#actual_currency {
 }
 
 .orders-auction_lot {
-	font-weight: 500;
+	/* font-weight: 500; */
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #AF9C81A1;
 	margin-bottom: 1rem;
-	grid-template-areas: "lot icons buttons buttons buttons"
-		"desc desc desc desc desc"
-		"image image image label-salida price-salida"
-		"image image image label-actual price-actual"
-		"image image image label-bid price-bid";
+	grid-template-areas: "lot icons . buttons buttons buttons"
+		"desc desc desc desc desc desc"
+		"image image image label-salida label-salida price-salida"
+		"image image image label-actual label-actual price-actual"
+		"image image image label-bid label-bid price-bid";
 }
 
 .orders-auction_title {
-	border: 1px solid var(--color-gold-dark);
 	padding: 5px;
-	font-size: 12px;
+	font-size: 16px;
+	font-weight: 500;
+	grid-column: 1 / -1;
 }
 
 .orders-auction p {
@@ -415,8 +421,13 @@ select#actual_currency {
 
 .js-divisa {
 	color: inherit;
-	font-weight: 500;
-	font-size: var(--fs-l);
+	/* font-weight: 500;
+	font-size: var(--fs-l); */
+}
+
+.orders-auction .js-divisa {
+	font-size: 13px;
+	font-weight: 400;
 }
 
 .lot-image {
@@ -434,10 +445,12 @@ select#actual_currency {
 
 .lot-ref {
 	grid-area: lot;
+	font-size: var(--fs-l);
+	font-weight: 600;
 }
 
 .lot-desc {
-	font-weight: 400;
+	font-weight: 300;
 	-webkit-line-clamp: 3;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -459,14 +472,20 @@ select#actual_currency {
 
 .lot-price-salida {
 	grid-area: price-salida;
+	font-size: 13px;
+	font-weight: 400;
 }
 
 .lot-price-actual {
 	grid-area: price-actual;
+	font-size: 13px;
+	font-weight: 600;
 }
 
 .lot-price-bid {
 	grid-area: price-bid;
+	font-size: 13px;
+	font-weight: 500;
 }
 
 .label-price-salida {
@@ -540,6 +559,13 @@ select#actual_currency {
 
 	.orders-auction_header>*:not(.orders-auction_title) {
 		display: block;
+	}
+
+	.orders-auction_title {
+		border: 1px solid var(--color-gold-dark);
+		padding: 5px;
+		font-size: 12px;
+		grid-column: initial;
 	}
 
 	.orders-auction_lot {
@@ -910,9 +936,10 @@ p,
 }
 
 .panel-lots_header-wrapper {
-	display: none;
+	/* display: none; */
 	border-bottom: 1px solid var(--color-gold);
 	border-top: 1px solid var(--color-gold);
+	margin-bottom: 2rem;
 }
 
 .orders-auction .panel-lots_header-wrapper {
