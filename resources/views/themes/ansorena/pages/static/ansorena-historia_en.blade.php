@@ -212,7 +212,7 @@
                                     class="img-cover">
                             </div>
                         </div>
-                        <p class="ff-highlight history-modal-title">Ansorena - madrid’s jewellers celebrate 150th
+                        <p class="ff-highlight history-modal-title">Ansorena - Madrid’s jewellers celebrate 150th
                             anniversary</p>
                         <p class="ff-highlight history-modal-subtitle">Work in the publishing field continued and in
                             1995 a book
