@@ -1682,7 +1682,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$category_url = $category->url_category_blog_lang;
 		$blog_url = $blog->url_web_blog_lang;
 
-		$full_url = "/$to_lang/$blog_literal_url/$category_url/$blog_url";
+		$full_url = "/$to_lang/$blog_literal_url/$category_url/" . ($blog->enabled_web_blog_lang != 0 ? "$blog_url" : "");
 
 		return [
 			'url' => $full_url,
