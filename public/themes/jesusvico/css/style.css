@@ -793,8 +793,19 @@ article.card-custom-large .card-body .card-title {
 }
 
 .card-custom-large {
-	min-height: 195px !important;
+	min-height: 160px !important;
 }
+
+.card-mobile-subastas-top {
+	margin-top: 1rem;
+	border-bottom: 0px;
+	box-shadow: none;
+}
+
+.card-mobile-subastas-bottom {
+	border-bottom: solid 1px rgb(0 0 0 / 0.175);
+}
+
 /*
 |--------------------------------------------------------------------------
 | GRID - LOT
