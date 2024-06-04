@@ -17,9 +17,7 @@
             <span>{{ trans("$theme-app.user_panel.starting_price_min") }}</span>
         </div>
         <div class="panel-lot_price-salida">
-            <p class="js-divisa" value="{{ $lot->impsalhces_asigl0 }}">
-                {!! $currency->getPriceSymbol(2, $lot->impsalhces_asigl0) !!}
-            </p>
+            <p class="js-divisa" value="{{ $lot->impsalhces_asigl0 }}" data-small-format="0,0"></p>
         </div>
         <div class="panel-lot_label label-price-actual">
             <span>
@@ -27,9 +25,7 @@
             </span>
         </div>
         <div class="panel-lot_actual-price">
-            <p class="js-divisa" value="{{ $lot->implic_hces1 }}">
-                {!! $currency->getPriceSymbol(2, $lot->implic_hces1) !!}
-            </p>
+            <p class="js-divisa" value="{{ $lot->implic_hces1 }}" data-small-format="0,0"></p>
         </div>
 
         <div class="panel-lot_label label-increment">

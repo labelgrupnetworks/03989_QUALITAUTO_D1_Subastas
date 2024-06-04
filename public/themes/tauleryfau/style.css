@@ -9317,7 +9317,11 @@ button.close {color:#283747;font-size:24px;opacity: 1 !important}
 	position: relative;
 	border:1px solid #b79d81;
 }
-.js-divisa {color:#888;font-weight:normal;}
+.js-divisa {
+	color: #888;
+	font-weight: inherit;
+}
+
 .money .js-divisa {
 	color:#EEE;
 	font-weight:normal;

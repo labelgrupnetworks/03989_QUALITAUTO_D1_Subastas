@@ -1,5 +1,8 @@
+<div class="summary-favorites-arrows">
+	<div class="arrow-prev"><i class="fa fa-angle-left"></i></div>
+	<div class="arrow-next"><i class="fa fa-angle-right "></i></div>
+</div>
 <section class="summary-favorites">
-
     @foreach ($lots as $inf_lot)
         @php
             $tileFriendly = str_slug($inf_lot->titulo_hces1);
@@ -81,6 +84,7 @@
             </div>
         </a>
     @endforeach
+
 </section>
 
 <script>
@@ -90,6 +94,8 @@
         slidesToScroll: 1,
         dots: false,
         arrows: true,
+		prevArrow: $('.arrow-prev'),
+		nextArrow: $('.arrow-next'),
         responsive: [{
                 breakpoint: 1200,
                 settings: {

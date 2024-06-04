@@ -39,7 +39,7 @@ if(!empty($bill->factura)){
             <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
-        <p class="js-divisa" value="{{ $document->total_price ?? 0 }}">
+        <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}" style="font-size: 13px">
             {!! $currency->getPriceSymbol(2, $document->total_price ?? 0) !!}
         </p>
 

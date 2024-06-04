@@ -1615,14 +1615,6 @@ function changeCurrencyNew(price, exchange, object) {
 
 }
 
-function roundNumber(number) {
-	// Obtener la parte decimal
-    let decimalPart = number - Math.floor(number);
-    // Redondear según la parte decimal
-	return (decimalPart >= 0.5)
-		? Math.ceil(number)
-		: Math.floor(number);
-}
 
 function changeCurrencyWithElement(price, exchange, element) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
@@ -1641,16 +1633,20 @@ function changeCurrencyWithElement(price, exchange, element) {
 	element.innerHTML = newPrice;
 }
 
+function refreshCurrency() {
+	$(".js-divisa").each(function () {
+		let value = $(this).attr('value');
+		if (value != "undefined") {
+			changeCurrencyNew(value, $('#actual_currency').val(), $(this));
+		}
+	});
+}
+
 $(document).ready(function () {
 
 	$("#actual_currency").change(function () {
 
-		$(".js-divisa").each(function () {
-			a = $(this).attr('value');
-			if (a != "undefined") {
-				changeCurrencyNew(a, $('#actual_currency').val(), $(this));
-			}
-		});
+		refreshCurrency();
 
 		$.ajax({
 			type: "POST",
@@ -1663,8 +1659,6 @@ $(document).ready(function () {
 
 
 	});
-
-
 });
 
 

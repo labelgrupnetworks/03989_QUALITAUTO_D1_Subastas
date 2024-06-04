@@ -24,10 +24,10 @@
         <p class="visible-md visible-lg">
             {{ str_replace('-', '/', $invoiceId) }}
         </p>
-        <p class="js-divisa" value="{{ $totalSettlement }}">
+        <p class="js-divisa fw-bold" value="{{ $totalSettlement }}">
             {!! $currency->getPriceSymbol(2, $totalSettlement ?? 0) !!}
         </p>
-        <p class="js-divisa" value="{{ $totalPending  ?? 0 }}">
+        <p class="js-divisa fw-bold" value="{{ $totalPending  ?? 0 }}">
             {!! $currency->getPriceSymbol(2, $totalPending  ?? 0) !!}
         </p>
         <p>

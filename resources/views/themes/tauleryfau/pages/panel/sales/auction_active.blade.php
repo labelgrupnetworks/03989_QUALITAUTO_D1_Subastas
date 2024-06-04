@@ -15,7 +15,7 @@
         <p class="js-divisa visible-md visible-lg" value="{{ $auction['total_imptas'] }}">
             {!! $currency->getPriceSymbol(2, $auction['total_imptas']) !!}
         </p>
-        <p class="js-divisa" value="{{ $auction['total_award'] }}">
+        <p class="js-divisa fw-bold" value="{{ $auction['total_award'] }}">
             {!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
         </p>
         <div class="actions">

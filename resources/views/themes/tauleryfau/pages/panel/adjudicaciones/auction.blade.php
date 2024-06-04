@@ -14,7 +14,7 @@
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
 
-        <p class="js-divisa" value="{{ $document->total_imp_invoice ?? 0 }}">
+        <p class="js-divisa fw-bold" value="{{ $document->total_imp_invoice ?? 0 }}" style="font-size: 13px;">
             {!! $currency->getPriceSymbol(2, $document->total_imp_invoice ?? 0) !!}
         </p>
         <p class="allotment-invoice_state">

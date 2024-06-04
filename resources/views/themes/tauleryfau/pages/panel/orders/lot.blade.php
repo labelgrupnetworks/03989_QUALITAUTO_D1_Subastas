@@ -50,41 +50,35 @@
         </div>
 
         <div class="order-label label-price-salida">
-            <span>{{ trans($theme . '-app.lot.lot-price') }}</span>
+            <span class="hidden-xs">{{ trans($theme . '-app.lot.lot-price') }}</span>
+            <span class="visible-xs">P. Salida</span>
         </div>
 
         <div class="lot-price-salida">
-            <span class="js-divisa" value="{{ $inf_lot->impsalhces_asigl0 }}">
-                {!! $currency->getPriceSymbol(2, $inf_lot->impsalhces_asigl0) !!}
-            </span>
-
+            <span class="js-divisa" value="{{ $inf_lot->impsalhces_asigl0 }}"></span>
         </div>
 
         <div class="order-label label-price-actual">
-            <span>
-                @if ($subasta_finalizada)
-                    {{ trans("$theme-app.user_panel.awarded") }}
-                @else
-                    {{ trans($theme . '-app.lot.puja_actual') }}
-                @endif
-            </span>
+            @if ($subasta_finalizada)
+                <span>{{ trans("$theme-app.user_panel.awarded") }}</span>
+            @else
+                <span class="hidden-xs">{{ trans($theme . '-app.lot.puja_actual') }}</span>
+                <span class="visible-xs">P. Actual</span>
+            @endif
         </div>
 
         <div class="{{ $style }} lot-price-actual">
-            <p class="js-divisa js-divisa-oberver" data-js-id="actual-price" value="{{ $inf_lot->implic_hces1 }}">
-                {!! $currency->getPriceSymbol(2, $inf_lot->implic_hces1) !!}
-            </p>
+            <p class="js-divisa js-divisa-oberver" data-js-id="actual-price" value="{{ $inf_lot->implic_hces1 }}"></p>
         </div>
 
         <div class="order-label label-price-bid">
-            <p>Mi Puja Máxima</p>
+			<p class="hidden-xs">Mi Puja Máxima</p>
+            <p class="visible-xs">Mi Puja Máx</p>
         </div>
 
         <div class="lot-price-bid">
             @if (!empty($inf_lot->imp))
-                <p class="js-divisa js-divisa-oberver" data-js-id="my-max-bid" value="{{ $inf_lot->imp }}">
-                    {!! $currency->getPriceSymbol(2, $inf_lot->imp) !!}
-                </p>
+                <p class="js-divisa js-divisa-oberver" data-js-id="my-max-bid" value="{{ $inf_lot->imp }}"></p>
             @else
                 <p>
                     <span class="my-max-bid">-</span>
@@ -133,13 +127,17 @@
 
         <div class="lot-icons">
             <a class="lot-icons-see" href="{{ $url_friendly }}">
-                <i class="fa fa-eye"></i>
+                <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to"
+                    style="display: block" width="20.25">
             </a>
 
             @if (!empty($data['favorites']))
                 <a class="delete-fav btn-del"
                     href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}',' <?= $data['codigos_licitador'][$inf_lot->cod_sub] ?>')"
-                    title="{{ trans($theme . '-app.lot.del_from_fav') }}"><i class="fas fa-minus"></i></a>
+                    title="{{ trans($theme . '-app.lot.del_from_fav') }}">
+                    <img src="/themes/{{ $theme }}/assets/icons/minus-circle-solid.svg" alt="delete"
+                        style="display: block" width="18">
+                </a>
             @endif
         </div>
     </div>

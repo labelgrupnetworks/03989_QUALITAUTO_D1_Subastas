@@ -14,9 +14,10 @@
                 <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
                 <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
                 <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
-                <th scope="col">{{ trans("$theme-app.user_panel.total_bill") }}</th>
+                <th scope="col">
+					{{ trans("$theme-app.user_panel.total") }}
+				</th>
                 <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
-                <th scope="col"></th>
             </tr>
         </thead>
 

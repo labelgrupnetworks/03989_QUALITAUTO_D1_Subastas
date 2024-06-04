@@ -35,51 +35,65 @@
         </div>
     </div>
 
-    <div class="sales-auctions-block table-hover">
+    <div class="sales-auctions-block">
 
-        <table class="table table-striped">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.lots") }}</th>
-                    <th scope="col">{{ trans("$theme-app.user_panel.starting_price") }}</th>
+                    <th class="visible-md visible-lg" scope="col">
+                        {{ trans("$theme-app.user_panel.starting_price") }}
+                    </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.actual_price") }}</th>
-                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($auctions as $auction)
                     <tr>
                         <td>
-							{{ date('d/m/Y', strtotime($auction['start'])) }}
-						</td>
+                            <a
+                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                {{ date('d/m/Y', strtotime($auction['start'])) }}
+                            </a>
+                        </td>
                         <td>
-							<p class="max-line-2">
-								{{ $auction['des_sub'] }}
-							</p>
-						</td>
-                        <td>{{ $auction['total_lots'] }}</td>
+                            <a
+                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                <p class="max-line-2">
+                                    <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
+                                    <span class="hidden-md hidden-lg">{{ $auction['sub_asigl0'] }}</span>
+                                </p>
+                            </a>
+                        </td>
                         <td>
-							<p class="js-divisa" value="{{ $auction['total_impsalhces'] }}">
-								{!! $currency->getPriceSymbol(2, $auction['total_impsalhces']) !!}
-							</p>
-						</td>
-						<td>
-							<p class="js-divisa" value="{{ $auction['total_award'] }}">
-								{!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
-							</p>
-						</td>
+                            <a
+                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                {{ $auction['total_lots'] }}
+                            </a>
+                        </td>
+                        <td class="visible-md visible-lg">
+                            <a
+                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                <p class="js-divisa" value="{{ $auction['total_impsalhces'] }}">
+                                    {!! $currency->getPriceSymbol(2, $auction['total_impsalhces']) !!}
+                                </p>
+                            </a>
+                        </td>
                         <td>
-							<a href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
-                                <i class="fa fa-eye"></i>
+                            <a
+                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                <p class="js-divisa fw-bold" value="{{ $auction['total_award'] }}">
+                                    {!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
+                                </p>
                             </a>
                         </td>
                     </tr>
-				@empty
-					<tr>
-						<td colspan="6" class="text-center">{{ trans("$theme-app.user_panel.no_sales") }}</td>
-					</tr>
+                @empty
+                    <tr>
+                        <td class="text-center" colspan="6">{{ trans("$theme-app.user_panel.no_sales") }}</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
@@ -88,5 +102,5 @@
 </section>
 
 <script>
-   salesAnimationCounter();
+    salesAnimationCounter();
 </script>

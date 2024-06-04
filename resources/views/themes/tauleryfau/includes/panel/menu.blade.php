@@ -15,14 +15,15 @@
     </div>
 
     <div class="submenu-links hidden-md hidden-lg">
-        <a href="{{ wpLink('wp_home') }}" title="{{ trans($theme . '-app.home.home') }}" style="margin-bottom: 2px">
+        <a href="{{ wpLink('wp_home') }}" title="{{ trans($theme . '-app.home.home') }}">
             <i class="icon_house fa-2x"></i>
         </a>
 
         {{-- hamburger-menu --}}
-        <a data-toggle="collapse" href="#collapseSubMenu" role="button" aria-expanded="false"
-            aria-controls="collapseSubMenu">
+        <a data-toggle="collapse" href="#collapseSubMenu" role="button" aria-expanded="false" class="toggle-icon"
+            aria-controls="collapseSubMenu" >
             <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+			<i class="fa fa-times fa-2x" aria-hidden="true"></i>
         </a>
     </div>
 </div>

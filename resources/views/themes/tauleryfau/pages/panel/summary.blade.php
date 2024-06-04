@@ -54,10 +54,12 @@
                             <span>{{ trans("$theme-app.user_panel.pendings") }}</span>
                         </a>
                         <a class="btn btn-lb btn-lb-primary" onclick="getSales(this)">
-                            <span>{{ trans("$theme-app.user_panel.active_auctions") }}</span>
+                            <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
+							<span class="hidden-md hidden-lg">Activas</span>
                         </a>
                         <a class="btn btn-lb btn-lb-outline" onclick="getFinishSales(this)">
-                            <span>{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
+							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
+							<span class="hidden-md hidden-lg">Finalizadas</span>
                         </a>
                     </div>
                 </div>
