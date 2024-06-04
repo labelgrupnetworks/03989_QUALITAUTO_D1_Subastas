@@ -156,7 +156,7 @@
                                 <div class="col-md-3">
 									<select class="form-control" name='lang'>
 										@foreach (config('app.locales') as $iso_code => $locale)
-											<option value="{{ mb_strtoupper($iso_code) }}">{{ $locale }}</option>
+											<option value="{{ mb_strtoupper($iso_code) }}" @selected(mb_strtoupper($iso_code) == $data['lang'])>{{ $locale }}</option>
 										@endforeach
                                     </select>
                                 </div>
