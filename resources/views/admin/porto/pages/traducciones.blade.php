@@ -22,8 +22,24 @@
         <div id="cms">
             <div class="row mb-10">
                 <div class="col-md-12">
-                    <button class="mb-xs mt-xs mr-xs btn btn-lg btn-primary pull-right save_traducciones"
-                        type="button">{{ trans('admin-app.title.save') }}</button>
+					<div class="d-flex align-items-center justify-content-space-between">
+						@if (count(config('app.locales')) > 1)
+							<div class="d-flex align-items-center justify-content-start">
+								@php
+									$langs = config('app.locales');
+									unset($langs[mb_strtolower($data['lang'])]);
+								@endphp
+								@foreach ($langs as $lang => $lang_name)
+									<a href="/admin/traducciones/{{$data['key']}}/{{mb_strtoupper($lang)}}"
+										class="mb-xs mt-xs mr-xs btn btn-sm btn-success">{{ trans("admin-app.button.change-to") }} {{ mb_strtoupper($lang) }}</a>
+								@endforeach
+							</div>
+						@endif
+						<div class="d-flex align-items-center justify-content-end">
+							<button class="mb-xs mt-xs mr-xs btn btn-lg btn-primary save_traducciones"
+								type="button">{{ trans('admin-app.title.save') }}</button>
+						</div>
+					</div>
                 </div>
             </div>
             <section class="panel">

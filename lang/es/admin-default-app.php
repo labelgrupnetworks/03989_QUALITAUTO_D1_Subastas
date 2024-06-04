@@ -413,6 +413,7 @@ return [
 		'excel' => 'Excel',
 		'preview' => 'Vista previa',
 		'download_copy' => 'Descargar copia',
+		'change-to' => 'Cambiar a',
 	),
 	'bi' => array(
 		'family' => 'Familia',
