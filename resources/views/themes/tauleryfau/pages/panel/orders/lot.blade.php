@@ -55,7 +55,7 @@
         </div>
 
         <div class="lot-price-salida">
-            <span class="js-divisa" value="{{ $inf_lot->impsalhces_asigl0 }}"></span>
+            <span class="js-divisa" value="{{ $inf_lot->impsalhces_asigl0 }}" data-small-format="0,0"></span>
         </div>
 
         <div class="order-label label-price-actual">
@@ -68,7 +68,7 @@
         </div>
 
         <div class="{{ $style }} lot-price-actual">
-            <p class="js-divisa js-divisa-oberver" data-js-id="actual-price" value="{{ $inf_lot->implic_hces1 }}"></p>
+            <p class="js-divisa js-divisa-oberver" data-js-id="actual-price" data-small-format="0,0" value="{{ $inf_lot->implic_hces1 }}"></p>
         </div>
 
         <div class="order-label label-price-bid">
@@ -78,7 +78,7 @@
 
         <div class="lot-price-bid">
             @if (!empty($inf_lot->imp))
-                <p class="js-divisa js-divisa-oberver" data-js-id="my-max-bid" value="{{ $inf_lot->imp }}"></p>
+                <p class="js-divisa js-divisa-oberver" data-js-id="my-max-bid" data-small-format="0,0" value="{{ $inf_lot->imp }}"></p>
             @else
                 <p>
                     <span class="my-max-bid">-</span>
