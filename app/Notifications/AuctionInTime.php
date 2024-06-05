@@ -24,7 +24,7 @@ class AuctionInTime extends Notification implements ShouldQueue
 	 * @return void
 	 */
 	public function __construct(
-		private FgSub $auction,
+		private $auction,
 		private string $whenTime
 	) {
 	}
@@ -101,7 +101,7 @@ class AuctionInTime extends Notification implements ShouldQueue
 		};
 	}
 
-	private function whenTimeBody(string $whenTime, Fgsub $auction)
+	private function whenTimeBody(string $whenTime, $auction)
 	{
 		return match ($whenTime) {
 			'week' => "La subasta {$auction->name} se realizará en 1 semana",

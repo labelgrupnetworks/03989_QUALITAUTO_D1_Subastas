@@ -461,6 +461,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('cache', 'configuracion\AdminCacheController@index')->name('admin.cache.index');
 		Route::post('cache', 'configuracion\AdminCacheController@action')->name('admin.cache.action');
 
+		Route::get('disk-status', 'configuracion\AdminDiskStatusController@index')->name('admin.disk-status.index');
+		Route::get('disk-status/folder', 'configuracion\AdminDiskStatusController@getDirectoryInPath')->name('admin.disk-status.folder');
+
+		Route::group(['prefix' => 'test-auction'], function () {
+			Route::get('/', 'configuracion\AdminTestAuctions@index')->name('admin.test-auctions.index');
+			Route::get('/create-auction/{idauction}', 'configuracion\AdminTestAuctions@createAuction')->name('admin.test-auctions.create');
+			Route::get('/reset-auction/{idauction}', 'configuracion\AdminTestAuctions@resetAuction')->name('admin.test-auctions.reset');
+			Route::get('/create-lots/{idauction}', 'configuracion\AdminTestAuctions@createLots')->name('admin.test-auctions.create-lots');
+			Route::get('/reset-lots/{idauction}', 'configuracion\AdminTestAuctions@resetLots')->name('admin.test-auctions.reset-lots');
+		});
+
 	});
 
 

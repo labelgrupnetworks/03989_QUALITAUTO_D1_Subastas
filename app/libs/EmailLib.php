@@ -43,6 +43,7 @@ private $lang =NULL;
 private $from =NULL;
 private $blade = "bbdd_email";
 public $attachments = NULL;
+public $attachmentsFiles = [];
 private $pdfs = array();
 public $old_lang = NULL;
 private $cc = array();
@@ -1270,4 +1271,26 @@ private $debug = true;
 			$this->attachments[] = public_path($path . $nameFile);
 		}
 
+		public function setAttachments($attachments)
+		{
+			$this->attachments = $attachments;
+		}
+
+		/**
+		 * Archivos en plano sin necesidad de tener path en el servidor
+		 */
+		public function setAttachmentsFiles($attachments)
+		{
+			$this->attachmentsFiles = $attachments;
+			return $this;
+		}
+
+		public function setAddress($address)
+		{
+			if(empty($address)){
+				return;
+			}
+
+			$this->setAtribute('DIR_ENVIO', "{$address->pob_clid} ({$address->cp_clid}) {$address->pais_clid}");
+		}
 }

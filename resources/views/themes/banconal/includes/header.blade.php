@@ -211,7 +211,7 @@ use App\libs\TradLib as TradLib;
             <div class="login_desktop_title">
                 <?= trans($theme.'-app.login_register.login') ?>
             </div>
-            <form data-toggle="validator" id="accerder-user-form" class="flex-display justify-center align-items-center flex-column">
+            <form data-toggle="validator" id="accerder-user-form" class="flex-display justify-center align-items-center flex-column" method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <div class="input-login-group">

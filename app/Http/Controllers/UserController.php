@@ -6,11 +6,11 @@ use Redirect;
 //use Controller;
 
 //opcional
-use DB;
+use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
-use Session;
+use Illuminate\Support\Facades\Session;
 use View;
 use Routing;
 use Illuminate\Support\Facades\Config;
@@ -564,25 +564,42 @@ class UserController extends Controller
     # Registrar un usuario
     public function registro(HttpRequest $request)
     {
-		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"]))
-		{
+		if(!empty(\Config::get('app.registerChecker'.$request["pri_emp"])) && !empty($request["pri_emp"])) {
+
 			$camposFormNoNullables = explode(",", \Config::get('app.registerChecker'.$request["pri_emp"]));
+			$errorsResponse = [
+				"err"       => 1,
+				"msg"       => 'error_register'
+			];
+
+
 			foreach ($camposFormNoNullables as $campo) {
 				if (empty($request[$campo])) {
-					return json_encode(array(
-						"err"       => 1,
-						"msg"       => 'error_register'
-					));
+					$errorsResponse['check'] = $campo;
+					return json_encode($errorsResponse);
 				}
 			}
 		}
 
 		if(Request::has('dni1') && Request::has('dni2')){
-			if(!$this->validateImages(request())){
+			if(!$this->validateNIFImages(request())){
 				return json_encode(array(
 					"err"       => 1,
 					"msg"       => 'max_size_img'
 				));
+			}
+		}
+
+		if($request->has('files_email')) {
+			$rules = [
+				'files_email.*' => 'max:20000|mimes:jpg,jpeg,png,tiff,bmp,gif,pdf'
+			];
+
+			if(!$this->validateFiles($request->file(), $rules)){
+				return json_encode([
+					"err"       => 1,
+					"msg"       => 'error_register_file'
+				  ]);
 			}
 		}
 
@@ -949,11 +966,7 @@ class UserController extends Controller
 					$rsoc = $strToDefault ? $rsoc : mb_strtoupper($rsoc,'UTF-8');
 					$nomd_clid = $strToDefault ? $nomd_clid : mb_strtoupper($nomd_clid,'UTF-8');
 
-                    if(Config::get('app.fpag_default')){
-                        $forma_pago = Config::get('app.fpag_default');
-                    }else{
-                        $forma_pago = 0;
-                    }
+					$forma_pago = $user->getDefaultPayhmentMethod($request->input('pais'));
 
                     $parametros = new Enterprise();
                     $param = $parametros->getParameters();
@@ -984,7 +997,7 @@ class UserController extends Controller
 						}
 
 
-                        $envio= array(
+                        $envio = array(
                         'clid_direccion'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),0,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),0,30,'UTF-8')),
                         'clid_direccion_2'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),30,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),30,30,'UTF-8')),
                         'clid_cod_pais'   => Input::get('clid_pais'),
@@ -998,7 +1011,8 @@ class UserController extends Controller
                         'clid_rsoc'=> $rsoc,
                         'codd_clid'=> $shipping_label,
                         'cod2_clid'=> $cod2_cli,
-						'preftel_clid' => request('preftel_clid', request('preftel_cli', ''))
+						'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
+						'mater_clid' => request('mater_clid', 'N'),
                         );
 
 
@@ -1006,9 +1020,9 @@ class UserController extends Controller
 
                              //se inserta el nuevo cliente
                         $FXCLI = DB::select("INSERT INTO FXCLI
-                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI )
+                           (GEMP_CLI, COD_CLI, COD_C_CLI, TIPO_CLI, RSOC_CLI, NOM_CLI,  DIR_CLI, DIR2_CLI, CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, BAJA_TMP_CLI, FPAG_CLI, EMAIL_CLI, CODPAIS_CLI, CIF_CLI, CNAE_CLI, PAIS_CLI, SEUDO_CLI, F_ALTA_CLI, SEXO_CLI, FECNAC_CLI,FISJUR_CLI, ENVCORR_CLI, IDIOMA_CLI,SG_CLI,TEL2_CLI,IVA_CLI,OBS_CLI,RIES_CLI,COD_DIV_CLI, DOCID_CLI, TDOCID_CLI, TIPV_CLI, COD2_CLI, PREFTEL_CLI, ORIGEN_CLI, BLOCKPUJ_CLI )
                            VALUES
-                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli)",
+                           ('".Config::get('app.gemp')."', '".$num."', '4300', '$tipo_cli', :rsoc, :usuario,  :direccion, :direccion2, :cpostal, :poblacion, :provincia, :telf, '".$BAJA_TMP_CLI."', :forma_pago, :email, :pais, :dni, :trabajo, :nombrepais, :nombre_trabajo, :fecha_alta, :sexo_cli, :fecnac_cli, :pri_emp, :envcorr,:lang,:sg,:mobile,:ivacli,:obs,:ries_cli,:divisa, :docid_cli, :tdocid_cli, :tipv_cli, :cod2_cli, :preftel_cli, :origen_cli, :blockpuj_cli)",
                             array(
                                //'gemp'          => "'Config::get('app.gemp')'",
                                'email'         => $strToDefault ? Request::input('email') : strtoupper(Request::input('email')),
@@ -1045,7 +1059,8 @@ class UserController extends Controller
 							   'tipv_cli' =>  $tipv_cli,
 							   'cod2_cli' => $cod2_cli,
 							   'preftel_cli' => request('preftel_cli', ''),
-							   'origen_cli' => request('origen', null)
+							   'origen_cli' => request('origen', null),
+							   'blockpuj_cli' => $this->defaultBidBlocking()
                                )
 						 );
 						#guardamos el evento SEO de registro de usuario
@@ -1071,8 +1086,7 @@ class UserController extends Controller
 								}
 							}
 							else{
-								$max_direcc = $shipping_label;
-								$addres->addDirEnvio($envio,$num,$name);
+								$addres->addDirEnvio($envio, $num, $name);
 							}
 
                          }
@@ -1266,6 +1280,12 @@ class UserController extends Controller
                             $email = new EmailLib('USER_ASSOCIATED');
                             if(!empty($email->email)){
                                 $email->setUserByCod($num);
+
+								if(Config::get('app.delivery_address', 0)) {
+									$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+									$email->setAddress(head($addressToEmail));
+								}
+
                                 $email->setTo(Config::get('app.admin_email'));
                                 $email->send_email();
                             }
@@ -1277,8 +1297,18 @@ class UserController extends Controller
 						$email->setUserByCod($num);
 						$email->setAtribute("OBS",Request::input('obscli'));
 
+						if(Config::get('app.delivery_address', 0)) {
+							$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+							$email->setAddress(head($addressToEmail));
+						}
+
 						if(!empty($job_name)){
 							$email->setAtribute("JOB_CLI", $job_name);
+						}
+
+						if($request->has('files_email')) {
+							$files = $request->file('files_email');
+							$email->setAttachmentsFiles($files);
 						}
 
 						$email->setTo(Config::get('app.admin_email'));
@@ -1482,12 +1512,12 @@ class UserController extends Controller
     return json_encode($response);
     }
 
-	private function validateImages($request)
+	private function validateNIFImages($request)
 	{
 
 		$rules = [
-			'dni1' => 'max:10000|mimes:jpg,jpeg,png,pdf', //a required, max 10000kb, doc or docx file
-			'dni2' => 'max:10000|mimes:jpg,jpeg,png,pdf'
+			'dni1' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF', //a required, max 10000kb, doc or docx file
+			'dni2' => 'max:1000000|mimes:jpg,jpeg,png,pdf,webp,heic,heif,JPG,JPEG,PNG,PDF,WEBP,HEIC,HEIF'
 		];
 
 		$validator = Validator::make($request->file(), $rules);
@@ -1497,6 +1527,17 @@ class UserController extends Controller
 		}
 
 		Log::error($validator->errors());
+		return false;
+	}
+
+	private function validateFiles($files, $rules)
+	{
+		$validator = Validator::make($files, $rules);
+
+		if (!$validator->fails()) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -1514,13 +1555,14 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
-		if (Config::get('app.dni_in_storage', false) == "dni-files") {
-			return storage_path("app/files/dni/$emp/$cod_cli/files/");
-		} elseif (Config::get('app.dni_in_storage', false) == "cli-documentation") {
-			return storage_path("app/files/CLI/$emp/$cod_cli/documentation/");
-		}
+		$path = match (Config::get('app.dni_in_storage', false)) {
+			"dni-files" => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+			"cli-documentation" => storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
+			"base-dni-files" => base_path("dni/$emp/$cod_cli/files/"),
+			default => storage_path("app/files/dni/$emp/$cod_cli/files/"),
+		};
 
-		return base_path('dni' . DIRECTORY_SEPARATOR . Config::get('app.emp') . DIRECTORY_SEPARATOR . $cod_cli . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR);
+		return $path;
 	}
 
 	public function saveDni($request, $cod_cli, $fileName, $nameOfFile = null)
@@ -1571,30 +1613,35 @@ class UserController extends Controller
 
 			$images = $this->getCIFImages($cod_cli);
 
-			$dni1 = "dni1";
-			$dni2 = "dni2";
+			$dni1Input = "dni1";
+			$dni2Input = "dni2";
 
-			if (Config::get('app.dni_in_storage', false) == "cli-documentation") {
+			# Esta ruta es la ruta que usa Ansorena y el nombre de los archivos para enlazar con el ERP
+			$routeCliDocumentation = Config::get('app.dni_in_storage', false) == "cli-documentation";
+
+			if ($routeCliDocumentation) {
 				$dni1 = $nif."A";
 				$dni2 = $nif."R";
 			}
 
 			$destinationPath = $this->dniPath($cod_cli);
 
-			if (isset($request[$dni1])) {
-				$file = $request[$dni1];
-				$filename = $dni1 . '.' . $file->getClientOriginalExtension();
-				if (isset($images[$dni1])) {
-					unlink($images[$dni1]);
+			if (isset($request[$dni1Input])) {
+				$file = $request[$dni1Input];
+				$dni1name = $routeCliDocumentation ? $dni1 : $dni1Input;
+				$filename = $dni1name . '.' . $file->getClientOriginalExtension();
+				if (isset($images[$dni1name])) {
+					unlink($images[$dni1name]);
 				}
 				$file->move($destinationPath, $filename);
 			}
 
-			if (isset($request[$dni2])) {
-				$file2 = $request[$dni2];
-				$filename2 = $dni2 . '.' . $file2->getClientOriginalExtension();
-				if (isset($images[$dni2])) {
-					unlink($images[$dni2]);
+			if (isset($request[$dni2Input])) {
+				$file2 = $request[$dni2Input];
+				$dni2name = $routeCliDocumentation ? $dni2 : $dni2Input;
+				$filename2 = $dni2name . '.' . $file2->getClientOriginalExtension();
+				if (isset($images[$dni2name])) {
+					unlink($images[$dni2name]);
 				}
 				$file2->move($destinationPath, $filename2);
 			}
@@ -2282,7 +2329,7 @@ class UserController extends Controller
 		}
 
 		if(Config::get('app.user_panel_cif', false)) {
-			if (Request::file('dni1') || Request::file('dni2')) {
+			if (Request::has('dni1') || Request::has('dni2')) {
 				$this->updateCIFImages(Request::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
@@ -2363,6 +2410,13 @@ class UserController extends Controller
 
              $email->setTo(Config::get('app.admin_email'));
              $email->setHtml($emailOptions['camposHtml']);
+
+			 if (Config::get('app.user_panel_cif', false)) {
+				$nifAdjuntos = $this->getCIFImages($Update->cod_cli);
+				if(!empty($nifAdjuntos)){
+					$email->setAttachments($nifAdjuntos);
+				}
+			 }
 
               if ($email->send_email()){
                   $response = array(
@@ -3427,20 +3481,28 @@ class UserController extends Controller
     }
 
 
-    public function sendPasswordRecovery()
+    public function sendPasswordRecovery(HttpRequest $request)
     {
-        $email = Request::input('email');
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email'
+		]);
+
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
+		if($validator->fails()){
+			return $successResponse;
+		}
+
+        $email = $request->input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
 
         $user = new User();
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
-
-		$successResponse = [
-			'status' => 'succes',
-			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-		];
 
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
 
@@ -4903,11 +4965,35 @@ class UserController extends Controller
 	  private function checkValidFormatPassport($passport)
 	  {
 		$passport = strtoupper($passport);
-		$pattern = "/^[A-Z]{3}[0-9]{6}[A-Z]{1}$/";
+		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);
 	  }
 
 	#endregion
 
+
+	/**
+	 * Valor por defecto para blockpuj_cli.
+	 * En soler utilizamos S por el registro W, en el resto de clientes utilizamos
+	 * el que tienen en la base de datos por defecto
+	 * @return string
+	 */
+	private function defaultBidBlocking()
+	{
+		if(Config::get('app.registro_user_w', false)) {
+			return 'S';
+		}
+
+		$defaultValue = null;
+		try {
+			$defaultValueInTable = DB::select("Select DATA_DEFAULT from DBA_TAB_COLUMNS where TABLE_NAME = 'FXCLI' AND COLUMN_NAME = 'BLOCKPUJ_CLI'");
+			$defaultValue = trim(str_replace("'", '', $defaultValueInTable[0]->data_default));
+		} catch (\Throwable $th) {
+			Log::debug('Error al obtener el valor por defecto de blockpuj_cli', ['error' => $th->getMessage()]);
+			$defaultValue = 'N';
+		}
+
+		return $defaultValue;
+	}
 }
 

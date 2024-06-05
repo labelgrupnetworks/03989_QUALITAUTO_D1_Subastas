@@ -69,7 +69,7 @@
 
                         <div class="user-account-menu-title extra-account">{{ trans($theme.'-app.user_panel.info') }}</div>
 
-                <form method="post" class="frmLogin" id="frmUpdateUserInfoADV" data-toggle="validator">
+                <form method="post" class="frmLogin" id="ansoFrmUpdateUserInfoADV" data-toggle="validator">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" class="form-control">
 					<?php #Solicitado, que solo se muestre el nombre tanto en regostro como en panel
 						/*
@@ -202,19 +202,29 @@
                         </div>
                     </div>
 
-					@if (Config::get('app.user_panel_cif', false))
-						<div class="form-group col-xs-12 col-sm-6">
-							<label for="dni1">{{ trans($theme . '-app.login_register.dni_obverse') }}</label>
-							{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = '') !!}
-							<p style="color: green; display: {{ isset($data['cifImages']['dni1']) ? 'block' : 'none' }};">
-								{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+					@if (Config::get('app.user_panel_cif', false) && $data['user']->doccompleta_cli != 'S')
+						<div class="form-group col-xs-12 col-sm-3">
+							<label for="nif">{{ trans($theme . '-app.user_panel.nif_dni_nie') }}</label>
+							<input type="text" class="form-control effect-16" name="nif" id="nif__1__nif"
+								value="{{ $data['user']->cif_cli }}" data-placement="right" placeholder="" autocomplete="off">
 						</div>
 
-						<div class="form-group col-xs-12 col-md-6">
-							<label for="dni2">{{ trans($theme . '-app.login_register.dni_reverse') }}</label>
-							{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
-							<p style="color: green; display: {{ isset($data['cifImages']['dni2']) ? 'block' : 'none' }};">
-								{{ trans("$theme-app.user_panel.uploaded_file") }}</p>
+						<div class="col-sm-9">
+							<div class="row">
+								<div class="form-group col-xs-12 col-sm-6">
+									<label for="dni1">{{ trans($theme . '-app.login_register.dni_obverse') }}</label>
+									{!! FormLib::File('dni1', $boolObligatorio = 1, $strExtra = '') !!}
+									{{-- <p style="color: green !important; display: {{ isset($data['cifImages'][$data['user']->cif_cli.'A']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}</p> --}}
+								</div>
+
+								<div class="form-group col-xs-12 col-md-6">
+									<label for="dni2">{{ trans($theme . '-app.login_register.dni_reverse') }}</label>
+									{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = '') !!}
+									{{-- <p style="color: green !important; display: {{ isset($data['cifImages'][$data['user']->cif_cli.'R']) ? 'block' : 'none' }};">
+										{{ trans("$theme-app.user_panel.uploaded_file") }}</p> --}}
+								</div>
+							</div>
 						</div>
 					@endif
 

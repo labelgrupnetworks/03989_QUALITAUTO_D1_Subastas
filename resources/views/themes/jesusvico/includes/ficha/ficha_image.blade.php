@@ -33,14 +33,18 @@
         @foreach ($lote_actual->imagenes as $key => $imagen)
 			@php
 				$emp = Config::get('app.emp');
-				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1.jpg";
+				$path_img_num = "";
+				if ($key != 0) {
+					$path_img_num = "_" . sprintf("%02d", $key);
+				}
+				$url_image = "/img/$emp/$lote_actual->num_hces1/$emp-$lote_actual->num_hces1-$lote_actual->lin_hces1{$path_img_num}.jpg";
 			@endphp
             <div class="image-wrapper">
                 <a class="js-smartPhoto" data-caption="{{ $lote_actual->titulo_hces1 }}"
                     data-id="id-{{ $key + 1 }}"
                     href="{{ $url_image }}">
                     <img class="lazy" data-group="nogroup"
-                        src="{{ $url_image }}">
+                        src="{{ Tools::url_img('lote_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                 </a>
             </div>
         @endforeach
@@ -148,8 +152,7 @@
         @foreach ($lote_actual->imagenes as $key => $imagen)
             <div class="mini-img-ficha no-360">
                 <button onclick="goToImage({{ $key }})">
-                    <img
-                        src="{{ \Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+                    <img src="{{ \Tools::url_img('lote_small', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
                 </button>
             </div>
         @endforeach

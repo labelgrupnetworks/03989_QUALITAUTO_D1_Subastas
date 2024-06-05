@@ -207,7 +207,7 @@ foreach($data["js_item"] as $subasta => $lotes){
                                                             <div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
                                                                 <div class="visible-xs">{{ trans($theme.'-app.user_panel.date') }}</div>
 																<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																@if ($comision !=0)
+																@if ($inf_lot->base_csub != 0)
 																	<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																	<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																@endif
@@ -478,7 +478,7 @@ foreach($data["js_item"] as $subasta => $lotes){
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.date') }}</div>
 																		<p><?=  \Tools::moneyFormat($precio_remate) ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																		@if ($comision !=0)
+																		@if ($inf_lot->base_csub != 0)
 																			<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
 																		@endif

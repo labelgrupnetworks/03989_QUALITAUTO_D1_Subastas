@@ -10,6 +10,20 @@
     $bread[] = array("name" => $data['name'] );
     ?>
 
+	@php
+
+		$redirect = function ($resource) {
+			$openLogin = request()->has('openLogin') ? ['openLogin' => 'S'] : [];
+			header("Location: " . "https://www.tauleryfau.com/".Config::get('app.locale').'/'.$resource , true, 302);
+			exit();
+		};
+
+		$userIsNotAdmin = !session('user.admin');
+		$redirectToTaulerSubastas = $userIsNotAdmin && $data['subc_sub'] == App\Models\V5\FgSub::SUBC_SUB_ACTIVO;
+		if ($redirectToTaulerSubastas) {
+			$redirect(Config::get('app.locale') == 'es' ?  'subastas' : 'auctions');
+		}
+	@endphp
 
     <?php //@include('includes.breadcrumb')<?>
 

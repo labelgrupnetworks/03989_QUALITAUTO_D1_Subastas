@@ -46,4 +46,5 @@
 
     @include('content.articles.article')
 </main>
+@include('includes.whatsapp_button')
 @stop

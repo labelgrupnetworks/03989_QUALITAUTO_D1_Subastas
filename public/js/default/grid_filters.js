@@ -86,10 +86,24 @@ $("#seeActiveLots_JS").on("click", function(){
 
 $(".filter_lot_list_js").click(function(){
 	if ($(this).attr("name") == "category"){
+		 const sectionElements = document.querySelectorAll('[name="section"]');
+		 if(sectionElements){
+			 sectionElements.forEach((element) => element.checked = false);
+		 }
+
 		 $("#all_sections").attr('checked', 'checked');
 		 $("#all_subsections").attr('checked', 'checked');
 	}else if ($(this).attr("name") == "section"){
 		 $("#all_subsections").attr('checked', 'checked');
+	}
+	else if ($(this).attr("name") == "filter_session"){
+		$("#all_categories").attr('checked', 'checked');
+		$("#all_sections").attr('checked', 'checked');
+		$("#all_subsections").attr('checked', 'checked');
+	}
+
+	if( typeof($(this).data("session")) != "undefined"){
+		$("#sesion_" + $(this).data("session")).attr('checked', 'checked');
 	}
 	 $("#form_lotlist").submit();
 })
@@ -100,7 +114,13 @@ $(".select_lot_list_js").change(function(){
 $(".slider-range").on('slidestop', () => $("#form_lotlist").submit());
 
 /* falta borrar el typo de subastas */
-
+$(".del_filter_session_js").click(function(){
+	$("#all_sessions").attr('checked', 'checked');
+	$("#all_categories").attr('checked', 'checked');
+	$("#all_sections").attr('checked', 'checked');
+	$("#all_subsections").attr('checked', 'checked');
+	$("#form_lotlist").submit();
+})
 $(".del_filter_category_js").click(function(){
 
 	$("#all_categories").attr('checked', 'checked');

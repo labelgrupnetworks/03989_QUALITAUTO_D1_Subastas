@@ -4249,7 +4249,7 @@ ICONOS ORDERNAR
     margin: 0;
     background: #283747;
     color: white;
-    padding: 10px 0;
+    padding: 4px 0 10px 0;
     width: 100%;
     z-index: 1;
 
@@ -4737,13 +4737,28 @@ LOTES
 	background: linear-gradient(180deg, rgba(83,115,149,1) 0%, rgba(40,55,71,1) 49%, rgba(25,34,45,1) 100%);*/
     width: 100%;
 }
+.nameAuctLeft{
+	font-weight: bold;
+
+    font-size: 16px;
+	background: #283747;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.sessionLeft {
+	background: #283747;
+	padding-top: 10px;
+	text-align: center;
+	color: #FFF !important;
+}
 
 .timeLeftOnLeft {
     margin: 0;
     text-align: center;
     font-size: 16px;
     font-weight: 600;
-    color: #283747;
+    color: #FFF;
 }
 .timeLeftOnLeft .fa {color:#b79d81;margin:2px 5px 0 15px;font-size:16px;}
 .timeLeftOnLeft .clock::before {
@@ -6160,6 +6175,35 @@ FICHA LOTE
 
 .info_single_content_button{
     text-align: right;
+}
+
+.pswp {
+	background-color: black;
+}
+
+.image-lot-miniature-container {
+	display: flex;
+	position: fixed;
+	gap: 5px;
+	bottom: 0;
+	left: 0;
+	z-index: 1000000;
+	overflow-x: auto;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.image-lot-miniature-container .micro-image {
+	transition: ease-in 0.07s;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+}
+
+.image-lot-miniature-container .image-selector .micro-image.selected {
+	transition: ease-in 0.07s;
+	width: 100px;
+	height: 100px;
 }
 
 /**********************************

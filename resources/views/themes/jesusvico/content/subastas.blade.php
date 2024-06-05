@@ -59,14 +59,15 @@
 
 			<div class="row row-cols-1 gy-3 align-items-stretch mb-3 d-block d-md-none">
 				@foreach ($auctionsForYears as $year => $auctions)
-					<div class="col">
-						<article class="card card-custom-large h-100">
-							@foreach ($auctions as $subasta)
-								<div class="col d-block d-md-none">
-									@include('includes.subasta_mobile', ['subasta' => $subasta, 'year' => $year])
-								</div>
-							@endforeach
-						</article>
+					<div class="col mt-0">
+						@php $ant_cod_sub = ''; @endphp
+						@foreach ($auctions as $key => $subasta)
+							@php $sig_cod_sub = $auctions[$key + 1]->cod_sub ?? ''; @endphp
+							<div class="col mt-0 d-block d-md-none">
+								@include('includes.subasta_mobile', ['subasta' => $subasta, 'year' => $year])
+							</div>
+							@php $ant_cod_sub = $subasta->cod_sub; @endphp
+						@endforeach
 					</div>
 				@endforeach
 			</div>

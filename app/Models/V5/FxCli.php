@@ -129,22 +129,19 @@ class FxCli extends Model
 
 	public static function getCurrentCredit($codSub,$licit = null ){
 
-		if($licit==\Config::get("app.dummy_bidder")){
+		if($licit == Config::get("app.dummy_bidder")){
 			return 9999999999; #credito máximos ya que es en sala.
 		}
 		#USO LAS FUNCIONES DE JOIN PARA EVITAR LA SQL INJECTION
+		$emp = Config::get("app.emp");
+		$self = self::select(" nvl(max(NUEVO_CREDITOSUB), max(RIES_CLI) ) maxcredito ")
+			->leftjoin("FGCREDITOSUB", "EMP_CREDITOSUB = '$emp' and SUB_CREDITOSUB = '$codSub' and CLI_CREDITOSUB = COD_CLI");
 
-		$self = self::select(" nvl(max(NUEVO_CREDITOSUB), max(RIES_CLI) ) maxcredito ")->
-					leftjoin("FGCREDITOSUB", function($join) use($codSub){
-						$join->on("EMP_CREDITOSUB", "=", \Config::get("app.emp"))->
-						on("SUB_CREDITOSUB", "=", $codSub)->
-						on("CLI_CREDITOSUB = COD_CLI");
-					});
 		if(!empty($codCli)){
 			$self = $self->where("COD_CLI", $codCli);
 		}elseif(!empty($licit)){
 			$self = $self->join("FGLICIT", function($join) use($codSub){
-				$join->on("EMP_LICIT", "=", \Config::get("app.emp"))->
+				$join->on("EMP_LICIT", "=", Config::get("app.emp"))->
 				on("SUB_LICIT", "'".$codSub."'")->
 				on("CLI_LICIT = COD_CLI");
 			})->where("COD_LICIT", $licit);

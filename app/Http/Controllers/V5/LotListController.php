@@ -26,6 +26,8 @@ use App\Providers\ToolsServiceProvider as Tools;
 use Illuminate\Support\Facades\Config;
 
 use App\libs\SeoLib;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use stdClass;
 
 class LotListController extends Controller
@@ -44,15 +46,15 @@ class LotListController extends Controller
 */
 
     #entrada por URL a la petición de mostrar lotes por categoria
-    public function getLotsListCategory($keyCategory ){
-        return $this->getLotsListSubSection( $keyCategory, null, null);
+    public function getLotsListCategory($keyCategory){
+        return $this->getLotsListSubSection($keyCategory, null, null);
 	}
 
-	public function getLotsListSection(  $keyCategory, $keySection ){
-		return $this->getLotsListSubSection( $keyCategory, $keySection, null);
+	public function getLotsListSection($keyCategory, $keySection){
+		return $this->getLotsListSubSection($keyCategory, $keySection, null);
 	}
 
-    public function getLotsListSubSection(  $keyCategory, $keySection, $keySubSection ){
+    public function getLotsListSubSection($keyCategory, $keySection, $keySubSection){
         $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
         $emp = Config::get("app.emp");
         $gemp = Config::get("app.gemp");
@@ -120,7 +122,7 @@ class LotListController extends Controller
     }
 
     #carga el listado de lotes en la blade
-    public function lotList( $category, $section, $subsection,  $codSub,  $refSession, $search = NULL)
+    public function lotList($category, $section, $subsection,  $codSub,  $refSession, $search = NULL)
 	{
 		abort_if(config('app.restrictAccessIfNoSession', 0) && !session('user.cod'), 401);
 
@@ -711,46 +713,89 @@ class LotListController extends Controller
 
 
         #generamos las variables por cada input que se espera
-        public function getInputFilters($typeSub, $category = NULL, $section = NULL, $subsection = NULL,  $search = NULL){
-            $filters = array();
-			//lots per page
-			/*
-            $this->lotsPerPage = request('lotsPerPage',$this->lotsPerPage);
-            $filters["lotsPerPage"] =$this->lotsPerPage;
-*/
-            #orden de los lotes
-            $filters["order"] = request('order',\Config::get("app.default_order",'ref') );
-            #busqueda por texto
-            $filters["description"] = request('description', $search);
-            #filtro pot categorias
-			$filters["category"] = request('category', $category ?? \Config::get("app.default_category") );
-            #filtro pot secciones
-            $filters["section"] = request('section', $section);
-            #filtro pot secciones
-            $filters["subsection"] = request('subsection',$subsection);
-            #filtro por tipo de subasta
-            $filters["typeSub"] = request('typeSub',$typeSub);
-			#filtro por referencia el lote
-			$filters["reference"] =  request('reference');
+        public function getInputFilters($typeSub, $category = null, $section = null, $subsection = null,  $search = null)
+		{
+			$request = request()->all();
+			$filters = [
+				#orden de los lotes
+				'order' => Config::get("app.default_order",'ref'),
+				#busqueda por texto
+				'description' => $search,
+				#filtro por categorias
+				'category' => $category ?? Config::get("app.default_category"),
+				#filtro por secciones
+				'section' => $section,
+				#filtro por secciones
+				'subsection' => $subsection,
+				#filtro por tipo de subasta
+				'typeSub' => $typeSub,
+				#filtro por referencia el lote
+				'reference' => '',
+				#filtro por caracteristica
+				'features' => [],
+				#filtro lotes vendidos
+				'award' => 0,
+				#filtro lotes no vendidos
+				'noAward' => 0,
+				#filtro lotes en curso
+				'liveLots' => 0,
+				#propietario de los lotes
+				'myLotsProperty' => 0,
+				'myLotsClient' => 0,
+				#filtro de precios
+				'prices' => [],
+			];
 
-             #filtro por caracteristica
-			$filters['features'] = request('features');
+			if(empty(Config::get("app.gridAllSessions"))){
+				$filters['session'] = '';
+			}else{
+				#creamos una variable de sesiones diferente para poderla usar en los filtros
+				$filters['filter_session'] = '';
+			}
 
-             #filtro lotes vendidos
-            $filters['award'] = request('award');
-             #filtro lotes no vendidos
-            $filters['noAward'] = request('noAward');
-             #filtro lotes en curso
-			$filters['liveLots'] = request('liveLots');
+			$rules = [
+				'order' => 'nullable|string',
+				'description' => 'nullable|string',
+				'category' => 'nullable|integer|digits_between:0,38',
+				'section' => 'nullable|string|max:2',
+				'subsection' => 'nullable|integer|digits_between:0,14',
+				'typeSub' => 'nullable|string|max:1',
+				'reference' => 'nullable|numeric',
+				'features' => 'nullable|array',
+				'award' => 'nullable|boolean',
+				'noAward' => 'nullable|boolean',
+				'liveLots' => 'nullable|boolean',
+				'myLotsProperty' => 'nullable|boolean',
+				'myLotsClient' => 'nullable|boolean',
+				'prices' => 'nullable|array',
+				'prices.*' => 'nullable|numeric',
+				'filter_session' => 'nullable|string|max:3',
+				'session' => 'nullable|string|max:3',
+			];
 
-			#propietario de los lotes
-			$filters['myLotsProperty'] = request('myLotsProperty');
-			$filters['myLotsClient'] = request('myLotsClient');
+			$validator = Validator::make($request, $rules);
 
-			#filtro de precios
-			$filters['prices'] = request('prices');
+			//si hay errores, reemplazar por cadena vacía en la solicitud y reconstruir el validador
+			//si no reconstuimos se realizara una redireccion con los valores anteriores
+			if ($validator->fails()) {
+				$errors = $validator->errors();
+				foreach ($errors->keys() as $key) {
 
-            return $filters;
+					//solo mostramos una vez el error
+					static $isLogged = false;
+					if (!$isLogged) {
+						$isLogged = true;
+						Log::debug("Error en el filtros de lotes", ['key' => $key, 'value' => $request[$key], 'ip' => request()->ip()]);
+					}
+
+					$request[$key] = '';
+				}
+				$validator = Validator::make($request, $rules);
+			}
+
+			$validatedFields = $validator->validated();
+			$filters = array_merge($filters, $validatedFields);
+			return $filters;
         }
 
         # se llama a cada una de las funciones de filtros u ordenacion
@@ -765,6 +810,10 @@ class LotListController extends Controller
             if($organize){
                 $fgasigl0 =  $this->setFilterOrder($fgasigl0, $filters['order']);
             }
+			#filtro creado para tauler que quieren poder ver en el grid las sesiones
+			if(!empty($filters['filter_session'] )){
+				$fgasigl0 =  $this->setFilterSession($fgasigl0, $filters['filter_session']);
+			}
             $fgasigl0 =  $this->setFilterReference($fgasigl0, $filters['reference']);
             $fgasigl0 =  $this->setFilterDescription($fgasigl0, $filters['description']);
             $fgasigl0 =  $this->setFilterCategory($fgasigl0, $filters['category']);
@@ -868,13 +917,24 @@ class LotListController extends Controller
 			}
 
             #SIEMPRE ORDENAM0S AL FINAL POR REFERENCIA,SI NO HAY FILTRO SE ORDENA POR DEFECTO Y SI LO HAY SE ORDENA  AUNQUE SEA COMO SEGUNDA O TERCERA ORDENACIÓN
-            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0","ASC");
+            $fgasigl0 = $fgasigl0->orderby("FGASIGL0.REF_ASIGL0", Config::get('app.lotlist_default_order', 'asc'));
 
 
             return   $fgasigl0;
 
         }
 
+
+		public function setFilterSession($fgasigl0, $filter_session ){
+            if(!empty($filter_session) ){
+				#si tienen este config es que se deben quitar los deicmales y los códigos  mayores que \Config::get("app.substrRef")
+
+                $fgasigl0 =  $fgasigl0->where('"reference"', $filter_session);
+
+            }
+
+            return  $fgasigl0;
+        }
 
         public function setFilterReference($fgasigl0, $reference ){
             if(!empty($reference) && is_numeric($reference)){
@@ -910,6 +970,9 @@ class LotListController extends Controller
 
 
                     foreach($words as $key => $word ){
+
+						#quitamos los corchetes que puedan venir
+						$word = str_replace(array("[","]"), "", $word);
 
 						#que no sea una palabra escluida por Catsearctch
                       	if(!in_array($word,$excludedWords)){
@@ -1144,7 +1207,14 @@ class LotListController extends Controller
             #contiene TSEC_SEC, COD_SEC, TIPO_SUB, SUBFAM_HCES1
             $numLotsPerFilter_array = $asigl0->get()->toarray();
 
-            $filters = array("typeSub" => "tipo_sub",  "category" =>"lin_ortsec1", "section" => "sec_ortsec1" , "subsection" => "subfam_hces1" );
+			if ( \Config::get("app.gridAllSessions") ){
+				$filters = array("typeSub" => "tipo_sub", "session" => "reference");
+			}else{
+				$filters = array("typeSub" => "tipo_sub");
+			}
+
+
+            $filters = array_merge($filters,array( "category" =>"lin_ortsec1", "section" => "sec_ortsec1" , "subsection" => "subfam_hces1" ));
             $countLots = array();
             #generamos un array con cada combinatoria posible indicando el numero de lotes.
             foreach($numLotsPerFilter_array as $numLotsPerFilter){

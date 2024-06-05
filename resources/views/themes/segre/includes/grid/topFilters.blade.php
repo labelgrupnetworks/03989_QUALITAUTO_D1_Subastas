@@ -73,7 +73,7 @@
 @endif
 
 
-<div class="col-xs-12 pt-1 d-flex align-items-center mt-1">
+<div class="col-xs-12 pt-1 top-pagination mt-1">
     <?php
     $count_lots = 0;
 

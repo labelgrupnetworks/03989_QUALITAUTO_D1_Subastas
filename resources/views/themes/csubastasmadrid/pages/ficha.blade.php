@@ -48,39 +48,9 @@ $(document).ready(function() {
 </script>
 <?php
 $lote_actual = $data['subasta_info']->lote_actual;
-$name= trans(\Config::get('app.theme').'-app.subastas.auctions');
-    if(!empty($lote_actual)){
-
-        if($data['subasta_info']->lote_actual->tipo_sub == 'H'){
-           $url = \Routing::translateSeo('subastas-historicas');
-        }elseif($data['subasta_info']->lote_actual->tipo_sub == 'W'){
-
-            if(strtotime($data['subasta_info']->lote_actual->orders_end) <= time()){
-               $url = \Routing::translateSeo('todas-subastas').'?finished=true';
-            }else{
-               $url = \Routing::translateSeo('todas-subastas').'?finished=false';
-            }
-
-        }elseif($data['subasta_info']->lote_actual->tipo_sub == 'O'){
-            $url = \Routing::translateSeo('subastas-online');
-        }elseif($data['subasta_info']->lote_actual->tipo_sub == 'V'){
-            $url = \Routing::translateSeo('venta-directa');
-            $name = trans(\Config::get('app.theme').'-app.foot.direct_sale');
-        }
-
-        $bread = array();
-        $bread[] = array("url" =>$url, "name" =>$name  );
-        $bread[] = array("url" => $lote_actual->url_subasta, "name" =>trans(\Config::get('app.theme').'-app.lot_list.lots'));
-        if(!empty($data['seo']->meta_title)){
-            $bread[] = array( "name" => $data['seo']->meta_title );
-        }else{
-            $bread[] = array( "name" => $lote_actual->titulo_hces1 );
-        }
-    }
-
 ?>
-    <div id="ficha">
-        @include('includes.breadcrumb_before_after')
-    </div>
+
+<main class="ficha-page">
     @include('content.ficha')
+</main>
 @stop

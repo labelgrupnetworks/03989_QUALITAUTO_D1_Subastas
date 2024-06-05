@@ -98,22 +98,22 @@
 							@endif
 						</ul>
 						<ul class="items_top_responsive hidden-md hidden-lg">
-							@if(!Session::has('user'))
-							<li><a title="Login" class="login" href="javascript:;"><i
-										class="fa fa-2x fa-user fa-lg"></i></a></li>
-							@else
-							<li><a href="{{ \Routing::slug('user/panel/orders') }}"><i
-										class="fa fa-2x fa-user fa-lg"></i></a></li>
 							@if(Session::get('user.admin'))
 							<li style="margin: 0;"><a
 									style="margin:  0;background: #154360;color: white;padding:  5px 10px;"
 									href="/admin" target="_blank">
 									{{ trans($theme.'-app.login_register.admin') }}</a></li>
 							@endif
+
+							@if(!Session::has('user'))
+							<li><a title="Login" class="login" href="javascript:;"><i
+										class="fa fa-2x fa-user fa-lg"></i></a></li>
+							@else
+							<li><a href="{{ \Routing::slug('user/panel/orders') }}"><i
+										class="fa fa-2x fa-user fa-lg"></i></a></li>
 							@endif
 						</ul>
-
-						<div class="search-component">
+						<div class="search-component hidden-md visible-lg">
 							<form id="formsearch" role="search" action="{{ \Routing::slug('busqueda') }}"
 								class="search-component-form">
 								<div class="form-group">
@@ -155,11 +155,26 @@
 </header>
 <nav class="navbar navbar-default">
 	<div class="container">
-		<div class="navbar-header visible-md visible-sm visible-xs">
-			<button id="btnResponsive" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-				data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<i class="fa fa-2x fa-bars"></i>
-			</button>
+		<div class="navbar-header visible-md visible-sm visible-xs w-100">
+			<div class="navbar-header-mobile">
+				<div class="search-component search-component-mobile visible-md visible-sm visible-xs ml-2">
+					<form id="formsearch" role="search" action="{{ \Routing::slug('busqueda') }}"
+						class="search-component-form">
+						<div class="form-group">
+							<input class="form-control input-custom"
+								placeholder="{{ trans($theme.'-app.head.search_label') }}"
+								type="text" name="texto" />
+						</div>
+						<button type="submit" class="btn btn-custom-search"><i class="fa fa-search"></i>
+							<div class="loader mini" style="display: none;"></div>
+						</button>
+					</form>
+				</div>
+				<button id="btnResponsive" type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<i class="fa fa-2x fa-bars"></i>
+				</button>
+			</div>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav hidden-xs hidden-sm hidden-md">

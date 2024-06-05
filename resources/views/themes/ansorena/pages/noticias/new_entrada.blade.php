@@ -27,9 +27,20 @@
     $category = $data['categorys'][$post->primary_category_web_blog];
 	$locale = Config('app.locale') == 'es' ? 'es_ES' : 'en_GB';
 	$fecha = Carbon::parse($post->publication_date_web_blog)->locale($locale)->isoFormat('D MMMM YYYY');
+	$url_translated = Tools::getBlogURLTranslated(\Config::get('app.locale'), $post->id_web_blog);
+
 @endphp
 
 @section('content')
+
+	@if (count($url_translated) > 0)
+		<script>
+			let url = "{{ $url_translated['url'] }}";
+			let to_lang = "{{ $url_translated['to_lang'] }}";
+			$("select#locale-select option[data-lang='" + to_lang + "']").val(url);
+		</script>
+	@endif
+
     <main class="post-blog-page p-0">
         <section class="post-blog-front">
 

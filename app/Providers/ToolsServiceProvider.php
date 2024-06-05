@@ -20,9 +20,12 @@ use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
+use App\Models\V5\Web_Blog;
+use App\Models\V5\Web_Category_Blog_Lang;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class ToolsServiceProvider extends ServiceProvider
@@ -1307,8 +1310,13 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
+		if ( \Config::get("app.gridAllSessions") ){
+			$filter_session = array("typeSub", "session" );
+		}else{
+			$filter_session = array("typeSub");
+		}
 		#listado de los filtros que usamos
-		$name_filter = array("typeSub",  "category", "section", "subsection");
+		$name_filter =  array_merge($filter_session,array( "category", "section", "subsection"));
 		$index = "";
 		$concat = "";
 		foreach ($name_filter as $filter) {
@@ -1403,7 +1411,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
-		if (strpos($path, 'img') === false && !$hash) {
+		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
 			$hash = filemtime($publicPath);
 		}
 		elseif(!$hash) {
@@ -1624,6 +1632,62 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 		return $dataTable->first();
+	}
+
+	public static function isITPLot($cod_sub, $ref) :bool
+	{
+		if(!Config::get('app.checkItp', false)){
+			return false;
+		}
+
+		$cod_cli = Session::get('user.cod', 0);
+		if(!$cod_cli){
+			return false;
+		}
+
+		return DB::executeFunction('LOTE_ITP', [
+			'EMPRESA' => Config::get('app.emp'),
+			'SUBASTA' => $cod_sub,
+			'LOTE' => $ref,
+			'CLIENTE' => $cod_cli
+		]);
+	}
+
+	public static function getBlogURLTranslated($lang, $web_blog_id) :array
+	{
+		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
+		foreach ($blogs as $key => $blog) {
+			if ($blog->lang_web_blog_lang == mb_strtoupper($lang)) {
+				unset($blogs[$key]);
+			}
+		}
+		$blog = $blogs->first();
+		if (!$blog) {
+			return [];
+		}
+
+		$categories = Web_Category_Blog_Lang::where('ID_CATEGORY_BLOG_LANG', $blog->primary_category_web_blog)->get();
+		foreach ($categories as $key => $category) {
+			if ($category->lang_category_blog_lang == mb_strtoupper($lang)) {
+				unset($categories[$key]);
+			}
+		}
+		$category = $categories->first();
+		if (!$category) {
+			return [];
+		}
+
+		$to_lang = mb_strtolower($blog->lang_web_blog_lang);
+		$blog_literal_url = 'blog';
+		$category_url = $category->url_category_blog_lang;
+		$blog_url = $blog->url_web_blog_lang;
+
+		$full_url = "/$to_lang/$blog_literal_url/$category_url/" . ($blog->enabled_web_blog_lang != 0 ? "$blog_url" : "");
+
+		return [
+			'url' => $full_url,
+			'to_lang' => $to_lang,
+		];
 	}
 
 }

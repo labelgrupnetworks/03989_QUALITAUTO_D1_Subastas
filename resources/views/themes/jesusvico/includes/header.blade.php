@@ -109,7 +109,7 @@ $pageName = Route::currentRouteName();
 
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						  {{ trans("$theme-app.login_register.empresa") }}
+						  {{ trans("$theme-app.foot.company") }}
 						</a>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="{{ Routing::translateSeo('pagina').trans("$theme-app.links.about_us") }}">{{ trans("$theme-app.foot.about_us") }}</a></li>

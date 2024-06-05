@@ -169,11 +169,12 @@ class FgAsigl0 extends Model
 
 	#devuelve la cantidad de lotes por cada filtro, por ejemplo nº lotes de subastas tipo O, o nº lotes de categoria joyas
     public function scopeCountLotsFilterAsigl0($query)  {
-		return  $query->select("FGORTSEC1.LIN_ORTSEC1, FGORTSEC1.SEC_ORTSEC1, FGSUB.TIPO_SUB, FGHCES1.SUBFAM_HCES1, count(FGASIGL0.REF_ASIGL0) count_lots")
+		$groupSession = \Config::get("app.gridAllSessions") ? '"reference",' :'';
+		return  $query->select($groupSession."FGORTSEC1.LIN_ORTSEC1, FGORTSEC1.SEC_ORTSEC1, FGSUB.TIPO_SUB, FGHCES1.SUBFAM_HCES1, count(FGASIGL0.REF_ASIGL0) count_lots")
 			   ->ActiveLotAsigl0()
 			   #no debe hacer el join con fxsec, si no con fgortsec1
 			   ->JoinFgOrtsec1Asigl0()
-			   ->groupby("FGORTSEC1.LIN_ORTSEC1, FGORTSEC1.SEC_ORTSEC1, FGSUB.TIPO_SUB, FGHCES1.SUBFAM_HCES1");
+			   ->groupby($groupSession."FGORTSEC1.LIN_ORTSEC1, FGORTSEC1.SEC_ORTSEC1, FGSUB.TIPO_SUB, FGHCES1.SUBFAM_HCES1");
    }
 
    public function scopeJoinFgOrtsec1Asigl0($query){

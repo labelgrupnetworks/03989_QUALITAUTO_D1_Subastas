@@ -96,7 +96,8 @@ class ImageGenerate {
 
                     $compresion = $peso / $area;
 
-                    if($compresion < 0.29)
+
+                    if($compresion <  floatval(\Config::get("app.compresion_img",'0.35')))
                     {
                       $comprimir = false;
                     }
@@ -224,7 +225,9 @@ class ImageGenerate {
                     }
                 //comprobamos que exista la carpeta de la hoja de cesion
                 $pathImagenesThumbsSize.="$numhces/";
-                if (!file_exists($pathImagenesThumbsSize))
+				#ya n ose generan las imagenes en la carpeta real, ahora se sustituyen las originales
+				if($size != "real"){
+                	if (!file_exists($pathImagenesThumbsSize))
                     {
                             try {
                                     mkdir($pathImagenesThumbsSize, 0775, true);
@@ -234,6 +237,7 @@ class ImageGenerate {
                                 echo $e->getMessage();
                             }
                     }
+				}
             }
             $imagenThumbs = $pathImagenesThumbsSize. $img;
 
@@ -334,6 +338,12 @@ class ImageGenerate {
 
 								//	echo "$original_start_X, $original_start_Y, $imgMaxWidth, $imgMaxHeight, $imgWidth, $imgHeight"; die();
 
+								}
+
+								#si es el tamaño real, modificamos la original
+								if($size == "real"){
+									$imagenThumbs=  $imagenOriginal;
+									$image_to_load = $imagenOriginal;
 								}
 
 								$this->image_quality($image_type, $image_p, $imagenThumbs, $imgQuality);

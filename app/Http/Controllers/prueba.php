@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //opcional
 use SimpleXMLElement;
 use App;
+use App\Actions\Observability\HasAuctionAction;
 use App\Http\Controllers\admin\bi\AdminBiController;
 use Request;
 use lessc;
@@ -174,12 +175,8 @@ class Prueba extends BaseController
 
 	public function index()
 	{
-		$a = new MailController();
-		$a->sendCompletLotReport('2024JUME',1);
 		die();
 	}
-
-
 
 	private function testConnection()
 	{

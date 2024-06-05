@@ -47,6 +47,8 @@ use App\Models\V5\WebCalendarEvent;
 use Illuminate\Support\Str;
 use SplFileInfo;
 use  App\libs\SeoLib;
+use App\Providers\ToolsServiceProvider;
+
 class SubastaController extends Controller
 {
 
@@ -1019,6 +1021,8 @@ class SubastaController extends Controller
 				$url_friendly = \Routing::translateSeo('lote') . $lote_search->sub_asigl0 . "-" . str_slug($lote_search->id_auc_sessions) . '-' . $lote_search->id_auc_sessions . "/" . $lote_search->ref_asigl0 . '-' . $lote_search->num_hces1 . '-' . $webfriend;
 				$lote_search->url_lot    = $url_friendly;
 
+				$lote_search->isItp = ToolsServiceProvider::isITPLot($lote_search->cod_sub, $lote_search->ref_asigl0);
+
 				$res = array(
 					"status" => "success",
 					"lote"     => $lote_search
@@ -1565,8 +1569,11 @@ class SubastaController extends Controller
 			}
 		}
 
-
-
+		if (empty($cod_sub) || empty($cod_licit) || empty($ref)) {
+			return array(
+				'status'    => 'error',
+			);
+		}
 
 		$res = array();
 

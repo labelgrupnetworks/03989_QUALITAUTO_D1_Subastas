@@ -153,7 +153,7 @@
 								</div>
 							@endif
 
-							@if (\Config::get('app.userPanelCIFandCC'))
+							@if (\Config::get('app.user_panel_cif'))
 								<div class="form-group {{-- form-group-custom --}} col-xs-12 col-sm-4">
 									<label for="nif">{{ trans($theme . '-app.user_panel.nif_dni_nie') }}</label>
 									<input type="text" class="form-control effect-16" name="nif" id="nif__1__nif"
@@ -229,7 +229,7 @@
 								<input type="hidden" name="title_poblacion" value="{{ trans($theme.'-app.user_panel.city') }}">
 							</div>
 
-							@if (\Config::get('app.userPanelCIFandCC'))
+							@if (\Config::get('app.user_panel_cc'))
 								<div class="form-group {{-- input-group --}} col-xs-12 col-md-8">
 									@php
 										//creditCard puede llegar como false, se debe validar
