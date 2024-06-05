@@ -14,7 +14,7 @@ use Carbon\Carbon;
 class FgSub extends Model
 {
     protected $table = 'FgSub';
-    protected $primaryKey = 'emp_sub,cod_sub';
+    protected $primaryKey = 'cod_sub';
 
     public $timestamps = false;
     public $incrementing = false;

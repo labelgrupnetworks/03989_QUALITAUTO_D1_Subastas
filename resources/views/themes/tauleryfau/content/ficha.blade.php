@@ -148,7 +148,7 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 							$imageSize = getimagesize($imageUrlReal);
 						@endphp
 						<a class="d-block" data-pswp-width="{{ $imageSize[0] }}" data-pswp-height="{{ $imageSize[1] }}"
-							href="{{ $imageUrlCompressed }}">
+							href="{{ $imageUrlReal }}">
 							<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
 								<img loading="lazy" style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
 									class="img-responsive" data-pos="{{ $key }}"

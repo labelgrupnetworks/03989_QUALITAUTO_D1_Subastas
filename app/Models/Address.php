@@ -14,28 +14,27 @@ class Address extends Model
 
     public $cod_cli;
 
-    public function addDirEnvio($envio,$num,$user){
+	public function __construct($cod_cli = null)
+	{
+		$this->cod_cli = $cod_cli;
+	}
 
+	public function addDirEnvio($envio, $num, $user)
+	{
 		//Textos por defecto o toUpper
 		$strToDefault = Config::get('app.strtodefault_register', 0);
-		$pais = null;
 		$rsoc = '';
 
-		if(!empty($envio['clid_pais'])){
-			$pais = $strToDefault ? $envio['clid_pais'][0]->des_paises : strtoupper($envio['clid_pais'][0]->des_paises);
-		}
-
-		if(!empty($envio['clid_rsoc'])){
+		if (!empty($envio['clid_rsoc'])) {
 			$rsoc = $strToDefault ? $envio['clid_rsoc'] : strtoupper($envio['clid_rsoc']);
-		}
-		else{
+		} else {
 			$rsoc = $strToDefault ? $user : strtoupper($user);
 		}
 
         DB::select("INSERT INTO FXCLID
-                (GEMP_CLID, CLI_CLID, CODD_CLID, NOMD_CLID,TIPO_CLID,CP_CLID,DIR_CLID,DIR2_CLID,POB_CLID,PAIS_CLID,CODPAIS_CLID,SG_CLID,PRO_CLID,TEL1_CLID,RSOC_CLID, CLI2_CLID, EMAIL_CLID, PREFTEL_CLID, OBS_CLID)
+                (GEMP_CLID, CLI_CLID, CODD_CLID, NOMD_CLID,TIPO_CLID,CP_CLID,DIR_CLID,DIR2_CLID,POB_CLID,PAIS_CLID,CODPAIS_CLID,SG_CLID,PRO_CLID,TEL1_CLID,RSOC_CLID, CLI2_CLID, EMAIL_CLID, PREFTEL_CLID, OBS_CLID, MATER_CLID)
                 VALUES
-                (:emp,:num,:max_direcc,:usuario,'E',:cpostal,:direccion,:direccion2,:poblacion,:pais,:cod_pais,:via,:provincia,:telf,:rsoc, :cod2, :email, :preftel_clid, :obs_clid)",
+                (:emp,:num,:max_direcc,:usuario,'E',:cpostal,:direccion,:direccion2,:poblacion,:pais,:cod_pais,:via,:provincia,:telf,:rsoc, :cod2, :email, :preftel_clid, :obs_clid, :mater_clid)",
                  array(
                     'emp' => Config::get('app.gemp'),
                      'num' => $num,
@@ -54,7 +53,8 @@ class Address extends Model
                     'cod2'   => !empty($envio['cod2_clid']) ? strtoupper($envio['cod2_clid']) : null,
 					'email' => $strToDefault ? $envio['email_clid'] ?? '' : strtoupper($envio['email_clid'] ?? ''),
 					'preftel_clid' => $envio['preftel_clid'],
-					'obs_clid' => $envio['obs_clid'] ?? ''
+					'obs_clid' => $envio['obs_clid'] ?? '',
+					'mater_clid' => $envio['mater_clid'] ?? ''
                     )
       );
     }

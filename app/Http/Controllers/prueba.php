@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 //opcional
 use SimpleXMLElement;
 use App;
+use App\Actions\Observability\HasAuctionAction;
 use App\Http\Controllers\admin\bi\AdminBiController;
 use Request;
 use lessc;

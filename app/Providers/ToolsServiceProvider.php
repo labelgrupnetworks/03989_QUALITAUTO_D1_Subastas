@@ -20,6 +20,8 @@ use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
+use App\Models\V5\Web_Blog;
+use App\Models\V5\Web_Category_Blog_Lang;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -1663,6 +1665,43 @@ class ToolsServiceProvider extends ServiceProvider
 			'LOTE' => $ref,
 			'CLIENTE' => $cod_cli
 		]);
+	}
+
+	public static function getBlogURLTranslated($lang, $web_blog_id) :array
+	{
+		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
+		foreach ($blogs as $key => $blog) {
+			if ($blog->lang_web_blog_lang == mb_strtoupper($lang)) {
+				unset($blogs[$key]);
+			}
+		}
+		$blog = $blogs->first();
+		if (!$blog) {
+			return [];
+		}
+
+		$categories = Web_Category_Blog_Lang::where('ID_CATEGORY_BLOG_LANG', $blog->primary_category_web_blog)->get();
+		foreach ($categories as $key => $category) {
+			if ($category->lang_category_blog_lang == mb_strtoupper($lang)) {
+				unset($categories[$key]);
+			}
+		}
+		$category = $categories->first();
+		if (!$category) {
+			return [];
+		}
+
+		$to_lang = mb_strtolower($blog->lang_web_blog_lang);
+		$blog_literal_url = 'blog';
+		$category_url = $category->url_category_blog_lang;
+		$blog_url = $blog->url_web_blog_lang;
+
+		$full_url = "/$to_lang/$blog_literal_url/$category_url/" . ($blog->enabled_web_blog_lang != 0 ? "$blog_url" : "");
+
+		return [
+			'url' => $full_url,
+			'to_lang' => $to_lang,
+		];
 	}
 
 }

@@ -2,6 +2,8 @@
 	--primary-color: #c8ad89;
 	--primary-color-hover: #977f60;
 
+	--primary-color-low-opacity: #c8ad8909;
+
 	--secondary-button-color: #707B7C;
 	--secondary-button-border: #707B7C;
 	--secondary-button-background: #fff;
@@ -752,7 +754,7 @@ nav.navbar-default {
 	border-color: #ebebeb;
 	position: sticky;
 	top: 40px;
-	z-index: 10;
+	z-index: 9;
 }
 nav.navbar {
 	min-height: 66px;
@@ -5170,6 +5172,11 @@ ul.sub_menu_adj {
 	color: #333;
 }
 
+.sales-panel .panel-default>.panel-heading {
+	background-color: var(--primary-color-low-opacity);
+	margin-bottom: 6px;
+}
+
 .panel-heading {
 	padding: 10px 15px;
 	border-bottom: 1px solid transparent;
@@ -5687,3 +5694,9 @@ reinicializo estilo para no afectar al resto de páginas
 .register-dni-section :is(.form-group, p) {
 	padding: 0 15px;
 }
+
+.sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
+	margin-top: -6px;
+	border-top: 2px solid var(--primary-color);
+}
+

@@ -584,6 +584,14 @@ $idiomes = \Config::get('app.locales');
 
 						<ul class="nav nav-children">
 							<li>
+								<a href="{{ route('admin.test-auctions.index') }}">
+									<span>Subastas de pruebas</span>
+								</a>
+							</li>
+						</ul>
+
+						<ul class="nav nav-children">
+							<li>
 								<a href="{{ route('admin.jobs.index') }}">
 									<span>{{ trans("admin-app.nav_menu.jobs") }}</span>
 								</a>

@@ -26,7 +26,7 @@ class RecipientsNotificationList
 				'subastas@labelgrup.com'
 			],
 			'sistemas' => [
-				'sistemas@labelgurp.com',
+				'sistemas@labelgrup.com',
 				'subastas@labelgrup.com'
 			],
 		];
@@ -68,6 +68,6 @@ class RecipientsNotificationList
 
 	private function whenLocalEnv()
 	{
-		return [env('MAIL_TO')];
+		return [Config::get('mail.mail_to')];
 	}
 }

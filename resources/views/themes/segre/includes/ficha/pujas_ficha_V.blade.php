@@ -43,7 +43,7 @@ $importe =  \Tools::moneyFormat($importe,false,2);
 						@endif
 
 					</p>
-					<p>+  comisión (17%) e IVA</p>
+					<p>+  comisión (18%) e IVA</p>
                 </div>
 			</div>
 			<div class="col-xs-6 ">

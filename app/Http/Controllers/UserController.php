@@ -999,7 +999,7 @@ class UserController extends Controller
 						}
 
 
-                        $envio= array(
+                        $envio = array(
                         'clid_direccion'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),0,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),0,30,'UTF-8')),
                         'clid_direccion_2'  => $strToDefault ? mb_substr(Input::get('clid_direccion'),30,30,'UTF-8') : strtoupper(mb_substr(Input::get('clid_direccion'),30,30,'UTF-8')),
                         'clid_cod_pais'   => Input::get('clid_pais'),
@@ -1013,7 +1013,8 @@ class UserController extends Controller
                         'clid_rsoc'=> $rsoc,
                         'codd_clid'=> $shipping_label,
                         'cod2_clid'=> $cod2_cli,
-						'preftel_clid' => request('preftel_clid', request('preftel_cli', ''))
+						'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
+						'mater_clid' => request('mater_clid', 'N'),
                         );
 
 
@@ -1087,8 +1088,7 @@ class UserController extends Controller
 								}
 							}
 							else{
-								$max_direcc = $shipping_label;
-								$addres->addDirEnvio($envio,$num,$name);
+								$addres->addDirEnvio($envio, $num, $name);
 							}
 
                          }
@@ -1282,6 +1282,12 @@ class UserController extends Controller
                             $email = new EmailLib('USER_ASSOCIATED');
                             if(!empty($email->email)){
                                 $email->setUserByCod($num);
+
+								if(Config::get('app.delivery_address', 0)) {
+									$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+									$email->setAddress(head($addressToEmail));
+								}
+
                                 $email->setTo(Config::get('app.admin_email'));
                                 $email->send_email();
                             }
@@ -1292,6 +1298,11 @@ class UserController extends Controller
 					if(!empty($email->email)){
 						$email->setUserByCod($num);
 						$email->setAtribute("OBS",Request::input('obscli'));
+
+						if(Config::get('app.delivery_address', 0)) {
+							$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
+							$email->setAddress(head($addressToEmail));
+						}
 
 						if(!empty($job_name)){
 							$email->setAtribute("JOB_CLI", $job_name);
@@ -3590,20 +3601,28 @@ class UserController extends Controller
     }
 
 
-    public function sendPasswordRecovery()
+    public function sendPasswordRecovery(HttpRequest $request)
     {
-        $email = Request::input('email');
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email'
+		]);
+
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
+		if($validator->fails()){
+			return $successResponse;
+		}
+
+        $email = $request->input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
 
         $user = new User();
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
-
-		$successResponse = [
-			'status' => 'succes',
-			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-		];
 
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
 
@@ -5267,7 +5286,7 @@ class UserController extends Controller
 	  private function checkValidFormatPassport($passport)
 	  {
 		$passport = strtoupper($passport);
-		$pattern = "/^[A-Z]{3}[0-9]{6}[A-Z]{1}$/";
+		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);
 	  }
 
