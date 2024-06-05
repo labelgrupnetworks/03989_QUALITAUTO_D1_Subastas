@@ -22,8 +22,24 @@
         <div id="cms">
             <div class="row mb-10">
                 <div class="col-md-12">
-                    <button class="mb-xs mt-xs mr-xs btn btn-lg btn-primary pull-right save_traducciones"
-                        type="button">{{ trans('admin-app.title.save') }}</button>
+					<div class="d-flex align-items-center justify-content-space-between">
+						@if (count(config('app.locales')) > 1)
+							<div class="d-flex align-items-center justify-content-start">
+								@php
+									$langs = config('app.locales');
+									unset($langs[mb_strtolower($data['lang'])]);
+								@endphp
+								@foreach ($langs as $lang => $lang_name)
+									<a href="/admin/traducciones/{{$data['key']}}/{{mb_strtoupper($lang)}}"
+										class="mb-xs mt-xs mr-xs btn btn-sm btn-success">{{ trans("admin-app.button.change-to") }} {{ mb_strtoupper($lang) }}</a>
+								@endforeach
+							</div>
+						@endif
+						<div class="d-flex align-items-center justify-content-end">
+							<button class="mb-xs mt-xs mr-xs btn btn-lg btn-primary save_traducciones"
+								type="button">{{ trans('admin-app.title.save') }}</button>
+						</div>
+					</div>
                 </div>
             </div>
             <section class="panel">
@@ -116,10 +132,10 @@
                     </div>
                 </form>
             </section>
-            <?php
-            $traducciones = new \App\Models\Translate();
-            $trans = $traducciones->headersTrans();
-            ?>
+            @php
+				$traducciones = new \App\Models\Translate();
+				$trans_headers = $traducciones->headersTrans();
+			@endphp
             @if (!empty($_GET) && $_GET['admin'] == 'superadmin')
                 <form id='new_traduction'>
                     <section class="panel">
@@ -127,9 +143,9 @@
                             <div class="row mb-10">
                                 <div class="col-md-3  mb-10">
                                     <select class="form-control" name='key_headers'>
-                                        @foreach ($trans as $traduc)
-                                            <option value="{{ $traduc->key_header }}" @selected($traduc->key_header = $data['key'])>
-                                                {{ $traduc->key_header }}
+                                        @foreach ($trans_headers as $trans_header)
+                                            <option value="{{ $trans_header->key_header }}" @selected($trans_header->key_header == $data['key'])>
+                                                {{ $trans_header->key_header }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -138,9 +154,10 @@
                                     <input class="form-control" name='key_translate' type='text' placeholder="key">
                                 </div>
                                 <div class="col-md-3">
-                                    <select class="form-control" name='lang'>
-                                        <option value="ES">Español</option>
-                                        <option value="EN">Ingles</option>
+									<select class="form-control" name='lang'>
+										@foreach (config('app.locales') as $iso_code => $locale)
+											<option value="{{ mb_strtoupper($iso_code) }}" @selected(mb_strtoupper($iso_code) == $data['lang'])>{{ $locale }}</option>
+										@endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-9  mb-10">

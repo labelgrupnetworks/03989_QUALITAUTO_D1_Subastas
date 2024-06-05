@@ -35,6 +35,8 @@
         </div>
     </main>
 
+	@include('includes.whatsapp_button')
+
     <script>
         //Página indicada en la url mediante variable get, se utiliza para la carga inicial de react
         var language = "{{ config('app.locale') }}";
