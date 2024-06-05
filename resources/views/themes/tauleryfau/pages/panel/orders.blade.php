@@ -20,7 +20,6 @@
         var rooms = [];
         var currency = @JSON($divisas);
         var divisa = @JSON($divisa);
-		var replaceZeroDecimals = true;
 
         $(function() {
             $("#actual_currency").trigger('change');

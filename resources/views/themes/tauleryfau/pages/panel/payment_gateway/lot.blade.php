@@ -36,7 +36,7 @@
         </div>
         <div class="panel-lot_label label-price-commission">
             <span>
-                Comisión
+                {{ trans("$theme-app.user_panel.price_comision") }}
             </span>
         </div>
         <div class="panel-lot_commission-price">

@@ -78,11 +78,11 @@
 
         <ul class="dropdown-menu">
             <li>
-                <a href="https://www.tauleryfau.com/onzas-macuquinas/">Base de datos online</a>
+                <a href="{{ wpLink('wp_onzas_macuquinas') }}">{{ trans("$theme-app.foot.database_online") }}</a>
             </li>
 
             <li>
-                <a href="https://www.tauleryfau.com/es/ediciones-tauler/">Catálogos PDF</a>
+                <a href="{{ wpLink('wp_catalogue_pdf') }}">{{ trans("$theme-app.foot.catalogue_pdf") }}</a>
             </li>
         </ul>
     </li>

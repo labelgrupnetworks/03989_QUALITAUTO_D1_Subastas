@@ -27,7 +27,6 @@
     <script>
         var currency = @JSON($divisas);
         var divisa = @JSON($divisa);
-        var replaceZeroDecimals = true;
         const statistics = @JSON($statistics);
     </script>
 

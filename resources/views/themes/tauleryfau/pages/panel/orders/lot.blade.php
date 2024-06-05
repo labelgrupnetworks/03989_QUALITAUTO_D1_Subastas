@@ -51,7 +51,7 @@
 
         <div class="order-label label-price-salida">
             <span class="hidden-xs">{{ trans($theme . '-app.lot.lot-price') }}</span>
-            <span class="visible-xs">P. Salida</span>
+            <span class="visible-xs">{{ trans("$theme-app.user_panel.starting_price_min") }}</span>
         </div>
 
         <div class="lot-price-salida">
@@ -63,7 +63,7 @@
                 <span>{{ trans("$theme-app.user_panel.awarded") }}</span>
             @else
                 <span class="hidden-xs">{{ trans($theme . '-app.lot.puja_actual') }}</span>
-                <span class="visible-xs">P. Actual</span>
+                <span class="visible-xs">{{ trans("$theme-app.user_panel.actual_price_min") }}</span>
             @endif
         </div>
 
@@ -72,8 +72,8 @@
         </div>
 
         <div class="order-label label-price-bid">
-			<p class="hidden-xs">Mi Puja Máxima</p>
-            <p class="visible-xs">Mi Puja Máx</p>
+			<p class="hidden-xs">{{ trans("$theme-app.user_panel.mi_puja") }}</p>
+            <p class="visible-xs">{{ trans("$theme-app.user_panel.mi_puja_abbr") }}</p>
         </div>
 
         <div class="lot-price-bid">
