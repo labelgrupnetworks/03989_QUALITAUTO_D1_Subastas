@@ -781,14 +781,14 @@ class LotListController extends Controller
 				$errors = $validator->errors();
 				foreach ($errors->keys() as $key) {
 
-					$request[$key] = '';
-
 					//solo mostramos una vez el error
 					static $isLogged = false;
 					if (!$isLogged) {
 						$isLogged = true;
 						Log::debug("Error en el filtros de lotes", ['key' => $key, 'value' => $request[$key], 'ip' => request()->ip()]);
 					}
+
+					$request[$key] = '';
 				}
 				$validator = Validator::make($request, $rules);
 			}
