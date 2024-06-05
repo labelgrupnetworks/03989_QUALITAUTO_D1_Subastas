@@ -13,7 +13,6 @@
 
 <div class="stream-block">
 
-	<p class="delay">{{ trans($theme.'-app.sheet_tr.delay') }}</p>
 	<div class="stream-wrapper">
 
 		<div id='video-overlay'>
@@ -48,4 +47,5 @@
 			style="position: absolute; top: 30px; left: 30px; display: none;" />
 
 	</div>
+	<p class="delay">{{ trans($theme.'-app.sheet_tr.delay') }}</p>
 </div>

@@ -3423,3 +3423,7 @@ color: black !important;
     margin: 10px 0;
     overflow: hidden;
 }
+
+.mfp-top-center .mfp-content {
+	vertical-align: top;
+}
