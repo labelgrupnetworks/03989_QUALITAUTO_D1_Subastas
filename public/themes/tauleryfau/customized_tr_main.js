@@ -12,7 +12,15 @@
    $(document).ready(function(){
 
 		if($('#modalActivarAudio').length){
-			setTimeout(function(){ $.magnificPopup.open({items: {src: '#modalActivarAudio'}, type: 'inline'}, 0); }, 500);
+			setTimeout(function() {
+				$.magnificPopup.open({
+					items: {
+						src: '#modalActivarAudio'
+					},
+					type: 'inline',
+					mainClass: 'mfp-top-center',
+				}, 0);
+			}, 500);
 		}
 
 
