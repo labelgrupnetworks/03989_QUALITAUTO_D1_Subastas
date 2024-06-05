@@ -1,6 +1,7 @@
 @php
     $totalInvoice = $document->himp_csub + $document->base_csub + $document->base_csub_iva;
     $state = ['class' => 'alert', 'text' => 'Pendiente'];
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 <div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}">
@@ -10,7 +11,9 @@
         </p>
         <p class="allotment-invoice_cod">
             <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
-            <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+            <span class="hidden-md hidden-lg">
+				{{ $auctionNumber($document->name, $document->cod_sub) }}
+			</span>
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
 

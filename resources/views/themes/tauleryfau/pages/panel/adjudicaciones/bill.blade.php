@@ -17,6 +17,7 @@
     };
 
     $description = $document->des_sub ?? ($document->inf_fact['S'][0]->des_sub ?? '');
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 {{-- @php
@@ -36,7 +37,9 @@ if(!empty($bill->factura)){
         </p>
         <p>
             <span class="visible-md visible-lg">{{ $description }}</span>
-            <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+            <span class="hidden-md hidden-lg">
+				{{ $auctionNumber($description, $document->cod_sub) }}
+			</span>
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
         <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}" style="font-size: 13px">

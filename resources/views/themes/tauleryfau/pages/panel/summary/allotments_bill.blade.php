@@ -21,6 +21,7 @@
 
     $description = $document->des_sub ?? ($document->inf_fact['S'][0]->des_sub ?? '');
     $link = route('panel.allotment-bills', ['lang' => config('app.locale')]) . "#auction-details-{$id}";
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 <tr>
@@ -33,7 +34,9 @@
         <a href="{{ $link }}">
             <p class="max-line-2">
                 <span class="visible-md visible-lg">{{ $description }}</span>
-                <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+                <span class="hidden-md hidden-lg">
+					{{ $auctionNumber($description, $document->cod_sub) }}
+				</span>
             </p>
         </a>
     </td>

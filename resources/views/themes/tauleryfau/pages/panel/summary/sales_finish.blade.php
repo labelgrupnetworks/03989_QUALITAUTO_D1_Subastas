@@ -1,3 +1,7 @@
+@php
+    $auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
+@endphp
+
 <section class="summary-active-sales">
     <div class="sales-summary">
         <div class="sales-summary_detail">
@@ -65,7 +69,9 @@
                                 href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
                                 <p class="max-line-2">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
-                                    <span class="hidden-md hidden-lg">{{ $auctionData->sub_asigl0 }}</span>
+                                    <span class="hidden-md hidden-lg">
+										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
+									</span>
                                 </p>
                             </a>
                         </td>
@@ -114,7 +120,9 @@
                                 href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
                                 <p class="max-line-2">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
-                                    <span class="hidden-md hidden-lg">{{ $auctionData->sub_asigl0 }}</span>
+                                    <span class="hidden-md hidden-lg">
+										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
+									</span>
                                 </p>
                             </a>
                         </td>

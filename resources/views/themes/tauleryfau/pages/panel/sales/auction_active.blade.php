@@ -1,3 +1,7 @@
+@php
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
+@endphp
+
 <div class="sales-auction-wrapper" data-type="active" data-sub="{{ $auction['sub_asigl0'] }}">
     <div class="sales-auction">
         <p>
@@ -5,7 +9,9 @@
         </p>
         <p>
             <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
-            <span class="hidden-md hidden-lg">{{ $auction['sub_asigl0'] }}</span>
+            <span class="hidden-md hidden-lg">
+				{{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}
+			</span>
 
         </p>
         <p>{{ $auction['total_lots'] }}</p>

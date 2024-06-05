@@ -2,6 +2,7 @@
     $totalInvoice = $document->himp_csub + $document->base_csub + $document->base_csub_iva;
     $state = ['class' => 'alert', 'text' => 'Pendiente'];
     $link = route('panel.allotment-bills', ['lang' => config('app.locale')]) . "#auction-details-{$id}";
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 <tr>
@@ -14,7 +15,9 @@
         <a href="{{ $link }}">
             <p class="max-line-2">
                 <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
-                <span class="hidden-md hidden-lg">{{ $document->cod_sub }}</span>
+                <span class="hidden-md hidden-lg">
+					{{ $auctionNumber($document->name, $document->cod_sub) }}
+				</span>
             </p>
         </a>
     </td>

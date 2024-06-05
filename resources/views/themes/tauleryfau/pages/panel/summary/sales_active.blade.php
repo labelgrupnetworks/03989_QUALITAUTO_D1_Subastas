@@ -1,8 +1,5 @@
 @php
-    //'revaluation' =>
-    /* ($statistics['auction']->sum('actual_price') /
-                Tools::numberClamp($statistics['auction']->sum('starting_price'), 1)) *
-            100, */
+    $auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 <section class="summary-active-sales">
@@ -63,7 +60,9 @@
                                 href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
                                 <p class="max-line-2">
                                     <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
-                                    <span class="hidden-md hidden-lg">{{ $auction['sub_asigl0'] }}</span>
+                                    <span class="hidden-md hidden-lg">
+										{{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}
+									</span>
                                 </p>
                             </a>
                         </td>
