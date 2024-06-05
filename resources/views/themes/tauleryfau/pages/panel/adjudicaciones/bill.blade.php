@@ -16,8 +16,9 @@
         4 => ['es' => 'Recogido en tienda', 'en' => 'Picked up in store'],
     ];
 	$locale = config('app.locale');
+	$followUp = !empty($document->followUp) ? $document->followUp->idseg_dvc0seg : null;
 
-	$state = match($document->followUp?->idseg_dvc0seg) {
+	$state = match($followUp) {
 		'1' => ['class' => 'success', 'text' => $states[1][$locale]],
 		'2' => ['class' => 'warning', 'text' => $states[2][$locale]],
 		'4' => ['class' => 'success', 'text' => $states[4][$locale]],
