@@ -64,7 +64,9 @@
                             {{ trans("$theme-app.user_panel.higher_bid_es") }}
                         @else
                             {{ trans("$theme-app.sheet_tr.place_bid") }}
-                            {!! $currency->getPriceSymbol(2, $nextScale) !!}
+							<span class="js-divisa" value="{{ $nextScale }}">
+								{!! $currency->getPriceSymbol(2, $nextScale) !!}
+							</span>
                         @endif
                     </button>
                 @else

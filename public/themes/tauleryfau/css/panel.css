@@ -1654,6 +1654,7 @@ p,
 
 .summary-banner>div {
 	padding: 0;
+	overflow: hidden;
 }
 
 .summary-page .panel-title {

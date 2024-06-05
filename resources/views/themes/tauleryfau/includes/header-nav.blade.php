@@ -68,6 +68,25 @@
         </ul>
     </li>
 
+	<li class="dropdown">
+
+        <a class="dropdown-toggle" data-toggle="dropdown" data-href="{{ wpLink('wp_services') }}" href="#"
+            role="button" aria-haspopup="true" aria-expanded="false">
+            Onzas macuquinas
+            <span class="sub-arrow"><i class="fas fa-caret-down"></i></span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <li>
+                <a href="https://www.tauleryfau.com/onzas-macuquinas/">Base de datos online</a>
+            </li>
+
+            <li>
+                <a href="https://www.tauleryfau.com/es/ediciones-tauler/">Catálogos PDF</a>
+            </li>
+        </ul>
+    </li>
+
     <li class="dropdown">
 
         <a class="dropdown-toggle" data-toggle="dropdown" data-href="{{ wpLink('wp_about_us') }}" href="#"
