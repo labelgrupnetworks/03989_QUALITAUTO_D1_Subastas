@@ -1,4 +1,4 @@
-@props(['id', 'title'])
+@props(['id', 'title', 'invoice'])
 
 <div class="tab-pane" id="auction-details-{{ $id }}" role="tabpanel">
     <h4 class="auction-details_title">
