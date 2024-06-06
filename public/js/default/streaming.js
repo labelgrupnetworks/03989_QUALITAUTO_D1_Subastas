@@ -24,7 +24,10 @@
 	/**
 	* Config
 	*/
-	const streamId = player?.dataset.id;
+	let streamId = '';
+	if(typeof player != "undefined"){
+		streamId = player.dataset.id;
+	}
 	const isDebug = false;
 
 	//let playOrder = ["webrtc", "hls"];
@@ -194,7 +197,6 @@
 				withCredentials: true,
 			});
 
-
 			player.poster("previews/" + preview + ".png");
 
 			if (mute) {
@@ -309,7 +311,10 @@
 			audio: false
 		};
 
-		const appName = player?.dataset.appName;
+		let appName = 'Live'
+		if(typeof player != "undefined"){
+			appName = player.dataset.appName;
+		}
 		let protocol = "wss://";
 		let port = "5443";
 
