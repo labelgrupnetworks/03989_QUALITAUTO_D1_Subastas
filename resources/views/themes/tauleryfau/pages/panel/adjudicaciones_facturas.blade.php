@@ -66,7 +66,7 @@
                 <div class="alltoments-header-wrapper">
                     <div class="table-grid_header alltoments-auctions_header">
                         <p>{{ trans("$theme-app.user_panel.date") }}</p>
-                        <p>{{ trans("$theme-app.user_panel.auction") }}</p>
+                        <p class="text-center text-md-start">{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
                         <p class="allotment-auctions_header-imp">{{ trans("$theme-app.user_panel.total_bill") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
@@ -129,9 +129,11 @@
 
             @foreach ($data['profomaInvoicesPendings'] as $proformaId => $profomaInvoiceLots)
                 @php
-                    $title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pendiente sin lotes';
+					$document = $profomaInvoiceLots->first();
+                    $title = $document->des_sub ?? 'proforma pendiente sin lotes';
+					$invoiceFile = !empty($document->prefactura) ? "/prefactura/{$document->cod_sub}" : false;
                 @endphp
-                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
+                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId" :invoice="$invoiceFile">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->num_hces1,
@@ -141,7 +143,7 @@
                             'description' => $lot->descweb_hces1 ?? $lot->desc_hces1,
                             'imp_sal' => $lot->impsalhces_asigl0,
                             'imp_award' => $lot->himp_csub,
-                            'isPayed' => false,
+                            'isPayed' => false
                         ])
                     @endforeach
                 </x-panel.adjudicaciones_details>
@@ -152,8 +154,11 @@
                     $lots = !empty($bill->inf_fact['S']) ? $bill->inf_fact['S'] : [];
                     $title = !empty($lots) ? $lots[0]->des_sub : 'factura pendiente sin lotes';
                     $id = "$bill->anum_pcob-$bill->num_pcob";
+					$invoiceFile = (!empty($bill->factura) && file_exists($bill->factura))
+						? "/factura/$id"
+						: false;
                 @endphp
-                <x-panel.adjudicaciones_details :title="$title" :id="$id">
+                <x-panel.adjudicaciones_details :title="$title" :id="$id" :invoice="$invoiceFile">
                     @foreach ($lots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->numhces_dvc1l,
@@ -171,9 +176,11 @@
 
             @foreach ($data['profomaInvoicesPayeds'] as $proformaId => $profomaInvoiceLots)
                 @php
-                    $title = $profomaInvoiceLots->first()->des_sub ?? 'proforma pagada sin lotes';
+					$document = $profomaInvoiceLots->first();
+                    $title = $document->des_sub ?? 'proforma pagada sin lotes';
+					$invoiceFile = !empty($document->prefactura) ? "/prefactura/{$document->cod_sub}" : false;
                 @endphp
-                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId">
+                <x-panel.adjudicaciones_details :title="$title" :id="$proformaId" :invoice="$invoiceFile">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->num_hces1,
@@ -194,8 +201,11 @@
                     $lots = !empty($bill->inf_fact['S']) ? $bill->inf_fact['S'] : [];
                     $title = !empty($lots) ? $lots[0]->des_sub : 'factura sin lotes';
                     $id = "$bill->afra_cobro1-$bill->nfra_cobro1";
+					$invoiceFile = (!empty($bill->factura) && file_exists($bill->factura))
+						? "/factura/$id"
+						: false;
                 @endphp
-                <x-panel.adjudicaciones_details :title="$title" :id="$id">
+                <x-panel.adjudicaciones_details :title="$title" :id="$id" :invoice="$invoiceFile">
                     @foreach ($lots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
                             'num' => $lot->numhces_dvc1l,

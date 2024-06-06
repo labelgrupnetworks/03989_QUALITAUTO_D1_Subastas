@@ -36,7 +36,7 @@
         <p>
             {{ date('d/m/Y', strtotime($fec)) }}
         </p>
-        <p>
+        <p class="text-center text-md-start">
             <span class="visible-md visible-lg">{{ $description }}</span>
             <span class="hidden-md hidden-lg">
                 {{ $auctionNumber($description, $document->cod_sub) }}

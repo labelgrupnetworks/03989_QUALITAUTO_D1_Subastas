@@ -9,7 +9,7 @@
         <p>
             {{ date('d/m/Y', strtotime($document->fecha_csub)) }}
         </p>
-        <p class="allotment-invoice_cod">
+        <p class="allotment-invoice_cod text-center text-md-start">
             <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
             <span class="hidden-md hidden-lg">
 				{{ $auctionNumber($document->name, $document->cod_sub) }}
