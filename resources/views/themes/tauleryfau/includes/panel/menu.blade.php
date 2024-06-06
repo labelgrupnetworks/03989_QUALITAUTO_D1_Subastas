@@ -49,7 +49,7 @@
             request()->has('favorites'),
     ])>
         <a href="{{ route('panel.orders', ['lang' => config('app.locale'), 'favorites' => true]) }}">
-            {{ trans("$theme-app.user_panel.favorites") }}
+            {{ trans("$theme-app.user_panel.my_favourites") }}
         </a>
     </li>
     <li @class([
@@ -68,7 +68,7 @@
         'active' => Route::currentRouteName() === 'panel.account_info',
     ])>
         <a href="{{ route('panel.account_info', ['lang' => config('app.locale')]) }}">
-            {{ trans("$theme-app.user_panel.info") }}
+            {{ trans("$theme-app.user_panel.my_profile") }}
         </a>
     </li>
 </ul>

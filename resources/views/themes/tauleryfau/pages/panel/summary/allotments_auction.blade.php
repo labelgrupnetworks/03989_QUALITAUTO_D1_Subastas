@@ -13,7 +13,7 @@
     </td>
     <td>
         <a href="{{ $link }}">
-            <p class="max-line-2">
+            <p class="max-line-2 text-center text-md-start">
                 <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
                 <span class="hidden-md hidden-lg">
 					{{ $auctionNumber($document->name, $document->cod_sub) }}

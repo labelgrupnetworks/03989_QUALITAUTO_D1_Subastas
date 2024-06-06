@@ -365,7 +365,7 @@ changeCurrencyNew = function(price, exchange, object) {
 	if (currency[exchange].pos_div == 'R') {
 		newPrice += " " + currency[exchange].symbolhtml_div;
 	} else {
-		newPrice = currency[exchange].symbolhtml_div + newPrice;
+		newPrice = currency[exchange].symbolhtml_div + " " + newPrice;
 	}
 
 	$(object).html(newPrice);

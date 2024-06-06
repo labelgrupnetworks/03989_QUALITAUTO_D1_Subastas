@@ -38,7 +38,7 @@
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
-                    <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.lots") }}</th>
                     <th class="visible-md visible-lg" scope="col">
                         {{ trans("$theme-app.user_panel.starting_price") }}
@@ -58,7 +58,7 @@
                         <td>
                             <a
                                 href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
-                                <p class="max-line-2">
+                                <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
                                     <span class="hidden-md hidden-lg">
 										{{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}

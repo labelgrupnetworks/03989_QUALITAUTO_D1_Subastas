@@ -32,7 +32,7 @@
     </td>
     <td>
         <a href="{{ $link }}">
-            <p class="max-line-2">
+            <p class="max-line-2 text-center text-md-start">
                 <span class="visible-md visible-lg">{{ $description }}</span>
                 <span class="hidden-md hidden-lg">
 					{{ $auctionNumber($description, $document->cod_sub) }}

@@ -8,7 +8,7 @@
             <span class="js-divisa sales-counter" id="actualPrice" value="{{ $summary['total_liquidation'] }}">
                 0
             </span>
-            <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
+            <p>{{ trans("$theme-app.user_panel.amount_sold") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
@@ -44,7 +44,7 @@
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
-                    <th scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
                     <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.total") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
@@ -67,7 +67,7 @@
                         <td>
                             <a
                                 href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
-                                <p class="max-line-2">
+                                <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
 										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
@@ -118,7 +118,7 @@
                         <td>
                             <a
                                 href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
-                                <p class="max-line-2">
+                                <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
 										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}

@@ -31,7 +31,7 @@
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.assignment") }}</th>
-                    <th scope="col">{{ trans("$theme-app.user_panel.line") }}</th>
+                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.line") }}</th>
                     <th style="width: 45%" scope="col">{{ trans("$theme-app.user_panel.description") }}</th>
                     <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.starting_price") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.estimated") }}</th>
@@ -45,7 +45,7 @@
                                 {{ $lot->num_hces1 }}
                             </a>
                         </td>
-                        <td>
+                        <td class="text-center text-md-start">
                             <a href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
                                 {{ $lot->lin_hces1 }}
                             </a>

@@ -140,7 +140,8 @@ class SummaryController extends Controller
 
 		$lotsQuery = FgHces1::query()
 			->whereOwner($cod_cli, false)
-			->notInAuction();
+			->notInAuction()
+			->isVisibleWeb();
 
 
 		$summary = $lotsQuery->clone()

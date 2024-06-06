@@ -20,10 +20,14 @@
 	--fs-xl: 1.5em;
 	--fs-xxl: 1.75em;
 
-	--min-padding-to-page: 10px;
+	--min-padding-to-page: 15px;
 	--max-content-width: 1500px;
 	--max-content-borderbox: calc(var(--max-content-width) + 2 * var(--min-padding-to-page));
 	--max-content-contentbox: var(--max-content-width);
+}
+
+h4 {
+	font-size: 17px;
 }
 
 .fw-bold {
@@ -33,6 +37,12 @@
 i.fa.fa-gbp,
 i.fa.fa-dollar {
 	margin-right: 2px;
+}
+
+@media (min-width: 992px) {
+	.text-md-start {
+		text-align: left;
+	}
 }
 
 .btn-lb {
@@ -261,7 +271,7 @@ aside li:is(.active, :hover) {
 aside li :is(a, a:hover) {
 	color: inherit;
 	display: block;
-	padding: 12px 36px;
+	padding: 12px 0px 12px 85px;
 }
 
 aside .panel_banner {
@@ -336,6 +346,10 @@ a.toggle-icon:is(:hover, :focus) {
 		display: block;
 	}
 
+	aside li :is(a, a:hover) {
+		padding: 12px 36px;
+	}
+
 	aside .panel_banner {
 		margin-top: auto;
 		display: block;
@@ -399,7 +413,7 @@ a.toggle-icon:is(:hover, :focus) {
 
 .panel-title h1 {
 	margin: 0;
-	font-size: var(--fs-xxl)
+	font-size: 20px;
 }
 
 select#actual_currency {
@@ -910,6 +924,10 @@ p,
 	margin: 0;
 	border-radius: 8px;
 	font-size: inherit;
+}
+
+.summary-page .badge {
+	font-size: 11px;
 }
 
 .badge.badge-alert {
@@ -1717,10 +1735,6 @@ p,
 	padding-right: var(--min-padding-to-page);
 }
 
-.summary-allotments-auctions-block {
-	padding-left: var(--min-padding-to-page);
-	padding-right: var(--min-padding-to-page);
-}
 
 .summary-allotments,
 .summary-sales {
@@ -1781,11 +1795,6 @@ p,
 	min-width: auto;
 }
 
-.summary-sales .sales-auctions-block {
-	padding-left: var(--min-padding-to-page);
-	padding-right: var(--min-padding-to-page);
-}
-
 .summary-sales thead {
 	font-size: 13px;
 }
@@ -1804,6 +1813,14 @@ p,
 
 .summary-sales .table>:is(tbody, thead) tr>:is(td, th) {
 	padding: 10px 4px
+}
+
+.summary-page .table>:is(tbody, thead) tr>:is(td, th):first-child {
+	padding-left: var(--min-padding-to-page);
+}
+
+.summary-page .table>:is(tbody, thead) tr>:is(td, th):last-child {
+	padding-right: var(--min-padding-to-page);
 }
 
 .summary-favorites .slick-track {
@@ -1852,7 +1869,7 @@ p,
 	border: 1px solid var(--color-gold-dark);
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: .5rem;
 	padding: 2rem 1rem 1rem;
 	height: 100%;
 }
@@ -2003,13 +2020,28 @@ p,
 		align-items: center;
 	}
 
-	.summary-sales .sales-auctions-block {
-		padding: 0;
+	.summary-page .table>:is(tbody, thead) tr>:is(td, th):first-child {
+		padding-left: 8px;
+	}
+	.summary-page .table>:is(tbody, thead) tr>:is(td, th):last-child {
+		padding-right: 8px;
+	}
+
+	.summary-sales .table>:is(tbody, thead) tr>:is(td, th):first-child {
+		padding-left: 4px;
+	}
+
+	.summary-sales .table>:is(tbody, thead) tr>:is(td, th):last-child {
+		padding-right: 4px;
 	}
 
 	.summary_body .summary-orders {
 		padding-bottom: 0;
 		margin-bottom: 0;
 		border-bottom: 0;
+	}
+
+	.summary-favorites-arrows {
+		padding: 0;
 	}
 }
