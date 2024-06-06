@@ -19,22 +19,24 @@
             </div>
         </header>
 
+		@if (count(config('app.locales')) > 1)
+			<div class="lang-changer">
+				@php
+					$langs = config('app.locales');
+					unset($langs[mb_strtolower($data['lang'])]);
+					$superadmin = !empty($_GET) && $_GET['admin'] == 'superadmin';
+				@endphp
+				@foreach ($langs as $lang => $lang_name)
+					<a href="/admin/traducciones/{{$data['key']}}/{{mb_strtoupper($lang)}}{{ $superadmin ? '?admin=superadmin' : '' }}"
+						class="mb-xs mt-xs mr-xs btn btn-sm btn-success">{{ trans("admin-app.button.change-to") }} {{ mb_strtoupper($lang) }}</a>
+				@endforeach
+			</div>
+		@endif
+
         <div id="cms">
             <div class="row mb-10">
                 <div class="col-md-12">
-					<div class="d-flex align-items-center justify-content-space-between">
-						@if (count(config('app.locales')) > 1)
-							<div class="d-flex align-items-center justify-content-start">
-								@php
-									$langs = config('app.locales');
-									unset($langs[mb_strtolower($data['lang'])]);
-								@endphp
-								@foreach ($langs as $lang => $lang_name)
-									<a href="/admin/traducciones/{{$data['key']}}/{{mb_strtoupper($lang)}}"
-										class="mb-xs mt-xs mr-xs btn btn-sm btn-success">{{ trans("admin-app.button.change-to") }} {{ mb_strtoupper($lang) }}</a>
-								@endforeach
-							</div>
-						@endif
+					<div class="d-flex align-items-center justify-content-end">
 						<div class="d-flex align-items-center justify-content-end">
 							<button class="mb-xs mt-xs mr-xs btn btn-lg btn-primary save_traducciones"
 								type="button">{{ trans('admin-app.title.save') }}</button>
