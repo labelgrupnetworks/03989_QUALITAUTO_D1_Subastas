@@ -39,9 +39,18 @@ i.fa.fa-dollar {
 	margin-right: 2px;
 }
 
+.highlighted-price {
+	font-size: 13px;
+	font-weight: 500;
+}
+
 @media (min-width: 992px) {
 	.text-md-start {
 		text-align: left;
+	}
+
+	.highlighted-price {
+		font-size: 14px;
 	}
 }
 
@@ -397,9 +406,8 @@ a.toggle-icon:is(:hover, :focus) {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 2rem;
+	gap: 1rem;
 	font-size: inherit;
-
 	max-width: var(--max-content-borderbox);
 	padding-left: var(--min-padding-to-page);
 	padding-right: var(--min-padding-to-page);
@@ -421,6 +429,7 @@ select#actual_currency {
 	font-size: 12px;
 	padding: 6px;
 	background-color: #fff;
+	margin-left: 5px;
 }
 
 .table-grid_header {
@@ -558,6 +567,7 @@ select#actual_currency {
 .label-price-actual,
 .label-price-bid {
 	font-size: 13px;
+	padding-right: 15px;
 }
 
 .label-price-salida {
@@ -691,7 +701,6 @@ select#actual_currency {
 
 .sales-page .sticky-section {
 	background-color: #fff;
-	padding: 15px;
 }
 
 .sales-filter {
@@ -712,6 +721,7 @@ select#actual_currency {
 }
 
 .sales-filter button.custom-select {
+	font-size: 11px;
 	background-color: #fff;
 	border: 1px solid var(--color-gold);
 	height: 100%;
@@ -723,7 +733,11 @@ select#actual_currency {
 .sales-filter .dropdown-menu {
 	padding-left: 2rem;
 	padding-right: 2rem;
-	min-width: auto;
+	min-width: 100%;
+}
+
+.sales-filter button {
+	width: 100%;
 }
 
 .sales-filter input {
@@ -787,6 +801,7 @@ select#actual_currency {
 
 	.sales-page .sticky-section {
 		position: sticky;
+		padding: 15px;
 		top: 70px;
 	}
 
@@ -905,6 +920,7 @@ p,
 	padding-left: var(--min-padding-to-page);
 	padding-right: var(--min-padding-to-page);
 	gap: var(--gap);
+	row-gap: 1.5rem;
 }
 
 .empty-auction :is(.sales-auction, .invoice-auction) {
@@ -923,10 +939,6 @@ p,
 	padding: 6px 12px;
 	margin: 0;
 	border-radius: 8px;
-	font-size: inherit;
-}
-
-.summary-page .badge {
 	font-size: 11px;
 }
 
@@ -1031,8 +1043,17 @@ p,
 	text-align: center;
 	margin-bottom: 1rem;
 	border-bottom: 1px solid var(--color-gold);
-	font-size: 16px;
+	font-size: 15px;
 	padding-bottom: 1rem;
+}
+
+.auction-details_title__file {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	max-width: 75%;
+    margin: auto;
 }
 
 .panel-lots p {

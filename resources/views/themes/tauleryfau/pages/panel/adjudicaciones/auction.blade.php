@@ -32,7 +32,7 @@
 
                 @if (!empty($document->prefactura))
                     <a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>
-                        <i class="fas fa-file-pdf fa-2x"></i>
+                        <img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
                     </a>
                 @endif
             @endif

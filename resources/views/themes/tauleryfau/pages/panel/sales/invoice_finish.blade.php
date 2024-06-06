@@ -28,10 +28,10 @@
         <p class="visible-md visible-lg">
             {{ str_replace('-', '/', $invoiceId) }}
         </p>
-        <p class="js-divisa fw-bold" value="{{ $totalSettlement }}">
+        <p class="js-divisa highlighted-price" value="{{ $totalSettlement }}">
             {!! $currency->getPriceSymbol(2, $totalSettlement ?? 0) !!}
         </p>
-        <p class="js-divisa fw-bold" value="{{ $totalPending  ?? 0 }}">
+        <p class="js-divisa highlighted-price" value="{{ $totalPending  ?? 0 }}">
             {!! $currency->getPriceSymbol(2, $totalPending  ?? 0) !!}
         </p>
         <p>
@@ -40,7 +40,7 @@
         </p>
         <p class="sales-auction_invoice">
 			<a class="panel-pdf-icon" target="_blank" href="/factura/{{ $invoiceId }}">
-				<i class="fas fa-file-pdf fa-2x"></i>
+				<img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
 			</a>
         </p>
         <div class="actions">

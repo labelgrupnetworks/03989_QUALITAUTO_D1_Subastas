@@ -142,7 +142,10 @@
                         <p>{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
                         <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
-                        <p>Total {{ trans("$theme-app.user_panel.pending") }}</p>
+                        <p>
+							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.outstanding_amount") }}</span>
+							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.outstanding_amount_abbr") }}</span>
+						</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
                     </div>
                 </div>
@@ -178,6 +181,7 @@
                     'id' => $lots->first()->sub_asigl0,
                     'title' => $lots->first()->des_sub,
                     'lotes' => $lots,
+					'invoice' => false
                 ])
             @endforeach
 
@@ -186,6 +190,7 @@
                     'id' => str_replace('/', '-', $invoiceId),
                     'title' => $lots->first()->des_sub,
                     'lotes' => $lots,
+					'invoice' => "/factura/{$invoiceId}"
                 ])
             @endforeach
         </section>

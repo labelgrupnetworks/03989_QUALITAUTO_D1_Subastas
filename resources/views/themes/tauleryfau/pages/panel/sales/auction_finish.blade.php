@@ -23,15 +23,14 @@
 			</span>
         </p>
         <p class="visible-md visible-lg">-</p>
-        <p class="js-divisa" value="{{ $totalSettlement }}">
+        <p class="js-divisa highlighted-price" value="{{ $totalSettlement }}">
             {!! $currency->getPriceSymbol(2, $totalSettlement ?? 0) !!}
         </p>
-        <p class="js-divisa" value="{{ $totalPending  ?? 0 }}">
+        <p class="js-divisa highlighted-price" value="{{ $totalPending  ?? 0 }}">
             {!! $currency->getPriceSymbol(2, $totalPending  ?? 0) !!}
         </p>
         <p>
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
-
         </p>
         <p></p>
         <div class="actions">
