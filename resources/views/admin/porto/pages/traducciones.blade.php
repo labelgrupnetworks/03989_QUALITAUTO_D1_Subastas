@@ -189,8 +189,15 @@
             input.select();
             document.execCommand('copy');
 
-            notify('', 'Copiado', 'success');
+            notify('', 'Se ha copiado: \n' + input.value, 'success');
         }
+
+		document.addEventListener('keydown', function(event) {
+			if (event.ctrlKey && event.key === 's') {
+				event.preventDefault();
+				$('.save_traducciones').click();
+			}
+		});
     </script>
 
 @stop
