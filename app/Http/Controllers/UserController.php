@@ -3087,7 +3087,7 @@ class UserController extends Controller
 		$summary['percentage_lots_with_bid'] = ($summary['total_bids_lots'] / max($summary['total_lots'], 1)) * 100;
 		$summary['revaluation'] = ($summary['total_award'] / max($summary['total_impsalhces'], 1)) * 100;
 
-		$lots = FgAsigl0::getActiveLotsSalesByOwnerQuery($auctions->pluck('sub_asigl0'), $cod_cli, false)
+		$lots = FgAsigl0::getActiveLotsSalesByOwnerQuery($auctions->pluck('sub_asigl0'), $cod_cli, true)
 			->orderby("sub_asigl0, ref_asigl0")
 			->get()
 			->groupBy('sub_asigl0');

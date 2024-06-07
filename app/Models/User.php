@@ -931,7 +931,7 @@ class User
 	public function getSalesToNotFinishAuctions()
 	{
 		$auctions = FgAsigl0::getNotEndedAuctionsWithOwnerLots($this->cod_cli);
-		$acutionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($auctions->pluck('sub_asigl0'), $this->cod_cli, false)->get();
+		$acutionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($auctions->pluck('sub_asigl0'), $this->cod_cli)->get();
 
 		//merge auctions with results
 		$auctions = $auctions->map(function($auction) use ($acutionsResults){

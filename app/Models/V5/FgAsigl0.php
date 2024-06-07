@@ -699,13 +699,16 @@ class FgAsigl0 extends Model
 			->get();
 	}
 
-	private static function getAuctionsWithOwnerLotsQuery($cod_cli)
+	private static function getAuctionsWithOwnerLotsQuery($cod_cli, $isMutlipleOwner = true)
 	{
 		return self::query()
 			->joinSubastaAsigl0()
 			->joinSessionAsigl0()
 			->joinFghces1Asigl0()
-			->where('PROP_HCES1', $cod_cli);
+			->when($isMutlipleOwner,
+				fn ($query) => $query->whereOwner($cod_cli),
+				fn ($query) => $query->wherePropOwner($cod_cli)
+			);
 	}
 
 	public function getActiveAuctionsWithPropietary($cod_cli, $isAdmin, $period = null)
