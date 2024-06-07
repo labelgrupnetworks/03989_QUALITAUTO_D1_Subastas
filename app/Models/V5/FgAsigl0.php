@@ -142,8 +142,11 @@ class FgAsigl0 extends Model
 			->when(!$query->isJoined('auc'), function ($query) {
 				return $query->joinSessionAsigl0();
 			})
-			->join('WEB_SUBASTAS', 'WEB_SUBASTAS.ID_EMP = FGASIGL0.EMP_ASIGL0 AND WEB_SUBASTAS.ID_SUB = FGASIGL0.SUB_ASIGL0 AND WEB_SUBASTAS.session_reference = auc."reference"')
-			->where('WEB_SUBASTAS.ESTADO', '!=', $status);
+			->leftjoin('WEB_SUBASTAS', 'WEB_SUBASTAS.ID_EMP = FGASIGL0.EMP_ASIGL0 AND WEB_SUBASTAS.ID_SUB = FGASIGL0.SUB_ASIGL0 AND WEB_SUBASTAS.session_reference = auc."reference"')
+			->where(function ($query) use ($status) {
+				$query->where('WEB_SUBASTAS.ESTADO', '!=', $status)
+					->orWhereNull('WEB_SUBASTAS.ESTADO');
+			});
 	}
 
 	public function scopeWhereYearsDates($query, $attribute, $yearDates)
