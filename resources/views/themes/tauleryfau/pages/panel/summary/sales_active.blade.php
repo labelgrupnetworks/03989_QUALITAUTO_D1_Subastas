@@ -13,7 +13,7 @@
         <div class="sales-summary_detail">
             <div class="number-wrapper">
                 <span class="sales-counter" id="percentage_lots_bid"
-                    value="{{ ($summary['total_lots'] / max($summary['total_bids_lots'], 1)) * 100 }}">
+                    value="{{ ($summary['total_bids_lots'] / max($summary['total_lots'], 1)) * 100 }}">
                     0
                 </span>
                 <span>%</span>
