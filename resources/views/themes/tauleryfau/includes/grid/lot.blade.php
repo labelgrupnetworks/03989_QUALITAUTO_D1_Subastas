@@ -291,11 +291,12 @@
 									$lotImages = [];
 									for ($i = 0; $i < $numFotos; $i++) {
 										$imageURL = Config::get('app.url').Tools::url_img('real', $item->num_hces1, $item->lin_hces1, $i);
+										$imageMetadata = exif_read_data($imageURL);
 										//$imageSize = getimagesize($imageURL);
 										$imageData = [
 											'src' => $imageURL,
-											'width' => '100%',
-											'height' => 'auto'
+											'width' => $imageMetadata ? $imageMetadata['COMPUTED']['Width'] : '100%',
+											'height' => $imageMetadata ? $imageMetadata['COMPUTED']['Height'] : 'auto'
 										];
 										array_push($lotImages, $imageData);
 									}
