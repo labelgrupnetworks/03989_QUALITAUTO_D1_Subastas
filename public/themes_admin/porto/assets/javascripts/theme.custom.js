@@ -422,21 +422,81 @@ $(function() {
 
         });
 
+		$('.copy-link').on('click', copyToClipboard)
+
+		function copyToClipboard(event) {
+			const button = event.currentTarget;
+
+			const input = button.nextElementSibling;
+			input.select();
+			document.execCommand('copy');
+
+			notify('', 'Se ha copiado: \n' + input.value, 'success');
+		}
+
          $(".new_traducciones").click(function() {
 
             var str = $( "#new_traduction" ).serializeArray();
-           $.ajax ({
-                url: "/admin/traducciones/new",
-                type: "post",
-                data: str,
-                success: function() {
-                    saved();
-                },
-                error: function() {
-                     error();
-                }
-            });
+			let formated_fields = formatFields(str);
+			const namesToRemove = ["translation_view", "language_in_page", "key_header_in_page"];
+			str = str.filter(field => !namesToRemove.includes(field.name));
+			$.ajax ({
+				url: "/admin/traducciones/new",
+				type: "post",
+				data: str,
+				success: function() {
+					saved();
+					const can_append = formated_fields['key_header_in_page'] == formated_fields['key_headers'] && formated_fields['language_in_page'] == formated_fields['lang'];
+					if (can_append) {
+						$("#traducciones table tbody").append(renameNewTranslationStructure(formated_fields));
+					}
+					$("#new_traduction input[type=text]").val('');
+				},
+				error: function() {
+					error();
+				}
+			});
         });
+
+		function renameNewTranslationStructure(fields) {
+			let structure_html = fields['translation_view'];
+			structure_html = replaceNewTranslationValues(structure_html, fields);
+			let jquery_html = $(structure_html);
+
+			jquery_html.find('input').each(function () {
+				let input = $(this);
+				let value = input.val();
+				let name = input.attr('name');
+
+				let new_value = replaceNewTranslationValues(value, fields);
+				input.attr('value', new_value);
+
+				if (name != undefined) {
+					let new_name = replaceNewTranslationValues(name, fields);
+					input.attr('name', new_name);
+				}
+			});
+
+			jquery_html.find('button.copy-link').on('click', copyToClipboard);
+
+			return jquery_html;
+		}
+
+
+		function replaceNewTranslationValues(html, fields) {
+			html = html.replace("|key_translate|", fields['key_translate']);
+			html = html.replace("|web_translation|", fields['web_translation']);
+			html = html.replace("|key_headers|", fields['key_headers']);
+			return html;
+		}
+
+		function formatFields(fields) {
+			let formated_fields = [];
+			for (let i = 0; i < fields.length; i++) {
+				formated_fields[fields[i].name] = fields[i].value;
+			}
+			return formated_fields;
+		}
 
         $(".save_page").click(function() {
             var html = ($(".note-editable").html()) ;
