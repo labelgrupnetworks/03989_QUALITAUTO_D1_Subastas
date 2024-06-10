@@ -54,7 +54,7 @@ class Address extends Model
 				'cod2'   => !empty($envio['cod2_clid']) ? strtoupper($envio['cod2_clid']) : null,
 				'email' => $strToDefault ? $envio['email_clid'] ?? '' : strtoupper($envio['email_clid'] ?? ''),
 				'preftel_clid' => $envio['preftel_clid'],
-				'mater_clid' => $envio['mater_clid']
+				'mater_clid' => $envio['mater_clid'] ?? ''
 			)
 		);
 	}
