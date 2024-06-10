@@ -628,6 +628,7 @@ header {
 
 
 header .container {
+	background-color: #fff;
 	display: grid;
 	grid-template-rows: 44px;
 	grid-template-columns: repeat(3, 1fr);
