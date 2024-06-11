@@ -267,14 +267,6 @@
 										<span class="btn-play" style="font-size: 13px;">VIDEO</span>
 									</a>
 
-									{{--
-									<a class="d-flex align-items-center btn view-video d-flex align-items-center hidden-xs hidden-sm hidden-md"
-										href="javascript:modalVideo('{{$videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}', '{{$titulo}}', '{{$item->descweb_hces1}}', '{{ $item->cerrado_asigl0 == 'S' ? trans($theme.'-app.lot.view_lot') : trans($theme.'-app.lot.pujar') }}', '{{$url_friendly}}')">
-										<span class="btn-play">VIDEO</span>
-										<i class="fa fa-play" aria-hidden="true"><span></span></i>
-										<p class="video-text">{{ trans($theme.'-app.lot_list.watch_video') }}</p>
-									</a>
-									--}}
 								@elseif($numFotos > 1)
 
 								{{-- desktop --}}
@@ -283,27 +275,33 @@
 								</a>
 
 								{{-- mobile --}}
-								<a class="d-flex align-items-center view-video more-images-grid-js hidden-sm hidden-md hidden-lg open-lot-gallery-{{$item->num_hces1}}-{{$item->lin_hces1}}">
+								<button class="d-flex align-items-center btn-link view-video more-images-grid-js hidden-sm hidden-md hidden-lg open-lot-gallery"
+									onclick="openLotGallery('{{$item->num_hces1}}', '{{$item->lin_hces1}}')">
 									<span class="btn-play" style="font-size: 13px;">{{ trans($theme.'-app.lot_list.more_images') }}</span>
-								</a>
+								</button>
 
 								@php
 									$lotImages = [];
-									for ($i = 0; $i < $numFotos; $i++) {
-										$imageURL = Config::get('app.url').Tools::url_img('real', $item->num_hces1, $item->lin_hces1, $i);
-										//$imageSize = getimagesize($imageURL);
-										$imageData = [
-											'src' => $imageURL,
-											'width' => '100%',
-											'height' => 'auto'
-										];
-										array_push($lotImages, $imageData);
-									}
-									$imagestojs = json_encode($lotImages)
 								@endphp
 
 								<div class="image-lot-miniature-container image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}}" style="display: none">
 									@for ($i = 0; $i < $numFotos; $i++)
+
+										@php
+										$urlPath = Tools::url_img('real', $item->num_hces1, $item->lin_hces1, $i);
+										$imagePath = explode('?', $urlPath)[0];
+										$imagePath = str_replace('/', DIRECTORY_SEPARATOR, $imagePath);
+
+										[$width, $height] = getimagesize(public_path($imagePath));
+										$imageData = [
+											'src' => $urlPath,
+											'width' => $width,
+											'height' => $height
+										];
+
+										$lotImages[] = $imageData;
+										@endphp
+
 										<a class="image-selector" data-key-image="{{ $i }}">
 											<img class="micro-image" loading="lazy" src="{{ Tools::url_img('lote_medium', $item->num_hces1, $item->lin_hces1, $i) }}">
 										</a>
@@ -311,48 +309,15 @@
 								</div>
 
 								<script>
-									const images{{$item->num_hces1}}_{{$item->lin_hces1}} = {!! $imagestojs !!};
-									const options{{$item->num_hces1}}_{{$item->lin_hces1}} = {
-										dataSource: images{{$item->num_hces1}}_{{$item->lin_hces1}},
-										pswpModule: PhotoSwipe,
-										loop: false
-									};
-									const lightbox{{$item->num_hces1}}_{{$item->lin_hces1}} = new PhotoSwipeLightbox(options{{$item->num_hces1}}_{{$item->lin_hces1}})
-									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.init();
-
-									document.querySelector('.open-lot-gallery-{{$item->num_hces1}}-{{$item->lin_hces1}}').onclick = () => {
-										options{{$item->num_hces1}}_{{$item->lin_hces1}}.index = 0;
-										lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.loadAndOpen(0);
-									};
-
-									const imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}} = $('.image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}}');
-
-									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('beforeOpen', () => {
-										selectGaleryMiniature(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
-										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.css('align-items', 'flex-end');
-										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.fadeIn(400, function() {
-											$(this).css('display', 'flex');
-										});
+									lightboxs.push({
+										num_hces1: '{{$item->num_hces1}}',
+										lin_hces1: '{{$item->lin_hces1}}',
+										instance: new PhotoSwipeLightbox({
+											dataSource: @json($lotImages),
+											pswpModule: PhotoSwipe,
+											loop: false
+										})
 									});
-
-									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('change', () => {
-										selectGaleryMiniature(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
-										moveMiniatureScroll(lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.currIndex, imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
-									});
-
-									lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.on('close', () => {
-										deselectAllGaleryMiniature(imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}});
-										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.slideUp(400);
-										imageMiniatureContainer{{$item->num_hces1}}_{{$item->lin_hces1}}.css('align-items', 'initial');
-									});
-
-									$('.image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}} a.image-selector').click(openThatImage);
-
-									function openThatImage(){
-										let index = $(this).data('key-image');
-										lightbox{{$item->num_hces1}}_{{$item->lin_hces1}}.pswp.goTo(index);
-									}
-
 								</script>
 
 								@else
