@@ -193,7 +193,7 @@
                 @foreach ($lote_actual->imagenes as $key => $imagen)
                     {
                         type: 'image',
-                        url: '/img/load/real/{{ $imagen }}'
+						url: '{{ Tools::url_img("real", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}'
                     },
                 @endforeach
             ];

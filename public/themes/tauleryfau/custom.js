@@ -1888,6 +1888,12 @@ function addNewsletter(data) {
 	});
 }
 
+/**
+ * Se utiliza para el las miniaturas del listado de lotes
+ * No eliminar la variable.
+ */
+const lightboxs = [];
+
 function selectGaleryMiniature(idx, imgcontainer) {
 	imgcontainer.find('.image-selector .micro-image').removeClass('selected');
 	imgcontainer.find('.image-selector').eq(idx).find('.micro-image').addClass('selected');
@@ -1904,3 +1910,45 @@ function moveMiniatureScroll(idx, imgcontainer) {
 		scrollLeft: scroll
 	}, 'fast');
 }
+
+function openLotGallery(num_hces1, lin_hces1) {
+	lightboxs.find(lightbox => lightbox.num_hces1 === num_hces1 && lightbox.lin_hces1 === lin_hces1).instance.loadAndOpen(0);
+}
+
+$(function () {
+
+	lightboxs.forEach(lightbox => {
+
+		const num_hces1 = lightbox.num_hces1;
+		const lin_hces1 = lightbox.lin_hces1;
+		const $container = $(`.image-lot-miniature-container-${num_hces1}-${lin_hces1}`)
+
+		lightbox.instance.init();
+
+		lightbox.instance.on('beforeOpen', () => {
+			selectGaleryMiniature(lightbox.instance.pswp.currIndex, $container);
+			$container.css('align-items', 'flex-end');
+			$container.fadeIn(400, function() {
+				$(this).css('display', 'flex');
+			});
+		});
+
+		lightbox.instance.on('afterChange', () => {
+			selectGaleryMiniature(lightbox.instance.pswp.currIndex, $container);
+			moveMiniatureScroll(lightbox.instance.pswp.currIndex, $container);
+		});
+
+		lightbox.instance.on('close', () => {
+			deselectAllGaleryMiniature($container);
+			$container.slideUp(400);
+			$container.css('align-items', 'initial');
+		});
+
+		$container.find('.image-selector').click(function() {
+			lightbox.instance.pswp.goTo($(this).data('key-image'));
+		});
+
+
+	});
+
+});
