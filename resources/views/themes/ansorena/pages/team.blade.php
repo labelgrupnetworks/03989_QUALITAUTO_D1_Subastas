@@ -24,9 +24,28 @@
 @section('content')
     <main class="team-page">
 
-        <h1 class="ff-highlight">
-            {{ trans("$theme-app.foot.team") }}
-        </h1>
+		<div class="container text-center">
+			<div class="aboutus-section-nav">
+				<h1 class="ff-highlight">
+					{{ trans("$theme-app.foot.about_us") }}
+				</h1>
+
+				<div class="about-us-pages">
+					<ul class="list-inline d-flex ff-highlight">
+						<li class="list-inline-item">
+							<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.historia') }}">{{ trans("$theme-app.foot.history") }}</a>
+						</li>
+						<li class="list-inline-item flex-grow-1">
+							<a class="lb-link-underline" href="{{ Routing::translateSeo('equipo') }}">{{ trans("$theme-app.foot.team") }}</a>
+						</li>
+						<li class="list-inline-item">
+							<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.careers') }}">{{ trans("$theme-app.foot.work_with_us") }}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
 
         <div class="container">
             <div class="row">

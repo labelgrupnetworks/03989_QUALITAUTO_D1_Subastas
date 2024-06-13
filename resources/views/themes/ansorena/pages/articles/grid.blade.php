@@ -18,7 +18,14 @@
     <link href="{{ Tools::urlAssetsCache("/themes/$theme/css/header.css") }}" rel="stylesheet" type="text/css">
 @endsection
 
+@php
+	$locale = Config::get('app.locale');
+	$menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUJOYERIA');
+@endphp
+
 @section('content')
+
+	{!! $menuEstaticoHtml->content_web_page !!}
 
     <main class="articles-grid-page">
 

@@ -2089,6 +2089,45 @@ section.recomendados .section-title {
 	}
 }
 
+.aboutus-section-nav {
+	display: inline-flex;
+	flex-direction: column;
+	margin: auto;
+	margin-bottom: 3rem;
+}
+
+.aboutus-section-nav h1.ff-highlight {
+	font-size: calc(var(--fs-64-96) * .9);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.aboutus-section-nav .about-us-pages {
+	font-size: 18px;
+    text-transform: uppercase;
+	width: 100%;
+	margin: auto;
+}
+
+.aboutus-section-nav a {
+	text-decoration: none;
+}
+
+.aboutus-section-nav ul {
+	justify-content: center;
+	align-items: center;
+}
+
+.aboutus-section-nav li {
+	flex: 1 1 0;
+}
+
+@media (min-width: 540px) {
+	.aboutus-section-nav li {
+		text-wrap: nowrap;
+	}
+}
+
 .static-info-page {
 	max-width: 950px;
 	margin: auto;
