@@ -606,6 +606,7 @@ article.blog-article {
  */
 .section-nav {
 	border-bottom: 1px solid var(--lb-border-color);
+	background-color: #fff;
 }
 
 .section-nav ul {
