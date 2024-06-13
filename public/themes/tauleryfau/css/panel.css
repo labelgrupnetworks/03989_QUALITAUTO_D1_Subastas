@@ -20,11 +20,13 @@
 	--fs-xl: 1.5em;
 	--fs-xxl: 1.75em;
 
-	--min-padding-to-page: 15px;
+	--min-padding-to-page: 20px;
 	--max-content-width: 1500px;
 	--max-content-borderbox: calc(var(--max-content-width) + 2 * var(--min-padding-to-page));
 	--max-content-contentbox: var(--max-content-width);
 }
+
+
 
 h4 {
 	font-size: 17px;
@@ -51,6 +53,10 @@ i.fa.fa-dollar {
 
 	.highlighted-price {
 		font-size: 14px;
+	}
+
+	.user-panel-body {
+		--min-padding-to-page: 30px;
 	}
 }
 
@@ -129,10 +135,6 @@ i.fa.fa-dollar {
 	padding: 5px 10px;
 	font-size: inherit;
 	line-height: 1.5;
-}
-
-.btn-large {
-	/* padding: 6px 20px; */
 }
 
 @media(min-width: 992px) {
@@ -1053,7 +1055,7 @@ p,
 	justify-content: center;
 	gap: 10px;
 	max-width: 75%;
-    margin: auto;
+	margin: auto;
 }
 
 .panel-lots p {
@@ -1737,16 +1739,38 @@ p,
 	}
 
 	.summary_body {
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: minmax(350px, max-content) minmax(350px, max-content);
-		column-gap: 2rem;
+		row-gap: 4rem;
+	}
+
+	.summary_body> :is(.summary-allotments, .summary-sales) {
+		margin-left: var(--min-padding-to-page);
+		margin-right: var(--min-padding-to-page);
+	}
+
+	.summary_body>.summary-orders {
 		padding-left: var(--min-padding-to-page);
 		padding-right: var(--min-padding-to-page);
-		row-gap: 4rem;
 	}
 
 	.summary-orders {
 		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 1440px) {
+	.summary_body {
+		padding-left: var(--min-padding-to-page);
+		padding-right: var(--min-padding-to-page);
+		grid-template-columns: 1fr 1fr;
+		column-gap: 3rem;
+	}
+
+	.summary_body> :is(.summary-allotments, .summary-sales) {
+		margin: 0;
+	}
+
+	.summary_body>.summary-orders {
+		padding: 0;
 	}
 }
 
@@ -1755,7 +1779,6 @@ p,
 	padding-left: var(--min-padding-to-page);
 	padding-right: var(--min-padding-to-page);
 }
-
 
 .summary-allotments,
 .summary-sales {
@@ -1776,7 +1799,27 @@ p,
 	border-bottom: 1px solid var(--color-gold-light);
 }
 
-.summary-allotments-auctions-block tbody tr:nth-child(n + 6) {
+@media(min-width: 1440px) {
+	.summary_body .summary-orders {
+		overflow: visible;
+	}
+}
+
+.table-allotments a.btn-lb {
+	color: var(--btn-color);
+	width: max-content;
+}
+
+.table-allotments tbody tr:nth-child(n + 6) {
+	display: none;
+}
+
+.table-allotments th {
+	width: 25%;
+	font-weight: 500;
+}
+
+.table-allotments .allotments-icon {
 	display: none;
 }
 
@@ -1787,6 +1830,33 @@ p,
 
 .summary-allotments :is(.sales-auction-wrapper, .invoice-wrapper):last-child {
 	border-bottom: 0px;
+}
+
+@media(min-width: 992px) {
+	.table-allotments .allotments-date {
+		width: 10%;
+	}
+
+	.table-allotments .allotments-auction {
+		width: 40%;
+	}
+
+	.table-allotments .allotments-invoice {
+		width: 13%;
+	}
+
+	.table-allotments .allotments-total {
+		width: 13%;
+	}
+
+	.table-allotments .allotments-staus {
+		width: 16%;
+	}
+
+	.table-allotments .allotments-icon {
+		display: table-cell;
+		width: auto;
+	}
 }
 
 .summary-sales_header {
@@ -1840,6 +1910,14 @@ p,
 	padding-left: var(--min-padding-to-page);
 }
 
+.summary-page .table-striped>tbody>tr:nth-of-type(even) {
+	background-color: #f9f9f9;
+}
+
+.summary-page .table-striped>tbody>tr:nth-of-type(odd) {
+	background-color: #fff;
+}
+
 .summary-page .table>:is(tbody, thead) tr>:is(td, th):last-child {
 	padding-right: var(--min-padding-to-page);
 }
@@ -1862,7 +1940,7 @@ p,
 
 /* the parent */
 .summary-favorites .slick-list {
-	margin: 0 20px;
+	margin: 0 9px;
 }
 
 .summary-favorites .slick-prev:before,
@@ -1939,6 +2017,14 @@ p,
 
 .summary-favorites-arrows i {
 	font-size: 21px;
+}
+
+.summary-favorites-arrows .arrow-prev {
+	transform: translateX(-15px);
+}
+
+.summary-favorites-arrows .arrow-next {
+	transform: translateX(15px);
 }
 
 .loader-box {
@@ -2044,6 +2130,7 @@ p,
 	.summary-page .table>:is(tbody, thead) tr>:is(td, th):first-child {
 		padding-left: 8px;
 	}
+
 	.summary-page .table>:is(tbody, thead) tr>:is(td, th):last-child {
 		padding-right: 8px;
 	}
@@ -2064,5 +2151,17 @@ p,
 
 	.summary-favorites-arrows {
 		padding: 0;
+	}
+
+	.summary-favorites-arrows .arrow-prev {
+		transform: translateX(-20px);
+	}
+
+	.summary-favorites-arrows .arrow-next {
+		transform: translateX(20px);
+	}
+
+	.summary-favorites .slick-list {
+		margin: 0 -9px;
 	}
 }

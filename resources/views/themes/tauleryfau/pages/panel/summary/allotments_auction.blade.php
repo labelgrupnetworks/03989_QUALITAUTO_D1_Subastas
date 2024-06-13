@@ -2,7 +2,7 @@
     $totalInvoice = $document->himp_csub + $document->base_csub + $document->base_csub_iva;
     $state = ['class' => 'alert', 'text' => 'Pendiente'];
     $link = route('panel.allotment-bills', ['lang' => config('app.locale')]) . "#auction-details-{$id}";
-	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
+    $auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
 <tr>
@@ -16,8 +16,8 @@
             <p class="max-line-2 text-center text-md-start">
                 <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
                 <span class="hidden-md hidden-lg">
-					{{ $auctionNumber($document->name, $document->cod_sub) }}
-				</span>
+                    {{ $auctionNumber($document->name, $document->cod_sub) }}
+                </span>
             </p>
         </a>
     </td>
@@ -34,8 +34,17 @@
         </a>
     </td>
     <td>
-        <a href="{{ $link }}">
-            <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
-        </a>
+        @if ($document->compraweb_sub == 'S')
+            <a class="btn btn-lb btn-lb-secondary"
+                href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+                cod_sub="{{ $document->cod_sub }}">
+                {{ trans($theme . '-app.user_panel.pay_now') }}
+            </a>
+        @endif
+    </td>
+
+    <td class="allotments-icon">
+        <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+            width="20.25">
     </td>
 </tr>

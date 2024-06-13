@@ -1,6 +1,6 @@
 <div class="summary-favorites-arrows">
-	<div class="arrow-prev"><i class="fa fa-angle-left"></i></div>
-	<div class="arrow-next"><i class="fa fa-angle-right "></i></div>
+    <div class="arrow-prev"><i class="fa fa-angle-left"></i></div>
+    <div class="arrow-next"><i class="fa fa-angle-right "></i></div>
 </div>
 <section class="summary-favorites">
     @foreach ($lots as $inf_lot)
@@ -53,8 +53,8 @@
                     <span>
                         {{ trans("$theme-app.lot.puja_actual") }}
                     </span>
-                    <span class="js-divisa" value="{{ $actualPrice }}">
-                        {!! $currency->getPriceSymbol(2, $actualPrice) !!}
+                    <span class="js-divisa" data-format="0,0" value="{{ $actualPrice }}">
+                        {!! $currency->getPriceSymbol(0, $actualPrice) !!}
                     </span>
                 </p>
 
@@ -64,9 +64,9 @@
                             {{ trans("$theme-app.user_panel.higher_bid_es") }}
                         @else
                             {{ trans("$theme-app.sheet_tr.place_bid") }}
-							<span class="js-divisa" value="{{ $nextScale }}">
-								{!! $currency->getPriceSymbol(2, $nextScale) !!}
-							</span>
+                            <span class="js-divisa" data-format="0,0" value="{{ $nextScale }}">
+                                {!! $currency->getPriceSymbol(0, $nextScale) !!}
+                            </span>
                         @endif
                     </button>
                 @else
@@ -96,8 +96,8 @@
         slidesToScroll: 1,
         dots: false,
         arrows: true,
-		prevArrow: $('.arrow-prev'),
-		nextArrow: $('.arrow-next'),
+        prevArrow: $('.arrow-prev'),
+        nextArrow: $('.arrow-next'),
         responsive: [{
                 breakpoint: 1200,
                 settings: {

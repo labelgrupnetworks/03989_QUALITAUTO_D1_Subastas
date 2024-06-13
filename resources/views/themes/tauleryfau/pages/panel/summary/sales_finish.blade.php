@@ -5,7 +5,8 @@
 <section class="summary-active-sales">
     <div class="sales-summary">
         <div class="sales-summary_detail">
-            <span class="js-divisa sales-counter" id="actualPrice" value="{{ $summary['total_liquidation'] }}">
+            <span class="js-divisa sales-counter" id="actualPrice" data-format="0,0"
+                value="{{ $summary['total_liquidation'] }}">
                 0
             </span>
             <p>{{ trans("$theme-app.user_panel.amount_sold") }}</p>
@@ -44,7 +45,8 @@
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
-                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}
+                    </th>
                     <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.total") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
@@ -70,8 +72,8 @@
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
-										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
-									</span>
+                                        {{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
+                                    </span>
                                 </p>
                             </a>
                         </td>
@@ -121,8 +123,8 @@
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
-										{{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
-									</span>
+                                        {{ $auctionNumber($auctionData->des_sub, $auctionData->sub_asigl0) }}
+                                    </span>
                                 </p>
                             </a>
                         </td>

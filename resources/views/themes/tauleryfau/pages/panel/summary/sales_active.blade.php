@@ -5,7 +5,7 @@
 <section class="summary-active-sales">
     <div class="sales-summary">
         <div class="sales-summary_detail">
-            <span class="js-divisa sales-counter" id="actualPrice" value="{{ $summary['total_award'] }}">
+            <span class="js-divisa sales-counter" id="actualPrice" data-format="0,0" value="{{ $summary['total_award'] }}">
                 0
             </span>
             <p>{{ trans("$theme-app.user_panel.actual_price") }}</p>
@@ -38,7 +38,8 @@
             <thead>
                 <tr>
                     <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
-                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
+                    <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}
+                    </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.lots") }}</th>
                     <th class="visible-md visible-lg" scope="col">
                         {{ trans("$theme-app.user_panel.starting_price") }}
@@ -61,8 +62,8 @@
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
                                     <span class="hidden-md hidden-lg">
-										{{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}
-									</span>
+                                        {{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}
+                                    </span>
                                 </p>
                             </a>
                         </td>

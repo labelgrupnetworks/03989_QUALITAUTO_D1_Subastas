@@ -270,9 +270,13 @@ submit_shipping_addres = function (data) {
 	});
 }
 
+let defaultYearsToSearch = [2024];
 function getAllotmentsAndBills() {
 	$.ajax({
 		url: `/${locale}/user/panel/allotments-bills`,
+		data: {
+			years: defaultYearsToSearch
+		},
 		type: 'GET',
 		success: function (response) {
 			const $block = $('#summary-allotments_table');
@@ -326,6 +330,9 @@ function getSalesTab(url) {
 	$.ajax({
 		url: url,
 		type: 'GET',
+		data: {
+			years: defaultYearsToSearch
+		},
 		beforeSend: function () {
 			$loader.show();
 		},
@@ -349,14 +356,14 @@ function refreshAnchorActive(anchorElement) {
 	$(anchorElement).addClass('btn-lb-primary').removeClass('btn-lb-outline');
 }
 
-changeCurrencyNew = function(price, exchange, object) {
+changeCurrencyNew = function (price, exchange, object) {
 
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
 
 	const currencyFormat = elementCurrencyFormat(object);
 
-	//si es menor a 760px y el formato es small, redondear el número
-	if(isMatchMedia('760') && currencyFormat == CURRENCY_FORMATS.SMALL){
+	//si el formato es small, redondear el número
+	if (currencyFormat == CURRENCY_FORMATS.SMALL) {
 		price = roundNumber(price);
 	}
 
@@ -373,12 +380,19 @@ changeCurrencyNew = function(price, exchange, object) {
 
 function elementCurrencyFormat($element) {
 
-	if(!isMatchMedia('760')) {
+	/* if(!isMatchMedia('760')) {
 		return CURRENCY_FORMATS.FULL;
+	} */
+	let format;
+
+	try {
+		format = $element.data('small-format') ?? $element.data('format');
+	}
+	catch (error) {
+		format = CURRENCY_FORMATS.FULL;
 	}
 
-	let format =  $element.data('small-format');
-	if(typeof format == 'undefined'){
+	if (typeof format == 'undefined') {
 		format = CURRENCY_FORMATS.FULL;
 	}
 
@@ -390,7 +404,7 @@ function isMatchMedia(mediaQuery) {
 }
 
 function roundNumber(number) {
-    let decimalPart = number - Math.floor(number);
+	let decimalPart = number - Math.floor(number);
 	return (decimalPart >= 0.5)
 		? Math.ceil(number)
 		: Math.floor(number);

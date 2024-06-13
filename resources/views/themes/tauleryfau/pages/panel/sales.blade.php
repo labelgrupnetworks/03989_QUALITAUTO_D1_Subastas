@@ -50,7 +50,7 @@
             <div class="sales-summary">
                 <div class="sales-summary_detail">
                     <span class="js-divisa sales-counter" id="actualPrice"
-                        value="{{ $summary['total_award'] }}">
+                        value="{{ $summary['total_award'] }}" data-format="0,0">
                         0
                     </span>
                     <p>{{ trans("$theme-app.user_panel.actual_price") }}</p>

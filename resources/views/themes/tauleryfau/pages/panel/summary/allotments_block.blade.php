@@ -7,17 +7,20 @@
 
 <div class="summary-allotments-auctions-block">
 
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover table-allotments">
 
         <thead>
             <tr>
-                <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
-                <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}</th>
-                <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
-                <th scope="col">
-					{{ trans("$theme-app.user_panel.total") }}
-				</th>
-                <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
+                <th class="allotments-date" scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                <th class="allotments-auction text-center text-md-start" scope="col">
+                    {{ trans("$theme-app.user_panel.auction") }}</th>
+                <th class="allotments-invoice hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}
+                </th>
+                <th class="allotments-total" scope="col">
+                    {{ trans("$theme-app.user_panel.total") }}
+                </th>
+                <th class="allotments-staus" scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
+                <th class="allotments-icon hidden-xs" scope="col"></th>
             </tr>
         </thead>
 

@@ -34,8 +34,11 @@
         </p>
         <p></p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auctionData->sub_asigl0 }}"
-                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a>
+           {{--  <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auctionData->sub_asigl0 }}"
+                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a> --}}
+			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal-{{ $auctionData->sub_asigl0 }}">
+				Launch demo modal
+				</button>
         </div>
     </div>
 </div>

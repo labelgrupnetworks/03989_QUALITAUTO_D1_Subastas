@@ -2,14 +2,15 @@
 
     <div class="sales-summary">
         <div class="sales-summary_detail">
-            <span class="js-divisa sales-counter" id="impsalPrice" value="{{ $summary->sum_impsalhces }}">
+            <span class="js-divisa sales-counter" id="impsalPrice" data-format="0,0" value="{{ $summary->sum_impsalhces }}">
                 0
             </span>
             <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
         </div>
         <div class="sales-summary_detail">
             <div class="number-wrapper">
-                <span class="js-divisa sales-counter" id="imptasPrice" value="{{ $summary->sum_imptashces }}">
+                <span class="js-divisa sales-counter" id="imptasPrice" data-format="0,0"
+                    value="{{ $summary->sum_imptashces }}">
                     0
                 </span>
             </div>
