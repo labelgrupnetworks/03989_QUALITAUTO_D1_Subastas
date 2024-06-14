@@ -179,8 +179,13 @@ class PayArticleCartController extends Controller
 			abort(404);
 		}
 
+		//El nº de pedido para redsys debe ser de entre 3 y 12 caracteres sin simbolos
+		$numfic = str_pad($pedido->numfic_pedc0, 3, "0", STR_PAD_LEFT);
+		$idToRedsys = "C{$numfic}";
+
+		//dd($pedido, $idTrans);
 		Log::info("Dentro de llamada a redsys");
-		$varsRedsys = $paymentcontroller->requestRedsys($pedido->total_pedc0, $idTrans,'/articleCart/returnPay');
+		$varsRedsys = $paymentcontroller->requestRedsys($pedido->total_pedc0, $idToRedsys,'/gateway/pagoDirectoReturn');
 
 		//dd($varsRedsys);
 		#reenviamos al formulario
@@ -189,23 +194,18 @@ class PayArticleCartController extends Controller
 
 	#llamada que hace redsys para indicarnos que transaccion se ha pagado
 	#tambien se llama si el pago es por transferencia, en el momento de elegir ese tipo de pago
-	public function returnPay(Request $request)
+	public function returnPay($idTrans)
 	{
-		Log::info("Dentro de redsys returnPay", ['request' => $request->all()]);
+		Log::info("Dentro de returnPay", ['idtrans' => $idTrans]);
+		$idTrans = ltrim($idTrans, '0');
+		FgPedc0::where("numfic_pedc0", $idTrans)
+			->update([
+				"ACCEPPTO_PEDC0"=>"S",
+				"FECACCPTO_PEDC0" => date("Y-m-d H:i:s")
+			]);
 
-		dd($request->all());
-		$post = [];
-		if ($post['status'] == 'CAPTURED') {
-			if(!empty($post['merchantTxId'])){
-				FgPedc0::where("ORDEN_PEDC0",$post['merchantTxId'] )
-					->update([
-						"ACCEPPTO_PEDC0"=>"S",
-						"FECACCPTO_PEDC0" => date("Y-m-d H:i:s")
-					]);
-			}
-			#enviar emails de pago
-			$this->sendPayMail($post['merchantTxId']);
-		}
+		$pedido = FgPedc0::where("numfic_pedc0", $idTrans)->first();
+		$this->sendPayMail($pedido->orden_pedc0);
 	}
 
 
