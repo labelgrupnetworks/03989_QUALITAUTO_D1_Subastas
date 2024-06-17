@@ -1410,12 +1410,7 @@ class User
 
 	public static function getClientFilesPath($codCli)
 	{
-		$enterpriseParams = (new Enterprise)->getParameters();
-		$enterpriseDirectory = $enterpriseParams->documentaciongemp_prmgt == 'S'
-			? Config::get('app.gemp')
-			: Config::get('app.emp');
-
-		return "$enterpriseDirectory/$codCli/files";
+		return "/$codCli/files";
 	}
 
 	/**

@@ -4,14 +4,37 @@ namespace App\Http\Controllers\admin\usuario;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\UserController;
+use App\Models\Enterprise;
 use App\Models\User;
 use App\Providers\ToolsServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminClienteFilesController extends Controller
 {
+	public function __construct()
+	{
+		//cambiamos el filesystem de cliente en aquellos casos que usen parametros especiales en erp
+		if(Config::get('app.client_files_erp', false)){
+			$enterpriseParams = (new Enterprise)->getParameters();
+			$enterpriseDirectory = $enterpriseParams->documentaciongemp_prmgt == 'S'
+				? Config::get('app.gemp')
+				: Config::get('app.emp');
+
+			$directory = DB::table('FXDIR')->select('dir3_dir')->where('emp_dir', Config::get('app.emp'))->value('dir3_dir');
+
+			// Expresión regular para identificar la IP y la ruta compartida
+			$patron = '/\\\\\\\\[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\\\\/';
+			$newRelativePath =  str_replace('\\', '/', preg_replace($patron, "", $directory));
+			$newPath = "app/files/$newRelativePath/$enterpriseDirectory";
+
+			Config::set('filesystems.disks.client.root', storage_path($newPath));
+		}
+	}
+
 	/**
 	 * Returns an array of files in the client directory.
 	 * The array contains the following information for each file: name, size in KB, last modified date in dd/mm/yyyy hh:mm:ss format, and extension.
@@ -32,12 +55,10 @@ class AdminClienteFilesController extends Controller
 
 	private function getMetadataToStorageFile($storage, $file)
 	{
-		//Para la url necesitamos eliminar la primera sección del path ya que puede ser emp o gemp
-		$fileWithoutEmp = preg_replace('/^\d{2,3}\//', '', $file);
-		$cod_cli = explode('/', $fileWithoutEmp)[0];
+		$cod_cli = explode('/', $file)[0];
 		$fileName = basename($file);
 		return [
-			'link' => $storage->url($fileWithoutEmp),
+			'link' => $storage->url($file),
 			'unlink' => route('clientes.files.destroy', ['cliente' => $cod_cli , 'file' => $fileName]),
 			'name' => $fileName,
 			'size_kb' => round($storage->size($file) / 1024, 2) . ' KB',
