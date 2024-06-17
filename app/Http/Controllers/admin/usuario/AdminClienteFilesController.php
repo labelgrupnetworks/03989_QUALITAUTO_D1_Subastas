@@ -32,10 +32,12 @@ class AdminClienteFilesController extends Controller
 
 	private function getMetadataToStorageFile($storage, $file)
 	{
-		$cod_cli = explode('/', $file)[0];
+		//Para la url necesitamos eliminar la primera sección del path ya que puede ser emp o gemp
+		$fileWithoutEmp = preg_replace('/^\d{2,3}\//', '', $file);
+		$cod_cli = explode('/', $fileWithoutEmp)[0];
 		$fileName = basename($file);
 		return [
-			'link' => $storage->url($file),
+			'link' => $storage->url($fileWithoutEmp),
 			'unlink' => route('clientes.files.destroy', ['cliente' => $cod_cli , 'file' => $fileName]),
 			'name' => $fileName,
 			'size_kb' => round($storage->size($file) / 1024, 2) . ' KB',
@@ -55,7 +57,7 @@ class AdminClienteFilesController extends Controller
 
 		$file = $storage->get("$clientFilesPath/$name");
 
-		return response($file, 200)->header('Content-Type', $storage->mimeType("$cod_cli/files/$name"));
+		return response($file, 200)->header('Content-Type', $storage->mimeType("$clientFilesPath/$name"));
 	}
 
 	public function storeDni(Request $request, $cod_cli)
