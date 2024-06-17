@@ -23,7 +23,11 @@
     </td>
     <td class="hidden-xs">
         <a href="{{ $link }}">
-            {{ str_replace('-', '/', $id) }}
+			@if (!empty($document->prefactura))
+            	{{ str_replace('-', '/', $id) }}
+			@else
+				-
+			@endif
         </a>
     </td>
     <td>
@@ -35,11 +39,17 @@
     </td>
     <td>
         @if ($document->compraweb_sub == 'S')
-            <a class="btn btn-lb btn-lb-secondary"
-                href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
-                cod_sub="{{ $document->cod_sub }}">
-                {{ trans($theme . '-app.user_panel.pay_now') }}
-            </a>
+			@if (!empty($document->prefactura))
+				<a class="btn btn-lb btn-lb-secondary"
+					href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+					cod_sub="{{ $document->cod_sub }}">
+					{{ trans($theme . '-app.user_panel.pay_now') }}
+				</a>
+				@else
+				<a class="btn btn-lb btn-lb-secondary"
+					href="{{ route('panel.allotment.sub', ['cod_sub' => $document->cod_sub, 'lang' => Config::get('app.locale')]) }}"
+					cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@endif
         @endif
     </td>
 

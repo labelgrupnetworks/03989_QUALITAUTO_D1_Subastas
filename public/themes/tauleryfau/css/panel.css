@@ -1720,6 +1720,10 @@ p,
 	color: inherit;
 }
 
+.summary-page table a.btn:hover {
+	color: #fff;
+}
+
 .summary_body {
 	max-width: var(--max-content-borderbox);
 	margin-left: auto;

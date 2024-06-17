@@ -15,7 +15,13 @@
 				{{ $auctionNumber($document->name, $document->cod_sub) }}
 			</span>
         </p>
-        <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
+        <p class="visible-md visible-lg">
+			@if (!empty($document->prefactura))
+				{{ str_replace('-', '/', $id) }}
+			@else
+				-
+			@endif
+		</p>
 
         <p class="js-divisa fw-bold" value="{{ $document->total_imp_invoice ?? 0 }}" style="font-size: 13px;">
             {!! $currency->getPriceSymbol(2, $document->total_imp_invoice ?? 0) !!}
@@ -26,9 +32,15 @@
         <p class="allotment-invoice_pay-buttons">
             @if ($document->compraweb_sub == 'S')
 
-                <a class="btn btn-lb btn-lb-secondary"
-                    href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
-                    cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@if (!empty($document->prefactura))
+					<a class="btn btn-lb btn-lb-secondary"
+						href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@else
+					<a class="btn btn-lb btn-lb-secondary"
+						href="{{ route('panel.allotment.sub', ['cod_sub' => $document->cod_sub, 'lang' => Config::get('app.locale')]) }}"
+						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@endif
 
                 @if (!empty($document->prefactura))
                     <a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>

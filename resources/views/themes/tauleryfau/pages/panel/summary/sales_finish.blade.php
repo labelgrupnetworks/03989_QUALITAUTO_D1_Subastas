@@ -58,17 +58,18 @@
                         $auctionData = $auction->first();
                         $totalSettlement = $auction->sum('imp_liquidacion');
                         $state = ['class' => 'alert', 'text' => 'Provisional'];
+						$link = route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}";
                     @endphp
                     <tr>
                         <td>
                             <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
+                                href="{{ $link }}">
                                 {{ date('d/m/Y', strtotime($auctionData->end)) }}
                             </a>
                         </td>
                         <td>
                             <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
+								href="{{ $link }}">
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
@@ -78,25 +79,28 @@
                             </a>
                         </td>
                         <td class="hidden-xs">
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
+                            <a href="{{ $link }}">
                                 -
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
+                            <a href="{{ $link }}">
                                 <p class="js-divisa fw-bold" value="{{ $totalSettlement }}">
                                     {!! $currency->getPriceSymbol(2, $totalSettlement) !!}
                                 </p>
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$auctionData->sub_asigl0}" }}">
+                            <a href="{{ $link }}">
                                 <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
                             </a>
                         </td>
+						<td class="hidden-xs">
+							<a href="{{ $link }}">
+								<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+									width="20.25">
+							</a>
+						</td>
                     </tr>
                 @endforeach
 
@@ -105,6 +109,7 @@
                         $auctionData = $invoices->first();
                         $totalSettlement = $invoices->sum('implic_hces1') - $auctionData->total_dvc0;
                         $totalPending = $invoices->sum('imp_pending');
+						$link = route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}";
                         $state = match (true) {
                             $totalPending != 0 => ['class' => 'warning', 'text' => 'En curso'],
                             default => ['class' => 'success', 'text' => 'Pagado'],
@@ -112,14 +117,12 @@
                     @endphp
                     <tr>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
+                            <a href="{{ $link }}">
                                 {{ date('d/m/Y', strtotime($auctionData->fecha_dvc0)) }}
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
+                            <a href="{{ $link }}">
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
@@ -129,25 +132,28 @@
                             </a>
                         </td>
                         <td class="hidden-xs">
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
+                            <a href="{{ $link }}">
                                 {{ str_replace('-', '/', $invoiceId) }}
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
+                            <a href="{{ $link }}">
                                 <span class="js-divisa fw-bold" value="{{ $totalSettlement }}">
                                     {!! $currency->getPriceSymbol(2, $totalSettlement) !!}
                                 </span>
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) . "#auction-details-{$invoiceId}" }}">
+                            <a href="{{ $link }}">
                                 <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
                             </a>
                         </td>
+						<td class="hidden-xs">
+							<a href="{{ $link }}">
+								<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+									width="20.25">
+							</a>
+						</td>
                     </tr>
                 @endforeach
 
