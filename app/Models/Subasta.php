@@ -601,7 +601,7 @@ class Subasta extends Model
 				NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
 				NVL(fgsublang.descdet_SUB_LANG,  sub.descdet_sub) descdet_sub,
 				NVL(fgsublang.obs_sub_lang,  sub.obs_sub) obs_sub,
-				NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
+				NVL(auc_lang.\"info_lang\", auc.\"info\") session_info,
 				sub.sesmaps_sub,sub.expomaps_sub,
 				auc.*,
 				NVL(auc_lang.\"name_lang\", auc.\"name\") name,
