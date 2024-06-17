@@ -535,7 +535,7 @@ select#actual_currency {
 	-webkit-box-orient: vertical;
 	-o-text-overflow: ellipsis;
 	grid-area: desc;
-
+	max-height: calc(var(--lines) * var(--line-h) * 1em);
 }
 
 .lot-actions {

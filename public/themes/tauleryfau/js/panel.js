@@ -180,6 +180,22 @@ $(function () {
 
 		reader.readAsDataURL(file);
 	});
+
+	//if form name="summary-form" submit
+	$('#summary-form').on('submit', function (event) {
+		event.preventDefault();
+
+		//this select values to array
+		const data = $(this).serializeArray();
+		//only values
+		yearsSelected = data.map(item => item.value);
+
+		getAllotmentsAndBills();
+		$buttonSales = $('.sales-menu .btn-lb-primary');
+		if ($buttonSales.data('refresh')) {
+			$buttonSales.trigger('click');
+		}
+	});
 });
 
 function reloadPrefix(fromNameElement, toNameElement) {
@@ -270,23 +286,29 @@ submit_shipping_addres = function (data) {
 	});
 }
 
-let defaultYearsToSearch = [2024];
 function getAllotmentsAndBills() {
+	const $block = $('#summary-allotments_table');
+	const $loader = $block.parent().find('.loader-box');
+
 	$.ajax({
 		url: `/${locale}/user/panel/allotments-bills`,
 		data: {
-			years: defaultYearsToSearch
+			years: yearsSelected
 		},
 		type: 'GET',
+		beforeSend: function () {
+			$loader.show();
+		},
 		success: function (response) {
-			const $block = $('#summary-allotments_table');
-			const $loader = $block.parent().find('.loader-box');
-			$loader.hide();
 			$block.html(response);
 		},
 		error: function (error) {
 			console.log(error);
+		},
+		complete: function () {
+			$loader.hide();
 		}
+
 	});
 }
 
@@ -331,7 +353,7 @@ function getSalesTab(url) {
 		url: url,
 		type: 'GET',
 		data: {
-			years: defaultYearsToSearch
+			years: yearsSelected
 		},
 		beforeSend: function () {
 			$loader.show();

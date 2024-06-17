@@ -72,7 +72,9 @@ class FxDvc0 extends Model
 	{
 		return self::selectRaw('to_char(fecha_dvc0, \'YYYY\') as year')
 			->where('cod_dvc0', $codCli)
-			->where('tipo_dvc0', $typeCli)
+			->when($typeCli, function ($query, $typeCli) {
+				return $query->where('tipo_dvc0', $typeCli);
+			})
 			->groupBy('to_char(fecha_dvc0, \'YYYY\')')
 			->orderBy('to_char(fecha_dvc0, \'YYYY\')', 'desc')
 			->pluck('year');

@@ -8,6 +8,7 @@
     <script>
         var currency = @JSON($divisas);
         var divisa = @JSON($divisa);
+		let yearsSelected = @JSON($yearsSelected);
     </script>
 
     <section class="summary-page">
@@ -21,6 +22,35 @@
                     </option>
                 @endforeach
             </select>
+
+			<div class="dropdown sales-filter">
+                <span>{{ trans("$theme-app.user_panel.filters") }}</span>
+                <button class="custom-select" id="summary-filter-toogle" data-toggle="dropdown" type="button" aria-haspopup="true"
+                    aria-expanded="false">
+                    {{ trans("$theme-app.user_panel.year") }}
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="summary-filter-toogle">
+                    <form id="summary-form">
+                        @foreach ($yearsAvailables as $year)
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="years[]" type="checkbox" value="{{ $year }}"
+                                            @checked(in_array($year, $yearsSelected))>{{ $year }}
+                                    </label>
+                                </div>
+                            </li>
+                        @endforeach
+                        <li class="divider" role="separator"></li>
+                        <li>
+                            <button class="btn btn-lb btn-lb-primary"
+                                type="submit">{{ trans("$theme-app.global.filter") }}</button>
+                        </li>
+                    </form>
+                </ul>
+            </div>
+
         </div>
 
         <div class="summary_body">
@@ -56,7 +86,7 @@
                             <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
 							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
                         </a>
-                        <a class="btn btn-lb btn-lb-outline" onclick="getFinishSales(this)">
+                        <a class="btn btn-lb btn-lb-outline" onclick="getFinishSales(this)" data-refresh="true">
 							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
 							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.finished") }}</span>
                         </a>

@@ -13,19 +13,29 @@ use App\Models\Subasta;
 use App\libs\Currency;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Controller;
-
+use App\Models\V5\FgCsub;
+use Illuminate\Http\Request;
 
 class SummaryController extends Controller
 {
 	public function summary()
 	{
+		$cod_cli = Session::get('user.cod');
 		$currency = new Currency();
 		$divisa = Session::get('user.currency', 'EUR');
 		$divisas = $currency->setDivisa($divisa)->getAllCurrencies();
 
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, null);
+		$profomaYearsAvailables = FgCsub::getYearsToAllAwardsAvailables($cod_cli);
+
+		$yearsAvailables = $invoicesYearsAvailables->merge($profomaYearsAvailables)->unique()->sortDesc();
+		$yearsSelected = [date('Y'), date('Y') - 1];
+
 		$data = [
 			'divisas' => $divisas,
 			'divisa' => $divisa,
+			'yearsAvailables' => $yearsAvailables,
+			'yearsSelected' => $yearsSelected
 		];
 
 		return view('front::pages.panel.summary', $data);
@@ -64,10 +74,11 @@ class SummaryController extends Controller
 		return view('front::pages.panel.summary.sales_active', $data);
 	}
 
-	public function summaryFinishSales()
+	public function summaryFinishSales(Request $request)
 	{
 		$cod_cli = Session::get('user.cod');
 		$maxLines = 3;
+		$yearSelected = $request->input('years', [date('Y'), date('Y') - 1]);
 
 		$paymentController = new PaymentsController();
 		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
@@ -75,6 +86,7 @@ class SummaryController extends Controller
 
 		//Lotes sin factura
 		$allLotsWithoutInvoice = FgAsigl0::getLotsAwardedWithoutInvoiceByOwnerQuery($cod_cli)
+			->whereYearsDates('auc."end"', $yearSelected)
 			->orderBy('auc."end"', 'desc')
 			->get()
 			->each(function ($item) use ($paymentController, $iva, $tipo_iva) {
@@ -97,6 +109,7 @@ class SummaryController extends Controller
 
 		//Facturas
 		$owerInvoicesLots = FxDvc0::getInvoicesByOwnerQuery($cod_cli)
+			->whereYearsDates($yearSelected)
 			->orderBy('fecha_dvc0', 'desc')
 			->get();
 
@@ -129,7 +142,6 @@ class SummaryController extends Controller
 			'summary' => $summary,
 			'currency' => $currency
 		];
-
 		return view('front::pages.panel.summary.sales_finish', $data);
 	}
 
