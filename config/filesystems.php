@@ -62,7 +62,7 @@ return [
 		],
 		'client' => [
 			'driver' => 'local',
-			'root' => storage_path('app/files/CLI/') . config('app.emp'),
+			'root' => storage_path('app/files/CLI/'),
 			'url' => config('app.url').'/admin/clientes',
 			'visibility' => 'public' //establece los permisos del directorio o archivo, en privado solo se puede acceder desde la aplicacion
 		]

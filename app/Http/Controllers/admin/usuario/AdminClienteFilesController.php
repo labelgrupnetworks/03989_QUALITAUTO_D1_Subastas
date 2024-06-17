@@ -20,7 +20,7 @@ class AdminClienteFilesController extends Controller
 	public function getClientFiles($codCli)
 	{
 		$storage = Storage::disk('client');
-		$files = $storage->files("$codCli/files");
+		$files = (new User)->getFiles($codCli);
 
 		//get url and methadata of files
 		$files = array_map(function ($file) use ($storage) {
@@ -47,12 +47,13 @@ class AdminClienteFilesController extends Controller
 	public function show($cod_cli, $name)
 	{
 		$storage = Storage::disk('client');
+		$clientFilesPath = User::getClientFilesPath($cod_cli);
 
-		if (!$storage->exists("$cod_cli/files/$name")) {
+		if (!$storage->exists("$clientFilesPath/$name")) {
 			return abort(404);
 		}
 
-		$file = $storage->get("$cod_cli/files/$name");
+		$file = $storage->get("$clientFilesPath/$name");
 
 		return response($file, 200)->header('Content-Type', $storage->mimeType("$cod_cli/files/$name"));
 	}
@@ -100,12 +101,13 @@ class AdminClienteFilesController extends Controller
 	public function destroy($cod_cli, $name)
 	{
 		$storage = Storage::disk('client');
+		$clientFilesPath = User::getClientFilesPath($cod_cli);
 
-		if (!$storage->exists("$cod_cli/files/$name")) {
+		if (!$storage->exists("$clientFilesPath/$name")) {
 			return response()->json(['status' => 'error', 'message' => 'No existe el fichero']);
 		}
 
-		$storage->delete("$cod_cli/files/$name");
+		$storage->delete("$clientFilesPath/$name");
 
 		$newFiles = $this->getClientFiles($cod_cli);
 		return response()->json(['files' => $newFiles, 'status' => 'success']);
