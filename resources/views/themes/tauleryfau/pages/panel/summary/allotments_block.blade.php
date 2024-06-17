@@ -20,7 +20,7 @@
                     {{ trans("$theme-app.user_panel.total") }}
                 </th>
                 <th class="allotments-staus" scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
-                <th class="allotments-icon hidden-xs" scope="col"></th>
+                <th class="summary-icons" scope="col"></th>
             </tr>
         </thead>
 

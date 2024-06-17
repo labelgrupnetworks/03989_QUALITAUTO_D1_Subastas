@@ -922,6 +922,12 @@ class ToolsServiceProvider extends ServiceProvider
 		return $image_to_load.self::date_modification($file);
 	}
 
+	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
+	{
+		$emp = Config::get('app.emp');
+		return "https://$url/img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces.jpg";
+	}
+
 	public static function url_img_auction($size, $cod_sub)
 	{
 		$img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";

@@ -45,20 +45,22 @@
                         {{ trans("$theme-app.user_panel.starting_price") }}
                     </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.actual_price") }}</th>
+					<th class="summary-icons" scope="col">
                 </tr>
             </thead>
             <tbody>
                 @forelse ($auctions as $auction)
+					@php
+						$link = route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}";
+					@endphp
                     <tr>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                            <a href="{{ $link }}">
                                 {{ date('d/m/Y', strtotime($auction['start'])) }}
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                            <a href="{{ $link }}">
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
                                     <span class="hidden-md hidden-lg">
@@ -68,27 +70,31 @@
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                            <a href="{{ $link }}">
                                 {{ $auction['total_lots'] }}
                             </a>
                         </td>
                         <td class="visible-md visible-lg">
                             <a
-                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                                href="{{ $link }}">
                                 <p class="js-divisa" value="{{ $auction['total_impsalhces'] }}">
                                     {!! $currency->getPriceSymbol(2, $auction['total_impsalhces']) !!}
                                 </p>
                             </a>
                         </td>
                         <td>
-                            <a
-                                href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) . "#auction-details-{$auction['sub_asigl0']}" }}">
+                            <a href="{{ $link }}">
                                 <p class="js-divisa fw-bold" value="{{ $auction['total_award'] }}">
                                     {!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
                                 </p>
                             </a>
                         </td>
+						<td class="summary-icons">
+							<a href="{{ $link }}">
+								<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+									width="20.25">
+							</a>
+						</td>
                     </tr>
                 @empty
                     <tr>

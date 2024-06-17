@@ -23,7 +23,7 @@
     </td>
     <td class="hidden-xs">
         <a href="{{ $link }}">
-			@if (!empty($document->prefactura))
+			@if (!empty($document->apre_csub))
             	{{ str_replace('-', '/', $id) }}
 			@else
 				-
@@ -39,7 +39,7 @@
     </td>
     <td>
         @if ($document->compraweb_sub == 'S')
-			@if (!empty($document->prefactura))
+			@if (!empty($document->apre_csub))
 				<a class="btn btn-lb btn-lb-secondary"
 					href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
 					cod_sub="{{ $document->cod_sub }}">
@@ -53,7 +53,7 @@
         @endif
     </td>
 
-    <td class="allotments-icon">
+    <td class="summary-icons">
         <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
             width="20.25">
     </td>

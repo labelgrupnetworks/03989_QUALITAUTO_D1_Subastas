@@ -56,7 +56,7 @@
         @endif
     </td>
 
-    <td class="allotments-icon">
+    <td class="summary-icons">
         <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
             width="20.25">
     </td>

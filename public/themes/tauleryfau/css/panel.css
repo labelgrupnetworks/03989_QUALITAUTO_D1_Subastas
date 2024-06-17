@@ -522,17 +522,20 @@ select#actual_currency {
 }
 
 .lot-desc {
+	--lines: 3;
+	--line-h: 1.4;
 	font-size: var(--fs-m);
 	font-weight: 300;
-	-webkit-line-clamp: 3;
+	line-height: var(--line-h);
+	-webkit-line-clamp: var(--lines);
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: block;
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	overflow: hidden;
 	-o-text-overflow: ellipsis;
 	grid-area: desc;
+
 }
 
 .lot-actions {
@@ -680,7 +683,7 @@ select#actual_currency {
 	}
 
 	.lot-image img {
-		max-height: 90px;
+		max-height: 115px;
 	}
 
 	.lot-actions {
@@ -1823,7 +1826,7 @@ p,
 	font-weight: 500;
 }
 
-.table-allotments .allotments-icon {
+.summary-icons {
 	display: none;
 }
 
@@ -1857,7 +1860,7 @@ p,
 		width: 16%;
 	}
 
-	.table-allotments .allotments-icon {
+	.summary-icons {
 		display: table-cell;
 		width: auto;
 	}
@@ -1973,7 +1976,7 @@ p,
 	display: flex;
 	flex-direction: column;
 	gap: .5rem;
-	padding: 2rem 1rem 1rem;
+	padding: .5rem 1rem 1rem;
 	height: 100%;
 }
 

@@ -38,9 +38,17 @@
         <a href="{{ $url_friendly }}">
             <div class="summary-lot">
                 <div class="lot-image">
+					@env('local')
+						<img class="img-responsive"
+							src="{{ Tools::serverLotUrlImg('subastas.tauleryfau.com', '700', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
+							loading="lazy">
+					@endenv
+
+					@env(['develop', 'production'])
                     <img class="img-responsive"
                         src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
                         loading="lazy">
+					@endenv
                 </div>
 
                 <p class="lot-ref">{{ trans("$theme-app.user_panel.lot") }} {{ $inf_lot->ref_asigl0 }}</p>

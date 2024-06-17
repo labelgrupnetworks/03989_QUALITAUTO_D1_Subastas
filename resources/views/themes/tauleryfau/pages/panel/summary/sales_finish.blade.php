@@ -50,6 +50,7 @@
                     <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.total") }}</th>
                     <th scope="col">{{ trans("$theme-app.user_panel.status") }}</th>
+					<th class="summary-icons" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -62,14 +63,12 @@
                     @endphp
                     <tr>
                         <td>
-                            <a
-                                href="{{ $link }}">
+                            <a href="{{ $link }}">
                                 {{ date('d/m/Y', strtotime($auctionData->end)) }}
                             </a>
                         </td>
                         <td>
-                            <a
-								href="{{ $link }}">
+                            <a href="{{ $link }}">
                                 <p class="max-line-2 text-center text-md-start">
                                     <span class="visible-md visible-lg">{{ $auctionData->des_sub }}</span>
                                     <span class="hidden-md hidden-lg">
@@ -95,7 +94,7 @@
                                 <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
                             </a>
                         </td>
-						<td class="hidden-xs">
+						<td class="summary-icons">
 							<a href="{{ $link }}">
 								<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
 									width="20.25">

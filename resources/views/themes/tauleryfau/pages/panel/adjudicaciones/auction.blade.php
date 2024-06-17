@@ -16,7 +16,7 @@
 			</span>
         </p>
         <p class="visible-md visible-lg">
-			@if (!empty($document->prefactura))
+			@if (!empty($document->apre_csub))
 				{{ str_replace('-', '/', $id) }}
 			@else
 				-
@@ -32,7 +32,7 @@
         <p class="allotment-invoice_pay-buttons">
             @if ($document->compraweb_sub == 'S')
 
-				@if (!empty($document->prefactura))
+				@if (!empty($document->apre_csub))
 					<a class="btn btn-lb btn-lb-secondary"
 						href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
 						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
