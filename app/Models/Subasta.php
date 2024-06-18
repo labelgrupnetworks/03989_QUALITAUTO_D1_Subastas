@@ -4671,8 +4671,8 @@ class Subasta extends Model
         }
     }
 
-    public function getFiles($cod_sub){
-
+    public function getFiles($cod_sub)
+	{
         $sql = "Select files.\"description\", files.\"type\", files.\"path\" , files.\"img\" , files.\"url\" "
                 . "FROM \"auc_sessions_files\" files "
                 . "WHERE files.\"company\" = :emp "
@@ -4688,6 +4688,23 @@ class Subasta extends Model
 
         $files = DB::select($sql, $params);
         return $files;
+	}
+
+	/**
+	 * Devuelve el primer archivo de una subasta sin tener en cuenta el idioma
+	 * Vico lo necesitaba para no tener que subir los archivos en todos los idiomas
+	 */
+	public function getFirstFileWithoutLocale($auctionId)
+	{
+		$file = DB::table('"auc_sessions_files"')
+			->select('"type"', '"path"', '"url"')
+			->where([
+				['"company"', '=', Config::get('app.emp')],
+				['"auction"', '=', $auctionId]
+			])
+			->first();
+
+		return $file;
 	}
 
 	/**

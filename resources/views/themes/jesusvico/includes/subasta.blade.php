@@ -2,10 +2,10 @@
 	$url_lotes = Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference);
 	$url_tiempo_real = Tools::url_real_time_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions);
 	$sub = new App\Models\Subasta();
-	$files = $sub->getFiles($subasta->cod_sub);
+	$file = $sub->getFirstFileWithoutLocale($subasta->cod_sub);
 	$fileUrl = '';
-	if (!empty($files)) {
-	    $fileUrl = $files[0]->type == '5' ? $files[0]->url : "/files{$files[0]->path}";
+	if (!empty($file)) {
+	    $fileUrl = $file->type == '5' ? $file->url : "/files{$file->path}";
 	}
 	$isExternalAucion = in_array($subasta->cod_sub, ['NAC']);
 
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 
-			@if (!empty($files))
+			@if (!empty($file))
 				<footer class="card-footer">
 					<div class="w-100 d-flex justify-content-center">
 						<div class="d-flex justify-center w-85">
