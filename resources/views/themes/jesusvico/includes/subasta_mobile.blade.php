@@ -2,10 +2,10 @@
 	$url_lotes = Tools::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference);
 	$url_tiempo_real = Tools::url_real_time_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions);
 	$sub = new App\Models\Subasta();
-	$files = $sub->getFiles($subasta->cod_sub);
-	$fileUrl = '';
-	if (!empty($files)) {
-	    $fileUrl = $files[0]->type == '5' ? $files[0]->url : "/files{$files[0]->path}";
+	$file = $sub->getFirstFileWithoutLocale($subasta->cod_sub);
+    $fileUrl = '';
+	if (!empty($file)) {
+	    $fileUrl = $file->type == '5' ? $file->url : "/files{$file->path}";
 	}
 	$isExternalAucion = in_array($subasta->cod_sub, ['NAC']);
 
@@ -50,7 +50,7 @@
 					@endif
 				</div>
 
-				@if (!empty($files))
+				@if (!empty($file))
 					<a class="btn btn-sm btn-outline-border-lb-primary w-100 info-btn" href="{{ $fileUrl }}" title="{{ $subasta->name }}">
 						<svg class="bi" width="12" height="12" fill="currentColor">
 							<use xlink:href="/bootstrap-icons.svg#plus"></use>
