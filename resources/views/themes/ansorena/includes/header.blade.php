@@ -202,7 +202,7 @@
                     @if ($isJoyeria) class="lb-link-underline" @endif>{{ trans("$theme-app.foot.joyeria") }}</a>
             </li>
             <li>
-                <a href="#subnav-subastas" role="tab"
+                <a href="{{ Routing::translateSeo('presenciales', null, $domain) }}"
                     @if ($isSubastas) class="lb-link-underline" @endif>{{ trans("$theme-app.subastas.auctions") }}</a>
             </li>
             <li>
@@ -218,7 +218,7 @@
 
         <div>
             <li>
-                <a href="#subnav-stories" title="{{ trans("$theme-app.blog.principal_title") }}" role="tab"
+                <a href="{{ Routing::translateSeo('blog', null, $domain) }}" title="{{ trans("$theme-app.blog.principal_title") }}"
                     @if ($isStories) class="lb-link-underline" @endif>{{ trans("$theme-app.blog.principal_title") }}</a>
             </li>
 
@@ -254,94 +254,6 @@
     </ul>
 
 </nav>
-
-<div class="submenu-wrapper" id="submenu-header">
-
-    <div class="container position-relative">
-        <button class="btn-close" type="button" aria-label="Close" onclick="closeSubmenu()"></button>
-    </div>
-
-    <div class="submenu-block">
-        <nav class="subment-nav tab-content">
-            <div id="nav-joyeria-subastas" role="tabpanel">
-                <div id="subnav-subastas" role="tabpanel">
-
-                    <div class="d-flex flex-column gap-4">
-                        <p class="position-relative subnav-title">
-                            <button class="btn-close" type="button" aria-label="Close"
-                                onclick="closeSubmenu()"></button>
-                            <span>{{ trans("$theme-app.subastas.auctions") }}</span>
-                        </p>
-
-                        <a href="{{ Routing::translateSeo('presenciales', null, $domain) }}">
-                            {{ trans("$theme-app.home.home") }} {{ trans("$theme-app.subastas.auctions") }}
-                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect width="6.2006" height="0.688955"
-                                    transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
-                                    fill="#0F0E0D" />
-                                <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
-                                    transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
-                            </svg>
-                        </a>
-
-                        @if ($urlSubastaOnline)
-                            <a href="{{ $urlSubastaOnline }}">
-                                Subasta online
-                            </a>
-                        @endif
-
-
-                        <a href="{{ Routing::translateSeo('ventas-destacadas', null, $domain) }}">
-                            {{ trans("$theme-app.lot_list.featured-sales") }}
-                        </a>
-                        <a href="{{ Routing::translateSeo('subastas-historicas', null, $domain) }}">
-                            {{ trans("$theme-app.artist.passAuctions") }}
-                        </a>
-                        <a href="{{ $pagina . trans("$theme-app.links.buy_and_sell") }}">
-                            {{ trans("$theme-app.foot.buy_and_sell") }}
-                        </a>
-
-                    </div>
-
-                </div>
-            </div>
-            <div id="subnav-stories" role="tabpanel">
-                <div class="d-flex flex-column gap-4">
-                    <p class="position-relative subnav-title">
-                        <button class="btn-close" type="button" aria-label="Close"
-                            onclick="closeSubmenu()"></button>
-                        <span>{{ trans("$theme-app.blog.principal_title") }}</span>
-                    </p>
-
-                    <a href="{{ Routing::translateSeo('blog', null, $domain) }}">
-                        {{ trans("$theme-app.home.home") }} STORIES
-                        <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect width="6.2006" height="0.688955"
-                                transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
-                                fill="#0F0E0D" />
-                            <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
-                                transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
-                        </svg>
-                    </a>
-
-                    <a
-                        href="{{ Routing::translateSeo('blog/joyeria', null, $domain) }}">{{ trans("$theme-app.foot.joyeria") }}</a>
-
-                    <a
-                        href="{{ Routing::translateSeo('blog/comunicacion', null, $domain) }}">{{ trans("$theme-app.subastas.auctions") }}</a>
-
-                    <a
-                        href="{{ Routing::translateSeo('blog/noticias', null, $galleryDomain) }}">{{ trans("$theme-app.galery.galery") }}</a>
-
-
-
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
 
 <div class="login_desktop container-fluid" style="display: none">
     <div class="h-100 d-flex justify-content-center align-content-center">

@@ -2219,6 +2219,10 @@ section.recomendados .section-title {
 	--bs-gutter-x: 0;
 }
 
+#jewelry-page-section, #engagement-page-section {
+	scroll-margin-top: var(--scroll-sticky);
+}
+
 @media(min-width: 992px) {
 
 	.articles-page section.fluid-banner,
