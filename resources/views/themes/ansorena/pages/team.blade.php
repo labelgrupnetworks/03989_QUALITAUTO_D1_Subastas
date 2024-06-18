@@ -35,11 +35,11 @@
 						<li class="list-inline-item">
 							<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.historia') }}">{{ trans("$theme-app.foot.history") }}</a>
 						</li>
-						<li class="list-inline-item flex-grow-1">
-							<a class="lb-link-underline" href="{{ Routing::translateSeo('equipo') }}">{{ trans("$theme-app.foot.team") }}</a>
-						</li>
 						<li class="list-inline-item">
 							<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.careers') }}">{{ trans("$theme-app.foot.work_with_us") }}</a>
+						</li>
+						<li class="list-inline-item flex-grow-1">
+							<a class="lb-link-underline" href="{{ Routing::translateSeo('equipo') }}">{{ trans("$theme-app.foot.team") }}</a>
 						</li>
 					</ul>
 				</div>
