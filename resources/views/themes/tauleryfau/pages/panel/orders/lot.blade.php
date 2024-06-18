@@ -5,7 +5,6 @@
     $lotLiveUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions";
 
     $url_friendly = Routing::translateSeo('lote') . $lotUrl;
-    $urlLive = Routing::translateSeo('api/subasta') . $lotLiveUrl;
 
     $style = 'other';
     $bid_mine = false;
@@ -37,8 +36,17 @@
     <div class="orders-auction_lot {{ $inf_lot->ref_asigl0 }}-{{ $inf_lot->cod_sub }}">
 
         <div class="lot-image">
-            <img class="img-responsive"
-                src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" loading="lazy">
+			@env('local')
+				<img class="img-responsive"
+					src="{{ Tools::serverLotUrlImg('subastas.tauleryfau.com', '700', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
+					loading="lazy">
+			@endenv
+
+			@env(['develop', 'production'])
+			<img class="img-responsive"
+				src="{{ Tools::url_img('lote_medium', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
+				loading="lazy">
+			@endenv
         </div>
 
         <div class="lot-ref">
@@ -104,13 +112,6 @@
                         {{ trans($theme . '-app.subastas.euros') }}
                     </p>
                 </button>
-            @endif
-
-            @if ($isNotClose || $isInLive)
-                <a class="btn btn-puja-panel btn-color btn-live js-button-bid-live" data-from="modal"
-                    href="{{ $urlLive }}">
-                    {{ trans($theme . '-app.lot_list.bid_live') }}
-                </a>
             @endif
 
             @if ($subasta_finalizada || !$isNotClose)

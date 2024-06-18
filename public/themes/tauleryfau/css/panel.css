@@ -451,7 +451,7 @@ select#actual_currency {
 	padding-left: var(--min-padding-to-page);
 	padding-right: var(--min-padding-to-page);
 	margin: auto;
-	gap: 8px;
+	gap: 20px;
 	row-gap: 1rem;
 }
 
@@ -493,13 +493,6 @@ select#actual_currency {
 .js-divisa {
 	color: inherit;
 	display: inline;
-	/* font-weight: 500;
-	font-size: var(--fs-l); */
-}
-
-.orders-auction .js-divisa {
-	font-size: 13px;
-	font-weight: inherit;
 }
 
 .lot-image {
@@ -565,7 +558,6 @@ select#actual_currency {
 .lot-price-bid {
 	grid-area: price-bid;
 	font-size: 13px;
-	font-weight: 500;
 }
 
 .label-price-salida,
@@ -639,7 +631,7 @@ select#actual_currency {
 	}
 
 	.orders-auction {
-		--grid-columns-desktop: 12% 5% 32% repeat(3, 1fr) 10% 8%;
+		--grid-columns-desktop: 12% 7% 30% repeat(3, 1fr) 10% 7%;
 	}
 
 	.orders-auction_header {
@@ -649,11 +641,13 @@ select#actual_currency {
 
 	.orders-auction_header>*:not(.orders-auction_title) {
 		display: block;
+		font-size: 13px;
+		font-weight: 500;
 	}
 
 	.orders-auction_title {
 		border: 1px solid var(--color-gold-dark);
-		padding: 8px;
+		padding: 8px 10px;
 		font-size: 12px;
 		grid-column: initial;
 		text-align: left;
@@ -669,10 +663,14 @@ select#actual_currency {
 		grid-template-areas: none;
 	}
 
-	/* :is(.orders-auction_header, .orders-auction_lot)>*:not(:first-child) {
-		padding-left: 10px;
-		padding-right: 10px;
-	} */
+	.orders-auction-ref, .orders-auction_lot .lot-ref {
+		padding-left: 2rem;
+		font-size: 14px;
+	}
+
+	.orders-auction_lot > *:not(.lot-desc) {
+		font-size: 14px;
+	}
 
 	.orders-auction_lot>* {
 		grid-area: auto;
@@ -682,10 +680,6 @@ select#actual_currency {
 		display: none;
 	}
 
-	.lot-image img {
-		max-height: 115px;
-	}
-
 	.lot-actions {
 		flex-direction: column;
 	}
@@ -693,8 +687,6 @@ select#actual_currency {
 
 .sales-page,
 .allotments-page {
-	/* padding: 15px;
-	padding-top: 0; */
 	color: var(--color-blue);
 	padding-bottom: 15px;
 }
@@ -2170,5 +2162,9 @@ p,
 
 	.summary-favorites .slick-list {
 		margin: 0 -9px;
+	}
+
+	.summary-lot .lot-image img {
+		height: 115px;
 	}
 }

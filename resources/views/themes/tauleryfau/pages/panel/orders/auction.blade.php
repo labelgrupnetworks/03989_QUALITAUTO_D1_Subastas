@@ -5,11 +5,11 @@
 
             <div class="orders-auction_title">
                 <p>
-                    {{ $all_inf['inf']->name }}
+                    {!! str_replace('-', '<br>', $all_inf['inf']->name) !!}
                 </p>
             </div>
 
-            <div>
+            <div class="orders-auction-ref">
                 <p>{{ trans($theme . '-app.user_panel.lot') }}</p>
             </div>
 
