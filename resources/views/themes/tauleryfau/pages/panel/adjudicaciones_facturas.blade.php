@@ -77,10 +77,16 @@
                 </div>
 
                 @foreach ($data['profomaInvoicesPendings'] as $proformaId => $profomaInvoice)
+
+					@php
+						$sumInvoices = $profomaInvoice->sum('total_imp_invoice');
+					@endphp
+
                     @include('pages.panel.adjudicaciones.auction', [
                         'id' => $proformaId,
                         'document' => $profomaInvoice->first(),
                         'isPayed' => false,
+						'sumInvoices' => $sumInvoices
                     ])
                 @endforeach
 
@@ -93,10 +99,15 @@
                 @endforeach
 
                 @foreach ($data['profomaInvoicesPayeds'] as $proformaId => $profomaInvoice)
+					@php
+						$sumInvoices = $profomaInvoice->sum('total_imp_invoice');
+					@endphp
+
                     @include('pages.panel.adjudicaciones.auction', [
                         'id' => $proformaId,
                         'document' => $profomaInvoice->first(),
                         'isPayed' => true,
+						'sumInvoices' => $sumInvoices
                     ])
                 @endforeach
 

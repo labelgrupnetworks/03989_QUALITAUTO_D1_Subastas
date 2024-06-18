@@ -1,5 +1,4 @@
 @php
-    $totalInvoice = $document->himp_csub + $document->base_csub + $document->base_csub_iva;
     $state = ['class' => 'alert', 'text' => 'Pendiente'];
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
@@ -23,8 +22,8 @@
 			@endif
 		</p>
 
-        <p class="js-divisa fw-bold" value="{{ $document->total_imp_invoice ?? 0 }}" style="font-size: 13px;">
-            {!! $currency->getPriceSymbol(2, $document->total_imp_invoice ?? 0) !!}
+        <p class="js-divisa fw-bold" value="{{ $sumInvoices ?? 0 }}" style="font-size: 13px;">
+            {!! $currency->getPriceSymbol(2, $sumInvoices ?? 0) !!}
         </p>
         <p class="allotment-invoice_state">
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>

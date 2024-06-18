@@ -46,6 +46,15 @@ i.fa.fa-dollar {
 	font-weight: 500;
 }
 
+div.btn-color {
+	cursor: initial;
+}
+
+div.btn-color:active {
+	-webkit-transform: none;
+	transform: none;
+}
+
 @media (min-width: 992px) {
 	.text-md-start {
 		text-align: left;
@@ -452,7 +461,7 @@ select#actual_currency {
 	padding-right: var(--min-padding-to-page);
 	margin: auto;
 	gap: 20px;
-	row-gap: 1rem;
+	row-gap: 1.5rem;
 }
 
 .orders-auction_header {
@@ -493,6 +502,7 @@ select#actual_currency {
 .js-divisa {
 	color: inherit;
 	display: inline;
+	text-wrap: nowrap;
 }
 
 .lot-image {
@@ -588,6 +598,10 @@ select#actual_currency {
 	max-width: none;
 }
 
+.lot-actions .btn-puja-panel[disabled] {
+	opacity: 1;
+}
+
 .lot-actions .btn-puja-panel.btn-live {
 	background-color: var(--btn-red);
 }
@@ -668,7 +682,7 @@ select#actual_currency {
 		font-size: 14px;
 	}
 
-	.orders-auction_lot > *:not(.lot-desc) {
+	.orders-auction_lot > *:not(.lot-desc, .lot-actions) {
 		font-size: 14px;
 	}
 

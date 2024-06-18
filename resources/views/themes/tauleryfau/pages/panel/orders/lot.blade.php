@@ -115,13 +115,13 @@
             @endif
 
             @if ($subasta_finalizada || !$isNotClose)
-                <button class="btn btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif">
+                <div class="btn btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif">
                     @if ($bid_mine)
                         {{ trans("$theme-app.user_panel.won") }}
                     @else
                         {{ trans("$theme-app.user_panel.lost") }}
                     @endif
-                </button>
+                </div>
             @endif
 
         </div>

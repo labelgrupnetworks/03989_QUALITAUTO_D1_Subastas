@@ -4483,6 +4483,9 @@ class UserController extends Controller
 		});
 
 		$profomaInvoicesPendings = $pendingAllotments->groupBy(function($item) {
+			if(empty($item->apre_csub) || empty($item->npre_csub)) {
+				return $item->sub_csub;
+			}
 			return "$item->apre_csub-$item->npre_csub";
 		});
 
