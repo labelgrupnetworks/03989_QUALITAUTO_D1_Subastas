@@ -11,6 +11,7 @@
     //los estados deben ser traducciones en user_panel.estado_seg_*
     //pero hasta aceptar el diseño, para no modificar los actuales se dejan en texto plano
     $states = [
+		0 => ['es' => 'Preparando envío', 'en' => 'Preparing shipment'],
         1 => ['es' => 'Enviado', 'en' => 'Sent'],
         2 => ['es' => 'Tramitando exportación', 'en' => 'Processing export'],
         4 => ['es' => 'Recogido en tienda', 'en' => 'Picked up in store'],
@@ -18,10 +19,11 @@
 	$locale = config('app.locale');
 	$followUp = !empty($document->followUp) ? $document->followUp->idseg_dvc0seg : null;
 
-	$state = match($followUp) {
-		'1' => ['class' => 'success', 'text' => $states[1][$locale]],
-		'2' => ['class' => 'warning', 'text' => $states[2][$locale]],
-		'4' => ['class' => 'success', 'text' => $states[4][$locale]],
+	$state = match(true) {
+		($followUp == '1') => ['class' => 'success', 'text' => $states[1][$locale]],
+		($followUp == '2') => ['class' => 'warning', 'text' => $states[2][$locale]],
+		($followUp == '4') => ['class' => 'success', 'text' => $states[4][$locale]],
+		(!$followUp && $isPayed) => ['class' => 'warning', 'text' => $states[0][$locale]],
 		default => ['class' => 'alert', 'text' => trans("$theme-app.user_panel.pending")]
 	};
 

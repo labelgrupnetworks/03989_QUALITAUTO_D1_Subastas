@@ -1,5 +1,14 @@
 @php
-    $state = ['class' => 'alert', 'text' => 'Pendiente'];
+	$locale = config('app.locale');
+
+	//los estados deben ser traducciones en user_panel.estado_seg_*
+    //pero hasta aceptar el diseño, para no modificar los actuales se dejan en texto plano
+	$state = [
+		'class' => $isPayed ? 'warning' : 'alert',
+		'text' => $isPayed
+			? ['es' => 'Preparando envío', 'en' => 'Preparing shipment'][$locale]
+			: trans("$theme-app.user_panel.pending")
+	];
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
@@ -29,7 +38,7 @@
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
         </p>
         <p class="allotment-invoice_pay-buttons">
-            @if ($document->compraweb_sub == 'S')
+            @if ($document->compraweb_sub == 'S' && !$isPayed)
 
 				@if (!empty($document->apre_csub))
 					<a class="btn btn-lb btn-lb-secondary"
@@ -46,6 +55,9 @@
                         <img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
                     </a>
                 @endif
+
+			@else
+                <span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
             @endif
         </p>
         <div class="actions">

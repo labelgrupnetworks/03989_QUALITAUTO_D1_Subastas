@@ -141,7 +141,7 @@ div.btn-color:active {
 }
 
 .btn-lb-success.btn-sm {
-	padding: 5px 10px;
+	padding: 5px 12px;
 	font-size: inherit;
 	line-height: 1.5;
 }
@@ -1321,12 +1321,6 @@ p,
 		border-bottom: 0;
 	}
 
-	.panel-lots.allotments-lots .panel-lots_header-wrapper,
-	.sales-page .panel-lots_header-wrapper,
-	.panel-lots_header-wrapper {
-		display: block;
-	}
-
 	.panel-lot-wrapper:nth-child(odd) {
 		background-color: #9B9B9B1F;
 	}
@@ -1361,17 +1355,29 @@ p,
 }
 
 .payment-page {
-	padding: 15px;
+	padding: var(--min-padding-to-page);
+	margin-bottom: 5rem;
 }
 
-.payment-page .panel-title a {
+.payment-page .panel-title h1 {
+	text-transform: capitalize;
+}
+
+.payment-page .panel-title a.btn {
 	margin-left: auto;
+	font-weight: 400;
+	text-transform: capitalize;
+    padding: 6px 32px;
 }
 
 .payment-page h4 {
 	font-size: var(--fs-l);
 	font-weight: 500;
 	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.payment-page h4:has(+ p) {
 	margin-bottom: 5px;
 }
 
@@ -1388,13 +1394,13 @@ p,
 .payment_details {
 	display: flex;
 	flex-direction: column;
-	gap: 3rem;
+	gap: 48px;
 }
 
 .detail_header {
 	position: relative;
-	padding-bottom: 2px;
-	margin-bottom: 1rem;
+	padding-bottom: 10px;
+	margin-bottom: 2rem;
 }
 
 .detail_header_action {
@@ -1415,27 +1421,49 @@ p,
 
 .detail_header .btn-lb {
 	text-transform: unset;
+	font-weight: 400;
 }
 
 .detail_form {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 1rem;
+	gap: .75rem;
 }
 
 .detail_form input {
-	accent-color: var(--color-green);
-	cursor: pointer;
+	display: none; /* Ocultar los input radio */
 }
 
-.detail_form label {
+.detail_form span::before {
+	width: 14px;
+	height: 14px;
+	content: url('/themes/tauleryfau/assets/icons/check-circle-solid.svg');
+	position: relative;
+	display: inline-block;
+}
+
+.detail_form input[type="radio"]:checked + span::before {
+	content: url('/themes/tauleryfau/assets/icons/check-circle-solid-active.svg');
+}
+
+.detail_form input[type="radio"]:checked + span:not(.detail-fact-ship-address) {
+	font-weight: 500;
+}
+
+.detail_form span {
 	cursor: pointer;
 	display: flex;
-	align-items: flex-start;
-	gap: 2rem;
+	align-items: center;
+	gap: 2.5rem;
 	font-weight: 400;
 	margin: 0;
+	font-size: 13px;
+}
+
+.detail_form .detail-fact-address {
+	font-weight: 500;
+	align-items: flex-start;
 }
 
 .payment_summary {
@@ -1444,7 +1472,7 @@ p,
 
 .payment_summary .summary-header {
 	position: relative;
-	margin-bottom: 2rem;
+	margin-bottom: 3rem;
 	padding-bottom: 1rem;
 }
 
@@ -1458,6 +1486,16 @@ p,
 	border-bottom: 1px solid var(--color-gold);
 }
 
+.summary-header > h4 {
+	font-size: 17px;
+}
+
+.summary-header > p {
+	text-align: right;
+	font-size: 13px;
+	font-weight: 500;
+	text-wrap: balance;
+}
 
 .payment_profoma-summary .summary-header {
 	display: none;
@@ -1470,17 +1508,21 @@ p,
 	justify-content: flex-end;
 	font-size: var(--fs-l);
 	font-weight: 500;
-	padding-top: 2rem;
+	padding-top: 4rem;
 }
 
 .payment_summary .summary_total::before {
 	content: "";
 	position: absolute;
-	top: 0;
+	top: 1rem;
 	left: 0;
 	width: 100%;
 	height: 1px;
 	border-bottom: 1px solid var(--color-gold);
+}
+
+.payment_summary .summary_line-vat {
+	display: none;
 }
 
 .summary_total_imports {
@@ -1501,6 +1543,7 @@ p,
 	display: flex;
 	align-items: center;
 	gap: 5px;
+	font-size: 13px;
 }
 
 .summary_separator {
@@ -1509,9 +1552,29 @@ p,
 	/* border-block-start: 1px dotted #000; */
 }
 
+.summary_line > span:last-child {
+	font-size: 14px;
+	font-weight: 500;
+}
+
 .summary_buttons {
 	display: flex;
-	gap: 5px;
+	gap: 10px;
+}
+
+.summary_buttons .btn-lb {
+	padding: 12px;
+}
+
+.summary_buttons .btn-lb-outline {
+	font-weight: 400;
+	text-transform: capitalize;
+	font-size: 13px;
+}
+
+.summary_buttons .btn-lb-secondary {
+	font-weight: 600;
+	font-size: 14px;
 }
 
 .payment_profoma-summary a {
@@ -1520,6 +1583,7 @@ p,
 
 .payment_profoma-details .auction-details_title {
 	text-align: left;
+	margin-bottom: 2rem;
 }
 
 .payment-page .modal label {
@@ -1530,13 +1594,42 @@ p,
 	border-bottom: 1px solid #e5e5e5;
 }
 
+.panel-lots.payment-lots .panel-lots_header-wrapper {
+	display: none;
+}
+
+.panel-lots.payment-lots .panel-lots_header {
+	font-size: 13px;
+}
+
+.panel-lot.payment-lot {
+	font-size: 13px;
+	padding: 0;
+	padding-bottom: 1rem;
+}
+
+.payment-lot .panel-lot_ref {
+	font-size: 14px;
+}
+
+.payment-lot .panel-lot_actual-price {
+	font-weight: 400;
+	color: inherit;
+	font-size: inherit;
+}
+
+.payment_profoma-summary .summary-section {
+	padding: 1rem 3rem;
+}
+
 @media (min-width: 768px) {
 
 	.payment-body {
-		grid-template-columns: 3fr 2fr;
+		grid-template-columns: 4fr 2fr;
 		grid-template-rows: minmax(80vh, auto) auto auto;
 		gap: 1rem;
-		padding-top: 4rem;
+		row-gap: 3rem;
+		padding-top: 8rem;
 	}
 
 	.payment_profoma-details {
@@ -1546,39 +1639,66 @@ p,
 
 	.payment_profoma-summary {
 		grid-row: 3 / 4;
-		grid-column: 2 / -1;
+		grid-column: 2 / 3;
 	}
 
 	.payment_summary {
 		display: block;
 	}
 
-	.summary-section {
-		max-width: 320px;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
-	}
-
 	.payment_summary .summary-section {
-		padding-left: 3rem;
+		padding: 1rem 3rem;
 		border-left: 1px solid var(--color-gold);
 	}
 
 	.payment_profoma-summary .summary-section {
-		padding-right: 3rem;
 		border-right: 1px solid var(--color-gold);
 		margin-left: auto;
+	}
+
+	.panel-lot.payment-lot {
+		font-size: 14px;
+		padding: .5rem 1rem;
+	}
+}
+
+@media(min-width: 992px) {
+	.payment-lot .panel-lot_desc {
+		margin-right: 3rem;
+	}
+
+	.payment_profoma-summary .summary_line-lot {
+		display: none;
 	}
 }
 
 @media (min-width: 1200px) {
 
+	.payment-body {
+		grid-template-columns: 4fr 2fr .5fr .5fr;
+	}
+
 	.payment-page .panel-title {
 		padding-left: 65px;
+		padding-right: 65px;
+		margin: 0;
 	}
 
 	.payment-body {
 		padding-left: 65px;
+	}
+
+	.payment_summary .summary-section {
+		padding: 1rem 5rem 1rem 4rem;
+	}
+
+	.payment_profoma-summary .summary-section {
+		padding-right: 3rem;
+	}
+
+	.payment_profoma-summary {
+		grid-column: 2 / 4;
+		padding-left: 30%;
 	}
 }
 
@@ -2180,5 +2300,12 @@ p,
 
 	.summary-lot .lot-image img {
 		height: 115px;
+	}
+
+	.panel-lots.allotments-lots .panel-lots_header-wrapper,
+	.sales-page .panel-lots_header-wrapper,
+	.panel-lots.payment-lots .panel-lots_header-wrapper,
+	.panel-lots_header-wrapper {
+		display: block;
 	}
 }

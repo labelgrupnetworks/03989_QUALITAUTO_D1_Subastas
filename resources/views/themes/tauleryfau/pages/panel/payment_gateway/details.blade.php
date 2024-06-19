@@ -10,9 +10,11 @@
     </div>
 
     <div class="detail_form">
-        <label for="">
+        <label>
             <input type="radio" checked>
-            {!! mb_convert_case($factAddress, MB_CASE_TITLE, 'UTF-8') !!}
+			<span class="detail-fact-address">
+            	{!! mb_convert_case($factAddress, MB_CASE_TITLE, 'UTF-8') !!}
+			</span>
         </label>
     </div>
 </div>
@@ -33,7 +35,7 @@
                     value="{{ $address->codd_clid }}" @checked($address->codd_clid == 'W1')>
 
 
-                <span>
+                <span class="detail-fact-ship-address">
                     @if (!empty($address->obs_clid))
                         <b>{{ mb_strtoupper($address->obs_clid) }} | </b>
                     @endif

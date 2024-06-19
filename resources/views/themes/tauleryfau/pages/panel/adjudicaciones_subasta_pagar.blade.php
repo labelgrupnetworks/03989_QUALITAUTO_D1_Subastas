@@ -50,7 +50,7 @@
                 @endforeach
             </select>
 
-            <a class="btn btn-lb btn-lb-outline" href="/es/user/panel/allotments">
+            <a class="btn btn-lb btn-lb-outline" href="{{ url()->previous() }}">
                 {{ trans("$theme-app.global.go_home") }}
             </a>
         </div>

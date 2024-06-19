@@ -14,14 +14,14 @@
         </div>
 
         <div class="summary-body">
-            <div class="summary_line">
+            <div class="summary_line summary_line-lot">
                 <span>{{ trans("$theme-app.user_panel.lots") }}</span>
                 <span class="summary_separator"></span>
                 <span>{{ $lots_count }}</span>
             </div>
 
             <div class="summary_line">
-                <span>{{ trans("$theme-app.user_panel.price") }}</span>
+                <span>{{ trans("$theme-app.user_panel.award_price") }}</span>
                 <span class="summary_separator"></span>
                 <span>{{ Tools::moneyFormat($total_remate, $euroSymbol, 2) }}</span>
             </div>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="summary_line">
-                <span>{{ trans("$theme-app.user_panel.tax") }}</span>
+                <span>{{ trans("$theme-app.user_panel.summary_commision_vat") }}</span>
                 <span class="summary_separator"></span>
                 <span>{{ Tools::moneyFormat($total_iva, $euroSymbol, 2) }}</span>
             </div>
@@ -45,22 +45,23 @@
             </div>
 
             <div class="summary_line">
-                <span>{{ trans("$theme-app.user_panel.ship_tax") }}</span>
+                <span>{{ trans("$theme-app.user_panel.shipping_and_insurance") }}</span>
+				<span class="summary_line-vat">{{ trans("$theme-app.user_panel.vat_included") }}</span>
                 <span class="summary_separator"></span>
-                <span class="text-gasto-envio-{{ $cod_sub }}"></span>
+                <span class="fw-bold text-gasto-envio-{{ $cod_sub }}"></span>
                 <span>{{ trans("$theme-app.lot.eur") }}</span>
             </div>
 
             <div class="summary_total">
-                <span>{{ trans("$theme-app.user_panel.total") }}</span>
+                <span>{{ trans("$theme-app.user_panel.total_to_pay") }}</span>
                 <div class="summary_total_imports">
                     <div>
                         <span class="precio_final_{{ $cod_sub }}"></span>
                         <span>{{ trans("$theme-app.lot.eur") }}</span>
                     </div>
-                    <div>
+                    {{-- <div>
                         <span class="js-divisa precio_final_{{ $cod_sub }}"></span>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
