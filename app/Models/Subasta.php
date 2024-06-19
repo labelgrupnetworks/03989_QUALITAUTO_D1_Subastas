@@ -1008,8 +1008,8 @@ class Subasta extends Model
         }
     }
 
-    public function getAllBidsAndOrders($favorites = false, $lotsColsed = false, $contraOfertas = false){
-
+    public function getAllBidsAndOrders($favorites = false, $lotsColsed = false, $whereFilters = [])
+	{
         $sql_favorites = "";
         $sql_join_favorites = "";
 		$orderby = " fec desc, hora desc";
@@ -1033,6 +1033,11 @@ class Subasta extends Model
               $orderby = Config::get('app.orderby_allbidsandorders');
 		}
 
+		$whereAuctions = "";
+		if(!empty($whereFilters['cods_sub'])){
+			$whereAuctions = " AND SUB.COD_SUB IN ('".implode("',", $whereFilters['cods_sub'])."')";
+		}
+
         if($favorites){
             $sql_join_favorites = "join web_favorites fav on (fav.id_emp=asigl0.emp_asigl0 and fav.id_sub = asigl0.SUB_ASIGL0 and fav.id_ref = asigl0.REF_ASIGL0 and fav.cod_cli= :cli_licit)";
             $sql_favorites = " UNION
@@ -1046,6 +1051,7 @@ class Subasta extends Model
                                     left join fgasigl1 asigl1 on (asigl1.emp_asigl1 = a.id_emp and asigl1.sub_asigl1 = a.id_sub and asigl1.ref_asigl1  = a.id_ref and asigl1.licit_asigl1 = b.cod_licit)
                                     where a.id_emp = :emp
 										$showLotsAllSubcSubAuctions
+										$whereAuctions
                                         AND a.cod_cli = :cli_licit
                                         AND b.CLI_LICIT < :subalia_min_licit
                                         $whereClose
@@ -1086,6 +1092,7 @@ class Subasta extends Model
                         AND asigl0.REF_ASIGL0 >= auc.\"init_lot\"
                         AND asigl0.REF_ASIGL0 <= auc.\"end_lot\"
                             $showLotsAllSubcSubAuctions
+							$whereAuctions
                             AND b.CLI_LICIT = :cli_licit
                             AND b.COD_LICIT < :subalia_min_licit
                             $showClosedLotOrdersInPanel"; //  AND (TIPO_SUB != 'W' or auc.\"start\" > SYSDATE)"
@@ -1110,7 +1117,8 @@ class Subasta extends Model
                     where
 						ref_asigl0 >= auc.\"init_lot\"
 						AND ref_asigl0 <= auc.\"end_lot\"
-						$showLotsAllSubcSubAuctions";
+						$showLotsAllSubcSubAuctions
+						$whereAuctions";
 
 
         //hay tantos selects anidados por que al hacer un group by se perdian valores de RN y eso provocaria que se cargaran menos elementos por página
@@ -1140,7 +1148,6 @@ class Subasta extends Model
 
            $ordenes = DB::select($sql, $params);
 
-        $strLib = new StrLib();
         foreach ($ordenes as $key => $value) {
             $ordenes[$key]->formatted_imp = \Tools::moneyFormat($value->imp);
             $ordenes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat($value->impsalhces_asigl0);

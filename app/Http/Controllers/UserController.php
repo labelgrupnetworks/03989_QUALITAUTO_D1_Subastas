@@ -67,6 +67,7 @@ use Illuminate\Validation\Rules\Password;
 use App\libs\SeoLib;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
+use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
@@ -2033,17 +2034,22 @@ class UserController extends Controller
         $sub = new Subasta();
         $sub->licit = Session::get('user.cod');
         $subastas_active = $sub->auctionList ('S');
+
+		$auctionsAvailables = Arr::pluck($subastas_active, 'des_sub', 'cod_sub');
+
         $sub->page  = 'all';
         $sub->cod = null;
         $all_pujas = array();
 
+		$filters = [
+			'cods_sub' => request('cods_sub', []),
+		];
 
 		if(!empty(Config::get('app.lots_closed_inpanel'))){
-
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, true);
+			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, true, $filters);
 		}
 		else{
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, false, request()->has('contraofertas'));
+			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, false, $filters);
 		}
 
         foreach($all_pujas_temp as $temp_pujas){
@@ -2053,6 +2059,8 @@ class UserController extends Controller
             $sub->cod = $key_inf;
             $all_pujas[$key_inf]['inf']=$sub->getInfSubasta();
         }
+
+		$data['auctionsAvailables'] = $auctionsAvailables;
         $data['values'] = $all_pujas;
         $data['seo'] = new \stdClass();
 		$data['seo']->noindex_follow = true;

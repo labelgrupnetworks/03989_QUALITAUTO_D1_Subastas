@@ -49,6 +49,40 @@
                     </option>
                 @endforeach
             </select>
+
+			<div class="dropdown sales-filter">
+				<button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button"
+					aria-haspopup="true" aria-expanded="false">
+					{{ trans("$theme-app.user_panel.select_auction") }}
+					<i class="fa fa-chevron-down" aria-hidden="true"></i>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
+					<form action="">
+						@if(request('favorites'))
+							<input type="hidden" name="favorites" value="1">
+						@endif
+
+						@foreach ($data['auctionsAvailables'] as $codSub => $auctionName)
+							@php
+								$auctionCode = explode('-', $auctionName)[0];
+							@endphp
+							<li>
+								<div class="checkbox">
+									<label>
+										<input name="cods_sub[]" type="checkbox" value="{{ $codSub }}"
+											@checked(in_array($codSub, request('cods_sub', [])))>{{ $auctionCode }}
+									</label>
+								</div>
+							</li>
+						@endforeach
+						<li class="divider" role="separator"></li>
+						<li>
+							<button class="btn btn-lb btn-lb-primary"
+								type="submit">{{ trans("$theme-app.global.filter") }}</button>
+						</li>
+					</form>
+				</ul>
+			</div>
         </div>
 
         <div class="orders-auctions-block">
