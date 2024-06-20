@@ -377,6 +377,7 @@ form {
     box-shadow: none;
     padding: 0;
     display: initial;
+	height: 40px;
 }
 
 .form-control:focus{

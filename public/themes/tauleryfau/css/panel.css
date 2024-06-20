@@ -1714,6 +1714,7 @@ p,
 .profile-page :is(input, textarea) {
 	font-size: inherit;
 	font-weight: 400;
+	display: block;
 }
 
 .profile-page .row {
@@ -1752,6 +1753,8 @@ p,
 .bootstrap-select button {
 	border-radius: 0;
 	border-width: 1px;
+	padding-top: 9px;
+	padding-bottom: 9px;
 }
 
 .profile-page select {
