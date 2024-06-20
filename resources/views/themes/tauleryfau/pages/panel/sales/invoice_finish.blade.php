@@ -3,7 +3,7 @@
     $date = $auctionData->fecha_dvc0;
     $dateValue = date('d/m/Y', strtotime($date));
 
-	$totalSettlement = $invoicesAuctions->sum('implic_hces1') - $auctionData->total_dvc0;
+	$totalSettlement = $invoicesAuctions->sum('padj_dvc1l') - $auctionData->total_dvc0;
 	$totalPending = abs($auctionData->imp_pending);
 
     $state = match (true) {

@@ -19,7 +19,7 @@
         'total_liquidation' => $auctionsResults->sum('total_liquidation'),
     ];
 
-    $statistics['auction'] = $auctionsResults->keyBy('sub_asigl0');
+	$statistics['auction'] = $auctionsResults->keyBy('sub_asigl0');
 @endphp
 
 @section('content')

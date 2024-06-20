@@ -78,6 +78,9 @@ class FgAsigl0 extends Model
 			->select(DB::raw('count(*) as total_lots, sum(implic_hces1) as total_award, sum(impsalhces_asigl0) as total_impsalhces, sum(imptas_asigl0) as total_imptas, sub_asigl0'))
 			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' AND cerrado_asigl0 = 'S' then 1 else 0 end) as total_awarded_lots"))
 			->addSelect(DB::raw("sum(case when lic_hces1 = 'S' then 1  else 0 end) as total_bids_lots"))
+			->when($isMutlipleOwner,
+				fn ($query) => $query->addSelect(DB::raw('sum(implic_hces1 * (COALESCE(FGHCESMT.ratio_hcesmt, MT0.ratio_hcesmt) / 100)) as total_award')),
+				fn ($query) => $query->addSelect('sum(implic_hces1) as total_award'))
 			->whereIn('sub_asigl0', $auctionsCodes)
 			->joinFghces1Asigl0()
 			->when($isMutlipleOwner,

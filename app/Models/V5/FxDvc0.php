@@ -59,7 +59,7 @@ class FxDvc0 extends Model
 	public static function getInvoicesByOwnerQuery($ownerCod)
 	{
 		return self::query()
-			->select('anum_dvc0', 'num_dvc0', 'fecha_dvc0', 'base_dvc0', 'impiva_dvc0', 'total_dvc0', 'iva_dvc0', 'basea_dvc1l')
+			->select('anum_dvc0', 'num_dvc0', 'fecha_dvc0', 'base_dvc0', 'impiva_dvc0', 'total_dvc0', 'iva_dvc0', 'basea_dvc1l', 'padj_dvc1l')
 			->addSelect('impsalhces_asigl0', 'ref_asigl0', 'sub_asigl0', 'implic_hces1', 'num_hces1', 'lin_hces1')
 			->addSelect(DB::raw('(select sum(imp_pcob) from fxpcob where emp_pcob = emp_dvc0 and anum_pcob = anum_dvc0 and num_pcob = num_dvc0) as imp_pending'))
 			->joinDvc1lDvc0()
@@ -146,7 +146,7 @@ class FxDvc0 extends Model
 
 		return $query
 			->leftjoin('FGHCES1', 'FGHCES1.EMP_HCES1 = FGDVC1L.EMP_DVC1L AND FGHCES1.NUM_HCES1 = FGDVC1L.NUMHCES_DVC1L AND FGHCES1.LIN_HCES1 = FGDVC1L.LINHCES_DVC1L')
-			->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0')
+			->leftjoin('FGASIGL0', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0 AND FGDVC1L.SUB_DVC1L = FGASIGL0.SUB_ASIGL0')
 			->leftjoin('FGSUB', 'FGSUB.EMP_SUB = FGASIGL0.EMP_ASIGL0 AND FGSUB.COD_SUB = FGASIGL0.SUB_ASIGL0')
 			->join('"auc_sessions" auc', 'auc."company" = FGASIGL0.EMP_ASIGL0 AND auc."auction" = FGASIGL0.SUB_ASIGL0 and auc."init_lot" <= ref_asigl0 and   auc."end_lot" >= ref_asigl0')
 			->selectRaw("(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM FGASIGL1 WHERE EMP_ASIGL1 = EMP_ASIGL0 AND SUB_ASIGL1 = SUB_ASIGL0 AND REF_ASIGL1 = REF_ASIGL0) licits")
