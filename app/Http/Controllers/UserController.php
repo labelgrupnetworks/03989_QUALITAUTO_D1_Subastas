@@ -3159,7 +3159,13 @@ class UserController extends Controller
 		$invoiceResults = FgAsigl0::getAuctionsResultsByOwnerQuery($invoiceAuctions, $cod_cli)
 			->get()
 			->each(function ($item) use ($owerInvoicesLots) {
-				$totalDvc0 = $owerInvoicesLots->where('sub_asigl0', $item->sub_asigl0)->value('total_dvc0');
+				$invoiceLots = $owerInvoicesLots->where('sub_asigl0', $item->sub_asigl0);
+
+				//TODO: Esta operación se puede realizar fuera del bucle,
+				//y realizar el where sub sobre este resultado.
+				$distinctInvoices = $invoiceLots->unique(fn($item) => $item['anum_dvc0'].$item['num_dvc0']);
+
+				$totalDvc0 = $distinctInvoices->sum('total_dvc0');
 				$item->total_liquidation = $item->total_award - $totalDvc0;
 			});
 
