@@ -290,8 +290,14 @@ aside li:is(.active, :hover) {
 
 aside li :is(a, a:hover) {
 	color: inherit;
-	display: block;
+	display: flex;
+	gap: 10px;
 	padding: 12px 0px 12px 85px;
+}
+
+aside svg {
+	width: 20px;
+	height: 20px;
 }
 
 aside .panel_banner {
@@ -346,7 +352,8 @@ a.toggle-icon:is(:hover, :focus) {
 	.body-main {
 		min-height: calc(100vh - 70px);
 		display: grid;
-		grid-template-columns: minmax(220px, 1fr) 6fr;
+		/* grid-template-columns: minmax(220px, 1fr) 6fr; */
+		grid-template-columns: 266px auto;
 		grid-template-areas: "aside main";
 	}
 
@@ -441,6 +448,7 @@ select#actual_currency {
 	padding: 6px;
 	background-color: #fff;
 	margin-left: 5px;
+	border-radius: 0;
 }
 
 .table-grid_header {

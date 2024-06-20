@@ -13,9 +13,7 @@
                 @include('includes.header-nav')
             </div>
 
-            <a class="btn btn-lb btn-lb-outline btn-lb-session"
-                href="{{ \Routing::slug('logout') }}">{{ trans($theme . '-app.user_panel.exit') }}</a>
-
+			<div class=""></div>
         </div>
     </nav>
 </header>
