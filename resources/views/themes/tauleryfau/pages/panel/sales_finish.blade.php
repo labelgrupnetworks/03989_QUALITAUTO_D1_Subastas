@@ -137,7 +137,7 @@
             <div class="sales-auctions sales-finish-auctions">
 
                 <div class="sales-header-wrapper">
-                    <div class="table-grid_heder header sales-auctions_header">
+                    <div class="table-grid_header header sales-auctions_header">
                         <p>{{ trans("$theme-app.user_panel.date") }}</p>
                         <p>{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>

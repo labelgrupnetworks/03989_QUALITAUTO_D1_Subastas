@@ -97,7 +97,7 @@ $(function () {
 
 		const $modal = $(this);
 		const $button = $(e.relatedTarget);
-		const auctionId = $button.data('sub');
+		const auctionId = $button.data('id');
 
 		//if match query media
 		if (!isMatchMedia('992')) {
@@ -120,7 +120,7 @@ $(function () {
 		const $wrapperElement = $('.sales-auctions').clone();
 
 		//inside $wrapperElement remove all sales-auction-wrapper except the one with data-sub
-		$wrapperElement.find('.sales-auction-wrapper').not(`[data-sub="${auctionId}"]`).remove();
+		$wrapperElement.find('.sales-auction-wrapper').not(`[data-id="${auctionId}"]`).remove();
 		$wrapperElement.find('.sales-auction-wrapper').removeClass('active');
 
 		//insert element clon in modal modal-table-header

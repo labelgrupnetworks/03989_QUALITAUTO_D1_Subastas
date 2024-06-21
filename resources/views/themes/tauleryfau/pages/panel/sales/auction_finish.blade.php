@@ -11,7 +11,7 @@
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
-<div class="sales-auction-wrapper" data-type="finish" data-sub="{{ $auctionData->sub_asigl0 }}">
+<div class="sales-auction-wrapper" data-type="finish" data-sub="{{ $auctionData->sub_asigl0 }}" data-id="{{ $auctionData->sub_asigl0 }}">
     <div class="sales-auction">
         <p>
             {{ $dateValue }}
@@ -34,12 +34,12 @@
         </p>
         <p></p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auctionData->sub_asigl0 }}"
-                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a>
+            {{-- <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auctionData->sub_asigl0 }}"
+                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a> --}}
 			{{-- open Modal --}}
-			{{-- <button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $auctionData->sub_asigl0 }}">
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $auctionData->sub_asigl0 }}" data-id="{{ $auctionData->sub_asigl0 }}">
 				{{ trans("$theme-app.user_panel.see_detail") }}
-			</button> --}}
+			</button>
         </div>
     </div>
 </div>

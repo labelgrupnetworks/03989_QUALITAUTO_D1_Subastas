@@ -2,7 +2,7 @@
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
-<div class="sales-auction-wrapper" data-type="active" data-sub="{{ $auction['sub_asigl0'] }}">
+<div class="sales-auction-wrapper" data-type="active" data-sub="{{ $auction['sub_asigl0'] }}" data-id="{{ $auction['sub_asigl0'] }}">
     <div class="sales-auction">
         <p>
             {{ date('d/m/Y', strtotime($auction['start'])) }}
@@ -30,7 +30,7 @@
                 role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a> --}}
 
 			{{-- open Modal --}}
-			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $auction['sub_asigl0'] }}" data-sub="{{ $auction['sub_asigl0'] }}">
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $auction['sub_asigl0'] }}" data-id="{{ $auction['sub_asigl0'] }}">
 				{{ trans("$theme-app.user_panel.see_detail") }}
 			</button>
         </div>
