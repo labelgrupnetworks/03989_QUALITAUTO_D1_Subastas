@@ -7,14 +7,14 @@
         <p>
             {{ date('d/m/Y', strtotime($auction['start'])) }}
         </p>
-        <p>
+        <p class="sales-auctions_description text-center text-md-start">
             <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
             <span class="hidden-md hidden-lg">
 				{{ $auctionNumber($auction['des_sub'], $auction['sub_asigl0']) }}
 			</span>
 
         </p>
-        <p>{{ $auction['total_lots'] }}</p>
+        <p class="text-center text-md-start">{{ $auction['total_lots'] }}</p>
         <p class="js-divisa visible-md visible-lg" value="{{ $auction['total_impsalhces'] }}">
             {!! $currency->getPriceSymbol(2, $auction['total_impsalhces']) !!}
         </p>
@@ -25,8 +25,14 @@
             {!! $currency->getPriceSymbol(2, $auction['total_award']) !!}
         </p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auction['sub_asigl0'] }}"
-                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a>
+			{{-- tab --}}
+            {{-- <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $auction['sub_asigl0'] }}"
+                role="tab" aria-controls="settings">{{ trans("$theme-app.user_panel.see_detail") }}</a> --}}
+
+			{{-- open Modal --}}
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $auction['sub_asigl0'] }}" data-sub="{{ $auction['sub_asigl0'] }}">
+				{{ trans("$theme-app.user_panel.see_detail") }}
+			</button>
         </div>
     </div>
 </div>

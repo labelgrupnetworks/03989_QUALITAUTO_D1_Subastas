@@ -94,8 +94,10 @@
 				<div class="sales-header-wrapper">
 					<div class="table-grid_header sales-auctions_header">
 						<p>{{ trans("$theme-app.user_panel.date") }}</p>
-						<p>{{ trans("$theme-app.user_panel.auction") }}</p>
-						<p>
+						<p class="sales-auctions_description text-center text-md-start">
+							{{ trans("$theme-app.user_panel.auction") }}
+						</p>
+						<p class="text-center text-md-start">
 							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no") }} {{ trans("$theme-app.user_panel.lots") }}</span>
 							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.lots") }}</span>
 						</p>

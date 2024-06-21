@@ -37,7 +37,7 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                    <th scope="col" style="width: 10%">{{ trans("$theme-app.user_panel.date") }}</th>
                     <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}
                     </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.lots") }}</th>
@@ -45,7 +45,7 @@
                         {{ trans("$theme-app.user_panel.starting_price") }}
                     </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.actual_price") }}</th>
-					<th class="summary-icons" scope="col">
+					<th class="summary-icons" scope="col"></th>
                 </tr>
             </thead>
             <tbody>

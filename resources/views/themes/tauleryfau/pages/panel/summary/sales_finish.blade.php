@@ -44,7 +44,7 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">{{ trans("$theme-app.user_panel.date") }}</th>
+                    <th scope="col" style="width: 10%">{{ trans("$theme-app.user_panel.date") }}</th>
                     <th class="text-center text-md-start" scope="col">{{ trans("$theme-app.user_panel.auction") }}
                     </th>
                     <th class="hidden-xs" scope="col">{{ trans("$theme-app.user_panel.no_invoice") }}</th>

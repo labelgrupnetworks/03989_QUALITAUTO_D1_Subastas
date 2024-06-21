@@ -32,17 +32,23 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal-{{ $id }}" role="dialog"
+<div class="modal fade modal-lots-details" id="myModal-{{ $id }}" role="dialog"
     aria-labelledby="myModalLabel-{{ $id }}" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lot-detail" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal" type="button" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+
+
+                <h4 class="modal-title" id="myModalLabel">{{ trans("$theme-app.user_panel.detail") }}</h4>
+
+				<div class="modal-table-header"></div>
+				<div class="modal-auction-header"></div>
+
             </div>
             <div class="modal-body">
-                <div class="tab-pane" id="auction-details-{{ $id }}" role="tabpanel">
+                <div id="auction-details-{{ $id }}">
                     <h4 class="auction-details_title">
                         <div class="auction-details_title__file">
                             <span>{{ $title }}</span>
@@ -76,10 +82,6 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
-                <button class="btn btn-primary" type="button">Save changes</button>
             </div>
         </div>
     </div>

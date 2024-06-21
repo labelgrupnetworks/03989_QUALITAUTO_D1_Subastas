@@ -611,6 +611,10 @@ select#actual_currency {
 	max-width: none;
 }
 
+.lot-actions div.btn-puja-panel:not(.bid-mine) {
+	background-color: var(--btn-red);
+}
+
 .lot-actions .btn-puja-panel[disabled] {
 	opacity: 1;
 }
@@ -653,10 +657,6 @@ select#actual_currency {
 
 @media (min-width: 992px) {
 
-	.table-grid_header {
-		font-size: var(--fs-l);
-	}
-
 	.orders-auction {
 		--grid-columns-desktop: 12% 7% 30% repeat(3, 1fr) 10% 7%;
 	}
@@ -695,6 +695,10 @@ select#actual_currency {
 		font-size: 14px;
 	}
 
+	.orders-auction-ref, .orders-auction_lot .lot-desc {
+		padding-right: 2rem;
+	}
+
 	.orders-auction_lot > *:not(.lot-desc, .lot-actions) {
 		font-size: 14px;
 	}
@@ -719,8 +723,8 @@ select#actual_currency {
 }
 
 .allotments-page .panel-title {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
 }
 
 .sales-page .sticky-section {
@@ -830,9 +834,9 @@ select#actual_currency {
 	}
 
 	.sales-summary {
-		justify-content: center;
+		justify-content: space-evenly;
 		flex-wrap: wrap;
-		gap: 25px;
+		gap: 0;
 	}
 
 	.sales-summary_detail {
@@ -869,11 +873,13 @@ select#actual_currency {
 
 .sales-auctions.sales-active-auctions {
 	--grid-columns-desktop: 8% 16% 8% repeat(3, 16%) 1fr;
-	--grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr);
+	/* --grid-columns-mobile: repeat(2, 1fr) .5fr repeat(2, 1fr); */
+	--grid-columns-mobile: minmax(61px, .9fr) minmax(50px, .8fr) minmax(32px, .7fr) minmax(55px, 1fr) 1fr
 }
 
 .alltoments-auctions {
-	--grid-columns-desktop: 8% 16% 8% 12% minmax(16%, auto) 16% 1fr;
+	/* --grid-columns-desktop: 8% 16% 8% 12% minmax(16%, auto) 16% 1fr; */
+	--grid-columns-desktop: 10% 22% 10% 10% 15% 15% auto;
 	--grid-columns-mobile: repeat(3, 1fr) 2fr;
 }
 
@@ -930,6 +936,10 @@ p,
 	gap: var(--gap);
 }
 
+.sales-auctions_header {
+	gap: 0;
+}
+
 .sales-auction,
 .invoice-auction {
 	box-sizing: content-box;
@@ -945,6 +955,10 @@ p,
 	padding-right: var(--min-padding-to-page);
 	gap: var(--gap);
 	row-gap: 1.5rem;
+}
+
+.sales-auction {
+	column-gap: 0;
 }
 
 .empty-auction :is(.sales-auction, .invoice-auction) {
@@ -1035,11 +1049,13 @@ p,
 	.sales-auctions_header,
 	.alltoments-auctions_header {
 		grid-template-columns: var(--grid-columns-desktop);
+		gap: var(--gap);
 	}
 
 	.sales-auction,
 	.invoice-auction {
 		grid-template-columns: var(--grid-columns-desktop);
+		gap: var(--gap);
 	}
 
 	.sales-auction .btn,
@@ -1154,11 +1170,15 @@ p,
 .panel-lot {
 	display: grid;
 	gap: var(--gap);
+	row-gap: 1.5rem;
 	align-items: center;
 	padding: 1rem;
 	margin-bottom: 1rem;
 	border-bottom: 1px solid var(--color-gold);
 	grid-template-columns: var(--grid-columns-mobile);
+
+	padding-left: var(--min-padding-to-page);
+	padding-right: var(--min-padding-to-page);
 }
 
 .allotment-lot {
@@ -2323,5 +2343,85 @@ p,
 	.panel-lots.payment-lots .panel-lots_header-wrapper,
 	.panel-lots_header-wrapper {
 		display: block;
+	}
+}
+
+.modal-dialog.modal-lot-detail .modal-header {
+	padding: 0;
+}
+
+.modal-dialog.modal-lot-detail .modal-body {
+	padding-left: 0;
+	padding-right: 0;
+	max-height: calc(100vh * .65);
+	overflow-y: auto;
+}
+
+.modal-dialog.modal-lot-detail .modal-body > div {
+	width: 100%;
+}
+
+.modal-dialog.modal-lot-detail .modal-content {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: 3px solid var(--color-gold-dark);
+}
+
+.modal-dialog.modal-lot-detail .modal-title {
+	padding: 2rem var(--min-padding-to-page);
+}
+
+.modal-dialog.modal-lot-detail .modal-header .close {
+	margin-top: 1.5rem;
+	margin-right: 1.5rem;
+	font-size: 32px;
+}
+
+.modal-dialog.modal-lot-detail .actions{
+	display: none;
+}
+
+.modal-dialog.modal-lot-detail .auction-details_title {
+	display: none;
+}
+
+.modal .sales-auctions.sales-active-auctions {
+	--grid-columns-desktop: 1fr 1fr .5fr .5fr 1fr 1fr 1fr;
+	--grid-columns-mobile: 1fr 1fr 1fr 1fr;
+}
+
+.modal :is(.sales-auctions_description, .sales-auctions_actual-price) {
+	grid-column: span 1;
+}
+
+.modal .sales-auction-wrapper {
+	border-bottom: 0;
+}
+
+@media(max-width: 992px) {
+
+	.modal.modal-lots-details {
+		padding-right: 0 !important;
+	}
+
+	.modal-dialog.modal-lot-detail {
+		width: 100%;
+		height: 100vh;
+		margin: 0;
+	}
+
+	.modal-dialog.modal-lot-detail .modal-content {
+		border: 0;
+		border-radius: 0;
+	}
+
+	.modal-dialog.modal-lot-detail .modal-body {
+		max-height: none;
+	}
+}
+
+@media(min-width: 992px) {
+	.modal .sales-auctions_description {
+		grid-column: span 2;
 	}
 }

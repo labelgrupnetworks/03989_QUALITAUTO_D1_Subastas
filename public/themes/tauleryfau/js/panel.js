@@ -92,6 +92,44 @@ $(function () {
 		const hash = window.location.hash;
 		$(`[href="${hash}"]`).tab('show');
 	}
+
+	$('.modal-lots-details').on('show.bs.modal', function (e) {
+
+		const $modal = $(this);
+		const $button = $(e.relatedTarget);
+		const auctionId = $button.data('sub');
+
+		//if match query media
+		if (!isMatchMedia('992')) {
+
+			//width main element
+			const margin = 60;
+			const $mainElement = $('main');
+			const width = $mainElement.width() - margin;
+
+			const $asideElement = $('aside');
+			const asideWidth = $asideElement.width() + margin;
+
+			//set width modal
+			$modalDialog = $modal.find('.modal-dialog');
+			$modalDialog.css('width', `${width}px`);
+			$modalDialog.css('margin-left', `${asideWidth}px`);
+
+		}
+		//clone sales-auctions
+		const $wrapperElement = $('.sales-auctions').clone();
+
+		//inside $wrapperElement remove all sales-auction-wrapper except the one with data-sub
+		$wrapperElement.find('.sales-auction-wrapper').not(`[data-sub="${auctionId}"]`).remove();
+		$wrapperElement.find('.sales-auction-wrapper').removeClass('active');
+
+		//insert element clon in modal modal-table-header
+		$modal.find('.modal-table-header').html($wrapperElement);
+	});
+
+	$('.modal-lots-details').on('hide.bs.modal', function (e) {
+		$(this).find('.modal-table-header').empty();
+	});
 });
 
 function salesAuctionOnClickHandler(event, callbackAnAuction, callbackTotals) {
