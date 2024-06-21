@@ -11,7 +11,7 @@
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
-<div class="sales-auction-wrapper" data-type="finish" data-sub="{{ $auctionData->sub_asigl0 }}" data-id="{{ $auctionData->sub_asigl0 }}">
+<div class="sales-auction-wrapper" data-type="finish" data-sub="{{ $auctionData->sub_asigl0 }}" data-id="{{ $auctionData->sub_asigl0 }}" data-auction-wrapper>
     <div class="sales-auction">
         <p>
             {{ $dateValue }}

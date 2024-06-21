@@ -89,7 +89,7 @@
 
         <div class="sales-auctions-block">
 
-			<div class="sales-auctions sales-active-auctions">
+			<div class="sales-auctions sales-active-auctions" data-detail-block>
 
 				<div class="sales-header-wrapper">
 					<div class="table-grid_header sales-auctions_header">

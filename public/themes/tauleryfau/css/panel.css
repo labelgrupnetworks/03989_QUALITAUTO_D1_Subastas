@@ -2405,6 +2405,10 @@ p,
 	--grid-columns-desktop: 10% .75fr 7% 14% 14% 10% 32px;
 }
 
+.modal .alltoments-auctions {
+	--grid-columns-desktop: 10% 25% 10% 10% 20% 15%;
+}
+
 .modal :is(.sales-auctions_description, .sales-auctions_actual-price) {
 	grid-column: span 1;
 }
@@ -2432,6 +2436,10 @@ p,
 
 	.modal-dialog.modal-lot-detail .modal-body {
 		max-height: none;
+	}
+
+	.modal :is(.alltoments-auctions_header, .invoice-auction) {
+		justify-content: center;
 	}
 }
 

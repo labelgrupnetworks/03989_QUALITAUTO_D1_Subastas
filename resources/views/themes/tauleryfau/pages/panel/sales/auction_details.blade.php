@@ -1,4 +1,4 @@
-<div class="tab-pane" id="auction-details-{{ $id }}" role="tabpanel">
+{{-- <div class="tab-pane" id="auction-details-{{ $id }}" role="tabpanel">
     <h4 class="auction-details_title">
         <div class="auction-details_title__file">
             <span>{{ $title }}</span>
@@ -29,7 +29,7 @@
             ])
         @endforeach
     </div>
-</div>
+</div> --}}
 
 <!-- Modal -->
 <div class="modal fade modal-lots-details" id="myModal-{{ $id }}" role="dialog"

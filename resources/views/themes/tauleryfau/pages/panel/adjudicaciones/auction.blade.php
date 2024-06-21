@@ -12,7 +12,7 @@
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
 @endphp
 
-<div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}">
+<div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}" data-auction-wrapper>
     <div class="invoice-auction">
         <p>
             {{ date('d/m/Y', strtotime($document->fecha_csub)) }}
@@ -61,10 +61,15 @@
             @endif
         </p>
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
+            {{-- <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
                 role="tab" aria-controls="settings">
                 {{ trans("$theme-app.user_panel.see_detail") }}
-            </a>
+            </a> --}}
+
+			{{-- open Modal --}}
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $id }}" data-id="{{ $id }}">
+				{{ trans("$theme-app.user_panel.see_detail") }}
+			</button>
         </div>
     </div>
 </div>

@@ -134,7 +134,7 @@
 
         <div class="sales-auctions-block">
 
-            <div class="sales-auctions sales-finish-auctions">
+            <div class="sales-auctions sales-finish-auctions" data-detail-block>
 
                 <div class="sales-header-wrapper">
                     <div class="table-grid_header header sales-auctions_header">

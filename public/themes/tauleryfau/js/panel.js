@@ -117,11 +117,11 @@ $(function () {
 
 		}
 		//clone sales-auctions
-		const $wrapperElement = $('.sales-auctions').clone();
+		const $wrapperElement = $('[data-detail-block]').clone();
 
 		//inside $wrapperElement remove all sales-auction-wrapper except the one with data-sub
-		$wrapperElement.find('.sales-auction-wrapper').not(`[data-id="${auctionId}"]`).remove();
-		$wrapperElement.find('.sales-auction-wrapper').removeClass('active');
+		$wrapperElement.find('[data-auction-wrapper]').not(`[data-id="${auctionId}"]`).remove();
+		$wrapperElement.find('[data-auction-wrapper]').removeClass('active');
 
 		//insert element clon in modal modal-table-header
 		$modal.find('.modal-table-header').html($wrapperElement);

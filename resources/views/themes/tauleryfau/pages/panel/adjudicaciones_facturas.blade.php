@@ -60,7 +60,7 @@
         </div>
 
 
-        <div class="allotments-auctions-block">
+        <div class="allotments-auctions-block" data-detail-block>
             <div class="alltoments-auctions">
 
                 <div class="alltoments-header-wrapper">

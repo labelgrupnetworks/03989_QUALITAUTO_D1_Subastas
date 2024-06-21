@@ -34,7 +34,7 @@
 @endphp
 
 <div class="invoice-wrapper" data-type="pending-bill" data-id="{{ $id }}" data-anum="{{ $anum }}"
-    data-num="{{ $num }}" data-efec="{{ $efec ?? '' }}">
+    data-num="{{ $num }}" data-efec="{{ $efec ?? '' }}" data-auction-wrapper>
 
     <div class="invoice-auction">
         <p>
@@ -81,10 +81,15 @@
         </div>
 
         <div class="actions">
-            <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
+            {{-- <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
                 role="tab" aria-controls="settings">
                 {{ trans("$theme-app.user_panel.see_detail") }}
-            </a>
+            </a> --}}
+
+			{{-- open Modal --}}
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $id }}" data-id="{{ $id }}">
+				{{ trans("$theme-app.user_panel.see_detail") }}
+			</button>
         </div>
     </div>
 </div>
