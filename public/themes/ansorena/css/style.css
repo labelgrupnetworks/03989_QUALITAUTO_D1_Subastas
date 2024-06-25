@@ -1841,6 +1841,10 @@ section.recomendados .section-title {
 	}
 }
 
+.article-card {
+	font-family: var(--font-jewelry);
+}
+
 .article-card a {
 	display: block;
 }
@@ -1914,6 +1918,7 @@ section.recomendados .section-title {
 }
 
 .articles-ficha .ficha-info {
+	font-family: var(--font-jewelry);
 	gap: 1.5rem;
 	font-size: 18px;
 	letter-spacing: 0.03em;
