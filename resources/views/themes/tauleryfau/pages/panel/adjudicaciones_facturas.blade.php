@@ -70,9 +70,8 @@
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
                         <p class="allotment-auctions_header-imp">{{ trans("$theme-app.user_panel.total_bill") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
+                        <p class="visible-md visible-lg"></p>
+                        <p class="visible-md visible-lg"></p>
                     </div>
                 </div>
 

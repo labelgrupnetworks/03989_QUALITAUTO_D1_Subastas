@@ -119,6 +119,11 @@ div.btn-color:active {
 	--btn-bg-hover: var(--color-gold);
 	--btn-bc-hover: var(--color-gold);
 	--btn-color-hover: #fff;
+	outline: none;
+}
+
+.btn-lb-outline:focus {
+	outline: none;
 }
 
 .btn-lb-success {
@@ -275,7 +280,7 @@ aside a {
 }
 
 aside ul {
-	font-size: var(--fs-l);
+	font-size: 13px;
 	padding-top: 2rem;
 }
 
@@ -296,8 +301,8 @@ aside li :is(a, a:hover) {
 }
 
 aside svg {
-	width: 20px;
-	height: 20px;
+	width: 16px;
+	height: 16px;
 }
 
 aside .panel_banner {
@@ -371,10 +376,11 @@ a.toggle-icon:is(:hover, :focus) {
 
 	aside ul.collapse {
 		display: block;
+		margin-left: -15px;
 	}
 
 	aside li :is(a, a:hover) {
-		padding: 12px 36px;
+		padding: 12px 36px 12px 50px;
 	}
 
 	aside .panel_banner {
@@ -412,7 +418,7 @@ a.toggle-icon:is(:hover, :focus) {
 }
 
 .panel_user .panel_user-data p {
-	font-size: var(--fs-l);
+	font-size: 14px;
 	font-weight: 500;
 }
 
@@ -792,8 +798,8 @@ select#actual_currency {
 	justify-content: space-around;
 	flex-wrap: wrap;
 	gap: 5px;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	padding-top: 3.5rem;
+	padding-bottom: 3.5rem;
 }
 
 .sales-summary_detail {
@@ -830,7 +836,7 @@ select#actual_currency {
 	.sales-page .sticky-section {
 		position: sticky;
 		padding: 15px;
-		top: 70px;
+		top: var(--header-height, 70px);
 	}
 
 	.sales-summary {
@@ -921,6 +927,12 @@ p,
 .sales-header-wrapper,
 .alltoments-header-wrapper {
 	border-bottom: 1px solid var(--color-gold);
+
+	position: sticky;
+	top: 90px;
+	background-color: #fff;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .sales-auctions_header,
@@ -1017,6 +1029,10 @@ p,
 	padding-right: 8px;
 }
 
+.invoice-auction .btn-lb-secondary {
+	font-weight: 700;
+}
+
 .invoice-auction .allotment-invoice_state {
 	order: 5;
 	grid-column: span 2;
@@ -1043,6 +1059,10 @@ p,
 }
 
 @media(min-width: 992px) {
+
+	.alltoments-header-wrapper, .sales-header-wrapper {
+		top: var(--sales-height, 70px);
+	}
 
 	.sales-auctions.sales-finish-auctions {
 		text-align: left;
@@ -1960,6 +1980,10 @@ p,
 	padding-right: var(--min-padding-to-page);
 }
 
+.summary-subtitle a:hover {
+	color: inherit;
+}
+
 .summary-allotments,
 .summary-sales {
 	/* border: 1px solid var(--color-gold-dark); */
@@ -2001,6 +2025,10 @@ p,
 
 .summary-icons {
 	display: none;
+}
+
+.table-active-sales .summary-icons {
+	display: table-cell;
 }
 
 .summary-allotments :is(.sales-auction, .invoice-auction) {
@@ -2302,9 +2330,19 @@ p,
 		padding: 0;
 	}
 
+	.summary-allotments .summary-subtitle {
+		padding-top: 2rem;
+		padding-left: 2rem;
+	}
+
 	.summary-sales_header {
 		flex-direction: row;
 		align-items: center;
+		padding-top: 2rem;
+	}
+
+	.summary-sales .summary-subtitle {
+		padding-left: 2rem;
 	}
 
 	.summary-page .table>:is(tbody, thead) tr>:is(td, th):first-child {
@@ -2346,7 +2384,7 @@ p,
 	}
 
 	.summary-lot .lot-image img {
-		height: 115px;
+		height: 120px;
 	}
 
 	.panel-lots.allotments-lots .panel-lots_header-wrapper,

@@ -4990,6 +4990,44 @@ class Subasta extends Model
 		return $nextScale->scale ?? 0;
 	}
 
+	public function getActiveAuctionsUserHasBids()
+	{
+		$auctions = FgSub::query()
+			->select('cod_sub')
+			->joinlangSub()
+			->where('subc_sub', FgSub::SUBC_SUB_ACTIVO)
+			->whereExists(function($query) {
+				$query->select(DB::raw(1))
+					->from('fgasigl1')
+					->join('fglicit', 'fglicit.emp_licit = fgasigl1.emp_asigl1 and fglicit.cod_licit = fgasigl1.licit_asigl1 and fglicit.sub_licit = fgasigl1.sub_asigl1')
+					->whereColumn('fgasigl1.sub_asigl1', 'fgsub.cod_sub')
+					->where('fgasigl1.emp_asigl1', Config::get('app.emp'))
+					->where('fglicit.cli_licit', $this->licit);
+				})
+			->get();
+
+		return $auctions;
+	}
+
+	public function getActiveAuctionsUserHasFavorites()
+	{
+		$auctions = FgSub::query()
+			->select('cod_sub')
+			->joinlangSub()
+			->where('subc_sub', FgSub::SUBC_SUB_ACTIVO)
+			->whereExists(function($query) {
+				$query->select(DB::raw(1))
+					->from('web_favorites')
+					->whereColumn('web_favorites.id_sub', 'fgsub.cod_sub')
+					->whereColumn('web_favorites.id_emp', 'fgsub.emp_sub')
+					->where('web_favorites.cod_cli', $this->licit);
+				})
+			->get();
+
+		return $auctions;
+	}
+
+
     /* comento el tema de enviar email de puja es para salaretiro, Josep comenta que de momento no se envie
     function send_email_bid($cod,$ref,$licit,$imp) {
 

@@ -2033,7 +2033,10 @@ class UserController extends Controller
 		}
         $sub = new Subasta();
         $sub->licit = Session::get('user.cod');
-        $subastas_active = $sub->auctionList ('S');
+
+		$subastas_active = $favorites
+			? $sub->getActiveAuctionsUserHasFavorites()
+		 	: $sub->getActiveAuctionsUserHasBids();
 
 		$auctionsAvailables = Arr::pluck($subastas_active, 'des_sub', 'cod_sub');
 

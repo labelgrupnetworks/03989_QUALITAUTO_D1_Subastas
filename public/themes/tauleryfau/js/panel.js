@@ -31,7 +31,12 @@ function initializeSubmenuPanel() {
 
 function addHeaderHeight() {
 	$headerHeight = $('body > header').height();
-	$('aside').css('--header-height', $headerHeight + 'px');
+	$('body').css('--header-height', $headerHeight + 'px');
+
+	if($('.sticky-section').length > 0) {
+		$stickySection = $('.sticky-section').height();
+		$('body').css('--sales-height', ($headerHeight + $stickySection + 25) + 'px');
+	}
 }
 
 function salesAnimationCounter() {
@@ -339,6 +344,7 @@ function getAllotmentsAndBills() {
 		},
 		success: function (response) {
 			$block.html(response);
+			$('.js-pay-bill').on('submit', payFactura)
 		},
 		error: function (error) {
 			console.log(error);

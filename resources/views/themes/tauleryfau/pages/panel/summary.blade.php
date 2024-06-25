@@ -55,7 +55,11 @@
 
         <div class="summary_body">
             <div class="summary-allotments">
-                <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.my_pending_bills") }}</h4>
+                <h4 class="summary-subtitle">
+					<a href="{{ route('panel.allotment-bills', ['lang' => config('app.locale')]) }}">
+						{{ trans("$theme-app.user_panel.my_pending_bills") }}
+					</a>
+				</h4>
                 <div class="loader-box">
                     <div class="loading-wrapper">
                         <div class="loader-a">
@@ -77,7 +81,11 @@
                     </div>
                 </div>
                 <div class="summary-sales_header">
-                    <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.my_assignments") }}</h4>
+                    <h4 class="summary-subtitle">
+						<a href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
+							{{ trans("$theme-app.user_panel.my_assignments") }}
+						</a>
+					</h4>
                     <div class="sales-menu">
                         <a class="btn btn-lb btn-lb-outline" onclick="getPendingSales(this)">
                             <span>{{ trans("$theme-app.user_panel.pendings") }}</span>
@@ -96,7 +104,14 @@
             </div>
 
             <div class="summary-orders">
-                <h4 class="summary-subtitle">{{ trans("$theme-app.user_panel.orders") }} | {{ trans("$theme-app.user_panel.favorites") }}</h4>
+                <h4 class="summary-subtitle">
+					<a href="{{ route('panel.orders', ['lang' => config('app.locale')]) }}">
+						{{ trans("$theme-app.user_panel.orders") }}
+					</a> |
+					<a href="{{ route('panel.orders', ['lang' => config('app.locale'), 'favorites' => '1']) }}">
+						{{ trans("$theme-app.user_panel.favorites") }}
+					</a>
+				</h4>
                 <div class="loader-box">
                     <div class="loading-wrapper">
                         <div class="loader-a">

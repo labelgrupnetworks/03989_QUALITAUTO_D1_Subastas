@@ -34,7 +34,7 @@
 
     <div class="sales-auctions-block">
 
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover table-active-sales">
             <thead>
                 <tr>
                     <th scope="col" style="width: 10%">{{ trans("$theme-app.user_panel.date") }}</th>
@@ -45,7 +45,7 @@
                         {{ trans("$theme-app.user_panel.starting_price") }}
                     </th>
                     <th scope="col">{{ trans("$theme-app.user_panel.actual_price") }}</th>
-					<th class="summary-icons" scope="col"></th>
+					<th class="summary-icons visible" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
