@@ -66,9 +66,9 @@
                     <fieldset>
                         <legend>{{ trans("$theme-app.user_panel.billing_address") }}</legend>
 
-                        <div class="">
+                        <div class="form-group">
                             <label>{{ trans($theme . '-app.login_register.pais') }}</label>
-                            {!! \FormLib::SelectWithCountries('pais', $data['user']->codpais_cli, $countries) !!}
+							{!! \FormLib::TextReadOnly('pais', 1, $countries[$data['user']->codpais_cli]) !!}
                         </div>
 
                         @if ($data['user']->fisjur_cli == 'J')
@@ -76,20 +76,20 @@
                                 <div class="col-xs-12 col-md-5">
                                     <div class="form-group">
                                         <label>{{ trans($theme . '-app.login_register.company') }}</label>
-                                        {!! \FormLib::Text('rsoc_cli', 1, $data['user']->rsoc_cli) !!}
+										{!! \FormLib::TextReadOnly('rsoc_cli', 1, $data['user']->rsoc_cli) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-md-7">
                                     <div class="form-group">
                                         <label>{{ trans($theme . '-app.login_register.contact') }}</label>
-                                        {!! \FormLib::Text('usuario', 1, $data['user']->nom_cli) !!}
+                                        {!! \FormLib::TextReadOnly('usuario', 1, $data['user']->nom_cli) !!}
                                     </div>
                                 </div>
                             </div>
                         @else
                             <div class="form-group">
                                 <label for="nombre">{{ trans($theme . '-app.user_panel.name') }}</label>
-                                {!! \FormLib::Text('usuario', 1, $data['user']->nom_cli) !!}
+                                {!! \FormLib::TextReadOnly('usuario', 1, $data['user']->nom_cli) !!}
                             </div>
                         @endif
 

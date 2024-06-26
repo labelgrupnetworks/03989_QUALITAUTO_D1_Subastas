@@ -206,8 +206,6 @@ function refreshActiveSummary(cod_sub) {
 
 /**
  * user panel profile events
- * @todo
- * [] - modificar selectores para que sean más específicos
  */
 $(function () {
 	$('.address-form-section [data-toggle="collapse"]').click(addressCollapsesClickHandler);
@@ -224,7 +222,6 @@ $(function () {
 		reader.readAsDataURL(file);
 	});
 
-	//if form name="summary-form" submit
 	$('#summary-form').on('submit', function (event) {
 		event.preventDefault();
 
@@ -446,11 +443,7 @@ changeCurrencyNew = function (price, exchange, object) {
 
 function elementCurrencyFormat($element) {
 
-	/* if(!isMatchMedia('760')) {
-		return CURRENCY_FORMATS.FULL;
-	} */
 	let format;
-
 	try {
 		format = $element.data('small-format') ?? $element.data('format');
 	}
@@ -477,3 +470,20 @@ function roundNumber(number) {
 }
 
 
+$(function () {
+	//No mostrar el cambio de divisa si la divisa es EUR en pasarela de pago
+	const gatewayObserver = new MutationObserver(function (mutations) {
+		mutations.forEach(function (mutation) {
+			const element = mutation.target;
+			const exchange = $('#actual_currency').val();
+			const display = exchange === 'EUR' ? 'none' : 'inline';
+			element.style.display = display;
+		});
+	});
+
+	const config = { attributes: false, childList: true, subtree: true };
+
+	document.querySelectorAll('.summary_total_imports .js-divisa').forEach(function (element) {
+		gatewayObserver.observe(element, config);
+	});
+});

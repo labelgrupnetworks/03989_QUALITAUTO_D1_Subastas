@@ -3193,7 +3193,8 @@ class UserController extends Controller
 		$lotsQuery = FgHces1::query()
 			->whereOwner($cod_cli, false)
 			->notInAuction()
-			->isVisibleWeb();
+			->isVisibleWeb()
+			->isNotReturnedOrWithdrawn();
 
 		$numsHces = $lotsQuery->clone()
 			->select('num_hces1')

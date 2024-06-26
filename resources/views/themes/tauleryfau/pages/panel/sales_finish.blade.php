@@ -141,7 +141,7 @@
                         <p>{{ trans("$theme-app.user_panel.date") }}</p>
                         <p>{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
-                        <p>{{ trans("$theme-app.user_panel.total_liquidation") }}</p>
+                        <p>{{ trans("$theme-app.user_panel.settlement") }}</p>
                         <p>
 							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.outstanding_amount") }}</span>
 							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.outstanding_amount_abbr") }}</span>

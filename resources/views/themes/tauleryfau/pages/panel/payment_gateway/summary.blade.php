@@ -59,15 +59,15 @@
                         <span class="precio_final_{{ $cod_sub }}"></span>
                         <span>{{ trans("$theme-app.lot.eur") }}</span>
                     </div>
-                    {{-- <div>
+                    <div>
                         <span class="js-divisa precio_final_{{ $cod_sub }}"></span>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
 
             <div class="summary_buttons">
 				<a class="btn btn-lb btn-lb-outline w-100" href="#auction-details-{{ $cod_sub }}">
-					{{ trans("$theme-app.user_panel.see_detail") }}s
+					{{ trans("$theme-app.user_panel.see_detail") }}
 				</a>
 
                 @if ($isCompraWeb)

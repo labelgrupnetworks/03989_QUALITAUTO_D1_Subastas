@@ -109,6 +109,13 @@ class FgHces1 extends Model
 		return $query->where('web_hces1', 'S');
 	}
 
+	public function scopeIsNotReturnedOrWithdrawn($query)
+	{
+		return $query->where('fac_hces1', '!=', 'D')
+			->where('fac_hces1', '!=', 'R');
+
+	}
+
 	public function scopelog($query)
 	{
 		return $query->joinUsr()->select("FSUSR.NOM_USR, FGHCES1.*");

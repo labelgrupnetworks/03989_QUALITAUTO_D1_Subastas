@@ -105,7 +105,7 @@
 
 
         <div class="panel-lots pending-lots">
-            <div class="panel-lots_header-wrapper">
+            <div class="panel-lots_header-wrapper sales-pending-header-wrapper">
                 <div class="table-grid_header panel-lots_header">
                     <p></p>
                     <p>{{ trans("$theme-app.user_panel.assignment") }}</p>
