@@ -157,6 +157,15 @@
 				@include('includes.ficha.ficha_pujas')
 			</section>
 
+			@if (!$retirado && !$devuelto && !$fact_devuelta && (($subasta_online || ($subasta_web && $subasta_abierta_P && !$start_session)) && !$cerrado))
+			<p class="p-2">
+				<a href="/themes/{{ $theme }}/assets/files/guia-de-como-pujar.pdf" target="_blank">
+					@include('components.boostrap_icon', ['icon' => 'file-earmark-pdf-fill', 'size' => '18', 'color' => 'red'])
+					{{ trans("$theme-app.lot.how_bid_guide") }}
+				</a>
+			</p>
+			@endif
+
 			<section class="ficha-history">
 				@if (
 					($subasta_online || $subasta_inversa || ($subasta_web && $subasta_abierta_P) || $subasta_make_offer) &&

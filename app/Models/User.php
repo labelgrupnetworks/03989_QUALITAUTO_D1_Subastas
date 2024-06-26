@@ -1415,26 +1415,34 @@ class User
 			$cod_cli = $this->cod_cli;
 		}
 
-		if(!$cod_cli) {
+		if(!$cod_cli || !$files) {
 			return false;
 		}
 
 		$storage = Storage::disk('client');
-		$relativePath = "$cod_cli/files";
+		$filesPath = self::getClientFilesPath($cod_cli);
 
-		if(!$files){
-			return false;
-		}
-
-		if (!$storage->exists($relativePath)) {
-			$storage->makeDirectory($relativePath);
+		if (!$storage->exists($filesPath)) {
+			$storage->makeDirectory($filesPath);
 		}
 
 		foreach ($files as $file) {
-			$storage->putFileAs($relativePath, $file, $file->getClientOriginalName());
+			$storage->putFileAs($filesPath, $file, $file->getClientOriginalName());
 		}
 
 		return true;
+	}
+
+	public function getFiles($codCli)
+	{
+		$storage = Storage::disk('client');
+		$filesPath = self::getClientFilesPath($codCli);
+		return $storage->files($filesPath);
+	}
+
+	public static function getClientFilesPath($codCli)
+	{
+		return "/$codCli/files";
 	}
 
 	/**

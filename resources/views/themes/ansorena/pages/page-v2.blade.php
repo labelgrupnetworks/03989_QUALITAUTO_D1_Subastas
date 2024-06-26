@@ -25,7 +25,7 @@
 
         $menuEstaticoHtml = null;
         #recogemos el valor del banner en $matches[1], en $matches[0] esta todo el código escrito [*BANNER-x*]
-        $menusEstaticos = ['MENUCONDECORACIONES', 'MENUANSORENA', 'MENUJOYAS', 'MENUSUBASTAS', 'MENUSUBASTAS'];
+        $menusEstaticos = ['MENUCONDECORACIONES', 'MENUANSORENA', 'MENUJOYAS', 'MENUSUBASTAS', 'MENUJOYERIA'];
 
         foreach ($menusEstaticos as $key) {
             #si aun no ha encontrado un menu que sustituir

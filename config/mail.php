@@ -58,9 +58,9 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-			/* 'allow_self_signed' => true,
-			'verify_peer' => false,
-			'verify_peer_name' => false, */
+			'allow_self_signed' => filter_var(env('MAIL_ALLOW_SELF_SIGNED', false), FILTER_VALIDATE_BOOLEAN),
+			'verify_peer' => filter_var(env('MAIL_VERIFY_PEER', true), FILTER_VALIDATE_BOOLEAN),
+			'verify_peer_name' => filter_var(env('MAIL_VERIFY_PEER_NAME', true), FILTER_VALIDATE_BOOLEAN),
         ],
 		'log_mail' => [
             'transport' => 'smtp',

@@ -26,6 +26,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FxClid;
 use App\Http\Controllers\V5\PayShoppingCartController;
 use App\Http\Controllers\V5\DepositController;
+use App\Http\Controllers\V5\PayArticleCartController;
 use App\libs\PayPalV2API;
 use App\Models\delivery\Delivery_default;
 use App\Models\V5\FsParams;
@@ -996,7 +997,7 @@ class PaymentsController extends Controller
 
 
 		#Redsys recomienda que no haya letras en los 4 primeros digitos de la idorden, por lo que substituimos la F y P por 0 y 1 respectivamente
-		$ordenTrans = str_replace(["F","P","T", "M","D"], [0,1,2,3,4], $ordenTrans);
+		$ordenTrans = str_replace(["F", "P", "T", "M", "D", "C"], [0,1,2,3,4,5], $ordenTrans);
 
 		$miObj = new RedsysAPI;
 
@@ -1247,6 +1248,7 @@ class PaymentsController extends Controller
 	public function pagoDirectoReturnRedsys($multiTpvCode=null)
 	{
 		try{
+			\Log::info('Return pago con redsys');
 			$redsys = new RedsysAPI;
 			$request = request()->all();
 
@@ -1298,6 +1300,9 @@ class PaymentsController extends Controller
 							#Llamamos a la funcion de depositController para que lo
 							$depositController = new DepositController();
 							$depositController->returnPay($merchantId);
+							return;
+						}elseif($tipoPago == '5') {
+							(new PayArticleCartController)->returnPay(substr($returnedVars->Ds_Order,1));
 							return;
 						}
 						#dividimos por cien por que al ser € se ha multiplicado antes por 100, Redsys no trabaja con decimales

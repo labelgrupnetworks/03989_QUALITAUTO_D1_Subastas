@@ -32,6 +32,7 @@ class VerifyCsrfToken extends Middleware
         "*/login/subalia*",
         "*/register_subalia",
 		"/articleCart/returnpayup2",
+		"/articleCart/returnPay",
 		"/carlandia/confirmPayment",
 		"phpsock*",
 		"*response_redsys*",

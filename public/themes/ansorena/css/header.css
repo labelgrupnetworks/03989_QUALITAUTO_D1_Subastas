@@ -1,3 +1,24 @@
+@font-face {
+	font-family: 'deng';
+	src: url("/themes/ansorena/assets/fonts/Dengl.otf") format("opentype");
+	font-weight: 100;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'deng';
+	src: url("/themes/ansorena/assets/fonts/Deng.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'deng';
+	src: url("/themes/ansorena/assets/fonts/Dengb.otf") format("opentype");
+	font-weight: 600;
+	font-style: normal;
+}
+
 :root {
 	--bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 	--navbar-close-icon: url("data:image/svg+xml,%3Csvg width='19' height='18' viewBox='0 0 19 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='1.35355' y1='0.646447' x2='18.3241' y2='17.617' stroke='%230F0E0D'/%3E%3Cline x1='1.13082' y1='17.6464' x2='18.1308' y2='0.646446' stroke='%230F0E0D'/%3E%3C/svg%3E");
@@ -24,6 +45,7 @@
 	--color-red: 0, 81%, 50%;
 	--font-prominent: "ivypresto-headline", serif;
 	--font-basic: "forma-djr-deck", sans-serif;
+	--font-jewelry: "deng", sans-serif;
 	--scroll-sticky: 190px;
 
 	--lot-background: hsl(0, 0%, 96%);

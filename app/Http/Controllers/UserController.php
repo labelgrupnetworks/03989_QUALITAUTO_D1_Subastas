@@ -1558,6 +1558,14 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
+
+		if(Config::get('app.client_files_erp', false)){
+			$enterpriseParams = (new Enterprise)->getParameters();
+			$emp = $enterpriseParams->documentaciongemp_prmgt == 'S'
+				? Config::get('app.gemp')
+				: Config::get('app.emp');
+		}
+
 		$path = match (Config::get('app.dni_in_storage', false)) {
 			"dni-files" => storage_path("app/files/dni/$emp/$cod_cli/files/"),
 			"cli-documentation" => storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
