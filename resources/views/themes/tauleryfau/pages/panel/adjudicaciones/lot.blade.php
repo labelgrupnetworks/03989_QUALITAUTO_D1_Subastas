@@ -33,11 +33,15 @@
         </div>
 
         <div class="panel-lot_buttons">
-            <a class="btn btn-lb btn-lb-primary" href="{{ $urlHqPhoto }}"
-                @if ($isPayed) download="{{ $ref }}_{{ $title }}" @endif
-                @disabled(!$isPayed)>
+			@if($isPayed)
+			<a class="btn btn-lb btn-lb-primary" href="{{ $urlHqPhoto }}" download="{{ $ref }}_{{ $title }}">
                 {{ trans("$theme-app.lot.photo") }}
             </a>
+			@else
+            <a class="btn btn-lb btn-lb-primary disable" disabled>
+                {{ trans("$theme-app.lot.photo") }}
+            </a>
+			@endif
 
             <a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}" @disabled(!$isPayed)
                 @class([

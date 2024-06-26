@@ -1157,7 +1157,7 @@ p,
 .panel-lots.pending-lots {
 	--grid-columns-desktop: 16% 8% 8% 2fr 1fr 1fr;
 	--grid-columns-mobile: 3fr 1.5fr 1fr;
-	--max-width: 1000px;
+	--max-width: 1500px;
 }
 
 .panel-lots.allotments-lots {
@@ -1634,7 +1634,7 @@ p,
 
 .summary_buttons .btn-lb-outline {
 	font-weight: 400;
-	text-transform: capitalize;
+	text-transform: initial;
 	font-size: 13px;
 }
 

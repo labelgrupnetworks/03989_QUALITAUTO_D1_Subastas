@@ -18,7 +18,7 @@
     </script>
 
     <section class="sales-page">
-        <div class="">
+        <div class="sticky-section">
             <div class="panel-title">
                 <h1>{{ trans("$theme-app.user_panel.my_assignments") }}</h1>
 
