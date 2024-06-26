@@ -54,7 +54,9 @@
     </td>
 
     <td class="summary-icons">
-        <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
-            width="20.25">
+		<a href="{{ $link }}">
+			<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+				width="20.25">
+		</a>
     </td>
 </tr>

@@ -52,12 +52,16 @@
                 </form>
             @endif
         @else
-            <span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
+			<a href="{{ $link }}">
+            	<span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
+			</a>
         @endif
     </td>
 
     <td class="summary-icons">
-        <img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
-            width="20.25">
+		<a href="{{ $link }}">
+			<img src="/themes/{{ $theme }}/assets/icons/eye-regular.svg" alt="go to" style="display: block"
+				width="20.25">
+		</a>
     </td>
 </tr>
