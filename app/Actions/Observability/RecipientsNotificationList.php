@@ -14,6 +14,9 @@ class RecipientsNotificationList
 		}
 
 		$recipients = [
+			'debug' => [
+				'enadal@labelgrup.com'
+			],
 			'web' => [
 				'rsanchez@labelgrup.com',
 				'llandeira@labelgrup.com',
@@ -32,6 +35,11 @@ class RecipientsNotificationList
 		];
 
 		return $recipients[$deparment];
+	}
+
+	public function getDebugTeam()
+	{
+		return $this->recipients('debug');
 	}
 
 	public function getWebTeam()
