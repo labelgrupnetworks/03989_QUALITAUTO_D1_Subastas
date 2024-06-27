@@ -187,7 +187,7 @@ class SummaryController extends Controller
 		$sub->licit = Session::get('user.cod');
 		$sub->page  = 'all';
 
-		$lots = $sub->getAllBidsAndOrders(true);
+		$lots = $sub->getAllBidsAndOrders(true, true);
 		$currency = new Currency();
 		$divisa = Session::get('user.currency', 'EUR');
 		$currency->setDivisa($divisa);

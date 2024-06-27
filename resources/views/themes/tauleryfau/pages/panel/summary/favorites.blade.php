@@ -8,19 +8,9 @@
             $tileFriendly = str_slug($inf_lot->titulo_hces1);
             $sesionFriendly = str_slug($inf_lot->session_name);
             $lotUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions/$inf_lot->ref_asigl0-$inf_lot->num_hces1-$tileFriendly";
-            $lotLiveUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions";
-
             $url_friendly = Routing::translateSeo('lote') . $lotUrl;
-            $urlLive = Routing::translateSeo('api/subasta') . $lotLiveUrl;
 
-            $style = 'other';
-            $bid_mine = false;
-            if ($inf_lot->cod_licit == $inf_lot->licit_winner_bid) {
-                $style = 'mine';
-                $bid_mine = true;
-            } elseif (!Config::get('app.notice_over_bid') && $inf_lot->tipo_sub == 'W') {
-                $style = 'gold';
-            }
+            $bid_mine = $inf_lot->cod_licit == $inf_lot->licit_winner_bid;
 
             $escalado = new \App\Models\Subasta();
             $escalado->cod = $inf_lot->cod_sub;
@@ -60,7 +50,11 @@
                 <p class="lot-actual">
 					@if(!empty($inf_lot->implic_hces1))
                     <span>
+						@if($isClose)
+						{{ trans("$theme-app.user_panel.awarded") }}
+						@else
                         {{ trans("$theme-app.lot.puja_actual") }}
+						@endif
                     </span>
                     <span class="js-divisa" data-format="0,0" value="{{ $inf_lot->implic_hces1 }}">
                         {!! $currency->getPriceSymbol(0, $inf_lot->implic_hces1) !!}

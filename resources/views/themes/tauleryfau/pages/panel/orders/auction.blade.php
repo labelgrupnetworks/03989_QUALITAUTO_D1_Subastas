@@ -18,7 +18,7 @@
             </div>
 
             <div>
-                <p>{{ trans($theme . '-app.lot.lot-price') }}</p>
+                <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
             </div>
 
             <div>
@@ -26,7 +26,7 @@
                     @if ($subasta_finalizada)
                         {{ trans($theme . '-app.user_panel.awarded') }}
                     @else
-                        {{ trans($theme . '-app.user_panel.mi_puja') }}
+                        {{ trans($theme . '-app.lot.puja_actual') }}
                     @endif
                 </p>
             </div>

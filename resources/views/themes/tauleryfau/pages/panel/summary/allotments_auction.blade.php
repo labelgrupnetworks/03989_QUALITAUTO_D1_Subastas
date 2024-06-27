@@ -32,8 +32,8 @@
     </td>
     <td>
         <a href="{{ $link }}">
-            <p class="js-divisa fw-bold" value="{{ $document->total_imp_invoice ?? 0 }}">
-                {!! $currency->getPriceSymbol(2, $document->total_imp_invoice ?? 0) !!}
+            <p class="js-divisa fw-bold" value="{{ $sumInvoices?? 0 }}">
+                {!! $currency->getPriceSymbol(2, $sumInvoices ?? 0) !!}
             </p>
         </a>
     </td>

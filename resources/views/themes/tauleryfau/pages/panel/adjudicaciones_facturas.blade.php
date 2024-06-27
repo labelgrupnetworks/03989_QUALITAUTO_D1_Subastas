@@ -19,45 +19,47 @@
     </script>
 
     <section class="allotments-page">
-        <div class="panel-title">
-            <h1>{{ trans("$theme-app.user_panel.my_pending_bills") }}</h1>
+		<div class="sticky-section">
+			<div class="panel-title">
+				<h1>{{ trans("$theme-app.user_panel.my_pending_bills") }}</h1>
 
-            <select id="actual_currency">
-                @foreach ($divisas as $divisaOption)
-                    <option value='{{ $divisaOption->cod_div }}' @selected($divisaOption->cod_div == $divisa)>
-                        {{ $divisaOption->cod_div }}
-                    </option>
-                @endforeach
-            </select>
+				<select id="actual_currency">
+					@foreach ($divisas as $divisaOption)
+						<option value='{{ $divisaOption->cod_div }}' @selected($divisaOption->cod_div == $divisa)>
+							{{ $divisaOption->cod_div }}
+						</option>
+					@endforeach
+				</select>
 
-            <div class="dropdown sales-filter">
-                <span>{{ trans("$theme-app.user_panel.filters") }}</span>
-                <button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button" aria-haspopup="true"
-                    aria-expanded="false">
-                    {{ trans("$theme-app.user_panel.year") }}
-                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
-                    <form action="">
-                        @foreach ($data['yearsAvailables'] as $year)
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="years[]" type="checkbox" value="{{ $year }}"
-                                            @checked(in_array($year, $data['yearsSelected']))>{{ $year }}
-                                    </label>
-                                </div>
-                            </li>
-                        @endforeach
-                        <li class="divider" role="separator"></li>
-                        <li>
-                            <button class="btn btn-lb btn-lb-primary"
-                                type="submit">{{ trans("$theme-app.global.filter") }}</button>
-                        </li>
-                    </form>
-                </ul>
-            </div>
-        </div>
+				<div class="dropdown sales-filter">
+					<span>{{ trans("$theme-app.user_panel.filters") }}</span>
+					<button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button" aria-haspopup="true"
+						aria-expanded="false">
+						{{ trans("$theme-app.user_panel.year") }}
+						<i class="fa fa-chevron-down" aria-hidden="true"></i>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
+						<form action="">
+							@foreach ($data['yearsAvailables'] as $year)
+								<li>
+									<div class="checkbox">
+										<label>
+											<input name="years[]" type="checkbox" value="{{ $year }}"
+												@checked(in_array($year, $data['yearsSelected']))>{{ $year }}
+										</label>
+									</div>
+								</li>
+							@endforeach
+							<li class="divider" role="separator"></li>
+							<li>
+								<button class="btn btn-lb btn-lb-primary"
+									type="submit">{{ trans("$theme-app.global.filter") }}</button>
+							</li>
+						</form>
+					</ul>
+				</div>
+			</div>
+		</div>
 
 
         <div class="allotments-auctions-block" data-detail-block>

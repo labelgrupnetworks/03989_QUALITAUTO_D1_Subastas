@@ -31,6 +31,11 @@ function initializeSubmenuPanel() {
 
 function addHeaderHeight() {
 	$headerHeight = $('body > header').height();
+	//if match < 992px aside hight
+	if (isMatchMedia('992')) {
+		$headerHeight = 90;
+	}
+
 	$('body').css('--header-height', $headerHeight + 'px');
 
 	if($('.sticky-section').length > 0) {

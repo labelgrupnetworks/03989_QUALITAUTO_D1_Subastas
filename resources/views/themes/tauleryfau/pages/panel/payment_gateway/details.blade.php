@@ -12,9 +12,9 @@
     <div class="detail_form">
         <label>
             <input type="radio" checked>
-			<span class="detail-fact-address">
+			<p class="detail-fact-address">
             	{!! mb_convert_case($factAddress, MB_CASE_TITLE, 'UTF-8') !!}
-			</span>
+			</p>
         </label>
     </div>
 </div>
@@ -35,14 +35,16 @@
                     value="{{ $address->codd_clid }}" @checked($address->codd_clid == 'W1')>
 
 
-                <span class="detail-fact-ship-address">
-                    @if (!empty($address->obs_clid))
-                        <b>{{ mb_strtoupper($address->obs_clid) }} | </b>
-                    @endif
-                    {{ $address->nomd_clid }} - {{ $address->dir_clid }}{{ $address->dir2_clid }} -
-                    {{ $address->cp_clid }}, {{ $address->pro_clid }} -
-                    {{ $countries[strtoupper($address->codpais_clid)] }}
-                </span>
+                <p class="detail-fact-ship-address">
+					<span>
+						@if (!empty($address->obs_clid))
+							<b>{{ mb_strtoupper($address->obs_clid) }}</b>
+						@endif
+						{{ $address->nomd_clid }} - {{ $address->dir_clid }}{{ $address->dir2_clid }} -
+						{{ $address->cp_clid }}, {{ $address->pro_clid }} -
+						{{ $countries[strtoupper($address->codpais_clid)] }}
+					</span>
+                </p>
 
             </label>
         @endforeach
@@ -59,31 +61,33 @@
         @if ($user->envcorr_cli != 'N')
             <label>
                 <input id="shipping_express" name="shipping" type="radio" value="express" checked="checked">
-                <span>
+                <p>
                     {{ trans("$theme-app.user_panel.shipping_express") }}
-                </span>
+					{{-- Para mostrar importe de gastos de envío --}}
+					<span class="gasto-envio-express-{{ $cod_sub }}_JS"></span>
+                </p>
 
-                {{-- Para mostrar importe de gastos de envío --}}
-                <span class="gasto-envio-express-{{ $cod_sub }}_JS"></span>
             </label>
         @endif
 
         <label for="shipping_express_min">
             <input id="shipping_express_min" name="shipping" type="radio" value="min">
 
-            <span class="payment-adj">
+            <p class="payment-adj">
                 {{ trans("$theme-app.user_panel.shipping_express_min") }}
-            </span>
-            {{-- Para mostrar importe de gastos de envío --}}
-            <span class="gasto-envio-min-{{ $cod_sub }}_JS"></span> €
+
+				{{-- Para mostrar importe de gastos de envío --}}
+				<span class="gasto-envio-min-{{ $cod_sub }}_JS"></span> €
+            </p>
+
         </label>
 
         <label>
             <input id="shipping_express_recoger" name="shipping" type="radio" value="recoger"
                 @checked($user->envcorr_cli == 'N')>
-            <span class="payment-adj">
+            <p class="payment-adj">
                 {{ trans("$theme-app.user_panel.store_pickup") }}
-            </span>
+            </p>
         </label>
 
     </div>
@@ -98,15 +102,15 @@
     <div class="detail_form">
         <label>
             <input id="paycreditcard" name="paymethod" type="radio" value="creditcard" checked="checked">
-            <span>
+            <p>
                 {{ trans("$theme-app.user_panel.pay_creditcard") }}
-            </span>
+            </p>
         </label>
         <label>
             <input id="paybizum" name="paymethod" type="radio" value="bizum">
-            <span>
+            <p>
                 {{ trans("$theme-app.user_panel.pay_bizum") }}
-            </span>
+            </p>
         </label>
     </div>
 </div>

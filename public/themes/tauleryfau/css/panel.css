@@ -310,8 +310,13 @@ aside .panel_banner {
 }
 
 main {
+	--main-padding-top: 25px;
 	grid-area: main;
-	padding-top: 25px;
+	padding-top: var(--main-padding-top);
+}
+
+main:has(.sticky-section) {
+	padding-top: 0;
 }
 
 .submenu-header-panel {
@@ -696,16 +701,18 @@ select#actual_currency {
 		grid-template-areas: none;
 	}
 
-	.orders-auction-ref, .orders-auction_lot .lot-ref {
+	.orders-auction-ref,
+	.orders-auction_lot .lot-ref {
 		padding-left: 2rem;
 		font-size: 14px;
 	}
 
-	.orders-auction-ref, .orders-auction_lot .lot-desc {
+	.orders-auction-ref,
+	.orders-auction_lot .lot-desc {
 		padding-right: 2rem;
 	}
 
-	.orders-auction_lot > *:not(.lot-desc, .lot-actions) {
+	.orders-auction_lot>*:not(.lot-desc, .lot-actions) {
 		font-size: 14px;
 	}
 
@@ -729,12 +736,18 @@ select#actual_currency {
 }
 
 .allotments-page .panel-title {
-	padding-left: var(--min-padding-to-page);
-	padding-right: var(--min-padding-to-page);
+	padding-left: 0;
+	padding-right: 0;
 }
 
-.sales-page .sticky-section {
+.sales-page .sticky-section,
+.allotments-page .sticky-section {
 	background-color: #fff;
+	position: sticky;
+	padding: 15px;
+	padding-top: calc(15px + var(--main-padding-top, 25px));
+	top: 90px;
+	z-index: 1;
 }
 
 .sales-filter {
@@ -799,7 +812,7 @@ select#actual_currency {
 	flex-wrap: wrap;
 	gap: 5px;
 	padding-top: 3.5rem;
-	padding-bottom: 3.5rem;
+	padding-bottom: 0.5rem;
 }
 
 .sales-summary_detail {
@@ -821,6 +834,10 @@ select#actual_currency {
 
 @media(min-width: 992px) {
 
+	.sales-summary {
+		padding-bottom: 3.5rem;
+	}
+
 	.sales-filter>span {
 		display: initial;
 	}
@@ -833,10 +850,14 @@ select#actual_currency {
 		flex: none;
 	}
 
-	.sales-page .sticky-section {
-		position: sticky;
-		padding: 15px;
+	.sales-page .sticky-section,
+	.allotments-page .sticky-section {
 		top: var(--header-height, 70px);
+	}
+
+	.allotments-page .panel-title {
+		padding-left: var(--min-padding-to-page);
+		padding-right: var(--min-padding-to-page);
 	}
 
 	.sales-summary {
@@ -930,7 +951,7 @@ p,
 	border-bottom: 1px solid var(--color-gold);
 
 	position: sticky;
-	top: 90px;
+	top: calc(var(--sales-height, 90px) + 30px);
 	background-color: #fff;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -1062,9 +1083,9 @@ p,
 
 @media(min-width: 992px) {
 
-	.alltoments-header-wrapper, .sales-header-wrapper, .sales-pending-header-wrapper {
-		top: var(--sales-height, 70px);
-	}
+	/* .alltoments-header-wrapper, .sales-header-wrapper, .sales-pending-header-wrapper {
+		top: calc(var(--sales-height, 70px) + 30px);
+	} */
 
 	.sales-auctions.sales-finish-auctions {
 		text-align: left;
@@ -1155,7 +1176,7 @@ p,
 }
 
 .panel-lots.pending-lots {
-	--grid-columns-desktop: 16% 8% 8% 2fr 1fr 1fr;
+	--grid-columns-desktop: 16% 5% 5% 2.5fr 1fr 1fr;
 	--grid-columns-mobile: 3fr 1.5fr 1fr;
 	--max-width: 1500px;
 }
@@ -1289,6 +1310,10 @@ p,
 	grid-area: desc;
 }
 
+.sales-lot[data-type="pending"] .panel-lot_desc {
+	-webkit-line-clamp: initial;
+}
+
 .panel-lot_price-salida {
 	grid-area: price-salida;
 	font-size: 14px;
@@ -1351,6 +1376,8 @@ p,
 
 .panel-lot_estimate-price {
 	grid-area: price-estimate;
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .panel-lot_buttons {
@@ -1434,7 +1461,7 @@ p,
 	margin-left: auto;
 	font-weight: 400;
 	text-transform: capitalize;
-    padding: 6px 32px;
+	padding: 6px 32px;
 }
 
 .payment-page h4 {
@@ -1468,20 +1495,34 @@ p,
 	position: relative;
 	padding-bottom: 10px;
 	margin-bottom: 2rem;
+	width: fit-content;
 }
 
 .detail_header_action {
 	display: flex;
 	align-items: center;
 	gap: 3rem;
+	padding-bottom: 0;
 }
 
-.detail_header::before {
+/* .detail_header h4:not(:has(+ p)), .detail_header p {
+	display: inline;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-gold);
+} */
+
+.detail_header_action h4 {
+	position: relative;
+	padding-bottom: 10px;
+}
+
+.detail_header:not(.detail_header_action)::before, .detail_header_action h4::before {
 	content: "";
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: var(--lb-bw, 23%);
+	width: 100%;
 	height: 1px;
 	border-bottom: 1px solid var(--color-gold);
 }
@@ -1499,26 +1540,32 @@ p,
 }
 
 .detail_form input {
-	display: none; /* Ocultar los input radio */
+	display: none;
+	/* Ocultar los input radio */
 }
 
-.detail_form span::before {
+.detail_form p::before {
 	width: 14px;
 	height: 14px;
 	content: url('/themes/tauleryfau/assets/icons/check-circle-solid.svg');
 	position: relative;
 	display: inline-block;
+	flex-shrink: 0;
 }
 
-.detail_form input[type="radio"]:checked + span::before {
+.detail_form input[type="radio"]:checked+p::before {
 	content: url('/themes/tauleryfau/assets/icons/check-circle-solid-active.svg');
 }
 
-.detail_form input[type="radio"]:checked + span:not(.detail-fact-ship-address) {
+.detail_form input[type="radio"]:checked+p:not(.detail-fact-ship-address) {
 	font-weight: 500;
 }
 
-.detail_form span {
+.detail-fact-ship-address b {
+	display: block;
+}
+
+.detail_form p {
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -1553,11 +1600,11 @@ p,
 	border-bottom: 1px solid var(--color-gold);
 }
 
-.summary-header > h4 {
+.summary-header>h4 {
 	font-size: 17px;
 }
 
-.summary-header > p {
+.summary-header>p {
 	font-size: 13px;
 	font-weight: 500;
 	text-wrap: balance;
@@ -1618,7 +1665,7 @@ p,
 	/* border-block-start: 1px dotted #000; */
 }
 
-.summary_line > span:last-child {
+.summary_line>span:last-child {
 	font-size: 14px;
 	font-weight: 500;
 }
@@ -2403,16 +2450,21 @@ p,
 
 .modal-dialog.modal-lot-detail .modal-header {
 	padding: 0;
+	position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
 }
 
 .modal-dialog.modal-lot-detail .modal-body {
 	padding-left: 0;
 	padding-right: 0;
+	padding-top: 0;
 	max-height: calc(100vh * .65);
 	overflow-y: auto;
 }
 
-.modal-dialog.modal-lot-detail .modal-body > div {
+.modal-dialog.modal-lot-detail .modal-body>div {
 	width: 100%;
 }
 
@@ -2432,7 +2484,7 @@ p,
 	font-size: 32px;
 }
 
-.modal-dialog.modal-lot-detail .actions{
+.modal-dialog.modal-lot-detail .actions {
 	display: none;
 }
 
@@ -2461,6 +2513,10 @@ p,
 	border-bottom: 0;
 }
 
+.modal :is(.alltoments-header-wrapper, .sales-header-wrapper, .sales-pending-header-wrapper) {
+	position: initial;
+}
+
 @media(max-width: 992px) {
 
 	.modal.modal-lots-details {
@@ -2485,10 +2541,31 @@ p,
 	.modal :is(.alltoments-auctions_header, .invoice-auction) {
 		justify-content: center;
 	}
+
 }
 
 @media(min-width: 992px) {
+
+	.modal-dialog.modal-lot-detail .modal-header {
+		position: relative;
+	}
+
 	.modal .sales-auctions_description {
 		grid-column: span 2;
+	}
+
+	.modal :is(
+		.panel-lots.allotments-lots .panel-lots_header-wrapper,
+		.sales-page .panel-lots_header-wrapper,
+		.panel-lots.payment-lots .panel-lots_header-wrapper,
+		.panel-lots_header-wrapper) {
+		position: sticky;
+		top: -1px;
+		background: #fff;
+		margin-top: 40px;
+	}
+
+	.modal .sales-page .panel-lots_header-wrapper {
+		top: 0;
 	}
 }
