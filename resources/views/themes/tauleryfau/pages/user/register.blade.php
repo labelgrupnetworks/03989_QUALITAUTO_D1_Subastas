@@ -27,8 +27,9 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
 
     $families = [
         2 => trans("$theme-app.user_panel.newsletter_2"),
-        3 => trans("$theme-app.user_panel.newsletter_3"),
+		6 => trans("$theme-app.user_panel.newsletter_6"),
         4 => trans("$theme-app.user_panel.newsletter_4"),
+        3 => trans("$theme-app.user_panel.newsletter_3"),
         5 => trans("$theme-app.user_panel.newsletter_5"),
     ];
 @endphp
@@ -399,7 +400,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                             @foreach ($families as $key => $item)
                                 <div class="checkbox">
                                     <label>
-                                        <input name="families[]" type="checkbox" value="{{ $key }}">
+                                        <input name="families[]" type="checkbox" value="{{ $key }}" @checked($key == 2)>
                                         {{ $item }}
                                     </label>
                                 </div>

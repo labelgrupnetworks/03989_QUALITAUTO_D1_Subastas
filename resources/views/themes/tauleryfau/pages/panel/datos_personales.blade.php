@@ -27,8 +27,9 @@
 
     $families = [
         2 => trans("$theme-app.user_panel.newsletter_2"),
-        3 => trans("$theme-app.user_panel.newsletter_3"),
+		6 => trans("$theme-app.user_panel.newsletter_6"),
         4 => trans("$theme-app.user_panel.newsletter_4"),
+        3 => trans("$theme-app.user_panel.newsletter_3"),
         5 => trans("$theme-app.user_panel.newsletter_5"),
     ];
 
@@ -36,7 +37,6 @@
 @endphp
 
 @section('content')
-
     <script>
         const prefix = @json($prefix);
     </script>
