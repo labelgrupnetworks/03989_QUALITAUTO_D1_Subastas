@@ -63,7 +63,7 @@
 												{{$refLot}}
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.title") }}" class="td-title">
-												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat provident eum repellendus aliquid unde ex exercitationem itaque voluptates error odit veniam earum quod, voluptas vel beatae laborum minus ea maxime.</span>
+												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
 											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
 												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans($theme.'-app.subastas.euros') }}

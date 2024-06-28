@@ -461,8 +461,18 @@ function logElementScroll(event) {
 	document.documentElement.style.setProperty('--top-sticky-sections', sticky);
 }
 
+/**
+ * @deprecated
+ * Al quitar el submenu este metodo ya no es necesario,
+ * Lo mantenemos por si en un futuro se vuelve a necesitar
+ * @returns
+ */
 function isHeaderOpen() {
-	return document.querySelector('#submenu-header').classList.contains('open');
+	const element = document.querySelector('#submenu-header');
+	if (!element) {
+		return false;
+	}
+	return element.classList.contains('open');
 }
 
 function isInMobileScreen() {

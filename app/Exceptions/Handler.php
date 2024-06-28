@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
             return array_merge(parent::context(), array_filter([
 				'route' => request()->url() ?? '',
 				'query' => request()->query() ?? '',
-				'post' => request()->post() ?? '',
+				'post' => array_filter(request()->post() ?? [], fn($value, $key) => !in_array($key, $this->dontFlash)),
                 'userId' => Session::has('user') ? Session::get('user')['cod'] : null,
             ]));
         } catch (Throwable $e) {

@@ -14,6 +14,9 @@ class RecipientsNotificationList
 		}
 
 		$recipients = [
+			'debug' => [
+				'enadal@labelgrup.com'
+			],
 			'web' => [
 				'rsanchez@labelgrup.com',
 				'llandeira@labelgrup.com',
@@ -26,12 +29,17 @@ class RecipientsNotificationList
 				'subastas@labelgrup.com'
 			],
 			'sistemas' => [
-				'sistemas@labelgurp.com',
+				'sistemas@labelgrup.com',
 				'subastas@labelgrup.com'
 			],
 		];
 
 		return $recipients[$deparment];
+	}
+
+	public function getDebugTeam()
+	{
+		return $this->recipients('debug');
 	}
 
 	public function getWebTeam()
@@ -68,6 +76,6 @@ class RecipientsNotificationList
 
 	private function whenLocalEnv()
 	{
-		return [env('MAIL_TO')];
+		return [Config::get('mail.mail_to')];
 	}
 }

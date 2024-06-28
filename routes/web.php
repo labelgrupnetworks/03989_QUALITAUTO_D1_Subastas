@@ -597,6 +597,7 @@ Route::post('/articleCart/pay', 'V5\PayArticleCartController@createPayment');
 Route::get('/articleCart/callRedsys', 'V5\PayArticleCartController@callRedsys');
 #página de confirmación de compra
 Route::post('/articleCart/returnpayup2', 'V5\PayArticleCartController@ReturnPayUP2');
+Route::post('/articleCart/returnPay', 'V5\PayArticleCartController@returnPay');
 
 
 Route::group(['prefix' => 'api'], function () {
@@ -637,7 +638,7 @@ Route::get('/auth/google/callback', function () {
     // $user->token
 });
 
-Route::get(\Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
+Route::get(Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
 
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 

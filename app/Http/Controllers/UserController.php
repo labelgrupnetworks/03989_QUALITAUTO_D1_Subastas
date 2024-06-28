@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
-use Session;
+use Illuminate\Support\Facades\Session;
 use View;
 use Routing;
 use Illuminate\Support\Facades\Config;
@@ -1555,6 +1555,14 @@ class UserController extends Controller
 	private function dniPath($cod_cli)
 	{
 		$emp = Config::get('app.emp');
+
+		if(Config::get('app.client_files_erp', false)){
+			$enterpriseParams = (new Enterprise)->getParameters();
+			$emp = $enterpriseParams->documentaciongemp_prmgt == 'S'
+				? Config::get('app.gemp')
+				: Config::get('app.emp');
+		}
+
 		$path = match (Config::get('app.dni_in_storage', false)) {
 			"dni-files" => storage_path("app/files/dni/$emp/$cod_cli/files/"),
 			"cli-documentation" => storage_path("app/files/CLI/Archivos/$emp/$cod_cli/documentation/"),
@@ -3481,20 +3489,28 @@ class UserController extends Controller
     }
 
 
-    public function sendPasswordRecovery()
+    public function sendPasswordRecovery(HttpRequest $request)
     {
-        $email = Request::input('email');
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email'
+		]);
+
+		$successResponse = [
+			'status' => 'succes',
+			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
+		];
+
+		if($validator->fails()){
+			return $successResponse;
+		}
+
+        $email = $request->input('email');
         $val_post = Request::input('post');
         $activate = Request::input('activate');
 
         $user = new User();
         $user->email = $email;
         $mail_exists = $user->getUserByEmail(true);
-
-		$successResponse = [
-			'status' => 'succes',
-			'msg' => trans(Config::get('app.theme').'-app.login_register.pass_recovery_mail_send')
-		];
 
         if (empty($email) || empty($mail_exists) || (!empty($mail_exists) && $mail_exists[0]->baja_tmp_cli != 'N')){
 

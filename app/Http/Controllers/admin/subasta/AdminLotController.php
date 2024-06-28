@@ -575,6 +575,7 @@ class AdminLotController extends Controller
 					'lang' => $value,
 					'title' => $request->get('title_lang')[$key],
 					'description' => $request->get('description_lang')[$key],
+					'extrainfo' => $request->get('extrainfo_lang')[$key],
 					'search' => $request->get('search_lang')[$key],
 				];
 			}
@@ -998,6 +999,7 @@ class AdminLotController extends Controller
 			$formulario->translates[$lang] = [
 				'title' => FormLib::Text('title_lang[]', 0, old('title_lang[]', strip_tags($lotTranslate->descweb_hces1_lang ?? ''))),
 				'description' => FormLib::TextAreaTiny('description_lang[]', 0, old('description_lang[]', $lotTranslate->desc_hces1_lang ?? ''), '', '', 300, true),
+				'extrainfo' => FormLib::TextAreaTiny('extrainfo_lang[]', 0, old('extrainfo_lang[]', $lotTranslate->descdet_hces1_lang ?? '')),
 				'search' => FormLib::Textarea('search_lang[]', 0, $lotTranslate->search_hces1_lang ?? ''),
 			];
 		}

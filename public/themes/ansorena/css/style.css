@@ -606,6 +606,7 @@ article.blog-article {
  */
 .section-nav {
 	border-bottom: 1px solid var(--lb-border-color);
+	background-color: #fff;
 }
 
 .section-nav ul {
@@ -1840,6 +1841,10 @@ section.recomendados .section-title {
 	}
 }
 
+.article-card {
+	font-family: var(--font-jewelry);
+}
+
 .article-card a {
 	display: block;
 }
@@ -1913,6 +1918,7 @@ section.recomendados .section-title {
 }
 
 .articles-ficha .ficha-info {
+	font-family: var(--font-jewelry);
 	gap: 1.5rem;
 	font-size: 18px;
 	letter-spacing: 0.03em;
@@ -2089,6 +2095,45 @@ section.recomendados .section-title {
 	}
 }
 
+.aboutus-section-nav {
+	display: inline-flex;
+	flex-direction: column;
+	margin: auto;
+	margin-bottom: 3rem;
+}
+
+.aboutus-section-nav h1.ff-highlight {
+	font-size: calc(var(--fs-64-96) * .9);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.aboutus-section-nav .about-us-pages {
+	font-size: 18px;
+    text-transform: uppercase;
+	width: 100%;
+	margin: auto;
+}
+
+.aboutus-section-nav a {
+	text-decoration: none;
+}
+
+.aboutus-section-nav ul {
+	justify-content: center;
+	align-items: center;
+}
+
+.aboutus-section-nav li {
+	flex: 1 1 0;
+}
+
+@media (min-width: 540px) {
+	.aboutus-section-nav li {
+		text-wrap: nowrap;
+	}
+}
+
 .static-info-page {
 	max-width: 950px;
 	margin: auto;
@@ -2177,6 +2222,10 @@ section.recomendados .section-title {
 
 .articles-page .banner-col * {
 	--bs-gutter-x: 0;
+}
+
+#jewelry-page-section, #engagement-page-section {
+	scroll-margin-top: var(--scroll-sticky);
 }
 
 @media(min-width: 992px) {
@@ -4224,4 +4273,51 @@ main.private-page .form-check-label {
 		max-width: 25ch;
 	}
 
+}
+
+.whatsapp-button {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 99;
+
+	padding: 12px 10px;
+	background: #FFF;
+	border: 1px solid black;
+	border-radius: 100%;
+	font-size: 15px;
+	text-decoration: none;
+	box-shadow: 3px 3px 4px #00000060;
+	transition: all 0.1s linear;
+
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.whatsapp-button:hover {
+	transform: scale(1.04);
+}
+
+.whatsapp-button i {
+	font-size: 20px;
+	margin: 0px 4px;
+}
+
+.whatsapp-button span {
+	display: none;
+}
+
+@media (min-width: 540px) {
+	.whatsapp-button {
+		border-radius: 30px;
+	}
+
+	.whatsapp-button i {
+		margin: 0px;
+	}
+
+	.whatsapp-button span {
+		display: inline;
+	}
 }

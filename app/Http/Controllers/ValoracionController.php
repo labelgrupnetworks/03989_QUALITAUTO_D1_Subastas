@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Redirect;
-use Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
 # Cargamos el modelo
 use App\Models\User;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 
 class ValoracionController extends Controller
 {
@@ -26,7 +30,7 @@ class ValoracionController extends Controller
 	public function GetValoracion()
 	{
 		$data = [];
-		return \View::make('pages.valoracion_articulos', array('data' => $data));
+		return View::make('pages.valoracion_articulos', array('data' => $data));
 	}
 
 	public function GetValoracionGratuita($lang, $key)
@@ -41,7 +45,7 @@ class ValoracionController extends Controller
 		}
 
 		$data = array(
-			'title' =>  trans(\Config::get('app.theme') . '-app.home.free-valuations'),
+			'title' =>  trans(Config::get('app.theme') . '-app.home.free-valuations'),
 			'seo'   => $SEO_metas,
 			'lang' => $lang,
 		);
@@ -72,7 +76,7 @@ class ValoracionController extends Controller
 				$data["email"] = $inf_user->usrw_cliweb;
 				$data["telf"] = $inf_user->tel1_cli;
 
-				return \View::make('pages.valoracion.valoracion_articulos', array('data' => $data));
+				return View::make('pages.valoracion.valoracion_articulos', array('data' => $data));
 			}
 		}
 
@@ -83,16 +87,16 @@ class ValoracionController extends Controller
 		} else {
 			$data['seo'] = new \stdClass();
 			$data['seo']->noindex_follow = true;
-			return \View::make('pages.valoracion.no_registrado', array('data' => $data));
+			return View::make('pages.valoracion.no_registrado', array('data' => $data));
 		}
 	}
 
-	public function ValoracionArticulosAdv($lang)
+	public function ValoracionArticulosAdv(Request $request, $lang)
 	{
 		try {
 
 			if (empty($_POST['post'])) {
-				$url = \Routing::translateSeo('valoracion-articulos-success');
+				$url = Routing::translateSeo('valoracion-articulos-success');
 			} else {
 				$url = Routing::translateSeo('pagina') . 'vender-monedas-success';
 			}
@@ -111,7 +115,7 @@ class ValoracionController extends Controller
 				}
 			}
 
-			\App::setLocale($lang);
+			App::setLocale($lang);
 
 			$i = 1;
 			$relative_dest_path = 'img/valoracion';
@@ -135,21 +139,19 @@ class ValoracionController extends Controller
 						$emailOptions['img']['imagen' . $i] = Config::get('app.url') . $relative . '/' . str_replace(" ", "%20", $filename);
 						$i++;
 					} else {
-						return $result = array(
+						return [
 							'status'  => 'error_size',
 							'msg' => 'max_size',
-						);
+						];
 					}
 				}
 			}
 
-
 			$htmlFields = false;
 			$prohibidos = array('_token', 'imagen', 'email_category', 'name', 'email', 'telf', 'post', 'g-recaptcha-response', 'captcha_token');
-
 			$htmlFieldsArray = array_diff_key(request()->all(), array_flip($prohibidos));
-			foreach ($_POST as $key => $value) {
 
+			foreach ($_POST as $key => $value) {
 				// Inputs prohibidos de mostrar
 				if (!in_array($key, $prohibidos)) {
 					if (!is_array($key) && !is_array($value)) {
@@ -158,20 +160,18 @@ class ValoracionController extends Controller
 				}
 			}
 
-
 			if (Config::get('app.assessment_registered')) {
 				$Usuario          = new User();
 				$Usuario->cod_cli = Session::get('user.cod');
 				$inf_user = $Usuario->getUser();
 
 				//si el formulario viene vacios se rellena con los datos del usuario
-
-				$name = !empty(Request::input('name')) ? Request::input('name') : $inf_user->nom_cli;
-				$email = !empty(Request::input('email')) ? Request::input('email') : $inf_user->usrw_cliweb;
-				$telf = !empty(Request::input('telf')) ? Request::input('telf') : $inf_user->usrw_cliweb;
+				$name = $request->input('name', $inf_user->nom_cli);
+				$email = $request->input('email', $inf_user->usrw_cliweb);
+				$telf = $request->input('telf', $inf_user->usrw_cliweb);
 
 				$emailOptions['content'] = array(
-					'texto' => trans(\Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
+					'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
 					'name'       => $name,
 					'email' =>  $email,
 					'telf' => $telf,
@@ -179,23 +179,24 @@ class ValoracionController extends Controller
 					'camposHtmlArray' => $htmlFieldsArray,
 				);
 
-				$emailOptions['user'] = Request::input('name');
+				$emailOptions['user'] = $name;
+
 			} else {
 				$emailOptions['content'] = array(
-					'texto' => trans(\Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
-					'name'       => Request::input('name'),
-					'email' => Request::input('email'),
-					'telf' => Request::input('telf'),
+					'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
+					'name'       => $request->input('name', ''),
+					'email' => $request->input('email', ''),
+					'telf' => $request->input('telf', ''),
 					'camposHtml' => $htmlFields,
 					'camposHtmlArray' => $htmlFieldsArray,
 
 				);
 
-				$emailOptions['user'] = Request::input('name');
+				$emailOptions['user'] = $request->input('name', '');
 			}
 
-			if (!empty(Request::input('email_category'))) {
-				$send_email = Request::input('email_category');
+			if (!empty($request->input('email_category'))) {
+				$send_email = $request->input('email_category');
 			} else {
 				$send_email = Config::get('app.admin_email');
 			}
@@ -207,19 +208,19 @@ class ValoracionController extends Controller
 			$emailOptions['UTM'] = $utm_email;
 
 			$emailOptions['to'] = $send_email;
-			$emailOptions['subject'] = trans(\Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name');
-			if (\Tools::sendMail('notification_valoracion', $emailOptions)) {
+			$emailOptions['subject'] = trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name');
+			if (ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions)) {
 
 				if (Config::get('app.cc_email_valoracion')) {
 
 					$emailOptions['to'] =  Config::get('app.cc_email_valoracion');
-					\Tools::sendMail('notification_valoracion', $emailOptions);
+					ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
 				}
 
 				if (Config::get('app.email_tasacion_client')) {
 
 					$emailOptions['to'] =  $emailOptions['content']['email'];
-					\Tools::sendMail('notification_valoracion', $emailOptions);
+					ToolsServiceProvider::sendMail('notification_valoracion', $emailOptions);
 				}
 
 
@@ -234,9 +235,9 @@ class ValoracionController extends Controller
 					}
 				}
 
-				return $result = array(
+				return array(
 					'status'  => 'correct',
-					'url' => \URL::asset($url),
+					'url' => URL::asset($url),
 
 				);
 			} else {
@@ -249,15 +250,15 @@ class ValoracionController extends Controller
 					}
 				}
 
-				return $result = array(
+				return array(
 					'status'  => 'error',
 				);
 			}
 		} catch (\Exception $e) {
 
-			\Log::error("Error en Valoración" . print_r($_POST, true));
-			\Log::error($e);
-			return $result = array(
+			Log::error("Error en Valoración" . print_r($_POST, true));
+			Log::error($e);
+			return array(
 				'status'  => 'error',
 			);
 		}
@@ -295,40 +296,40 @@ class ValoracionController extends Controller
 			'seo'   => $SEO_metas,
 		);
 
-		return \View::make('pages.valoracion.valoracion_articulos_success', array('data' => $data));
+		return View::make('pages.valoracion.valoracion_articulos_success', array('data' => $data));
 	}
 
 	public function Tasacion()
 	{
 		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_vender-monedas');
-		$SEO_metas->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_vender-monedas');
+		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_vender-monedas');
+		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_vender-monedas');
 		$data['seo'] = $SEO_metas;
-		return \View::make('pages.tasacion', array('data' => $data));
+		return View::make('pages.tasacion', array('data' => $data));
 	}
 
 	public function Books()
 	{
 		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_landing-books');
-		$SEO_metas->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_landing-books');
+		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-books');
+		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-books');
 		$data['seo'] = $SEO_metas;
-		return \View::make('landings.books', array('data' => $data));
+		return View::make('landings.books', array('data' => $data));
 	}
 	public function Numismatica()
 	{
 		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_landing-accesories');
-		$SEO_metas->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_landing-accesories');
+		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-accesories');
+		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-accesories');
 		$data['seo'] = $SEO_metas;
-		return \View::make('landings.numismatica', array('data' => $data));
+		return View::make('landings.numismatica', array('data' => $data));
 	}
 	public function SubastaNumismaticaPrimavera()
 	{
 		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_landing-numismatica');
-		$SEO_metas->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_landing-numismatica');
+		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-numismatica');
+		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-numismatica');
 		$data['seo'] = $SEO_metas;
-		return \View::make('landings.subastaNumismaticaPrimavera', array('data' => $data));
+		return View::make('landings.subastaNumismaticaPrimavera', array('data' => $data));
 	}
 }
