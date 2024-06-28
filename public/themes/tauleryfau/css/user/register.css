@@ -113,6 +113,7 @@ input[type=month].form-control,
 input[type=time].form-control {
 	line-height: inherit;
 	display: block;
+	-webkit-min-logical-width: calc(100% - 16px);
 }
 
 .login-wrapper .input-group {
