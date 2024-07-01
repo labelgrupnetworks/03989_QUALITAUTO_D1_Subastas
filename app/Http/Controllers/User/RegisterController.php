@@ -220,7 +220,7 @@ class RegisterController extends Controller
             //Inputs compartidos sea por donse sea que se acceda a la blade de registro
             $data['formulario']->language = FormLib::Select("language", 0, "ES", $idiomas);
             $data['formulario']->divisa = FormLib::Select("divisa", 0, "EUR", $divisas);
-            $data['formulario']->obscli = FormLib::Textarea("obscli", 0, "", 'maxlength="200"');
+            $data['formulario']->obscli = FormLib::Textarea("obscli", 0, "", 'maxlength="4000"');
 
 			$data['formulario']->sexo = FormLib::Select("sexo", 0, "", array("H" => trans(\Config::get('app.theme') . '-app.login_register.hombre'), "M" => trans(\Config::get('app.theme') . '-app.login_register.mujer')), 0, trans(\Config::get('app.theme') . '-app.login_register.genre'));
 
