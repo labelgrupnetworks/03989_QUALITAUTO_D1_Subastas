@@ -80,7 +80,7 @@
                             <div class="col-md-6 col-xs-12 col-sm-8 no-padding auction-item-img">
                                 <div class="auction-size col-xs-12 no-padding">
 
-										<img src="{{ \Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
+										<img src="{{ Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
 											@if($loop->iteration > 4) loading="lazy" @endif
                                         	alt="{{ $subasta->name }}" class="img-responsive" />
                                 </div>
