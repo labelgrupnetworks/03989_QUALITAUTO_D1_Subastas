@@ -181,7 +181,8 @@
                     'id' => $lots->first()->sub_asigl0,
                     'title' => $lots->first()->des_sub,
                     'lotes' => $lots,
-					'invoice' => false
+					'invoice' => false,
+					'finish' => true
                 ])
             @endforeach
 
@@ -190,7 +191,8 @@
                     'id' => str_replace('/', '-', $invoiceId),
                     'title' => $lots->first()->des_sub,
                     'lotes' => $lots,
-					'invoice' => "/factura/{$invoiceId}"
+					'invoice' => "/factura/{$invoiceId}",
+					'finish' => true
                 ])
             @endforeach
         </section>

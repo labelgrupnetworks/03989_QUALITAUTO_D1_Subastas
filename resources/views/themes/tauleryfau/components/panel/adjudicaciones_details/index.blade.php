@@ -14,7 +14,7 @@
 
     <div class="panel-lots allotments-lots">
         <div class="panel-lots_header-wrapper">
-            <div class="panel-lots_header">
+            <div class="table-grid_header panel-lots_header">
                 <p></p>
                 <p>{{ trans("$theme-app.user_panel.lot") }}</p>
                 <p>{{ trans("$theme-app.user_panel.description") }}</p>
@@ -59,7 +59,7 @@
 
 					<div class="panel-lots allotments-lots">
 						<div class="panel-lots_header-wrapper">
-							<div class="panel-lots_header">
+							<div class="table-grid_header panel-lots_header">
 								<p></p>
 								<p>{{ trans("$theme-app.user_panel.lot") }}</p>
 								<p>{{ trans("$theme-app.user_panel.description") }}</p>

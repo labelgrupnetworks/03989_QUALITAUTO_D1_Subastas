@@ -68,7 +68,13 @@
                                 <p>{{ trans("$theme-app.user_panel.lot") }}</p>
                                 <p>{{ trans("$theme-app.user_panel.description") }}</p>
                                 <p>{{ trans("$theme-app.user_panel.starting_price") }}</p>
-                                <p>{{ trans("$theme-app.user_panel.actual_price") }}</p>
+                                <p>
+									@if($finish)
+									{{ trans("$theme-app.user_panel.awarded") }}
+									@else
+									{{ trans("$theme-app.user_panel.actual_price") }}
+									@endif
+								</p>
                                 <p>{{ trans("$theme-app.user_panel.increase") }}</p>
                                 <p>{{ trans("$theme-app.user_panel.bids") }} /
                                     {{ trans("$theme-app.user_panel.bidders") }}</p>

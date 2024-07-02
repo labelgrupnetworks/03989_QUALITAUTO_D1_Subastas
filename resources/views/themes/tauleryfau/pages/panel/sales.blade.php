@@ -132,7 +132,8 @@
 					'id' => $auction['sub_asigl0'],
 					'title' => $auction['des_sub'],
 					'lots' => $lots[$auction['sub_asigl0']],
-					'invoice' => false
+					'invoice' => false,
+					'finish' => false
 				])
 			@endforeach
 

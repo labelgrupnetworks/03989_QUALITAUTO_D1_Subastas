@@ -1172,9 +1172,10 @@ p,
 
 .panel-lots {
 	--grid-columns-desktop: 16% 7% 1fr repeat(4, 9%);
+	--grid-columns-desktop: 16% 6% 35% 8% 8% .5fr .5fr;
 	--grid-columns-mobile: 3fr 1fr 1fr;
 	--gap: 1rem;
-	--max-width: 1300px;
+	--max-width: 1200px;
 }
 
 .panel-lots.pending-lots {
@@ -1314,6 +1315,7 @@ p,
 
 .sales-lot[data-type="pending"] .panel-lot_desc {
 	-webkit-line-clamp: initial;
+
 }
 
 .panel-lot_price-salida {
@@ -1423,6 +1425,10 @@ p,
 	.panel-lot_desc {
 		font-size: 12px;
 		padding-right: 20px;
+	}
+
+	.sales-lot[data-type="pending"] .panel-lot_desc {
+		padding-right: 50px;
 	}
 
 	.panel-lot,
