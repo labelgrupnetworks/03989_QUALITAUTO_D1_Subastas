@@ -56,7 +56,7 @@
                     <tr>
                         <td>
                             <a href="{{ $link }}">
-                                {{ date('d/m/Y', strtotime($auction['start'])) }}
+                                {{ date('d/m/Y', strtotime($auction['dfec_sub'])) }}
                             </a>
                         </td>
                         <td>

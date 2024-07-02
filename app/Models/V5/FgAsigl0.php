@@ -696,7 +696,7 @@ class FgAsigl0 extends Model
 		return self::getAuctionsWithOwnerLotsQuery($cod_cli)
 			->whereAuctionIsActive()
 			->whereAuctionStatusNotIs('ended')
-			->select('SUB_ASIGL0', 'auc."start"')
+			->select('SUB_ASIGL0', 'DFEC_SUB')
 			->addSelectFgSubDescriptionsAttributes()
 			->distinct()
 			->get();

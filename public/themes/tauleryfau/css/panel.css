@@ -26,7 +26,9 @@
 	--max-content-contentbox: var(--max-content-width);
 }
 
-
+a {
+	color: inherit;
+}
 
 h4 {
 	font-size: 17px;
@@ -669,7 +671,7 @@ select#actual_currency {
 @media (min-width: 992px) {
 
 	.orders-auction {
-		--grid-columns-desktop: 12% 7% 30% repeat(3, 1fr) 10% 7%;
+		--grid-columns-desktop: 12% 7% 35% repeat(3, 1fr) 10% 7%;
 	}
 
 	.orders-auction_header {
@@ -1169,20 +1171,20 @@ p,
 }
 
 .panel-lots {
-	--grid-columns-desktop: 16% 8% 1fr repeat(4, 12%);
+	--grid-columns-desktop: 16% 7% 1fr repeat(4, 9%);
 	--grid-columns-mobile: 3fr 1fr 1fr;
 	--gap: 1rem;
 	--max-width: 1300px;
 }
 
 .panel-lots.pending-lots {
-	--grid-columns-desktop: 16% 5% 5% 2.5fr 1fr 1fr;
+	--grid-columns-desktop: 16% 5% 5% 1fr 9% 9%;
 	--grid-columns-mobile: 3fr 1.5fr 1fr;
 	--max-width: 1500px;
 }
 
 .panel-lots.allotments-lots {
-	--grid-columns-desktop: 16% 6% 1fr repeat(2, 12%) 1fr;
+	--grid-columns-desktop: 16% 6% 35% 8% 8% 1fr;
 	--max-width: 1200px;
 }
 

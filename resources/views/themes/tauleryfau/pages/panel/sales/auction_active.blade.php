@@ -5,7 +5,7 @@
 <div class="sales-auction-wrapper" data-type="active" data-sub="{{ $auction['sub_asigl0'] }}" data-id="{{ $auction['sub_asigl0'] }}" data-auction-wrapper>
     <div class="sales-auction">
         <p>
-            {{ date('d/m/Y', strtotime($auction['start'])) }}
+            {{ date('d/m/Y', strtotime($auction['dfec_sub'])) }}
         </p>
         <p class="sales-auctions_description text-center text-md-start">
             <span class="visible-md visible-lg">{{ $auction['des_sub'] }}</span>
