@@ -1084,7 +1084,7 @@ p,
 }
 
 .payment_profoma-details > div {
-	scroll-margin-top: 300px;
+	scroll-margin-top: 150px;
 }
 
 @media(min-width: 992px) {
