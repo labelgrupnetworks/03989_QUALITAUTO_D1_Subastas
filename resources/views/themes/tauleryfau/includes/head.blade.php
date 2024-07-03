@@ -14,12 +14,12 @@ header("X-Frame-Options:     DENY");
 
 <!-- color de explorador en mobile -->
 <!-- Chrome, Firefox OS y Opera -->
-<meta name="theme-color" content="#3B00FF" />
+<meta name="theme-color" content="#A37A4C" />
 <!-- Windows Phone -->
-<meta name="msapplication-navbutton-color" content="#3B00FF" />
+<meta name="msapplication-navbutton-color" content="#A37A4C" />
 <!-- iOS Safari -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="3B00FF" />
+<meta name="apple-mobile-web-app-status-bar-style" content="A37A4C" />
 
 <title>
 @if(!empty($data['seo']->meta_title))

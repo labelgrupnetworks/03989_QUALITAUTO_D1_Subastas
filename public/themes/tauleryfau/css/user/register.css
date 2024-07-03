@@ -107,14 +107,14 @@ input.form-control {
 	height: 40px;
 	font-size: 14px;
 	font-weight: 400;
-	color: #000;
+	color: #000 !important;
 }
 
 .register-page .form-control:-webkit-autofill,
 input.form-control:-webkit-autofill {
 	background-color: #fff !important;
 	background: #fff !important;
-	color: #000;
+	color: #000 !important;
 }
 
 input[type=date].form-control,
