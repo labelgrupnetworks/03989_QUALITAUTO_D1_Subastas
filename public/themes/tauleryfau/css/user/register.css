@@ -58,6 +58,7 @@ label {
 select {
 	display: block;
 	border: 1px solid #ccc;
+	accent-color: #000;
 }
 
 .checkbox {
