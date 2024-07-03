@@ -39,7 +39,7 @@
         </div>
         <div class="panel-lot_commission-price">
             <p>
-                {{ Tools::moneyFormat($imp_commision, $euroSymbol, 0) }}
+				{{ Tools::moneyFormat($imp_commision, $euroSymbol, 2) }}
             </p>
         </div>
         <div class="panel-lot_label label-price-total">
@@ -49,7 +49,7 @@
         </div>
         <div class="panel-lot_total-price">
             <p>
-                {{ Tools::moneyFormat($imp_award + $imp_commision, $euroSymbol, 0) }}
+                {{ Tools::moneyFormat($imp_award + $imp_commision, $euroSymbol, 2) }}
             </p>
         </div>
 
