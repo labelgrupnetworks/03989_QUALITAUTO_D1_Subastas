@@ -515,6 +515,15 @@ section.ficha-contact a {
 	font-size: 1.1rem;
 }
 
+.guide-btn {
+	--lb-border-radius: .375rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-around;
+	gap: 10px;
+	font-size: 1.1rem;
+}
+
 section.ficha-features {
 	grid-row-start: 6;
 }

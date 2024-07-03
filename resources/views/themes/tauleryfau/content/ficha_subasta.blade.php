@@ -208,7 +208,7 @@ $user = (Session::get('user'));
 						<a
 							href="{{\Tools::url_auction($data['auction']->cod_sub,$data['auction']->name,$session->id_auc_sessions,$session->reference) }}">
 
-							<img src="/img/load/subasta_large/AUCTION_{{ $data["auction"]->emp_sub }}_{{ $data["auction"]->cod_sub }}.jpg"
+							<img src="{{ Tools::url_img_auction('subasta_large', $data["auction"]->cod_sub) }}"
 								class="img-responsive" style="margin:0 auto">
 
 						</a>

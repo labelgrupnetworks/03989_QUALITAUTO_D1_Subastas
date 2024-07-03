@@ -930,58 +930,96 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_img_auction($size, $cod_sub)
 	{
-		$img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, null);
+
+		/* $img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
 		$file="img/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
-		return $img_file.self::date_modification($file);
+		return $img_file.self::date_modification($file); */
 	}
 
 	public static function url_img_session($size, $cod_sub, $reference)
 	{
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, $reference);
 
-		$file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
+		/* $file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
 		$img_file = Config::get('app.url') . "/img/load/$size/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
-		return $img_file.self::date_modification($file);
-
-		/*
-        // Codigo para evitar la conexion a base de datos y cargar las imágenes directamente
-
-		$emp = Config::get('app.emp');
-		$images_size = \Tools::images_size();
-		$image_to_load = "img/thumbs/$images_size[$size]/SESSION_$emp" . "_" . "$cod_sub" . "_" . "$reference.jpg";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
-		}
-        return   Config::get('app.url') . "/$image_to_load";
-        */
+		return $img_file.self::date_modification($file); */
 	}
 
-	public static function auctionImage($cod_sub, $size = null)
+	public static function auctionImage($cod_sub, $size = null, $reference = null)
 	{
-		//search file without extension
 		$emp = Config::get('app.emp');
 		$url = Config::get('app.url');
 		$theme = Config::get('app.theme');
 
-		if($size) {
+		$imagePath = self::buildAuctionImagePath($size, $cod_sub, $reference);
+		$image_to_load = self::getValidAuctionImage($imagePath, $size, $theme, $emp, $cod_sub);
+
+		return "$url/$image_to_load".self::date_modification($image_to_load);
+	}
+
+	private static function auctionImageName($cod_sub, $reference)
+	{
+		$emp = Config::get('app.emp');
+		if (empty($reference)) {
+			return "AUCTION_{$emp}_{$cod_sub}";
+		}
+		return "SESSION_{$emp}_{$cod_sub}_{$reference}";
+	}
+
+	private static function buildAuctionImagePath($size, $cod_sub, $reference)
+	{
+		$imageName = self::auctionImageName($cod_sub, $reference);
+		if ($size) {
 			$images_size = self::images_size();
-			$imagePath = "img/thumbs/$images_size[$size]/AUCTION_{$emp}_{$cod_sub}.*";
+			return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
+		} else {
+			return "img/{$imageName}.*";
 		}
-		else {
-			$imagePath = "img/AUCTION_{$emp}_{$cod_sub}.*";
-		}
+	}
+
+	private static function getValidAuctionImage($imagePath, $size, $cod_sub, $reference)
+	{
+		$emp = Config::get('app.emp');
+		$theme = Config::get('app.theme');
 
 		$globImage = glob($imagePath);
 		$image_to_load = $globImage ? $globImage[0] : null;
 
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
+		if (!self::isImageValid($image_to_load)) {
+			//Si no existe la miniatura la intentamos generar
+			self::generateThumbnail($size, $emp, $cod_sub, $theme);
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
+			$globImage = glob($imagePath);
+			$image_to_load = $globImage ? $globImage[0] : null;
+
+			//Si no se ha podido generar la miniatura o no existe la imagen original, cargamos la imagen por defecto
+			if (!self::isImageValid($image_to_load)) {
+				$image_to_load = self::getPlaceholderImage($size);
+			}
 		}
 
-		return "$url/$image_to_load";
+		return $image_to_load;
+	}
+
+	private static function isImageValid($image)
+	{
+		return file_exists($image) && filesize($image) >= 500;
+	}
+
+	private static function generateThumbnail($size, $cod_sub, $reference)
+	{
+		$originalImage = self::auctionImageName($cod_sub, $reference) . '.jpg';
+		(new ImageGenerate)->resize_img($size, $originalImage, Config::get('app.theme'), true);
+	}
+
+	private static function getPlaceholderImage($size)
+	{
+		$theme = Config::get('app.theme');
+		$pathNoPhoto = "themes/{$theme}/img/items/no_photo";
+		return file_exists("{$pathNoPhoto}_{$size}.png") ? "{$pathNoPhoto}_{$size}.png" : "{$pathNoPhoto}.png";
 	}
 
 	public static function lotRealImage($numhces, $linhces, $img_num = null)

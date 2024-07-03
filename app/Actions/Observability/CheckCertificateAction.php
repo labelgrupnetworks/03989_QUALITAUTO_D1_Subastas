@@ -24,7 +24,7 @@ class CheckCertificateAction
 			Config::get('app.node_url'),
 		];
 
-		$recipients = (new RecipientsNotificationList)->getWebAlerts();
+		$recipients = (new RecipientsNotificationList)->getDebugTeam();
 
 		foreach ($urls as $url) {
 			$daysToFinishCertificate = $this->checkCertificate($url);
@@ -34,10 +34,8 @@ class CheckCertificateAction
 				continue;
 			}
 
-			foreach ($recipients as $recipient) {
-				$notification = Notification::route('mail', $recipient);
-				$this->sendNotification($notification, $notificationToSend);
-			}
+			$notification = Notification::route('mail', $recipients);
+			$this->sendNotification($notification, $notificationToSend);
 		}
 	}
 

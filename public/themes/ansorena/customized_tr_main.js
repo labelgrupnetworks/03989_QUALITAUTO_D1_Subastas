@@ -1,5 +1,5 @@
-
-
+//para desactivar el popup de informacion al administrador
+showInfoTrLot = null;
 
 
 /*

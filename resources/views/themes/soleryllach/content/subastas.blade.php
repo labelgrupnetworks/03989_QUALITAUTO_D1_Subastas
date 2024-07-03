@@ -78,7 +78,7 @@
 								<a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
 									<div class="img-lot">
 											<img
-												src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code}}.jpg"
+												src="{{ Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
 												alt="{{ $subasta->name }}"
 												class="img-responsive"
 											/>
@@ -169,7 +169,7 @@
                             <a title="{{ $subasta->name }}" href="{{ $url_lotes }}">
                                 <div class="img-lot">
                                         <img
-                                            src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code}}.jpg"
+                                            src="{{ Tools::url_img_session('subasta_medium', $subasta->cod_sub, $subasta->reference) }}"
                                             alt="{{ $subasta->name }}"
                                             class="img-responsive"
                                         />

@@ -158,5 +158,5 @@ return [
     */
 
 	//de la api no recogemos nada, en el resto de la web obtenemos las traducciones de los campos del admin
-	'attributes' => request()->route()->getPrefix() == '/apilabel' ? [] : trans('admin-app.fields'),
+	'attributes' => request()?->route()?->getPrefix() == '/apilabel' ? [] : trans('admin-app.fields'),
 ];
