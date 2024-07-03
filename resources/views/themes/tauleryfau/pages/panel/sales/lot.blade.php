@@ -21,7 +21,11 @@
         </div>
         <div class="panel-lot_label label-price-actual">
             <span>
-                {{ trans("$theme-app.user_panel.actual_price_min") }}
+				@if($finish)
+					{{ trans("$theme-app.user_panel.awarded") }}
+				@else
+    	            {{ trans("$theme-app.user_panel.actual_price_min") }}
+				@endif
             </span>
         </div>
         <div class="panel-lot_actual-price">

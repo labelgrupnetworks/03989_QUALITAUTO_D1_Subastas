@@ -84,6 +84,7 @@
                         @foreach ($lots as $lot)
                             @include('pages.panel.sales.lot', [
                                 'lot' => $lot,
+								'finish' => $finish,
                             ])
                         @endforeach
                     </div>

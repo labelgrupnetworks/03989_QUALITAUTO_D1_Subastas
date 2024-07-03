@@ -1083,6 +1083,10 @@ p,
 	scroll-margin-top: 300px;
 }
 
+.payment_profoma-details > div {
+	scroll-margin-top: 300px;
+}
+
 @media(min-width: 992px) {
 
 	/* .alltoments-header-wrapper, .sales-header-wrapper, .sales-pending-header-wrapper {
@@ -1333,7 +1337,7 @@ p,
 
 .label-increment {
 	grid-area: label-increment;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .panel-lot_increment {
@@ -1833,6 +1837,10 @@ p,
 	display: block;
 }
 
+.profile-page :is(input[type=date], input[type=datetime-local], input[type=month], input[type=time]).form-control {
+	-webkit-min-logical-width: calc(100% - 16px);
+}
+
 .profile-page .row {
 	margin-right: calc(var(--lb-gutter-x) * -1);
 	margin-left: calc(var(--lb-gutter-x) * -1);
@@ -1878,6 +1886,7 @@ p,
 }
 
 .profile-page .checkbox {
+	accent-color: var(--color-gold-dark);
 	margin-top: 0;
 	margin-bottom: 5px;
 }
