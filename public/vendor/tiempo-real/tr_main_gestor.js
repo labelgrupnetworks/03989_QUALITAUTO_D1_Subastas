@@ -1196,7 +1196,10 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
 $(document).ready(function () {
 	//hacemos la llamada para el lote actual, el resto se llaman al pasar de lote
-	showInfoTrLot();
+	//El if es necesario para clientes que tienen esta función desactivada
+	if (typeof showInfoTrLot === 'function') {
+		showInfoTrLot();
+	}
 })
 
 
