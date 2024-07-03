@@ -101,10 +101,20 @@ h1 {
 .register-page .form-control,
 input.form-control {
 	background-color: #fff;
+	background: #fff;
 	border: 1px solid #848484BF;
 	padding: 10px;
 	height: 40px;
 	font-size: 14px;
+	font-weight: 400;
+	color: #000;
+}
+
+.register-page .form-control:-webkit-autofill,
+input.form-control:-webkit-autofill {
+	background-color: #fff !important;
+	background: #fff !important;
+	color: #000;
 }
 
 input[type=date].form-control,
