@@ -62,8 +62,10 @@ class FxDvc0 extends Model
 			->select('anum_dvc0', 'num_dvc0', 'fecha_dvc0', 'base_dvc0', 'impiva_dvc0', 'total_dvc0', 'iva_dvc0', 'basea_dvc1l', 'padj_dvc1l')
 			->addSelect('impsalhces_asigl0', 'ref_asigl0', 'sub_asigl0', 'implic_hces1', 'num_hces1', 'lin_hces1')
 			->addSelect(DB::raw('(select sum(imp_pcob) from fxpcob where emp_pcob = emp_dvc0 and anum_pcob = anum_dvc0 and num_pcob = num_dvc0) as imp_pending'))
+			->addSelect('fich_dvc02')
 			->joinDvc1lDvc0()
 			->joinLotesDvc1L()
+			->joinDvc02Dvc0()
 			->IsSettled()
 			->whereOwner($ownerCod);
 	}
@@ -134,6 +136,11 @@ class FxDvc0 extends Model
 	public function scopeJoinDvc1lDvc0($query)
 	{
 		return $query->leftjoin('FGDVC1L', 'FGDVC1L.EMP_DVC1L = FXDVC0.EMP_DVC0 AND FGDVC1L.ANUM_DVC1L = FXDVC0.ANUM_DVC0 AND FGDVC1L.NUM_DVC1L = FXDVC0.NUM_DVC0');
+	}
+
+	public function scopeJoinDvc02Dvc0($query)
+	{
+		return $query->leftjoin('FXDVC02', 'FXDVC02.EMP_DVC02 = FXDVC0.EMP_DVC0 AND FXDVC02.ANUM_DVC02 = FXDVC0.ANUM_DVC0 AND FXDVC02.NUM_DVC02 = FXDVC0.NUM_DVC0');
 	}
 
 	/**

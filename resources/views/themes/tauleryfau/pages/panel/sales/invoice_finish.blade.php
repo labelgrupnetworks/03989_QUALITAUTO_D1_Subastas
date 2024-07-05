@@ -39,9 +39,11 @@
 
         </p>
         <p class="sales-auction_invoice">
+			@if($auctionData->fich_dvc02)
             <a class="panel-pdf-icon" href="/factura/{{ $invoiceId }}" target="_blank">
                 <img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
             </a>
+			@endif
         </p>
         <div class="actions">
            {{--  <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $invoiceId }}"
