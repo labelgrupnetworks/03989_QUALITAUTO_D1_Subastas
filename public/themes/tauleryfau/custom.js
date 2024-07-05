@@ -1693,7 +1693,7 @@ function specificModalEmailExist() {
 //@TODO
 function sendRecoveryPassword() {
 
-	var email = $("#email").val();
+	var email = $('#registerForm [name="email"]').val();
 	var token = $("[name='_token']").val();
 	var lang = $("html").attr("lang").split("-")[0].replace('”', '');
 
