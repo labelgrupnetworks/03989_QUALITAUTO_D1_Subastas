@@ -47,14 +47,15 @@
             </span>
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
-        <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}" style="font-size: 13px">
+
+		{{-- <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}" style="font-size: 13px">
             {!! $currency->getPriceSymbol(2, $document->total_price ?? 0) !!}
-        </p>
+        </p> --}}
 
         {{-- importe pendiente de pago --}}
-        {{-- <p class="js-divisa" value="{{ $document->imp ?? 0 }}">
-            {!! $currency->getPriceSymbol(2, $document->imp ?? 0) !!}
-        </p> --}}
+        <p class="js-divisa fw-bold" value="{{ $imp ?? 0 }}" style="font-size: 13px">
+            {!! $currency->getPriceSymbol(2, $imp ?? 0) !!}
+        </p>
 
         <p class="allotment-invoice_state">
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>

@@ -11,7 +11,9 @@
             </p>
         </div>
         <div class="panel-lot_desc">
-            <p>{!! $lot->descweb_hces1 !!}</p>
+            <p>
+				{!! $lot->descweb_hces1 ?? strip_tags($lot->desc_hces1) !!}
+			</p>
         </div>
         <div class="panel-lot_label label-price-salida">
             <span>{{ trans("$theme-app.user_panel.starting_price_min") }}</span>

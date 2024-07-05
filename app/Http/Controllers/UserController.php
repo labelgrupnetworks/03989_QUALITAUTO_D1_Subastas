@@ -4799,20 +4799,10 @@ class UserController extends Controller
 
 				$inf_fact_pag['S'][$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $facturasSubasta->values()->all();
 
-				foreach ($facturasSubasta as $factura) {
-					if($fact_pag->tv_contav == 'P'){
-						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
-					}
-					//=== L
-					else {
-						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
-					}
-				}
 
 				$fact_pag->inf_fact['S'] = $facturasSubasta->where('tl_dvc1l', 'P')->values()->all();
 			}
 
-			$fact_pag->total_price = $totalPrice;
 			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
 			$tipo_tv_pag[$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $fact_pag->tv_contav;
 		}

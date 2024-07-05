@@ -26,16 +26,9 @@ clidNotRequired = function () {
 	//cambiar requerimiento de inputs
 	$("select[name='clid_pais']").prop("id", "select__0__clid_pais");
 	$("select[name='clid_codigoVia']").prop("id", "select__0__clid_codigoVia");
-	inputRequired('clid_cpostal', false);
-	inputRequired('clid_poblacion', false);
-	inputRequired('clid_provincia', false);
-	inputRequired('clid_direccion', false);
 
-	inputRequired('name_clidTemp', false);
-	inputRequired('lastName_clidTemp', false);
-	inputRequired('preftel_clid', false);
-	inputRequired('tele_clid', false);
-
+	const requiredInputs = ['clid_cpostal', 'clid_poblacion', 'clid_provincia', 'clid_direccion', 'obs_clid', 'name_clidTemp', 'lastName_clidTemp', 'preftel_clid', 'tele_clid'];
+	requiredInputs.forEach(input => inputRequired(input, false));
 	//indicar que se utilizaran los inputs por defecto
 	$('#clid').val(1);
 }
@@ -45,16 +38,9 @@ clidRequired = function () {
 	//cambiar requerimiento de inputs
 	$("select[name='clid_pais']").prop("id", "select__1__clid_pais");
 	$("select[name='clid_codigoVia']").prop("id", "select__1__clid_codigoVia");
-	inputRequired('clid_cpostal', true);
-	inputRequired('clid_poblacion', true);
-	inputRequired('clid_provincia', true);
-	inputRequired('clid_direccion', true);
 
-	inputRequired('name_clidTemp', true);
-	inputRequired('lastName_clidTemp', true);
-	inputRequired('preftel_clid', true);
-	inputRequired('tele_clid', true);
-
+	const requiredInputs = ['clid_cpostal', 'clid_poblacion', 'clid_provincia', 'clid_direccion', 'obs_clid', 'name_clidTemp', 'lastName_clidTemp', 'preftel_clid', 'tele_clid'];
+	requiredInputs.forEach(input => inputRequired(input, true));
 	$('#clid').val(0);
 }
 
