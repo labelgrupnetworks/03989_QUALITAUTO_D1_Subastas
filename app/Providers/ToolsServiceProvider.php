@@ -963,7 +963,7 @@ class ToolsServiceProvider extends ServiceProvider
 	private static function buildAuctionImagePath($size, $cod_sub, $reference)
 	{
 		$imageName = self::auctionImageName($cod_sub, $reference);
-		if ($size) {
+		if ($size && $size !== 'real') {
 			$images_size = self::images_size();
 			return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
 		} else {
