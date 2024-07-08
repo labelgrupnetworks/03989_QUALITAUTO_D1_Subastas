@@ -4337,3 +4337,18 @@ header ul.items_top_responsive {
 	}
 }
 
+label:has(+ input.has-error) {
+	color: var(--error-form-color);
+}
+
+.autoformulario .button-principal {
+	border-radius: 0;
+	width: 100%;
+	height: auto;
+	padding: 12px;
+	font-size: 18px;
+}
+
+.autoformulario .button-principal:hover {
+	background: var(--primary-color);
+}
