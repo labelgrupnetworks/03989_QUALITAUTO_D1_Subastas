@@ -133,13 +133,11 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
                         @foreach($lote_actual->imagenes as $key => $imagen)
                         <div class="col-sm-3-custom col-img">
-							<a href="javascript:seed.goToPage(parseInt('{{ $key }}'));">
-                                <div class="img-openDragon" data-pos="{{ $key }}"
-                                    style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>'); background-size: contain; background-position: center; background-repeat: no-repeat;"
-                                    alt="{{$lote_actual->titulo_hces1}}"
-									data-image="{{ $imagen }}">
-								</div>
-							</a>
+							<button class="img-openDragon" data-pos="{{ $key }}" onclick="seed.goToPage(parseInt('{{ $key }}'))"
+								style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #fff;"
+								alt="{{$lote_actual->titulo_hces1}}"
+								data-image="{{ $imagen }}">
+							</button>
                         </div>
                         @endforeach
 
