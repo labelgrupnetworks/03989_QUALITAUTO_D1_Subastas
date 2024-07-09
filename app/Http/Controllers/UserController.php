@@ -4753,7 +4753,7 @@ class UserController extends Controller
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-		$pagado = $facturas->paid_bill(false, 'L', $datesIntervals);
+		$pagado = $facturas->paid_bill(false, 'L', $datesIntervals, true);
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
 		$totalPrice = 0;

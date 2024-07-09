@@ -101,17 +101,17 @@ class Facturas extends Model
 	 * Obtiene la cobros de facturas
 	 * @param bool $showWhenPending
 	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
+	 * @param array $whereIntervalDates Intervalos de fechas
+	 * @param bool $group Agrupar resultados por factura, en caso contrario los resultados son por cobros
 	 */
-    public function paid_bill($showWhenPending = true, $type = '', $whereIntervalDates = []){
-        $sql =  DB::TABLE('FXCOBRO1')
-                ->select('afra_cobro1,nfra_cobro1,tv_contav,imp_cobro1,fec_cobro1')
-                ->Join('FSCONTAV',function($join){
+    public function paid_bill($showWhenPending = true, $type = '', $whereIntervalDates = [], $group = false){
+        $sql = DB::TABLE('FXCOBRO1')
+                ->select('afra_cobro1, nfra_cobro1, tv_contav, fec_cobro1')
+                ->join('FSCONTAV',function($join){
                     $join->on('FSCONTAV.SER_CONTAV','=','SUBSTR(FXCOBRO1.afra_cobro1,0,1)')
                     ->on('FSCONTAV.PER_CONTAV','=','SUBSTR(FXCOBRO1.afra_cobro1,2)')
                     ->where('EMP_contav','=',Config::get('app.emp'));
                 })
-
-
                 ->where('EMP_COBRO1', Config::get('app.emp'))
                 ->where('CLI_COBRO1',$this->cod_cli)
 				->when(!$showWhenPending, function ($query) {
@@ -128,6 +128,12 @@ class Facturas extends Model
 							$query->orWhereBetween('fec_cobro1', $interval);
 						}
 					});
+				})
+				->when($group, function ($query) {
+					$query->groupBy('afra_cobro1', 'nfra_cobro1', 'tv_contav', 'fec_cobro1');
+					$query->selectRaw('sum(imp_cobro1) as imp_cobro1');
+				}, function ($query) {
+					$query->addSelect('imp_cobro1');
 				});
                 if(!empty(Config::get('app.allBills'))){
                     $sql->whereIn('tv_contav',[Config::get('app.allBills')]);
