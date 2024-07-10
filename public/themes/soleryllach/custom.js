@@ -216,6 +216,26 @@
         });
 
 
+	$('[name="shipping_address"]').on('change', function(event){
+		const ckeckInput = event.target;
+		const isCheked = ckeckInput.checked;
+		const inputs = [
+			'clid_direccion',
+			'clid_pais',
+			'clid_cpostal',
+			'clid_provincia',
+			'clid_poblacion'
+		];
+
+		inputs.forEach(input => {
+			const inputElement = document.querySelector(`[name="${input}"]`);
+			if (!inputElement) return;
+
+			inputElement.required = !isCheked;
+		});
+	});
+
+
 
 	  $('#frmRegister-adv').on('submit', function (e) {
 
