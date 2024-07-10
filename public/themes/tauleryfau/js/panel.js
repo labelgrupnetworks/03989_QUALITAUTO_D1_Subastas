@@ -227,6 +227,20 @@ $(function () {
 		reader.readAsDataURL(file);
 	});
 
+	refreshFamiliesSelected();
+	//si se selecciona todas, se deseleccionan las demas y viceversa
+	$('[name="families[]"]').on('change', function (event) {
+		const $this = $(this);
+		if ($this.is(':checked') && $this.val() === '2') {
+			$(`input[name="families[]"]`).prop('checked', false);
+			$this.prop('checked', true);
+		}
+		else {
+			$(`input[name="families[]"][value="2"]`).prop('checked', false);
+		}
+	});
+
+
 	$('#summary-form').on('submit', function (event) {
 		event.preventDefault();
 
@@ -242,6 +256,14 @@ $(function () {
 		}
 	});
 });
+
+function refreshFamiliesSelected() {
+	const $allFamily = $(`input[name="families[]"][value="2"]`);
+	if($allFamily.is(':checked')) {
+		$(`input[name="families[]"]`).prop('checked', false);
+		$allFamily.prop('checked', true);
+	}
+}
 
 function reloadPrefix(fromNameElement, toNameElement) {
 

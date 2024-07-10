@@ -196,4 +196,16 @@ $(document).ready(function () {
 		}
 	});
 
+	//si se selecciona todas, se deseleccionan las demas y viceversa
+	$('[name="families[]"]').on('change', function (event) {
+		const $this = $(this);
+		if ($this.is(':checked') && $this.val() === '2') {
+			$(`input[name="families[]"]`).prop('checked', false);
+			$this.prop('checked', true);
+		}
+		else {
+			$(`input[name="families[]"][value="2"]`).prop('checked', false);
+		}
+	});
+
 });
