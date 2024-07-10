@@ -270,6 +270,12 @@
 				<li><a title="{{ trans($theme.'-app.foot.contact')}}"
 						href="<?= \Routing::translateSeo('pagina').trans($theme.'-app.links.contact')?>">{{ trans($theme.'-app.foot.contact')}}</a>
 				</li>
+				<li>
+					<a title="{{ trans($theme.'-app.foot.workwithus')}}"
+						href="{{ \Routing::translateSeo('workwithus') }}">
+						{{ trans("$theme-app.foot.workwithus") }}
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -359,6 +365,13 @@
 
 		<li><a title="{{ trans($theme.'-app.foot.contact')}}"
 				href="<?= \Routing::translateSeo('pagina').trans($theme.'-app.links.contact')?>">{{ trans($theme.'-app.foot.contact')}}</a>
+		</li>
+
+		<li>
+			<a title="{{ trans($theme.'-app.foot.workwithus')}}"
+				href="{{ \Routing::translateSeo('workwithus') }}">
+				{{ trans("$theme-app.foot.workwithus") }}
+			</a>
 		</li>
 
 	</ul>

@@ -216,6 +216,8 @@
         });
 
 
+	$('[name="shipping_address"]').on('change', changeRquiredShippingAddress);
+
 
 	  $('#frmRegister-adv').on('submit', function (e) {
 
@@ -256,6 +258,9 @@
 				  $("#insert_msgweb").html(messages.error.dni_incorrect);
 				  $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			  } else {
+
+					updateShippingAddressWithUserData();
+
 				  $('button', $this).attr('disabled', 'disabled');
 				  // Datos correctos enviamos ajax
 				  const formDataRegister = new FormData(this);
@@ -1382,4 +1387,43 @@ function getCookie(nombreCookie) {
 
 	// Si no se encuentra la cookie, devuelve null
 	return null;
+  }
+
+  function changeRquiredShippingAddress(event) {
+	const isCheked = shippingAddressIsChecked();
+	const inputs = [
+		'clid_direccion',
+		'clid_pais',
+		'clid_cpostal',
+		'clid_provincia',
+		'clid_poblacion'
+	];
+
+	inputs.forEach(input => {
+		const inputElement = document.querySelector(`[name="${input}"]`);
+		if (!inputElement) return;
+
+		inputElement.required = !isCheked;
+	});
+
+	updateShippingAddressWithUserData();
+  }
+
+  function shippingAddressIsChecked() {
+	const input = document.querySelector('[name="shipping_address"]');
+	if (!input) return false;
+	return input.checked;
+  }
+
+  function updateShippingAddressWithUserData() {
+	const isCheked = shippingAddressIsChecked();
+
+	if (!isCheked) return;
+
+	$('[name="clid_codigoVia"]').val($('[name="codigoVia"]').val());
+	$('[name="clid_direccion"]').val($('[name="direccion"]').val());
+	$('[name="clid_pais"]').val($('[name="pais"]').val());
+	$('[name="clid_cpostal"]').val($('[name="cpostal"]').val());
+	$('[name="clid_provincia"]').val($('[name="provincia"]').val());
+	$('[name="clid_poblacion"]').val($('[name="poblacion"]').val());
   }

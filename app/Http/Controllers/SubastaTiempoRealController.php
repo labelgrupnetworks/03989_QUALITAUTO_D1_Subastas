@@ -4528,7 +4528,7 @@ class subastaTiempoRealController extends Controller
 		$openLot = Request::input('open_lot', 0);
 		if ($openLot) {
 			$SubastaTR->ref = $ref;
-			$res_open = $SubastaTR->openLot();
+			$res_open = $SubastaTR->openLot(true);
 
 			if(!$res_open){
 				$res = array(

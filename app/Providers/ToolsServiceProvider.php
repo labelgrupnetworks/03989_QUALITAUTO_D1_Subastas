@@ -622,7 +622,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		return array(
 			'DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'SK', 'SI', 'ES', 'EE', 'FI', 'FR', 'GR', 'IE', 'IT', 'LV',
-			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'GB', 'CZ', 'RO', 'SE'
+			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'CZ', 'RO', 'SE'
 		);
 	}
 
@@ -972,12 +972,17 @@ class ToolsServiceProvider extends ServiceProvider
 	private static function buildAuctionImagePath($size, $cod_sub, $reference)
 	{
 		$imageName = self::auctionImageName($cod_sub, $reference);
-		if ($size) {
-			$images_size = self::images_size();
-			return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
-		} else {
+
+		if(!$size || $size === 'real') {
 			return "img/{$imageName}.*";
 		}
+
+		$images_size = self::images_size();
+		if(!isset($images_size[$size])) {
+			return "img/{$imageName}.*";
+		}
+
+		return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
 	}
 
 	private static function getValidAuctionImage($imagePath, $size, $cod_sub, $reference)

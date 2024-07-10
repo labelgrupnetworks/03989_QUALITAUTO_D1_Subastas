@@ -234,6 +234,11 @@
 		margin-right: 5rem;
 	}
 
+	.autoformulario .input-group[class*=col-] {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
 }
 
 

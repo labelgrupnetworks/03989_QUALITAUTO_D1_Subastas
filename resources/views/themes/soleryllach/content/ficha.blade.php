@@ -119,30 +119,27 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 
                     <div class="miniImg row hidden-xs slider-thumnail">
 
-						@foreach( $resourcesList as $key => $resource)
+						@foreach($resourcesList as $key => $resource)
+						@php
+							$backgroundImage = $resource["format"] == "GIF" ? $resource["src"] : asset('/img/icons/video_thumb.png');
+						@endphp
 							<div class="col-sm-3-custom col-video">
-								<a href="javascript:viewResourceFicha('<?=$resource["src"]?>', '<?=$resource["format"]?>');">
-									@if($resource["format"]=="GIF")
-										<div class="img-openDragon" style="background-image:url('{{$resource["src"]}}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
-									@elseif($resource["format"]=="VIDEO")
-										<div class="img-openDragon" style="background-image:url('{{ asset('/img/icons/video_thumb.png') }}'); background-size: contain; background-position: center; background-repeat: no-repeat;" alt="{{$lote_actual->titulo_hces1}}"></div>
-									@endif
-								</a>
+								<button class="img-openDragon" alt="{{$lote_actual->titulo_hces1}}"
+									onclick="viewResourceFicha('{{ $resource['src'] }}', '{{ $resource['format'] }}')"
+									style="background-image:url('{{ $backgroundImage }}');">
+								</button>
 							</div>
 						@endforeach
 
                         @foreach($lote_actual->imagenes as $key => $imagen)
                         <div class="col-sm-3-custom col-img">
-							<a href="javascript:seed.goToPage(parseInt('{{ $key }}'));">
-                                <div class="img-openDragon" data-pos="{{ $key }}"
-                                    style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>'); background-size: contain; background-position: center; background-repeat: no-repeat;"
-                                    alt="{{$lote_actual->titulo_hces1}}"
-									data-image="{{ $imagen }}">
-								</div>
-							</a>
+							<button class="img-openDragon" data-pos="{{ $key }}" alt="{{$lote_actual->titulo_hces1}}"
+								onclick="seed.goToPage(parseInt('{{ $key }}'))"
+								style="background-image:url('<?=  \Tools::url_img("lote_small", $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) ?>');"
+								data-image="{{ $imagen }}">
+							</button>
                         </div>
                         @endforeach
-
 
                     </div>
 

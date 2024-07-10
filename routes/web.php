@@ -499,7 +499,7 @@ Route::post(Routing::slug('autoformulario-send'), 'V5\AutoFormulariosController@
 Route::get(Routing::slug('autoformulario-success'), 'V5\AutoFormulariosController@Success');
 
 Route::get(Routing::slug('tasaciones'), 'V5\AutoFormulariosController@Tasaciones');
-Route::get(Routing::slug('workwithus') . "/{key}", 'V5\AutoFormulariosController@workWidthUs');
+Route::get(Routing::translateSeo('workwithus', "/{key?}"), 'V5\AutoFormulariosController@workWidthUs');
 
 
 
