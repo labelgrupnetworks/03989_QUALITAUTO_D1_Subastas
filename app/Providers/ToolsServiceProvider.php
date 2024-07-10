@@ -619,7 +619,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		return array(
 			'DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'SK', 'SI', 'ES', 'EE', 'FI', 'FR', 'GR', 'IE', 'IT', 'LV',
-			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'GB', 'CZ', 'RO', 'SE'
+			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'CZ', 'RO', 'SE'
 		);
 	}
 
