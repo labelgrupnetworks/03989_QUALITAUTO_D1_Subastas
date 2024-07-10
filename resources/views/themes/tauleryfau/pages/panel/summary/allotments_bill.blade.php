@@ -5,7 +5,7 @@
     $num = $isPayed ? $document->nfra_cobro1 : $document->num_pcob;
     $efec = $isPayed ? null : $document->efec_pcob;
     $fec = $isPayed ? $document->fec_cobro1 : $document->fec_pcob;
-    $imp = $isPayed ? $document->imp_cobro1 : $document->imp_pcob;
+	$imp = $isPayed ? $document->imp_cobro1 : $document->imp_pcob;
 
     $url = "/factura/$anum-$num";
 
@@ -37,8 +37,8 @@
     </td>
     <td>
         <a href="{{ $link }}">
-            <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}">
-                {!! $currency->getPriceSymbol(2, $document->total_price ?? 0) !!}
+            <p class="js-divisa fw-bold" value="{{ $imp ?? 0 }}">
+                {!! $currency->getPriceSymbol(2, $imp ?? 0) !!}
             </p>
         </a>
     </td>

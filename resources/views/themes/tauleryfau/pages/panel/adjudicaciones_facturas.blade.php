@@ -71,6 +71,7 @@
                         <p class="text-center text-md-start">{{ trans("$theme-app.user_panel.auction") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no_invoice") }}</p>
                         <p class="allotment-auctions_header-imp">{{ trans("$theme-app.user_panel.total_bill") }}</p>
+						<p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.outstanding_amount") }}</p>
                         <p class="visible-md visible-lg">{{ trans("$theme-app.user_panel.status") }}</p>
                         <p class="visible-md visible-lg"></p>
                         <p class="visible-md visible-lg"></p>

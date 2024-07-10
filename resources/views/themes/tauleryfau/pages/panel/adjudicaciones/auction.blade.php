@@ -10,6 +10,8 @@
 			: trans("$theme-app.user_panel.pending")
 	];
 	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
+
+	$pendingToPay = $isPayed ? 0 : $sumInvoices;
 @endphp
 
 <div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}" data-auction-wrapper>
@@ -34,6 +36,11 @@
         <p class="js-divisa fw-bold" value="{{ $sumInvoices ?? 0 }}" style="font-size: 13px;">
             {!! $currency->getPriceSymbol(2, $sumInvoices ?? 0) !!}
         </p>
+
+        <p class="js-divisa fw-bold visible-md visible-lg" value="{{ $pendingToPay ?? 0 }}" style="font-size: 13px;">
+            {!! $currency->getPriceSymbol(2, $pendingToPay ?? 0) !!}
+        </p>
+
         <p class="allotment-invoice_state">
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
         </p>

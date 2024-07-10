@@ -4,7 +4,8 @@
     $num = $isPayed ? $document->nfra_cobro1 : $document->num_pcob;
     $efec = $isPayed ? null : $document->efec_pcob;
     $fec = $isPayed ? $document->fec_cobro1 : $document->fec_pcob;
-    $imp = $isPayed ? $document->imp_cobro1 : $document->imp_pcob;
+    $imp = $isPayed ? $document->imp_cobro1 : $document->total_price;
+	$pending = $isPayed ? 0 : $document->imp_pcob;
 
     $url = "/factura/$anum-$num";
 
@@ -48,13 +49,13 @@
         </p>
         <p class="visible-md visible-lg">{{ str_replace('-', '/', $id) }}</p>
 
-		{{-- <p class="js-divisa fw-bold" value="{{ $document->total_price ?? 0 }}" style="font-size: 13px">
-            {!! $currency->getPriceSymbol(2, $document->total_price ?? 0) !!}
-        </p> --}}
+		<p @class(['js-divisa fw-bold', 'visible-md visible-lg' => !$isPayed]) value="{{ $imp ?? 0 }}" style="font-size: 13px">
+            {!! $currency->getPriceSymbol(2, $imp ?? 0) !!}
+        </p>
 
         {{-- importe pendiente de pago --}}
-        <p class="js-divisa fw-bold" value="{{ $imp ?? 0 }}" style="font-size: 13px">
-            {!! $currency->getPriceSymbol(2, $imp ?? 0) !!}
+        <p @class(['js-divisa fw-bold', 'visible-md visible-lg' => $isPayed]) value="{{ $pending ?? 0 }}" style="font-size: 13px">
+            {!! $currency->getPriceSymbol(2, $pending ?? 0) !!}
         </p>
 
         <p class="allotment-invoice_state">

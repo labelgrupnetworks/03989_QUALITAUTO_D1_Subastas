@@ -910,7 +910,7 @@ select#actual_currency {
 
 .alltoments-auctions {
 	/* --grid-columns-desktop: 8% 16% 8% 12% minmax(16%, auto) 16% 1fr; */
-	--grid-columns-desktop: 10% 22% 10% 10% 15% 15% auto;
+	--grid-columns-desktop: 8% 20% 10% 10% 10% 10% 10% auto;
 	--grid-columns-mobile: repeat(3, 1fr) 2fr;
 }
 
