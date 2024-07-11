@@ -916,7 +916,14 @@ class ToolsServiceProvider extends ServiceProvider
 		$pathNoPhoto = "themes/$theme/img/items/no_photo";
 
 		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
+
+			//la intentamos generar
+			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num);
+
+			//si no se ha podido generar la miniatura o no existe la imagen original, cargamos la imagen por defecto
+			if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
+				$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
+			}
 		}
 		$image_to_load = "$url/$image_to_load";
 		return $image_to_load.self::date_modification($file);

@@ -1,7 +1,7 @@
 <div class="panel-lot-wrapper">
     <div class="panel-lot sales-lot">
         <div class="panel-lot_img">
-            <img class="img-responsive" src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1) }}"
+            <img class="img-responsive" src="{{ Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1, 0) }}"
                 alt="" loading="lazy">
         </div>
         <div class="panel-lot_ref">
