@@ -254,7 +254,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/store', 'subasta\AdminAwardController@store');
 			Route::get('/edit', 'subasta\AdminAwardController@edit')->name('award.edit');
 			Route::post('/update', 'subasta\AdminAwardController@update');
-			Route::post('/delete', 'subasta\AdminAwardController@destroy');
+			Route::post('/delete', 'subasta\AdminAwardController@destroy')->name('award.delete');
 			Route::post('/export/{idAuction?}', 'subasta\AdminAwardController@export')->name('award.export');
 		});
 
