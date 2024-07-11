@@ -605,7 +605,7 @@ class ImageGenerate
 					chmod(public_path($directoryThumb), 0775);
 				}
 
-				$imageThumb = public_path("$directoryThumb/$imageName.jpeg");
+				$imageThumb = public_path("$directoryThumb/$imageName.jpg");
 
 				$imageMake = Image::make($imagePath);
 
@@ -614,7 +614,7 @@ class ImageGenerate
 					$constraint->upsize();
 				});
 
-				$imageMake->save($imageThumb, 75, 'jpeg');
+				$imageMake->save($imageThumb, 75, 'jpg');
 			}
 		}
 	}
