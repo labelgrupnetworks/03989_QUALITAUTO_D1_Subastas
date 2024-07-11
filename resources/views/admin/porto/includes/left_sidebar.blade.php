@@ -122,6 +122,15 @@ $idiomes = \Config::get('app.locales');
 							</li>
 						</ul>
 						@endif
+						@if(in_array('reports', $config_menu_admin))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('subasta.reports.index') }}">
+									<span>Informes</span>
+								</a>
+							</li>
+						</ul>
+						@endif
 						@if(!in_array('noLicit', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>

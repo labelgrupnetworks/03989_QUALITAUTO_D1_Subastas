@@ -277,6 +277,7 @@ Route::post('/api-ajax/carousel', 'ContentController@getAjaxCarousel');
 Route::post('/api-ajax/newcarousel', 'ContentController@getAjaxNewCarousel');
 Route::post('/api-ajax/static-carousel', 'ContentController@getAjaxStaticCarousel');
 Route::post('/api-ajax/add-sec-user', 'UserController@changeFavTsec');
+Route::post('/api-ajax/lot_grid', 'ContentController@getAjaxLotGrid');
 
 Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser');
 
@@ -284,7 +285,7 @@ Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser')
 # Búsqueda
 Route::get(Routing::slugSeo('busqueda') . '/redirect', 'BusquedaController@redirect');
 Route::get(Routing::slugSeo('busqueda') . '/{texto?}', 'BusquedaController@index');
-Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index');
+Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index')->name('busqueda');
 Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', 'BusquedaController@index');
 
 # Mail Composer via POST

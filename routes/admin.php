@@ -254,7 +254,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/store', 'subasta\AdminAwardController@store');
 			Route::get('/edit', 'subasta\AdminAwardController@edit')->name('award.edit');
 			Route::post('/update', 'subasta\AdminAwardController@update');
-			Route::post('/delete', 'subasta\AdminAwardController@destroy');
+			Route::post('/delete', 'subasta\AdminAwardController@destroy')->name('award.delete');
 			Route::post('/export/{idAuction?}', 'subasta\AdminAwardController@export')->name('award.export');
 		});
 
@@ -302,6 +302,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/update', 'subasta\AdminSubCategoryController@update');
 			Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
 		});
+
+		Route::get('/subasta/reports', 'subasta\AdminAuctionReportsController@index')->name('subasta.reports.index');
+		Route::post('/subasta/reports/generate', 'subasta\AdminAuctionReportsController@generate')->name('subasta.reports.generate');
+		Route::get('/subasta/reports/download/{cod_sub}', 'subasta\AdminAuctionReportsController@download')->name('subasta.reports.download');
 
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
 		Route::get('user_newsletter/catalog', 'usuario\AdminNewsletterClientController@showCatalogSuscriptors')->name('user_newsletter.catalog');
