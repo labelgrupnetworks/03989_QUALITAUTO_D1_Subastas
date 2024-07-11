@@ -941,12 +941,10 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function auctionImage($cod_sub, $size = null, $reference = null)
 	{
-		$emp = Config::get('app.emp');
 		$url = Config::get('app.url');
-		$theme = Config::get('app.theme');
 
 		$imagePath = self::buildAuctionImagePath($size, $cod_sub, $reference);
-		$image_to_load = self::getValidAuctionImage($imagePath, $size, $theme, $emp, $cod_sub);
+		$image_to_load = self::getValidAuctionImage($imagePath, $size, $cod_sub, $reference);
 
 		return "$url/$image_to_load".self::date_modification($image_to_load);
 	}
@@ -978,15 +976,12 @@ class ToolsServiceProvider extends ServiceProvider
 
 	private static function getValidAuctionImage($imagePath, $size, $cod_sub, $reference)
 	{
-		$emp = Config::get('app.emp');
-		$theme = Config::get('app.theme');
-
 		$globImage = glob($imagePath);
 		$image_to_load = $globImage ? $globImage[0] : null;
 
 		if (!self::isImageValid($image_to_load)) {
 			//Si no existe la miniatura la intentamos generar
-			self::generateThumbnail($size, $emp, $cod_sub, $theme);
+			self::generateThumbnail($size, $cod_sub, $reference);
 
 			$globImage = glob($imagePath);
 			$image_to_load = $globImage ? $globImage[0] : null;
