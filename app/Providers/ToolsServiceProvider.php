@@ -905,28 +905,30 @@ class ToolsServiceProvider extends ServiceProvider
 		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
 
 		$image_to_load = "img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
-		$extension = 'webp';
 
+		//finalmente creo que a nadie se le generan en webp, se puede quitar
+		$extension = 'webp';
 		if(!file_exists("$image_to_load.$extension")){
 			$extension = 'jpg';
 		}
 
 		$image_to_load = "$image_to_load.$extension";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/$theme/img/items/no_photo";
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-
-			//la intentamos generar
-			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num);
-
-			//si no se ha podido generar la miniatura o no existe la imagen original, cargamos la imagen por defecto
-			if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-				$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
-			}
+		if(self::isImageValid($image_to_load)) {
+			return "$url/$image_to_load".self::date_modification($file);
 		}
-		$image_to_load = "$url/$image_to_load";
-		return $image_to_load.self::date_modification($file);
+
+		//si no existe la imagen, generamos las miniaturas (solo si esta activado en la configuración)
+		if(Config::get('app.generate_image_when_not_found', false)){
+			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num, $sizeImage);
+		}
+
+		//si sigue sin existir la imagen, cargamos la imagen por defecto
+		if (!self::isImageValid($image_to_load)) {
+			$image_to_load = self::getPlaceholderImage($size);
+		}
+
+		return "$url/$image_to_load".self::date_modification($file);
 	}
 
 	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)

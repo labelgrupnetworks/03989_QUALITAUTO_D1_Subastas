@@ -544,54 +544,19 @@ class ImageGenerate
 		}
 	}
 
-
-	public function imageLot($numHces, $linHces, $imagePosition = null)
+	public function imageLot($numHces, $linHces = null, $imagePosition = null, $imageSize = null)
 	{
 		$emp = Config::get('app.emp');
-
-		$sizes = CacheLib::rememberCache('image_sizes', 1200, function () {
-			return Web_Images_Size::query()
-				->where('name_web_images_size', 'like', '%lote%')
-				->pluck('size_web_images_size');
-		});
-
-
 		$path = "img/$emp/$numHces/";
-		$images = array_diff(scandir($path), ['.', '..']);
+		$images = $this->getlotImages($numHces, $linHces, $imagePosition);
 
-		if (!empty($linHces)) {
-			$images = array_filter($images, function ($image) use ($linHces, $imagePosition) {
-				[$imageName, $extension] = explode(".", $image);
-
-				$imageParams = explode("-", $imageName);
-				[$imgEmp, $imgNum, $imgLin] = $imageParams;
-
-				/**
-				 * ejemplos de nombre
-				 * 001-50-1.jpg
-				 * 001-50-1_01.jpg
-				 * [emp-numHces-linHces]_[imagePosition].[extension]
-				 *
-				 * si $imagePosition es 0, obtenemos la que concida con el linHces y que no tenga imagePosition
-				 * si $imagePosition es null, obtenemos todas las que concidan con el linHces
-				 * si $imagePosition no es null, obtenemos la que concida con el linHces y la imagePosition
-				 */
-
-				if ($imagePosition == 0) {
-					return $imgLin == $linHces && strpos($imgLin, "_") === false;
-				}
-
-				$imagePosition = str_pad($imagePosition, 2, "0", STR_PAD_LEFT);
-				$imgPos = explode("_", $imgLin)[1] ?? null;
-				$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
-
-				if ($imagePosition) {
-					return $imgLin == $linHces && $imgPos == $imagePosition;
-				}
-
-				return $imgLin == $linHces;
+		$sizes = $imageSize
+			? [$imageSize]
+			: CacheLib::rememberCache('image_sizes', 1200, function () {
+				return Web_Images_Size::query()
+					->where('name_web_images_size', 'like', '%lote%')
+					->pluck('size_web_images_size');
 			});
-		}
 
 		foreach ($images as $image) {
 			[$imageName, $extension] = explode(".", $image);
@@ -617,5 +582,50 @@ class ImageGenerate
 				$imageMake->save($imageThumb, 75, 'jpg');
 			}
 		}
+	}
+
+	private function getlotImages($numHces, $linHces = null, $imagePosition = null)
+	{
+		$emp = Config::get('app.emp');
+		$path = "img/$emp/$numHces/";
+		$images = array_diff(scandir($path), ['.', '..']);
+
+		if (!empty($linHces)) {
+			$images = array_filter($images, fn ($image) => $this->isSameLineAndPosition($image, $linHces, $imagePosition));
+		}
+
+		return $images;
+	}
+
+	/**
+	 * ejemplos de nombre
+	 * 001-50-1.jpg
+	 * 001-50-1_01.jpg
+	 * [emp-numHces-linHces]_[imagePosition].[extension]
+	 *
+	 * si $imagePosition es 0, obtenemos la que concida con el linHces y que no tenga imagePosition
+	 * si $imagePosition es null, obtenemos todas las que concidan con el linHces
+	 * si $imagePosition no es null, obtenemos la que concida con el linHces y la imagePosition
+	 */
+	private function isSameLineAndPosition($image, $linHces, $imagePosition)
+	{
+		[$imageName, $extension] = explode(".", $image);
+
+		$imageParams = explode("-", $imageName);
+		[$imgEmp, $imgNum, $imgLin] = $imageParams;
+
+		if ($imagePosition == 0) {
+			return $imgLin == $linHces && strpos($imgLin, "_") === false;
+		}
+
+		$imagePosition = str_pad($imagePosition, 2, "0", STR_PAD_LEFT);
+		$imgPos = explode("_", $imgLin)[1] ?? null;
+		$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
+
+		if ($imagePosition) {
+			return $imgLin == $linHces && $imgPos == $imagePosition;
+		}
+
+		return $imgLin == $linHces;
 	}
 }
