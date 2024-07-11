@@ -303,6 +303,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/delete', 'subasta\AdminSubCategoryController@destroy');
 		});
 
+		Route::get('/subasta/reports', 'subasta\AdminAuctionReportsController@index')->name('subasta.reports.index');
+		Route::post('/subasta/reports/generate', 'subasta\AdminAuctionReportsController@generate')->name('subasta.reports.generate');
+		Route::get('/subasta/reports/download/{cod_sub}', 'subasta\AdminAuctionReportsController@download')->name('subasta.reports.download');
+
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
 		Route::get('user_newsletter/catalog', 'usuario\AdminNewsletterClientController@showCatalogSuscriptors')->name('user_newsletter.catalog');
 		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'show', 'destroy']);
