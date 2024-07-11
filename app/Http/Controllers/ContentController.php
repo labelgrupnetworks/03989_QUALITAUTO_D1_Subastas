@@ -196,6 +196,49 @@ class ContentController extends Controller
 		return $contents;
 	}
 
+	function getAjaxLotGrid()
+	{
+		$itemsForPage = 15;
+
+		$bloque = new Bloques();
+		$contents = "";
+		$banner = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
+		if (empty($banner)) {
+			return;
+		}
+
+		foreach ($banner as $item) {
+			if (isset($item->impsalhces_asigl0)) {
+				$item->no_formated_impsalhces_asigl0 = $item->impsalhces_asigl0;
+				$item->impsalhces_asigl0 = \Tools::moneyFormat($item->impsalhces_asigl0);
+			}
+		}
+		if (!empty($_POST['replace'])) {
+			$lang_temp = $_POST['replace']['lang'];
+			$locales = Config::get('app.language_complete');
+			foreach ($locales as $key => $value) {
+				if ($value == $lang_temp) {
+					\App::setLocale($key);
+				}
+			}
+		}
+
+		$img = new \App\Models\Subasta;
+		if (!empty($banner)) {
+			$banner_chunked = array_chunk($banner, $itemsForPage);
+			foreach ($banner_chunked as $key => $bann_list) {
+				$contents .= view('includes.lot_grid_ajax', array('bann_list' => $bann_list, 'img' => $img, 'page' => $key + 1))->render();
+			}
+		}
+
+		if (!empty($_POST['size'])) {
+			$data = array('contents' => $contents, 'size' => count($banner));
+			return $data;
+		}
+
+		return $contents;
+	}
+
 	function getAjaxNewCarousel()
 	{
 		Config::set('app.locale', request('lang', 'es'));
