@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Config;
 use App\Http\View\Composers\GlobalComposer;
+use App\Models\PageSetting;
 
 class ShareVarsProvider extends ServiceProvider
 {
@@ -36,6 +37,7 @@ class ShareVarsProvider extends ServiceProvider
 		View::share('img_url', $img_url);
 		View::share('images_url', $images_url);
 		View::share('host', $host);
+		View::share ('page_settings', new PageSetting());
 
 		//para seleccionar a que vistas afecta (* a todas, ['name ruta', 'name ruta'] a varias)
 		//se pueden usar la session dentro del composer
