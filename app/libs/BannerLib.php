@@ -266,11 +266,12 @@ class BannerLib
 					}
 				}
 
-				if(strpos($tipo_item, ':') !== false) {
+				if (strpos($tipo_item, ':') !== false) {
 					$viewBlade = explode(':', $tipo_item)[1];
+
 					foreach ($itemsPorBloque[$k] as $item) {
-						if(!empty($item->texto)) {
-							$params = json_decode($item->texto, true);
+						$params = self::jsonTextToArray($item->texto);
+						if ($params) {
 							$html .= view("front::includes.banners.$viewBlade", $params);
 						}
 					}
@@ -395,5 +396,27 @@ class BannerLib
 		];
 
 		return $data;
+	}
+
+	/**
+	 * Decodifica el texto lo convierte en un array asociativo filtrado.
+	 * Se filtra para que si las claves son vacías o los valores son nulos, no se muestre
+	 * el banner item.
+	 * Tener en cuanta si se crea un banner tipo vista sin variables.
+	 *
+	 * @param string $text
+	 * @return array
+	 */
+	private static function jsonTextToArray($text)
+	{
+		if(empty($text)) {
+			return [];
+		}
+
+		$params = json_decode($text, true);
+		if (!is_array($params)) {
+			$params = [];
+		}
+		return array_filter($params);
 	}
 }
