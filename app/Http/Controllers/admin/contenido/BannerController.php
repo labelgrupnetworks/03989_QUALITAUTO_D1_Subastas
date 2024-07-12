@@ -39,8 +39,8 @@ class BannerController extends Controller
 		$this->PUBLIC_PATH_IMG = "/img/banner/" . Config::get('app.theme') . "/" .  Config::get("app.main_emp") . "/";
 		$this->PATH_IMG = getcwd() . $this->PUBLIC_PATH_IMG;
 
-		$this->middleware(function($request, $next) {
-			if($key = $request->input('key')) {
+		$this->middleware(function ($request, $next) {
+			if ($key = $request->input('key')) {
 				$this->refreshBannerCache($key);
 			}
 			return $next($request);
@@ -56,7 +56,7 @@ class BannerController extends Controller
 		$banners = $banners->wherenotin("UBICACION", $ubicacionesProhibidas);
 
 		$ubicacion = '';
-		if($request->filled('ubicacion')){
+		if ($request->filled('ubicacion')) {
 			$banners = $banners->where('ubicacion', $request->get('ubicacion'));
 			$ubicacion = $request->get('ubicacion');
 		}
@@ -88,7 +88,7 @@ class BannerController extends Controller
 		$isIframe = $request->has('to_frame');
 
 		$tipos = WebNewbannerTipoModel::query()
-			->when($isIframe, function($query) {
+			->when($isIframe, function ($query) {
 				return $query->whereIn('id', [1, 2, 3, 4, 5, 16, 21]);
 			})
 			->get();
@@ -102,7 +102,7 @@ class BannerController extends Controller
 			'is_iframe' => $isIframe
 		];
 
-		if($isIframe){
+		if ($isIframe) {
 			$data['ubicacion'] = FormLib::Hidden("ubicacion", 1, $request->get('ubicacion'));
 			$data['id_content'] = FormLib::Hidden("id_content", 1, $request->get('id_content'));
 		};
@@ -134,7 +134,7 @@ class BannerController extends Controller
 			"ID_WEB_NEWBANNER_TIPO" => $data['tipo_banner']
 		];
 
-		if($isIframe) {
+		if ($isIframe) {
 			$bannerData['UBICACION'] = $request->get('ubicacion');
 		}
 
@@ -142,7 +142,7 @@ class BannerController extends Controller
 
 		$urlToRedirect = "/admin/newbanner/editar/$id";
 
-		if($isIframe) {
+		if ($isIframe) {
 			$webContentPage = Web_Content_Page::query()
 				->where('id_content_page', $request->get('id_content'))
 				->first();
@@ -152,7 +152,7 @@ class BannerController extends Controller
 
 			//Ya que los banners ya controlan por si mismo los idiomas, en los contenidos
 			//solo permitimos crearlos en español y crearemos una copia en el idioma que corresponda
-			if($webContentPage->table_rel_content_page == Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG) {
+			if ($webContentPage->table_rel_content_page == Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG) {
 
 				$webBlogLang = Web_Blog_Lang::where([
 					['id_web_blog_lang', $webContentPage->rel_id_content_page],
@@ -181,7 +181,6 @@ class BannerController extends Controller
 						'order_content_page' => $maxOrder + 1
 					]);
 				}
-
 			}
 
 
@@ -256,7 +255,7 @@ class BannerController extends Controller
 	private function getValidExtension($path)
 	{
 		foreach (['webp', 'jpg', 'gif'] as $extension) {
-			if(is_file("$path.$extension")){
+			if (is_file("$path.$extension")) {
 				return $extension;
 			}
 		}
@@ -282,7 +281,7 @@ class BannerController extends Controller
 
 			$item->imagen = !$extension ? "/img/noFoto.png" : $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.$extension";
 
-			$item->imagen=ToolsServiceProvider::urlAssetsCache($item->imagen);
+			$item->imagen = ToolsServiceProvider::urlAssetsCache($item->imagen);
 		}
 
 		return View::make('admin::pages.contenido.banner.itemBlockBannerSnippet', $info);
@@ -341,6 +340,13 @@ class BannerController extends Controller
 		$tipos = explode(",", $tipos->bloques);
 		$info['tipo'] = $tipos[$info_aux[0]->bloque];
 
+		//if info tipo contains ":" is view type
+		$isViewType = strpos($info['tipo'], ':') !== false;
+		if ($isViewType) {
+			$viewName = explode(':', $info['tipo'])[1];
+			return $this->editViewItemBloque("includes.banners.$viewName", $info);
+		}
+
 		foreach (Config::get("app.locales") as $lang => $textLang) {
 
 			$lang = strtoupper($lang);
@@ -366,6 +372,42 @@ class BannerController extends Controller
 		return View::make('admin::pages.contenido.banner.itemBlockBannerForm', $info);
 	}
 
+	private function editViewItemBloque($viewName, $info)
+	{
+		$finder = View::getFinder();
+		try {
+			$view = $finder->find($viewName);
+		} catch (\InvalidArgumentException $e) {
+			Log::error("View $viewName not found");
+			return "No se ha podido mostrar la vista $viewName";
+		}
+		$variables = $this->extractVariablesFromComments(file_get_contents($view));
+
+		//create form
+		$formulario = [];
+		foreach (array_keys(Config::get("app.locales")) as $lang) {
+			$lang = strtoupper($lang);
+			$formulario[$lang] = [];
+			$formulario[$lang]['id'] = FormLib::Hidden("id_" . $lang, 1, $info[$lang]->id);
+			$formulario[$lang]['id_web_banner'] = FormLib::Hidden("id_web_newbanner_" . $lang, 1, $info[$lang]->id_web_newbanner);
+			$formulario[$lang]['lenguaje'] = FormLib::Hidden("lenguaje_" . $lang, 1, $info[$lang]->lenguaje);
+			$formulario[$lang]['bloque'] = FormLib::Hidden("bloque_" . $lang, 1, $info[$lang]->bloque);
+
+			$content = json_decode($info[$lang]->texto, true);
+
+			foreach ($variables as $variableName => $type) {
+				$formulario[$lang][$variableName] = FormLib::Text("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? '');
+			}
+		}
+
+		$formulario[$lang]['token'] = Formlib::Hidden("_token", 1, csrf_token());
+		$formulario[$lang]['key'] = Formlib::Hidden("key", 1, $info['banner']->key);
+
+		$info['formulario'] = $formulario;
+
+		return View::make('admin::pages.contenido.banner.itemViewBlockBannerForm', $info);
+	}
+
 	function guardaItemBloque(Request $request)
 	{
 		$theme = config('app.theme');
@@ -389,29 +431,54 @@ class BannerController extends Controller
 				])
 				->update($update);
 
-			$direcoryPath = str_replace("\\", "/","/img/banner/$theme/$mainEmp/$parentId/$id");
+			$direcoryPath = str_replace("\\", "/", "/img/banner/$theme/$mainEmp/$parentId/$id");
 			if (!is_dir(public_path($direcoryPath))) {
 				mkdir(public_path($direcoryPath), 0775, true);
 				chmod(public_path($direcoryPath), 0775);
 			}
 
-			if($image = request()->file("imagen_$lang")) {
+			if ($image = request()->file("imagen_$lang")) {
 				$this->saveImage($image, "$lang", $direcoryPath, false);
 			}
 
-			if($imageMobile = request()->file("imagen_mobile_$lang", $image)) {
+			if ($imageMobile = request()->file("imagen_mobile_$lang", $image)) {
 				$this->saveImage($imageMobile, "{$lang}_mobile", $direcoryPath, true);
 			}
 		}
 
-		return back()->with(['success' =>array(trans('admin-app.title.updated_ok'))]);
+		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
+	}
+
+	function guardaItemViewBloque(Request $request)
+	{
+		$id = $request->input('id_ES');
+		$langs = array_map('mb_strtoupper', array_keys(config('app.locales')));
+
+		foreach ($langs as $lang) {
+
+			$content = $request->input("content_$lang");
+			$contentJson = json_encode($content);
+
+			$update = [
+				'texto' => $contentJson,
+			];
+
+			WebNewbannerItemModel::query()
+				->where([
+					['lenguaje', $lang],
+					['id', $id],
+				])
+				->update($update);
+		}
+
+		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
 	public function saveImage(UploadedFile $image, string $fileName, string $direcoryPath, bool $isMobile)
 	{
 		$extension = "webp";
 
-		if($image->getMimeType() == "image/gif") {
+		if ($image->getMimeType() == "image/gif") {
 			copy($image->getRealPath(), public_path("$direcoryPath/$fileName.gif"));
 			@unlink(public_path("$direcoryPath/$fileName.$extension"));
 			return;
@@ -420,7 +487,7 @@ class BannerController extends Controller
 		$path = public_path("$direcoryPath/$fileName.$extension");
 
 		$imageSave = Image::make($image);
-		if($isMobile) {
+		if ($isMobile) {
 			$imageSave->resize(800, null, function ($constraint) {
 				$constraint->aspectRatio();
 				$constraint->upsize();
@@ -464,7 +531,7 @@ class BannerController extends Controller
 			$this->delete_directory(str_replace("\\", "/", $this->PATH_IMG . $id));
 		}
 
-		return back()->with(['success' =>array(trans('admin-app.title.updated_ok'))]);
+		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
 	function delete_directory($dirname)
@@ -533,11 +600,11 @@ class BannerController extends Controller
 	 */
 	public function bannerImage($banners)
 	{
-		$rutaImg = "img/banner/".Config::get('app.theme') ."/". Config::get('app.main_emp');
+		$rutaImg = "img/banner/" . Config::get('app.theme') . "/" . Config::get('app.main_emp');
 		$nameImg = strtoupper(Config::get('app.locale'));
 
 		$idsBanners = array();
-		foreach($banners as $banner){
+		foreach ($banners as $banner) {
 			$idsBanners[] = $banner->id;
 		}
 
@@ -547,12 +614,12 @@ class BannerController extends Controller
 			->get();
 
 		$images = array();
-		foreach($items as $item){
+		foreach ($items as $item) {
 			$idBanner = $item->id_web_newbanner;
 			$idItem = $item->id;
 
 			# si aun no tenemos una imagen para ese baner
-			if(empty($images[$idBanner]) || $images[$idBanner] == "/img/noFoto.png"){
+			if (empty($images[$idBanner]) || $images[$idBanner] == "/img/noFoto.png") {
 
 				$path = "$rutaImg/$idBanner/$idItem/$nameImg";
 				$extension = $this->getValidExtension($path);
@@ -569,11 +636,11 @@ class BannerController extends Controller
 	{
 		$order = request("order");
 		$ubicacion = request("ubicacion");
-			foreach ($order as $key => $id) {
-				WebNewbannerModel::where("UBICACION",$ubicacion)
-						->where('ID', $id)
-						->update(['ORDEN' => $key]);
-			}
+		foreach ($order as $key => $id) {
+			WebNewbannerModel::where("UBICACION", $ubicacion)
+				->where('ID', $id)
+				->update(['ORDEN' => $key]);
+		}
 
 		return MessageLib::successMessage("Orden modificado");
 	}
@@ -614,5 +681,33 @@ class BannerController extends Controller
 	private function refreshBannerCache($key)
 	{
 		CacheLib::forgetCache(BannerLib::banerCacheName($key));
+	}
+
+	private function extractVariablesFromView($viewContent)
+	{
+		$pattern = '/\{\{\s*\$([\w\[\]\'"\.]+)\s*\}\}|\{!!\s*\$([\w\[\]\'"\.]+)\s*!!\}/';
+		preg_match_all($pattern, $viewContent, $matches);
+
+		// Combinar los resultados de las dos partes de la expresión regular
+		$variables = array_merge($matches[1], $matches[2]);
+
+		// Eliminar duplicados y limpiar el array
+		$variables = array_filter($variables);
+		$variables = array_unique($variables);
+
+		return $variables;
+	}
+
+	private function extractVariablesFromComments($viewContent)
+	{
+		$pattern = '/\*\s*@var\s+(\w+)\s+\$(\w+)/';
+		preg_match_all($pattern, $viewContent, $matches);
+
+		$variables = [];
+		foreach ($matches[2] as $key => $variable) {
+			$variables[$variable] = $matches[1][$key];
+		}
+
+		return $variables;
 	}
 }

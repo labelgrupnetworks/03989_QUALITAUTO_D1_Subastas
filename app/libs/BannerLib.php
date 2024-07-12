@@ -265,6 +265,16 @@ class BannerLib
 						$html .= '</div>';
 					}
 				}
+
+				if(strpos($tipo_item, ':') !== false) {
+					$viewBlade = explode(':', $tipo_item)[1];
+					foreach ($itemsPorBloque[$k] as $item) {
+						if(!empty($item->texto)) {
+							$params = json_decode($item->texto, true);
+							$html .= view("front::includes.banners.$viewBlade", $params);
+						}
+					}
+				}
 			}
 			$html .= '</div></div>';
 			if ($tipo_item == "imagen" ||  $tipo_item == "texto") {

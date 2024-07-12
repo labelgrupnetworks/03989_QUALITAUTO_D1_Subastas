@@ -120,6 +120,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/nuevoItemBloque', "contenido\BannerController@nuevoItemBloque");
 			Route::post('/editaItemBloque', "contenido\BannerController@editaItemBloque");
 			Route::post('/guardaItemBloque', "contenido\BannerController@guardaItemBloque");
+			Route::post('/guardaItemViewBloque', "contenido\BannerController@guardaItemViewBloque");
 			Route::post('/borraItemBloque', "contenido\BannerController@borraItemBloque");
 			Route::post('/estadoItemBloque', "contenido\BannerController@estadoItemBloque");
 			Route::post('/vistaPrevia', "contenido\BannerController@vistaPrevia");
