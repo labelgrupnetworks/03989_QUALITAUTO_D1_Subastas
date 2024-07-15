@@ -588,6 +588,11 @@ class ImageGenerate
 	{
 		$emp = Config::get('app.emp');
 		$path = "img/$emp/$numHces/";
+
+		if (!is_dir($path)) {
+			return [];
+		}
+
 		$images = array_diff(scandir($path), ['.', '..']);
 
 		if (!empty($linHces)) {

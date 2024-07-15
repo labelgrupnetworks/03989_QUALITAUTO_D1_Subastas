@@ -149,6 +149,7 @@
                 <x-panel.adjudicaciones_details :title="$title" :id="$proformaId" :invoice="$invoiceFile">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
+							'auction' => '',
                             'num' => $lot->num_hces1,
                             'lin' => $lot->lin_hces1,
                             'ref' => $lot->ref_asigl0,
@@ -174,6 +175,7 @@
                 <x-panel.adjudicaciones_details :title="$title" :id="$id" :invoice="$invoiceFile">
                     @foreach ($lots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
+							'auction' => '',
                             'num' => $lot->numhces_dvc1l,
                             'lin' => $lot->linhces_dvc1l,
                             'ref' => $lot->ref_dvc1l,
@@ -196,6 +198,7 @@
                 <x-panel.adjudicaciones_details :title="$title" :id="$proformaId" :invoice="$invoiceFile">
                     @foreach ($profomaInvoiceLots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
+							'auction' => $document->cod_sub,
                             'num' => $lot->num_hces1,
                             'lin' => $lot->lin_hces1,
                             'ref' => $lot->ref_asigl0,
@@ -221,6 +224,7 @@
                 <x-panel.adjudicaciones_details :title="$title" :id="$id" :invoice="$invoiceFile">
                     @foreach ($lots as $lot)
                         @include('pages.panel.adjudicaciones.lot', [
+							'auction' => $lot->sub_dvc1l,
                             'num' => $lot->numhces_dvc1l,
                             'lin' => $lot->linhces_dvc1l,
                             'ref' => $lot->ref_dvc1l,

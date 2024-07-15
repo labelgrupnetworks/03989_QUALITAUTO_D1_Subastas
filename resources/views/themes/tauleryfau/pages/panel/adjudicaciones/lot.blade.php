@@ -43,7 +43,7 @@
             </a>
 			@endif
 
-            <a data-codsub="{{ $lot->cod_sub }}" data-ref="{{ $lot->ref_asigl0 }}" @disabled(!$isPayed)
+            <a data-codsub="{{ $auction }}" data-ref="{{ $ref }}" @disabled(!$isPayed)
                 @class([
                     'btn btn-lb btn-lb-secondary',
                     'js-btn-certificate' => $isPayed,
