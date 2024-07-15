@@ -1,6 +1,6 @@
 @php
 /**
- * @var string $url
+ * @var string $id
  * @var string $title
  * @var string $text
  */
@@ -8,7 +8,7 @@
 
 <div class="item">
     <div class="yt-iframe-container">
-        <iframe src="{{ $url ?? '' }}" title="YouTube video player"
+        <iframe src="https://www.youtube.com/embed/{{ $id ?? '' }}" title="YouTube video player"
             width="360" height="250" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen=""></iframe>

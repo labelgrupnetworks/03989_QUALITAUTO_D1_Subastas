@@ -279,7 +279,7 @@ class BannerController extends Controller
 			$path = str_replace("\\", "/", $this->PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES");
 			$extension = $this->getValidExtension($path);
 
-			$item->imagen = !$extension ? "/img/noFoto.png" : $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.$extension";
+			$item->imagen = !$extension ? "/default/img/no_photo.png" : $this->PUBLIC_PATH_IMG . $item->id_web_newbanner . "/" . $item->id . "/ES.$extension";
 
 			$item->imagen = ToolsServiceProvider::urlAssetsCache($item->imagen);
 		}
