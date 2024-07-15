@@ -9,12 +9,12 @@
             $url_tiempo_real=\Tools::url_real_time_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions);
 			$url_subasta=\Tools::url_info_auction($subasta->cod_sub,$subasta->name);
             ?>
-            <div class="col-xs-12 col-sm-4 col-lg-3">
+            <div class="col-xs-12 col-sm-4 mb-3">
                 <div class="item_subasta">
                     <a title="{{ $subasta->name }}" href="<?= $url_subasta?>">
                         <div class="img-lot">
                                 <img
-                                    src="{{ Tools::url_img_auction('subasta_medium', $subasta->cod_sub) }}"
+                                    src="{{ Tools::url_img_auction('subasta_large', $subasta->cod_sub) }}"
                                     alt="{{ $subasta->name }}"
                                     class="img-responsive"
                                 />
@@ -29,7 +29,7 @@
                           }
                           ?>
 
-                        <a title="{{ $subasta->name }}" href="{{ $url_lotes}}"
+                        <a title="{{ $subasta->name }}" href="{{ $url_lotes }}"
                            class="btn btn-lotes">{{ trans($theme.'-app.subastas.see_lotes') }}</a>
                         <a title="{{ $subasta->name }}" href="{{ $url_subasta }}" class="btn btn-subasta">{{ trans($theme.'-app.subastas.see_subasta') }}</a>
                         @if($subasta->upcatalogo == 'S')
