@@ -601,7 +601,7 @@ class Subasta extends Model
 				NVL(fgsublang.SESLOCAL_SUB_LANG,  sub.seslocal_sub) seslocal_sub,
 				NVL(fgsublang.descdet_SUB_LANG,  sub.descdet_sub) descdet_sub,
 				NVL(fgsublang.obs_sub_lang,  sub.obs_sub) obs_sub,
-				NVL(auc.\"info\", auc_lang.\"info_lang\") session_info,
+				NVL(auc_lang.\"info_lang\", auc.\"info\") session_info,
 				sub.sesmaps_sub,sub.expomaps_sub,
 				auc.*,
 				NVL(auc_lang.\"name_lang\", auc.\"name\") name,
@@ -1343,7 +1343,7 @@ class Subasta extends Model
 			$credit = FxCli::getCurrentCredit($this->cod, $orden->licit_orlic);
 
 			$user = new User();
-			$totalAdjudicado = $user->getTotalAdjudicado($this->cod, $sessionReference, $orden->licit_orlic);
+			$totalAdjudicado = $user->getSumAdjudicacionesSubasta($this->cod, $orden->licit_orlic);
 			$disponible = $credit - $totalAdjudicado ;
 			//echo $orden->licit_orlic."<br> Credito disponible: ".$disponible."<br> Orden: ".$orden->himp_orlic."<br><br><br>";
 
@@ -4671,8 +4671,8 @@ class Subasta extends Model
         }
     }
 
-    public function getFiles($cod_sub){
-
+    public function getFiles($cod_sub)
+	{
         $sql = "Select files.\"description\", files.\"type\", files.\"path\" , files.\"img\" , files.\"url\" "
                 . "FROM \"auc_sessions_files\" files "
                 . "WHERE files.\"company\" = :emp "
@@ -4690,19 +4690,42 @@ class Subasta extends Model
         return $files;
 	}
 
+	/**
+	 * Devuelve el primer archivo de una subasta sin tener en cuenta el idioma
+	 * Vico lo necesitaba para no tener que subir los archivos en todos los idiomas
+	 */
+	public function getFirstFileWithoutLocale($auctionId)
+	{
+		$file = DB::table('"auc_sessions_files"')
+			->select('"type"', '"path"', '"url"')
+			->where([
+				['"company"', '=', Config::get('app.emp')],
+				['"auction"', '=', $auctionId]
+			])
+			->first();
 
-	public static function allowBidCredit($codSub, $referenceSession, $licit, $imp ){
+		return $file;
+	}
+
+	/**
+	 * Comprueba si un usuario tiene crédito suficiente para realizar una puja
+	 * En el caso de no pasar referencia de sesión, se comprueba el crédito utilizado
+	 * en todas las sesiones de la subasta
+	 */
+	public static function allowBidCredit($codSub, $referenceSession, $licit, $imp)
+	{
 			$credit = FxCli::getCurrentCredit($codSub,$licit);
+
 			#ya adjudicado
 			$user = new User();
-			$totalAdjudicado = $user->getTotalAdjudicado($codSub, $referenceSession, $licit);
+			$totalAdjudicado = empty($referenceSession)
+				? $user->getSumAdjudicacionesSubasta($codSub, $licit)
+				: $user->getTotalAdjudicado($codSub, $referenceSession, $licit);
+
 			# si al sumar esta puja se han pasado del credito devolvemos error
-			if(($imp + $totalAdjudicado) > $credit ){
-				return false;
-			}else{
-				return true;
-			}
+			return ($imp + $totalAdjudicado) <= $credit;
 	}
+
 	#sobre puja inicial de subasta en caso de que haya credito, funcion recursiva
 	public function sobrePujaOrdenCredit($ordenes,$precio_salida, $codSub, $referenceSession, $ref ){
 		if($precio_salida== 0){
@@ -4715,9 +4738,9 @@ class Subasta extends Model
 		foreach($ordenes as $orden){
 
 			$credit = FxCli::getCurrentCredit($codSub,$orden->cod_licit);
-			$totalAdjudicado = $user->getTotalAdjudicado($codSub, $referenceSession,$orden->cod_licit );
+			$totalAdjudicado = $user->getSumAdjudicacionesSubasta($codSub, $orden->cod_licit);
 			#como minimo será cero, no deberia salir numero negativos pero por si acaso.
-			$disponible = max($credit -$totalAdjudicado,0);
+			$disponible = max($credit - $totalAdjudicado, 0);
 
 			#cogemos el credito disponible si es más pequeño que la orden
 			if($orden->himp_orlic > $disponible){

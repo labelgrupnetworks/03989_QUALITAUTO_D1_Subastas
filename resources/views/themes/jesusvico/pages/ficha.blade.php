@@ -77,8 +77,9 @@ $(document).ready(function() {
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">
-				{{-- <p class="h1">{{ $titleName }} | <b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->title_url_subasta }}</a></b></p> --}}
-				<p class="h1 pb-1 lot-ficha-title"><b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> | <a class="back-link" href="javascript:backpage();">{{ trans("$theme-app.global.back") }}</a>  </p>
+				<p class="h1 pb-1 lot-ficha-title">
+					<b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> | <a class="back-link" href="{{ $lote_actual->url_subasta }}">{{ trans("$theme-app.global.back") }}</a>
+				</p>
 			</div>
 		</div>
 	</div>

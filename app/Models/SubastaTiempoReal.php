@@ -358,7 +358,7 @@ class SubastaTiempoReal extends Model
         DB::select($sql, $bindings);
     }
 
-     public function openLot()
+     public function openLot($fromJump = false)
     {
 
          if(!empty($this->cod) && !empty($this->ref)) {
@@ -374,7 +374,12 @@ class SubastaTiempoReal extends Model
             //si devuelve 0 es que lo ha`podido abrir
             if(count($abrirlote) > 0 && $abrirlote[0]->abrir_lote == '0'){
                 return true;
-            }else{
+            }
+			// si el resultado es 3 es que el lote ya estaba abierto, si estamos saltando en el tiempo real debemos seguir con el proceso
+			elseif($fromJump && count($abrirlote) > 0 && $abrirlote[0]->abrir_lote == '3'){
+				return true;
+			}
+			else{
                 if(count($abrirlote) > 0){
                     \Log::info("No se ha podido abrir el lote ".$this->cod. " " . $this->ref ." respuesta: ". $abrirlote[0]->abrir_lote);
                 }

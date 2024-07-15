@@ -936,6 +936,7 @@ $lang = [
 		'assign_ministry' => 'Asignar al ministerio',
 		'cost_price' => 'Precio coste',
 		'auctionConditions'	=> 'Al pujar confirma que acepta las condiciones de la sala.' ,
+		'open_lot_to_jump' => 'Abrir el lote en el caso de estar cerrado',
 	),
 	'subastas' =>
 	array(

@@ -57,7 +57,7 @@
                                     <a href="{{$url_lotes}}?description={{$data['search']}}" target="_blank" >
                                 <div class="list_lot_search_content">
                                     <div class="img_search_lot">
-                                        <img src="/img/load/subasta_medium/AUCTION_{{ Config::get('app.emp')}}_{{ $item->cod_sub }}.jpg" class="img-responsive" style="width: 100%;" />
+                                        <img src="{{ Tools::url_img_auction('subasta_medium', $item->cod_sub) }}" class="img-responsive" style="width: 100%;" />
 
                                     </div>
 

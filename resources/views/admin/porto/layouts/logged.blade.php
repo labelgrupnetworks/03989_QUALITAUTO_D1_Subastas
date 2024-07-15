@@ -3,7 +3,8 @@
     <head>
         @include('admin::includes.head')
     </head>
-    <body>
+
+	<body>
         <section class="body">
             @include('admin::includes.header')
 
@@ -13,11 +14,9 @@
             </div>
 
             @include('admin::includes.right_sidebar')
-
         </section>
 
-
-        <div id="modal_message" class="modal fade" role="dialog">
+         <div id="modal_message" class="modal fade @yield('page-modal')" role="dialog">
           <div class="modal-dialog">
 
             <div class="modal-content">

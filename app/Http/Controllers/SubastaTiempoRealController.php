@@ -464,12 +464,14 @@ class subastaTiempoRealController extends Controller
 				$creditUsed += $subasta_info->lote_actual->max_puja->imp_asigl1;
 			}
 
-			foreach($adjudicaciones as $adj){
-                $creditUsed += $adj->himp_csub;
-			}
+			//Para la primera carga, necesitamos las sumas de adjudicaciones de TODAS las sesiones de la subasta
+			$sumAward = (new User)->getSumAdjudicacionesSubasta($subasta_info->cod_sub, $js_item['user']['cod_licit']);
+			$creditUsed += $sumAward;
 
-			//usuarios con más credito /usuarios con mas credito a que mas hayan pedido??
-			//$usersCredit = FgCreditoSub::where('SUB_CREDITOSUB', $subasta_info->cod_sub)->orderBy();
+			//Para actualizar en tiempo real, necesitamos las sumas de adjudicaciones de las otras sesiones, las de la actual ya más las pujas se suman en el js
+			$sumAwardInOtherSessions = (new User)->getSumAdjudicacionesInOtherSessions($subasta_info->cod_sub, $js_item['user']['cod_licit'], $subasta_info->reference);
+
+			$js_item['user']['sum_award_previous_sessions'] = $sumAwardInOtherSessions;
 
 			$credit_info = [
 				'current_credit' => intval($currentCredit),
@@ -1166,141 +1168,134 @@ class subastaTiempoRealController extends Controller
 
 
 
-    public function comprarLote($cod_sub, $ref, $cod_user, $cod_licit = null, $gestor = false  ) {
-        $user = new User();
-        $mail = new MailController();
+	public function comprarLote($cod_sub, $ref, $cod_user, $cod_licit = null, $gestor = false)
+	{
+		$user = new User();
+		$mail = new MailController();
 
-
-
-
-
-
-        if (empty($cod_user)){
-            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.subastas.mustLogin'),NULL, FALSE);
-            return $res;
-
-        }
-
-        $user->cod_cli = $cod_user;
-        $exist_user = $user->getUserByCodCli();
-        if(empty($exist_user)){
-            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.subastas.mustLogin'),NULL, FALSE);
-            return $res;
-        }
-		if ( $exist_user[0]->blockpuj_cli == "S") {
-			$res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.usuario_pendiente_revision'), NULL, False);
+		if (empty($cod_user)) {
+			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.subastas.mustLogin'), NULL, FALSE);
 			return $res;
 		}
 
+		$user->cod_cli = $cod_user;
+		$exist_user = $user->getUserByCodCli();
+		if (empty($exist_user)) {
+			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.subastas.mustLogin'), NULL, FALSE);
+			return $res;
+		}
+		if ($exist_user[0]->blockpuj_cli == "S") {
+			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.usuario_pendiente_revision'), NULL, False);
+			return $res;
+		}
 
-        $subasta = new subasta();
-        $subasta->cod = $cod_sub;
-        $subasta->cli_licit = $cod_user;
-        //si es gestor puede haber indicado un id de licitador para realizar la compra en su nombre
-        if($gestor && !empty($cod_licit) ){
-            $licit = $cod_licit;
-        }
-        //si no buscamos el id de licitaodr dle usuario.
-        else{
+		$subasta = new subasta();
+		$subasta->cod = $cod_sub;
+		$subasta->cli_licit = $cod_user;
+		//si es gestor puede haber indicado un id de licitador para realizar la compra en su nombre
+		if ($gestor && !empty($cod_licit)) {
+			$licit = $cod_licit;
+		}
+		//si no buscamos el id de licitaodr dle usuario.
+		else {
 
-            $checklicit = $subasta->checkLicitador();
+			$checklicit = $subasta->checkLicitador();
 
-            //si no ha devuelto ningun codigo de licitador
-            if (count($checklicit) == 0){
-                $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.buying'),NULL, FALSE);
-                return $res;
-            }
-            $licit = head($checklicit)->cod_licit;
-        }
+			//si no ha devuelto ningun codigo de licitador
+			if (count($checklicit) == 0) {
+				$res = $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.buying'), NULL, FALSE);
+				return $res;
+			}
+			$licit = head($checklicit)->cod_licit;
+		}
 
+		$subasta->lote = $ref;
+		$l = $subasta->getLote();
 
-        $subasta->lote = $ref;
-        $l = $subasta->getLote();
+		//el lote no existe
+		if (count($l) == 0) {
+			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.buying'), NULL, FALSE);
+			return $res;
+		}
+		$lote = head($l);
+		//comprobamos que el lote se puede comprar, la subastas de tipo V tienen que tener el lote abierto y no hace falta que tengan el campo compra_asigl0 como S, en cambio las otras el lote debe estar cerrado y los deben tener el campo comprar a S
 
-        //el lote no existe
-        if(count($l)== 0 ){
-            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.buying'),NULL, FALSE);
-            return $res;
-        }
-        $lote = head($l);
-        //comprobamos que el lote se puede comprar, la subastas de tipo V tienen que tener el lote abierto y no hace falta que tengan el campo compra_asigl0 como S, en cambio las otras el lote debe estar cerrado y los deben tener el campo comprar a S
+		if (($lote->tipo_sub == 'V'  && $lote->cerrado_asigl0 != 'N') || ($lote->tipo_sub != 'V' && $lote->cerrado_asigl0 != 'S')  || ($lote->tipo_sub != 'V' && $lote->compra_asigl0 != 'S') || $lote->retirado_asigl0 != 'N'  || $lote->lic_hces1 != 'N' || ($lote->subc_sub != 'S' && $lote->subc_sub != 'C' && $lote->subc_sub != 'A' && !(Config::get('app.buy_historic') && $lote->subc_sub == 'H'))) {
 
-        if( ($lote->tipo_sub=='V'  && $lote->cerrado_asigl0!='N'  )  ||    ( $lote->tipo_sub!='V' && $lote->cerrado_asigl0!='S' )  || ( $lote->tipo_sub!='V' && $lote->compra_asigl0!='S') || $lote->retirado_asigl0!='N'  || $lote->lic_hces1 !='N' || ( $lote->subc_sub!='S' && $lote->subc_sub!='C' && $lote->subc_sub!='A' && !(\Config::get('app.buy_historic') && $lote->subc_sub=='H') ) ){
-
-            $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.buying'),NULL, FALSE);
-            return $res;
-        }
-		//impsal_hces1
+			$res = $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.buying'), NULL, FALSE);
+			return $res;
+		}
 
 		$importe =  $lote->impsalhces_asigl0;
-		if(!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0 ){
+		if (!empty($lote->impres_asigl0) && $lote->impres_asigl0 >  $lote->impsalhces_asigl0) {
 			$importe =  $lote->impres_asigl0;
 		}
 
-        //datos para hacer la puja
-        $subasta->licit = $licit;
-        $subasta->type_bid = 'W';
-        $subasta->imp = $importe;
-        $subasta->ref = $ref;
+		//comprobar si tenemos credito disponible en la sesión? para realizar la compra
+		if(Config::get('app.use_credit', false)) {
+			$hasAvailableCredit = Subasta::allowBidCredit($cod_sub, null, $licit, $importe);
+			if(!$hasAvailableCredit){
+				return $this->error_puja(trans(Config::get('app.theme') . '-app.subastas.not_have_credit'), null, false);
+			}
+		}
 
+		//datos para hacer la puja
+		$subasta->licit = $licit;
+		$subasta->type_bid = 'W';
+		$subasta->imp = $importe;
+		$subasta->ref = $ref;
 
-
-        //debe ir a true para que no compruebe que este cerrado
-        $result = $subasta->addPuja(TRUE);
-        //no se envia de momento para compra directa
-        //$this->email_bid_confirmed($subasta,$result,'compra');
-        if ($result['status'] == 'success'){
+		//debe ir a true para que no compruebe que este cerrado
+		$result = $subasta->addPuja(TRUE);
+		//no se envia de momento para compra directa
+		//$this->email_bid_confirmed($subasta,$result,'compra');
+		if ($result['status'] == 'success') {
 
 			$subasta->cerrarLote();
 
-			if(Config::get('app.WebServiceCloseLot')){
+			if (Config::get('app.WebServiceCloseLot')) {
 
 				$theme  = Config::get('app.theme');
 				$rutaCloseLotcontroller = "App\Http\Controllers\\externalws\\$theme\CloseLotController";
 
 				$closeLotController = new $rutaCloseLotcontroller();
 
-				$closeLotController->createCloseLot($cod_sub,$ref);
+				$closeLotController->createCloseLot($cod_sub, $ref);
 			}
-            if (Config::get('app.enable_email_buy_user')){
-                $mail->sendEmailCerradoGeneric(Config::get('app.emp'),$cod_sub,$ref);
-            }
+			if (Config::get('app.enable_email_buy_user')) {
+				$mail->sendEmailCerradoGeneric(Config::get('app.emp'), $cod_sub, $ref);
+			}
 
-                # Opciones de envio de email
-                if(!empty(Config::get('app.accounting_email_admin'))){
-                    $admin_email = Config::get('app.accounting_email_admin');
-                }else{
-                   $admin_email = Config::get('app.admin_email');
-                }
+			# Opciones de envio de email
+			if (!empty(Config::get('app.accounting_email_admin'))) {
+				$admin_email = Config::get('app.accounting_email_admin');
+			} else {
+				$admin_email = Config::get('app.admin_email');
+			}
 
-                    $email = new EmailLib('LOT_SOLD_ADMIN');
-                    if(!empty($email->email)){
-                        $email->setUserByLicit($cod_sub, $licit,false);
-                        $email->setAuction_code($cod_sub);
-                        $email->setLot_ref($ref);
-						$email->setPrice($importe);
-                        $email->setTo($admin_email);
-						$email->send_email();
-                    }
+			$email = new EmailLib('LOT_SOLD_ADMIN');
+			if (!empty($email->email)) {
+				$email->setUserByLicit($cod_sub, $licit, false);
+				$email->setAuction_code($cod_sub);
+				$email->setLot_ref($ref);
+				$email->setPrice($importe);
+				$email->setTo($admin_email);
+				$email->send_email();
+			}
 
+			$res = array(
+				'status' => 'success',
+				'msg' => trans(Config::get('app.theme') . '-app.msg_success.buying_lot', ['lot' => $subasta->ref]),
+				'ref' => $subasta->ref,
+				'imp' => $subasta->imp
 
-
-            $res = array(
-                    'status' => 'success',
-                    'msg' => trans(\Config::get('app.theme').'-app.msg_success.buying_lot',['lot' => $subasta->ref]),
-                    'ref' => $subasta->ref,
-                    'imp' => $subasta->imp
-
-                );
-            return $res ;
-        }else{
-            $res = $this->error_puja($result['msg'],NULL, FALSE);
-            return $res ;
-        }
-
-
-
-    }
+			);
+			return $res;
+		} else {
+			$res = $this->error_puja($result['msg'], NULL, FALSE);
+			return $res;
+		}
+	}
 
 
     public function ordenLicitacion ()
@@ -1940,7 +1935,7 @@ class subastaTiempoRealController extends Controller
 			#Credito- SOLER- comprobación de puja , solo subasta presenciales,
 			#no deja pujar si la puja más lo que tienes adjudicado supera tu credito
 			if( (\Config::get('app.use_credit'))  && count($u) > 0 && $lote->tipo_sub == 'W' ){
-				$puedePujar =Subasta::allowBidCredit($subasta->cod, $lote->reference, $subasta->licit,$subasta->imp  );
+				$puedePujar =Subasta::allowBidCredit($subasta->cod, null, $subasta->licit,$subasta->imp);
 				if(!$puedePujar ){
 					$res = $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
                     return $res;
@@ -4529,6 +4524,21 @@ class subastaTiempoRealController extends Controller
              return $res;
         }
         $jumpToOrder = (int)$actual_lot->orden_hces1;
+
+		$openLot = Request::input('open_lot', 0);
+		if ($openLot) {
+			$SubastaTR->ref = $ref;
+			$res_open = $SubastaTR->openLot(true);
+
+			if(!$res_open){
+				$res = array(
+					'status' => 'error',
+					'msg' => 'open_lot_error'
+				);
+				return $res;
+			}
+		}
+
 
         $subasta->lote            = $ref_actual;
         $actual_lot = $subasta->getLoteLight();

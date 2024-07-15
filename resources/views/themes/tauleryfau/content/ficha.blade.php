@@ -22,6 +22,10 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 	}
 </style>
 <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="/vendor/photoswipe/photoswipe.umd.min.js"></script>
+<script src="/vendor/photoswipe/photoswipe-lightbox.umd.min.js"></script>
+<link href="/vendor/photoswipe/photoswipe.css" rel="stylesheet">
+
 <input type="hidden" name="_token" id="token" value="{{ Session::token() }}" />
 <section class="title-ficha">
 	<div class="container">
@@ -135,23 +139,38 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 						@endforeach
 					@endif
 
-					<div class="owl-theme owl-carousel visible-xs visible-sm visible-md" id="owl-carousel-responsive-ficha">
-						@if (count($lote_actual->imagenes) > 0)
-							@foreach ($lote_actual->imagenes as $key => $imagen)
-								<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
-									<img
-										onclick="javascript:moreImagesGridMobile('{{ $lote_actual->num_hces1 }}', '{{ $lote_actual->lin_hces1 }}', {{ $key }})"
-										loading="lazy"
-										style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
-										class="img-responsive" data-pos="{{ $key }}"
-										src="{{ \Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}"
-										alt="{{ $lote_actual->titulo_hces1 }}">
+					<div class="ficha-lot-galery owl-theme owl-carousel visible-xs visible-sm visible-md" id="owl-carousel-responsive-ficha">
+						@if(count($lote_actual->imagenes) > 0)
+						@foreach($lote_actual->imagenes as $key => $imagen)
+						@php
+							$imageUrlCompressed = Tools::url_img('lote_medium_large', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
+							$imageUrlReal = Config::get('app.url').Tools::url_img('real', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key);
+							$imageSize = getimagesize($imageUrlReal);
+						@endphp
+						<a class="d-block" data-pswp-width="{{ $imageSize[0] }}" data-pswp-height="{{ $imageSize[1] }}"
+							href="{{ $imageUrlReal }}">
+							<div class="item_content_img_single" style="position: relative; height: 250px; overflow: hidden;">
+								<img loading="lazy" style="max-width: 100%; max-height: 190px;top: 50%; transform: translateY(-50%); position: relative; width: auto !important; display: inherit !important; margin: 0 auto !important;"
+									class="img-responsive" data-pos="{{ $key }}"
+									src="{{ $imageUrlCompressed }}"
+									alt="{{$lote_actual->titulo_hces1}}">
 
-								</div>
-							@endforeach
+							</div>
+						</a>
+						@endforeach
 						@endif
 
 					</div>
+
+					@if(count($lote_actual->imagenes) > 0)
+						<div class="image-lot-miniature-container" style="display: none">
+							@foreach($lote_actual->imagenes as $key => $imagen)
+								<a class="image-selector" data-key-image="{{ $key }}">
+									<img class="micro-image" src="{{ Tools::url_img('lote_medium', $lote_actual->num_hces1, $lote_actual->lin_hces1, $key) }}">
+								</a>
+							@endforeach
+						</div>
+					@endif
 
 					<div class="col-xs-12 no-padding hidden-lg">
 						<div class="btn-responsive flex">
@@ -504,6 +523,45 @@ $minMaxLot = \App\Models\V5\FgAsigl0::joinSessionAsigl0()
 	});
 
 	$(window).ready(function() {
+
+		var lightbox = new PhotoSwipeLightbox({
+			gallery: '.ficha-lot-galery',
+			children: 'a',
+			pswpModule: PhotoSwipe,
+			loop: false
+		});
+		lightbox.init();
+
+		const imageMiniatureContainer = $('.image-lot-miniature-container');
+
+		lightbox.on('beforeOpen', () => {
+			selectGaleryMiniature(lightbox.pswp.currIndex, imageMiniatureContainer);
+			imageMiniatureContainer.css('align-items', 'flex-end');
+			imageMiniatureContainer.fadeIn(400, function() {
+				$(this).css('display', 'flex');
+			});
+		});
+
+		lightbox.on('change', () => {
+			fichaCarousel.trigger('to.owl.carousel', [lightbox.pswp.currIndex, 0])
+			selectGaleryMiniature(lightbox.pswp.currIndex, imageMiniatureContainer);
+			moveMiniatureScroll(lightbox.pswp.currIndex, imageMiniatureContainer);
+		});
+
+		lightbox.on('close', () => {
+			deselectAllGaleryMiniature(imageMiniatureContainer);
+			imageMiniatureContainer.slideUp(400);
+			imageMiniatureContainer.css('align-items', 'initial');
+		});
+
+		$('a.image-selector').click(openThatImage);
+
+		function openThatImage(){
+			let index = $(this).data('key-image');
+			const pswp = lightbox.pswp;
+			pswp.goTo(index)
+			fichaCarousel.trigger('to.owl.carousel', [pswp.currIndex, 0])
+		}
 
 		if ($('.context-text p span').text().length > 10) {
 			$('.btn-context').removeClass('hidden')

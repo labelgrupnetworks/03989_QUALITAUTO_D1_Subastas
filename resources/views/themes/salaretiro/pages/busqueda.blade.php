@@ -39,8 +39,8 @@
                 </form>
 
 </div>
-         
-            
+
+
         </div>
     </div>
 </div>
@@ -58,20 +58,20 @@
                         @foreach ($data['subastas'] as $key => $item)
                         <?php
                                         $url_lotes=\Routing::translateSeo('subasta').$item->cod_sub."-".str_slug($item->name)."-".$item->id_auc_sessions;
-                                    ?> 
+                                    ?>
                         <div class="col-xs-12 col-sm-6 col-md-3">
                             <div class="list_lot_search">
                                     <a href="{{$url_lotes}}?description={{$data['search']}}" target="_blank" >
                                 <div class="list_lot_search_content">
                                     <div class="img_search_lot">
-                                        <img src="/img/load/subasta_medium/AUCTION_{{ Config::get('app.emp')}}_{{ $item->cod_sub }}.jpg" class="img-responsive" style="width: 100%;" />
+                                        <img src="{{ Tools::url_img_auction('subasta_medium', $item->cod_sub) }}" class="img-responsive" style="width: 100%;" />
 
                                     </div>
-                                    
+
                                     <div class="caption">
-                                        
+
                                         <p>{{$item->name}}</p>
-                                        
+
 
                                     </div>
                                     <p class="num_lot">
@@ -80,11 +80,11 @@
                                         @else
                                             {{$item->cuantos}} {{trans($theme.'-app.lot_list.lots')}}
                                         @endif
-                                    </p> 
+                                    </p>
                                 </div>
                             </a>
                             </div>
-                            
+
                         </div>
                     @endforeach
                 </div>
@@ -93,23 +93,23 @@
                         <?php
                           $url = "";
                             //Si no esta retirado tendrá enlaces
-                            if($item->retirado_asigl0 =='N'){  
+                            if($item->retirado_asigl0 =='N'){
                                 $url_friendly = str_slug($item->webfriend_hces1);
                                 $url_friendly = \Routing::translateSeo('lote').$item->cod_sub."-".str_slug($item->name).'-'.$item->id_auc_sessions."/".$item->ref_asigl0.'-'.$item->num_hces1.'-'.$url_friendly;
-                                 $url = "href='$url_friendly'";    
+                                 $url = "href='$url_friendly'";
                             }
 
                             $class_square = 'col-xs-12 col-sm-3';
 
                            $titulo ="";
                             //posicion del principio de descripcion
-                            $posicion = strpos($item->desc_hces1,'<span class="description"'); 
+                            $posicion = strpos($item->desc_hces1,'<span class="description"');
                             if($posicion === false ){
                                 $descripcion = "";
                             }else{
                                 $descripcion = substr($item->desc_hces1,$posicion);
                                 //posicion de cuando acaba
-                                $posicion = strpos($descripcion,'</span>'); 
+                                $posicion = strpos($descripcion,'</span>');
                                 //coger solo el span de descripcion
                                 $descripcion = substr($descripcion,0,$posicion+7);
                             }
@@ -121,7 +121,7 @@
 
                                 $titulo ="$item->ref_asigl0  -  $item->descweb_hces1 ";
                             }elseif(!\Config::get('app.ref_asigl0') && \Config::get('app.titulo_hces1')){
-                                $titulo = $item->descweb_hces1;        
+                                $titulo = $item->descweb_hces1;
                             }elseif(\Config::get('app.ref_asigl0')){
                                 $titulo = trans($theme.'-app.lot.lot-name') ." ".$item->ref_asigl0 ;
                             }
@@ -137,27 +137,27 @@
                             //en el buscador no miraremos si el usuario actual es el ganador de la subasta ya que hay varias subastas y por cada una tiene un códig ode licitador
                             $winner = "";
 
-                            ?> 
+                            ?>
                         @include('includes.lotlist')
                     @endforeach
-                    
+
                 @endif
             </div>
         </div>
-        
+
         @if(isset($data['subastas.paginator']))
             <?= $data['subastas.paginator'] ?>
         @endif
-        
+
     </div>
-    
+
 </div>
-	
+
 <script>
-    see_img();    
+    see_img();
 </script>
 
-			
+
 
 
 @stop

@@ -749,7 +749,13 @@
 						<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.jump_to_lots') }}</p>
 
 						<input id="jumpLot" autocomplete="off" class="form-control" type="text">
-						<br />
+						<div style="margin-top:10px;">
+						<input type="checkbox" id="openLot" name="open_lot" checked>
+						<label for="openLot">
+							Abrir el lote en el caso de estar cerrado
+						</label>
+					</div>
+                    <br>
 
 						<button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
 						<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>

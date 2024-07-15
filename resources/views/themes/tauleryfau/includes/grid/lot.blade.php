@@ -267,14 +267,6 @@
 										<span class="btn-play" style="font-size: 13px;">VIDEO</span>
 									</a>
 
-									{{--
-									<a class="d-flex align-items-center btn view-video d-flex align-items-center hidden-xs hidden-sm hidden-md"
-										href="javascript:modalVideo('{{$videos[0]}}', '{{$item->ref_asigl0}}', '{{$item->cod_sub}}', '{{$titulo}}', '{{$item->descweb_hces1}}', '{{ $item->cerrado_asigl0 == 'S' ? trans($theme.'-app.lot.view_lot') : trans($theme.'-app.lot.pujar') }}', '{{$url_friendly}}')">
-										<span class="btn-play">VIDEO</span>
-										<i class="fa fa-play" aria-hidden="true"><span></span></i>
-										<p class="video-text">{{ trans($theme.'-app.lot_list.watch_video') }}</p>
-									</a>
-									--}}
 								@elseif($numFotos > 1)
 
 								{{-- desktop --}}
@@ -283,9 +275,50 @@
 								</a>
 
 								{{-- mobile --}}
-								<a href="javascript:moreImagesGridMobile('{{$item->num_hces1}}', '{{$item->lin_hces1}}', 0)" class="d-flex align-items-center view-video more-images-grid-js hidden-sm hidden-md hidden-lg">
+								<button class="d-flex align-items-center btn-link view-video more-images-grid-js hidden-sm hidden-md hidden-lg open-lot-gallery"
+									onclick="openLotGallery('{{$item->num_hces1}}', '{{$item->lin_hces1}}')">
 									<span class="btn-play" style="font-size: 13px;">{{ trans($theme.'-app.lot_list.more_images') }}</span>
-								</a>
+								</button>
+
+								@php
+									$lotImages = [];
+								@endphp
+
+								<div class="image-lot-miniature-container image-lot-miniature-container-{{$item->num_hces1}}-{{$item->lin_hces1}}" style="display: none">
+									@for ($i = 0; $i < $numFotos; $i++)
+
+										@php
+										$urlPath = Tools::url_img('real', $item->num_hces1, $item->lin_hces1, $i);
+										$imagePath = explode('?', $urlPath)[0];
+										$imagePath = str_replace('/', DIRECTORY_SEPARATOR, $imagePath);
+
+										[$width, $height] = getimagesize(public_path($imagePath));
+										$imageData = [
+											'src' => $urlPath,
+											'width' => $width,
+											'height' => $height
+										];
+
+										$lotImages[] = $imageData;
+										@endphp
+
+										<a class="image-selector" data-key-image="{{ $i }}">
+											<img class="micro-image" loading="lazy" src="{{ Tools::url_img('lote_medium', $item->num_hces1, $item->lin_hces1, $i) }}">
+										</a>
+									@endfor
+								</div>
+
+								<script>
+									lightboxs.push({
+										num_hces1: '{{$item->num_hces1}}',
+										lin_hces1: '{{$item->lin_hces1}}',
+										instance: new PhotoSwipeLightbox({
+											dataSource: @json($lotImages),
+											pswpModule: PhotoSwipe,
+											loop: false
+										})
+									});
+								</script>
 
 								@else
 								<a class="d-flex align-items-center view-video"></a>

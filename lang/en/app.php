@@ -907,6 +907,7 @@ $lang =[
 			'streaming' => 'Streaming',
 			'author' => 'Artist',
 			'auctionConditions'	=> 'By bidding you confirm that you accept the conditions of the room' ,
+			'open_lot_to_jump' => 'Open the lot if it is closed',
 		),
 	'subastas' =>
 		array (

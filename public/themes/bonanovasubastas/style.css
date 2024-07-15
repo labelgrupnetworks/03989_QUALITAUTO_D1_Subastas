@@ -858,10 +858,17 @@ footer div.module_footer address a:hover {
 
 footer div.module_footer ul.redes {
 	margin: 0;
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+	padding: 10px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+}
+
+@media (min-width: 601px) {
+	footer div.module_footer ul.redes {
+		justify-content: flex-start;
+	}
 }
 
 footer div.module_footer ul.redes li {
@@ -1136,6 +1143,7 @@ ul.navbar-responsive li>ul .desplegable li {
 div.info_contact {
     border: 1px solid #ccc;
     padding: 10px;
+	margin-bottom: 5rem;
 }
 
 div.info_contact a {

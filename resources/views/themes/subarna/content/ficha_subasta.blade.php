@@ -1,6 +1,6 @@
 @php
     $auction = $data['auction'];
-    $imageSrc = '/img/load/subasta_large/AUCTION_' . $auction->emp_sub . '_' . $auction->cod_sub . '.jpg';
+    $imageSrc = Tools::url_img_auction('subasta_large', $auction->cod_sub);
     //$imageSrc = 'https://www.subarna.net' . $imageSrc; // remove this line
 
     $dateFormat = Tools::getDateFormatDayMonthLocale($auction->start);

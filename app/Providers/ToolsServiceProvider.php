@@ -20,6 +20,8 @@ use DOMDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Helpers\Helper;
+use App\Models\V5\Web_Blog;
+use App\Models\V5\Web_Category_Blog_Lang;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -617,7 +619,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		return array(
 			'DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'SK', 'SI', 'ES', 'EE', 'FI', 'FR', 'GR', 'IE', 'IT', 'LV',
-			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'GB', 'CZ', 'RO', 'SE'
+			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'CZ', 'RO', 'SE'
 		);
 	}
 
@@ -925,58 +927,96 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_img_auction($size, $cod_sub)
 	{
-		$img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, null);
+
+		/* $img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
 		$file="img/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
-		return $img_file.self::date_modification($file);
+		return $img_file.self::date_modification($file); */
 	}
 
 	public static function url_img_session($size, $cod_sub, $reference)
 	{
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, $reference);
 
-		$file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
+		/* $file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
 		$img_file = Config::get('app.url') . "/img/load/$size/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
-		return $img_file.self::date_modification($file);
-
-		/*
-        // Codigo para evitar la conexion a base de datos y cargar las imágenes directamente
-
-		$emp = Config::get('app.emp');
-		$images_size = \Tools::images_size();
-		$image_to_load = "img/thumbs/$images_size[$size]/SESSION_$emp" . "_" . "$cod_sub" . "_" . "$reference.jpg";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
-		}
-        return   Config::get('app.url') . "/$image_to_load";
-        */
+		return $img_file.self::date_modification($file); */
 	}
 
-	public static function auctionImage($cod_sub, $size = null)
+	public static function auctionImage($cod_sub, $size = null, $reference = null)
 	{
-		//search file without extension
-		$emp = Config::get('app.emp');
 		$url = Config::get('app.url');
-		$theme = Config::get('app.theme');
 
-		if($size) {
-			$images_size = self::images_size();
-			$imagePath = "img/thumbs/$images_size[$size]/AUCTION_{$emp}_{$cod_sub}.*";
+		$imagePath = self::buildAuctionImagePath($size, $cod_sub, $reference);
+		$image_to_load = self::getValidAuctionImage($imagePath, $size, $cod_sub, $reference);
+
+		return "$url/$image_to_load".self::date_modification($image_to_load);
+	}
+
+	private static function auctionImageName($cod_sub, $reference)
+	{
+		$emp = Config::get('app.emp');
+		if (empty($reference)) {
+			return "AUCTION_{$emp}_{$cod_sub}";
 		}
-		else {
-			$imagePath = "img/AUCTION_{$emp}_{$cod_sub}.*";
+		return "SESSION_{$emp}_{$cod_sub}_{$reference}";
+	}
+
+	private static function buildAuctionImagePath($size, $cod_sub, $reference)
+	{
+		$imageName = self::auctionImageName($cod_sub, $reference);
+
+		if(!$size || $size === 'real') {
+			return "img/{$imageName}.*";
 		}
 
+		$images_size = self::images_size();
+		if(!isset($images_size[$size])) {
+			return "img/{$imageName}.*";
+		}
+
+		return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
+	}
+
+	private static function getValidAuctionImage($imagePath, $size, $cod_sub, $reference)
+	{
 		$globImage = glob($imagePath);
 		$image_to_load = $globImage ? $globImage[0] : null;
 
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
+		if (!self::isImageValid($image_to_load)) {
+			//Si no existe la miniatura la intentamos generar
+			self::generateThumbnail($size, $cod_sub, $reference);
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
+			$globImage = glob($imagePath);
+			$image_to_load = $globImage ? $globImage[0] : null;
+
+			//Si no se ha podido generar la miniatura o no existe la imagen original, cargamos la imagen por defecto
+			if (!self::isImageValid($image_to_load)) {
+				$image_to_load = self::getPlaceholderImage($size);
+			}
 		}
 
-		return "$url/$image_to_load";
+		return $image_to_load;
+	}
+
+	private static function isImageValid($image)
+	{
+		return file_exists($image) && filesize($image) >= 500;
+	}
+
+	private static function generateThumbnail($size, $cod_sub, $reference)
+	{
+		$originalImage = self::auctionImageName($cod_sub, $reference) . '.jpg';
+		(new ImageGenerate)->resize_img($size, $originalImage, Config::get('app.theme'), true);
+	}
+
+	private static function getPlaceholderImage($size)
+	{
+		$theme = Config::get('app.theme');
+		$pathNoPhoto = "themes/{$theme}/img/items/no_photo";
+		return file_exists("{$pathNoPhoto}_{$size}.png") ? "{$pathNoPhoto}_{$size}.png" : "{$pathNoPhoto}.png";
 	}
 
 	public static function lotRealImage($numhces, $linhces, $img_num = null)
@@ -1677,6 +1717,43 @@ class ToolsServiceProvider extends ServiceProvider
 			'LOTE' => $ref,
 			'CLIENTE' => $cod_cli
 		]);
+	}
+
+	public static function getBlogURLTranslated($lang, $web_blog_id) :array
+	{
+		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
+		foreach ($blogs as $key => $blog) {
+			if ($blog->lang_web_blog_lang == mb_strtoupper($lang)) {
+				unset($blogs[$key]);
+			}
+		}
+		$blog = $blogs->first();
+		if (!$blog) {
+			return [];
+		}
+
+		$categories = Web_Category_Blog_Lang::where('ID_CATEGORY_BLOG_LANG', $blog->primary_category_web_blog)->get();
+		foreach ($categories as $key => $category) {
+			if ($category->lang_category_blog_lang == mb_strtoupper($lang)) {
+				unset($categories[$key]);
+			}
+		}
+		$category = $categories->first();
+		if (!$category) {
+			return [];
+		}
+
+		$to_lang = mb_strtolower($blog->lang_web_blog_lang);
+		$blog_literal_url = 'blog';
+		$category_url = $category->url_category_blog_lang;
+		$blog_url = $blog->url_web_blog_lang;
+
+		$full_url = "/$to_lang/$blog_literal_url/$category_url/" . ($blog->enabled_web_blog_lang != 0 ? "$blog_url" : "");
+
+		return [
+			'url' => $full_url,
+			'to_lang' => $to_lang,
+		];
 	}
 
 }

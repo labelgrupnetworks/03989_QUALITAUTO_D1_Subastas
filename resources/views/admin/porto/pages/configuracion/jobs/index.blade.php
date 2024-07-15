@@ -76,12 +76,15 @@
         $('#jobModal').on('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const route = button.dataset.route;
+			const type = button.dataset.type;
 
             fetch(route)
                 .then(response => response.json())
                 .then(json => {
-                    const commandText = json.data.payload.data.command;
-                    $('.modal-body').html(commandText);
+					const html = type == 'exception'
+						? json.data.exception
+						: json.data.payload.data.command;
+                    $('.modal-body').html(html);
                 })
                 .catch(error => {
                     console.error(error);

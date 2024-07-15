@@ -1,20 +1,21 @@
 @php
     use App\libs\TradLib as TradLib;
     use App\Http\Controllers\V5\ArticleController;
+
     $registration_disabled = Config::get('app.registration_disabled');
     $locale = Config::get('app.locale');
     $envioroment = Config::get('app.env');
 
-	$domains = [
+    $domains = [
         'local' => Config::get('app.url'),
         'develop' => 'https://auctions-ansorena.labelgrup.com',
         'production' => 'https://www.ansorena.com',
     ];
 
-	$galleryDomains = [
+    $galleryDomains = [
         'local' => Config::get('app.url'),
-        'develop' => "https://www.preprodgaleria.enpreproduccion.com",
-        'production' => "https://galeria.ansorena.com",
+        'develop' => 'https://preprodgaleria.enpreproduccion.com',
+        'production' => 'https://galeria.ansorena.com',
     ];
     $domain = $domains[$envioroment];
     $galleryDomain = $galleryDomains[$envioroment];
@@ -30,19 +31,42 @@
         $articlesToCart = count((new ArticleController())->loadArticleCart());
     }
 
-	$urlSubastaOnline = '';
-	if(Arr::has($global, 'subastas.S.O')) {
-		$urlSubastaOnline = Routing::translateSeo('subasta-actual-online', null, $domain);
-	}
+    $urlSubastaOnline = '';
+    if (Arr::has($global, 'subastas.S.O')) {
+        $urlSubastaOnline = Routing::translateSeo('subasta-actual-online', null, $domain);
+    }
 
     //Comprobar en que página estamos
-    $isSobreNosotros = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.historia"), Routing::translateSeo('equipo', null, $domain), $pagina . trans("$theme-app.links.careers")]);
+    $isSobreNosotros = Routing::currentUrlInArray([
+        $pagina . trans("$theme-app.links.historia"),
+        Routing::translateSeo('equipo', null, $domain),
+        $pagina . trans("$theme-app.links.careers"),
+        $pagina . trans("$theme-app.links.about_us"),
+    ]);
 
-    $isJoyeria = Routing::currentUrlInArray([$pagina . trans("$theme-app.links.joyas_category"), $pagina . trans("$theme-app.links.condecoraciones")]) || (!Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain)) && strpos(url()->full(), 'articulos') !== false);
+    $isJoyeria =
+        Routing::currentUrlInArray([
+            $pagina . trans("$theme-app.links.joyas_category"),
+            $pagina . trans("$theme-app.links.condecoraciones"),
+        ]) ||
+        (!Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain)) &&
+            strpos(url()->full(), 'articulos') !== false);
 
-    $isSubastas = Routing::currentUrlInArray([Routing::translateSeo('presenciales', null, $domain), Routing::translateSeo('ventas-destacadas', null, $domain), Routing::translateSeo('subastas-historicas', null, $domain), $pagina . trans("$theme-app.links.buy_and_sell"), Routing::translateSeo('subasta-actual-online', null, $domain)]);
+    $isSubastas = Routing::currentUrlInArray([
+        Routing::translateSeo('presenciales', null, $domain),
+        Routing::translateSeo('ventas-destacadas', null, $domain),
+        Routing::translateSeo('subastas-historicas', null, $domain),
+        $pagina . trans("$theme-app.links.buy_and_sell"),
+        Routing::translateSeo('subasta-actual-online', null, $domain),
+    ]);
 
-    $isStories = Routing::currentUrlInArray([Routing::translateSeo('blog/comunicacion', null, $domain), Routing::translateSeo('blog/joyeria', null, $domain)]);
+    $isStories = Routing::currentUrlInArray([
+        Routing::translateSeo('blog/comunicacion', null, $domain),
+        Routing::translateSeo('blog/joyeria', null, $domain),
+    ]);
+
+    $currentPath = request()->path();
+    $currentPath = substr($currentPath, 3);
 @endphp
 
 <header>
@@ -54,10 +78,10 @@
                 onclick="toogleMenu(this)"></button>
 
             <div class="select-container" id="select-container">
-                <select name="" id="locale-select">
+                <select id="locale-select" name="">
                     @foreach (array_keys(Config::get('app.locales')) as $lang)
-                        <option
-                            value="{{ "/$lang" . TradLib::getRouteTranslate(substr($_SERVER['REQUEST_URI'], 4), \App::getLocale(), $lang) }}"
+                        <option data-lang="{{ $lang }}"
+                            value="{{ "/$lang" . TradLib::getRouteTranslate($currentPath, config('app.locale'), $lang) }}"
                             @if ($locale === $lang) selected @endif>
                             {{ $lang }}
                         </option>
@@ -76,7 +100,7 @@
             @if (!$isGallery)
                 <div class="search-component">
                     <form action="{{ Routing::translateSeo('subasta-actual') }}#grid-lots">
-                        <input type="search" name="description"
+                        <input name="description" type="search"
                             placeholder="{{ trans("$theme-app.global.write_search") }}">
                         <span class="icon flex-center">
                             <img src="/themes/ansorena/assets/img/vectors/search.svg"
@@ -91,12 +115,12 @@
 
         @if (Route::current()->getName() === 'home')
             <h1>
-                <a class="logo-link" title="{{ Config::get('app.name') }}" href="{{ $domain . '/' . $locale }}">
+                <a class="logo-link" href="{{ $domain . '/' . $locale }}" title="{{ Config::get('app.name') }}">
                     <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
                 </a>
             </h1>
         @else
-            <a class="logo-link" title="{{ Config::get('app.name') }}" href="{{ $domain . '/' . $locale }}">
+            <a class="logo-link" href="{{ $domain . '/' . $locale }}" title="{{ Config::get('app.name') }}">
                 <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
             </a>
         @endif
@@ -105,7 +129,7 @@
             <div class="search-gallery-wrapper">
                 <div class="search-component">
                     <form action="{{ Routing::translateSeo('exposiciones') }}">
-                        <input type="search" name="search"
+                        <input name="search" type="search"
                             placeholder="{{ trans("$theme-app.global.write_search") }}">
                         <span class="icon flex-center">
                             <img src="/themes/ansorena/assets/img/vectors/search.svg"
@@ -126,8 +150,8 @@
                         <span>{{ trans("$theme-app.login_register.generic_name") }}</span>
                     </button>
                 @else
-                    <a href="{{ \Routing::slug('user/panel/orders') }}"
-                        class="btn btn-white btn-header-sm flex-center">
+                    <a class="btn btn-white btn-header-sm flex-center"
+                        href="{{ \Routing::slug('user/panel/orders') }}">
                         <svg width="20" height="20" viewBox="0 0 18 21" fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -138,9 +162,9 @@
                 @endif
 
                 @if (Session::get('user.admin'))
-                    <a href="/admin" target="_blank" class="btn btn-white btn-header-sm flex-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor"
-                            class="bi bi-person-gear" viewBox="0 0 16 16">
+                    <a class="btn btn-white btn-header-sm flex-center" href="/admin" target="_blank">
+                        <svg class="bi bi-person-gear" xmlns="http://www.w3.org/2000/svg" width="21" height="21"
+                            fill="currentColor" viewBox="0 0 16 16">
                             <path
                                 d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm.256 7a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" />
                         </svg>
@@ -148,8 +172,8 @@
                     </a>
                 @endif
 
-                <a href="{{ route('showArticleCart', ['lang' => \Config::get('app.locale')]) }}"
-                    class="btn btn-white btn-header-xs flex-center shopping-cart-btn">
+                <a class="btn btn-white btn-header-xs flex-center shopping-cart-btn"
+                    href="{{ route('showArticleCart', ['lang' => \Config::get('app.locale')]) }}">
 
                     @if ($articlesToCart)
                         <span class="articles-cart">{{ $articlesToCart }}</span>
@@ -160,307 +184,97 @@
     </div>
 </header>
 
-<nav id="menu-header" class="menu-header open open-lg">
+<nav class="menu-header open open-lg" id="menu-header">
 
     <ul>
         <div>
             <li>
-                <a @if ($isSobreNosotros) class="lb-link-underline" @endif href="#nav-sobrenosotros"
-                    role="tab">{{ trans("$theme-app.foot.about_us") }}</a>
-            </li>
-        </div>
-
-        <div>
-            <li class="d-none d-lg-block">
-                <a @if ($isJoyeria) class="lb-link-underline" @endif href="#subnav-joyeria"
-                    role="tab">{{ trans("$theme-app.foot.joyeria") }}</a>
-            </li>
-			<li class="d-lg-none">
-                <a @if ($isJoyeria) class="lb-link-underline" @endif href="{{ $pagina . trans("$theme-app.links.joyas_category") }}">{{ trans("$theme-app.foot.joyeria") }}</a>
-            </li>
-            <li>
-                <a @if ($isSubastas) class="lb-link-underline" @endif href="#subnav-subastas"
-                    role="tab">{{ trans("$theme-app.subastas.auctions") }}</a>
-            </li>
-            <li>
-                <a @if ($isGallery) class="lb-link-underline" @endif
-                    href="{{ "$galleryDomain/$locale" }}">{{ trans("$theme-app.galery.galery") }}</a>
-            </li>
-
-            <li>
-                <a @if (Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain))) class="lb-link-underline" @endif
-                    href="{{ Routing::translateSeo('valoracion-articulos', null, $domain) }}">{{ trans("$theme-app.home.free-valuations") }}</a>
+                <a href="{{ $pagina . trans("$theme-app.links.about_us") }}"
+                    @if ($isSobreNosotros) class="lb-link-underline" @endif>
+                    {{ trans("$theme-app.foot.about_us") }}
+                </a>
             </li>
         </div>
 
         <div>
             <li>
-                <a @if ($isStories) class="lb-link-underline" @endif
-                    title="{{ trans("$theme-app.blog.principal_title") }}" role="tab"
-                    href="#subnav-stories">{{ trans("$theme-app.blog.principal_title") }}</a>
+                <a href="{{ $pagina . trans("$theme-app.links.joyas_category") }}"
+                    @if ($isJoyeria) class="lb-link-underline" @endif>{{ trans("$theme-app.foot.joyeria") }}</a>
+            </li>
+            <li>
+                <a href="{{ Routing::translateSeo('presenciales', null, $domain) }}"
+                    @if ($isSubastas) class="lb-link-underline" @endif>{{ trans("$theme-app.subastas.auctions") }}</a>
+            </li>
+            <li>
+                <a href="{{ "$galleryDomain/$locale" }}"
+                    @if ($isGallery) class="lb-link-underline" @endif>{{ trans("$theme-app.galery.galery") }}</a>
             </li>
 
             <li>
-                <a @if (Routing::currentUrl(Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain))) class="lb-link-underline" @endif
+                <a href="{{ Routing::translateSeo('valoracion-articulos', null, $domain) }}"
+                    @if (Routing::currentUrl(Routing::translateSeo('valoracion-articulos', null, $domain))) class="lb-link-underline" @endif>{{ trans("$theme-app.home.free-valuations") }}</a>
+            </li>
+        </div>
+
+        <div>
+            <li>
+                <a href="{{ Routing::translateSeo('blog', null, $domain) }}" title="{{ trans("$theme-app.blog.principal_title") }}"
+                    @if ($isStories) class="lb-link-underline" @endif>{{ trans("$theme-app.blog.principal_title") }}</a>
+            </li>
+
+            <li>
+                <a href="{{ Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain) }}"
                     title="{{ trans("$theme-app.foot.contact") }}"
-                    href="{{ Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain) }}">{{ trans("$theme-app.foot.contact") }}</a>
+                    @if (Routing::currentUrl(Routing::translateSeo(trans("$theme-app.links.contact"), null, $domain))) class="lb-link-underline" @endif>{{ trans("$theme-app.foot.contact") }}</a>
             </li>
         </div>
 
     </ul>
 
-	<ul class="menu-header__langs">
-		@foreach(Config::get('app.locales') as $key => $value)
-			@if(Config::get('app.locale') == $key)
-			<li>
-				<p class="lb-link-underline" style="text-transform: uppercase">{{ $key }}</p>
-			</li>
-			@else
-			<li>
-				<a title="{{ trans($theme.'-app.head.language_'.$key) }}" href="/{{ $key }}">
-					<p style="text-transform: uppercase">{{ $key }}</p>
-				</a>
-			</li>
-			@endif
+    <ul class="menu-header__langs">
+        @foreach (Config::get('app.locales') as $key => $value)
+            @if (Config::get('app.locale') == $key)
+                <li>
+                    <p class="lb-link-underline" style="text-transform: uppercase">{{ $key }}</p>
+                </li>
+            @else
+                <li>
+                    <a href="/{{ $key }}" title="{{ trans($theme . '-app.head.language_' . $key) }}">
+                        <p style="text-transform: uppercase">{{ $key }}</p>
+                    </a>
+                </li>
+            @endif
 
-			@if($loop->first)
-			<li>
-				<span>|</span>
-			</li>
-			@endif
-		@endforeach
-	</ul>
+            @if ($loop->first)
+                <li>
+                    <span>|</span>
+                </li>
+            @endif
+        @endforeach
+    </ul>
 
 </nav>
-
-<div id="submenu-header" class="submenu-wrapper">
-
-    <div class="container position-relative">
-        <button type="button" class="btn-close" aria-label="Close" onclick="closeSubmenu()"></button>
-    </div>
-
-    <div class="submenu-block">
-        <nav class="subment-nav tab-content">
-            <div role="tabpanel" id="nav-sobrenosotros">
-                <div class="d-flex flex-column gap-4">
-                    <p class="position-relative subnav-title">
-                        <button type="button" class="btn-close" aria-label="Close"
-                            onclick="closeSubmenu()"></button>
-                        <span>{{ trans("$theme-app.foot.about_us") }}</span>
-                    </p>
-                    <a
-                        href="{{ $pagina . trans("$theme-app.links.historia") }}">{{ trans("$theme-app.foot.history") }}</a>
-                    <a
-                        href="{{ Routing::translateSeo('equipo', null, $domain) }}">{{ trans("$theme-app.foot.team") }}</a>
-                    <a
-                        href="{{ $pagina . trans("$theme-app.links.careers") }}">{{ trans("$theme-app.foot.work_with_us") }}</a>
-                </div>
-            </div>
-            <div role="tabpanel" id="nav-joyeria-subastas">
-                <div role="tabpanel" id="subnav-joyeria">
-                    <div class="d-flex flex-column gap-4">
-
-                        <p class="position-relative subnav-title">
-                            <button type="button" class="btn-close" aria-label="Close"
-                                onclick="closeSubmenu()"></button>
-                            <span>{{ trans("$theme-app.foot.joyeria") }}</span>
-                        </p>
-
-                        <a href="{{ $pagina . trans("$theme-app.links.joyas_category") }}">
-                           {{ trans("$theme-app.foot.jewellery_catalog") }}
-                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect width="6.2006" height="0.688955"
-                                    transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
-                                    fill="#0F0E0D" />
-                                <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
-                                    transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
-                            </svg>
-                        </a>
-
-                        <div class="subnav-joyeria-content">
-                            <div>
-
-                                <p class="ff-highlight subnav-title-highlight">
-                                    {{ trans("$theme-app.subastas.joyas") }}
-                                </p>
-                                <div class="d-grid grid-2 subnav-list">
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/solitarios', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.solitaires") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/sortijas', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.rings") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/pendientes', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.earrings") }}
-                                    </a>
-                                    <a href="{{ Routing::translateSeo('articulos-joyeria/broches', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.broochs") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/collares', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.neckclaces") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/colgantes', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.Pendants") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/pulseras', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.bracelets") }}
-                                    </a>
-                                    <a href="{{ Routing::translateSeo('articulos-joyeria/gemelos', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.Cufflinks") }}
-                                    </a>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="ff-highlight subnav-title-highlight">
-                                    {{ trans("$theme-app.articles.engagement") }}
-                                </p>
-                                <div class="d-flex flex-column subnav-list">
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/solitarios', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.solitaires") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-compromiso/alianzas-bodas', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.rings_a") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/pendientes', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.earrings") }}
-                                    </a>
-                                    <a
-                                        href="{{ Routing::translateSeo('articulos-joyeria/pulseras', null, $domain) }}">
-                                        {{ trans("$theme-app.articles.bracelets") }}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column justify-content-between gap-4">
-                                <div>
-                                    <p class="ff-highlight subnav-title-highlight">
-                                        {{ trans("$theme-app.articles.high_jelwelry") }}
-                                    </p>
-                                    <div class="d-flex flex-wrap subnav-list">
-                                        <a
-                                            href="{{ Routing::translateSeo('articulos', null, $domain) . '?ortsec=11&sec=JX' }}">{{ trans("$theme-app.subastas.see-all") }}</a>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <p class="ff-highlight subnav-title-highlight">
-                                        {{ trans("$theme-app.foot.condecoraciones") }}
-                                    </p>
-                                    <div class="d-flex flex-wrap subnav-list">
-                                        <a
-                                            href="{{ $pagina . trans("$theme-app.links.condecoraciones") }}">{{ trans("$theme-app.subastas.see-all") }}</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div role="tabpanel" id="subnav-subastas">
-
-                    <div class="d-flex flex-column gap-4">
-                        <p class="position-relative subnav-title">
-                            <button type="button" class="btn-close" aria-label="Close"
-                                onclick="closeSubmenu()"></button>
-                            <span>{{ trans("$theme-app.subastas.auctions") }}</span>
-                        </p>
-
-                        <a href="{{ Routing::translateSeo('presenciales', null, $domain) }}">
-                            {{ trans("$theme-app.home.home") }} {{ trans("$theme-app.subastas.auctions") }}
-                            <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect width="6.2006" height="0.688955"
-                                    transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
-                                    fill="#0F0E0D" />
-                                <rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
-                                    transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
-                            </svg>
-                        </a>
-
-						@if($urlSubastaOnline)
-						<a href="{{ $urlSubastaOnline }}">
-                            Subasta online
-                        </a>
-						@endif
-
-
-                        <a href="{{ Routing::translateSeo('ventas-destacadas', null, $domain) }}">
-                            {{ trans("$theme-app.lot_list.featured-sales") }}
-                        </a>
-                        <a href="{{ Routing::translateSeo('subastas-historicas', null, $domain) }}">
-                            {{ trans("$theme-app.artist.passAuctions") }}
-                        </a>
-                        <a href="{{ $pagina . trans("$theme-app.links.buy_and_sell") }}">
-                            {{ trans("$theme-app.foot.buy_and_sell") }}
-                        </a>
-
-                    </div>
-
-                </div>
-            </div>
-            <div role="tabpanel" id="subnav-stories">
-                <div class="d-flex flex-column gap-4">
-                    <p class="position-relative subnav-title">
-                        <button type="button" class="btn-close" aria-label="Close"
-                            onclick="closeSubmenu()"></button>
-                        <span>{{ trans("$theme-app.blog.principal_title") }}</span>
-                    </p>
-
-					<a href="{{ Routing::translateSeo('blog', null, $domain) }}">
-						{{ trans("$theme-app.home.home") }} STORIES
-						<svg width="6" height="10" viewBox="0 0 6 10" fill="none"
-							xmlns="http://www.w3.org/2000/svg">
-							<rect width="6.2006" height="0.688955"
-								transform="matrix(0.707107 -0.707107 -0.707107 -0.707107 0.739258 9.00781)"
-								fill="#0F0E0D" />
-							<rect x="4.38477" y="4.875" width="6.2006" height="0.688955"
-								transform="rotate(-135 4.38477 4.875)" fill="#0F0E0D" />
-						</svg>
-					</a>
-
-					<a href="{{ Routing::translateSeo('blog/joyeria', null, $domain) }}">{{ trans("$theme-app.foot.joyeria") }}</a>
-
-					<a href="{{ Routing::translateSeo('blog/comunicacion', null, $domain) }}">{{ trans("$theme-app.subastas.auctions") }}</a>
-
-					<a href="{{ Routing::translateSeo('blog/noticias', null, $galleryDomain) }}">{{ trans("$theme-app.galery.galery") }}</a>
-
-
-
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
 
 <div class="login_desktop container-fluid" style="display: none">
     <div class="h-100 d-flex justify-content-center align-content-center">
         <div class="login_desktop_content m-auto">
             <div class="only-login bg-white position-relative">
                 <div class="text-center">
-                    <button type="button" class="btn-close closedd" aria-label="Close"></button>
+                    <button class="btn-close closedd" type="button" aria-label="Close"></button>
 
                     <p class="login_desktop_title h1">{{ trans($theme . '-app.login_register.login') }}</p>
 
-                    <form data-toggle="validator" id="accerder-user-form">
+                    <form id="accerder-user-form" data-toggle="validator">
                         @csrf
 
                         <div class="form-floating">
-                            <input type="email" class="form-control" id="floatingInput" name="email"
+                            <input class="form-control" id="floatingInput" name="email" type="email"
                                 placeholder="email@example.com">
                             <label for="floatingInput">{{ trans("$theme-app.login_register.ph_user") }}</label>
                         </div>
 
                         <div class="form-floating input-group">
-                            <input type="password" name="password" class="form-control" id="floatingPassword"
+                            <input class="form-control" id="floatingPassword" name="password" type="password"
                                 placeholder="contraseña">
                             <label for="floatingPassword">{{ trans("$theme-app.login_register.password") }}</label>
                             <span class="input-group-text view_password">
@@ -471,7 +285,7 @@
 
                         <p class="message-error-log text-danger d-none"></p>
 
-                        <button id="accerder-user" class="btn btn-lb-primary btn-fluid" type="submit">
+                        <button class="btn btn-lb-primary btn-fluid" id="accerder-user" type="submit">
                             <span class="text">{{ trans($theme . '-app.login_register.acceder') }}</span>
                             <div class="spinner spinner-1 m-auto"></div>
                         </button>
@@ -480,11 +294,11 @@
 
                     <div class="d-flex flex-column gap-3">
 
-                        <a onclick="cerrarLogin();" class="c_bordered fs-16"
-                            data-ref="{{ \Routing::slug('password_recovery') }}" id="p_recovery"
+                        <a class="c_bordered fs-16" id="p_recovery"
+                            data-ref="{{ \Routing::slug('password_recovery') }}"
                             data-title="{{ trans($theme . '-app.login_register.forgotten_pass_question') }}"
-                            href="javascript:;" data-bs-toggle="modal" data-bs-target="#modalAjax"
-                            data-toggle="modal" data-target="#modalAjax">
+                            data-bs-toggle="modal" data-bs-target="#modalAjax" data-toggle="modal"
+                            data-target="#modalAjax" href="javascript:;" onclick="cerrarLogin();">
                             {{ trans($theme . '-app.login_register.forgotten_pass_question') }}
                         </a>
 
@@ -494,9 +308,8 @@
 
                         <div>
                             @if (empty($registration_disabled))
-                                <a class="btn btn-lb-primary btn-medium"
-                                    title="{{ trans("$theme-app.login_register.register") }}"
-                                    href="{{ \Routing::slug('register') }}">
+                                <a class="btn btn-lb-primary btn-medium" href="{{ \Routing::slug('register') }}"
+                                    title="{{ trans("$theme-app.login_register.register") }}">
                                     {{ trans("$theme-app.login_register.register") }}
                                 </a>
                             @else

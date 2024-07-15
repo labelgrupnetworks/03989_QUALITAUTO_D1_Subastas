@@ -90,9 +90,21 @@
 					<td>
 						<a title="{{ trans("admin-app.button.edit") }}"
 							href="{{ route('award.edit', ['idauction' => $award->get('sub_asigl0'), 'ref' => $award->get('ref_asigl0'), 'licit' => $award->get('licit_csub')]) }}"
-							class="btn btn-success btn-sm"><i class="fa fa-pencil-square-o"
-								aria-hidden="true"></i>{{ trans("admin-app.button.edit") }} {{ trans('admin-app.title.award') }}
+							class="btn btn-success btn-sm">
+							<i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{ trans("admin-app.button.edit") }}
 						</a>
+
+						<button
+							onclick="deleteAward(this)"
+							data-idauction="{{ $award->get('sub_asigl0') }}"
+							data-ref="{{ $award->get('ref_asigl0') }}"
+							data-licit="{{ $award->get('licit_csub') }}"
+							data-href="{{ route('award.delete') }}"
+							href="{{ route('award.delete', ['idauction' => $award->get('sub_asigl0'), 'ref' => $award->get('ref_asigl0'), 'licit' => $award->get('licit_csub')]) }}"
+							class="btn btn-danger btn-sm">
+							<i class="fa fa-trash" aria-hidden="true"></i> {{ trans("admin-app.button.delete") }}
+						</button>
+
 					</td>
 
 				</tr>

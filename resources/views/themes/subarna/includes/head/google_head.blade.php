@@ -5,18 +5,34 @@
     Config::set('app.cookies.analysis', [Cookies::THIRD_GOOGLE, Cookies::THIRD_HOTJAR, Cookies::THIRD_LIVEAGENT]);
 @endphp
 
-@if($cookiesPreferences->isAnalysisAllowed())
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-176775918-1"></script>
 <script>
-    window.dataLayer = window.dataLayer || [];
+	// Define dataLayer and the gtag function.
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+</script>
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
+@if (!$cookiesPreferences->isAnalysisAllowed() )
+	<script>
+		// Set default consent to 'denied' as a placeholder
+		// Determine actual values based on your own requirements
+		gtag('consent', 'default', {
+			'ad_storage': 'denied',
+			'ad_user_data': 'denied',
+			'ad_personalization': 'denied',
+			'analytics_storage': 'denied'
+		});
 
-    gtag('config', 'UA-176775918-1');
+		ga = () => {};
+	</script>
+@else
+<script>
+	gtag('consent', 'default', {
+			'ad_storage': 'granted',
+			'ad_user_data': 'granted',
+			'ad_personalization': 'denied',
+			'analytics_storage': 'granted'
+		});
+
 </script>
 
 <!-- Hotjar Tracking Code for www.subarna.net -->
@@ -36,8 +52,12 @@
         a.appendChild(r);
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 </script>
-@else
-<script>
-	ga = () => {};
-</script>
 @endif
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2W5SBMTKG2"></script>
+<script>
+	gtag('js', new Date());
+	gtag('config', 'G-2W5SBMTKG2');
+</script>
+

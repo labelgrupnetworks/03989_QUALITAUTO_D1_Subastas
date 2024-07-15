@@ -119,7 +119,7 @@
 							<br>
 							<br>
 							<br>
-						
+
                     </div>
 
                     <p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans(\Config::get('app.theme').'-app.msg_error.no_licit') }}</p>
@@ -260,7 +260,13 @@
                     <p class="insert_msg">{{ trans(\Config::get('app.theme').'-app.sheet_tr.jump_to_lots') }}</p>
 
                     <input id="jumpLot" autocomplete="off" class="form-control" type="text">
-                    <br />
+                    <div style="margin-top:10px;">
+						<input type="checkbox" id="openLot" name="open_lot" checked>
+						<label for="openLot">
+							Abrir el lote en el caso de estar cerrado
+						</label>
+					</div>
+                    <br>
 
                     <button class="btn btn-primary modal-confirm">{{ trans(\Config::get('app.theme').'-app.sheet_tr.confirm') }}</button>
                     <button class="btn btn-default modal-dismiss">{{ trans(\Config::get('app.theme').'-app.sheet_tr.cancel') }}</button>

@@ -13,22 +13,6 @@ $home3bannerOptions = "{
 				}
 		]
 	}";
-
-$youtubeBannerOptions = "{
-		'dots': false,
-	'arrows': false,
-	'rows': 5 ,
-		'slidesPerRow': 3,
-		'responsive': [
-				{
-						'breakpoint': 768,
-						'settings': {
-								'slidesPerRow': 1,
-						}
-				}
-		]
-	}";
-
 @endphp
 
 {!! \BannerLib::bannersPorKey('home-top-banner', 'home-superior', [
@@ -134,12 +118,11 @@ $youtubeBannerOptions = "{
 </div>
 
 <div class=" pt-1 pb-5">
-
-
-
 	<div class="yt-banner-container pb-3">
-		{!! \BannerLib::bannersPorKey('featured-lot-banner', 'featured-log-bnr', $youtubeBannerOptions) !!}
+		{!! \BannerLib::bannersPorKey('yt-video-banner', 'featured-log-bnr') !!}
 	</div>
+
+
 	{{--
 	<div class="container">
 		<div class="row">

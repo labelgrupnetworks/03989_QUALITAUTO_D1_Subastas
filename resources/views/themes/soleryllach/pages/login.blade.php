@@ -289,7 +289,9 @@
 						</div>
 					</div>
 				</div>
-				<?php if(!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1){ ?>
+				<?php if(Config::get('app.delivery_address', 0)){ ?>
+
+				<input type="hidden" name="mater_clid" value="S">
 				<div class="row">
 					<div class="col-xs-12 col-md-8 col-md-offset-2" style="border: 1px solid #ccc; margin-bottom: 10px; padding-bottom:20px;">
 						<div class="col-xs-12 ">

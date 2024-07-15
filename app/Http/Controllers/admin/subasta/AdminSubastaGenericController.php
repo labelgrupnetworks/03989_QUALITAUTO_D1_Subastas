@@ -25,6 +25,7 @@ use App\Models\V5\FgSub_lang;
 use App\Models\V5\FxPro;
 use App\Models\V5\Web_Artist;
 use App\Http\Controllers\externalAggregator\Invaluable\House;
+use App\Models\V5\SubAuchouse;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Session;
 
@@ -77,14 +78,22 @@ class AdminSubastaGenericController extends Controller
 
 		if(config("app.ArtistInExibition")){
 			$formulario->artist_name = FormLib::Text('artist_name', 0, $request->artist_name);
-
 			$artists = Web_Artist::pluck('name_artist', 'id_artist')->toArray();
 		}
 
+		$auchouse = SubAuchouse::getAuchouse();
+
 		$resource_name = $this->resource_name;
 
-		return view('admin::pages.subasta.subastas.index', compact('fgSubs', 'formulario', 'resource_name', 'artists'));
+		$dataToView = [
+			'fgSubs' => $fgSubs,
+			'formulario' => $formulario,
+			'resource_name' => $resource_name,
+			'artists' => $artists,
+			'auchouse' => $auchouse
+		];
 
+		return view('admin::pages.subasta.subastas.index', $dataToView);
     }
 
     public function create(): View

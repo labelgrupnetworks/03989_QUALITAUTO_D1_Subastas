@@ -2,6 +2,8 @@
 	--primary-color: #c8ad89;
 	--primary-color-hover: #977f60;
 
+	--primary-color-low-opacity: #c8ad8909;
+
 	--secondary-button-color: #707B7C;
 	--secondary-button-border: #707B7C;
 	--secondary-button-background: #fff;
@@ -752,7 +754,7 @@ nav.navbar-default {
 	border-color: #ebebeb;
 	position: sticky;
 	top: 40px;
-	z-index: 10;
+	z-index: 9;
 }
 nav.navbar {
 	min-height: 66px;
@@ -1420,6 +1422,7 @@ div.list_lot div.item_lot p.salida,
 	font-size: 13px;
     min-height: 19px;
 	margin-bottom: 5px;
+	line-height: 1;
 }
 
 
@@ -1493,13 +1496,17 @@ div.col-sm-3-custom {
 	display: inline-block;
 	border: 1px solid #ccc;
 	margin-bottom: 10px;
+	height: 66.40px;
+	overflow: hidden;
 }
+
 div.single div.img_single {
 	height: 476px;
 	text-align: center;
 	position: relative;
 	overflow: hidden;
 }
+
 div.single div.img_single img {
 	max-width: 100%;
 	max-height: 380px;
@@ -1914,7 +1921,7 @@ span.clock{
 }
 .img-openDragon{
     width: 100%;
-    height: 66.40px;
+    height: 100%;
 	border: 0;
 }
 
@@ -5169,6 +5176,11 @@ ul.sub_menu_adj {
 	color: #333;
 }
 
+.sales-panel .panel-default>.panel-heading {
+	background-color: var(--primary-color-low-opacity);
+	margin-bottom: 6px;
+}
+
 .panel-heading {
 	padding: 10px 15px;
 	border-bottom: 1px solid transparent;
@@ -5686,3 +5698,16 @@ reinicializo estilo para no afectar al resto de páginas
 .register-dni-section :is(.form-group, p) {
 	padding: 0 15px;
 }
+
+.sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
+	margin-top: -6px;
+	border-top: 2px solid var(--primary-color);
+}
+
+:is(.col-video, .col-img) button{
+	background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-color: #fff;
+}
+

@@ -2,6 +2,8 @@
     --primary-color: #c8ad89;
     --primary-color-hover: #977f60;
 
+	--primary-color-low-opacity: #c8ad8909;
+
 	/* Gray Scale */
     --white-color: #ffffff;
     --gray-color-1: #CACFCB;
@@ -1743,6 +1745,7 @@ div.list_lot div.item_lot p.salida,
     font-size: 13px;
     min-height: 19px;
 	margin-bottom: 5px;
+	line-height: 1;
 }
 
 div.list_lot div.item_lot p.salida .timer {
@@ -1817,16 +1820,13 @@ div.single div.img_single_border {
     position: relative;
 }
 
-
-/*div.col-sm-3-custom:first-child, div.col-sm-3-custom:nth-child(7), div.col-sm-3-custom:nth-child(13) {
-	margin-left: 15px;
-}*/
-
 div.col-sm-3-custom {
     width: 70%;
     display: inline-block;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+	height: 66.40px;
+	overflow: hidden;
 }
 
 div.single div.img_single {
@@ -2294,7 +2294,8 @@ span.clock {
 
 .img-openDragon {
     width: 100%;
-    height: 66.40px;
+    height: 100%;
+	border: 0;
 }
 
 div.data-container,
@@ -4403,13 +4404,13 @@ div.content_faq a i {
 } */
 
 
-.panel-heading .panel-title:after {
+/* .panel-heading .panel-title:after {
 	content: '\f0dd';
     font: normal normal normal 14px/1 FontAwesome;
     position: absolute;
     top: 8px;
     right: 15px;
-}
+} */
 
 
 /* ---- RESULTADOS LOTES SUBASTAS ---*/
@@ -5802,6 +5803,11 @@ ul.sub_menu_adj {
 	color: #333;
 }
 
+.sales-panel .panel-default > .panel-heading {
+	background-color: var(--primary-color-low-opacity);
+	margin-bottom: 6px;
+}
+
 .panel-heading {
 	padding: 10px 15px;
 	border-bottom: 1px solid transparent;
@@ -6302,4 +6308,16 @@ reinicializo estilo para no afectar al resto de páginas
 
 .register-dni-section :is(.form-group, p) {
 	padding: 0 15px;
+}
+
+.sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
+	margin-top: -6px;
+	border-top: 2px solid var(--primary-color);
+}
+
+:is(.col-video, .col-img) button{
+	background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-color: #fff;
 }

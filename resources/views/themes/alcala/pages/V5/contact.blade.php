@@ -240,7 +240,6 @@ $data['departamentos'][6] = [
             <p><span>Dirección: </span><strong>Nuñez de Balboa 9</strong></p>
             <p><strong>28001 Madrid-Spain</strong></p>
             <p><span>Teléfono: </span><strong>+34 91 577 87 97</strong></p>
-            <p><span>Móvil: </span><strong>+34 717 79 17 39</strong></p>
             <p><span>WhatsApp: </span><strong>+34 616 095 044</strong></p>
             <p><span>Fax: </span><strong>+34 91 432 47 55</strong></p>
             <p><span>Email: </span><strong><a href="mailto:info@alcalasubastas.es">info@alcalasubastas.es</a></strong></p>

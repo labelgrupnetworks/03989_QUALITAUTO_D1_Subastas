@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
@@ -657,6 +658,29 @@ class User
         }
 
     }
+
+	public function getSumAdjudicacionesSubasta($cod_sub, $licit)
+	{
+		return FgCsub::query()
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit]
+			])
+			->sum('himp_csub');
+	}
+
+	public function getSumAdjudicacionesInOtherSessions($cod_sub, $licit, $reference)
+	{
+		return FgCsub::query()
+			->join('"auc_sessions" auc', 'auc."company" = EMP_CSUB AND auc."auction" = SUB_CSUB and auc."init_lot" <= REF_CSUB and auc."end_lot" >= REF_CSUB')
+			->where([
+				['sub_csub', $cod_sub],
+				['licit_csub', $licit],
+				['auc."reference"', '!=', "$reference"]
+			])
+			->sum('himp_csub');
+	}
+
     public function getAllAdjudicacionesSession($cod_sub, $reference, $licit)
     {
         $bindings = array(
@@ -934,6 +958,10 @@ class User
 					});
 				});
 			});
+
+			if (config('app.sellAuctionsStartDateOrder', false)) {
+				$query->orderBy('auc."start"', config('app.sellAuctionsStartDateOrder'));
+			}
 
 			if(\Config::get("app.number_bids_lotlist") ){
 				$query = $query->selectRaw(" (SELECT COUNT(DISTINCT(LICIT_ASIGL1))  FROM FGASIGL1 WHERE EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND REF_ASIGL1 = ASIGL0.REF_ASIGL0) LICITS")
@@ -1355,26 +1383,34 @@ class User
 			$cod_cli = $this->cod_cli;
 		}
 
-		if(!$cod_cli) {
+		if(!$cod_cli || !$files) {
 			return false;
 		}
 
 		$storage = Storage::disk('client');
-		$relativePath = "$cod_cli/files";
+		$filesPath = self::getClientFilesPath($cod_cli);
 
-		if(!$files){
-			return false;
-		}
-
-		if (!$storage->exists($relativePath)) {
-			$storage->makeDirectory($relativePath);
+		if (!$storage->exists($filesPath)) {
+			$storage->makeDirectory($filesPath);
 		}
 
 		foreach ($files as $file) {
-			$storage->putFileAs($relativePath, $file, $file->getClientOriginalName());
+			$storage->putFileAs($filesPath, $file, $file->getClientOriginalName());
 		}
 
 		return true;
+	}
+
+	public function getFiles($codCli)
+	{
+		$storage = Storage::disk('client');
+		$filesPath = self::getClientFilesPath($codCli);
+		return $storage->files($filesPath);
+	}
+
+	public static function getClientFilesPath($codCli)
+	{
+		return "/$codCli/files";
 	}
 
 	/**

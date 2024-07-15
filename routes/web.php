@@ -281,6 +281,7 @@ Route::post('/api-ajax/carousel', 'ContentController@getAjaxCarousel');
 Route::post('/api-ajax/newcarousel', 'ContentController@getAjaxNewCarousel');
 Route::post('/api-ajax/static-carousel', 'ContentController@getAjaxStaticCarousel');
 Route::post('/api-ajax/add-sec-user', 'UserController@changeFavTsec');
+Route::post('/api-ajax/lot_grid', 'ContentController@getAjaxLotGrid');
 
 Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser');
 
@@ -288,7 +289,7 @@ Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser')
 # Búsqueda
 Route::get(Routing::slugSeo('busqueda') . '/redirect', 'BusquedaController@redirect');
 Route::get(Routing::slugSeo('busqueda') . '/{texto?}', 'BusquedaController@index');
-Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index');
+Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index')->name('busqueda');
 Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', 'BusquedaController@index');
 
 # Mail Composer via POST
@@ -503,7 +504,7 @@ Route::post(Routing::slug('autoformulario-send'), 'V5\AutoFormulariosController@
 Route::get(Routing::slug('autoformulario-success'), 'V5\AutoFormulariosController@Success');
 
 Route::get(Routing::slug('tasaciones'), 'V5\AutoFormulariosController@Tasaciones');
-Route::get(Routing::slug('workwithus') . "/{key}", 'V5\AutoFormulariosController@workWidthUs');
+Route::get(Routing::translateSeo('workwithus', "/{key?}"), 'V5\AutoFormulariosController@workWidthUs');
 
 
 
@@ -601,6 +602,7 @@ Route::post('/articleCart/pay', 'V5\PayArticleCartController@createPayment');
 Route::get('/articleCart/callRedsys', 'V5\PayArticleCartController@callRedsys');
 #página de confirmación de compra
 Route::post('/articleCart/returnpayup2', 'V5\PayArticleCartController@ReturnPayUP2');
+Route::post('/articleCart/returnPay', 'V5\PayArticleCartController@returnPay');
 
 
 Route::group(['prefix' => 'api'], function () {
@@ -641,7 +643,7 @@ Route::get('/auth/google/callback', function () {
     // $user->token
 });
 
-Route::get(\Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
+Route::get(Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
 
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 

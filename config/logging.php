@@ -80,7 +80,12 @@ return [
 			'level' => 'debug',
 			'days' => 15,
 		],
-
+		'root' => [
+			'driver' => 'daily',
+			'path' => storage_path('logs/root.log'),
+			'level' => 'debug',
+			'days' => 15,
+		],
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

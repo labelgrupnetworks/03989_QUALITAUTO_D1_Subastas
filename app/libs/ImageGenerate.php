@@ -96,7 +96,8 @@ class ImageGenerate {
 
                     $compresion = $peso / $area;
 
-                    if($compresion < 0.29)
+
+                    if($compresion <  floatval(\Config::get("app.compresion_img",'0.35')))
                     {
                       $comprimir = false;
                     }
