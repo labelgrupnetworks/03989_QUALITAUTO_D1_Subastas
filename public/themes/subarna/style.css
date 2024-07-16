@@ -4725,3 +4725,31 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 #admin_settings_box .button-principal span {
 	margin: 0 auto;
 }
+
+.grid-auctions {
+	display: grid;
+	grid-template-columns: 1fr;
+	row-gap: 2rem;
+	column-gap: 2rem;
+}
+
+div.item_subasta {
+	height: 100%;
+}
+
+div.item_subasta img {
+	aspect-ratio: 295/417;
+	object-position: top;
+}
+
+@media (min-width: 600px) {
+	.grid-auctions {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 992px) {
+	.grid-auctions {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
