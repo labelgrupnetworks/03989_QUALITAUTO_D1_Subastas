@@ -76,7 +76,7 @@
 				@endphp
 				<div class="ficha-subasta_links">
 					<a class="btn btn-lb-primary btn-light" href="{{ $lotsUrl }}"
-						title="{{ trans("$theme-app.subastas.see_lotes") }}" target="_blank">
+						title="{{ trans("$theme-app.subastas.see_lotes") }}">
 						{{ trans("$theme-app.subastas.see_lotes") }}
 					</a>
 

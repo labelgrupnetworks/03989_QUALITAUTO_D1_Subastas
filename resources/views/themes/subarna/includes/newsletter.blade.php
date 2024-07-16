@@ -16,9 +16,9 @@
 <div class="container newsletter js-newletter-block">
     <div class="form-block">
         <div class="form-floating floating-center">
-			<input class="form-control newsletter-input" type="email">
+			<input class="form-control newsletter-input" type="email" placeholder=" ">
 			<label>
-				{{ trans("$theme-app.foot.newsletter_title") }}
+				<span>{{ trans("$theme-app.foot.newsletter_title") }}</span>
 			</label>
 
             <input id="lang-newsletter" type="hidden" value="{{ $locale }}">

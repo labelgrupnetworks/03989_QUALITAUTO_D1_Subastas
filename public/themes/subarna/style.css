@@ -166,9 +166,17 @@ span.fw-normal {
 	text-align: center;
 }
 
-.form-floating>.form-control:focus~label {
+.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label {
 	opacity: .65;
-	transform: scale(.85) translateY(-1.5em) translateX(.5rem);
+	transform: translateY(-1.5em) translateX(.5rem);
+}
+
+.form-floating.floating-center>label span {
+	transition: font-size .3s;
+}
+
+.form-floating>.form-control:focus~label span, .form-floating>.form-control:not(:placeholder-shown)~label span {
+	font-size: .8em;
 }
 
 .input-group-btn:last-child>.btn {
