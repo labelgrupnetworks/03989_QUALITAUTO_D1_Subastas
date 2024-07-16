@@ -160,6 +160,10 @@ span.fw-normal {
 	font-size: var(--fs-small);
 }
 
+.form-control {
+	font-size: inherit;
+}
+
 .form-floating.floating-center>label {
 	padding: 0;
 	width: 100%;
@@ -1427,6 +1431,9 @@ tbody tr {
 	border: none !important;
 }
 
+.modal-block {
+	max-width: 800px;
+}
 
 .modal-block .panel {
 	-webkit-box-shadow: 0 14px 8px rgba(0, 0, 0, .05);
@@ -1435,23 +1442,16 @@ tbody tr {
 
 .modal-block div p.class_h1 {
 	font-size: 20px;
-	font-weight: 900;
-	color: #a6acaf;
+	font-weight: 500;
 }
 
 .modal-block div span {
-	font-weight: 900;
-	color: #424949;
+	font-weight: 600;
 }
 
 .modal-block div .btn:active {
 	background: white;
 }
-
-.modal-block div .btn {
-	border-radius: 20px !important;
-}
-
 
 .modal-block div ul.items_list {
 	margin-top: 25px;
@@ -1482,11 +1482,14 @@ tbody tr {
 
 #add_fav,
 #del_fav {
-	float: right;
 	z-index: 2;
 	color: #c9b37d;
-	font-size: 18px;
+	font-size: 30px;
+	line-height: 1;
 	padding: 0px;
+	background-color: transparent;
+	outline: 0;
+    box-shadow: none;
 }
 
 #add_fav p,
@@ -2440,20 +2443,66 @@ div button.btn-step-reg2 {
 	margin-top: 0px !important;
 }
 
-.btn-white {
-	background-color: #fff;
-	border: 1px solid black;
+.btn-white, .btn-lb-outline {
+	--bg-color: #fff;
+	--bg-color-hover: #000;
+	--border-color: #000;
+	--border-color-hover: #000;
+	--text-color: #000;
+	--text-color-hover: #fff;
+
+	background-color: var(--bg-color);
+	border: 1px solid var(--border-color);
 	text-decoration: none;
 	border-radius: 0px;
-	color: black;
-	font-weight: bold;
+	color: var(--text-color);
+	font-weight: 500;
 	transition: 0.5s;
 }
 
+.btn-lb {
+	--bg-color: #000;
+	--bg-color-hover: #fff;
+	--border-color: #000;
+	--border-color-hover: #000;
+	--text-color: #fff;
+	--text-color-hover: #000;
+
+	background-color: var(--bg-color);
+	border: 1px solid var(--border-color);
+	text-decoration: none;
+	border-radius: 0px;
+	color: var(--text-color);
+	font-weight: 500;
+	transition: 0.5s;
+}
+
+.btn-lb:hover,
+.btn-lb:focus,
+.btn-lb:active {
+	background-color: var(--bg-color-hover);
+	color: var(--text-color-hover);
+	border-color: var(--border-color-hover);
+}
+
 .btn-white:focus,
-.btn-white:hover {
-	background-color: black;
-	color: white;
+.btn-white:hover,
+.btn-lb-outline:focus,
+.btn-lb-outline:hover {
+	background-color: var(--bg-color-hover);
+	color: var(--text-color-hover);
+}
+
+.btn-lb-outline.btn-lb-gray {
+	--bg-color-hover: var(--color-gray);
+	--border-color: var(--color-gray);
+	--border-color-hover: var(--color-gray);
+	--text-color-hover: #000;
+}
+
+.btn.btn-lb-confirm {
+	padding-left: 36px;
+	padding-right: 36px;
 }
 
 /*history num pujador*/

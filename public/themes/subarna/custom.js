@@ -938,8 +938,8 @@ function close_modal_session() {
 
 function action_fav_modal(action) {
 
-	$('.button-follow').show();
-	$('.button-follow-responsive').show();
+	/* $('.button-follow').show();
+	$('.button-follow-responsive').show(); */
 
 	$.magnificPopup.close();
 	if (typeof cod_licit == 'undefined' || cod_licit == null) {
@@ -952,8 +952,8 @@ function action_fav_modal(action) {
 			url: routing.favorites + "/" + action,
 			data: { cod_sub: cod_sub, ref: ref, cod_licit: cod_licit },
 			success: function (data) {
-				$('.button-follow').hide();
-				$('.button-follow-responsive').hide();
+				/* $('.button-follow').hide();
+				$('.button-follow-responsive').hide(); */
 
 				if (data.status == 'error') {
 					$("#insert_msg").html("");
@@ -1437,4 +1437,8 @@ time_format = function(timer, format) {
 			.replace('%Hh', '');
 
 	}
+}
+
+function showModal(name) {
+	$.magnificPopup.open({ items: { src: name }, type: 'inline' }, 0);
 }

@@ -13,17 +13,6 @@
 	$currencySimbol = trans("$theme-app.subastas.euros");
 @endphp
 
-{{-- Favorito. mover a la vista de la ficha --}}
-@if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
-    <div class="date_top_side_small">
-        <button id="add_fav" @class(['btn', 'hidden' => $lote_actual->favorito]) click="action_fav_modal('add')">
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
-        </button>
-        <button id="del_fav" @class(['btn', 'hidden' => !$lote_actual->favorito]) click="action_fav_modal('remove')">
-            <i class="fa fa-heart" aria-hidden="true"></i>
-        </button>
-    </div>
-@endif
 
 <div class="ficha-info-block">
     <div class="ficha-dates_close-date">

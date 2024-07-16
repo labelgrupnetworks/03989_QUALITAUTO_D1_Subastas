@@ -50,13 +50,26 @@
         </section>
 
         {{-- title --}}
-        <section class="ficha-title">
-            <p class="ficha_auction-type">
-                {{ $auctionName . ' - ' . $dateFormat }}
-            </p>
-            <h1>
-                {!! strip_tags($lote_actual->descweb_hces1) !!}
-            </h1>
+        <section class="ficha-title d-flex">
+			<div class="">
+				<p class="ficha_auction-type">
+					{{ $auctionName . ' - ' . $dateFormat }}
+				</p>
+				<h1>
+					{!! strip_tags($lote_actual->descweb_hces1) !!}
+				</h1>
+			</div>
+
+			@if (Session::has('user') && $lote_actual->retirado_asigl0 == 'N')
+				<div class="date_top_side_small">
+					<button id="add_fav" @class(['btn', 'hidden' => $lote_actual->favorito]) onclick="action_fav_modal('add')">
+						<i class="fa fa-heart-o" aria-hidden="true"></i>
+					</button>
+					<button id="del_fav" @class(['btn', 'hidden' => !$lote_actual->favorito]) onclick="action_fav_modal('remove')">
+						<i class="fa fa-heart" aria-hidden="true"></i>
+					</button>
+				</div>
+			@endif
         </section>
 
         {{-- block pujas --}}
