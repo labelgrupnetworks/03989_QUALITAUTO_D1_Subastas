@@ -4494,6 +4494,10 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	grid-row: 1 / 2;
 }
 
+.ficha-title > div:first-child {
+	flex: 1;
+}
+
 .ficha-pujas {
 	order: 4;
 	grid-column: 3 / 4;
