@@ -44,10 +44,24 @@ class FgEspecial1 extends Model
 		);
 	}
 
+	public function image(): Attribute
+	{
+		$imageIsSharedWihtErp = false;
+		$theme = Config::get('app.theme');
+
+		return Attribute::make(
+			get: fn () => $imageIsSharedWihtErp ? "/img/PER/{$this->per_especial1}" : "/themes/{$theme}/assets/img/specialists/{$this->per_especial1}"
+		);
+	}
+
 	public static function getSpecialists()
 	{
-		return self::withSpecialty()
+		return self::query()
+			->select('emp_especial1', 'min(lin_especial1) as lin_especial1', 'per_especial1', 'min(orden_especial1) as orden_especial1', 'nom_especial1', 'desc_especial1', 'email_especial1')
+			->withSpecialty()
 			->withOrtsec()
+			->groupBy('emp_especial1', 'per_especial1', 'nom_especial1', 'desc_especial1', 'email_especial1')
+			->orderBy('orden_especial1', 'asc')
 			->get();
 	}
 
