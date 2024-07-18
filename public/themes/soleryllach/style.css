@@ -5620,7 +5620,8 @@ reinicializo estilo para no afectar al resto de páginas
 @media(min-width: 768px) {
 
 	div.list_lot div.item_lot div.border_img_lot {
-		height: 260px;
+		/* height: 260px; */
+		height: 273px;
 	}
 
 	.form-top-grid {

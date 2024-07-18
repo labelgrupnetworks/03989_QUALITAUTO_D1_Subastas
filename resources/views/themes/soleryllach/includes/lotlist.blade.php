@@ -19,7 +19,7 @@
         <div class="item_lot" data-with-rarity="{{ !empty($rarity) ? "true" : "false" }}">
 			<div class="border_img_lot">
 				<div class="img_lot">
-					<img class="img-responsive lazy" data-src="{{Tools::url_img('lote_medium_large',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
+					<img class="img-responsive lazy" data-src="{{Tools::url_img('lote_medium',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
 
 				</div>
 
