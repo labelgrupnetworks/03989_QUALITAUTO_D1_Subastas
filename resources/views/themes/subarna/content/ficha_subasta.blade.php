@@ -96,7 +96,7 @@
 						class="btn btn-block btn-live"
 						title="{{ trans("$theme-app.header.from") . ' ' . date_format(date_create_from_format('Y-m-d H:i:s', $auction->start), 'd/m/Y H:i') . ' ' . trans($theme . '-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $auction->end), 'd/m/Y H:i') }}"
 						target="_blank">
-						Puja en vivo
+						{{ trans("$theme-app.subastas.live_bidding") }}
 					</a>
 				</div>
 			@endif

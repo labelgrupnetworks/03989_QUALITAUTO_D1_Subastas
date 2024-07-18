@@ -49,7 +49,7 @@
                     <p class="text-center" style="background-color:#9e190a;padding: 20px 0; ">
                         <a href="{{ $url_tiempo_real }}"
                             title="{{ trans($theme . '-app.header.from') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_start), 'd/m/Y H:i') }} {{ trans($theme . '-app.header.to') }} {{ date_format(date_create_from_format('Y-m-d H:i:s', $subasta->session_end), 'd/m/Y H:i') }}"
-                            style="color:#FFFFFF" target="_blank">Puja en vivo</a>
+                            style="color:#FFFFFF" target="_blank">{{ trans("$theme-app.subastas.live_bidding") }}</a>
                     </p>
                 @endif
             </div>
