@@ -202,10 +202,10 @@ class Blog extends Model
        $lang = $this->lang;
 
        $blog = DB::table('WEB_BLOG')
-                ->select('ID_WEB_BLOG,IMG_WEB_BLOG,LOT_CATEGORIES_WEB_BLOG,LOT_SUB_CATEGORIES_WEB_BLOG,PUBLICATION_DATE_WEB_BLOG,primary_category_web_blog,author_web_blog,'
-                        . 'WEB_BLOG_LANG.*')
-                ->join('WEB_BLOG_LANG','WEB_BLOG_LANG.idblog_web_blog_lang', '=', 'WEB_BLOG.id_web_blog')
-
+                ->select('ID_WEB_BLOG,IMG_WEB_BLOG,LOT_CATEGORIES_WEB_BLOG,LOT_SUB_CATEGORIES_WEB_BLOG,PUBLICATION_DATE_WEB_BLOG,primary_category_web_blog,author_web_blog')
+				->addSelect('ID_WEB_BLOG_LANG, IDBLOG_WEB_BLOG_LANG, LANG_WEB_BLOG_LANG, TITULO_WEB_BLOG_LANG, CITA_WEB_BLOG_LANG, METATITLE_WEB_BLOG_LANG, METADESCRIPTION_WEB_BLOG_LANG, URL_WEB_BLOG_LANG, VIDEO_WEB_BLOG_LANG, ENABLED_WEB_BLOG_LANG')
+				->selectRaw('substr(TEXTO_WEB_BLOG_LANG, 0, 1200) as TEXTO_WEB_BLOG_LANG')
+				->join('WEB_BLOG_LANG','WEB_BLOG_LANG.idblog_web_blog_lang', '=', 'WEB_BLOG.id_web_blog')
 				->when($key_categ, function($q) use($key_categ,$lang){
 
 					return $q->addSelect('WEB_CATEGORY_BLOG_LANG.*')
