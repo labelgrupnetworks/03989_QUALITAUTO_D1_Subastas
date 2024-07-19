@@ -173,7 +173,7 @@
 @include('includes.cookies_personalize')
 
 @php
-	$showWarningModal = true && Session::has('user');
+	$showWarningModal = Config::get('app.show_warning_modal', false) && Session::has('user');
 	$untilDate = Carbon\Carbon::create(2024, 7, 31, 0, 0, 0);
 @endphp
 
