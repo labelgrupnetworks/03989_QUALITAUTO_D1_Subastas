@@ -1288,7 +1288,7 @@ private $debug = true;
 		public function setAddress($address)
 		{
 			if(empty($address)){
-				return;
+				$this->setAtribute('DIR_ENVIO', '');
 			}
 
 			$this->setAtribute('DIR_ENVIO', "{$address->pob_clid} ({$address->cp_clid}) {$address->pais_clid}");
