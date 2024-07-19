@@ -1086,7 +1086,10 @@ class UserController extends Controller
 								}
 							}
 							else{
-								$addres->addDirEnvio($envio, $num, $name);
+								$usePrincipalAddress = $request->has('shipping_address');
+								if(Config::get('app.save_address_when_empty', true) || !$usePrincipalAddress){
+									$addres->addDirEnvio($envio, $num, $name);
+								}
 							}
 
                          }
