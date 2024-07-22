@@ -7,9 +7,8 @@
             background-color: #d1d1d1;
             border: 1px solid gainsboro;
             border-radius: 10px;
-            min-height: 400px;
-            max-height: 400px;
-            overflow-y: auto;
+            height: 470px;
+            overflow-y: scroll;
             margin-bottom: 10px;
             padding: 1rem;
             scroll-behavior: smooth;
@@ -63,8 +62,8 @@
                         <select class="form-control" id="generateTypeInput" name="type" type="text">
 
                             <option value="">Todas</option>
-							<option value="1">Sin miniatura generada</option>
-							<option value="2">Imagen original modificada</option>
+                            <option value="1">Sin miniatura generada</option>
+                            <option value="2">Imagen original modificada</option>
                         </select>
                     </div>
 
@@ -75,6 +74,11 @@
             </div>
 
             <div class="col-xs-12 col-md-8">
+                <button class="btn btn-danger btn-xs" data-active="0" title="Mostrar solo errores"
+                    style="position: absolute; right: 45px; top: 5px;" onclick="handleClickCheckErrors(this)">
+                    <i class="fa fa-warning"></i>
+                </button>
+
                 <div class="log" id="div_log"></div>
 
                 <div class="progress">

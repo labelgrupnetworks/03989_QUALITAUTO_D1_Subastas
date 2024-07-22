@@ -146,3 +146,27 @@ function updateProgressBar(completed, total) {
 	$('#progressBarValue').text(`${percent}%`);
 	$('#progressBarImg').css('width', `${percent}%`);
 }
+
+function handleClickCheckErrors(button) {
+
+	if(button.dataset.active == 1) {
+		showAll();
+		button.dataset.active = 0;
+	}
+	else {
+		showOnlyErrors();
+		button.dataset.active = 1;
+	}
+}
+
+function showOnlyErrors() {
+	$divLog.children().each(function () {
+		if (!$(this).hasClass('text-danger')) {
+			$(this).hide();
+		}
+	});
+}
+
+function showAll() {
+	$divLog.children().show();
+}
