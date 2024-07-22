@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\admin\configuracion;
 
 use App\Http\Controllers\Controller;
-use App\libs\CacheLib;
+use App\libs\ImageGenerate;
 use App\Models\V5\FgHces1;
 use App\Models\V5\Web_Images_Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
 
 class AdminThumbsController extends Controller
 {
@@ -64,7 +62,7 @@ class AdminThumbsController extends Controller
 			->orderBy('num_hces1, lin_hces1')
 			->get()
 			->each(function ($lot) {
-				$lot->images = $this->getlotImages($lot->num_hces1, $lot->lin_hces1);
+				$lot->images = (new ImageGenerate)->getlotImages($lot->num_hces1, $lot->lin_hces1);
 			})
 			->when($request->input('type'), function ($collection, $type) use ($request) {
 				$size = $request->input('size');
@@ -96,7 +94,7 @@ class AdminThumbsController extends Controller
 		$size = $request->input('size');
 
 		try {
-			$this->imageLot($numhces, $linhces, null, $size);
+			(new ImageGenerate)->imageLot($numhces, $linhces, null, $size);
 		} catch (\Throwable $th) {
 			$errorMessage = "Error al generar las miniaturas del lote número {$numhces} y línea {$linhces}";
 			Log::error($errorMessage, ['error' => $th->getMessage()]);
@@ -108,103 +106,6 @@ class AdminThumbsController extends Controller
 			: "Miniaturas del lote número {$numhces} y línea {$linhces} generadas correctamente";
 
 		return response()->json(['message' => $message]);
-	}
-
-
-	/**
-	 * TODO EL CÓDIGO A PARTIR DE AQUÍ YA ESTA CREADO EN EL ImageGenerate de la rama de tauler
-	 * Cuando se únifique esa rama, utilizar ese código y elimianr este
-	 */
-
-	public function imageLot($numHces, $linHces = null, $imagePosition = null, $imageSize = null)
-	{
-		$emp = Config::get('app.emp');
-		$path = "img/$emp/$numHces/";
-
-		$images = $this->getlotImages($numHces, $linHces, $imagePosition);
-
-		$sizes = $imageSize
-			? [$imageSize]
-			: CacheLib::rememberCache('image_sizes', 1200, function () {
-				return Web_Images_Size::query()
-					->where('name_web_images_size', 'like', '%lote%')
-					->pluck('size_web_images_size');
-			});
-
-		foreach ($images as $image) {
-			[$imageName, $extension] = explode(".", $image);
-			$imagePath = public_path($path . $image);
-
-			foreach ($sizes as $size) {
-				set_time_limit(60);
-				$directoryThumb = "img/thumbs/$size/$emp/$numHces";
-				if (!is_dir(public_path($directoryThumb))) {
-					mkdir(public_path($directoryThumb), 0775, true);
-					chmod(public_path($directoryThumb), 0775);
-				}
-
-				$imageThumb = public_path("$directoryThumb/$imageName.jpg");
-
-				$imageMake = Image::make($imagePath);
-
-				$imageMake->resize($size, null, function ($constraint) {
-					$constraint->aspectRatio();
-					$constraint->upsize();
-				});
-
-				$imageMake->save($imageThumb, 75, 'jpg');
-			}
-		}
-	}
-
-	private function getlotImages($numHces, $linHces = null, $imagePosition = null)
-	{
-		$emp = Config::get('app.emp');
-		$path = "img/$emp/$numHces/";
-
-		if (!is_dir(public_path($path))) {
-			return [];
-		}
-
-		$images = array_diff(scandir($path), ['.', '..']);
-
-		if (!empty($linHces)) {
-			$images = array_filter($images, fn ($image) => $this->isSameLineAndPosition($image, $linHces, $imagePosition));
-		}
-
-		return array_values($images);
-	}
-
-	/**
-	 * ejemplos de nombre
-	 * 001-50-1.jpg
-	 * 001-50-1_01.jpg
-	 * [emp-numHces-linHces]_[imagePosition].[extension]
-	 *
-	 * si $imagePosition es 0, obtenemos la que concida con el linHces y que no tenga imagePosition
-	 * si $imagePosition es null, obtenemos todas las que concidan con el linHces
-	 * si $imagePosition no es null, obtenemos la que concida con el linHces y la imagePosition
-	 */
-	private function isSameLineAndPosition($image, $linHces, $imagePosition)
-	{
-		[$imageName, $extension] = explode(".", $image);
-
-		$imageParams = explode("-", $imageName);
-		[$imgEmp, $imgNum, $imgLin] = $imageParams;
-
-		if ($imagePosition === 0) {
-			return $imgLin == $linHces && strpos($imgLin, "_") === false;
-		}
-
-		if ($imagePosition === null) {
-			return $imgLin == $linHces || (strpos($imgLin, "_") !== false && explode("_", $imgLin)[0] == $linHces);
-		}
-
-		$imagePosition = str_pad($imagePosition, 2, "0", STR_PAD_LEFT);
-		$imgPos = explode("_", $imgLin)[1] ?? null;
-		$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
-
-		return $imgLin == $linHces && $imgPos == $imagePosition;
 	}
 
 	private function getThumbsPath($numHces, $size)

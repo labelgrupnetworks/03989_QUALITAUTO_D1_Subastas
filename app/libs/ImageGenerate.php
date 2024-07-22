@@ -584,7 +584,7 @@ class ImageGenerate
 		}
 	}
 
-	private function getlotImages($numHces, $linHces = null, $imagePosition = null)
+	public function getlotImages($numHces, $linHces = null, $imagePosition = null)
 	{
 		$emp = Config::get('app.emp');
 		$path = "img/$emp/$numHces/";
@@ -619,18 +619,18 @@ class ImageGenerate
 		$imageParams = explode("-", $imageName);
 		[$imgEmp, $imgNum, $imgLin] = $imageParams;
 
-		if ($imagePosition == 0) {
+		if ($imagePosition === 0) {
 			return $imgLin == $linHces && strpos($imgLin, "_") === false;
+		}
+
+		if ($imagePosition === null) {
+			return $imgLin == $linHces || (strpos($imgLin, "_") !== false && explode("_", $imgLin)[0] == $linHces);
 		}
 
 		$imagePosition = str_pad($imagePosition, 2, "0", STR_PAD_LEFT);
 		$imgPos = explode("_", $imgLin)[1] ?? null;
 		$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
 
-		if ($imagePosition) {
-			return $imgLin == $linHces && $imgPos == $imagePosition;
-		}
-
-		return $imgLin == $linHces;
+		return $imgLin == $linHces && $imgPos == $imagePosition;
 	}
 }
