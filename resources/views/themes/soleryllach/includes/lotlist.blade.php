@@ -1,6 +1,12 @@
 @php
+
 	$subastaInst = new App\Models\Subasta();
 	$videos = $subastaInst->getLoteVideos($item);
+
+	//todos los lotes de subastas anteriores a 2024-07-01 mostraran el tamaño lote_medium_large
+	$untilDate = Carbon\Carbon::create(2024, 7, 01, 0, 0, 0);
+	$auctionInit = new Carbon\Carbon($item->start_session);
+	$imageSize = $auctionInit->lessThan($untilDate) ? 'lote_medium_large' : 'lote_medium';
 @endphp
 
 
@@ -19,8 +25,7 @@
         <div class="item_lot" data-with-rarity="{{ !empty($rarity) ? "true" : "false" }}">
 			<div class="border_img_lot">
 				<div class="img_lot">
-					<img class="img-responsive lazy" data-src="{{Tools::url_img('lote_medium_large',$item->num_hces1,$item->lin_hces1)}}" alt="{{$titulo}}">
-
+					<img class="img-responsive lazy" data-src="{{Tools::url_img($imageSize, $item->num_hces1, $item->lin_hces1)}}" alt="{{$titulo}}">
 				</div>
 
 				@if( $item->retirado_asigl0 !='N')
