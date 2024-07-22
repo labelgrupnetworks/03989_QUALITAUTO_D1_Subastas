@@ -122,6 +122,15 @@ $idiomes = \Config::get('app.locales');
 							</li>
 						</ul>
 						@endif
+						@if(in_array('reports', $config_menu_admin))
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('subasta.reports.index') }}">
+									<span>Informes</span>
+								</a>
+							</li>
+						</ul>
+						@endif
 						@if(!in_array('noLicit', $config_menu_admin))
 						<ul class="nav nav-children">
 							<li>
@@ -581,6 +590,14 @@ $idiomes = \Config::get('app.locales');
 							<i class="fa fa-cogs" aria-hidden="true"></i>
 							<span>{{ trans("admin-app.nav_menu.internal_config") }}</span>
 						</a>
+
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('admin.thumbs.index') }}">
+									<span>Generar miniaturas</span>
+								</a>
+							</li>
+						</ul>
 
 						<ul class="nav nav-children">
 							<li>

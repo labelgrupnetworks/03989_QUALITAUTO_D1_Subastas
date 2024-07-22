@@ -126,7 +126,9 @@ class ValoraliaController extends Controller
 	{
 		if (!$isSuccess) {
 			Log::error("Error web Service Valoralia, función $function", ['request' => $request, 'response' => $message, 'data' => $data]);
-			$this->sendEmailError($function, json_encode($request), json_encode($message));
+			if(!empty($request)) {
+				$this->sendEmailError($function, json_encode($request), json_encode($message));
+			}
 		} else {
 			Log::debug("response $function ws", ['function' => $function, 'response' => $message]);
 		}

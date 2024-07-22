@@ -25,46 +25,51 @@
                 </div>
             @endif
             @foreach (array_reverse($data['auction_list']) as  $subasta)
-                <?php
-                    // $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
+                @php
+					$title = $subasta->name;
+				  	$clean_title = strip_tags($title);
+
+					// $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
                     $indices = array();
                     if(count($indices) > 0 ){
-                        $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
+                        $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
                     }else{
-                        $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
+                        $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
 					}
 
-                $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
+                $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
+                $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($clean_title);
                   if( $subasta->tipo_sub =='V' ){
                            $url_lotes.='?only_salable=on';
                   }elseif(strtotime($subasta->session_end) < time()){
 					$url_lotes.='?no_award=on';
 				  }
-                ?>
+
+
+                @endphp
                 <div class="col-xs-12 col-sm-4 col-lg-3">
                     <div class="item_subasta">
-                        <a title="{{ $subasta->name }}" href="<?= $url_lotes?>">
+                        <a title="{{ $clean_title }}" href="<?= $url_lotes?>">
                             <div class="img-lot">
                                 <img
                                     src="{{ Tools::url_img_auction('subasta_medium', $subasta->cod_sub) }}"
-                                    alt="{{ $subasta->name }}"
+                                    alt="{{ $clean_title }}"
                                     class="img-responsive"
                                 />
                             </div>
                         </a>
                         <div class="item_subasta_item text-center">
-                               {{ $subasta->name }}
+                               {!! $title !!}
                         </div>
                         <a
-                            title="{{ $subasta->name }}"
+                            title="{{ $clean_title }}"
                             href="{{ $url_lotes }}"
                             class="btn btn-lotes"
                         >
                             {{ trans($theme.'-app.subastas.see_lotes') }}
                         </a>
                         <a
-                            title="{{ $subasta->name }}"
+                            title="{{ $clean_title }}"
                             href="{{ $url_subasta }}"
                             class="btn btn-subasta"
                         >

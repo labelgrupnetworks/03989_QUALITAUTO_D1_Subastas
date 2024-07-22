@@ -36,6 +36,14 @@
 						<div class="">
 							<a href="{{ $item->url }}" target="_blank" style="overflow-wrap: break-word;">{{ $item->url }}</a>
 						</div>
+					@elseif (strpos(trim($tipo), ':') !== false)
+						<div class="">
+							@php
+								$view = explode(':', $tipo)[1];
+								$params = (!empty($item->texto)) ? json_decode($item->texto, true) : [];
+							@endphp
+							@includeWhen($params, "includes.banners.$view", $params)
+						</div>
                     @endif
 
                 </div>
