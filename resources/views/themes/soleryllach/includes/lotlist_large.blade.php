@@ -2,6 +2,11 @@
 	$subastaInst = new App\Models\Subasta();
 	$videos = [];
 	$videos = $subastaInst->getLoteVideos($item);
+
+	//todos los lotes de subastas anteriores a 2024-07-01 mostraran el tamaño lote_medium_large
+	$untilDate = Carbon\Carbon::create(2024, 7, 01, 0, 0, 0);
+	$auctionInit = new Carbon\Carbon($item->start_session);
+	$imageSize = $auctionInit->lessThan($untilDate) ? 'lote_medium_large' : 'lote_medium';
 @endphp
 
 
@@ -39,7 +44,7 @@
 				@endif
                 <div class="img_lot h-100">
                     <img class="img-responsive lazy"
-                        data-src="{{ Tools::url_img('lote_medium_large', $item->num_hces1, $item->lin_hces1) }}"
+                        data-src="{{ Tools::url_img($imageSize, $item->num_hces1, $item->lin_hces1) }}"
                         alt="{{ $titulo }}">
                 </div>
 			</a>
