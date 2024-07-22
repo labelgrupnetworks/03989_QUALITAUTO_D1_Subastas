@@ -59,6 +59,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="generateTypeInput">Filtro</label>
+                        <select class="form-control" id="generateTypeInput" name="type" type="text">
+
+                            <option value="">Todas</option>
+							<option value="1">Sin miniatura generada</option>
+							<option value="2">Imagen original modificada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <button class="btn btn-primary" type="submit">Buscar</button>
                     </div>
                 </form>

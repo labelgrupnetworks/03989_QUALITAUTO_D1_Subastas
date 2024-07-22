@@ -8,11 +8,15 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\Web_Images_Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class AdminThumbsController extends Controller
 {
+	const FILTER_ONLY_WITHOUT_THUMB = '1';
+	const FILTER_WITH_MODIFIED_DATE = '2';
+
 	public function __construct()
 	{
 		$this->middleware(function ($request, $next) {
@@ -61,6 +65,14 @@ class AdminThumbsController extends Controller
 			->get()
 			->each(function ($lot) {
 				$lot->images = $this->getlotImages($lot->num_hces1, $lot->lin_hces1);
+			})
+			->when($request->input('type'), function ($collection, $type) use ($request) {
+				$size = $request->input('size');
+				return match ($type) {
+					self::FILTER_ONLY_WITHOUT_THUMB => $collection->filter(fn ($lot) => $this->filterNewThumbnails($lot, $size)),
+					self::FILTER_WITH_MODIFIED_DATE => $collection->filter(fn ($lot) => $this->filterModifiedImages($lot, $size)),
+					default => $collection
+				};
 			})
 			->filter(fn ($lot) => !empty($lot->images));
 
@@ -160,7 +172,7 @@ class AdminThumbsController extends Controller
 			$images = array_filter($images, fn ($image) => $this->isSameLineAndPosition($image, $linHces, $imagePosition));
 		}
 
-		return $images;
+		return array_values($images);
 	}
 
 	/**
@@ -180,18 +192,61 @@ class AdminThumbsController extends Controller
 		$imageParams = explode("-", $imageName);
 		[$imgEmp, $imgNum, $imgLin] = $imageParams;
 
-		if ($imagePosition == 0) {
+		if ($imagePosition === 0) {
 			return $imgLin == $linHces && strpos($imgLin, "_") === false;
+		}
+
+		if ($imagePosition === null) {
+			return $imgLin == $linHces || (strpos($imgLin, "_") !== false && explode("_", $imgLin)[0] == $linHces);
 		}
 
 		$imagePosition = str_pad($imagePosition, 2, "0", STR_PAD_LEFT);
 		$imgPos = explode("_", $imgLin)[1] ?? null;
 		$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
 
-		if ($imagePosition) {
-			return $imgLin == $linHces && $imgPos == $imagePosition;
-		}
+		return $imgLin == $linHces && $imgPos == $imagePosition;
+	}
 
-		return $imgLin == $linHces;
+	private function getThumbsPath($numHces, $size)
+	{
+		$emp = Config::get('app.emp');
+		return public_path("img/thumbs/$size/$emp/$numHces/");
+	}
+
+	private function getOriginalPath($numHces)
+	{
+		$emp = Config::get('app.emp');
+		return public_path("img/$emp/$numHces/");
+	}
+
+	/**
+	 * Comprueba si el lote tiene alguna imagen que no tenga la miniatura creada
+	 */
+	private function filterNewThumbnails($lot, $size)
+	{
+		foreach ($lot->images as $image) {
+			if (!file_exists($this->getThumbsPath($lot->num_hces1, $size) . $image)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Comprueba si el lote tiene alguna imagen que la fecha de modificación de
+	 * la original sea mayor que la de la miniatura
+	 */
+	function filterModifiedImages($lot, $size)
+	{
+		foreach ($lot->images as $image) {
+			$thumbFilePath = $this->getThumbsPath($lot->num_hces1, $size) . $image;
+			$thumbDate = file_exists($thumbFilePath) ? filemtime($thumbFilePath) : 0;
+			$originalDate = filemtime($this->getOriginalPath($lot->num_hces1) . $image);
+
+			if ($originalDate > $thumbDate) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
