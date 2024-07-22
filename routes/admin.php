@@ -469,6 +469,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('disk-status', 'configuracion\AdminDiskStatusController@index')->name('admin.disk-status.index');
 		Route::get('disk-status/folder', 'configuracion\AdminDiskStatusController@getDirectoryInPath')->name('admin.disk-status.folder');
 
+		Route::get('thumbs', 'configuracion\AdminThumbsController@index')->name('admin.thumbs.index');
+		Route::post('thumbs/lots', 'configuracion\AdminThumbsController@getLots')->name('admin.thumbs.lots');
+		Route::post('thumbs/generate', 'configuracion\AdminThumbsController@generateThumbs')->name('admin.thumbs.generate');
+
 		Route::group(['prefix' => 'test-auction'], function () {
 			Route::get('/', 'configuracion\AdminTestAuctions@index')->name('admin.test-auctions.index');
 			Route::get('/create-auction/{idauction}', 'configuracion\AdminTestAuctions@createAuction')->name('admin.test-auctions.create');
