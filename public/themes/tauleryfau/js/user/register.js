@@ -5,24 +5,14 @@
  */
 
 particular = function () {
-
-	$("#pri_emp").val("F");
-	$(".tipo_usuario .empresa").removeClass("selected");
-	$(".tipo_usuario .particular").addClass("selected");
 	$(".registerParticular").show();
 	$(".registerEnterprise").hide();
-
 	labelDniReload();
-
 };
 
 empresa = function () {
-	$("#pri_emp").val("J");
-	$(".tipo_usuario .empresa").addClass("selected");
-	$(".tipo_usuario .particular").removeClass("selected");
 	$(".registerParticular").hide();
 	$(".registerEnterprise").show();
-
 	labelDniReload();
 };
 
@@ -31,23 +21,14 @@ function inputRequired(name, required) {
 	$(`input[name='${name}']`).prop("id", `texto__${valRequired}__${name}`);
 }
 
-
-
 clidNotRequired = function () {
 
 	//cambiar requerimiento de inputs
 	$("select[name='clid_pais']").prop("id", "select__0__clid_pais");
 	$("select[name='clid_codigoVia']").prop("id", "select__0__clid_codigoVia");
-	inputRequired('clid_cpostal', false);
-	inputRequired('clid_poblacion', false);
-	inputRequired('clid_provincia', false);
-	inputRequired('clid_direccion', false);
 
-	inputRequired('name_clidTemp', false);
-	inputRequired('lastName_clidTemp', false);
-	inputRequired('preftel_clid', false);
-	inputRequired('tele_clid', false);
-
+	const requiredInputs = ['clid_cpostal', 'clid_poblacion', 'clid_provincia', 'clid_direccion', 'obs_clid', 'name_clidTemp', 'lastName_clidTemp', 'preftel_clid', 'tele_clid'];
+	requiredInputs.forEach(input => inputRequired(input, false));
 	//indicar que se utilizaran los inputs por defecto
 	$('#clid').val(1);
 }
@@ -57,16 +38,9 @@ clidRequired = function () {
 	//cambiar requerimiento de inputs
 	$("select[name='clid_pais']").prop("id", "select__1__clid_pais");
 	$("select[name='clid_codigoVia']").prop("id", "select__1__clid_codigoVia");
-	inputRequired('clid_cpostal', true);
-	inputRequired('clid_poblacion', true);
-	inputRequired('clid_provincia', true);
-	inputRequired('clid_direccion', true);
 
-	inputRequired('name_clidTemp', true);
-	inputRequired('lastName_clidTemp', true);
-	inputRequired('preftel_clid', true);
-	inputRequired('tele_clid', true);
-
+	const requiredInputs = ['clid_cpostal', 'clid_poblacion', 'clid_provincia', 'clid_direccion', 'obs_clid', 'name_clidTemp', 'lastName_clidTemp', 'preftel_clid', 'tele_clid'];
+	requiredInputs.forEach(input => inputRequired(input, true));
 	$('#clid').val(0);
 }
 
@@ -114,7 +88,11 @@ function labelDniReload() {
 	}
 
 	$('input[type="text"][id*=nif]').each(function () {
-		$(this).attr('placeholder', $(this).siblings('label[style*="display: inline-block"]').text());
+		$(this).attr('placeholder', $(this).parent('label')
+			.find('span:not([style*=display]):not([style*=none])')
+			.text()
+			.trim()
+		);
 	});
 }
 
@@ -144,25 +122,36 @@ function viaRequired(isRequired) {
 function reloadPlaceholders() {
 
 	$('input[type="text"]').each(function () {
-		$(this).attr('placeholder', $(this).siblings('label').text().trim());
+		$(this).attr('placeholder', $(this).parent('label').text().trim());
 	});
 
 	$('input[type="text"][id*=nif]').each(function () {
-		$(this).attr('placeholder', $(this).siblings('label[style*="display: inline-block"]').text());
+		$(this).attr('placeholder', $(this).parent('label')
+			.find('span:not([style*=display]):not([style*=none])')
+			.text()
+			.trim()
+		);
 	});
 
 	$('input[type="password"]').each(function () {
-		$(this).attr('placeholder', $(this).siblings('label').text());
+		$(this).attr('placeholder', $(this).parent('label').text());
 	});
 
-	$("textarea[name='obscli']").attr('placeholder', $("textarea[name='obscli']").siblings('label')[1].innerHTML);
-
+	//$("textarea[name='obscli']").attr('placeholder', $("textarea[name='obscli']").parent('label')[1].innerHTML);
 }
 
 
 
 
 $(document).ready(function () {
+
+	$('[name="pri_emp"]').on('change', function () {
+		if (this.value === 'F') {
+			particular();
+			return;
+		}
+		empresa();
+	});
 
 	$('input[name="preftel_cli"],input[name="preftel_clid"]').removeAttr("onfocus");
 
@@ -185,40 +174,38 @@ $(document).ready(function () {
 	reloadPrefix('preftel_cli', 'pais');
 	reloadPrefix('preftel_clid', 'clid_pais');
 
+	$('input[name="shipping_address"]').on('change', function (event) {
+		const $colapse = $('#collapse_d');
+		const $this = $(this);
+		const name = $this.attr('name');
 
-	$('#shipping_address').unbind().change(function () {
-
-		let colapse = $('#collapse_d');
-
-		if (this.checked) {
-
+		if ($this.is(':checked') && $this.val() === '1') {
+			$(`input[name="${name}"]`).prop('checked', false);
+			$this.prop('checked', true);
 			clidNotRequired();
-			$('#collapse_d').hide("slow");
-			$('#shipping_address_required').removeAttr('checked');
-
-		} else {
-			//inversa
+			$colapse.hide("slow");
+		}
+		else if($this.is(':checked') && $this.val() === '2') {
+			$(`input[name="${name}"]`).prop('checked', false);
+			$this.prop('checked', true);
 			clidRequired();
-			$('#collapse_d').show("slow");
-			$('#shipping_address_required').prop("checked", true);
+			$colapse.show("slow");
+		}
+		else {
+			$this.prop('checked', true);
 		}
 	});
 
-	$('#shipping_address_required').unbind().change(function () {
-
-		let colapse = $('#collapse_d');
-
-		if (this.checked) {
-			clidRequired();
-			$('#collapse_d').show("slow");
-			$('#shipping_address').removeAttr('checked');
-
-		} else {
-			clidNotRequired();
-			$('#collapse_d').hide("slow");
-			$('#shipping_address').prop("checked", true);
+	//si se selecciona todas, se deseleccionan las demas y viceversa
+	$('[name="families[]"]').on('change', function (event) {
+		const $this = $(this);
+		if ($this.is(':checked') && $this.val() === '2') {
+			$(`input[name="families[]"]`).prop('checked', false);
+			$this.prop('checked', true);
+		}
+		else {
+			$(`input[name="families[]"][value="2"]`).prop('checked', false);
 		}
 	});
-
 
 });

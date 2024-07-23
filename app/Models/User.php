@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxCliWeb;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class User
 {
@@ -778,7 +780,7 @@ class User
     }
 
      # Adjudicaciones de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
-    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '')
+    public function getAdjudicacionesPagar($value = 'N', $cod_sub = '', $criteria = [], $whereIntervalDates = [])
     {
 
         $lang = Config::get("app.language_complete")[Config::get("app.locale")];
@@ -786,8 +788,9 @@ class User
                 ->select('C.SUB_CSUB,C.REF_CSUB, C.HIMP_CSUB,C.BASE_CSUB,C.FAC_CSUB,C.AFRAL_CSUB,C.NFRAL_CSUB,C.fecfra_csub,P.REF_ASIGL1')
                 ->addSelect('NVL(lotes_lang.titulo_hces1_lang, LO.titulo_hces1) titulo_hces1,LO.NUM_HCES1 ,  LO.LIN_HCES1, P.FEC_ASIGL1, P.HORA_ASIGL1, LO.COB_HCES1')
                 ->addSelect('C.apre_csub, C.npre_csub,LO.ALM_HCES1,ALM.OBS_ALM, LO.TRANSPORT_HCES1')
-                ->addSelect('SUB.cod_sub,sub.tipo_sub,auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0,NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
+                ->addSelect('SUB.cod_sub,sub.tipo_sub, sub.compraweb_sub, SUB.DES_SUB, auc."name" name, auc."id_auc_sessions",ASIGL0.ref_asigl0, ASIGL0.IMPSALHCES_ASIGL0, NVL(lotes_lang.desc_hces1_lang, LO.desc_hces1) desc_hces1, NVL(lotes_lang.descweb_hces1_lang, LO.descweb_hces1) descweb_hces1, asigl0.COMLHCES_ASIGL0')
                 ->addSelect('FGC0.estado_csub0,C.fecha_csub, FGC0.exp_csub0,FGC0.impgas_csub0,FGC0.tax_csub0 ')
+				->addSelect('otv."exportacion"')
                 ->Join('FGASIGL0 ASIGL0',function($join){
                     $join->on('ASIGL0.EMP_ASIGL0','=','C.EMP_CSUB')
                     ->on('ASIGL0.SUB_ASIGL0','=','C.SUB_CSUB')
@@ -838,10 +841,25 @@ class User
                     ->on('FGC0.APRE_CSUB0','=','C.APRE_CSUB')
                     ->on('FGC0.NPRE_CSUB0','=','C.NPRE_CSUB');
 				})
+				->leftJoin('"object_types_values" otv', 'otv."company" = C.EMP_CSUB and otv."transfer_sheet_number" = ASIGL0.NUMHCES_ASIGL0 and otv."transfer_sheet_line" = ASIGL0.LINHCES_ASIGL0')
                 ->where('C.EMP_CSUB',Config::get('app.emp'))
                 ->where('C.CLIFAC_CSUB',$this->cod_cli)
                 ->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
-                ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"');
+                ->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"')
+				->when($criteria, function($query, $criteria){
+					foreach($criteria as $key => $value){
+						$query->where($key, $value);
+					}
+					return $query;
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fecha_csub', $interval);
+						}
+					});
+				});
+
                 if($value == 'S'){
 					//Modificado 21/09/22 Eloy: añadimos facturas y efectos pendientes para comprobar que realmente esta pagado.
 					//Si el lote esta en factura pero la factura no esta pagada, el lote no aparecera como pagado.
@@ -910,6 +928,20 @@ class User
 		return $lotWithSale ? true : false;
 	}
 
+	public function getSalesToNotFinishAuctions()
+	{
+		$auctions = FgAsigl0::getNotEndedAuctionsWithOwnerLots($this->cod_cli);
+		$acutionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($auctions->pluck('sub_asigl0'), $this->cod_cli)->get();
+
+		//merge auctions with results
+		$auctions = $auctions->map(function($auction) use ($acutionsResults){
+			$results = $acutionsResults->where('sub_asigl0', $auction->sub_asigl0)->first();
+			return array_merge($auction->toArray(), $results->toArray());
+		});
+
+		return $auctions;
+	}
+
     #Ventas de usuario mediante cod_cli ya que un usuario puede tener varios codigos de licitador
     public function getSales($filters = null)
     {
@@ -920,7 +952,7 @@ class User
 
 			->selectRaw('FGSUB.cod_sub, FGSUB.des_sub, FGSUB.tipo_sub, FGSUB.subc_sub, FGSUB.dfec_sub, FGSUB.hfec_sub, auc."name", auc."id_auc_sessions", auc."start", auc."end", auc."reference", auc."orders_start",
 				FGHCES1.num_hces1, FGHCES1.lin_hces1, FGHCES1.implic_hces1, FGHCES1.titulo_hces1, FGHCES1.fac_hces1, FGHCES1.webfriend_hces1, FGHCES1.titulo_hces1,
-				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0')
+				ASIGL0.ref_asigl0, ASIGL0.impsalhces_asigl0, ASIGL0.cerrado_asigl0, ASIGL0.sub_asigl0, ASIGL0.desadju_asigl0, ASIGL0.comlhces_asigl0, ASIGL0.comphces_asigl0, ASIGL0.retirado_asigl0, ASIGL0.imptas_asigl0')
 			->addSelect($clobParams)
          	->Join('FGASIGL0 ASIGL0',function($join){
             	$join->on('ASIGL0.EMP_ASIGL0','=','FGHCES1.EMP_HCES1')
@@ -1411,6 +1443,50 @@ class User
 	public static function getClientFilesPath($codCli)
 	{
 		return "/$codCli/files";
+	}
+
+	/**
+	 * @param \Illuminate\Http\UploadedFile|null $file
+	 * @param string $cod_cli
+	 * @return bool
+	 */
+	public function storeAvatar($fileImage, $cod_cli = null)
+	{
+		$notValidation = (!$cod_cli && !$this->cod_cli) || !$fileImage;
+
+		if($notValidation) {
+			return false;
+		}
+
+		if(!$cod_cli) {
+			$cod_cli = $this->cod_cli;
+		}
+
+		$extension = 'png';
+		$nameFile = $cod_cli . '.' . $extension;
+
+		Image::make($fileImage)
+			->resize(100, null, function ($constraint) {
+				$constraint->aspectRatio();
+				$constraint->upsize();
+			})
+			->save(Storage::disk('avatars')->path($nameFile), 90);
+
+		return true;
+	}
+
+	public function getAvatar($cod_cli = null)
+	{
+		if(!$cod_cli) {
+			$cod_cli = $this->cod_cli;
+		}
+
+		$theme = Config::get('app.theme');
+		$storage = Storage::disk('avatars');
+		$avatarImageName = $cod_cli . '.png';
+		$avatar = $storage->exists($avatarImageName) ? $storage->url($avatarImageName) : asset("/themes/$theme/assets/img/default-avatar.png");
+
+		return $avatar;
 	}
 
 	/**

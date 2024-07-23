@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use View;
 use Illuminate\Support\Facades\Config;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Request;
 
 use App\Models\Payments;
@@ -36,8 +36,31 @@ use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Collection;
 use GuzzleHttp\Client;
 
+
 class PaymentsController extends Controller
 {
+	public $user;
+	public $iva;
+	public $tipo_iva;
+
+	public function setIva($iva)
+	{
+		$this->iva = $iva;
+		return $this;
+	}
+
+	public function setTipoIva($tipo_iva)
+	{
+		$this->tipo_iva = $tipo_iva;
+		return $this;
+	}
+
+	public function setUser($user)
+	{
+		$this->user = $user;
+		return $this;
+	}
+
 	public function index($function)
 	{
 
@@ -758,6 +781,7 @@ class PaymentsController extends Controller
 		} else {
 			$iva = 0;
 		}
+
 		return $iva;
 	}
 	//Iva del cliente
@@ -1734,7 +1758,6 @@ class PaymentsController extends Controller
 
 	}
 
-
 	public function gastosEnvio($precio = null, $cod_sub = null)
 	{
 		#si usan las tablas de WEB_GASTOS_ENVIO
@@ -1763,11 +1786,14 @@ class PaymentsController extends Controller
 			return $res ;
 		}
 
-
-
-		$user = new User();
-		$user->cod_cli = Session::get('user.cod');
-		$inf_client = $user->getUserByCodCli('N');
+		if(empty($this->user)) {
+			$user = new User();
+			$user->cod_cli = Session::get('user.cod');
+			$inf_client = $user->getUserByCodCli('N');
+		}
+		else {
+			$inf_client = [$this->user];
+		}
 
 		$imp_env = 0;
 		$iva_env = 0;
@@ -1874,10 +1900,10 @@ class PaymentsController extends Controller
 
 		return $res;
 	}
+
 	// Calculo de la iva dependiendo de si el iva del cliente es 1 o 2
 	public function calculate_iva($tipo_iva = 0, $iva, $price)
 	{
-
 		$tax = 0;
 		if ($tipo_iva == '1' || $tipo_iva == '2') {
 			$tax = round((($price * $iva) / 100), 2);

@@ -1,63 +1,82 @@
-{{-- al acabar comprobar el numero de consultas total del nuevo metodo y el antiguo --}}
-
 @php
-$withAuction = !empty($auction);
-$codSub = $withAuction ? $auction->cod_sub : 'withoutsub';
-$name = $withAuction ? $auction->name : 'Sin subasta';
-$totalBillsImport = 0;
-$pdfBills = [];
+	$locale = config('app.locale');
+
+	//los estados deben ser traducciones en user_panel.estado_seg_*
+    //pero hasta aceptar el diseño, para no modificar los actuales se dejan en texto plano
+	$state = [
+		'class' => $isPayed ? 'warning' : 'alert',
+		'text' => $isPayed
+			? ['es' => 'Preparando envío', 'en' => 'Preparing shipment'][$locale]
+			: trans("$theme-app.user_panel.pending")
+	];
+	$auctionNumber = fn($text, $codSub) => preg_match('/\b\d+\b/', $text, $matches) ? $matches[0] : $codSub;
+
+	$pendingToPay = $isPayed ? 0 : $sumInvoices;
 @endphp
 
-<a aria-expanded="true" data-toggle="collapse" href="#{{ $codSub }}_{{ $isPayed }}">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            {{ $name }}
-        </h4>
-        <i class="fas fa-sort-down"></i>
-    </div>
-</a>
-
-<div id="{{ $codSub }}_{{ $isPayed }}"
-    class="table-responsive-custom panel-collapse collapse js-auction-block">
-
-    <form class="js-pay-bill" action="/gateway/pagarFacturasWeb" method="POST">
-
-		@foreach ($bills as $bill)
-            @php
-                $totalBillsImport += $bill->imp_pcob;
-				if(!empty($bill->factura)){
-					$pdfBills[] = "/factura/$bill->anum_pcob-$bill->num_pcob";
-				}
-            @endphp
-
-            @include('pages.panel.adjudicaciones.bill', ['bill' => $bill, 'isPayed' => $isPayed])
-
-			{{-- Bótones --}}
-			@if($loop->last && $totalBillsImport > 0)
-			<div class="text-right factura-buttons">
-                <input type="hidden" name="paymethod" value="creditcard">
-
-				@foreach ($pdfBills as $url)
-				<a href="{{ $url }}" download
-					class="btn btn-color factura-button mb-1">{{ trans($theme . '-app.user_panel.invoice_pdf') }}</a>
-				@endforeach
-
-                <a class="btn btn-color btn-gold mb-1" data-toggle="modal" data-target="#largeModal" data-type="bill"
-                    data-codsub="{{ $codSub }}" data-value={{$totalBillsImport}}
-                    data-concept="{{ explode('-', $name)[0] }}-{{ \Session::get('user.cod') }}">{{ trans("$theme-app.user_panel.bank_transfer") }}</a>
-
-                <button type="submit"
-                    class="btn btn-color btn-blue mb-1">{{ trans("$theme-app.user_panel.pay_now") }}</a>
-
-            </div>
+<div class="invoice-wrapper" data-type="pending" data-id="{{ $id }}" data-auction-wrapper>
+    <div class="invoice-auction">
+        <p>
+            {{ date('d/m/Y', strtotime($document->fecha_csub)) }}
+        </p>
+        <p class="allotment-invoice_cod text-center text-md-start">
+            <span class="visible-md visible-lg">{{ $document->name ?? '' }}</span>
+            <span class="hidden-md hidden-lg">
+				{{ $auctionNumber($document->name, $document->cod_sub) }}
+			</span>
+        </p>
+        <p class="visible-md visible-lg">
+			@if (!empty($document->apre_csub))
+				{{ str_replace('-', '/', $id) }}
+			@else
+				-
 			@endif
+		</p>
 
-        @endforeach
+        <p class="js-divisa fw-bold" value="{{ $sumInvoices ?? 0 }}" style="font-size: 13px;">
+            {!! $currency->getPriceSymbol(2, $sumInvoices ?? 0) !!}
+        </p>
 
-    </form>
+        <p class="js-divisa fw-bold visible-md visible-lg" value="{{ $pendingToPay ?? 0 }}" style="font-size: 13px;">
+            {!! $currency->getPriceSymbol(2, $pendingToPay ?? 0) !!}
+        </p>
 
-    @foreach ($allotments as $allotment)
-        @include('pages.panel.adjudicaciones.allotment', ['lot' => $allotment, 'isPayed' => $isPayed])
-    @endforeach
+        <p class="allotment-invoice_state">
+            <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
+        </p>
+        <p class="allotment-invoice_pay-buttons">
+            @if ($document->compraweb_sub == 'S' && !$isPayed)
 
+				@if (!empty($document->apre_csub))
+					<a class="btn btn-lb btn-lb-secondary"
+						href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@else
+					<a class="btn btn-lb btn-lb-secondary"
+						href="{{ route('panel.allotment.sub', ['cod_sub' => $document->cod_sub, 'lang' => Config::get('app.locale')]) }}"
+						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+				@endif
+
+                @if (!empty($document->prefactura))
+                    <a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>
+                        <img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
+                    </a>
+                @endif
+
+			@else
+                <span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
+            @endif
+        </p>
+        <div class="actions">
+            {{-- <a class="btn btn-lb btn-lb-outline" data-toggle="tab" href="#auction-details-{{ $id }}"
+                role="tab" aria-controls="settings">
+                {{ trans("$theme-app.user_panel.see_detail") }}
+            </a> --}}
+
+			{{-- open Modal --}}
+			<button type="button" class="btn btn-lb btn-lb-outline" data-toggle="modal" data-target="#myModal-{{ $id }}" data-id="{{ $id }}">
+				{{ trans("$theme-app.user_panel.see_detail") }}
+			</button>
+        </div>
+    </div>
 </div>

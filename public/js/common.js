@@ -1571,7 +1571,7 @@ function cambiarDireccion(thi) {
 }
 
 function ajax_shipping(cod_ship, lang) {
-	$.ajax({
+	return $.ajax({
 		type: "GET",
 		url: '/' + lang + '/seeShippingAddress',
 		data: { codd_clid: cod_ship },
@@ -1579,8 +1579,10 @@ function ajax_shipping(cod_ship, lang) {
 			$("#ajax_shipping_add").html('');
 			$("#ajax_shipping_add").html(response);
 		}
+	})
+	.then((response) => {
+		return response;
 	});
-
 }
 
 function changeCurrency(price, exchange, object) {
@@ -1613,6 +1615,7 @@ function changeCurrencyNew(price, exchange, object) {
 
 }
 
+
 function changeCurrencyWithElement(price, exchange, element) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
 
@@ -1630,16 +1633,20 @@ function changeCurrencyWithElement(price, exchange, element) {
 	element.innerHTML = newPrice;
 }
 
+function refreshCurrency() {
+	$(".js-divisa").each(function () {
+		let value = $(this).attr('value');
+		if (value != "undefined") {
+			changeCurrencyNew(value, $('#actual_currency').val(), $(this));
+		}
+	});
+}
+
 $(document).ready(function () {
 
 	$("#actual_currency").change(function () {
 
-		$(".js-divisa").each(function () {
-			a = $(this).attr('value');
-			if (a != "undefined") {
-				changeCurrencyNew(a, $('#actual_currency').val(), $(this));
-			}
-		});
+		refreshCurrency();
 
 		$.ajax({
 			type: "POST",
@@ -1652,8 +1659,6 @@ $(document).ready(function () {
 
 
 	});
-
-
 });
 
 
@@ -1986,3 +1991,18 @@ function sharePage({ text, title, url }) {
 		window.open(shareUrl, '_blank');
 	}
 }
+
+
+// Retrasar la ejecución de una función hasta que el usuario deje de escribir
+let debounceTimeoutId;
+function debounce(func, delay) {
+	clearTimeout(debounceTimeoutId);
+	debounceTimeoutId = setTimeout(func, delay);
+}
+
+ /* inputElement.addEventListener('input', function() {
+	debounce(function() {
+		// Aquí puedes agregar el código para enviar el formulario
+		console.log('Enviar formulario');
+	}, 500); // 500 milisegundos (0.5 segundos) de pausa
+}); */

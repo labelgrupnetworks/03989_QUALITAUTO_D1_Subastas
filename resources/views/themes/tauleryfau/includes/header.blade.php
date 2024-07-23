@@ -62,18 +62,18 @@ function wpLink($code) {
                 <div class="session">
                     <ul class="panel-principal flex">
                         @if (!Session::has('user'))
-                            <li class="prueba session-start">
+                            <li class="session-start">
                                 <a title="<?= trans($theme . '-app.login_register.login') ?>"
                                     class="btn btn-color flex valign" data-toggle="modal"
                                     data-target="#modalLogin"><?= trans($theme . '-app.login_register.login') ?></a>
                             </li>
                         @else
-                            <li class="prueba myAccount">
-                                <a href="{{ \Routing::slug('user/panel/orders') }}"
+                            <li class="myAccount">
+                                <a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}"
                                     class="btn btn-color btn-account flex">{{ trans($theme . '-app.login_register.my_panel') }}</a>
                             </li>
                             @if (Session::get('user.admin'))
-                                <li class="prueba admin">
+                                <li class="admin">
                                     <a class="btn btn-color" href="/admin" target="_blank">
                                         {{ trans($theme . '-app.login_register.admin') }}</a>
                                 </li>
@@ -139,7 +139,7 @@ function wpLink($code) {
 					@elseif(Session::has('user'))
 					<li>
 						<i class="fa fa-user-circle"></i>
-						<a href="{{ \Routing::slug('user/panel/orders') }}">
+						<a href="{{ route('panel.summary', ['lang' => config('app.locale')]) }}">
 							{{ trans("$theme-app.login_register.my_panel") }}
 						</a>
 					</li>

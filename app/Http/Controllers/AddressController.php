@@ -10,10 +10,10 @@ use DB;
 use Request;
 use Validator;
 use Illuminate\Support\Facades\Request as Input;
-use Session;
+use Illuminate\Support\Facades\Session;
 use View;
 use Routing;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Route;
 use File;
 
@@ -22,6 +22,7 @@ use App\Models\Content;
 use App\Models\AucIndex;
 use App\Models\Address;
 use App\Models\Enterprise;
+use App\Models\User;
 
 class AddressController extends Controller
 {
@@ -53,6 +54,7 @@ class AddressController extends Controller
 				'clid_name' => $fxCliAddres->nom,
 				'clid_telf' => $fxCliAddres->tel,
 				'preftel_clid' => $fxCliAddres->preftel_clid,
+				'obs_clid' => $fxCliAddres->obs_clid,
 			);
 		}
 		else{
@@ -71,7 +73,8 @@ class AddressController extends Controller
 				'clid_telf' => trim(Input::get('telefono')),
 				'clid_rsoc' => $strToDefault ? trim($rsoc) : trim(strtoupper($rsoc)),
 				'email_clid' => trim(!empty(Input::get('email_clid')) ? Input::get('email_clid') : null),
-				'preftel_clid' => trim(request('preftel_clid', ''))
+				'preftel_clid' => trim(request('preftel_clid', '')),
+				'obs_clid' => trim(request('obs_clid', '')),
 			);
 		}
 
@@ -175,6 +178,10 @@ class AddressController extends Controller
 
 		$data['codd_clid'] = $codd_clid;
 
-		return \View::make('front::pages.panel.address_shipping', array('data' => $data));
+		$userClass          = new User();
+		$userClass->cod_cli = Session::get('user.cod');
+        $data['user'] = $userClass->getUser();
+
+		return view('front::pages.panel.address_shipping', array('data' => $data));
 	}
 }

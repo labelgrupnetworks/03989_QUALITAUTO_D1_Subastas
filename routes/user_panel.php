@@ -1,4 +1,10 @@
 <?php
+
+use App\Http\Controllers\Panel\SummaryController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
+
 # Obligatorio estar registrado.
 Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
@@ -16,6 +22,14 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
+	Route::prefix('{lang}/user/panel/summary')->group(function () {
+		Route::get('/', [SummaryController::class, 'summary'])->name('panel.summary');
+		Route::get('/active-sales', [SummaryController::class, 'summaryActiveSales'])->name('panel.summary.active-sales');
+		Route::get('/finish-sales', [SummaryController::class, 'summaryFinishSales'])->name('panel.summary.finish-sales');
+		Route::get('/pending-sales', [SummaryController::class, 'summaryPendingToBeAssigned'])->name('panel.summary.pending-sales');
+		Route::get('/favorites', [SummaryController::class, 'favoritesCarrousel']);
+	});
+
 	# Lista de Favoritos
 	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');
 	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos')->name('panel.favorites');
@@ -25,6 +39,12 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/sales', 'UserController@getSales')->name('panel.sales');
 	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
 	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
+
+	Route::get('{lang}/user/panel/sales/active', 'UserController@getSalesToActiveAuctions')->name('panel.sales.active');
+	Route::get('{lang}/user/panel/sales/finish', 'UserController@invoiceSalesOfFinishAuctions')->name('panel.sales.finish');
+	Route::get('{lang}/user/panel/sales/pending-assign', 'UserController@getLotsSalesPendingToBeAssign')->name('panel.sales.pending-assign');
+
+
 	#CARLANDIA
 	//Mis vehiculos en venta
 	Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');
@@ -74,6 +94,7 @@ Route::get('{lang}/user/panel/orders' . '/page/{page}', 'UserController@orderbid
 Route::get('{lang}/user/panel/allotments/outstanding', 'UserController@getAdjudicacionesPendientePago');
 Route::get('{lang}/user/panel/allotments/paid', 'UserController@getAdjudicacionesPagadas');
 Route::get('{lang}/user/panel/allotments/shopping-cart', 'UserController@getDirectSaleAdjudicaciones')->name('panel.allotment.diectsale');
+Route::get('{lang}/user/panel/allotments/proforma/{apre}-{npre}', 'UserController@getAdjudicacionesPendientePagoByProforma')->name('panel.allotment.proforma');
 Route::get('{lang}/user/panel/allotments/{cod_sub}', 'UserController@getAdjudicacionesPendientePagoBySub')->name('panel.allotment.sub');
 Route::get('{lang}/user/panel/allotments', 'UserController@getAllAdjudicaciones')->name('panel.allotments');
 Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generateAuthenticityCertificate')->name('panel.allotment.certifiacte');
@@ -82,7 +103,7 @@ Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generate
 Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
 
 Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
-Route::get('{lang}/user/panel/allotments-bills', 'UserController@getAllAllotmentsAndBills')->name('panel.allotment-bills');
+Route::get('{lang}/user/panel/allotments-bills', 'UserController@getInvoiceOverviewView')->name('panel.allotment-bills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
@@ -98,7 +119,7 @@ Route::get('{lang}/user/panel/showShoppingOrders', 'V5\ArticleController@showSho
 #pago por transferencia
 
 Route::get('{lang}/user/panel/transferpayment', function () {
-	exit(\View::make('front::pages.panel.transferpayment'));
+	exit(View::make('front::pages.panel.transferpayment'));
 })->name("transferpayment");
 
 #NFT

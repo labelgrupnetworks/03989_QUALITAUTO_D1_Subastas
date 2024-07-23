@@ -510,6 +510,8 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 			$time = 0;
 			$count = 0;
+
+			echo "<div class='query-log'>";
 			foreach (DB::getQueryLog() as $query) {
 				$count++;
 				$color = "";
@@ -524,6 +526,7 @@ class ToolsServiceProvider extends ServiceProvider
 				echo "<div style='border:1px solid grey; margin:30px;padding: 10px;word-break: break-all; $color'> (" . $query['time'] . ")<br> " . nl2br($query['query']) . "</div> ";
 			}
 			echo "<h1> Total: $time , TotalQuerys: $count</h1>";
+			echo "</div>";
 		}
 	}
 
@@ -902,21 +905,36 @@ class ToolsServiceProvider extends ServiceProvider
 		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
 
 		$image_to_load = "img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
-		$extension = 'webp';
 
+		//finalmente creo que a nadie se le generan en webp, se puede quitar
+		$extension = 'webp';
 		if(!file_exists("$image_to_load.$extension")){
 			$extension = 'jpg';
 		}
 
 		$image_to_load = "$image_to_load.$extension";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/$theme/img/items/no_photo";
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
+		if(self::isImageValid($image_to_load)) {
+			return "$url/$image_to_load".self::date_modification($file);
 		}
-		$image_to_load = "$url/$image_to_load";
-		return $image_to_load.self::date_modification($file);
+
+		//si no existe la imagen, generamos las miniaturas (solo si esta activado en la configuración)
+		if(Config::get('app.generate_image_when_not_found', false)){
+			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num, $sizeImage);
+		}
+
+		//si sigue sin existir la imagen, cargamos la imagen por defecto
+		if (!self::isImageValid($image_to_load)) {
+			$image_to_load = self::getPlaceholderImage($size);
+		}
+
+		return "$url/$image_to_load".self::date_modification($file);
+	}
+
+	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
+	{
+		$emp = Config::get('app.emp');
+		return "https://$url/img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces.jpg";
 	}
 
 	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
@@ -1698,6 +1716,17 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 		return $dataTable->first();
+	}
+
+	/**
+	 * Obtener numero entre dos valores delimitando su rango.
+	 */
+	public static function numberClamp($number, $min, $max = 0)
+	{
+		if(!$max){
+			return max($min, $number);
+		}
+		return max($min, min($number, $max));
 	}
 
 	public static function isITPLot($cod_sub, $ref) :bool

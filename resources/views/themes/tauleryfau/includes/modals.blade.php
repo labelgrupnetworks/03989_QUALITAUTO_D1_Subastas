@@ -1,4 +1,5 @@
 
+@if(!Session::has('user'))
 <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-register" role="document">
         <div class="signin d-flex">
@@ -57,6 +58,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <?php /*
 <div id="loginResponsive">

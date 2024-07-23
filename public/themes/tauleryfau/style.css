@@ -1,50 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap');
+@font-face{
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-ExtraLight.ttf') format('truetype');
+	font-weight: 200;
+	font-style: normal;
+}
 
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-ExtraLight.otf');
-	font-weight: 200;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Light.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Light.ttf') format('truetype');
 	font-weight: 300;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Light.otf');
-	font-weight: 300;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Regular.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Regular.ttf') format('truetype');
 	font-weight: 400;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Medium.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Medium.ttf') format('truetype');
 	font-weight: 500;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-SemiBold.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-SemiBold.ttf') format('truetype');
 	font-weight: 600;
+	font-style: normal;
 }
+
 @font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Bold.otf');
+	font-family: 'Fira Sans';
+	src: url('/themes/tauleryfau/fonts/Fira_Sans/FiraSans-Bold.ttf') format('truetype');
 	font-weight: 700;
+	font-style: normal;
 }
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-SemiBold.otf');
-	font-weight: 900;
-}
-@font-face{
-	font-family: NotoSerifKR;
-	src: url('/themes/fonts/NotoSerifKR-Black.otf');
-	font-weight: bold;
-}
+
 
 @font-face {
 	font-family: 'ElegantIcons';
@@ -382,6 +377,7 @@ form {
     box-shadow: none;
     padding: 0;
     display: initial;
+	height: 40px;
 }
 
 .form-control:focus{
@@ -639,7 +635,7 @@ ul {
     letter-spacing: 0px;
 }
 
-.session ul li.prueba.admin a {
+.session ul li.admin a {
     width: 100%;
 }
 
@@ -648,10 +644,10 @@ ul {
     position: relative;
 }
 
-.session ul li.prueba.session-start {
+.session ul li.session-start {
     width: 100%;
 }
-.session ul li.prueba.logout {
+.session ul li.logout {
     width: 40px;
 }
 
@@ -8134,8 +8130,8 @@ a.texto-puja-online:hover{
 
 input[type="text"],
 textarea {
-    -webkit-text-size-adjust: 100% !important;
-    font-size:16px !important;
+    -webkit-text-size-adjust: 100%;
+    font-size:16px;
 }
 
 
@@ -9324,7 +9320,11 @@ button.close {color:#283747;font-size:24px;opacity: 1 !important}
 	position: relative;
 	border:1px solid #b79d81;
 }
-.js-divisa {color:#888;font-weight:normal;}
+.js-divisa {
+	color: #888;
+	font-weight: inherit;
+}
+
 .money .js-divisa {
 	color:#EEE;
 	font-weight:normal;

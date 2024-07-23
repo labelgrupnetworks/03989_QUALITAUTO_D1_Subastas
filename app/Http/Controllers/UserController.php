@@ -11,7 +11,7 @@ use Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\Session;
-use View;
+use Illuminate\Support\Facades\View;
 use Routing;
 use Illuminate\Support\Facades\Config;
 use Route;
@@ -35,6 +35,7 @@ Use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
+use App\libs\Currency;
 use App\libs\EmailLib;
 use App\Models\V5\SubAuchouse;
 use App\libs\FormLib;
@@ -59,13 +60,15 @@ use App\Models\V5\FgOrtsec0;
 use App\Models\V5\Fx_Newsletter;
 use App\Providers\ToolsServiceProvider;
 use GuzzleHttp;
-
 use Illuminate\Http\Request as HttpRequest;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rules\Password;
 use App\libs\SeoLib;
+use App\Models\V5\FgCsub;
+use App\Models\V5\FgHces1;
+use Illuminate\Support\Arr;
+
 class UserController extends Controller
 {
 
@@ -1086,7 +1089,10 @@ class UserController extends Controller
 								}
 							}
 							else{
-								$addres->addDirEnvio($envio, $num, $name);
+								$usePrincipalAddress = $request->has('shipping_address');
+								if(Config::get('app.save_address_when_empty', true) || !$usePrincipalAddress){
+									$addres->addDirEnvio($envio, $num, $name);
+								}
 							}
 
                          }
@@ -2038,18 +2044,26 @@ class UserController extends Controller
 		}
         $sub = new Subasta();
         $sub->licit = Session::get('user.cod');
-        $subastas_active = $sub->auctionList ('S');
+
+		$subastas_active = $favorites
+			? $sub->getActiveAuctionsUserHasFavorites()
+		 	: $sub->getActiveAuctionsUserHasBids();
+
+		$auctionsAvailables = Arr::pluck($subastas_active, 'des_sub', 'cod_sub');
+
         $sub->page  = 'all';
         $sub->cod = null;
         $all_pujas = array();
 
+		$filters = [
+			'cods_sub' => request('cods_sub', []),
+		];
 
 		if(!empty(Config::get('app.lots_closed_inpanel'))){
-
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, true);
+			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, true, $filters);
 		}
 		else{
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, false, request()->has('contraofertas'));
+			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, false, $filters);
 		}
 
         foreach($all_pujas_temp as $temp_pujas){
@@ -2059,6 +2073,8 @@ class UserController extends Controller
             $sub->cod = $key_inf;
             $all_pujas[$key_inf]['inf']=$sub->getInfSubasta();
         }
+
+		$data['auctionsAvailables'] = $auctionsAvailables;
         $data['values'] = $all_pujas;
         $data['seo'] = new \stdClass();
 		$data['seo']->noindex_follow = true;
@@ -2265,7 +2281,7 @@ class UserController extends Controller
 
 
     # Actualizamos la información del perfil del usuario
-    public function updateClientInfo()
+    public function updateClientInfo(HttpRequest $request)
     {
 
 		//Textos por defecto o toUpper
@@ -2409,6 +2425,11 @@ class UserController extends Controller
                 $Update->email = Input::get('email');
             }
         }
+
+		if($request->has('avatar')) {
+			(new User)->storeAvatar($request->file('avatar'), $Update->cod_cli);
+		}
+
             //Administrador recibe un correo que este cliente quiere modificar su información
 
           $emailOptions = $email->processVars();
@@ -3043,31 +3064,7 @@ class UserController extends Controller
 			->orderBy('imp_asigl1', 'desc')
 			->orderBy('fec_asigl1', 'desc')->get();
 
-
-		$infoSales = [];
-		$facturas = [];
-		$subastasActivas = [];
-
-		//La información de las facturas solamente la utilizar tauler, por lo que encapsulo en un config
-		if(config('app.userpanel_sales_extends', false)){
-			$defaultMonthPeriod = 6;
-			$fgAsigl0 = new FgAsigl0();
-			$subastasActivas = $fgAsigl0->getActiveAuctionsWithPropietary($cod_cli, Session::get('user.admin'));
-			$infoSales = $fgAsigl0->getLotsInfoSales($subastasActivas->where('start', '>=', date("Y-m-d", strtotime("-$defaultMonthPeriod months")))->pluck('sub_asigl0')->toArray(), $cod_cli);
-
-			//toda la informacion. Facturas y lineas incluidas
-			//$facturas = (new FxDvc0())->getFacturasPropietario('$cod_cli')->groupBy('sub_hces1');
-
-			//cabeceras y lineas por separado
-			$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $defaultMonthPeriod);
-			$fgDvc1l = new FgDvc1l();
-			foreach ($facturasCabeceras as $key => $cabecera) {
-				$facturasCabeceras[$key]['linea'] = $fgDvc1l->getPrimeraLinea($cabecera->anum_dvc0, $cabecera->num_dvc0);
-			}
-			$facturas = $facturasCabeceras->keyBy('linea.sub_hces1');
-		}
-
-        foreach($lotes as $key => $lot){
+        foreach($lotes as $lot){
 
             //$pujas = $subasta->getPujas(null,$lot->sub_asigl0);
             $lot->pujas = $pujas->where('ref_asigl1', $lot->ref_asigl0)->where('sub_asigl1', $lot->cod_sub);
@@ -3083,10 +3080,154 @@ class UserController extends Controller
 			return [$item->cod_sub => $item];
 		});
 
-		$data = array('subastas' => $subastas, 'subastasActivas' => $subastasActivas, 'infoSales' => (object)$infoSales, 'facturas' => $facturas);
+		$data = array('subastas' => $subastas);
 
 		return view('front::pages.panel.sales', $data);
     }
+
+	public function getSalesToActiveAuctions(HttpRequest $request)
+	{
+		$user = new User();
+		$cod_cli = Session::get('user.cod');
+
+		if (config('app.permission_to_view_seller_panel', false)) {
+			$cliweb = FxCliWeb::where('cod_cliweb', $cod_cli)->whereNotNull('permission_id_cliweb')->first();
+			abort_if(!$cliweb, 404);
+		}
+
+		$auctions = $user->setCodCli($cod_cli)
+			->getSalesToNotFinishAuctions();
+
+		$summary = [
+			'total_lots' => $auctions->sum('total_lots'),
+			'total_award' => $auctions->sum('total_award'),
+			'total_impsalhces' => $auctions->sum('total_impsalhces'),
+			'total_bids_lots' => $auctions->sum('total_bids_lots'),
+			'total_imptas' => $auctions->sum('total_imptas'),
+		];
+
+		$summary['percentage_lots_with_bid'] = ($summary['total_bids_lots'] / max($summary['total_lots'], 1)) * 100;
+		$summary['revaluation'] = ($summary['total_award'] / max($summary['total_impsalhces'], 1)) * 100;
+
+		$lots = FgAsigl0::getActiveLotsSalesByOwnerQuery($auctions->pluck('sub_asigl0'), $cod_cli, true)
+			->orderby("sub_asigl0, ref_asigl0")
+			->get()
+			->groupBy('sub_asigl0');
+
+		$currency = new Currency();
+		$divisa = Session::get('user.currency', 'EUR');
+		$divisas = $currency->setDivisa($divisa)->getAllCurrencies();
+
+		$data = [
+			'auctions' => $auctions,
+			'lots' => $lots,
+			'summary' => $summary,
+			'currency' => $currency,
+			'divisa' => $divisa,
+			'divisas' => $divisas,
+		];
+
+		return view('front::pages.panel.sales', $data);
+	}
+
+	public function invoiceSalesOfFinishAuctions(HttpRequest $request)
+	{
+		$cod_cli = Session::get('user.cod');
+		$yearSelected = $request->input('years', [date('Y'), date('Y') - 1]);
+
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva(Config::get('app.emp'), date("Y-m-d"));
+		$tipo_iva = $paymentController->user_has_Iva(Config::get('app.gemp'), $cod_cli);
+
+		//Lotes sin factura
+		$lotsWithoutInvoice = FgAsigl0::getLotsAwardedWithoutInvoiceByOwnerQuery($cod_cli)
+			->addSelectLotDesctiptionsAttributes()
+			->orderBy('auc."end"', 'desc')
+			->whereYearsDates('auc."end"', $yearSelected)
+			->get()
+			->each(function ($item) use ($paymentController, $iva, $tipo_iva){
+				$item->imp_award = ($item->implic_hces1 * $item->ratio_hcesmt) / 100;
+				$item->imp_comision = ($item->imp_award * $item->comphces_asigl0) / 100;
+				$item->imp_tax = $paymentController->calculate_iva($tipo_iva->tipo, $iva, $item->imp_comision);
+				$item->imp_liquidacion = $item->imp_award - $item->imp_comision - $item->imp_tax;
+			});
+
+		$auctionsWithoutInvoice = $lotsWithoutInvoice->groupBy('sub_asigl0');
+		$activeAuctions = $auctionsWithoutInvoice->keys()->all();
+
+		$auctionsResults = FgAsigl0::getAuctionsResultsByOwnerQuery($activeAuctions, $cod_cli)
+			->get()
+			->each(function ($item) use ($lotsWithoutInvoice) {
+				$item->total_liquidation = $lotsWithoutInvoice->where('sub_asigl0', $item->sub_asigl0)->sum('imp_liquidacion');
+			});
+
+		//Facturas
+		$owerInvoicesLots = FxDvc0::getInvoicesByOwnerQuery($cod_cli)
+			->addSelectLotDesctiptionsAttributes()
+			->whereYearsDates($yearSelected)
+			->orderBy('fecha_dvc0', 'desc')
+			->get();
+
+		$invoiceAuctions = $owerInvoicesLots->pluck('sub_asigl0')->unique()->all();
+		$ownerInvoices = $owerInvoicesLots->groupBy(fn ($item) => "$item->anum_dvc0-$item->num_dvc0");
+		$invoiceResults = FgAsigl0::getAuctionsResultsByOwnerQuery($invoiceAuctions, $cod_cli)
+			->get()
+			->each(function ($item) use ($owerInvoicesLots) {
+				$invoiceLots = $owerInvoicesLots->where('sub_asigl0', $item->sub_asigl0);
+
+				//TODO: Esta operación se puede realizar fuera del bucle,
+				//y realizar el where sub sobre este resultado.
+				$distinctInvoices = $invoiceLots->unique(fn($item) => $item['anum_dvc0'].$item['num_dvc0']);
+
+				$totalDvc0 = $distinctInvoices->sum('total_dvc0');
+				$item->total_liquidation = $item->total_award - $totalDvc0;
+			});
+
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, FxDvc0::TIPO_PROPIETARIO);
+
+		$data = [
+			'auctionsWithoutInvoice' => $auctionsWithoutInvoice,
+			'ownerInvoices' => $ownerInvoices,
+			'auctionsResults' => $auctionsResults->concat($invoiceResults),
+			'invoicesYearsAvailables' => $invoicesYearsAvailables,
+			'yearSelected' => $yearSelected
+		];
+
+		return view('front::pages.panel.sales_finish', $data);
+	}
+
+	public function getLotsSalesPendingToBeAssign(HttpRequest $request)
+	{
+		$cod_cli = Session::get('user.cod');
+		$sheetsSelected = $request->input('sheets', []);
+
+		$lotsQuery = FgHces1::query()
+			->whereOwner($cod_cli, false)
+			->notInAuction()
+			->isVisibleWeb()
+			->isNotReturnedOrWithdrawn();
+
+		$numsHces = $lotsQuery->clone()
+			->select('num_hces1')
+			->distinct()
+			->pluck('num_hces1');
+
+		$lots = $lotsQuery->clone()
+			->select('num_hces1', 'lin_hces1', 'impsal_hces1', 'imptas_hces1')
+			->addSelectTranslationsAttributes()
+			->when($sheetsSelected, fn ($query, $sheetsSelected) => $query->whereIn('num_hces1', $sheetsSelected))
+			->orderBy('num_hces1')
+			->orderBy('lin_hces1')
+			->get();
+
+		$data = [
+			'lots' => $lots,
+			'numsHces' => $numsHces,
+			'sheetsSelected' => $sheetsSelected
+		];
+
+		return view('front::pages.panel.sales_pending', $data);
+	}
 
 	public function getFacturasPropietarioLineas()
 	{
@@ -3660,6 +3801,7 @@ class UserController extends Controller
         return $value;
 
     }
+
     // Saber si existe pdf de factruas
     public function bills($afral,$nfral,$exist_file = false){
         $user = new User();
@@ -4075,6 +4217,10 @@ class UserController extends Controller
     }
 
     //Facturas del cliente
+	/**
+	 * @deprecated 04/2024
+	 * No lo esta usando nadie.
+	 */
      public function myBills(){
          if(!Session::has('user')){
             $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
@@ -4190,6 +4336,14 @@ class UserController extends Controller
 
     }
 
+	/**
+	 * @deprecated - Substituido por el metodo getInvoiceOverviewView
+	 * Mantener durante las pruebas por si surje alguna diferencia o duda.
+	 *
+	 * Pagina para gestionar adjudicaciones y facturas desde un solo lugar
+	 * Por el momento (04/2024) solamente lo utiliza Tauler.
+	 * @return \Illuminate\View\View
+	 */
 	public function getAllAllotmentsAndBills()
 	{
 		$seo = new \Stdclass();
@@ -4215,9 +4369,22 @@ class UserController extends Controller
         $addres->cod_cli = $user->cod_cli;
         $envio = $addres->getUserShippingAddress();
 
+		//payments data
+		/**
+		 * @todo La siguiente sección no tiene sentido que sea un controlador.
+		 * Por no modificar en exceso el código, se ha dejado así.
+		 * Pero en cuanto se pueda se debería modificar a un servicio o modelo.
+		 */
+		$emp = Config::get('app.emp');
+		$gemp = Config::get('app.gemp');
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva($emp, date("Y-m-d"));
+        $tipo_iva = $paymentController->user_has_Iva($gemp, $user->cod_cli);
+		$paymentController->setIva($iva)->setTipoIva($tipo_iva)->setUser($user);
+
 		//allotments
-		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio);
-		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio);
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $paymentController);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $paymentController);
 
 		//bills
 		//Las facturas pagadas contienen los mismos lotes que las adjudicaciones pagadas,
@@ -4226,11 +4393,11 @@ class UserController extends Controller
 
 		//extraer variables para acomodar datos
 		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
-		['adjudicaciones' => $pendingAllotments, 'js_item' => $allotmetsForJs] = $pendingAllotmentsData;
+		['adjudicaciones' => $pendingAllotments] = $pendingAllotmentsData;
 		['adjudicaciones_pag' => $payedAllotments] = $payedAllotmentsData;
 
 		//billsForJs solo sería necesario si permitimos checkear las facturas
-		['pending' => $pendingBills, 'js_item' => $billsForJs] = $pendingBillsData;
+		['pending' => $pendingBills] = $pendingBillsData;
 
 		//agrupaciones por subasta
 		$auctionsIdsPending = $pendingAllotments->pluck('sub_csub')->merge($pendingBills->where('tipo_tv', 'L')->pluck('cod_sub'));
@@ -4260,21 +4427,137 @@ class UserController extends Controller
 			'envio' => $envio,
 			'currency' => (new Subasta())->getCurrency(),
 			'payedForAuctions' => $payedForAuctions,
-			'pendingForAuctions' => $pendingForAuctions,
-			'allotmetsForJs' => $allotmetsForJs,
+			'pendingForAuctions' => $pendingForAuctions
 		];
 
 		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
 	}
 
-	private function getPayedAllotmentsData($user, $envio)
+	public function getInvoiceOverviewView(HttpRequest $request)
 	{
-		$emp = config('app.emp');
-		$gemp = config('app.gemp');
+		$emp = Config::get('app.emp');
+		$gemp = Config::get('app.gemp');
+		$seo = new \Stdclass();
+		$seo->noindex_follow = true;
 
-		$pago_controller = new PaymentsController();
+		if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data['data'] = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+			$data['seo'] = $seo;
+            return View::make('front::pages.not-logged', $data);
+        }
 
-        $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S');
+		$cod_cli = session('user.cod');
+		$yearsSelected = $request->input('years', [date('Y'), date('Y') - 1]);
+
+		$datesIntervals = array_map(function($year){
+			return [
+				$year . '-01-01',
+				$year . '-12-31'
+			];
+		}, $yearsSelected);
+
+		//user data
+		$userModel = User::factory()
+			->setCodCli($cod_cli)
+			->setItemsPerPage('all');
+
+		$user =	$userModel->getUser();
+
+		$addres = new Address();
+        $addres->cod_cli = $user->cod_cli;
+        $envio = $addres->getUserShippingAddress();
+
+		//payments data
+		/**
+		 * @todo La siguiente sección no tiene sentido que sea un controlador.
+		 * Por no modificar en exceso el código, se ha dejado así.
+		 * Pero en cuanto se pueda se debería modificar a un servicio o modelo.
+		 */
+		$paymentController = new PaymentsController();
+		$iva = $paymentController->getIva($emp, date("Y-m-d"));
+        $tipo_iva = $paymentController->user_has_Iva($gemp, $user->cod_cli);
+		$paymentController->setIva($iva)->setTipoIva($tipo_iva)->setUser($user);
+
+		//allotments
+		$pendingAllotmentsData = $this->getPendingAllotmentsData($user, $envio, $paymentController, $datesIntervals);
+		$payedAllotmentsData = $this->getPayedAllotmentsData($user, $envio, $paymentController, $datesIntervals);
+
+		//bills
+		$pendingBillsData = $this->getPendingBillsData($user, $datesIntervals);
+		$payedBillsData =  $this->getPayedBillsData($user, $datesIntervals);
+
+		//extraer variables para acomodar datos
+		//esto no se hace dentro de los metodos anteriores para mantener compativilidad con metodos antiguos
+		['adjudicaciones' => $pendingAllotments] = $pendingAllotmentsData;
+		['adjudicaciones_pag' => $payedAllotments] = $payedAllotmentsData;
+
+		['pending' => $pendingBills] = $pendingBillsData;
+		['bills' => $billsPayeds] = $payedBillsData;
+
+		$billsIds = $billsPayeds->map(function($item) {
+			return [
+				'afra' => $item->afra_cobro1,
+				'nfra' => $item->nfra_cobro1
+			];
+		});
+
+		$billsPayedFollowUps = FxDvc0Seg::getFollowUpByBills($billsIds);
+		$billsPayeds->each(function($item) use ($billsPayedFollowUps) {
+			$followUp = $billsPayedFollowUps->where('anum_dvc0seg', $item->afra_cobro1)
+				->where('num_dvc0seg', $item->nfra_cobro1)
+				->first();
+
+			$item->followUp = $followUp;
+		});
+
+		$profomaInvoicesPendings = $pendingAllotments->groupBy(function($item) {
+			if(empty($item->apre_csub) || empty($item->npre_csub)) {
+				return $item->sub_csub;
+			}
+			return "$item->apre_csub-$item->npre_csub";
+		});
+
+		//prefacturas pagadas pero aún no facturadas
+		$profomaInvoicesPayeds = $payedAllotments->where('fac_csub', '!=', 'S')->groupBy(function($item) {
+			return "$item->apre_csub-$item->npre_csub";
+		});
+
+		//Las facturas tipo T (de texto) no se están mostrando.
+		//En caso de necesitarlas clonar el pendingBills y obtener solo las de tipo T
+		//ya que los campos obtenidos son distintos
+		$billsPending = $pendingBills->where('tipo_tv', 'L');
+
+		$invoicesYearsAvailables = FxDvc0::getInvoicesYearsAvailables($cod_cli, 'L');
+		$profomaYearsAvailables = FgCsub::getYearsToAllAwardsAvailables($cod_cli);
+		$yearsAvailables = $invoicesYearsAvailables->merge($profomaYearsAvailables)->unique()->sortDesc();
+
+		$data = [
+            'user' => $user,
+			'seo' => $seo,
+			'envio' => $envio,
+			'profomaInvoicesPendings' => $profomaInvoicesPendings,
+			'profomaInvoicesPayeds' => $profomaInvoicesPayeds,
+			'billsPending' => $billsPending,
+			'billsPayeds' => $billsPayeds,
+			'yearsAvailables' => $yearsAvailables,
+			'yearsSelected' => $yearsSelected,
+			'isAjax' => $request->ajax(),
+		];
+
+		//if is ajax request return only the data
+		if($request->ajax()){
+			return view('front::pages.panel.summary.allotments_block', ['data' => $data])->render();
+		}
+
+		return view('front::pages.panel.adjudicaciones_facturas', ['data' => $data]);
+	}
+
+	private function getPayedAllotmentsData($user, $envio, $paymentController, $datesIntervals = [])
+	{
+        $adjudicaciones_pag = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('S', null, null, $datesIntervals);
+
+		$bills = $this->getUniqueBills($adjudicaciones_pag);
 
 		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
 		$referencesByAction = $adjudicaciones_pag->groupBy('sub_csub')
@@ -4284,43 +4567,35 @@ class UserController extends Controller
 
 		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
 
-		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
-        $tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
-
-		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
+		$adjudicaciones_pag = collect($adjudicaciones_pag)->map(function($adjudicacion) use ($user, $envio, $paymentController, $gastosExtra, $bills) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $paymentController, $gastosExtra, $bills);
 		});
 
 		return [
 			'adjudicaciones_pag' => $adjudicaciones_pag,
 			#al pasar le valor 1 devolvera el iva que hay que aplicar, por ejemplo 0,21
-			'ivaAplicable' => $pago_controller->calculate_iva($tipo_iva->tipo, $iva, 1),
+			'ivaAplicable' => $paymentController->calculate_iva($paymentController->tipo_iva->tipo, $paymentController->iva, 1),
 		];
 	}
 
-	private function getPendingAllotmentsData($user, $envio)
+	private function getPendingAllotmentsData($user, $envio, $paymentController, $datesIntervals = [])
 	{
-		$emp = config('app.emp');
-		$gemp = config('app.gemp');
-
 		$subasta = new Subasta();
 		$parametrosSub = $subasta->getParametersSub();
 
-		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N');
-		$pago_controller = new PaymentsController();
-
-		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
-		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user->cod_cli);
+		$adjudicaciones_pendientes = User::factory()->setCodCli($user->cod_cli)->getAdjudicacionesPagar('N', null, null, $datesIntervals);
 
 		//Con este bloque, logramos eliminar la consulta dentro del for de adjudicaciones
 		$referencesByAction = $adjudicaciones_pendientes->groupBy('sub_csub')
 			->map(function($adjudicaciones){
 				return $adjudicaciones->pluck('ref_asigl0');
 			});
-		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
 
-		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $iva, $tipo_iva, $gastosExtra) {
-			return $this->allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastosExtra);
+		$gastosExtra = (new Payments())->getGastosExtra($referencesByAction, 'C');
+		$bills = $this->getUniqueBills($adjudicaciones_pendientes);
+
+		$adjudicaciones_temporales = collect($adjudicaciones_pendientes)->map(function ($adjudicacion) use ($user, $envio, $paymentController, $gastosExtra, $bills) {
+			return $this->allotmentFormat($adjudicacion, $user, $envio, $paymentController, $gastosExtra, $bills);
 		});
 
 		$adjudicaciones = $adjudicaciones_temporales->where('estado_csub0', '!=', 'T');
@@ -4335,22 +4610,39 @@ class UserController extends Controller
 		];
 	}
 
-	private function allotmentFormat($adjudicacion, $user, $envio, $iva, $tipo_iva, $gastos)
+	private function getUniqueBills($adjudicaciones)
+	{
+		$bills = collect();
+		foreach ($adjudicaciones as $adjudicacion) {
+
+			if($bills->where('afral_csub', $adjudicacion->afral_csub)->where('nfral_csub')->isNotEmpty()){
+				continue;
+			}
+
+			$bills->push([
+				'afral_csub' => $adjudicacion->afral_csub,
+				'nfral_csub' => $adjudicacion->nfral_csub,
+				'file' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub, true)
+			]);
+		}
+		return $bills;
+	}
+
+	private function allotmentFormat($adjudicacion, $user, $envio, PaymentsController $paymentController, $gastos, $bills)
 	{
 		$subastaClass = new Subasta();
-		$pagoController = new PaymentsController();
 
-		$withNotIva = \Config::get("app.noIVAOnlineAuction") && $adjudicacion->tipo_sub == 'O';
+		$withNotIva = Config::get("app.noIVAOnlineAuction") && $adjudicacion->tipo_sub == 'O';
 
 		$adjudicacionFormat = (object) array_merge(get_object_vars($adjudicacion), [
-			'formatted_imp_asigl1' => \Tools::moneyFormat($adjudicacion->himp_csub),
+			'formatted_imp_asigl1' => ToolsServiceProvider::moneyFormat($adjudicacion->himp_csub),
 			'imagen' => $subastaClass->getLoteImg($adjudicacion),
-			'date' => \Tools::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
+			'date' => ToolsServiceProvider::euroDate($adjudicacion->fec_asigl1, $adjudicacion->hora_asigl1),
 			'imp_asigl1' => $adjudicacion->himp_csub,
-			'base_csub_iva' => $withNotIva ? 0 : $pagoController->calculate_iva($tipo_iva->tipo, $iva, $adjudicacion->base_csub),
+			'base_csub_iva' => $withNotIva ? 0 : $paymentController->calculate_iva($paymentController->tipo_iva->tipo, $paymentController->iva, $adjudicacion->base_csub),
 			//'extras' => (new Payments())->getGastosExtrasLot($adjudicacion->sub_csub,$adjudicacion->ref_csub, $tipo = null, 'C'),
 			'extras' => $gastos->where('sub_asigl2', $adjudicacion->sub_csub)->where('ref_asigl2', $adjudicacion->ref_asigl0),
-            'factura' => $this->bills($adjudicacion->afral_csub, $adjudicacion->nfral_csub, true),
+            'factura' => $bills->where('afral_csub', $adjudicacion->afral_csub)->where('nfral_csub')->first()->file ?? null,
             //'pending_fact' => (new Facturas())->pending_bills(false), //no le he encontrado sentido
 			'days_extras_alm' => $this->days_extras_almacen($adjudicacion->fecha_csub),
 			'prefactura' => $this->proformaInvoiceFile($adjudicacion->sub_csub, true),
@@ -4359,40 +4651,52 @@ class UserController extends Controller
 		]);
 
 		//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
-		//03/11/2021 - Eloy
-		$exportacion = $subastaClass->hasExportLicense($adjudicacion->num_hces1, $adjudicacion->lin_hces1);
-
 		$adjudicacionFormat->licencia_exportacion = 0;
-		if($exportacion){
+		if($adjudicacion->exportacion != 'N'){
 			$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
-			$adjudicacionFormat->licencia_exportacion = $pagoController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
+			$adjudicacionFormat->licencia_exportacion = $paymentController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
 		}
+
+		$adjudicacionFormat->imp_invoice = $adjudicacion->himp_csub + $adjudicacion->base_csub + $adjudicacionFormat->base_csub_iva;
+		$adjudicacionFormat->imp_envio = $paymentController->gastosEnvio($adjudicacionFormat->imp_invoice);
+		$adjudicacionFormat->total_imp_invoice = $adjudicacionFormat->imp_invoice + $adjudicacionFormat->imp_envio['imp'] + $adjudicacionFormat->imp_envio['iva'] + $adjudicacionFormat->licencia_exportacion;
 
 		return $adjudicacionFormat;
 	}
 
-	private function getPendingBillsData($user)
+	private function getPendingBillsData($user, $datesIntervals = [])
 	{
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-        $pendientes = $facturas->pending_bills();
-		$inf_fact = array();
-        $tipo_tv = array();
-        $js_fact = array();
+        $pendientes = $facturas->pending_bills(true, 'L', $datesIntervals);
+
+		$sheets = $pendientes->map(function($item) {
+			return [
+				'serie' => $item->anum_pcob,
+				'line' => $item->num_pcob
+			];
+		})->toArray();
+
+		$billFiles = $facturas->getBillsFilesFromMultipleSheets($sheets);
+		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
+
+		$inf_fact = [];
+        $tipo_tv = [];
+        $js_fact = [];
 
 		foreach($pendientes as $val_pendiente){
 
 			$facturas->serie = $val_pendiente->anum_pcob;
 			$facturas->numero = $val_pendiente->num_pcob;
-			$fact_temp = $this->bills($val_pendiente->anum_pcob,$val_pendiente->num_pcob,true);
+
+			$fact_temp = $billFiles->where('anum_dvc02', $val_pendiente->anum_pcob)->where('num_dvc02', $val_pendiente->num_pcob)->first();
 
 			$val_pendiente->date = $fact_temp['date'] ?? null;
 			$val_pendiente->factura = $fact_temp['filname'] ?? null;
 
 			//buscamos si la factura esta generada
-			$tipo_fact = $facturas->bill_text_sub(substr($facturas->serie, 0, 1), substr($facturas->serie, 1));
-			$tipo_tv_contav = $tipo_fact->tv_contav;
+			$tipo_tv_contav = $val_pendiente->tv_contav;
 			$val_pendiente->tipo_tv = $tipo_tv_contav;
 			$totalPrice = 0;
 
@@ -4403,31 +4707,30 @@ class UserController extends Controller
 				$inf_fact['T'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturaTexto;
 				$val_pendiente->inf_fact = ['T'];
 				$val_pendiente->inf_fact['T'] = $facturaTexto;
-				/* Las facturas de texto no tienen código de subasta
-				if(!empty($val_pendiente->inf_fact['T'])){
-					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['T'])->where('sub_dvc1l', '!=', 'null')->first()->sub_dvc1l;
-				}
-				*/
+
 				foreach ($facturaTexto as $factura) {
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}
 
 			}elseif($tipo_tv_contav == 'L' || $tipo_tv_contav == 'P'){
 
-				$facutraSubasta = $facturas->getFactSubasta();
-				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facutraSubasta;
-				$val_pendiente->inf_fact['S'] = $facutraSubasta;
+				//$facutraSubasta = $facturas->getFactSubasta();
+				$facturasSubasta = $facturasSubastas->where('anum_dvc1l', $val_pendiente->anum_pcob)->where('num_dvc1l', $val_pendiente->num_pcob);//->values()->all();
+				$inf_fact['S'][$val_pendiente->anum_pcob][$val_pendiente->num_pcob] = $facturasSubasta;
+
+				$val_pendiente->inf_fact['S'] = $facturasSubasta->where('tl_dvc1l', 'P')->values()->all();
 				if(!empty($val_pendiente->inf_fact['S'])){
-					$val_pendiente->cod_sub = collect($val_pendiente->inf_fact['S'])->where('sub_dvc1l', '!=', null)->first()->sub_dvc1l;
+					$val_pendiente->cod_sub = $facturasSubasta->first()->sub_dvc1l ?? null;;
 				}
 
-				foreach ($facutraSubasta as $factura) {
+				foreach ($facturasSubasta as $factura) {
 					if($tipo_tv_contav === 'P'){
 						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
 					}
 					//=== L
 					else {
-						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+						$linePrice = $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
+						$totalPrice += $linePrice;
 					}
 				}
 			}
@@ -4448,19 +4751,29 @@ class UserController extends Controller
 		];
 	}
 
-	private function getPayedBillsData($user)
+	private function getPayedBillsData($user, $datesIntervals = [])
 	{
 		$facturas = new Facturas();
 		$facturas->cod_cli = $user->cod_cli;
 
-		$pagado = $facturas->paid_bill();
+		$pagado = $facturas->paid_bill(false, 'L', $datesIntervals, true);
         $inf_fact_pag = array();
         $tipo_tv_pag = array();
 		$totalPrice = 0;
 
+		$sheets = $pagado->map(function($item) {
+			return [
+				'serie' => $item->afra_cobro1,
+				'line' => $item->nfra_cobro1
+			];
+		})->toArray();
+
+		$billFiles = $facturas->getBillsFilesFromMultipleSheets($sheets);
+		$facturasSubastas = $facturas->getFacturaLotsByMultipleSheets($sheets);
+
 		foreach($pagado as $fact_pag){
 
-			$fact_temp = $this->bills($fact_pag->afra_cobro1,$fact_pag->nfra_cobro1,true);
+			$fact_temp = $billFiles->where('anum_dvc02', $fact_pag->afra_cobro1)->where('num_dvc02', $fact_pag->nfra_cobro1)->first();
 			$fact_pag->date = $fact_temp['date'] ?? null;
 			$fact_pag->factura = $fact_temp['filname'] ?? null;
 			$facturas->serie = $fact_pag->afra_cobro1;
@@ -4479,29 +4792,22 @@ class UserController extends Controller
 					$totalPrice += $factura->total_dvc1 + round(($factura->total_dvc1 * $factura->iva_dvc1) / 100, 2);
 				}
 
+			} elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
 
-			}elseif($fact_pag->tv_contav == 'L' || $fact_pag->tv_contav == 'P'){
+				//$facturasSubasta = $facturas->getFactSubasta();
+				$facturasSubasta = $facturasSubastas->where('anum_dvc1l', $fact_pag->afra_cobro1)->where('num_dvc1l', $fact_pag->nfra_cobro1);//->values()->all();
 
-				$facturasSubasta = $facturas->getFactSubasta();
 				//Puede existir mas de una subasta en cada factura, pero ahora mismo solamente necesito la primera. (Eloy)
-				$fact_pag->cod_sub = (count($facturasSubasta) > 0) ? $facturasSubasta[0]->sub_dvc1l : null;
-				$inf_fact_pag['S'][$facturas->serie][$facturas->numero] = $facturasSubasta;
+				$fact_pag->cod_sub = $facturasSubasta->first()->sub_dvc1l ?? null;
 
-				foreach ($facturasSubasta as $factura) {
-					if($fact_pag->tv_contav == 'P'){
-						$totalPrice += (round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2) + $factura->basea_dvc1l) - $factura->padj_dvc1l;
-					}
-					//=== L
-					else {
-						$totalPrice += $factura->padj_dvc1l + $factura->basea_dvc1l + round(($factura->basea_dvc1l * $factura->iva_dvc1l) / 100, 2);
-					}
-				}
+				$inf_fact_pag['S'][$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $facturasSubasta->values()->all();
 
+
+				$fact_pag->inf_fact['S'] = $facturasSubasta->where('tl_dvc1l', 'P')->values()->all();
 			}
 
-			$fact_pag->total_price = $totalPrice;
 			//Generamos un array con el tipo de factura que es, nos sirve en la blade para los calculos
-			$tipo_tv_pag[$facturas->serie][$facturas->numero] = $fact_pag->tv_contav;
+			$tipo_tv_pag[$fact_pag->afra_cobro1][$fact_pag->nfra_cobro1] = $fact_pag->tv_contav;
 		}
 
         return [
@@ -4622,56 +4928,90 @@ class UserController extends Controller
 	}
 
 
-	public function getAdjudicacionesPendientePagoBySub()
+	public function getAdjudicacionesPendientePagoBySub($lang, $cod_sub)
     {
-        $subasta = new Subasta();
-        $parametrosSub= $subasta->getParametersSub();
-        if(!Session::has('user')){
+		if(!Session::has('user')){
             $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
-            $data = trans_choice(\Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+            $data = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
             return View::make('front::pages.not-logged', array('data' => $data));
         }
-
-        $emp  = Config::get('app.emp');
-        $gemp  = Config::get('app.gemp');
-        # Lista de códigos de licitacion del usuario en sesion
 
         $User = new User();
         $User->cod_cli = Session::get('user.cod');
         $User->itemsPerPage = 'all';
 
-        $adjudicaciones = $User->getAdjudicacionesPagar('N', request('cod_sub'));
+        $adjudicaciones = $User->getAdjudicacionesPagar('N', $cod_sub);
 
 		if($adjudicaciones->count() == 0){
 			return view('errors.404');
 		}
 
-		$user_cli=$User->getUser($User->cod_cli);
+		$data = $this->getAdjudicacionesPendiente($User, $adjudicaciones);
 
-        $pago_controller = new PaymentsController();
-        $pago_modelo = new Payments();
+        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', ['data' => $data]);
+	}
 
-        $user_cod = $User->cod_cli;
+	public function getAdjudicacionesPendientePagoByProforma(HttpRequest $request, $lang, $apre, $npre)
+    {
+        if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+            return View::make('front::pages.not-logged', array('data' => $data));
+        }
 
-        $addres = new Address();
-        $addres->cod_cli = $User->cod_cli;
-        $envio = $addres->getUserShippingAddress();
+        $User = new User();
+        $User->cod_cli = Session::get('user.cod');
+        $User->itemsPerPage = 'all';
 
-        $iva = $pago_controller->getIva($emp,date ("Y-m-d"));
-		$tipo_iva = $pago_controller->user_has_Iva($gemp,$user_cod);
+		$criteria = [
+			'apre_csub' => $apre,
+			'npre_csub' => $npre,
+		];
+
+        $adjudicaciones = $User->getAdjudicacionesPagar('N', null, $criteria);
+
+		if($adjudicaciones->count() == 0){
+			return view('errors.404');
+		}
+
+		$data = $this->getAdjudicacionesPendiente($User, $adjudicaciones);
+
+        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', ['data' => $data]);
+	}
+
+	private function getAdjudicacionesPendiente($User, $adjudicaciones)
+	{
+		$emp  = Config::get('app.emp');
+		$gemp  = Config::get('app.gemp');
+		$subasta = new Subasta();
+		$parametrosSub = $subasta->getParametersSub();
+
+		$user_cli = $User->getUser($User->cod_cli);
+
+		$pago_controller = new PaymentsController();
+		//$pago_modelo = new Payments();
+
+		$user_cod = $User->cod_cli;
+
+		$addres = new Address();
+		$addres->cod_cli = $User->cod_cli;
+		$envio = $addres->getUserShippingAddress();
+
+		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
+		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user_cod);
 
 		/**
 		 * Aunque solamente tenga una adjudicación, algunos metodos que la reciben esperan un array
 		 * por lo que no se puede convertir en un objecto individual
 		 * */
-        foreach($adjudicaciones as $adj){
-            $adj->formatted_imp_asigl1 = \Tools::moneyFormat($adj->himp_csub);
-            $adj->imagen = $subasta->getLoteImg($adj);
-            $adj->date = \Tools::euroDate($adj->fec_asigl1, $adj->hora_asigl1 );
-            $adj->imp_asigl1 = $adj->himp_csub;
-            $adj->base_csub_iva = $pago_controller->calculate_iva($tipo_iva->tipo,$iva,$adj->base_csub);
-            //Modificamos ref_asigl0 de . a _ porque si hay punto el js de calclulo de pagar no calcula bien
-            $adj->ref_asigl0 = str_replace('.','_',$adj->ref_asigl0);
+		foreach ($adjudicaciones as $adj) {
+			$adj->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($adj->himp_csub);
+			$adj->imagen = $subasta->getLoteImg($adj);
+			$adj->date = ToolsServiceProvider::euroDate($adj->fec_asigl1, $adj->hora_asigl1);
+			$adj->imp_asigl1 = $adj->himp_csub;
+			$adj->base_csub_iva = $pago_controller->calculate_iva($tipo_iva->tipo, $iva, $adj->base_csub);
+			//Modificamos ref_asigl0 de . a _ porque si hay punto el js de calclulo de pagar no calcula bien
+			$adj->ref_asigl0 = str_replace('.', '_', $adj->ref_asigl0);
 			$adj->days_extras_alm = $this->days_extras_almacen($adj->fecha_csub);
 
 			//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
@@ -4679,15 +5019,13 @@ class UserController extends Controller
 			$exportacion = $subasta->hasExportLicense($adj->num_hces1, $adj->lin_hces1);
 
 			$adj->licencia_exportacion = 0;
-			if($exportacion){
+			if ($exportacion) {
 				$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
 				$adj->licencia_exportacion = $pago_controller->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user_cli->codpais_cli, $adj->himp_csub);
 			}
-
-
 		}
-        //Podemos saber que iva va a tener el cliente
-        $user_cli->iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo,$iva);
+		//Podemos saber que iva va a tener el cliente
+		$user_cli->iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo, $iva);
 
 		//paises
 		$countries = FsPaises::select('cod_paises', 'des_paises')->JoinLangPaises()->orderby("des_paises")->pluck('des_paises', 'cod_paises');
@@ -4697,18 +5035,15 @@ class UserController extends Controller
 		 * @todo pendiente
 		 */
 
-        $sub = new Subasta();
-        $data = array(
-                    'adjudicaciones' => $adjudicaciones,
-                    'currency'       => $sub->getCurrency(),
-                    'envio'    =>$envio,
-                    'user'  => $user_cli,
-                    'js_item'=>$this->generatePreciosLotAdj($adjudicaciones),
-					'price_exportacion' => floatval($parametrosSub->licexp_prmsub),
-					'countries' => $countries
-				);
-
-        return View::make('front::pages.panel.adjudicaciones_subasta_pagar', array('data' => $data));
+		return [
+			'adjudicaciones' => $adjudicaciones,
+			'currency'       => $subasta->getCurrency(),
+			'envio'    => $envio,
+			'user'  => $user_cli,
+			'js_item' => $this->generatePreciosLotAdj($adjudicaciones),
+			'price_exportacion' => floatval($parametrosSub->licexp_prmsub),
+			'countries' => $countries
+		];
 	}
 
 	public function updateWallet(HttpRequest $request)
@@ -4978,7 +5313,6 @@ class UserController extends Controller
 	  }
 
 	#endregion
-
 
 	/**
 	 * Valor por defecto para blockpuj_cli.

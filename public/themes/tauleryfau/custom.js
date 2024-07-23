@@ -1,5 +1,3 @@
-
-
 window.onscroll =
 	function () {
 		if ($('.online-time-foot').length > 0) {
@@ -10,11 +8,11 @@ window.onscroll =
 
 $(function () {
 
-	$("input[name=shipping]").on("change", function(){
+	$("input[name=shipping]").on("change", function () {
 		reload_carrito();
 	})
 
-	$("input[name=clidd]").on("change", function(){
+	$("input[name=clidd]").on("change", function () {
 		reload_carrito();
 	})
 
@@ -248,7 +246,7 @@ $(function () {
 	$('.menu .nav ul li a').click(function (e) {
 		e.preventDefault();
 
-		if(this.dataset.target){
+		if (this.dataset.target) {
 			return;
 		}
 
@@ -322,11 +320,11 @@ $(function () {
 		location.href = url;
 	});
 
-	if( $('.switcher').length ) {
+	if ($('.switcher').length) {
 		const showFilterString = JSON.parse(sessionStorage.getItem('showFilter'));
 		const switcherIsVisible = document.querySelector('.switcher')?.offsetWidth;
 
-		if(showFilterString && switcherIsVisible) {
+		if (showFilterString && switcherIsVisible) {
 			$('.switcher').trigger('click');
 		}
 	}
@@ -554,9 +552,9 @@ $(function () {
 	});
 
 	/**
-     * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
-     * actualmente no utilizamos en la vista.
-     */
+	 * Cambiado ya que con el nuevo controlador se obliga a rellenar ciertos campos que
+	 * actualmente no utilizamos en la vista.
+	 */
 	$('#newsletter-btn').on('click', newsletterSuscription);
 	$('#newsletterForm').on('submit', newsletterFormSuscription);
 
@@ -609,11 +607,16 @@ $(function () {
 			var $this = $(this);
 
 			$('button', $this).attr('disabled', 'disabled');
+
+			const formData = new FormData(this);
+
 			// Datos correctos enviamos ajax
 			$.ajax({
 				type: "POST",
 				url: '/api-ajax/client/update',
-				data: $('#frmUpdateUserInfoADV').serialize(),
+				data: formData,
+				contentType: false,
+				processData: false,
 				beforeSend: function () {
 					$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
 				},
@@ -999,7 +1002,7 @@ $(function () {
 	});
 
 	//funcion para cerrar el video
-	$('#modalVideo').on('hide.bs.modal', function(e) {
+	$('#modalVideo').on('hide.bs.modal', function (e) {
 		let video = document.getElementById('elvideo');
 		video.pause();
 		video.currentTime = 0;
@@ -1009,7 +1012,7 @@ $(function () {
 		event.preventDefault();
 
 		const reference = $("[name=reference]").val();
-		if(!reference){
+		if (!reference) {
 			return;
 		}
 
@@ -1019,17 +1022,17 @@ $(function () {
 	})
 
 	$('#admin_settings_box').on('click', '.desplegable', function () {
-        if ($('#admin_settings_box').hasClass('opened_box')) {
-            $('#admin_settings_box').removeClass('opened_box');
-            $('[data-id="left"]', this).addClass('hidden');
-            $('[data-id="right"]', this).removeClass('hidden');
-        } else {
+		if ($('#admin_settings_box').hasClass('opened_box')) {
+			$('#admin_settings_box').removeClass('opened_box');
+			$('[data-id="left"]', this).addClass('hidden');
+			$('[data-id="right"]', this).removeClass('hidden');
+		} else {
 			$('#admin_settings_box').addClass('opened_box');
-            $('[data-id="right"]', this).addClass('hidden');
-            $('[data-id="left"]', this).removeClass('hidden');
+			$('[data-id="right"]', this).addClass('hidden');
+			$('[data-id="left"]', this).removeClass('hidden');
 
-        }
-    });
+		}
+	});
 
 });
 
@@ -1041,7 +1044,7 @@ function payFactura(event) {
 	const showErrorMessage = () => {
 		$("#modalMensaje #insert_msg").html('');
 		$("#modalMensaje #insert_msg").html(messages.error.generic);
-		$.magnificPopup.open({items: {src: '#modalMensaje'},type: 'inline'}, 0);
+		$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
 	}
 
 	const form = event.target;
@@ -1061,23 +1064,23 @@ function payFactura(event) {
 }
 
 
-function modalVideo(video, ref, codSub, title, description, textButton, url){
+function modalVideo(video, ref, codSub, title, description, textButton, url) {
 	addReproduccion(video, ref, codSub);
 	$("#insert_msgweb").html('');
 	$("#insert_msg_title").html('');
 	let h3 = $('<h3>').html(title);
 	let p = $('<p>').html(description);
 	$("#insert_msg_title").append(h3, p);
-	$("#insert_msgweb").html('<video width="100%" controls autoplay  id="elvideo" onplay="addReproduccion(\''+video+'\',\''+ref+'\',\''+codSub+'\')"><source src="'+video+'" type="video/mp4"></video>');
+	$("#insert_msgweb").html('<video width="100%" controls autoplay  id="elvideo" onplay="addReproduccion(\'' + video + '\',\'' + ref + '\',\'' + codSub + '\')"><source src="' + video + '" type="video/mp4"></video>');
 	$('.button_modal_confirm').html(textButton);
 	$('.button_modal_confirm').unbind('click');
-	$('.button_modal_confirm').click(function(e){
+	$('.button_modal_confirm').click(function (e) {
 		location.href = url;
 	});
 
 	$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 
-	$('.mfp-close').click(function(e){
+	$('.mfp-close').click(function (e) {
 		$("#elvideo")[0].pause();
 		$("#elvideo")[0].remove();
 	});
@@ -1086,7 +1089,7 @@ function modalVideo(video, ref, codSub, title, description, textButton, url){
 }
 
 
-function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descripcion, textButton, url){
+function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descripcion, textButton, url) {
 
 	token = $("input[name='_token']").val();
 	let params = {
@@ -1099,7 +1102,7 @@ function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descr
 		descripcion: descripcion
 	};
 
-    $.post( "/subasta/modal_images", params, function(response) {
+	$.post("/subasta/modal_images", params, function (response) {
 
 		$("#modalFotosGrid #insert_msgweb").html('');
 		$("#modalFotosGrid #insert_msg_title").html('');
@@ -1107,7 +1110,7 @@ function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descr
 
 		$('#modalFotosGrid .button_modal_confirm').html(textButton);
 		$('#modalFotosGrid .button_modal_confirm').off('click');
-		$('#modalFotosGrid .button_modal_confirm').on('click', function(e){
+		$('#modalFotosGrid .button_modal_confirm').on('click', function (e) {
 			location.href = url;
 		});
 
@@ -1124,7 +1127,7 @@ function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descr
 	});
 }
 
-function moreImagesGridMobile(num_hces1, lin_hces1, page){
+function moreImagesGridMobile(num_hces1, lin_hces1, page) {
 
 	token = $("input[name='_token']").val();
 	let params = {
@@ -1134,7 +1137,7 @@ function moreImagesGridMobile(num_hces1, lin_hces1, page){
 		page: page
 	};
 
-    $.post( "/subasta/modal_images_fullscreen", params, function(response) {
+	$.post("/subasta/modal_images_fullscreen", params, function (response) {
 		$("body").append(response);
 	});
 }
@@ -1146,54 +1149,54 @@ function cerrarLogin() {
 var replaceTemp;
 function ajax_carousel(key, replace, loteInicial) {
 	//if ($("#" + key).html().length == 0) {
-		$carrousel = $("#" + key);
-		$carrousel.siblings().removeClass('hidden');
-		$carrousel.parents().addClass('active');
-		$.ajax({
-			type: "POST",
-			url: "/api-ajax/carousel",
-			data: { key: key, replace: replace },
-			success: function (result) {
-				$carrousel.siblings('.loader').addClass('hidden');
-				replaceTemp = replace;
-				let loop = true;
-				if(key == 'lotes_subasta'){
-					result = `<a href="javascript:reloadAjaxCarousel('${key}', ${replaceTemp.ref_asigl0}, true);"><div class="item d-flex align-items-center justify-content-center"><p class="btn-carrousel btn-color">${messages.neutral.see_less}</p></div></a>` + result + `<a href="javascript:reloadAjaxCarousel('${key}', ${replaceTemp.ref_asigl0}, false);"><div class="item d-flex align-items-center justify-content-center"><p class="btn-carrousel btn-color">${messages.neutral.see_more}</p></div></a>`;
-					loop = false;
-				}
-
-
-				$carrousel.html(result);
-				carrousel_molon($carrousel, loteInicial, loop);
-				$carrousel.animate({
-					opacity: 1,
-				}, 00)
-
-
-				$('[data-countdown]').each(function () {
-					$(this).data('ini', new Date().getTime());
-					countdown_timer($(this))
-				});
-				if (key == 'lotes_destacados' && result == '') {
-					$('.lotes_destacados').addClass('hidden');
-					$('.mas_reciente a').click();
-				}
+	$carrousel = $("#" + key);
+	$carrousel.siblings().removeClass('hidden');
+	$carrousel.parents().addClass('active');
+	$.ajax({
+		type: "POST",
+		url: "/api-ajax/carousel",
+		data: { key: key, replace: replace },
+		success: function (result) {
+			$carrousel.siblings('.loader').addClass('hidden');
+			replaceTemp = replace;
+			let loop = true;
+			if (key == 'lotes_subasta') {
+				result = `<a href="javascript:reloadAjaxCarousel('${key}', ${replaceTemp.ref_asigl0}, true);"><div class="item d-flex align-items-center justify-content-center"><p class="btn-carrousel btn-color">${messages.neutral.see_less}</p></div></a>` + result + `<a href="javascript:reloadAjaxCarousel('${key}', ${replaceTemp.ref_asigl0}, false);"><div class="item d-flex align-items-center justify-content-center"><p class="btn-carrousel btn-color">${messages.neutral.see_more}</p></div></a>`;
+				loop = false;
 			}
 
-		});
+
+			$carrousel.html(result);
+			carrousel_molon($carrousel, loteInicial, loop);
+			$carrousel.animate({
+				opacity: 1,
+			}, 00)
+
+
+			$('[data-countdown]').each(function () {
+				$(this).data('ini', new Date().getTime());
+				countdown_timer($(this))
+			});
+			if (key == 'lotes_destacados' && result == '') {
+				$('.lotes_destacados').addClass('hidden');
+				$('.mas_reciente a').click();
+			}
+		}
+
+	});
 
 
 	//}
 };
 
-function reloadAjaxCarousel(key, ref, prev){
+function reloadAjaxCarousel(key, ref, prev) {
 
 	let search = (prev ? -20 : 20) + ref;
 
-	if(search <= minLotAuction){
+	if (search <= minLotAuction) {
 		search = minLotAuction - 1;
 	}
-	else if(search >= maxLotAuction){
+	else if (search >= maxLotAuction) {
 		return;
 	}
 
@@ -1265,8 +1268,8 @@ function carrousel_molon(carrousel, loteInicial, loop) {
 
 	carrousel.data('hasSlick', true);
 
-	if(loteInicial != null && $('.owl-item.active > .item').length > 0){
-		while($('.owl-item.active > .item')[0].dataset.ref != loteInicial && parseInt($('.owl-item.active > .item')[0].dataset.ref) +1 < loteInicial && !$('.owl-next').hasClass('disabled')){
+	if (loteInicial != null && $('.owl-item.active > .item').length > 0) {
+		while ($('.owl-item.active > .item')[0].dataset.ref != loteInicial && parseInt($('.owl-item.active > .item')[0].dataset.ref) + 1 < loteInicial && !$('.owl-next').hasClass('disabled')) {
 			$('.owl-next').trigger("click")
 		}
 	}
@@ -1598,7 +1601,7 @@ function reload_carrito() {
 		var precio_final = 0;
 		$.each(value_sub.lots, function (index, value) {
 			precio_final = precio_final + value.himp + value.iva + value.base + value.licencia_exportacion;
-			sum_precio_envio = sum_precio_envio + value.himp + value.base +  value.iva + value.licencia_exportacion;
+			sum_precio_envio = sum_precio_envio + value.himp + value.base + value.iva + value.licencia_exportacion;
 		});
 		if (sum_precio_envio > 0) {
 			$.ajax({
@@ -1612,27 +1615,27 @@ function reload_carrito() {
 				}
 			});
 		}
-		$(".gasto-envio-express-" + index_sub+"_JS").text(precio_envio_express.toFixed(2).replace(".", ","));
+		$(".gasto-envio-express-" + index_sub + "_JS").text(precio_envio_express.toFixed(2).replace(".", ","));
 
-		if(precio_envio_min != 0){
+		if (precio_envio_min != 0) {
 			$("label[for=shipping_express_min]").show();
-			$(".gasto-envio-min-" + index_sub+"_JS").text(precio_envio_min.toFixed(2).replace(".", ","));
+			$(".gasto-envio-min-" + index_sub + "_JS").text(precio_envio_min.toFixed(2).replace(".", ","));
 		}
-		else{
+		else {
 			$("label[for=shipping_express_min]").hide();
-			if($("input[name=shipping]:checked").val()=="min"){
+			if ($("input[name=shipping]:checked").val() == "min") {
 				$('#shipping_express').prop("checked", true).trigger('change');
 			}
 		}
 
 
-		if($("input[name=shipping]:checked").val()=="express"){
+		if ($("input[name=shipping]:checked").val() == "express") {
 			precio_envio = precio_envio_express;
 		}
-		else if($("input[name=shipping]:checked").val()=="min"){
+		else if ($("input[name=shipping]:checked").val() == "min") {
 			precio_envio = precio_envio_min;
 		}
-		else{
+		else {
 			precio_envio = 0;
 		}
 
@@ -1690,7 +1693,7 @@ function specificModalEmailExist() {
 //@TODO
 function sendRecoveryPassword() {
 
-	var email = $("#email").val();
+	var email = $('#registerForm [name="email"]').val();
 	var token = $("[name='_token']").val();
 	var lang = $("html").attr("lang").split("-")[0].replace('”', '');
 
@@ -1713,117 +1716,117 @@ function sendRecoveryPassword() {
 
 function loadVideoMobile(video) {
 
-    var elem = document.getElementById(video);
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-    elem.play();
+	var elem = document.getElementById(video);
+	if (elem.requestFullscreen) {
+		elem.requestFullscreen();
+	} else if (elem.mozRequestFullScreen) {
+		elem.mozRequestFullScreen();
+	} else if (elem.webkitRequestFullscreen) {
+		elem.webkitRequestFullscreen();
+	} else if (elem.msRequestFullscreen) {
+		elem.msRequestFullscreen();
+	}
+	elem.play();
 }
 
-function loadVideoMobileGrid(video, ref, sub){
+function loadVideoMobileGrid(video, ref, sub) {
 
 	addReproduccion(video, ref, sub);
 	location.href = video;
 
 }
 
-function addReproduccion(video,ref,sub) {
+function addReproduccion(video, ref, sub) {
 
-    token = $("#token").val();
+	token = $("#token").val();
 
-    $.post( "/subasta/reproducciones",{_token:token,video:video,ref:ref,sub:sub}, function( data ) {
+	$.post("/subasta/reproducciones", { _token: token, video: video, ref: ref, sub: sub }, function (data) {
 
-        a = data.split("-");
-        if (a[2]==1) {
-            $("#corazon").html('<i class="fa fa-heart red"></i>');
-        }
-        else {
-            $("#corazon").html('<i class="fa fa-heart"></i>');
-        }
-        $("#reproducciones").html(a[0]);
-        $("#megusta").html(a[1]);
+		a = data.split("-");
+		if (a[2] == 1) {
+			$("#corazon").html('<i class="fa fa-heart red"></i>');
+		}
+		else {
+			$("#corazon").html('<i class="fa fa-heart"></i>');
+		}
+		$("#reproducciones").html(a[0]);
+		$("#megusta").html(a[1]);
 
-    });
+	});
 }
 
-function loadVideo(video,ref,sub) {
+function loadVideo(video, ref, sub) {
 
-    addReproduccion(video,ref,sub);
+	addReproduccion(video, ref, sub);
 	actualiza_importes();
-    $("#modalVideo").modal("show");
-    $("#reproductor").html('');
-    $("#reproductor").append('<video width="100%" controls autoplay  id="elvideo" onplay="addReproduccion(\''+video+'\',\''+ref+'\',\''+sub+'\')"><source src="'+video+'" type="video/mp4"></video>');
-    $("#modalVideo").find(".read-more").remove();
-    $(".description").parent().css("height","auto");
-	setTimeout('readMore( $("#box2"), 2)',1000);
+	$("#modalVideo").modal("show");
+	$("#reproductor").html('');
+	$("#reproductor").append('<video width="100%" controls autoplay  id="elvideo" onplay="addReproduccion(\'' + video + '\',\'' + ref + '\',\'' + sub + '\')"><source src="' + video + '" type="video/mp4"></video>');
+	$("#modalVideo").find(".read-more").remove();
+	$(".description").parent().css("height", "auto");
+	setTimeout('readMore( $("#box2"), 2)', 1000);
 
 }
 
 
-function megusta(ref,sub) {
+function megusta(ref, sub) {
 
-    token = $("#token").val();
+	token = $("#token").val();
 
-    video = $("#reproductor").find("source").attr("src");
+	video = $("#reproductor").find("source").attr("src");
 
-    $.post( "/subasta/megusta",{_token:token,video:video,ref:ref,sub:sub}, function( data ) {
+	$.post("/subasta/megusta", { _token: token, video: video, ref: ref, sub: sub }, function (data) {
 
-        a = data.split("-");
-        if (a[1]==1) {
-            $("#corazon").html('<i class="fa fa-heart red"></i>');
-        }
-        else {
-            $("#corazon").html('<i class="fa fa-heart"></i>');
-        }
-        $("#megusta").html(a[0]);
+		a = data.split("-");
+		if (a[1] == 1) {
+			$("#corazon").html('<i class="fa fa-heart red"></i>');
+		}
+		else {
+			$("#corazon").html('<i class="fa fa-heart"></i>');
+		}
+		$("#megusta").html(a[0]);
 
-    });
+	});
 
 }
 
 function actualiza_importes() {
-    $(".actualizable").html($(".origenactualizable").html());
-    total_pujas = 0;
-    pujadores = new Array();
+	$(".actualizable").html($(".origenactualizable").html());
+	total_pujas = 0;
+	pujadores = new Array();
 
-    $("#pujas_list .hist_item").each(function(key,value) {
-        total_pujas = total_pujas + 1;
-        a = $(this).find(".uno").html();
-        if (a!="") {
-            pujadores[a] = 1;
-        }
-    });
-    $(".tot_pujas").html(total_pujas);
-    if(pujadores.length > 0){
-        $(".total_postores").html(pujadores.length -1);
-    }
-    else{
-        $(".total_postores").html(pujadores.length);
-    }
-    setTimeout("actualiza_importes()",3000);
+	$("#pujas_list .hist_item").each(function (key, value) {
+		total_pujas = total_pujas + 1;
+		a = $(this).find(".uno").html();
+		if (a != "") {
+			pujadores[a] = 1;
+		}
+	});
+	$(".tot_pujas").html(total_pujas);
+	if (pujadores.length > 0) {
+		$(".total_postores").html(pujadores.length - 1);
+	}
+	else {
+		$(".total_postores").html(pujadores.length);
+	}
+	setTimeout("actualiza_importes()", 3000);
 }
 
-function viewVideoBtnEvents(){
+function viewVideoBtnEvents() {
 	$('.timeLeft .btn.view-video').unbind('mouseenter mouseleave');
-	$('.timeLeft .btn.view-video').mouseenter(function(e){
+	$('.timeLeft .btn.view-video').mouseenter(function (e) {
 		$(this).children(".video-text").hide().show("slide", { direction: "left" }, 500);
 		e.stopPropagation();
 	});
-	$('.timeLeft .btn.view-video').mouseleave(function(e){
-		$(this).children(".video-text").hide("slide", { direction: "left" }, 500, function(){
+	$('.timeLeft .btn.view-video').mouseleave(function (e) {
+		$(this).children(".video-text").hide("slide", { direction: "left" }, 500, function () {
 			$(this).clearQueue();
 		});
 		e.stopPropagation();
 	});
 }
 
-function newsletterSuscription (event) {
+function newsletterSuscription(event) {
 	var email = $('.newsletter-input').val();
 	var lang = $('#lang-newsletter').val();
 
@@ -1836,7 +1839,7 @@ function newsletterSuscription (event) {
 
 	const newsletters = {};
 	document.querySelectorAll(".js-newletter-block [name^=families]").forEach((element) => {
-		if(element.checked) {
+		if (element.checked) {
 			newsletters[`families[${element.value}]`] = '1';
 		}
 	});
@@ -1878,7 +1881,7 @@ function addNewsletter(data) {
 			}
 			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 		},
-		error: function(error) {
+		error: function (error) {
 			$('.insert_msg').html(messages.error.message_500);
 			$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 		}

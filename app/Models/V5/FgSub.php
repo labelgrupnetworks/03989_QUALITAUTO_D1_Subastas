@@ -271,7 +271,6 @@ class FgSub extends Model
 		return $this->subc_sub;
 	}
 
-
 	public function getDesdeFechaHoraAttribute()
 	{
 		return ToolsServiceProvider::getDateFormat($this->dfec_sub, 'Y-m-d H:i:s', 'd-m-Y') . ' ' . $this->dhora_sub;
@@ -281,7 +280,6 @@ class FgSub extends Model
 	{
 		return ToolsServiceProvider::getDateFormat($this->hfec_sub, 'Y-m-d H:i:s', 'd-m-Y') . ' ' . $this->hhora_sub;
 	}
-
 
 	public function scopelog($query){
         return $query->joinUsr()->select("FSUSR.NOM_USR, FGSUB.*");
