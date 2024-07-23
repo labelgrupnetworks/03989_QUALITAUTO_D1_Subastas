@@ -16,8 +16,17 @@ $('form[name="search_lots"]').submit(function (e) {
 	getLots(this).then(response => {
 		let message =
 			`<p>Se han encontrado ${response.count_images} imagenes de ${response.count_lots} lotes</p>`;
+
+		message += `<details class="mb-1">`;
+		message += `<summary style="display: list-item;">Lotes</summary>`;
+		response.lots.forEach(lot => {
+			message += `<p>Lote: ${lot.num_hces1} - Línea: ${lot.lin_hces1}</p>`;
+		});
+		message += `</details>`;
+
 		message +=
 			`<p><button class="btn btn-xs btn-success" onclick="generateThumbs(${size})">Generar Miniaturas</button></p>`;
+
 		lots = response.lots;
 		$divLog.append(message);
 	})
