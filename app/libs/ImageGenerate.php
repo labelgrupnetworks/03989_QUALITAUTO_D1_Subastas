@@ -337,6 +337,7 @@ class ImageGenerate
 					}
 				} catch (\Exception $e) {
 
+					Log::debug($e->getMessage());
 					# Controlar el error en el log y la app
 					$image_to_load =  $this->no_foto($theme, $size);
 				}
