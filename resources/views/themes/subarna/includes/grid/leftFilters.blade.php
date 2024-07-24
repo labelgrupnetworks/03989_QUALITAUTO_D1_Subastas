@@ -1,10 +1,21 @@
 @if ($auction && $codSub && $codSub != 'VDJ')
     <div class="expo-container">
-        <h4>{{ trans($theme . '-app.subastas.see_subasta') }}</h4>
-        <p>{{ trans($theme . '-app.subastas.auction_day') }} {{ $auction->sesfechas_sub }} -
-            {{ $auction->seshorario_sub }}</p>
-        <p>{{ trans($theme . '-app.calendar.expo') }} {{ $auction->expofechas_sub }}</p>
-        <p>{{ trans($theme . '-app.lot.location') }}: {{ $auction->seslocal_sub }}</p>
+
+		<div class="align-items-center d-flex justify-content-space-between" data-toggle="collapse" href="#info-collapse" role="button"
+                aria-expanded="true" aria-controls="info-collapse">
+
+                <h4 class="m-0">{{ trans($theme . '-app.subastas.see_subasta') }}</h4>
+				<i class="fa fa-sort-down hidden-md hidden-lg"></i>
+            </div>
+
+            <div class="filters-collapse collapse pt-1" id="info-collapse">
+				<p>{{ trans($theme . '-app.subastas.auction_day') }} {{ $auction->sesfechas_sub }} -
+					{{ $auction->seshorario_sub }}</p>
+				<p>{{ trans($theme . '-app.calendar.expo') }} {{ $auction->expofechas_sub }}</p>
+				<p>{{ trans($theme . '-app.lot.location') }}: {{ $auction->seslocal_sub }}</p>
+			</div>
+
+
     </div>
 @elseif($auction && $codSub && $codSub == 'VDJ')
     <div class="expo-container">

@@ -937,12 +937,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return "https://$url/img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces.jpg";
 	}
 
-	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
-	{
-		$emp = Config::get('app.emp');
-		return "https://$url/img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces.jpg";
-	}
-
 	public static function url_img_auction($size, $cod_sub)
 	{
 		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.

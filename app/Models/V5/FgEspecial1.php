@@ -54,6 +54,17 @@ class FgEspecial1 extends Model
 		);
 	}
 
+	public static function getSpecialist($per_especial1)
+	{
+		return self::query()
+			->select('emp_especial1', 'lin_especial1', 'per_especial1', 'orden_especial1', 'nom_especial1', 'desc_especial1', 'email_especial1')
+			->withSpecialty()
+			->withOrtsec()
+			->where('per_especial1', $per_especial1)
+			->orderBy('lin_especial1')
+			->first();
+	}
+
 	public static function getSpecialists()
 	{
 		return self::query()

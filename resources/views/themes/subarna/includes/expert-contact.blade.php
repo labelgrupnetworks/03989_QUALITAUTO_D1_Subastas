@@ -8,16 +8,19 @@
     <h1>{{ $title }}</h1>
 
     <div class="expert-section_body">
-        <div class="">
+        <div class="expert-section_img-container visible-lg">
             <img class="expert-section_generic" src="/themes/subarna/assets/img/tasacion.png"
                 alt="muestra un ejemplo de tasación" loading="lazy">
         </div>
 
-		@includeWhen($specialist, 'includes.expert', ['specialist' => $specialist])
-
+		@if($specialist)
+			<div class="">
+				@include('includes.expert', ['specialist' => $specialist])
+			</div>
+		@endif
     </div>
 
-    <div class="text-center p-2">
+    <div class="text-center p-2 expert-section_btn-container">
         <a class="btn btn-xl btn-lb-primary" href="{{ Routing::translateSeo('valoracion-articulos') }}">
 			{{ trans("$theme-app.valoracion_gratuita.online_appraisal") }}
         </a>

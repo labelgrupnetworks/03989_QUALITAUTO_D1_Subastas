@@ -205,10 +205,7 @@
                 <button class="navbar-toggle collapsed" id="btnResponsive" data-toggle="collapse" data-target="#navbar"
                     type="button" aria-expanded="false" aria-controls="navbar">
 
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+					<x-icon.boostrap size="3em" color="currentColor" icon="list" />
                 </button>
 
                 <a class="navbar-brand" href="/{{ $lang }}" title="{{ config('app.name') }}">
@@ -220,16 +217,17 @@
                     <li>
                         <button class="search_btn btn-link" data-toggle="modal" data-target="#searchModal"
                             title="Buscar">
-                            <i class="fa fa-search"></i></button>
+							<x-icon.fontawesome icon=magnifying-glass version=6 />
+						</button>
                     </li>
                     <li>
                         @if (Session::has('user'))
                             <a href="{{ Routing::slug('user/panel/orders') }}">
-                                <i class="fa fa-user"></i>
+                                <x-icon.fontawesome icon=user version=6 />
                             </a>
                         @else
                             <button class="btn-link login">
-                                <i class="fa fa-user"></i>
+                                <x-icon.fontawesome icon=user version=6 />
                             </button>
                         @endif
                     </li>

@@ -56,7 +56,7 @@
 	-webkit-box-orient: vertical;
 	display: -webkit-box;
 	font-weight: var(--fw-default-normal);
-	margin-bottom: 3rem;
+	margin-bottom: 1rem;
 }
 
 .lot-square .item_lot .salida-price {
@@ -72,4 +72,8 @@
 	display: flex;
     flex-direction: column;
     flex: 1;
+}
+
+summary::marker, summary::-webkit-details-marker {
+	text-align: end !important;
 }

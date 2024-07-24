@@ -162,6 +162,11 @@ class Enterprise {
 		return FgEspecial1::getSpecialists();
 	}
 
+	public function getSpecialist($per_especial1)
+	{
+		return FgEspecial1::getSpecialist($per_especial1);
+	}
+
 	public function getSpecialistsByOrtsec($lin_ortsec0)
 	{
 		if(Config::get('app.specialists_model', false)) {

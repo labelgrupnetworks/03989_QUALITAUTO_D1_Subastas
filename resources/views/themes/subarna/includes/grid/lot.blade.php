@@ -19,7 +19,9 @@
                 <div class="title_item">
                     <h4 class="seo_h4">
                         <span class="bold"> {{ $item->ref_asigl0 }}.</span>
-                        {{ $titulo }}
+						<span class="ff-highlight bold">
+                        	{{ $titulo }}
+						</span>
                     </h4>
                 </div>
 
