@@ -24,7 +24,9 @@ class ImageGenerate
 	}
 	public function resize_img($size, $img, $theme, $base64 = false)
 	{
-		Log::debug("resize_img $size, $img, $theme, $base64");
+		if(request('from') == 'erp') {
+			Log::debug("resize_img $size, $img, $theme, $base64");
+		}
 		$new_image_folders_config = Config::get("app.new_image_folders");
 		//las imagenes de subastas no se han reubicado
 		if ($new_image_folders_config && $size != 'subasta_medium' && $size != 'subasta_large') {
@@ -180,7 +182,9 @@ class ImageGenerate
 
 		/* En caso de no recibir imagen, o la imagen original no está disponible, o pesa muy poco po lo que puede que sea erronea mostramos la no encontrada */
 		if ($img == "" || $width_size == "" || !file_exists($imagenOriginal) || filesize($imagenOriginal) < 500) {
-			Log::debug("No se ha encontrado la imagen $imagenOriginal");
+			if(request('from') == 'erp') {
+				Log::debug("no existe $imagenOriginal");
+			}
 			$image_to_load =  $this->no_foto($theme, $size);
 		} elseif (!$comprimir) {
 			$image_to_load = $imagenOriginal;
@@ -337,8 +341,9 @@ class ImageGenerate
 						$image_to_load = $imagenOriginal;
 					}
 				} catch (\Exception $e) {
-
-					Log::debug($e->getMessage());
+					if(request('from') == 'erp') {
+						Log::debug($e->getMessage());
+					}
 					# Controlar el error en el log y la app
 					$image_to_load =  $this->no_foto($theme, $size);
 				}
