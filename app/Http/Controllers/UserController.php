@@ -1894,6 +1894,7 @@ class UserController extends Controller
             $goto = false;
         }
 
+		$locale = Config::get('app.locale');
 
 			# Eliminamos la sesión de usuario y redirigimos a login
 
@@ -1905,7 +1906,7 @@ class UserController extends Controller
 			Cookie::queue('user',null);
 		}
 
-		return redirect("/");
+		return redirect("/$locale");
 		#pongo que siempre vaya a la home
         #return Redirect::back();
     }

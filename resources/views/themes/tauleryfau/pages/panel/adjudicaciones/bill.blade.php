@@ -13,7 +13,7 @@
     //pero hasta aceptar el diseño, para no modificar los actuales se dejan en texto plano
     $states = [
 		0 => ['es' => 'Preparando envío', 'en' => 'Preparing shipment'],
-        1 => ['es' => 'Pagado', 'en' => 'Paid'],
+        1 => ['es' => 'Preparando envío', 'en' => 'Preparing shipment'],
         2 => ['es' => 'Tramitando exportación', 'en' => 'Processing export'],
 		4 => ['es' => 'Enviado', 'en' => 'Shipped'],
         6 => ['es' => 'Recogido en tienda', 'en' => 'Picked up in store'],
@@ -22,7 +22,7 @@
 	$followUp = !empty($document->followUp) ? $document->followUp->idseg_dvc0seg : null;
 
 	$state = match(true) {
-		($followUp == '1') => ['class' => 'success', 'text' => $states[1][$locale]],
+		($followUp == '1') => ['class' => 'warning', 'text' => $states[1][$locale]],
 		($followUp == '2') => ['class' => 'warning', 'text' => $states[2][$locale]],
 		($followUp == '4') => ['class' => 'success', 'text' => $states[4][$locale]],
 		($followUp == '6') => ['class' => 'success', 'text' =>	$states[6][$locale]],

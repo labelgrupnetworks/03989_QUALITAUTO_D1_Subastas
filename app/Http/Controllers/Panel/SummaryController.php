@@ -20,6 +20,20 @@ class SummaryController extends Controller
 {
 	public function summary()
 	{
+		if(!Session::has('user')){
+            $url =  Config::get('app.url'). parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH).'?view_login=true';
+            $data['data'] = trans_choice(Config::get('app.theme').'-app.user_panel.not-logged', 1, ['url'=>$url]);
+			$seo = new \Stdclass();
+			$seo->noindex_follow = true;
+			if(config('app.seo_notlogged_page', 0)){
+				$seo->meta_title = trans(Config::get('app.theme').'-app.metas.title_no_logged');
+				$seo->meta_description = trans(Config::get('app.theme').'-app.metas.description__no_logged');
+			}
+
+			$data['seo'] = $seo;
+            return view('front::pages.not-logged', $data);
+        }
+
 		$cod_cli = Session::get('user.cod');
 		$currency = new Currency();
 		$divisa = Session::get('user.currency', 'EUR');

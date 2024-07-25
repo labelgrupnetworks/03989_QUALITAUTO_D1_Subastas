@@ -23,7 +23,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
 
 	Route::prefix('{lang}/user/panel/summary')->group(function () {
-		Route::get('/', [SummaryController::class, 'summary'])->name('panel.summary');
 		Route::get('/active-sales', [SummaryController::class, 'summaryActiveSales'])->name('panel.summary.active-sales');
 		Route::get('/finish-sales', [SummaryController::class, 'summaryFinishSales'])->name('panel.summary.finish-sales');
 		Route::get('/pending-sales', [SummaryController::class, 'summaryPendingToBeAssigned'])->name('panel.summary.pending-sales');
@@ -85,6 +84,10 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::post('{lang}/user/panel/preferences/create', 'UserController@setPreferences')->name('panel.create_preferences');
 	Route::post('{lang}/user/panel/preferences/delete', 'UserController@deletePreferences')->name('panel.delete_preferences');
 });
+
+//fuera de userAuth para mostrar pagina que solicite el inicio de sesion
+Route::get('{lang}/user/panel/summary/', [SummaryController::class, 'summary'])->name('panel.summary');
+
 Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
 
 # Lista de Ordenes de licitacion

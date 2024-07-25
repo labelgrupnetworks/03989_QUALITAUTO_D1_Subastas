@@ -1,8 +1,10 @@
 @php
-    function wpLink($code)
-    {
-        $wpDomain = 'https://www.tauleryfau.com/';
-        return $wpDomain . trans(config('app.theme') . "-app.links.$code");
+    if (!function_exists('wpLink')) {
+        function wpLink($code)
+        {
+            $wpDomain = 'https://www.tauleryfau.com/';
+            return $wpDomain . trans(config('app.theme') . "-app.links.$code");
+        }
     }
 @endphp
 
@@ -68,7 +70,7 @@
         </ul>
     </li>
 
-	<li class="dropdown">
+    <li class="dropdown">
 
         <a class="dropdown-toggle" data-toggle="dropdown" data-href="{{ wpLink('wp_services') }}" href="#"
             role="button" aria-haspopup="true" aria-expanded="false">
