@@ -618,9 +618,14 @@ class ImageGenerate
 	 */
 	private function isSameLineAndPosition($image, $linHces, $imagePosition)
 	{
-		Log::debug("isSameLineAndPosition $image, $linHces, $imagePosition");
+		if(strpos($image, ".") === false){
+			return false;
+		}
 		[$imageName, $extension] = explode(".", $image);
 
+		if(strpos($imageName, "-") === false){
+			return false;
+		}
 		$imageParams = explode("-", $imageName);
 		[$imgEmp, $imgNum, $imgLin] = $imageParams;
 
