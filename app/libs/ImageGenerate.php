@@ -354,6 +354,9 @@ class ImageGenerate
 			$type = 'image/jpeg';
 			header('Content-Type:' . $type);
 			header('Content-Length: ' . filesize($image_to_load));
+			header('Cache-Control: no-cache, private, max-age=0');
+			header('Pragma: no-cache');
+			header('Expires: 0');
 			readfile($image_to_load);
 			//no borrar el die();
 			die();
