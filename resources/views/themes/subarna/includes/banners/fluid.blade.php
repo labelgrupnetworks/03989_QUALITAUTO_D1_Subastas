@@ -43,24 +43,24 @@
                 </div>
             @endforeach
 
-			@php
-				$cutLine = "<p><strong>&nbsp;</strong></p>";
-				$text = trans("$theme-app.home.seo");
-				$seoBlocks = explode($cutLine, $text);
-			@endphp
+            @php
+                $cutLine = '<p><strong>&nbsp;</strong></p>';
+                $text = trans("$theme-app.home.seo");
+                $seoBlocks = explode($cutLine, $text);
+            @endphp
 
 
-			@foreach ($seoBlocks as $seo)
-			<div class="footer-banner">
-                <div class="wrapper-footer">
-                    <div class="container">
-                        <div class="seo-container">
-                            {!! $seo !!}
+            @foreach ($seoBlocks as $seo)
+                <div class="footer-banner">
+                    <div class="wrapper-footer">
+                        <div class="container">
+                            <div class="seo-container">
+                                {!! $seo !!}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-			@endforeach
+            @endforeach
 
 
             <div class="footer-banner">
@@ -90,14 +90,25 @@
 
         const slider = $(".{{ $slide }}").slick(options);
 
+        const debounceDelay = 700;
+        let lastScrollTime = 0;
+
         slider.on('wheel', (function(e) {
             e.preventDefault();
+
+            let currentTime = new Date().getTime();
+            if ((currentTime - lastScrollTime) < debounceDelay) {
+                return;
+            }
+
+            lastScrollTime = currentTime;
 
             if (e.originalEvent.deltaY < 0) {
                 $(this).slick('slickPrev');
             } else {
                 $(this).slick('slickNext');
             }
+
         }));
 
         //slider.on('afterChange', invertHeaderColors);
@@ -112,7 +123,7 @@
             const isInvert = domElement.hasAttribute("data-invert");
             document.querySelector('.navbar-custom').classList.toggle('inverted', isInvert);
 
-			$('.wrapper-footer').css('padding-top', $('header').height());
+            $('.wrapper-footer').css('padding-top', $('header').height());
         }
     </script>
 @endif
