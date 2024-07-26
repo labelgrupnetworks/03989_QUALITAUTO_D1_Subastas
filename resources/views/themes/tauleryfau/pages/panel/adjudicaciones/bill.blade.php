@@ -9,24 +9,14 @@
 
     $url = "/factura/$anum-$num";
 
-    //los estados deben ser traducciones en user_panel.estado_seg_*
-    //pero hasta aceptar el diseño, para no modificar los actuales se dejan en texto plano
-    $states = [
-		0 => ['es' => 'Preparando envío', 'en' => 'Preparing shipment'],
-        1 => ['es' => 'Preparando envío', 'en' => 'Preparing shipment'],
-        2 => ['es' => 'Tramitando exportación', 'en' => 'Processing export'],
-		4 => ['es' => 'Enviado', 'en' => 'Shipped'],
-        6 => ['es' => 'Recogido en tienda', 'en' => 'Picked up in store'],
-    ];
-	$locale = config('app.locale');
 	$followUp = !empty($document->followUp) ? $document->followUp->idseg_dvc0seg : null;
+	if(!$followUp && $isPayed) {
+		$followUp = 1;
+	}
 
 	$state = match(true) {
-		($followUp == '1') => ['class' => 'warning', 'text' => $states[1][$locale]],
-		($followUp == '2') => ['class' => 'warning', 'text' => $states[2][$locale]],
-		($followUp == '4') => ['class' => 'success', 'text' => $states[4][$locale]],
-		($followUp == '6') => ['class' => 'success', 'text' =>	$states[6][$locale]],
-		(!$followUp && $isPayed) => ['class' => 'warning', 'text' => $states[0][$locale]],
+		(in_array($followUp, [1, 2, 8])) => ['class' => 'warning', 'text' => trans("$theme-app.user_panel.estado_seg_$followUp")],
+		(in_array($followUp, [4, 6, 7])) => ['class' => 'success', 'text' => trans("$theme-app.user_panel.estado_seg_$followUp")],
 		default => ['class' => 'alert', 'text' => trans("$theme-app.user_panel.pending")]
 	};
 
