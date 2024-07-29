@@ -178,7 +178,7 @@
 @endphp
 
 @if ($showWarningModal && Carbon\Carbon::now()->lessThan($untilDate))
-<div class="message_modal" data-style="popover" data-position="right">
+<div class="message_modal " data-style="popover" data-position="right">
     <p class="message_modal__title">{{ trans("$theme-app.foot.alert_modal_title") }}</p>
 
     <div class="message_modal_content">
@@ -198,6 +198,17 @@
 </div>
 
 <script>
+	 const today = new Date().toISOString().split('T')[0];
+	 const lastVisit = localStorage.getItem("lastVisit");
+
+	if (lastVisit !== today) {
+		localStorage.setItem("lastVisit", today);
+    }
+	else{
+		$('.message_modal')[0].style.display = 'none';
+	}
+
+	
 	function closeMessageModal() {
 		$('.message_modal')[0].style.display = 'none';
 	}
