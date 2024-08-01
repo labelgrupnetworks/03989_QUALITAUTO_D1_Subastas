@@ -13,8 +13,8 @@
 	<div class="banner-home-row2 container-fluid" style="background-color: white">
 
 		<div class="row">
-			<div class="col-xs-12 separator">
-				{{-- <p>{!! trans("$theme-app.home.info") !!}</p> --}}
+			<div class="col-xs-12 separator ">
+				 <p>{!! trans("$theme-app.home.info") !!}</p>
 			</div>
 		</div>
 
