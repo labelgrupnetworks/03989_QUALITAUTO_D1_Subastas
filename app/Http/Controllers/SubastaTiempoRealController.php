@@ -2353,6 +2353,14 @@ class subastaTiempoRealController extends Controller
             }
             */
 
+			#si tienen precio web vamos a simular que hay precio de reserva para que la puja llegue hasta ese precio web
+
+			if(Config::get('app.price_web_to_reserve',false) && !empty($lote->impsalweb_asigl0) &&  ( empty($lote->impres_asigl0) || ($lote->impres_asigl0< $lote->impsalweb_asigl0)) ){
+
+				$lote->impres_asigl0 = $lote->impsalweb_asigl0;
+			}
+
+
             //comentado el 20170512
             //$siguiente              = $this->siguienteEscalado($subasta->imp);
             //modificado 2017-05_11
