@@ -1389,7 +1389,7 @@ class subastaTiempoRealController extends Controller
 		// Comprobamos que tenemos crédito suficiente para realizar la orden
 		// Solo se tienen en cuenta las ordenes de licitación, ni las pujas ni las adjudicaciones
 		// Se supone que este es para antes de empezar la subasta en vivo.
-		if(Config::get('app.use_credit', false)) {
+		if(Config::get('app.use_credit_in_orders', false)) {
 			$importeOrdenes = FgOrlic::getTotalOrdersInAuction($cod_sub, $ref, $cod_user);
 			$availableCredit = FxCli::getCurrentCredit($cod_sub, $licit);
 
