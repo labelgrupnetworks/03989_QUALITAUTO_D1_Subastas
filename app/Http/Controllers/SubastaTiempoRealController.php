@@ -1382,8 +1382,22 @@ class subastaTiempoRealController extends Controller
             $res = $this->error_puja(trans(\Config::get('app.theme').'-app.msg_error.buying'),NULL, FALSE);
             return $res;
         }
-        $licit = head($checklicit)->cod_licit;
+
+		$licit = head($checklicit)->cod_licit;
         $subasta->licit = $licit;
+
+		// Comprobamos que tenemos crédito suficiente para realizar la orden
+		// Solo se tienen en cuenta las ordenes de licitación, ni las pujas ni las adjudicaciones
+		// Se supone que este es para antes de empezar la subasta en vivo.
+		if(Config::get('app.use_credit', false)) {
+			$importeOrdenes = FgOrlic::getTotalOrdersInAuction($cod_sub, $ref, $cod_user);
+			$availableCredit = FxCli::getCurrentCredit($cod_sub, $licit);
+
+			$hasAvailableCredit = (($imp + $importeOrdenes) < $availableCredit);
+			if(!$hasAvailableCredit) {
+				return $this->error_puja(trans(Config::get('app.theme') . '-app.msg_error.imp_max_licitador'), null, false);
+			}
+		}
 
         $l = $subasta->getLote();
         //el lote no existe
