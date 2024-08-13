@@ -31,7 +31,7 @@
 </div>
 
 <script>
-    if ($('.ficha-thumnail').length <= 6) {
+    if ($('.ficha-thumnail').length <= 4) {
         $('.control').hide();
     }
 </script>

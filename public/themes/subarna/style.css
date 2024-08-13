@@ -1186,7 +1186,7 @@ header ul.items_top a.dropdown-menu {
 	--gap: 5px;
 	width: 100%;
 	overflow-y: hidden;
-	height: calc(var(--total-size) * 6);
+	height: calc(var(--total-size) * 4);
 }
 
 .slider-thumnail-container>.miniImg {
@@ -4019,7 +4019,7 @@ footer ul {
 }
 
 section.lotes_destacados {
-	padding-top: var(--space-large);
+	padding-top: var(--space-xlarge);
 	padding-bottom: var(--space-large);
 }
 
