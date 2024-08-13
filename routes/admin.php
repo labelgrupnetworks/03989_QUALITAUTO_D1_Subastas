@@ -481,6 +481,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/reset-lots/{idauction}', 'configuracion\AdminTestAuctions@resetLots')->name('admin.test-auctions.reset-lots');
 		});
 
+		Route::get('/contenido/uploads', 'contenido\AdminUploadsController@index')->name('admin.contenido.uploads.index');
+		Route::post('/contenido/uploads', 'contenido\AdminUploadsController@upload')->name('admin.contenido.uploads.upload');
+		Route::delete('/contenido/uploads/delete/{fileName}', 'contenido\AdminUploadsController@delete')->name('admin.contenido.uploads.delete');
+		Route::put('/contenido/uploads/update/{fileName}', 'contenido\AdminUploadsController@update')->name('admin.contenido.uploads.update');
 	});
 
 
