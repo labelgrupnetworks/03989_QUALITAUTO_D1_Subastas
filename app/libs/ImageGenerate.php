@@ -24,6 +24,7 @@ class ImageGenerate
 	}
 	public function resize_img($size, $img, $theme, $base64 = false)
 	{
+		$this->logFromErpRequest("resize_img $size, $img, $theme, $base64");
 
 		$new_image_folders_config = Config::get("app.new_image_folders");
 		//las imagenes de subastas no se han reubicado
@@ -180,6 +181,7 @@ class ImageGenerate
 
 		/* En caso de no recibir imagen, o la imagen original no está disponible, o pesa muy poco po lo que puede que sea erronea mostramos la no encontrada */
 		if ($img == "" || $width_size == "" || !file_exists($imagenOriginal) || filesize($imagenOriginal) < 500) {
+			$this->logFromErpRequest("no existe $imagenOriginal");
 			$image_to_load =  $this->no_foto($theme, $size);
 		} elseif (!$comprimir) {
 			$image_to_load = $imagenOriginal;
@@ -337,6 +339,8 @@ class ImageGenerate
 					}
 				} catch (\Exception $e) {
 
+					$this->logFromErpRequest($e->getMessage());
+
 					# Controlar el error en el log y la app
 					$image_to_load =  $this->no_foto($theme, $size);
 				}
@@ -350,6 +354,9 @@ class ImageGenerate
 			$type = 'image/jpeg';
 			header('Content-Type:' . $type);
 			header('Content-Length: ' . filesize($image_to_load));
+			header('Cache-Control: no-cache, private, max-age=0');
+			header('Pragma: no-cache');
+			header('Expires: 0');
 			readfile($image_to_load);
 			//no borrar el die();
 			die();
@@ -447,7 +454,7 @@ class ImageGenerate
 		}
 		//si tampoco existe no hacemos nada
 		if (!file_exists($imagenOriginal)) {
-			Log::info("no exciste $imagenOriginal");
+			Log::info("no existe $imagenOriginal");
 			return False;
 		}
 		$generateThumb = false;
@@ -536,7 +543,7 @@ class ImageGenerate
 				}
 			} catch (\Exception $e) {
 				# Controlar el error en el log y la app
-				\Log::error($e);
+				Log::error($e);
 				return false;
 			}
 
@@ -614,8 +621,14 @@ class ImageGenerate
 	 */
 	private function isSameLineAndPosition($image, $linHces, $imagePosition)
 	{
+		if(strpos($image, ".") === false){
+			return false;
+		}
 		[$imageName, $extension] = explode(".", $image);
 
+		if(strpos($imageName, "-") === false){
+			return false;
+		}
 		$imageParams = explode("-", $imageName);
 		[$imgEmp, $imgNum, $imgLin] = $imageParams;
 
@@ -632,5 +645,14 @@ class ImageGenerate
 		$imgLin = explode("_", $imgLin)[0] ?? $imgLin;
 
 		return $imgLin == $linHces && $imgPos == $imagePosition;
+	}
+
+	private function logFromErpRequest($message)
+	{
+		if(!Config::get('app.debug_erp', false) || !request('from') == 'erp'){
+			return;
+		}
+
+		Log::debug($message);
 	}
 }

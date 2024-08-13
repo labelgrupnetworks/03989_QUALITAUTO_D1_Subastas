@@ -775,14 +775,17 @@ class test extends BaseController
 		#http://subastas.test/apilabel/test?function=putLot&testmode=CONTROLLER
         public function putLot(){
 			$lot = new stdClass();
-			$lot->idorigin = "1671623786";
-            $lot->idauction = "TEST";
-            $lot->reflot = 63;
+			$lot->idorigin = "LABELP-1";
+            $lot->idauction = "LABELP";
+            $lot->reflot = 1;
+			$lot->startprice = 7500;
+			$lot->priceweb = 15000;
+			/*
 			$lot->startdate = '2020-03-02';
             $lot->enddate = '2020-03-03';
             $lot->starthour = '20:01:04';
             $lot->endhour = '05:40:05';
-           /*
+
             $lot->idsubcategory = "AV";
             $lot->title = "titulo";
             $lot->description = "Lot metadescription";

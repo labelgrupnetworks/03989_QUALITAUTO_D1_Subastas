@@ -194,7 +194,15 @@ function reloadPujasList_W() {
 function reloadPujasList_O() {
 	var model = $('#duplicalte_list_pujas').clone();
 	var container = $('#pujas_list');
-	$('.siguiente_puja').html(auction_info.lote_actual.importe_escalado_siguiente.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+
+	//si no hay pujas
+	if(auction_info.lote_actual.pujas.length == 0){
+		$('.siguiente_puja').html(auction_info.lote_actual.impsalweb_asigl0.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+	}
+	else{
+		$('.siguiente_puja').html(auction_info.lote_actual.importe_escalado_siguiente.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+	}
+
 	if (typeof auction_info.lote_actual != 'undefined' && typeof auction_info.lote_actual.pujas != 'undefined') {
 		//se borran todos lso contenidos del listado de pujas
 		$('div', container).remove();

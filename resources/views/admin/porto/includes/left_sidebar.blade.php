@@ -407,6 +407,16 @@ $idiomes = \Config::get('app.locales');
 						</ul>
 						@endif
 
+						@if(strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM')
+						<ul class="nav nav-children">
+							<li>
+								<a href="{{ route('admin.contenido.uploads.index') }}">
+									<span>Archivos</span>
+								</a>
+							</li>
+						</ul>
+						@endif
+
 
 					</li>
 					@endif

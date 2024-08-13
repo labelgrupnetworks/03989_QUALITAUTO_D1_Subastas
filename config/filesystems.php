@@ -1,4 +1,5 @@
 <?php
+$theme = env('APP_THEME', 'default');
 
 return [
 
@@ -72,7 +73,12 @@ return [
 			'url' => config('app.url') . '/storage/avatars/' . config('app.emp'),
 			'visibility' => 'public'
 		],
-
+		'public_uploads' => [
+			'driver' => 'local',
+			'root' => storage_path("app/public/themes/$theme/uploads"),
+			'url' => config('app.url') . "/storage/themes/$theme/uploads/",
+			'visibility' => 'public'
+		]
     ],
 
     /*

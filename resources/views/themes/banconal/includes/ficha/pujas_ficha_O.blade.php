@@ -31,7 +31,7 @@
 				<div class="pre">
 					@if ($lote_actual->ocultarps_asigl0 != 'S')
 						<p class="pre-title">{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}</p>
-						<p class="pre-price">{{ \Tools::moneyFormat($lote_actual->impsalhces_asigl0, $currency, 0, 'L',".",",")}}
+						<p class="pre-price">{{ \Tools::moneyFormat($lote_actual->impsalweb_asigl0, $currency, 0, 'L',".",",")}}
 						@if(\Config::get("app.exchange"))
 							| <span id="startPriceExchange_JS" class="exchange"> </span>
 						@endif
@@ -98,7 +98,11 @@
 						</div>
 					</div>
 					<div class="d-flex mb-2">
-						<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
+						@if (count($lote_actual->pujas)== 0)
+							<input id="bid_amount" placeholder="{{ $lote_actual->impsalweb_asigl0 }}" class="form-control control-number" type="text" value="{{ $lote_actual->impsalweb_asigl0 }}">
+						@else
+							<input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
+						@endif
 						<div class="input-group-btn">
 							<button type="button" data-from="modal" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}"
 								class="lot-action_pujar_on_line_banco ficha-btn-bid ficha-btn-bid-height button-principal">
@@ -114,7 +118,7 @@
 							<button style="width:100%" id="cancelarOrdenUser"   class="ficha-btn-bid-height button-principal  @if(empty($data['js_item']['user']['ordenMaxima']))  hidden @endif" type="button" ref="{{$data['subasta_info']->lote_actual->ref_asigl0}}" sub="{{$data['subasta_info']->lote_actual->cod_sub}}" >  {{ trans(\Config::get('app.theme').'-app.user_panel.delete_orden') }}
 							</button>
 						@endif
-						
+
 					</div>
 
 				</div>

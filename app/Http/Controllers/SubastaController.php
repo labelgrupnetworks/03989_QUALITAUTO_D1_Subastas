@@ -1501,7 +1501,7 @@ class SubastaController extends Controller
 		}
 
 		#datos para Open Graph
-		$SEO_metas->openGraphImagen = \Tools::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
+		$SEO_metas->openGraphImagen = ToolsServiceProvider::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
 
 		$data['seo'] = $this->cleanStrMeta($SEO_metas);
 
