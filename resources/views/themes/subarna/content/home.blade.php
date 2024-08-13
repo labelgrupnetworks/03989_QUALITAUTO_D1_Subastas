@@ -1,4 +1,5 @@
 
+{{-- {!! BannerLib::bannerWithView('home-slider', 'fluid') !!} --}}
 {!! BannerLib::bannerWithView('home_banner', 'fluid') !!}
 
 {{-- script para botón de mensaje --}}

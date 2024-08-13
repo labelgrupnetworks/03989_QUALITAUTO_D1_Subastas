@@ -3677,10 +3677,18 @@ header.fixed .navbar-custom {
 
 }
 
-
+.footer-banner .seo-container[data-position="1"] {
+	display: none;
+}
 
 .footer-banner .seo-container {
 	background-color: white;
+}
+
+@media(min-width: 480px) and (min-height: 900px) {
+	.footer-banner .seo-container[data-position="1"] {
+		display: block;
+	}
 }
 
 .footer-banner .wrapper-footer {
@@ -3743,8 +3751,9 @@ footer ul {
 }
 
 .newsletter {
-	padding-top: var(--space-large);
-	padding-bottom: var(--space-large);
+	--percent-space: .5;
+	padding-top: calc(var(--space-large) * var(--percent-space));
+	padding-bottom: calc(var(--space-large) * var(--percent-space));
 }
 
 .newsletter .redes {

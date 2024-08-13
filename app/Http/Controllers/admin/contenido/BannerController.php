@@ -396,7 +396,21 @@ class BannerController extends Controller
 			$content = json_decode($info[$lang]->texto, true);
 
 			foreach ($variables as $variableName => $type) {
-				$formulario[$lang][$variableName] = FormLib::Text("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? '');
+
+				if ($type == 'file') {
+					$formulario[$lang]['imagen'] = FormLib::File("imagen_" . strtoupper($lang), 0, "");
+					$formulario[$lang]['imagen_mobile'] = FormLib::File("imagen_mobile_" . strtoupper($lang), 0, "");
+				} elseif ($type == 'ventana_nueva') {
+					FormLib::Bool("ventana_nueva_" . strtoupper($lang), 0, $info[$lang]->ventana_nueva);
+				} else {
+					$formulario[$lang][$variableName] = match ($type) {
+						'string' => FormLib::Text("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? ''),
+						'color' => FormLib::Color("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? ''),
+						default => FormLib::Text("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? ''),
+					};
+				}
+
+				//FormLib::Text("content_{$lang}[{$variableName}]", 0, $content[$variableName] ?? '');
 			}
 		}
 
@@ -451,6 +465,10 @@ class BannerController extends Controller
 
 	function guardaItemViewBloque(Request $request)
 	{
+		$theme = config('app.theme');
+		$mainEmp = config('app.main_emp');
+		$parentId = $request->input('id_web_newbanner_ES');
+
 		$id = $request->input('id_ES');
 		$langs = array_map('mb_strtoupper', array_keys(config('app.locales')));
 
@@ -469,6 +487,20 @@ class BannerController extends Controller
 					['id', $id],
 				])
 				->update($update);
+
+			$direcoryPath = str_replace("\\", "/", "/img/banner/$theme/$mainEmp/$parentId/$id");
+			if (!is_dir(public_path($direcoryPath))) {
+				mkdir(public_path($direcoryPath), 0775, true);
+				chmod(public_path($direcoryPath), 0775);
+			}
+
+			if ($image = request()->file("imagen_$lang")) {
+				$this->saveImage($image, "$lang", $direcoryPath, false);
+			}
+
+			if ($imageMobile = request()->file("imagen_mobile_$lang", $image)) {
+				$this->saveImage($imageMobile, "{$lang}_mobile", $direcoryPath, true);
+			}
 		}
 
 		return back()->with(['success' => array(trans('admin-app.title.updated_ok'))]);

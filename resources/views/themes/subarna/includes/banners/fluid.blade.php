@@ -31,26 +31,43 @@
         <div class="slider {{ $slide }}">
 
             @foreach ($banner->activeItems as $bannerItem)
-                <div class="position-relative" data-invert="true">
-                    <picture class="slider-img">
-                        <source srcset="{{ $bannerItem->images['desktop'] }}" media="(min-width: 600px)">
-                        <img src="{{ $bannerItem->images['mobile'] }}" alt="{{ $bannerItem->texto }}">
-                    </picture>
+				@php
+					$params = json_decode($bannerItem->texto, true);
+					if (!is_array($params)) {
+						$params = [];
+					}
+					$params = array_filter($params);
+				@endphp
 
-                    @if (!empty($bannerItem->url))
-                        <a class="stretched-link" href="{{ $bannerItem->url }}"></a>
-                    @endif
-                </div>
+				@if($params)
+					@php
+					$params['images'] = $bannerItem->images;
+					@endphp
+					@include("includes.banners.$bannerItem->tipo", $params)
+				@else
+					<div class="position-relative" data-invert="true">
+						<picture class="slider-img">
+							<source srcset="{{ $bannerItem->images['desktop'] }}" media="(min-width: 600px)">
+							<img src="{{ $bannerItem->images['mobile'] }}" alt="{{ $bannerItem->texto }}">
+						</picture>
+
+						@if (!empty($bannerItem->url))
+							<a class="stretched-link" href="{{ $bannerItem->url }}"></a>
+						@endif
+					</div>
+				@endif
             @endforeach
 
             @php
                 $cutLine = '<p><strong>&nbsp;</strong></p>';
+				$removeLine = '<p>&nbsp;</p>';
                 $text = trans("$theme-app.home.seo");
+				$text = str_replace($removeLine, '', $text);
                 $seoBlocks = explode($cutLine, $text);
             @endphp
 
 
-            @foreach ($seoBlocks as $seo)
+            {{-- @foreach ($seoBlocks as $seo)
                 <div class="footer-banner">
                     <div class="wrapper-footer">
                         <div class="container">
@@ -60,12 +77,21 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @endforeach --}}
 
 
             <div class="footer-banner">
                 <div class="wrapper-footer">
-                    @include('includes.newsletter')
+
+					<div class="container">
+						@foreach ($seoBlocks as $key => $seo)
+							<div class="seo-container" data-position={{$key}}>
+								{!! $seo !!}
+							</div>
+						@endforeach
+					</div>
+
+					@include('includes.newsletter')
 
                     @include('includes.footer-section')
                 </div>
@@ -122,6 +148,12 @@
         function invertHeaderColors(domElement) {
             const isInvert = domElement.hasAttribute("data-invert");
             document.querySelector('.navbar-custom').classList.toggle('inverted', isInvert);
+
+			//if domElement has data-color, use it, otherwise not action
+			if(domElement.hasAttribute("data-color")) {
+				const dataColor = domElement.dataset.color;
+				document.querySelector('.navbar-custom').style.setProperty('--lb-nav-text-color', dataColor);
+			}
 
             $('.wrapper-footer').css('padding-top', $('header').height());
         }
