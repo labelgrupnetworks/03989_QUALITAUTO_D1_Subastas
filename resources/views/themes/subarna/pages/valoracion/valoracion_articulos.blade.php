@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-xs-0 col-md-5 col-lg-4">
                         <img class="header-image height-image img-responsive"
-                            src="/themes/{{ $theme }}/assets/img/top_banner_image_rounded.png">
+                            src="/storage/themes/{{ $theme }}/uploads/tasa-burbuja.png">
                     </div>
                 </div>
             </div>

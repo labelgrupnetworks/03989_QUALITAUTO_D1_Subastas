@@ -4,6 +4,17 @@
     {{ trans($theme . '-app.head.title_app') }}
 @stop
 
+@php
+	$imageExpertSection = match($ortsec->lin_ortsec0) {
+		1 => "/storage/themes/$theme/uploads/JOYAS-dept-Tasa.jpg",
+		3 => "/storage/themes/$theme/uploads/Oriental-dept-tasa.jpg",
+		4 => "/storage/themes/$theme/uploads/Artes-deco-dept-tasa.jpg",
+		5 => "/storage/themes/$theme/uploads/pint-dep-tasa.jpg",
+		6 => "/storage/themes/$theme/uploads/escult-dept-tasa.jpg",
+		default => "/themes/$theme/assets/img/tasacion.png",
+	}
+@endphp
+
 @section('content')
 
     <main class="department-page">
@@ -24,6 +35,7 @@
 
         @include('includes.expert-contact', [
             'title' => trans("$theme-app.valoracion_gratuita.need_contact"),
+			'image' => $imageExpertSection,
             'specialist' => $especialistas->first(),
         ])
 

@@ -4803,7 +4803,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .about-us-page img {
 	display: block;
-	max-width: 100%;
+	max-width: 75%;
 	height: auto;
 	margin: auto;
 }

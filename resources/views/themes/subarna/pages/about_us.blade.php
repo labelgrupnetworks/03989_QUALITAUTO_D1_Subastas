@@ -13,7 +13,7 @@
             <p class="about-us_subtitle">
                 {{ trans("$theme-app.about_us.subtitle_page") }}
             </p>
-            <img class="about-us_img" src="/themes/{{ $theme }}/assets/img/about_asset1.png"
+            <img class="about-us_img" src="/storage/themes/{{ $theme }}/uploads/EQUI copia.jpg"
                 alt="Sala de subastas Subarna">
         </section>
 
@@ -85,7 +85,7 @@
                         <p>{{ trans("$theme-app.about_us.trust_description") }}</p>
                     </div>
                     <div class="archived-item">
-                        <img src="/themes/{{ $theme }}/assets/img/about_asset3.png"
+                        <img src="/storage/themes/{{ $theme }}/uploads/Confianza-quienes somos.jpg"
                             alt="Logro conseguido en subarna">
                     </div>
                 </div>

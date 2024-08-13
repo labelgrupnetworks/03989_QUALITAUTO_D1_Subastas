@@ -1,5 +1,6 @@
 @php
     //$name_archive = '/img/PER/' . Config::get('app.gemp') . $esp->per_especial1 . '.jpg';
+	$image = $image ?? '/themes/subarna/assets/img/tasacion.png';
     $title = $title ?? trans("$theme-app.valoracion_gratuita.need_contact");
 @endphp
 
@@ -9,7 +10,7 @@
 
     <div class="expert-section_body">
         <div class="expert-section_img-container visible-lg">
-            <img class="expert-section_generic" src="/themes/subarna/assets/img/tasacion.png"
+            <img class="expert-section_generic" src="{{ $image }}"
                 alt="muestra un ejemplo de tasación" loading="lazy">
         </div>
 
