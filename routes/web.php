@@ -491,7 +491,6 @@ Route::get(Routing::translateSeo('contacto'), 'V5\ContactController@index')->nam
 Route::get(Routing::slugSeo('administradores-concursales', true), 'V5\ContactController@admin');
 Route::post('contactSendmail', 'V5\ContactController@contactSendmail')->name('contactSendmail');
 
-//Route::get(Routing::slugSeo('register',true), 'V5\UserAccessController@register');
 Route::get(Routing::slugSeo('register', true), 'User\RegisterController@index')->name('register');
 
 // Autoformularios
