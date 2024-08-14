@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SummaryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
@@ -91,8 +92,9 @@ Route::get('{lang}/user/panel/summary/', [SummaryController::class, 'summary'])-
 Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
 
 # Lista de Ordenes de licitacion
-Route::get('{lang}/user/panel/orders', 'UserController@orderbidsList')->name('panel.orders');
-Route::get('{lang}/user/panel/orders' . '/page/{page}', 'UserController@orderbidsList');
+Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'])->name('panel.orders');
+//solamente se utiliza con la vista por lotes, pero nadie la usa (14/08/2024)
+Route::get('{lang}/user/panel/orders' . '/page/{page}', [OrdersController::class, 'orderbidsList']);
 
 Route::get('{lang}/user/panel/allotments/outstanding', 'UserController@getAdjudicacionesPendientePago');
 Route::get('{lang}/user/panel/allotments/paid', 'UserController@getAdjudicacionesPagadas');
