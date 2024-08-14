@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SummaryController;
 use Illuminate\Support\Facades\Route;
@@ -16,10 +17,11 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 		Route::get('/favorites', [SummaryController::class, 'favoritesCarrousel']);
 	});
 
-	# Lista de Favoritos
-	Route::get('{lang}/user/panel/new-favorites', 'UserController@getNewFavoritos')->name('panel.newfavorites');
-	Route::get('{lang}/user/panel/favorites', 'UserController@getFavoritos')->name('panel.favorites');
-	Route::get('{lang}/user/panel/favorites' . '/page/{page}', 'UserController@getFavoritos');
+	Route::get('{lang}/user/panel/new-favorites', [FavoritesController::class, 'getNewFavoritos'])->name('panel.newfavorites');
+	Route::get('{lang}/user/panel/favorites', [FavoritesController::class, 'getFavoritos'])->name('panel.favorites');
+	Route::get('{lang}/user/panel/favorites/page/{page}', [FavoritesController::class, 'getFavoritos']);
+	Route::get('{lang}/user/panel/themesfavorites', [FavoritesController::class, 'getTemaFavoritos'])->name('panel.themesfavorites');
+	Route::post('/panel/save/favorites', [FavoritesController::class, 'savedTemaFavoritos'])->name('panel.save.favorites');
 
 	# Lista de Ventas cedente
 	Route::get('{lang}/user/panel/sales', 'UserController@getSales')->name('panel.sales');
@@ -36,12 +38,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');
 	Route::get('{lang}/user/panel/my-sales', 'V5\CarlandiaSalesController@getAwardSales')->name('panel.award-sales');
 	Route::get('{lang}/user/panel/my-sales-download', 'V5\CarlandiaSalesController@getDownloadSales')->name('panel.download-sales');
-
-
-	#Lista de Temas Favoritos
-	Route::get('{lang}/user/panel/themesfavorites', 'UserController@getTemaFavoritos');
-	Route::post('/panel/save/favorites', 'UserController@savedTemaFavoritos');
-
 
 	Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
 

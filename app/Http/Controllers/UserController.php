@@ -2,69 +2,61 @@
 namespace App\Http\Controllers;
 
 
-use Redirect;
-//use Controller;
-
-//opcional
-use Illuminate\Support\Facades\DB;
-use Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
-use Routing;
-use Illuminate\Support\Facades\Config;
-use Route;
-/*use Mail;*/
-use Cookie;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Illuminate\Support\Facades\Log;
-# ODBC Service Provider
-//use TCK\Odbc\OdbcServiceProvider;
-use App\Http\Controllers\PaymentsController;
-# Cargamos el modelo
-use App\Models\User;
-use App\Models\Subasta;
-use App\Models\Favorites;
-use App\Models\Newsletter;
-use App\Models\Payments;
-use App\Models\Facturas;
-use App\Models\Enterprise;
-use App\Models\Address;
-Use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
+Use App\Http\Controllers\MailController;
+use App\Http\Controllers\PaymentsController;
 use App\libs\Currency;
 use App\libs\EmailLib;
-use App\Models\V5\SubAuchouse;
 use App\libs\FormLib;
-use App\Models\V5\Customer_Presta;
+use App\libs\SeoLib;
+use App\Models\Address;
+use App\Models\Enterprise;
+use App\Models\Facturas;
+use App\Models\Newsletter;
+use App\Models\Payments;
+use App\Models\Subasta;
+use App\Models\User;
 use App\Models\V5\Address_Presta;
+use App\Models\V5\Customer_Presta;
 use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgAsigl1;
+use App\Models\V5\FgCsub;
 use App\Models\V5\FgDvc1l;
-use App\Models\V5\FxDvc0;
+use App\Models\V5\FgHces1;
+use App\Models\V5\FgOrtsec0;
+use App\Models\V5\FgSub;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\FsPaises;
+use App\Models\V5\Fx_Newsletter;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Models\V5\FxCliObcta;
 use App\Models\V5\FxCliWeb;
+use App\Models\V5\FxDvc0;
 use App\Models\V5\FxDvc0Seg;
-use App\Models\V5\FgAsigl1_Aux;
-use App\Models\V5\FgSub;
+use App\Models\V5\SubAuchouse;
 use App\Models\V5\Web_Preferences;
-use App\Models\V5\FgOrtsec0;
-use App\Models\V5\Fx_Newsletter;
 use App\Providers\ToolsServiceProvider;
+use Cookie;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Request as Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rules\Password;
-use App\libs\SeoLib;
-use App\Models\V5\FgCsub;
-use App\Models\V5\FgHces1;
+use Redirect;
+use Request;
+use Route;
+use Routing;
 
 class UserController extends Controller
 {
@@ -3150,287 +3142,7 @@ class UserController extends Controller
         return $codigos_licitador;
     }
 
-    // lotes favoritos, por subasta o por lotes
-    public function getFavoritos(){
 
-         if(!empty(Config::get('app.user_panel_group_subasta')) && Config::get('app.user_panel_group_subasta') == 1){
-            return $this->getFavoritosSubastas();
-         }else{
-            return $this->getFavoritosLots();
-
-         }
-    }
-
-    #Lotes favoritos
-    public function getFavoritosSubastas(){
-
-        $sub = new Subasta();
-
-          if(!Session::has('user'))
-        {
-            $favs = array();
-            $paginator ="";
-            $data = array(
-                    'favoritos'      => $favs,
-                    'paginator'      => $paginator,
-                );
-
-            return View::make('front::pages.panel.favoritos', array('data' => $data));
-        }
-
-         # Lista de códigos de licitacion del usuario en sesion
-        $codigos_licitador = self::getLicitCodes();
-        # Obtenemos los codigos de licitador en formato string para el IN(xxx)
-
-        $lista_codigos = '';
-         $coma = '';
-        foreach ($codigos_licitador as $key => $value) {
-            $lista_codigos .= $coma . "'". $key."-".$value."'";
-             $coma = ',';
-        }
-        $all_favorites=array();
-        $favs = array();
-        $fav  = new Favorites(false, false);
-        if(!empty($lista_codigos)){
-
-            $fav->list_licit = $lista_codigos;
-
-            $fav->page  = 'all';
-
-            $favs = $fav->getFavsByLicits();
-        }
-
-        if(!empty($favs['data'])){
-            foreach($favs['data'] as $favorites){
-                 $all_favorites[$favorites->cod_sub]['lotes'][] = $favorites;
-             }
-             foreach($all_favorites as $key_inf => $value){
-                 $sub->cod = $key_inf;
-                 $all_favorites[$key_inf]['inf']=$sub->getInfSubasta();
-             }
-        }
-
-
-        $data = array(
-                    'favoritos'      => $all_favorites,
-                    'codigos_licitador' => $codigos_licitador
-                );
-        return View::make('front::pages.panel.favoritos', array('data' => $data));
-
-
-     }
-
-    public function getFavoritosLots()
-    {
-
-        if(!Session::has('user'))
-        {
-            $favs = array();
-            $paginator ="";
-            $data = array(
-                    'favoritos'      => $favs,
-                    'paginator'      => $paginator,
-                );
-
-            return View::make('front::pages.panel.favoritos', array('data' => $data));
-        }
-        # Lista de códigos de licitacion del usuario en sesion
-        $codigos_licitador = self::getLicitCodes();
-        # Obtenemos los codigos de licitador en formato string para el IN(xxx)
-
-        $lista_codigos = '';
-         $coma = '';
-        foreach ($codigos_licitador as $key => $value) {
-            $lista_codigos .= $coma . "'". $key."-".$value."'";
-             $coma = ',';
-        }
-
-        $favs = array();
-        $fav  = new Favorites(false, false);
-        if(!empty($lista_codigos)){
-
-            $fav->list_licit = $lista_codigos;
-
-            $fav->page  = 'all';
-
-            $favs = $fav->getFavsByLicits();
-        }
-
-        if(!empty($favs) && isset($favs['data']))
-        {
-          $favs = $favs['data'];
-        }
-
-        # Paginador #
-        $page = Route::current()->parameter('page');
-
-
-        $totalItems = count($favs);
-        $itemsPerPage   = $fav->itemsPerPage = 10;
-        $urlPattern     = \Routing::slug('user/panel/favorites').'/page/(:num)';
-
-        if(empty($page) or $page == 1) {
-            $currentPage    = 1;
-        } else {
-            $currentPage    = $page;
-        }
-
-		$path = request()->fullUrlWithoutQuery(['page']);
-        $paginator = new Paginator($favs, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
-
-        $fav->page           = $currentPage;
-        # end paginador #
-
-        $favs = $fav->getFavsByLicits();
-
-        if($favs && isset($favs['data']))
-        {
-          $favs = $favs['data'];
-        }
-        else
-        {
-          $favs= array();
-        }
-
-        $data = array(
-                    'favoritos'      => $favs,
-                    'paginator'      => $paginator,
-                    'codigos_licitador' => $codigos_licitador
-                );
-
-        return View::make('front::pages.panel.favoritos', array('data' => $data));
-    }
-
-    //Ver Temas Faoritos panel
-    public function getTemaFavoritos()
-    {
-        $emp  = Config::get('app.emp');
-        if(!Session::has('user'))
-        {
-            $favs = array();
-            $paginator ="";
-            $data = array(
-                    'favoritos'      => $favs,
-                    'paginator'      => $paginator,
-                );
-
-            return View::make('front::pages.panel.temas_favorites', array('data' => $data));
-        }
-
-        $user = new User();
-        $cod_lic =  Session::get('user.cod');
-        $data['favorites'] = $user->favorites();
-
-        $data['fav']= $user->fav_themes($emp,$cod_lic);
-
-        return View::make('front::pages.panel.temas_favorites', array('data' => $data));
-    }
-
-    //Guardar Temas favoritos panel
-    public function savedTemaFavoritos(){
-        $emp  = Config::get('app.emp');
-        $user = new User();
-        $cod_cli =  Session::get('user.cod');
-
-        $user->deletefavorites($emp,$cod_cli);
-
-        $data['favorites'] = $user->favorites();
-
-        foreach($data['favorites'] as $favorites){
-           $interest = Request::input("interest_".$favorites->cod_tsec);
-           if(!empty($interest)){
-               $user->addfavorites($emp,$cod_cli,$favorites->cod_tsec);
-           }
-        }
-    }
-
-	// ---------------------------- //
-	// ------Nuevos Favoritos------ //
-	// ---------------------------- //
-
-	public function getNewFavoritos(){
-
-		if(!empty(Config::get('app.user_panel_group_subasta')) && Config::get('app.user_panel_group_subasta') == 1){
-			return $this->getFavoritosSubastasNew();
-		}else{
-			return $this->getFavoritosLotsNew();
-		}
-	}
-
-	#Lotes favoritos
-    public function getFavoritosSubastasNew(){
-
-          if(!Session::has('user'))
-        {
-            $favs = array();
-            $paginator ="";
-            $data = array(
-                    'favoritos'      => $favs,
-                    'paginator'      => $paginator,
-                );
-
-            return View::make('front::pages.panel.favoritos', array('data' => $data));
-        }
-
-        $favs = array();
-        $fav  = new Favorites(false, false);
-        $favs = $fav->getFavsNewByCodCli();
-
-		$all_favorites = array();
-
-
-		if(!isset($favs['status']) || $favs['status'] != 'error') {
-			foreach ($favs as $lot){
-				$lot->url_img = \Tools::url_img("lote_small", $lot->num_hces1, $lot->lin_hces1);
-				$url_friendly = str_slug($lot->titulo_hces1);
-				$lot->url_lot = \Routing::translateSeo('lote').$lot->id_sub."-".str_slug($lot->name).'-'.$lot->id_auc_sessions."/".$lot->id_ref.'-'.$lot->num_hces1.'-'.$url_friendly;
-
-				$all_favorites[$lot->id_sub]['lotes'][] = $lot;
-				$all_favorites[$lot->id_sub]['inf'] = [
-					'cod_sub' => $lot->id_sub,
-					'des_sub' => $lot->des_sub,
-					'name' => $lot->name,
-				];
-			}
-		}
-
-        $data = array(
-                    'favoritos'      => $all_favorites
-                );
-
-        return View::make('front::pages.panel.new_favoritos', array('data' => $data));
-
-
-     }
-
-	public function getFavoritosLotsNew()
-    {
-
-        if(!Session::has('user'))
-        {
-            $favs = array();
-            $data = array(
-                    'favoritos'      => $favs,
-                );
-
-            return View::make('front::pages.panel.favoritos', array('data' => $data));
-        }
-
-        $favs = array();
-        $fav  = new Favorites(Session::get('user.cod'), false);
-        $favs = $fav->getFavsNewByCodCli();
-
-        $data = array(
-                    'favoritos'      => $favs,
-                );
-
-        return View::make('front::pages.panel.favoritos', array('data' => $data));
-    }
-
-
-	// ---------------------------- //
-	// ----Fin Nuevos Favoritos---- //
-	// ---------------------------- //
 
      //Guardar save divisas
     public function savedDivisas(){
