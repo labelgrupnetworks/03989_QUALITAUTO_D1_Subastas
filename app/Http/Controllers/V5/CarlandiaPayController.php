@@ -17,8 +17,9 @@ use App\Models\Subasta;
 use App\Models\User;
 use App\libs\EmailLib;
 use Config;
-use Request;
+use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\View;
 use Route;
 /*
 use App\Models\V5\FxClid;
@@ -567,6 +568,31 @@ class CarlandiaPayController extends Controller
 		catch(exception $e){
 			return \View::make('front::pages.panel.contraofertaAceptada',["estado" => "aceptada" ]);
 		}
+	}
+
+	public function getCounterOffers(Request $request)
+	{
+		//Si existe o no session, se controla en el middleware. Si llegamos aquí, tenemos sesion.
+		$cod_cli = session('user.cod');
+
+		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA, FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA]);
+		$seo = (object)['noindex_follow' => true];
+
+		$data = compact('values', 'seo');
+
+        return View::make('front::pages.panel.counteroffers', compact('data'));
+	}
+
+	public function preAwards(Request $request)
+	{
+		$cod_cli = session('user.cod');
+
+		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_ONLINE, FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_VD]);
+		$seo = (object)['noindex_follow' => true];
+
+		$data = compact('values', 'seo');
+
+        return View::make('front::pages.panel.preawards', compact('data'));
 	}
 
 

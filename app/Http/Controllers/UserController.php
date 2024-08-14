@@ -20,7 +20,6 @@ use App\Models\User;
 use App\Models\V5\Address_Presta;
 use App\Models\V5\Customer_Presta;
 use App\Models\V5\FgAsigl0;
-use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgSub;
@@ -1954,31 +1953,6 @@ class UserController extends Controller
 
 		}
 
-	}
-
-	public function getCounterOffers(HttpRequest $request)
-	{
-		//Si existe o no session, se controla en el middleware. Si llegamos aquí, tenemos sesion.
-		$cod_cli = session('user.cod');
-
-		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA, FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA]);
-		$seo = (object)['noindex_follow' => true];
-
-		$data = compact('values', 'seo');
-
-        return View::make('front::pages.panel.counteroffers', compact('data'));
-	}
-
-	public function preAwards(HttpRequest $request)
-	{
-		$cod_cli = session('user.cod');
-
-		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_ONLINE, FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_VD]);
-		$seo = (object)['noindex_follow' => true];
-
-		$data = compact('values', 'seo');
-
-        return View::make('front::pages.panel.preawards', compact('data'));
 	}
 
     # Listado de ordenes de licitacion en el panel de usuario

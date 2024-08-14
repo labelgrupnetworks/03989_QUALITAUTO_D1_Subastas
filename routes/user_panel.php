@@ -4,7 +4,6 @@ use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SalesController;
 use App\Http\Controllers\Panel\SummaryController;
-use App\Http\Controllers\V5\CarlandiaSalesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
@@ -28,7 +27,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
 	# Lista de Ventas cedente
 	Route::get('{lang}/user/panel/sales', [SalesController::class, 'getSales'])->name('panel.sales');
-	// Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
+	// Diseño de panel de Tauler antiguo, No se estan utilizando (14/08/2024)
 	// Route::post('{lang}/user/panel/sales-info/', [SalesController::class, 'getInfoSales'])->name('panel.salesInfo');
 	// Route::post('{lang}/user/panel/sales-facturas/', [SalesController::class, 'getFacturasPropietarioLineas'])->name('panel.salesFactura');
 	Route::get('{lang}/user/panel/sales/active', [SalesController::class, 'getSalesToActiveAuctions'])->name('panel.sales.active');
@@ -36,10 +35,13 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::get('{lang}/user/panel/sales/pending-assign', [SalesController::class, 'getLotsSalesPendingToBeAssign'])->name('panel.sales.pending-assign');
 
 	#CARLANDIA
-	//Mis vehiculos en venta
-	Route::get('{lang}/user/panel/my-active-sales', [CarlandiaSalesController::class, 'getActiveSales'])->name('panel.active-sales');
-	Route::get('{lang}/user/panel/my-sales', [CarlandiaSalesController::class, 'getAwardSales'])->name('panel.award-sales');
-	Route::get('{lang}/user/panel/my-sales-download', [CarlandiaSalesController::class, 'getDownloadSales'])->name('panel.download-sales');
+	// Metodos de Carlandia, No se estan utilizando (14/08/2024)
+	// Route::get('{lang}/user/panel/my-active-sales', [CarlandiaSalesController::class, 'getActiveSales'])->name('panel.active-sales');
+	// Route::get('{lang}/user/panel/my-sales', [CarlandiaSalesController::class, 'getAwardSales'])->name('panel.award-sales');
+	// Route::get('{lang}/user/panel/my-sales-download', [CarlandiaSalesController::class, 'getDownloadSales'])->name('panel.download-sales');
+	// Route::get('{lang}/user/panel/pre-awards', [CarlandiaPayController::class, 'preAwards'])->name('panel.pre_awards');
+	// Route::get('{lang}/user/panel/counteroffers', [CarlandiaPayController::class, 'getCounterOffers'])->name('panel.counteroffers');
+
 
 	Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
 
@@ -57,11 +59,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
 	#Lista de Temas Favoritos
 	Route::get('{lang}/user/panel/pending_bills', 'UserController@getPendingBills');
-
-
-	# Para Carlandia
-	Route::get('{lang}/user/panel/pre-awards', 'UserController@preAwards')->name('panel.pre_awards');
-	Route::get('{lang}/user/panel/counteroffers', 'UserController@getCounterOffers')->name('panel.counteroffers');
 
 	# Preferencias
 	Route::get('{lang}/user/panel/preferences', 'UserController@getPreferencesAndFamily')->name('panel.preferences');
