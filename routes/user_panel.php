@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
+use App\Http\Controllers\Panel\SalesController;
 use App\Http\Controllers\Panel\SummaryController;
+use App\Http\Controllers\V5\CarlandiaSalesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
@@ -10,6 +12,7 @@ use Illuminate\Support\Facades\View;
 # Obligatorio estar registrado.
 Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
+	# Resumen
 	Route::prefix('{lang}/user/panel/summary')->group(function () {
 		Route::get('/active-sales', [SummaryController::class, 'summaryActiveSales'])->name('panel.summary.active-sales');
 		Route::get('/finish-sales', [SummaryController::class, 'summaryFinishSales'])->name('panel.summary.finish-sales');
@@ -17,26 +20,25 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 		Route::get('/favorites', [SummaryController::class, 'favoritesCarrousel']);
 	});
 
+	# Lista de Favoritos
 	Route::get('{lang}/user/panel/favorites', [FavoritesController::class, 'getFavoritos'])->name('panel.favorites');
-	Route::get('{lang}/user/panel/favorites/page/{page}', [FavoritesController::class, 'getFavoritos']);
+	Route::get('{lang}/user/panel/favorites/page/{page}', [FavoritesController::class, 'getFavoritos']); //No se esta utilizando (14/08/2024)
 	Route::get('{lang}/user/panel/themesfavorites', [FavoritesController::class, 'getTemaFavoritos'])->name('panel.themesfavorites');
 	Route::post('/panel/save/favorites', [FavoritesController::class, 'savedTemaFavoritos'])->name('panel.save.favorites');
 
 	# Lista de Ventas cedente
-	Route::get('{lang}/user/panel/sales', 'UserController@getSales')->name('panel.sales');
-	Route::post('{lang}/user/panel/sales-info/', 'UserController@getInfoSales')->name('panel.salesInfo');
-	Route::post('{lang}/user/panel/sales-facturas/', 'UserController@getFacturasPropietarioLineas')->name('panel.salesFactura');
-
-	Route::get('{lang}/user/panel/sales/active', 'UserController@getSalesToActiveAuctions')->name('panel.sales.active');
-	Route::get('{lang}/user/panel/sales/finish', 'UserController@invoiceSalesOfFinishAuctions')->name('panel.sales.finish');
-	Route::get('{lang}/user/panel/sales/pending-assign', 'UserController@getLotsSalesPendingToBeAssign')->name('panel.sales.pending-assign');
-
+	Route::get('{lang}/user/panel/sales', [SalesController::class, 'getSales'])->name('panel.sales');
+	Route::post('{lang}/user/panel/sales-info/', [SalesController::class, 'getInfoSales'])->name('panel.salesInfo');
+	Route::post('{lang}/user/panel/sales-facturas/', [SalesController::class, 'getFacturasPropietarioLineas'])->name('panel.salesFactura');
+	Route::get('{lang}/user/panel/sales/active', [SalesController::class, 'getSalesToActiveAuctions'])->name('panel.sales.active');
+	Route::get('{lang}/user/panel/sales/finish', [SalesController::class, 'invoiceSalesOfFinishAuctions'])->name('panel.sales.finish');
+	Route::get('{lang}/user/panel/sales/pending-assign', [SalesController::class, 'getLotsSalesPendingToBeAssign'])->name('panel.sales.pending-assign');
 
 	#CARLANDIA
 	//Mis vehiculos en venta
-	Route::get('{lang}/user/panel/my-active-sales', 'V5\CarlandiaSalesController@getActiveSales')->name('panel.active-sales');
-	Route::get('{lang}/user/panel/my-sales', 'V5\CarlandiaSalesController@getAwardSales')->name('panel.award-sales');
-	Route::get('{lang}/user/panel/my-sales-download', 'V5\CarlandiaSalesController@getDownloadSales')->name('panel.download-sales');
+	Route::get('{lang}/user/panel/my-active-sales', [CarlandiaSalesController::class, 'getActiveSales'])->name('panel.active-sales');
+	Route::get('{lang}/user/panel/my-sales', [CarlandiaSalesController::class, 'getAwardSales'])->name('panel.award-sales');
+	Route::get('{lang}/user/panel/my-sales-download', [CarlandiaSalesController::class, 'getDownloadSales'])->name('panel.download-sales');
 
 	Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
 
