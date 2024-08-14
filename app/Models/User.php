@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
+use App\Models\V5\FgLicit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use \Request;
@@ -1024,6 +1025,22 @@ class User
         $sql = "SELECT COD_LICIT, SUB_LICIT FROM FGLICIT WHERE CLI_LICIT = :cod_cli AND EMP_LICIT = :emp";
         return DB::select($sql, $bindings);
     }
+
+	/**
+	 * Recogemos todos los codigos de licitador de un usuario CLI en concreto
+	 * Este metodo substituye a @method $this->getLicitCodes junto al @method UserController::getLicitCodes
+	 * @param $codCli
+	 * @return array
+	 */
+	public function getLicitCodesGroupBySub($codCli)
+	{
+		return FgLicit::query()
+			->select('sub_licit', 'cod_licit')
+			->where('cli_licit', $codCli)
+			->get()
+			->pluck('cod_licit', 'sub_licit')
+			->toArray();
+	}
 
     # Recogemos codigo de licitador de un usuario en esa subasta
     public function getCodLicit()

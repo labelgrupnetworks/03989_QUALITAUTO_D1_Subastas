@@ -43,15 +43,16 @@ class OrdersController extends Controller
 	private function orderbidsListSubastas(Request $request)
 	{
 		$favorites = null;
+		$codCli = Session::get('user.cod');
+
 		if (!empty($request->input('favorites'))) {
 			$favorites = true;
 			$data['favorites'] = true;
-			# Lista de códigos de licitacion del usuario en sesion
-
-			$data['codigos_licitador'] = self::getLicitCodes();
+			$data['codigos_licitador'] = (new User)->getLicitCodesGroupBySub($codCli);
 		}
+
 		$sub = new Subasta();
-		$sub->licit = Session::get('user.cod');
+		$sub->licit = $codCli;
 
 		$subastas_active = $favorites
 			? $sub->getActiveAuctionsUserHasFavorites()
@@ -67,11 +68,8 @@ class OrdersController extends Controller
 			'cods_sub' => request('cods_sub', []),
 		];
 
-		if (!empty(Config::get('app.lots_closed_inpanel'))) {
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, true, $filters);
-		} else {
-			$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, false, $filters);
-		}
+		$showLotsClosed = Config::get('app.lots_closed_inpanel', false);
+		$all_pujas_temp = $sub->getAllBidsAndOrders($favorites, $showLotsClosed, $filters);
 
 		foreach ($all_pujas_temp as $temp_pujas) {
 			$all_pujas[$temp_pujas->cod_sub]['lotes'][] = $temp_pujas;
@@ -95,19 +93,16 @@ class OrdersController extends Controller
 		$data = array();
 		$page = Route::current()->parameter('page');
 
-		$sub->page  = 'all';
+		$sub->page = 'all';
 
 		if (!empty($request->input('order')) && $request->input('order') == 'desc') {
 			$sub->where_filter = 'desc';
-		} else {
 		}
 
 		$queryValues = $sub->getAllBidsAndOrders();
 		$totalItems = count($queryValues);
 
-
 		$itemsPerPage = $sub->itemsPerPage = 10;
-		//$urlPattern     = \Routing::slug('user/panel/orders').'/page/(:num)';
 
 		if (empty($page) or $page == 1) {
 			$currentPage    = 1;
@@ -119,29 +114,13 @@ class OrdersController extends Controller
 		$paginator = new Paginator($queryValues, $totalItems, $itemsPerPage, $currentPage, ['path' => $path]);
 
 		$sub->page = $currentPage;
-		//$paginator->numPages = ($paginator->numPages -1);
 
 		$data['values'] = $queryValues;
 		$data['paginator'] = $paginator;
 		$data['currency'] = $sub->getCurrency();
-		//}
 		$data['seo'] = new \stdClass();
 		$data['seo']->noindex_follow = true;
 
 		return View::make('front::pages.panel.orders', array('data' => $data));
-	}
-
-	# Lista en formato string de codigos de licitador del usuario en sesión
-	public static function getLicitCodes()
-	{
-		$User = new User();
-
-		$User->cod_cli = Session::get('user.cod');
-		$codigos_licitador = array();
-		foreach ($User->getLicitCodes() as $key) {
-			$codigos_licitador[$key->sub_licit] = $key->cod_licit;
-		}
-
-		return $codigos_licitador;
 	}
 }
