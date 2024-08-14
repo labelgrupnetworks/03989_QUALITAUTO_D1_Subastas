@@ -17,7 +17,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 		Route::get('/favorites', [SummaryController::class, 'favoritesCarrousel']);
 	});
 
-	Route::get('{lang}/user/panel/new-favorites', [FavoritesController::class, 'getNewFavoritos'])->name('panel.newfavorites');
 	Route::get('{lang}/user/panel/favorites', [FavoritesController::class, 'getFavoritos'])->name('panel.favorites');
 	Route::get('{lang}/user/panel/favorites/page/{page}', [FavoritesController::class, 'getFavoritos']);
 	Route::get('{lang}/user/panel/themesfavorites', [FavoritesController::class, 'getTemaFavoritos'])->name('panel.themesfavorites');

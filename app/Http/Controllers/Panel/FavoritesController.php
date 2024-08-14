@@ -17,34 +17,25 @@ use Illuminate\Support\Facades\View;
 
 class FavoritesController extends Controller
 {
-
-	/**
-	 * Obtener los favoritos por código de cliente, no por licitador
-	 * No se esta utiliando (14/08/2024)
-	 */
-	public function getNewFavoritos()
+	// lotes favoritos, por subasta o por lotes
+	public function getFavoritos()
 	{
-		//El config todos lo tienen a 1, por lo que no se esta utilizando
-		if (!Config::get('app.user_panel_group_subasta', 1)) {
-			return $this->getFavoritosLotsNew();
-		}
+		//mostrar favoritos por código de cliente o por licitador, No se esta utiliando (14/08/2024)
+		$showFavsByCodCli = Config::get('app.show_favorites_by_cod_cli', 0);
 
-		return $this->getFavoritosSubastasNew();
+		//El config todos lo tienen a 1, por lo que no se esta utilizando
+		$showFavsGroupBySub = Config::get('app.user_panel_group_subasta', 1);
+
+		return match (true) {
+			!$showFavsGroupBySub && $showFavsByCodCli => $this->getFavoritosLotsNew(),
+			!$showFavsGroupBySub => $this->getFavoritosLots(),
+			$showFavsByCodCli => $this->getFavoritosSubastasNew(),
+			default => $this->getFavoritosSubastas(),
+		};
 	}
 
 	private function getFavoritosSubastasNew()
 	{
-		if (!Session::has('user')) {
-			$favs = array();
-			$paginator = "";
-			$data = array(
-				'favoritos'      => $favs,
-				'paginator'      => $paginator,
-			);
-
-			return View::make('front::pages.panel.favoritos', array('data' => $data));
-		}
-
 		$favs = array();
 		$fav  = new Favorites(false, false);
 		$favs = $fav->getFavsNewByCodCli();
@@ -76,16 +67,6 @@ class FavoritesController extends Controller
 
 	private function getFavoritosLotsNew()
 	{
-
-		if (!Session::has('user')) {
-			$favs = array();
-			$data = array(
-				'favoritos'      => $favs,
-			);
-
-			return View::make('front::pages.panel.favoritos', array('data' => $data));
-		}
-
 		$favs = array();
 		$fav  = new Favorites(Session::get('user.cod'), false);
 		$favs = $fav->getFavsNewByCodCli();
@@ -97,32 +78,9 @@ class FavoritesController extends Controller
 		return View::make('front::pages.panel.favoritos', array('data' => $data));
 	}
 
-	// lotes favoritos, por subasta o por lotes
-	public function getFavoritos()
-	{
-		//El config todos lo tienen a 1, por lo que no se esta utilizando
-		if (!Config::get('app.user_panel_group_subasta', 1)) {
-			return $this->getFavoritosLots();
-		}
-
-		return $this->getFavoritosSubastas();
-	}
-
-	#Lotes favoritos
-	public function getFavoritosSubastas()
+	private function getFavoritosSubastas()
 	{
 		$sub = new Subasta();
-
-		if (!Session::has('user')) {
-			$favs = array();
-			$paginator = "";
-			$data = array(
-				'favoritos'      => $favs,
-				'paginator'      => $paginator,
-			);
-
-			return View::make('front::pages.panel.favoritos', array('data' => $data));
-		}
 
 		# Lista de códigos de licitacion del usuario en sesion
 		$codCli = Session::get('user.cod');
@@ -165,19 +123,8 @@ class FavoritesController extends Controller
 		return View::make('front::pages.panel.favoritos', array('data' => $data));
 	}
 
-	public function getFavoritosLots()
+	private function getFavoritosLots()
 	{
-
-		if (!Session::has('user')) {
-			$favs = array();
-			$paginator = "";
-			$data = array(
-				'favoritos'      => $favs,
-				'paginator'      => $paginator,
-			);
-
-			return View::make('front::pages.panel.favoritos', array('data' => $data));
-		}
 		# Lista de códigos de licitacion del usuario en sesion
 		$codCli = Session::get('user.cod');
 		$codigos_licitador = (new User)->getLicitCodesGroupBySub($codCli);
@@ -207,7 +154,6 @@ class FavoritesController extends Controller
 
 		# Paginador #
 		$page = Route::current()->parameter('page');
-
 
 		$totalItems = count($favs);
 		$itemsPerPage   = $fav->itemsPerPage = 10;
@@ -245,21 +191,10 @@ class FavoritesController extends Controller
 	public function getTemaFavoritos()
 	{
 		$emp  = Config::get('app.emp');
-		if (!Session::has('user')) {
-			$favs = array();
-			$paginator = "";
-			$data = array(
-				'favoritos'      => $favs,
-				'paginator'      => $paginator,
-			);
-
-			return View::make('front::pages.panel.temas_favorites', array('data' => $data));
-		}
-
 		$user = new User();
 		$cod_lic =  Session::get('user.cod');
-		$data['favorites'] = $user->favorites();
 
+		$data['favorites'] = $user->favorites();
 		$data['fav'] = $user->fav_themes($emp, $cod_lic);
 
 		return View::make('front::pages.panel.temas_favorites', array('data' => $data));
