@@ -28,8 +28,9 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
 	# Lista de Ventas cedente
 	Route::get('{lang}/user/panel/sales', [SalesController::class, 'getSales'])->name('panel.sales');
-	Route::post('{lang}/user/panel/sales-info/', [SalesController::class, 'getInfoSales'])->name('panel.salesInfo');
-	Route::post('{lang}/user/panel/sales-facturas/', [SalesController::class, 'getFacturasPropietarioLineas'])->name('panel.salesFactura');
+	// Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
+	// Route::post('{lang}/user/panel/sales-info/', [SalesController::class, 'getInfoSales'])->name('panel.salesInfo');
+	// Route::post('{lang}/user/panel/sales-facturas/', [SalesController::class, 'getFacturasPropietarioLineas'])->name('panel.salesFactura');
 	Route::get('{lang}/user/panel/sales/active', [SalesController::class, 'getSalesToActiveAuctions'])->name('panel.sales.active');
 	Route::get('{lang}/user/panel/sales/finish', [SalesController::class, 'invoiceSalesOfFinishAuctions'])->name('panel.sales.finish');
 	Route::get('{lang}/user/panel/sales/pending-assign', [SalesController::class, 'getLotsSalesPendingToBeAssign'])->name('panel.sales.pending-assign');

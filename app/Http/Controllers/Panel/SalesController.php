@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 class SalesController extends Controller
 {
 	# Adjudicaciones del usuario en sesion
-	public function getSales()
+	public function getSales(Request $request)
 	{
 		$user = new User();
 		$cod_cli = Session::get('user.cod');
@@ -30,7 +30,7 @@ class SalesController extends Controller
 		}
 
 		$user->cod_cli = $cod_cli;
-		$lotes = $user->getSales(request()->all());
+		$lotes = $user->getSales($request->all());
 
 		$condAuctions = $lotes->pluck('cod_sub')->unique()->values();
 		$pujas = FgAsigl1::select('ref_asigl1, lin_asigl1, licit_asigl1, imp_asigl1, fec_asigl1', 'sub_asigl1')
@@ -61,9 +61,12 @@ class SalesController extends Controller
 		return view('front::pages.panel.sales', $data);
 	}
 
+	/**
+	 * @deprecated Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
+	 * @todo Al eliminar, revisar si se pueden eliminar metodos relacionados
+	 */
 	public function getInfoSales()
 	{
-
 		$period = null;
 		$cod_subs = null;
 
@@ -86,7 +89,6 @@ class SalesController extends Controller
 			return response('Not auctions', 404);
 		}
 
-
 		$infoSales = $fgAsigl0->getLotsInfoSales($cod_subs, $cod_cli);
 
 		$facturasCabeceras = (new FxDvc0())->getFacturasCabecerasPropietario($cod_cli, $period[0] ?? null);
@@ -107,6 +109,10 @@ class SalesController extends Controller
 		return response($infoSales);
 	}
 
+	/**
+	 * @deprecated Diseño de panel de Tauler antiguo, No se esta utilizando (14/08/2024)
+	 * @todo Al eliminar, revisar si se pueden eliminar metodos relacionados
+	 */
 	public function getFacturasPropietarioLineas()
 	{
 		$anum = request('anum');
