@@ -9,20 +9,6 @@ use Illuminate\Support\Facades\View;
 # Obligatorio estar registrado.
 Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
-	# Panel de usuario
-	#Deprecated revisar
-	//Route::get('{lang}/user/panel', 'UserController@panel');
-
-	# Lista de pujas
-	#Deprecated revisar
-	/*Route::get('{lang}/user/panel/bids', 'UserController@bidsList');
-		Route::get('{lang}/user/panel/bids'.'/page/{page}', 'UserController@bidsList');*/
-
-	# Lista de Adjudicaciones
-	# Deprecated revisar
-	//Route::get('{lang}/user/panel/allotments', 'UserController@getAdjudicaciones');
-	//Route::get('{lang}/user/panel/allotments'.'/page/{page}', 'UserController@getAdjudicaciones');
-
 	Route::prefix('{lang}/user/panel/summary')->group(function () {
 		Route::get('/active-sales', [SummaryController::class, 'summaryActiveSales'])->name('panel.summary.active-sales');
 		Route::get('/finish-sales', [SummaryController::class, 'summaryFinishSales'])->name('panel.summary.finish-sales');

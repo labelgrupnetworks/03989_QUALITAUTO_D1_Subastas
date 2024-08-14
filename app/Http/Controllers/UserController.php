@@ -1907,44 +1907,6 @@ class UserController extends Controller
 		#pongo que siempre vaya a la home
         #return Redirect::back();
     }
-//2018_01_19 no se esta usando
-   /*
-    # Subastas en las que está participando el usuario seleccionado
-    public function getPujas($cod = false, $lote = false)
-    {
-        $user = new User();
-        $user->cod  = $cod;
-        $user->lote = $lote;
-
-        # COD_CLIWEB
-        $user->cod_cliweb   = '00001'; // usuario en sesión
-        return json_encode($user->getPujas());
-    }
-
-    # Ordenes de licitacion del usuario en sesión
-    public function getOrdenes($cod = false, $lote = false)
-    {
-        $user = new User();
-        $user->cod  = $cod;
-        $user->lote = $lote;
-
-        # COD_CLIWEB
-        $user->cod_cliweb   = '00001'; // usuario en sesión
-
-        return json_encode($user->getOrdenes());
-    }
-
-    public function panel()
-    {
-        $data = array(
-                'name' => trans(\Config::get('app.theme').'-app.user_panel.panel_usuario'),
-                'section' => "favorites",
-                );
-
-        return View::make('front::pages.panel.main', array('data' => $data));
-
-    }
-   */
 
 	/**
 	 * Generea un certificado del lote en el servidor del cliente
