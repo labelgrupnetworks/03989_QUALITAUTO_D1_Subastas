@@ -123,7 +123,7 @@ class SalesController extends Controller
 
 		$lineas = (new FgDvc1l())->getFacturasLineasPropietario($anum, $num, $cod_cli);
 
-		$facturaPdf = $this->bills($anum, $num, true);
+		$facturaPdf = (new AllotmentsAndBillsController)->bills($anum, $num, true);
 
 		return view('front::pages.panel.sales.invoice_assignor_linea', ['lots' => $lineas, 'facturaPdf' => $facturaPdf])->render();
 	}

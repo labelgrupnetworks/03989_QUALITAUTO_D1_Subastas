@@ -58,9 +58,6 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
 	Route::post('api-ajax/shipping_costs', 'PaymentsController@shippingCosts');
 
-	#Lista de Temas Favoritos
-	Route::get('{lang}/user/panel/pending_bills', [AllotmentsAndBillsController::class, 'getPendingBills']); //No se esta utilizando (14/08/2024) (solo tienen vista inbusa y csubastas)
-
 	# Preferencias
 	Route::get('{lang}/user/panel/preferences', 'UserController@getPreferencesAndFamily')->name('panel.preferences');
 	Route::post('user/panel/preferences', 'UserController@getSubfamilyForPreferences')->name('panel.preferences_subfamily');
@@ -79,8 +76,7 @@ Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'
 Route::get('{lang}/user/panel/orders' . '/page/{page}', [OrdersController::class, 'orderbidsList']);
 
 Route::prefix('{lang}/user/panel/allotments')->group(function () {
-	Route::get('/outstanding', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePago']); //no funciona y creo que no la usa nadie (14/08/2024)
-	Route::get('/paid', [AllotmentsAndBillsController::class, 'getAdjudicacionesPagadas']); //no funciona y creo que no la usa nadie (14/08/2024)
+
 	Route::get('/shopping-cart', [AllotmentsAndBillsController::class, 'getDirectSaleAdjudicaciones'])->name('panel.allotment.diectsale');
 	Route::get('/proforma/{apre}-{npre}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoByProforma'])->name('panel.allotment.proforma');
 	Route::get('/{cod_sub}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoBySub'])->name('panel.allotment.sub');
@@ -111,8 +107,4 @@ Route::get('{lang}/user/panel/transferpayment', function () {
 
 #NFT
 Route::get('user/panel/loadPendingPayTransferNft', 'UserController@nftTransferPay');
-
-
-#dejar esto al final, no se quien lo puso ni que  sentido tiene que coja cualquier valor
-Route::get('{lang}/user/panel/{value}', [AllotmentsAndBillsController::class, 'myBills']); //revisar si se puede eliminar
 Route::post('/change-passw-user', 'UserController@changePassw');
