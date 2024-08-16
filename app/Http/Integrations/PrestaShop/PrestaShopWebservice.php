@@ -1,5 +1,5 @@
 <?php
-namespace App\libs;
+namespace App\Http\Integrations\PrestaShop;
 /*
 * 2007-2013 PrestaShop
 *
@@ -45,7 +45,7 @@ class PrestaShopWebservice
 	/** @var string PS version */
 	protected $version;
 
-	/** @var array compatible versions of PrestaShop Webservice */
+	/** @var string compatible versions of PrestaShop Webservice */
 	const psCompatibleVersionsMin = '1.4.0.0';
 	const psCompatibleVersionsMax = '1.7.99.99';
 

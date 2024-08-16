@@ -6,47 +6,50 @@
  * and open the template in the editor.
  */
 
-namespace App\Models\V5;
+namespace App\Http\Integrations\PrestaShop\DTO;
 
 /**
  * Description of Customer_Presta
  *
  * @author enadal
  */
-class Address_Presta{
-    
-    public $id_customer;
-    public $alias;
-    public $dni;
-    public $lastname;
-    public $firstname;
-    public $address1;
-    public $city;
-    public $id_country;
-    
-    public $postcode;
-    public $phone;
-    public $id_state; //provincias en España
+class Address
+{
 
-    public function __construct($id_customer, $alias, $dni, $lastname, $firstname, $address1, $city, $id_country, $postcode = "", $phone = "", $id_state = ""){
-        //requeridos
-        $this->id_customer = $id_customer;
-        $this->alias = $alias;
-        $this->dni = $dni;
-        $this->lastname = $lastname;
-        $this->firstname = $firstname;
-        $this->address1 = $address1;
-        $this->city= $city;
-        $this->id_country = $id_country;
-        
-        //Opcionales
-        $this->postcode = $postcode;
-        $this->phone = $phone;
-        $this->id_state = $id_state;
-    }
-    
-    public function getXml(){
-        return <<<XML
+	public $id_customer;
+	public $alias;
+	public $dni;
+	public $lastname;
+	public $firstname;
+	public $address1;
+	public $city;
+	public $id_country;
+
+	public $postcode;
+	public $phone;
+	public $id_state; //provincias en España
+
+	public function __construct($id_customer, $alias, $dni, $lastname, $firstname, $address1, $city, $id_country, $postcode = "", $phone = "", $id_state = "")
+	{
+		//requeridos
+		$this->id_customer = $id_customer;
+		$this->alias = $alias;
+		$this->dni = $dni;
+		$this->lastname = $lastname;
+		$this->firstname = $firstname;
+		$this->address1 = $address1;
+		$this->city = $city;
+		$this->id_country = $id_country;
+
+		//Opcionales
+		$this->postcode = $postcode;
+		$this->phone = $phone;
+		$this->id_state = $id_state;
+	}
+
+	public function getXml()
+	{
+		return <<<XML
         <prestashop>
             <address>
                 <id_customer>$this->id_customer</id_customer>
@@ -65,6 +68,5 @@ class Address_Presta{
             </address>
         </prestashop>
 XML;
-    }
-
+	}
 }

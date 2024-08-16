@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Integrations\PrestaShop;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use SimpleXMLElement;
 
-use App\libs\PrestaShopWebservice;
-use App\Models\V5\Customer_Presta as CustomerPresta;
-use App\Models\V5\Address_Presta as AddressPresta;
+use App\Http\Integrations\PrestaShop\PrestaShopWebservice;
+use App\Http\Integrations\PrestaShop\DTO\Customer;
+use App\Http\Integrations\PrestaShop\DTO\Address;
 
 
 /**
  * @Pendiente
  * Mover variables de entorno a .env
  */
-class PrestashopController extends Controller{
+class PrestashopConnector {
 
     public $webService;
 
@@ -58,10 +58,10 @@ class PrestashopController extends Controller{
 
     /**
      * Crea un usuario si este no existe
-     * @param CustomerPresta $customer
-     * @return boolean
+     * @param Customer $customer
+     * @return SimpleXMLElement
      */
-    public function createCustomer(CustomerPresta $customer) {
+    public function createCustomer(Customer $customer) {
 
         if ($this->existCustomer($customer->email)){
             return false;
@@ -78,10 +78,10 @@ class PrestashopController extends Controller{
 
     /**
      * Añade una dirección a un usuario
-     * @param AddressPresta $address
+     * @param Address $address
      * @return type
      */
-    public function createAddress(AddressPresta $address) {
+    public function createAddress(Address $address) {
 
         $xml = new SimpleXMLElement($address->getXml());
         $newAddress = $this->webService->add([
@@ -161,13 +161,13 @@ class PrestashopController extends Controller{
 
     /**
      * @deprecated
-     * @see PrestashopController::createAddress
+     * @see createAddress
      * No se esta utilizando, peor lo guardo como ejemplo por si alguna vez hace falta
      * Metodo llamando recuperando el xml directamente del webservice
      *
      * @param AddressPresta $address
      */
-    public function createAddress_deprecated(AddressPresta $address) {
+    public function createAddress_deprecated(Address $address) {
 
         $xmlResponse = $this->webService->get(['url' => PS_SHOP_PATH . '/api/addresses?schema=blank']);
         $addressXML = $xmlResponse->address[0];

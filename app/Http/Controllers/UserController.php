@@ -13,8 +13,6 @@ use App\Models\Address;
 use App\Models\Enterprise;
 use App\Models\Newsletter;
 use App\Models\User;
-use App\Models\V5\Address_Presta;
-use App\Models\V5\Customer_Presta;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FsIdioma;
@@ -1320,31 +1318,6 @@ class UserController extends Controller
 					curl_close($ch);
 				}
 
-
-				######### CREAR USUARIO EN PRESTASHOP ##########
-				/**
-				 * @Pendiente
-				 * Multiples direcciones
-				 *
-				 * Eloy 21/02/22: Cambiamos gallery a Laravel, por lo que ya no hace falta
-				 * registrar en presta
-				 * */
-
-				/* if (!empty(\Config::get("app.ps_activate"))){
-
-					$last = (!empty(Request::input('last_name'))) ? Request::input('last_name') : Request::input('usuario');
-                    $name = Request::input('usuario');
-
-                    $resp = $this->addUserToPresta(Request::input('password'), $last, $name, Request::input('email'), Request::input('sexo'), Request::input('date'));
-
-                    if($resp != false){
-                        $id_Presta = $resp->customer->id;
-                        $this->addAressToPresta($id_Presta, Request::input('nif'), $last, $name, Request::input('codigoVia') . " " . Request::input('direccion'), mb_substr(Input::get('poblacion'), 0, 30, 'UTF-8'), Input::get('clid_pais'), Request::input('cpostal'), Request::input('telefono'));
-                    }
-                } */
-				######### FIN CREAR USUARIO EN PRESTASHOP ##########
-
-
 				if ((Config::get('app.regtype') == 1 || Config::get('app.regtype') == 2) && config('app.login_when_sign', 1) && empty(Config::get("app.ps_activate"))) {
 
 					$this->login_post_ajax($request);
@@ -1702,69 +1675,6 @@ class UserController extends Controller
 		}
 	}
 
-
-	/**
-	 * Crear usuario en prestashop
-	 * @param string $passwd contraseña
-	 * @param string $lastname apellido
-	 * @param string $firstname nombre
-	 * @param string $email mail
-	 * @param string $id_gender genero(H | M)
-	 * @param string $birthday fecha nacimiento
-	 * @return PrestashopController
-	 */
-	private function addUserToPresta(string $passwd, string $lastname, string $firstname, string $email, string $id_gender, string $birthday)
-	{
-
-		if (empty($passwd) || empty($lastname) || empty($firstname) || empty($email) || empty($id_gender) || empty($birthday)) {
-			return false;
-		}
-
-		$birthday_cli_temp = $birthday;
-		$birthday_cli = date('Y-m-d', strtotime($birthday_cli_temp));
-
-		$sexo = ($id_gender == "H") ? 1 : 2;
-		$customer = new Customer_Presta($passwd, $lastname, $firstname, $email, $sexo, $birthday_cli);
-
-		$prestaController = new PrestashopController();
-		//$result = $prestaCustomer->createCustomer(Request::input('password'), Request::input('last_name'), Request::input('usuario'), Request::input('email'), $sexo, $fecnac_pcli);
-		$result = $prestaController->createCustomer($customer);
-
-		return $result;
-	}
-
-	/**
-	 *
-	 * @PENDIENTE
-	 *  - comprobar si getIdCountry no retorna valor
-	 *
-	 * @param type $id_customer
-	 * @param type $alias
-	 * @param type $dni
-	 * @param type $lastname
-	 * @param type $firstname
-	 * @param type $address1
-	 * @param type $city
-	 * @param type $id_country codigo del pais, ej: "ES"
-	 */
-	private function addAressToPresta($id_customer, $dni, $lastname, $firstname, $address1, $city, $id_country, $postcode, $phone)
-	{
-
-		if (empty($id_customer) || empty($dni) || empty($lastname) || empty($firstname) || empty($address1) || empty($city) || empty($id_country)) {
-			return false;
-		}
-
-		$prestaController = new PrestashopController();
-
-		//convertir el codigo pais al id de pais en prestashop
-		$id_country = $prestaController->getIdCountry($id_country);
-
-		//crear un alias con apellido y direccion
-		$alias = $lastname . "_address";
-
-		$addressPresta = new Address_Presta($id_customer, $alias, $dni, $lastname, $firstname, $address1, $city, $id_country, $postcode, $phone);
-		$prestaController->createAddress($addressPresta);
-	}
 
 	//******************************************************************************************************
 	// Creación de un hash a partir del código de empresa y de subasta
