@@ -16,6 +16,7 @@ use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+#[\AllowDynamicProperties]
 class User
 {
     //protected $table = 'FXCLIWEB';
@@ -48,6 +49,7 @@ class User
     public $divisa;
 	public $cod_sub;
 	public $seudo_cli;
+	//public $cod;
 
 	public function __construct(array $atributtes = [])
 	{
