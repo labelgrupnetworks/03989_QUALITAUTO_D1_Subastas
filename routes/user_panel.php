@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\AllotmentsAndBillsController;
 use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SalesController;
@@ -50,15 +51,15 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::post('api-ajax/client/update', 'UserController@updateClientInfo');
 	Route::post('api-ajax/client/update/password', 'UserController@updatePassword');
 
-	Route::get('/factura/{afral}-{nfral}', 'UserController@bills');
-	Route::get('/prefactura/{cod_sub}', 'UserController@proformaInvoiceFile');
+	Route::get('/factura/{afral}-{nfral}', [AllotmentsAndBillsController::class, 'bills']);
+	Route::get('/prefactura/{cod_sub}', [AllotmentsAndBillsController::class, 'proformaInvoiceFile']);
 
 	Route::get('/{lang}/user/panel/modification-orders', 'UserController@ordersClient');
 
 	Route::post('api-ajax/shipping_costs', 'PaymentsController@shippingCosts');
 
 	#Lista de Temas Favoritos
-	Route::get('{lang}/user/panel/pending_bills', 'UserController@getPendingBills');
+	Route::get('{lang}/user/panel/pending_bills', [AllotmentsAndBillsController::class, 'getPendingBills']); //No se esta utilizando (14/08/2024) (solo tienen vista inbusa y csubastas)
 
 	# Preferencias
 	Route::get('{lang}/user/panel/preferences', 'UserController@getPreferencesAndFamily')->name('panel.preferences');
@@ -77,19 +78,19 @@ Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'
 //solamente se utiliza con la vista por lotes, pero nadie la usa (14/08/2024)
 Route::get('{lang}/user/panel/orders' . '/page/{page}', [OrdersController::class, 'orderbidsList']);
 
-Route::get('{lang}/user/panel/allotments/outstanding', 'UserController@getAdjudicacionesPendientePago');
-Route::get('{lang}/user/panel/allotments/paid', 'UserController@getAdjudicacionesPagadas');
-Route::get('{lang}/user/panel/allotments/shopping-cart', 'UserController@getDirectSaleAdjudicaciones')->name('panel.allotment.diectsale');
-Route::get('{lang}/user/panel/allotments/proforma/{apre}-{npre}', 'UserController@getAdjudicacionesPendientePagoByProforma')->name('panel.allotment.proforma');
-Route::get('{lang}/user/panel/allotments/{cod_sub}', 'UserController@getAdjudicacionesPendientePagoBySub')->name('panel.allotment.sub');
-Route::get('{lang}/user/panel/allotments', 'UserController@getAllAdjudicaciones')->name('panel.allotments');
-Route::post('{lang}/user/panel/allotments/certificate', 'UserController@generateAuthenticityCertificate')->name('panel.allotment.certifiacte');
+Route::prefix('{lang}/user/panel/allotments')->group(function () {
+	Route::get('/outstanding', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePago']); //no funciona y creo que no la usa nadie (14/08/2024)
+	Route::get('/paid', [AllotmentsAndBillsController::class, 'getAdjudicacionesPagadas']); //no funciona y creo que no la usa nadie (14/08/2024)
+	Route::get('/shopping-cart', [AllotmentsAndBillsController::class, 'getDirectSaleAdjudicaciones'])->name('panel.allotment.diectsale');
+	Route::get('/proforma/{apre}-{npre}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoByProforma'])->name('panel.allotment.proforma');
+	Route::get('/{cod_sub}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoBySub'])->name('panel.allotment.sub');
+	Route::get('/', [AllotmentsAndBillsController::class, 'getAllAdjudicaciones'])->name('panel.allotments');
+	Route::post('/certificate', [AllotmentsAndBillsController::class, 'generateAuthenticityCertificate'])->name('panel.allotment.certifiacte');
+});
 
-
-Route::post('{lang}/user/panel/shipment', 'UserController@getShipment')->name('panel.shipment');
-
-Route::get('{lang}/user/panel/bills', 'UserController@allBills')->name('panel.bills');
-Route::get('{lang}/user/panel/allotments-bills', 'UserController@getInvoiceOverviewView')->name('panel.allotment-bills');
+Route::post('{lang}/user/panel/shipment', [AllotmentsAndBillsController::class, 'getShipment'])->name('panel.shipment');
+Route::get('{lang}/user/panel/bills', [AllotmentsAndBillsController::class, 'allBills'])->name('panel.bills');
+Route::get('{lang}/user/panel/allotments-bills', [AllotmentsAndBillsController::class, 'getInvoiceOverviewView'])->name('panel.allotment-bills');
 
 #carrito de la compra
 Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
@@ -113,5 +114,5 @@ Route::get('user/panel/loadPendingPayTransferNft', 'UserController@nftTransferPa
 
 
 #dejar esto al final, no se quien lo puso ni que  sentido tiene que coja cualquier valor
-Route::get('{lang}/user/panel/{value}', 'UserController@myBills');
+Route::get('{lang}/user/panel/{value}', [AllotmentsAndBillsController::class, 'myBills']); //revisar si se puede eliminar
 Route::post('/change-passw-user', 'UserController@changePassw');
