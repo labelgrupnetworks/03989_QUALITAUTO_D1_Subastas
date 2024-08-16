@@ -5,6 +5,9 @@ use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SalesController;
 use App\Http\Controllers\Panel\SummaryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\V5\ArticleController;
+use App\Http\Controllers\V5\CartController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
@@ -44,31 +47,27 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	// Route::get('{lang}/user/panel/counteroffers', [CarlandiaPayController::class, 'getCounterOffers'])->name('panel.counteroffers');
 
 
-	Route::get('{lang}/user/panel/addresses/{cod_sub?}', 'User\AddressController@index')->name('panel.addresses');
-
 	# Informacion de usuario
-
-	Route::post('api-ajax/client/update', 'UserController@updateClientInfo');
-	Route::post('api-ajax/client/update/password', 'UserController@updatePassword');
+	Route::get('{lang}/user/panel/addresses/{cod_sub?}', [App\Http\Controllers\User\AddressController::class, 'index'])->name('panel.addresses');
+	Route::post('api-ajax/client/update', [UserController::class, 'updateClientInfo']);
+	Route::post('api-ajax/client/update/password', [UserController::class, 'updatePassword']);
 
 	Route::get('/factura/{afral}-{nfral}', [AllotmentsAndBillsController::class, 'bills']);
 	Route::get('/prefactura/{cod_sub}', [AllotmentsAndBillsController::class, 'proformaInvoiceFile']);
 
-	Route::get('/{lang}/user/panel/modification-orders', 'UserController@ordersClient');
-
-	Route::post('api-ajax/shipping_costs', 'PaymentsController@shippingCosts');
+	Route::get('/{lang}/user/panel/modification-orders', [OrdersController::class, 'ordersClient']);
 
 	# Preferencias
-	Route::get('{lang}/user/panel/preferences', 'UserController@getPreferencesAndFamily')->name('panel.preferences');
-	Route::post('user/panel/preferences', 'UserController@getSubfamilyForPreferences')->name('panel.preferences_subfamily');
-	Route::post('{lang}/user/panel/preferences/create', 'UserController@setPreferences')->name('panel.create_preferences');
-	Route::post('{lang}/user/panel/preferences/delete', 'UserController@deletePreferences')->name('panel.delete_preferences');
+	Route::get('{lang}/user/panel/preferences', [UserController::class, 'getPreferencesAndFamily'])->name('panel.preferences');
+	Route::post('user/panel/preferences', [UserController::class, 'getSubfamilyForPreferences'])->name('panel.preferences_subfamily');
+	Route::post('{lang}/user/panel/preferences/create', [UserController::class, 'setPreferences'])->name('panel.create_preferences');
+	Route::post('{lang}/user/panel/preferences/delete', [UserController::class, 'deletePreferences'])->name('panel.delete_preferences');
 });
 
 //fuera de userAuth para mostrar pagina que solicite el inicio de sesion
 Route::get('{lang}/user/panel/summary/', [SummaryController::class, 'summary'])->name('panel.summary');
 
-Route::get('{lang}/user/panel/info', 'UserController@accountInfo')->name('panel.account_info');
+Route::get('{lang}/user/panel/info', [UserController::class, 'accountInfo'])->name('panel.account_info');
 
 # Lista de Ordenes de licitacion
 Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'])->name('panel.orders');
@@ -76,7 +75,6 @@ Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'
 Route::get('{lang}/user/panel/orders' . '/page/{page}', [OrdersController::class, 'orderbidsList']);
 
 Route::prefix('{lang}/user/panel/allotments')->group(function () {
-
 	Route::get('/shopping-cart', [AllotmentsAndBillsController::class, 'getDirectSaleAdjudicaciones'])->name('panel.allotment.diectsale');
 	Route::get('/proforma/{apre}-{npre}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoByProforma'])->name('panel.allotment.proforma');
 	Route::get('/{cod_sub}', [AllotmentsAndBillsController::class, 'getAdjudicacionesPendientePagoBySub'])->name('panel.allotment.sub');
@@ -89,15 +87,15 @@ Route::get('{lang}/user/panel/bills', [AllotmentsAndBillsController::class, 'all
 Route::get('{lang}/user/panel/allotments-bills', [AllotmentsAndBillsController::class, 'getInvoiceOverviewView'])->name('panel.allotment-bills');
 
 #carrito de la compra
-Route::get('{lang}/user/panel/showShoppingCart', 'V5\CartController@showShoppingCart')->name('showShoppingCart');
-Route::get('{lang}/user/panel/payShowShoppingCart', 'V5\CartController@payShowShoppingCart')->name('payShowShoppingCart');
+Route::get('{lang}/user/panel/showShoppingCart', [CartController::class, 'showShoppingCart'])->name('showShoppingCart');
+Route::get('{lang}/user/panel/payShowShoppingCart', [CartController::class, 'payShowShoppingCart'])->name('payShowShoppingCart');
 
 #Carrito de articulos
-Route::get('{lang}/user/panel/showArticleCart', 'V5\ArticleController@showArticleCart')->name('showArticleCart');
-Route::get('{lang}/user/panel/payShowArticleCart', 'V5\ArticleController@payArticleCart')->name('payShowArticleCart');
+Route::get('{lang}/user/panel/showArticleCart', [ArticleController::class, 'showArticleCart'])->name('showArticleCart');
+Route::get('{lang}/user/panel/payShowArticleCart', [ArticleController::class, 'payArticleCart'])->name('payShowArticleCart');
 
 #Pedidos de articulos
-Route::get('{lang}/user/panel/showShoppingOrders', 'V5\ArticleController@showShoppingOrders')->name('panel.shopping_orders');
+Route::get('{lang}/user/panel/showShoppingOrders', [ArticleController::class, 'showShoppingOrders'])->name('panel.shopping_orders');
 
 #pago por transferencia
 
@@ -106,5 +104,6 @@ Route::get('{lang}/user/panel/transferpayment', function () {
 })->name("transferpayment");
 
 #NFT
-Route::get('user/panel/loadPendingPayTransferNft', 'UserController@nftTransferPay');
-Route::post('/change-passw-user', 'UserController@changePassw');
+Route::get('user/panel/loadPendingPayTransferNft', [UserController::class, 'nftTransferPay']);
+
+Route::post('/change-passw-user', [UserController::class, 'changePassw']);

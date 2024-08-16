@@ -2705,34 +2705,6 @@ class UserController extends Controller
 
     }
 
-    public function ordersClient(){
-
-        $subastaObj        = new Subasta();
-        $data = array(
-            "sub" => null,
-        );
-
-
-        if(!empty($_GET['sub'])){
-            $subasta = $_GET['sub'];
-            $subastaObj->cod = $subasta;
-            $inf_subasta =$subastaObj->getInfSubasta();
-
-            if(!empty($inf_subasta) && strtotime("now") > strtotime($inf_subasta->orders_start)  &&   strtotime("now") < strtotime($inf_subasta->orders_end)){
-
-                $subastaObj->page = 'all';
-                $subastaObj->licit = Session::get('user.cod');
-                $subastas = $subastaObj->getAllSubastaLicitOrdenes($subasta);
-                $data['sub'] = $subastas;
-            }
-        }
-
-        $data['node']  = array(
-            'ol'       => Config::get('app.url')."/".\App::getLocale()."/api/ol/subasta",
-        );
-
-        return View::make('front::pages.panel.ordenes_cli', array('data' => $data));
-    }
     // Ip
     function getUserIP() {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))

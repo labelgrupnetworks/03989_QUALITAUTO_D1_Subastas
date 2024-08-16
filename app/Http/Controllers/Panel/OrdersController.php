@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -122,5 +123,33 @@ class OrdersController extends Controller
 		$data['seo']->noindex_follow = true;
 
 		return View::make('front::pages.panel.orders', array('data' => $data));
+	}
+
+	public function ordersClient()
+	{
+		$subastaObj        = new Subasta();
+		$data = array(
+			"sub" => null,
+		);
+
+		if (!empty($_GET['sub'])) {
+			$subasta = $_GET['sub'];
+			$subastaObj->cod = $subasta;
+			$inf_subasta = $subastaObj->getInfSubasta();
+
+			if (!empty($inf_subasta) && strtotime("now") > strtotime($inf_subasta->orders_start)  &&   strtotime("now") < strtotime($inf_subasta->orders_end)) {
+
+				$subastaObj->page = 'all';
+				$subastaObj->licit = Session::get('user.cod');
+				$subastas = $subastaObj->getAllSubastaLicitOrdenes($subasta);
+				$data['sub'] = $subastas;
+			}
+		}
+
+		$data['node']  = array(
+			'ol'       => Config::get('app.url') . "/" . App::getLocale() . "/api/ol/subasta",
+		);
+
+		return View::make('front::pages.panel.ordenes_cli', array('data' => $data));
 	}
 }

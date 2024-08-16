@@ -2,28 +2,24 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Config;
-
-use App\Models\User;
 use App\Models\Address;
 use App\Models\Enterprise;
-use App\Models\V5\FsPaises;
+use App\Models\User;
 use App\Models\V5\FsIdioma;
-
+use App\Models\V5\FsPaises;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class AddressController extends Controller
 {
 
 	public function index()
 	{
-
 		if (!Session::has('user')) {
 			$url =  Config::get('app.url') . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) . '?view_login=true';
-			$data = trans_choice(\Config::get('app.theme') . '-app.user_panel.not-logged', 1, ['url' => $url]);
+			$data = trans_choice(Config::get('app.theme') . '-app.user_panel.not-logged', 1, ['url' => $url]);
 			return View::make('front::pages.not-logged', array('data' => $data));
 		}
 
@@ -38,7 +34,7 @@ class AddressController extends Controller
 		$enterprise = new Enterprise();
 
 		$data = array(
-			'name' => trans(\Config::get('app.theme') . '-app.user_panel.personal_info'),
+			'name' => trans(Config::get('app.theme') . '-app.user_panel.personal_info'),
 			'user' => $datos,
 			'shippingaddress'  => $shippingaddress,
 			'address'  => $address,
@@ -67,10 +63,10 @@ class AddressController extends Controller
 			}
 		}
 
+		//para volver a la pasarela de pago en caso de necesitarlo.
 		$data['auction'] = request('cod_sub');
 
 		return view()->make('front::pages.panel.direcciones', array('data' => $data));
-
 	}
 
 }
