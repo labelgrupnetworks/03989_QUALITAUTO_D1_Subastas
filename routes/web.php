@@ -8,6 +8,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Prueba;
 use App\Providers\RoutingServiceProvider as Routing;
 use Illuminate\Support\Facades\App;
@@ -309,7 +310,6 @@ Route::get('/disbandment_lot', [MailController::class, 'disbandment_lot']);
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index')->name('blog.index');
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', 'NoticiasController@news')->name('blog.news');
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@mosaicBlog');
-
 Route::get(Routing::slugSeo('mosaic-blog', true), 'NoticiasController@museumPieces');
 Route::get(Routing::slugSeo('events', true), 'NoticiasController@events');
 Route::get(Routing::slugSeo('events', true) . '/{id}', 'NoticiasController@event');
@@ -503,15 +503,14 @@ Route::get("transfernftpayment/{operationsIds}", 'V5\PayShoppingCartController@c
 #Comprobar escalados fuera de rango
 Route::get("preciofueraescalado/{codSub}", [CustomControllers::class, 'preciosFueraEscalado']);
 
-Route::get("/api-ajax/newsletters/{service}/{action}", "NewsletterController@checkCallback");
-Route::post("/api-ajax/newsletters/{service}/{action}", "NewsletterController@callbackUnsuscribe");
-
-Route::post('api-ajax/newsletter/{opcion}', 'NewsletterController@setNewsletterAjax');
-Route::get("/{lang}/newsletter/{email}", "NewsletterController@configNewsletter")->where('lang', 'es|en');
-Route::get("/{lang}/newsletter-suscribe/{email}", "NewsletterController@suscribeOnlyToExternalService");
-Route::get("/{lang}/newsletter-unsuscribe/{email}", "NewsletterController@unsuscribeNewsletter")->name('newsletter.unsuscribe');
-Route::get("/{lang}/newsletter-migrate", "NewsletterController@migrateNewslettersToNewFormat");
-Route::get("/{lang}/newsletter-mailchimp-export", "NewsletterController@mailchimpExportCsv");
+Route::get("/api-ajax/newsletters/{service}/{action}", [NewsletterController::class, 'checkCallback']);
+Route::post("/api-ajax/newsletters/{service}/{action}", [NewsletterController::class, 'callbackUnsuscribe']);
+Route::post('api-ajax/newsletter/{opcion}', [NewsletterController::class, 'setNewsletterAjax']);
+Route::get("/{lang}/newsletter/{email}", [NewsletterController::class, 'configNewsletter'])->where('lang', 'es|en');
+Route::get("/{lang}/newsletter-suscribe/{email}", [NewsletterController::class, 'suscribeOnlyToExternalService']);
+Route::get("/{lang}/newsletter-unsuscribe/{email}", [NewsletterController::class, 'unsuscribeNewsletter'])->name('newsletter.unsuscribe');
+Route::get("/{lang}/newsletter-migrate", [NewsletterController::class, 'migrateNewslettersToNewFormat']);
+Route::get("/{lang}/newsletter-mailchimp-export", [NewsletterController::class, 'mailchimpExportCsv']);
 
 
 /* SIMULACIÓN DE ENDPOINT DE PUSH */

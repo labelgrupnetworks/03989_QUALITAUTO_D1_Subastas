@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MailChimpExport;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Config;
-use App\Models\V5\FxCliWeb;
+use App\libs\SeoLib;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter_Suscription;
-use App\libs\SeoLib;
+use App\Models\V5\FxCliWeb;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class NewsletterController extends Controller
 {
