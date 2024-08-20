@@ -4,25 +4,27 @@ use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\CustomControllers;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
-/* Esto iba en el routes de la version 5.2 de laravel */
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\Prueba;
 use App\Providers\RoutingServiceProvider as Routing;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+use Laravel\Socialite\Facades\Socialite;
 
 require __DIR__ . '/redirect.php';
 //require __DIR__ . '/test.php'; //Para mostrar momento de las consultas en el navegador
 
-Route::get('/{lang}/img/load/{size}/{img}', 'ImageController@return_image_lang');
-Route::get('/img/load/{size}/{img}', 'ImageController@return_image');
+Route::get('/{lang}/img/load/{size}/{img}', [ImageController::class, 'return_image_lang']);
+Route::get('/img/load/{size}/{img}', [ImageController::class, 'return_image']);
 #load img url amigable
-Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', 'ImageController@return_image_friend');
-
-Route::get('/img/converter/{imagePathToBase64Url}', 'ImageController@converterImage');
+Route::get('/img_load/{size}/{num}/{lin}/{numfoto}/{friendly}', [ImageController::class, 'return_image_friend']);
+Route::get('/img/converter/{imagePathToBase64Url}', [ImageController::class, 'converterImage']);
 
 
 
@@ -42,7 +44,7 @@ Route::get('AnsorenaResultUnion', 'AnsorenaValidateUnion@resultUnion');
 
 Route::get('/generate_images', 'prueba@generate_images');
 
-Route::get('send_new_password/{num_mails?}', 'MailController@send_new_password');
+Route::get('send_new_password/{num_mails?}', [MailController::class, 'send_new_password']);
 
 # Login @ UserController
 Route::get(Routing::slug('login'), 'UserController@login');
@@ -120,10 +122,10 @@ Route::post('/api-ajax/sessions/files', 'SubastaController@getAucSessionFiles')-
 Route::get(Routing::slug('sub') . '/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
 Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAuctionList')->name('subastas.tematicas');
 
-Route::post('/consult-lot/email', 'MailController@emailConsultLot');
-Route::get('/{lang?}/accept_news', 'MailController@acceptNews');
-Route::post('/api-ajax/info-lot-email', 'MailController@sendInfoLot');
-Route::post('/api-ajax/ask-info-lot', 'MailController@askInfoLot');
+Route::post('/consult-lot/email', [MailController::class, 'emailConsultLot']);
+Route::get('/{lang?}/accept_news', [MailController::class, 'acceptNews']);
+Route::post('/api-ajax/info-lot-email', [MailController::class, 'sendInfoLot']);
+Route::post('/api-ajax/ask-info-lot', [MailController::class, 'askInfoLot']);
 
 Route::get(Routing::translateSeo('bid-admin'), 'SubastaController@bidAdmin');
 Route::post('/api-ajax/save_order', 'SubastaController@SaveOrders');
@@ -175,9 +177,12 @@ Route::post('api-ajax/get_clients_credit', 'SubastaTiempoRealController@getClien
 
 Route::post('api-ajax/add_lower_bid', 'SubastaTiempoRealController@addLowerBid');
 
-//pedir el precio del envio
-Route::post('/api-ajax/get_shipment_rate', 'DeliveryController@getShipmentRate');
-Route::post('/api-ajax/get_shipment_delivery', 'DeliveryController@getShipmentDelivery');
+/**
+ * pedir el precio del envio
+ * @todo - No veo que se esté utilizando - 20/08/2024
+ */
+Route::post('/api-ajax/get_shipment_rate', [DeliveryController::class, 'getShipmentRate']);
+Route::post('/api-ajax/get_shipment_delivery', [DeliveryController::class, 'getShipmentDelivery']);
 
 Route::post('api/status/subasta', 'SubastaTiempoRealController@setStatus');
 Route::post('api/pause_lot', 'SubastaTiempoRealController@pausarLote');
@@ -209,8 +214,8 @@ Route::get(Routing::slugSeo('busqueda'), [BusquedaController::class, 'index'])->
 Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', [BusquedaController::class, 'index']);
 
 # Mail Composer via POST
-Route::post('api-ajax/mail', 'MailController@mailToAdmin');
-Route::post('api-ajax/mail-peticion-catalogo', 'MailController@mailToAdminPeticionCatalogo');
+Route::post('api-ajax/mail', [MailController::class, 'mailToAdmin']);
+Route::post('api-ajax/mail-peticion-catalogo', [MailController::class, 'mailToAdminPeticionCatalogo']);
 
 Route::get(Routing::slug('thanks'), function () {
 	return View::make('front::generic.thanks');
@@ -259,7 +264,7 @@ Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys'
 // Valoraciones
 Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
-Route::get(Routing::slugSeo('especialistas'), 'EnterpriseController@index')->name('especialistas');
+Route::get(Routing::slugSeo('especialistas'), [EnterpriseController::class, 'index'])->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv');
 Route::post('/valoracion/upload', 'ValoracionController@uploadFile');
 Route::get('/{lang}/valoracion-{key}', 'ValoracionController@GetValoracionGratuita')->name('valoracion');
@@ -284,11 +289,11 @@ Route::get('/generateProductFeed', [CronController::class, 'generateProductFeed'
 Route::get('/email-cedente-amedida-error', [CronController::class, 'emailCedenteAmedidaError']);
 Route::get('/update-divisa', [CronController::class, 'update_divisa']);
 
-Route::get('/email_cancel_puja/{cod_sub}/{ref}/{cod_licit}', 'MailController@emailCancelBid');
+Route::get('/email_cancel_puja/{cod_sub}/{ref}/{cod_licit}', [MailController::class, 'emailCancelBid']);
 
-Route::get('/generate_miniatures', 'ImageController@generateMiniatures');
-Route::get('/regenerate_img', 'ImageController@regenerate_images_table');
-Route::get('/new_generate_miniatures', 'ImageController@generateImageLot');
+Route::get('/generate_miniatures', [ImageController::class, 'generateMiniatures']);
+Route::get('/regenerate_img', [ImageController::class, 'regenerate_images_table']);
+Route::get('/new_generate_miniatures', [ImageController::class, 'generateImageLot']);
 
 Route::get('/clear-cache', function () {
 	Artisan::call('cache:clear');
@@ -297,8 +302,8 @@ Route::get('/{lang}/rechargefilters', 'SubastaController@rechargefilters');
 
 Route::get('/{lang}/reload_lot', 'SubastaController@reloadLot');
 
-Route::get('/email_fact_generated', 'MailController@emailFacturaGenerated');
-Route::get('/disbandment_lot', 'MailController@disbandment_lot');
+Route::get('/email_fact_generated', [MailController::class, 'emailFacturaGenerated']);
+Route::get('/disbandment_lot', [MailController::class, 'disbandment_lot']);
 
 /* Blog */
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', 'NoticiasController@index')->name('blog.index');

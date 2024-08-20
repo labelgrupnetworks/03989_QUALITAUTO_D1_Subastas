@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\CustomControllers;
+use App\Http\Controllers\EnterpriseController;
 use App\Providers\RoutingServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,9 @@ Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCat
 #SOLER, GUTINVEST,
 // DEPARTAMENTOS
 Route::get(RoutingServiceProvider::slugSeo('departamentos', true), 'PageController@getDepartment');
-Route::get(RoutingServiceProvider::translateSeo('departamento') . '{text}', 'EnterpriseController@department')->name('department');
+Route::get(RoutingServiceProvider::translateSeo('departamento') . '{text}', [EnterpriseController::class, 'department'])->name('department');
 Route::get(RoutingServiceProvider::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
-Route::get(RoutingServiceProvider::translateSeo('equipo'), 'EnterpriseController@team')->name('enterprise.team');
+Route::get(RoutingServiceProvider::translateSeo('equipo'), [EnterpriseController::class, 'team'])->name('enterprise.team');
 
 #TAULER
 //Landings

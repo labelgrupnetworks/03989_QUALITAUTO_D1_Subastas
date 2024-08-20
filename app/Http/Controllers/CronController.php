@@ -365,12 +365,6 @@ class CronController extends Controller
 		$i = 0;
 		foreach ($index as $value) {
 			$mail->sendEmailCerradoGeneric($value->id_emp, $value->id_sub, $value->id_ref);
-			//$mail->sendEmailCerrado($value->id_emp,$value->id_sub,$value->id_ref);
-
-			/*$i++;
-             if($i >= Config::get('app.max_email_cron')){
-               break;
-             }*/
 		}
 
 
