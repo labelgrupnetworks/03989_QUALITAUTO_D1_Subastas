@@ -5,6 +5,7 @@ use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
 use App\Http\Controllers\Panel\SalesController;
 use App\Http\Controllers\Panel\SummaryController;
+use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\V5\ArticleController;
 use App\Http\Controllers\V5\CartController;
@@ -48,7 +49,7 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 
 
 	# Informacion de usuario
-	Route::get('{lang}/user/panel/addresses/{cod_sub?}', [App\Http\Controllers\User\AddressController::class, 'index'])->name('panel.addresses');
+	Route::get('{lang}/user/panel/addresses/{cod_sub?}', [AddressController::class, 'index'])->name('panel.addresses');
 	Route::post('api-ajax/client/update', [UserController::class, 'updateClientInfo']);
 	Route::post('api-ajax/client/update/password', [UserController::class, 'updatePassword']);
 
@@ -68,6 +69,10 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 Route::get('{lang}/user/panel/summary/', [SummaryController::class, 'summary'])->name('panel.summary');
 
 Route::get('{lang}/user/panel/info', [UserController::class, 'accountInfo'])->name('panel.account_info');
+Route::get('/{lang}/seeShippingAddress', [AddressController::class, 'seeShippingAddress']);
+Route::post('/change_address_shipping', [AddressController::class, 'updateShippingAddress']);
+Route::post('/delete_address_shipping', [AddressController::class, 'deleteShippingAddress']);
+Route::post('/api-ajax/add_favorite_address_shipping', [AddressController::class, 'FavoriteShippingAddress']);
 
 # Lista de Ordenes de licitacion
 Route::get('{lang}/user/panel/orders', [OrdersController::class, 'orderbidsList'])->name('panel.orders');

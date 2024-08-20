@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\AddressController;
+use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
 use App\Http\Controllers\MailController;
