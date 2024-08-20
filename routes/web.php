@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusquedaController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -279,10 +280,9 @@ Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser')
 
 
 # Búsqueda
-Route::get(Routing::slugSeo('busqueda') . '/redirect', 'BusquedaController@redirect');
-Route::get(Routing::slugSeo('busqueda') . '/{texto?}', 'BusquedaController@index');
-Route::get(Routing::slugSeo('busqueda'), 'BusquedaController@index')->name('busqueda');
-Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', 'BusquedaController@index');
+Route::get(Routing::slugSeo('busqueda') . '/{texto?}', [BusquedaController::class, 'index']);
+Route::get(Routing::slugSeo('busqueda'), [BusquedaController::class, 'index'])->name('busqueda');
+Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', [BusquedaController::class, 'index']);
 
 # Mail Composer via POST
 Route::post('api-ajax/mail', 'MailController@mailToAdmin');
