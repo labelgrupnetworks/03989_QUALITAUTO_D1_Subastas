@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\V5\CarlandiaPayController;
 use App\Providers\RoutingServiceProvider;
 
 #ALCALA
@@ -9,7 +8,6 @@ use App\Providers\RoutingServiceProvider;
 
 
 Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCatalogo');
-//Route::post('/catalogoSendmail', 'ComprarCatalogoController@Sendmail');
 
 
 #SOLER, GUTINVEST,
