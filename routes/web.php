@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\CronController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -263,28 +264,24 @@ Route::post('/valoracion/upload', 'ValoracionController@uploadFile');
 Route::get('/{lang}/valoracion-{key}', 'ValoracionController@GetValoracionGratuita')->name('valoracion');
 Route::get('/{lang}/valuation-{key}', 'ValoracionController@GetValoracionGratuita');
 
-Route::get('/cron_load_cars_motorflash', 'CronController@loadCarsMotorflash');
-
-Route::get('/web_cron_closelotws', 'CronController@CloseLotsWebServiceCall');
-Route::get('/web_cron_xmlUrl', 'CronController@xmlURL');
-Route::get('/web_cron_newxmlUrl', 'CronController@newXmlUrl');
-Route::get('/emailsadjudicaciones', 'CronController@EmailsAdjudicaciones');
-Route::get('/send_resalelot', 'CronController@emailsReSaleLots');
-Route::get('/send_lastcall', 'CronController@lastCall');
-Route::get('/send_first_auction', 'CronController@EmailFirstAuction');
-Route::get('/emailsadjudicaciones_generic', 'CronController@EmailsAdjudicacionesGeneric');
-Route::get('/web_cron_closeauction', 'CronController@EmailCloseAuction');
-Route::get('/web_cron_email_report', 'CronController@cronEmailReports');
-
-Route::get('/lote_pending_pay', 'CronController@LotePendingPay');
-Route::get('/lote_pending_collect', 'CronController@LotePendingCollect');
-
-Route::get('/not-bidded-yet', 'CronController@emailNotBiddedYet');
-Route::get('/email_cedente_amedida', 'CronController@emailCedeneteAMedida');
-Route::get('/generateProductFeed', 'CronController@generateProductFeed');
-Route::get('/email-cedente-amedida-error', 'CronController@emailCedenteAmedidaError');
-
-Route::get('/update-divisa', 'CronController@update_divisa');
+Route::get('/cron_load_cars_motorflash', [CronController::class, 'loadCarsMotorflash']);
+Route::get('/web_cron_closelotws', [CronController::class, 'CloseLotsWebServiceCall']);
+Route::get('/web_cron_xmlUrl', [CronController::class, 'xmlURL']);
+Route::get('/web_cron_newxmlUrl', [CronController::class, 'newXmlUrl']);
+Route::get('/emailsadjudicaciones', [CronController::class, 'EmailsAdjudicaciones']);
+Route::get('/send_resalelot', [CronController::class, 'emailsReSaleLots']);
+Route::get('/send_lastcall', [CronController::class, 'lastCall']);
+Route::get('/send_first_auction', [CronController::class, 'EmailFirstAuction']);
+Route::get('/emailsadjudicaciones_generic', [CronController::class, 'EmailsAdjudicacionesGeneric']);
+Route::get('/web_cron_closeauction', [CronController::class, 'EmailCloseAuction']);
+Route::get('/web_cron_email_report', [CronController::class, 'cronEmailReports']);
+Route::get('/lote_pending_pay', [CronController::class, 'LotePendingPay']);
+Route::get('/lote_pending_collect', [CronController::class, 'LotePendingCollect']);
+Route::get('/not-bidded-yet', [CronController::class, 'emailNotBiddedYet']);
+Route::get('/email_cedente_amedida', [CronController::class, 'emailCedeneteAMedida']);
+Route::get('/generateProductFeed', [CronController::class, 'generateProductFeed']);
+Route::get('/email-cedente-amedida-error', [CronController::class, 'emailCedenteAmedidaError']);
+Route::get('/update-divisa', [CronController::class, 'update_divisa']);
 
 Route::get('/email_cancel_puja/{cod_sub}/{ref}/{cod_licit}', 'MailController@emailCancelBid');
 

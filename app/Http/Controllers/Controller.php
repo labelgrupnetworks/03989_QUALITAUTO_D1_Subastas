@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\libs\SeoLib;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use Request;
-use App\Models\User;
-use App\libs\SeoLib;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -22,7 +24,7 @@ class Controller extends BaseController
         //header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 
         if( env('APP_DEBUG') || (!empty($_GET) && !empty($_GET['querylog']) && $_GET['querylog'] == 'active_log')){
-            \DB::enableQueryLog();
+            DB::enableQueryLog();
         }
 
         $this->validateUserSession();
