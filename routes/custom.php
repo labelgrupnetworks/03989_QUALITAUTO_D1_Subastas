@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\CustomControllers;
 use App\Providers\RoutingServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCat
 // DEPARTAMENTOS
 Route::get(RoutingServiceProvider::slugSeo('departamentos', true), 'PageController@getDepartment');
 Route::get(RoutingServiceProvider::translateSeo('departamento') . '{text}', 'EnterpriseController@department')->name('department');
-Route::get(RoutingServiceProvider::translateSeo('video-subastas'), 'CustomControllers@videoAuctions');
+Route::get(RoutingServiceProvider::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
 Route::get(RoutingServiceProvider::translateSeo('equipo'), 'EnterpriseController@team')->name('enterprise.team');
 
 #TAULER
@@ -56,9 +57,9 @@ Route::post('/custom_login', 'UserController@customLogin');
 #ANSORENA
 Route::view(RoutingServiceProvider::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
 Route::view(RoutingServiceProvider::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
-Route::get('/' . Config::get('app.locale') . '/private-chanel/login', 'CustomControllers@privateChanelLogin')->name('private_chanel.login');
-Route::post('/' . Config::get('app.locale') . '/private-chanel/login', 'CustomControllers@loginInPrivateChanel')->name('private_chanel.login.send');
-Route::post('/' . Config::get('app.locale') . '/private-chanel/form', 'CustomControllers@sendPrivateChanelForm')->name('private_chanel.form');
+Route::get('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'privateChanelLogin'])->name('private_chanel.login');
+Route::post('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'loginInPrivateChanel'])->name('private_chanel.login.send');
+Route::post('/' . Config::get('app.locale') . '/private-chanel/form', [CustomControllers::class, 'sendPrivateChanelForm'])->name('private_chanel.form');
 
 #Carlandia
 #carga con Cron
@@ -78,7 +79,7 @@ Route::post('contraoferta-aceptada', 'V5\CarlandiaPayController@contraofertaAcep
 
 
 #SALARETIRO
-Route::get('/exportar-a-excel-lotes/{codSub}', 'CustomControllers@exportarLotes');
+Route::get('/exportar-a-excel-lotes/{codSub}', [CustomControllers::class, 'exportarLotes']);
 
 #SEGRE
 /* Hacer una ruta que llegue a la blade pages.newsletter */

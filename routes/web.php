@@ -3,6 +3,7 @@
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\CustomControllers;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -495,7 +496,7 @@ Route::get("mintnftpayment/{operationId}", 'V5\PayShoppingCartController@createM
 #pago
 Route::get("transfernftpayment/{operationsIds}", 'V5\PayShoppingCartController@createTransferPay')->name('transferNftPayUrl');
 #Comprobar escalados fuera de rango
-Route::get("preciofueraescalado/{codSub}","CustomControllers@preciosFueraEscalado");
+Route::get("preciofueraescalado/{codSub}", [CustomControllers::class, 'preciosFueraEscalado']);
 
 Route::get("/api-ajax/newsletters/{service}/{action}", "NewsletterController@checkCallback");
 Route::post("/api-ajax/newsletters/{service}/{action}", "NewsletterController@callbackUnsuscribe");
@@ -528,7 +529,7 @@ Route::post("/phpsock/jump_lot","V5\NodePhp@jumpLot");
 Route::post("/phpsock/open_bids","V5\NodePhp@openBids");
 Route::post("/phpsock/cancelar_orden_user","V5\NodePhp@cancelarOrdenUser");
 
-Route::get("/lot-qr-generate", "CustomControllers@lotQRGenerator")->name('lotQRGenerator');
+Route::get("/lot-qr-generate", [CustomControllers::class, 'lotQRGenerator'])->name('lotQRGenerator');
 
 /* Depositos */
 Route::post("deposit/pay", "V5\DepositController@createPayment")->name("payDeposit");
@@ -542,11 +543,11 @@ Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregat
 //responseRedsysMultiTpv
 
 #Eventos SEO, permite pasar letras numeros y el simbolo _
-Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z_]+']);
+Route::get("/seo_event/{event}", [CustomControllers::class, 'saveEvent'])->where(['event' => '[0-9a-zA-Z_]+']);
 
 #Lleida Net, como n ose si devuelven post o get pngo lso dos
-Route::get('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
-Route::post('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
+Route::get('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
+Route::post('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
