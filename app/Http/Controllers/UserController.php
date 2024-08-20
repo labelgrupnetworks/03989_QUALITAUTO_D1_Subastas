@@ -42,50 +42,50 @@ use Illuminate\Support\Facades\Redirect;
 class UserController extends Controller
 {
 
+	/**
+	 * Página de registro antigua
+	 * Solo quedan Soler y CSM con ella
+	 */
 	public function login($postUser = null, $info = null)
 	{
-		if (!Session::has('user')) {
-
-			$enterprise = new Enterprise();
-			$user = new User();
-			//Busca paises
-			$countries = $enterprise->getCountries();
-
-			//Busca vias
-			$via = $enterprise->getVia();
-			//Busca divisas del cliente
-			$divisa = $enterprise->getDivisa();
-			$data = array("countries" => $countries, "via" => $via, "divisa" => $divisa);
-
-			$data['favorites'] = $user->favorites();
-			$data['seo'] = new \stdClass();
-			# Cargamos la vista del login en caso de que no exista la sesión del usuario.
-			$data['seo']->noindex_follow = true;
-
-			/**
-			 * Carga de idiomas
-			 */
-			if (!empty(FsIdioma::getArrayValues())) {
-				$data['language'] = FsIdioma::getArrayValues();
-			} else {
-				foreach (Config::get('app.locales') as $key => $value) {
-					$data['language'][strtoupper($key)] = $value;
-				}
-			}
-
-			if (!empty($postUser) && !empty($info)) {
-
-				$data['userFields'] = $postUser;
-				$data['formulario'] =  new \stdClass();
-				$data['formulario']->subalia = FormLib::Hidden("subalia", 0, "subalia");
-				$data['formulario']->info = FormLib::Hidden("info", 0, $info);
-			}
-
-			return View::make('front::pages.login')->with('data', $data);
-		} else {
-			# Hay Sesión;
+		if (Session::has('user')) {
 			return Redirect::to('/');
 		}
+
+		$enterprise = new Enterprise();
+		//Busca paises
+		$countries = $enterprise->getCountries();
+
+		//Busca vias
+		$via = $enterprise->getVia();
+		//Busca divisas del cliente
+		$divisa = $enterprise->getDivisa();
+		$data = array("countries" => $countries, "via" => $via, "divisa" => $divisa);
+
+		$data['favorites'] = (new User)->favorites();
+		$data['seo'] = new \stdClass();
+		# Cargamos la vista del login en caso de que no exista la sesión del usuario.
+		$data['seo']->noindex_follow = true;
+
+		//Carga de idiomas
+		$languages = FsIdioma::getArrayValues();
+		if (!empty($languages)) {
+			$data['language'] = $languages;
+		} else {
+			foreach (Config::get('app.locales') as $key => $value) {
+				$data['language'][strtoupper($key)] = $value;
+			}
+		}
+
+		if (!empty($postUser) && !empty($info)) {
+
+			$data['userFields'] = $postUser;
+			$data['formulario'] =  new \stdClass();
+			$data['formulario']->subalia = FormLib::Hidden("subalia", 0, "subalia");
+			$data['formulario']->info = FormLib::Hidden("info", 0, $info);
+		}
+
+		return View::make('front::pages.login')->with('data', $data);
 	}
 
 	//Buscar informacion del usuario
@@ -379,6 +379,8 @@ class UserController extends Controller
 
 	/**
 	 * Login para Segre
+	 * @deprecated en desuso 19/08/2024
+	 * @todo preguntar a rubén si se puede eliminar
 	 */
 	public function customLogin(HttpRequest $request)
 	{
@@ -582,14 +584,6 @@ class UserController extends Controller
 			$languages = strtoupper(Config::get('app.locale'));
 		}
 
-		/*
-         $response = array(
-                    "err"       => 0,
-                    "msg"       => trans(\Config::get('app.theme').'-app.login.success_register')
-                );
-         return json_encode($response);
-         *
-         */
 		$rules = [
 			//'regtype'  => 'required',          // Tipo de usuario
 			'email'    => 'required|email',    // make sure the email is an actual email
@@ -2900,6 +2894,34 @@ class UserController extends Controller
 		$passport = strtoupper($passport);
 		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);
+	}
+
+	/**
+	 * Comprueba si el NIF ya existe en la base de datos
+	 * Debe substituir if actual en el metodo registro
+	 */
+	private function isNifExist($nif, $pais, $email)
+	{
+		if(empty($nif) || empty($pais) || empty($email)) {
+			return false;
+		}
+
+		if($pais != 'ES') {
+			return false;
+		}
+
+		$user = FxCliWeb::select("cod_cli")
+			->joinCliCliweb()
+			->where([
+				["upper(CIF_CLI)", strtoupper($nif)],
+				["upper(CODPAIS_CLI)", strtoupper($pais)],
+				["upper(USRW_CLIWEB)", strtoupper($email)]
+			])
+			->exists();
+
+		$acceptMultipleNif = Config::get("app.multipleNif", false);
+
+		return $user && !$acceptMultipleNif;
 	}
 
 	#endregion
