@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BusquedaController;
+use App\Http\Controllers\ContentController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -28,7 +29,6 @@ Route::get('', function () {
 	return redirect("/" . App::getLocale(), 301);
 });
 
-//Route::get('/{lang?}', 'HomeController@index');
 Route::get(Routing::is_home(), 'HomeController@index')->name('home');
 Route::get('prueba', 'prueba@index')->name('prueba');
 Route::post('prueba', 'prueba@index');
@@ -39,11 +39,8 @@ Route::get('AnsorenaResultUnion', 'AnsorenaValidateUnion@resultUnion');
 
 
 Route::get('/generate_images', 'prueba@generate_images');
-Route::get('/{lang?}/module/labelsubastas/obtenersubasta', 'HomeController@obtenersubasta');
 
 Route::get('send_new_password/{num_mails?}', 'MailController@send_new_password');
-//Route::get(Routing::slug('contact'), 'HomeController@contact');
-//Route::get('about', 'HomeController@about');
 
 # Login @ UserController
 Route::get(Routing::slug('login'), 'UserController@login');
@@ -72,44 +69,27 @@ Route::post('/api-ajax/wallet/update', 'UserController@updateWallet');
 Route::post('/api-ajax/wallet/create', 'UserController@createWallet');
 Route::get('/api-ajax/wallet/back', 'UserController@backVottumWallet')->name('wallet.back');
 
-
-//Route::post('/send_password_recovery', 'UserController@sendPasswordRecovery');
-
 Route::get('/{lang?}/email-recovery', 'UserController@getPasswordRecovery');
 Route::get('/{lang?}/email-validation', 'UserController@getEmailValidation');
-//lo comento por que no existe favorites en el controlador Usercontroller 2018_01_2018
-// Route::get('/{lang?}/favorites', 'UserController@Favorites');
+
 # Logout & Login de Tiempo Real
 Route::get(Routing::slug('login') . '/tr', 'UserController@login');
 Route::post(Routing::slug('login') . '/tr', 'UserController@login_post');
 Route::get(Routing::slug('logout') . '/tr', 'UserController@logout'); // logout de tiempo real
 
 # Subastas @ SubastaController
-# 2017/10/25 no se esta usando
-#Route::get(Routing::slug('subasta').'-{cod}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::get(Routing::slugSeo('indice-subasta') . '/{cod}-{texto}', 'SubastaController@indice_subasta')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.indice');
-
 
 Route::post('/subasta/reproducciones', 'SubastaController@reproducciones');
 Route::post('/subasta/megusta', 'SubastaController@megusta');
 Route::post('/subasta/modal_images', 'SubastaController@modalGridImages');
 Route::post('/subasta/modal_images_fullscreen', 'SubastaController@modalImagesFullScreen')->name('modal.images.fullscreen');
 
-// 2 URLS la segunda es adicional en caso de querer pasar el texto del titulo de la subasta por la url
-#2017/10/26 creo que no se usan para nada
-/*
-            Route::get(Routing::slug('subasta').'-{cod}'.Routing::slug('category', true).'/{cat}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-            Route::get(Routing::slug('subasta').'-{cod}-{texto_adicional}'.Routing::slug('category', true).'/{cat}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-            */
-
 #lotes
 Route::get(Routing::slugSeo('lote') . '/{cod}-{texto2}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',))->name('subasta.lote_old.ficha');
 #NewLotes
 Route::get(Routing::slugSeo('subasta-lote') . '/{texto}/{cod}-{ref}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+'))->name('subasta.lote.ficha');
 
-
-//2017-11-08  no parece que se use
-//Route::get(Routing::slugSeo('lote').'/{cod}/{ref}-{texto}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 #listado de lotes categorias y tematicos
 Route::get(Routing::slugSeo('subastas') . '/{key}/page-{page?}', 'SubastaController@customizeLotListCategory');
 Route::get(Routing::slugSeo('subastas') . '/{key}/{subcategory?}', 'SubastaController@customizeLotListCategory');
@@ -143,14 +123,6 @@ Route::get('/{lang?}/accept_news', 'MailController@acceptNews');
 Route::post('/api-ajax/info-lot-email', 'MailController@sendInfoLot');
 Route::post('/api-ajax/ask-info-lot', 'MailController@askInfoLot');
 
-#2017/10/25 no se está usando
-# Subastas venta directa @ SubastaController
-/*
-    if (!empty(intval(Config::get('app.enable_direct_sale_auctions')))) {
-        Route::get(Routing::slug('subasta/vt').'-{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-        Route::get(Routing::slug('subasta/vt').'-{cod}-{texto}/{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
-    }
-        */
 Route::get(Routing::translateSeo('bid-admin'), 'SubastaController@bidAdmin');
 Route::post('/api-ajax/save_order', 'SubastaController@SaveOrders');
 Route::post('/api-ajax/delete_order', 'SubastaController@DeleteOrders');
@@ -184,12 +156,6 @@ Route::post(Routing::slug('api') . '/check-contraofertar/subasta-{cod}', 'Subast
 Route::post(Routing::slug('api') . '/comprar-aux/subasta-{cod}', 'SubastaTiempoRealController@comprarAux')->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post('api-ajax/makeOffer', 'SubastaTiempoRealController@makeOffer');
 
-////NGAMEZ ejemplos de abajo
-//Route::get(Routing::slug('subasta/hc').'-{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-//Route::get(Routing::slug('subasta/hc').'-{cod}-{texto}/{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
-////NGAMEZ original
-//Route::get('api-ajax'. Routing::slug('subasta').'-{cod}/p-{page}', 'SubastaController@subastaAjax')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
-//Route::get('api-ajax'. Routing::slug('subasta').'-{cod}/{ref}/{search?}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 Route::get('api-ajax' . Routing::slug('subasta') . '-{cod}/p-{page}', 'SubastaController@subastaAjax')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 Route::get('api-ajax' . Routing::slug('subasta') . '-{cod}-{texto2}/{ref}/{search?}', 'SubastaController@lote')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 
@@ -211,73 +177,29 @@ Route::post('api-ajax/add_lower_bid', 'SubastaTiempoRealController@addLowerBid')
 Route::post('/api-ajax/get_shipment_rate', 'DeliveryController@getShipmentRate');
 Route::post('/api-ajax/get_shipment_delivery', 'DeliveryController@getShipmentDelivery');
 
-
-
 Route::post('api/status/subasta', 'SubastaTiempoRealController@setStatus');
 Route::post('api/pause_lot', 'SubastaTiempoRealController@pausarLote');
 Route::post('api/cancel_bid', 'SubastaTiempoRealController@cancelarPuja');
 Route::post('api/cancel_order', 'SubastaTiempoRealController@cancelarOrden');
 Route::post('api/cancelar_orden_user', 'SubastaTiempoRealController@cancelarOrdenUser');
 
-
-//Route::post('api/resume_lot', 'SubastaTiempoRealController@pausarLote');
-
 Route::get(Routing::slug('chat') . '-{cod}-{lang}', 'ChatController@getChat')->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post('api/chat', 'ChatController@setChatArray');
 Route::post('api/chat/delete', 'ChatController@deleteChat');
 
-
 Route::post('api/end_lot' . '-{cod}', 'SubastaTiempoRealController@endLot');
 
-//Route::get(Routing::slug('subastas'), 'SubastaController@listaSubastasSesiones');
-//solo una letra en mayusculas
-
 Route::get(Routing::slug('subastas-tiempo-real'), 'SubastaController@listaSubastasSesionesTR');
+Route::get(Routing::slug('pujas') . '/{cod}/{lote}', 'SubastaController@getPujas');
+Route::get(Routing::slug('ordenes') . '/{cod}/{lote}', 'SubastaController@getOrdenes');
 
-# Lotes de subastas en la home con paginación via ajax
-# 2017_11_03 No se esta usando
-//Route::get(Routing::slug('subastashome'), 'HomeController@index');
-//Route::get(Routing::slug('subastashome').'/{page}/{is_home?}', 'HomeController@index');
-
-
-Route::get(Routing::slug('pujas') . '/{cod}/{lote}', 'SubastaController@getPujas'); //->where(array('cod' => '[0-9a-zA-Z]+', 'lote' => '[0-9]+'));
-Route::get(Routing::slug('ordenes') . '/{cod}/{lote}', 'SubastaController@getOrdenes'); //->where(array('cod' => '[0-9a-zA-Z]+', 'lote' => '[0-9]+'));
-
-# Lote único
-//Route::get(Routing::slug('lote').'/{lote}', 'SubastaController@lote');
-
-# Usuario @ UserController
-#Deprecated revisar
-/*Route::get(Routing::slug('user/subastas'), 'UserController@getPujas');
-    Route::get(Routing::slug('user/subastas').'/{cod}', 'UserController@getPujas');
-    Route::get(Routing::slug('user/subastas').'/{cod}/{lote}', 'UserController@getPujas');
-    Route::get(Routing::slug('user/ordenes'), 'UserController@getOrdenes');
-    Route::get(Routing::slug('user/ordenes').'/{cod}', 'UserController@getOrdenes');
-    Route::get(Routing::slug('user/ordenes').'/{cod}/{lote}', 'UserController@getOrdenes');
-    Route::get(Routing::slug('user/adjudicaciones'), 'UserController@getAdjudicaciones');
-    Route::get('user/licit', 'UserController@getLicitCodes');*/
-
-# SetLang
-//Route::get('lang', 'SetLangController@index');
-
-# Histórico Grid
-#Deprecates
-/*if (!empty(intval(Config::get('app.enable_historic_auctions')))) {
-        Route::get(Routing::slug('historic'), 'SubastaController@displayHistorico');
-        Route::get(Routing::slug('historic').'/page/{page}', 'SubastaController@displayHistorico');
-
-        Route::get(Routing::slug('subasta/hc').'-{cod}-{texto}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+'));
-        Route::get(Routing::slug('subasta/hc').'-{cod}-{texto}/{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
-    }*/
-
-Route::post('/api-ajax/carousel', 'ContentController@getAjaxCarousel');
-Route::post('/api-ajax/newcarousel', 'ContentController@getAjaxNewCarousel');
-Route::post('/api-ajax/static-carousel', 'ContentController@getAjaxStaticCarousel');
+Route::post('/api-ajax/carousel', [ContentController::class, 'getAjaxCarousel']);
+Route::post('/api-ajax/newcarousel', [ContentController::class, 'getAjaxNewCarousel']);
+Route::post('/api-ajax/static-carousel', [ContentController::class, 'getAjaxStaticCarousel']);
 Route::post('/api-ajax/add-sec-user', 'UserController@changeFavTsec');
-Route::post('/api-ajax/lot_grid', 'ContentController@getAjaxLotGrid');
+Route::post('/api-ajax/lot_grid', [ContentController::class, 'getAjaxLotGrid']);
 
 Route::post('/api-ajax/accept-cond-user', 'UserController@AcceptConditionsUser');
-
 
 # Búsqueda
 Route::get(Routing::slugSeo('busqueda') . '/{texto?}', [BusquedaController::class, 'index']);
@@ -288,23 +210,18 @@ Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', [BusquedaController
 Route::post('api-ajax/mail', 'MailController@mailToAdmin');
 Route::post('api-ajax/mail-peticion-catalogo', 'MailController@mailToAdminPeticionCatalogo');
 
-
-
 Route::get(Routing::slug('thanks'), function () {
 	return View::make('front::generic.thanks');
 });
 
-# Content Controller
 # CMS / Gestor de contenido
-#Route::get(Routing::slug('pagina').'/{pagina}', 'ContentController@getPagina');
-#  Route::get(Routing::slugSeo('pagina',true).'/{pagina}', 'ContentController@getPagina');
 Route::get(Routing::slugSeo('pagina', true) . '/{pagina}', 'PageController@getPagina')->name('staticPage');
 Route::get('/article/{id}', 'PageController@getArticle');
 Route::get(Routing::translateSeo('mapa-web'), 'PageController@siteMapPage');
 
 //Soler esta utilizando un sistema de preguntas frequentes con csv.
 if (Config::get("app.faqs_old", 0)) {
-	Route::get(Routing::slugSeo('preguntas-frecuentes', true), 'ContentController@faqs')->name('faqs_page');
+	Route::get(Routing::slugSeo('preguntas-frecuentes', true), [ContentController::class, 'faqs'])->name('faqs_page');
 } else {
 	Route::get(Routing::translateSeo('preguntas-frecuentes'), 'V5\FaqController@index')->name('faqs_page');
 }
@@ -315,15 +232,12 @@ require __DIR__ . '/user_panel.php';
 Route::get(Routing::slugSeo('info-subasta', true) . '/{cod}-{texto}', 'SubastaController@auction_info')->name('urlAuctionInfo')->where(array('cod' => '[0-9a-zA-Z]+'));
 
 Route::get('/lot/getfechafin', 'SubastaController@getFechaFin');
-// SE ha modificado el routes
-//Route::get(Routing::slug('subastas').'/{status?}/{type?}', 'SubastaController@listaSubastasSesiones')->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
 
 // routes del shipment
 Route::get('/delivery/getshipmentsrates', 'DeliveryController@getShipmentsRates');
 Route::get('/delivery/newshipment', 'DeliveryController@newShipment');
 
 //TPV
-
 Route::post('/response_redsys_multi_tpv/{tpvCode}', 'PaymentsController@responseRedsysMultiTpv');
 Route::post('/gateway/{function}', 'PaymentsController@index');
 Route::get('/gateway/returnPayPage', 'PaymentsController@returnPayPage');
@@ -331,7 +245,6 @@ Route::get('/sermepa/peticion.php', 'PaymentsController@pagoDirecto');
 Route::get('/gateway/pasarela-pago', 'PaymentsController@pagoDirecto');
 
 Route::get('/gateway/paypal-approve', 'PaymentsController@pagoDirectoReturnPaypal')->name('paypal_approve');
-
 
 Route::get('/gateway/sendPayment', 'PaymentsController@sendPayment');
 
@@ -341,12 +254,6 @@ Route::post('/api-ajax/gastos_envio', 'PaymentsController@gastosEnvio');
 Route::post('/shoppingCart/pay', 'V5\PayShoppingCartController@createPayment');
 Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys');
 
-
-
-
-
-
-
 // Valoraciones
 Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
@@ -355,7 +262,6 @@ Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@Valoracion
 Route::post('/valoracion/upload', 'ValoracionController@uploadFile');
 Route::get('/{lang}/valoracion-{key}', 'ValoracionController@GetValoracionGratuita')->name('valoracion');
 Route::get('/{lang}/valuation-{key}', 'ValoracionController@GetValoracionGratuita');
-
 
 Route::get('/cron_load_cars_motorflash', 'CronController@loadCarsMotorflash');
 
@@ -380,10 +286,7 @@ Route::get('/email-cedente-amedida-error', 'CronController@emailCedenteAmedidaEr
 
 Route::get('/update-divisa', 'CronController@update_divisa');
 
-
 Route::get('/email_cancel_puja/{cod_sub}/{ref}/{cod_licit}', 'MailController@emailCancelBid');
-
-
 
 Route::get('/generate_miniatures', 'ImageController@generateMiniatures');
 Route::get('/regenerate_img', 'ImageController@regenerate_images_table');
@@ -410,7 +313,6 @@ Route::get(Routing::slugSeo('events', true) . '/{id}', 'NoticiasController@event
 
 Route::get(Routing::slugSeo('calendar'), 'SubastaController@calendarController')->name('calendar');
 
-
 Route::post('api-ajax/updateDivisa', 'UserController@savedDivisas');
 
 Route::post('/accept-all-cookies', 'CookiesController@acceptAllCookies');
@@ -418,34 +320,22 @@ Route::post('/reject-all-cookies', 'CookiesController@rejectAllCookies');
 Route::post('/save-preferences-cookies', 'CookiesController@setPreferencesCookies');
 Route::post('/add-configurations-cookies', 'CookiesController@addConfigurationsCookies');
 
-
 /* Invaluable */
-
 Route::get('/houses/token', 'InvaluableController@token');
-
 Route::get('/houses/{houseUserName}/groups', 'InvaluableController@groupSettings');
-
 Route::get('/houses/{houseUserName}/contacts', 'InvaluableController@listContacts');
-
 Route::get('/houses/{houseUserName}/address', 'InvaluableController@addresses');
-
 Route::get('/houses/{houseUserName}/channels', 'InvaluableController@channels');
-
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/catalogs', 'InvaluableController@catalogos');
-
 Route::get('/houses/{houseUserName}/lots', 'InvaluableController@lots');
-
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/lots/{lotNumber}', 'InvaluableController@deleteLot');
-
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/catalogs/lots/{lotNumber}', 'InvaluableController@updateLot');
 
 Route::get('/landing', function () {
 	return View::make('front::landings.landing');
 });
 
-
 /* Tabs tiempo real */
-
 Route::get('/{lang}/historicTab/{cod_sub}/{session}', 'SubastaTiempoRealController@historicTab');
 Route::get('/{lang}/favoritesTab/{cod_sub}/{licit}', 'SubastaTiempoRealController@favoritesTab');
 Route::get('/{lang}/adjudicadosTab/{cod_sub}/{session}/{licit}', 'SubastaTiempoRealController@adjudicadosTab');
@@ -459,28 +349,6 @@ Route::get('api-ajax/award_price/{cod_sub}/{ref_asigl0}', 'SubastaTiempoRealCont
 Route::post('api-ajax/formulario-pujar', 'SubastaController@getFormularioPujar');
 Route::post('api-ajax/enviar-formulario-pujar', 'SubastaController@sendFormularioPujar');
 Route::post('api-ajax/accept-auction-conditions', 'SubastaController@acceptAuctionConditions');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//   Versión 5
-//
-
-//Contacto
-#Route::get(Routing::slugSeo('contacto',true), 'V5\ContactController@index');
 
 Route::get(Routing::translateSeo('contacto'), 'V5\ContactController@index')->name('contact_page');
 
@@ -496,9 +364,6 @@ Route::get(Routing::slug('autoformulario-success'), 'V5\AutoFormulariosControlle
 
 Route::get(Routing::slug('tasaciones'), 'V5\AutoFormulariosController@Tasaciones');
 Route::get(Routing::translateSeo('workwithus', "/{key?}"), 'V5\AutoFormulariosController@workWidthUs');
-
-
-
 
 // Services page
 Route::get(Routing::slugSeo('servicios', true), 'ServicesController@index');
@@ -521,11 +386,10 @@ Route::post('/{lang}/api/email-provisional-lot-award', 'apirest\MailApiRestContr
 Route::post('/{lang}/api/email-complet-lot-report', 'apirest\MailApiRestController@emailCompletLotReport');
 
 Route::post('/{lang}/api/email-when-change-file', 'apirest\MailApiRestController@sendToUsersWithDepositWhenChangeFiles');
-/***************************************************************************************************************************************
-    /***************************************************************************************************************************************
-    /* 		SUBASTA    -    @Nuevo grid
-    /***************************************************************************************************************************************
-	/***************************************************************************************************************************************/
+
+/**
+ * SUBASTA - @Nuevo grid
+ */
 
 #listado de lotes por subasta
 if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new") {
@@ -542,7 +406,6 @@ if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new")
 	Route::get(Routing::slugSeo('subasta') . '/{cod}-{texto}/page-{page}', 'SubastaController@index')->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+',));
 }
 
-
 #listado de lotes para todas las categorias
 Route::get(Routing::slugSeo('subastas'), 'V5\LotListController@getLotsListAllCategories')->name('allCategories');
 
@@ -555,18 +418,12 @@ Route::get(Routing::slugSeo('subastas') . "-{keycategory}", 'V5\LotListControlle
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection?}"), 'V5\LotListController@getLotsListSection')->name('section');
 #listado de lotes por subcsecciones
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection}/{keysubsection}"), 'V5\LotListController@getLotsListSubSection')->name('subsection');
-#buscador
-#Route::get(Routing::translateSeo('b', '/{description}'),'V5\LotListController@getLotsListSearch')->name('search');
-
 
 #carga lotes por ajax
 Route::post('/{lang}/GetAjaxLots', 'V5\LotListController@GetAjaxLots')->name('getAjaxLots');
 
 #consultar si hay lotes históricos
 Route::post('/{lang}/showHistoricLink', 'V5\LotListController@showHistoricLink');
-#lote como está en subalia
-//Route::get(Routing::translateSeo('lote-{texto}_{idorigenhces1}_{codsub}'), 'subalia\LotControllerSubalia@showLotAuction')->name('urlLotAuction')->where(array('idorigenhces1' => '[0-9a-zA-Z\-]+','codsub' => '[0-9a-zA-Z]+'));
-//Route::get(Routing::translateSeo('lote-{texto}_{idorigenhces1}'), 'subalia\LotControllerSubalia@showLotCategory')->name('urlLot')->where(array('idorigenhces1' => '[0-9a-zA-Z\-]+'));
 
 #Tienda de venta directa
 Route::post('/addLotCart', 'V5\CartController@addLot')->name('addLotCart');
@@ -597,10 +454,7 @@ Route::post('/articleCart/returnPay', 'V5\PayArticleCartController@returnPay');
 
 
 Route::group(['prefix' => 'api'], function () {
-
 	Route::post('{lang}/getArticles', 'V5\ArticleController@getArticles')->name("getArticles");
-	//Route::post(Routing::translateSeo('getArticles'), 'V5\ArticleController@getArticles')->name("getArticles");
-
 	Route::post('{lang}/getOrtsec', 'V5\ArticleController@getOrtSec');
 	Route::post('{lang}/getSec', 'V5\ArticleController@getSec');
 	Route::post('{lang}/getTallasColores', 'V5\ArticleController@getTallasColores');
@@ -634,7 +488,7 @@ Route::get('/auth/google/callback', function () {
     // $user->token
 });
 
-Route::get(Routing::translateSeo('remates-destacados',"/{codSub}"), 'ContentController@rematesDestacados')->name('rematesDestacados');
+Route::get(Routing::translateSeo('remates-destacados',"/{codSub}"), [ContentController::class, 'rematesDestacados'])->name('rematesDestacados');
 
 Route::post("/api/webhookvottun","externalws\\vottun\\VottunController@webhook" )->name('webhookvottun');
 
@@ -693,17 +547,16 @@ Route::get("carga-lote-invaluable/{codSub}/{reference}/{ref}", "externalAggregat
 #Eventos SEO, permite pasar letras numeros y el simbolo _
 Route::get("/seo_event/{event}", "CustomControllers@saveEvent")->where(['event' => '[0-9a-zA-Z_]+']);
 
-
 #Lleida Net, como n ose si devuelven post o get pngo lso dos
 Route::get('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
 Route::post('/lleidanet/response_ocr', 'CustomControllers@response_ocr');
+
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/api_rest.php';
 require __DIR__ . '/api_label.php';
 require __DIR__ . '/web_service.php';
-
 
 /* Rutas para llamar al 404 */
 Route::get('404', function () {
