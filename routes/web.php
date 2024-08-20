@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AddressController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -66,10 +68,10 @@ Route::post('/{lang?}/register_subalia', 'User\RegisterController@registerComple
 # Activar cuenta (Tauler)
 Route::get(Routing::slug('activate_account'), 'UserController@activateAcount');
 
-Route::get('/{lang}/seeShippingAddress', 'AddressController@seeShippingAddress');
-Route::post('/change_address_shipping', 'AddressController@updateShippingAddress');
-Route::post('/delete_address_shipping', 'AddressController@deleteShippingAddress');
-Route::post('/api-ajax/add_favorite_address_shipping', 'AddressController@FavoriteShippingAddress');
+Route::get('/{lang}/seeShippingAddress', [AddressController::class, 'seeShippingAddress']);
+Route::post('/change_address_shipping', [AddressController::class, 'updateShippingAddress']);
+Route::post('/delete_address_shipping', [AddressController::class, 'deleteShippingAddress']);
+Route::post('/api-ajax/add_favorite_address_shipping', [AddressController::class, 'FavoriteShippingAddress']);
 
 Route::post('/api-ajax/wallet/update', 'UserController@updateWallet');
 Route::post('/api-ajax/wallet/create', 'UserController@createWallet');

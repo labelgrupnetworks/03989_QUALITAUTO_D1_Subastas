@@ -1875,21 +1875,16 @@ class UserController extends Controller
 
 		$user = $Update->getClientInfo($Update->cod_cli);
 
+		/**
+		 * @todo no veo que add_address lo tenga ningun formulario - revisar 20/08/2024
+		 */
 		$addAdress = request()->input('add_address');
 		$addressController = new AddressController();
+
 		if (!empty($addAdress)) {
-			$addressController->updateShippingAddress();
+			$addressController->updateShippingAddress($request);
 		} else if (Config::get('app.delete_addres_toupdate', 1)) {
-			$addressController->deleteShippingAddress();
-		}
-		//Tauler necesita conservar la direccion, con los datos de la direccion original
-		else {
-			/**
-			 * Ya no, 19/02/2021. ahora las direcciones se controlan desde una ventana a parte, por lo que la dirrección de envío principal no debe
-			 * sobreescribirse en este punto.
-			 * Se debe mantener el config de borrado de direcciones ya que tampoco la debemos borrar
-			 * */
-			//$addressController->updateShippingAddress($Update);
+			$addressController->deleteShippingAddress($request);
 		}
 
 		if (empty(FacadeRequest::get('email'))) {
