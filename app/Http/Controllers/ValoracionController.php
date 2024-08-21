@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Support\Facades\Session;
-# Cargamos el modelo
 use App\Models\User;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as Input;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 
@@ -101,12 +100,12 @@ class ValoracionController extends Controller
 				$url = Routing::translateSeo('pagina') . 'vender-monedas-success';
 			}
 
-			if(Config::get('app.codRecaptchaValoracion', false) || Config::get('app.captcha_v3', false)) {
+			if (Config::get('app.codRecaptchaValoracion', false) || Config::get('app.captcha_v3', false)) {
 				$token = request()->input('captcha_token');
 				$ip = request()->getClientIp();
 				$email = request()->input('email');
 
-				if(!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaValoracion'))) {
+				if (!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaValoracion'))) {
 					return [
 						"status" => 'error',
 						"err" => 1,
@@ -180,7 +179,6 @@ class ValoracionController extends Controller
 				);
 
 				$emailOptions['user'] = $name;
-
 			} else {
 				$emailOptions['content'] = array(
 					'texto' => trans(Config::get('app.theme') . '-app.emails.valoracion_articulos') . ' ' . Config::get('app.name'),
@@ -299,37 +297,4 @@ class ValoracionController extends Controller
 		return View::make('pages.valoracion.valoracion_articulos_success', array('data' => $data));
 	}
 
-	public function Tasacion()
-	{
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_vender-monedas');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_vender-monedas');
-		$data['seo'] = $SEO_metas;
-		return View::make('pages.tasacion', array('data' => $data));
-	}
-
-	public function Books()
-	{
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-books');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-books');
-		$data['seo'] = $SEO_metas;
-		return View::make('landings.books', array('data' => $data));
-	}
-	public function Numismatica()
-	{
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-accesories');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-accesories');
-		$data['seo'] = $SEO_metas;
-		return View::make('landings.numismatica', array('data' => $data));
-	}
-	public function SubastaNumismaticaPrimavera()
-	{
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.title_landing-numismatica');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.description_landing-numismatica');
-		$data['seo'] = $SEO_metas;
-		return View::make('landings.subastaNumismaticaPrimavera', array('data' => $data));
-	}
 }

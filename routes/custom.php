@@ -20,23 +20,6 @@ Route::get(RoutingServiceProvider::translateSeo('departamento') . '{text}', [Ent
 Route::get(RoutingServiceProvider::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
 Route::get(RoutingServiceProvider::translateSeo('equipo'), [EnterpriseController::class, 'team'])->name('enterprise.team');
 
-/**
- * TAULER - Landings
- * @todo No se esta utilizando (20/08/2024)
- */
-Route::get(RoutingServiceProvider::slugSeo('vender-monedas'), 'ValoracionController@Tasacion');
-Route::get(RoutingServiceProvider::slugSeo('libros-numismatica'), 'ValoracionController@Books');
-Route::get(RoutingServiceProvider::slugSeo('accesorios-numismatica'), 'ValoracionController@Numismatica');
-Route::get(RoutingServiceProvider::slugSeo('subasta-numismatica'), 'ValoracionController@SubastaNumismaticaPrimavera');
-Route::get(RoutingServiceProvider::slugSeo('servicios', true), 'ServicesController@index');
-Route::get('/{lang}/servicios/encapsulacion', 'ServicesController@encapsulacion');
-Route::get('/{lang}/servicios/fotografias', function () {
-	return View::make('pages.servicios.fotografias');
-});
-Route::post('/{lang}/servicios/valoracion-fotografia', 'ServicesController@valoracionFotografia');
-Route::post('/{lang}/servicios/valoracion-encapsulacion', 'ServicesController@valoracionEncapsulacion');
-Route::get('/{lang}/numismatica-madrid', 'Landing\LandingController@landing');
-
 #VICO
 // Estaticas con banner
 Route::view(RoutingServiceProvider::translateSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'foot.direct_sale', 'banner' => 'tienda-banner']]);
