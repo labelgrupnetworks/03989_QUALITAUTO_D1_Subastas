@@ -368,16 +368,6 @@ Route::get(Routing::slug('autoformulario-success'), 'V5\AutoFormulariosControlle
 Route::get(Routing::slug('tasaciones'), 'V5\AutoFormulariosController@Tasaciones');
 Route::get(Routing::translateSeo('workwithus', "/{key?}"), 'V5\AutoFormulariosController@workWidthUs');
 
-// Services page
-Route::get(Routing::slugSeo('servicios', true), 'ServicesController@index');
-Route::get('/{lang}/servicios/encapsulacion', 'ServicesController@encapsulacion');
-Route::get('/{lang}/servicios/fotografias', function () {
-	return View::make('pages.servicios.fotografias');
-});
-Route::post('/{lang}/servicios/valoracion-fotografia', 'ServicesController@valoracionFotografia');
-Route::post('/{lang}/servicios/valoracion-encapsulacion', 'ServicesController@valoracionEncapsulacion');
-
-Route::get('/{lang}/numismatica-madrid', 'Landing\LandingController@landing');
 
 /**Api Emails */
 Route::post('/{lang}/api/send-mail', 'apirest\MailApiRestController@sendMail');
