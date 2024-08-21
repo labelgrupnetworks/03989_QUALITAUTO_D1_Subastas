@@ -33,25 +33,16 @@ class MailController extends Controller
 	public $emailOptions;
 	public $to;
 
-	# Enviamos un correo al admin
+
+	/**
+	 * Enviamos un correo al admin
+	 * Metodo protegido por el middleware VerifyCaptcha
+	 * @see App\Http\Middleware\VerifyCaptcha::class
+	 */
 	public function mailToAdmin()
 	{
-
 		Log::info("Formulario contacto: " . print_r($_POST, true));
 
-		if (!empty(Config::get('app.codRecaptchaEmail'))) {
-
-			if (empty($_POST['g-recaptcha-response'])) {
-				Log::info("Correo bloqueado validateRecaptcha no variable");
-				return Redirect::to(Routing::slug('thanks'));
-			}
-
-			$jsonResponse = ToolsServiceProvider::validateRecaptcha(Config::get('app.codRecaptchaEmail'));
-			if (empty($jsonResponse) || $jsonResponse->success !== true) {
-				Log::info("Correo bloqueado validateRecaptcha ");
-				return Redirect::to(Routing::slug('thanks'));
-			}
-		}
 		//hemso recibido ataques y ellos envian el input Submit, nosotros no lo enviamos
 		if (isset($_POST['submit'])) {
 			Log::info("Correo bloqueado Submit ");
