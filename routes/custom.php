@@ -4,10 +4,9 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\CustomControllers;
 use App\Http\Controllers\EnterpriseController;
-use App\Providers\RoutingServiceProvider;
+use App\Providers\RoutingServiceProvider as Routing;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
 
 #ALCALA
 // Comprar catálogo
@@ -15,30 +14,30 @@ Route::get('/{lang?}/comprar-catalogo', 'V5\AutoFormulariosController@ComprarCat
 
 #SOLER, GUTINVEST,
 // DEPARTAMENTOS
-Route::get(RoutingServiceProvider::slugSeo('departamentos', true), 'PageController@getDepartment');
-Route::get(RoutingServiceProvider::translateSeo('departamento') . '{text}', [EnterpriseController::class, 'department'])->name('department');
-Route::get(RoutingServiceProvider::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
-Route::get(RoutingServiceProvider::translateSeo('equipo'), [EnterpriseController::class, 'team'])->name('enterprise.team');
+Route::get(Routing::slugSeo('departamentos', true), 'PageController@getDepartment');
+Route::get(Routing::translateSeo('departamento') . '{text}', [EnterpriseController::class, 'department'])->name('department');
+Route::get(Routing::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
+Route::get(Routing::translateSeo('equipo'), [EnterpriseController::class, 'team'])->name('enterprise.team');
 
 #VICO
 // Estaticas con banner
-Route::view(RoutingServiceProvider::translateSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'foot.direct_sale', 'banner' => 'tienda-banner']]);
-Route::view(RoutingServiceProvider::slugSeo('servicios-numismatica'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'Servicios', 'banner' => 'servicios-banner']]);
+Route::view(Routing::translateSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'foot.direct_sale', 'banner' => 'tienda-banner']]);
+Route::view(Routing::slugSeo('servicios-numismatica'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'Servicios', 'banner' => 'servicios-banner']]);
 
 #DURAN
 // Landing de login
-Route::get(RoutingServiceProvider::slug('login-landing'), 'UserController@loginLanding');
+Route::get(Routing::slug('login-landing'), 'UserController@loginLanding');
 Route::post('/api-ajax/external-login', 'UserController@encryptLogin');
 Route::post('/ordenTelefonica', 'externalws\duran\PujaTelefonicaController@createTelefonica');
 Route::post('/verBotonOrdenTelefonica', 'externalws\duran\PujaTelefonicaController@wbVerBotonTelefono');
 Route::get('/cancelreserveWs', [CronController::class, 'CancelReservationWS']);
 Route::get('/consentimiento', 'externalws\duran\ConsentimientoControler@createConsentimiento');
 
-Route::get(RoutingServiceProvider::translateSeo('landing-subastas', '') . '{keySubSection}', 'V5\LotListController@getCustomListSubSection')->name('landing-subastas');
+Route::get(Routing::translateSeo('landing-subastas', '') . '{keySubSection}', 'V5\LotListController@getCustomListSubSection')->name('landing-subastas');
 
 
 #DURAN-GALLERY
-Route::view(RoutingServiceProvider::slug('dmg'), 'front::pages.dmg');
+Route::view(Routing::slug('dmg'), 'front::pages.dmg');
 
 #SEGRE
 //Login
@@ -49,8 +48,8 @@ Route::post('/custom_login', 'UserController@customLogin');
 //Exportación en Excel de subasta
 
 #ANSORENA
-Route::view(RoutingServiceProvider::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
-Route::view(RoutingServiceProvider::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
+Route::view(Routing::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
+Route::view(Routing::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
 Route::get('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'privateChanelLogin'])->name('private_chanel.login');
 Route::post('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'loginInPrivateChanel'])->name('private_chanel.login.send');
 Route::post('/' . Config::get('app.locale') . '/private-chanel/form', [CustomControllers::class, 'sendPrivateChanelForm'])->name('private_chanel.form');
@@ -64,8 +63,8 @@ Route::get('/carlandia/generatePayment/{payLink}', 'V5\CarlandiaPayController@ge
 #recibimos la confirmación de redsys
 Route::post('/carlandia/confirmPayment', 'V5\CarlandiaPayController@confirmPayment');
 
-Route::get(RoutingServiceProvider::slugSeo('coches-contraoferta'), 'V5\LotListController@getLotsListAllCategories');
-Route::get(RoutingServiceProvider::slugSeo('coches-subasta'), 'V5\LotListController@getLotsListAllCategories');
+Route::get(Routing::slugSeo('coches-contraoferta'), 'V5\LotListController@getLotsListAllCategories');
+Route::get(Routing::slugSeo('coches-subasta'), 'V5\LotListController@getLotsListAllCategories');
 
 #aceptar contraofertas por el concesionario
 Route::get('aceptacion-contraoferta', 'V5\CarlandiaPayController@aceptarContraoferta')->name('aceptacion-contraoferta');
