@@ -90,6 +90,10 @@ class ValoracionController extends Controller
 		}
 	}
 
+	/**
+	 * Metodo protegido por el middleware VerifyCaptcha
+	 * @see App\Http\Middleware\VerifyCaptcha
+	 */
 	public function ValoracionArticulosAdv(Request $request, $lang)
 	{
 		try {
@@ -98,20 +102,6 @@ class ValoracionController extends Controller
 				$url = Routing::translateSeo('valoracion-articulos-success');
 			} else {
 				$url = Routing::translateSeo('pagina') . 'vender-monedas-success';
-			}
-
-			if (Config::get('app.codRecaptchaValoracion', false) || Config::get('app.captcha_v3', false)) {
-				$token = request()->input('captcha_token');
-				$ip = request()->getClientIp();
-				$email = request()->input('email');
-
-				if (!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaValoracion'))) {
-					return [
-						"status" => 'error',
-						"err" => 1,
-						"msg" => 'recaptcha_incorrect'
-					];
-				}
 			}
 
 			App::setLocale($lang);

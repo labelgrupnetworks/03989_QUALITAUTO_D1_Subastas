@@ -52,7 +52,7 @@ Route::get(Routing::slug('login'), 'UserController@login');
 Route::get(Routing::slugSeo('usuario-registrado'), 'UserController@SuccessRegistered')->name('user.registered');
 Route::post(Routing::slug('login'), 'UserController@login_post')->name('post_login');
 Route::post('/login_post_ajax', 'UserController@login_post_ajax');
-Route::post(Routing::slug('registro'), 'UserController@registro')->name('send_register');
+Route::post(Routing::slug('registro'), 'UserController@registro')->middleware('verify.captcha')->name('send_register');
 Route::get(Routing::slug('logout'), 'UserController@logout');
 Route::get(Routing::slug('password_recovery'), 'UserController@passwordRecovery');
 Route::post('/{lang}/send_password_recovery', 'UserController@sendPasswordRecovery');
@@ -215,7 +215,7 @@ Route::get(Routing::slugSeo('busqueda'), [BusquedaController::class, 'index'])->
 Route::get(Routing::slugSeo('busqueda') . '/{texto}/{page}', [BusquedaController::class, 'index']);
 
 # Mail Composer via POST
-Route::post('api-ajax/mail', [MailController::class, 'mailToAdmin']);
+Route::post('api-ajax/mail', [MailController::class, 'mailToAdmin'])->middleware('verify.captcha');
 Route::post('api-ajax/mail-peticion-catalogo', [MailController::class, 'mailToAdminPeticionCatalogo']);
 
 Route::get(Routing::slug('thanks'), function () {
@@ -241,10 +241,6 @@ Route::get(Routing::slugSeo('info-subasta', true) . '/{cod}-{texto}', 'SubastaCo
 
 Route::get('/lot/getfechafin', 'SubastaController@getFechaFin');
 
-// routes del shipment
-Route::get('/delivery/getshipmentsrates', 'DeliveryController@getShipmentsRates');
-Route::get('/delivery/newshipment', 'DeliveryController@newShipment');
-
 //TPV
 Route::post('/response_redsys_multi_tpv/{tpvCode}', 'PaymentsController@responseRedsysMultiTpv');
 Route::post('/gateway/{function}', 'PaymentsController@index');
@@ -266,7 +262,7 @@ Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys'
 Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
 Route::get(Routing::slugSeo('especialistas'), [EnterpriseController::class, 'index'])->name('especialistas');
-Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv');
+Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv')->middleware('verify.captcha');
 Route::post('/valoracion/upload', 'ValoracionController@uploadFile');
 Route::get('/{lang}/valoracion-{key}', 'ValoracionController@GetValoracionGratuita')->name('valoracion');
 Route::get('/{lang}/valuation-{key}', 'ValoracionController@GetValoracionGratuita');
@@ -356,7 +352,7 @@ Route::post('api-ajax/accept-auction-conditions', 'SubastaController@acceptAucti
 Route::get(Routing::translateSeo('contacto'), 'V5\ContactController@index')->name('contact_page');
 
 Route::get(Routing::slugSeo('administradores-concursales', true), 'V5\ContactController@admin');
-Route::post('contactSendmail', 'V5\ContactController@contactSendmail')->name('contactSendmail');
+Route::post('contactSendmail', 'V5\ContactController@contactSendmail')->middleware('verify.captcha')->name('contactSendmail');
 
 Route::get(Routing::slugSeo('register', true), 'User\RegisterController@index')->name('register');
 

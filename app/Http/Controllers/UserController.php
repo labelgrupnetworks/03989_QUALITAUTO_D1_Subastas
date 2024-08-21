@@ -508,7 +508,10 @@ class UserController extends Controller
 		return view('pages.user.login_landing', ['back' => $back]);
 	}
 
-	# Registrar un usuario
+	/**
+	 * Metodo protegido por el middleware VerifyCaptcha
+	 * @see App\Http\Middleware\VerifyCaptcha
+	 */
 	public function registro(HttpRequest $request)
 	{
 		if (!empty(Config::get('app.registerChecker' . $request["pri_emp"])) && !empty($request["pri_emp"])) {
@@ -552,17 +555,6 @@ class UserController extends Controller
 
 		//Textos por defecto o toUpper
 		$strToDefault = Config::get('app.strtodefault_register', 0);
-
-		//Validación recaptcha
-		if (Config::get('app.codRecaptcha', false) || Config::get('app.captcha_v3', false)) {
-			$token = $request->input('captcha_token');
-			$ip = $request->getClientIp();
-			$email = $request->input('email');
-
-			if (!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptcha'))) {
-				return ["err" => 1, "msg" => 'recaptcha_incorrect'];
-			}
-		}
 
 		$user = new User();
 		//Lo ponemos en el principio por que envia un email, asi savemos que idioma lo tenemos que enviar

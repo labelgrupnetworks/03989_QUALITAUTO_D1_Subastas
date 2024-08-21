@@ -735,64 +735,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
-	/**
-	 * @param string|null $token Token de recaptcha v3
-	 * @param string|null $ip IP del usuario
-	 * @param string|null $email string Email del usuario
-	 * @param string|null $privateCaptcha string|null Clave privada de recaptcha v2
-	 */
-	public static function captchaIsValid($token, $ip, $email, $privateCaptcha = null)
-	{
-		if(Config::get('app.captcha_v3', false)) {
-			return self::validateRecaptchaV3($token, $ip, $email);
-		}
-
-		if($privateCaptcha) {
-			$jsonResponse = self::validateRecaptcha($privateCaptcha);
-			if(empty($jsonResponse) || $jsonResponse->success !== true) {
-				Log::warning('Recaptcha v2 failed', ['response' => $jsonResponse, 'email' => $email, 'ip' => $ip]);
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public static function validateRecaptcha($secret)
-	{
-		if (empty($_POST['g-recaptcha-response'])) {
-			return null;
-		}
-		//get verify response data
-		$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-		$responseData = json_decode($verifyResponse);
-		return $responseData;
-	}
-
-	private static function validateRecaptchaV3($token, $ip, $email)
-	{
-		$privateKey = Config::get('app.captcha_v3_private', '');
-
-		$response = Http::asForm()
-		->post('https://www.google.com/recaptcha/api/siteverify', [
-			'secret' => $privateKey,
-			'response' => $token,
-			'remoteip' => $ip,
-		]);
-
-		if($response->failed()) {
-			return false;
-		}
-
-		$responseObject = $response->object();
-		if($responseObject->success == false || $responseObject->score < config('app.captcha_v3_severity', '0.5')) {
-			Log::warning('Recaptcha failed', ['response' => $response->json(), 'email' => $email, 'ip' => $ip]);
-			return false;
-		}
-
-		return true;
-	}
-
 	public static function url_lot($cod_sub, $id_session, $des_sub, $ref, $num_hces, $friendly = "", $title = "")
 	{
 		$webfriend = !empty($friendly) ? $friendly :  \Str::slug(strip_tags(trim($title)));
@@ -1231,7 +1173,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	static public function Seo_url($strValue)
 	{
-		$a = strtolower(\Tools::Limpia(str_replace(' ', '-', str_replace("'", ':', $strValue))));
+		$a = strtolower(self::Limpia(str_replace(' ', '-', str_replace("'", ':', $strValue))));
 		$a = str_replace("------", "-", $a);
 		$a = str_replace("-----", "-", $a);
 		$a = str_replace("----", "-", $a);
