@@ -451,22 +451,10 @@ class CronController extends Controller
 	public function EmailFirstAuction()
 	{
 		$mail = new MailController();
-		$mailquery = new MailQueries;
 		$params = array(
 			'emp'       =>  Config::get('app.emp')
 
 		);
-
-		/*
-		Enitendo que Balclis ejecutaba el proceso manualmente y queria enviar email de todos los lotes siempre, pero al hacerlo
-		como proceso automatico cada 15min, no tiene sentido que se repitan correos del mismo lote.
-		*/
-		/*
-        $first_auctions = $mailquery->getFirstAuction();
-        foreach ($first_auctions as $lot){
-             $mailquery->setFirstAuction( $lot->sub_asigl0, $lot->ref_asigl0);
-        }
-		*/
 
 		$sql = "SELECT fa.*  FROM WEB_EMAIL_FIRST_AUCTION fa "
 			. "JOIN FGASIGL0 ON EMP_ASIGL0 = ID_EMP AND SUB_ASIGL0 = ID_SUB AND REF_ASIGL0 = ID_REF"
