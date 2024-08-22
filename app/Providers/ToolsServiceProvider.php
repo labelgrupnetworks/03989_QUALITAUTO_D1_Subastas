@@ -2,31 +2,34 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Mail;
-use App\Models\Subasta;
-use App\Models\Payments;
-use App\Models\Facturas;
-use App\Models\Enterprise;
-use App\libs\ImageGenerate;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\services\GoogleApiPlacesController;
+use App\libs\CacheLib;
+use App\libs\ImageGenerate;
+use App\Models\Enterprise;
+use App\Models\Facturas;
+use App\Models\Payments;
+use App\Models\Subasta;
 use App\Models\V5\FxCli;
-use DOMDocument;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
-use App\Http\Helpers\Helper;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
+use App\Providers\RoutingServiceProvider as Routing;
+use DOMDocument;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request as FacadeRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class ToolsServiceProvider extends ServiceProvider
 {
@@ -123,11 +126,11 @@ class ToolsServiceProvider extends ServiceProvider
                     $format = number_format($qtty, $decimal, ',', '.');
                 }
                 */
-		if(\Config::get("app.decimalSeparator")){
-			$decimalSeparator = \Config::get("app.decimalSeparator");
+		if(Config::get("app.decimalSeparator")){
+			$decimalSeparator = Config::get("app.decimalSeparator");
 		}
-		if(\Config::get("app.thousandSeparator")){
-			$thousandSeparator = \Config::get("app.thousandSeparator");
+		if(Config::get("app.thousandSeparator")){
+			$thousandSeparator = Config::get("app.thousandSeparator");
 		}
 
 		$format = number_format($qtty, $decimal, $decimalSeparator, $thousandSeparator);
@@ -206,7 +209,7 @@ class ToolsServiceProvider extends ServiceProvider
         );
         */
 
-		$string = \trans(\Config::get('app.theme') . '-app.time');
+		$string = \trans(Config::get('app.theme') . '-app.time');
 
 		foreach ($string as $k => &$v) {
 			if ($diff->$k) {
@@ -281,7 +284,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$sub = new Subasta();
 		$sub->cod = $cod_sub;
 		$sub->id_auc_sessions = $id_auc_sessions;
-		$cat = \Route::current()->parameter('cat');
+		$cat = Route::current()->parameter('cat');
 
 		# Familias
 		//FER Q LES FAMILIES ES VEGIN AFECTADES SEGONS ELS MATERIALS SELECCIONATS. (FILTRE POSTERIOR)
@@ -292,8 +295,8 @@ class ToolsServiceProvider extends ServiceProvider
 		$options['families'] = $sub->getFamilies();
 
 		# Materiales
-		$selected_mats = \Request::input('mat');
-		$selected_families = \Request::input('fam');
+		$selected_mats = FacadeRequest::input('mat');
+		$selected_families = FacadeRequest::input('fam');
 		$available_mats = array(1, 2, 3, 4, 5);
 
 		# Obtiene los filtros por material disponibles.
@@ -402,7 +405,7 @@ class ToolsServiceProvider extends ServiceProvider
 			return true;
 		} catch (\Exception $e) {
 
-			\Log::emergency('Error Email: <br>' . $e);
+			Log::emergency('Error Email: <br>' . $e);
 
 			return false;
 		}
@@ -572,9 +575,9 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		$count_lots_adj = 0;
-		if (\Session::has('user')) {
+		if (Session::has('user')) {
 			$user = new \App\Models\User();
-			$user->cod_cli = \Session::get('user.cod');
+			$user->cod_cli = Session::get('user.cod');
 			$user->itemsPerPage = 'count';
 			$count_lots_adj_temp = $user->getAdjudicacionesPagar('N');
 			if (!empty($count_lots_adj_temp)) {
@@ -588,9 +591,9 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		$count_fact = 0;
-		if (\Session::has('user')) {
+		if (Session::has('user')) {
 			$facturas = new Facturas();
-			$facturas->cod_cli = \Session::get('user.cod');
+			$facturas->cod_cli = Session::get('user.cod');
 			//Sacamos facturas pendiente de pago
 			$pendientes = $facturas->pending_bills();
 			if (!empty($pendientes)) {
@@ -701,10 +704,10 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		$enterprice = new Enterprise();
 		$keyname_cache = "get_countries".Config::get('app.theme')."_".Config::get('app.emp');
-		$paises = \CacheLib::getCache($keyname_cache);
+		$paises = CacheLib::getCache($keyname_cache);
 		if ($paises === false){
 			$paises = $enterprice->getCountries();
-			\CacheLib::putCache($keyname_cache, $paises);
+			CacheLib::putCache($keyname_cache, $paises);
 		}
 
 		$countries = array();
@@ -720,13 +723,13 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_lot($cod_sub, $id_session, $des_sub, $ref, $num_hces, $friendly = "", $title = "")
 	{
-		$webfriend = !empty($friendly) ? $friendly :  \Str::slug(strip_tags(trim($title)));
+		$webfriend = !empty($friendly) ? $friendly :  Str::slug(strip_tags(trim($title)));
 
-		if(\Config::get("app.newUrlLot")){
+		if(Config::get("app.newUrlLot")){
 			//$url = Route("lote",["texto"=> $webfriend,"ref" => $ref, "cod" => $cod_sub]);
-			$url =Config::get('app.url') .\Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
+			$url =Config::get('app.url') .Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
 		}else{
-			$url=Config::get('app.url') .\Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
+			$url=Config::get('app.url') .Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
 		}
 
 		return $url;
@@ -743,36 +746,36 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_auction($cod_sub, $name, $id_session, $ref_session = '001')
 	{
-		if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") == "new") {
-			return route("urlAuction", ["texto" => \Str::slug($name), "cod" => $cod_sub, "session" => $ref_session]);
+		if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new") {
+			return route("urlAuction", ["texto" => Str::slug($name), "cod" => $cod_sub, "session" => $ref_session]);
 		} else {
-			return   Config::get('app.url') . \Routing::translateSeo('subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+			return   Config::get('app.url') . Routing::translateSeo('subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 		}
 	}
 
 	public static function url_info_auction($cod_sub, $name)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('info-subasta') . $cod_sub . "-" . \Str::slug($name);
+		return   Config::get('app.url') . Routing::translateSeo('info-subasta') . $cod_sub . "-" . Str::slug($name);
 	}
 
 	public static function url_indice_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('indice-subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . Routing::translateSeo('indice-subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_real_time_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('api/subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . Routing::translateSeo('api/subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_categorys($category)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('subastas') . $category;
+		return   Config::get('app.url') . Routing::translateSeo('subastas') . $category;
 	}
 
 	public static function url_exposicion($des_sub, $cod_sub, $reference = '001')
 	{
-		return   Route("exposicion",['texto' => \Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
+		return   Route("exposicion",['texto' => Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
 	}
 
 	public static function  images_size()
@@ -782,7 +785,7 @@ class ToolsServiceProvider extends ServiceProvider
 			/* tamaño imagenes */
 			$sql = "select * from WEB_IMAGES_SIZE WHERE ID_EMP = :emp";
 			$params = array('emp' => Config::get('app.main_emp'));
-			$sizes_DB =  \DB::select($sql, $params);
+			$sizes_DB =  DB::select($sql, $params);
 			$sizes = array();
 
 			//$sizes_DB = \DB::select($sql);
@@ -1000,7 +1003,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_pdf($cod_sub, $reference, $archive)
 	{
-		$url = "files/" . Config::get('app.emp') . '_' . $cod_sub . '_' . $reference . '_' . $archive . '_' . \App::getLocale() . '.pdf';
+		$url = "files/" . Config::get('app.emp') . '_' . $cod_sub . '_' . $reference . '_' . $archive . '_' . App::getLocale() . '.pdf';
 
 		//si no existe pdf en el idioma lo mostramos en ingles.
 		if (!file_exists($url)) {
@@ -1016,7 +1019,7 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function generateUrlGet($getValue = array())
 	{
 
-		$req = \Request::all();
+		$req = FacadeRequest::all();
 		$to_concat = '';
 		$cont = 0;
 
@@ -1279,6 +1282,7 @@ class ToolsServiceProvider extends ServiceProvider
 		if (empty($var)) {
 			return abort(404);
 		}
+
 	}
 	#sirve para arrays tambien
 	public static function exit404IfEmptyCollection($collection = null)
@@ -1291,7 +1295,7 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
-		if ( \Config::get("app.gridAllSessions") ){
+		if ( Config::get("app.gridAllSessions") ){
 			$filter_session = array("typeSub", "session" );
 		}else{
 			$filter_session = array("typeSub");
@@ -1613,17 +1617,6 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 		return $dataTable->first();
-	}
-
-	/**
-	 * Obtener numero entre dos valores delimitando su rango.
-	 */
-	public static function numberClamp($number, $min, $max = 0)
-	{
-		if(!$max){
-			return max($min, $number);
-		}
-		return max($min, min($number, $max));
 	}
 
 	public static function isITPLot($cod_sub, $ref) :bool
