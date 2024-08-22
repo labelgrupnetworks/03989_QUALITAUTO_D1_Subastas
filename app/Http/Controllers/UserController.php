@@ -1644,7 +1644,7 @@ class UserController extends Controller
 
 			return $creditDecrypt;
 		} catch (\Throwable $th) {
-			Log::info('Error al conseguir la tarjeta de credito', ['error' => $th->getMessage()]);
+			Log::info('Error al conseguir la tarjeta de credito', ['error' => $th->getMessage(), 'cod_cli' => $cod_cli]);
 			return false;
 		}
 	}
