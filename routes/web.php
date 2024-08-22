@@ -259,7 +259,7 @@ Route::post('/shoppingCart/pay', 'V5\PayShoppingCartController@createPayment');
 Route::get('/shoppingCart/callRedsys', 'V5\PayShoppingCartController@callRedsys');
 
 // Valoraciones
-Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos'); // **Deprecated**
+Route::post(Routing::slug('valoracion-articulos'), 'ValoracionController@ValoracionArticulos');
 Route::get(Routing::slug('valoracion-articulos-success'), 'ValoracionController@ValoracionSuccess')->name('valoracion-success');
 Route::get(Routing::slugSeo('especialistas'), [EnterpriseController::class, 'index'])->name('especialistas');
 Route::post('/{lang}/valoracion-articulos-adv', 'ValoracionController@ValoracionArticulosAdv')->middleware('verify.captcha');

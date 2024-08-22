@@ -18,6 +18,10 @@ class NewsletterController extends Controller
 	public function __construct()
 	{
 		$this->newsletterModel = new Newsletter();
+
+		if(Config::get('app.captcha_v3', false)){
+			$this->middleware('verify.captcha')->only(['setNewsletterAjax']);
+		}
 	}
 
 	#hago por ajax la funcion para poder guardar solo el evento al darse de alta en la newsletter desde la web

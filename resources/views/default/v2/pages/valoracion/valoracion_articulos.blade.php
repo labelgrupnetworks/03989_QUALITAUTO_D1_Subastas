@@ -4,14 +4,6 @@
     {{ trans($theme . '-app.head.title_app') }}
 @stop
 
-@push('scripts')
-    @if (config('app.captcha_v3'))
-        <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.captcha_v3_public') }}"></script>
-    @else
-        <script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
-    @endif
-@endpush
-
 @section('content')
 
     @php
@@ -29,10 +21,8 @@
 
             <form class="mt-3" id="form-valoracion-adv" action="">
                 @csrf
-                @if (config('app.captcha_v3'))
-                    <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
                         value="">
-                @endif
 
                 <p class="text-danger h4 hidden msg_valoracion">
                     {{ trans($theme . '-app.valoracion_gratuita.error') }}</p>
@@ -81,14 +71,9 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    @if (!config('app.captcha_v3'))
-                        <div class="col-12">
-                            <div class="g-recaptcha" data-sitekey="{{ config('app.codRecaptchaEmailPublico') }}"
-                                data-callback="onSubmit"></div>
-                        </div>
-                    @endif
-                </div>
+				<p class="captcha-terms">
+                    {!! trans("$theme-app.global.captcha-terms") !!}
+                </p>
 
                 <button class="button-send-valorate btn btn-lb-primary" id="valoracion-adv"
                     type="submit">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>

@@ -4,14 +4,6 @@
     {{ trans(\Config::get('app.theme') . '-app.head.title_app') }}
 @stop
 
-@push('scripts')
-    @if (config('app.captcha_v3'))
-        <script src="https://www.google.com/recaptcha/api.js?render={{ config('app.captcha_v3_public') }}"></script>
-    @else
-        <script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
-    @endif
-@endpush
-
 @section('content')
 
     @php
@@ -40,10 +32,9 @@
 
             <form class="mt-3" id="form-valoracion-adv" action="">
                 @csrf
-                @if (config('app.captcha_v3'))
-                    <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
-                        value="">
-                @endif
+
+                <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                    value="">
 
 				<input type="hidden" name="entidad" value="{{$entity}}">
 				<input type="hidden" name="operacion" value="Venta">
@@ -95,12 +86,11 @@
                 </div>
 
                 <div class="row mb-3">
-                    @if (!config('app.captcha_v3'))
-                        <div class="col-12">
-                            <div class="g-recaptcha" data-sitekey="{{ config('app.codRecaptchaEmailPublico') }}"
-                                data-callback="onSubmit"></div>
-                        </div>
-                    @endif
+					<div class="col-12">
+						<p class="captcha-terms">
+							{!! trans("$theme-app.global.captcha-terms") !!}
+						</p>
+					</div>
                 </div>
 
                 <button class="button-send-valorate btn btn-lb-primary" id="valoracion-adv"

@@ -153,6 +153,8 @@ header("Expires: 0 "); // Proxies.
 
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+
 @stack('scripts')
 
 <style>
