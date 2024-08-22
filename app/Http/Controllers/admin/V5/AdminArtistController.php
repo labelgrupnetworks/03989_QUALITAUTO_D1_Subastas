@@ -15,7 +15,7 @@ use App\Models\V5\Web_Artist_Article;
 use App\Models\V5\FgCaracteristicas_Value;
 use App\libs\FormLib;
 use App\Models\V5\Web_Artist_Lang;
-
+use App\Providers\ToolsServiceProvider;
 
 class AdminArtistController extends Controller
 {
@@ -41,7 +41,7 @@ class AdminArtistController extends Controller
 
 		if ($request->name_artist) {
 			$lotlist = new LotListController();
-			$description = $lotlist->clearWords($request->name_artist, \Tools::getLanguageComplete(Config::get("app.locale")));
+			$description = $lotlist->clearWords($request->name_artist, ToolsServiceProvider::getLanguageComplete(Config::get("app.locale")));
 			$words = explode(" ",$description);
 			$search="";
 			$and="";

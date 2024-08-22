@@ -143,7 +143,7 @@ class Subasta extends Model
         $params = array(
                 'emp'       =>  Config::get('app.emp'),
                 'cod_sub'   =>  $this->cod,
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
                 );
         $sql ="SELECT auc.*,
@@ -183,7 +183,7 @@ class Subasta extends Model
 
          $params = array(
                 'emp'       =>  Config::get('app.emp'),
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
                 );
 
@@ -338,7 +338,7 @@ class Subasta extends Model
 
          $params = array(
                 'emp'       =>  Config::get('app.emp'),
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
 				);
 
@@ -620,7 +620,7 @@ class Subasta extends Model
 
 		$params['emp'] = Config::get('app.emp');
 		$params['cod_sub'] = $this->cod;
-		$params['lang'] = \Tools::getLanguageComplete(Config::get('app.locale'));
+		$params['lang'] = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 
 		//pongo solo un minuto por que no tarda mucho y es posible que necesiten cambiar la subasta de tipo carrito a otro
 		$auctions = \CacheLib::useCache($cacheName, $sql, $params,1);
@@ -787,10 +787,10 @@ class Subasta extends Model
 
 			if(!$licit) {
 				foreach ($pujas as $key => $value) {
-					$pujas[$key]->formatted_imp_asigl1 = \Tools::moneyFormat($value->imp_asigl1);
+					$pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
 				}
 			} elseif (!empty($pujas[0])) {
-				$pujas[0]->formatted_imp_asigl1 = \Tools::moneyFormat($pujas[0]->imp_asigl1);
+				$pujas[0]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($pujas[0]->imp_asigl1);
 			}
 
 			return $pujas;
@@ -831,10 +831,10 @@ class Subasta extends Model
 
         if(!$licit) {
             foreach ($pujas as $key => $value) {
-                $pujas[$key]->formatted_imp_asigl1 = \Tools::moneyFormat($value->imp_asigl1);
+                $pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
             }
         } elseif (!empty($pujas[0])) {
-            $pujas[0]->formatted_imp_asigl1 = \Tools::moneyFormat($pujas[0]->imp_asigl1);
+            $pujas[0]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($pujas[0]->imp_asigl1);
         }
 
         return $pujas;
@@ -963,14 +963,14 @@ class Subasta extends Model
                     and b.CLI_LICIT = :cli_licit
                     order by a.SUB_ASIGL1, a.REF_ASIGL1, a.IMP_ASIGL1
             )
-        pu ) ". \Tools::getOffset($this->page, $this->itemsPerPage)."";
+        pu ) ". ToolsServiceProvider::getOffset($this->page, $this->itemsPerPage)."";
 
         $pujas = DB::select($sql, $params);
         $strLib = new StrLib();
         foreach ($pujas as $key => $value) {
-            $pujas[$key]->formatted_imp_asigl1 = \Tools::moneyFormat($value->imp_asigl1);
+            $pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
             $pujas[$key]->imagen = $this->getLoteImg($value);
-            $pujas[$key]->date = \Tools::formatDate($value->fec_asigl1, $value->hora_asigl1);
+            $pujas[$key]->date = ToolsServiceProvider::formatDate($value->fec_asigl1, $value->hora_asigl1);
             $pujas[$key]->titulo_hces1 = $strLib->CleanStr($value->titulo_hces1);
             $pujas[$key]->rsoc_licit = $strLib->CleanStr($value->rsoc_licit);
         }
@@ -1063,7 +1063,7 @@ class Subasta extends Model
         $params = array(
             'emp'       => Config::get('app.emp'),
             'cli_licit'     => $this->licit,
-            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale')),
+            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
             'subalia_min_licit' =>  !empty(Config::get('app.subalia_min_licit'))? Config::get('app.subalia_min_licit') : 10000
             //'cod_sub'   => $this->cod,
         );
@@ -1144,21 +1144,21 @@ class Subasta extends Model
                   JOIN FGHCES1 lotes ON   (lotes.EMP_HCES1 = :emp AND lotes.NUM_HCES1 = T4.NUMHCES_ASIGL0  AND lotes.LIN_HCES1 = T4.LINHCES_ASIGL0)
                 LEFT JOIN FGHCES1_LANG lotes_lang
                 ON (lotes_lang.EMP_HCES1_LANG = :emp AND lotes_lang.NUM_HCES1_LANG = lotes.num_hces1  AND lotes_lang.LIN_HCES1_LANG = lotes.lin_hces1 AND lotes_lang.LANG_HCES1_LANG = :lang)
-                ".\Tools::getOffset($this->page, $this->itemsPerPage)." order by $orderby";
+                ".ToolsServiceProvider::getOffset($this->page, $this->itemsPerPage)." order by $orderby";
 
            $ordenes = DB::select($sql, $params);
 
         foreach ($ordenes as $key => $value) {
-            $ordenes[$key]->formatted_imp = \Tools::moneyFormat($value->imp);
-            $ordenes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat($value->impsalhces_asigl0);
+            $ordenes[$key]->formatted_imp = ToolsServiceProvider::moneyFormat($value->imp);
+            $ordenes[$key]->formatted_impsalhces_asigl0 = ToolsServiceProvider::moneyFormat($value->impsalhces_asigl0);
 
             $ordenes[$key]->imagen = $this->getLoteImg($value);
             $date = explode(' ', $value->fec);
             //al agrupar por pujas no es posible coger la hora real por que estamos cogiendo la maxima, por lo que voy a usar la fecha completa de todas las pujas que contengan la hora dentro de la fecha.
             if(!empty($date[1]) &&  $date[1] != "00:00:00"){
-                $ordenes[$key]->date = \Tools::formatDate($value->fec, null);
+                $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec, null);
             }else{
-                $ordenes[$key]->date = \Tools::formatDate($value->fec, $value->hora);
+                $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec, $value->hora);
             }
 
         }
@@ -1205,15 +1205,15 @@ class Subasta extends Model
                     and b.CLI_LICIT = :cli_licit
                     order by a.SUB_ORLIC, a.REF_ORLIC
             )
-        pu ) ". \Tools::getOffset($this->page, $this->itemsPerPage)."";
+        pu ) ". ToolsServiceProvider::getOffset($this->page, $this->itemsPerPage)."";
 
         $ordenes = DB::select($sql, $params);
 
         $strLib = new StrLib();
         foreach ($ordenes as $key => $value) {
-            $ordenes[$key]->formatted_himp_orlic = \Tools::moneyFormat($value->himp_orlic);
+            $ordenes[$key]->formatted_himp_orlic = ToolsServiceProvider::moneyFormat($value->himp_orlic);
             $ordenes[$key]->imagen = $this->getLoteImg($value);
-            $ordenes[$key]->date = \Tools::formatDate($value->fec_orlic, $value->hora_orlic);
+            $ordenes[$key]->date = ToolsServiceProvider::formatDate($value->fec_orlic, $value->hora_orlic);
             /*$subasta = new Subasta($ordenes[$key]->SUB_LICIT);
             */
             $ref_prueba = isset($value->ref_hces1)?$value->ref_hces1:-1;
@@ -1222,7 +1222,7 @@ class Subasta extends Model
             $sub_licit = isset($ordenes[$key]->sub_orlic)?$ordenes[$key]->sub_orlic:-1;
             $ordenes[$key]->id_auc_session = $this->getIdAucSessionslote($sub_licit,$ref_prueba );
             $ordenes[$key]->session_name = $this->getNameSessionslote($sub_licit,$ref_prueba );
-            $ordenes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat($value->impsalhces_asigl0);
+            $ordenes[$key]->formatted_impsalhces_asigl0 = ToolsServiceProvider::moneyFormat($value->impsalhces_asigl0);
 
 
         }
@@ -1260,7 +1260,7 @@ class Subasta extends Model
 		$ordenes = array();
         foreach ($ordenesTmp as $key => $value) {
 
-			$ordenesTmp[$key]->himp_orlic_formatted = \Tools::moneyFormat($value->himp_orlic);
+			$ordenesTmp[$key]->himp_orlic_formatted = ToolsServiceProvider::moneyFormat($value->himp_orlic);
 			$ordenes[]=$ordenesTmp[$key];
         }
 
@@ -1298,7 +1298,7 @@ class Subasta extends Model
 		$ordenes = array();
         foreach ($ordenesTmp as $key => $value) {
 
-			$ordenesTmp[$key]->himp_orlic_formatted = \Tools::moneyFormat($value->himp_orlic);
+			$ordenesTmp[$key]->himp_orlic_formatted = ToolsServiceProvider::moneyFormat($value->himp_orlic);
 
 			#si es una orden condicionada (numero lotes y referencia lotes)
 			if(!empty($value->num_conditional_orlic) && !empty($value->lots_conditional_orlic)){
@@ -1646,7 +1646,7 @@ class Subasta extends Model
 		$params['emp'] = Config::get('app.emp');
 		$params['cod_sub'] = $this->cod;
 		$params['lote'] = $this->lote;
-		$params['lang'] = \Tools::getLanguageComplete(Config::get('app.locale'));
+		$params['lang'] = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 		$params['auction'] = $auction;
 
         return DB::select($sql,	$params );
@@ -2144,7 +2144,7 @@ class Subasta extends Model
                     'msg'                    => 'add_bidding_order',
                     'cod_licit_actual'       => $this->licit,
                     'imp'                    => $this->imp,
-                    //'actual_bid' => \Tools::moneyFormat($this->imp),
+                    //'actual_bid' => ToolsServiceProvider::moneyFormat($this->imp),
                     //'ref' => $this->ref
                     );
 
@@ -2325,7 +2325,7 @@ class Subasta extends Model
 					$result = array(
 						'status' => 'close',
 						'msg' => 'correct_bid',
-						'formatted_actual_bid' => \Tools::moneyFormat($this->imp),
+						'formatted_actual_bid' => ToolsServiceProvider::moneyFormat($this->imp),
 						'actual_bid' => $this->imp,
 						'ref' => $this->ref
 						);
@@ -2336,7 +2336,7 @@ class Subasta extends Model
                 $result = array(
                 'status' => 'success',
                 'msg' => 'correct_bid',
-                'formatted_actual_bid' => \Tools::moneyFormat($this->imp),
+                'formatted_actual_bid' => ToolsServiceProvider::moneyFormat($this->imp),
                 'actual_bid' => $this->imp,
                 'ref' => $this->ref
                 );
@@ -2437,25 +2437,25 @@ class Subasta extends Model
 		]);
 
 		//si es comprar
-		$message = trans(config('app.theme') . "-app.msg_success.buying_lot", ['lot' => $lot->descweb_hces1, 'imp' => \Tools::moneyFormat($this->imp)]);
+		$message = trans(config('app.theme') . "-app.msg_success.buying_lot", ['lot' => $lot->descweb_hces1, 'imp' => ToolsServiceProvider::moneyFormat($this->imp)]);
 
 		//si es contraoferta
 		if($typePuja == FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA){
-			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => \Tools::moneyFormat($this->imp)]);
+			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => ToolsServiceProvider::moneyFormat($this->imp)]);
 		}
 		elseif($typePuja == FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA){
 			$urlSimilar = (new EmailLib(''))->getUrlGridLots($lot->num_hces1, $lot->lin_hces1, 'V', 0, $this->imp * 1.25);
-			//$message = trans(config('app.theme') . '-app.msg_error.counteroffer_rejected', ['imp' => \Tools::moneyFormat($this->imp), 'url' => $urlSimilar]);
+			//$message = trans(config('app.theme') . '-app.msg_error.counteroffer_rejected', ['imp' => ToolsServiceProvider::moneyFormat($this->imp), 'url' => $urlSimilar]);
 			$message = 'El Vendedor no ha aceptado tu Oferta. Puedes asegurar la Compra al precio indicado, hacer otra Oferta superior o consultar otros Vehiculos Similares acordes a tu presupuesto.';
 		}
 		/* if (in_array($typePuja, [FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA, FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA])) {
-			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => \Tools::moneyFormat($this->imp)]);
+			$message = trans(config('app.theme') . '-app.msg_success.counteroffer_success', ['imp' => ToolsServiceProvider::moneyFormat($this->imp)]);
 		} */
 
 		return [
 			'status' => 'success',
 			'msg' => $message,
-			'formatted_actual_bid' => \Tools::moneyFormat($this->imp),
+			'formatted_actual_bid' => ToolsServiceProvider::moneyFormat($this->imp),
 			'imp' => $this->imp,
 			'ref' => $this->ref,
 			'bid' => $bid,
@@ -3469,18 +3469,18 @@ class Subasta extends Model
 
 			$lotes[$key]->ocultarps_asigl0 = $value->ocultarps_asigl0 ?? 'N';
 
-			$lotes[$key]->pc_hces1 = \Tools::moneyFormat($value->pc_hces1 ?? 0);
+			$lotes[$key]->pc_hces1 = ToolsServiceProvider::moneyFormat($value->pc_hces1 ?? 0);
 
-            $lotes[$key]->formatted_actual_bid = \Tools::moneyFormat($lotes[$key]->actual_bid);
+            $lotes[$key]->formatted_actual_bid = ToolsServiceProvider::moneyFormat($lotes[$key]->actual_bid);
             /* IMPORTANTE se debe usar el campo impsalhces_asigl0 como precio de salida  mantengo el campo formatted_impsalhces_asigl0 para que no haya ningun problema con los blames que no hayan siido modificados */
-            //$lotes[$key]->formatted_impsal_hces1 = \Tools::moneyFormat($value->impsalhces_asigl0);
+            //$lotes[$key]->formatted_impsal_hces1 = ToolsServiceProvider::moneyFormat($value->impsalhces_asigl0);
 			//En caso de existir salida web, se prioriza mostrar ese precio por encima del original
-            $lotes[$key]->formatted_impsalhces_asigl0 = \Tools::moneyFormat(!empty($value->impsalweb_asigl0) ? $value->impsalweb_asigl0 : $value->impsalhces_asigl0);
+            $lotes[$key]->formatted_impsalhces_asigl0 = ToolsServiceProvider::moneyFormat(!empty($value->impsalweb_asigl0) ? $value->impsalweb_asigl0 : $value->impsalhces_asigl0);
 
-			$lotes[$key]->formatted_imptash_asigl0 = \Tools::moneyFormat($value->imptash_asigl0);
-            $lotes[$key]->formatted_imptas_asigl0 = \Tools::moneyFormat($value->imptas_asigl0);
-            $lotes[$key]->formatted_impres_asigl0 = \Tools::moneyFormat($value->impres_asigl0);
-            $lotes[$key]->formatted_impsalweb_asigl0 = \Tools::moneyFormat($value->impsalweb_asigl0);
+			$lotes[$key]->formatted_imptash_asigl0 = ToolsServiceProvider::moneyFormat($value->imptash_asigl0);
+            $lotes[$key]->formatted_imptas_asigl0 = ToolsServiceProvider::moneyFormat($value->imptas_asigl0);
+            $lotes[$key]->formatted_impres_asigl0 = ToolsServiceProvider::moneyFormat($value->impres_asigl0);
+            $lotes[$key]->formatted_impsalweb_asigl0 = ToolsServiceProvider::moneyFormat($value->impsalweb_asigl0);
             //QUITADO EL 2017_07_26, NO VEO QUE SE USE
 
             $lotes[$key]->cod_sub           = $value->cod_sub;
@@ -3552,7 +3552,7 @@ class Subasta extends Model
             $lotes[$key]->compra_asigl0     = $value->compra_asigl0;
             $lotes[$key]->name              = $value->name;
             if(isset($value->descdet_hces1)){
-                $lotes[$key]->descdet_hces1     = \Tools::friendlyDesc($value->descdet_hces1);
+                $lotes[$key]->descdet_hces1     = ToolsServiceProvider::friendlyDesc($value->descdet_hces1);
             }else{
                 $lotes[$key]->descdet_hces1 = null;
             }
@@ -3569,7 +3569,7 @@ class Subasta extends Model
 			}
 
            if (isset($value->desc_hces1)){
-            $lotes[$key]->desc_hces1        = \Tools::friendlyDesc($value->desc_hces1);
+            $lotes[$key]->desc_hces1        = ToolsServiceProvider::friendlyDesc($value->desc_hces1);
            }else{
                $lotes[$key]->desc_hces1        = "";
            }
@@ -4277,7 +4277,7 @@ class Subasta extends Model
 
 		$params['emp'] = Config::get('app.emp');
 		$params['estado'] = $estado;
-		$params['lang'] = \Tools::getLanguageComplete(Config::get('app.locale'));
+		$params['lang'] = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 
 
         //quitamos espacios en blanco
@@ -4489,7 +4489,7 @@ class Subasta extends Model
             'emp'       => Config::get('app.emp'),
             'num'   => $num,
             'lin'      => $lin,
-            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
         );
 
@@ -4689,7 +4689,7 @@ class Subasta extends Model
 
         $params = array(
             'emp'   =>  Config::get('app.emp'),
-            'lang'  => \Tools::getLanguageComplete(Config::get('app.locale')),
+            'lang'  => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
             'cod_sub' => $cod_sub
         );
 
@@ -5059,7 +5059,7 @@ class Subasta extends Model
                         );
 
 
-                \Tools::sendMail('notification', $emailOptions);
+                ToolsServiceProvider::sendMail('notification', $emailOptions);
     }
         */
     /*

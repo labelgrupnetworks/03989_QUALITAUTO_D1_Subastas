@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -113,7 +114,7 @@ class FxSec extends Model
 }
 
    public function scopeJoinLangFxSec($query ){
-	$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+	$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 	return $query->leftjoin("FXSEC_LANG","FXSEC_LANG.GEMP_SEC_LANG = FXSEC.GEMP_SEC AND FXSEC_LANG.CODSEC_SEC_LANG = FXSEC.COD_SEC AND FXSEC_LANG.LANG_SEC_LANG  = '". $lang . "'");
 
 	}

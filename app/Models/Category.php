@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use \pdo;
@@ -37,7 +38,7 @@ class Category extends Model
                                         array(
                                             'sec'   => $cod_sec,
                                             'gemp'       => Config::get('app.gemp'),
-                                            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                                            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                                             )
                                         );
             return $data;
@@ -63,12 +64,12 @@ class Category extends Model
                             'cod_sub'   => $all_categ_sub,
                             'emp'       => Config::get('app.emp'),
                             'gemp'       => Config::get('app.gemp'),
-                            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                             );
 
              if($cache_sql){
                 //quitamos espacios en blanco
-                $name_cache = "CategSubCateg_".$all_categ_sub.'_'.\Tools::getLanguageComplete(Config::get('app.locale'));
+                $name_cache = "CategSubCateg_".$all_categ_sub.'_'.ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 
                 $res = \CacheLib::useCache($name_cache,$sql, $params);
             }else{

@@ -12,6 +12,7 @@ use Route;
 use Log;
 
 use App\Models\Subasta;
+use App\Providers\ToolsServiceProvider;
 
 class RedirectController extends Controller
 {
@@ -54,7 +55,7 @@ class RedirectController extends Controller
                 $item = $lote_info[0];
                 $webfriend = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  str_slug($item->titulo_hces1);
             # $url_friendly = \Routing::translateSeo('lote').$item->cod_sub."-".str_slug($item->name).'-'.$item->id_auc_sessions."/".$item->ref_asigl0.'-'.$item->num_hces1.'-'.$webfriend;
-				$url_friendly =  \Tools::url_lot($item->cod_sub,$item->id_auc_sessions,$item->name,$item->ref_asigl0,$item->num_hces1,$item->webfriend_hces1,$item->titulo_hces1);
+				$url_friendly =  ToolsServiceProvider::url_lot($item->cod_sub,$item->id_auc_sessions,$item->name,$item->ref_asigl0,$item->num_hces1,$item->webfriend_hces1,$item->titulo_hces1);
 
                 return \Redirect::to(\URL::asset($url_friendly),301);
             }else{

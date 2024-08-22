@@ -283,8 +283,8 @@ class AdminBiReports extends Controller
 
 
 			}
-			$totales["importe_adjudicaciones"] = \Tools::moneyFormat($totales["importe_adjudicaciones"], " €",0);
-			$totales["importe_pujas"] = \Tools::moneyFormat($totales["importe_pujas"], " €",0);
+			$totales["importe_adjudicaciones"] = ToolsServiceProvider::moneyFormat($totales["importe_adjudicaciones"], " €",0);
+			$totales["importe_pujas"] = ToolsServiceProvider::moneyFormat($totales["importe_pujas"], " €",0);
 
 			$chart=[];
 		foreach($auctions as $auction){
@@ -421,8 +421,8 @@ class AdminBiReports extends Controller
 				$importe_ganado+= $adjudicacion->importe_adjudicaciones ;
 			}
 		}
-		$totales["importe_adjudicaciones"] = \Tools::moneyFormat($totales["importe_adjudicaciones"], " €",0);
-		$totales["importe_pujas"] = \Tools::moneyFormat($totales["importe_pujas"], " €",0);
+		$totales["importe_adjudicaciones"] = ToolsServiceProvider::moneyFormat($totales["importe_adjudicaciones"], " €",0);
+		$totales["importe_pujas"] = ToolsServiceProvider::moneyFormat($totales["importe_pujas"], " €",0);
 
 
 		$chart[]=$this->chartData("Suscritos", "", $suscritos);
@@ -574,8 +574,8 @@ class AdminBiReports extends Controller
 				$excel[$cod_subfamily]= clone $families[$cod_family]->sub_families[$cod_subfamily];
 
 				#formateamos el precio de venta en subfamilias y calculamos la revalorización y el porcentaje de adjudicados
-				$families[$cod_family]->sub_families[$cod_subfamily]->sold_price_format =\Tools::moneyFormat($sub_family->sold_price," €",0);
-				$families[$cod_family]->sub_families[$cod_subfamily]->price_format =\Tools::moneyFormat($sub_family->price," €",0);
+				$families[$cod_family]->sub_families[$cod_subfamily]->sold_price_format =ToolsServiceProvider::moneyFormat($sub_family->sold_price," €",0);
+				$families[$cod_family]->sub_families[$cod_subfamily]->price_format =ToolsServiceProvider::moneyFormat($sub_family->price," €",0);
 
 
 			}
@@ -583,8 +583,8 @@ class AdminBiReports extends Controller
 			$totales["sold"] +=$families[$cod_family]->sold;
 			$totales["sold_price"] +=$families[$cod_family]->sold_price;
 			$totales["price"] +=$families[$cod_family]->price;
-			$families[$cod_family]->sold_price_format = \Tools::moneyFormat($families[$cod_family]->sold_price," €",0);
-			$families[$cod_family]->price_format = \Tools::moneyFormat($families[$cod_family]->price," €",0);
+			$families[$cod_family]->sold_price_format = ToolsServiceProvider::moneyFormat($families[$cod_family]->sold_price," €",0);
+			$families[$cod_family]->price_format = ToolsServiceProvider::moneyFormat($families[$cod_family]->price," €",0);
 
 
 			$families[$cod_family]->sold_pct =  round( (($families[$cod_family]->sold / $families[$cod_family]->lots) ) *100, 2) ."%";
@@ -606,8 +606,8 @@ class AdminBiReports extends Controller
 		}else{
 			$totales["revaluation"] = "0%";
 		}
-		$totales["sold_price_format"] = \Tools::moneyFormat($totales["sold_price"]," €",0);
-		$totales["price_format"] = \Tools::moneyFormat($totales["price"]," €",0);
+		$totales["sold_price_format"] = ToolsServiceProvider::moneyFormat($totales["sold_price"]," €",0);
+		$totales["price_format"] = ToolsServiceProvider::moneyFormat($totales["price"]," €",0);
 
 
 
@@ -762,8 +762,8 @@ private function auctionAwards( $type ){
 			$excel[$cod_auction."-".$cod_family]= clone $auctions[$cod_auction]->families[$cod_family];
 
 			#formateamos el precio de venta en subfamilias y calculamos la revalorización y el porcentaje de adjudicados
-			$auctions[$cod_auction]->families[$cod_family]->sold_price_format =\Tools::moneyFormat($family->sold_price," €",0);
-			$auctions[$cod_auction]->families[$cod_family]->price_format =\Tools::moneyFormat($family->price," €",0);
+			$auctions[$cod_auction]->families[$cod_family]->sold_price_format =ToolsServiceProvider::moneyFormat($family->sold_price," €",0);
+			$auctions[$cod_auction]->families[$cod_family]->price_format =ToolsServiceProvider::moneyFormat($family->price," €",0);
 
 
 		}
@@ -771,8 +771,8 @@ private function auctionAwards( $type ){
 		$totales["sold"] +=$auctions[$cod_auction]->sold;
 		$totales["sold_price"] +=$auctions[$cod_auction]->sold_price;
 		$totales["price"] +=$auctions[$cod_auction]->price;
-		$auctions[$cod_auction]->sold_price_format = \Tools::moneyFormat($auctions[$cod_auction]->sold_price," €",0);
-		$auctions[$cod_auction]->price_format = \Tools::moneyFormat($auctions[$cod_auction]->price," €",0);
+		$auctions[$cod_auction]->sold_price_format = ToolsServiceProvider::moneyFormat($auctions[$cod_auction]->sold_price," €",0);
+		$auctions[$cod_auction]->price_format = ToolsServiceProvider::moneyFormat($auctions[$cod_auction]->price," €",0);
 
 
 		$auctions[$cod_auction]->sold_pct =  round( (($auctions[$cod_auction]->sold / $auctions[$cod_auction]->lots) ) *100, 2) ."%";
@@ -794,8 +794,8 @@ private function auctionAwards( $type ){
 	}else{
 		$totales["revaluation"] = "0%";
 	}
-	$totales["sold_price_format"] = \Tools::moneyFormat($totales["sold_price"]," €",0);
-	$totales["price_format"] = \Tools::moneyFormat($totales["price"]," €",0);
+	$totales["sold_price_format"] = ToolsServiceProvider::moneyFormat($totales["sold_price"]," €",0);
+	$totales["price_format"] = ToolsServiceProvider::moneyFormat($totales["price"]," €",0);
 
 
 

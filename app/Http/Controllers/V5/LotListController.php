@@ -26,6 +26,7 @@ use App\Providers\ToolsServiceProvider as Tools;
 use Illuminate\Support\Facades\Config;
 
 use App\libs\SeoLib;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use stdClass;
@@ -55,7 +56,7 @@ class LotListController extends Controller
 	}
 
     public function getLotsListSubSection($keyCategory, $keySection, $keySubSection){
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
         $emp = Config::get("app.emp");
         $gemp = Config::get("app.gemp");
 
@@ -63,12 +64,12 @@ class LotListController extends Controller
         $fgortsec0 = new FgOrtsec0();
 		$linSec = $fgortsec0->getLinFgOrtsec( $keyCategory);
 
-         \Tools::exit404IfEmpty($linSec);
+         ToolsServiceProvider::exit404IfEmpty($linSec);
         #puede venir vacio si la llamada la hacen desde lotslistCategory
         if(!empty($keySection)){
             $fxsec = new FxSec();
             $sec = $fxsec->select("COD_SEC")->JoinLangFxSec($lang)->where('NVL(FXSEC_LANG.KEY_SEC_LANG, FXSEC.KEY_SEC)', $keySection)->where('gemp_sec', $gemp)->first();
-             \Tools::exit404IfEmpty($sec);
+             ToolsServiceProvider::exit404IfEmpty($sec);
             $codSec = $sec->cod_sec;
         }else{
             $codSec = null;
@@ -78,7 +79,7 @@ class LotListController extends Controller
 		 if(!empty($keySubSection)){
             $fxsubsec = new FxSubSec();
             $subsec = $fxsubsec->select("COD_SUBSEC")->JoinLangFxSubSec($lang)->where('NVL(FXSUBSEC_LANG.KEY_SUBSEC_LANG, FXSUBSEC.KEY_SUBSEC)', $keySubSection)->where('gemp_subsec', $gemp)->first();
-            \Tools::exit404IfEmpty($subsec);
+            ToolsServiceProvider::exit404IfEmpty($subsec);
             $codSubSec = $subsec->cod_subsec;
         }else{
             $codSubSec = null;
@@ -87,7 +88,7 @@ class LotListController extends Controller
         return $this->lotList( $linSec, $codSec,$codSubSec, null,  null);
     }
 	public function getCustomListSubSection($keySubSection){
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 
         $gemp = Config::get("app.gemp");
 
@@ -101,7 +102,7 @@ class LotListController extends Controller
 		->where('NVL(FXSUBSEC_LANG.KEY_SUBSEC_LANG, FXSUBSEC.KEY_SUBSEC)', $keySubSection)
 		->where('gemp_subsec', $gemp)
 		->first();
-		\Tools::exit404IfEmpty($this->landing_page);
+		ToolsServiceProvider::exit404IfEmpty($this->landing_page);
 
 
 		$linSec = $codSubSec= $this->landing_page->cod_subsec;
@@ -126,7 +127,7 @@ class LotListController extends Controller
 	{
 		abort_if(config('app.restrictAccessIfNoSession', 0) && !session('user.cod'), 401);
 
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		$fgasigl0 = new FgAsigl0();
 
         $tipos_sub = array("O" =>trans(\Config::get('app.theme').'-app.lot_list.online_auction'), "W" => trans(\Config::get('app.theme').'-app.lot_list.face_auction'), "V" => trans(\Config::get('app.theme').'-app.lot_list.direct_sale'), "P" => trans(\Config::get('app.theme').'-app.lot_list.permanent_auction'), "E" => trans(\Config::get('app.theme').'-app.lot_list.special_auction'), "M" => trans(\Config::get('app.theme').'-app.lot_list.make_offer'), "I" => trans(\Config::get('app.theme').'-app.lot_list.reverse_auction'));
@@ -138,7 +139,7 @@ class LotListController extends Controller
             #cargamos información de la subasta
 			$auction = $fgsub->getInfoSub(  $codSub, $refSession);
 
-			 \Tools::exit404IfEmpty($auction);
+			 ToolsServiceProvider::exit404IfEmpty($auction);
 
             #recogemos los filtros pasados por get
 			$filters = $this->getInputFilters($auction->tipo_sub);
@@ -299,7 +300,7 @@ class LotListController extends Controller
 		$subsection = request("subSection");
 
 
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		$fgasigl0 = new FgAsigl0();
 
 		$fgasigl0 =  $fgasigl0->HistoricLotForCategory();
@@ -345,7 +346,7 @@ class LotListController extends Controller
 			$bladeVars["titulo"] ="$refLot   -  $item->descweb_hces1";
 			$bladeVars["descripcion"] =$item->desc_hces1;
 			$bladeVars["hay_pujas"] = !empty($item->implic_hces1)? true : false;
-			$bladeVars["maxPuja"] = \Tools::moneyFormat($item->implic_hces1);
+			$bladeVars["maxPuja"] = ToolsServiceProvider::moneyFormat($item->implic_hces1);
 			$bladeVars["cerrado"] = $item->cerrado_asigl0 == 'S'? true : false;
 			$bladeVars["compra"] = $item->compra_asigl0 == 'S'? true : false;
 			$bladeVars["subasta_online"] = ($item->tipo_sub == 'P' || $item->tipo_sub == 'O')? true : false;
@@ -364,11 +365,11 @@ class LotListController extends Controller
 			$bladeVars["inicio_pujas_online"] = strtotime("now") > strtotime($item->fini_asigl0) ? true : false;
 			// D = factura devuelta, R = factura pedniente de devolver
 			$bladeVars["devuelto"] = ($item->fac_hces1 == 'D' || $item->fac_hces1 == 'R' || $item->cerrado_asigl0 == 'D') ? true : false;
-			$bladeVars["precio_venta"] = \Tools::moneyFormat($item->implic_hces1);
+			$bladeVars["precio_venta"] = ToolsServiceProvider::moneyFormat($item->implic_hces1);
 			$bladeVars["desadjudicado"] = $item->desadju_asigl0 == 'S'? true : false;
 
 			$bladeVars["webfriend"] = !empty($item->webfriend_hces1)? $item->webfriend_hces1 :  \Str::slug(strip_tags($item->descweb_hces1));
-			$bladeVars["precio_salida"] = \Tools::moneyFormat(!empty($item->impsalweb_asigl0) ? $item->impsalweb_asigl0 : $item->impsalhces_asigl0);
+			$bladeVars["precio_salida"] = ToolsServiceProvider::moneyFormat(!empty($item->impsalweb_asigl0) ? $item->impsalweb_asigl0 : $item->impsalhces_asigl0);
 			#debe haber la variable number_bids_lotlist a 1 en webconfig para que devuelva el numero de pujas y de licitadores
 			$bladeVars["bids"] = !empty($item->bids)? $item->bids : 0;
 			$bladeVars["licits"] = !empty($item->licits)? $item->licits : 0;
@@ -378,7 +379,7 @@ class LotListController extends Controller
 			$url = "";
 			//Si no esta retirado tendrá enlaces
 			if(!$bladeVars["retirado"]  && !$bladeVars["devuelto"] ){
-				$url_friendly = \Tools::url_lot($item->cod_sub,$item->id_auc_sessions,$item->name,$item->ref_asigl0,$item->num_hces1,$item->webfriend_hces1,$item->descweb_hces1);
+				$url_friendly = ToolsServiceProvider::url_lot($item->cod_sub,$item->id_auc_sessions,$item->name,$item->ref_asigl0,$item->num_hces1,$item->webfriend_hces1,$item->descweb_hces1);
 				$url = "href='$url_friendly'";
 			}
 			$bladeVars["url"] = $url;
@@ -439,7 +440,7 @@ class LotListController extends Controller
 			$seo_data->meta_title =$auction->webmetat_sub;
 			$seo_data->meta_description =$auction->webmetad_sub;
 				#datos para Open Graph
-			$seo_data->openGraphImagen = \Tools::url_img_session("subasta_large", $auction->cod_sub, $auction->reference);
+			$seo_data->openGraphImagen = ToolsServiceProvider::url_img_session("subasta_large", $auction->cod_sub, $auction->reference);
 		}else{
 			if(request("historic")){
 				$seo_data->h1_seo = trans(\Config::get('app.theme').'-app.lot_list.historic_sold_lots');
@@ -544,13 +545,13 @@ class LotListController extends Controller
 		#No es necesario el search ya que vendra por variables
 		$search = "" ;
 
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		$fgasigl0 = new FgAsigl0();
 
         #filtros activos y cantidad de lotes para cada uno
 
 
-        \Tools::exit404IfEmpty(is_numeric($this->actualPage));
+        ToolsServiceProvider::exit404IfEmpty(is_numeric($this->actualPage));
 
         #devuelve el listado de idorigin y la cantidad de lotes totales
         #lotes de subasta
@@ -560,7 +561,7 @@ class LotListController extends Controller
             #cargamos información de la subasta
 			$auction = $fgsub->getInfoSub(  $codSub, $refSession);
 
-			 \Tools::exit404IfEmpty($auction);
+			 ToolsServiceProvider::exit404IfEmpty($auction);
             #recogemos los filtros pasados por get
 			$filters = $this->getInputFilters($auction->tipo_sub);
 			#ponemos los filtros para que coja lso datosde la subasta
@@ -955,7 +956,7 @@ class LotListController extends Controller
         public function setFilterDescription($fgasigl0, $description ){
             if(!empty($description)){
 
-				$description = $this->clearWords($description, \Tools::getLanguageComplete(Config::get("app.locale")));
+				$description = $this->clearWords($description, ToolsServiceProvider::getLanguageComplete(Config::get("app.locale")));
 
                 if(\Config::get("app.search_engine") ){
 					$excludedWords =[];
@@ -988,12 +989,12 @@ class LotListController extends Controller
 
 
 						#si el idioma es el principal buscamos en hces1, si no en hces1_lang
-						if(\Tools::getLanguageComplete(Config::get("app.locale")) == head(Config::get("app.language_complete")) ){
+						if(ToolsServiceProvider::getLanguageComplete(Config::get("app.locale")) == head(Config::get("app.language_complete")) ){
 							#Es necesario poner las dos pipes || para concatenar la variable si no da error  número/nombre de variable no válid
 							$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
 						}else{
 							$fgasigl0 =  $fgasigl0->whereraw(" CATSEARCH(search_hces1_lang,'<query><textquery grammar=\"context\">' || ? || '</textquery></query>',null) >0", [ $search]);
-							$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+							$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 							#OJO debe ser Join no left Join
 							$fgasigl0 =  $fgasigl0->join('FGHCES1_LANG',"FGHCES1_LANG.EMP_HCES1_LANG = FGASIGL0.EMP_ASIGL0 AND FGHCES1_LANG.NUM_HCES1_LANG = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1_LANG.LIN_HCES1_LANG = FGASIGL0.LINHCES_ASIGL0 AND FGHCES1_LANG.LANG_HCES1_LANG = '" . $lang . "'");
 
@@ -1003,7 +1004,7 @@ class LotListController extends Controller
 
                 }else{
                     $words = explode(" ",$description);
-                     \Tools::linguisticSearch();
+                     ToolsServiceProvider::linguisticSearch();
                     $fgasigl0 = $fgasigl0->JoinFgOrtsecAsigl0();
 
                     foreach ($words as $word){
@@ -1024,7 +1025,7 @@ class LotListController extends Controller
 
                         }
                     }
-                   $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+                   $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
                    $fgasigl0 = $fgasigl0->JoinFghces1LangAsigl0($lang);
                 }
 
@@ -1253,7 +1254,7 @@ class LotListController extends Controller
 
 		abort_if(config('app.restrictAccessIfNoSession', 0) && session('user.cod'), 401);
 
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 
         $gemp = Config::get("app.gemp");
         $auction = NULL;
@@ -1264,7 +1265,7 @@ class LotListController extends Controller
 
         }
 
-        \Tools::exit404IfEmpty($auction);
+        ToolsServiceProvider::exit404IfEmpty($auction);
         $aucHouse = Sub_AucHouse::getByCliHouse($auction->agrsub_sub);
 
         $auction->house = $aucHouse->cod_auchouse;

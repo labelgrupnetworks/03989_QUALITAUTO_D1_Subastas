@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Config;
@@ -63,7 +64,7 @@ class FgCaracteristicas extends Model
 	}
 
 	public function scopeJoinLang($query){
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		return $query->leftjoin("FGCARACTERISTICAS_LANG","EMP_CARACTERISTICAS_LANG = EMP_CARACTERISTICAS AND ID_CARACTERISTICAS_LANG = ID_CARACTERISTICAS AND LANG_CARACTERISTICAS_LANG= '". $lang . "'")
 						->addSelect("NVL(NAME_CARACTERISTICAS_LANG, NAME_CARACTERISTICAS) NAME_CARACTERISTICAS");
 

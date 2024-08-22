@@ -11,6 +11,7 @@ use App\Models\V5\FgAsigl0;
 
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\View;
 
 class GaleriaArte extends Controller
@@ -18,14 +19,14 @@ class GaleriaArte extends Controller
 
 	public function getGalery( $texto, $codSub,  $reference ){
 
-        $lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+        $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 
 		if(!empty($codSub) && !empty($reference)){
             $fgsub = new Fgsub();
             #cargamos información de la subasta
 			$auction = $fgsub->getInfoSub(  $codSub, $reference);
 
-			 \Tools::exit404IfEmpty($auction);
+			 ToolsServiceProvider::exit404IfEmpty($auction);
 			 if($auction->tipo_sub !='E'){
 				exit(\View::make('front::errors.404'));
 			 }
@@ -119,7 +120,7 @@ class GaleriaArte extends Controller
 	public function artist($id_artist){
 		$artist = Web_Artist::where("ID_ARTIST", $id_artist)->first();
 
-		\Tools::exit404IfEmpty($artist);
+		ToolsServiceProvider::exit404IfEmpty($artist);
 
 		if(\Config::get("app.ArtistNameSurname")){
 			$artist = $this->nameSurname($artist );
@@ -251,7 +252,7 @@ class GaleriaArte extends Controller
 	function artistFondoGaleria( $idArtist){
 
 		$artist = Web_Artist::where("ID_ARTIST", $idArtist)->first();
-		\Tools::exit404IfEmpty($artist);
+		ToolsServiceProvider::exit404IfEmpty($artist);
 
 		$fgasigl0 = new  FgAsigl0 ;
 		#lotes de este artista
@@ -299,7 +300,7 @@ class GaleriaArte extends Controller
 
 	function prepareSearchWords($searchWords){
 		$lotlist = new LotListController();
-		$description = $lotlist->clearWords($searchWords, \Tools::getLanguageComplete(Config::get("app.locale")));
+		$description = $lotlist->clearWords($searchWords, ToolsServiceProvider::getLanguageComplete(Config::get("app.locale")));
 		$words = explode(" ",$description);
 		$search="";
 		$and="";

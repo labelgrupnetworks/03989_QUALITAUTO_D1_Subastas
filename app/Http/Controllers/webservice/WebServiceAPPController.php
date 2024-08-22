@@ -262,7 +262,7 @@ class WebServiceAPPController  extends WebServiceController{
 				$countries = FsPaises::select("cod_paises", "nvl(FSPAISES_LANG.DES_PAISES_LANG,FSPAISES.des_paises) des_paises")
 				->leftJoin('FSPAISES_LANG', function ($join) use ($lang) {
 					$join   ->on("FSPAISES_LANG.COD_PAISES_LANG", "=", "FSPAISES.cod_paises")
-							->on("FSPAISES_LANG.LANG_PAISES_LANG", "=", "'".\Tools::getLanguageComplete($lang)."'");
+							->on("FSPAISES_LANG.LANG_PAISES_LANG", "=", "'".ToolsServiceProvider::getLanguageComplete($lang)."'");
 				})->orderby("des_paises_lang")->get();
 
 				foreach($countries as $country){
@@ -390,11 +390,11 @@ class WebServiceAPPController  extends WebServiceController{
 		private function getAuctionImage($cod_sub, $reference)
 		{
 			#intentamos conseguir imagen de sesión
-			$image_to_load = \Tools::url_img_session("subasta_large", $cod_sub, $reference);
+			$image_to_load = ToolsServiceProvider::url_img_session("subasta_large", $cod_sub, $reference);
 
 			#si no existe conseguimos la imagen de la subasta\
 			if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-				$image_to_load = \Tools::url_img_auction("subasta_large", $cod_sub);
+				$image_to_load = ToolsServiceProvider::url_img_auction("subasta_large", $cod_sub);
 			}
 
 			return $image_to_load;
@@ -572,7 +572,7 @@ class WebServiceAPPController  extends WebServiceController{
 				$lote["codauction"] = $lot->sub_asigl0;
 				$lote["lotref"] = $lot->ref_asigl0;
 				$lote["title"] = strip_tags($lot->title);
-				$lote["image"] = \Tools::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1);
+				$lote["image"] = ToolsServiceProvider::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1);
 				$lote["price"] = $lot->impsalhces_asigl0;
 
 				$lote["retired"] = ($lot->retirado_asigl0 == 'S');
@@ -783,7 +783,7 @@ class WebServiceAPPController  extends WebServiceController{
 					#Fecha a mostrar
 				if($lot->tipo_sub == 'W'){
 					$lote["enddate"] = $lot->start;
-					$lote["realtime"] = \Tools::url_real_time_auction($lot->cod_sub ,$lot->name ,$lot->id_auc_sessions);
+					$lote["realtime"] = ToolsServiceProvider::url_real_time_auction($lot->cod_sub ,$lot->name ,$lot->id_auc_sessions);
 				}elseif($lot->tipo_sub == 'O' || $lot->tipo_sub == 'P'){
 					$lote["enddate"] = substr($lot->ffin_asigl0,0,10)." ".$lot->hfin_asigl0;
 

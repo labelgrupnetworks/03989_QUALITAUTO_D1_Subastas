@@ -405,7 +405,7 @@ class SubastaController extends Controller
 					continue;
 
 				if (empty($data['WEBFRIEND_SUB_' . $lang])) {
-					$data['WEBFRIEND_SUB_' . $lang] = \Tools::Seo_url($data['DES_SUB_' . $lang]);
+					$data['WEBFRIEND_SUB_' . $lang] = ToolsServiceProvider::Seo_url($data['DES_SUB_' . $lang]);
 				}
 				if (empty($data['WEBMETAT_SUB_' . $lang])) {
 					$data['WEBMETAT_SUB_' . $lang] = $data['DES_SUB_' . $lang];
@@ -788,7 +788,7 @@ class SubastaController extends Controller
 					"DESCWEB_HCES1_LANG" => $data['DESCWEB_HCES1_LANG_' . $lang],
 					"WEBMETAT_HCES1_LANG" => $data['WEBMETAT_HCES1_LANG_' . $lang],
 					"WEBMETAD_HCES1_LANG" => $data['WEBMETAD_HCES1_LANG_' . $lang],
-					"WEBFRIEND_HCES1_LANG" => \Tools::Seo_url($data['WEBFRIEND_HCES1_LANG_' . $lang]),
+					"WEBFRIEND_HCES1_LANG" => ToolsServiceProvider::Seo_url($data['WEBFRIEND_HCES1_LANG_' . $lang]),
 					"DESC_HCES1_LANG" => $data['DESC_HCES1_LANG_' . $lang],
 					"DESCDET_HCES1_LANG" => $data['DESCDET_HCES1_LANG_' . $lang],
 				];
@@ -1618,7 +1618,7 @@ class SubastaController extends Controller
 						"DESCWEB_HCES1_LANG" => $info[2],
 						"WEBMETAT_HCES1_LANG" => substr($info[2], 0, 60),
 						"WEBMETAD_HCES1_LANG" => substr($info[2], 0, 150),
-						"WEBFRIEND_HCES1_LANG" => \Tools::Seo_url(substr($info[2], 0, 100)),
+						"WEBFRIEND_HCES1_LANG" => ToolsServiceProvider::Seo_url(substr($info[2], 0, 100)),
 						"DESC_HCES1_LANG" => $info[4],
 						"DESCDET_HCES1_LANG" => $info[15],
 					];
@@ -1717,7 +1717,7 @@ class SubastaController extends Controller
 						"DESCWEB_HCES1_LANG" => $info[2],
 						"WEBMETAT_HCES1_LANG" => substr($info[2], 0, 60),
 						"WEBMETAD_HCES1_LANG" => substr($info[2], 0, 150),
-						"WEBFRIEND_HCES1_LANG" => \Tools::Seo_url(substr($info[2], 0, 100)),
+						"WEBFRIEND_HCES1_LANG" => ToolsServiceProvider::Seo_url(substr($info[2], 0, 100)),
 						"DESC_HCES1_LANG" => $info[4],
 						"DESCDET_HCES1_LANG" => $info[15]
 					];
@@ -2031,7 +2031,7 @@ class SubastaController extends Controller
 			foreach($fgasigl0 as $lot){
 				$lots[$lot->sub_asigl0."-".$lot->ref_asigl0] = [
 					'id' => $lot->sub_asigl0."-".$lot->ref_asigl0,
-					'html' =>   $lot->descweb_hces1." - ".$lot->value_caracteristicas_value . " - ". \Tools::moneyFormat($lot->impsalhces_asigl0,"€")
+					'html' =>   $lot->descweb_hces1." - ".$lot->value_caracteristicas_value . " - ". ToolsServiceProvider::moneyFormat($lot->impsalhces_asigl0,"€")
 				];
 			}
 

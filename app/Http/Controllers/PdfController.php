@@ -16,6 +16,7 @@ use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider as Tools;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -40,7 +41,7 @@ class PdfController extends Controller
 		$fgsub = new Fgsub();
 		$auction = $fgsub->getInfoSub(  $codSub, $reference);
 
-		\Tools::exit404IfEmpty($auction);
+		ToolsServiceProvider::exit404IfEmpty($auction);
 		if($auction->tipo_sub !='E'){
 		exit(\View::make('front::errors.404'));
 		}

@@ -39,6 +39,10 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 	}
 
+	public function register()
+	{
+	}
+
 	public static function linguisticSearch()
 	{
 		//permitir busqueda lingüistica,  que n otenga en cuenta acentos ni mayusculas
@@ -82,7 +86,7 @@ class ToolsServiceProvider extends ServiceProvider
 			'emp' => Config::get('app.emp'),
 			'num_hces' => $num_hces,
 			'lin_hces' => $lin_hces,
-			'lang'     => \Tools::getLanguageComplete(Config::get('app.locale'))
+			'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 		);
 
 
@@ -94,20 +98,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return head($consulta);
 	}
 
-	public function register()
-	{
-	}
-
-	/*public static function makeSlug($str, $delimiter='-')
-	{
-		$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-		$clean = preg_replace("#[^a-zA-Z0-9/_|+ -]#", '', $clean);
-		$clean = strtolower(trim($clean, '-'));
-		$clean = preg_replace("#[/_|+ -]+#", $delimiter, $clean);
-
-		return $clean;
-	}*/
-
 	public static function friendlyDesc($str)
 	{
 
@@ -116,13 +106,6 @@ class ToolsServiceProvider extends ServiceProvider
 		$str = preg_replace('/\\\s/', ' ', $str);
 		$str = str_replace("
 ", "<br>", $str);
-		//$str = preg_replace('/&euro+/', '€', $str);
-
-		/*$str = str_replace('\b', ' ', $str);
-		$str = str_replace('\n', '<br >',$str);
-		$str = str_replace('  ', ' ', $str);
-		//$str = str_replace('&euro', '€', $str);
-		$str = str_replace('<br ><br >', '<br >',$str);*/
 
 		return $str;
 	}
@@ -644,7 +627,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 		# si no encontramos usuario , o si lo encontramos y es Europeo devolvemos el precio de base de datos que lleva el iva
-		if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+		if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 			return  $imp;
 
 		}else{
@@ -668,7 +651,7 @@ class ToolsServiceProvider extends ServiceProvider
 			return $tax;
 		}else{
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
-			if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 				return   $tax;
 
 			}else{
@@ -703,7 +686,7 @@ class ToolsServiceProvider extends ServiceProvider
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 			# si no encontramos usuario , o si lo encontramos y es Europeo
-			if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 					return  (1 + $tax) * $imp;
 
 			}
@@ -1287,7 +1270,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function numberformat($qtty)
 	{
-		return \Tools::moneyFormat($qtty, FALSE, 0);
+		return ToolsServiceProvider::moneyFormat($qtty, FALSE, 0);
 	}
 
 
@@ -1390,7 +1373,7 @@ class ToolsServiceProvider extends ServiceProvider
             "title" => $dataSeo->title_seo);
 
         if(!empty($dataSeo->parent)){
-           $breadCrumb= array_merge( \Tools::breadCrumbSeo($dataSeo->parent),$breadCrumb);
+           $breadCrumb= array_merge( ToolsServiceProvider::breadCrumbSeo($dataSeo->parent),$breadCrumb);
         }
 
         return $breadCrumb;

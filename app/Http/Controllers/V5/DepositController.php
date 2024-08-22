@@ -15,6 +15,8 @@ use App\Http\Controllers\PaymentsController;
 
 # Cargamos el modelo
 use App\Models\Page;
+use App\Providers\ToolsServiceProvider;
+
 class DepositController extends Controller
 {
 /*
@@ -39,7 +41,7 @@ M430…Moncofar tiles
 		$codCli = Session::get('user.cod');
 		$codSub = request("codSub");
 		$ref= request("ref");
-		\Tools::exit404IfEmpty($codCli);
+		ToolsServiceProvider::exit404IfEmpty($codCli);
 
 		$paymethod= request("paymethod","creditcard");
 
@@ -241,7 +243,7 @@ M430…Moncofar tiles
 			->where("ref_asigl0", $ref)
 			->first();
 
-			$url = \Tools::url_lot($lote->cod_sub,$lote->id_auc_sessions,"",$lote->ref_asigl0,$lote->num_hces1,$lote->webfriend_hces1,$lote->titulo_hces1);
+			$url = ToolsServiceProvider::url_lot($lote->cod_sub,$lote->id_auc_sessions,"",$lote->ref_asigl0,$lote->num_hces1,$lote->webfriend_hces1,$lote->titulo_hces1);
 
 
 			#cargamos la página de deposito

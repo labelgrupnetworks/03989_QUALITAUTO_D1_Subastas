@@ -8,12 +8,14 @@ use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxCli2;
 use App\Models\V5\FxClid;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
+
 class ClientController extends DuranController
 {
 
 
 	public function createClient($codCli){
-		
+
 		$fields = $this->CreateFields($codCli, "A");
 
 		$xml = $this->createXML($fields);
@@ -37,7 +39,7 @@ class ClientController extends DuranController
 							 //EMAIL DOBLE OPT-in
 							$email->setUserByCod($codCli,true);
 							$email_user = $fields['email'];
-							$code = \Tools::encodeStr($email_user.'-'.$codCli);
+							$code = ToolsServiceProvider::encodeStr($email_user.'-'.$codCli);
 
 							$url =  \Config::get('app.url').'/es/email-validation?code='.$code.'&email='.$email_user.'&type=new_user';
 							$email->setUrl($url);

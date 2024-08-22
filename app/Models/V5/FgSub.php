@@ -121,7 +121,7 @@ class FgSub extends Model
 	}
 
 	public function scopeJoinLangSub($query){
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		$query->addSelect("nvl(FGSUB_LANG.DES_SUB_LANG,FGSUB.DES_SUB) DES_SUB");
 
 		#reducimos mucho los tiempos de carga si no cargamos los clob y los convertimos a varchar de 4000
@@ -136,7 +136,7 @@ class FgSub extends Model
 
 	}
 	public function scopeJoinSessionSub($query) {
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 
 
         $query  ->addSelect("FGSUB.COD_SUB")

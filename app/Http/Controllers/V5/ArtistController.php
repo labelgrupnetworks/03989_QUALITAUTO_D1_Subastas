@@ -15,6 +15,7 @@ use App\libs\TradLib;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\Web_Artist;
 use App\Models\V5\Web_Artist_Article;
+use App\Providers\ToolsServiceProvider;
 use stdClass;
 
 class ArtistController extends Controller
@@ -33,7 +34,7 @@ class ArtistController extends Controller
 
 		if(!empty(request("description"))){
 			$lotlist = new LotListController();
-			$description = $lotlist->clearWords(request("description"), \Tools::getLanguageComplete(Config::get("app.locale")));
+			$description = $lotlist->clearWords(request("description"), ToolsServiceProvider::getLanguageComplete(Config::get("app.locale")));
 			$words = explode(" ",$description);
 			$search="";
 			$and="";
@@ -82,7 +83,7 @@ class ArtistController extends Controller
 		$data = array();
 		$data['seo'] = new stdClass();
  		$data['seo']->meta_title = $artist->name_artist;
-		$data['seo']->meta_description = \Tools::acortar(strip_tags($artist->biography_artist), 166,  " ",  "...");
+		$data['seo']->meta_description = ToolsServiceProvider::acortar(strip_tags($artist->biography_artist), 166,  " ",  "...");
 
 		return View::make('front::pages.artist', compact("artist","articles", "historyLots", "activeLots",  "data"));
 	}

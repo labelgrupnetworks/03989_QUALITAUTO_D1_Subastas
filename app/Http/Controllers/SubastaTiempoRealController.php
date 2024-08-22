@@ -39,6 +39,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider as Tools;
 use App\Models\V5\FgSub;
+use App\Providers\ToolsServiceProvider;
 
 class subastaTiempoRealController extends Controller
 {
@@ -313,7 +314,7 @@ class subastaTiempoRealController extends Controller
         $desde      = str_replace('-', '/', $desde);
         $fecha_in   = $desde.$subasta_info->lote_actual->dhora_sub;
 
-        $subasta_info->fecha_inicio_subasta = \Tools::euroDate($fecha_in);
+        $subasta_info->fecha_inicio_subasta = ToolsServiceProvider::euroDate($fecha_in);
         * */
         //a efectos practicos es más sencillo sustituir el valor del importe de salida por el del importe de reserva, así no hay que tratarlos por separado
 
@@ -411,7 +412,7 @@ class subastaTiempoRealController extends Controller
             $pujaUser  = head($subasta->getPujas($js_item['user']['cod_licit']));
             $ordenUser = head($subasta->getOrden($js_item['user']['cod_licit']));
             if(!empty($ordenUser)) {
-                $ordenUser->himp_orlic = \Tools::moneyFormat($ordenUser->himp_orlic);
+                $ordenUser->himp_orlic = ToolsServiceProvider::moneyFormat($ordenUser->himp_orlic);
             }
 
             $js_item['user']['maxPuja']     = $pujaUser;
@@ -477,9 +478,9 @@ class subastaTiempoRealController extends Controller
 				'current_credit' => intval($currentCredit),
 				'credit_used' => $creditUsed,
 				'available_credit' => $currentCredit - $creditUsed,
-				'current_credit_format' => \Tools::moneyFormat(intval($currentCredit)),
-				'credit_used_format' => \Tools::moneyFormat($creditUsed),
-				'available_credit_format' => \Tools::moneyFormat($currentCredit - $creditUsed)
+				'current_credit_format' => ToolsServiceProvider::moneyFormat(intval($currentCredit)),
+				'credit_used_format' => ToolsServiceProvider::moneyFormat($creditUsed),
+				'available_credit_format' => ToolsServiceProvider::moneyFormat($currentCredit - $creditUsed)
 			];
 		}
 
@@ -818,7 +819,7 @@ class subastaTiempoRealController extends Controller
 			$email->setAtribute('PRICE_COUNTEROFFER', Tools::moneyFormat($counterOffer, trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 			$carlandiaCommission = \Config::get("app.carlandiaCommission");
 			$impreserva = $counterOffer - ($counterOffer / (1 + $carlandiaCommission));
-			$email->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat($impreserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+			$email->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat($impreserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 			$email->setAtribute('PAY_LINK', $link);
 
 			if(config('app.emailOwnerInformation', 0)){
@@ -951,11 +952,11 @@ class subastaTiempoRealController extends Controller
 		if(!empty($email->email)){
 			$email->setUserByLicit($cod_sub, $licit, true);
 			$email->setLot($cod_sub, $ref);
-			$email->setPrice(\Tools::moneyFormat($importe,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+			$email->setPrice(ToolsServiceProvider::moneyFormat($importe,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 			$carlandiaCommission = \Config::get("app.carlandiaCommission");
 			$impreserva = $importe- ($importe / (1 + $carlandiaCommission));
 
-			$email->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat(round($impreserva, 2),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+			$email->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat(round($impreserva, 2),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 
 			$email->setPropInfo($cod_sub, $ref);
 			$email->setAtribute('PAY_LINK', $link);
@@ -1513,12 +1514,12 @@ class subastaTiempoRealController extends Controller
 				$email->setLot_img(Config::get('app.url').'/img/load/lote_small/'.Config::get('app.emp').'-'.$lote->num_hces1.'-'.$lote->lin_hces1.'.jpg');
 				$email->setSession_name($lote->des_sub);
 				$email->setLot_ref($subasta->lote);
-				$email->setPrice(\Tools::moneyFormat($lote->impsalhces_asigl0));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($lote->impsalhces_asigl0));
 				$email->setLot_title($lote->titulo_hces1);
 				$email->setLot_description($lote->desc_hces1);
-				$email->setBid(\Tools::moneyFormat($subasta->imp));
+				$email->setBid(ToolsServiceProvider::moneyFormat($subasta->imp));
 				/**Era para carlandia y creo que no es necesario en este caso */
-/* 				$email->setLot_link(\Tools::url_lot($cod_sub, $lote->id_auc_sessions, $lote->des_sub, $lote->ref_asigl0, $lote->num_hces1,$lote->webfriend_hces1,$lote->titulo_hces1));
+/* 				$email->setLot_link(ToolsServiceProvider::url_lot($cod_sub, $lote->id_auc_sessions, $lote->des_sub, $lote->ref_asigl0, $lote->num_hces1,$lote->webfriend_hces1,$lote->titulo_hces1));
 				$email->setCloseDate($lote->close_at);
 				$email->setAtribute('LOT_DESCWEB', $lote->descweb_hces1); */
 
@@ -1614,7 +1615,7 @@ class subastaTiempoRealController extends Controller
 	#funcion de hacer puja pero en version subasta inversa
 	public function executeActionInversa($subasta,  $lote, $is_gestor){
 		#guardamos los valores originales de la puja
-		$impOriginalFormatted = \Tools::moneyFormat($subasta->imp);
+		$impOriginalFormatted = ToolsServiceProvider::moneyFormat($subasta->imp);
 		$impOriginal = $subasta->imp;
 		$licitOriginal = $subasta->licit;
 		$typeBidOriginal = $subasta->type_bid;
@@ -1649,7 +1650,7 @@ class subastaTiempoRealController extends Controller
 					'msg_2'             => 'add_bidding_order',
 					'cod_licit_actual'  => $subasta->licit,
 					'can_do'            => "orden",
-					'himp_formatted'    => \Tools::moneyFormat($subasta->imp), //resultado para ficha subasta normal
+					'himp_formatted'    => ToolsServiceProvider::moneyFormat($subasta->imp), //resultado para ficha subasta normal
 					'sobreorden'    => true,
 					'imp_original_formatted' => $impOriginalFormatted,
 					'imp_original'      => $impOriginal,
@@ -1666,7 +1667,7 @@ class subastaTiempoRealController extends Controller
 					$res['pujasAll']    = $subasta->getPujasInversas();
 					$res['actual_bid']  = $subasta->imp ;
 
-					$res['formatted_actual_bid'] = \Tools::moneyFormat($subasta->imp);
+					$res['formatted_actual_bid'] = ToolsServiceProvider::moneyFormat($subasta->imp);
 
 					$res['siguiente']  = $subasta->NextScaleInverseBid($subasta->impsal,$subasta->imp );
 
@@ -1809,7 +1810,7 @@ class subastaTiempoRealController extends Controller
 		  $actualBid = $subasta->imp;
 		  $siguiente = $subasta->NextScaleInverseBid($subasta->impsal,$actualBid );
 
-		  $formatted_actual_bid = \Tools::moneyFormat($actualBid);
+		  $formatted_actual_bid = ToolsServiceProvider::moneyFormat($actualBid);
 
 		  $cod_licit_db = "";
 		  $resultado = array();
@@ -2163,7 +2164,7 @@ class subastaTiempoRealController extends Controller
         elseif ($tipo_puja_gestor == 'firme' && ($is_gestor || Config::get('app.pujas_enfirme', 0) ))
         {
 			\Log::info("puja en firme");
-			$imp_original_formatted = \Tools::moneyFormat($subasta->imp);
+			$imp_original_formatted = ToolsServiceProvider::moneyFormat($subasta->imp);
            	$cod_licit_db = "";
             //la puja en firme debe superar al precio actual,
             if ( ($subasta->imp <= $max_puja && $max_puja!=$subasta->impsal)  )
@@ -2306,9 +2307,9 @@ class subastaTiempoRealController extends Controller
                 /* fin codigo nuevo */
                 $actual_bid = $subasta->imp;
                 $siguiente = $subasta->NextScaleBid($subasta->impsal,$actual_bid );
-				//$imp_original_formatted =  \Tools::moneyFormat($subasta->impsal);
-            	//$imp_original_formatted = \Tools::moneyFormat($subasta->imp);
-                $formatted_actual_bid = \Tools::moneyFormat($actual_bid);
+				//$imp_original_formatted =  ToolsServiceProvider::moneyFormat($subasta->impsal);
+            	//$imp_original_formatted = ToolsServiceProvider::moneyFormat($subasta->imp);
+                $formatted_actual_bid = ToolsServiceProvider::moneyFormat($actual_bid);
                 $resultado = array();
                 array_push($resultado, 'addPuja');
 				if(empty($status)){
@@ -2428,7 +2429,7 @@ class subastaTiempoRealController extends Controller
                                     'msg_2'             => 'add_bidding_order',
                                     'cod_licit_actual'  => $subasta->licit,
                                     'can_do'            => $can_do,
-                                    'himp_formatted'    => \Tools::moneyFormat($orden->himp_orlic), //resultado para ficha subasta normal
+                                    'himp_formatted'    => ToolsServiceProvider::moneyFormat($orden->himp_orlic), //resultado para ficha subasta normal
                                     'sobreorden'    => true
                                 );
 
@@ -2501,7 +2502,7 @@ class subastaTiempoRealController extends Controller
                                 'status'            => 'success',
                                 'msg_2'             => 'add_bidding_order',
                                 'cod_licit_actual'  => $subasta->licit,
-                                'himp_formatted'    => \Tools::moneyFormat($orden->himp_orlic), //resultado para ficha subasta normal
+                                'himp_formatted'    => ToolsServiceProvider::moneyFormat($orden->himp_orlic), //resultado para ficha subasta normal
                                 'can_do'            => $can_do,
                                 'opt'               => 'XFGN'
                             );
@@ -2529,7 +2530,7 @@ class subastaTiempoRealController extends Controller
             }
 
             $imp_original           = $subasta->imp;
-            $imp_original_formatted = \Tools::moneyFormat($subasta->imp);
+            $imp_original_formatted = ToolsServiceProvider::moneyFormat($subasta->imp);
 
 
 
@@ -2796,7 +2797,7 @@ class subastaTiempoRealController extends Controller
                             'msg_1'             => "",
                             'cod_licit_actual'  => $subasta->licit,
                             'cod_licit_db'      => $subasta->licit,
-                            'formatted_actual_bid'  => \Tools::moneyFormat($max_puja),
+                            'formatted_actual_bid'  => ToolsServiceProvider::moneyFormat($max_puja),
                             'actual_bid'        => $max_puja,
                             'siguiente'         => $siguiente_puja_max,
                             'winner'            => $winner,
@@ -2870,7 +2871,7 @@ class subastaTiempoRealController extends Controller
                         if (!empty($puja)){
 
                             $actual_bid = $puja->imp_asigl1;//$siguiente_puja_max;
-                            $formatted_actual_bid = \Tools::moneyFormat($puja->imp_asigl1);
+                            $formatted_actual_bid = ToolsServiceProvider::moneyFormat($puja->imp_asigl1);
                             if (!empty($puja->cod_licit)){
                                 $cod_licit_db = '';//$puja->cod_licit;
                             }else{
@@ -3016,7 +3017,7 @@ class subastaTiempoRealController extends Controller
                         $mensaje_1      =  'higher_bid';
                        // $siguiente      = $this->siguienteEscalado($siguiente_puja_max);
                         $siguiente = $subasta->NextScaleBid($subasta->impsal,$subasta->imp);
-                        $siguiente_formatted_puja_max = \Tools::moneyFormat($siguiente_puja_max);
+                        $siguiente_formatted_puja_max = ToolsServiceProvider::moneyFormat($siguiente_puja_max);
                         //winner no l oesta cogiendo el json poer eso pactualizo el licit de Subasta
                         $winner = $orden->licit_orlic;
                         $subasta->licit = $orden->licit_orlic;
@@ -3143,7 +3144,7 @@ class subastaTiempoRealController extends Controller
                    // $subasta->sin_pujas = false;
                     $siguiente=$subasta->NextScaleBid($subasta->impsal,$subasta->imp);
                     $siguiente_puja_max = $puja_res['actual_bid'];
-                    $siguiente_formatted_puja_max = \Tools::moneyFormat($siguiente_puja_max);
+                    $siguiente_formatted_puja_max = ToolsServiceProvider::moneyFormat($siguiente_puja_max);
                     $status = "success";
                     $mensaje_2 = 'correct_bid';
                     $mensaje_1 = 'higher_bid';
@@ -3380,7 +3381,7 @@ class subastaTiempoRealController extends Controller
             }
             $subasta->imp = $imp;
 
-            $data['lote_actual']->formatted_actual_bid = \Tools::moneyFormat($data['lote_actual']->actual_bid);
+            $data['lote_actual']->formatted_actual_bid = ToolsServiceProvider::moneyFormat($data['lote_actual']->actual_bid);
            // $escalado = $subasta->escalado();
 
             //$data['lote_actual']->importe_escalado_siguiente = $escalado;
@@ -4160,7 +4161,7 @@ class subastaTiempoRealController extends Controller
             if(!empty($email->email)){
                 $email->setUserByLicit($cod,$licit_envio,true);
                 $email->setLot($cod, $ref);
-				$email->setBid(\Tools::moneyFormat($importe));
+				$email->setBid(ToolsServiceProvider::moneyFormat($importe));
 				if(!empty($pujaPerdedor)){
 					$email->setAtribute("PUJA_PERDEDOR", $pujaPerdedor);
 				}
@@ -4429,7 +4430,7 @@ class subastaTiempoRealController extends Controller
         $res['status'] = "success";
         $res['actual_bid'] = $imp_actual;
         $res['actual_licit'] = $actual_licit;
-        $res['formatted_actual_bid'] = \Tools::moneyFormat($imp_actual);
+        $res['formatted_actual_bid'] = ToolsServiceProvider::moneyFormat($imp_actual);
         $res['importe_escalado_siguiente'] = $imp_siguiente;
         $res['siguiente'] = $imp_siguiente;
         $res['licit_delete'] = $licit_delete;
@@ -4757,7 +4758,7 @@ class subastaTiempoRealController extends Controller
 			if(!empty($email->email)){
 				$email->setUserByLicit($subasta->cod, $subasta->licit, true);
 				$email->setLot($subasta->cod, $subasta->ref);
-				$email->setBid(\Tools::moneyFormat($subasta->imp));
+				$email->setBid(ToolsServiceProvider::moneyFormat($subasta->imp));
 
 				if(Config::get('app.email_bid_withdatebid', 0)){
 
@@ -4845,7 +4846,7 @@ class subastaTiempoRealController extends Controller
             $fecha = strftime('%d %b',strtotime($inf_lot->ffin_asigl0));
             if(\App::getLocale() != 'en'){
                 $array_fecha = explode(" ",$fecha);
-                $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
+                $array_fecha[1] = ToolsServiceProvider::get_month_lang($array_fecha[1],trans(\Config::get('app.theme')."-app.global.month_large"));
                 $fecha = $array_fecha[0].' '.$array_fecha[1];
             }
             $fecha.=' '.strftime('%H:%M',strtotime($inf_lot->hfin_asigl0)).'h';
@@ -4868,11 +4869,11 @@ class subastaTiempoRealController extends Controller
             $email_lot->desc = $inf_lot_translate[$inf_user->idioma_cli]->desc_hces1;
             $email_lot->ref = $inf_lot->ref_asigl0;
             $email_lot->img = $img;
-            $email_lot->imp_bid = \Tools::moneyFormat($subasta->imp,false);
+            $email_lot->imp_bid = ToolsServiceProvider::moneyFormat($subasta->imp,false);
 
             $emailOptions['lot'][] = $email_lot;
 
-            if (\Tools::sendMail('emails_automaticos', $emailOptions) == true){
+            if (ToolsServiceProvider::sendMail('emails_automaticos', $emailOptions) == true){
                 \Log::emergency('Success email_bid_confirmed');
             }
 

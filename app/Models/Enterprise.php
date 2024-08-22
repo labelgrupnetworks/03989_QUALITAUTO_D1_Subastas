@@ -23,6 +23,7 @@ use yajra\Oci8\Oci8Connection;
 use Config;
 use Routing;
 use App\Models\Content;
+use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
     //put your code here
@@ -41,7 +42,7 @@ class Enterprise {
                       . "order by FGSG.des_sg asc";
 
              $params = array(
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                 );
 
               return DB::select($sql, $params);
@@ -56,7 +57,7 @@ class Enterprise {
                         LEFT JOIN FSPAISES_LANG ON (FSPAISES_LANG.COD_PAISES_LANG = FSPAISES.cod_paises AND FSPAISES_LANG.LANG_PAISES_LANG = :lang)
                         ORDER BY nvl(FSPAISES_LANG.DES_PAISES_LANG,FSPAISES.des_paises) ASC";
         $params = array(
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                 );
 
               return DB::select($sql, $params);
@@ -74,7 +75,7 @@ class Enterprise {
 
             $bindings = array(
                     'emp'             => Config::get('app.emp'),
-                    'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                    'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                     );
         return DB::select($sql, $bindings);
     }
@@ -88,7 +89,7 @@ class Enterprise {
                 array(
                         'emp'       => Config::get('app.emp'),
                         'cod_alm'   => $cod_alm,
-                        'lang' => \Tools::getLanguageComplete(Config::get('app.locale'))
+                        'lang' => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
                         )
                     );
         if(count($almacen) > 0){

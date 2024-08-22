@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Log;
 
 class PayArticleCartController extends Controller
@@ -324,7 +325,7 @@ class PayArticleCartController extends Controller
 			$email = new EmailLib('ARTICLES_PAY');
 			if (!empty($email->email)) {
 				$email->setUserByCod( $pedido[0]->cod_pedc0, true);
-				$email->setPrice(\Tools::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
 				$email->setHtml( $articulosBody);
 				$email->setAtribute("COMMENT", nl2br($pedido[0]->obs_pedc0));
 				$email->send_email();
@@ -338,7 +339,7 @@ class PayArticleCartController extends Controller
 				#definimos el usuario para mostrar datos, pero el email no va para el
 				$email->setUserByCod( $pedido[0]->cod_pedc0, false);
 				$email->setTo($setTo);
-				$email->setPrice(\Tools::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
 				$email->setHtml( $articulosBody);
 				$email->setAtribute("COMMENT", nl2br($pedido[0]->obs_pedc0));
 				$email->send_email();

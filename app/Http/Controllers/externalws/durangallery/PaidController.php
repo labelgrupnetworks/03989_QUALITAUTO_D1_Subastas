@@ -15,6 +15,8 @@ use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Jobs\SoapJob;
 use Config;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
+
 class PaidController extends DuranGalleryController
 {
 
@@ -118,7 +120,7 @@ class PaidController extends DuranGalleryController
 		$importeTotal = 0;
 
 		 #pongo el valor * 100 ya que el iva lo devolverá con decimales
-		$ivaUser = \Tools::TaxForEuropean($cli->cod_cli) *100;
+		$ivaUser = ToolsServiceProvider::TaxForEuropean($cli->cod_cli) *100;
 		 #los lotes  tienen iva en el precio por lo que hay que calcularlo sin iva siempre, no podemos usar el iva del usuario, si no el general
 		$payments = new Payments();
 		$ivaGeneral = $payments->getIVA(date('Y-m-d H:i:s'),'01');
@@ -160,7 +162,7 @@ class PaidController extends DuranGalleryController
 			if(!empty($email->email)){
 				$email->setUserByCod($cli->cod_cli,false);
 				$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
-				$email->setPrice(\Tools::moneyFormat(\Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli),"",2) );
+				$email->setPrice(ToolsServiceProvider::moneyFormat(ToolsServiceProvider::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli),"",2) );
 				$seguro_txt = "";
 				if($info["seguro"] == 1){
 					$seguro_txt = "<span style='color: red;'>El usuario quiere contratar el seguro de envio.</span>";
@@ -187,12 +189,12 @@ class PaidController extends DuranGalleryController
 		   $lote["vendedor"] =$idPropietario;  # codigo artista ;
 		   $lote["familia"] = $lot->sec_hces1; # codigo familia ;
 		   $lote["coste"] = $lot->pc_hces1?? ""; # coste del articulo ; campo de caracteristica precio_neto_artista
-		   $img = \Tools::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
+		   $img = ToolsServiceProvider::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
 		   $lote["imagen"] =base64_encode(file_get_contents($img));    # imagen bits ;
 		   $lote["envioincluido"] =  $lot->transport_hces1=="S"? "1" : "0";  # envío incluido en el precio (1-Sí; 0-No) ;
 		   $lote["tenencia"] = $lot->alm_hces1;  # 2-artista, 1-Durán ;
 		   $lote["ubicacion"] = !empty($caracteristicas[2])?$caracteristicas[2]->value_caracteristicas_hces1 : ""; ; # ubicacion física ;
-		   $lote["total"] = \Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli)  ;# precio final
+		   $lote["total"] = ToolsServiceProvider::PriceWithTaxForEuropean($lot->impsalhces_asigl0,$cli->cod_cli)  ;# precio final
 
 		   #borrar caracteristicas que para duran no son caracteristicas y por lo tanto no se deben enviar
 		   unset($caracteristicas[1]);
@@ -310,10 +312,10 @@ class PaidController extends DuranGalleryController
 		$email = new EmailLib('NOTIFICAR_PAGO_DURAN');
 		$email->setAtribute("INFO_FACTURACION",$infoFacturación);
 		$email->setAtribute("NUM_PEDIDO",$info["numeroPedido"]);
-		$email->setAtribute("TOTAL",\Tools::moneyFormat($info["importeSeguro"] + $info["importeEnvio"] + $info["importeTotal"] + $info["ivaTotal"]," €",2) );
+		$email->setAtribute("TOTAL",ToolsServiceProvider::moneyFormat($info["importeSeguro"] + $info["importeEnvio"] + $info["importeTotal"] + $info["ivaTotal"]," €",2) );
 	#3-transferencia; 4-tarjeta; 6-bizum
 		if($info["formaPago"] == 3){
-			$infoPago =  trans(\Config::get('app.theme').'-app.user_panel.pay_transfer'). "<br><br>" . trans(\Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => \Tools::moneyFormat($totalPagar,null,2),"cuenta" => \Config::get('app.tranferCount')]);
+			$infoPago =  trans(\Config::get('app.theme').'-app.user_panel.pay_transfer'). "<br><br>" . trans(\Config::get('app.theme').'-app.user_panel.text_transfer', ["pago" => ToolsServiceProvider::moneyFormat($totalPagar,null,2),"cuenta" => \Config::get('app.tranferCount')]);
 		}else if($info["formaPago"] == 4){
 			$infoPago= trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard');
 		}else if($info["formaPago"] == 6){
@@ -324,9 +326,9 @@ class PaidController extends DuranGalleryController
 		if($info["formaEnvio"] == 1){
 			$infoEnvio = $cliente->nom_cli." <br> ". $info["direccion"] ." <br>  ".$info["poblacion"] .", ".$info["provincia"] .", ".$info["cp"] ." <br> ".$info["pais"] ." <br>  "."T: ".$info["telefono"] ;
 			$infoMetodoEnvio = trans(\Config::get('app.theme').'-app.user_panel.envio_agencia');
-			$infoMetodoEnvio .="<br><br>".trans(\Config::get('app.theme').'-app.user_panel.gastos_envio').": ".\Tools::moneyFormat($info["importeEnvio"]," €",2);
+			$infoMetodoEnvio .="<br><br>".trans(\Config::get('app.theme').'-app.user_panel.gastos_envio').": ".ToolsServiceProvider::moneyFormat($info["importeEnvio"]," €",2);
 			if($info["seguro"] == 1){
-				$infoMetodoEnvio .="<br><br> ".trans(\Config::get('app.theme').'-app.user_panel.seguro_envio').": ".\Tools::moneyFormat($info["importeSeguro"]," €",2);
+				$infoMetodoEnvio .="<br><br> ".trans(\Config::get('app.theme').'-app.user_panel.seguro_envio').": ".ToolsServiceProvider::moneyFormat($info["importeSeguro"]," €",2);
 			}
 		}else{
 			$infoEnvio = "";
@@ -346,16 +348,16 @@ class PaidController extends DuranGalleryController
 			$infoLots .= "<td><p style=\"padding-left: 5px;\"><strong>".$lote["titulo"]."</strong><br>".$lote["infoAlmacen"] .$permisoExportacion ."</p></td>";
 			$infoLots .= "<td style=\"text-align: center;\">".$lote["codigoArticulo"] ."</td>";
 			//$infoLots .= "<td style=\"text-align: center;\">1</td>";
-			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".\Tools::moneyFormat($lote["total"] + $lote["iva"]," €",2) ."</td>";
+			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".ToolsServiceProvider::moneyFormat($lote["total"] + $lote["iva"]," €",2) ."</td>";
 			$infoLots .= " </tr> ";
 		}
 		#suma de lotes
-		#$infoLots .= "<tr ><td> </td> <td> </td> <td bgcolor=\"#efefef\"  style=\"text-align: right;padding-right: 5px;\">  <strong>".\Tools::moneyFormat($info["importeTotal"] + $info["ivaTotal"]," €",2) ." </strong></td> </tr> ";
+		#$infoLots .= "<tr ><td> </td> <td> </td> <td bgcolor=\"#efefef\"  style=\"text-align: right;padding-right: 5px;\">  <strong>".ToolsServiceProvider::moneyFormat($info["importeTotal"] + $info["ivaTotal"]," €",2) ." </strong></td> </tr> ";
 
 		$email->setAtribute("INFO_ARTICULOS",$infoLots);
-		$email->setAtribute("TOTAL_ARTICULOS",\Tools::moneyFormat( $info["importeTotal"] + $info["ivaTotal"]," €",2) );
-		$email->setAtribute("GASTOS_ENVIO",\Tools::moneyFormat( $info["importeEnvio"]," €",2) );
-		$email->setAtribute("SEGURO_ENVIO",\Tools::moneyFormat( $info["importeSeguro"] ," €",2) );
+		$email->setAtribute("TOTAL_ARTICULOS",ToolsServiceProvider::moneyFormat( $info["importeTotal"] + $info["ivaTotal"]," €",2) );
+		$email->setAtribute("GASTOS_ENVIO",ToolsServiceProvider::moneyFormat( $info["importeEnvio"]," €",2) );
+		$email->setAtribute("SEGURO_ENVIO",ToolsServiceProvider::moneyFormat( $info["importeSeguro"] ," €",2) );
 
 		$email->setTo($cliente->email_cli, $cliente->nom_cli);
 		$email->setBcc("ventaonline@duran-subastas.com");
