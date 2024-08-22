@@ -125,13 +125,17 @@ class AutoFormulariosController extends Controller
 		$email = new EmailLib('AUTOFORMULARIO');
 
 		if (!empty($email->email)) {
-			$email->attachmentsFiles = array();
+			$email->attachmentsFiles = [];
+
 			if (!empty(Input::file('images'))) {
-				$email->attachmentsFiles = Input::file('images');
+				$email->attachmentsFiles = array_merge($email->attachmentsFiles, Input::file('images'));
+			}
+			if (!empty(Input::file('imagen'))) {
+				$email->attachmentsFiles = array_merge($email->attachmentsFiles, Input::file('imagen'));
 			}
 
 			if (!empty(Input::file('files'))) {
-				$email->attachmentsFiles[] = Input::file('files');
+				$email->attachmentsFiles = array_merge($email->attachmentsFiles, Input::file('files'));
 			}
 
 			$html = "";
@@ -140,6 +144,7 @@ class AutoFormulariosController extends Controller
 			$email->email->subject_email = $data['subject'];
 
 			unset($data['images']);
+			unset($data['imagen']);
 			unset($data['files']);
 			unset($data['subject']);
 			unset($data['_token']);
