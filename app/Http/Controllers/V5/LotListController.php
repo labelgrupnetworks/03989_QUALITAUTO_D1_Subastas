@@ -110,8 +110,8 @@ class LotListController extends Controller
 		return $this->lotList( $linSec, null,$codSubSec, null,  null);
 	}
 
-    public function getLotsListAllCategories (){
-
+    public function getLotsListAllCategories ()
+	{
         return $this->lotList( null,null, null,null,  null);
     }
 
@@ -126,6 +126,9 @@ class LotListController extends Controller
     public function lotList($category, $section, $subsection,  $codSub,  $refSession, $search = NULL)
 	{
 		abort_if(config('app.restrictAccessIfNoSession', 0) && !session('user.cod'), 401);
+
+		//Están llegando a esta página con la configuración de lotes antigua
+		abort_if(Config::get("app.gridLots") != "new", 404);
 
         $lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		$fgasigl0 = new FgAsigl0();
