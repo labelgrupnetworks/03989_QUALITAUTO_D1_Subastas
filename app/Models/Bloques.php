@@ -92,10 +92,6 @@ class Bloques extends Model
 
                         foreach($replace as $key => $value){
 
-							//eliminamos simbolos de puntuacion para evitar que den problemas en la query
-							//detectado intentos de inyeccion sql
-							$value = str_replace(['"', ':', '.', ',', ';','$','%', "'", "(", ")", "+","","=","|","*", "\\", "/" ,"&", "{","}"], '', $value);
-
                             $sql = str_replace("[".$key."]", $value, $sql);
 
                             $key_cache.=$key."_".$value;

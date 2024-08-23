@@ -38,11 +38,18 @@ class ContentController extends Controller
 		return $content;
 	}
 
-	function getAjaxCarousel()
+	function getAjaxCarousel(Request $request)
 	{
 		$bloque         = new Bloques();
 		$contents = "";
-		$banner = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
+
+		$replaces = $request->input('replace');
+		$replaces = array_map(function ($replace) {
+			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
+		}, $replaces);
+
+
+		$banner = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
 		if (empty($banner)) {
 			return;
 		}
@@ -78,13 +85,20 @@ class ContentController extends Controller
 		return $contents;
 	}
 
-	function getAjaxLotGrid()
+	function getAjaxLotGrid(Request $request)
 	{
 		$itemsForPage = 15;
 
 		$bloque = new Bloques();
 		$contents = "";
-		$banner = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
+
+		$replaces = $request->input('replace');
+		$replaces = array_map(function ($replace) {
+			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
+		}, $replaces);
+
+
+		$banner = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
 		if (empty($banner)) {
 			return;
 		}
@@ -132,7 +146,14 @@ class ContentController extends Controller
 
 		$bloque = new Bloques();
 		$lots = null;
-		$lotsQuery = $bloque->getResultBlockByKeyname($key, $request->input('replace'));
+
+		$replaces = $request->input('replace');
+		$replaces = array_map(function ($replace) {
+			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
+		}, $replaces);
+
+
+		$lotsQuery = $bloque->getResultBlockByKeyname($key, $replaces);
 
 		$lotlistcontroller = new LotListController();
 		$lotlist = $lotlistcontroller->setRef($lotsQuery);
@@ -165,13 +186,19 @@ class ContentController extends Controller
 		return View::make('front::includes.new_carrousel', ["lots"  => $lots]);
 	}
 
-	function getAjaxGridLotesDestacados()
+	function getAjaxGridLotesDestacados(Request $request)
 	{
 		Config::set('app.locale', request('lang', 'es'));
 		$bloque         = new Bloques();
 		$contents = "";
 		$lots = null;
-		$lotsQuery = $bloque->getResultBlockByKeyname($_POST['key'], $_POST['replace']);
+
+		$replaces = $request->input('replace');
+		$replaces = array_map(function ($replace) {
+			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
+		}, $replaces);
+
+		$lotsQuery = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
 
 		$lotlistcontroller = new LotListController();
 		$lotlist = $lotlistcontroller->setRef($lotsQuery);
