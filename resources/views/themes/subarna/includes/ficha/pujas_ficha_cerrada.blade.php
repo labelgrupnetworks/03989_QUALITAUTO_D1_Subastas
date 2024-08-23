@@ -44,7 +44,7 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 
 
 				<div class="col-xs-12 col-sm-6">
-					@if(Session::has('user') && $lote_actual->retirado_asigl0 =='N')
+					@if(Session::has('user') && $lote_actual->retirado_asigl0 =='N' && !empty($lote_actual->favorito))
 						<a class="btn {{ $lote_actual->favorito ? 'hidden' : '' }}" id="add_fav" href="javascript:action_fav_modal('add')">
 							<i class="fa fa-heart-o" aria-hidden="true"></i>
 						</a>
