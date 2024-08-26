@@ -330,10 +330,6 @@ Route::get('/houses/{houseUserName}/lots', 'InvaluableController@lots');
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/lots/{lotNumber}', 'InvaluableController@deleteLot');
 Route::get('/houses/{houseUserName}/groups/{codSubasta}/session/{sessionID}/catalogs/lots/{lotNumber}', 'InvaluableController@updateLot');
 
-Route::get('/landing', function () {
-	return View::make('front::landings.landing');
-});
-
 /* Tabs tiempo real */
 Route::get('/{lang}/historicTab/{cod_sub}/{session}', 'SubastaTiempoRealController@historicTab');
 Route::get('/{lang}/favoritesTab/{cod_sub}/{licit}', 'SubastaTiempoRealController@favoritesTab');
@@ -402,7 +398,8 @@ Route::get(Routing::slugSeo('subastas'), 'V5\LotListController@getLotsListAllCat
 Route::get(Routing::slugSeo('subastas') . "_{keycategory}/{texto}", 'V5\LotListController@getLotsListCategory')->name('categoryTexFriendly');
 
 #listado de lotes por categoria
-Route::get(Routing::slugSeo('subastas') . "-{keycategory}", 'V5\LotListController@getLotsListCategory')->name('category');
+Route::get(Routing::translateSeo('subastas', '') . "-{keycategory}", 'V5\LotListController@getLotsListCategory')->name('category');
+
 #listado de lotes por secciones
 Route::get(Routing::translateSeo('subastas', "-{keycategory}/{keysection?}"), 'V5\LotListController@getLotsListSection')->name('section');
 #listado de lotes por subcsecciones

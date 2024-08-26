@@ -223,12 +223,8 @@ class LotListController extends Controller
 
 		$features = FgCaracteristicas::getFeatures();
 		if(\Config::get("app.paginacion_grid_lotes")){
-			$this->actualPage = request('page',1);
-			$this->lotsPerPage  = request('total');
-
-			if(empty($this->lotsPerPage)){
-				$this->lotsPerPage = head(Config::get('app.filter_total_shown_options'));
-			}
+			$this->actualPage = $filters['page'];
+			$this->lotsPerPage  = !empty($filters['total']) ? $filters['total'] : head(Config::get('app.filter_total_shown_options'));
 
 			$lots = $this->getlots($category, $section, $subsection,  $codSub,  $refSession, $search);
 
@@ -720,6 +716,7 @@ class LotListController extends Controller
         public function getInputFilters($typeSub, $category = null, $section = null, $subsection = null,  $search = null)
 		{
 			$request = request()->all();
+
 			$filters = [
 				#orden de los lotes
 				'order' => Config::get("app.default_order",'ref'),
@@ -748,6 +745,10 @@ class LotListController extends Controller
 				'myLotsClient' => 0,
 				#filtro de precios
 				'prices' => [],
+				#total de lotes
+				'total' => head(Config::get('app.filter_total_shown_options')),
+				#page
+				'page' => 1,
 			];
 
 			if(empty(Config::get("app.gridAllSessions"))){
@@ -775,6 +776,8 @@ class LotListController extends Controller
 				'prices.*' => 'nullable|numeric',
 				'filter_session' => 'nullable|string|max:3',
 				'session' => 'nullable|string|max:3',
+				'total' => 'nullable|integer',
+				'page' => 'nullable|integer',
 			];
 
 			$validator = Validator::make($request, $rules);
