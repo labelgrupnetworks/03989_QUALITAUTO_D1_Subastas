@@ -1,0 +1,19 @@
+.static-page h4 {
+	margin-top: 2rem;
+}
+
+.static-page p {
+	margin-bottom: 1rem;
+}
+
+.static-page ul ul {
+	margin-top: .5rem;
+}
+
+.static-page li {
+	margin-bottom: 1rem;
+}
+
+.static-page li ul li, .static-page ul ul li {
+	margin-bottom: .5rem;
+}
