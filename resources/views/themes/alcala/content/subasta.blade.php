@@ -48,15 +48,20 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                 </div>
                 <div class="col-xs-12 col-lg-9 d-flex views widgets-auction pull-right">
                     <?php // si es uan subasta w y abierta o si es uan subasta tipo O o P ?>
+
                     @if(!empty( $data['subastas']) && ( ($data['subastas'][0]->tipo_sub == 'W' && $data['subastas'][0]->subabierta_sub == 'S') || $data['subastas'][0]->tipo_sub == 'P'  || $data['subastas'][0]->tipo_sub == 'O' )  && ($data['subastas'][0]->subc_sub == 'A' ||$data['subastas'][0]->subc_sub == 'S' )  )
                         <div class="full-screen widget d-inline-flex">
-                            <a class="refresh d-block color-letter" href=""> {{ trans($theme.'-app.lot_list.refresh_prices') }} <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                            <a class="refresh d-block color-letter" href=""> {{ trans($theme.'-app.lot_list.refresh_prices') }}
+								<x-icon.fontawesome version=5 icon=sync-alt></x-icon.fontawesome>
+							</a>
                         </div>
                     @endif
+
                     @if(!empty($data['sub_data']) && !empty($data['sub_data']->opcioncar_sub && !empty($data['subastas'][0])) && $data['sub_data']->opcioncar_sub == 'S' && strtotime($data['subastas'][0]->start_session) > time())
                         <div class="full-screen widget d-inline-flex">
                             @if(Session::has('user'))
-                                <i class="fa fa-gavel  fa-1x"></i> <a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
+								<x-icon.fontawesome version=5 icon=gavel></x-icon.fontawesome>
+								<a href="{{ \Routing::slug('user/panel/modification-orders') }}?sub={{$data['sub_data']->cod_sub}}" ><?= trans($theme.'-app.lot_list.ver_ofertas') ?></a>
                             @endif
                         </div>
                     @endif
@@ -99,11 +104,17 @@ routing.ol		 = '{{ $data["node"]["ol"] }}';
                     @endif
                     <div class="views-content d-inline-flex">
                             <div class="title-views d-flex align-items-center justify-content-center color-letter">{{ trans($theme.'-app.lot_list.view') }}</div>
-                            <a id="square" class="grid-icon-square color-letter d-block" href="javascript:;"><i class="fas fa-th"></i></a>
-                            <a id="large_square" class="grid-icon-square d-block color-letter" href="javascript:;"><i class="fas fa-bars"></i></a>
+                            <a id="square" class="grid-icon-square color-letter d-block" href="javascript:;">
+								<x-icon.fontawesome version=5 icon=th></x-icon.fontawesome>
+							</a>
+                            <a id="large_square" class="grid-icon-square d-block color-letter" href="javascript:;">
+								<x-icon.fontawesome version=5 icon=bars></x-icon.fontawesome>
+							</a>
                     </div>
                     <div class="hidden-xs widget full-screen d-inline-flex">
-                            <a id="full-screen" class="grid-icon-square color-letter d-flex" href="javascript:;"><i class="fas fa-expand"></i></a>
+                            <a id="full-screen" class="grid-icon-square color-letter d-flex" href="javascript:;">
+								<x-icon.fontawesome version=5 icon=expand></x-icon.fontawesome>
+							</a>
                     </div>
                 </div>
             </div>

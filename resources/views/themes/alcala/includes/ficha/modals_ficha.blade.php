@@ -105,7 +105,9 @@
 <?php  //view more debe llevar el hidden para que funcione correctamente, el customized_tr_main ya se lo quitara si es necesario ?>
 <div id="view_more" class="more more-historic-bids hidden col-xs-12 text-right hidden">
     <a title="ver todas"  data-toggle="collapse" data-target="#pujas-collapse" href="javascript:view_all_bids();">
-     <span id="view_more_text">{{ trans($theme.'-app.lot.see-all') }} </span>
-    <span id="hide_bids_text" class="hidden">{{ trans($theme.'-app.lot.hidden') }} </span> <i class="fa fa-angle-down"></i></a>
+		<span id="view_more_text">{{ trans($theme.'-app.lot.see-all') }} </span>
+		<span id="hide_bids_text" class="hidden">{{ trans($theme.'-app.lot.hidden') }} </span>
+		<x-icon.fontawesome version=5 icon=chevron-down size=9px></x-icon.fontawesome>
+	</a>
 
 </div>

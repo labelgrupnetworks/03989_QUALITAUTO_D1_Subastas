@@ -109,9 +109,7 @@
     <div class="copyr-spacer text-center">
         <div class="container">
 
-            <div class="button-up">
-                <i class="fa fa-chevron-up" aria-hidden="true"></i>
-            </div>
+
             <div class="row">
                 <div class="col-xs-12 col-md-10">
                     &copy; 2019 Alcalá Subastas |

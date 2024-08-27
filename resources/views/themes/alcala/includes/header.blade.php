@@ -56,11 +56,14 @@
                                     <div class="form-group">
                                         <input class="form-control input-custom" placeholder="{{ trans($theme.'-app.head.search_label') }}" type="text" name="texto">
                                     </div>
-                                    <button type="submit" class="btn btn-custom-search-large"><i class="fa fa-search"></i><div style="display: none;top:0;" class="loader mini"></div></button>
+                                    <button type="submit" class="btn btn-custom-search-large btn-icon-cente">
+										<x-icon.fontawesome icon=search version=5></x-icon.fontawesome>
+										<div style="display: none;top:0;" class="loader mini"></div>
+									</button>
                                 </form>
                             </div>
-            </div>
-        </div>
+            	</div>
+        	</div>
             <div class="col-xs-10 col-lg-10 col-md-12">
                 <div class="formulario-buscar col-xs-12 hidden-md ">
                         <div class=" text-right d-flex justify-content-flex-end">
@@ -69,7 +72,10 @@
                                         <div class="form-group">
                                             <input class="form-control input-custom" placeholder="{{ trans($theme.'-app.head.search_label') }}" type="text" name="texto">
                                         </div>
-                                        <button type="submit" class="btn btn-custom-search-large"><i class="fa fa-search"></i><div style="display: none;top:0;" class="loader mini"></div></button>
+                                        <button type="submit" class="btn btn-custom-search-large btn-icon-center">
+											<x-icon.fontawesome icon=search version=5></x-icon.fontawesome>
+											<div style="display: none;top:0;" class="loader mini"></div>
+										</button>
                                     </form>
                                 </div>
                 </div>
@@ -190,13 +196,18 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <div class="input-login-group">
-                        <i class="fa fa-user"></i>
+						<div class="input-icon-wrapp">
+							<x-icon.fontawesome icon=user version=5></x-icon.fontawesome>
+						</div>
                         <input class="form-control" placeholder="{{ trans($theme.'-app.login_register.user') }}" type="email" name="email" type="text">
                     </div>
                 </div>
                 <div class="form-group ">
                     <div class="input-login-group">
-                        <i class="fa fa-key"></i>
+						<div class="input-icon-wrapp">
+							<x-icon.fontawesome icon=key version=6></x-icon.fontawesome>
+						</div>
+
                         <input class="form-control" placeholder="{{ trans($theme.'-app.login_register.contraseña') }}" type="password" name="password" maxlength="20">
                         <img class="view_password eye-password" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
                     </div>

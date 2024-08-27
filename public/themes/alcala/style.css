@@ -1369,17 +1369,13 @@ dialog::backdrop {
 
 .item_lot .salida-time{
     background: #707070;
-    /* position: relative; */
-    /* width: 150px; */
     height: 38px;
     padding: 10px 15px;
-
     color: white;
-    /* left: -20px; */
-    display: block;
-    /* bottom: 0px; */
     font-size: 12px;
-
+	display: flex;
+	align-items: center;
+    gap: 5px;
 }
 
 .item_lot_large .timer{
@@ -2358,7 +2354,7 @@ hr { background-color: #f9f3ce ; height: 1px; border: 0; }
 }
 .full-screen a{
     border: 1px solid lightgray;
-    padding: 14px 14px 0 14px;
+    padding: 12px;
     background: #F0F0F3;
 }
 .full-screen a.active{
@@ -3234,7 +3230,6 @@ input:checked ~ .input-check-custom{
     display: none;
     align-items: center;
     justify-content: center;
-    padding-top: 9px;
     text-align: center;
     cursor: pointer;
 }
@@ -3242,6 +3237,13 @@ input:checked ~ .input-check-custom{
     opacity: 1;
 }
 
+.button-up .btn-icon-wrapp {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 .inputs-custom-group input,
 .inputs-custom-group select,
@@ -5715,4 +5717,17 @@ width: 100%;
 
 #admin_settings_box .button-principal span {
 	margin: 0 auto;
+}
+
+.btn-icon-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.input-icon-wrapp {
+	display: flex;
+	width: 40px;
+	align-items: center;
+	justify-content: center;
 }
