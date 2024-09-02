@@ -150,6 +150,7 @@ class AutoFormulariosController extends Controller
 			unset($data['_token']);
 			unset($data['g-recaptcha-response']);
 			unset($data['condiciones']);
+			unset($data['captcha_token']);
 
 			foreach ($data as $k => $item) {
 				$html .= "<b>" . trans(Config::get('app.theme') . '-app.global.' . $k) . "</b>: " . $item . "<br><br>";

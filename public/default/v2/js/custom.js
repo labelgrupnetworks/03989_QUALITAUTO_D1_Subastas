@@ -154,9 +154,8 @@ $(function () {
 			return;
 		}
 
-		await executeCaptchaV3();
-
-		if(!checkCaptcha()) {
+		const captcha = await isValidCaptcha();
+		if(!captcha) {
 			$(".loader").addClass("hidden");
 			$("#valoracion-adv").removeClass("hidden");
 			$("#insert_msg").html(messages.error.generic);
@@ -1103,9 +1102,8 @@ async function sendContactForm(event) {
 		return false;
 	}
 
-	await executeCaptchaV3();
-
-	if(!checkCaptcha()) {
+	const captcha = await isValidCaptcha();
+	if(!captcha) {
 		showMessage(messages.error.hasErrors);
 		return false;
 	}
@@ -1217,9 +1215,8 @@ async function handleSubmitNewsletterForm(event) {
 		}
 	});
 
-	await executeCaptchaV3();
-
-	if(!checkCaptcha()) {
+	const captcha = await isValidCaptcha();
+	if(!captcha) {
 		$("#insert_msgweb").html(messages.error.code_500);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 	}
@@ -1369,33 +1366,6 @@ function createWallet(event) {
 
 function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
-}
-
-function checkCaptcha() {
-	const response = document.querySelector('[name="g-recaptcha-response"]').value;
-	return Boolean(response);
-}
-
-async function executeCaptchaV3() {
-	const captchaElemenent = document.querySelector('[name="captcha_token"]');
-
-	if(!captchaElemenent) return;
-
-	const key = captchaElemenent.getAttribute('data-sitekey');
-
-	return new Promise((resolve, reject) => {
-
-		grecaptcha.ready(function() {
-			grecaptcha.execute(key, {action: 'submit'})
-			.then(function(token) {
-
-				if(!token) reject('No token found');
-
-				captchaElemenent.value = token;
-				resolve();
-			});
-		});
-	});
 }
 
 // En la version dos este metodo no aplica, y se llama desde common.js

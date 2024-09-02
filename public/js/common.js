@@ -1882,24 +1882,7 @@ async function sendContact() {
 	});
 }
 
-function isV3Captcha() {
-	return $("[name=captcha_token]").length > 0;
-}
 
-async function isValidCaptcha() {
-	if (isV3Captcha()) {
-		await executeCaptchaV3();
-		return checkCaptcha();
-	}
-
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
-	const resutl = Boolean($("#g-recaptcha-response").val());
-	if(!resutl){
-		$(".g-recaptcha").find("iframe").addClass("has-error");
-	}
-
-	return resutl;
-}
 
 
 /****************************************************************************************/
@@ -2015,3 +1998,57 @@ function debounce(func, delay) {
 		console.log('Enviar formulario');
 	}, 500); // 500 milisegundos (0.5 segundos) de pausa
 }); */
+
+
+async function isValidCaptcha() {
+
+	if (isV3Captcha()) {
+		return await checkCaptchaV3();
+	}
+
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+	const resutl = Boolean($("#g-recaptcha-response").val());
+	if(!resutl){
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+	}
+
+	return resutl;
+}
+
+function isV3Captcha() {
+	return $("[name=captcha_token]").length > 0;
+}
+
+async function checkCaptchaV3() {
+	await executeCaptchaV3();
+
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
+	return Boolean(response);
+}
+
+async function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+
+	if(!captchaElemenent) return;
+
+	const key = captchaElemenent.getAttribute('data-sitekey');
+
+	return new Promise((resolve, reject) => {
+
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				//recorrecmos todos para que en paginas con varios formularios se rellenen todos
+				document.querySelectorAll('[name="captcha_token"]')
+					.forEach(captchaElemenent => {
+						captchaElemenent.value = token;
+					});
+
+				resolve();
+			});
+		});
+	});
+}

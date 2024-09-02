@@ -880,8 +880,7 @@ $(document).ready(function () {
 			})
 		});
 
-		await executeCaptchaV3();
-		const captcha = checkCaptcha();
+		const captcha = await isValidCaptcha();
 
 		formData = new FormData(this);
 
@@ -2040,7 +2039,14 @@ function abrirNuevaVentana(parametros) {
 
 })(jQuery);
 
-function newsletterSuscription (event) {
+async function newsletterSuscription (event) {
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.hasErrors);
+		return;
+	}
+
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
 
@@ -2065,11 +2071,21 @@ function newsletterSuscription (event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.hasErrors);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -2104,31 +2120,4 @@ function addNewsletter(data) {
 
 function backpage() {
 	window.history.back();
-}
-
-function checkCaptcha() {
-	const response = document.querySelector('[name="g-recaptcha-response"]').value;
-	return Boolean(response);
-}
-
-async function executeCaptchaV3() {
-	const captchaElemenent = document.querySelector('[name="captcha_token"]');
-
-	if(!captchaElemenent) return;
-
-	const key = captchaElemenent.getAttribute('data-sitekey');
-
-	return new Promise((resolve, reject) => {
-
-		grecaptcha.ready(function() {
-			grecaptcha.execute(key, {action: 'submit'})
-			.then(function(token) {
-
-				if(!token) reject('No token found');
-
-				captchaElemenent.value = token;
-				resolve();
-			});
-		});
-	});
 }
