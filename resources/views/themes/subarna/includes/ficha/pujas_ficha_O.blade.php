@@ -79,14 +79,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				 @php /*<h4 class="modal-title">{{ trans("$theme-app.lot.post_venta_title") }}</h4> */ @endphp
+				<h4 class="modal-title">{{ trans("$theme-app.lot.post_venta_title") }}</h4>
 			</div>
 
-			<div class="modal-body text-justify">
-				@php /*
+			<div class="modal-body">
 				<p>{{ trans("$theme-app.lot.post_venta_content") }}</p>
-				*/ @endphp
-				<p>{{ str_replace("</br>","",trans("$theme-app.home.info")) }}</p>
 			</div>
 
 			<div class="modal-footer">
@@ -99,7 +96,7 @@
 <script>
 	$(document).ready(function() {
 
-		showPostVentaModal(auction_info.lote_actual);
+		//showPostVentaModal(auction_info.lote_actual);
 
         //calculamos la fecha de cierre
         //$("#cierre_lote").html(format_date(new Date("{{$lote_actual->close_at}}".replace(/-/g, "/"))));
@@ -135,12 +132,12 @@
 		if(isMobile && !shouldExecuteOncePerDay(keyStorage)){
 			return;
 		}
-		//comento este código para el pop up del verano, restaurarlo para postventa
-		/*
+
+
 		if(tipo_sub !== 'W' || compra_asigl0 !== 'S') {
 			return;
 		}
-		*/
+
 		$('#postVentaModal').modal({
 			show: true,
 			backdrop: false,
