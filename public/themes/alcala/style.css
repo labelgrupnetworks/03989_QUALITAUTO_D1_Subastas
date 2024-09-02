@@ -5731,3 +5731,13 @@ width: 100%;
 	align-items: center;
 	justify-content: center;
 }
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}

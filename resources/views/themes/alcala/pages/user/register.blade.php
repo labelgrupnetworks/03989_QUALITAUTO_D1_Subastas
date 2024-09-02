@@ -7,31 +7,9 @@
 @section('content')
 
 <?php
-
 $families = array();
-/*
-$families[2] = trans($theme.'-app.subastas.proximas_subastas'); // Próximas subastas
-$families[3] = trans($theme.'-app.subastas.abanicos');    // Abanicos
-$families[4] = trans($theme.'-app.subastas.alfombras');   // Alfombras
-$families[5] = trans($theme.'-app.subastas.ceramica');    // Cerámica
-$families[6] = trans($theme.'-app.subastas.contemporaneo');    // Contemporáneo
-$families[7] = trans($theme.'-app.subastas.cristal');     // Cristal
-$families[8] = trans($theme.'-app.subastas.escultura');   // Escultura
-$families[9] = trans($theme.'-app.subastas.joyas');       // Joyas
-$families[10] = trans($theme.'-app.subastas.lamparas');   // Lámparas
-$families[11] = trans($theme.'-app.subastas.miniaturas'); // Miniaturas
-$families[12] = trans($theme.'-app.subastas.muebles');    // Muebles
-$families[13] = trans($theme.'-app.subastas.oriental');   // Oriental
-$families[14] = trans($theme.'-app.subastas.pintura');    // Pintura
-$families[15] = trans($theme.'-app.subastas.plata');      // Plata
-$families[16] = trans($theme.'-app.subastas.porcelana');  // Porcelana
-$families[17] = trans($theme.'-app.subastas.relojes');    // Relojes
-$families[18] = trans($theme.'-app.subastas.tapices');    // Tapices
-$families[19] = trans($theme.'-app.subastas.varios');     // Varios
-*/
 ?>
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
 <div class="create-account color-letter">
 	<div class="container register pb-5">
@@ -46,6 +24,8 @@ $families[19] = trans($theme.'-app.subastas.varios');     // Varios
 				<form method="post" id="registerForm" action="javascript:submit_register_form()">
 
 					<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
 
@@ -341,11 +321,11 @@ $families[19] = trans($theme.'-app.subastas.varios');     // Varios
 										target="_blank">{{ trans($theme.'-app.login_register.more_info') }}</a>)
 								</label>
 							</div>
-							<br>
-							<div>
-								<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-									data-callback="onSubmit">
-								</div>
+
+							<div class="mt-1">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
 							</div>
 
 							<div class="clearfix"></div>
