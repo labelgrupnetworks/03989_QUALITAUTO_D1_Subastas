@@ -866,25 +866,26 @@ $(document).ready(function () {
 		$.magnificPopup.open({ items: { src: '#modalMensajeDelete' }, type: 'inline' }, 0);
 	});
 
-	$("#form-valoracion-adv").submit(function (event) {
+	$("#form-valoracion-adv").submit(async function (event) {
 		$(".loader").removeClass("hidden");
 		$("#valoracion-adv").addClass("hidden");
 		event.preventDefault();
-		formData = new FormData(this);
-
 
 		var max_size = 6000;
 		var size = 0;
 
 		$("#form-valoracion-adv").find('input[type="file"]').each(function (index, element) {
-
 			$(element.files).each(function (index, el) {
-
 				size = size + ((el.size / 1024))
 			})
 		});
 
-		if (Math.floor(size) < max_size) {
+		await executeCaptchaV3();
+		const captcha = checkCaptcha();
+
+		formData = new FormData(this);
+
+		if (Math.floor(size) < max_size || captcha) {
 			$.ajax({
 				type: "POST",
 				url: "valoracion-articulos-adv",
@@ -2103,4 +2104,31 @@ function addNewsletter(data) {
 
 function backpage() {
 	window.history.back();
+}
+
+function checkCaptcha() {
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
+	return Boolean(response);
+}
+
+async function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+
+	if(!captchaElemenent) return;
+
+	const key = captchaElemenent.getAttribute('data-sitekey');
+
+	return new Promise((resolve, reject) => {
+
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				captchaElemenent.value = token;
+				resolve();
+			});
+		});
+	});
 }

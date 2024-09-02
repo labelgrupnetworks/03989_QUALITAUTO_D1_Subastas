@@ -64,7 +64,7 @@ function verIfNum(string) {
 	return true;
 }
 
-submit_register_form = function () {
+submit_register_form = async function () {
 	if ($("#clid").val() == 1) {
 		cleanDirection();
 	}
@@ -124,16 +124,13 @@ submit_register_form = function () {
 		}
 	}
 
-	response = $("#g-recaptcha-response").val();
-	if (!response) {
-		error = error + 1;
-		$(".g-recaptcha iframe").addClass("has-error");
-	} else {
-		$(".g-recaptcha iframe").removeClass("has-error");
+	await executeCaptchaV3();
+	const captcha = checkCaptcha();
+	if (!captcha) {
+		error++;
 	}
 
 	if (!error) {
-
 		var aux = $('.submitButton').html();
 
 		var form_data = new FormData($('#registerForm')[0]);

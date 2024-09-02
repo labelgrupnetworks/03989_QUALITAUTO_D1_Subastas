@@ -1856,41 +1856,50 @@ function showMessage(data, title) {
 /*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
 /****************************************************************************************/
 
-function sendContact() {
+async function sendContact() {
 
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
-
-	response = $("#g-recaptcha-response").val();
-
-	if (response) {
-		$.ajax({
-			type: "POST",
-			url: "/contactSendmail",
-			data: $(contactForm).serialize(),
-			success: function (response) {
-				if (response.status == "error") {
-					showMessage(response.message);
-				} else {
-					showMessage(response, "");
-					setTimeout("location.reload()", 4000);
-				}
-			},
-			error: function (response) {
-				showMessage("Error");
-			}
-		});
-	} else {
-		$(".g-recaptcha").find("iframe").addClass("has-error");
+	const captcha = await isValidCaptcha();
+	if(!captcha){
 		showMessage(messages.error.hasErrors);
+		return;
 	}
 
+	$.ajax({
+		type: "POST",
+		url: "/contactSendmail",
+		data: $(contactForm).serialize(),
+		success: function (response) {
+			if (response.status == "error") {
+				showMessage(response.message);
+			} else {
+				showMessage(response, "");
+				setTimeout("location.reload()", 4000);
+			}
+		},
+		error: function (response) {
+			showMessage("Error");
+		}
+	});
 }
 
+function isV3Captcha() {
+	return $("[name=captcha_token]").length > 0;
+}
 
+async function isValidCaptcha() {
+	if (isV3Captcha()) {
+		await executeCaptchaV3();
+		return checkCaptcha();
+	}
 
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+	const resutl = Boolean($("#g-recaptcha-response").val());
+	if(!resutl){
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+	}
 
-
-
+	return resutl;
+}
 
 
 /****************************************************************************************/

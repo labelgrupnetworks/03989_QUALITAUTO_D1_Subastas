@@ -29,6 +29,9 @@ $bread[] = array("name" =>$data['title']  );
                 <form id="form-valoracion-adv" class="form">
                     <div class=" col-xs-12 col-lg-8 col-lg-offset-2">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                        value="">
+
                     <div class=" col-xs-12 content-form-valuations no-padding">
                         <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans($theme.'-app.valoracion_gratuita.error') }}</p>
                         <div class="col-xs-12 col-lg-6  no-padding d-flex flex-direction-column inputs-custom-group">
@@ -78,6 +81,11 @@ $bread[] = array("name" =>$data['title']  );
                             <textarea class="form-control" id="exampleTextarea" rows="10" name="descripcion" required placeholder="{{ trans($theme.'-app.valoracion_gratuita.description') }}"></textarea>
                         </div>
                     </div>
+					<div class="col-xs-12">
+						<p class="captcha-terms">
+							{!! trans("$theme-app.global.captcha-terms") !!}
+						</p>
+					</div>
                     <div class="form-group form-group-custom col-xs-12">
 
                             <div id="dropzone">
@@ -88,6 +96,7 @@ $bread[] = array("name" =>$data['title']  );
                                     <input id="images" type="file" name="imagen[]" />
                                   </div>
                     </div>
+
                             <div class="col-xs-12 text-right no-padding">
                                 <button type="submit" id="valoracion-adv" class="btn btn-static-page">{{ trans($theme.'-app.valoracion_gratuita.send') }}</button>
                             </div>
