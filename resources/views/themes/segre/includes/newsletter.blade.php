@@ -10,6 +10,7 @@
                     {{ trans($theme.'-app.foot.newsletter_text_input') }}
                 </div>
                 <input class="form-control input-lg newsletter-input" type="text" placeholder="">
+				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
                 <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
                 <input type="hidden" class="newsletter" id="newsletter-input" name="families[]" value="1" >
                 <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans($theme.'-app.foot.newsletter_button')}}</button>
@@ -25,7 +26,10 @@
 				</div>
 			</div>
 			<div class="col-xs-12">
-				<h6 class="text-center">{{ trans($theme.'-app.foot.newslatter_lopd') }}</h6>
+				<h6 class="text-center">
+					{{ trans($theme.'-app.foot.newslatter_lopd') }}
+					<p>{!! trans("$theme-app.global.captcha-terms") !!}</p>
+				</h6>
 			</div>
         </div>
     </div>
