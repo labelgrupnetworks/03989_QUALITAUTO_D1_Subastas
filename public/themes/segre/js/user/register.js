@@ -124,8 +124,7 @@ submit_register_form = async function () {
 		}
 	}
 
-	await executeCaptchaV3();
-	const captcha = checkCaptcha();
+	const captcha = await isValidCaptcha();
 	if (!captcha) {
 		error++;
 	}
