@@ -442,65 +442,57 @@ $(document).ready(function () {
   };
 
 
-    $("#autoformulario").submit(function (event) {
+    $("#autoformulario").submit(async function (event) {
 
         event.preventDefault();
-        formData = new FormData(this);
 
         var max_size = 1000000;
         var size = 0;
 		var error = 0;
-        response = $("#g-recaptcha-response").val();
-		response=true;
-        if (!response) {
-            error = error + 1;
-            $(".g-recaptcha iframe").addClass("has-error");
-            $("#insert_msg").html(messages.error.recaptcha_incorrect);
+
+		const captcha = await isValidCaptcha();
+		if(!captcha){
+			error++;
+			$("#insert_msg").html(messages.error.recaptcha_incorrect);
             $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-        }
-        else {
-            $(".g-recaptcha iframe").removeClass("has-error");
+			return;
+		}
 
+		formData = new FormData(this);
 
-            $("#autoformulario").find('input[type="file"]').each(function (index, element) {
+		$("#autoformulario").find('input[type="file"]').each(function (index, element) {
+			$(element.files).each(function(index, el){
+				size = size + ((el.size / 1024))
+			})
+		});
 
-                $(element.files).each(function(index, el){
-                    size = size + ((el.size / 1024))
-                })
+		if (Math.floor(size) >= max_size) {
+			$("#insert_msg").html(messages.error.max_size_img);
+			$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			return;
+		}
 
-            });
+		$.ajax({
+			type: "POST",
+			url: "/es/autoformulario-send",
+			data: formData,
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			success: function (result) {
+				if (result.status == 'success') {
+					window.location.href = result.url;
+				} else {
+					$("#modalMensaje #insert_msg").html(result.message);
+					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				}
+			},
+			error: function (result) {
+				$("#insert_msg").html(messages.error.generic);
+				$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+			}
+		});
 
-            if (Math.floor(size) < max_size) {
-                $.ajax({
-                    type: "POST",
-                    url: "/es/autoformulario-send",
-                    data: formData,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                    contentType: false,
-                    success: function (result) {
-                        if (result.status == 'success') {
-                            window.location.href = result.url;
-                        } else {
-                            $("#modalMensaje #insert_msg").html(result.message);
-                            $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-                        }
-                    },
-                    error: function (result) {
-                        $("#insert_msg").html(messages.error.generic);
-                        $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-                    }
-                });
-            }
-            else {
-
-                if (Math.floor(size)>1) {
-
-                    $("#insert_msg").html(messages.error.max_size_img);
-                    $.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
-                }
-            }
-        }
     });
 
 });

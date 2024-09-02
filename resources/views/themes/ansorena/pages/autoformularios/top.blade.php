@@ -10,7 +10,6 @@
 
 @section('framework-js')
     <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 @endsection
 
 @section('custom-css')
@@ -38,6 +37,7 @@
 
                 <input name="subject" type="hidden" value="{{ $data['title'] }}">
                 {!! $data['formulario']['_token']['formulario'] !!}
+				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
                 <div class="row g-3">
                     <div class="col-md">
@@ -100,11 +100,11 @@
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
-                            data-callback="onSubmit">
-                        </div>
-                    </div>
+					<div class="col-12">
+						<p class="captcha-terms">
+							{!! trans("$theme-app.global.captcha-terms") !!}
+						</p>
+					</div>
 
 					<div class="col-12 text-center">
 						{!! $data['submit'] !!}
