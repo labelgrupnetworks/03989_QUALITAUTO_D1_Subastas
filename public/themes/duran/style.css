@@ -5189,6 +5189,7 @@ input.radio-filtro {
 #contactForm a.submitButton {
     border-radius: 20px;
     background-color: #770043;
+	height: auto;
 }
 
 #contactForm a.submitButton:hover {
@@ -8010,4 +8011,14 @@ dialog::backdrop {
 
 #admin_settings_box .button-principal span {
 	margin: 0 auto;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
 }

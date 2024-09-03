@@ -11,11 +11,11 @@ if(!empty($data['usuario'])){
 
 ?>
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 <div class="info-type-auction  mt-2 ">{{$titulo}}</div>
 
 <form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
 	<input type="hidden" name="auction" value="Venta Privada">
+	<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 	<input type="hidden" name="lot" value="{{$lote_actual->ref_asigl0}}">
 
   		@csrf
@@ -58,12 +58,9 @@ if(!empty($data['usuario'])){
 		</div>
 
 		<div class="col-xs-12 mt-3">
-			<div class="row">
-				<div class="g-recaptcha col-xs-6"
-					data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-					data-callback="onSubmit">
-				</div>
-			</div>
+			<p class="captcha-terms">
+				{!! trans("$theme-app.global.captcha-terms") !!}
+			</p>
 		</div>
 
 		<div class="col-xs-12 mt-3">
@@ -80,28 +77,4 @@ if(!empty($data['usuario'])){
 	</div>
 	<div class="clearfix"></div>
 
-
-
 </form>
-
-<script>
-function sendInfoLot() {
-
-
-		$.ajax({
-			type: "POST",
-			data: $("#infoLotForm").serialize(),
-			url: '/api-ajax/ask-info-lot',
-			success: function (res) {
-
-				showMessage("¡Gracias! Hemos sido notificados.  ");
-
-
-			},
-			error: function (e) {
-				showMessage("Ha ocurrido un error y no hemos podido ser notificados");
-			}
-		});
-
-}
-</script>

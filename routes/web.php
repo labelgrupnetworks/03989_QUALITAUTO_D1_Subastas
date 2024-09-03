@@ -126,7 +126,7 @@ Route::get(Routing::slugSeo('subastas-tematicas'), 'SubastaController@themeAucti
 Route::post('/consult-lot/email', [MailController::class, 'emailConsultLot']);
 Route::get('/{lang?}/accept_news', [MailController::class, 'acceptNews']);
 Route::post('/api-ajax/info-lot-email', [MailController::class, 'sendInfoLot']);
-Route::post('/api-ajax/ask-info-lot', [MailController::class, 'askInfoLot']);
+Route::post('/api-ajax/ask-info-lot', [MailController::class, 'askInfoLot'])->middleware('verify.captcha');
 
 Route::get(Routing::translateSeo('bid-admin'), 'SubastaController@bidAdmin');
 Route::post('/api-ajax/save_order', 'SubastaController@SaveOrders');
