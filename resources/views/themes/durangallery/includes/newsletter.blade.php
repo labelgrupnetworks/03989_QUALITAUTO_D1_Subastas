@@ -7,9 +7,11 @@
 		<div class="w-100 newsletter-input-group">
 
 			<input class="form-control newsletter-input" type="text" placeholder="Tu email">
+			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
 			<div class="form-check mt-1">
 				<input name="condiciones" type="checkbox" id="condiciones" type="checkbox" class="form-check-input">
+
 
 				<label class="form-check-label" for="condiciones">{!! trans($theme.'-app.login_register.read_conditions') !!} (<a
 					href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.privacy_policy') }}"
@@ -21,6 +23,9 @@
 
 		<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
 		<input type="hidden" class="newsletter" name="families[]" value="1">
+		<p class="captcha-terms">
+			{!! trans("$theme-app.global.captcha-terms") !!}
+		</p>
         <button id="newsletter-btn" type="button" class="button-principal button-newsletter">{{trans($theme.'-app.foot.newsletter_button')}}</button>
 
 	</div>
