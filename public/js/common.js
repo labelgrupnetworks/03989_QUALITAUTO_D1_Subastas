@@ -1858,27 +1858,23 @@ function showMessage(data, title) {
 
 async function sendContact() {
 
-	const captcha = await isValidCaptcha();
-	if(!captcha){
-		showMessage(messages.error.hasErrors);
-		return;
-	}
-
-	$.ajax({
-		type: "POST",
-		url: "/contactSendmail",
-		data: $(contactForm).serialize(),
-		success: function (response) {
-			if (response.status == "error") {
-				showMessage(response.message);
-			} else {
-				showMessage(response, "");
-				setTimeout("location.reload()", 4000);
+	validateCaptchaMiddleware(() => {
+		$.ajax({
+			type: "POST",
+			url: "/contactSendmail",
+			data: $(contactForm).serialize(),
+			success: function (response) {
+				if (response.status == "error") {
+					showMessage(response.message);
+				} else {
+					showMessage(response, "");
+					setTimeout("location.reload()", 4000);
+				}
+			},
+			error: function (response) {
+				showMessage("Error");
 			}
-		},
-		error: function (response) {
-			showMessage("Error");
-		}
+		});
 	});
 }
 
@@ -1999,13 +1995,26 @@ function debounce(func, delay) {
 	}, 500); // 500 milisegundos (0.5 segundos) de pausa
 }); */
 
+function validateCaptchaMiddleware(callback, arg) {
+	isValidCaptcha().then((result) => {
+		if(result){
+			callback(arg);
+			return;
+		}
+
+		showMessage(messages.error.recaptcha_incorrect);
+	});
+}
+
 
 async function isValidCaptcha() {
 
+	// Si es un captcha v3
 	if (isV3Captcha()) {
 		return await checkCaptchaV3();
 	}
 
+	// Si es un captcha v2
 	$(".g-recaptcha").find("iframe").removeClass("has-error");
 	const resutl = Boolean($("#g-recaptcha-response").val());
 	if(!resutl){

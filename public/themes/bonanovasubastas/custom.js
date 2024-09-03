@@ -915,3 +915,9 @@ function see_img() {
 function see_img_samll() {
 	$('.list_lot').removeClass("large_list").addClass("small_list");
 }
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
+}

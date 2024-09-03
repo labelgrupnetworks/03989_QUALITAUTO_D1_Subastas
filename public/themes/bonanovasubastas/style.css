@@ -3365,7 +3365,6 @@ div.newsletter button.btn-custom {
 
 .newsletter-wrapper .section-title,
 .newsletter-wrapper .section-input {
-    width: 50%;
     display: flex;
     color: white;
 }
@@ -4369,4 +4368,14 @@ ul.sub_menu_adj {
 
 #admin_settings_box .button-principal span {
 	margin: 0 auto;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
 }

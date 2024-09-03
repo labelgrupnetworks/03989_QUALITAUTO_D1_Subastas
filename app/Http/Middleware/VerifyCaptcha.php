@@ -82,7 +82,7 @@ class VerifyCaptcha
 		}
 
 		$responseObject = $response->object();
-		if($responseObject->success == false || $responseObject->score < config('app.captcha_v3_severity', '0.5')) {
+		if($responseObject->success == false || $responseObject->score < config('app.captcha_v3_severity', '0.6')) {
 			Log::warning('Recaptcha failed', ['response' => $response->json(), 'email' => $email, 'ip' => $ip]);
 			return false;
 		}

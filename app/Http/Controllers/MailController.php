@@ -118,7 +118,7 @@ class MailController extends Controller
 	public function processPostVars($htmlFields = "", $prohibidosAux = array(""))
 	{
 		#por defecto quitamos los campos del formulario que no deben enviarse, si hay alguno más se puede pasar por la función
-		$prohibidos = array_merge(array('condiciones',  '_token', 'regtype',  'g-recaptcha-response'), $prohibidosAux);
+		$prohibidos = array_merge(array('condiciones',  '_token', 'regtype',  'g-recaptcha-response', 'captcha_token'), $prohibidosAux);
 		foreach ($_POST as $key => $value) {
 
 			if (!in_array($key, $prohibidos)) {
