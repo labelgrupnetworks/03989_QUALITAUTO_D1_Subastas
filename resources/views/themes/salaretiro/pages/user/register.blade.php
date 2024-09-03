@@ -16,8 +16,6 @@ $data['seo']->noindex_follow='true';
 	$newsletters = (new \App\Models\Newsletter())->getNewslettersNames();
 @endphp
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
 <div class="create-account color-letter">
 	<div class="container register pb-5">
 		<div class="row d-flex align-items-center justify-content-center">
@@ -29,6 +27,7 @@ $data['seo']->noindex_follow='true';
 				<form method="post" id="registerForm" action="javascript:submit_register_form()" enctype="multipart/form-data">
 
 					<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
 
@@ -340,10 +339,10 @@ $data['seo']->noindex_follow='true';
 								</div>
 							</div>
 							<br>
-							<div class="col-xs-12 col-md-offset-3">
-								<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}" data-callback="onSubmit">
-								</div>
-
+							<div class="col-xs-12 mt-1">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
 							</div>
 
 							<div class="clearfix"></div>
@@ -351,19 +350,6 @@ $data['seo']->noindex_follow='true';
 						</div>
 
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 					<div class="col-xs-12 text-center">
 						<button type="submit" class="btn btn btn-registro-salaretiro submitButton" style="background:#015BA9;color:#FFF;">

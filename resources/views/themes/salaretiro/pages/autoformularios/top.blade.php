@@ -8,7 +8,6 @@
     <?php
     $bread[] = ['name' => $data['title']];
     ?>
-    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
     @include('includes.breadcrumb')
 
@@ -31,6 +30,7 @@
                 <div class="row form-group">
                     <form id="autoformulario" name="autoformulario" method="post">
 
+						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
                         <input name="subject" type="hidden" value="{{ $data['title'] }}">
 
                         @foreach ($data['formulario'] as $k => $item)
@@ -76,12 +76,6 @@
                             @endif
                         @endforeach
 
-                        <div class="col-xs-12 input-group">
-                            <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
-                                data-callback="onSubmit">
-                            </div>
-                        </div>
-
                         <div class="col-xs-12 input-group mb-2">
                             <div class="check_term">
                                 <label for="condiciones">
@@ -91,6 +85,12 @@
                                 </label>
                             </div>
                         </div>
+
+						<div class="col-12">
+							<p class="captcha-terms">
+								{!! trans("$theme-app.global.captcha-terms") !!}
+							</p>
+						</div>
 
                         <div class="col-xs-12 input-group">
                             {!! $data['submit'] !!}

@@ -20,6 +20,8 @@
                                 <input type="hidden" id="lang-newsletter" name="lang"
                                     value="<?= \App::getLocale() ?>">
 
+								<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+
 
                                 <button id="newsletter-btn" type="button"
                                     class="btn btn-custom newsletter-input">{{ trans($theme . '-app.foot.newsletter_button') }}</button>
@@ -54,6 +56,10 @@
                                     style="color: #555"><?= trans($theme . '-app.emails.privacy_conditions') ?></a></span>
                             </label>
                         </div>
+
+						<p class="captcha-terms">
+							{!! trans("$theme-app.global.captcha-terms") !!}
+						</p>
                     </div>
                 </div>
             </div>
