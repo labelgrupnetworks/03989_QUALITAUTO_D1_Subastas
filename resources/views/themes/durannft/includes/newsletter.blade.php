@@ -19,7 +19,12 @@
 
 		</div>
 
+		<p class="captcha-terms">
+			{!! trans("$theme-app.global.captcha-terms") !!}
+		</p>
+
 		<input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>" >
+		<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 		<input type="hidden" class="newsletter" name="families[]" value="1">
         <button id="newsletter-btn-duranNFT" type="button" class="button-principal button-newsletter">{{trans($theme.'-app.foot.newsletter_button')}}</button>
 

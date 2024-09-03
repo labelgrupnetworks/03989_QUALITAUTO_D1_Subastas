@@ -8,7 +8,6 @@
     <?php
     $bread[] = ['name' => trans($theme . '-app.foot.contact')];
     ?>
-    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
 	<div class="container">
 		<div class="row">
@@ -33,7 +32,7 @@
 
                 <form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
                     {!! $data['formulario']['_token'] !!}
-
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
                     <div class="form-group row">
                         <div class="input-effect col-xs-12 col-md-9">
@@ -74,10 +73,11 @@
                         </div>
                     </div>
 
-                    <div class="row">
-						<div class="col-xs-12">
-							<div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}" data-callback="onSubmit">
-                        	</div>
+					<div class="row">
+                        <div class="col-xs-12">
+							<span class="captcha-terms">
+								{!! trans("$theme-app.global.captcha-terms") !!}
+							</span>
 						</div>
                     </div>
 
