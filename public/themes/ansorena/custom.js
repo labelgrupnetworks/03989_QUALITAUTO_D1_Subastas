@@ -638,9 +638,15 @@ function selectToSelect2(jqSelect) {
 	$parentElement.removeClass('d-none');
 }
 
-function sendInfoLot(event) {
+async function sendInfoLot(event) {
 	event.preventDefault();
 	event.stopPropagation();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
 
 	const submitButton = event.target.querySelector('button[type=submit]');
 	submitButton.disabled = true;

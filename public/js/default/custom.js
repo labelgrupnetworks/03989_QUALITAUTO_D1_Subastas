@@ -2043,7 +2043,7 @@ async function newsletterSuscription (event) {
 
 	const captcha = await isValidCaptcha();
 	if(!captcha){
-		showMessage(messages.error.hasErrors);
+		showMessage(messages.error.recaptcha_incorrect);
 		return;
 	}
 
