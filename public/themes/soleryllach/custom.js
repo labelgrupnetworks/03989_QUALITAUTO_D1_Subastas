@@ -595,7 +595,7 @@
             $.magnificPopup.open({items: {src: '#modalMensajeDelete'}, type: 'inline'}, 0);
         });
 
-        $( "#form-valoracion-adv" ).submit(function(event) {
+        $( "#form-valoracion-adv" ).submit(async function(event) {
 
 
             if (event.isDefaultPrevented()) {
@@ -610,17 +610,11 @@
             } else {
                 event.preventDefault();
 
-                var $captcha = $( '#recaptcha' ),
-                response = grecaptcha.getResponse();
-
-                if (response.length === 0) {
-                  if( !$captcha.hasClass( "error" ) ){
-                    $captcha.addClass( "error" );
-                  }
-                  return;
-                }else{
-                   $captcha.removeClass( "error" );
-                }
+                const captcha = await isValidCaptcha();
+				if(!captcha){
+					showMessage(messages.error.recaptcha_incorrect);
+					return;
+				}
 
                 if($("#condiciones").is(':checked')){
                    $(".condiciones").css('color', '#333');
