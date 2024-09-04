@@ -354,7 +354,7 @@ Route::get(Routing::slugSeo('register', true), 'User\RegisterController@index')-
 
 // Autoformularios
 
-Route::post(Routing::slug('autoformulario-send'), 'V5\AutoFormulariosController@Send')->name('autoformulario-send');
+Route::post(Routing::slug('autoformulario-send'), 'V5\AutoFormulariosController@Send')->middleware('verify.captcha')->name('autoformulario-send');
 Route::get(Routing::slug('autoformulario-success'), 'V5\AutoFormulariosController@Success');
 
 Route::get(Routing::slug('tasaciones'), 'V5\AutoFormulariosController@Tasaciones');
