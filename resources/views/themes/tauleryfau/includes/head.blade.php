@@ -102,9 +102,8 @@ header("X-Frame-Options:     DENY");
 <link href="{{ URL::asset('vendor/font-awesome/6.5.2/css/all.min.css') }}" rel="stylesheet">
 <link href='{{ URL::asset('vendor/year-calendar/jquery.bootstrap.year.calendar.css') }}' rel='stylesheet' />
 
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-	async defer>
-</script>
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+
 @php
 	$curency_usd = new \App\libs\Currency;
 	$curency_usd->currency(0,'USD',\Config::get('app.money'));
