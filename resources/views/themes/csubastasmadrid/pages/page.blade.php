@@ -6,9 +6,7 @@
 
 @section('content')
     <main class="page-static">
-        <script
-            src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={{ config('app.locale') }}"
-            async defer></script>
+
 
         <div id="pagina-{{ $data['data']->id_web_page }}" class="contenido">
             <div class="container">
