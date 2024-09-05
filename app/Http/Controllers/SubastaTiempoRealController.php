@@ -2010,6 +2010,17 @@ class subastaTiempoRealController extends Controller
             }
 
 			//si es una subasta de tipo O y el importe de salida no es correcto, lo corregimos
+			/**
+			 * @todo revisar porque se cambia el impres_asigl0
+			 * Clientes a los que afecta
+			 * - Ansorena gallery (son tipo E, no afecta)
+			 * - Gutinvest (todo 2024 sin subasta online, 6 desde 2020)
+			 * - Segre (son tipo W, no afecta)
+			 * - Valoralia -> son onlines, es al único que afecta
+			 *
+			 * -- con impres_asigl0 comentado, si se realiza una puja por encima del precio de salida, pero por debajo de impres: Se crea una puja y una ordern por el valor marcado
+			 * -- sin comentar, se crea puja por siguiente escalado y orden por puja introducida
+			 */
 			if($lote->tipo_sub == 'O'
 				&& $escalado_correcto != $lote->impsalhces_asigl0
 				&& Config::get('app.force_correct_price'))
