@@ -8,7 +8,8 @@ use Carbon\Carbon;
 use Carbon\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Config;
+use Illuminate\Support\Facades\Config;
+
 class FxDvc0Seg extends Model
 {
     protected $table = 'FXDVC0SEG';
@@ -71,6 +72,44 @@ class FxDvc0Seg extends Model
 		 * LEFT JOIN FXDVC0SEG ON EMP_DVC0SEG = EMP_DVC0 AND ANUM_DVC0SEG = ANUM_DVC0 AND NUM_DVC0SEG = NUM_DVC0
 		 * LEFT JOIN FXESTADOSSEG ON IDSEG_DVC0SEG = ID_ESTADOSSEG
 		 */
+	}
+
+	public static function getFollowUpByBills($billsIds)
+	{
+		if((is_array($billsIds) && !$billsIds) || (is_collection($billsIds) && $billsIds->isEmpty())){
+			return collect();
+		}
+
+		return self::select('anum_dvc0seg','num_dvc0seg', 'des_estadosseg', 'fecha_dvc0seg', 'lin_dvc0seg', 'idseg_dvc0seg')
+			->joinFxEstadosSeg()
+			->whereBills($billsIds)
+			->whereOnlyMaxLine()
+			->orderBy('lin_dvc0seg', 'desc')
+			->get();
+	}
+
+	 function scopeWhereOnlyMaxLine($query)
+	{
+		$query->where('lin_dvc0seg', function($query){
+			$query->selectRaw('max(FXDVC0SEG2.lin_dvc0seg)')
+				->from('FXDVC0SEG as FXDVC0SEG2')
+				->whereColumn('FXDVC0SEG.anum_dvc0seg', 'FXDVC0SEG2.anum_dvc0seg')
+				->whereColumn('FXDVC0SEG.num_dvc0seg', 'FXDVC0SEG2.num_dvc0seg')
+				->whereColumn('FXDVC0SEG.emp_dvc0seg', 'FXDVC0SEG2.emp_dvc0seg');
+		});
+	}
+
+	public function scopeWhereBills($query, $billsIds)
+	{
+		return $query->where(function($query) use ($billsIds){
+			foreach ($billsIds as $bill) {
+				$query->orWhere([
+					['anum_dvc0seg', $bill['afra']],
+					['num_dvc0seg', $bill['nfra']]
+				]);
+			}
+			return $query;
+		});
 	}
 
 	/**

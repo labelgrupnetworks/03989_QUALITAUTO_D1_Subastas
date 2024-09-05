@@ -107,30 +107,24 @@
 			<ul class="list-unstyled d-flex">
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.twitter') }}" target="_blank">
-						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#twitter"></use>
-						</svg></a></li>
+						<x-icon.boostrap size=24 icon=twitter></x-icon.boostrap>
+					</a>
+				</li>
 
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.instagram') }}" target="_blank">
-						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#instagram"></use>
-						</svg>
+						<x-icon.boostrap size=24 icon=instagram></x-icon.boostrap>
 					</a>
 				</li>
 
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.facebook') }}" target="_blank">
-						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#facebook"></use>
-						</svg>
+						<x-icon.boostrap size=24 icon=facebook></x-icon.boostrap>
 					</a>
 				</li>
 				<li class="ms-3">
 					<a class="lb-text-primary" href="{{ Config::get('app.pinterest') }}" target="_blank">
-						<svg class="bi" width="24" height="24" fill="currentColor">
-							<use xlink:href="/bootstrap-icons.svg#pinterest"></use>
-						</svg>
+						<x-icon.boostrap size=24 icon=pinterest></x-icon.boostrap>
 					</a>
 				</li>
 			</ul>

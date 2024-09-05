@@ -15,6 +15,7 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FgCaracteristicas_Hces1_Lang;
 use App\Models\V5\FgHces1_Lang;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\MessageBag;
 
 use DB;
@@ -22,7 +23,7 @@ use DB;
 class LotController extends ApiLabelController
 {
     #arrays que sirve para traducir las variables que envian y las de busqueda
-    protected  $asigl0Rename = array("idorigin"=>"idorigen_asigl0","idauction"=>"sub_asigl0",  "reflot"=>"ref_asigl0", "close"=>"cerrado_asigl0",  "highlight" => "destacado_asigl0", "buyoption" => "compra_asigl0", "soldprice" => "remate_asigl0", "startprice" => "impsalhces_asigl0", "lowprice" => "imptas_asigl0", "highprice" => "imptash_asigl0", "reserveprice" => "impres_asigl0", "retired" => "retirado_asigl0", "hidden" => "oculto_asigl0",  "disclaimed" => "desadju_asigl0", "startdate" => "fini_asigl0", "enddate" => "ffin_asigl0", "starthour" => "hini_asigl0", "endhour" => "hfin_asigl0", "ownercommission" => "comphces_asigl0" , "biddercommission" => "comlhces_asigl0", "enddateoriginal" => "ffin_original_asigl0", "endhouroriginal" => "hfin_original_asigl0", "label" => "oferta_asigl0", "createdate" =>"fecalta_asigl0" );
+    protected  $asigl0Rename = array("idorigin"=>"idorigen_asigl0","idauction"=>"sub_asigl0",  "reflot"=>"ref_asigl0", "close"=>"cerrado_asigl0",  "highlight" => "destacado_asigl0", "buyoption" => "compra_asigl0", "soldprice" => "remate_asigl0", "startprice" => "impsalhces_asigl0", "lowprice" => "imptas_asigl0", "highprice" => "imptash_asigl0", "reserveprice" => "impres_asigl0", "retired" => "retirado_asigl0", "hidden" => "oculto_asigl0",  "disclaimed" => "desadju_asigl0", "startdate" => "fini_asigl0", "enddate" => "ffin_asigl0", "starthour" => "hini_asigl0", "endhour" => "hfin_asigl0", "ownercommission" => "comphces_asigl0" , "biddercommission" => "comlhces_asigl0", "enddateoriginal" => "ffin_original_asigl0", "endhouroriginal" => "hfin_original_asigl0", "label" => "oferta_asigl0", "createdate" =>"fecalta_asigl0", "priceweb" => "impsalweb_asigl0"  );
     protected  $hces1Rename = array("idorigin"=>"idorigen_hces1",  "idauction"=>"sub_hces1",  "reflot"=>"ref_hces1",  "idsubcategory" => "sec_hces1", "title" => "descweb_hces1", "description" => "desc_hces1",  "extrainfo" => "descdet_hces1",   "htmlcontent" => "contextra_hces1",  "search" => "search_hces1", "startprice" => "impsal_hces1", "lowprice" => "imptasini_hces1",  "highprice" => "imptash_hces1","reserveprice" => "impres_hces1", "costprice" => "pc_hces1" ,"biddercommission" => "coml_hces1" ,"biddercommissionini" => "comlini_hces1" ,"ownercommission" => "comp_hces1" ,"ownercommissionini" => "compini_hces1" ,"warehouse" =>"alm_hces1", "numberobjects" => "nobj_hces1","high" => "alto_hces1", "width" => "ancho_hces1", "diameter" => "diam_hces1","thickness" => "grueso_hces1" , "weight" => "peso_hces1", "volumetricweight" => "pesovol_hces1", "video" => "img360_hces1", "ministry"=>"ministerio_hces1", "exportpermission"=>"permisoexp_hces1", "urlfriendly" => "webfriend_hces1", "order" => "orden_hces1", "maxbid" =>"implic_hces1", "infoforauctioner" => "infotr_hces1",  "owner" => "prop_hces1",  "imgfriendly" => "imgfriendly_hces1", "metatitle" => "webmetat_hces1", "metadescription" => "webmetad_hces1", "withstock" => "controlstock_hces1", "stock" => "stock_hces1", "transport" => "transport_hces1", "other_id" => "loteaparte_hces1", "note" => "obsdet_hces1", "idsubsubcategory" => "subfam_hces1" );
     protected  $featuresRename = array("idfeature"=>"idcar_caracteristicas_hces1",  "num"=>"numhces_caracteristicas_hces1",   "lin"=>"linhces_caracteristicas_hces1", "idvaluefeature" => "idvalue_caracteristicas_hces1", "idfeaturevalue" => "idvalue_caracteristicas_hces1", "value" => "value_caracteristicas_hces1", "orden" => "orden_caracteristicas_hces1"  );
 	protected  $featuresLangRename = array("idfeature"=>"idcar_car_hces1_lang",  "num"=>"numhces_car_hces1_lang",   "lin"=>"linhces_car_hces1_lang",  "value" => "value_car_hces1_lang", "lang" => "lang_car_hces1_lang"  );
@@ -117,7 +118,7 @@ class LotController extends ApiLabelController
 							if(empty($feature["lang"])){
 								$itemsFeatures[] = $feature;
 							}else{
-								$feature["lang"] =  \Tools::getLanguageComplete($feature["lang"]);
+								$feature["lang"] =  ToolsServiceProvider::getLanguageComplete($feature["lang"]);
 								$itemsFeaturesLang[] = $feature;
 							}
 
@@ -127,7 +128,7 @@ class LotController extends ApiLabelController
 					#multiidioma
 					if(!empty($item["languages"])){
                         foreach($item["languages"] as $hces1Lang){
-							$hces1Lang["lang"] =  \Tools::getLanguageComplete($hces1Lang["lang"]);
+							$hces1Lang["lang"] =  ToolsServiceProvider::getLanguageComplete($hces1Lang["lang"]);
                             $hces1Lang["lin"] =  $linHces;
 							$hces1Lang["num"] =  $numHces;
 							if(empty($hces1Lang["urlfriendly"]) && !empty($hces1Lang["title"])){
@@ -271,10 +272,10 @@ class LotController extends ApiLabelController
                     $res->items[$key]->features = $caracteristicas[$item->idorigin];
 				}
 
-				$res->items[$key]->url= \Tools::url_lot($item->idauction, $item->id_auc_sessions, $item->name, $item->reflot,$item->numcession,$item->urlfriendly,$item->title);
-				$res->items[$key]->urlimg= \Tools::url_img("lote_large", $item->numcession, $item->lincession, null, false);
-				$res->items[$key]->urlimgMedium= \Tools::url_img("lote_medium", $item->numcession, $item->lincession, null, false);
-				$res->items[$key]->urlimgSmall= \Tools::url_img("lote_small", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->url= ToolsServiceProvider::url_lot($item->idauction, $item->id_auc_sessions, $item->name, $item->reflot,$item->numcession,$item->urlfriendly,$item->title);
+				$res->items[$key]->urlimg= ToolsServiceProvider::url_img("lote_large", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgMedium= ToolsServiceProvider::url_img("lote_medium", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgSmall= ToolsServiceProvider::url_img("lote_small", $item->numcession, $item->lincession, null, false);
 
 				#eliminamso num, ya que no se necesita devolver el num_hces
 				unset($res->items[$key]->name);
@@ -437,7 +438,7 @@ class LotController extends ApiLabelController
                                 $create[] = $featureLot;
 
 							}else{
-								$featureLot["lang"] =  \Tools::getLanguageComplete($featureLot["lang"]);
+								$featureLot["lang"] =  ToolsServiceProvider::getLanguageComplete($featureLot["lang"]);
 								$createLang[] = $featureLot;
 							}
 
@@ -471,7 +472,7 @@ class LotController extends ApiLabelController
 			$or=" or ";
 		}
 		$hces1_lang =$fghces1->whereraw($where)->get();
-		
+
 	 /*	->leftjoin("FGHCES1_LANG", " EMP_HCES1_LANG = EMP_HCES1  AND  NUM_HCES1_LANG = NUM_HCES1  AND  LIN_HCES1_LANG = LIN_HCES1") */
 		$lots = array();
 
@@ -494,7 +495,7 @@ class LotController extends ApiLabelController
 			if(isset(($item["languages"]))){
 
 				foreach($item["languages"] as $hces1Lang){
-					$lang =\Tools::getLanguageComplete($hces1Lang["lang"]);
+					$lang =ToolsServiceProvider::getLanguageComplete($hces1Lang["lang"]);
 					if(!empty( $lots[$item["idorigin"]])){
 						$hces1Lang["lang"] = $lang;
 						$hces1Lang["num"] = $lots[$item["idorigin"]]["num"];

@@ -188,7 +188,7 @@ private $debug = true;
         $bindings = array(
             'emp'            => Config::get('app.main_emp'),
             'cod_email' =>$cod_email,
-            'lang' =>\Tools::getLanguageComplete($this->lang)
+            'lang' =>ToolsServiceProvider::getLanguageComplete($this->lang)
 
         );
         $emails =  DB::select($sql, $bindings);
@@ -359,11 +359,11 @@ private $debug = true;
 			$this->lot = $lot;
 
             $this->atributes['LOT_DESCRIPTION'] = $lot->desc_hces1;
-            $this->atributes['LOT_IMG'] = \Tools::url_img('lote_medium',$lot->numhces_asigl0,$lot->linhces_asigl0);
+            $this->atributes['LOT_IMG'] = ToolsServiceProvider::url_img('lote_medium',$lot->numhces_asigl0,$lot->linhces_asigl0);
 
            // $this->atributes['LOT_LINK'] = Config::get('app.url').\Routing::translateSeo('lote').$cod_sub."-".$lot->id_auc_sessions.'-'.$lot->id_auc_sessions."/".$lot->ref_asigl0.'-'.$lot->num_hces1.'-'.$webfriend.
 			$this->atributes['LOT_LINK'] = ToolsServiceProvider::url_lot($cod_sub, $lot->id_auc_sessions, $lot->des_sub, $lot->ref_asigl0, $lot->num_hces1,$lot->webfriend_hces1,$lot->titulo_hces1);
-			$this->atributes['LOT_LINK_DESCWEB'] = \Tools::url_lot($cod_sub,$lot->id_auc_sessions, $lot->des_sub , $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->descweb_hces1);
+			$this->atributes['LOT_LINK_DESCWEB'] = ToolsServiceProvider::url_lot($cod_sub,$lot->id_auc_sessions, $lot->des_sub , $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->descweb_hces1);
 
             $this->atributes['LOT_LINHCES'] = $lot->lin_hces1;
             $this->atributes['LOT_NUMHCES'] = $lot->num_hces1;
@@ -402,11 +402,11 @@ private $debug = true;
             $this->atributes['AUCTION_CODE'] = $cod_sub;
             $this->atributes['AUCTION_NAME'] = $lot->auc_name;
             $this->atributes['PROP'] = $lot->prop_hces1;
-            $this->atributes['ACTUAL_BID'] = \Tools::moneyFormat($lot->implic_hces1);
-            $this->atributes['PRICE'] = \Tools::moneyFormat($lot->impsalhces_asigl0);
-			$this->atributes['ESTIMACION_ALTA'] = \Tools::moneyFormat($lot->imptash_asigl0);
-			$this->atributes['RESERVE_PRICE'] = \Tools::moneyFormat($lot->impres_asigl0);
-			$this->atributes['ESTIMACION_BAJA'] = \Tools::moneyFormat($lot->imptas_asigl0);
+            $this->atributes['ACTUAL_BID'] = ToolsServiceProvider::moneyFormat($lot->implic_hces1);
+            $this->atributes['PRICE'] = ToolsServiceProvider::moneyFormat($lot->impsalhces_asigl0);
+			$this->atributes['ESTIMACION_ALTA'] = ToolsServiceProvider::moneyFormat($lot->imptash_asigl0);
+			$this->atributes['RESERVE_PRICE'] = ToolsServiceProvider::moneyFormat($lot->impres_asigl0);
+			$this->atributes['ESTIMACION_BAJA'] = ToolsServiceProvider::moneyFormat($lot->imptas_asigl0);
 			$this->atributes['ANCHO'] = $lot->ancho_hces1 ?? '';
 
 			$this->setLotOpen($lot->open_at ?? '');
@@ -714,9 +714,9 @@ private $debug = true;
 			#duran no usa el iva en als adjudicaciones
 			$precioSinIva = $adjudicado->himp_csub + $adjudicado->base_csub;
 
-            $this->setPrice(\Tools::moneyFormat($precio,false,2));
-            $this->setPrice_tax(\Tools::moneyFormat($precio_tax,false,2));
-			$this->setPrice_auction(\Tools::moneyFormat($adjudicado->himp_csub,false,2));
+            $this->setPrice(ToolsServiceProvider::moneyFormat($precio,false,2));
+            $this->setPrice_tax(ToolsServiceProvider::moneyFormat($precio_tax,false,2));
+			$this->setPrice_auction(ToolsServiceProvider::moneyFormat($adjudicado->himp_csub,false,2));
 
 			if(Config::get('app.emails_with_commission', false)) {
 				$this->addCommissionMessages($precio);
@@ -724,12 +724,12 @@ private $debug = true;
 
 			if(config::get("app.carlandiaCommission")){
 				#importe total, lo pongo con € y sin decimales
-				$this->setPrice(\Tools::moneyFormat($precio,trans(\Config::get('app.theme').'-app.subastas.euros')));
+				$this->setPrice(ToolsServiceProvider::moneyFormat($precio,trans(\Config::get('app.theme').'-app.subastas.euros')));
 
 				#importe reserva
 				$carlandiaCommission = \Config::get("app.carlandiaCommission");
 				$impreserva = $precio- ($precio / (1 + $carlandiaCommission));
-				$this->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat(round($impreserva, 2),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+				$this->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat(round($impreserva, 2),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 
 				#Enlace de pago
 				$linAsigl1 = FgAsigl1::where([
@@ -741,7 +741,7 @@ private $debug = true;
 				$this->setAtribute('PAY_LINK', $link);
 			}
 
-			$this->setAtribute("IMPORTESINIVA",\Tools::moneyFormat($precioSinIva,false,2));
+			$this->setAtribute("IMPORTESINIVA",ToolsServiceProvider::moneyFormat($precioSinIva,false,2));
         }
     }
 
@@ -1130,7 +1130,7 @@ private $debug = true;
 				return;
 			}
 			$dateBuff = new \DateTime($open_at);
-            setlocale(LC_TIME,\Tools::getLanguageComplete(\Config::get('app.locale'))   . ".UTF-8");
+            setlocale(LC_TIME,ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'))   . ".UTF-8");
             if(\Config::get('app.locale') == 'es'){
 				$this->atributes["LOT_OPEN"] = Carbon::createFromFormat('Y/m/d H:i:s', $open_at)->locale('es')->isoFormat('D \d\e MMMM \d\e YYYY \a \l\a\s kk:mm');
             }
@@ -1147,7 +1147,7 @@ private $debug = true;
 				return;
 			}
             $dateBuff = new \DateTime($date);
-            setlocale(LC_TIME,\Tools::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
+            setlocale(LC_TIME,ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
             if(\Config::get('app.locale') == 'es'){
                 //$this->atributes["LOT_CLOSE"] = strftime ("%d de %B de %Y", $dateBuff->getTimestamp());
 				$this->atributes["LOT_CLOSE"] = Carbon::createFromFormat('Y/m/d H:i:s', $date)->locale('es')->isoFormat('D \d\e MMMM \d\e YYYY \a \l\a\s kk:mm');
@@ -1160,7 +1160,7 @@ private $debug = true;
         public function setDate($date, $format){
 
             $dateBuff = new \DateTime($date);
-            setlocale(LC_TIME,\Tools::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
+            setlocale(LC_TIME,ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
             if(\Config::get('app.locale') == 'es'){
                 $this->atributes["SESSION_START"] = strftime ("%d de %B de %Y", $dateBuff->getTimestamp());
             }
@@ -1288,6 +1288,7 @@ private $debug = true;
 		public function setAddress($address)
 		{
 			if(empty($address)){
+				$this->setAtribute('DIR_ENVIO', '');
 				return;
 			}
 

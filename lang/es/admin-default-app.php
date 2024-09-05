@@ -413,6 +413,7 @@ return [
 		'excel' => 'Excel',
 		'preview' => 'Vista previa',
 		'download_copy' => 'Descargar copia',
+		'change-to' => 'Cambiar a',
 	),
 	'bi' => array(
 		'family' => 'Familia',
@@ -1155,6 +1156,7 @@ return [
 		'is_active_hces1_files' => 'En caso de no estar activo no se mostrará para nadie',
 		'permission_hces1_files' => 'Determina que usuarios podrán acceder a la descarga del archivo',
 		'file_hces1_files' => 'Archivo/s',
+		'extrainfo' => 'Información extra',
 	),
 	'general' => array(
 		'yes' => 'SI',

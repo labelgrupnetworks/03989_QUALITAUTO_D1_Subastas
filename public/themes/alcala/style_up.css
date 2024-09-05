@@ -1,10 +1,5 @@
 /*
-Cashier Page Customisation CSS file v. 1.0
-created 2016-09-22
-
-All changes to values of following properties are regarded safe.
-Modifying the style further than that is possible, but not necessarily
-supported by Intelligent Payments Application Support Team  
+Ojo, Se esta utilizando desde la blade pago.blade.php
 */
 
 h1, h2, h3, h4 {
@@ -55,7 +50,7 @@ input,select {
 
 .radio label{
     background-color: papayawhip;
-    color: navy;    
+    color: navy;
 }
 
 .radio input[type=radio]:checked+label{
@@ -129,7 +124,7 @@ input.touched:valid,select.touched:valid {
 
 input[type=checkbox]:checked+label::before {
     color: white;
-    background-color: navy;    
+    background-color: navy;
 }
 
 input[type=checkbox]+label::before {
@@ -184,7 +179,7 @@ input.error {
 #myriadMessage .error.field {
     color: gray;
     font-size: 0.6em;
-    border: 0; 
+    border: 0;
 }
 
 #myriadMessage {
@@ -248,7 +243,7 @@ input.error {
 
 body{
     height: 100vh;
-    min-height: 471px;  
+    min-height: 471px;
 }
 
 

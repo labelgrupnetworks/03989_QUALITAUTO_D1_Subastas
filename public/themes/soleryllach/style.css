@@ -1487,22 +1487,26 @@ div.list_lot div.item_lot div.img_lot img, .item_subasta a .img-lot img{
 div.single div.img_single_border {
 	border: 1px solid #ccc;
 	min-height: 485px;
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
     position: relative;
 }
 
 div.col-sm-3-custom {
-	width: 70%;
+	width: 100%;
 	display: inline-block;
 	border: 1px solid #ccc;
 	margin-bottom: 10px;
+	height: 66.40px;
+	overflow: hidden;
 }
+
 div.single div.img_single {
 	height: 476px;
 	text-align: center;
 	position: relative;
 	overflow: hidden;
 }
+
 div.single div.img_single img {
 	max-width: 100%;
 	max-height: 380px;
@@ -1873,7 +1877,7 @@ header ul.items_top a.dropdown-menu {
 .row-down{
     background: rgba(0,0,0,.5);
     position: absolute;
-    width: 70%;
+    width: 100%;
     left: 0;
     color:white;
     text-align: center;
@@ -1917,7 +1921,7 @@ span.clock{
 }
 .img-openDragon{
     width: 100%;
-    height: 66.40px;
+    height: 100%;
 	border: 0;
 }
 
@@ -3352,6 +3356,12 @@ ul.list_home li {
 
 	.lot-ficha .retired.selled {
 		background-image: linear-gradient(to top right, transparent 50%, var(--complement-color) 0);
+	}
+
+	@media(min-width: 992px) {
+		.lot-ficha_media {
+			padding-right: 0;
+		}
 	}
 
 	.lot-itp-mark {
@@ -5616,7 +5626,8 @@ reinicializo estilo para no afectar al resto de páginas
 @media(min-width: 768px) {
 
 	div.list_lot div.item_lot div.border_img_lot {
-		height: 260px;
+		/* height: 260px; */
+		height: 273px;
 	}
 
 	.form-top-grid {
@@ -5700,3 +5711,19 @@ reinicializo estilo para no afectar al resto de páginas
 	border-top: 2px solid var(--primary-color);
 }
 
+:is(.col-video, .col-img) button{
+	background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-color: #fff;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}

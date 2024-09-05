@@ -30,7 +30,9 @@ class AdminCacheController extends Controller
 			$this->newAction('clear_all', 'Limpiar todo', 'Elimina todos los archivos de cache, configuración, rutas y vistas'),
 			$this->newAction('clear_optimize', 'Limpiar optimización', 'Elimina todos los archivos de optimización'),
 			$this->newAction('optimize', 'Optimizar', 'Optimiza la configuración, las rutas y las clases'),
-			$this->newAction('cache_routes', 'Cachear rutas', 'Cachear rutas')
+			$this->newAction('cache_routes', 'Cachear rutas', 'Cachear rutas'),
+			$this->newAction('storage_link', 'Crear enlace de almacenamiento', 'Crea un enlace simbólico desde "public/storage" a "storage/app/public"'),
+			$this->newAction('remove_storage_link', 'Eliminar enlace de almacenamiento', 'Elimina el enlace simbólico de "public/storage"'),
 		];
 
 		return view('admin::pages.configuracion.cache.index', compact('actions'));
@@ -48,6 +50,8 @@ class AdminCacheController extends Controller
 			'optimize' => $this->optimize(),
 			'clear_optimize' => $this->clearOptimize(),
 			'cache_routes' => $this->cacheRoutes(),
+			'storage_link' => $this->storageLink(),
+			'remove_storage_link' => $this->removeStorageLink(),
 			'default' => response()->json(['status' => 'error', 'message' => 'No se ha encontrado la acción']),
 		};
 	}
@@ -110,5 +114,20 @@ class AdminCacheController extends Controller
 	{
 		Artisan::call('route:cache');
 		return response()->json(['status' => 'success', 'message' => 'Se han cacheado las rutas correctamente']);
+	}
+
+	private function storageLink()
+	{
+		Artisan::call('storage:link');
+		return response()->json(['status' => 'success', 'message' => 'Se ha creado el enlace de almacenamiento correctamente']);
+	}
+
+	private function removeStorageLink()
+	{
+		if (file_exists(public_path('storage'))) {
+			rmdir(public_path('storage'));
+		}
+
+		return response()->json(['status' => 'success', 'message' => 'Se ha eliminado el direcotrio "storage" correctamente']);
 	}
 }

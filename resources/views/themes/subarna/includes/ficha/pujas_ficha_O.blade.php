@@ -133,6 +133,7 @@
 			return;
 		}
 
+
 		if(tipo_sub !== 'W' || compra_asigl0 !== 'S') {
 			return;
 		}

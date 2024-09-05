@@ -19,6 +19,7 @@
                 <div class="my-3">
                     <form id="newsletterForm" method="POST">
                         <input type="hidden" id="lang-newsletter" name="lang" value="{{ config('app.locale') }}">
+						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
                         <input type="hidden" name="email" value="{{ request('email') }}">
                         <input type="hidden" name="isMultiCompany" value="{{ $isMultiCompany }}">
 

@@ -143,10 +143,8 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
 
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-        async defer>
-</script>
 <script>
 	//si pasan la variable view_login = true se mostrara el login
    var view_login = @json(Request::input('view_login', false));

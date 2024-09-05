@@ -14,6 +14,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FxClid;
 use App\Models\User;
 use App\Http\Controllers\PaymentsController;
+use App\Providers\ToolsServiceProvider;
 
 class CartController extends Controller
 {
@@ -158,9 +159,9 @@ class CartController extends Controller
 			//dd($lots);
 			if(\Config::get("app.TaxForEuropean")){
 				foreach($lots as $lot){
-					$lot->iva =  \Tools::TaxForEuropean(\Session::get('user.cod')) *100;
+					$lot->iva =  ToolsServiceProvider::TaxForEuropean(\Session::get('user.cod')) *100;
 					#importe que verá el usuario, dependerá de si hay que cargarle el iva o no
-					$lot->impsalhces_asigl0 = \Tools::PriceWithTaxForEuropean($lot->impsalhces_asigl0,\Session::get('user.cod'));
+					$lot->impsalhces_asigl0 = ToolsServiceProvider::PriceWithTaxForEuropean($lot->impsalhces_asigl0,\Session::get('user.cod'));
 
 				}
 			}

@@ -75,38 +75,50 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">
 
-                    <form action="/api-ajax/mail" method="post">
+                    <form action="/api-ajax/mail" method="post" onsubmit="sendContactForm(event)">
+                        <input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden"
+                            value="">
+
                         <div class="form-group">
                             <label for="Nombre"><strong>{{ trans("$theme-app.login_register.nombre") }}</strong></label>
-                            <input placeholder="{{ trans("$theme-app.login_register.nombre") }}" class="form-control"
-                                type="text" name="nombre" required aria-required="true">
+                            <input class="form-control" name="nombre" type="text" aria-required="true"
+                                placeholder="{{ trans("$theme-app.login_register.nombre") }}" required>
                         </div>
                         <div class="form-group">
                             <label for="E-mail">E-mail</label>
-                            <input placeholder="E-mail" class="form-control" type="text" name="email" required
-                                aria-required="true">
+                            <input class="form-control" name="email" type="text" aria-required="true"
+                                placeholder="E-mail" required>
                         </div>
                         <div class="form-group">
                             <label for="Teléfono">{{ trans("$theme-app.login_register.phone") }}</label>
-                            <input placeholder="{{ trans("$theme-app.login_register.phone") }}" class="form-control"
-                                type="text" name="telefono" required aria-required="true">
+                            <input class="form-control" name="telefono" type="text" aria-required="true"
+                                placeholder="{{ trans("$theme-app.login_register.phone") }}" required>
                         </div>
                         <div class="form-group">
                             <label for="Comentario">{{ trans("$theme-app.global.coment") }}</label>
-                            <textarea name="comentario" required aria-required="true" id="" cols="30" rows="4"
-                                class="form-control"></textarea>
+                            <textarea class="form-control" id="" name="comentario" aria-required="true" required cols="30"
+                                rows="4"></textarea>
                         </div>
-                        <div class="g-recaptcha" data-sitekey="6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV" id="html_element"
-                            data-callback="recaptcha_callback"></div>
+
                         <div class="checkbox">
                             <label>
-                                <input name="condiciones" required="" type="checkbox">{!! trans("$theme-app.login_register.read_conditions_politic") !!}</u>
-
+                                <input name="condiciones" type="checkbox" required="">{!! trans("$theme-app.login_register.read_conditions_politic") !!}</u>
                             </label>
                         </div>
-                        * {{ trans("$theme-app.login_register.all_fields_are_required") }}
-                        <button style="cursor:pointer;" id="buttonSend" type="submit" class="btn btn-contact btn-color"
-                            disabled="">{{ trans("$theme-app.login_register.send") }}</button>
+
+                        <p>
+                            * {{ trans("$theme-app.login_register.all_fields_are_required") }}
+                        </p>
+
+                        <div class="mt-1">
+                            <p class="captcha-terms">
+                                {!! trans("$theme-app.global.captcha-terms") !!}
+                            </p>
+                        </div>
+
+                        <button class="btn btn-contact btn-color" id="buttonSend" type="submit" style="cursor:pointer;">
+                            {{ trans("$theme-app.login_register.send") }}
+                        </button>
                     </form>
                 </div>
                 <div class="col-lg-2"></div>
@@ -123,38 +135,20 @@
 
         </div>
     </main>
-    <script
-        src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl={{ config('app.locale') }}"
-        async defer></script>
 
-    <script type="text/javascript">
-        var verifyCallback = function(response) {
-            $('#buttonSend').attr('disabled', false)
-        };
-
-        var onloadCallback = function() {
-            grecaptcha.render('html_element', {
-                'sitekey': '6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV',
-                'callback': verifyCallback,
-                'theme': 'light'
-            });
-        };
-
-
-
-        <?php
-        $key = 'lotes_departamentos';
+    @php
         $replace = [
             'departamento' => $ortsec->lin_ortsec0,
             'lang' => Config::get('app.language_complete')[Config::get('app.locale')],
             'emp' => Config::get('app.emp'),
             'gemp' => Config::get('app.gemp'),
         ];
-        ?>
-        var replace = <?= json_encode($replace) ?>;
-        var key = "<?= $key ?>";
+    @endphp
+
+    <script type="text/javascript">
+        var replace = @json($replace);
         $(document).ready(function() {
-            ajax_carousel(key, replace);
+            ajax_carousel('lotes_departamentos', replace);
         });
     </script>
 

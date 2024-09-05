@@ -17,6 +17,8 @@ use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Jobs\SoapJob;
 use Config;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
+
 class PaidController extends DuranNftController
 {
 
@@ -239,7 +241,7 @@ class PaidController extends DuranNftController
 		$importeTotal = 0;
 
 		 #pongo el valor * 100 ya que el iva lo devolverá con decimales
-		$ivaUser = \Tools::TaxForEuropean($cli->cod_cli) *100;
+		$ivaUser = ToolsServiceProvider::TaxForEuropean($cli->cod_cli) *100;
 
 		#los lotes  tienen iva en el precio por lo que hay que calcularlo sin iva siempre, no podemos usar el iva del usuario, si no el general
 		$payments = new Payments();
@@ -262,7 +264,7 @@ class PaidController extends DuranNftController
 				$importesiniva= round($price / (1 + ($ivaUser/100)),2);
 			}else{
 				$price = $lot->impsalhces_asigl0;
-				$paid =\Tools::PriceWithTaxForEuropean($price,$cli->cod_cli) ;
+				$paid =ToolsServiceProvider::PriceWithTaxForEuropean($price,$cli->cod_cli) ;
 				$importesiniva= round($price / (1 + $ivaGeneral),2);
 			}
 
@@ -271,7 +273,7 @@ class PaidController extends DuranNftController
 			if(!empty($email->email)){
 				$email->setUserByCod($cli->cod_cli,false);
 				$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
-				$email->setPrice(\Tools::moneyFormat($paid,"",2));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($paid,"",2));
 				$email->setTo(\Config::get('app.admin_email'));
 
 				$email->send_email();
@@ -298,7 +300,7 @@ class PaidController extends DuranNftController
 		   }else{
 				$lote["porcentajevendedor"] =  "";
 		   }
-		   $img = \Tools::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
+		   $img = ToolsServiceProvider::url_img('lote_large', $lot->num_hces1, $lot->lin_hces1);
 		   $lote["imagen"] =base64_encode(file_get_contents($img));    # imagen bits ;
 
 		   $lote["total"] = $paid  ;# precio final
@@ -400,7 +402,7 @@ class PaidController extends DuranNftController
 		$email->setAtribute("INFO_FACTURACION",$infoFacturación);
 		$email->setAtribute("NUM_PEDIDO",$info["numeroPedido"]);
 		$email->setAtribute("NAME",$cliente->nom_cli);
-		$email->setAtribute("TOTAL",\Tools::moneyFormat( $info["importeTotal"] ," €",2) );
+		$email->setAtribute("TOTAL",ToolsServiceProvider::moneyFormat( $info["importeTotal"] ," €",2) );
 	#solo tienen 4-tarjeta; 6-bizum
 		if($info["formaPago"] == 4){
 			$infoPago= trans(\Config::get('app.theme').'-app.user_panel.pay_creditcard');
@@ -413,7 +415,7 @@ class PaidController extends DuranNftController
 		foreach($info["lotes"] as $lote){
 			$infoLots .= "<tr bgcolor=\"#efefef\" style=\"text-align: center;\" >";
 			$infoLots .= "<td><p ><strong>".$lote["titulo"]."</strong></p></td>";
-			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".\Tools::moneyFormat($lote["total"] ," €",2) ."</td>";
+			$infoLots .= "<td style=\"text-align: right;padding-right: 5px;\">".ToolsServiceProvider::moneyFormat($lote["total"] ," €",2) ."</td>";
 			$infoLots .= " </tr> ";
 		}
 

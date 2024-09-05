@@ -40,7 +40,7 @@ class ArticleController extends Controller
 		elseif($request->family){
 			$fgfamart = FgFamart::select("COD_FAMART")->where("COD_FAMART",strtoupper($request->family) )->first();
 
-			\Tools::exit404IfEmpty($fgfamart);
+			ToolsServiceProvider::exit404IfEmpty($fgfamart);
 			$data["familia"] = $fgfamart->cod_famart;
 
 		}
@@ -51,7 +51,7 @@ class ArticleController extends Controller
 			$fgortsec0 = new FgOrtsec0();
 			$linOrtsec =  $fgortsec0->getLinFgOrtsec($request->category) ;
 
-			\Tools::exit404IfEmpty($linOrtsec);
+			ToolsServiceProvider::exit404IfEmpty($linOrtsec);
 			$data["ortsec"] = $linOrtsec;
 
 		}
@@ -61,7 +61,7 @@ class ArticleController extends Controller
 
 			$fxSec = new FxSec();
 			$cod_sec = $fxSec->GetCodFromKey($request->subcategory);
-			\Tools::exit404IfEmpty($cod_sec);
+			ToolsServiceProvider::exit404IfEmpty($cod_sec);
 			$data["sec"] = $cod_sec;
 
 		}
@@ -112,7 +112,7 @@ class ArticleController extends Controller
 
 			$imp = round($article->pvp_art0 + ($article->pvp_art0 * $iva),2);
 
-			$article->pvpFormat = \Tools::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros'),0 );
+			$article->pvpFormat = ToolsServiceProvider::moneyFormat($imp, trans(\Config::get('app.theme').'-app.subastas.euros'),0 );
 
 			$articles[$key] = $article;
 		}
@@ -331,7 +331,7 @@ class ArticleController extends Controller
 	public function getTallasColoresFicha(){
 		$tallaColores = request("tallaColor",[]);
 		$idArt0 = request("idArt0");
-		\Tools::exit404IfEmpty($idArt0);
+		ToolsServiceProvider::exit404IfEmpty($idArt0);
 
 		#llegara un array de tallas colores, la idea es que devolvamos información de las tallas colores que vengan vacios, de esta manera solo recargaremos los que no estan seleccionados
 		$fgart0 = new FgArt0();

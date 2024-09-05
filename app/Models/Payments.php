@@ -600,6 +600,10 @@ class Payments extends Model
 	 */
 	public function getGastosExtra(Collection $auctionsLots, string $estado = 'P', string $origen = null, string $tipo = null) : Collection
 	{
+		if($auctionsLots->isEmpty()){
+			return collect();
+		}
+
 		return FgAsigl2::getBuilderForAuctions($auctionsLots)
 			->select('imp_asigl2', 'impiva_asigl2', 'desc_asigl2', 'tipo_asigl2', 'sub_asigl2', 'ref_asigl2')
 			->when($origen, function($q) use ($origen){

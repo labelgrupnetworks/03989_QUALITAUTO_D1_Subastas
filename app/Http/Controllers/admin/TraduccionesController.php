@@ -9,6 +9,7 @@ use Config;
 use Illuminate\Support\Facades\DB;
 use App\Models\Translate;
 use App\libs\TradLib;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
@@ -325,12 +326,12 @@ class TraduccionesController extends Controller
             //$data['trad'] = $this->cargarArchivo($_GET["lang"]);
             $data['trad'] = TradLib::getTranslations($_GET["lang"]);
             $this->archiveLang = TradLib::getArchiveTranslations($_GET["lang"]);
-            \Tools::linguisticSearch();
+            ToolsServiceProvider::linguisticSearch();
 
             //busca resutados que contengan la cadena
             $data['trad'] = $this->searchTranslate($_GET["web_translation"], $data['trad'], $_GET["lang"]);
 
-            \Tools::normalSearch();
+            ToolsServiceProvider::normalSearch();
 
         }
         return \View::make('admin::pages.traducciones_search', array('data' => $data));

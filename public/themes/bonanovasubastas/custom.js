@@ -709,7 +709,7 @@ function reload_carrito() {
 	});
 }
 
-function newsletterSuscription(event) {
+async function newsletterSuscription(event) {
 	var email = $('.newsletter-input').val();
 	var lang = $('#lang-newsletter').val();
 
@@ -720,6 +720,12 @@ function newsletterSuscription(event) {
 		}
 	});
 
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
+
 	const data = {
 		email,
 		lang,
@@ -727,11 +733,22 @@ function newsletterSuscription(event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -914,4 +931,10 @@ function see_img() {
 
 function see_img_samll() {
 	$('.list_lot').removeClass("large_list").addClass("small_list");
+}
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
 }

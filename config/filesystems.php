@@ -1,4 +1,5 @@
 <?php
+$theme = env('APP_THEME', 'default');
 
 return [
 
@@ -65,8 +66,19 @@ return [
 			'root' => storage_path('app/files/CLI/') . config('app.emp'),
 			'url' => config('app.url').'/admin/clientes',
 			'visibility' => 'public' //establece los permisos del directorio o archivo, en privado solo se puede acceder desde la aplicacion
+		],
+		'avatars' => [
+			'driver' => 'local',
+			'root' => storage_path('app/public/avatars/') . config('app.emp'),
+			'url' => config('app.url') . '/storage/avatars/' . config('app.emp'),
+			'visibility' => 'public'
+		],
+		'public_uploads' => [
+			'driver' => 'local',
+			'root' => storage_path("app/public/themes/$theme/uploads"),
+			'url' => config('app.url') . "/storage/themes/$theme/uploads/",
+			'visibility' => 'public'
 		]
-
     ],
 
     /*

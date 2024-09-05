@@ -376,7 +376,7 @@ class SubastaController extends Controller
 
 		if (!empty($cod_sub)) {
 			$sub_data = $subastaObj->getInfSubasta();
-			\Tools::exit404IfEmpty($sub_data);
+			ToolsServiceProvider::exit404IfEmpty($sub_data);
 
 			if (!empty($sub_data) && $sub_data->subc_sub == 'H') {
 				$cache_sql = true;
@@ -498,7 +498,7 @@ class SubastaController extends Controller
 		$paginator->appends(request()->except('page'));
 
 		//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
-		\Tools::normalSearch();
+		ToolsServiceProvider::normalSearch();
 
 		$get_ordenes = false;
 		//si es subasta abierta tipo o cargamos las ordenes para sabersi el usuario actual es el ganador
@@ -678,9 +678,9 @@ class SubastaController extends Controller
 	{
 		//las palabras deben tener mas de un caracter, si no n oson validas, debe haber almenos una palabra valida para ralizar la busqueda
 		$valid_words = false;
-		$description = \Tools::replaceDangerqueryCharacter($description);
+		$description = ToolsServiceProvider::replaceDangerqueryCharacter($description);
 		if (!empty($description)) {
-			\Tools::linguisticSearch();
+			ToolsServiceProvider::linguisticSearch();
 
 			if (Config::get('app.search_multiple_words')) {
 
@@ -914,12 +914,12 @@ class SubastaController extends Controller
 
 		// Mostrar grid lotes de VD con query only_salable cuando solamente exista una subasta
 		if ($type == 'V' && count($auction_list) == 1) {
-			$url = \Tools::url_auction($auction_list[0]->cod_sub, $auction_list[0]->name, $auction_list[0]->id_auc_sessions, $auction_list[0]->reference);
+			$url = ToolsServiceProvider::url_auction($auction_list[0]->cod_sub, $auction_list[0]->name, $auction_list[0]->id_auc_sessions, $auction_list[0]->reference);
 			return redirect($url);
 		}
 		elseif(config('app.goGridIfOnlyOneAuction', 0) && count($auction_list) == 1){
 			$subasta = $auction_list[0];
-			$url= \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,$subasta->reference);
+			$url= ToolsServiceProvider::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,$subasta->reference);
 			return redirect($url);
 		}
 
@@ -1003,14 +1003,14 @@ class SubastaController extends Controller
 
 				$lote_search->desc_hces1 = $strLib->CleanStr($inf_lot_translate[$lang]->desc_hces1);
 				*/
-				$lote_search->formatted_impsalhces_asigl0 = \Tools::moneyFormat($lote_search->impsalhces_asigl0);
+				$lote_search->formatted_impsalhces_asigl0 = ToolsServiceProvider::moneyFormat($lote_search->impsalhces_asigl0);
 				$lote_search->imagen            = $subasta_search->getLoteImg($lote_search);
 				//si hay alguna puja max_puja >0 miramos si tiene un valor de adjudicación y lo ponemos como max puja
 				$lote_search->himp_csub = 0;
 				if ($lote_search->max_puja > 0) {
 					$adj = $subasta_search->getAssignetPrice();
 					if (!empty($adj)) {
-						$lote_search->himp_csub = \Tools::moneyFormat($adj->himp_csub);;
+						$lote_search->himp_csub = ToolsServiceProvider::moneyFormat($adj->himp_csub);;
 					}
 				}
 
@@ -1093,7 +1093,7 @@ class SubastaController extends Controller
 		/* $webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
 		$url_buena = \Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
 		*/
-		$url_buena = \Tools::url_lot($lote[0]->cod_sub,$lote[0]->id_auc_sessions,$lote[0]->name,$lote[0]->ref_asigl0,$lote[0]->num_hces1,$lote[0]->webfriend_hces1,$titulo);
+		$url_buena = ToolsServiceProvider::url_lot($lote[0]->cod_sub,$lote[0]->id_auc_sessions,$lote[0]->name,$lote[0]->ref_asigl0,$lote[0]->num_hces1,$lote[0]->webfriend_hces1,$titulo);
 		#quitamos la parte del dominio, por si viniera informada
 		$url_buena = str_replace( Config::get('app.url'),"",$url_buena);
 		if ($url_buena != $url_actual) {
@@ -1188,7 +1188,7 @@ class SubastaController extends Controller
 
 			}else{
 				#$url_subasta= \Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
-				$url_subasta = \Tools::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
+				$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
 			}
 
 
@@ -1215,7 +1215,7 @@ class SubastaController extends Controller
 
 
 
-			$previous = \Tools::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
+			$previous = ToolsServiceProvider::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
 
 
 
@@ -1225,7 +1225,7 @@ class SubastaController extends Controller
 
 
 
-				$next = \Tools::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
+				$next = ToolsServiceProvider::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
 
 
 				break;
@@ -1501,7 +1501,7 @@ class SubastaController extends Controller
 		}
 
 		#datos para Open Graph
-		$SEO_metas->openGraphImagen = \Tools::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
+		$SEO_metas->openGraphImagen = ToolsServiceProvider::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
 
 		$data['seo'] = $this->cleanStrMeta($SEO_metas);
 
@@ -1522,7 +1522,7 @@ class SubastaController extends Controller
 
 		//precio en siguiente puja
 		$data['js_item']['lote_actual']->importe_escalado_siguiente = $precio_salida;
-		$data['js_item']['lote_actual']->importe_escalado_siguiente_formated = \Tools::moneyFormat($precio_salida);
+		$data['js_item']['lote_actual']->importe_escalado_siguiente_formated = ToolsServiceProvider::moneyFormat($precio_salida);
 
 
 		#divisas
@@ -1848,7 +1848,7 @@ class SubastaController extends Controller
 			);
 
 
-			if (\Tools::sendMail('notification', $emailOptions)) {
+			if (ToolsServiceProvider::sendMail('notification', $emailOptions)) {
 				Log::info('Mail sent recordatorio subasta  ID_LICIT:' . $id_licit);
 			} else {
 

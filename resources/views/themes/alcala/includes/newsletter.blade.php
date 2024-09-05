@@ -8,6 +8,7 @@
         <div class="col-xs-12 no-padding">
             <label class="grey-color font-100">Email</label>
             <input type="hidden" id="lang-newsletter" value="<?=\App::getLocale()?>">
+			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
             <input class="form-control newsletter-input newsletter-input-alcala" type="text" placeholder="" style="border:1px solid lightgray" name="email">
 
         </div>
@@ -25,13 +26,6 @@
                 @endforeach
 
             </fieldset>
-
-            <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}" data-callback="onSubmit"></div>
-                </div>
-            </div>
 
             <br>
 
@@ -52,6 +46,10 @@
                     <label for="bool__0__comercial">{{ trans($theme.'-app.emails.accept_news') }}</label>
                 </div>
             </div>
+
+			<p class="captcha-terms">
+				{!! trans("$theme-app.global.captcha-terms") !!}
+			</p>
 
             <br>
             <center><button id="newsletter-btn" type="button" class="btn btn-lg btn-custom newsletter-input">{{trans($theme.'-app.foot.newsletter_button')}}</button></center>

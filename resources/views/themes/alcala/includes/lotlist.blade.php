@@ -78,13 +78,13 @@
                     @endif
 
                 </div>
-                @if($subasta_online && !$cerrado)
 
-                            <p class="salida-time">
-                                <i class="fa fa-clock-o"></i>
-                                <span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
-                            </p>
-                        @endif
+                @if($subasta_online && !$cerrado)
+					<p class="salida-time">
+						<x-icon.fontawesome icon=clock type=regular version=6></x-icon.fontawesome>
+						<span data-countdown="{{strtotime($item->close_at) - getdate()[0] }}" data-format="<?= \Tools::down_timer($item->close_at); ?>" class="timer"></span>
+					</p>
+				@endif
 
             </div>
 

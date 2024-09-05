@@ -15,7 +15,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgCaracteristicas_Hces1;
-
+use App\Providers\ToolsServiceProvider;
 use stdClass;
 /* VALORES DE LOS ESTADOS
 			1  REQUESTED
@@ -239,7 +239,7 @@ class VottunController extends Controller
 				$asigl0 = new FgAsigl0();
 	#
 				$nft = $asigl0->select('FGNFT.*,SUB_ASIGL0,REF_ASIGL0,NUM_HCES1, LIN_HCES1, "id_auc_sessions","name",WEBFRIEND_HCES1,DESCWEB_HCES1')->JoinNFT()->JoinFghces1Asigl0()->JoinSessionAsigl0()->where("numhces_nft", $num)->where("linhces_nft", $lin)->first();
-				$url_friendly = \Tools::url_lot($nft->sub_asigl0,$nft->id_auc_sessions,$nft->name,$nft->ref_asigl0,$nft->numhces_nft,$nft->webfriend_hces1,$nft->descweb_hces1);
+				$url_friendly = ToolsServiceProvider::url_lot($nft->sub_asigl0,$nft->id_auc_sessions,$nft->name,$nft->ref_asigl0,$nft->numhces_nft,$nft->webfriend_hces1,$nft->descweb_hces1);
 
 				$data = new StdClass();
 
@@ -484,7 +484,7 @@ class VottunController extends Controller
 										if(!empty($email->email)){
 											$email->setUserByCod($lot->prop_hces1);
 											$email->setLot($lot->sub_asigl0,$lot->ref_asigl0);
-											$email->setPrice(\Tools::moneyFormat($costMint,"€",2));
+											$email->setPrice(ToolsServiceProvider::moneyFormat($costMint,"€",2));
 											$email->setUrl($link);
 
 											$email->send_email();
@@ -597,7 +597,7 @@ class VottunController extends Controller
 								foreach($transfers as $transfer){
 									$total+=$transfer->cost_transfer_nft;
 									$transfersIds[]=$transfer->transfer_id_nft;
-									$lots_name .="<tr><td> * ".$transfer->descweb_hces1."<td><td style='text-align:right'> ". \Tools::moneyFormat($transfer->cost_transfer_nft,"€",2) ."</td></tr>";
+									$lots_name .="<tr><td> * ".$transfer->descweb_hces1."<td><td style='text-align:right'> ". ToolsServiceProvider::moneyFormat($transfer->cost_transfer_nft,"€",2) ."</td></tr>";
 									#si hay alguna que no ha finalizado cancelamos el envio
 									if( empty($transfer->pay_transfer_nft)){
 										$enviar = false;
@@ -613,7 +613,7 @@ class VottunController extends Controller
 										$email->setUserByCod($buyer->clifac_csub);
 										#falta indicar los lotes
 										$email->setAtribute("LOTS_NAME",$lots_name );
-										$email->setPrice(\Tools::moneyFormat($total,"€",2));
+										$email->setPrice(ToolsServiceProvider::moneyFormat($total,"€",2));
 										$email->setUrl($link);
 
 										$email->send_email();

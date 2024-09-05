@@ -1369,17 +1369,13 @@ dialog::backdrop {
 
 .item_lot .salida-time{
     background: #707070;
-    /* position: relative; */
-    /* width: 150px; */
     height: 38px;
     padding: 10px 15px;
-
     color: white;
-    /* left: -20px; */
-    display: block;
-    /* bottom: 0px; */
     font-size: 12px;
-
+	display: flex;
+	align-items: center;
+    gap: 5px;
 }
 
 .item_lot_large .timer{
@@ -2358,7 +2354,7 @@ hr { background-color: #f9f3ce ; height: 1px; border: 0; }
 }
 .full-screen a{
     border: 1px solid lightgray;
-    padding: 14px 14px 0 14px;
+    padding: 12px;
     background: #F0F0F3;
 }
 .full-screen a.active{
@@ -3234,7 +3230,6 @@ input:checked ~ .input-check-custom{
     display: none;
     align-items: center;
     justify-content: center;
-    padding-top: 9px;
     text-align: center;
     cursor: pointer;
 }
@@ -3242,6 +3237,13 @@ input:checked ~ .input-check-custom{
     opacity: 1;
 }
 
+.button-up .btn-icon-wrapp {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 .inputs-custom-group input,
 .inputs-custom-group select,
@@ -5202,6 +5204,12 @@ div.newsletter button.btn-custom {
 fieldset .check_term label {
     position:relative;top:-10px;
 }
+
+.check_term input[type="checkbox"] {
+	display: inline;
+	margin-left: auto;
+}
+
 #newsletter fieldset div {width:50%;}
 .goog-te-gadget-simple {background:transparent !important;margin-left:10px;}
 .goog-te-menu-value {position:relative;top:-2px;}
@@ -5226,7 +5234,7 @@ header {border-bottom:lightgray 1px solid;}
     .lotes_destacados {padding: 20px 0 !important;}
     #newsletter fieldset div {width:100%;}
 }
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
     .menu-principal.open {background:#FFF;width:100%;}
     .menu-principal-content li {
         border-top:lightgrey 1px solid;
@@ -5244,7 +5252,7 @@ header {border-bottom:lightgray 1px solid;}
 
 #contactForm input[type="checkbox"] {height:20px;display:inline-block;width:20px;position:relative;top:0;left:15px;margin-right:10px;}
 
-@media (max-width: 420px) {
+/* @media (max-width: 420px) {
 	.g-recaptcha {
 		position: absolute;
 		left: 2px;
@@ -5265,6 +5273,44 @@ header {border-bottom:lightgray 1px solid;}
 		left: -13px;
     }
     .first_check {margin-top:70px;}
+} */
+
+@media (max-width: 410px) {
+	#contactForm .g-recaptcha {
+		transform:scale(0.8);-webkit-transform:scale(0.8);
+		transform-origin: ;-webkit-transform-origin: ;
+		margin-left: -20px;
+	}
+}
+
+@media (max-width: 360px) {
+	#contactForm .g-recaptcha {
+		transform:scale(0.7);-webkit-transform:scale(0.7);
+		transform-origin: ;-webkit-transform-origin: ;
+		margin-left: -25px;
+	}
+}
+
+@media (max-width: 350px) {
+	.g-recaptcha {
+		transform:scale(0.8);-webkit-transform:scale(0.8);
+		transform-origin: ;-webkit-transform-origin: ;
+		margin-left: -20px;
+	}
+
+	#form-newsletter .g-recaptcha {
+		margin-left: -40px;
+	}
+}
+
+@media (max-width: 320px) {
+	#contactForm .g-recaptcha {
+			transform: scale(0.6);
+			-webkit-transform: scale(0.6);
+			transform-origin: ;
+			-webkit-transform-origin: ;
+			margin-left: -40px;
+		}
 }
 
 .slick-slide img {
@@ -5671,4 +5717,27 @@ width: 100%;
 
 #admin_settings_box .button-principal span {
 	margin: 0 auto;
+}
+
+.btn-icon-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.input-icon-wrapp {
+	display: flex;
+	width: 40px;
+	align-items: center;
+	justify-content: center;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
 }

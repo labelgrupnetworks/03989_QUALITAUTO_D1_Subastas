@@ -108,8 +108,10 @@
             @if (empty($filters['section']))
                 <div class="links-sections">
                     @foreach ($sections as $sec)
+						@if(!empty($sec['key_sec']))
                         <a class="mr-2"
                             href="{{ route('section', ['keycategory' => $infoOrtsec->key_ortsec0, 'keysection' => $sec['key_sec'] ?? ' ']) }}">{{ ucfirst($sec['des_sec']) }}</a>
+						@endif
                     @endforeach
                 </div>
             @endif

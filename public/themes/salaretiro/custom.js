@@ -1305,9 +1305,15 @@ function comprarLoteResponse(response) {
 	});
 }
 
-function newsletterSuscription(event) {
+async function newsletterSuscription(event) {
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
 
 	if (!$('#condiciones').prop("checked") || !$('#accept_new').prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -1330,11 +1336,21 @@ function newsletterSuscription(event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -1531,4 +1547,10 @@ function see_img() {
 
 function see_img_samll() {
 	$(".small_square").removeClass("hidden");
+}
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
 }

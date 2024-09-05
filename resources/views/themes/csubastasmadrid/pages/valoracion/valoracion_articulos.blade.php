@@ -5,8 +5,6 @@
 @stop
 
 @section('content')
-    <script src='https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}'></script>
-
 
     <main class="valoracion-page">
         <div class="container" id="return-valoracion">
@@ -18,6 +16,7 @@
             <?= trans(\Config::get('app.theme') . '-app.valoracion_gratuita.desc_assessment') ?>
             <form class="form" id="form-valoracion-adv">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
                 <br>
                 <div class="form-group form-group-custom form-group-custom-textarea">
                     <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion" required
@@ -62,8 +61,12 @@
                         <?= trans(\Config::get('app.theme') . '-app.login_register.read_conditions_politic') ?>
                     </label>
                 </div>
-                <div style="margin-top: 20px;" id="recaptcha" data-callback="recaptcha_callback" class="g-recaptcha"
-                    data-sitekey="6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV"></div>
+
+				<div class="mt-1">
+					<p class="captcha-terms">
+						{!! trans("$theme-app.global.captcha-terms") !!}
+					</p>
+				</div>
 
                 <div clas="row">
                     <div class="col-md-12">

@@ -27,8 +27,11 @@
     #cojer todos los primeros lotes para poder sacar las iamgenes.
     $lots = FgAsigl0::select('cod_sub, numhces_asigl0, linhces_asigl0')
         ->joinSubastaAsigl0()
-        ->where('ref_asigl0', 1)
+		->join('FGCARACTERISTICAS_HCES1', 'FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0')
+		->join('WEB_ARTIST', 'WEB_ARTIST.EMP_ARTIST = FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 AND WEB_ARTIST.ID_ARTIST =  FGCARACTERISTICAS_HCES1.IDVALUE_CARACTERISTICAS_HCES1')
+		->where("WEB_ARTIST.ID_ARTIST", $artist->id_artist)
         ->wherein('cod_sub', $auctions)
+		->orderBy('ref_asigl0')
         ->get();
 
     $exhibitionsFormat = $exhibitions->map(function ($exhibition) use ($lots, $artist) {

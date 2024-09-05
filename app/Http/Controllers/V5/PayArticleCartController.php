@@ -6,66 +6,41 @@ use App\Http\Controllers\V5\ArticleController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
 
-use App\Models\V5\FxClid;
 use App\Models\articles\FgPedc0;
 use App\Models\articles\FgArt0;
 use App\Models\V5\FxCli;
-use App\Models\V5\WebPayCart;
-use App\Models\Subasta;
+use Illuminate\Http\Request;
 use View;
-use Config;
-use Session;
-use Request;
-use DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class PayArticleCartController extends Controller
-
 {
-
-
-
-	public function createPayment(){
-
+	public function createPayment()
+	{
 		$res = array(
 			"status" => "error",
 			"msgError" => "generic"
 		);
 
-		$paymentcontroller = new PaymentsController();
-
 		$cod_cli = Session::get('user.cod');
-
-
-
 		#generamos la información a guardar.
 		$inf = new \stdClass();
-
-
-
 		$articleController = new ArticleController();
 
-
-		#checkeamos los lotes antes de confirmar compra
-		/* DE MOMENTO NO SE MIRA EL STOCK por lo que no miraremos esto
-		if(! $articleController->checkToBuy()){
-			#faltan productos, hay que avisar al usuario y refrescar la web
-			$res["msgError"] = "lotsLost";
-			\Log::info("faltan lotes");
-			return $res;
-		}
-		*/
-
 		$articles  = $articleController->loadArticleCart();
-
 		$units = $articleController->articleCart;
-
 		$importeLotes = 0;
 
 		$paymethod= request("paymethod");
 		$comments = request("comments")."\n\n";
 		#si hay que grabar un anillo
 		$grabados = request("grabados");
+
 		if(is_array($grabados )){
 			foreach($grabados as $idArt => $grabadoArticulo){
 				foreach($grabadoArticulo as $grabadoUnidad){
@@ -85,31 +60,27 @@ class PayArticleCartController extends Controller
 		$user = FxCli::select("CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, CIF_CLI")->WHERE("COD_CLI", $cod_cli)->first();
 
 		DB::select("call Crea_pedido.CREA_CAPCELERA(:gemp, :emp, :idPed, :codCli, :cp, :pob, :prov, :telf, :obs, :nif, :codDir, :transport, :payment, to_char(sysdate,'YYYY-MM-DD  HH24:MI:ss'), :numOrder)",
-		array(
-
-			'gemp'        => Config::get('app.gemp'),
-			'emp'        => Config::get('app.emp'),
-			'idPed'    => $idPedido->numfic,
-			'codCli'        => $cod_cli,
-			'cp'     =>$user->cp_cli,
-			'pob'     =>$user->pob_cli,
-			'prov'     =>$user->pro_cli,
-			'telf'     =>$user->tel1_cli,
-			'obs'     =>  $comments,
-			'nif'     =>$user->cif_cli,
-			'codDir'	=> '00',
-			'transport' => '',
-			'payment'	=> $paymethod,
-			'numOrder'		=> $numOrder
+			array(
+				'gemp'        => Config::get('app.gemp'),
+				'emp'        => Config::get('app.emp'),
+				'idPed'    => $idPedido->numfic,
+				'codCli'        => $cod_cli,
+				'cp'     =>$user->cp_cli,
+				'pob'     =>$user->pob_cli,
+				'prov'     =>$user->pro_cli,
+				'telf'     =>$user->tel1_cli,
+				'obs'     =>  $comments,
+				'nif'     =>$user->cif_cli,
+				'codDir'	=> '00',
+				'transport' => '',
+				'payment'	=> $paymethod,
+				'numOrder'		=> $numOrder
 			)
-
-			);
-
+		);
 
 		foreach($articles as $article){
 
-			$impUnit = round ($article->pvp_art + ($article->pvp_art * $iva), 2)  ;
-
+			$impUnit = round($article->pvp_art + ($article->pvp_art * $iva), 2);
 			$importeLotes += $impUnit * $units[$article->id_art] ;
 
 			DB::select("call Crea_pedido.CREA_LINIES(:idPed, :emp, :seccio, :codi, :cant, to_char(sysdate,'YYYY-MM-DD'),:descuento)",
@@ -126,20 +97,17 @@ class PayArticleCartController extends Controller
 			#quitamos el lote del carrito
 			#para las pruebas no quitamos las cosas del carrito
 			unset($articleController->articleCart[$article->id_art]) ;
-
 		}
+
 		#salvamos para que se actualice el carrito en memoria
 		$articleController->saveArticleCart();
 		$importeTotal = $importeLotes;
 
-
 		#CREAMOS EL ID DE LA TRANSACCION, Los articulos no llevaran letra, en universal pay usaremso el numOrden como id de transaccion para dar más seguridad, ya que el otro id se comprate al hacer transferencia
 		$idtranspaycart =  $idPedido->numfic;
 
-
 		#es necesario para que las cookies se actualicen y se pueda vaciar correctamente el carrito
 		response();
-
 
 		#Si han elegido el pago por transferencia reenviamos a la página que mostrará el texto
 		if(  (!empty(request("paymethod")) && request("paymethod") == "transfer" )){
@@ -149,7 +117,7 @@ class PayArticleCartController extends Controller
 			$importe = base64_encode($inf->total);
 			$control =  md5($importe.Session::get('user.cod'));
 			$idtrans =  $idtranspaycart;
-			$url = route("transferpayment", ["lang" => \Config::get("app.locale")])."?control=$control&trans=$importe&idtrans=$idtrans";
+			$url = route("transferpayment", ["lang" => Config::get("app.locale")])."?control=$control&trans=$importe&idtrans=$idtrans";
 
 			$res = array(
 				"status" => "success",
@@ -164,7 +132,7 @@ class PayArticleCartController extends Controller
 				$paymethod = "&paymethod=". request("paymethod");
 			}
 
-			$url = Config::get('app.url') . '/shoppingCart/callRedsys?idTrans=' . $idtranspaycart.$paymethod ;
+			$url = Config::get('app.url') . '/articleCart/callRedsys?idTrans=' . $numOrder.$paymethod ;
 
 			$res = array(
 				"status" => "success",
@@ -201,31 +169,44 @@ class PayArticleCartController extends Controller
 
 
 	#Carga el formulariode redsys
-	public function callRedsys(){
-
+	public function callRedsys()
+	{
 		$paymentcontroller = new PaymentsController();
 		$idTrans = request("idTrans");
-		$transaccion = WebPayCart::where("IDTRANS_PAYCART", $idTrans)->first();
+		$pedido = FgPedc0::where("ORDEN_PEDC0", $idTrans)->first();
 
-		if(empty($transaccion)){
-			exit (\View::make('front::errors.404'));
+		//$transaccion = WebPayCart::where("IDTRANS_PAYCART", $idTrans)->first();
+		if(empty($pedido)) {
+			abort(404);
 		}
-		$info = json_decode($transaccion->info_paycart);
-		\Log::info("Dentro de llamada a redsys");
 
-		$varsRedsys = $paymentcontroller->requestRedsys($info->total, $idTrans,'/gateway/pagoDirectoReturn');
+		//El nº de pedido para redsys debe ser de entre 3 y 12 caracteres sin simbolos
+		$numfic = str_pad($pedido->numfic_pedc0, 3, "0", STR_PAD_LEFT);
+		$idToRedsys = "C{$numfic}";
 
+		//dd($pedido, $idTrans);
+		Log::info("Dentro de llamada a redsys");
+		$varsRedsys = $paymentcontroller->requestRedsys($pedido->total_pedc0, $idToRedsys,'/gateway/pagoDirectoReturn');
 
-
-
+		//dd($varsRedsys);
 		#reenviamos al formulario
-		return \View::make('front::pages.panel.RedsysForm', $varsRedsys);
+		return view('front::pages.panel.RedsysForm', $varsRedsys);
 	}
 
 	#llamada que hace redsys para indicarnos que transaccion se ha pagado
 	#tambien se llama si el pago es por transferencia, en el momento de elegir ese tipo de pago
-	public function returnPay($idTrans){
+	public function returnPay($idTrans)
+	{
+		Log::info("Dentro de returnPay", ['idtrans' => $idTrans]);
+		$idTrans = ltrim($idTrans, '0');
+		FgPedc0::where("numfic_pedc0", $idTrans)
+			->update([
+				"ACCEPPTO_PEDC0"=>"S",
+				"FECACCPTO_PEDC0" => date("Y-m-d H:i:s")
+			]);
 
+		$pedido = FgPedc0::where("numfic_pedc0", $idTrans)->first();
+		$this->sendPayMail($pedido->orden_pedc0);
 	}
 
 
@@ -238,11 +219,6 @@ class PayArticleCartController extends Controller
 		$tipo = substr($numOrder, 0, 1);
 
 		$up2Vars = $paymentcontroller->universalPay2Vars($codSub,$tipo );
-
-
-
-
-
 
 		$time = strtotime("now") * 1000;
 		$url = Config::get('app.url');
@@ -291,14 +267,16 @@ class PayArticleCartController extends Controller
 
 	public function ReturnPayUP2()
 	{
-
 		$post = $_POST;
-
-		\Log::info("Pago: " . print_r($post, true));
+		Log::info("Pago: " . print_r($post, true));
 
 		if ($post['status'] == 'CAPTURED') {
 			if(!empty($post['merchantTxId'])){
-				FgPedc0::where("ORDEN_PEDC0",$post['merchantTxId'] )->update(["ACCEPPTO_PEDC0"=>"S", "FECACCPTO_PEDC0" => date("Y-m-d H:i:s")]);
+				FgPedc0::where("ORDEN_PEDC0",$post['merchantTxId'] )
+					->update([
+						"ACCEPPTO_PEDC0"=>"S",
+						"FECACCPTO_PEDC0" => date("Y-m-d H:i:s")
+					]);
 			}
 			#enviar emails de pago
 			$this->sendPayMail($post['merchantTxId']);
@@ -347,7 +325,7 @@ class PayArticleCartController extends Controller
 			$email = new EmailLib('ARTICLES_PAY');
 			if (!empty($email->email)) {
 				$email->setUserByCod( $pedido[0]->cod_pedc0, true);
-				$email->setPrice(\Tools::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
 				$email->setHtml( $articulosBody);
 				$email->setAtribute("COMMENT", nl2br($pedido[0]->obs_pedc0));
 				$email->send_email();
@@ -361,7 +339,7 @@ class PayArticleCartController extends Controller
 				#definimos el usuario para mostrar datos, pero el email no va para el
 				$email->setUserByCod( $pedido[0]->cod_pedc0, false);
 				$email->setTo($setTo);
-				$email->setPrice(\Tools::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
+				$email->setPrice(ToolsServiceProvider::moneyFormat($pedido[0]->total_pedc0,trans(\Config::get('app.theme').'-app.lot.eur'),2));
 				$email->setHtml( $articulosBody);
 				$email->setAtribute("COMMENT", nl2br($pedido[0]->obs_pedc0));
 				$email->send_email();

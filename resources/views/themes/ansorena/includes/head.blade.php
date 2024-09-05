@@ -173,4 +173,6 @@ header('X-Frame-Options:     DENY');
 
 @stack('scripts')
 
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+
+

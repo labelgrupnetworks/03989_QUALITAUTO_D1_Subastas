@@ -86,6 +86,11 @@ $("#seeActiveLots_JS").on("click", function(){
 
 $(".filter_lot_list_js").click(function(){
 	if ($(this).attr("name") == "category"){
+		 const sectionElements = document.querySelectorAll('[name="section"]');
+		 if(sectionElements){
+			 sectionElements.forEach((element) => element.checked = false);
+		 }
+
 		 $("#all_sections").attr('checked', 'checked');
 		 $("#all_subsections").attr('checked', 'checked');
 	}else if ($(this).attr("name") == "section"){

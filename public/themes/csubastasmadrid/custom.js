@@ -202,7 +202,7 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#frmRegister-adv').on('submit', function (e) {
+	$('#frmRegister-adv').on('submit', async function (e) {
 
 		if (e.isDefaultPrevented()) {
 			// formulario incorrecto
@@ -242,6 +242,12 @@ $(document).ready(function () {
 				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			} else {
 				$('button', $this).attr('disabled', 'disabled');
+				const captcha = await isValidCaptcha();
+				if(!captcha){
+					showMessage(messages.error.recaptcha_incorrect);
+					return;
+				}
+
 				// Datos correctos enviamos ajax
 				const formDataRegister = new FormData(this);
 
@@ -256,7 +262,6 @@ $(document).ready(function () {
 						$('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
 					},
 					success: function (response) {
-						$('button', $this).attr('disabled', false);
 						res = $.parseJSON(response);
 						if (res.err == 1) {
 							$("#insert_msgweb").html('');
@@ -266,6 +271,9 @@ $(document).ready(function () {
 							window.location.href = res.msg;
 						}
 
+					},
+					complete: function () {
+						$('button', $this).attr('disabled', false);
 					}
 				});
 			}
@@ -590,7 +598,7 @@ $( ".submit_carrito" ).click(function() {
             $.magnificPopup.open({items: {src: '#modalMensajeDelete'}, type: 'inline'}, 0);
         });
 
-        $( "#form-valoracion-adv" ).submit(function(event) {
+        $( "#form-valoracion-adv" ).submit(async function(event) {
 
 
             if (event.isDefaultPrevented()) {
@@ -605,17 +613,11 @@ $( ".submit_carrito" ).click(function() {
             } else {
                 event.preventDefault();
 
-                var $captcha = $( '#recaptcha' ),
-                response = grecaptcha.getResponse();
-
-                if (response.length === 0) {
-                  if( !$captcha.hasClass( "error" ) ){
-                    $captcha.addClass( "error" );
-                  }
-                  return;
-                }else{
-                   $captcha.removeClass( "error" );
-                }
+                const captcha = await isValidCaptcha();
+				if(!captcha){
+					showMessage(messages.error.recaptcha_incorrect);
+					return;
+				}
 
                 if($("#condiciones").is(':checked')){
                    $(".condiciones").css('color', '#333');
@@ -1733,4 +1735,10 @@ function see_img() {
 
 function see_img_samll() {
 	$(".small_square").removeClass("hidden");
+}
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
 }

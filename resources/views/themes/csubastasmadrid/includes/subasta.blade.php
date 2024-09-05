@@ -4,7 +4,7 @@
 		<div class="col-xs-12 col-sm-6 col-md-4">
 			<a title="{{ $subasta->name }}" href="<?= $url_lotes ?>">
 				<div>
-					<img src="/img/load/subasta_medium/SESSION_{{ $subasta->file_code }}.jpg" alt="{{ $subasta->name }}"
+					<img src="{{ Tools::url_img_session('subasta_medium', $ficha_subasta->cod_sub, $ficha_subasta->reference) }}" alt="{{ $subasta->name }}"
 						class="img-responsive" />
 				</div>
 			</a>

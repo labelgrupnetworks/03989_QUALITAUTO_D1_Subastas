@@ -8,10 +8,11 @@ use Controller;
 use App\Models\apirest\UserApiRest;
 use App\Models\apirest\ContractApiRest;
 use App\Models\apirest\EnterpriseApiRest;
+use App\Providers\ToolsServiceProvider;
 
 class UserApiRestController extends ApiRestController
 {
-    
+
     public function index(){
 
         $inf_user = $this->existUser(true);
@@ -19,16 +20,16 @@ class UserApiRestController extends ApiRestController
             "status"=>"success",
             "data" => $inf_user);
         $this->returnInf($inf);
-        
+
     }
-    
-     
+
+
     public function allUsers(){
 
         $user_api = new UserApiRest();
         $search = array();
         $like = array();
-        
+
 try {
     if(!empty(Request::input('search'))){
         $search = json_decode(Request::input('search'));
@@ -49,10 +50,10 @@ try {
     }
 
 }
-    
+
     public function setUser(){
     //    try{
-  
+
         $enterprise_inf = new EnterpriseApiRest();
             $user_api = new UserApiRest();
             $required = array('cif_cli','pais_cli','nom_cli','dir_cli','cp_cli','pob_cli');
@@ -78,15 +79,15 @@ try {
 
                 $codcli = Request::input('cod_cli');
                 $inf_user = $user_api->getUser(null,$codcli,array('N'));
- 
+
             }
 
 
-            if(!empty(Config::get('app.envcorr')) && Config::get('app.envcorr') == 'S'){    
+            if(!empty(Config::get('app.envcorr')) && Config::get('app.envcorr') == 'S'){
                 $envcorr ='S';
             }else{
                 $envcorr ='N';
-            } 
+            }
 
 
             $nombre_pais = '';
@@ -94,8 +95,8 @@ try {
 
             if(!empty($pais)){
                 $nombre_pais = $pais->des_paises;
-            }    
-            
+            }
+
 
 
             $user = new \stdClass;
@@ -104,7 +105,7 @@ try {
             $user->nom_cli = strtoupper(Request::input('nom_cli'));
             $user->rsoc_cli = strtoupper(!empty(Request::input('rsoc_cli'))?Request::input('rsoc_cli'):Request::input('nom_cli'));
             $user->email_cli = Request::input('email_cli');
-            $user->idioma_cli = Request::input('idioma_cli');        
+            $user->idioma_cli = Request::input('idioma_cli');
             $user->tel1_cli = Request::input('tel1_cli');
             $user->tel2cli = Request::input('tel2_cli');
             $user->pais_cli = $enterprise_inf->getCountries(Request::input('pais_cli'))->des_paises;
@@ -149,7 +150,7 @@ try {
 
 
         // } catch (\Exception $e) {
-            
+
         //     $inf = array (
         //             'status' => 'error',
         //             'data' => array('msg_error' => "Problem save client.")
@@ -157,20 +158,20 @@ try {
         //     pritn_r($e);
         //    \Log::info('Erro set user'.$e);
         // }
-        
+
         $this->returnInf($inf);
     }
-    
+
     public function getUser(){
-        
+
         $inf = array (
             'status' => 'success',
         );
-        
+
         $user_api = new UserApiRest();
         $contract = new ContractApiRest();
-        $enterprise = new EnterpriseApiRest(); 
-        
+        $enterprise = new EnterpriseApiRest();
+
         if(!empty(Request::input('cod_cli'))){
             $codcli = Request::input('cod_cli');
             $inf['user'] = $user_api->getUser(null,$codcli);
@@ -182,19 +183,19 @@ try {
 
     }
 
-    
+
     public function cliente_tax($pais,$cpostal){
        $iva_cli = 1;
-       
+
        if(!empty(Config::get('app.all_tax_clients'))){
            return Config::get('app.all_tax_clients');
        }
-               
-       $paises = \Tools::PaisesEUR();
-       
+
+       $paises = ToolsServiceProvider::PaisesEUR();
+
        $canarias = array('38','35');
        $mel_ceu = array('51','52');
-     
+
        if(($pais == 'AD') || ($pais == 'ES' && in_array(substr($cpostal,0,2),$canarias))){
           $iva_cli = 0;
        }elseif($pais == 'ES' && in_array(substr($cpostal,0,2),$mel_ceu)){
@@ -205,12 +206,12 @@ try {
 
        return $iva_cli;
     }
-    
+
     public function saveImageDNI($img_temp,$codcli){
         $dest_path =   storage_path('cli/'.Config::get('app.gemp').'/DNI/');
         $img = json_decode($img_temp);
         foreach($img as $key => $imgSource){
-            
+
             if($key == 0){
                 $dniimg = 'DNIA';
             }else{
@@ -222,6 +223,6 @@ try {
         }
     }
 
-    
+
 
 }

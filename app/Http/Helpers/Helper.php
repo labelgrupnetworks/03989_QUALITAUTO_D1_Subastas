@@ -74,3 +74,10 @@ if(!function_exists('public_default_path')){
 	}
 }
 
+if(!function_exists('is_collection')){
+	function is_collection($var)
+	{
+		return $var instanceof \Illuminate\Support\Collection || $var instanceof \Illuminate\Database\Eloquent\Collection;
+	}
+}
+

@@ -34,10 +34,8 @@ class HasAuctionAction
 			$recipients = $recipientsList->getAllTeams();
 		}
 
-		foreach ($recipients as $recipient) {
-			$notification = Notification::route('mail', $recipient);
-			$this->sendNotification($notification, new AuctionInTime($this->auctionValueObject($auction), $when));
-		}
+		$notification = Notification::route('mail', $recipients);
+		$this->sendNotification($notification, new AuctionInTime($this->auctionValueObject($auction), $when));
 	}
 
 	private function auctionValueObject($auction)

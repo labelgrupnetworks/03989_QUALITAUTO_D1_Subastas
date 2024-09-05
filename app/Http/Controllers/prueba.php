@@ -588,70 +588,6 @@ class Prueba extends BaseController
 		$cron->loadCarsCedente($cod_cli);
 	}
 
-
-	public function recreatePdfReports($cod_sub)
-	{
-		$subasta = new Subasta();
-		$subasta->cod = $cod_sub;
-		$subasta->page = 'all';
-		$info = $subasta->getInfSubasta();
-
-		$pdfController = new PdfController();
-
-		$reportTitleBidsReport = trans(\Config::get('app.theme') . '-app.reports.lots_report');
-		$reportTitleAwardsReport = trans(\Config::get('app.theme') . '-app.reports.awards_report');
-
-		$pdfController->generateAuctionAwardsReportPdf($info, $reportTitleAwardsReport);
-		$pdfController->generateAuctionBidsReportPdf($info, $reportTitleBidsReport);
-		if (config('app.certificate_in_report', false)) {
-			$pdfController->generateCertificateReportPdf($cod_sub);
-		}
-
-		//generamos y guardamos archivos
-		$pdfController->savePdfs($info->cod_sub, null);
-	}
-
-	public function recreatePdfLotReports($cod_sub, $ref)
-	{
-		$subasta = new Subasta();
-		$subasta->ref = $ref;
-		$subasta->cod = $cod_sub;
-		$subasta->lote = $ref;
-		$subasta->page = 'all';
-
-		$id_auc_sessions = $subasta->getIdAucSessionslote($subasta->cod, $subasta->ref);
-		$get_pujas = $subasta->getPujas(false, $cod_sub);
-		$inf_lot = head($subasta->getLote());
-		$inf_lot->id_auc_sessions  = $id_auc_sessions;
-		$inf_subasta = $subasta->getInfSubasta();
-		$adjudicado = $subasta->get_csub(config('app.emp'));
-
-		$pdfController = new PdfController();
-		if (!empty($inf_lot->prop_hces1)) {
-			$propietary = FxCli::select('RSOC_CLI')->where('COD_CLI', $inf_lot->prop_hces1)->first();
-		}
-
-		$tableInfo = [
-			trans(\Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
-			trans(\Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
-			trans(\Config::get('app.theme') . '-app.reports.date_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_start') => ToolsServiceProvider::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
-			trans(\Config::get('app.theme') . '-app.reports.date_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_end') => ToolsServiceProvider::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
-		];
-
-		$pdfController->setTableInfo($tableInfo);
-		$pdfController->setBids($get_pujas, true);
-
-		$pdfController->generateBidsPdf();
-		$pdfController->generateClientsPdf();
-		$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? null, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
-
-		$pdfController->savePdfs($inf_subasta->cod_sub, $inf_lot->ref_asigl0);
-	}
-
 	public function borrarCarpeta($carpeta)
 	{
 		//$carpeta="img/002/9";
@@ -774,7 +710,7 @@ class Prueba extends BaseController
 
 		$user = FxCli::select("CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, CIF_CLI")->WHERE("COD_CLI", $cod_cli)->first();
 
-		\Tools::exit404IfEmpty($user);
+		ToolsServiceProvider::exit404IfEmpty($user);
 
 		/*(GEMP ,EMP ,IDPED IN NUMBER,CCODLI ,CP ,POB ,PROV ,
                         TELF ,OBS ,NIF ,CODDIRCLI ,TRANSPORT ,PAYMENT
@@ -1601,9 +1537,9 @@ $lang =[';
 			->first();
 
 		/* foreach ($dataForExport as $key => $value) {
-			$url_friendly = \Tools::url_lot($value->cod_sub, $value->id_auc_sessions, $value->name, $value->lot_number, $value->num_hces1, $value->webfriend_hces1, $value->description);
+			$url_friendly = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, $value->name, $value->lot_number, $value->num_hces1, $value->webfriend_hces1, $value->description);
 			$dataForExport[$key]["lot_url"] = $url_friendly;
-			$dataForExport[$key]["photo_url"] = \Tools::url_img('lote_medium', $value->num_hces1, $value->lin_hces1);
+			$dataForExport[$key]["photo_url"] = ToolsServiceProvider::url_img('lote_medium', $value->num_hces1, $value->lin_hces1);
 
 			//Borrar variables innecesarias debajo del catalog_date
 			unset($dataForExport[$key]["cod_sub"]);

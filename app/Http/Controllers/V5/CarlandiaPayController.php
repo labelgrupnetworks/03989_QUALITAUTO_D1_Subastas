@@ -16,9 +16,11 @@ use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\Subasta;
 use App\Models\User;
 use App\libs\EmailLib;
+use App\Providers\ToolsServiceProvider;
 use Config;
-use Request;
+use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\View;
 use Route;
 /*
 use App\Models\V5\FxClid;
@@ -70,7 +72,7 @@ class CarlandiaPayController extends Controller
 
 
 				$client = FgLicit::select("cli_licit")->where("sub_licit", $info->codSub)->where("cod_licit", $info->licit)->first();
-				\Tools::exit404IfEmpty($client);
+				ToolsServiceProvider::exit404IfEmpty($client);
 
 
 
@@ -107,17 +109,17 @@ class CarlandiaPayController extends Controller
 
 						#comprobar que el precio de comprar ya (imptash_asigl0) de la subasta online sigue aceptando esta compra
 						if($lote->tipo_sub == 'O' && $bid->pujrep_asigl1=='Y' && $bid->imp_asigl1 < $lote->imptash_asigl0){
-							return $this->error("Precio 'COMPRAR YA'  ". \Tools::moneyFormat($lote->imptash_asigl0,"€")." en subasta Online es superior a la puja aux ". \Tools::moneyFormat($bid->imp_asigl1,"€"), $info );
+							return $this->error("Precio 'COMPRAR YA'  ". ToolsServiceProvider::moneyFormat($lote->imptash_asigl0,"€")." en subasta Online es superior a la puja aux ". ToolsServiceProvider::moneyFormat($bid->imp_asigl1,"€"), $info );
 						}
 
 						#comprobar que el precio de comprar (impsalhces_asigl0) de la venta directa sigue aceptando esta compra
 						if($lote->tipo_sub == 'V' && $bid->pujrep_asigl1=='B' && $bid->imp_asigl1 < $lote->impsalhces_asigl0){
-							return $this->error("Precio 'COMPRAR' ". \Tools::moneyFormat($lote->impsalhces_asigl0,"€")."   en Venta directa es superior a la puja aux ". \Tools::moneyFormat($bid->imp_asigl1,"€"), $info );
+							return $this->error("Precio 'COMPRAR' ". ToolsServiceProvider::moneyFormat($lote->impsalhces_asigl0,"€")."   en Venta directa es superior a la puja aux ". ToolsServiceProvider::moneyFormat($bid->imp_asigl1,"€"), $info );
 						}
 
 						#comprobar que el precio de contraoferta minimo(imptas_asigl0) de la subasta online sigue aceptando esta compra
 						if($lote->tipo_sub == 'V' && $bid->pujrep_asigl1=='C' && $bid->imp_asigl1 < $lote->imptas_asigl0){
-							return $this->error("Precio 'CONTRAOFERTA MINIMA' ". \Tools::moneyFormat($lote->impsalhces_asigl0,"€")."   en Venta directa es superior a la puja aux ". \Tools::moneyFormat($bid->imp_asigl1,"€"),  $info );
+							return $this->error("Precio 'CONTRAOFERTA MINIMA' ". ToolsServiceProvider::moneyFormat($lote->impsalhces_asigl0,"€")."   en Venta directa es superior a la puja aux ". ToolsServiceProvider::moneyFormat($bid->imp_asigl1,"€"),  $info );
 						}
 
 						#para casos de contraoferta aceptada por el concesionario, tipo A , no se comprueba nada
@@ -133,7 +135,7 @@ class CarlandiaPayController extends Controller
 					if($fecha < time() ){
 						#comprobar que el precio de reserva (impres_asigl0) de la subasta online sigue aceptando esta compra
 						if($lote->tipo_sub == 'O'  && $bid->imp_asigl1 < $lote->impres_asigl0){
-							return $this->error("Precio 'RESERVA'  ". \Tools::moneyFormat($lote->impres_asigl0,"€")." en subasta Online es superior a la puja ". \Tools::moneyFormat($bid->imp_asigl1,"€"), $info );
+							return $this->error("Precio 'RESERVA'  ". ToolsServiceProvider::moneyFormat($lote->impres_asigl0,"€")." en subasta Online es superior a la puja ". ToolsServiceProvider::moneyFormat($bid->imp_asigl1,"€"), $info );
 						}
 					}
 
@@ -223,10 +225,10 @@ class CarlandiaPayController extends Controller
 					$email->setUserByCod($transaccion->cli_paycart, true);
 					$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/info'));
 					#importe pagado, el de la reserva
-					$email->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat($info->impReserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+					$email->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat($info->impReserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 					#redondeamos para que si hay decimales no salgan, es posible que aparezcan decimales al haber redondeado lso precios de venta
-					$email->setAtribute("IMPORTE_RESTANTE", \Tools::moneyFormat( floor($info->impTotal - $info->impReserva),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
-					$email->setAtribute("IMPORTE_TOTAL", \Tools::moneyFormat($info->impTotal,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+					$email->setAtribute("IMPORTE_RESTANTE", ToolsServiceProvider::moneyFormat( floor($info->impTotal - $info->impReserva),trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+					$email->setAtribute("IMPORTE_TOTAL", ToolsServiceProvider::moneyFormat($info->impTotal,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 
 					$email->send_email();
 				}
@@ -289,9 +291,9 @@ class CarlandiaPayController extends Controller
 					$fechaVenta=  date("d/m/Y H:i:s ", strtotime($info->fecha));
 
 				#importes
-				$importeReserva =\Tools::moneyFormat($info->impReserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2);
-				$importeRestante = \Tools::moneyFormat(floor($info->impTotal - $info->impReserva),trans(\Config::get('app.theme').'-app.subastas.euros'),2);
-				$importeTotal = \Tools::moneyFormat($info->impTotal,trans(\Config::get('app.theme').'-app.subastas.euros'),2);
+				$importeReserva =ToolsServiceProvider::moneyFormat($info->impReserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2);
+				$importeRestante = ToolsServiceProvider::moneyFormat(floor($info->impTotal - $info->impReserva),trans(\Config::get('app.theme').'-app.subastas.euros'),2);
+				$importeTotal = ToolsServiceProvider::moneyFormat($info->impTotal,trans(\Config::get('app.theme').'-app.subastas.euros'),2);
 
 				#envio de notificacion de pago al propieario
 				$email = new EmailLib('PAID_RESERVATION_OWNER');
@@ -412,7 +414,7 @@ class CarlandiaPayController extends Controller
 							$htmlLicitadores.="<p><strong>".	$licitador["nom_cli"]."</strong></p>
 							<ul>
 								<li><b>Fecha:</b> ". date("d/m/Y H:i:s ", strtotime($licitador["fec_asigl1"])) ." </li>
-								<li><b>Importe ofrecido:</b> ". \Tools::moneyFormat($licitador["imp_asigl1"]) ."€ </li>
+								<li><b>Importe ofrecido:</b> ". ToolsServiceProvider::moneyFormat($licitador["imp_asigl1"]) ."€ </li>
 								<li><b>Teléfono:</b> ". $licitador["tel1_cli"] ." </li>
 								<li><b>Email:</b> ". mb_strtolower($licitador["email_cli"]) ." </li>
 								<li><b>NIF:</b> ". $licitador["cif_cli"] ."</li>
@@ -549,10 +551,10 @@ class CarlandiaPayController extends Controller
 			if(!empty($email->email)){
 				$email->setUserByLicit($cod_sub, $cod_licit, true);
 				$email->setLot($cod_sub, $ref_asigl0);
-				$email->setAtribute('PRICE_COUNTEROFFER', \Tools::moneyFormat($counterOffer, trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+				$email->setAtribute('PRICE_COUNTEROFFER', ToolsServiceProvider::moneyFormat($counterOffer, trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 				$carlandiaCommission = \Config::get("app.carlandiaCommission");
 				$impreserva = $counterOffer - ($counterOffer / (1 + $carlandiaCommission));
-				$email->setAtribute("IMPORTE_RESERVA", \Tools::moneyFormat($impreserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
+				$email->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat($impreserva,trans(\Config::get('app.theme').'-app.subastas.euros'),2));
 				$email->setAtribute('PAY_LINK', $link);
 
 				if(config('app.emailOwnerInformation', 0)){
@@ -567,6 +569,31 @@ class CarlandiaPayController extends Controller
 		catch(exception $e){
 			return \View::make('front::pages.panel.contraofertaAceptada',["estado" => "aceptada" ]);
 		}
+	}
+
+	public function getCounterOffers(Request $request)
+	{
+		//Si existe o no session, se controla en el middleware. Si llegamos aquí, tenemos sesion.
+		$cod_cli = session('user.cod');
+
+		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA, FgAsigl1_Aux::PUJREP_ASIGL1_CONTRAOFERTA_RECHAZADA]);
+		$seo = (object)['noindex_follow' => true];
+
+		$data = compact('values', 'seo');
+
+        return View::make('front::pages.panel.counteroffers', compact('data'));
+	}
+
+	public function preAwards(Request $request)
+	{
+		$cod_cli = session('user.cod');
+
+		$values = FgAsigl1_Aux::getPujasAuxiliares($cod_cli, [FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_ONLINE, FgAsigl1_Aux::PUJREP_ASIGL1_COMPRAR_VD]);
+		$seo = (object)['noindex_follow' => true];
+
+		$data = compact('values', 'seo');
+
+        return View::make('front::pages.panel.preawards', compact('data'));
 	}
 
 

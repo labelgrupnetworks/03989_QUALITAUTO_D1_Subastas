@@ -1,125 +1,143 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
-{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
-<style>
-	.container-503 {
-		text-align: center;
-		vertical-align: middle;
-	}
-
-	.container-503 .content {
-		text-align: center;
-		display: inline-block;
-	}
-
-	.container-503 .title {
-		font-size: 72px;
-		margin-bottom: 40px;
-	}
-</style>
+@php
+	$statistics = [];
+	$statistics['auction'] = $auctions->keyBy('sub_asigl0');
+	$statistics['total'] = $summary;
+@endphp
 
 @section('content')
-@include('pages.panel.principal_bar')
 
-<section class="account cesiones">
-	<div class="container">
-		<div class="row">
-			<?php $tab="cesiones";?>
+    <script>
+        var currency = @JSON($divisas);
+        var divisa = @JSON($divisa);
+        const statistics = @JSON($statistics);
+    </script>
 
-			<div class="col-xs-12">
-				@include('pages.panel.menu')
-			</div>
+    <section class="sales-page">
+        <div class="sticky-section">
+            <div class="panel-title">
+                <h1>{{ trans("$theme-app.user_panel.my_assignments") }}</h1>
 
-			<div class="col-xs-12">
-				<div class="user-datas-title">
-					<p>{{ trans($theme.'-app.user_panel.my_assignments') }}<span style="float: right">{{Session::get('user.cod')}} -
-							{{ \Session::get('user.name') }}</span></p>
+                <select id="actual_currency">
+                    @foreach ($divisas as $divisaOption)
+                        <option value='{{ $divisaOption->cod_div }}' @selected($divisaOption->cod_div == $divisa)>
+                            {{ $divisaOption->cod_div }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
+            <div class="sales-menu">
+                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.pending-assign', ['lang' => config('app.locale')]) }}">
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.pending_auction") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.pendings") }}</span>
+                </a>
+                <a class="btn btn-lb btn-lb-primary btn-large" href="{{ route('panel.sales.active', ['lang' => config('app.locale')]) }}">
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.active_auctions") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.active") }}</span>
+                </a>
+                <a class="btn btn-lb btn-lb-outline btn-large" href="{{ route('panel.sales.finish', ['lang' => config('app.locale')]) }}">
+                    <span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.auctions_completed") }}</span>
+                    <span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.finished") }}</span>
+                </a>
+            </div>
+
+            <div class="sales-summary">
+                <div class="sales-summary_detail">
+                    <span class="js-divisa sales-counter" id="actualPrice"
+                        value="{{ $summary['total_award'] }}" data-format="0,0">
+                        0
+                    </span>
+                    <p>{{ trans("$theme-app.user_panel.actual_price") }}</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <div class="number-wrapper">
+                        <span class="sales-counter" id="percentage_lots_bid"
+                            value="{{ $summary['percentage_lots_with_bid'] }}">
+                            0
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <p>{{ trans("$theme-app.user_panel.bid") }}</p>
+                </div>
+                <div class="sales-summary_detail">
+                    <div class="number-wrapper">
+                        <span class="sales-counter" id="revaluation" value="{{ $summary['revaluation'] }}">
+                            0
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <p>{{ trans("$theme-app.user_panel.revaluation") }}</p>
+                </div>
+                <div class="sales-summary_detail sales-summary_detail_lots">
+                    <span class="sales-counter" id="consigned_lots" value="{{ $summary['total_lots'] }}">
+                        0
+                    </span>
+                    <p>{{ trans("$theme-app.user_panel.consigned_lots") }}</p>
+                </div>
+                <div class="sales-summary_detail sales-summary_detail_lots">
+                    <span class="sales-counter" id="bid_lots" value="{{ $summary['total_bids_lots'] }}">0</span>
+                    <p>{{ trans("$theme-app.user_panel.bid_lots") }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sales-auctions-block">
+
+			<div class="sales-auctions sales-active-auctions" data-detail-block>
+
+				<div class="sales-header-wrapper">
+					<div class="table-grid_header sales-auctions_header">
+						<p>{{ trans("$theme-app.user_panel.date") }}</p>
+						<p class="sales-auctions_description text-center text-md-start">
+							{{ trans("$theme-app.user_panel.auction") }}
+						</p>
+						<p class="text-center text-md-start">
+							<span class="visible-md visible-lg">{{ trans("$theme-app.user_panel.no") }} {{ trans("$theme-app.user_panel.lots") }}</span>
+							<span class="hidden-md hidden-lg">{{ trans("$theme-app.user_panel.lots") }}</span>
+						</p>
+						<p class="visible-md visible-lg">Total {{ trans("$theme-app.user_panel.starting_price") }}</p>
+						<p class="visible-md visible-lg">Total {{ trans("$theme-app.user_panel.estimated") }}</p>
+						<p class="sales-auctions_actual-price">
+							<span class="visible-md visible-lg">Total {{ trans("$theme-app.user_panel.actual_price") }}</span>
+							<span class="hidden-md hidden-lg">Total {{ trans("$theme-app.user_panel.actual_price_min") }}</span>
+						</p>
+					</div>
 				</div>
-			</div>
 
-			<div class="col-xs-12 cesiones-bi">
-				@include('pages.panel.sales.cesiones_bi')
-			</div>
-
-			@php
-					use App\libs\Currency;
-                    $currency = new Currency();
-                    $divisa = !empty(Session::get('user.currency'))? Session::get('user.currency') : 'EUR';
-                    $currency->setDivisa($divisa);
-					$divisas = $currency->getAllCurrencies();
-
-					$subastasActivasTr = [];
-					$subastasActivasFinalizadas = [];
-
-					$SubastaTR = new \App\Models\SubastaTiempoReal();
-
-					foreach ($subastas as $cod_sub => $lotes) {
-
-						$SubastaTR->cod = $cod_sub;
-						$SubastaTR->session_reference = $lotes->first()->reference;
-						$status  = $SubastaTR->getStatus();
-
-						if (!empty($status) && $status[0]->estado == "ended" && in_array($lotes->first()->subc_sub, ['S', 'H']) && $lotes->first()->tipo_sub != 'V') {
-							$subastasActivasFinalizadas[$cod_sub] = $subastas[$cod_sub];
-						}
-						elseif($lotes->first()->subc_sub == 'S'){
-							$subastasActivasTr[$cod_sub] = $subastas[$cod_sub];
-						}
-					}
-			@endphp
-
-
-			<div class="col-xs-12 mt-2">
-
-				<ul class="nav nav-tabs nav-justified">
-					<li>
-						<a data-toggle="tab" href="#finalizados">{{ trans($theme.'-app.user_panel.finished_lots') }}</a>
-					</li>
-					<li class="active">
-						<a data-toggle="tab" href="#activos">{{ trans($theme.'-app.user_panel.active_lots') }}</a>
-					</li>
-					<li>
-						<a {{--data-toggle="tab"--}} href="{{ \Routing::translateSeo('valoracion-articulos') }}">{{ trans($theme.'-app.user_panel.consign') }}</a>
-					</li>
-				</ul>
-
-				<div class="tab-content">
-
-					<div id="finalizados" class="tab-pane fade">
-
-
-						<div class="panel-group" id="accordion">
-							<div class="panel panel-default panel-payment" id="panel-payment-finish">
-								@include('pages.panel.sales.invoice_assignor_cabecera', ['subastas' => $facturas])
-							</div>
-						</div>
-					</div>
-					<div id="activos" class="tab-pane fade in active">
-						<div class="panel-group" id="accordion">
-							<div class="panel panel-default panel-payment">
-								@include('pages.panel.sales.auctions', ['subastas' => $subastasActivasTr, 'finalizada' => false])
-								@include('pages.panel.sales.auctions', ['subastas' => $subastasActivasFinalizadas, 'finalizada' => true])
-							</div>
-						</div>
-					</div>
-					<div id="consignar" class="tab-pane fade">
-						<div class="container-503">
-							<div class="content">
-								<div class="title">Coming soon.</div>
-							</div>
-						</div>
+				@forelse ($auctions as $auction)
+					@include('pages.panel.sales.auction_active', [
+						'auctions' => $auction,
+					])
+				@empty
+				<div class="sales-auction-wrapper empty-auction">
+					<div class="sales-auction">
+						<p>{{ trans("$theme-app.user_panel.no_sales") }}</p>
 					</div>
 				</div>
+				@endforelse
 
 			</div>
+        </div>
 
-		</div>
-	</div>
-</section>
+		<section class="tab-content" id="auction-details">
 
+			@foreach ($auctions as $auction)
+				@include('pages.panel.sales.auction_details', [
+					'id' => $auction['sub_asigl0'],
+					'title' => $auction['des_sub'],
+					'lots' => $lots[$auction['sub_asigl0']],
+					'invoice' => false,
+					'finish' => false
+				])
+			@endforeach
 
+		</section>
+
+    </section>
 @stop

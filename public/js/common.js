@@ -1571,7 +1571,7 @@ function cambiarDireccion(thi) {
 }
 
 function ajax_shipping(cod_ship, lang) {
-	$.ajax({
+	return $.ajax({
 		type: "GET",
 		url: '/' + lang + '/seeShippingAddress',
 		data: { codd_clid: cod_ship },
@@ -1579,8 +1579,10 @@ function ajax_shipping(cod_ship, lang) {
 			$("#ajax_shipping_add").html('');
 			$("#ajax_shipping_add").html(response);
 		}
+	})
+	.then((response) => {
+		return response;
 	});
-
 }
 
 function changeCurrency(price, exchange, object) {
@@ -1613,6 +1615,7 @@ function changeCurrencyNew(price, exchange, object) {
 
 }
 
+
 function changeCurrencyWithElement(price, exchange, element) {
 	price = Math.round(price * currency[exchange].impd_div * 100) / 100;
 
@@ -1630,16 +1633,20 @@ function changeCurrencyWithElement(price, exchange, element) {
 	element.innerHTML = newPrice;
 }
 
+function refreshCurrency() {
+	$(".js-divisa").each(function () {
+		let value = $(this).attr('value');
+		if (value != "undefined") {
+			changeCurrencyNew(value, $('#actual_currency').val(), $(this));
+		}
+	});
+}
+
 $(document).ready(function () {
 
 	$("#actual_currency").change(function () {
 
-		$(".js-divisa").each(function () {
-			a = $(this).attr('value');
-			if (a != "undefined") {
-				changeCurrencyNew(a, $('#actual_currency').val(), $(this));
-			}
-		});
+		refreshCurrency();
 
 		$.ajax({
 			type: "POST",
@@ -1652,8 +1659,6 @@ $(document).ready(function () {
 
 
 	});
-
-
 });
 
 
@@ -1851,13 +1856,9 @@ function showMessage(data, title) {
 /*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
 /****************************************************************************************/
 
-function sendContact() {
+async function sendContact() {
 
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
-
-	response = $("#g-recaptcha-response").val();
-
-	if (response) {
+	validateCaptchaMiddleware(() => {
 		$.ajax({
 			type: "POST",
 			url: "/contactSendmail",
@@ -1874,16 +1875,8 @@ function sendContact() {
 				showMessage("Error");
 			}
 		});
-	} else {
-		$(".g-recaptcha").find("iframe").addClass("has-error");
-		showMessage(messages.error.hasErrors);
-	}
-
+	});
 }
-
-
-
-
 
 
 
@@ -1985,4 +1978,86 @@ function sharePage({ text, title, url }) {
 		const shareUrl = `mailto:?subject=${title}&body=${text} ${url}`;
 		window.open(shareUrl, '_blank');
 	}
+}
+
+
+// Retrasar la ejecución de una función hasta que el usuario deje de escribir
+let debounceTimeoutId;
+function debounce(func, delay) {
+	clearTimeout(debounceTimeoutId);
+	debounceTimeoutId = setTimeout(func, delay);
+}
+
+ /* inputElement.addEventListener('input', function() {
+	debounce(function() {
+		// Aquí puedes agregar el código para enviar el formulario
+		console.log('Enviar formulario');
+	}, 500); // 500 milisegundos (0.5 segundos) de pausa
+}); */
+
+function validateCaptchaMiddleware(callback, arg) {
+	isValidCaptcha().then((result) => {
+		if(result){
+			callback(arg);
+			return;
+		}
+
+		showMessage(messages.error.recaptcha_incorrect);
+	});
+}
+
+
+async function isValidCaptcha() {
+
+	// Si es un captcha v3
+	if (isV3Captcha()) {
+		return await checkCaptchaV3();
+	}
+
+	// Si es un captcha v2
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+	const resutl = Boolean($("#g-recaptcha-response").val());
+	if(!resutl){
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+	}
+
+	return resutl;
+}
+
+function isV3Captcha() {
+	return $("[name=captcha_token]").length > 0;
+}
+
+async function checkCaptchaV3() {
+	await executeCaptchaV3();
+
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
+	return Boolean(response);
+}
+
+async function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+
+	if(!captchaElemenent) return;
+
+	const key = captchaElemenent.getAttribute('data-sitekey');
+
+	return new Promise((resolve, reject) => {
+
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				//recorrecmos todos para que en paginas con varios formularios se rellenen todos
+				document.querySelectorAll('[name="captcha_token"]')
+					.forEach(captchaElemenent => {
+						captchaElemenent.value = token;
+					});
+
+				resolve();
+			});
+		});
+	});
 }

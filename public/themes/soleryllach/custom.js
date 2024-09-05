@@ -216,8 +216,10 @@
         });
 
 
+	$('[name="shipping_address"]').on('change', changeRquiredShippingAddress);
 
-	  $('#frmRegister-adv').on('submit', function (e) {
+
+	  $('#frmRegister-adv').on('submit', async function (e) {
 
 		  if (e.isDefaultPrevented()) {
 			  // formulario incorrecto
@@ -256,7 +258,16 @@
 				  $("#insert_msgweb").html(messages.error.dni_incorrect);
 				  $.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			  } else {
+
+					updateShippingAddressWithUserData();
+
 				  $('button', $this).attr('disabled', 'disabled');
+				  const captcha = await isValidCaptcha();
+				  if(!captcha){
+					  showMessage(messages.error.recaptcha_incorrect);
+					  return;
+				  }
+
 				  // Datos correctos enviamos ajax
 				  const formDataRegister = new FormData(this);
 
@@ -271,7 +282,6 @@
 						  $('#btnRegister').prepend(' <i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i> ');
 					  },
 					  success: function (response) {
-						  $('button', $this).attr('disabled', false);
 						  res = $.parseJSON(response);
 						  if (res.err == 1) {
 							  $("#insert_msgweb").html('');
@@ -281,6 +291,9 @@
 							  window.location.href = res.msg;
 						  }
 
+					  },
+					  complete: function () {
+						  $('button', $this).attr('disabled', false);
 					  }
 				  });
 			  }
@@ -582,7 +595,7 @@
             $.magnificPopup.open({items: {src: '#modalMensajeDelete'}, type: 'inline'}, 0);
         });
 
-        $( "#form-valoracion-adv" ).submit(function(event) {
+        $( "#form-valoracion-adv" ).submit(async function(event) {
 
 
             if (event.isDefaultPrevented()) {
@@ -597,17 +610,11 @@
             } else {
                 event.preventDefault();
 
-                var $captcha = $( '#recaptcha' ),
-                response = grecaptcha.getResponse();
-
-                if (response.length === 0) {
-                  if( !$captcha.hasClass( "error" ) ){
-                    $captcha.addClass( "error" );
-                  }
-                  return;
-                }else{
-                   $captcha.removeClass( "error" );
-                }
+                const captcha = await isValidCaptcha();
+				if(!captcha){
+					showMessage(messages.error.recaptcha_incorrect);
+					return;
+				}
 
                 if($("#condiciones").is(':checked')){
                    $(".condiciones").css('color', '#333');
@@ -1116,7 +1123,14 @@ function initSalesDataTables() {
 	)
 }
 
-function newsletterSuscription (event) {
+async function newsletterSuscription (event) {
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
+
 	var email = $('.newsletter-input').val();
 	var lang = $('#lang-newsletter').val();
 
@@ -1124,15 +1138,6 @@ function newsletterSuscription (event) {
 		$("#insert_msgweb").html('');
 		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
-		return;
-	}
-
-	var $captcha = $('#recaptcha');
-
-	const recatchaIsVerified = Boolean(grecaptcha.getResponse());
-	$captcha[0].classList.toggle("error", !recatchaIsVerified);
-
-	if(!recatchaIsVerified) {
 		return;
 	}
 
@@ -1150,11 +1155,21 @@ function newsletterSuscription (event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.hasErrors);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -1383,3 +1398,48 @@ function getCookie(nombreCookie) {
 	// Si no se encuentra la cookie, devuelve null
 	return null;
   }
+
+  function changeRquiredShippingAddress(event) {
+	const isCheked = shippingAddressIsChecked();
+	const inputs = [
+		'clid_direccion',
+		'clid_pais',
+		'clid_cpostal',
+		'clid_provincia',
+		'clid_poblacion'
+	];
+
+	inputs.forEach(input => {
+		const inputElement = document.querySelector(`[name="${input}"]`);
+		if (!inputElement) return;
+
+		inputElement.required = !isCheked;
+	});
+
+	updateShippingAddressWithUserData();
+  }
+
+  function shippingAddressIsChecked() {
+	const input = document.querySelector('[name="shipping_address"]');
+	if (!input) return false;
+	return input.checked;
+  }
+
+  function updateShippingAddressWithUserData() {
+	const isCheked = shippingAddressIsChecked();
+
+	if (!isCheked) return;
+
+	$('[name="clid_codigoVia"]').val($('[name="codigoVia"]').val());
+	$('[name="clid_direccion"]').val($('[name="direccion"]').val());
+	$('[name="clid_pais"]').val($('[name="pais"]').val());
+	$('[name="clid_cpostal"]').val($('[name="cpostal"]').val());
+	$('[name="clid_provincia"]').val($('[name="provincia"]').val());
+	$('[name="clid_poblacion"]').val($('[name="poblacion"]').val());
+  }
+
+function sendContactForm(event) {
+	event.preventDefault();
+	const form = event.currentTarget;
+	validateCaptchaMiddleware(() => form.submit())
+}

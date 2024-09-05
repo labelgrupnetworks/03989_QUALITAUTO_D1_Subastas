@@ -1,3 +1,36 @@
+function fakeDataWinner() {
+	return {
+		"status": "success",
+		"pujasAll": [
+			{
+				"cod_licit": '1000',
+				"cod_sub": 'DESPL',
+				"ref_asigl1": "1",
+				"imp_asigl1": 100,
+				"formatted_imp_asigl1": "100,00 €"
+			}
+		],
+		"siguiente": 110
+	};
+}
+
+function fakeDataLoser() {
+	return {
+		"status": "success",
+		"pujasAll": [
+			{
+				"cod_licit": '1001',
+				"cod_sub": 'DESPL',
+				"ref_asigl1": "1",
+				"imp_asigl1": 100,
+				"formatted_imp_asigl1": "100,00 €"
+			}
+		],
+		"siguiente": 110
+	};
+}
+
+
 function actualPriceReload(data) {
 
 	console.log(data);
@@ -9,19 +42,18 @@ function actualPriceReload(data) {
 		return false;
 	}
 
-	let $actualPrice = $subastaElement.find('.actual-price');
-	$actualPrice.text(puja.formatted_imp_asigl1);
+	const $actualPrice = $subastaElement.find('[data-js-id="actual-price"]');
+	$actualPrice.attr('value', puja.imp_asigl1);
 
 	let actionButton = $subastaElement.find('.js-lot-action_pujar_panel');
 
-	changeCurrencyNew(puja.imp_asigl1, divisa, $subastaElement.find('.divisa-actual-price'));
+	const $myBid = $subastaElement.find('[data-js-id="my-max-bid"]');
 
 	//puja maxima es mia
 	if (auctions_info[puja.cod_sub]["lotes"][0].cod_licit == puja.cod_licit) {
 		$actualPrice.parent().addClass('mine').removeClass('other');
 
-		$subastaElement.find('.my-max-bid').text(puja.formatted_imp_asigl1);
-		changeCurrencyNew(puja.imp_asigl1, divisa, $subastaElement.find('.divisa-my-max-bid'));
+		$myBid.attr('value', puja.imp_asigl1);
 
 		actionButton.addClass('bid-mine').attr('disabled', true);
 		actionButton.find('.js-max-bid').removeClass('hidden');
@@ -39,30 +71,11 @@ function actualPriceReload(data) {
 
 		//si existe sobre puja mi puja máxima es la segunda
 		if (data.status == 'error' && typeof data.pujasAll[1] != 'undefined' && data.pujasAll[1].cod_licit == auctions_info[puja.cod_sub]["lotes"][0].cod_licit) {
-			$subastaElement.find('.my-max-bid').text(data.pujasAll[1].formatted_imp_asigl1);
+			$myBid.attr('value', data.pujasAll[1].imp_asigl1);
 		}
-
-		//reloadPujasButtonsPanel(puja.cod_sub, puja.imp_asigl1, actionButton);
 	}
 
 	return true;
-}
-
-/**
- * @deprecated Al final recibo los datos del propio socket,
- * Dejar hasta publica por si acaso
- */
-function reloadPujasButtonsPanel(codSub, actualBid, object) {
-
-	$.ajax({
-		type: "GET",
-		url: '/api-ajax/calculate_bids/' + actualBid + '/' + actualBid + '?cod_sub=' + codSub,
-		success: function (response) {
-			response = JSON.parse(response);
-			$(object).attr('value', response[0]).attr('disabled', false).data('imp', response[0]);
-			$($(object).find('span')).attr('value', response[0]).text(new Intl.NumberFormat("de-DE").format(response[0]));
-		}
-	});
 }
 
 function hiddenBidButton(data) {
@@ -154,8 +167,8 @@ $(function () {
 			beforeSend: function () {
 
 			},
-			success: function( response ) {
-				if(response.status == 'error'){
+			success: function (response) {
+				if (response.status == 'error') {
 					displayAlert(1, messages.error[response.msg]);
 					$('#abrirLote').addClass('hidden');
 				}
@@ -169,6 +182,29 @@ $(function () {
 		socket.emit('action', params);
 	}
 
+	const mutationCallback = (mutationList) => {
+		mutationList.forEach((mutation) => {
+			if (mutation.type === 'attributes') {
+				if (mutation.attributeName === 'value') {
+					let $element = $(mutation.target);
+					let value = $element.attr('value');
+					let divisa = $('#actual_currency').val();
+					changeCurrencyNew(value, divisa, $element);
+				}
+			}
+		});
+	}
+
+	const observer = new MutationObserver(mutationCallback);
+	const config = {
+		attributes: true,
+		attributeFilter: ['value'],
+		childList: false,
+		subtree: false
+	};
+
+	const elements = document.querySelectorAll('.js-divisa-oberver');
+	elements.forEach(element => observer.observe(element, config));
 });
 
 

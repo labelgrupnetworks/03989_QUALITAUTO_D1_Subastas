@@ -53,9 +53,6 @@ $data['departamentos'][6] = [
 ?>
 
 
-
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 text-center color-letter">
@@ -127,6 +124,8 @@ $data['departamentos'][6] = [
                                 <form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
 
                                     {!! $data['formulario']['_token'] !!}
+									<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+
                                     <div class="form-group">
                                         <div class="input-effect col-xs-12">
                                             <label>{{trans($theme.'-app.login_register.contact') }}</label>
@@ -159,11 +158,12 @@ $data['departamentos'][6] = [
                                         </div>
 
                                         <br>
-                                        <div class="g-recaptcha col-xs-12 col-md-6"
-                                             data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-                                             data-callback="onSubmit"
-                                             >
-                                        </div>
+										<div class="col-xs-12">
+											<p class="captcha-terms">
+												{!! trans("$theme-app.global.captcha-terms") !!}
+											</p>
+										</div>
+
                                         <div class="col-xs-12 col-md-6 text-center first_check">
                                             <br>
                                             {!! $data['formulario']['SUBMIT'] !!}
@@ -240,7 +240,6 @@ $data['departamentos'][6] = [
             <p><span>Dirección: </span><strong>Nuñez de Balboa 9</strong></p>
             <p><strong>28001 Madrid-Spain</strong></p>
             <p><span>Teléfono: </span><strong>+34 91 577 87 97</strong></p>
-            <p><span>Móvil: </span><strong>+34 717 79 17 39</strong></p>
             <p><span>WhatsApp: </span><strong>+34 616 095 044</strong></p>
             <p><span>Fax: </span><strong>+34 91 432 47 55</strong></p>
             <p><span>Email: </span><strong><a href="mailto:info@alcalasubastas.es">info@alcalasubastas.es</a></strong></p>

@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Config;
@@ -55,7 +56,7 @@ class Filters extends Model
 
 
 
-        $key_cache= "getFilterAuctionForSelector_".$type."_".$cod_sub."_".$id_auc_sessions."_". $category."_". $subcategory."_". $filter_name."_".\Tools::getLanguageComplete(Config::get('app.locale')). print_r($filters_input, true);
+        $key_cache= "getFilterAuctionForSelector_".$type."_".$cod_sub."_".$id_auc_sessions."_". $category."_". $subcategory."_". $filter_name."_".ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')). print_r($filters_input, true);
         $filters = \CacheLib::getCache($key_cache);
         if($filters === false){
            // ahora solo se buscará un filtro

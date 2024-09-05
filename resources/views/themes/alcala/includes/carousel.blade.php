@@ -65,10 +65,11 @@
                 </div>
 
 
-                @if( $subasta_online)
+                @if($subasta_online)
                     <p class="mt-15 salida-time background-principal text-center  d-flex align-items-center justify-content-center">
-                        <i class="fa fa-clock-o"></i>
+						<x-icon.fontawesome icon=clock type=regular version=6></x-icon.fontawesome>
                         <span
+							class="ml-1"
                             data-countdown="{{strtotime($bann->close_at) - getdate()[0] }}"
                             data-format="<?= \Tools::down_timer($bann->close_at); ?>"
                             class="timer">

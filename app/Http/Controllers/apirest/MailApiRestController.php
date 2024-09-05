@@ -11,6 +11,7 @@ use App\Models\V5\FgDeposito;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxDvc0Seg;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
@@ -364,7 +365,7 @@ class MailApiRestController extends ApiRestController {
         }
 
         $email = urlencode($email);
-        $code = \Tools::encodeStr($email . '-' . $mail_exists[0]->pwdwencrypt_cliweb);
+        $code = ToolsServiceProvider::encodeStr($email . '-' . $mail_exists[0]->pwdwencrypt_cliweb);
         $url = config('app.url') . '/' . config('app.locale') . '/email-recovery' . '?email=' . $email . '&code=' . $code . '&login=true';
 
         $email = new EmailLib($type);

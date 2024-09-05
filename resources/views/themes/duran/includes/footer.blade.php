@@ -70,50 +70,56 @@
 										@endforeach
 								   @endif
 
-								   	<li><a class="footer-link"  href="/en/subasta/subasta-solo-online-duran_7501-001">{{ mb_strtoupper (trans($theme.'-app.foot.online_auction')) }} </a></li>
+								   	<li><a class="footer-link"  href="{{ trans("$theme-app.links.footer_online_auction") }}">{{ mb_strtoupper (trans($theme.'-app.foot.online_auction')) }} </a></li>
 
 									<li><a  class="footer-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ mb_strtoupper (trans($theme.'-app.metas.title_historic'))  }}</a></li>
-									<li><a class="footer-link" href="/en/subasta/tienda-online_7500-001?order=orden_desc">{{  mb_strtoupper (trans($theme.'-app.foot.compra_ahora')) }}</a></li>
-									<li><a class="footer-link" href="/en/info-subasta/7503-venta-privada">{{   mb_strtoupper ( trans($theme.'-app.foot.ventas_privadas')  ) }}</a></li>
+									<li><a class="footer-link" href="{{ trans("$theme-app.links.footer_compra_ahora") }}">{{  mb_strtoupper (trans($theme.'-app.foot.compra_ahora')) }}</a></li>
+									<li><a class="footer-link" href="{{ trans("$theme-app.links.footer_ventas_privadas") }}">{{   mb_strtoupper ( trans($theme.'-app.foot.ventas_privadas')  ) }}</a></li>
+
+									@php
+										#TODO:	Cambiar las URL hardcoded por dinámicas.
+										#		Esto se podrá hacer posible cuando en la tabla FXSUBSEC_LANG estén las versiones en inglés respectivas.
+										# Lluc - 06/06/2024
+									@endphp
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-rolex">{{ mb_strtoupper ("subasta ROLEX"  ) }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-rolex">{{ mb_strtoupper ("subasta ROLEX"  ) }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-patek-philippe">{{ mb_strtoupper ("subasta Patek Philippe") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-patek-philippe">{{ mb_strtoupper ("subasta Patek Philippe") }}</a>
 									</li>
 
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-tag-hauer">{{ mb_strtoupper ("subasta Tag Hauer") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-tag-hauer">{{ mb_strtoupper ("subasta Tag Hauer") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-omega">{{ mb_strtoupper ("subasta Omega") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-omega">{{ mb_strtoupper ("subasta Omega") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-cartier">{{ mb_strtoupper ("subasta Cartier") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-cartier">{{ mb_strtoupper ("subasta Cartier") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-longines">{{ mb_strtoupper ("subasta Longines") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-longines">{{ mb_strtoupper ("subasta Longines") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-audermars-piguet">{{ mb_strtoupper ("Audermars Piguet") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-audermars-piguet">{{ mb_strtoupper ("Audermars Piguet") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-van-cleef-&-arpels">{{ mb_strtoupper ("subasta Van Cleef & Arpels") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-van-cleef-&-arpels">{{ mb_strtoupper ("subasta Van Cleef & Arpels") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-hermes">{{ mb_strtoupper ("subasta Hermes") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-hermes">{{ mb_strtoupper ("subasta Hermes") }}</a>
 									</li>
 
 									<li>
-										<a class="footer-link" href="https://www.duran-subastas.com/es/duran-subastas-subasta-louis-vuitton">{{ mb_strtoupper ("subasta Louis Vuitton") }}</a>
+										<a class="footer-link" href="/es/duran-subastas-subasta-louis-vuitton">{{ mb_strtoupper ("subasta Louis Vuitton") }}</a>
 									</li>
 
 									</ul>

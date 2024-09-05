@@ -551,3 +551,25 @@ tr.shown td.details-control {
 
 .left{float:left;}
 
+
+.lang-changer {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	justify-content: start;
+	position: fixed;
+	top: 125px;
+	z-index: 10;
+}
+
+.lang-changer a {
+	box-shadow: 2px 2px 3px #00000080;
+}
+
+.banner-page-modal label:has(input[type="hidden"]) {
+	display: none;
+}
+
+.banner-page-modal label {
+	width: 100%;
+}

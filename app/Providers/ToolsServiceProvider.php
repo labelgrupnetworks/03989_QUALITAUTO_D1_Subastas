@@ -2,29 +2,34 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Mail;
-use App\Models\Subasta;
-use App\Models\Payments;
-use App\Models\Facturas;
-use App\Models\Enterprise;
-use App\libs\ImageGenerate;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\services\GoogleApiPlacesController;
+use App\libs\CacheLib;
+use App\libs\ImageGenerate;
+use App\Models\Enterprise;
+use App\Models\Facturas;
+use App\Models\Payments;
+use App\Models\Subasta;
 use App\Models\V5\FxCli;
+use App\Models\V5\Web_Blog;
+use App\Models\V5\Web_Category_Blog_Lang;
+use App\Providers\RoutingServiceProvider as Routing;
 use DOMDocument;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
-use App\Http\Helpers\Helper;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request as FacadeRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class ToolsServiceProvider extends ServiceProvider
 {
@@ -34,6 +39,10 @@ class ToolsServiceProvider extends ServiceProvider
 	 * @return void
 	 */
 	public function boot()
+	{
+	}
+
+	public function register()
 	{
 	}
 
@@ -80,7 +89,7 @@ class ToolsServiceProvider extends ServiceProvider
 			'emp' => Config::get('app.emp'),
 			'num_hces' => $num_hces,
 			'lin_hces' => $lin_hces,
-			'lang'     => \Tools::getLanguageComplete(Config::get('app.locale'))
+			'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 		);
 
 
@@ -92,20 +101,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return head($consulta);
 	}
 
-	public function register()
-	{
-	}
-
-	/*public static function makeSlug($str, $delimiter='-')
-	{
-		$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-		$clean = preg_replace("#[^a-zA-Z0-9/_|+ -]#", '', $clean);
-		$clean = strtolower(trim($clean, '-'));
-		$clean = preg_replace("#[/_|+ -]+#", $delimiter, $clean);
-
-		return $clean;
-	}*/
-
 	public static function friendlyDesc($str)
 	{
 
@@ -114,13 +109,6 @@ class ToolsServiceProvider extends ServiceProvider
 		$str = preg_replace('/\\\s/', ' ', $str);
 		$str = str_replace("
 ", "<br>", $str);
-		//$str = preg_replace('/&euro+/', '€', $str);
-
-		/*$str = str_replace('\b', ' ', $str);
-		$str = str_replace('\n', '<br >',$str);
-		$str = str_replace('  ', ' ', $str);
-		//$str = str_replace('&euro', '€', $str);
-		$str = str_replace('<br ><br >', '<br >',$str);*/
 
 		return $str;
 	}
@@ -138,11 +126,11 @@ class ToolsServiceProvider extends ServiceProvider
                     $format = number_format($qtty, $decimal, ',', '.');
                 }
                 */
-		if(\Config::get("app.decimalSeparator")){
-			$decimalSeparator = \Config::get("app.decimalSeparator");
+		if(Config::get("app.decimalSeparator")){
+			$decimalSeparator = Config::get("app.decimalSeparator");
 		}
-		if(\Config::get("app.thousandSeparator")){
-			$thousandSeparator = \Config::get("app.thousandSeparator");
+		if(Config::get("app.thousandSeparator")){
+			$thousandSeparator = Config::get("app.thousandSeparator");
 		}
 
 		$format = number_format($qtty, $decimal, $decimalSeparator, $thousandSeparator);
@@ -221,7 +209,7 @@ class ToolsServiceProvider extends ServiceProvider
         );
         */
 
-		$string = \trans(\Config::get('app.theme') . '-app.time');
+		$string = \trans(Config::get('app.theme') . '-app.time');
 
 		foreach ($string as $k => &$v) {
 			if ($diff->$k) {
@@ -296,7 +284,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$sub = new Subasta();
 		$sub->cod = $cod_sub;
 		$sub->id_auc_sessions = $id_auc_sessions;
-		$cat = \Route::current()->parameter('cat');
+		$cat = Route::current()->parameter('cat');
 
 		# Familias
 		//FER Q LES FAMILIES ES VEGIN AFECTADES SEGONS ELS MATERIALS SELECCIONATS. (FILTRE POSTERIOR)
@@ -307,8 +295,8 @@ class ToolsServiceProvider extends ServiceProvider
 		$options['families'] = $sub->getFamilies();
 
 		# Materiales
-		$selected_mats = \Request::input('mat');
-		$selected_families = \Request::input('fam');
+		$selected_mats = FacadeRequest::input('mat');
+		$selected_families = FacadeRequest::input('fam');
 		$available_mats = array(1, 2, 3, 4, 5);
 
 		# Obtiene los filtros por material disponibles.
@@ -417,7 +405,7 @@ class ToolsServiceProvider extends ServiceProvider
 			return true;
 		} catch (\Exception $e) {
 
-			\Log::emergency('Error Email: <br>' . $e);
+			Log::emergency('Error Email: <br>' . $e);
 
 			return false;
 		}
@@ -508,6 +496,8 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 			$time = 0;
 			$count = 0;
+
+			echo "<div class='query-log'>";
 			foreach (DB::getQueryLog() as $query) {
 				$count++;
 				$color = "";
@@ -522,6 +512,7 @@ class ToolsServiceProvider extends ServiceProvider
 				echo "<div style='border:1px solid grey; margin:30px;padding: 10px;word-break: break-all; $color'> (" . $query['time'] . ")<br> " . nl2br($query['query']) . "</div> ";
 			}
 			echo "<h1> Total: $time , TotalQuerys: $count</h1>";
+			echo "</div>";
 		}
 	}
 
@@ -584,9 +575,9 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		$count_lots_adj = 0;
-		if (\Session::has('user')) {
+		if (Session::has('user')) {
 			$user = new \App\Models\User();
-			$user->cod_cli = \Session::get('user.cod');
+			$user->cod_cli = Session::get('user.cod');
 			$user->itemsPerPage = 'count';
 			$count_lots_adj_temp = $user->getAdjudicacionesPagar('N');
 			if (!empty($count_lots_adj_temp)) {
@@ -600,9 +591,9 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		$count_fact = 0;
-		if (\Session::has('user')) {
+		if (Session::has('user')) {
 			$facturas = new Facturas();
-			$facturas->cod_cli = \Session::get('user.cod');
+			$facturas->cod_cli = Session::get('user.cod');
 			//Sacamos facturas pendiente de pago
 			$pendientes = $facturas->pending_bills();
 			if (!empty($pendientes)) {
@@ -617,7 +608,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 		return array(
 			'DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'SK', 'SI', 'ES', 'EE', 'FI', 'FR', 'GR', 'IE', 'IT', 'LV',
-			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'GB', 'CZ', 'RO', 'SE'
+			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'CZ', 'RO', 'SE'
 		);
 	}
 
@@ -639,7 +630,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 		# si no encontramos usuario , o si lo encontramos y es Europeo devolvemos el precio de base de datos que lleva el iva
-		if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+		if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 			return  $imp;
 
 		}else{
@@ -663,7 +654,7 @@ class ToolsServiceProvider extends ServiceProvider
 			return $tax;
 		}else{
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
-			if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 				return   $tax;
 
 			}else{
@@ -698,7 +689,7 @@ class ToolsServiceProvider extends ServiceProvider
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 			# si no encontramos usuario , o si lo encontramos y es Europeo
-			if(empty($user) ||  in_array($user->codpais_cli,\Tools::PaisesEUR() )){
+			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
 					return  (1 + $tax) * $imp;
 
 			}
@@ -713,10 +704,10 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		$enterprice = new Enterprise();
 		$keyname_cache = "get_countries".Config::get('app.theme')."_".Config::get('app.emp');
-		$paises = \CacheLib::getCache($keyname_cache);
+		$paises = CacheLib::getCache($keyname_cache);
 		if ($paises === false){
 			$paises = $enterprice->getCountries();
-			\CacheLib::putCache($keyname_cache, $paises);
+			CacheLib::putCache($keyname_cache, $paises);
 		}
 
 		$countries = array();
@@ -730,73 +721,15 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 	}
 
-	/**
-	 * @param string|null $token Token de recaptcha v3
-	 * @param string|null $ip IP del usuario
-	 * @param string|null $email string Email del usuario
-	 * @param string|null $privateCaptcha string|null Clave privada de recaptcha v2
-	 */
-	public static function captchaIsValid($token, $ip, $email, $privateCaptcha = null)
-	{
-		if(Config::get('app.captcha_v3', false)) {
-			return self::validateRecaptchaV3($token, $ip, $email);
-		}
-
-		if($privateCaptcha) {
-			$jsonResponse = self::validateRecaptcha($privateCaptcha);
-			if(empty($jsonResponse) || $jsonResponse->success !== true) {
-				Log::warning('Recaptcha v2 failed', ['response' => $jsonResponse, 'email' => $email, 'ip' => $ip]);
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public static function validateRecaptcha($secret)
-	{
-		if (empty($_POST['g-recaptcha-response'])) {
-			return null;
-		}
-		//get verify response data
-		$verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $_POST['g-recaptcha-response']);
-		$responseData = json_decode($verifyResponse);
-		return $responseData;
-	}
-
-	private static function validateRecaptchaV3($token, $ip, $email)
-	{
-		$privateKey = Config::get('app.captcha_v3_private', '');
-
-		$response = Http::asForm()
-		->post('https://www.google.com/recaptcha/api/siteverify', [
-			'secret' => $privateKey,
-			'response' => $token,
-			'remoteip' => $ip,
-		]);
-
-		if($response->failed()) {
-			return false;
-		}
-
-		$responseObject = $response->object();
-		if($responseObject->success == false || $responseObject->score < config('app.captcha_v3_severity', '0.5')) {
-			Log::warning('Recaptcha failed', ['response' => $response->json(), 'email' => $email, 'ip' => $ip]);
-			return false;
-		}
-
-		return true;
-	}
-
 	public static function url_lot($cod_sub, $id_session, $des_sub, $ref, $num_hces, $friendly = "", $title = "")
 	{
-		$webfriend = !empty($friendly) ? $friendly :  \Str::slug(strip_tags(trim($title)));
+		$webfriend = !empty($friendly) ? $friendly :  Str::slug(strip_tags(trim($title)));
 
-		if(\Config::get("app.newUrlLot")){
+		if(Config::get("app.newUrlLot")){
 			//$url = Route("lote",["texto"=> $webfriend,"ref" => $ref, "cod" => $cod_sub]);
-			$url =Config::get('app.url') .\Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
+			$url =Config::get('app.url') .Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
 		}else{
-			$url=Config::get('app.url') .\Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
+			$url=Config::get('app.url') .Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
 		}
 
 		return $url;
@@ -813,36 +746,36 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_auction($cod_sub, $name, $id_session, $ref_session = '001')
 	{
-		if (!empty(\Config::get("app.gridLots")) && \Config::get("app.gridLots") == "new") {
-			return route("urlAuction", ["texto" => \Str::slug($name), "cod" => $cod_sub, "session" => $ref_session]);
+		if (!empty(Config::get("app.gridLots")) && Config::get("app.gridLots") == "new") {
+			return route("urlAuction", ["texto" => Str::slug($name), "cod" => $cod_sub, "session" => $ref_session]);
 		} else {
-			return   Config::get('app.url') . \Routing::translateSeo('subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+			return   Config::get('app.url') . Routing::translateSeo('subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 		}
 	}
 
 	public static function url_info_auction($cod_sub, $name)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('info-subasta') . $cod_sub . "-" . \Str::slug($name);
+		return   Config::get('app.url') . Routing::translateSeo('info-subasta') . $cod_sub . "-" . Str::slug($name);
 	}
 
 	public static function url_indice_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('indice-subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . Routing::translateSeo('indice-subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_real_time_auction($cod_sub, $name, $id_session)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('api/subasta') . $cod_sub . "-" . \Str::slug($name) . "-" . $id_session;
+		return   Config::get('app.url') . Routing::translateSeo('api/subasta') . $cod_sub . "-" . Str::slug($name) . "-" . $id_session;
 	}
 
 	public static function url_categorys($category)
 	{
-		return   Config::get('app.url') . \Routing::translateSeo('subastas') . $category;
+		return   Config::get('app.url') . Routing::translateSeo('subastas') . $category;
 	}
 
 	public static function url_exposicion($des_sub, $cod_sub, $reference = '001')
 	{
-		return   Route("exposicion",['texto' => \Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
+		return   Route("exposicion",['texto' => Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
 	}
 
 	public static function  images_size()
@@ -852,7 +785,7 @@ class ToolsServiceProvider extends ServiceProvider
 			/* tamaño imagenes */
 			$sql = "select * from WEB_IMAGES_SIZE WHERE ID_EMP = :emp";
 			$params = array('emp' => Config::get('app.main_emp'));
-			$sizes_DB =  \DB::select($sql, $params);
+			$sizes_DB =  DB::select($sql, $params);
 			$sizes = array();
 
 			//$sizes_DB = \DB::select($sql);
@@ -900,77 +833,130 @@ class ToolsServiceProvider extends ServiceProvider
 		$sizeImage = !empty($images_size[$size]) ? $images_size[$size] : $size;
 
 		$image_to_load = "img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces{$path_img_num}";
-		$extension = 'webp';
 
+		//finalmente creo que a nadie se le generan en webp, se puede quitar
+		$extension = 'webp';
 		if(!file_exists("$image_to_load.$extension")){
 			$extension = 'jpg';
 		}
 
 		$image_to_load = "$image_to_load.$extension";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/$theme/img/items/no_photo";
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load = (file_exists("{$pathNoPhoto}_$size.png")) ? "{$pathNoPhoto}_$size.png" : "$pathNoPhoto.png";
+		if(self::isImageValid($image_to_load)) {
+			return "$url/$image_to_load".self::date_modification($file);
 		}
-		$image_to_load = "$url/$image_to_load";
-		return $image_to_load.self::date_modification($file);
+
+		//si no existe la imagen, generamos las miniaturas (solo si esta activado en la configuración)
+		if(Config::get('app.generate_image_when_not_found', false)){
+			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num, $sizeImage);
+		}
+
+		//si sigue sin existir la imagen, cargamos la imagen por defecto
+		if (!self::isImageValid($image_to_load)) {
+			$image_to_load = self::getPlaceholderImage($size);
+		}
+
+		return "$url/$image_to_load".self::date_modification($file);
+	}
+
+	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
+	{
+		$emp = Config::get('app.emp');
+		return "https://$url/img/thumbs/$sizeImage/$emp/$numhces/$emp-$numhces-$linhces.jpg";
 	}
 
 	public static function url_img_auction($size, $cod_sub)
 	{
-		$img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, null);
+
+		/* $img_file=Config::get('app.url') . "/img/load/$size/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
 		$file="img/AUCTION_" . Config::get('app.emp') . "_$cod_sub.jpg";
-		return $img_file.self::date_modification($file);
+		return $img_file.self::date_modification($file); */
 	}
 
 	public static function url_img_session($size, $cod_sub, $reference)
 	{
+		//Nuevo metodo para cargar imagenes de subastas sin realizar el load.
+		return self::auctionImage($cod_sub, $size, $reference);
 
-		$file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
+		/* $file = "img/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
 		$img_file = Config::get('app.url') . "/img/load/$size/SESSION_" . Config::get('app.emp') . "_" . $cod_sub . "_" . $reference . ".jpg";
-		return $img_file.self::date_modification($file);
-
-		/*
-        // Codigo para evitar la conexion a base de datos y cargar las imágenes directamente
-
-		$emp = Config::get('app.emp');
-		$images_size = \Tools::images_size();
-		$image_to_load = "img/thumbs/$images_size[$size]/SESSION_$emp" . "_" . "$cod_sub" . "_" . "$reference.jpg";
-		$theme = Config::get('app.theme');
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
-		}
-        return   Config::get('app.url') . "/$image_to_load";
-        */
+		return $img_file.self::date_modification($file); */
 	}
 
-	public static function auctionImage($cod_sub, $size = null)
+	public static function auctionImage($cod_sub, $size = null, $reference = null)
 	{
-		//search file without extension
-		$emp = Config::get('app.emp');
 		$url = Config::get('app.url');
-		$theme = Config::get('app.theme');
 
-		if($size) {
-			$images_size = self::images_size();
-			$imagePath = "img/thumbs/$images_size[$size]/AUCTION_{$emp}_{$cod_sub}.*";
+		$imagePath = self::buildAuctionImagePath($size, $cod_sub, $reference);
+		$image_to_load = self::getValidAuctionImage($imagePath, $size, $cod_sub, $reference);
+
+		return "$url/$image_to_load".self::date_modification($image_to_load);
+	}
+
+	private static function auctionImageName($cod_sub, $reference)
+	{
+		$emp = Config::get('app.emp');
+		if (empty($reference)) {
+			return "AUCTION_{$emp}_{$cod_sub}";
 		}
-		else {
-			$imagePath = "img/AUCTION_{$emp}_{$cod_sub}.*";
+		return "SESSION_{$emp}_{$cod_sub}_{$reference}";
+	}
+
+	private static function buildAuctionImagePath($size, $cod_sub, $reference)
+	{
+		$imageName = self::auctionImageName($cod_sub, $reference);
+
+		if(!$size || $size === 'real') {
+			return "img/{$imageName}.*";
 		}
 
+		$images_size = self::images_size();
+		if(!isset($images_size[$size])) {
+			return "img/{$imageName}.*";
+		}
+
+		return "img/thumbs/{$images_size[$size]}/{$imageName}.*";
+	}
+
+	private static function getValidAuctionImage($imagePath, $size, $cod_sub, $reference)
+	{
 		$globImage = glob($imagePath);
 		$image_to_load = $globImage ? $globImage[0] : null;
 
-		$pathNoPhoto = "themes/" . $theme . "/img/items/no_photo";
+		if (!self::isImageValid($image_to_load)) {
+			//Si no existe la miniatura la intentamos generar
+			self::generateThumbnail($size, $cod_sub, $reference);
 
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load =  (file_exists($pathNoPhoto . "_$size.png")) ? $pathNoPhoto . "_$size.png" : $pathNoPhoto . ".png";
+			$globImage = glob($imagePath);
+			$image_to_load = $globImage ? $globImage[0] : null;
+
+			//Si no se ha podido generar la miniatura o no existe la imagen original, cargamos la imagen por defecto
+			if (!self::isImageValid($image_to_load)) {
+				$image_to_load = self::getPlaceholderImage($size);
+			}
 		}
 
-		return "$url/$image_to_load";
+		return $image_to_load;
+	}
+
+	private static function isImageValid($image)
+	{
+		return file_exists($image) && filesize($image) >= 500;
+	}
+
+	private static function generateThumbnail($size, $cod_sub, $reference)
+	{
+		$originalImage = self::auctionImageName($cod_sub, $reference) . '.jpg';
+		(new ImageGenerate)->resize_img($size, $originalImage, Config::get('app.theme'), true);
+	}
+
+	private static function getPlaceholderImage($size)
+	{
+		$theme = Config::get('app.theme');
+		$pathNoPhoto = "themes/{$theme}/img/items/no_photo";
+		return file_exists("{$pathNoPhoto}_{$size}.png") ? "{$pathNoPhoto}_{$size}.png" : "{$pathNoPhoto}.png";
 	}
 
 	public static function lotRealImage($numhces, $linhces, $img_num = null)
@@ -1017,7 +1003,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_pdf($cod_sub, $reference, $archive)
 	{
-		$url = "files/" . Config::get('app.emp') . '_' . $cod_sub . '_' . $reference . '_' . $archive . '_' . \App::getLocale() . '.pdf';
+		$url = "files/" . Config::get('app.emp') . '_' . $cod_sub . '_' . $reference . '_' . $archive . '_' . App::getLocale() . '.pdf';
 
 		//si no existe pdf en el idioma lo mostramos en ingles.
 		if (!file_exists($url)) {
@@ -1033,7 +1019,7 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function generateUrlGet($getValue = array())
 	{
 
-		$req = \Request::all();
+		$req = FacadeRequest::all();
 		$to_concat = '';
 		$cont = 0;
 
@@ -1173,7 +1159,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	static public function Seo_url($strValue)
 	{
-		$a = strtolower(\Tools::Limpia(str_replace(' ', '-', str_replace("'", ':', $strValue))));
+		$a = strtolower(self::Limpia(str_replace(' ', '-', str_replace("'", ':', $strValue))));
 		$a = str_replace("------", "-", $a);
 		$a = str_replace("-----", "-", $a);
 		$a = str_replace("----", "-", $a);
@@ -1287,7 +1273,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function numberformat($qtty)
 	{
-		return \Tools::moneyFormat($qtty, FALSE, 0);
+		return ToolsServiceProvider::moneyFormat($qtty, FALSE, 0);
 	}
 
 
@@ -1296,6 +1282,7 @@ class ToolsServiceProvider extends ServiceProvider
 		if (empty($var)) {
 			return abort(404);
 		}
+
 	}
 	#sirve para arrays tambien
 	public static function exit404IfEmptyCollection($collection = null)
@@ -1308,7 +1295,7 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
-		if ( \Config::get("app.gridAllSessions") ){
+		if ( Config::get("app.gridAllSessions") ){
 			$filter_session = array("typeSub", "session" );
 		}else{
 			$filter_session = array("typeSub");
@@ -1390,7 +1377,7 @@ class ToolsServiceProvider extends ServiceProvider
             "title" => $dataSeo->title_seo);
 
         if(!empty($dataSeo->parent)){
-           $breadCrumb= array_merge( \Tools::breadCrumbSeo($dataSeo->parent),$breadCrumb);
+           $breadCrumb= array_merge( ToolsServiceProvider::breadCrumbSeo($dataSeo->parent),$breadCrumb);
         }
 
         return $breadCrumb;
@@ -1649,6 +1636,43 @@ class ToolsServiceProvider extends ServiceProvider
 			'LOTE' => $ref,
 			'CLIENTE' => $cod_cli
 		]);
+	}
+
+	public static function getBlogURLTranslated($lang, $web_blog_id) :array
+	{
+		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
+		foreach ($blogs as $key => $blog) {
+			if ($blog->lang_web_blog_lang == mb_strtoupper($lang)) {
+				unset($blogs[$key]);
+			}
+		}
+		$blog = $blogs->first();
+		if (!$blog) {
+			return [];
+		}
+
+		$categories = Web_Category_Blog_Lang::where('ID_CATEGORY_BLOG_LANG', $blog->primary_category_web_blog)->get();
+		foreach ($categories as $key => $category) {
+			if ($category->lang_category_blog_lang == mb_strtoupper($lang)) {
+				unset($categories[$key]);
+			}
+		}
+		$category = $categories->first();
+		if (!$category) {
+			return [];
+		}
+
+		$to_lang = mb_strtolower($blog->lang_web_blog_lang);
+		$blog_literal_url = 'blog';
+		$category_url = $category->url_category_blog_lang;
+		$blog_url = $blog->url_web_blog_lang;
+
+		$full_url = "/$to_lang/$blog_literal_url/$category_url/" . ($blog->enabled_web_blog_lang != 0 ? "$blog_url" : "");
+
+		return [
+			'url' => $full_url,
+			'to_lang' => $to_lang,
+		];
 	}
 
 }

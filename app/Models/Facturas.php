@@ -3,6 +3,9 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Models\V5\FgDvc1l;
+use App\Models\V5\FxDvc02;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -21,12 +24,19 @@ class Facturas extends Model
     public $imp;
     public $tk;
 
-    public function pending_bills($all = true)
-	{
 
+	/**
+	 * Obtiene las pagos pendientes
+	 * @param bool $all
+	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
+	 */
+    public function pending_bills($all = true, $type = '', $whereIntervalDates = [])
+	{
+		//añadir select tv_contav de fscontav
         $gemp = config('app.gemp');
         $sql = DB::table('FXPCOB')
-                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
+                ->select('FXPCOB.*, FGSUB.COMPRAWEB_SUB, FGSUB.COD_SUB, FGSUB.DES_SUB, FXDVC0.fecha_dvc0', 'FXDVC0.tipo_dvc0')
+				->selectRaw("(select tv_contav from FSCONTAV where SER_CONTAV = SUBSTR(FXPCOB.anum_pcob, 0, 1) and PER_CONTAV = SUBSTR(FXPCOB.anum_pcob, 2, 3) AND EMP_CONTAV = FXPCOB.EMP_PCOB) as tv_contav")
                 ->Join('FXCLI',function($join) use($gemp){
                     $join->on('FXPCOB.COD_PCOB','=','FXCLI.COD_CLI')
                     ->where('GEMP_CLI','=',$gemp);
@@ -46,7 +56,17 @@ class Facturas extends Model
                     ->on('SUB_DVC02','=','COD_SUB');
                 })
                 ->where('COD_PCOB', $this->cod_cli)
-                ->where('EMP_PCOB', Config::get('app.emp'));
+                ->where('EMP_PCOB', Config::get('app.emp'))
+				->when(!empty($type), function ($query) use ($type) {
+					return $query->where('FXDVC0.tipo_dvc0', $type);
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fecha_dvc0', $interval);
+						}
+					});
+				});
                 if(!empty($this->serie)){
                     $sql->where('anum_pcob',$this->serie);
                 }
@@ -78,18 +98,46 @@ class Facturas extends Model
                ->first();
     }
 
-    public function paid_bill(){
-        $sql =  DB::TABLE('FXCOBRO1')
-                ->select('afra_cobro1,nfra_cobro1,tv_contav,imp_cobro1,fec_cobro1')
-                ->Join('FSCONTAV',function($join){
+	/**
+	 * Obtiene la cobros de facturas
+	 * @param bool $showWhenPending
+	 * @param string $type Tipo de factura: P (propietario) o L (licitador)
+	 * @param array $whereIntervalDates Intervalos de fechas
+	 * @param bool $group Agrupar resultados por factura, en caso contrario los resultados son por cobros
+	 */
+    public function paid_bill($showWhenPending = true, $type = '', $whereIntervalDates = [], $group = false){
+        $sql = DB::TABLE('FXCOBRO1')
+                ->select('afra_cobro1, nfra_cobro1, tv_contav, fec_cobro1')
+                ->join('FSCONTAV',function($join){
                     $join->on('FSCONTAV.SER_CONTAV','=','SUBSTR(FXCOBRO1.afra_cobro1,0,1)')
                     ->on('FSCONTAV.PER_CONTAV','=','SUBSTR(FXCOBRO1.afra_cobro1,2)')
                     ->where('EMP_contav','=',Config::get('app.emp'));
                 })
-                ->where('EMP_COBRO1',\Config::get('app.emp'))
-                ->where('CLI_COBRO1',$this->cod_cli);
-                if(!empty(\Config::get('app.allBills'))){
-                    $sql->whereIn('tv_contav',[\Config::get('app.allBills')]);
+                ->where('EMP_COBRO1', Config::get('app.emp'))
+                ->where('CLI_COBRO1',$this->cod_cli)
+				->when(!$showWhenPending, function ($query) {
+					return $query->leftjoin('FXPCOB', 'FXPCOB.ANUM_PCOB = FXCOBRO1.AFRA_COBRO1 AND FXPCOB.NUM_PCOB = FXCOBRO1.NFRA_COBRO1 AND FXPCOB.EMP_PCOB = FXCOBRO1.EMP_COBRO1')
+						->whereNull('FXPCOB.ANUM_PCOB');
+				})
+				->when(!empty($type), function ($query) use ($type) {
+					return $query->join('FXDVC0', 'FXDVC0.EMP_DVC0 = FXCOBRO1.EMP_COBRO1 and FXDVC0.ANUM_DVC0 = FXCOBRO1.AFRA_COBRO1 and FXDVC0.NUM_DVC0 = FXCOBRO1.NFRA_COBRO1')
+						->where('FXDVC0.tipo_dvc0', $type);
+				})
+				->when(!empty($whereIntervalDates), function ($query) use ($whereIntervalDates) {
+					$query->where(function($query) use ($whereIntervalDates){
+						foreach ($whereIntervalDates as $interval) {
+							$query->orWhereBetween('fec_cobro1', $interval);
+						}
+					});
+				})
+				->when($group, function ($query) {
+					$query->groupBy('afra_cobro1', 'nfra_cobro1', 'tv_contav', 'fec_cobro1');
+					$query->selectRaw('sum(imp_cobro1) as imp_cobro1');
+				}, function ($query) {
+					$query->addSelect('imp_cobro1');
+				});
+                if(!empty(Config::get('app.allBills'))){
+                    $sql->whereIn('tv_contav',[Config::get('app.allBills')]);
                 }
                 if(Request::input('order') == 'lasted'){
                     $sql->orderBy('fec_cobro1','asc');
@@ -113,14 +161,13 @@ class Facturas extends Model
                 ->first();
     }
 
-    public function getFactSubasta(){
-
-
+    public function getFactSubasta()
+	{
         $bindings = array(
             'emp'       => Config::get('app.emp'),
             'anum'       =>$this->serie,
             'num'   => $this->numero,
-            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
         );
 
         $sql = "SELECT FGDVC1L.*,
@@ -133,8 +180,26 @@ class Facturas extends Model
             WHERE EMP_DVC1L = :emp AND NUM_DVC1L = :num AND ANUM_DVC1L = :anum";
 
         return DB::select($sql,$bindings);
-
     }
+
+	/**
+	 * Copia del metodo @see getFactSubasta()
+	 * pero permitiendo obtener varias facturas a la vez.
+	 */
+	public function getFacturaLotsByMultipleSheets(array $seriesAndLines)
+	{
+		if(empty($seriesAndLines)){
+			return collect();
+		}
+
+		$invoiceLots = FgDvc1l::query()
+			->select('FGDVC1L.*')
+			->withBuyerLotsInfo()
+			->whereMultiplesSeriesAndLines($seriesAndLines)
+			->get();
+
+		return $invoiceLots;
+	}
 
     public function getFactTexto(){
 
@@ -389,5 +454,34 @@ class Facturas extends Model
         DB::select($sql,$binding);
     }
 
+	public function getBillsFilesFromMultipleSheets(array $seriesAndLines)
+	{
+		if (empty($seriesAndLines)) {
+			return collect();
+		}
+
+		$bills = FxDvc02::query()
+			->joinDvc0()
+			->whereUser($this->cod_cli)
+			->whereMultiplesSeriesAndLines($seriesAndLines)
+			->whereNotNull('fich_dvc02')
+			->select('anum_dvc02', 'num_dvc02', 'fich_dvc02', 'fecha_dvc0')
+			->get();
+
+		$billsData = $bills->map(function ($bill) {
+			$emp = Config::get('app.emp');
+			$fileName = "bills/{$emp}/{$bill->fich_dvc02}.PDF";
+			$date = date('d-m-Y', strtotime($bill->fecha_dvc0));
+
+			return [
+				'filname' => $fileName,
+				'date' => $date,
+				'anum_dvc02' => $bill->anum_dvc02,
+				'num_dvc02' => $bill->num_dvc02,
+			];
+		});
+
+		return $billsData;
+	}
 
 }

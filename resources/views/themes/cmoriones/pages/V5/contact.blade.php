@@ -4,14 +4,6 @@
 {{ trans(\Config::get('app.theme').'-app.foot.faq') }}
 @stop
 
-@push('scripts')
-	@if(config('app.captcha_v3'))
-	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
-	@else
-	<script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
-	@endif
-@endpush
-
 @section('content')
 
 @php
@@ -32,9 +24,8 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 
 			<form name="contactForm" id="contactForm" novalidate>
 				@csrf
-				@if(config('app.captcha_v3'))
-					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
-				@endif
+
+				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
 				<div class="mb-3">
 					<label for="texto__1__nombre" class="form-label">{{ trans("$theme-app.login_register.contact") }}</label>
@@ -60,11 +51,9 @@ $bread[] = array("name" => trans(\Config::get('app.theme').'-app.foot.contact') 
 					</label>
 				</div>
 
-				@if(!config('app.captcha_v3'))
-				<div class="mb-3">
-					<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}" data-callback="onSubmit"></div>
-				</div>
-				@endif
+				<p class="captcha-terms">
+					{!! trans("$theme-app.global.captcha-terms") !!}
+				</p>
 
 				<button type="submit" class="btn btn-lb-primary">Enviar</a>
 

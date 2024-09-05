@@ -1,11 +1,3 @@
-@push('scripts')
-	@if(config('app.captcha_v3'))
-	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
-	@else
-	<script src="https://www.google.com/recaptcha/api.js?hl={{ config('app.locale') }}" async defer></script>
-	@endif
-@endpush
-
 @php
     $name = $data['usuario']->nom_cliweb ?? '';
     $phone = $data['usuario']->tel1_cli ?? '';
@@ -16,9 +8,7 @@
     <form id="infoLotForm" name="infoLotForm" method="post" onsubmit="sendInfoLot(event)">
         @csrf
 
-		@if(config('app.captcha_v3'))
-			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
-		@endif
+		<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
         <input name="auction" type="hidden" value="{{ $lote_actual->cod_sub }} - {{ $lote_actual->des_sub }}">
         <input name="lot_name" type="hidden" value="{{ $lote_actual->ref_asigl0 }} - {{ $lote_actual->descweb_hces1 }} ">
@@ -69,6 +59,10 @@
                     </label>
                 </div>
             </div>
+
+			<p class="captcha-terms">
+				{!! trans("$theme-app.global.captcha-terms") !!}
+			</p>
 
             <div class="text-center text-lg-end">
                 <button class="btn btn-lb-primary btn-medium" type="submit">

@@ -306,7 +306,8 @@ $lang = [
 		'see_more' => 'Ver más',
 		'sort' => 'Ordenar',
 		'all' => 'All',
-		'cancel' => 'Cancelar'
+		'cancel' => 'Cancelar',
+		'captcha-terms' => 'Este sitio está protegido por reCAPTCHA y se aplican la <a href="https://policies.google.com/privacy" target="_blank">Política de privacidad</a> y los <a href="https://policies.google.com/terms" target="_blank">Términos de servicio</a> de Google.',
 	),
 	'head' =>
 	array(
@@ -936,6 +937,7 @@ $lang = [
 		'assign_ministry' => 'Asignar al ministerio',
 		'cost_price' => 'Precio coste',
 		'auctionConditions'	=> 'Al pujar confirma que acepta las condiciones de la sala.' ,
+		'open_lot_to_jump' => 'Abrir el lote en el caso de estar cerrado',
 	),
 	'subastas' =>
 	array(

@@ -12,7 +12,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FgSub_lang;
 use App\Models\V5\AucSessions_Lang;
 use App\Models\V5\AucSessions;
-
+use App\Providers\ToolsServiceProvider;
 use DB;
 
 class AuctionController extends ApiLabelController
@@ -65,7 +65,7 @@ class AuctionController extends ApiLabelController
 						#idiomas sesion
 						if(!empty($session["sessionLanguages"])){
 							foreach($session["sessionLanguages"] as $sessionLang){
-								$sessionLang["lang"] =  \Tools::getLanguageComplete($sessionLang["lang"]);
+								$sessionLang["lang"] =  ToolsServiceProvider::getLanguageComplete($sessionLang["lang"]);
 								$sessionLang["idauction"] =  $session["idauction"];
 								$sessionLang["reference"] =  $session["reference"];
 								#debemos recuperar su id de sesion
@@ -81,7 +81,7 @@ class AuctionController extends ApiLabelController
 
 				if(!empty($item["auctionlanguages"])){
 					foreach($item["auctionlanguages"] as $auctionLang){
-						$auctionLang["lang"] =  \Tools::getLanguageComplete($auctionLang["lang"]);
+						$auctionLang["lang"] =  ToolsServiceProvider::getLanguageComplete($auctionLang["lang"]);
 						$auctionLang["idauction"] =  $item["idauction"];
 
 
@@ -218,7 +218,7 @@ class AuctionController extends ApiLabelController
 			if(isset(($item["auctionlanguages"]))){
 
 				foreach($item["auctionlanguages"] as $auctionlang){
-					$lang =\Tools::getLanguageComplete($auctionlang["lang"]);
+					$lang =ToolsServiceProvider::getLanguageComplete($auctionlang["lang"]);
 					$auctionlang["idauction"] = $item["idauction"];
 					$auctionlang["lang"] = $lang;
 					$create[] = $auctionlang;
@@ -248,7 +248,7 @@ class AuctionController extends ApiLabelController
 						$sessionId = AucSessions::select('"id_auc_sessions"')->where('"auction"', $item["idauction"])->where('"reference"', $session["reference"])->first();
 
 						foreach($session["sessionLanguages"] as $sessionLang){
-							$sessionLang["lang"] =  \Tools::getLanguageComplete($sessionLang["lang"]);
+							$sessionLang["lang"] =  ToolsServiceProvider::getLanguageComplete($sessionLang["lang"]);
 							$sessionLang["idauction"] =  $item["idauction"];
 							$sessionLang["reference"] =  $session["reference"];
 							#debemos recuperar su id de sesion
@@ -273,7 +273,7 @@ class AuctionController extends ApiLabelController
 			if(isset(($item["auctionlanguages"]))){
 
 				foreach($item["auctionlanguages"] as $auctionlang){
-					$lang =\Tools::getLanguageComplete($auctionlang["lang"]);
+					$lang =ToolsServiceProvider::getLanguageComplete($auctionlang["lang"]);
 					$auctionlang["idauction"] = $item["idauction"];
 					$auctionlang["lang"] = $lang;
 					$create[] = $auctionlang;

@@ -10,7 +10,6 @@
 
 @section('framework-js')
     <script src="{{ URL::asset('vendor/bootstrap/5.2.0/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 @endsection
 
 @section('custom-css')

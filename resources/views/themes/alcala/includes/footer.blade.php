@@ -10,7 +10,6 @@
 
                 <ul class="contacts">
                     <li class="cont-phone">T: +34 91 577 87 97</li>
-                    <li class="cont-phone">M: +34 717 79 17 39</li>
                     <li class="cont-whatsapp">W: +34 616 095 044</li>
                     <li class="cont-email"><a href="mailto:info@alcalasubastas.es">info@alcalasubastas.es</a></li>
                     <li class="cont-adress">C/ Núñez de Balboa, 9<br>
@@ -110,9 +109,7 @@
     <div class="copyr-spacer text-center">
         <div class="container">
 
-            <div class="button-up">
-                <i class="fa fa-chevron-up" aria-hidden="true"></i>
-            </div>
+
             <div class="row">
                 <div class="col-xs-12 col-md-10">
                     &copy; 2019 Alcalá Subastas |

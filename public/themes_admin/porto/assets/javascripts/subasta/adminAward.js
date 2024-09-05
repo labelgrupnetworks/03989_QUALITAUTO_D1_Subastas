@@ -42,10 +42,13 @@ $(document).ready(function () {
 
 });
 
+function deleteAward(button) {
 
-function deleteAward(idauction, ref, licit) {
+	const idauction = $(button).data('idauction');
+	const ref = $(button).data('ref');
+	const licit = $(button).data('licit');
 
-	bootbox.confirm("¿Estas seguro de que quieres eliminar este registro?", function (result) {
+	bootbox.confirm("¿Estas seguro de que quieres eliminar la adjudicación?", function (result) {
         if (result) {
 
 			var token = $("[name='_token']").val();
@@ -63,7 +66,7 @@ function deleteAward(idauction, ref, licit) {
 					response = JSON.parse(response);
 
                     if (response.status == "SUCCESS") {
-						$("#whereAwards").trigger("submit");
+						$("#awardsFilters form").trigger("submit");
                     } else {
                         new PNotify({
                             title: 'Error',
@@ -85,7 +88,3 @@ function deleteAward(idauction, ref, licit) {
 
 	return;
 }
-
-
-
-

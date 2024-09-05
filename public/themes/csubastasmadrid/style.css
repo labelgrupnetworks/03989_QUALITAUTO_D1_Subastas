@@ -1820,16 +1820,13 @@ div.single div.img_single_border {
     position: relative;
 }
 
-
-/*div.col-sm-3-custom:first-child, div.col-sm-3-custom:nth-child(7), div.col-sm-3-custom:nth-child(13) {
-	margin-left: 15px;
-}*/
-
 div.col-sm-3-custom {
     width: 70%;
     display: inline-block;
     border: 1px solid #ccc;
     margin-bottom: 10px;
+	height: 66.40px;
+	overflow: hidden;
 }
 
 div.single div.img_single {
@@ -2297,7 +2294,8 @@ span.clock {
 
 .img-openDragon {
     width: 100%;
-    height: 66.40px;
+    height: 100%;
+	border: 0;
 }
 
 div.data-container,
@@ -6315,4 +6313,21 @@ reinicializo estilo para no afectar al resto de páginas
 .sales-panel .panel-default>.panel-heading+.panel-collapse>.panel-body {
 	margin-top: -6px;
 	border-top: 2px solid var(--primary-color);
+}
+
+:is(.col-video, .col-img) button{
+	background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-color: #fff;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
 }

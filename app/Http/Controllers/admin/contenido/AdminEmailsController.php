@@ -50,9 +50,12 @@ class AdminEmailsController extends Controller
 		$lot = FgAsigl0::select('sub_asigl0', 'ref_asigl0')->orderBy('date_update_asigl0', 'desc')->first();
 		$client = FxCli::select('cod_cli')->orderBy('f_alta_cli')->first();
 
-		$emailDesign->setLot($lot->sub_asigl0, $lot->ref_asigl0);
+		if($lot){
+			$emailDesign->setLot($lot->sub_asigl0, $lot->ref_asigl0);
+			$emailDesign->setPropInfo($lot->sub_asigl0, $lot->ref_asigl0);
+		}
+
 		$emailDesign->setUserByCod($client->cod_cli);
-		$emailDesign->setPropInfo($lot->sub_asigl0, $lot->ref_asigl0);
 
 		$emailDesign->replace();
 		$html = $emailDesign->HTML_email;

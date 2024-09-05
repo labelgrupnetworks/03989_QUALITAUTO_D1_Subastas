@@ -1,182 +1,160 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
-{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
+@php
+    use App\libs\Currency;
+    $currency = new Currency();
+    $divisa = Session::get('user.currency', 'EUR');
+    $divisas = $currency->setDivisa($divisa)->getAllCurrencies();
+    $isFavoritePage = !empty($data['favorites']);
+@endphp
+
 @section('content')
-<script>
-	routing.node_url = '{{ Config::get("app.node_url") }}';
-	var auctions_info = @JSON($data['values']);
-	auctions_info.user = @JSON(\Session::get('user'));
-	var rooms = [];
-</script>
+    <script>
+        routing.node_url = '{{ Config::get('app.node_url') }}';
+        var auctions_info = @JSON($data['values']);
+        auctions_info.user = @JSON(\Session::get('user'));
+        var rooms = [];
+        var currency = @JSON($divisas);
+        var divisa = @JSON($divisa);
 
-<script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}"></script>
-<script src="{{ Tools::urlAssetsCache('/themes/'.$theme.'/custom_node_panel.js') }}"></script>
-<script src="{{ URL::asset('js/hmac-sha256.js') }}"></script>
+        $(function() {
+            $("#actual_currency").trigger('change');
+        });
+    </script>
 
-@include('pages.panel.principal_bar')
+    <script src="{{ URL::asset('vendor/tiempo-real/node_modules/socket.io/node_modules/socket.io-client/socket.io.js') }}">
+    </script>
+    <script src="{{ Tools::urlAssetsCache("/themes/$theme/custom_node_panel.js") }}"></script>
+    <script src="{{ URL::asset('js/hmac-sha256.js') }}"></script>
 
-<style>
-	@media (max-width: 600px) {
-		.custom-wrapper-responsive .auc-data-custom p:first-child {
-			/*height: 25px;
-			padding-right: 10px;*/
-			font-size: 12px;
-		}
-	}
-</style>
+    <section class="orders-page">
 
-<section class="account">
-	<div class="container">
-		<div class="row">
+        <div class="panel-title">
+            <h1>
+                @if ($isFavoritePage)
+                    {{ trans("$theme-app.user_panel.favorites") }}
+                @else
+                    {{ trans("$theme-app.user_panel.orders") }}
+                @endif
+            </h1>
 
-				@php
-                    $tab="orders";
-                    if(!empty($data['favorites'])){
-                        $tab="favorites";
+            <select id="actual_currency">
+                @foreach ($divisas as $divisaOption)
+                    <option value='{{ $divisaOption->cod_div }}' @selected($divisaOption->cod_div == $divisa)>
+                        {{ $divisaOption->cod_div }}
+                    </option>
+                @endforeach
+            </select>
+
+			<div class="dropdown sales-filter">
+				<button class="custom-select" id="sales-filter-toogle" data-toggle="dropdown" type="button"
+					aria-haspopup="true" aria-expanded="false">
+					{{ trans("$theme-app.user_panel.select_auction") }}
+					<i class="fa fa-chevron-down" aria-hidden="true"></i>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="sales-filter-toogle">
+					<form action="">
+						@if(request('favorites'))
+							<input type="hidden" name="favorites" value="1">
+						@endif
+
+						@foreach ($data['auctionsAvailables'] as $codSub => $auctionName)
+							@php
+								$auctionCode = explode('-', $auctionName)[0];
+							@endphp
+							<li>
+								<div class="checkbox">
+									<label>
+										<input name="cods_sub[]" type="checkbox" value="{{ $codSub }}"
+											@checked(in_array($codSub, request('cods_sub', [])))>{{ $auctionCode }}
+									</label>
+								</div>
+							</li>
+						@endforeach
+						<li class="divider" role="separator"></li>
+						<li>
+							<button class="btn btn-lb btn-lb-primary"
+								type="submit">{{ trans("$theme-app.global.filter") }}</button>
+						</li>
+					</form>
+				</ul>
+			</div>
+        </div>
+
+        <div class="orders-auctions-block">
+            @php
+                $finalized = [];
+                $notFinalized = [];
+            @endphp
+
+            @foreach ($data['values'] as $key_sub => $all_inf)
+                @php
+                    //ver si la subasta está cerrada
+                    $SubastaTR = new \App\Models\SubastaTiempoReal();
+                    $SubastaTR->cod = $all_inf['inf']->cod_sub;
+                    $SubastaTR->session_reference = $all_inf['inf']->reference;
+
+                    $ended = $SubastaTR->getStatusSessions();
+                    $subasta_finalizada = false;
+
+                    if ($ended && $all_inf['inf']->tipo_sub != 'V') {
+                        $subasta_finalizada = true;
+                        array_unshift($finalized, $all_inf);
+                    } else {
+                        array_unshift($notFinalized, $all_inf);
                     }
 
-                    use App\libs\Currency;
-                    $currency = new Currency();
-                    $divisa = !empty(Session::get('user.currency'))? Session::get('user.currency') : 'EUR';
-                    $currency->setDivisa($divisa);
-					$divisas = $currency->getAllCurrencies();
+                    $escalado = new \App\Models\Subasta();
+                    $escalado->cod = $key_sub;
                 @endphp
 
-			<script>
-				var currency =  @JSON($divisas);
-				var divisa = @JSON($divisa);
-			</script>
 
-			<div class="col-xs-12">
-				@include('pages.panel.menu')
-			</div>
+                @if ($all_inf['inf']->tipo_sub != 'V' && !$subasta_finalizada)
+                    <script>
+                        rooms.push('{{ $key_sub }}');
+                    </script>
 
-			<div class="col-xs-12">
+                    @include('pages.panel.orders.auction', ['subasta_finalizada' => false])
+                @endif
+            @endforeach
 
-				<div role="tabpanel" class="user-datas-title">
-					@if(!empty($data['favorites']))
-					<p>{{ trans($theme.'-app.user_panel.favorites') }}</p>
-					@else
-					<p>{{ trans($theme.'-app.user_panel.orders') }}</p>
-					@endif
-				</div>
-
-				<div class="panel-group" id="accordion">
-					<div class="panel panel-default marg-resp">
-						@php
-
-						$finalized = [];
-						$notFinalized = [];
-						@endphp
+            @foreach ($finalized as $all_inf)
+                @include('pages.panel.orders.auction', ['subasta_finalizada' => true])
+            @endforeach
 
 
-						<div class="title-collapse" data-toggle="collapse" data-target="#auctions_accordion">
-							<p>
-								{{ trans($theme.'-app.foot.auctions-active') }}
-								<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-							</p>
-						</div>
-
-						{{--<div class="auctions-list-title"><strong>{{ trans($theme.'-app.subastas.next_auctions') }}</strong></div>--}}
-						<div class="collapse js-title-collapse in" id="auctions_accordion">
-						@foreach($data['values'] as $key_sub => $all_inf)
-
-						@php
-
-						//ver si la subasta está cerrada
-						$SubastaTR = new \App\Models\SubastaTiempoReal();
-						$SubastaTR->cod =$all_inf['inf']->cod_sub;
-						$SubastaTR->session_reference = $all_inf['inf']->reference;
-
-						$ended = $SubastaTR->getStatusSessions();
-						$subasta_finalizada = false;
-
-						if($ended && $all_inf['inf']->tipo_sub != 'V'){
-							$subasta_finalizada = true;
-							array_unshift($finalized, $all_inf);
-						}
-						else{
-							array_unshift($notFinalized, $all_inf);
-						}
-
-						$escalado = new \App\Models\Subasta;
-						$escalado->cod = $key_sub;
-						@endphp
+        </div>
+    </section>
 
 
-						@if ($all_inf['inf']->tipo_sub != 'V' && !$subasta_finalizada)
-						<script>
-							rooms.push('{{$key_sub}}');
-						</script>
-
-							@include('pages.panel.orders_auction', ['subasta_finalizada' => false])
-
-						@endif
-
-						@endforeach
-						</div>
-
-						@if(count($finalized) > 0)
-
-						<div class="title-collapse mt-3" data-toggle="collapse" data-target="#auctions_fin_accordion">
-							<p>
-								{{ trans($theme.'-app.subastas.finished_auctions') }}
-								<span style="float: right"><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-							</p>
-						</div>
-
-						<div class="collapse js-title-collapse" id="auctions_fin_accordion">
-						@foreach ($finalized as $all_inf)
-							@include('pages.panel.orders_auction', ['subasta_finalizada' => true])
-						@endforeach
-						</div>
-
-						@endif
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-
-<div id="modalPujarPanel" class="container modal-block mfp-hide ">
-	<div data-to="pujarLotePanel" class="modal-sub-w">
-			<section class="panel">
-					<div class="panel-body">
-							<div class="modal-wrapper">
-									<div class=" text-center single_item_content_">
-										<p class="class_h1">{{ trans($theme.'-app.lot.confirm_bid') }}</p><br/>
-										<span for="bid" class='desc_auc'>{{ trans($theme.'-app.lot.you_are_bidding') }} </span> <strong><span class="precio"></span> €</strong><br/>
-										<span class="ref_orden hidden"></span>
-										<br>
-											<button id="confirm_puja_panel" class="btn btn-color button_modal_confirm btn-custom">{{ trans($theme.'-app.lot.confirm') }}</button>
-											<div class='mb-10'></div>
-											 <div class='mb-10'></div>
-											<ul class="items_list">
-												<li><?=trans($theme.'-app.lot.tax_not_included')?> </li>
-
-											</ul>
-									</div>
-							</div>
-					</div>
-			</section>
-	</div>
-</div>
-
-<script>
-	$( document ).ready(function() {
-		$('.js-title-collapse').on('show.bs.collapse', function (e) {
-			$(`[data-target^='#${e.target.id}'] i.fa.fa-caret-right`).removeClass('fa-caret-right').addClass('fa-caret-down');
-		});
-
-		$('.js-title-collapse').on('hide.bs.collapse', function (e) {
-			$(`[data-target^='#${e.target.id}'] i.fa.fa-caret-down`).removeClass('fa-caret-down').addClass('fa-caret-right');
-		});
-	});
-
-</script>
+    <div class="container modal-block mfp-hide " id="modalPujarPanel">
+        <div class="modal-sub-w" data-to="pujarLotePanel">
+            <section class="panel">
+                <div class="panel-body">
+                    <div class="modal-wrapper">
+                        <div class=" text-center single_item_content_">
+                            <p class="class_h1">{{ trans($theme . '-app.lot.confirm_bid') }}</p><br />
+                            <span class='desc_auc' for="bid">{{ trans($theme . '-app.lot.you_are_bidding') }} </span>
+                            <strong><span class="precio"></span> €</strong><br>
+                            <span class="ref_orden hidden"></span>
+                            <br>
+                            <button class="btn btn-color button_modal_confirm btn-custom"
+                                id="confirm_puja_panel">{{ trans($theme . '-app.lot.confirm') }}</button>
+                            <div class='mb-10'></div>
+                            <div class='mb-10'></div>
+                            <ul class="items_list">
+                                <li>
+                                    {!! trans("$theme-app.lot.tax_not_included") !!}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 @stop

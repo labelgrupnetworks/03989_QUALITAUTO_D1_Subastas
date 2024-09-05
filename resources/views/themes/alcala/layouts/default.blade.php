@@ -21,8 +21,9 @@
     @endif
 
 <div class="button-up">
-    <i class="fa fa-chevron-up" aria-hidden="true"></i>
-
+	<div class="btn-icon-wrapp">
+		<x-icon.fontawesome icon=chevron-up></x-icon.fontawesome>
+	</div>
 </div>
 {{--  {!! Tools::querylog() !!} --}}
 </body>

@@ -304,7 +304,8 @@ $lang =[
 			'see_more' => 'See more',
 			'sort' => 'Sort',
 			'all' => 'Todas',
-			'cancel' => 'Cancel'
+			'cancel' => 'Cancel',
+			'captcha-terms' => 'This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.',
 		),
 	'head' =>
 		array (
@@ -907,6 +908,7 @@ $lang =[
 			'streaming' => 'Streaming',
 			'author' => 'Artist',
 			'auctionConditions'	=> 'By bidding you confirm that you accept the conditions of the room' ,
+			'open_lot_to_jump' => 'Open the lot if it is closed',
 		),
 	'subastas' =>
 		array (

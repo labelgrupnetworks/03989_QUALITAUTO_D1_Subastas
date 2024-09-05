@@ -32,7 +32,7 @@
     <div class="auction-cover">
         <div class="auction-cover-image">
             <img width="100%"
-                src="/img/load/subasta_large/SESSION_{{ $ficha_subasta->emp_sub }}_{{ $ficha_subasta->cod_sub }}_{{ $ficha_subasta->reference }}.jpg"
+                src="{{ Tools::url_img_session('subasta_large', $ficha_subasta->cod_sub, $ficha_subasta->reference) }}"
                 class="img-responsive">
         </div>
         <div class="auction-cover-info">

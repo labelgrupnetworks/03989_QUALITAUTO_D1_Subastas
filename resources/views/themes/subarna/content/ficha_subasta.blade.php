@@ -5,7 +5,7 @@
                 <div class="col-sm-7 col-xs-12">
                     <div class="img-subasta">
                         <div class="img-border-auction">
-                            <img  width="100%" src="/img/load/subasta_large/AUCTION_{{ $data["auction"]->emp_sub }}_{{ $data["auction"]->cod_sub }}.jpg" class="img-responsive">
+                            <img  width="100%" src="{{ Tools::url_img_auction('subasta_large', $data["auction"]->cod_sub) }}" class="img-responsive">
                         </div>
                     </div>
                 </div>

@@ -33,12 +33,8 @@ class EventServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		Event::listen(function (QueueBusy $event) {
-			$recipients = (new RecipientsNotificationList)->getWebAlerts();
-			foreach ($recipients as $recipient) {
-				Notification::route('mail', $recipient)
-					->notify(new BusyJobs($event));
-			}
-
+			$recipients = (new RecipientsNotificationList)->getDebugTeam();
+			Notification::route('mail', $recipients)->notify(new BusyJobs($event));
 			Log::warning("Queue is busy", ['event' => $event]);
 		});
 	}

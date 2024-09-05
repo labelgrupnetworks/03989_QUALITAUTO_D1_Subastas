@@ -461,8 +461,18 @@ function logElementScroll(event) {
 	document.documentElement.style.setProperty('--top-sticky-sections', sticky);
 }
 
+/**
+ * @deprecated
+ * Al quitar el submenu este metodo ya no es necesario,
+ * Lo mantenemos por si en un futuro se vuelve a necesitar
+ * @returns
+ */
 function isHeaderOpen() {
-	return document.querySelector('#submenu-header').classList.contains('open');
+	const element = document.querySelector('#submenu-header');
+	if (!element) {
+		return false;
+	}
+	return element.classList.contains('open');
 }
 
 function isInMobileScreen() {
@@ -628,9 +638,15 @@ function selectToSelect2(jqSelect) {
 	$parentElement.removeClass('d-none');
 }
 
-function sendInfoLot(event) {
+async function sendInfoLot(event) {
 	event.preventDefault();
 	event.stopPropagation();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
 
 	const submitButton = event.target.querySelector('button[type=submit]');
 	submitButton.disabled = true;

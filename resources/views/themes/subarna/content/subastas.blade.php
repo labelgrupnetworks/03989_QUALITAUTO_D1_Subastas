@@ -27,7 +27,7 @@
                     <a title="{{ $subasta->name }}" href="<?= $url_subasta?>">
                         <div class="img-lot">
                                 <img
-                                    src="/img/load/subasta_medium/AUCTION_{{ $subasta->emp_sub }}_{{ $subasta->cod_sub }}.jpg"
+                                    src="{{ Tools::url_img_auction('subasta_medium', $subasta->cod_sub) }}"
                                     alt="{{ $subasta->name }}"
                                     class="img-responsive"
                                 />

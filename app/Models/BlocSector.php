@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Config;
@@ -38,7 +39,7 @@ class BlocSector extends Model
 
         $bindings = array(
                             'emp'      => Config::get('app.emp'),
-							'lang'      => \Tools::getLanguageComplete(Config::get('app.locale')),
+							'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
 							'subc'	=> $subc
 
 
@@ -102,7 +103,7 @@ class BlocSector extends Model
 
         $bindings = array(
                             'emp'      => Config::get('app.emp'),
-                            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale')),
+                            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
 							);
 		if(!empty($type)){
 			$bindings['type'] = $type;
@@ -132,7 +133,7 @@ class BlocSector extends Model
 
         $bindings = array(
             'emp'      => Config::get('app.emp'),
-            'lang'     => \Tools::getLanguageComplete(Config::get('app.locale'))
+            'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
         );
         $sectors_tmp = DB::select($sql,$bindings);

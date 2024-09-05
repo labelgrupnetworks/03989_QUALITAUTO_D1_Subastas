@@ -46,13 +46,13 @@
 <div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
 	<div class="container">
 		<div class="row flex-display flex-wrap">
-			<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
+			<div class="col-xs-12 lotes-destacados-principal-title">
 				<div class="lotes-destacados-tittle color-letter">
 					{{ trans(\Config::get('app.theme').'-app.lot_list.lotes_destacados') }}
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-sm-10 col-md-12 text-center">
+			<div class="col-xs-12 text-center">
 				<div class="lds-ellipsis loader">
 					<div></div>
 					<div></div>

@@ -12,7 +12,7 @@
 .calendarItems .row {padding:10px 0;}
 
 @media (min-width: 576px) {
-	.modal-dialog {
+	.modal-dialog:not(.modal-sm) {
 		min-width: 80%;
 		width:80%;
 	}

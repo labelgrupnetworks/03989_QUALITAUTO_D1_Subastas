@@ -14,7 +14,7 @@
 		@php
 		$subasta_finalizada = false;
 		if(!empty($auction)){
-			
+
 			$sql = 'SELECT ESTADO, "reference", "start", "end", "name", "id_auc_sessions" FROM "auc_sessions" left join WEB_SUBASTAS  on ID_EMP="company" and ID_SUB="auction" and SESSION_REFERENCE="reference" WHERE "company" = :emp and "auction" = :cod_sub order by "reference"';
        $bindings = array(
 						'emp'           => Config::get('app.emp'),
@@ -166,7 +166,9 @@
 		@if (empty($filters["section"]))
 			<div class="links-sections">
 				@foreach($sections as $sec)
-					<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0 ?? '', 'keysection' => $sec['key_sec']))}}">{{ucfirst($sec["des_sec"])}}</a>
+					@if(!empty($sec['key_sec']))
+						<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0 ?? '', 'keysection' => $sec['key_sec']))}}">{{ucfirst($sec["des_sec"])}}</a>
+					@endif
 				@endforeach
 			</div>
 		@endif
@@ -198,7 +200,9 @@
             <div class="modal-button-auction mb-3 d-flex align-items-center justify-content-space-bettween flex-wrap">
                 <div class="btn-current-action gotoauction col-md-6 col-xs-12 ">
                     @php
-                    $url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
+						if(empty($url_tiempo_real)){
+                   		 	$url_tiempo_real=\Routing::translateSeo('api/subasta').$auction->cod_sub."-".str_slug($auction->name)."-".$auction->id_auc_sessions;
+						}
 					@endphp
 					<a href="{{ $url_tiempo_real }}" target="_blank" class="puja-online texto-puja-online">{{ trans($theme.'-app.subastas.bid_online_now') }}</a>
                 </div>

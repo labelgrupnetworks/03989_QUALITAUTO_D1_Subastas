@@ -42,3 +42,5 @@
 <script defer src="{{ Tools::urlAssetsCache('/themes/' . $theme . '/custom.js') }}"></script>
 <script defer src="{{ URL::asset('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>

@@ -862,27 +862,33 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
             $.magnificPopup.open({items: {src: '#modalJumpLot'}, type: 'inline',showCloseBtn: true,enableEscapeKey: false,  closeOnBgClick: true}, 0);
         });
 
-        window.jump_lot = function()
-	{
-            var lot_go = $("#modalJumpLot #jumpLot").val();
-            var actual_lot = auction_info.lote_actual.ref_asigl0;
-            var jump_lot = 1;
-            if(lot_go != '' && lot_go != actual_lot){
-		$.ajax({
-                    type: "POST",
-                    url: '/api-ajax/jump_lots',
-                    data: {ref:$("#modalJumpLot #jumpLot").val(),codsub:auction_info.lote_actual.sub_hces1,ref_actual:actual_lot},
-                    success: function( data ) {
-                        if(data.status == 'error'){
-                             displayAlert(0, messages.error[data.msg]);
-                        }else{
-                             send_end_lot(jump_lot);
-                        }
-                        $("#modalJumpLot #jumpLot").val('');
-                    }
-                })
-            }
-        }
+	window.jump_lot = function () {
+		var lot_go = $("#modalJumpLot #jumpLot").val();
+		var actual_lot = auction_info.lote_actual.ref_asigl0;
+		var jump_lot = 1;
+		const open_lot = $('#openLot').is(':checked') ? 1 : 0;
+
+		if (lot_go != '' && lot_go != actual_lot) {
+			$.ajax({
+				type: "POST",
+				url: '/api-ajax/jump_lots',
+				data: {
+					ref: lot_go,
+					codsub: auction_info.lote_actual.sub_hces1,
+					ref_actual: actual_lot,
+					open_lot: open_lot
+				},
+				success: function (data) {
+					if (data.status == 'error') {
+						displayAlert(0, messages.error[data.msg]);
+					} else {
+						send_end_lot(jump_lot);
+					}
+					$("#modalJumpLot #jumpLot").val('');
+				}
+			})
+		}
+	}
 
         $("#baja_client").click(function() {
             var direccion=' ';
@@ -1190,7 +1196,10 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
 
 $(document).ready(function () {
 	//hacemos la llamada para el lote actual, el resto se llaman al pasar de lote
-	showInfoTrLot();
+	//El if es necesario para clientes que tienen esta función desactivada
+	if (typeof showInfoTrLot === 'function') {
+		showInfoTrLot();
+	}
 })
 
 

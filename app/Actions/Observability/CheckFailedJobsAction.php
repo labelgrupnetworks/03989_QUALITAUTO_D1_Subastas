@@ -15,7 +15,6 @@ class CheckFailedJobsAction
 
 	public function __invoke()
 	{
-		Log::info("Test para comprovar que la tarea se ejecuta y guarda el log en el lugar correcto.");
 		$failedJobs = DB::table('FAILED_JOBS')->get();
 
 		//no podemos hacer el where sobre la tabla poque el campo queue es clob...
@@ -26,11 +25,8 @@ class CheckFailedJobsAction
 			return;
 		}
 
-		$recipients = (new RecipientsNotificationList)->getWebTeam();
-
-		foreach ($recipients as $recipient) {
-			$notification = Notification::route('mail', $recipient);
-			$this->sendNotification($notification, new FailedJobs($numberToFailedJobs));
-		}
+		$recipients = (new RecipientsNotificationList)->getDebugTeam();
+		$notification = Notification::route('mail', $recipients);
+		$this->sendNotification($notification, new FailedJobs($numberToFailedJobs));
 	}
 }

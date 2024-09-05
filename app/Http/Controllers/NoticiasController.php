@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Config;
-
 use App\Models\Blog;
 use App\Models\CategorysBlog;
 use App\Models\Sec;
 use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerModel;
+use App\Providers\RoutingServiceProvider;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class NoticiasController extends Controller
 {
@@ -46,14 +46,14 @@ class NoticiasController extends Controller
             $categoryBlog->url_category = $key_categ;
             $categ = $categoryBlog->getCategory();
             $url_category_blog_lang=!empty($categ->url_category_blog_lang)?$categ->url_category_blog_lang:$key_categ;
-            $SEO_metas->meta_title = !empty($categ->metatit_category_blog_lang)?$categ->metatit_category_blog_lang:trans(\Config::get('app.theme').'-app.blog.blog_metatile');
-            $SEO_metas->meta_description = !empty($categ->meta_description)?$categ->meta_description:trans(\Config::get('app.theme').'-app.blog.blog_metades');
-            $SEO_metas->canonical = $_SERVER['HTTP_HOST'].\Routing::translateSeo('blog') .$url_category_blog_lang ;
+            $SEO_metas->meta_title = !empty($categ->metatit_category_blog_lang)?$categ->metatit_category_blog_lang:trans(Config::get('app.theme').'-app.blog.blog_metatile');
+            $SEO_metas->meta_description = !empty($categ->meta_description)?$categ->meta_description:trans(Config::get('app.theme').'-app.blog.blog_metades');
+            $SEO_metas->canonical = $_SERVER['HTTP_HOST'].RoutingServiceProvider::translateSeo('blog') .$url_category_blog_lang ;
         }else{
-            $SEO_metas->meta_title = trans(\Config::get('app.theme').'-app.blog.blog_metatile');
-            $SEO_metas->meta_description = trans(\Config::get('app.theme').'-app.blog.blog_metades');
+            $SEO_metas->meta_title = trans(Config::get('app.theme').'-app.blog.blog_metatile');
+            $SEO_metas->meta_description = trans(Config::get('app.theme').'-app.blog.blog_metades');
 
-            $SEO_metas->canonical =  substr($_SERVER['HTTP_HOST'].\Routing::translateSeo('blog'), 0, -1);
+            $SEO_metas->canonical =  substr($_SERVER['HTTP_HOST'].RoutingServiceProvider::translateSeo('blog'), 0, -1);
 
         }
 
@@ -103,7 +103,7 @@ class NoticiasController extends Controller
         $noticias=$blog->getNoticia($key_categ,$key_news);
 
         if(empty($noticias) || empty($categorys[$noticias->primary_category_web_blog])){
-            exit (\View::make('front::errors.404'));
+            exit (View::make('front::errors.404'));
         }
 
         $cod_sub = '0';
@@ -147,7 +147,7 @@ class NoticiasController extends Controller
 	public function mosaicBlog(){
 
 		if(!Config::get('app.mosaic_blog_category', 0)){
-			exit (\View::make('front::errors.404'));
+			exit (View::make('front::errors.404'));
 		}
 
 		$key_categ = Config::get('app.mosaic_blog_category');
@@ -163,10 +163,10 @@ class NoticiasController extends Controller
 
 		#La idea es que no tengan enlace
 		//$url_category_blog_lang = !empty($categ->url_category_blog_lang)?$categ->url_category_blog_lang:$key_categ;
-		//$SEO_metas->canonical = $_SERVER['HTTP_HOST'].\Routing::translateSeo('blog') .$url_category_blog_lang;
+		//$SEO_metas->canonical = $_SERVER['HTTP_HOST'].RoutingServiceProvider::translateSeo('blog') .$url_category_blog_lang;
 
-		$SEO_metas->meta_title =  $categ->metatit_category_blog_lang ?? trans(\Config::get('app.theme').'-app.blog.blog_metatile');
-        $SEO_metas->meta_description = $categ->meta_description ?? trans(\Config::get('app.theme').'-app.blog.blog_metades');
+		$SEO_metas->meta_title =  $categ->metatit_category_blog_lang ?? trans(Config::get('app.theme').'-app.blog.blog_metatile');
+        $SEO_metas->meta_description = $categ->meta_description ?? trans(Config::get('app.theme').'-app.blog.blog_metades');
 
         $data = array (
             'noticias'=>$noticias,
@@ -251,7 +251,7 @@ class NoticiasController extends Controller
 					])->first();
 
 		if(!$banner){
-			exit (\View::make('front::errors.404'));
+			exit (View::make('front::errors.404'));
 		}
 
 		$banner->images = WebNewbannerItemModel::select('id', 'texto')
@@ -265,6 +265,5 @@ class NoticiasController extends Controller
 
 		return View::make('front::pages.noticias.event', compact('banner'));
 	}
-
 
 }

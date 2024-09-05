@@ -9,6 +9,7 @@
 namespace App\Models\delivery;
 
 use Config;
+use App\Providers\ToolsServiceProvider;
 /**
  * Description of delivery
  *
@@ -239,7 +240,7 @@ class Delivery_deliverea extends DeliveryService  {
     }
      /*
     function getFinalPrice(){
-        return \Tools::moneyFormat($this->final_price,false,2);
+        return ToolsServiceProvider::moneyFormat($this->final_price,false,2);
     }
     */
     function getCodesProvider(){
