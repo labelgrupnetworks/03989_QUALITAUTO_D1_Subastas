@@ -166,6 +166,10 @@ class RegisterEmpresaTest extends TestCase
 		$this->requestUserMock['_token'] = csrf_token();
 		$this->requestUserMock['nif'] = 'R_9476182_B';
 
+		// Debería tener el transition y añadir el rollback al final,
+		// Al hacer el transition con closure, no se ejecuta el rollback al final
+		//DB::beginTransaction();
+
 		DB::transaction(function () {
 			$response = $this->post(route('send_register'), $this->requestUserMock);
 
