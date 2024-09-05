@@ -26,11 +26,12 @@ span {
 
 body > .tiempo_real_content {
 	height: 100vh;
-	padding: 10px;
+	padding: 0 10px;
 	display: grid;
 	grid-template-columns: 65% 35%;
-	grid-template-rows: auto auto repeat(3, 1fr) 20%;
+	grid-template-rows: min-content auto auto repeat(2, 1fr) 1fr;
 	row-gap: 10px;
+	column-gap: 5px;
 }
 
 header {
@@ -45,14 +46,24 @@ header {
 
 header a {
 	display: block;
-	height: calc(.9em * 1.5);
-	min-height: 50px;
+	/* height: calc(.9em * 1.5);
+	min-height: 50px; */
 }
 
 header img {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
+}
+
+header.enc {
+	height: auto;
+	padding: 10px 0;
+}
+
+.enc h1 {
+	color: inherit;
+	margin: 0;
 }
 
 h1 {
@@ -69,9 +80,13 @@ h1 {
     -o-text-overflow: ellipsis;
 }
 
+header .brand img {
+	max-height: 1em;
+}
+
 #main_lot_box {
 	grid-column: 1 / 2;
-	grid-row: 2 / end;
+	grid-row: 3 / end;
 	position: relative;
 }
 
@@ -102,10 +117,18 @@ h1 {
 	background-position: center;
 }
 
-.tiempo_real_content>div:not(#main_lot_box) {
+#lote_actual_main {
+	text-align: left;
+}
+
+.tiempo_real_content>div:not(#main_lot_box, .lot) {
 	border: 1px solid #DBDBDB;
 	padding-left: 5px;
 	padding-right: 0;
+}
+
+.starting-price {
+	grid-row: span 2;
 }
 
 /* Estilo para el último elemento */
@@ -166,6 +189,7 @@ link{
 */
 .lot {
 	text-align: center;
+	border: 0;
 }
 
 .current-bid{
@@ -173,7 +197,14 @@ link{
 	font-weight: 800;
 }
 
+@media (min-width: 3200px) {
+	.current-bid, .next-bid {
+		font-size: 1.5em;
+	}
+}
+
 .pujas_model {
+	display: flex;
 	justify-content: space-evenly;
 	padding-bottom: 5px;
 }
@@ -196,6 +227,13 @@ link{
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-bottom: .5rem;
+}
+
+.aside {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	margin: 0;
 }
 
 /*
