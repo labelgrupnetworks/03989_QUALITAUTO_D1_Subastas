@@ -5,9 +5,9 @@
 @stop
 
 @section('content')
-    <link href="{{ Tools::urlAssetsCache('/default/v2/css/tiempo_real_proyector.css') }}" rel="stylesheet" />
-    <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/tiempo_real/tiempo_real_proyector.css') }}"
-        rel="stylesheet" />
+    <link href="{{ Tools::urlAssetsCache('/css/tiempo_real/proyector_v2.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/tiempo_real/tiempo_real_proyector.css') }}"
+        rel="stylesheet" /> --}}
 
 
 	@include('includes.tr.tiempo_real_proyector.v2.header')

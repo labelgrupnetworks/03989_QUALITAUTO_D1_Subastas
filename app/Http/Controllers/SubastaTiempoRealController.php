@@ -519,7 +519,7 @@ class subastaTiempoRealController extends Controller
               return View::make('front::pages.ficha_tiempo_real', array('data' => $data));
          }
 		 elseif(Route::current()->parameter('proyector') == 'proyector2'){
-			  return view('front::pages.tiempo_real.ficha_tiempo_real_proyector', ['data' => $data]);
+			  return view('front::pages.tiempo_real.proyector.v2', ['data' => $data]);
 		 }
 		 else{
               return View::make('front::pages.ficha_tiempo_real_proyector', array('data' => $data));
