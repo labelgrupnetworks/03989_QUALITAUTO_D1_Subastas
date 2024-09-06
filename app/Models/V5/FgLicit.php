@@ -5,7 +5,9 @@ namespace App\Models\V5;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+
 class FgLicit extends Model
 {
     protected $table = 'FGLICIT';
@@ -20,7 +22,7 @@ class FgLicit extends Model
     #definimos la variable emp para no tener que indicarla cada vez
     public function __construct(array $vars = []){
         $this->attributes=[
-            'emp_licit' => \Config::get("app.emp")
+            'emp_licit' => Config::get("app.emp")
         ];
         parent::__construct($vars);
     }
@@ -31,7 +33,7 @@ class FgLicit extends Model
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-            $builder->where('emp_licit', \Config::get("app.emp"));
+            $builder->where('emp_licit', Config::get("app.emp"));
         });
     }
 
@@ -42,7 +44,7 @@ class FgLicit extends Model
     }
 
     public function scopeJoinCli($query){
-        return $query->join("FXCLI", "GEMP_CLI = '".\Config::get("app.gemp") . "'  AND COD_CLI = CLI_LICIT");
+        return $query->join("FXCLI", "GEMP_CLI = '".Config::get("app.gemp") . "'  AND COD_CLI = CLI_LICIT");
     }
 
     static function getLicitsSubIdOrigin($codsub){
@@ -54,7 +56,37 @@ class FgLicit extends Model
         return $licits;
     }
 
+	static function getMaxCodLicit($codSub)
+	{
+		$maxLicit = self::select("cod_licit")
+			->where([
+				["sub_licit", $codSub],
+				["cod_licit", "!=", Config::get("app.dummy_bidder", 9999)],
+				["cod_licit", "<", Config::get("app.subalia_min_licit", 100000)]
+			])
+			->max("cod_licit");
 
+		$licitLog = DB::table("fglicit_log")
+			->select("max(cod_licit_new) as cod_licit_new", "max(cod_licit_old) as cod_licit_old")
+			->where([
+				["emp_licit", Config::get("app.emp")],
+				["sub_licit", $codSub],
+				["cod_licit_new", "!=", Config::get("app.dummy_bidder", 9999)],
+				["cod_licit_new", "<", Config::get("app.subalia_min_licit", 100000)]
+			])
+			->first();
+
+		//@todo añadir numlicweb_prmsub al max
+
+		$max = max($maxLicit, $licitLog->cod_licit_new, $licitLog->cod_licit_old);
+
+		return $max;
+	}
+
+	static function newCodLicit($codSub)
+	{
+		return self::getMaxCodLicit($codSub) + 1;
+	}
 
 
 }

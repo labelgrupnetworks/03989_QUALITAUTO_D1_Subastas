@@ -102,7 +102,7 @@ class DepositController extends ApiLabelController
 
 
 					#máximo código de licitador actual
-					$this->maxCodLicit= FgLicit::select("max(cod_licit) max_cod_licit")->where("sub_licit",$idAuction )->where("cod_licit","!=", \Config::get("app.dummy_bidder"))->where("cod_licit","<", \Config::get("app.subalia_min_licit"))->first()->max_cod_licit;
+					FgLicit::getMaxCodLicit($idAuction);
 
 
 					if(empty($this->maxCodLicit) || (!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) &&  $this->maxCodLicit < $numcliweb->numlicweb_prmsub)){

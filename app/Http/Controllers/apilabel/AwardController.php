@@ -28,7 +28,7 @@ class AwardController extends ApiLabelController
 	protected  $renameAsigl1 = array("licit"=>"licit_asigl1","lin"=>"lin_asigl1", "idauction"=>"sub_asigl1",  "ref"=>"ref_asigl1",  "bid"=>"imp_asigl1", "type" => "type_asigl1", "date" => "fec_asigl1","hour" => "hora_asigl1");
 
     protected  $rules = array('idoriginlot' => "required|max:255", "idauction" => "required|max:8","idoriginclient" => "required|max:8", "bid" => "required|numeric", "date" => "date_format:Y-m-d H:i:s|nullable", "hour" => "date_format:H:i:s|nullable","commission" => "numeric|nullable", "invoice" => "alpha_num|max:1|nullable", "serialpay" => "alpha_num|max:3|nullable", "numberpay" => "numeric|nullable|max:99999999" );
-	
+
     public function postAward(){
         $items =  request("items");
         return $this->createAward( $items );
@@ -51,7 +51,7 @@ class AwardController extends ApiLabelController
                 ->first();
 
                 #máximo código de licitador actual
-               	$this->maxCodLicit= FgLicit::select("max(cod_licit) max_cod_licit")->where("sub_licit",$idAuction )->where("cod_licit","!=", \Config::get("app.dummy_bidder"))->where("cod_licit","<", \Config::get("app.subalia_min_licit"))->first()->max_cod_licit;
+				$this->maxCodLicit= FgLicit::getMaxCodLicit($idAuction);
 
 
                 if(empty($this->maxCodLicit) || (!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) &&  $this->maxCodLicit < $numcliweb->numlicweb_prmsub)){
