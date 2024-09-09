@@ -82,6 +82,8 @@ class FgLicit extends Model
                 ->where('EMP_PRMSUB', Config::get('app.emp'))
                 ->value('numlicweb_prmsub') ?? 1000;
 
+		$start_bidders--; // Posteriores incrementos 1, así que para obtener el 1000, restamos 1
+
 		$max = max($maxLicit, $licitLog->cod_licit_new, $licitLog->cod_licit_old, $start_bidders);
 
 		return (int) $max;
@@ -118,7 +120,8 @@ class FgLicit extends Model
 			])
 			->get();
 
-		$arrayWithAllCodLicit = $cod_licits->merge($codsLicitsLog->pluck("cod_licit_new"))
+		$arrayWithAllCodLicit = $cod_licits
+			->merge($codsLicitsLog->pluck("cod_licit_new"))
 			->merge($codsLicitsLog->pluck("cod_licit_old"))
 			->unique()
 			->sort()
@@ -127,7 +130,7 @@ class FgLicit extends Model
 			})
 			->values();
 
-		$unudsedCodLicit = $start_bidders;
+		$unudsedCodLicit = $start_bidders; //1000
 		while ($arrayWithAllCodLicit->contains($unudsedCodLicit)) {
 			$unudsedCodLicit++;
 		}

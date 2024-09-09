@@ -45,23 +45,9 @@ class AwardController extends ApiLabelController
                 $this->validatorArray($items, $this->rules);
                 $idAuction = $items[0]["idauction"];
 
-				$numcliweb = DB::table('fgprmsub')
-                ->select('numlicweb_prmsub')
-                ->where('EMP_PRMSUB', Config::get('app.emp'))
-                ->first();
-
                 #máximo código de licitador actual
 				$this->maxCodLicit= FgLicit::getMaxCodLicit($idAuction);
 
-
-                if(empty($this->maxCodLicit) || (!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) &&  $this->maxCodLicit < $numcliweb->numlicweb_prmsub)){
-                    if(!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) ){
-						$this->maxCodLicit = $numcliweb->numlicweb_prmsub-1; #empieza por el mil y se le sumara 1 antes de asignarselo al cliente por eso se lo restamos ahora
-					}else{
-						$this->maxCodLicit = 1000-1;
-					}
-
-                }
 				$lots = FgAsigl0::arrayByIdOrigin($idAuction);
 				$lotsByRef = FgAsigl0::arrayByRef($idAuction);
                 $licits = FgLicit::getLicitsSubIdOrigin($idAuction);
