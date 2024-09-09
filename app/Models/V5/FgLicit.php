@@ -76,11 +76,15 @@ class FgLicit extends Model
 			])
 			->first();
 
-		//@todo añadir numlicweb_prmsub al max
+		//Inicio licitadores
+        $start_bidders = DB::table('fgprmsub')
+                ->select('numlicweb_prmsub')
+                ->where('EMP_PRMSUB', Config::get('app.emp'))
+                ->value('numlicweb_prmsub') ?? 1000;
 
-		$max = max($maxLicit, $licitLog->cod_licit_new, $licitLog->cod_licit_old);
+		$max = max($maxLicit, $licitLog->cod_licit_new, $licitLog->cod_licit_old, $start_bidders);
 
-		return $max;
+		return (int) $max;
 	}
 
 	static function newCodLicit($codSub)
@@ -88,5 +92,52 @@ class FgLicit extends Model
 		return self::getMaxCodLicit($codSub) + 1;
 	}
 
+	static function unusedCodLicit($codSub)
+	{
+		$dummy = Config::get("app.dummy_bidder", 9999);
+		$start_bidders = DB::table('fgprmsub')
+			->select('numlicweb_prmsub')
+			->where('EMP_PRMSUB', Config::get('app.emp'))
+			->value('numlicweb_prmsub') ?? 1000;
+
+		$cod_licits = self::select("cod_licit")
+			->where([
+				["sub_licit", $codSub],
+				["cod_licit", ">=", $start_bidders],
+				["cod_licit", "<", $dummy]
+			])
+			->pluck("cod_licit");
+
+		$codsLicitsLog = DB::table("fglicit_log")
+			->select("cod_licit_new, cod_licit_old")
+			->where([
+				["emp_licit", Config::get("app.emp")],
+				["sub_licit", $codSub],
+				["cod_licit_old", "<", $dummy],
+				["cod_licit_new", "<", $dummy]
+			])
+			->get();
+
+		$arrayWithAllCodLicit = $cod_licits->merge($codsLicitsLog->pluck("cod_licit_new"))
+			->merge($codsLicitsLog->pluck("cod_licit_old"))
+			->unique()
+			->sort()
+			->filter(function ($value) use ($start_bidders) {
+				return $value >= $start_bidders;
+			})
+			->values();
+
+		$unudsedCodLicit = $start_bidders;
+		while ($arrayWithAllCodLicit->contains($unudsedCodLicit)) {
+			$unudsedCodLicit++;
+		}
+
+		//En este caso no queda ningun codigo de licitador libre. Deberíamos lanzar una excepción
+		// if($unudsedCodLicit >= $dummy) {
+		// 	throw new \Exception("No hay códigos de licitador libres");
+		// }
+
+		return $unudsedCodLicit;
+	}
 
 }

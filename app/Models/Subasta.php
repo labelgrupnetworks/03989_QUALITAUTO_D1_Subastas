@@ -1833,42 +1833,9 @@ class Subasta extends Model
     {
         $num = FgLicit::newCodLicit($this->cod); //número entre 0 y 99999 quitando el 9999
 
-		//Inicio licitadores
-        $numcliweb = DB::table('fgprmsub')
-                ->select('numlicweb_prmsub')
-                ->where('EMP_PRMSUB', Config::get('app.emp'))
-                ->first();
-
-		// Si el número de licitador es menor que el número de licitadores iniciales, se asigna el número de licitador inicial
-		$start_bidders = $numcliweb->numlicweb_prmsub ?? 1000;
-        if ($num < $start_bidders){
-            $num = $start_bidders;
-        }
-
-		//@todo esto es posible? ahora al dar una paleta más alta se pierden las intermedias, así que teoricamente es posible llegar más facilmente a 9999
-		//Se debe cambiar este proceso para tener en cuenta las paletas ya utilizadas por alguien.
+		// Si el número de licitador es mayor o igual que el bidder, se asigna un número de licitador no utilizado
         if($num >= Config::get('app.dummy_bidder')){
-            //buscamos el siguiente codigo de licitador libre
-            $cod_licits = DB::select("SELECT CAST(COD_LICIT AS Int) AS COD_LICIT FROM FGLICIT WHERE EMP_LICIT = :emp AND SUB_LICIT = :cod_sub AND cod_licit >= :start_bidders AND COD_LICIT < :dummy_bidder order by cod_licit asc",
-            array(
-                'emp'           => Config::get('app.emp'),
-                'cod_sub'       => $this->cod,
-                'dummy_bidder'  => Config::get('app.dummy_bidder'),
-                'start_bidders' => $start_bidders
-                )
-            );
-            $actual = $start_bidders;
-           foreach($cod_licits as $cod_licit){
-               if($actual != $cod_licit->cod_licit){
-                   break;
-               }
-               $actual++;
-           }
-
-           if($actual < Config::get('app.dummy_bidder')){
-                $num = $actual;
-           }
-
+			$num = FgLicit::unusedCodLicit($this->cod);
         }
 
         return $num;
