@@ -1035,7 +1035,7 @@ class Subasta extends Model
 
 		$whereAuctions = "";
 		if(!empty($whereFilters['cods_sub'])){
-			$whereAuctions = " AND SUB.COD_SUB IN ('".implode("',", $whereFilters['cods_sub'])."')";
+			$whereAuctions = " AND SUB.COD_SUB IN ('" . implode("', '", $whereFilters['cods_sub']) . "')";
 		}
 
         if($favorites){
