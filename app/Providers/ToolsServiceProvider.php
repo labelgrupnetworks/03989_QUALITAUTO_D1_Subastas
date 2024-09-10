@@ -38,13 +38,9 @@ class ToolsServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
-	public function boot()
-	{
-	}
+	public function boot() {}
 
-	public function register()
-	{
-	}
+	public function register() {}
 
 	public static function linguisticSearch()
 	{
@@ -113,7 +109,7 @@ class ToolsServiceProvider extends ServiceProvider
 		return $str;
 	}
 
-	public static function moneyFormat($qtty, $currency = FALSE, $decimal = 0, $position = 'R', $decimalSeparator=",", $thousandSeparator=".")
+	public static function moneyFormat($qtty, $currency = FALSE, $decimal = 0, $position = 'R', $decimalSeparator = ",", $thousandSeparator = ".")
 	{
 
 		if (!is_numeric($qtty)) {
@@ -126,10 +122,10 @@ class ToolsServiceProvider extends ServiceProvider
                     $format = number_format($qtty, $decimal, ',', '.');
                 }
                 */
-		if(Config::get("app.decimalSeparator")){
+		if (Config::get("app.decimalSeparator")) {
 			$decimalSeparator = Config::get("app.decimalSeparator");
 		}
-		if(Config::get("app.thousandSeparator")){
+		if (Config::get("app.thousandSeparator")) {
 			$thousandSeparator = Config::get("app.thousandSeparator");
 		}
 
@@ -181,7 +177,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function euroDate($fecha)
 	{
-		if(!$fecha){
+		if (!$fecha) {
 			return "";
 		}
 		$t = strtotime($fecha);
@@ -196,18 +192,6 @@ class ToolsServiceProvider extends ServiceProvider
 
 		$diff->w = floor($diff->d / 7);
 		$diff->d -= $diff->w * 7;
-
-		/*
-        $string = array(
-            'y' => 'year',
-            'm' => 'month',
-            'w' => 'week',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second',
-        );
-        */
 
 		$string = \trans(Config::get('app.theme') . '-app.time');
 
@@ -450,8 +434,7 @@ class ToolsServiceProvider extends ServiceProvider
 			} elseif ($fecha > 3600) {
 				$date_time = '%Hh' . $date_time;
 			}
-		}
-		elseif ($type == 'complete') {
+		} elseif ($type == 'complete') {
 			$stringSeconds = "Segundos";
 			$stringMinutes = "Minutos";
 			$stringHours = "Hrs";
@@ -468,8 +451,7 @@ class ToolsServiceProvider extends ServiceProvider
 			} elseif ($fecha > 3600) {
 				$date_time = "$hoursElement $date_time";
 			}
-		}
-		elseif ($type == 'small') {
+		} elseif ($type == 'small') {
 			$date_time = " %Ss";
 			if ($fecha > 86400) {
 				$date_time = '%Dd %Hh';
@@ -607,62 +589,87 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 
 		return array(
-			'DE', 'AT', 'BE', 'BG', 'CY', 'HR', 'DK', 'SK', 'SI', 'ES', 'EE', 'FI', 'FR', 'GR', 'IE', 'IT', 'LV',
-			'HU', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'CZ', 'RO', 'SE'
+			'DE',
+			'AT',
+			'BE',
+			'BG',
+			'CY',
+			'HR',
+			'DK',
+			'SK',
+			'SI',
+			'ES',
+			'EE',
+			'FI',
+			'FR',
+			'GR',
+			'IE',
+			'IT',
+			'LV',
+			'HU',
+			'LT',
+			'LU',
+			'MT',
+			'NL',
+			'PL',
+			'PT',
+			'CZ',
+			'RO',
+			'SE'
 		);
 	}
 
 	#importe con iva para comunitarios, los precios en base de datos ya incluyen el iva
-	public static function PriceWithTaxForEuropean($imp,$codCli){
+	public static function PriceWithTaxForEuropean($imp, $codCli)
+	{
 		#si no está logeado devolvemos el precio como en base de datos, con iva
 		if (empty($codCli)) {
 			return $imp;
 		}
 		$payments = new Payments();
 		#recogemos el iva actual
-		$iva = $payments->getIVA(date('Y-m-d H:i:s'),'01');
+		$iva = $payments->getIVA(date('Y-m-d H:i:s'), '01');
 
-		$tax =0;
-		if(count($iva)> 0){
-			$tax = $iva[0]->iva_iva/100;
+		$tax = 0;
+		if (count($iva) > 0) {
+			$tax = $iva[0]->iva_iva / 100;
 		}
 
 		$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
 
 		# si no encontramos usuario , o si lo encontramos y es Europeo devolvemos el precio de base de datos que lleva el iva
-		if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
+		if (empty($user) ||  in_array($user->codpais_cli, ToolsServiceProvider::PaisesEUR())) {
 			return  $imp;
-
-		}else{
+		} else {
 			#si es usuario extracomunitario se le descuenta el iva, es necesario redondearlo para no arrastrar decimales
-			return  round($imp / (1 + $tax),2) ;
+			return  round($imp / (1 + $tax), 2);
 		}
 	}
 
 	#si es europeo devolverá el iva y si no lo es devolverá 0
-	public static function TaxForEuropean($codCli){
+	public static function TaxForEuropean($codCli)
+	{
 		$payments = new Payments();
 		#recogemos el iva actual
-		$iva = $payments->getIVA(date('Y-m-d H:i:s'),'01');
+		$iva = $payments->getIVA(date('Y-m-d H:i:s'), '01');
 
-		$tax =0;
-		if(count($iva)> 0){
-			$tax = $iva[0]->iva_iva/100;
+		$tax = 0;
+		if (count($iva) > 0) {
+			$tax = $iva[0]->iva_iva / 100;
 		}
 		# si no hay usuario se aplica el iva
 		if (empty($codCli)) {
 			return $tax;
-		}else{
+		} else {
 			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
-			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
+			if (empty($user) ||  in_array($user->codpais_cli, ToolsServiceProvider::PaisesEUR())) {
 				return   $tax;
-
-			}else{
+			} else {
 				return 0;
 			}
 		}
 	}
-/*
+	/*
 	public static function PriceWithTaxForEuropean($imp,$codCli, $taxForLoged = true){
 
 		$iva = DB::select( "select iva_iva from fsiva where dfec_iva <= :time and hfec_iva >= :time and cod_iva = :cod",
@@ -703,9 +710,9 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function NamePais($countri)
 	{
 		$enterprice = new Enterprise();
-		$keyname_cache = "get_countries".Config::get('app.theme')."_".Config::get('app.emp');
+		$keyname_cache = "get_countries" . Config::get('app.theme') . "_" . Config::get('app.emp');
 		$paises = CacheLib::getCache($keyname_cache);
-		if ($paises === false){
+		if ($paises === false) {
 			$paises = $enterprice->getCountries();
 			CacheLib::putCache($keyname_cache, $paises);
 		}
@@ -725,11 +732,11 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		$webfriend = !empty($friendly) ? $friendly :  Str::slug(strip_tags(trim($title)));
 
-		if(Config::get("app.newUrlLot")){
+		if (Config::get("app.newUrlLot")) {
 			//$url = Route("lote",["texto"=> $webfriend,"ref" => $ref, "cod" => $cod_sub]);
-			$url =Config::get('app.url') .Routing::translateSeo('subasta-lote') .$webfriend.'/'.$cod_sub.'-'.$ref;
-		}else{
-			$url=Config::get('app.url') .Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
+			$url = Config::get('app.url') . Routing::translateSeo('subasta-lote') . $webfriend . '/' . $cod_sub . '-' . $ref;
+		} else {
+			$url = Config::get('app.url') . Routing::translateSeo('lote') . $cod_sub . "-" . $id_session . '-' . $id_session . "/" . $ref . '-' . $num_hces . '-' . $webfriend;
 		}
 
 		return $url;
@@ -775,7 +782,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function url_exposicion($des_sub, $cod_sub, $reference = '001')
 	{
-		return   Route("exposicion",['texto' => Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
+		return   Route("exposicion", ['texto' => Str::slug($des_sub), 'cod' => $cod_sub, 'reference' => $reference]);
 	}
 
 	public static function  images_size()
@@ -799,8 +806,7 @@ class ToolsServiceProvider extends ServiceProvider
 	}
 	public static function url_img_friendly($size, $numhces, $linhces, $img_num = 0, $textFriendly = null)
 	{
-		return Config::get('app.url') ."/img_load/". $size."/$numhces/$linhces/$img_num/$textFriendly.jpg";
-
+		return Config::get('app.url') . "/img_load/" . $size . "/$numhces/$linhces/$img_num/$textFriendly.jpg";
 	}
 
 	public static function url_img($size, $numhces, $linhces, $img_num = null, $force_old = null)
@@ -820,12 +826,12 @@ class ToolsServiceProvider extends ServiceProvider
 		#codigo antiguo
 		if ($loadOld) {
 			$img_file = "$url/img/load/$size/$emp-$numhces-$linhces{$path_img_num}.jpg";
-			return $img_file.self::date_modification($file);
+			return $img_file . self::date_modification($file);
 		}
 
 		/* revisar esto, ya que se quito pero sin el no puedo cargar imagnes
 		de ansorena galeria */
-		if($size === "real") {
+		if ($size === "real") {
 			return self::lotRealImage($numhces, $linhces, $img_num);
 		}
 
@@ -836,18 +842,18 @@ class ToolsServiceProvider extends ServiceProvider
 
 		//finalmente creo que a nadie se le generan en webp, se puede quitar
 		$extension = 'webp';
-		if(!file_exists("$image_to_load.$extension")){
+		if (!file_exists("$image_to_load.$extension")) {
 			$extension = 'jpg';
 		}
 
 		$image_to_load = "$image_to_load.$extension";
 
-		if(self::isImageValid($image_to_load)) {
-			return "$url/$image_to_load".self::date_modification($file);
+		if (self::isImageValid($image_to_load)) {
+			return "$url/$image_to_load" . self::date_modification($file);
 		}
 
 		//si no existe la imagen, generamos las miniaturas (solo si esta activado en la configuración)
-		if(Config::get('app.generate_image_when_not_found', false)){
+		if (Config::get('app.generate_image_when_not_found', false)) {
 			(new ImageGenerate)->imageLot($numhces, $linhces, $img_num, $sizeImage);
 		}
 
@@ -856,7 +862,7 @@ class ToolsServiceProvider extends ServiceProvider
 			$image_to_load = self::getPlaceholderImage($size);
 		}
 
-		return "$url/$image_to_load".self::date_modification($file);
+		return "$url/$image_to_load" . self::date_modification($file);
 	}
 
 	public static function serverLotUrlImg($url, $sizeImage, $numhces, $linhces)
@@ -892,7 +898,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$imagePath = self::buildAuctionImagePath($size, $cod_sub, $reference);
 		$image_to_load = self::getValidAuctionImage($imagePath, $size, $cod_sub, $reference);
 
-		return "$url/$image_to_load".self::date_modification($image_to_load);
+		return "$url/$image_to_load" . self::date_modification($image_to_load);
 	}
 
 	private static function auctionImageName($cod_sub, $reference)
@@ -908,12 +914,12 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		$imageName = self::auctionImageName($cod_sub, $reference);
 
-		if(!$size || $size === 'real') {
+		if (!$size || $size === 'real') {
 			return "img/{$imageName}.*";
 		}
 
 		$images_size = self::images_size();
-		if(!isset($images_size[$size])) {
+		if (!isset($images_size[$size])) {
 			return "img/{$imageName}.*";
 		}
 
@@ -966,36 +972,37 @@ class ToolsServiceProvider extends ServiceProvider
 		$webPath = "/img/$emp/$numhces/";
 
 		$path = "/img/$emp/$numhces/$nameFile";
-		if($img_num) {
-			$path .= "_".sprintf("%02d", $img_num);
+		if ($img_num) {
+			$path .= "_" . sprintf("%02d", $img_num);
 		}
 
 		$image = glob(public_path($path) . ".*");
 
-		if($image) {
+		if ($image) {
 			$imageFile = $image[0];
 			return $webPath . basename($imageFile) . self::date_modification($imageFile);
-		}
-		else {
+		} else {
 			return "/themes/" . Config::get('app.theme') . "/img/items/no_photo.png";
 		}
 	}
 
-	public static function date_modification($img_file){
+	public static function date_modification($img_file)
+	{
 
-		if(file_exists($img_file)){
-			return "?a=" .filemtime($img_file);
+		if (file_exists($img_file)) {
+			return "?a=" . filemtime($img_file);
 		}
 	}
 
 	/**
 	 * @deprecated
 	 */
-	public static function url_img_validation($img_file){
+	public static function url_img_validation($img_file)
+	{
 
-		if(file_exists($img_file)){
-			$fechaUltimaModificacion=filemtime ($img_file);
-			$img_date_mod=$img_file."?a=".$fechaUltimaModificacion;
+		if (file_exists($img_file)) {
+			$fechaUltimaModificacion = filemtime($img_file);
+			$img_date_mod = $img_file . "?a=" . $fechaUltimaModificacion;
 			return $img_date_mod;
 		}
 		return $img_file;
@@ -1233,7 +1240,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 			$rand = rand();
 			$b = explode("@", $a[2]);
-			$modulo = $a[1] == "V5"? "V5": Str::camel($a[1]);
+			$modulo = $a[1] == "V5" ? "V5" : Str::camel($a[1]);
 
 			$pathJs = public_path() . "/themes_admin/porto/assets/javascripts/" . $modulo;
 			$pathCss = public_path() . "/themes_admin/porto/assets/stylesheets/" . $modulo;
@@ -1282,7 +1289,6 @@ class ToolsServiceProvider extends ServiceProvider
 		if (empty($var)) {
 			return abort(404);
 		}
-
 	}
 	#sirve para arrays tambien
 	public static function exit404IfEmptyCollection($collection = null)
@@ -1295,13 +1301,13 @@ class ToolsServiceProvider extends ServiceProvider
 	#devuelve el numero de lotes que hay para este elemento
 	public static function showNumLots($numActiveFilters, $filters,  $level, $value)
 	{
-		if ( Config::get("app.gridAllSessions") ){
-			$filter_session = array("typeSub", "session" );
-		}else{
+		if (Config::get("app.gridAllSessions")) {
+			$filter_session = array("typeSub", "session");
+		} else {
 			$filter_session = array("typeSub");
 		}
 		#listado de los filtros que usamos
-		$name_filter =  array_merge($filter_session,array( "category", "section", "subsection"));
+		$name_filter =  array_merge($filter_session, array("category", "section", "subsection"));
 		$index = "";
 		$concat = "";
 		foreach ($name_filter as $filter) {
@@ -1364,7 +1370,8 @@ class ToolsServiceProvider extends ServiceProvider
 		return base64_encode(openssl_encrypt($data, "AES-256-ECB", $key, OPENSSL_RAW_DATA));
 	}
 
-	public static function descrypt(string $data, string $key){
+	public static function descrypt(string $data, string $key)
+	{
 		return openssl_decrypt(base64_decode($data), 'AES-256-ECB', $key, OPENSSL_RAW_DATA);
 	}
 
@@ -1398,8 +1405,7 @@ class ToolsServiceProvider extends ServiceProvider
 		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
 		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
 			$hash = filemtime($publicPath);
-		}
-		elseif(!$hash) {
+		} elseif (!$hash) {
 			return URL::asset($path) . "?a=" . filemtime($publicPath);
 		}
 
@@ -1428,9 +1434,10 @@ class ToolsServiceProvider extends ServiceProvider
 		return $apiGoogle->getReviews($daysToReload);
 	}
 
-	public static function getDateFormat($dateValue, $formatOrigin, $formatReturn){
+	public static function getDateFormat($dateValue, $formatOrigin, $formatReturn)
+	{
 
-		if(empty($dateValue)){
+		if (empty($dateValue)) {
 			return '';
 		}
 
@@ -1445,7 +1452,7 @@ class ToolsServiceProvider extends ServiceProvider
 	public static function getWorpressRss($url)
 	{
 		try {
-			$context = stream_context_create(array('http'=> array(
+			$context = stream_context_create(array('http' => array(
 				'timeout' => 3, //en segundos
 			)));
 
@@ -1453,7 +1460,6 @@ class ToolsServiceProvider extends ServiceProvider
 			$xml = simplexml_load_string($xml_string, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$json = json_encode($xml);
 			$array = json_decode($json, true);
-
 		} catch (\Throwable $th) {
 			Log::info('Error al obtener el feed de wordpress', ['error' => $th->getMessage()]);
 			return [];
@@ -1497,13 +1503,12 @@ class ToolsServiceProvider extends ServiceProvider
 			$elements = $dom->getElementsByTagName($tag);
 			foreach ($elements as $element) {
 
-				if($closure) {
+				if ($closure) {
 					$closure($element);
 				}
 				$html_arr[] = $dom->saveHtml($element);
 			}
 			return $html_arr ?? [];
-
 		} catch (\Throwable $th) {
 			return [$stringHtml];
 		}
@@ -1537,7 +1542,7 @@ class ToolsServiceProvider extends ServiceProvider
 	 */
 	public static function validFiles($files)
 	{
-		if(!is_array($files)){
+		if (!is_array($files)) {
 			return $files->isValid() ? [$files] : [];
 		}
 
@@ -1550,7 +1555,7 @@ class ToolsServiceProvider extends ServiceProvider
 
 	public static function isValidMime(Request $request, $rules)
 	{
-		if(Validator::make($request->file(), $rules)->fails()){
+		if (Validator::make($request->file(), $rules)->fails()) {
 			return false;
 		}
 
@@ -1595,8 +1600,7 @@ class ToolsServiceProvider extends ServiceProvider
 		$orderBy = '',
 		$joins = [],
 		$scopes = []
-		)
-	{
+	) {
 		if (count($whereCases) > 0) {
 			$dataTable = $dataTable->where($whereCases);
 		}
@@ -1619,14 +1623,14 @@ class ToolsServiceProvider extends ServiceProvider
 		return $dataTable->first();
 	}
 
-	public static function isITPLot($cod_sub, $ref) :bool
+	public static function isITPLot($cod_sub, $ref): bool
 	{
-		if(!Config::get('app.checkItp', false)){
+		if (!Config::get('app.checkItp', false)) {
 			return false;
 		}
 
 		$cod_cli = Session::get('user.cod', 0);
-		if(!$cod_cli){
+		if (!$cod_cli) {
 			return false;
 		}
 
@@ -1638,7 +1642,7 @@ class ToolsServiceProvider extends ServiceProvider
 		]);
 	}
 
-	public static function getBlogURLTranslated($lang, $web_blog_id) :array
+	public static function getBlogURLTranslated($lang, $web_blog_id): array
 	{
 		$blogs = Web_Blog::where('IDBLOG_WEB_BLOG_LANG', $web_blog_id)->joinWebBlogLang()->get();
 		foreach ($blogs as $key => $blog) {
@@ -1674,5 +1678,4 @@ class ToolsServiceProvider extends ServiceProvider
 			'to_lang' => $to_lang,
 		];
 	}
-
 }
