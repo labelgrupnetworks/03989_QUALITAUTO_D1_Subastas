@@ -44,6 +44,10 @@ class ContentController extends Controller
 		$contents = "";
 
 		$replaces = $request->input('replace');
+		if (empty($replaces) || !is_array($replaces) || !$request->has('key')) {
+			return $contents;
+		}
+
 		$replaces = array_map(function ($replace) {
 			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
 		}, $replaces);
@@ -140,7 +144,9 @@ class ContentController extends Controller
 		Config::set('app.locale', request('lang', 'es'));
 
 		$key = $request->input('key');
-		if (!$key) {
+		$replaces = $request->input('replace');
+
+		if (empty($replaces) || !is_array($replaces) || !$key) {
 			return "";
 		}
 
