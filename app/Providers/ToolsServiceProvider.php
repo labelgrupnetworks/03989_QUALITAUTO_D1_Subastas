@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\services\GoogleApiPlacesController;
 use App\libs\CacheLib;
 use App\libs\ImageGenerate;
 use App\Models\Enterprise;
