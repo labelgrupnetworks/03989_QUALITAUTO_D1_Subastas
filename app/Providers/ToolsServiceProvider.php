@@ -1428,12 +1428,6 @@ class ToolsServiceProvider extends ServiceProvider
 			$noScript";
 	}
 
-	public static function googleReviews($daysToReload)
-	{
-		$apiGoogle = new GoogleApiPlacesController();
-		return $apiGoogle->getReviews($daysToReload);
-	}
-
 	public static function getDateFormat($dateValue, $formatOrigin, $formatReturn)
 	{
 

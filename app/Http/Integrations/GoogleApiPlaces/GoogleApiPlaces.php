@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\services;
-
-use Controller;
-use GuzzleHttp;
-use Illuminate\Support\Facades\Config;
+namespace App\Http\Controllers\Integrations\GoogleApiPlaces;
 
 use DateTime;
+use GuzzleHttp;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
-class GoogleApiPlacesController extends Controller
+class GoogleApiPlaces
 {
-
 	public $apiKey;
 	public $placeId;
 	public $lang;
 	public $path;
+	public $fields;
 
 	function __construct()
 	{
@@ -22,15 +21,15 @@ class GoogleApiPlacesController extends Controller
 		$this->placeId = Config::get('app.google_place_id');
 		$this->lang = Config::get('app.locale');
 		$this->fields = "reviews";
-		$this->path = public_path() . "/files/" .  Config::get('app.theme') . "_reviews_" . Config::get('app.locale') .".txt";
+		$this->path = public_path() . "/files/" .  Config::get('app.theme') . "_reviews_" . Config::get('app.locale') . ".txt";
 	}
 
 	function getReviews($daysToReload)
 	{
 		$responseJson = json_decode($this->readData($daysToReload), true);
 
-		if(!empty($responseJson['error_message'])){
-			\Log::error("Error de datos recuperados de google", $responseJson);
+		if (!empty($responseJson['error_message'])) {
+			Log::error("Error de datos recuperados de google", $responseJson);
 			return false;
 		}
 
@@ -55,7 +54,7 @@ class GoogleApiPlacesController extends Controller
 			$linesFile = file($this->path);
 		} catch (\Throwable $th) { //archivo no existe o no tiene permisos
 
-			if(!$this->createOrUpdateFile()){  //si no existe tenemos que crearlo y seguir, si no permiso salir y error
+			if (!$this->createOrUpdateFile()) {  //si no existe tenemos que crearlo y seguir, si no permiso salir y error
 				return false;
 			};
 			$linesFile = file($this->path);
@@ -94,19 +93,18 @@ class GoogleApiPlacesController extends Controller
 		$client = new GuzzleHttp\Client();
 		//$res = $client->request('GET', "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&language=$lang&fields=$this->fields&key=$apiKey");
 
-		try{
+		try {
 			$res = $client->request('GET', "https://maps.googleapis.com/maps/api/place/details/json?place_id=$this->placeId&language=$this->lang&key=$this->apiKey");
-		}
-		catch (\Throwable $th){
-			\Log::error("error al conectar con api google");
-			\Log::error($th);
+		} catch (\Throwable $th) {
+			Log::error("error al conectar con api google");
+			Log::error($th);
 			return false;
 		}
 
 
 		if ($res->getStatusCode() != 200) {
-			\Log::error("error al conectar con api google");
-			
+			Log::error("error al conectar con api google");
+
 			return false;
 		}
 
@@ -126,11 +124,10 @@ class GoogleApiPlacesController extends Controller
 			fclose($file);
 			return true;
 		} catch (\Throwable $th) {
-			\Log::error("error al guardar archivo reviews");
+			Log::error("error al guardar archivo reviews");
 			return false;
 		}
 	}
-
 
 	function testData()
 	{
