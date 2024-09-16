@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Providers\ToolsServiceProvider;
 use App\libs\MessageLib;
 use App\libs\FormLib;
 use App\libs\EmailLib;
