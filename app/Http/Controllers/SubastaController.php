@@ -829,40 +829,6 @@ class SubastaController extends Controller
 		}
 	}
 
-
-
-
-
-
-
-	//2018_01_19 no se esta usando
-	/*
-    # Pujas de un lote
-    public function getPujas($cod, $lote)
-    {
-        $subastaObj        = new Subasta();
-        $subastaObj->cod   = $cod;
-        $subastaObj->lote  = $lote;
-        return  json_encode($subastaObj->getPujas());
-    }
-
-    # Ordenes de licitación
-    public function getOrdenes($cod, $lote)
-    {
-        $subastaObj        = new Subasta();
-        $subastaObj->cod   = $cod;
-        $subastaObj->lote  = $lote;
-        return  json_encode($subastaObj->getOrdenes());
-    }
-
-    public function listaLotes($id_subasta = false)
-    {
-        return \View::make('front::pages.list');
-    }*/
-
-
-
-
 	/**
 	 * Cargar listado de subastas
 	 * @version 12.05.20 Eloy,cambiado el type de nuevo a null para mostrar todas las subastas por defecto
@@ -2349,11 +2315,8 @@ class SubastaController extends Controller
 
 	}
 
-
 	public function rechargeFilters()
 	{
-
-
 		$data["type"] = app('request')->input('type');
 		$data['cod_sub'] = app('request')->input('cod_sub');
 		$data['id_auc_sessions'] = app('request')->input('id_auc_sessions');
