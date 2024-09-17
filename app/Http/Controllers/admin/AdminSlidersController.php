@@ -8,7 +8,6 @@ use View;
 use Illuminate\Support\Facades\Request as Input;
 use File;
 use Config;
-use App\Models\Content;
 
 class AdminSlidersController extends Controller
 {
@@ -114,23 +113,6 @@ class AdminSlidersController extends Controller
 			die("error");
 		}
 
-		/*if (!File::move($absolute_file_path, $absolute_dest_path_file)){
-		    die("Couldn't move file");
-		}*/
-
-		//print_r($_REQUEST); die;
-
-		/*$c_data = array(
-			'' => ,
-			);
-
-		$ct_data = array(
-			'' => ,
-			);
-
-		$cl_data = array(
-			'' => ,
-			);*/
 		$date = new \DateTime();
 		$now = $date->format('d-m-Y H:i:s');
 		print_r($now);
@@ -138,9 +120,6 @@ class AdminSlidersController extends Controller
 		print_r($text);
 		print_r($name);
 		die();
-
-		$content = new Content();
-		$content->setContent('sdf', 'slider', 'df');
 	}
 
 	private function saveSettings()

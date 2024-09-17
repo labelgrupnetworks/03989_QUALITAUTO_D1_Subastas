@@ -515,12 +515,6 @@ $idiomes = \Config::get('app.locales');
                     @endif
                     @if (in_array('emails_clients', $config_menu_admin))
                         <li>
-                            {{--
-						<a href="/admin/email_clients">
-							<i class="fa fa-folder" aria-hidden="true"></i>
-							<span>{{ trans('admin-app.title.emails') }}</span>
-						</a>
-						--}}
                             <a href="{{ route('adminemails.showlog') }}">
                                 <i class="fa fa-envelope" aria-hidden="true"></i>
                                 <span>{{ trans('admin-app.nav_menu.emails_log') }}</span>

@@ -17,11 +17,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/', 'AdminHomeController@index');
 
-		//lo comento por que antes estaba así pero jaume lo tiene diferente 2017_09_18
-		//Routes: Route::get('/config', 'AdminConfigController@index');
-
-		Route::get('/config', 'AdminConfigController@index');
-
 		Route::get('/bloque', 'BloqueConfigController@index');
 		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
 
@@ -476,7 +471,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	Route::post('/sliders/save', 'AdminSlidersController@save');
 	Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
 
-	Route::post('/config/save', 'AdminConfigController@save');
 	Route::post('/content/save', 'ContentController@savedPage');
 	Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
 

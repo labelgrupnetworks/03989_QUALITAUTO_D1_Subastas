@@ -6,7 +6,6 @@ use Request;
 use Controller;
 
 use App\Models\Page;
-use App\Models\Content;
 class ContentController extends Controller
 {
     public function index()
