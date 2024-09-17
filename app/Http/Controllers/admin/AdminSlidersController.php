@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\admin;
 
-use Request;
 use App\Http\Controllers\Controller;
-use View;
-use Illuminate\Support\Facades\Request as Input;
-use File;
-use Config;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 
+/**
+ * Revisar peticiones por Ajax, pero creo que solo queda Gutinvest utilizando este controlador
+ */
 class AdminSlidersController extends Controller
 {
 
@@ -21,17 +23,15 @@ class AdminSlidersController extends Controller
 
 	public function uploadFile()
 	{
-
-
 		if (!Request::ajax()) {
 			die("Error");
 		}
 
 		$upload = array();
 
-		if (!Input::hasFile('file') || !Input::file('file')->isValid()) {
+		if (!Request::hasFile('file') || !Request::file('file')->isValid()) {
 			$upload['status'] = "error";
-			$upload['msg'] = trans(\Config::get('app.theme') . '-admin.slider.error_upload_img');
+			$upload['msg'] = trans(Config::get('app.theme') . '-admin.slider.error_upload_img');
 		}
 
 		try {
@@ -44,15 +44,13 @@ class AdminSlidersController extends Controller
 				$relative_dest_path = '/img/' . $_POST['url_img'];
 			}
 
-			//$relative_dest_path = '/themes/'.\Config::get('app.theme').'/img/'.$relative_dest_path_temp;
-
 			$destination_path = public_path($relative_dest_path);
 
 			if (!File::exists($destination_path)) {
 				File::makeDirectory($destination_path, 0775, true);
 			}
 
-			$file = Input::file('file');
+			$file = Request::file('file');
 			$filename = $file->getClientOriginalName();
 
 			$cont = 0;
@@ -64,7 +62,7 @@ class AdminSlidersController extends Controller
 
 			if (File::exists($filename) && $cont == 10) {
 				$upload['status'] = "error";
-				$upload['msg'] = trans(\Config::get('app.theme') . '-admin.slider.error_upload_img');
+				$upload['msg'] = trans(Config::get('app.theme') . '-admin.slider.error_upload_img');
 			}
 
 			if ($file->move($destination_path, $filename)) {
@@ -72,9 +70,9 @@ class AdminSlidersController extends Controller
 				$upload['file'] = $relative_dest_path . '/' . $filename;
 			}
 		} catch (\Exception $e) {
-			\Log::info($e->getMessage());
+			Log::info($e->getMessage());
 			$upload['status'] = "error";
-			$upload['msg'] = trans(\Config::get('app.theme') . '-admin.slider.error_upload_img');
+			$upload['msg'] = trans(Config::get('app.theme') . '-admin.slider.error_upload_img');
 		}
 
 		die(json_encode($upload));
@@ -82,7 +80,7 @@ class AdminSlidersController extends Controller
 
 	public function save()
 	{
-		switch (Input::get('save')) {
+		switch (Request::get('save')) {
 			case 'new':
 				$this->saveNewSlider();
 				break;
@@ -96,9 +94,9 @@ class AdminSlidersController extends Controller
 	private function saveNewSlider()
 	{
 		$data = array();
-		$file = Input::get('file_url');
-		$text = Input::get('summernote');
-		$name = Input::get('name');
+		$file = Request::get('file_url');
+		$text = Request::get('summernote');
+		$name = Request::get('name');
 		$dest_path = Config::get('app.sliders_upload_folder');
 		$absolute_dest_path = public_path($dest_path);
 		$absolute_file_path = public_path($file);
@@ -124,7 +122,7 @@ class AdminSlidersController extends Controller
 
 	private function saveSettings()
 	{
-		$order = Input::get('order');
+		$order = Request::get('order');
 		print_r($order);
 		die;
 	}

@@ -1,6 +1,16 @@
 <?php
 
+use App\Http\Controllers\admin\AdminArticlesController;
 use App\Http\Controllers\admin\AdminConfigController;
+use App\Http\Controllers\admin\AdminSlidersController;
+use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\BloqueConfigController;
+use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
+use App\Http\Controllers\admin\EmailController;
+use App\Http\Controllers\admin\ResourceController;
+use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 /*
@@ -10,36 +20,45 @@ use Illuminate\Support\Facades\Config;
 */
 # Añadido excepcional ya que no funcionaba el admin
 
-Route::get('/admin', 'AdminHomeController@index');
+Route::view('/admin', 'admin::pages.home');
+
 Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 	Route::group(['middleware' => ['adminAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
-		Route::get('/', 'AdminHomeController@index');
+		Route::view('/', 'admin::pages.home');
 
-		Route::get('/bloque', 'BloqueConfigController@index');
-		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
+		Route::get('/bloque', [BloqueConfigController::class, 'index']);
+		Route::get('/bloque/name/{id?}', [BloqueConfigController::class, 'SeeBloque']);
+		Route::post('/bloque/edit', [BloqueConfigController::class, 'EditBloque']);
 
-		Route::get('/resources', 'ResourceController@index')->name('resources.index');
-		Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
+		Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
+		Route::get('/resources/name/{id?}', [ResourceController::class, 'SeeResources']);
+		Route::post('/resources/edit', [ResourceController::class, 'EditResources']);
+		Route::post('/resources/delete', [ResourceController::class, 'DeleteResource']);
 
-		Route::get('/banner', 'BannerController@index')->name('banner.index');
-		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
+		Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
+		Route::get('/banner/name/{id?}', [BannerController::class, 'SeeBanner']);
+		Route::post('/banner/edit', [BannerController::class, 'EditBanner']);
 
-		Route::get('/traducciones/{head}/{lang}', 'TraduccionesController@index');
-		Route::get('/traducciones', 'TraduccionesController@getTraducciones');
+		Route::get('/traducciones/{head}/{lang}', [TraduccionesController::class, 'index']);
+		Route::get('/traducciones', [TraduccionesController::class, 'getTraducciones']);
+		Route::get('/traducciones/search', [TraduccionesController::class, 'search']);
+		Route::post('/traducciones/save', [TraduccionesController::class, 'SavedTrans']);
+		Route::post('/traducciones/new', [TraduccionesController::class, 'NewTrans']);
 
-		Route::get('/traducciones/search', 'TraduccionesController@search');
+		Route::get('/content', [App\Http\Controllers\admin\ContentController::class, 'index'])->name('content.index');
+		Route::get('/content/name/{id}', [App\Http\Controllers\admin\ContentController::class, 'getPage'])->name('content.page');
+		Route::post('/content/save', [App\Http\Controllers\admin\ContentController::class, 'savedPage']);
 
-		Route::get('/content', 'ContentController@index')->name('content.index');
-		Route::get('/content/name/{id}', 'ContentController@getPage')->name('content.page');
-		Route::get('/email_clients', 'AdminEmailsController@index');
-		Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
+		Route::get('/email_log', [App\Http\Controllers\admin\AdminEmailsController::class, 'showLog'])->name('adminemails.showlog');
 
-		Route::get('/blog-admin', 'BlogController@getBlogs');
-		Route::get('/blog-admin/name/{id?}', 'BlogController@index');
-		Route::get('/category-blog', 'BlogController@getCategoryBlog');
-		Route::get('/category-blog/name/{id?}', 'BlogController@seeCategoryBlog');
+		Route::get('/blog-admin', [BlogController::class, 'getBlogs']);
+		Route::get('/blog-admin/name/{id?}', [BlogController::class, 'index']);
+		Route::get('/category-blog', [BlogController::class, 'getCategoryBlog']);
+		Route::get('/category-blog/name/{id?}', [BlogController::class, 'seeCategoryBlog']);
+		Route::post('/category-blog/edit', [BlogController::class, 'EditBlogCategory']);
+		Route::post('/blog/edit', [BlogController::class, 'EditBlog']);
 
 		Route::post('/contenido/blog-category', 'contenido\AdminBlogCategoryController@store')->name('admin.contenido.blog-category.store');
 		Route::get('/contenido/blog-category/{id}/edit', 'contenido\AdminBlogCategoryController@edit')->name('admin.contenido.blog-category.edit');
@@ -89,25 +108,25 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::group(['prefix' => 'newbanner'], function () {
-			Route::get('/', "contenido\BannerController@index")->name('newbanner.index');
-			Route::get('/download', "contenido\BannerController@download");
-			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
-			Route::get('/nuevo', "contenido\BannerController@nuevo");
-			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
-			Route::get('/editar/{id}', "contenido\BannerController@editar")->name('newbanner.edit');
-			Route::get('/borrar/{id}', "contenido\BannerController@borrar");
-			Route::post('/activar', "contenido\BannerController@activar");
-			Route::post('/editar_run', "contenido\BannerController@editar_run");
-			Route::post('/listaItemsBloque', "contenido\BannerController@listaItemsBloque");
-			Route::post('/nuevoItemBloque', "contenido\BannerController@nuevoItemBloque");
-			Route::post('/editaItemBloque', "contenido\BannerController@editaItemBloque");
-			Route::post('/guardaItemBloque', "contenido\BannerController@guardaItemBloque");
-			Route::post('/guardaItemViewBloque', "contenido\BannerController@guardaItemViewBloque");
-			Route::post('/borraItemBloque', "contenido\BannerController@borraItemBloque");
-			Route::post('/estadoItemBloque', "contenido\BannerController@estadoItemBloque");
-			Route::post('/vistaPrevia', "contenido\BannerController@vistaPrevia");
-			Route::post('/ordenaBloque', "contenido\BannerController@ordenaBloque");
-			Route::post('/orderbanner', "contenido\BannerController@orderBanner");
+			Route::get('/', [ContenidoBannerController::class, 'index'])->name('newbanner.index');
+			Route::get('/download', [ContenidoBannerController::class, 'download']);
+			Route::get('/ubicacionhome', [ContenidoBannerController::class, 'ubicacionHome']);
+			Route::get('/nuevo', [ContenidoBannerController::class, 'nuevo']);
+			Route::post('/nuevo_run', [ContenidoBannerController::class, 'nuevo_run']);
+			Route::get('/editar/{id}', [ContenidoBannerController::class, 'editar'])->name('newbanner.edit');
+			Route::get('/borrar/{id}', [ContenidoBannerController::class, 'borrar']);
+			Route::post('/activar', [ContenidoBannerController::class, 'activar']);
+			Route::post('/editar_run', [ContenidoBannerController::class, 'editar_run']);
+			Route::post('/listaItemsBloque', [ContenidoBannerController::class, 'listaItemsBloque']);
+			Route::post('/nuevoItemBloque', [ContenidoBannerController::class, 'nuevoItemBloque']);
+			Route::post('/editaItemBloque', [ContenidoBannerController::class, 'editaItemBloque']);
+			Route::post('/guardaItemBloque', [ContenidoBannerController::class, 'guardaItemBloque']);
+			Route::post('/guardaItemViewBloque', [ContenidoBannerController::class, 'guardaItemViewBloque']);
+			Route::post('/borraItemBloque', [ContenidoBannerController::class, 'borraItemBloque']);
+			Route::post('/estadoItemBloque', [ContenidoBannerController::class, 'estadoItemBloque']);
+			Route::post('/vistaPrevia', [ContenidoBannerController::class, 'vistaPrevia']);
+			Route::post('/ordenaBloque', [ContenidoBannerController::class, 'ordenaBloque']);
+			Route::post('/orderbanner', [ContenidoBannerController::class, 'orderBanner']);
 		});
 
 		Route::resource('event', 'contenido\EventsController')->except(['show', 'destroy']);
@@ -125,8 +144,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/guardarPlantilla', 'configuracion\EmailController@guardarPlantilla');
 		});
 
-		Route::get('/email', 'EmailController@index');
-		Route::get('/email/ver/{cod_email}', 'EmailController@getEmail');
+		Route::get('/email', [EmailController::class, 'index']);
+		Route::get('/email/ver/{cod_email}', [EmailController::class, 'getEmail']);
 
 		Route::group(['prefix' => 'escalado'], function () {
 			Route::get('/', 'configuracion\EscaladoController@index');
@@ -422,9 +441,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::resource('pedidos', 'facturacion\AdminPedidosController')->except(['show']);
 		Route::post('pedidos/importeBasePedido', 'facturacion\AdminPedidosController@importeBasePedido');
 
-		Route::get('articulos', 'AdminArticlesController@index')->name('articles.index');
-		Route::get('articles/order', 'AdminArticlesController@getOrder')->name('articles.order_edit');
-		Route::post('articles/order', 'AdminArticlesController@saveOrder')->name('articles.order_store');
+		Route::get('articulos', [AdminArticlesController::class, 'index'])->name('articles.index');
+		Route::get('articles/order', [AdminArticlesController::class, 'getOrder'])->name('articles.order_edit');
+		Route::post('articles/order', [AdminArticlesController::class, 'saveOrder'])->name('articles.order_store');
 
 		#ver imagenes de lotes de la subasta para comprobar que no faltam
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
@@ -467,27 +486,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	});
 
 
-	Route::post('/sliders/upload', 'AdminSlidersController@uploadFile');
-	Route::post('/sliders/save', 'AdminSlidersController@save');
-	Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
+	Route::post('/sliders/upload', [AdminSlidersController::class, 'uploadFile']);
+	Route::post('/sliders/save', [AdminSlidersController::class, 'save']);
+	Route::post('/sliders/delete', [AdminSlidersController::class, 'deleteFile']);
 
-	Route::post('/content/save', 'ContentController@savedPage');
-	Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
 
-	Route::post('/traducciones/new', 'TraduccionesController@NewTrans');
-	Route::post('/bloque/edit', 'BloqueConfigController@EditBloque');
 
-	Route::post('/banner/edit', 'BannerController@EditBanner');
-	Route::post('/resources/edit', 'ResourceController@EditResources');
-	Route::post('/resources/delete', 'ResourceController@DeleteResource');
-	Route::post('/category-blog/edit', 'BlogController@EditBlogCategory');
-	Route::post('/blog/edit', 'BlogController@EditBlog');
+
 
 	Route::group(['middleware' => ['web']], function () {
-
-		Route::get('/login', 'AdminUserController@login');
-		Route::post('/login', 'AdminUserController@login_post');
-		Route::get('/logout', 'AdminUserController@logout');
+		Route::get('/login', [AdminUserController::class, 'login']);
+		Route::post('/login', [AdminUserController::class, 'login_post']);
+		Route::get('/logout', [AdminUserController::class, 'logout']);
 	});
 
 	#ruta a la cual se debe poder acceder desde fuera del admin y sin estar logeado ya que la llamada la hace subalia

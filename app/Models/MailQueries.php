@@ -237,26 +237,6 @@ class MailQueries {
                ->update(['SENDED' => $type]);
    }
 
-   public function getEmailsLogs($date , $num_days = 7 ){
-
-
-        $dates = '';
-
-        $nuevafecha  = strtotime ( '-'.$num_days.' day' , strtotime ( $date ) ) ;
-        $nuevafecha  = date ( 'Y/m/j' , $nuevafecha );
-        $dates.= " trunc(DATE_EMAIL_LOGS) >= '$nuevafecha' AND  trunc(DATE_EMAIL_LOGS) <= '$date'";
-
-       $sql = "Select CODTXT_EMAIL_LOGS, COUNT(CODTXT_EMAIL_LOGS) count_emails, TRUNC(DATE_EMAIL_LOGS) date_emails
-        from WEB_EMAIL_LOGS
-        WHERE
-        $dates
-        GROUP BY CODTXT_EMAIL_LOGS, TRUNC(DATE_EMAIL_LOGS) ORDER BY TRUNC(DATE_EMAIL_LOGS) desc";
-
-      $value = DB::select($sql);
-
-      return $value;
-   }
-
    public function getTxtcod(){
        $sql = "Select cod_txtcod, des_txtcod from fstxtcod where cod_txtcod = 'W'";
        $params = array(
