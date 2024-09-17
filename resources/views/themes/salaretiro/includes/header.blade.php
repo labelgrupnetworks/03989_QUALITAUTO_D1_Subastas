@@ -178,23 +178,11 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav hidden-xs hidden-sm hidden-md">
-				<?php
-                    $subastaObj        = new \App\Models\Subasta();
-                    $has_subasta_presenciales = $subastaObj->auctionList ('S', 'W');
-                    if( empty($has_subasta_presenciales) && Session::get('user.admin')){
-                        $has_subasta_presenciales = array_merge($has_subasta_presenciales,$subastaObj->auctionList ('A', 'W'));
-                    }
-                    $has_subasta_online = $subastaObj->auctionList ('S', 'O');
-                    if(empty($has_subasta_online) && Session::get('user.admin')){
-                         $has_subasta_online = array_merge($has_subasta_online,$subastaObj->auctionList ('A', 'O'));
-                     }
-
-					 $has_subasta_venta = $subastaObj->auctionList ('S', 'V');
-                    if(empty($has_subasta_venta) && Session::get('user.admin')){
-                         $has_subasta_venta = array_merge($has_subasta_venta,$subastaObj->auctionList ('A', 'V'));
-                     }
-
-                 ?>
+				@php
+                    $has_subasta_presenciales = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
+                    $has_subasta_online = $global['subastas']->has('S') && $global['subastas']['S']->has('O');
+					$has_subasta_venta = $global['subastas']->has('S') && $global['subastas']['S']->has('V');
+                @endphp
 				<li class="info <?= empty($has_subasta_online) && empty($has_subasta_presenciales) && empty($has_subasta_venta) ?'hidden':''; ?>">
 					<a title="" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
 						aria-haspopup="true"
@@ -202,7 +190,7 @@
 							class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<div class="dropdown-container">
-							@if(!empty($has_subasta_presenciales))
+							@if($has_subasta_presenciales)
 							<li class="box">
 								<ul>
 									<li><a
@@ -211,7 +199,7 @@
 								</ul>
 							</li>
 							@endif
-							@if(!empty($has_subasta_online))
+							@if($has_subasta_online)
 							<li class="box">
 								<ul>
 									<li><a
@@ -221,27 +209,27 @@
 							</li>
 							@endif
 
-							@if(!empty($has_subasta_venta))
+
+							@if($has_subasta_venta)
 							<li class="box">
 								<ul>
-							@php
 
-								$collection = collect($has_subasta_venta);
-								$subastas = $collection->mapToGroups(function ($item, $key) {
-									return [$item->cod_sub => $item];
-									});
-							@endphp
-								@if(!empty($subastas['VDRESTOS']))
+								@if($global['subastas']['S']['V']->has('VDRESTOS'))
+									@php
+										$auctionVd = $global['subastas']['S']['V']['VDRESTOS'];
+									@endphp
 									<li>
-										<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans($theme.'-app.foot.direct_sale_jewelry')}}</a>
+										<a href="{{ \Tools::url_auction($auctionVd->cod_sub, $auctionVd->name,$auctionVd->id_auc_sessions,$auctionVd->reference).'?only_salable=on&order=ref_desc' }}">
+											{{ trans($theme.'-app.foot.direct_sale_jewelry')}}
+										</a>
 									</li>
-								@elseif(!empty($subastas['ADJDIR21']))
+								@elseif($global['subastas']['S']['V']->has('ADJDIR21'))
 									<li>
 										<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
 									</li>
-								@elseif(!empty($subastas['RASTRILL']))
+								@elseif($global['subastas']['S']['V']->has('RASTRILL'))
 									@php
-										$rastrillAuction = $subastas['RASTRILL']->first();
+										$rastrillAuction = $global['subastas']['S']['V']['RASTRILL'];
 									@endphp
 									<li>
 										<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
@@ -250,7 +238,8 @@
 									</li>
 								@else
 									<li>
-										<a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}
+										<a href="{{ \Routing::translateSeo('venta-directa') }}">
+											{{ trans($theme.'-app.foot.direct_sale')}}
 										</a>
 									</li>
 
@@ -262,10 +251,7 @@
 							@endif
 					</ul>
 				</li>
-				<?php
-					$has_subasta = $subastaObj->auctionList ('H');
-				?>
-				@if(!empty($has_subasta))
+				@if($global['subastas']->has('H'))
 					<li><a
 						href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 					</li>
@@ -298,119 +284,68 @@
 	</div>
 	<div class="clearfix"></div>
 	<ul class="nav navbar-nav navbar-right navbar-responsive">
-		<li><a title="{{ trans($theme.'-app.home.home')}}"
-				href="/">{{ trans($theme.'-app.home.home')}}</a></li>
-		<?php
+		<li>
+			<a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a>
+		</li>
 
-                   $subastaObj        = new \App\Models\Subasta();
-                   $has_subasta = $subastaObj->auctionList ('S', 'W');
-                   if( empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-                   }
+		@php
+			$has_subasta_presenciales = $global['subastas']->has('S') && $global['subastas']['S']->has('W');
+			$has_subasta_online = $global['subastas']->has('S') && $global['subastas']['S']->has('O');
+			$has_subasta_venta = $global['subastas']->has('S') && $global['subastas']['S']->has('V');
+		@endphp
 
-                ?>
-		@if(!empty($has_subasta))
-		<li><a
-				href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
+		@if($has_subasta_presenciales)
+		<li>
+			<a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a>
 		</li>
 		@endif
-		<?php
-			$has_subasta_venta = $subastaObj->auctionList ('S', 'V');
-			if(empty($has_subasta_venta) && Session::get('user.admin')){
-				$has_subasta_venta = array_merge($has_subasta_venta,$subastaObj->auctionList ('A', 'V'));
-			}
-		 ?>
 
-			@if(!empty($has_subasta_venta))
-				@php
-
-				$collection = collect($has_subasta_venta);
-				$subastas = $collection->mapToGroups(function ($item, $key) {
-					return [$item->cod_sub => $item];
-					});
-				@endphp
-				@if(!empty($subastas['VDRESTOS']))
-					<li>
-						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans($theme.'-app.foot.direct_sale_jewelry')}}</a>
-					</li>
-				@elseif(!empty($subastas['ADJDIR21']))
-					<li>
-						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
-					</li>
-				@elseif(!empty($subastas['RASTRILL']))
-					@php
-						$rastrillAuction = $subastas['RASTRILL']->first();
-					@endphp
-					<li>
-						<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
-							{{ trans("$theme-app.foot.jumble_sale") }}
-						</a>
-					</li>
-				@else
-					<li>
-						<a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}
-						</a>
-					</li>
-
-				@endif
-
-
-				
-			@endif
-
-
-		<?php
-			$has_subasta = $subastaObj->auctionList ('H');
-        ?>
-		@if(!empty($has_subasta))
+		@if($global['subastas']->has('H'))
 		<li><a
 			href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a>
 		</li>
 		@endif
 
-		<?php
-                  $has_subasta = $subastaObj->auctionList ('S', 'O');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'O'));
-                   }
-                ?>
-		@if(!empty($has_subasta))
+		@if($has_subasta_online)
 		<li><a
 				href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a>
 		</li>
 		@endif
-		<?php
-				  $has_subasta = $subastaObj->auctionList ('S', 'V');
-                  if(empty($has_subasta) && Session::get('user.admin')){
-                       $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'V'));
-				   }
-				   $collection = collect($has_subasta);
-				   $subastas = $collection->mapToGroups(function ($item, $key) {
-					   return [$item->cod_sub => $item];
-					});
-                ?>
-				@if(!empty($has_subasta))
-					@if(!empty($subastas['VDRESTOS']))
-					<li>
-						<a href="{{ \Tools::url_auction($subastas['VDRESTOS']->first()->cod_sub,$subastas['VDRESTOS']->first()->name,$subastas['VDRESTOS']->first()->id_auc_sessions,$subastas['VDRESTOS']->first()->reference).'?only_salable=on&order=ref_desc' }}">{{ trans($theme.'-app.foot.direct_sale_jewelry')}}</a>
-					</li>
-					@endif
-					@if(!empty($subastas['ADJDIR21']))
-					<li>
-						<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
-					</li>
-					@endif
-					@if(!empty($subastas['RASTRILL']))
-						@php
-							$rastrillAuction = $subastas['RASTRILL']->first();
-						@endphp
-						<li>
-							<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
-								{{ trans("$theme-app.foot.jumble_sale") }}
-							</a>
-						</li>
-					@endif
-				@endif
+
+		@if($has_subasta_venta)
+
+			@if($global['subastas']['S']['V']->has('VDRESTOS'))
+				@php
+					$auctionVd = $global['subastas']['S']['V']['VDRESTOS'];
+				@endphp
+				<li>
+					<a href="{{ \Tools::url_auction($auctionVd->cod_sub, $auctionVd->name,$auctionVd->id_auc_sessions,$auctionVd->reference).'?only_salable=on&order=ref_desc' }}">
+						{{ trans($theme.'-app.foot.direct_sale_jewelry')}}
+					</a>
+				</li>
+			@elseif($global['subastas']['S']['V']->has('ADJDIR21'))
+				<li>
+					<a href="{{ \Routing::translateSeo('tienda-online', '') }}">{{ trans($theme.'-app.foot.direct_sale_art')}}</a>
+				</li>
+			@elseif($global['subastas']['S']['V']->has('RASTRILL'))
+				@php
+					$rastrillAuction = $global['subastas']['S']['V']['RASTRILL'];
+				@endphp
+				<li>
+					<a href="{{ Tools::url_auction($rastrillAuction->cod_sub, $rastrillAuction->name, $rastrillAuction->id_auc_sessions, $rastrillAuction->reference).'?only_salable=on&order=ref_desc' }}">
+						{{ trans("$theme-app.foot.jumble_sale") }}
+					</a>
+				</li>
+			@else
+				<li>
+					<a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}
+					</a>
+				</li>
+
+			@endif
+
+		@endif
+
 		<li><a title="{{ trans($theme.'-app.foot.how_to_buy') }}"
 				href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy') ?>">{{ trans($theme.'-app.foot.how_to_buy')}}</a>
 		</li>
