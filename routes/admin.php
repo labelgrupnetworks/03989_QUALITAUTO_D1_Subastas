@@ -16,13 +16,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	Route::group(['middleware' => ['adminAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
 		Route::get('/', 'AdminHomeController@index');
-		Route::get('/sliders/{tab?}', 'AdminSlidersController@index');
 
 		//lo comento por que antes estaba así pero jaume lo tiene diferente 2017_09_18
 		//Routes: Route::get('/config', 'AdminConfigController@index');
 
 		Route::get('/config', 'AdminConfigController@index');
-		Route::get('/cms', 'CmsConfigController@index');
 
 		Route::get('/bloque', 'BloqueConfigController@index');
 		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
@@ -32,17 +30,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::get('/banner', 'BannerController@index')->name('banner.index');
 		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
-
-		Route::get('/auc-index', 'AucIndexController@index');
-		Route::get('/auc-index/name/{id?}', 'AucIndexController@SeeAuxIndex');
-
-		Route::get('/auc-index-menu', 'AucIndexMenuController@index');
-
-		Route::get('/seo-familias-sessiones', 'SeoFamiliasSessionesController@index');
-		Route::get('/seo-familias-sessiones/name/{id?}', 'SeoFamiliasSessionesController@SeeFamilySessionsSeo');
-
-		Route::get('/seo-categories', 'SeoCategoriesController@index');
-		Route::get('/seo-categories/name/{cod_sec?}', 'SeoCategoriesController@InfCategSeo');
 
 		Route::get('/traducciones/{head}/{lang}', 'TraduccionesController@index');
 		Route::get('/traducciones', 'TraduccionesController@getTraducciones');
@@ -444,9 +431,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('articles/order', 'AdminArticlesController@getOrder')->name('articles.order_edit');
 		Route::post('articles/order', 'AdminArticlesController@saveOrder')->name('articles.order_store');
 
-		Route::get('/genericImport', 'CmsConfigController@getImportFile');
-		Route::post('/genericImport', 'CmsConfigController@ImportFile');
-
 		#ver imagenes de lotes de la subasta para comprobar que no faltam
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
 
@@ -491,25 +475,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	Route::post('/sliders/upload', 'AdminSlidersController@uploadFile');
 	Route::post('/sliders/save', 'AdminSlidersController@save');
 	Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
+
 	Route::post('/config/save', 'AdminConfigController@save');
 	Route::post('/content/save', 'ContentController@savedPage');
 	Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
-	Route::post('/seo-categories/edit', 'SeoCategoriesController@SavedCategSeo');
-	Route::post('/seo-familias-sessiones/edit', 'SeoFamiliasSessionesController@SavedFamilySessionsSeo');
-	Route::post('/auc-index-menu/save', 'AucIndexMenuController@save');
+
 	Route::post('/traducciones/new', 'TraduccionesController@NewTrans');
 	Route::post('/bloque/edit', 'BloqueConfigController@EditBloque');
-	Route::post('/auc-index/edit', 'AucIndexController@EditAuIndex');
+
 	Route::post('/banner/edit', 'BannerController@EditBanner');
 	Route::post('/resources/edit', 'ResourceController@EditResources');
 	Route::post('/resources/delete', 'ResourceController@DeleteResource');
 	Route::post('/category-blog/edit', 'BlogController@EditBlogCategory');
 	Route::post('/blog/edit', 'BlogController@EditBlog');
-
-
-
-
-
 
 	Route::group(['middleware' => ['web']], function () {
 

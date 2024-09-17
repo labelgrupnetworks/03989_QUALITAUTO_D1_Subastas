@@ -146,7 +146,6 @@ Route::get(Routing::translateSeo('subasta-inversa'), [SubastaController::class, 
 Route::post('/api-ajax/sessions/files', [SubastaController::class, 'getAucSessionFiles'])->name('apiajax.sessions.files');
 
 Route::get(Routing::slug('sub') . '/{status?}/{type?}', [SubastaController::class, 'listaSubastasSesiones'])->where(array('status' => '[A-Z]?', 'type' => '[A-Z]?'));
-Route::get(Routing::slugSeo('subastas-tematicas'), [SubastaController::class, 'themeAuctionList'])->name('subastas.tematicas');
 
 Route::post('/consult-lot/email', [MailController::class, 'emailConsultLot']);
 Route::get('/{lang?}/accept_news', [MailController::class, 'acceptNews']);

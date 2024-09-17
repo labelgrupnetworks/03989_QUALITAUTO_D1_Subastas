@@ -11,7 +11,6 @@ use App\libs\FormLib;
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
 use App\libs\TradLib;
-use App\Models\AucIndex;
 use App\Models\Bloques;
 use App\Models\Category;
 use App\Models\Enterprise;
@@ -19,7 +18,6 @@ use App\Models\Favorites;
 use App\Models\Filters;
 use App\Models\Payments;
 use App\Models\Sec;
-use App\Models\SeoFamiliasSessiones;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\AucSessionsFiles;
@@ -189,26 +187,6 @@ class SubastaController extends Controller
 		$route_customize = Request::segment(2);
 
 		return  $this->lotList(NULL, $key,  $route_customize, 'theme');
-	}
-
-	public function themeAuctionList()
-	{
-		$lang = Config::get('app.locale');
-		$key = 'subjects_thematic_' . strtoupper($lang);
-		$menu_obj = new \App\Models\AucIndex;
-		$Menu = $menu_obj->getMenuWeb($key);
-
-		$data = array();
-		$data['theme_auctions'] = array();
-		if (!empty($Menu)) {
-			$data['theme_auctions'] = $menu_obj->getMenuWebHijo($Menu->id_web_auc_index_lang);
-		}
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.metas.theme_auction_meta_title');
-		$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.metas.theme_auction_meta_description');
-		$data['seo'] = $SEO_metas;
-
-		return View::make('front::pages.subastas_tematicas', array('data' => $data));
 	}
 
 	public function indice_subasta($cod_sub = NULL)
@@ -405,14 +383,6 @@ class SubastaController extends Controller
 				$SEO_metas->meta_title = $sub_data->des_sub;
 				$SEO_metas->meta_description = $sub_data->description;
 			}
-			/*
-            if ( Config::get('app.filter_period')){
-                $get_filters =  $subastaObj->getSubasta_filters(TRUE);
-
-                $filters = $this->create_filters($get_filters);
-            }
-             *
-             */
 		}
 
 		$totalItems = $subastaObj->getLots("count", $cache_sql);
@@ -1059,92 +1029,16 @@ class SubastaController extends Controller
 		$subastaObj->select_filter = 'asigl0.ref_asigl0,  hces1.num_hces1, SUB.cod_sub, "id_auc_sessions",  NVL(HCES1_LANG.WEBFRIEND_HCES1_LANG,  HCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1,titulo_hces1';
 		$subastaObj->page = 'all';
 
-		$auction_in_categories =  Config::get('app.auction_in_categories');
+		$subastaObj->where_filter = "AND \"id_auc_sessions\" =  $subastaObj->id_auc_sessions ";
 
-		$theme_key = null;
-		//se usará para los enlaces de siguiente y anterior
-		$get_theme_key = "";
-		if (!empty($_GET['theme'])) {
-			$theme_key = $_GET['theme'];
-			$get_theme_key = "?theme=$theme_key";
+		if (!empty(Config::get("app.gridAllSessions"))) {
+			$url_subasta = route("urlAuction", ["texto" => Str::slug($lote[0]->des_sub), "cod" => $lote[0]->cod_sub, "session" => '001']);
+		} else {
+			#$url_subasta= Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
+			$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
 		}
 
-		//comprueba si es una subasta tematica o  de tipo categoria, por ejemplo si la subasta es de tipo O es de categorias
-		if (!empty($theme_key)) {
-			$auc = new AucIndex();
-			//es subasta tematica
-			if (!empty($theme_key)) {
-				//creamos url para el breadcumb
-				$url_subasta = Routing::translateSeo('tematicas') . $theme_key;
-				$key_name = $theme_key;
-			} else { // es de tipo categoria
-				//buscamos el key a partir de la categoria del lote
-				$category = $auc->getKeyBySec($lote[0]->sec_hces1, Config::get('app.locale'));
-
-				if (empty($category)) {
-					$category =  new \stdClass();
-
-					$category->key_name = Config::get('app.default_category_' . Config::get('app.locale'));
-				}
-
-
-				//url para el breadcumb
-				$url_subasta = Routing::translateSeo('subastas') . $category->key_name;
-				$key_name = $category->key_name;
-			}
-			//definimos los wheres segun la key
-			$customize_values = $auc->getAucIndexByKeyname($key_name, Config::get('app.locale'));
-
-			if (empty($customize_values)) {
-				return abort(404);
-			}
-
-			$this->set_customize_values_filter($customize_values, $subastaObj);
-
-			$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-
-
-			$title_url_subasta = $customize_values->title;
-		} //si es una subasta de tipo categorias
-		/* 2019_09_05 - LO DEJO COMENTADO, ya que con la estructura que tiene tauler es dificil controlar el anterior siguiente por categoria, solo cuando vienen de categoria.
-        elseif( !empty($auction_in_categories) &&    stripos($auction_in_categories,$lote[0]->tipo_sub) !== false ){
-            $sec_obj = new Sec();
-            $ortsec  = $sec_obj->getOrtsecByCodSec('0',$lote[0]->sec_hces1);
-
-            //si nose ha encontrado la ordenacion de catalogo de esa categoria
-            if(empty($ortsec)){
-                $ortsec=  new \stdClass();
-                $ortsec->key_ortsec0 = Config::get('app.default_category_'. Config::get('app.locale'));
-                $ortsec->des_ortsec0 =trans(Config::get('app.theme').'-app.lot_list.all_categories');
-                //Lin_ortsec de todas las categories.
-                $ortsec->lin_ortsec0 = 10;
-            }
-            $title_url_subasta =$ortsec->des_ortsec0;
-            $url_subasta= Routing::translateSeo('subastas').$ortsec->key_ortsec0;
-            $key_name = $ortsec->key_ortsec0;
-            $subastaObj->where_filter  .= " AND (ORTSEC1.LIN_ORTSEC1 = '$ortsec->lin_ortsec0')";
-            $subastaObj->join_filter .= "JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = HCES1.SEC_HCES1 AND ORTSEC1.EMP_ORTSEC1 = HCES1.EMP_HCES1 AND ORTSEC1.SUB_ORTSEC1 = '0') ";
-
-
-            $subastaObj->where_filter .=" AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-            $subastaObj->order_by_values = 'ffin_asigl0 ASC,hfin_asigl0 ASC, ref_asigl0 ASC';
-        }
-         *
-         */ else {
-			//$subastaObj->tipo = "'W','O','V','P'";
-
-			$subastaObj->where_filter = "AND \"id_auc_sessions\" =  $subastaObj->id_auc_sessions ";
-
-			if (!empty(Config::get("app.gridAllSessions"))) {
-				$url_subasta = route("urlAuction", ["texto" => Str::slug($lote[0]->des_sub), "cod" => $lote[0]->cod_sub, "session" => '001']);
-			} else {
-				#$url_subasta= Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
-				$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
-			}
-
-
-			$title_url_subasta = $lote[0]->des_sub;
-		}
+		$title_url_subasta = $lote[0]->des_sub;
 
 		# Monta las URL para los lotes: anterior y siguiente.
 		//$item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R'
@@ -1161,17 +1055,9 @@ class SubastaController extends Controller
 			}
 			//si no hemos pasado por actual y aun no hay previous
 			elseif ($actual == false) {
-				#	$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-				#	$previous = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
-
 				$previous = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, "", $value->ref_asigl0, $value->num_hces1, $value->webfriend_hces1, $value->titulo_hces1);
-
 			} elseif ($actual && is_null($next)) {
-				#$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-				#$next = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
-
 				$next = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, "", $value->ref_asigl0, $value->num_hces1, $value->webfriend_hces1, $value->titulo_hces1);
-
 				break;
 			}
 		}
@@ -1551,44 +1437,6 @@ class SubastaController extends Controller
 	}
 
 	//-------- FIN NEW FAVORITES --------------
-
-
-	private function create_filters($data)
-	{
-
-		$filters = array(
-			"period" => array(),
-			"period_count" => array()
-		);
-
-		foreach ($data as $item) {
-			if (!empty($item->period)) {
-				if (!isset($filters["period"][$item->period])) {
-					$filters["period"][$item->period] = array();
-					$filters["period_count"][$item->period] = 0;
-				}
-				$filters["period_count"][$item->period]++;
-				if (!empty($item->subperiod_1) && !isset($filters["period"][$item->period][$item->subperiod_1])) {
-					$filters["period"][$item->period][$item->subperiod_1] = 1;
-				} elseif (!empty($item->subperiod_1)) {
-					$filters["period"][$item->period][$item->subperiod_1]++;
-				}
-			}
-		}
-		//ahora se ordena teniendo encuenta el campo orden
-		/*
-        foreach ($filters["period"] as $key => $period){
-
-            ksort($filters["period"][$key]);
-
-        }
-
-        ksort($filters["period"]);
-        ksort($filters["period_count"]);
-         *
-         */
-		return $filters;
-	}
 
 	public function auction_info()
 	{
@@ -1971,66 +1819,6 @@ class SubastaController extends Controller
 			$subastaObj->where_filter .= $customize_values->tipo_sub;
 		}
 	}
-	private function setFilterCustomize_copy($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas)
-	{
-		$category = NULL;
-		//si venimos de categorias o de temáticas
-		if (!empty($type)) {
-			if ($type == "category") {
-				$category = $key_customize;
-			}
-			$auc = new AucIndex();
-			$customize_values = $auc->getAucIndexByKeyname($key_customize, Config::get('app.locale'));
-			if (empty($customize_values)) {
-				return abort(404);
-			}
-
-			$this->set_customize_values_filter($customize_values, $subastaObj);
-
-			$auction_in_categories =  Config::get('app.auction_in_categories');
-			//debemos limitar la busqueda a los tipso de subasta que hayan indicado
-			if (!empty($auction_in_categories)) {
-				$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-			}
-
-
-
-			//COMO LAS SUBASTAS DE TIPO P Y TIPO O SE COPIAN LOS LOTES DEBEMOS PONER QUE SOLO COJA EL ULTIMO LOTE, ES DECIR EL QUE COINCIDA CON LA HCES1
-			// DE MOMENTO LO OBVIAMOS POR QUE NOS BASTA CON PONER QUE LOS LOTES NO ESTEN CERRADOS
-			// AND HCES1.REF_HCES1 = ASIGL0.REF_ASIGL0 AND HCES1.SUB_HCES1 = ASIGL0.SUB_ASIGL0
-
-			//Queremos que reindexe si es una familia
-			$seo_family_session = new SeoFamiliasSessiones();
-			$metas = $seo_family_session->FamilySessionsSeoLang($customize_values->id_web_auc_index, Config::get('app.emp'), strtoupper(Config::get('app.locale')));
-			//Crea el objeto del Seo donde vendra todo el Seo de esa Category
-			//Crea el objeto para que devuelva informacion de esa category para el breadcrumb
-			$SEO_metas->noindex_follow = false;
-			if (!empty($metas)) {
-				$SEO_metas->url = Routing::translateSeo($route_customize) . $key_customize;
-				$SEO_metas->webname = $metas[0]->webname_auc_seo;
-				$SEO_metas->meta_title = $metas[0]->webmetat_auc_seo;
-				$SEO_metas->meta_description = $metas[0]->webmetad_auc_seo;
-				$SEO_metas->meta_content = $metas[0]->webcont_auc_seo;
-			}
-		}
-		//es subasta normal
-		else {
-			//Miramos si existe codigo de subasta, si no viene quiere decir que es una categoria
-
-			//Es no es una category que no reindexe
-			$SEO_metas->noindex_follow = true;
-		}
-		//si han elegido una categoria del listado y la subasta no es de tipo categoria
-		if ($type != "category" &&  !empty(Request::input('category'))) {
-			$category = Request::input('category');
-			$auc = new AucIndex();
-			//aqui no usamos $customize values por  que los customize_values son de para subastas customizadas
-			$cat_values = $auc->getAucIndexByKeyname($category, Config::get('app.locale'));
-			$this->set_customize_values_filter($cat_values, $subastaObj);
-		}
-
-		return $category;
-	}
 
 
 	private function setFilterCustomize($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas, $subcategory)
@@ -2106,42 +1894,6 @@ class SubastaController extends Controller
 					$SEO_metas->meta_content = $ortsec->meta_contenido_ortsec0;
 				}
 			}
-			//subastas temáticas
-			else {
-				$auc = new AucIndex();
-				$customize_values = $auc->getAucIndexByKeyname($key_customize, Config::get('app.locale'));
-				if (empty($customize_values)) {
-					return abort(404);
-				}
-
-				$this->set_customize_values_filter($customize_values, $subastaObj);
-
-				$auction_in_categories =  Config::get('app.auction_in_categories');
-				//debemos limitar la busqueda a los tipso de subasta que hayan indicado
-				if (!empty($auction_in_categories)) {
-					$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-				}
-
-
-
-				//COMO LAS SUBASTAS DE TIPO P Y TIPO O SE COPIAN LOS LOTES DEBEMOS PONER QUE SOLO COJA EL ULTIMO LOTE, ES DECIR EL QUE COINCIDA CON LA HCES1
-				// DE MOMENTO LO OBVIAMOS POR QUE NOS BASTA CON PONER QUE LOS LOTES NO ESTEN CERRADOS
-				// AND HCES1.REF_HCES1 = ASIGL0.REF_ASIGL0 AND HCES1.SUB_HCES1 = ASIGL0.SUB_ASIGL0
-
-				//Queremos que reindexe si es una familia
-				$seo_family_session = new SeoFamiliasSessiones();
-				$metas = $seo_family_session->FamilySessionsSeoLang($customize_values->id_web_auc_index, Config::get('app.emp'), strtoupper(Config::get('app.locale')));
-				//Crea el objeto del Seo donde vendra todo el Seo de esa Category
-				//Crea el objeto para que devuelva informacion de esa category para el breadcrumb
-				$SEO_metas->noindex_follow = false;
-				if (!empty($metas)) {
-					$SEO_metas->url = Routing::translateSeo($route_customize) . $key_customize;
-					$SEO_metas->webname = $metas[0]->webname_auc_seo;
-					$SEO_metas->meta_title = $metas[0]->webmetat_auc_seo;
-					$SEO_metas->meta_description = $metas[0]->webmetad_auc_seo;
-					$SEO_metas->meta_content = $metas[0]->webcont_auc_seo;
-				}
-			}
 		}
 		//es subasta normal
 		else {
@@ -2152,18 +1904,6 @@ class SubastaController extends Controller
 			$subcategory = Request::input('cod_sec');
 			$category = Request::input('lin_ortsec');
 		}
-		/*
-        //si han elegido una categoria del listado y la subasta no es de tipo categoria
-        if($type!="category" &&  !empty(Request::input('lin_ortsec1')) ){
-            $category = Request::input('lin_ortsec1');
-
-            $auc = new AucIndex();
-            //aqui no usamos $customize values por  que los customize_values son de para subastas customizadas
-            $cat_values = $auc->getAucIndexByKeyname($category,Config::get('app.locale'));
-            $this->set_customize_values_filter($cat_values, $subastaObj);
-
-        }
-             */
 
 		return $category;
 	}
