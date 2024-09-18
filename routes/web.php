@@ -22,7 +22,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Prueba;
 use App\Http\Controllers\SubastaController;
-use App\Http\Controllers\subastaTiempoRealController;
+use App\Http\Controllers\SubastaTiempoRealController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\SubaliaController;
 use App\Http\Controllers\UserController;
@@ -161,7 +161,7 @@ Route::post('/api-ajax/cod-zip', [UserController::class, 'CodZip']);
 
 Route::post('api-ajax/email_sobrepuja', [SubastaController::class, 'emailSobrepuja']);
 /*reabrir lote */
-Route::post('/api-ajax/open_lot', [subastaTiempoRealController::class, 'openLot']);
+Route::post('/api-ajax/open_lot', [SubastaTiempoRealController::class, 'openLot']);
 
 # Lotes API Service
 # Subastas en Tiempo Real
@@ -171,8 +171,8 @@ if (!empty(intval(Config::get('app.enable_tr_auctions')))) {
 		return view('front::pages.tiempo_real.streamin_test');
 	});
 
-	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}', [subastaTiempoRealController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
-	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', [subastaTiempoRealController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
+	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}', [SubastaTiempoRealController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
+	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', [SubastaTiempoRealController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 }
 Route::get('sendemailsobrepuja/{cod}/{licit}/{ref}/{orden_o_puja}', [SubastaTiempoRealController::class, 'sendEmailSobrepuja']);
 Route::post('api/action/subasta-{cod}', [SubastaTiempoRealController::class, 'action'])->where(array('cod' => '[0-9a-zA-Z]+'));
