@@ -3,6 +3,7 @@ let project = {
 	theme: 'demo',
 	version: 1,
 };
+//cleanUrl();
 
 $(document).ready(function () {
 
@@ -2060,4 +2061,19 @@ async function executeCaptchaV3() {
 			});
 		});
 	});
+}
+
+function cleanUrl() {
+    // Obtén la URL actual
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+
+	const paramsObject = Object.fromEntries(params);
+	const emptyKeys = Object.entries(paramsObject).filter(([_, value]) => value === '');
+
+	emptyKeys.forEach(([key]) => params.delete(key));
+
+    // Actualiza la URL sin recargar la página
+    url.search = params.toString();
+    window.history.replaceState({}, '', url.toString());
 }
