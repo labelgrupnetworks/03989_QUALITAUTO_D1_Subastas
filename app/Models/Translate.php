@@ -11,7 +11,6 @@ use yajra\Oci8\Connectors\OracleConnector;
 use yajra\Oci8\Oci8Connection;
 use Config;
 use Routing;
-use App\Models\Content;
 use Illuminate\Translation\Translator as Trans;
 
 class Translate extends Model

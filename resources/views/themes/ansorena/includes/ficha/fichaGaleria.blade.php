@@ -19,8 +19,6 @@
     $artistName = Tools::changePositionNamesWithComa($caracteristicas[1]->value_caracteristicas_hces1 ?? '');
 @endphp
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
 <div class="container-fluid gx-0">
     <div class="row gx-0">
 
@@ -67,6 +65,7 @@
             <div class="collapse" id="formRequest">
                 <form name="infoLotForm" id="infoLotForm" method="post" onsubmit="sendInfoLot(event)">
                     @csrf
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
                     <input type="hidden" name="auction"
                         value="{{ $lote_actual->cod_sub }} - {{ $lote_actual->des_sub }}">
                     <input type="hidden" name="lot_name"
@@ -137,9 +136,9 @@
                         </div>
 
                         <div class="col-12">
-                            <div class="g-recaptcha" data-sitekey="{{ Config::get('app.codRecaptchaEmailPublico') }}"
-                                data-callback="onSubmit">
-                            </div>
+                            <p class="captcha-terms">
+								{!! trans("$theme-app.global.captcha-terms") !!}
+							</p>
                         </div>
 
                         <div class="text-center text-lg-end">

@@ -114,10 +114,6 @@ header("X-Frame-Options:     DENY");
 	};
 </script>
 
-
-
-
-
 <script src="{{ URL::asset('vendor/jquery/3.6.0/dist/jquery.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/common.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>
@@ -141,3 +137,4 @@ header("X-Frame-Options:     DENY");
 <script src="{{ URL::asset('vendor/slick/slick.js') }}"></script>
 <script src="{{ URL::asset('vendor/datatables/datatables.js') }}"></script>
 
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>

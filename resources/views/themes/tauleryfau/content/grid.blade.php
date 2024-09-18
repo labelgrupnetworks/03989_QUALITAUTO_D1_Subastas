@@ -166,7 +166,9 @@
 		@if (empty($filters["section"]))
 			<div class="links-sections">
 				@foreach($sections as $sec)
-					<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0 ?? '', 'keysection' => $sec['key_sec']))}}">{{ucfirst($sec["des_sec"])}}</a>
+					@if(!empty($sec['key_sec']))
+						<a class="mr-2" href="{{route('section',array( 'keycategory' => $infoOrtsec->key_ortsec0 ?? '', 'keysection' => $sec['key_sec']))}}">{{ucfirst($sec["des_sec"])}}</a>
+					@endif
 				@endforeach
 			</div>
 		@endif

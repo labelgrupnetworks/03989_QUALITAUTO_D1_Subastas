@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\V5;
 
 use App\Exports\CarlandiaSalesExport;
@@ -12,6 +13,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class CarlandiaSalesController extends Controller
 {
 
+	private $cedente;
+	private $isAdmin;
+
 	public function __construct()
 	{
 		$this->middleware(function ($request, $next) {
@@ -19,7 +23,7 @@ class CarlandiaSalesController extends Controller
 			$this->cedente = $this->checkCedenteUser();
 			$this->isAdmin = session('user.admin');
 
-			if(!$this->cedente && !$this->isAdmin) {
+			if (!$this->cedente && !$this->isAdmin) {
 				abort(404);
 			}
 
@@ -47,7 +51,7 @@ class CarlandiaSalesController extends Controller
 
 	public function getDownloadSales(Request $request)
 	{
-		if($this->isAdmin) {
+		if ($this->isAdmin) {
 			$this->cedente = new FxCli();
 			$this->cedente->cod_cli = null;
 		}
@@ -60,14 +64,14 @@ class CarlandiaSalesController extends Controller
 
 		$name = $isActive ? 'Ofertas_vigentes' : 'Ventas_cerradas';
 
-		return Excel::download($export, $name .'_'. $this->cedente->cod_cli . '.xlsx');
+		return Excel::download($export, $name . '_' . $this->cedente->cod_cli . '.xlsx');
 	}
 
 	private function formatPricesWithCommission($lots)
 	{
 		$comision = 1 + config('app.carlandiaCommission');
 
-		foreach($lots as $lot) {
+		foreach ($lots as $lot) {
 			$lot->reserva = $lot->reserva / $comision;
 			$lot->comprar = $lot->comprar / $comision;
 			$lot->implic_hces1 = $lot->implic_hces1 / $comision;
@@ -81,11 +85,11 @@ class CarlandiaSalesController extends Controller
 	{
 		$cod_cli = session('user.cod');
 
-		if(!$cod_cli){
+		if (!$cod_cli) {
 			return null;
 		}
 
-		return FxCli::where(['cod_cli' => $cod_cli,'tipo_cli' => FxCli::TIPO_CLI_VENDEDOR])->first();
+		return FxCli::where(['cod_cli' => $cod_cli, 'tipo_cli' => FxCli::TIPO_CLI_VENDEDOR])->first();
 	}
 
 	private function getOwnerSelector(Request $request)
@@ -97,7 +101,7 @@ class CarlandiaSalesController extends Controller
 		$this->cedente = new FxCli();
 		$this->cedente->cod_cli = $request->get('prop', $firstOwner);
 
-		return FormLib::Select('prop', 0, $request->prop ?? $firstOwner , $owners, "", "", false);
+		return FormLib::Select('prop', 0, $request->prop ?? $firstOwner, $owners, "", "", false);
 	}
 
 
@@ -117,7 +121,7 @@ class CarlandiaSalesController extends Controller
 					SELECT COUNT(LICIT_ASIGL1) as BIDS FROM FGASIGL1_AUX WHERE SUB_ASIGL1 = COD_SUB AND REF_ASIGL1 = REF_ASIGL0 AND EMP_ASIGL1 = EMP_ASIGL0
 				)) AS BIDS')
 
-				->selectRaw('(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM(
+			->selectRaw('(SELECT COUNT(DISTINCT(LICIT_ASIGL1)) FROM(
 					SELECT DISTINCT(LICIT_ASIGL1) FROM FGASIGL1 WHERE SUB_ASIGL1 = COD_SUB AND REF_ASIGL1 = REF_ASIGL0 AND EMP_ASIGL1 = EMP_ASIGL0
 					UNION ALL
 					SELECT DISTINCT(LICIT_ASIGL1) FROM FGASIGL1_AUX WHERE SUB_ASIGL1 = COD_SUB AND REF_ASIGL1 = REF_ASIGL0 AND EMP_ASIGL1 = EMP_ASIGL0
@@ -132,19 +136,19 @@ class CarlandiaSalesController extends Controller
 			->leftJoin('FGCARACTERISTICAS_HCES1', "EMP_CARACTERISTICAS_HCES1 = EMP_HCES1 AND LINHCES_CARACTERISTICAS_HCES1 = LIN_HCES1 AND NUMHCES_CARACTERISTICAS_HCES1 = NUM_HCES1 AND IDCAR_CARACTERISTICAS_HCES1 = '$idMatricula'")
 
 			//No lo han pedido, pero por si en un futuro quieren buscador
-			->when($search, function ($query, $search){
+			->when($search, function ($query, $search) {
 				return $query->where([
 					['ref_asigl0', $search],
-					['lower(descweb_hces1)', 'like', "%". mb_strtolower($search) ."%", 'or'],
+					['lower(descweb_hces1)', 'like', "%" . mb_strtolower($search) . "%", 'or'],
 				]);
 			})
 
-			->when($propertyCod, function($query, $cod) {
+			->when($propertyCod, function ($query, $cod) {
 				return $query->where('prop_hces1', $cod);
 			})
 
 			//seleccionamos condiciones segun si buscamos activos o vendidos
-			->when($isActive, function ($query){
+			->when($isActive, function ($query) {
 				return $query
 					->selectRaw('(SELECT MAX(IMP_ASIGL1) FROM(
 						SELECT MAX(IMP_ASIGL1) AS IMP_ASIGL1 FROM FGASIGL1 WHERE SUB_ASIGL1 = COD_SUB AND REF_ASIGL1 = REF_ASIGL0 AND EMP_ASIGL1 = EMP_ASIGL0
@@ -155,23 +159,22 @@ class CarlandiaSalesController extends Controller
 						['cerrado_asigl0', 'N'],
 						['retirado_asigl0', 'N']
 					]);
-			}, function ($query){
+			}, function ($query) {
 
 				return $query
-				->addSelect('FGASIGL1.pujrep_asigl1', 'FGCSUB.fecha_csub')
+					->addSelect('FGASIGL1.pujrep_asigl1', 'FGCSUB.fecha_csub')
 
-				->joinCSubAsigl0()
-				->join('FGASIGL1', 'FGASIGL1.EMP_ASIGL1 = FGCSUB.EMP_CSUB AND FGASIGL1.SUB_ASIGL1 = FGCSUB.SUB_CSUB AND FGASIGL1.REF_ASIGL1 = FGCSUB.REF_CSUB AND FGASIGL1.LICIT_ASIGL1 = FGCSUB.LICIT_CSUB AND FGASIGL1.IMP_ASIGL1 = FGCSUB.HIMP_CSUB')
-				->where([
-					['cerrado_asigl0', 'S'],
-					['implic_hces1', '!=', '0'],
-					['afral_csub', 'L00']
-				]);
+					->joinCSubAsigl0()
+					->join('FGASIGL1', 'FGASIGL1.EMP_ASIGL1 = FGCSUB.EMP_CSUB AND FGASIGL1.SUB_ASIGL1 = FGCSUB.SUB_CSUB AND FGASIGL1.REF_ASIGL1 = FGCSUB.REF_CSUB AND FGASIGL1.LICIT_ASIGL1 = FGCSUB.LICIT_CSUB AND FGASIGL1.IMP_ASIGL1 = FGCSUB.HIMP_CSUB')
+					->where([
+						['cerrado_asigl0', 'S'],
+						['implic_hces1', '!=', '0'],
+						['afral_csub', 'L00']
+					]);
 			})
 			->orderBy('ref_asigl0')
 			->get();
 
-			return $this->formatPricesWithCommission($lots);
+		return $this->formatPricesWithCommission($lots);
 	}
-
 }

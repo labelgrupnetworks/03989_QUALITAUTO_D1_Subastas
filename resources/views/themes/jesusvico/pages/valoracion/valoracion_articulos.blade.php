@@ -123,6 +123,10 @@
                         </div>
                     </div>
 
+					<p class="captcha-terms">
+						{!! trans("$theme-app.global.captcha-terms") !!}
+					</p>
+
                     <button class="button-send-valorate btn btn-lb-primary" id="valoracion-adv"
                         type="submit">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
                 </form>

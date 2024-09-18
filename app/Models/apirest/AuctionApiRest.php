@@ -2,18 +2,20 @@
 
 
 namespace App\Models\apirest;
+
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Config;
 use DB;
 
 
 class AuctionApiRest extends ApiRest{
-   
+
     public function getSub($type_sub,$codsub,$idsession){
-        
-        
-        $lang = \Tools::getLanguageComplete(Config::get('app.locale'));
-        
+
+
+        $lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+
         $sql = DB::TABLE('fgsub sub')
                 ->select('sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub, sub.SUBC_SUB, sub.tipo_sub,sub.subabierta_sub,sub.opcioncar_sub,
                        sub.subastatr_sub,sub.COMPRAWEB_SUB,
@@ -54,6 +56,6 @@ class AuctionApiRest extends ApiRest{
                }
                return $sql->get();
     }
-    
+
 
 }

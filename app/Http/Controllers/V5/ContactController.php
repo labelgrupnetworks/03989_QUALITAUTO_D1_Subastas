@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Providers\ToolsServiceProvider;
 use App\libs\MessageLib;
 use App\libs\FormLib;
 use App\libs\EmailLib;
@@ -54,6 +53,11 @@ class ContactController extends Controller
 		return View::make('pages.V5.contact', array('data' => $data));
 	}
 
+	/**
+	 * Enviamos un correo de contacto al admin
+	 * Metodo protegido por el middleware VerifyCaptcha
+	 * @see App\Http\Middleware\VerifyCaptcha
+	 */
 	public function contactSendmail(Request $request)
 	{
 		// Recogemos la info
@@ -64,16 +68,6 @@ class ContactController extends Controller
 		$isEmailBanned = in_array(trim($data['email']), $bannedsEmails);
 		if ($isEmailBanned) {
 			return MessageLib::errorMessage("recaptcha_incorrect");
-		}
-
-		if (Config::get('app.codRecaptchaEmail', false) || Config::get('app.captcha_v3', false)) {
-			$token = $request->input('captcha_token');
-			$ip = $request->getClientIp();
-			$email = $request->input('email');
-
-			if (!ToolsServiceProvider::captchaIsValid($token, $ip, $email, Config::get('app.codRecaptchaEmail'))) {
-				return MessageLib::errorMessage("recaptcha_incorrect");
-			}
 		}
 
 		// Enviamos el email a admin

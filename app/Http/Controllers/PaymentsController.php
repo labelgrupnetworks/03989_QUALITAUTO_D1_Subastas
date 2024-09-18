@@ -2,39 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use View;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
-use Request;
-
-use App\Models\Payments;
-use App\Models\delivery\Delivery;
-use App\Models\User;
-use \JasonGrimes\Paginator;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Subasta;
-use App\Models\Bloques;
-use App\Models\Facturas;
-use App\Models\Enterprise;
-use Spipu\Html2Pdf\Html2Pdf;
-use App\libs\EmailLib;
-use App\libs\GastosEnvioLib;
-use Illuminate\Support\Facades\DB;
-use App\libs\RedsysAPI;
-
-use App\Models\V5\FgAsigl0;
-use App\Models\V5\FxClid;
-use App\Http\Controllers\V5\PayShoppingCartController;
 use App\Http\Controllers\V5\DepositController;
 use App\Http\Controllers\V5\PayArticleCartController;
+use App\Http\Controllers\V5\PayShoppingCartController;
+use App\libs\EmailLib;
+use App\libs\GastosEnvioLib;
 use App\libs\PayPalV2API;
+use App\libs\RedsysAPI;
 use App\Models\delivery\Delivery_default;
-use App\Models\V5\FsParams;
-use App\Models\V5\FgCsub0;
+use App\Models\delivery\Delivery;
+use App\Models\Enterprise;
+use App\Models\Facturas;
+use App\Models\Payments;
+use App\Models\Subasta;
+use App\Models\User;
+use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgCsub;
+use App\Models\V5\FgCsub0;
+use App\Models\V5\FsParams;
+use App\Models\V5\FxClid;
+use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
-use Illuminate\Support\Collection;
 use GuzzleHttp\Client;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 
 class PaymentsController extends Controller
@@ -66,10 +63,9 @@ class PaymentsController extends Controller
 
 		if ($function == 'pagoDirectoReturn') {
 
-			if (Config::get('app.paymentRedsys') ) {
+			if (Config::get('app.paymentRedsys')) {
 				$this->pagoDirectoReturnRedsys();
-			}
-			elseif (Config::get('app.paymentUP2') == 'UP2') {
+			} elseif (Config::get('app.paymentUP2') == 'UP2') {
 				$this->pagoDirectoReturnUP2();
 			}
 		} elseif ($function == 'pagarLotesWeb') {
@@ -94,7 +90,7 @@ class PaymentsController extends Controller
 		$emp  = Config::get('app.emp');
 		$gemp  = Config::get('app.gemp');
 		$hoy = date("Y-m-d");
-		$importeLotes=0;
+		$importeLotes = 0;
 		$precio = (int) 0;
 		$tax = (int) 0;
 		$tax_temp = (int) 0;
@@ -162,7 +158,7 @@ class PaymentsController extends Controller
 
 					$iva_cli = $this->hasIvaReturnIva($tipo_iva->tipo, $iva);
 					#para el iva de los lotes
-					$base_csub_lotes +=$inf_lot->base_csub;
+					$base_csub_lotes += $inf_lot->base_csub;
 
 
 					//Cogemos gastos extas si ya tenia una prefactura hecha
@@ -184,7 +180,7 @@ class PaymentsController extends Controller
 						if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1) {
 							#Envio por agencia, se usa en Duran, se calculan los gastos de la tabla WEB_GASTOS_ENVIO de momento solo lo usa Duran
 
-							if ($shopping_cart['envios'] == '5' && request('envio_' . $sub)=="1" ) {
+							if ($shopping_cart['envios'] == '5' && request('envio_' . $sub) == "1") {
 								#debe existir una direccion de envio
 								$address = request('clidd_' . $sub);
 
@@ -193,15 +189,13 @@ class PaymentsController extends Controller
 								}
 
 								$inf_env_lic->fecharec = null;
-								$inf_env_lic->infenv =$address;
+								$inf_env_lic->infenv = $address;
 								#guardamos todos los datos de la dirección de envio, ya que si solo guardamos el código la info asociada  puede variar en el tiempo
 								$inf_env_lic = $this->addresInfo($inf_env_lic);
 								$delete_peticion_delivery = true;
 								$increment_asigl2++;
 								#guardamos el extra de gastos de envio, posteriormente le pondremos el valor
 								$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, "gastos envio", 0, 0, 0, 'EN', $parametrosSub->secemb_prmsub);
-
-
 							}
 							//Envio por deliverea
 							elseif ($shopping_cart['envios'] == '4') {
@@ -216,7 +210,7 @@ class PaymentsController extends Controller
 								$envio = $envio + $enviar->imp_csube;
 								$increment_asigl2++;
 								$iva_tmp = round(($enviar->impiva_csube * 100) / $enviar->imp_csube);
-								$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(\Config::get('app.theme') . '-app.mis_compras.transport_packing'), $enviar->imp_csube, $enviar->impiva_csube, $iva_tmp, 'EN', $parametrosSub->secemb_prmsub);
+								$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(Config::get('app.theme') . '-app.mis_compras.transport_packing'), $enviar->imp_csube, $enviar->impiva_csube, $iva_tmp, 'EN', $parametrosSub->secemb_prmsub);
 								$inf_env_lic->fecharec = null;
 								$inf_env_lic->infenv = $enviar->nom_csube;
 
@@ -242,17 +236,15 @@ class PaymentsController extends Controller
 								//Lo sacamos fuera del if para tener siempre unos valores por defecto
 								$inf_env_lic = $this->addressStorePickup($inf_env_lic);
 
-								if(!empty($address))
-								{
-									$inf_env_lic->tarifa = request("shipping") ;
+								if (!empty($address)) {
+									$inf_env_lic->tarifa = request("shipping");
 									$inf_env_lic->fecharec = null;
 									$inf_env_lic->infenv = $address;
 
 									#guardamos todos los datos de la dirección de envio, ya que si solo guardamos el código la info asociada  puede variar en el tiempo
-									if(request("shipping") !== "recoger"){
+									if (request("shipping") !== "recoger") {
 										$inf_env_lic = $this->addresInfo($inf_env_lic);
 									}
-
 								}
 							} else {
 								$inf_env_lic->fecharec = null;
@@ -279,7 +271,7 @@ class PaymentsController extends Controller
 						$lic_exportacion = $this->licenciaDeExportacion($ref, $sub);
 						$tasa_exportacion = $this->tasasExportacion($ref, $sub);
 
-						if (($paise_exportacion != 'ES' && $lic_exportacion == 1) || ($lic_exportacion == 2 && !in_array($paise_exportacion, \Tools::PaisesEUR()))) {
+						if (($paise_exportacion != 'ES' && $lic_exportacion == 1) || ($lic_exportacion == 2 && !in_array($paise_exportacion, ToolsServiceProvider::PaisesEUR()))) {
 							$price_exportacion = floatval($parametrosSub->licexp_prmsub);
 							$iva_exportacion = $this->calculate_iva($tipo_iva->tipo, $iva, $price_exportacion);
 							$precio = $precio + $price_exportacion;
@@ -289,29 +281,28 @@ class PaymentsController extends Controller
 
 							if ($inf_env_lic->liceexp == 'S') {
 								$increment_asigl2++;
-								$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(\Config::get('app.theme') . '-app.mis_compras.spend_lincence_export'), $price_exportacion, $iva_exportacion, $iva_cli, 'EX', $parametrosSub->secexp_prmsub);
+								$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(Config::get('app.theme') . '-app.mis_compras.spend_lincence_export'), $price_exportacion, $iva_exportacion, $iva_cli, 'EX', $parametrosSub->secexp_prmsub);
 							}
 						}
 
-						if (($paise_exportacion != 'ES' && $tasa_exportacion == 1) || ($tasa_exportacion == 2 && !in_array($paise_exportacion, \Tools::PaisesEUR()))) {
+						if (($paise_exportacion != 'ES' && $tasa_exportacion == 1) || ($tasa_exportacion == 2 && !in_array($paise_exportacion, ToolsServiceProvider::PaisesEUR()))) {
 							$inf_env_lic->tasas  = 'S';
 						}
 					}
 					//Exportacion de tauler, que se calcula según pais de envio
-					else if(!empty($shopping_cart['exportacion']) && $shopping_cart['exportacion'] != 'ES' && Config::get('app.licencia_exportacion', 0)){
+					else if (!empty($shopping_cart['exportacion']) && $shopping_cart['exportacion'] != 'ES' && Config::get('app.licencia_exportacion', 0)) {
 
 						$lote = FgAsigl0::select('numhces_asigl0', 'linhces_asigl0')->where('sub_asigl0', $sub)->where('ref_asigl0', $ref)->first();
 						$exportacion = $subasta->hasExportLicense($lote->numhces_asigl0, $lote->linhces_asigl0);
 						$price_exportacion = 0;
-						if($exportacion){
+						if ($exportacion) {
 							$price_exportacion = $this->licenciaDeExportacionPorPais($shopping_cart['exportacion'], $inf_lot->himp_csub);
 						}
 
 						$price_exportacion_total += $price_exportacion;
 
 						$increment_asigl2++;
-						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(\Config::get('app.theme') . '-app.mis_compras.spend_lincence_export'), $price_exportacion, 0, $iva_cli, 'EX', $parametrosSub->secexp_prmsub);
-
+						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(Config::get('app.theme') . '-app.mis_compras.spend_lincence_export'), $price_exportacion, 0, $iva_cli, 'EX', $parametrosSub->secexp_prmsub);
 					}
 
 
@@ -327,23 +318,22 @@ class PaymentsController extends Controller
 						$precio = $precio + $precio_seguro;
 						$tax = $tax + $iva_seguro;
 						$increment_asigl2++;
-						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(\Config::get('app.theme') . '-app.mis_compras.insurance_shipping'), $precio_seguro, $iva_seguro, $iva_cli, 'SE', $parametrosSub->secseg_prmsub);
+						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(Config::get('app.theme') . '-app.mis_compras.insurance_shipping'), $precio_seguro, $iva_seguro, $iva_cli, 'SE', $parametrosSub->secseg_prmsub);
 					}
 					#tiene seguro y envio del lote calculado con la nueva tabla web_gastos_envio
 					if (!empty($shopping_cart['seguro']) && !empty($shopping_cart['envios']) && $shopping_cart['envios'] == '5') {
 						#necesitamos el pimporte de los lotes para calcular el precio del seguro
 						#Duran solo las online pasan por este circuito por eso no hace falta comparar si la subasta es de tipo online
-						if(\Config::get("app.noIVAOnlineAuction") ){
+						if (Config::get("app.noIVAOnlineAuction")) {
 							$ivaEnvios =  0;
-						}else{
+						} else {
 							$ivaEnvios = $this->calculate_iva($tipo_iva->tipo, $iva, $inf_lot->base_csub);
 						}
 
-						$importeLotes += $inf_lot->himp_csub + $inf_lot->base_csub + $ivaEnvios ;
+						$importeLotes += $inf_lot->himp_csub + $inf_lot->base_csub + $ivaEnvios;
 
 						$increment_asigl2++;
-						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(\Config::get('app.theme') . '-app.mis_compras.insurance_shipping'),0, 0, $iva_cli, 'SE', $parametrosSub->secseg_prmsub);
-
+						$jsonLot[$sub][$ref]['extras'][] = $this->jsonGastosExtrasLot($emp, $sub, $ref, $increment_asigl2, trans(Config::get('app.theme') . '-app.mis_compras.insurance_shipping'), 0, 0, $iva_cli, 'SE', $parametrosSub->secseg_prmsub);
 					}
 
 
@@ -367,7 +357,7 @@ class PaymentsController extends Controller
 
 		// calculamos iva de los lotes, todos juntos para que no haya problemas de decimales
 		#Duran solo las online pasan por este circuito por eso no hace falta comparar si la subasta es de tipo online
-		if(!\Config::get("app.noIVAOnlineAuction") ){
+		if (!Config::get("app.noIVAOnlineAuction")) {
 			$tax = $tax + $this->calculate_iva($tipo_iva->tipo, $iva, $base_csub_lotes);
 		}
 		//Calculamos gastos de envio
@@ -377,12 +367,12 @@ class PaymentsController extends Controller
 		$envio_temp  = $this->gastosEnvio($gastos_envio + $tax + $price_exportacion_total, $sub);
 
 		#si ha elegido el envio no urgente, ponemos el precio del envio no urgente como principal
-		if(!empty(request("shipping")) && request("shipping") == "min"){
+		if (!empty(request("shipping")) && request("shipping") == "min") {
 			$envio_temp['iva'] =  $envio_temp['iva_min'];
 			$envio_temp['imp'] =  $envio_temp['imp_min'];
 		}
 		#Tauler tiene la posibilidad de recogida en tienda, y en este caso el gasto es 0
-		elseif(!empty(request("shipping")) && request("shipping") == "recoger"){
+		elseif (!empty(request("shipping")) && request("shipping") == "recoger") {
 			$envio_temp['iva'] =  0;
 			$envio_temp['imp'] =  0;
 		}
@@ -394,27 +384,27 @@ class PaymentsController extends Controller
 			$envio = $envio + $imp_gastosErp['imp'];
 		} else {
 			*/
-			#si hay gastos de envio guardamos en cada lote lo que le correspondería por gastos de envio
+		#si hay gastos de envio guardamos en cada lote lo que le correspondería por gastos de envio
 
-			#guarda los costes de gasto de envio en el primer lote que tenga gastos de envio
-			$this->setCostInExtraInfo($jsonLot, "EN", $envio_temp['imp'], $envio_temp['iva'] );
+		#guarda los costes de gasto de envio en el primer lote que tenga gastos de envio
+		$this->setCostInExtraInfo($jsonLot, "EN", $envio_temp['imp'], $envio_temp['iva']);
 
-			#si no tienen los gastos de envio nuevo o si los tienen y han marcado que quiere el envio
-			if (!\Config::get("app.web_gastos_envio") || request('envio_' . $sub)=="1"){
-				$tax = $tax + $envio_temp['iva'] ;
-				$envio = $envio + $envio_temp['imp'];
-			}
+		#si no tienen los gastos de envio nuevo o si los tienen y han marcado que quiere el envio
+		if (!Config::get("app.web_gastos_envio") || request('envio_' . $sub) == "1") {
+			$tax = $tax + $envio_temp['iva'];
+			$envio = $envio + $envio_temp['imp'];
+		}
 
 
-			#calculamos seguro de envío, se calcula en base al coste de los lotes y el % indicado en el campo porcentaje_seguro_envio
-			if(!empty(request("seguro_". $sub)) && !empty(\Config::get('app.porcentaje_seguro_envio'))){
-				$importeSeguro = round($importeLotes * \Config::get('app.porcentaje_seguro_envio')/100,2);
-				$taxSeguro = $this->calculate_iva($tipo_iva->tipo, $iva, $importeSeguro);
-				$this->setCostInExtraInfo($jsonLot, "SE", $importeSeguro, $taxSeguro);
-				#se lo sumamos a las tasas y al envio, el seguro no tiene un apartado concreto
-				$tax += $taxSeguro;
-				$envio += $importeSeguro;
-			}
+		#calculamos seguro de envío, se calcula en base al coste de los lotes y el % indicado en el campo porcentaje_seguro_envio
+		if (!empty(request("seguro_" . $sub)) && !empty(Config::get('app.porcentaje_seguro_envio'))) {
+			$importeSeguro = round($importeLotes * Config::get('app.porcentaje_seguro_envio') / 100, 2);
+			$taxSeguro = $this->calculate_iva($tipo_iva->tipo, $iva, $importeSeguro);
+			$this->setCostInExtraInfo($jsonLot, "SE", $importeSeguro, $taxSeguro);
+			#se lo sumamos a las tasas y al envio, el seguro no tiene un apartado concreto
+			$tax += $taxSeguro;
+			$envio += $importeSeguro;
+		}
 
 		#ya no se puede comprobar el coste de la prefactura por que ahora en tauler pueden elegir dos preciso de envio
 		#}
@@ -424,25 +414,24 @@ class PaymentsController extends Controller
 
 
 
-	//	echo "total: " . ($precio + $envio + $tax);die();
+		//	echo "total: " . ($precio + $envio + $tax);die();
 		$token = '';
 		//generamos token
 		$token = $this->generate_token();
 		#si tiene un sobrecargo por pagar en web
 		$imp_extra = 0;
-		if(Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb"))){
-			$imp_extra = ($precio +  $envio + $tax) * (Config::get("app.sobreCargoPagoWeb") / 100) ;
-
+		if (Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb"))) {
+			$imp_extra = ($precio +  $envio + $tax) * (Config::get("app.sobreCargoPagoWeb") / 100);
 		}
 
-		$pago->insertPreFactura($emp, $apre, $npre, $user_cod, $precio, $envio, $tax, $token, $jsonLot, $price_exportacion_total,$imp_extra);
+		$pago->insertPreFactura($emp, $apre, $npre, $user_cod, $precio, $envio, $tax, $token, $jsonLot, $price_exportacion_total, $imp_extra);
 
 		$tipo = 'P';
-		$paymethod ="";
-		if(!empty(request("paymethod"))){
-			$paymethod = "&paymethod=".request("paymethod") ;
+		$paymethod = "";
+		if (!empty(request("paymethod"))) {
+			$paymethod = "&paymethod=" . request("paymethod");
 		}
-		$url = Config::get('app.url') . '/gateway/pasarela-pago?anum=' . $apre . '&num=' . $npre . '&tipo=' . $tipo . '&emp=' . $emp . '&tk=' . $token.$paymethod;
+		$url = Config::get('app.url') . '/gateway/pasarela-pago?anum=' . $apre . '&num=' . $npre . '&tipo=' . $tipo . '&emp=' . $emp . '&tk=' . $token . $paymethod;
 
 
 
@@ -511,12 +500,12 @@ class PaymentsController extends Controller
 			}
 		}
 
-/* ya no va por este circuito
+		/* ya no va por este circuito
 		#Si han elegido el pago por transferencia reenviamos a la página que mostrará el texto
 		if(!empty(request("paymethod")) && request("paymethod") == "transfer" ){
 			$importe = base64_encode($fact->imp);
 			$control = md5($importe.$fact->cod_cli);
-			$url = route("transferpayment", ["lang" => \Config::get("app.locale")])."?control=$control&trans=".$importe;
+			$url = route("transferpayment", ["lang" => Config::get("app.locale")])."?control=$control&trans=".$importe;
 			$res = array(
 				"status" => "success",
 				"msg" => $url
@@ -531,13 +520,13 @@ class PaymentsController extends Controller
 		}
 
 		$tipo = 'F';
-		$paymethod="";
+		$paymethod = "";
 
-		if(!empty(request("paymethod"))){
-			$paymethod = "&paymethod=". request("paymethod");
+		if (!empty(request("paymethod"))) {
+			$paymethod = "&paymethod=" . request("paymethod");
 		}
 
-		$url = Config::get('app.url') . '/gateway/pasarela-pago?anum=' . $fact->anum . '&num=' . $fact->num . '&tipo=' . $tipo . '&emp=' . \Config('app.emp') . '&tk=' . $fact->tk .$paymethod;
+		$url = Config::get('app.url') . '/gateway/pasarela-pago?anum=' . $fact->anum . '&num=' . $fact->num . '&tipo=' . $tipo . '&emp=' . \Config('app.emp') . '&tk=' . $fact->tk . $paymethod;
 		$res = array(
 			"status" => "success",
 			"msg" => $url
@@ -577,7 +566,7 @@ class PaymentsController extends Controller
 
 
 		if (empty($_GET['anum']) || empty($_GET['num']) || empty($_GET['emp']) || empty($_GET['tipo']) ||  empty($_GET['tk'])) {
-			exit(\View::make('front::errors.404'));
+			exit(View::make('front::errors.404'));
 		}
 
 
@@ -592,7 +581,7 @@ class PaymentsController extends Controller
 		$fechaactual = date("Y-m-d H:i:s");
 		#antes habia rand(5, 15) pero fallaba porque redssys solo acepta 12 caracteres y se generaban a veces 13, cuando daba numeros del 10 al 15
 		#$ordenTrans = $tipo . rand(1, 9) . time(); //lo comento por que ha fallado en tauler ampliamso el nuemro de valores random para hacer mas improbable que falle
-		$ordenTrans = $tipo . rand(10, 99).substr(time(),1,9);
+		$ordenTrans = $tipo . rand(10, 99) . substr(time(), 1, 9);
 		//Comprovamos el tipo
 		if ($tipo == 'P') {
 			//Comprobamos que el pago que quieren hacer exista y que no este pagada
@@ -606,70 +595,66 @@ class PaymentsController extends Controller
 				$pay->newCSUB0_EXT($emp, $anum, $num, $ordenTrans, $fechaactual);
 
 				#marcamos el pago como pendiente de recibir la transferencia (estado T), para que el lote no se pueda volver a pagar de otrra manera
-				if(!empty(request("paymethod")) && request("paymethod") == "transfer" ){
+				if (!empty(request("paymethod")) && request("paymethod") == "transfer") {
 					DB::table('fgcsub0')
-					->where('apre_csub0',$anum)
-					  ->where('npre_csub0',$num)
-					  ->where('emp_csub0',$emp)
-					->update(['estado_csub0' => "T"]);
+						->where('apre_csub0', $anum)
+						->where('npre_csub0', $num)
+						->where('emp_csub0', $emp)
+						->update(['estado_csub0' => "T"]);
 				}
 
 
 				#Si han elegido el pago por transferencia hacemos la llamada al webservice
-				if(!empty(request("paymethod")) && request("paymethod") == "transfer" && Config::get('app.WebServicePaidLots') ){
+				if (!empty(request("paymethod")) && request("paymethod") == "transfer" && Config::get('app.WebServicePaidLots')) {
 
-						$theme  = Config::get('app.theme');
-						$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
+					$theme  = Config::get('app.theme');
+					$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
 
-						$paidController = new $rutaPaidController();
-						$paidController->informPaid($ordenTrans);
-
+					$paidController = new $rutaPaidController();
+					$paidController->informPaid($ordenTrans);
 				}
 				#Si han elegido el pago por transferencia reenviamos a la página que mostrará el texto
-				if(!empty(request("paymethod")) && request("paymethod") == "transfer" ){
+				if (!empty(request("paymethod")) && request("paymethod") == "transfer") {
 					$data["importe"] = $prefact->imptotal;
 					$data["idtrans"] = $ordenTrans;
 
-					return \View::make('front::pages.panel.transferpayment', $data);
-
-				}
-				elseif(!empty(request("paymethod")) && request("paymethod") == "paypal"){
+					return View::make('front::pages.panel.transferpayment', $data);
+				} elseif (!empty(request("paymethod")) && request("paymethod") == "paypal") {
 
 					$div = FsParams::select('div_params')->first();
 					$currency = $div->div_params;
-					if($div->div_params == 'US$'){
+					if ($div->div_params == 'US$') {
 						$currency = 'USD';
 					}
 					//$currency = request("currency", 'EUR');
 					return (new PayPalV2API())->handlePayment($prefact->imptotal, $ordenTrans, $currency);
-				}elseif (Config::get('app.paymentRedsys')) {
+				} elseif (Config::get('app.paymentRedsys')) {
 
 					$varsRedsys = $this->requestRedsys($prefact->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn');
 					#reenviamso al formulario
-					return \View::make('front::pages.panel.RedsysForm', $varsRedsys);
-
-				}elseif (Config::get('app.paymentUP2') == 'UP2') {
+					return View::make('front::pages.panel.RedsysForm', $varsRedsys);
+				} elseif (Config::get('app.paymentUP2') == 'UP2') {
 					//Peticion universal pay
 					$return_token = $this->tokenPasarelaUP2($prefact, $ordenTrans, $emp, $tipo);
 					if (!empty($return_token) && $return_token['result'] == 'success') {
 						//Peticion universal pay redireccion para el pago
 						$this->requestPasarelaUP2($return_token['merchantId'], $return_token['token']);
 					} else {
-						\Log::error($return_token);
+						Log::error($return_token);
 						//$pay->updatePreFactB($num,$anum);
 						//$this->error_email($return_token);
-						exit(\View::make('front::errors.404'));
+						exit(View::make('front::errors.404'));
 					}
 				}
 			} else {
-				exit(\View::make('front::errors.404'));
+				exit(View::make('front::errors.404'));
 			}
 		} else if ($tipo == 'F') {
 
 			//Comprobamos que exista el codigo de pago y que no este pagada
 			$factura = $fact->getFXPCOB0($emp, $num, $anum, $tk);
 			if (empty($factura) || ($factura->estado_pcob0 != 'N')) {
-				exit(\View::make('front::errors.404'));
+				exit(View::make('front::errors.404'));
 			}
 
 			$factura->imptotal = $factura->imp_pcob0;
@@ -677,39 +662,35 @@ class PaymentsController extends Controller
 			$fact->newPCOB0_EXT($emp, $anum, $num, $ordenTrans, $fechaactual);
 
 			#Si han elegido el pago por transferencia reenviamos a la página que mostrará el texto
-			if(!empty(request("paymethod")) && request("paymethod") == "transfer" ){
+			if (!empty(request("paymethod")) && request("paymethod") == "transfer") {
 				$data["importe"] = $factura->imptotal;
 				$data["idtrans"] = $ordenTrans;
 
-				return \View::make('front::pages.panel.transferpayment', $data);
-
-			}elseif(!empty(request("paymethod")) && request("paymethod") == "paypal"){
+				return View::make('front::pages.panel.transferpayment', $data);
+			} elseif (!empty(request("paymethod")) && request("paymethod") == "paypal") {
 
 				$div = FsParams::select('div_params')->first();
 				$currency = $div->div_params;
-				if($div->div_params == 'US$'){
+				if ($div->div_params == 'US$') {
 					$currency = 'USD';
 				}
 				return (new PayPalV2API())->handlePayment($factura->imptotal, $ordenTrans, $currency);
-
-			}elseif (Config::get('app.paymentRedsys')) {
+			} elseif (Config::get('app.paymentRedsys')) {
 
 				$varsRedsys = $this->requestRedsys($factura->imptotal, $ordenTrans, '/gateway/pagoDirectoReturn');
 				#reenviamso al formulario
-				return \View::make('front::pages.panel.RedsysForm', $varsRedsys);
-
-			}elseif (Config::get('app.paymentUP2') == 'UP2') {
+				return View::make('front::pages.panel.RedsysForm', $varsRedsys);
+			} elseif (Config::get('app.paymentUP2') == 'UP2') {
 
 				$return_token = $this->tokenPasarelaUP2($factura, $ordenTrans, $emp, $tipo);
 				if (!empty($return_token) && $return_token['result'] == 'success') {
 					$this->requestPasarelaUP2($return_token['merchantId'], $return_token['token']);
 				} else {
-					\Log::info('return token UP2' . print_r($return_token, true));
+					Log::info('return token UP2' . print_r($return_token, true));
 					$this->error_email('tokenPasarelaUP2');
-					exit(\View::make('front::errors.404'));
+					exit(View::make('front::errors.404'));
 				}
 			}
-
 		}
 	}
 
@@ -744,7 +725,7 @@ class PaymentsController extends Controller
 			$email->setOrder_id($order_id);
 			$email->setTo($email_admin, 'Admin');
 
-			if(!empty(config('app.admin_email_administracion_cc', ''))){
+			if (!empty(config('app.admin_email_administracion_cc', ''))) {
 				$emails = array_map('trim', explode(',', config('app.admin_email_administracion_cc', '')));
 				foreach ($emails as $email_cc) {
 					$email->setCc($email_cc);
@@ -777,7 +758,6 @@ class PaymentsController extends Controller
 		*/
 		if (!empty($iva_temp[0])) {
 			$iva = $iva_temp[0]->iva_iva;
-
 		} else {
 			$iva = 0;
 		}
@@ -814,7 +794,7 @@ class PaymentsController extends Controller
 		$emailOptions['to'] = $emailOptions['email'];
 		$emailOptions['subject'] = "Error passarela de pago";
 		$emailOptions['content'] = "Error passarela de pago cliente:" . Config::get('app.name') . "<br>" . $e;
-		if (\Tools::sendMail('notification', $emailOptions)) {
+		if (ToolsServiceProvider::sendMail('notification', $emailOptions)) {
 		}
 	}
 
@@ -826,25 +806,25 @@ class PaymentsController extends Controller
 
 		$inf_client = head($inf_client);
 		$hoy = date("Y-m-d");
-		$iva = $this->getIva(\Config::get('app.emp'), $hoy);
+		$iva = $this->getIva(Config::get('app.emp'), $hoy);
 		//Email a logistica y comprador
-		\App::setLocale(strtolower($inf_client->idioma_cli));
+		App::setLocale(strtolower($inf_client->idioma_cli));
 		$adjudicaciones = array();
 
 		$imp_total = 0;
 		foreach ($lots as $key => $lot) {
 
 			$user_cod = $lot->clifac_csub;
-			$tipo_iva = $this->user_has_Iva(\Config::get('app.gemp'), $user_cod);
+			$tipo_iva = $this->user_has_Iva(Config::get('app.gemp'), $user_cod);
 			$subasta->cod = $lot->sub_csub;
 			$subasta->lote = $lot->ref_csub;
 			$adjudicaciones[$subasta->cod][$subasta->lote] = head($subasta->getLote(false, false));
 			//Ponemos id_auc_sessions a nulo por que el array puede tener 2 subastas diferentes el id de session se assigna en getLote
 			$subasta->id_auc_sessions = null;
 			#Duran solo las online pasan por este circuito por eso no hace falta comparar si la subasta es de tipo online
-			if(\Config::get("app.noIVAOnlineAuction") ){
+			if (Config::get("app.noIVAOnlineAuction")) {
 				$adjudicaciones[$subasta->cod][$subasta->lote]->base_csub_iva = 0;
-			}else{
+			} else {
 				$adjudicaciones[$subasta->cod][$subasta->lote]->base_csub_iva = $this->calculate_iva($tipo_iva->tipo, $iva, $lot->base_csub);
 			}
 			$adjudicaciones[$subasta->cod][$subasta->lote]->extras = $pago->getGastosExtrasLot($lot->sub_csub, $lot->ref_csub, null, 'C');
@@ -860,85 +840,9 @@ class PaymentsController extends Controller
 		$email = new EmailLib('LOT_PAY');
 		if (!empty($email->email)) {
 			$email->setUserByCod($inf_client->cod_cli, true);
-			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/info'));
+			$email->setUrl(Config::get('app.url') . RoutingServiceProvider::slug('user/panel/info'));
 			$email->setPrice($imp_total);
 			$email->send_email();
-		}
-	}
-
-	function email_signaturit($inf_cli, $lots)
-	{
-
-		$parametros = new Enterprise();
-		$user = new User();
-		$subasta = new Subasta();
-		$pago = new Payments();
-		$send_email = false;
-		$inf_cli = head($inf_cli);
-		$user->cod_cli = $inf_cli->cli_csub0;
-		$inf_client = $user->getUserByCodCli();
-		$inf_client = head($inf_client);
-
-		if (empty($inf_client->email_cli)) {
-			return;
-		}
-		$dir = '';
-		if (!empty($inf_client->sg_cli)) {
-			$dir .= ' ' . $inf_client->sg_cli;
-		}
-		if (!empty($inf_client->dir_cli)) {
-			$dir .= ' ' . $inf_client->dir_cli;
-		}
-		if (!empty($inf_client->pob_cli)) {
-			$dir .= ' ' . $inf_client->pob_cli;
-		}
-		if (!empty($inf_client->cp_cli)) {
-			$dir .= ' (' . $inf_client->cp_cli . ')';
-		}
-		\App::setLocale(strtolower($inf_client->idioma_cli));
-		$text_lot = '';
-
-		foreach ($lots as $lot) {
-			$subasta->cod = $lot->sub_csub;
-			$subasta->lote = $lot->ref_csub;
-			$lot->inf_lot = head($subasta->getLote(false, false));
-			if ($lot->licexp_csub == 'C') {
-				$text_lot .= '- ' . $lot->inf_lot->titulo_hces1 . '<br>';
-				$send_email = true;
-			}
-		}
-
-		if (!$send_email) {
-			return;
-		}
-
-		$inf_client->nom_cli = ucwords(mb_strtolower($inf_client->nom_cli));
-		$param = $parametros->getParameters();
-		$texto = '<div style="margin:50px 30px;"><div style="margin-bottom:30px;"><img src="' . \Config::get('app.url') . '/themes/' . \Config::get('app.theme') . '/assets/img/logo.png"></div>';
-		$texto .= trans_choice(\Config::get('app.theme') . '-app.emails.email_inf_exportacion', 1, [
-			'day' => date("d"), 'month' => date("m"), 'year' => date("Y"), 'name' => $inf_client->nom_cli, 'nif' => $inf_client->cif_cli, 'dir' => $dir, 'inf_lot' => $text_lot
-		]);
-		$texto .= '</div>';
-
-		$html2pdf = new Html2Pdf();
-		$html2pdf->writeHTML($texto);
-		$pdf = $html2pdf->output('pdf.pdf', 'S');
-		$signaturit = '';
-
-		if (!empty($param->comfirma_prmgt)) {
-			$signaturit = $param->comfirma_prmgt;
-		}
-
-		$emailOptions['name_adjunto'] = 'exportacion_bienes_' . str_slug($inf_client->nom_cli, '_') . '_' . strtotime("now");
-		$emailOptions['to'] = strtolower($inf_client->email_cli) . $signaturit;
-		$emailOptions['user'] = $inf_client->nom_cli;
-		$emailOptions['subject'] = trans(\Config::get('app.theme') . '-app.emails.email_asunto_exportacion');
-		$emailOptions['adjunto'] = $pdf;
-		$emailOptions['content'] = trans_choice(\Config::get('app.theme') . '-app.emails.email_texto_exportacion', 1, ['name' => $inf_client->nom_cli]);
-		$emailOptions['signaturit'] = true;
-
-		if (\Tools::sendMail('notification', $emailOptions) == true) {
-			\Log::info('Send Email Signaturit <br>');
 		}
 	}
 
@@ -951,17 +855,17 @@ class PaymentsController extends Controller
 			$subasta->lote = $lot->ref_csub;
 
 			$inf_alm = $subasta->getAlmLot();
-			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.email_collect_free', 1, ['ubic' => !empty($inf_alm) ? $inf_alm[0]->obs_alm : '']) . '</br>';
+			$msg = trans_choice(Config::get('app.theme') . '-app.mis_compras.email_collect_free', 1, ['ubic' => !empty($inf_alm) ? $inf_alm[0]->obs_alm : '']) . '</br>';
 
 			$fecharec = '';
 			if (!empty($lot->fecharec_csub)) {
 				$fecharec = date('d/m/Y', strtotime($lot->fecharec_csub));
 			}
-			$msg .= trans(\Config::get('app.theme') . '-app.mis_compras.collect_day_personally') . ' ' . $fecharec . '<br>';
+			$msg .= trans(Config::get('app.theme') . '-app.mis_compras.collect_day_personally') . ' ' . $fecharec . '<br>';
 		} else if ($lot->openv_csub == 2) {
-			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.email_another_person', 1, ['dni' => $lot->infoenv_csub]) . '</br>';
+			$msg = trans_choice(Config::get('app.theme') . '-app.mis_compras.email_another_person', 1, ['dni' => $lot->infoenv_csub]) . '</br>';
 		} else if ($lot->openv_csub == 3) {
-			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.email_transportista', 1, []) . '</br>';
+			$msg = trans_choice(Config::get('app.theme') . '-app.mis_compras.email_transportista', 1, []) . '</br>';
 		} else if ($lot->openv_csub == 4) {
 
 			/* la libreria de Deliverea no esta funcional. Revisar si
@@ -972,65 +876,64 @@ class PaymentsController extends Controller
 			if (!empty($send_lot)) {
 				$dir =  ucwords(strtolower($send_lot->dir_csube . ' ' . $send_lot->cp_csube . ' ' . $send_lot->pob_csube));
 			}
-			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.email_send_lot', 1, ['ubic' => $dir]) . '</br>';
+			$msg = trans_choice(Config::get('app.theme') . '-app.mis_compras.email_send_lot', 1, ['ubic' => $dir]) . '</br>';
 		} else if ($lot->openv_csub == 5) {
-			$msg = trans_choice(\Config::get('app.theme') . '-app.mis_compras.contact_company', 1, []) . '</br>';
+			$msg = trans_choice(Config::get('app.theme') . '-app.mis_compras.contact_company', 1, []) . '</br>';
 		}
 		if ($lot->licexp_csub == 'S') {
-			$msg .= trans_choice(\Config::get('app.theme') . '-app.mis_compras.exportacion', 1, []) . '</br>';
+			$msg .= trans_choice(Config::get('app.theme') . '-app.mis_compras.exportacion', 1, []) . '</br>';
 		}
 
 		return $msg;
 	}
 	#la operacion 0 es la normal , la autorización
-	function requestRedsys($amount, $ordenTrans, $merchantURL, $operacion = 0 , $multiRedsys = null, $urlOk = null, $urlKo = null ){
+	function requestRedsys($amount, $ordenTrans, $merchantURL, $operacion = 0, $multiRedsys = null, $urlOk = null, $urlKo = null)
+	{
 
 
 		$url =  Config::get('app.url');
 		#método de pago, por defecto targeta
 		$payMethod = 'C';
-		if( !empty(request("paymethod")) && request("paymethod")=="bizum" ){
-						$payMethod = 'z';
-		}elseif( !empty(request("paymethod")) && request("paymethod")=="transfer" ){
+		if (!empty(request("paymethod")) && request("paymethod") == "bizum") {
+			$payMethod = 'z';
+		} elseif (!empty(request("paymethod")) && request("paymethod") == "transfer") {
 			$payMethod = 'R';
 		}
 
 
 		#Redsys recomienda que no haya letras en los 4 primeros digitos de la idorden, por lo que substituimos la F y P por 0 y 1 respectivamente
-		$ordenTrans = str_replace(["F", "P", "T", "M", "D", "C"], [0,1,2,3,4,5], $ordenTrans);
+		$ordenTrans = str_replace(["F", "P", "T", "M", "D", "C"], [0, 1, 2, 3, 4, 5], $ordenTrans);
 
 		$miObj = new RedsysAPI;
 
-		if(!empty($multiRedsys))
-		{
-			\Log::info("multiredsys $multiRedsys");
-			$merchantCode = Config::get('app.MerchandCodeRedsys_'.$multiRedsys);
-			$terminal = Config::get('app.TerminalRedsys_'.$multiRedsys);
-			$keyRedsys = Config::get('app.KeyRedsys_'.$multiRedsys);
-
-		}else{
+		if (!empty($multiRedsys)) {
+			Log::info("multiredsys $multiRedsys");
+			$merchantCode = Config::get('app.MerchandCodeRedsys_' . $multiRedsys);
+			$terminal = Config::get('app.TerminalRedsys_' . $multiRedsys);
+			$keyRedsys = Config::get('app.KeyRedsys_' . $multiRedsys);
+		} else {
 			$merchantCode = Config::get('app.MerchandCodeRedsys');
 			$terminal = Config::get('app.TerminalRedsys');
 			$keyRedsys = Config::get('app.KeyRedsys');
 		}
-		if(empty($urlOk)){
-			$urlOk = $url.Config::get('app.PaymentUrlOK');
+		if (empty($urlOk)) {
+			$urlOk = $url . Config::get('app.PaymentUrlOK');
 		}
-		if(empty($urlKo)){
-			$urlKo = $url.Config::get('app.PaymentUrlKO');
+		if (empty($urlKo)) {
+			$urlKo = $url . Config::get('app.PaymentUrlKO');
 		}
 
 
-		$miObj->setParameter("DS_MERCHANT_AMOUNT",round($amount * 100,0));#para euros las dos ultimas cifras se consideran decimales, por lo que hay que mltiplicarlo por 100
-		$miObj->setParameter("DS_MERCHANT_ORDER",$ordenTrans);
-		$miObj->setParameter("DS_MERCHANT_MERCHANTCODE",$merchantCode);
-		$miObj->setParameter("DS_MERCHANT_CURRENCY","978");#moneda, 978 es Euros
-		$miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE",$operacion); #tipo transaccion 0 autorización, la normal, 1 preautorización
-		$miObj->setParameter("DS_MERCHANT_TERMINAL",$terminal);
-		$miObj->setParameter("DS_MERCHANT_MERCHANTURL",$url . $merchantURL);
-		$miObj->setParameter("DS_MERCHANT_URLOK", $urlOk );
+		$miObj->setParameter("DS_MERCHANT_AMOUNT", round($amount * 100, 0)); #para euros las dos ultimas cifras se consideran decimales, por lo que hay que mltiplicarlo por 100
+		$miObj->setParameter("DS_MERCHANT_ORDER", $ordenTrans);
+		$miObj->setParameter("DS_MERCHANT_MERCHANTCODE", $merchantCode);
+		$miObj->setParameter("DS_MERCHANT_CURRENCY", "978"); #moneda, 978 es Euros
+		$miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", $operacion); #tipo transaccion 0 autorización, la normal, 1 preautorización
+		$miObj->setParameter("DS_MERCHANT_TERMINAL", $terminal);
+		$miObj->setParameter("DS_MERCHANT_MERCHANTURL", $url . $merchantURL);
+		$miObj->setParameter("DS_MERCHANT_URLOK", $urlOk);
 		$miObj->setParameter("DS_MERCHANT_URLKO", $urlKo);
-		$miObj->setParameter("DS_MERCHANT_PAYMETHODS",$payMethod);
+		$miObj->setParameter("DS_MERCHANT_PAYMETHODS", $payMethod);
 
 
 		#nombre del comercio
@@ -1044,14 +947,15 @@ class PaymentsController extends Controller
 		$varsRedsys["signature"] = $miObj->createMerchantSignature($keyRedsys); #Clave recuperada de CANALES
 
 		#log con la información que se envia a redsys
-		\Log::info(json_encode($miObj->vars_pay));
-		\Log::info(json_encode($varsRedsys));
+		Log::info(json_encode($miObj->vars_pay));
+		Log::info(json_encode($varsRedsys));
 
 		return $varsRedsys;
 	}
 
 
-	public function universalPay2Vars($codSub,$tipo ){
+	public function universalPay2Vars($codSub, $tipo)
+	{
 		$up2Vars = array();
 		if (!env('APP_DEBUG') && Config::get('app.environmentUP2')) {
 			$up2Vars["url_pay"] = 'https://api.universalpay.es/token';
@@ -1060,16 +964,15 @@ class PaymentsController extends Controller
 			$up2Vars["password"] = Config::get('app.passwordUP2');
 
 			#modificamos estos valores si el cliente tiene multicuenta y la subasta es multicuenta
-			if( ($tipo =="P" || $tipo == "T" ) && Config::get('app.multiPasarela') && !empty($codSub)){
-				$auctions = explode(',',Config::get('app.multiPasarela'));
+			if (($tipo == "P" || $tipo == "T") && Config::get('app.multiPasarela') && !empty($codSub)) {
+				$auctions = explode(',', Config::get('app.multiPasarela'));
 
-				if(in_array($codSub, $auctions) ){
-					$up2Vars["merchantId"] = Config::get('app.merchantIdUP2_'.$codSub);
-					$up2Vars["brandId"] = Config::get('app.brandIdUP2_'.$codSub);
-					$up2Vars["password"] = Config::get('app.passwordUP2_'.$codSub);
+				if (in_array($codSub, $auctions)) {
+					$up2Vars["merchantId"] = Config::get('app.merchantIdUP2_' . $codSub);
+					$up2Vars["brandId"] = Config::get('app.brandIdUP2_' . $codSub);
+					$up2Vars["password"] = Config::get('app.passwordUP2_' . $codSub);
 				}
 			}
-
 		} else {
 			$up2Vars["url_pay"] = 'https://api.test.universalpay.es/token';
 
@@ -1077,10 +980,6 @@ class PaymentsController extends Controller
 			$up2Vars["merchantId"] = Config::get('app.merchantIdUP2_test');
 			$up2Vars["brandId"] = Config::get('app.brandIdUP2_test');
 			$up2Vars["password"] = Config::get('app.passwordUP2_test');
-
-
-
-
 		}
 
 
@@ -1115,7 +1014,7 @@ class PaymentsController extends Controller
 			'amount' => floatval($prefact->imptotal),
 			'brandId' => $up2Vars["brandId"],
 			'merchantId' => $up2Vars["merchantId"],
-			'password' =>$up2Vars["password"],
+			'password' => $up2Vars["password"],
 			'action' => 'PURCHASE',
 			'language' => !empty($prefact->idioma_cli) ? strtolower($prefact->idioma_cli) : 'es',
 			'timestamp' => $time,
@@ -1130,7 +1029,7 @@ class PaymentsController extends Controller
 		);
 
 		//Lo necesita Soler al tener cuentas unificadas
-		if(config('app.bankMidUP2', false)){
+		if (config('app.bankMidUP2', false)) {
 			$fields["bankMid"] = config('app.bankMidUP2');
 		}
 
@@ -1138,9 +1037,9 @@ class PaymentsController extends Controller
 
 		//url-ify the data for the POST
 		$fields_string = http_build_query($fields);
-		\Log::info("URL de pago: ".$up2Vars["url_pay"]." ?$fields_string");
+		Log::info("URL de pago: " . $up2Vars["url_pay"] . " ?$fields_string");
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $up2Vars["url_pay"] );
+		curl_setopt($ch, CURLOPT_URL, $up2Vars["url_pay"]);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 
@@ -1172,7 +1071,7 @@ class PaymentsController extends Controller
 		$header = "Location: $url_pay?merchantId=$merchantId"
 			. "&token=$token"
 			. "&integrationMode=standalone&paymentSolutionId=500";
-		\Log::info("Request Universal Pay: " . $header);
+		Log::info("Request Universal Pay: " . $header);
 		header($header);
 		exit;
 	}
@@ -1183,7 +1082,7 @@ class PaymentsController extends Controller
 
 		$post = $_POST;
 
-		\Log::info("Pago: " . print_r($post, true));
+		Log::info("Pago: " . print_r($post, true));
 		$merchantID = $post['merchantTxId'];
 		$amount = $post['amount'];
 		$status = $post['status'];
@@ -1193,10 +1092,10 @@ class PaymentsController extends Controller
 			if (!env('APP_DEBUG') && (bool) Config::get('app.environmentUP2') === true) {
 				$this->register_payment("UniversalPay", $amount);
 			}
-			$tipoPago = substr($merchantID,0,1);
+			$tipoPago = substr($merchantID, 0, 1);
 
 			#es un pago del carrito de la compra
-			if($tipoPago == "T"){
+			if ($tipoPago == "T") {
 				#Llamamos a la funcion de cart controller para que lo procese todo
 				$payShoppingCart = new PayShoppingCartController();
 				$payShoppingCart->returnPay($merchantID);
@@ -1208,47 +1107,48 @@ class PaymentsController extends Controller
 		}
 	}
 
-	public function restRedsys ($varsRedsys){
+	public function restRedsys($varsRedsys)
+	{
 
 
-		$url = \Config::get("app.UrlRedsys")."rest/trataPeticionREST" ;
+		$url = Config::get("app.UrlRedsys") . "rest/trataPeticionREST";
 		$clientGuzz = new Client(['verify' => false]);
-		$method="POST";
-		$vars=[
+		$method = "POST";
+		$vars = [
 			"Ds_SignatureVersion" => $varsRedsys["version"],
 			"Ds_MerchantParameters" => $varsRedsys["params"],
 			"Ds_Signature" => $varsRedsys["signature"],
 
 		];
-        $responseJson=$clientGuzz->request($method, $url,[
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-              ],
+		$responseJson = $clientGuzz->request($method, $url, [
+			'headers' => [
+				'Content-Type' => 'application/json',
+				'Accept' => 'application/json',
+			],
 
-            \GuzzleHttp\RequestOptions::JSON =>$vars
-            ]);
+			\GuzzleHttp\RequestOptions::JSON => $vars
+		]);
 
-			$response = json_decode($responseJson->getBody());
+		$response = json_decode($responseJson->getBody());
 
-			if(empty($response->errorCode)){
-				return true;
-			}else{
-				\Log::error("Error en restRedsys ".$response->errorCode);
-				return false;
-			}
-
+		if (empty($response->errorCode)) {
+			return true;
+		} else {
+			Log::error("Error en restRedsys " . $response->errorCode);
+			return false;
+		}
 	}
 
-	public function responseRedsysMultiTpv($tpvCode){
-		\Log::info("Pago multi tpv code $tpvCode");
+	public function responseRedsysMultiTpv($tpvCode)
+	{
+		Log::info("Pago multi tpv code $tpvCode");
 		$this->pagoDirectoReturnRedsys($tpvCode);
 	}
 
-	public function pagoDirectoReturnRedsys($multiTpvCode=null)
+	public function pagoDirectoReturnRedsys($multiTpvCode = null)
 	{
-		try{
-			\Log::info('Return pago con redsys');
+		try {
+			Log::info('Return pago con redsys');
 			$redsys = new RedsysAPI;
 			$request = request()->all();
 
@@ -1256,89 +1156,84 @@ class PaymentsController extends Controller
 			$datos = $request["Ds_MerchantParameters"];
 			$signatureRecibida = $request["Ds_Signature"];
 			$kc = Config::get('app.KeyRedsys');
-			if(!empty($multiTpvCode)){
-				$kc = Config::get('app.KeyRedsys_'.$multiTpvCode );
+			if (!empty($multiTpvCode)) {
+				$kc = Config::get('app.KeyRedsys_' . $multiTpvCode);
 			}
 
 			//Clave recuperada de CANALES
-			$firma = $redsys->createMerchantSignatureNotif($kc,$datos);
+			$firma = $redsys->createMerchantSignatureNotif($kc, $datos);
 			$decodec = $redsys->decodeMerchantParameters($datos);
 			$returnedVars = json_decode($decodec);
 			#datos decodificados
-			\Log::info(print_r($returnedVars, true));
+			Log::info(print_r($returnedVars, true));
 
 			#Si la información es válida
-			if ($firma === $signatureRecibida){
+			if ($firma === $signatureRecibida) {
 				$respuesta = $returnedVars->Ds_Response;
 
 				#las respuesta 0000 a 0099 son de transaccion autorizada, el resto no lleva 2 ceros al principio
-				if(substr($respuesta, 0,2) == "00"){
+				if (substr($respuesta, 0, 2) == "00") {
 
-					if($returnedVars->Ds_Order){
+					if ($returnedVars->Ds_Order) {
 						#el merchand id se ha modificado en el envio para no enviar letras así que hay que hacer el proceso inverso y recuperar las letras 0=F, 1=P
-						$tipoPago = substr($returnedVars->Ds_Order,0,1);
+						$tipoPago = substr($returnedVars->Ds_Order, 0, 1);
 
-						$merchantId =NULL;
-						if($tipoPago == '0'){
+						$merchantId = NULL;
+						if ($tipoPago == '0') {
 							#cambiamos el primer digito si es 0 por F
-							$merchantId = "F".substr($returnedVars->Ds_Order,1);
-						}elseif($tipoPago == '1'){
-							$merchantId = "P".substr($returnedVars->Ds_Order,1);
-
-						}elseif($tipoPago == '2'){#pago tiendaonline
-							$merchantId = "T".substr($returnedVars->Ds_Order,1);
+							$merchantId = "F" . substr($returnedVars->Ds_Order, 1);
+						} elseif ($tipoPago == '1') {
+							$merchantId = "P" . substr($returnedVars->Ds_Order, 1);
+						} elseif ($tipoPago == '2') { #pago tiendaonline
+							$merchantId = "T" . substr($returnedVars->Ds_Order, 1);
 							#Llamamos a la funcion de cart controller para que lo procese todo
 							$payShoppingCart = new PayShoppingCartController();
 							$payShoppingCart->returnPay($merchantId);
 							return;
-						}elseif($tipoPago == '3'){
+						} elseif ($tipoPago == '3') {
 							#cambiamos el primer digito si es 3 por M que es el de coste minteo
-							$merchantId = "M".substr($returnedVars->Ds_Order,1);
-						}elseif($tipoPago == '4'){
+							$merchantId = "M" . substr($returnedVars->Ds_Order, 1);
+						} elseif ($tipoPago == '4') {
 							#cambiamos el primer digito si es 3 por M que es el de coste minteo
-							$merchantId = "D".substr($returnedVars->Ds_Order,1);
+							$merchantId = "D" . substr($returnedVars->Ds_Order, 1);
 							#Llamamos a la funcion de depositController para que lo
 							$depositController = new DepositController();
 							$depositController->returnPay($merchantId);
 							return;
-						}elseif($tipoPago == '5') {
-							(new PayArticleCartController)->returnPay(substr($returnedVars->Ds_Order,1));
+						} elseif ($tipoPago == '5') {
+							(new PayArticleCartController)->returnPay(substr($returnedVars->Ds_Order, 1));
 							return;
 						}
 						#dividimos por cien por que al ser € se ha multiplicado antes por 100, Redsys no trabaja con decimales
-						$amount = $returnedVars->Ds_Amount/100;
+						$amount = $returnedVars->Ds_Amount / 100;
 						#paso la info a la función de pago directo
 						$this->pagoDirectoReturn($merchantId, $amount, $returnedVars);
-					}else{
-						\Log::error("No viene informado el Ds_Order");
+					} else {
+						Log::error("No viene informado el Ds_Order");
 					}
-				}else{
-					if($respuesta=="9915"){
-						\Log::error("El usuario ha cancelado el pago");
-					}else{
-						\Log::error("No se ha podido completar el pago correctamente, respuesta: $respuesta");
+				} else {
+					if ($respuesta == "9915") {
+						Log::error("El usuario ha cancelado el pago");
+					} else {
+						Log::error("No se ha podido completar el pago correctamente, respuesta: $respuesta");
 					}
-
 				}
-
-			}else{
-				\Log::error("No concuerda la firma con los datos enviados en Redsys" );
+			} else {
+				Log::error("No concuerda la firma con los datos enviados en Redsys");
 			}
-		}catch( \Exception $e ){
-				\Log::error("Excepcion en pago con redsys \n" . $e);
+		} catch (\Exception $e) {
+			Log::error("Excepcion en pago con redsys \n" . $e);
 
 			return;
 		}
-
 	}
 
 	public function pagoDirectoReturnPaypal()
 	{
 		try {
 			return (new PayPalV2API())->handleApproval();
-
 		} catch (\Exception $e) {
-			\Log::error("Excepcion en pago con paypal \n" . $e);
+			Log::error("Excepcion en pago con paypal \n" . $e);
 			return redirect(config('app.UP2_cancel'));
 		}
 	}
@@ -1379,7 +1274,7 @@ class PaymentsController extends Controller
 
 
 				#Notificar a casas de subastas por webservice que se ha pagado los lotes
-				if(Config::get('app.WebServicePaidLots')){
+				if (Config::get('app.WebServicePaidLots')) {
 
 					$theme  = Config::get('app.theme');
 					$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
@@ -1394,17 +1289,17 @@ class PaymentsController extends Controller
 				$pago->updateTrans($amount, $merchantID, $fact);
 
 				#Código para modificar los Apre y Npre de la csub para evitar que lso códigos actuales no coincidan con lso del pago, por ejemplo si abren varias pasarelas de pago y pagan en la primera
-					$extra_bbdd = FgCsub0::select("EXTRAINF_CSUB0, APRE_CSUB0, NPRE_CSUB0")->where("IDTRANS_CSUB0",$merchantID)->first();
-					if(!empty($extra_bbdd)){
-						$extraInfo = json_decode($extra_bbdd->extrainf_csub0);
-						if(!empty($extraInfo)){
-							foreach($extraInfo as $cod_sub => $subasta){
-								foreach($subasta as $ref => $infoLot){
-									FgCsub::where("sub_csub", $cod_sub)->where("ref_csub", $ref)->update(["apre_csub" =>  $extra_bbdd->apre_csub0, "npre_csub" => $extra_bbdd->npre_csub0]);
-								}
+				$extra_bbdd = FgCsub0::select("EXTRAINF_CSUB0, APRE_CSUB0, NPRE_CSUB0")->where("IDTRANS_CSUB0", $merchantID)->first();
+				if (!empty($extra_bbdd)) {
+					$extraInfo = json_decode($extra_bbdd->extrainf_csub0);
+					if (!empty($extraInfo)) {
+						foreach ($extraInfo as $cod_sub => $subasta) {
+							foreach ($subasta as $ref => $infoLot) {
+								FgCsub::where("sub_csub", $cod_sub)->where("ref_csub", $ref)->update(["apre_csub" =>  $extra_bbdd->apre_csub0, "npre_csub" => $extra_bbdd->npre_csub0]);
 							}
 						}
 					}
+				}
 				//Lotes que se han pagado en esta factura
 				$lots = array();
 				$lots = $pago->getLotsFact($fact->apre_csub0ext, $fact->npre_csub0ext);
@@ -1451,8 +1346,6 @@ class PaymentsController extends Controller
 				if (!empty($inf_client)) {
 					//Enviar email al cliente confirmando pago y a logistica
 					$this->email_inf_purchase($inf_client, $lots);
-					//Enviar email de signaturit
-					//$this->email_signaturit($inf_client,$lots);
 				}
 				//factura
 			} else if (substr($merchantID, 0, 1) == 'F') {
@@ -1514,7 +1407,7 @@ class PaymentsController extends Controller
 
 				#ha de ir aquí por que necesita que esten creados los cobros
 				#Notificar a casas de subastas por webservice que se ha pagado una facura
-				if(Config::get('app.WebServicePaidInvoice')){
+				if (Config::get('app.WebServicePaidInvoice')) {
 
 					$theme  = Config::get('app.theme');
 					$rutaPaidController = "App\Http\Controllers\\externalws\\$theme\PaidController";
@@ -1528,8 +1421,6 @@ class PaymentsController extends Controller
 				$this->correo_payment($inf_fact[0]->serie_pcob1 . "/" . $inf_fact[0]->numero_pcob1, $amount, $merchantID, $inf_client->nom_cli);
 				//enviamos email de factura pagada
 				$this->email_bills_pay($inf_client, $inf_fact, $amount);
-
-
 			}
 		} catch (\Exception $e) {
 			$this->error_email($e);
@@ -1538,7 +1429,7 @@ class PaymentsController extends Controller
 
 	public function returnPayPage()
 	{
-		\Log::info("Return " . print_r($_POST, true));
+		Log::info("Return " . print_r($_POST, true));
 
 
 
@@ -1552,7 +1443,8 @@ class PaymentsController extends Controller
 	}
 
 	#solo sirve si pagan todos los lotes de la subasta, no pueden usarla de otra manera
-	public function web_gastos_envio($cod_sub){
+	public function web_gastos_envio($cod_sub)
+	{
 		$cod_cli = Session::get('user.cod');
 		$codd_clid = request('clidd_' . $cod_sub);
 		/* lo quito por que si no n ofunciona
@@ -1567,7 +1459,7 @@ class PaymentsController extends Controller
 
 
 
-		if(empty($cod_sub) || empty($cod_cli)){
+		if (empty($cod_sub) || empty($cod_cli)) {
 			return -1;
 		}
 
@@ -1575,83 +1467,82 @@ class PaymentsController extends Controller
 		#lotes adjudicados al ususario
 		$fgAsigl0 = new FgAsigl0();
 		#ordenamos por referencia por que debemos hacer grupos de 5 y debemos seguir un criterio
-		$lotes = $fgAsigl0->select("REF_ASIGL0, PESO_HCES1, PESOVOL_HCES1, SEC_HCES1, LIN_ORTSEC1")->joinCSubAsigl0()->JoinFghces1Asigl0()->JoinFgOrtsec1Asigl0()->where("FGCSUB.SUB_CSUB",$cod_sub)->where("FGCSUB.CLIFAC_CSUB",$cod_cli)->orderby("REF_ASIGL0")->get();
+		$lotes = $fgAsigl0->select("REF_ASIGL0, PESO_HCES1, PESOVOL_HCES1, SEC_HCES1, LIN_ORTSEC1")->joinCSubAsigl0()->JoinFghces1Asigl0()->JoinFgOrtsec1Asigl0()->where("FGCSUB.SUB_CSUB", $cod_sub)->where("FGCSUB.CLIFAC_CSUB", $cod_cli)->orderby("REF_ASIGL0")->get();
 
 		###########	QUERY DE TEST ###################
 		#$lotes =$fgAsigl0->select("REF_ASIGL0, PESO_HCES1, PESOVOL_HCES1, SEC_HCES1, LIN_ORTSEC1")->JoinFghces1Asigl0()->JoinFgOrtsec1Asigl0()->where("FGASIGL0.SUB_asigl0",'582')->wherein("FGASIGL0.REF_ASIGL0", array(657,353, 372,23,621))->orderby("REF_ASIGL0")->get();
 
-		return $this->calc_web_gastos_envio ($lotes,$codd_clid);
-
+		return $this->calc_web_gastos_envio($lotes, $codd_clid);
 	}
 
-	public function  calc_web_gastos_envio ($lotes,$codd_clid){
+	public function  calc_web_gastos_envio($lotes, $codd_clid)
+	{
 		$cod_cli = Session::get('user.cod');
 		$direccionEnvio = FxClid::select("CP_CLID, CODPAIS_CLID")->WHERE("CODD_CLID", $codd_clid)->where("cli_clid", $cod_cli)->first();
 
-		if(empty($direccionEnvio) || empty($direccionEnvio->cp_clid) || empty($direccionEnvio->codpais_clid)){
+		if (empty($direccionEnvio) || empty($direccionEnvio->cp_clid) || empty($direccionEnvio->codpais_clid)) {
 			#no hay datos de direccion por lo que no se puede enviar
 			return -1;
 		}
 		#código postal del envio
 		$cp = $direccionEnvio->cp_clid;
-		$codCountry =$direccionEnvio->codpais_clid;
+		$codCountry = $direccionEnvio->codpais_clid;
 		$gastosEnvioLib =  new GastosEnvioLib();
-		$casosParticulares = $this->gastosEnvioCasosParticulares($lotes,$direccionEnvio );
+		$casosParticulares = $this->gastosEnvioCasosParticulares($lotes, $direccionEnvio);
 
 		#si devuelve un valor
-		if($casosParticulares != -2){
+		if ($casosParticulares != -2) {
 			return $casosParticulares;
 		}
 
 		#Numero máximo de lotes, pongo diezmil para que sea un numero lo suficientemente alto como para que todos los lotes vayan juntos
-		$numMaxLotes = Config::get("app.max_lot_web_gastos_envio")?? 10000;
+		$numMaxLotes = Config::get("app.max_lot_web_gastos_envio") ?? 10000;
 		#agrupamos los lotes
-		$grupo_envios= array();
+		$grupo_envios = array();
 		$i = 0;
-		$cont=0;
+		$cont = 0;
 		#si el lote pertenece a alguna de las familias se debe enviar en solitario
 		$familia_envio_individual = array();
-		if(!empty(Config::get("app.envio_individual_web_gastos_envio"))){
+		if (!empty(Config::get("app.envio_individual_web_gastos_envio"))) {
 			$familia_envio_individual = explode(',', Config::get("app.envio_individual_web_gastos_envio"));
 		}
 
 		$envios_individuales = array();
-		foreach($lotes as $lote){
-			if(in_array($lote->lin_ortsec1, $familia_envio_individual) ){
-				$envios_individuales[]= $lote;
-			}else{
-				$grupo_envios[$i][]= $lote;
+		foreach ($lotes as $lote) {
+			if (in_array($lote->lin_ortsec1, $familia_envio_individual)) {
+				$envios_individuales[] = $lote;
+			} else {
+				$grupo_envios[$i][] = $lote;
 				$cont++;
-				if ($cont == $numMaxLotes){
+				if ($cont == $numMaxLotes) {
 					$i++;
-					$cont=0;
+					$cont = 0;
 				}
 			}
-
 		}
 
 		#añadimos los lotes que se envian de manera individual,dentro de cada envio habra un array de un solo lote
-		foreach($envios_individuales as $envio_individual){
-				$grupo_envios[]= array($envio_individual);
+		foreach ($envios_individuales as $envio_individual) {
+			$grupo_envios[] = array($envio_individual);
 		}
 
-		$imp=0;
+		$imp = 0;
 
 		#petición de gastos de envio
-		foreach($grupo_envios as $grupo){
+		foreach ($grupo_envios as $grupo) {
 			$peso = 0;
 			$cmsLineales = 0;
-			foreach($grupo as $lote){
+			foreach ($grupo as $lote) {
 				$peso += $lote->peso_hces1;
 				$cmsLineales += $lote->pesovol_hces1;
 			}
-			$gastosEnvio = $gastosEnvioLib->calculate($codCountry,$cp, $peso, $cmsLineales);
+			$gastosEnvio = $gastosEnvioLib->calculate($codCountry, $cp, $peso, $cmsLineales);
 
 			#no hay precio por lo que no se puede enviar
-			if($gastosEnvio == -1){
+			if ($gastosEnvio == -1) {
 				#con que haya un envio que no se pueda realizar se indica que el envio n oes posible
 				return -1;
-			}else{
+			} else {
 				$imp += $gastosEnvio;
 			}
 		}
@@ -1663,7 +1554,7 @@ class PaymentsController extends Controller
 	#calculos particulares
 	public function gastosEnvioCasosParticulares($lotes, $direccionEnvio)
 	{
-		if(\Config::get('app.theme')=='duran'){
+		if (Config::get('app.theme') == 'duran') {
 			/* 8.	CASO PARTICULAR LIBROS: Si todos los lotes del carrito son libros, los centímetros lineales totales no superan los 100 cms.
 			lineales y el peso total no supera los 2 Kg., entonces, el importe será de 9 euros para la zona de Madrid y 16 euros para el resto de zonas.
 			(no tenemos en cuenta la tarifa de las tablas).
@@ -1671,38 +1562,36 @@ class PaymentsController extends Controller
 			$libros = true;
 			$peso = 0;
 			$cmsLineales = 0;
-			foreach($lotes as $lote ){
+			foreach ($lotes as $lote) {
 				$peso += $lote->peso_hces1;
 				$cmsLineales += $lote->pesovol_hces1;
-				if($lote->lin_ortsec1 !=327){ #categoria libros
+				if ($lote->lin_ortsec1 != 327) { #categoria libros
 					$libros = false;
 					break;
 				}
 			}
 			#deben ser todos libros y la dirección ser dentro de españa
-			if($libros && $direccionEnvio->codpais_clid == 'ES' && $peso <= 2 && $cmsLineales <=100 ){
-				if(substr($direccionEnvio->cp_clid,0,3) == '280'){
+			if ($libros && $direccionEnvio->codpais_clid == 'ES' && $peso <= 2 && $cmsLineales <= 100) {
+				if (substr($direccionEnvio->cp_clid, 0, 3) == '280') {
 					return 9;
 				}
 				#si es baleares o canarias se calcula con las tablas
-				elseif(substr($direccionEnvio->cp_clid,0,1) == '7' ||  substr($direccionEnvio->cp_clid,0,2) == '35' ||  substr($direccionEnvio->cp_clid,0,2) == '38')
-				{
+				elseif (substr($direccionEnvio->cp_clid, 0, 1) == '7' ||  substr($direccionEnvio->cp_clid, 0, 2) == '35' ||  substr($direccionEnvio->cp_clid, 0, 2) == '38') {
 					return -2;
-				}else{
+				} else {
 					return 12;
 				}
 			}
-
-		} elseif(Config::get('app.theme') == 'jesusvico') {
+		} elseif (Config::get('app.theme') == 'jesusvico') {
 
 			//Nos aseguramos que trabajamos con una colección de datos
-			if(!$lotes instanceof Collection){
+			if (!$lotes instanceof Collection) {
 				$lotes = collect($lotes);
 			}
 
 			//si tenemos paquetes de arqueologia no podemos calcular los gastos
 			$arqueologyLots = $lotes->where('lin_ortsec1', '2');
-			if($arqueologyLots->contains('sec_hces1', 'AN')) {
+			if ($arqueologyLots->contains('sec_hces1', 'AN')) {
 				return -2;
 			}
 
@@ -1724,7 +1613,7 @@ class PaymentsController extends Controller
 			$bigPackages = (int) ceil($bigLots / $lotsPerBigPackage);
 
 			//si me sobran lotes pequeños pero no tengo paquetes grandes, se añade un paquete pequeño
-			if($leftoverSmall && !$bigPackages){
+			if ($leftoverSmall && !$bigPackages) {
 				$smallPackages++;
 			}
 
@@ -1733,14 +1622,12 @@ class PaymentsController extends Controller
 			$bigPrices = 0;
 			$percentPrice = 0;
 
-			if($direccionEnvio->codpais_clid == 'ES'){
+			if ($direccionEnvio->codpais_clid == 'ES') {
 				$smallPrices = $smallPackages * 5.50;
 				$bigPrices = $bigPackages * 7.50;
-
 			} elseif (in_array($direccionEnvio->codpais_clid, ToolsServiceProvider::PaisesEUR())) {
 				$smallPrices = $smallPackages * 8.50;
 				$bigPrices = $bigPackages * 11;
-
 			} else {
 				$smallPrices = $smallPackages * 12;
 				$bigPrices = $bigPackages * 15;
@@ -1755,22 +1642,21 @@ class PaymentsController extends Controller
 			return $totalShippingCost;
 		}
 		return -2;
-
 	}
 
 	public function gastosEnvio($precio = null, $cod_sub = null)
 	{
 		#si usan las tablas de WEB_GASTOS_ENVIO
-		if(Config::get("app.web_gastos_envio")){
+		if (Config::get("app.web_gastos_envio")) {
 
-			$gastosEnvio = $this->web_gastos_envio(request('cod_sub', $cod_sub) );
+			$gastosEnvio = $this->web_gastos_envio(request('cod_sub', $cod_sub));
 			#-1 indica que no es enviable
-			if($gastosEnvio == -1){
+			if ($gastosEnvio == -1) {
 				$res = array(
 					'imp' => -1,
 					'iva' => 0
 				);
-			}else{
+			} else {
 
 				$tipo_iva = $this->user_has_Iva(Config::get('app.gemp'), Session::get('user.cod'));
 				$iva = $this->getIva(Config::get('app.emp'), date("Y-m-d"));
@@ -1783,15 +1669,14 @@ class PaymentsController extends Controller
 
 				);
 			}
-			return $res ;
+			return $res;
 		}
 
-		if(empty($this->user)) {
+		if (empty($this->user)) {
 			$user = new User();
 			$user->cod_cli = Session::get('user.cod');
 			$inf_client = $user->getUserByCodCli('N');
-		}
-		else {
+		} else {
 			$inf_client = [$this->user];
 		}
 
@@ -1838,16 +1723,16 @@ class PaymentsController extends Controller
 			$tipo = $tipo_iva->tipo;
 
 			$cp_cli = 0;
-			if (isset($inf_client[0]->cp_cli)){
+			if (isset($inf_client[0]->cp_cli)) {
 				$cp_cli = $inf_client[0]->cp_cli;
 			}
-			if (!empty(request('clidd'))){
+			if (!empty(request('clidd'))) {
 				#falta recargar el js cuando cambian de dirección y ver que pasa cuando cambian de dirección y van a pagar
 				$direccionEnvio = FxClid::select("CP_CLID, CODPAIS_CLID")->WHERE("CODD_CLID", request('clidd'))->where("cli_clid", $user->cod_cli)->first();
 
-				if(!empty($direccionEnvio)){
-					$pais= $direccionEnvio->codpais_clid?? $pais;
-					$cp_cli= $direccionEnvio->cp_clid?? $cp_cli;
+				if (!empty($direccionEnvio)) {
+					$pais = $direccionEnvio->codpais_clid ?? $pais;
+					$cp_cli = $direccionEnvio->cp_clid ?? $cp_cli;
 					//No estaba comprovando si existian gastos de envío por el pais de la dirección
 					$existGasimp = $pago->existGasimp((object) ['tipo' => $tipo_iva->tipo, 'pais' => $pais]);
 				}
@@ -1855,21 +1740,20 @@ class PaymentsController extends Controller
 
 
 			if (!empty($existGasimp)) {
-				$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
-				$envio_min = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli, true);
-
+				$envio_temp = $pago->getGastoEnvio(Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
+				$envio_min = $pago->getGastoEnvio(Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli, true);
 			} else {
 				$pais = '*';
-				$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
+				$envio_temp = $pago->getGastoEnvio(Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
 
 				if (empty($envio_temp)) {
 					$tipo = 'D';
 					$pais = $tipo_iva->pais;
-					$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
+					$envio_temp = $pago->getGastoEnvio(Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
 					if (empty($envio_temp)) {
 						$tipo = 'D';
 						$pais = '*';
-						$envio_temp = $pago->getGastoEnvio(\Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
+						$envio_temp = $pago->getGastoEnvio(Config::get('app.emp'), $base_himp, $tipo, $pais, $cp_cli);
 					}
 				}
 			}
@@ -1887,14 +1771,14 @@ class PaymentsController extends Controller
 		);
 
 		#si hay envio min tambien
-		$imp_min=0;
-		$iva_min =0;
-		if(!empty($envio_min)){
+		$imp_min = 0;
+		$iva_min = 0;
+		if (!empty($envio_min)) {
 			$imp_min = head($envio_min)->imp_gasimp;
 			$iva_min = $this->calculate_iva($tipo_iva->tipo, $iva, $imp_min);
 		}
-		$res["imp_min"]=  floatval($imp_min);
-		$res["iva_min"]=  floatval($iva_min);
+		$res["imp_min"] =  floatval($imp_min);
+		$res["iva_min"] =  floatval($iva_min);
 
 
 
@@ -1971,7 +1855,7 @@ class PaymentsController extends Controller
 	public function licenciaDeExportacionPorPais($codpais_clid = "ES", $importeAdjudicacion)
 	{
 
-		if(!Config::get('app.licencia_exportacion', 0) || $codpais_clid == 'ES' || empty($codpais_clid)){
+		if (!Config::get('app.licencia_exportacion', 0) || $codpais_clid == 'ES' || empty($codpais_clid)) {
 			return 0;
 		}
 
@@ -1984,7 +1868,7 @@ class PaymentsController extends Controller
 			)
 		);
 
-		if(!empty($exp[0])){
+		if (!empty($exp[0])) {
 			return floatval($exp[0]->exportacion);
 		}
 
@@ -2033,10 +1917,10 @@ class PaymentsController extends Controller
 	public function contador2_ora($codigo, $letra)
 	{
 
-		$data = \DB::select(
+		$data = DB::select(
 			"select CONTADOR2_ORA(:codigo,:emp,SYSDATE,:letra) as cont from dual",
 			array(
-				'emp'       => \Config::get('app.emp'),
+				'emp'       => Config::get('app.emp'),
 				'codigo' => $codigo,
 				'letra' => $letra
 			)
@@ -2075,8 +1959,8 @@ class PaymentsController extends Controller
 		$email = new EmailLib('INVOICE_PAY_USER');
 		if (!empty($email->email)) {
 			$email->setUserByCod($inf_client->cod_cli, true);
-			$email->setUrl(\Config::get('app.url') . \Routing::slug('user/panel/bills'));
-			$email->setPrice(\Tools::moneyFormat($amount, false, 2));
+			$email->setUrl(Config::get('app.url') . RoutingServiceProvider::slug('user/panel/bills'));
+			$email->setPrice(ToolsServiceProvider::moneyFormat($amount, false, 2));
 			$email->setBill($facturas->serie . '/' . $facturas->numero);
 			$email->send_email();
 		}
@@ -2121,17 +2005,18 @@ class PaymentsController extends Controller
 		return $estrasLot;
 	}
 
-	public function addresInfo($inf_env_lic){
+	public function addresInfo($inf_env_lic)
+	{
 		$cod_cli = Session::get('user.cod');
-		if(!empty($cod_cli) && !empty($inf_env_lic->infenv)){
-			$direccionEnvio = FxClid::select("CP_CLID, CODPAIS_CLID, DIR_CLID, DIR2_CLID, SG_CLID, POB_CLID, TEL1_CLID, PRO_CLID")->WHERE("CODD_CLID",$inf_env_lic->infenv)->where("cli_clid", $cod_cli)->first();
-			if(!empty($direccionEnvio)){
-				$inf_env_lic->paisenv= $direccionEnvio->codpais_clid;
-				$inf_env_lic->provenv= $direccionEnvio->pro_clid;
-				$inf_env_lic->pobenv= $direccionEnvio->pob_clid;
-				$inf_env_lic->direnv= $direccionEnvio->sg_clid . ' ' . $direccionEnvio->dir_clid . $direccionEnvio->dir2_clid;
-				$inf_env_lic->cpenv= $direccionEnvio->cp_clid;
-				$inf_env_lic->telenv= $direccionEnvio->tel1_clid;
+		if (!empty($cod_cli) && !empty($inf_env_lic->infenv)) {
+			$direccionEnvio = FxClid::select("CP_CLID, CODPAIS_CLID, DIR_CLID, DIR2_CLID, SG_CLID, POB_CLID, TEL1_CLID, PRO_CLID")->WHERE("CODD_CLID", $inf_env_lic->infenv)->where("cli_clid", $cod_cli)->first();
+			if (!empty($direccionEnvio)) {
+				$inf_env_lic->paisenv = $direccionEnvio->codpais_clid;
+				$inf_env_lic->provenv = $direccionEnvio->pro_clid;
+				$inf_env_lic->pobenv = $direccionEnvio->pob_clid;
+				$inf_env_lic->direnv = $direccionEnvio->sg_clid . ' ' . $direccionEnvio->dir_clid . $direccionEnvio->dir2_clid;
+				$inf_env_lic->cpenv = $direccionEnvio->cp_clid;
+				$inf_env_lic->telenv = $direccionEnvio->tel1_clid;
 			}
 		}
 

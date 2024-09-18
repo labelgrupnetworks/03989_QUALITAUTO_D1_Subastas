@@ -5,6 +5,7 @@ namespace App\Models;
 
 use App\Models\V5\FgDvc1l;
 use App\Models\V5\FxDvc02;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -166,7 +167,7 @@ class Facturas extends Model
             'emp'       => Config::get('app.emp'),
             'anum'       =>$this->serie,
             'num'   => $this->numero,
-            'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
         );
 
         $sql = "SELECT FGDVC1L.*,

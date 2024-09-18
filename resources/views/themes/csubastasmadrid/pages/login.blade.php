@@ -9,11 +9,11 @@
 @endphp
 
 @section('content')
-<script src='https://www.google.com/recaptcha/api.js?hl={{config('app.locale')}}'></script>
 
 <main class="login-page">
 	<form method="post" class="frmLogin" id="frmRegister-adv" data-toggle="validator">
 		<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
+		<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12">
@@ -486,18 +486,16 @@
 					</label>
 				</div>
 
+					<p class="captcha-terms">
+						{!! trans("$theme-app.global.captcha-terms") !!}
+					</p>
+
 			</div>
 
 
 		</div>
 
 	</div>
-							<div class="row">
-								<div class="col-xs-12 col-md-8 col-md-offset-2" style="padding-left: 0px;">
-																					<div class="g-recaptcha" data-sitekey="6LdhD34UAAAAANG9lkke6_b6fyycAsWTpfpm_sTV"></div>
-								</div>
-
-							</div>
 
 
 						<div class="input-button-register">

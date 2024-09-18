@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MailChimpExport;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Config;
-use App\Models\V5\FxCliWeb;
+use App\libs\SeoLib;
 use App\Models\Newsletter;
 use App\Models\V5\Fx_Newsletter_Suscription;
-use App\libs\SeoLib;
+use App\Models\V5\FxCliWeb;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class NewsletterController extends Controller
 {
@@ -18,6 +18,10 @@ class NewsletterController extends Controller
 	public function __construct()
 	{
 		$this->newsletterModel = new Newsletter();
+
+		if(Config::get('app.captcha_v3', false)){
+			$this->middleware('verify.captcha')->only(['setNewsletterAjax']);
+		}
 	}
 
 	#hago por ajax la funcion para poder guardar solo el evento al darse de alta en la newsletter desde la web

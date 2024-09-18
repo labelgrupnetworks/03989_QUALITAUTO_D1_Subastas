@@ -6,7 +6,6 @@
 
 @section('content')
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 <link rel="stylesheet" type="text/css" href="/css/user/register.css">
 
 <div class="create-account color-letter">
@@ -23,6 +22,7 @@
 				<form method="post" id="registerForm" action="javascript:submit_register_form()">
 
 					<input class="form-control" type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
 					<input class="form-control" type="hidden" name="pri_emp" id="pri_emp" value="F">
 
@@ -293,10 +293,10 @@
 									</label>
 							</div>
 							<br>
-							<div class="col-xs-12 col-md-offset-3">
-								<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}" data-callback="onSubmit">
-								</div>
-
+							<div class="col-xs-12 mt-1">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
 							</div>
 
 							<div class="clearfix"></div>

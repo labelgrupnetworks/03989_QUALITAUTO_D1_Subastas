@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -40,7 +41,7 @@ class FgSg extends Model
         $query->leftJoin('FGSG_LANG', function ($join) {
 
             $join   ->on("FGSG_LANG.COD_SG_LANG", "=", "FGSG.cod_SG")
-                    ->on("FGSG_LANG.LANG_SG_LANG", "=","'".\Tools::getLanguageComplete(\Config::get('app.locale'))."'");
+                    ->on("FGSG_LANG.LANG_SG_LANG", "=","'".ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'))."'");
 
         });
         return  $query;

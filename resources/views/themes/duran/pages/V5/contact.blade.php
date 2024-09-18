@@ -9,10 +9,6 @@
 $bread[] = array("name" => trans($theme.'-app.foot.contact') );
 ?>
 
-
-
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
 <div class="container">
 
 	<h1 class="titlePage">{{trans($theme.'-app.foot.contact') }}</h1>
@@ -22,6 +18,7 @@ $bread[] = array("name" => trans($theme.'-app.foot.contact') );
 			<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()">
 				<input type="hidden" value="david.duran@duran-subastas.com" name="email_cc">
 				{!! $data['formulario']['_token'] !!}
+				<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 				<div class="form-group">
 					<div class="input-effect col-xs-12">
 						{!! $data['formulario']['nombre'] !!}
@@ -55,9 +52,12 @@ $bread[] = array("name" => trans($theme.'-app.foot.contact') );
 					</div>
 
 					<div class="row">
-						<div class="g-recaptcha col-xs-12 mt-2"
-							data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}" data-callback="onSubmit">
+						<div class="col-xs-12">
+							<p class="captcha-terms">
+								{!! trans("$theme-app.global.captcha-terms") !!}
+							</p>
 						</div>
+
 						<div class="col-xs-12 mt-2">
 							{!! $data['formulario']['SUBMIT'] !!}
 						</div>

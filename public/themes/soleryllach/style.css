@@ -5718,3 +5718,12 @@ reinicializo estilo para no afectar al resto de páginas
 	background-color: #fff;
 }
 
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}

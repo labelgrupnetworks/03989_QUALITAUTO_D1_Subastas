@@ -21,7 +21,7 @@ class LoginTest extends TestCase
 		$this->post($url, [
 			"_token" => csrf_token(),
 			"email" => "subastas@labelgrup.com",
-			"password" => "Magno22"
+			"password" => "****"
 		]);
 
 		$user = [];

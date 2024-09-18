@@ -716,7 +716,7 @@ class FormLib
 				$formulario["imagen"] = array("formulario" => FormLib::Image(trans(\Config::get('app.theme') . '-app.global.imagen')), "type" => "Image", "mandatory" => 0);
 
 			if (substr($item, 0, 4) == "file" ){
-				$formulario[$item] = array("formulario" => FormLib::File("files",1), "type" => "File", "mandatory" => 1);
+				$formulario[$item] = array("formulario" => FormLib::File("files[]",1), "type" => "File", "mandatory" => 1);
 			}
 
 			if ($item == "nif" || $item == "cif")

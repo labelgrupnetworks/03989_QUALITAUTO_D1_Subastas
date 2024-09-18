@@ -2,7 +2,6 @@
     header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
     header('Pragma: no-cache'); // HTTP 1.0.
     header('Expires: 0 '); // Proxies.
-    header('X-Frame-Options:     DENY');
     //header("Cache-Control: max-age=31536000");
 @endphp
 

@@ -68,7 +68,8 @@
 
                         <div class="form-group">
                             <label>{{ trans($theme . '-app.login_register.pais') }}</label>
-							{!! \FormLib::TextReadOnly('pais', 1, $countries[$data['user']->codpais_cli]) !!}
+							{!! \FormLib::TextReadOnly('pais_value', 1, $countries[$data['user']->codpais_cli]) !!}
+							<input type="hidden" name="pais" value="{{$data['user']->codpais_cli}}">
                         </div>
 
                         @if ($data['user']->fisjur_cli == 'J')

@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Config;
@@ -42,7 +43,7 @@ class FgCaracteristicas_Hces1 extends Model
 	}
 
 	public function scopeJoinLang($query){
-		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang =  ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		return $query->leftjoin("FGCARACTERISTICAS_HCES1_LANG", " EMP_CAR_HCES1_LANG = EMP_CARACTERISTICAS_HCES1 AND NUMHCES_CAR_HCES1_LANG = NUMHCES_CARACTERISTICAS_HCES1  AND LINHCES_CAR_HCES1_LANG = LINHCES_CARACTERISTICAS_HCES1  AND IDCAR_CAR_HCES1_LANG = IDCAR_CARACTERISTICAS_HCES1 AND LANG_CAR_HCES1_LANG = '$lang'");
 	}
 
@@ -51,12 +52,12 @@ class FgCaracteristicas_Hces1 extends Model
 	}
 
 	public function scopeJoinCaracteristicasLang($query){
-		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang =  ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		return $query->leftjoin("FGCARACTERISTICAS_LANG", " EMP_CARACTERISTICAS_LANG = EMP_CARACTERISTICAS and ID_CARACTERISTICAS_LANG = ID_CARACTERISTICAS AND LANG_CARACTERISTICAS_LANG = '$lang'");
 	}
 
 	public function scopeJoinCateristicasValue($query){
-		$lang =  \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang =  ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
 		return $query->leftjoin("FGCARACTERISTICAS_VALUE", "EMP_CARACTERISTICAS_VALUE = EMP_CARACTERISTICAS_HCES1 and IDCAR_CARACTERISTICAS_VALUE = IDCAR_CARACTERISTICAS_HCES1 and ID_CARACTERISTICAS_VALUE = IDVALUE_CARACTERISTICAS_HCES1")
 					->leftjoin("FGCARACTERISTICAS_VALUE_LANG", "EMP_CAR_VAL_LANG = EMP_CARACTERISTICAS_HCES1  and IDCARVAL_CAR_VAL_LANG = IDVALUE_CARACTERISTICAS_HCES1 AND LANG_CAR_VAL_LANG ='$lang'");
 

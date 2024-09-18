@@ -11,7 +11,7 @@ use Request;
 
 use App\Models\V5\FgCaracteristicas_Value;
 use App\Models\V5\FgCaracteristicas_Value_Lang;
-
+use App\Providers\ToolsServiceProvider;
 use DB;
 use stdClass;
 
@@ -43,7 +43,7 @@ class FeatureValueController extends ApiLabelController
 
 					if(!empty($item["lang"])){
 
-						$item["lang"] = \Tools::getLanguageComplete($item["lang"]);
+						$item["lang"] = ToolsServiceProvider::getLanguageComplete($item["lang"]);
 						$items_lang[]=$item;
 						unset($items[$key]);
 					}
@@ -96,7 +96,7 @@ class FeatureValueController extends ApiLabelController
 				foreach($items as $key => $item){
 
 					if(!empty($item["lang"])){
-						$item["lang"] = \Tools::getLanguageComplete($item["lang"]);
+						$item["lang"] = ToolsServiceProvider::getLanguageComplete($item["lang"]);
 						$items_lang[]=$item;
 						unset($items[$key]);
 					}

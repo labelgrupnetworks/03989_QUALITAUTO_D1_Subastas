@@ -15,6 +15,7 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FgCaracteristicas_Hces1_Lang;
 use App\Models\V5\FgHces1_Lang;
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\MessageBag;
 
 use DB;
@@ -117,7 +118,7 @@ class LotController extends ApiLabelController
 							if(empty($feature["lang"])){
 								$itemsFeatures[] = $feature;
 							}else{
-								$feature["lang"] =  \Tools::getLanguageComplete($feature["lang"]);
+								$feature["lang"] =  ToolsServiceProvider::getLanguageComplete($feature["lang"]);
 								$itemsFeaturesLang[] = $feature;
 							}
 
@@ -127,7 +128,7 @@ class LotController extends ApiLabelController
 					#multiidioma
 					if(!empty($item["languages"])){
                         foreach($item["languages"] as $hces1Lang){
-							$hces1Lang["lang"] =  \Tools::getLanguageComplete($hces1Lang["lang"]);
+							$hces1Lang["lang"] =  ToolsServiceProvider::getLanguageComplete($hces1Lang["lang"]);
                             $hces1Lang["lin"] =  $linHces;
 							$hces1Lang["num"] =  $numHces;
 							if(empty($hces1Lang["urlfriendly"]) && !empty($hces1Lang["title"])){
@@ -271,10 +272,10 @@ class LotController extends ApiLabelController
                     $res->items[$key]->features = $caracteristicas[$item->idorigin];
 				}
 
-				$res->items[$key]->url= \Tools::url_lot($item->idauction, $item->id_auc_sessions, $item->name, $item->reflot,$item->numcession,$item->urlfriendly,$item->title);
-				$res->items[$key]->urlimg= \Tools::url_img("lote_large", $item->numcession, $item->lincession, null, false);
-				$res->items[$key]->urlimgMedium= \Tools::url_img("lote_medium", $item->numcession, $item->lincession, null, false);
-				$res->items[$key]->urlimgSmall= \Tools::url_img("lote_small", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->url= ToolsServiceProvider::url_lot($item->idauction, $item->id_auc_sessions, $item->name, $item->reflot,$item->numcession,$item->urlfriendly,$item->title);
+				$res->items[$key]->urlimg= ToolsServiceProvider::url_img("lote_large", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgMedium= ToolsServiceProvider::url_img("lote_medium", $item->numcession, $item->lincession, null, false);
+				$res->items[$key]->urlimgSmall= ToolsServiceProvider::url_img("lote_small", $item->numcession, $item->lincession, null, false);
 
 				#eliminamso num, ya que no se necesita devolver el num_hces
 				unset($res->items[$key]->name);
@@ -437,7 +438,7 @@ class LotController extends ApiLabelController
                                 $create[] = $featureLot;
 
 							}else{
-								$featureLot["lang"] =  \Tools::getLanguageComplete($featureLot["lang"]);
+								$featureLot["lang"] =  ToolsServiceProvider::getLanguageComplete($featureLot["lang"]);
 								$createLang[] = $featureLot;
 							}
 
@@ -494,7 +495,7 @@ class LotController extends ApiLabelController
 			if(isset(($item["languages"]))){
 
 				foreach($item["languages"] as $hces1Lang){
-					$lang =\Tools::getLanguageComplete($hces1Lang["lang"]);
+					$lang =ToolsServiceProvider::getLanguageComplete($hces1Lang["lang"]);
 					if(!empty( $lots[$item["idorigin"]])){
 						$hces1Lang["lang"] = $lang;
 						$hces1Lang["num"] = $lots[$item["idorigin"]]["num"];

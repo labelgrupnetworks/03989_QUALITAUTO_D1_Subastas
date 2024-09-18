@@ -154,9 +154,8 @@ $(function () {
 			return;
 		}
 
-		await executeCaptchaV3();
-
-		if(!checkCaptcha()) {
+		const captcha = await isValidCaptcha();
+		if(!captcha) {
 			$(".loader").addClass("hidden");
 			$("#valoracion-adv").removeClass("hidden");
 			$("#insert_msg").html(messages.error.generic);
@@ -1103,9 +1102,8 @@ async function sendContactForm(event) {
 		return false;
 	}
 
-	await executeCaptchaV3();
-
-	if(!checkCaptcha()) {
+	const captcha = await isValidCaptcha();
+	if(!captcha) {
 		showMessage(messages.error.hasErrors);
 		return false;
 	}
@@ -1201,7 +1199,7 @@ function successLoginForm(response) {
 	}
 }
 
-function handleSubmitNewsletterForm(event) {
+async function handleSubmitNewsletterForm(event) {
 
 	var parent = $(this).closest(".newsletter-js");
 
@@ -1210,16 +1208,25 @@ function handleSubmitNewsletterForm(event) {
 	var lang = parent.find('.lang-newsletter-js').val();
 	var entrar = parent.find('.condiciones-newsletter-js').prop("checked");
 	const families = {};
+
 	parent.find("[name^=families]").each(function(index) {
 		if($(this).prop("checked")|| $(this).is(":hidden")) {
 			families[$(this).val()] = 1;
 		}
 	});
 
+	const captcha = await isValidCaptcha();
+	if(!captcha) {
+		$("#insert_msgweb").html(messages.error.code_500);
+		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+	}
+
+	const captcha_token = document.querySelector('[name="captcha_token"]').value;
+
 	if (entrar) {
 		$.ajax({
 			type: "POST",
-			data: { email: email, lang: lang, condiciones: 1, families: families },
+			data: { email: email, lang: lang, condiciones: 1, families: families, captcha_token },
 			url: '/api-ajax/newsletter/add',
 			beforeSend: function () {
 			},
@@ -1229,6 +1236,10 @@ function handleSubmitNewsletterForm(event) {
 				} else {
 					$('.insert_msg').html(messages.error[msg.msg]);
 				}
+				$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
+			},
+			error: function (msg) {
+				$('.insert_msg').html(messages.error.code_500);
 				$.magnificPopup.open({ items: { src: '#newsletterModal' }, type: 'inline' }, 0);
 			}
 		});
@@ -1355,33 +1366,6 @@ function createWallet(event) {
 
 function cerrarLogin() {
 	$('.login_desktop').fadeToggle("fast");
-}
-
-function checkCaptcha() {
-	const response = document.querySelector('[name="g-recaptcha-response"]').value;
-	return Boolean(response);
-}
-
-async function executeCaptchaV3() {
-	const captchaElemenent = document.querySelector('[name="captcha_token"]');
-
-	if(!captchaElemenent) return;
-
-	const key = captchaElemenent.getAttribute('data-sitekey');
-
-	return new Promise((resolve, reject) => {
-
-		grecaptcha.ready(function() {
-			grecaptcha.execute(key, {action: 'submit'})
-			.then(function(token) {
-
-				if(!token) reject('No token found');
-
-				captchaElemenent.value = token;
-				resolve();
-			});
-		});
-	});
 }
 
 // En la version dos este metodo no aplica, y se llama desde common.js

@@ -710,7 +710,7 @@ class Prueba extends BaseController
 
 		$user = FxCli::select("CP_CLI, POB_CLI, PRO_CLI, TEL1_CLI, CIF_CLI")->WHERE("COD_CLI", $cod_cli)->first();
 
-		\Tools::exit404IfEmpty($user);
+		ToolsServiceProvider::exit404IfEmpty($user);
 
 		/*(GEMP ,EMP ,IDPED IN NUMBER,CCODLI ,CP ,POB ,PROV ,
                         TELF ,OBS ,NIF ,CODDIRCLI ,TRANSPORT ,PAYMENT
@@ -1537,9 +1537,9 @@ $lang =[';
 			->first();
 
 		/* foreach ($dataForExport as $key => $value) {
-			$url_friendly = \Tools::url_lot($value->cod_sub, $value->id_auc_sessions, $value->name, $value->lot_number, $value->num_hces1, $value->webfriend_hces1, $value->description);
+			$url_friendly = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, $value->name, $value->lot_number, $value->num_hces1, $value->webfriend_hces1, $value->description);
 			$dataForExport[$key]["lot_url"] = $url_friendly;
-			$dataForExport[$key]["photo_url"] = \Tools::url_img('lote_medium', $value->num_hces1, $value->lin_hces1);
+			$dataForExport[$key]["photo_url"] = ToolsServiceProvider::url_img('lote_medium', $value->num_hces1, $value->lin_hces1);
 
 			//Borrar variables innecesarias debajo del catalog_date
 			unset($dataForExport[$key]["cod_sub"]);

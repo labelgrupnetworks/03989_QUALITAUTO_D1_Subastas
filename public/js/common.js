@@ -3,6 +3,7 @@ let project = {
 	theme: 'demo',
 	version: 1,
 };
+//cleanUrl();
 
 $(document).ready(function () {
 
@@ -1856,13 +1857,9 @@ function showMessage(data, title) {
 /*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
 /****************************************************************************************/
 
-function sendContact() {
+async function sendContact() {
 
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
-
-	response = $("#g-recaptcha-response").val();
-
-	if (response) {
+	validateCaptchaMiddleware(() => {
 		$.ajax({
 			type: "POST",
 			url: "/contactSendmail",
@@ -1879,16 +1876,8 @@ function sendContact() {
 				showMessage("Error");
 			}
 		});
-	} else {
-		$(".g-recaptcha").find("iframe").addClass("has-error");
-		showMessage(messages.error.hasErrors);
-	}
-
+	});
 }
-
-
-
-
 
 
 
@@ -2006,3 +1995,85 @@ function debounce(func, delay) {
 		console.log('Enviar formulario');
 	}, 500); // 500 milisegundos (0.5 segundos) de pausa
 }); */
+
+function validateCaptchaMiddleware(callback, arg) {
+	isValidCaptcha().then((result) => {
+		if(result){
+			callback(arg);
+			return;
+		}
+
+		showMessage(messages.error.recaptcha_incorrect);
+	});
+}
+
+
+async function isValidCaptcha() {
+
+	// Si es un captcha v3
+	if (isV3Captcha()) {
+		return await checkCaptchaV3();
+	}
+
+	// Si es un captcha v2
+	$(".g-recaptcha").find("iframe").removeClass("has-error");
+	const resutl = Boolean($("#g-recaptcha-response").val());
+	if(!resutl){
+		$(".g-recaptcha").find("iframe").addClass("has-error");
+	}
+
+	return resutl;
+}
+
+function isV3Captcha() {
+	return $("[name=captcha_token]").length > 0;
+}
+
+async function checkCaptchaV3() {
+	await executeCaptchaV3();
+
+	const response = document.querySelector('[name="g-recaptcha-response"]').value;
+	return Boolean(response);
+}
+
+async function executeCaptchaV3() {
+	const captchaElemenent = document.querySelector('[name="captcha_token"]');
+
+	if(!captchaElemenent) return;
+
+	const key = captchaElemenent.getAttribute('data-sitekey');
+
+	return new Promise((resolve, reject) => {
+
+		grecaptcha.ready(function() {
+			grecaptcha.execute(key, {action: 'submit'})
+			.then(function(token) {
+
+				if(!token) reject('No token found');
+
+				//recorrecmos todos para que en paginas con varios formularios se rellenen todos
+				document.querySelectorAll('[name="captcha_token"]')
+					.forEach(captchaElemenent => {
+						captchaElemenent.value = token;
+					});
+
+				resolve();
+			});
+		});
+	});
+}
+
+function cleanUrl() {
+    // Obtén la URL actual
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+
+	const paramsObject = Object.fromEntries(params);
+	const emptyKeys = Object.entries(paramsObject).filter(([_, value]) => value === '');
+
+	emptyKeys.forEach(([key]) => params.delete(key));
+
+    // Actualiza la URL sin recargar la página
+    url.search = params.toString();
+    window.history.replaceState({}, '', url.toString());
+}

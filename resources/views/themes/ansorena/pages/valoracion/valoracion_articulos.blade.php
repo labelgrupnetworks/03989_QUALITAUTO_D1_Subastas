@@ -36,6 +36,7 @@
 
         <form id="form-valoracion-adv" class="form">
             @csrf
+			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 
             <div class="row g-3">
                 <p class="text-danger valoracion-h4 hidden msg_valoracion">
@@ -121,6 +122,10 @@
                             {!! trans("$theme-app.emails.privacy_conditions") !!}
                         </label>
                     </div>
+
+					<p class="captcha-terms mt-1">
+						{!! trans("$theme-app.global.captcha-terms") !!}
+					</p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <button type="submit" id="valoracion-adv"

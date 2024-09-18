@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Enterprise;
 use App\Models\V5\FgOrtsec0;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
@@ -48,7 +47,7 @@ class EnterpriseController extends Controller
 		return View::make('front::pages.department', compact('ortsec', 'especialistas', 'data'));
 	}
 
-	public function team(Request $request)
+	public function team()
 	{
 		$specialists = collect((new Enterprise())->infEspecialistas());
 		$specialties = $specialists->where('lin_especial1', '!=', 1)->pluck('titulo_especial0')->unique();

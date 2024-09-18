@@ -153,52 +153,6 @@ class MailQueries {
 
    }
 
-   public function getFirstAuction(){
-        $sql="select ASIGL0.SUB_ASIGL0, ASIGL0.REF_ASIGL0 from FGSUB SUB
-                JOIN FGASIGL0 ASIGL0 ON ASIGL0.EMP_ASIGL0 = SUB.EMP_SUB AND ASIGL0.SUB_ASIGL0 = SUB.COD_SUB
-                JOIN FGHCES1 HCES1 ON HCES1.EMP_HCES1 = SUB.EMP_SUB AND HCES1.NUM_HCES1 = ASIGL0.NUMHCES_ASIGL0 AND HCES1.LIN_HCES1 = ASIGL0.LINHCES_ASIGL0
-                WHERE SUB.EMP_SUB = :emp AND SUB.TIPO_SUB = :tipo_sub AND SUB.SUBC_SUB = :subc_sub AND CERRADO_ASIGL0 = :cerrado AND TRUNC(FINI_ASIGL0) = TRUNC(SYSDATE) AND HCES1.FAC_HCES1 != 'D' AND HCES1.FAC_HCES1 != 'R' ";
-
-                 $params = array(
-                'emp'       =>  Config::get('app.emp'),
-                'subc_sub'  => 'S',
-                'cerrado'   => 'N',
-                'tipo_sub'  => 'P'
-
-                );
-
-       return DB::select($sql, $params);
-
-   }
-
-   /**
-	* @deprecated No se esta utilizando, ahora mismo se insertan los datos desde ERP al añadir el
-	* Lote a la primera subasta.
-    */
-    public function setFirstAuction( $cod_sub, $ref){
-          //quieren que se puedan enviar emails aunque se repita el lote y la subasta
-       /*
-        $sql="MERGE INTO WEB_EMAIL_FIRST_AUCTION fa
-              USING (SELECT EMP_SUB, COD_SUB FROM FGSUB WHERE EMP_SUB = :emp and COD_SUB = :cod_sub) sub
-              ON (fa.ID_EMP = sub.emp_sub  and fa.ID_SUB = sub.cod_sub and fa.ID_REF = :ref)
-              WHEN NOT MATCHED THEN
-            ";
-        */
-        $sql=" INSERT INTO WEB_EMAIL_FIRST_AUCTION (ID_WEB_EMAIL_FIRST_AUCTION , ID_EMP, ID_SUB, ID_REF,  FECHA_ENVIO, SENDED)
-              VALUES (nvl((select max(ID_WEB_EMAIL_FIRST_AUCTION )+1 from WEB_EMAIL_FIRST_AUCTION ),1)
-               , :emp, :cod_sub, :ref, TRUNC(SYSDATE), 'N')";
-
-        $params = array(
-                'emp'       =>  Config::get('app.emp'),
-                'cod_sub'  => $cod_sub,
-                'ref'   => $ref
-                );
-
-        DB::select($sql, $params);
-
-   }
-
-
 	public function setEmailLogs($codtxt, $sub, $ref, $numhces, $linhces, $codcli, $email, $type, $sended = 'S')
 	{
 		// si existe la variable debug_email es la que manda, si no se usará APP_DEBUG
@@ -281,26 +235,6 @@ class MailQueries {
                ->where('ID_SUB',$cod_sub)
                ->where('ID_REF',$ref)
                ->update(['SENDED' => $type]);
-   }
-
-   public function getEmailsLogs($date , $num_days = 7 ){
-
-
-        $dates = '';
-
-        $nuevafecha  = strtotime ( '-'.$num_days.' day' , strtotime ( $date ) ) ;
-        $nuevafecha  = date ( 'Y/m/j' , $nuevafecha );
-        $dates.= " trunc(DATE_EMAIL_LOGS) >= '$nuevafecha' AND  trunc(DATE_EMAIL_LOGS) <= '$date'";
-
-       $sql = "Select CODTXT_EMAIL_LOGS, COUNT(CODTXT_EMAIL_LOGS) count_emails, TRUNC(DATE_EMAIL_LOGS) date_emails
-        from WEB_EMAIL_LOGS
-        WHERE
-        $dates
-        GROUP BY CODTXT_EMAIL_LOGS, TRUNC(DATE_EMAIL_LOGS) ORDER BY TRUNC(DATE_EMAIL_LOGS) desc";
-
-      $value = DB::select($sql);
-
-      return $value;
    }
 
    public function getTxtcod(){

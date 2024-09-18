@@ -5,7 +5,6 @@
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
 header("Expires: 0 "); // Proxies.
-header("X-Frame-Options:     DENY");
 ?>
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -153,6 +152,8 @@ header("X-Frame-Options:     DENY");
 <script src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
 
 @stack('scripts')
 

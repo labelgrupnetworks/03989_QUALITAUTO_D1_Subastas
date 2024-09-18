@@ -59,4 +59,8 @@
 <script defer src="{{ Tools::urlAssetsCache('js/forms.js') }}"></script>
 <script src="{{ URL::asset('vendor/slick/slick.min.js') }}"></script>
 
+@if(Config::get('app.captcha_v3', false))
+<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
+@else
 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+@endif

@@ -13,6 +13,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgLicit;
 use App\Models\V5\Web_Favorites;
+use App\Providers\ToolsServiceProvider;
 use Session;
 
 class Favorites extends Model
@@ -291,11 +292,11 @@ OBSDET_HCES1,TALLA_HCES1,TRANSPORT_HCES1,IMPNOVA_HCES1,
                                                   AND lotes.REF_HCES1 <= auc.\"end_lot\"
                                                   AND p.cerrado_asigl0 = 'N'
                                                   ORDER BY p.ffin_asigl0 , p.hfin_asigl0 desc, p.ref_asigl0
-                        ) pu " .\Tools::getOffset($this->page, $this->itemsPerPage). " ";
+                        ) pu " .ToolsServiceProvider::getOffset($this->page, $this->itemsPerPage). " ";
 
             $bindings = array(
                 'emp'       => Config::get('app.emp'),
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
             );
 
             $res = DB::select($sql, $bindings);
@@ -623,11 +624,11 @@ OBSDET_HCES1,TALLA_HCES1,TRANSPORT_HCES1,IMPNOVA_HCES1,
                                                   AND lotes.REF_HCES1 >= auc.\"init_lot\"
                                                   AND lotes.REF_HCES1 <= auc.\"end_lot\"
 
-                        ) pu " .\Tools::getOffset($this->page, $this->itemsPerPage);
+                        ) pu " .ToolsServiceProvider::getOffset($this->page, $this->itemsPerPage);
 
             $bindings = array(
                 'emp'       => Config::get('app.emp'),
-                'lang'      => \Tools::getLanguageComplete(Config::get('app.locale'))
+                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
             );
 
             $res = DB::select($sql, $bindings);

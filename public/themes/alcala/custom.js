@@ -1505,7 +1505,7 @@ function sendCatalogoContact() {
 
 }
 
-function newsletterSuscription (event) {
+async function newsletterSuscription (event) {
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
 
@@ -1521,10 +1521,8 @@ function newsletterSuscription (event) {
 		return;
 	}
 
-	$("#form-newsletter .g-recaptcha").find("iframe").removeClass("has-error");
-	const response = $("#g-recaptcha-response").val();
-	const response2 = $("#g-recaptcha-response-1").val(); // Esto está para cuando existen 2 repatchas. Ej: Contactar
-	if (!response && !response2) {
+	const captcha = await isValidCaptcha();
+	if(!captcha){
 		$("#insert_msgweb").html(messages.error.recaptcha_incorrect);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		return;
@@ -1542,6 +1540,10 @@ function newsletterSuscription (event) {
 		lang,
 		condiciones: 1,
 		...newsletters
+	}
+
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
 	}
 
 	addNewsletter(data);

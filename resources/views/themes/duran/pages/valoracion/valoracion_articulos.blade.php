@@ -9,7 +9,7 @@
 
 $bread[] = array("name" =>$data['title']  );
 ?>
-<script src='https://www.google.com/recaptcha/api.js'></script>
+
 <div class="breadcrumb-total row">
     <div class="col-xs-12 col-sm-12 text-center color-letter">
             @include('includes.breadcrumb')
@@ -25,6 +25,8 @@ $bread[] = array("name" =>$data['title']  );
                 <form id="form-valoracion-adv" class="form">
                     <div class=" col-xs-12 col-lg-8 col-lg-offset-2">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
+
 
                     <div class=" col-xs-12 content-form-valuations no-padding">
                         <p class="text-danger valoracion-h4 hidden msg_valoracion">{{ trans($theme.'-app.valoracion_gratuita.error') }}</p>
@@ -97,8 +99,15 @@ $bread[] = array("name" =>$data['title']  );
                                     <input id="images" type="file" name="imagen[]" />
                                   </div>
                     		</div>
-							<div style="margin-top: 20px;" id="recaptcha" data-callback="recaptcha_callback" class="g-recaptcha" data-sitekey="{{ Config::get('app.codRecaptchaEmailPublico') }}"></div>
-                            <div class="col-xs-12 text-right pb-5">
+
+							<div class="col-xs-12">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
+							</div>
+
+
+							<div class="col-xs-12 text-right pb-5">
                                 <button type="submit" id="valoracion-adv" class="button-send-valorate button-principal">{{ trans($theme.'-app.valoracion_gratuita.send') }}</button>
                             </div>
 					</div>

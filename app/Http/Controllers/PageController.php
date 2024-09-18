@@ -1,17 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-
-use Config;
-use App;
-use App\Imports\SiteMapImport;
-use DB;
-
-
-use View;
-# Cargamos el modelo
 use App\Models\Page;
-
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
@@ -53,74 +46,6 @@ class PageController extends Controller
         }
    }
 
-
-    public function getPagina_old($lang,$pagina)
-    {
-        $pag = $pagina;
-        $Pagina         = new Content();
-
-        # Seteamos la pagina como slug para buscar y establecemos el idioma
-        $Pagina->lang   = strtoupper($lang);
-        $Pagina->slug   = $pag;
-
-        $data = head($Pagina->getContent());
-
-
-
-        /*
-         *
-       es necesario la linea de código Route::get('/{lang}/pagina/{pagina}', 'ContentController@getPagina'); del routes para que esto funcione
-        $lang   = Route::current()->parameter('lang');
-        $Pagina->slug   = $pag;
-        $pa = head($Pagina->getContent());
-        if ($pa->id_lang != $lang){
-            $pagina_lang   = new Content();
-            $pagina_lang->lang = $lang;
-            $pagina_lang->id = $pa->id_content;
-            print_r($pagina_lang);die();
-            $pa = head($pagina_lang->getContent());
-
-        }
-        $data = $pa;
-         *
-         *
-         *
-         *
-         */
-        # Si no existe la pagina mostramos 404
-        if(empty($data)) {
-            exit (\View::make('front::errors.404'));
-        }
-
-        # Comprobamos las coincidencias de anchors de solo un nivel
-        $coincidencias = self::anchor($data->value);
-
-        # Reemplazamos las coincidencias
-        foreach ($coincidencias as $key) {
-            $data->value = str_replace($key['clave'], $key['value'], $data->value);
-        }
-
-        # Asignamos
-        $data->name = $data->title.' - '.Config::get('app.name');
-
-        $SEO_metas= new \stdClass();
-        $SEO_metas->noindex_follow = false;
-        $SEO_metas->meta_title = $data->webmetat_content;
-        $SEO_metas->meta_description = $data->webmetad_content;
-
-
-        if(empty($_GET['modal'])){
-            $data = array(
-            'data' => $data,
-            'seo' => $SEO_metas ,
-        );
-            return View::make('front::pages.content', array('data' => $data));
-        }else{
-            //return View::make('front::includes.ficha.modals_information', array('data' => $data->value));
-            return $data->value;
-        }
-    }
-
     /**
      * Metodo usado en Alcala para mostrar articulos en paginas estaticas
      * @param type $id
@@ -136,7 +61,7 @@ class PageController extends Controller
         $res = DB::select($sql, $bindings);
 
         if(empty($res)){
-           exit (\View::make('front::errors.404'));
+           exit (View::make('front::errors.404'));
         }
 
         $data = array(

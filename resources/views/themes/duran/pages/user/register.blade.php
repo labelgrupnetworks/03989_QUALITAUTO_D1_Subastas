@@ -29,10 +29,6 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 
 @section('content')
 
-
-
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
 <div class="create-account color-letter mt-5">
 	<div class="container register pb-5">
 		<div class="row d-flex align-items-center justify-content-center">
@@ -61,6 +57,7 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 
 
 					<input class="form-control" type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 					<input class="form-control" type="hidden" name="back" value="{{ $formulario->back ?? '' }}">
 					<input class="form-control" type="hidden" name="context_url" value="{{ request('context_url', '') }}">
 					<input class="form-control" type="hidden" name="sexo" id="sexo" value="H">
@@ -415,13 +412,11 @@ $document_type = (new \App\Models\V5\FxCli)->getTipoDocumento();
 								</label>
 							</div>
 							<br>
-							<div class="col-xs-12 col-md-offset-3">
-								<div class="g-recaptcha" data-sitekey="{{\Config::get('app.codRecaptchaEmailPublico')}}"
-									data-callback="onSubmit">
-								</div>
-
+							<div class="col-xs-12 mt-1">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
 							</div>
-
 							<div class="clearfix"></div>
 						</div>
 

@@ -9,8 +9,6 @@ if(!empty($data['usuario'])){
 }
 @endphp
 
-<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
-
 <div class="info_single ficha_Shopping">
 	<div class="pre prices-wrapper mt-1">
 

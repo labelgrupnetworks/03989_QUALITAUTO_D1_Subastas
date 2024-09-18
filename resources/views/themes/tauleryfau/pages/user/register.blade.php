@@ -51,7 +51,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
             </div>
         </section>
     @else
-        <script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
+
         <script>
             const prefix = @json($jsitem->prefix);
         </script>
@@ -69,6 +69,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
 
                 <form id="registerForm" method="post" action="javascript:submit_register_form()">
                     <input class="form-control" name="_token" type="hidden" value="{{ csrf_token() }}">
+					<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
                     <input class="form-control" id="sexo" name="sexo" type="hidden" value="H">
 
                     <fieldset>
@@ -462,8 +463,12 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                                 <p class="error-javascript">
                                     {{ trans("$theme-app.login_register.enable-javascript") }}</p>
                             </noscript>
-                            <div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
-                                data-callback="onSubmit"></div>
+
+                            <div class="mt-1 mb-2">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
+							</div>
                         </div>
 
                         <div class="text-center">

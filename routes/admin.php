@@ -1,6 +1,16 @@
 <?php
 
+use App\Http\Controllers\admin\AdminArticlesController;
 use App\Http\Controllers\admin\AdminConfigController;
+use App\Http\Controllers\admin\AdminSlidersController;
+use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\BannerController;
+use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\BloqueConfigController;
+use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
+use App\Http\Controllers\admin\EmailController;
+use App\Http\Controllers\admin\ResourceController;
+use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
 /*
@@ -10,54 +20,45 @@ use Illuminate\Support\Facades\Config;
 */
 # Añadido excepcional ya que no funcionaba el admin
 
-Route::get('/admin', 'AdminHomeController@index');
+Route::view('/admin', 'admin::pages.home');
+
 Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 	Route::group(['middleware' => ['adminAuth', 'SessionTimeout:' . Config::get('app.admin_session_timeout')]], function () {
 
-		Route::get('/', 'AdminHomeController@index');
-		Route::get('/sliders/{tab?}', 'AdminSlidersController@index');
+		Route::view('/', 'admin::pages.home');
 
-		//lo comento por que antes estaba así pero jaume lo tiene diferente 2017_09_18
-		//Routes: Route::get('/config', 'AdminConfigController@index');
+		Route::get('/bloque', [BloqueConfigController::class, 'index']);
+		Route::get('/bloque/name/{id?}', [BloqueConfigController::class, 'SeeBloque']);
+		Route::post('/bloque/edit', [BloqueConfigController::class, 'EditBloque']);
 
-		Route::get('/config', 'AdminConfigController@index');
-		Route::get('/cms', 'CmsConfigController@index');
+		Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
+		Route::get('/resources/name/{id?}', [ResourceController::class, 'SeeResources']);
+		Route::post('/resources/edit', [ResourceController::class, 'EditResources']);
+		Route::post('/resources/delete', [ResourceController::class, 'DeleteResource']);
 
-		Route::get('/bloque', 'BloqueConfigController@index');
-		Route::get('/bloque/name/{id?}', 'BloqueConfigController@SeeBloque');
+		Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
+		Route::get('/banner/name/{id?}', [BannerController::class, 'SeeBanner']);
+		Route::post('/banner/edit', [BannerController::class, 'EditBanner']);
 
-		Route::get('/resources', 'ResourceController@index')->name('resources.index');
-		Route::get('/resources/name/{id?}', 'ResourceController@SeeResources');
+		Route::get('/traducciones/{head}/{lang}', [TraduccionesController::class, 'index']);
+		Route::get('/traducciones', [TraduccionesController::class, 'getTraducciones']);
+		Route::get('/traducciones/search', [TraduccionesController::class, 'search']);
+		Route::post('/traducciones/save', [TraduccionesController::class, 'SavedTrans']);
+		Route::post('/traducciones/new', [TraduccionesController::class, 'NewTrans']);
 
-		Route::get('/banner', 'BannerController@index')->name('banner.index');
-		Route::get('/banner/name/{id?}', 'BannerController@SeeBanner');
+		Route::get('/content', [App\Http\Controllers\admin\ContentController::class, 'index'])->name('content.index');
+		Route::get('/content/name/{id}', [App\Http\Controllers\admin\ContentController::class, 'getPage'])->name('content.page');
+		Route::post('/content/save', [App\Http\Controllers\admin\ContentController::class, 'savedPage']);
 
-		Route::get('/auc-index', 'AucIndexController@index');
-		Route::get('/auc-index/name/{id?}', 'AucIndexController@SeeAuxIndex');
+		Route::get('/email_log', [App\Http\Controllers\admin\AdminEmailsController::class, 'showLog'])->name('adminemails.showlog');
 
-		Route::get('/auc-index-menu', 'AucIndexMenuController@index');
-
-		Route::get('/seo-familias-sessiones', 'SeoFamiliasSessionesController@index');
-		Route::get('/seo-familias-sessiones/name/{id?}', 'SeoFamiliasSessionesController@SeeFamilySessionsSeo');
-
-		Route::get('/seo-categories', 'SeoCategoriesController@index');
-		Route::get('/seo-categories/name/{cod_sec?}', 'SeoCategoriesController@InfCategSeo');
-
-		Route::get('/traducciones/{head}/{lang}', 'TraduccionesController@index');
-		Route::get('/traducciones', 'TraduccionesController@getTraducciones');
-
-		Route::get('/traducciones/search', 'TraduccionesController@search');
-
-		Route::get('/content', 'ContentController@index')->name('content.index');
-		Route::get('/content/name/{id}', 'ContentController@getPage')->name('content.page');
-		Route::get('/email_clients', 'AdminEmailsController@index');
-		Route::get('/email_log', 'AdminEmailsController@showLog')->name('adminemails.showlog');
-
-		Route::get('/blog-admin', 'BlogController@getBlogs');
-		Route::get('/blog-admin/name/{id?}', 'BlogController@index');
-		Route::get('/category-blog', 'BlogController@getCategoryBlog');
-		Route::get('/category-blog/name/{id?}', 'BlogController@seeCategoryBlog');
+		Route::get('/blog-admin', [BlogController::class, 'getBlogs']);
+		Route::get('/blog-admin/name/{id?}', [BlogController::class, 'index']);
+		Route::get('/category-blog', [BlogController::class, 'getCategoryBlog']);
+		Route::get('/category-blog/name/{id?}', [BlogController::class, 'seeCategoryBlog']);
+		Route::post('/category-blog/edit', [BlogController::class, 'EditBlogCategory']);
+		Route::post('/blog/edit', [BlogController::class, 'EditBlog']);
 
 		Route::post('/contenido/blog-category', 'contenido\AdminBlogCategoryController@store')->name('admin.contenido.blog-category.store');
 		Route::get('/contenido/blog-category/{id}/edit', 'contenido\AdminBlogCategoryController@edit')->name('admin.contenido.blog-category.edit');
@@ -107,25 +108,25 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		});
 
 		Route::group(['prefix' => 'newbanner'], function () {
-			Route::get('/', "contenido\BannerController@index")->name('newbanner.index');
-			Route::get('/download', "contenido\BannerController@download");
-			Route::get('/ubicacionhome', "contenido\BannerController@ubicacionHome");
-			Route::get('/nuevo', "contenido\BannerController@nuevo");
-			Route::post('/nuevo_run', "contenido\BannerController@nuevo_run");
-			Route::get('/editar/{id}', "contenido\BannerController@editar")->name('newbanner.edit');
-			Route::get('/borrar/{id}', "contenido\BannerController@borrar");
-			Route::post('/activar', "contenido\BannerController@activar");
-			Route::post('/editar_run', "contenido\BannerController@editar_run");
-			Route::post('/listaItemsBloque', "contenido\BannerController@listaItemsBloque");
-			Route::post('/nuevoItemBloque', "contenido\BannerController@nuevoItemBloque");
-			Route::post('/editaItemBloque', "contenido\BannerController@editaItemBloque");
-			Route::post('/guardaItemBloque', "contenido\BannerController@guardaItemBloque");
-			Route::post('/guardaItemViewBloque', "contenido\BannerController@guardaItemViewBloque");
-			Route::post('/borraItemBloque', "contenido\BannerController@borraItemBloque");
-			Route::post('/estadoItemBloque', "contenido\BannerController@estadoItemBloque");
-			Route::post('/vistaPrevia', "contenido\BannerController@vistaPrevia");
-			Route::post('/ordenaBloque', "contenido\BannerController@ordenaBloque");
-			Route::post('/orderbanner', "contenido\BannerController@orderBanner");
+			Route::get('/', [ContenidoBannerController::class, 'index'])->name('newbanner.index');
+			Route::get('/download', [ContenidoBannerController::class, 'download']);
+			Route::get('/ubicacionhome', [ContenidoBannerController::class, 'ubicacionHome']);
+			Route::get('/nuevo', [ContenidoBannerController::class, 'nuevo']);
+			Route::post('/nuevo_run', [ContenidoBannerController::class, 'nuevo_run']);
+			Route::get('/editar/{id}', [ContenidoBannerController::class, 'editar'])->name('newbanner.edit');
+			Route::get('/borrar/{id}', [ContenidoBannerController::class, 'borrar']);
+			Route::post('/activar', [ContenidoBannerController::class, 'activar']);
+			Route::post('/editar_run', [ContenidoBannerController::class, 'editar_run']);
+			Route::post('/listaItemsBloque', [ContenidoBannerController::class, 'listaItemsBloque']);
+			Route::post('/nuevoItemBloque', [ContenidoBannerController::class, 'nuevoItemBloque']);
+			Route::post('/editaItemBloque', [ContenidoBannerController::class, 'editaItemBloque']);
+			Route::post('/guardaItemBloque', [ContenidoBannerController::class, 'guardaItemBloque']);
+			Route::post('/guardaItemViewBloque', [ContenidoBannerController::class, 'guardaItemViewBloque']);
+			Route::post('/borraItemBloque', [ContenidoBannerController::class, 'borraItemBloque']);
+			Route::post('/estadoItemBloque', [ContenidoBannerController::class, 'estadoItemBloque']);
+			Route::post('/vistaPrevia', [ContenidoBannerController::class, 'vistaPrevia']);
+			Route::post('/ordenaBloque', [ContenidoBannerController::class, 'ordenaBloque']);
+			Route::post('/orderbanner', [ContenidoBannerController::class, 'orderBanner']);
 		});
 
 		Route::resource('event', 'contenido\EventsController')->except(['show', 'destroy']);
@@ -143,8 +144,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/guardarPlantilla', 'configuracion\EmailController@guardarPlantilla');
 		});
 
-		Route::get('/email', 'EmailController@index');
-		Route::get('/email/ver/{cod_email}', 'EmailController@getEmail');
+		Route::get('/email', [EmailController::class, 'index']);
+		Route::get('/email/ver/{cod_email}', [EmailController::class, 'getEmail']);
 
 		Route::group(['prefix' => 'escalado'], function () {
 			Route::get('/', 'configuracion\EscaladoController@index');
@@ -189,52 +190,30 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/export', 'usuario\ClienteController@export')->name('cliente.export');
 		});
 
-
 		// SUBASTAS
-
 		Route::group(['prefix' => 'subasta'], function () {
-			Route::get('/', "subasta\SubastaController@index");
-			Route::get('/nuevo', 'subasta\SubastaController@edit');
-			Route::get('/edit/{id}', 'subasta\SubastaController@edit')->name('subasta.edit');
-			Route::post('/edit_run', 'subasta\SubastaController@edit_run');
-			Route::post('/borrarSubasta', 'subasta\SubastaController@borrarSubasta');
-			Route::post('/ficherosSubasta/{subasta}', 'subasta\SubastaController@ficherosSubasta');
-			Route::post('/borrarFicherosSubasta', 'subasta\SubastaController@borrarFicherosSubasta');
-			Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja');
-			Route::post('/borrarOrden', 'subasta\SubastaController@borrarOrden');
-			Route::post('/guardaEscalado', 'subasta\SubastaController@guardaEscalado')->name('guardarEscaladoSubastas');
+			Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja'); //se utiliza
 			Route::get('/list', 'subasta\SubastaController@getSelectSubastas');
 			Route::get('/select2list', 'subasta\SubastaController@getSelect2List')->name('subastas.select2');
 		});
+
 		Route::group(['prefix' => 'lote'], function () {
-			Route::get('/nuevo/{id}', 'subasta\SubastaController@editLote');
-			Route::get('/edit/{subasta}/{id}', 'subasta\SubastaController@editLote');
-			Route::post('/borrar/{subasta}/{id}', 'subasta\SubastaController@borrarLote');
-			Route::post('/edit_run', 'subasta\SubastaController@editLote_run');
-			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote');
-			Route::get('/file/{id}', 'subasta\SubastaController@lotFile');
-			Route::post('/excelRun', 'subasta\SubastaController@subirExcel');
-			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport');
-			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage');
-			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage');
+
+			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote'); //se utiliza
+			Route::get('/file/{id}', 'subasta\SubastaController@lotFile'); //para subir excel
+			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport'); //guardar excel
+			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage'); //excel?
+			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage'); //excel??
 			Route::get('/list', 'subasta\SubastaController@getSelectLotes');
 			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
-			Route::post('/addfile', 'subasta\SubastaController@addLoteFile');
-			Route::post('/addvideo', 'subasta\SubastaController@addLoteVideo');
-			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
-			Route::post('/deletevideo', 'subasta\SubastaController@deleteLoteVideo');
-			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export');
+			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export'); //se utiliza para descargar excel
 			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
 
 
 		});
 		Route::group(['prefix' => 'sesion'], function () {
-			Route::get('/nuevo/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-			Route::get('/edit/{subasta}/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-			Route::post('/borrar/{cod_sub}/{reference}', 'subasta\AdminAucSessionsController@destroy');
-			Route::post('/update', 'subasta\AdminAucSessionsController@oldUpdate');
-			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store');
-			Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy');
+			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store'); //revisar si es necesario
+			Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy'); //revisar si es necesario
 		});
 
 		Route::group(['prefix' => 'orders'], function () {
@@ -283,9 +262,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'category'], function () {
 			Route::get('/', 'subasta\AdminCategoryController@index')->name('category.index');
-			#Route::get('/show', 'subasta\AdminCategoryController@show');
-			#Route::get('/create', 'subasta\AdminCategoryController@create');
-			#Route::post('/store', 'subasta\AdminCategoryController@store');
 			Route::get('/edit', 'subasta\AdminCategoryController@edit')->name('category.edit');
 			Route::post('/update', 'subasta\AdminCategoryController@update');
 			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
@@ -440,12 +416,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::resource('pedidos', 'facturacion\AdminPedidosController')->except(['show']);
 		Route::post('pedidos/importeBasePedido', 'facturacion\AdminPedidosController@importeBasePedido');
 
-		Route::get('articulos', 'AdminArticlesController@index')->name('articles.index');
-		Route::get('articles/order', 'AdminArticlesController@getOrder')->name('articles.order_edit');
-		Route::post('articles/order', 'AdminArticlesController@saveOrder')->name('articles.order_store');
-
-		Route::get('/genericImport', 'CmsConfigController@getImportFile');
-		Route::post('/genericImport', 'CmsConfigController@ImportFile');
+		Route::get('articulos', [AdminArticlesController::class, 'index'])->name('articles.index');
+		Route::get('articles/order', [AdminArticlesController::class, 'getOrder'])->name('articles.order_edit');
+		Route::post('articles/order', [AdminArticlesController::class, 'saveOrder'])->name('articles.order_store');
 
 		#ver imagenes de lotes de la subasta para comprobar que no faltam
 		Route::get("listado_imagenes_subasta/{cod_sub}", 'subasta\AdminLotController@listadoImagenesSubasta')->name('listado_imagenes_subasta');
@@ -488,34 +461,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 	});
 
 
-	Route::post('/sliders/upload', 'AdminSlidersController@uploadFile');
-	Route::post('/sliders/save', 'AdminSlidersController@save');
-	Route::post('/sliders/delete', 'AdminSlidersController@deleteFile');
-	Route::post('/config/save', 'AdminConfigController@save');
-	Route::post('/content/save', 'ContentController@savedPage');
-	Route::post('/traducciones/save', 'TraduccionesController@SavedTrans');
-	Route::post('/seo-categories/edit', 'SeoCategoriesController@SavedCategSeo');
-	Route::post('/seo-familias-sessiones/edit', 'SeoFamiliasSessionesController@SavedFamilySessionsSeo');
-	Route::post('/auc-index-menu/save', 'AucIndexMenuController@save');
-	Route::post('/traducciones/new', 'TraduccionesController@NewTrans');
-	Route::post('/bloque/edit', 'BloqueConfigController@EditBloque');
-	Route::post('/auc-index/edit', 'AucIndexController@EditAuIndex');
-	Route::post('/banner/edit', 'BannerController@EditBanner');
-	Route::post('/resources/edit', 'ResourceController@EditResources');
-	Route::post('/resources/delete', 'ResourceController@DeleteResource');
-	Route::post('/category-blog/edit', 'BlogController@EditBlogCategory');
-	Route::post('/blog/edit', 'BlogController@EditBlog');
-
+	Route::post('/sliders/upload', [AdminSlidersController::class, 'uploadFile']);
+	Route::post('/sliders/save', [AdminSlidersController::class, 'save']);
+	Route::post('/sliders/delete', [AdminSlidersController::class, 'deleteFile']);
 
 
 
 
 
 	Route::group(['middleware' => ['web']], function () {
-
-		Route::get('/login', 'AdminUserController@login');
-		Route::post('/login', 'AdminUserController@login_post');
-		Route::get('/logout', 'AdminUserController@logout');
+		Route::get('/login', [AdminUserController::class, 'login']);
+		Route::post('/login', [AdminUserController::class, 'login_post']);
+		Route::get('/logout', [AdminUserController::class, 'logout']);
 	});
 
 	#ruta a la cual se debe poder acceder desde fuera del admin y sin estar logeado ya que la llamada la hace subalia

@@ -4352,3 +4352,13 @@ label:has(+ input.has-error) {
 .autoformulario .button-principal:hover {
 	background: var(--primary-color);
 }
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 12px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}

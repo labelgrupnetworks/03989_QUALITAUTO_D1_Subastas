@@ -1,0 +1,28 @@
+/*
+|--------------------------------------------------------------------------
+| General
+|--------------------------------------------------------------------------
+*/
+
+:root {
+	--font-prominent: "ivypresto-headline", serif;
+	--font-basic: "forma-djr-deck", sans-serif;
+}
+
+body {
+	font-family: var(--font-basic);
+	--font-size-responive: clamp(3.125rem, 0.2841rem + 3.7879vw, 9.375rem);
+	height: 100vh;
+	font-size: var(--font-size-responive);
+	line-height: 1;
+	text-transform: uppercase;
+	margin-bottom: 0 !important;
+}
+
+.lot, .starting-price {
+	font-family: var(--font-prominent);
+}
+
+.current-bid {
+	background-color: rgb(240 238 228);
+}

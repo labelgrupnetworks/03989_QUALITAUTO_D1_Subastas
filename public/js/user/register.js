@@ -173,7 +173,7 @@ function cleanDirection(){
 }
 
 
-function submit_register_form() {
+async function submit_register_form() {
 
     if ($("#clid").val() == 1) {
         cleanDirection();
@@ -227,13 +227,10 @@ function submit_register_form() {
 
     }
 
-    response = $("#g-recaptcha-response").val();
-    if (!response) {
-        error = error + 1;
-        $(".g-recaptcha iframe").addClass("has-error");
-    } else {
-        $(".g-recaptcha iframe").removeClass("has-error");
-    }
+	const captcha = await isValidCaptcha();
+	if (!captcha) {
+		error++;
+	}
 
     if (!error) {
 

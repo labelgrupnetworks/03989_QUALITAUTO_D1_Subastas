@@ -1,7 +1,7 @@
 @php
 	$allRequest = request()->collect()->filter();
 	$hasFeaturesFilter = collect($allRequest->get('features', []))->filter()->isNotEmpty();
-	$filters = collect(['description', 'reference', 'liveLots', 'noAward', 'award', 'typeSub', /* 'category', 'section', 'subsection', */ 'auchouse']);
+	$filters = collect(['description', 'reference', 'liveLots', 'noAward', 'award', 'typeSub', 'category', 'section', 'subsection', 'auchouse']);
 	$hasSimpleFilters = $filters->intersect($allRequest->keys())->isNotEmpty();
 @endphp
 
@@ -81,26 +81,26 @@
 		</span>
     @endif
 
-    @if(!empty($filters["category"]) && !empty($infoOrtsec))
+    @if($filters->contains('category') && !empty($infoOrtsec))
         <span class="del_filter_category_js badge rounded-pill badge-custom-primary">
 			<span>X</span><span>{{ $infoOrtsec->des_ortsec0 }}</span>
 		</span>
     @endif
 
-    @if(!empty($filters["section"]) && !empty($infoSec))
+    @if($filters->contains("section") && !empty($infoSec))
         <span class="del_filter_section_js badge rounded-pill badge-custom-primary">
 			<span>X</span><span>{{ ucfirst(mb_strtolower($infoSec->des_sec)) }}</span>
 		</span>
 	@endif
 
-    @if(!empty($filters["subsection"]) && !empty($infoSubSec))
+    @if($filters->contains("subsection") && !empty($infoSubSec))
         <span class="del_filter_subsection_js badge rounded-pill badge-custom-primary">
 			<span>X</span><span>{{ ucfirst(mb_strtolower($infoSubSec->des_subsec)) }}</span>
 		</span>
 
     @endif
      <?php //el filtro de casa de subastas solo debe aparecer por categorias , no por subasta ya que no se podrá quitar   ?>
-    @if(!empty($filters["auchouse"]) && empty($auction) && !empty($aucHouses) && !empty($aucHouses[$filters["auchouse"]]))
+    @if($filters->contains("auchouse") && empty($auction) && !empty($aucHouses) && !empty($aucHouses[$filters["auchouse"]]))
         <span class="del_filter_auchouse_js badge rounded-pill badge-custom-primary">
 			<span>X</span><span>{{$aucHouses[$filters["auchouse"]]["rsoc_auchouse"]}}</span>
 		</span>

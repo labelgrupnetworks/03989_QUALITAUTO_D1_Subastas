@@ -35,6 +35,7 @@ class Handler extends ExceptionHandler
         'current_password',
         'password',
         'password_confirmation',
+		'confirm_password'
     ];
 
     /**
@@ -57,6 +58,7 @@ class Handler extends ExceptionHandler
 				'query' => request()->query() ?? '',
 				'post' => array_filter(request()->post() ?? [], fn($value, $key) => !in_array($key, $this->dontFlash)),
                 'userId' => Session::has('user') ? Session::get('user')['cod'] : null,
+				'referer' => request()->headers->get('referer') ?? '',
             ]));
         } catch (Throwable $e) {
             return [];

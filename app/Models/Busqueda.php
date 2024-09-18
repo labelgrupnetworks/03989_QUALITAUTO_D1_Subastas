@@ -11,6 +11,7 @@ use yajra\Oci8\Connectors\OracleConnector;
 use yajra\Oci8\Oci8Connection;
 
 use App\Models\Subasta;
+use App\Providers\ToolsServiceProvider;
 
 class Busqueda extends Model
 {
@@ -62,7 +63,7 @@ class Busqueda extends Model
                                    array(
                                        'emp'       => Config::get('app.emp'),
                                        'text'      => strtolower ($text),
-                                       'lang' => \Tools::getLanguageComplete(Config::get('app.locale')),
+                                       'lang' => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
                                        )
                              );
 

@@ -2092,7 +2092,7 @@ function abrirNuevaVentana(parametros) {
 
 })(jQuery);
 
-function newsletterSuscriptionFromModal(event) {
+async function newsletterSuscriptionFromModal(event) {
 	const email = $('#modalAjax .newsletter-input').val();
 	const lang = $('#modalAjax #lang-newsletter').val();
 
@@ -2100,6 +2100,12 @@ function newsletterSuscriptionFromModal(event) {
 		$("#insert_msgweb").html('');
 		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
 		return;
 	}
 
@@ -2117,10 +2123,14 @@ function newsletterSuscriptionFromModal(event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterSuscription (event) {
+async function newsletterSuscription (event) {
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
 
@@ -2128,6 +2138,12 @@ function newsletterSuscription (event) {
 		$("#insert_msgweb").html('');
 		$("#insert_msgweb").html(messages.neutral.accept_condiciones);
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
+		return;
+	}
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
 		return;
 	}
 
@@ -2145,10 +2161,14 @@ function newsletterSuscription (event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
 
 	if (!$("[name=condiciones]").prop("checked")) {
@@ -2157,6 +2177,13 @@ function newsletterFormSuscription(event) {
 		$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 		return;
 	}
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
+
 	const data = $(event.target).serialize();
 
 	addNewsletter(data);
@@ -2188,17 +2215,16 @@ function addNewsletter(data) {
 	});
 }
 
-function formValoracionHandleSubmit(event){
+async function formValoracionHandleSubmit(event){
 	$('#images').remove()
 	$(".loader").removeClass("hidden");
 	$("#valoracion-adv").addClass("hidden");
 
 	event.preventDefault();
 
-	//si no han marcado el recaptcha
-	response = $("#g-recaptcha-response").val();
-	if (!response) {
-		formValoracionError(messages.error.hasErrors);
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		formValoracionError(messages.error.recaptcha_incorrect);
 		return;
 	}
 
@@ -2265,4 +2291,22 @@ function formValoracionIsFilesSizeValid() {
 	});
 
 	return Math.floor(size) < max_size;
+}
+
+function sendInfoLotRequest() {
+	$.ajax({
+		type: "POST",
+		data: $("#infoLotForm").serialize(),
+		url: '/api-ajax/ask-info-lot',
+		success: function (res) {
+			showMessage("¡Gracias! Hemos sido notificados.  ");
+		},
+		error: function (e) {
+			showMessage("Ha ocurrido un error y no hemos podido ser notificados");
+		}
+	});
+}
+
+function sendInfoLot() {
+	validateCaptchaMiddleware(sendInfoLotRequest);
 }

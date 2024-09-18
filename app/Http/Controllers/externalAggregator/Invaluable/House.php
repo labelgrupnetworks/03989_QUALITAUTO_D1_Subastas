@@ -4,6 +4,7 @@ namespace App\Http\Controllers\externalAggregator\Invaluable;
 
 use App\Models\V5\FgSub;
 use App\Models\V5\FgAsigl0;
+use App\Providers\ToolsServiceProvider;
 use Config;
 use Illuminate\Support\Facades\DB;
 
@@ -167,7 +168,7 @@ class House extends GuzzleHttpRequest {
 			}
 
 			#le quitaremos las variables por que si no da error la carga de imágenes
-			$urlImagen = explode("?",\Tools::url_img("lote_medium_large", $lote->num_hces1, $lote->lin_hces1));
+			$urlImagen = explode("?",ToolsServiceProvider::url_img("lote_medium_large", $lote->num_hces1, $lote->lin_hces1));
 			$imagen = $urlImagen[0];
 
 			$imagenes = [
@@ -178,7 +179,7 @@ class House extends GuzzleHttpRequest {
 			for ($i=1;$i< $lote->totalfotos_hces1 ;$i++){
 
 				#le quitaremos las variables
-				$urlImagen = explode("?",\Tools::url_img("lote_medium_large", $lote->num_hces1, $lote->lin_hces1, $i));
+				$urlImagen = explode("?",ToolsServiceProvider::url_img("lote_medium_large", $lote->num_hces1, $lote->lin_hces1, $i));
 				$imagen = $urlImagen[0];
 
 				$imagenes = [

@@ -90,7 +90,8 @@ class Bloques extends Model
                     $cache = $res->time_cache;
                     if(!$this->sqldanger($sql)){
 
-                        foreach($replace as $key=>$value ){
+                        foreach($replace as $key => $value){
+
                             $sql = str_replace("[".$key."]", $value, $sql);
 
                             $key_cache.=$key."_".$value;

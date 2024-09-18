@@ -866,25 +866,25 @@ $(document).ready(function () {
 		$.magnificPopup.open({ items: { src: '#modalMensajeDelete' }, type: 'inline' }, 0);
 	});
 
-	$("#form-valoracion-adv").submit(function (event) {
+	$("#form-valoracion-adv").submit(async function (event) {
 		$(".loader").removeClass("hidden");
 		$("#valoracion-adv").addClass("hidden");
 		event.preventDefault();
-		formData = new FormData(this);
-
 
 		var max_size = 6000;
 		var size = 0;
 
 		$("#form-valoracion-adv").find('input[type="file"]').each(function (index, element) {
-
 			$(element.files).each(function (index, el) {
-
 				size = size + ((el.size / 1024))
 			})
 		});
 
-		if (Math.floor(size) < max_size) {
+		const captcha = await isValidCaptcha();
+
+		formData = new FormData(this);
+
+		if (Math.floor(size) < max_size || captcha) {
 			$.ajax({
 				type: "POST",
 				url: "valoracion-articulos-adv",
@@ -2039,7 +2039,14 @@ function abrirNuevaVentana(parametros) {
 
 })(jQuery);
 
-function newsletterSuscription (event) {
+async function newsletterSuscription (event) {
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
+
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
 
@@ -2064,11 +2071,21 @@ function newsletterSuscription (event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.hasErrors);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');

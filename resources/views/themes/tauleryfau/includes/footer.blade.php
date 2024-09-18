@@ -1,3 +1,12 @@
+@php
+if (!function_exists('wpLink')) {
+	function wpLink($code)
+	{
+		$wpDomain = 'https://www.tauleryfau.com/';
+		return $wpDomain . trans(config('app.theme') . "-app.links.$code");
+	}
+}
+@endphp
 <footer>
     <div class="container">
 

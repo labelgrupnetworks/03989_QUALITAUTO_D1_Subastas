@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Config;
@@ -40,7 +41,7 @@ class Web_Artist extends Model
     }
 
 	public function scopeLeftJoinLang($query){
-		$lang = \Tools::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
         return $query->addselect("nvl(INFO_ARTIST_LANG,INFO_ARTIST) AS INFO_ARTIST")->
 		addselect("nvl(BIOGRAPHY_ARTIST_LANG, BIOGRAPHY_ARTIST) AS BIOGRAPHY_ARTIST")->
 		addselect("nvl(EXTRA_ARTIST_LANG, EXTRA_ARTIST) AS EXTRA_ARTIST")->
