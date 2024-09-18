@@ -190,52 +190,30 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/export', 'usuario\ClienteController@export')->name('cliente.export');
 		});
 
-
 		// SUBASTAS
-
 		Route::group(['prefix' => 'subasta'], function () {
-			Route::get('/', "subasta\SubastaController@index");
-			Route::get('/nuevo', 'subasta\SubastaController@edit');
-			Route::get('/edit/{id}', 'subasta\SubastaController@edit')->name('subasta.edit');
-			Route::post('/edit_run', 'subasta\SubastaController@edit_run');
-			Route::post('/borrarSubasta', 'subasta\SubastaController@borrarSubasta');
-			Route::post('/ficherosSubasta/{subasta}', 'subasta\SubastaController@ficherosSubasta');
-			Route::post('/borrarFicherosSubasta', 'subasta\SubastaController@borrarFicherosSubasta');
-			Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja');
-			Route::post('/borrarOrden', 'subasta\SubastaController@borrarOrden');
-			Route::post('/guardaEscalado', 'subasta\SubastaController@guardaEscalado')->name('guardarEscaladoSubastas');
+			Route::post('/borrarPuja', 'subasta\SubastaController@borrarPuja'); //se utiliza
 			Route::get('/list', 'subasta\SubastaController@getSelectSubastas');
 			Route::get('/select2list', 'subasta\SubastaController@getSelect2List')->name('subastas.select2');
 		});
+
 		Route::group(['prefix' => 'lote'], function () {
-			Route::get('/nuevo/{id}', 'subasta\SubastaController@editLote');
-			Route::get('/edit/{subasta}/{id}', 'subasta\SubastaController@editLote');
-			Route::post('/borrar/{subasta}/{id}', 'subasta\SubastaController@borrarLote');
-			Route::post('/edit_run', 'subasta\SubastaController@editLote_run');
-			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote');
-			Route::get('/file/{id}', 'subasta\SubastaController@lotFile');
-			Route::post('/excelRun', 'subasta\SubastaController@subirExcel');
-			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport');
-			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage');
-			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage');
+
+			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote'); //se utiliza
+			Route::get('/file/{id}', 'subasta\SubastaController@lotFile'); //para subir excel
+			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport'); //guardar excel
+			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage'); //excel?
+			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage'); //excel??
 			Route::get('/list', 'subasta\SubastaController@getSelectLotes');
 			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
-			Route::post('/addfile', 'subasta\SubastaController@addLoteFile');
-			Route::post('/addvideo', 'subasta\SubastaController@addLoteVideo');
-			Route::post('/deletefile', 'subasta\SubastaController@deleteLoteFile');
-			Route::post('/deletevideo', 'subasta\SubastaController@deleteLoteVideo');
-			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export');
+			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export'); //se utiliza para descargar excel
 			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
 
 
 		});
 		Route::group(['prefix' => 'sesion'], function () {
-			Route::get('/nuevo/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-			Route::get('/edit/{subasta}/{reference}', 'subasta\AdminAucSessionsController@oldEdit');
-			Route::post('/borrar/{cod_sub}/{reference}', 'subasta\AdminAucSessionsController@destroy');
-			Route::post('/update', 'subasta\AdminAucSessionsController@oldUpdate');
-			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store');
-			Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy');
+			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store'); //revisar si es necesario
+			Route::post('/deletefile', 'subasta\AdminAucSessionsFilesController@destroy'); //revisar si es necesario
 		});
 
 		Route::group(['prefix' => 'orders'], function () {
@@ -284,9 +262,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'category'], function () {
 			Route::get('/', 'subasta\AdminCategoryController@index')->name('category.index');
-			#Route::get('/show', 'subasta\AdminCategoryController@show');
-			#Route::get('/create', 'subasta\AdminCategoryController@create');
-			#Route::post('/store', 'subasta\AdminCategoryController@store');
 			Route::get('/edit', 'subasta\AdminCategoryController@edit')->name('category.edit');
 			Route::post('/update', 'subasta\AdminCategoryController@update');
 			Route::post('/delete', 'subasta\AdminCategoryController@destroy');
