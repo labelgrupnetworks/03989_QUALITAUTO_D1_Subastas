@@ -42,7 +42,7 @@
                         </p>
 
 
-                       {{--  @if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
+                        @if (($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
                             <p>
                                 <span class="salida-title">
                                     {{ trans($theme . '-app.lot.puja_actual') }}
@@ -51,11 +51,11 @@
                                     {{ $maxPuja . trans($theme . '-app.subastas.euros') }}
                                 </span>
                             </p>
-                        @elseif ($subasta_online || ($subasta_web && $subasta_abierta_P && !$cerrado))
+                        {{-- @elseif ($subasta_online || ($subasta_web && $subasta_abierta_P && !$cerrado))
                             <p>
                                 <span class="salida-title">{{ trans($theme . '-app.lot_list.no_bids') }} </span>
-                            </p>
-                        @endif --}}
+                            </p> --}}
+                        @endif
 
 
 

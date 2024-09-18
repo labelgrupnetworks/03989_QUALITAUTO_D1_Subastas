@@ -1,32 +1,23 @@
 <div class="ficha-details">
     <details>
-        <summary>¿Necesitas un envío?</summary>
+        <summary>{{ trans("$theme-app.lot.need_a_shipment") }}</summary>
         <p>
-            A keyboard.
+			{!! trans("$theme-app.lot.contact_our_logistics", ['lote' => strip_tags($lote_actual->descweb_hces1)]) !!}
         </p>
     </details>
     <details>
-        <summary>Condiciones de compra para este lote</summary>
+        <summary>{{ trans("$theme-app.lot.purchase_conditions_summary") }}</summary>
         <p>
-            El precio de remate tanto en subastas como en venta directa se incrementará en un 18% en concepto de
-            honorarios
-            de
-            intermediación de la sala, más el 21% I.V.A. sobre la comisión de la sala correspondiente a los mismos.
-            Sobre el
-            precio de adjudicación o martillo se ha de incrementar el 21,78% que incluye comisión e IVA.
+            {{ trans("$theme-app.lot.purchase_conditions_p1") }}
         </p>
         <p>
-            Una vez terminada la licitación recibirá una notificación si ud. es el ganador de esta, con factura adjunta.
-            El
-            pago debe realizarse en un plazo de 15 días naturales, de lo contrario se procederá a una desadjudicacón del
-            lote.
+            {{ trans("$theme-app.lot.purchase_conditions_p2") }}
         </p>
     </details>
     <details>
-        <summary>¿Quieres vender una pieza similar con nosotros?</summary>
+        <summary>{{ trans("$theme-app.lot.want_to_sell_summary") }}</summary>
         <p>
-            Si te llamó la atención de este lote porque tienes uno parecido, te animamos a que realices una valoración
-            totalmente gratuita. Haz click aquí y un experto se pondrá en contacto contigo.
+            {!! trans("$theme-app.lot.want_to_sell_p1") !!}
         </p>
     </details>
 </div>

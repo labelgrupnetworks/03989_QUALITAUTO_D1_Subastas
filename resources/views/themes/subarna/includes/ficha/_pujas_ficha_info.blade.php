@@ -16,7 +16,7 @@
 
 <div class="ficha-info-block">
     <div class="ficha-dates_close-date">
-        <span>Fecha de cierre</span>
+        <span>{{ trans("$theme-app.lot.closing_date") }}</span>
         <span>{{ $closeDateFormat }}</span>
     </div>
     <div class="ficha-dates_countdown">

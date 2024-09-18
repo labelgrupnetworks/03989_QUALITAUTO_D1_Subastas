@@ -4391,6 +4391,9 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 /* -------------------------------------------------------
 --------------- Valoraciones/Tasaciones ------------------
 ------------------------------------------------------- */
+.tasaciones {
+	margin-bottom: var(--space-medium);
+}
 
 .tasaciones .top-align-items-center {
 	display: flex;
