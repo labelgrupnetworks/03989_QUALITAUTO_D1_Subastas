@@ -13,7 +13,7 @@
         <div class="row well tabs-well">
 
             <div class="col-xs-4 pt-2 categories-block">
-               {{--  @if (session('success'))
+                {{--  @if (session('success'))
                     <p>{{ session('success')[0] }}</p>
                     <p>File URL:
                         <a
@@ -23,8 +23,7 @@
                 @endif --}}
 
                 <div class="pt-4">
-                    <form action="{{ route('admin.contenido.uploads.upload') }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.contenido.uploads.upload') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input class="form-control mb-3" name="file" type="file" required>
                         <button class="btn btn-primary btn-block" type="submit">Upload</button>
@@ -33,12 +32,11 @@
             </div>
 
             <div class="col-xs-8">
-
                 <table class="table table-striped table-condensed table-responsive" id="" style="width:100%">
                     <thead>
                         <tr>
                             <th>File Name</th>
-							<th>Size</th>
+                            <th>Size</th>
                             <th>Last Modified</th>
                             <th>Actions</th>
                         </tr>
@@ -51,12 +49,18 @@
                                 <td class="js-editable-column" onclick="makeEditable(event, '{{ $file['name'] }}')">
                                     {{ $file['name'] }}
                                 </td>
-								<td>{{ $file['size'] }}</td>
+                                <td>{{ $file['size'] }}</td>
                                 <td>{{ $file['lastModified'] }}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-primary" onclick="showModal('{{ $file['url'] }}')">
-                                        View
-                                    </button>
+                                    @if ($file['isImage'])
+                                        <button class="btn btn-xs btn-primary" onclick="showModal('{{ $file['url'] }}')">
+                                            View
+                                        </button>
+                                    @else
+                                        <a class="btn btn-xs btn-primary" href="{{ $file['url'] }}" target="_blank">
+                                            View
+                                        </a>
+                                    @endif
                                     <form style="display:inline;"
                                         action="{{ route('admin.contenido.uploads.delete', ['fileName' => $file['name']]) }}"
                                         method="POST">
@@ -75,6 +79,7 @@
                                 </td>
                             </tr>
                         @endforelse
+
 
                     </tbody>
 
