@@ -56,13 +56,13 @@ class SubastaController extends Controller
 	private function guardarImagenLote($ficheros, $num_hces1, $lin_hces1)
 	{
 
-		$path = str_replace("\\", "/", getcwd() . "/img/" . \Config::get('app.emp'));
+		$path = str_replace("\\", "/", getcwd() . "/img/" . Config::get('app.emp'));
 		if (!is_dir($path)) {
 			mkdir($path);
 			chmod($path, 0755);
 		}
 
-		$pathInicial = "/img/" . \Config::get('app.emp') . "/" . $num_hces1;
+		$pathInicial = "/img/" . Config::get('app.emp') . "/" . $num_hces1;
 		$path = str_replace("\\", "/", getcwd() . $pathInicial);
 		if (!is_dir($path)) {
 			mkdir($path);
@@ -108,7 +108,7 @@ class SubastaController extends Controller
 					$count = $countImage;
 				}
 
-				$newimage = \Config::get('app.emp') . "-" . $num_hces1 . "-" . $lin_hces1;
+				$newimage = Config::get('app.emp') . "-" . $num_hces1 . "-" . $lin_hces1;
 
 				if (is_file($path . "/" . $newimage . ".jpg")) {
 
@@ -117,7 +117,7 @@ class SubastaController extends Controller
 							$t = "0" . $t;
 						}
 
-						$newimage = \Config::get('app.emp') . "-" . $num_hces1 . "-" . $lin_hces1 . "_" . $t;
+						$newimage = Config::get('app.emp') . "-" . $num_hces1 . "-" . $lin_hces1 . "_" . $t;
 
 						if (!is_file($path . "/" . $newimage . ".jpg")) {
 							break;
@@ -126,7 +126,7 @@ class SubastaController extends Controller
 				}
 
 				imagejpeg($dst_image, $path . "/" . $newimage . ".jpg");
-				$this->createThumbs(\Config::get('app.emp'), $num_hces1, $newimage . ".jpg");
+				$this->createThumbs(Config::get('app.emp'), $num_hces1, $newimage . ".jpg");
 			}
 		}
 	}
@@ -215,7 +215,7 @@ class SubastaController extends Controller
 		$maxReference = FgAsigl0::where('sub_asigl0', $idAuction)->max('ref_asigl0') ?? 0;
 
 		$fxSecMapDataArray = [];
-		if (\Config::get('app.use_fxsecmap_excel')) {
+		if (Config::get('app.use_fxsecmap_excel')) {
 			$fxSecMapDataArray = FxSecMap::getFxSecMapData();
 		}
 
@@ -472,14 +472,14 @@ class SubastaController extends Controller
 		#si el tipo de puja es de la tabla auxiliar
 
 
-		$asigl0 = DB::table("FGASIGL0")->where("EMP_ASIGL0", \Config::get("app.emp"))->where("SUB_ASIGL0", $info['subasta'])->where("ref_asigl0", $info['ref'])->first();
+		$asigl0 = DB::table("FGASIGL0")->where("EMP_ASIGL0", Config::get("app.emp"))->where("SUB_ASIGL0", $info['subasta'])->where("ref_asigl0", $info['ref'])->first();
 		# si es una puja auxiliar borramos la puja auxiliar
 		if ($info['asigl0Aux'] == "SI") {
-			DB::table("FGASIGL1_AUX")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
+			DB::table("FGASIGL1_AUX")->where("EMP_ASIGL1", Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
 		} else { # si es una puja normal, borramos la puja normal y actualizamos el implic
-			DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
+			DB::table("FGASIGL1")->where("EMP_ASIGL1", Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info['ref'])->where("lin_asigl1", $info['lin'])->delete();
 
-			$pujaMasAlta = DB::table("FGASIGL1")->where("EMP_ASIGL1", \Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info["ref"])->orderBy("lin_asigl1", "desc")->first();
+			$pujaMasAlta = DB::table("FGASIGL1")->where("EMP_ASIGL1", Config::get("app.emp"))->where("SUB_ASIGL1", $info['subasta'])->where("ref_asigl1", $info["ref"])->orderBy("lin_asigl1", "desc")->first();
 
 
 			if (!empty($pujaMasAlta)) {
@@ -489,7 +489,7 @@ class SubastaController extends Controller
 				$nuevo_importe = 0;
 				$lic_hces1 = "N";
 			}
-			DB::table("FGHCES1")->where("emp_hces1", \Config::get("app.emp"))->where("num_hces1", $asigl0->numhces_asigl0)->where("lin_hces1", $asigl0->linhces_asigl0)->update([
+			DB::table("FGHCES1")->where("emp_hces1", Config::get("app.emp"))->where("num_hces1", $asigl0->numhces_asigl0)->where("lin_hces1", $asigl0->linhces_asigl0)->update([
 				"implic_hces1" => $nuevo_importe,
 				"lic_hces1" => $lic_hces1
 			]);
@@ -587,7 +587,7 @@ class SubastaController extends Controller
 				#QUEREMOS EVITAR LOS LOTES EN PEDIDOS
 				->whereraw("LIN_PEDC1 IS NULL")
 
-				->where("IDCAR_CARACTERISTICAS_VALUE", \Config::get("app.ArtistCode"))
+				->where("IDCAR_CARACTERISTICAS_VALUE", Config::get("app.ArtistCode"))
 				->whereRaw("( (upper(descweb_hces1) like ?)  OR (upper(value_caracteristicas_value) like ?) )", ["%" . mb_strtoupper($query) . "%", "%" . mb_strtoupper($query) . "%"])
 				->where("impsalhces_asigl0", ">", 0)
 				->where("pc_hces1", ">", 0)
