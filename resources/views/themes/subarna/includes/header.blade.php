@@ -350,7 +350,7 @@
 
         </li>
         {{-- <li><a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a></li> --}}
-        <li><a href="<?php echo Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us'); ?>"
+        <li><a href="{{ route('landing-about-us') }}"
                 title="{{ trans($theme . '-app.foot.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
         </li>
         <li><a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.how_to_buy') }}"
