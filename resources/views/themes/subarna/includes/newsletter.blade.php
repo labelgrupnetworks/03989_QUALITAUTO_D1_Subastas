@@ -12,7 +12,9 @@
 <div class="container newsletter js-newletter-block">
     <div class="form-block">
         <div class="form-floating floating-center">
+
 			<input class="form-control newsletter-input" type="email" placeholder=" ">
+
 			<label>
 				<span>{{ trans("$theme-app.foot.newsletter_title") }}</span>
 			</label>
@@ -24,10 +26,12 @@
                 type="button">{{ trans($theme . '-app.foot.newsletter_button') }}</button> --}}
         </div>
 
-		<div>
+		<div class="newletter-button-block">
 			<p class="captcha-terms">
 				{!! trans("$theme-app.global.captcha-terms") !!}
 			</p>
+			<button class="btn btn-light btn-lb-primary" id="newsletter-btn"
+				type="button">{{ trans($theme . '-app.foot.newsletter_button') }}</button>
 		</div>
 
         <div class="form-check">

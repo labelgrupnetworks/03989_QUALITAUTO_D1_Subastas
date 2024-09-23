@@ -206,6 +206,14 @@ span.fw-normal {
 	}
 }
 
+.stretched-link {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
 .btn {
 	font-size: inherit;
 	font-weight: var(--fw-default-normal);
@@ -2542,7 +2550,7 @@ div button.btn-step-reg2 {
 	line-height: 1;
 	padding: 2px 5px;
 	font-style: normal;
-	width: 1.3em;
+	width: 1.7em;
 	aspect-ratio: 1;
 	display: flex;
 	align-items: center;
@@ -2651,6 +2659,12 @@ div button.btn-step-reg2 {
 	padding: 2rem 3rem;
 }
 
+.newletter-button-block {
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 5px;
+}
+
 .dialog-content {
 	display: flex;
 	flex-direction: column;
@@ -2659,6 +2673,12 @@ div button.btn-step-reg2 {
 
 dialog::backdrop {
 	background: rgba(0, 0, 0, 0.3);
+}
+
+@media(min-width: 768px) {
+	.newletter-button-block {
+		flex-direction: row;
+	}
 }
 
 /*----------------------------------------
