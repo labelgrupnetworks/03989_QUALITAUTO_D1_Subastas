@@ -5,7 +5,6 @@
 @stop
 
 @section('content')
-	<script src="https://www.google.com/recaptcha/api.js?hl={{ \Config::get('app.locale') }}" async defer></script>
 
 	<div class="contact-page">
 		<div class="background-light-green">
@@ -104,6 +103,7 @@
 				<h2 class="fs-xxxlarge">{{ trans("$theme-app.contact.form_title") }}</h2>
 				<form name="contactForm" id="contactForm" method="post" action="javascript:sendContact()" enctype="multipart/form-data">
 					{!! $data['formulario']['_token'] !!}
+					<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
 					<div class="row">
 						<div class="col-xs-12">
 							<div class="input-margin">
@@ -162,10 +162,11 @@
 										autocomplete="off">
 									<label for="bool__1__condiciones"><?= trans($theme . '-app.emails.privacy_conditions') ?>
 								</div>
-
-								<div class="g-recaptcha" data-sitekey="{{ \Config::get('app.codRecaptchaEmailPublico') }}"
-									data-callback="onSubmit">
-								</div>
+							</div>
+							<div class="mt-1">
+								<p class="captcha-terms">
+									{!! trans("$theme-app.global.captcha-terms") !!}
+								</p>
 							</div>
 						</div>
 

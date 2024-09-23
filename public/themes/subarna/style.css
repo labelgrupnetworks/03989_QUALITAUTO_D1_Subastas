@@ -5101,3 +5101,13 @@ div.item_subasta img {
 		aspect-ratio: initial;
 	}
 }
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+.captcha-terms {
+	font-size: 13px;
+	line-height: 1;
+	margin-bottom: .5rem;
+}

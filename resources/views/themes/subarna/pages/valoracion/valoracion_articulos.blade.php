@@ -65,6 +65,7 @@
         <div class="background-more-light-green">
             <div class="container padding-contact-sections pb-0">
                 <form class="form" id="form-valoracion-adv">
+					<input name="captcha_token" data-sitekey="{{ config('app.captcha_v3_public') }}" type="hidden" value="">
                     <div class="hidden hidden-inputs">
                         <input name="email_category" type="hidden" value="tasaciones@subarna.net">
                     </div>
@@ -120,6 +121,11 @@
                                     placeholder="" autocomplete="off"></textarea>
                             </div>
                         </div>
+						<div class="col-xs-12">
+							<p class="captcha-terms">
+								{!! trans("$theme-app.global.captcha-terms") !!}
+							</p>
+						</div>
                         <div class="col-xs-12 text-center">
                             <button class="button-principal submitButton btn btn-lb-primary" id="valoracion-adv"
                                 type="submit">

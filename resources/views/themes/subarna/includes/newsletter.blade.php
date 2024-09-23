@@ -9,10 +9,6 @@
 
 @endphp
 
-@push('scripts')
-	<script src="https://www.google.com/recaptcha/api.js?render={{config('app.captcha_v3_public')}}"></script>
-@endpush
-
 <div class="container newsletter js-newletter-block">
     <div class="form-block">
         <div class="form-floating floating-center">
@@ -21,11 +17,18 @@
 				<span>{{ trans("$theme-app.foot.newsletter_title") }}</span>
 			</label>
 
+			<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
             <input id="lang-newsletter" type="hidden" value="{{ $locale }}">
             <input class="newsletter" name="families" type="hidden" value="1">
             {{-- <button class="btn-custom btn" id="newsletter-btn"
                 type="button">{{ trans($theme . '-app.foot.newsletter_button') }}</button> --}}
         </div>
+
+		<div>
+			<p class="captcha-terms">
+				{!! trans("$theme-app.global.captcha-terms") !!}
+			</p>
+		</div>
 
         <div class="form-check">
             <input class="form-check-input" id="condiciones" name="condiciones" type="checkbox" type="checkbox">
@@ -39,6 +42,7 @@
             <label class="form-check-label"
                 for="comercial">{{ trans($theme . '-app.login_register.recibir_newsletter') }}</label>
         </div>
+
     </div>
 
 

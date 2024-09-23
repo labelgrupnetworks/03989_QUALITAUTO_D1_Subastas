@@ -132,7 +132,7 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#frmRegister-adv').validator().on('submit', function (e) {
+	$('#frmRegister-adv').validator().on('submit', async function (e) {
 		if (e.isDefaultPrevented()) {
 			// formulario incorrecto
 			var text = $(".error-form-validation").html();
@@ -149,6 +149,14 @@ $(document).ready(function () {
 				$.magnificPopup.open({ items: { src: '#modalMensajeWeb' }, type: 'inline' }, 0);
 			} else {
 				$('button', $this).attr('disabled', 'disabled');
+
+				const captcha = await isValidCaptcha();
+				  if(!captcha){
+					  showMessage(messages.error.recaptcha_incorrect);
+					  return;
+				  }
+
+
 				// Datos correctos enviamos ajax
 				$.ajax({
 					type: "POST",
@@ -168,6 +176,9 @@ $(document).ready(function () {
 							window.location.href = res.msg;
 						}
 
+					},
+					complete: function () {
+						$('button', $this).attr('disabled', false);
 					}
 				});
 			}
@@ -440,18 +451,20 @@ $(document).ready(function () {
 		$.magnificPopup.open({ items: { src: '#modalMensajeDelete' }, type: 'inline' }, 0);
 	});
 
-	$("#form-valoracion-adv").submit(function (event) {
+	$("#form-valoracion-adv").submit(async function (event) {
 
 		event.preventDefault();
-		formData = new FormData(this);
+
 		var max_size = 20;
 		var size = 0;
 		$(event.target.files.files).each(function (index, element) {
-
 			size = parseInt((element.size / 1024 / 1024).toFixed(2)) + parseInt(size);
-			//console.log(size);
 		});
-		if (size < max_size) {
+
+		const captcha = await isValidCaptcha();
+		formData = new FormData(this);
+
+		if ((size < max_size) && captcha) {
 			$.ajax({
 				type: "POST",
 				url: "valoracion-articulos-adv",
@@ -1074,7 +1087,14 @@ function showLogin() {
 	$('.btn_login_desktop').trigger('click');
 }
 
-function newsletterSuscription(event) {
+async function newsletterSuscription(event) {
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.recaptcha_incorrect);
+		return;
+	}
+
 	const email = $('.newsletter-input').val();
 	const lang = $('#lang-newsletter').val();
 
@@ -1099,11 +1119,21 @@ function newsletterSuscription(event) {
 		...newsletters
 	}
 
+	if($('[name="captcha_token"]').length) {
+		data.captcha_token = $('[name="captcha_token"]').val();
+	}
+
 	addNewsletter(data);
 }
 
-function newsletterFormSuscription(event) {
+async function newsletterFormSuscription(event) {
 	event.preventDefault();
+
+	const captcha = await isValidCaptcha();
+	if(!captcha){
+		showMessage(messages.error.hasErrors);
+		return;
+	}
 
 	if (!$("[name=condiciones]").prop("checked")) {
 		$("#insert_msgweb").html('');
@@ -1295,44 +1325,6 @@ function oculta_error_input_contact(campo) {
         $(campo).removeClass('has-content');
         $(campo).parent().removeClass('has-content');
     }
-
-}
-
-/****************************************************************************************/
-/*************************** FUNCIONES SOBRE PANTALLA CONTACTO **************************/
-/****************************************************************************************/
-
-
-function sendContact() {
-
-	$(".g-recaptcha").find("iframe").removeClass("has-error");
-
-	response = $("#g-recaptcha-response").val();
-
-	if (response) {
-		var contact_form_data = new FormData($('#contactForm')[0]);
-		$.ajax({
-			type: "POST",
-			url: "/contactSendmail",
-			data: contact_form_data,
-			processData: false,
-			contentType: false,
-			success: function (response) {
-				if (response.status == "error") {
-					showMessage(response.message);
-				} else {
-					showMessage(response, "");
-					setTimeout("location.reload()", 4000);
-				}
-			},
-			error: function (response) {
-				showMessage("Error");
-			}
-		});
-	} else {
-		$(".g-recaptcha").find("iframe").addClass("has-error");
-		showMessage(messages.error.hasErrors);
-	}
 
 }
 
