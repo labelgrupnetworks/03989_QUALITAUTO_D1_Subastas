@@ -4540,6 +4540,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 
 .tasaciones .expert-card .expert-card_desc {
 	order: 3;
+	margin-bottom: 1rem;
 }
 
 .tasaciones .expert-card .expert-card_link {
@@ -4549,7 +4550,6 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 .tasaciones .expert-section_generic {
 	object-fit: cover;
 }
-
 
 
 @media (min-width: 992px) {
