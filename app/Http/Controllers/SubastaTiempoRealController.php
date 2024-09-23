@@ -41,7 +41,7 @@ use App\Providers\ToolsServiceProvider as Tools;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
 
-class subastaTiempoRealController extends Controller
+class SubastaTiempoRealController extends Controller
 {
     public $cod;
 	public $ref;

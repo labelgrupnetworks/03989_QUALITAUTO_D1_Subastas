@@ -1,5 +1,5 @@
 <?php
-
+#region imports
 use App\Http\Controllers\admin\AdminArticlesController;
 use App\Http\Controllers\admin\AdminConfigController;
 use App\Http\Controllers\admin\AdminSlidersController;
@@ -13,11 +13,9 @@ use App\Http\Controllers\admin\ResourceController;
 use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
-/*
-|--------------------------------------------------------------------------
-| Layout - BackOffice
-|--------------------------------------------------------------------------
-*/
+#endregion
+
+
 # Añadido excepcional ya que no funcionaba el admin
 
 Route::view('/admin', 'admin::pages.home');
@@ -460,14 +458,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::put('/contenido/uploads/update/{fileName}', 'contenido\AdminUploadsController@update')->name('admin.contenido.uploads.update');
 	});
 
-
 	Route::post('/sliders/upload', [AdminSlidersController::class, 'uploadFile']);
 	Route::post('/sliders/save', [AdminSlidersController::class, 'save']);
 	Route::post('/sliders/delete', [AdminSlidersController::class, 'deleteFile']);
-
-
-
-
 
 	Route::group(['middleware' => ['web']], function () {
 		Route::get('/login', [AdminUserController::class, 'login']);
