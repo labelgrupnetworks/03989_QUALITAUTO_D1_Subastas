@@ -141,7 +141,8 @@ class ContentController extends Controller
 
 	function getAjaxNewCarousel(Request $request)
 	{
-		Config::set('app.locale', request('lang', 'es'));
+		$langkey = array_search($request->input('replace.lang', 'es-ES'), Config::get('app.language_complete'));
+		Config::set('app.locale', $langkey);
 
 		$key = $request->input('key');
 		$replaces = $request->input('replace');

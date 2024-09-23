@@ -14,14 +14,9 @@ namespace App\Models;
  * @author LABEL-RSANCHEZ
  */
 
-use Illuminate\Database\Eloquent\Model;
-use DB;
-
-use \pdo;
-use yajra\Oci8\Connectors\OracleConnector;
-use yajra\Oci8\Oci8Connection;
-use Config;
-use Routing;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use App\Models\V5\FgEspecial1;
 use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
@@ -161,4 +156,40 @@ class Enterprise {
             ->select('cod_div','des_div','impd_div','symbolhtml_div')
             ->get();
     }
+
+	public function getAllSpecialists()
+	{
+		return FgEspecial1::getSpecialists();
+	}
+
+	public function getSpecialist($per_especial1)
+	{
+		return FgEspecial1::getSpecialist($per_especial1);
+	}
+
+	public function getSpecialistsByOrtsec($lin_ortsec0)
+	{
+		if(Config::get('app.specialists_model', false)) {
+			return FgEspecial1::getSpecialistsByOrtsec($lin_ortsec0);
+		}
+		return $this->getSpecialistsWithoutModel($lin_ortsec0);
+	}
+
+	/**
+	 * @deprecated
+	 * Se utiliza por soler. No se debe utilizar en nuevos desarrollos
+	 */
+	private function getSpecialistsWithoutModel($lin_ortsec0): array
+	{
+		$specialists = [];
+		$especial = $this->infEspecialistas();
+
+		foreach ($especial as $esp) {
+			if ($esp->lin_especial1 == $lin_ortsec0) {
+				$specialists[$esp->per_especial1] = $esp;
+			}
+		}
+		return $specialists;
+	}
+
 }
