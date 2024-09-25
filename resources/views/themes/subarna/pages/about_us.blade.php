@@ -13,8 +13,7 @@
             <p class="about-us_subtitle">
                 {{ trans("$theme-app.about_us.subtitle_page") }}
             </p>
-            <img class="about-us_img" src="/storage/themes/{{ $theme }}/uploads/EQUI copia.jpg"
-                alt="Sala de subastas Subarna">
+
 			<picture>
 				<source srcset="/storage/themes/{{ $theme }}/uploads/equipo-mobile.webp" type="image/webp" media="(max-width: 768px)">
 				<source srcset="/storage/themes/{{ $theme }}/uploads/equipo-mobile.jpg" media="(max-width: 768px)">
