@@ -36,7 +36,7 @@ class AdminUploadsController extends Controller
 	public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,gif,mp4,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:100000'
+            'file' => 'required|file|mimes:jpg,jpeg,png,webp,gif,mp4,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:100000'
         ]);
 
 		$file = $request->file('file');
