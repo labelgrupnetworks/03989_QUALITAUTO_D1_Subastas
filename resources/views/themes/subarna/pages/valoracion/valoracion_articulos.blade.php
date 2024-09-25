@@ -6,6 +6,7 @@
 
 @php
     $specialist = (new App\Models\Enterprise())->getSpecialist('0001');
+	$specialist->phone_especial1 = '932156518';
 @endphp
 
 @section('content')
