@@ -45,23 +45,26 @@
             <span class="badge badge-{{ $state['class'] }}">{{ $state['text'] }}</span>
         </p>
         <p class="allotment-invoice_pay-buttons">
-            @if ($document->compraweb_sub == 'S' && !$isPayed)
+			@if(!$isPayed)
+            	@if ($document->compraweb_sub == 'S')
 
-				@if (!empty($document->apre_csub))
-					<a class="btn btn-lb btn-lb-secondary"
-						href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
-						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
-				@else
-					<a class="btn btn-lb btn-lb-secondary"
-						href="{{ route('panel.allotment.sub', ['cod_sub' => $document->cod_sub, 'lang' => Config::get('app.locale')]) }}"
-						cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+					@if (!empty($document->apre_csub))
+						<a class="btn btn-lb btn-lb-secondary"
+							href="{{ route('panel.allotment.proforma', ['apre' => $document->apre_csub, 'npre' => $document->npre_csub, 'lang' => Config::get('app.locale')]) }}"
+							cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+					@else
+						<a class="btn btn-lb btn-lb-secondary"
+							href="{{ route('panel.allotment.sub', ['cod_sub' => $document->cod_sub, 'lang' => Config::get('app.locale')]) }}"
+							cod_sub="{{ $document->cod_sub }}">{{ trans($theme . '-app.user_panel.pay_now') }}</a>
+					@endif
+
+					@if (!empty($document->prefactura))
+						<a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>
+							<img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
+						</a>
+					@endif
+
 				@endif
-
-                @if (!empty($document->prefactura))
-                    <a class="panel-pdf-icon" href="/prefactura/{{ $document->cod_sub }}" target="_blank" download>
-                        <img src="/themes/{{ $theme }}/assets/icons/file-pdf-solid.svg" alt="PDF file" width="18.75">
-                    </a>
-                @endif
 
 			@else
                 <span class="badge badge-success">{{ trans("$theme-app.user_panel.paid_out") }}</span>
