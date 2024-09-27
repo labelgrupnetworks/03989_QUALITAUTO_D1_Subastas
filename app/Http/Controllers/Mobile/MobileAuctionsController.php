@@ -3,81 +3,86 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Mobile\Resources\AuctionCollection;
+use App\Http\Controllers\Mobile\Resources\AuctionResource;
+use App\Models\V5\AucSessionsFiles;
 use App\Models\V5\FgSub;
-use App\Providers\ToolsServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
 class MobileAuctionsController extends Controller
 {
-	# FALTA QUE SEA MULTIIDIOMA
-	public function getActiveAuctions(Request $request)
+	public function auctions(Request $request)
 	{
-		#hacemos una consulta para conseguir las subastas activas poniendo S para definir que no están cerradas
-		$sessions = $this->getAuctions('S', $request);
-
-		//return $this->responseSuccsess("Active Auctions", $sessions);
-		return response()->json($sessions);
-	}
-
-	public function getHistoricAuctions(Request $request)
-	{
-
-		#hacemos una consulta para conseguir las subastas históricas poniendo H
-		$sessions = $this->getAuctions('H', $request);
-		return response()->json($sessions);
-	}
-
-
-	private function getAuctions($status, $request)
-	{
-		$lang = $request->input('lang', 'ES');
+		$lang = $request->user()?->idioma_cliweb ?? 'ES';
+		App::setLocale($lang);
+		$status = $request->input('status', 'S');
 
 		#mandamos query para conseguir todas las sesiones
 
-		$sessions = FgSub::select('COD_SUB, SUBC_SUB, "id_auc_sessions", "reference",  TIPO_SUB, SUBC_SUB')
-			->addSelect(' max(NVL("auc_sessions_lang"."name_lang","auc_sessions"."name")) as name')
-			->addSelect(' max("auc_sessions"."start") as session_start')
-			->addSelect(' max("auc_sessions"."end") as session_end')
+		$sessions = FgSub::query()
+			->select('FgSub.COD_SUB, FgSub.SUBC_SUB, "auc_sessions"."id_auc_sessions", "auc_sessions"."reference",  FgSub.TIPO_SUB')
+			->addSelect('NVL("auc_sessions_lang"."name_lang","auc_sessions"."name") as name')
+			->addSelect('"auc_sessions"."start" as session_start')
+			->addSelect('"auc_sessions"."end" as session_end')
 			->join('"auc_sessions"', '"auc_sessions"."company" = FGSUB.EMP_SUB AND "auc_sessions"."auction" = FGSUB.COD_SUB')
 			->leftJoin('"auc_sessions_lang"',
 				' "auc_sessions_lang"."id_auc_session_lang" = "auc_sessions"."id_auc_sessions"   AND "auc_sessions"."company" = "auc_sessions_lang"."company_lang" AND "auc_sessions"."auction" = "auc_sessions_lang"."auction_lang" AND "auc_sessions_lang"."lang_auc_sessions_lang" = \'' . $lang . '\'')
-			->join("fgasigl0", 'emp_asigl0 = EMP_SUB AND  SUB_ASIGL0= COD_SUB and ref_asigl0 >=  "init_lot"  and ref_asigl0 <=  "end_lot"')
-			->where('subc_sub', '=', $status)
-			->groupby('emp_sub , cod_sub , "reference",SUBC_SUB,"id_auc_sessions", TIPO_SUB')
-			->orderBy('max("start")', 'desc')->get();
+			->where(function($query) {
+				$query->whereRaw('exists (select 1 from fgasigl0 where fgasigl0.emp_asigl0 = FgSub.EMP_SUB AND fgasigl0.SUB_ASIGL0 = FgSub.COD_SUB and fgasigl0.ref_asigl0 >= "auc_sessions"."init_lot"  and ref_asigl0 <= "auc_sessions"."end_lot")');
+			})
+			->where('FgSub.subc_sub', '=', $status)
+			->orderBy('"auc_sessions"."start"', 'desc')
+			->get();
+			//->paginate(3);
 
-		#inicializamos el array de subastas
-		$sessionsResponse = [];
+		return new AuctionCollection($sessions);
+		//return AuctionResource::collection($sessions);
+	}
 
-		foreach ($sessions as  $session) {
+	public function auction(Request $request, $codsession)
+	{
+		$lang = $request->user()?->idioma_cliweb ?? 'ES';
+		App::setLocale($lang);
 
-			$sessionRes = [
-				"codsession" => $session->id_auc_sessions,
-				"title" => $session->name,
-				"type" => $session->tipo_sub,
-				"status" => $session->subc_sub,
-				"image" => $this->getAuctionImage($session->cod_sub, $session->reference),
-			];
-			if ($session->subc_sub == "S") {
-				$sessionRes["start"] =  $session->tipo_sub == "O" ? $session->session_end :  $session->session_start;
+		#comprobamos campo id_auc_sessions
+		//$this->missFields(['codsession']);
+
+		#hacemos query para recoger datos de la subasta
+		$session = FgSub::select("SUBC_SUB")
+			->joinLangSub()
+			->joinSessionSub()
+			->where('"id_auc_sessions"', $codsession)
+			->first();
+
+		#si no existe la sesion devolvemos error
+		if (!$session) {
+			return $this->responseError("session don't exist");
+		}
+
+		#hacemos query para recoger archivos de la subasta
+		$files = AucSessionsFiles::where('"auction"', $session->cod_sub)->get();
+
+		$filesArray = [];
+
+		#si existen archivos los guardamos en un array
+		if ($files) {
+			$session->files = [];
+			#recorremos los archivos
+			foreach ($files as $file) {
+				$filesArray[] = [
+					"title" => $file->description,
+					"type" => $file->type_file,
+					"url" => Config::get('app.url') . $file->public_file_path
+				];
 			}
 
-			$sessionsResponse[] = $sessionRes;
+			$session->files = $filesArray;
 		}
 
-		return $sessionsResponse;
+		return new AuctionResource($session);
 	}
 
-	private function getAuctionImage($cod_sub, $reference)
-	{
-		#intentamos conseguir imagen de sesión
-		$image_to_load = ToolsServiceProvider::url_img_session("subasta_large", $cod_sub, $reference);
 
-		#si no existe conseguimos la imagen de la subasta\
-		if (!file_exists($image_to_load) || filesize($image_to_load) < 500) {
-			$image_to_load = ToolsServiceProvider::url_img_auction("subasta_large", $cod_sub);
-		}
-
-		return $image_to_load;
-	}
 }

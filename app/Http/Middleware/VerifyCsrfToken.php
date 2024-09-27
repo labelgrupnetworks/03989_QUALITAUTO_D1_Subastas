@@ -22,7 +22,6 @@ class VerifyCsrfToken extends Middleware
         "*apilabel/*",
         "*webservice/*",
          "*api/*",
-         "*mobile/*",
         "api-ajax/*",
         "gateway/*",
         //"/login_post_ajax",

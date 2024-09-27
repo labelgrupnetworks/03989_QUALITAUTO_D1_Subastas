@@ -24,5 +24,6 @@ Route::post('/login', [MobileAuthController::class, 'login']);  // Ruta de login
 Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
 	Route::get('/user', [MobileAuthController::class, 'user']);
 
-	Route::get('active-auctions', [MobileAuctionsController::class, 'getActiveAuctions']);
+	Route::get('auctions', [MobileAuctionsController::class, 'auctions'])->name('mobile.auctions');
+	Route::get('auction/{codsession}', [MobileAuctionsController::class, 'auction'])->name('mobile.auction');
 });

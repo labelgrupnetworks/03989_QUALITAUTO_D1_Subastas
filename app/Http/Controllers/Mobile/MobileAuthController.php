@@ -9,9 +9,16 @@ use App\Models\FxCliWeb;
 
 class MobileAuthController extends Controller
 {
+
     // Método para autenticar y generar el token
     public function login(Request $request)
     {
+		//validate request
+		$request->validate([
+			'email' => 'required|email',
+			'password' => 'required',
+		]);
+
         $requestData = $request->only('email', 'password');
 
 		$credentials = [
