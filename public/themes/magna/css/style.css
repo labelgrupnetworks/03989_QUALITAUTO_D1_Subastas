@@ -1,3 +1,9 @@
+:root {
+	--lb-color-primary: #c59f74;
+	--lb-color-primary-light: #d9b68b;
+    --lb-color-primary-dark: #a68763;
+}
+
 .static-page h4 {
 	margin-top: 2rem;
 }
