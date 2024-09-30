@@ -938,6 +938,12 @@ $lang = [
 		'cost_price' => 'Precio coste',
 		'auctionConditions'	=> 'Al pujar confirma que acepta las condiciones de la sala.' ,
 		'open_lot_to_jump' => 'Abrir el lote en el caso de estar cerrado',
+		'mp_title' => 'Paletas modificadas',
+		'mp_name' => 'Nombre',
+		'mp_new_paddle' => 'Nueva paleta',
+		'mp_old_paddle' => 'Paleta anterior',
+		'mp_actual_paddle' => 'Paleta definitiva',
+		'mp_client_code' => 'Código de cliente',
 	),
 	'subastas' =>
 	array(

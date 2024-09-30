@@ -592,6 +592,22 @@ class SubastaTiempoRealController extends Controller
 		return $clients;
 	}
 
+	public function getModifiedPaddles(){
+		$codSub = Request::input('cod_sub');
+
+		$licits = (new Subasta())->getLicitLogs($codSub);
+
+		collect($licits)->each(function($licit) use ($codSub){
+			if(empty($licit->cod_licit)) {
+				$validCodLicit = (new Subasta())->validLicit($licit->cod_licit_new, $codSub);
+				$licit->cod_licit = $validCodLicit[0]->cod_licit ?? null;
+			}
+			return $licit;
+		});
+
+		return response()->json($licits);
+	}
+
 	public function increaseCredit(){
 
 		$credit = request('credit', 0);
@@ -3875,13 +3891,14 @@ class SubastaTiempoRealController extends Controller
          $subasta->cod = request('cod_sub');
 
 		$ministeryLicit = config('app.ministeryLicit', false);
+		$validLicit = $subasta->checkLicitador(true);
 
-        if ($subasta->checkLicitador(true)){
+        if ($validLicit){
 
             $SubastaTR           = new SubastaTiempoReal();
             $SubastaTR->cod      = request('cod_sub');
             $SubastaTR->ref      = request('ref');
-            $SubastaTR->licit    = request('licit');
+            $SubastaTR->licit    = $validLicit[0]->cod_licit;
 
 			if($ministeryLicit && $SubastaTR->licit == $ministeryLicit){
 				return response($this->assignToMinistery($SubastaTR->cod, $SubastaTR->ref), 200);

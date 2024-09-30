@@ -95,48 +95,29 @@ class DepositController extends ApiLabelController
 
 					$idAuction = $items[0]["idauction"];
 
-					$numcliweb = DB::table('fgprmsub')
-					->select('numlicweb_prmsub')
-					->where('EMP_PRMSUB', Config::get('app.emp'))
-					->first();
-
-
 					#máximo código de licitador actual
-					$this->maxCodLicit= FgLicit::select("max(cod_licit) max_cod_licit")->where("sub_licit",$idAuction )->where("cod_licit","!=", \Config::get("app.dummy_bidder"))->where("cod_licit","<", \Config::get("app.subalia_min_licit"))->first()->max_cod_licit;
+					$this->maxCodLicit = FgLicit::getMaxCodLicit($idAuction);
 
+					$licits = FgLicit::getLicitsSubIdOrigin($idAuction);
+					foreach($items as $key => $item){
+						$licit = $this->getLicit($licits, $item, $key);
+						FgAsigl1::depositBid($licit["cod_licit"],$item["idauction"],$item["reflot"],$item["amount"],$item["date"]);
+						if(\Config::get("app.mailDepositBid") ){
+							$client = FxCli::select("cod_cli")->where("cod2_cli", $item["idoriginclient"])->JoinCliWebCli()->first();
+							if(!empty($client)){
+								$email = new EmailLib('DEPOSIT_ACTIVATE');
+								if (!empty($email->email)) {
+									$email->setUserByCod($client->cod_cli, true);
+									$email->setLot($item["idauction"],$item["reflot"]);
+									$urlLot = $email->getAtribute("LOT_LINK");
 
-					if(empty($this->maxCodLicit) || (!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) &&  $this->maxCodLicit < $numcliweb->numlicweb_prmsub)){
-						if(!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) ){
-							$this->maxCodLicit = $numcliweb->numlicweb_prmsub-1;
-						}else{
-							$this->maxCodLicit = 1000-1; #empieza por el mil y se le sumara 1 antes de asignarselo al cliente por eso se lo restamos ahora
-						}
+									$email->setAtribute("URL_PASWWORD",$urlLot."?recoveryPassword=S&emailRecovery=".$client->email_cli);
+									$email->send_email();
 
-					}
-
-
-						$licits = FgLicit::getLicitsSubIdOrigin($idAuction);
-						foreach($items as $key => $item){
-							$licit = $this->getLicit($licits, $item, $key);
-							FgAsigl1::depositBid($licit["cod_licit"],$item["idauction"],$item["reflot"],$item["amount"],$item["date"]);
-							if(\Config::get("app.mailDepositBid") ){
-								$client = FxCli::select("cod_cli")->where("cod2_cli", $item["idoriginclient"])->JoinCliWebCli()->first();
-								if(!empty($client)){
-									$email = new EmailLib('DEPOSIT_ACTIVATE');
-									if (!empty($email->email)) {
-										$email->setUserByCod($client->cod_cli, true);
-										$email->setLot($item["idauction"],$item["reflot"]);
-										$urlLot = $email->getAtribute("LOT_LINK");
-
-										$email->setAtribute("URL_PASWWORD",$urlLot."?recoveryPassword=S&emailRecovery=".$client->email_cli);
-										$email->send_email();
-
-									}
 								}
 							}
-
-
 						}
+					}
 
 
 				}

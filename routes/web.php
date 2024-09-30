@@ -201,7 +201,7 @@ Route::post('api-ajax/jump_lots', [SubastaTiempoRealController::class, 'jumpLots
 Route::post('api-ajax/baja_cli', [SubastaTiempoRealController::class, 'bajaCli']);
 Route::post('api-ajax/get_baja_cli_sub', [SubastaTiempoRealController::class, 'getBajaCliSub']);
 Route::post('api-ajax/get_clients_credit', [SubastaTiempoRealController::class, 'getClientsCreditBySub']);
-
+Route::post('api-ajax/get_modified_paddles', [SubastaTiempoRealController::class, 'getModifiedPaddles']);
 Route::post('api-ajax/add_lower_bid', [SubastaTiempoRealController::class, 'addLowerBid']);
 
 /**

@@ -23,6 +23,8 @@ use DateTime;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\libs\SeoLib;
+use App\Models\V5\FgLicit;
+
 class Subasta extends Model
 {
     protected $table = 'FGSUB';
@@ -1827,58 +1829,13 @@ class Subasta extends Model
     }
 
 	# Auto increment de los códigos de licitador en la tabla FGLICIT
-        public function licitIncrement()
+    public function licitIncrement()
     {
-        # Es el código de licitador a partir del cual se considera licitador de subalia, se deben excluir los valores iguales o superiores a este
-        $licitSubalia   = !empty(Config::get('app.subalia_min_licit'))? Config::get('app.subalia_min_licit') : 100000;
-        # Auto increment
-        $res = DB::select("SELECT NVL(MAX(CAST(COD_LICIT AS Int)) + 1, 1) AS numero FROM FGLICIT WHERE EMP_LICIT = :emp AND SUB_LICIT = :cod_sub AND COD_LICIT < :licitSubalia AND COD_LICIT != :dummy_bidder",
-            array(
-                'emp'           => Config::get('app.emp'),
-                'cod_sub'       => $this->cod,
-                'dummy_bidder'  => Config::get('app.dummy_bidder'),
-                'licitSubalia'  => $licitSubalia
-                )
-            );
+        $num = FgLicit::newCodLicit($this->cod); //número entre 0 y 99999 quitando el 9999
 
-        $num = $res['0']->numero;
-
-        //Inicio licitadores
-        $numcliweb = DB::table('fgprmsub')
-                ->select('numlicweb_prmsub')
-                ->where('EMP_PRMSUB', Config::get('app.emp'))
-                ->first();
-
-        if(!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub)){
-            $start_bidders =$numcliweb->numlicweb_prmsub;
-        }else{
-            $start_bidders = 1000;
-        }
-        if ($num <  $start_bidders){
-            $num = $start_bidders;
-        }
+		// Si el número de licitador es mayor o igual que el bidder, se asigna un número de licitador no utilizado
         if($num >= Config::get('app.dummy_bidder')){
-            //buscamos el siguiente codigo de licitador libre
-            $cod_licits = DB::select("SELECT CAST(COD_LICIT AS Int) AS COD_LICIT FROM FGLICIT WHERE EMP_LICIT = :emp AND SUB_LICIT = :cod_sub AND cod_licit >= :start_bidders AND COD_LICIT < :dummy_bidder order by cod_licit asc",
-            array(
-                'emp'           => Config::get('app.emp'),
-                'cod_sub'       => $this->cod,
-                'dummy_bidder'  => Config::get('app.dummy_bidder'),
-                'start_bidders' => $start_bidders
-                )
-            );
-            $actual = $start_bidders;
-           foreach($cod_licits as $cod_licit){
-               if($actual != $cod_licit->cod_licit){
-                   break;
-               }
-               $actual++;
-           }
-
-           if($actual < Config::get('app.dummy_bidder')){
-                $num = $actual;
-           }
-
+			$num = FgLicit::unusedCodLicit($this->cod);
         }
 
         return $num;
@@ -1935,19 +1892,69 @@ class Subasta extends Model
                 }
             }
         } else {
-            $licit = DB::select("SELECT COD_LICIT FROM FGLICIT WHERE COD_LICIT = :cod_licit AND SUB_LICIT = :cod_sub AND EMP_LICIT = :emp",
-                                array(
-                                    'emp'           => Config::get('app.emp'),
-                                    'cod_licit'     => $this->licit,
-                                    'cod_sub'       => $this->cod,
-                                    )
-                                );
+			$licit = $this->validLicit($this->licit, $this->cod);
         }
-
-
 
         return $licit;
     }
+
+	public function validLicit($cod_licit, $cod_sub)
+	{
+		$licit = $this->getLicit($cod_licit, $cod_sub);
+
+		// Si no se encontró el licitador, buscar en el log
+		if (!$licit) {
+			$licit = $this->getLicitFromLog($cod_licit, $cod_sub);
+
+			// Si se encontró el licitador en el log, buscar de nuevo si existe en la tabla FGLICIT
+			if ($licit) {
+				return $this->validLicit($licit[0]->cod_licit, $cod_sub);
+			}
+		}
+
+		return $licit;
+	}
+
+	private function getLicit($cod_licit, $cod_sub)
+	{
+		return DB::select(
+			"SELECT COD_LICIT
+				FROM FGLICIT
+				WHERE COD_LICIT = :cod_licit AND SUB_LICIT = :cod_sub AND EMP_LICIT = :emp",
+			[
+				'emp'           => Config::get('app.emp'),
+				'cod_licit'     => $cod_licit,
+				'cod_sub'       => $cod_sub,
+			]
+		);
+	}
+
+	private function getLicitFromLog($cod_licit, $cod_sub)
+	{
+		$fgLicitLogQuery = "SELECT COD_LICIT_NEW as COD_LICIT
+				FROM FGLICIT_LOG
+				WHERE COD_LICIT_OLD = :cod_licit AND SUB_LICIT = :cod_sub AND EMP_LICIT = :emp";
+
+		return DB::select(
+			$fgLicitLogQuery,
+			[
+				'emp'       => Config::get('app.emp'),
+				'cod_licit' => $cod_licit,
+				'cod_sub'   => $cod_sub,
+			]
+		);
+	}
+
+	public function getLicitLogs($codSub)
+	{
+		$fgLicitLogQuery = "SELECT * FROM FGLICIT_LOG
+			LEFT JOIN FGLICIT ON FGLICIT.COD_LICIT = FGLICIT_LOG.COD_LICIT_NEW AND FGLICIT.EMP_LICIT = FGLICIT_LOG.EMP_LICIT AND FGLICIT.SUB_LICIT = FGLICIT_LOG.SUB_LICIT
+			WHERE FGLICIT_LOG.SUB_LICIT = :cod_sub AND FGLICIT_LOG.EMP_LICIT = :emp
+			ORDER BY FGLICIT_LOG.DATE_LICIT DESC";
+
+		$licits = DB::select($fgLicitLogQuery, ['emp' => Config::get('app.emp'), 'cod_sub' => $codSub]);
+		return $licits;
+	}
 
     /*
     |--------------------------------------------------------------------------

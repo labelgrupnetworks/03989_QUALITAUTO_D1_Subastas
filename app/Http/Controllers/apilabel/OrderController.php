@@ -44,24 +44,9 @@ class OrderController extends ApiLabelController
                 $this->validatorArray($items, $this->rules);
                 $idAuction = $items[0]["idauction"];
 
-				$numcliweb = DB::table('fgprmsub')
-                ->select('numlicweb_prmsub')
-                ->where('EMP_PRMSUB', Config::get('app.emp'))
-                ->first();
-
-
                 #máximo código de licitador actual
-                $this->maxCodLicit= FgLicit::select("max(cod_licit) max_cod_licit")->where("sub_licit",$idAuction )->where("cod_licit","!=", \Config::get("app.dummy_bidder"))->where("cod_licit","<", \Config::get("app.subalia_min_licit"))->first()->max_cod_licit;
+                $this->maxCodLicit= FgLicit::getMaxCodLicit($idAuction);
 
-
-				if(empty($this->maxCodLicit) || (!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) &&  $this->maxCodLicit < $numcliweb->numlicweb_prmsub)){
-                    if(!empty($numcliweb) && !empty($numcliweb->numlicweb_prmsub) ){
-						$this->maxCodLicit = $numcliweb->numlicweb_prmsub-1;
-					}else{
-						$this->maxCodLicit = 1000-1; #empieza por el mil y se le sumara 1 antes de asignarselo al cliente por eso se lo restamos ahora
-					}
-
-                }
                 $lots = FgAsigl0::arrayByIdOrigin($idAuction);
                 $licits = FgLicit::getLicitsSubIdOrigin($idAuction);
                 $orders = FgOrlic::arrayByRef($idAuction);

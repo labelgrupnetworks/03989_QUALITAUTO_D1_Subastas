@@ -326,6 +326,36 @@
     </section>
 </div>
 
+<div id="ModifiedPaddles" class="modal-block modal-lg mfp-hide" data-to="modified_paddles">
+    <section class="panel">
+        <div class="panel-body">
+            <div class="modal-wrapper">
+                <div class="modal-text text-center">
+                    <div class='col-md-12'>
+                        <p class="insert_msg">{{ trans("$theme-app.sheet_tr.mp_title") }}</p>
+                    </div>
+                    <div class='col-md-12'>
+                        <hr>
+                        <table style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>{{ trans("$theme-app.sheet_tr.mp_name") }}</th>
+                                    <th>{{ trans("$theme-app.sheet_tr.mp_new_paddle") }}</th>
+                                    <th>{{ trans("$theme-app.sheet_tr.mp_old_paddle") }}</th>
+                                    <th>{{ trans("$theme-app.sheet_tr.mp_actual_paddle") }}</th>
+                                    <th>{{ trans("$theme-app.sheet_tr.mp_client_code") }}</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modified_paddles_tablebody"></tbody>
+                        </table>
+                        <div class="loader search-loader" style="display:hide;width: 25px;height: 25px;margin-top:10px"></div>
+                    </div>
+                </div>
+            </div>
+			<button class="btn btn-default modal-dismiss" style="float: right;">{{ trans("$theme-app.sheet_tr.close") }}</button>
+        </div>
+    </section>
+</div>
 
 <div id="modalActivarSubastaAutomatica" class="modal-block mfp-hide" data-to="activate_automatic_auction">
     <section class="panel">
