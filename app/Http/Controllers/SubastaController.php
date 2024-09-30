@@ -2,39 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request as HttpRequest;
-use Request;
-//use Controller;
-//use View;
-use Illuminate\Support\Facades\Session;
-use Routing;
-use Route;
-use Illuminate\Support\Facades\Request as Input;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
-use DB;
-use App\Models\Subasta;
-use App\Models\Enterprise;
-use App\Models\Filters;
-use App\Models\User;
-use App\Models\Favorites;
-use App\Models\SeoFamiliasSessiones;
-
-use App\Models\AucIndex;
-use App\libs\StrLib;
-use App\libs\ImageGenerate;
-use App\libs\Currency;
-
-use App\libs\EmailLib;
-use Illuminate\Pagination\LengthAwarePaginator;
-use App\Models\Sec;
-use App\Models\Category;
-use App\Models\Bloques;
+use  App\libs\SeoLib;
 use App\Http\Controllers\PaymentsController;
-use App\libs\FormLib;
-use App\libs\TradLib;
-use App\Models\Payments;
 use App\Http\Controllers\V5\LotListController;
+use App\libs\Currency;
+use App\libs\EmailLib;
+use App\libs\FormLib;
+use App\libs\ImageGenerate;
+use App\libs\StrLib;
+use App\libs\TradLib;
+use App\Models\Bloques;
+use App\Models\Category;
+use App\Models\Enterprise;
+use App\Models\Favorites;
+use App\Models\Filters;
+use App\Models\Payments;
+use App\Models\Sec;
+use App\Models\Subasta;
+use App\Models\User;
 use App\Models\V5\AucSessionsFiles;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgDeposito;
@@ -44,58 +29,62 @@ use App\Models\V5\FgSubConditions;
 use App\Models\V5\FxCli;
 use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
+use App\Providers\RoutingServiceProvider as Routing;
+use App\Providers\ToolsServiceProvider;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use SplFileInfo;
-use  App\libs\SeoLib;
-use App\Providers\ToolsServiceProvider;
 
 class SubastaController extends Controller
 {
-
-
-
 	public function index($cod)
 	{
-
-		//dd($this->lotList(Route::current()->parameter('cod')));
 		return  $this->lotList(Route::current()->parameter('cod'));
 	}
-
 
 	public function subasta_actual_online()
 	{
 		return $this->subasta_actual("O");
 	}
 
-
-
-	public function subasta_actual($type="W")
+	public function subasta_actual($type = "W")
 	{
 		$subastaObj        = new Subasta();
 		$auction_list = $subastaObj->auctionList("S", $type);
 		$lotListController = new LotListController();
 
 		//mostramos solo las subastas ocultas a los administradores
-		if (Session::has('user') && Session::get('user.admin') ) {
-			$auction_list_oculto = $subastaObj->auctionList('A',$type);
-			$auction_list = array_merge( $auction_list,$auction_list_oculto);
+		if (Session::has('user') && Session::get('user.admin')) {
+			$auction_list_oculto = $subastaObj->auctionList('A', $type);
+			$auction_list = array_merge($auction_list, $auction_list_oculto);
 		}
 
-		if(count($auction_list ) > 0){
+		if (count($auction_list) > 0) {
 			$auction = $auction_list[0];
-		}else{
+		} else {
 			$auction_list = $subastaObj->auctionList("H", $type);
-			if(count($auction_list)==0){
-				if($type=="O"){
-					return redirect(\Routing::translateSeo('subastas-online'));
-				}else{
-					return redirect(\Routing::translateSeo('presenciales'));
+			if (count($auction_list) == 0) {
+				if ($type == "O") {
+					return redirect(Routing::translateSeo('subastas-online'));
+				} else {
+					return redirect(Routing::translateSeo('presenciales'));
 				}
 			}
 			$auction = $auction_list[0];
 		}
 
-		return $lotListController->getLotsList( Str::slug($auction->name), $auction->cod_sub,  $auction->reference );
+		return $lotListController->getLotsList(Str::slug($auction->name), $auction->cod_sub,  $auction->reference);
 	}
 
 	public function subastas_especiales()
@@ -172,7 +161,7 @@ class SubastaController extends Controller
 		if ($return_value) {
 			return $subastas;
 		} else {
-			return \View::make('front::pages.subastas', array('data' => $subastas));
+			return View::make('front::pages.subastas', array('data' => $subastas));
 		}
 	}
 
@@ -185,7 +174,7 @@ class SubastaController extends Controller
 
 		$key = str_replace($search, $replace, $key);
 		//cogemos la ruta
-		$route_customize = \Request::segment(2);
+		$route_customize = Request::segment(2);
 
 		//$cod_sub = Request::input('c');
 
@@ -195,29 +184,9 @@ class SubastaController extends Controller
 	public function customizeLotListTheme($key)
 	{
 		//cogemos la ruta
-		$route_customize = \Request::segment(2);
+		$route_customize = Request::segment(2);
 
 		return  $this->lotList(NULL, $key,  $route_customize, 'theme');
-	}
-
-	public function themeAuctionList()
-	{
-		$lang = Config::get('app.locale');
-		$key = 'subjects_thematic_' . strtoupper($lang);
-		$menu_obj = new \App\Models\AucIndex;
-		$Menu = $menu_obj->getMenuWeb($key);
-
-		$data = array();
-		$data['theme_auctions'] = array();
-		if (!empty($Menu)) {
-			$data['theme_auctions'] = $menu_obj->getMenuWebHijo($Menu->id_web_auc_index_lang);
-		}
-		$SEO_metas = new \stdClass();
-		$SEO_metas->meta_title = trans(\Config::get('app.theme') . '-app.metas.theme_auction_meta_title');
-		$SEO_metas->meta_description = trans(\Config::get('app.theme') . '-app.metas.theme_auction_meta_description');
-		$data['seo'] = $SEO_metas;
-
-		return \View::make('front::pages.subastas_tematicas', array('data' => $data));
 	}
 
 	public function indice_subasta($cod_sub = NULL)
@@ -232,13 +201,13 @@ class SubastaController extends Controller
 		}
 		$data['id_auc_sessions'] = $subasta->id_auc_sessions;
 		$data['cod_sub'] = $cod_sub;
-		$data['url'] = \Routing::translateSeo('subasta') . $subasta->cod . '-' . $subasta->texto;
+		$data['url'] = Routing::translateSeo('subasta') . $subasta->cod . '-' . $subasta->texto;
 
 		$data['subasta'] = $subasta->getInfSubasta();
 		if (empty($data['subasta'])) {
 			return abort(404);
 		}
-		return \View::make('front::pages.indice_subasta', array('data' => $data));
+		return View::make('front::pages.indice_subasta', array('data' => $data));
 	}
 
 
@@ -248,7 +217,7 @@ class SubastaController extends Controller
 	{
 
 		if (!empty($_GET) && !empty($_GET['querylog'])) {
-			\DB::enableQueryLog();
+			DB::enableQueryLog();
 		}
 		$lots_favs = array();
 		$subasta        = new Subasta();
@@ -265,7 +234,7 @@ class SubastaController extends Controller
 			$dataAuxSubasta = DB::table("FGSUB")->where("COD_SUB", $a->auction)->first();
 		}
 
-		$js_item['lang_code'] = strtoupper(\App::getLocale());
+		$js_item['lang_code'] = strtoupper(App::getLocale());
 
 		# Retornamos la información del usuario
 		if (Session::has('user')) {
@@ -284,7 +253,7 @@ class SubastaController extends Controller
 				$subasta->checkDummyLicitador();
 
 				# Si tienen numero de ministerio asignado, creamos ministerio como licitador
-				if(Config::get('app.ministeryLicit', false)){
+				if (Config::get('app.ministeryLicit', false)) {
 					$subasta->checkOrInstertMinisteryLicitador(Config::get('app.ministeryLicit'), 'Ministerio');
 				}
 
@@ -414,22 +383,13 @@ class SubastaController extends Controller
 				$SEO_metas->meta_title = $sub_data->des_sub;
 				$SEO_metas->meta_description = $sub_data->description;
 			}
-			/*
-            if ( Config::get('app.filter_period')){
-                $get_filters =  $subastaObj->getSubasta_filters(TRUE);
-
-                $filters = $this->create_filters($get_filters);
-            }
-             *
-             */
 		}
 
 		$totalItems = $subastaObj->getLots("count", $cache_sql);
 
-		if(request()->has('page')){
+		if (request()->has('page')) {
 			$currentPage = request()->input('page');
-		}
-		elseif (empty(Route::current()->parameter('page')) or Route::current()->parameter('page') == 1) {
+		} elseif (empty(Route::current()->parameter('page')) or Route::current()->parameter('page') == 1) {
 			$currentPage    = 1;
 		} else {
 			$currentPage    = Route::current()->parameter('page');
@@ -472,10 +432,10 @@ class SubastaController extends Controller
 
 		//Si hay código de subasta debemos generar la url de la subasta
 		if (!empty($cod_sub)) {
-			$url = \Routing::translateSeo('subasta') . $subastaObj->cod . '-' . $subastaObj->texto;
-			$url_indice = \Routing::translateSeo('indice-subasta') . $subastaObj->cod . '-' . $subastaObj->texto;
+			$url = Routing::translateSeo('subasta') . $subastaObj->cod . '-' . $subastaObj->texto;
+			$url_indice = Routing::translateSeo('indice-subasta') . $subastaObj->cod . '-' . $subastaObj->texto;
 		} else {
-			$url = \Routing::translateSeo($route_customize) . $key_customize;
+			$url = Routing::translateSeo($route_customize) . $key_customize;
 			if (!empty(Route::current()->parameter('subcategory'))) {
 				$url .= "/" . Route::current()->parameter('subcategory');
 			}
@@ -528,8 +488,8 @@ class SubastaController extends Controller
 			'route_customize' => $route_customize,
 			'filters' => $filters,
 			'subastas' => $subasta,
-			'name' => !empty($first_item->des_sub) ? ucfirst(mb_strtolower($first_item->des_sub, "UTF-8")) : trans(\Config::get('app.theme') . '-app.subastas.lots_not_found'),
-			'title' => !empty($first_item->des_sub) ? ucfirst(mb_strtolower($first_item->name, "UTF-8")) : trans(\Config::get('app.theme') . '-app.subastas.lots_not_found'),
+			'name' => !empty($first_item->des_sub) ? ucfirst(mb_strtolower($first_item->des_sub, "UTF-8")) : trans(Config::get('app.theme') . '-app.subastas.lots_not_found'),
+			'title' => !empty($first_item->des_sub) ? ucfirst(mb_strtolower($first_item->name, "UTF-8")) : trans(Config::get('app.theme') . '-app.subastas.lots_not_found'),
 			'cod_sub' => $subastaObj->cod,
 			'id_auc_sessions' => $subastaObj->id_auc_sessions,
 			'seo' => $SEO_metas,
@@ -560,8 +520,8 @@ class SubastaController extends Controller
 		}
 
 		$data['node']  = array(
-			'comprar'       => Config::get('app.url') . \Routing::slug('api') . "/comprar/subasta",
-			'ol'       => Config::get('app.url') . \Routing::slug('api') . "/ol/subasta",
+			'comprar'       => Config::get('app.url') . Routing::slug('api') . "/comprar/subasta",
+			'ol'       => Config::get('app.url') . Routing::slug('api') . "/ol/subasta",
 		);
 
 		$data['js_item'] = $js_item;
@@ -572,7 +532,7 @@ class SubastaController extends Controller
       */
 
 
-		return \View::make('front::pages.subasta', array('data' => $data));
+		return View::make('front::pages.subasta', array('data' => $data));
 	}
 
 
@@ -655,9 +615,9 @@ class SubastaController extends Controller
 	//Retorna el where con los lotes comprados
 	private function getWhereMyLotsClient($myLotsClient, $subastaObj)
 	{
-		if (!empty($myLotsClient) && !empty(\Session::get('user.cod'))) {
+		if (!empty($myLotsClient) && !empty(Session::get('user.cod'))) {
 
-			$subastaObj->join_filter .= ' JOIN FGLICIT ON ( FGLICIT.EMP_LICIT = ASIGL0.EMP_ASIGL0 AND FGLICIT.SUB_LICIT = AUC."auction" AND FGLICIT.CLI_LICIT  =' . \Session::get('user.cod') . ' )';
+			$subastaObj->join_filter .= ' JOIN FGLICIT ON ( FGLICIT.EMP_LICIT = ASIGL0.EMP_ASIGL0 AND FGLICIT.SUB_LICIT = AUC."auction" AND FGLICIT.CLI_LICIT  =' . Session::get('user.cod') . ' )';
 			//hago el join sobre una salect con group by para evitar duplicados
 			$subastaObj->join_filter .= ' JOIN (select EMP_ASIGL1,SUB_ASIGL1,LICIT_ASIGL1,REF_ASIGL1 from FGASIGL1 group by EMP_ASIGL1,SUB_ASIGL1,LICIT_ASIGL1,REF_ASIGL1)  LOTS_CLIENT ON (LOTS_CLIENT.EMP_ASIGL1 = ASIGL0.EMP_ASIGL0 AND LOTS_CLIENT.SUB_ASIGL1 = ASIGL0.SUB_ASIGL0 AND LOTS_CLIENT.LICIT_ASIGL1 = FGLICIT.COD_LICIT AND LOTS_CLIENT.REF_ASIGL1 =  ASIGL0.REF_ASIGL0) ';
 		}
@@ -667,8 +627,8 @@ class SubastaController extends Controller
 	private function getWhereMyLotsProperty($myLotsProperty, $subastaObj)
 	{
 
-		if (!empty($myLotsProperty) && !empty(\Session::get('user.cod'))) {
-			$subastaObj->where_filter .= " AND HCES1.PROP_HCES1 = '" . \Session::get('user.cod') . "'";
+		if (!empty($myLotsProperty) && !empty(Session::get('user.cod'))) {
+			$subastaObj->where_filter .= " AND HCES1.PROP_HCES1 = '" . Session::get('user.cod') . "'";
 		}
 	}
 
@@ -690,7 +650,7 @@ class SubastaController extends Controller
 				foreach ($words as $word) {
 					if (!empty($word) && strlen($word) > 1) {
 						$valid_words = true;
-						if (\Config::get('app.desc_hces1')) {
+						if (Config::get('app.desc_hces1')) {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESC_HCES1_LANG, HCES1.DESC_HCES1), '$word')";
 						} else {
 							$search .= $pipe . " REGEXP_LIKE (NVL(HCES1_LANG.TITULO_HCES1_LANG, HCES1.titulo_hces1), '$word') OR REGEXP_LIKE (NVL(HCES1_LANG.DESCWEB_HCES1_LANG, HCES1.DESCWEB_HCES1), '$word')";
@@ -701,7 +661,7 @@ class SubastaController extends Controller
 				$search .= ") ";
 			} else {
 				if (strlen($description) > 1) {
-					if (\Config::get('app.desc_hces1')) {
+					if (Config::get('app.desc_hces1')) {
 						$search = " REGEXP_LIKE (NVL(TITULO_HCES1_LANG, titulo_hces1), '$description') OR REGEXP_LIKE (NVL(DESC_HCES1_LANG, DESC_HCES1), '$description')";
 					} else {
 						$search = " REGEXP_LIKE (NVL(TITULO_HCES1_LANG, titulo_hces1), '$description') OR REGEXP_LIKE (NVL(DESCWEB_HCES1_LANG, DESCWEB_HCES1), '$description')";
@@ -811,7 +771,7 @@ class SubastaController extends Controller
 
 			if (!empty($filter_value)) {
 				$search_in_filters = true;
-				$subastaObj->where_filter .= ' AND TRIM(NVL(otv_lang."' . $auction_filter->col_subfw  . '_lang",  otv."' . $auction_filter->col_subfw  . '"))  = :'.$filter_name.' ';
+				$subastaObj->where_filter .= ' AND TRIM(NVL(otv_lang."' . $auction_filter->col_subfw  . '_lang",  otv."' . $auction_filter->col_subfw  . '"))  = :' . $filter_name . ' ';
 				$subastaObj->params_filter[$filter_name] = $filter_value;
 			}
 		}
@@ -828,40 +788,6 @@ class SubastaController extends Controller
 			$subastaObj->where_filter  .= " AND (ASIGL0.OFERTA_ASIGL0 = $oferta)";
 		}
 	}
-
-
-
-
-
-
-
-	//2018_01_19 no se esta usando
-	/*
-    # Pujas de un lote
-    public function getPujas($cod, $lote)
-    {
-        $subastaObj        = new Subasta();
-        $subastaObj->cod   = $cod;
-        $subastaObj->lote  = $lote;
-        return  json_encode($subastaObj->getPujas());
-    }
-
-    # Ordenes de licitación
-    public function getOrdenes($cod, $lote)
-    {
-        $subastaObj        = new Subasta();
-        $subastaObj->cod   = $cod;
-        $subastaObj->lote  = $lote;
-        return  json_encode($subastaObj->getOrdenes());
-    }
-
-    public function listaLotes($id_subasta = false)
-    {
-        return \View::make('front::pages.list');
-    }*/
-
-
-
 
 	/**
 	 * Cargar listado de subastas
@@ -882,29 +808,29 @@ class SubastaController extends Controller
 		$SEO_metas = new \stdClass();
 
 		if ($status == 'H') {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_historic');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_historic');
-			$name = trans(\Config::get('app.theme') . '-app.subastas.historic_auctions');
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_historic');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_historic');
+			$name = trans(Config::get('app.theme') . '-app.subastas.historic_auctions');
 		} elseif ($type == 'O') {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_online');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_online');
-			$name = trans(\Config::get('app.theme') . '-app.foot.online_auction');
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_online');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_online');
+			$name = trans(Config::get('app.theme') . '-app.foot.online_auction');
 		} elseif ($type == 'V') {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_venta');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_venta');
-			$name = trans(\Config::get('app.theme') . '-app.foot.direct_sale');
-		}  elseif ($type == 'M') {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_haz_oferta');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_haz_oferta');
-			$name = trans(\Config::get('app.theme') . '-app.foot.make_offer');
-		}  elseif ($type == 'I') {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_inversa');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_inversa');
-			$name = trans(\Config::get('app.theme') . '-app.foot.reverse_auction');
-		}else {
-			$SEO_metas->meta_title =  trans(\Config::get('app.theme') . '-app.metas.title_presenciales');
-			$SEO_metas->meta_description =  trans(\Config::get('app.theme') . '-app.metas.description_presenciales');
-			$name = trans(\Config::get('app.theme') . '-app.subastas.auctions');
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_venta');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_venta');
+			$name = trans(Config::get('app.theme') . '-app.foot.direct_sale');
+		} elseif ($type == 'M') {
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_haz_oferta');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_haz_oferta');
+			$name = trans(Config::get('app.theme') . '-app.foot.make_offer');
+		} elseif ($type == 'I') {
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_inversa');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_inversa');
+			$name = trans(Config::get('app.theme') . '-app.foot.reverse_auction');
+		} else {
+			$SEO_metas->meta_title =  trans(Config::get('app.theme') . '-app.metas.title_presenciales');
+			$SEO_metas->meta_description =  trans(Config::get('app.theme') . '-app.metas.description_presenciales');
+			$name = trans(Config::get('app.theme') . '-app.subastas.auctions');
 		}
 
 		//ponemos el canonical, de momento solo las subastas tematicas llevan variables, pero no afectara negativamente al resto
@@ -916,10 +842,9 @@ class SubastaController extends Controller
 		if ($type == 'V' && count($auction_list) == 1) {
 			$url = ToolsServiceProvider::url_auction($auction_list[0]->cod_sub, $auction_list[0]->name, $auction_list[0]->id_auc_sessions, $auction_list[0]->reference);
 			return redirect($url);
-		}
-		elseif(config('app.goGridIfOnlyOneAuction', 0) && count($auction_list) == 1){
+		} elseif (config('app.goGridIfOnlyOneAuction', 0) && count($auction_list) == 1) {
 			$subasta = $auction_list[0];
-			$url= ToolsServiceProvider::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,$subasta->reference);
+			$url = ToolsServiceProvider::url_auction($subasta->cod_sub, $subasta->name, $subasta->id_auc_sessions, $subasta->reference);
 			return redirect($url);
 		}
 
@@ -935,7 +860,7 @@ class SubastaController extends Controller
 		);
 
 		if ($return_view == true) {
-			return \View::make('front::pages.subastas', array('data' => $data));
+			return View::make('front::pages.subastas', array('data' => $data));
 		}
 
 		return $data;
@@ -971,7 +896,7 @@ class SubastaController extends Controller
 		//si no debemos buscar la anterior o la siguiente
 		else {
 			$subasta->session_reference = $session->reference;
-			if(!is_numeric($order)){
+			if (!is_numeric($order)) {
 				return json_encode(["status" => "error"]);
 			}
 
@@ -988,7 +913,7 @@ class SubastaController extends Controller
 			if (!empty($lote_search)) {
 				$lote_search = head($lote_search);
 				#si el importe de salida es 0 debemos cojer el primer escalado como puja válida
-				if( $lote_search->impsalhces_asigl0== 0){
+				if ($lote_search->impsalhces_asigl0 == 0) {
 					$lote_search->impsalhces_asigl0 = head($subasta->AllScales())->scale;
 				}
 				$inf_lot_translate =  $subasta->getMultilanguageTextLot($lote_search->num_hces1, $lote_search->lin_hces1);
@@ -998,7 +923,7 @@ class SubastaController extends Controller
 				$lote_search->titulo_hces1 = $inf_lot_translate[$lang]->titulo_hces1;
 				$lote_search->desc_hces1 = $inf_lot_translate[$lang]->desc_hces1;
 				$lote_search->descweb_hces1 = $inf_lot_translate[$lang]->descweb_hces1;
-/*
+				/*
 
 
 				$lote_search->desc_hces1 = $strLib->CleanStr($inf_lot_translate[$lang]->desc_hces1);
@@ -1016,9 +941,9 @@ class SubastaController extends Controller
 
 				$imageGenerate = new ImageGenerate();
 				$lote_search->imagen_base64 = $imageGenerate->resize_img("lote_small", $lote_search->imagen, Config::get('app.theme'), true);
-				\App::setLocale(strtolower($lang));
+				App::setLocale(strtolower($lang));
 				$webfriend = !empty($inf_lot_translate[strtoupper($lang)]->webfriend_hces1) ? $inf_lot_translate[strtoupper($lang)]->webfriend_hces1 :  str_slug($inf_lot_translate[strtoupper($lang)]->titulo_hces1);
-				$url_friendly = \Routing::translateSeo('lote') . $lote_search->sub_asigl0 . "-" . str_slug($lote_search->id_auc_sessions) . '-' . $lote_search->id_auc_sessions . "/" . $lote_search->ref_asigl0 . '-' . $lote_search->num_hces1 . '-' . $webfriend;
+				$url_friendly = Routing::translateSeo('lote') . $lote_search->sub_asigl0 . "-" . str_slug($lote_search->id_auc_sessions) . '-' . $lote_search->id_auc_sessions . "/" . $lote_search->ref_asigl0 . '-' . $lote_search->num_hces1 . '-' . $webfriend;
 				$lote_search->url_lot    = $url_friendly;
 
 				$lote_search->isItp = ToolsServiceProvider::isITPLot($lote_search->cod_sub, $lote_search->ref_asigl0);
@@ -1059,12 +984,12 @@ class SubastaController extends Controller
 			}
 		}
 		#18-10-22 MODIFICADO PARA PODER USAR UNA URL ALTERNATIVA
-/*
+		/*
 		$subastaObj->texto = Route::current()->parameter('texto2');
 		preg_match('#.*-(\d+)$#', $subastaObj->texto, $matches);
 		if (empty($matches[1]) || !is_numeric($matches[1])) {
 
-			exit(\View::make('front::errors.404'));
+			exit(View::make('front::errors.404'));
 		}
 
 		$session_slug = $matches[1];
@@ -1073,9 +998,9 @@ class SubastaController extends Controller
 */
 		$lote = $subastaObj->getLote($where, true, true);
 
-		if (empty($lote) || $lote[0]->subc_sub =='N') {
+		if (empty($lote) || $lote[0]->subc_sub == 'N') {
 
-			if(config('app.redirect_home_nolot', false)){
+			if (config('app.redirect_home_nolot', false)) {
 				return redirect(route('home'), 302);
 			}
 			return abort(404);
@@ -1083,117 +1008,37 @@ class SubastaController extends Controller
 		$session_slug = $lote[0]->id_auc_sessions;
 		$subastaObj->id_auc_sessions = $session_slug;
 		#quito los parametros para comparar solo la url
-		$urlsinparametros= explode('?', $_SERVER['REQUEST_URI']);
+		$urlsinparametros = explode('?', $_SERVER['REQUEST_URI']);
 		$url_actual = $urlsinparametros[0];
 
 
-		$titulo = $lote[0]->titulo_hces1?? $lote[0]->descweb_hces1;
+		$titulo = $lote[0]->titulo_hces1 ?? $lote[0]->descweb_hces1;
 
 		#18-10-22 MODIFICADO PARA QUE USE LA MISMA FUNCION
 		/* $webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
-		$url_buena = \Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
+		$url_buena = Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
 		*/
-		$url_buena = ToolsServiceProvider::url_lot($lote[0]->cod_sub,$lote[0]->id_auc_sessions,$lote[0]->name,$lote[0]->ref_asigl0,$lote[0]->num_hces1,$lote[0]->webfriend_hces1,$titulo);
+		$url_buena = ToolsServiceProvider::url_lot($lote[0]->cod_sub, $lote[0]->id_auc_sessions, $lote[0]->name, $lote[0]->ref_asigl0, $lote[0]->num_hces1, $lote[0]->webfriend_hces1, $titulo);
 		#quitamos la parte del dominio, por si viniera informada
-		$url_buena = str_replace( Config::get('app.url'),"",$url_buena);
+		$url_buena = str_replace(Config::get('app.url'), "", $url_buena);
 		if ($url_buena != $url_actual) {
-			//exit (\View::make('front::errors.404'));
-			return \Redirect::to(\URL::asset($url_buena), 301);
+			//exit (View::make('front::errors.404'));
+			return Redirect::to(URL::asset($url_buena), 301);
 		}
-
-
-
 
 		$subastaObj->select_filter = 'asigl0.ref_asigl0,  hces1.num_hces1, SUB.cod_sub, "id_auc_sessions",  NVL(HCES1_LANG.WEBFRIEND_HCES1_LANG,  HCES1.WEBFRIEND_HCES1) WEBFRIEND_HCES1,titulo_hces1';
 		$subastaObj->page = 'all';
 
-		$auction_in_categories =  \Config::get('app.auction_in_categories');
+		$subastaObj->where_filter = "AND \"id_auc_sessions\" =  $subastaObj->id_auc_sessions ";
 
-		$theme_key = null;
-		//se usará para los enlaces de siguiente y anterior
-		$get_theme_key = "";
-		if (!empty($_GET['theme'])) {
-			$theme_key = $_GET['theme'];
-			$get_theme_key = "?theme=$theme_key";
+		if (!empty(Config::get("app.gridAllSessions"))) {
+			$url_subasta = route("urlAuction", ["texto" => Str::slug($lote[0]->des_sub), "cod" => $lote[0]->cod_sub, "session" => '001']);
+		} else {
+			#$url_subasta= Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
+			$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
 		}
 
-		//comprueba si es una subasta tematica o  de tipo categoria, por ejemplo si la subasta es de tipo O es de categorias
-		if (!empty($theme_key)) {
-			$auc = new AucIndex();
-			//es subasta tematica
-			if (!empty($theme_key)) {
-				//creamos url para el breadcumb
-				$url_subasta = \Routing::translateSeo('tematicas') . $theme_key;
-				$key_name = $theme_key;
-			} else { // es de tipo categoria
-				//buscamos el key a partir de la categoria del lote
-				$category = $auc->getKeyBySec($lote[0]->sec_hces1, \Config::get('app.locale'));
-
-				if (empty($category)) {
-					$category =  new \stdClass();
-
-					$category->key_name = Config::get('app.default_category_' . \Config::get('app.locale'));
-				}
-
-
-				//url para el breadcumb
-				$url_subasta = \Routing::translateSeo('subastas') . $category->key_name;
-				$key_name = $category->key_name;
-			}
-			//definimos los wheres segun la key
-			$customize_values = $auc->getAucIndexByKeyname($key_name, \Config::get('app.locale'));
-
-			if (empty($customize_values)) {
-				return abort(404);
-			}
-
-			$this->set_customize_values_filter($customize_values, $subastaObj);
-
-			$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-
-
-			$title_url_subasta = $customize_values->title;
-		} //si es una subasta de tipo categorias
-		/* 2019_09_05 - LO DEJO COMENTADO, ya que con la estructura que tiene tauler es dificil controlar el anterior siguiente por categoria, solo cuando vienen de categoria.
-        elseif( !empty($auction_in_categories) &&    stripos($auction_in_categories,$lote[0]->tipo_sub) !== false ){
-            $sec_obj = new Sec();
-            $ortsec  = $sec_obj->getOrtsecByCodSec('0',$lote[0]->sec_hces1);
-
-            //si nose ha encontrado la ordenacion de catalogo de esa categoria
-            if(empty($ortsec)){
-                $ortsec=  new \stdClass();
-                $ortsec->key_ortsec0 = Config::get('app.default_category_'. \Config::get('app.locale'));
-                $ortsec->des_ortsec0 =trans(\Config::get('app.theme').'-app.lot_list.all_categories');
-                //Lin_ortsec de todas las categories.
-                $ortsec->lin_ortsec0 = 10;
-            }
-            $title_url_subasta =$ortsec->des_ortsec0;
-            $url_subasta= \Routing::translateSeo('subastas').$ortsec->key_ortsec0;
-            $key_name = $ortsec->key_ortsec0;
-            $subastaObj->where_filter  .= " AND (ORTSEC1.LIN_ORTSEC1 = '$ortsec->lin_ortsec0')";
-            $subastaObj->join_filter .= "JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = HCES1.SEC_HCES1 AND ORTSEC1.EMP_ORTSEC1 = HCES1.EMP_HCES1 AND ORTSEC1.SUB_ORTSEC1 = '0') ";
-
-
-            $subastaObj->where_filter .=" AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-            $subastaObj->order_by_values = 'ffin_asigl0 ASC,hfin_asigl0 ASC, ref_asigl0 ASC';
-        }
-         *
-         */ else {
-			//$subastaObj->tipo = "'W','O','V','P'";
-
-			$subastaObj->where_filter = "AND \"id_auc_sessions\" =  $subastaObj->id_auc_sessions ";
-
-			if(!empty(\Config::get("app.gridAllSessions") )){
-				$url_subasta = route("urlAuction",["texto" => \Str::slug($lote[0]->des_sub), "cod" => $lote[0]->cod_sub, "session" => '001']);
-
-			}else{
-				#$url_subasta= \Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
-				$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
-			}
-
-
-			$title_url_subasta = $lote[0]->des_sub;
-		}
+		$title_url_subasta = $lote[0]->des_sub;
 
 		# Monta las URL para los lotes: anterior y siguiente.
 		//$item->retirado_asigl0 =='N' && $item->fac_hces1 != 'D' && $item->fac_hces1 != 'R'
@@ -1210,30 +1055,12 @@ class SubastaController extends Controller
 			}
 			//si no hemos pasado por actual y aun no hay previous
 			elseif ($actual == false) {
-			#	$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-			#	$previous = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
-
-
-
-			$previous = ToolsServiceProvider::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
-
-
-
+				$previous = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, "", $value->ref_asigl0, $value->num_hces1, $value->webfriend_hces1, $value->titulo_hces1);
 			} elseif ($actual && is_null($next)) {
-				#$webfriend = !empty($value->webfriend_hces1) ? $value->webfriend_hces1 :  str_slug($value->titulo_hces1);
-				#$next = Routing::translateSeo('lote') . $value->cod_sub . "-" . $session_slug . "-" . $value->id_auc_sessions . '/' . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $webfriend . $get_theme_key;
-
-
-
-				$next = ToolsServiceProvider::url_lot($value->cod_sub,$value->id_auc_sessions,"",$value->ref_asigl0,$value->num_hces1,$value->webfriend_hces1,$value->titulo_hces1);
-
-
+				$next = ToolsServiceProvider::url_lot($value->cod_sub, $value->id_auc_sessions, "", $value->ref_asigl0, $value->num_hces1, $value->webfriend_hces1, $value->titulo_hces1);
 				break;
 			}
 		}
-
-
-
 
 		$data = array();
 		$data['previous'] = $previous;
@@ -1242,8 +1069,6 @@ class SubastaController extends Controller
 
 		# El ajax se utiliza en el modo api tiempo real
 
-
-
 		$subasta        = new Subasta();
 		$subasta->cod   = Route::current()->parameter('cod');
 		$subasta->tipo          = "'W', 'V', 'O'";
@@ -1251,7 +1076,7 @@ class SubastaController extends Controller
 		$subasta->page          = 'all';
 		$referencia             = Route::current()->parameter('ref');
 
-		$js_item['lang_code'] = strtoupper(\App::getLocale());
+		$js_item['lang_code'] = strtoupper(App::getLocale());
 		//inicializamos favorito a false, ya que si no hay usuario logeado no sabemso si es favorito
 		$favorito = false;
 		# Retornamos la información del usuario
@@ -1260,7 +1085,7 @@ class SubastaController extends Controller
 			$user                = new User();
 			$user->cod_cli       = Session::get('user.cod');
 			$usuario             = $this->userLoged;
-			$data["usuario"] = $usuario ;
+			$data["usuario"] = $usuario;
 			# Comprobamos si tiene un código de licitador asignado, de lo contrario le asignaremos uno.
 			$subasta->cli_licit = Session::get('user.cod');
 			$subasta->rsoc      = !empty($usuario->rsoc_cli) ? $usuario->rsoc_cli : $usuario->nom_cli;
@@ -1280,7 +1105,7 @@ class SubastaController extends Controller
 				$subasta->checkDummyLicitador();
 
 				# Si tienen numero de ministerio asignado, creamos ministerio como licitador
-				if(Config::get('app.ministeryLicit', false)){
+				if (Config::get('app.ministeryLicit', false)) {
 					$subasta->checkOrInstertMinisteryLicitador(Config::get('app.ministeryLicit'), 'Ministerio');
 				}
 
@@ -1296,7 +1121,7 @@ class SubastaController extends Controller
 			}
 			$subasta->licit = Session::get('user.cod');
 			$js_item['user']['tk'] = Session::get('user.tk');
-			//$js_item['user']['lang_code']     = strtoupper(\App::getLocale());
+			//$js_item['user']['lang_code']     = strtoupper(App::getLocale());
 			// $js_item['user']['is_gestor']       = $usuario->tipo_cliweb == 'G' ? TRUE : FALSE;
 			$js_item['user']['is_gestor']       = $usuario->tipacceso_cliweb == 'S' ? TRUE : FALSE;
 			$js_item['user']['adjudicaciones']  = array();
@@ -1316,8 +1141,6 @@ class SubastaController extends Controller
 			$favorito = (new Favorites(null, null))->isFavorite($subasta->cod, $subastaObj->lote);
 		}
 
-
-
 		if (!empty($lote[0]->alm_hces1)) {
 			$enterprise = new Enterprise();
 			$almacen = $enterprise->getAlmacen($lote[0]->alm_hces1);
@@ -1335,7 +1158,7 @@ class SubastaController extends Controller
 		$subasta_info->lote_actual->favorito = $favorito;
 		$subasta_info->lote_actual->url_subasta = $url_subasta;
 		$strLib = new StrLib();
-		$subasta_info->lote_actual->title_url_subasta =$strLib->CleanStr($title_url_subasta);
+		$subasta_info->lote_actual->title_url_subasta = $strLib->CleanStr($title_url_subasta);
 
 
 		# Materiales de un lote en concreto
@@ -1368,34 +1191,33 @@ class SubastaController extends Controller
 
 
 		#En la subasta inversa el siguiente escalado debe ir al reves
-		if($subasta_info->lote_actual->inversa_sub == 'S'){
+		if ($subasta_info->lote_actual->inversa_sub == 'S') {
 
 			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
 
 			$subasta_info->lote_actual->importe_escalado_siguiente = $siguienteEscalado;
-			$siguientes_escalados=[];
+			$siguientes_escalados = [];
 
 
 			$siguientes_escalados[0] = $siguienteEscalado;
-			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[0],true);
+			$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[0], true);
 			#si hemos llegando a 0 siempre devolvera el escalado anterior, por lo que debemos hacer que no se repita
-			if($siguienteEscalado != $siguientes_escalados[0]){
+			if ($siguienteEscalado != $siguientes_escalados[0]) {
 				$siguientes_escalados[1] = $siguienteEscalado;
-				$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[1],true);
-				if($siguienteEscalado != $siguientes_escalados[1]){
+				$siguienteEscalado = $subasta->NextScaleInverseBid($subasta_info->lote_actual->impsalhces_asigl0, $siguientes_escalados[1], true);
+				if ($siguienteEscalado != $siguientes_escalados[1]) {
 					$siguientes_escalados[2] = $siguienteEscalado;
 				}
 			}
 
 
 			$subasta_info->lote_actual->siguientes_escalados = $siguientes_escalados;
-
-		}else{
+		} else {
 			# Escalado de la puja y la siguiente
-		//$la_escalado = $subasta->escalado();
+			//$la_escalado = $subasta->escalado();
 
-		$la_escalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
-		$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
+			$la_escalado = $subasta->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->actual_bid);
+			$subasta_info->lote_actual->importe_escalado_siguiente = $la_escalado;
 
 			$subasta_info->lote_actual->siguientes_escalados[] = $la_escalado;
 
@@ -1405,11 +1227,10 @@ class SubastaController extends Controller
 				$subasta_info->lote_actual->siguientes_escalados[0] = $siguienteEscalado;
 			}
 
-			if($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]){
+			if ($siguienteEscalado != $subasta_info->lote_actual->siguientes_escalados[0]) {
 				$subasta_info->lote_actual->siguientes_escalados[] = $siguienteEscalado;
 				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1]);
-			}
-			else{
+			} else {
 				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[0], true);
 				$subasta_info->lote_actual->siguientes_escalados[] = $subastaObj->NextScaleBid($subasta_info->lote_actual->impsalhces_asigl0, $subasta_info->lote_actual->siguientes_escalados[1], true);
 			}
@@ -1452,8 +1273,8 @@ class SubastaController extends Controller
 		$data['ordenes'] = $ordenes;
 		$data['node']  = array(
 			'action_url'    => Config::get('app.url') . "/api/action/subasta",
-			'comprar'       => Config::get('app.url') . "/" . \App::getLocale() . "/api/comprar/subasta",
-			'ol'       => Config::get('app.url') . "/" . \App::getLocale() . "/api/ol/subasta",
+			'comprar'       => Config::get('app.url') . "/" . App::getLocale() . "/api/comprar/subasta",
+			'ol'       => Config::get('app.url') . "/" . App::getLocale() . "/api/ol/subasta",
 			'status_url'    => Config::get('app.url') . "/api/status/subasta",
 			'chat'          => Config::get('app.url') . "/api/chat",
 			'end_lot'       => Config::get('app.url') . "/api/end_lot",
@@ -1485,15 +1306,15 @@ class SubastaController extends Controller
 		$SEO_metas->meta_description = $lote[0]->webmetad_hces1;
 
 		if (empty($lote[0]->webmetat_hces1)) {
-			$SEO_metas->meta_title = mb_substr(strip_tags($lote[0]->descweb_hces1),0,60 );
+			$SEO_metas->meta_title = mb_substr(strip_tags($lote[0]->descweb_hces1), 0, 60);
 		}
 		if (empty($lote[0]->webmetad_hces1)) {
-			$SEO_metas->meta_description = mb_substr(strip_tags($lote[0]->desc_hces1),0,160 );
+			$SEO_metas->meta_description = mb_substr(strip_tags($lote[0]->desc_hces1), 0, 160);
 		}
 
 		//ponemos el canonical, de momento solo las subastas tematicas llevan variables, pero no afectara negativamente al resto
 		$webfriend = !empty($subasta_info->lote_actual->webfriend_hces1) ? $subasta_info->lote_actual->webfriend_hces1 :  str_slug($subasta_info->lote_actual->titulo_hces1);
-		$SEO_metas->canonical ="https://". $_SERVER['HTTP_HOST'] . \Routing::translateSeo('lote') . $subasta_info->lote_actual->cod_sub . "-" . $subasta_info->lote_actual->id_auc_sessions . '-' . $subasta_info->lote_actual->id_auc_sessions . "/" . $subasta_info->lote_actual->ref_asigl0 . '-' . $subasta_info->lote_actual->num_hces1 . '-' . $webfriend;
+		$SEO_metas->canonical = "https://" . $_SERVER['HTTP_HOST'] . Routing::translateSeo('lote') . $subasta_info->lote_actual->cod_sub . "-" . $subasta_info->lote_actual->id_auc_sessions . '-' . $subasta_info->lote_actual->id_auc_sessions . "/" . $subasta_info->lote_actual->ref_asigl0 . '-' . $subasta_info->lote_actual->num_hces1 . '-' . $webfriend;
 
 		//quitamso las variables
 		if (!empty(strpos($SEO_metas->canonical, '?'))) {
@@ -1501,14 +1322,14 @@ class SubastaController extends Controller
 		}
 
 		#datos para Open Graph
-		$SEO_metas->openGraphImagen = ToolsServiceProvider::url_img('lote_medium_large',$subasta_info->lote_actual->num_hces1,$subasta_info->lote_actual->lin_hces1);
+		$SEO_metas->openGraphImagen = ToolsServiceProvider::url_img('lote_medium_large', $subasta_info->lote_actual->num_hces1, $subasta_info->lote_actual->lin_hces1);
 
 		$data['seo'] = $this->cleanStrMeta($SEO_metas);
 
 		/*  codigo temporal */
 		if ($subasta_info->lote_actual->importe_escalado_siguiente  == $subasta_info->lote_actual->impsalhces_asigl0) {
 			//miramos el config a ver si tenemos que cuadrar le precio de salida co nel escalado
-			if (\Config::get('app.force_correct_price')) {
+			if (Config::get('app.force_correct_price')) {
 				$precio_salida = $subastaObj->NextScaleBid(0, $subasta_info->lote_actual->impsalhces_asigl0 - 1, FALSE);
 			} else {
 				$precio_salida = $subasta_info->lote_actual->impsalhces_asigl0;
@@ -1533,8 +1354,7 @@ class SubastaController extends Controller
 		SeoLib::saveVisit($subasta_info->lote_actual->sub_hces1, null, $subasta_info->lote_actual->sec_hces1, $subasta_info->lote_actual->ref_asigl0);
 
 		/* FIN  codigo temporal */
-		return \View::make('front::pages.ficha', array('data' => $data));
-
+		return View::make('front::pages.ficha', array('data' => $data));
 	}
 
 
@@ -1553,19 +1373,19 @@ class SubastaController extends Controller
 	public function favorites($action)
 	{
 
-		$cod_sub   = Input::get('cod_sub');
-		$cod_licit = Input::get('cod_licit');
-		$ref       = Input::get('ref');
+		$cod_sub   = Request::input('cod_sub');
+		$cod_licit = Request::input('cod_licit');
+		$ref       = Request::input('ref');
 		// $cod_licit = Session::get('user.cod');
 
-		if(empty($cod_licit) && !empty(Session::has('user'))){
+		if (empty($cod_licit) && !empty(Session::has('user'))) {
 			$licitador = FgLicit::SELECT("COD_LICIT")->where("SUB_LICIT", $cod_sub)->where("CLI_LICIT", Session::get('user.cod'))->first();
-			if(!empty($licitador)){
+			if (!empty($licitador)) {
 				$cod_licit = $licitador->cod_licit;
-			}else{
+			} else {
 				return array(
 					'status'    => 'error',
-					);
+				);
 			}
 		}
 
@@ -1597,8 +1417,8 @@ class SubastaController extends Controller
 	public function favoritesNew($action)
 	{
 
-		$cod_sub   = Input::get('cod_sub');
-		$ref       = Input::get('ref');
+		$cod_sub   = Request::input('cod_sub');
+		$ref       = Request::input('ref');
 
 		$res = array();
 
@@ -1618,44 +1438,6 @@ class SubastaController extends Controller
 
 	//-------- FIN NEW FAVORITES --------------
 
-
-	private function create_filters($data)
-	{
-
-		$filters = array(
-			"period" => array(),
-			"period_count" => array()
-		);
-
-		foreach ($data as $item) {
-			if (!empty($item->period)) {
-				if (!isset($filters["period"][$item->period])) {
-					$filters["period"][$item->period] = array();
-					$filters["period_count"][$item->period] = 0;
-				}
-				$filters["period_count"][$item->period]++;
-				if (!empty($item->subperiod_1) && !isset($filters["period"][$item->period][$item->subperiod_1])) {
-					$filters["period"][$item->period][$item->subperiod_1] = 1;
-				} elseif (!empty($item->subperiod_1)) {
-					$filters["period"][$item->period][$item->subperiod_1]++;
-				}
-			}
-		}
-		//ahora se ordena teniendo encuenta el campo orden
-		/*
-        foreach ($filters["period"] as $key => $period){
-
-            ksort($filters["period"][$key]);
-
-        }
-
-        ksort($filters["period"]);
-        ksort($filters["period_count"]);
-         *
-         */
-		return $filters;
-	}
-
 	public function auction_info()
 	{
 
@@ -1668,24 +1450,24 @@ class SubastaController extends Controller
 
 		$auction = $subasta->getInfSubasta();
 
-		if (!empty($auction) && ($auction->subc_sub == 'S' || $auction->subc_sub == 'H' || ($auction->subc_sub == 'A' && Session::get('user.admin')) )) {
+		if (!empty($auction) && ($auction->subc_sub == 'S' || $auction->subc_sub == 'H' || ($auction->subc_sub == 'A' && Session::get('user.admin')))) {
 
 			if ($auction->subc_sub == 'H') {
-				$url_bread = \Routing::translateSeo('subastas-historicas');
-				$name_bread = trans(\Config::get('app.theme') . '-app.subastas.historic_auctions');
+				$url_bread = Routing::translateSeo('subastas-historicas');
+				$name_bread = trans(Config::get('app.theme') . '-app.subastas.historic_auctions');
 			} elseif ($auction->tipo_sub == 'W') {
-				$url_bread = \Routing::translateSeo('presenciales');
-				$name_bread = trans(\Config::get('app.theme') . '-app.subastas.auctions');
+				$url_bread = Routing::translateSeo('presenciales');
+				$name_bread = trans(Config::get('app.theme') . '-app.subastas.auctions');
 			} elseif ($auction->tipo_sub == 'O') {
-				$url_bread = \Routing::translateSeo('subastas-online');
-				$name_bread = trans(\Config::get('app.theme') . '-app.foot.online_auction');
-			}elseif ($auction->tipo_sub == 'P') {
-				$url_bread = \Routing::translateSeo('subastas-online');
-				$name_bread = trans(\Config::get('app.theme') . '-app.foot.online_auction');
+				$url_bread = Routing::translateSeo('subastas-online');
+				$name_bread = trans(Config::get('app.theme') . '-app.foot.online_auction');
+			} elseif ($auction->tipo_sub == 'P') {
+				$url_bread = Routing::translateSeo('subastas-online');
+				$name_bread = trans(Config::get('app.theme') . '-app.foot.online_auction');
 			} elseif ($auction->tipo_sub == 'V') {
-				$url_bread = \Routing::translateSeo('venta-directa');
-				$name_bread = trans(\Config::get('app.theme') . '-app.foot.direct_sale');
-			}else{
+				$url_bread = Routing::translateSeo('venta-directa');
+				$name_bread = trans(Config::get('app.theme') . '-app.foot.direct_sale');
+			} else {
 				$url_bread = "";
 				$name_bread = "";
 			}
@@ -1709,7 +1491,7 @@ class SubastaController extends Controller
 				}
 			}
 		} else {
-			if(config('app.redirect_auction_finish_to_home')){
+			if (config('app.redirect_auction_finish_to_home')) {
 				return redirect()->route('home', [], 301);
 			}
 			return abort(404);
@@ -1717,8 +1499,8 @@ class SubastaController extends Controller
 		$data['seo'] = new \stdClass();
 		$data['seo']->meta_title = $auction->des_sub;
 		$data['seo']->meta_description = $auction->des_sub;
-		if(\Config::get('app.noindexInfoAuction') && $auction->tipo_sub != 'E' ){
-			$data['seo']->noindex_follow=true;
+		if (Config::get('app.noindexInfoAuction') && $auction->tipo_sub != 'E') {
+			$data['seo']->noindex_follow = true;
 		}
 		$data['previous'] = $previous;
 		$data['url_bread'] = $url_bread;
@@ -1727,7 +1509,7 @@ class SubastaController extends Controller
 		$data['auction'] = $auction;
 		$data['noindex-follow'] = true;
 
-		return \View::make('front::pages.ficha_subasta', array('data' => $data));
+		return View::make('front::pages.ficha_subasta', array('data' => $data));
 	}
 
 
@@ -1821,7 +1603,7 @@ class SubastaController extends Controller
 			}
 			//ES NECESARIO COMPROBAR QUE NO ESTE VACIO, ES POSIBLE QUE ALGUN LICIT DE ERROR AL INTENTAR RECUPERAR EL USUARIO
 			if (!empty($users[$lot_reminder->id_licit])) {
-				$lot_reminder->link_lote = \Config::get('app.url') . '/' . \App::getLocale() . '/subasta-' . $lot_reminder->sub_asigl0 . '-' . str_slug($lot_reminder->id_auc_sessions) . '-' . $lot_reminder->id_auc_sessions . '/' . $lot_reminder->ref_asigl0 . '-' . $lot_reminder->num_hces1 . '-' . str_slug($lot_reminder->titulo_hces1);
+				$lot_reminder->link_lote = Config::get('app.url') . '/' . App::getLocale() . '/subasta-' . $lot_reminder->sub_asigl0 . '-' . str_slug($lot_reminder->id_auc_sessions) . '-' . $lot_reminder->id_auc_sessions . '/' . $lot_reminder->ref_asigl0 . '-' . $lot_reminder->num_hces1 . '-' . str_slug($lot_reminder->titulo_hces1);
 				$users[$lot_reminder->id_licit]["lots"][] = $lot_reminder;
 			}
 		}
@@ -1878,17 +1660,17 @@ class SubastaController extends Controller
 				break;
 
 			case 'price_asc':
-				if (\Config::get('app.order_by_filter') == 'estimacion') {
+				if (Config::get('app.order_by_filter') == 'estimacion') {
 					$order = 'imptash_asigl0 ASC, imptas_asigl0 ASC, ref_asigl0 ASC ';
-				} elseif (\Config::get('app.order_by_filter') == 'precio_salida') {
+				} elseif (Config::get('app.order_by_filter') == 'precio_salida') {
 					$order = 'impsalhces_asigl0 ASC, ref_asigl0 ASC ';
 				}
 				break;
 
 			case 'price_desc':
-				if (\Config::get('app.order_by_filter') == 'estimacion') {
+				if (Config::get('app.order_by_filter') == 'estimacion') {
 					$order = 'imptash_asigl0 DESC, imptas_asigl0 DESC, ref_asigl0 ASC ';
-				} elseif (\Config::get('app.order_by_filter') == 'precio_salida') {
+				} elseif (Config::get('app.order_by_filter') == 'precio_salida') {
 					$order = 'impsalhces_asigl0 DESC, ref_asigl0 ASC ';
 				}
 				break;
@@ -1897,7 +1679,7 @@ class SubastaController extends Controller
 				$order = 'ref_asigl0';
 				break;
 
-			//referencia más alta a más baja
+				//referencia más alta a más baja
 			case 'ref_desc':
 				$order = 'ref_asigl0 DESC';
 				break;
@@ -1984,15 +1766,15 @@ class SubastaController extends Controller
 
 		if (!empty($periodo)) {
 			$periodo = urldecode($periodo);
-			if (\Config::get("app.locale") == 'es') {
-				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values" ON "transfer_sheet_line" = HCES1.LIN_HCES1  AND "transfer_sheet_number" = HCES1.NUM_HCES1 AND "object_types_values"."company" = ' . \Config::get("app.emp");
+			if (Config::get("app.locale") == 'es') {
+				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values" ON "transfer_sheet_line" = HCES1.LIN_HCES1  AND "transfer_sheet_number" = HCES1.NUM_HCES1 AND "object_types_values"."company" = ' . Config::get("app.emp");
 			} else {
-				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values_lang" ON "transfer_sheet_line_lang" = HCES1.LIN_HCES1 AND "transfer_sheet_number_lang" = HCES1.NUM_HCES1 AND "company_lang" = ' . \Config::get("app.emp");
+				$subastaObj->join_filter .= ' LEFT JOIN "object_types_values_lang" ON "transfer_sheet_line_lang" = HCES1.LIN_HCES1 AND "transfer_sheet_number_lang" = HCES1.NUM_HCES1 AND "company_lang" = ' . Config::get("app.emp");
 			}
-			if ($periodo == strtolower(trans(\Config::get('app.theme') . '-app.lot_list.sin_periodo'))) {
+			if ($periodo == strtolower(trans(Config::get('app.theme') . '-app.lot_list.sin_periodo'))) {
 				$subastaObj->where_filter .= ' AND "subperiod_1" IS NULL ';
 			} else {
-				if (\Config::get("app.locale") == 'es') {
+				if (Config::get("app.locale") == 'es') {
 					$subastaObj->where_filter .= " AND \"subperiod_1\" COLLATE LATIN_AI LIKE :subperiod || '%' ";
 					$subastaObj->params_filter["subperiod"] = $periodo;
 				} else {
@@ -2037,66 +1819,6 @@ class SubastaController extends Controller
 			$subastaObj->where_filter .= $customize_values->tipo_sub;
 		}
 	}
-	private function setFilterCustomize_copy($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas)
-	{
-		$category = NULL;
-		//si venimos de categorias o de temáticas
-		if (!empty($type)) {
-			if ($type == "category") {
-				$category = $key_customize;
-			}
-			$auc = new AucIndex();
-			$customize_values = $auc->getAucIndexByKeyname($key_customize, \Config::get('app.locale'));
-			if (empty($customize_values)) {
-				return abort(404);
-			}
-
-			$this->set_customize_values_filter($customize_values, $subastaObj);
-
-			$auction_in_categories =  \Config::get('app.auction_in_categories');
-			//debemos limitar la busqueda a los tipso de subasta que hayan indicado
-			if (!empty($auction_in_categories)) {
-				$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-			}
-
-
-
-			//COMO LAS SUBASTAS DE TIPO P Y TIPO O SE COPIAN LOS LOTES DEBEMOS PONER QUE SOLO COJA EL ULTIMO LOTE, ES DECIR EL QUE COINCIDA CON LA HCES1
-			// DE MOMENTO LO OBVIAMOS POR QUE NOS BASTA CON PONER QUE LOS LOTES NO ESTEN CERRADOS
-			// AND HCES1.REF_HCES1 = ASIGL0.REF_ASIGL0 AND HCES1.SUB_HCES1 = ASIGL0.SUB_ASIGL0
-
-			//Queremos que reindexe si es una familia
-			$seo_family_session = new SeoFamiliasSessiones();
-			$metas = $seo_family_session->FamilySessionsSeoLang($customize_values->id_web_auc_index, \Config::get('app.emp'), strtoupper(\Config::get('app.locale')));
-			//Crea el objeto del Seo donde vendra todo el Seo de esa Category
-			//Crea el objeto para que devuelva informacion de esa category para el breadcrumb
-			$SEO_metas->noindex_follow = false;
-			if (!empty($metas)) {
-				$SEO_metas->url = \Routing::translateSeo($route_customize) . $key_customize;
-				$SEO_metas->webname = $metas[0]->webname_auc_seo;
-				$SEO_metas->meta_title = $metas[0]->webmetat_auc_seo;
-				$SEO_metas->meta_description = $metas[0]->webmetad_auc_seo;
-				$SEO_metas->meta_content = $metas[0]->webcont_auc_seo;
-			}
-		}
-		//es subasta normal
-		else {
-			//Miramos si existe codigo de subasta, si no viene quiere decir que es una categoria
-
-			//Es no es una category que no reindexe
-			$SEO_metas->noindex_follow = true;
-		}
-		//si han elegido una categoria del listado y la subasta no es de tipo categoria
-		if ($type != "category" &&  !empty(Request::input('category'))) {
-			$category = Request::input('category');
-			$auc = new AucIndex();
-			//aqui no usamos $customize values por  que los customize_values son de para subastas customizadas
-			$cat_values = $auc->getAucIndexByKeyname($category, \Config::get('app.locale'));
-			$this->set_customize_values_filter($cat_values, $subastaObj);
-		}
-
-		return $category;
-	}
 
 
 	private function setFilterCustomize($subastaObj, $type, $key_customize, $route_customize,  $SEO_metas, $subcategory)
@@ -2132,7 +1854,7 @@ class SubastaController extends Controller
 
 					//No existe subasta redirigimos a la categoria seleccionada
 					if ($redirect_categ) {
-						$url_redirect = \Routing::translateSeo('subastas') . $key_customize;
+						$url_redirect = Routing::translateSeo('subastas') . $key_customize;
 						header("Location:" . $url_redirect);
 						exit;
 					}
@@ -2140,7 +1862,7 @@ class SubastaController extends Controller
 				//condiciones por la categoria
 				$subastaObj->where_filter  .= " AND (ORTSEC1.LIN_ORTSEC1 = '$ortsec->lin_ortsec0')";
 				$subastaObj->join_filter .= "JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = HCES1.SEC_HCES1 AND ORTSEC1.EMP_ORTSEC1 = HCES1.EMP_HCES1 AND ORTSEC1.SUB_ORTSEC1 = '0') ";
-				$auction_in_categories =  \Config::get('app.auction_in_categories');
+				$auction_in_categories =  Config::get('app.auction_in_categories');
 				if (!empty($auction_in_categories)) {
 
 					$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) ";
@@ -2153,11 +1875,11 @@ class SubastaController extends Controller
 				//si hay subcatgorias
 				if (!empty($subcategory)) {
 					$sec = $sec_obj->getSecByKey($subcategory);
-					if (empty($sec) && !\Config::get('app.filter_period')) {
+					if (empty($sec) && !Config::get('app.filter_period')) {
 						return abort(404);
-					} elseif (!\Config::get('app.filter_period')) {
+					} elseif (!Config::get('app.filter_period')) {
 						$subastaObj->where_filter  .= " AND (HCES1.SEC_HCES1 = '$sec->cod_sec')";
-						$SEO_metas->url = \Routing::translateSeo($route_customize) . $category;
+						$SEO_metas->url = Routing::translateSeo($route_customize) . $category;
 						$SEO_metas->subcategory = $sec->des_sec;
 						$SEO_metas->webname = $ortsec->des_ortsec0;
 						$SEO_metas->meta_title = $sec->meta_titulo_sec;
@@ -2165,47 +1887,11 @@ class SubastaController extends Controller
 						$SEO_metas->meta_content = $sec->meta_contenido_sec;
 					}
 				} else {
-					$SEO_metas->url = \Routing::translateSeo($route_customize) . $category;
+					$SEO_metas->url = Routing::translateSeo($route_customize) . $category;
 					$SEO_metas->webname = $ortsec->des_ortsec0;
 					$SEO_metas->meta_title = $ortsec->meta_titulo_ortsec0;
 					$SEO_metas->meta_description = $ortsec->meta_description_ortsec0;
 					$SEO_metas->meta_content = $ortsec->meta_contenido_ortsec0;
-				}
-			}
-			//subastas temáticas
-			else {
-				$auc = new AucIndex();
-				$customize_values = $auc->getAucIndexByKeyname($key_customize, \Config::get('app.locale'));
-				if (empty($customize_values)) {
-					return abort(404);
-				}
-
-				$this->set_customize_values_filter($customize_values, $subastaObj);
-
-				$auction_in_categories =  \Config::get('app.auction_in_categories');
-				//debemos limitar la busqueda a los tipso de subasta que hayan indicado
-				if (!empty($auction_in_categories)) {
-					$subastaObj->where_filter .= " AND SUB.TIPO_SUB  IN ($auction_in_categories) AND ASIGL0.CERRADO_ASIGL0 = 'N' ";
-				}
-
-
-
-				//COMO LAS SUBASTAS DE TIPO P Y TIPO O SE COPIAN LOS LOTES DEBEMOS PONER QUE SOLO COJA EL ULTIMO LOTE, ES DECIR EL QUE COINCIDA CON LA HCES1
-				// DE MOMENTO LO OBVIAMOS POR QUE NOS BASTA CON PONER QUE LOS LOTES NO ESTEN CERRADOS
-				// AND HCES1.REF_HCES1 = ASIGL0.REF_ASIGL0 AND HCES1.SUB_HCES1 = ASIGL0.SUB_ASIGL0
-
-				//Queremos que reindexe si es una familia
-				$seo_family_session = new SeoFamiliasSessiones();
-				$metas = $seo_family_session->FamilySessionsSeoLang($customize_values->id_web_auc_index, \Config::get('app.emp'), strtoupper(\Config::get('app.locale')));
-				//Crea el objeto del Seo donde vendra todo el Seo de esa Category
-				//Crea el objeto para que devuelva informacion de esa category para el breadcrumb
-				$SEO_metas->noindex_follow = false;
-				if (!empty($metas)) {
-					$SEO_metas->url = \Routing::translateSeo($route_customize) . $key_customize;
-					$SEO_metas->webname = $metas[0]->webname_auc_seo;
-					$SEO_metas->meta_title = $metas[0]->webmetat_auc_seo;
-					$SEO_metas->meta_description = $metas[0]->webmetad_auc_seo;
-					$SEO_metas->meta_content = $metas[0]->webcont_auc_seo;
 				}
 			}
 		}
@@ -2218,18 +1904,6 @@ class SubastaController extends Controller
 			$subcategory = Request::input('cod_sec');
 			$category = Request::input('lin_ortsec');
 		}
-		/*
-        //si han elegido una categoria del listado y la subasta no es de tipo categoria
-        if($type!="category" &&  !empty(Request::input('lin_ortsec1')) ){
-            $category = Request::input('lin_ortsec1');
-
-            $auc = new AucIndex();
-            //aqui no usamos $customize values por  que los customize_values son de para subastas customizadas
-            $cat_values = $auc->getAucIndexByKeyname($category,\Config::get('app.locale'));
-            $this->set_customize_values_filter($cat_values, $subastaObj);
-
-        }
-             */
 
 		return $category;
 	}
@@ -2253,8 +1927,8 @@ class SubastaController extends Controller
 
 		$inf_subasta = $subasta->getInfSubasta();
 
-									#
-		if (!empty($inf_subasta)  && empty(\Config::get("app.DeleteOrdersAnyTime")) && empty(\Config::get("app.DeleteOrders"))   && (strtotime("now") < strtotime($inf_subasta->orders_start)  ||  strtotime("now") > strtotime($inf_subasta->orders_end))) {
+		#
+		if (!empty($inf_subasta)  && empty(Config::get("app.DeleteOrdersAnyTime")) && empty(Config::get("app.DeleteOrders"))   && (strtotime("now") < strtotime($inf_subasta->orders_start)  ||  strtotime("now") > strtotime($inf_subasta->orders_end))) {
 
 
 			$res = array(
@@ -2264,13 +1938,13 @@ class SubastaController extends Controller
 		} else if (!empty($licit)) {
 			$orden = $subasta->getOrden($licit[0]->cod_licit);
 			#para subastas online
-			if( $inf_subasta->tipo_sub == 'O'  ){
+			if ($inf_subasta->tipo_sub == 'O') {
 
 				#debemos comprobar si la orden es superior a las pujas que quedan, por que si no lo es le daremos un mensaje al usuario que no se puede borrar uan orden si ya se ha convertido en puja
 				$pujas = $subasta->getPujas($licit[0]->cod_licit);
 
 				#Si no hay ordenes o la orden ya se ha materializado en puja
-				if(count($orden)==0 || ( count($pujas) > 0 && $pujas[0]->imp_asigl1>= $orden[0]->himp_orlic)) {
+				if (count($orden) == 0 || (count($pujas) > 0 && $pujas[0]->imp_asigl1 >= $orden[0]->himp_orlic)) {
 
 					$res = array(
 						"status" => "error",
@@ -2279,10 +1953,6 @@ class SubastaController extends Controller
 					);
 					return json_encode($res);
 				}
-
-
-
-
 			}
 
 
@@ -2294,14 +1964,14 @@ class SubastaController extends Controller
 				#enviamso email
 				$email = new EmailLib('CANCEL_ORDER');
 				if (!empty($email->email)) {
-					$email->setUserByCod($user->cod_cli,true);
+					$email->setUserByCod($user->cod_cli, true);
 					$email->setLot($cod_sub, $subasta->ref);
 					$email->setAtribute("CANCEL_BID", $subasta->imp);
 					$email->send_email();
 				}
 
 				#llamada a funcion de webservice de borrar orden
-				$this->webServiceDeleteOrder($inf_subasta->tipo_sub,$licit[0]->cod_licit, $subasta->cod, $subasta->ref, $subasta->imp);
+				$this->webServiceDeleteOrder($inf_subasta->tipo_sub, $licit[0]->cod_licit, $subasta->cod, $subasta->ref, $subasta->imp);
 
 
 				$res = array(
@@ -2328,39 +1998,36 @@ class SubastaController extends Controller
 	}
 
 
-	public function webServiceDeleteOrder($type, $licit, $codSub, $ref, $imp ){
+	public function webServiceDeleteOrder($type, $licit, $codSub, $ref, $imp)
+	{
 
-		if(Config::get('app.WebServiceDeleteOrder')){
+		if (Config::get('app.WebServiceDeleteOrder')) {
 
 			$theme  = Config::get('app.theme');
 
-			if($type=="W"){
+			if ($type == "W") {
 
 				$rutaBidController = "App\Http\Controllers\\externalws\\$theme\OrderController";
-			}else{
+			} else {
 				$rutaBidController = "App\Http\Controllers\\externalws\\$theme\BidController";
 			}
 
 
 			$bidController = new $rutaBidController();
 
-			$bidController->deleteOrder($licit, $codSub, $ref, $imp );
+			$bidController->deleteOrder($licit, $codSub, $ref, $imp);
 		}
-
 	}
-
 
 	public function rechargeFilters()
 	{
-
-
 		$data["type"] = app('request')->input('type');
 		$data['cod_sub'] = app('request')->input('cod_sub');
 		$data['id_auc_sessions'] = app('request')->input('id_auc_sessions');
 		$data['category'] = app('request')->input('category');
 		$data['subcategory'] = app('request')->input('subcategory');
 
-		return \View::make('front::includes.select_filters', array('data' => $data));
+		return View::make('front::includes.select_filters', array('data' => $data));
 	}
 
 	public function categSubcateg($all_categ_sub)
@@ -2393,7 +2060,7 @@ class SubastaController extends Controller
 		$data['lote_actual'] = $lote_actual;
 		$data['cerrado'] = true;
 
-		return \View::make('front::includes.ficha.pujas_ficha_cerrada', $data);
+		return View::make('front::includes.ficha.pujas_ficha_cerrada', $data);
 	}
 
 	public function lotes_recomendados($lot)
@@ -2411,7 +2078,7 @@ class SubastaController extends Controller
 			$relacionados = array();
 			$key = "recomendados_email";
 			foreach (Config::get('app.language_complete') as $key_lang => $lang) {
-				\App::setLocale(strtolower($key_lang));
+				App::setLocale(strtolower($key_lang));
 				$replace = array(
 					'emp' => Config::get('app.emp'),
 					'sec_hces1' => $inf_lot->sec_hces1,
@@ -2428,7 +2095,7 @@ class SubastaController extends Controller
 				foreach ($relacionados as $value) {
 
 					$url_friendly = str_slug($value->webfriend_hces1);
-					$url_friendly = \Routing::translateSeo('lote') . $value->sub_asigl0 . "-" . $value->id_auc_sessions . '-' . $value->id_auc_sessions . "/" . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $url_friendly;
+					$url_friendly = Routing::translateSeo('lote') . $value->sub_asigl0 . "-" . $value->id_auc_sessions . '-' . $value->id_auc_sessions . "/" . $value->ref_asigl0 . '-' . $value->num_hces1 . '-' . $url_friendly;
 					$lotes_relacionado = '<a style="color:rgb(110,109,109);" href="' . Config::get('app.url') . $url_friendly . "/" . Config::get('app.utm_email') . '"><div>'
 						. '<img width="50px" src="' . Config::get('app.url') . '/img/load/lote_small/' . Config::get('app.emp') . '-' . $value->num_hces1 . '-' . $value->lin_hces1 . '.jpg">'
 						. '<br><u>' . $value->descweb_hces1 . '</div></u></a><br><br>';
@@ -2471,17 +2138,17 @@ class SubastaController extends Controller
 
 		$seoExist = TradLib::getWebTranslateWithStringKey('metas', 'title_calendar', config('app.locale', 'es'));
 		$seo = new \stdClass();
-		if(!empty($seoExist)){
-			$seo->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_calendar');
-			$seo->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_calendar');
+		if (!empty($seoExist)) {
+			$seo->meta_title = trans(Config::get('app.theme') . '-app.metas.title_calendar');
+			$seo->meta_description = trans(Config::get('app.theme') . '-app.metas.description_calendar');
 		}
-		$seo->canonical=$_SERVER['HTTP_HOST'].\Routing::slugSeo('calendar');
-		return \View::make('front::pages.calendar', array('data' => $data, 'seo' => $seo));
+		$seo->canonical = $_SERVER['HTTP_HOST'] . Routing::slugSeo('calendar');
+		return View::make('front::pages.calendar', array('data' => $data, 'seo' => $seo));
 	}
 
 	public function calendarController(HttpRequest $request)
 	{
-		if(Config::get('app.default_theme', 'v1') === 'v1') {
+		if (Config::get('app.default_theme', 'v1') === 'v1') {
 			return $this->calendarV1Controller();
 		}
 
@@ -2494,7 +2161,7 @@ class SubastaController extends Controller
 		$year = $request->input('year', date("Y"));
 		$isValidYear = is_numeric($year) && $year > 2000 & $year < 2100;
 
-		if(!$isValidYear){
+		if (!$isValidYear) {
 			$year = date("Y");
 		}
 
@@ -2504,12 +2171,12 @@ class SubastaController extends Controller
 			->get();
 
 		$eventInCalendar = [];
-		foreach($days as $day){
+		foreach ($days as $day) {
 			$eventInCalendar[$day->cod_calendar_event] = 1;
 		}
 
 		//Formatos para utilizar en javascript
-		$daysEventsFormat = $days->map(function($day) {
+		$daysEventsFormat = $days->map(function ($day) {
 			return [
 				'name' => $day->name_calendar,
 				'description' => $day->description_calendar,
@@ -2520,7 +2187,7 @@ class SubastaController extends Controller
 				'url' => $day->url_calendar,
 			];
 		});
-		$auctionsEventsFormat = array_map(function($auction){
+		$auctionsEventsFormat = array_map(function ($auction) {
 			return [
 				'description' => $auction->des_sub,
 				'startDate' => $auction->session_start,
@@ -2532,11 +2199,11 @@ class SubastaController extends Controller
 
 		$seoExist = TradLib::getWebTranslateWithStringKey('metas', 'title_calendar', config('app.locale', 'es'));
 		$seo = new \stdClass();
-		if(!empty($seoExist)){
-			$seo->meta_title = trans(\Config::get('app.theme') . '-app.metas.title_calendar');
-			$seo->meta_description = trans(\Config::get('app.theme') . '-app.metas.description_calendar');
+		if (!empty($seoExist)) {
+			$seo->meta_title = trans(Config::get('app.theme') . '-app.metas.title_calendar');
+			$seo->meta_description = trans(Config::get('app.theme') . '-app.metas.description_calendar');
 		}
-		$seo->canonical=$_SERVER['HTTP_HOST'].\Routing::slugSeo('calendar');
+		$seo->canonical = $_SERVER['HTTP_HOST'] . Routing::slugSeo('calendar');
 
 		$viewData = [
 			'seo' => $seo,
@@ -2554,15 +2221,15 @@ class SubastaController extends Controller
 	public function reproducciones()
 	{
 
-		$data = Input::all();
+		$data = Request::all();
 
-		$video = DB::table("WEB_VIDEO")->where("EMP_VIDEO", \Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->first();
+		$video = DB::table("WEB_VIDEO")->where("EMP_VIDEO", Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->first();
 
 		$res = new \stdClass();
 
 		if (empty($video)) {
 			DB::table("WEB_VIDEO")->insert([
-				"emp_video" => \Config::get('app.emp'),
+				"emp_video" => Config::get('app.emp'),
 				"sub_video" => $data['sub'],
 				"ref_video" => $data['ref'],
 				"video_video" => $data['video'],
@@ -2572,7 +2239,7 @@ class SubastaController extends Controller
 			$res->reproducciones = 1;
 			$res->megusta = 0;
 		} else {
-			DB::table("WEB_VIDEO")->where("EMP_VIDEO", \Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
+			DB::table("WEB_VIDEO")->where("EMP_VIDEO", Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
 				"reproducciones_video" => $video->reproducciones_video + 1
 			]);
 			$res->reproducciones = $video->reproducciones_video + 1;
@@ -2581,11 +2248,11 @@ class SubastaController extends Controller
 
 		$has_megusta = 0;
 
-		if (\Session::has("user")) {
+		if (Session::has("user")) {
 			$has_megusta = DB::table("WEB_VIDEO_MEGUSTA")
-				->where("EMP_VIDEO_MEGUSTA", \Config::get('app.emp'))
+				->where("EMP_VIDEO_MEGUSTA", Config::get('app.emp'))
 				->where("VIDEO_VIDEO_MEGUSTA", $data['video'])
-				->where("CLI_VIDEO_MEGUSTA", \Session::get("user.cod"))
+				->where("CLI_VIDEO_MEGUSTA", Session::get("user.cod"))
 				->first();
 		}
 
@@ -2595,37 +2262,37 @@ class SubastaController extends Controller
 	public function megusta()
 	{
 
-		$data = Input::all();
+		$data = Request::all();
 
-		$video = DB::table("WEB_VIDEO")->where("EMP_VIDEO", \Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->first();
+		$video = DB::table("WEB_VIDEO")->where("EMP_VIDEO", Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->first();
 
 		$has_megusta = DB::table("WEB_VIDEO_MEGUSTA")
-			->where("EMP_VIDEO_MEGUSTA", \Config::get('app.emp'))
+			->where("EMP_VIDEO_MEGUSTA", Config::get('app.emp'))
 			->where("VIDEO_VIDEO_MEGUSTA", $data['video'])
-			->where("CLI_VIDEO_MEGUSTA", \Session::get("user.cod"))
+			->where("CLI_VIDEO_MEGUSTA", Session::get("user.cod"))
 			->first();
 
 		if (empty($has_megusta)) {
 
 			DB::table("WEB_VIDEO_MEGUSTA")->insert([
-				"EMP_VIDEO_MEGUSTA" => \Config::get('app.emp'),
+				"EMP_VIDEO_MEGUSTA" => Config::get('app.emp'),
 				"VIDEO_VIDEO_MEGUSTA" => $data['video'],
-				"CLI_VIDEO_MEGUSTA" => \Session::get("user.cod")
+				"CLI_VIDEO_MEGUSTA" => Session::get("user.cod")
 			]);
 
-			DB::table("WEB_VIDEO")->where("EMP_VIDEO", \Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
+			DB::table("WEB_VIDEO")->where("EMP_VIDEO", Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
 				"megusta_video" => $video->megusta_video + 1
 			]);
 			echo ($video->megusta_video + 1) . "-1";
 		} else {
 
 			DB::table("WEB_VIDEO_MEGUSTA")
-				->where("EMP_VIDEO_MEGUSTA", \Config::get('app.emp'))
+				->where("EMP_VIDEO_MEGUSTA", Config::get('app.emp'))
 				->where("VIDEO_VIDEO_MEGUSTA", $data['video'])
-				->where("CLI_VIDEO_MEGUSTA", \Session::get("user.cod"))
+				->where("CLI_VIDEO_MEGUSTA", Session::get("user.cod"))
 				->delete();
 
-			DB::table("WEB_VIDEO")->where("EMP_VIDEO", \Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
+			DB::table("WEB_VIDEO")->where("EMP_VIDEO", Config::get('app.emp'))->where("REF_VIDEO", $data['ref'])->where("SUB_VIDEO", $data['sub'])->where("VIDEO_VIDEO", $data['video'])->update([
 				"megusta_video" => $video->megusta_video - 1
 			]);
 			echo ($video->megusta_video - 1) . "-0";
@@ -2633,22 +2300,23 @@ class SubastaController extends Controller
 	}
 
 
-	public function getFormularioPujar(){
+	public function getFormularioPujar()
+	{
 
 		$cod_cli = request('cod_cli');
 		$cod_sub = request('cod_sub');
 		$ref = request('ref');
 
-		\App::setLocale(strtolower(request('lang', 'es')));
+		App::setLocale(strtolower(request('lang', 'es')));
 
-		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'email_cli', 'cif_cli' ,'fisjur_cli')->where('cod_cli', $cod_cli)->first();
+		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'email_cli', 'cif_cli', 'fisjur_cli')->where('cod_cli', $cod_cli)->first();
 
 		$formulario = [
-			trans(\Config::get('app.theme') . '-app.login_register.nombre') => FormLib::TextReadOnly('nom', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->rsoc_cli : $fxCli->nom_cli),
-			trans(\Config::get('app.theme') . '-app.login_register.email') => FormLib::TextReadOnly('email_cli', 1, $fxCli->email_cli),
-			trans(\Config::get('app.theme') . '-app.login_register.nif_dni_nie') => FormLib::TextReadOnly('cif_cli', 1, $fxCli->cif_cli),
-			trans(\Config::get('app.theme') . '-app.login_register.representar') => FormLib::Select('representar', 1, $fxCli->fisjur_cli == 'R' ? 'S' : 'N', ['S' => trans(\Config::get('app.theme') . '-app.login_register.yes'), 'N' => trans(\Config::get('app.theme') . '-app.login_register.no') ], '', '', false),
-			trans(\Config::get('app.theme') . '-app.login_register.company') => FormLib::Text('nom_rsoc', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->nom_cli : ($fxCli->fisjur_cli == 'J' ? $fxCli->rsoc_cli : ''), 'maxlength="59"'),
+			trans(Config::get('app.theme') . '-app.login_register.nombre') => FormLib::TextReadOnly('nom', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->rsoc_cli : $fxCli->nom_cli),
+			trans(Config::get('app.theme') . '-app.login_register.email') => FormLib::TextReadOnly('email_cli', 1, $fxCli->email_cli),
+			trans(Config::get('app.theme') . '-app.login_register.nif_dni_nie') => FormLib::TextReadOnly('cif_cli', 1, $fxCli->cif_cli),
+			trans(Config::get('app.theme') . '-app.login_register.representar') => FormLib::Select('representar', 1, $fxCli->fisjur_cli == 'R' ? 'S' : 'N', ['S' => trans(Config::get('app.theme') . '-app.login_register.yes'), 'N' => trans(Config::get('app.theme') . '-app.login_register.no')], '', '', false),
+			trans(Config::get('app.theme') . '-app.login_register.company') => FormLib::Text('nom_rsoc', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->nom_cli : ($fxCli->fisjur_cli == 'J' ? $fxCli->rsoc_cli : ''), 'maxlength="59"'),
 		];
 
 		return view('front::includes.ficha.formulario_deposito', compact('formulario', 'cod_sub', 'ref'))->render();
@@ -2657,17 +2325,17 @@ class SubastaController extends Controller
 	public function sendFormularioPujar()
 	{
 
-		if(!Session::has('user')){
-			return response(trans(\Config::get('app.theme') . '-app.msg_error.mustLogin'), 404);
+		if (!Session::has('user')) {
+			return response(trans(Config::get('app.theme') . '-app.msg_error.mustLogin'), 404);
 		}
 
 		$files = request()->file('file') ?? [];
 
 		foreach ($files as $file) {
-			if($file->getError() == 1){
+			if ($file->getError() == 1) {
 				$max_size = $file->getMaxFileSize() / 1024 / 1024;  // Get size in Mb
 				$error = 'El tamaño del documento debe ser menor a ' . $max_size . 'Mb.';
-        		return response($error, 404);
+				return response($error, 404);
 			}
 		}
 
@@ -2682,29 +2350,28 @@ class SubastaController extends Controller
 		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'fisjur_cli', 'email_cli', 'cif_cli')->where('COD_CLI', $cod_cli)->first();
 
 		//quiere representar, antes ya lo era y el nombre de la empresa ha cambiado
-		if($representar == 'S' && mb_strtolower($nom_rsoc) != mb_strtolower($fxCli->nom_cli)){
+		if ($representar == 'S' && mb_strtolower($nom_rsoc) != mb_strtolower($fxCli->nom_cli)) {
 
 			$fxCli = $user->changeToRepresentative($fxCli, $nom_rsoc);
 		}
 		//No quiere representar, pero antes era representante
-		elseif($representar == 'N' && $fxCli->fisjur_cli == 'R'){
+		elseif ($representar == 'N' && $fxCli->fisjur_cli == 'R') {
 
 			$fxCli = $user->changeFromRepresentativeToParticular($fxCli);
 		}
 
 		//Envio de email
-		if($mailController->sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files)){
-			return response(trans(\Config::get('app.theme') . '-app.msg_success.mensaje_enviado'), 200);
+		if ($mailController->sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files)) {
+			return response(trans(Config::get('app.theme') . '-app.msg_success.mensaje_enviado'), 200);
 		}
-		return response(trans(\Config::get('app.theme') . '-app.msg_error.generic'), 404);
-
+		return response(trans(Config::get('app.theme') . '-app.msg_error.generic'), 404);
 	}
 
 	public function acceptAuctionConditions(HttpRequest $request)
 	{
 		$theme = Config::get('app.theme');
 
-		if(!Session::has('user')){
+		if (!Session::has('user')) {
 			Log::error("Error al aceptar condiciones de subasta, usuario no logueado", ["request" => $request->all()]);
 
 			return response()->json([
@@ -2727,7 +2394,8 @@ class SubastaController extends Controller
 		]);
 	}
 
-	public function modalGridImages(){
+	public function modalGridImages()
+	{
 
 		$num_hces1 = request('num_hces1');
 		$lin_hces1 = request('lin_hces1');
@@ -2745,7 +2413,6 @@ class SubastaController extends Controller
 		$videos = $subastaModel->getLoteVideos($numLin);
 
 		return view('front::includes.grid._modal_images', compact('imagenes', 'videos', 'ref_asigl0', 'titulo', 'descripcion', 'num_hces1', 'lin_hces1', 'cod_sub'))->render();
-
 	}
 
 	public function modalImagesFullScreen()
@@ -2780,11 +2447,11 @@ class SubastaController extends Controller
 
 		$file = FgHces1Files::getFileByIdCanViewUser($user, $idFile, $deposit);
 
-		if(!$file){
+		if (!$file) {
 			abort(404);
 		}
 
-		if(!file_exists($file->storage_path)){
+		if (!file_exists($file->storage_path)) {
 			abort(404);
 		}
 
@@ -2794,7 +2461,7 @@ class SubastaController extends Controller
 
 	public function getAucSessionFiles(HttpRequest $request)
 	{
-		if(!$request->auction || !$request->reference){
+		if (!$request->auction || !$request->reference) {
 			return response()->json(['status' => 'error', 'error' => 'No se ha encontrado la subasta'], 404);
 		}
 
@@ -2811,5 +2478,4 @@ class SubastaController extends Controller
 			'html' => $view,
 		]);
 	}
-
 }

@@ -1037,7 +1037,7 @@ class Subasta extends Model
 
 		$whereAuctions = "";
 		if(!empty($whereFilters['cods_sub'])){
-			$whereAuctions = " AND SUB.COD_SUB IN ('".implode("',", $whereFilters['cods_sub'])."')";
+			$whereAuctions = " AND SUB.COD_SUB IN ('" . implode("', '", $whereFilters['cods_sub']) . "')";
 		}
 
         if($favorites){
@@ -5051,42 +5051,121 @@ class Subasta extends Model
 		return $auctions;
 	}
 
+	/**
+	 * Verifica si un usuario puede pujar en una subasta según credito o riescli
+	 * @param array $user
+	 * @param object $lote
+	 * @param Subasta $subasta
+	 * @param bool $is_gestor
+	 * @param User $gestor
+	 * @return bool
+	 */
+	function canBid($user, $lote, $subasta, $is_gestor, $gestor)
+	{
+		// Verifica si puede pujar usando crédito
+		if ($this->usesCredit($user, $lote)) {
+			return $this->validateCreditBid($subasta);
+		}
 
-    /* comento el tema de enviar email de puja es para salaretiro, Josep comenta que de momento no se envie
-    function send_email_bid($cod,$ref,$licit,$imp) {
+		// Verifica el límite de adjudicaciones del cliente en subastas
+		if ($this->adjudicationLimit($user, $lote, $is_gestor)) {
+			return $this->validateAdjudications($user, $subasta, $gestor);
+		}
 
+		// Si no se cumple ninguna de las condiciones anteriores, se permite la puja
+		return true;
+	}
 
-                  $emailOptions = array(
-                    'user'      => Config::get('app.name'),
-                    'email'     => Config::get('app.admin_email'),
-                    'to'        => Config::get('app.admin_email_administracion'),
-                    'subject'   => "Puja realizada en Subasta: ".$cod." REF: ". $ref  ,
-                    'content'      => "Se ha realizado una puja:<br> Subasta: <strong> ".$cod."</strong></br> REF: <strong>".$ref."</strong> <br> Importe: <strong>".$imp." €</strong> </br> Licitador: <strong>".$licit."</strong> </br> Hora: <strong>".date("d/m/Y H:i:s")."</strong>",
+	private function usesCredit($user, $lote)
+	{
+		return Config::get('app.use_credit') && count($user) > 0 && $lote->tipo_sub === 'W';
+	}
 
-                        );
+	private function validateCreditBid($subasta)
+	{
+		$puedePujar = self::allowBidCredit($subasta->cod, null, $subasta->licit, $subasta->imp);
+		return $puedePujar;
+	}
 
+	private function adjudicationLimit($user, $lote, $is_gestor)
+	{
+		return !Config::get('app.use_credit')
+			&& Config::get('app.disabled_ries_cli') == false
+			&& in_array($lote->tipo_sub, ['W', 'O'])
+			&& !$is_gestor
+			&& count($user) > 0
+			&& !empty($user[0]->max_adj)
+			&& $user[0]->max_adj > 0;
+	}
 
-                ToolsServiceProvider::sendMail('notification', $emailOptions);
-    }
-        */
-    /*
-    //Función nueva para coger la mínima información necesaria de un lote
-    function getLoteInfo(){
-          $params = array(
-                'emp'       =>  Config::get('app.emp'),
-                'cod_sub'   =>  $this->cod
-                );
-       $sql = " select S1.TITULO_HCES1, S1.REF_HCES1, S1.IMPSAL_HCES1, S1.DESC_HCES1 AS \"DESC\", L0.CERRADO_ASIGL0 from FGHCES1 S1
-                JOIN FGASIGL0 L0 ON L0.EMP_ASIGL0 = S1.EMP_HCES1 AND L0.REF_ASIGL0 = S1.REF_HCES1 AND L0.SUB_ASIGL0 = S1.SUB_HCES1
-                WHERE S1.REF_HCES1 = 1 AND S1.EMP_HCES1 = :emp AND S1.SUB_HCES1= :cod_sub";
-       $lote = DB::select($sql);
+	/**
+	 * Calcula el importe total de las adjudicaciones, más el importe de las órdenes y/o pujas
+	 * y verifica si el importe total supera el límite de adjudicaciones del cliente
+	 * @param array $user
+	 * @param Subasta $subasta
+	 * @param User $gestor
+	 */
+	private function validateAdjudications($user, $subasta, $gestor)
+	{
+		$id_auc_sessions = $subasta->getIdAucSessionslote($subasta->cod, $subasta->lote);
+		$get_session = $subasta->get_session($id_auc_sessions);
 
-       if($lote){
-           return head($lote, $params);
-       }else{
-           return NULL;
-       }
-    }
-    */
+		// Calcular adjudicaciones
+		$adjudic = $gestor->getAllAdjudicacionesSession($subasta->cod, $get_session->reference, $subasta->licit);
+		$imp_adjudic = 0;
+
+		foreach ($adjudic as $price) {
+			$imp_adjudic = $price->himp_csub + $imp_adjudic;
+		}
+
+		$total_imp_adju = $imp_adjudic + $subasta->imp;
+
+		// Calcular importe de órdenes
+		$importeOrdenes = $this->calculateBidsOrOrderAmount($subasta, $user);
+
+		// Verificar límite de adjudicaciones
+		if (($total_imp_adju + $importeOrdenes) > $user[0]->max_adj) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function calculateBidsOrOrderAmount($subasta, $user)
+	{
+		if (Config::get('app.max_orders_ries_cli', false)) {
+			return FgOrlic::getTotalOrdersInAuction($subasta->cod, $subasta->ref, $user[0]->cli_licit, true);
+		}
+
+		if (Config::get('app.max_orders_and_bids_ries_cli', false)) {
+			return $this->sumMaxBidsOrOrdersInAuctionToLicit($subasta);
+		}
+
+		return 0;
+	}
+
+	private function sumMaxBidsOrOrdersInAuctionToLicit($subasta)
+	{
+		$bids = FgAsigl1::query()
+			->select('ref_asigl1', 'licit_asigl1', 'max(imp_asigl1) as max_imp_asigl1', 'max(himp_orlic) as max_himp_orlic')
+			->leftJoin('fgorlic', 'emp_orlic = emp_asigl1 and sub_orlic = sub_asigl1 and ref_orlic = ref_asigl1 and licit_orlic = licit_asigl1')
+			//fgcsub para solamente tener en cuenta los lotes no adjudicados
+			->leftJoin('fgcsub', 'emp_csub = emp_asigl1 and sub_csub = sub_asigl1 and ref_csub = ref_asigl1')
+			->where([
+				['sub_asigl1', $subasta->cod],
+				['ref_asigl1', '!=', $subasta->ref], //debemos descartar el lote actual
+				['licit_asigl1', $subasta->licit]
+			])
+			->whereNull('ref_csub')
+			->groupBy('ref_asigl1', 'licit_asigl1')
+			->orderBy('ref_asigl1')
+			->get();
+
+		$sumMaxBidOrOrder = $bids->map(function ($bid) {
+			return max($bid->max_imp_asigl1, $bid->max_himp_orlic);
+		})->sum();
+
+		return $sumMaxBidOrOrder;
+	}
 
 }

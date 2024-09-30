@@ -26,6 +26,9 @@ Route::get(Routing::translateSeo('departamento') . '{text}', [EnterpriseControll
 Route::get(Routing::translateSeo('video-subastas'), [CustomControllers::class, 'videoAuctions']);
 Route::get(Routing::translateSeo('equipo'), [EnterpriseController::class, 'team'])->name('enterprise.team');
 
+//SUBARNA
+Route::get(Routing::translateSeo('about-us'), 'EnterpriseController@aboutUsPage')->name('landing-about-us');
+
 #VICO
 // Estaticas con banner
 Route::view(Routing::translateSeo('tienda-online'), 'front::pages.bannerPage', ['data' => ['name_web_page' => 'foot.direct_sale', 'banner' => 'tienda-banner']]);

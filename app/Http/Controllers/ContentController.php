@@ -44,6 +44,10 @@ class ContentController extends Controller
 		$contents = "";
 
 		$replaces = $request->input('replace');
+		if (empty($replaces) || !is_array($replaces) || !$request->has('key')) {
+			return $contents;
+		}
+
 		$replaces = array_map(function ($replace) {
 			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
 		}, $replaces);
@@ -137,10 +141,13 @@ class ContentController extends Controller
 
 	function getAjaxNewCarousel(Request $request)
 	{
-		Config::set('app.locale', request('lang', 'es'));
+		$langkey = array_search($request->input('replace.lang', 'es-ES'), Config::get('app.language_complete'));
+		Config::set('app.locale', $langkey);
 
 		$key = $request->input('key');
-		if (!$key) {
+		$replaces = $request->input('replace');
+
+		if (empty($replaces) || !is_array($replaces) || !$key) {
 			return "";
 		}
 

@@ -20,7 +20,7 @@
 		{{ trans($theme.'-app.lot.retired') }}
 	</div>
 @elseif($devuelto)
-	<div class="RightlabelGrid" style="font-size: 10px">
+	<div class="RightlabelGrid RightlabelGrid_devuelto">
 		{{ trans($theme.'-app.subastas.dont_available') }}
 	</div>
 @elseif($awarded && $cerrado &&  (!empty($precio_venta)) || ($sub_historica && !empty($item->impadj_asigl0)) )

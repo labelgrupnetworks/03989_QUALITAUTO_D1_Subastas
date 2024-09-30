@@ -5,7 +5,7 @@
         </div>
 
         <div class="auction__filters-type-list mt-1 collapse" id="estado_lotes" >
-            <div class="input-category auction__filters-collapse d-flex align-items-center justify-content-space-between collapse in" id="">
+            <div class="input-category auction__filters-collapse">
                 <div class="category_level_01 d-flex align-items-center justify-content-space-between">
                     <div class="radio">
                         <input type="radio" class="js-check-award" name="liveLots" id="liveLots" value="1" <?=  !empty(request('liveLots'))? 'checked="checked"' : '' ?>  />

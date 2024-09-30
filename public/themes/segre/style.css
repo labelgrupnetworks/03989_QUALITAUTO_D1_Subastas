@@ -352,10 +352,13 @@ p {
 .featured-log-bnr .yt-video-title {
 	--lh: 1.1;
 	--fs: 30px;
+	--lines: 3;
 	color: var(--secondary-color);
 	font-size: var(--fs);
 	line-height: var(--lh);
-	height: calc(2 * var(--fs) * var(--lh));
+	height: calc(var(--lines) * var(--fs) * var(--lh));
+	text-wrap: balance;
+	text-wrap: pretty;
 }
 
 .featured-log-bnr iframe {

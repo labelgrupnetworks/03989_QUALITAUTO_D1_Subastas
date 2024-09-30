@@ -26,7 +26,14 @@
 			</div>
 			@if(!empty($codSub) && !empty($refSession))
 				<div class=" search-control-input">
-					<input  name="reference" id="reference_filter_grid" class="form-control input-sm search-input search-input_js" type="text" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" value="{{request('reference')}}" >
+
+					<input  name="reference" id="reference_filter_grid" type="hidden" value="{{request('reference')}}" >
+					<input  name="reference_value" id="reference_filter_grid_value" class="form-control input-sm search-input search-input_js"
+						type="text" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" value="{{request('reference_value')}}" >
+
+					{{-- <input  name="reference" id="reference_filter_grid" class="form-control input-sm search-input search-input_js"
+						type="text" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" value="{{request('reference')}}" > --}}
+
 					<button id="search-btn" type="button" class="button-principal button-search search-btn_js"><i class="fas fa-search"></i></button>
 				</div>
 			@endif

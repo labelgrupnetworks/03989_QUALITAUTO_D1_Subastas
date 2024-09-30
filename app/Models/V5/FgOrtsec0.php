@@ -7,6 +7,8 @@ use App\Override\RelationCollection;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Config;
 
 class FgOrtsec0 extends Model
 {
@@ -25,7 +27,7 @@ class FgOrtsec0 extends Model
     #definimos la variable emp para no tener que indicarla cada vez
     public function __construct(array $vars = []){
         $this->attributes=[
-            'emp_ortsec0' => \Config::get("app.emp")
+            'emp_ortsec0' => Config::get("app.emp")
 		];
 
         parent::__construct($vars);
@@ -41,13 +43,20 @@ class FgOrtsec0 extends Model
         parent::boot();
 
         static::addGlobalScope('emp', function(Builder $builder) {
-            $builder->where('emp_ortsec0', \Config::get("app.emp"));
+            $builder->where('emp_ortsec0', Config::get("app.emp"));
         });
     }
 
 	public function newCollection(array $models = [])
 	{
 		return new RelationCollection($models);
+	}
+
+	public function departmentRoutePage(): Attribute
+	{
+		return Attribute::make(
+			get: fn () => route('department', ['text' => $this->key_ortsec0])
+		);
 	}
 
     #esta funcion espera un objeto y coje los valores que necesita la APi para hacer un update

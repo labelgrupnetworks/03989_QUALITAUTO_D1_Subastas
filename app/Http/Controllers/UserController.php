@@ -1575,7 +1575,7 @@ class UserController extends Controller
 
 	private function updateCreditCard($request, $cod_cli)
 	{
-		$cli = FxCli::select('email_cli')->where('cod_cli', $cod_cli)->first();
+		$cli = FxCli::joinCliWebCli()->where('cod_cli', $cod_cli)->first();
 		$credit_card = $request["creditcard_fxcli"];
 		/* conseguir el mail */
 		$key = strtolower($cli->email_cli);
@@ -1736,7 +1736,7 @@ class UserController extends Controller
 
 		// divido los configs ya que son independientes
 		if (Config::get('app.user_panel_cc', false)) {
-			$data['creditCard'] = $this->getCreditCard($datos->email_cli, $datos->cod_cli);
+			$data['creditCard'] = $this->getCreditCard($datos->email_cliweb, $datos->cod_cli);
 		}
 		if (Config::get('app.user_panel_cif', false)) {
 			$data['cifImages'] = $this->getCIFImages($datos->cod_cli);

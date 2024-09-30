@@ -585,7 +585,13 @@ class FormLib
 	}
 
 
+	static function Color($strNombre, $boolObligatorio = 0, $strValue = '', $strExtra = "")
+	{
 
+		$aux = '<input type="color" class="form-control effect-16" name="' . $strNombre . '" id="color__' . $boolObligatorio . '__' . $strNombre . '" value="' . $strValue . '" onblur="comprueba_campo(this)" ' . $strExtra . ' data-placement="right" autocomplete="off">';
+
+		return $aux;
+	}
 
 
 

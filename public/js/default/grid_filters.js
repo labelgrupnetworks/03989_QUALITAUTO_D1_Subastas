@@ -1,7 +1,12 @@
-checkTextFilters();
+const referenceInputToCheck = $('#form_lotlist input[name="reference_value"]').length ? $('#form_lotlist input[name="reference_value"]') : $('#form_lotlist input[name="reference"]');
 
-$('#form_lotlist input[name="reference"]').on('keyup', checkTextFilters);
+checkTextFilters();
+referenceInputToCheck.length && validateReference(referenceInputToCheck[0]);
+
 $('#form_lotlist input[name="description"]').on('keyup', checkTextFilters);
+$(referenceInputToCheck).on('keyup', checkTextFilters);
+$(referenceInputToCheck).on('input', (event) => validateReference(event.target));
+
 $('#form_lotlist').on('submit', disabledButtonSubmit);
 
 $("#order_selected").change(function(){
@@ -232,4 +237,47 @@ function enabledButtonSubmit(){
 
 function disabledButtonSubmit(){
 	$('#form_lotlist button[type="submit"]').addClass('disabled').prop('disabled', true);
+}
+
+function validateReference(input) {
+	// Solo permitir números, ',' y '.' con posibilidad de letra tras el punto
+    let value = input.value;
+    const valid = /^[0-9]+(\.[A-Ea-e0-9])?$/.test(value);
+
+    if (!valid) {
+		input.value = normalizeReferenceValue(value);
+    }
+
+	refreshReferenceValue(input.value);
+}
+
+function normalizeReferenceValue(value) {
+	value = value
+		.replace(/[^0-9A-Ea-e.]/g, '')    // Eliminar cualquier carácter que no sea número, letra o punto
+		.replace(/\..*\./g, '.')           // Eliminar puntos adicionales si hay más de uno
+		.replace(/(\.[A-Ea-e0-9]{1}).+$/, '$1');  // Limitar a solo un carácter después del punto
+
+	// Asegurarse de que solo haya números antes del punto
+	const parts = value.split('.');
+	parts[0] = parts[0].replace(/[A-Ea-e]/g, '');  // Eliminar cualquier letra antes del punto
+
+	return parts.join('.');
+}
+
+function refreshReferenceValue(value) {
+
+	if(value.includes('.')){
+		const parts = value.split('.');
+		const afterDecimal = parts[1];
+
+		// Si el carácter después del punto es una letra (A-E), convertir a su posición en el alfabeto
+		if (/[A-Ea-e]/.test(afterDecimal)) {
+			const letter = afterDecimal.toUpperCase();
+			const position = letter.charCodeAt(0) - 64;
+
+			value = parts[0] + '.' + position;
+		}
+	}
+
+	$('#form_lotlist input[name="reference"]').val(value);
 }

@@ -41,7 +41,7 @@ use App\Providers\ToolsServiceProvider as Tools;
 use App\Models\V5\FgSub;
 use App\Providers\ToolsServiceProvider;
 
-class subastaTiempoRealController extends Controller
+class SubastaTiempoRealController extends Controller
 {
     public $cod;
 	public $ref;
@@ -1967,47 +1967,12 @@ class subastaTiempoRealController extends Controller
                 return $res;
 			 }
 
-			#Credito- SOLER- comprobación de puja , solo subasta presenciales,
-			#no deja pujar si la puja más lo que tienes adjudicado supera tu credito
-			if( (\Config::get('app.use_credit'))  && count($u) > 0 && $lote->tipo_sub == 'W' ){
-				$puedePujar =Subasta::allowBidCredit($subasta->cod, null, $subasta->licit,$subasta->imp);
-				if(!$puedePujar ){
-					$res = $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
-                    return $res;
-				}
 
-
+			//se verifica si se puede pujas según riescli o credito
+			//No se puede pujar si la actual más lo que tienes adjudicado supera tu crédito
+			if(!$subasta->canBid($u, $lote, $subasta, $is_gestor, $gestor)) {
+				return $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
 			}
-            //Limite que puede un cliente tener adjudicaciones en una subastas
-            elseif( !(\Config::get('app.use_credit')) && \Config::get('app.disabled_ries_cli') == false && ($lote->tipo_sub == 'W' || $lote->tipo_sub == 'O') && !$is_gestor && count($u)> 0 && !empty($u[0]->max_adj) && $u[0]->max_adj > 0){
-
-
-
-
-                $id_auc_sessions = $subasta->getIdAucSessionslote($subasta->cod, $subasta->lote);
-                $get_session = $subasta->get_session($id_auc_sessions);
-
-                //Miramos todas las pujas de esta subastas
-                $adjudic=$gestor->getAllAdjudicacionesSession($subasta->cod, $get_session->reference, $subasta->licit);
-
-                 $imp_adjudic = 0;
-                 foreach($adjudic as $price){
-                     $imp_adjudic = $price->himp_csub + $imp_adjudic;
-                 }
-				 $total_imp_adju = $imp_adjudic + $subasta->imp;
-
-				 $importeOrdenes = 0;
-				 if(Config::get('app.max_orders_ries_cli', false)){
-					$importeOrdenes = FgOrlic::getTotalOrdersInAuction($subasta->cod, $subasta->ref, $u[0]->cli_licit, true);
-				}
-
-                 //total precios adjudicaciones es mas grande que el importe maximo del cliente devolvemos error.
-                 if(($total_imp_adju + $importeOrdenes) > $u[0]->max_adj){
-                    $res = $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
-                    return $res;
-                 }
-            }
-
         }
 
 
