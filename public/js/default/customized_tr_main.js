@@ -459,7 +459,7 @@ function hideStreaming() {
 	document.getElementById('streaming').style.opacity = '0';
 }
 
-function auctionIsStartedDate() {
+/* function auctionIsStartedDate() {
 	const start_session = auction_info?.lote_actual?.start_session;
 
 	if(!start_session){
@@ -468,4 +468,4 @@ function auctionIsStartedDate() {
 
 	const isStart = new Date() > new Date(start_session);
 	return isStart;
-}
+} */
