@@ -4320,6 +4320,27 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	font-size: 16px;
 }
 
+.contact-auction-info-section {
+	margin-block: var(--space-medium);
+}
+
+.contact-auction-info {
+	text-align: center;
+    border: 1px solid;
+    max-width: fit-content;
+    margin: auto;
+    padding: var(--space-small) var(--space-medium);
+}
+
+.contact-auction-info p:first-of-type {
+	font-weight: var(--fw-default-bold);
+}
+
+/* remove margin to last p  */
+.contact-auction-info p:last-of-type {
+	margin: 0;
+}
+
 /* -------------------------------------------------------
 ----------------END Contact Page -------------------------
 ------------------------------------------------------- */

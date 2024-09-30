@@ -98,6 +98,14 @@
 			</div>
 		</div>
 
+		<section class="container contact-auction-info-section">
+			<div class="contact-auction-info">
+				<p>{{ trans("$theme-app.contact.exhibition_schedule_title") }}</p>
+				<p>{{ trans("$theme-app.contact.exhibition_schedule_line1") }}</p>
+				<p>{{ trans("$theme-app.contact.exhibition_schedule_line2") }}</p>
+			</div>
+		</section>
+
 		<div class="background-contact-form">
 			<div class="container padding-contact-sections">
 				<h2 class="fs-xxxlarge">{{ trans("$theme-app.contact.form_title") }}</h2>
