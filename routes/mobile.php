@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Mobile\MobileAuctionsController;
 use App\Http\Controllers\Mobile\MobileAuthController;
+use App\Http\Controllers\Mobile\MobileCategoriesController;
+use App\Http\Controllers\Mobile\MobileLotsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,9 +23,16 @@ Route::get('login', function () {
 
 Route::post('/login', [MobileAuthController::class, 'login']);  // Ruta de login
 
-Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
+//Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
 	Route::get('/user', [MobileAuthController::class, 'user']);
 
-	Route::get('auctions', [MobileAuctionsController::class, 'auctions'])->name('mobile.auctions');
-	Route::get('auction/{codsession}', [MobileAuctionsController::class, 'auction'])->name('mobile.auction');
-});
+	Route::get('auctions', [MobileAuctionsController::class, 'index'])->name('mobile.auctions.index');
+	Route::get('auctions/{codsession}', [MobileAuctionsController::class, 'show'])->name('mobile.auctions.show');
+
+	Route::get('categories', [MobileCategoriesController::class, 'index'])->name('mobile.categories.index');
+
+	Route::get('auctions/{codsession}/lots', [MobileLotsController::class, 'index'])->name('mobile.auctions.lots.index');
+	Route::get('auctions/{codauction}/lots/{lotref}', [MobileLotsController::class, 'show'])->name('mobile.auctions.lots.show');
+	//all lots withou auction
+	Route::get('lots', [MobileLotsController::class, 'index'])->name('mobile.lots.index');
+//});

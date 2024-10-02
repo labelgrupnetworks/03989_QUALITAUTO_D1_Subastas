@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Config;
 
 class MobileAuctionsController extends Controller
 {
-	public function auctions(Request $request)
+	public function index(Request $request)
 	{
 		$lang = $request->user()?->idioma_cliweb ?? 'ES';
 		App::setLocale($lang);
-		$status = $request->input('status', 'S');
 
+		$request->validate([
+			'status' => 'in:S,H',
+		]);
+
+		$status = $request->input('status', 'S');
 		#mandamos query para conseguir todas las sesiones
 
 		$sessions = FgSub::query()
@@ -37,11 +41,11 @@ class MobileAuctionsController extends Controller
 			->get();
 			//->paginate(3);
 
-		return new AuctionCollection($sessions);
-		//return AuctionResource::collection($sessions);
+		//return new AuctionCollection($sessions);
+		return AuctionResource::collection($sessions);
 	}
 
-	public function auction(Request $request, $codsession)
+	public function show(Request $request, $codsession)
 	{
 		$lang = $request->user()?->idioma_cliweb ?? 'ES';
 		App::setLocale($lang);

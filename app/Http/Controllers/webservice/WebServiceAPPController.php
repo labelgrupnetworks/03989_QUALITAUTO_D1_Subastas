@@ -187,6 +187,9 @@ class WebServiceAPPController  extends WebServiceController
 
 
 
+	/**
+	 * @deprecated
+	 */
 	public function login()
 	{
 		$this->missFields(["password", "email"]);
@@ -317,6 +320,9 @@ class WebServiceAPPController  extends WebServiceController
 		return $this->responseSuccsess("User Info", $userResponse);
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function getCategories()
 	{
 		#conseguimos las categorias
@@ -334,6 +340,9 @@ class WebServiceAPPController  extends WebServiceController
 	}
 
 	# FALTA QUE SEA MULTIIDIOMA
+	/**
+	 * @deprecated
+	 */
 	public function getActiveAuctions()
 	{
 		#hacemos una consulta para conseguir las subastas activas poniendo S para definir que no están cerradas
@@ -341,6 +350,9 @@ class WebServiceAPPController  extends WebServiceController
 		return $this->responseSuccsess("Active Auctions", $sessions);
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function getHistoricAuctions()
 	{
 
@@ -350,6 +362,9 @@ class WebServiceAPPController  extends WebServiceController
 	}
 
 
+	/**
+	 * @deprecated
+	 */
 	private function getAuctions($status)
 	{
 		#guardamos el locale actual
@@ -395,6 +410,9 @@ class WebServiceAPPController  extends WebServiceController
 		return $sessionsResponse;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	private function getAuctionImage($cod_sub, $reference)
 	{
 		#intentamos conseguir imagen de sesión
@@ -408,7 +426,9 @@ class WebServiceAPPController  extends WebServiceController
 		return $image_to_load;
 	}
 
-
+	/**
+	 * @deprecated
+	 */
 	public function getAuction()
 	{
 		#guardamos el locale actual en una variable

@@ -25,7 +25,8 @@ class AuctionResource extends JsonResource
 			'description' => $this->description,
 			'files' => $this->files ?? [],
 			'links' => [
-				'self' => route('mobile.auction', ['codsession' => $this->id_auc_sessions]),
+				'self' => route('mobile.auctions.show', ['codsession' => $this->id_auc_sessions]),
+				'lots' => route('mobile.auctions.lots.index', ['codsession' => $this->id_auc_sessions]),
 			],
         ];
     }
