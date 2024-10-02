@@ -32,7 +32,7 @@
         default => trans("$theme-app.subastas.lot_subasta_presencial"),
     };
     $dateFormat = Tools::getDateFormatDayMonthLocale($lote_actual->start_session);
-
+	$auctionUrl = Tools::url_auction($lote_actual->cod_sub, $lote_actual->name, $lote_actual->id_auc_sessions, $lote_actual->reference);
 @endphp
 
 
@@ -52,11 +52,14 @@
         {{-- title --}}
         <section class="ficha-title d-flex">
 			<div class="">
+
 				<p class="ficha_auction-type">
-					{{ $auctionName . ' - ' . $dateFormat }}
+					<a href="{{ $auctionUrl }}">
+						{{ $auctionName . ' - ' . $dateFormat }}
+					</a>
 				</p>
 				<h1>
-					{!! strip_tags($lote_actual->descweb_hces1) !!}
+					<span class="ficha-title-reference">{{ $lote_actual->ref_asigl0 }} - </span>{!! strip_tags($lote_actual->descweb_hces1) !!}
 				</h1>
 			</div>
 

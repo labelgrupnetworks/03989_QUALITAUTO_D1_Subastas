@@ -4715,6 +4715,12 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	margin-top: 0;
 }
 
+.ficha-title .ficha-title-reference {
+	font-family: var(--ff-default);
+	font-weight: var(--fw-default-bold);
+	font-size: .9em;
+}
+
 .ficha-info-block {
 	display: flex;
 	align-items: center;
