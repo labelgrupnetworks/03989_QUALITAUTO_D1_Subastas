@@ -59,7 +59,7 @@
 					</a>
 				</p>
 				<h1>
-					<span class="ficha-title-reference">{{ $lote_actual->ref_asigl0 }} - </span>{!! strip_tags($lote_actual->descweb_hces1) !!}
+					<span class="ficha-title-reference">{{ $lote_actual->ref_asigl0 }}. </span>{!! strip_tags($lote_actual->descweb_hces1) !!}
 				</h1>
 			</div>
 

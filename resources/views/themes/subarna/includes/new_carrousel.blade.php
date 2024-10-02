@@ -8,7 +8,7 @@
 				${$key} = $value;
 			}
 
-			$titulo = $item->ref_asigl0.'-'.strip_tags ($item->descweb_hces1);
+			$titulo = strip_tags ($item->descweb_hces1);
 			$class_square = '';
 			$codeScrollBack ="";
 		?>
