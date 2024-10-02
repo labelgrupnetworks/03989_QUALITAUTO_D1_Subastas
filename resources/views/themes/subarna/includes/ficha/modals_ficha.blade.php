@@ -115,7 +115,7 @@
 </div>
 
 <!--<div class="info hidden" id="price_min_surpass"><div class="col-xs-12 ">{{ trans($theme . '-app.lot.minimal-price') }} <strong> {{ $lote_actual->impres_asigl0 }} {{ trans($theme . '-app.lot.eur') }}</strong></div></div>-->
-<div class="more hidden col-xs-12 text-right" id="view_more">
+<div class="more hidden col-xs-12" id="view_more">
     <a data-toggle="collapse" data-target="#pujas-collapse" href="javascript:view_all_bids();" title="ver todas">
         <span id="view_more_text">{{ trans($theme . '-app.lot.see-all') }} </span>
         <span class="hidden" id="hide_bids_text">{{ trans($theme . '-app.lot.hidden') }}</span></a>
