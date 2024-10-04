@@ -99,7 +99,9 @@
 										<th > </th>
 									@endif
 									@foreach($report["titles"] as $key=> $title)
-										<th > {{$report["totales"][$key]}}</th>
+										@if (!empty($report["totales"][$key]))
+											<th > {{$report["totales"][$key]}}</th>
+										@endif
 									@endforeach
 								</tr>
 							</tfoot>

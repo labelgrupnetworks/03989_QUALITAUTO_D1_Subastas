@@ -72,7 +72,7 @@ class AdminBiReports extends Controller
 
 				$auctions[$auction->cod_sub] =$auction->description;
 				#si no hay subatas seleccionada o si esta en la lista de las seleccionadas
-				if(count($auctionsRequest )==0 || in_array($auction->cod_sub,$auctionsRequest)){
+				if( (count($auctionsRequest )==0 || in_array($auction->cod_sub,$auctionsRequest)) && !empty($auctionsTypes_tmp[$auction->tipo_sub])){
 					$auctionsTypes[$auction->tipo_sub] = $auctionsTypes_tmp[$auction->tipo_sub];
 				}
 			}
@@ -461,16 +461,18 @@ class AdminBiReports extends Controller
 	}
 	#Registro BI
 	private function logAccessReport(  ){
-		$name="Registro de Acceso al BI";
-		$sql="select cod_cli, nom_cli, 'Administrador' as tipo_usuario, date_web_login_log as fecha, ip_web_login_log as ip from web_login_log
+		$name="Registro de Acceso al BI de Gutinvest";
+		$sql="select cod_cli, usrw_cliweb, nom_cli, 'Administrador' as tipo_usuario, date_web_login_log as fecha, ip_web_login_log as ip from web_login_log
 		join fxcli on cod_cli = codcli_web_login_log
 		join fxcliweb on cod_cliweb=cod_cli and emp_cliweb=emp_web_login_log
 		where gemp_cli ='01' and web_login_log.EMP_WEB_LOGIN_LOG='001' and tipacceso_cliweb = 'S'
+		and usrw_cliweb like '%gutinvest.es'
 		and cod_cli != '000001'
-		order by fecha desc";
+		and date_web_login_log > '2024/05/01'
+		order by date_web_login_log ";
 		$datatable = \DB::select($sql);
-		$titles=["cod_cli"=>"Código Cliente", "nom_cli" => "Nombre", "tipo_usuario" => "Tipo de Usuario", "fecha" => "Fecha", "ip" => "IP" ];
-		$classes=["cod_cli"=>"td_number","nom_cli" =>"td_text","tipo_usuario"=> "td_text","fecha" => "td_text", "ip" =>"td_text"];
+		$titles=["fecha" => "Fecha","cod_cli"=>"Código Cliente", "nom_cli" => "Nombre", "usrw_cliweb" => "Email",   "tipo_usuario" => "Tipo de Usuario",  "ip" => "IP" ];
+		$classes=["cod_cli"=>"td_number",  "usrw_cliweb" => "td_text",  "nom_cli" =>"td_text","tipo_usuario"=> "td_text","fecha" => "td_text", "ip" =>"td_text"];
 		$pagingDatatable=true;
 		$charts=[];
 		$params = $this->params;
