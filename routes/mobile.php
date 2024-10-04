@@ -23,7 +23,7 @@ Route::get('login', function () {
 
 Route::post('/login', [MobileAuthController::class, 'login']);  // Ruta de login
 
-//Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
+Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
 	Route::get('/user', [MobileAuthController::class, 'user']);
 
 	Route::get('auctions', [MobileAuctionsController::class, 'index'])->name('mobile.auctions.index');
@@ -35,4 +35,4 @@ Route::post('/login', [MobileAuthController::class, 'login']);  // Ruta de login
 	Route::get('auctions/{codauction}/lots/{lotref}', [MobileLotsController::class, 'show'])->name('mobile.auctions.lots.show');
 	//all lots withou auction
 	Route::get('lots', [MobileLotsController::class, 'index'])->name('mobile.lots.index');
-//});
+});
