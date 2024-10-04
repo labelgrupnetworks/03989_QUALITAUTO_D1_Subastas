@@ -1027,7 +1027,7 @@ function modalVideo(video, ref, codSub, title, description, textButton, url) {
 
 function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descripcion, textButton, url) {
 
-	token = $("input[name='_token']").val();
+	token = $("meta[name='csrf-token']").prop('content');
 	let params = {
 		_token: token,
 		ref_asigl0: ref_asigl0,
@@ -1065,7 +1065,7 @@ function moreImagesGrid(ref_asigl0, cod_sub, num_hces1, lin_hces1, titulo, descr
 
 function moreImagesGridMobile(num_hces1, lin_hces1, page) {
 
-	token = $("input[name='_token']").val();
+	token = $("meta[name='csrf-token']").prop('content');
 	let params = {
 		_token: token,
 		num_hces1: num_hces1,

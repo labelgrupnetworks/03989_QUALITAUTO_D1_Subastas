@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Providers\ToolsServiceProvider;
 use App\libs\MessageLib;
 use App\libs\FormLib;
 use App\libs\EmailLib;
@@ -96,9 +95,13 @@ class ContactController extends Controller
 				$email->setCc($data['email_cc']);
 			}
 
+			if (!empty($request->file('images'))) {
+				$email->attachmentsFiles = array();
+				$email->attachmentsFiles = $request->file('images');
+			}
+
 			$email->send_email();
 		}
-
 
 		// Enviamos el email de confirmación al usuario
 
@@ -131,4 +134,5 @@ class ContactController extends Controller
 
 		return View::make('pages.V5.administradores_concursales', array('data' => $data));
 	}
+
 }

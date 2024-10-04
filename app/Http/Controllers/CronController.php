@@ -240,16 +240,6 @@ class CronController extends Controller
 			}
 
 			$xml[] = $this->xml($url, $key, '', $fechaactual, $priority_web);
-			$index = DB::table('WEB_AUC_INDEX')
-				->join('WEB_AUC_INDEX_LANG', 'WEB_AUC_INDEX_LANG.ID_WEB_AUC_INDEX', '=', 'WEB_AUC_INDEX.ID_WEB_AUC_INDEX')
-				->where('WEB_AUC_INDEX_LANG.ID_LANG', $idioma)
-				->where('WEB_AUC_INDEX.ID_EMP', $emp)
-				->where('WEB_AUC_INDEX.type', '!=', 'P')
-				->get();
-
-			foreach ($index as $value) {
-				$xml[] = $this->xml($url, $key, substr(RoutingServiceProvider::translateSeo('subastas'), 4) . $value->key_name, $fechaactual, $priority_categ);
-			}
 
 			$index = DB::table('WEB_PAGE')
 				->select('key_web_page')

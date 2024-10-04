@@ -41,6 +41,12 @@
 							@php
 								$view = explode(':', $tipo)[1];
 								$params = (!empty($item->texto)) ? json_decode($item->texto, true) : [];
+
+								if(!empty($item->imagen)) {
+									$params['image'] = [];
+									$params['image']['desktop'] = $item->imagen;
+									$params['image']['mobile'] = $item->imagen;
+								}
 							@endphp
 							@includeWhen($params, "includes.banners.$view", $params)
 						</div>

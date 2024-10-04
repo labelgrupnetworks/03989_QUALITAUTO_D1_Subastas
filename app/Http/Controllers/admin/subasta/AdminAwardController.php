@@ -242,7 +242,7 @@ class AdminAwardController extends Controller
 							->first();
 
 		if(!$licitTemp){
-			$cod_licit = FgLicit::select("max(cod_licit) max_cod_licit")->joinCli()->where("sub_licit",$idAuction )->first()->max_cod_licit +1;
+			$cod_licit = FgLicit::newCodLicit($idAuction);
 			$rsoc_licit = FxCli::SelectBasicCli()->where('COD_CLI', $cod_cli)->first()->rsoc_cli;
 
 			$licit = array("sub_licit" => $idAuction,

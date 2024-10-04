@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -52,6 +53,10 @@ class AppServiceProvider extends ServiceProvider
 				}
 			);
 		}
+
+		Auth::provider('md5', function($app, array $config) {
+			return new Md5UserProvider($config['model']);
+		});
 
 		LogViewer::auth(function ($request) {
 			return Session::has('user.admin') && in_array(mb_strtolower(Session::get('user.usrw')), ["subastas@labelgrup.com"]);

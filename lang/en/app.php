@@ -909,6 +909,12 @@ $lang =[
 			'author' => 'Artist',
 			'auctionConditions'	=> 'By bidding you confirm that you accept the conditions of the room' ,
 			'open_lot_to_jump' => 'Open the lot if it is closed',
+			'mp_title' => 'Modified Paddles',
+			'mp_name' => 'Name',
+			'mp_new_paddle' => 'New paddle',
+			'mp_old_paddle' => 'Old paddle',
+			'mp_actual_paddle' => 'Current paddle',
+			'mp_client_code' => 'Client code',
 		),
 	'subastas' =>
 		array (

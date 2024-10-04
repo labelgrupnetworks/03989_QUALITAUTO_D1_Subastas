@@ -1,5 +1,9 @@
 
  <?php
+	/**
+	 * @deprecated
+	 * */
+
     $url = "";
     //Si no esta retirado tendrá enlaces
     if($bann->retirado_asigl0 =='N'){

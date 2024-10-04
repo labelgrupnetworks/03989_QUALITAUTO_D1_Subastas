@@ -12,6 +12,8 @@
 
 @yield('seo')
 
+@includeIf('includes.head.custom_meta_tags')
+
 <title>
     @if (!empty($data['seo']->meta_title))
         {{ $data['seo']->meta_title }}
@@ -30,7 +32,7 @@
 </script>
 
 <link href="<?= '/themes/' . $theme . '/img/favicon.ico' ?>" rel="shortcut icon" />
-@if (env('APP_DEBUG'))
+@if(config('app.debug') || config('app.env') != 'production')
     <meta name="robots" content="noindex">
 @elseif(!empty($data['seo']->noindex_follow) && $data['seo']->noindex_follow == true)
     <meta name="robots" content="noindex,follow">

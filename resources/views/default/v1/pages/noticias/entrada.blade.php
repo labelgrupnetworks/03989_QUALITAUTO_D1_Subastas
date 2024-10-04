@@ -6,7 +6,7 @@
 
 @section('assets_components')
 <link href="{{ Tools::urlAssetsCache('/css/default/noticias.css') }}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="{{ Tools::urlAssetsCache("/themes/" . env('APP_THEME') . "/css/noticias.css") }}" >;
+<link rel="stylesheet" type="text/css" href="{{ Tools::urlAssetsCache("/themes/$theme/css/noticias.css") }}" >
 @endsection
 
 @section('content')

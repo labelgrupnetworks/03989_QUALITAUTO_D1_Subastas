@@ -136,14 +136,11 @@ class AdminLicitController extends Controller
 		if((!$licitTemp) || (!empty($cod_licit))){
 
 			if(empty($cod_licit)){//comprovem si la pelata del formulari esta buida si ho esta li donem una
-				$cod_licit = FgLicit::select("max(cod_licit) max_cod_licit")->joinCli()
-					->where("sub_licit",$idAuction)
-					->where("cod_licit", "<", Config::get('app.subalia_min_licit'))
-					->first()->max_cod_licit +1;
+				$cod_licit = FgLicit::newCodLicit($idAuction);
 			}else{
 				$exist_licit = FgLicit::select("cod_licit")->joinCli()->where("sub_licit",$idAuction )->where("cod_licit",$cod_licit)->first();
 
-				if($exist_licit || ($cod_licit==Config::get('app.dummy_bidder'))){
+				if($exist_licit || ($cod_licit == Config::get('app.dummy_bidder'))){
 					return redirect()->back()
 					->with(['errors' => [0 => 'No se puede crear, ya esta en uso'] ]);
 				}

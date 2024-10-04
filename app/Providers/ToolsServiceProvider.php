@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\services\GoogleApiPlacesController;
 use App\libs\CacheLib;
 use App\libs\ImageGenerate;
 use App\Models\Enterprise;
@@ -182,29 +181,6 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 		$t = strtotime($fecha);
 		return date("d/m/Y H:i:s", $t);
-	}
-
-	public static function time_elapsed_string($datetime, $full = false)
-	{
-		$now = new \DateTime;
-		$ago = new \DateTime($datetime);
-		$diff = $now->diff($ago);
-
-		$diff->w = floor($diff->d / 7);
-		$diff->d -= $diff->w * 7;
-
-		$string = \trans(Config::get('app.theme') . '-app.time');
-
-		foreach ($string as $k => &$v) {
-			if ($diff->$k) {
-				$v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-			} else {
-				unset($string[$k]);
-			}
-		}
-
-		if (!$full) $string = array_slice($string, 0, 1);
-		return $string ? implode(', ', $string)  : 'just now';
 	}
 
 	public static function getOffset($page, $itemsPerPage)
@@ -1428,12 +1404,6 @@ class ToolsServiceProvider extends ServiceProvider
 			$noScript";
 	}
 
-	public static function googleReviews($daysToReload)
-	{
-		$apiGoogle = new GoogleApiPlacesController();
-		return $apiGoogle->getReviews($daysToReload);
-	}
-
 	public static function getDateFormat($dateValue, $formatOrigin, $formatReturn)
 	{
 
@@ -1442,6 +1412,28 @@ class ToolsServiceProvider extends ServiceProvider
 		}
 
 		return Carbon::createFromFormat($formatOrigin, $dateValue)->format($formatReturn);
+	}
+
+	public static function getParseDateFormat($dateValue, $formatReturn)
+	{
+		if(empty($dateValue)){
+			return '';
+		}
+		return Carbon::parse($dateValue)->format($formatReturn);
+	}
+
+	/**
+	 * return date in format day month. Example: 12 de enero / January 12th
+	 * @param string $dateValue
+	 */
+	public static function getDateFormatDayMonthLocale($dateValue)
+	{
+		$completeLocale = self::getLanguageComplete(Config::get('app.locale'));
+   	 	$localeToTime = str_replace('-', '_', $completeLocale);
+		$dateFormat = $localeToTime === 'es_ES' ? 'D [de] MMMM' : 'MMMM Do';
+
+		$carbonDate = Carbon::parse($dateValue);
+		return $carbonDate->locale($localeToTime)->isoFormat($dateFormat);
 	}
 
 	/**

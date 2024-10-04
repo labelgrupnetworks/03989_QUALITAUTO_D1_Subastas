@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\V5\FxCliWeb;
+
 return [
 
     /*
@@ -38,8 +40,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'md5-users',
         ],
+		'mobile' => [
+			'driver' => 'sanctum',
+			'provider' => 'md5-users',
+		]
     ],
 
     /*
@@ -62,13 +68,17 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => FxCliWeb::class,
         ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+		'md5-users' => [
+			'driver' => 'md5',
+			'model' => FxCliWeb::class,
+    	],
     ],
 
     /*

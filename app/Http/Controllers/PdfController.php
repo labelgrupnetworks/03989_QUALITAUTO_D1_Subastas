@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\V5\GaleriaArte;
 use App\Models\Subasta;
 use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
+use App\Models\V5\FgAsigl1Mt;
 use App\Models\V5\FgCsub;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FgOrlic;
-use App\Models\V5\FxCli;
-use App\Models\V5\Web_Cancel_Log;
-use App\Http\Controllers\V5\GaleriaArte;
-use App\Models\V5\FgAsigl1Mt;
-use App\Models\V5\Web_Artist;
 use App\Models\V5\FgSub;
+use App\Models\V5\FxCli;
+use App\Models\V5\Web_Artist;
+use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider as Tools;
 use App\Providers\ToolsServiceProvider;
-use Illuminate\Support\Facades\Config;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class PdfController extends Controller
 {
@@ -31,65 +32,63 @@ class PdfController extends Controller
 	protected $pdfs = array();
 	protected $pathPdfsSaved = array();
 
-	public function __construct()
-	{
-	}
+	public function __construct() {}
 
-	public function pdfExhibition($codSub, $reference ){
+	public function pdfExhibition($codSub, $reference)
+	{
 		$galeriaArte = new GaleriaArte();
 
 		$fgsub = new Fgsub();
-		$auction = $fgsub->getInfoSub(  $codSub, $reference);
+		$auction = $fgsub->getInfoSub($codSub, $reference);
 
 		ToolsServiceProvider::exit404IfEmpty($auction);
-		if($auction->tipo_sub !='E'){
-		exit(\View::make('front::errors.404'));
+		if ($auction->tipo_sub != 'E') {
+			exit(View::make('front::errors.404'));
 		}
 
 		$fgasigl0 = new FgAsigl0();
 
 		$lots = $fgasigl0->select('FGHCES1.NUM_HCES1, FGHCES1.LIN_HCES1, IMPSALHCES_ASIGL0,  DESCWEB_HCES1, REF_ASIGL0,   DES_SUB, DFEC_SUB, HFEC_SUB,IDVALUE_CARACTERISTICAS_HCES1')
-						->leftjoin('FGCARACTERISTICAS_HCES1', "FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0 AND FGCARACTERISTICAS_HCES1.IDCAR_CARACTERISTICAS_HCES1 = '". \Config::get("app.ArtistCode")."'" )
-						->where("COD_SUB", $codSub)
-						#ordenamos por orden, pero tambien tenemos en cuenta la referencia ya que por defecto el orden esta a nully rompia la ordenacion
-						->ActiveLotAsigl0()->orderby("nvl(orden_hces1,ref_hces1), nvl(orden_hces1,99999999999) ")->get();
+			->leftjoin('FGCARACTERISTICAS_HCES1', "FGCARACTERISTICAS_HCES1.EMP_CARACTERISTICAS_HCES1 = FGASIGL0.EMP_ASIGL0 AND NUMHCES_CARACTERISTICAS_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND LINHCES_CARACTERISTICAS_HCES1 = FGASIGL0.LINHCES_ASIGL0 AND FGCARACTERISTICAS_HCES1.IDCAR_CARACTERISTICAS_HCES1 = '" . Config::get("app.ArtistCode") . "'")
+			->where("COD_SUB", $codSub)
+			#ordenamos por orden, pero tambien tenemos en cuenta la referencia ya que por defecto el orden esta a nully rompia la ordenacion
+			->ActiveLotAsigl0()->orderby("nvl(orden_hces1,ref_hces1), nvl(orden_hces1,99999999999) ")->get();
 
 
 		$caracteristicasTmp = $fgasigl0->select('NUM_HCES1, LIN_HCES1, ID_CARACTERISTICAS, nvl(VALUE_CARACTERISTICAS_VALUE,VALUE_CARACTERISTICAS_HCES1 ) VALUE_CARACTERISTICAS')
-							->LeftJoinCaracteristicasAsigl0()
-							->where("COD_SUB", $codSub)
-							->ActiveLotAsigl0()->get();
+			->LeftJoinCaracteristicasAsigl0()
+			->where("COD_SUB", $codSub)
+			->ActiveLotAsigl0()->get();
 		$caracteristicas = array();
 
-		foreach($caracteristicasTmp as $caracteristica){
+		foreach ($caracteristicasTmp as $caracteristica) {
 
-			$numLin = $caracteristica->num_hces1 ."_". $caracteristica->lin_hces1;
-			if(empty($caracteristicas[$numLin] )){
+			$numLin = $caracteristica->num_hces1 . "_" . $caracteristica->lin_hces1;
+			if (empty($caracteristicas[$numLin])) {
 				$caracteristicas[$numLin] = array();
 			}
-			if($caracteristica->id_caracteristicas == 1){
-				$caracteristicas[$numLin] [ $caracteristica->id_caracteristicas] = $galeriaArte->explodeComillas($caracteristica->value_caracteristicas ) ;
-
-			}else{
-				$caracteristicas[$numLin] [ $caracteristica->id_caracteristicas] = $caracteristica->value_caracteristicas;
+			if ($caracteristica->id_caracteristicas == 1) {
+				$caracteristicas[$numLin][$caracteristica->id_caracteristicas] = $galeriaArte->explodeComillas($caracteristica->value_caracteristicas);
+			} else {
+				$caracteristicas[$numLin][$caracteristica->id_caracteristicas] = $caracteristica->value_caracteristicas;
 			}
 		}
 		#buscamos los artistas de la exposición
 		$idArtists = [];
-		foreach($lots as $lot){
-			if(empty($idArtists[$lot->idvalue_caracteristicas_hces1])){
-				$idArtists[$lot->idvalue_caracteristicas_hces1]=$lot->idvalue_caracteristicas_hces1;
+		foreach ($lots as $lot) {
+			if (empty($idArtists[$lot->idvalue_caracteristicas_hces1])) {
+				$idArtists[$lot->idvalue_caracteristicas_hces1] = $lot->idvalue_caracteristicas_hces1;
 			}
 		}
 
 		$artists = [];
 
-		if (count($idArtists) > 0){
+		if (count($idArtists) > 0) {
 			$web_artist = new WEB_ARTIST();
 			$artists = $web_artist->select("NAME_ARTIST, ID_ARTIST")->LeftJoinLang()->wherein("WEB_ARTIST.ID_ARTIST", $idArtists)->get();
 
-			if(\Config::get("app.ArtistNameSurname")){
-				$artists =	 $galeriaArte->nameSurname($artists );
+			if (Config::get("app.ArtistNameSurname")) {
+				$artists =	 $galeriaArte->nameSurname($artists);
 			}
 		}
 
@@ -98,38 +97,34 @@ class PdfController extends Controller
 		$data['lots'] = $lots;
 		$data['auction'] = $auction;
 
-
-
 		$pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
-		$pdf =$pdf->loadView('front::reports.expoArt', $data);
+		$pdf = $pdf->loadView('front::reports.expoArt', $data);
 
-
-
-		return $pdf->download("Expo-".$codSub.".pdf");
+		return $pdf->download("Expo-" . $codSub . ".pdf");
 	}
 
 	public function generateBidsPdf()
 	{
 
-		$reportTitle = trans(\Config::get('app.theme') . '-app.reports.bid_report');
-		$titleTable = trans(\Config::get('app.theme') . '-app.reports.bid_detail');
+		$reportTitle = trans(Config::get('app.theme') . '-app.reports.bid_report');
+		$titleTable = trans(Config::get('app.theme') . '-app.reports.bid_detail');
 
 		$tableContent = [];
 
 		if (empty($this->bids)) {
 			$tableContent[] = [
-				trans(\Config::get('app.theme') . '-app.reports.licit') => '',
-				trans(\Config::get('app.theme') . '-app.reports.cli_name') => '',
-				trans(\Config::get('app.theme') . '-app.reports.imp_asigl1') => '',
-				trans(\Config::get('app.theme') . '-app.reports.bid_date') => ''
+				trans(Config::get('app.theme') . '-app.reports.licit') => '',
+				trans(Config::get('app.theme') . '-app.reports.cli_name') => '',
+				trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => '',
+				trans(Config::get('app.theme') . '-app.reports.bid_date') => ''
 			];
 		} else {
 			foreach ($this->bids as $key => $bid) {
 				$tableContent[] = [
-					trans(\Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
-					trans(\Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
-					trans(\Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
-					trans(\Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
+					trans(Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
+					trans(Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
+					trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
+					trans(Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
 				];
 			}
 		}
@@ -141,10 +136,10 @@ class PdfController extends Controller
 	public function generateClientsPdf()
 	{
 
-		$reportTitle = trans(\Config::get('app.theme') . '-app.reports.client_report');
-		$titleTable = trans(\Config::get('app.theme') . '-app.reports.lot_detail');
+		$reportTitle = trans(Config::get('app.theme') . '-app.reports.client_report');
+		$titleTable = trans(Config::get('app.theme') . '-app.reports.lot_detail');
 
-		$reportBidderTitle = trans(\Config::get('app.theme') . '-app.reports.bidder_report');
+		$reportBidderTitle = trans(Config::get('app.theme') . '-app.reports.bidder_report');
 
 		$collection = collect($this->bids);
 
@@ -158,11 +153,11 @@ class PdfController extends Controller
 			foreach ($bids as $bid) {
 
 				$tableContent[] = [
-					trans(\Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
-					trans(\Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
-					trans(\Config::get('app.theme') . '-app.reports.lot_code') => $bid->ref_asigl1,
-					trans(\Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
-					trans(\Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
+					trans(Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
+					trans(Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
+					trans(Config::get('app.theme') . '-app.reports.lot_code') => $bid->ref_asigl1,
+					trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
+					trans(Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
 				];
 			}
 
@@ -174,10 +169,10 @@ class PdfController extends Controller
 	public function generateAwardLotPdf($propetary, $ref_asigl0, $cod_licit, $import)
 	{
 		//'content_lot_award' => 'De la subasta de la Sociedad :prop <br> El lote nº :lot ha sido adjudicado provionalmente a la sociedad :award<br>Por un importe de :imp'
-		$reportTitle = trans(\Config::get('app.theme') . '-app.reports.award_report');
+		$reportTitle = trans(Config::get('app.theme') . '-app.reports.award_report');
 
 		$bidders = [];
-		if(config('app.withMultipleBidders', false)){
+		if (config('app.withMultipleBidders', false)) {
 
 			$bids = is_array($this->bids) ? collect($this->bids) : $this->bids;
 			$bid = $bids->where('imp_asigl1', $import)->where('cod_licit', $cod_licit)->first();
@@ -196,7 +191,7 @@ class PdfController extends Controller
 			'award' => $this->licits[$cod_licit]->nom_cli,
 			'imp' => $import,
 			'bidders' => $bidders,
-+			'tablaSubasta' => $this->tableInfo,
+			+'tablaSubasta' => $this->tableInfo,
 		];
 
 
@@ -208,8 +203,8 @@ class PdfController extends Controller
 
 		//'content_lot_award' => 'De la subasta de la Sociedad :prop <br> El lote nº :lot ha sido adjudicado provionalmente a la sociedad :award<br>Por un importe de :imp'
 
-		$reportTitle = trans(\Config::get('app.theme') . '-app.reports.award_report');
-		$content = trans(\Config::get('app.theme') . '-app.reports.content_lot_notaward', [
+		$reportTitle = trans(Config::get('app.theme') . '-app.reports.award_report');
+		$content = trans(Config::get('app.theme') . '-app.reports.content_lot_notaward', [
 			'prop' => $propetary,
 			'lot' => $ref_asigl0
 		]);
@@ -238,7 +233,7 @@ class PdfController extends Controller
 		$todos = $this->bids->concat($lotesSinPujas);
 
 		$lotsRange = $todos->min('ref_asigl1');
-		if($todos->count() > 1) {
+		if ($todos->count() > 1) {
 			$lotsRange .= " - {$todos->max('ref_asigl1')}";
 		}
 
@@ -248,9 +243,9 @@ class PdfController extends Controller
 			->where('SUB_HCES1', $inf_subasta->cod_sub)
 			->first();
 
-		$bids = $todos->each(function($item) {
+		$bids = $todos->each(function ($item) {
 			$item->isBid = !empty($item->licit_asigl1);
-		})->sortBy(function($item){
+		})->sortBy(function ($item) {
 			return str_pad($item->ref_asigl1, 3, '0', STR_PAD_LEFT) . '#' . $item->fec_asigl1;
 		});
 
@@ -320,7 +315,7 @@ class PdfController extends Controller
 			$hasMultiple = false;
 			$multiple = [];
 
-			if($withMultipleBidders){
+			if ($withMultipleBidders) {
 
 				$multipleBidder = FgAsigl1Mt::query()->where([
 					['sub_asigl1mt', $inf_subasta->cod_sub],
@@ -330,11 +325,11 @@ class PdfController extends Controller
 
 				$hasMultiple = $multipleBidder->isNotEmpty();
 
-				if($hasMultiple){
+				if ($hasMultiple) {
 
 					foreach ($multipleBidder as $bidder) {
 
-						if($bidder->ratio_asigl1mt == 0) {
+						if ($bidder->ratio_asigl1mt == 0) {
 							//Si el ratio es 0 no se muestra
 							continue;
 						}
@@ -352,10 +347,9 @@ class PdfController extends Controller
 				}
 			}
 
-			if($hasMultiple) {
+			if ($hasMultiple) {
 				array_push($awards, ...$multiple);
-			}
-			else{
+			} else {
 				$awards[] = $award;
 			}
 		}
@@ -378,14 +372,14 @@ class PdfController extends Controller
 		}
 
 		$tableInfo = [
-			trans(\Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
-			trans(\Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
-			trans(\Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
-			trans(\Config::get('app.theme') . '-app.reports.date_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
-			trans(\Config::get('app.theme') . '-app.reports.date_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
-			trans(\Config::get('app.theme') . '-app.reports.hour_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
+			trans(Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
+			trans(Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
+			trans(Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
+			trans(Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
+			trans(Config::get('app.theme') . '-app.reports.date_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans(Config::get('app.theme') . '-app.reports.hour_start') => Tools::getDateFormat($inf_subasta->start, 'Y-m-d H:i:s', 'H:i:s'),
+			trans(Config::get('app.theme') . '-app.reports.date_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'd/m/Y'),
+			trans(Config::get('app.theme') . '-app.reports.hour_end') => Tools::getDateFormat($inf_subasta->end, 'Y-m-d H:i:s', 'H:i:s'),
 		];
 		$this->setTableInfo($tableInfo);
 		$this->generateBidsPdf();
@@ -397,7 +391,7 @@ class PdfController extends Controller
 		$theme = config('app.theme');
 		$awards = $this->getAdjudicaciones($codSub);
 
-		if(!$awards){
+		if (!$awards) {
 			return;
 		}
 
@@ -554,7 +548,7 @@ class PdfController extends Controller
 
 	private function getAdjudicaciones($codSub)
 	{
-		if(!empty($this->awards)){
+		if (!empty($this->awards)) {
 			return $this->awards;
 		}
 
@@ -620,12 +614,12 @@ class PdfController extends Controller
 			->get();
 
 		$clientesOrdenesValidas = $ordenes->pluck('cod_cli');
-		$historicos = $ordenes->concat($logOrdenesPujas)->map(function($item) use ($clientesOrdenesValidas){
+		$historicos = $ordenes->concat($logOrdenesPujas)->map(function ($item) use ($clientesOrdenesValidas) {
 			$item->is_deleted = !$clientesOrdenesValidas->contains($item->cod_cli);
 			return $item;
 		});
 
-		if($lote->tipo_sub != 'W'){
+		if ($lote->tipo_sub != 'W') {
 			$historicos = $historicos->concat($pujas);
 		}
 		$historicos = $historicos->sortByDesc('fecha');

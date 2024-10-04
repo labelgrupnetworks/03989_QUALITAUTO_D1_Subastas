@@ -123,27 +123,7 @@ function imageInBucle(i, dataJson) {
 
 	});
 
-	/*for (var i = 0; i < dataJson.length; i++) {
-		$.ajax({
-			async: false,
-			type: 'POST',
-			url: '/admin/lote/excelImg',
-			data: dataJson[i],
-			success: function(data) {
-				$(`<span>Imagen ${i} cargada correctamente.</span>`).appendTo($log);
-				let percent = `${ (i * 100) / dataJson.length }%`;
-				$("#progressBarImg").css("width", percent);
-				$("#progressBarValue").text(percent);
-			},
-			error: function(data) {
-				$(`<span>Ha habido un problema inesperado con la imagen ${i}.`).appendTo($log);
-				return;
-			}
-		});
-	}*/
 }
-
-
 
 
 function borrarImagenLote(item, url) {
@@ -152,76 +132,6 @@ function borrarImagenLote(item, url) {
 	$.post("/admin/lote/borrarImagenLote", { url: url, _token: token }, function (data) {
 
 		$("#imagen" + item).remove();
-
-	});
-
-}
-
-function borrarSubasta(item) {
-
-	token = $("[name='_token']").val();
-
-	bootbox.confirm("¿Estás seguro que quieres borrar esta subasta?", function (result) {
-
-		if (result) {
-
-			$.post("/admin/subasta/borrarSubasta", { item: item, _token: token }, function (data) {
-
-				if (data == "OK") {
-					showMessage("Subasta borrada");
-					$("#fila" + item).remove();
-				}
-
-			});
-
-		}
-
-	});
-
-}
-
-
-function borrarLote(subasta, num, lin, ref) {
-
-	token = $("[name='_token']").val();
-
-	bootbox.confirm("¿Estás seguro que quieres borrar este lote?", function (result) {
-
-		if (result) {
-
-			$.post("/admin/lote/borrar/" + subasta + "/" + num + "-" + lin + "-" + ref, { _token: token }, function (data) {
-
-				if (data == "OK") {
-					showMessage("Sesión eliminada");
-					$("#fila" + num + "-" + lin + "-" + ref).remove();
-				}
-
-			});
-
-		}
-
-	});
-
-}
-
-
-function borrarFichero(subasta, item, element) {
-
-	token = $("[name='_token']").val();
-
-	bootbox.confirm("¿Estás seguro que quieres borrar este fichero?", function (result) {
-
-		if (result) {
-
-			$.post("/admin/subasta/borrarFicherosSubasta", { _token: token, subasta: subasta, item: item }, function (data) {
-				if (data == "OK") {
-					showMessage("Fichero borrado");
-					$("#fila" + element).remove();
-				}
-
-			});
-
-		}
 
 	});
 
@@ -254,55 +164,6 @@ function borrarPuja(items) {
 	});
 
 }
-
-
-function borrarOrden(items) {
-
-	token = $("[name='_token']").val();
-
-	bootbox.confirm("¿Estás seguro que quieres borrar esta orden?", function (result) {
-
-		if (result) {
-
-			item = items.split("---");
-
-			var subasta = item[2];
-			var lin = item[1];
-			var ref = item[0];
-
-			$.post("/admin/subasta/borrarOrden", { _token: token, subasta: subasta, ref: ref, lin: lin }, function (data) {
-				if (data == "OK") {
-					showMessage("Orden borrada");
-					$("#orden---" + lin + "---" + ref).remove();
-				}
-
-			});
-		}
-
-	});
-
-}
-
-function borrarSesion(auction, reference, id_auc_session) {
-
-	token = $("[name='_token']").val();
-
-	bootbox.confirm("¿Estás seguro que quieres borrar esta sesión?", function (result) {
-
-		if (result) {
-
-			$.post("/admin/sesion/borrar/" + auction + "/" + reference, { _token: token }, function (data) {
-
-				if (data == "OK") {
-					showMessage("Lote borrado");
-					$(`#${id_auc_session}`).remove();
-				}
-
-			});
-		}
-	});
-}
-
 
 function exportWithFilters(event, tableConfig, parentFilters) {
 
@@ -349,13 +210,6 @@ function exportWithFilters(event, tableConfig, parentFilters) {
 		});
 
 }
-
-function selectedCheckItemsByName(name) {
-	return Array.from(document.getElementsByName(name))
-		.filter((element) => element.checked)
-		.map((element) => element.value);
-}
-
 
 function handleToJson(response) {
 	if(response.ok){

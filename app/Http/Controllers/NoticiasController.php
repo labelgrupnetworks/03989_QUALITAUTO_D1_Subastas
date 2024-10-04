@@ -42,6 +42,11 @@ class NoticiasController extends Controller
         $category_exist = $categoryBlog->getCategoryHasNews();
 
         $noticias=$blog->getAllNoticiasLang($key_categ);
+
+		foreach ($noticias as $noticia) {
+			$noticia->texto_web_blog_lang = strip_tags($noticia->texto_web_blog_lang);
+		}
+
         if(!empty($key_categ)){
             $categoryBlog->url_category = $key_categ;
             $categ = $categoryBlog->getCategory();

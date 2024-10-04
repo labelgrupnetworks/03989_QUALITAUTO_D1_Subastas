@@ -286,7 +286,7 @@ function view_all_bids(){
 
     //si estan ocultos los mostramos y cambiamso el texto del boton
     if($("#view_all_pujas_active").val() == '0'){
-        $('#pujas_list div').each(function(index){
+        $('#pujas_list > div').each(function(index){
             $(this).removeClass("hidden");
 
         });
@@ -296,7 +296,7 @@ function view_all_bids(){
     }
     //si estan visibles los ocultamos y cambiamso el texto del boton
     else{
-        $('#pujas_list div').each(function(index){
+        $('#pujas_list > div').each(function(index){
             if(index >= $('#view_num_pujas').val()){
              $(this).addClass("hidden");
             }

@@ -25,7 +25,8 @@ class AdminUploadsController extends Controller
                 'name' => basename($file),
                 'url' => $storage->url($file),
                 'lastModified' => Carbon::createFromTimestamp($storage->lastModified($file))->toDateTimeString(),
-				'size' => $this->unitConvert($storage->size($file))
+				'size' => $this->unitConvert($storage->size($file)),
+				'isImage' => in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']),
             ];
         }, $files);
 
@@ -35,7 +36,7 @@ class AdminUploadsController extends Controller
 	public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,gif',
+            'file' => 'required|file|mimes:jpg,jpeg,png,webp,gif,mp4,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:100000'
         ]);
 
 		$file = $request->file('file');

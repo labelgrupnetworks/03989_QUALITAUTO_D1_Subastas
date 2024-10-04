@@ -35,7 +35,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
 @endphp
 
 @section('content')
-    @if (false && !empty($active_lots) && $active_lots[0]->cuantos > 0)
+    @if (!empty($active_lots) && $active_lots[0]->cuantos > 0)
         <section class="principal-bar no-principal body-auctions2">
             <div class="container">
                 <div class="row">
@@ -59,12 +59,10 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
         <section class="register-page create-account">
             <div class="container register-container">
 
-                <h1>Registrarse en Tauler&Fau</h1>
+                <h1>{{ trans("$theme-app.login_register.register_on") }}</h1>
 
                 <p class="text-center">
-                    Rellene el formulario de registro de forma completa y fidedigna. Los campos marcados con un asterisco
-                    (*)
-                    son obligatorios:
+                    {{ trans("$theme-app.login_register.fill_out_registration") }}
                 </p>
 
                 <form id="registerForm" method="post" action="javascript:submit_register_form()">
@@ -73,7 +71,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                     <input class="form-control" id="sexo" name="sexo" type="hidden" value="H">
 
                     <fieldset>
-                        <legend>Dirección de facturación</legend>
+                        <legend>{{ trans("$theme-app.user_panel.billing_address") }}</legend>
 
                         <div class="form-group">
                             <label>
@@ -84,7 +82,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
 
                         <div class="form-group">
                             <label>
-                                Tipo de usuario
+                                {{ trans("$theme-app.user_panel.user_type") }}
                                 <select class="form-control" id="pri_emp" name="pri_emp">
                                     <option value="F">
                                         {{ trans("$theme-app.login_register.particular") }}
@@ -342,7 +340,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                         </fieldset>
 
                         <fieldset>
-                            <legend>Contacto</legend>
+                            <legend>{{ trans("$theme-app.login_register.contact") }}</legend>
 
                             <div class="row">
                                 <div class="col-xs-3">
@@ -378,7 +376,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                         </fieldset>
 
                         <fieldset>
-                            <legend>Preferencias</legend>
+                            <legend>{{ trans("$theme-app.login_register.preferences") }}</legend>
 
                             <div class="form-group moneda">
                                 <label>
@@ -396,7 +394,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                         </fieldset>
 
                         <fieldset>
-                            <legend>Tipo de subasta preferida</legend>
+                            <legend>{{ trans("$theme-app.user_panel.preferred_auction") }}</legend>
 
                             @foreach ($families as $key => $item)
                                 <div class="checkbox">
@@ -440,12 +438,12 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                         </fieldset>
 
                         <fieldset>
-                            <legend>Otros</legend>
+                            <legend>{{ trans("$theme-app.login_register.others") }}</legend>
 
                             <div class="checkbox">
                                 <label>
                                     <input id="bool_0_newsletter" name="newsletter" type="checkbox" checked="true">
-                                    Deseo recibir la newsletter con la información sobre las subastas
+                                    {{ trans("$theme-app.login_register.i_wish_receive_newsletter") }}
                                 </label>
                             </div>
                             <div class="checkbox">

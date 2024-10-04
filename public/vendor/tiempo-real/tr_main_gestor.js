@@ -914,6 +914,33 @@ var socket = io.connect(routing.node_url, { 'forceNew': true });
            $.magnificPopup.open({items: {src: '#BajaClient'}, type: 'inline',showCloseBtn: true,enableEscapeKey: false,  closeOnBgClick: true}, 0);
         });
 
+		$('#modified_paddles').on('click', function() {
+			$.ajax({
+                type: "POST",
+                url: '/api-ajax/get_modified_paddles',
+                data: {cod_sub:auction_info.lote_actual.sub_hces1},
+                success: function(data) {
+					$html = modifiedPaddlesRender(data);
+                    $("#modified_paddles_tablebody").html($html);
+                    $("#ModifiedPaddles .search-loader").hide();
+                }
+            })
+			$.magnificPopup.close();
+			$.magnificPopup.open({items: {src: '#ModifiedPaddles'}, type: 'inline', showCloseBtn: true, enableEscapeKey: false,  closeOnBgClick: true}, 0);
+		});
+
+		function modifiedPaddlesRender(results) {
+			return results.map(function (result) {
+				return `<tr>
+							<td>${result.rsoc_licit ?? ''}</td>
+							<td>${result.cod_licit_new}</td>
+							<td>${result.cod_licit_old}</td>
+							<td>${result.cod_licit}</td>
+							<td>${result.cli_licit ?? ''}</td>
+						</tr>`;
+			});
+		}
+
         $(".pause_auction").change(function(){
             show_restart_date();
         })

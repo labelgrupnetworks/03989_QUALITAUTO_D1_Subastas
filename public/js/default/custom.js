@@ -884,7 +884,7 @@ $(document).ready(function () {
 
 		formData = new FormData(this);
 
-		if (Math.floor(size) < max_size || captcha) {
+		if ((Math.floor(size) < max_size) && captcha) {
 			$.ajax({
 				type: "POST",
 				url: "valoracion-articulos-adv",

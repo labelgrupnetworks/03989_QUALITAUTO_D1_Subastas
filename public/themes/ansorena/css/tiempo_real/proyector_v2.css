@@ -19,10 +19,36 @@ body {
 	margin-bottom: 0 !important;
 }
 
-.lot, .starting-price {
+body > .tiempo_real_content {
+	grid-template-rows: min-content auto auto repeat(2, .7fr) 1fr;
+}
+
+header.enc > * {
+	flex: 1;
+}
+
+.enc h1 {
+	visibility: hidden;
+}
+
+header .brand img {
+	max-height: 1.5em;
+}
+
+.lot {
+	font-weight: 600;
+}
+
+.starting-price {
 	font-family: var(--font-prominent);
 }
 
 .current-bid {
 	background-color: rgb(240 238 228);
 }
+
+.tiempo_real_content>div:not(#main_lot_box, .lot, .last-bids-container) {
+	font-size: .8em;
+}
+
+

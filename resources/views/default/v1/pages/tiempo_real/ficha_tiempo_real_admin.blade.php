@@ -733,6 +733,8 @@ body, html {
 					<button class="fairwarning_js btn" style="background: #b11b0c;"  type="button">Fair Warning</button>
                 @endif
 
+				<button id="modified_paddles" class="btn" type="button">{{ trans("$theme-app.sheet_tr.mp_title") }}</button>
+
                 <?php /*automátic auctions */ ?>
                 @if (\Config::get('app.tr_show_automatic_auction'))
                 <div>

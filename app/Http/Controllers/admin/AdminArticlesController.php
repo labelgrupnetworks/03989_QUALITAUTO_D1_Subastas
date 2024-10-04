@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\libs\FormLib;
 use App\Models\articles\FgArt0;
-
-
+use Illuminate\Http\Request;
 
 class AdminArticlesController extends Controller
 {
@@ -17,10 +15,8 @@ class AdminArticlesController extends Controller
 		view()->share(['menu' => 'articulos']);
 	}
 
-
 	public function index(Request $request)
 	{
-
 		$emp = config('app.emp');
 		$gemp = config('app.gemp');
 
@@ -56,40 +52,37 @@ class AdminArticlesController extends Controller
 	{
 		$gemp = config('app.gemp');
 		$sections = FgArt0::select('cod_sec', 'des_sec', 'orden_ortsec1')->distinct()
-		->joinArt()->joinSec()->joinOrtsec1()->artActivo()->orderBy('orden_ortsec1', 'asc')->get();
+			->joinArt()->joinSec()->joinOrtsec1()->artActivo()->orderBy('orden_ortsec1', 'asc')->get();
 
 		foreach ($sections as $section) {
 			$articles = FgArt0::select('id_art0', 'sec_art0', 'title_art0', 'des_art0', 'orden_art0')
-			->joinArt()->joinSec()->artActivo()->where('sec_art0', $section->cod_sec)
-			->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
+				->joinArt()->joinSec()->artActivo()->where('sec_art0', $section->cod_sec)
+				->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
 			$section->articles = $articles;
 		}
 
 		return view('admin::pages.articles.order', compact('sections'));
-
 	}
 
 	public function saveOrder(Request $request)
 	{
 		$articles = FgArt0::select('id_art0', 'sec_art0', 'des_sec', 'title_art0', 'des_art0', 'orden_art0')
-		->joinArt()->joinSec()->artActivo()->where('sec_art0', collect($request->sec))->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
+			->joinArt()->joinSec()->artActivo()->where('sec_art0', collect($request->sec))->orderby('orden_art0')->orderby('id_art0')->orderby('sec_art0')->get();
 		$order = collect($request->ref)->flip();
 
 		foreach ($articles as $article) {
 
-			$article->orden_art0 = $order[$article->id_art0.'-'.$article->sec_art0] + 1;
+			$article->orden_art0 = $order[$article->id_art0 . '-' . $article->sec_art0] + 1;
 
 			//Comprueba si el modelo a sido modificado para no lanzar más actualizaciones de las necesarias
-			if($article->isDirty()){
+			if ($article->isDirty()) {
 				FgArt0::where([
 					['id_art0', $article->id_art0],
 					['sec_art0', $article->sec_art0]
 				])->update([
 					'orden_art0' => $article->orden_art0
 				]);
-			 }
+			}
 		}
-
 	}
-
 }

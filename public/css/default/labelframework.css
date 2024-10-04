@@ -12,7 +12,6 @@
 
 .d-flex{
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
 }
 
@@ -46,7 +45,6 @@
     display: block;
 }
 .flex-wrap{
-    -ms-flex-wrap: wrap;
         flex-wrap: wrap;
 }
 
@@ -120,7 +118,6 @@ font-weight: lighter;
 
 .align-items-center{
     -webkit-box-align: center;
-        -ms-flex-align: center;
             align-items: center
 }
 .flex-column{
