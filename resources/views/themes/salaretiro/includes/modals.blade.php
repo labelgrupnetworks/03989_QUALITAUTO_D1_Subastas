@@ -132,7 +132,7 @@
 						<p id="insert_msg"></p>
 						<br>
 						<button class="btn button_modal_confirm modal-dismiss btn-custom">{{ trans("$theme-app.lot.keep_buying") }}</button>
-						<a id="js-payLot" href="{{ Routing::slug('user/panel/allotments/outstanding') }}" class="btn btn-custom">{{ trans("$theme-app.lot.pay_lot") }}</a>
+						<a id="js-payLot" href="{{ route('panel.allotments', ['lang' => config('app.locale')]) }}" class="btn btn-custom">{{ trans("$theme-app.lot.pay_lot") }}</a>
 					</div>
 				</div>
 			</div>
