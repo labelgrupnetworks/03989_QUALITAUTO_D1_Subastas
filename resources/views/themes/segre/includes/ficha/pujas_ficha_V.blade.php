@@ -65,7 +65,8 @@ $importe =  \Tools::moneyFormat($importe,false,2);
 					<form name="infoLotForm" id="infoLotForm" method="post" action="javascript:sendInfoLot()">
 						<input type="hidden" data-sitekey="{{ config('app.captcha_v3_public') }}" name="captcha_token" value="">
 						<input type="hidden" name="auction" value="{{ $lote_actual->cod_sub}} - {{ $lote_actual->des_sub}}">
-						<input type="hidden" name="lot" value="   {{$lote_actual->descweb_hces1 }} ">
+						<input name="lot" type="hidden" value="{{ $lote_actual->ref_asigl0 }}">
+                		<input name="lot_name" type="hidden" value="{{ $lote_actual->descweb_hces1 }}">
 
 						<div class="form-group">
 							<div class="input-effect col-xs-12">
