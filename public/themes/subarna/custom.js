@@ -94,11 +94,16 @@ $(document).ready(function () {
 	});
 
 	$('.login').on('click', function () {
+		$.magnificPopup.close();
 		$('#loginResponsive').removeClass('fadeOutDown');
 		$('#loginResponsive').show().addClass('animated fadeInDown');
 	});
 	$('#closeResponsive').on('click', function () {
 		$('#loginResponsive').addClass('animated fadeOutDown').removeClass('fadeInDown');
+		setTimeout(function () {
+			$('#loginResponsive').hide();
+		}, 1000);
+
 	})
 
 	$('#btnResponsive').on('click', function () {
@@ -1084,7 +1089,11 @@ function getFullscreen(element) {
 }
 
 function showLogin() {
-	$('.btn_login_desktop').trigger('click');
+	if (window.matchMedia("(max-width: 1200px)").matches) {
+		$('.login').trigger('click');
+	} else {
+		$('.btn_login_desktop').trigger('click');
+	}
 }
 
 async function newsletterSuscription(event) {
