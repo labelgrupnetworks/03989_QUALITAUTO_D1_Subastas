@@ -1075,8 +1075,19 @@ class LotListController extends Controller
 	#lote vendido, comprobamos que esté cerrado y tenga no pujas
 	public function setFilterNoAward($fgasigl0, $noAward)
 	{
+		$showOnlyNotAwardedWhenFilerActive = Config::get("app.show_only_not_awarded", false);
+
 		if (!empty($noAward)) {
-			$fgasigl0 = $fgasigl0->where("FGASIGL0.CERRADO_ASIGL0", "S")->where("FGHCES1.LIC_HCES1", 'N');
+			$fgasigl0 = $fgasigl0
+				->where("FGASIGL0.CERRADO_ASIGL0", "S")
+				->where("FGHCES1.LIC_HCES1", 'N')
+				->when($showOnlyNotAwardedWhenFilerActive, function($query) {
+					return $query->where([
+						['FGHCES1.FAC_HCES1', '!=', 'D'],
+						['FGHCES1.FAC_HCES1', '!=', 'R'],
+						['FGASIGL0.CERRADO_ASIGL0', '!=', 'D']
+					]);
+				});
 		}
 		return  $fgasigl0;
 	}
