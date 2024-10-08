@@ -794,6 +794,11 @@ class FgAsigl0 extends Model
 				->leftJoin('FXDVC0', 'FGDVC1L.EMP_DVC1L = FXDVC0.EMP_DVC0 AND FGDVC1L.ANUM_DVC1L = FXDVC0.ANUM_DVC0 AND FGDVC1L.NUM_DVC1L = FXDVC0.NUM_DVC0');
 	}
 
+	public function scopeJoinFavorites($query, $cod_cli)
+	{
+		return $query->join('WEB_FAVORITES', "WEB_FAVORITES.ID_EMP = FGASIGL0.EMP_ASIGL0 and WEB_FAVORITES.ID_SUB = FGASIGL0.SUB_ASIGL0 and WEB_FAVORITES.ID_REF = FGASIGL0.REF_ASIGL0 and WEB_FAVORITES.COD_CLI = '$cod_cli'");
+	}
+
 	public function ventasDestacadas($order = 'orden_destacado_asigl0', $orderDirection = "asc", $paginate = 12, $limit = 0)
 	{
 		$query = self::query()

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Mobile\MobileAuctionsController;
 use App\Http\Controllers\Mobile\MobileAuthController;
 use App\Http\Controllers\Mobile\MobileCategoriesController;
+use App\Http\Controllers\Mobile\MobileFavoritesController;
 use App\Http\Controllers\Mobile\MobileLotsController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () { // Rutas protegida
 	Route::get('auctions/{codauction}/lots/{lotref}', [MobileLotsController::class, 'show'])->name('mobile.auctions.lots.show');
 	//all lots withou auction
 	Route::get('lots', [MobileLotsController::class, 'index'])->name('mobile.lots.index');
+
+	//lotes favoritos
+	Route::get('favorites', [MobileFavoritesController::class, 'index'])->name('mobile.lots.favorites');
 });
