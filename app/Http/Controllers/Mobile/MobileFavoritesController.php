@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\App;
 
 class MobileFavoritesController extends Controller
 {
-	public function index(Request $request, $codsession = null)
+	public function index(Request $request)
 	{
 		$lang = $request->user()?->idioma_cliweb ?? 'ES';
 		App::setLocale($lang);
 
-		$codCli = $request->user()?->cod_cliweb ?? '00012';
+		$codCli = $request->user()?->cod_cliweb;
 
 		$lots = FgAsigl0::joinFavorites($codCli)
 			->activeLotAsigl0()
