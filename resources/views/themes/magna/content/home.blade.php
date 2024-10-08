@@ -1,5 +1,5 @@
 <div class="home-slider">
-	{!! BannerLib::bannersPorKey('home', '', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false], null, false, '', $page_settings) !!}
+	{!! BannerLib::bannersPorKey('home', 'home-top-banner', ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false], null, false, '', $page_settings) !!}
 </div>
 
 
