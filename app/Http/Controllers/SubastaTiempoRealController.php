@@ -1970,7 +1970,7 @@ class SubastaTiempoRealController extends Controller
 
 			//se verifica si se puede pujas según riescli o credito
 			//No se puede pujar si la actual más lo que tienes adjudicado supera tu crédito
-			if(!$subasta->canBid($u, $lote, $subasta, $is_gestor, $gestor)) {
+			if(!$subasta->canBid($u, $lote, $subasta, $is_gestor)) {
 				return $this->error_puja('imp_max_licitador', $subasta->licit, $is_gestor);
 			}
         }

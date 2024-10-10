@@ -5060,7 +5060,7 @@ class Subasta extends Model
 	 * @param User $gestor
 	 * @return bool
 	 */
-	function canBid($user, $lote, $subasta, $is_gestor, $gestor)
+	function canBid($user, $lote, $subasta, $is_gestor)
 	{
 		// Verifica si puede pujar usando crédito
 		if ($this->usesCredit($user, $lote)) {
@@ -5069,7 +5069,7 @@ class Subasta extends Model
 
 		// Verifica el límite de adjudicaciones del cliente en subastas
 		if ($this->adjudicationLimit($user, $lote, $is_gestor)) {
-			return $this->validateAdjudications($user, $subasta, $gestor);
+			return $this->validateAdjudications($user, $subasta);
 		}
 
 		// Si no se cumple ninguna de las condiciones anteriores, se permite la puja
@@ -5105,17 +5105,19 @@ class Subasta extends Model
 	 * @param Subasta $subasta
 	 * @param User $gestor
 	 */
-	private function validateAdjudications($user, $subasta, $gestor)
+	public function validateAdjudications($user, $subasta)
 	{
-		$id_auc_sessions = $subasta->getIdAucSessionslote($subasta->cod, $subasta->lote);
-		$get_session = $subasta->get_session($id_auc_sessions);
-
-		// Calcular adjudicaciones
-		$adjudic = $gestor->getAllAdjudicacionesSession($subasta->cod, $get_session->reference, $subasta->licit);
 		$imp_adjudic = 0;
-
-		foreach ($adjudic as $price) {
-			$imp_adjudic = $price->himp_csub + $imp_adjudic;
+		if(Config::get('app.check_adjudications_for_ries_by_auction', false)) {
+			//sumar importe de adjudicaciones de la subasta
+			$imp_adjudic = (new User)->getSumAdjudicacionesSubasta($subasta->cod, $subasta->licit);
+		}
+		else {
+			//sumar importe de adjudicaciones de la sesión
+			$id_auc_sessions = $subasta->getIdAucSessionslote($subasta->cod, $subasta->lote);
+			$get_session = $subasta->get_session($id_auc_sessions);
+			$adjudic = (new User)->getAllAdjudicacionesSession($subasta->cod, $get_session->reference, $subasta->licit);
+			$imp_adjudic = array_sum(array_column($adjudic, 'himp_csub'));
 		}
 
 		$total_imp_adju = $imp_adjudic + $subasta->imp;
