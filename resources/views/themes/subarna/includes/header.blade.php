@@ -142,7 +142,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span> Idioma</a>
+                            aria-haspopup="true" aria-expanded="false"><span class="caret"></span> {{ trans("$theme-app.login_register.language") }}</a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             @foreach ($languages as $langKey => $language)
                                 <li>
