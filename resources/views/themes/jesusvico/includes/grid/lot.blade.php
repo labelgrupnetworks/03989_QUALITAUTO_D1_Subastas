@@ -57,6 +57,11 @@ $isNotRetired = !$devuelto && !$retirado;
 	</div>
 
 	<div class="card-footer">
+		@if($item->permisoexp_hces1 == 'N')
+		<div class="lot-notexport">
+			<p>{{ trans("$theme-app.lot.no_export_tax") }}</p>
+		</div>
+		@endif
 
 		@if(!$subasta_venta)
 		<div class="bidds-counter bg-lb-primary-150 text-lb-gray">
