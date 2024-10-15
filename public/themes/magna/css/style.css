@@ -83,6 +83,11 @@ h1 {
 	min-width: 130px;
 }
 
+.btn-lb-primary {
+	--bs-btn-color: #fff;
+	--bs-btn-bg-color: var(--lb-color-primary);
+}
+
 .btn-link {
 	--bs-btn-color: var(--lb-color-primary);
 	--bs-btn-hover-color: "#000";
@@ -595,7 +600,7 @@ nav.header-navbar ul {
 }
 
 .lot-card .card-body {
-	gap: .5rem;
+	gap: 1rem;
 	min-height: initial;
 }
 
@@ -744,4 +749,10 @@ body>footer .logo-svg {
 .share-icon:hover {
 	color: inherit;
 	background-color: #424242;
+}
+
+
+/* GRID */
+.section-grid-lots {
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
