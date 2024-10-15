@@ -126,6 +126,10 @@ h1 {
 	font-family: var(--prominent-font-family);
 }
 
+.bg-gold {
+	background-color: var(--color-gold);
+}
+
 /* header */
 header .container {
 	background-color: #fff;
@@ -703,6 +707,7 @@ footer .nav-link {
 body>footer .logo-svg {
 	color: #fff;
 	width: 100%;
+	max-width: 250px;
 	height: auto;
 }
 
@@ -728,7 +733,7 @@ body>footer .logo-svg {
 .share-icon {
 	width: 47px;
 	height: 47px;
-	border: 1px solid var(--lb-color-secondary-light);
+	border: 1px solid rgb(255, 255, 255, 0.7);
 	border-radius: 9999px;
 	display: flex;
 	align-items: center;
@@ -738,5 +743,5 @@ body>footer .logo-svg {
 
 .share-icon:hover {
 	color: inherit;
-	background-color: var(--lb-color-primary-dark);
+	background-color: #424242;
 }
