@@ -4827,7 +4827,7 @@ main:is(.ficha-subasta-page, .ficha-page, .subastas-page, .register-page, .stati
 	font-size: var(--fs-default) !important;
 }
 
-.static-page .contenido:is(#pagina-6, #pagina-4) {
+.static-page .contenido:is(#pagina-6, #pagina-4, #pagina-13) {
 	max-width: 90ch;
 	margin: auto;
 }
