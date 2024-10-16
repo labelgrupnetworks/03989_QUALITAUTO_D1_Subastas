@@ -45,7 +45,7 @@
 	--close-icon-black: url("data:image/svg+xml,%3Csvg width='30' height='31' viewBox='0 0 30 31' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0.353553' y1='1.45895' x2='29.5427' y2='30.6481' stroke='black'/%3E%3Cline y1='-0.5' x2='41.2797' y2='-0.5' transform='matrix(-0.707107 0.707107 0.707107 0.707107 30 1)' stroke='black'/%3E%3C/svg%3E");
 
 	--lb-opacity: 1;
-	--lb-border-radius: 0;
+	--lb-border-radius: .25rem;
 
 	--color-gold: #c59f74;
 	--color-gold-light: #d9b68b;
@@ -61,6 +61,7 @@
 	--lb-border-opacity: 0.4;
 	--lb-border-color: hsla(var(--lb-border-color-hsl), var(--lb-border-opacity));
 	--bs-border-color: var(--lb-border-color);
+	--lb-text-color-primary: var(--color-black);
 
 	--lb-box-shadow-lot: none;
 
@@ -801,9 +802,13 @@ body>footer .logo-svg {
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
-#js-filters-col {
-	padding-right: 4rem;
+
+#js-filters-col .radio{
+	display: flex;
+    align-items: center;
+    gap: .5rem;
 }
+
 
 .filters-auction-title {
 	background-color: var(--lb-color-primary);
@@ -841,4 +846,26 @@ body>footer .logo-svg {
 .filters-auction-content .radio-label {
 	font-size: .8em;
 	font-weight: 500;
+}
+
+.input-group-lot-states {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+}
+
+@media(min-width: 992px) {
+	#js-filters-col {
+		padding-right: 3rem;
+	}
+}
+
+.cantidad-res {
+	display: inline-block;
+	padding: 4px 12px 4px 8px;
+	border: 1px solid var(--lb-border-color);
+	border-radius: var(--lb-border-radius);
+	text-transform: lowercase;
+	font-size: .9em;
+
 }
