@@ -1,3 +1,47 @@
+const homeBannersOptions  = [
+	{
+		breakpoint: 1200,
+		settings: {
+			slidesToShow: 4,
+			slidesToScroll: 4,
+			infinite: true,
+			rows: 1,
+			slidesPerRow: 4,
+		}
+	},
+	{
+		breakpoint: 1024,
+		settings: {
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			infinite: true,
+			rows: 1,
+			slidesPerRow: 3,
+		}
+	},
+	{
+		breakpoint: 770,
+		settings: {
+			slidesToShow: 2,
+			slidesToScroll: 2,
+			rows: 1,
+			slidesPerRow: 2,
+			arrows: false,
+		}
+	},
+	{
+		breakpoint: 480,
+		settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			rows: 1,
+			slidesPerRow: 1,
+			arrows: false,
+		}
+	}
+];
+
+
 $(() => {
 	document.querySelector('.search-component .icon')?.addEventListener('click', handleClickSearchComponent);
 	document.querySelector('.search-button')?.addEventListener('click', handleClickSearchButton);
