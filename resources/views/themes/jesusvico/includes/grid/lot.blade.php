@@ -80,7 +80,7 @@ $isNotRetired = !$devuelto && !$retirado;
 			@if($isAwarded)
 				<a {!! $url !!} class="btn btn-block btn-outline-lb-primary lot-btn">{{ trans("$theme-app.sheet_tr.view") }}</a>
 			@elseif ($cerrado && empty($precio_venta) && !$compra || $sub_historica)
-				<div class="w-100 d-flex align-items-center justify-content-center bg-lb-primary-150">{{ trans($theme.'-app.subastas.dont_buy') }}</div>
+				<div class="flex-grow-1 d-flex align-items-center justify-content-center bg-lb-primary-150">{{ trans($theme.'-app.subastas.dont_buy') }}</div>
 			@elseif($cerrado && empty($precio_venta) && $compra && !$sub_historica)
 				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans($theme.'-app.subastas.buy_lot') }}</a>
 			@elseif($subasta_venta && !$cerrado)
