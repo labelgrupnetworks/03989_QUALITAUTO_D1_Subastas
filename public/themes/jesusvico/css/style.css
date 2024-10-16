@@ -860,7 +860,7 @@ article.card-custom-large .card-body .card-title {
 }
 
 .lot-card .lot-notexport {
-	background-color: #800000;
+	background-color: var(--lb-color-primary);
 	color: #fff;
 	width: 100%;
 	padding: 0 var(--bs-card-spacer-x);
