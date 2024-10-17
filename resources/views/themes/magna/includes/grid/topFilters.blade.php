@@ -84,6 +84,10 @@
 
 </div>
 
+<div class="top-filters-labels">
+	@include('includes.grid.badges_section')
+</div>
+
 <div class="col-xs-12 pt-1 d-flex align-items-center mt-1">
 
     {{-- FILTRO DE SUBASTAS HISTÓRICAS --}}

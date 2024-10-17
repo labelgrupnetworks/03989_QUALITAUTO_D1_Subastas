@@ -70,6 +70,7 @@
 
 	--bs-link-color: currentColor;
 	--bs-link-hover-color: currentColor;
+	--bs-border-radius-pill: .25rem;
 }
 
 h1 {
@@ -94,7 +95,11 @@ h1 {
 	--bs-btn-hover-color: "#000";
 }
 
-.form-control:focus {
+.badge {
+	--bs-badge-font-weight: 400;
+}
+
+.form-control:focus, .form-select:focus {
 	border-color: var(--lb-border-color);
 	box-shadow: none;
 }
@@ -867,5 +872,13 @@ body>footer .logo-svg {
 	border-radius: var(--lb-border-radius);
 	text-transform: lowercase;
 	font-size: .9em;
+}
 
+.section-badges {
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+}
+
+.section-badges > p {
+	display: none;
 }
