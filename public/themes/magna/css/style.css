@@ -99,6 +99,10 @@ h1 {
 	--bs-badge-font-weight: 400;
 }
 
+.form-control, .form-select {
+	border: 1px solid var(--lb-border-color);
+}
+
 .form-control:focus, .form-select:focus {
 	border-color: var(--lb-border-color);
 	box-shadow: none;
@@ -658,6 +662,30 @@ nav.header-navbar ul {
 	align-self: flex-start;
 }
 
+.label-grid {
+	rotate: none;
+    transform: rotate(0deg);
+    top: -10px;
+    right: -1px;
+    background: #e4003c;
+    aspect-ratio: 1;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    border-radius: var(--lb-border-radius);
+	font-size: 10px;
+}
+
+.lot-buy-to {
+	text-transform: lowercase;
+}
+
+.lot-buy-to:first-letter {
+	text-transform: uppercase;
+}
+
 .newsletter-section {
 	padding: 3rem 0;
 }
@@ -805,6 +833,7 @@ body>footer .logo-svg {
 /* GRID */
 .section-grid-lots {
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	row-gap: 3rem;
 }
 
 
@@ -865,6 +894,12 @@ body>footer .logo-svg {
 	}
 }
 
+.top-filters-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .cantidad-res {
 	display: inline-block;
 	padding: 4px 12px 4px 8px;
@@ -872,6 +907,31 @@ body>footer .logo-svg {
 	border-radius: var(--lb-border-radius);
 	text-transform: lowercase;
 	font-size: .9em;
+}
+
+.pagination-wrapper .pagination {
+    --bs-pagination-padding-x: 1rem;
+    --bs-pagination-border-color: var(--lb-border-color);
+    --bs-pagination-border-radius: var(--lb-border-radius);
+    --bs-pagination-focus-bg: #dee2e6;
+    --bs-pagination-focus-box-shadow: none;
+    --bs-pagination-disabled-border-color: var(--lb-border-color);
+	margin-bottom: 0;
+}
+
+.section-grid-pagination {
+	padding-top: 4rem;
+    padding-bottom: 4rem;
+    border-top: 1px solid var(--lb-border-color);
+    margin-top: 2rem;
+}
+
+.section-grid-pagination nav {
+	display: flex;
+}
+
+.section-grid-pagination .pagination {
+	margin: auto;
 }
 
 .section-badges {
@@ -882,3 +942,35 @@ body>footer .logo-svg {
 .section-badges > p {
 	display: none;
 }
+
+.grid-auction-info {
+	margin-bottom: 4rem;
+}
+
+.grid-auction-info h1 {
+	font-size: 3rem;
+}
+
+.auction-type-name {
+	display: inline-block;
+	background-color: var(--lb-color-primary);
+	color: rgb(255 255 255 / 0.9);
+	padding: 2px 1.5rem;
+}
+
+.auction-expo {
+	margin-top: 2rem;
+	margin-bottom: 4rem;
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.auction-expo > * {
+	flex: 1;
+	min-width: min(100%, 400px);
+	padding-left: 2rem;
+	border-left: 2px solid #000;
+}
+
+
