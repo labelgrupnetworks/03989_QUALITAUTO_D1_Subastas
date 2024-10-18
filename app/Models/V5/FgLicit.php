@@ -102,8 +102,6 @@ class FgLicit extends Model
 			->where('EMP_PRMSUB', Config::get('app.emp'))
 			->value('numlicweb_prmsub') ?? 1000;
 
-		$start_bidders = 1000;
-
 		$cod_licits = self::select("cod_licit")
 			->where([
 				["sub_licit", $codSub],

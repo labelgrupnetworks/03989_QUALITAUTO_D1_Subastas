@@ -1832,9 +1832,22 @@ class Subasta extends Model
     public function licitIncrement()
     {
         $num = FgLicit::newCodLicit($this->cod); //número entre 0 y 99999 quitando el 9999
+		$dummyBidder = Config::get('app.dummy_bidder');
 
 		// Si el número de licitador es mayor o igual que el bidder, se asigna un número de licitador no utilizado
-        if($num >= Config::get('app.dummy_bidder')){
+		if($num >= $dummyBidder){
+
+			$start_bidders = DB::table('fgprmsub')
+				->select('numlicweb_prmsub')
+				->where('EMP_PRMSUB', Config::get('app.emp'))
+				->value('numlicweb_prmsub') ?? 1000;
+
+			//if start_bidders is bigger to dummy_bidder, we will retun num
+			if($start_bidders > $dummyBidder){
+				return $num;
+			}
+
+
 			$num = FgLicit::unusedCodLicit($this->cod);
         }
 
