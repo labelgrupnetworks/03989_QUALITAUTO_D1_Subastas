@@ -172,9 +172,9 @@ if (strpos($fullname, ',')) {
 
 					$pintura=false;
 					$artesDecorativas=false;
-					$joyas=false;
-					$casaHistorica = false;
-					$arteSigloXX = false;
+					$joyas=true;
+					$casaHistorica = true;
+					$arteSigloXX = true;
 
 					foreach($has_subasta as $session){
 
