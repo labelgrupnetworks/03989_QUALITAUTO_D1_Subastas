@@ -187,7 +187,7 @@ class AdminAucSessionsFilesController extends Controller
 
 		$formulario->archivos = [
 			'auc_sessions_files' => FormLib::File("ficheroAdjunto", 0),
-			'reference' => FormLib::Select('id_auc_sessions', 1, array_keys($sessions, '001')[0], $sessions, '', '', false),
+			'reference' => FormLib::Select('id_auc_sessions', 1, array_key_first($sessions), $sessions, '', '', false),
 			'description' => FormLib::Text('description', 0),
 			'order' => FormLib::Int('order', 0, 1),
 			'lang' => FormLib::Select('lang', 1, 'es-ES', $langsFile, '', '', false),
