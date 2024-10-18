@@ -172,14 +172,34 @@ if (strpos($fullname, ',')) {
 
 					$pintura=false;
 					$artesDecorativas=false;
-					$joyas=true;
-					$casaHistorica = true;
-					$arteSigloXX = true;
+					$joyas=false;
+					$casaHistorica = false;
+					$arteSigloXX = false;
+
+					$actualPintura=false;
+					$actualArtesDecorativas=false;
+					$actualJoyas=false;
+					$actualCasaHistorica = false;
+					$actualArteSigloXX = false;
 
 					foreach($has_subasta as $session){
 
-						if(strtotime($session->session_start) < strtotime('now')){
+						if(strtotime($session->orders_start) < strtotime('now')){
 							if($session->reference=="001"){
+								$actualPintura=true;
+							}elseif($session->reference=="002"){
+								$actualArtesDecorativas=true;
+							}elseif($session->reference=="003"){
+								$actualJoyas=true;
+							} elseif($session->reference=="004"){
+								$actualCasaHistorica=true;
+							} elseif($session->reference=="005"){
+								$actualArteSigloXX=true;
+							}
+						}
+
+						if(strtotime($session->session_start) < strtotime('now')){
+							if($session->reference == "001"){
 								$pintura=true;
 							}elseif($session->reference=="002"){
 								$artesDecorativas=true;
@@ -220,7 +240,7 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 
-							@if ($pintura)
+							@if ($actualPintura)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '001') }}?category=1">
@@ -229,7 +249,7 @@ if (strpos($fullname, ',')) {
 							</p>
 							@endif
 
-							@if ($casaHistorica)
+							@if ($actualCasaHistorica)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '004') }}?category=5">
@@ -238,7 +258,7 @@ if (strpos($fullname, ',')) {
 							</p>
 							@endif
 
-							@if ($artesDecorativas)
+							@if ($actualArtesDecorativas)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '002') }}?category=3">
@@ -247,7 +267,7 @@ if (strpos($fullname, ',')) {
 							</p>
 							@endif
 
-							@if ($arteSigloXX)
+							@if ($actualArteSigloXX)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '005') }}?category=6">
@@ -256,7 +276,7 @@ if (strpos($fullname, ',')) {
 							</p>
 							@endif
 
-							@if ($joyas)
+							@if ($actualJoyas)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '003') }}?category=2">
