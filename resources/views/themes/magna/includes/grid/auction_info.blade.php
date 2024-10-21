@@ -1,6 +1,6 @@
 @php
     $emp = Config::get('app.emp');
-    $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpg");
+    $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpeg");
 @endphp
 
 <img src="{{ $auctionImage }}" alt="">

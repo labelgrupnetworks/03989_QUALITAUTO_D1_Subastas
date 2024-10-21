@@ -7,13 +7,11 @@
 
 <div class="filters-auction-content">
 
-	<div class="filters-auction-title d-flex align-items-end justify-content-between border-bottom pb-1 mt-1">
+	<div class="filters-auction-title d-flex align-items-end justify-content-between border-bottom py-1 mt-1">
 		<p>{{ trans($theme.'-app.lot_list.filters') }}</p>
 
-		<button class="btn btn-sm btn-outline-border-lb-primary d-flex align-items-center" onclick="hideFilters(event)">
-			<svg class="bi" width="16" height="16" fill="currentColor">
-				<use xlink:href="/bootstrap-icons.svg#arrow-bar-left"/>
-			</svg>
+		<button class="btn btn-sm btn-link btn-icon d-lg-none" onclick="hideFilters(event)">
+			<x-icon.boostrap icon="caret-down-fill" size="16" />
 		</button>
 	</div>
 

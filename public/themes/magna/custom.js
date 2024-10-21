@@ -115,3 +115,8 @@ function toogleMenu(menuButton) {
 	menuHeader.classList.toggle('open', !isOpen);
 	logo.classList.toggle('d-none', !isOpen);
 }
+
+hideFilters = function(event) {
+	event.preventDefault();
+	$('.filters-auction-content .form-group').toggleClass('d-none');
+}

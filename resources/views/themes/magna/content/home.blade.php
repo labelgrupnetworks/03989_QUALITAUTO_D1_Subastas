@@ -50,3 +50,5 @@
 <section class="home-section home-categories">
     @include('includes.home.categories')
 </section>
+
+@include('includes.newsletter')
