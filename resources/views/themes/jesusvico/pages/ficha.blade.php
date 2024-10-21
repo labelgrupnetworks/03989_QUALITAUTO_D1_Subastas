@@ -72,13 +72,23 @@ $(document).ready(function() {
 		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => trans("$theme-app.subastas.current_auction"),
 		default => trans("$theme-app.subastas.inf_subasta_subasta"),
 	};
+
+	$refererQuery = '';
+	$referer = request()->headers->get('referer');
+	$host = parse_url($referer, PHP_URL_HOST);
+
+	// host is current domain
+	if ($host === request()->getHttpHost()) {
+		$refererQuery = "?" . parse_url($referer, PHP_URL_QUERY);
+	}
 @endphp
 <main class="page-ficha pt-3">
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">
 				<p class="h1 pb-1 lot-ficha-title">
-					<b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> | <a class="back-link" href="{{ $lote_actual->url_subasta }}">{{ trans("$theme-app.global.back") }}</a>
+					<b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> |
+					<a class="back-link" href="{{ $lote_actual->url_subasta . $refererQuery }}">{{ trans("$theme-app.global.back") }}</a>
 				</p>
 			</div>
 		</div>
