@@ -169,6 +169,13 @@ nav[aria-label="breadcrumb"] {
 	background-color: var(--color-gold);
 }
 
+.text-block {
+	display: inline-block;
+    background-color: var(--lb-color-primary);
+    color: rgb(255 255 255 / 0.9);
+    padding: 2px 1.5rem;
+}
+
 /* header */
 header .container {
 	background-color: #fff;
@@ -984,11 +991,12 @@ body>footer .logo-svg {
 	}
 }
 
-.auction-type-name {
+.auction-type-name, .info-type-auction {
 	display: inline-block;
 	background-color: var(--lb-color-primary);
 	color: rgb(255 255 255 / 0.9);
 	padding: 2px 1.5rem;
+	font-size: 1em;
 }
 
 .auction-expo {
@@ -1052,4 +1060,123 @@ body>footer .logo-svg {
 		position: absolute;
 		right: -6rem;
 	}
+}
+
+@media (min-width: 992px) {
+	.ficha-grid {
+		grid-template-columns: 1.5fr 1fr;
+	}
+
+	section.ficha-auction-info {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	section.ficha-title {
+		grid-column: 2;
+		grid-row: 2;
+	}
+
+	section.ficha-image {
+		grid-column: 1;
+		grid-row: 2 / 5;
+	}
+
+	section.ficha-pujas {
+		grid-column: 2;
+		grid-row: 4;
+	}
+
+	section.ficha-history {
+		grid-column: 2;
+		grid-row: -1;
+	}
+
+	section.ficha-share {
+		grid-column: 3 / 4;
+		grid-row: 4 / 5;
+		align-self: flex-end;
+	}
+
+	section.ficha-description {
+		grid-column: 1 / 4;
+		grid-row-start: 5;
+	}
+
+	section.ficha-files {
+		grid-column: 1;
+		grid-row: 9;
+	}
+
+	section.ficha-recomendados {
+		grid-column: 1 / 4;
+	}
+}
+
+@media (min-width: 1200px) {
+
+	.ficha-grid {
+		grid-template-columns: 1.5fr 1fr;
+		column-gap: 4rem;
+	}
+
+	section.ficha-image {
+		grid-column: 1;
+		grid-row: 2 / 8;
+	}
+
+	section.ficha-history {
+		align-self: flex-end;
+	}
+
+	section.ficha-share {
+		grid-column: 1;
+		grid-row: 8;
+	}
+
+	section.ficha-previous-next {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	section.ficha-description {
+		grid-column: 2;
+		grid-row-start: 3;
+	}
+}
+
+.ficha-info {
+	display: flex;
+}
+
+.info-type-auction {
+	margin: 0;
+	font-weight: 400;
+}
+
+.ficha-date-closing {
+	margin-left: auto;
+}
+
+.ficha-title-reference {
+	text-decoration: underline;
+}
+
+.ficha-title h1 {
+	font-family: var(--bs-body-font-family);
+	font-size: 2rem;
+}
+
+.ficha-pujas {
+	text-transform: uppercase;
+	font-size: 1.25em;
+}
+
+.ficha-pujas .price:not(.next-price) span:nth-of-type(2) {
+	float: none;
+	margin-left: 2rem;
+}
+
+.ficha-pujas .price.salida-price span:nth-of-type(2) {
+	font-weight: 700;
 }
