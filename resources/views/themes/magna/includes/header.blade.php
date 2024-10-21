@@ -60,18 +60,19 @@
                     <span class="d-none d-lg-inline">{{ trans("$theme-app.login_register.generic_name") }}</span>
                 </button>
             @else
-                <a class="btn" href="{{ \Routing::slug('user/panel/orders') }}">
-                    <svg width="20" height="20" viewBox="0 0 18 21" fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M4.639 6.00943C4.639 3.52379 6.65401 1.50878 9.13965 1.50878C11.6253 1.50878 13.6403 3.52379 13.6403 6.00943C13.6403 8.49507 11.6253 10.5101 9.13965 10.5101C6.65401 10.5101 4.639 8.49507 4.639 6.00943ZM9.13965 0.491241C6.09204 0.491241 3.62146 2.96182 3.62146 6.00943C3.62146 9.05704 6.09204 11.5276 9.13965 11.5276C12.1873 11.5276 14.6578 9.05704 14.6578 6.00943C14.6578 2.96182 12.1873 0.491241 9.13965 0.491241ZM4.13088 12.7812C2.12076 12.7812 0.491226 14.4107 0.491226 16.4208V20.1779H1.50876V16.4208C1.50876 14.9727 2.68273 13.7987 4.13088 13.7987H14.1497C15.5979 13.7987 16.7718 14.9727 16.7718 16.4208V20.1779H17.7894V16.4208C17.7894 14.4107 16.1598 12.7812 14.1497 12.7812H4.13088Z" />
-                    </svg>
+                <a class="btn btn-outline-lb-primary rounded-5 d-none d-lg-inline" href="{{ \Routing::slug('user/panel/orders') }}">
                     <span>{{ trans("$theme-app.login_register.my_panel") }}</span>
                 </a>
+				<a class="btn btn-link d-lg-none" href="{{ \Routing::slug('user/panel/orders') }}">
+					<x-icon.boostrap icon="person-fill" size="18" />
+				</a>
+
+
             @endif
 
             @if (Session::get('user.admin'))
-                <a class="btn" href="/admin" target="_blank">
+                <a class="btn btn-outline-lb-primary rounded-5" href="/admin" target="_blank">
+
                     <svg class="bi bi-person-gear" xmlns="http://www.w3.org/2000/svg" width="21" height="21"
                         fill="currentColor" viewBox="0 0 16 16">
                         <path

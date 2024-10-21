@@ -77,6 +77,10 @@ if($subasta_web){
 			@include('includes.ficha.header_time')
 		</section>
 
+		<section class="ficha-previous-next">
+			@include('includes.ficha.previous_next')
+		</section>
+
 		<section class="ficha-title">
 			<p class="ficha-title-reference">LOTE {{$refLot}}</p>
 			<h1>{!!$lote_actual->descweb_hces1 ?? $lote_actual->titulo_hces1!!}</h1>
@@ -104,10 +108,6 @@ if($subasta_web){
 			@include('includes.ficha.share')
 		</section>
 
-		<section class="ficha-previous-next">
-			@include('includes.ficha.previous_next')
-		</section>
-
 		<section class="ficha-files">
 			@include('includes.ficha.files')
 		</section>
@@ -130,6 +130,16 @@ if($subasta_web){
 				</div>
 			</div>
 		</div>
+	</section>
+
+	<section class="py-4">
+		<x-contact-section>
+			<x-slot:topAddress>
+				<h2 class="contact-address-subtitle">Contactar</h2>
+				<h3 class="contact-address-title">¿En que podemos ayudarte?</h3>
+			</x-slot:topAddress>
+
+		</x-contact-section>
 	</section>
 </div>
 

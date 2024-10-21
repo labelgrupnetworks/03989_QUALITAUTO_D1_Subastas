@@ -38,16 +38,23 @@ $(function () {
 			ortherphone = false;
 		}
 		$.magnificPopup.close();
+
+
 		$.ajax({
 			type: "POST",
 			url: routing.ol + '-' + cod_sub,
 			data: { cod_sub: cod_sub, ref: ref, imp: imp, tel1: tel1, tel2: tel2, ortherphone: ortherphone },
 			success: function (data) {
-				if (data.status == 'error') {
 
-					$("#insert_msg_title").html("");
-					$("#insert_msg").html(data.msg_1);
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+				$modal = $('#modalMensaje');
+				$modaltitle = $modal.find('#insert_msg_title');
+				$modalmsg = $modal.find('#insert_msg');
+
+				if (data.status == 'error') {
+					$modaltitle.html("");
+					$modalmsg.html(data.msg_1);
+					$.magnificPopup.open({ items: { src: $modal }, type: 'inline' }, 0);
+
 				} else if (data.status == 'success') {
 					//divisas, debe existir el selector
 					if (typeof $("#currencyExchange").val() != 'undefined') {
@@ -58,8 +65,10 @@ $(function () {
 					$("#text_actual_no_bid").addClass("hidden");
 					$("#text_actual_max_bid").removeClass("hidden");
 					$("#actual_max_bid").html(data.open_price);
-					$("#insert_msg_title").html("");
-					$("#insert_msg").html(data.msg);
+
+					$modaltitle.html("");
+					$modalmsg.html(data.msg);
+
 					$(".hist_new").removeClass("hidden");
 					$(".custom").removeClass("hidden");
 					$("#bid_modal_pujar").val(data.imp_actual);
@@ -70,7 +79,7 @@ $(function () {
 						$("#max_bid_color").removeClass("winner");
 						$("#max_bid_color").addClass("no_winner");
 					}
-					$.magnificPopup.open({ items: { src: '#modalMensaje' }, type: 'inline' }, 0);
+					$.magnificPopup.open({ items: { src: $modal }, type: 'inline' }, 0);
 				}
 
 			}
