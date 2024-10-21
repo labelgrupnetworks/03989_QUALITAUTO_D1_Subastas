@@ -45,7 +45,7 @@
 					@endphp
 					@include("includes.banners.$bannerItem->tipo", $params)
 				@else
-					<div class="position-relative" @if(!$loop->first) data-invert @endif>
+					<div class="position-relative" data-invert="true">
 						<picture class="slider-img">
 							<source srcset="{{ $bannerItem->images['desktop'] }}" media="(min-width: 600px)">
 							<img src="{{ $bannerItem->images['mobile'] }}" alt="{{ $bannerItem->texto }}">
