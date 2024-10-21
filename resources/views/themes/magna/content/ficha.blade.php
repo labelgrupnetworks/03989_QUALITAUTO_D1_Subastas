@@ -118,7 +118,7 @@ if($subasta_web){
 
 	<section class="ficha-recomendados mt-3">
 		<div class="lotes_destacados" id="lotes_recomendados-content">
-			<h1 class="mas-pujados-title">{{ trans($theme.'-app.lot.recommended_lots') }}</h1>
+			<h2 class="lotes-destacados-title">{{ trans($theme.'-app.lot.recommended_lots') }}</h2>
 
 			<div class='loader d-none'></div>
 			<div id="lotes_recomendados" class="owl-theme owl-carousel"></div>

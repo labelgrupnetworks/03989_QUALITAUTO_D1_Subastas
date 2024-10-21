@@ -60,6 +60,7 @@
 	--lb-border-color-hsl: 0, 0%, 0%;
 	--lb-border-opacity: 0.4;
 	--lb-border-color: hsla(var(--lb-border-color-hsl), var(--lb-border-opacity));
+	--lb-border-black: #000;
 	--bs-border-color: var(--lb-border-color);
 	--lb-text-color-primary: var(--color-black);
 
@@ -1062,9 +1063,13 @@ body>footer .logo-svg {
 	}
 }
 
+.ficha .container {
+	max-width: 1140px;
+}
+
 @media (min-width: 992px) {
 	.ficha-grid {
-		grid-template-columns: 1.5fr 1fr;
+		grid-template-columns: 2fr 1fr;
 	}
 
 	section.ficha-auction-info {
@@ -1089,7 +1094,7 @@ body>footer .logo-svg {
 
 	section.ficha-history {
 		grid-column: 2;
-		grid-row: -1;
+		grid-row: 9;
 	}
 
 	section.ficha-share {
@@ -1180,3 +1185,23 @@ body>footer .logo-svg {
 .ficha-pujas .price.salida-price span:nth-of-type(2) {
 	font-weight: 700;
 }
+
+.minis-content button {
+	border: 0;
+	padding: 0;
+}
+
+.minis-content button img {
+	object-fit: cover;
+}
+
+.lotes-destacados-title {
+	font-family: var(--prominent-font-family);
+	font-size: 2.5rem;
+	padding: 2rem 0;
+	margin-top: 3rem;
+	margin-bottom: 2rem;
+	border-top: 1px solid var(--lb-border-black);
+	border-bottom: 1px solid var(--lb-border-color);
+}
+

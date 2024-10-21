@@ -5,7 +5,7 @@ $caracteristicas = App\Models\V5\FgCaracteristicas_Hces1::getByLot($lote_actual-
 
 
 
-<div class="description max-lines" style="--max-lines: 3; --line-height: 1.5">
+<div class="description">
 	<p>{!! str_replace('&nbsp;', ' ', $lote_actual->desc_hces1) !!}</p>
 </div>
 

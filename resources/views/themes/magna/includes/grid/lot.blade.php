@@ -15,7 +15,7 @@
 					@if($subasta_venta)
 						<span>{{ trans($theme.'-app.subastas.price_sale') }}</span>
 					@else
-						<span>{{ trans($theme.'-app.lot.lot-price') }}</span>
+						<span>{{ trans("$theme-app.lot_list.starting_price") }}</span>
 					@endif
 
 					<span>{{$precio_salida}}  {{ trans($theme.'-app.subastas.euros') }}</span>
