@@ -738,11 +738,11 @@ nav.header-navbar ul {
 	font-size: 10px;
 }
 
-.lot-buy-to {
+.lot-buy-to, .lot-not-buy {
 	text-transform: lowercase;
 }
 
-.lot-buy-to:first-letter {
+.lot-buy-to:first-letter, .lot-not-buy > *:first-letter {
 	text-transform: uppercase;
 }
 
@@ -1069,8 +1069,8 @@ body>footer .logo-svg {
 @media(min-width: 768px) {
 
 	.how-to-buy-section {
-		padding-top: 5rem;
-		padding-bottom: 5rem;
+		padding-top: 4rem;
+		padding-bottom: 4rem;
 	}
 
 	.how-to-buy-action {
