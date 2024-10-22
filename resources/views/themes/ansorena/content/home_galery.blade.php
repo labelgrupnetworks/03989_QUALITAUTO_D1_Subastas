@@ -11,7 +11,7 @@
         ->where('OPCIONCAR_SUB', 'N')
         ->orderby('DFEC_SUB', 'desc')
         ->first()
-        ->getExhibitionFieldsAttribute();
+        ?->getExhibitionFieldsAttribute();
 
     $exposures = FgSub::leftJoinArtistExhibition()
         ->where('SUBC_SUB', 'H')
@@ -65,6 +65,7 @@
 
 <div class="gallery">
 
+	@if($actualExposure)
     <section class="next-auction-wrapper next-exposure">
         <div class="next-auction-info text-center">
 
@@ -89,6 +90,7 @@
             <img src="{{ $actualExposure->image }}" alt="Portada de la subasta" height="758" width="950">
         </div>
     </section>
+	@endif
 
     <section class="container medium-container landing-section">
         <h2 class="landing-section-title ff-highlight">{{ trans("$theme-app.galery.previous_exhibition") }}</h2>
