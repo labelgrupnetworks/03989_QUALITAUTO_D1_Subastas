@@ -8,7 +8,7 @@
 
     <main class="contact-page">
 
-        <section>
+        <section class="fluid-banner">
             {!! BannerLib::bannersPorKey(
                 'home',
                 'home-top-banner',

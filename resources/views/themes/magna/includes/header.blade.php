@@ -1,6 +1,6 @@
 @php
     $registration_disabled = Config::get('app.registration_disabled');
-	$locale = Config::get('app.locale');
+    $locale = Config::get('app.locale');
     $pageName = Route::currentRouteName();
 @endphp
 
@@ -40,7 +40,7 @@
         </div>
 
         <a class="logo-link" href="{{ '/' . $locale }}" title="{{ Config::get('app.name') }}">
-			<x-icon.logo />
+            <x-icon.logo />
         </a>
 
 
@@ -60,14 +60,13 @@
                     <span class="d-none d-lg-inline">{{ trans("$theme-app.login_register.generic_name") }}</span>
                 </button>
             @else
-                <a class="btn btn-outline-lb-primary rounded-5 d-none d-lg-inline" href="{{ \Routing::slug('user/panel/orders') }}">
+                <a class="btn btn-outline-lb-primary rounded-5 d-none d-lg-inline"
+                    href="{{ \Routing::slug('user/panel/orders') }}">
                     <span>{{ trans("$theme-app.login_register.my_panel") }}</span>
                 </a>
-				<a class="btn btn-link d-lg-none" href="{{ \Routing::slug('user/panel/orders') }}">
-					<x-icon.boostrap icon="person-fill" size="18" />
-				</a>
-
-
+                <a class="btn btn-link d-lg-none" href="{{ \Routing::slug('user/panel/orders') }}">
+                    <x-icon.boostrap icon="person-fill" size="18" />
+                </a>
             @endif
 
             @if (Session::get('user.admin'))
@@ -102,14 +101,16 @@
                 @endif
 
                 <li class="nav-item">
-                    <a href="" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
-                        <span>Comprar</span>
+                    <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
+                        title="{{ trans("$theme-app.foot.how_to_buy") }}" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
+                        <span>{{ trans("$theme-app.foot.how_to_buy") }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
-                        <span>Vender</span>
+					<a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_sell") }}"
+                        title="{{ trans("$theme-app.foot.how_to_sell") }}" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
+                        <span>{{ trans("$theme-app.foot.how_to_sell") }}</span>
                     </a>
                 </li>
 

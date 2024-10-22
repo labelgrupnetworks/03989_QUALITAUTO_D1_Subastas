@@ -1,4 +1,4 @@
-<div class="home-slider">
+<section class="fluid-banner">
     {!! BannerLib::bannersPorKey(
         'home',
         'home-top-banner',
@@ -8,7 +8,7 @@
         '',
         $page_settings,
     ) !!}
-</div>
+</section>
 
 <section class="home-section home-seo">
     @include('includes.home.seo_home')
