@@ -135,8 +135,8 @@ if($subasta_web){
 	<section class="py-4">
 		<x-contact-section>
 			<x-slot:topAddress>
-				<h2 class="contact-address-subtitle">Contactar</h2>
-				<h3 class="contact-address-title">¿En que podemos ayudarte?</h3>
+				<h2 class="contact-address-subtitle">{{ trans("$theme-app.pages.contact_subtitle") }}</h2>
+				<h3 class="contact-address-title">{{ trans("$theme-app.pages.contact_title") }}</h3>
 			</x-slot:topAddress>
 
 		</x-contact-section>

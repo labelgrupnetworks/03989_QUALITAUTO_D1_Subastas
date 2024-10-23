@@ -1,17 +1,19 @@
 @php
+	use \App\Models\Enterprise;
     $registration_disabled = Config::get('app.registration_disabled');
     $locale = Config::get('app.locale');
     $pageName = Route::currentRouteName();
+	$empresa = (new Enterprise())->getEmpre();
 @endphp
 
 <div class="wrapp-info-header d-none d-lg-block border-bottom py-2">
     <div class="container">
         <div class="d-flex">
-            <p>Abierto de lunes a viernes de 10 a 19h</p>
+            <p>{{ trans("$theme-app.global.company_schedule") }}</p>
             <p class="ms-auto">
-                <a href="tel:+34910076464">91 007 64 64</a>
+                <a href="tel:+34{{ $empresa->tel1_emp ?? '' }}">{{ $empresa->tel1_emp ?? '' }}</a>
                 <span>|</span>
-                <a href="mailto:subastas@magna-art.com">subastas@magna-art.com</a>
+                <a href="mailto:subastas@magna-art.com">{{ $empresa->email_emp ?? '' }}</a>
             </p>
         </div>
     </div>
@@ -99,21 +101,21 @@
 
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
-                        title="{{ trans("$theme-app.foot.how_to_buy") }}" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
+                        title="{{ trans("$theme-app.foot.how_to_buy") }}" @class(['nav-link', 'active' => $pageName === 'comprar'])>
                         <span>{{ trans("$theme-app.foot.how_to_buy") }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_sell") }}"
-                        title="{{ trans("$theme-app.foot.how_to_sell") }}" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
+                        title="{{ trans("$theme-app.foot.how_to_sell") }}" @class(['nav-link', 'active' => $pageName === 'vender'])>
                         <span>{{ trans("$theme-app.foot.how_to_sell") }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"
-                        title="" @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion'])>
+                        title="" @class(['nav-link', 'active' => $pageName === 'valoracion'])>
                         <span> {{ trans($theme . '-app.home.free-valuations') }}</span>
                     </a>
                 </li>
@@ -130,7 +132,7 @@
                     <a href="{{ route('contact_page') }}" title="{{ trans($theme . '-app.foot.contact') }}"
                         @class([
                             'nav-link',
-                            'lb-text-primary' => $pageName === 'contact_page',
+                            'active' => $pageName === 'contact_page',
                         ])><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
                 </li>
             </ul>

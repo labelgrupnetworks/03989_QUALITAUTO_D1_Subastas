@@ -8,7 +8,7 @@
 			<p class="newsletter_subtitle">{{ trans("$theme-app.foot.newsletter_title") }}</p>
             <h3 class="newsletter_title">{{ trans("$theme-app.foot.newsletters") }}</h3>
             <p class="newsletter_desc">
-                Suscribase para estar al día de loas últimas noticias sobre subastas y mucho más
+                {{ trans("$theme-app.foot.newsletter_description") }}
             </p>
 
             <div class="newsletter_input position-relative">
