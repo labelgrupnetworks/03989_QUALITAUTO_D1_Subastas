@@ -46,6 +46,10 @@ $(() => {
 	document.querySelector('.search-component .icon')?.addEventListener('click', handleClickSearchComponent);
 	document.querySelector('.search-button')?.addEventListener('click', handleClickSearchButton);
 	document.querySelector('.search-button span[type="reset"]')?.addEventListener('click', handleClickCloseSearchButton);
+
+	$('.js-view-password-group')
+		.mousedown(handleClickShowPassword)
+		.mouseup(handleMouseOutShowPassword);
 });
 
 /**
@@ -119,4 +123,18 @@ function toogleMenu(menuButton) {
 hideFilters = function(event) {
 	event.preventDefault();
 	$('.filters-auction-content .form-group').toggleClass('d-none');
+}
+
+function handleClickShowPassword(event) {
+	const button = event.currentTarget;
+	const wrapper = button.closest('.input-group');
+	const input = wrapper.querySelector('input');
+	input.type = 'text';
+}
+
+function handleMouseOutShowPassword(event) {
+	const button = event.currentTarget;
+	const wrapper = button.closest('.input-group');
+	const input = wrapper.querySelector('input');
+	input.type = 'password';
 }

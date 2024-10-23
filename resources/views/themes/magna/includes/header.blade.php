@@ -108,7 +108,7 @@
                 </li>
 
                 <li class="nav-item">
-					<a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_sell") }}"
+                    <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_sell") }}"
                         title="{{ trans("$theme-app.foot.how_to_sell") }}" @class(['nav-link', 'lb-text-primary' => $pageName === 'comprar'])>
                         <span>{{ trans("$theme-app.foot.how_to_sell") }}</span>
                     </a>
@@ -146,66 +146,79 @@
     <div class="h-100 d-flex justify-content-center align-content-center">
         <div class="login_desktop_content m-auto">
             <div class="only-login bg-white position-relative">
-                <div class="text-center">
-                    <button class="btn-close closedd" type="button" aria-label="Close"></button>
+                <div class="login-content-form">
+                    <img class="closedd" src="/themes/{{ $theme }}/assets/img/shape.png" alt="Close"
+                        role="button">
 
                     <p class="login_desktop_title h1">{{ trans($theme . '-app.login_register.login') }}</p>
 
-                    <form id="accerder-user-form" data-toggle="validator">
+                    <form class="d-flex align-items-center justify-content-center flex-column py-4"
+                        id="accerder-user-form" data-toggle="validator">
                         @csrf
 
-                        <div class="form-floating">
-                            <input class="form-control" id="floatingInput" name="email" type="email"
-                                placeholder="email@example.com">
-                            <label for="floatingInput">{{ trans("$theme-app.login_register.ph_user") }}</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <x-icon.boostrap icon="person-fill" size="16" />
+                            </span>
+                            <div class="form-floating flex-grow-1">
+                                <input class="form-control" id="floatingInput" name="email" type="email"
+                                    placeholder="email@example.com">
+                                <label for="floatingInput">{{ trans("$theme-app.login_register.ph_user") }}</label>
+                            </div>
                         </div>
 
-                        <div class="form-floating input-group">
-                            <input class="form-control" id="floatingPassword" name="password" type="password"
-                                placeholder="contraseña">
-                            <label for="floatingPassword">{{ trans("$theme-app.login_register.password") }}</label>
-                            <span class="input-group-text view_password">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <svg class="bi" width="16" height="16" fill="currentColor">
+                                    <use xlink:href="/bootstrap-icons.svg#key-fill"></use>
+                                </svg>
+                            </span>
+                            <div class="form-floating">
+                                <input class="form-control" id="floatingPassword" name="password" type="password"
+                                    placeholder="contraseña">
+                                <label
+                                    for="floatingPassword">{{ trans("$theme-app.login_register.password") }}</label>
+                            </div>
+                            <span class="input-group-text js-view-password-group">
                                 <img class="eye-password"
                                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
                             </span>
                         </div>
 
-                        <p class="message-error-log text-danger d-none"></p>
+                        <small class="align-self-end">
+                            <a class="c_bordered" id="p_recovery"
+                                data-ref="{{ \Routing::slug('password_recovery') }}"
+                                data-title="{{ trans($theme . '-app.login_register.forgotten_pass_question') }}"
+                                data-bs-toggle="modal" data-bs-target="#modalAjax" href="javascript:;"
+                                onclick="cerrarLogin();">
+                                {{ trans($theme . '-app.login_register.forgotten_pass_question') }}
+                            </a>
+                        </small>
 
-                        <button class="btn btn-lb-primary btn-fluid" id="accerder-user" type="submit">
+                        <p><span class="message-error-log text-danger seo_h5"></span></p>
+
+                        <button class="btn btn-lb-primary w-100 mt-4" id="accerder-user" type="submit">
                             <span class="text">{{ trans($theme . '-app.login_register.acceder') }}</span>
                             <div class="spinner spinner-1 m-auto"></div>
                         </button>
 
                     </form>
 
-                    <div class="d-flex flex-column gap-3">
+                    <div class="login-separator" data-content="o"></div>
 
-                        <a class="c_bordered fs-16" id="p_recovery"
-                            data-ref="{{ \Routing::slug('password_recovery') }}"
-                            data-title="{{ trans($theme . '-app.login_register.forgotten_pass_question') }}"
-                            data-bs-toggle="modal" data-bs-target="#modalAjax" data-toggle="modal"
-                            data-target="#modalAjax" href="javascript:;" onclick="cerrarLogin();">
-                            {{ trans($theme . '-app.login_register.forgotten_pass_question') }}
-                        </a>
+                    <p class="text-center mb-2">{{ trans($theme . '-app.login_register.not_account') }}</p>
 
-                        <div class="login-separator" data-content=""></div>
-
-                        <p class="text-center mb-2 fs-16">{{ trans($theme . '-app.login_register.not_account') }}</p>
-
-                        <div>
-                            @if (empty($registration_disabled))
-                                <a class="btn btn-lb-primary btn-medium" href="{{ \Routing::slug('register') }}"
-                                    title="{{ trans("$theme-app.login_register.register") }}">
-                                    {{ trans("$theme-app.login_register.register") }}
-                                </a>
-                            @else
-                                <p class="text-center" style="color: darkred;">
-                                    {{ trans($theme . '-app.login_register.registration_disabled') }}</p>
-                            @endif
-                        </div>
+                    <div class="create-account-link">
+                        @if (empty($registration_disabled))
+                            <a class="btn btn-outline-lb-secondary w-100" href="{{ \Routing::slug('register') }}"
+                                title="{{ trans($theme . '-app.login_register.register') }}">
+                                {{ trans($theme . '-app.login_register.register') }}
+                            </a>
+                        @else
+                            <p class="text-center" style="color: darkred;">
+                                {{ trans($theme . '-app.login_register.registration_disabled') }}</p>
+                        @endif
                     </div>
-
                 </div>
             </div>
         </div>
