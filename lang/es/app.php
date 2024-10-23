@@ -353,7 +353,9 @@ $lang = [
 		'google_write_review' => 'Escribir Reseña',
 		'google_view' => 'Ver en'
 	),
+	'pages' => array(
 
+	),
 	'links' =>
 	array(
 		'about_us' => 'quienes-somos',
