@@ -2,12 +2,9 @@
     $categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
 @endphp
 <div class="container">
-    <p class="home-section_subtitle">Calidad en nuestra colecciones</p>
-    <h2 class="home-section_title">Categorías</h2>
-    <p class="home-section_desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi deserunt distinctio
-        ducimus asperiores
-        suscipit, dolorum, quas maiores, repudiandae accusamus harum natus. Eum, assumenda a aliquam quae unde animi
-        labore eligendi!</p>
+    <p class="home-section_subtitle">{{ trans("$theme-app.home.seo_home_subtitle") }}</p>
+    <h2 class="home-section_title">{{ trans("$theme-app.home.seo_home_title") }}</h2>
+    <p class="home-section_desc">{{ trans("$theme-app.home.seo_home_text") }}</p>
 
     <div class="categories">
         @foreach ($categories as $category)

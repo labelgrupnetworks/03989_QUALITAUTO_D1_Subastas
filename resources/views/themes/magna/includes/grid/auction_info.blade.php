@@ -16,13 +16,13 @@
 
 			<div class="auction-expo">
 				<div class="auction-expo-dates">
-					<p class="fw-bold">Exposición</p>
+					<p class="fw-bold">{{ trans("$theme-app.subastas.inf_subasta_exposicion") }}</p>
 					<p>{{ $auction->expofechas_sub }}</p>
 					<p>{{ $auction->expohorario_sub }}</p>
 					<p>{{ $auction->expolocal_sub }}</p>
 				</div>
 				<div class="auction-session-dates">
-					<p class="fw-bold">Subasta</p>
+					<p class="fw-bold">{{ trans("$theme-app.subastas.inf_subasta_subasta") }}</p>
 					<p>{{ $auction->sesfechas_sub }}</p>
 					<p>{{ $auction->seshorario_sub }}</p>
 				</div>

@@ -37,8 +37,8 @@
             <section class="container py-3">
                 <div class="row">
                     <div class="col-lg-9">
-                        <x-howbuy-block headText="Ahora puede solicitar una valoración de cualquier pieza de manera online."
-                            highlightedText="Compra / Venta" linkText="Ir a valoración"
+                        <x-howbuy-block headText="{{ trans("$theme-app.pages.how_buy_sell_text_2") }}"
+                            highlightedText="{{ trans("$theme-app.pages.how_buy_sell_title_2") }}" linkText="{{ trans("$theme-app.pages.how_buy_sell_link_text_2") }}"
                             linkAction="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}" />
                     </div>
                 </div>

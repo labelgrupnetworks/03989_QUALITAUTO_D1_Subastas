@@ -22,12 +22,9 @@
 
         <section class="py-4">
             <div class="container text-center">
-                <p class="seo-block-subtitle">Estamos para ayudarte</p>
-                <h1 class="seo-block-title">Contacta con nosotros</h1>
-                <h2 class="seo-block-content">Illa nonsequ idebis sum int quia coremossi sin ra volorio sapiene tumque nus
-                    pores dest
-                    provitas est ipicidel im eaque sit dolendit eos doluptat volore, non natentius dus exerum
-                    faccum qui aut incipsam, et lant labori atem qui unt everferum</h2>
+                <p class="seo-block-subtitle">{{ trans("$theme-app.pages.contact_seo_subtitle") }}</p>
+                <h1 class="seo-block-title">{{ trans("$theme-app.pages.contact_seo_title") }}</h1>
+                <h2 class="seo-block-content">{{ trans("$theme-app.pages.contact_seo_text") }}</h2>
             </div>
         </section>
 
@@ -35,11 +32,11 @@
             <div class="container container-short">
                 <x-contact-section>
 					<x-slot:topAddress>
-						<p class="text-block mb-3">Dirección</p>
+						<p class="text-block mb-3">{{ trans("$theme-app.pages.contact_label1") }}</p>
 					</x-slot:topAddress>
 
 					<x-slot:topForm>
-						<p class="text-block mb-3">FORMULARIO DE CONTACTO</p>
+						<p class="text-block mb-3">{{ trans("$theme-app.pages.contact_label2") }}</p>
 					</x-slot:topForm>
 				</x-contact-section>
             </div>
