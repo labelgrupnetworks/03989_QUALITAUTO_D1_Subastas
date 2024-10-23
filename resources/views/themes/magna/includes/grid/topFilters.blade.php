@@ -11,7 +11,7 @@
     }
 @endphp
 
-<div class="top-filters-selects row row-cols-4 align-content-end mb-2">
+<div class="top-filters-selects row row-cols-md-4 gy-2 align-content-end mb-2">
 
     <div>
         <select class="form-select form-select-sm" id="order_selected">

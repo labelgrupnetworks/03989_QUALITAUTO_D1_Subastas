@@ -115,6 +115,10 @@ h1, .h1 {
 	--bs-btn-hover-color: "#000";
 }
 
+.btn-outline-lb-primary.rounded-5:not(.btn_login) {
+	min-width: 130px;
+}
+
 .badge {
 	--bs-badge-font-weight: 400;
 }
@@ -221,11 +225,21 @@ header .container {
 	padding-bottom: 14px;
 }
 
+.wrapp-info-header {
+	font-size: .8em;
+}
+
 @media(min-width: 992px) {
 	header .container {
 		grid-template-rows: 66px;
 		padding-top: 19px;
 		padding-bottom: 35px;
+	}
+}
+
+@media(min-width: 1200px) {
+	.wrapp-info-header {
+		font-size: 1em;
 	}
 }
 
@@ -368,6 +382,10 @@ header .navbar-toggler {
 	border: 1px solid var(--lb-border-color);
 }
 
+.btn_login {
+	--bs-btn-border-width: 0;
+}
+
 @media (min-width: 992px) {
 	.select-container {
 		display: flex;
@@ -379,6 +397,10 @@ header .navbar-toggler {
 
 	.search-component {
 		border: 1px solid var(--lb-border-color);
+	}
+
+	.btn_login {
+		--bs-btn-border-width: 1px;
 	}
 
 	.btn_login :is(img, svg) {
@@ -727,6 +749,11 @@ footer .nav-link {
 	--bs-nav-link-hover-color: rgb(255 255 255 / 1);
 	--bs-nav-link-padding-x: 0;
 	--bs-nav-link-padding-y: 0.5rem;
+	text-transform: lowercase;
+}
+
+footer .nav-link:first-letter {
+	text-transform: uppercase;
 }
 
 body>footer .logo-svg {
@@ -976,6 +1003,12 @@ body>footer .logo-svg {
 }
 
 @media (min-width: 992px) {
+
+	main.ficha {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+	}
+
 	.ficha-grid {
 		grid-template-columns: 2fr 1fr;
 		column-gap: 4rem;
@@ -1064,6 +1097,7 @@ body>footer .logo-svg {
 
 .ficha-info {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .ficha-info .ficha-info-clock {
@@ -1073,10 +1107,6 @@ body>footer .logo-svg {
 .info-type-auction {
 	margin: 0;
 	font-weight: 400;
-}
-
-.ficha-date-closing {
-	margin-left: auto;
 }
 
 .ficha-title-reference {
@@ -1132,6 +1162,12 @@ body>footer .logo-svg {
 	margin-bottom: 2rem;
 	border-top: 1px solid var(--lb-border-black);
 	border-bottom: 1px solid var(--lb-border-color);
+}
+
+@media(min-width: 768px) {
+	.ficha-date-closing {
+		margin-left: auto;
+	}
 }
 
 .seo-block-title {
@@ -1241,4 +1277,14 @@ body>footer .logo-svg {
 	.team-member {
 		margin: 0;
 	}
+}
+
+.user-panel-page {
+	margin-top: 4rem;
+	margin-bottom: 4rem;
+}
+
+.user-panel-page h1 {
+	font-size: 2.5rem;
+	margin-bottom: 2rem;
 }

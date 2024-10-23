@@ -3,10 +3,19 @@
     $specialists = FgEspecial1::getSpecialists();
 @endphp
 
-<section class="container container-short py-5">
+<section class="container container-short my-5">
 
-    banner
-
+    <section class="mb-5">
+		{!! BannerLib::bannersPorKey(
+			'team',
+			'',
+			['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false],
+			null,
+			false,
+			'',
+			$page_settings,
+		) !!}
+	</section>
 
     <div class="text-md-end">
         <p class="seo-block-subtitle">Tenemos el mejor equipo</p>

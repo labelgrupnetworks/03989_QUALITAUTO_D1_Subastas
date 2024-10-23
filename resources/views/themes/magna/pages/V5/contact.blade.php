@@ -10,8 +10,8 @@
 
         <section class="fluid-banner">
             {!! BannerLib::bannersPorKey(
-                'home',
-                'home-top-banner',
+                'contacto',
+                '',
                 ['dots' => false, 'autoplay' => true, 'autoplaySpeed' => 5000, 'slidesToScroll' => 1, 'arrows' => false],
                 null,
                 false,
