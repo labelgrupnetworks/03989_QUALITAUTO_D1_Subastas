@@ -630,6 +630,12 @@ nav.header-navbar ul {
 	--bs-card-spacer-x: 0;
 }
 
+.lot-card .card-img-top {
+	aspect-ratio: 3 / 3.5;
+	object-fit: cover;
+	height: auto;
+}
+
 .lot-card .card-body {
 	gap: 1rem;
 	min-height: initial;
