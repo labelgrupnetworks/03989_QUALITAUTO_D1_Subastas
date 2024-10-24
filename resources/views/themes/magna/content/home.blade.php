@@ -21,11 +21,21 @@
             'home_block_doble',
             [
                 'dots' => false,
-                'autoplay' => false,
+                'autoplay' => true,
                 'autoplaySpeed' => 5000,
                 'slidesToScroll' => 2,
                 'slidesToShow' => 2,
                 'arrows' => true,
+				'responsive' => [
+					[
+						'breakpoint' => 768,
+						'settings' => [
+							'slidesToShow' => 1,
+							'slidesToScroll' => 1,
+							'arrows' => false,
+						],
+					],
+				]
             ],
             null,
             false,

@@ -556,7 +556,6 @@ nav.header-navbar ul {
 }
 
 .banner-seo .row {
-	--bs-gutter-x: 3rem;
 	--bs-gutter-y: 1rem;
 }
 
@@ -573,6 +572,11 @@ nav.header-navbar ul {
 }
 
 @media(min-width: 768px) {
+
+	.banner-seo .row {
+		--bs-gutter-x: 3rem;
+	}
+
 	.banner-seo.reverse .row {
 		flex-direction: row-reverse;
 	}
@@ -591,6 +595,15 @@ nav.header-navbar ul {
 }
 
 .home-categories .slick-list {
+	margin: 0 -12px;
+}
+
+.lotes_destacados .lots-wrapper.slick-slide {
+	padding: 0;
+	margin: 0 12px;
+}
+
+.lotes_destacados .slick-list {
 	margin: 0 -12px;
 }
 
