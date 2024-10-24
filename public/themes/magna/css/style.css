@@ -1200,6 +1200,27 @@ body>footer .logo-svg {
 	font-size: 1.25em;
 }
 
+.cgc-page .seo-block-content {
+	max-width: none;
+	font-size: 1em;
+}
+
+.cgc-page ul {
+	list-style: disc;
+}
+
+.cgc-page ul ul>li::marker {
+	content: "-";
+}
+
+.cgc-page ::marker {
+	font-weight: 700;
+}
+
+.list-roman {
+	list-style: upper-roman;
+}
+
 .contact-page-form .btn, .btn.button-send-valorate {
 	--bs-btn-padding-y: .75rem;
 	width: 100%;

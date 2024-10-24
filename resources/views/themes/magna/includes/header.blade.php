@@ -1,9 +1,16 @@
 @php
-	use \App\Models\Enterprise;
+    use App\Models\Enterprise;
     $registration_disabled = Config::get('app.registration_disabled');
     $locale = Config::get('app.locale');
     $pageName = Route::currentRouteName();
-	$empresa = (new Enterprise())->getEmpre();
+    $empresa = (new Enterprise())->getEmpre();
+    $routeSegments = request()->segments();
+
+    $res = request()->path() === Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy");
+
+    $isSubastasPage =
+        Routing::currentUrl(Routing::translateSeo('presenciales')) ||
+        Str::contains(URL::full(), Routing::slugSeo('subasta'));
 @endphp
 
 <div class="wrapp-info-header d-none d-lg-block border-bottom py-2">
@@ -90,10 +97,7 @@
 
                 @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
                     <li class="nav-item">
-                        <a href="{{ route('subastas.presenciales') }}" @class([
-                            'nav-link',
-                            'active' => $pageName === 'subastas.presenciales',
-                        ])>
+                        <a href="{{ route('subastas.presenciales') }}" @class(['nav-link', 'active' => $isSubastasPage])>
                             <span>{{ trans($theme . '-app.foot.auctions') }}</span>
                         </a>
                     </li>
@@ -101,39 +105,56 @@
 
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
-                        title="{{ trans("$theme-app.foot.how_to_buy") }}" @class(['nav-link', 'active' => $pageName === 'comprar'])>
+                        title="{{ trans("$theme-app.foot.how_to_buy") }}" @class([
+                            'nav-link',
+                            'active' => Routing::currentUrl(
+                                route('staticPage', [
+                                    'pagina' => trans("$theme-app.links.how_to_buy"),
+                                    'lang' => $locale,
+                                ])),
+                        ])>
                         <span>{{ trans("$theme-app.foot.how_to_buy") }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_sell") }}"
-                        title="{{ trans("$theme-app.foot.how_to_sell") }}" @class(['nav-link', 'active' => $pageName === 'vender'])>
+                        title="{{ trans("$theme-app.foot.how_to_sell") }}" @class([
+                            'nav-link',
+                            'active' => Routing::currentUrl(
+                                route('staticPage', [
+                                    'pagina' => trans("$theme-app.links.how_to_sell"),
+                                    'lang' => $locale,
+                                ])),
+                        ])>
                         <span>{{ trans("$theme-app.foot.how_to_sell") }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"
-                        title="" @class(['nav-link', 'active' => $pageName === 'valoracion'])>
+                    <a href="{{ route('valoracion', ['key' => 'articulos', 'lang' => $locale]) }}" title=""
+                        @class(['nav-link', 'active' => $pageName === 'valoracion'])>
                         <span> {{ trans($theme . '-app.home.free-valuations') }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}"
-                        title="{{ trans($theme . '-app.foot.about_us') }}">
+                    <a href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.about_us') }}"
+                        title="{{ trans($theme . '-app.foot.about_us') }}" @class([
+                            'nav-link',
+                            'active' => Routing::currentUrl(
+                                route('staticPage', [
+                                    'pagina' => trans("$theme-app.links.about_us"),
+                                    'lang' => $locale,
+                                ])),
+                        ])>
                         <span>{{ trans($theme . '-app.foot.about_us') }}</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('contact_page') }}" title="{{ trans($theme . '-app.foot.contact') }}"
-                        @class([
-                            'nav-link',
-                            'active' => $pageName === 'contact_page',
-                        ])><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
+                        @class(['nav-link', 'active' => $pageName === 'contact_page'])><span>{{ trans($theme . '-app.foot.contact') }}</span></a>
                 </li>
             </ul>
 

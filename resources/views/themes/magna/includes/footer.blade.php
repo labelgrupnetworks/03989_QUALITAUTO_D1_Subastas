@@ -42,7 +42,7 @@ $empresa = $empre->getEmpre();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.contact') }}"
+                            href="{{ route('contact_page') }}"
                             title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
                 </ul>
