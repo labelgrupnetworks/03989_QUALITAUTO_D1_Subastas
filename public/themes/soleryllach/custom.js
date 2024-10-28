@@ -1443,3 +1443,7 @@ function sendContactForm(event) {
 	const form = event.currentTarget;
 	validateCaptchaMiddleware(() => form.submit())
 }
+
+function openLogin() {
+	$('.btn_login_desktop').trigger('click');
+}
