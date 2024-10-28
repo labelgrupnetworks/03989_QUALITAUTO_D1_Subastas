@@ -3239,7 +3239,7 @@ ul.list_home li {
 		top: 0px;
 		width: 95px;
 		height: 95px;
-		z-index: 9;
+		z-index: 8;
 		background-image: linear-gradient(to top left, transparent 50%, var(--primary-color) 0);
 	}
 
@@ -3282,8 +3282,9 @@ ul.list_home li {
 	}
 
 	.retired-text.lang-en {
-		top: 26px;
-  		left: 1px;
+		top: 31px;
+  		left: -1px;
+		font-size: 12px;
 	}
 
 	.retired.selled .retired-text {
