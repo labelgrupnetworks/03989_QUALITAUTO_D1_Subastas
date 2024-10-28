@@ -2880,6 +2880,11 @@ class UserController extends Controller
 
 	private function checkValidFormatPassport($passport)
 	{
+		$validatePassort = Config::get("app.validatePassport", false);
+		if (!$validatePassort) {
+			return true;
+		}
+
 		$passport = strtoupper($passport);
 		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);
