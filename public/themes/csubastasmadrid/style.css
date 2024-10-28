@@ -60,7 +60,6 @@
 	--error-form-color: #b21416;
 
 	--retired-tag-color: #cd6155;
-	--retired-tag-font-size: 13.5pt;
 }
 
 html {
@@ -3739,12 +3738,13 @@ div.item_lot_large {
 .retired-text {
 	top: 23px;
   	left: -6px;
-	font-size: var(--retired-tag-font-size);
+	font-size: 18px;
 }
 
 .retired-text.lang-en {
-	top: 21px;
-  	left: -1px;
+	top: 31px;
+	left: -1px;
+	font-size: 12px;
 }
 
 .retired.selled .retired-text {
@@ -3755,6 +3755,7 @@ div.item_lot_large {
 .retired.selled .retired-text.lang-en {
 	top: 20px;
 	left: 10px;
+	font-size: 18px;
 }
 
 .content_item_mini .retired-border {
