@@ -193,6 +193,23 @@ nav[aria-label="breadcrumb"] {
 	font-family: inherit;
 }
 
+svg.slick-prev, svg.slick-next {
+	color: #000;
+	opacity: .75;
+	padding: 4px;
+	border: 2px solid black;
+}
+
+svg.slick-prev:not(.slick-disabled):hover, svg.slick-next:not(.slick-disabled):hover {
+	color: #000;
+	opacity: 1;
+}
+
+svg.slick-prev.slick-disabled, svg.slick-next.slick-disabled {
+	color: #000;
+	opacity: .25;
+}
+
 .eye-password {
 	/* position: initial; */
 	opacity: 1;
@@ -1149,10 +1166,6 @@ body>footer .logo-svg {
 
 .ficha-pujas .price.salida-price span:nth-of-type(2) {
 	font-weight: 700;
-}
-
-.ficha-pujas .btn {
-	border-radius: 50rem;
 }
 
 .ficha-pujas .input-group-text {
