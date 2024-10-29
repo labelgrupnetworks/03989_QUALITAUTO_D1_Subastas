@@ -3,6 +3,7 @@
     $sesionFriendly = str_slug($inf_lot->session_name);
     $lotUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions/$inf_lot->ref_asigl0-$inf_lot->num_hces1-$tileFriendly";
     $lotLiveUrl = "$inf_lot->cod_sub-$sesionFriendly-$inf_lot->id_auc_sessions";
+	$urlLive = Routing::translateSeo('api/subasta') . $lotLiveUrl;
 
     $url_friendly = Routing::translateSeo('lote') . $lotUrl;
 
@@ -26,10 +27,11 @@
     $isNotClose =
         $inf_lot->cerrado_asigl0 != 'S' &&
         $inf_lot->retirado_asigl0 != 'S' &&
-        strtotime('now') < strtotime($all_inf['inf']->start);
+        strtotime('now') < strtotime($inf_lot->session_start);
 
-    $isInLive =
-        strtotime('now') > strtotime($all_inf['inf']->start) && strtotime('now') < strtotime($all_inf['inf']->end);
+    $isInLive = true ||
+        strtotime('now') > strtotime($inf_lot->session_start) &&
+		strtotime('now') < strtotime($inf_lot->session_end);
 @endphp
 
 <div class="panel-lot-wrapper">
@@ -96,7 +98,7 @@
         </div>
 
         <div class="lot-actions">
-            @if ($isNotClose)
+            @if ($isNotClose && !$isInLive)
                 <button
                     class="btn js-lot-action_pujar_panel btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif"
                     data-from="modal" data-sub="{{ $inf_lot->cod_sub }}" data-ref="{{ $inf_lot->ref_asigl0 }}"
@@ -113,6 +115,13 @@
                     </p>
                 </button>
             @endif
+
+			@if ($isNotClose && $isInLive)
+			<a class="btn btn-puja-panel btn-color btn-live js-button-bid-live" data-from="modal"
+				href="{{ $urlLive }}">
+				{{ trans($theme . '-app.lot_list.bid_live') }}
+			</a>
+			@endif
 
             @if ($subasta_finalizada || !$isNotClose)
                 <div class="btn btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif">

@@ -1043,7 +1043,7 @@ class Subasta extends Model
         if($favorites){
             $sql_join_favorites = "join web_favorites fav on (fav.id_emp=asigl0.emp_asigl0 and fav.id_sub = asigl0.SUB_ASIGL0 and fav.id_ref = asigl0.REF_ASIGL0 and fav.cod_cli= :cli_licit)";
             $sql_favorites = " UNION
-                                    select  b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0,  ref_asigl0,tipo_sub,cod_sub,0 imp, null tipop_orlic, a.fecha fec,  TO_CHAR(a.fecha,'HH24:MM:SS')  hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
+                                    select  b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name, auc.\"start\" as session_start, auc.\"end\" as session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0,  ref_asigl0,tipo_sub,cod_sub,0 imp, null tipop_orlic, a.fecha fec,  TO_CHAR(a.fecha,'HH24:MM:SS')  hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
                                     from web_favorites a
                                     JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.id_emp AND asigl0.SUB_ASIGL0 = a.id_sub AND asigl0.REF_ASIGL0 = a.id_ref)
                                      JOIN fglicit b ON (b.EMP_LICIT = a.id_emp AND b.SUB_LICIT = a.id_sub AND b.CLI_LICIT = a.cod_cli)
@@ -1083,7 +1083,7 @@ class Subasta extends Model
         //SOLO COJEMOS ORDENES DE SUBASTAS TIPO W SI LA SUBASTA NO HA EMPEZADO (NO TIENE PUJAS)
         $orders_sql =   "select
 
-                        b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,himp_orlic as imp, tipop_orlic, fec_orlic fec, hora_orlic hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
+                        b.COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name, auc.\"start\" as session_start, auc.\"end\" as session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,himp_orlic as imp, tipop_orlic, fec_orlic fec, hora_orlic hora,NUMHCES_ASIGL0, LINHCES_ASIGL0
                         from FGORLIC a
                         JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.emp_orlic AND asigl0.SUB_ASIGL0 = a.SUB_ORLIC AND asigl0.REF_ASIGL0 = a.REF_ORLIC)
                         JOIN fglicit b ON (b.EMP_LICIT = :emp AND b.SUB_LICIT = a.SUB_ORLIC AND b.COD_LICIT = a.LICIT_ORLIC)
@@ -1101,7 +1101,7 @@ class Subasta extends Model
 
         $bids_sql = "select
 
-                    COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,imp,null tipop_orlic,  fec,hora,NUMHCES_ASIGL0, LINHCES_ASIGL0 from
+                    COD_LICIT, \"id_auc_sessions\",auc.\"name\" as session_name, auc.\"start\" as session_start, auc.\"end\" as session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,imp,null tipop_orlic,  fec,hora,NUMHCES_ASIGL0, LINHCES_ASIGL0 from
                     (
                         select b.COD_LICIT,retirado_asigl0, cerrado_asigl0, emp_asigl0,SUB_ASIGL0,ref_asigl0,max(fec_asigl1) fec, max(hora_asigl1) hora, max(imp_asigl1) as imp, max(NUMHCES_ASIGL0) as NUMHCES_ASIGL0, max(LINHCES_ASIGL0) as LINHCES_ASIGL0, max(impsalhces_asigl0) as impsalhces_asigl0       from  fgasigl1 a
                         JOIN fgasigl0 asigl0 ON (asigl0.emp_asigl0 = a.emp_asigl1 AND asigl0.SUB_ASIGL0 = a.SUB_ASIGL1 AND asigl0.REF_ASIGL0 = a.REF_ASIGL1)
@@ -1128,12 +1128,12 @@ class Subasta extends Model
                 $licit_bid_winner_sql
                 $licit_order_winner_sql
                 COD_LICIT,
-                rn,lotes.implic_hces1,\"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,num_hces1,lin_hces1,  imp,tipop_orlic, fec, hora ,
+                rn,lotes.implic_hces1,\"id_auc_sessions\", session_name, session_start, session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,num_hces1,lin_hces1,  imp,tipop_orlic, fec, hora ,
                               NVL(lotes_lang.titulo_hces1_lang, lotes.titulo_hces1) titulo_hces1,
                 NVL(lotes_lang.desc_hces1_lang, lotes.desc_hces1) desc_hces1,  NVL(lotes_lang.descweb_hces1_lang, lotes.descweb_hces1) descweb_hces1
                               FROM (
                          SELECT rownum rn,T3.* FROM (
-                          SELECT COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,NUMHCES_ASIGL0, LINHCES_ASIGL0, max(imp) imp, max(tipop_orlic)  tipop_orlic , max(fec) as fec, max(hora) as hora FROM (
+                          SELECT COD_LICIT, \"id_auc_sessions\",session_name, session_start, session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, ref_asigl0,tipo_sub,cod_sub,NUMHCES_ASIGL0, LINHCES_ASIGL0, max(imp) imp, max(tipop_orlic)  tipop_orlic , max(fec) as fec, max(hora) as hora FROM (
                  SELECT  T.*  from
                  (
                         $orders_sql
@@ -1142,7 +1142,7 @@ class Subasta extends Model
                     $sql_favorites
 
 
-                  )T       )T2  group by COD_LICIT, \"id_auc_sessions\",session_name,impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, tipo_sub,cod_sub,ref_asigl0,NUMHCES_ASIGL0, LINHCES_ASIGL0 order by    tipo_sub, cod_sub,     ref_asigl0)T3 )T4
+                  )T       )T2  group by COD_LICIT, \"id_auc_sessions\",session_name, session_start, session_end, impsalhces_asigl0,retirado_asigl0, cerrado_asigl0, tipo_sub,cod_sub,ref_asigl0,NUMHCES_ASIGL0, LINHCES_ASIGL0 order by    tipo_sub, cod_sub,     ref_asigl0)T3 )T4
                   JOIN FGHCES1 lotes ON   (lotes.EMP_HCES1 = :emp AND lotes.NUM_HCES1 = T4.NUMHCES_ASIGL0  AND lotes.LIN_HCES1 = T4.LINHCES_ASIGL0)
                 LEFT JOIN FGHCES1_LANG lotes_lang
                 ON (lotes_lang.EMP_HCES1_LANG = :emp AND lotes_lang.NUM_HCES1_LANG = lotes.num_hces1  AND lotes_lang.LIN_HCES1_LANG = lotes.lin_hces1 AND lotes_lang.LANG_HCES1_LANG = :lang)

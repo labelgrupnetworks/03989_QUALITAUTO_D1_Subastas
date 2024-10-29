@@ -633,7 +633,7 @@ select#actual_currency {
 }
 
 .lot-actions .btn-puja-panel.btn-live {
-	background-color: var(--btn-red);
+	background-color: #ff000a;
 }
 
 .lot-actions .btn-puja-panel.bid-mine {
