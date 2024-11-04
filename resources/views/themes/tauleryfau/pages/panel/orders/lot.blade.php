@@ -29,9 +29,8 @@
         $inf_lot->retirado_asigl0 != 'S' &&
         strtotime('now') < strtotime($inf_lot->session_start);
 
-    $isInLive = true ||
-        strtotime('now') > strtotime($inf_lot->session_start) &&
-		strtotime('now') < strtotime($inf_lot->session_end);
+    $isInLive = strtotime('now') > strtotime($inf_lot->session_start)
+		&& strtotime('now') < strtotime($inf_lot->session_end);
 @endphp
 
 <div class="panel-lot-wrapper">
