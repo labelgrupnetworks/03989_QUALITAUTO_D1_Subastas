@@ -72,6 +72,13 @@
                 </label>
             </div>
 
+			<p class="captcha-terms mb-2">
+				{{ trans("$theme-app.global.forms_terms") }}
+			</p>
+			<p class="captcha-terms mb-3">
+				{{ trans("$theme-app.global.contact_terms_1") }}
+			</p>
+
             <div class="form-check mb-3">
                 <input class="form-check-input" id="bool__1__condiciones" name="condiciones" type="checkbox"
                     value="on" autocomplete="off">
@@ -80,7 +87,11 @@
                 </label>
             </div>
 
-            <div class="mb-3 px-1">
+			<p class="captcha-terms mb-2">
+				{{ trans("$theme-app.global.contact_terms_2") }}
+			</p>
+
+            <div class="mb-3">
                 <p class="captcha-terms">
                     {!! trans("$theme-app.global.captcha-terms") !!}
                 </p>

@@ -84,6 +84,12 @@
 h1, .h1 {
 	font-size: 3rem;
 	font-family: var(--ff-highlight);
+	font-weight: 400;
+}
+
+main {
+	margin-top: 3rem;
+	margin-bottom: 3rem;
 }
 
 .btn {
@@ -538,6 +544,7 @@ nav.header-navbar ul {
 
 .home-section_title {
 	font-family: var(--ff-highlight);
+	font-weight: 400;
 	font-size: 3rem;
 }
 
@@ -638,7 +645,7 @@ nav.header-navbar ul {
 .category_name {
 	font-family: var(--ff-highlight);
 	font-size: 1.5rem;
-	font-weight: bold;
+	font-weight: 400;
 	margin-top: 1rem;
 }
 
@@ -1281,9 +1288,13 @@ body>footer .logo-svg {
     letter-spacing: .2em;
 }
 
-.contenido-web, .valoracion-page {
+.contenido-web {
 	margin-top: 3rem;
 	margin-bottom: 3rem;
+}
+
+.valoracion-page {
+	margin-top: 4rem;
 }
 
 .static-page .seo-block-subtitle {

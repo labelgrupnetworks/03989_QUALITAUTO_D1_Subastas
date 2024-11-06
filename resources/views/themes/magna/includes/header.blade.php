@@ -93,7 +93,7 @@
 <nav class="navbar navbar-expand-lg header-navbar">
     <div class="container">
         <div class="navbar-collapse collapse" id="navbarHeader" style="">
-            <ul class="navbar-nav mb-2 mb-lg-0 fw-bold">
+            <ul class="navbar-nav mb-2 mb-lg-0">
 
                 @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
                     <li class="nav-item">

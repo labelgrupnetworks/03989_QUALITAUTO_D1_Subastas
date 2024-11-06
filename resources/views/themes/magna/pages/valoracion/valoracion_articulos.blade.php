@@ -11,7 +11,13 @@
 
             <h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
 
-            <p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p>
+            <p class="optimal-text-lenght mb-5">
+				{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}
+			</p>
+
+			<p class="fw-bold">
+				{{ trans("$theme-app.login_register.all_fields_are_required") }}.
+			</p>
 
             <form class="mt-3" id="form-valoracion-adv" action="">
                 @csrf
@@ -54,7 +60,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-10">
-                        <div class="position-relative mb-3" id="dropzone">
+                        <div class="position-relative mb-4" id="dropzone">
                             <p class="text-danger error-dropzone" style="display:none">
                                 <small>{{ trans("$theme-app.msg_error.max_size") }}</small>
                             </p>
@@ -63,7 +69,20 @@
                             <input id="images" name="imagen[]" type="file" multiple />
                         </div>
 
-                        <p class="captcha-terms mb-3">
+						<p class="captcha-terms mb-2">
+							{{ trans("$theme-app.global.forms_terms") }}
+						</p>
+
+						<p class="captcha-terms mb-3">
+							{{ trans("$theme-app.global.valoracion_terms_1") }}
+						</p>
+
+
+						<p class="captcha-terms mb-2">
+							{{ trans("$theme-app.global.valoracion_terms_2") }}
+						</p>
+
+                        <p class="captcha-terms mb-4">
                             {!! trans("$theme-app.global.captcha-terms") !!}
                         </p>
 
