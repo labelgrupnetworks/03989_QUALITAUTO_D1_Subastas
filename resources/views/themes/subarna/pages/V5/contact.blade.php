@@ -54,7 +54,7 @@
 							<div class="single-contact">
 								<p><span class="bold">{{ trans("$theme-app.contact.administration_title") }}</span></p>
 								<p>
-									{{ trans("$theme-app.contact.antiques_mail") }} <br>
+									{{ trans("$theme-app.contact.administration_mail") }} <br>
 									{{ trans("$theme-app.contact.administration_num") }}
 								</p>
 							</div>
@@ -70,7 +70,7 @@
 							<div class="single-contact">
 								<p><span class="bold">{{ trans("$theme-app.contact.valuations_title") }}</span></p>
 								<p>
-									{{ trans("$theme-app.contact.antiques_mail") }} <br>
+									{{ trans("$theme-app.contact.valuations_mail") }} <br>
 									{{ trans("$theme-app.contact.valuations_num") }}
 								</p>
 							</div>

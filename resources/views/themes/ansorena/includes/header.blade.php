@@ -116,12 +116,14 @@
         @if (Route::current()->getName() === 'home')
             <h1>
                 <a class="logo-link" href="{{ $domain . '/' . $locale }}" title="{{ Config::get('app.name') }}">
-                    <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
+                    {{-- <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}"> --}}
+					<img src="/themes/ansorena/assets/img/logo-lazo.png" alt="">
                 </a>
             </h1>
         @else
             <a class="logo-link" href="{{ $domain . '/' . $locale }}" title="{{ Config::get('app.name') }}">
-                <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}">
+                {{-- <img src="/themes/ansorena/assets/img/vectors/logo.svg" alt="{{ Config::get('app.name') }}"> --}}
+				<img src="/themes/ansorena/assets/img/logo-lazo.png" alt="">
             </a>
         @endif
 

@@ -65,7 +65,6 @@
 	--error-form-color: #b21416;
 
 	--retired-tag-color: #cd6155;
-	--retired-tag-font-size: 12pt;
 
 	--ff-body: "Montserrat",Helvetica,Arial,sans-serif;
 }
@@ -3239,7 +3238,7 @@ ul.list_home li {
 		top: 0px;
 		width: 95px;
 		height: 95px;
-		z-index: 9;
+		z-index: 8;
 		background-image: linear-gradient(to top left, transparent 50%, var(--primary-color) 0);
 	}
 
@@ -3278,17 +3277,19 @@ ul.list_home li {
 	.retired-text {
 		top: 24px;
   		left: -7px;
-		font-size: var(--retired-tag-font-size);
+		font-size: 16px;
 	}
 
 	.retired-text.lang-en {
-		top: 26px;
-  		left: 1px;
+		top: 31px;
+  		left: -1px;
+		font-size: 12px;
 	}
 
 	.retired.selled .retired-text {
 		top: 23px;
 		left: -4px;
+		font-size: 16px;
 	}
 
 	.retired.selled .retired-text.lang-en {

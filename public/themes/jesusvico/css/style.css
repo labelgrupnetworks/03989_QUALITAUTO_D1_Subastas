@@ -829,12 +829,18 @@ article.card-custom-large .card-body .card-title {
 	margin-top: 0.5rem;
 }
 
+.lot-card .card-body {
+	padding-bottom: 0;
+}
+
 .lot-card .card-footer {
 	display: flex;
-	gap: 0.5rem;
+	column-gap: 0.5rem;
+	row-gap: 0.25rem;
 	padding: 0;
 	border: 0;
 	background: none;
+	flex-wrap: wrap;
 }
 
 .lot-card .lot-btn {
@@ -853,6 +859,15 @@ article.card-custom-large .card-body .card-title {
 	color: var(--lb-color-primary);
 }
 
+.lot-card .lot-notexport {
+	background-color: #d38378;
+	color: #fff;
+	width: 100%;
+	padding: 0 var(--bs-card-spacer-x);
+	text-align: center;
+	font-weight: 500;
+	font-size: .9em;
+}
 
 .lot-card .bidds-counter {
 	min-height: 50px;

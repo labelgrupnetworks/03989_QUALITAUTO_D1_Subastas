@@ -2454,7 +2454,9 @@ class UserController extends Controller
 			}
 
 			$user->BajaTmpCli($mail_exists[0]->cod_cli, 'N', date("Y-m-d H:i:s"), 'W');
-			Redirect::to(route('user.registered'));
+
+			return Redirect::to(route('user.registered'));
+
 		} elseif ($type == 'newsletter') {
 			$cod = FacadeRequest::input('code');
 			$email = FacadeRequest::input('email');
@@ -2878,6 +2880,11 @@ class UserController extends Controller
 
 	private function checkValidFormatPassport($passport)
 	{
+		$validatePassort = Config::get("app.validatePassport", false);
+		if (!$validatePassort) {
+			return true;
+		}
+
 		$passport = strtoupper($passport);
 		$pattern = "/^[A-Z]{3}[0-9]{6}$/";
 		return preg_match($pattern, $passport);

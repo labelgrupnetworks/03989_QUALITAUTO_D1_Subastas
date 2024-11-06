@@ -167,24 +167,50 @@ if (strpos($fullname, ',')) {
 					$has_subasta = $subastaObj->auctionList('S', 'W');
 
 					if (count($has_subasta) > 0) {
-					$subastaActual = head($has_subasta);
+						$subastaActual = head($has_subasta);
 					}
+
 					$pintura=false;
 					$artesDecorativas=false;
 					$joyas=false;
+					$casaHistorica = false;
+					$arteSigloXX = false;
+
+					$actualPintura=false;
+					$actualArtesDecorativas=false;
+					$actualJoyas=false;
+					$actualCasaHistorica = false;
+					$actualArteSigloXX = false;
+
 					foreach($has_subasta as $session){
 
-						if(strtotime($session->session_start) < strtotime('now')){
+						if(strtotime($session->orders_start) < strtotime('now')){
 							if($session->reference=="001"){
+								$actualPintura=true;
+							}elseif($session->reference=="002"){
+								$actualArtesDecorativas=true;
+							}elseif($session->reference=="003"){
+								$actualJoyas=true;
+							} elseif($session->reference=="004"){
+								$actualCasaHistorica=true;
+							} elseif($session->reference=="005"){
+								$actualArteSigloXX=true;
+							}
+						}
+
+						if(strtotime($session->session_start) < strtotime('now')){
+							if($session->reference == "001"){
 								$pintura=true;
 							}elseif($session->reference=="002"){
 								$artesDecorativas=true;
 							}elseif($session->reference=="003"){
-
 								$joyas=true;
+							} elseif($session->reference=="004"){
+								$casaHistorica=true;
+							} elseif($session->reference=="005"){
+								$arteSigloXX=true;
 							}
 						}
-
 					}
 
 
@@ -214,24 +240,50 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 
+							@if ($actualPintura)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '001') }}?category=1">
 									{{ trans($theme . '-app.foot.paint') }}
 								</a>
 							</p>
+							@endif
+
+							@if ($actualCasaHistorica)
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '004') }}?category=5">
+									{{ trans($theme . '-app.foot.casa_historica') }}
+								</a>
+							</p>
+							@endif
+
+							@if ($actualArtesDecorativas)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '002') }}?category=3">
 									{{ trans($theme . '-app.foot.decorative_arts') }}
 								</a>
 							</p>
+							@endif
+
+							@if ($actualArteSigloXX)
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '005') }}?category=6">
+									{{ trans($theme . '-app.foot.arte_siglo_xx') }}
+								</a>
+							</p>
+							@endif
+
+							@if ($actualJoyas)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaActual->cod_sub, $subastaActual->name, $subastaActual->id_auc_sessions, '003') }}?category=2">
 									{{ trans($theme . '-app.foot.jewels') }}
 								</a>
 							</p>
+							@endif
 
 							<p class="item">
 								<a
@@ -261,6 +313,15 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
+							@if ($casaHistorica)
+								<p class="item">
+									<a
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, "casa historica", $subastaActual->id_auc_sessions, '004') . '?noAward=1&category=5' }}">
+										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.casa_historica') }}
+									</a>
+								</p>
+							@endif
+
 							@if ($artesDecorativas)
 								<p class="item">
 									<a
@@ -269,6 +330,15 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
+							@if ($arteSigloXX)
+								<p class="item">
+									<a
+										href="{{ \Tools::url_auction($subastaActual->cod_sub, "arte siglo xx", $subastaActual->id_auc_sessions, '005') . '?noAward=1&category=6' }}">
+										{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.arte_siglo_xx') }}
+									</a>
+								</p>
+							@endif
+
 							@if ($joyas)
 								<p class="item">
 									<a
@@ -277,6 +347,7 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
+
 
 							@if(strtotime($subastaActual->session_start) < strtotime('now'))
 
@@ -317,6 +388,9 @@ if (strpos($fullname, ',')) {
 					$pinturaAnterior=false;
 					$artesDecorativasAnterior=false;
 					$joyasAnterior=false;
+					$casaHistoricaAnterior = false;
+					$arteSigloXXAnterior = false;
+
 					foreach($has_subasta as $session){
 
 						if(strtotime($session->session_start) < strtotime('now')){
@@ -326,7 +400,12 @@ if (strpos($fullname, ',')) {
 								$artesDecorativasAnterior=true;
 							}elseif($session->reference=="003"){
 								$joyasAnterior=true;
+							} elseif($session->reference=="004"){
+								$casaHistoricaAnterior=true;
+							} elseif($session->reference=="005"){
+								$arteSigloXXAnterior=true;
 							}
+
 						}
 
 					}
@@ -354,7 +433,7 @@ if (strpos($fullname, ',')) {
 							</a>
 						</p>
 
-						@if ( $pinturaAnterior)
+						@if ($pinturaAnterior)
 							<p class="item">
 								<a
 									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "pintura", $subastaAnterior->id_auc_sessions, '001') . '?noAward=1&category=1' }}">
@@ -362,6 +441,16 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 						@endif
+
+						@if ($casaHistoricaAnterior)
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "casa historica", $subastaAnterior->id_auc_sessions, '004') . '?noAward=1&category=5' }}">
+									{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.casa_historica') }}
+								</a>
+							</p>
+						@endif
+
 						@if ( $artesDecorativasAnterior)
 							<p class="item">
 								<a
@@ -370,6 +459,16 @@ if (strpos($fullname, ',')) {
 								</a>
 							</p>
 						@endif
+
+						@if ($arteSigloXXAnterior)
+							<p class="item">
+								<a
+									href="{{ \Tools::url_auction($subastaAnterior->cod_sub, "arte siglo xx", $subastaAnterior->id_auc_sessions, '005') . '?noAward=1&category=6' }}">
+									{{ trans($theme . '-app.foot.unsold') }} {{ trans($theme . '-app.foot.arte_siglo_xx') }}
+								</a>
+							</p>
+						@endif
+
 						@if ( $joyasAnterior)
 							<p class="item">
 								<a

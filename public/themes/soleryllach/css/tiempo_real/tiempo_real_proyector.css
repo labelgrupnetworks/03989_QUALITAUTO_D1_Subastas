@@ -1,0 +1,191 @@
+:root {
+    --primary-color: #0C2340;
+    --secondary-color: #c8ad89;
+	--secondary-color-hover: #977f60;
+	--danger-color: #9e190a;
+	--danger-hover-color: #65110d;
+}
+
+html, body {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+body {
+	overflow: hidden;
+}
+
+
+.nav_tr{
+    background-color: #0C2340;
+    color: #fff;
+}
+
+.header_logo img {
+    max-height: 60px;
+}
+
+.menu {
+    background-color: #0C2340;
+}
+
+.tr_user_info_auction span.novelty{
+	font-size: 15px !important;
+    font-weight: 600;
+    color: red;
+    margin: 0px 5px;
+}
+
+p .novelty{
+	font-size: 23px ;
+}
+
+.button:hover {
+	background-color: var(--secondary-color-hover);
+	color: #fff;
+}
+
+.btn-danger {
+	background-color: var(--danger-color);
+	border-color: var(--danger-color);
+}
+
+.btn-danger:hover {
+	background-color: var(--danger-hover-color);
+	border-color: var(--danger-hover-color);
+}
+
+#ficha #clock {
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    left: 0;
+    z-index: 2;
+    top: 80px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+            align-items: center;
+    text-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+            justify-content: center;
+    font-size: 65px;
+    background: #0C2340;
+    color: #fff;
+    overflow:hidden;
+}
+
+.logo-time-wait {
+    max-width: 70%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+.start_auction_date {
+    font-size: 55px;
+}
+.start_auction_inf {
+    font-size: 30px;
+}
+.data-logo-wait-info {
+    padding: 0 30px;
+    font-size: 31px;
+}
+.data-logo-wait-info p {
+    font-weight: 100;
+    font-size: 30px;
+    margin-top: 30px;
+}
+.tiempo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.tiempo span{
+    display: flex;
+    flex-direction: column-reverse;
+    margin-right: 15px;
+    text-transform: uppercase;
+}
+.center-tr {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.language {
+	display: none;
+}
+
+#ficha #clock {
+	z-index: 100;
+}
+
+@media (max-width:1200px) {
+	.logo-time-wait{
+	  max-width: 250px;
+	  font-size: 25px;
+	}
+	.data-logo-wait-info{
+	  -webkit-box-ordinal-group: 0;
+		  -ms-flex-order: -1;
+			  order: -1;
+	}
+
+	.data-content-info-wait{
+	  font-size: 45px;
+	}
+	#ficha .botonclock{
+	  position: fixed;
+	}
+	#ficha #clock{
+	  height: auto;
+	}
+  }
+
+@media (max-width: 768px) {
+	.logo-time-wait{
+	  max-width: 250px;
+	}
+	.start_auction_date{
+	  font-size: 35px;
+	}
+	.data-content-info-wait{
+	  font-size: 35px;
+	}
+	#ficha .botonclock{
+	  position: fixed;
+	}
+	#ficha #clock{
+	  height: auto;
+	}
+
+
+  }
+
+@media (max-width: 438px) {
+	.logo-time-wait{
+	  max-width: 150px;
+	}
+	.start_auction_date{
+	  font-size: 20px;
+	}
+	.data-content-info-wait{
+	  font-size: 20px;
+	}
+	#ficha .botonclock{
+	  position: fixed;
+	}
+	#ficha #clock{
+	  height: auto;
+	  z-index: 15;
+	}
+  }

@@ -91,7 +91,11 @@ function handleCheckedAddressShipping(checkElement) {
 async function handleSubmitRegisterForm(event) {
 	event.preventDefault();
 
-	await executeCaptchaV3();
+	const captcha = await isValidCaptcha();
+	if (!captcha) {
+		showMessage(messages.error.hasErrors);
+		return;
+	}
 
 	//en caso de no tener dirección multiple o de estar seleccionado, copiamos dirección
 	const withSameAddress = document.querySelector("[name=shipping_address]").checked;
@@ -144,7 +148,7 @@ function registerValidations(form) {
 		return false;
 	}
 
-	if (!checkNifValidations() || !checkCaptcha()) {
+	if (!checkNifValidations()) {
 		showMessage(messages.error.hasErrors);
 		return false
 	}

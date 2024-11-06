@@ -11,6 +11,7 @@
 @php
 
 	header("Location: " . URL::to(route('allCategories'), true, 302));
+
 	exit();
 
 @endphp
