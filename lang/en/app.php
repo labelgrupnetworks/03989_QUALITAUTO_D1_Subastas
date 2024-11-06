@@ -351,6 +351,9 @@ $lang =[
 			'google_write_review' => 'Write a Review',
 			'google_view' => 'View in',
 		),
+	'pages' => array(
+
+	),
 	'links' =>
 		array (
 			'about_us' => 'about-company',

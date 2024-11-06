@@ -23,7 +23,7 @@ class FgEspecial0 extends Model
 	public function __construct(array $vars = [])
 	{
 		$this->attributes = [
-			'emp_especial0' => Config::get("app.emp")
+			'emp_especial0' => Config::get("app.main_emp")
 		];
 		parent::__construct($vars);
 	}
@@ -33,7 +33,7 @@ class FgEspecial0 extends Model
 	{
 		parent::boot();
 		static::addGlobalScope('emp', function (Builder $builder) {
-			$builder->where('emp_especial0', Config::get("app.emp"));
+			$builder->where('emp_especial0', Config::get("app.main_emp"));
 		});
 	}
 

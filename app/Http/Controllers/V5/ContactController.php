@@ -17,17 +17,10 @@ class ContactController extends Controller
 	{
 		#cogemos la empresa principal y si no existe la actual, de esta manera solo contenidos solo deben estar en la empresa principal
 		$emp = Config::get('app.main_emp');
-		$theme = Config::get('app.theme');
 		$withPlaceHolders = Config::get('app.contat_with_placeholders', 0);
 
 		$data = array();
-		$data['formulario'] = array();
-		$data['formulario']['nombre'] = Formlib::Text("nombre", 1, "", "", $withPlaceHolders ? trans("$theme-app.login_register.contact") : "");
-		$data['formulario']['email'] = Formlib::Email("email", 1, "", "", $withPlaceHolders ? trans("$theme-app.foot.newsletter_text_input") : "");
-		$data['formulario']['telefono'] = Formlib::Text("telefono", 1, "", "", $withPlaceHolders ? trans("$theme-app.user_panel.phone") : "");
-		$data['formulario']['comentario'] = Formlib::TextArea("comentario", 1, "", "", $withPlaceHolders ? trans("$theme-app.global.coment") : "");
-		$data['formulario']['_token'] = Formlib::hidden("_token", 1, csrf_token());
-		$data['formulario']['SUBMIT'] = Formlib::Submit(trans(Config::get('app.theme') . '-app.login_register.acceder'), "contactForm");
+		$data['formulario'] = $this->formContact($withPlaceHolders);
 
 		$a = Web_Page::where("key_web_page", "contacto")->where("lang_web_page", strtoupper(Config::get("app.locale")))->where("emp_web_page", $emp)->first();
 		if (!empty($a)) {
@@ -51,6 +44,21 @@ class ContactController extends Controller
 		}
 
 		return View::make('pages.V5.contact', array('data' => $data));
+	}
+
+	public static function formContact($withPlaceHolders = 0)
+	{
+		$theme = Config::get('app.theme');
+		$formulario = [
+			'nombre' => Formlib::Text("nombre", 1, "", "", $withPlaceHolders ? trans("$theme-app.login_register.contact") : ""),
+			'email' => Formlib::Email("email", 1, "", "", $withPlaceHolders ? trans("$theme-app.foot.newsletter_text_input") : ""),
+			'telefono' => Formlib::Text("telefono", 1, "", "", $withPlaceHolders ? trans("$theme-app.user_panel.phone") : ""),
+			'comentario' => Formlib::TextArea("comentario", 1, "", "", $withPlaceHolders ? trans("$theme-app.global.coment") : ""),
+			'_token' => Formlib::hidden("_token", 1, csrf_token()),
+			'SUBMIT' => Formlib::Submit(trans(Config::get('app.theme') . '-app.login_register.acceder'), "contactForm")
+		];
+
+		return $formulario;
 	}
 
 	/**
