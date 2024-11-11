@@ -603,8 +603,9 @@ class UserController extends Controller
 				$ya_existe_nif_pais = true;
 			}
 
-			if (!self::validateNifNieCif($nif)) {
-				$user_id_incorrecto = true;
+			$isPhysicalEntity = $request->input('pri_emp') == FxCli::TIPO_FISJUR_FISICA;
+			if ($isPhysicalEntity) {
+				$user_id_incorrecto = !self::validateNifNieCif($nif);
 			}
 		}
 
@@ -2781,9 +2782,10 @@ class UserController extends Controller
 		if (FacadeRequest::input('pri_emp') == 'F' && $this->checkValidNIE($nif)) {
 			return true;
 		}
-		if (FacadeRequest::input('pri_emp') == 'J' && $this->checkValidCIF($nif)) {
+		//Eliminada la comprobación ya que no solo ejiste la figura jurídica
+		/* if (FacadeRequest::input('pri_emp') == 'J' && $this->checkValidCIF($nif)) {
 			return true;
-		}
+		} */
 		if (FacadeRequest::input('pri_emp') == 'F' && $this->checkValidFormatPassport($nif)) {
 			return true;
 		}
