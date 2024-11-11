@@ -1226,7 +1226,7 @@ body>footer .logo-svg {
 	font-size: 1.25em;
 }
 
-.cgc-page .seo-block-content {
+.cgc-page .seo-block-content, .pp-page .seo-block-content {
 	max-width: none;
 	font-size: 1em;
 }

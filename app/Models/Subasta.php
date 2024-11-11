@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\libs\SeoLib;
 use App\Models\V5\FgLicit;
+use Illuminate\Support\Facades\Session;
 
 class Subasta extends Model
 {
@@ -97,6 +98,8 @@ class Subasta extends Model
     public $precio;
 
 	public $scales;
+
+	public static $allAuctions;
 
     public static function getOffset($page, $itemsPerPage)
     {
@@ -5181,6 +5184,48 @@ class Subasta extends Model
 		})->sum();
 
 		return $sumMaxBidOrOrder;
+	}
+
+	public static function auctionsToViews()
+	{
+		if(static::$allAuctions){
+			return static::$allAuctions;
+		}
+
+		$subastasQuery = FgSub::query()
+			//No he encontrado un caso en el que lo necesite y en caso
+			//de necesitarlo saldra a cuenta envolverlo en un condicional.
+			//->joinLangSub()
+			->joinSessionSub()
+			->addSelect('subc_sub')
+			->where('subc_sub', '!=', 'N');
+
+		if (!Session::get('user.admin')) {
+			$subastasQuery->where('subc_sub', '!=', 'A');
+		}
+
+		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
+		if(Config::get("app.restrictVisibility")){
+			$subastasQuery = $subastasQuery->Visibilidadsubastas(Session::get('user.cod'));
+		}
+
+		$subastasQuery = $subastasQuery->orderBy('session_start', 'asc')->get();
+
+		$subastas = $subastasQuery
+			->groupBy([
+				//Si se es admin, las subastas subc_sub A las unificamos con las S
+				function ($item, $key) {
+					if (Session::has('user') && Session::get('user.admin') && $item['subc_sub'] == 'A') {
+						return 'S';
+					} else {
+						return $item['subc_sub'];
+					}
+				},
+				'tipo_sub', 'cod_sub'
+			], $preserveKeys = false);
+
+		static::$allAuctions = $subastas;
+		return $subastas;
 	}
 
 }

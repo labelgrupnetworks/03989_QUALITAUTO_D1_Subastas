@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="team-members row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <div class="team-members row row-cols-sm-2 row-cols-md-3 g-4">
         @foreach ($specialists as $specialist)
             <div class="team-member">
                 <div class="team-member-image">
