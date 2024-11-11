@@ -96,8 +96,17 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
 
                 @if ($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+					@php
+						$activeAuction = collect(data_get($global['subastas'], 'S.W', []))->flatten()->first();
+						$url_lotes = Tools::url_auction(
+							$activeAuction->cod_sub,
+							$activeAuction->name,
+							$activeAuction->id_auc_sessions,
+							$activeAuction->reference,
+						);
+					@endphp
                     <li class="nav-item">
-                        <a href="{{ route('subastas.presenciales') }}" @class(['nav-link', 'active' => $isSubastasPage])>
+                        <a href="{{ $url_lotes }}" @class(['nav-link', 'active' => $isSubastasPage])>
                             <span>{{ trans($theme . '-app.foot.auctions') }}</span>
                         </a>
                     </li>
