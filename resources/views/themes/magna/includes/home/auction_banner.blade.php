@@ -7,10 +7,10 @@
 
     $catalogLink = AucSessionsFiles::where([['"auction"', $auction->cod_sub], ['"type"', 5]])->first();
 @endphp
-<section class="container-fluid border-top border-bottom auction-banner">
-    <div class="row g-0 auction-banner-row" style="height: 400px">
+<section class="auction-banner container-fluid">
+    <div class="row g-0 auction-banner-row">
         <div class="col-12 col-md-5 auction-banner-info-column">
-            <div class="d-flex flex-column align-items-center gap-4 py-5 border-end">
+            <div>
                 <h1>{{ $auction->name }}</h1>
 
                 <a class="btn btn-outline-lb-primary rounded-5" href="{{ $url_lotes }}">
