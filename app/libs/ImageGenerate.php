@@ -99,8 +99,7 @@ class ImageGenerate
 
 					$compresion = $peso / $area;
 
-
-					if ($compresion <  floatval(Config::get("app.compresion_img", '0.35'))) {
+					if (Config::get('app.not_compress_real_image') || ($compresion < floatval(Config::get("app.compresion_img", '0.35')))) {
 						$comprimir = false;
 					}
 					$width_size = $imgWidth;
