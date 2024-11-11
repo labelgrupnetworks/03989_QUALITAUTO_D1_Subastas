@@ -656,7 +656,7 @@ nav.header-navbar ul {
 
 .lot-card .card-img-top {
 	aspect-ratio: 3 / 3.5;
-	object-fit: cover;
+	object-fit: contain;
 	height: auto;
 }
 
