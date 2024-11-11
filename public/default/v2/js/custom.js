@@ -451,8 +451,8 @@ function addStylesheetIfNotExist(nameFile) {
 	if (existStylesheet) return;
 
 	try {
-		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${defaultTheme}/css/${nameFile}">`);
-		document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="/${theme}/css/${nameFile}">`);
+		document.head.insertAdjacentHTML('beforeend', `<link type="text/css" rel="stylesheet" href="/${defaultTheme}/css/${nameFile}">`);
+		document.head.insertAdjacentHTML('beforeend', `<link type="text/css" rel="stylesheet" href="/${theme}/css/${nameFile}">`);
 	}
 	catch (e) {
 		console.log(e);
