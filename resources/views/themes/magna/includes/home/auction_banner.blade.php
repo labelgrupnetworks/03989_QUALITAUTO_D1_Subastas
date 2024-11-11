@@ -18,7 +18,7 @@
                 </a>
 
 				@if($catalogLink)
-                <a class="btn btn-outline-lb-primary rounded-5" href="{{ $catalogLink->url }}">
+                <a class="btn btn-outline-lb-primary rounded-5" href="{{ $catalogLink->url }}" target="_blank">
                     Ver catálogo
                 </a>
 				@endif

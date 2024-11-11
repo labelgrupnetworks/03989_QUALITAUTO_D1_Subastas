@@ -1081,7 +1081,7 @@ body>footer .logo-svg {
 }
 
 .ficha .breadcrumb-item {
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 }
 
 @media (min-width: 992px) {
