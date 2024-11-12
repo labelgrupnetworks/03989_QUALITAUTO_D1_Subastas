@@ -74,8 +74,10 @@
     @include('includes.home.lotes_destacados')
 </section>
 
+{{--
 <section class="home-section home-categories">
     @include('includes.home.categories')
 </section>
+ --}}
 
 @include('includes.newsletter')
