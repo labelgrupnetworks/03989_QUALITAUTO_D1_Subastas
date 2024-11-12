@@ -63,6 +63,11 @@ $empresa = $empre->getEmpre();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
+                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.legal_advice') }}"
+                            title="{{ trans($theme . '-app.foot.legal_advice') }}">{{ trans($theme . '-app.foot.legal_advice') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.cookies') }}"
                             title="{{ trans($theme . '-app.foot.cookies') }}">{{ trans($theme . '-app.foot.cookies') }}</a>
                     </li>
