@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands\Observability;
 
-use App\Actions\Observability\CheckFailedJobsAction;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class CheckFailedJobs extends Command
+class CheckCronIsActive extends Command
 {
     /**
      * The name and signature of the console command.
