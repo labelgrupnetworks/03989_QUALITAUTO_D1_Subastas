@@ -73,6 +73,14 @@
 - ...
 
 
+<a name="packages"></a>
+## Dependencias
+
+Actualizar dependencias relacionadas con composer
+```sh { closeTerminalOnSuccess=false }
+composer update
+```
+
 <a name="examples"></a>
 ## Ejemplos de comandos
 
