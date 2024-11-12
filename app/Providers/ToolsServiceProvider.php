@@ -1372,17 +1372,19 @@ class ToolsServiceProvider extends ServiceProvider
 	{
 		static $hash = null;
 		$publicPath = public_path($path);
+		$isDebug = Config::get('app.debug');
 
 		if (!file_exists($publicPath)) {
 			return;
 		}
 
 		//de las imagenes no podemos obtener el hash ya que no se crean de nuevo en cada deploy
-		//generalemnte se carga antes un js o css pero por si acaso lo comprobamos
-		if (strpos($path, 'img') === false && (config('app.debug') || !$hash)) {
-			$hash = filemtime($publicPath);
-		} elseif (!$hash) {
+		if(strpos($path, 'img') !== false){
 			return URL::asset($path) . "?a=" . filemtime($publicPath);
+		}
+
+		if($isDebug || !$hash){
+			$hash = filemtime($publicPath);
 		}
 
 		return URL::asset($path) . "?a=$hash";
