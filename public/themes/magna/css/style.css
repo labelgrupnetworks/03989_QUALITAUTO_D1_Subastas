@@ -1390,9 +1390,10 @@ body>footer .logo-svg {
 }
 
 .team-members {
-	row-gap: 2rem;
+	gap: 1.5rem;
 	padding-top: 3rem;
 	padding-bottom: 3rem;
+	justify-content: center;
 }
 
 .team-member {
