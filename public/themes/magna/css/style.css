@@ -173,16 +173,13 @@ main {
 	transition: all 0.3s linear;
 }
 
-.nav-link:focus,
-.nav-link:hover,
-.nav-link.active {
+.header-navbar :is(.nav-link:is(:hover, :focus, .active)) {
 	background-color: var(--color-gold);
 }
 
 nav[aria-label="breadcrumb"] {
 	--bs-breadcrumb-divider: "/";
 }
-
 
 .breadcrumb {
 	--bs-breadcrumb-item-padding-x: .25rem;
@@ -309,11 +306,11 @@ header .container {
 	align-items: stretch;
 }
 
-.login-wrapper > a.btn-link {
+.login-wrapper>a.btn-link {
 	color: rgb(255 255 255 / .7);
 }
 
-.login-wrapper > a.btn-link:hover {
+.login-wrapper>a.btn-link:hover {
 	color: #fff;
 }
 
