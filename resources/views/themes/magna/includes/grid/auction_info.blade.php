@@ -28,12 +28,8 @@
                 </div>
             </div>
 
-            <h1>
-                {{ $auction->name }}
-            </h1>
-            <p>
-                {{ $auction->description }}
-            </p>
+            <h1>{{ $auction->name }}</h1>
+            {{-- <p>{{ $auction->description }}</p> --}}
         </div>
     </div>
 </div>

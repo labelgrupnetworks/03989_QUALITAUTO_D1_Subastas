@@ -30,7 +30,7 @@
         @foreach ($specialists as $specialist)
             <div class="team-member">
                 <div class="team-member-image">
-                    <img src="{{ $specialist->image }}.jpg" alt="{{ $specialist->nom_especial1 }}">
+                    <img src="{{ $specialist->image }}.jpg?a=1731507411" alt="{{ $specialist->nom_especial1 }}">
                 </div>
                 <div class="team-member-info">
                     <p>{{ $specialist->specialty?->title }}</p>
