@@ -77,6 +77,12 @@
 							{{ trans("$theme-app.global.valoracion_terms_1") }}
 						</p>
 
+						<div class="form-check mb-3">
+							<input class="form-check-input" id="condiciones" name="condiciones" type="checkbox" required>
+							<label class="form-check-label" for="condiciones">
+								{!! trans("$theme-app.login_register.read_conditions_politic") !!}
+							</label>
+						</div>
 
 						<p class="captcha-terms mb-2">
 							{{ trans("$theme-app.global.valoracion_terms_2") }}

@@ -161,6 +161,10 @@ main {
 	--bs-nav-link-font-size: 1.25rem;
 }
 
+.navbar-dark {
+	--bs-navbar-color: rgb(255 255 255 / 0.9);
+}
+
 .navbar-nav {
 	--bs-nav-link-padding-y: 0;
 }
@@ -886,6 +890,11 @@ footer .nav-link:first-letter {
 .logo-svg {
 	color: var(--color-gold);
 	background-color: #000;
+}
+
+.contact-company .logo-svg {
+	color: currentColor;
+	background-color: transparent;
 }
 
 body>footer .logo-svg {
