@@ -291,13 +291,8 @@
 						<div class="col-12 mb-3">
                             <label class="form-check-label">
                                 {!! $formulario->condiciones !!}
-								<span class="fw-bold text-danger">*</span>
-								<span>
-									{!! trans("$theme-app.login_register.read_conditions") !!}
-									(<a href='{{ Routing::translateSeo('pagina') . trans("$theme-app.links.term_condition") }}'
-										target="_blank">{{ trans("$theme-app.login_register.more_info") }}
-									</a>)
-								</span>
+
+								{!! trans("$theme-app.login_register.read_conditions") !!}
                             </label>
                         </div>
 
