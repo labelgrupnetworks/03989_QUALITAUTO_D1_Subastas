@@ -61,12 +61,12 @@
             @endforeach
         </select>
     </div>
-    <div class="ms-auto">
+    {{-- <div class="ms-auto">
         <button class="btn btn-icon btn-outline-lb-primary justify-content-between w-100">
             Como pujar
             <x-icon.boostrap icon="info-circle-fill" size="16" />
         </button>
-    </div>
+    </div> --}}
 
 </div>
 

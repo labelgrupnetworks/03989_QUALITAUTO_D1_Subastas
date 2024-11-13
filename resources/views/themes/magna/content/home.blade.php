@@ -65,7 +65,7 @@
 <section class="home-section home-seo">
     <div class="container">
         <div class="banner-seo">
-            {!! BannerLib::bannerWithView('home_block_3', 'row_1') !!}
+            {!! BannerLib::bannerWithView('home_block_3', 'row_without_img') !!}
         </div>
     </div>
 </section>
@@ -74,10 +74,10 @@
     @include('includes.home.lotes_destacados')
 </section>
 
-{{--
+
 <section class="home-section home-categories">
     @include('includes.home.categories')
 </section>
- --}}
+
 
 @include('includes.newsletter')

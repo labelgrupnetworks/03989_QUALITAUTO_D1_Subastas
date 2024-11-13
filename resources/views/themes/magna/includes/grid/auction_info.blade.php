@@ -18,7 +18,7 @@
                 <div class="auction-expo-dates">
                     <p class="fw-bold">{{ trans("$theme-app.subastas.inf_subasta_exposicion") }}</p>
                     <p>{{ $auction->expofechas_sub }}</p>
-                    <p>{{ $auction->expohorario_sub }}</p>
+                    <p>{!! $auction->expohorario_sub !!}</p>
                     <p>{{ $auction->expolocal_sub }}</p>
                 </div>
                 <div class="auction-session-dates">

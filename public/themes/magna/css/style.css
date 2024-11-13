@@ -717,15 +717,22 @@ nav.header-navbar ul {
 	margin: 0 -12px;
 }
 
-/* .home-categories :is(.slick-prev, .slick-next) {
-	top: 90px;
-} */
+.category-card {
+	text-decoration: none;
+}
+
+.category-card:hover {
+	text-decoration: underline;
+}
 
 .category-card img {
 	width: 100%;
 	aspect-ratio: 8 / 9;
 	object-fit: cover;
+}
 
+.category-card:hover img {
+	opacity: 0.9;
 }
 
 .category_name {

@@ -3,10 +3,12 @@
     use Carbon\Carbon;
 
     $emp = Config::get('app.emp');
+	$locale = Config::get('app.locale');
 
-    $dateFormat = Carbon::parse($auction->session_start)
-        ->locale(config('app.locale'))
-        ->isoFormat('LL');
+    $auctionDate = Carbon::parse($auction->session_start)->locale($locale);
+
+	$dateFormat = $auctionDate->isoFormat('LL');
+    $tiemeFormat = $auctionDate->isoFormat('H \h');
 
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpg");
 
@@ -19,10 +21,14 @@
         <div class="col-12 col-md-5 auction-banner-info-column">
             <div>
                 <h1>{{ $auction->name }}</h1>
-				<h3>{{ $dateFormat }}</h3>
+                <h3>
+					{{ $dateFormat }}
+					<br>
+					A las {{ $tiemeFormat }}
+				</h3>
 
                 <a class="btn btn-outline-lb-primary rounded-5" href="{{ $url_lotes }}">
-					{{ trans("$theme-app.subastas.go_to_the_auction") }}
+                    {{ trans("$theme-app.subastas.go_to_the_auction") }}
                 </a>
 
                 @if ($catalogLink)

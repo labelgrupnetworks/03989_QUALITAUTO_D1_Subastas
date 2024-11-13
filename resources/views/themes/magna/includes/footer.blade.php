@@ -49,7 +49,7 @@ $empresa = $empre->getEmpre();
             </div>
 
             <div class="coo-12 col-lg-3 mb-3">
-                <h5>{{ trans($theme . '-app.foot.term_condition') }}</h5>
+                <h5>{{ trans($theme . '-app.foot.terms_and_conditions') }}</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link"
