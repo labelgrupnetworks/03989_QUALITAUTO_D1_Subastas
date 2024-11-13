@@ -34,13 +34,9 @@
 				@endif
 
 				@if(!empty($auction))
-
 					@if (strtotime($auction->session_start) < time() && ($auction->tipo_sub=='W'))
 						@include('includes.grid.filter_sold')
 					@endif
-
-				@else
-					@include('includes.grid.typeAuction_list')
 				@endif
 			</div>
 
