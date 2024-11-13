@@ -27,7 +27,7 @@
 
             <div class="newsletter_legal">
                 <div class="form-check">
-                    <input class="form-check-input condiciones-newsletter-js" id="condiciones" name="condiciones" type="checkbox" type="checkbox">
+                    <input class="form-check-input condiciones-newsletter-js" id="condiciones" name="condiciones" type="checkbox">
                     <label class="form-check-label" for="condiciones">{!! trans("$theme-app.login_register.read_conditions_politic") !!}</label>
                 </div>
                 <span class="captcha-terms">

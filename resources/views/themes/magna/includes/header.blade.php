@@ -34,8 +34,9 @@
 
             <button class="navbar-toggler flex-center" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                 type="button" aria-expanded="false" aria-label="Menú" aria-controls="navbarHeader"
-                aria-expanded="false"></button>
-
+                aria-expanded="false">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
             <div class="search-component">
                 <form action="{{ Routing::translateSeo('subasta-actual') }}#grid-lots">
@@ -62,12 +63,12 @@
                     {{ trans("$theme-app.login_register.register") }}
                 </a>
 
-                <button class="btn btn_login btn-outline-lb-primary rounded-5">
+                <button class="btn btn_login btn-outline-light rounded-5">
                     <x-icon.boostrap icon="person" size="20" />
                     <span class="d-none d-lg-inline">{{ trans("$theme-app.login_register.generic_name") }}</span>
                 </button>
             @else
-                <a class="btn btn-outline-lb-primary rounded-5 d-none d-lg-inline"
+                <a class="btn btn-outline-light rounded-5 d-none d-lg-inline"
                     href="{{ \Routing::slug('user/panel/orders') }}">
                     <span>{{ trans("$theme-app.login_register.my_panel") }}</span>
                 </a>
@@ -77,7 +78,7 @@
             @endif
 
             @if (Session::get('user.admin'))
-                <a class="btn btn-outline-lb-primary rounded-5 d-none d-lg-inline" href="/admin" target="_blank">
+                <a class="btn btn-outline-light rounded-5 d-none d-lg-inline" href="/admin" target="_blank">
                     <span>{{ trans("$theme-app.login_register.admin") }}</span>
                 </a>
             @endif
@@ -85,7 +86,7 @@
     </div>
 </header>
 
-<nav class="navbar navbar-expand-lg header-navbar">
+<nav class="navbar navbar-dark navbar-expand-lg header-navbar">
     <div class="container">
         <div class="navbar-collapse collapse" id="navbarHeader" style="">
             <ul class="navbar-nav mb-2 mb-lg-0">
