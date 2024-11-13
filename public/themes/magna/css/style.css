@@ -309,11 +309,11 @@ header .container {
 	align-items: stretch;
 }
 
-.login-wrapper > a {
+.login-wrapper > a.btn-link {
 	color: rgb(255 255 255 / .7);
 }
 
-.login-wrapper > a:hover {
+.login-wrapper > a.btn-link:hover {
 	color: #fff;
 }
 
