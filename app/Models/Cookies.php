@@ -97,11 +97,19 @@ class Cookies
 
 	public function isAnalysisAllowed()
 	{
+		if(Config::get('app.env') === 'local' || Config::get('app.debug') === true) {
+			return false;
+		}
+
 		return $this->preferences['permissions']['analysis'];
 	}
 
 	public function isAdvertisingAllowed()
 	{
+		if(Config::get('app.env') === 'local' || Config::get('app.debug') === true) {
+			return false;
+		}
+
 		return $this->preferences['permissions']['advertising'];
 	}
 
