@@ -1,5 +1,5 @@
 @php
-$isNotRetired = !$devuelto && !$retirado;
+$isNotRetired = !$devuelto && !$retirado && !$desadjudicado;
 @endphp
 <div class="card lot-card" {!! $codeScrollBack !!}>
 	@include('includes.grid.labelLots')

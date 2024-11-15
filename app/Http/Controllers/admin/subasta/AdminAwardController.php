@@ -339,6 +339,15 @@ class AdminAwardController extends Controller
 			return response($json, 400);
 		}
 
+		FgAsigl0::query()
+			->where([
+				'sub_asigl0' => request('idauction'),
+				'ref_asigl0' => request('ref')
+			])
+			->update([
+				'desadju_asigl0' => 'S'
+			]);
+
 		return response(json_encode($result), 200);
 
 	}

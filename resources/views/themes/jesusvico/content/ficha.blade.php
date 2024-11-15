@@ -12,7 +12,7 @@ $subasta_inversa = $lote_actual->tipo_sub == 'I';
 $subasta_abierta_O = $lote_actual->subabierta_sub == 'O';
 $subasta_abierta_P = $lote_actual->subabierta_sub == 'P';
 $subasta_make_offer = $lote_actual->tipo_sub == 'M';
-$retirado = $lote_actual->retirado_asigl0 !='N';
+$retirado = $lote_actual->retirado_asigl0 != 'N' || $lote_actual->desadju_asigl0 == 'S';
 $sub_historica = $lote_actual->subc_sub == 'H';
 $sub_cerrada = ($lote_actual->subc_sub != 'A'  && $lote_actual->subc_sub != 'S');
 $remate = $lote_actual->remate_asigl0 =='S';
