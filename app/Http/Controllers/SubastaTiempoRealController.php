@@ -3914,14 +3914,18 @@ class SubastaTiempoRealController extends Controller
 	private function assignToMinistery($cod_sub, $ref) {
 
 		$ministeryLicit = config('app.ministeryLicit', false);
-		$actualWinner = FgAsigl1::where([
-			['sub_asigl1', $cod_sub],
-			['ref_asigl1', $ref]
-		])->orderBy('lin_asigl1', 'desc')
-		->first();
+		$actualWinner = FgAsigl1::query()
+			->where([
+				['sub_asigl1', $cod_sub],
+				['ref_asigl1', $ref]
+			])
+			->orderBy('lin_asigl1', 'desc')
+			->first();
 
 		if(!$actualWinner){
-			return 'error-notbid';
+			//crear puja y asignarla al ministerio
+			$this->addMinisteryBid($cod_sub, $ref);
+			return 'ministery';
 		}
 
 		$minsteryBid = $actualWinner->replicate()->fill([
@@ -3943,6 +3947,35 @@ class SubastaTiempoRealController extends Controller
 		}
 
 		return 'ministery';
+	}
+
+	private function addMinisteryBid($cod_sub, $ref)
+	{
+		$ministeryLicit = config('app.ministeryLicit', false);
+		$lot = FgAsigl0::query()
+			->select('impsalhces_asigl0', 'impres_asigl0')
+			->where('sub_asigl0', $cod_sub)
+			->where('ref_asigl0', $ref)
+			->first();
+
+		// Nos falta saber si utilizamos el precio de reserva o no.
+		$salidaPrice = max($lot->impsalhces_asigl0, $lot->impres_asigl0);
+
+		$ministeryBid = [
+			'sub_asigl1' => $cod_sub,
+			'ref_asigl1' => $ref,
+			'licit_asigl1' => $ministeryLicit,
+			'lin_asigl1' => 1,
+			'imp_asigl1' => $salidaPrice,
+			'pujrep_asigl1' => 'W',
+			'type_asigl1' => FgAsigl1::TYPE_NORMAL,
+			'fec_asigl1' => now()->format('Y-m-d H:i:s'),
+			'date_update_asigl1' => now()->format('Y-m-d H:i:s'),
+			'hora_asigl1' => now()->format('H:i:s'),
+			'usr_update_asigl1' => 'WEB',
+		];
+
+		FgAsigl1::create($ministeryBid);
 	}
 
     public function openLot()
