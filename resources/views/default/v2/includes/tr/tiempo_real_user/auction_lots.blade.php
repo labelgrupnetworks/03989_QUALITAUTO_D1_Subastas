@@ -28,7 +28,7 @@
             <div class="card carrousel-lot-card border-0 j-active-info lots" data-ref_asigl0="{{ $lote->ref_asigl0 }}"
                 data-cod_sub="{{ $data['subasta_info']->cod_sub }}" data-order="{{ $loop->index }}" style="order: {{ $loop->index }};">
 
-                <img class="card-img-top py-1 img-contain border" src="{{ $img }}" loading="auto">
+                <img class="card-img-top py-1 img-contain border" src="{{ $img }}" loading="lazy">
 
                 <div class="card-body py-2 text-center">
                     <h4 class="card-lot-title">{{ trans("$theme-app.lot.lot-name") }} {{ $lote->ref_asigl0 }}</h4>
