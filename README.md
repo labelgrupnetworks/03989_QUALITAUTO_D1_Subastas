@@ -81,6 +81,11 @@ Actualizar dependencias relacionadas con composer
 composer update
 ```
 
+Actualizar dependencias relacionadas de npm
+```sh { closeTerminalOnSuccess=false }
+npm update
+```
+
 <a name="examples"></a>
 ## Ejemplos de comandos
 
