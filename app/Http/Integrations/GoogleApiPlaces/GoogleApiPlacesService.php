@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Integrations\GoogleApiPlaces;
+namespace App\Http\Integrations\GoogleApiPlaces;
 
 class GoogleApiPlacesService
 {
