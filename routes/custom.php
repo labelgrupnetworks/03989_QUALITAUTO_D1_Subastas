@@ -53,6 +53,8 @@ Route::view(Routing::slug('dmg'), 'front::pages.dmg');
 //@todo creo que se puede eliminar, preguntar a Rubén 05/09/2024
 Route::post('/custom_login', [UserController::class, 'customLogin']);
 
+Route::get('/exportPackengers/{codSub}', [CustomControllers::class, 'exportPackengers']);
+
 #ANSORENA
 Route::view(Routing::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
 Route::view(Routing::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
