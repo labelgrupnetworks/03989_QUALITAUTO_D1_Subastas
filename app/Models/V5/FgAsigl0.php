@@ -369,11 +369,18 @@ class FgAsigl0 extends Model
 
 
 	/**
-	 *NECESITA EL JOIN DE HCES1
+	 *NECESITAN EL JOIN DE HCES1
 	 */
-	public function scopeLeftJoinAlm($query){
+	public function scopeLeftJoinAlm($query)
+	{
         return $query->leftjoin("FXALM", "EMP_ALM = EMP_HCES1 AND COD_ALM = ALM_HCES1 ");
     }
+
+	public function scopeLeftJoinUmed($query)
+	{
+		$gemp = Config::get("app.gemp");
+		return $query->leftjoin("FXUMED", "FXUMED.GEMP_UMED = $gemp AND FXUMED.COD_UMED = nvl(FGHCES1.ALTOUMED_HCES1, 1)");
+	}
 
 	public function scopeWhereAuction($query, $codSub, $refSession){
 
