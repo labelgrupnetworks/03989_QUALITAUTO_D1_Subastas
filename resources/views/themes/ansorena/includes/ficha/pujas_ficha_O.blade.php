@@ -140,18 +140,15 @@
                 @endif
             @endif
 
-            @if (\Config::get('app.urlToPackengers'))
-                @php
-                    $lotFotURL = $lote_actual->cod_sub . '-' . $lote_actual->ref_asigl0;
-                    $urlCompletePackengers = \Config::get('app.urlToPackengers') . $lotFotURL;
-                @endphp
-                <div class="packengers-container-button-ficha">
-                    <a class="packengers-button-ficha" href="{{ $urlCompletePackengers }}" target="_blank">
-                        <i class="fa fa-truck" aria-hidden="true"></i>
-                        {{ trans("$theme-app.lot.packengers_ficha") }}
-                    </a>
-                </div>
-            @endif
+            @if (Config::get('app.urlToPackengers'))
+				@php
+					$lotFotURL = "$lote_actual->cod_sub-$lote_actual->ref_asigl0";
+				@endphp
+				<a class="btn btn-small btn-outline-lb-primary gap-2 w-100" href="{{ Config::get('app.urlToPackengers') . "/{$lotFotURL}&source=estimate" }}" target="_blank">
+					<x-icon.boostrap icon="truck" size="16" />
+					{{ trans("$theme-app.lot.packengers_ficha") }}
+				</a>
+			@endif
 
         </div>
     @else
