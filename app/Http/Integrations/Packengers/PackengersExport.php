@@ -72,7 +72,7 @@ class PackengersExport implements FromQuery, WithHeadings, ShouldAutoSize, WithM
 			'EUR',
 			strip_tags($lot->description),
 			ToolsServiceProvider::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1),
-			ToolsServiceProvider::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $lot->lot_number, $lot->num_hces1, $lot->webfriend_hces1, $lot->description),
+			ToolsServiceProvider::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->description),
 			$this->ownerName(),
 			$lot->cod_sub,
 			$lot->des_sub,
