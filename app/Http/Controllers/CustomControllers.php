@@ -26,6 +26,26 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class CustomControllers extends Controller
 {
 
+	function exportSession(Request $request, $service, $idAucSession)
+	{
+		$type = $request->input('type', 'csv');
+		//$exportFile = PackengersService::getAuctionExportFile($codSub);
+
+		$exportService = match ($service) {
+			'packengers' => PackengersService::getAuctionSessionExportFile($idAucSession),
+			default => null
+		};
+
+		if (!$exportService) {
+			return abort(404);
+		}
+
+		return match($type) {
+			'xlsx' => $exportService->download("{$service}_{$idAucSession}.xlsx"),
+			default => $exportService->download("{$service}_{$idAucSession}.csv"),
+		};
+	}
+
 	/**
 	 * Lo utiliza ERP. Si se quiere modifcar la ruta es necesario avisarles.
 	 */

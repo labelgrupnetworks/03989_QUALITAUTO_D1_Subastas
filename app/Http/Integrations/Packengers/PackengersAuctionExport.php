@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class PackengersExport implements FromQuery, WithHeadings, ShouldAutoSize, WithMapping, WithCustomCsvSettings
+class PackengersAuctionExport implements FromQuery, WithHeadings, ShouldAutoSize, WithMapping, WithCustomCsvSettings
 {
 	use Exportable;
 

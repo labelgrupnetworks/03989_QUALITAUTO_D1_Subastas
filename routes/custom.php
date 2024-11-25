@@ -54,6 +54,8 @@ Route::view(Routing::slug('dmg'), 'front::pages.dmg');
 Route::post('/custom_login', [UserController::class, 'customLogin']);
 
 Route::get('/exportPackengers/{codSub}', [CustomControllers::class, 'exportPackengers']);
+Route::get('/export/{service}/session/{idAucSession}', [CustomControllers::class, 'exportSession']);
+
 
 #ANSORENA
 Route::view(Routing::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
