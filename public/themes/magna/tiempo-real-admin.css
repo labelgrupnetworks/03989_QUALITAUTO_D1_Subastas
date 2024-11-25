@@ -1,0 +1,7 @@
+#ficha #main_image_box #count_down_msg {
+	background: rgb(100, 100, 100, .8);
+}
+
+#ficha #main_image_box #count_down_msg p {
+	font-size: 80px;
+}

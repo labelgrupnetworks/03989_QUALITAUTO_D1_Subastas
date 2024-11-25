@@ -122,3 +122,11 @@ header .auction_title {
     border-right: 0;
 	font-size: 18pt;
 }
+
+.product_img {
+	height: 484.44px;
+}
+
+.product_desc .actual_titulo {
+	height: auto;
+}
