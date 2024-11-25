@@ -41,7 +41,7 @@ class CustomControllers extends Controller
 		}
 
 		return match($type) {
-			'xlsx' => $exportService->download("{$service}_{$idAucSession}.xlsx"),
+			'xlsx', 'excel' => $exportService->download("{$service}_{$idAucSession}.xlsx"),
 			default => $exportService->download("{$service}_{$idAucSession}.csv"),
 		};
 	}
@@ -55,7 +55,7 @@ class CustomControllers extends Controller
 		$exportFile = PackengersService::getAuctionExportFile($codSub);
 
 		return match($type) {
-			'xlsx' => $exportFile->download("Packengers_$codSub.xlsx"),
+			'xlsx', 'excel' => $exportFile->download("Packengers_$codSub.xlsx"),
 			default => $exportFile->download("Packengers_$codSub.csv"),
 		};
 	}

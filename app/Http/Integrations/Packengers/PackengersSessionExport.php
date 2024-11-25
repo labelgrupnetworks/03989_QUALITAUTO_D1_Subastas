@@ -34,7 +34,7 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 				'num_hces1',
 				'lin_hces1',
 				'impsalhces_asigl0',
-				"nvl(DESCWEB_HCES1, TITULO_HCES1) as description",
+				"desc_hces1 as description",
 				'webfriend_hces1',
 				'ancho_hces1',
 				'alto_hces1',
@@ -70,7 +70,7 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 			$lot->des_umed,
 			$lot->impsalhces_asigl0,
 			'EUR',
-			strip_tags($lot->description),
+			$this->cleanDescription($lot->description),
 			ToolsServiceProvider::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1),
 			ToolsServiceProvider::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->description),
 			$this->ownerName(),
@@ -116,6 +116,13 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 			'salaretiro' => 'sala-retiro',
 			default => 'demo',
 		};
+	}
+
+	private function cleanDescription($description)
+	{
+		$descriptionHtmlWithSpaces = str_replace('<', ' <', $description);
+		$descriptionString = strip_tags($descriptionHtmlWithSpaces);
+		return str_replace('  ', ' ', $descriptionString);
 	}
 
 	public function getCsvSettings(): array
