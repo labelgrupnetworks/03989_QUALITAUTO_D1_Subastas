@@ -431,13 +431,15 @@ $(function () {
                     auction_info.lote_actual.pujas.unshift(obj);
                 }
 
+				const soundInternationalNewBidToAdmin = getCustomOption('soundInternationalNewBidToAdmin', true) && typeof auction_info.user != 'undefined' && auction_info.user.is_gestor;
+
                 /*hacer sonido si es diferente de sala o telefono y el usuario es administrador o el usuario es normal y es su puja */
-                if (data.type_bid != 'S' && data.type_bid != 'T' && typeof auction_info.user != 'undefined' && (auction_info.user.is_gestor || (!auction_info.user.is_gestor && auction_info.user.cod_licit == data.cod_licit_actual))) {
+                if (soundInternationalNewBidToAdmin && data.type_bid != 'S' && data.type_bid != 'T' && typeof auction_info.user != 'undefined' && (auction_info.user.is_gestor || (!auction_info.user.is_gestor && auction_info.user.cod_licit == data.cod_licit_actual))) {
                     playAlert(['new_bid']);
                 }
+
                 auction_info.lote_actual.max_puja = obj;
                 auction_info.lote_actual.importe_escalado_siguiente = data.siguiente;
-
                 auction_info.lote_actual.actual_bid = data.actual_bid;
             }
 
@@ -2546,4 +2548,16 @@ function generateMultipleBiddersItem() {
 		bidders.push(bidder);
 	});
 	return bidders;
+}
+
+function getCustomOption(option, defaultOption = null) {
+	if(typeof customTrOptions === 'undefined'){
+		return defaultOption;
+	}
+
+	if(typeof customTrOptions[option] === 'undefined'){
+		return defaultOption;
+	}
+
+	return customTrOptions[option];
 }

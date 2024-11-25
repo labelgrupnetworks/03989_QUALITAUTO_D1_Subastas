@@ -1,0 +1,3 @@
+const customTrOptions = {
+	"soundInternationalNewBidToAdmin": false
+}
