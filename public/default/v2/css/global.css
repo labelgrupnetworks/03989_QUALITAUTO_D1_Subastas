@@ -535,7 +535,7 @@ a.lb-text-primary:hover {
 	flex-direction: column;
 }
 
-.cookies_buttons button {
+.cookies_buttons button, .cookies_buttons a {
 	flex: 1;
 	padding: .75em 1.25em;
 	font-weight: 500;
@@ -559,7 +559,7 @@ a.lb-text-primary:hover {
 	justify-content: center;
 }
 
-.cookies_buttons button:hover {
+.cookies_buttons button:hover, .cookies_buttons a:hover {
 	background-color: var(--lb-color-primary-dark);
 	border: 1px solid var(--lb-color-primary-dark);
 }

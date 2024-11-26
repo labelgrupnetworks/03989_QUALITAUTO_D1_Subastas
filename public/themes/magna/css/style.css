@@ -141,6 +141,12 @@ svg.slick-next.slick-disabled {
 	text-transform: uppercase;
 }
 
+@media(min-width: 500px) {
+	.cookies[data-style="popover"] {
+		max-width: 880px;
+	}
+}
+
 /* header */
 header {
 	background-color: #000;
