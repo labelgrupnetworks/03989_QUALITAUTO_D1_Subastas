@@ -1294,4 +1294,15 @@ private $debug = true;
 
 			$this->setAtribute('DIR_ENVIO', "{$address->pob_clid} ({$address->cp_clid}) {$address->pais_clid}");
 		}
+
+		public function setPackengersUrl($codSub, $ref)
+		{
+			$url = Config::get('app.urlToPackengers', '');
+			if(empty($url)){
+				return;
+			}
+
+			$url .= "/{$codSub}-{$ref}&source=estimate";
+			$this->setAtribute('PACKENGERS_URL', $url);
+		}
 }

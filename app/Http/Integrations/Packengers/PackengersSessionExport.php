@@ -61,6 +61,8 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 
 	public function map($lot): array
 	{
+		$referenceFormat = str_replace('.', '-', $lot->ref_asigl0);
+
 		return [
 			"$lot->cod_sub-$lot->ref_asigl0",
 			$lot->ref_asigl0,
@@ -72,7 +74,7 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 			'EUR',
 			$this->cleanDescription($lot->description),
 			ToolsServiceProvider::url_img('lote_medium', $lot->num_hces1, $lot->lin_hces1),
-			ToolsServiceProvider::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->description),
+			ToolsServiceProvider::url_lot($lot->cod_sub, $lot->id_auc_sessions, $lot->name, $referenceFormat, $lot->num_hces1, $lot->webfriend_hces1, $lot->description),
 			$this->ownerName(),
 			$lot->cod_sub,
 			$lot->des_sub,
@@ -122,7 +124,8 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 	{
 		$descriptionHtmlWithSpaces = str_replace('<', ' <', $description);
 		$descriptionString = strip_tags($descriptionHtmlWithSpaces);
-		return str_replace('  ', ' ', $descriptionString);
+		$descriptionWithoutDobleSpaces = str_replace('  ', ' ', $descriptionString);
+		return trim($descriptionWithoutDobleSpaces);
 	}
 
 	public function getCsvSettings(): array

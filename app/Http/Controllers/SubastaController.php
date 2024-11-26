@@ -967,17 +967,22 @@ class SubastaController extends Controller
 	# ej: /subasta-1A15/6-blabla
 	public function lote()
 	{
-
 		abort_if(config('app.restrictAccessIfNoSession', 0) && !session('user.cod'), 401);
 		# Información del Lote
+
+		$reference = Route::current()->parameter('ref');
+
+		//if reference contain '-' replace to '.'
+		$reference = str_replace('-', '.', $reference);
+
 		$subastaObj        = new Subasta();
 		$subastaObj->cod   = Route::current()->parameter('cod');
-		$subastaObj->lote  = Route::current()->parameter('ref');
+		$subastaObj->lote  = $reference;
 
 		$where = FALSE;
 
 		if (Request::ajax()) {
-			$subastaObj->orden  = Route::current()->parameter('ref');
+			$subastaObj->orden = $reference;
 
 			if (Route::current()->parameter('search') == 'orden') {
 				$where = "ORDEN_HCES1";
@@ -1074,7 +1079,7 @@ class SubastaController extends Controller
 		$subasta->tipo          = "'W', 'V', 'O'";
 		$subasta->texto         = Route::current()->parameter('texto');
 		$subasta->page          = 'all';
-		$referencia             = Route::current()->parameter('ref');
+		$referencia             = $reference;
 
 		$js_item['lang_code'] = strtoupper(App::getLocale());
 		//inicializamos favorito a false, ya que si no hay usuario logeado no sabemso si es favorito

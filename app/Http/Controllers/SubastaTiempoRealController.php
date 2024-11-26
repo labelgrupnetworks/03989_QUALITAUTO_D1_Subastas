@@ -1538,6 +1538,8 @@ class SubastaTiempoRealController extends Controller
 				$email->setLot_title($lote->titulo_hces1);
 				$email->setLot_description($lote->desc_hces1);
 				$email->setBid(ToolsServiceProvider::moneyFormat($subasta->imp));
+				$email->setPackengersUrl($cod_sub, $ref);
+
 				/**Era para carlandia y creo que no es necesario en este caso */
 /* 				$email->setLot_link(ToolsServiceProvider::url_lot($cod_sub, $lote->id_auc_sessions, $lote->des_sub, $lote->ref_asigl0, $lote->num_hces1,$lote->webfriend_hces1,$lote->titulo_hces1));
 				$email->setCloseDate($lote->close_at);
@@ -4789,6 +4791,7 @@ class SubastaTiempoRealController extends Controller
 				$email->setUserByLicit($subasta->cod, $subasta->licit, true);
 				$email->setLot($subasta->cod, $subasta->ref);
 				$email->setBid(ToolsServiceProvider::moneyFormat($subasta->imp));
+				$email->setPackengersUrl($subasta->cod, $subasta->ref);
 
 				if(Config::get('app.email_bid_withdatebid', 0)){
 
