@@ -64,8 +64,8 @@ class PackengersSessionExport implements FromQuery, WithHeadings, ShouldAutoSize
 		$referenceFormat = str_replace('.', '-', $lot->ref_asigl0);
 
 		return [
-			"$lot->cod_sub-$lot->ref_asigl0",
-			$lot->ref_asigl0,
+			"$lot->cod_sub-$referenceFormat",
+			$referenceFormat,
 			$lot->ancho_hces1,
 			$lot->grueso_hces1,
 			$lot->alto_hces1,

@@ -138,7 +138,8 @@
 
 @if (Config::get('app.urlToPackengers'))
 	@php
-		$lotFotURL = "$lote_actual->cod_sub-$lote_actual->ref_asigl0";
+		$lotReference = str_replace('.', '-', $lote_actual->ref_asigl0);
+		$lotFotURL = "$lote_actual->cod_sub-$lotReference";
 	@endphp
 	<a class="btn btn-small btn-outline-lb-primary gap-2 w-100" href="{{ Config::get('app.urlToPackengers') . "/{$lotFotURL}&source=estimate" }}" target="_blank">
 		<x-icon.boostrap icon="truck" size="16" />
