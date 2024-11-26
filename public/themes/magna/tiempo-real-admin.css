@@ -5,3 +5,10 @@
 #ficha #main_image_box #count_down_msg p {
 	font-size: 80px;
 }
+
+div#pujas_list *, div#ol_list * {
+	padding: 0;
+	font-size: 1.04em;
+}
+
+
