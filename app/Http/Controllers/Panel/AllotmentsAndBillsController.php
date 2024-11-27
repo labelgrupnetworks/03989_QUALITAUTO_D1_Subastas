@@ -1014,7 +1014,12 @@ class AllotmentsAndBillsController extends Controller
 			$lot_js[$puj->cod_sub]['lots'][$adjudicaciones[$key]->ref_asigl0] = $price_lot;
 		}
 
+		$typeSub = data_get($adjudicaciones, '0.tipo_sub', null);
+
 		$iva_cli = $pago_controller->hasIvaReturnIva($tipo_iva->tipo, $iva);
+		if(Config::get("app.noIVAOnlineAuction") && $typeSub == 'O'){
+			$iva_cli = 0;
+		}
 
 		//tenemos iva del cliente
 		$lot_js['iva'] = floatval($iva_cli);
