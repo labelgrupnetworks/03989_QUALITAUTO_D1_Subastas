@@ -1302,7 +1302,7 @@ private $debug = true;
 				return;
 			}
 
-			$url .= "/{$codSub}-{$ref}&source=estimate";
+			$url .= "/{$codSub}-{$ref}?source=estimate";
 			$this->setAtribute('PACKENGERS_URL', $url);
 		}
 }
