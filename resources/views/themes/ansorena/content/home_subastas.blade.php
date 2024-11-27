@@ -1,6 +1,6 @@
 
 
-{!! BannerLib::bannerWithView('home-video', 'video', ['src' => "/uploads/videos/Alejandra Spending Time.mp4"]) !!}
+{!! BannerLib::bannerWithView('home-video', 'video', ['src' => "/uploads/videos/Evento Coleccion Diamantes.mp4"]) !!}
 {!! BannerLib::bannerWithView('home-top-banner', 'fluid', ['title' => "<p class='slider-title'>" . trans("$theme-app.home.banner_title") . '</p>'], ['autoplay' => true]) !!}
 {!! BannerLib::bannerWithView('home-joyeria', 'grid_1', ['title' => trans("$theme-app.foot.joyeria")], ['loading' => 'lazy']) !!}
 
