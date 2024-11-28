@@ -29,7 +29,7 @@
             {{ trans($theme . '-app.login_register.no_account') }}
         </div>
         <a class="btn btn-registro-responsive"
-            href="{{ \Routing::slug('login') }}">{{ trans($theme . '-app.login_register.register') }}</a>
+            href="{{ \Routing::slug('register') }}">{{ trans($theme . '-app.login_register.register') }}</a>
     </div>
 </div>
 <div class="modal fade " id="modalAjax" role="dialog" aria-labelledby="myModalLabel" tabindex="-1">

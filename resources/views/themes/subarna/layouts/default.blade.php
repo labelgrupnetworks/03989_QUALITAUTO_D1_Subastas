@@ -9,6 +9,7 @@
     @php
         $withNewsletters = Config::get('app.newsletter_in_all_pages', true);
 		$isHomePage = Route::currentRouteName() == 'home';
+		$isRegisterPage = Route::currentRouteName() == 'register';
     @endphp
 
     @if (!env('APP_DEBUG') && !empty(\Config::get('app.login_acces_web')) && !Session::has('user'))
@@ -19,7 +20,7 @@
 
         @yield('content')
 
-        @includeWhen($withNewsletters && !$isHomePage, 'includes.newsletter')
+        @includeWhen($withNewsletters &&  !$isHomePage &&  !$isRegisterPage , 'includes.newsletter')
 
         @yield('seo_block')
 
