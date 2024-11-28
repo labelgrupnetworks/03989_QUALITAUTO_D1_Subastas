@@ -26,7 +26,7 @@
 		<div class="title_login mt30">
                         {{ trans($theme.'-app.login_register.no_account') }}
 		</div>
-                <a href="{{ \Routing::slug('login') }}" class="btn btn-registro-responsive btn-color">{{ trans($theme.'-app.login_register.register') }}</a>
+                <a href="{{ \Routing::slug('register') }}" class="btn btn-registro-responsive btn-color">{{ trans($theme.'-app.login_register.register') }}</a>
 	</div>
 </div>
 <div class="modal fade " id="modalAjax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
