@@ -28,6 +28,7 @@ $idiomes = \Config::get('app.locales');
                         </a>
                     </li>
 
+					@if (!in_array('b2b', $config_menu_admin))
                     <li class="nav-parent @if (request('menu', '') == 'usuarios' || (!empty($menu) && $menu == 'usuarios')) nav-expanded @endif">
                         <a href="#">
                             <i class="fa fa-user" aria-hidden="true"></i>
@@ -64,11 +65,15 @@ $idiomes = \Config::get('app.locales');
                             </li>
                         </ul>
                     </li>
+					@endif
 
-                    @if (in_array('subastas', $config_menu_admin) ||
-                            in_array('newsubastas', $config_menu_admin) ||
-                            in_array('concursal', $config_menu_admin) ||
-                            in_array('ordenLotesDestacados', $config_menu_admin))
+                    @if (
+						!in_array('b2b', $config_menu_admin) &&
+						(in_array('subastas', $config_menu_admin) ||
+						in_array('newsubastas', $config_menu_admin) ||
+						in_array('concursal', $config_menu_admin) ||
+						in_array('ordenLotesDestacados', $config_menu_admin))
+						)
                         <li class="nav-parent @if (request('menu', '') == 'subastas' || (!empty($menu) && $menu == 'subastas')) nav-expanded @endif">
                             <a href="#">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
@@ -545,7 +550,45 @@ $idiomes = \Config::get('app.locales');
                         </li>
                     @endif
 
-                    @if (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM')
+
+					@if(in_array('b2b', $config_menu_admin))
+					<li>
+						<a href="{{ route('admin.b2b.users') }}">
+							<i class="fa fa-users" aria-hidden="true"></i>
+							<span>Usuarios</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ route('admin.b2b.visibility') }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							<span>Visibilidad</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ route('admin.b2b.lots') }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							<span>Lotes</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ route('admin.b2b.bids') }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							<span>Pujas</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="{{ route('admin.b2b.awards') }}">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+							<span>Adjudicaciones</span>
+						</a>
+					</li>
+					@endif
+
+					@if (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM')
                         <li class="nav-parent @if (!empty($menu) && $menu == 'configuracion_admin') nav-expanded @endif">
                             <a href="#">
                                 <i class="fa fa-cogs" aria-hidden="true"></i>

@@ -4,6 +4,13 @@ use App\Http\Controllers\admin\AdminArticlesController;
 use App\Http\Controllers\admin\AdminConfigController;
 use App\Http\Controllers\admin\AdminSlidersController;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\b2b\{
+	AdminB2BBidsController,
+	AdminB2BLotsController,
+	AdminB2BUsersController,
+	AdminB2BVisibilityController,
+	AdminB2BAwardsController
+};
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BloqueConfigController;
@@ -206,8 +213,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/listFondoGaleria', 'subasta\SubastaController@getSelectLotesFondoGaleria')->name('lotListFondoGaleria');
 			Route::get('/export/{cod_sub}', 'subasta\SubastaController@export')->name('lote.export'); //se utiliza para descargar excel
 			Route::post('/send_end_lot_ws', 'subasta\SubastaController@send_end_lot_ws');
-
-
 		});
 		Route::group(['prefix' => 'sesion'], function () {
 			Route::post('/addfile', 'subasta\AdminAucSessionsFilesController@store'); //revisar si es necesario
@@ -404,8 +409,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('bi/cedentes/{cod_cli}/json', 'bi\AdminBiCedentesController@getShow')->name('bi_cedentes.show_data');
 		Route::get('bi/cedentes', 'bi\AdminBiCedentesController@index')->name('bi_cedentes.index');
 
-		Route::get('bi/reports/','bi\AdminBiReports@index' )->name('bi_reports');
-		Route::get('bi/report/{report}','bi\AdminBiReports@report' )->name('bi_report');
+		Route::get('bi/reports/', 'bi\AdminBiReports@index')->name('bi_reports');
+		Route::get('bi/report/{report}', 'bi\AdminBiReports@report')->name('bi_report');
 
 		Route::get('providers/list', 'facturacion\AdminProviderController@getSelectProviders')->name('provider.list');
 		Route::resource('providers', 'facturacion\AdminProviderController')->except(['show']);
@@ -456,6 +461,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('/contenido/uploads', 'contenido\AdminUploadsController@upload')->name('admin.contenido.uploads.upload');
 		Route::delete('/contenido/uploads/delete/{fileName}', 'contenido\AdminUploadsController@delete')->name('admin.contenido.uploads.delete');
 		Route::put('/contenido/uploads/update/{fileName}', 'contenido\AdminUploadsController@update')->name('admin.contenido.uploads.update');
+
+		Route::group(['prefix' => 'b2b'], function () {
+			Route::get('/users', [AdminB2BUsersController::class, 'index'])->name('admin.b2b.users');
+			Route::get('/visibility', [AdminB2BVisibilityController::class, 'index'])->name('admin.b2b.visibility');
+			Route::get('/lots', [AdminB2BLotsController::class, 'index'])->name('admin.b2b.lots');
+			Route::get('/bids', [AdminB2BBidsController::class, 'index'])->name('admin.b2b.bids');
+			Route::get('/awards', [AdminB2BAwardsController::class, 'index'])->name('admin.b2b.awards');
+		});
 	});
 
 	Route::post('/sliders/upload', [AdminSlidersController::class, 'uploadFile']);
