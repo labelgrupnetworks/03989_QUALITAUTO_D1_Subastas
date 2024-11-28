@@ -78,14 +78,17 @@ Route::get('send_new_password/{num_mails?}', [MailController::class, 'send_new_p
 
 # Login @ UserController
 Route::get(Routing::slug('login'), [UserController::class, 'login']);
+
+Route::view(Routing::translateSeo('iniciar-sesion'), 'front::pages.login_page')->name('user.login-page');
+
 Route::get(Routing::slugSeo('usuario-registrado'), [UserController::class, 'SuccessRegistered'])->name('user.registered');
 Route::post(Routing::slug('login'), [UserController::class, 'login_post'])->name('post_login');
-Route::post('/login_post_ajax', [UserController::class, 'login_post_ajax']);
+Route::post('/login_post_ajax', [UserController::class, 'login_post_ajax'])->name('user.login_post_ajax');
 Route::post(Routing::slug('registro'), [UserController::class, 'registro'])->middleware('verify.captcha')->name('send_register');
 Route::get(Routing::slug('logout'), [UserController::class, 'logout']);
-Route::get(Routing::slug('password_recovery'), [UserController::class, 'passwordRecovery']);
-Route::post('/{lang}/send_password_recovery', [UserController::class, 'sendPasswordRecovery']);
-Route::post('/{lang}/ajax-send-password-recovery', [UserController::class, 'sendPasswordRecovery']);
+Route::get(Routing::slug('password_recovery'), [UserController::class, 'passwordRecovery'])->name('user.password_recovery');
+Route::post('/{lang}/send_password_recovery', [UserController::class, 'sendPasswordRecovery'])->name('user.send_password_recovery');
+Route::post('/{lang}/ajax-send-password-recovery', [UserController::class, 'sendPasswordRecovery'])->name('user.ajax_send_password_recovery');
 
 //registro en subalia
 Route::get(Routing::slug('login') . "/subalia", [SubaliaController::class, 'index']);
