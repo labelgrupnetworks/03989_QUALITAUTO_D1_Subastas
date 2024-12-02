@@ -34,7 +34,7 @@
 
 				@if ($url_tiempo_real)
 					<a class="btn btn-outline-lb-primary rounded-5" href="{{ $url_tiempo_real }}">
-						Subasta en sala
+						{{ trans("$theme-app.lot.bid_live") }}
 					</a>
 				@endif
 
