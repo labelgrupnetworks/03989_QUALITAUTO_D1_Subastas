@@ -431,10 +431,17 @@ $(function () {
                     auction_info.lote_actual.pujas.unshift(obj);
                 }
 
-				const soundInternationalNewBidToAdmin = getCustomOption('soundInternationalNewBidToAdmin', true) && typeof auction_info.user != 'undefined' && auction_info.user.is_gestor;
+				const soundInternationalNewBidToAdmin = getCustomOption('soundInternationalNewBidToAdmin', true)
+					&& typeof auction_info.user != 'undefined'
+					&& !auction_info.user.is_gestor;
 
                 /*hacer sonido si es diferente de sala o telefono y el usuario es administrador o el usuario es normal y es su puja */
-                if (soundInternationalNewBidToAdmin && data.type_bid != 'S' && data.type_bid != 'T' && typeof auction_info.user != 'undefined' && (auction_info.user.is_gestor || (!auction_info.user.is_gestor && auction_info.user.cod_licit == data.cod_licit_actual))) {
+                if (data.type_bid != 'S'
+					&& data.type_bid != 'T'
+					&& (soundInternationalNewBidToAdmin || !(typeof auction_info.user != 'undefined' && auction_info.user.is_gestor && data.type_bid == 'I'))
+					&& typeof auction_info.user != 'undefined'
+					&& (auction_info.user.is_gestor || (!auction_info.user.is_gestor && auction_info.user.cod_licit == data.cod_licit_actual))
+				) {
                     playAlert(['new_bid']);
                 }
 
