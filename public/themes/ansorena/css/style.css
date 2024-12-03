@@ -1752,6 +1752,15 @@ section.recomendados .section-title {
 	padding: 0 20px;
 }
 
+.btn.btn-packengers {
+	font-size: 1.3em;
+	line-height: 1;
+}
+
+.btn.btn-packengers svg {
+	width: 1.5em;
+	height: 1.4em;
+}
 
 /*
 |--------------------------------------------------------------------------
