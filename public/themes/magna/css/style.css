@@ -656,6 +656,7 @@ nav.header-navbar ul {
 }
 
 .label-grid {
+	display: none;
 	rotate: none;
 	transform: rotate(0deg);
 	top: -10px;
@@ -672,12 +673,15 @@ nav.header-navbar ul {
 }
 
 .lot-buy-to,
-.lot-not-buy {
+.lot-not-buy,
+.ficha-is-awarded {
+	display: none;
 	text-transform: lowercase;
 }
 
 .lot-buy-to:first-letter,
-.lot-not-buy>*:first-letter {
+.lot-not-buy>*:first-letter,
+.ficha-is-awarded:first-letter {
 	text-transform: uppercase;
 }
 
