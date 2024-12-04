@@ -656,7 +656,7 @@ nav.header-navbar ul {
 }
 
 .label-grid {
-	display: none;
+
 	rotate: none;
 	transform: rotate(0deg);
 	top: -10px;
@@ -665,11 +665,11 @@ nav.header-navbar ul {
 	aspect-ratio: 1;
 	width: auto;
 	height: auto;
-	display: flex;
 	align-items: center;
 	padding: 0 4px;
 	border-radius: var(--lb-border-radius);
 	font-size: 10px;
+	display: none;
 }
 
 .lot-buy-to,
