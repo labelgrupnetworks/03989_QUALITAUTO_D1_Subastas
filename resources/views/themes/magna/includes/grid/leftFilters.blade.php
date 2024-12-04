@@ -32,12 +32,6 @@
 				@if(!empty($features))
 					@include('includes.grid.features_list')
 				@endif
-
-				@if(!empty($auction))
-					@if (strtotime($auction->session_start) < time() && ($auction->tipo_sub=='W'))
-						@include('includes.grid.filter_sold')
-					@endif
-				@endif
 			</div>
 
 
