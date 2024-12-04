@@ -59,15 +59,15 @@ class FxCliWeb extends Authenticatable implements AuthenticatableContract
 
 
     # JOINS
-    public function scopeJoinCliCliweb($query){
+    public function scopeJoinCliCliweb($query)
+	{
         return  $query->join('FXCLI', 'FXCLIWEB.COD_CLIWEB = FXCLI.COD_CLI  AND FXCLIWEB.GEMP_CLIWEB', '=', 'FXCLI.GEMP_CLI');
-
     }
 
-    public function scopeJoinLicitCliweb($query){
+    public function scopeJoinLicitCliweb($query)
+	{
         return  $query->join('FGLICIT', 'FGLICIT.CLI_LICIT = FXCLIWEB.COD_CLIWEB  AND FGLICIT.EMP_LICIT = FXCLIWEB.EMP_CLIWEB');
     }
-
 
 
 

@@ -464,6 +464,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 
 		Route::group(['prefix' => 'b2b'], function () {
 			Route::get('/users', [AdminB2BUsersController::class, 'index'])->name('admin.b2b.users');
+			Route::get('/users/create', [AdminB2BUsersController::class, 'create'])->name('admin.b2b.users.create');
+			Route::post('/users', [AdminB2BUsersController::class, 'store'])->name('admin.b2b.users.store');
+			Route::post('/users/import', [AdminB2BUsersController::class, 'import'])->name('admin.b2b.users.import');
+			Route::post('/users/notify', [AdminB2BUsersController::class, 'notify'])->name('admin.b2b.users.notify');
+			Route::delete('/users/all', [AdminB2BUsersController::class, 'destroyAll'])->name('admin.b2b.users.delete-all');
+
 			Route::get('/visibility', [AdminB2BVisibilityController::class, 'index'])->name('admin.b2b.visibility');
 			Route::get('/lots', [AdminB2BLotsController::class, 'index'])->name('admin.b2b.lots');
 			Route::get('/bids', [AdminB2BBidsController::class, 'index'])->name('admin.b2b.bids');

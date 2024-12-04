@@ -1,4 +1,13 @@
 @extends('layouts.login')
+
+@php
+	if(Session::has('user')) {
+		//redirect to auction page
+		header('Location: ' . route('subastas.online'));
+		exit;
+	}
+@endphp
+
 @section('content')
 
     <style>

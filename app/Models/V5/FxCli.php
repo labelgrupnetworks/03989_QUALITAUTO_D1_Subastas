@@ -277,4 +277,22 @@ class FxCli extends Model
 		return $tipo_cli == self::TIPO_CLI_VENDEDOR || $tipo_cli == self::TIPO_CLI_CEDENTE;
 	}
 
+	public static function newCod2Cli($cod_cli = NULL)
+	{
+		if(!$cod_cli){
+			$cod_cli = self::getNextCodCli();
+		}
+
+		$tcli_params = FsParams::select("tcli_params")->first();
+
+		$numdigits = 6;
+		if(!empty($tcli_params) && !empty($tcli_params->tcli_params)){
+			$numdigits = $tcli_params->tcli_params;
+		}
+
+		$formatCodCli = sprintf("%'.0".$numdigits ."d", $cod_cli);
+
+		return str_replace("0", "W", $formatCodCli);
+	}
+
 }

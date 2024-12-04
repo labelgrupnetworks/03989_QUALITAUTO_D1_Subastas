@@ -113,7 +113,7 @@ class AdminClienteController extends Controller
 	{
 		$fxcli = new FxCli();
 		$cliente = new stdClass();
-		$cliente->idorigincli = $this->newCod2Cli(null);
+		$cliente->idorigincli = FxCli::newCod2Cli();
 		$save = 'clientesStore';
 		$formulario = (object) $this->basicFormCreateFxCli($fxcli, $cliente, $save);
 
@@ -135,7 +135,7 @@ class AdminClienteController extends Controller
 
 		//Sobrescribimios campos
 		//el cod2cli lo volvemos a generar por si acaso se registra alguien mientras guardamos un nuevo usuario
-		$cliente['idorigincli'] = $this->newCod2Cli(null);
+		$cliente['idorigincli'] = FxCli::newCod2Cli();
 		$cliente['password'] = $this->passwordEncrypt($request->password);
 
 		//Array para enviar a api
@@ -227,7 +227,7 @@ class AdminClienteController extends Controller
 		 * */
 		//Si no tiene idorigincli, debemos enviar setidorigincli para poder añadirlo
 		if(empty($request->idorigincli)){
-			$cliente['idorigincli'] = $this->newCod2Cli($request->codcli);
+			$cliente['idorigincli'] = FxCli::newCod2Cli($request->codcli);
 			$cliente['setidorigincli'] = 'S';
 		}
 
@@ -440,25 +440,6 @@ class AdminClienteController extends Controller
 		return $password_encrypt;
 	}
 
-	public function newCod2Cli($cod_cli = NULL)
-	{
-		if(!$cod_cli){
-			$cod_cli = FxCli::getNextCodCli();
-		}
-		$tcli_params = FsParams::select("tcli_params")->first();
-
-		if(!empty($tcli_params) && !empty($tcli_params->tcli_params)){
-			$numdigits = $tcli_params->tcli_params;
-		}else{
-			$numdigits = 6;
-		}
-
-		$formatCodCli = sprintf("%'.0".$numdigits ."d", $cod_cli);
-
-
-		return str_replace("0", "W", $formatCodCli);
-	}
-
 	private function addOrigenes(Request $request, $cod_cli)
 	{
 		FxCliOrigen::where('cli_cliorigen', $cod_cli)->delete();
@@ -474,15 +455,16 @@ class AdminClienteController extends Controller
 		FxCliOrigen::insert($origenes->toArray());
 	}
 
-	private function clientsQueryBuilder()
+	protected function clientsQueryBuilder()
 	{
-		return FxCli::with('tipoCli')->with('cli2:cod_cli2, envcat_cli2')
+		return FxCli::query()
+			->with('cli2:cod_cli2, envcat_cli2', 'tipoCli')
 			->leftJoinCliWebCli()
 			->leftJoinClid('W1')
 			->where('cod_cli', '!=', 9999);
 	}
 
-	private function clientsQueryFilters($clientes, Request $request)
+	protected function clientsQueryFilters($clientes, Request $request)
 	{
 		//para relacion con cli2
 		$clientes->when($request->envcat_cli2, function ($query, $envcat_cli2) {
