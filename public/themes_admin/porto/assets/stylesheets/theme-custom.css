@@ -573,3 +573,28 @@ tr.shown td.details-control {
 .banner-page-modal label {
 	width: 100%;
 }
+
+.label > .badge {
+	font-size: inherit;
+	margin-left: 5px;
+}
+
+.badge.badge-danger {
+	background-color: #d2322d;
+}
+
+.table.table-align-middle > tbody > tr > td {
+	vertical-align: middle;
+}
+
+img.object-fit-cover {
+	object-fit: cover;
+}
+
+img.object-fit-contain {
+	object-fit: contain;
+}
+
+.admin-filters-dropdown {
+	max-height: 500px;
+}

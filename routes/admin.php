@@ -470,8 +470,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/users/notify', [AdminB2BUsersController::class, 'notify'])->name('admin.b2b.users.notify');
 			Route::delete('/users/all', [AdminB2BUsersController::class, 'destroyAll'])->name('admin.b2b.users.delete-all');
 
-			Route::get('/visibility', [AdminB2BVisibilityController::class, 'index'])->name('admin.b2b.visibility');
 			Route::get('/lots', [AdminB2BLotsController::class, 'index'])->name('admin.b2b.lots');
+			Route::get('/lots/create', [AdminB2BLotsController::class, 'create'])->name('admin.b2b.lots.create');
+			Route::post('/lots', [AdminB2BLotsController::class, 'store'])->name('admin.b2b.lots.store');
+			Route::get('/lots/{ref_asigl0}', [AdminB2BLotsController::class, 'edit'])->name('admin.b2b.lots.edit');
+			Route::put('/lots/{ref_asigl0}', [AdminB2BLotsController::class, 'update'])->name('admin.b2b.lots.update');
+			Route::delete('/lots/{ref_asigl0}', [AdminB2BLotsController::class, 'destroy'])->name('admin.b2b.lots.destroy');
+
+			Route::get('/visibility', [AdminB2BVisibilityController::class, 'index'])->name('admin.b2b.visibility');
 			Route::get('/bids', [AdminB2BBidsController::class, 'index'])->name('admin.b2b.bids');
 			Route::get('/awards', [AdminB2BAwardsController::class, 'index'])->name('admin.b2b.awards');
 		});

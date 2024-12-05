@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\Providers\ToolsServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -920,6 +921,16 @@ class FgAsigl0 extends Model
 			return [];
 		}
 		return FgCaracteristicas_Hces1::getByLot($this->numhces_asigl0, $this->linhces_asigl0);
+	}
+
+	public function getFechainicioFormatAttribute()
+	{
+		return Carbon::parse($this->fini_asigl0)->format('d/m/Y H:i:s');
+	}
+
+	public function getFechafinFormatAttribute()
+	{
+		return Carbon::parse($this->ffin_asigl0)->format('d/m/Y H:i:s');
 	}
 }
 

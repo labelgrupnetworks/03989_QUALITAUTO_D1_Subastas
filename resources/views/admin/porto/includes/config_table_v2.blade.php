@@ -19,7 +19,7 @@
 		aria-expanded="false">
 		<i style="cursor: pointer" class="fa fa-filter"></i> Filtros <span class="caret"></span>
 	</button>
-	<ul class="dropdown-menu custom-dropdown" id="midropdown">
+	<ul class="dropdown-menu custom-dropdown admin-filters-dropdown" id="midropdown">
 
 		@if(!empty($formulario))
 		<li class="dropdown-header">Filtros</li>
