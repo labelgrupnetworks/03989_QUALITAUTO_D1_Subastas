@@ -1554,3 +1554,16 @@ function sendContactForm(event) {
 	const form = event.currentTarget;
 	validateCaptchaMiddleware(() => form.submit())
 }
+
+function viewResourceFicha($src, $format) {
+	$('#resource_main_wrapper').empty();
+	$('.img-global-content').hide();
+	$('#toolbarDiv').hide();
+	if ($format == "GIF") {
+		$resource = $('<img  src=' + $src + ' style="max-width: 100%;">');
+	} else if ($format == "VIDEO") {
+		$resource = $('<video width="100%" height="auto" autoplay="true" controls>').append($('<source src="' + $src + '">'));
+	}
+	$('#resource_main_wrapper').append($resource);
+	$('#resource_main_wrapper').show();
+}

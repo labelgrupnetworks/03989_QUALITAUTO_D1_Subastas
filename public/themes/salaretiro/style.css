@@ -1022,17 +1022,16 @@ div.list_lot div.item_lot div.img_lot img {
 div.single div.img_single_border {
 	border: 1px solid #ccc;
 	min-height: 485px;
-	margin-bottom: 20px;
-        position: relative;
+    position: relative;
 }
-/*div.col-sm-3-custom:first-child, div.col-sm-3-custom:nth-child(7), div.col-sm-3-custom:nth-child(13) {
-	margin-left: 15px;
-}*/
+
 div.col-sm-3-custom {
-	width: 70%;
+	width: 100%;
 	display: inline-block;
 	border: 1px solid #ccc;
 	margin-bottom: 10px;
+	height: 66.40px;
+	overflow: hidden;
 }
 div.single div.img_single {
 	height: 476px;
@@ -1490,14 +1489,13 @@ header ul.items_top a.dropdown-menu {
 
 .row-up,
 .row-down{
-    background: rgba(0,0,0,.5);
+	background: rgba(0,0,0,.5);
     position: absolute;
-    width: 70%;
+    width: 100%;
     left: 0;
     color:white;
     text-align: center;
     height: 30px;
-
 }
 .row-down{
     bottom: 0;
@@ -1537,8 +1535,9 @@ span.clock{
     font-weight: bold;
 }
 .img-openDragon{
-    width: 100%;
-    height: 66.40px;
+	width: 100%;
+    height: 100%;
+	border: 0;
 }
 
 div.data-container,
@@ -4353,6 +4352,13 @@ label:has(+ input.has-error) {
 	background: var(--primary-color);
 }
 
+:is(.col-video, .col-img) button{
+	background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+	background-color: #fff;
+}
+
 .grecaptcha-badge {
 	visibility: hidden;
 }
@@ -4361,4 +4367,50 @@ label:has(+ input.has-error) {
 	font-size: 12px;
 	line-height: 1;
 	margin-bottom: .5rem;
+}
+
+.chevron-right-button, .chevron-left-button{
+    position: absolute;
+    top: 0;
+    height: 46vh;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chevron-right-button > i, .chevron-left-button > i{
+	cursor: pointer;
+	background: #005ea5;
+	color: white;
+    font-size: 13px;
+    padding: 7px 10px;
+    display: inline-block;
+    border-radius: 50%;
+	z-index: 10;
+}
+
+#toolbarDiv.fullpage .chevron-right-button > i, #toolbarDiv.fullpage .chevron-left-button > i{
+	font-size: 26px;
+}
+
+.chevron-right-button{
+	right: 0;
+}
+
+.chevron-left-button
+{
+    left: 0;
+}
+
+#toolbarDiv{
+	z-index: 1;
+}
+
+#toolbarDiv.fullpage .chevron-left-button, #toolbarDiv.fullpage .chevron-right-button{
+	height: 100vh;
+}
+
+#toolbarDiv.fullpage :is(div[title="Zoom in"], div[title="Zoom out"], div[title="Go home"], div[title="Toggle full page"]){
+	z-index: 100;
 }
