@@ -1,0 +1,20 @@
+@extends('layouts.default')
+
+@section('title')
+    {{ trans($theme . '-app.head.title_app') }}
+@stop
+
+@section('content')
+    <main class="grid">
+
+        <div class="container grid-header">
+            <div class="row">
+                <div class="col-12">
+                    <h1>{{ $seo_data->h1_seo }}</h1>
+                </div>
+            </div>
+        </div>
+
+        @include('content.grid')
+    </main>
+@stop

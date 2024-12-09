@@ -14,7 +14,7 @@
 <header>
 
     <nav class="navbar navbar-expand-xl">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="/{{ $lang }}" title="{{ \Config::get('app.name') }}">
                 <img class="img-responsive" src="/themes/{{ $theme }}/assets/img/logo.png"
                     alt="{{ \Config::get('app.name') }}" width="200">
@@ -50,13 +50,7 @@
                     </li>
                 </ul>
 
-                @include('components.search', ['classes' => ''])
-
-                @if (!Session::has('user'))
-                    <button class="btn btn-lb-primary btn_login">
-                        {{ trans($theme . '-app.login_register.login') }}
-                    </button>
-                @else
+				@if (Session::has('user'))
                     <div class="d-flex align-items-center gap-3">
                         <a class="btn btn-lb-primary"
                             href="{{ \Routing::slug('user/panel/orders') }}">{{ trans($theme . '-app.login_register.my_panel') }}</a>
