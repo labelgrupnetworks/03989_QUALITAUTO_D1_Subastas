@@ -692,6 +692,8 @@ class LotListController extends Controller
 			'noAward' => 0,
 			#filtro lotes en curso
 			'liveLots' => 0,
+			#filtro lotes comprables
+			'purchasable' => 0,
 			#propietario de los lotes
 			'myLotsProperty' => 0,
 			'myLotsClient' => 0,
@@ -722,6 +724,7 @@ class LotListController extends Controller
 			'award' => 'nullable|boolean',
 			'noAward' => 'nullable|boolean',
 			'liveLots' => 'nullable|boolean',
+			'purchasable' => 'nullable|boolean',
 			'myLotsProperty' => 'nullable|boolean',
 			'myLotsClient' => 'nullable|boolean',
 			'prices' => 'nullable|array',
@@ -787,6 +790,9 @@ class LotListController extends Controller
 		$fgasigl0 =  $this->setFilterAward($fgasigl0, $filters['award']);
 		$fgasigl0 =  $this->setFilterNoAward($fgasigl0, $filters['noAward']);
 		$fgasigl0 =  $this->setFilterLiveLots($fgasigl0, $filters['liveLots']);
+
+		#lotes comprables
+		$fgasigl0 =  $this->setFilterPurchasable($fgasigl0, $filters['purchasable']);
 
 		#propietario o pujador lote
 		$fgasigl0 =  $this->setFilterMyLotsProperty($fgasigl0, $filters['myLotsProperty']);
@@ -1097,6 +1103,15 @@ class LotListController extends Controller
 	{
 		if (!empty($liveLots)) {
 			$fgasigl0 = $fgasigl0->where("FGASIGL0.CERRADO_ASIGL0", "N");
+		}
+		return  $fgasigl0;
+	}
+
+	#lotes comprables
+	public function setFilterPurchasable($fgasigl0, $purchasable)
+	{
+		if (!empty($purchasable)) {
+			$fgasigl0 = $fgasigl0->where("FGASIGL0.compra_asigl0", "S");
 		}
 		return  $fgasigl0;
 	}

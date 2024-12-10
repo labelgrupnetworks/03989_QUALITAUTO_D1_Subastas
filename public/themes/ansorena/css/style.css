@@ -1897,16 +1897,20 @@ section.recomendados .section-title {
 }
 
 
-.lot-sold .info-message {
-	font-size: 15px;
-  	color: var(--lb-text-color-primary);
-}
-
 /*
 |--------------------------------------------------------------------------
 | Ficha Artículo
 |--------------------------------------------------------------------------
  */
+.lot-sold.ficha-v {
+	font-size: 1.1em;
+}
+
+
+.lot-sold .info-message {
+	font-size: 15px;
+  	color: var(--lb-text-color-primary);
+}
 
 .articles-ficha canvas {
 	mix-blend-mode: multiply;

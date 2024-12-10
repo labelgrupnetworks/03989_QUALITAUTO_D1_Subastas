@@ -100,7 +100,13 @@
             if ($lote_actual->tipo_sub == 'E') {
                 $url = route('exposicion', ['texto' => \Str::slug($lote_actual->des_sub), 'cod' => $lote_actual->cod_sub, 'reference' => $lote_actual->reference]);
                 $bread[] = ['url' => $url, 'name' => $lote_actual->des_sub];
-            } else {
+            }
+			//Esto es momentaneo para la post subasta de diciembre de 2024.
+			else if($lote_actual->compra_asigl0 == 'S') {
+				$bread[] = ['url' => $lote_actual->url_subasta . '?purchasable=1', 'name' => 'XMAS GIFTS'];
+				$bread[] = ['name' => !empty($data['seo']->meta_title) ? $data['seo']->meta_title : $lote_actual->descweb_hces1];
+			}
+			else {
                 $bread[] = ['url' => $lote_actual->url_subasta, 'name' => $lote_actual->title_url_subasta];
                 if (!empty($data['seo']->meta_title)) {
                     $bread[] = ['name' => $data['seo']->meta_title];

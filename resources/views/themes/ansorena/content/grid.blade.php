@@ -4,7 +4,7 @@
     }
 
     use Carbon\Carbon;
-	use App\Models\V5\AucSessionsFiles;
+    use App\Models\V5\AucSessionsFiles;
 
     $completeLocale = Tools::getLanguageComplete(\Config::get('app.locale'));
     $localeToTime = str_replace('-', '_', $completeLocale);
@@ -13,8 +13,13 @@
     $emp = Config::get('app.emp');
     $isPresencial = $auction->tipo_sub == 'W';
 
-    $sessions = App\Models\V5\AucSessions::select('"id_auc_sessions","auction","reference", nvl("name_lang","name") name, "start", "end", "init_lot", "end_lot"')
-        ->leftjoin('"auc_sessions_lang"', '"id_auc_session_lang" = "id_auc_sessions" and "lang_auc_sessions_lang" =\'' . $completeLocale . '\'')
+    $sessions = App\Models\V5\AucSessions::select(
+        '"id_auc_sessions","auction","reference", nvl("name_lang","name") name, "start", "end", "init_lot", "end_lot"',
+    )
+        ->leftjoin(
+            '"auc_sessions_lang"',
+            '"id_auc_session_lang" = "id_auc_sessions" and "lang_auc_sessions_lang" =\'' . $completeLocale . '\'',
+        )
         ->where('"auction"', $auction->cod_sub)
         ->orderby('"reference"')
         ->get();
@@ -26,33 +31,45 @@
 
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpg");
 
-	$catalogUrl = "/catalogos/{$auction->cod_sub}";
-	if($auction->tipo_sub == 'O'){
+    $catalogUrl = "/catalogos/{$auction->cod_sub}";
+    if ($auction->tipo_sub == 'O') {
+        $auctionFile = AucSessionsFiles::where([['"auction"', $auction->cod_sub], ['"type"', 1]])->first();
 
-		$auctionFile = AucSessionsFiles::where([
-			['"auction"', $auction->cod_sub],
-			['"type"', 1]
-		])->first();
+        if ($auctionFile) {
+            $catalogUrl = $auctionFile->publicFilePath;
+        }
+    }
 
-		if($auctionFile){
-			$catalogUrl = $auctionFile->publicFilePath;
-		}
-	}
+    $auctionTitle = trans("$theme-app.subastas.inf_subasta_subasta") . ' ' . $auction->cod_sub;
+
+	$isOnlyPurchasables = request('purchasable') == true;
+    if ($isOnlyPurchasables) {
+        $filters['purchasable'] = true;
+        $auctionImage = 'other';
+        $auctionTitle = 'XMAS GIFTS';
+		$sessions = [];
+		$catalogUrl = '';
+    }
 
 @endphp
 
 <main class="grid-page pt-2">
-    <h1 class="ff-highlight grid-page-tile">
-        {{ trans("$theme-app.subastas.inf_subasta_subasta") . ' ' . $auction->cod_sub }}</h1>
+    <h1 class="ff-highlight grid-page-tile">{{ $auctionTitle }}</h1>
+
+    @if ($isOnlyPurchasables)
+        <h2 class="h4 ff-highlight text-center">
+			{{ trans("$theme-app.lot_list.alternative_auction_subtitle") }}
+        </h2>
+    @endif
 
     <section class="grid-front-page" style="background-image: url({{ $auctionImage }})">
-        <div class="btn-group btn-group-grid @if($liveSession) grid-2 @endif">
-            <a href="#grid-lots" class="btn btn-auction"
+        <div class="btn-group btn-group-grid @if ($liveSession) grid-2 @endif">
+            <a class="btn btn-auction" href="#grid-lots"
                 aria-current="page">{{ trans("$theme-app.subastas.see_lotes") }}</a>
 
             @if ($liveSession)
-                <a href="{{ Tools::url_real_time_auction($liveSession->auction, $liveSession->name, $liveSession->id_auc_sessions) }}"
-                    class="btn btn-auction">
+                <a class="btn btn-auction"
+                    href="{{ Tools::url_real_time_auction($liveSession->auction, $liveSession->name, $liveSession->id_auc_sessions) }}">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="12" fill="#ED2F2F" />
@@ -71,7 +88,12 @@
                     @php
                         $fecha = Carbon::parse($sesion->start);
                         $hour = date('H:i', strtotime($sesion->start));
-                        $urlSession = \Tools::url_auction($sesion->auction, $sesion->name, $sesion->id_auc_sessions, '001');
+                        $urlSession = \Tools::url_auction(
+                            $sesion->auction,
+                            $sesion->name,
+                            $sesion->id_auc_sessions,
+                            '001',
+                        );
                         #poner esto antes de la página a la que debe ir
                         if (empty($url)) {
                             $url = $urlSession;
@@ -89,13 +111,21 @@
                         $pagina = intdiv($cuantosLotes->cuantos, $lotsPerPage);
                         #le sumamos 1 por que la página no empieza em 0 si no en 1
                         $pagina += 1;
-                        $urlSession .= "?page=$pagina" . '&total=' . request('total', 24) . '#' . $auction->cod_sub . '-' . $sesion->init_lot;
+                        $urlSession .=
+                            "?page=$pagina" .
+                            '&total=' .
+                            request('total', 24) .
+                            '#' .
+                            $auction->cod_sub .
+                            '-' .
+                            $sesion->init_lot;
                     @endphp
 
                     <div class="col">
                         <div class="session position-relative">
                             <p>
-                                <span class="opacity-50">{{ trans("$theme-app.lot_list.session") . " " . intval($sesion->reference) }}</span><br>
+                                <span
+                                    class="opacity-50">{{ trans("$theme-app.lot_list.session") . ' ' . intval($sesion->reference) }}</span><br>
                                 {{ $fecha->locale($localeToTime)->isoFormat($dateFormat) }}
                             </p>
                             <p class="ff-highlight session-name">{{ $sesion->name }}</p>
@@ -121,16 +151,18 @@
 
         <div class="grid-section-header" id="grid-lots">
             <h2 class="ff-highlight grid-section-title">{{ trans("$theme-app.lot_list.lots") }}</h2>
-            <a href="{{ $catalogUrl }}" target="_blank">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
+			@if(!empty($catalogUrl))
+            	<a href="{{ $catalogUrl }}" target="_blank">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
+			@endif
         </div>
 
         <div class="grid-lots position-relative">
 
             <aside class="lots-filters">
-				<div class="lots-filters-content">
-					<button type="button" class="btn-close" aria-label="Close"></button>
-					@include('includes.grid.leftFilters')
-				</div>
+                <div class="lots-filters-content">
+                    <button class="btn-close" type="button" aria-label="Close"></button>
+                    @include('includes.grid.leftFilters')
+                </div>
             </aside>
 
             <div class="container">

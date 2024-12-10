@@ -109,13 +109,21 @@
 </div>
 <div id="modalComprarFicha" class="modal-block mfp-hide" data-to="comprarLoteFicha">
 	<section class="panel">
-		<div class="panel-body">
-			<div class="modal-wrapper">
+		<div class="modal-wrapper">
+			<div class="modal-body">
 				<div class="modal-text text-center">
-					<p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
-					<button class="btn btn-primary modal-confirm btn-custom">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-					<button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+					<p class="insert_msg h4">
+						{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}
+					</p>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-lb-primary modal-confirm btn-custom">
+					{{ trans($theme.'-app.sheet_tr.confirm') }}
+				</button>
+				<button class="btn btn-lb-primary modal-dismiss">
+					{{ trans($theme.'-app.sheet_tr.cancel') }}
+				</button>
 			</div>
 		</div>
 	</section>

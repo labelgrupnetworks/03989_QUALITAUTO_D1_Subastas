@@ -1,4 +1,5 @@
 @php
+	$isOnlyPurchasables = request('purchasable') == true;
     $defaultOrder = 'ref';
     $orders = [
         'name' => 'name',
@@ -33,6 +34,10 @@
         <input type="hidden" name="total" id="hidden_total" value="{{ request('total') }}" />
         <input type="hidden" name="historic" id="hidden_historic" value="{{ request('historic') }}" />
 
+		@if(request('purchasable'))
+			<input type="hidden" name="purchasable" value="1" />
+		@endif
+
         <div class="form-filters">
             <div class="filters-auction-texts">
 
@@ -64,21 +69,25 @@
 
             </div>
 
-            <div class="">
+
+
+			<div class="">
                 @include('front::includes.grid.badges_section')
             </div>
 
-            @include('includes.grid.categories_list')
+			@if(!$isOnlyPurchasables)
+				@include('includes.grid.categories_list')
 
-            @include('includes.grid.features_list')
+				@include('includes.grid.features_list')
 
-            @if (!empty($auction))
-                @if (strtotime($auction->session_start) < time() && $auction->tipo_sub == 'W' && session('user'))
-                    @include('includes.grid.filter_sold')
-                @endif
-            @else
-                @include('includes.grid.typeAuction_list')
-            @endif
+				@if (!empty($auction))
+					@if (strtotime($auction->session_start) < time() && $auction->tipo_sub == 'W' && session('user'))
+						@include('includes.grid.filter_sold')
+					@endif
+				@else
+					@include('includes.grid.typeAuction_list')
+				@endif
+			@endif
         </div>
 
         <div class="order-auction-lot">
