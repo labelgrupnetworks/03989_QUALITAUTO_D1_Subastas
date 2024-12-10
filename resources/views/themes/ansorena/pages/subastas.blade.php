@@ -21,7 +21,7 @@
 
 @php
 	$locale = Config::get('app.locale');
-	$menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUSUBASTAS');
+	$menuEstaticoHtml = (new App\Models\Page())->getPaginaWithoutGemp('MENUSUBASTAS') ?? new App\Models\Page();
 @endphp
 
 @section('content')

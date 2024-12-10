@@ -103,7 +103,7 @@
             }
 			//Esto es momentaneo para la post subasta de diciembre de 2024.
 			else if($lote_actual->compra_asigl0 == 'S') {
-				$bread[] = ['url' => $lote_actual->url_subasta . '?purchasable=1', 'name' => 'XMAS GIFTS'];
+				$bread[] = ['url' => $lote_actual->url_subasta . '?purchasable=1&noAward=1', 'name' => 'XMAS GIFTS'];
 				$bread[] = ['name' => !empty($data['seo']->meta_title) ? $data['seo']->meta_title : $lote_actual->descweb_hces1];
 			}
 			else {

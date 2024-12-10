@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\View;
 class PageController extends Controller
 {
 
-   public function getPagina($lang,$key)
+   public function getPagina($lang, $key)
    {
         $pagina = new Page();
 

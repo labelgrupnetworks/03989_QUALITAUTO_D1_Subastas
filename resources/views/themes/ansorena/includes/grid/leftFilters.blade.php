@@ -36,6 +36,7 @@
 
 		@if(request('purchasable'))
 			<input type="hidden" name="purchasable" value="1" />
+			<input type="hidden" name="noAward" value="1" />
 		@endif
 
         <div class="form-filters">
@@ -72,7 +73,11 @@
 
 
 			<div class="">
-                @include('front::includes.grid.badges_section')
+				@if($isOnlyPurchasables)
+					@include('front::includes.grid.badges_section_purchasable')
+				@else
+					@include('front::includes.grid.badges_section')
+				@endif
             </div>
 
 			@if(!$isOnlyPurchasables)

@@ -211,9 +211,12 @@ $packengersMoneyValue = 0;
 													</div>
                                                     </div>
 
-													<?php #Crea la URL mediante la iteración del foreach con los lotes de dentro
-														$urlToPackengersMaker .= $inf_lot->cod_sub."-".$inf_lot->ref_asigl0.",";
-													?>
+													@php
+														#Crea la URL mediante la iteración del foreach con los lotes de dentro
+														$lotReference = str_replace('.', '-', $inf_lot->ref_asigl0);
+														$lotFotURL = "$inf_lot->cod_sub-$lotReference";
+														$urlToPackengersMaker .= $lotFotURL.",";
+													@endphp
 
                                             @endforeach
                                         </div>
@@ -316,11 +319,11 @@ $packengersMoneyValue = 0;
 												<input id="paytransfer" type="hidden" name="paymethod" value="@if(config('app.paymentPaypal', 0)){{'paypal'}}@else{{'creditcard'}}@endif">
 												@endif
 												<br/><br/>
-												@if (\Config::get("app.urlToPackengers"))
+												@if (Config::get("app.urlToPackengers"))
 													<?php #Se crea la URL para ser usable en el botón
 														$urlToPackengers = rtrim($urlToPackengersMaker, ",");
 														$urlToPackengers .= "?value=".\Tools::moneyFormat($packengersMoneyValue,false,2);
-														$urlCompletePackengers = \Config::get('app.urlToPackengers').$urlToPackengers;
+														$urlCompletePackengers = \Config::get('app.urlToPackengers')."/$urlToPackengers";
 													?>
 													<a class="packengers-button-adjudicaciones" href="{{$urlCompletePackengers}}" target="_blank">
 														<i class="fa fa-truck" aria-hidden="true"></i>
@@ -465,7 +468,7 @@ $packengersMoneyValue = 0;
 																	<div class="user-account-item-date d-flex flex-direction-column align-items-center justify-content-center">
 																		<div class="visible-xs">{{ trans($theme.'-app.user_panel.price') }}</div>
 																		<p><?= $precio_remate ?> {{ trans($theme.'-app.lot.eur') }}</p>
-																		
+
 																		@if ($inf_lot->base_csub !=0)
 																			<small class="comision-title">{{ trans($theme.'-app.user_panel.price_comision') }}</small>
 																			<div>+ <?=  $comision ?> {{ trans($theme.'-app.lot.eur') }}</div>
