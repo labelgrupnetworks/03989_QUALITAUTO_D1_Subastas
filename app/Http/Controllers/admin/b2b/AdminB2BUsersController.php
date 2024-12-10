@@ -22,7 +22,7 @@ class AdminB2BUsersController extends Controller
 		$ownerCod = Session::get('user.cod');
 
 		$users = FxSubInvites::query()
-			->with('invited:cod_cliweb, cod2_cliweb, nom_cliweb, email_cliweb, cif_cli, tel1_cli')
+			->with('invited:cod_cliweb, cod2_cliweb, email_cliweb')
 			->where('owner_codcli_subinvites', $ownerCod)
 			->orderBy('invited_codcli_subinvites', 'desc')
 			->paginate(40);

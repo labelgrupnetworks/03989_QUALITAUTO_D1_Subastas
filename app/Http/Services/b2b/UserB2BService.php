@@ -45,8 +45,11 @@ class UserB2BService
 		FxSubInvites::create([
 			'emp_subinvites' => Config::get('app.emp'),
 			'owner_codcli_subinvites' => $ownerCod,
+			'codsub_subinvites' => $auctionCode->cod_sub,
 			'invited_codcli_subinvites' => $fxCli->cod_cli,
-			'codsub_subinvites' => $auctionCode->cod_sub
+			'invited_nom_subinvites' => $userData->name,
+			'invited_cif_subinvites' => $userData->idnumber,
+			'invited_tel_subinvites' => $userData->phone
 		]);
 	}
 

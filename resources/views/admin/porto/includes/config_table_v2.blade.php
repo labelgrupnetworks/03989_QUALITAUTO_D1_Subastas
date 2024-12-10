@@ -30,8 +30,8 @@
 				<a href="{{ route(Route::current()->getName()) }}" class="btn btn-warning w-100">{{ trans("admin-app.button.restart") }}</a>
 			</li>
 
-			<input type="hidden" name="order" value="{{ request('order', 'cod_cli') }}">
-			<input type="hidden" name="order_dir" value="{{ request('order_dir', 'desc') }}">
+			<input type="hidden" name="order" value="{{ request('order', '') }}">
+			<input type="hidden" name="order_dir" value="{{ request('order_dir', 'asc') }}">
 
 			@foreach ($formulario as $param => $input)
 			<li class="">

@@ -79,7 +79,7 @@ class AdminB2BLotsController extends Controller
 			->when($request->cerrado_asigl0, function ($query, $cerrado_asigl0) {
 				$query->where('cerrado_asigl0', $cerrado_asigl0);
 			})
-			->orderBy($request->input('order', 'ref_asigl0'), $request->input('order_dir', 'asc'))
+			->orderBy($request->input('order') ?? 'ref_asigl0', $request->input('order_dir', 'asc'))
 			->paginate(20);
 
 		$tableParams = [
@@ -96,6 +96,8 @@ class AdminB2BLotsController extends Controller
 			'fechafin_format' => 1,
 		];
 
+		$numberOfColumns = count(array_filter($tableParams));
+
 		$formulario = (object)[
 			'ref_asigl0' => FormLib::Text('ref_asigl0', 0, $request->ref_asigl0),
 			'impsalhces_asigl0' => FormLib::Text('impsalhces_asigl0', 0, $request->impsalhces_asigl0),
@@ -106,6 +108,7 @@ class AdminB2BLotsController extends Controller
 			'lots' => $lots,
 			'tableParams' => $tableParams,
 			'formulario' => $formulario,
+			'numberOfColumns' => $numberOfColumns,
 		];
 
 		return view('admin::pages.b2b.lots.index', $data);

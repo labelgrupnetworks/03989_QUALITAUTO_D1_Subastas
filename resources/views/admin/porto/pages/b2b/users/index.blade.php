@@ -87,10 +87,10 @@
 
                         @forelse ($users as $user)
                             <tr id="{{ $user->invited->cod2_cliweb }}">
-                                <td>{{ $user->invited->nom_cliweb }}</td>
+                                <td>{{ $user->invited_nom_subinvites }}</td>
                                 <td>{{ mb_strtolower($user->invited->email_cliweb) }}</td>
-                                <td>{{ $user->invited->cif_cli }}</td>
-                                <td>{{ $user->invited->tel1_cli }}</td>
+                                <td>{{ $user->invited_cif_subinvites }}</td>
+                                <td>{{ $user->invited_tel_subinvites }}</td>
 
                                 <td>
                                     <a class="btn btn-success btn-sm" href=""

@@ -15,29 +15,22 @@
 
         <div class="row well header-well d-flex align-items-center">
             <div class="col-xs-12">
-                <h1>{{ trans('admin-app.title.lot') }}</h1>
+                <h1>Pujas</h1>
             </div>
         </div>
 
         <div class="row well">
 
             <div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
-                {{-- configuracion de tabla --}}
-                <a class="btn btn-primary btn-sm" href="{{ route('admin.b2b.lots.create') }}">
-                    {{ trans('admin-app.button.new') }}
-                    {{ trans('admin-app.title.lot') }}
-                </a>
-
                 @include('admin::includes.config_table_v2', [
-                    'id' => 'b2b_lots_table',
+                    'id' => 'b2b_bids_table',
                     'params' => $tableParams,
                     'formulario' => $formulario,
                 ])
             </div>
 
-
             <div class="col-xs-12 table-responsive">
-                <table class="table table-striped table-condensed table-align-middle" id="b2b_lots_table"
+                <table class="table table-striped table-condensed table-align-middle" id="b2b_bids_table"
                     data-order-name="order" style="width:100%">
                     <thead>
                         <tr>
@@ -53,38 +46,23 @@
                     </thead>
                     <tbody>
 
-                        @forelse ($lots as $lot)
+                        @forelse ($bids as $bid)
 
-                            <tr id="{{ $lot->ref_asigl0 }}">
-
+                            <tr>
                                 @foreach ($tableParams as $field => $display)
-                                    <td class="{{ $field }}"
-                                        @if (!$tableParams[$field]) style="display: none" @endif>
-                                        @if ($field == 'img_lot')
-                                            <img class="object-fit-contain"
-                                                src="{{ Tools::url_img('lote_small', $lot->numhces_asigl0, $lot->linhces_asigl0) }}"
-                                                style="width: 50px; height: 50px;">
-                                        @elseif(in_array($field, ['impsalhces_asigl0', 'impres_asigl0', 'max_puja', 'max_orden']))
-                                            {{ Tools::moneyFormat($lot->{$field}, '€') }}
-                                        @else
-                                            {{ $lot->{$field} }}
-                                        @endif
+                                    <td class="{{ $field }}" @style([
+                                        'display' => $tableParams[$field] ? 'table-cell' : 'none',
+                                    ])>
+                                        {{ $bid->{$field} }}
                                     </td>
                                 @endforeach
 
                                 <td>
-                                    <a class="btn btn-success btn-sm"
-                                        href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $lot->ref_asigl0]) }}"
-                                        title="{{ trans('admin-app.button.edit') }}"><i class="fa fa-pencil-square-o"
-                                            aria-hidden="true"></i>{{ trans('admin-app.button.edit') }}
-                                    </a>
-                                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal"
+                                    {{-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal"
                                         data-id="{{ $lot->ref_asigl0 }}"
-
                                         data-name="{{ trans('admin-app.title.delete_resource', ['resource' => trans('admin-app.title.lot'), 'id' => $lot->ref_asigl0]) }}">
                                         <i class="fa fa-trash"></i>
-                                    </button>
-
+                                    </button> --}}
                                 </td>
                             </tr>
 
@@ -105,12 +83,14 @@
         </div>
 
         <div class="col-xs-12 d-flex justify-content-center">
-            {{ $lots->links() }}
+            {{ $bids->links() }}
         </div>
 
-        @include('admin::includes._delete_modal', ['routeToDelete' => route('admin.b2b.lots.destroy', ['ref_asigl0' => 0])])
+        {{-- @include('admin::includes._delete_modal', [
+            'routeToDelete' => route('admin.b2b.lots.destroy', ['ref_asigl0' => 0]),
+        ]) --}}
 
-        <script>
+        {{-- <script>
             $('#deleteModal').on('show.bs.modal', function(event) {
 
                 var button = $(event.relatedTarget);
@@ -124,7 +104,7 @@
                 var modal = $(this);
                 modal.find('.modal-title').text(name);
             });
-        </script>
+        </script> --}}
 
     </section>
 @stop

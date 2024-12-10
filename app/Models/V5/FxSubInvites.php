@@ -26,6 +26,9 @@ class FxSubInvites extends Model
 		'emp_subinvites',
 		'owner_codcli_subinvites',
 		'invited_codcli_subinvites',
+		'invited_nom_subinvites',
+		'invited_cif_subinvites',
+		'invited_tel_subinvites',
 		'codsub_subinvites',
 		'invite_date_subinvites',
 	];
