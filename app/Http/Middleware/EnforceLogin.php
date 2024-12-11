@@ -29,7 +29,9 @@ class EnforceLogin
 			'user.login_post_ajax',
 			'user.password_recovery',
 			'user.send_password_recovery',
-			'user.ajax_send_password_recovery'
+			'user.ajax_send_password_recovery',
+			'user.email-recovery',
+			'user.change-passw'
 		];
 
 		// Verifica si la ruta actual está excluida de la autenticación forzada

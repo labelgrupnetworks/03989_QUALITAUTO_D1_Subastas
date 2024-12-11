@@ -106,7 +106,7 @@ Route::post('/api-ajax/wallet/update', [UserController::class, 'updateWallet']);
 Route::post('/api-ajax/wallet/create', [UserController::class, 'createWallet']);
 Route::get('/api-ajax/wallet/back', [UserController::class, 'backVottumWallet'])->name('wallet.back');
 
-Route::get('/{lang?}/email-recovery', [UserController::class, 'getPasswordRecovery']);
+Route::get('/{lang?}/email-recovery', [UserController::class, 'getPasswordRecovery'])->name('user.email-recovery');
 Route::get('/{lang?}/email-validation', [UserController::class, 'getEmailValidation']);
 
 # Logout & Login de Tiempo Real

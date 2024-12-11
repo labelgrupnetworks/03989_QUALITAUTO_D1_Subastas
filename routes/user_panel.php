@@ -111,4 +111,4 @@ Route::get('{lang}/user/panel/transferpayment', function () {
 #NFT
 Route::get('user/panel/loadPendingPayTransferNft', [UserController::class, 'nftTransferPay']);
 
-Route::post('/change-passw-user', [UserController::class, 'changePassw']);
+Route::post('/change-passw-user', [UserController::class, 'changePassw'])->name('user.change-passw');
