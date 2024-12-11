@@ -45,22 +45,25 @@
 - `git remote add almoneda https://github.com/labelgrupnetworks/03352_ALMONEDA_D1_Subastas.git`
 - `git remote add ansorena-galery https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Galeria.git`
 - `git remote add ansorena https://github.com/labelgrupnetworks/01509_ANSORENA_D1_Subastas.git`
-- `git remote add bogota https://github.com/labelgrupnetworks/03226_BOGOTA_D1_Subastas.git`
+- `git remote add b2b https://github.com/labelgrupnetworks/D1_SUBALIAB2B_Stocks.git`
+- `git remote add bogota https://github.com/labelgrupnetworks/03226_BOGOTA_D1_Subastas.git` (Sin implementar)
 - `git remote add bonanova https://github.com/labelgrupnetworks/00162_BONANOVA_D1_Subastas.git`
 - `git remote add cmoriones https://github.com/labelgrupnetworks/03744_Cristina_Moriones_D1_Subastas.git`
+- `git remote add csubastas https://github.com/labelgrupnetworks/03532_CSUBASTASMADRID_D1_Subastas.git`
 - `git remote add demo https://github.com/labelgrupnetworks/00147_LabelGrup_Demo_Subastas.git`
 - `git remote add duran https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas.git`
 - `git remote add duran-gallery https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas_GALERIA.git`
 - `git remote add duran-nft https://github.com/labelgrupnetworks/02293_DURAN_D1_Subastas_NFT.git`
+- `git remote add gutinvest https://github.com/labelgrupnetworks/02151_GUTINVEST_D1_Subastas.git` (Sin implementar)
 - `git remote add jesusvico https://github.com/labelgrupnetworks/03254_JESUSVICO_D1_Subastas.git`
+- `git remote add magna https://github.com/labelgrupnetworks/03906_MAGNA_D1_Subastas.git`
 - `git remote add salaretiro https://github.com/labelgrupnetworks/01407_SALARETIRO_D1_Subastas.git`
 - `git remote add segre https://github.com/labelgrupnetworks/02913_SEGRE_D1_Subastas.git`
-- `git remote add silicua https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git`
+- `git remote add silicua https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git` (Fuera de servicio)
 - `git remote add soler https://github.com/labelgrupnetworks/03465_SOLERYLLACH_D1_Subastas.git`
 - `git remote add soporteconcursal https://github.com/labelgrupnetworks/02946_SOPORTECONCURSAL_D1_Subastas.git`
 - `git remote add subarna https://github.com/labelgrupnetworks/01232_SUBARNA_D1_Subastas.git`
 - `git remote add tauler https://github.com/labelgrupnetworks/01862_TAULERFAU_D1_Subastas.git`
-
 
 <a name="allprojects"></a>
 ## Añadir remoto a todos los proyectos
