@@ -1784,9 +1784,33 @@ h1.titlePage {
 	margin-bottom: 1rem;
 }
 
+/**
+ * Esto se hizo así porque no existe diseño para el panel de usuario
+ * Así por lo menos el texto tiene el mismo color que el resto de la web
+ * problema: hover y focus
+ */
 .account-user * {
 	color: var(--lb-text-color-primary) !important;
 }
+
+/**
+ * Los siguientes importants son debido a la condición anterior a esta
+ * Modificar esto en cuanto se pueda.
+ */
+.account-user .btn-outline-lb-primary:hover, .account-user .btn-outline-lb-primary:focus,
+.account-user .secondary-button:hover,.account-user .secondary-button:focus {
+	color: var(--lb-color-primary-contrast) !important;
+}
+
+.account-user .btn-outline-lb-primary:hover svg, .account-user .btn-outline-lb-primary:focus svg {
+	color: var(--lb-color-primary-contrast) !important;
+	fill: var(--lb-color-primary-contrast) !important;
+}
+
+/**
+ * Fin de la condición
+ */
+
 
 .account-user .form-group {
 	flex-direction: column;
