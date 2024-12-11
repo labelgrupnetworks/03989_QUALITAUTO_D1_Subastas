@@ -322,7 +322,9 @@ $packengersMoneyValue = 0;
 												@if (Config::get("app.urlToPackengers"))
 													<?php #Se crea la URL para ser usable en el botón
 														$urlToPackengers = rtrim($urlToPackengersMaker, ",");
-														$urlToPackengers .= "?value=".\Tools::moneyFormat($packengersMoneyValue,false,2);
+														//$urlToPackengers .= "?value=".\Tools::moneyFormat($packengersMoneyValue,false,2);
+														$urlToPackengers .= "?source=booking";
+
 														$urlCompletePackengers = \Config::get('app.urlToPackengers')."/$urlToPackengers";
 													?>
 													<a class="packengers-button-adjudicaciones" href="{{$urlCompletePackengers}}" target="_blank">
