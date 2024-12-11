@@ -57,14 +57,7 @@ class AdminB2BLotsController extends Controller
 					->whereColumn('sub_asigl1', 'fgasigl0.sub_asigl0')
 					->whereColumn('ref_asigl1', 'fgasigl0.ref_asigl0')
 					->orderByDesc('imp_asigl1')
-					->limit(1),
-				'max_orden' => FgOrlic::query()
-					->select('himp_orlic')
-					->whereColumn('emp_orlic', 'fgasigl0.emp_asigl0')
-					->whereColumn('sub_orlic', 'fgasigl0.sub_asigl0')
-					->whereColumn('ref_orlic', 'fgasigl0.ref_asigl0')
-					->orderByDesc('himp_orlic')
-					->limit(1),
+					->limit(1)
 			])
 			->joinFghces1Asigl0()
 			->joinSubastaAsigl0()
@@ -91,7 +84,6 @@ class AdminB2BLotsController extends Controller
 			'impsalhces_asigl0' => 1,
 			'impres_asigl0' => 1,
 			'max_puja' => 1,
-			'max_orden' => 1,
 			'fechainicio_format' => 1,
 			'fechafin_format' => 1,
 		];
