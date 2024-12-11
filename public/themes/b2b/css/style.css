@@ -229,6 +229,14 @@ footer .btn.nav-link::first-letter {
 	text-transform: uppercase;
 }
 
+.auctions-wrapper .card-custom-large {
+	min-height: 250px;
+}
+
+.auctions-wrapper .card-custom-large footer {
+	display: none;
+}
+
 .section-grid-lots {
 	grid-gap: 4rem 2rem;
 }
