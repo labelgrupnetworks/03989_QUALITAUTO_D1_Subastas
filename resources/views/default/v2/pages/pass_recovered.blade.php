@@ -1,51 +1,82 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
 
 @section('content')
-@if(Config::get('app.panel_password_recovery'))
-<section class="mb-20">
-    <div class="container panel panel-recovery">
-        <div class='row'>
-            <div class="col-lg-4 col-md-4 col-xs-12 col-lg-offset-4 col-md-offset-4">
-               <form class="frmLogin" id="passRecovered">
-                    <div class="form-group">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="login" id="login" value="{{$data['login']}}">
-                        <input style="display:none" type="password">
-                        @if(!empty(Request::input('email')))
-                        <input style="display:none" type="email" name="email" value="{{Request::input('email')}}">
-                        @endif
-                        <div class="form" style="position:relative">
-                        <label for="contrasena">{{ trans($theme.'-app.user_panel.new_pass') }}</label>
-                        <input maxlength="20" type="password" id="password" name="password" type="password" class="form-control" id="contrasena"  data-minlength="5" required>
-                        <img class="view_password eye-password" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
-                        </div>
+    @if (Config::get('app.panel_password_recovery'))
+        <main>
+            <div class="container panel-recovery">
+                <div class='row'>
+                    <div class="m-auto" style="max-width: 380px">
+                        <form class="frmLogin" id="passRecovered">
+
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <input id="login" name="login" type="hidden" value="{{ $data['login'] }}">
+                            <input type="password" style="display:none">
+
+                            @if (!empty(Request::input('email')))
+                                <input name="email" type="email" value="{{ Request::input('email') }}"
+                                    style="display:none">
+                            @endif
+
+
+                            <div class="mb-3">
+                                <label class="form-label"
+                                    for="password">{{ trans($theme . '-app.user_panel.new_pass') }}</label>
+                                <div class="input-group form-group">
+                                    <span class="input-group-text">
+                                        <svg class="bi" width="16" height="16" fill="currentColor">
+                                            <use xlink:href="/bootstrap-icons.svg#key-fill"></use>
+                                        </svg>
+                                    </span>
+                                    <input class="form-control" id="password" name="password"
+                                        data-minlength="5" type="password" placeholder="*****" maxlength="20"
+                                        autocomplete="off" required>
+                                    <span class="input-group-text view_password">
+                                        <img class="eye-password"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"
+                                    for="confirmcontrasena">{{ trans($theme . '-app.user_panel.new_pass') }}</label>
+                                <div class="input-group form-group">
+                                    <span class="input-group-text">
+                                        <svg class="bi" width="16" height="16" fill="currentColor">
+                                            <use xlink:href="/bootstrap-icons.svg#key-fill"></use>
+                                        </svg>
+                                    </span>
+                                    <input class="form-control" id="confirmcontrasena" name="confirm_password"
+                                        data-minlength="5" data-match="#password" type="password" placeholder="*****"
+                                        maxlength="20" autocomplete="off" required>
+                                    <span class="input-group-text view_password">
+                                        <img class="eye-password"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 text-center">
+                                <button class="btn btn-lb-primary btn-step-reg" type="submit">
+                                    {{ trans($theme . '-app.user_panel.save') }}
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <div class="form" style="position: relative">
-                        <label for="confirmcontrasena">{{ trans($theme.'-app.user_panel.new_pass_repeat') }}</label>
-                        <input maxlength="20" type="password" name="confirm_password" class="form-control" data-match="#password" id="confirmcontrasena"  required  data-minlength="5">
-                        <img class="view_password eye-password" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAQAAAD8x0bcAAAAxUlEQVR4AcWQIQxBURSGvyF5EwiSINMDNlU3sxmaLtoMk5iIRhAFM8Vkm170LOgU4Ozu7D7P63vfH+79z/23c+4hSJK0GYo6lAiDnyJrnnysLjT5Y24eHsyoiGYa3+FgWZnSkzyQEkFBYwdCGFraYAlM5HwzAhZa7SPEuKqtk7ETZanr7U4cEtzU1kjbUFqcGxJ6bju993/ajTGE2PsGz/EytTNRFIeNXUFVNNW/nYjhocGFj2eZAxx8RCjRZcuRHWVxQfEFCcppAFXu2JUAAAAASUVORK5CYII=">
-                        </div>
-                        <div class="text-center mt-2">
-                            <button class="btn btn-step-reg" type="submit">{{ trans($theme.'-app.user_panel.save') }}</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-@else
-<section class="permanentAuctions">
-	<div class="container">
-		<div class="alert alert-success">
-			<?= trans($theme.'-app.login_register.pass_sent') ?>
-		</div>
-	</div>
-</section>
-@endif
+        </main>
+    @else
+        <main class="permanentAuctions">
+            <div class="container">
+                <div class="alert alert-success">
+                    <?= trans($theme . '-app.login_register.pass_sent') ?>
+                </div>
+            </div>
+        </main>
+    @endif
 @stop
