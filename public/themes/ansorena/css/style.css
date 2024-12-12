@@ -639,6 +639,7 @@ article.blog-article {
 	padding: 1rem 2rem;
     color: #fff;
 	font-size: 1em;
+	--bs-btn-bg: var(--color-xmas-500);
 	--bs-btn-border-color: var(--color-xmas-500);
 	--bs-btn-active-bg: var(--color-xmas-500);
 	--bs-btn-hover-border-color: var(--color-xmas-700);
@@ -999,6 +1000,10 @@ article.blog-article {
 .grid-page.grid-xmas-page .grid-page-tile {
 	margin-bottom: .5rem;
 	font-size: var(--fs-64-96);
+}
+
+.grid-page.grid-xmas-page .grid-front-page {
+	background-size: contain;
 }
 
 .grid-front-page {
