@@ -42,23 +42,23 @@
 
     $auctionTitle = trans("$theme-app.subastas.inf_subasta_subasta") . ' ' . $auction->cod_sub;
 
-	$isOnlyPurchasables = request('purchasable') == true;
+    $isOnlyPurchasables = request('purchasable') == true;
     if ($isOnlyPurchasables) {
         $filters['purchasable'] = true;
-        $auctionImage = 'other';
+        $auctionImage = '/themes/ansorena/assets/img/tmp/grid_joyas.jpg';
         $auctionTitle = 'XMAS GIFTS';
-		$sessions = [];
-		$catalogUrl = '';
+        $sessions = [];
+        $catalogUrl = '';
     }
 
 @endphp
 
-<main class="grid-page pt-2">
+<main @class(['grid-page pt-2', 'grid-xmas-page' => $isOnlyPurchasables])>
     <h1 class="ff-highlight grid-page-tile">{{ $auctionTitle }}</h1>
 
     @if ($isOnlyPurchasables)
-        <h2 class="h4 ff-highlight text-center">
-			{{ trans("$theme-app.lot_list.alternative_auction_subtitle") }}
+        <h2 class="grid-page-subtitle h4 text-center">
+            {{ trans("$theme-app.lot_list.alternative_auction_subtitle") }}
         </h2>
     @endif
 
@@ -151,9 +151,9 @@
 
         <div class="grid-section-header" id="grid-lots">
             <h2 class="ff-highlight grid-section-title">{{ trans("$theme-app.lot_list.lots") }}</h2>
-			@if(!empty($catalogUrl))
-            	<a href="{{ $catalogUrl }}" target="_blank">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
-			@endif
+            @if (!empty($catalogUrl))
+                <a href="{{ $catalogUrl }}" target="_blank">{{ trans("$theme-app.lot_list.ver_catalogo") }}</a>
+            @endif
         </div>
 
         <div class="grid-lots position-relative">
