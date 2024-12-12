@@ -1004,6 +1004,7 @@ article.blog-article {
 
 .grid-page.grid-xmas-page .grid-front-page {
 	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .grid-front-page {
@@ -1931,11 +1932,6 @@ section.recomendados .section-title {
 | Ficha Artículo
 |--------------------------------------------------------------------------
  */
-.lot-sold.ficha-v {
-	font-size: 1.1em;
-}
-
-
 .lot-sold .info-message {
 	font-size: 15px;
   	color: var(--lb-text-color-primary);

@@ -45,7 +45,7 @@
     $isOnlyPurchasables = request('purchasable') == true;
     if ($isOnlyPurchasables) {
         $filters['purchasable'] = true;
-        $auctionImage = '/themes/ansorena/assets/img/tmp/grid_joyas.jpg';
+        $auctionImage = '/themes/ansorena/assets/img/tmp/grid_joyas_2.jpg';
         $auctionTitle = 'XMAS GIFTS';
         $sessions = [];
         $catalogUrl = '';
