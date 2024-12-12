@@ -620,6 +620,7 @@ article.blog-article {
 	padding: 1rem;
 	overflow-x: auto;
 	width: 100%;
+	justify-content: center;
 }
 
 .section-nav ul li {
