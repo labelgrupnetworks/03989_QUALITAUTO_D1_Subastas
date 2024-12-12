@@ -530,7 +530,7 @@ function toogleMenu(menuButton) {
 	menuHeader.classList.toggle('open', !isOpen);
 	logo.classList.toggle('d-none', !isOpen);
 
-	closeSubmenu();
+	//closeSubmenu();
 }
 
 function toogleGridFilters() {
