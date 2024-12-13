@@ -619,9 +619,15 @@ article.blog-article {
 	text-transform: uppercase;
 	overflow-x: auto;
 	width: 100%;
-	justify-content: center;
+	justify-content: flex-start;
 	padding: 0 1rem;
 	overflow-y: hidden;
+}
+
+@media(min-width: 992px) {
+	.section-nav ul {
+		justify-content: center;
+	}
 }
 
 .section-nav ul li {
