@@ -1009,8 +1009,15 @@ article.blog-article {
 }
 
 .grid-page.grid-xmas-page .grid-front-page {
+	background-image: url('/themes/ansorena/assets/img/tmp/venta_joyas_small.jpg') !important;
 	background-size: contain;
 	background-repeat: no-repeat;
+}
+
+@media(min-width: 600px) {
+	.grid-page.grid-xmas-page .grid-front-page {
+		background-image: url('/themes/ansorena/assets/img/tmp/venta_joyas_big.jpg') !important;
+	}
 }
 
 .grid-front-page {
