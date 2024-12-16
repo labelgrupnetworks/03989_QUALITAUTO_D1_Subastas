@@ -174,6 +174,7 @@ body, html {
                     <img class="logo-time-wait img-responsive" src="/themes/{{\Config::get('app.theme')}}/assets/img/logo_footer.jpg?a=1"  alt="{{(\Config::get( 'app.name' ))}}">
                     <p>{{trans(\Config::get('app.theme')."-app.msg_neutral.auction_coming_soon")}}</p>
                     <div data-countdown="{{strtotime($tiempo) - getdate()[0] }}"  data-format="<span><span class='date'>%D</span><span class='text'>{{trans(\Config::get('app.theme')."-app.msg_neutral.days")}}</span></span><br><span><span class='date'>%H</span><span class='text'>{{trans(\Config::get('app.theme')."-app.msg_neutral.hours")}}</span></span><span><span class='date'>%M</span><span class='text'>{{trans(\Config::get('app.theme')."-app.msg_neutral.minutes")}}</span></span><span><span class='date'>%S<span class='text'>{{trans(\Config::get('app.theme')."-app.msg_neutral.seconds")}}</span></span>" data-txtend ="{{trans(\Config::get('app.theme')."-app.msg_neutral.auction_coming_soon_minuts")}}" class="tiempo"></div>
+					<p style="font-size: .8em">{{ trans("$theme-app.sheet_tr.refresh_reminder") }}</p>
                 </div>
                 <div class="col-xs-12 col-lg-3 data-content-info-wait">
 
