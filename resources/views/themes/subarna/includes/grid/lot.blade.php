@@ -32,6 +32,10 @@
                                 <span class="salida-title">{{ trans($theme . '-app.subastas.net_price') }}: </span>
                             @elseif($subasta_venta)
                                 <span class="salida-title">{{ trans($theme . '-app.subastas.price_sale') }}:</span>
+							@elseif($compra)
+								<span class="salida-title">
+									{{ trans("$theme-app.subastas.price_sale") }}
+								</span>
                             @else
                                 <span class="salida-title">{{ trans($theme . '-app.lot.lot-price') }}:</span>
                             @endif
