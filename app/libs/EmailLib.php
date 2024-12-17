@@ -999,6 +999,10 @@ private $debug = true;
             $this->atributes["HTML"] = $html;
         }
 
+	public function setHtmlBody($html)
+	{
+		$this->HTML_email = $html;
+	}
 
         public function setInvoice_code($invoice_code){
             $this->atributes["INVOICE_CODE"] = $invoice_code;

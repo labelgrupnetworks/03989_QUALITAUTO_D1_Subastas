@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\ToolsServiceProvider;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,6 +69,26 @@ class FxCliWeb extends Authenticatable implements AuthenticatableContract
 	{
         return  $query->join('FGLICIT', 'FGLICIT.CLI_LICIT = FXCLIWEB.COD_CLIWEB  AND FGLICIT.EMP_LICIT = FXCLIWEB.EMP_CLIWEB');
     }
+
+	public function getHasPasswordAttribute()
+	{
+		return !empty($this->pwdwencrypt_cliweb);
+	}
+
+	public function getRecoveryLinkAttribute()
+	{
+		if(!$this->email_cliweb){
+			return null;
+		}
+		$email = urlencode($this->email_cliweb);
+		$password = $this->pwdwencrypt_cliweb ?? '';
+
+		$url = Config::get('app.url');
+		$locale = Config::get('app.locale');
+		$code = ToolsServiceProvider::encodeStr("$email-$password");
+
+		return "$url/$locale/email-recovery?email=$email&code=$code";
+	}
 
 
 

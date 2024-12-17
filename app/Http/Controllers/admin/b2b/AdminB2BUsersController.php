@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin\b2b;
 use App\Http\Controllers\Controller;
 use App\Http\Services\b2b\UserB2BData;
 use App\Http\Services\b2b\UserB2BService;
+use App\Jobs\MailJob;
 use App\Jobs\SendNotificationsJob;
+use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\Mail\AuctionInvitationMail;
 use App\Models\V5\FgSub;
@@ -88,7 +90,8 @@ class AdminB2BUsersController extends Controller
 		$ownerCod = $owner['cod'];
 
 		$users = FxSubInvites::query()
-			->with('invited:cod_cliweb, cod2_cliweb, nom_cliweb, email_cliweb, cif_cli, tel1_cli')
+			->select('invited_codcli_subinvites', 'invited_nom_subinvites')
+			->with('invited:cod_cliweb, email_cliweb, pwdwencrypt_cliweb')
 			->where('owner_codcli_subinvites', $ownerCod)
 			->get();
 
@@ -105,11 +108,30 @@ class AdminB2BUsersController extends Controller
 
 		$delay = 0;
 		foreach ($users as $user) {
-			$notification = new AuctionInvitationMail($owner, $auction->toArray(), $user->invited->toArray());
 
-			SendNotificationsJob::dispatch($notification, $user->invited->email_cliweb)
+			$userDataToEmail = [
+				'name' => $user->invited_nom_subinvites,
+				'email' => $user->invited->email_cliweb,
+				'hasPassword' => $user->invited->hasPassword,
+				'linkResetPassword' => $user->invited->recoveryLink,
+			];
+
+			$notification = new AuctionInvitationMail($owner, $auction->toArray(), $userDataToEmail);
+
+			$emailLib = new EmailLib('AUTION_INVITE');
+			if(!empty($emailLib->email)) {
+				$emailLib->setHtmlBody($notification->render());
+				$emailLib->setTo($userDataToEmail['email']);
+
+				MailJob::dispatch($emailLib)
+					->onQueue(Config::get('app.queue_env'))
+					->delay(now()->addSeconds($delay));
+			}
+
+
+			/* SendNotificationsJob::dispatch($notification, $userDataToEmail['email'])
 				->onQueue(Config::get('app.queue_env'))
-				->delay(now()->addSeconds($delay));
+				->delay(now()->addSeconds($delay)); */
 
 			//office tiene un limite de 30 correos por minuto.
 			//Con el delay evitaremos que se envien todos los correos a la vez.

@@ -20,7 +20,7 @@
             @csrf
 
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-xs-12 col-md-8">
                     <div class="well">
                         @include('admin::pages.b2b.lots._form', [
                             'formulario' => $formulario,
@@ -33,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="col-xs-4">
+                <div class="col-xs-12 col-md-4">
                     <div class="well">
 						@include('admin::pages.b2b.lots._lot_images', ['images' => []])
                     </div>
@@ -42,7 +42,7 @@
             </div>
 
 			<div class="row">
-				<div class="col-xs-8 text-center">
+				<div class="col-xs-12 col-md-8 text-center">
 					{!! $formulario->submit !!}
 				</div>
 			</div>

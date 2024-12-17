@@ -69,12 +69,21 @@
             <img src="{{ $owner['logo'] }}" alt="Logo de {{ $owner['company_name'] }}" style="max-height: 100px;">
         </div>
         <div class="content">
-            <p>Buenas {{ $user['nom_cliweb'] }},</p>
+            <p>Buenas {{ $user['name'] }},</p>
             <p>Ha sido invitado a participar en la subasta <strong>{{ $auction['des_sub'] }}</strong>.</p>
+
+			@if($user['hasPassword'])
             <p>
                 Puede acceder a los lotes desde el siguiente enlace:
                 <a href="{{ $auction['link'] }}">{{ $auction['des_sub'] }}</a>.
             </p>
+			@else
+			<p>
+				Para poder acceder primero debe crearse una contraseña. Puede hacerlo desde el siguiente enlace:
+				<a href="{{ $user['linkResetPassword'] }}">Crear contraseña</a>.
+			</p>
+			@endif
+
             <p>Saludos cordiales,</p>
             <p>{{ $owner['company_name'] }}</p>
         </div>
