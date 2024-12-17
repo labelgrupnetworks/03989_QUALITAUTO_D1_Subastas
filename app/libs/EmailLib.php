@@ -541,12 +541,6 @@ class EmailLib
 		} else {
 			$this->HTML_email = str_replace('[*CONTENT*]', $body_email, $design_template);
 		}
-
-		if ($this->HTML_email) {
-			$this->HTML_email = $this->atributes["HTML"];
-		}
-
-		dd($this->HTML_email);
 	}
 
 	private function send()

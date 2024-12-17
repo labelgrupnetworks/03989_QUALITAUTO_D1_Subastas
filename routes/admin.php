@@ -9,7 +9,8 @@ use App\Http\Controllers\admin\b2b\{
 	AdminB2BLotsController,
 	AdminB2BUsersController,
 	AdminB2BVisibilityController,
-	AdminB2BAwardsController
+	AdminB2BAwardsController,
+    AdminB2BCompaniesController
 };
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\BlogController;
@@ -463,6 +464,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::put('/contenido/uploads/update/{fileName}', 'contenido\AdminUploadsController@update')->name('admin.contenido.uploads.update');
 
 		Route::group(['prefix' => 'b2b'], function () {
+
+			Route::get('/companies', [AdminB2BCompaniesController::class, 'index'])->name('admin.b2b.companies');
+			Route::get('/companies/create', [AdminB2BCompaniesController::class, 'create'])->name('admin.b2b.companies.create');
+			Route::post('/companies', [AdminB2BCompaniesController::class, 'store'])->name('admin.b2b.companies.store');
+			Route::get('/companies/{idCli}', [AdminB2BCompaniesController::class, 'edit'])->name('admin.b2b.companies.edit');
+			Route::put('/companies/{idCli}', [AdminB2BCompaniesController::class, 'update'])->name('admin.b2b.companies.update');
+			Route::put('/companies/{idCli}/status', [AdminB2BCompaniesController::class, 'status'])->name('admin.b2b.companies.status');
+
 			Route::get('/users', [AdminB2BUsersController::class, 'index'])->name('admin.b2b.users');
 			Route::get('/users/create', [AdminB2BUsersController::class, 'create'])->name('admin.b2b.users.create');
 			Route::post('/users', [AdminB2BUsersController::class, 'store'])->name('admin.b2b.users.store');
