@@ -428,7 +428,7 @@ class FormLib
 				$aux .= "selected='selected'";
 			}
 
-			$aux .= ">{$key}-{$value}</option>";
+			$aux .= ">{$key} - {$value}</option>";
 		}
 
 		$aux .= "</select>";
