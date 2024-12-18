@@ -18,20 +18,18 @@ class RecipientsNotificationList
 				'enadal@labelgrup.com'
 			],
 			'web' => [
-				'rsanchez@labelgrup.com',
-				'llandeira@labelgrup.com',
-				'enadal@labelgrup.com',
-				'subastas@labelgrup.com'
+				'enadal@labelgrup.com'
 			],
 			'erp' => [
 				'dibanez@labelgrup.com',
-				'mbanos@labelgrup.com',
-				'subastas@labelgrup.com'
+				'mbanos@labelgrup.com'
 			],
 			'sistemas' => [
-				'sistemas@labelgrup.com',
-				'subastas@labelgrup.com'
+				'sistemas@labelgrup.com'
 			],
+			'subastas' => [
+				'subastas@labelgrup.com'
+			]
 		];
 
 		return $recipients[$deparment];
@@ -57,21 +55,28 @@ class RecipientsNotificationList
 		return $this->recipients('sistemas');
 	}
 
+	public function getSubastasTeam()
+	{
+		return $this->recipients('subastas');
+	}
+
 	public function getAllTeams()
 	{
-		return array_unique(array_merge(
+		return array_merge(
 			$this->getWebTeam(),
 			$this->getErpTeam(),
-			$this->getSistemasTeam()
-		));
+			$this->getSistemasTeam(),
+			$this->getSubastasTeam()
+		);
 	}
 
 	public function getWebAlerts()
 	{
-		return array_unique(array_merge(
+		return array_merge(
 			$this->getWebTeam(),
-			$this->getSistemasTeam()
-		));
+			$this->getSistemasTeam(),
+			$this->getSubastasTeam()
+		);
 	}
 
 	private function whenLocalEnv()
