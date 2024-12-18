@@ -188,7 +188,7 @@
         </div>
         <div class="col-md-8 col-xs-12">
             <div class="modal-name-aution mb-2 title-modal-current-auction">
-                {{ trans($theme.'-app.lot_list.la') }} {{ $auction->name }} {{ trans($theme.'-app.lot_list.isBegin') }}
+                {{ trans($theme.'-app.lot_list.la') }} {!! $auction->name !!} {{ trans($theme.'-app.lot_list.isBegin') }}
             </div>
             <div class="modal-desc-auction mb-2 title-modal-current-auction text-underline">
                     {{ $auction->description }}
