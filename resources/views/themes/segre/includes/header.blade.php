@@ -357,10 +357,10 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
-							@php
+							{{-- @php
 								$has_subasta = $subastaObj->auctionList('H');
-							@endphp
-{{-- de momento omitimos el histórico
+							@endphp --}}
+							{{-- de momento omitimos el histórico
 							@if (!empty($has_subasta))
 								<p class="item">
 									<a href="{{ \Routing::translateSeo('subastas-historicas') }}">
@@ -368,7 +368,7 @@ if (strpos($fullname, ',')) {
 									</a>
 								</p>
 							@endif
---}}
+							--}}
 						</div>
 
 					</li>
@@ -382,16 +382,19 @@ if (strpos($fullname, ',')) {
 
 				if (count($subastasAnteriores) > 0) {
 					$subastaAnterior = head($subastasAnteriores);
-
-
 				}
+
+				$subastasAnteriores = array_filter($subastasAnteriores, function ($subasta) use ($subastaAnterior) {
+					return $subasta->cod_sub == $subastaAnterior?->cod_sub;
+				});
+
 					$pinturaAnterior=false;
 					$artesDecorativasAnterior=false;
 					$joyasAnterior=false;
 					$casaHistoricaAnterior = false;
 					$arteSigloXXAnterior = false;
 
-					foreach($has_subasta as $session){
+					foreach($subastasAnteriores as $session){
 
 						if(strtotime($session->session_start) < strtotime('now')){
 							if($session->reference=="001"){
