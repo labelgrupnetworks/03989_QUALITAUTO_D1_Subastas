@@ -30,13 +30,13 @@
 
             <div class="auction-card__dates">
                 <div class="auctions-init-dates text-center mb-1">
-					<p class="m-0">Inico</p>
+					<p class="m-0">{{ trans("$theme-app.subastas.start") }}</p>
 					<p class="m-0" style="font-weight: 600;">{{ date('d-m-Y', strtotime($subasta->session_start)) }}</p>
 					<small>{{ date('H:i', strtotime($subasta->session_start)) }} h</small>
 				</div>
 				@if($subasta->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_ONLINE)
 				<div class="auctions-close-dates text-center">
-					<p class="m-0">Cierre</p>
+					<p class="m-0">{{ trans("$theme-app.subastas.closing") }}</p>
 					<p class="m-0" style="font-weight: 600;">{{ date('d-m-Y', strtotime($subasta->session_end)) }}</p>
 					<small>{{ date('H:i', strtotime($subasta->session_end)) }} h</small>
 				</div>

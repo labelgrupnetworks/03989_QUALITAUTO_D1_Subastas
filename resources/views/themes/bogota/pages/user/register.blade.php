@@ -317,6 +317,7 @@ foreach ($document_type as $key => $value) {
                                                             {{ trans(\Config::get('app.theme').'-app.login_register.recibir_newsletter') }}
                                                         </label>
                                                     </div>
+													<input type="hidden" name="families[1]" value="0">
 													<input type="hidden" name="families[20]" value="1">
 
 
@@ -375,9 +376,9 @@ foreach ($document_type as $key => $value) {
 				</form>
                             @if(!empty($formulario->subalia))
                                 @if(\Config::get("app.locale") == 'en')
-                            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+                            <form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
                                 @else
-                            <form id="formToSubalia" method="post" action="https://subalia.es/registerclicli">
+                            <form id="formToSubalia" method="post" action="{{\Config::get("app.subalia_URL", "https://subalia.es")}}/registerclicli">
                                 @endif
                                     <input type="hidden" name="info" id="info_sent" value="">
                                     <input type="hidden" name="cod_auchouse" id="cod_auchouse_sent" value="">

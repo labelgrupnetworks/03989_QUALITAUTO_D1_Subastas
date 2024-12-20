@@ -125,10 +125,13 @@
                     <input id="bid_amount" placeholder="{{ $data['precio_salida'] }}" class="form-control control-number" type="text" value="{{ $data['precio_salida'] }}">
                 <div class="input-group-btn">
 
-					@if(Session::has('user') && (new App\Models\User())->getClientNllist(session('user.cod'))->nllist20_cliweb == 'S')
+
+					@if(Session::has('user') && in_array(20,  (new App\Models\Newsletter())->getIdSuscriptions(session('user.usrw', ''))))
                     	<button type="button" data-from="modal" class="lot-action_pujar_on_line ficha-btn-bid ficha-btn-bid-height button-principal <?= Session::has('user')?'add_favs':''; ?>" type="button" ref="{{ $lote_actual->ref_asigl0 }}" ref="{{ $lote_actual->ref_asigl0 }}" codsub="{{ $lote_actual->cod_sub }}" >{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
-					@else
+					@elseif(Session::has('user'))
 						<button type="button" data-from="modal" data-toggle="modal" data-target="#acceptedTermsModal" class="ficha-btn-bid ficha-btn-bid-height button-principal">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
+					@else
+						<button type="button" class="btn_login ficha-btn-bid ficha-btn-bid-height button-principal">{{ trans(\Config::get('app.theme').'-app.lot.pujar') }}</button>
 					@endif
 
                 </div>

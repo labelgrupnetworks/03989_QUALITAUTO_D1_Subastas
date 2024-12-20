@@ -47,11 +47,19 @@ header.fixed nav {
 	background: #000;
   }
 
+header .logo-company {
+	filter: invert(1);
+}
+
 
 a.link-header, a.link-header:hover, .btn_login_desktop, .btn_login_desktop:hover{
 	color:#FFF;
 }
 
+.mega-menu a:hover {
+    background: #000;
+    color: #ffffff;
+}
 
 .link-header span:before {
 /* para que no aparezca */
@@ -207,8 +215,18 @@ color: #DDD;
 
 .newsletter-placeholder {
 	opacity: 0.8;
- }
-.lotes-destacados-principal-title, .lotes-destacados-principal-lot
-{
+}
+
+.lotes-destacados-principal-title, .lotes-destacados-principal-lot {
 	padding: 0px;
+}
+
+.banner_title {
+	font-size: 30px;
+    font-weight: 500;
+	color: var(--primary-color-text);
+}
+
+.account-user-menu {
+	background-color: #c2c2c2;
 }

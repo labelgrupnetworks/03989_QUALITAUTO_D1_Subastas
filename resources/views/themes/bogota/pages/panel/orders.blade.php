@@ -86,7 +86,8 @@
 
 																			<div class="user-account-item-title">
 
-																				{{$inf_lot->descweb_hces1}}
+																				{{ $inf_lot->descweb_hces1 }}
+
 																				<p>	{{ trans(\Config::get('app.theme').'-app.lot.lot-price') }}:
 																					{{trans(\Config::get('app.theme').'-app.subastas.euros')}}	{{$inf_lot->formatted_impsalhces_asigl0 }} </p>
 																			</div>

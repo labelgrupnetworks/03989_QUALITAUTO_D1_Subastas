@@ -1,12 +1,17 @@
 
+@php
+ $options = [
+	"TOP_HOME" => ['dots' => true, 'autoplay' => true, 'arrows' => false],
+	"VENDIDOS_HOME" => ['dots' => false],
+	"matteport" => ['title' => trans("$theme-app.home.virtual_tour")],
+	"issuu" => ['title' => trans("$theme-app.home.catalogs")]
+ ]
+@endphp
 
-{!! \BannerLib::bannersPorUbicacionKeyAsClass('HOME',[ "TOP_HOME" => ['dots' => true, 'autoplay' => true] ,"VENDIDOS_HOME" => ['dots' => false]]) !!}
-
-<div class="clearfix"></div>
-<br><br>
+{!! \BannerLib::bannersPorUbicacionKeyAsClass('HOME', $options) !!}
 
 <!-- Inicio lotes destacados -->
-<div id="lotes_destacados-content" class="lotes_destacados secundary-color-text">
+<div id="lotes_destacados-content" class="lotes_destacados secundary-color-text" >
 	<div class="container">
 		<div class="row flex-display flex-wrap">
 			<div class="col-xs-12 col-sm-12 col-md-12 lotes-destacados-principal-title">
@@ -33,6 +38,9 @@
 	</div>
 </div>
 
+<div class="pt-3 pb-3">
+	{!! BannerLib::bannersPorKey('CENTRADO_HOME', '', ['dots' => false]) !!}
+</div>
 
 @php
 	$replace = array(

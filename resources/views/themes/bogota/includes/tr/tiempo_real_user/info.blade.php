@@ -119,7 +119,7 @@
             </div>
 
             @if(Session::has('user'))
-				@if((new App\Models\User())->getClientNllist(session('user.cod'))->nllist20_cliweb == 'S')
+				@if(in_array(20,  (new App\Models\Newsletter())->getIdSuscriptions(session('user.usrw', ''))))
 					<a class="add_bid btn button btn-custom-save"><i class="fa fa-gavel"></i> {{ trans(\Config::get('app.theme').'-app.sheet_tr.place_bid') }}</a>
 					<input type="hidden" id="tiempo_real" value="1" readonly>
 				@else

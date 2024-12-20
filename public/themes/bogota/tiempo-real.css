@@ -1,15 +1,15 @@
 
 
 .button, .btn-primary, .btn-warning{
-	background-color: #00664F!important;
-	border-color: #888!important;
+	background-color: #888 !important;
+    border-color: #888 !important;
 }
 
 
 
 .button:hover, .btn-primary:hover, .btn-warning:hover{
-	background-color: #FFF!important;
-	color: #00664F!important;
-	border-color: #888!important;
+	background-color: #686868 !important;
+    color: #fff !important;
+    border-color: #686868 !important;
 }
 

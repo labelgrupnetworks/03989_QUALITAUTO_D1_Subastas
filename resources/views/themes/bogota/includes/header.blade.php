@@ -29,7 +29,7 @@ use App\libs\TradLib as TradLib;
         </div>
         <div class="logo-header">
             <a title="{{(\Config::get( 'app.name' ))}}" href="/{{$lang}}">
-                <img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
+                <img class="logo-company" src="/themes/{{$theme}}/assets/img/logo.png?t=25012024"  alt="{{(\Config::get( 'app.name' ))}}">
             </a>
         </div>
         <div class="menu-principal">
@@ -75,6 +75,13 @@ use App\libs\TradLib as TradLib;
 
                 <li>
                     <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
+                </li>
+
+				<li>
+                    <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}"
+						href="/{!! Routing::slugSeo('blog') !!}">
+						<span>{{ trans("$theme-app.home.blog") }}</span>
+					</a>
                 </li>
             </ul>
         </div>
