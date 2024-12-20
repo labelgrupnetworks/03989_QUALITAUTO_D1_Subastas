@@ -80,7 +80,7 @@ class AucSessions extends Model
 	}
 
 	public function scopeJoinLang($query){
-		$lang = ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'));
+		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 
 		return $query->leftJoin('"auc_sessions_lang"','  "id_auc_session_lang" = "id_auc_sessions"   AND "company_lang" = "company"   AND "auction_lang" = "auction"  AND "lang_auc_sessions_lang" = \''.$lang.'\'');
 

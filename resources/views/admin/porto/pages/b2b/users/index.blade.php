@@ -15,6 +15,39 @@
 
             <div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
 
+                <div class="btn-group left" id="js-dropdownItems">
+                    <button class="btn btn-default btn-sm" type="button">{{ trans('admin-app.button.selecteds') }}</button>
+                    <button class="btn btn-default btn-sm dropdown-toggle" data-objective="cli_ids" data-toggle="dropdown"
+                        type="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="js-dropdownItems">
+                        <li>
+                            <button class="btn" data-objective="user_invited_ids" data-allselected="js-selectAll"
+                                data-title="¿Estas seguro de que quieres notificar a los clientes selecciondos?"
+                                data-response="Se ha notificado a los clientes correctamente"
+                                data-url="{{ route('admin.b2b.users.notify-selection') }}"
+                                onclick="notifyClientSelecteds(this.dataset)">
+                                Notificar
+                            </button>
+                        </li>
+
+                        <li>
+                            <button class="btn" data-objective="user_invited_ids" data-allselected="js-selectAll"
+                                data-title="{{ trans('admin-app.questions.erase_mass_cli') }}"
+                                data-response="{{ trans('admin-app.success.erase_mass_cli') }}"
+                                data-url="{{ route('admin.b2b.users.destroy-selection') }}"
+                                onclick="removeClientSelecteds(this.dataset)">
+                                {{ trans('admin-app.button.destroy') }}
+                            </button>
+                        </li>
+
+
+
+                    </ul>
+                </div>
+
                 <a class="btn btn-sm btn-primary" href="{{ route('admin.b2b.users.create') }}">
                     {{ trans('admin-app.button.new') }} {{ trans('admin-app.fields.cli_creditosub') }}
                 </a>
@@ -23,10 +56,10 @@
                     Importar Excel
                 </button>
 
-				{{-- Notificar --}}
-				<button class="btn btn-sm btn-primary" onclick="notifyClients()">
-					Notificar
-				</button>
+                {{-- Notificar --}}
+                <button class="btn btn-sm btn-primary" onclick="notifyAllClients()">
+                    Notificar
+                </button>
 
                 <button class="btn btn-sm btn-danger" onclick="removeAllClients()">
                     Borrar Clientes
@@ -40,6 +73,12 @@
                     style="width:100%">
                     <thead>
                         <tr>
+                            <th>
+                                <label>
+                                    <input id="selectAllClients" name="js-selectAll" data-objective="user_invited_ids"
+                                        type="checkbox" value="true">
+                                </label>
+                            </th>
                             @foreach ($tableParams as $param => $display)
                                 <th class="{{ $param }}" data-order="{{ $param }}"
                                     style="cursor: pointer; @if (!$display) display: none; @endif">
@@ -65,32 +104,24 @@
                     </thead>
 
                     <tbody>
-                        {{-- <tr id="filters">
-                            <form class="form-group" action="">
-                                <input name="order" type="hidden" value="{{ request('order', 'cod_cli') }}">
-                                <input name="order_dir" type="hidden" value="{{ request('order_dir', 'desc') }}">
-
-								<td></td>
-                                @foreach ($tableParams as $param => $display)
-                                    <td class="{{ $param }}"
-                                        @if (!$display) style="display: none" @endif>
-                                        {!! $formulario->$param ?? '' !!}</td>
-                                @endforeach
-
-                                <td class="d-flex">
-                                    <input class="btn btn-info w-100" type="submit"
-                                        value="{{ trans('admin-app.button.search') }}"><a class="btn btn-warning w-100"
-                                        href="{{ route('admin.b2b.users') }}">{{ trans('admin-app.button.restart') }}</a>
-                                </td>
-                            </form>
-                        </tr> --}}
 
                         @forelse ($users as $user)
-                            <tr id="{{ $user->invited->cod2_cliweb }}">
+                            <tr id="{{ $user->invited->cod_cliweb }}">
+                                <td>
+                                    <label>
+                                        <input name="user_invited_ids" type="checkbox"
+                                            value="{{ $user->invited->cod_cliweb }}">
+                                    </label>
+                                </td>
                                 <td>{{ $user->invited_nom_subinvites }}</td>
                                 <td>{{ mb_strtolower($user->invited->email_cliweb) }}</td>
                                 <td>{{ $user->invited_cif_subinvites }}</td>
                                 <td>{{ $user->invited_tel_subinvites }}</td>
+                                <td class="text-center">
+                                    @if ($user->notification_sent_subinvites)
+                                        <i class="fa fa-check lb-icon-circle" aria-hidden="true"></i>
+                                    @endif
+                                </td>
 
                                 <td>
                                     <a class="btn btn-success btn-sm" href=""
@@ -150,12 +181,41 @@
 
 
     <script>
+        $(document).ready(function() {
+
+            $('[name="js-selectAll"').on('click', function() {
+                const isChecked = this.checked;
+                const objectiveInputs = this.dataset.objective;
+                isChecked ? selectAllTable(objectiveInputs) : unselectAllTable(objectiveInputs);
+            });
+
+            $('input[name="user_invited_ids"]').on('change', function() {
+
+                const selectAllElement = document.getElementById('selectAllClients');
+                const isChecked = selectAllElement.checked;
+
+                if (isChecked) {
+                    selectAllElement.checked = false;
+                }
+            });
+        });
+
+        function selectAllTable(inputName) {
+            const inputs = Array.from(document.getElementsByName(inputName));
+            inputs.forEach((element) => element.checked = true);
+        }
+
+        function unselectAllTable(inputName) {
+            const inputs = Array.from(document.getElementsByName(inputName));
+            inputs.forEach((element) => element.checked = false);
+        }
+
         function removeAllClients() {
             bootbox.confirm("¿Estas seguro de que quieres eliminar todos los clientes?", function(result) {
                 if (!result) return;
 
                 $.ajax({
-                    url: "{{ route('admin.b2b.users.delete-all') }}",
+                    url: "{{ route('admin.b2b.users.destroy-all') }}",
                     type: 'DELETE',
                     data: {
                         _token: $('input[name="_token"]').val()
@@ -171,25 +231,114 @@
             });
         }
 
-		function notifyClients() {
-			bootbox.confirm("¿Estas seguro de que quieres notificar a todos los clientes?", function(result) {
-				if (!result) return;
+        function notifyAllClients(force = false) {
+            bootbox.confirm("¿Estas seguro de que quieres notificar a todos los clientes?", function(result) {
+                if (!result) return;
 
-				$.ajax({
-					url: "{{ route('admin.b2b.users.notify') }}",
-					type: 'POST',
-					data: {
-						_token: $('input[name="_token"]').val()
-					},
-					success: function(response) {
-						if (response.success) {
-							bootbox.alert("Se ha notificado a los clientes correctamente");
-						} else {
-							bootbox.alert("Ha ocurrido un error al notificar a los clientes");
-						}
-					}
-				});
-			});
-		}
+                $.ajax({
+                    url: "{{ route('admin.b2b.users.notify') }}",
+                    type: 'POST',
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        force: force ? 1 : 0
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            bootbox.alert("Se ha notificado a los clientes correctamente");
+                            location.reload();
+                        } else {
+                            bootbox.alert("Ha ocurrido un error al notificar a los clientes");
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        }
+
+        function removeClientSelecteds({
+            objective,
+            allselected,
+            url,
+            title,
+            response
+        }) {
+
+            const valueAllSelected = getValueFromInput(allselected);
+            if (valueAllSelected) {
+                return removeAllClients();
+            }
+
+            const ids = selectedCheckItemsByName(objective);
+            bootbox.confirm(title, function(result) {
+                if (!result) return;
+
+                $.ajax({
+                    url,
+                    type: "delete",
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        ids
+                    },
+                    success: function(result) {
+                        saved(result.message);
+                        location.reload(true);
+                    },
+                    error: function(result) {
+                        error(result.responseJSON.message);
+                    }
+                });
+
+            });
+        }
+
+        function notifyClientSelecteds({
+            objective,
+            allselected,
+            url,
+            title,
+            response
+        }) {
+            const valueAllSelected = getValueFromInput(allselected);
+            if (valueAllSelected) {
+                return notifyAllClients(true);
+            }
+
+            const ids = selectedCheckItemsByName(objective);
+            bootbox.confirm(title, function(result) {
+                if (!result) return;
+
+                $.ajax({
+                    url,
+                    type: "post",
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        ids
+                    },
+                    success: function(result) {
+                        bootbox.alert(response);
+                        location.reload(true);
+
+                    },
+                    error: function(result) {
+                        error(result.responseJSON.message);
+                    }
+                });
+
+            });
+        };
+
+        function selectedCheckItemsByName(name) {
+            return Array.from(document.getElementsByName(name))
+                .filter((element) => element.checked)
+                .map((element) => element.value);
+        }
+
+        function getValueFromInput(inputName) {
+            const input = document.querySelector(`input[name="${inputName}"]`);
+            if (input.type == 'checkbox' && input.checked) {
+                return input.value;
+            }
+            return false;
+        }
     </script>
 @stop

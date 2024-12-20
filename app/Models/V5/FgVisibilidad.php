@@ -6,8 +6,8 @@ namespace App\Models\V5;
 use App\Models\V5\Traits\ScopeFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\V5\FxCliWeb;
 use App\Models\V5\FxCli;
+use Illuminate\Support\Facades\Config;
 
 class FgVisibilidad extends Model
 {
@@ -22,14 +22,14 @@ class FgVisibilidad extends Model
 	public $incrementing = false;
 
 	const CREATED_AT = 'fecha_visibilidad';
-    const UPDATED_AT = 'fecha_visibilidad';
+	const UPDATED_AT = 'fecha_visibilidad';
 
 	protected $guarded = []; // Blacklist de variables que no queremos updatear de forma masiva
 
 	public function __construct(array $vars = [])
 	{
 		$this->attributes = [
-			'emp_visibilidad' => \Config::get("app.emp")
+			'emp_visibilidad' => Config::get("app.emp")
 		];
 
 		parent::__construct($vars);
@@ -40,7 +40,7 @@ class FgVisibilidad extends Model
 		parent::boot();
 
 		static::addGlobalScope('emp', function (Builder $builder) {
-			$builder->where('emp_visibilidad', \Config::get("app.emp"));
+			$builder->where('emp_visibilidad', Config::get("app.emp"));
 		});
 	}
 
@@ -53,5 +53,4 @@ class FgVisibilidad extends Model
 	{
 		return $this->client->nom_cli ?? '';
 	}
-
 }

@@ -4,10 +4,9 @@ namespace App\Http\Services\b2b;
 
 use App\Http\Controllers\apilabel\ClientController;
 use App\Imports\b2b\UsersB2BImport;
-use App\Imports\ExcelImport;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
-use App\Models\V5\FxSubInvites;
+use App\Models\V5\FgSubInvites;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +31,7 @@ class UserB2BService
 			->where('agrsub_sub', $ownerCod)
 			->first();
 
-		$hasInvite = FxSubInvites::query()
+		$hasInvite = FgSubInvites::query()
 			->where('owner_codcli_subinvites', $ownerCod)
 			->where('invited_codcli_subinvites', $fxCli->cod_cli)
 			->where('codsub_subinvites', $auctionCode->cod_sub)
@@ -42,7 +41,7 @@ class UserB2BService
 			throw new Exception('El cliente ya ha sido invitado a la subasta');
 		}
 
-		FxSubInvites::create([
+		FgSubInvites::create([
 			'emp_subinvites' => Config::get('app.emp'),
 			'owner_codcli_subinvites' => $ownerCod,
 			'codsub_subinvites' => $auctionCode->cod_sub,

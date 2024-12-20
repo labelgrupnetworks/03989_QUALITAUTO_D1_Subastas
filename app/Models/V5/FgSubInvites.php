@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 
-class FxSubInvites extends Model
+class FgSubInvites extends Model
 {
 	use HasFactory;
 
 	// Nombre de la tabla
-	protected $table = 'fxsubinvites';
+	protected $table = 'fgsubinvites';
 
 	// Clave primaria (si se usa un campo distinto a "id", puedes especificarlo aquí)
 	// protected $primaryKey = 'id_subinvites'; // Si decides añadir un campo ID
@@ -30,7 +30,12 @@ class FxSubInvites extends Model
 		'invited_cif_subinvites',
 		'invited_tel_subinvites',
 		'codsub_subinvites',
+		'notification_sent_subinvites',
 		'invite_date_subinvites',
+	];
+
+	protected $cast = [
+		'notification_sent_subinvites' => 'boolean',
 	];
 
 	// Definir si necesitas convertir la fecha de la invitación automáticamente

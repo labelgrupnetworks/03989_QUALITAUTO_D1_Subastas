@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\libs\SeoLib;
 use App\Models\V5\FgLicit;
+use App\Models\V5\FgSubInvites;
 use Illuminate\Support\Facades\Session;
 
 class Subasta extends Model
@@ -4246,15 +4247,33 @@ class Subasta extends Model
 		$join="";
 		$where="";
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
-		if(\Config::get("app.restrictVisibility")){
+		if(Config::get("app.restrictVisibility")){
 			//si no hay usuario logeado devolvemos vacio
-			if(empty(\Session::get('user.cod'))){
+			if(empty(Session::get('user.cod'))){
 				return [];
 			}
 
 			$join = $this->restrictVisibilityAuction("join");
 			$where = $this->restrictVisibilityAuction("where");
-			$params['codCli'] = \Session::get('user.cod');
+			$params['codCli'] = Session::get('user.cod');
+		}
+
+		if(Config::get('app.restrictInvited', false)){
+
+			if(!Session::has('user')){
+				return [];
+			}
+
+			$codCli = Session::get('user.cod');
+			$ownersInvites = FgSubInvites::query()
+				->where('invited_codcli_subinvites', $codCli)
+				->pluck('owner_codcli_subinvites');
+
+			//añadimos el código del usuario logeado para mostrar sus propias subastas
+			$ownersInvites->push($codCli);
+
+			$ownerInvitesSqlFormat = implode(',', $ownersInvites->toArray());
+			$where .= " AND agrsub_sub IN ($ownerInvitesSqlFormat) ";
 		}
 
 

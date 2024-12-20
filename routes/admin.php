@@ -8,7 +8,7 @@ use App\Http\Controllers\admin\b2b\{
 	AdminB2BBidsController,
 	AdminB2BLotsController,
 	AdminB2BUsersController,
-	AdminB2BVisibilityController,
+	AdminB2BVisibilitiesController,
 	AdminB2BAwardsController,
     AdminB2BCompaniesController
 };
@@ -477,7 +477,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/users', [AdminB2BUsersController::class, 'store'])->name('admin.b2b.users.store');
 			Route::post('/users/import', [AdminB2BUsersController::class, 'import'])->name('admin.b2b.users.import');
 			Route::post('/users/notify', [AdminB2BUsersController::class, 'notify'])->name('admin.b2b.users.notify');
-			Route::delete('/users/all', [AdminB2BUsersController::class, 'destroyAll'])->name('admin.b2b.users.delete-all');
+			Route::post('/users/notify-selection', [AdminB2BUsersController::class, 'notifySelection'])->name('admin.b2b.users.notify-selection');
+			Route::delete('/users/all', [AdminB2BUsersController::class, 'destroyAll'])->name('admin.b2b.users.destroy-all');
+			Route::delete('/users/selection', [AdminB2BUsersController::class, 'destroySelection'])->name('admin.b2b.users.destroy-selection');
+
 
 			Route::get('/lots', [AdminB2BLotsController::class, 'index'])->name('admin.b2b.lots');
 			Route::get('/lots/create', [AdminB2BLotsController::class, 'create'])->name('admin.b2b.lots.create');
@@ -486,7 +489,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::put('/lots/{ref_asigl0}', [AdminB2BLotsController::class, 'update'])->name('admin.b2b.lots.update');
 			Route::delete('/lots/{ref_asigl0}', [AdminB2BLotsController::class, 'destroy'])->name('admin.b2b.lots.destroy');
 
-			Route::get('/visibility', [AdminB2BVisibilityController::class, 'index'])->name('admin.b2b.visibility');
+			Route::get('/visibility', [AdminB2BVisibilitiesController::class, 'index'])->name('admin.b2b.visibility');
+			Route::get('/visibility/create', [AdminB2BVisibilitiesController::class, 'create'])->name('admin.b2b.visibility.create');
+			Route::post('/visibility', [AdminB2BVisibilitiesController::class, 'store'])->name('admin.b2b.visibility.store');
+			Route::get('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'edit'])->name('admin.b2b.visibility.edit');
+			Route::put('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'update'])->name('admin.b2b.visibility.update');
+			Route::delete('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'destroy'])->name('admin.b2b.visibility.destroy');
+
 			Route::get('/bids', [AdminB2BBidsController::class, 'index'])->name('admin.b2b.bids');
 			Route::get('/awards', [AdminB2BAwardsController::class, 'index'])->name('admin.b2b.awards');
 		});

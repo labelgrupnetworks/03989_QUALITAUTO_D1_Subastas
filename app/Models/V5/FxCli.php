@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class FxCli extends Model
 {
@@ -183,6 +184,18 @@ class FxCli extends Model
 	{
 		return $this->belongsToMany(FsOrigen::class, 'fxcliorigen', 'cli_cliorigen', 'origen_cliorigen')
 						->wherePivot('gemp_cliorigen', config('app.gemp'));
+	}
+
+	public function invitations()
+	{
+		return $this->hasMany(FgSubInvites::class, 'invited_codcli_subinvites', 'cod_cli');
+	}
+
+	public function invitation()
+	{
+		$userCod = Session::get('user.cod');
+		return $this->belongsTo(FgSubInvites::class, 'cod_cli', 'invited_codcli_subinvites')
+			->where('owner_codcli_subinvites', $userCod);
 	}
 
 

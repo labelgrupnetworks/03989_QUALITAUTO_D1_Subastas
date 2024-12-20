@@ -598,3 +598,14 @@ img.object-fit-contain {
 .admin-filters-dropdown {
 	max-height: 500px;
 }
+
+i.lb-icon-circle {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    aspect-ratio: 1;
+    background: green;
+    color: white;
+    border-radius: 999999px;
+}
