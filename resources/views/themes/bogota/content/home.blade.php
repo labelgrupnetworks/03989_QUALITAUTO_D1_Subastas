@@ -5,7 +5,7 @@
 	"VENDIDOS_HOME" => ['dots' => false],
 	"matteport" => ['title' => trans("$theme-app.home.virtual_tour")],
 	"issuu" => ['title' => trans("$theme-app.home.catalogs")]
- ]
+];
 @endphp
 
 {!! \BannerLib::bannersPorUbicacionKeyAsClass('HOME', $options) !!}

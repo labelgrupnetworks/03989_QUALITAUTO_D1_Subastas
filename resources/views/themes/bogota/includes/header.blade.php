@@ -62,7 +62,7 @@ use App\libs\TradLib as TradLib;
 								$categories = $fgortsec0->GetAllFgOrtsec0()->get()->toarray();
 							@endphp
 							@foreach ($categories as $k => $category)
-									<div class="categoryOption"><a href="{{ route("category",array( "category" => $category["key_ortsec0"])) }}">{{$category["des_ortsec0"]}}</a></div>
+									<div class="categoryOption"><a href="{{ route("category", ["keycategory" => $category["key_ortsec0"]]) }}">{{$category["des_ortsec0"]}}</a></div>
 
 							@endforeach
 						</div>
@@ -77,12 +77,12 @@ use App\libs\TradLib as TradLib;
                     <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo(trans($theme.'-app.links.contact')) ?>"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
                 </li>
 
-				<li>
+				{{-- <li>
                     <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.contact')}}"
 						href="/{!! Routing::slugSeo('blog') !!}">
 						<span>{{ trans("$theme-app.home.blog") }}</span>
 					</a>
-                </li>
+                </li> --}}
             </ul>
         </div>
 

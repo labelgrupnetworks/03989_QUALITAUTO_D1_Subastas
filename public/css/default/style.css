@@ -1943,6 +1943,16 @@ hr {
 	height: 100%;
 }
 
+.banner_iframe {
+	text-align: center;
+}
+
+.banner_iframe iframe {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16/9;
+}
+
 /************************* PUJADOS HOME*******************/
 
 .mas-pujados {

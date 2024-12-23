@@ -137,7 +137,12 @@ class BannerLib
 
 		$bannerTypeClass = "banner_type_{$banner->type->id}";
 		$bannerContainerClass = $banner->type->completo ? "container-fluid" : "container";
-		$html .= "<div class='{$bannerContainerClass} {$bannerTypeClass}'><div class='row rowBanner'>";
+		$html .= "<div class='{$bannerContainerClass} {$bannerTypeClass}'>";
+
+		if(is_array($options) && !empty($options['title'])){
+			$html .= "<h3 class='banner_title'>{$options['title']}</h3>";
+		}
+		$html .= "<div class='row rowBanner'>";
 
 		$MobileDetect = new MobileDetect();
 		$isMobile = $MobileDetect->isMobile();
