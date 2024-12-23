@@ -150,7 +150,7 @@ body {
 	min-height: 100vh;
 }
 
-body > main {
+body>main {
 	flex: 1;
 }
 
@@ -168,7 +168,8 @@ h1 {
 	text-decoration: none;
 }
 
-.btn:hover, .btn:focus {
+.btn:hover,
+.btn:focus {
 	text-decoration: none;
 }
 
@@ -266,4 +267,14 @@ button[data-grid] {
 
 .static-page *:not(span, i, b) {
 	margin-bottom: 1rem;
+}
+
+#ges_cod_licit {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	section.ficha-files {
+		grid-column: 1 / 2;
+	}
 }
