@@ -22,16 +22,18 @@
                             @endif
 
                             <a class="btn btn-primary" href="{{ route('admin.b2b.lots') }}">
-								{{ trans('admin-app.button.return') }}
-							</a>
+                                {{ trans('admin-app.button.return') }}
+                            </a>
 
                             @if ($anterior)
-                                <a class="btn btn-warning" href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $anterior]) }}">
+                                <a class="btn btn-warning"
+                                    href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $anterior]) }}">
                                     {{ trans('admin-app.button.prev') }}
                                 </a>
                             @endif
                             @if ($siguiente)
-                                <a class="btn btn-warning" href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $anterior]) }}">
+                                <a class="btn btn-warning"
+                                    href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $anterior]) }}">
                                     {{ trans('admin-app.button.next') }}
                                 </a>
                             @endif
@@ -55,7 +57,7 @@
             @csrf
 
             <div class="row">
-                <div class="col-xs-12 col-xl-8">
+                <div class="col-xs-12 col-lg-8">
                     <div class="well">
                         @include('admin::pages.b2b.lots._form', [
                             'formulario' => $formulario,
@@ -63,59 +65,34 @@
                         ])
                     </div>
 
-					<div class="well">
-                        @include('admin::pages.b2b.lots._translates', ['formulario' => $formulario])
-                    </div>
-
                 </div>
 
-				<div class="col-xs-12 col-xl-4">
+                <div class="col-xs-12 col-lg-4">
                     <div class="well">
-						@include('admin::pages.b2b.lots._lot_images', ['images' => $images])
+                        @include('admin::pages.b2b.lots._lot_images', ['images' => $images])
                     </div>
+
+                    <div class="well">
+                        @include('admin::pages.b2b.lots._lot_files', [
+                            'formulario' => $formulario,
+                            'files' => $files,
+                            'fgAsigl0' => $fgAsigl0,
+                        ])
+                    </div>
+
+
                 </div>
 
 
             </div>
 
-            {{-- @if (!in_array('FILES', explode(',', config('app.HideEditLotOptions'))) && !Config::get('app.use_table_files', false))
-                <div class="row well">
-                    @include(
-                        'admin::pages.subasta.lotes._lot_files',
-                        compact('formulario', 'files', 'fgAsigl0'))
-                </div>
-            @endif --}}
-
-            {{-- @if (!in_array('VIDEOS', explode(',', config('app.HideEditLotOptions'))))
-                <div class="row well">
-                    @include(
-                        'admin::pages.subasta.lotes._lot_videos',
-                        compact('formulario', 'videos', 'fgAsigl0'))
-                </div>
-            @endif --}}
-
-
-            {{-- @if (!in_array('HTML', explode(',', config('app.HideEditLotOptions'))))
-                <div class="row well">
-                    @include('admin::pages.subasta.lotes._lot_iframe', compact('formulario', 'fgAsigl0'))
-                </div>
-            @endif --}}
 
             <div class="row">
-                <div class="col-xs-8 text-center">
+                <div class="col-xs-12 col-lg-8 text-center">
                     {!! $formulario->submit !!}
                 </div>
             </div>
         </form>
-
-        {{-- @if (!in_array('FILES', explode(',', config('app.HideEditLotOptions'))) && Config::get('app.use_table_files', false))
-            <div class="col-xs-12">
-                @include('admin::pages.subasta.lot_files._table', [
-                    'files' => $files,
-                    'fgAsigl0' => $fgAsigl0,
-                ])
-            </div>
-        @endif --}}
 
     </section>
 

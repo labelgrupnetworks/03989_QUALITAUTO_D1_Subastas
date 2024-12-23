@@ -14,10 +14,10 @@ use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FgHces1_Lang;
 use App\Models\V5\FgHces1Files;
-use App\Models\V5\FgOrlic;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -124,7 +124,6 @@ class AdminB2BLotsController extends Controller
 		$fgAsigl0->hfin_asigl0 = $fgsub->hhora_sub;
 
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
-		$formulario = $this->addTranslationsForm($formulario);
 
 		if (config('app.useExtraInfo', false)) {
 			$this->addExtrasToForm($formulario, $fgAsigl0);
@@ -165,11 +164,25 @@ class AdminB2BLotsController extends Controller
 				$json = $this->saveImages($request->file('images'), $request->idorigin);
 				$result = json_decode($json);
 				if ($result->status == 'ERROR') {
-					return back()->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
+					return redirect(route('admin.b2b.lots'))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
 				}
 			}
 
-			return back()->with(['success' => array(trans('admin-app.title.created_ok'))]);
+
+			if (!empty($request->file('files'))) {
+
+				$fgAsigl0 = FgAsigl0::query()
+					->joinFghces1Asigl0()
+					->where([
+						['ref_asigl0', $request->input('reflot')],
+						['sub_asigl0', $request->input('idauction')]
+					])
+					->first();
+
+				$this->saveFiles($fgAsigl0, ...$request->file('files'));
+			}
+
+			return redirect(route('admin.b2b.lots'))->with(['success' => array(trans('admin-app.title.created_ok'))]);
 		} catch (\Throwable $th) {
 			DB::rollBack();
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
@@ -224,12 +237,9 @@ class AdminB2BLotsController extends Controller
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
 		$formulario->id['reflot'] = FormLib::TextReadOnly('reflot', 0, $fgAsigl0->ref_asigl0);
 		$formulario->id['idorigin'] = FormLib::TextReadOnly('idorigin', 0, old('idorigin', $fgAsigl0->idorigen_asigl0 ?? "$cod_sub-$fgAsigl0->ref_asigl0"));
-		//$formulario->files['files'] = FormLib::File('files[]', 0, 'multiple="true"');
 		//$formulario->videos['files'] = FormLib::File('videos[]', 0, 'multiple="true"');
 
 		$formulario->submit = FormLib::Submit('Actualizar', 'loteUpdate');
-
-		$this->addTranslationsForm($formulario, $lotTranslates);
 
 		$data = [
 			'formulario' => $formulario,
@@ -281,10 +291,9 @@ class AdminB2BLotsController extends Controller
 
 		$this->saveUserInfoInUpdatedLots($fgAsigl0->sub_asigl0, [$ref_asigl0]);
 
-		//files
-		// if (!empty($request->file('files'))) {
-		// 	$this->saveFiles($fgAsigl0, ...$request->file('files'));
-		// }
+		if (!empty($request->file('files'))) {
+			$this->saveFiles($fgAsigl0, ...$request->file('files'));
+		}
 
 		//videos
 		// if (!empty($request->file('videos'))) {
@@ -361,38 +370,16 @@ class AdminB2BLotsController extends Controller
 				'precios' => [
 					'startprice' => FormLib::Int('startprice', 1, old('startprice', $fgAsigl0->impsalhces_asigl0 ?? 0)),
 					'reserveprice' => FormLib::Int('reserveprice', 0, old('reserveprice', $fgAsigl0->impres_asigl0 ?? 0)),
+					'lowprice' => FormLib::Int('lowprice', 0, old('lowprice', $fgAsigl0->imptas_asigl0 ?? 0)),
+					'highprice' => FormLib::Int('highprice', 0, old('highprice', $fgAsigl0->imptash_asigl0 ?? 0)),
+				],
+				'files' => [
+					'files' => FormLib::File('files[]', 0, 'multiple="true"'),
 				],
 				'submit' => FormLib::Submit('Guardar', 'loteStore')
 			];
 
 		return $basicForm;
-	}
-
-	protected function addTranslationsForm($formulario, $lotTranslates = null)
-	{
-		$languages = array_filter(array_keys(config('app.locales')), function ($lang) {
-			return $lang != 'es';
-		});
-
-		$formulario->translates = [];
-
-		foreach ($languages as $lang) {
-
-			$language_complete = config("app.language_complete.$lang");
-
-			if ($lotTranslates) {
-				$lotTranslate = $lotTranslates->where('lang_hces1_lang', $language_complete)->first();
-			} else {
-				$lotTranslates = new FgHces1_Lang();
-			}
-
-			$formulario->translates[$lang] = [
-				'title' => FormLib::Text('title_lang[]', 0, old('title_lang[]', strip_tags($lotTranslate->descweb_hces1_lang ?? ''))),
-				'description' => FormLib::TextAreaTiny('description_lang[]', 0, old('description_lang[]', $lotTranslate->desc_hces1_lang ?? ''), '', '', 300, true),
-			];
-		}
-
-		return $formulario;
 	}
 
 	protected function requestLangs($request)
@@ -556,5 +543,21 @@ class AdminB2BLotsController extends Controller
 		}
 
 		return back()->with(['success' => [trans('admin-app.title.deleted_ok')]]);
+	}
+
+	protected function saveFiles($fgAsigl0, UploadedFile ...$files)
+	{
+		$relativePath = "/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
+		$path = getcwd() . "/files/$relativePath";
+
+		if (!is_dir(str_replace("\\", "/", $path))) {
+			mkdir(str_replace("\\", "/", $path), 0775, true);
+		}
+
+		foreach ($files as $file) {
+			$newfile = str_replace("\\", "/", $path . '/' . $file->getClientOriginalName());
+
+			copy($file->getPathname(), $newfile);
+		}
 	}
 }
