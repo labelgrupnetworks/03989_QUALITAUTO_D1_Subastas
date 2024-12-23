@@ -182,7 +182,7 @@ if (!empty(intval(Config::get('app.enable_tr_auctions')))) {
 	Route::get(Routing::translateSeo('api/subasta') . '{cod}-{texto}/{proyector}', [SubastaTiempoRealController::class, 'index'])->where(array('cod' => '[0-9a-zA-Z]+', 'page' => '[0-9]+'));
 }
 Route::get('sendemailsobrepuja/{cod}/{licit}/{ref}/{orden_o_puja}', [SubastaTiempoRealController::class, 'sendEmailSobrepuja']);
-Route::post('api/action/subasta-{cod}', [SubastaTiempoRealController::class, 'action'])->where(array('cod' => '[0-9a-zA-Z]+'));
+Route::post('api/action/subasta-{cod}', [SubastaTiempoRealController::class, 'action'])->where(array('cod' => '[0-9a-zA-Z]+'))->name('api.action.subasta');
 Route::post(Routing::slug('api') . '/comprar/subasta-{cod}', [SubastaTiempoRealController::class, 'comprar'])->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post(Routing::slug('api') . '/ol/subasta-{cod}', [SubastaTiempoRealController::class, 'ordenLicitacion'])->where(array('cod' => '[0-9a-zA-Z]+'));
 Route::post(Routing::slug('api') . '/contraofertar/subasta-{cod}', [SubastaTiempoRealController::class, 'contraOfertar'])->where(array('cod' => '[0-9a-zA-Z]+'));
