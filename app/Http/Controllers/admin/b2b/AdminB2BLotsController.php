@@ -4,22 +4,19 @@ namespace App\Http\Controllers\admin\b2b;
 
 use App\Http\Controllers\admin\subasta\AdminLotController;
 use App\Http\Controllers\admin\subasta\AdminLoteConcursalController;
-use App\Http\Controllers\apilabel\ImgController;
 use App\Http\Controllers\apilabel\LotController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UpdateLoteApiRequest;
+use App\Http\Services\admin\lot\AdminLotService;
 use App\libs\FormLib;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgAsigl1;
 use App\Models\V5\FgHces1;
-use App\Models\V5\FgHces1_Lang;
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 
@@ -116,6 +113,7 @@ class AdminB2BLotsController extends Controller
 			->select('ref_asigl0')
 			->where('sub_asigl0', $cod_sub)
 			->max('ref_asigl0') + 1;
+
 		$fgsub = FgSub::select('dfec_sub', 'hfec_sub', 'dhora_sub', 'hhora_sub')->where('cod_sub', $cod_sub)->first();
 
 		$fgAsigl0->fini_asigl0 = $fgsub->dfec_sub;
@@ -125,10 +123,6 @@ class AdminB2BLotsController extends Controller
 
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
 
-		if (config('app.useExtraInfo', false)) {
-			$this->addExtrasToForm($formulario, $fgAsigl0);
-		}
-
 		return view('admin::pages.b2b.lots.create', [
 			'formulario' => $formulario,
 			'cod_sub' => $cod_sub,
@@ -136,57 +130,40 @@ class AdminB2BLotsController extends Controller
 		]);
 	}
 
-	public function store(UpdateLoteApiRequest $request)
+	public function store(UpdateLoteApiRequest $request, AdminLotService $lotService)
 	{
-		$lotControler = new LotController();
-
 		try {
-			DB::beginTransaction();
-
 			$lot = $request->validated();
-
-			//idiomas
 			$lot["languages"] = $this->requestLangs($request);
 
-			$json = $lotControler->createLot([$lot]);
-
-			$result = json_decode($json);
-
-			if ($result->status == 'ERROR') {
-				DB::rollBack();
-				return back()->withErrors(['errors' => [$json]])->withInput();
-			}
-
-			DB::commit();
-
-			if ($request->has('images')) {
-
-				$json = $this->saveImages($request->file('images'), $request->idorigin);
-				$result = json_decode($json);
-				if ($result->status == 'ERROR') {
-					return redirect(route('admin.b2b.lots'))->with(['warning' => $json, 'success' => array(trans('admin-app.title.created_ok'))]);
-				}
-			}
-
-
-			if (!empty($request->file('files'))) {
-
-				$fgAsigl0 = FgAsigl0::query()
-					->joinFghces1Asigl0()
-					->where([
-						['ref_asigl0', $request->input('reflot')],
-						['sub_asigl0', $request->input('idauction')]
-					])
-					->first();
-
-				$this->saveFiles($fgAsigl0, ...$request->file('files'));
-			}
-
-			return redirect(route('admin.b2b.lots'))->with(['success' => array(trans('admin-app.title.created_ok'))]);
+			$lotService->createLotWithApi($lot);
 		} catch (\Throwable $th) {
-			DB::rollBack();
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
 		}
+
+		$warning = [];
+		if ($request->has('images')) {
+			try {
+				$lotService->uploadImagesWithApi($request->file('images'), $request->idorigin);
+			} catch (\Throwable $th) {
+				$warning[] = $th->getMessage();
+			}
+		}
+
+		if (!empty($request->file('files'))) {
+			$fgAsigl0 = FgAsigl0::query()
+				->joinFghces1Asigl0()
+				->where([
+					['ref_asigl0', $request->input('reflot')],
+					['sub_asigl0', $request->input('idauction')]
+				])
+				->first();
+
+			$lotService->uploadFilesByLot($fgAsigl0, $request->file('files'));
+		}
+
+		return redirect(route('admin.b2b.lots'))
+			->with(['success' => [trans('admin-app.title.created_ok')], 'warning' => $warning]);
 	}
 
 	public function edit($ref_asigl0)
@@ -218,17 +195,10 @@ class AdminB2BLotsController extends Controller
 
 		$files = FgHces1Files::getAllFilesByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 
-		//$videos = $this->getVideosFgAsigl0($fgAsigl0);
-
 		$lotes = FgAsigl0::select('ref_asigl0')
 			->where('sub_asigl0', $cod_sub)
 			->orderBy('ref_asigl0')
 			->pluck('ref_asigl0')->toArray();
-
-		$lotTranslates = FgHces1_Lang::where([
-			['num_hces1_lang', $fgAsigl0->numhces_asigl0],
-			['lin_hces1_lang', $fgAsigl0->linhces_asigl0]
-		])->get();
 
 		$current = array_search($ref_asigl0, $lotes);
 		$anterior = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::PREVIOUS_LOT);
@@ -260,6 +230,8 @@ class AdminB2BLotsController extends Controller
 		$response = ['success' => [], 'warning' => [], 'errors' => []];
 		$owenerCod = Session::get('user.cod');
 
+		$lotService = new AdminLotService();
+
 		$fgAsigl0 = FgAsigl0::query()
 			->joinFghces1Asigl0()
 			->joinSubastaAsigl0()
@@ -273,8 +245,6 @@ class AdminB2BLotsController extends Controller
 			abort(404);
 		}
 
-		$lotControler = new LotController();
-
 		$lot = $request->validated();
 
 		//Eliminar saltos de linea que puedan venir de una importacion en excel
@@ -282,23 +252,15 @@ class AdminB2BLotsController extends Controller
 		$lot["languages"] = $this->requestLangs($request);
 
 		#se pasa como array
-		$json = $lotControler->updateLot([$lot]);
-		$result = json_decode($json);
-
-		if ($result->status == 'ERROR') {
-			return back()->withErrors(['errors' => [$json]])->withInput();
+		try {
+			$lotService->updateLotWithApi($lot);
+		} catch (\Throwable $th) {
+			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
 		}
-
-		$this->saveUserInfoInUpdatedLots($fgAsigl0->sub_asigl0, [$ref_asigl0]);
 
 		if (!empty($request->file('files'))) {
-			$this->saveFiles($fgAsigl0, ...$request->file('files'));
+			$lotService->uploadFilesByLot($fgAsigl0, $request->file('files'));
 		}
-
-		//videos
-		// if (!empty($request->file('videos'))) {
-		// 	$this->saveVideos($fgAsigl0, ...$request->file('videos'));
-		// }
 
 		//imagenes
 		$imagesb64 = [];
@@ -318,11 +280,10 @@ class AdminB2BLotsController extends Controller
 			}
 		}
 
-		$json = $this->saveImages($imagesb64, $request->idorigin, true);
-		$result = json_decode($json);
-
-		if ($result->status == 'ERROR') {
-			$response['warning']['Images'] = $json;
+		try {
+			$lotService->uploadImagesWithApi($imagesb64, $request->idorigin, true);
+		} catch (\Throwable $th) {
+			$response['warning']['Images'] = $th->getMessage();
 		}
 
 		$response['success'][] = trans('admin-app.title.updated_ok');
@@ -409,30 +370,6 @@ class AdminB2BLotsController extends Controller
 		return $languages;
 	}
 
-	protected function saveImages($images, $idorigin, $isEncode = false)
-	{
-		$itemImages = [];
-
-		foreach ($images as $key => $image) {
-			$item = ($isEncode)
-				? ['img64' => $image]
-				: ['img64' => base64_encode(Image::make($image->path())->encode()->encoded)];
-
-			$itemImages[] = [
-				'idoriginlot' => $idorigin,
-				'order' => $key,
-			] + $item;
-		}
-		$imgController = new ImgController();
-
-
-		if (count($itemImages) > 0) {
-			return $imgController->createImg($itemImages);
-		}
-
-		return json_encode(['status' => "SUCCESS"]);
-	}
-
 	public function addIdOrigin($cod, $ref, $numhces, $linhces)
 	{
 		$newIdOrigen = "$cod-$ref";
@@ -506,18 +443,6 @@ class AdminB2BLotsController extends Controller
 		return $element;
 	}
 
-	public static function saveUserInfoInUpdatedLots($cod_sub, $refLots)
-	{
-		$userSession = Session::get('user');
-
-		$update = [
-			'usr_update_asigl0' => strval($userSession['usrw']),
-			'date_update_asigl0' => date('Y-m-d H:i:s'),
-		];
-
-		FgAsigl0::where('sub_asigl0', $cod_sub)->whereIn('ref_asigl0', $refLots)->update($update);
-	}
-
 	public function destroy($ref_asigl0)
 	{
 		$ownerCod = Session::get('user.cod');
@@ -543,21 +468,5 @@ class AdminB2BLotsController extends Controller
 		}
 
 		return back()->with(['success' => [trans('admin-app.title.deleted_ok')]]);
-	}
-
-	protected function saveFiles($fgAsigl0, UploadedFile ...$files)
-	{
-		$relativePath = "/$this->emp/$fgAsigl0->num_hces1/$fgAsigl0->lin_hces1/files/";
-		$path = getcwd() . "/files/$relativePath";
-
-		if (!is_dir(str_replace("\\", "/", $path))) {
-			mkdir(str_replace("\\", "/", $path), 0775, true);
-		}
-
-		foreach ($files as $file) {
-			$newfile = str_replace("\\", "/", $path . '/' . $file->getClientOriginalName());
-
-			copy($file->getPathname(), $newfile);
-		}
 	}
 }

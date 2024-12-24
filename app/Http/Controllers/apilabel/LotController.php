@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers\apilabel;
 
-
-
-use Controller;
 use Config;
-use Request;
-
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FxCli;
 use App\Models\V5\FgHces0;
@@ -18,7 +13,7 @@ use App\Models\V5\FgHces1_Lang;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\MessageBag;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class LotController extends ApiLabelController
 {

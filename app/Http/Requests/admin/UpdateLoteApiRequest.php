@@ -19,7 +19,7 @@ class UpdateLoteApiRequest extends FormRequest
 			'description' => "required",
 			'extrainfo' => "nullable",
 			'search' => "nullable",
-			'startprice' => "required|numeric",
+			'startprice' => "required|numeric|min:0",
 			'lowprice' => "numeric|nullable",
 			'highprice' => "numeric|nullable",
 			'reserveprice' => "numeric|nullable",
