@@ -14,6 +14,7 @@ use App\Models\V5\FxSec;
 use App\Models\V5\FgHces1;
 use App\Models\V5\FgHces1_Lang;
 use App\Models\V5\FgHces1Files;
+use App\Support\ArrayHelper;
 
 class AdminLoteConcursalController extends AdminLotController
 {
@@ -62,9 +63,8 @@ class AdminLoteConcursalController extends AdminLotController
 				->orderBy('ref_asigl0')
 				->pluck('ref_asigl0')->toArray();
 
-		$current = array_search($ref_asigl0, $lotes);
-		$anterior = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::PREVIOUS_LOT);
-		$siguiente = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::NEXT_LOT);
+		$anterior = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::PREVIOUS);
+		$siguiente = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::NEXT);
 
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
 		$formulario->id['reflot'] = FormLib::TextReadOnly('reflot', 0, $fgAsigl0->ref_asigl0);

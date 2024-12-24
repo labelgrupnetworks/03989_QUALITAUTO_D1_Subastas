@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\admin\b2b;
 
-use App\Http\Controllers\admin\subasta\AdminLotController;
-use App\Http\Controllers\admin\subasta\AdminLoteConcursalController;
 use App\Http\Controllers\apilabel\LotController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UpdateLoteApiRequest;
@@ -15,6 +13,7 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxSec;
+use App\Support\ArrayHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
@@ -200,9 +199,8 @@ class AdminB2BLotsController extends Controller
 			->orderBy('ref_asigl0')
 			->pluck('ref_asigl0')->toArray();
 
-		$current = array_search($ref_asigl0, $lotes);
-		$anterior = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::PREVIOUS_LOT);
-		$siguiente = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::NEXT_LOT);
+		$anterior = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::PREVIOUS);
+		$siguiente = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::NEXT);
 
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
 		$formulario->id['reflot'] = FormLib::TextReadOnly('reflot', 0, $fgAsigl0->ref_asigl0);
@@ -414,33 +412,6 @@ class AdminB2BLotsController extends Controller
 		}, $validImages);
 
 		return $paths;
-	}
-
-	protected function adjacentElement(array $array, $currentKey, $position = AdminLotController::PREVIOUS_LOT)
-	{
-		if (!isset($array[$currentKey])) {
-			return false;
-		}
-
-		if ($position == AdminLotController::PREVIOUS_LOT) {
-			end($array);
-		}
-
-		do {
-			$key = array_search(current($array), $array);
-
-			switch ($position) {
-				case AdminLotController::NEXT_LOT:
-					$element = next($array);
-					break;
-
-				default:
-					$element = prev($array);
-					break;
-			}
-		} while ($key != $currentKey);
-
-		return $element;
 	}
 
 	public function destroy($ref_asigl0)

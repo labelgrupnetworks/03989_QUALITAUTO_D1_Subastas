@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\externalAggregator\Invaluable\House;
 use App\Http\Services\admin\lot\AdminLotService;
 use App\Models\V5\FgHces1Files;
+use App\Support\ArrayHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
@@ -272,9 +273,8 @@ class AdminLotController extends Controller
 			['lin_hces1_lang', $fgAsigl0->linhces_asigl0]
 		])->get();
 
-		$current = array_search($ref_asigl0, $lotes);
-		$anterior = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::PREVIOUS_LOT);
-		$siguiente = $this->adjacentElement($lotes, $current, AdminLoteConcursalController::NEXT_LOT);
+		$anterior = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::PREVIOUS);
+		$siguiente = ArrayHelper::getAdjacentElementValue($lotes, $ref_asigl0, ArrayHelper::NEXT);
 
 		$formulario = (object) $this->basicFormCreateFgAsigl0($fgAsigl0, $cod_sub);
 		$formulario->id['reflot'] = FormLib::TextReadOnly('reflot', 0, $fgAsigl0->ref_asigl0);
@@ -1017,34 +1017,6 @@ class AdminLotController extends Controller
 		];
 
 		return $formulario;
-	}
-
-
-	protected function adjacentElement(array $array, $currentKey, $position = AdminLotController::PREVIOUS_LOT)
-	{
-		if (!isset($array[$currentKey])) {
-			return false;
-		}
-
-		if ($position == AdminLotController::PREVIOUS_LOT) {
-			end($array);
-		}
-
-		do {
-			$key = array_search(current($array), $array);
-
-			switch ($position) {
-				case AdminLotController::NEXT_LOT:
-					$element = next($array);
-					break;
-
-				default:
-					$element = prev($array);
-					break;
-			}
-		} while ($key != $currentKey);
-
-		return $element;
 	}
 
 	function getSelect2List($cod_sub)
