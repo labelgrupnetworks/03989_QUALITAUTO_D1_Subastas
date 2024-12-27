@@ -3,18 +3,28 @@
         ->where('subc_sub', App\Models\V5\FgSub::SUBC_SUB_ACTIVO)
         ->first();
 
-    $sessions = App\Models\V5\AucSessions::select('"id_auc_sessions","auction","reference", nvl("name_lang","name") name, "start", "end", "init_lot", "end_lot"')
+    $sessions = App\Models\V5\AucSessions::select(
+        '"id_auc_sessions","auction","reference", nvl("name_lang","name") name, "start", "end", "init_lot", "end_lot"',
+    )
         ->joinLang()
         ->where('"auction"', $activeAuction->cod_sub)
         ->orderby('"reference"')
         ->get();
 
-	$isFirstSessionEnded = $sessions->where('end', '<', now())->isNotEmpty();
+    $isFirstSessionEnded = $sessions->where('end', '<', now())->isNotEmpty();
     $emp = config('app.emp');
 
     //$auctionImage = Tools::url_img_auction('subasta_large', $activeAuction->cod_sub);
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$activeAuction->cod_sub}.jpg");
     $liveSession = $sessions->where('end', '>', now())->first();
+
+	$onlineAuction = App\Models\V5\FgSub::query()
+        ->joinLangSub()
+        ->joinSessionSub()
+		->where('subc_sub', App\Models\V5\FgSub::SUBC_SUB_ACTIVO)
+        ->onlineAuctions()
+        ->orderBy('session_start', 'asc')
+        ->first();
 
     use App\Models\V5\FgAsigl0;
     $prominentSalesLots = (new FgAsigl0())->ventasDestacadas('orden_destacado_asigl0', 'asc', 0, 3);
@@ -40,8 +50,9 @@
             <a class="btn btn-outline-lb-primary btn-medium"
                 href="{{ route('subasta.actual') }}">{{ trans("$theme-app.lot_list.go_to_auction") }}</a>
             @if ($liveSession)
-                <a class="btn btn-outline-lb-primary btn-medium" target="_blank"
-                    href="{{ Tools::url_real_time_auction($liveSession->auction, $liveSession->name, $liveSession->id_auc_sessions) }}">
+                <a class="btn btn-outline-lb-primary btn-medium"
+                    href="{{ Tools::url_real_time_auction($liveSession->auction, $liveSession->name, $liveSession->id_auc_sessions) }}"
+                    target="_blank">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <circle cx="12" cy="12" r="12" fill="#ED2F2F" />
@@ -52,8 +63,9 @@
         </div>
 
         <div class="next-auction-catalog">
-            <img src="/catalogos/{{ $activeAuction->cod_sub }}/files/assets/cover300.jpg" alt="imagén de catálogo" width="160" height="190">
-            <a href="/catalogos/{{ $activeAuction->cod_sub }}" class="next-auction-catalog-link">
+            <img src="/catalogos/{{ $activeAuction->cod_sub }}/files/assets/cover300.jpg" alt="imagén de catálogo"
+                width="160" height="190">
+            <a class="next-auction-catalog-link" href="/catalogos/{{ $activeAuction->cod_sub }}">
                 {{ trans("$theme-app.lot_list.ver_catalogo") }}
             </a>
         </div>
@@ -64,6 +76,39 @@
     </div>
 </section>
 
+@if($onlineAuction)
+<section class="landing-section">
+    <h2 class="landing-section-title ff-highlight">{{ trans("$theme-app.subastas.lot_subasta_online") }}</h2>
+    <div class="next-auction-wrapper w-100">
+        <div class="next-auction-info text-center">
+
+            <div>
+                <p class="fw-semibold ls-2">{{ $onlineAuction->des_sub }}</p>
+                <h1 class="ff-highlight next-auction-title">{{ trans("$theme-app.subastas.inf_subasta_subasta") }}
+                    {{ $onlineAuction->cod_sub }}</h1>
+            </div>
+
+            <div class="next-auction-links">
+                <a class="btn btn-outline-lb-primary btn-medium"
+                    href="{{ route('subastas.online') }}">{{ trans("$theme-app.lot_list.go_to_auction") }}</a>
+            </div>
+
+            <div class="next-auction-catalog">
+                <img src="/catalogos/{{ $activeAuction->cod_sub }}/files/assets/cover300.jpg" alt="imagén de catálogo"
+                    width="160" height="190">
+                <a class="next-auction-catalog-link" href="/catalogos/{{ $onlineAuction->cod_sub }}">
+                    {{ trans("$theme-app.lot_list.ver_catalogo") }}
+                </a>
+            </div>
+
+        </div>
+        <div class="next-auction-image">
+            <img src="{{ Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$onlineAuction->cod_sub}.jpg"); }}" alt="Portada de la subasta" height="758" width="950">
+        </div>
+    </div>
+</section>
+@endif
+
 <section class="container landing-section">
     <h2 class="landing-section-title ff-highlight">{{ trans("$theme-app.lot_list.featured-sales") }}</h2>
     <p class="landing-section-description">{{ trans("$theme-app.subastas.featured_sales_desc") }}</p>
@@ -71,15 +116,23 @@
         @foreach ($prominentSalesLots as $lot)
             @php
                 $titulo = trans("$theme-app.subastas.auctions") . ' ' . $lot->sub_asigl0;
-				$url = Tools::url_lot($lot->sub_asigl0, $lot->auc_session, $lot->name, $lot->ref_asigl0, $lot->num_hces1, $lot->webfriend_hces1, $lot->titulo_hces1)
+                $url = Tools::url_lot(
+                    $lot->sub_asigl0,
+                    $lot->auc_session,
+                    $lot->name,
+                    $lot->ref_asigl0,
+                    $lot->num_hces1,
+                    $lot->webfriend_hces1,
+                    $lot->titulo_hces1,
+                );
             @endphp
 
             @include('includes.grid.lot_venta_destacada')
         @endforeach
     </div>
 
-    <a href="/{{ Routing::slugSeo('ventas-destacadas') }}"
-        class="btn btn-outline-lb-primary btn-medium">{{ trans("$theme-app.global.see_more") }}</a>
+    <a class="btn btn-outline-lb-primary btn-medium"
+        href="/{{ Routing::slugSeo('ventas-destacadas') }}">{{ trans("$theme-app.global.see_more") }}</a>
 </section>
 
 <section class="container landing-section">
@@ -92,7 +145,12 @@
                 if (date('Y', strtotime($auction->session_start)) < 2022) {
                     $url = '/catalogos/' . $auction->cod_sub;
                 } else {
-                    $url = Tools::url_auction($auction->cod_sub, $auction->name, $auction->id_auc_sessions, $auction->reference);
+                    $url = Tools::url_auction(
+                        $auction->cod_sub,
+                        $auction->name,
+                        $auction->id_auc_sessions,
+                        $auction->reference,
+                    );
                 }
             @endphp
             <div class="col">
@@ -104,7 +162,7 @@
                                 {{ $auction->cod_sub }}</p>
                             <p class="card-text">{{ $auction->des_sub }}</p>
                         </div>
-						<a href="{{ $url }}" class="stretched-link"></a>
+                        <a class="stretched-link" href="{{ $url }}"></a>
                         <button class="btn btn-outline-lb-primary h-auto">
                             {{ trans("$theme-app.lot_list.ver_catalogo") }}
                         </button>
@@ -114,8 +172,8 @@
             </div>
         @endforeach
     </div>
-    <a href="{{ route('subastas.historicas') }}"
-        class="btn btn-outline-lb-primary btn-medium">{{ trans("$theme-app.global.see_more") }}</a>
+    <a class="btn btn-outline-lb-primary btn-medium"
+        href="{{ route('subastas.historicas') }}">{{ trans("$theme-app.global.see_more") }}</a>
 
 </section>
 
@@ -152,13 +210,13 @@
     </svg>
     <h2 class="landing-section-title ff-highlight mb-5">{{ trans("$theme-app.foot.buy_and_sell") }}</h2>
 
-    <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.buy_and_sell") }}"
-        class="btn btn-outline-lb-primary btn-medium">{{ trans("$theme-app.subastas.know_more") }}</a>
+    <a class="btn btn-outline-lb-primary btn-medium"
+        href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.buy_and_sell") }}">{{ trans("$theme-app.subastas.know_more") }}</a>
 </section>
 
 
-@if($isFirstSessionEnded && !Session::has('user'))
-<script>
-	window.setTimeout(showRematesModal, 3500);
-</script>
+@if ($isFirstSessionEnded && !Session::has('user'))
+    <script>
+        window.setTimeout(showRematesModal, 3500);
+    </script>
 @endif

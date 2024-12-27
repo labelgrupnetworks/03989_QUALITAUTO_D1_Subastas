@@ -1648,7 +1648,7 @@ section.ficha-info {
 }
 
 #historial_pujas {
-	border: 2px solid var(--lb-border-color);
+	border: 1px solid var(--lb-border-color);
 	border-radius: var(--lb-border-radius);
 	padding: 1rem;
 	font-size: 16px;

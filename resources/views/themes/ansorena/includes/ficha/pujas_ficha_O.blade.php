@@ -112,7 +112,7 @@
                     {{ trans("$theme-app.lot.insert_max_puja") }}
                 </p>
 
-                <div class="ficha-buttons">
+                <div class="ficha-buttons mb-3">
                     <div class="position-relative ficha-insert-bid">
                         <input type="text" class="form-control control-number" id="bid_amount"
                             placeholder="{{ $data['precio_salida'] }}"
