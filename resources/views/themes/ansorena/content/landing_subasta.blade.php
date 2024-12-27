@@ -18,10 +18,10 @@
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$activeAuction->cod_sub}.jpg");
     $liveSession = $sessions->where('end', '>', now())->first();
 
-	$onlineAuction = App\Models\V5\FgSub::query()
+    $onlineAuction = App\Models\V5\FgSub::query()
         ->joinLangSub()
         ->joinSessionSub()
-		->where('subc_sub', App\Models\V5\FgSub::SUBC_SUB_ACTIVO)
+        ->where('subc_sub', App\Models\V5\FgSub::SUBC_SUB_ACTIVO)
         ->onlineAuctions()
         ->orderBy('session_start', 'asc')
         ->first();
@@ -76,37 +76,10 @@
     </div>
 </section>
 
-@if($onlineAuction)
-<section class="landing-section">
-    <h2 class="landing-section-title ff-highlight">{{ trans("$theme-app.subastas.lot_subasta_online") }}</h2>
-    <div class="next-auction-wrapper w-100">
-        <div class="next-auction-info text-center">
-
-            <div>
-                <p class="fw-semibold ls-2">{{ $onlineAuction->des_sub }}</p>
-                <h1 class="ff-highlight next-auction-title">{{ trans("$theme-app.subastas.inf_subasta_subasta") }}
-                    {{ $onlineAuction->cod_sub }}</h1>
-            </div>
-
-            <div class="next-auction-links">
-                <a class="btn btn-outline-lb-primary btn-medium"
-                    href="{{ route('subastas.online') }}">{{ trans("$theme-app.lot_list.go_to_auction") }}</a>
-            </div>
-
-            <div class="next-auction-catalog">
-                <img src="/catalogos/{{ $activeAuction->cod_sub }}/files/assets/cover300.jpg" alt="imagén de catálogo"
-                    width="160" height="190">
-                <a class="next-auction-catalog-link" href="/catalogos/{{ $onlineAuction->cod_sub }}">
-                    {{ trans("$theme-app.lot_list.ver_catalogo") }}
-                </a>
-            </div>
-
-        </div>
-        <div class="next-auction-image">
-            <img src="{{ Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$onlineAuction->cod_sub}.jpg"); }}" alt="Portada de la subasta" height="758" width="950">
-        </div>
-    </div>
-</section>
+@if ($onlineAuction)
+    <section class="landing-section video-section">
+        {!! BannerLib::bannerWithView('subastas-video', 'video', ['title' => trans("$theme-app.lot_list.african_art")]) !!}
+    </section>
 @endif
 
 <section class="container landing-section">
