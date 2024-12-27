@@ -101,6 +101,11 @@ class FgSub extends Model
 		return $query;
 	}
 
+	public function scopeOnlineAuctions($query)
+	{
+		return $query->where("fgsub.TIPO_SUB", FgSub::TIPO_SUB_ONLINE);
+	}
+
 	# JOINS
 
 	public function getInfoSub($cod_sub, $refSession = null)
