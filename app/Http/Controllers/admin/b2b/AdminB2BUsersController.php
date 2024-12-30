@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\admin\b2b;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\b2b\OwnerB2BData;
 use App\Http\Services\b2b\UserB2BData;
 use App\Http\Services\b2b\UserB2BService;
-use App\Jobs\MailJob;
-use App\Jobs\SendNotificationsJob;
-use App\libs\EmailLib;
 use App\libs\FormLib;
-use App\Mail\AuctionInvitationMail;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgSubInvites;
 use App\Providers\ToolsServiceProvider;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 class AdminB2BUsersController extends Controller
@@ -47,8 +42,8 @@ class AdminB2BUsersController extends Controller
 	public function create()
 	{
 		$formulario = (object)[
-			'name' => FormLib::Text('name', 0, old('name', ''), 'maxlength="60"'),
-			'email' => FormLib::Text('email', 0, old('email', ''), 'maxlength="60"'),
+			'rsoc' => FormLib::Text('name', 1, old('name', ''), 'maxlength="60"'),
+			'email' => FormLib::Text('email', 1, old('email', ''), 'maxlength="60"'),
 			'idnumber' => FormLib::Text("idnumber", 0, old('idnumber', ''), 'maxlength="20"'),
 			'phone' => FormLib::Text('phone', 0, old('phone', ''), 'maxlength="40"'),
 		];
@@ -72,6 +67,42 @@ class AdminB2BUsersController extends Controller
 			->with(['success' => [0 => 'Cliente creado correctamente']]);
 	}
 
+	public function edit(UserB2BService $userService, $id)
+	{
+		$ownerCod = Session::get('user.cod');
+
+		$user = $userService->getInvitationsByOwnerAndInvited($ownerCod, $id);
+
+		abort_if(!$user, 404);
+
+		$formulario = (object)[
+			'rsoc' => FormLib::Text('name', 1, $user->name, 'maxlength="60"'),
+			'email' => FormLib::Text('email', 0, $user->email, 'maxlength="60" readonly '),
+			'idnumber' => FormLib::Text("idnumber", 0, $user->idnumber, 'maxlength="20"'),
+			'phone' => FormLib::Text('phone', 0, $user->phone, 'maxlength="40"'),
+		];
+
+		return view('admin::pages.b2b.users.edit', [
+			'formulario' => $formulario,
+			'user' => $user,
+		]);
+	}
+
+	public function update(Request $request, UserB2BService $userService, $id)
+	{
+		$ownerCod = Session::get('user.cod');
+
+		try {
+			$userService->updateInvitation($ownerCod, $id, UserB2BData::fromArray($request->all()));
+		} catch (\Throwable $th) {
+			return redirect()->back()
+				->withErrors([$th->getMessage()])->withInput();
+		}
+
+		return redirect(route('admin.b2b.users'))
+			->with(['success' => [0 => 'Cliente actualizado correctamente']]);
+	}
+
 	public function import(Request $request, UserB2BService $userService)
 	{
 		$ownerCod = Session::get('user.cod');
@@ -86,27 +117,21 @@ class AdminB2BUsersController extends Controller
 			->with(['success' => [0 => 'Clientes importados correctamente']]);
 	}
 
-	public function notify(Request $request)
+	public function notify(Request $request, UserB2BService $userService)
 	{
-		$ownerSession = Session::get('user');
-		$ownerCod = $ownerSession['cod'];
+		$owner = OwnerB2BData::fromArray(Session::get('user'));
 
 		$users = FgSubInvites::query()
-			->select('invited_codcli_subinvites', 'invited_nom_subinvites')
 			->with('invited:cod_cliweb, email_cliweb, pwdwencrypt_cliweb')
-			->where('owner_codcli_subinvites', $ownerCod)
+			->where('owner_codcli_subinvites', $owner->id)
 			->when(!$request->input('force'), function ($query) {
 				$query->where('notification_sent_subinvites', 0);
 			})
-			->get();
-
-		$owner = [
-			'company_name' => $ownerSession['rsoc'],
-			'logo' => $this->getCompanyImageLink($ownerCod),
-		];
+			->get()
+			->map(fn($user) => UserB2BData::fromInvitationWithInvited($user));
 
 		$auction = FgSub::query()
-			->where('agrsub_sub', $ownerCod)
+			->where('agrsub_sub', $owner->id)
 			->first();
 
 		$auction->link = ToolsServiceProvider::url_auction($auction->cod_sub, $auction->des_sub, null);
@@ -114,36 +139,7 @@ class AdminB2BUsersController extends Controller
 		$delay = 0;
 		foreach ($users as $user) {
 
-			$userDataToEmail = [
-				'name' => $user->invited_nom_subinvites,
-				'email' => $user->invited->email_cliweb,
-				'hasPassword' => $user->invited->hasPassword,
-				'linkResetPassword' => $user->invited->recoveryLink,
-			];
-
-			$notification = new AuctionInvitationMail($owner, $auction->toArray(), $userDataToEmail);
-
-			$emailLib = new EmailLib('AUTION_INVITE');
-			if(!empty($emailLib->email)) {
-				$emailLib->setHtmlBody($notification->render());
-				$emailLib->setTo($userDataToEmail['email']);
-
-				MailJob::dispatch($emailLib)
-					->onQueue(Config::get('app.queue_env'))
-					->delay(now()->addSeconds($delay));
-
-
-				FgSubInvites::query()
-					->where('owner_codcli_subinvites', $ownerCod)
-					->where('invited_codcli_subinvites', $user->invited_codcli_subinvites)
-					->update(['notification_sent_subinvites' => 1]);
-			}
-
-
-			/* SendNotificationsJob::dispatch($notification, $userDataToEmail['email'])
-				->onQueue(Config::get('app.queue_env'))
-				->delay(now()->addSeconds($delay)); */
-
+			$userService->sendInvitationEmail($owner, $auction, $user, $delay);
 			//office tiene un limite de 30 correos por minuto.
 			//Con el delay evitaremos que se envien todos los correos a la vez.
 			$delay += 5;
@@ -152,59 +148,26 @@ class AdminB2BUsersController extends Controller
 		return response()->json(['success' => 'Notificaciones enviadas correctamente']);
 	}
 
-	public function notifySelection(Request $request)
+	public function notifySelection(Request $request, UserB2BService $userService)
 	{
-		$ownerCod = Session::get('user.cod');
+		$owner = OwnerB2BData::fromArray(Session::get('user'));
 
 		$users = FgSubInvites::query()
-			->select('invited_codcli_subinvites', 'invited_nom_subinvites')
 			->with('invited:cod_cliweb, email_cliweb, pwdwencrypt_cliweb')
-			->where('owner_codcli_subinvites', $ownerCod)
+			->where('owner_codcli_subinvites', $owner->id)
 			->whereIn('invited_codcli_subinvites', $request->input('ids'))
-			->get();
-
-		$owner = [
-			'company_name' => Session::get('user.rsoc'),
-			'logo' => $this->getCompanyImageLink($ownerCod),
-		];
+			->get()
+			->map(fn($user) => UserB2BData::fromInvitationWithInvited($user));
 
 		$auction = FgSub::query()
-			->where('agrsub_sub', $ownerCod)
+			->where('agrsub_sub', $owner->id)
 			->first();
 
 		$auction->link = ToolsServiceProvider::url_auction($auction->cod_sub, $auction->des_sub, null);
 
 		$delay = 0;
 		foreach ($users as $user) {
-
-			$userDataToEmail = [
-				'name' => $user->invited_nom_subinvites,
-				'email' => $user->invited->email_cliweb,
-				'hasPassword' => $user->invited->hasPassword,
-				'linkResetPassword' => $user->invited->recoveryLink,
-			];
-
-			$notification = new AuctionInvitationMail($owner, $auction->toArray(), $userDataToEmail);
-
-			$emailLib = new EmailLib('AUTION_INVITE');
-			if(!empty($emailLib->email)) {
-				$emailLib->setHtmlBody($notification->render());
-				$emailLib->setTo($userDataToEmail['email']);
-
-				MailJob::dispatch($emailLib)
-					->onQueue(Config::get('app.queue_env'))
-					->delay(now()->addSeconds($delay));
-
-				FgSubInvites::query()
-					->where('owner_codcli_subinvites', $ownerCod)
-					->where('invited_codcli_subinvites', $user->invited_codcli_subinvites)
-					->update(['notification_sent_subinvites' => 1]);
-			}
-
-			/* SendNotificationsJob::dispatch($notification, $userDataToEmail['email'])
-				->onQueue(Config::get('app.queue_env'))
-				->delay(now()->addSeconds($delay)); */
-
+			$userService->sendInvitationEmail($owner, $auction, $user, $delay);
 			$delay += 5;
 		}
 
@@ -232,22 +195,5 @@ class AdminB2BUsersController extends Controller
 			->delete();
 
 		return response()->json(['success' => 'Clientes eliminados correctamente']);
-	}
-
-	private function getCompanyImageLink($ownerCod)
-	{
-		if (!$ownerCod) {
-			return false;
-		}
-
-		$theme = Config::get('app.theme');
-		$emp = Config::get('app.emp');
-		$path = "app/public/themes/$theme/owners/$emp/$ownerCod.png";
-
-		if (!file_exists(storage_path($path))) {
-			return asset("/themes/$theme/assets/img/logo.png");
-		}
-
-		return asset("storage/themes/$theme/owners/$emp/$ownerCod.png");
 	}
 }

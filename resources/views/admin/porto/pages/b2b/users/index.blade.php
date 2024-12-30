@@ -117,14 +117,14 @@
                                 <td>{{ mb_strtolower($user->invited->email_cliweb) }}</td>
                                 <td>{{ $user->invited_cif_subinvites }}</td>
                                 <td>{{ $user->invited_tel_subinvites }}</td>
-                                <td class="text-center">
+                                <td>
                                     @if ($user->notification_sent_subinvites)
-                                        <i class="fa fa-check lb-icon-circle" aria-hidden="true"></i>
+                                        <i class="fa fa-2x fa-check-circle text-success" aria-hidden="true"></i>
                                     @endif
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-success btn-sm" href=""
+                                    <a class="btn btn-success btn-sm" href="{{ route('admin.b2b.users.edit', $user->invited->cod_cliweb) }}"
                                         title="{{ trans('admin-app.button.edit') }}">
                                         <i class="fa fa-pencil-square-o"
                                             aria-hidden="true"></i>{{ trans('admin-app.button.edit') }}

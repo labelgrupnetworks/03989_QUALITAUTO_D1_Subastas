@@ -22,7 +22,7 @@ class AuctionInvitationMail extends Mailable
      *
      * @return void
      */
-    public function __construct($owner, $auction, array $user)
+    public function __construct($owner, $auction, $user)
     {
 		$this->owner = $owner;
 		$this->auction = $auction;

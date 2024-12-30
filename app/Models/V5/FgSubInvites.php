@@ -15,7 +15,7 @@ class FgSubInvites extends Model
 	protected $table = 'fgsubinvites';
 
 	// Clave primaria (si se usa un campo distinto a "id", puedes especificarlo aquí)
-	// protected $primaryKey = 'id_subinvites'; // Si decides añadir un campo ID
+	protected $primaryKey = false;
 
 	// Desactivar la gestión automática de timestamps si no estás usando las columnas created_at y updated_at
 	public $timestamps = false;
