@@ -475,6 +475,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/users', [AdminB2BUsersController::class, 'index'])->name('admin.b2b.users');
 			Route::get('/users/create', [AdminB2BUsersController::class, 'create'])->name('admin.b2b.users.create');
 			Route::post('/users', [AdminB2BUsersController::class, 'store'])->name('admin.b2b.users.store');
+			Route::get('/users/{id}', [AdminB2BUsersController::class, 'edit'])->name('admin.b2b.users.edit');
+			Route::put('/users/{id}', [AdminB2BUsersController::class, 'update'])->name('admin.b2b.users.update');
 			Route::post('/users/import', [AdminB2BUsersController::class, 'import'])->name('admin.b2b.users.import');
 			Route::post('/users/notify', [AdminB2BUsersController::class, 'notify'])->name('admin.b2b.users.notify');
 			Route::post('/users/notify-selection', [AdminB2BUsersController::class, 'notifySelection'])->name('admin.b2b.users.notify-selection');
