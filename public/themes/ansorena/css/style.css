@@ -4292,9 +4292,8 @@ section.syncing-banner .text-block {
 	font-size: .75em;
 }
 
-.video-banner-url {
-	text-decoration: none;
-	font-size: .5em;
+.video-banner .video-banner-btn {
+	font-size: .4em;
 	margin-top: 1.5em;
 }
 

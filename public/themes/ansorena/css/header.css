@@ -282,6 +282,17 @@ strong {
 	--bs-btn-hover-bg: transparent;
 }
 
+.btn-outline-lb-translucent {
+	--bs-btn-color: #fff;
+	--bs-btn-border-color: #fff;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #000;
+	--bs-btn-active-border-color: #000;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #000;
+	--bs-btn-hover-border-color: #000;
+}
+
 .btn-fluid {
 	--bs-btn-padding-y: 21px;
 	--lb-border-radius: 41.8125px;
