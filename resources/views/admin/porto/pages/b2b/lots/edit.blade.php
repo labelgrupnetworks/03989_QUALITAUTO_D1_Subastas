@@ -33,7 +33,7 @@
                             @endif
                             @if ($siguiente)
                                 <a class="btn btn-warning"
-                                    href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $anterior]) }}">
+                                    href="{{ route('admin.b2b.lots.edit', ['ref_asigl0' => $siguiente]) }}">
                                     {{ trans('admin-app.button.next') }}
                                 </a>
                             @endif

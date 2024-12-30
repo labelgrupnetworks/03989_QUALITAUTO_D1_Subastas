@@ -28,6 +28,17 @@
                     {{ trans('admin-app.title.lot') }}
                 </a>
 
+                <a class="btn btn-success btn-sm" href="/themes/b2b/assets/files/plantillaejemplo.xlsx"
+                    download="plantilla.xlsx">
+                    {{ trans('admin-app.button.download_excel_template') }}
+                </a>
+
+                <a class="btn btn-info btn-sm" class="btn btn-success btn-sm"
+                    href="{{ route('admin.lote.getimport', ['id' => $auction->cod_sub]) }}">
+                    {{ trans('admin-app.button.upload_excel') }}
+                </a>
+
+
                 @include('admin::includes.config_table_v2', [
                     'id' => 'b2b_lots_table',
                     'params' => $tableParams,
@@ -80,7 +91,6 @@
                                     </a>
                                     <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal"
                                         data-id="{{ $lot->ref_asigl0 }}"
-
                                         data-name="{{ trans('admin-app.title.delete_resource', ['resource' => trans('admin-app.title.lot'), 'id' => $lot->ref_asigl0]) }}">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -108,7 +118,9 @@
             {{ $lots->links() }}
         </div>
 
-        @include('admin::includes._delete_modal', ['routeToDelete' => route('admin.b2b.lots.destroy', ['ref_asigl0' => 0])])
+        @include('admin::includes._delete_modal', [
+            'routeToDelete' => route('admin.b2b.lots.destroy', ['ref_asigl0' => 0]),
+        ])
 
         <script>
             $('#deleteModal').on('show.bs.modal', function(event) {

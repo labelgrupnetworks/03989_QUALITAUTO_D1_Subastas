@@ -29,7 +29,9 @@ class AdminLoteConcursalController extends AdminLotController
 	{
 		$render = request('render', false);
 
-		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
+		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()
+			->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])
+			->first();
 
 		if (!$fgAsigl0) {
 			abort(404);
@@ -55,7 +57,7 @@ class AdminLoteConcursalController extends AdminLotController
 			);
 		}
 
-		$images = $this->getImagesFgAsigl0($fgAsigl0);
+		$images = $fgAsigl0->getImages();
 		$files = FgHces1Files::getAllFilesByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 
 		$lotes = FgAsigl0::select('ref_asigl0')

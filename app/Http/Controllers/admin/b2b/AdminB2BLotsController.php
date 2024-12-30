@@ -32,6 +32,8 @@ class AdminB2BLotsController extends Controller
 	{
 		$userCod = Session::get('user.cod');
 
+		$auction = FgSub::where('agrsub_sub', $userCod)->first();
+
 		$lots = FgAsigl0::query()
 			->select([
 				'sub_asigl0',
@@ -56,9 +58,7 @@ class AdminB2BLotsController extends Controller
 					->limit(1)
 			])
 			->joinFghces1Asigl0()
-			->joinSubastaAsigl0()
-			->joinSessionAsigl0()
-			->where('agrsub_sub', $userCod)
+			->where('sub_asigl0', $auction->cod_sub)
 			->when($request->ref_asigl0, function ($query, $ref_asigl0) {
 				$query->where('ref_asigl0', $ref_asigl0);
 			})
@@ -68,7 +68,15 @@ class AdminB2BLotsController extends Controller
 			->when($request->cerrado_asigl0, function ($query, $cerrado_asigl0) {
 				$query->where('cerrado_asigl0', $cerrado_asigl0);
 			})
-			->orderBy($request->input('order') ?? 'ref_asigl0', $request->input('order_dir', 'asc'))
+			->when(!$request->has('cerrado_asigl0'), function ($query) {
+				$query->where('cerrado_asigl0', 'N');
+			})
+			->when(!empty($request->input('order')) && !empty($request->input('order_dir')), function ($query) use ($request) {
+				$query->orderBy($request->input('order', 'ffin_asigl0'), $request->input('order_dir', 'asc'));
+			}, function ($query) {
+				$query->orderBy('cerrado_asigl0', 'asc')
+					->orderBy('ffin_asigl0', 'asc');
+			})
 			->paginate(20);
 
 		$tableParams = [
@@ -89,10 +97,11 @@ class AdminB2BLotsController extends Controller
 		$formulario = (object)[
 			'ref_asigl0' => FormLib::Text('ref_asigl0', 0, $request->ref_asigl0),
 			'impsalhces_asigl0' => FormLib::Text('impsalhces_asigl0', 0, $request->impsalhces_asigl0),
-			'cerrado_asigl0' => FormLib::Select('cerrado_asigl0', 0, $request->cerrado_asigl0, ['N' => 'No', 'S' => 'Si'])
+			'cerrado_asigl0' => FormLib::Select('cerrado_asigl0', 0, !$request->has('cerrado_asigl0') ? 'N' : $request->cerrado_asigl0, ['N' => 'No', 'S' => 'Si'])
 		];
 
 		$data = [
+			'auction' => $auction,
 			'lots' => $lots,
 			'tableParams' => $tableParams,
 			'formulario' => $formulario,
@@ -190,7 +199,7 @@ class AdminB2BLotsController extends Controller
 			$this->addIdOrigin($cod_sub, $fgAsigl0->ref_asigl0, $fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 		}
 
-		$images = $this->getImagesFgAsigl0($fgAsigl0);
+		$images = $fgAsigl0->getImages();
 
 		$files = FgHces1Files::getAllFilesByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 
@@ -388,30 +397,6 @@ class AdminB2BLotsController extends Controller
 		);
 
 		return $newIdOrigen;
-	}
-
-	protected function getImagesFgAsigl0($fgAsigl0)
-	{
-		//dd($fgAsigl0);
-		$path = "/img/$this->emp/$fgAsigl0->numhces_asigl0/";
-		$systemPath = getcwd() . $path;
-
-		$images = is_dir($systemPath) ? array_diff(scandir($systemPath), ['.', '..']) : [];
-
-		$validImages = array_filter($images, function ($image) use ($fgAsigl0) {
-			$imageName = "{$this->emp}-{$fgAsigl0->numhces_asigl0}-{$fgAsigl0->linhces_asigl0}";
-			$isThisLine = strpos($image, "{$imageName}.") !== false || strpos($image, "{$imageName}_") !== false;
-
-			$isHidden = strpos($image, "-NV");
-
-			return !$isHidden && $isThisLine;
-		});
-
-		$paths = array_map(function ($image) use ($path) {
-			return $path . $image;
-		}, $validImages);
-
-		return $paths;
 	}
 
 	public function destroy($ref_asigl0)

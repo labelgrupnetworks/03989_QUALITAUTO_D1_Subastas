@@ -246,7 +246,11 @@ class AdminLotController extends Controller
 	{
 		$render = request('render', false);
 
-		$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->JoinSessionAsigl0()->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
+		$fgAsigl0 = FgAsigl0::query()
+			->joinFghces1Asigl0()
+			->joinSessionAsigl0()
+			->where([['ref_asigl0', $ref_asigl0], ['sub_asigl0', $cod_sub]])
+			->first();
 
 		if (!$fgAsigl0) {
 			abort(404);
@@ -257,7 +261,7 @@ class AdminLotController extends Controller
 			$this->addIdOrigin($cod_sub, $fgAsigl0->ref_asigl0, $fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 		}
 
-		$images = $this->getImagesFgAsigl0($fgAsigl0);
+		$images = $fgAsigl0->getImages();
 
 		$files = FgHces1Files::getAllFilesByLot($fgAsigl0->numhces_asigl0, $fgAsigl0->linhces_asigl0);
 
@@ -702,29 +706,6 @@ class AdminLotController extends Controller
 			['numhces_nft', $fgAsigl0->num_hces1],
 			['linhces_nft', $fgAsigl0->lin_hces1]
 		])->delete();
-	}
-
-	protected function getImagesFgAsigl0($fgAsigl0)
-	{
-		$path = "/img/$this->emp/$fgAsigl0->numhces_asigl0/";
-		$systemPath = getcwd() . $path;
-
-		$images = is_dir($systemPath) ? array_diff(scandir($systemPath), ['.', '..']) : [];
-
-		$validImages = array_filter($images, function ($image) use ($fgAsigl0) {
-			$imageName = "{$this->emp}-{$fgAsigl0->numhces_asigl0}-{$fgAsigl0->linhces_asigl0}";
-			$isThisLine = strpos($image, "{$imageName}.") !== false || strpos($image, "{$imageName}_") !== false;
-
-			$isHidden = strpos($image, "-NV");
-
-			return !$isHidden && $isThisLine;
-		});
-
-		$paths = array_map(function ($image) use ($path) {
-			return $path . $image;
-		}, $validImages);
-
-		return $paths;
 	}
 
 	protected function getFilesFgAsigl0($fgAsigl0)

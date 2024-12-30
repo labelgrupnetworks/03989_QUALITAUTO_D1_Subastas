@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models;
 
+use App\libs\CacheLib;
 use App\libs\EmailLib;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -3781,15 +3782,7 @@ class Subasta extends Model
 
         $imagen = $ruta_img.'.jpg';
 
-
         $imagenes = array($imagen);
-
-
-        //buscar en la carpeta si hay ficheros con la coletilla _ , o sease $_SERVER['DOCUMENT_ROOT'].Config::get('app.img_lot').'/'.Config::get('app.emp').'-'.$lote->num_hces1. '-' .$lote->lin_hces1.'_'
-        /*foreach (glob($ruta_carpeta.$ruta_img.'_*.*') as $fichero)
-        {
-          $imagenes[]= str_replace($ruta_carpeta, "", $fichero);
-        } */
 
 		#Nuevo metodo de recuperar todas las imagenes de un lote
 		foreach (glob($ruta_carpeta.$ruta_img.'_*') as $file) {
@@ -3802,23 +3795,6 @@ class Subasta extends Model
 			}
 		}
 		ksort($imagenes);
-		#Metodo antiguo de recuperar las imagenes de un lotes, lo mantengo un tiempo por si falla algo del nuevo
-		/*
-        for ($x=1; ;$x++){
-            if ($x < 10) {
-            	$x = '0'.$x;
-            }
-            $name_img = $ruta_img.'_'.$x.'.jpg';
-            $name_img_mayus = $ruta_img.'_'.$x.'.JPG';
-            if (file_exists((string)$ruta_carpeta.$name_img)  ){
-                $imagenes[] = $name_img;
-            }elseif (file_exists((string)$ruta_carpeta.$name_img_mayus) ){
-				$imagenes[] =  $name_img_mayus;
-			}
-			else{
-                break;
-            }
-        }*/
         return $imagenes;
     }
 
@@ -4325,12 +4301,9 @@ class Subasta extends Model
         //quitamos espacios en blanco
         $name_cache ="auctions_". str_replace(" ","", $order_by. $type.$estado);
 
-        $auctions = \CacheLib::useCache($name_cache,$sql, $params);
+        $auctions = CacheLib::useCache($name_cache,$sql, $params);
 
         return $auctions;
-
-
-
     }
     //devuelve el registro de adjudicación de un lote
     public function getAssignetPrice()

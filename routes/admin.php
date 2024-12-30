@@ -206,7 +206,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::group(['prefix' => 'lote'], function () {
 
 			Route::post('/borrarImagenLote', 'subasta\SubastaController@borrarImagenLote'); //se utiliza
-			Route::get('/file/{id}', 'subasta\SubastaController@lotFile'); //para subir excel
+			Route::get('/file/{id}', 'subasta\SubastaController@lotFile')->name('admin.lote.getimport'); //para subir excel
 			Route::post('/fileImport/{type}', 'subasta\SubastaController@lotFileImport'); //guardar excel
 			Route::post('/excelImg', 'subasta\SubastaController@createExcelImage'); //excel?
 			Route::post('/addImg/', 'subasta\SubastaController@addImage')->name('addLotImage'); //excel??
@@ -494,6 +494,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/visibility', [AdminB2BVisibilitiesController::class, 'index'])->name('admin.b2b.visibility');
 			Route::get('/visibility/create', [AdminB2BVisibilitiesController::class, 'create'])->name('admin.b2b.visibility.create');
 			Route::post('/visibility', [AdminB2BVisibilitiesController::class, 'store'])->name('admin.b2b.visibility.store');
+			Route::post('/visibility/showOrHideEveryone', [AdminB2BVisibilitiesController::class, 'showOrHideEveryone'])->name('admin.b2b.visibility.showOrHideEveryone');
 			Route::get('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'edit'])->name('admin.b2b.visibility.edit');
 			Route::put('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'update'])->name('admin.b2b.visibility.update');
 			Route::delete('/visibility/{id}', [AdminB2BVisibilitiesController::class, 'destroy'])->name('admin.b2b.visibility.destroy');

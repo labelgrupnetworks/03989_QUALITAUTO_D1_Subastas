@@ -1,4 +1,4 @@
-<?
+@php
 /**
  * Permite visualizar u ocultar columnas de una tabla y guardar el resultado en
  * el navegador
@@ -13,7 +13,7 @@
  * @todo pendiente
  * - añadir campos checkeados por defecto.
  */
-?>
+@endphp
 <div class="btn-group dropright">
 	<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
 		aria-expanded="false">
