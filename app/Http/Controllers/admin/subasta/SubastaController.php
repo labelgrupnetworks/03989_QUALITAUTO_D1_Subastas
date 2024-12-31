@@ -233,6 +233,10 @@ class SubastaController extends Controller
 
 			$lot = $this->createLotObject($rows[$i], $cabeceras);
 
+			if(empty($lot['idsubcategory']) && Config::get('app.default_idsubcategory')) {
+				$lot['idsubcategory'] = Config::get('app.default_idsubcategory');
+			}
+
 			if (count($fxSecMapDataArray) > 0 && $lot['idsubcategory']) {
 				$lot['idsubcategory'] = mb_strtoupper($lot['idsubcategory']);
 				$existKeyInArray = array_key_exists($lot['idsubcategory'], $fxSecMapDataArray);
