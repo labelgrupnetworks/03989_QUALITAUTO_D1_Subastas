@@ -142,8 +142,6 @@ class AdminB2BLotsController extends Controller
 	{
 		try {
 			$lot = $request->validated();
-			$lot["languages"] = $this->requestLangs($request);
-
 			$lotService->createLotWithApi($lot);
 		} catch (\Throwable $th) {
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
@@ -256,7 +254,6 @@ class AdminB2BLotsController extends Controller
 
 		//Eliminar saltos de linea que puedan venir de una importacion en excel
 		$lot['description'] = preg_replace("~[\r\n]~", "", $lot['description']);
-		$lot["languages"] = $this->requestLangs($request);
 
 		#se pasa como array
 		try {
@@ -348,33 +345,6 @@ class AdminB2BLotsController extends Controller
 			];
 
 		return $basicForm;
-	}
-
-	protected function requestLangs($request)
-	{
-		$languages = [];
-
-		if (!$request->has('lang')) {
-			return $languages;
-		}
-
-		$inputsLanguages = $request->get('lang');
-
-		foreach ($inputsLanguages as $key => $value) {
-			#si no viene ningun valor no lo agregamos, ya que si no creará los campos vacios
-			if (!empty($request->get('title_lang')[$key]) || !empty($request->get('description_lang')[$key]) || !empty($request->get('search_lang')[$key])) {
-
-				$languages[] = [
-					'lang' => $value,
-					'title' => $request->get('title_lang')[$key],
-					'description' => $request->get('description_lang')[$key],
-					'extrainfo' => $request->get('extrainfo_lang')[$key],
-					'search' => $request->get('search_lang')[$key],
-				];
-			}
-		}
-
-		return $languages;
 	}
 
 	public function addIdOrigin($cod, $ref, $numhces, $linhces)
