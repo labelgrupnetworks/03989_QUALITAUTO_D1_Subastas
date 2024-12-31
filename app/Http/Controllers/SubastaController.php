@@ -1010,6 +1010,11 @@ class SubastaController extends Controller
 			}
 			return abort(404);
 		}
+
+		if(Config::get('app.hideNotInitLots')) {
+			abort_if(strtotime($lote[0]->open_at) > strtotime(now()), 404);
+		}
+
 		$session_slug = $lote[0]->id_auc_sessions;
 		$subastaObj->id_auc_sessions = $session_slug;
 		#quito los parametros para comparar solo la url

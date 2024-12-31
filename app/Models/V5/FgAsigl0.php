@@ -241,6 +241,11 @@ class FgAsigl0 extends Model
 			$query = $query->whereRaw("((FGSUB.TIPO_SUB in('W','V','O')) OR ( FGSUB.TIPO_SUB = 'P' AND(TRUNC(fgasigl0.FINI_ASIGL0) < TRUNC(SYSDATE) or (fgasigl0.FINI_ASIGL0 = TRUNC(SYSDATE) AND  fgasigl0.HINI_ASIGL0 <= TO_CHAR(SYSDATE, 'HH24:MI:SS'))) ))");
 		}
 
+		if(Config::get("app.hideNotInitLots")){
+			$query = $query->whereRaw("(TRUNC(fgasigl0.FINI_ASIGL0) <= TRUNC(SYSDATE)
+						or (fgasigl0.FINI_ASIGL0 = TRUNC(SYSDATE) AND fgasigl0.HINI_ASIGL0 <= TO_CHAR(SYSDATE, 'HH24:MI:SS')))");
+		}
+
 				#si tienen este config los lotes de las subastas que sean V-tienda o O-Online no se ven cuando estan cerrados
 		if(Config::get("app.hideCloseLots")){
 			$query = $query->whereRAW("(FGASIGL0.CERRADO_ASIGL0 ='N' OR FGSUB.TIPO_SUB ='W') ");
