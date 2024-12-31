@@ -59,7 +59,7 @@ Route::get('/export/{service}/session/{idAucSession}', [CustomControllers::class
 
 #ANSORENA
 Route::view(Routing::slugSeo('exposicion_actual'), 'front::pages.landing_galery.exposicion_actual');
-Route::view(Routing::slugSeo('ventas-destacadas'), 'front::pages.ventas_destacadas');
+Route::view(Routing::translateSeo('ventas-destacadas'), 'front::pages.ventas_destacadas')->name('custom.ventas-destacadas');
 Route::get('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'privateChanelLogin'])->name('private_chanel.login');
 Route::post('/' . Config::get('app.locale') . '/private-chanel/login', [CustomControllers::class, 'loginInPrivateChanel'])->name('private_chanel.login.send');
 Route::post('/' . Config::get('app.locale') . '/private-chanel/form', [CustomControllers::class, 'sendPrivateChanelForm'])->name('private_chanel.form');

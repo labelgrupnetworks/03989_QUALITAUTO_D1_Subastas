@@ -19,7 +19,6 @@
 
     $locale = Config::get('app.locale');
     $subasta_galeria = $lote_actual->tipo_sub == 'E' || $lote_actual->tipo_sub == 'F';
-    $menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUSUBASTAS');
 @endphp
 
 @section('framework-css')
@@ -120,7 +119,7 @@
     @if ($subasta_galeria)
         @include('includes.galery.subnav')
     @else
-        {!! $menuEstaticoHtml->content_web_page !!}
+		@include('includes.menus.menu_subastas')
     @endif
 
 	<main class="{{$subasta_galeria ? "gallery-ficha" : "ficha"}}">

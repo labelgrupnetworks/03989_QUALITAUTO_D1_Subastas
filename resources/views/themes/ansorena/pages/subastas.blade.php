@@ -21,12 +21,11 @@
 
 @php
 	$locale = Config::get('app.locale');
-	$menuEstaticoHtml = (new App\Models\Page())->getPaginaWithoutGemp('MENUSUBASTAS') ?? new App\Models\Page();
 @endphp
 
 @section('content')
 
-	{!! $menuEstaticoHtml->content_web_page !!}
+	@include('includes.menus.menu_subastas')
 
 	@if($data['type'] === 'W')
 		@include('content.landing_subasta')

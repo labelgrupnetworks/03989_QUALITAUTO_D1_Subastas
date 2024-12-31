@@ -6,7 +6,7 @@
 $bread[] = array("name" =>$data['data']->name_web_page  );
 $menuEstaticoHtml=null;
 #recogemos el valor del banner en $matches[1], en $matches[0] esta todo el código escrito [*BANNER-x*]
-$menusEstaticos= array("MENUCONDECORACIONES", "MENUANSORENA","MENUJOYAS","MENUSUBASTAS");
+$menusEstaticos= array("MENUANSORENA");
 foreach($menusEstaticos as $key){
 	#si aun no ha encontrado un menu que sustituir
 	if(empty($menuEstaticoHtml)){

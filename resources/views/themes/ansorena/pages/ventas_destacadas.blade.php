@@ -15,14 +15,11 @@
 
 @php
     use App\Models\V5\FgAsigl0;
-
-    $locale = Config::get('app.locale');
-    $menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUSUBASTAS');
     $lots = (new FgAsigl0())->ventasDestacadas('orden_destacado_asigl0', request('order_dir', 'asc'));
 @endphp
 @section('content')
 
-    {!! $menuEstaticoHtml->content_web_page !!}
+	@include('includes.menus.menu_subastas')
 
     <main class="grid-prominent-sales">
         <h1 class="ff-highlight grid-page-tile">

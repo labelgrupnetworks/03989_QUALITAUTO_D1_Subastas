@@ -25,7 +25,7 @@
 
         $menuEstaticoHtml = null;
         #recogemos el valor del banner en $matches[1], en $matches[0] esta todo el código escrito [*BANNER-x*]
-        $menusEstaticos = ['MENUCONDECORACIONES', 'MENUANSORENA', 'MENUJOYAS', 'MENUSUBASTAS', 'MENUJOYERIA'];
+        $menusEstaticos = ['MENUSUBASTAS', 'MENUJOYERIA'];
 
         foreach ($menusEstaticos as $key) {
             #si aun no ha encontrado un menu que sustituir
@@ -100,6 +100,11 @@
     @endphp
 
     <div id="pagina-{{ $data['data']->id_web_page }}" class="contenido contenido-web">
+
+		@if(in_array($data['data']->key_web_page, ['como-comprar-vender', 'how-to-buy-and-sell']))
+			@include('includes.menus.menu_subastas')
+		@endif
+
         {!! $html !!}
         @if ($redesSociales !== false)
             @include('includes.sharePage')

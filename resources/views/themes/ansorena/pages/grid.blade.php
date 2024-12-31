@@ -19,14 +19,9 @@
     <link href="{{ Tools::urlAssetsCache('/themes/' . $theme . '/css/header.css') }}" rel="stylesheet" type="text/css">
 @endsection
 
-@php
-    $locale = Config::get('app.locale');
-    $menuEstaticoHtml = (new App\Models\Page())->getPagina(mb_strtoupper($locale), 'MENUSUBASTAS');
-@endphp
-
 @section('content')
 
-    {!! $menuEstaticoHtml->content_web_page !!}
+	@include('includes.menus.menu_subastas')
 
     @include('content.grid')
 @stop
