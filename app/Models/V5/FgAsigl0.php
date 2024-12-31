@@ -303,7 +303,7 @@ class FgAsigl0 extends Model
 
 	#devuelve la cantidad de lotes por cada filtro, por ejemplo nº lotes de subastas tipo O, o nº lotes de categoria joyas
     public function scopeCountLotsFilterAsigl0($query)  {
-		$groupSession = \Config::get("app.gridAllSessions") ? '"reference",' :'';
+		$groupSession = Config::get("app.gridAllSessions") ? '"reference",' :'';
 		return  $query->select($groupSession."FGORTSEC1.LIN_ORTSEC1, FGORTSEC1.SEC_ORTSEC1, FGSUB.TIPO_SUB, FGHCES1.SUBFAM_HCES1, count(FGASIGL0.REF_ASIGL0) count_lots")
 			   ->ActiveLotAsigl0()
 			   #no debe hacer el join con fxsec, si no con fgortsec1
@@ -316,7 +316,7 @@ class FgAsigl0 extends Model
 	}
 
 	public function scopeJoinSecAsigl0($query){
-        return $query->leftjoin("FXSEC" , "FXSEC.GEMP_SEC = '".\Config::get("app.gemp")."' AND FXSEC.COD_SEC =FGHCES1.SEC_HCES1");
+        return $query->leftjoin("FXSEC" , "FXSEC.GEMP_SEC = '".Config::get("app.gemp")."' AND FXSEC.COD_SEC =FGHCES1.SEC_HCES1");
 	}
 
 	public function scopejoinFgCaracteristicasAsigl0($query){
@@ -788,13 +788,12 @@ class FgAsigl0 extends Model
 	#se ha creado para futuver/banconal pero actualmente no está en uso, se deberá comentar la vista grid que se creo para ellos, ya uqe esta vista fuerza que no haya grid.
  	public function scopeJoinViewDepositLots($query){
 
-		if(empty(\Session::get('user.cod'))){
+		if(empty(Session::get('user.cod'))){
 			return $query->where(1,2);
 		}else{
 			return $query->join("FGDEPOSITO","EMP_DEPOSITO = EMP_ASIGL0 AND  SUB_DEPOSITO = SUB_ASIGL0 AND REF_DEPOSITO=REF_ASIGL0")->
 			where("ESTADO_DEPOSITO", "V")->
-			where("CLI_DEPOSITO", \Session::get('user.cod'));
-
+			where("CLI_DEPOSITO", Session::get('user.cod'));
 		}
 	}
 

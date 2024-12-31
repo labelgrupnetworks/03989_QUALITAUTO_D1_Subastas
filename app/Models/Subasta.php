@@ -1561,13 +1561,10 @@ class Subasta extends Model
 
         //Lote no es numerico 404
         if(!is_numeric($this->lote)){
-
 			return abort(404);
-
         }
 
         //Si no llega id_auc_sessions lo vamos a buscar
-
         if(empty($this->id_auc_sessions))
         {
             $auction = $this->getIdAucSessionslote($this->cod, $this->lote);
@@ -1596,24 +1593,20 @@ class Subasta extends Model
             $where_order .= " AND p.OCULTO_ASIGL0  = 'N'";
         }
 
-
-
 		$join ="";
 
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
 
-		if(\Config::get("app.restrictVisibility") && $checkVisibility){
+		if(Config::get("app.restrictVisibility") && $checkVisibility){
 			//si no hay usuario logeado devolvemos vacio
-			if(empty(\Session::get('user.cod'))){
+			if(empty(Session::get('user.cod'))){
 				return null;
 			}
 
 			$join = $this->restrictVisibilityLot("join");
 			$where_order =  $where_order ."  ". $this->restrictVisibilityLot("where");
-			$params['codCli'] = \Session::get('user.cod');
+			$params['codCli'] = Session::get('user.cod');
 		}
-
-
 
         $sql = "SELECT rownum rn, p.*, subastas.*, lotes.implic_hces1,lotes.id_hces1, CSUB.himp_csub,CSUB.base_csub,subastas.opcioncar_sub,lotes.nobj_hces1,
             lotes.lin_hces1, lotes.num_hces1, lotes.ref_hces1,  lotes.orden_hces1, lotes.fac_hces1, lotes.lic_hces1, lotes.sec_hces1, NVL(lotes_lang.descdet_hces1_lang, lotes.descdet_hces1) descdet_hces1 ,  NVL(lotes_lang.descweb_hces1_lang, lotes.descweb_hces1) descweb_hces1, lotes.sub_hces1,

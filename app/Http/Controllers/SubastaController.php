@@ -988,23 +988,10 @@ class SubastaController extends Controller
 				$where = "ORDEN_HCES1";
 			}
 		}
-		#18-10-22 MODIFICADO PARA PODER USAR UNA URL ALTERNATIVA
-		/*
-		$subastaObj->texto = Route::current()->parameter('texto2');
-		preg_match('#.*-(\d+)$#', $subastaObj->texto, $matches);
-		if (empty($matches[1]) || !is_numeric($matches[1])) {
 
-			exit(View::make('front::errors.404'));
-		}
-
-		$session_slug = $matches[1];
-
-		$subastaObj->id_auc_sessions = $matches[1];
-*/
 		$lote = $subastaObj->getLote($where, true, true);
 
 		if (empty($lote) || $lote[0]->subc_sub == 'N') {
-
 			if (config('app.redirect_home_nolot', false)) {
 				return redirect(route('home'), 302);
 			}
@@ -1024,10 +1011,6 @@ class SubastaController extends Controller
 
 		$titulo = $lote[0]->titulo_hces1 ?? $lote[0]->descweb_hces1;
 
-		#18-10-22 MODIFICADO PARA QUE USE LA MISMA FUNCION
-		/* $webfriend = !empty($lote[0]->webfriend_hces1) ? $lote[0]->webfriend_hces1 :  str_slug($titulo);
-		$url_buena = Routing::translateSeo('lote') . $lote[0]->cod_sub . "-" . $lote[0]->id_auc_sessions . '-' . $lote[0]->id_auc_sessions . "/" . $lote[0]->ref_asigl0 . '-' . $lote[0]->num_hces1 . '-' . $webfriend;
-		*/
 		$url_buena = ToolsServiceProvider::url_lot($lote[0]->cod_sub, $lote[0]->id_auc_sessions, $lote[0]->name, $lote[0]->ref_asigl0, $lote[0]->num_hces1, $lote[0]->webfriend_hces1, $titulo);
 		#quitamos la parte del dominio, por si viniera informada
 		$url_buena = str_replace(Config::get('app.url'), "", $url_buena);
@@ -1044,7 +1027,6 @@ class SubastaController extends Controller
 		if (!empty(Config::get("app.gridAllSessions"))) {
 			$url_subasta = route("urlAuction", ["texto" => Str::slug($lote[0]->des_sub), "cod" => $lote[0]->cod_sub, "session" => '001']);
 		} else {
-			#$url_subasta= Routing::translateSeo('subasta').$lote[0]->cod_sub."-".str_slug($lote[0]->name)."-".str_slug($lote[0]->id_auc_sessions);
 			$url_subasta = ToolsServiceProvider::url_auction($lote[0]->cod_sub, $lote[0]->name, $lote[0]->id_auc_sessions, $lote[0]->reference);
 		}
 
