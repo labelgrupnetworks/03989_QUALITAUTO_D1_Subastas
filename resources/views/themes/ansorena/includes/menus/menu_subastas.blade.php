@@ -30,9 +30,9 @@
 
 
         @if ($existOnlineAuction)
-            <li>
-                <a href="{{ route('subasta.actual-online') }}">
-                    {{ trans("$theme-app.foot.online_auction") }}
+            <li >
+                <a href="{{ route('subasta.actual-online') }}" >
+                    {!! trans("$theme-app.foot.online_auction")."<br>ARTE AFRICANO" !!}
                 </a>
             </li>
         @endif

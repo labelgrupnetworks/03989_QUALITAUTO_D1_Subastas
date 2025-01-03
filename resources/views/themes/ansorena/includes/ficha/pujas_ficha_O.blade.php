@@ -25,17 +25,17 @@
             |<span id="yourOrderExchange_JS" class="exchange"> </span>
         @endif
     </p>
-
+{{--
     <p class="ff-highlight ficha-lot-price">
         {{ trans("$theme-app.lot.lot-price") . ' ' . $lote_actual->formatted_impsalhces_asigl0 . ' ' . trans("$theme-app.subastas.euros") }}
         @if (Config::get('app.exchange'))
             | <span id="startPriceExchange_JS" class="exchange"> </span>
         @endif
     </p>
-
-    @if (!empty($lote_actual->imptash_asigl0))
-        <p class="ff-highlight ficha-lot-estimate">
-            {{ trans("$theme-app.lot.lot-estimate") . ' ' . $lote_actual->imptash_asigl0 . ' ' . trans("$theme-app.subastas.euros") }}
+--}}
+    @if (!empty($lote_actual->imptash_asigl0) && !empty($lote_actual->imptas_asigl0))
+        <p class="ff-highlight ficha-lot-price">
+            {{ trans("$theme-app.lot.estimate") . ' ' . App\Providers\ToolsServiceProvider::moneyFormat($lote_actual->imptas_asigl0) . trans("$theme-app.subastas.euros") . ' - ' . App\Providers\ToolsServiceProvider::moneyFormat($lote_actual->imptash_asigl0).  trans("$theme-app.subastas.euros") }}
             @if (Config::get('app.exchange'))
                 | <span id="estimateExchange_JS" class="exchange"> </span>
             @endif
@@ -53,7 +53,7 @@
         @endif
     </p>
 
-    {{-- precio de reserva alcanzado/no alcanzado --}}
+    {{-- precio de reserva alcanzado/no alcanzado
     @if (isset($lote_actual->impres_asigl0) && $lote_actual->impres_asigl0 > 0 && Session::has('user'))
         <p class="ficha-lot-price ff-highlight">
             {{ trans("$theme-app.subastas.price_minim") }}:
@@ -61,7 +61,7 @@
             <span class="precio_minimo_no_alcanzado hidden">{{ trans("$theme-app.subastas.no_reached") }}</span>
         </p>
     @endif
-
+	--}}
     {{-- sin puja --}}
     <p class="ficha-lot-price ff-highlight {{ !$hasBids ? '' : 'hidden' }}">
         {{ trans("$theme-app.lot_list.no_bids") }}
