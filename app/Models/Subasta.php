@@ -4245,7 +4245,11 @@ class Subasta extends Model
 			$where .= " AND agrsub_sub IN ($ownerInvitesSqlFormat) ";
 		}
 
-
+		if(Config::get('app.agrsub', null)){
+			$auctionGroup = Config::get('app.agrsub');
+			$where .= " AND agrsub_sub = :agrsub ";
+			$params['agrsub'] = $auctionGroup;
+		}
 
         $sql ="
             SELECT cod_sub, des_sub,  orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, session_start, session_end,subastatr_sub, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
@@ -4760,7 +4764,7 @@ class Subasta extends Model
 			#cogemos el credito disponible si es más pequeño que la orden
 			if($orden->himp_orlic > $disponible){
 
-				\Log::info("CREDIT-Precio salida, No hay credito suficiente, Subasta: $codSub lote: $ref licitador: ". $orden->cod_licit  ." orden: " . $orden->himp_orlic. " disponible: $disponible  ");
+				Log::info("CREDIT-Precio salida, No hay credito suficiente, Subasta: $codSub lote: $ref licitador: ". $orden->cod_licit  ." orden: " . $orden->himp_orlic. " disponible: $disponible  ");
 				$orden->himp_orlic = $disponible;
 			}
 
@@ -5192,6 +5196,10 @@ class Subasta extends Model
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
 		if(Config::get("app.restrictVisibility")){
 			$subastasQuery = $subastasQuery->Visibilidadsubastas(Session::get('user.cod'));
+		}
+
+		if(Config::get('app.agrsub', null)) {
+			$subastasQuery->where('agrsub_sub', Config::get('app.agrsub'));
 		}
 
 		$subastasQuery = $subastasQuery->orderBy('session_start', 'asc')->get();

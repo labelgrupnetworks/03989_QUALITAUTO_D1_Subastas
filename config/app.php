@@ -34,6 +34,12 @@ return [
 	'queue_env'   => env('QUEUE_ENV'),
 	'force_https' => env('FORCE_HTTPS', false),
 
+
+	/**
+	 * Agrupar subastas por variable de entorno
+	 */
+	'agrsub' => env('APP_AGRSUB', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
