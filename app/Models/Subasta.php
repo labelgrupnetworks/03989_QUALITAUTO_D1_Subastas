@@ -5025,6 +5025,9 @@ class Subasta extends Model
 			->select('cod_sub')
 			->joinlangSub()
 			->where('subc_sub', FgSub::SUBC_SUB_ACTIVO)
+			->when(Config::get('app.agrsub'), function($query) {
+				$query->where('agrsub_sub', Config::get('app.agrsub'));
+			})
 			->whereExists(function($query) {
 				$query->select(DB::raw(1))
 					->from('fgasigl1')
@@ -5044,6 +5047,9 @@ class Subasta extends Model
 			->select('cod_sub')
 			->joinlangSub()
 			->where('subc_sub', FgSub::SUBC_SUB_ACTIVO)
+			->when(Config::get('app.agrsub'), function($query) {
+				$query->where('agrsub_sub', Config::get('app.agrsub'));
+			})
 			->whereExists(function($query) {
 				$query->select(DB::raw(1))
 					->from('web_favorites')

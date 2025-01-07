@@ -66,6 +66,9 @@ class Facturas extends Model
 							$query->orWhereBetween('fecha_dvc0', $interval);
 						}
 					});
+				})
+				->when(Config::get('app.agrsub'), function ($query) {
+					$query->where('FGSUB.AGRSUB_SUB', Config::get('app.agrsub'));
 				});
                 if(!empty($this->serie)){
                     $sql->where('anum_pcob',$this->serie);
@@ -135,7 +138,15 @@ class Facturas extends Model
 					$query->selectRaw('sum(imp_cobro1) as imp_cobro1');
 				}, function ($query) {
 					$query->addSelect('imp_cobro1');
-				});
+				})
+				->when(Config::get('app.agrsub'), function ($query) {
+					$query
+						->join('FXDVC0', 'FXDVC0.EMP_DVC0 = FXCOBRO1.EMP_COBRO1 and FXDVC0.ANUM_DVC0 = FXCOBRO1.AFRA_COBRO1 and FXDVC0.NUM_DVC0 = FXCOBRO1.NFRA_COBRO1')
+						->join('FGCSUB', 'FGCSUB.EMP_CSUB = FXDVC0.EMP_DVC0 and FGCSUB.AFRAL_CSUB = FXDVC0.ANUM_DVC0 and FGCSUB.NFRAL_CSUB = FXDVC0.NUM_DVC0')
+						->join('FGSUB', 'FGSUB.EMP_SUB = FGCSUB.EMP_CSUB and FGSUB.COD_SUB = FGCSUB.SUB_CSUB')
+						->where('FGSUB.AGRSUB_SUB', Config::get('app.agrsub'));
+				})
+				;
                 if(!empty(Config::get('app.allBills'))){
                     $sql->whereIn('tv_contav',[Config::get('app.allBills')]);
                 }

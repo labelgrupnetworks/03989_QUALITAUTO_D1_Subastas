@@ -818,6 +818,9 @@ class User
 						$query->orWhereBetween('fecha_csub', $interval);
 					}
 				});
+			})
+			->when(Config::get('app.agrsub'), function ($query) {
+				$query->where('SUB.AGRSUB_SUB', Config::get('app.agrsub'));
 			});
 
 		if ($value == 'S') {

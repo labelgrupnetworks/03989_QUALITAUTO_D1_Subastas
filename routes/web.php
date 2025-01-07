@@ -255,6 +255,7 @@ Route::get('/article/{id}', [PageController::class, 'getArticle']);
 Route::get(Routing::translateSeo('mapa-web'), [PageController::class, 'siteMapPage']);
 
 //Soler esta utilizando un sistema de preguntas frequentes con csv.
+//12-2024 No! ya no lo utiliza. revisar si puedo eliminar el antiguo sistema de preguntas frecuentes
 if (Config::get("app.faqs_old", 0)) {
 	Route::get(Routing::slugSeo('preguntas-frecuentes', true), [ContentController::class, 'faqs'])->name('faqs_page');
 } else {
