@@ -4276,7 +4276,7 @@ section.syncing-banner .text-block {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding-bottom: 4rem;
+	padding-bottom: 1rem;
 	font-family: var(--font-prominent);
 	font-size: var(--fs-32-64);
 	font-weight: 100;
@@ -4294,6 +4294,12 @@ section.syncing-banner .text-block {
 
 .video-banner .video-banner-btn {
 	margin-top: 1.5em;
+}
+
+@media(min-width: 992px) {
+	.video-banner .video-banner-content {
+		padding-bottom: 4rem;
+	}
 }
 
 main.private-page .container {

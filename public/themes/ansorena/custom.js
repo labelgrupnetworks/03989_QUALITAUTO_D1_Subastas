@@ -801,3 +801,13 @@ function showLoginFromModal() {
 	$('.login_desktop').fadeToggle("fast");
 	$('.login_desktop [name=email]').focus();
 }
+
+function loadVideoBanner(id, url) {
+	const video = document.getElementById(id);
+	if (!video) {
+		return;
+	}
+
+	video.src = url;
+	video.load();
+}
