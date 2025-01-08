@@ -10,6 +10,7 @@ use App\Models\V5\FgSub;
 use App\Models\V5\FgVisibilidad;
 use App\Models\V5\FgSubInvites;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 class AdminB2BVisibilitiesController extends Controller
@@ -21,6 +22,10 @@ class AdminB2BVisibilitiesController extends Controller
 		$auctionsToOwner = FgSub::query()
 			->where('agrsub_sub', $userCod)
 			->pluck('cod_sub');
+
+		$auctionVisibility = FgVisibilidad::query()
+			->whereIn('sub_visibilidad', $auctionsToOwner)
+			->first();
 
 		$visibilities = FgVisibilidad::query()
 			->with('client.invitation:owner_codcli_subinvites,invited_codcli_subinvites,invited_nom_subinvites')
@@ -36,6 +41,7 @@ class AdminB2BVisibilitiesController extends Controller
 			->paginate(40);
 
 		$tableParams = [
+			'sub_visibilidad' => 1,
 			'cli_visibilidad' => 1,
 			'clientName' => 1,
 			'email_cli' => 1,
@@ -51,6 +57,7 @@ class AdminB2BVisibilitiesController extends Controller
 
 		return view('admin::pages.b2b.visibilities.index', [
 			'visibilities' => $visibilities,
+			'auctionVisibility' => $auctionVisibility,
 			'formulario' => $formulario,
 			'tableParams' => $tableParams,
 			'numberOfColumns' => $numberOfColumns
@@ -108,7 +115,6 @@ class AdminB2BVisibilitiesController extends Controller
 			->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
-
 	public function destroy($cod_visibilidad)
 	{
 		FgVisibilidad::where('cod_visibilidad', $cod_visibilidad)->firstOrFail();
@@ -121,6 +127,42 @@ class AdminB2BVisibilitiesController extends Controller
 
 		return redirect(route('admin.b2b.visibility'))
 			->with(['success' => array(trans('admin-app.title.deleted_ok'))]);
+	}
+
+	public function showOrHideEveryone(Request $request)
+	{
+		$userCod = Session::get('user.cod');
+		$action = $request->action;
+		$state = $action === 'show' ? 'N' : 'S';
+
+		$auctionsToOwner = FgSub::query()
+			->where('agrsub_sub', $userCod)
+			->pluck('cod_sub');
+
+		if ($action === 'show') {
+
+			$visibilities = $auctionsToOwner->map(function ($auction) {
+				return [
+					'emp_visibilidad' => Config::get('app.emp'),
+					'cli_visibilidad' => null,
+					'sub_visibilidad' => $auction,
+					'ref_visibilidad' => null,
+					'inverso_visibilidad' => 'N',
+					'admin_visibilidad' => 'WEB',
+					'eliminado_visibilidad' => 'N',
+				];
+			});
+
+			FgVisibilidad::insert($visibilities->toArray());
+		} else {
+			FgVisibilidad::query()
+				->whereIn('sub_visibilidad', $auctionsToOwner)
+				->whereNull('cli_visibilidad')
+				->whereNull('ref_visibilidad')
+				->delete();
+		}
+
+		return response()->json(['success' => true]);
 	}
 
 	private function basicForm(FgVisibilidad $visibility)
@@ -143,9 +185,9 @@ class AdminB2BVisibilitiesController extends Controller
 			->pluck('description', 'ref_hces1');
 
 		return [
-			'cli_visibilidad' => FormLib::Select2WithArray('cli_visibilidad', 0, old('cli_visibilidad', $visibility->cli_visibilidad), $clients, true, false),
-			'sub_visibilidad' => FormLib::Select2WithArray('sub_visibilidad', 0, old('sub_visibilidad', $visibility->sub_visibilidad), $acutions, false, false),
-			'ref_visibilidad' => FormLib::Select2WithArray('ref_visibilidad', 0, old('ref_visibilidad', $visibility->ref_visibilidad), $lots, false, false),
+			'cli_visibilidad' => FormLib::Select2WithArray('cli_visibilidad', 0, old('cli_visibilidad', $visibility->cli_visibilidad), $clients, true),
+			'sub_visibilidad' => FormLib::Select2WithArray('sub_visibilidad', 0, old('sub_visibilidad', $visibility->sub_visibilidad), $acutions, false),
+			'ref_visibilidad' => FormLib::Select2WithArray('ref_visibilidad', 0, old('ref_visibilidad', $visibility->ref_visibilidad), $lots, true),
 		];
 	}
 }

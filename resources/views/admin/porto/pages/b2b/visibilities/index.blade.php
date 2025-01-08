@@ -22,6 +22,23 @@
         <div class="row well">
 
             <div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
+
+                <div class="left">
+                    <label for="">Por defecto:</label>
+                    <div class="btn-group ml-2" role="group" aria-label="...">
+                        <button type="button" data-action="show" @class([
+                            'btn btn-xs',
+                            'btn-primary' => $auctionVisibility?->eliminado_visibilidad !== 'S',
+                            'btn-default' => $auctionVisibility?->eliminado_visibilidad === 'S',
+                        ])>Mostrar a todos</button>
+                        <button type="button" data-action="hide" @class([
+                            'btn btn-xs',
+                            'btn-primary' => $auctionVisibility?->eliminado_visibilidad === 'S',
+							'btn-default' => $auctionVisibility?->eliminado_visibilidad !== 'S',
+                        ])>Ocultar a todos</button>
+                    </div>
+                </div>
+
                 {{-- configuracion de tabla --}}
                 <a class="btn btn-primary btn-sm" href="{{ route('admin.b2b.visibility.create') }}">
                     {{ trans('admin-app.button.new') }}
@@ -54,24 +71,23 @@
                     <tbody>
 
                         @forelse ($visibilities as $visibility)
-
                             <tr id="{{ $visibility->cod_visibilidad }}">
 
-								<td class="cli_visibilidad"
-                                    @if (!$tableParams['cli_visibilidad']) style="display: none" @endif>
-                                        {{ $visibility->cli_visibilidad }}
+                                <td class="sub_visibilidad" @if (!$tableParams['sub_visibilidad']) style="display: none" @endif>
+                                    {{ $visibility->sub_visibilidad }}
                                 </td>
-								<td class="clientName"
-                                    @if (!$tableParams['clientName']) style="display: none" @endif>
-                                        {{ $visibility->client->invitation->invited_nom_subinvites }}
+
+                                <td class="cli_visibilidad" @if (!$tableParams['cli_visibilidad']) style="display: none" @endif>
+                                    {{ $visibility->cli_visibilidad }}
                                 </td>
-								<td class="email_cli"
-                                    @if (!$tableParams['email_cli']) style="display: none" @endif>
-                                        {{ mb_strtolower($visibility->client->email_cli) }}
+                                <td class="clientName" @if (!$tableParams['clientName']) style="display: none" @endif>
+                                    {{ $visibility?->client?->invitation->invited_nom_subinvites }}
                                 </td>
-								<td class="ref_visibilidad"
-                                    @if (!$tableParams['ref_visibilidad']) style="display: none" @endif>
-                                        {{ $visibility->ref_visibilidad }}
+                                <td class="email_cli" @if (!$tableParams['email_cli']) style="display: none" @endif>
+                                    {{ mb_strtolower($visibility?->client?->email_cli) }}
+                                </td>
+                                <td class="ref_visibilidad" @if (!$tableParams['ref_visibilidad']) style="display: none" @endif>
+                                    {{ $visibility->ref_visibilidad }}
                                 </td>
 
                                 <td>
@@ -96,7 +112,6 @@
                                     <h3 class="text-center">{{ trans('admin-app.title.without_results') }}</h3>
                                 </td>
                             </tr>
-
                         @endforelse
                     </tbody>
                 </table>
@@ -109,7 +124,9 @@
             {{ $visibilities->links() }}
         </div>
 
-        @include('admin::includes._delete_modal', ['routeToDelete' => route('admin.b2b.visibility.destroy', [0])])
+        @include('admin::includes._delete_modal', [
+            'routeToDelete' => route('admin.b2b.visibility.destroy', [0]),
+        ])
 
         <script>
             $('#deleteModal').on('show.bs.modal', function(event) {
@@ -125,6 +142,29 @@
                 var modal = $(this);
                 modal.find('.modal-title').text(name);
             });
+
+			$('[data-action]').on('click', function() {
+				var action = $(this).data('action');
+				var url = '{{ route('admin.b2b.visibility.showOrHideEveryone') }}';
+				var data = {
+					'action': action,
+				};
+
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: data,
+					success: function(response) {
+						location.reload();
+					},
+					error: function(response) {
+						console.log(response);
+					}
+				});
+
+			});
+
+
         </script>
 
     </section>
