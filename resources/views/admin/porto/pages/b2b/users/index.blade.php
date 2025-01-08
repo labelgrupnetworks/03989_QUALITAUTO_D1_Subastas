@@ -161,6 +161,16 @@
                     </button>
                     <h4 class="modal-title" id="importExcelLabel">Importar Archivo Excel</h4>
                 </div>
+
+				<div class="modal-body">
+					<div class="form-group">
+						<a href="/themes/b2b/assets/files/plantilla_clientes.xlsx" class="btn btn-sm btn-success" download>
+							<i class="fa fa-download"></i>
+							Descargar Plantilla Excel
+						</a>
+					</div>
+				</div>
+
                 <form id="importExcelForm" action="{{ route('admin.b2b.users.import') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
