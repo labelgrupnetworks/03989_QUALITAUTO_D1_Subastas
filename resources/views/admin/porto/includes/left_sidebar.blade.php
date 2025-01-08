@@ -4,6 +4,8 @@ $traducciones = new \App\Models\Translate();
 $trans = $traducciones->headersTrans();
 $idiomes = \Config::get('app.locales');
 $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
+
+$isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
 ?>
 <aside class="sidebar-left" id="sidebar-left">
 
@@ -28,6 +30,22 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                             <span>{{ trans('admin-app.nav_menu.web') }}</span>
                         </a>
                     </li>
+
+                    @if ($isB2bWihtLabel)
+                        <li>
+                            <a href="{{ route('admin.b2b.companies') }}">
+                                <i class="fa fa-building" aria-hidden="true"></i>
+                                <span>Empresas</span>
+                            </a>
+                        </li>
+						<li>
+							<a href="{{ route('clientes.index') }}">
+								<i class="fa fa-user" aria-hidden="true"></i>
+								<span>{{ trans('admin-app.nav_menu.clients') }}</span>
+							</a>
+						</li>
+
+                    @endif
 
                     @if (!in_array('b2b', $config_menu_admin))
                         <li class="nav-parent @if (request('menu', '') == 'usuarios' || (!empty($menu) && $menu == 'usuarios')) nav-expanded @endif">
@@ -68,18 +86,17 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                         </li>
                     @endif
 
-                    @if (
-                        !in_array('b2b', $config_menu_admin) &&
-                            (in_array('subastas', $config_menu_admin) ||
-                                in_array('newsubastas', $config_menu_admin) ||
-                                in_array('concursal', $config_menu_admin) ||
-                                in_array('ordenLotesDestacados', $config_menu_admin)))
+                    @if (in_array('subastas', $config_menu_admin) ||
+                            in_array('newsubastas', $config_menu_admin) ||
+                            in_array('concursal', $config_menu_admin) ||
+                            in_array('ordenLotesDestacados', $config_menu_admin) ||
+                            $isB2bWihtLabel)
                         <li class="nav-parent @if (request('menu', '') == 'subastas' || (!empty($menu) && $menu == 'subastas')) nav-expanded @endif">
                             <a href="#">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
                                 <span>{{ trans('admin-app.nav_menu.auctions') }}</span>
                             </a>
-                            @if (in_array('newsubastas', $config_menu_admin))
+                            @if (in_array('newsubastas', $config_menu_admin) || $isB2bWihtLabel)
                                 <ul class="nav nav-children">
                                     <li>
                                         <a href="{{ route('subastas.index') }}">
@@ -317,7 +334,7 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                             </a>
                         </li>
                     @endif
-                    @if (in_array('newbanner', $config_menu_admin))
+                    @if (in_array('newbanner', $config_menu_admin) || $isB2bWihtLabel)
                         <li>
                             <a href="/admin/newbanner">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
@@ -463,7 +480,7 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                         </li>
                     @endif
 
-                    @if (in_array('content_page', $config_menu_admin))
+                    @if (in_array('content_page', $config_menu_admin) || $isB2bWihtLabel)
                         <li>
                             <a href="/admin/content">
                                 <i class="fa fa-desktop" aria-hidden="true"></i>
@@ -550,31 +567,13 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                         </li>
                     @endif
 
-
-                    @if (in_array('b2b', $config_menu_admin))
-
-                        @if ($isLabelAdmin)
-                            <li>
-                                <a href="{{ route('admin.b2b.companies') }}">
-                                    <i class="fa fa-building" aria-hidden="true"></i>
-                                    <span>Empresas</span>
-                                </a>
-                            </li>
-                        @endif
-
+                    @if (in_array('b2b', $config_menu_admin) && !$isLabelAdmin)
                         <li>
                             <a href="{{ route('admin.b2b.users') }}">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 <span>Usuarios</span>
                             </a>
                         </li>
-
-                       {{--  <li>
-                            <a href="{{ route('admin.b2b.visibility') }}">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span>Visibilidad</span>
-                            </a>
-                        </li> --}}
 
                         <li>
                             <a href="{{ route('admin.b2b.lots') }}">

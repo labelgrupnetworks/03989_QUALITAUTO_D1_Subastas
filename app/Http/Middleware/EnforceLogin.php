@@ -25,6 +25,8 @@ class EnforceLogin
 		}
 
 		$excludedRoutes = [
+			'home.redirect',
+			'home',
 			'user.login-page',
 			'user.login_post_ajax',
 			'user.password_recovery',

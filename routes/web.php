@@ -64,7 +64,7 @@ Route::get('/img/converter/{imagePathToBase64Url}', [ImageController::class, 'co
 //redireccionamos de la raiz al idioma principal
 Route::get('', function () {
 	return redirect("/" . App::getLocale(), 301);
-});
+})->name('home.redirect');
 
 Route::get(Routing::is_home(), [HomeController::class, 'index'])->name('home');
 Route::any('prueba', [Prueba::class, 'index'])->name('prueba');

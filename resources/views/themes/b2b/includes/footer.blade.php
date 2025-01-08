@@ -21,11 +21,7 @@
             <div class="col-6 col-lg-4 order-2">
                 <h5>{{ trans($theme . '-app.foot.term_condition') }}</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2">
-                        <a class="nav-link p-0"
-                            href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.term_condition') }}"
-                            title="{{ trans($theme . '-app.foot.term_condition') }}">{{ trans($theme . '-app.foot.term_condition') }}</a>
-                    </li>
+
                     <li class="nav-item mb-2">
                         <a class="nav-link p-0"
                             href="{{ Routing::translateSeo('pagina') . trans($theme . '-app.links.privacy') }}"

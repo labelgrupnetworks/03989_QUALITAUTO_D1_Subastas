@@ -174,7 +174,7 @@ h1 {
 }
 
 
-main {
+main:not(.home) {
 	margin-bottom: 3rem;
 	margin-top: 3rem;
 }
@@ -218,6 +218,7 @@ footer .nav-link {
 	--bs-nav-link-color: var(--lb-color-primary);
 	--bs-nav-link-hover-color: #808080;
 	transition: color 300ms linear;
+	display: inline;
 }
 
 footer .btn.nav-link {
