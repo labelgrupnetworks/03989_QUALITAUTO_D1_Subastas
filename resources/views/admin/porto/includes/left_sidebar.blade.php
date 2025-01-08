@@ -569,12 +569,12 @@ $isLabelAdmin = strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM';
                             </a>
                         </li>
 
-                        <li>
+                       {{--  <li>
                             <a href="{{ route('admin.b2b.visibility') }}">
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 <span>Visibilidad</span>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li>
                             <a href="{{ route('admin.b2b.lots') }}">
