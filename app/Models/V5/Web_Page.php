@@ -55,4 +55,21 @@ class Web_Page extends Model
 	{
 		return self::where('key_web_page', $key)->first()->id_web_page;
 	}
+
+	public function toArrayWithoutAppends()
+	{
+		// Guardar los valores actuales de `appends`
+		$originalAppends = $this->appends;
+
+		// Vaciar los atributos calculados
+		$this->appends = [];
+
+		// Convertir a array
+		$array = $this->toArray();
+
+		// Restaurar los valores originales de `appends`
+		$this->appends = $originalAppends;
+
+		return $array;
+	}
 }
