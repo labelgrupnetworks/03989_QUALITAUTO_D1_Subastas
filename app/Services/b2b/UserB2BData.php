@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\b2b;
+namespace App\Services\b2b;
 
 use App\Models\V5\FgSubInvites;
 

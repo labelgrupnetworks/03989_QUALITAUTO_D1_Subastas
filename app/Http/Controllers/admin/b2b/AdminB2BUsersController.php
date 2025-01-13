@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\admin\b2b;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\b2b\OwnerB2BData;
-use App\Http\Services\b2b\UserB2BData;
-use App\Http\Services\b2b\UserB2BService;
+use App\Services\b2b\OwnerB2BData;
+use App\Services\b2b\UserB2BData;
+use App\Services\b2b\UserB2BService;
 use App\libs\FormLib;
 use App\Models\V5\FgSub;
 use App\Models\V5\FgSubInvites;

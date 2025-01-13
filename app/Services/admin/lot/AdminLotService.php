@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\admin\lot;
+namespace App\Services\admin\lot;
 
 use App\Http\Controllers\apilabel\ImgController;
 use App\Http\Controllers\apilabel\LotController;

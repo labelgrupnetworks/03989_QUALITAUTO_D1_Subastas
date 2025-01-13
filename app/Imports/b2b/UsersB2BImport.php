@@ -2,8 +2,8 @@
 
 namespace App\Imports\b2b;
 
-use App\Http\Services\b2b\UserB2BData;
-use App\Http\Services\b2b\UserB2BService;
+use App\Services\b2b\UserB2BData;
+use App\Services\b2b\UserB2BService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;

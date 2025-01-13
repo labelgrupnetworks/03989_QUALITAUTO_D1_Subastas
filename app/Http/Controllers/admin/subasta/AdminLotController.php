@@ -40,7 +40,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\externalAggregator\Invaluable\House;
-use App\Http\Services\admin\lot\AdminLotService;
+use App\Services\admin\lot\AdminLotService;
 use App\Models\V5\FgHces1Files;
 use App\Support\ArrayHelper;
 use Illuminate\Http\JsonResponse;
