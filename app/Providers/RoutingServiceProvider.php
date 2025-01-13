@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,12 @@ class RoutingServiceProvider extends ServiceProvider
 
 	public static function seo_rutes()
 	{
+		if(!Schema::hasTable('web_seo_routes')){
+			Config::set('routes_SEO', []);
+			Config::set('translate_SEO', []);
+			return;
+		}
+
 		// $seo_routes = DB::select("SELECT * FROM WEB_SEO_ROUTES WHERE ID_EMP = '".Config::get('app.main_emp')."'");
 		$sql = "SELECT * FROM WEB_SEO_ROUTES WHERE ID_EMP = '" . Config::get('app.main_emp') . "'";
 		$seo_routes = CacheLib::useCache('WEB_SEO_ROUTES', $sql, array(), 100);
