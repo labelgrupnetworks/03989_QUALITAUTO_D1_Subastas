@@ -861,3 +861,7 @@ footer {
 		margin-bottom: 0px;
 	}
 }
+
+.ficha-live-btn-link {
+	display: none;
+}
