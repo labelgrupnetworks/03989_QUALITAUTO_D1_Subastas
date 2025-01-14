@@ -96,7 +96,7 @@ class NewsletterSubscriptionController extends ApiLabelController
 			$rules = ['email' => "required|email|max:260"];
 
 			$newsletterSuscription =  new Fx_Newsletter_Suscription();
-			$this->erase($whereVars, $rules, $this->newsletterSuscriptionRename, $newsletterSuscription);
+			$this->erase($whereVars, $rules, $this->newsletterSuscriptionRename, $newsletterSuscription, false);
 			DB::commit();
 			return $this->responseSuccsess();
 		} catch (\Exception $e) {
