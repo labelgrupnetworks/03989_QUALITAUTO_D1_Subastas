@@ -6,8 +6,10 @@
 |--------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel'], function () {
+use App\Http\Controllers\apilabel\NewsletterSubscriptionController;
+use Illuminate\Support\Facades\Route;
 
+Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel'], function () {
 	Route::GET('/test', 'test@index');
 });
 
@@ -99,4 +101,10 @@ Route::group(['prefix' => 'apilabel', 'namespace' => 'apilabel', 'middleware' =>
 	Route::POST('/invaluable_lot', 'InvaluableController@lot');
 	Route::PUT('/invaluable_lot', 'InvaluableController@lot');
 	Route::DELETE('/invaluable_lot', 'InvaluableController@deleteLot');
+
+	#NEWSLETTER SUSCRIPTIONS
+	Route::get('/newsletter', [NewsletterSubscriptionController::class, 'getNewsletterSubscription']);
+	Route::post('/newsletter', [NewsletterSubscriptionController::class, 'postNewsletterSubscription']);
+	Route::delete('/newsletter', [NewsletterSubscriptionController::class, 'deleteNewsletterSubscription']);
+
 });

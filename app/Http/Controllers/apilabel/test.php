@@ -1123,6 +1123,49 @@ class test extends BaseController
 	}
 	# FIN INVALUABLE
 
+	//http://subastas.test/apilabel/test?function=postNewsletter&testmode=CONTROLLER
+	public function postNewsletter()
+	{
+		$items = [
+			[
+				'email' => "enadal@labelgrup.com",
+				'lang' => "ES",
+				'family' => "1"
+			],
+			[
+				'email' => "enadal@labelgrup.com",
+				'lang' => "ES",
+				'family' => "2"
+			],
+		];
+
+		$this->excuteMode($items ,"POST","newsletter", new NewsletterSubscriptionController(), "createNewsletterSubscription");
+	}
+
+	//http://subastas.test/apilabel/test?function=getNewsletterSubscription&testmode=CONTROLLER
+	public function getNewsletterSubscription()
+	{
+		$parameters = [
+			'email' => 'enadal@labelgrup.com',
+			// 'family' => '3',
+			// 'startdate' => '2020-01-01',
+			// 'enddate' => '2024-12-31'
+		];
+
+		$this->excuteMode($parameters, "GET", "newsletter", new NewsletterSubscriptionController(), "showNewsletterSubscription");
+	}
+
+	//http://subastas.test/apilabel/test?function=deleteNewsletterSubscription&testmode=CONTROLLER
+	public function deleteNewsletterSubscription()
+	{
+		$parameters = [
+			'email' => 'enadal@labelgrup.com',
+			'family' => '3'
+		];
+
+		$this->excuteMode($parameters, "DELETE", "newsletter", new NewsletterSubscriptionController(), "eraseNewsletterSubscription");
+	}
+
     #fin de test peticiones api
 
     private function excuteMode($parameters, $method, $name, $controller, $function){
