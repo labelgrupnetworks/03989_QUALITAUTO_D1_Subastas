@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use App\Actions\Observability\RecipientsNotificationList;
+use App\Events\user\UserNewsletterSubscribed;
+use App\Listeners\user\NotifySubscriptionToClientWebService;
+use App\Listeners\user\NotifySubscriptionToMailingService;
+use App\Listeners\user\SendSubscriptionConfirmationEmail;
 use App\Notifications\BusyJobs;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +26,11 @@ class EventServiceProvider extends ServiceProvider
 	protected $listen = [
 		Registered::class => [
 			SendEmailVerificationNotification::class,
+		],
+		UserNewsletterSubscribed::class => [
+			SendSubscriptionConfirmationEmail::class,
+			NotifySubscriptionToClientWebService::class,
+			NotifySubscriptionToMailingService::class,
 		],
 	];
 

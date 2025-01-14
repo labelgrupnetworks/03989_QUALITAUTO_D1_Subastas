@@ -63,19 +63,10 @@ class Newsletter
 
 		Fx_Newsletter_Suscription::insertWithDefaultValues($suscriptions);
 
-		$this->subscribeToExternalService($this->email);
-
 		//duran necesita tener en cliweb nllist1_cliweb = 'S' ya que lo envía al webservice
-		if(Config::get('app.save_newsletter_in_cliweb', false)) {
+		if (Config::get('app.save_newsletter_in_cliweb', false)) {
 			FxCliWeb::where('LOWER(USRW_CLIWEB)', strtolower($this->email))
 				->update(['NLLIST1_CLIWEB' => 'S']);
-		}
-
-		//Soporte Concursal queria que también se enviara el registro en la newsletter
-		$email = new EmailLib('USER_NEWSLETTER');
-		if (!empty($email->email)) {
-			$email->setTo(strtolower($this->email));
-			$email->send_email();
 		}
 	}
 
@@ -135,7 +126,7 @@ class Newsletter
 	public function deleteSuscriptions(string $email, bool $checkForGroup = false)
 	{
 		Fx_Newsletter_Suscription::whereEmail($email)
-			->when(!$checkForGroup, function($query) {
+			->when(!$checkForGroup, function ($query) {
 				$query->WhereEmp();
 			})
 			->delete();
@@ -198,21 +189,20 @@ class Newsletter
 	 * Crea o modifica la información de newsletters
 	 * en plataformas externas
 	 */
-	public function subscribeToExternalService($email_cli)
+	public function subscribeToExternalService($email_cli): void
 	{
 		if (!$sendToExternalService = config('app.mailing_service', null)) {
-			return false;
+			return;
 		}
 
 		$service = "App\Http\Controllers\\externalws\mailing\services\\$sendToExternalService";
 		if (!class_exists($service)) {
-			return false;
+			return;
 		}
 
 		$externalMailingService = new ExternalMailingController(new $service());
 		$externalMailingService->add($email_cli);
-
-		return true;
+		return;
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\user\UserNewsletterSubscribed;
 use App\Exports\MailChimpExport;
 use App\libs\SeoLib;
 use App\Models\Newsletter;
@@ -54,6 +55,7 @@ class NewsletterController extends Controller
 			? $this->setNewNewsletters($lang, $email, $families, $cehckForGroup)
 			: $this->setOldNewsletter($lang, $email, $families);
 
+
 		return $result;
 	}
 
@@ -81,6 +83,8 @@ class NewsletterController extends Controller
 		$this->newsletterModel
 			->setAttributes($lang, $email, $families)
 			->suscribe($cehckForGroup);
+
+		event(new UserNewsletterSubscribed($email));
 
 		return [
 			'status' => 'success',
@@ -119,6 +123,8 @@ class NewsletterController extends Controller
 		if (!empty($news->families)) {
 			$news->newFamilies();
 		}
+
+		event(new UserNewsletterSubscribed($email));
 
 		return [
 			'status' => 'success',
@@ -211,10 +217,7 @@ class NewsletterController extends Controller
 		};
 
 		dd('fin');
-
 		//dd($users->count(), $users, $suscriptions);
-
-
 	}
 
 	public function mailchimpExportCsv()
