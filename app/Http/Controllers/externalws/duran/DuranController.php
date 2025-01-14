@@ -8,8 +8,9 @@ use SoapClient;
 use SoapVar;
 use SimpleXMLElement;
 use App\libs\EmailLib;
-use Hamcrest\Arrays\IsArray;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 
 class DuranController extends Controller
 {
@@ -48,6 +49,10 @@ class DuranController extends Controller
 			}
 
 			$xmlRes =  new SimpleXMLElement($res->AccesoWbResult);
+
+			if(Config::get('app.logginWS',false)){
+				Log::info('Duran Ws', ['petición' => $stringXML, 'respuesta' => $xmlRes]);
+			}
 
 			if( request("debug")==1){
 
