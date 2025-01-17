@@ -247,8 +247,8 @@
                                     href="{{ $url_lotes }}">{{ trans(\Config::get('app.theme') . '-app.foot.direct_sale') }}</a>
                             @endif
 
-                            {{-- <a
-                                href="{{ Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a> --}}
+                            <a
+                                href="{{ Routing::translateSeo('subastas-historicas') }}">{{ trans("$theme-app.foot.historico") }}</a>
 
                             @if ($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
                                 <a

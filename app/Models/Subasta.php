@@ -24,6 +24,7 @@ use DateTime;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\libs\SeoLib;
+use App\Models\V5\AucSessions;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FgSubInvites;
 use Illuminate\Support\Facades\Session;
@@ -5225,6 +5226,33 @@ class Subasta extends Model
 
 		static::$allAuctions = $subastas;
 		return $subastas;
+	}
+
+	public function getStaticHistoricAuctionsWithoutEmp(array $whereEmps, $toDate)
+	{
+		$staticAuctions = FgSub::query()
+			->select('cod_sub')
+			->withoutGlobalScopes()
+			->where('subc_sub', 'H')
+			->where('hfec_sub', '<', date($toDate))
+			->whereIn('emp_sub', $whereEmps)
+			->pluck('cod_sub');
+
+		$staticAucSession = AucSessions::query()
+			->select([
+				'"company"',
+				'"auction"',
+				'"name"',
+				'"reference"',
+				'"start"',
+			])
+			->withoutGlobalScopes()
+			->whereIn('"auction"', $staticAuctions)
+			->whereIn('"company"', $whereEmps)
+			->orderBy('"start"', 'desc')
+			->get();
+
+		return $staticAucSession;
 	}
 
 }
