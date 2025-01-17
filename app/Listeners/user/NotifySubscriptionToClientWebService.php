@@ -27,7 +27,6 @@ class NotifySubscriptionToClientWebService
 	public function handle(UserNewsletterSubscribed $event)
 	{
 		if(!Config::get('app.WebServiceClientNewsletter')) {
-			Log::debug('Client Web Service is disabled');
 			return;
 		}
 
