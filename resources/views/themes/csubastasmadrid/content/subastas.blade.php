@@ -46,6 +46,8 @@
 			foreach ($data['auction_list'] as $value) {
 			    $year = date('Y', strtotime($value->session_start));
 
+				if($year < '2025') continue;
+
 			    $historico[$year][$value->cod_sub][] = $value;
 			    usort($historico[$year][$value->cod_sub], function ($a, $b) {
 			        return strcmp($a->reference, $b->reference);
@@ -80,6 +82,30 @@
 					@endforeach
 				@endforeach
 			@endforeach
+
+			@php
+				$empToHistoric = Config::get('app.main_emp') == '006' ? ['006'] : ['002', '005'];
+				$toDate = '2025-01-01';
+				$staticAuctions = (new App\Models\Subasta())->getStaticHistoricAuctionsWithoutEmp($empToHistoric, $toDate)
+						->selectRaw('nvl(descdet_sub_lang, descdet_sub) as descdet_sub')
+						->get();
+
+				$staticAuctionsForYear = $staticAuctions->groupBy(function ($item) {
+					return date('Y', strtotime($item->start));
+				});
+			@endphp
+
+			@foreach ($staticAuctionsForYear as $year => $auctions)
+			<div class="col-xs-12 sub-h">
+				<div class="dat">
+					{{ $year }}
+				</div>
+			</div>
+				@foreach ($auctions as $auction)
+					@include('front::includes.subasta_h', ['subasta' => $auction])
+				@endforeach
+			@endforeach
+
 		@else
 			<div class=" col-lg-12">
 				<h1 class="tit text-center"> {{ trans(\Config::get('app.theme') . '-app.subastas.not-register') }}</h1>

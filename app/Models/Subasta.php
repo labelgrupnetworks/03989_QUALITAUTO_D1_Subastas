@@ -5241,12 +5241,11 @@ class Subasta extends Model
 				'"upCatalogo"',
 			])
 			->withoutGlobalScopes()
-			->joinFgSub()
+			->joinLocaleFgSub()
 			->where('subc_sub', 'H')
 			->where('"start"', '<', date($toDate))
 			->whereIn('emp_sub', $whereEmps)
-			->orderBy('"start"', 'desc')
-			->get();
+			->orderBy('"start"', 'desc');
 	}
 
 }

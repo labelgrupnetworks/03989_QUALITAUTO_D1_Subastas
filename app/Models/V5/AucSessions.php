@@ -83,6 +83,18 @@ class AucSessions extends Model
 		return $query->join('fgsub', '"company" = emp_sub AND "auction" = cod_sub');
 	}
 
+	public function scopeJoinLocaleFgSub($query)
+	{
+		$lang = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
+
+		$query->join('fgsub', '"company" = emp_sub AND "auction" = cod_sub')
+			->leftjoin('fgsub_lang', function ($join) use ($lang) {
+				$join->on('fgsub.emp_sub', '=', 'fgsub_lang.emp_sub_lang')
+					->on('fgsub.cod_sub', '=', 'fgsub_lang.cod_sub_lang')
+					->where('fgsub_lang.lang_sub_lang', $lang);
+			});
+	}
+
 	public function scopeJoinUsr($query)
 	{
 		return $query->leftjoin("FSUSR", 'FSUSR.COD_USR = "auc_sessions"."usr_update_sessions"');
