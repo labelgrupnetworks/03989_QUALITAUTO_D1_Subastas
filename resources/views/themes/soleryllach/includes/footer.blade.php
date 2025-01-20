@@ -40,7 +40,7 @@
                     />
                     <ul class="module_wrapper">
                             <address>
-									Soler y Llach Auctions<br>
+									Soler y Llach<br>
                                     <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
                                     <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> </br>
                                     <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?>  <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>

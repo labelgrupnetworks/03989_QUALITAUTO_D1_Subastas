@@ -236,7 +236,8 @@
 			@php
 				$empToHistoric = Config::get('app.main_emp') == '006' ? ['006'] : ['002', '005'];
 				$toDate = '2025-01-01';
-				$staticAuctions = (new App\Models\Subasta())->getStaticHistoricAuctionsWithoutEmp($empToHistoric, $toDate);
+				$staticAuctions = (new App\Models\Subasta())->getStaticHistoricAuctionsWithoutEmp($empToHistoric, $toDate)
+					->get();
 				$staticAuctionsForYear = $staticAuctions->groupBy(function ($item) {
 					return date('Y', strtotime($item->start));
 				});
