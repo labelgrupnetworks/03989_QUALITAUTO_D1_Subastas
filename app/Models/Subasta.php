@@ -5227,25 +5227,4 @@ class Subasta extends Model
 		static::$allAuctions = $subastas;
 		return $subastas;
 	}
-
-	public function getStaticHistoricAuctionsWithoutEmp(array $whereEmps, $toDate)
-	{
-		return AucSessions::query()
-			->select([
-				'"company"',
-				'"auction"',
-				'"name"',
-				'"reference"',
-				'"start"',
-				'"upPrecioRealizado"',
-				'"upCatalogo"',
-			])
-			->withoutGlobalScopes()
-			->joinLocaleFgSub()
-			->where('subc_sub', 'H')
-			->where('"start"', '<', date($toDate))
-			->whereIn('emp_sub', $whereEmps)
-			->orderBy('"start"', 'desc');
-	}
-
 }

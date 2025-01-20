@@ -1,3 +1,7 @@
+@php
+use App\Models\V5\AucSessions;
+@endphp
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -236,8 +240,7 @@
 			@php
 				$empToHistoric = Config::get('app.main_emp') == '006' ? ['006'] : ['002', '005'];
 				$toDate = '2025-01-01';
-				$staticAuctions = (new App\Models\Subasta())->getStaticHistoricAuctionsWithoutEmp($empToHistoric, $toDate)
-					->get();
+				$staticAuctions = AucSessions::getHistoricAuctionsWithoutEmp($empToHistoric, $toDate);
 				$staticAuctionsForYear = $staticAuctions->groupBy(function ($item) {
 					return date('Y', strtotime($item->start));
 				});

@@ -39,13 +39,24 @@
                         style="height:auto;"
                     />
                     <ul class="module_wrapper">
-                            <address>
-									Soler y Llach<br>
-                                    <?= !empty($empresa->dir_emp)? $empresa->dir_emp : ''; ?><br>
-                                    <?= !empty($empresa->cp_emp)? $empresa->cp_emp : ''; ?> <?= !empty($empresa->pob_emp)? $empresa->pob_emp : ''; ?> </br>
-                                    <?= !empty($empresa->tel1_emp)? $empresa->tel1_emp : ''; ?>  <a title="<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>" href="mailto:<?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?>"><?= !empty($empresa->email_emp)? $empresa->email_emp : ''; ?></a>
-                           </address>
-                        </ul>
+						<li class="module_title secondary-color">
+							<span>En Madrid</span>
+							<address class="mt-0">
+								<a href="tel:+34910773236">+34 91 077 32 36</a><br>
+								<a href="mailto:info@soleryllach.com">info@soleryllach.com</a>
+							</address>
+						<li>
+
+						<li class="module_title secondary-color">
+							<span>En Barcelona</span>
+							<address class="mt-0">
+								<span>Beethoven 13</span><br>
+								<span>08021 Barcelona</span><br>
+								<a href="tel:+34932018733">+34 93 201 87 33</a><br>
+								<a href="mailto:info@soleryllach.com">info@soleryllach.com</a>
+							</address>
+						<li>
+                    </ul>
                 </div>
 
                 <div class="col-xs-12 col-md-3">

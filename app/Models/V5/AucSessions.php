@@ -134,4 +134,34 @@ class AucSessions extends Model
 			->orderBy('"reference"')
 			->first();
 	}
+
+	/**
+	 * Query para obtener subasta históricas hasta la fecha indicada y sin tener en cuenta la empresa
+	 * Para en Soler y CSM poder mostrar las subastas de empresas distintas a la actual.
+	 * @param string $toDate
+	 * @return Builder
+	 */
+	public static function getHistoricAuctionsWithoutEmp(array $whereEmps, string $toDate, array $options = [])
+	{
+		return self::query()
+			->select([
+				'"company"',
+				'"auction"',
+				'"name"',
+				'"reference"',
+				'"start"',
+				'"upPrecioRealizado"',
+				'"upCatalogo"',
+			])
+			->when(data_get($options, 'with_description', false), function ($query) {
+				$query->selectRaw('nvl(descdet_sub_lang, descdet_sub) as descdet_sub');
+			})
+			->withoutGlobalScopes()
+			->joinLocaleFgSub()
+			->where('subc_sub', FgSub::SUBC_SUB_HISTORICO)
+			->where('"start"', '<', date($toDate))
+			->whereIn('emp_sub', $whereEmps)
+			->orderBy('"start"', 'desc')
+			->get();
+	}
 }
