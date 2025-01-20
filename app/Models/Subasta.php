@@ -5230,29 +5230,23 @@ class Subasta extends Model
 
 	public function getStaticHistoricAuctionsWithoutEmp(array $whereEmps, $toDate)
 	{
-		$staticAuctions = FgSub::query()
-			->select('cod_sub')
-			->withoutGlobalScopes()
-			->where('subc_sub', 'H')
-			->where('hfec_sub', '<', date($toDate))
-			->whereIn('emp_sub', $whereEmps)
-			->pluck('cod_sub');
-
-		$staticAucSession = AucSessions::query()
+		return AucSessions::query()
 			->select([
 				'"company"',
 				'"auction"',
 				'"name"',
 				'"reference"',
 				'"start"',
+				'"upPrecioRealizado"',
+				'"upCatalogo"',
 			])
 			->withoutGlobalScopes()
-			->whereIn('"auction"', $staticAuctions)
-			->whereIn('"company"', $whereEmps)
+			->joinFgSub()
+			->where('subc_sub', 'H')
+			->where('"start"', '<', date($toDate))
+			->whereIn('emp_sub', $whereEmps)
 			->orderBy('"start"', 'desc')
 			->get();
-
-		return $staticAucSession;
 	}
 
 }

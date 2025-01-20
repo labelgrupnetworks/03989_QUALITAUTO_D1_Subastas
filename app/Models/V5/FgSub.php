@@ -170,6 +170,11 @@ class FgSub extends Model
 		return $query;
 	}
 
+	public function scopeSimpleJoinSessionSub($query)
+	{
+		return $query->join('"auc_sessions"', '"company" = emp_sub AND "auction" = cod_sub');
+	}
+
 	public function scopeGetInfoSession($query, $refSession)
 	{
 		if (empty($refSession)) {

@@ -269,6 +269,7 @@
 							{{ $auction->name }}
 						</div>
 
+						@if($auction->uppreciorealizado == 'S')
 						<p class="text-center">
 							<a class="btn btn-subasta"
 								href="{{ "/files/{$auction->company}_{$auction->auction}_{$auction->reference}_pre_es.pdf" }}"
@@ -277,15 +278,18 @@
 								{{ trans(\Config::get('app.theme') . '-app.subastas.pdf_adj') }}
 							</a>
 						</p>
+						@endif
 
+						@if($auction->upcatalogo == 'S')
 						<p class="text-center">
 							<a class="btn btn-subasta"
 								href="{{ "/files/{$auction->company}_{$auction->auction}_{$auction->reference}_cat_es.pdf" }}"
 								title="{{ trans(\Config::get('app.theme') . '-app.grid.pdf_adj') }}"
 								target="_blank">
-								Catálogo en PDF
+								{{ trans("$theme-app.subastas.pdf_catalog") }}
 							</a>
 						</p>
+						@endif
 
 					</div>
 				</div>
