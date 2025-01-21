@@ -9,8 +9,13 @@
 	<div class="color-letter">
 		<div class="container">
 			<div class="row">
-				<div class="col-xs-12 text-center">
-					<h1 class="titlePage">{{ trans(\Config::get('app.theme') . '-app.user_panel.mi_cuenta') }}</h1>
+				<div class="col-xs-12">
+					<h1 class="titlePage user-dashboard-title">
+						{{ trans(\Config::get('app.theme') . '-app.user_panel.mi_cuenta') }}
+					</h1>
+					<h4 class="user-dashboard-notice">
+						{{ trans("$theme-app.user_panel.services_update") }}
+					</h4>
 				</div>
 			</div>
 		</div>

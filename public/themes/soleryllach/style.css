@@ -5728,3 +5728,13 @@ reinicializo estilo para no afectar al resto de páginas
 	line-height: 1;
 	margin-bottom: .5rem;
 }
+
+h1.user-dashboard-title {
+	margin-bottom: 0;
+}
+
+.user-dashboard-notice {
+	color: #ff1e0d;
+	margin-bottom: 2rem;
+	font-weight: bold;
+}
