@@ -166,6 +166,9 @@ class CustomControllers extends Controller
 			}, function ($query) {
 				return $query->where('SUBC_SUB', 'S');
 			})
+			->when(Config::get('app.agrsub', null), function ($query) {
+				return $query->where('agrsub_sub', Config::get('app.agrsub'));
+			})
 			//orden ascendente solo para probar subasta, dejar en desc cuando este en producción
 			//->orderby("session_start", "asc")
 			->orderby("session_start", "desc")

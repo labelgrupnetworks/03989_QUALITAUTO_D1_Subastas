@@ -40,7 +40,7 @@
                     />
                     <ul class="module_wrapper">
 						<li class="module_title secondary-color">
-							<span>En Madrid</span>
+							<span>{{ trans("$theme-app.foot.in_madrid") }}</span>
 							<address class="mt-0">
 								<a href="tel:+34910773236">+34 91 077 32 36</a><br>
 								<a href="mailto:info@soleryllach.com">info@soleryllach.com</a>
@@ -48,7 +48,7 @@
 						<li>
 
 						<li class="module_title secondary-color">
-							<span>En Barcelona</span>
+							<span>{{ trans("$theme-app.foot.in_barcelona") }}</span>
 							<address class="mt-0">
 								<span>Beethoven 13</span><br>
 								<span>08021 Barcelona</span><br>
