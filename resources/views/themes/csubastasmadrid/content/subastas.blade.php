@@ -1,115 +1,131 @@
+@php
+    use App\Models\V5\AucSessions;
+@endphp
+
 <div class="container">
-	<div class="row">
-		<div class="col-xs-12">
-			@if (request('finished') == 'true')
-				<h1 class="titlePage"> {{ trans(\Config::get('app.theme') . '-app.subastas.price_made_long') }}</h1>
-			@else
-				<h1 class="titlePage"> {{ $data['name'] }}</h1>
-			@endif
-		</div>
-		<?php
-		if (!empty($_GET['finished'])) {
-		    foreach ($data['auction_list'] as $key => $sub_finished) {
-		        if (strtotime($sub_finished->session_end) <= time() && $_GET['finished'] == 'false') {
-		            unset($data['auction_list'][$key]);
-		        } elseif (strtotime($sub_finished->session_end) > time() && $_GET['finished'] == 'true') {
-		            unset($data['auction_list'][$key]);
-		            krsort($data['auction_list']);
-		        }
-		    }
-		}
-		?>
+    <div class="row">
+        <div class="col-xs-12">
+            @if (request('finished') == 'true')
+                <h1 class="titlePage"> {{ trans(\Config::get('app.theme') . '-app.subastas.price_made_long') }}</h1>
+            @else
+                <h1 class="titlePage"> {{ $data['name'] }}</h1>
+            @endif
+        </div>
+        <?php
+        if (!empty($_GET['finished'])) {
+            foreach ($data['auction_list'] as $key => $sub_finished) {
+                if (strtotime($sub_finished->session_end) <= time() && $_GET['finished'] == 'false') {
+                    unset($data['auction_list'][$key]);
+                } elseif (strtotime($sub_finished->session_end) > time() && $_GET['finished'] == 'true') {
+                    unset($data['auction_list'][$key]);
+                    krsort($data['auction_list']);
+                }
+            }
+        }
+        ?>
 
-		@if ($data['subc_sub'] != 'H')
+        @if ($data['subc_sub'] != 'H')
 
-			@foreach ($data['auction_list'] as $subasta)
-				<?php
-				$url_lotes = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
-				$url_tiempo_real = \Routing::translateSeo('api/subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
-				$url_subasta = \Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name);
+            @foreach ($data['auction_list'] as $subasta)
+                <?php
+				dd($subasta);
+                $url_lotes = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
+                $url_tiempo_real = \Routing::translateSeo('api/subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
+                $url_subasta = \Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name);
 
-				$url_lotes_no_vendidos = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions . '?no_award=1';
+                $url_lotes_no_vendidos = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions . '?no_award=1';
 
-				// Se obtiene la descripción de la subasta
-				$inf_subasta = new \App\Models\Subasta();
-				$inf_subasta->cod = $subasta->cod_sub;
-				$inf_subasta->id_auc_sessions = $subasta->id_auc_sessions;
-				$ficha_subasta = $inf_subasta->getInfSubasta();
+                // Se obtiene la descripción de la subasta
+                $inf_subasta = new \App\Models\Subasta();
+                $inf_subasta->cod = $subasta->cod_sub;
+                $inf_subasta->id_auc_sessions = $subasta->id_auc_sessions;
+                $ficha_subasta = $inf_subasta->getInfSubasta();
 
-				?>
+                ?>
 
-				@include('front::includes.subasta', ['ficha_subasta' => $ficha_subasta, 'url_lotes' => $url_lotes, 'url_tiempo_real' => $url_tiempo_real, 'url_subasta' => $url_subasta, 'url_lotes_no_vendidos' => $url_lotes_no_vendidos])
-			@endforeach
-		@elseif(Session::has('user'))
-			<?php
-			$historico = [];
-			foreach ($data['auction_list'] as $value) {
-			    $year = date('Y', strtotime($value->session_start));
+                @include('front::includes.subasta', [
+                    'ficha_subasta' => $ficha_subasta,
+                    'url_lotes' => $url_lotes,
+                    'url_tiempo_real' => $url_tiempo_real,
+                    'url_subasta' => $url_subasta,
+                    'url_lotes_no_vendidos' => $url_lotes_no_vendidos,
+                ])
+            @endforeach
+        @elseif(Session::has('user'))
+            <?php
+            $historico = [];
+            foreach ($data['auction_list'] as $value) {
+                $year = date('Y', strtotime($value->session_start));
 
-				if($year < '2025') continue;
+                if ($year < '2025') {
+                    continue;
+                }
 
-			    $historico[$year][$value->cod_sub][] = $value;
-			    usort($historico[$year][$value->cod_sub], function ($a, $b) {
-			        return strcmp($a->reference, $b->reference);
-			    });
-			}
+                $historico[$year][$value->cod_sub][] = $value;
+                usort($historico[$year][$value->cod_sub], function ($a, $b) {
+                    return strcmp($a->reference, $b->reference);
+                });
+            }
 
-			?>
-			@foreach ($historico as $key => $sub)
-				<div class="col-xs-12 sub-h">
-					<div class="dat">
-						{{ $key }}
-					</div>
-				</div>
-				@foreach ($sub as $sessions)
-					@foreach ($sessions as $subasta)
-						<?php
-						$url_lotes = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
-						$url_tiempo_real = \Routing::translateSeo('api/subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
-						$url_subasta = \Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name);
+            ?>
+            @foreach ($historico as $key => $sub)
+                <div class="col-xs-12 sub-h">
+                    <div class="dat">
+                        {{ $key }}
+                    </div>
+                </div>
+                @foreach ($sub as $sessions)
+                    @foreach ($sessions as $subasta)
+                        <?php
+                        $url_lotes = \Routing::translateSeo('subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
+                        $url_tiempo_real = \Routing::translateSeo('api/subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name) . '-' . $subasta->id_auc_sessions;
+                        $url_subasta = \Routing::translateSeo('info-subasta') . $subasta->cod_sub . '-' . str_slug($subasta->name);
 
-						// Se obtiene la descripción de la subasta
-						$inf_subasta = new \App\Models\Subasta();
-						$inf_subasta->cod = $subasta->cod_sub;
-						$inf_subasta->id_auc_sessions = $subasta->id_auc_sessions;
-						$ficha_subasta = $inf_subasta->getInfSubasta();
+                        // Se obtiene la descripción de la subasta
+                        $inf_subasta = new \App\Models\Subasta();
+                        $inf_subasta->cod = $subasta->cod_sub;
+                        $inf_subasta->id_auc_sessions = $subasta->id_auc_sessions;
+                        $ficha_subasta = $inf_subasta->getInfSubasta();
 
-						?>
+                        ?>
 
 
-						@include('front::includes.subasta', ['ficha_subasta' => $ficha_subasta, 'url_lotes' => $url_lotes, 'url_tiempo_real' => $url_tiempo_real, 'url_subasta' => $url_subasta])
+                        @include('front::includes.subasta', [
+                            'ficha_subasta' => $ficha_subasta,
+                            'url_lotes' => $url_lotes,
+                            'url_tiempo_real' => $url_tiempo_real,
+                            'url_subasta' => $url_subasta,
+                        ])
+                    @endforeach
+                @endforeach
+            @endforeach
 
-					@endforeach
-				@endforeach
-			@endforeach
+            @php
+                $empToHistoric = Config::get('app.main_emp') == '006' ? ['006'] : ['002', '005'];
+                $toDate = '2025-01-01';
+                $staticAuctions = AucSessions::getHistoricAuctionsWithoutEmp($empToHistoric, $toDate, [
+                    'with_description' => true,
+                ]);
 
-			@php
-				$empToHistoric = Config::get('app.main_emp') == '006' ? ['006'] : ['002', '005'];
-				$toDate = '2025-01-01';
-				$staticAuctions = (new App\Models\Subasta())->getStaticHistoricAuctionsWithoutEmp($empToHistoric, $toDate)
-						->selectRaw('nvl(descdet_sub_lang, descdet_sub) as descdet_sub')
-						->get();
+                $staticAuctionsForYear = $staticAuctions->groupBy(function ($item) {
+                    return date('Y', strtotime($item->start));
+                });
+            @endphp
 
-				$staticAuctionsForYear = $staticAuctions->groupBy(function ($item) {
-					return date('Y', strtotime($item->start));
-				});
-			@endphp
-
-			@foreach ($staticAuctionsForYear as $year => $auctions)
-			<div class="col-xs-12 sub-h">
-				<div class="dat">
-					{{ $year }}
-				</div>
-			</div>
-				@foreach ($auctions as $auction)
-					@include('front::includes.subasta_h', ['subasta' => $auction])
-				@endforeach
-			@endforeach
-
-		@else
-			<div class=" col-lg-12">
-				<h1 class="tit text-center"> {{ trans(\Config::get('app.theme') . '-app.subastas.not-register') }}</h1>
-			</div>
-		@endif
-	</div>
+            @foreach ($staticAuctionsForYear as $year => $auctions)
+                <div class="col-xs-12 sub-h">
+                    <div class="dat">
+                        {{ $year }}
+                    </div>
+                </div>
+                @foreach ($auctions as $auction)
+                    @include('front::includes.subasta_h', ['subasta' => $auction])
+                @endforeach
+            @endforeach
+        @else
+            <div class=" col-lg-12">
+                <h1 class="tit text-center"> {{ trans(\Config::get('app.theme') . '-app.subastas.not-register') }}</h1>
+            </div>
+        @endif
+    </div>
 </div>
