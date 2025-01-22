@@ -159,25 +159,37 @@
                             {{ trans("$theme-app.lot.lot-name") . ' ' . $lote_actual->ref_asigl0 }}
                         </h2>
 
-                        @if (Session::has('user') && !$retirado)
-                            <div class="favoritos float-end">
-                                <button id="del_fav"
-                                    class="lb-text-primary @if (!$lote_actual->favorito) hidden @endif"
-                                    onclick="action_fav_modal('remove')">
-                                    <svg class="bi" width="24" height="24" fill="currentColor">
-                                        <use xlink:href="/bootstrap-icons.svg#heart-fill"></use>
-                                    </svg>
-                                </button>
-                                <button id="add_fav"
-                                    class="lb-text-primary @if ($lote_actual->favorito) hidden @endif"
-                                    onclick="action_fav_modal('add')">
-                                    <svg class="bi" width="24" height="24" fill="currentColor">
-                                        <use xlink:href="/bootstrap-icons.svg#heart"></use>
-                                    </svg>
-                                </button>
+						<div class="float-end d-flex align-items-center gap-3">
+							@if ($subasta_online && !$cerrado)
+							<p class="ff-highlight ficha-info-lot mb-0">
+								<span class="d-flex align-items-center gap-2" style="font-size: .9em">
+									<x-icon.boostrap  icon="clock" size=".8em" />
+									<span data-countdown="{{ strtotime($lote_actual->close_at) - getdate()[0] }}"
+										data-format="{{ Tools::down_timer($lote_actual->close_at) }}" class="timer"></span>
+								</span>
+							</p>
+							@endif
 
-                            </div>
-                        @endif
+							@if (Session::has('user') && !$retirado)
+								<div class="favoritos">
+									<button id="del_fav"
+										class="lb-text-primary @if (!$lote_actual->favorito) hidden @endif"
+										onclick="action_fav_modal('remove')">
+										<svg class="bi" width="24" height="24" fill="currentColor">
+											<use xlink:href="/bootstrap-icons.svg#heart-fill"></use>
+										</svg>
+									</button>
+									<button id="add_fav"
+										class="lb-text-primary @if ($lote_actual->favorito) hidden @endif"
+										onclick="action_fav_modal('add')">
+										<svg class="bi" width="24" height="24" fill="currentColor">
+											<use xlink:href="/bootstrap-icons.svg#heart"></use>
+										</svg>
+									</button>
+
+								</div>
+							@endif
+						</div>
 
                     </div>
 
