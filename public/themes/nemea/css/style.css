@@ -1,0 +1,5 @@
+@import url('global.css');
+
+.navbar-brand img {
+	max-width: 100px;
+}
