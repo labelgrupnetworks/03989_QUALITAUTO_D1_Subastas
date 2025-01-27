@@ -154,14 +154,16 @@ class AucSessions extends Model
 				'"upCatalogo"',
 			])
 			->when(data_get($options, 'with_description', false), function ($query) {
-				$query->selectRaw('nvl(descdet_sub_lang, descdet_sub) as descdet_sub');
+				$query->selectRaw('nvl("info_lang", "info") as info');
 			})
 			->withoutGlobalScopes()
-			->joinLocaleFgSub()
+			->joinLang()
+			->joinFgSub()
 			->where('subc_sub', FgSub::SUBC_SUB_HISTORICO)
 			->where('"start"', '<', date($toDate))
 			->whereIn('emp_sub', $whereEmps)
-			->orderBy('"start"', 'desc')
+			->orderBy('dfec_sub', 'desc')
+			->orderBy('"reference"', 'asc')
 			->get();
 	}
 }

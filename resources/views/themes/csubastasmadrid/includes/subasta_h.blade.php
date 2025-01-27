@@ -18,7 +18,7 @@
             </div>
 
             <div class="item_subasta_item_text">
-                {!! $subasta->descdet_sub !!}
+                {!! $subasta->info !!}
             </div>
         </div>
 
