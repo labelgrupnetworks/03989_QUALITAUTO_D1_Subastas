@@ -160,6 +160,7 @@ class CustomControllers extends Controller
 		$isAdmin = (bool) session('user.admin');
 
 		$subastaReciente = FgSub::select('des_sub', 'dfec_sub')
+			->withoutGlobalScopes()
 			->joinSessionSub()
 			->when($isAdmin, function ($query) {
 				return $query->whereIn('SUBC_SUB', ['S', 'A']);
@@ -167,7 +168,12 @@ class CustomControllers extends Controller
 				return $query->where('SUBC_SUB', 'S');
 			})
 			->when(Config::get('app.agrsub', null), function ($query) {
-				return $query->where('agrsub_sub', Config::get('app.agrsub'));
+				return $query->where(function ($query) {
+					$query->where([
+						'emp_sub' => Config::get('app.emp'),
+						'agrsub_sub' => Config::get('app.agrsub')
+					]);
+				})->orWhere('emp_sub', Config::get('app.main_emp'));
 			})
 			//orden ascendente solo para probar subasta, dejar en desc cuando este en producción
 			//->orderby("session_start", "asc")
@@ -179,8 +185,8 @@ class CustomControllers extends Controller
 		}
 
 		$lots = FgAsigl0::select("SUB_ASIGL0", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1")
+			->withoutGlobalScopes()
 			->joinFghces1Asigl0()
-			->where("EMP_ASIGL0", Config::get('app.emp'))
 			->where("SUB_ASIGL0", $subastaReciente->cod_sub)
 			->orderBy('ref_asigl0')
 			->get();
