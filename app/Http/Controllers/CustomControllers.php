@@ -184,13 +184,12 @@ class CustomControllers extends Controller
 			return view('front::pages.video_auction', ['videoSorted' => [], 'subastaReciente' => new FgSub()]);
 		}
 
-		$lots = FgAsigl0::select("SUB_ASIGL0", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1")
+		$lots = FgAsigl0::select("SUB_ASIGL0", "REF_ASIGL0", "NUM_HCES1", "LIN_HCES1", "EMP_ASIGL0")
 			->withoutGlobalScopes()
 			->joinFghces1Asigl0()
 			->where("SUB_ASIGL0", $subastaReciente->cod_sub)
 			->orderBy('ref_asigl0')
 			->get();
-
 		$subasta = new Subasta();
 		$videos = [];
 
