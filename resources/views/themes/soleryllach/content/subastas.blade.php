@@ -301,7 +301,6 @@ use App\Models\V5\AucSessions;
 
 			@endforeach
 
-            {{-- @include('content.subastas_historicas') --}}
         @else
             <div class=" col-lg-12">
                 <h1 class="tit text-center"> {{ trans(\Config::get('app.theme') . '-app.subastas.not-register') }}</h1>
