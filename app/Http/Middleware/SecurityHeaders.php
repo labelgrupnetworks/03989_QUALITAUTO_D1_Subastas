@@ -23,7 +23,7 @@ class SecurityHeaders
 			 * X-Frame-Options
 			 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 			 */
-			$response->headers->set('X-Frame-Options', 'DENY');
+			$response->headers->set('X-Frame-Options', 'SAMEORIGIN');
 
 			/**
 			 * X-Content-Type-Options
