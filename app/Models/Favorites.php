@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
-use Config;
+use Illuminate\Support\Facades\Config;
 use Exception;
 use Log;
 use App\Models\Subasta;
@@ -237,6 +237,11 @@ class Favorites extends Model
                 $bindings['ref'] = $this->ref;
                 $where = "AND ID_REF = :ref";
             }
+
+			if(Config::get('app.agrsub')) {
+				$bindings['agrsub'] = Config::get('app.agrsub');
+				$where .= " AND SUB_ASIGL0 IN (SELECT COD_SUB FROM FGSUB WHERE EMP_SUB = :emp AND AGRSUB_SUB = :agrsub)";
+			}
 
             //$sql = "SELECT * FROM WEB_FAVORITES WHERE ID_EMP = :emp AND ID_LICIT IN (".$this->list_licit.") ".$where." ORDER BY FECHA DESC";
             if(!empty($this->list_licit)){

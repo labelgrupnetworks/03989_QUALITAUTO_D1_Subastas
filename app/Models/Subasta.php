@@ -1046,6 +1046,11 @@ class Subasta extends Model
 			$whereAuctions = " AND SUB.COD_SUB IN ('" . implode("', '", $whereFilters['cods_sub']) . "')";
 		}
 
+		if(Config::get('app.agrsub')) {
+			$agrsub = Config::get('app.agrsub');
+			$whereAuctions .= " AND SUB.AGRSUB_SUB = '$agrsub'";
+		}
+
         if($favorites){
             $sql_join_favorites = "join web_favorites fav on (fav.id_emp=asigl0.emp_asigl0 and fav.id_sub = asigl0.SUB_ASIGL0 and fav.id_ref = asigl0.REF_ASIGL0 and fav.cod_cli= :cli_licit)";
             $sql_favorites = " UNION
