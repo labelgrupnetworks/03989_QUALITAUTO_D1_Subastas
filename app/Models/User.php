@@ -929,6 +929,9 @@ class User
 			->where('FGHCES1.EMP_HCES1', Config::get("app.emp"))
 			->whereRaw('ASIGL0.REF_ASIGL0 >= auc."init_lot"')
 			->whereRaw('ASIGL0.REF_ASIGL0 <= auc."end_lot"')
+			->when(Config::get('app.agrsub'), function ($query) {
+				$query->where('FGSUB.AGRSUB_SUB', Config::get('app.agrsub'));
+			})
 			->when($showOnlyActiveAuctions, function ($query) {
 				$auctionsType = session('user.admin') ? ['S', 'A'] : ['S'];
 				return $query->whereIn('FGSUB.subc_sub', $auctionsType);
