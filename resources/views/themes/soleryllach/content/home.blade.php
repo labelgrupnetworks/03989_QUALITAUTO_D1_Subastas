@@ -19,7 +19,11 @@
 </div>
 
 @php
-	$replace = ['lang' => Config::get('app.language_complete')[Config::get('app.locale')] ,'emp' => Config::get('app.emp')];
+	$replace = [
+		'lang' => Config::get('app.language_complete')[Config::get('app.locale')] ,
+		'emp' => Config::get('app.emp'),
+		'agrsub' => Config::get('app.agrsub'),
+		];
 @endphp
 
 <script>
