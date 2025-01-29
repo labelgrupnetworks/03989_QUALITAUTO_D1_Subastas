@@ -30,6 +30,12 @@ class NotifySubscriptionToClientWebService
 			return;
 		}
 
+		//Duran solamente quiere que se envíe la petición cuando es desde nesltter, no desde registro.
+		//Como solo lo utilizamos para Duran por el momento no lo añadimos a la configuración
+		if($event->origin != 'newsletter') {
+			return;
+		}
+
 		$theme = Config::get('app.theme');
 		$rutaClientcontroller = "App\Http\Controllers\\externalws\\$theme\ClientController";
 

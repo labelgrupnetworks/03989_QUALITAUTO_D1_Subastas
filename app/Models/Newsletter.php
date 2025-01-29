@@ -4,6 +4,7 @@
 
 namespace App\Models;
 
+use App\Events\user\UserNewsletterSubscribed;
 use App\Http\Controllers\externalws\mailing\ExternalMailingController;
 use Illuminate\Support\Facades\Config;
 use App\libs\EmailLib;
@@ -15,6 +16,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class Newsletter
 {
@@ -43,10 +45,18 @@ class Newsletter
 		return $this;
 	}
 
-	public function suscribe($checkForGroup)
+	public function suscribe($checkForGroup, $origin)
 	{
 		if (!$this->email) {
 			throw new Exception(trans(Config::get('app.theme') . "-app.msg_error.err-add_newsletter"));
+		}
+
+		if(Config::get('app.verify_subscription_before_saving', false)){
+			$hasSuscription = Fx_Newsletter_Suscription::whereEmail($this->email)->exists();
+			if($hasSuscription){
+				Log::debug("El usuario {$this->email} ya está suscrito a la newsletter, no seguir.");
+				return;
+			}
 		}
 
 		$newslettersIds = array_keys($this->families ?? []);
@@ -68,6 +78,8 @@ class Newsletter
 			FxCliWeb::where('LOWER(USRW_CLIWEB)', strtolower($this->email))
 				->update(['NLLIST1_CLIWEB' => 'S']);
 		}
+
+		event(new UserNewsletterSubscribed($this->email, $origin));
 	}
 
 	public function getIdSuscriptions(string $email): array

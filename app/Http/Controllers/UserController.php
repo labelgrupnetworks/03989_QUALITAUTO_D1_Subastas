@@ -1148,13 +1148,19 @@ class UserController extends Controller
 						);
 					}
 
-					//Añadimos a newsletter controlando tanto el sistema nuevo como el antiguo
 					if (!empty(FacadeRequest::input('newsletter')) || !empty($request->get('families'))) {
 
-						if (empty($request->get('families'))) {
-							$request->merge(['families' => [Fx_Newsletter::GENERAL => 1]]);
+						$familiesToNewsletter = $request->get('families', []);
+						if (empty($familiesToNewsletter)) {
+							$familiesToNewsletter = [Fx_Newsletter::GENERAL => 1];
 						}
-						(new NewsletterController())->setNewsletter($request, "add");
+
+						$emailToNewsletter = trim($request->input('email'));
+						$langToNewsletter = $request->input('language');
+
+						Newsletter::factory()
+							->setAttributes($langToNewsletter, $emailToNewsletter, $familiesToNewsletter)
+							->suscribe(false, 'register');
 					}
 
 					$user->cod_cli = $num;

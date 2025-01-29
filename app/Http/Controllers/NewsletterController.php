@@ -82,9 +82,7 @@ class NewsletterController extends Controller
 
 		$this->newsletterModel
 			->setAttributes($lang, $email, $families)
-			->suscribe($cehckForGroup);
-
-		event(new UserNewsletterSubscribed($email));
+			->suscribe($cehckForGroup, 'newsletter');
 
 		return [
 			'status' => 'success',

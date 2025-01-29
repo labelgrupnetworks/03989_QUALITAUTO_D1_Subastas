@@ -10,14 +10,16 @@ class UserNewsletterSubscribed
     use Dispatchable, SerializesModels;
 
 	public string $email;
+	public string $origin;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($email)
+    public function __construct($email, $origin)
     {
         $this->email = $email;
+		$this->origin = $origin;
     }
 }

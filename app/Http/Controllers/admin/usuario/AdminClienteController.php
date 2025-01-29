@@ -262,7 +262,7 @@ class AdminClienteController extends Controller
 			});
 			(new Newsletter())
 				->setAttributes($request->input('language'), $request->input('email'), $families)
-				->suscribe(true);
+				->suscribe(true, 'admin');
 		}
 
 		//(new Newsletter())->subscribeToExternalService($cliente['email']);
