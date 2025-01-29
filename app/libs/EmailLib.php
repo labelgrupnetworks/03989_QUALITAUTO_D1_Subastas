@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 
 /**
  * Description of Str_lib
@@ -80,7 +81,7 @@ class EmailLib
 		#el diseñ odel email lo cojemso de la empresa principal para evitar tener duplicados.
 		if (empty($cod_email)) {
 			$designs =  DB::table('FSEMAIL')
-				->where('emp_email', \Config::get('app.main_emp'))
+				->where('emp_email', Config::get('app.main_emp'))
 				->where('enabled_email', 1)
 				#el autoformulari oque n osalga
 				->where('cod_email', '!=', 'AUTOFORMULARIO')
@@ -89,7 +90,7 @@ class EmailLib
 				->get();
 		} else {
 			$designs =  DB::table('FSEMAIL')
-				->where('emp_email', \Config::get('app.main_emp'))
+				->where('emp_email', Config::get('app.main_emp'))
 				->where('enabled_email', 1)
 				->where('cod_email', $cod_email)
 				->get();
@@ -114,7 +115,7 @@ class EmailLib
 				$text .=  "<strong>Asunto: </strong>" . $this->email->subject_email . "<br><br><br><br>";
 
 
-				$text .= \View::make('front::emails.bbdd_email', array("HTML_email" => $this->HTML_email));
+				$text .= View::make('front::emails.bbdd_email', array("HTML_email" => $this->HTML_email));
 				$text .=  "<br><br><br><div style='text-align:center'>---------------------------------------------------------------------------------------------------</div>";
 				$text .=  "</div>";
 			}
@@ -138,7 +139,7 @@ class EmailLib
 		}
 
 		$this->replace();
-		#quitado 11/01/2023 \Config::get("app.queueEmails") &&
+		#quitado 11/01/2023 Config::get("app.queueEmails") &&
 		if (Config::get('queue.default') != "sync" && empty($this->attachments) && empty($this->pdfs) && empty($this->attachmentsFiles)) {
 			MailJob::dispatch($this)->onQueue(Config::get('app.queue_env'));
 			return true;
@@ -172,7 +173,7 @@ class EmailLib
 		}
 		$this->replace();
 		echo $this->email->subject_email . "<br><br>";
-		echo \View::make('front::emails.bbdd_email', array("HTML_email" => $this->HTML_email));
+		echo View::make('front::emails.bbdd_email', array("HTML_email" => $this->HTML_email));
 		die();
 	}
 
@@ -197,7 +198,7 @@ class EmailLib
 		if (empty($emails)) {
 			# si viene vacio no mostramso log ya que en algunos casos se requiere llamar a una funcion de email
 			if (!empty($cod_email)) {
-				\Log::info("No Existe el email $cod_email en base de datos");
+				Log::info("No Existe el email $cod_email en base de datos");
 			}
 
 			return False;
@@ -310,7 +311,7 @@ class EmailLib
 			$this->atributes['RIES_CLI'] = $inf_user->ries_cli;
 
 			if (isset($inf_user->sexo_cli)) {
-				$this->setSexo_Cli($inf_user->sexo_cli, \App::getLocale());
+				$this->setSexo_Cli($inf_user->sexo_cli, App::getLocale());
 			}
 			//si es la persona receptora del mensaje
 			if ($recipient) {
@@ -324,10 +325,10 @@ class EmailLib
 
 				if (array_key_exists($lang, $locales) || array_key_exists($lang, $locales_long)) {
 					//si el idioma no es el actual cargamos de nuevo los textos en el idioma adecuado
-					if (\App::getLocale() != $lang) {
-						$this->old_lang = \App::getLocale();
+					if (App::getLocale() != $lang) {
+						$this->old_lang = App::getLocale();
 						//modificamos el locale para que los datos del lote/subasta etc se pasen en el idioma que toca
-						\App::setLocale($lang);
+						App::setLocale($lang);
 						if (isset($inf_user->sexo_cli)) {
 							$this->setSexo_Cli($inf_user->sexo_cli, $lang);
 						}
@@ -339,7 +340,7 @@ class EmailLib
 				//Si no existe el idioma del cliente, y le damos al metodo uno por defecto, envia el mail en ese idioma
 				else {
 					if (!empty($default_lang)) {
-						//\App::setLocale($default_lang);
+						//App::setLocale($default_lang);
 						$this->lang = $default_lang;
 						$this->setSexo_Cli($inf_user->sexo_cli, $default_lang);
 						$this->get_design($this->email->cod_email);
@@ -378,29 +379,29 @@ class EmailLib
 			#si  tiene el . decimal hay que ver si se debe poner las letras
 			if (strpos($refLot, '.') !== false) {
 				#si no hay limitación de subastas o si la hay y la actual es de ese tipo
-				if (!\Config::get("app.bisOnlyIn") || (\Config::get("app.bisOnlyIn") && in_array($lot->tipo_sub, explode(",", \Config::get("app.bisOnlyIn"))))) {
-					if (\Config::get("app.bis") && \Config::get("app.bis") == "A") {
+				if (!Config::get("app.bisOnlyIn") || (Config::get("app.bisOnlyIn") && in_array($lot->tipo_sub, explode(",", Config::get("app.bisOnlyIn"))))) {
+					if (Config::get("app.bis") && Config::get("app.bis") == "A") {
 						$refLot = str_replace(array(".1", ".2", ".3", ".4", ".5", ".6"), array("-A", "-B", "-C", "-D", "-E"),  $refLot);
-					} elseif (\Config::get("app.bis") && \Config::get("app.bis") == "B") {
+					} elseif (Config::get("app.bis") && Config::get("app.bis") == "B") {
 						$refLot = str_replace(array(".1", ".2", ".3", ".4", ".5", ".6"), array("-B", "-C", "-D", "-E", "-F"),  $refLot);
 					}
 					#si hay limitacion de subastas y esta subasta no pertenece a las que permiten bises, hay que borrar los decimales
 					#duran pondra decimales en subastas online y tienda para poder repertir lote sin repetir referencia, pero no se tiene que ver el bis ni el decimal
-				} elseif (\Config::get("app.bisOnlyIn") && !in_array($lot->tipo_sub, explode(",", \Config::get("app.bisOnlyIn")))) {
+				} elseif (Config::get("app.bisOnlyIn") && !in_array($lot->tipo_sub, explode(",", Config::get("app.bisOnlyIn")))) {
 
 					$refLot = str_replace(array(".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8", ".9"), array("", "", "", "", "", "", "", "", "", ""),  $refLot);
-					if (\config::get("app.substrRef")) {
-						$refLot = substr($refLot, -\config::get("app.substrRef")) + 0;
+					if (Config::get("app.substrRef")) {
+						$refLot = substr($refLot, -Config::get("app.substrRef")) + 0;
 					}
 				}
 
 
 
 				#si hay que recortar
-			} elseif (\config::get("app.substrRef")) {
+			} elseif (Config::get("app.substrRef")) {
 				#cogemos solo los últimos x numeros, ya que se usaran hasta 9, los  primeros para diferenciar un lote cuando se ha vuelto a subir a subasta
 				#le sumamos 0 para convertirlo en numero y así eliminamos los 0 a la izquierda
-				$refLot = substr($lot->ref_asigl0, -\config::get("app.substrRef")) + 0;
+				$refLot = substr($lot->ref_asigl0, -Config::get("app.substrRef")) + 0;
 			}
 
 			$this->atributes['LOT_REF'] = $refLot;
@@ -532,7 +533,7 @@ class EmailLib
 
 		foreach ($matches[0] as $item) {
 			$key = str_replace(array("[#", "#]"), "", $item);
-			$design_template = str_replace($item, trans(\Config::get('app.theme') . '-app.emails.' . $key), $design_template);
+			$design_template = str_replace($item, trans(Config::get('app.theme') . '-app.emails.' . $key), $design_template);
 		}
 
 		//cargamos el contenido definitivo, con o sin plantilla
@@ -703,7 +704,7 @@ class EmailLib
 		$subasta = new Subasta();
 		$subasta->cod = $cod_sub;
 		$subasta->lote = $ref;
-		$adjudicado = $subasta->get_csub(\Config::get('app.emp'));
+		$adjudicado = $subasta->get_csub(Config::get('app.emp'));
 
 		if (!empty($adjudicado)) {
 			$pay =  new PaymentsController();
@@ -726,12 +727,12 @@ class EmailLib
 
 			if (config::get("app.carlandiaCommission")) {
 				#importe total, lo pongo con € y sin decimales
-				$this->setPrice(ToolsServiceProvider::moneyFormat($precio, trans(\Config::get('app.theme') . '-app.subastas.euros')));
+				$this->setPrice(ToolsServiceProvider::moneyFormat($precio, trans(Config::get('app.theme') . '-app.subastas.euros')));
 
 				#importe reserva
-				$carlandiaCommission = \Config::get("app.carlandiaCommission");
+				$carlandiaCommission = Config::get("app.carlandiaCommission");
 				$impreserva = $precio - ($precio / (1 + $carlandiaCommission));
-				$this->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat(round($impreserva, 2), trans(\Config::get('app.theme') . '-app.subastas.euros'), 2));
+				$this->setAtribute("IMPORTE_RESERVA", ToolsServiceProvider::moneyFormat(round($impreserva, 2), trans(Config::get('app.theme') . '-app.subastas.euros'), 2));
 
 				#Enlace de pago
 				$linAsigl1 = FgAsigl1::where([
@@ -830,7 +831,7 @@ class EmailLib
 			'LOT_REF' => "<span style=\"color:#000CFF;\">101</span>",
 			'LOT_TITLE' => "<span style=\"color:#000CFF;\">Lote de ejemplo</span>",
 			'NAME' => "<span style=\"color:#000CFF;\">Nombre Cliente</span>",
-			'NAME_EMP' => \Config::get("app.name"),
+			'NAME_EMP' => Config::get("app.name"),
 			'ORDER_ID' => "<span style=\"color:#000CFF;\">123456</span>",
 			'PASSWORD' => "<span style=\"color:#000CFF;\">password</span>",
 			'PHONE' => "<span style=\"color:#000CFF;\">902902902</span>",
@@ -882,7 +883,7 @@ class EmailLib
 			'LOT_TITLE' => 'Titulo lote',
 			'LOT_OPEN' => '01 de enero de 2001',
 			'NAME' => 'Nombre',
-			'NAME_EMP' => \Config::get("app.name"),
+			'NAME_EMP' => Config::get("app.name"),
 			'ORDER_ID' => '222',
 			'PASSWORD' => 'password',
 			'PHONE' => '666777888',
@@ -1180,8 +1181,8 @@ class EmailLib
 			return;
 		}
 		$dateBuff = new \DateTime($open_at);
-		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'))   . ".UTF-8");
-		if (\Config::get('app.locale') == 'es') {
+		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))   . ".UTF-8");
+		if (Config::get('app.locale') == 'es') {
 			$this->atributes["LOT_OPEN"] = Carbon::createFromFormat('Y/m/d H:i:s', $open_at)->locale('es')->isoFormat('D \d\e MMMM \d\e YYYY \a \l\a\s kk:mm');
 		} else {
 			$this->atributes["LOT_OPEN"] = strftime("%B %dth, %Y", $dateBuff->getTimestamp());
@@ -1196,8 +1197,8 @@ class EmailLib
 			return;
 		}
 		$dateBuff = new \DateTime($date);
-		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
-		if (\Config::get('app.locale') == 'es') {
+		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')) . ".UTF-8");
+		if (Config::get('app.locale') == 'es') {
 			//$this->atributes["LOT_CLOSE"] = strftime ("%d de %B de %Y", $dateBuff->getTimestamp());
 			$this->atributes["LOT_CLOSE"] = Carbon::createFromFormat('Y/m/d H:i:s', $date)->locale('es')->isoFormat('D \d\e MMMM \d\e YYYY \a \l\a\s kk:mm');
 		} else {
@@ -1209,8 +1210,8 @@ class EmailLib
 	{
 
 		$dateBuff = new \DateTime($date);
-		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale')) . ".UTF-8");
-		if (\Config::get('app.locale') == 'es') {
+		setlocale(LC_TIME, ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')) . ".UTF-8");
+		if (Config::get('app.locale') == 'es') {
 			$this->atributes["SESSION_START"] = strftime("%d de %B de %Y", $dateBuff->getTimestamp());
 		} else {
 			$this->atributes["SESSION_START"] = strftime("%B %dth, %Y", $dateBuff->getTimestamp());

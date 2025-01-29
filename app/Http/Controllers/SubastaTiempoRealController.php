@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Request;
-use Requests;
 use View;
 use Routing;
 use Route;
@@ -23,9 +22,8 @@ use App\Models\Chat;
 use App\Models\Favorites;
 use App\Models\Subalia;
 use App\libs\EmailLib;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
 use App\Models\V5\FgOrlic;
