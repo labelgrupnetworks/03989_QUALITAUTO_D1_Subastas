@@ -115,6 +115,9 @@ class FgSub extends Model
 
 			->GetInfoSession($refSession)
 			->where("FGSUB.COD_SUB", $cod_sub)
+			->when(Config::get('app.agrsub'), function ($query) {
+				return $query->where("FGSUB.AGRSUB_SUB", Config::get('app.agrsub'));
+			})
 			->addSelect("FGSUB.SUBC_SUB")
 			->addSelect("FGSUB.DFEC_SUB, FGSUB.HFEC_SUB")
 			->addSelect("NVL(FGSUB_LANG.WEBMETAT_SUB_LANG,FGSUB.WEBMETAT_SUB) as WEBMETAT_SUB")

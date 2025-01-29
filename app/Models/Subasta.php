@@ -586,15 +586,21 @@ class Subasta extends Model
 
 		$join = "";
 		/* MOSTRAR SOLO LAS SUBASTAS QUE PUEDE VER EL USUARIO */
-		if (\Config::get("app.restrictVisibility")) {
+		if (Config::get("app.restrictVisibility")) {
 			//si no hay usuario logeado devolvemos vacio
-			if (empty(\Session::get('user.cod'))) {
+			if (empty(Session::get('user.cod'))) {
 				return null;
 			}
 
 			$join = $this->restrictVisibilityAuction("join");
 			$sql_where =  $sql_where . "  " . $this->restrictVisibilityAuction("where");
-			$params['codCli'] = \Session::get('user.cod');
+			$params['codCli'] = Session::get('user.cod');
+		}
+
+		if(Config::get('app.agrsub')) {
+			$agrsub = Config::get('app.agrsub');
+			$sql_where .= " AND sub.AGRSUB_SUB = :agrsub";
+			$params['agrsub'] = $agrsub;
 		}
 
 
@@ -631,7 +637,7 @@ class Subasta extends Model
 		$params['lang'] = ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
 
 		//pongo solo un minuto por que no tarda mucho y es posible que necesiten cambiar la subasta de tipo carrito a otro
-		$auctions = \CacheLib::useCache($cacheName, $sql, $params,1);
+		$auctions = CacheLib::useCache($cacheName, $sql, $params,1);
 
 		if (!empty($auctions)) {
 			return head($auctions);
@@ -1598,6 +1604,11 @@ class Subasta extends Model
         if($oculto){
             $where_order .= " AND p.OCULTO_ASIGL0  = 'N'";
         }
+
+		if(Config::get('app.agrsub')) {
+			$where_order .= " AND subastas.AGRSUB_SUB = :agrsub";
+			$params['agrsub'] = Config::get('app.agrsub');
+		}
 
 		$join ="";
 
