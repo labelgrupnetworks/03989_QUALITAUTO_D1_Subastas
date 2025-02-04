@@ -91,55 +91,31 @@ use App\libs\TradLib as TradLib;
                 <img class="logo-company visible-xs-block" src="/themes/{{$theme}}/assets/img/logo_footer.png"  alt="{{(\Config::get( 'app.name' ))}}" width="90%">
                 <span role="button" class="close-menu-reponsive hidden-lg"><i class="fas fa-times"></i></span>
 
-                <?php
-                   $subastaObj        = new \App\Models\Subasta();
-                   $has_subasta = $subastaObj->auctionList ('S', 'W');
-                   if(  Session::get('user.admin')){
-					   $has_subasta= array_merge($has_subasta,$subastaObj->auctionList ('A', 'W'));
-
-                   }
-
-                ?>
-            		<?php //    @if(!empty($has_subasta)) ?>
-                  <li>
-                      <a class="color-letter d-flex link-header align-items-center ">
-                        <span>{{trans($theme.'-app.foot.auctions') }}</span>
+                  	<li>
+                      	<a class="color-letter d-flex link-header align-items-center">
+                        	<span>{{trans($theme.'-app.foot.auctions') }}</span>
                     	</a>
-						@php
-						/*
-							<div class="submenu pt-3 pb-3">
-								<div class="container">
-									<div class="row">
-										<div class="hidden-xs hidden-sm hidden-md col-lg-1 no-padding"></div>
-										<div class="col-xs-12 col-lg-4 no-padding auctions-list-menu">
-											@foreach($has_subasta as $subasta)
-												@if($subasta->reference == '001')
-													<a href="{{ \Tools::url_auction($subasta->cod_sub,$subasta->des_sub,$subasta->id_auc_sessions, $subasta->reference) }}">{{$subasta->des_sub}}</a>
-													<br>
-												@endif
-											@endforeach
-											<a  href="/es/subasta/subasta-solo-online-duran_7501-001">{{ trans($theme.'-app.foot.online_auction')}} </a>
-											<br>
-											<a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.metas.title_historic') }}</a>
 
-										</div>
-
-									</div>
-								</div>
-							</div>
-						*/
-						@endphp
 						 <div class="submenuDuran ">
-							<div  >
-								@foreach($has_subasta as $subasta)
-									@if($subasta->reference == '001')
-									<div class="categoryOption"> 	<a href="{{ \Tools::url_auction($subasta->cod_sub,$subasta->des_sub,$subasta->id_auc_sessions, $subasta->reference) }}">{{$subasta->des_sub}}</a> </div>
-									@endif
+							<div>
+								@foreach(data_get($global, 'subastas.S.W', []) as $auction)
+									@foreach($auction as $session)
+										@if($session->reference == '001')
+											<div class="categoryOption">
+												<a href="{{ \Tools::url_auction($session->cod_sub,$session->des_sub,$session->id_auc_sessions, $session->reference) }}">{{$session->des_sub}}</a>
+											</div>
+										@endif
+									@endforeach
 								@endforeach
 
-								<div class="categoryOption"> <a  href="/<?= \Config::get("app.locale") ?>/subasta/subasta-solo-online-duran_7501-001?order=orden_asc">{{ trans($theme.'-app.foot.online_auction')}} </a> </div>
-
-									<div class="categoryOption"> <a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.metas.title_historic') }}</a> </div>
+								<div class="categoryOption">
+									<a href="/<?= \Config::get("app.locale") ?>/subasta/subasta-solo-online-duran_7501-001?order=orden_asc">
+										{{ trans($theme.'-app.foot.online_auction')}}
+									</a>
+								</div>
+								<div class="categoryOption">
+									<a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.metas.title_historic') }}</a>
+								</div>
 							</div>
 					  </div>
                     </li>

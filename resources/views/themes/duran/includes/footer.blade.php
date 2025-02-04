@@ -38,7 +38,7 @@
 									</a>
 								</li>
 								<li class="email">
-									<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.contact')  }}" >
+									<a href="{{ Routing::translateSeo(trans($theme.'-app.links.contact')) }}" >
 										<i class="fas fa-envelope"></i>
 									</a>
 								</li>
@@ -58,17 +58,19 @@
 
 							<div class="col-xs-12 col-md-6">
 								<ul class="ul-format footer-ul">
-									@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
-										@foreach($global['subastas']['S']['W'] as $auction)
-											@foreach($auction as $session)
-												@if($session->reference == '001')
-													<li>
-														<a class="footer-link" href="{{ \Tools::url_auction($session->cod_sub,$session->des_sub,$session->id_auc_sessions, $session->reference) }}">{{mb_strtoupper ($session->des_sub) }}</a>
-													</li>
-												@endif
-											@endforeach
+
+									@foreach(data_get($global, 'subastas.S.W', []) as $auction)
+
+										@foreach($auction as $session)
+											@if($session->reference == '001')
+												<li>
+													<a class="footer-link" href="{{ \Tools::url_auction($session->cod_sub,$session->des_sub,$session->id_auc_sessions, $session->reference) }}">
+														{{mb_strtoupper ($session->des_sub) }}
+													</a>
+												</li>
+											@endif
 										@endforeach
-								   @endif
+									@endforeach
 
 								   	<li><a class="footer-link"  href="{{ trans("$theme-app.links.footer_online_auction") }}">{{ mb_strtoupper (trans($theme.'-app.foot.online_auction')) }} </a></li>
 

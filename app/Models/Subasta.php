@@ -5206,9 +5206,9 @@ class Subasta extends Model
 		}
 
 		$subastasQuery = FgSub::query()
-			//No he encontrado un caso en el que lo necesite y en caso
-			//de necesitarlo saldra a cuenta envolverlo en un condicional.
-			//->joinLangSub()
+			->when(Config::get('app.lang_sub_in_global', false), function($query) {
+				$query->joinLangSub();
+			})
 			->joinSessionSub()
 			->addSelect('subc_sub')
 			->where('subc_sub', '!=', 'N');
