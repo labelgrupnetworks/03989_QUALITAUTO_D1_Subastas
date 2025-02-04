@@ -577,10 +577,13 @@ class ArticleController extends Controller
 			$fgArt0 = $this->setFilters($fgArt0, ["tallaColor_" . $variante->id_variante]);
 			$fgArt0 =  $fgArt0->where("FGART_VARIANTES.ID_VARIANTE", $variante->id_variante);
 
-			$elementos =  $fgArt0->leftJoinFgArt0Lang()->getTallaColor($isDefaultLang)->get();
+			$elementos =  $fgArt0
+				->leftJoinFgArt0Lang()
+				->getTallaColor($isDefaultLang)
+				->get();
 
 			if (count($elementos) > 0) {
-				$tallasColores[] =  $elementos;
+				$tallasColores[] = $elementos->sortBy("valor_valvariante")->values();
 			}
 		}
 
