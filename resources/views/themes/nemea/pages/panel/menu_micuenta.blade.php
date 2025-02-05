@@ -31,6 +31,14 @@
 
 	</div>
 
+	<div class="h6 my-2">{{ trans("$theme-app.user_panel.seller") }}</div>
+	<div class="list-group list-group-flush mb-3">
+		<a href="{{ route('panel.sales', ['lang' => config('app.locale')]) }}" @class(['list-group-item list-group-item-action', 'active' => $pageName == 'panel.sales'])
+			aria-current="{{ $pageName == 'panel.sales' }}">
+			{{ trans("$theme-app.user_panel.my_sale_title") }}
+		</a>
+	</div>
+
 
 	<div class="h6 mb-2">{{ trans("$theme-app.user_panel.setting") }}</div>
 	<div class="list-group list-group-flush mb-3">
