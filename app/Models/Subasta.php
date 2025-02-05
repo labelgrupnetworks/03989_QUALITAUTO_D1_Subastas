@@ -761,54 +761,71 @@ class Subasta extends Model
                                 );
 
     }
-	    //copia de getPujas pero que envia menos información
-		public function getPujas($licit = false, $cod_sub = false, $num = 100)
-		{
 
-			if(!$cod_sub)
-			{
-			  $cod_sub = $this->cod;
-			}
-			$params = array(
-				'emp'       => Config::get('app.emp'),
-				'cod_sub'   => $cod_sub,
-				'ref'       => $this->ref
-			);
+	//copia de getPujas pero que envia menos información
+	public function getPujas($licit = false, $cod_sub = false, $num = 100)
+	{
+		if (!$cod_sub) {
+			$cod_sub = $this->cod;
+		}
 
+		$params = array(
+			'emp'       => Config::get('app.emp'),
+			'cod_sub'   => $cod_sub,
+			'ref'       => $this->ref
+		);
 
-			if($licit) {
-				$params['licit']    = $licit;
-				$where_licit        = " AND pujas1.LICIT_ASIGL1 = :licit";
-			} else {
-				$where_licit        = false;
-			}
+		if ($licit) {
+			$params['licit']    = $licit;
+			$where_licit        = " AND pujas1.LICIT_ASIGL1 = :licit";
+		} else {
+			$where_licit        = false;
+		}
 
+		$addUserInfo = "";
+		$joinUserInfo = "";
+		if(Config::get('app.show_user_info_in_bids', false)) {
+			$addUserInfo = ", fxcli.codpais_cli";
+			$joinUserInfo = "LEFT JOIN fxcliweb ON (licitadores.EMP_LICIT = fxcliweb.EMP_CLIWEB AND fxcliweb.COD_CLIWEB = licitadores.CLI_LICIT)
+				LEFT JOIN fxcli ON (fxcli.GEMP_CLI = fxcliweb.GEMP_CLIWEB AND fxcli.COD_CLI = fxcliweb.COD_CLIWEB)";
+		}
 
-			//ES IMPORTANTE QUE SI HAY DOS PUJAS IGUALES COJA PRIMERO LA ULTIMA, PARA ESO HACE FALTA MIRAR LA FECHA Y HORA Y LIN_ASIGL1 POR SI LA FECHA Y HORA SON IGUALES.
-
-			$pujas = DB::select("SELECT * FROM (
+		//ES IMPORTANTE QUE SI HAY DOS PUJAS IGUALES COJA PRIMERO LA ULTIMA, PARA ESO HACE FALTA MIRAR LA FECHA Y HORA Y LIN_ASIGL1 POR SI LA FECHA Y HORA SON IGUALES.
+		$pujas = DB::select(
+			"SELECT * FROM (
 				SELECT * FROM (
 					  SELECT rownum rn, pu.* FROM (
-						  SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1,  concat(SUBSTR(pujas1.fec_asigl1,1,11),  pujas1.hora_asigl1) as bid_date, type_asigl1 FROM FGASIGL1 pujas1
+						  SELECT
+						  	licitadores.SUB_LICIT cod_sub,
+							licitadores.cod_licit,
+							pujas1.ref_asigl1,
+							pujas1.lin_asigl1,
+							pujas1.imp_asigl1,
+							pujas1.pujrep_asigl1,
+							concat(SUBSTR(pujas1.fec_asigl1, 1, 11),
+							pujas1.hora_asigl1) as bid_date,
+							type_asigl1
+							{$addUserInfo}
+						  FROM FGASIGL1 pujas1
 						  JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
-
+						  {$joinUserInfo}
 						  WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
 						  ORDER BY IMP_ASIGL1 DESC, TO_DATE(TO_CHAR(pujas1.FEC_ASIGL1, 'DD/MM/YY') || ' ' || pujas1.HORA_ASIGL1, 'DD/MM/YY HH24:MI:SS') DESC, LIN_ASIGL1 DESC
 					  ) pu
-					) where ROWNUM <= $num)t".self::getOffset($this->page, $this->itemsPerPage)
-					,$params
-				);
+					) where ROWNUM <= $num)t" . self::getOffset($this->page, $this->itemsPerPage),
+			$params
+		);
 
-			if(!$licit) {
-				foreach ($pujas as $key => $value) {
-					$pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
-				}
-			} elseif (!empty($pujas[0])) {
-				$pujas[0]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($pujas[0]->imp_asigl1);
+		if (!$licit) {
+			foreach ($pujas as $key => $value) {
+				$pujas[$key]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($value->imp_asigl1);
 			}
-
-			return $pujas;
+		} elseif (!empty($pujas[0])) {
+			$pujas[0]->formatted_imp_asigl1 = ToolsServiceProvider::moneyFormat($pujas[0]->imp_asigl1);
 		}
+
+		return $pujas;
+	}
 
    	#Listado de pujas inversas
      public function getPujasInversas($licit = false,$cod_sub = false,   $num = 100)

@@ -102,3 +102,16 @@ header .navbar-nav {
 		opacity: 1;
 	}
 }
+
+.ficha-grid {
+	gap: 1rem;
+}
+
+.hist_content .info {
+	background-color: var(--bs-gray-300);
+}
+
+.hist_content .bidder-identifier-container {
+	display: inline-flex;
+	gap: 2px;
+}
