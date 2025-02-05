@@ -70,11 +70,11 @@
 				</a>
 
                 @if (Session::has('user'))
-                    <a class="icon-link" href="{{ \Routing::slug('user/panel/favorites') }}">
+                    <a class="icon-link" href="{{ route('panel.favorites', ['lang' => Config::get('app.locale')]) }}">
                         <x-icon.boostrap icon="heart" size="18px" />
                     </a>
 
-                    <a class="icon-link" href="{{ \Routing::slug('user/panel/favorites') }}">
+                    <a class="icon-link" href="{{ route('panel.allotments', ['lang' => Config::get('app.locale')]) }}">
                         <x-icon.boostrap icon="bag" size="18px" />
                     </a>
                 @else
@@ -118,23 +118,6 @@
                             </a>
                         </li>
                     @endif
-                    {{--  @if ($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
-                        <li class="nav-item">
-                            <a href="{{ route('subastas.online') }}" @class([
-                                'nav-link',
-                                'lb-text-primary' => $pageName === 'subastas.online',
-                            ])>
-                                <span>{{ trans($theme . '-app.foot.online_auction') }}</span>
-                            </a>
-                        </li>
-                    @endif --}}
-                    {{-- @if ($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ \Routing::translateSeo('venta-directa') }}">
-                                <span>{{ trans($theme . '-app.foot.direct_sale') }}</span>
-                            </a>
-                        </li>
-                    @endif --}}
                     @if ($global['subastas']->has('H'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
@@ -142,18 +125,11 @@
                             </a>
                         </li>
                     @endif
-
-                    {{-- <li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'calendar']) title="" href="{{ route('calendar') }}"><span>{{ trans($theme.'-app.foot.calendar')}}</span></a>
-					</li> --}}
                     <li class="nav-item">
                         <a href="{{ route('valoracion', ['key' => 'articulos', 'lang' => config('app.locale')]) }}"
                             title="" @class(['nav-link', 'lb-text-primary' => $pageName === 'valoracion'])><span>
                                 {{ trans($theme . '-app.home.free-valuations') }}</span></a>
                     </li>
-                    {{-- <li class="nav-item">
-						<a @class(['nav-link', 'lb-text-primary' => $pageName === 'contact_page']) title="{{ trans($theme.'-app.foot.contact')}}" href="{{ route('contact_page') }}"><span>{{ trans($theme.'-app.foot.contact')}}</span></a>
-					</li> --}}
                 </ul>
 
             </div>
@@ -170,11 +146,11 @@
 				</div>
 
                 @if (Session::has('user'))
-                    <a class="icon-link" href="{{ \Routing::slug('user/panel/favorites') }}">
+                    <a class="icon-link" href="{{ route('panel.favorites', ['lang' => Config::get('app.locale')]) }}">
                         <x-icon.boostrap icon="heart" size="18px" />
                     </a>
 
-                    <a class="icon-link" href="{{ \Routing::slug('user/panel/favorites') }}">
+                    <a class="icon-link" href="{{ route('panel.allotments', ['lang' => Config::get('app.locale')]) }}">
                         <x-icon.boostrap icon="bag" size="18px" />
                     </a>
                 @else
