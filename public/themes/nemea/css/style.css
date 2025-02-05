@@ -107,6 +107,10 @@ header .navbar-nav {
 	gap: 1rem;
 }
 
+.hist_content {
+	--logo-size: 1.5em;
+}
+
 .hist_content .info {
 	background-color: var(--bs-gray-300);
 }
@@ -114,4 +118,8 @@ header .navbar-nav {
 .hist_content .bidder-identifier-container {
 	display: inline-flex;
 	gap: 2px;
+}
+
+.hist_item img {
+	width: var(--logo-size);
 }

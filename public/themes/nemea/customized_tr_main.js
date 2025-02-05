@@ -46,7 +46,7 @@ reloadHistory = function ({ subasta, pujas, licits, importeReserva, minPriceSurp
 
 		const licitUnit = puja.cod_licit.toString().slice(-1);
 
-		let bidderFlag = `<img width="35" src="/default/img/icons/flags/es.svg" alt="es"></img>`;
+		let bidderFlag = `<img src="/default/img/icons/flags/es.svg" alt="es"></img>`;
 		if (typeof puja.codpais_cli != 'undefined' && puja.codpais_cli != null && puja.codpais_cli != '') {
 			bidderFlag = `<img src="/default/img/icons/flags/${puja.codpais_cli.toLowerCase()}.svg" alt="${puja.codpais_cli}"></img>`;
 		}
