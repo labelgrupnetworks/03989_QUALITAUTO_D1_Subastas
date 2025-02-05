@@ -3,7 +3,7 @@
     $lang = config('app.locale');
     $registration_disabled = Config::get('app.registration_disabled');
 
-    // $categories = (new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
+    $categories = [];//(new App\Models\V5\FgOrtsec0())->getAllFgOrtsec0()->whereNotNull('key_ortsec0')->get()->toarray();
     $searchAction = config('app.gridLots', false) == 'new' ? route('allCategories') : \Routing::slug('busqueda');
     $pageName = Route::currentRouteName();
 @endphp
