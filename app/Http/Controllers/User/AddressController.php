@@ -109,7 +109,7 @@ class AddressController extends Controller
 			'clid_rsoc' => $rsoc,
 			'email_clid' => $request->input('email_clid', null),
 			'preftel_clid' => $request->input('preftel_clid', ''),
-			'obs_clid' => $request->input('obs_clid', ''),
+			'rsoc2_clid' => $request->input('rsoc2_clid', ''),
 		];
 
 		if (!empty($request->input('codd_clid'))) {

@@ -241,7 +241,7 @@ asigl0.ref_asigl0 <=  auc.\"end_lot\" and
                                 <div class="form-group">
                                     <label>
                                         Alias
-                                        {!! FormLib::Text('obs_clid', 0, $address->obs_clid ?? '', 'maxlength="40"') !!}
+                                        {!! FormLib::Text('rsoc2_clid', 0, $address->rsoc2_clid ?? '', 'maxlength="40"') !!}
                                     </label>
                                 </div>
 

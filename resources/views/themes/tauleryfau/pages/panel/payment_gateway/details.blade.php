@@ -37,8 +37,8 @@
 
                 <p class="detail-fact-ship-address">
 					<span>
-						@if (!empty($address->obs_clid))
-							<b>{{ mb_convert_case($address->obs_clid, MB_CASE_TITLE, 'UTF-8') }}</b>
+						@if (!empty($address->rsoc2_clid))
+							<b>{{ mb_convert_case($address->rsoc2_clid, MB_CASE_TITLE, 'UTF-8') }}</b>
 						@endif
 						{{ mb_convert_case("$address->nomd_clid - $address->dir_clid - $address->dir2_clid - $address->cp_clid - $address->pro_clid ", MB_CASE_TITLE, 'UTF-8') }}
 						- {{ mb_convert_case($countries[strtoupper($address->codpais_clid)], MB_CASE_TITLE, 'UTF-8') }}

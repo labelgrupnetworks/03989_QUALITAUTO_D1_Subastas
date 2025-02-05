@@ -29,7 +29,7 @@ class AddressService
 			'cli2_clid' => $address['cod2_clid'],
 			'email_clid' => $address['email_clid'],
 			'preftel_clid' => $address['preftel_clid'],
-			'obs_clid' => $address['obs_clid'],
+			'rsoc2_clid' => $address['rsoc2_clid'],
 			'mater_clid' => $address['mater_clid']
 		];
 
@@ -62,7 +62,7 @@ class AddressService
 			'clid_rsoc' => $envio['clid_rsoc'],
 			'email_clid' => $envio['email_clid'],
 			'preftel_clid' => $envio['preftel_clid'],
-			'obs_clid' => $envio['obs_clid'] ?? null
+			'rsoc2_clid' => $envio['rsoc2_clid'] ?? null
 		];
 
 		if ($strToDefault) {

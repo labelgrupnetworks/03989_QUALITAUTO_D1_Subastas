@@ -153,7 +153,7 @@
                                 <a class="list-group-item" data-toggle="collapse" type="button" href="#address_form_html"
                                     aria-controls="address_{{ $address->codd_clid }}" aria-expanded="false"
                                     cod="{{ $address->codd_clid }}">
-                                    {{ $address->obs_clid ?? $address->dir_clid }}
+                                    {{ $address->rsoc2_clid ?? $address->dir_clid }}
                                     @if ($address->codd_clid == 'W1')
                                         <span>*{{ trans("$theme-app.user_panel.default") }}</span>
                                     @endif
