@@ -105,12 +105,14 @@
                 {{ trans("$theme-app.user_panel.pay_creditcard") }}
             </p>
         </label>
+		@if(mb_strtolower($user->codpais_cli) == mb_strtolower('ES'))
         <label>
             <input id="paybizum" name="paymethod" type="radio" value="bizum">
             <p>
                 {{ trans("$theme-app.user_panel.pay_bizum") }}
             </p>
         </label>
+		@endif
     </div>
 </div>
 
