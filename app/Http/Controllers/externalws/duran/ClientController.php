@@ -153,9 +153,12 @@ class ClientController extends DuranController
 	public function addSuscription($email)
 	{
 		$fields = [
-			'origen' => 37,
+			'nombre' => '',
+			'apellidos' => '',
 			'email' => $email,
+			'telefono' => '',
 			'publicidad' => 1,
+			'origen' => 37,
 		];
 
 		$xml = $this->createXML($fields);
