@@ -1,4 +1,4 @@
-<div class="search-component-wrapper {{ $classes }} me-auto">
+<div class="search-component-wrapper {{ $classes }}">
     <form role="search" action="{{ $searchAction }}">
         <div class="input-group">
             <input class="form-control form-control-sm" name="description" type="search"
