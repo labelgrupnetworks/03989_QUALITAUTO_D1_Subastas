@@ -25,6 +25,7 @@
 - exif
 - intl (para comprobar certificados)
 - oci8_12c
+- soap
 
 <a name="download"></a>
 ## Descargar e iniciar proyecto
@@ -57,6 +58,7 @@
 - `git remote add gutinvest https://github.com/labelgrupnetworks/02151_GUTINVEST_D1_Subastas.git` (Sin implementar)
 - `git remote add jesusvico https://github.com/labelgrupnetworks/03254_JESUSVICO_D1_Subastas.git`
 - `git remote add magna https://github.com/labelgrupnetworks/03906_MAGNA_D1_Subastas.git`
+- `git remote add nemea https://github.com/labelgrupnetworks/03942_NEMEA_D1_Subastas.git`
 - `git remote add salaretiro https://github.com/labelgrupnetworks/01407_SALARETIRO_D1_Subastas.git`
 - `git remote add segre https://github.com/labelgrupnetworks/02913_SEGRE_D1_Subastas.git`
 - `git remote add silicua https://github.com/labelgrupnetworks/02244_SILICUA_D1_Subastas.git` (Fuera de servicio)
