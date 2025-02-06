@@ -1,8 +1,14 @@
 @php
 $precio_venta = $lote_actual->himp_csub ?? null;
 
+$originalPrecioVenta = !$precio_venta && $lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->sub_hces1 && $lote_actual->lic_hces1 == 'S' && $lote_actual->implic_hces1 > 0;
+
+//precio de adjudicación temporal para los lotes cargados por excel para históricos.
+//necesita revisión para ver si es suficiente.
+$toHistoryPrecioVenta = $lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->sub_hces1 && $lote_actual->implic_hces1 > 0;
+
 //si es un histórico y la subasta del asigl0 = a la del hces1 es que no está en otra subasta y podemso coger su valor de compra de implic_hces1
-if(!$precio_venta && $lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->sub_hces1 && $lote_actual->lic_hces1 == 'S' && $lote_actual->implic_hces1 > 0) {
+if($originalPrecioVenta || $toHistoryPrecioVenta) {
 	$precio_venta = $lote_actual->implic_hces1;
 }
 
