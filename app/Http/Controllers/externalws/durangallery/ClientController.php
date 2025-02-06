@@ -70,4 +70,22 @@ class ClientController extends DuranGalleryController
 
 		return $fields;
 	}
+
+	public function addSuscription($email)
+	{
+		$fields = [
+			'email' => $email,
+			'publicidad' => 1,
+			'origen' => 37,
+		];
+
+		$xml = $this->createXML($fields);
+		$res = $this->callWebService($xml, "wbcontactos");
+
+		if (!empty($res)) {
+			if ($res->resultado != 0) {
+				Log::info("error Web service Duran" . print_r($res, true));
+			}
+		}
+	}
 }
