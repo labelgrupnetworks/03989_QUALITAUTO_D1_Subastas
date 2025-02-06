@@ -103,6 +103,9 @@
             <input id="paycreditcard" name="paymethod" type="radio" value="creditcard" checked="checked">
             <p>
                 {{ trans("$theme-app.user_panel.pay_creditcard") }}
+				@if(Config::get('app.sobreCargoPagoWeb'))
+					<span>{{ trans("$theme-app.user_panel.financial_fee") }}</span>
+				@endif
             </p>
         </label>
 		@if(mb_strtolower($user->codpais_cli) == mb_strtolower('ES'))

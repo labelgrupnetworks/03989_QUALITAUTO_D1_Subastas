@@ -420,7 +420,9 @@ class PaymentsController extends Controller
 		$token = $this->generate_token();
 		#si tiene un sobrecargo por pagar en web
 		$imp_extra = 0;
-		if (Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb"))) {
+		$isCreditCardPayment = request("paymethod") == "creditcard";
+
+		if (Config::get("app.sobreCargoPagoWeb") && is_numeric(Config::get("app.sobreCargoPagoWeb")) && $isCreditCardPayment) {
 			$imp_extra = ($precio +  $envio + $tax) * (Config::get("app.sobreCargoPagoWeb") / 100);
 		}
 
