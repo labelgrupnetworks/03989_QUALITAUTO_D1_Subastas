@@ -16,6 +16,16 @@ $(function () {
 		reload_carrito();
 	})
 
+	$("input[name=paymethod]").on("change", function () {
+
+		$('.summary-body').hide();
+
+		const paymethodBlock = $("input[name=paymethod]:checked").val() === 'transfer' ? 'transfer' : 'creditcard';
+		$(`.summary-body[data-paymethod="${paymethodBlock}"]`).show();
+
+		reload_carrito();
+	});
+
 	$('.js-pay-bill').on('submit', payFactura)
 
 	viewVideoBtnEvents();
@@ -1578,7 +1588,18 @@ function reload_carrito() {
 		$(".text-gasto-envio-" + index_sub).text(precio_envio.toFixed(2).replace(".", ","));
 		$(".js-divisa.text-gasto-envio-" + index_sub).attr('value', precio_envio);
 		precio_final = parseFloat(precio_final) + parseFloat(precio_envio);
+
+		let gastosExtra = parseFloat(0);
+		const paymethodsWithExtra = ["creditcard", "bizum"];
+		if (paymethodsWithExtra.includes($("input[name=paymethod]:checked").val())) {
+			gastosExtra = precio_final * 0.01;
+		}
+
+		precio_final = precio_final + gastosExtra;
+
+		$(".text-gastos-extra-" + index_sub).text(gastosExtra.toFixed(2).replace(".", ","));
 		$(".precio_final_" + index_sub).text(precio_final.toFixed(2).replace(".", ","));
+
 		$(".js-divisa.precio_final_" + index_sub).attr('value', precio_final.toFixed(2));
 
 		if (precio_final <= 0) {
@@ -1864,7 +1885,7 @@ $(function () {
 		lightbox.instance.on('beforeOpen', () => {
 			selectGaleryMiniature(lightbox.instance.pswp.currIndex, $container);
 			$container.css('align-items', 'flex-end');
-			$container.fadeIn(400, function() {
+			$container.fadeIn(400, function () {
 				$(this).css('display', 'flex');
 			});
 		});
@@ -1880,7 +1901,7 @@ $(function () {
 			$container.css('align-items', 'initial');
 		});
 
-		$container.find('.image-selector').click(function() {
+		$container.find('.image-selector').click(function () {
 			lightbox.instance.pswp.goTo($(this).data('key-image'));
 		});
 
