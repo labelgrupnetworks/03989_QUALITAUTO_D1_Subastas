@@ -223,6 +223,9 @@ class Blog extends Model
 				fetch first 1 row only
 				) as CONTENT"));
 			})
+			->when(Config::get('app.most_distant_blog_date', null), function ($query, $date) {
+				$query->where('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG', '>=' , $date);
+			})
 			->where('WEB_CATEGORY_BLOG.ENABLE_CATEGORY_BLOG', 1)
 			->where('WEB_CATEGORY_BLOG_LANG.lang_category_blog_lang', $lang)
 			->where('WEB_CATEGORY_BLOG.EMP_CATEGORY_BLOG', Config::get('app.main_emp'))
