@@ -108,6 +108,14 @@
                     </li>
                 @endif
 
+				@if(data_get($global, 'subastas.H', []))
+				<li class="nav-item">
+					<a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+						<span>{{ trans($theme.'-app.foot.historico')}}</span>
+					</a>
+				</li>
+				@endif
+
                 <li class="nav-item">
                     <a href="{{ Routing::translateSeo('pagina') . trans("$theme-app.links.how_to_buy") }}"
                         title="{{ trans("$theme-app.foot.how_to_buy") }}" @class([

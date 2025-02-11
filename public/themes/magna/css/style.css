@@ -14,6 +14,10 @@ main {
 	main {
 		margin-top: 3rem;
 	}
+
+	main:has(.fluid-banner), main.grid {
+		margin-top: 0;
+	}
 }
 
 
@@ -148,11 +152,11 @@ svg.slick-next.slick-disabled {
 }
 
 /* header */
-header {
+body > header {
 	background-color: #000;
 }
 
-header .container {
+body > header .container {
 	display: grid;
 	grid-template-rows: 44px;
 	grid-template-columns: repeat(3, 1fr);
@@ -172,7 +176,7 @@ header .container {
 }
 
 @media(min-width: 992px) {
-	header .container {
+	body > header .container {
 		grid-template-rows: 66px;
 		padding-top: 19px;
 		padding-bottom: 35px;
@@ -187,7 +191,7 @@ header .container {
 
 @media(min-width: 1600px) {
 
-	header .container,
+	body > header .container,
 	.wrapp-info-header .container {
 		--padding-diference: calc(var(--bs-gutter-x, 1.5rem) * .5);
 		width: calc(1550px + calc(var(--padding-diference) * 2));
@@ -221,7 +225,7 @@ header .container {
 	border: 1px solid hsla(30, 7%, 5%, 0.6);
 }
 
-header h1 {
+body > header h1 {
 	margin: 0;
 }
 
