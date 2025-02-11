@@ -9,7 +9,7 @@ $empresa = $empre->getEmpre();
     <div class="container">
         <div class="row">
 
-			<div class="coo-12 col-lg-3 mb-3">
+            <div class="coo-12 col-lg-3 mb-3">
                 <x-icon.logo />
 
                 <div class="footer-address">
@@ -29,7 +29,16 @@ $empresa = $empre->getEmpre();
                                 href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme . '-app.foot.auctions') }}</a>
                         </li>
                     @endif
+
+                    @if ($global['subastas']->has('H'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+                                <span>{{ trans($theme . '-app.foot.historico') }}</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
+
             </div>
 
             <div class="coo-12 col-lg-2 mb-3">
@@ -41,8 +50,7 @@ $empresa = $empre->getEmpre();
                             title="{{ trans($theme . '-app.foot.about_us') }}">{{ trans($theme . '-app.foot.about_us') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"
-                            href="{{ route('contact_page') }}"
+                        <a class="nav-link" href="{{ route('contact_page') }}"
                             title="{{ trans($theme . '-app.foot.contact') }}">{{ trans($theme . '-app.foot.contact') }}</a>
                     </li>
                 </ul>
@@ -127,13 +135,13 @@ $empresa = $empre->getEmpre();
 </footer>
 
 <div class="bg-gold text-white text-center">
-	<p>© {{ now()->format('Y') }} {!! trans($theme . '-app.foot.rights') !!}.</p>
-	<p>
-		<a class="nav-link" href="{{ trans($theme . '-app.foot.developed_url') }}"
-			title="{{ trans($theme . '-app.foot.developedSoftware') }}"
-			target="_blank">{{ trans($theme . '-app.foot.developedBy') }}
-		</a>
-	</p>
+    <p>© {{ now()->format('Y') }} {!! trans($theme . '-app.foot.rights') !!}.</p>
+    <p>
+        <a class="nav-link" href="{{ trans($theme . '-app.foot.developed_url') }}"
+            title="{{ trans($theme . '-app.foot.developedSoftware') }}"
+            target="_blank">{{ trans($theme . '-app.foot.developedBy') }}
+        </a>
+    </p>
 </div>
 
 @if (!Cookie::get((new App\Models\Cookies())->getCookieName()))
