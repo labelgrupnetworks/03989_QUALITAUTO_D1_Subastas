@@ -15,7 +15,7 @@ main {
 		margin-top: 3rem;
 	}
 
-	main:has(.fluid-banner), main.grid {
+	main:has(.fluid-banner, .grid-auction-info) {
 		margin-top: 0;
 	}
 }
