@@ -36,6 +36,7 @@ class NoticiasController extends Controller
 
 		$blog->lang = strtoupper(Config::get('app.locale'));
 		$noticias = $blog->getAllNoticiasLang($key_categ);
+		$categ = null;
 
 		foreach ($noticias as $noticia) {
 			$noticia->texto_web_blog_lang = strip_tags($noticia->texto_web_blog_lang);
@@ -59,6 +60,7 @@ class NoticiasController extends Controller
 		}
 
 		$data = [
+			'categ' => $categ,
 			'categories' => $categoryBlog->getCategoriesHasNews(),
 			'noticias' => $noticias,
 			'seo' => $SEO_metas
