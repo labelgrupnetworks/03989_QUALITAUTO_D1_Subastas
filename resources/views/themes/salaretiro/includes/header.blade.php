@@ -272,6 +272,12 @@
 						{{ trans("$theme-app.foot.workwithus") }}
 					</a>
 				</li>
+				<li>
+					<a title="{{ trans($theme.'-app.foot.job_offers')}}"
+						href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.job_offers') }}">
+						{{ trans("$theme-app.foot.job_offers") }}
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -361,6 +367,12 @@
 			<a title="{{ trans($theme.'-app.foot.workwithus')}}"
 				href="{{ \Routing::translateSeo('workwithus') }}">
 				{{ trans("$theme-app.foot.workwithus") }}
+			</a>
+		</li>
+		<li>
+			<a title="{{ trans($theme.'-app.foot.job_offers')}}"
+				href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.job_offers') }}">
+				{{ trans("$theme-app.foot.job_offers") }}
 			</a>
 		</li>
 
