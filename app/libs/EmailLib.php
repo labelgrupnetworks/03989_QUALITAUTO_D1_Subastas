@@ -60,7 +60,7 @@ class EmailLib
 		if ($this->debug) {
 			$this->from = Config::get('mail.from.address') ?: Config::get('app.from_email');
 		} else {
-			$this->from = Config::get('app.from_email');
+			$this->from = Config::get('app.from_email', Config::get('mail.from.address'));
 		}
 
 		$this->lang = Config::get('app.locale');
