@@ -51,7 +51,7 @@
 
 		@foreach ($data['noticias'] as $key => $noticias)
 		@php
-		$url = \Routing::slug('blog').'/'.$data['categorys'][$noticias->primary_category_web_blog]->url_category_blog_lang.'/'.$noticias->url_web_blog_lang;
+		$url = $noticias->url;
 		@endphp
 
 		<div class="row entrada-post">
@@ -144,72 +144,6 @@
 </section>
 
 <script>
-	/*   funcion para categorias con scroll horizontal
-(function ($) {
-    var scrollCategories = {
-        init: function () {
-            this.cache();
-            this.bindEvents();
-        },
-        cache: function () {
-            this.btnR = $('.scroll-controller.right')
-            this.btnL = $('.scroll-controller.left')
-            this.scroll = 0;
-            this.container = $('.blog_categories_list')
-            this.scrollTotal =  $('.blog_categories_list')[0].scrollWidth - 250;
-        },
-        move: function (e) {
-
-           if($(e.currentTarget).hasClass('left')){
-               if(this.scroll > 0){
-                    this.scroll = this.scroll - (this.scrollTotal /10);
-                    if(this.scroll < 0 ){
-                        this.scroll = 0;
-                    }else{
-                        //$(e.currentTarget).find('i').hide()
-                    }
-               }
-
-           }else{
-                if(this.scroll < this.scrollTotal){
-
-                    this.scroll = this.scroll + (this.scrollTotal /10);
-                    if(this.scroll > this.scrollTotal ){
-                        this.scroll = this.scrollTotal;
-                    }
-               }
-           }
-           this.moveScroll()
-
-
-        },
-        moveScroll: function () {
-                console.log(this.scroll)
-                this.container.animate({
-                    scrollLeft: this.scroll
-                },200)
-            },
-
-        activeBtn: function(){
-
-
-        },
-        disabledBtn: function(){
-
-
-        },
-        bindEvents: function () {
-            //this.btnL.hide()
-            this.btnR.on('click', this.move.bind(this));
-            this.btnL.on('click', this.move.bind(this));
-        }
-    };
-
-    scrollCategories.init();
-
-})($);
-
-*/
     $(document).ready(function(){
         $('.resumen').each(function (){
             var str = $(this).text();
@@ -218,10 +152,5 @@
         });
 
     });
-
 </script>
-
-
-
-
 @stop

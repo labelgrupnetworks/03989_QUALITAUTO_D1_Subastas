@@ -31,51 +31,40 @@ class NoticiasController extends Controller
 	{
 
 		$blog = new Blog();
-
 		$categoryBlog = new CategorysBlog();
 		$SEO_metas = new \stdClass();
-		$categorys = array();
-		$categ = null;
+
 		$blog->lang = strtoupper(Config::get('app.locale'));
-
-		$categoryBlog->lang = strtoupper(Config::get('app.locale'));
-		$categorys_temp = $categoryBlog->getCategory(true);
-		$category_exist = $categoryBlog->getCategoryHasNews();
-
 		$noticias = $blog->getAllNoticiasLang($key_categ);
 
 		foreach ($noticias as $noticia) {
 			$noticia->texto_web_blog_lang = strip_tags($noticia->texto_web_blog_lang);
+			$noticia->url = RoutingServiceProvider::translateSeo("blog/{$noticia->url_category_blog_lang}/{$noticia->url_web_blog_lang}");
+			$noticia->category_url = RoutingServiceProvider::translateSeo("blog/{$noticia->url_category_blog_lang}");
 		}
 
 		if (!empty($key_categ)) {
+			$categoryBlog->lang = strtoupper(Config::get('app.locale'));
 			$categoryBlog->url_category = $key_categ;
 			$categ = $categoryBlog->getCategory();
 			$url_category_blog_lang = !empty($categ->url_category_blog_lang) ? $categ->url_category_blog_lang : $key_categ;
+
 			$SEO_metas->meta_title = !empty($categ->metatit_category_blog_lang) ? $categ->metatit_category_blog_lang : trans(Config::get('app.theme') . '-app.blog.blog_metatile');
 			$SEO_metas->meta_description = !empty($categ->meta_description) ? $categ->meta_description : trans(Config::get('app.theme') . '-app.blog.blog_metades');
 			$SEO_metas->canonical = $_SERVER['HTTP_HOST'] . RoutingServiceProvider::translateSeo('blog') . $url_category_blog_lang;
 		} else {
 			$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.blog.blog_metatile');
 			$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.blog.blog_metades');
-
 			$SEO_metas->canonical =  substr($_SERVER['HTTP_HOST'] . RoutingServiceProvider::translateSeo('blog'), 0, -1);
 		}
 
-		$categorys = $categorys_temp->filter(fn ($category) => in_array($category->id_category_blog, $category_exist))
-			->keyBy('id_category_blog')
-			->all();
-
-		$data = array(
-			//dividir caminos para obtener datos
-			//'categories' => $categoryBlog->getCategoriesHasNews(),
-			'categorys' => $categorys,
+		$data = [
+			'categories' => $categoryBlog->getCategoriesHasNews(),
 			'noticias' => $noticias,
-			'categ' => $categ,
 			'seo' => $SEO_metas
-		);
+		];
 
-		return View::make('front::pages.noticias.noticias', array('data' => $data));
+		return View::make('front::pages.noticias.noticias', ['data' => $data]);
 	}
 
 	public function news($lang, $key_categ, $key_news)

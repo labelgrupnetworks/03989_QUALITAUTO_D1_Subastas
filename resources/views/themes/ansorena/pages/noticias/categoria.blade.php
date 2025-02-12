@@ -34,14 +34,6 @@
     $noticiasSecondBlock = $noticias->splice(0, 3);
     $noticiasThirdBlock = $noticias->splice(0, 4);
     $noticiasLastBlock = $noticias;
-
-    function getNoticiaUrl($noticia, $categorys)
-    {
-        if (empty($categorys[$noticia->primary_category_web_blog])) {
-            return '#';
-        }
-        return Routing::translateSeo("blog/{$categorys[$noticia->primary_category_web_blog]->url_category_blog_lang}/{$noticia->url_web_blog_lang}");
-    }
 @endphp
 
 <main class="stories-page stories-page__categories pb-0">
@@ -71,7 +63,7 @@
         @if ($noticia)
             <section class="front-blog">
                 <article class="card card-blog card-blog-xl h-100">
-                    <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                    <a href="{{ $noticia->url }}">
                         @if (Tools::fileNameIsImage($noticia->img_web_blog))
                             <img class="card-img-top" src="{{ $noticia->img_web_blog }}"
                                 alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
@@ -82,14 +74,14 @@
                     </a>
                     <div class="card-body">
                         <p class="card-title font-clamp">
-                            <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                            <a href="{{ $noticia->url }}">
                                 {{ $noticia->titulo_web_blog_lang }}
                             </a>
                         </p>
                     </div>
                     <div class="card-footer">
                         <p class="card-subtitle">
-                            <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                            <a href="{{ $noticia->url }}">
                                 {{ $noticia->cita_web_blog_lang }}
                             </a>
                         </p>
@@ -103,7 +95,7 @@
                 @foreach ($noticiasSecondBlock as $index => $noticia)
                     <div class="{{ $index == 1 ? 'col-lg-5' : 'col-12 col-lg' }}">
                         <article class="card card-blog h-100">
-                            <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                            <a href="{{ $noticia->url }}">
                                 @if (Tools::fileNameIsImage($noticia->img_web_blog))
                                     <img class="card-img-top" src="{{ $noticia->img_web_blog }}"
                                         alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
@@ -114,14 +106,14 @@
                             </a>
                             <div class="card-body">
                                 <p class="card-title font-clamp">
-                                    <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                    <a href="{{ $noticia->url }}">
                                         {{ $noticia->titulo_web_blog_lang }}
                                     </a>
                                 </p>
                             </div>
                             <div class="card-footer">
                                 <p class="card-subtitle">
-                                    <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                    <a href="{{ $noticia->url }}">
                                         {{ $noticia->cita_web_blog_lang }}
                                     </a>
                                 </p>
@@ -139,7 +131,7 @@
                 @foreach ($noticiasThirdBlock as $noticia)
                     <div class="col">
                         <article class="card card-blog h-100">
-                            <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                            <a href="{{ $noticia->url }}">
                                 @if (Tools::fileNameIsImage($noticia->img_web_blog))
                                     <img class="card-img-top" src="{{ $noticia->img_web_blog }}"
                                         alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
@@ -150,14 +142,14 @@
                             </a>
                             <div class="card-body">
                                 <p class="card-title font-clamp">
-                                    <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                    <a href="{{ $noticia->url }}">
                                         {{ $noticia->titulo_web_blog_lang }}
                                     </a>
                                 </p>
                             </div>
                             <div class="card-footer">
                                 <p class="card-subtitle">
-                                    <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                    <a href="{{ $noticia->url }}">
                                         {{ $noticia->cita_web_blog_lang }}
                                     </a>
                                 </p>
@@ -178,7 +170,7 @@
                 @endphp
                 @if ($noticia)
                     <article class="card card-blog card-blog-xl h-100">
-                        <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                        <a href="{{ $noticia->url }}">
                             @if (Tools::fileNameIsImage($noticia->img_web_blog))
                                 <img class="card-img-top" src="{{ $noticia->img_web_blog }}"
                                     alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
@@ -189,14 +181,14 @@
                         </a>
                         <div class="card-body">
                             <p class="card-title font-clamp">
-                                <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                <a href="{{ $noticia->url }}">
                                     {{ $noticia->titulo_web_blog_lang }}
                                 </a>
                             </p>
                         </div>
                         <div class="card-footer">
                             <p class="card-subtitle">
-                                <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                <a href="{{ $noticia->url }}">
                                     {{ $noticia->cita_web_blog_lang }}
                                 </a>
                             </p>
@@ -210,7 +202,7 @@
                     @foreach ($noticiasLastBlock as $noticia)
                         <div class="col">
                             <article class="card card-blog h-100">
-                                <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                <a href="{{ $noticia->url }}">
                                     @if (Tools::fileNameIsImage($noticia->img_web_blog))
                                         <img class="card-img-top" src="{{ $noticia->img_web_blog }}"
                                             alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
@@ -221,14 +213,14 @@
                                 </a>
                                 <div class="card-body">
                                     <p class="card-title font-clamp">
-                                        <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                        <a href="{{ $noticia->url }}">
                                             {{ $noticia->titulo_web_blog_lang }}
                                         </a>
                                     </p>
                                 </div>
                                 <div class="card-footer">
                                     <p class="card-subtitle">
-                                        <a href="{{ getNoticiaUrl($noticia, $data['categorys']) }}">
+                                        <a href="{{ $noticia->url }}">
                                             {{ $noticia->cita_web_blog_lang }}
                                         </a>
                                     </p>

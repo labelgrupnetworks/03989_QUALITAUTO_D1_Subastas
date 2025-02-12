@@ -51,14 +51,14 @@ $noticias = $data['noticias']->all();
 				@foreach ($noticias as $noticia)
 				<article class="card card-blog h-100">
 					<a
-						href="{{ Routing::translateSeo("blog/{$data['categorys'][$noticia->primary_category_web_blog]->url_category_blog_lang}/{$noticia->url_web_blog_lang}") }}">
+						href="{{ $noticia->url }}">
 						<img class="card-img-top" src="{{ $noticia->img_web_blog }}"
 							alt="Imagen para artículo {{ $noticia->titulo_web_blog_lang }}">
 					</a>
 					<div class="card-body">
 						<p class="card-title">
 							<a
-								href="{{ Routing::translateSeo("blog/{$data['categorys'][$noticia->primary_category_web_blog]->url_category_blog_lang}/{$noticia->url_web_blog_lang}") }}">
+								href="{{ $noticia->url }}">
 								{{ $noticia->titulo_web_blog_lang }}
 							</a>
 						</p>
@@ -66,8 +66,8 @@ $noticias = $data['noticias']->all();
 					<div class="card-footer">
 						<p class="card-subtitle">
 							<a
-								href="{{ Routing::translateSeo("blog/{$data['categorys'][$noticia->primary_category_web_blog]->url_category_blog_lang}") }}">
-								{{ $data['categorys'][$noticia->primary_category_web_blog]->name_category_blog_lang }}
+								href="{{ $noticia->category_url }}">
+								{{ $noticia->name_category_blog_lang }}
 							</a>
 						</p>
 					</div>
