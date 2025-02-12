@@ -108,14 +108,26 @@
 				@endif
             </p>
         </label>
+
+		<label>
+            <input id="transfer" name="paymethod" type="radio" value="transfer">
+			<p>
+                {{ Str::of(trans("$theme-app.user_panel.bank_transfer"))->lower()->ucfirst() }}
+            </p>
+        </label>
+
 		@if(mb_strtolower($user->codpais_cli) == mb_strtolower('ES'))
         <label>
             <input id="paybizum" name="paymethod" type="radio" value="bizum">
             <p>
                 {{ trans("$theme-app.user_panel.pay_bizum") }}
+				@if(Config::get('app.sobreCargoPagoWeb'))
+					<span>{{ trans("$theme-app.user_panel.financial_fee") }}</span>
+				@endif
             </p>
         </label>
 		@endif
+
     </div>
 </div>
 
