@@ -8,7 +8,7 @@
     $auctionDate = Carbon::parse($auction->session_start)->locale($locale);
 
     $dateFormat = $auctionDate->isoFormat('LL');
-    $tiemeFormat = $auctionDate->isoFormat('H \h');
+    $tiemeFormat = $auctionDate->isoFormat('H:mm \h');
 
     $auctionImage = Tools::urlAssetsCache("/img/AUCTION_{$emp}_{$auction->cod_sub}.jpg");
 
