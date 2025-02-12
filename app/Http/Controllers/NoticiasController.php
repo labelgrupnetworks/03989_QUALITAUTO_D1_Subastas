@@ -37,9 +37,9 @@ class NoticiasController extends Controller
 		$categorys = array();
 		$categ = null;
 		$blog->lang = strtoupper(Config::get('app.locale'));
+
 		$categoryBlog->lang = strtoupper(Config::get('app.locale'));
 		$categorys_temp = $categoryBlog->getCategory(true);
-
 		$category_exist = $categoryBlog->getCategoryHasNews();
 
 		$noticias = $blog->getAllNoticiasLang($key_categ);
@@ -62,21 +62,18 @@ class NoticiasController extends Controller
 			$SEO_metas->canonical =  substr($_SERVER['HTTP_HOST'] . RoutingServiceProvider::translateSeo('blog'), 0, -1);
 		}
 
-		$i = 0;
-		foreach ($categorys_temp as $categ_value) {
-			if (in_array($categ_value->id_category_blog, $category_exist)) {
-				$categorys[$categ_value->id_category_blog] = $categ_value;
-			}
-		}
+		$categorys = $categorys_temp->filter(fn ($category) => in_array($category->id_category_blog, $category_exist))
+			->keyBy('id_category_blog')
+			->all();
 
 		$data = array(
+			//dividir caminos para obtener datos
+			//'categories' => $categoryBlog->getCategoriesHasNews(),
 			'categorys' => $categorys,
 			'noticias' => $noticias,
 			'categ' => $categ,
 			'seo' => $SEO_metas
 		);
-
-		//dd($data);
 
 		return View::make('front::pages.noticias.noticias', array('data' => $data));
 	}
