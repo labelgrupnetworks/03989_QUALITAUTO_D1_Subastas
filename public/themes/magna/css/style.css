@@ -605,6 +605,31 @@ nav.header-navbar ul {
 	margin: 0 -12px;
 }
 
+.home-categories img {
+	width: 100%;
+	aspect-ratio: 8 / 9;
+	object-fit: cover;
+}
+
+.home-categories .item a:hover img {
+	opacity: 0.9;
+}
+
+.home-categories .item a {
+	text-decoration: none;
+}
+
+.home-categories .item a:hover {
+	text-decoration: underline;
+}
+
+.home-categories .item p {
+	font-family: var(--ff-highlight);
+	font-size: 1.5rem;
+	font-weight: 400;
+	margin-top: 1rem;
+}
+
 .lotes_destacados .lots-wrapper.slick-slide {
 	padding: 0;
 	margin: 0 12px;
@@ -612,31 +637,6 @@ nav.header-navbar ul {
 
 .lotes_destacados .slick-list {
 	margin: 0 -12px;
-}
-
-.category-card {
-	text-decoration: none;
-}
-
-.category-card:hover {
-	text-decoration: underline;
-}
-
-.category-card img {
-	width: 100%;
-	aspect-ratio: 8 / 9;
-	object-fit: cover;
-}
-
-.category-card:hover img {
-	opacity: 0.9;
-}
-
-.category_name {
-	font-family: var(--ff-highlight);
-	font-size: 1.5rem;
-	font-weight: 400;
-	margin-top: 1rem;
 }
 
 .card.lot-card {

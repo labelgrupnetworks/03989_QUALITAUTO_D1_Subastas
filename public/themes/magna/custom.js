@@ -1,4 +1,4 @@
-const homeBannersOptions  = [
+const homeBannersOptions = [
 	{
 		breakpoint: 1200,
 		settings: {
@@ -120,7 +120,7 @@ function toogleMenu(menuButton) {
 	logo.classList.toggle('d-none', !isOpen);
 }
 
-hideFilters = function(event) {
+hideFilters = function (event) {
 	event.preventDefault();
 	$('.filters-auction-content .form-group').toggleClass('d-none');
 }
