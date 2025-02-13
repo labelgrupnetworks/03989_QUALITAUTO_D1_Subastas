@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Providers\RoutingServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
@@ -66,7 +67,7 @@ class Web_Blog extends Model
 				$query->where('lang_category_blog_lang', mb_strtoupper(Config::get('app.locale')));
 			}])
 			->with(['localeLang' => function ($query) use ($withContent) {
-				$query->select('idblog_web_blog_lang', 'titulo_web_blog_lang', 'url_web_blog_lang', 'enabled_web_blog_lang')
+				$query->select('idblog_web_blog_lang', 'titulo_web_blog_lang', 'url_web_blog_lang', 'enabled_web_blog_lang', 'cita_web_blog_lang')
 					->when($withContent, function ($query) {
 						return $query->addSelect('texto_web_blog_lang');
 					});
@@ -145,6 +146,20 @@ class Web_Blog extends Model
 	public function getIsVisibleAttribute()
 	{
 		return $this->is_visible_message->error == "" && count($this->is_visible_message->warnings) == 0;
+	}
+
+	public function getUrlAttribute()
+	{
+		if(!$this->localeLang) {
+			return null;
+		};
+
+		if(!$this->principalCategory) {
+			return RoutingServiceProvider::translateSeo("blog/{$this->localeLang->url_web_blog_lang}");
+		};
+
+		$categoryLanguage = $this->principalCategory->languages->where('lang_category_blog_lang', mb_strtoupper(Config::get('app.locale')))->first();
+		return RoutingServiceProvider::translateSeo("blog/{$categoryLanguage->url_category_blog_lang}/{$this->localeLang->url_web_blog_lang}");
 	}
 
 	public function setMedia($file)

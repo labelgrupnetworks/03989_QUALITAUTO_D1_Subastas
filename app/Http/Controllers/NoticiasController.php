@@ -83,7 +83,6 @@ class NoticiasController extends Controller
 
 		if (!empty($key_categ)) {
 			$categoryBlog->url_category = $key_categ;
-			$categ = $categoryBlog->getCategory();
 		}
 
 		foreach ($categorys_temp as $categ_value) {

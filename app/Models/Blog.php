@@ -310,6 +310,9 @@ class Blog extends Model
                 ->where('WEB_BLOG_LANG.lang_web_blog_lang', $lang)
                 ->where('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG','<=',date("Y-m-d"))
                 ->where('ENABLED_WEB_BLOG_LANG',1)
+				->when(Config::get('app.most_distant_blog_date', null), function ($query, $date) {
+					$query->where('WEB_BLOG.PUBLICATION_DATE_WEB_BLOG', '>=' , $date);
+				})
                 ->whereNotNull('URL_WEB_BLOG_LANG')
                 ->whereIn('WEB_BLOG_REL_CATEGORY.IDCAT_WEB_BLOG_REL_CATEGORY',$categ_rel)
                 ->where('WEB_BLOG.id_web_blog','!=',$relation_new)
