@@ -18,6 +18,10 @@
 				<h1 class="ff-highlight bold">{{ $auction->des_sub }}</h1>
 			</div>
 
+			<div class="ficha-subasta-description">
+				{!! $auction->descdet_sub !!}
+			</div>
+
 			<div class="ficha-suasta-expo">
 				<h2>{{ trans("$theme-app.subastas.inf_subasta_exposicion") }}</h2>
 				@if ($auction->expofechas_sub)
