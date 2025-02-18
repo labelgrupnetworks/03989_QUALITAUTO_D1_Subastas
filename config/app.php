@@ -43,6 +43,13 @@ return [
 	'captcha_v3_public' => env('CAPTCHA_SITE_KEY', null),
 	'captcha_v3_private' => env('CAPTCHA_SECRET_KEY', null),
 
+
+	/**
+	 * Redsys
+	 */
+	'MerchandCodeRedsys' => env('REDSYS_MERCHANDCODE', null),
+	'KeyRedsys' => env('REDSYS_KEY', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
