@@ -8,7 +8,7 @@
     <details>
         <summary>{{ trans("$theme-app.lot.purchase_conditions_summary") }}</summary>
         <p>
-            {{ trans("$theme-app.lot.purchase_conditions_p1") }}
+            {!! trans("$theme-app.lot.purchase_conditions_p1") !!}
         </p>
         <p>
             {{ trans("$theme-app.lot.purchase_conditions_p2") }}
