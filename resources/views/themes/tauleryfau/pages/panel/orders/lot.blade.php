@@ -24,13 +24,10 @@
 
     $nextScale = $escalado->NextScaleBid($inf_lot->impsalhces_asigl0, $inf_lot->implic_hces1);
 
-    $isNotClose =
-        $inf_lot->cerrado_asigl0 != 'S' &&
-        $inf_lot->retirado_asigl0 != 'S' &&
-        strtotime('now') < strtotime($inf_lot->session_start);
-
-    $isInLive = strtotime('now') > strtotime($inf_lot->session_start)
-		&& strtotime('now') < strtotime($inf_lot->session_end);
+	$now = strtotime('now');
+	$auctionsDateIsFinish = strtotime($inf_lot->session_end) < $now;
+	$isClose = $inf_lot->cerrado_asigl0 == 'S' || $inf_lot->retirado_asigl0 == 'S';
+    $isInLive = $now > strtotime($inf_lot->session_start) && $now < strtotime($inf_lot->session_end);
 @endphp
 
 <div class="panel-lot-wrapper">
@@ -97,7 +94,7 @@
         </div>
 
         <div class="lot-actions">
-            @if ($isNotClose && !$isInLive)
+            @if (!$isClose && !$isInLive && !$auctionsDateIsFinish)
                 <button
                     class="btn js-lot-action_pujar_panel btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif"
                     data-from="modal" data-sub="{{ $inf_lot->cod_sub }}" data-ref="{{ $inf_lot->ref_asigl0 }}"
@@ -115,14 +112,14 @@
                 </button>
             @endif
 
-			@if ($isNotClose && $isInLive)
+			@if ($isInLive && !$isClose)
 			<a class="btn btn-puja-panel btn-color btn-live js-button-bid-live" data-from="modal"
 				href="{{ $urlLive }}">
 				{{ trans($theme . '-app.lot_list.bid_live') }}
 			</a>
 			@endif
 
-            @if ($subasta_finalizada || !$isNotClose)
+            @if ($isClose)
                 <div class="btn btn-puja-panel btn-color @if ($bid_mine) bid-mine @endif">
                     @if ($bid_mine)
                         {{ trans("$theme-app.user_panel.won") }}
