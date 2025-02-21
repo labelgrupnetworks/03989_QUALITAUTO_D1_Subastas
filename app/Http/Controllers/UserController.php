@@ -21,6 +21,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
 use App\Models\V5\FxCliObcta;
 use App\Models\V5\FxCliWeb;
+use App\Models\V5\FxTiendas;
 use App\Models\V5\SubAuchouse;
 use App\Models\V5\Web_Preferences;
 use App\Providers\RoutingServiceProvider;
@@ -1126,11 +1127,12 @@ class UserController extends Controller
 						);
 					} else {
 
+
 						$FXCLIWEB = DB::select(
 							"INSERT INTO FXCLIWEB
-                              (GEMP_CLIWEB, COD_CLIWEB, USRW_CLIWEB, PWDWENCRYPT_CLIWEB, EMP_CLIWEB, TIPACCESO_CLIWEB, TIPO_CLIWEB, NOM_CLIWEB, EMAIL_CLIWEB, NLLIST1_CLIWEB, NLLIST2_CLIWEB, FECALTA_CLIWEB,IDIOMA_CLIWEB,COD2_CLIWEB,PUBLI_CLIWEB   )
+                              (GEMP_CLIWEB, COD_CLIWEB, USRW_CLIWEB, PWDWENCRYPT_CLIWEB, EMP_CLIWEB, TIPACCESO_CLIWEB, TIPO_CLIWEB, NOM_CLIWEB, EMAIL_CLIWEB, NLLIST1_CLIWEB, NLLIST2_CLIWEB, FECALTA_CLIWEB, IDIOMA_CLIWEB, COD2_CLIWEB, PUBLI_CLIWEB, TIENDA_CLIWEB)
                               VALUES
-                              (:gemp, :cod_cliweb, :email, :password_encrypt, :emp, 'N', 'C', :usuario, :email,:nllist1, :nllist2, :fecha_alta,:lang, :cod2, :publi)",
+                              (:gemp, :cod_cliweb, :email, :password_encrypt, :emp, 'N', 'C', :usuario, :email,:nllist1, :nllist2, :fecha_alta,:lang, :cod2, :publi, :tienda_cliweb)",
 							array(
 								'gemp'          => Config::get('app.gemp'),
 								'email'         => FacadeRequest::input('email'),
@@ -1143,7 +1145,8 @@ class UserController extends Controller
 								'fecha_alta'    => date("Y-m-d H:i:s"),
 								'lang' => $languages,
 								'cod2' => $cod2_cli,
-								'publi' => $condiciones2
+								'publi' => $condiciones2,
+								'tienda_cliweb' => Config::get('app.agrsub', false) ? FxTiendas::getTinedaIdFromAgrsub() : null
 							)
 						);
 					}
