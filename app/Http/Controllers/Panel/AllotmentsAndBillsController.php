@@ -567,6 +567,17 @@ class AllotmentsAndBillsController extends Controller
 			return "$item->apre_csub-$item->npre_csub";
 		});
 
+		//gastos de envío de cada profoma
+		$shippmentsCosts = $profomaInvoicesPendings->map(function ($item, $key) use ($paymentController) {
+			$totalProforma = $item->sum('total_imp_invoice');
+			$shippment = $paymentController->gastosEnvio($totalProforma);
+			$total =  $shippment['imp'] + $shippment['iva'];
+			return (object)[
+				'id' => $key,
+				'cost' => $total,
+			];
+		});
+
 		//prefacturas pagadas pero aún no facturadas
 		$profomaInvoicesPayeds = $payedAllotments->where('fac_csub', '!=', 'S')->groupBy(function ($item) {
 			return "$item->apre_csub-$item->npre_csub";
@@ -592,9 +603,9 @@ class AllotmentsAndBillsController extends Controller
 			'yearsAvailables' => $yearsAvailables,
 			'yearsSelected' => $yearsSelected,
 			'isAjax' => $request->ajax(),
+			'shippmentsCosts' => $shippmentsCosts,
 		];
 
-		//if is ajax request return only the data
 		if ($request->ajax()) {
 			return view('front::pages.panel.summary.allotments_block', ['data' => $data])->render();
 		}
@@ -707,8 +718,7 @@ class AllotmentsAndBillsController extends Controller
 		}
 
 		$adjudicacionFormat->imp_invoice = $adjudicacion->himp_csub + $adjudicacion->base_csub + $adjudicacionFormat->base_csub_iva;
-		$adjudicacionFormat->imp_envio = $paymentController->gastosEnvio($adjudicacionFormat->imp_invoice);
-		$adjudicacionFormat->total_imp_invoice = $adjudicacionFormat->imp_invoice + $adjudicacionFormat->imp_envio['imp'] + $adjudicacionFormat->imp_envio['iva'] + $adjudicacionFormat->licencia_exportacion;
+		$adjudicacionFormat->total_imp_invoice = $adjudicacionFormat->imp_invoice + $adjudicacionFormat->licencia_exportacion;
 
 		return $adjudicacionFormat;
 	}

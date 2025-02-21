@@ -29,13 +29,15 @@
 
 				@php
 					$sumInvoices = $profomaInvoice->sum('total_imp_invoice');
+					$shippmentCost = $data['shippmentsCosts']->where('id', $proformaId)->first();
+					$totalInvoice = $sumInvoices + ($shippmentCost->cost ?? 0);
 				@endphp
 
                 @include('pages.panel.summary.allotments_auction', [
                     'id' => $proformaId,
                     'document' => $profomaInvoice->first(),
                     'isPayed' => false,
-					'sumInvoices' => $sumInvoices
+					'sumInvoices' => $totalInvoice
                 ])
             @endforeach
 
