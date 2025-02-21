@@ -389,15 +389,33 @@ class Facturas extends Model
 
     }
 
-    public function insertCOBRO0($anum,$num,$params,$date){
+	public function insertCOBRO0($anum, $num, $params, $date)
+	{
+		//En csm utilizan un código distinto. y al usar ambas la mimsa empresa...
+		$cobParam = Config::get('app.agrsub', null) == 'CSM'
+			? $params->cob3web2_param1
+			: $params->cob3web_param1;
 
-         DB::table('FXCOBRO0')->insert([
-            'EMP_COBRO0' => \Config::get('app.emp'), 'ANUM_COBRO0' => $anum,'NUM_COBRO0'=>$num, 'CLI_COBRO0' => $this->cod_cli, 'FECI_COBRO0' => $date,
-                'USR_COBRO0'=>'WEB','ASENT_COBRO0'=>'N','CONC1_COBRO0'=>'COBRO GLOBAL1','CONC2_COBRO0'=>'COBRO GLOBAL2','CONC3_COBRO0'=>'COBRO GLOBAL3'
-                ,'INGRESADO_COBRO0'=>'N','TOTAL1_COBRO0'=>'0','TOTAL2_COBRO0'=>'0','TOTAL3_COBRO0'=>'0'
-                ,'CTAIC_COBRO0'=>$params->cob1_param1, 'CTAIT_COBRO0'=>$params->cob2_param1, 'CTAIB_COBRO0'=>$params->cob3web_param1
-        ]);
-    }
+		DB::table('FXCOBRO0')->insert([
+			'EMP_COBRO0' => Config::get('app.emp'),
+			'ANUM_COBRO0' => $anum,
+			'NUM_COBRO0' => $num,
+			'CLI_COBRO0' => $this->cod_cli,
+			'FECI_COBRO0' => $date,
+			'USR_COBRO0' => 'WEB',
+			'ASENT_COBRO0' => 'N',
+			'CONC1_COBRO0' => 'COBRO GLOBAL1',
+			'CONC2_COBRO0' => 'COBRO GLOBAL2',
+			'CONC3_COBRO0' => 'COBRO GLOBAL3',
+			'INGRESADO_COBRO0' => 'N',
+			'TOTAL1_COBRO0' => '0',
+			'TOTAL2_COBRO0' => '0',
+			'TOTAL3_COBRO0' => '0',
+			'CTAIC_COBRO0' => $params->cob1_param1,
+			'CTAIT_COBRO0' => $params->cob2_param1,
+			'CTAIB_COBRO0' => $cobParam
+		]);
+	}
 
     public function  maxCOBRO1($anum,$num){
         return DB::TABLE('FXCOBRO1')
