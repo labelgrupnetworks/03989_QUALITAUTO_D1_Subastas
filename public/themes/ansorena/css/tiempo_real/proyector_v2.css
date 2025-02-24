@@ -26,12 +26,14 @@ p {
 
 body>.tiempo_real_content {
 	grid-template-rows: min-content .5fr repeat(4, 1fr);
+	grid-template-columns: 65% auto;
 	row-gap: 20px;
+	column-gap: 2rem;
 	padding: 20px;
 }
 
 header {
-	font-size: .85em;
+	font-size: .8em;
 }
 
 header.enc {
@@ -95,7 +97,7 @@ header .brand img {
 .column-block {
 	align-items: center;
 	gap: 10px;
-	padding: 1rem 0;
+	padding: 2rem 0;
 }
 
 .last-bids-container {
@@ -104,7 +106,7 @@ header .brand img {
 }
 
 .tiempo_real_content>div:not(#main_lot_box, .lot, .last-bids-container) {
-	font-size: .8em;
+	font-size: .75em;
 }
 
 .pujas_model {
