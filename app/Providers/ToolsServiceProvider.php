@@ -340,7 +340,7 @@ class ToolsServiceProvider extends ServiceProvider
 				});
 			}
 
-			$from = Config::get('app.from_email');
+			$from = Config::get('app.from_email', Config::get('mail.from.address'));
 			if (!empty($emailOptions['signaturit'])) {
 				$from = Config::get('app.email_signaturit');
 			}
