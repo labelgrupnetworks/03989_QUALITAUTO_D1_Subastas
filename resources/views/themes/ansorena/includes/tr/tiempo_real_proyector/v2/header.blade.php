@@ -12,7 +12,7 @@
 	</div>
 
 	<a class="brand" href="{{ \Routing::slug('/') }}">
-        <img class="img-responsive" src="{{ $img_url }}/logo.png">
+        <img class="img-responsive" src="{{ $img_url }}/logo_v2.png">
     </a>
 
 	<h1 class="auction_number">{{ $data['name'] }}</h1>
