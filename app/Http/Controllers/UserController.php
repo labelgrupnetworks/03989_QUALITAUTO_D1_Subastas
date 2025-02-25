@@ -1147,7 +1147,7 @@ class UserController extends Controller
 								'lang' => $languages,
 								'cod2' => $cod2_cli,
 								'publi' => $condiciones2,
-								'tienda_cliweb' => Config::get('app.agrsub', false) ? FxTiendas::getTinedaIdFromAgrsub() : null
+								'tienda_cliweb' => Config::get('app.agrsub', false) ? FxTiendas::getTinedaIdFromAgrsub() : 0
 							)
 						);
 					}
