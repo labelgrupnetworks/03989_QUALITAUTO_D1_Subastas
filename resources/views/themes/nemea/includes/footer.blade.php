@@ -42,9 +42,9 @@
 							trans($theme.'-app.foot.about_us') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.contact') }}"
-							title="{{ trans($theme.'-app.foot.contact') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.contact') }}</a>
+						<a href="{{ route('contact_page') }}"
+							title="{{ trans($theme.'-app.foot.contact') }}" class="nav-link p-0 text-muted">
+							{{ trans($theme.'-app.foot.contact') }}</a>
 					</li>
 					<li class="nav-item mb-2">
 						<a href="{{ Routing::translateSeo(trans($theme.'-app.links.faq')) }}"
