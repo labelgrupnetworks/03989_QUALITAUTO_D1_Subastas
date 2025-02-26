@@ -123,3 +123,15 @@ header .navbar-nav {
 .hist_item img {
 	width: var(--logo-size);
 }
+
+.home-slider .column_banner {
+	padding: 0;
+}
+
+.static-main-page {
+	padding-top: 3rem;
+}
+
+.static-page .container > * {
+	max-width: 90ch;
+}
