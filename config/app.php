@@ -47,8 +47,6 @@ return [
 	/**
 	 * Redsys
 	 */
-	'paymentUP2' => env('UP2_PAYMENT', 0),
-	'paymentRedsys' => env('REDSYS_PAYMENT', 0),
 	'MerchandCodeRedsys' => env('REDSYS_MERCHANDCODE', null),
 	'KeyRedsys' => env('REDSYS_KEY', null),
 
