@@ -69,7 +69,7 @@ $auction = $data['auction'];
 				<div class="auction-detail-links">
 					@foreach ($data['sessions'] as $session)
 					<a class="btn btn-lb-primary" title="Ver lotes"
-						href="{{ Routing::translateSeo("subasta").$session->auction."-".str_slug($session->name."-".$session->id_auc_sessions)}}">
+						href="{{ Tools::url_auction($session->auction, $session->name, $session->id_auc_sessions, $session->reference) }}">
 						<p>{{$session->name}}</p>
 					</a>
 					@endforeach
