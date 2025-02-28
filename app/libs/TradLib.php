@@ -46,8 +46,6 @@ class TradLib {
 		$theme = config('app.theme');
 		$lang = config('app.locale');
 
-
-
 		$adminDefaultFile = lang_path("$lang/admin-default-app.php");
 		if(!file_exists($adminDefaultFile)){
 			return;
@@ -66,9 +64,13 @@ class TradLib {
 		return array_replace_recursive($adminDefault, $adminTheme);
 	}
 
-    public static function getTranslations($language, $emp = null, $withCache = null) {
+    public static function getTranslations($language = null, $emp = null, $withCache = null) {
 
         $translateModel = new Translate();
+
+		if(empty($language)){
+			$language = Config::get('app.locale');
+		}
 
         if (empty($emp)) {
             $emp = Config::get('app.main_emp');
