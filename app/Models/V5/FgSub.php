@@ -249,9 +249,10 @@ class FgSub extends Model
 
 	public function getTipoSubTypes()
 	{
-		//actualizar tabla sys_auction_types de todos los clientes y activar erpActiveAuctions
-		//$configActiveAuctions = explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E,M,I'));
-		//$erpActiveAuctions = SysAuctionTypes::enabledAuctions()->get()->pluck('code');
+		$activeAuctions = SysAuctionTypes::enabledAuctions()->get()->pluck('code');
+		if ($activeAuctions->isEmpty()) {
+			$activeAuctions = collect(explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E,M,I')));
+		}
 
 		$types = collect([
 			self::TIPO_SUB_PRESENCIAL => trans("admin-app.fields.tipo_sub_w"),
@@ -262,9 +263,7 @@ class FgSub extends Model
 			self::TIPO_SUB_MAKE_OFFER =>  trans("admin-app.fields.tipo_sub_m"),
 		]);
 
-		return $types->filter(function ($value, $key) {
-			return in_array($key, explode(",", Config::get('app.admin_active_auctions', 'W,P,O,V,E,M,I')));
-		});
+		return $types->filter(fn ($value, $key) => $activeAuctions->contains($key));
 	}
 
 	public function getTipoSubTypeAttribute()
@@ -274,11 +273,18 @@ class FgSub extends Model
 
 	public function getSubAbiertaTypes()
 	{
-		return [
+		$types = [
 			self::SUBABIERTA_SUB_NO => trans("admin-app.fields.tipo_subabierta_sub_n"),
 			self::SUBABIERTA_SUB_ORDENES => trans("admin-app.fields.tipo_subabierta_sub_o"),
 			self::SUBABIERTA_SUB_PUJAS => trans("admin-app.fields.tipo_subabierta_sub_p")
 		];
+
+		$activeTypes = array_filter(explode(",", Config::get('app.admin_active_subabierta', '')));
+		if (!empty($activeTypes)) {
+			return collect($types)->only($activeTypes)->toArray();
+		}
+
+		return $types;
 	}
 
 	public function getSubAbiertaTypeAttribute()
