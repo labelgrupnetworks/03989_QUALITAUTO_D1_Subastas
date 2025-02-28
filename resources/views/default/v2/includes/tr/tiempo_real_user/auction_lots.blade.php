@@ -15,7 +15,7 @@
         <div class="carrousel-lots-check d-flex justify-content-end">
             <input class="check-input" id="j-followCarrousel" type="checkbox" value="" checked>
             <label class="check-label" for="j-followCarrousel">
-                {{ trans($theme . '-app.sheet_tr.follow') }}
+                {{ trans('web.sheet_tr.follow') }}
             </label>
         </div>
     </div>
@@ -31,17 +31,17 @@
                 <img class="card-img-top py-1 img-contain border" src="{{ $img }}" loading="lazy">
 
                 <div class="card-body py-2 text-center">
-                    <h4 class="card-lot-title">{{ trans("$theme-app.lot.lot-name") }} {{ $lote->ref_asigl0 }}</h4>
+                    <h4 class="card-lot-title">{{ trans("web.lot.lot-name") }} {{ $lote->ref_asigl0 }}</h4>
 
                     <h6 class="text-lb-gray m-0">
-                        {{ trans("$theme-app.lot.lot-price") }}
+                        {{ trans("web.lot.lot-price") }}
                     </h6>
-                    <p class="text-lb-gray">{{ $lote->impsal_hces1 }} {{ trans("$theme-app.subastas.euros") }}</p>
+                    <p class="text-lb-gray">{{ $lote->impsal_hces1 }} {{ trans("web.subastas.euros") }}</p>
                 </div>
 
                 <div class="card-footer p-0 bg-transparent">
                     <a class="btn w-100 btn-outline-lb-primary lot-btn"
-                        href="{{ $lote->url }}">{{ trans("$theme-app.sheet_tr.view") }}</a>
+                        href="{{ $lote->url }}">{{ trans("web.sheet_tr.view") }}</a>
                 </div>
             </div>
         @endforeach

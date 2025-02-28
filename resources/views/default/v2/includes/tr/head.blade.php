@@ -43,9 +43,9 @@
         subasta: "{{ \Routing::slug('subasta') }}",
     };
     var messages = {
-        'error': @json(trans("$theme-app.msg_error")),
-        'success': @json(trans("$theme-app.msg_success")),
-        'neutral': @json(trans("$theme-app.msg_neutral"))
+        'error': @json(trans("web.msg_error")),
+        'success': @json(trans("web.msg_success")),
+        'neutral': @json(trans("web.msg_neutral"))
     };
 </script>
 <script src="{{ URL::asset('vendor/jquery/3.6.0/dist/jquery.min.js') }}"></script>

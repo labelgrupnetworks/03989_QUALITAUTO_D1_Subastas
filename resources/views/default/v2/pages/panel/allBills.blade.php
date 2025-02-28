@@ -16,14 +16,14 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans("$theme-app.user_panel.pending_bills") }}</h1>
+                <h1>{{ trans("web.user_panel.pending_bills") }}</h1>
 
                 <div class="accordion mb-2">
                     <h2 class="accordion-item accordion-header" id="bills-pending-heading">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#bills-pending-collapse" aria-expanded="true"
                             aria-controls="bills-pending-collapse">
-                            {{ trans("$theme-app.user_panel.still_paid") }}
+                            {{ trans("web.user_panel.still_paid") }}
                         </button>
                     </h2>
 
@@ -39,10 +39,10 @@
                                             <tr>
                                                 <th></th>
                                                 <th></th>
-                                                <th>{{ trans("$theme-app.user_panel.pending_bills") }}</th>
-                                                <th>{{ trans("$theme-app.user_panel.date") }}</th>
-                                                <th>{{ trans("$theme-app.user_panel.total_fact") }}</th>
-                                                <th>{{ trans("$theme-app.user_panel.total_price_fact") }}</th>
+                                                <th>{{ trans("web.user_panel.pending_bills") }}</th>
+                                                <th>{{ trans("web.user_panel.date") }}</th>
+                                                <th>{{ trans("web.user_panel.total_fact") }}</th>
+                                                <th>{{ trans("web.user_panel.total_price_fact") }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -69,8 +69,8 @@
 							<div class="total-price checkout mb-2">
 
 								<div class="importe_total adj">
-									<h4>{{ trans("$theme-app.user_panel.total_price") }}</h4>
-									<h4><span id="total_bills">00</span> {{ trans("$theme-app.subastas.euros") }}</h4>
+									<h4>{{ trans("web.user_panel.total_price") }}</h4>
+									<h4><span id="total_bills">00</span> {{ trans("web.subastas.euros") }}</h4>
 								</div>
 								@if (\Config::get('app.PayBizum') || \Config::get('app.PayTransfer') || \Config::get('app.paymentPaypal'))
 
@@ -80,7 +80,7 @@
 											<input type="radio" class="btn-check" name="paymethod" id="paycreditcard"
 												value="creditcard" autocomplete="off" checked>
 											<label class="btn btn-outline-lb-secondary" for="paycreditcard">
-												{{ trans($theme . '-app.user_panel.pay_creditcard') }}
+												{{ trans('web.user_panel.pay_creditcard') }}
 											</label>
 										@endif
 
@@ -90,7 +90,7 @@
 											<label class="btn btn-outline-lb-secondary" for="paybizum">
 												<img src="/default/img/logos/bizum-blue.png"
 													style="height: 20px;margin: 0px 6px;">
-												{{ trans($theme . '-app.user_panel.pay_bizum') }}
+												{{ trans('web.user_panel.pay_bizum') }}
 											</label>
 										@endif
 
@@ -98,7 +98,7 @@
 											<input type="radio" class="btn-check" name="paymethod" id="paytransfer"
 												value="transfer" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paytransfer">
-												{{ trans($theme . '-app.user_panel.pay_transfer') }}
+												{{ trans('web.user_panel.pay_transfer') }}
 											</label>
 										@endif
 
@@ -107,7 +107,7 @@
 												value="paypal" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paypaypal">
 												<i class="fa fa-paypal" aria-hidden="true"></i>
-												{{ trans($theme . '-app.user_panel.pay_paypal') }}
+												{{ trans('web.user_panel.pay_paypal') }}
 											</label>
 										@endif
 
@@ -121,7 +121,7 @@
 									</button>
 
 									<button id="submit_fact" type="button"
-										class="btn btn-lb-primary hidden">{{ trans("$theme-app.user_panel.pay") }}</button>
+										class="btn btn-lb-primary hidden">{{ trans("web.user_panel.pay") }}</button>
 								</div>
 							</div>
                         </div>
@@ -135,7 +135,7 @@
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#bills-payed-collapse" aria-expanded="true"
                             aria-controls="bills-payed-collapse">
-                            {{ trans("$theme-app.user_panel.bills") }}
+                            {{ trans("web.user_panel.bills") }}
                         </button>
                     </h2>
 
@@ -150,10 +150,10 @@
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th>{{ trans("$theme-app.user_panel.pending_bills") }}</th>
-                                            <th>{{ trans("$theme-app.user_panel.date") }}</th>
-                                            <th>{{ trans("$theme-app.user_panel.total_fact") }}</th>
-                                            <th>{{ trans("$theme-app.user_panel.paid_out") }}</th>
+                                            <th>{{ trans("web.user_panel.pending_bills") }}</th>
+                                            <th>{{ trans("web.user_panel.date") }}</th>
+                                            <th>{{ trans("web.user_panel.total_fact") }}</th>
+                                            <th>{{ trans("web.user_panel.paid_out") }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>

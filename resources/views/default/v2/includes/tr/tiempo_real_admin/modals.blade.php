@@ -15,7 +15,7 @@
                     <div class="input-append date " >
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="col-xs-4">
-                                <div>{{ ucwords (trans($theme.'-app.msg_neutral.days')) }}</div>
+                                <div>{{ ucwords (trans('web.msg_neutral.days')) }}</div>
                                 <select class="form-control pause_auction" id="days_pause" style='padding: 0; padding-left: 3px;'  >
                                     @for($dp = 0;$dp < 50; $dp++)
                                     <option value="{{$dp}}"  <?= $dp == $days_default ? "selected='selected'" : "" ?>>{{ $dp }} </option>
@@ -23,7 +23,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-4">
-                                <div>{{ ucwords (trans($theme.'-app.msg_neutral.hours')) }}</div>
+                                <div>{{ ucwords (trans('web.msg_neutral.hours')) }}</div>
                                 <select class="form-control pause_auction" id="hours_pause" style='padding: 0; padding-left: 3px;'  >
                                     @for($hp = 0;$hp < 24; $hp++)
                                     <option value="{{$hp}}" <?= $hp == $hours_default ? "selected='selected'" : "" ?>>{{ $hp }} </option>
@@ -31,7 +31,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-4">
-                                <div>{{ ucwords (trans($theme.'-app.msg_neutral.minutes')) }}</div>
+                                <div>{{ ucwords (trans('web.msg_neutral.minutes')) }}</div>
                                 <select class="form-control pause_auction" id="minutes_pause" style='padding: 0; padding-left: 3px;'  >
                                     @for($mp = 0;$mp < 60; $mp++)
                                     <option value="{{$mp}}"  <?= $mp == $minutes_default ? "selected='selected'" : "" ?>>{{ $mp }} </option>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div style="margin-top: 10px;" class="col-xs-12">
-                            {{ trans($theme.'-app.sheet_tr.activate_auctions') }} <br>
+                            {{ trans('web.sheet_tr.activate_auctions') }} <br>
                             <span id="restart_auc_date" style="font-size: 16px;"> </span>
                             <input id="total_minutes_pause" type="hidden" value="<?= !empty(Config::get('app.default_minuts_pause')) ? Config::get('app.default_minuts_pause') : 0 ?>" >
 						</div>
@@ -49,8 +49,8 @@
 						</div>
                     </div>
                     <div class="col-xs-12" style='margin-top: 20px'>
-                        <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                        <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                        <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                        <button class="btn btn-primary modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                     </div>
                 </div>
             </div>
@@ -63,26 +63,26 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.activate_auctions') }}   <br /> </p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.activate_auctions') }}   <br /> </p>
                     <div class="input-append date " >
                         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                             <div class="col-xs-12">
-                                {{ trans($theme.'-app.user_panel.date') }}
+                                {{ trans('web.user_panel.date') }}
                                 <input type="text" id="date_pause" value="<?= date('d m Y') ?>" data-inputmask="'mask': '99/99/2099'" class="inputmask" style="width:100px">
                             </div>
 
 
                             <div class="col-xs-12">
                                 <br>
-                                {{ trans($theme.'-app.msg_neutral.hour') }}
+                                {{ trans('web.msg_neutral.hour') }}
                                 <input type="text" id="hour_pause" value="{{ Config::get('app.put_off_auction') }}" data-inputmask="'mask': '99:99:00'" class="inputmask" style="width:70px">
                             </div>
                         </div>
 
                     </div>
                     <div class="col-xs-12" style='margin-top: 20px'>
-                        <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                        <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                        <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                        <button class="btn btn-primary modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
                     <div class="winner_undefined hidden">
-                        <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.winner_undefined') }}</p>
+                        <p class="insert_msg">{{ trans('web.sheet_tr.winner_undefined') }}</p>
                         <div class="col-sm-6 col-sm-offset-3">
                             <input type="text" class="form-control" name="w_undefined" id="w_undefined">
                         </div>
@@ -120,10 +120,10 @@
                         <br>
                     </div>
 
-                    <p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans($theme.'-app.msg_error.no_licit') }}</p>
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.end_lot_question') }}</p>
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss cancelasignlicit">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <p id="modalEndLot_msg_error" class="error_msg hidden" style="color:#d9534f;">{{ trans('web.msg_error.no_licit') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.end_lot_question') }}</p>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss cancelasignlicit">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -135,9 +135,9 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.start_auction_question') }}</p>
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.start_auction_question') }}</p>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -148,10 +148,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.open_lot') }}</p>
-                    <p class="insert_msg <?= !empty(Config::get('app.deleteBids')) ? '' : 'hidden'; ?>"><input type="checkbox" class="deleteBids"> {{ trans($theme.'-app.sheet_tr.open_lot_delete') }}</p>
-                    <button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.open_lot') }}</p>
+                    <p class="insert_msg <?= !empty(Config::get('app.deleteBids')) ? '' : 'hidden'; ?>"><input type="checkbox" class="deleteBids"> {{ trans('web.sheet_tr.open_lot_delete') }}</p>
+                    <button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -162,10 +162,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.pause_lot') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.pause_lot') }}</p>
 
-                    <button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm lotPause" data-status="P">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -177,13 +177,13 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_lot') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.resume_lot') }}</p>
 
                     <input id="lotOrden" autocomplete="off" class="form-control" type="hidden">
                     <br />
 
-                    <button class="btn btn-primary modal-confirm lotResume" data-status="N">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm lotResume" data-status="N">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -195,10 +195,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_bid_question') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.cancel_bid_question') }}</p>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -210,10 +210,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_order_question') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.cancel_order_question') }}</p>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -227,14 +227,14 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.stopped_lots') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.stopped_lots') }}</p>
                     <br />
                     <div id="reanudarList">
 
                     </div>
                     <br />
 
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -245,7 +245,7 @@
 <div id="reanudarListModel" style="text-align:left; margin-bottom: 10px;" class="hidden">
     <div class="row">
         <div class="col-lg-10 titulo"></div>
-        <div class="col-lg-2 boton"><button class="btn btn-primary reanudarLote" type="button">{{ trans($theme.'-app.sheet_tr.continue') }}</button></div>
+        <div class="col-lg-2 boton"><button class="btn btn-primary reanudarLote" type="button">{{ trans('web.sheet_tr.continue') }}</button></div>
     </div>
 </div>
 
@@ -254,7 +254,7 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.jump_to_lots') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.jump_to_lots') }}</p>
 
                     <input id="jumpLot" autocomplete="off" class="form-control" type="text">
 					<div style="margin-top:10px;">
@@ -265,8 +265,8 @@
 					</div>
                     <br>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -279,13 +279,13 @@
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
                     <div class='col-md-12'>
-                        <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_licit_baja') }}</p>
+                        <p class="insert_msg">{{ trans('web.sheet_tr.resume_licit_baja') }}</p>
 
                         <input id="licit_baja" autocomplete="off" class="form-control" type="text">
                         <br />
 
-                        <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                        <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                        <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                        <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                     </div>
                     <div class='col-md-12'>
                         <hr>
@@ -293,10 +293,10 @@
                         <table style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>{{ trans($theme.'-app.sheet_tr.cod_licit') }}</th>
-                                    <th>{{ trans($theme.'-app.sheet_tr.name_licit') }}</th>
-                                    <th>{{ trans($theme.'-app.sheet_tr.cod_cli_licit') }}</th>
-                                    <th>{{ trans($theme.'-app.sheet_tr.reactivar') }}</th>
+                                    <th>{{ trans('web.sheet_tr.cod_licit') }}</th>
+                                    <th>{{ trans('web.sheet_tr.name_licit') }}</th>
+                                    <th>{{ trans('web.sheet_tr.cod_cli_licit') }}</th>
+                                    <th>{{ trans('web.sheet_tr.reactivar') }}</th>
                                 </tr>
                             </thead>
                             <tbody class='clientes_baja'></tbody>
@@ -314,10 +314,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.resume_alta_client') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.resume_alta_client') }}</p>
 
-                    <button id="alta_client" class="btn btn-primary modal-confirm" cli_licit="">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button id="alta_client" class="btn btn-primary modal-confirm" cli_licit="">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -331,8 +331,8 @@
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
                     <p class="insert_msg">Activar Subasta Automática</p>
-                    <button  class="btn btn-primary  modal-confirm" >{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-default modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button  class="btn btn-primary  modal-confirm" >{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-default modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>

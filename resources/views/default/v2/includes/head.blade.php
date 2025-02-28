@@ -9,7 +9,7 @@ header("Expires: 0 "); // Proxies.
 <meta charset="utf-8" http-equiv="content-type">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="{{ trans($theme.'-app.head.meta_author') }}">
+<meta name="author" content="{{ trans('web.head.meta_author') }}">
 
 @yield('seo')
 
@@ -19,7 +19,7 @@ header("Expires: 0 "); // Proxies.
 @elseif (!empty($seo->meta_title))
 {{ $seo->meta_title }}
 @else
-{{ trans("$theme-app.head.title_app") }}
+{{ trans("web.head.title_app") }}
 @endif
 </title>
 
@@ -47,7 +47,7 @@ header("Expires: 0 "); // Proxies.
 @elseif (!empty($seo->meta_title))
 <meta name="title" content="{{ $seo->meta_title }}">
 @else
-<meta name="title" content="{{ trans("$theme-app.head.title_app") }}">
+<meta name="title" content="{{ trans("web.head.title_app") }}">
 @endif
 
 @if(!empty($data['seo']->meta_description))
@@ -55,7 +55,7 @@ header("Expires: 0 "); // Proxies.
 @elseif (!empty($seo->meta_description))
 <meta name="description" content="{{ $seo->meta_description }}">
 @else
-<meta name="description" content="{{ trans("$theme-app.head.meta_description") }}">
+<meta name="description" content="{{ trans("web.head.meta_description") }}">
 @endif
 
 @if(!empty($data['seo']->canonical))
@@ -97,8 +97,8 @@ header("Expires: 0 "); // Proxies.
 @stack('stylesheets')
 
 <script>
-    var traduction_large = { {!!trans("$theme-app.global.month_large")!!} };
-    var traductions = { {!!trans("$theme-app.global.month")!!} };
+    var traduction_large = { {!!trans("web.global.month_large")!!} };
+    var traductions = { {!!trans("web.global.month")!!} };
 
 	var routing = {
 		subastashome: 	"{{ \Routing::slug('subastashome') }}",
@@ -109,13 +109,13 @@ header("Expires: 0 "); // Proxies.
 	};
 
 	var messages = {
-		'error': @json(trans("$theme-app.msg_error")),
-		'success': @json(trans("$theme-app.msg_success")),
-		'neutral': @json(trans("$theme-app.msg_neutral"))
+		'error': @json(trans("web.msg_error")),
+		'success': @json(trans("web.msg_success")),
+		'neutral': @json(trans("web.msg_neutral"))
 	};
 </script>
 
-<script src="{{ Tools::urlAssetsCache("/js/lang/". \Config::get('app.locale') . "/$theme-app.js") }}"></script>
+<script src="{{ Tools::urlAssetsCache("/js/lang/". \Config::get('app.locale') . "/web.js") }}"></script>
 <script src="{{ URL::asset('vendor/jquery/3.6.0/dist/jquery.min.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/common.js') }}"></script>
 <script src="{{ Tools::urlAssetsCache('/js/actions.js') }}"></script>

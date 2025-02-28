@@ -1,7 +1,7 @@
 @extends('layouts.tiempo_real')
 
 @section('title')
-{{ trans($theme.'-app.head.title_app') }}
+{{ trans('web.head.title_app') }}
 @stop
 
 @section('content')

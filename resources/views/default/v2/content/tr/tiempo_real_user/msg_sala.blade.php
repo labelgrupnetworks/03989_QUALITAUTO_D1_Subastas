@@ -33,10 +33,10 @@
                                     <div class="col-lg-4">
                                         <button class="btn-primary btn btn-warning btn-chat-pre btn-enviar"
                                             id_mensaje="{{ $item->id_web_chat }}" type="button">
-                                            {{ trans("$theme-app.sheet_tr.chat-send") }}
+                                            {{ trans("web.sheet_tr.chat-send") }}
                                             <button class="btn btn-danger btn-eliminar"
                                                 id_mensaje="{{ $item->id_web_chat }}" type="button" predefinido="1">
-                                                {{ trans("$theme-app.sheet_tr.chat-delete") }}
+                                                {{ trans("web.sheet_tr.chat-delete") }}
                                             </button>
                                     </div>
 

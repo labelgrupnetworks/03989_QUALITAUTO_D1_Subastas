@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -24,7 +24,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label"
-                                    for="password">{{ trans($theme . '-app.user_panel.new_pass') }}</label>
+                                    for="password">{{ trans('web.user_panel.new_pass') }}</label>
                                 <div class="input-group form-group">
                                     <span class="input-group-text">
                                         <svg class="bi" width="16" height="16" fill="currentColor">
@@ -43,7 +43,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label"
-                                    for="confirmcontrasena">{{ trans($theme . '-app.user_panel.new_pass') }}</label>
+                                    for="confirmcontrasena">{{ trans('web.user_panel.new_pass') }}</label>
                                 <div class="input-group form-group">
                                     <span class="input-group-text">
                                         <svg class="bi" width="16" height="16" fill="currentColor">
@@ -62,7 +62,7 @@
 
                             <div class="mb-3 text-center">
                                 <button class="btn btn-lb-primary btn-step-reg" type="submit">
-                                    {{ trans($theme . '-app.user_panel.save') }}
+                                    {{ trans('web.user_panel.save') }}
                                 </button>
                             </div>
                         </form>
@@ -74,7 +74,7 @@
         <main class="permanentAuctions">
             <div class="container">
                 <div class="alert alert-success">
-                    <?= trans($theme . '-app.login_register.pass_sent') ?>
+                    <?= trans('web.login_register.pass_sent') ?>
                 </div>
             </div>
         </main>

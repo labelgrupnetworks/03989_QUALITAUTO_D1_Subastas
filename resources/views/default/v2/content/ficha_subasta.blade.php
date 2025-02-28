@@ -12,7 +12,7 @@ $auction = $data['auction'];
 				<div class="auction-address">
 					@if( (!empty($auction->expofechas_sub)) || (!empty($auction->expohorario_sub)) ||
 					(!empty($auction->expolocal_sub)) || (!empty($auction->expomaps_sub)))
-					<h3>{{ trans("$theme-app.subastas.inf_subasta_exposicion") }}</h3>
+					<h3>{{ trans("web.subastas.inf_subasta_exposicion") }}</h3>
 					@endif
 
 					@if(!empty($auction->expofechas_sub))
@@ -20,11 +20,11 @@ $auction = $data['auction'];
 					@endif
 
 					@if(!empty($auction->expohorario_sub))
-					<p>{{ trans("$theme-app.subastas.inf_subasta_horario") }}: {{ $auction->expohorario_sub }}</p>
+					<p>{{ trans("web.subastas.inf_subasta_horario") }}: {{ $auction->expohorario_sub }}</p>
 					@endif
 
 					@if(!empty($auction->expolocal_sub))
-					<p>{{ trans("$theme-app.subastas.inf_subasta_location") }}: {{ $auction->expolocal_sub }}</p>
+					<p>{{ trans("web.subastas.inf_subasta_location") }}: {{ $auction->expolocal_sub }}</p>
 					@endif
 
 					@if(!empty($auction->expomaps_sub))
@@ -41,7 +41,7 @@ $auction = $data['auction'];
 					@if((!empty($auction->sesfechas_sub)) || (!empty($auction->seshorario_sub)) ||
 						(!empty($auction->seslocal_sub)) || (!empty($auction->sesmaps_sub)))
 
-					<h3 class="mt-3">{{ trans("$theme-app.subastas.inf_subasta_subasta") }}</h3>
+					<h3 class="mt-3">{{ trans("web.subastas.inf_subasta_subasta") }}</h3>
 					@endif
 
 					@if(!empty($auction->sesfechas_sub))
@@ -49,16 +49,16 @@ $auction = $data['auction'];
 					@endif
 
 					@if(!empty($auction->seshorario_sub))
-					<p>{{ trans("$theme-app.subastas.inf_subasta_horario") }}: {{ $auction->seshorario_sub }} </p>
+					<p>{{ trans("web.subastas.inf_subasta_horario") }}: {{ $auction->seshorario_sub }} </p>
 					@endif
 
 					@if(!empty($auction->seslocal_sub))
-					<p>{{ trans("$theme-app.subastas.inf_subasta_location") }}: {{ $auction->seslocal_sub }}</p>
+					<p>{{ trans("web.subastas.inf_subasta_location") }}: {{ $auction->seslocal_sub }}</p>
 					@endif
 
 					@if(!empty($auction->sesmaps_sub))
 					<p>
-						<a target="_blank" title="{{ trans("$theme-app.subastas.how_to_get") }}"
+						<a target="_blank" title="{{ trans("web.subastas.how_to_get") }}"
 							href="{{ "https://maps.google.com/?q={$auction->sesmaps_sub}" }}">
 							<i class="fas fa-map-marker-alt"></i>
 						</a>
@@ -76,7 +76,7 @@ $auction = $data['auction'];
 				</div>
 
 				<div class="auction-detail-share mt-auto">
-					<h4>{{ trans("$theme-app.subastas.shared_auctions") }}</h4>
+					<h4>{{ trans("web.subastas.shared_auctions") }}</h4>
 
 					<ul class="list-unstyled d-flex">
 						<li>
@@ -94,7 +94,7 @@ $auction = $data['auction'];
 							</a>
 						</li>
 						<li class="ms-3">
-							<a class="lb-text-primary" title="Compartir por e-mail" href="mailto:?Subject={{ trans(" $theme-app.head.title_app")}}&body={{$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] }}" target="_blank">
+							<a class="lb-text-primary" title="Compartir por e-mail" href="mailto:?Subject={{ trans(" web.head.title_app")}}&body={{$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] }}" target="_blank">
 								<svg class="bi" width="24" height="24" fill="currentColor">
 									<use xlink:href="/bootstrap-icons.svg#envelope"></use>
 								</svg>

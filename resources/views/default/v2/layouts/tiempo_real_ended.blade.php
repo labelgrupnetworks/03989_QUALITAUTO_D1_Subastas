@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-   <title>{{ trans($theme.'-app.head.title_app') }}</title>
+   <title>{{ trans('web.head.title_app') }}</title>
 
     <style>
     @import url('https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,700,700i,900,900i');
@@ -48,7 +48,7 @@
 
 <div style="" class="center-body">
    <img style="max-width: 100%; max-height: 400px;" src="/themes/{{$theme}}/assets/img/logo.png"  alt="{{(\Config::get( 'app.name' ))}}">
-    <p>{{ trans($theme.'-app.msg_neutral.auction_end') }}</p>
+    <p>{{ trans('web.msg_neutral.auction_end') }}</p>
 
 </div>
 </body>

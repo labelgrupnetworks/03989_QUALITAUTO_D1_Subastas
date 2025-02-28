@@ -16,7 +16,7 @@ $bread[] = array( "name" => $data['title']  );
 
     <div class="row">
         <div class="col-xs-12 col-sm-12 text-center color-letter">
-            <h1 class="titlePage"> {!! trans($theme.'-app.global.form_success') !!}</h1>
+            <h1 class="titlePage"> {!! trans('web.global.form_success') !!}</h1>
         </div>
     </div>
 
@@ -25,7 +25,7 @@ $bread[] = array( "name" => $data['title']  );
     <div class="row">
 
         <div class="col-xs-12">
-            <center>{!! trans($theme.'-app.global.text_success') !!}</center>
+            <center>{!! trans('web.global.text_success') !!}</center>
         </div>
     </div>
 

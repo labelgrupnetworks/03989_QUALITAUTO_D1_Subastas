@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="col-lg-9">
-			<h1>{{ trans($theme.'-app.user_panel.orders') }}</h1>
+			<h1>{{ trans('web.user_panel.orders') }}</h1>
 
 
 			<div class="accordion">
@@ -27,12 +27,12 @@
 								<thead class="table-light">
 									<tr>
 										<th></th>
-										<th>{{ trans("$theme-app.user_panel.lot") }}</th>
-										<th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
-										<th>{{ trans("$theme-app.user_panel.starting_price") }}</th>
-										<th>{{ trans("$theme-app.user_panel.actual_bid") }}</th>
-										<th>{{ trans("$theme-app.user_panel.mi_puja") }}</th>
-										<th>{{ trans("$theme-app.user_panel.bid_date") }}</th>
+										<th>{{ trans("web.user_panel.lot") }}</th>
+										<th style="max-width: 300px">{{ trans("web.user_panel.title") }}</th>
+										<th>{{ trans("web.user_panel.starting_price") }}</th>
+										<th>{{ trans("web.user_panel.actual_bid") }}</th>
+										<th>{{ trans("web.user_panel.mi_puja") }}</th>
+										<th>{{ trans("web.user_panel.bid_date") }}</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -59,31 +59,31 @@
 												<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-fluid">
 												</a>
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+											<td data-title="{{ trans("web.user_panel.lot") }}">
 												{{$refLot}}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.title") }}" class="td-title">
+											<td data-title="{{ trans("web.user_panel.title") }}" class="td-title">
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
-												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans($theme.'-app.subastas.euros') }}
+											<td data-title="{{ trans("web.user_panel.starting_price") }}">
+												{{$inf_lot->formatted_impsalhces_asigl0 }} {{ trans('web.subastas.euros') }}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">
+											<td data-title="{{ trans("web.user_panel.actual_bid") }}">
 												@if(empty($inf_lot->implic_hces1) || $all_inf["inf"]->tipo_sub == 'W' && $all_inf["inf"]->subabierta_sub == 'N')
 													-
 												@else
-													{{ \Tools::moneyFormat($inf_lot->implic_hces1, trans($theme.'-app.subastas.euros')) }}
+													{{ \Tools::moneyFormat($inf_lot->implic_hces1, trans('web.subastas.euros')) }}
 												@endif
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.mi_puja") }}"
+											<td data-title="{{ trans("web.user_panel.mi_puja") }}"
 												@class([
 													'mine' => ($inf_lot->cod_licit == $inf_lot->licit_winner_bid && ($all_inf["inf"]->tipo_sub=='O' || $all_inf["inf"]->subabierta_sub=='P')) || ($inf_lot->cod_licit == $inf_lot->licit_winner_order && ($all_inf["inf"]->tipo_sub=='W' && $all_inf["inf"]->subabierta_sub == 'O')),
 													'other' => !($inf_lot->cod_licit == $inf_lot->licit_winner_bid && ($all_inf["inf"]->tipo_sub=='O' || $all_inf["inf"]->subabierta_sub=='P')) || ($inf_lot->cod_licit == $inf_lot->licit_winner_order && ($all_inf["inf"]->tipo_sub=='W' && $all_inf["inf"]->subabierta_sub == 'O'))
 												])
 											>
-											{{$inf_lot->formatted_imp }} {{trans($theme.'-app.subastas.euros')}}
+											{{$inf_lot->formatted_imp }} {{trans('web.subastas.euros')}}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.bid_date") }}">
+											<td data-title="{{ trans("web.user_panel.bid_date") }}">
 												{{$inf_lot->date}}
 											</td>
 											<td>
@@ -95,12 +95,12 @@
 													</button>
 
 													<ul class="dropdown-menu">
-														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
 														{{-- <li><hr class="dropdown-divider"></li> --}}
 														@if(config("app.DeleteOrders") && (empty($inf_lot->implic_hces1) || $inf_lot->imp > $inf_lot->implic_hces1))
 															<li>
 																<a class="dropdown-item delete_order_panel" href="#" ref="{{$inf_lot->ref_asigl0}}" sub="{{$inf_lot->cod_sub}}">
-																	{{ trans("$theme-app.user_panel.delete_orden") }}
+																	{{ trans("web.user_panel.delete_orden") }}
 																</a>
 															</li>
 														@endif
@@ -125,7 +125,7 @@
 </main>
 
 {{-- @if($inf_lot->tipop_orlic == 'T')
-	{{trans($theme.'-app.lot.puja_telefonica')}}<br/>
+	{{trans('web.lot.puja_telefonica')}}<br/>
 @endif --}}
 
 

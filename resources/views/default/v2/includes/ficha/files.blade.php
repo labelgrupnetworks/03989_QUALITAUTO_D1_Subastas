@@ -12,7 +12,7 @@
 @endphp
 
 @if(!empty($files))
-<h5>{{ trans("$theme-app.lot.documents") }}</h5>
+<h5>{{ trans("web.lot.documents") }}</h5>
 
 <div class="ficha-files-list list-group list-group-flush">
 

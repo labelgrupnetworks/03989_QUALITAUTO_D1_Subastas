@@ -29,9 +29,9 @@ foreach ($info_factura as $key_type => $inf_fact) {
             <img class="img-responsive" src="/img/icons/pdf.png">
         </a>
     </td>
-    <td data-title="{{ trans("$theme-app.user_panel.pending_bills") }}">
+    <td data-title="{{ trans("web.user_panel.pending_bills") }}">
 
-        {{ trans("$theme-app.user_panel.n_bill") }} {{ $anum }}/{{ $num }}
+        {{ trans("web.user_panel.n_bill") }} {{ $anum }}/{{ $num }}
         {{-- texto de la factura de texto --}}
         @if (!empty($info_factura['T'][$anum][$num]))
             <br>
@@ -41,16 +41,16 @@ foreach ($info_factura as $key_type => $inf_fact) {
         @endif
     </td>
 
-	<td data-title="{{ trans("$theme-app.user_panel.date") }}">
+	<td data-title="{{ trans("web.user_panel.date") }}">
 		{{ date('d-m-Y',strtotime ($fec)) }}
 	</td>
 
-	<td data-title="{{ trans("$theme-app.user_panel.total_fact") }}">
-		{{Tools::moneyFormat($precio_total, trans("$theme-app.subastas.euros"), 2)}}
+	<td data-title="{{ trans("web.user_panel.total_fact") }}">
+		{{Tools::moneyFormat($precio_total, trans("web.subastas.euros"), 2)}}
 	</td>
 
-	<td data-title="{{ trans("$theme-app.user_panel.total_price_fact") }}">
-		{{ \Tools::moneyFormat($imp, trans("$theme-app.subastas.euros"), 2) }}
+	<td data-title="{{ trans("web.user_panel.total_price_fact") }}">
+		{{ \Tools::moneyFormat($imp, trans("web.subastas.euros"), 2) }}
 	</td>
 
 </tr>

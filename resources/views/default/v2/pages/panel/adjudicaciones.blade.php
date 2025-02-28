@@ -10,7 +10,7 @@
             </div>
 
             <div class="col-lg-9">
-				<h1>{{ trans("$theme-app.user_panel.allotments") }}</h1>
+				<h1>{{ trans("web.user_panel.allotments") }}</h1>
 
                 {{-- pendientes --}}
                 @if ($data['adjudicaciones']->isNotEmpty())

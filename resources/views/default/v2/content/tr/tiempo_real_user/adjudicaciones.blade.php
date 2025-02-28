@@ -2,7 +2,7 @@
     {{-- Model --}}
     <li class="list-group-item p-0 py-1 adjudicaciones_model d-flex justify-content-between hidden" id="type_adj_model">
         <p class="adj_ref">
-            {{ trans("$theme-app.sheet_tr.lot") }}
+            {{ trans("web.sheet_tr.lot") }}
             <span></span>
         </p>
         <p>
@@ -19,7 +19,7 @@
         @foreach ($data['js_item']['user']['adjudicaciones'] ?? [] as $award)
             <li class="list-group-item p-0 py-1 adjudicaciones_model d-flex justify-content-between">
                 <p class="adj_ref">
-                    {{ trans("$theme-app.sheet_tr.lot") }}
+                    {{ trans("web.sheet_tr.lot") }}
                     <span>
                         {{ str_replace(['.1', '.2', '.3', '.4', '.5'], ['-A', '-B', '-C', '-D', '-E'], $award->ref_asigl1) }}
                     </span>

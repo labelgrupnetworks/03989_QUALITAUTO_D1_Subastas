@@ -4,7 +4,7 @@ $titulo=$relatedArticle->model_art0;
 
 #sumarle el iva al producto
 $imp =  round($relatedArticle->pvp_art0 + ($relatedArticle->pvp_art0 * $iva), 2);
-$impFormat = \Tools::moneyFormat($imp, trans($theme.'-app.subastas.euros'), 0);
+$impFormat = \Tools::moneyFormat($imp, trans('web.subastas.euros'), 0);
 $url=route("article", ["idArticle" => $relatedArticle->id_art0, "friendly" =>\Str::slug($titulo)])
 
 @endphp

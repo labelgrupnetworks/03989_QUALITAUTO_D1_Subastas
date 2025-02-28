@@ -39,14 +39,14 @@
 
                 <div class="row">
                     <div class="salida col-xs-12 text-center ">
-                        <p class="salida-title mb-0">{{ trans($theme.'-app.lot.lot-price') }}</p>
-                        <div class="salida-title mt-1 letter-price-salida"> {{$precio_salida}} {{ trans($theme.'-app.subastas.euros') }}</div>
+                        <p class="salida-title mb-0">{{ trans('web.lot.lot-price') }}</p>
+                        <div class="salida-title mt-1 letter-price-salida"> {{$precio_salida}} {{ trans('web.subastas.euros') }}</div>
                     </div>
 
                     <div class="salida fs-12 col-xs-12 text-center">
                         @if ( ($subasta_online || $subasta_abierta_P) &&  $hay_pujas)
-                            <p class="mb-0 salida-title extra-color-one">{{ trans($theme.'-app.lot.puja_actual') }}</p>
-                            <div class="letter-price-salida salida-title mt-1">{{ \Tools::moneyFormat($bann->max_puja, trans($theme.'-app.subastas.euros'), 0)}} </div>
+                            <p class="mb-0 salida-title extra-color-one">{{ trans('web.lot.puja_actual') }}</p>
+                            <div class="letter-price-salida salida-title mt-1">{{ \Tools::moneyFormat($bann->max_puja, trans('web.subastas.euros'), 0)}} </div>
 
                         @endif
                     </div>

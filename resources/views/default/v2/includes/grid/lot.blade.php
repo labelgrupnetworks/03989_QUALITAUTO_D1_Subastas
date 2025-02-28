@@ -13,19 +13,19 @@
 			<p class="lot-salida-price">
 				@if(!$subasta_make_offer)
 					@if($subasta_venta)
-						<span>{{ trans($theme.'-app.subastas.price_sale') }}</span>
+						<span>{{ trans('web.subastas.price_sale') }}</span>
 					@else
-						<span>{{ trans($theme.'-app.lot.lot-price') }}</span>
+						<span>{{ trans('web.lot.lot-price') }}</span>
 					@endif
 
-					<span>{{$precio_salida}}  {{ trans($theme.'-app.subastas.euros') }}</span>
+					<span>{{$precio_salida}}  {{ trans('web.subastas.euros') }}</span>
 				@endif
 			</p>
 
 			@if(($subasta_online || ($subasta_web && $subasta_abierta_P)) && !$cerrado && $hay_pujas)
 			<p class="lot-actual-bid">
-				<span>{{ trans($theme.'-app.lot.puja_actual') }}</span>
-				<span class="{{$winner}}">{{ $maxPuja }} {{ trans($theme.'-app.subastas.euros') }}</span>
+				<span>{{ trans('web.lot.puja_actual') }}</span>
+				<span class="{{$winner}}">{{ $maxPuja }} {{ trans('web.subastas.euros') }}</span>
 			</p>
 			@endif
 
@@ -35,13 +35,13 @@
 						@php($precio_venta = $item->impadj_asigl0)@endphp
 					@endif
 					<p class="lot-buy-to">
-						<span>{{ trans($theme.'-app.subastas.buy_to') }}</span>
-						<span>{{ $precio_venta }} {{ trans($theme.'-app.subastas.euros') }}</span>
+						<span>{{ trans('web.subastas.buy_to') }}</span>
+						<span>{{ $precio_venta }} {{ trans('web.subastas.euros') }}</span>
 					</p>
 
 				@elseif($cerrado &&  empty($precio_venta) && !$compra)
 					<p class="lot-not-buy">
-						<span class="salida-title notSold">{{ trans($theme.'-app.subastas.dont_buy') }}</span>
+						<span class="salida-title notSold">{{ trans('web.subastas.dont_buy') }}</span>
 					</p>
 				@endif
 			@endif
@@ -50,13 +50,13 @@
 
 		@if (!$devuelto && !$retirado && !$sub_historica)
 			@if($cerrado &&  empty($precio_venta) && $compra)
-				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans($theme.'-app.subastas.buy_lot') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans('web.subastas.buy_lot') }}</a>
 			@elseif($subasta_venta  && !$cerrado)
 				@if(!$end_session)
-				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans($theme.'-app.subastas.buy_lot') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans('web.subastas.buy_lot') }}</a>
 				@endif
 			@elseif(!$cerrado )
-				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans($theme.'-app.lot.pujar') }}</a>
+				<a {!! $url !!} class="btn btn-block btn-lb-primary lot-btn">{{ trans('web.lot.pujar') }}</a>
 			@endif
 		@endif
 	</div>

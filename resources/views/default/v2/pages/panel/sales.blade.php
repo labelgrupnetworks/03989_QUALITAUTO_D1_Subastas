@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans("$theme-app.user_panel.my_lots") }}</h1>
+                <h1>{{ trans("web.user_panel.my_lots") }}</h1>
 
                 <div class="accordion">
                     @foreach ($subastas as $cod_sub => $lotes)
@@ -42,11 +42,11 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th></th>
-                                                    <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                                    <th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
-                                                    <th>{{ trans("$theme-app.user_panel.status") }}</th>
-                                                    <th>{{ trans("$theme-app.lot.lot-price") }}</th>
-                                                    <th>{{ trans("$theme-app.lot.puja_actual") }}</th>
+                                                    <th>{{ trans("web.user_panel.lot") }}</th>
+                                                    <th style="max-width: 300px">{{ trans("web.user_panel.title") }}</th>
+                                                    <th>{{ trans("web.user_panel.status") }}</th>
+                                                    <th>{{ trans("web.lot.lot-price") }}</th>
+                                                    <th>{{ trans("web.lot.puja_actual") }}</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -67,14 +67,14 @@
 
                                                         $status = '';
                                                         if ($hay_pujas) {
-                                                            $status = trans("$theme-app.subastas.buy");
+                                                            $status = trans("web.subastas.buy");
                                                             $lotsSold++;
                                                         } elseif (strtotime($lote->end) < time()) {
-                                                            $status = trans("$theme-app.user_panel.closed");
+                                                            $status = trans("web.user_panel.closed");
                                                         } elseif (strtotime($lote->orders_start) > time()) {
-                                                            $status = trans("$theme-app.user_panel.soon");
+                                                            $status = trans("web.user_panel.soon");
                                                         } elseif (strtotime($lote->orders_start) < time()) {
-                                                            $status = trans("$theme-app.sheet_tr.in_auction");
+                                                            $status = trans("web.sheet_tr.in_auction");
                                                             $lotsInAuction++;
                                                         }
                                                     @endphp
@@ -86,20 +86,20 @@
                                                             </a>
                                                         </td>
 
-                                                        <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+                                                        <td data-title="{{ trans("web.user_panel.lot") }}">
                                                             {{ $lote->ref_asigl0 }}
                                                         </td>
-                                                        <td class="td-title" data-title="{{ trans("$theme-app.user_panel.title") }}">
+                                                        <td class="td-title" data-title="{{ trans("web.user_panel.title") }}">
                                                             <span class="max-line-2">{!! $lote->desc_hces1 !!}</span>
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.user_panel.status") }}">
+                                                        <td data-title="{{ trans("web.user_panel.status") }}">
                                                             {{ $status }}
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.lot.lot-price") }}">
-                                                            {{ Tools::moneyFormat($lote->impsalhces_asigl0, trans("$theme-app.subastas.euros")) }}
+                                                        <td data-title="{{ trans("web.lot.lot-price") }}">
+                                                            {{ Tools::moneyFormat($lote->impsalhces_asigl0, trans("web.subastas.euros")) }}
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.lot.puja_actual") }}">
-                                                            {{ Tools::moneyFormat($lote->implic_hces1, trans("$theme-app.subastas.euros")) }}
+                                                        <td data-title="{{ trans("web.lot.puja_actual") }}">
+                                                            {{ Tools::moneyFormat($lote->implic_hces1, trans("web.subastas.euros")) }}
                                                         </td>
 
                                                         <td>
@@ -117,7 +117,7 @@
 
                                                                 <ul class="dropdown-menu">
                                                                     <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                                            target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+                                                                            target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
                                                                     {{-- <li><hr class="dropdown-divider"></li> --}}
                                                                 </ul>
                                                             </div>
@@ -149,26 +149,26 @@
                                     <table class="table table-sm align-middle">
                                         <thead class="table-light">
                                             <tr>
-                                                <th>{{ trans("$theme-app.lot_list.lots") }}</th>
-                                                <th>{{ trans("$theme-app.lot_list.award_filter") }}</th>
-                                                <th>{{ trans("$theme-app.sheet_tr.in_auction") }}</th>
-                                                <th>{{ trans("$theme-app.lot.lot-price") }}</th>
-                                                <th>{{ trans("$theme-app.user_panel.price") }}</th>
+                                                <th>{{ trans("web.lot_list.lots") }}</th>
+                                                <th>{{ trans("web.lot_list.award_filter") }}</th>
+                                                <th>{{ trans("web.sheet_tr.in_auction") }}</th>
+                                                <th>{{ trans("web.lot.lot-price") }}</th>
+                                                <th>{{ trans("web.user_panel.price") }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td data-title="{{ trans("$theme-app.lot_list.lots") }}">
+                                                <td data-title="{{ trans("web.lot_list.lots") }}">
                                                     {{ $totalLotes }}</td>
-                                                <td data-title="{{ trans("$theme-app.lot_list.award_filter") }}">
+                                                <td data-title="{{ trans("web.lot_list.award_filter") }}">
                                                     {{ $lotsSold }}</td>
-                                                <td data-title="{{ trans("$theme-app.sheet_tr.in_auction") }}">
+                                                <td data-title="{{ trans("web.sheet_tr.in_auction") }}">
                                                     {{ $lotsInAuction }}</td>
-                                                <td data-title="{{ trans("$theme-app.lot.lot-price") }}">
-                                                    {{ Tools::moneyFormat($totalPsalida, trans("$theme-app.subastas.euros")) }}
+                                                <td data-title="{{ trans("web.lot.lot-price") }}">
+                                                    {{ Tools::moneyFormat($totalPsalida, trans("web.subastas.euros")) }}
                                                 </td>
-                                                <td data-title="{{ trans("$theme-app.user_panel.price") }}">
-                                                    {{ Tools::moneyFormat($totalPremate, trans("$theme-app.subastas.euros")) }}
+                                                <td data-title="{{ trans("web.user_panel.price") }}">
+                                                    {{ Tools::moneyFormat($totalPremate, trans("web.subastas.euros")) }}
                                                 </td>
                                             </tr>
                                         </tbody>

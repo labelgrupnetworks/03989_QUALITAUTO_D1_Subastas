@@ -40,7 +40,7 @@
                 aria-expanded="true" aria-controls="auction_feature_{{ $idFeature }}">
 
                 <div class="filter-title">
-                    {{ trans("$theme-app.features.$feature") }}
+                    {{ trans("web.features.$feature") }}
                 </div>
 
                 <svg class="bi" width="16" height="16" fill="currentColor">

@@ -5,19 +5,19 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="nav-pujas-tab" data-bs-toggle="pill" data-bs-target="#nav-pujas"
                     type="button" role="tab" aria-controls="nav-pujas" aria-selected="true">
-                    {{ trans($theme . '-app.sheet_tr.last_bids') }}
+                    {{ trans('web.sheet_tr.last_bids') }}
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="nav-streaming-tab" data-bs-toggle="pill" data-bs-target="#nav-streaming"
                     type="button" role="tab" aria-controls="nav-streaming" aria-selected="false">
-                    {{ trans($theme . '-app.sheet_tr.streaming') }}
+                    {{ trans('web.sheet_tr.streaming') }}
                 </button>
             </li>
         @else
             <button class="nav-link active" id="nav-pujas-tab" data-bs-toggle="tab" data-bs-target="#nav-pujas"
                 type="button" role="tab" aria-controls="nav-pujas" aria-selected="true">
-                {{ trans($theme . '-app.sheet_tr.last_bids') }}
+                {{ trans('web.sheet_tr.last_bids') }}
             </button>
         @endif
     </ul>

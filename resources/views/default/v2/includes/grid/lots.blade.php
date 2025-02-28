@@ -1,5 +1,5 @@
 @if(empty($lots))
-	<h2 class="mt-5">{{ trans($theme.'-app.lot_list.no_results') }}</h2>
+	<h2 class="mt-5">{{ trans('web.lot_list.no_results') }}</h2>
 @else
 	@foreach ($lots as $item)
 		@php

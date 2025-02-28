@@ -17,17 +17,17 @@
             ?>
             <div class="pujas_model col-xs-12">
                 <div class="col-xs-7 tipoPuja">
-                    <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
-                    <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
-                    <p data-type="T" @if ($puja->pujrep_asigl1 != 'T'  && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-                    <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i>  {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                    <p data-type="I" @if ($puja->pujrep_asigl1 != 'I')class="hidden" @endif><i class="fa fa-globe" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-internacional') }}</p>
+                    <p data-type="S" @if ($puja->pujrep_asigl1 != 'S')class="hidden" @endif><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-sala') }}</p>
+                    <p data-type="T" @if ($puja->pujrep_asigl1 != 'T'  && $puja->pujrep_asigl1 != 'B')class="hidden" @endif><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-telf') }}</p>
+                    <p data-type="E" @if ($puja->pujrep_asigl1 != 'E' && $puja->pujrep_asigl1 != 'P') class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i>  {{ trans('web.sheet_tr.books_bid') }}</p>
 
-                    <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
+                    <p data-type="W" @if ($puja->pujrep_asigl1 != 'W')class="hidden" @endif><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-web') }}</p>
 
                     <p data-type="U" @if ($puja->pujrep_asigl1 != 'U')class="hidden" @endif><i class="fab fa-stripe-s" aria-hidden="true"></i> Subalia</p>
 
-                    <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-					<p data-type="R" @if ($puja->pujrep_asigl1 != 'R')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                    <p data-type="O" @if ($puja->pujrep_asigl1 != 'O')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
+					<p data-type="R" @if ($puja->pujrep_asigl1 != 'R')class="hidden" @endif><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
 
 				</div>
                 <div class="col-xs-5 text-center importePuja">
@@ -45,16 +45,16 @@
 
         <div class="pujas_model hidden col-xs-12" id="type_bid_model">
             <div class="col-xs-7 tipoPuja">
-                <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-internacional') }}</p>
-                <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-sala') }}</p>
-                <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-                <p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-telf') }}</p>
-                <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
-                <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.bid-web') }}</p>
-                <p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+                <p data-type="I"><i class="fa fa-globe" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-internacional') }}</p>
+                <p data-type="S" class="hidden"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-sala') }}</p>
+                <p data-type="T" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-telf') }}</p>
+                <p data-type="B" class="hidden"><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-telf') }}</p>
+                <p data-type="E" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
+                <p data-type="P" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
+                <p data-type="W" class="hidden"><i class="fa fa-wikipedia-w" aria-hidden="true"></i> {{ trans('web.sheet_tr.bid-web') }}</p>
+                <p data-type="O" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
                 <p data-type="U" class="hidden"><i class="fab fa-stripe-s" aria-hidden="true"></i> SUBALIA</p>
-				<p data-type="R" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans($theme.'-app.sheet_tr.books_bid') }}</p>
+				<p data-type="R" class="hidden"><i class="fa fa-desktop" aria-hidden="true"></i> {{ trans('web.sheet_tr.books_bid') }}</p>
 
 			</div>
             <div class="col-xs-5 text-center importePuja">

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -12,8 +12,8 @@
         $url_subasta = \Routing::translateSeo('info-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub);
 
         $url_indice = \Routing::translateSeo('indice-subasta') . $sub_data->cod_sub . '-' . str_slug($sub_data->des_sub . '-' . $sub_data->id_auc_sessions);
-        $indice = trans($theme . '-app.lot_list.indice_auction');
-        $name = trans($theme . '-app.subastas.auctions');
+        $indice = trans('web.lot_list.indice_auction');
+        $name = trans('web.subastas.auctions');
         if ($data['sub_data']->subc_sub == 'H') {
             $url = \Routing::translateSeo('subastas-historicas');
         } elseif ($data['sub_data']->tipo_sub == 'W') {
@@ -26,8 +26,8 @@
             $url = \Routing::translateSeo('subastas-online');
         } elseif ($data['sub_data']->tipo_sub == 'V') {
             $url = \Routing::translateSeo('venta-directa');
-            $indice = trans($theme . '-app.lot_list.indice_venta_directa');
-            $name = trans($theme . '-app.foot.direct_sale');
+            $indice = trans('web.lot_list.indice_venta_directa');
+            $name = trans('web.foot.direct_sale');
         }
         $bread[] = ['url' => $url, 'name' => $name];
         $bread[] = ['url' => $url_subasta, 'name' => $sub_data->des_sub];

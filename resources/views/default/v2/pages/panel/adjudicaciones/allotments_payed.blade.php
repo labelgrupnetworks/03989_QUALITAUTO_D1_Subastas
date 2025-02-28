@@ -15,7 +15,7 @@ foreach ($all_adj_pag as $key_inf => $value) {
     <h2 class="accordion-item accordion-header" id="accordion-payed-heading">
         <button class="accordion-button" type="button" data-bs-toggle="collapse"
             data-bs-target="#allotemnts-payed-collapse" aria-expanded="true" aria-controls="allotemnts-payed-collapse">
-            {{ trans("$theme-app.user_panel.bills") }}
+            {{ trans("web.user_panel.bills") }}
         </button>
     </h2>
 
@@ -43,12 +43,12 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                 <thead class="table-light">
                                     <tr>
                                         <th></th>
-                                        <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                        <th style="max-width: 300px">{{ trans("$theme-app.user_panel.description") }}</th>
-										<th>{{ trans("$theme-app.lot.lot-price") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.price") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.price_comision") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.price_clean") }}</th>
+                                        <th>{{ trans("web.user_panel.lot") }}</th>
+                                        <th style="max-width: 300px">{{ trans("web.user_panel.description") }}</th>
+										<th>{{ trans("web.lot.lot-price") }}</th>
+                                        <th>{{ trans("web.user_panel.price") }}</th>
+                                        <th>{{ trans("web.user_panel.price_comision") }}</th>
+                                        <th>{{ trans("web.user_panel.price_clean") }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -58,11 +58,11 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                         @php
                                             $url_friendly = str_slug($inf_lot->titulo_hces1);
                                             $url_friendly = Routing::translateSeo('lote') . $inf_lot->cod_sub . '-' . str_slug($inf_lot->name) . '-' . $inf_lot->id_auc_sessions . '/' . $inf_lot->ref_asigl0 . '-' . $inf_lot->num_hces1 . '-' . $url_friendly;
-                                            $precio_remate = Tools::moneyFormat($inf_lot->himp_csub, trans("$theme-app.lot.eur"));
-											$comision = Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva, trans("$theme-app.lot.eur"), 2);
+                                            $precio_remate = Tools::moneyFormat($inf_lot->himp_csub, trans("web.lot.eur"));
+											$comision = Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva, trans("web.lot.eur"), 2);
 
 											$total_price = $inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva;
-											$precio_limpio_calculo = Tools::moneyFormat($total_price, trans("$theme-app.lot.eur"), 2);
+											$precio_limpio_calculo = Tools::moneyFormat($total_price, trans("web.lot.eur"), 2);
                                         @endphp
 
                                         <tr>
@@ -72,23 +72,23 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                                         class="img-fluid">
                                                 </a>
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+                                            <td data-title="{{ trans("web.user_panel.lot") }}">
                                                 {{ $inf_lot->ref_asigl0 }}
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.description") }}" class="td-title">
+                                            <td data-title="{{ trans("web.user_panel.description") }}" class="td-title">
                                                 <span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
+                                            <td data-title="{{ trans("web.user_panel.starting_price") }}">
                                                 {{ $inf_lot->impsalhces_asigl0 ?? 0 }}
-                                                {{ trans($theme . '-app.subastas.euros') }}
+                                                {{ trans('web.subastas.euros') }}
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.price") }}">
+                                            <td data-title="{{ trans("web.user_panel.price") }}">
                                                 {{ $precio_remate }}
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.price_comision") }}">
+                                            <td data-title="{{ trans("web.user_panel.price_comision") }}">
                                                 {{ $comision }}
                                             </td>
-                                            <td data-title="{{ trans("$theme-app.user_panel.price_clean") }}">
+                                            <td data-title="{{ trans("web.user_panel.price_clean") }}">
                                                 {{ $precio_limpio_calculo }}
                                             </td>
                                             <td>
@@ -105,7 +105,7 @@ foreach ($all_adj_pag as $key_inf => $value) {
 
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                                target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+                                                                target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
                                                     </ul>
 
                                                 </div>

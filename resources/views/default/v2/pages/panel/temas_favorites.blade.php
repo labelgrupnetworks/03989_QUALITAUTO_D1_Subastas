@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+	{{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-center">
-            <h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
+            <h1 class="titlePage">{{ trans('web.user_panel.mi_cuenta') }}</h1>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
 <div class="container hide">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12">
-			<h1 class="titlePage">{{ trans($theme.'-app.user_panel.mi_cuenta') }}</h1>
+			<h1 class="titlePage">{{ trans('web.user_panel.mi_cuenta') }}</h1>
 		</div>
 	</div>
 </div>
@@ -72,7 +72,7 @@
                            </div>
                            @endforeach
                             <div class="col-xs-12 col-sm-12 text-center">
-                                  <button type="button" id="save_panel_favorites" class="btn btn-step-reg">{{ trans($theme.'-app.user_panel.save') }}</button>
+                                  <button type="button" id="save_panel_favorites" class="btn btn-step-reg">{{ trans('web.user_panel.save') }}</button>
                            </div>
           </div>
 		    </div>
@@ -95,7 +95,7 @@
         <button type="button" class="close" data-dismiss="modal"> <img src="/img/icons/shape.png"</button>
       </div>
       <div class="modal-body">
-        <h1 class="titlecat" style="text-align: center;">{{ trans($theme.'-app.user_panel.success_save') }}</h1>
+        <h1 class="titlecat" style="text-align: center;">{{ trans('web.user_panel.success_save') }}</h1>
       </div>
     </div>
 

@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="{{ trans($theme . '-app.head.meta_description') }}">
-    <meta name="author" content="{{ trans($theme . '-app.head.meta_author') }}">
+    <meta name="description" content="{{ trans('web.head.meta_description') }}">
+    <meta name="author" content="{{ trans('web.head.meta_author') }}">
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <title>@yield('title', '')</title>
 

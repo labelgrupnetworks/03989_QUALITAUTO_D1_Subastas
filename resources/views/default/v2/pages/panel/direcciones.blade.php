@@ -11,7 +11,7 @@
 
             <div class="col-lg-9">
 
-                <h1>{{ trans("$theme-app.user_panel.addresses") }}</h1>
+                <h1>{{ trans("web.user_panel.addresses") }}</h1>
                 <section class="adrresses row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 gy-2">
                     @foreach ($data['shippingaddress'] as $key => $address)
                         <div class="col">
@@ -29,15 +29,15 @@
 
                                     <button class="btn btn-sm btn-lb-secondary" data-bs-toggle="modal"
                                         data-bs-target="#editAddress" data-codd="{{ $address->codd_clid }}"
-                                        type="button" title="{{ trans("$theme-app.user_panel.edit") }}">{{ trans("$theme-app.user_panel.edit") }}</button>
+                                        type="button" title="{{ trans("web.user_panel.edit") }}">{{ trans("web.user_panel.edit") }}</button>
 
                                     @if ($address->codd_clid != 'W1')
-                                        <button class="btn btn-sm btn-lb-secondary fav-address" title="{{ trans("$theme-app.user_panel.select_as_parent") }}"
+                                        <button class="btn btn-sm btn-lb-secondary fav-address" title="{{ trans("web.user_panel.select_as_parent") }}"
                                             cod="{{ $address->codd_clid }}">
 											@include('components.boostrap_icon', ['icon' => 'star', 'size' => '18'])
 										</button>
 
-										<button class="btn btn-sm btn-lb-secondary delete-address" cod="{{ $address->codd_clid }}" title="{{ trans("$theme-app.user_panel.remove") }}">
+										<button class="btn btn-sm btn-lb-secondary delete-address" cod="{{ $address->codd_clid }}" title="{{ trans("web.user_panel.remove") }}">
 											@include('components.boostrap_icon', ['icon' => 'trash', 'size' => '18'])
 										</button>
                                     @endif
@@ -51,7 +51,7 @@
                         <button class="card address-card h-100 w-100" data-bs-toggle="modal" data-bs-target="#editAddress" data-codd="0">
                             <div class="card-body card-new-direction">
 								@include('components.boostrap_icon', ['icon' => 'plus', 'size' => '48'])
-                                {{ trans("$theme-app.user_panel.add_new_address") }}
+                                {{ trans("web.user_panel.add_new_address") }}
                             </div>
                         </button>
                     </div>
@@ -65,7 +65,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editAddressLabel">{{ trans("$theme-app.user_panel.edit") }} {{ trans("$theme-app.user_panel.address") }}</h5>
+                    <h5 class="modal-title" id="editAddressLabel">{{ trans("web.user_panel.edit") }} {{ trans("web.user_panel.address") }}</h5>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -75,16 +75,16 @@
                         <div class="row gy-1">
 
                             <div class="col-md-6">
-                                <label for="nombre">{{ trans("$theme-app.login_register.nombre_apellido") }}</label>
+                                <label for="nombre">{{ trans("web.login_register.nombre_apellido") }}</label>
                                 <input class="form-control" id="nombre" name="usuario" type="text" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="telefono">{{ trans("$theme-app.user_panel.phone") }}</label>
+                                <label for="telefono">{{ trans("web.user_panel.phone") }}</label>
                                 <input class="form-control" id="telefono" name="telefono" type="text" required
                                     maxlength="40">
                             </div>
                             <div class="col-md-2">
-                                <label for="codigoVia">{{ trans("$theme-app.login_register.via") }}</label>
+                                <label for="codigoVia">{{ trans("web.login_register.via") }}</label>
                                 <select class="form-select" id="codigoVia" name="clid_codigoVia">
                                     @foreach ($data['via'] as $cod_sg => $des_sg)
                                         <option value="{{ $cod_sg }}">{{ $des_sg }}</option>
@@ -92,13 +92,13 @@
                                 </select>
                             </div>
                             <div class="col-md-10">
-                                <label for="direccion">{{ trans("$theme-app.user_panel.address") }}</label>
+                                <label for="direccion">{{ trans("web.user_panel.address") }}</label>
                                 <input class="form-control dreccion_cambiar" id="direccion" name="clid_direccion"
                                     type="text" maxlength="60" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="country_envio">{{ trans("$theme-app.user_panel.pais") }}</label>
+                                <label for="country_envio">{{ trans("web.user_panel.pais") }}</label>
                                 <select class="form-select" id="country_envio" name="clid_pais" required>
                                     @foreach ($data['countries'] as $cod_paises => $des_paises)
                                         <option value="{{ $cod_paises }}">{{ $des_paises }}</option>
@@ -106,17 +106,17 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="codigo_postal">{{ trans("$theme-app.user_panel.zip_code") }}</label>
+                                <label for="codigo_postal">{{ trans("web.user_panel.zip_code") }}</label>
                                 <input class="form-control" id="codigo_postal" name="clid_cpostal" type="text" required
                                     maxlength="10">
                             </div>
                             <div class="col-md-6">
-                                <label for="clid_provincia">{{ trans("$theme-app.login_register.provincia") }}</label>
+                                <label for="clid_provincia">{{ trans("web.login_register.provincia") }}</label>
                                 <input class="form-control" id="clid_provincia" name="clid_provincia" type="text"
                                     maxlength="30">
                             </div>
                             <div class="col-md-6">
-                                <label for="clid_poblacion">{{ trans("$theme-app.user_panel.city") }}</label>
+                                <label for="clid_poblacion">{{ trans("web.user_panel.city") }}</label>
                                 <input class="form-control" id="clid_poblacion" name="clid_poblacion" type="text"
                                     required maxlength="30">
                             </div>
@@ -125,8 +125,8 @@
                     <input id="lang_dirreciones" type="hidden" value="{{ config('app.locale') }}">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-outline-lb-primary" data-bs-dismiss="modal" type="button">{{ trans("$theme-app.head.close") }}</button>
-                    <button class="btn btn-lb-primary" form="save_address_shipping" type="submit">{{ trans("$theme-app.user_panel.save") }}</button>
+                    <button class="btn btn-outline-lb-primary" data-bs-dismiss="modal" type="button">{{ trans("web.head.close") }}</button>
+                    <button class="btn btn-lb-primary" form="save_address_shipping" type="submit">{{ trans("web.user_panel.save") }}</button>
                 </div>
             </div>
         </div>
@@ -140,7 +140,7 @@
                     <div class="panel-body">
                         <div class="modal-wrapper">
                             <div class=" text-center single_item_content_">
-                                <p>{{ trans("$theme-app.user_panel.delete_address") }}</p><br />
+                                <p>{{ trans("web.user_panel.delete_address") }}</p><br />
                                 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}" />
                                 <input id="cod_delete" name="cod" type="hidden" value="">
                                 <input id="lang" name="lang" type="hidden"
@@ -149,7 +149,7 @@
                             </div>
 							<div class="modal-footer">
 								<button
-                                    class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans("$theme-app.lot.accept") }}</button>
+                                    class=" btn button_modal_confirm modal-dismiss modal-confirm">{{ trans("web.lot.accept") }}</button>
 							</div>
                         </div>
                     </div>

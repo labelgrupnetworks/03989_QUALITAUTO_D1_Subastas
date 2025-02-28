@@ -23,23 +23,23 @@ if(strpos($refLot, '.') !== false){
 			<img src="{{ Tools::url_img("lote_small", $lot->num_hces1, $lot->lin_hces1) }}" class="img-responsive">
 		</a>
 	</td>
-	<td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+	<td data-title="{{ trans("web.user_panel.lot") }}">
 		{{$refLot}}
 	</td>
-	<td data-title="{{ trans("$theme-app.user_panel.description") }}" class="td-title">
+	<td data-title="{{ trans("web.user_panel.description") }}" class="td-title">
 		<span class="max-line-2">{!! $lot->descweb_hces1 !!}</span>
 		@if($lot->permisoexp_hces1 == 'S')
-		<span>{!! trans("$theme-app.lot.permiso_exportacion") !!}</span>
+		<span>{!! trans("web.lot.permiso_exportacion") !!}</span>
 		@endif
 	</td>
-	<td data-title="{{ trans("$theme-app.user_panel.units") }}">
+	<td data-title="{{ trans("web.user_panel.units") }}">
 		1
 	</td>
-	<td data-title="{{ trans("$theme-app.user_panel.unit_price") }}">
-		{{ Tools::moneyFormat($lot->impsalhces_asigl0, trans("$theme-app.subastas.euros"), 2) }}
+	<td data-title="{{ trans("web.user_panel.unit_price") }}">
+		{{ Tools::moneyFormat($lot->impsalhces_asigl0, trans("web.subastas.euros"), 2) }}
 	</td>
-	<td data-title="{{ trans("$theme-app.user_panel.price_clean") }}">
-		{{ Tools::moneyFormat($lot->impsalhces_asigl0, trans("$theme-app.subastas.euros"), 2) }}
+	<td data-title="{{ trans("web.user_panel.price_clean") }}">
+		{{ Tools::moneyFormat($lot->impsalhces_asigl0, trans("web.subastas.euros"), 2) }}
 	</td>
 	<td>
 		<div class="btn-group">
@@ -50,11 +50,11 @@ if(strpos($refLot, '.') !== false){
 			</button>
 
 			<ul class="dropdown-menu">
-				<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+				<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
 				<li>
 					<button class="dropdown-item deleteLot_JS"
 						data-sub="{{$lot->sub_asigl0}}" data-ref="{{$lot->ref_asigl0}}">
-						{{ trans("$theme-app.user_panel.delete") }}
+						{{ trans("web.user_panel.delete") }}
 					</button>
 				</li>
 			</ul>

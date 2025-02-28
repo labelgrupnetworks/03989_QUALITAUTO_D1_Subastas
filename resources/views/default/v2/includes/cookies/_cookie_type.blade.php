@@ -17,7 +17,7 @@
             <span class="cookie-type_header_arrow">
 				@include('components.boostrap_icon', ['icon' => 'chevron-right'])
 			</span>
-            <span class="cookie-type_header_text">{{ trans("$theme-app.cookies.type_$type") }}</span>
+            <span class="cookie-type_header_text">{{ trans("web.cookies.type_$type") }}</span>
 
         </div>
 
@@ -31,22 +31,22 @@
         @endif
     </div>
 
-    <p class="cookie-type_description">{{ trans("$theme-app.cookies.description_$type") }}</p>
+    <p class="cookie-type_description">{{ trans("web.cookies.description_$type") }}</p>
 
     <div class="cookie-type_content collapse" id="collapse{{ $type }}Cookies">
         @foreach ($cookies as $cookie)
             <div class="cookie-wrapper">
                 <p>
                     <span>Cookie: </span>
-                    <span>{{ trans("$theme-app.cookies.{$cookie}_name") }}</span>
+                    <span>{{ trans("web.cookies.{$cookie}_name") }}</span>
                 </p>
                 <p>
                     <span>Duración: </span>
-                    <span>{{ trans("$theme-app.cookies.{$cookie}_duration") }}</span>
+                    <span>{{ trans("web.cookies.{$cookie}_duration") }}</span>
                 </p>
                 <p>
                     <span>Descripción: </span>
-                    <span>{{ trans("$theme-app.cookies.{$cookie}_description") }}</span>
+                    <span>{{ trans("web.cookies.{$cookie}_description") }}</span>
                 </p>
             </div>
         @endforeach

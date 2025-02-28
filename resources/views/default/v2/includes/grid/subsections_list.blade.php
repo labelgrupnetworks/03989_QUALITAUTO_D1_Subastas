@@ -4,7 +4,7 @@
         <div class="radio">
             <input type="radio" name="subsection" id="all_subsections" value="" <?=   empty($filters["subsection"])? 'checked="checked"' : '' ?>  />
             <label for="all_subsections" class="ratio-label">
-                {{trans($theme.'-app.lot_list.all_subsubsection')}} ({{$numCategoryLots }})
+                {{trans('web.lot_list.all_subsubsection')}} ({{$numCategoryLots }})
             </label>
         </div>
     </div>

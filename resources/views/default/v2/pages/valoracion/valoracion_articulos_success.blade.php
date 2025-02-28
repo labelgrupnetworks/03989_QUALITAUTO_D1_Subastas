@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @php
@@ -14,7 +14,7 @@
 			@include('includes.breadcrumb')
 			<div class="py-5">
 				<h1 class="text-center">
-					{{ trans("$theme-app.valoracion_gratuita.succes_peticion") }}
+					{{ trans("web.valoracion_gratuita.succes_peticion") }}
 				</h1>
 			</div>
         </div>

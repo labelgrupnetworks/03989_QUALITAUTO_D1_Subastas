@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans($theme . '-app.user_panel.favorites') }}</h1>
+                <h1>{{ trans('web.user_panel.favorites') }}</h1>
 
                 <div class="accordion">
                     @foreach ($data['favoritos'] as $all_inf)
@@ -30,11 +30,11 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th></th>
-                                                    <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                                    <th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
-                                                    <th>{{ trans("$theme-app.user_panel.starting_price") }}</th>
-                                                    <th>{{ trans("$theme-app.user_panel.actual_bid") }}</th>
-                                                    <th>{{ trans("$theme-app.user_panel.mi_puja") }}</th>
+                                                    <th>{{ trans("web.user_panel.lot") }}</th>
+                                                    <th style="max-width: 300px">{{ trans("web.user_panel.title") }}</th>
+                                                    <th>{{ trans("web.user_panel.starting_price") }}</th>
+                                                    <th>{{ trans("web.user_panel.actual_bid") }}</th>
+                                                    <th>{{ trans("web.user_panel.mi_puja") }}</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -73,25 +73,25 @@
                                                                     src="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}">
                                                             </a>
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+                                                        <td data-title="{{ trans("web.user_panel.lot") }}">
                                                             {{ $refLot }}
                                                         </td>
-                                                        <td class="td-title" data-title="{{ trans("$theme-app.user_panel.title") }}">
+                                                        <td class="td-title" data-title="{{ trans("web.user_panel.title") }}">
                                                             <span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
+                                                        <td data-title="{{ trans("web.user_panel.starting_price") }}">
                                                             {{ $inf_lot->formatted_impsalhces_asigl0 }}
                                                             {{ trans(Config::get('app.theme') . '-app.subastas.euros') }}
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.user_panel.actual_bid") }}">
-                                                            {{ \Tools::moneyFormat($inf_lot->actual_bid ?? 0, trans($theme . '-app.subastas.euros')) }}
+                                                        <td data-title="{{ trans("web.user_panel.actual_bid") }}">
+                                                            {{ \Tools::moneyFormat($inf_lot->actual_bid ?? 0, trans('web.subastas.euros')) }}
                                                         </td>
-                                                        <td data-title="{{ trans("$theme-app.user_panel.mi_puja") }}"
+                                                        <td data-title="{{ trans("web.user_panel.mi_puja") }}"
                                                             @class([
                                                                 'mine' => $myMaxBid?->rn == 1,
                                                                 'other' => $myMaxBid?->rn != 1,
                                                             ])>
-                                                            {{ Tools::moneyFormat($maxValue, trans($theme . '-app.subastas.euros')) }}
+                                                            {{ Tools::moneyFormat($maxValue, trans('web.subastas.euros')) }}
                                                         </td>
 
                                                         <td>
@@ -109,11 +109,11 @@
 
                                                                 <ul class="dropdown-menu">
                                                                     <li><a class="dropdown-item" href="{{ $url_friendly }}"
-                                                                            target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+                                                                            target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
                                                                     <li>
                                                                         <a class="dropdown-item"
                                                                             href="javascript:action_fav_lote('remove','{{ $inf_lot->ref_asigl0 }}','{{ $inf_lot->cod_sub }}', '{{ $myCodLicitInThisAuction }}')">
-                                                                            {{ trans($theme . '-app.lot.del_from_fav') }}
+                                                                            {{ trans('web.lot.del_from_fav') }}
                                                                         </a>
                                                                     </li>
 

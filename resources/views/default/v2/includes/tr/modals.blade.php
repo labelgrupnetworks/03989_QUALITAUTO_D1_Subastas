@@ -3,9 +3,9 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.buy_lot_question') }}</p>
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-danger modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.buy_lot_question') }}</p>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -18,8 +18,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_stopped') }} <br /></p>
-                    <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                    <p class="insert_msg"> {{ trans('web.sheet_tr.auction_stopped') }} <br /></p>
+                    <button class="btn btn-primary modal-dismiss">{{ trans('web.sheet_tr.confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -31,8 +31,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg"> {{ trans($theme.'-app.sheet_tr.auction_pendiente') }}</p>
-                    <button class="btn btn-primary modal-dismiss">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
+                    <p class="insert_msg"> {{ trans('web.sheet_tr.auction_pendiente') }}</p>
+                    <button class="btn btn-primary modal-dismiss">{{ trans('web.sheet_tr.confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.auction_disconnected') }}</p>
+                    <p class="txt_loading"> {{ trans('web.sheet_tr.auction_disconnected') }}</p>
                     <div class="loader"></div>
                 </div>
             </div>
@@ -56,10 +56,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_bid_question') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.cancel_bid_question') }}</p>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-danger modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -70,10 +70,10 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.cancel_order_question') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.cancel_order_question') }}</p>
 
-                    <button class="btn btn-primary modal-confirm">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-danger modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -85,8 +85,8 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="txt_loading"> {{ trans($theme.'-app.sheet_tr.loading') }} </p>
-                    <p class="txt_esperando_sala hidden"> {{ trans($theme.'-app.sheet_tr.esperando_sala') }} </p>
+                    <p class="txt_loading"> {{ trans('web.sheet_tr.loading') }} </p>
+                    <p class="txt_esperando_sala hidden"> {{ trans('web.sheet_tr.esperando_sala') }} </p>
                     <div class="loader"></div>
                 </div>
             </div>
@@ -99,11 +99,11 @@
         <div class="panel-body">
             <div class="modal-wrapper">
                 <div class="modal-text text-center">
-                    <p class="insert_msg">{{ trans($theme.'-app.sheet_tr.order_amount') }}</p>
+                    <p class="insert_msg">{{ trans('web.sheet_tr.order_amount') }}</p>
                     <input id="order_amount" autocomplete="off" class="form-control bid_amount_gestor" type="text">
                     <br />
-                    <button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans($theme.'-app.sheet_tr.confirm') }}</button>
-                    <button class="btn btn-danger modal-dismiss">{{ trans($theme.'-app.sheet_tr.cancel') }}</button>
+                    <button class="btn btn-primary modal-confirm add_order_amount" data-boton="1">{{ trans('web.sheet_tr.confirm') }}</button>
+                    <button class="btn btn-danger modal-dismiss">{{ trans('web.sheet_tr.cancel') }}</button>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@
                                         <!-- METODO ORIGINAL EN EL QUE INICIAR SESION NO ES UN LINK -->
                                         <!-- <p id="insert_msg"></p><br/> -->
 
-                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans($theme.'-app.lot.accept') }}</button>
+                                            <button  class=" btn button_modal_confirm modal-dismiss btn-custom">{{ trans('web.lot.accept') }}</button>
 
                                     </div>
                             </div>

@@ -3,7 +3,7 @@
     <div class="auction__filters-collapse filter-parent-collapse d-flex align-items-center justify-content-space-between"
         data-bs-toggle="collapse" href="#estado_lotes" role="button" aria-expanded="true" aria-controls="estado_lotes">
 
-        <div class="filter-title">{{ trans("$theme-app.lot_list.lots_status") }}</div>
+        <div class="filter-title">{{ trans("web.lot_list.lots_status") }}</div>
 
         @include('components.boostrap_icon', ['icon' => 'caret-down-fill'])
     </div>
@@ -16,7 +16,7 @@
                         @checked(!empty(request('liveLots'))) />
 
                     <label class="radio-label" for="liveLots">
-                        {{ trans("$theme-app.lot_list.live_lots_filter") }}
+                        {{ trans("web.lot_list.live_lots_filter") }}
                     </label>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         @checked(!empty(request('noAward'))) />
 
                     <label class="radio-label" for="no-award">
-                        {{ trans("$theme-app.lot_list.no_award_filter") }}
+                        {{ trans("web.lot_list.no_award_filter") }}
                     </label>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         @checked(!empty(request('award'))) />
 
                     <label class="radio-label" for="award">
-                        {{ trans("$theme-app.lot_list.award_filter") }}
+                        {{ trans("web.lot_list.award_filter") }}
                     </label>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -9,7 +9,7 @@
     <main class="press-page">
 
         <section class="container">
-            <h1>{{ trans("$theme-app.foot.press") }}</h1>
+            <h1>{{ trans("web.foot.press") }}</h1>
 
             @foreach ($data['noticias']->chunk(2) as $noticias)
                 <div @class([
@@ -41,7 +41,7 @@
 
                                 <div class="card-footer bg-transparent border-0 p-0">
                                     <a class="btn btn-lb-primary" href="{{ $url }}" target="_blank">
-                                        {{ trans("$theme-app.blog.more") }}
+                                        {{ trans("web.blog.more") }}
                                     </a>
                                 </div>
                             </div>

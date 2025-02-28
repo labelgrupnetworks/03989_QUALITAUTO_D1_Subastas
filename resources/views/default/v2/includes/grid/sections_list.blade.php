@@ -7,7 +7,7 @@
         <div class="radio">
             <input id="all_sections" name="section" type="radio" value="" @checked(empty($filters['section']))>
             <label class="ratio-label" for="all_sections">
-				{{ trans("$theme-app.lot_list.all_subcategories") }}
+				{{ trans("web.lot_list.all_subcategories") }}
 				<span class="grid-count">
                 	({{ $numCategoryLots }})
 				</span>

@@ -61,15 +61,15 @@
 <div class="d-none d-sm-flex flex-column h-100">
 	@if($retirado)
 		<div class="label-grid ficha-label">
-			{{ trans($theme.'-app.lot.retired') }}
+			{{ trans('web.lot.retired') }}
 		</div>
 	@elseif($fact_devuelta)
 		<div class="label-grid ficha-label">
-			{{ trans($theme.'-app.subastas.dont_available') }}
+			{{ trans('web.subastas.dont_available') }}
 		</div>
 	@elseif($cerrado && (!empty($lote_actual->himp_csub) || ($sub_historica && !empty($lote_actual->impadj_asigl0))))
 		<div class="label-grid ficha-label">
-			{{ trans($theme.'-app.subastas.buy') }}
+			{{ trans('web.subastas.buy') }}
 		</div>
 	@endif
 	<div id="resource_main_wrapper" class="text-center" style="display:none"></div>

@@ -9,72 +9,72 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-6 col-lg-2 mb-3">
-				<h5>{{ trans($theme.'-app.foot.auctions') }}</h5>
+				<h5>{{ trans('web.foot.auctions') }}</h5>
 				<ul class="nav flex-column">
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('presenciales') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.auctions')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.auctions')}}</a></li>
 					@endif
 
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-online') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.online_auction')}}</a></li>
 					@endif
 
 					@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('venta-directa') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.direct_sale')}}</a></li>
 					@endif
 
 					@if($global['subastas']->has('H'))
 					<li class="nav-item mb-2"><a href="{{ \Routing::translateSeo('subastas-historicas') }}"
-							class="nav-link p-0 text-muted">{{ trans($theme.'-app.foot.historico')}}</a></li>
+							class="nav-link p-0 text-muted">{{ trans('web.foot.historico')}}</a></li>
 					@endif
 				</ul>
 			</div>
 
 			<div class="col-6 col-lg-2 mb-3">
-				<h5>{{ trans($theme.'-app.foot.enterprise') }}</h5>
+				<h5>{{ trans('web.foot.enterprise') }}</h5>
 				<ul class="nav flex-column">
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.about_us') }}"
-							title="{{ trans($theme.'-app.foot.about_us') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.about_us') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.about_us') }}"
+							title="{{ trans('web.foot.about_us') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.about_us') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.contact') }}"
-							title="{{ trans($theme.'-app.foot.contact') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.contact') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.contact') }}"
+							title="{{ trans('web.foot.contact') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.contact') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo(trans($theme.'-app.links.faq')) }}"
-							title="{{ trans($theme.'-app.foot.faq') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.faq') }}</a>
+						<a href="{{ Routing::translateSeo(trans('web.links.faq')) }}"
+							title="{{ trans('web.foot.faq') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.faq') }}</a>
 					</li>
 				</ul>
 			</div>
 
 			<div class="col-6 col-lg-3 mb-3">
-				<h5>{{ trans($theme.'-app.foot.term_condition')}}</h5>
+				<h5>{{ trans('web.foot.term_condition')}}</h5>
 				<ul class="nav flex-column">
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.term_condition') }}"
-							title="{{ trans($theme.'-app.foot.term_condition') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.term_condition') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.term_condition') }}"
+							title="{{ trans('web.foot.term_condition') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.term_condition') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.privacy') }}"
-							title="{{ trans($theme.'-app.foot.privacy') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.privacy') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.privacy') }}"
+							title="{{ trans('web.foot.privacy') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.privacy') }}</a>
 					</li>
 					<li class="nav-item mb-2">
-						<a href="{{ Routing::translateSeo('pagina').trans($theme.'-app.links.cookies') }}"
-							title="{{ trans($theme.'-app.foot.cookies') }}" class="nav-link p-0 text-muted">{{
-							trans($theme.'-app.foot.cookies') }}</a>
+						<a href="{{ Routing::translateSeo('pagina').trans('web.links.cookies') }}"
+							title="{{ trans('web.foot.cookies') }}" class="nav-link p-0 text-muted">{{
+							trans('web.foot.cookies') }}</a>
 					</li>
 					<li class="nav-item">
 						<button class="nav-link btn btn-link text-muted" type="button" data-bs-toggle="modal" data-bs-target="#cookiesPersonalize">
-							{{ trans("$theme-app.cookies.configure") }}
+							{{ trans("web.cookies.configure") }}
 						</button>
 					</li>
 				</ul>
@@ -96,10 +96,10 @@
 
 		<div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
 			<div>
-				<p>© {{ now()->format('Y') }} {!! trans($theme.'-app.foot.rights') !!}.</p>
-				<p><a class="nav-link" title="{{ trans($theme.'-app.foot.developedSoftware') }}"
-						href="{{ trans($theme.'-app.foot.developed_url') }}" target="_blank">{{
-						trans($theme.'-app.foot.developedBy') }}</a></p>
+				<p>© {{ now()->format('Y') }} {!! trans('web.foot.rights') !!}.</p>
+				<p><a class="nav-link" title="{{ trans('web.foot.developedSoftware') }}"
+						href="{{ trans('web.foot.developed_url') }}" target="_blank">{{
+						trans('web.foot.developedBy') }}</a></p>
 				<p><a href="https://storyset.com/people">People illustrations by Storyset</a></p>
 			</div>
 

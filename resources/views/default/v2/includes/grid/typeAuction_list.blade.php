@@ -3,7 +3,7 @@
     <div class="auction__filters-collapse filter-parent-collapse d-flex align-items-center justify-content-between"
         data-bs-toggle="collapse" href="#auction_type" role="button" aria-expanded="false" aria-controls="auction_type">
 
-        <div class="filter-title">{{ trans($theme . '-app.lot_list.auction_type') }}</div>
+        <div class="filter-title">{{ trans('web.lot_list.auction_type') }}</div>
 
         <svg class="bi" width="16" height="16" fill="currentColor">
             <use xlink:href="/bootstrap-icons.svg#caret-down-fill" />

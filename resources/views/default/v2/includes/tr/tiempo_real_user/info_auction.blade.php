@@ -4,20 +4,20 @@
             @if (Session::has('user'))
                 <li>
                     <a data-toggle="tab"
-                        href="#mensajes">{{ trans($theme . '-app.sheet_tr.room_msg') }}</a>
+                        href="#mensajes">{{ trans('web.sheet_tr.room_msg') }}</a>
                 </li>
                 <li class="active">
                     <a data-toggle="tab"
-                        href="#lotes">{{ trans($theme . '-app.sheet_tr.auctions_lots') }}</a>
+                        href="#lotes">{{ trans('web.sheet_tr.auctions_lots') }}</a>
                 </li>
                 <li>
                     <a data-toggle="tab"
-                        href="#adjudicaciones">{{ trans($theme . '-app.sheet_tr.your_adjudications') }}</a>
+                        href="#adjudicaciones">{{ trans('web.sheet_tr.your_adjudications') }}</a>
                 </li>
             @else
                 <li class="active">
                     <a data-toggle="tab" href="#lotes"
-                        style="border-bottom: 1px solid #ddd">{{ trans("$theme-app.lot_list.lots") }}</a>
+                        style="border-bottom: 1px solid #ddd">{{ trans("web.lot_list.lots") }}</a>
                 </li>
             @endif
         </ul>

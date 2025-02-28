@@ -29,7 +29,7 @@
 						@if(!empty($featuresCount[$idFeature]) && !empty($featuresCount[$idFeature][$idValueFeature]))
 							{{$featuresCount[$idFeature][$idValueFeature]["value_caracteristicas_value"]}}
 						@else
-							{{ trans("$theme-app.features.$name") }}
+							{{ trans("web.features.$name") }}
 							{{$idValueFeature}}
 						@endif
 					</span>
@@ -42,7 +42,7 @@
 				<span data-del_filter="#feature_{{$idFeature}}" class="del_filter_js badge rounded-pill badge-custom-primary">
 					<span>X</span>
 					<span>
-						{{ trans("$theme-app.features.$name") }}
+						{{ trans("web.features.$name") }}
 						{{$valueFeature}}
 					</span>
 				</span>
@@ -61,17 +61,17 @@
 	@endif
      @if(!empty(request('liveLots')))
         <span data-del_filter="#liveLots" class="del_filter_js badge rounded-pill badge-custom-primary">
-			<span>X</span><span>{{ trans("$theme-app.lot_list.live_lots_filter") }}</span>
+			<span>X</span><span>{{ trans("web.lot_list.live_lots_filter") }}</span>
 		</span>
     @endif
     @if(!empty(request('noAward')))
         <span data-del_filter="#no-award" class="del_filter_js badge rounded-pill badge-custom-primary">
-			<span>X</span><span>{{ trans("$theme-app.lot_list.no_award_filter") }}</span>
+			<span>X</span><span>{{ trans("web.lot_list.no_award_filter") }}</span>
 		</span>
     @endif
     @if(!empty(request('award')))
         <span data-del_filter="#award" class="del_filter_js badge rounded-pill badge-custom-primary">
-			<span>X</span><span>{{ trans("$theme-app.lot_list.award_filter") }}</span>
+			<span>X</span><span>{{ trans("web.lot_list.award_filter") }}</span>
 		</span>
     @endif
     {{-- el filtro de tipo de subasta solo debe aparecer por categorias , no por subasta ya que no se podrá quitar --}}

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.head.title_app') }}
+    {{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
@@ -15,9 +15,9 @@
 
             @include('includes.breadcrumb')
 
-            <h1 class="titlePage">{{ trans("$theme-app.valoracion_gratuita.solicitud_valoracion") }}</h1>
+            <h1 class="titlePage">{{ trans("web.valoracion_gratuita.solicitud_valoracion") }}</h1>
 
-            <p class="optimal-text-lenght">{!! trans("$theme-app.valoracion_gratuita.desc_assessment") !!}</p>
+            <p class="optimal-text-lenght">{!! trans("web.valoracion_gratuita.desc_assessment") !!}</p>
 
             <form class="mt-3" id="form-valoracion-adv" action="">
                 @csrf
@@ -25,36 +25,36 @@
                         value="">
 
                 <p class="text-danger h4 hidden msg_valoracion">
-                    {{ trans($theme . '-app.valoracion_gratuita.error') }}</p>
+                    {{ trans('web.valoracion_gratuita.error') }}</p>
 
                 <div class="row">
                     <div class="col-md-4">
                         <div class="mb-3">
                             <label class="form-label"
-                                for="name">{{ trans("$theme-app.valoracion_gratuita.name") }}</label>
+                                for="name">{{ trans("web.valoracion_gratuita.name") }}</label>
                             <input class="form-control" id="name" name="name" type="text"
-                                placeholder="{{ trans("$theme-app.valoracion_gratuita.name") }}" required>
+                                placeholder="{{ trans("web.valoracion_gratuita.name") }}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"
-                                for="email">{{ trans("$theme-app.valoracion_gratuita.email") }}</label>
+                                for="email">{{ trans("web.valoracion_gratuita.email") }}</label>
                             <input class="form-control" id="email" name="email" type="email"
-                                placeholder="{{ trans("$theme-app.valoracion_gratuita.email") }}" required>
+                                placeholder="{{ trans("web.valoracion_gratuita.email") }}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label"
-                                for="telf">{{ trans("$theme-app.valoracion_gratuita.telf") }}</label>
+                                for="telf">{{ trans("web.valoracion_gratuita.telf") }}</label>
                             <input class="form-control" id="telf" name="telf" type="phone"
-                                placeholder="{{ trans("$theme-app.valoracion_gratuita.telf") }}" required>
+                                placeholder="{{ trans("web.valoracion_gratuita.telf") }}" required>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label"
-                                for="descripcion">{{ trans("$theme-app.user_panel.description") }}</label>
+                                for="descripcion">{{ trans("web.user_panel.description") }}</label>
                             <textarea class="form-control" name="descripcion" rows="10" required
-                                placeholder="{{ trans("$theme-app.valoracion_gratuita.description") }}"></textarea>
+                                placeholder="{{ trans("web.valoracion_gratuita.description") }}"></textarea>
                         </div>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                     <div class="col-md-10">
                         <div class="position-relative" id="dropzone">
                             <p class="text-danger error-dropzone" style="display:none">
-                                <small>{{ trans("$theme-app.msg_error.max_size") }}</small></p>
-                            <p class="text-dropzone">{!! trans("$theme-app.valoracion_gratuita.adj_IMG") !!}</p>
+                                <small>{{ trans("web.msg_error.max_size") }}</small></p>
+                            <p class="text-dropzone">{!! trans("web.valoracion_gratuita.adj_IMG") !!}</p>
                             <div class="mini-file-content d-flex align-items-center position-relative gap-2 mt-1"></div>
                             <input id="images" name="imagen[]" type="file" multiple />
                         </div>
@@ -72,11 +72,11 @@
                 </div>
 
 				<p class="captcha-terms">
-                    {!! trans("$theme-app.global.captcha-terms") !!}
+                    {!! trans("web.global.captcha-terms") !!}
                 </p>
 
                 <button class="button-send-valorate btn btn-lb-primary" id="valoracion-adv"
-                    type="submit">{{ trans("$theme-app.valoracion_gratuita.send") }}</button>
+                    type="submit">{{ trans("web.valoracion_gratuita.send") }}</button>
             </form>
         </div>
     </main>

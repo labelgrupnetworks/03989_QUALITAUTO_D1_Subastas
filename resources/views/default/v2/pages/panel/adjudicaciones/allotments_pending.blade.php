@@ -20,7 +20,7 @@ foreach($all_adj as $key_inf => $value){
 <div class="accordion mb-3">
 	<h2 class="accordion-item accordion-header" id="accordion-pendings-heading">
 		<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#allotemnts-pending-collapse" aria-expanded="true" aria-controls="allotemnts-pending-collapse">
-			{{ trans("$theme-app.user_panel.still_paid") }}
+			{{ trans("web.user_panel.still_paid") }}
 		</button>
 	</h2>
 	<div id="allotemnts-pending-collapse" class="accordion-collapse collapse show" aria-labelledby="#accordion-pendings-heading">
@@ -41,8 +41,8 @@ foreach($all_adj as $key_inf => $value){
 
 							@if($all_inf['inf']->compraweb_sub == 'S')
 								<span class="total-price-sup">
-									{{ trans("$theme-app.user_panel.total_price") }}
-									<span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans("$theme-app.lot.eur") }}
+									{{ trans("web.user_panel.total_price") }}
+									<span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans("web.lot.eur") }}
 								</span>
 							@endif
 						</button>
@@ -54,12 +54,12 @@ foreach($all_adj as $key_inf => $value){
 								<thead class="table-light">
 									<tr>
 										<th></th>
-										<th>{{ trans("$theme-app.user_panel.lot") }}</th>
-										<th style="max-width: 300px">{{ trans("$theme-app.user_panel.title") }}</th>
-										<th>{{ trans("$theme-app.lot.lot-price") }}</th>
-										<th>{{ trans("$theme-app.user_panel.price") }}</th>
-										<th>{{ trans("$theme-app.user_panel.price_comision") }}</th>
-										<th>{{ trans("$theme-app.user_panel.price_clean") }}</th>
+										<th>{{ trans("web.user_panel.lot") }}</th>
+										<th style="max-width: 300px">{{ trans("web.user_panel.title") }}</th>
+										<th>{{ trans("web.lot.lot-price") }}</th>
+										<th>{{ trans("web.user_panel.price") }}</th>
+										<th>{{ trans("web.user_panel.price_comision") }}</th>
+										<th>{{ trans("web.user_panel.price_clean") }}</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -70,10 +70,10 @@ foreach($all_adj as $key_inf => $value){
 											$url_friendly = str_slug($inf_lot->titulo_hces1);
 											$url_friendly = Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
 											$precio_remate = Tools::moneyFormat($inf_lot->himp_csub);
-											$comision = Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva, trans("$theme-app.lot.eur"), 2);
+											$comision = Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva, trans("web.lot.eur"), 2);
 
 											$total_price = $inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva;
-											$precio_limpio_calculo = Tools::moneyFormat($total_price, trans("$theme-app.lot.eur"), 2);
+											$precio_limpio_calculo = Tools::moneyFormat($total_price, trans("web.lot.eur"), 2);
 
 											#Suma para calcular el precio total para URL de packengers
 											$packengersMoneyValue += $total_price;
@@ -108,22 +108,22 @@ foreach($all_adj as $key_inf => $value){
 													<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
 												</a>
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.lot") }}">
+											<td data-title="{{ trans("web.user_panel.lot") }}">
 												{{$refLot}}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.title") }}" class="td-title">
+											<td data-title="{{ trans("web.user_panel.title") }}" class="td-title">
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.starting_price") }}">
-												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans($theme.'-app.subastas.euros') }}
+											<td data-title="{{ trans("web.user_panel.starting_price") }}">
+												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans('web.subastas.euros') }}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.price") }}">
+											<td data-title="{{ trans("web.user_panel.price") }}">
 												{{$precio_remate}}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.price_comision") }}">
+											<td data-title="{{ trans("web.user_panel.price_comision") }}">
 												{{ $comision }}
 											</td>
-											<td data-title="{{ trans("$theme-app.user_panel.price_clean") }}">
+											<td data-title="{{ trans("web.user_panel.price_clean") }}">
 												{{ $precio_limpio_calculo }}
 											</td>
 											<td>
@@ -135,7 +135,7 @@ foreach($all_adj as $key_inf => $value){
 													</button>
 
 													<ul class="dropdown-menu">
-														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("$theme-app.user_panel.see_lot") }}</a></li>
+														<li><a class="dropdown-item" href="{{ $url_friendly }}" target="_blank">{{ trans("web.user_panel.see_lot") }}</a></li>
 													</ul>
 
 												</div>
@@ -160,7 +160,7 @@ foreach($all_adj as $key_inf => $value){
 							@if(config('app.web_gastos_envio', false) && !empty($data["address"]))
 								<div class="row">
 									<div class="col-sm-5 gastos_envio">
-										<strong> {{ trans("$theme-app.user_panel.direccion-facturacion") }}</strong>
+										<strong> {{ trans("web.user_panel.direccion-facturacion") }}</strong>
 										<select id="clidd_{{$all_inf['inf']->cod_sub}}"  name="clidd_{{$all_inf['inf']->cod_sub}}" class="change_address_js "   data-sub="{{$all_inf['inf']->cod_sub}}" style="width: 90%;">
 											@foreach($data["address"] as $key => $value)
 												<option value="{{ $key}}">{{$value}} </option>
@@ -168,14 +168,14 @@ foreach($all_adj as $key_inf => $value){
 										</select>
 									</div>
 									<div class="col-sm-4 gastos_envio" >
-										<p><strong> {{ trans("$theme-app.user_panel.envio_agencia") }} </strong></p>
+										<p><strong> {{ trans("web.user_panel.envio_agencia") }} </strong></p>
 										<?php #Debe estar checkeado almenos uno de los dos radio buttons ?>
 										<div id="envioPosible_{{$all_inf['inf']->cod_sub}}_js">
-											<input type="radio" checked="checked" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="envio_agencia_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="envio_agencia_{{$all_inf['inf']->cod_sub}}_js"> {{ trans($theme.'-app.user_panel.gastos_envio') }}:  <span id="coste-envio-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans($theme.'-app.lot.eur') }}</label>
+											<input type="radio" checked="checked" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="envio_agencia_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="envio_agencia_{{$all_inf['inf']->cod_sub}}_js"> {{ trans('web.user_panel.gastos_envio') }}:  <span id="coste-envio-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans('web.lot.eur') }}</label>
 
 											@if (!empty(Config::get("app.porcentaje_seguro_envio")))
 												<br>
-												<input type="checkbox" style="top: 0px;height: 10px;margin-right: 0px;"  class="check_seguro_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="seguro_{{$all_inf['inf']->cod_sub}}_js" name="seguro_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="seguro_{{$all_inf['inf']->cod_sub}}_js"> {{ trans($theme.'-app.user_panel.seguro_envio') }}:  <span id="coste-seguro-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans($theme.'-app.lot.eur') }}</label>
+												<input type="checkbox" style="top: 0px;height: 10px;margin-right: 0px;"  class="check_seguro_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="seguro_{{$all_inf['inf']->cod_sub}}_js" name="seguro_{{$all_inf['inf']->cod_sub}}"  value="1"> <label for="seguro_{{$all_inf['inf']->cod_sub}}_js"> {{ trans('web.user_panel.seguro_envio') }}:  <span id="coste-seguro-{{$all_inf['inf']->cod_sub}}_js"> </span> {{ trans('web.lot.eur') }}</label>
 												<input type="hidden" id="porcentaje-seguro-{{$all_inf['inf']->cod_sub}}_js" value="{{ \Config::get("app.porcentaje_seguro_envio")}}">
 												<input type="hidden" id="iva_aplicable-{{$all_inf['inf']->cod_sub}}_js" value="{{ $data["ivaAplicable"]}}">
 
@@ -183,12 +183,12 @@ foreach($all_adj as $key_inf => $value){
 
 										</div>
 										<div id="envioNoDisponible_{{$all_inf['inf']->cod_sub}}_js" class="hidden">
-											{{ trans($theme.'-app.user_panel.envio_no_disponible') }}
+											{{ trans('web.user_panel.envio_no_disponible') }}
 										</div>
 
-										<strong> {{ trans($theme.'-app.user_panel.recogida_producto') }} </strong>
+										<strong> {{ trans('web.user_panel.recogida_producto') }} </strong>
 
-										<input type="radio" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="recogida_almacen_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}" value="0"> <label  for="recogida_almacen">{{ trans($theme.'-app.user_panel.sala_almacen') }}</label>
+										<input type="radio" class=" change_envio_js" data-sub="{{$all_inf['inf']->cod_sub}}" id="recogida_almacen_{{$all_inf['inf']->cod_sub}}_js" name="envio_{{$all_inf['inf']->cod_sub}}" value="0"> <label  for="recogida_almacen">{{ trans('web.user_panel.sala_almacen') }}</label>
 
 										<script>
 											const hasShowSeguro = "{{config('app.porcentaje_seguro_envio', false)}}";
@@ -206,8 +206,8 @@ foreach($all_adj as $key_inf => $value){
 
 							<div class="total-price checkout mb-2">
 								<div>
-									<h4>{{ trans($theme.'-app.user_panel.total_price') }}</h4>
-									<h4><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans($theme.'-app.lot.eur') }}</h4>
+									<h4>{{ trans('web.user_panel.total_price') }}</h4>
+									<h4><span class="precio_final_{{$all_inf['inf']->cod_sub}}">0</span> {{ trans('web.lot.eur') }}</h4>
 								</div>
 
 								@if(\Config::get("app.PayBizum") || \Config::get("app.PayTransfer") || \Config::get("app.paymentPaypal"))
@@ -218,14 +218,14 @@ foreach($all_adj as $key_inf => $value){
 										@if(Config::get("app.paymentUP2")  || Config::get('app.paymentRedsys') )
 											<input type="radio" class="btn-check" name="paymethod" id="paycreditcard" value="creditcard" autocomplete="off" checked>
 											<label class="btn btn-outline-lb-secondary" for="paycreditcard">
-												{{ trans($theme.'-app.user_panel.pay_creditcard') }}
+												{{ trans('web.user_panel.pay_creditcard') }}
 											</label>
 										@endif
 
 										@if(Config::get("app.PayBizum", false))
 										<input type="radio" class="btn-check" name="paymethod" id="paybizum" value="bizum" autocomplete="off">
 										<label class="btn btn-outline-lb-secondary" for="paybizum">
-											<img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans($theme.'-app.user_panel.pay_bizum') }}
+											<img src="/default/img/logos/bizum-blue.png" style="height: 20px;margin: 0px 6px;"> {{ trans('web.user_panel.pay_bizum') }}
 										</label>
 										@endif
 
@@ -233,14 +233,14 @@ foreach($all_adj as $key_inf => $value){
 										@if(Config::get("app.PayTransfer", false))
 											<input type="radio" class="btn-check" name="paymethod" id="paytransfer" value="transfer" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paytransfer">
-												{{ trans($theme.'-app.user_panel.pay_transfer') }}
+												{{ trans('web.user_panel.pay_transfer') }}
 											</label>
 										@endif
 
 										@if(Config::get("app.paymentPaypal", false))
 											<input type="radio" class="btn-check" name="paymethod" id="paypaypal" value="paypal" autocomplete="off">
 											<label class="btn btn-outline-lb-secondary" for="paypaypal">
-												<i class="fa fa-paypal" aria-hidden="true"></i> {{ trans($theme.'-app.user_panel.pay_paypal') }}
+												<i class="fa fa-paypal" aria-hidden="true"></i> {{ trans('web.user_panel.pay_paypal') }}
 											</label>
 										@endif
 									</div>
@@ -262,13 +262,13 @@ foreach($all_adj as $key_inf => $value){
 										<svg class="bi" width="16" height="16" fill="currentColor">
 											<use xlink:href="/bootstrap-icons.svg#truck"></use>
 										</svg>
-										{{ trans("$theme-app.lot.packengers_adjudicaciones") }}
+										{{ trans("web.lot.packengers_adjudicaciones") }}
 									</a>
 
 								@endif
 
 								<button type="button" class="submit_carrito btn btn-lb-primary" cod_sub="{{$all_inf['inf']->cod_sub}}" class="btn btn-step-reg" disabled>
-									{{ trans($theme.'-app.user_panel.pay') }}
+									{{ trans('web.user_panel.pay') }}
 								</button>
 
 							</div>

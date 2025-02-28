@@ -3,7 +3,7 @@
 		@csrf
 		<div class="row">
 			<div class="col-sm-10 m-auto mb-3">
-				<label>{{ trans($theme.'-app.login_register.insert_email')}}</label>
+				<label>{{ trans('web.login_register.insert_email')}}</label>
 				<input name="email" type="email" class="form-control" placeholder="Email">
 				<input type="hidden" name="post" value="true">
 				<label class="error-recovery text-danger"></span>
@@ -11,7 +11,7 @@
 		</div>
 		<div class="text-center">
 			<button type="submit" class="btn btn-lb-primary">
-				{{ trans($theme.'-app.login_register.send_email') }}
+				{{ trans('web.login_register.send_email') }}
 			</button>
 		</div>
 	</form>

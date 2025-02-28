@@ -11,7 +11,7 @@
             <div class="modal-body"></div>
             <div class="modal-footer">
                 <button class="btn btn-lb-secondary" data-bs-dismiss="modal"
-                    type="button">{{ trans($theme . '-app.head.close') }}</button>
+                    type="button">{{ trans('web.head.close') }}</button>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn modal-dismiss btn-lb-primary">
-                    {{ trans("$theme-app.home.confirm") }}
+                    {{ trans("web.home.confirm") }}
                 </button>
             </div>
         </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn modal-dismiss btn-lb-primary">
-                    {{ trans("$theme-app.lot.accept") }}
+                    {{ trans("web.lot.accept") }}
                 </button>
             </div>
         </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn modal-dismiss btn-lb-primary">
-                    {{ trans("$theme-app.lot.accept") }}
+                    {{ trans("web.lot.accept") }}
                 </button>
             </div>
 
@@ -77,19 +77,19 @@
             <div class="panel-body">
                 <div class="modal-wrapper">
                     <div class=" text-center single_item_content_">
-                        <p class="class_h1">{{ trans($theme . '-app.lot.confirm_bid') }}</p><br />
+                        <p class="class_h1">{{ trans('web.lot.confirm_bid') }}</p><br />
                         <span class='desc_auc'
-                            for="bid">{{ trans($theme . '-app.lot.you_are_bidding') }} </span>
+                            for="bid">{{ trans('web.lot.you_are_bidding') }} </span>
                         <strong><span class="precio_orden"></span>
-                            {{ trans($theme . '-app.subastas.euros') }}</strong><br />
+                            {{ trans('web.subastas.euros') }}</strong><br />
                         <span class="ref_orden hidden"></span>
                         </br>
                         <button class="btn button_modal_confirm btn-custom"
-                            id="confirm_orden_lotlist">{{ trans($theme . '-app.lot.confirm') }}</button>
+                            id="confirm_orden_lotlist">{{ trans('web.lot.confirm') }}</button>
                         <div class='mb-10'></div>
                         <div class='mb-10'></div>
                         <ul class="items_list">
-                            <li> {{trans($theme . '-app.lot.tax_not_included')}} </li>
+                            <li> {{trans('web.lot.tax_not_included')}} </li>
 
                         </ul>
                     </div>
@@ -109,7 +109,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn modal-dismiss btn-lb-primary confirm_delete_order">
-                    {{ trans("$theme-app.lot.accept") }}
+                    {{ trans("web.lot.accept") }}
                 </button>
             </div>
         </div>
@@ -128,10 +128,10 @@
             </div>
             <div class="modal-footer">
                 <button class="btn modal-dismiss btn-lb-secondary">
-                    {{ trans("$theme-app.lot.continue_buying") }}
+                    {{ trans("web.lot.continue_buying") }}
                 </button>
 				<a href="{{ route('showShoppingCart', ['lang' => Config::get('app.locale')]) }}" class="btn btn-lb-primary">
-                    {{ trans("$theme-app.lot.go_to_cart") }}
+                    {{ trans("web.lot.go_to_cart") }}
 				</a>
             </div>
         </div>
@@ -150,10 +150,10 @@
             </div>
             <div class="modal-footer">
                 <a href="{{ route('articles') }}" class="btn modal-dismiss btn-lb-secondary">
-                    {{ trans("$theme-app.lot.continue_buying") }}
+                    {{ trans("web.lot.continue_buying") }}
                 </a>
 				<a href="{{ route('showArticleCart', ['lang' => Config::get('app.locale')]) }}" class="btn btn-lb-primary">
-                    {{ trans("$theme-app.lot.go_to_cart") }}
+                    {{ trans("web.lot.go_to_cart") }}
 				</a>
             </div>
         </div>

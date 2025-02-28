@@ -1,5 +1,5 @@
 <div class="aside hidden started" id="favs_box">
-	<h2 class="msj">{{ trans($theme.'-app.sheet_tr.your_favs') }}</h2>
+	<h2 class="msj">{{ trans('web.sheet_tr.your_favs') }}</h2>
 	<div class="row fav_list">
 		<?php foreach ($data['js_item']['user']['favorites'] as $key => $value) : ?>
 			<div class="col-sm-3">
@@ -20,9 +20,9 @@
 				<img class="img-responsive" src="{{ $img_url }}/test.jpg">
 			</div>
 			<div class="lot">
-				
+
 			</div>
 		</div>
 	</div>
-	
+
 </div>

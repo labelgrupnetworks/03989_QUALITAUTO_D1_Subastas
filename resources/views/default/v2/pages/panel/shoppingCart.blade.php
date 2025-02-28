@@ -9,21 +9,21 @@
             </div>
 
             <div class="col-lg-9">
-                <h1>{{ trans("$theme-app.shopping_cart.myCart") }}</h1>
+                <h1>{{ trans("web.shopping_cart.myCart") }}</h1>
 
                 <h2>
                     @if (!Session::has('user'))
-                        {!! trans("$theme-app.shopping_cart.mustLoginShippingCart") !!}
+                        {!! trans("web.shopping_cart.mustLoginShippingCart") !!}
                     @elseif(count($auctions) == 0)
-                        {{ trans("$theme-app.shopping_cart.noLots") }}
+                        {{ trans("web.shopping_cart.noLots") }}
                     @else
-                        {{ trans("$theme-app.shopping_cart.text_reserve") }}
+                        {{ trans("web.shopping_cart.text_reserve") }}
                     @endif
                 </h2>
 
                 @foreach ($auctions as $codSub => $auction)
                     @if (count($auctions) > 1)
-                        <h3>{{ trans("$theme-app.shopping_cart.myCart") }} {{ head($auction)->des_sub }}</h3>
+                        <h3>{{ trans("web.shopping_cart.myCart") }} {{ head($auction)->des_sub }}</h3>
                     @endif
 
                     <form id="pagar_lotes_{{ $codSub }}" autocomplete="off">
@@ -33,11 +33,11 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th></th>
-                                        <th>{{ trans("$theme-app.user_panel.lot") }}</th>
-                                        <th style="max-width: 300px">{{ trans("$theme-app.user_panel.description") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.units") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.unit_price") }}</th>
-                                        <th>{{ trans("$theme-app.user_panel.price_clean") }}</th>
+                                        <th>{{ trans("web.user_panel.lot") }}</th>
+                                        <th style="max-width: 300px">{{ trans("web.user_panel.description") }}</th>
+                                        <th>{{ trans("web.user_panel.units") }}</th>
+                                        <th>{{ trans("web.user_panel.unit_price") }}</th>
+                                        <th>{{ trans("web.user_panel.price_clean") }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -70,7 +70,7 @@
                                 <div class="d-flex flex-column gap-3">
 
                                     <label class="form-label">
-                                        {{ trans("$theme-app.user_panel.direccion-facturacion") }}
+                                        {{ trans("web.user_panel.direccion-facturacion") }}
                                         <select class="form-select change_address_carrito_js"
                                             id="clidd_carrito_{{ $codSub }}" name="clidd_carrito"
                                             data-sub="{{ $codSub }}" aria-label="select address">
@@ -81,7 +81,7 @@
                                     </label>
 
                                     <label class="form-label" for="comments">
-                                        {!! trans("$theme-app.shopping_cart.comment") !!}
+                                        {!! trans("web.shopping_cart.comment") !!}
                                     </label>
                                     <textarea class="w-100" id="comments" name="comments form-control" rows="5"> </textarea>
 
@@ -90,7 +90,7 @@
 
                             @if (!empty(Config::get('app.web_gastos_envio')))
                                 <div class="gastos_envio d-flex flex-column gap-3">
-                                    <p class="fw-bold">{{ trans("$theme-app.user_panel.envio_agencia") }}</p>
+                                    <p class="fw-bold">{{ trans("web.user_panel.envio_agencia") }}</p>
 
                                     <div id="envioPosible_carrito_{{ $codSub }}_js" @class(['d-none' => $gastosEnvio == -1])>
                                         <div class="form-check">
@@ -101,9 +101,9 @@
 
                                             <label class="form-check-label"
                                                 for="envio_agencia_carrito_{{ $codSub }}_js">
-                                                {{ trans("$theme-app.user_panel.gastos_envio") }} :
+                                                {{ trans("web.user_panel.gastos_envio") }} :
                                                 <span id="coste-envio-carrito_{{ $codSub }}_js">
-                                                    {{ Tools::moneyFormat($gastosEnvio, trans("$theme-app.lot.eur"), 2) }}
+                                                    {{ Tools::moneyFormat($gastosEnvio, trans("web.lot.eur"), 2) }}
                                                 </span>
                                             </label>
                                         </div>
@@ -116,9 +116,9 @@
 
                                                 <label class="form-check-label"
                                                     for="seguro_carrito_{{ $codSub }}_js">
-                                                    {{ trans("$theme-app.user_panel.seguro_envio") }} :
+                                                    {{ trans("web.user_panel.seguro_envio") }} :
                                                     <span id="coste-seguro-carrito_js">
-                                                        {{ Tools::moneyFormat($totalSeguro[$codSub], trans("$theme-app.lot.eur"), 2) }}
+                                                        {{ Tools::moneyFormat($totalSeguro[$codSub], trans("web.lot.eur"), 2) }}
                                                     </span>
                                                 </label>
                                             </div>
@@ -127,10 +127,10 @@
 
                                     <div id="envioNoDisponible_carrito_{{ $codSub }}_js"
                                         @class(['d-none' => $gastosEnvio != '-1'])>
-                                        {{ trans("$theme-app.user_panel.envio_no_disponible") }}
+                                        {{ trans("web.user_panel.envio_no_disponible") }}
                                     </div>
 
-                                    <p class="fw-bold">{{ trans("$theme-app.user_panel.recogida_producto") }} </p>
+                                    <p class="fw-bold">{{ trans("web.user_panel.recogida_producto") }} </p>
                                     <div class="form-check">
                                         <input class="form-check-input change_envio_carrito_js"
                                             id="recogida_almacen_carrito_js" name="envio_carrito"
@@ -138,7 +138,7 @@
                                             @checked($gastosEnvio == '-1')>
 
                                         <label class="form-check-label" for="recogida_almacen_carrito_js">
-                                            {{ trans("$theme-app.user_panel.sala_almacen") }}
+                                            {{ trans("web.user_panel.sala_almacen") }}
                                         </label>
                                     </div>
 
@@ -156,20 +156,20 @@
                                         @checked($gastosEnvio != '-1')>
 
                                     <label class="form-check-label" for="seguro_carrito_info">
-                                        {{ trans("$theme-app.user_panel.seguro_envio") }}
+                                        {{ trans("web.user_panel.seguro_envio") }}
                                     </label>
                                 </div>
                             @endif
 
                             <p>
-                                <span class="fw-bold">{{ trans("$theme-app.shopping_cart.total_articles") }}</span>
-                                <span>{{ Tools::moneyFormat($totalLotes[$codSub], trans("$theme-app.subastas.euros"), 2) }}</span>
+                                <span class="fw-bold">{{ trans("web.shopping_cart.total_articles") }}</span>
+                                <span>{{ Tools::moneyFormat($totalLotes[$codSub], trans("web.subastas.euros"), 2) }}</span>
                             </p>
 
                             <p>
-                                <span class="fw-bold">{{ trans("$theme-app.shopping_cart.total_pay") }}</span>
+                                <span class="fw-bold">{{ trans("web.shopping_cart.total_pay") }}</span>
                                 <span class="precio_final_carrito_{{ $codSub }}">
-                                    {{ Tools::moneyFormat($pagar, trans("$theme-app.subastas.euros"), 2) }}
+                                    {{ Tools::moneyFormat($pagar, trans("web.subastas.euros"), 2) }}
                                 </span>
                             </p>
 
@@ -180,7 +180,7 @@
 
                                     <label class="form-check-label" for="paycreditcard">
                                         @include('components.boostrap_icon', ['icon' => 'credit-card'])
-                                        {{ trans("$theme-app.user_panel.pay_creditcard") }}
+                                        {{ trans("web.user_panel.pay_creditcard") }}
                                     </label>
                                 </div>
 
@@ -191,7 +191,7 @@
 
                                         <label class="form-check-label" for="paybizum">
                                             <img src="/default/img/logos/bizum-blue.png" height="20">
-                                            {{ trans("$theme-app.user_panel.pay_bizum") }}
+                                            {{ trans("web.user_panel.pay_bizum") }}
                                         </label>
                                     </div>
                                 @endif
@@ -202,7 +202,7 @@
                                             value="transfer">
 
                                         <label class="form-check-label" for="paytransfer">
-                                            {{ trans("$theme-app.user_panel.pay_transfer") }}
+                                            {{ trans("web.user_panel.pay_transfer") }}
                                         </label>
                                     </div>
                                 @endif
@@ -217,18 +217,18 @@
                                         value="1">
 
                                     <label class="form-check-label" for="acceptCheck">
-                                        {!! trans("$theme-app.shopping_cart.check") !!}
+                                        {!! trans("web.shopping_cart.check") !!}
                                     </label>
                                 </div>
 
-                                <p>{!! trans("$theme-app.shopping_cart.text_condition") !!}</p>
+                                <p>{!! trans("web.shopping_cart.text_condition") !!}</p>
                             @else
                                 <input class="hidden" id="acceptCheck" name="acceptCheck" type="checkbox" value=1
                                     checked="checked">
                             @endif
                             <button class="btn btn-lb-primary submitShoppingCart_JS mt-3" class="btn btn-step-reg"
                                 type="button" cod_sub="{{ $codSub }}">
-								<span class="text">{{ trans("$theme-app.user_panel.pay") }}</span>
+								<span class="text">{{ trans("web.user_panel.pay") }}</span>
 								<div class="spinner spinner-1 m-auto"></div>
                             </button>
 

@@ -18,7 +18,7 @@
             <div class="dropdown-center">
                 <a class="btn btn-sm btn-lb-primary dropdown-toggle" id="dropdownLogin" data-bs-toggle="dropdown"
                     data-bs-auto-close="false" href="#" role="button" aria-expanded="false">
-                    {{ trans($theme.'-app.login_register.login') }}
+                    {{ trans('web.login_register.login') }}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end">
 
@@ -38,8 +38,8 @@
                                     </svg>
                                 </span>
                                 <input class="form-control" name="email"
-                                    data-error="{{ trans($theme . '-app.login_register.write_valid_email') }}"
-                                    type="email" placeholder="{{ trans($theme . '-app.login_register.user') }}">
+                                    data-error="{{ trans('web.login_register.write_valid_email') }}"
+                                    type="email" placeholder="{{ trans('web.login_register.user') }}">
                             </div>
                             <div class="input-group mb-2">
                                 <span class="input-group-text">
@@ -48,7 +48,7 @@
                                     </svg>
                                 </span>
                                 <input class="form-control" name="password" type="password"
-                                    placeholder="{{ trans($theme . '-app.login_register.contraseña') }}" maxlength="20"
+                                    placeholder="{{ trans('web.login_register.contraseña') }}" maxlength="20"
                                     autocomplete="off">
                                 <span class="input-group-text view_password">
                                     <img class="eye-password"
@@ -58,7 +58,7 @@
 
                             <span class="message-error-log text-danger"></span>
                             <input class="btn btn-lb-primary w-100" type="button"
-                                value="{{ trans($theme . '-app.login_register.sign_in') }}"
+                                value="{{ trans('web.login_register.sign_in') }}"
                                 onclick="javascript:login_web()">
                         </form>
                     </div>

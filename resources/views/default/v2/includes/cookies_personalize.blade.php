@@ -12,12 +12,12 @@
         <div class="modal-content">
             <div class="modal-header">
 
-				<h4 class="modal-title">{{ trans("$theme-app.cookies.modal_title") }}</h4>
+				<h4 class="modal-title">{{ trans("web.cookies.modal_title") }}</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
             </div>
             <div class="modal-body">
-                {!! trans("$theme-app.cookies.modal_description") !!}
+                {!! trans("web.cookies.modal_description") !!}
 
                 @include('includes.cookies._cookie_type', [
                     'type' => 'technical',
@@ -37,15 +37,15 @@
             <div class="modal-footer">
                 <div class="cookies_buttons">
                     <button onclick="acceptAllCookies()">
-						{{ trans("$theme-app.cookies.accept_all") }}
+						{{ trans("web.cookies.accept_all") }}
                     </button>
 
                     <button type="button" onclick="savePreferencesCookies()">
-						{{ trans("$theme-app.cookies.save_settings") }}
+						{{ trans("web.cookies.save_settings") }}
                     </button>
 
                     <button onclick="rejectAllCookies()">
-						{{ trans("$theme-app.cookies.reject_all") }}
+						{{ trans("web.cookies.reject_all") }}
                     </button>
                 </div>
             </div>

@@ -6,19 +6,19 @@
                 <button class="nav-link active" id="nav-adjudicaciones-tab" data-bs-toggle="pill"
                     data-bs-target="#nav-adjudicaciones" type="button" role="tab" aria-controls="nav-adjudicaciones"
                     aria-selected="true">
-                    {{ trans("$theme-app.sheet_tr.your_adjudications") }}
+                    {{ trans("web.sheet_tr.your_adjudications") }}
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="nav-mensajes-tab" data-bs-toggle="pill" data-bs-target="#nav-mensajes"
                     type="button" role="tab" aria-controls="nav-mensajes" aria-selected="false">
-                    {{ trans("$theme-app.sheet_tr.room_msg") }}
+                    {{ trans("web.sheet_tr.room_msg") }}
                 </button>
             </li>
         @else
             <button class="nav-link active" id="nav-mensajes-tab" data-bs-toggle="tab" data-bs-target="#nav-mensajes"
                 type="button" role="tab" aria-controls="nav-mensajes" aria-selected="true">
-                {{ trans("$theme-app.sheet_tr.room_msg") }}
+                {{ trans("web.sheet_tr.room_msg") }}
             </button>
         @endif
     </ul>

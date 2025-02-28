@@ -38,7 +38,7 @@
 				class="w-100 h-100" alt="...">
 
 			<div class="btn-live-wrapper">
-				<button class="btn btn-lb-primary">{{ trans("$theme-app.lot.bid_live") }}</button>
+				<button class="btn btn-lb-primary">{{ trans("web.lot.bid_live") }}</button>
 			</div>
 
 		</div>

@@ -20,9 +20,9 @@
                     }
                 @endphp
                 <li>
-                    <a href="{{ $route }}" title="{{ trans("$theme-app.head.language_$key") }}" aria-current="true"
+                    <a href="{{ $route }}" title="{{ trans("web.head.language_$key") }}" aria-current="true"
                         @class(['dropdown-item', 'disabled' => $key == $lang]) translate="no">
-                        {{ trans("$theme-app.home.$key") }}
+                        {{ trans("web.home.$key") }}
                     </a>
                 </li>
             @endforeach
@@ -36,8 +36,8 @@
 				$route = "/$key". TradLib::getRouteTranslate((substr($_SERVER["REQUEST_URI"], 4)), \App::getLocale(), $key);
 			}
 		@endphp
-		<a @class(['selected' => $key == $lang]) translate="no" title="{{ trans("$theme-app.head.language_$key") }}" href="{{$route}}">
-			<span translate="no">{{ trans("$theme-app.home.$key") }}</span>
+		<a @class(['selected' => $key == $lang]) translate="no" title="{{ trans("web.head.language_$key") }}" href="{{$route}}">
+			<span translate="no">{{ trans("web.home.$key") }}</span>
 		</a>
 		@endforeach --}}
 @endif

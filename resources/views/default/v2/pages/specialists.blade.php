@@ -1,23 +1,23 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+	{{ trans('web.head.title_app') }}
 @stop
 
 @section('content')
 <div class="container">
-    
+
     <div class="row">
         <div class="col-xs-12 col-sm-12 resultok">
-                <h1 class="titlePage">{{ trans($theme.'-app.home.specialist-contact') }}</h1>
+                <h1 class="titlePage">{{ trans('web.home.specialist-contact') }}</h1>
         </div>
         <div class="col-lg-12">
-            
+
             @foreach($data['especialista'] as $key_esp => $especialista)
                 @if(!empty($especialista[0]->titulo_especial0))
                     <h2>{{$especialista[0]->titulo_especial0}}</h2>
                 @endif
-                
+
                 <div class="row mb-50">
                     @foreach($especialista as $esp)
                     <?php
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-lg-7 margin_30">
                                 <p> <?= ucwords($esp->nom_especial1) ?></p>
-                                 <a href="mailto:{{strtolower($esp->email_especial1)}}">{{strtolower($esp->email_especial1)}}</a> 
+                                 <a href="mailto:{{strtolower($esp->email_especial1)}}">{{strtolower($esp->email_especial1)}}</a>
 
                             </div>
                             </div>
@@ -44,6 +44,6 @@
                 </div>
             @endforeach
         </div>
-    </div>                                                                    		
+    </div>
 </div>
 @stop

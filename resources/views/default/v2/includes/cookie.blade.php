@@ -3,28 +3,28 @@
 @endphp
 
 <div class="cookies" data-style="{{ $style }}">
-    <p class="cookies__title">{{ trans("$theme-app.cookies.cookies_policy") }}</p>
+    <p class="cookies__title">{{ trans("web.cookies.cookies_policy") }}</p>
 
     <div class="cookies_content">
         <div class="cookies__messages">
             <p class="cookies__message">
-                {{ trans("$theme-app.cookies.popover_description") }}
+                {{ trans("web.cookies.popover_description") }}
             </p>
 
             <p class="cookies__message">
-                {{ trans("$theme-app.cookies.popover_description2") }}
+                {{ trans("web.cookies.popover_description2") }}
             </p>
         </div>
 
         <div class="cookies_buttons">
             <button onclick="acceptAllCookies()">
-                {{ trans("$theme-app.cookies.accept_all") }}
+                {{ trans("web.cookies.accept_all") }}
             </button>
             <button type="button" data-toggle="modal" data-bs-toggle="modal" data-target="#cookiesPersonalize" data-bs-target="#cookiesPersonalize">
-                {{ trans("$theme-app.cookies.personalize") }}
+                {{ trans("web.cookies.personalize") }}
             </button>
             <button onclick="rejectAllCookies()">
-                {{ trans("$theme-app.cookies.reject_all") }}
+                {{ trans("web.cookies.reject_all") }}
             </button>
         </div>
     </div>

@@ -12,19 +12,19 @@
                 <ul>
                     @if(!Session::has('user'))
                     <li>
-                        <button class="btn btn-primary btn-xs open_own_box" data-ref="login">{{ trans($theme.'-app.login_register.generic_name') }}</button>
+                        <button class="btn btn-primary btn-xs open_own_box" data-ref="login">{{ trans('web.login_register.generic_name') }}</button>
                     </li>
-                    <li>	
-                        <a href="{{ \Routing::slug('login') }}" class="btn btn-primary btn-xs btn-register">{{ trans($theme.'-app.login_register.register') }}</a>
+                    <li>
+                        <a href="{{ \Routing::slug('login') }}" class="btn btn-primary btn-xs btn-register">{{ trans('web.login_register.register') }}</a>
                     </li>
                     @else
                     <li class="group user_session">
-                        <a href="{{ \Routing::slug('logout') }}/tr" class="btn btn-danger btn-xs" >{{ trans($theme.'-app.login_register.logout') }}</a>
+                        <a href="{{ \Routing::slug('logout') }}/tr" class="btn btn-danger btn-xs" >{{ trans('web.login_register.logout') }}</a>
                     </li>
                     <li class="group user_session hidden-xs">
-                        <a onclick="toggleFullScreen()" class="btn btn-primary  btn-xs" >{{ trans($theme.'-app.sheet_tr.full_screen') }}</a>
+                        <a onclick="toggleFullScreen()" class="btn btn-primary  btn-xs" >{{ trans('web.sheet_tr.full_screen') }}</a>
                     </li>
-                    <li class="group user_verified">	
+                    <li class="group user_verified">
                         <div>
                             <span class="img_verified">
                                 <span>
@@ -34,7 +34,7 @@
                         </div>
                         <div class="u_data">
                             <div class="u_name">{{ Session::get('user.name') }}</div>
-                            <div class="u_verified">{{ trans_choice($theme.'-app.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
+                            <div class="u_verified">{{ trans_choice('web.sheet_tr.verified_bidders', 1) }} <span>{{ $data['js_item']['user']['cod_licit'] }}</span></div>
                         </div>
                     </li>
                     @endif
@@ -54,16 +54,16 @@
 
         <div class="language">
 
-            <select 
-                id="selectorIdioma" 
-                actuallang="/{{ \App::getLocale() }}/" 
-                name="idioma" 
-                class="form-control" 
+            <select
+                id="selectorIdioma"
+                actuallang="/{{ \App::getLocale() }}/"
+                name="idioma"
+                class="form-control"
                 style="width: 100px;height: 27px;font-size: 12px;padding: 0;background: rgba(255,255,255,.4);color: black;border: 0;"
                 >
-                <option value="es"><?= trans($theme . '-app.head.language_es') ?></option>
-                <option value="en"><?= trans($theme . '-app.head.language_en') ?></option>
-            </select>     
+                <option value="es"><?= trans('web.head.language_es') ?></option>
+                <option value="en"><?= trans('web.head.language_en') ?></option>
+            </select>
         </div>
     </nav>
 </header>

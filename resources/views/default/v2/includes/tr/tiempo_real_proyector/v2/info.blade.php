@@ -15,14 +15,14 @@
 
 <div class="lot">
     <p id="lote_actual_main">
-        {{ trans("$theme-app.sheet_tr.lot") }}
+        {{ trans("web.sheet_tr.lot") }}
         <span id="info_lot_actual">{{ $refFormat }}</span>
     </p>
 </div>
 
 <div class="starting-price">
     <div class="precioSalida column-block" id="precioSalida">
-        <p>{{ trans($theme . '-app.sheet_tr.start_price') }}</p>
+        <p>{{ trans('web.sheet_tr.start_price') }}</p>
         <p class="number-value">
             <span>{{ $loteActual->formatted_impsalhces_asigl0 }}</span>
             {{ $simbol }}
@@ -34,11 +34,11 @@
     <div class="column-block">
         <p>
             <span id="text_actual_max_bid" @class(['hidden' => !$withBids])>
-                {{ trans($theme . '-app.sheet_tr.max_actual_bid') }}
+                {{ trans('web.sheet_tr.max_actual_bid') }}
             </span>
 
             <span id="text_actual_no_bid" @class(['hidden' => $withBids])>
-                {{ trans($theme . '-app.sheet_tr.pending_bid') }}
+                {{ trans('web.sheet_tr.pending_bid') }}
             </span>
         </p>
 
@@ -58,7 +58,7 @@
 
 <div class="next-bid">
     <div class="column-block" id="next-bid_JS">
-        <p>{{ trans($theme . '-app.lot.next_min_bid') }}</p>
+        <p>{{ trans('web.lot.next_min_bid') }}</p>
         <p class="number-value">
             <span id="next_bid_JS">{{ Tools::moneyFormat($loteActual->importe_escalado_siguiente) }}</span>
             {{ $simbol }}
@@ -72,7 +72,7 @@
             <div class="started hidden">
                 <div class="aside pujas">
 
-                    <p class="last-bids-title">{{ trans($theme . '-app.sheet_tr.last_bids') }}</p>
+                    <p class="last-bids-title">{{ trans('web.sheet_tr.last_bids') }}</p>
 
                     <div class="pujas_list" id="pujas_list">
                         @foreach ($loteActual->pujas as $puja)

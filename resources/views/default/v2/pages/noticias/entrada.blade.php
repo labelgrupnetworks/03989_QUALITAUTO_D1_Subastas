@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ trans($theme.'-app.head.title_app') }}
+{{ trans('web.head.title_app') }}
 @stop
 
 @section('assets_components')
@@ -18,7 +18,7 @@
 			<div class="col-xs-12 col-sm-12 text-center color-letter titlepage-contenidoweb">
 
 				<?php
-    			$bread[] = array("name" => trans($theme.'-app.blog.name'), 'url'=> "/" . \Routing::slugSeo('blog') );
+    			$bread[] = array("name" => trans('web.blog.name'), 'url'=> "/" . \Routing::slugSeo('blog') );
     			$titulo_post = $data['news']->titulo_web_blog_lang;
     			$bread[] = array("name" => $titulo_post) ;
     			?>
@@ -49,7 +49,7 @@
 
                         if(\App::getLocale() != 'en'){
                             $array_fecha = explode(" ",$fecha);
-                            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans($theme."-app.global.month_large"));
+                            $array_fecha[1] = \Tools::get_month_lang($array_fecha[1],trans("web.global.month_large"));
                             $fecha = $array_fecha[0].' '.$array_fecha[1].' '.$array_fecha[2];
                         }
 
@@ -109,7 +109,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="article-categoria-titulo">
-					{{ trans($theme.'-app.blog.post_related') }}:
+					{{ trans('web.blog.post_related') }}:
 				</div>
 				<div class="entradas-relacionadas-lista">
 					@foreach($data['relationship_new'] as $rel_link)
@@ -125,7 +125,7 @@
 						</div>
 						<div class="button-post">
 							<a href="{{ $url }}"
-								role="button"><?= trans($theme.'-app.blog.more') ?></a>
+								role="button"><?= trans('web.blog.more') ?></a>
 						</div>
 					</div>
 

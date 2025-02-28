@@ -3,10 +3,10 @@
 	<ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
 			<a itemtype="https://schema.org/Thing" itemprop="item"
-				title="{{ trans($theme.'-app.subastas.breadcrumb') }}"
+				title="{{ trans('web.subastas.breadcrumb') }}"
 				href="https://{{ \Request::getHttpHost() }}">
 
-				<span itemprop="name">{{ trans($theme.'-app.subastas.breadcrumb') }}</span>
+				<span itemprop="name">{{ trans('web.subastas.breadcrumb') }}</span>
 			</a>
 			<meta itemprop="position" content="1"/>
 		</li>

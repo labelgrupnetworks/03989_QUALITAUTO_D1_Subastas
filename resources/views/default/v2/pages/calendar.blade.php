@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-	{{ trans($theme.'-app.head.title_app') }}
+	{{ trans('web.head.title_app') }}
 @stop
 
 @push('stylesheets')
@@ -16,7 +16,7 @@
 @section('content')
 
 @php
-	$bread[] = array("name" =>trans($theme.'-app.home.calendar-news'));
+	$bread[] = array("name" =>trans('web.home.calendar-news'));
 @endphp
 
 <main>
@@ -26,7 +26,7 @@
 			@include('includes.breadcrumb')
 		</div>
 		<div class="col-12">
-			<h1 class="titlePage">{{ trans($theme.'-app.home.calendar-news') }}</h1>
+			<h1 class="titlePage">{{ trans('web.home.calendar-news') }}</h1>
 		</div>
 	</div>
 
@@ -34,15 +34,15 @@
 
 		<div class="col-12 col-md-9">
 			<div class="select-year d-flex justify-content-between">
-				<a class="previous_year text-decoration-none" href="?year={{$year - 1}}"  > {{ trans($theme.'-app.calendar.year') }} {{$year - 1}} </a>
+				<a class="previous_year text-decoration-none" href="?year={{$year - 1}}"  > {{ trans('web.calendar.year') }} {{$year - 1}} </a>
 				<h3 class="actual_year"> {{$year}} </h3>
-				<a class="next_year text-decoration-none" href="?year={{$year + 1}}"> {{ trans($theme.'-app.calendar.year') }} {{$year + 1}} </a>
+				<a class="next_year text-decoration-none" href="?year={{$year + 1}}"> {{ trans('web.calendar.year') }} {{$year + 1}} </a>
 			</div>
 
 			<div id='calendar'></div>
 
 			<p>
-				<strong> {{ trans($theme.'-app.calendar.holidays') }}</strong>
+				<strong> {{ trans('web.calendar.holidays') }}</strong>
 			</p>
 		</div>
 
@@ -51,7 +51,7 @@
 				@if (array_key_exists($event->cod_calendar_event, $eventInCalendar))
 					<p>
 						<span class="calendar_event_label" style="background-color:{{$event->color_calendar_event}}"></span>
-						<span>{{ trans("$theme-app.calendar.{$event->cod_calendar_event}_event") }}</span>
+						<span>{{ trans("web.calendar.{$event->cod_calendar_event}_event") }}</span>
 					</p>
 				@endif
 			@endforeach
@@ -67,13 +67,13 @@
 					<div class="bs-callout bs-callout-default AUCTION_calendar_border" id="callout-alerts-dismiss-plugin" >
 						<h5>{{$sub->des_sub}}</h5>
 						@if (!empty($sub->calini_sub))
-							<p>{{ trans($theme.'-app.calendar.start_expo') }} {{ date("d/m/Y ", strtotime($sub->calini_sub))}} </p>
+							<p>{{ trans('web.calendar.start_expo') }} {{ date("d/m/Y ", strtotime($sub->calini_sub))}} </p>
 						@endif
 						@if (!empty($sub->calfin_sub))
-							<p>{{ trans($theme.'-app.calendar.end_expo') }} {{ date("d/m/Y ", strtotime($sub->calfin_sub))}} </p>
+							<p>{{ trans('web.calendar.end_expo') }} {{ date("d/m/Y ", strtotime($sub->calfin_sub))}} </p>
 						@endif
 						@if (!empty($sub->session_start))
-							<p>{{ trans($theme.'-app.calendar.start_rt') }} {{ date("d/m/Y H:i:s", strtotime($sub->session_start))}} </p>
+							<p>{{ trans('web.calendar.start_rt') }} {{ date("d/m/Y H:i:s", strtotime($sub->session_start))}} </p>
 						@endif
 					</div>
 					@php

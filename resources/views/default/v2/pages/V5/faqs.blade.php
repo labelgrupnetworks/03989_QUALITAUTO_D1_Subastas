@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
 @section('title')
-    {{ trans($theme . '-app.foot.faq') }}
+    {{ trans('web.foot.faq') }}
 @stop
 
 @section('content')
     @php
         $bread[] = [
-            'name' => trans($theme . '-app.foot.faq'),
+            'name' => trans('web.foot.faq'),
             'url' => URL::current(),
             'title' => 'title',
         ];
@@ -20,7 +20,7 @@
     <main class="faqs">
         <div class="container">
             @include('includes.breadcrumb')
-            <h1>{{ trans($theme . '-app.foot.faq') }}</h1>
+            <h1>{{ trans('web.foot.faq') }}</h1>
         </div>
 
         <div class="container mt-3" id="faq">
@@ -28,7 +28,7 @@
             <div class="row row-cols-1 row-cols-lg-3">
 
                 <div class="col">
-                    <h4>{{ trans("$theme-app.faq.select_category") }}</h4>
+                    <h4>{{ trans("web.faq.select_category") }}</h4>
                     <hr>
                     <div class="list-group list-group-flush" role="tablist">
                         @foreach ($categories as $item)
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col tab-content" id="tabSubcategory" role="tabpanel">
-                    <h4>{{ trans("$theme-app.faq.select_sub_category") }}</h4>
+                    <h4>{{ trans("web.faq.select_sub_category") }}</h4>
                     <hr>
 
                     @foreach ($subCategories as $parentId => $items)
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="col tab-content">
-                    <h4>{{ trans("$theme-app.faq.select_question") }}</h4>
+                    <h4>{{ trans("web.faq.select_question") }}</h4>
                     <hr>
 
                     @foreach ($questions as $parentId => $items)

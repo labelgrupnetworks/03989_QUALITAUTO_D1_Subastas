@@ -9,9 +9,9 @@
 
     {{-- Precio salida --}}
     <p class="price salida-price">
-        <span>{{ trans($theme . '-app.lot.lot-price') }}</span>
+        <span>{{ trans('web.lot.lot-price') }}</span>
         <span class="value">
-            {{ $lote_actual->formatted_impsalhces_asigl0 }} {{ trans($theme . '-app.subastas.euros') }}
+            {{ $lote_actual->formatted_impsalhces_asigl0 }} {{ trans('web.subastas.euros') }}
 
             @if (config('app.exchange'))
                 | <span class="exchange" id="startPriceExchange_JS"> </span>
@@ -22,9 +22,9 @@
     {{-- Estimación --}}
     @if (!empty($lote_actual->imptash_asigl0))
         <p class="price estimacion-price">
-            <span>{{ trans($theme . '-app.lot.estimate') }}</span>
+            <span>{{ trans('web.lot.estimate') }}</span>
             <span class="value">{{ Tools::moneyFormat($lote_actual->imptash_asigl0) }}
-                {{ trans($theme . '-app.subastas.euros') }}
+                {{ trans('web.subastas.euros') }}
                 @if (\Config::get('app.exchange'))
                     | <span class="exchange" id="estimateExchange_JS"> </span>
                 @endif
@@ -37,7 +37,7 @@
         'price bid-price',
         'hidden' => count($lote_actual->pujas) == 0,
     ])>
-        <span>{{ trans($theme . '-app.lot.puja_actual') }}</span>
+        <span>{{ trans('web.lot.puja_actual') }}</span>
         <span id="actual_max_bid" @class([
             'value',
             'mine' =>
@@ -51,7 +51,7 @@
                 $lote_actual->max_puja?->cod_licit !=
                     $data['js_item']['user']['cod_licit'],
         ])>
-            {{ $lote_actual->formatted_actual_bid }} {{ trans($theme . '-app.subastas.euros') }}
+            {{ $lote_actual->formatted_actual_bid }} {{ trans('web.subastas.euros') }}
 
             @if (config('app.exchange'))
                 | <span class="exchange" id="actualBidExchange_JS"> </span>
@@ -61,7 +61,7 @@
 
     {{-- Sin pujas --}}
     <h5 id="text_actual_no_bid" @class(['hidden' => count($lote_actual->pujas) > 0])>
-        {{ trans($theme . '-app.lot_list.no_bids') }}
+        {{ trans('web.lot_list.no_bids') }}
     </h5>
 
     {{-- Reserva alcanzada  --}}
@@ -69,19 +69,19 @@
         'price price_minim_reached',
         'hidden' => empty($lote_actual->impres_asigl0),
     ])>
-        <span>{{ trans($theme . '-app.subastas.price_minim') }}</span>
+        <span>{{ trans('web.subastas.price_minim') }}</span>
         <span
-            class="precio_minimo_alcanzado hidden">{{ trans($theme . '-app.subastas.reached') }}</span>
+            class="precio_minimo_alcanzado hidden">{{ trans('web.subastas.reached') }}</span>
         <span
-            class="precio_minimo_no_alcanzado hidden">{{ trans($theme . '-app.subastas.no_reached') }}</span>
+            class="precio_minimo_no_alcanzado hidden">{{ trans('web.subastas.no_reached') }}</span>
     </p>
 
     {{-- Siguiente puja --}}
     <p class="price next-price">
-        <span>{{ $hay_pujas ? trans($theme . '-app.lot.next_min_bid') : trans($theme . '-app.lot.min_puja') }}</span>
+        <span>{{ $hay_pujas ? trans('web.lot.next_min_bid') : trans('web.lot.min_puja') }}</span>
         <span class="value">
             <span class="siguiente_puja"></span>
-            <span>&nbsp;{{ trans($theme . '-app.subastas.euros') }}</span>
+            <span>&nbsp;{{ trans('web.subastas.euros') }}</span>
 
             @if (\Config::get('app.exchange'))
                 | <span class="exchange" id="nextBidExchange_JS"> </span>
@@ -100,14 +100,14 @@
         'hist_new',
         'hidden' => empty($myBestBid),
     ])>
-        {{ trans($theme . '-app.lot.max_puja') }}
+        {{ trans('web.lot.max_puja') }}
         <strong>
             <span id="tuorden">
                 @if (!empty($myBestBid))
                 	{{ $myBestBid }}
                 @endif
             </span>
-            {{ trans($theme . '-app.subastas.euros') }}
+            {{ trans('web.subastas.euros') }}
             @if (\Config::get('app.exchange'))
                 | <span class="exchange" id="yourOrderExchange_JS"> </span>
             @endif
@@ -126,7 +126,7 @@
                 <svg class="bi" width="16" height="16" fill="currentColor">
                     <use xlink:href="/bootstrap-icons.svg#truck"></use>
                 </svg>
-                {{ trans("$theme-app.lot.packengers_ficha") }}
+                {{ trans("web.lot.packengers_ficha") }}
             </a>
         </div>
     @endif

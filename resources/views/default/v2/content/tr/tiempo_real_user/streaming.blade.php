@@ -48,4 +48,4 @@
 	</div>
 </div>
 
-<p class="delay mt-2 px-1">{{ trans($theme.'-app.sheet_tr.delay') }}</p>
+<p class="delay mt-2 px-1">{{ trans('web.sheet_tr.delay') }}</p>

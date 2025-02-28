@@ -8,7 +8,7 @@
 			@foreach ($settings as $setting)
 				<a class="btn btn-lb-primary w-100 mb-1" href="{{ $setting['url'] }}" title="{{ $setting['name'] }}" target="_blank">
 					<span>
-						{{ trans("$theme-app.foot.admin_" . $setting['name'], $setting['name_val'] ? $setting['name_val'] : []) }}
+						{{ trans("web.foot.admin_" . $setting['name'], $setting['name_val'] ? $setting['name_val'] : []) }}
 					</span>
 				</a>
 			@endforeach
