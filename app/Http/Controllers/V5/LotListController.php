@@ -413,6 +413,9 @@ class LotListController extends Controller
 		if (isset($auction) && isset($auction->name)) {
 
 			$seo_data->h1_seo = $auction->name;
+			if(Config::get('app.gridAllSessions', 0) && !empty($auction->des_sub)){
+				$seo_data->h1_seo = Str::title($auction->des_sub);
+			}
 			$seo_data->meta_title = $auction->webmetat_sub;
 			$seo_data->meta_description = $auction->webmetad_sub;
 			#datos para Open Graph
