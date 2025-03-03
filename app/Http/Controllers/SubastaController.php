@@ -2453,15 +2453,17 @@ class SubastaController extends Controller
 
 	public function getAucSessionFiles(HttpRequest $request)
 	{
-		if (!$request->auction || !$request->reference) {
+		if (!$request->auction) {
 			return response()->json(['status' => 'error', 'error' => 'No se ha encontrado la subasta'], 404);
 		}
 
-		$auctionSessionFiles = AucSessionsFiles::where([
-			'"auction"' => $request->auction,
-			'"reference"' => $request->reference,
-			'"lang"' => config('app.language_complete')[config('app.locale')]
-		])->get();
+		$auctionSessionFiles = AucSessionsFiles::query()
+			->whereAuction($request->auction)
+			->inLocale()
+			->when($request->reference, function ($query, $reference) {
+				return $query->where('"reference"', $reference);
+			})
+			->get();
 
 		$view = view('front::includes.subasta.files', ['auctionSessionFiles' => $auctionSessionFiles])->render();
 

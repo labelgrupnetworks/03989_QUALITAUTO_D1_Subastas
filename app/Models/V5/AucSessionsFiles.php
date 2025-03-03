@@ -61,6 +61,13 @@ class AucSessionsFiles extends Model
 		return $query->where('"auction"', $auction);
 	}
 
+	public function scopeInLocale($query)
+	{
+		$locale = Config::get('app.locale');
+		$localeComplete = Config::get("app.language_complete.{$locale}", 'es-ES');
+		return $query->where('"lang"', $localeComplete);
+	}
+
 	public function scopeWhereAuctionBases($query, $auction)
 	{
 		return $query->where([
