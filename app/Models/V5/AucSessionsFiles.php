@@ -56,12 +56,22 @@ class AucSessionsFiles extends Model
         });
     }
 
+	public function scopeWhereAuction($query, $auction)
+	{
+		return $query->where('"auction"', $auction);
+	}
+
 	public function scopeWhereAuctionBases($query, $auction)
 	{
 		return $query->where([
 			'"auction"' => $auction,
 			'"type"' => self::AUCTION_CONDITIONS,
 		]);
+	}
+
+	public function scopeIsLink($query)
+	{
+		return $query->where('"type"', self::TYPE_ENLACE);
 	}
 
 	public function getPublicFilePathAttribute()
