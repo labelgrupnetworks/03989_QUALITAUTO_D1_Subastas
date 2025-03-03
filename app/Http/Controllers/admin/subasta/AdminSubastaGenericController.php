@@ -282,7 +282,7 @@ class AdminSubastaGenericController extends Controller
 			}
 
 			//archivos de sesion
-			if (request()->hasFile('ficheroAdjunto')) {
+			if (request()->hasFile('ficheroAdjunto') || request('typefile') == AucSessionsFiles::TYPE_ENLACE) {
 				$adminAucSessionsFilesController = new AdminAucSessionsFilesController();
 				$adminAucSessionsFilesController->store($request);
 			}
