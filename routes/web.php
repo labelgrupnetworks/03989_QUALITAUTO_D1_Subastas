@@ -44,6 +44,7 @@ use App\Providers\RoutingServiceProvider as Routing;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Laravel\Socialite\Facades\Socialite;
@@ -547,6 +548,15 @@ Route::get("/seo_event/{event}", [CustomControllers::class, 'saveEvent'])->where
 #Lleida Net, como n ose si devuelven post o get pngo lso dos
 Route::get('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
 Route::post('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
+
+Route::any('/tecalis/response', function($request){
+	Log::debug("callback tecalis", ['request' => $request->all()]);
+	return response()->json(['status' => 'ok']);
+});
+Route::any('/tecalis/redirect', function($request){
+	Log::debug("redirect tecalis", ['request' => $request->all()]);
+	return response()->json(['status' => 'ok']);
+});
 
 /* Esto iba en el routes de la version 5.2 de laravel despues de incluir el routes/web */
 require __DIR__ . '/custom.php';

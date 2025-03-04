@@ -36,6 +36,7 @@ class VerifyCsrfToken extends Middleware
 		"/carlandia/confirmPayment",
 		"phpsock*",
 		"*response_redsys*",
-		"/lleidanet/response_ocr"
+		"/lleidanet/response_ocr",
+		"/tecalis/*",
     ];
 }
