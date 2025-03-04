@@ -58,7 +58,12 @@
                         @endif
                         <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.historico') }}" href="<?php echo Routing::translateSeo('subastas-historicas') ?>">{{ trans(\Config::get('app.theme').'-app.foot.historico') }}</a></li>
                         <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.about_us')  ?>">{{ trans(\Config::get('app.theme').'-app.foot.about_us') }}</a></li>
-                        <li><a title="{{ trans(\Config::get('app.theme').'-app.foot.contact') }}" href="<?php echo Routing::translateSeo('pagina').trans(\Config::get('app.theme').'-app.links.contact') ?>">{{ trans(\Config::get('app.theme').'-app.foot.contact') }}</a></li>
+                        <li>
+							<a title="{{ trans(\Config::get('app.theme').'-app.foot.contact') }}"
+								href="{{ route('contact_page') }}">
+								{{ trans(\Config::get('app.theme').'-app.foot.contact') }}
+							</a>
+						</li>
                         <li><a  href="<?=\Routing::translateSeo('valoracion-articulos')?>"> {{ trans(\Config::get('app.theme').'-app.home.free-valuations') }}</a></li>
                     </ul>
                 </div>

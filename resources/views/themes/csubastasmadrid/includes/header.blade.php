@@ -319,8 +319,9 @@ use App\libs\TradLib as TradLib;
 					</li>
 					<li class="li-color">
 
-						<a title="{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}"
-							href="<?= \Routing::translateSeo('pagina') . trans(\Config::get('app.theme') . '-app.links.contact') ?>">{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}</a>
+						<a title="{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}" href="{{ route('contact_page') }}">
+							{{ trans(\Config::get('app.theme') . '-app.foot.contact') }}
+						</a>
 					</li>
 				</ul>
 			</div>
