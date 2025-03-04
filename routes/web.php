@@ -41,6 +41,7 @@ use App\Http\Controllers\V5\PayArticleCartController;
 use App\Http\Controllers\V5\PayShoppingCartController;
 use App\Http\Controllers\ValoracionController;
 use App\Providers\RoutingServiceProvider as Routing;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
@@ -549,11 +550,11 @@ Route::get("/seo_event/{event}", [CustomControllers::class, 'saveEvent'])->where
 Route::get('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
 Route::post('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
 
-Route::any('/tecalis/response', function($request){
+Route::any('/tecalis/callback', function(Request $request){
 	Log::debug("callback tecalis", ['request' => $request->all()]);
 	return response()->json(['status' => 'ok']);
 });
-Route::any('/tecalis/redirect', function($request){
+Route::any('/tecalis/redirect', function(Request $request){
 	Log::debug("redirect tecalis", ['request' => $request->all()]);
 	return response()->json(['status' => 'ok']);
 });
