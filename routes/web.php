@@ -40,6 +40,7 @@ use App\Http\Controllers\V5\NodePhp;
 use App\Http\Controllers\V5\PayArticleCartController;
 use App\Http\Controllers\V5\PayShoppingCartController;
 use App\Http\Controllers\ValoracionController;
+use App\Http\Integrations\Tecalis\TecalisService;
 use App\Providers\RoutingServiceProvider as Routing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -549,6 +550,8 @@ Route::get("/seo_event/{event}", [CustomControllers::class, 'saveEvent'])->where
 #Lleida Net, como n ose si devuelven post o get pngo lso dos
 Route::get('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
 Route::post('/lleidanet/response_ocr', [CustomControllers::class, 'response_ocr']);
+
+Route::get('/tecalis-test', [TecalisService::class, 'auth']);
 
 Route::any('/tecalis/callback', function(Request $request){
 	Log::debug("callback tecalis", ['request' => $request->all()]);
