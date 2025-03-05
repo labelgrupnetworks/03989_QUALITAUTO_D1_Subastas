@@ -14,6 +14,7 @@ class AdminThumbsController extends Controller
 {
 	const FILTER_ONLY_WITHOUT_THUMB = '1';
 	const FILTER_WITH_MODIFIED_DATE = '2';
+	const FILTER_ROTATED_IMAGES = '3';
 
 	public function __construct()
 	{
@@ -69,6 +70,7 @@ class AdminThumbsController extends Controller
 				return match ($type) {
 					self::FILTER_ONLY_WITHOUT_THUMB => $collection->filter(fn ($lot) => $this->filterNewThumbnails($lot, $size)),
 					self::FILTER_WITH_MODIFIED_DATE => $collection->filter(fn ($lot) => $this->filterModifiedImages($lot, $size)),
+					self::FILTER_ROTATED_IMAGES => $collection->each(fn ($lot) => $this->hasRotatedImages($lot)),
 					default => $collection
 				};
 			})
@@ -81,7 +83,8 @@ class AdminThumbsController extends Controller
 		$data = [
 			'count_lots' => $lots->count(),
 			'count_images' => $lots->sum(fn ($lot) => count($lot->images)),
-			'lots' => $lots->values()->all()
+			'lots' => $lots->values()->all(),
+			'to_rotate' => $request->input('type') == self::FILTER_ROTATED_IMAGES
 		];
 
 		return response()->json($data);
@@ -106,6 +109,51 @@ class AdminThumbsController extends Controller
 			: "Miniaturas del lote número {$numhces} y línea {$linhces} generadas correctamente";
 
 		return response()->json(['message' => $message]);
+	}
+
+	public function rotate(Request $request)
+	{
+		$numhces = $request->input('numhces');
+		$linhces = $request->input('linhces');
+
+		$images = (new ImageGenerate)->getlotImages($numhces, $linhces);
+
+		foreach ($images as $image) {
+			$originalPath = $this->getOriginalPath($numhces) . $image;
+			$exif = exif_read_data($originalPath);
+
+			if (isset($exif['Orientation'])) {
+				$orientation = $exif['Orientation'];
+
+				$image = imagecreatefromjpeg($originalPath);
+
+				switch ($orientation) {
+					case 3:
+						$rotate = imagerotate($image, 180, 0);
+						break;
+					case 6:
+						$rotate = imagerotate($image, -90, 0);
+						break;
+					case 8:
+						$rotate = imagerotate($image, 90, 0);
+						break;
+					default:
+						$rotate = $image;
+						break;
+				}
+
+				imagejpeg($rotate, $originalPath);
+			}
+		}
+
+		return response()->json(['message' => 'Imágenes rotadas correctamente']);
+	}
+
+	private function rotateToCorrectOrientation($imagePath, $exif)
+	{
+		$source = imagecreatefromjpeg($imagePath);
+		$rotate = imagerotate($source, 90, 0);
+		imagejpeg($rotate, $imagePath);
 	}
 
 	private function getThumbsPath($numHces, $size)
@@ -149,5 +197,19 @@ class AdminThumbsController extends Controller
 			}
 		}
 		return false;
+	}
+
+	private function hasRotatedImages($lot)
+	{
+		$rotatedImages = array_filter($lot->images, function ($image) use ($lot) {
+			$originalPath = $this->getOriginalPath($lot->num_hces1) . $image;
+			$exif = exif_read_data($originalPath);
+			if(!isset($exif['Orientation'])) {
+				return false;
+			}
+			return $exif['Orientation'] > 1;
+		});
+
+		$lot->images = $rotatedImages;
 	}
 }

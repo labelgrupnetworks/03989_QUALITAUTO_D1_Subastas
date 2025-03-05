@@ -64,6 +64,7 @@
                             <option value="">Todas</option>
                             <option value="1">Sin miniatura generada</option>
                             <option value="2">Imagen original modificada</option>
+							<option value="3">Imagenes rotadas</option>
                         </select>
                     </div>
 
