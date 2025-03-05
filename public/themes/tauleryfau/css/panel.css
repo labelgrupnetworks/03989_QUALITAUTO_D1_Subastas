@@ -2602,3 +2602,17 @@ p,
 		top: 0;
 	}
 }
+
+.static-page {
+	padding: var(--min-padding-to-page);
+	text-align: center;
+}
+
+.static-page h2 {
+	font-size: 28px;
+    font-weight: 500;
+    border: 0;
+    color: inherit;
+    margin-top: revert;
+	text-wrap: balance;
+}

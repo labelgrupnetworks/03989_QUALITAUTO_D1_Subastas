@@ -1,25 +1,20 @@
-@extends('layouts.default')
+@extends('layouts.panel')
 
 @section('title')
-	{{ $data['data']->name_web_page }}
+    {{ trans($theme . '-app.head.title_app') }}
 @stop
+
+@php
+if(!Session::has('user')) {
+	header('Location: /');
+	exit;
+}
+@endphp
 
 @section('content')
-<?php 
-$bread[] = array("name" =>$data['data']->name_web_page  );
-?>
 
-
-<div id="pagina-{{ $data['data']->id_web_page }}" class="contenido">
-          <div class="container-had">
-		<?php 
-			
-                  echo ($data['data']->content_web_page);
-		?>
-		
-	</div>            
-</div>    
-
+    <div class="static-page" id="pagina-{{ $data['data']->id_web_page }}">
+			{!! $data['data']->content_web_page !!}
+    </div>
 
 @stop
-
