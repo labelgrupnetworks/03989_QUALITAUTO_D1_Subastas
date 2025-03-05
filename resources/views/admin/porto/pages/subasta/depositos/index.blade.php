@@ -36,8 +36,8 @@
 
 	<div class="row well">
 
-		<div class="col-xs-12">
-			<table id="" class="table table-striped table-condensed table-responsive" style="width:100%">
+		<div class="col-xs-12 table-responsive">
+			<table id="" class="table table-striped table-condensed" style="width:100%">
 				<thead>
 
 					<tr>
@@ -55,6 +55,7 @@
 						<th>{{ trans("admin-app.fields.importe_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.fecha_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.cli_deposito") }}</th>
+						<th>Representando a</th>
 						<th>{{ trans("admin-app.fields.actions") }}</th>
 					</tr>
 				</thead>
@@ -72,7 +73,11 @@
 							<td>{!! $formulario->importe_deposito !!}</td>
 							<td>{!! $formulario->fecha_deposito !!}</td>
 							<td>{!! $formulario->cli_deposito !!}</td>
-							<td><input type="submit" class="btn btn-info w-100" value="{{ trans("admin-app.button.search") }}"><a href="{{route('deposito.index', ['menu' => 'subastas'])}}" class="btn btn-warning w-100">{{ trans("admin-app.button.restart") }}</a></td>
+							<td></td>
+							<td style="display: flex; gap: 2px">
+								<input type="submit" class="btn btn-sm btn-info w-100" value="{{ trans("admin-app.button.search") }}">
+								<a href="{{route('deposito.index', ['menu' => 'subastas'])}}" class="btn btn-sm btn-warning w-100">{{ trans("admin-app.button.restart") }}</a>
+							</td>
 						</form>
 					</tr>
 
@@ -92,6 +97,7 @@
 						<td>{{$deposito->importe_deposito}}</td>
 						<td>{{$deposito->fecha_deposito}}</td>
 						<td>{{$deposito->cli_deposito}}</td>
+						<td>{{optional($deposito->represented)->nom_representados}}</td>
 
 						<td>
 							<a href="{{ route('deposito.edit', $deposito->cod_deposito) }}" class="btn btn-primary btn-sm">{{ trans("admin-app.button.edit") }}</a>

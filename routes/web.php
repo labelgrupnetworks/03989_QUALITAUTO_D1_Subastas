@@ -368,6 +368,7 @@ Route::get('api-ajax/award_price/{cod_sub}/{ref_asigl0}', [SubastaTiempoRealCont
 Route::post('api-ajax/formulario-pujar', [SubastaController::class, 'getFormularioPujar']);
 Route::post('api-ajax/enviar-formulario-pujar', [SubastaController::class, 'sendFormularioPujar']);
 Route::post('api-ajax/accept-auction-conditions', [SubastaController::class, 'acceptAuctionConditions']);
+Route::post('api-ajax/check-bid-conditions', 'SubastaController@checkBidConditions');
 
 Route::get(Routing::translateSeo('contacto'), [ContactController::class, 'index'])->name('contact_page');
 Route::get(Routing::slugSeo('administradores-concursales', true), [ContactController::class, 'admin']);

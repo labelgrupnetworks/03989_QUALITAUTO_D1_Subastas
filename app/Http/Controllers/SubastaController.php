@@ -25,6 +25,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgDeposito;
 use App\Models\V5\FgHces1Files;
 use App\Models\V5\FgLicit;
+use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSubConditions;
 use App\Models\V5\FxCli;
 use App\Models\V5\WebCalendar;
@@ -2291,71 +2292,89 @@ class SubastaController extends Controller
 		}
 	}
 
-
 	public function getFormularioPujar()
 	{
+		if(!Session::has('user')){
+			return response(trans(Config::get('app.theme') . '-app.msg_error.mustLogin'), 404);
+		}
 
-		$cod_cli = request('cod_cli');
+		$cod_cli = Session::get('user.cod');
 		$cod_sub = request('cod_sub');
 		$ref = request('ref');
 
+		$theme = Config::get('app.theme');
+		$withRepresented = Config::get('app.withRepresented', false);
+
 		App::setLocale(strtolower(request('lang', 'es')));
 
-		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'email_cli', 'cif_cli', 'fisjur_cli')->where('cod_cli', $cod_cli)->first();
+		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'email_cli', 'cif_cli' ,'fisjur_cli')->where('cod_cli', $cod_cli)->first();
+
+		$representedArray = [];
+		if($withRepresented) {
+			$representedArray = FgRepresentados::getRepresentedToSelect($fxCli->cod_cli);
+			$nonRepresented = [
+				'N' => $fxCli->fisjur_cli == FxCli::TIPO_FISJUR_JURIDICA ? $fxCli->rsoc_cli : $fxCli->nom_cli
+			];
+
+			$representedArray = $nonRepresented + $representedArray;
+		}
 
 		$formulario = [
-			trans(Config::get('app.theme') . '-app.login_register.nombre') => FormLib::TextReadOnly('nom', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->rsoc_cli : $fxCli->nom_cli),
-			trans(Config::get('app.theme') . '-app.login_register.email') => FormLib::TextReadOnly('email_cli', 1, $fxCli->email_cli),
-			trans(Config::get('app.theme') . '-app.login_register.nif_dni_nie') => FormLib::TextReadOnly('cif_cli', 1, $fxCli->cif_cli),
-			trans(Config::get('app.theme') . '-app.login_register.representar') => FormLib::Select('representar', 1, $fxCli->fisjur_cli == 'R' ? 'S' : 'N', ['S' => trans(Config::get('app.theme') . '-app.login_register.yes'), 'N' => trans(Config::get('app.theme') . '-app.login_register.no')], '', '', false),
-			trans(Config::get('app.theme') . '-app.login_register.company') => FormLib::Text('nom_rsoc', 1, $fxCli->fisjur_cli == 'R' ? $fxCli->nom_cli : ($fxCli->fisjur_cli == 'J' ? $fxCli->rsoc_cli : ''), 'maxlength="59"'),
+			trans("$theme-app.login_register.nombre") => FormLib::TextReadOnly('nom', 1, $fxCli->fisjur_cli == 'J' ? $fxCli->rsoc_cli : $fxCli->nom_cli),
+			trans("$theme-app.login_register.email") => FormLib::TextReadOnly('email_cli', 1, $fxCli->email_cli),
+			trans("$theme-app.login_register.nif_dni_nie") => FormLib::TextReadOnly('cif_cli', 1, $fxCli->cif_cli),
 		];
 
-		return view('front::includes.ficha.formulario_deposito', compact('formulario', 'cod_sub', 'ref'))->render();
+		if($withRepresented) {
+			$formulario['En represntación de:'] = FormLib::Select('representado', 1, 'N', $representedArray, '', '', false);
+		}
+
+		$data = [
+			'formulario' => $formulario,
+			'cod_sub' => $cod_sub,
+			'ref' => $ref
+		];
+
+		return view('front::includes.ficha.formulario_deposito', $data)->render();
 	}
 
 	public function sendFormularioPujar()
 	{
-
-		if (!Session::has('user')) {
+		if(!Session::has('user')){
 			return response(trans(Config::get('app.theme') . '-app.msg_error.mustLogin'), 404);
 		}
 
 		$files = request()->file('file') ?? [];
 
 		foreach ($files as $file) {
-			if ($file->getError() == 1) {
+			if($file->getError() == 1){
 				$max_size = $file->getMaxFileSize() / 1024 / 1024;  // Get size in Mb
 				$error = 'El tamaño del documento debe ser menor a ' . $max_size . 'Mb.';
-				return response($error, 404);
+        		return response($error, 404);
 			}
 		}
 
-		$cod_cli = Session::get('user')['cod'];
-		$representar = request('representar', 'N');
-		$nom_rsoc = request('nom_rsoc', '');
+		$cod_cli = Session::get('user.cod');
+		$represented = request('represented', 'N');
+
 		$cod_sub = request('cod_sub', '');
 		$ref = request('ref', '');
 
 		$user = new User();
 		$mailController = new MailController();
+
 		$fxCli = FxCli::select('cod_cli', 'nom_cli', 'rsoc_cli', 'fisjur_cli', 'email_cli', 'cif_cli')->where('COD_CLI', $cod_cli)->first();
 
-		//quiere representar, antes ya lo era y el nombre de la empresa ha cambiado
-		if ($representar == 'S' && mb_strtolower($nom_rsoc) != mb_strtolower($fxCli->nom_cli)) {
-
-			$fxCli = $user->changeToRepresentative($fxCli, $nom_rsoc);
-		}
-		//No quiere representar, pero antes era representante
-		elseif ($representar == 'N' && $fxCli->fisjur_cli == 'R') {
-
-			$fxCli = $user->changeFromRepresentativeToParticular($fxCli);
+		$representedTo = null;
+		if($represented != 'N') {
+			$representedTo = FgRepresentados::find($represented);
 		}
 
 		//Envio de email
-		if ($mailController->sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files)) {
+		if($mailController->sendFormAuthorizeBid($fxCli, $cod_sub, $ref, $files, $representedTo)){
 			return response(trans(Config::get('app.theme') . '-app.msg_success.mensaje_enviado'), 200);
 		}
+
 		return response(trans(Config::get('app.theme') . '-app.msg_error.generic'), 404);
 	}
 
@@ -2471,5 +2490,62 @@ class SubastaController extends Controller
 			'status' => 'success',
 			'html' => $view,
 		]);
+	}
+
+	public function checkBidConditions(HttpRequest $request)
+	{
+		$userSession = Session::get('user');
+		if(!$userSession){
+			return response()->json([
+				'deposito' => false,
+				'conditions' => false,
+			]);
+		}
+
+		$userCod = $userSession['cod'];
+		$codSub = $request->input('codSub');
+		$ref = $request->input('ref');
+		$representedCod = $request->input('representedCod', null);
+
+		$licitCod = Fglicit::query()
+			->leftJoin('fglicit_representados', "emp_licit = emp_licitrepresentados and sub_licit = sub_licitrepresentados and cod_licit = cod_licitrepresentados")
+			->where([
+				['sub_licit', $codSub],
+				['cli_licit', $userCod]
+			])
+			->when($representedCod, function($query, $representedCod){
+				return $query->where('repre_licitrepresentados', $representedCod);
+			},
+			function($query){
+				return $query->whereNull('repre_licitrepresentados');
+			})
+			->value('cod_licit');
+
+		if(!$licitCod){
+			$licitCod = (string)(new Subasta())->createLicitadorToAuthUserAndRepresented($userCod, $codSub, $representedCod);
+		}
+
+		return response()->json([
+			'deposito' => (new FgDeposito)->isValid($userCod, $codSub, $ref, $representedCod),
+			'conditions' => $this->checkAuctionConditions($codSub, $userCod),
+			'licitCod' => $licitCod,
+		]);
+	}
+
+	/**
+	 * Comprueba si el usuario ha aceptado las condiciones de la subasta
+	 * En caso de que la subasta no tenga condiciones, se considera que el usuario las ha aceptado
+	 */
+	private function checkAuctionConditions($codSub, $userCod)
+	{
+		$locale = Config::get('app.locale');
+		$auctionBasesFile = AucSessionsFiles::whereAuctionBases($codSub)->get();
+		$auctionBasesFile = $auctionBasesFile->where('locale', $locale)->first() ?? $auctionBasesFile->first();
+
+		if(is_null($auctionBasesFile)) {
+			return true;
+		}
+
+		return FgSubConditions::isAcceptedCondtition($userCod, $codSub);
 	}
 }

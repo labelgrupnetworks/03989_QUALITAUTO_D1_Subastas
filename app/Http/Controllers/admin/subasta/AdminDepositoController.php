@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UpdateDepositoPut;
 use App\Models\V5\FgDeposito;
 use App\libs\FormLib;
+use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSub;
 use App\Models\V5\FxCli;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 
 class AdminDepositoController extends Controller
 {
@@ -24,7 +26,10 @@ class AdminDepositoController extends Controller
 		$fgDepositos = FgDeposito::query();
 		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
 		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'nom_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
-		->JoinCli()
+			->when(Config::get('app.withRepresented', false), function ($query) {
+				$query->with('represented');
+			})
+			->joinCli()
 			->orderBy("fecha_deposito", "desc")
 			->paginate(40);
 
@@ -38,7 +43,7 @@ class AdminDepositoController extends Controller
 			'estado_deposito' => FormLib::Select('estado_deposito', 0, $request->estado_deposito, $fgDeposito->getEstados(), '', ''),
 			'importe_deposito' => FormLib::Text('importe_deposito', 0, $request->importe_deposito, '', 'Importe'),
 			'fecha_deposito' => FormLib::Date('fecha_deposito', 0, $request->fecha_deposito),
-			'cli_deposito' => FormLib::Text('cli_deposito', 0, $request->cli_deposito, '', 'Cliente')
+			'cli_deposito' => FormLib::Text('cli_deposito', 0, $request->cli_deposito, '', 'Cliente'),
 		];
 
 		return view('admin::pages.subasta.depositos.index', compact('fgDepositos', 'formulario'));
@@ -90,6 +95,7 @@ class AdminDepositoController extends Controller
 		$fgDeposito->estado_deposito = old('estado_deposito', $fgDeposito->estado_deposito);
 		$fgDeposito->importe_deposito = old('importe_deposito', $fgDeposito->importe_deposito);
 		$fgDeposito->cli_deposito = old('cli_deposito', $fgDeposito->cli_deposito);
+		$fgDeposito->representado_deposito = old('representado_deposito', $fgDeposito->representado_deposito);
 
 		$formulario = (object) $this->formFgDeposito($fgDeposito);
 
@@ -149,13 +155,19 @@ class AdminDepositoController extends Controller
 		//clientes
 		$fxCli = FxCli::select('cod_cli', 'nom_cli')->pluck('nom_cli', 'cod_cli');
 
-		return [
+		$formulario = [
 			'sub_deposito' => FormLib::Select2WithArray('sub_deposito', 0, $fgDeposito->sub_deposito, $fgSubs),
 			'ref_deposito' => FormLib::Text('ref_deposito', 0, $fgDeposito->ref_deposito, '', ''),
 			'estado_deposito' => FormLib::Select('estado_deposito', 1, $fgDeposito->estado_deposito, $fgDeposito->getEstados()),
 			'importe_deposito' => FormLib::Text('importe_deposito', 1, $fgDeposito->importe_deposito, '', ''),
 			'cli_deposito' => FormLib::Select2WithArray('cli_deposito', 1, $fgDeposito->cli_deposito, $fxCli)
 		];
+
+		if (Config::get('app.withRepresented', false)) {
+			$formulario['representado_deposito'] = FormLib::Select2WithArray('representado_deposito', 0, $fgDeposito->representado_deposito, FgRepresentados::getRepresentedToSelect($fgDeposito->cli_deposito));
+		}
+
+		return $formulario;
 	}
 
 	private function filtersDepositos(Builder $fgDepositos, Request $request)

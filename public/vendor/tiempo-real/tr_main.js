@@ -2442,12 +2442,19 @@ $(function () {
         confirm_puja({hasMultipleBidders: true});
     });
 
+	$('.confirm_puja_with_represented').on('click', function (e) {
+		confirm_puja({
+			represented: $('#representante').val() == 'N' ? null : $('#representante').val(),
+		});
+	});
+
     function confirm_puja(options = {}) {
 
         $.magnificPopup.close();
 
 		const defaultOptions = {
 			hasMultipleBidders: false,
+			represented: null,
 			...options
 		}
 
@@ -2478,6 +2485,7 @@ $(function () {
 			'tipo_puja_gestor': $("#tipo_puja_gestor").val(),
 			hasMultipleBidders: defaultOptions.hasMultipleBidders,
 			bidders,
+			represented: defaultOptions.represented
 		};
 
 		confirmPujaWithSocket(params);
