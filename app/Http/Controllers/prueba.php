@@ -170,7 +170,7 @@ use Illuminate\Support\Facades\Config as FacadesConfig;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Spatie\SslCertificate\SslCertificate;
 
-class Prueba extends BaseController
+class prueba extends BaseController
 {
 
 	public function index()

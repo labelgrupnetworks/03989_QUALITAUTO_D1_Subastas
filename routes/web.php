@@ -20,7 +20,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\NoticiasController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentsController;
-use App\Http\Controllers\Prueba;
+use App\Http\Controllers\prueba;
 use App\Http\Controllers\SubastaController;
 use App\Http\Controllers\SubastaTiempoRealController;
 use App\Http\Controllers\User\RegisterController;
@@ -70,7 +70,7 @@ Route::get('', function () {
 })->name('home.redirect');
 
 Route::get(Routing::is_home(), [HomeController::class, 'index'])->name('home');
-Route::any('prueba', [Prueba::class, 'index'])->name('prueba');
+Route::any('prueba', [prueba::class, 'index'])->name('prueba');
 
 Route::get('AnsorenaValidateUnion', [AnsorenaValidateUnion::class, 'validateUnion'])->name('AnsorenaValidateUnion');
 Route::get('AnsorenaDecisionUnion', [AnsorenaValidateUnion::class, 'decisionUnion']);
