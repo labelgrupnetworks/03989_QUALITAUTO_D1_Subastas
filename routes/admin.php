@@ -288,6 +288,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('/subasta/reports/generate', 'subasta\AdminAuctionReportsController@generate')->name('subasta.reports.generate');
 		Route::get('/subasta/reports/download/{cod_sub}', 'subasta\AdminAuctionReportsController@download')->name('subasta.reports.download');
 
+		Route::get('/subasta/custom-reports/download/{id}', 'subasta\AdminCustomExports@download')->name('subasta.custom-reports.download');
+
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
 		Route::get('user_newsletter/catalog', 'usuario\AdminNewsletterClientController@showCatalogSuscriptors')->name('user_newsletter.catalog');
 		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'show', 'destroy']);

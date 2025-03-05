@@ -23,7 +23,7 @@ class AdminDepositoController extends Controller
 	{
 		$fgDepositos = FgDeposito::query();
 		$fgDepositos = self::filtersDepositos($fgDepositos, $request);
-		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
+		$fgDepositos = $fgDepositos->select('cod_deposito', 'rsoc_cli', 'nom_cli', 'sub_deposito', 'ref_deposito', 'estado_deposito', 'importe_deposito', 'fecha_deposito', 'cli_deposito')
 		->JoinCli()
 			->orderBy("fecha_deposito", "desc")
 			->paginate(40);
@@ -34,6 +34,7 @@ class AdminDepositoController extends Controller
 			'sub_deposito' => FormLib::Text('sub_deposito', 0, $request->sub_deposito, '', 'Subasta'),
 			'ref_deposito' => FormLib::Text('ref_deposito', 0, $request->ref_deposito, '', 'Referencia'),
 			'rsoc_cli' => FormLib::Text('rsoc_cli', 0, $request->rsoc_cli, '', 'Razón social'),
+			'nom_cli' => FormLib::Text('nom_cli', 0, $request->nom_cli, '', 'Nombre'),
 			'estado_deposito' => FormLib::Select('estado_deposito', 0, $request->estado_deposito, $fgDeposito->getEstados(), '', ''),
 			'importe_deposito' => FormLib::Text('importe_deposito', 0, $request->importe_deposito, '', 'Importe'),
 			'fecha_deposito' => FormLib::Date('fecha_deposito', 0, $request->fecha_deposito),
@@ -159,6 +160,8 @@ class AdminDepositoController extends Controller
 
 	private function filtersDepositos(Builder $fgDepositos, Request $request)
 	{
+		$defalutState = Config('app.admin_default_deposit_state', null);
+
 		if ($request->sub_deposito) {
 			$fgDepositos->where('upper(sub_deposito)', 'like', "%" . mb_strtoupper($request->sub_deposito) . "%");
 		}
@@ -168,8 +171,14 @@ class AdminDepositoController extends Controller
 		if ($request->rsoc_cli) {
 			$fgDepositos->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($request->rsoc_cli) . "%");
 		}
+		if ($request->nom_cli) {
+			$fgDepositos->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($request->nom_cli) . "%");
+		}
 		if ($request->estado_deposito) {
 			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
+		}
+		else if ($defalutState) {
+			$fgDepositos->where('estado_deposito', '=', $defalutState);
 		}
 		if ($request->importe_deposito) {
 			$fgDepositos->where('importe_deposito', '=', $request->importe_deposito);

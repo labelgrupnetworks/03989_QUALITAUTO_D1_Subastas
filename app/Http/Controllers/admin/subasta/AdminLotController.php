@@ -76,7 +76,7 @@ class AdminLotController extends Controller
 
 		$lotes = self::fgAsigl0QueryFilters($request, FgAsigl0::query());
 
-		$select = ['SUB_ASIGL0', 'REF_ASIGL0', 'IDORIGEN_ASIGL0', 'CERRADO_ASIGL0', 'IMPSALHCES_ASIGL0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0', 'comlhces_asigl0', 'comphces_asigl0', 'DESTACADO_ASIGL0', 'RETIRADO_ASIGL0', 'OCULTO_ASIGL0', 'NUMHCES_ASIGL0', 'LINHCES_ASIGL0', 'PROP_HCES1', 'DESCWEB_HCES1', 'fini_asigl0', 'ffin_asigl0', 'STOCK_HCES1', 'OBSDET_HCES1', 'FECALTA_ASIGL0', 'DES_ALM'];
+		$select = ['SUB_ASIGL0', 'REF_ASIGL0', 'IDORIGEN_ASIGL0', 'CERRADO_ASIGL0', 'IMPSALHCES_ASIGL0', 'impres_asigl0', 'imptas_asigl0', 'imptash_asigl0', 'comlhces_asigl0', 'comphces_asigl0', 'DESTACADO_ASIGL0', 'RETIRADO_ASIGL0', 'OCULTO_ASIGL0', 'fac_hces1', 'cob_hces1', 'NUMHCES_ASIGL0', 'LINHCES_ASIGL0', 'PROP_HCES1', 'DESCWEB_HCES1', 'fini_asigl0', 'ffin_asigl0', 'STOCK_HCES1', 'OBSDET_HCES1', 'FECALTA_ASIGL0', 'DES_ALM'];
 
 		$tableParams = [
 			'sub_asigl0' => 0,
@@ -97,6 +97,8 @@ class AdminLotController extends Controller
 			'destacado_asigl0' => 1,
 			'retirado_asigl0' => 1,
 			'oculto_asigl0' => 1,
+			'fac_hces1' => 0,
+			'cob_hces1' => 0,
 			'fini_asigl0' => 0,
 			'ffin_asigl0' => 0
 		];
@@ -154,6 +156,8 @@ class AdminLotController extends Controller
 			'destacado_asigl0' => FormLib::Select('destacado_asigl0', 0, $request->destacado_asigl0, ['S' => 'Si', 'N' => 'No']),
 			'retirado_asigl0' => FormLib::Select('retirado_asigl0', 0, $request->retirado_asigl0, ['S' => 'Si', 'N' => 'No']),
 			'oculto_asigl0' => FormLib::Select('oculto_asigl0', 0, $request->oculto_asigl0, ['S' => 'Si', 'N' => 'No']),
+			'fac_hces1' => FormLib::Select('fac_hces1', 0, $request->fac_hces1, ['S' => 'Si', 'N' => 'No']),
+			'cob_hces1' => FormLib::Select('cob_hces1', 0, $request->cob_hces1, ['S' => 'Si', 'N' => 'No']),
 			'fini_asigl0' => FormLib::Date('fini_asigl0', 0, $request->fini_asigl0),
 			'ffin_asigl0' => FormLib::Date('ffin_asigl0', 0, $request->ffin_asigl0),
 		];
@@ -214,6 +218,8 @@ class AdminLotController extends Controller
 			$lot["languages"] = $this->requestLangs($request);
 
 			$lotService->createLotWithApi($lot);
+
+			$this->updateHces1Fields($request, $cod_sub, $request->reflot);
 
 			if ($request->get('es_nft_asigl0') == 'S') {
 				FgAsigl0::where([['ref_asigl0', $request->reflot], ['sub_asigl0', $cod_sub]])
@@ -333,6 +339,8 @@ class AdminLotController extends Controller
 		} catch (\Throwable $th) {
 			return back()->withErrors(['errors' => [$th->getMessage()]])->withInput();
 		}
+
+		$this->updateHces1Fields($request, $cod_sub, $ref_asigl0);
 
 		//Nft
 		$resultNftProcess = null;
@@ -574,6 +582,25 @@ class AdminLotController extends Controller
 		}
 
 		return $languages;
+	}
+
+	private function updateHces1Fields($request, $cod_sub, $ref_asigl0)
+	{
+		$dataToUpdateHces1 = [];
+		if($request->has('isInvoiced')) {
+			$dataToUpdateHces1['fac_hces1'] = $request->isInvoiced;
+		}
+
+		if($request->has('isCharged')) {
+			$dataToUpdateHces1['cob_hces1'] = $request->isCharged;
+		}
+
+		if(!empty($dataToUpdateHces1)){
+			$fgAsigl0 = FgAsigl0::joinFghces1Asigl0()->where([['ref_asigl0',  $ref_asigl0], ['sub_asigl0', $cod_sub]])->first();
+
+			FgHces1::where([['num_hces1', $fgAsigl0->numhces_asigl0], ['lin_hces1', $fgAsigl0->linhces_asigl0]])
+			->update($dataToUpdateHces1);
+		}
 	}
 
 	private function nftProcess(Request $request, FgAsigl0 $fgAsigl0)
@@ -1421,6 +1448,12 @@ class AdminLotController extends Controller
 		}
 		if ($request->oculto_asigl0) {
 			$query->where('oculto_asigl0', '=', $request->oculto_asigl0);
+		}
+		if ($request->fac_hces1) {
+			$query->where('fac_hces1', '=', $request->fac_hces1);
+		}
+		if ($request->cob_hces1) {
+			$query->where('cob_hces1', '=', $request->cob_hces1);
 		}
 		if ($request->impres_asigl0) {
 			$query->where('impres_asigl0', '=', $request->impres_asigl0);

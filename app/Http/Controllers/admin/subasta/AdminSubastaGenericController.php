@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
+use App\Exports\custom\CustomExport;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Config;
@@ -45,6 +46,7 @@ class AdminSubastaGenericController extends Controller
 
     public function index(Request $request)
     {
+		$defalutState = Config('app.admin_default_auction_state', FgSub::SUBC_SUB_ACTIVO);
 		$artists = [];
 
 		$fgSubs = FgSub::query();
@@ -70,7 +72,7 @@ class AdminSubastaGenericController extends Controller
 		$formulario = (object)[
 			'cod_sub' => FormLib::Text('cod_sub', 0, $request->cod_sub),
 			'des_sub' => FormLib::Text('des_sub', 0, $request->des_sub),
-			'subc_sub' => FormLib::Select('subc_sub', 0, $request->subc_sub, $fgSub->getSubcSubTypes()),
+			'subc_sub' => FormLib::Select('subc_sub', 0, $request->subc_sub ?? $defalutState, $fgSub->getSubcSubTypes()),
 			'tipo_sub' => FormLib::Select('tipo_sub', 0, $request->tipo_sub, $fgSub->getTipoSubTypes()),
 			'dfec_sub' => FormLib::Date('dfec_sub', 0, $request->dfec_sub),
 			'hfec_sub' => FormLib::Date('hfec_sub', 0, $request->hfec_sub),
@@ -85,10 +87,13 @@ class AdminSubastaGenericController extends Controller
 
 		$resource_name = $this->resource_name;
 
+		$exports = (new CustomExport)->getExportsNames();
+
 		$dataToView = [
 			'fgSubs' => $fgSubs,
 			'formulario' => $formulario,
 			'resource_name' => $resource_name,
+			'exports' => $exports,
 			'artists' => $artists,
 			'auchouse' => $auchouse
 		];
@@ -378,8 +383,14 @@ class AdminSubastaGenericController extends Controller
 			],
 			'submit' => FormLib::Submit('Guardar', 'subastaStore')
 		];
+
+		//valoralia necesitaba un campo booleano, y este no lo utiliza nadie.
+		if(Config::get('app.use_panel_sub')) {
+			$form['estados']['panel_sub'] = FormLib::Select('panel_sub', 1, old('panel_sub', $fgSub->panel_sub ?? 'N'), ['N' => trans('admin-app.general.not'), 'S' => trans('admin-app.general.yes')], '', '', false);
+		}
+
 		#en subasta guardamos propietario para poderlo cargar luego en los lotes
-		if(\Config::get("app.useProviders")){
+		if(Config::get("app.useProviders")){
 
 			$idProvider = "" ;
 			$textProvider =  "" ;
@@ -393,7 +404,7 @@ class AdminSubastaGenericController extends Controller
 			$form['provider']['provider']  = FormLib::Select2WithAjax('agrsub_sub', 0, old('agrsub_sub', $idProvider ), $textProvider, route('provider.list'), trans('admin-app.placeholder.provider'));
 		}
 
-		if(\Config::get("app.ArtistInExibition")){
+		if(Config::get("app.ArtistInExibition")){
 			$artists = FgCaracteristicas_Value::where("IDCAR_CARACTERISTICAS_VALUE", \Config::get("app.ArtistCode"))->SelectInput();
 
 			#USO EL CAMPO CCOS_SUB POR COGER UNO CQUE FUERA VARCHAR
@@ -540,6 +551,8 @@ class AdminSubastaGenericController extends Controller
 
 	private function fgsubQueryFilters($query, Request $request)
 	{
+		$defalutState = Config('app.admin_default_auction_state', FgSub::SUBC_SUB_ACTIVO);
+
 		if ($request->cod_sub) {
 			$query->where('upper(cod_sub)', 'like', "%" . mb_strtoupper($request->cod_sub) . "%");
 		}
@@ -548,6 +561,9 @@ class AdminSubastaGenericController extends Controller
 		}
 		if ($request->subc_sub) {
 			$query->where('subc_sub', '=', $request->subc_sub);
+		}
+		else if ($defalutState) {
+			$query->where('subc_sub', '=', $defalutState);
 		}
 		if ($request->tipo_sub) {
 			$query->where('tipo_sub', '=', $request->tipo_sub);

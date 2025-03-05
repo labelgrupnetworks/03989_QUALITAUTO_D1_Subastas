@@ -80,7 +80,8 @@ class AdminSubastaConcursalController extends AdminSubastaGenericController
 
 			//subasta
 			//FgSub::where('cod_sub', $cod_sub)->update($request->except(['_method', '_token', 'cod_sub', 'image_sub']));
-			$test = FgSub::where('cod_sub', $cod_sub)->update([
+
+			$dataToUpdate = [
 				'des_sub' => $request->des_sub,
 				'descdet_sub' => $request->descdet_sub,
 				'dfec_sub' => $request->dfec_sub,
@@ -94,7 +95,13 @@ class AdminSubastaConcursalController extends AdminSubastaGenericController
 				'webmetat_sub' => $request->webmetat_sub,
 				'webmetad_sub' => $request->webmetad_sub,
 				'webfriend_sub' => $request->webfriend_sub,
-			]);
+			];
+
+			if(Config::get('app.use_panel_sub')){
+				$dataToUpdate['panel_sub'] = $request->panel_sub;
+			}
+
+			FgSub::where('cod_sub', $cod_sub)->update($dataToUpdate);
 
 			//session
 			AucSessions::where([
