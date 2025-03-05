@@ -809,7 +809,7 @@ class Subasta extends Model
 							concat(SUBSTR(pujas1.fec_asigl1, 1, 11),
 							pujas1.hora_asigl1) as bid_date,
 							type_asigl1,
-							licitadores.cli_licit,
+							licitadores.cli_licit
 							{$addUserInfo}
 						  FROM FGASIGL1 pujas1
 						  JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
