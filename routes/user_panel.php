@@ -3,6 +3,7 @@
 use App\Http\Controllers\Panel\AllotmentsAndBillsController;
 use App\Http\Controllers\Panel\FavoritesController;
 use App\Http\Controllers\Panel\OrdersController;
+use App\Http\Controllers\Panel\RepresentedController;
 use App\Http\Controllers\Panel\SalesController;
 use App\Http\Controllers\Panel\SummaryController;
 use App\Http\Controllers\User\AddressController;
@@ -63,6 +64,13 @@ Route::group(['middleware' => ['userAuth', 'SessionTimeout:' . Config::get('app.
 	Route::post('user/panel/preferences', [UserController::class, 'getSubfamilyForPreferences'])->name('panel.preferences_subfamily');
 	Route::post('{lang}/user/panel/preferences/create', [UserController::class, 'setPreferences'])->name('panel.create_preferences');
 	Route::post('{lang}/user/panel/preferences/delete', [UserController::class, 'deletePreferences'])->name('panel.delete_preferences');
+
+	Route::get('{lang}/user/panel/represented', [RepresentedController::class, 'showList'])->name('panel.represented.list');
+	Route::post('{lang}/user/panel/represented/create', [RepresentedController::class, 'create'])->name('panel.represented.create');
+	Route::post('{lang}/user/panel/represented/update', [RepresentedController::class, 'update'])->name('panel.represented.update');
+	Route::post('{lang}/user/panel/represented/toggle-status', [RepresentedController::class, 'toggleStatus'])->name('panel.represented.toggle-status');
+	Route::post('{lang}/user/panel/represented/delete', [RepresentedController::class, 'delete'])->name('panel.represented.delete');
+
 });
 
 //fuera de userAuth para mostrar pagina que solicite el inicio de sesion

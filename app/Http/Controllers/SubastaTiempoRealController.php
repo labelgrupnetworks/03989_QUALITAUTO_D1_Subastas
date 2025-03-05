@@ -33,6 +33,7 @@ use App\Models\V5\FgHces1;
 use App\Models\V5\FgAsigl1_Aux;
 use App\Models\V5\FgCaracteristicas_Hces1;
 use App\Models\V5\FgCreditoSub;
+use App\Models\V5\FgLicitRepresentados;
 use App\Models\V5\FxCli;
 use App\Models\V5\Web_Cancel_Log;
 use App\Providers\ToolsServiceProvider as Tools;
@@ -1886,12 +1887,14 @@ class SubastaTiempoRealController extends Controller
         $hash_user = request('params.hash');
         $tipo_puja_gestor = request('params.tipo_puja_gestor');
 
-		\Log::info ("antiguo circuito action");
-		return $this->executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  );
+		$represented = request('params.represented');
+
+		Log::info ("antiguo circuito action");
+		return $this->executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user, $tipo_puja_gestor, $represented);
 	}
 
     # Funcion de pujas y ordenes de licitacion en tiempo real mediante node
-    public function executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user,  $tipo_puja_gestor  )
+    public function executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user, $tipo_puja_gestor, $represented = null)
     {
 		$now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 		Log::debug('Inicio de la puja: ', ['codSub' => $codSub, 'ref' => $ref, 'licit' => $licit, 'imp' => $imp, 'time' => $now->format("Y-m-d H:i:s.u")]);
@@ -1906,6 +1909,8 @@ class SubastaTiempoRealController extends Controller
 		//08-04-2021: forzamos que el valor recibido no tenga decimales
 		$subasta->imp = $imp;
         $subasta->type_bid = $type_bid;
+
+		$subasta->represented = $represented;
         //2017-10-10 lo cojemos del lote directamente
         //$subasta->impsal         = Input::get('params.impsal');
 
@@ -1914,6 +1919,22 @@ class SubastaTiempoRealController extends Controller
        //para evitar que falte esta variable la inicializamos a false indicando que se interrumpira la cuenta atras
         $no_interrupt_cd_time='false';
         $lote_tmp = $subasta->getLote();
+
+		if($subasta->represented){
+			$licitRepre = FgLicitRepresentados::query()
+				->where([
+					'sub_licitrepresentados' => $subasta->cod,
+					'repre_licitrepresentados' => $subasta->represented,
+				])
+				->value('cod_licitrepresentados');
+
+			if(!$licitRepre){
+				$res = $this->error_puja('generic', $subasta->licit, $is_gestor);
+				return $res;
+			}
+
+			$subasta->licit = $licitRepre;
+		}
 
 
         //comprobamos que exista un lote con esos datos
@@ -1929,12 +1950,11 @@ class SubastaTiempoRealController extends Controller
 			$lote->impsalhces_asigl0 = head($subasta->AllScales())->scale;
 		}
 
-        //si el usuario es gestor puede pujar por otra gente y por eso el codigo que envia es diferente al original, pero puede que en algun lugar de la web aun no se envie el parametro $cod_original_licit por lo que usaremso el codigo de licitador ya que no viene de un gestor.
+        //si el usuario es gestor puede pujar por otra gente y por eso el codigo que envia es diferente al original,
+		//pero puede que en algun lugar de la web aun no se envie el parametro $cod_original_licit por lo que usaremso el codigo de licitador ya que no viene de un gestor.
         if (empty($cod_original_licit)){
-           $cod_original_licit = $subasta->licit;
-        }
-
-
+			$cod_original_licit = $subasta->licit;
+		}
 
         //Comprobamos si el usuario es gestor
         $gestor = new User();
@@ -1949,11 +1969,27 @@ class SubastaTiempoRealController extends Controller
                 $is_gestor = true;
 
             }
-            //si el código original es el mismo  que el licitador usamos el mismo usuario, es un usuario normal o un gestor que usa su propio código
+
+			//si el código original es el mismo  que el licitador usamos el mismo usuario, es un usuario normal o un gestor que usa su propio código
             if ($subasta->licit == $cod_original_licit){
                 $user  = $gestor;
                 $u = $g;
             }
+			elseif($subasta->represented) {
+
+				/*
+			 	Exite también la opción de estar pujando por otra persona, en este caso el código de licitador
+				será el de la persona por la que se está pujando
+				 */
+
+				$user  = new User([
+					'cod' => $subasta->cod,
+					'licit' => $subasta->licit
+				]);
+                $u = $user->getUserByLicit();
+			}
+
+
             //si no coincide el original con el licitador el usuario debe ser un gestor, si no es así se quedará a NULL el objeto $u
             elseif($is_gestor){
                 $user  = new User();
@@ -2045,7 +2081,14 @@ class SubastaTiempoRealController extends Controller
              $tk_cliweb = $u[0]->tk_cliweb;
         }
         $user->tk_CLIWEB =$tk_cliweb;
-        $hash = hash_hmac("sha256",$subasta->licit ." ".$subasta->cod." ". $subasta->ref . " " .$subasta->imp, $user->tk_CLIWEB);
+
+		$hashData = $subasta->licit ." ".$subasta->cod." ". $subasta->ref . " " .$subasta->imp;
+		//si es una subasta representada añadimos el código de la persona por la que se está pujando
+		if($subasta->represented){
+			$hashData = "{$cod_original_licit} {$subasta->cod} {$subasta->ref} {$subasta->imp}";
+		}
+
+        $hash = hash_hmac("sha256", $hashData, $user->tk_CLIWEB);
 
         if($hash != $hash_user){
            \Log::info("licit:".$subasta->licit ." cod_sub:".$subasta->cod." ref:". $subasta->ref . " imp:" .$subasta->imp);
@@ -2124,21 +2167,21 @@ class SubastaTiempoRealController extends Controller
 
 
 
-        if($subasta->imp < $subasta->impsal)
-        {
+        if($subasta->imp < $subasta->impsal) {
             $res = $this->error_puja('small_bid', $subasta->licit, $is_gestor);
             return $res;
         }
-        /* escalado libre para pujas */
-            $escalado_libre_pujas = \Config::get('app.escalado_libre_pujas');
-            //si esta marcado que puedan hacer pujas libres antes de que empiece subasta
-            if($escalado_libre_pujas == 1 && strtotime($lote->start_session) > time() ){
-                $permitir_puja_libre = true;
-            }elseif($escalado_libre_pujas == 2){
-                $permitir_puja_libre = true;
-            }else{
-                $permitir_puja_libre = false;
-            }
+
+		/* escalado libre para pujas */
+		$escalado_libre_pujas = Config::get('app.escalado_libre_pujas');
+		//si esta marcado que puedan hacer pujas libres antes de que empiece subasta
+		if ($escalado_libre_pujas == 1 && strtotime($lote->start_session) > time()) {
+			$permitir_puja_libre = true;
+		} elseif ($escalado_libre_pujas == 2) {
+			$permitir_puja_libre = true;
+		} else {
+			$permitir_puja_libre = false;
+		}
 
         //al pasar el error en el mensaje 2 no se le muestra al admin, todos los mensajes de msg1 los ve l admin
         if ($subasta->validateScale($subasta->impsal,$subasta->imp ) == false  && !($tipo_puja_gestor == 'firme' && ($is_gestor || Config::get('app.pujas_enfirme', 0)) )  && (($can_do != 'orders' && $permitir_puja_libre == false ) || ($can_do == 'orders' && ( empty($escalado_libre) || !$escalado_libre) )) ){

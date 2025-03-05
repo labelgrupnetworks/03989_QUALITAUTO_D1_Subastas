@@ -15,3 +15,30 @@
 
 	<input type="submit" class="btn btn-success" value="{{ trans("admin-app.button.save") }}"  style="margin-top: 1rem">
 </div>
+
+@if (Config::get('withRepresented', false))
+    <script>
+
+		$('[name=cli_deposito]').on('change', (event) => getRepresented(event.target.value));
+
+		function getRepresented(id) {
+			const select = $('[name=representado_deposito]');
+			const url = `/admin/clientes/${id}/representados`;
+
+			select.empty();
+			select.append('<option value="0">Nadie</option>');
+
+			$.ajax({
+				url,
+				type: 'GET',
+				contentType: 'application/json',
+				success: (response) => {
+					const represented = response.representados;
+					represented.forEach((item) => {
+						select.append(`<option value="${item.id}">${item.nom_representados}</option>`);
+					});
+				}
+			});
+		}
+    </script>
+@endif

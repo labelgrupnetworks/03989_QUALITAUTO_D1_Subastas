@@ -1298,6 +1298,16 @@ function countdown_timer(countdown) {
 			//paramos el contador
 			return
 		}
+
+		//add callback
+		if (typeof countdown.data('callback') != 'undefined') {
+			var callback = window[countdown.data('callback')];
+			if (typeof callback === 'function') {
+				callback(countdown, countdown.data('callback-params'));
+				countdown.data('stop', 'stop');
+				return;
+			}
+		}
 	}
 
 	var timeFormat = time_format(ToFinish, countdown.data('format'));

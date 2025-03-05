@@ -129,12 +129,14 @@ class AdminAuctionReportsController extends Controller
 		$adjudicado = $subasta->get_csub(config('app.emp'));
 
 		$pdfController = new PdfController();
+		$propietary = null;
+
 		if (!empty($inf_lot->prop_hces1)) {
 			$propietary = FxCli::select('RSOC_CLI')->where('COD_CLI', $inf_lot->prop_hces1)->first();
 		}
 
 		$tableInfo = [
-			trans(Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? '',
+			trans(Config::get('app.theme') . '-app.reports.prop_hces1') => $propietary->rsoc_cli ?? 'No indicado',
 			trans(Config::get('app.theme') . '-app.reports.lote_aparte') => $inf_lot->loteaparte_hces1 ?? '',
 			trans(Config::get('app.theme') . '-app.reports.auction_code') => $inf_subasta->cod_sub,
 			trans(Config::get('app.theme') . '-app.reports.lot_code') => $inf_lot->ref_asigl0,
@@ -145,11 +147,17 @@ class AdminAuctionReportsController extends Controller
 		];
 
 		$pdfController->setTableInfo($tableInfo);
-		$pdfController->setBids($get_pujas, true);
+		$pdfController->addBids($cod_sub, $ref);
 
 		$pdfController->generateBidsPdf();
 		$pdfController->generateClientsPdf();
-		$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? null, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
+
+		if(empty($adjudicado->licit_csub) && empty($adjudicado->himp_csub)){
+			$pdfController->generateNotAwardLotPdf($propietary, $inf_lot->ref_asigl0);
+		}
+		else {
+			$pdfController->generateAwardLotPdf($propietary->rsoc_cli ?? null, $inf_lot->ref_asigl0, $adjudicado->licit_csub, $adjudicado->himp_csub);
+		}
 
 		$pdfController->savePdfs($inf_subasta->cod_sub, $inf_lot->ref_asigl0);
 	}

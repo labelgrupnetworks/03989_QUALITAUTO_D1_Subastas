@@ -15,6 +15,7 @@ use App\Models\Newsletter;
 use App\Models\User;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
+use App\Models\V5\FgRepresentados;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\Fx_Newsletter;
 use App\Models\V5\FxCli;
@@ -1181,6 +1182,11 @@ class UserController extends Controller
 						$this->saveFiles(request(), $num);
 					}
 
+					//Crear los representantes legales
+					if(FacadeRequest::input('representar', 'N') == 'S') {
+						FgRepresentados::insertFromArray($num, FacadeRequest::input('repre', []));
+					}
+
 					if (!empty($u)) {
 						# Enviamos email notificando la asociación de un cliente con un usuario web
 						$email = new EmailLib('USER_ASSOCIATED');
@@ -1840,20 +1846,6 @@ class UserController extends Controller
 				$this->updateCIFImages(FacadeRequest::all(), $Update->cod_cli, User::getUserNIF($Update->cod_cli));
 			}
 		}
-
-
-		/**Inbusa necesita que se guarde el nombre de la empresa como nombre principal, para correos e informes*/
-		if (!empty(FacadeRequest::input('representar'))) {
-			if (FacadeRequest::input('representar') == 'S') {
-				$Update->fisjur_cli = 'R';
-				$nomTemp = $Update->nom;
-				$Update->nom = $Update->rsoc;
-				$Update->rsoc = $nomTemp;
-			} else {
-				$Update->fisjur_cli = 'F';
-			}
-		}
-
 
 		$Update->via = null;
 		if (!empty(FacadeRequest::input('codigoVia'))) {

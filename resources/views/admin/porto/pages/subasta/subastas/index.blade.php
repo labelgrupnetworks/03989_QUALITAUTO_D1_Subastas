@@ -18,36 +18,54 @@
 
 	<div class="row well">
 
-		<div class="col-xs-12 text-right mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
-			{{-- <a href="{{ route("$resource_name.lotes.order_destacadas_edit") }}"
-				class="btn btn-sm btn-warning">{{ trans("admin-app.button.sort") }}
-				{{ trans("admin-app.title.lot_auction_destacadas") }}</a> --}}
+		<div class="col-xs-12 mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
+			<div class="d-flex">
+				{{-- <a href="{{ route("$resource_name.lotes.order_destacadas_edit") }}"
+					class="btn btn-sm btn-warning">{{ trans("admin-app.button.sort") }}
+					{{ trans("admin-app.title.lot_auction_destacadas") }}</a> --}}
 
-			<div class="btn-group left" id="js-dropdownItems">
-				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
-				<button
-					data-objective="auc_ids"
-					class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
-					aria-haspopup="true" aria-expanded="false">
-					<span class="caret"></span>
-				</button>
+				<div class="btn-group left" id="js-dropdownItems">
+					<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
+					<button
+						data-objective="auc_ids"
+						class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" type="button"
+						aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+					</button>
 
-				<ul aria-labelledby="js-dropdownItems" class="dropdown-menu">
+					<ul aria-labelledby="js-dropdownItems" class="dropdown-menu">
 
-					<li>
-						<button class="btn" data-toggle="modal" data-target="#editMultpleAuctionsModal">
-							{{ trans("admin-app.button.modify") }}
-						</button>
-					</li>
+						<li>
+							<button class="btn" data-toggle="modal" data-target="#editMultpleAuctionsModal">
+								{{ trans("admin-app.button.modify") }}
+							</button>
+						</li>
 
-				</ul>
+					</ul>
+				</div>
+
+				@if($exports->isNotEmpty())
+				<div class="btn-group">
+					{{-- <button type="button" class="btn btn-default btn-sm">Exportaciones personalizadas</button> --}}
+					<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Exportaciones personalizadas <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						@foreach ($exports as $export)
+							<li>
+								<a href="{{ route('subasta.custom-reports.download', ['id' => $export]) }}">{{ $export }}</a>
+							</li>
+						@endforeach
+					</ul>
+				</div>
+				@endif
+
+				<a href="{{ route("$resource_name.create") }}"
+					class="btn btn-sm btn-primary mr-1 ml-auto">{{ trans("admin-app.button.new_fem") }}
+					{{ trans("admin-app.title.auction") }}</a>
+
+				@include('admin::includes.config_table', ['id' => $resource_name, 'params' => ((array) $formulario)])
 			</div>
-
-			<a href="{{ route("$resource_name.create") }}"
-				class="btn btn-sm btn-primary">{{ trans("admin-app.button.new_fem") }}
-				{{ trans("admin-app.title.auction") }}</a>
-
-			@include('admin::includes.config_table', ['id' => $resource_name, 'params' => ((array) $formulario)])
 		</div>
 
 		<div class="col-xs-12">

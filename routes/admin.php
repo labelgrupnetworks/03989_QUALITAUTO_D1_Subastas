@@ -288,6 +288,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('/subasta/reports/generate', 'subasta\AdminAuctionReportsController@generate')->name('subasta.reports.generate');
 		Route::get('/subasta/reports/download/{cod_sub}', 'subasta\AdminAuctionReportsController@download')->name('subasta.reports.download');
 
+		Route::get('/subasta/custom-reports/download/{id}', 'subasta\AdminCustomExports@download')->name('subasta.custom-reports.download');
+
 		Route::get('user_newsletter/export/', 'usuario\AdminNewsletterClientController@export')->name('user_newsletter.export');
 		Route::get('user_newsletter/catalog', 'usuario\AdminNewsletterClientController@showCatalogSuscriptors')->name('user_newsletter.catalog');
 		Route::resource('user_newsletter', 'usuario\AdminNewsletterClientController')->only(['index', 'show', 'destroy']);
@@ -301,6 +303,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::post('clientes/update-selection', 'usuario\AdminClienteController@updateSelections')->name('clientes.update_selections');
 		Route::post('clientes/baja-tmp-cli', 'usuario\AdminClienteController@modificarBajaTemporal');
 		Route::post('clientes/export', 'usuario\AdminClienteController@export')->name('clientes.export');
+		Route::get('clientes/{cod_cli}/representados', 'usuario\AdminRepresentadosController@index')->name('clientes.representados');
+
 		Route::post('clientes/send_ws', 'usuario\AdminClienteController@send_ws');
 		Route::resource('clientes', 'usuario\AdminClienteController');
 		Route::post('clientes/{cod_cli}/dni', 'usuario\AdminClienteFilesController@storeDni')->name('admin.clientes.dni.store');

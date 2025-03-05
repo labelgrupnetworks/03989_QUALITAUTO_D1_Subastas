@@ -63,22 +63,26 @@ class FgDeposito extends Model
 	 * @param string $cli_deposito
 	 * @param string $sub_deposito
 	 * @param string $ref_deposito
+	 * @param string|null $representado_deposito
 	 * @return Boolean
 	 */
-	public function isValid($cli_deposito, $sub_deposito, $ref_deposito)
+	public function isValid($cli_deposito, $sub_deposito, $ref_deposito, $representado_deposito = null)
 	{
 		if (!$cli_deposito) {
 			return false;
 		}
 
-		$deposit = self::where('CLI_DEPOSITO', $cli_deposito)
+		$deposit = self::query()
+			->where('CLI_DEPOSITO', $cli_deposito)
+			->when($representado_deposito, function ($query) use ($representado_deposito) {
+				$query->where('REPRESENTADO_DEPOSITO', $representado_deposito);
+			}, function ($query) {
+				$query->whereNull('REPRESENTADO_DEPOSITO');
+			})
 			->whereValidConditions($sub_deposito, $ref_deposito)
 			->first();
 
-		if ($deposit) {
-			return true;
-		}
-		return false;
+		return !empty($deposit);
 	}
 
 	public function getAllClientsWithValidDepositInLotQuery($sub_deposito, $ref_deposito)
@@ -155,6 +159,12 @@ class FgDeposito extends Model
 	public function scopeWhereUpdateApi($query, $item)
 	{
 		return $query->where('sub_deposito', $item["sub_deposito"])->where('ref_deposito', $item["ref_deposito"])->where('cli_deposito', $item["cli_deposito"]);
+	}
+
+	//relation one to one with fgrepresntados
+	public function represented()
+	{
+		return $this->hasOne(FgRepresentados::class, 'id', 'representado_deposito');
 	}
 
 	private static function sendDepositNotification($fgDeposito)

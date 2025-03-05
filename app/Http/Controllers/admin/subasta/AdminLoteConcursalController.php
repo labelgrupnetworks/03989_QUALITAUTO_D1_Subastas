@@ -122,6 +122,8 @@ class AdminLoteConcursalController extends AdminLotController
 				'retired' => FormLib::Select('retired', 1, old('retired', $fgAsigl0->retirado_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
 				'close' => FormLib::Select('close', 1, old('close', $fgAsigl0->cerrado_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
 				'soldprice' => FormLib::Select('soldprice', 1, old('soldprice', $fgAsigl0->remate_asigl0 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
+				'isInvoiced' => FormLib::Select('isInvoiced', 1, old('isInvoiced', $fgAsigl0->fac_hces1 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
+				'isCharged' => FormLib::Select('isCharged', 1, old('isCharged', $fgAsigl0->cob_hces1 ?? 'N'), ['N' => 'No', 'S' => 'Si'], '', '', false),
 			],
 			'fechas' => [
 				'startdate' => FormLib::Date("startdate", 1, old('startdate', $fgAsigl0->fini_asigl0)),

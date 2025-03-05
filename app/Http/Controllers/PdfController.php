@@ -105,26 +105,26 @@ class PdfController extends Controller
 
 	public function generateBidsPdf()
 	{
-
-		$reportTitle = trans(Config::get('app.theme') . '-app.reports.bid_report');
-		$titleTable = trans(Config::get('app.theme') . '-app.reports.bid_detail');
+		$theme = Config::get('app.theme');
+		$reportTitle = trans($theme . '-app.reports.bid_report');
+		$titleTable = trans($theme . '-app.reports.bid_detail');
 
 		$tableContent = [];
 
 		if (empty($this->bids)) {
 			$tableContent[] = [
-				trans(Config::get('app.theme') . '-app.reports.licit') => '',
-				trans(Config::get('app.theme') . '-app.reports.cli_name') => '',
-				trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => '',
-				trans(Config::get('app.theme') . '-app.reports.bid_date') => ''
+				trans($theme . '-app.reports.licit') => '',
+				trans($theme . '-app.reports.cli_name') => '',
+				trans($theme . '-app.reports.imp_asigl1') => '',
+				trans($theme . '-app.reports.bid_date') => ''
 			];
 		} else {
-			foreach ($this->bids as $key => $bid) {
+			foreach ($this->bids as $bid) {
 				$tableContent[] = [
-					trans(Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
-					trans(Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
-					trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
-					trans(Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
+					trans($theme . '-app.reports.licit') => $bid->cod_licit . ' - ' . $bid->cli_licit,
+					trans($theme . '-app.reports.cli_name') => substr($bid->nom, 0, 25),
+					trans($theme . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
+					trans($theme . '-app.reports.bid_date') => $bid->date
 				];
 			}
 		}
@@ -135,7 +135,7 @@ class PdfController extends Controller
 
 	public function generateClientsPdf()
 	{
-
+		$theme = Config::get('app.theme');
 		$reportTitle = trans(Config::get('app.theme') . '-app.reports.client_report');
 		$titleTable = trans(Config::get('app.theme') . '-app.reports.lot_detail');
 
@@ -153,11 +153,11 @@ class PdfController extends Controller
 			foreach ($bids as $bid) {
 
 				$tableContent[] = [
-					trans(Config::get('app.theme') . '-app.reports.licit') => $bid->cod_licit . ' - ' . $this->licits[$bid->cod_licit]->cli_licit,
-					trans(Config::get('app.theme') . '-app.reports.cli_name') => substr($this->licits[$bid->cod_licit]->nom_cli, 0, 25),
-					trans(Config::get('app.theme') . '-app.reports.lot_code') => $bid->ref_asigl1,
-					trans(Config::get('app.theme') . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
-					trans(Config::get('app.theme') . '-app.reports.bid_date') => Tools::getDateFormat($bid->bid_date, 'Y-m-d H:i:s', 'd/m/Y H:i:s')
+					trans($theme . '-app.reports.licit') => $bid->cod_licit . ' - ' . $bid->cli_licit,
+					trans($theme . '-app.reports.cli_name') => substr($bid->nom, 0, 25),
+					trans($theme . '-app.reports.lot_code') => $bid->ref_asigl1,
+					trans($theme . '-app.reports.imp_asigl1') => Tools::moneyFormat($bid->imp_asigl1) . ' €',
+					trans($theme . '-app.reports.bid_date') => $bid->date
 				];
 			}
 
@@ -188,10 +188,10 @@ class PdfController extends Controller
 			'reportTitle' => $reportTitle,
 			'prop' => $propetary,
 			'lot' => $ref_asigl0,
-			'award' => $this->licits[$cod_licit]->nom_cli,
+			'award' => $bid->nom,
 			'imp' => $import,
 			'bidders' => $bidders,
-			+'tablaSubasta' => $this->tableInfo,
+			'tablaSubasta' => $this->tableInfo,
 		];
 
 
@@ -273,7 +273,12 @@ class PdfController extends Controller
 		//obtenemos todas las referencias de la subasta, y de ahí la mas baja y la mas alta
 		$referenciasAdjudicadas = $adjudicaciones->pluck('ref')->unique();
 
-		$lotesNoAdjudicados = FgAsigl0::select('ref_asigl0 as ref')->where('sub_asigl0', $inf_subasta->cod_sub)->whereNotIn('ref_asigl0', $referenciasAdjudicadas)->orderBy('ref_asigl0')->get();
+		$lotesNoAdjudicados = FgAsigl0::select('ref_asigl0 as ref')
+			->where('sub_asigl0', $inf_subasta->cod_sub)
+			->whereNotIn('ref_asigl0', $referenciasAdjudicadas)
+			->orderBy('ref_asigl0')
+			->get();
+
 		$todos = $adjudicaciones->concat($lotesNoAdjudicados);
 
 		if (count($referenciasAdjudicadas) == 0) {
@@ -302,11 +307,13 @@ class PdfController extends Controller
 
 			$withMultipleBidders = config('app.withMultipleBidders', false);
 
+			$userName = $this->getNameOfBidder($adjudicacion);
+
 			$award = [
 				'ref' => $adjudicacion->ref,
 				'is_award' => !empty($adjudicacion->licit_csub),
 				'licit' => $adjudicacion->licit_csub . ' - ' . $adjudicacion->clifac_csub,
-				'name' => substr($adjudicacion->nom_cli, 0, 25),
+				'name' => substr($userName, 0, 25),
 				'import' => Tools::moneyFormat($adjudicacion->himp_csub, '€'),
 				'date' => Tools::getDateFormat($adjudicacion->fec_asigl1, 'Y-m-d H:i:s', 'd/m/Y H:i:s'),
 				'ratio' => $withMultipleBidders ? "100 %" : null
@@ -501,6 +508,45 @@ class PdfController extends Controller
 		}
 	}
 
+	public function addBids($codSub, $ref)
+	{
+		$bids = FgAsigl1::select([
+			'ref_asigl1',
+			'licit_asigl1',
+			'imp_asigl1',
+			'fec_asigl1',
+			'hora_asigl1',
+			'cod_licit',
+			'cli_licit',
+			'nom_cli',
+			'rsoc_cli',
+			'fisjur_cli',
+			'nom_representados'
+		])
+			->where([
+				["SUB_ASIGL1", $codSub],
+				["REF_ASIGL1", $ref]
+			])
+			->joinCli()
+			->leftJoinRepresentedLicit()
+			->orderBy('lin_asigl1', "desc")
+			->get();
+
+			$bids->each(function ($bid) {
+			$bid->nom = $this->getNameOfBidder($bid);
+
+			$date = substr($bid->fec_asigl1, 0, 10);
+			$bid->date = Tools::getDateFormat("{$date} {$bid->hora_asigl1}", 'Y-m-d H:i:s', 'd/m/Y H:i:s');
+		});
+
+		$this->bids = $bids;
+	}
+
+	/**
+	 * Revisar.
+	 * En inbusa con la funcionalidad de representantes esta función no es valida
+	 * Revisar los metodos que aún la tienen, y si servihabitat la utiliza.
+	 */
 	public function setBids($bids, $searchLicitsInfo = false)
 	{
 
@@ -536,6 +582,20 @@ class PdfController extends Controller
 		$this->bids = $bids;
 	}
 
+
+	private function getNameOfBidder($bid)
+	{
+		if (!empty($bid->nom_representados)) {
+			return $bid->nom_representados;
+		}
+
+		if ($bid->fisjur_cli == 'J') {
+			return $bid->rsoc_cli;
+		}
+
+		return $bid->nom_cli;
+	}
+
 	public function setLicits($licits, $cod_sub)
 	{
 		$user = new User();
@@ -548,13 +608,26 @@ class PdfController extends Controller
 
 	private function getAdjudicaciones($codSub)
 	{
-		if (!empty($this->awards)) {
+		if(!empty($this->awards)){
 			return $this->awards;
 		}
 
-		$this->awards = FgCsub::select('licit_csub', 'clifac_csub', 'nom_cli', 'cif_cli', 'ref_csub as ref', 'himp_csub', 'lin_asigl1', 'fec_asigl1')
+		$this->awards = FgCsub::select([
+			'licit_csub',
+			'clifac_csub',
+			'nom_cli',
+			'rsoc_cli',
+			'fisjur_cli',
+			'cif_cli',
+			'ref_csub as ref',
+			'himp_csub',
+			'lin_asigl1',
+			'fec_asigl1',
+			'nom_representados'
+		])
 			->joinWinnerBid()
 			->joinCli()
+			->leftJoinRepresentedLicit()
 			->where('SUB_CSUB', $codSub)
 			->orderBy('ref_csub')
 			->get();

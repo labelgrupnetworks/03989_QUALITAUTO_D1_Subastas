@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Log;
 use App\libs\SeoLib;
 use App\Models\V5\AucSessions;
 use App\Models\V5\FgLicit;
+use App\Models\V5\FgLicitRepresentados;
+use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSubInvites;
 use Illuminate\Support\Facades\Session;
 
@@ -101,6 +103,8 @@ class Subasta extends Model
     public $precio;
 
 	public $scales;
+
+	public $represented = null;
 
 	public static $allAuctions;
 
@@ -804,7 +808,8 @@ class Subasta extends Model
 							pujas1.pujrep_asigl1,
 							concat(SUBSTR(pujas1.fec_asigl1, 1, 11),
 							pujas1.hora_asigl1) as bid_date,
-							type_asigl1
+							type_asigl1,
+							licitadores.cli_licit,
 							{$addUserInfo}
 						  FROM FGASIGL1 pujas1
 						  JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
@@ -850,7 +855,7 @@ class Subasta extends Model
         $pujas = DB::select("SELECT * FROM (
             SELECT * FROM (
                   SELECT rownum rn, pu.* FROM (
-                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1, pujas1.fec_asigl1 as bid_date, type_asigl1 FROM FGASIGL1 pujas1
+                      SELECT licitadores.SUB_LICIT cod_sub ,licitadores.cod_licit, pujas1.ref_asigl1, pujas1.lin_asigl1, pujas1.imp_asigl1,pujas1.pujrep_asigl1, pujas1.fec_asigl1 as bid_date, type_asigl1, licitadores.cli_licit FROM FGASIGL1 pujas1
                       JOIN FGLICIT licitadores ON (licitadores.COD_LICIT = pujas1.LICIT_ASIGL1 AND licitadores.EMP_LICIT = :emp AND licitadores.SUB_LICIT = :cod_sub)
 
                       WHERE pujas1.SUB_ASIGL1 = :cod_sub AND pujas1.EMP_ASIGL1 = :emp AND pujas1.REF_ASIGL1 = :ref $where_licit
@@ -873,15 +878,28 @@ class Subasta extends Model
 
 	function getPujasWithAuction($byLicit = null){
 
-		$fgasigl1 = FgAsigl1::select('ref_asigl1', 'lin_asigl1', 'licit_asigl1', 'imp_asigl1', 'fec_asigl1', 'cod_licit', 'cli_licit', 'rsoc_licit', 'nom_cli')
-							->joinCli()
-							->where('sub_asigl1', $this->cod);
+		$fgasigl1 = FgAsigl1::select([
+			'ref_asigl1',
+			'lin_asigl1',
+			'licit_asigl1',
+			'imp_asigl1',
+			'fec_asigl1',
+			'cod_licit',
+			'cli_licit',
+			'rsoc_licit',
+			'nom_cli',
+			'rsoc_cli',
+			'fisjur_cli',
+			'nom_representados',
+		])
+			->joinCli()
+			->leftJoinRepresentedLicit()
+			->where('sub_asigl1', $this->cod);
 
-		if(!empty($byLicit)){
+		if (!empty($byLicit)) {
 			$fgasigl1->where('licit_asigl1', $byLicit);
 		}
 
-		//return $fgasigl1->orderBy('imp_asigl1')->orderBy('fec_asigl1')->get();
 		return $fgasigl1->orderBy('ref_asigl1')->orderBy('fec_asigl1')->get();
 	}
 
@@ -2001,6 +2019,35 @@ class Subasta extends Model
 		return $licits;
 	}
 
+	public function createLicitadorToAuthUserAndRepresented($codCli, $codSub, $idRepresented)
+	{
+		$represented = FgRepresentados::find($idRepresented);
+		if(!$represented){
+			return;
+		}
+
+		$nomRepre = mb_substr($represented->nom_representados, 0, 60);
+
+		$this->cod = $codSub;
+		$codLicit = $this->licitIncrement();
+
+		FgLicit::create([
+			'SUB_LICIT' => $codSub,
+			'COD_LICIT' => $codLicit,
+			'CLI_LICIT' => $codCli,
+			'RSOC_LICIT' => $nomRepre,
+		]);
+
+		//create fglicit_representados
+		FgLicitRepresentados::create([
+			'SUB_LICITREPRESENTADOS' => $codSub,
+			'COD_LICITREPRESENTADOS' => $codLicit,
+			'REPRE_LICITREPRESENTADOS' => $idRepresented
+		]);
+
+		return $codLicit;
+	}
+
     /*
     |--------------------------------------------------------------------------
     | Código licitador dummy user para el gestor únicamente
@@ -2352,15 +2399,30 @@ class Subasta extends Model
                  //copiar en subalia la puja, DE MOMENTO SOLO HABRÁ PUJAS Y ORDENES EN LA BASE DE DATOS DE LOS CLIENTES, POR LO QUE NO SE COPIA A SUBALIA
               //  $this->add_puja_subalia($type_asigl1, $sql_asigl1, $sql_hces1);
 
-			if(config('app.withMultipleBidders', false)){
+
+			/**
+			 * @todo 19/02/2025 - Introducción de puja auto y puja por distintas paletas
+			 * Al realizar la puja auto no tiene sentido que inserte los pujadoreMT de la puja realizada en la ficha.
+			 * En caso de añadir la pujaMT con ordenes valorar un segundo circuito para esas pujas defensoras.
+			 */
+			if(config('app.withMultipleBidders', false)) {
+
+				//obtenemos la puja que se acaba de insertar
 				$bid = FgAsigl1::query()->where([
 					['sub_asigl1', $this->cod],
 					['ref_asigl1', $this->ref],
 					['licit_asigl1', $this->licit],
 					['imp_asigl1', $this->imp],
 				])->first();
-				$this->addPujaMultiple($bid);
+
+				if($type_asigl1 == FgAsigl1::TYPE_NORMAL) {
+					$this->addPujaMultiple($bid);
+				}
+				elseif($type_asigl1 == FgAsigl1::TYPE_AUTO) {
+					$this->addAutoPujaMultiple($bid);
+				}
 			}
+
 			DB::commit();
 
 			$now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
@@ -2444,6 +2506,44 @@ class Subasta extends Model
 		FgAsigl1Mt::insert($bidders);
 
 		return true;
+	}
+
+	private function addAutoPujaMultiple($bid)
+	{
+		//obtenemos la línea de la última puja normal
+		$lastBidLine = FgAsigl1::query()
+		->where([
+			['sub_asigl1', $bid->sub_asigl1],
+			['ref_asigl1', $bid->ref_asigl1],
+			['licit_asigl1', $bid->licit_asigl1],
+			['type_asigl1', FgAsigl1::TYPE_NORMAL]
+		])
+		->orderBy('lin_asigl1', 'desc')
+		->value('lin_asigl1');
+
+		//de esa puja extraemos los datos de los licitadores MT
+		$lastMultipleBidBidders = FgAsigl1Mt::query()
+			->where([
+				['sub_asigl1mt', $bid->sub_asigl1],
+				['ref_asigl1mt', $bid->ref_asigl1],
+				['lin_asigl1mt', $lastBidLine]
+			])
+			->get();
+
+		//insertamos los licitadores en la puja automática
+		$bidders = $lastMultipleBidBidders->map(function ($bidder) use ($bid) {
+			return [
+				'emp_asigl1mt' => $bid->emp_asigl1,
+				'sub_asigl1mt' => $bid->sub_asigl1,
+				'ref_asigl1mt' => $bid->ref_asigl1,
+				'lin_asigl1mt' => $bid->lin_asigl1,
+				'ratio_asigl1mt' => $bidder->ratio_asigl1mt,
+				'nom_asigl1mt' => $bidder->nom_asigl1mt,
+				'apellido_asigl1mt' => $bidder->apellido_asigl1mt
+			];
+		})->toArray();
+
+		FgAsigl1Mt::insert($bidders);
 	}
 
 	/**

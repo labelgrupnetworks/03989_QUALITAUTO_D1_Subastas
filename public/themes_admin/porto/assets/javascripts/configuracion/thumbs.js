@@ -2,6 +2,7 @@ const $divLog = $('#div_log');
 const routes = {
 	'getLots': '/admin/thumbs/lots',
 	'generateThumbs': '/admin/thumbs/generate',
+	'rotateImages': '/admin/thumbs/rotate'
 };
 
 let lots = [];
@@ -26,6 +27,11 @@ $('form[name="search_lots"]').submit(function (e) {
 
 		message +=
 			`<p><button class="btn btn-xs btn-success" onclick="generateThumbs(${size})">Generar Miniaturas</button></p>`;
+
+		if(response.to_rotate == true) {
+			message +=
+				`<p><button class="btn btn-xs btn-danger" onclick="rotateImages()">Rotar Imagenes</button></p>`;
+		}
 
 		lots = response.lots;
 		$divLog.append(message);
@@ -57,6 +63,28 @@ async function generateThumbs(size) {
 	addLog('Todas las miniaturas se han generado.');
 }
 
+async function rotateImages() {
+	const batchSize = 5; // Tamaño del grupo de peticiones
+	const total = lots.length; // Total de lotes
+	let completed = 0; // Contador de lotes completados
+	resetProgressBar();
+
+	// Divide los lotes en grupos de tamaño batchSize
+	const batches = createBatches(lots, batchSize);
+
+	for (const batch of batches) {
+		try {
+			await processRotateBatch(batch);
+			completed += batch.length;
+			updateProgressBar(completed, total);
+		} catch (error) {
+			addLog(error.message, 'text-danger');
+		}
+	}
+
+	addLog('Todas las imágenes se han rotado.');
+}
+
 /**
  * Divide un array en lotes de tamaño
  * @param {array} array
@@ -78,6 +106,20 @@ async function processBatch(batch, size) {
 	const promises = batch.map(lot => {
 		addLog(`Generando miniaturas para el lote numero ${lot.num_hces1} línea ${lot.lin_hces1}`);
 		return generateThumb(lot, size);
+	});
+
+	const responses = await Promise.all(promises);
+	responses.forEach(response => {
+		if (response) {
+			addLog(response.message, 'text-success');
+		}
+	});
+}
+
+async function processRotateBatch(batch) {
+	const promises = batch.map(lot => {
+		addLog(`Rotando imágenes para el lote numero ${lot.num_hces1} línea ${lot.lin_hces1}`);
+		return rotateImage(lot);
 	});
 
 	const responses = await Promise.all(promises);
@@ -135,6 +177,32 @@ async function generateThumb(lot, size) {
 
 		return await response.json();
 	} catch (error) {
+		console.error('Error:', error);
+		addLog(error.message, 'text-danger');
+	}
+}
+
+async function rotateImage(lot) {
+	try {
+		const response = await fetch(routes.rotateImages, {
+			method: 'POST',
+			body: JSON.stringify({
+				numhces: lot.num_hces1,
+				linhces: lot.lin_hces1,
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(
+				`Error al rotar las imagenes del lote número ${lot.num_hces1} y línea ${lot.lin_hces1}`);
+		}
+
+		return await response.json();
+	}
+	catch (error) {
 		console.error('Error:', error);
 		addLog(error.message, 'text-danger');
 	}

@@ -29,6 +29,7 @@ class UpdateDepositoPut extends FormRequest
 			'estado_deposito' => 'required',
 			'importe_deposito' => 'numeric',
 			'cli_deposito' => 'required',
+			'representado_deposito' => 'nullable|numeric',
         ];
     }
 }
