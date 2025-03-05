@@ -177,7 +177,7 @@ class AdminDepositoController extends Controller
 		if ($request->estado_deposito) {
 			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
 		}
-		else if ($defalutState) {
+		else if (is_null($request->estado_deposito) && $defalutState) {
 			$fgDepositos->where('estado_deposito', '=', $defalutState);
 		}
 		if ($request->importe_deposito) {

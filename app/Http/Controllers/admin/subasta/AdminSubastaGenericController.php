@@ -562,7 +562,7 @@ class AdminSubastaGenericController extends Controller
 		if ($request->subc_sub) {
 			$query->where('subc_sub', '=', $request->subc_sub);
 		}
-		else if ($defalutState) {
+		else if (is_null($request->subc_sub) && $defalutState) {
 			$query->where('subc_sub', '=', $defalutState);
 		}
 		if ($request->tipo_sub) {
