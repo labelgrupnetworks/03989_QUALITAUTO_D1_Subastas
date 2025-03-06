@@ -1,5 +1,5 @@
 <?php
-use App\libs\MobileDetect;
+use Detection\MobileDetect;
 $MobileDetect = new MobileDetect();
 
 //   capturando la conversion de la moneda

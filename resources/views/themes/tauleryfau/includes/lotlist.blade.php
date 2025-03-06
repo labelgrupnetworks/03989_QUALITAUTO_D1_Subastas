@@ -1,9 +1,3 @@
-<?php
-
-
-use \App\libs\MobileDetect;
-$MobileDetect = new MobileDetect();
-?>
 <div class="{{$class_square}} square">
 
     <div class="item_lot lot">

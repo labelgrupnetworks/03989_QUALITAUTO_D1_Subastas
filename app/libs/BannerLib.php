@@ -4,10 +4,10 @@ namespace App\libs;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use \App\libs\MobileDetect;
 use App\Models\PageSetting;
 use App\Models\WebNewbannerModel;
 use App\Providers\ToolsServiceProvider as Tools;
+use Detection\MobileDetect;
 
 /**
  * @method static array getOnlyContentForBanner(WebNewbannerModel|null $banner)
@@ -46,8 +46,7 @@ class BannerLib
 		#añadimos el ES despues para que busque primero en el idioma principal, si el principal es ES, esto no hace nada
 		$languages["ES"] = 1;
 
-
-		if ($MobileDetect->isMobile() ){
+		if ($MobileDetect->isMobile()){
 
 			foreach (["jpg","gif"] as  $extension){
 				foreach ($languages as  $locale=>$a){

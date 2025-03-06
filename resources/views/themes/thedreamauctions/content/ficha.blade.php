@@ -1,6 +1,4 @@
 <?php
-use \App\libs\MobileDetect;
-$MobileDetect = new MobileDetect();
 
 $cerrado = $lote_actual->cerrado_asigl0 == 'S'? true : false;
 $cerrado_N = $lote_actual->cerrado_asigl0 == 'N'? true : false;
