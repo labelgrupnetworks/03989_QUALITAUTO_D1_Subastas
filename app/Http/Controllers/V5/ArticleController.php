@@ -401,7 +401,7 @@ class ArticleController extends Controller
 		$order = request('order', 'id_art0');
 
 		if ($order == 'id_art0') {
-			$orderDirection = request('order_dir', 'asc');
+			$orderDirection = request('order_dir', request('orderDir', 'asc'));
 			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1", $orderDirection)
 				->orderBy("ORDEN_ART0", $orderDirection)
 				->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
