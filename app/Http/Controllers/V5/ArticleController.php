@@ -399,15 +399,23 @@ class ArticleController extends Controller
 			->joinArt();
 
 		$order = request('order', 'id_art0');
+		$orderDirection = request('order_dir', request('orderDir', 'desc'));
 
 		if ($order == 'id_art0') {
-			$orderDirection = request('order_dir', request('orderDir', 'asc'));
-			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1", $orderDirection)
-				->orderBy("ORDEN_ART0", $orderDirection)
+			$fgArt0 = $fgArt0
+				->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1")
+				->orderBy("ORDEN_ART0")
 				->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
-		} else {
-			$orderDirection = request('order_dir', 'desc');
-			$fgArt0 = $fgArt0->orderBy(request('order'), $orderDirection)->groupby("FGART0.ID_ART0");
+		} elseif ($order == 'category') {
+			$fgArt0 = $fgArt0
+				->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1", $orderDirection)
+				->orderBy("ORDEN_ART0")
+				->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
+		}
+		 else {
+			$fgArt0 = $fgArt0
+				->orderBy(request('order'), $orderDirection)
+				->groupby("FGART0.ID_ART0");
 		}
 
 		#necesitamos ortsec1 para el orden
