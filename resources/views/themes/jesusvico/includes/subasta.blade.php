@@ -27,7 +27,9 @@
 						{{ trans("$theme-app.user_panel.date") . ': ' . date('d-m-Y H:i', strtotime($subasta->session_start)) }}</h6>
 				</header>
 
-				<p class="card-text max-line-3 mb-2">{{ strip_tags($subasta->description ?? '') }}</p>
+				<div class="card-text mb-2">
+					{!! $subasta->description ?? '' !!}
+				</div>
 
 				<div class="w-100 mt-auto d-flex justify-content-center">
 					<div class="d-flex align-items-center justify-content-between w-85">
