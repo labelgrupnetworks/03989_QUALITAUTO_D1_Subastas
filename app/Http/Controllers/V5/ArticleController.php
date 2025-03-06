@@ -21,10 +21,15 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-	var $numElements = 12;
+	private $numElements;
 	var $errorMsg = "add_lot_cart";
 	var $articleCart = array();
 	var $imagesDir = "articulos";
+
+	public function __construct()
+	{
+		$this->numElements = Config::get('app.articles_per_page', 12);
+	}
 
 	public function index(Request $request)
 	{
@@ -394,10 +399,14 @@ class ArticleController extends Controller
 			->joinArt();
 
 		$order = request('order', 'id_art0');
-		$orderDirection = request('order_dir', 'desc');
+
 		if ($order == 'id_art0') {
-			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1")->orderBy("ORDEN_ART0")->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
+			$orderDirection = request('order_dir', 'asc');
+			$fgArt0 = $fgArt0->orderBy("ORDEN_ORTSEC.ORDEN_ORTSEC1", $orderDirection)
+				->orderBy("ORDEN_ART0", $orderDirection)
+				->groupby("ORDEN_ORTSEC.ORDEN_ORTSEC1,ORDEN_ART0, FGART0.ID_ART0");
 		} else {
+			$orderDirection = request('order_dir', 'desc');
 			$fgArt0 = $fgArt0->orderBy(request('order'), $orderDirection)->groupby("FGART0.ID_ART0");
 		}
 

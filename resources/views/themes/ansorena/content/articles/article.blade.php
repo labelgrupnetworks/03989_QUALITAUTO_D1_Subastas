@@ -5,7 +5,9 @@
     $img = $article->img;
     $description = $article->des_art0;
     $images = $article->images;
-    $images[] = '/themes/ansorena/assets/img/pages/generico-joyeria.jpg';
+	if(count($images) == 1){
+    	$images[] = '/themes/ansorena/assets/img/pages/generico-joyeria.jpg';
+	}
 
     $relatedArticles = FgArt0::select('FGART0.ID_ART0, FGART0.PVP_ART0, FGART0.SEC_ART0')
 		->selectRaw('NVL(FGART0_LANG.MODEL_ART0_LANG, FGART0.MODEL_ART0) as model_art0')
