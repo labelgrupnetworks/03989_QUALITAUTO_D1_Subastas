@@ -103,8 +103,42 @@ header .navbar-nav {
 	}
 }
 
+.grid .auction__filters-type {
+	display: none;
+}
+
 .ficha-grid {
 	gap: 1rem;
+}
+
+.description.max-lines {
+	--max-lines: none !important;
+}
+
+@media(min-width: 1200px) {
+
+	.ficha-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	section.ficha-image {
+		grid-column: 1 / 3;
+	}
+
+	section.ficha-description {
+		grid-column: 1 / 3;
+		grid-row-start: 4;
+	}
+
+	section.ficha-previous-next {
+		grid-column: 1 / 3;
+		grid-row: 5 / 6;
+	}
+
+	section.ficha-share {
+		grid-column: 3 / 4;
+		grid-row: 5;
+	}
 }
 
 .hist_content {
