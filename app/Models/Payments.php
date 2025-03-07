@@ -454,6 +454,9 @@ class Payments extends Model
 					['tipo_gasimp', '=', 'D', 'or']
 				])
                ->where('pais_gasimp',$tipo_iva->pais)
+			   ->when(Config::get('app.agrsub', false), function ($query, $agrsub) {
+					return $query->where('agrsub_gasimp', $agrsub);
+			   })
                ->first();
 
    }
@@ -465,6 +468,12 @@ class Payments extends Model
         $tipoIva = is_null($tipoIva)? '' : $tipoIva;
         $codPais = is_null($codPais)? '' : $codPais;
         $cp = is_null($cp)? '' : $cp;
+
+		$agrsub = '*';
+		if(Config::get('app.agrsub', false)){
+			$agrsub = Config::get('app.agrsub');
+		}
+
 		#existen dos funciones, la que se usaba hasta ahora y la min
 		if($min){
 			$function = "CALCULAR_GASTOS_ENVIO_MIN";
@@ -472,13 +481,14 @@ class Payments extends Model
 			$function = "CALCULAR_GASTOS_ENVIO";
 		}
 
-        $a=DB::select("select $function(:empresa,:imp,:tipoIva,:codPais,:cp ) as imp_gasimp from dual",
+        $a=DB::select("select $function(:empresa,:imp,:tipoIva,:codPais,:cp,:agrsub ) as imp_gasimp from dual",
         array(
             'empresa'    => $emp,
             'imp'        => $imp,
             'tipoIva'    => $tipoIva,
             'codPais'    => $codPais,
-            'cp'         => $cp
+            'cp'         => $cp,
+			'agrsub'     => $agrsub
             )
         );
        return $a;
