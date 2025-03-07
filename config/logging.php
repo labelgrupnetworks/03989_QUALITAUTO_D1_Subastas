@@ -73,7 +73,6 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 30,
         ],
-
 		'cli' => [
 			'driver' => 'daily',
 			'path' => storage_path('logs/cli.log'),
@@ -83,6 +82,12 @@ return [
 		'root' => [
 			'driver' => 'daily',
 			'path' => storage_path('logs/root.log'),
+			'level' => 'debug',
+			'days' => 15,
+		],
+		'analytics' => [
+			'driver' => 'daily',
+			'path' => storage_path('logs/analytics.log'),
 			'level' => 'debug',
 			'days' => 15,
 		],

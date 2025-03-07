@@ -100,5 +100,6 @@ class Kernel extends HttpKernel
         'SessionTimeout' =>\App\Http\Middleware\SessionTimeout::class,
 		'trimStrings' => \App\Http\Middleware\TrimStrings::class,
 		'verify.captcha' => \App\Http\Middleware\VerifyCaptcha::class,
+		'measure.query.time' => \App\Http\Middleware\MeasureQueryTime::class,
     ];
 }
