@@ -68,8 +68,10 @@ foreach ($all_adj_pag as $key_inf => $value) {
                                         <tr>
                                             <td class="td-img">
                                                 <a href="{{ $url_friendly }}">
-                                                    <img src="{{ \Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}"
-                                                        class="img-fluid">
+													<picture>
+														<source srcset="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" media="(min-width: 992px)">
+														<img class="img-fluid" src="{{ Tools::url_img('lote_large', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" loading="lazy" />
+													</picture>
                                                 </a>
                                             </td>
                                             <td data-title="{{ trans("web.user_panel.lot") }}">

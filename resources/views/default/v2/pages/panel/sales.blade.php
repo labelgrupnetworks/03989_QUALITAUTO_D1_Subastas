@@ -81,8 +81,10 @@
                                                     <tr>
                                                         <td class="td-img">
                                                             <a href="{{ $url_friendly }}">
-                                                                <img class="img-fluid"
-                                                                    src="{{ \Tools::url_img('lote_small', $lote->num_hces1, $lote->lin_hces1) }}">
+																<picture>
+																	<source srcset="{{ Tools::url_img('lote_small', $lote->num_hces1, $lote->lin_hces1) }}" media="(min-width: 992px)">
+																	<img class="img-fluid" src="{{ Tools::url_img('lote_large', $lote->num_hces1, $lote->lin_hces1) }}" loading="lazy" />
+																</picture>
                                                             </a>
                                                         </td>
 
