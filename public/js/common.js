@@ -9,12 +9,13 @@ $(document).ready(function () {
 
 	activedAudio(true);
 
-	//Visualizar la contraseña en el panel de datos personales
-	$('.view_password').mousedown(function () {
-		$(this).siblings('input').attr('type', 'text')
-	}).mouseup(function () {
-		$(this).siblings('input').attr('type', 'password')
-	});
+	$('.view_password')
+		.on('mousedown touchstart', function () {
+			$(this).siblings('input').attr('type', 'text');
+		})
+		.on('mouseup touchend mouseleave', function () {
+			$(this).siblings('input').attr('type', 'password');
+		});
 
 	$(".control-number").keydown(function (event) {
 		if (event.shiftKey) {
