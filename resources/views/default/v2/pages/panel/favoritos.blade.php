@@ -69,8 +69,10 @@
                                                     <tr>
                                                         <td class="td-img">
                                                             <a href="{{ $url_friendly }}">
-                                                                <img class="img-fluid"
-                                                                    src="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}">
+																<picture>
+																	<source srcset="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" media="(min-width: 992px)">
+																	<img class="img-fluid" src="{{ Tools::url_img('lote_large', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" />
+																</picture>
                                                             </a>
                                                         </td>
                                                         <td data-title="{{ trans("web.user_panel.lot") }}">

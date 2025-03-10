@@ -169,3 +169,8 @@ header .navbar-nav {
 .static-page .container > * {
 	max-width: 90ch;
 }
+
+footer .nav-link {
+	--bs-nav-link-color: inherit;
+	--bs-nav-link-hover-color: inherit;
+}
