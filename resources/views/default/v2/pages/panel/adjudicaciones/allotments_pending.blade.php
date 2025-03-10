@@ -105,7 +105,10 @@ foreach($all_adj as $key_inf => $value){
 											<input class="hide seguro_lote_{{$inf_lot->sub_csub}}_js" type="hidden" name="carrito[{{$inf_lot->sub_csub}}][{{$inf_lot->ref_csub}}][seguro]" value='0'>
 											<td class="td-img">
 												<a href="{{$url_friendly}}">
-													<img src="{{ \Tools::url_img("lote_small", $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" class="img-responsive">
+													<picture>
+														<source srcset="{{ Tools::url_img('lote_small', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" media="(min-width: 992px)">
+														<img class="img-fluid" src="{{ Tools::url_img('lote_large', $inf_lot->num_hces1, $inf_lot->lin_hces1) }}" loading="lazy" />
+													</picture>
 												</a>
 											</td>
 											<td data-title="{{ trans("web.user_panel.lot") }}">
