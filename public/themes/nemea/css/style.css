@@ -174,3 +174,15 @@ footer .nav-link {
 	--bs-nav-link-color: inherit;
 	--bs-nav-link-hover-color: inherit;
 }
+
+.carrusel-wrapper, #lotes_recomendados {
+	max-width: 80%;
+	margin: auto;
+}
+
+@media (min-width: 600px) {
+	.carrusel-wrapper, #lotes_recomendados {
+		max-width: 100%;
+		margin: auto;
+	}
+}
