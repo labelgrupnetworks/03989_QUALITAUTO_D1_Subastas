@@ -1896,9 +1896,6 @@ class SubastaTiempoRealController extends Controller
     # Funcion de pujas y ordenes de licitacion en tiempo real mediante node
     public function executeAction($codSub, $ref, $licit, $cod_original_licit, $imp, $type_bid, $can_do, $hash_user, $tipo_puja_gestor, $represented = null)
     {
-		$now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
-		Log::debug('Inicio de la puja: ', ['codSub' => $codSub, 'ref' => $ref, 'licit' => $licit, 'imp' => $imp, 'time' => $now->format("Y-m-d H:i:s.u")]);
-
         $subasta = new subasta();
         $subasta->cod = $codSub;
         $subasta->ref =  $ref;

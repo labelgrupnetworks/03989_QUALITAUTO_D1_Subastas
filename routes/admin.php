@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\b2b\{
 use App\Http\Controllers\admin\BannerController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BloqueConfigController;
+use App\Http\Controllers\admin\configuracion\AdminMesuresController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\ResourceController;
@@ -453,6 +454,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 		Route::get('thumbs', 'configuracion\AdminThumbsController@index')->name('admin.thumbs.index');
 		Route::post('thumbs/lots', 'configuracion\AdminThumbsController@getLots')->name('admin.thumbs.lots');
 		Route::post('thumbs/generate', 'configuracion\AdminThumbsController@generateThumbs')->name('admin.thumbs.generate');
+
+		Route::get('mesures', [AdminMesuresController::class, 'index'])->name('admin.mesures.index');
+		Route::get('mesures-json', [AdminMesuresController::class, 'analizeLogFile'])->name('admin.mesures.index-json');
+
 
 		Route::group(['prefix' => 'test-auction'], function () {
 			Route::get('/', 'configuracion\AdminTestAuctions@index')->name('admin.test-auctions.index');

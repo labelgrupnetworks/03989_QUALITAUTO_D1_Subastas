@@ -227,7 +227,7 @@ Route::get(Routing::slug('chat') . '-{cod}-{lang}', [ChatController::class, 'get
 Route::post('api/chat', [ChatController::class, 'setChatArray']);
 Route::post('api/chat/delete', [ChatController::class, 'deleteChat']);
 
-Route::post('api/end_lot' . '-{cod}', [SubastaTiempoRealController::class, 'endLot']);
+Route::post('api/end_lot' . '-{cod}', [SubastaTiempoRealController::class, 'endLot'])->middleware('measure.query.time')->name('api.action.end_lot');
 
 Route::get(Routing::slug('subastas-tiempo-real'), [SubastaController::class, 'listaSubastasSesionesTR']);
 

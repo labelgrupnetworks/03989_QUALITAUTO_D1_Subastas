@@ -20,30 +20,48 @@ class MeasureQueryTime
         DB::enableQueryLog();
 
 		//  Medir el tiempo de del proceso
-		$queryStart = microtime(true);
+		$processTimeStart = microtime(true);
 
 		$response = $next($request);
 
-		$queryTime = microtime(true) - $queryStart;
-		$proccessTime = round($queryTime * 1000, 2) . ' ms';
+		$processTimeEnd = microtime(true) - $processTimeStart;
+		$processTotalTime = round($processTimeEnd * 1000, 2);
 
-		$messages[] = "Tiempo de ejecución de la petición: {$proccessTime}";
+		//generar identificador de la petición
+		$uuid = uniqid();
 
-        // Obtener todas las consultas realizadas durante esta petición
-        $queries = DB::getQueryLog();
+		$this->addProcessTimeFromRequest($uuid, $request, $processTotalTime);
 
-        foreach ($queries as $query) {
-			$table = explode(" ", $query['query']);
-			$table = $table[array_search("from", array_map('strtolower', $table)) + 1];
-			$table = trim($table, " \t\n\r`");
-
-			$messages[] = "Consulta ejecutada: en {$table} en {$query['time']} ms";
-        }
+		$queries = DB::getQueryLog();
+		$this->addQueryTimes($uuid, $queries);
 
         DB::disableQueryLog();
 
-		Log::driver('analytics')->info(['messages' => $messages]);
-
         return $response;
     }
+
+	private function addProcessTimeFromRequest($uuid, $request, $time)
+	{
+		$params = $request->all();
+		$action = $request->route()->getAction()['as'] ?? 'Sin acción';
+		if(count($params) > 0) {
+			Log::driver('analytics')->info($action, ['time' => $time, 'uuid' => $uuid, $params]);
+		}
+	}
+
+	private function addQueryTimes($uuid, $queries)
+	{
+		$messages = [];
+		foreach ($queries as $query) {
+			$table = explode(" ", $query['query']);
+			$table = $table[array_search("from", array_map('strtolower', $table)) + 1];
+			$table = trim($table, " \t\n\r`");
+			$table = str_replace("\n", "", $table);
+			$table = str_replace("\t", "", $table);
+
+			$messages[] = "Consulta ejecutada: en {$table} en {$query['time']} ms";
+		}
+
+		Log::driver('analytics')->info("Consultas de la peticion: $uuid", ['messages' => $messages]);
+	}
 }
