@@ -130,6 +130,10 @@ body, html {
     margin: 0;
     padding: 0;
 }
+.fondo1 {
+    /*border: 1px solid black;*/
+    height: 480px;
+}
 
 .img-lot {
     /*max-width: 500px*/;
