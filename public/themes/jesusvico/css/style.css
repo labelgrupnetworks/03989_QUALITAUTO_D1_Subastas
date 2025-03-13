@@ -917,22 +917,6 @@ simbolos:: %3e == /> | %3c == < | %23 == #
 |--------------------------------------------------------------------------
 */
 
-main.page-ficha p.h1.lot-ficha-title {
-	font-size: calc(0.8rem + 1.5vw);
-}
-
-@media (min-width: 992px) {
-	main.page-ficha p.h1.lot-ficha-title {
-		font-size: calc(0.5em + 1.5vw);
-	}
-}
-
-@media (min-width: 1200px) {
-	main.page-ficha p.h1.lot-ficha-title {
-		font-size: calc(0.8rem + 1vw);
-	}
-}
-
 a.back-link {
 	text-transform: none;
 }
@@ -1202,9 +1186,6 @@ section.ficha-extrainfo {
 	width: 90px;
 }
 
-main.page-ficha p.h1 {
-	font-size: calc(1rem + 1.5vw);
-}
 
 .ficha-previous-next .btn.arrow-button {
 	padding: 10px 6px;
@@ -1224,10 +1205,6 @@ main.page-ficha p.h1 {
 }
 
 @media (min-width: 992px) {
-
-	main.page-ficha p.h1 {
-		font-size: calc(0.8rem + 1.5vw);
-	}
 
 	section.ficha-title {
 		grid-column: 1 / 1;
@@ -1275,9 +1252,6 @@ main.page-ficha p.h1 {
 }
 
 @media (min-width: 1200px) {
-	main.page-ficha p.h1 {
-		font-size: calc(0.7rem + 1.5vw);
-	}
 
 	.ficha-grid {
 		grid-template-columns: 3fr 5fr 3fr;

@@ -11,6 +11,12 @@
         $auction?->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => trans("$theme-app.subastas.current_auction"),
         default => trans("$theme-app.subastas.inf_subasta_subasta"),
     };
+	$auctionsUrl = match (true) {
+		$auction?->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_VENTA_DIRECTA => Routing::translateSeo('tienda-online'),
+		$auction?->subc_sub === App\Models\V5\FgSub::SUBC_SUB_HISTORICO => Routing::translateSeo('subastas-historicas'),
+		$auction?->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => Routing::translateSeo('presenciales'),
+		default => Routing::translateSeo('presenciales'),
+	};
 @endphp
 
 @section('content')
@@ -20,7 +26,10 @@
             <div class="row">
 
                 <div class="col-12">
-                    <h1 class="text-uppercase">{{ $titleName }} | <b>{{ $seo_data->h1_seo }}</b> | <a class="back-link" href="javascript:backpage();">{{ trans("$theme-app.global.back") }}</a> </h1>
+                    <h1 class="text-uppercase">
+						<a href="{{ $auctionsUrl }}">{{ $titleName }}</a> |
+						<a href=""><b>{{ $seo_data->h1_seo }}</b></a> |
+						<a class="back-link" href="javascript:backpage();">{{ trans("$theme-app.global.back") }}</a> </h1>
                 </div>
             </div>
         </div>

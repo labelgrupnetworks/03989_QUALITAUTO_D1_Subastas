@@ -73,6 +73,13 @@ $(document).ready(function() {
 		default => trans("$theme-app.subastas.inf_subasta_subasta"),
 	};
 
+	$auctionsUrl = match (true) {
+		$lote_actual->tipo_sub === App\Models\V5\FgSub::TIPO_SUB_VENTA_DIRECTA => Routing::translateSeo('tienda-online'),
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_HISTORICO => Routing::translateSeo('subastas-historicas'),
+		$lote_actual->subc_sub === App\Models\V5\FgSub::SUBC_SUB_ACTIVO => Routing::translateSeo('presenciales'),
+		default => Routing::translateSeo('presenciales'),
+	};
+
 	$refererQuery = '';
 	$referer = request()->headers->get('referer');
 	$host = parse_url($referer, PHP_URL_HOST);
@@ -82,11 +89,12 @@ $(document).ready(function() {
 		$refererQuery = "?" . parse_url($referer, PHP_URL_QUERY);
 	}
 @endphp
-<main class="page-ficha pt-3">
+<main class="page-ficha">
 	<div class="container grid-header">
 		<div class="row">
 			<div class="col-12">
 				<p class="h1 pb-1 lot-ficha-title">
+					<a href="{{ $auctionsUrl }}">{{ $titleName }}</a> |
 					<b><a href="{{ $lote_actual->url_subasta }}">{{ $lote_actual->name }}</a></b> |
 					<a class="back-link" href="{{ $lote_actual->url_subasta . $refererQuery }}">{{ trans("$theme-app.global.back") }}</a>
 				</p>
