@@ -5,18 +5,19 @@ namespace App\Models;
 
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
-use DB;
-use Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 class BlocSector extends Model
 {
-    public function get_active_blocs($type = null, $subc = 'S'){
-        $where = "";
-        if(!empty($type)){
-            $where = " AND SUB.TIPO_SUB = :type ";
-        }
+	public function get_active_blocs($type = null, $subc = 'S')
+	{
+		$where = "";
+		if (!empty($type)) {
+			$where = " AND SUB.TIPO_SUB = :type ";
+		}
 
-         $sql = "SELECT COD_BLOC, DES_BLOC, COUNT(COD_BLOC) AS NUM_SUB FROM (
+		$sql = "SELECT COD_BLOC, DES_BLOC, COUNT(COD_BLOC) AS NUM_SUB FROM (
                     SELECT COD_BLOC, NVL(BLOC_LANG.DES_BLOC_LANG,BLOC.DES_BLOC) AS DES_BLOC FROM FGBLOC BLOC
                     JOIN FGSUBBLOC SBLOC ON  SBLOC.EMP_SUBBLOC = BLOC.EMP_BLOC AND SBLOC.COD_SUBBLOC = BLOC.COD_BLOC
                     JOIN FGSUB SUB ON SUB.EMP_SUB = SBLOC.EMP_SUBBLOC AND SUB.COD_SUB = SBLOC.SUB_SUBBLOC
@@ -37,34 +38,34 @@ class BlocSector extends Model
 
                 ";
 
-        $bindings = array(
-                            'emp'      => Config::get('app.emp'),
-							'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
-							'subc'	=> $subc
+		$bindings = array(
+			'emp'      => Config::get('app.emp'),
+			'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
+			'subc'	=> $subc
 
 
-							);
-		if(!empty($type)){
+		);
+		if (!empty($type)) {
 			$bindings['type'] = $type;
 		}
-         return DB::select($sql,$bindings);
+		return DB::select($sql, $bindings);
+	}
+	//se supone que solo pueden tener un cod_subsector
+	public function get_auction_blocs($type = null, $subc = 'S')
+	{
 
-    }
-    //se supone que solo pueden tener un cod_subsector
-    public function get_auction_blocs($type = null, $subc = 'S'){
+		$where = "";
+		if (!empty($type)) {
+			$where = " AND sub.TIPO_SUB = :type ";
+		}
 
-        $where = "";
-        if(!empty($type)){
-            $where = " AND sub.TIPO_SUB = :type ";
-        }
+		//en historico ordenamos las nuevas antes
+		$order_by = "orders_end ASC";
+		if ($subc == 'H') {
+			$order_by = "session_end DESC";
+		}
 
-        //en historico ordenamos las nuevas antes
-        $order_by = "orders_end ASC";
-        if($subc == 'H'){
-            $order_by = "session_end DESC";
-        }
-
-         $sql = "SELECT COD_SUBBLOC,COD_SUBSECTOR,NUM_LOTS,cod_sub,PAIS_SUB, des_sub, orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, session_start, session_end, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
+		$sql = "SELECT COD_SUBBLOC,COD_SUBSECTOR,NUM_LOTS,cod_sub,PAIS_SUB, des_sub, orders_start, orders_end,  tipo_sub, reference,name, id_auc_sessions, session_start, session_end, emp_sub, subc_sub,expofechas_sub,expohorario_sub,expolocal_sub,sesfechas_sub,seshorario_sub,seslocal_sub,
             emp_sub ||  '_' || cod_sub || '_' ||    reference as file_code,upcatalogo,uppdfadjudicacion,uppreciorealizado
             FROM (
                 SELECT SBLOC.COD_SUBBLOC, max(SSECTOR.COD_SUBSECTOR) COD_SUBSECTOR,sub.PAIS_SUB PAIS_SUB ,sub.COD_SUB cod_sub, sub.EMP_SUB, sub.SUBC_SUB, sub.tipo_sub,COUNT(lotes.REF_ASIGL0) AS NUM_LOTS,
@@ -101,49 +102,47 @@ class BlocSector extends Model
             )
                 ";
 
-        $bindings = array(
-                            'emp'      => Config::get('app.emp'),
-                            'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
-							);
-		if(!empty($type)){
+		$bindings = array(
+			'emp'      => Config::get('app.emp'),
+			'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
+		);
+		if (!empty($type)) {
 			$bindings['type'] = $type;
 		}
-        $auctions = DB::select($sql,$bindings);
-        $blocs_auctions = array();
+		$auctions = DB::select($sql, $bindings);
+		$blocs_auctions = array();
 
-        foreach($auctions as $auction){
-             if(empty($blocs_auctions[$auction->cod_subbloc])){
-                 $blocs_auctions[$auction->cod_subbloc] = array();
-             }
-             //CREAMOS EL INDICE ALL PARA QUE NO SE REPITAN, POR ESO USAMOS EL id_auc_sessions COMO INDICE
-             $blocs_auctions['ALL'][$auction->id_auc_sessions]=$auction;
-             $blocs_auctions[$auction->cod_subbloc][$auction->id_auc_sessions]=$auction;
+		foreach ($auctions as $auction) {
+			if (empty($blocs_auctions[$auction->cod_subbloc])) {
+				$blocs_auctions[$auction->cod_subbloc] = array();
+			}
+			//CREAMOS EL INDICE ALL PARA QUE NO SE REPITAN, POR ESO USAMOS EL id_auc_sessions COMO INDICE
+			$blocs_auctions['ALL'][$auction->id_auc_sessions] = $auction;
+			$blocs_auctions[$auction->cod_subbloc][$auction->id_auc_sessions] = $auction;
+		}
 
-         }
-
-         return $blocs_auctions;
-    }
+		return $blocs_auctions;
+	}
 
 
-    public function get_sectors(){
+	public function get_sectors()
+	{
 
-        $sql = "SELECT COD_SECTOR, NVL(DES_SECTOR_LANG,DES_SECTOR) DES_SECTOR FROM FGSECTOR SEC
+		$sql = "SELECT COD_SECTOR, NVL(DES_SECTOR_LANG,DES_SECTOR) DES_SECTOR FROM FGSECTOR SEC
                 LEFT JOIN FGSECTOR_LANG SEC_LANG ON SEC_LANG.EMP_SECTOR_LANG = SEC.EMP_SECTOR AND  SEC_LANG.COD_SECTOR_LANG =SEC.COD_SECTOR AND SEC_LANG.LANG_SECTOR_LANG = :lang
                 WHERE EMP_SECTOR = :emp";
 
-        $bindings = array(
-            'emp'      => Config::get('app.emp'),
-            'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
+		$bindings = array(
+			'emp'      => Config::get('app.emp'),
+			'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
 
-        );
-        $sectors_tmp = DB::select($sql,$bindings);
-        $sectors = array();
-        foreach($sectors_tmp as $sector){
-            $sectors[$sector->cod_sector] = $sector->des_sector;
-        }
+		);
+		$sectors_tmp = DB::select($sql, $bindings);
+		$sectors = array();
+		foreach ($sectors_tmp as $sector) {
+			$sectors[$sector->cod_sector] = $sector->des_sector;
+		}
 
-        return $sectors;
-    }
-
-
+		return $sectors;
+	}
 }
