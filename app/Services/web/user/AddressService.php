@@ -7,41 +7,6 @@ use Illuminate\Support\Facades\Config;
 
 class AddressService
 {
-	public function addAddres($user, $address)
-	{
-		$strToDefault = Config::get('app.strtodefault_register', 0);
-
-		$addressData = [
-			'cli_clid' => $user->cod_cli,
-			'codd_clid' => $address['codd_clid'],
-			'nomd_clid' => $user->nom_cli,
-			'tipo_clid' => 'E',
-			'cp_clid' => $address['clid_cpostal'],
-			'dir_clid' => $address['clid_direccion'],
-			'dir2_clid' => $address['clid_direccion_2'],
-			'pob_clid' => $address['clid_poblacion'],
-			'pais_clid' => $address['clid_pais'],
-			'codpais_clid' => $address['clid_cod_pais'],
-			'sg_clid' => $address['clid_via'],
-			'pro_clid' => $address['clid_provincia'],
-			'tel1_clid' => $address['clid_telf'],
-			'rsoc_clid' => $address['clid_rsoc'] ?? $user->nom_cli,
-			'cli2_clid' => $address['cod2_clid'],
-			'email_clid' => $address['email_clid'],
-			'preftel_clid' => $address['preftel_clid'],
-			'rsoc2_clid' => $address['rsoc2_clid'],
-			'mater_clid' => $address['mater_clid']
-		];
-
-		if ($strToDefault) {
-			$addressData = array_map(function ($value) {
-				return mb_strtoupper($value);
-			}, $addressData);
-		}
-
-		FxClid::create($addressData);
-	}
-
 	public function editAddress($user, $envio)
 	{
 		$strToDefault = Config::get('app.strtodefault_register', 0);

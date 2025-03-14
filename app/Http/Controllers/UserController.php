@@ -17,6 +17,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgRepresentados;
 use App\Models\V5\FsIdioma;
+use App\Models\V5\FsPaises;
 use App\Models\V5\Fx_Newsletter;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
@@ -27,6 +28,7 @@ use App\Models\V5\SubAuchouse;
 use App\Models\V5\Web_Preferences;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
+use App\Services\User\UserAddressService;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\App;
@@ -899,6 +901,9 @@ class UserController extends Controller
 							$cod2_cli = '';
 						}
 
+						$countryName = FsPaises::query()
+							->where("cod_paises", FacadeRequest::input('clid_pais', FacadeRequest::input('pais', 'ES')))
+							->value('des_paises');
 
 						$envio = array(
 							'clid_direccion'  => $strToDefault ? mb_substr(FacadeRequest::get('clid_direccion'), 0, 30, 'UTF-8') : strtoupper(mb_substr(FacadeRequest::get('clid_direccion'), 0, 30, 'UTF-8')),
@@ -906,7 +911,7 @@ class UserController extends Controller
 							'clid_cod_pais'   => FacadeRequest::get('clid_pais'),
 							'clid_poblacion'   => $strToDefault ? mb_substr(FacadeRequest::get('clid_poblacion'), 0, 30, 'UTF-8') : strtoupper(mb_substr(FacadeRequest::get('clid_poblacion'), 0, 30, 'UTF-8')),
 							'clid_cpostal'   => FacadeRequest::get('clid_cpostal'),
-							'clid_pais' => DB::select("SELECT des_paises FROM FSPAISES WHERE cod_paises = :codPais", array("codPais" => FacadeRequest::input('clid_pais', FacadeRequest::input('pais')))),
+							'clid_pais' => $countryName,
 							'clid_via' => !empty(FacadeRequest::get('clid_codigoVia')) ? FacadeRequest::get('clid_codigoVia') : null,
 							'clid_provincia'    => !empty(FacadeRequest::get('clid_provincia')) ? FacadeRequest::get('clid_provincia') : null,
 							'clid_name' => $nomd_clid,
@@ -917,9 +922,6 @@ class UserController extends Controller
 							'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
 							'mater_clid' => request('mater_clid', 'N'),
 						);
-
-
-
 
 						//se inserta el nuevo cliente
 						$FXCLI = DB::select(
@@ -976,27 +978,10 @@ class UserController extends Controller
 						$FXCLI2 = DB::select("INSERT INTO FXCLI2  (GEMP_CLI2, COD_CLI2, ENVCAT_CLI2, COD2_CLI2)  VALUES  ('" . Config::get('app.gemp') . "', '" . $num . "','N', '$cod2_cli')");
 
 						//inserta dirección de envio
-						if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1) {
-
-							$addres = new Address();
-
-							//En carlandia utilizamos la direccion multiple para guardar datos de contacto
-							if (config('app.contact_adress', 0)) {
-								try {
-									if ($tipo_cli == FxCli::TIPO_CLI_VENDEDOR) {
-										$addres->addContacto($request, $num);
-									}
-								} catch (\Throwable $th) {
-									Log::error('Error direccion contacto', ['error' => $th]);
-								}
-							} else {
-								$usePrincipalAddress = $request->has('shipping_address');
-								if (Config::get('app.save_address_when_empty', true) || !$usePrincipalAddress) {
-									$addres->addDirEnvio($envio, $num, $name);
-								}
-							}
+						$hasShippingAddress = $request->has('shipping_address');
+						if (UserAddressService::shouldSaveDeliveryAddressInRegister($hasShippingAddress)) {
+							(new UserAddressService())->addAddress($envio, $num, $name);
 						}
-
 
 						//Guardar favoritos
 						$data['favorites'] = $user->favorites();

@@ -8,6 +8,7 @@ use App\Models\Enterprise;
 use App\Models\User;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\FsPaises;
+use App\Services\User\UserAddressService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
@@ -91,9 +92,9 @@ class AddressController extends Controller
 
 		//$rsoc = request('clid_rsoc', request('usuario'));
 		$rsoc = $request->input('clid_rsoc', $request->input('usuario'));
-		$desPais = FsPaises::select('des_paises')
+		$desPais = FsPaises::query()
 			->where('cod_paises', $request->input('clid_pais'))
-			->get();
+			->value('des_paises');
 
 		$envio = [
 			'clid_direccion'  => mb_substr($request->input('clid_direccion'), 0, 30, 'UTF-8'),
@@ -123,7 +124,7 @@ class AddressController extends Controller
 		if (!empty($data_adress)) {
 			$addres->editDirEnvio($envio, $addres->cod_cli);
 		} else {
-			$addres->addDirEnvio($envio, $addres->cod_cli, $envio['clid_name']);
+			(new UserAddressService)->addAddress($envio, $addres->cod_cli, $envio['clid_name']);
 		}
 
 		return [

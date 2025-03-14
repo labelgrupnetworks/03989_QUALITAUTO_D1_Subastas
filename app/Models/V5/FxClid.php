@@ -6,7 +6,6 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
-
 class FxClid extends Model
 {
 	protected $table = 'FxClid';
@@ -48,7 +47,7 @@ class FxClid extends Model
 	public function getForSelectHTML($cod_user)
 	{
 		return $this->select('codd_clid', 'nomd_clid', 'dir_clid', 'cp_clid', 'pob_clid')
-		->where('cli_clid', $cod_user)->orderBy('codd_clid', 'desc')->get()->pluck('full_direction', 'codd_clid')->toArray();
+			->where('cli_clid', $cod_user)->orderBy('codd_clid', 'desc')->get()->pluck('full_direction', 'codd_clid')->toArray();
 	}
 
 	public function getFullDirectionAttribute()
