@@ -73,24 +73,11 @@ class AddressController extends Controller
 
 	public function updateShippingAddress(Request $request)
 	{
-		//Textos por defecto o toUpper
-		$strToDefault = Config::get('app.strtodefault_register', 0);
 		$userCod = Session::get('user.cod');
 
-		$addres = new Address();
-		$addres->cod_cli = $userCod;
-		$data_adress = [];
-
-		//$values = $request->except(['_token']);
 		//trim to all values
 		$request->merge(array_map('trim', $request->all()));
 
-		//apply strtoupper to all values if strtodefault_register is true
-		if (!$strToDefault) {
-			$request->merge(array_map('mb_strtoupper', $request->all()));
-		}
-
-		//$rsoc = request('clid_rsoc', request('usuario'));
 		$rsoc = $request->input('clid_rsoc', $request->input('usuario'));
 		$desPais = FsPaises::query()
 			->where('cod_paises', $request->input('clid_pais'))
@@ -113,18 +100,24 @@ class AddressController extends Controller
 			'rsoc2_clid' => $request->input('rsoc2_clid', ''),
 		];
 
+		/**
+		 * Si en la petición viene codd_clid es porque se está editando una dirección
+		 * Si no viene es porque se está creando una nueva dirección
+		 * @todo Mover a otro metodo el crear la dirección
+		 */
 		if (!empty($request->input('codd_clid'))) {
 			$codd_clid = $request->input('codd_clid');
-			$data_adress = $addres->getUserShippingAddress($codd_clid);
+			$address = (new UserAddressService)->getUserAddressById($userCod, $codd_clid);
 		} else {
 			$codd_clid = $this->getNewCoddClid($userCod);
 		}
+
 		$envio['codd_clid'] = $codd_clid;
 
-		if (!empty($data_adress)) {
-			$addres->editDirEnvio($envio, $addres->cod_cli);
+		if ($address) {
+			(new UserAddressService)->editAddress($envio, $userCod);
 		} else {
-			(new UserAddressService)->addAddress($envio, $addres->cod_cli, $envio['clid_name']);
+			(new UserAddressService)->addAddress($envio, $userCod, $envio['clid_name']);
 		}
 
 		return [

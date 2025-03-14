@@ -21,8 +21,8 @@ class UserAddressService
 		//Textos por defecto o toUpper
 		$strToDefault = Config::get('app.strtodefault_register', 0);
 		if (!$strToDefault) {
-			$envio = array_map('strtoupper', $envio);
-			$user = strtoupper($user);
+			$envio = array_map('mb_strtoupper', $envio);
+			$user = mb_strtoupper($user);
 		}
 
 		$rsoc = $envio['clid_rsoc'] ?? $user;
@@ -47,9 +47,55 @@ class UserAddressService
 			'email_clid' => $envio['email_clid'] ?? '',
 			'preftel_clid' => $envio['preftel_clid'] ?? '',
 			'rsoc2_clid' => $envio['rsoc2_clid'] ?? '',
-			'mater_clid' => $envio['mater_clid'] ?? ''
+			'mater_clid' => $envio['mater_clid'] ?? 'N'
 		];
 
 		FxClid::create($address);
+	}
+
+	public function editAddress($envio, $num)
+	{
+		$addressId = $envio['codd_clid'];
+
+		$strToDefault = Config::get('app.strtodefault_register', 0);
+		if (!$strToDefault) {
+			$envio = array_map('mb_strtoupper', $envio);
+		}
+
+		$addressData = [
+			'dir_clid' => $envio['clid_direccion'] ?? '',
+			'dir2_clid' => $envio['clid_direccion_2'] ?? '',
+			'cp_clid' => $envio['clid_cpostal'] ?? '',
+			'pob_clid' => $envio['clid_poblacion'] ?? '',
+			'pais_clid' => $envio['clid_pais'] ?? '',
+			'codpais_clid' => $envio['clid_cod_pais'] ?? '',
+			'sg_clid' => $envio['clid_via'] ?? '',
+			'pro_clid' => mb_substr($envio['clid_provincia'] ?? '', 0, 30, 'UTF-8'),
+			'nomd_clid' => $envio['clid_name'] ?? '',
+			'tel1_clid' => $envio['clid_telf'] ?? '',
+			'rsoc_clid' => $envio['clid_rsoc'] ?? '',
+			'email_clid' => $envio['email_clid'] ?? '',
+			'preftel_clid' => $envio['preftel_clid'] ?? '',
+			'rsoc2_clid' => $envio['rsoc2_clid'] ?? '',
+			'mater_clid' => $envio['mater_clid'] ?? 'N'
+		];
+
+		FxClid::query()
+			->where([
+				['cli_clid', $num],
+				['codd_clid', $addressId]
+			])
+			->update($addressData);
+	}
+
+	public function getUserAddressById($codCli, $addressId)
+	{
+		return FxClid::query()
+			->where([
+				['cli_clid', $codCli],
+				['tipo_clid', 'E'],
+				['codd_clid', $addressId]
+			])
+			->first();
 	}
 }
