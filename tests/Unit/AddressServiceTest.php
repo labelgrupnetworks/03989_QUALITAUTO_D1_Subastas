@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Services;
 
+use App\DataTransferObjects\User\AddressData;
 use App\Services\User\UserAddressService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
@@ -30,30 +31,25 @@ class AddressServiceTest extends TestCase
 	{
 		Config::set('app.strtodefault_register', 1);
 
-		$user = new \stdClass();
-		$user->cod_cli = 1;
-		$user->nom_cli = 'Test User';
-
-		$address = [
-			'codd_clid' => 'W1',
-			'clid_cpostal' => '12345',
+		$userId = 1;
+		$address = AddressData::fromArray([
 			'clid_direccion' => 'TEST Address',
-			'clid_direccion_2' => 'Test Address 2',
 			'clid_poblacion' => 'Test City',
-			'clid_pais' => 'Test Country',
-			'clid_cod_pais' => 'TC',
-			'clid_via' => 'Test Via',
+			'clid_cpostal' => '12345',
+			'clid_pais' => 'TC',
+			'des_pais' => 'Test Country',
+			'clid_codigoVia' => 'TV',
 			'clid_provincia' => 'Test Province',
-			'clid_telf' => '1234567890',
+			'usuario' => 'Test User',
+			'telefono' => '1234567890',
+			'rsoc' => 'Test Rsoc',
+			'codd_clid' => 'W1',
 			'cod2_clid' => '123',
-			'email_clid' => 'test@add.es',
-			'preftel_clid' => '1234567890',
-			'rsoc2_clid' => 'Test Rsoc',
-			'obs_clid' => 'Test Obs',
-			'mater_clid' => 'Test Mater'
-		];
+			'preftel_clid' => '1234',
+			'mater_clid' => 'N',
+		]);
 
-		(new UserAddressService)->addAddress($address, $user->cod_cli, $user->nom_cli);
+		(new UserAddressService)->addAddress($address, $userId);
 
 		$this->assertDatabaseHas('fxclid', [
 			'cli_clid' => 1,
@@ -62,14 +58,12 @@ class AddressServiceTest extends TestCase
 			'tipo_clid' => 'E',
 			'cp_clid' => '12345',
 			'dir_clid' => 'TEST Address',
-			'dir2_clid' => 'Test Address 2',
 			'pob_clid' => 'Test City',
 			'pais_clid' => 'Test Country',
 			'codpais_clid' => 'TC',
-			'sg_clid' => 'Test Via',
+			'sg_clid' => 'TV',
 			'pro_clid' => 'Test Province',
-			'tel1_clid' => '1234567890',
-			'rsoc_clid' => 'Test User'
+			'tel1_clid' => '1234567890'
 		]);
 
 		$this->assertDatabaseCount('fxclid', 1);
@@ -80,30 +74,25 @@ class AddressServiceTest extends TestCase
 	{
 		Config::set('app.strtodefault_register', 0);
 
-		$user = new \stdClass();
-		$user->cod_cli = 1;
-		$user->nom_cli = 'Test User';
-
-		$address = [
-			'codd_clid' => 'W1',
-			'clid_cpostal' => '12345',
+		$userId = 1;
+		$address = AddressData::fromArray([
 			'clid_direccion' => 'TEST Address',
-			'clid_direccion_2' => 'Test Address 2',
 			'clid_poblacion' => 'Test City',
-			'clid_pais' => 'Test Country',
-			'clid_cod_pais' => 'TC',
-			'clid_via' => 'Test Via',
+			'clid_cpostal' => '12345',
+			'clid_pais' => 'TC',
+			'des_pais' => 'Test Country',
+			'clid_codigoVia' => 'TV',
 			'clid_provincia' => 'Test Province',
-			'clid_telf' => '1234567890',
+			'usuario' => 'Test User',
+			'telefono' => '1234567890',
+			'rsoc' => 'Test Rsoc',
+			'codd_clid' => 'W1',
 			'cod2_clid' => '123',
-			'email_clid' => 'test@add.es',
-			'preftel_clid' => '1234567890',
-			'rsoc2_clid' => 'Test Rsoc',
-			'obs_clid' => 'Test Obs',
-			'mater_clid' => 'Test Mater'
-		];
+			'preftel_clid' => '1234',
+			'mater_clid' => 'N',
+		]);
 
-		(new UserAddressService)->addAddress($address, $user->cod_cli, $user->nom_cli);
+		(new UserAddressService)->addAddress($address, $userId);
 
 		$this->assertDatabaseHas('fxclid', [
 			'cli_clid' => 1,
@@ -112,14 +101,12 @@ class AddressServiceTest extends TestCase
 			'tipo_clid' => 'E',
 			'cp_clid' => '12345',
 			'dir_clid' => 'TEST ADDRESS',
-			'dir2_clid' => 'TEST ADDRESS 2',
 			'pob_clid' => 'TEST CITY',
 			'pais_clid' => 'TEST COUNTRY',
 			'codpais_clid' => 'TC',
-			'sg_clid' => 'TEST VIA',
+			'sg_clid' => 'TV',
 			'pro_clid' => 'TEST PROVINCE',
-			'tel1_clid' => '1234567890',
-			'rsoc_clid' => 'TEST USER'
+			'tel1_clid' => '1234567890'
 		]);
 
 		$this->assertDatabaseCount('fxclid', 1);

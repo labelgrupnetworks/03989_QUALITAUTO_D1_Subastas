@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\AddressRequest;
 use App\Models\Address;
 use App\Models\Enterprise;
 use App\Models\User;
@@ -71,58 +72,26 @@ class AddressController extends Controller
 		return view()->make('front::pages.panel.direcciones', array('data' => $data));
 	}
 
-	public function updateShippingAddress(Request $request)
+	public function updateShippingAddress(AddressRequest $request)
 	{
+		$addressDTO = $request->toDTO();
 		$userCod = Session::get('user.cod');
-
-		//trim to all values
-		$request->merge(array_map('trim', $request->all()));
-
-		$rsoc = $request->input('clid_rsoc', $request->input('usuario'));
-		$desPais = FsPaises::query()
-			->where('cod_paises', $request->input('clid_pais'))
-			->value('des_paises');
-
-		$envio = [
-			'clid_direccion'  => mb_substr($request->input('clid_direccion'), 0, 30, 'UTF-8'),
-			'clid_direccion_2'  => mb_substr($request->input('clid_direccion'), 30, 30, 'UTF-8'),
-			'clid_cod_pais'   => $request->input('clid_pais'),
-			'clid_poblacion'   => $request->input('clid_poblacion'),
-			'clid_cpostal'   => $request->input('clid_cpostal'),
-			'clid_pais' => $desPais,
-			'clid_via' => $request->input('clid_codigoVia', null),
-			'clid_provincia'    => $request->input('clid_provincia', null),
-			'clid_name' => $request->input('usuario'),
-			'clid_telf' => $request->input('telefono'),
-			'clid_rsoc' => $rsoc,
-			'email_clid' => $request->input('email_clid', null),
-			'preftel_clid' => $request->input('preftel_clid', ''),
-			'rsoc2_clid' => $request->input('rsoc2_clid', ''),
-		];
 
 		/**
 		 * Si en la petición viene codd_clid es porque se está editando una dirección
 		 * Si no viene es porque se está creando una nueva dirección
 		 * @todo Mover a otro metodo el crear la dirección
 		 */
-		if (!empty($request->input('codd_clid'))) {
-			$codd_clid = $request->input('codd_clid');
-			$address = (new UserAddressService)->getUserAddressById($userCod, $codd_clid);
+		if ($addressDTO->codd_clid) {
+			(new UserAddressService)->editAddress($addressDTO, $userCod);
 		} else {
-			$codd_clid = $this->getNewCoddClid($userCod);
-		}
-
-		$envio['codd_clid'] = $codd_clid;
-
-		if ($address) {
-			(new UserAddressService)->editAddress($envio, $userCod);
-		} else {
-			(new UserAddressService)->addAddress($envio, $userCod, $envio['clid_name']);
+			$addressDTO->setCoddClid($this->getNewCoddClid($userCod));
+			(new UserAddressService)->addAddress($addressDTO, $userCod);
 		}
 
 		return [
 			'status' => 'success',
-			'codd_clid' => $envio['codd_clid']
+			'codd_clid' => $addressDTO->codd_clid
 		];
 	}
 

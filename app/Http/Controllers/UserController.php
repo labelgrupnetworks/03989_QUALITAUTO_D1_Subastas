@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTransferObjects\User\AddressData;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
@@ -901,27 +902,7 @@ class UserController extends Controller
 							$cod2_cli = '';
 						}
 
-						$countryName = FsPaises::query()
-							->where("cod_paises", FacadeRequest::input('clid_pais', FacadeRequest::input('pais', 'ES')))
-							->value('des_paises');
 
-						$envio = array(
-							'clid_direccion'  => $strToDefault ? mb_substr(FacadeRequest::get('clid_direccion'), 0, 30, 'UTF-8') : strtoupper(mb_substr(FacadeRequest::get('clid_direccion'), 0, 30, 'UTF-8')),
-							'clid_direccion_2'  => $strToDefault ? mb_substr(FacadeRequest::get('clid_direccion'), 30, 30, 'UTF-8') : strtoupper(mb_substr(FacadeRequest::get('clid_direccion'), 30, 30, 'UTF-8')),
-							'clid_cod_pais'   => FacadeRequest::get('clid_pais'),
-							'clid_poblacion'   => $strToDefault ? mb_substr(FacadeRequest::get('clid_poblacion'), 0, 30, 'UTF-8') : strtoupper(mb_substr(FacadeRequest::get('clid_poblacion'), 0, 30, 'UTF-8')),
-							'clid_cpostal'   => FacadeRequest::get('clid_cpostal'),
-							'clid_pais' => $countryName,
-							'clid_via' => !empty(FacadeRequest::get('clid_codigoVia')) ? FacadeRequest::get('clid_codigoVia') : null,
-							'clid_provincia'    => !empty(FacadeRequest::get('clid_provincia')) ? FacadeRequest::get('clid_provincia') : null,
-							'clid_name' => $nomd_clid,
-							'clid_telf' => FacadeRequest::input('tele_clid', FacadeRequest::input('telefono')),
-							'clid_rsoc' => $rsoc,
-							'codd_clid' => $shipping_label,
-							'cod2_clid' => $cod2_cli,
-							'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
-							'mater_clid' => request('mater_clid', 'N'),
-						);
 
 						//se inserta el nuevo cliente
 						$FXCLI = DB::select(
@@ -980,7 +961,24 @@ class UserController extends Controller
 						//inserta dirección de envio
 						$hasShippingAddress = $request->has('shipping_address');
 						if (UserAddressService::shouldSaveDeliveryAddressInRegister($hasShippingAddress)) {
-							(new UserAddressService())->addAddress($envio, $num, $name);
+
+							$addressDto = AddressData::fromArray([
+								'clid_direccion' => FacadeRequest::get('clid_direccion'),
+								'clid_poblacion' => FacadeRequest::get('clid_poblacion'),
+								'clid_cpostal' => FacadeRequest::get('clid_cpostal'),
+								'clid_pais' => FacadeRequest::get('clid_pais'),
+								'clid_codigoVia' => FacadeRequest::get('clid_codigoVia'),
+								'clid_provincia' => FacadeRequest::get('clid_provincia'),
+								'usuario' => $nomd_clid,
+								'telefono' => FacadeRequest::input('tele_clid', FacadeRequest::input('telefono')),
+								'rsoc' => $rsoc,
+								'codd_clid' => $shipping_label,
+								'cod2_clid' => $cod2_cli,
+								'preftel_clid' => request('preftel_clid', request('preftel_cli', '')),
+								'mater_clid' => request('mater_clid', 'N'),
+							]);
+
+							(new UserAddressService())->addAddress($addressDto, $num);
 						}
 
 						//Guardar favoritos

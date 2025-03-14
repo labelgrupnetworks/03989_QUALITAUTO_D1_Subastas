@@ -2,6 +2,8 @@
 
 namespace App\Services\User;
 
+use App\DataTransferObjects\User\AddressData;
+use App\Models\V5\FsPaises;
 use App\Models\V5\FxClid;
 use Illuminate\Support\Facades\Config;
 
@@ -16,76 +18,52 @@ class UserAddressService
 			&& (Config::get('app.save_address_when_empty', true) || !$hasShippingAddress);
 	}
 
-	public function addAddress($envio, $num, $user)
+	public function addAddress(AddressData $addressData, $userId)
 	{
-		//Textos por defecto o toUpper
-		$strToDefault = Config::get('app.strtodefault_register', 0);
-		if (!$strToDefault) {
-			$envio = array_map('mb_strtoupper', $envio);
-			$user = mb_strtoupper($user);
+		if(!$addressData->des_pais) {
+			$desPais = FsPaises::query()
+				->where('cod_paises', $addressData->clid_pais)
+				->value('des_paises');
+
+			$addressData->setDesPais($desPais);
 		}
 
-		$rsoc = $envio['clid_rsoc'] ?? $user;
-
-		//'codd_clid' => 'CONT', se usaba para carlandia tener datos de contacto del usuario
-		$address = [
-			'cli_clid' => $num,
-			'codd_clid' => $envio['codd_clid'],
-			'nomd_clid' => $user ?? '',
-			'tipo_clid' => 'E',
-			'cp_clid' => $envio['clid_cpostal'] ?? '',
-			'dir_clid' => $envio['clid_direccion'] ?? '',
-			'dir2_clid' => $envio['clid_direccion_2'] ?? '',
-			'pob_clid' => $envio['clid_poblacion'] ?? '',
-			'pais_clid' => $envio['clid_pais'] ?? '',
-			'codpais_clid' => $envio['clid_cod_pais'] ?? '',
-			'sg_clid' => $envio['clid_via'] ?? '',
-			'pro_clid' => mb_substr($envio['clid_provincia'] ?? '', 0, 30, 'UTF-8'),
-			'tel1_clid' => $envio['clid_telf'] ?? '',
-			'rsoc_clid' => $rsoc ?? '',
-			'cli2_clid' => $envio['cod2_clid'] ?? null,
-			'email_clid' => $envio['email_clid'] ?? '',
-			'preftel_clid' => $envio['preftel_clid'] ?? '',
-			'rsoc2_clid' => $envio['rsoc2_clid'] ?? '',
-			'mater_clid' => $envio['mater_clid'] ?? 'N'
+		$dataToModel = [
+			...$addressData->toEloquentArray(),
+			'cli_clid' => $userId
 		];
 
-		FxClid::create($address);
+		$strToDefault = Config::get('app.strtodefault_register', 0);
+		if (!$strToDefault) {
+			$dataToModel = array_map('mb_strtoupper', $dataToModel);
+		}
+
+		FxClid::create($dataToModel);
 	}
 
-	public function editAddress($envio, $num)
+	public function editAddress(AddressData $addressData, string $userId)
 	{
-		$addressId = $envio['codd_clid'];
+		if(!$addressData->des_pais) {
+			$desPais = FsPaises::query()
+				->where('cod_paises', $addressData->clid_pais)
+				->value('des_paises');
+
+			$addressData->setDesPais($desPais);
+		}
+
+		$dataToModel = $addressData->toEloquentArray();
 
 		$strToDefault = Config::get('app.strtodefault_register', 0);
 		if (!$strToDefault) {
-			$envio = array_map('mb_strtoupper', $envio);
+			$dataToModel = array_map('mb_strtoupper', $dataToModel);
 		}
-
-		$addressData = [
-			'dir_clid' => $envio['clid_direccion'] ?? '',
-			'dir2_clid' => $envio['clid_direccion_2'] ?? '',
-			'cp_clid' => $envio['clid_cpostal'] ?? '',
-			'pob_clid' => $envio['clid_poblacion'] ?? '',
-			'pais_clid' => $envio['clid_pais'] ?? '',
-			'codpais_clid' => $envio['clid_cod_pais'] ?? '',
-			'sg_clid' => $envio['clid_via'] ?? '',
-			'pro_clid' => mb_substr($envio['clid_provincia'] ?? '', 0, 30, 'UTF-8'),
-			'nomd_clid' => $envio['clid_name'] ?? '',
-			'tel1_clid' => $envio['clid_telf'] ?? '',
-			'rsoc_clid' => $envio['clid_rsoc'] ?? '',
-			'email_clid' => $envio['email_clid'] ?? '',
-			'preftel_clid' => $envio['preftel_clid'] ?? '',
-			'rsoc2_clid' => $envio['rsoc2_clid'] ?? '',
-			'mater_clid' => $envio['mater_clid'] ?? 'N'
-		];
 
 		FxClid::query()
 			->where([
-				['cli_clid', $num],
-				['codd_clid', $addressId]
+				['cli_clid', $userId],
+				['codd_clid', $addressData->codd_clid]
 			])
-			->update($addressData);
+			->update($dataToModel);
 	}
 
 	public function getUserAddressById($codCli, $addressId)
