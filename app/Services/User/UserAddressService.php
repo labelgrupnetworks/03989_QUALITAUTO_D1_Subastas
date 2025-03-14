@@ -76,4 +76,57 @@ class UserAddressService
 			])
 			->first();
 	}
+
+	public function getUserAddresses($codCli)
+	{
+		return FxClid::query()
+			->where([
+				['cli_clid', $codCli],
+				['tipo_clid', 'E']
+			])
+			->get();
+	}
+
+	public function getNewMaxAddressId($codCli)
+	{
+		$actualMax = FxClid::query()
+			->where([
+				['cli_clid', "$codCli"],
+				['tipo_clid', 'E'],
+				['codd_clid', '!=', 'W1']
+			])
+			->max('codd_clid');
+
+		//int value and increment 1
+		$newMaxInteger = (int) $actualMax + 1;
+
+		$newMaxString = str_pad($newMaxInteger, 2, '0', STR_PAD_LEFT);
+		return $newMaxString;
+	}
+
+
+	public function deleteAddress($codCli, $codd_clid)
+	{
+		FxClid::query()
+			->where([
+				['cli_clid', $codCli],
+				['tipo_clid', 'E'],
+				['codd_clid', $codd_clid]
+			])
+			->delete();
+
+		return true;
+	}
+
+	public function changeFavoriteAddress($codCli, $codd_clid, $new_cod_clid)
+	{
+		FxClid::query()
+			->where([
+				['cli_clid', $codCli],
+				['codd_clid', $codd_clid]
+			])
+			->update(['codd_clid' => $new_cod_clid]);
+
+		return true;
+	}
 }

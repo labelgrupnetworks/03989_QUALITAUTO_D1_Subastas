@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AddressRequest;
-use App\Models\Address;
 use App\Models\Enterprise;
 use App\Models\User;
 use App\Models\V5\FsIdioma;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\View;
 
 class AddressController extends Controller
 {
-
 	public function index()
 	{
 		if (!Session::has('user')) {
@@ -26,22 +24,21 @@ class AddressController extends Controller
 			return View::make('front::pages.not-logged', array('data' => $data));
 		}
 
-		$Usuario          = new User();
-		$Usuario->cod_cli = Session::get('user.cod');
-		$datos            = $Usuario->getUser();
-		$addres = new Address();
-		$addres->cod_cli = Session::get('user.cod');
-		$shippingaddress            = $addres->getUserShippingAddress();
-		$address = array();
-		$address            = head($addres->getUserShippingAddress('W1'));
-		$enterprise = new Enterprise();
+		$userId = Session::get('user.cod');
 
-		$data = array(
+		$Usuario = new User();
+
+		$Usuario->cod_cli = $userId;
+		$datos = $Usuario->getUser();
+
+		$addressService = new UserAddressService();
+
+		$data = [
 			'name' => trans(Config::get('app.theme') . '-app.user_panel.personal_info'),
 			'user' => $datos,
-			'shippingaddress'  => $shippingaddress,
-			'address'  => $address,
-		);
+			'shippingaddress'  => $addressService->getUserAddresses($userId),
+			'address'  => $addressService->getUserAddressById($userId, 'W1')
+		];
 
 		$data['codd_clid'] = 'W1';
 		$countries_aux = FsPaises::JoinLangPaises()->addSelect('preftel_paises')->orderby("des_paises")->get();
@@ -56,7 +53,8 @@ class AddressController extends Controller
 		$data['countries'] = $countries;
 		$data['prefix'] = $prefix;
 
-		$data['via']  = collect($enterprise->getVia())->pluck('des_sg', 'cod_sg');
+		$enterprise = new Enterprise();
+		$data['via'] = collect($enterprise->getVia())->pluck('des_sg', 'cod_sg');
 
 		if (!empty(FsIdioma::getArrayValues())) {
 			$data['language'] = FsIdioma::getArrayValues();
@@ -76,6 +74,7 @@ class AddressController extends Controller
 	{
 		$addressDTO = $request->toDTO();
 		$userCod = Session::get('user.cod');
+		$addressService = new UserAddressService();
 
 		/**
 		 * Si en la petición viene codd_clid es porque se está editando una dirección
@@ -83,10 +82,10 @@ class AddressController extends Controller
 		 * @todo Mover a otro metodo el crear la dirección
 		 */
 		if ($addressDTO->codd_clid) {
-			(new UserAddressService)->editAddress($addressDTO, $userCod);
+			$addressService->editAddress($addressDTO, $userCod);
 		} else {
-			$addressDTO->setCoddClid($this->getNewCoddClid($userCod));
-			(new UserAddressService)->addAddress($addressDTO, $userCod);
+			$addressDTO->setCoddClid($addressService->getNewMaxAddressId($userCod));
+			$addressService->addAddress($addressDTO, $userCod);
 		}
 
 		return [
@@ -97,10 +96,11 @@ class AddressController extends Controller
 
 	public function deleteShippingAddress(Request $request)
 	{
-		$addres = new Address();
-		$addres->cod_cli = Session::get('user.cod');
-		$codd_clid = $request->input('cod');
-		$addres->deleteAddres($codd_clid);
+		$userId = Session::get('user.cod');
+		$codd_clid = $request->input('codd_clid', $request->input('cod'));
+
+		$addressService = new UserAddressService();
+		$addressService->deleteAddress($userId, $codd_clid);
 
 		return [
 			'status' => 'success',
@@ -110,24 +110,23 @@ class AddressController extends Controller
 
 	public function FavoriteShippingAddress(Request $request)
 	{
-		$addres = new Address();
-		$addres->cod_cli = Session::get('user.cod');
+		$userID = Session::get('user.cod');
 		$codd_clid = $request->input('codd_clid');
 
-		$addres->changeFavoriteAddres($codd_clid, 'W2');
-		$addres->changeFavoriteAddres('W1', $codd_clid);
-		$addres->changeFavoriteAddres('W2', 'W1');
+		$addressService = new UserAddressService();
+		$addressService->changeFavoriteAddress($userID, $codd_clid, 'W2');
+		$addressService->changeFavoriteAddress($userID, 'W1', $codd_clid);
+		$addressService->changeFavoriteAddress($userID, 'W2', 'W1');
+
 		return ['status' => 'success'];
 	}
 
 	public function seeShippingAddress(Request $request)
 	{
 		$userCod = Session::get('user.cod');
-
-		$addres = new Address();
-		$addres->cod_cli = $userCod;
-
+		$addressService = new UserAddressService();
 		$coddCli = $request->input('codd_clid');
+
 		#controlamos que no esten insertando código malicioso, cómo el limite del campo son 4 caracteres usaremos esa caracteristica
 		if (strlen($coddCli) > 4) {
 			$coddCli = 'W1';
@@ -135,15 +134,13 @@ class AddressController extends Controller
 
 		//Si no viene codd_clid cremos nuevo codigo de envio
 		if ($coddCli == 'new') {
-			$codd_clid = $this->getNewCoddClid($userCod);
+			$codd_clid = $addressService->getNewMaxAddressId($userCod);
 			//Si viene asignamos codigo
 		} elseif (!empty($coddCli)) {
 			$codd_clid = $coddCli;
 		} else {
 			$codd_clid = 'W1';
 		}
-
-		$data_adress = $addres->getUserShippingAddress($codd_clid);
 
 		$userClass = new User();
 		$userClass->cod_cli = $userCod;
@@ -152,28 +149,13 @@ class AddressController extends Controller
 			'via' => (new Enterprise)->getVia(),
 			'countries' => FsPaises::selectBasicPaises()->orderBy("des_paises")->get(),
 			'new' => $coddCli == 'new',
-			'shippingaddress' => $addres->getUserShippingAddress(),
-			'address' => !empty($data_adress) ? head($data_adress) : null,
+			'shippingaddress' => $addressService->getUserAddresses($userCod)->toArray(),
+			'address' => $addressService->getUserAddressById($userCod, 'W1'),
 			'codd_clid' => $codd_clid,
 			'user' => $userClass->getUser()
 		];
 
 		return view('front::pages.panel.address_shipping', ['data' => $data]);
-	}
-
-	private function getNewCoddClid($codCli)
-	{
-		$addres = new Address();
-		$addres->cod_cli = $codCli;
-
-		$max_direcc_temp = $addres->getMaxShippingAddress();
-
-		if (!empty($max_direcc_temp)) {
-			$max_direcc = head($max_direcc_temp)->max_codd + 1;
-			return str_pad($max_direcc, '2', 0, STR_PAD_LEFT);
-		}
-
-		return '01';
 	}
 
 }
