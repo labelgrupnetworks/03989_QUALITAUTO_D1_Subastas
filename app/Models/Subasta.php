@@ -789,9 +789,10 @@ class Subasta extends Model
 		$addUserInfo = "";
 		$joinUserInfo = "";
 		if(Config::get('app.show_user_info_in_bids', false)) {
+			$gemp = Config::get('app.gemp');
 			$addUserInfo = ", fxcli.codpais_cli";
-			$joinUserInfo = "LEFT JOIN fxcliweb ON (licitadores.EMP_LICIT = fxcliweb.EMP_CLIWEB AND fxcliweb.COD_CLIWEB = licitadores.CLI_LICIT)
-				LEFT JOIN fxcli ON (fxcli.GEMP_CLI = fxcliweb.GEMP_CLIWEB AND fxcli.COD_CLI = fxcliweb.COD_CLIWEB)";
+			$joinUserInfo = "LEFT JOIN fxcli ON (licitadores.CLI_LICIT = fxcli.COD_CLI AND fxcli.GEMP_CLI = :gemp)";
+			$params['gemp'] = $gemp;
 		}
 
 		//ES IMPORTANTE QUE SI HAY DOS PUJAS IGUALES COJA PRIMERO LA ULTIMA, PARA ESO HACE FALTA MIRAR LA FECHA Y HORA Y LIN_ASIGL1 POR SI LA FECHA Y HORA SON IGUALES.
