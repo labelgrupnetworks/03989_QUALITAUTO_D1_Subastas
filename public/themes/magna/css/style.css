@@ -679,7 +679,7 @@ nav.header-navbar ul {
 .lot-buy-to,
 .lot-not-buy,
 .ficha-is-awarded {
-	display: none;
+	/* display: none; */
 	text-transform: lowercase;
 }
 
@@ -1182,17 +1182,19 @@ body>footer .logo-svg {
 	font-size: 2rem;
 }
 
-.ficha-pujas .salida-price {
+.ficha-pujas :is(.salida-price, .sold-price) {
 	text-transform: uppercase;
 	font-size: 1.25em;
+	margin-bottom: 1rem;
 }
+
 
 .ficha-pujas .price:not(.next-price) span:nth-of-type(2) {
 	float: none;
 	margin-left: 2rem;
 }
 
-.ficha-pujas .price.salida-price span:nth-of-type(2) {
+.ficha-pujas .price:is(.salida-price, .sold-price) span:nth-of-type(2) {
 	font-weight: 700;
 }
 
