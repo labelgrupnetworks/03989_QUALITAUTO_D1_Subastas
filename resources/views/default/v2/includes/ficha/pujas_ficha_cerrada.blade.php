@@ -38,7 +38,7 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
 		<h4 class="ficha-is-awarded">{{ trans('web.subastas.dont_buy') }}</h4>
 
 	{{-- No Vendido - cerrado  --}}
-	@elseif($cerrado && empty($precio_venta))
+	@elseif($cerrado && empty($precio_venta) && $remate)
 		<h4 class="ficha-is-awarded">{{ trans('web.subastas.dont_buy') }}</h4>
 
 	 @elseif($devuelto)
