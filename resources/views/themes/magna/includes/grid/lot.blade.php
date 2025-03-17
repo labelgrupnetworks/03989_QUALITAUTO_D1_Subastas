@@ -30,6 +30,7 @@
 			@endif
 
 			@if( $awarded && !$devuelto && !$retirado)
+
 				@if($cerrado && $remate &&  (!empty($precio_venta) ) || ($sub_historica && !empty($item->impadj_asigl0)) )
 					@if($sub_historica && !empty($item->impadj_asigl0))
 						@php($precio_venta = $item->impadj_asigl0)@endphp
@@ -39,7 +40,7 @@
 						<span>{{ $precio_venta }} {{ trans($theme.'-app.subastas.euros') }}</span>
 					</p>
 
-				@elseif($cerrado &&  empty($precio_venta) && !$compra)
+				@elseif($cerrado && empty($precio_venta) && !$compra && $remate)
 					<p class="lot-not-buy">
 						<span class="salida-title notSold">{{ trans($theme.'-app.subastas.dont_buy') }}</span>
 					</p>
