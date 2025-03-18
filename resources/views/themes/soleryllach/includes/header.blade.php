@@ -1,7 +1,10 @@
+@inject('auctionService', 'App\Services\Auction\AuctionService')
+
 @php
     use App\libs\TradLib as TradLib;
     $lang = Config::get('app.locale');
 @endphp
+
 <header>
     <div class="navbar-top">
         <div class="container">
@@ -233,9 +236,7 @@
                                     $firstVdAuction = $subastasV->first();
 
                                     if ($subastasV->count() == 1) {
-                                        $indices = \App\Models\Amedida::indice($firstVdAuction->cod_sub, $firstVdAuction->id_auc_sessions);
-
-                                        if (count($indices) > 0) {
+                                        if ($auctionService->existsAuctionIndex($firstVdAuction->cod_sub, $firstVdAuction->id_auc_sessions)) {
                                             $url_lotes = \Routing::translateSeo('indice-subasta') . $firstVdAuction->cod_sub . '-' . $firstVdAuction->name . '-' . $firstVdAuction->id_auc_sessions;
                                         } else {
                                             $url_lotes = \Routing::translateSeo('subasta') . $firstVdAuction->cod_sub . '-' . str_slug($firstVdAuction->name) . '-' . $firstVdAuction->id_auc_sessions;

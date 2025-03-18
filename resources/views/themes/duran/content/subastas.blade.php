@@ -31,7 +31,6 @@ foreach ($data['auction_list'] as $value){
 							@foreach($subastas as $subasta)
 								<?php
 
-									$indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
 									$url_lotes= \Tools::url_auction($subasta->cod_sub,$subasta->des_sub,$subasta->id_auc_sessions, '001');
 									$url_tiempo_real=\Tools::url_real_time_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions);
 									$url_subasta=\Tools::url_info_auction($subasta->cod_sub,$subasta->name);

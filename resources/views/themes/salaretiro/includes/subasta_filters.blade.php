@@ -138,36 +138,6 @@
 			  @endif
               <button class="btn btn-filter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
 
-        <?php
-                $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
-
-        ?>
-        @if(!isset($in_indice_subasta) || $in_indice_subasta == false)
-
-            <?php
-                $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
-            ?>
-
-            @if(!empty($indices))
-                <div class="block_filters text">
-                    <label for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
-                    <div class="tcenter">
-                          <a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
-                    </div>
-                </div>
-
-                <?php // hacer que los filtros funcionen con el indice
-                    /*
-                        @if (app('request')->input('first_lot'))
-                            <input type='hidden' name="first_lot" value="{{app('request')->input('first_lot')}}">
-                        @endif
-                        @if (app('request')->input('last_lot'))
-                            <input type='hidden' name="last_lot" value="{{app('request')->input('last_lot')}}">
-                        @endif
-                    */
-                ?>
-            @endif
-        @endif
         </form>
 </div>
 

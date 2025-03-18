@@ -1,3 +1,5 @@
+@inject('auctionService', 'App\Services\Auction\AuctionService')
+
 @php
     $urlIndice = $urlIndice ?? '';
 	$isFinishedAndNotHistory = $ficha_subasta->subc_sub != 'H' && now() > $ficha_subasta->end && $ficha_subasta->tipo_sub == 'W';
@@ -17,11 +19,8 @@
     <div class="auction-cover-links">
 
         @if (!empty($urlIndice))
-            @php
-                $indices = App\Models\Amedida::indice($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions);
-            @endphp
 
-            @if (!empty($indices))
+            @if ($auctionService->existsAuctionIndex($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions))
                 <a class="btn btn-block btn-subasta" title="{{ trans("$theme-app.lot_list.open_indice") }}"
                     href="{{ $urlIndice }}">
                     {{ trans("$theme-app.lot_list.open_indice") }}

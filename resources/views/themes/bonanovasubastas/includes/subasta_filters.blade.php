@@ -10,7 +10,7 @@
 
              <label for="input_reference">{{ trans($theme.'-app.lot_list.reference') }}</label>
             <input id="input_reference" placeholder="{{ trans($theme.'-app.lot_list.reference') }}" name="reference" type="text" class="form-control input-sm" value="{{ app('request')->input('reference') }}">
-                    
+
                     <div class="divider"></div>
                     <select id="order_selected" name="order" class="form-control submit_on_change">
                     <option value="name" @if (app('request')->input('order') == 'name') selected @endif >
@@ -40,15 +40,15 @@
 
 
                         <option value="fecalta" @if (app('request')->input('order') == 'fecalta') selected @endif >
-                                {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.more_recent') }} 
+                                {{ trans($theme.'-app.lot_list.order') }}:    {{ trans($theme.'-app.lot_list.more_recent') }}
                         </option>
                     @endif
             </select>
         </div>
-                        
-                        
+
+
 <?php
-    
+
     $lin_ortsec_selected = app('request')->input('lin_ortsec');
     if(!is_numeric($lin_ortsec_selected)){
         $lin_ortsec_selected = '';
@@ -67,36 +67,36 @@
     $subasta->group_by = "ORTSEC1.LIN_ORTSEC1, ORTSEC0.orden_ORTSEC0, NVL(ORTSEC0_LANG.KEY_ORTSEC0_LANG,  ORTSEC0.KEY_ORTSEC0),NVL(ORTSEC0_LANG.DES_ORTSEC0_LANG,  ORTSEC0.DES_ORTSEC0)";
     $subasta->order_by_values = "ORTSEC0.orden_ORTSEC0";
     $categories= $subasta->getLots("small",true);
-    
-?>                    
-                        
+
+?>
 
 
- @if( count($categories) > 0) 
+
+ @if( count($categories) > 0)
  <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-   
+
       <label>{{ trans($theme.'-app.lot_list.categories') }}  </label>
-               
 
 
 
-                    <select class="form-control " id="category" name="lin_ortsec" >                       
+
+                    <select class="form-control " id="category" name="lin_ortsec" >
                          <option value="" >{{ trans($theme.'-app.lot_list.all_categories') }}</option>
                         @foreach($categories as $category)
                              <option value="{{$category->lin_ortsec1}}" <?=   $lin_ortsec_selected == $category->lin_ortsec1? "selected='selected'" : ""  ?> >{{ $category->des_ortsec0 }} ({{$category->cuantos}})</option>
                         @endforeach
                     </select>
-        
-     
-        <?php //solo se cargan las subcategorias si hay categorias pero no es la de todas las categorias de las subastas P ?>        
-                    @if ( !empty($lin_ortsec_selected))    
+
+
+        <?php //solo se cargan las subcategorias si hay categorias pero no es la de todas las categorias de las subastas P ?>
+                    @if ( !empty($lin_ortsec_selected))
                         <?php
                             //cargamos el objeto de nuevo para que este vacio de selects y joins
                             $subasta = new App\Models\Subasta();
-                            $subasta->select_filter = "COD_SEC, COUNT(COD_SEC) cuantos";   
+                            $subasta->select_filter = "COD_SEC, COUNT(COD_SEC) cuantos";
                             $subasta->select_filter .= " ,NVL(SEC_LANG.DES_SEC_LANG,  SEC.DES_SEC) DES_SEC ";
                             $subasta->select_filter .= " ,NVL(SEC_LANG.KEY_SEC_LANG,  SEC.KEY_SEC) KEY_SEC  ";
-                            $subasta->join_filter = "JOIN FXSEC SEC ON (SEC.COD_SEC = HCES1.SEC_HCES1  ) ";	
+                            $subasta->join_filter = "JOIN FXSEC SEC ON (SEC.COD_SEC = HCES1.SEC_HCES1  ) ";
                             $subasta->join_filter .= "LEFT JOIN FXSEC_LANG SEC_LANG ON (SEC_LANG.CODSEC_SEC_LANG = SEC.COD_SEC AND  SEC_LANG.GEMP_SEC_LANG = SEC.GEMP_SEC  AND SEC_LANG.LANG_SEC_LANG = '". Config::get('app.language_complete')[Config::get('app.locale')]   . "')" ;
                             $subasta->join_filter .= "JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = SEC.COD_SEC  AND ORTSEC1.EMP_ORTSEC1 = HCES1.EMP_HCES1 ) ";
                             $subasta->where_filter = " AND SEC.BAJAT_SEC = 'N' AND SEC.GEMP_SEC = '". Config::get('app.gemp')."' ";
@@ -104,59 +104,30 @@
                             $subasta->where_filter .= " AND ORTSEC1.SUB_ORTSEC1 = ASIGL0.SUB_ASIGL0 AND \"id_auc_sessions\" =  ".  $data['id_auc_sessions'];
                             $subasta->group_by = "COD_SEC,ORTSEC1.ORDEN_ORTSEC1, NVL(SEC_LANG.DES_SEC_LANG,  SEC.DES_SEC), NVL(SEC_LANG.KEY_SEC_LANG,  SEC.KEY_SEC)";
                             $subasta->order_by_values = "ORTSEC1.ORDEN_ORTSEC1 ASC";
-                          
-                            
+
+
                             $subcategories= $subasta->getLots("small",true);
-                            
+
                         ?>
                         @if( count($subcategories) > 0)
                          <label>{{ trans($theme.'-app.lot_list.subcategories') }}  </label>
-                            <select class="form-control " id="subcategory" name="cod_sec" >                                   
+                            <select class="form-control " id="subcategory" name="cod_sec" >
                                    <option value="" >{{ trans($theme.'-app.lot_list.all_subcategory') }} </option>
-                                       @foreach($subcategories as $subcategory)                                    
+                                       @foreach($subcategories as $subcategory)
                                            <option value="{{$subcategory->cod_sec}}" <?=  $data['subcategory'] == $subcategory->cod_sec? "selected='selected'" : ""  ?> >{{ ucfirst(mb_strtolower(trim ($subcategory->des_sec)))}} ({{$subcategory->cuantos}})  </option>
                                        @endforeach
-                            </select>                            
+                            </select>
                         @endif
                     @endif
    </div>
- @endif                
+ @endif
               <br>
               <div id="select_filters">
                     @include('includes.select_filters')
               </div>
               <button class="btn btn-filter" type="submit">{{ trans($theme.'-app.lot_list.filter') }}</button>
-             
-        <?php 
-                $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
 
-        ?>              
-        @if(!isset($in_indice_subasta) || $in_indice_subasta == false)     
 
-            <?php 
-                $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
-            ?>              
-
-            @if(!empty($indices))                
-                <div class="block_filters text">
-                    <label for="input_description">{{ trans($theme.'-app.lot_list.indice_auction') }}</label>
-                    <div class="tcenter">
-                          <a title="{{ trans($theme.'-app.lot_list.open_indice') }}" href="{{$data['url_indice']}}" class="btn btn-filter listaIndice btn-color" >{{ trans($theme.'-app.lot_list.open_indice') }}</a>
-                    </div>
-                </div>
-                
-                <?php // hacer que los filtros funcionen con el indice 
-                    /*
-                        @if (app('request')->input('first_lot'))
-                            <input type='hidden' name="first_lot" value="{{app('request')->input('first_lot')}}">
-                        @endif 
-                        @if (app('request')->input('last_lot'))
-                            <input type='hidden' name="last_lot" value="{{app('request')->input('last_lot')}}">
-                        @endif 
-                    */    
-                ?>
-            @endif
-        @endif
         </form>
 </div>
 
@@ -168,7 +139,7 @@
             $("[name$='_select']").attr("name","");
             $("#form_lotlist").submit();
         });
-        
+
         $("#subcategory").on('change', function(){
             //borrar los names de los selectores para que no se envien al cambiar de subcategoria
             $("[name$='_select']").attr("name","");

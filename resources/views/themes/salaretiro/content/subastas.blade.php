@@ -28,17 +28,10 @@
                 @php
 					$title = $subasta->name;
 				  	$clean_title = strip_tags($title);
+					$url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
 
-					// $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                    $indices = array();
-                    if(count($indices) > 0 ){
-                        $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
-                    }else{
-                        $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
-					}
-
-                $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
-                $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($clean_title);
+					$url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($clean_title)."-".$subasta->id_auc_sessions;
+					$url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($clean_title);
                   if( $subasta->tipo_sub =='V' ){
                            $url_lotes.='?only_salable=on';
                   }elseif(strtotime($subasta->session_end) < time()){
@@ -137,13 +130,7 @@
                 </div>
                 @foreach($sub as $subasta )
                     <?php
-                        // $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                        $indices = array();
-                        if(count($indices) > 0 ){
-                            $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                        }else{
-                            $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
-                        }
+                        $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
                         $url_tiempo_real=\Routing::translateSeo('api/subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
                         $url_subasta=\Routing::translateSeo('info-subasta').$subasta->cod_sub."-".str_slug($subasta->name);
                     ?>

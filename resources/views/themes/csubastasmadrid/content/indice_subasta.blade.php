@@ -1,3 +1,5 @@
+@inject('auctionService', 'App\Services\Auction\AuctionService')
+
 @php
 	use App\Models\V5\AucSessions;
 
@@ -6,7 +8,7 @@
 	$previousAuction = AucSessions::previousReference($ficha_subasta->cod_sub, $ficha_subasta->reference);
 	$nextAuction = AucSessions::nextReference($ficha_subasta->cod_sub, $ficha_subasta->reference);
 
-	$indices = App\Models\Amedida::indice($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions);
+	$indices = $auctionService->getAuctionIndexs($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions);
 
 	//mostrar cuenta atras
     $showCountdown = $ficha_subasta->tipo_sub == 'W' && in_array($ficha_subasta->subc_sub, ['A', 'S']) && strtotime($ficha_subasta->start) > time();

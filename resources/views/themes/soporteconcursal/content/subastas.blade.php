@@ -5,7 +5,6 @@
                             @foreach (collect($data['auction_list'])->sortBy('session_start')->sortByDesc('session_end') as $subasta)
                             <?php
 
-                                $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
                                 $url_lotes= \Tools::url_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions,$subasta->reference);
                                 $url_tiempo_real=\Tools::url_real_time_auction($subasta->cod_sub,$subasta->name,$subasta->id_auc_sessions);
 

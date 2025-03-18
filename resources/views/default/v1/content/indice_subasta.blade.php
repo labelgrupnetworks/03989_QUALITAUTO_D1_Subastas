@@ -1,3 +1,5 @@
+@inject('auctionService', 'App\Services\Auction\AuctionService')
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 title-head-grid">
@@ -44,9 +46,10 @@
 
                             </td>
                         </tr>
-                        <?php 
-                            $indices = App\Models\Amedida::indice($data['cod_sub'], $data['id_auc_sessions']);
-                        ?> @foreach($indices as $indice)
+                        <?php
+                            $indices = $auctionService->getAuctionIndexs($ficha_subasta->cod_sub, $ficha_subasta->id_auc_sessions);
+                        ?>
+						@foreach($indices as $indice)
                         <tr id="order-row-tpl" style="display: table-row;">
                             <td class="class-content-orders" onclick="window.location='{{$data['url']}}?first_lot={{$indice->dref_subind}}&last_lot={{$indice->href_subind}}&index_hide=1'">
                                 <div class="nt-block-th left">

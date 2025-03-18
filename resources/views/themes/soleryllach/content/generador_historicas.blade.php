@@ -24,8 +24,8 @@
         @if($data['subc_sub'] != 'H')
             @foreach ($data['auction_list'] as  $subasta)
                 <?php
-					$indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                    if(count($indices) > 0 ){
+					$auctionService = new App\Services\Auction\AuctionService();
+                    if($auctionService->existsAuctionIndex($firstVdAuction->cod_sub, $firstVdAuction->id_auc_sessions)){
                         $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
                     }else{
                         $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
@@ -135,8 +135,8 @@
                     @foreach($sessions as $subasta)
                     <?php
 
-                        $indices = App\Models\Amedida::indice($subasta->cod_sub, $subasta->id_auc_sessions);
-                        if(count($indices) > 0 ){
+						$auctionService = new App\Services\Auction\AuctionService();
+						if($auctionService->existsAuctionIndex($firstVdAuction->cod_sub, $firstVdAuction->id_auc_sessions)){
                             $url_lotes=\Routing::translateSeo('indice-subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
                         }else{
                             $url_lotes=\Routing::translateSeo('subasta').$subasta->cod_sub."-".str_slug($subasta->name)."-".$subasta->id_auc_sessions;
