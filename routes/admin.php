@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\configuracion\AdminMesuresController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\ResourceController;
+use App\Http\Controllers\admin\subasta\AdminLicitController;
 use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
@@ -253,17 +254,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::get('/list', 'subasta\SubastaController@getSelectClients');
 			Route::get('/select2list', 'subasta\SubastaController@getSelect2ClientList')->name('client.list');
 		});
-		Route::group(['prefix' => 'licit'], function () {
-			Route::get('/', 'subasta\AdminLicitController@index');
-			Route::get('/show', 'subasta\AdminLicitController@show');
-			Route::get('/create', 'subasta\AdminLicitController@create');
-			Route::post('/store', 'subasta\AdminLicitController@store');
-			Route::get('/edit', 'subasta\AdminLicitController@edit');
-			Route::post('/update', 'subasta\AdminLicitController@update');
-			Route::get('/list', 'subasta\SubastaController@getSelectLicits');
-			Route::post('/export-licits', 'subasta\SubastaController@exportLicits');
-		});
 
+		Route::group(['prefix' => 'licit'], function () {
+			Route::get('/', [AdminLicitController::class, 'index'])->name('admin.licit.index');
+			Route::get('/create', [AdminLicitController::class, 'create'])->name('admin.licit.create');
+			Route::post('/store', [AdminLicitController::class, 'store'])->name('admin.licit.store');
+			Route::get('/export-licits', [AdminLicitController::class, 'exportLicits'])->name('admin.licit.export');
+		});
 
 		Route::group(['prefix' => 'category'], function () {
 			Route::get('/', 'subasta\AdminCategoryController@index')->name('category.index');

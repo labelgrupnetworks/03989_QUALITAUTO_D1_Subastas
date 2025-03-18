@@ -1,71 +1,101 @@
-
 <div class="row well">
-	<div class="col-xs-12">
+    <div class="col-xs-12 mb-1 pt-1 pb-1" style="background-color: #ffe7e7">
 
-		<h1>{{ trans("admin-app.title.licits") }}</h1>
-		<a href="{{$formularioCreate}}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.licit") }}</a>
-		<form id="idAuctionForExport" name="idAuctionForExport" action="/admin/licit/export-licits" method="POST">
-			<input id="idAuctionForExcel" type="hidden" name="idAuctionExcel" value="">
-			<a id="submitLicitExport" onclick="javascript:submit_form(document.getElementById('idAuctionForExport'),0);" class="btn btn-warning right mr-2 d-none">{{ trans("admin-app.button.export") }} {{ mb_strtolower(trans("admin-app.title.licits")) }}</a>
-		</form>
+        <div class="d-flex align-items-center" style="gap:1rem;">
 
-		<p><i class="fa fa-2x fa-info-circle" style="position:relative;top:6px;"></i>&nbsp;<span class="badge">
-				{{ trans("admin-app.information.obligatory_select_auction") }}</span></p>
-		<br>
+            <div class="mr-auto d-inline-flex align-items-center" style="gap:1rem;">
+                <label class="">
+                    Subasta:
+                </label>
+                <select class="form-control form-control-sm" name="auction">
+                    @foreach ($auctions as $codSub => $nameSub)
+                        <option
+							@selected($auctionSelected == $codSub)
+								value="{{ $codSub }}">
+								{{ "$codSub - $nameSub" }}
+						</option>
+                    @endforeach
+                </select>
 
-		<form name="whereLicits" id="whereLicits" action="/admin/licit/show" method="GET" class="col-11">
+            </div>
 
-			@csrf
+            <a class="btn btn-sm btn-primary" href="{{ route('admin.licit.export', ['auction' => $auctionSelected]) }}">
+                {{ trans('admin-app.button.export') }}
+                {{ mb_strtolower(trans('admin-app.title.licits')) }}
+            </a>
 
-			<div class="row">
-				@foreach($formulario as $index => $item)
+            <button class="btn btn-sm btn-primary"
+				onclick="createLicit()"
+			>
+                {{ trans('admin-app.button.new') }}
+                {{ trans('admin-app.title.licit') }}
+            </button>
+        </div>
+    </div>
 
-				@if ($index != 'SUBMIT' && $index != 'HIDDEN')
-				<div class="col-xs-12 col-md-6" style="padding-bottom:15px;">
-					<div class="row">
-						<div class="col-xs-3 pt-2 text-right">
-							<label>{{ ucfirst($index)}}: </label>
-						</div>
-						<div class="col-xs-9">
-							{!! $item !!}
-						</div>
-					</div>
-				</div>
-				@elseif ($index != "SUBMIT")
-				{!! $item !!}
-				@endif
+    <div class="col-xs-12 table-responsive">
+        <table class="table table-striped table-condensed table-responsive" id="tableLicits" data-order-name="order"
+            style="width:100%">
+            <thead>
+                <th>{{ trans('admin-app.fields.cod_cli') }}</th>
+                <th>{{ trans('admin-app.fields.idorigincli') }}</th>
+                <th>{{ trans('admin-app.fields.cod_licit') }}</th>
+                <th>{{ trans('admin-app.fields.rsoc_cli') }}</th>
+            </thead>
 
-				@endforeach
-				<div class="col-xs-12 col-md-6 text-right">{!! $formulario['SUBMIT'] !!}</div>
+            <tbody>
+                @foreach ($licits as $licit)
+                    <tr>
+                        <td>{{ $licit->cli_licit }}</td>
+                        <td>{{ $licit->cod2_cli }}</td>
+                        <td>{{ $licit->cod_licit }}</td>
+                        <td>{{ $licit->rsoc_licit }}</td>
+                    </tr>
+                @endforeach
+
+        </table>
+
+
+    </div>
+
+</div>
+
+{{-- modal --}}
+<div class="modal fade" id="modalCreateLicit" role="dialog" aria-labelledby="modalCreateLicitLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					{{ trans('admin-app.button.new') }}
+					{{ trans("admin-app.title.licit") }}
+				</h5>
+				<button class="close" data-dismiss="modal" type="button" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 
-		</form>
-
+			<div class="modal-body"></div>
+		</div>
 	</div>
 </div>
 
-<div class="row well">
-	<div class="col-xs-12">
-		<table id="tableLicits" class="table table-striped table-bordered hover" style="width:100%">
-			<thead>
-				<th>{{ trans("admin-app.fields.cod_cli") }}</th>
-				<th>{{ trans("admin-app.fields.idorigincli") }}</th>
-				<th>{{ trans("admin-app.fields.cod_licit") }}</th>
-				<th>{{ trans("admin-app.fields.rsoc_cli") }}</th>
-				{{--<th>Acc.</th>--}}
-			</thead>
-		</table>
-	</div>
-</div>
+
 
 <script>
-	$('#select__1__SUB_LICIT').change(function() {
-		$('#idAuctionForExcel').val($(this).val());
-		if ($('#idAuctionForExcel').val() != '') {
-			$('#submitLicitExport').removeClass('d-none');
-		} else {
-			$('#submitLicitExport').addClass('d-none');
-		}
+	$('select[name="auction"]').on('change', function() {
+		window
+			.location = window.location.pathname + '?auction=' + $(this).val();
 	});
-</script>
 
+	function createLicit() {
+		$('#modalCreateLicit').modal('show');
+		$.ajax({
+			url: '{{ route('admin.licit.create', ['auction' => $auctionSelected]) }}',
+			type: 'GET',
+			success: function(data) {
+				$('#modalCreateLicit .modal-body').html(data);
+			}
+		});
+	}
+</script>

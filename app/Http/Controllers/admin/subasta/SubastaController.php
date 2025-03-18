@@ -499,14 +499,11 @@ class SubastaController extends Controller
 			]);
 		}
 
-
-
 		echo "OK";
 	}
 
 	function getSelectSubastas($ajax = true)
 	{
-
 		$subastas = FgSub::select('COD_SUB as id', 'DES_SUB as html')
 			->where('SUBC_SUB', '<>', 'N')->get();
 
@@ -629,52 +626,6 @@ class SubastaController extends Controller
 		}
 
 		return response();
-	}
-
-	function getSelectLicits()
-	{
-
-		$idauction = request('idauction');
-
-		if (empty($idauction)) {
-			return response('Id subasta obligatorio', 400);
-		}
-
-		$licitadores = FgLicit::select('cod_licit', 'rsoc_licit', 'cod2_cli')->joinCli()->where("SUB_LICIT", $idauction)->get();
-
-		if (empty($licitadores)) {
-			return response('No items', 400);
-		}
-
-		$licits = [];
-		foreach ($licitadores as $key => $value) {
-			$licits[$key] = [
-				'id' => $value->cod_licit,
-				'html' => "$value->cod_licit - $value->rsoc_licit"
-			];
-		}
-
-		return response($licits, 200);
-	}
-
-	function exportLicits()
-	{
-
-		$idauction = request('idAuctionExcel');
-
-		if (empty($idauction)) {
-			return response('Id subasta obligatorio', 400);
-		}
-
-		$licitadores = FgLicit::select('COD_LICIT as "código licitador"', 'COD2_CLI as "id origen cliente"', 'RSOC_LICIT as "nombre licitador"', 'COD_CLI as "código usuario"')->joinCli()->where("SUB_LICIT", $idauction)->get();
-
-		if (empty($licitadores)) {
-			return response('No items', 400);
-		}
-
-		$filename = "licitadores_$idauction" . "_" . date('d-m-Y_H-i-s');
-
-		return ToolsServiceProvider::exportCollectionToExcel($licitadores, $filename);
 	}
 
 	function getSelect2ClientList()

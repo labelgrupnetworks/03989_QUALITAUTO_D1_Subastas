@@ -1,24 +1,16 @@
-
 @extends('admin::layouts.logged')
 @section('content')
 
-<section role="main" class="content-body">
-        <header class="page-header">
-                <div class="right-wrapper pull-right">
-                        <ol class="breadcrumbs">
-                                <li>
-                                        <a href="/admin">
-                                                <i class="fa fa-home"></i>
-                                        </a>
-                                </li>
+    <section class="content-body" role="main">
+        @include('admin::includes.header_content')
 
-                        </ol>
+        <div class="row well header-well d-flex align-items-center">
+            <div class="col-xs-12">
+                <h1>{{ trans('admin-app.title.licits') }}</h1>
+            </div>
 
-                        <a class="sidebar-right-toggle" ><i class="fa fa-chevron-left"></i></a>
-                </div>
-		</header>
+        </div>
 
-		@include('admin::pages.subasta.licitadores.table')
-		{!! \FormLib::modalToList('list_modal')!!}
-
+        @include('admin::pages.subasta.licitadores.table')
+    </section>
 @stop
