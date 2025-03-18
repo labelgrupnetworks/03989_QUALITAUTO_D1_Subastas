@@ -2,173 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-
-
-//opcional
-use SimpleXMLElement;
 use App;
-use App\Actions\Observability\HasAuctionAction;
-use App\Http\Controllers\admin\bi\AdminBiController;
-use Request;
-use lessc;
-use Illuminate\Support\Facades\DB;
-use File;
-use Log;
-use View;
-use App\Models\Subasta;
-use App\Models\Sec;
-use App\Models\MailQueries;
-use App\Models\Bloques;
-use App\libs\ImageGenerate;
-# ODBC Service Provider
-use TCK\Odbc\OdbcServiceProvider;
-
-# Cargamos el modelo
-use App\Models\User;
-
-use App\Models\Subalia;
-use App\Models\Enterprise;
-use App\Models\SubastaTiempoReal;
-use App\Models\delivery\Delivery;
-use \Http;
-use Config;
-use App\libs\StrLib;
-use App\libs\EmailLib;
-use App\libs\LogLib;
-use App\libs\GastosEnvioLib;
-use App\libs\Currency;
-use App\libs\LoadLotFileLib;
-use Deliverea\Deliverea;
-use Session;
-use Deliverea\Model;
-
-use Evo\Evo;
-use Mail;
-use Route;
-use \ForceUTF8\Encoding;
-use App\Http\Controllers\SubastaTiempoRealController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CronController;
-use App\Http\Controllers\PaymentsController;
-use App\Http\Controllers\SubastaController;
-use App\Http\Controllers\MailController;
-use App\Http\Controllers\PrestashopController;
 use App\Http\Controllers\externalws\duran\ClientController;
-use App\Http\Controllers\externalws\duran\ReservationController;
 use App\Http\Controllers\externalws\duran\OrderController;
-use App\Http\Controllers\externalws\duran\CloseLotController;
-use App\Http\Controllers\externalws\duran\CloseLotControllerOnline;
-use App\Http\Controllers\externalws\durangallery\PaidController;
-
-use App\Models\Payments;
-use App\Models\Facturas;
-use Spipu\Html2Pdf\Html2Pdf;
-use App\Models\V5\Customer_Presta as CustomerPresta;
-use App\Http\Controllers\V5\AutoFormulariosController;
-use App\Http\Controllers\V5\PayShoppingCartController;
-use App\Http\Controllers\ServicesController;
-
-
-use App\Models\V5\FxSec;
-use App\Models\V5\FxSubSec;
-
-use GuzzleHttp;
-use stdClass;
-use App\Models\V5\FxCli;
-
-use App\Models\V5\FxCliWeb;
-
-use App\Models\V5\FxCli2;
-use App\Models\V5\FxClid;
-use App\Models\V5\FgHces0;
-use App\Models\V5\FgHces1;
-use App\Models\V5\FgHces1_Lang;
-use App\Models\V5\FgLicit;
-use App\Models\V5\Web_Favorites;
-use App\Models\V5\FsParams;
-
-use App\Models\V5\FgAsigl0;
-use App\Models\V5\FgOrlic;
-use App\Models\V5\FgCsub;
-use App\Models\V5\FgCsub0;
-use App\Models\V5\FgCaracteristicas;
-use App\Models\V5\Web_Blog_Lang;
-
-use App\Models\V5\AucSessionsFiles;
-
-use App\Http\Controllers\apilabel\PaymentController;
-use App\Http\Controllers\externalws\duran\BidController;
-use App\Http\Controllers\externalws\durannft\PendingOperitionPaid;
-
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\V5\ArticleController;
-use App\Http\Controllers\V5\PayArticleCartController;
-
-use App\Models\V5\FgAsigl1;
-use App\Models\V5\FgAsigl1_Aux;
-use App\Models\V5\FgSub;
-use App\Models\V5\FgOrtsec0;
-
-
-use App\Http\Controllers\apilabel\ApiLabelException;
+use App\libs\EmailLib;
 use App\libs\PayPalV2API;
+use App\Models\articles\FgArt;
+use App\Models\articles\FgArt0;
 use App\Models\V5\AucSessions;
-use App\Models\V5\FgCreditoSub;
-use Cookie;
-use Illuminate\Http\Request as HttpRequest;
-use SoapFault;
+use App\Models\V5\FgAsigl0;
+use App\Models\V5\FgCaracteristicas_Hces1_Lang;
+use App\Models\V5\FgCaracteristicas_Hces1;
+use App\Models\V5\FgCaracteristicas_Value_Lang;
+use App\Models\V5\FgCaracteristicas_Value;
+use App\Models\V5\FgCaracteristicas;
+use App\Models\V5\FgCsub;
+use App\Models\V5\FgHces1;
+use App\Models\V5\FgOrtsec0;
+use App\Models\V5\FgPedc0;
+use App\Models\V5\FgSub;
+use App\Models\V5\FxCli;
+use App\Models\V5\FxSec;
 use App\Models\V5\Web_Faq;
 use App\Models\V5\Web_FaqCat;
-use App\Http\Controllers\V5\FaqController;
-use App\Models\V5\Web_Artist;
-use App\Models\V5\FgNft;
-use App\Http\Controllers\V5\GaleriaArte;
-
-use Illuminate\Support\Facades\Storage;
-use setasign\Fpdi\Fpdi;
-
-use App\Http\Controllers\externalws\motorflash\validateLotController;
-use PhpParser\Node\Expr\AssignOp\Concat;
-use App\Invoice;
-use Maatwebsite\Excel\Concerns\FromArray;
-
-use App\Http\Controllers\PdfController;
-use App\Http\Controllers\admin\facturacion\AdminPedidosController;
-
-
-use App\Http\Controllers\V5\CarlandiaPayController;
-use App\Http\Controllers\webservice\WebServiceController;
-use App\Models\V5\FgCaracteristicas_Hces1;
-use App\Models\V5\FgCaracteristicas_Hces1_Lang;
-use App\Models\V5\FgCaracteristicas_Value;
-use App\Models\V5\FgCaracteristicas_Value_Lang;
-
-use App\Models\V5\WebPayCart;
 use App\Providers\ToolsServiceProvider;
+use GuzzleHttp;
 use GuzzleHttp\Client;
-use App\Http\Controllers\externalws\vottun\VottunController;
-use GuzzleHttp\Psr7;
-use App\Http\Controllers\webservice\LogChangesController;
-use App\Http\Controllers\admin\subasta\AdminLotcontroller;
-use App\Models\Address;
-use App\Models\V5\FgAsigl1Mt;
-use Faker\Provider\en_US\PaymentTest;
-
-
-use ElephantIO\Engine\SocketIO\Version2X;
-use ElephantIO\Engine\Socket\SecureOptionBuilder;
-use App\Http\Controllers\V5\AppPushController;
-use App\Http\Controllers\V5\DepositController;
-use App\models\V5\AppUsersToken;
-use App\models\V5\AppPush;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config as FacadesConfig;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Spatie\SslCertificate\SslCertificate;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use setasign\Fpdi\Fpdi;
+use stdClass;
 
 class prueba extends BaseController
 {
@@ -183,21 +54,23 @@ class prueba extends BaseController
 		return DB::table('jobs')->get()->count();
 	}
 
-	private function testInvaluable(){
+	private function testInvaluable()
+	{
 		$house = new App\Http\Controllers\externalAggregator\Invaluable\House();
-		$a = $house->catalogs( "2248", "001");
+		$a = $house->catalogs("2248", "001");
 		echo $a;
 	}
 
 	private function sendFailedJobs($fromId, $toId)
 	{
-		foreach(range($fromId, $toId) as $id){
+		foreach (range($fromId, $toId) as $id) {
 			Artisan::call('queue:retry', ['id' => $id]);
 		}
 	}
 
 
-	public function traspaso_fgcaracteristicas(){
+	public function traspaso_fgcaracteristicas()
+	{
 
 
 		//$res = $this->traspaso_auc_custom_fields();
@@ -206,30 +79,31 @@ class prueba extends BaseController
 		//$res = $this->traspaso_object_types_lang();
 		#ultimo paso pasar values
 		$res = $this->traspaso_values_hces1();
-		if($res){
+		if ($res) {
 
-			return redirect('prueba?a='.rand());
+			return redirect('prueba?a=' . rand());
 		}
 	}
 	# una vez volcados todos los datos, hacemos update en fgcaracteristica_hces1 para añadir los codes
-	public function traspaso_values_hces1($numelements = 200){
+	public function traspaso_values_hces1($numelements = 200)
+	{
 		$caracteristicas = FgCaracteristicas::get();
 
 
 		$idcaracteristicas = array();
-		foreach($caracteristicas as $caracteristica){
+		foreach ($caracteristicas as $caracteristica) {
 			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
 		}
 
 
-		$sql= "select \"field\" from \"auc_custom_fields_values\" group by \"field\"";
-		$fields = \DB::select($sql, []);
+		$sql = "select \"field\" from \"auc_custom_fields_values\" group by \"field\"";
+		$fields = DB::select($sql, []);
 		$select = "";
 		$where = array();
 
-		foreach($fields as $field){
-			$select .= ', "'.$field->field.'_code" ' ;
-			$where[]= '  "'.$field->field.'_code" is not null ';
+		foreach ($fields as $field) {
+			$select .= ', "' . $field->field . '_code" ';
+			$where[] = '  "' . $field->field . '_code" is not null ';
 		}
 
 		$sql = "select * from (
@@ -238,31 +112,26 @@ class prueba extends BaseController
 		from \"object_types_values\"
 		left join (select EMP_CARACTERISTICAS_HCES1,NUMHCES_CARACTERISTICAS_HCES1, LINHCES_CARACTERISTICAS_HCES1 from fgcaracteristicas_hces1 where idvalue_caracteristicas_hces1 is not null group by EMP_CARACTERISTICAS_HCES1,NUMHCES_CARACTERISTICAS_HCES1, LINHCES_CARACTERISTICAS_HCES1) T
 			on EMP_CARACTERISTICAS_HCES1 = \"company\" and  NUMHCES_CARACTERISTICAS_HCES1 =  \"transfer_sheet_number\" and  LINHCES_CARACTERISTICAS_HCES1 = \"transfer_sheet_line\"
-		where \"company\" = ".\Config::get("app.emp") ." ".
-		"and T.EMP_CARACTERISTICAS_HCES1 is null
-		and (". implode(' or ',$where ) . ")
+		where \"company\" = " . Config::get("app.emp") . " " .
+			"and T.EMP_CARACTERISTICAS_HCES1 is null
+		and (" . implode(' or ', $where) . ")
 		)
 			where rn <= $numelements";
 
-		$codes = \DB::select($sql, []);
-		echo "traspasando códigos". count($codes)." a la FgCaracteristicas_Hces1";
-		if(count($codes) == 0){
+		$codes = DB::select($sql, []);
+		echo "traspasando códigos" . count($codes) . " a la FgCaracteristicas_Hces1";
+		if (count($codes) == 0) {
 			die();
 		}
 
-		foreach($codes as $code){
+		foreach ($codes as $code) {
 
-			foreach($code as $atribute => $val){
+			foreach ($code as $atribute => $val) {
 
-				if(!is_null($val) && $atribute != "transfer_sheet_number"  && $atribute != "transfer_sheet_line"  && $atribute != "rn"   ){
+				if (!is_null($val) && $atribute != "transfer_sheet_number"  && $atribute != "transfer_sheet_line"  && $atribute != "rn") {
 
-					$atribute = str_replace("_code", "",$atribute);
-					FgCaracteristicas_Hces1::where("NUMHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_number)->
-					where("LINHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_line)->
-					where("IDCAR_CARACTERISTICAS_HCES1", $idcaracteristicas[$atribute])->
-					update(["IDVALUE_CARACTERISTICAS_HCES1" => $val]);
-
-
+					$atribute = str_replace("_code", "", $atribute);
+					FgCaracteristicas_Hces1::where("NUMHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_number)->where("LINHCES_CARACTERISTICAS_HCES1", $code->transfer_sheet_line)->where("IDCAR_CARACTERISTICAS_HCES1", $idcaracteristicas[$atribute])->update(["IDVALUE_CARACTERISTICAS_HCES1" => $val]);
 				}
 			}
 		}
@@ -272,41 +141,42 @@ class prueba extends BaseController
 
 
 	# OJO tener en cuenta que la tabla de fgcaracteristicas_value debe estar vacia para esa empresa, si no es así habrá que sumar un numero
-	public function traspaso_auc_custom_fields($numelements=200){
+	public function traspaso_auc_custom_fields($numelements = 200)
+	{
 		$caracteristicas = FgCaracteristicas::get();
 
-		$select="";
+		$select = "";
 		$idcaracteristicas = array();
-		foreach($caracteristicas as $caracteristica){
-			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+		foreach ($caracteristicas as $caracteristica) {
+			$select .= ' ,"' . $caracteristica->name_caracteristicas . '"';
 			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
 		}
 		$sql = "select * from (
 			select \"auc_custom_fields_values\".*,  ROW_NUMBER() OVER(order by \"id\") as rn from \"auc_custom_fields_values\"
-			left join fgcaracteristicas_value on emp_caracteristicas_value = '" .\Config::get("app.emp")."' and id_caracteristicas_value = \"id\"
+			left join fgcaracteristicas_value on emp_caracteristicas_value = '" . Config::get("app.emp") . "' and id_caracteristicas_value = \"id\"
 			where emp_caracteristicas_value is null
 			)
 			where rn <= $numelements";
 
-		$customFieldsValue = \DB::select($sql, []);
+		$customFieldsValue = DB::select($sql, []);
 
 		$caracteristicasValue = array();
 
-		echo "traspasando ". count($customFieldsValue)." a la traspaso_auc_custom_fields";
+		echo "traspasando " . count($customFieldsValue) . " a la traspaso_auc_custom_fields";
 
-		if(count($customFieldsValue) == 0){
+		if (count($customFieldsValue) == 0) {
 			#si acabamos ya no redireccionamos
 			die();
 		}
-		foreach($customFieldsValue as $customFieldValue){
+		foreach ($customFieldsValue as $customFieldValue) {
 
-			$caracteristicasValue[]=[
-				"EMP_CARACTERISTICAS_VALUE" => \Config::get("app.emp"),
+			$caracteristicasValue[] = [
+				"EMP_CARACTERISTICAS_VALUE" => Config::get("app.emp"),
 				"ID_CARACTERISTICAS_VALUE" =>  $customFieldValue->id,
-				"IDCAR_CARACTERISTICAS_VALUE" => $idcaracteristicas[ $customFieldValue->field],
+				"IDCAR_CARACTERISTICAS_VALUE" => $idcaracteristicas[$customFieldValue->field],
 				"OBJ_TYPE_CARACTERISTICAS_VALUE" =>  $customFieldValue->object_type,
 				"SECTION_CARACTERISTICAS_VALUE" =>  $customFieldValue->section,
-				"VALUE_CARACTERISTICAS_VALUE" =>$customFieldValue->value
+				"VALUE_CARACTERISTICAS_VALUE" => $customFieldValue->value
 			];
 		}
 
@@ -314,35 +184,36 @@ class prueba extends BaseController
 		return true;
 	}
 
-	public function traspaso_auc_custom_fields_lang($numelements=200){
+	public function traspaso_auc_custom_fields_lang($numelements = 200)
+	{
 		$caracteristicas = FgCaracteristicas::get();
 
-		$select="";
+		$select = "";
 		$idcaracteristicas = array();
-		foreach($caracteristicas as $caracteristica){
-			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+		foreach ($caracteristicas as $caracteristica) {
+			$select .= ' ,"' . $caracteristica->name_caracteristicas . '"';
 			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
 		}
 		$sql = "select * from (
 			select \"auc_custom_fields_values_lang\".*,  ROW_NUMBER() OVER(order by \"id_lang\") as rn from \"auc_custom_fields_values_lang\"
-			left join fgcaracteristicas_value_lang on emp_car_val_lang = '" .\Config::get("app.emp")."' and idcarval_car_val_lang = \"id_lang\"
+			left join fgcaracteristicas_value_lang on emp_car_val_lang = '" . Config::get("app.emp") . "' and idcarval_car_val_lang = \"id_lang\"
 			where emp_car_val_lang is null
 			)
 			where rn <= $numelements";
 
-		$customFieldsValue_lang = \DB::select($sql, []);
+		$customFieldsValue_lang = DB::select($sql, []);
 
 		$caracteristicasValue_lang = array();
-		echo "traspasando ". count($customFieldsValue_lang)." a la traspaso_auc_custom_fields_lang";
+		echo "traspasando " . count($customFieldsValue_lang) . " a la traspaso_auc_custom_fields_lang";
 
-		if(count($customFieldsValue_lang) == 0){
+		if (count($customFieldsValue_lang) == 0) {
 			#si acabamos ya no redireccionamos
 			die();
 		}
-		foreach($customFieldsValue_lang as $customFieldValue_lang){
+		foreach ($customFieldsValue_lang as $customFieldValue_lang) {
 
-			$caracteristicasValue_lang[]=[
-				"EMP_CAR_VAL_LANG" => \Config::get("app.emp"),
+			$caracteristicasValue_lang[] = [
+				"EMP_CAR_VAL_LANG" => Config::get("app.emp"),
 				"IDCARVAL_CAR_VAL_LANG" =>  $customFieldValue_lang->id_lang,
 				"LANG_CAR_VAL_LANG" =>  $customFieldValue_lang->lang,
 				"VALUE_CAR_VAL_LANG" =>  $customFieldValue_lang->value_lang
@@ -353,55 +224,49 @@ class prueba extends BaseController
 		return true;
 	}
 
-	public function traspaso_object_types($numelements=200){
+	public function traspaso_object_types($numelements = 200)
+	{
 		$caracteristicas = FgCaracteristicas::get();
 
-		$select="";
+		$select = "";
 		$idcaracteristicas = array();
 		$whereNull = array();
-		foreach($caracteristicas as $caracteristica){
-			$select.=' ,"'.$caracteristica->name_caracteristicas.'"';
+		foreach ($caracteristicas as $caracteristica) {
+			$select .= ' ,"' . $caracteristica->name_caracteristicas . '"';
 			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
-			$whereNull[]=' NVL(LENGTH("'.$caracteristica->name_caracteristicas.'"),0) > 0';
+			$whereNull[] = ' NVL(LENGTH("' . $caracteristica->name_caracteristicas . '"),0) > 0';
 		}
 
-		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1".$select)->
-		join('"object_types_values"','"company" = emp_hces1 and "transfer_sheet_number" = num_hces1 and "transfer_sheet_line" = lin_hces1')->
-		leftjoin("FGCARACTERISTICAS_HCES1","EMP_CARACTERISTICAS_HCES1 = EMP_HCES1 AND NUMHCES_CARACTERISTICAS_HCES1 = NUM_HCES1 AND LINHCES_CARACTERISTICAS_HCES1=LIN_HCES1")->
-		/* comprobamos que no exista en la tabla de caracteristicas */
-		where("EMP_CARACTERISTICAS_HCES1")->
-		whereRaw(" (". implode(' or ',$whereNull ) ." )")->
-		take($numelements)->get();
+		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1" . $select)->join('"object_types_values"', '"company" = emp_hces1 and "transfer_sheet_number" = num_hces1 and "transfer_sheet_line" = lin_hces1')->leftjoin("FGCARACTERISTICAS_HCES1", "EMP_CARACTERISTICAS_HCES1 = EMP_HCES1 AND NUMHCES_CARACTERISTICAS_HCES1 = NUM_HCES1 AND LINHCES_CARACTERISTICAS_HCES1=LIN_HCES1")->
+			/* comprobamos que no exista en la tabla de caracteristicas */where("EMP_CARACTERISTICAS_HCES1")->whereRaw(" (" . implode(' or ', $whereNull) . " )")->take($numelements)->get();
 
 		$caracteristicasHces1 = array();
 
-		echo "traspasando ". count($lotes)." a la traspaso_object_types";
+		echo "traspasando " . count($lotes) . " a la traspaso_object_types";
 
-		if(count($lotes) == 0){
+		if (count($lotes) == 0) {
 			#si acabamos ya no redireccionamos
 			die();
 		}
 
-		foreach($lotes as $lote){
+		foreach ($lotes as $lote) {
 
-			foreach($lote->toArray() as $atribute => $val){
+			foreach ($lote->toArray() as $atribute => $val) {
 
-				if(!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn" ){
+				if (!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn") {
 
 					#son los campos clob, "technical_description" se sacara a las hces1
-				if(in_array($atribute, ["obverse", "reverse"]) ){
-					#cada p que haya ponemos un salto de linea
-					$val = str_replace("</p>",  "</p>\n", $val);
-					#quitamos código HTML ya que si no se superan los 2000 caracteres
-					$val = strip_tags($val);
+					if (in_array($atribute, ["obverse", "reverse"])) {
+						#cada p que haya ponemos un salto de linea
+						$val = str_replace("</p>",  "</p>\n", $val);
+						#quitamos código HTML ya que si no se superan los 2000 caracteres
+						$val = strip_tags($val);
+					}
 
-
-				}
-
-					$caracteristicasHces1[]=[
-						"EMP_CARACTERISTICAS_HCES1" =>$lote->emp_hces1,
-						"NUMHCES_CARACTERISTICAS_HCES1" =>$lote->num_hces1,
-						"LINHCES_CARACTERISTICAS_HCES1" =>$lote->lin_hces1,
+					$caracteristicasHces1[] = [
+						"EMP_CARACTERISTICAS_HCES1" => $lote->emp_hces1,
+						"NUMHCES_CARACTERISTICAS_HCES1" => $lote->num_hces1,
+						"LINHCES_CARACTERISTICAS_HCES1" => $lote->lin_hces1,
 						"IDCAR_CARACTERISTICAS_HCES1" => $idcaracteristicas[$atribute],
 						"VALUE_CARACTERISTICAS_HCES1" => $val
 					];
@@ -414,59 +279,52 @@ class prueba extends BaseController
 		return true;
 	}
 
-	public function traspaso_object_types_lang($numelements=200){
+	public function traspaso_object_types_lang($numelements = 200)
+	{
 		$caracteristicas = FgCaracteristicas::get();
 
-		$select="";
+		$select = "";
 		$idcaracteristicas = array();
 
-		$whereNull=array();
+		$whereNull = array();
 
-		foreach($caracteristicas as $caracteristica){
-			$select.=' ,"'.$caracteristica->name_caracteristicas.'_lang"';
+		foreach ($caracteristicas as $caracteristica) {
+			$select .= ' ,"' . $caracteristica->name_caracteristicas . '_lang"';
 			$idcaracteristicas[$caracteristica->name_caracteristicas] = $caracteristica->id_caracteristicas;
-			$whereNull[]=' NVL(LENGTH("'.$caracteristica->name_caracteristicas.'_lang"),0) > 0';
-
+			$whereNull[] = ' NVL(LENGTH("' . $caracteristica->name_caracteristicas . '_lang"),0) > 0';
 		}
 
 
 
-		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1, \"lang_object_types_values_lang\" ".$select)->
-		join('"object_types_values_lang"','"company_lang" = emp_hces1 and "transfer_sheet_number_lang" = num_hces1 and "transfer_sheet_line_lang" = lin_hces1')->
-		leftjoin("FGCARACTERISTICAS_HCES1_LANG","EMP_CAR_HCES1_LANG = EMP_HCES1 AND NUMHCES_CAR_HCES1_LANG = NUM_HCES1 AND LINHCES_CAR_HCES1_LANG=LIN_HCES1 AND LANG_CAR_HCES1_LANG =  \"lang_object_types_values_lang\"")->
-		/* comprobamos que no exista en la tabla de caracteristicas  por lo que  miramso que EMP_CAR_HCES1_LANG sea nulo*/
-		where("EMP_CAR_HCES1_LANG")->
-		whereRaw(" (". implode(' or ',$whereNull ) ." )")->
-		take($numelements)->get();
+		$lotes = FgHces1::select("emp_hces1, num_hces1, lin_hces1, \"lang_object_types_values_lang\" " . $select)->join('"object_types_values_lang"', '"company_lang" = emp_hces1 and "transfer_sheet_number_lang" = num_hces1 and "transfer_sheet_line_lang" = lin_hces1')->leftjoin("FGCARACTERISTICAS_HCES1_LANG", "EMP_CAR_HCES1_LANG = EMP_HCES1 AND NUMHCES_CAR_HCES1_LANG = NUM_HCES1 AND LINHCES_CAR_HCES1_LANG=LIN_HCES1 AND LANG_CAR_HCES1_LANG =  \"lang_object_types_values_lang\"")->
+			/* comprobamos que no exista en la tabla de caracteristicas  por lo que  miramso que EMP_CAR_HCES1_LANG sea nulo*/where("EMP_CAR_HCES1_LANG")->whereRaw(" (" . implode(' or ', $whereNull) . " )")->take($numelements)->get();
 
 		$caracteristicasHces1 = array();
 
-		echo "traspasando ". count($lotes)." a la object_types_values_lang";
+		echo "traspasando " . count($lotes) . " a la object_types_values_lang";
 
-		if(count($lotes) == 0){
+		if (count($lotes) == 0) {
 			#si acabamos ya no redireccionamos
 			die();
 		}
 
-		foreach($lotes as $lote){
+		foreach ($lotes as $lote) {
 
-			foreach($lote->toArray() as $atribute => $val){
+			foreach ($lote->toArray() as $atribute => $val) {
 
-				if(!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn" && $atribute != "lang_object_types_values_lang"){
-					if(in_array($atribute, ["obverse_lang", "reverse_lang"]) ){
+				if (!is_null($val) && $atribute != "emp_hces1"  && $atribute != "num_hces1" && $atribute != "lin_hces1" && $atribute != "rn" && $atribute != "lang_object_types_values_lang") {
+					if (in_array($atribute, ["obverse_lang", "reverse_lang"])) {
 						#cada p que haya ponemos un salto de linea
 						$val = str_replace("</p>",  "</p>\n", $val);
 						#quitamos código HTML ya que si no se superan los 2000 caracteres
 						$val = strip_tags($val);
-
-
 					}
 
-					$caracteristicasHces1[]=[
-						"EMP_CAR_HCES1_LANG" =>$lote->emp_hces1,
-						"NUMHCES_CAR_HCES1_LANG" =>$lote->num_hces1,
-						"LINHCES_CAR_HCES1_LANG" =>$lote->lin_hces1,
-						"IDCAR_CAR_HCES1_LANG" => $idcaracteristicas[str_replace("_lang","",$atribute)],
+					$caracteristicasHces1[] = [
+						"EMP_CAR_HCES1_LANG" => $lote->emp_hces1,
+						"NUMHCES_CAR_HCES1_LANG" => $lote->num_hces1,
+						"LINHCES_CAR_HCES1_LANG" => $lote->lin_hces1,
+						"IDCAR_CAR_HCES1_LANG" => $idcaracteristicas[str_replace("_lang", "", $atribute)],
 						"VALUE_CAR_HCES1_LANG" => $val,
 						"LANG_CAR_HCES1_LANG" => $lote->lang_object_types_values_lang
 					];
@@ -518,7 +376,7 @@ class prueba extends BaseController
 
 	   ";
 		#and  cif_cli in (' GB788152982','AAA916794')
-		$users = \DB::select($sql, []);
+		$users = DB::select($sql, []);
 		$listado = [];
 		foreach ($users as $key => $user) {
 			if ($key > 0) {
@@ -554,30 +412,6 @@ class prueba extends BaseController
 		//	$a->informPaid("P55657178730");
 
 	}
-	public function TestVottun()
-	{
-		$num = 8;
-		$lin = 6;
-		$vottun = new VottunController();
-		$response = $vottun->webhook();
-		//$response = $vottun->vottunGetWebhook();
-		//$response = $vottun->vottunCreateWebhook();
-		//$response = $vottun->vottunNetworks();
-		echo "<pre>";
-		//$response = $vottun->uploadFile($num, $lin);
-		//$response = $vottun->uploadMetadata($num, $lin);
-
-		//$response = $vottun->mint($num, $lin);
-		//$response = $vottun->requestStateMint($num, $lin);
-		//$response = $vottun->transferNFT($num, $lin);
-		//$response = $vottun->requestStateTransfer($num, $lin);
-		//$response =$vottun->requestHistorictransactions($num, $lin);
-
-		//$operation = $vottun->getTransferOpperation($num, $lin);
-		//$response = $vottun->getTransaction($operation->transactionHash, $operation->networkId);
-		print_r($response);
-	}
-
 
 	/* carga motorflash */
 	public function cargaMotorflash()
@@ -606,7 +440,7 @@ class prueba extends BaseController
 
 
 		$sec = $lote->sec_hces1;
-		$emp = \Config::get("app.emp");
+		$emp = Config::get("app.emp");
 		$des = $lote->descweb_hces1;
 		$model = $lote->descweb_hces1;
 		$comb = 0;
@@ -632,6 +466,7 @@ class prueba extends BaseController
 			"udadxcaja_art0" => $udadxcaja,
 			"refasin_art0" => $refasin_art0
 		);
+
 		FgArt0::create($art0fields);
 		#debemos conseguir el id que se ha creado
 		$art0 = FgArt0::select("ID_ART0")->where("REFASIN_ART0", $refasin_art0)->orderby("ID_ART0", "desc")->first();
@@ -742,7 +577,7 @@ class prueba extends BaseController
 		foreach ($cartArticles as $article) {
 			$lotInfo = new \stdClass();
 			$lotInfo->idPed = $idPedido->numfic;
-			$lotInfo->emp = \Config::get("app.emp");
+			$lotInfo->emp = Config::get("app.emp");
 			$lotInfo->codi = $article->cod_art;
 			$lotInfo->seccio = $article->sec_art;
 			$lotInfo->cant = $units[$article->id_art];
@@ -810,7 +645,7 @@ class prueba extends BaseController
 		$max = request("max");
 		if ($max < 45000) {
 			$sql = "update VOLCADO_CLIENTES VC SET ID_PADRE_NIF = (SELECT NVL(MIN(ID_PADRE_NIF), MIN(ID_NUM))ID_PADRE_NIF FROM VOLCADO_CLIENTES where nif=VC.nif and id_padre_duplicados is null GROUP BY nif  HAVING COUNT(NIF) >1 AND COUNT(NIF) <4) WHERE NIF IS NOT NULL  AND ID_NUM > $min AND ID_NUM < $max";
-			\DB::select($sql, []);
+			DB::select($sql, []);
 			$min = $max;
 			$max = $max + 5000;
 			header('Location: ' . Route("prueba") . "?min=$min&max=$max");
@@ -824,7 +659,7 @@ class prueba extends BaseController
 		$max = request("max");
 		if ($max < 45000) {
 			$sql = "update VOLCADO_CLIENTES VC SET ID_PADRE_NIF = (SELECT NVL(MIN(ID_PADRE_NIF), MIN(ID_NUM))ID_PADRE_NIF FROM VOLCADO_CLIENTES where nif=VC.nif and id_padre_duplicados is null GROUP BY nif  HAVING COUNT(NIF) >1 AND COUNT(NIF) <4) WHERE NIF IS NOT NULL  AND ID_NUM > $min AND ID_NUM < $max";
-			\DB::select($sql, []);
+			DB::select($sql, []);
 			$min = $max;
 			$max = $max + 5000;
 			header('Location: ' . Route("prueba") . "?min=$min&max=$max");
@@ -838,7 +673,7 @@ class prueba extends BaseController
 		$max = request("max");
 		if ($max < 45000) {
 			$sql = "update VOLCADO_CLIENTES VC SET ID_PADRE_DUPLICADOS = (SELECT MIN(ID_NUM) ID_NUM FROM VOLCADO_CLIENTES where DUPLICIDAD_CEDENTE_COMPRADOR=VC.DUPLICIDAD_CEDENTE_COMPRADOR GROUP BY DUPLICIDAD_CEDENTE_COMPRADOR  HAVING COUNT(DUPLICIDAD_CEDENTE_COMPRADOR) >1 ) WHERE DUPLICIDAD_CEDENTE_COMPRADOR IS NOT NULL  AND ID_NUM > $min AND ID_NUM < $max";
-			\DB::select($sql, []);
+			DB::select($sql, []);
 			$min = $max;
 			$max = $max + 5000;
 			header('Location: ' . Route("prueba") . "?min=$min&max=$max");
@@ -854,7 +689,7 @@ class prueba extends BaseController
 		if ($max < 45000) {
 			$sql = "update VOLCADO_CLIENTES VC SET ID_PADRE_TELEFONO = (SELECT MIN(ID_NUM) FROM VOLCADO_CLIENTES where TELEFONO=VC.TELEFONO AND ID_PADRE_NIF is null AND id_padre_duplicados is null GROUP BY TELEFONO  HAVING COUNT(TELEFONO) >1 AND COUNT(TELEFONO) <4 ) WHERE TELEFONO IS NOT NULL  AND ID_NUM >  $min AND ID_NUM < $max";
 
-			\DB::select($sql, []);
+			DB::select($sql, []);
 			$min = $max;
 			$max = $max + 5000;
 			header('Location: ' . Route("prueba") . "?min=$min&max=$max");
@@ -869,7 +704,7 @@ class prueba extends BaseController
 		if ($max < 45000) {
 			$sql = "update VOLCADO_CLIENTES VC SET ID_PADRE_EMAIL = (SELECT MIN(ID_NUM) FROM VOLCADO_CLIENTES where EMAIL=VC.EMAIL AND   ID_PADRE_NIF is null AND id_padre_duplicados is null AND ID_PADRE_TELEFONO is null  GROUP BY EMAIL  HAVING COUNT(EMAIL) >1 AND COUNT(EMAIL) <4 ) WHERE EMAIL IS NOT NULL  AND ID_NUM >  $min AND ID_NUM < $max";
 
-			\DB::select($sql, []);
+			DB::select($sql, []);
 			$min = $max;
 			$max = $max + 5000;
 			header('Location: ' . Route("prueba") . "?min=$min&max=$max");
@@ -997,8 +832,8 @@ class prueba extends BaseController
 		$a = DB::select(
 			"call CREA_PEDIDO.CREA_CAPCELERA(:gemp,:emp,:idPed,:cCodCli,:car,:cp,:pob,:prov,:telf,:obs,:nif, :codDirCli ,:transport ,:payment  )",
 			array(
-				'gemp'    => \Config::get("app.gemp"),
-				'emp'    => \Config::get("app.emp"),
+				'gemp'    => Config::get("app.gemp"),
+				'emp'    => Config::get("app.emp"),
 				'idPed'        => $idPedido,
 				'cCodCli'    => $codCli,
 				'car'    => $car, #no se si se usa
@@ -1102,33 +937,9 @@ class prueba extends BaseController
 			$email->send_email();
 			echo "send BID_LOWER_NEW";
 		} else {
-			\Log::info("email de puja inferior No enviado, no existe o está deshabilitadio");
+			Log::info("email de puja inferior No enviado, no existe o está deshabilitadio");
 		}
 	}
-
-
-	public function presta()
-	{
-		//iniciamos webservice
-		$pc = new PrestashopController();
-
-		//creamos un nuevo usuario
-		//$customer = new CustomerPresta("123456", "nuevo", "pruebas", "prueba11@prueba.es", 1, "1985-03-31");
-
-		//creamos usuario
-		/*
-        $customerData = $pc->createCustomer($customer);
-        $customerId = $customerData->customer->id;
-         *
-         */
-
-		//$addressData = $pc->createAddress();
-
-		$result = $pc->getIdCountry("ES");
-
-		return $result;
-	}
-
 
 	public function soapDuranClient()
 	{
@@ -1144,23 +955,10 @@ class prueba extends BaseController
 		} else {
 			$clientController->createClient($codCli);
 		}
-
-		/*
-		$reservationController = new ReservationController();
-		$codCli = 62552;
-		$lots = array("271875" ,"447730" );
-
-		if(request("metodo")=="2"){
-			$reservationController->deleteReservation($codCli, $lots);
-		}else{
-			$reservationController->createReservation($codCli, $lots);
-		}
-*/
 	}
+
 	public function soapDuranBidW()
 	{
-
-
 		$orderController = new OrderController();
 		$orderController->createOrder("000003", "582", "630", 600);
 	}
@@ -1178,7 +976,7 @@ class prueba extends BaseController
 		foreach ($lots as $lot) {
 			//	dd($lot);
 			#se pasa a minusculas, se elimina la palabra subasta y se hac3 el SLUG
-			$name = \Str::slug(str_replace("subasta", "", strtolower($lot->des_sub)));
+			$name = Str::slug(str_replace("subasta", "", strtolower($lot->des_sub)));
 			$urlRedirect = "subastas-anteriores/$codSub-$name/" . $lot->webfriend_hces1 . ".html";
 			echo $urlRedirect;
 			die();
@@ -1191,12 +989,12 @@ class prueba extends BaseController
 		$auctions = FgSub::select("COD_SUB, DES_SUB")->wherenotin("cod_sub",array("562","570","572","575","577"))->get();
 		foreach($auctions as $auction){
 			$desc = strtolower($auction->des_sub);
-			$url = $auction->cod_sub."-". \Str::slug( str_replace("subasta","", $desc));
+			$url = $auction->cod_sub."-". Str::slug( str_replace("subasta","", $desc));
 			echo "<br> $url";
 
 			DB::table('FGSUB')
 			  ->where('COD_SUB', $auction->cod_sub)
-              ->where('EMP_SUB', \Config::get("app.emp"))
+              ->where('EMP_SUB', Config::get("app.emp"))
               ->update(['WEBFRIEND_SUB' => $url]);
 		}
 
@@ -1205,11 +1003,11 @@ class prueba extends BaseController
 	private function redirectAuctions()
 	{
 		$auctions = FgSub::select("COD_SUB, DES_SUB, WEBFRIEND_SUB")->get();
-		$redirect["emp_web_redirect_pages"] =  \Config::get("app.emp");
+		$redirect["emp_web_redirect_pages"] =  Config::get("app.emp");
 		foreach ($auctions as $auction) {
 			$urlOld =  "subastas-anteriores/" . $auction->webfriend_sub . ".html";
-			$urlNew = "subasta/" . \Str::slug($auction->des_sub) . "_" . $auction->cod_sub . "-001";
-			$this->createPageRedirect($urlOld, $urlNew, \Config::get("app.emp"));
+			$urlNew = "subasta/" . Str::slug($auction->des_sub) . "_" . $auction->cod_sub . "-001";
+			$this->createPageRedirect($urlOld, $urlNew, Config::get("app.emp"));
 		}
 	}
 
@@ -1217,7 +1015,7 @@ class prueba extends BaseController
 	{
 		$lots = FgAsigl0::select("URL, SUB_ASIGL0, REF_ASIGL0, EMP_ASIGL0 ")->join("WEB_REDIRECT_LOTS_LOAD", "WEB_REDIRECT_LOTS_LOAD.ID = IDORIGEN_ASIGL0")->where("sub_asigl0", $auction)->get();
 
-		$redirect["emp_web_redirect_lots"] = \Config::get("app.emp");
+		$redirect["emp_web_redirect_lots"] = Config::get("app.emp");
 		foreach ($lots as $lot) {
 
 			$redirect['sub_web_redirect_lots'] = $lot->sub_asigl0;
@@ -1248,7 +1046,7 @@ class prueba extends BaseController
 			}
 			$auctions = $fgsub->get();
 
-			$redirect["emp_web_redirect_lots"] =  \Config::get("app.emp");
+			$redirect["emp_web_redirect_lots"] =  Config::get("app.emp");
 			foreach ($auctions as $auction) {
 				$urlSubasta = "subastas-anteriores/" . $auction->webfriend_sub . "/";
 				$redirect['sub_web_redirect_lots'] = $auction->cod_sub;
@@ -1325,7 +1123,7 @@ class prueba extends BaseController
 	public function createPageRedirect($urlOld, $urlNew, $emp)
 	{
 		$redirect["url_web_redirect_pages"] = $urlOld; #"subastas-anteriores/" .$auction->webfriend_sub.".html";
-		$redirect["page_web_redirect_pages"] =  $urlNew; # "subasta/" . \Str::slug($auction->des_sub)."_".$auction->cod_sub."-001";
+		$redirect["page_web_redirect_pages"] =  $urlNew; # "subasta/" . Str::slug($auction->des_sub)."_".$auction->cod_sub."-001";
 		$redirect["emp_web_redirect_pages"] =  $emp;
 		#primero borramos
 		DB::table("WEB_REDIRECT_PAGES")->where("EMP_WEB_REDIRECT_PAGES",  $emp)->where("PAGE_WEB_REDIRECT_PAGES", $redirect["page_web_redirect_pages"])->delete();
@@ -1351,7 +1149,7 @@ class prueba extends BaseController
 
 
 		if ($response->getStatusCode() != 200) {
-			dd($th);
+			dd($response->getBody()->getContents());
 		}
 
 		echo ($response->getBody()->getContents());
@@ -1499,7 +1297,7 @@ $lang =[';
 
 	function exportToExcel()
 	{
-		$gemp = \Config::get('app.gemp');
+		$gemp = Config::get('app.gemp');
 		$fileName = "TXP";
 		$dataForExport = FgAsigl0::select(
 			" sub_asigl0  || '-' || ref_asigl0 as id",
@@ -1555,7 +1353,7 @@ $lang =[';
 	}
 
 
-	function whatsappAction ()
+	function whatsappAction()
 	{
 		$headers_whatsapp = [
 			'Authorization' => 'Bearer EAAGCB52O9oMBANpgu8ZBQqP5oijPZAQOyw8d9tuxZBF8wZBn3a0bwfqSRaNJ9FSULbX8JgxR5S1It176hJuJ5TX92YB7fqGnoG6KaKDo5sIflmjJXCQmYetFHryvp048TV2FzVydQxQ8ouB6SSxz2KRmSKHBw2mPFZBtQFbzcmz4MuRuKUs8S',
@@ -1567,9 +1365,8 @@ $lang =[';
 			$response = $this->sendTemplateWhatsapp($headers_whatsapp);
 
 			dd($response->getBody()->getContents());
-
 		} catch (\Throwable $th) {
-			\Log::info($th->getMessage());
+			Log::info($th->getMessage());
 
 			dd($th->getMessage());
 		}
@@ -1578,10 +1375,10 @@ $lang =[';
 	function sendTemplateWhatsapp($headers)
 	{
 
-		$var1 = \Request::get('var1');
-		$var2 = \Request::get('var2');
-		$var3 = \Request::get('var3');
-		$var4 = \Request::get('var4');
+		$var1 = Request::get('var1');
+		$var2 = Request::get('var2');
+		$var3 = Request::get('var3');
+		$var4 = Request::get('var4');
 
 		$client = new Client();
 
@@ -1612,7 +1409,7 @@ $lang =[';
 						[
 							'type' => 'body',
 							'parameters' => [
-/* 								[
+								/* 								[
 									'type' => 'text',
 									'image' => $var1
 								], */
@@ -1637,14 +1434,14 @@ $lang =[';
 	function createTemplate4Whatsapp($headers)
 	{
 
-		$var1 = \Request::get('var1');
-		$var2 = \Request::get('var2');
-		$var3 = \Request::get('var3');
-		$var4 = \Request::get('var4');
+		$var1 = Request::get('var1');
+		$var2 = Request::get('var2');
+		$var3 = Request::get('var3');
+		$var4 = Request::get('var4');
 
-			$client = new Client();
+		$client = new Client();
 
-$text_template = '¿Estás preparado para la emoción de nuestra última subasta?
+		$text_template = '¿Estás preparado para la emoción de nuestra última subasta?
 Descubre la increíble colección de lotes en la subasta "{{1}}". Te espera una amplia selección de productos y ofertas imperdibles.
 ¡No te pierdas la oportunidad de participar en vivo el próximo {{2}} y disfruta de la emocionante experiencia de pujar por tus favoritos.
 
@@ -1652,63 +1449,65 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 
 ¡Te esperamos con entusiasmo!';
 
-			$response = $client->request('POST', 'https://graph.facebook.com/v17.0/110347208640772/message_templates', [
-				'headers' => $headers,
-				'json' => [
-					"name" => "sample_recient_auction",
-					"language" => "es_ES",
-					"category" => "MARKETING",
-					"components" => [
-						[
-							"type" => "HEADER",
-							"format" => "TEXT",
-							"text" => "¡Hola {{1}}!",
-							"example" => [
-								"header_text" => [
-									"Jorge Alameda"
-								]
+		$response = $client->request('POST', 'https://graph.facebook.com/v17.0/110347208640772/message_templates', [
+			'headers' => $headers,
+			'json' => [
+				"name" => "sample_recient_auction",
+				"language" => "es_ES",
+				"category" => "MARKETING",
+				"components" => [
+					[
+						"type" => "HEADER",
+						"format" => "TEXT",
+						"text" => "¡Hola {{1}}!",
+						"example" => [
+							"header_text" => [
+								"Jorge Alameda"
 							]
-						],
-						[
-							"type" => "BODY",
-							"text" => $text_template,
-							"example" => [
-								"body_text" => [
-									[
-										"Alfombras y tapices del siglo primero","13 de octubre"
-									]
-								]
-							]
-						],
-						[
-							"type" => "FOOTER",
-							"text" => '¿No te interesa? Toca "Detener promociones"'
-						],
-						[
-							"type" => "BUTTONS",
-							"buttons" => [
+						]
+					],
+					[
+						"type" => "BODY",
+						"text" => $text_template,
+						"example" => [
+							"body_text" => [
 								[
-									"type" => "QUICK_REPLY",
-									"text" => "Detener promociones",
+									"Alfombras y tapices del siglo primero",
+									"13 de octubre"
 								]
+							]
+						]
+					],
+					[
+						"type" => "FOOTER",
+						"text" => '¿No te interesa? Toca "Detener promociones"'
+					],
+					[
+						"type" => "BUTTONS",
+						"buttons" => [
+							[
+								"type" => "QUICK_REPLY",
+								"text" => "Detener promociones",
 							]
 						]
 					]
 				]
-			]);
+			]
+		]);
 
-			dump($response->getBody()->getContents());
+		dump($response->getBody()->getContents());
 
-				/* 'recipient_type' => 'individual', */
+		/* 'recipient_type' => 'individual', */
 
-					/* 'link' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', */
+		/* 'link' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', */
 
-			return $response;
+		return $response;
 	}
 
 	/* PRUEBA DE OBTENCIÓN UBICACIÓN CON IP */
 
-	public function ObtenerPaísIP(HttpRequest $request) {
+	public function ObtenerPaísIP(Request $request)
+	{
 		$ip = $request->ip();
 		$binaryIpAddress = implode('.', array_map(function ($octet) {
 			return str_pad(decbin($octet), 8, '0', STR_PAD_LEFT);
@@ -1731,7 +1530,8 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 		dd($dataLocalization);
 	}
 
-	private function getLocalizationID($ip, $rowsPerPage = 5000) {
+	private function getLocalizationID($ip, $rowsPerPage = 5000)
+	{
 		$rutaArchivo = public_path('files/IPv4_blocks_processed.csv');
 
 		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
@@ -1746,7 +1546,7 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 				if ($fila <= $pagina * $filasPorPagina) {
 					if ($fila > ($pagina - 1) * $filasPorPagina) {
 						if ($data[0] == $ip) {
-							echo"Ha llegado a los " . $i . " registros <br>";
+							echo "Ha llegado a los " . $i . " registros <br>";
 							echo "Ha llegado a las " . $pagina . " páginas <br>";
 							return $data[1];
 						}
@@ -1763,7 +1563,8 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 	}
 
 
-	private function getDataLocalization($id) {
+	private function getDataLocalization($id)
+	{
 		$rutaArchivo = public_path('files/IP_Locations_es_processed.csv');
 
 		if (($handle = fopen($rutaArchivo, "r")) !== FALSE) {
@@ -1778,8 +1579,8 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 				if ($fila <= $pagina * $filasPorPagina) {
 					if ($fila > ($pagina - 1) * $filasPorPagina) {
 						if ($data[0] == $id) {
-							echo"Localizaciones:<br>";
-							echo"Ha llegado a los " . $i . " registros <br>";
+							echo "Localizaciones:<br>";
+							echo "Ha llegado a los " . $i . " registros <br>";
 							echo "Ha llegado a las " . $pagina . " páginas <br>";
 							return [
 								'continent' => $data[1],
@@ -1799,15 +1600,12 @@ Recuerda visitar nuestra plataforma y sumergirte en la adrenalina de la puja en 
 				}
 			}
 
-			echo"Localizaciones:<br>";
-			echo"Ha llegado a los " . $i . " registros <br>";
+			echo "Localizaciones:<br>";
+			echo "Ha llegado a los " . $i . " registros <br>";
 			echo "Ha llegado a las " . $pagina . " páginas <br>";
 
 			return null;
 			fclose($handle);
 		}
-
 	}
-
 }
-
