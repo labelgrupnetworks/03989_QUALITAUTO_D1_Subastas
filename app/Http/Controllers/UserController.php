@@ -10,7 +10,6 @@ use App\Http\Controllers\MailController;
 use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\libs\SeoLib;
-use App\Models\Address;
 use App\Models\Enterprise;
 use App\Models\Newsletter;
 use App\Models\User;
@@ -18,7 +17,6 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgRepresentados;
 use App\Models\V5\FsIdioma;
-use App\Models\V5\FsPaises;
 use App\Models\V5\Fx_Newsletter;
 use App\Models\V5\FxCli;
 use App\Models\V5\FxClid;
@@ -1177,8 +1175,7 @@ class UserController extends Controller
 							$email->setUserByCod($num);
 
 							if (Config::get('app.delivery_address', 0)) {
-								$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
-								$email->setAddress(head($addressToEmail));
+								$email->setAddress((new UserAddressService)->getUserAddressById($num, 'W1'));
 							}
 
 							$email->setTo(Config::get('app.admin_email'));
@@ -1193,8 +1190,7 @@ class UserController extends Controller
 						$email->setAtribute("OBS", FacadeRequest::input('obscli'));
 
 						if (Config::get('app.delivery_address', 0)) {
-							$addressToEmail = (new Address($num))->getUserShippingAddress('W1');
-							$email->setAddress(head($addressToEmail));
+							$email->setAddress((new UserAddressService)->getUserAddressById($num, 'W1'));
 						}
 
 						if (!empty($job_name)) {
@@ -1702,6 +1698,7 @@ class UserController extends Controller
 	{
 		$seo = new \Stdclass();
 		$seo->noindex_follow = true;
+
 		if (!Session::has('user')) {
 			$url =  Config::get('app.url') . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH) . '?view_login=true';
 			$data['data'] = trans_choice(Config::get('app.theme') . '-app.user_panel.not-logged', 1, ['url' => $url]);
@@ -1709,22 +1706,22 @@ class UserController extends Controller
 			return View::make('front::pages.not-logged',  $data);
 		}
 
+		$userId = Session::get('user.cod');
+
 		$Usuario          = new User();
-		$Usuario->cod_cli = Session::get('user.cod');
+		$Usuario->cod_cli = $userId;
 		$datos            = $Usuario->getUser();
-		$addres = new Address();
-		$addres->cod_cli = Session::get('user.cod');
-		$shippingaddress            = $addres->getUserShippingAddress();
-		$address = array();
-		$address            = head($addres->getUserShippingAddress('W1'));
+
+		$addressService = new UserAddressService();
+
 		$enterprise = new Enterprise();
 		$divisa = $enterprise->getDivisa();
 
 		$data = array(
 			'name' => trans(Config::get('app.theme') . '-app.user_panel.personal_info'),
 			'user' => $datos,
-			'shippingaddress'  => $shippingaddress,
-			'address'  => $address,
+			'shippingaddress'  => $addressService->getUserAddresses($userId),
+			'address'  => $addressService->getUserAddressById($userId, 'W1'),
 			'divisa'    => $divisa,
 			'seo'		=> $seo,
 		);

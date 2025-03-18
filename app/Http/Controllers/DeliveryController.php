@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\PaymentsController;
-use App\Models\Address;
 use App\Models\delivery\Delivery_default;
 use App\Models\delivery\Delivery;
 use App\Providers\ToolsServiceProvider;
+use App\Services\User\UserAddressService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request as Input;
@@ -78,9 +78,8 @@ class DeliveryController  extends Controller
 
 	public function getShipmentDelivery()
 	{
-		$addres = new Address();
 		$delivery = new Delivery(new Delivery_default());
-		$addres->cod_cli = Session::get('user.cod');
+		$userId = Session::get('user.cod');
 		$cod_dir = Input::get('cod_dir');
 		$cod_sub = Input::get('sub');
 		$ref = Input::get('ref');
@@ -97,12 +96,14 @@ class DeliveryController  extends Controller
 
 		);
 
-		$custom_dir = $addres->getUserShippingAddress($cod_dir);
+		$addressService = new UserAddressService();
+
+		$custom_dir = $addressService->getUserAddressById($userId, $cod_dir);
 
 		if (empty($custom_dir)) {
 			return $res;
 		}
-		$custom_dir = head($custom_dir);
+
 		$custom_dir->email_clid = !empty($custom_dir->email_clid) ? $custom_dir->email_clid : Session::get('user.usrw');
 		$destinationCountryCode = $custom_dir->codpais_clid;
 		$destinationZipCode = $custom_dir->cp_clid;

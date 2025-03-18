@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PaymentsController;
-use App\Models\Address;
 use App\Models\Facturas;
 use App\Models\Payments;
 use App\Models\Subasta;
@@ -16,6 +15,7 @@ use App\Models\V5\FxClid;
 use App\Models\V5\FxDvc0;
 use App\Models\V5\FxDvc0Seg;
 use App\Providers\ToolsServiceProvider;
+use App\Services\User\UserAddressService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -61,9 +61,7 @@ class AllotmentsAndBillsController extends Controller
 
 		$user_cod = $User->cod_cli;
 
-		$addres = new Address();
-		$addres->cod_cli = $User->cod_cli;
-		$envio = $addres->getUserShippingAddress();
+		$envio = (new UserAddressService())->getUserAddresses($user_cod);
 
 		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
 		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user_cod);
@@ -97,7 +95,7 @@ class AllotmentsAndBillsController extends Controller
 
 			$adj->licencia_exportacion = 0;
 			if ($exportacion) {
-				$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
+				$envioPorDefecto = $envio->where('codd_clid', 'W1')->first();
 				$adj->licencia_exportacion = $pago_controller->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user_cli->codpais_cli, $adj->himp_csub);
 			}
 
@@ -163,7 +161,7 @@ class AllotmentsAndBillsController extends Controller
 
 			$adj->licencia_exportacion = 0;
 			if ($exportacion) {
-				$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
+				$envioPorDefecto = $envio->where('codd_clid', 'W1')->first();
 				$adj->licencia_exportacion = $pago_controller->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user_cli->codpais_cli, $adj->himp_csub);
 			}
 		}
@@ -513,9 +511,7 @@ class AllotmentsAndBillsController extends Controller
 
 		$user =	$userModel->getUser();
 
-		$addres = new Address();
-		$addres->cod_cli = $user->cod_cli;
-		$envio = $addres->getUserShippingAddress();
+		$envio = (new UserAddressService())->getUserAddresses($cod_cli);
 
 		//payments data
 		/**
@@ -713,7 +709,7 @@ class AllotmentsAndBillsController extends Controller
 		//Existen lotes en Tauler que no deben añadir el precio de exportación al pago, en object_types controlamos si se cobra o no
 		$adjudicacionFormat->licencia_exportacion = 0;
 		if ($adjudicacion->exportacion != 'N') {
-			$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
+			$envioPorDefecto = $envio->where('codd_clid', 'W1')->first();
 			$adjudicacionFormat->licencia_exportacion = $paymentController->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user->codpais_cli, $adjudicacion->himp_csub);
 		}
 
@@ -894,9 +890,7 @@ class AllotmentsAndBillsController extends Controller
 
 		$user_cod = $User->cod_cli;
 
-		$addres = new Address();
-		$addres->cod_cli = $User->cod_cli;
-		$envio = $addres->getUserShippingAddress();
+		$envio = (new UserAddressService())->getUserAddresses($user_cod);
 
 		$iva = $pago_controller->getIva($emp, date("Y-m-d"));
 		$tipo_iva = $pago_controller->user_has_Iva($gemp, $user_cod);
@@ -921,7 +915,7 @@ class AllotmentsAndBillsController extends Controller
 
 			$adj->licencia_exportacion = 0;
 			if ($exportacion) {
-				$envioPorDefecto = collect($envio)->where('codd_clid', 'W1')->first();
+				$envioPorDefecto = $envio->where('codd_clid', 'W1')->first();
 				$adj->licencia_exportacion = $pago_controller->licenciaDeExportacionPorPais($envioPorDefecto->codpais_clid ?? $user_cli->codpais_cli, $adj->himp_csub);
 			}
 		}
