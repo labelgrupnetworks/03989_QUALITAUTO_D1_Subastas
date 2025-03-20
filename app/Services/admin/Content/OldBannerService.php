@@ -1,16 +1,17 @@
 <?php
 
-# Ubicacion del modelo
-namespace App\Models;
+namespace App\Services\admin\Content;
 
-use App\libs\CacheLib;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
-class Banners extends Model
+/**
+ * Utilizado principalmente por Gutinvest pero también por CSM, Soler y Alcala para los
+ * recursos de norticias y articulos.
+ * Si actualizamos esa parte podemos eliminar este controlador y los modelos relacionados
+ */
+class OldBannerService
 {
-
 	#Ver los banners
 	public $emp;
 
@@ -21,7 +22,6 @@ class Banners extends Model
 
 	public function tableBanners($value, $cod_sec = null)
 	{
-
 		$t = DB::table('WEB_BANNER')
 			->select('title', 'id_web_banner', 'key_name')
 			->where('ID_EMP', $this->emp)
@@ -36,7 +36,6 @@ class Banners extends Model
 
 	public function GetBanners($id)
 	{
-
 		$value = DB::table('WEB_BANNER')
 			->where('ID_WEB_BANNER', $id)
 			->where('ID_EMP', $this->emp)
@@ -46,7 +45,6 @@ class Banners extends Model
 
 	public function ResoucesBanners($id)
 	{
-
 		$value = DB::table('WEB_RESOURCE_BANNER')
 			->where('ID_WEB_BANNER', $id)
 			->orderBy('orden', 'asc')
@@ -56,8 +54,6 @@ class Banners extends Model
 
 	public function GetResourceActivated($cod_banner_sec)
 	{
-		$emp = Config::get('app.main_emp');
-
 		$resources_tmp = DB::table('WEB_RESOURCE')
 			->select('title', 'id_web_resource', 'type')
 			->where('ENABLED', 1)
@@ -71,7 +67,6 @@ class Banners extends Model
 				$resources[$resource->id_web_resource]  = $resource;
 			}
 		}
-
 
 		return $resources;
 	}
@@ -102,7 +97,6 @@ class Banners extends Model
 	#Crear la relacion entre banner i resouce
 	public function new_resouce_banner($id_max, $id_banner, $value, $orden)
 	{
-
 		$bindings = array(
 			"id_max" => $id_max,
 			"value" => $value,
@@ -117,7 +111,6 @@ class Banners extends Model
 	#ver el max banner resouce
 	public function maxBannerResouce()
 	{
-
 		$max_id = DB::table('WEB_RESOURCE_BANNER')
 			->max('ID_WEB_RESOURCE_BANNER');
 		if (!isset($max_id)) {
@@ -128,7 +121,6 @@ class Banners extends Model
 
 	public function updateBanners($name, $key_name, $enabled, $id, $type)
 	{
-
 		$bindings = array(
 			"id" => $id,
 			"name" => $name,
@@ -151,33 +143,6 @@ class Banners extends Model
 			. "WHERE ID_WEB_BANNER = :id ", array("id" => $id));
 	}
 
-	//usamos cache
-	public function getBannerByKeyname($key_name_banner, $max_ban = 10)
-	{
-		$keyname_cache = $key_name_banner . "_banner_" . Config::get('app.theme') . "_" . Config::get('app.main_emp');
-
-		$data = CacheLib::getCache($keyname_cache);
-		if ($data === false) {
-			$data = DB::table('WEB_BANNER')
-				->join('WEB_RESOURCE_BANNER', 'WEB_RESOURCE_BANNER.ID_WEB_BANNER', '=', 'WEB_BANNER.ID_WEB_BANNER')
-				->join('WEB_RESOURCE', 'WEB_RESOURCE.ID_WEB_RESOURCE', '=', 'WEB_RESOURCE_BANNER.ID_WEB_RESOURCE')
-				->select('WEB_RESOURCE.*')
-				->where('WEB_BANNER.KEY_NAME', $key_name_banner)
-				->where('WEB_BANNER.ENABLED', 1)
-				->where('WEB_RESOURCE.ENABLED', 1)
-				->where('WEB_BANNER.ID_EMP', $this->emp)
-				->orderBy('WEB_RESOURCE_BANNER.ORDEN', 'asc')
-				->limit($max_ban)
-				->get();
-			CacheLib::putCache($keyname_cache, $data);
-		}
-		return $data;
-	}
-
-	public function get_banner_sections()
-	{
-		return DB::table('WEB_BANNER_SECTION')->get();
-	}
 	public function get_banner_section_by_cod($cod)
 	{
 		return DB::table('WEB_BANNER_SECTION')

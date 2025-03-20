@@ -66,13 +66,14 @@
 					<div class="content_art">
 
 						<div class="content_art_container">
-							<?php
-                    $slidder_obj = new \App\Models\Banners;
-                    $key = "article_".strtoupper(Config::get('app.locale'));
-                    $slidders = $slidder_obj->getBannerByKeyname($key,20);
-                ?>
+							@php
+								$bannerService = new \App\Services\Content\BannerService();
+								$key = 'article_' . strtoupper(Config::get('app.locale'));
+								$slidders = $bannerService->getOldBannerByKeyname($key);
+							@endphp
+
 							@foreach($slidders as $article)
-							<?= $article->content ?>
+								{!! $article->content !!}
 							<br>
 							@endforeach
 						</div>

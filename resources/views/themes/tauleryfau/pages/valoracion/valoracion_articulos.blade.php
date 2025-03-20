@@ -32,16 +32,9 @@ $bread[] = array("name" =>$data['title']  );
             </div>
             <div class="col-sm-6 col-xs-12 text-description-tasacion">
 
-                                <?php
-                                $key = "tasacion-valoraciones_".strtoupper(Config::get('app.locale'));
-                                $html="{html}";
-                                $content = \Tools::slider($key, $html);
-                                ?>
-                                <?= $content; ?>
-
             </div>
-                </div>
         </div>
+    </div>
 
         <div class="custom-bar-title">
             <div class="container">

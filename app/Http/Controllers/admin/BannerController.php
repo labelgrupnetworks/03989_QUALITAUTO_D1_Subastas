@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Banners;
+use App\Services\admin\Content\OldBannerService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
@@ -20,7 +20,7 @@ class BannerController extends Controller
 
 	public function index()
 	{
-		$content = new Banners();
+		$content = new OldBannerService();
 		if (!empty($_GET["see"]) && $_GET["see"] == 'N') {
 			$value = $_GET["see"];
 		} elseif (!empty($_GET["see"]) && $_GET["see"] == 'C') {
@@ -45,7 +45,7 @@ class BannerController extends Controller
 	public function SeeBanner($id = NULL)
 	{
 		$data['BannerResources'] = array();
-		$content = new Banners();
+		$content = new OldBannerService();
 		$data['infBanner'] = $content->GetBanners($id);
 		$data['BannerResources'] = $content->ResoucesBanners($id);
 		$data['resourcechecked'] = array();
@@ -68,7 +68,7 @@ class BannerController extends Controller
 		$enabled_temp = "";
 		$orden = 1;
 
-		$content = new Banners();
+		$content = new OldBannerService();
 		$id = Request::input('id');
 		$name = Request::input('name');
 		$key_name = Request::input('key_name');

@@ -117,15 +117,8 @@
 	<div id='seo_content' class='container content'>
 		<div class='row'>
 			<div class="col-sm-12">
-				@if(empty ($data['categ']))
-				<?php
-                    $key = "info_h2_blog_".strtoupper(Config::get('app.locale'));
-                    $html="{html}";
-                    $content = \Tools::slider($key, $html);
-                ?>
-				<?= $content ?>
-				@else
-				<?=  $data['categ']->metacont_category_blog_lang ?>
+				@if(!empty ($data['categ']))
+				{!! $data['categ']->metacont_category_blog_lang !!}
 				@endif
 			</div>
 		</div>

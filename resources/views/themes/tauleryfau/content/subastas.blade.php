@@ -229,20 +229,4 @@
             </div>
             @endif
         </div>
-@if(!empty($data['auction_list']) && count($data['auction_list']) > 0)
-<section>
-    <div id='seo_content' class='container content'>
-        <div class='row'>
-            <div class="col-sm-12">
-                <?php
-                    $key =($data['auction_list'][0]->tipo_sub == 'V') ? "info_tienda_SEO_".strtoupper(Config::get('app.locale')) : "info_subasta_SEO_".strtoupper(Config::get('app.locale'));
-                        $html="{html}";
-                        $content = \Tools::slider($key, $html);
-                ?>
-                {!!$content!!}
-            </div>
-        </div>
-    </div>
-</section>
-@endif
 </div>

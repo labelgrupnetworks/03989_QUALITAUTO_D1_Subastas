@@ -390,14 +390,6 @@ class ToolsServiceProvider extends ServiceProvider
 		return array_diff_key(config('app.locales'), [config('app.locale') => 1]);
 	}
 
-	public static function slider($key, $html)
-	{
-		$data['key'] = $key;
-		$data['html'] = $html;
-		$contents = view('front::content.slider', ['data' => $data])->render();
-		return ($contents);
-	}
-
 	public static function down_timer($timer, $type = 'large')
 	{
 
