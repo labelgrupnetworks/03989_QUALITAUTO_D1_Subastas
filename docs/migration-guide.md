@@ -10,3 +10,7 @@
 
 -   Bogota
 -   Gutinvest
+
+3. Del archivo blocs.blade.php, cambiar la referencia de BlocSector a BlocSectorService y sus métodos correspondientes.
+
+-   Gutinvest

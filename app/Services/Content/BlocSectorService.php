@@ -1,16 +1,23 @@
 <?php
 
-# Ubicacion del modelo
-namespace App\Models;
+namespace App\Services\Content;
 
-use App\Providers\ToolsServiceProvider;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use App\Support\Localization;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
-class BlocSector extends Model
+/**
+ * @todo
+ * Esta clase es utilizada solamente por Gutinvest, en la blade blocs.blade.php
+ * Seguramente se puedan añadir las consultas a web_blocs y eliminar estos metodos.
+ *
+ * En caso de no poder eliminarlos, se deberia crear las consultas desde los modelos.
+ *
+ * get_sectors se ha eliminado porque no se usa en ningun sitio
+ */
+class BlocSectorService
 {
-	public function get_active_blocs($type = null, $subc = 'S')
+	public function getActiveBlocs($type = null, $subc = 'S')
 	{
 		$where = "";
 		if (!empty($type)) {
@@ -40,7 +47,7 @@ class BlocSector extends Model
 
 		$bindings = array(
 			'emp'      => Config::get('app.emp'),
-			'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
+			'lang'      => Localization::getLocaleComplete(),
 			'subc'	=> $subc
 
 
@@ -51,9 +58,8 @@ class BlocSector extends Model
 		return DB::select($sql, $bindings);
 	}
 	//se supone que solo pueden tener un cod_subsector
-	public function get_auction_blocs($type = null, $subc = 'S')
+	public function getAuctionBlocs($type = null, $subc = 'S')
 	{
-
 		$where = "";
 		if (!empty($type)) {
 			$where = " AND sub.TIPO_SUB = :type ";
@@ -103,8 +109,8 @@ class BlocSector extends Model
                 ";
 
 		$bindings = array(
-			'emp'      => Config::get('app.emp'),
-			'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale')),
+			'emp' => Config::get('app.emp'),
+			'lang' => Localization::getLocaleComplete()
 		);
 		if (!empty($type)) {
 			$bindings['type'] = $type;
@@ -122,27 +128,5 @@ class BlocSector extends Model
 		}
 
 		return $blocs_auctions;
-	}
-
-
-	public function get_sectors()
-	{
-
-		$sql = "SELECT COD_SECTOR, NVL(DES_SECTOR_LANG,DES_SECTOR) DES_SECTOR FROM FGSECTOR SEC
-                LEFT JOIN FGSECTOR_LANG SEC_LANG ON SEC_LANG.EMP_SECTOR_LANG = SEC.EMP_SECTOR AND  SEC_LANG.COD_SECTOR_LANG =SEC.COD_SECTOR AND SEC_LANG.LANG_SECTOR_LANG = :lang
-                WHERE EMP_SECTOR = :emp";
-
-		$bindings = array(
-			'emp'      => Config::get('app.emp'),
-			'lang'     => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-
-		);
-		$sectors_tmp = DB::select($sql, $bindings);
-		$sectors = array();
-		foreach ($sectors_tmp as $sector) {
-			$sectors[$sector->cod_sector] = $sector->des_sector;
-		}
-
-		return $sectors;
 	}
 }
