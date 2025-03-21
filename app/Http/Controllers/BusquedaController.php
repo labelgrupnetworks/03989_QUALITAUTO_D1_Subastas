@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\View;
-
-use App\Models\Subasta;
-use App\Models\Bloques;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use App\Models\Favorites;
+use App\Models\Subasta;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\BlockService;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 /**
  * Controlador para la busqueda de lotes y subastas
@@ -38,7 +37,6 @@ class BusquedaController extends Controller
 		}
 		//las palabras deben tener mas de un caracter, si no n oson validas, debe haber almenos una palabra valida para ralizar la busqueda
 		$valid_words = false;
-		$bloque = new Bloques();
 		$sub = new Subasta();
 		# Cargamos modelo de subasta para el getLote
 		$itemsPerPage  			= 48;
@@ -118,7 +116,7 @@ class BusquedaController extends Controller
 				);
 
 				//Utilizamos bloc para buscar los lotes
-				$resultado = $bloque->getResultBlockByKeyname('count_search', $replace);
+				$resultado = (new BlockService)->getResultBlockByKeyname('count_search', $replace);
 
 
 				if (!empty($resultado) && !empty($resultado[0]->num_lots)) {
@@ -135,7 +133,7 @@ class BusquedaController extends Controller
 
 			$replace['paginacion'] = $sub->getOffset($currentPage, $itemsPerPage);
 
-			$resultado = $bloque->getResultBlockByKeyname('search', $replace);
+			$resultado = (new BlockService)->getResultBlockByKeyname('search', $replace);
 
 			//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
 			ToolsServiceProvider::normalSearch();
@@ -183,8 +181,6 @@ class BusquedaController extends Controller
 
 		//las palabras deben tener mas de un caracter, si no n oson validas, debe haber almenos una palabra valida para ralizar la busqueda
 		$valid_words = false;
-		$bloque = new Bloques();
-		$sub = new Subasta();
 		# Cargamos modelo de subasta para el getLote
 
 		$texto = Route::current()->parameter('texto');
@@ -234,7 +230,7 @@ class BusquedaController extends Controller
 					'hist' => $history,
 				);
 
-				$resultado = $bloque->getResultBlockByKeyname('search_auction', $replace);
+				$resultado = (new BlockService)->getResultBlockByKeyname('search_auction', $replace);
 				//dejamos los parametros de busqueda a normal, por que estaban afectando a todas las queries de la página
 				ToolsServiceProvider::normalSearch();
 				if (empty($resultado)) {

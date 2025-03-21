@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\V5\LotListController;
-use App\Models\Bloques;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgSub;
 use App\Models\V5\Web_Page;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\BlockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -40,7 +40,6 @@ class ContentController extends Controller
 
 	function getAjaxCarousel(Request $request)
 	{
-		$bloque         = new Bloques();
 		$contents = "";
 
 		$replaces = $request->input('replace');
@@ -53,7 +52,7 @@ class ContentController extends Controller
 		}, $replaces);
 
 
-		$banner = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
+		$banner = (new BlockService)->getResultBlockByKeyname($request->input('key'), $replaces);
 		if (empty($banner)) {
 			return;
 		}
@@ -92,8 +91,6 @@ class ContentController extends Controller
 	function getAjaxLotGrid(Request $request)
 	{
 		$itemsForPage = 15;
-
-		$bloque = new Bloques();
 		$contents = "";
 
 		$replaces = $request->input('replace');
@@ -102,7 +99,7 @@ class ContentController extends Controller
 		}, $replaces);
 
 
-		$banner = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
+		$banner = (new BlockService)->getResultBlockByKeyname($request->input('key'), $replaces);
 		if (empty($banner)) {
 			return;
 		}
@@ -151,16 +148,14 @@ class ContentController extends Controller
 			return "";
 		}
 
-		$bloque = new Bloques();
 		$lots = null;
-
 		$replaces = $request->input('replace');
 		$replaces = array_map(function ($replace) {
 			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
 		}, $replaces);
 
 
-		$lotsQuery = $bloque->getResultBlockByKeyname($key, $replaces);
+		$lotsQuery = (new BlockService)->getResultBlockByKeyname($key, $replaces);
 
 		$lotlistcontroller = new LotListController();
 		$lotlist = $lotlistcontroller->setRef($lotsQuery);
@@ -196,8 +191,6 @@ class ContentController extends Controller
 	function getAjaxGridLotesDestacados(Request $request)
 	{
 		Config::set('app.locale', request('lang', 'es'));
-		$bloque         = new Bloques();
-		$contents = "";
 		$lots = null;
 
 		$replaces = $request->input('replace');
@@ -205,7 +198,7 @@ class ContentController extends Controller
 			return ToolsServiceProvider::replaceDangerqueryCharacter($replace);
 		}, $replaces);
 
-		$lotsQuery = $bloque->getResultBlockByKeyname($request->input('key'), $replaces);
+		$lotsQuery = (new BlockService)->getResultBlockByKeyname($request->input('key'), $replaces);
 
 		$lotlistcontroller = new LotListController();
 		$lotlist = $lotlistcontroller->setRef($lotsQuery);

@@ -11,7 +11,6 @@ use App\libs\FormLib;
 use App\libs\ImageGenerate;
 use App\libs\StrLib;
 use App\libs\TradLib;
-use App\Models\Bloques;
 use App\Models\Category;
 use App\Models\Enterprise;
 use App\Models\Favorites;
@@ -32,6 +31,7 @@ use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Content\BlockService;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\App;
@@ -2060,7 +2060,6 @@ class SubastaController extends Controller
 	{
 		try {
 			$subasta = new Subasta();
-			$bloque = new Bloques();
 			$subasta->cod = $lot->sub_csub;
 			$subasta->lote = $lot->ref_csub;
 
@@ -2080,7 +2079,7 @@ class SubastaController extends Controller
 				);
 
 
-				$relacionados_temp = $bloque->getResultBlockByKeyname($key, $replace);
+				$relacionados_temp = (new BlockService)->getResultBlockByKeyname($key, $replace);
 
 				foreach ($relacionados_temp as $value) {
 					$relacionados[$value->num_hces1 . '-' . $value->lin_hces1] = $value;

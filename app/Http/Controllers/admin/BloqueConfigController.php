@@ -4,40 +4,39 @@ namespace App\Http\Controllers\admin;
 
 use \Carbon\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\Bloques;
+use App\Models\V5\Web_Block;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 
+/**
+ * Class BloqueConfigController
+ * Administraction de la tabla web_block
+ * @todo 21/03/2025
+ * Tal y como esta pensada, no creo que nadie administre estas consultas desde aquí.
+ * Solamente se utiliza para lotes destacados y recomentados, puede que se pueda eliminar
+ * si se modifica la forma en como mostrarlos.
+ */
 class BloqueConfigController extends Controller
 {
-
 	//Ver todos los Bloques que hay
 	public function index()
 	{
-		$content = new Bloques();
-		$data = $content->tableBloque();
+		$data = Web_Block::orderBy('title', 'desc')->get();
 		return View::make('admin::pages.bloque', array('data' => $data));
 	}
 
 	//Ver la informacion del bloque si no existe todo vacio
 	public function SeeBloque($id = NULL)
 	{
-		$content = new Bloques();
-		$bloque = $content->infBloque($id);
-		if (!count($bloque) > 0) {
-			$bloque = null;
-		}
-
-		return View::make('admin::pages.editBloque', array('bloque' => $bloque[0]));
+		$bloque = Web_Block::where('id_web_block', $id)->first();
+		return View::make('admin::pages.editBloque', array('bloque' => $bloque));
 	}
 
 	//Editar el bloque
 	public function EditBloque()
 	{
-		$content = new Bloques();
-
 		$type = Request::input('type');
 		$title = Request::input('title');
 		$consulta = Request::input('consulta');
@@ -51,16 +50,30 @@ class BloqueConfigController extends Controller
 		//Si no hay update o hace un insert dependiendo de si existe
 
 		if (!$val_injection) {
-			if ($enabled_temp == 'on') {
-				$enabled = 1;
-			} else {
-				$enabled = 0;
-			}
+
+			$enabled = $enabled_temp == 'on' ? 1 : 0;
 
 			if ($id < 1) {
-				$id_bloque = $content->NewBloque($type, $title, $consulta, $enabled, $key_name, $cache);
+				$maxId = Web_Block::max('id_web_block') + 1;
+				Web_Block::create([
+					'id_web_block' => $maxId,
+					'key_name' => $key_name,
+					'title' => $title,
+					'type' => $type,
+					'products' => $consulta,
+					'enabled' => $enabled,
+					'time_cache' => $cache,
+				]);
 			} else {
-				$content->UpdateBloque($type, $title, $consulta, $enabled, $key_name, $id, $cache);
+				Web_Block::where('id_web_block', $id)
+					->update([
+						'key_name' => $key_name,
+						'title' => $title,
+						'type' => $type,
+						'products' => $consulta,
+						'enabled' => $enabled,
+						'time_cache' => $cache,
+					]);
 			}
 
 			$claves_temp = $this->sqlClaves($consulta);
