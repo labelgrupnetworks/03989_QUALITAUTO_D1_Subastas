@@ -4,16 +4,18 @@
 <head>
     <title>Gráfica de Pujas</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous" defer>
     </script>
+
 </head>
 
 <body>
     <div class="container pt-5">
-		<h1 class="h2 mb-5">Tiempos de acciones en tiempo real</h1>
+        <h1 class="h2 mb-5">Tiempos de acciones en tiempo real</h1>
 
         <div class="row">
             <div class="col-3">
@@ -23,7 +25,8 @@
                             <a href="{{ $toFile($log) }}" @class([
                                 'list-group-item list-group-item-action',
                                 'active' =>
-                                    request('day', request('file', '')) == $log || (empty(request('day')) && $loop->first),
+                                    request('day', request('file', '')) == $log ||
+                                    (empty(request('day')) && $loop->first),
                             ])>
                                 <span>
                                     {{ $log }}
@@ -53,11 +56,30 @@
         const pujas = actions.filter(item => item.action_type === 'BID');
         const closeLots = actions.filter(item => item.action_type === 'END_LOT');
 
-        var labels = pujas.map(item => item.id);
+        var labels = pujas.map(item => new Date(item.date));
         var tiempos = pujas.map(item => item.time);
 
-        var labelsCierres = closeLots.map(item => item.id);
+		var dataPujas = pujas.map(item => {
+			return {
+				x: new Date(item.date),
+				y: item.time,
+				ref: item.ref,
+				licitador: item.licitador,
+				imp: item.imp,
+				uuid: item.uuid
+			}
+		});
+
+        var labelsCierres = closeLots.map(item => new Date(item.date));
         var tiemposCierres = closeLots.map(item => item.time);
+		var dataCierres = closeLots.map(item => {
+			return {
+				x: new Date(item.date),
+				y: item.time,
+				ref: item.ref,
+				uuid: item.uuid
+			}
+		});
 
         // Calculamos la media de los tiempos
         // Creamos un array con la media para cada punto
@@ -67,12 +89,12 @@
         var promedioCierres = tiemposCierres.reduce((a, b) => a + b, 0) / tiemposCierres.length;
         var promedioArrayCierres = labelsCierres.map(() => promedioCierres);
 
-        const lineChartsDatasets = (labels, tiempos, promedioArray) => {
+        const lineChartsDatasets = (labels, data, promedioArray) => {
             return {
-                labels: labels,
+               	labels: labels,
                 datasets: [{
                         label: 'Tiempo (ms)',
-                        data: tiempos,
+                        data: data,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1,
@@ -129,10 +151,38 @@
             }
         }
 
+        const scales = {
+            x: {
+                type: 'time',
+				min: labels[0],
+                time: {
+                    displayFormats: {
+                        minute: 'HH:mm',
+                    },
+                    tooltipFormat: 'HH:mm:ss'
+                },
+				ticks: {
+					source: 'auto',
+
+				},
+                title: {
+                    display: true,
+                    text: 'Hora'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Tiempo (ms)'
+                }
+            }
+        };
+
+
         var ctx = document.getElementById('chartPujas').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
-            data: lineChartsDatasets(labels, tiempos, promedioArray),
+            data: lineChartsDatasets(labels, dataPujas, promedioArray),
             options: {
                 onClick: (evt, activeElements) => {
                     if (activeElements.length > 0) {
@@ -162,18 +212,14 @@
                         }
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                scales
             }
         });
 
         var ctxCierres = document.getElementById('chartCierres').getContext('2d');
         var chartCierres = new Chart(ctxCierres, {
             type: 'line',
-            data: lineChartsDatasets(labelsCierres, tiemposCierres, promedioArrayCierres),
+            data: lineChartsDatasets(labelsCierres, dataCierres, promedioArrayCierres),
             options: {
                 onClick: (evt, activeElements) => {
                     if (activeElements.length > 0) {
@@ -200,11 +246,7 @@
                         }
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                scales
             }
         });
     </script>

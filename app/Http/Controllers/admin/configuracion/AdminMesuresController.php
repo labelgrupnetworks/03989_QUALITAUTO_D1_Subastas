@@ -90,6 +90,11 @@ class AdminMesuresController extends Controller
 		$closeCounter = 1;
 		foreach ($lines as $line) {
 			if (strpos($line, 'api.action.subasta') !== false) {
+
+				// Extraemos fehca y hora de la linea
+				preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $line, $matchestime);
+				$dateTime = $matchestime[0];
+
 				// Extraemos el JSON usando regex
 				preg_match('/api.action.subasta\s+(.*)$/', $line, $matches);
 
@@ -97,12 +102,17 @@ class AdminMesuresController extends Controller
 					$json = $matches[1];
 					$data = json_decode($json, true);
 					if (json_last_error() === JSON_ERROR_NONE) {
-						$actions[] = $this->actionDto($bidCounter, 'BID', $data);
+						$actions[] = $this->actionDto($bidCounter, 'BID', $data, $dateTime);
 						$bidCounter++;
 					}
 				}
 			}
 			if (strpos($line, 'api.action.end_lot') !== false) {
+
+				// Extraemos fehca y hora de la linea
+				preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $line, $matchestime);
+				$dateTime = $matchestime[0];
+
 				// Extraemos el JSON usando regex
 				preg_match('/api.action.end_lot\s+(.*)$/', $line, $matches);
 
@@ -110,7 +120,7 @@ class AdminMesuresController extends Controller
 					$json = $matches[1];
 					$data = json_decode($json, true);
 					if (json_last_error() === JSON_ERROR_NONE) {
-						$actions[] = $this->actionDto($closeCounter, 'END_LOT', $data);
+						$actions[] = $this->actionDto($closeCounter, 'END_LOT', $data, $dateTime);
 						$closeCounter++;
 					}
 				}
@@ -120,7 +130,7 @@ class AdminMesuresController extends Controller
 		return $actions;
 	}
 
-	private function actionDto($id, $type, $data)
+	private function actionDto($id, $type, $data, $dateTime)
 	{
 		$params = data_get($data, '0.params', []);
 
@@ -129,6 +139,7 @@ class AdminMesuresController extends Controller
 			'id' => $id,
 			'time' => $data['time'],
 			'uuid' => $data['uuid'],
+			'date' => $dateTime,
 			'codSub' => data_get($params, 'cod_sub', ''),
 			'ref' => data_get($params, 'ref', data_get($params, 'lot', '')),
 			'imp' => data_get($params, 'imp', ''),

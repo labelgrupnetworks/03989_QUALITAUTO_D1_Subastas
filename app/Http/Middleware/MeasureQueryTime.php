@@ -16,14 +16,22 @@ class MeasureQueryTime
 			return $next($request);
 		}
 
-        // Habilitar el registro de consultas
-        DB::enableQueryLog();
+		$queries = [];
+		DB::listen(function ($query) use (&$queries) {
+			//Guardamos solo las consultas que superen los 50ms
+			if($query->time < 50) {
+				return;
+			}
+
+			$queries[] = [
+				'table' => $this->getTableName($query->sql),
+				'time'     => $query->time,
+			];
+		});
 
 		//  Medir el tiempo de del proceso
 		$processTimeStart = microtime(true);
-
 		$response = $next($request);
-
 		$processTimeEnd = microtime(true) - $processTimeStart;
 		$processTotalTime = round($processTimeEnd * 1000, 2);
 
@@ -31,11 +39,7 @@ class MeasureQueryTime
 		$uuid = uniqid();
 
 		$this->addProcessTimeFromRequest($uuid, $request, $processTotalTime);
-
-		$queries = DB::getQueryLog();
 		$this->addQueryTimes($uuid, $queries);
-
-        DB::disableQueryLog();
 
         return $response;
     }
@@ -51,17 +55,14 @@ class MeasureQueryTime
 
 	private function addQueryTimes($uuid, $queries)
 	{
-		$messages = [];
-		foreach ($queries as $query) {
-			$table = explode(" ", $query['query']);
-			$table = $table[array_search("from", array_map('strtolower', $table)) + 1];
-			$table = trim($table, " \t\n\r`");
-			$table = str_replace("\n", "", $table);
-			$table = str_replace("\t", "", $table);
+		Log::driver('analytics')->info("Consultas lentas de la peticion: $uuid", ['querys' => $queries]);
+	}
 
-			$messages[] = "Consulta ejecutada: en {$table} en {$query['time']} ms";
+	private function getTableName($sql)
+	{
+		if (preg_match('/\bfrom\s+(?!\()[`]?(\w+)[`]?/i', $sql, $matches)) {
+			return $matches[1];
 		}
-
-		Log::driver('analytics')->info("Consultas de la peticion: $uuid", ['messages' => $messages]);
+		return 'desconocida';
 	}
 }
