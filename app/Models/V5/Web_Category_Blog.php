@@ -6,6 +6,7 @@ namespace App\Models\V5;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 class Web_Category_Blog extends Model
 {
     protected $table = 'web_category_blog';
@@ -33,6 +34,17 @@ class Web_Category_Blog extends Model
 		static::addGlobalScope('emp', function(Builder $builder) {
 			$builder->where('emp_category_blog', Config::get("app.main_emp"));
 		});
+	}
+
+	public function scopeJoinLang($query)
+	{
+		return $query->join('web_category_blog_lang', 'id_category_blog_lang = id_category_blog');
+	}
+
+	public function scopeWhereLang($query, $lang)
+	{
+		$lang = Str::upper($lang);
+		return $query->where('lang_category_blog_lang', $lang);
 	}
 
 	public function languages()

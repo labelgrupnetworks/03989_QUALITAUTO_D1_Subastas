@@ -331,7 +331,6 @@ Route::get('/disbandment_lot', [MailController::class, 'disbandment_lot']);
 /* Blog */
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ?}', [NoticiasController::class, 'index'])->name('blog.index');
 Route::get(Routing::slugSeo('blog', true) . '/{key_categ}/{key_news}', [NoticiasController::class, 'news'])->name('blog.news');
-Route::get(Routing::slugSeo('mosaic-blog', true), [NoticiasController::class, 'mosaicBlog']);
 Route::get(Routing::slugSeo('mosaic-blog', true), [NoticiasController::class, 'museumPieces']);
 Route::get(Routing::slugSeo('events', true), [NoticiasController::class, 'events']);
 Route::get(Routing::slugSeo('events', true) . '/{id}', [NoticiasController::class, 'event']);

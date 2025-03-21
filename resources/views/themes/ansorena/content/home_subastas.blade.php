@@ -47,7 +47,7 @@
 </div>
 
 @php
-    $blogs = (new App\Models\Blog())->getHomeNotices(3, false);
+    $blogs = (new App\Services\Content\BlogService())->getHomeNotices(3, false);
 @endphp
 <section class="blog-home">
     <div class="container blog-home-container text-center">

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin\contenido;
 
 use App\Http\Controllers\Controller;
 use App\libs\FormLib;
-use App\Models\Blog;
 use App\Models\Category;
 use App\Models\CategorysBlog;
 use App\Models\V5\Web_Blog;
@@ -12,6 +11,7 @@ use App\Models\V5\Web_Blog_Lang;
 use App\Models\V5\Web_Category_Blog;
 use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerModel;
+use App\Services\admin\Content\BlogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
@@ -22,14 +22,12 @@ use Illuminate\Support\Str;
 class AdminBlogController extends Controller
 {
 	//añadir las variables del contructor
-	public $blog;
 	public $categorysBlog;
 	public $category;
 	public $lang;
 
 	public function __construct()
 	{
-		$this->blog = new Blog();
 		$this->categorysBlog = new CategorysBlog();
 		$this->category = new Category();
 		$this->lang = Config::get('app.locales');
@@ -40,7 +38,8 @@ class AdminBlogController extends Controller
 
 	public function index()
 	{
-		$blogs = $this->blog->getAllPrincipalBlog();
+		$blogService = new BlogService();
+		$blogs = $blogService->getAllPrincipalBlog();
 		$categories = $this->categorysBlog->getCategorys();
 		$categories = collect($categories)->sortBy('orden_category_blog')->toArray();
 
@@ -61,15 +60,15 @@ class AdminBlogController extends Controller
 			return $item;
 		});
 
-		$this->blog->lang = 'ES';
-		$categories = $this->blog->getCategorysLang();
+		$blogService = new BlogService();
+		$categories = $blogService->getCategoriesLangByLocale();
 
 		$data = [
 			'sub_categ' => $sub_categ,
 			'sec' => $sections,
 			'idiomes' => $this->lang,
 			'categories' => $categories,
-			'categories_select' => collect($categories)->pluck('title_category_blog_lang', 'id_category_blog'),
+			'categories_select' => $categories->pluck('title_category_blog_lang', 'id_category_blog'),
 		];
 
 		return View::make('admin::pages.contenido.blog.create', array('data' => $data));
@@ -150,13 +149,11 @@ class AdminBlogController extends Controller
 			return $item;
 		});
 
-		$this->blog->lang = 'ES';
-		$categories = $this->blog->getCategorysLang();
-
-		$this->blog->idblog = $id;
+		$blogService = new BlogService();
+		$categories = $blogService->getCategoriesLangByLocale();
 
 		//obtener datos de la noticia por idioma
-		$inf_noticia['lang'] = $this->blog->getNoticiasAllLangs()->keyBy('lang_web_blog_lang');
+		$inf_noticia['lang'] = $blogService->getNoticiasAllLangs($id)->keyBy('lang_web_blog_lang');
 		$ids = $inf_noticia['lang']->pluck('id_web_blog_lang')->toArray();
 
 		$contents = Web_Content_Page::WhereCustomRelation(Web_Content_Page::TABLE_REL_CONTENT_PAGE_BLOG, $ids)
@@ -176,7 +173,7 @@ class AdminBlogController extends Controller
 		$inf_noticia['lot_sub_categories_web_blog'] = $noticiaLocale->lot_sub_categories_web_blog ? explode(",", $noticiaLocale->lot_sub_categories_web_blog) : [];
 
 		//obtener noticias relacionadas
-		$categ_blog = $this->blog->getNoticiaRelCategory();
+		$categ_blog = $blogService->getNoticiaRelCategory($id);
 		$inf_noticia['categories'] = [];
 		foreach ($categ_blog as $value) {
 			$inf_noticia['categories'][] = $value->idcat_web_blog_rel_category;
@@ -370,13 +367,11 @@ class AdminBlogController extends Controller
 	 */
 	private function addRelationsBlog($id, $relCategories)
 	{
-		$this->blog->id = $id;
-		$this->blog->idblog_lang = $id;
-		$this->blog->DeleteRelBlog();
+		$blogService = new BlogService();
+		$blogService->deleteRelationBlog($id);
 
 		foreach ($relCategories ?? [] as $cate_blog) {
-			$this->blog->rel_category = $cate_blog;
-			$this->blog->InsertRelBlog();
+			$blogService->insertRelationBlog($id, $cate_blog);
 		}
 	}
 

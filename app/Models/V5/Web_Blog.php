@@ -60,6 +60,12 @@ class Web_Blog extends Model
 		return $query->join('web_blog_lang', 'idblog_web_blog_lang', '=', 'id_web_blog');
 	}
 
+	public function scopeWhereLang($query, $lang)
+	{
+		$lang = mb_strtoupper($lang);
+		return $query->where('lang_web_blog_lang', $lang);
+	}
+
 	public static function getNoticiesQuery($withContent)
 	{
 		return self::query()

@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\admin\contenido;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
 use App\Models\Category;
 use App\Models\CategorysBlog;
-use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
 use Illuminate\Http\Request;
@@ -23,7 +21,6 @@ class AdminBlogCategoryController extends Controller
 
 	public function __construct()
 	{
-		$this->blog = new Blog();
 		$this->categorysBlog = new CategorysBlog();
 		$this->category = new Category();
 		$this->lang = Config::get('app.locales');

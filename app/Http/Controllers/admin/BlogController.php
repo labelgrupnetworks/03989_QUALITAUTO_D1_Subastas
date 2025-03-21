@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DataTransferObjects\Content\BlogData;
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
 use App\Models\Category;
 use App\Models\CategorysBlog;
+use App\Models\V5\Web_Blog;
+use App\Models\V5\Web_Blog_Lang;
+use App\Services\admin\Content\BlogService;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -17,14 +21,12 @@ use Illuminate\Support\Facades\View;
  */
 class BlogController extends Controller
 {
-	private $blog;
 	private $categorysBlog;
 	private $category;
 	private $lang;
 
 	public function __construct()
 	{
-		$this->blog = new Blog();
 		$this->categorysBlog = new CategorysBlog();
 		$this->category = new Category();
 		$this->lang = Config::get('app.locales');
@@ -33,30 +35,35 @@ class BlogController extends Controller
 
 	public function index($id = null)
 	{
+		$blogService = new BlogService();
+
 		$data = array();
 		$sub_categ = array();
 		$sec = array();
 		$categorys = $this->category->getCategSubCateg(false, '0');
+
 		foreach ($categorys as $categ) {
 			$sub_categ[$categ->cod_sec] = ucfirst(mb_strtolower($categ->des_sec));
 			$sec[$categ->lin_ortsec1] = $categ->des_ortsec0;
 		}
 
-		$this->blog->lang = 'ES';
-		$categorys = $this->blog->getCategorysLang();
+		$categorys = $blogService->getCategoriesLangByLocale();
+
 		$all_categories = array();
 		foreach ($categorys as $categ) {
 			$all_categories[$categ->url_category_blog_lang] = $categ;
 		}
+
 		asort($all_categories);
 		asort($sec);
 		asort($sub_categ);
 		$data = array('sub_categ' => $sub_categ, 'sec' => $sec, 'idiomes' => $this->lang, 'categories' => $all_categories);
 		if (!empty($id)) {
-			$this->blog->idblog = $id;
+
 			foreach ($this->lang as $key_alng => $lang) {
-				$this->blog->lang = strtoupper($key_alng);
-				$inf_noticia['lang'][strtoupper($key_alng)] = head($this->blog->getNoticiaLang());
+
+				$inf_noticia['lang'][strtoupper($key_alng)] = $blogService->getNoticiaLang($id, $key_alng);
+
 				if (!empty($inf_noticia['lang'][strtoupper($key_alng)]->lot_categories_web_blog)) {
 					$inf_noticia['lot_categories_web_blog'] = explode(",", $inf_noticia['lang'][strtoupper($key_alng)]->lot_categories_web_blog);
 				}
@@ -64,10 +71,11 @@ class BlogController extends Controller
 					$inf_noticia['lot_sub_categories_web_blog'] = explode(",", $inf_noticia['lang'][strtoupper($key_alng)]->lot_sub_categories_web_blog);
 				}
 			}
-			$categ_blog = $this->blog->getNoticiaRelCategory();
+			$categ_blog = $blogService->getNoticiaRelCategory($id);
 			foreach ($categ_blog as $value) {
 				$inf_noticia['categories'][] = $value->idcat_web_blog_rel_category;
 			}
+
 			$data['noticia'] = $inf_noticia;
 		}
 
@@ -75,11 +83,9 @@ class BlogController extends Controller
 	}
 
 
-	public function getBlogs()
+	public function getBlogs(BlogService $blogService)
 	{
-		$data = array();
-		$data = $this->blog->getAllBlogs();
-		return View::make('admin::pages.blog', array('data' => $data));
+		return View::make('admin::pages.blog', ['data' => $blogService->getAllBlogs()]);
 	}
 
 	public function getCategoryBlog()
@@ -91,10 +97,11 @@ class BlogController extends Controller
 
 	public function seeCategoryBlog($id = null)
 	{
-		$categorys = array();
+		$blogService = new BlogService();
+
+		$categorys = [];
 		if (!empty($id)) {
-			$this->blog->id = $id;
-			$categorys_temp = $this->blog->getCategorysLang();
+			$categorys_temp = $blogService->getCategoriesLangById($id);
 			foreach ($categorys_temp as $categ) {
 				$categorys[$categ->lang_category_blog_lang] = $categ;
 			}
@@ -163,90 +170,38 @@ class BlogController extends Controller
 		return $this->categorysBlog->id;
 	}
 
-	public function EditBlog()
+	public function EditBlog(HttpRequest $request)
 	{
-		$this->blog->id = Request::input('id');
-		$this->blog->title = Request::input('title');
-		$this->blog->categories_web = '';
-		$this->blog->sub_categories_web = '';
-		$this->blog->img = Request::input('file_url');
-		$this->blog->date = Request::input('date');
-		$this->blog->category_principal = Request::input('categ_blog_principal');
-		$this->blog->author_web_blog = trim(Request::input('author'));
+		$blog = BlogData::fromRequest($request);
+		$blogService = new BlogService();
 
-		if (!empty(Request::input('sub_categ'))) {
-			foreach (Request::input('sub_categ') as $sub_categ) {
-				$this->blog->sub_categories_web .= $sub_categ . ',';
-			}
-			$this->blog->sub_categories_web = trim(substr($this->blog->sub_categories_web, 0, -1));
-		}
+		if ($blog->id == 0) {
+			$max_id = Web_Blog::max('id_web_blog');
+			$blog->id = $max_id + 1;
+			$blogService->insertBlog($blog);
 
-		if (!empty(Request::input('sec'))) {
-			foreach (Request::input('sec') as $sec_categ) {
-				$this->blog->categories_web .= $sec_categ . ',';
-			}
-			$this->blog->categories_web = trim(substr($this->blog->categories_web, 0, -1));
-		}
-
-
-		if ($this->blog->id == 0) {
-			$max_id = $this->blog->MaxBlog();
-			$this->blog->idblog_lang = $max_id + 1;
-			$this->blog->InsertBlog();
-			$this->blog->id = $this->blog->idblog_lang;
-			foreach ($this->lang as $lang => $idiom) {
-				$this->blog->id_lang = $this->blog->MaxBlogLang();
-				$this->blog->id_lang++;
+			foreach (array_keys($this->lang) as $lang) {
+				$idBlogLang = Web_Blog_Lang::max('id_web_blog_lang') + 1;
 				$lang = strtoupper($lang);
-				$this->blog->lang = $lang;
-				$this->blog->title_blog = trim(Request::input('title_' . $lang));
-				$this->blog->cita_blog = trim(Request::input('cita_' . $lang));
-				$this->blog->url_blog = str_slug(trim(Request::input('url_' . $lang), '-'));
-				$this->blog->metatit_blog = trim(Request::input('meta_title_' . $lang));
-				$this->blog->metades_blog = trim(Request::input('meta_desc_' . $lang));
-				$this->blog->video_blog = trim(Request::input('video_' . $lang));
-				$this->blog->cont_blog = trim(Request::input('cont_' . $lang));
 
-				if (empty(Request::input('enabled_' . $lang))) {
-					$this->blog->enabled_blog = 0;
-				} else {
-					$this->blog->enabled_blog = 1;
-				}
-				$this->blog->InsertBlogLang();
+				$blogService->insertBlogLang($request, $blog->id, $idBlogLang, $lang);
 			}
 		} else {
-			$this->blog->idblog_lang = $this->blog->id;
-			$this->blog->UpdateBlog();
+			$blogService->updateBlog($blog);
 
-			foreach ($this->lang as $lang => $idiom) {
+			foreach (array_keys($this->lang) as $lang) {
 				$lang = strtoupper($lang);
-				$this->blog->lang = $lang;
-				$this->blog->title_blog = trim(Request::input('title_' . $lang));
-				$this->blog->cita_blog = trim(Request::input('cita_' . $lang));
-				$this->blog->url_blog = str_slug(trim(Request::input('url_' . $lang), '-'));
-				$this->blog->metatit_blog = trim(Request::input('meta_title_' . $lang));
-				$this->blog->metades_blog = trim(Request::input('meta_desc_' . $lang));
-				$this->blog->video_blog = trim(Request::input('video_' . $lang));
-				$this->blog->cont_blog = trim(Request::input('cont_' . $lang));
-				if (empty(Request::input('enabled_' . $lang))) {
-					$this->blog->enabled_blog = 0;
-				} else {
-					$this->blog->enabled_blog = 1;
-				}
-				$this->blog->UpdateBlogLang();
+				$blogService->updateBlogLang($request, $blog->id, $lang);
 			}
 		}
 
-		$this->blog->DeleteRelBlog();
+		$blogService->deleteRelationBlog($blog->id);
 
-		if (!empty(Request::input('cate_blog'))) {
-			$categ_blog = Request::input('cate_blog');
-			foreach ($categ_blog as $cate_blog) {
-				$this->blog->rel_category = $cate_blog;
-				$this->blog->InsertRelBlog();
-			}
+		$categ_blog = $request->input('cate_blog', []);
+		foreach ($categ_blog as $cate_blog) {
+			$blogService->insertRelationBlog($blog->id, $cate_blog);
 		}
 
-		return $this->blog->id;
+		return $blog->id;
 	}
 }

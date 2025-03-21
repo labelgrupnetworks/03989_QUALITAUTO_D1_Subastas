@@ -2,40 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
-use App\Models\CategorysBlog;
 use App\Models\Sec;
 use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerItemModel;
 use App\Models\WebNewbannerModel;
 use App\Providers\RoutingServiceProvider;
+use App\Services\Content\BlogService;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class NoticiasController extends Controller
 {
-	public function smallIndex()
-	{
-		$blog = new Blog();
-		$blog->lang = strtoupper(Config::get('app.locale'));
-		$noticias = $blog->getSmallNoticiasLang();
-
-		$data = [
-			'noticias' => $noticias,
-		];
-
-		return (object)['data' => $data];
-	}
 
 	public function index($lang, $key_categ = null)
 	{
-
-		$blog = new Blog();
-		$categoryBlog = new CategorysBlog();
-		$SEO_metas = new \stdClass();
-
-		$blog->lang = strtoupper(Config::get('app.locale'));
-		$noticias = $blog->getAllNoticiasLang($key_categ);
+		$blogService = new BlogService();
+		$noticias = $blogService->getAllNoticiasLang($key_categ);
 		$categ = null;
 
 		foreach ($noticias as $noticia) {
@@ -44,24 +27,24 @@ class NoticiasController extends Controller
 			$noticia->category_url = RoutingServiceProvider::translateSeo("blog/{$noticia->url_category_blog_lang}");
 		}
 
-		if (!empty($key_categ)) {
-			$categoryBlog->lang = strtoupper(Config::get('app.locale'));
-			$categoryBlog->url_category = $key_categ;
-			$categ = $categoryBlog->getCategory();
-			$url_category_blog_lang = !empty($categ->url_category_blog_lang) ? $categ->url_category_blog_lang : $key_categ;
+		$SEO_metas = (object)[
+			'meta_title' => trans('web.blog.blog_metatile'),
+			'meta_description' => trans('web.blog.blog_metades'),
+			'canonical' => route('blog.index', ['lang' => $lang])
+		];
 
-			$SEO_metas->meta_title = !empty($categ->metatit_category_blog_lang) ? $categ->metatit_category_blog_lang : trans(Config::get('app.theme') . '-app.blog.blog_metatile');
-			$SEO_metas->meta_description = !empty($categ->meta_description) ? $categ->meta_description : trans(Config::get('app.theme') . '-app.blog.blog_metades');
-			$SEO_metas->canonical = $_SERVER['HTTP_HOST'] . RoutingServiceProvider::translateSeo('blog') . $url_category_blog_lang;
-		} else {
-			$SEO_metas->meta_title = trans(Config::get('app.theme') . '-app.blog.blog_metatile');
-			$SEO_metas->meta_description = trans(Config::get('app.theme') . '-app.blog.blog_metades');
-			$SEO_metas->canonical =  substr($_SERVER['HTTP_HOST'] . RoutingServiceProvider::translateSeo('blog'), 0, -1);
+		if (!empty($key_categ)) {
+			$categ = $blogService->getCategory($key_categ);
+
+			$url_category_blog_lang = $categ->url_category_blog_lang ?? $key_categ;
+			$SEO_metas->meta_title = $categ->metatit_category_blog_lang ?? $SEO_metas->meta_title;
+			$SEO_metas->meta_description = $categ->meta_description ?? $SEO_metas->meta_description;
+			$SEO_metas->canonical = route('blog.index', ['lang' => $lang, 'key_categ' => $url_category_blog_lang]);
 		}
 
 		$data = [
 			'categ' => $categ,
-			'categories' => $categoryBlog->getCategoriesHasNews(),
+			'categories' => $blogService->getCategoriesHasNews(),
 			'noticias' => $noticias,
 			'seo' => $SEO_metas
 		];
@@ -71,27 +54,14 @@ class NoticiasController extends Controller
 
 	public function news($lang, $key_categ, $key_news)
 	{
-		$blog = new Blog();
+		$blogService = new BlogService();
 		$sec = new Sec();
 
-		$isAdmin = session('user.admin') ? true : false;
+		$isAdmin = Session::has('user.admin');
+		$categorys = $blogService->getCategory(null, !$isAdmin)
+			->keyBy('id_category_blog_lang');
 
-		$categorys = array();
-		$categoryBlog = new CategorysBlog();
-		$categoryBlog->lang = strtoupper(Config::get('app.locale'));
-		$categorys_temp = $categoryBlog->getCategory(true, !$isAdmin);
-
-		if (!empty($key_categ)) {
-			$categoryBlog->url_category = $key_categ;
-		}
-
-		foreach ($categorys_temp as $categ_value) {
-			$categorys[$categ_value->id_category_blog_lang] = $categ_value;
-		}
-
-		$relationship_new = array();
-		$blog->lang = strtoupper(Config::get('app.locale'));
-		$noticias = $blog->getNoticia($key_categ, $key_news);
+		$noticias = $blogService->getNoticia($key_categ, $key_news);
 
 		if (empty($noticias) || empty($categorys[$noticias->primary_category_web_blog])) {
 			exit(View::make('front::errors.404'));
@@ -102,10 +72,9 @@ class NoticiasController extends Controller
 		$categorys_web = $sec->getOrtsecByOrtsec($cod_sub, $lot_categories);
 
 		$noticias->cita_web_blog_lang =  '<div id="cita" class="post_text-special">' . $noticias->cita_web_blog_lang . '</div>';
-
 		$noticias->texto_web_blog_lang = str_replace('[*CITA*]', $noticias->cita_web_blog_lang, $noticias->texto_web_blog_lang);
 
-		$relationship_new = $blog->getAllNoticiasRelacionadas($noticias->id_web_blog);
+		$relationship_new = $blogService->getAllNoticiasRelacionadas($noticias->id_web_blog);
 
 		$SEO_metas = new \stdClass();
 		$SEO_metas->meta_title = $noticias->metatitle_web_blog_lang;
@@ -132,42 +101,6 @@ class NoticiasController extends Controller
 		}
 
 		return View::make('front::pages.noticias.entrada', array('data' => $data));
-	}
-
-
-	public function mosaicBlog()
-	{
-
-		if (!Config::get('app.mosaic_blog_category', 0)) {
-			exit(View::make('front::errors.404'));
-		}
-
-		$key_categ = Config::get('app.mosaic_blog_category');
-		$blog = new Blog();
-		$categoryBlog = new CategorysBlog();
-		$SEO_metas = new \stdClass();
-		$categ = null;
-		$blog->lang = strtoupper(Config::get('app.locale'));
-		$categoryBlog->lang = strtoupper(Config::get('app.locale'));
-
-		$noticias = $blog->getAllNoticiasLangByIdCategory($key_categ);
-		$categ = $categoryBlog->getCategoryById($key_categ);
-
-		#La idea es que no tengan enlace
-		//$url_category_blog_lang = !empty($categ->url_category_blog_lang)?$categ->url_category_blog_lang:$key_categ;
-		//$SEO_metas->canonical = $_SERVER['HTTP_HOST'].RoutingServiceProvider::translateSeo('blog') .$url_category_blog_lang;
-
-		$SEO_metas->meta_title =  $categ->metatit_category_blog_lang ?? trans(Config::get('app.theme') . '-app.blog.blog_metatile');
-		$SEO_metas->meta_description = $categ->meta_description ?? trans(Config::get('app.theme') . '-app.blog.blog_metades');
-
-		$data = array(
-			'noticias' => $noticias,
-			'categ' => $categ,
-			'seo' => $SEO_metas
-		);
-
-		//dd($data);
-		return View::make('front::pages.noticias.mosaic_blog', array('data' => $data));
 	}
 
 	public function eventBanner($ubicacion)

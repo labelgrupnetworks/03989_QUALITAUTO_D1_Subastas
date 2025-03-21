@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\V5\FgOrtsec0;
 use App\Models\V5\FgSub;
 use App\Models\V5\Web_Page;
+use App\Services\Content\BlogService;
 use Illuminate\Support\Facades\Config;
 
 class PageSetting
@@ -235,9 +236,7 @@ class PageSetting
 			return [];
 		}
 
-		$blog = new Blog();
-		$blog->lang = strtoupper(Config::get('app.locale'));
-		$news = $blog->getNoticia($params['key_categ'], $params['key_news']);
+		$news = (new BlogService)->getNoticia($params['key_categ'], $params['key_news']);
 
 		return [
 			$canAccess ? $this->newRoute('edit_blogs', route('admin.contenido.blog.index')) : null,
