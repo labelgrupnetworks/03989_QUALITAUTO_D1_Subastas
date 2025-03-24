@@ -1118,6 +1118,10 @@ section.ficha-image {
 	gap: 1rem;
 }
 
+.allotments-page .accordion-button {
+	gap: .7rem;
+}
+
 
 /*
 |--------------------------------------------------------------------------

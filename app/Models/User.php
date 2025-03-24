@@ -839,7 +839,7 @@ class User
 		}
 		if (Request::input('order') == 'lasted') {
 			$sql->orderBy('C.fecha_csub', 'asc');
-		} else {
+		} elseif (Request::input('order')) {
 			$sql->orderBy('C.fecha_csub', 'desc'); //$sql->orderBy('C.fecfra_csub','desc nulls first');
 		}
 

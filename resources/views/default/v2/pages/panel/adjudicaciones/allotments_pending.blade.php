@@ -69,7 +69,9 @@ foreach($all_adj as $key_inf => $value){
 										@php
 											$url_friendly = str_slug($inf_lot->titulo_hces1);
 											$url_friendly = Routing::translateSeo('lote').$inf_lot->cod_sub."-".str_slug($inf_lot->name).'-'.$inf_lot->id_auc_sessions."/".$inf_lot->ref_asigl0.'-'.$inf_lot->num_hces1.'-'.$url_friendly;
-											$precio_remate = Tools::moneyFormat($inf_lot->himp_csub);
+
+											$impSalida = Tools::moneyFormat($inf_lot->impsalhces_asigl0 ?? 0, trans("web.lot.eur"), 2);
+											$precio_remate = Tools::moneyFormat($inf_lot->himp_csub, trans("web.lot.eur"), 2);
 											$comision = Tools::moneyFormat($inf_lot->base_csub + $inf_lot->base_csub_iva, trans("web.lot.eur"), 2);
 
 											$total_price = $inf_lot->himp_csub + $inf_lot->base_csub + $inf_lot->base_csub_iva;
@@ -118,7 +120,7 @@ foreach($all_adj as $key_inf => $value){
 												<span class="max-line-2">{!! $inf_lot->descweb_hces1 !!}</span>
 											</td>
 											<td data-title="{{ trans("web.user_panel.starting_price") }}">
-												{{ $inf_lot->impsalhces_asigl0 ?? 0 }} {{ trans('web.subastas.euros') }}
+												{{ $impSalida }}
 											</td>
 											<td data-title="{{ trans("web.user_panel.price") }}">
 												{{$precio_remate}}
