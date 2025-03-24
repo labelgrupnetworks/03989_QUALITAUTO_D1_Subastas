@@ -41,15 +41,11 @@
     <div class="col-xs-12">
         <div class="col-xs-12 col-sm-6 categories no-padding">
             <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
-                <?php
-                    $category = new \App\Models\Category();
-                    $tipo_sec = $category->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-                ?>
-            <p>
-                @foreach($tipo_sec as $sec)
-                    {{$sec->des_tsec}}
-                @endforeach
-            </p>
+			<p>
+				@foreach($data['categories'] as $sec)
+				   {{$sec->des_tsec}}
+				@endforeach
+			</p>
         </div>
         <div class="col-xs-12 col-sm-6 no-padding text-right">
             <p class="shared">{{ trans(\Config::get('app.theme').'-app.lot.share_lot') }}</p>

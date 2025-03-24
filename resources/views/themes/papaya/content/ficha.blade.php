@@ -133,14 +133,10 @@ if ($retirado || $fact_devuelta || $cerrado || $lot_close_at) {
 							{{$lote_actual->ref_asigl0}} - {!!$lote_actual->titulo_hces1 ?? $lote_actual->descweb_hces1!!}
 						</div>
 					</div>
-					<?php
-            			$categorys = new \App\Models\Category();
-            			$tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-            		?>
-					@if(count($tipo_sec) !== 0)
+					@if($data['categories']->isNotEmpty())
 					<div class="col-xs-12 no-padding fincha-info-cats hide">
 						<div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
-						@foreach($tipo_sec as $sec)
+						@foreach($data['categories'] as $sec)
 						<span class="badge">{{$sec->des_tsec}}</span>
 						@endforeach
 					</div>

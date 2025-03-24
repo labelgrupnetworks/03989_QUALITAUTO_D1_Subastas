@@ -141,18 +141,14 @@ $currency = "B/.";
 
 					</div>
 
-						<?php
-						$categorys = new \App\Models\Category();
-						$tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-						?>
-						@if(count($tipo_sec) !== 0)
-							<div class="col-xs-12 no-padding fincha-info-cats">
-								<div class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</div>
-								@foreach($tipo_sec as $sec)
-									<span class="badge">{{$sec->des_tsec}}</span>
-								@endforeach
-							</div>
-						@endif
+					@if($data['categories']->isNotEmpty())
+					<div class="col-xs-12 no-padding fincha-info-cats">
+						<div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
+						@foreach($data['categories'] as $sec)
+							<span class="badge">{{$sec->des_tsec}}</span>
+						@endforeach
+					</div>
+					@endif
 
 					<div class="ficha-info-content col-xs-12 no-padding h-100 flex-column justify-content-center d-flex mt-2">
 

@@ -37,12 +37,8 @@ $precio_venta = (!empty($precio_venta) && $lote_actual->impsalweb_asigl0 != 0) ?
                 </div>
                 <div class="col-xs-12 col-sm-6">
                         <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
-                         <?php
-                            $categorys = new \App\Models\Category();
-                            $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-                        ?>
                         <p>
-                            @foreach($tipo_sec as $sec)
+                            @foreach($data['categories'] as $sec)
                                 {{$sec->des_tsec}}
                             @endforeach
                        </p>

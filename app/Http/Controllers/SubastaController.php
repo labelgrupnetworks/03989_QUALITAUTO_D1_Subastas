@@ -31,6 +31,7 @@ use App\Models\V5\WebCalendar;
 use App\Models\V5\WebCalendarEvent;
 use App\Providers\RoutingServiceProvider as Routing;
 use App\Providers\ToolsServiceProvider;
+use App\Services\Auction\LotCategoryService;
 use App\Services\Content\BlockService;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -1264,6 +1265,9 @@ class SubastaController extends Controller
 		$data['subasta_info']           = $subasta_info;
 		// las necesitamos para la subasta abierta saber si el usuario es el ganador de la puja
 		$data['ordenes'] = $ordenes;
+
+		$data['categories'] = (new LotCategoryService)->getSecciones($subasta_info->lote_actual->sec_hces1);
+
 		$data['node']  = array(
 			'action_url'    => Config::get('app.url') . "/api/action/subasta",
 			'comprar'       => Config::get('app.url') . "/" . App::getLocale() . "/api/comprar/subasta",
@@ -2021,15 +2025,6 @@ class SubastaController extends Controller
 		$data['subcategory'] = app('request')->input('subcategory');
 
 		return View::make('front::includes.select_filters', array('data' => $data));
-	}
-
-	public function categSubcateg($all_categ_sub)
-	{
-		$order_catge = array();
-		$category = new Category();
-		$all_catgeorys = $category->getCategSubCateg(true, $all_categ_sub);
-
-		return $all_catgeorys;
 	}
 
 	public function reloadLot()

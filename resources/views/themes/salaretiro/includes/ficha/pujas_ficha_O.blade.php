@@ -40,15 +40,11 @@
     </div>
     <div class="col-xs-12 col-sm-6">
         <p class="cat">{{ trans($theme . '-app.lot.categories') }}</p>
-        <?php
-        $category = new \App\Models\Category();
-        $tipo_sec = $category->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-        ?>
         <p>
-            @foreach ($tipo_sec as $sec)
-                {{ $sec->des_tsec }}
-            @endforeach
-        </p>
+			@foreach($data['categories'] as $sec)
+			   {{$sec->des_tsec}}
+			@endforeach
+		</p>
         <p class="shared">{{ trans($theme . '-app.lot.share_lot') }}</p>
         @include('includes.ficha.share')
     </div>

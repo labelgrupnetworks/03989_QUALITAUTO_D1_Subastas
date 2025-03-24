@@ -16,13 +16,11 @@ class AdminBlogCategoryController extends Controller
 	//añadir las variables del contructor
 	public $blog;
 	public $categorysBlog;
-	public $category;
 	public $lang;
 
 	public function __construct()
 	{
 		$this->categorysBlog = new CategorysBlog();
-		$this->category = new Category();
 		$this->lang = Config::get('app.locales');
 
 		$this->middleware('trimStrings');

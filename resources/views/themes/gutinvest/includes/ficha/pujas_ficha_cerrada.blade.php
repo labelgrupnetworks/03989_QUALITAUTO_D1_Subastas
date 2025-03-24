@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 $precio_venta=NULL;
 if (!empty($lote_actual->himp_csub)){
     $precio_venta=$lote_actual->himp_csub;
@@ -15,11 +15,11 @@ elseif($lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->s
             </div>
 
                 <div class="col-xs-12 col-sm-12 no-padding exit-price">
-                        
-                        @if($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' && (!empty($precio_venta))|| ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0)) )   
+
+                        @if($lote_actual->cerrado_asigl0 == 'S' && $lote_actual->remate_asigl0 =='S' && (!empty($precio_venta))|| ($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0)) )
                         @if($lote_actual->subc_sub == 'H' && !empty($lote_actual->impadj_asigl0))
                             @php($precio_venta = $lote_actual->impadj_asigl0)
-                        @endif  
+                        @endif
                         <p class="pre text">{{ trans(\Config::get('app.theme').'-app.subastas.buy_to') }}:</p> <div class="pre">{{ \Tools::moneyFormat($precio_venta) }} {{ trans(\Config::get('app.theme').'-app.subastas.euros') }}</div>
                         @elseif($lote_actual->desadju_asigl0 =='S')
                          <p class="pre text">{{ trans(\Config::get('app.theme').'-app.subastas.buy') }}</p>
@@ -34,12 +34,7 @@ elseif($lote_actual->subc_sub == 'H' && $lote_actual->cod_sub == $lote_actual->s
                 </div>
                 <div class="col-xs-12 col-sm-6 no-padding categories">
                         <p class="cat">{{ trans(\Config::get('app.theme').'-app.lot.categories') }}</p>
-                         <?php
-                            $categorys = new \App\Models\Category();
-                            $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-                        ?>
-                        <p>
-                            @foreach($tipo_sec as $sec)
+						@foreach($data['categories'] as $sec)
                                 {{$sec->des_tsec}}
                             @endforeach
                        </p>

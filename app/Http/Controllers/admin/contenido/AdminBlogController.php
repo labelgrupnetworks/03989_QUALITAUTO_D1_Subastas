@@ -23,16 +23,14 @@ class AdminBlogController extends Controller
 {
 	//añadir las variables del contructor
 	public $categorysBlog;
-	public $category;
 	public $lang;
 
 	public function __construct()
 	{
 		$this->categorysBlog = new CategorysBlog();
-		$this->category = new Category();
 		$this->lang = Config::get('app.locales');
 
-		$this->middleware('trimStrings'); //App\Http\Middleware\TrimStrings::class
+		$this->middleware('trimStrings');
 		view()->share(['menu' => 'contenido']);
 	}
 
@@ -50,7 +48,8 @@ class AdminBlogController extends Controller
 
 	public function create()
 	{
-		$subSections = $this->category->getCategSubCateg(false, '0');
+		$blogService = new BlogService();
+		$subSections = $blogService->getCategSubCateg(false, '0');
 		$subSectionsCollection = collect($subSections)->sortBy('lin_ortsec1');
 
 		$sections = $subSectionsCollection->pluck('des_ortsec0', 'lin_ortsec1');
@@ -60,7 +59,6 @@ class AdminBlogController extends Controller
 			return $item;
 		});
 
-		$blogService = new BlogService();
 		$categories = $blogService->getCategoriesLangByLocale();
 
 		$data = [
@@ -139,7 +137,8 @@ class AdminBlogController extends Controller
 
 	public function edit($id)
 	{
-		$subSections = $this->category->getCategSubCateg(false, '0');
+		$blogService = new BlogService();
+		$subSections = $blogService->getCategSubCateg(false, '0');
 		$subSectionsCollection = collect($subSections)->sortBy('lin_ortsec1');
 
 		$sections = $subSectionsCollection->pluck('des_ortsec0', 'lin_ortsec1');
@@ -149,7 +148,6 @@ class AdminBlogController extends Controller
 			return $item;
 		});
 
-		$blogService = new BlogService();
 		$categories = $blogService->getCategoriesLangByLocale();
 
 		//obtener datos de la noticia por idioma

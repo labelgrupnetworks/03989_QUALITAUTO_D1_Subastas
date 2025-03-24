@@ -246,14 +246,10 @@ foreach( ($lote_actual->videos ?? []) as $key => $video){
 				</div>
 			</section>
 
-            <?php
-            $categorys = new \App\Models\Category();
-            $tipo_sec = $categorys->getSecciones($data['js_item']['lote_actual']->sec_hces1);
-            ?>
-            @if(count($tipo_sec) !== 0)
+            @if($data['categories']->isNotEmpty())
                 <div class="col-xs-12 no-padding fincha-info-cats">
                     <div class="cat">{{ trans($theme.'-app.lot.categories') }}</div>
-                    @foreach($tipo_sec as $sec)
+                    @foreach($data['categories'] as $sec)
                         <span class="badge">{{$sec->des_tsec}}</span>
                     @endforeach
                 </div>

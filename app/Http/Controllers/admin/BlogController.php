@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin;
 
 use App\DataTransferObjects\Content\BlogData;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\CategorysBlog;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Blog_Lang;
@@ -22,13 +21,11 @@ use Illuminate\Support\Facades\View;
 class BlogController extends Controller
 {
 	private $categorysBlog;
-	private $category;
 	private $lang;
 
 	public function __construct()
 	{
 		$this->categorysBlog = new CategorysBlog();
-		$this->category = new Category();
 		$this->lang = Config::get('app.locales');
 		view()->share(['menu' => 'blog']);
 	}
@@ -40,7 +37,7 @@ class BlogController extends Controller
 		$data = array();
 		$sub_categ = array();
 		$sec = array();
-		$categorys = $this->category->getCategSubCateg(false, '0');
+		$categorys = $blogService->getCategSubCateg(false, '0');
 
 		foreach ($categorys as $categ) {
 			$sub_categ[$categ->cod_sec] = ucfirst(mb_strtolower($categ->des_sec));
