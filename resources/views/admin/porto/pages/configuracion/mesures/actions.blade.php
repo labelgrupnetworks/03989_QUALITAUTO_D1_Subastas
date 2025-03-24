@@ -4,12 +4,17 @@
 <head>
     <title>Gráfica de Pujas</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous" defer>
     </script>
+
+
 
 </head>
 
@@ -59,27 +64,27 @@
         var labels = pujas.map(item => new Date(item.date));
         var tiempos = pujas.map(item => item.time);
 
-		var dataPujas = pujas.map(item => {
-			return {
-				x: new Date(item.date),
-				y: item.time,
-				ref: item.ref,
-				licitador: item.licitador,
-				imp: item.imp,
-				uuid: item.uuid
-			}
-		});
+        var dataPujas = pujas.map(item => {
+            return {
+                x: new Date(item.date),
+                y: item.time,
+                ref: item.ref,
+                licitador: item.licitador,
+                imp: item.imp,
+                uuid: item.uuid
+            }
+        });
 
         var labelsCierres = closeLots.map(item => new Date(item.date));
         var tiemposCierres = closeLots.map(item => item.time);
-		var dataCierres = closeLots.map(item => {
-			return {
-				x: new Date(item.date),
-				y: item.time,
-				ref: item.ref,
-				uuid: item.uuid
-			}
-		});
+        var dataCierres = closeLots.map(item => {
+            return {
+                x: new Date(item.date),
+                y: item.time,
+                ref: item.ref,
+                uuid: item.uuid
+            }
+        });
 
         // Calculamos la media de los tiempos
         // Creamos un array con la media para cada punto
@@ -91,7 +96,7 @@
 
         const lineChartsDatasets = (labels, data, promedioArray) => {
             return {
-               	labels: labels,
+                labels: labels,
                 datasets: [{
                         label: 'Tiempo (ms)',
                         data: data,
@@ -154,17 +159,17 @@
         const scales = {
             x: {
                 type: 'time',
-				min: labels[0],
+                min: labels[0],
                 time: {
                     displayFormats: {
                         minute: 'HH:mm',
                     },
                     tooltipFormat: 'HH:mm:ss'
                 },
-				ticks: {
-					source: 'auto',
+                ticks: {
+                    source: 'auto',
 
-				},
+                },
                 title: {
                     display: true,
                     text: 'Hora'
@@ -178,19 +183,51 @@
             }
         };
 
+        const zoomOptionsFromLabels = (labelsToLimits) => {
+            return {
+                limits: {
+                    x: {
+                        min: new Date(labelsToLimits[0]),
+                        max: new Date(labelsToLimits[labelsToLimits.length - 1]),
+                        minRange: 1000 * 60 * 60, //1hour
+
+                    },
+                    y: {
+                        min: 0,
+                        minRange: 1000
+                    }
+                },
+                pan: {
+                    enabled: true, // Activa el panning
+                    mode: 'xy', // Solo desplazamiento horizontal
+                    threshold: 10, // Umbral en píxeles para iniciar el pan (opcional)
+                },
+                zoom: {
+                    wheel: {
+                        enabled: true // Zoom con la rueda
+                    },
+                    pinch: {
+                        enabled: true // Zoom con pellizco en pantallas táctiles
+                    },
+                    mode: 'x' // Zoom solo en el eje horizontal
+                }
+            };
+        };
+
+        const onClickEvent = (evt, activeElements) => {
+            if (activeElements.length > 0) {
+                const index = activeElements[0].index;
+                const dataItem = pujas[index];
+                copyUuid(dataItem.uuid);
+            }
+        };
 
         var ctx = document.getElementById('chartPujas').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
             data: lineChartsDatasets(labels, dataPujas, promedioArray),
             options: {
-                onClick: (evt, activeElements) => {
-                    if (activeElements.length > 0) {
-                        const index = activeElements[0].index;
-                        const dataItem = pujas[index];
-                        copyUuid(dataItem.uuid);
-                    }
-                },
+                onClick: onClickEvent,
                 plugins: {
                     tooltip: {
                         callbacks: {
@@ -210,7 +247,8 @@
                                 return context.dataset.label + ': ' + context.formattedValue;
                             }
                         }
-                    }
+                    },
+                    zoom: zoomOptionsFromLabels(labels)
                 },
                 scales
             }
@@ -221,13 +259,7 @@
             type: 'line',
             data: lineChartsDatasets(labelsCierres, dataCierres, promedioArrayCierres),
             options: {
-                onClick: (evt, activeElements) => {
-                    if (activeElements.length > 0) {
-                        const index = activeElements[0].index;
-                        const dataItem = closeLots[index];
-                        copyUuid(dataItem.uuid);
-                    }
-                },
+                onClick: onClickEvent,
                 plugins: {
                     tooltip: {
                         callbacks: {
@@ -244,7 +276,8 @@
                                 return context.dataset.label + ': ' + context.formattedValue;
                             }
                         }
-                    }
+                    },
+                    zoom: zoomOptionsFromLabels(labelsCierres)
                 },
                 scales
             }
