@@ -579,11 +579,10 @@ class UserController extends Controller
 			$languages = strtoupper(Config::get('app.locale'));
 		}
 
+		//Si se modifica el minimo de caracteres para el password, ha de cambiarse tambien en el forms.js
 		$rules = [
-			//'regtype'  => 'required',          // Tipo de usuario
-			'email'    => 'required|email',    // make sure the email is an actual email
-			'password' => 'required|min:5'     // password can only be alphanumeric and has to be greater than 5 characters
-			//Si se modifica el minimo de caracteres para el password, ha de cambiarse tambien en el forms.js
+			'email'    => ['required','email'],
+			'password' => ['required', 'min:5', 'max:20'],
 		];
 
 		if (Config::get('app.strict_password_validation', false)) {

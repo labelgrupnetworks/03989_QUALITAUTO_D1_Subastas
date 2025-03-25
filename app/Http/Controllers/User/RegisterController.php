@@ -116,7 +116,7 @@ class RegisterController extends Controller
 
 				$data['formulario']->email = FormLib::Email("email", 1, "", 0);
 				$data['formulario']->confirm_email = FormLib::Email("confirm_email", 1, "", "check='email__1__email'");
-				$data['formulario']->password = FormLib::Password("password", 1, "", 0);
+				$data['formulario']->password = FormLib::Password("password", 1, "", 'maxlength="20"');
 				$data['formulario']->confirm_password = FormLib::Password("confirm_password", 1, "", "check='password__1__password'");
 
 				$data['formulario']->language = FormLib::Hidden("language", 1, strtoupper(App::getLocale()));
@@ -178,7 +178,7 @@ class RegisterController extends Controller
 
 				$data['formulario']->email = FormLib::Email("email", 1, $postUser->email_cli, 0);
 				$data['formulario']->confirm_email = FormLib::Email("confirm_email", 1, $postUser->email_cli, "check='email__1__email'");
-				$data['formulario']->password = FormLib::Password("password", 1, "", 0);
+				$data['formulario']->password = FormLib::Password("password", 1, "", 'maxlength="20"');
 				$data['formulario']->confirm_password = FormLib::Password("confirm_password", 1, "", "check='password__1__password'");
 
 				$data['formulario']->language = FormLib::Hidden("language", 1, strtoupper(App::getLocale()));
