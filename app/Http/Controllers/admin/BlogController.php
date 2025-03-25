@@ -37,8 +37,8 @@ class BlogController extends Controller
 		$data = array();
 		$sub_categ = array();
 		$sec = array();
-		$categorys = $blogService->getCategSubCateg(false, '0');
 
+		$categorys = $blogService->getCategSubCategCollection();
 		foreach ($categorys as $categ) {
 			$sub_categ[$categ->cod_sec] = ucfirst(mb_strtolower($categ->des_sec));
 			$sec[$categ->lin_ortsec1] = $categ->des_ortsec0;

@@ -3,14 +3,12 @@
 namespace App\Services\admin\Content;
 
 use App\DataTransferObjects\Content\BlogData;
-use App\libs\CacheLib;
+use App\Models\V5\FxSec;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Blog_Lang;
 use App\Models\V5\Web_Blog_Rel_Category;
 use App\Models\V5\Web_Category_Blog;
-use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 
 class BlogService
 {
@@ -155,42 +153,18 @@ class BlogService
 		]);
 	}
 
-	/**
-	 * @todo Refactorizar por eloquent
-	 */
-	public function getCategSubCateg($cache_sql = false, $all_categ_sub)
+	public function getCategSubCategCollection()
 	{
-
-		$sql = "SELECT
-        COD_SEC,ORTSEC1.lin_ortsec1 as lin_ortsec1 ,NVL(SEC_LANG.DES_SEC_LANG,  SEC.DES_SEC) DES_SEC  ,NVL(SEC_LANG.KEY_SEC_LANG,  SEC.KEY_SEC) KEY_SEC ,NVL(ORTSEC0_LANG.KEY_ORTSEC0_LANG,  ORTSEC0.KEY_ORTSEC0) KEY_ORTSEC0 , NVL(ORTSEC0_LANG.DES_ORTSEC0_LANG,  ORTSEC0.DES_ORTSEC0) DES_ORTSEC0
-        FROM FXSEC SEC
-        LEFT JOIN FXSEC_LANG SEC_LANG ON (SEC_LANG.CODSEC_SEC_LANG = SEC.COD_SEC AND  SEC_LANG.GEMP_SEC_LANG = SEC.GEMP_SEC  AND SEC_LANG.LANG_SEC_LANG = :lang)
-        JOIN FGORTSEC1 ORTSEC1 ON (ORTSEC1.SEC_ORTSEC1 = SEC.COD_SEC  AND ORTSEC1.EMP_ORTSEC1 = :emp )
-        JOIN FGORTSEC0 ORTSEC0 ON (ORTSEC0.sub_ORTSEC0 =ORTSEC1.sub_ORTSEC1 AND ORTSEC0.EMP_ORTSEC0 = ORTSEC1.EMP_ORTSEC1  and ORTSEC0.LIN_ORTSEC0 =ORTSEC1.LIN_ORTSEC1)
-        LEFT JOIN FGORTSEC0_LANG ORTSEC0_LANG ON (ORTSEC0_LANG.sub_ORTSEC0_LANG = ORTSEC1.sub_ORTSEC1 AND ORTSEC0_LANG.EMP_ORTSEC0_LANG = ORTSEC1.EMP_ORTSEC1  and ORTSEC0_LANG.LIN_ORTSEC0_LANG =ORTSEC1.LIN_ORTSEC1  AND ORTSEC0_LANG.LANG_ORTSEC0_LANG = :lang)
-        WHERE
-        ORTSEC1.LIN_ORTSEC1 != '10'
-        AND SEC.BAJAT_SEC = 'N' AND SEC.GEMP_SEC = :gemp AND ORTSEC1.SUB_ORTSEC1 = :cod_sub
-        GROUP BY COD_SEC,ORTSEC1.ORDEN_ORTSEC1,ORTSEC1.lin_ortsec1, NVL(SEC_LANG.DES_SEC_LANG,  SEC.DES_SEC), NVL(SEC_LANG.KEY_SEC_LANG,  SEC.KEY_SEC),NVL(ORTSEC0_LANG.KEY_ORTSEC0_LANG,  ORTSEC0.KEY_ORTSEC0) , NVL(ORTSEC0_LANG.DES_ORTSEC0_LANG,  ORTSEC0.DES_ORTSEC0)
-        ORDER BY ORTSEC1.ORDEN_ORTSEC1 ASC";
-
-
-		$params =  array(
-			'cod_sub'   => $all_categ_sub,
-			'emp'       => Config::get('app.emp'),
-			'gemp'       => Config::get('app.gemp'),
-			'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-		);
-
-		if ($cache_sql) {
-			//quitamos espacios en blanco
-			$name_cache = "CategSubCateg_" . $all_categ_sub . '_' . ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'));
-
-			$res = CacheLib::useCache($name_cache, $sql, $params);
-		} else {
-			$res = DB::select($sql, $params);
-		}
-
-		return $res;
+		return FxSec::query()
+			->select('cod_sec', 'lin_ortsec1', 'des_sec', 'key_sec', 'key_ortsec0', 'des_ortsec0')
+			->joinFgOrtsecFxSec(true)
+			->where([
+				['fgortsec1.lin_ortsec1', '!=', '10'],
+				['fxsec.bajat_sec', 'N'],
+				['fgortsec1.sub_ortsec1', '0']
+			])
+			->orderBy('fgortsec1.orden_ortsec1', 'asc')
+			->orderBy('fxsec.cod_sec', 'asc')
+			->get();
 	}
 }

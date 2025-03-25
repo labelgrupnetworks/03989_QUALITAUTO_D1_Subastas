@@ -49,7 +49,7 @@ class AdminBlogController extends Controller
 	public function create()
 	{
 		$blogService = new BlogService();
-		$subSections = $blogService->getCategSubCateg(false, '0');
+		$subSections = $blogService->getCategSubCategCollection();
 		$subSectionsCollection = collect($subSections)->sortBy('lin_ortsec1');
 
 		$sections = $subSectionsCollection->pluck('des_ortsec0', 'lin_ortsec1');
@@ -138,8 +138,8 @@ class AdminBlogController extends Controller
 	public function edit($id)
 	{
 		$blogService = new BlogService();
-		$subSections = $blogService->getCategSubCateg(false, '0');
-		$subSectionsCollection = collect($subSections)->sortBy('lin_ortsec1');
+		$subSections = $blogService->getCategSubCategCollection();
+		$subSectionsCollection = $subSections->sortBy('lin_ortsec1');
 
 		$sections = $subSectionsCollection->pluck('des_ortsec0', 'lin_ortsec1');
 
