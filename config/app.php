@@ -16,7 +16,7 @@ return [
     'theme' => env('APP_THEME', 'demo'),
 	'default_theme' => env('APP_DEFAULT_THEME', 'v1'),
 	'locales' => array_combine($localesKeys, $localesValues),
-    'language_complete' => ['es' => 'es-ES', 'de' => 'de-DE', 'en' => 'en-GB', 'fr' => 'fr-FR', 'pt' => 'pt-PT', 'ru' => 'ru-RU', 'ca' => 'ca-CA'],
+    'language_complete' => ['es' => 'es-ES', 'en' => 'en-GB'],
     'emp'   => env('APP_EMP', '001'),
 	'gemp'  => env('APP_GEMP', '01'),
 	'main_emp'   => env('APP_MAIN_EMP', env('APP_EMP', '001')),
