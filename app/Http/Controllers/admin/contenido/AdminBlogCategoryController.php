@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\admin\contenido;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\CategorysBlog;
 use App\Models\V5\Web_Category_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
 use Illuminate\Http\Request;
@@ -14,13 +12,10 @@ use Illuminate\Support\Str;
 class AdminBlogCategoryController extends Controller
 {
 	//añadir las variables del contructor
-	public $blog;
-	public $categorysBlog;
 	public $lang;
 
 	public function __construct()
 	{
-		$this->categorysBlog = new CategorysBlog();
 		$this->lang = Config::get('app.locales');
 
 		$this->middleware('trimStrings');

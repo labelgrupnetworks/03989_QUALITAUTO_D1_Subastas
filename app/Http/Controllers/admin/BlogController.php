@@ -4,14 +4,14 @@ namespace App\Http\Controllers\admin;
 
 use App\DataTransferObjects\Content\BlogData;
 use App\Http\Controllers\Controller;
-use App\Models\CategorysBlog;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Blog_Lang;
+use App\Models\V5\Web_Category_Blog;
+use App\Models\V5\Web_Category_Blog_Lang;
 use App\Services\admin\Content\BlogService;
-use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 
 /**
@@ -20,12 +20,10 @@ use Illuminate\Support\Facades\View;
  */
 class BlogController extends Controller
 {
-	private $categorysBlog;
 	private $lang;
 
 	public function __construct()
 	{
-		$this->categorysBlog = new CategorysBlog();
 		$this->lang = Config::get('app.locales');
 		view()->share(['menu' => 'blog']);
 	}
@@ -87,9 +85,8 @@ class BlogController extends Controller
 
 	public function getCategoryBlog()
 	{
-		$categorys = array();
-		$categorys = $this->categorysBlog->getCategorys();
-		return View::make('admin::pages.categoryBlog', array('data' => $categorys));
+		$categorys = Web_Category_Blog::get();
+		return View::make('admin::pages.categoryBlog', ['data' => $categorys]);
 	}
 
 	public function seeCategoryBlog($id = null)
@@ -109,65 +106,73 @@ class BlogController extends Controller
 		return View::make('admin::pages.editCategoryBlog', array('data' => $data));
 	}
 
-	public function EditBlogCategory()
+	public function EditBlogCategory(Request $request)
 	{
-		$this->categorysBlog->id = Request::input('id');
-		$this->categorysBlog->title = Request::input('title');
-		$this->categorysBlog->orden = Request::input('orden');
-		if (!empty(Request::input('orden'))) {
-			$this->categorysBlog->orden = Request::input('orden');
-		} else {
-			$this->categorysBlog->orden = Request::input('id');
-		}
-		if (empty(Request::input('enabled'))) {
-			$this->categorysBlog->enabled = 0;
-		} else {
-			$this->categorysBlog->enabled = 1;
-		}
-		if ($this->categorysBlog->id == 0) {
+		$categoryBlog = [
+			'id_category_blog' => $request->input('id'),
+			'title_category_blog' => $request->input('title'),
+			'orden_category_blog' => $request->input('orden', $request->input('id')),
+			'enable_category_blog' => !empty($request->input('enabled', 0)) ? 1 : 0
+		];
 
-			$max_id = $this->categorysBlog->Max_Category_Blog();
-			$this->categorysBlog->id = $max_id + 1;
-			$this->categorysBlog->orden = $max_id + 1;
+		if (empty($request->input('id'))) {
 
-			/*
-             * Si falla la inserción de cualquier idioma, realiza rollback de las operaciones anteriores,
-             * no comitea hasta finalizar todas las operaciones
-             */
-			DB::transaction(function () {
+			$maxId = Web_Category_Blog::max('id_category_blog');
+			$categoryBlog['id_category_blog'] = $maxId + 1;
+			$categoryBlog['orden_category_blog'] = $maxId + 1;
 
-				$this->categorysBlog->InsertCategoryBlog();
-				foreach ($this->lang as $lang => $idiom) {
+			DB::transaction(function () use ($categoryBlog, $request) {
+
+				Web_Category_Blog::create($categoryBlog);
+
+				foreach (array_keys($this->lang) as $lang) {
 					$lang = strtoupper($lang);
-					$this->categorysBlog->lang = $lang;
-					$this->categorysBlog->name_category = trim(Request::input('name_' . $lang));
-					$this->categorysBlog->title_category = trim(Request::input('title_' . $lang));
-					$this->categorysBlog->url_category = trim(Request::input('url_' . $lang));
-					$this->categorysBlog->metatit_category = trim(Request::input('meta_title_' . $lang));
-					$this->categorysBlog->metades_category = trim(Request::input('meta_desc_' . $lang));
-					$this->categorysBlog->metacont_category = trim(Request::input('meta_cont_' . $lang));
-					$this->categorysBlog->InsertCategoryBlogLang();
+
+					$categoryBlogLang = [
+						'id_category_blog_lang' => $categoryBlog['id_category_blog'],
+						'lang_category_blog_lang' => strtoupper($lang),
+						'name_category_blog_lang' => $request->input("name_$lang"),
+						'title_category_blog_lang' => $request->input("title_$lang"),
+						'url_category_blog_lang' => $request->input("url_$lang"),
+						'metatit_category_blog_lang' => $request->input("meta_title_$lang"),
+						'metades_category_blog_lang' => $request->input("meta_desc_$lang"),
+						'metacont_category_blog_lang' => $request->input("meta_cont_$lang")
+					];
+
+					Web_Category_Blog_Lang::create($categoryBlogLang);
 				}
 			});
 		} else {
-			$this->categorysBlog->UpdateCategoryBlog();
-			foreach ($this->lang as $lang => $idiom) {
+
+			Web_Category_Blog::where('id_category_blog', $categoryBlog['id_category_blog'])
+				->update([
+					'title_category_blog' => $categoryBlog['title_category_blog'],
+					'enable_category_blog' => $categoryBlog['enable_category_blog']
+				]);
+
+			foreach (array_keys($this->lang) as $lang) {
+
 				$lang = strtoupper($lang);
-				$this->categorysBlog->lang = $lang;
-				$this->categorysBlog->name_category = trim(Request::input('name_' . $lang));
-				$this->categorysBlog->title_category = trim(Request::input('title_' . $lang));
-				$this->categorysBlog->url_category = trim(Request::input('url_' . $lang));
-				$this->categorysBlog->metatit_category = trim(Request::input('meta_title_' . $lang));
-				$this->categorysBlog->metades_category = trim(Request::input('meta_desc_' . $lang));
-				$this->categorysBlog->metacont_category = trim(Request::input('meta_cont_' . $lang));
-				$this->categorysBlog->UpdateCategoryBlogLang();
+				$categoryBlogLang = [
+					'name_category_blog_lang' => $request->input("name_$lang"),
+					'title_category_blog_lang' => $request->input("title_$lang"),
+					'url_category_blog_lang' => $request->input("url_$lang"),
+					'metatit_category_blog_lang' => $request->input("meta_title_$lang"),
+					'metades_category_blog_lang' => $request->input("meta_desc_$lang"),
+					'metacont_category_blog_lang' => $request->input("meta_cont_$lang")
+				];
+
+				Web_Category_Blog_Lang::query()
+					->where('id_category_blog_lang', $categoryBlog['id_category_blog'])
+					->where('lang_category_blog_lang', $lang)
+					->update($categoryBlogLang);
 			}
 		}
 
-		return $this->categorysBlog->id;
+		return $categoryBlog['id_category_blog'];
 	}
 
-	public function EditBlog(HttpRequest $request)
+	public function EditBlog(Request $request)
 	{
 		$blog = BlogData::fromRequest($request);
 		$blogService = new BlogService();

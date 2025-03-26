@@ -4,10 +4,8 @@ namespace App\Http\Controllers\admin\contenido;
 
 use App\Http\Controllers\Controller;
 use App\libs\FormLib;
-use App\Models\Category;
-use App\Models\CategorysBlog;
-use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Blog_Lang;
+use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog;
 use App\Models\V5\Web_Content_Page;
 use App\Models\WebNewbannerModel;
@@ -21,13 +19,10 @@ use Illuminate\Support\Str;
 
 class AdminBlogController extends Controller
 {
-	//añadir las variables del contructor
-	public $categorysBlog;
 	public $lang;
 
 	public function __construct()
 	{
-		$this->categorysBlog = new CategorysBlog();
 		$this->lang = Config::get('app.locales');
 
 		$this->middleware('trimStrings');
@@ -36,10 +31,9 @@ class AdminBlogController extends Controller
 
 	public function index()
 	{
-		$blogService = new BlogService();
-		$blogs = $blogService->getAllPrincipalBlog();
-		$categories = $this->categorysBlog->getCategorys();
-		$categories = collect($categories)->sortBy('orden_category_blog')->toArray();
+		$blogs = (new BlogService())->getAllPrincipalBlog();
+		$categories = Web_Category_Blog::orderBy('orden_category_blog')
+			->get();
 
 		$blogsWithoutCategory = $blogs->where('principalCategory', null);
 
