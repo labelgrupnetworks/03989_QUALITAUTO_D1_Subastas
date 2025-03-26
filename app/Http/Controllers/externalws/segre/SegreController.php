@@ -76,9 +76,9 @@ class SegreController extends Controller
 
 			if($sendExternalAdmin){
 				$email->setTo("aizard@aquilum.es");
-				$email->setBcc("rsanchez@labelgrup.com");
+				$email->setBcc("enadal@labelgrup.com");
 			}else{
-				$email->setTo("rsanchez@labelgrup.com");
+				$email->setTo("enadal@labelgrup.com");
 				$email->setBcc("subastas@labelgrup.com");
 			}
 			$email->setAtribute("FUNCTION", $function);

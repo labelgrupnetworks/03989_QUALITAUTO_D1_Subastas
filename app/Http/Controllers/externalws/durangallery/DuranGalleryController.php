@@ -106,9 +106,9 @@ class DuranGalleryController extends Controller
 
 			if($sendExternalAdmin){
 				$email->setTo("jmanuel@pedroduran.com");
-				$email->setBcc("rsanchez@labelgrup.com");
+				$email->setBcc("enadal@labelgrup.com");
 			}else{
-				$email->setTo("rsanchez@labelgrup.com");
+				$email->setTo("enadal@labelgrup.com");
 			}
 			$email->setAtribute("FUNCTION", $function);
 			$email->setAtribute("REQUEST", $request);
