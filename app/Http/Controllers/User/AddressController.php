@@ -53,8 +53,7 @@ class AddressController extends Controller
 		$data['countries'] = $countries;
 		$data['prefix'] = $prefix;
 
-		$enterprise = new Enterprise();
-		$data['via'] = collect($enterprise->getVia())->pluck('des_sg', 'cod_sg');
+		$data['via'] = $addressService->getPluckStreetTypes();
 
 		if (!empty(FsIdioma::getArrayValues())) {
 			$data['language'] = FsIdioma::getArrayValues();
@@ -144,9 +143,8 @@ class AddressController extends Controller
 
 		$userClass = new User();
 		$userClass->cod_cli = $userCod;
-
 		$data = [
-			'via' => (new Enterprise)->getVia(),
+			'via' => $addressService->getStreetTypes(),
 			'countries' => FsPaises::selectBasicPaises()->orderBy("des_paises")->get(),
 			'new' => $coddCli == 'new',
 			'shippingaddress' => $addressService->getUserAddresses($userCod)->toArray(),

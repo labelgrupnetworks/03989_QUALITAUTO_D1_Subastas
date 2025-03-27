@@ -7,25 +7,55 @@ use Illuminate\Support\Str;
 
 class Localization
 {
-	public static function getLocaleComplete()
-	{
-		return self::getLanguageComplete(Config::get('app.locale'));
-	}
+    /**
+     * Verifica si el idioma actual es el idioma predeterminado.
+     *
+     * @return bool
+     */
+    public static function isDefaultLocale(): bool
+    {
+        return Config::get('app.locale') === Config::get('app.fallback_locale');
+    }
 
-	public static function getLanguageComplete($locale)
-	{
-		$languages = Config::get('app.language_complete');
-		return data_get($languages, $locale, 'es-ES');
-	}
+    /**
+     * Obtiene el idioma completo del idioma actual configurado.
+     *
+     * @return string
+     */
+    public static function getLocaleComplete(): string
+    {
+        return self::getLanguageComplete(Config::get('app.locale'));
+    }
 
-	public static function getDefaultUpperLocale()
-	{
-		return strtoupper(Config::get('app.fallback_locale'));
-	}
+    /**
+     * Obtiene el idioma completo para un idioma específico.
+     *
+     * @param string $locale El código del idioma (por ejemplo, 'es', 'en').
+     * @return string
+     */
+    public static function getLanguageComplete(string $locale): string
+    {
+        $languages = Config::get('app.language_complete');
+        return data_get($languages, $locale, 'es-ES');
+    }
 
-	public static function getUpperLocale()
-	{
-		return Str::upper(Config::get('app.locale'));
-	}
+    /**
+     * Obtiene el idioma predeterminado en mayúsculas.
+     *
+     * @return string
+     */
+    public static function getDefaultUpperLocale(): string
+    {
+        return Str::upper(Config::get('app.fallback_locale'));
+    }
 
+    /**
+     * Obtiene el idioma actual en mayúsculas.
+     *
+     * @return string
+     */
+    public static function getUpperLocale(): string
+    {
+        return Str::upper(Config::get('app.locale'));
+    }
 }

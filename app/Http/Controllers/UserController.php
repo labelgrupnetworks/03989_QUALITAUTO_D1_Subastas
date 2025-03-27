@@ -60,7 +60,8 @@ class UserController extends Controller
 		$countries = $enterprise->getCountries();
 
 		//Busca vias
-		$via = $enterprise->getVia();
+		$addressService = new UserAddressService();
+		$via = $addressService->getStreetTypes();
 		//Busca divisas del cliente
 		$divisa = $enterprise->getDivisa();
 		$data = array("countries" => $countries, "via" => $via, "divisa" => $divisa);
@@ -1727,7 +1728,7 @@ class UserController extends Controller
 
 		$data['codd_clid'] = 'W1';
 		$data['countries'] = $enterprise->getCountries();
-		$data['via']  = $enterprise->getVia();
+		$data['via']  = $addressService->getStreetTypes();
 
 
 		// divido los configs ya que son independientes

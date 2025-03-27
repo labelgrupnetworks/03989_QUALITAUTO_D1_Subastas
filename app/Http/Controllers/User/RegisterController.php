@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\SubaliaController;
 use App\Http\Controllers\UserController;
 use App\libs\FormLib;
-use App\Models\V5\FgSg;
 use App\Models\V5\FsIdioma;
 use App\Models\V5\FsPaises;
 use App\Models\V5\FxCliWeb;
 use App\Models\V5\SubAuchouse;
+use App\Services\User\UserAddressService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +50,6 @@ class RegisterController extends Controller
 			$data = array();
 			$countries = array();
 			$prefix = array();
-			$vias = array();
 			$divisas = array();
 			$idiomas = array();
 
@@ -62,14 +61,12 @@ class RegisterController extends Controller
 				$country_selected = (Config::get('app.locale') == 'es') ? 'ES' : '';
 			}
 
-			$via_aux = FgSg::selectBasicSg()->JoinLangSg()->get();
 			foreach ($countries_aux as $item) {
 				$countries[$item->cod_paises] = $item->des_paises;
 				$prefix[$item->cod_paises] = str_pad($item->preftel_paises, 4, 0, STR_PAD_LEFT);
 			}
-			foreach ($via_aux as $item) {
-				$vias[$item->cod_sg] = $item->des_sg;
-			}
+
+			$streetsTypes = (new UserAddressService())->getPluckStreetTypes();
 
 			$divisas_aux = DB::table('FSDIV')
 				->select('cod_div', 'des_div', 'impd_div', 'symbolhtml_div')
@@ -107,7 +104,7 @@ class RegisterController extends Controller
 				$data['formulario']->cif = FormLib::Nif("nif", 0, "", 0);
 				$data['formulario']->fecha_nacimiento = FormLib::Date("date", 1, "", 0);
 
-				$data['formulario']->vias = FormLib::Select("codigoVia", 1, "", $vias, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
+				$data['formulario']->vias = FormLib::Select("codigoVia", 1, "", $streetsTypes, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
 				$data['formulario']->pais = FormLib::Select("pais", 1, $country_selected, $countries, 0, trans(Config::get('app.theme') . '-app.login_register.pais'));
 				$data['formulario']->direccion = FormLib::Text("direccion", 1, "", 0);
 				$data['formulario']->cpostal = FormLib::Text("cpostal", 1, "", 'maxlength="10"');
@@ -144,7 +141,7 @@ class RegisterController extends Controller
 					$data['formulario']->clid_cpostal = FormLib::Text("clid_cpostal", 0, "", 0);
 					$data['formulario']->clid_poblacion = FormLib::Text("clid_poblacion", 0, "", 0);
 					$data['formulario']->clid_provincia = FormLib::Text("clid_provincia", 0, "", 0);
-					$data['formulario']->clid_codigoVia = FormLib::Select("clid_codigoVia", 0, "", $vias, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
+					$data['formulario']->clid_codigoVia = FormLib::Select("clid_codigoVia", 0, "", $streetsTypes, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
 					$data['formulario']->clid_direccion = FormLib::Text("clid_direccion", 0, "", 0);
 				}
 			} else {
@@ -169,7 +166,7 @@ class RegisterController extends Controller
 				$data['formulario']->cif = FormLib::Text("nif", 0, $postUser->cif_cli, 0);
 				$data['formulario']->fecha_nacimiento = FormLib::Date("date", 1, $postUser->fecnac_cli, 0);
 
-				$data['formulario']->vias = FormLib::Select("codigoVia", 1, $postUser->sg_cli, $vias, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
+				$data['formulario']->vias = FormLib::Select("codigoVia", 1, $postUser->sg_cli, $streetsTypes, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
 				$data['formulario']->pais = FormLib::Select("pais", 1, $postUser->codpais_cli, $countries, 0, trans(Config::get('app.theme') . '-app.login_register.pais'));
 				$data['formulario']->direccion = FormLib::Text("direccion", 1, $postUser->dir_cli, 0);
 				$data['formulario']->cpostal = FormLib::Text("cpostal", 1, $postUser->cp_cli, 'maxlength="10"');
@@ -210,7 +207,7 @@ class RegisterController extends Controller
 					$data['formulario']->clid_cpostal = FormLib::Text("clid_cpostal", 0, "", 0);
 					$data['formulario']->clid_poblacion = FormLib::Text("clid_poblacion", 0, "", 0);
 					$data['formulario']->clid_provincia = FormLib::Text("clid_provincia", 0, "", 0);
-					$data['formulario']->clid_codigoVia = FormLib::Select("clid_codigoVia", 0, "", $vias, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
+					$data['formulario']->clid_codigoVia = FormLib::Select("clid_codigoVia", 0, "", $streetsTypes, 0, trans(Config::get('app.theme') . '-app.login_register.via'));
 					$data['formulario']->clid_direccion = FormLib::Text("clid_direccion", 0, "", 0);
 				}
 			}

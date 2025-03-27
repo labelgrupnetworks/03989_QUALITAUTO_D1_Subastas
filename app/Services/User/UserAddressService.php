@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\DataTransferObjects\User\AddressData;
+use App\Models\V5\FgSg;
 use App\Models\V5\FsPaises;
 use App\Models\V5\FxClid;
 use Illuminate\Support\Facades\Config;
@@ -128,5 +129,19 @@ class UserAddressService
 			->update(['codd_clid' => $new_cod_clid]);
 
 		return true;
+	}
+
+	public function getStreetTypes()
+	{
+		return FgSg::getStreetTypesQuery()
+			->orderBy('des_sg')
+			->get();
+	}
+
+	public function getPluckStreetTypes()
+	{
+		return FgSg::getStreetTypesQuery()
+			->orderBy('des_sg')
+			->pluck('des_sg', 'cod_sg');
 	}
 }

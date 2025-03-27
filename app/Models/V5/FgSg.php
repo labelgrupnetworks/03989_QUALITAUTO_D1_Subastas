@@ -3,51 +3,48 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
-use App\Providers\ToolsServiceProvider;
+use App\Support\Localization;
 use Illuminate\Database\Eloquent\Model;
 
 
 class FgSg extends Model
 {
-
-	// Variables propias de Eloquent para poder usar el ORM de forma correcta.
-
-	protected $table = 'FgSg';
-	protected $primaryKey = 'COD_SG';
-	protected $dateFormat = 'U';
-	protected $attributes = false;                  // Ej: ['delayed' => false]; Son valores por defecto para el modelo
-
-	public $timestamps = false; 	// No usaremos campos de BBDD created_at y updated_at
+	protected $table = 'fgsg';
+	protected $primaryKey = 'cod_sg';
+	protected $attributes = false;
+	public $timestamps = false;
 	public $incrementing = false;
-
-	protected $guarded = []; // Blacklist de variables que no queremos updatear de forma masiva
-
-
-    # SELECTS
-    public function scopeSelectBasicSg($query){
-        return  $query->select("cod_sg", "des_sg");
-    }
+	protected $guarded = [];
 
 	public static function getList()
 	{
 		return self::pluck('des_sg', 'cod_sg');
 	}
 
+	public function scopeJoinLangSg($query)
+	{
+		$lang = Localization::getLocaleComplete();
 
-    # JOINS
-    public function scopeJoinLangSg($query){
+		//$query->select("cod_sg", "nvl(FGSG_LANG.DES_SG_LANG,FGSG.des_SG) des_SG");
+		$query->leftJoin('FGSG_LANG', function ($join) use ($lang) {
+			$join->on("FGSG_LANG.COD_SG_LANG", "=", "FGSG.cod_sg")
+				->on("FGSG_LANG.LANG_SG_LANG", "=", "'$lang'");
+		});
+		return  $query;
+	}
 
-        $query->select("cod_sg", "nvl(FGSG_LANG.DES_SG_LANG,FGSG.des_SG) des_SG");
-        $query->leftJoin('FGSG_LANG', function ($join) {
-
-            $join   ->on("FGSG_LANG.COD_SG_LANG", "=", "FGSG.cod_SG")
-                    ->on("FGSG_LANG.LANG_SG_LANG", "=","'".ToolsServiceProvider::getLanguageComplete(\Config::get('app.locale'))."'");
-
-        });
-        return  $query;
-
-    }
-
-
-
+	/**
+	 * Query para obtener los diferentes tipos de vías (avenida, calle, etc.).
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public static function getStreetTypesQuery()
+	{
+		return self::query()
+			->when(!Localization::isDefaultLocale(), function ($query) {
+				return $query->joinLangSg()
+					->select("cod_sg", "nvl(FGSG_LANG.DES_SG_LANG,FGSG.des_sg) des_sg");
+			}, function ($query) {
+				return $query->select("cod_sg", "des_sg");
+			});
+	}
 }

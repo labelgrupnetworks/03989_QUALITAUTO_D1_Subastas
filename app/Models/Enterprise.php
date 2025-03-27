@@ -29,20 +29,6 @@ class Enterprise {
                 ->first();
     }
 
-    public function getVia(){
-        $sql = "SELECT NVL(FGSG_LANG.DES_SG_LANG,  FGSG.DES_SG) DES_SG, COD_SG "
-                      . "FROM FGSG "
-                      . "LEFT JOIN FGSG_LANG ON (FGSG.COD_SG = FGSG_LANG.COD_SG_LANG AND LANG_SG_LANG = :lang) "
-                      . "order by FGSG.des_sg asc";
-
-             $params = array(
-                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-                );
-
-              return DB::select($sql, $params);
-
-    }
-
     public function getCountries(){
 
 
