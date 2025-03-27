@@ -29,20 +29,6 @@ class Enterprise {
                 ->first();
     }
 
-    public function getCountries(){
-
-
-        $sql = "SELECT cod_paises, nvl(FSPAISES_LANG.DES_PAISES_LANG,FSPAISES.des_paises) des_paises
-                        FROM FSPAISES
-                        LEFT JOIN FSPAISES_LANG ON (FSPAISES_LANG.COD_PAISES_LANG = FSPAISES.cod_paises AND FSPAISES_LANG.LANG_PAISES_LANG = :lang)
-                        ORDER BY nvl(FSPAISES_LANG.DES_PAISES_LANG,FSPAISES.des_paises) ASC";
-        $params = array(
-                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-                );
-
-              return DB::select($sql, $params);
-    }
-
     public function infEspecialistas(){
 
 

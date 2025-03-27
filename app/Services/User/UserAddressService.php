@@ -6,6 +6,7 @@ use App\DataTransferObjects\User\AddressData;
 use App\Models\V5\FgSg;
 use App\Models\V5\FsPaises;
 use App\Models\V5\FxClid;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
 class UserAddressService
@@ -21,7 +22,7 @@ class UserAddressService
 
 	public function addAddress(AddressData $addressData, $userId)
 	{
-		if(!$addressData->des_pais) {
+		if (!$addressData->des_pais) {
 			$desPais = FsPaises::query()
 				->where('cod_paises', $addressData->clid_pais)
 				->value('des_paises');
@@ -44,7 +45,7 @@ class UserAddressService
 
 	public function editAddress(AddressData $addressData, string $userId)
 	{
-		if(!$addressData->des_pais) {
+		if (!$addressData->des_pais) {
 			$desPais = FsPaises::query()
 				->where('cod_paises', $addressData->clid_pais)
 				->value('des_paises');
@@ -143,5 +144,17 @@ class UserAddressService
 		return FgSg::getStreetTypesQuery()
 			->orderBy('des_sg')
 			->pluck('des_sg', 'cod_sg');
+	}
+
+	public function getCountries()
+	{
+		$theme = Config::get('app.theme');
+		$keyCache = "useraddress.countries.{$theme}";
+		$time = 86400; //one day
+		return Cache::remember($keyCache, $time, function () {
+			return FsPaises::query()
+				->joinLangPaises()
+				->get();
+		});
 	}
 }

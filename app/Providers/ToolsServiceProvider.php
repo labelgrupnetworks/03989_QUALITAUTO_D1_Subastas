@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\libs\CacheLib;
 use App\libs\ImageGenerate;
-use App\Models\Enterprise;
 use App\Models\Facturas;
 use App\Models\Payments;
 use App\Models\Subasta;
@@ -12,6 +11,7 @@ use App\Models\V5\FxCli;
 use App\Models\V5\Web_Blog;
 use App\Models\V5\Web_Category_Blog_Lang;
 use App\Providers\RoutingServiceProvider as Routing;
+use App\Services\User\UserAddressService;
 use DOMDocument;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -637,51 +637,19 @@ class ToolsServiceProvider extends ServiceProvider
 			}
 		}
 	}
-	/*
-	public static function PriceWithTaxForEuropean($imp,$codCli, $taxForLoged = true){
 
-		$iva = DB::select( "select iva_iva from fsiva where dfec_iva <= :time and hfec_iva >= :time and cod_iva = :cod",
-						array(
-							'time'       => date('Y-m-d H:i:s'),
-							'cod'   => '01'
-							)
-					);
-		$tax =0;
-		if(count($iva)> 0){
-			$tax = $iva[0]->iva_iva/100;
-		}
-
-		#si no esta logeado mostramos precio con iva o no segun variable
-		if (empty($codCli)) {
-			if($taxForLoged){
-				return  (1 + $tax) * $imp;
-			}else{
-				return $imp;
-			}
-
-
-		}else{
-			$user = FxCli::select("CODPAIS_CLI")->where("COD_CLI", $codCli)->first();
-
-			# si no encontramos usuario , o si lo encontramos y es Europeo
-			if(empty($user) ||  in_array($user->codpais_cli,ToolsServiceProvider::PaisesEUR() )){
-					return  (1 + $tax) * $imp;
-
-			}
-		}
-		#si no se suma el iva se devuelve el precio como estaba
-		return $imp;
-
-
-	}
-*/
+	/**
+	 * @todo 27/03/2025
+	 * Utilizado por Gutinvest en las vistas.
+	 * Seguramente se pueda eliminar utilizando directamente el servicio.
+	 */
 	public static function NamePais($countri)
 	{
-		$enterprice = new Enterprise();
 		$keyname_cache = "get_countries" . Config::get('app.theme') . "_" . Config::get('app.emp');
+
 		$paises = CacheLib::getCache($keyname_cache);
 		if ($paises === false) {
-			$paises = $enterprice->getCountries();
+			$paises = (new UserAddressService())->getCountries();
 			CacheLib::putCache($keyname_cache, $paises);
 		}
 

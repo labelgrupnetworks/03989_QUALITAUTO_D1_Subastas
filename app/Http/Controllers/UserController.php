@@ -55,13 +55,12 @@ class UserController extends Controller
 			return Redirect::to('/');
 		}
 
-		$enterprise = new Enterprise();
-		//Busca paises
-		$countries = $enterprise->getCountries();
-
-		//Busca vias
 		$addressService = new UserAddressService();
+		$enterprise = new Enterprise();
+
+		$countries = $addressService->getCountries();
 		$via = $addressService->getStreetTypes();
+
 		//Busca divisas del cliente
 		$divisa = $enterprise->getDivisa();
 		$data = array("countries" => $countries, "via" => $via, "divisa" => $divisa);
@@ -1727,7 +1726,7 @@ class UserController extends Controller
 		);
 
 		$data['codd_clid'] = 'W1';
-		$data['countries'] = $enterprise->getCountries();
+		$data['countries'] = $addressService->getCountries();
 		$data['via']  = $addressService->getStreetTypes();
 
 
