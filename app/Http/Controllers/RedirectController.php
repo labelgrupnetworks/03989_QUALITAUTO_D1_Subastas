@@ -58,7 +58,7 @@ class RedirectController extends Controller
 
 				$sesiones = $subasta->getSessiones();
 
-				if (count($sesiones) > 0) {
+				if ($sesiones->count() > 0) {
 
 					$url_friendly = Routing::translateSeo('subasta') . $subasta->cod . "-" . str_slug($sesiones[0]->name) . "-" . $sesiones[0]->id_auc_sessions;
 

@@ -151,21 +151,19 @@ class Subasta extends Model
      */
     public function getSessiones()
     {
-        # Parametros a parsear en el SQL con PDO
-        $params = array(
-                'emp'       =>  Config::get('app.emp'),
-                'cod_sub'   =>  $this->cod,
-                'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-
-                );
-        $sql ="SELECT auc.*,
-                NVL(auc_lang.\"name_lang\",  auc.\"name\") name
-                FROM \"auc_sessions\" auc
-               LEFT JOIN \"auc_sessions_lang\" auc_lang on (auc_lang.\"auction_lang\" = :cod_sub and auc_lang.\"company_lang\" = :emp and auc_lang.\"lang_auc_sessions_lang\" = :lang and auc.\"id_auc_sessions\" = auc_lang.\"id_auc_session_lang\")
-              WHERE \"auction\"= :cod_sub AND \"company\"= :emp AND  \"start\" IS NOT NULL AND  \"end\" IS NOT NULL AND \"init_lot\" > 0 AND \"end_lot\" > 0";
-        $sesiones = DB::select($sql, $params);
-
-        return $sesiones;
+		return AucSessions::query()
+				->select('"auc_sessions".*')
+				->selectRaw('NVL("auc_sessions_lang"."name_lang",  "auc_sessions"."name") name')
+				->joinLang()
+				->where([
+					['"auction"', '=', $this->cod],
+					['"init_lot"', '>', 0],
+					['"end_lot"', '>', 0]
+				])
+				->whereNotNull('"start"')
+				->whereNotNull('"end"')
+				->orderBy('"reference"')
+				->get();
     }
 
     public function getLots_old($type = "normal", $cache_sql = false)
