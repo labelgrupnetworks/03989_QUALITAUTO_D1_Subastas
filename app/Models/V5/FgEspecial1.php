@@ -3,6 +3,7 @@
 # Ubicacion del modelo
 namespace App\Models\V5;
 
+use App\Support\Localization;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ class FgEspecial1 extends Model
 	public function description(): Attribute
 	{
 		return Attribute::make(
-			get: fn () => $this->relationLoaded('specialistLang') ? $this->specialistLang->desc_especial1_lang : $this->desc_especial1
+			get: fn() => $this->relationLoaded('specialistLang') ? $this->specialistLang->desc_especial1_lang : $this->desc_especial1
 		);
 	}
 
@@ -50,8 +51,41 @@ class FgEspecial1 extends Model
 		$theme = Config::get('app.theme');
 
 		return Attribute::make(
-			get: fn () => $imageIsSharedWihtErp ? "/img/PER/{$this->per_especial1}" : "/themes/{$theme}/assets/img/specialists/{$this->per_especial1}"
+			get: fn() => $imageIsSharedWihtErp ? "/img/PER/{$this->per_especial1}" : "/themes/{$theme}/assets/img/specialists/{$this->per_especial1}"
 		);
+	}
+
+	public static function getSpecialistsWithJoins()
+	{
+		$lang = Localization::getLocaleComplete();
+
+		return self::query()
+			->select([
+				'emp_especial1',
+				'lin_especial1',
+				'orden_especial1',
+				'nom_especial1',
+				'email_especial1',
+				'nvl(esp1_lang.desc_especial1_lang, fgespecial1.desc_especial1) desc_especial1',
+				'nvl(esp1_lang.per_especial1_lang, fgespecial1.per_especial1) per_especial1',
+				'nvl(espi0_lang.titulo_especial0_lang,  esp0.titulo_especial0) titulo_especial0',
+				'esp0.orden_especial0'
+			])
+			->join('fgespecial0 as esp0', 'esp0.lin_especial0 = fgespecial1.lin_especial1 and esp0.emp_especial0 = fgespecial1.emp_especial1')
+			->leftJoin('fgespecial0_lang as espi0_lang', function ($join) use ($lang) {
+				$join->on('espi0_lang.lin_especial0_lang', 'esp0.lin_especial0')
+					->on('espi0_lang.emp_especial0_lang', 'esp0.emp_especial0')
+					->where('espi0_lang.lang_especial0_lang', $lang);
+			})
+			->leftJoin('fgespecial1_lang as esp1_lang', function ($join) use ($lang) {
+				$join->on('esp1_lang.lin_especial1_lang', 'fgespecial1.lin_especial1')
+					->on('esp1_lang.emp_especial1_lang', 'fgespecial1.emp_especial1')
+					->on('esp1_lang.per_especial1_lang', 'fgespecial1.per_especial1')
+					->where('esp1_lang.lang_especial1_lang', $lang);
+			})
+			->orderBy('esp0.orden_especial0')
+			->orderBy('fgespecial1.orden_especial1')
+			->get();
 	}
 
 	public static function getSpecialist($per_especial1)

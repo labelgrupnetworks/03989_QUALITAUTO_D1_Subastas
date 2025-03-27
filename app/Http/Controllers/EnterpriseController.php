@@ -2,30 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Enterprise;
 use App\Models\V5\FgOrtsec0;
+use App\Services\Content\SpecialistService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 
 class EnterpriseController extends Controller
 {
 
-	function __construct(
-		private Enterprise $enterpriseRepository
-	) {
-	}
+	function __construct() {}
 
 	public function index()
 	{
-		$enterprise = new Enterprise();
-		$profes = array();
-		$especial = $enterprise->infEspecialistas();
+		$specialits = (new SpecialistService)->infEspecialistas();
+		$data['especialista'] = $specialits->groupBy('lin_especial1');
 
-		foreach ($especial as $esp) {
-			$profes[$esp->lin_especial1][] = $esp;
-		}
-
-		$data['especialista'] = $profes;
 		return View::make('front::pages.specialists', array('data' => $data));
 	}
 
@@ -38,8 +29,7 @@ class EnterpriseController extends Controller
 			exit(View::make('front::errors.404'));
 		}
 
-		$especialistas = $this->enterpriseRepository->getSpecialistsByOrtsec($ortsec->lin_ortsec0);
-
+		$especialistas = (new SpecialistService)->getSpecialistsByOrtsec($ortsec->lin_ortsec0);
 		$data['seo'] = new \stdClass();
 		$data['seo']->meta_title = $ortsec->meta_titulo_ortsec0 ?? trans(Config::get('app.theme') . '-app.head.title_app');
 		$data['seo']->meta_description = $ortsec->meta_description_ortsec0 ?? trans(Config::get('app.theme') . '-app.head.meta_description');
@@ -49,7 +39,7 @@ class EnterpriseController extends Controller
 
 	public function team()
 	{
-		$specialists = collect((new Enterprise())->infEspecialistas());
+		$specialists = (new SpecialistService)->infEspecialistas();
 		$specialties = $specialists->where('lin_especial1', '!=', 1)->pluck('titulo_especial0')->unique();
 
 		$data = [
@@ -66,7 +56,7 @@ class EnterpriseController extends Controller
 			abort(404);
 		}
 
-		$specialists = $this->enterpriseRepository->getAllSpecialists();
+		$specialists = (new SpecialistService)->getAllSpecialists();
 
 		return view('front::pages.about_us', ['specialists' => $specialists]);
 	}

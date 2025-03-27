@@ -16,7 +16,6 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
-use App\Models\V5\FgEspecial1;
 use App\Providers\ToolsServiceProvider;
 
 class Enterprise {
@@ -27,23 +26,6 @@ class Enterprise {
                 ->where('cod_emp',Config::get('app.emp'))
                 ->where('gemp_emp',Config::get('app.gemp'))
                 ->first();
-    }
-
-    public function infEspecialistas(){
-
-
-         $sql = "select ESP1.LIN_ESPECIAL1, ESP1.NOM_ESPECIAL1, ESP1.ORDEN_ESPECIAL1, ESP1.EMAIL_ESPECIAL1, NVL(ESP1_LANG.DESC_ESPECIAL1_LANG, ESP1.DESC_ESPECIAL1) DESC_ESPECIAL1, NVL(ESP1_LANG.PER_ESPECIAL1_LANG, ESP1.PER_ESPECIAL1) PER_ESPECIAL1,
-		 		NVL(ESPI0_LANG.TITULO_ESPECIAL0_LANG,  ESP0.TITULO_ESPECIAL0) TITULO_ESPECIAL0, ESP0.ORDEN_ESPECIAL0 from FGESPECIAL0 ESP0
-                INNER JOIN FGESPECIAL1 ESP1 ON ESP1.LIN_ESPECIAL1 = ESP0.LIN_ESPECIAL0 AND ESP0.EMP_ESPECIAL0 = ESP1.EMP_ESPECIAL1
-                LEFT JOIN FGESPECIAL0_LANG ESPI0_LANG ON ESP0.LIN_ESPECIAL0 = ESPI0_LANG.LIN_ESPECIAL0_LANG AND ESP0.EMP_ESPECIAL0 = ESPI0_LANG.EMP_ESPECIAL0_LANG AND ESPI0_LANG.LANG_ESPECIAL0_LANG  = :lang
-				LEFT JOIN FGESPECIAL1_LANG ESP1_LANG ON ESP1_LANG.LIN_ESPECIAL1_LANG = ESP1.LIN_ESPECIAL1 AND ESP1_LANG.EMP_ESPECIAL1_LANG = ESP1.EMP_ESPECIAL1 AND ESP1_LANG.PER_ESPECIAL1_LANG = ESP1.PER_ESPECIAL1 AND ESP1_LANG.LANG_ESPECIAL1_LANG  = :lang
-                WHERE ESP0.EMP_ESPECIAL0 = :emp order by ESP0.ORDEN_ESPECIAL0, ESP1.ORDEN_ESPECIAL1";
-
-            $bindings = array(
-                    'emp'             => Config::get('app.emp'),
-                    'lang'      => ToolsServiceProvider::getLanguageComplete(Config::get('app.locale'))
-                    );
-        return DB::select($sql, $bindings);
     }
 
     public function getAlmacen($cod_alm){
@@ -128,40 +110,5 @@ class Enterprise {
             ->select('cod_div','des_div','impd_div','symbolhtml_div')
             ->get();
     }
-
-	public function getAllSpecialists()
-	{
-		return FgEspecial1::getSpecialists();
-	}
-
-	public function getSpecialist($per_especial1)
-	{
-		return FgEspecial1::getSpecialist($per_especial1);
-	}
-
-	public function getSpecialistsByOrtsec($lin_ortsec0)
-	{
-		if(Config::get('app.specialists_model', false)) {
-			return FgEspecial1::getSpecialistsByOrtsec($lin_ortsec0);
-		}
-		return $this->getSpecialistsWithoutModel($lin_ortsec0);
-	}
-
-	/**
-	 * @deprecated
-	 * Se utiliza por soler. No se debe utilizar en nuevos desarrollos
-	 */
-	private function getSpecialistsWithoutModel($lin_ortsec0): array
-	{
-		$specialists = [];
-		$especial = $this->infEspecialistas();
-
-		foreach ($especial as $esp) {
-			if ($esp->lin_especial1 == $lin_ortsec0) {
-				$specialists[$esp->per_especial1] = $esp;
-			}
-		}
-		return $specialists;
-	}
 
 }
