@@ -68,5 +68,5 @@ const printar = (data) => {
 const closeLotsData = calcularTiempos(closeLots ?? []);
 const pujasData = calcularTiempos(pujas ?? []);
 
-printar(closeLotsData);
 printar(pujasData);
+printar(closeLotsData);

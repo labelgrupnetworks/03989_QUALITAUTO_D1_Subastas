@@ -175,7 +175,15 @@ class PaymentsController extends Controller
 
 					$jsonLot[$sub][$ref]['extras'] = array();
 
-
+					/**
+					 * @todo !Importante.
+					 * Se están utilizando los envios 1 y 5.
+					 * 1 - Recogida en tienda
+					 * 5 - Envio por agencia
+					 *
+					 * El resto no se estan utilizando.
+					 * Se debe revisar si se pueden eliminar o si se deben utilizar.
+					 */
 					if (!empty($shopping_cart['envios'])) {
 						if (!empty(Config::get('app.delivery_address')) && Config::get('app.delivery_address') == 1) {
 							#Envio por agencia, se usa en Duran, se calculan los gastos de la tabla WEB_GASTOS_ENVIO de momento solo lo usa Duran
