@@ -130,6 +130,9 @@
 						<td class="tel1_cli" @if(!$tableParams['tel1_cli']) style="display: none" @endif>{{$cliente->tel1_cli}}</td>
 						<td class="pais_cli" @if(!$tableParams['pais_cli']) style="display: none" @endif>{{$cliente->pais_cli}}</td>
 						<td class="pro_cli" @if(!$tableParams['pro_cli']) style="display: none" @endif>{{$cliente->pro_cli}}</td>
+						<td class="cp_cli" @if(!$tableParams['cp_cli']) style="display: none" @endif>{{$cliente->cp_cli}}</td>
+						<td class="pob_cli" @if(!$tableParams['pob_cli']) style="display: none" @endif>{{$cliente->pob_cli}}</td>
+						<td class="complete_direction" @if(!$tableParams['complete_direction']) style="display: none" @endif>{{$cliente->complete_direction}}</td>
 						<td class="idioma_cli" @if(!$tableParams['idioma_cli']) style="display: none" @endif>{{$cliente->idioma_cli}}</td>
 						<td class="fisjur_cli" @if(!$tableParams['fisjur_cli']) style="display: none" @endif>{{$cliente->tipo_fisJur_types}}</td>
 

@@ -700,6 +700,7 @@ return [
 		'tipo_cli_w'=>'Web',
 		'tipo_cli_p' => 'Propietario',
 		'tipo_cli_l'=>'Licitador',
+		'complete_direction' => 'Dirección completa',
 		'enviocatalogo' => 'Envío de catálogo',
 		'idorigincli'=>'Id Origen',
 		'email'=>'Email',

@@ -19,6 +19,11 @@ class ClientsExport extends StringValueBinder implements FromQuery, WithHeadings
 
 	use Exportable;
 
+	protected $order;
+	protected $order_dir;
+	protected $select;
+	protected $where;
+
 	public function __construct(Request $request)
 	{
 		$this->order = $request->order;
@@ -91,6 +96,15 @@ class ClientsExport extends StringValueBinder implements FromQuery, WithHeadings
 			})
 			->when($this->where['baja_tmp_cli'], function ($query, $baja_tmp_cli) {
 				return $query->where('baja_tmp_cli', $baja_tmp_cli);
+			})
+			->when($this->where['cp_cli'], function ($query, $cp_cli) {
+				return $query->where('cp_cli', 'like', "%" . $cp_cli . "%");
+			})
+			->when($this->where['pob_cli'], function ($query, $pob_cli) {
+				return $query->where('upper(pob_cli)', 'like', "%" . mb_strtoupper($pob_cli) . "%");
+			})
+			->when($this->where['complete_direction'], function ($query, $complete_direction) {
+				return $query->whereRaw('upper(dir_cli || dir2_cli || sg_cli) like ?', "%" . mb_strtoupper($complete_direction) . "%");
 			});
 
 		//newsletters

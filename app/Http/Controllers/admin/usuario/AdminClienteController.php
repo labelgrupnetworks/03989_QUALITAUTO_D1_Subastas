@@ -37,37 +37,55 @@ class AdminClienteController extends Controller
 	public function index(Request $request)
 	{
 		$newslettersSelect = [];
-		if(config('app.newsletterFamilies') && !config('app.newsletter_table')){
-			$newslettersSelect = collect(explode(',', config('app.newsletterFamilies', '')))->map(function($item){
+		if (config('app.newsletterFamilies') && !config('app.newsletter_table')) {
+			$newslettersSelect = collect(explode(',', config('app.newsletterFamilies', '')))->map(function ($item) {
 				return "nllist" . trim($item) . "_cliweb";
-			}) ;
+			});
 		}
 
 		$clientes = self::clientsQueryBuilder()
-		->select("FXCLI.COD_CLI", "FXCLI.COD2_CLI", "FXCLI.TIPO_CLI", "FXCLI.RSOC_CLI", "FXCLI.EMAIL_CLI", "FXCLI.TEL1_CLI", "FXCLI.PAIS_CLI", "FXCLI.PRO_CLI", "FXCLI.IDIOMA_CLI", "FXCLI.FISJUR_CLI", "FXCLI.BAJA_TMP_CLI", "FXCLI.F_MODI_CLI")
-		->addSelect("NVL(FXCLI.NOM_CLI, FXCLIWEB.NOM_CLIWEB) as NOM_CLI" ,"NVL(FXCLI.F_ALTA_CLI,FXCLIWEB.FECALTA_CLIWEB) as FECALTA_CLIWEB")
-		->addSelect('FXCLID.EMAIL_CLID');
+			->select([
+				"FXCLI.COD_CLI",
+				"FXCLI.COD2_CLI",
+				"FXCLI.TIPO_CLI",
+				"FXCLI.RSOC_CLI",
+				"FXCLI.EMAIL_CLI",
+				"FXCLI.TEL1_CLI",
+				"FXCLI.PAIS_CLI",
+				"FXCLI.PRO_CLI",
+				"fxcli.cp_cli",
+				"fxcli.pob_cli",
+				"fxcli.dir_cli",
+				"fxcli.dir2_cli",
+				"fxcli.sg_cli",
+				"FXCLI.IDIOMA_CLI",
+				"FXCLI.FISJUR_CLI",
+				"FXCLI.BAJA_TMP_CLI",
+				"FXCLI.F_MODI_CLI"
+			])
+			->addSelect("NVL(FXCLI.NOM_CLI, FXCLIWEB.NOM_CLIWEB) as NOM_CLI", "NVL(FXCLI.F_ALTA_CLI,FXCLIWEB.FECALTA_CLIWEB) as FECALTA_CLIWEB")
+			->addSelect('FXCLID.EMAIL_CLID');
 
 
-			$clientes = self::clientsQueryFilters($clientes, $request);
+		$clientes = self::clientsQueryFilters($clientes, $request);
 
-			//newsletters
-			if(!empty($newslettersSelect)){
-				$clientes = $clientes->addSelect($newslettersSelect->implode(','));
-				foreach ($newslettersSelect as $value) {
-					$clientes = $clientes->when($request->{$value}, function ($query, $nllist_cliweb) use($value) {
-						return $query->where($value, $nllist_cliweb);
-					});
-				}
+		//newsletters
+		if (!empty($newslettersSelect)) {
+			$clientes = $clientes->addSelect($newslettersSelect->implode(','));
+			foreach ($newslettersSelect as $value) {
+				$clientes = $clientes->when($request->{$value}, function ($query, $nllist_cliweb) use ($value) {
+					return $query->where($value, $nllist_cliweb);
+				});
 			}
+		}
 
 
-			$clientes = $clientes->orderBy(request('order', 'cast(fxcli.cod_cli as int)'), request('order_dir', 'desc'));
+		$clientes = $clientes->orderBy(request('order', 'cast(fxcli.cod_cli as int)'), request('order_dir', 'desc'));
 
-			/* $test = DB::select(Str::replaceArray('?', $clientes->getBindings(), $clientes->toSql()));
+		/* $test = DB::select(Str::replaceArray('?', $clientes->getBindings(), $clientes->toSql()));
 			dd($test); */
 
-			$clientes = $clientes->paginate(30);
+		$clientes = $clientes->paginate(30);
 
 		$fxcli = new FxCli();
 		$bool = ['S' => 'Si', 'N' => 'No'];
@@ -92,6 +110,9 @@ class AdminClienteController extends Controller
 			'tel1_cli' => FormLib::Text('tel1_cli', 0, $request->tel1_cli),
 			'pais_cli' => FormLib::Text('pais_cli', 0, $request->pais_cli),
 			'pro_cli' => FormLib::Text('pro_cli', 0, $request->pro_cli),
+			'cp_cli' => FormLib::Text('cp_cli', 0, $request->cp_cli),
+			'pob_cli' => FormLib::Text('pob_cli', 0, $request->pob_cli),
+			'complete_direction' => FormLib::Text('complete_direction', 0, $request->complete_direction),
 			'idioma_cli' => FormLib::Text('idioma_cli', 0, $request->idioma_cli),
 			'fisjur_cli' => FormLib::Select('fisjur_cli', 0, $request->fisjur_cli, $fxcli->getTipoFisJurTypes()),
 			'baja_tmp_cli' => FormLib::Select('baja_tmp_cli', 0, $request->baja_tmp_cli, $fxcli->getTipoBajaTmpTypes()),
@@ -102,9 +123,26 @@ class AdminClienteController extends Controller
 		] + $newsletters);
 
 		$tableParams = [
-			'cod_cli' => Config::get('external_id', 1), 'cod2_cli' => Config::get('external_id', 0), 'tipo_cli' => 1,
-			'nom_cli' => 1, 'rsoc_cli' => 0, 'email_cli' => 1, 'tel1_cli' => 0, 'pais_cli' => 0, 'pro_cli' => 0, 'idioma_cli' => 0,
-			'fisjur_cli' => 1, 'baja_tmp_cli' => 0, 'fecalta_cliweb' => 1, 'f_modi_cli' => 1, 'envcat_cli2' => 1, 'email_clid' => 0] + $newsletterTableParam;
+			'cod_cli' => Config::get('external_id', 1),
+			'cod2_cli' => Config::get('external_id', 0),
+			'tipo_cli' => 1,
+			'nom_cli' => 1,
+			'rsoc_cli' => 0,
+			'email_cli' => 1,
+			'tel1_cli' => 0,
+			'pais_cli' => 0,
+			'pro_cli' => 0,
+			'cp_cli' => 0,
+			'pob_cli' => 0,
+			'complete_direction' => 0,
+			'idioma_cli' => 0,
+			'fisjur_cli' => 1,
+			'baja_tmp_cli' => 0,
+			'fecalta_cliweb' => 1,
+			'f_modi_cli' => 1,
+			'envcat_cli2' => 1,
+			'email_clid' => 0
+		] + $newsletterTableParam;
 
 		return view('admin::pages.usuario.cliente_v2.index', compact('clientes', 'formulario', 'fxcli', 'tableParams', 'newslettersSelect'));
 	}
@@ -153,7 +191,7 @@ class AdminClienteController extends Controller
 		$cod_cli = FxCli::select('cod_cli')->where('cod2_cli', $cliente['idorigincli'])->first()->cod_cli ?? null;
 
 		//Origen de datos los guardamos directamente en su tabla
-		if($request->provenance && FsOrigen::first()){
+		if ($request->provenance && FsOrigen::first()) {
 			$this->addOrigenes($request, $cod_cli);
 		}
 
@@ -199,7 +237,7 @@ class AdminClienteController extends Controller
 
 		//dnis
 		$dnisPaths = (new UserController)->getCIFImages($cliente->codcli);
-		$dnis = array_map(function($dni){
+		$dnis = array_map(function ($dni) {
 			return [
 				'path' => $dni,
 				'mime' => mime_content_type($dni),
@@ -226,14 +264,14 @@ class AdminClienteController extends Controller
 		 * Ojo, no se puede editar el email hasta que el cliente no tenga idorigincli
 		 * */
 		//Si no tiene idorigincli, debemos enviar setidorigincli para poder añadirlo
-		if(empty($request->idorigincli)){
+		if (empty($request->idorigincli)) {
 			$cliente['idorigincli'] = FxCli::newCod2Cli($request->codcli);
 			$cliente['setidorigincli'] = 'S';
 		}
 
 		//Si no viene nuevo password eliminamos el campo vacio para que no lo actualice
 		unset($cliente['password']);
-		if(!empty($request->password)){
+		if (!empty($request->password)) {
 			$cliente['password'] = $this->passwordEncrypt($request->password);
 		}
 
@@ -251,13 +289,13 @@ class AdminClienteController extends Controller
 		$this->modifyUserUpdate([$cliente['idorigincli']]);
 
 		//Origen de datos los guardamos directamente en su tabla
-		if(FsOrigen::first()){
+		if (FsOrigen::first()) {
 			$this->addOrigenes($request, $request->codcli);
 		}
 
-		if(config('app.newsletter_table')) {
+		if (config('app.newsletter_table')) {
 
-			$families = array_filter($request->input('families', []), function($family) {
+			$families = array_filter($request->input('families', []), function ($family) {
 				return $family === 'S';
 			});
 			(new Newsletter())
@@ -297,9 +335,10 @@ class AdminClienteController extends Controller
 	}
 
 	#usamos esta función para poder llamar al web service desde el admin
-	function send_ws(Request $request){
+	function send_ws(Request $request)
+	{
 		#por seguridad solo podrá ejecutar este código el usuari ode subastas
-		if ( Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM') ){
+		if (Config::get('app.WebServiceClient') && (strtoupper(session('user.usrw')) == 'SUBASTAS@LABELGRUP.COM')) {
 			$theme  = Config::get('app.theme');
 			$rutaClientcontroller = "App\Http\Controllers\\externalws\\$theme\ClientController";
 
@@ -384,18 +423,17 @@ class AdminClienteController extends Controller
 		];
 
 		//De manera provisional, en ansorena galeria, necesitamos guardar en newslleter20 la suscripcion a catalogo
-		if(config('app.catalogo_newsletter')){
+		if (config('app.catalogo_newsletter')) {
 			$position = config('app.catalogo_newsletter');
 			$form['additional']["newsletter$position"] = FormLib::select("newsletter$position", 0, old("newsletter$position", $cliente->{"newsletter$position"} ?? 'N'), $booleanSelectOptions, '', '', false);
 		}
 
 		$origenes = FsOrigen::pluck('des_origen', 'id_origen')->toArray();
-		if(!empty($origenes)){
+		if (!empty($origenes)) {
 			$form['additional']['provenance'] = FormLib::Select2WithArray('provenance', false, old('provenance', $fxcli->origenes->pluck('id_origen')->toArray()), $origenes, false, true);
 		}
 
 		return $form;
-
 	}
 
 	private function newsletterForm($fxCli, $apiCli)
@@ -403,7 +441,7 @@ class AdminClienteController extends Controller
 		$newsletters = [];
 		$booleanSelectOptions = ['S' => 'Si', 'N' => 'No'];
 
-		if(config('app.newsletter_table')){
+		if (config('app.newsletter_table')) {
 			$newsletterRepo = new Newsletter();
 			$subsriptions = $newsletterRepo->getSuscriptionsWithNamesByEmail($fxCli->email_cliweb ?? '');
 			$newslettersNames = $newsletterRepo->getNewslettersNames(true);
@@ -412,12 +450,11 @@ class AdminClienteController extends Controller
 				$suscription = $subsriptions->where('id_newsletter', $id)->first();
 				$newsletters[$name] = FormLib::Select("families[$id]", 0, old("families[$id]", (bool)$suscription ? 'S' : 'N'), $booleanSelectOptions, '', '', false);
 			}
-		}
-		else {
+		} else {
 			$newslettersFamilies = explode(',', config('app.newsletterFamilies', ''));
 
 			for ($i = 1; $i <= 20; $i++) {
-				if(in_array($i, $newslettersFamilies)){
+				if (in_array($i, $newslettersFamilies)) {
 					$newsletters[$i] = FormLib::select("newsletter$i", 0, old("newsletter$i", $apiCli->{"newsletter$i"} ?? 'N'), $booleanSelectOptions, '', '', false);
 				}
 			}
@@ -428,13 +465,12 @@ class AdminClienteController extends Controller
 
 	public function passwordEncrypt($passwd)
 	{
-		if(!empty(Config::get('app.multi_key_pass'))){
-			$newKey=md5(time());
-			$password_encrypt =  md5($newKey.$passwd).":".$newKey;
+		if (!empty(Config::get('app.multi_key_pass'))) {
+			$newKey = md5(time());
+			$password_encrypt =  md5($newKey . $passwd) . ":" . $newKey;
+		} elseif (!empty(Config::get('app.password_MD5'))) {
 
-		}elseif(!empty(Config::get('app.password_MD5'))){
-
-			$password_encrypt =  md5(Config::get('app.password_MD5').$passwd);
+			$password_encrypt =  md5(Config::get('app.password_MD5') . $passwd);
 		}
 
 		return $password_encrypt;
@@ -473,51 +509,60 @@ class AdminClienteController extends Controller
 			});
 		})
 
-		->when($request->cod_cli, function ($query, $cod_cli) {
-			return $query->where('cod_cli', 'like', "%" . $cod_cli . "%");
-		})
-		->when($request->cod2_cli, function ($query, $cod2_cli) {
-			return $query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
-		})
-		->when($request->tipo_cli, function ($query, $tipo_cli) {
-			return $query->where('tipo_cli', $tipo_cli);
-		})
-		->when($request->nom_cli, function ($query, $nom_cli) {
-			return $query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
-		})
-		->when($request->rsoc_cli, function ($query, $rsoc_cli) {
-			return $query->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($rsoc_cli) . "%");
-		})
-		->when($request->email_cli, function ($query, $email_cli) {
-			return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($email_cli) . "%");
-		})
-		->when($request->tel1_cli, function ($query, $tel1_cli) {
-			return $query->where('upper(tel1_cli)', 'like', "%" . mb_strtoupper($tel1_cli) . "%");
-		})
-		->when($request->pais_cli, function ($query, $pais_cli) {
-			return $query->where('upper(pais_cli)', 'like', "%" . mb_strtoupper($pais_cli) . "%");
-		})
-		->when($request->pro_cli, function ($query, $pro_cli) {
-			return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($pro_cli) . "%");
-		})
-		->when($request->idioma_cli, function ($query, $idioma_cli) {
-			return $query->where('upper(idioma_cli)', 'like', "%" . mb_strtoupper($idioma_cli) . "%");
-		})
-		->when($request->fisjur_cli, function ($query, $fisjur_cli) {
-			return $query->where('fisjur_cli', $fisjur_cli);
-		})
-		->when($request->fecalta_cliweb, function ($query, $fecalta_cliweb) {
-			return $query->where('fecalta_cliweb', '>=', ToolsServiceProvider::getDateFormat($fecalta_cliweb, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-		})
-		->when($request->f_modi_cli, function ($query, $f_modi_cli) {
-			return $query->where('f_modi_cli', '>=', ToolsServiceProvider::getDateFormat($f_modi_cli, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
-		})
-		->when($request->baja_tmp_cli, function ($query, $baja_tmp_cli) {
-			return $query->where('baja_tmp_cli', $baja_tmp_cli);
-		})
-		->when($request->email_clid, function ($query, $email_clid) {
-			return $query->where('upper(email_clid)', 'like', "%" . mb_strtoupper($email_clid) . "%");
-		});
+			->when($request->cod_cli, function ($query, $cod_cli) {
+				return $query->where('cod_cli', 'like', "%" . $cod_cli . "%");
+			})
+			->when($request->cod2_cli, function ($query, $cod2_cli) {
+				return $query->where('upper(cod2_cli)', 'like', "%" . mb_strtoupper($cod2_cli) . "%");
+			})
+			->when($request->tipo_cli, function ($query, $tipo_cli) {
+				return $query->where('tipo_cli', $tipo_cli);
+			})
+			->when($request->nom_cli, function ($query, $nom_cli) {
+				return $query->where('upper(nom_cli)', 'like', "%" . mb_strtoupper($nom_cli) . "%");
+			})
+			->when($request->rsoc_cli, function ($query, $rsoc_cli) {
+				return $query->where('upper(rsoc_cli)', 'like', "%" . mb_strtoupper($rsoc_cli) . "%");
+			})
+			->when($request->email_cli, function ($query, $email_cli) {
+				return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($email_cli) . "%");
+			})
+			->when($request->tel1_cli, function ($query, $tel1_cli) {
+				return $query->where('upper(tel1_cli)', 'like', "%" . mb_strtoupper($tel1_cli) . "%");
+			})
+			->when($request->pais_cli, function ($query, $pais_cli) {
+				return $query->where('upper(pais_cli)', 'like', "%" . mb_strtoupper($pais_cli) . "%");
+			})
+			->when($request->pro_cli, function ($query, $pro_cli) {
+				return $query->where('upper(email_cli)', 'like', "%" . mb_strtoupper($pro_cli) . "%");
+			})
+			->when($request->idioma_cli, function ($query, $idioma_cli) {
+				return $query->where('upper(idioma_cli)', 'like', "%" . mb_strtoupper($idioma_cli) . "%");
+			})
+			->when($request->fisjur_cli, function ($query, $fisjur_cli) {
+				return $query->where('fisjur_cli', $fisjur_cli);
+			})
+			->when($request->fecalta_cliweb, function ($query, $fecalta_cliweb) {
+				return $query->where('fecalta_cliweb', '>=', ToolsServiceProvider::getDateFormat($fecalta_cliweb, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+			})
+			->when($request->f_modi_cli, function ($query, $f_modi_cli) {
+				return $query->where('f_modi_cli', '>=', ToolsServiceProvider::getDateFormat($f_modi_cli, 'Y-m-d', 'Y/m/d') . ' 00:00:00');
+			})
+			->when($request->baja_tmp_cli, function ($query, $baja_tmp_cli) {
+				return $query->where('baja_tmp_cli', $baja_tmp_cli);
+			})
+			->when($request->email_clid, function ($query, $email_clid) {
+				return $query->where('upper(email_clid)', 'like', "%" . mb_strtoupper($email_clid) . "%");
+			})
+			->when($request->cp_cli, function ($query, $cp_cli) {
+				return $query->where('cp_cli', 'like', "%" . $cp_cli . "%");
+			})
+			->when($request->pob_cli, function ($query, $pob_cli) {
+				return $query->where('upper(pob_cli)', 'like', "%" . mb_strtoupper($pob_cli) . "%");
+			})
+			->when($request->complete_direction, function ($query, $complete_direction) {
+				return $query->whereRaw('upper(dir_cli || dir2_cli || sg_cli) like ?', "%" . mb_strtoupper($complete_direction) . "%");
+			});
 
 		return $clientes;
 	}
@@ -529,7 +574,6 @@ class AdminClienteController extends Controller
 			if (preg_match('/_select$/', $key) && !empty($value)) {
 				$empty = false;
 				return $empty;
-
 			}
 		}
 		return $empty;
@@ -619,7 +663,8 @@ class AdminClienteController extends Controller
 		FxCliWeb::whereIn('cod_cliweb', $cods_cliweb)->update($update);
 	}
 
-	public function destroySelections(Request $request) {
+	public function destroySelections(Request $request)
+	{
 		$ids = $request->input('ids', []);
 
 		$json = $this->destroySelectedClients($ids);
@@ -662,5 +707,4 @@ class AdminClienteController extends Controller
 
 		return $json;
 	}
-
 }

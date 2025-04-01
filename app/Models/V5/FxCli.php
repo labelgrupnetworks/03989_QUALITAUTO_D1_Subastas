@@ -250,7 +250,12 @@ class FxCli extends Model
 
 	public function getDirectionAttribute()
 	{
-		return $this->dir_cli . $this->dir2_cli;
+		return "{$this->dir_cli}{$this->dir2_cli}";
+	}
+
+	public function getCompleteDirectionAttribute()
+	{
+		return "{$this->sg_cli} {$this->dir_cli}{$this->dir2_cli}";
 	}
 
 	public function getTipoDocumento ()
