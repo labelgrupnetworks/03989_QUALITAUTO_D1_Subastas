@@ -1302,6 +1302,10 @@ section.ficha-extrainfo {
 	}
 }
 
+#lotes_recomendados {
+	overflow: hidden;
+}
+
 /*
 |--------------------------------------------------------------------------
 | MUSEUM, EVENTS & PRESS
