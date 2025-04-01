@@ -23,7 +23,11 @@ class AdminLicitController extends Controller
 	function index(Request $request)
 	{
 		$auctionsPluck = FgSub::query()
-			->where('SUBC_SUB', '<>', 'N')
+			->when($request->has('only_active'), function ($query) {
+				$query->where('SUBC_SUB', FgSub::SUBC_SUB_ACTIVO);
+			}, function ($query) {
+				$query->where('SUBC_SUB', '!=', FgSub::SUBC_SUB_INACTIVO);
+			})
 			->orderBy('dfec_sub', 'desc')
 			->pluck('des_sub', 'cod_sub');
 
