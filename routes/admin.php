@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\configuracion\AdminMesuresController;
 use App\Http\Controllers\admin\contenido\BannerController as ContenidoBannerController;
 use App\Http\Controllers\admin\EmailController;
 use App\Http\Controllers\admin\ResourceController;
+use App\Http\Controllers\admin\subasta\AdminBidsController;
 use App\Http\Controllers\admin\subasta\AdminLicitController;
 use App\Http\Controllers\admin\TraduccionesController;
 use Illuminate\Support\Facades\Route;
@@ -232,6 +233,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function () {
 			Route::post('/delete-selection', 'subasta\AdminOrderController@destroySelections')->name('orders.destroy_selections');
 		});
 		Route::resource('orders', 'subasta\AdminOrderController')->except(['show'])->parameters(['orders' => 'idAuction']);
+
+		Route::group(['prefix' => 'bids'], function () {
+			Route::get('/', [AdminBidsController::class, 'index'])->name('admin.bids.index');
+		});
 
 		Route::group(['prefix' => 'award'], function () {
 			Route::get('/', 'subasta\AdminAwardController@index')->name('award.index');

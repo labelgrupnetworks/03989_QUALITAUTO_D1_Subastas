@@ -175,6 +175,17 @@ $isB2bWihtLabel = in_array('b2b', $config_menu_admin) && $isLabelAdmin;
                                     </li>
                                 </ul>
                             @endif
+
+							@if (in_array('dev', $config_menu_admin))
+							<ul class="nav nav-children">
+								<li>
+									<a href="{{ route('admin.bids.index') }}">
+										<span>Pujas</span>
+									</a>
+								</li>
+							</ul>
+							@endif
+
                             @if (!in_array('noAwards', $config_menu_admin))
                                 <ul class="nav nav-children">
                                     <li>

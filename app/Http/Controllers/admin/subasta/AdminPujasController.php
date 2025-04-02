@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
+use App\Exports\PujasExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -12,7 +13,7 @@ use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgHces1;
 use App\Providers\ToolsServiceProvider;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\View;
 
 class AdminPujasController extends Controller
 {
@@ -66,7 +67,7 @@ class AdminPujasController extends Controller
 			'ffin_asigl0' => FormLib::Date('ffin_asigl0', 0, $request->ffin_asigl0),
 		];
 
-		return \View::make('admin::pages.subasta.subastas._nav_pujas', compact('pujas', 'filter', 'cod_sub', 'resource_name', 'pujrepsArray', 'typesArray'))->render();
+		return View::make('admin::pages.subasta.subastas._nav_pujas', compact('pujas', 'filter', 'cod_sub', 'resource_name', 'pujrepsArray', 'typesArray'))->render();
 	}
 
 	function PujasExport($cod_sub){
@@ -86,7 +87,7 @@ class AdminPujasController extends Controller
 			return DB::table(DB::raw("($pujasSql) PUJAS"))
 					->where('emp_asigl1', config('app.emp'))
 					->join("FGLICIT", "EMP_LICIT = EMP_ASIGL1 AND SUB_LICIT = SUB_ASIGL1 AND COD_LICIT = LICIT_ASIGL1 ")
-					->leftjoin("FXCLI", "GEMP_CLI = '". \Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT")
+					->leftjoin("FXCLI", "GEMP_CLI = '". Config::get("app.gemp") ."' AND COD_CLI = CLI_LICIT")
 					->join("FGASIGL0", "EMP_ASIGL0 = EMP_ASIGL1 AND SUB_ASIGL0 = SUB_ASIGL1 AND REF_ASIGL0 = REF_ASIGL1 ")
 					->join('FGHCES1', 'FGHCES1.EMP_HCES1 = FGASIGL0.EMP_ASIGL0 AND FGHCES1.NUM_HCES1 = FGASIGL0.NUMHCES_ASIGL0 AND FGHCES1.LIN_HCES1 = FGASIGL0.LINHCES_ASIGL0');
 		}

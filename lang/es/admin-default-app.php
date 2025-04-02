@@ -602,6 +602,7 @@ return [
 		'starthour' => 'Hora de inicio',
 		'endhour' => 'Hora de fin',
 		'sub_asigl0' => 'Id Subasta',
+		'sub_asigl1' => 'Id Subasta',
 		'idorigen_asigl0' => 'Id Origen',
 		'descweb_hces1' => 'Título',
 		'costprice' => 'Precio coste',
