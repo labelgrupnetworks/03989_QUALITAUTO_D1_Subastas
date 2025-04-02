@@ -9,10 +9,13 @@
 		<div class="col-xs-9">
 			<h1>{{ trans("admin-app.title.deposits") }}</h1>
 		</div>
-		<div class="col-xs-3">
-			<a href="{{ route('deposito.create', ['menu' => 'subastas']) }}" class="btn btn-primary right">{{ trans("admin-app.button.new") }} {{ trans("admin-app.title.deposit") }}</a>
+	</div>
 
-			<div class="btn-group right mr-1" id="js-dropdownItems">
+	<div class="row well">
+
+		<div class="col-xs-12 d-flex align-items-center mb-1 pt-1 pb-1" style="background-color: #ffe7e7; gap: 1rem">
+
+			<div class="btn-group mr-auto" id="js-dropdownItems">
 				<button class="btn btn-default btn-sm" type="button">{{ trans("admin-app.button.selecteds") }}</button>
 				<button
 					data-objective="desposit_ids"
@@ -31,10 +34,17 @@
 
 				</ul>
 			</div>
-		</div>
-	</div>
 
-	<div class="row well">
+			<a class="btn btn-success btn-sm"
+				href="{{ route('deposito.index', Request::query() + ['to_export' => 1]) }}">
+				{{ trans('admin-app.button.download_excel') }}
+			</a>
+
+			<a href="{{ route('deposito.create', ['menu' => 'subastas']) }}" class="btn btn-primary btn-sm">
+				{{ trans('admin-app.button.new') }} {{ trans('admin-app.title.deposit') }}
+			</a>
+
+		</div>
 
 		<div class="col-xs-12 table-responsive">
 			<table id="" class="table table-striped table-condensed" style="width:100%">
@@ -55,7 +65,9 @@
 						<th>{{ trans("admin-app.fields.importe_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.fecha_deposito") }}</th>
 						<th>{{ trans("admin-app.fields.cli_deposito") }}</th>
-						<th>Representando a</th>
+						@if(Config::get('withRepresented', false))
+							<th>Representando a</th>
+						@endif
 						<th>{{ trans("admin-app.fields.actions") }}</th>
 					</tr>
 				</thead>
@@ -73,7 +85,10 @@
 							<td>{!! $formulario->importe_deposito !!}</td>
 							<td>{!! $formulario->fecha_deposito !!}</td>
 							<td>{!! $formulario->cli_deposito !!}</td>
-							<td></td>
+							@if(Config::get('withRepresented', false))
+								<td></td>
+							@endif
+
 							<td style="display: flex; gap: 2px">
 								<input type="submit" class="btn btn-sm btn-info w-100" value="{{ trans("admin-app.button.search") }}">
 								<a href="{{route('deposito.index', ['menu' => 'subastas'])}}" class="btn btn-sm btn-warning w-100">{{ trans("admin-app.button.restart") }}</a>
@@ -97,7 +112,9 @@
 						<td>{{$deposito->importe_deposito}}</td>
 						<td>{{$deposito->fecha_deposito}}</td>
 						<td>{{$deposito->cli_deposito}}</td>
-						<td>{{optional($deposito->represented)->nom_representados}}</td>
+						@if(Config::get('withRepresented', false))
+                                	<td>{{ optional($deposito->represented)->nom_representados }}</td>
+								@endif
 
 						<td>
 							<a href="{{ route('deposito.edit', $deposito->cod_deposito) }}" class="btn btn-primary btn-sm">{{ trans("admin-app.button.edit") }}</a>

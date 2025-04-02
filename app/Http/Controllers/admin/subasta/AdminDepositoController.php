@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin\subasta;
 
+use App\Exports\DepositsExport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UpdateDepositoPut;
@@ -30,8 +31,14 @@ class AdminDepositoController extends Controller
 				$query->with('represented');
 			})
 			->joinCli()
-			->orderBy("fecha_deposito", "desc")
-			->paginate(40);
+			->orderBy("fecha_deposito", "desc");
+
+
+		if ($request->input('to_export')) {
+			return (new DepositsExport($fgDepositos))->download("depositos_" . date("Ymd") . ".xlsx");
+		}
+
+		$fgDepositos = $fgDepositos->paginate(40);
 
 		$fgDeposito = new FgDeposito();
 
@@ -100,7 +107,6 @@ class AdminDepositoController extends Controller
 		$formulario = (object) $this->formFgDeposito($fgDeposito);
 
 		return view('admin::pages.subasta.depositos.edit', compact('formulario', 'fgDeposito'));
-
 	}
 
 	/**
@@ -115,7 +121,7 @@ class AdminDepositoController extends Controller
 		$deposito->update($request->validated());
 
 		return redirect(route('deposito.index'))
-				->with(['success' =>array(trans('admin-app.title.updated_ok')) ]);
+			->with(['success' => array(trans('admin-app.title.updated_ok'))]);
 	}
 
 	public function updateSelections(Request $request)
@@ -188,8 +194,7 @@ class AdminDepositoController extends Controller
 		}
 		if ($request->estado_deposito) {
 			$fgDepositos->where('estado_deposito', '=', $request->estado_deposito);
-		}
-		else if (is_null($request->estado_deposito) && $defalutState) {
+		} else if (is_null($request->estado_deposito) && $defalutState) {
 			$fgDepositos->where('estado_deposito', '=', $defalutState);
 		}
 		if ($request->importe_deposito) {
