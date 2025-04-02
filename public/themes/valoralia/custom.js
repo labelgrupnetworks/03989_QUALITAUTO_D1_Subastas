@@ -116,15 +116,15 @@ function confirmarOrdenResponse(data) {
 }
 
 function showElements(...elementSelector) {
-    elementSelector.forEach(function(element) {
-        $(element).removeClass("hidden");
-    });
+	elementSelector.forEach(function (element) {
+		$(element).removeClass("hidden");
+	});
 }
 
 function hideElements(...elementSelector) {
-    elementSelector.forEach(function(element) {
-        $(element).addClass("hidden");
-    });
+	elementSelector.forEach(function (element) {
+		$(element).addClass("hidden");
+	});
 }
 
 function userLogin(event) {
@@ -135,7 +135,7 @@ function userLogin(event) {
 function sendInfoLot(event) {
 	event.preventDefault();
 
-	if(!submit_form(event.target, 1)){
+	if (!submit_form(event.target, 1)) {
 		showMessage(messages.error.hasErrors);
 		return;
 	}
@@ -144,14 +144,14 @@ function sendInfoLot(event) {
 		type: "POST",
 		data: $("#infoLotForm").serialize(),
 		url: '/api-ajax/ask-info-lot',
-		success: function(res) {
+		success: function (res) {
 			showMessage("¡Gracias! Hemos sido notificados.  ");
 			document.querySelector("[name=telefono]").value = "";
 			document.querySelector("[name=comentario]").value = "";
 			document.querySelector("[name=user_price]").value = "";
 			document.querySelector("#infoLotForm [name=condiciones]").checked = false;
 		},
-		error: function(e) {
+		error: function (e) {
 			showMessage("Ha ocurrido un error y no hemos podido ser notificados");
 		}
 	});
@@ -182,4 +182,10 @@ ajax_newcarousel = function (key, replace, lang) {
 		}
 
 	});
+}
+
+function hideOpenTimer(countdown, params) {
+	params = params.split(',');
+	$('.' + params[0]).addClass('hidden');
+	$('.' + params[1]).removeClass('hidden');
 }

@@ -62,6 +62,11 @@
 									title="{{ trans($theme.'-app.foot.cookies') }}"
 									href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.cookies')?>">{{ trans($theme.'-app.foot.cookies') }}</a>
 							</li>
+							<li>
+								<button class="footer-link footer-link-button" type="button" data-toggle="modal" data-target="#cookiesPersonalize">
+									{{ trans("$theme-app.cookies.configure") }}
+								</button>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -144,3 +149,9 @@
 		</div>
 	</div>
 </div>
+
+@if (!Cookie::get((new App\Models\Cookies)->getCookieName()))
+    @include('includes.cookie', ['style' => 'popover'])
+@endif
+
+@include('includes.cookies_personalize')

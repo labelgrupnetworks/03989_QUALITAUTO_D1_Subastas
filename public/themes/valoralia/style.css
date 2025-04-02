@@ -173,4 +173,26 @@ a.link-header {
 	color: inherit;
 }
 
+.tabs-custom {
+	background-color: var(--primary-color);
+	padding: 20px 10px;
+}
 
+.item_lot .salida-time {
+	height: auto;
+	padding: 7.5px 0;
+}
+
+.ficha-info-clock {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.ficha-info-clock i {
+	margin-right: 5px;
+}
+
+a.button-principal {
+	padding: 12px 45px;
+}
