@@ -433,7 +433,7 @@ $(function () {
 
 				const soundInternationalNewBidToAdmin = getCustomOption('soundInternationalNewBidToAdmin', true)
 					&& typeof auction_info.user != 'undefined'
-					&& !auction_info.user.is_gestor;
+					&& auction_info.user.is_gestor;
 
                 /*hacer sonido si es diferente de sala o telefono y el usuario es administrador o el usuario es normal y es su puja */
                 if (data.type_bid != 'S'
