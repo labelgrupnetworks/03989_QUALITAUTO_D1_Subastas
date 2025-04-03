@@ -42,7 +42,7 @@ $data['seo']->noindex_follow='true';
 
 					<div class="well">
 
-						<div class="tit">
+						<div class="tit register-header-form">
 							{{ trans($theme.'-app.login_register.personal_information') }}
 						</div>
 
@@ -171,7 +171,9 @@ $data['seo']->noindex_follow='true';
 								<label>{{ trans($theme.'-app.login_register.dni_reverse') }}</label>
 								{!! FormLib::File('dni2', $boolObligatorio = 1, $strExtra = "") !!}
 							</div>
-							<div>{{ trans("$theme-app.login_register.credit_card_register_note") }}</div>
+							<div class="credit_card_note">
+								{{ trans("$theme-app.login_register.credit_card_register_note") }}
+							</div>
 						</div>
 						<div class="clearfix"></div>
 					</div>

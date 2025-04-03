@@ -4419,3 +4419,12 @@ label:has(+ input.has-error) {
 	font-weight: 600;
 	color: #015BA9;
 }
+
+.tit.register-header-form {
+	text-transform: uppercase;
+	font-size: 35px;
+}
+
+.credit_card_note {
+	font-weight: 600;
+}
