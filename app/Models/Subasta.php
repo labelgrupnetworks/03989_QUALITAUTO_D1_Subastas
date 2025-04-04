@@ -5283,35 +5283,13 @@ class Subasta extends Model
 		}
 
 		if (Config::get('app.max_orders_and_bids_ries_cli', false)) {
-			return $this->sumMaxBidsOrOrdersInAuctionToLicit($subasta);
+			return FgPujaMax::sumBidderAmountForAuction($subasta, true);
 		}
 
 		return 0;
 	}
 
-	private function sumMaxBidsOrOrdersInAuctionToLicit($subasta)
-	{
-		$bids = FgAsigl1::query()
-			->select('ref_asigl1', 'licit_asigl1', 'max(imp_asigl1) as max_imp_asigl1', 'max(himp_orlic) as max_himp_orlic')
-			->leftJoin('fgorlic', 'emp_orlic = emp_asigl1 and sub_orlic = sub_asigl1 and ref_orlic = ref_asigl1 and licit_orlic = licit_asigl1')
-			//fgcsub para solamente tener en cuenta los lotes no adjudicados
-			->leftJoin('fgcsub', 'emp_csub = emp_asigl1 and sub_csub = sub_asigl1 and ref_csub = ref_asigl1')
-			->where([
-				['sub_asigl1', $subasta->cod],
-				['ref_asigl1', '!=', $subasta->ref], //debemos descartar el lote actual
-				['licit_asigl1', $subasta->licit]
-			])
-			->whereNull('ref_csub')
-			->groupBy('ref_asigl1', 'licit_asigl1')
-			->orderBy('ref_asigl1')
-			->get();
-
-		$sumMaxBidOrOrder = $bids->map(function ($bid) {
-			return max($bid->max_imp_asigl1, $bid->max_himp_orlic);
-		})->sum();
-
-		return $sumMaxBidOrOrder;
-	}
+	
 
 	public static function auctionsToViews()
 	{
