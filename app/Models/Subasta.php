@@ -27,6 +27,7 @@ use App\libs\SeoLib;
 use App\Models\V5\AucSessions;
 use App\Models\V5\FgLicit;
 use App\Models\V5\FgLicitRepresentados;
+use App\Models\V5\FgPujaMax;
 use App\Models\V5\FgRepresentados;
 use App\Models\V5\FgSubInvites;
 use Illuminate\Support\Facades\Session;
