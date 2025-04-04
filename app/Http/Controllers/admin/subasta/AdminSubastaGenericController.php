@@ -46,7 +46,7 @@ class AdminSubastaGenericController extends Controller
 
     public function index(Request $request)
     {
-		$defalutState = Config('app.admin_default_auction_state', FgSub::SUBC_SUB_ACTIVO);
+		$defalutState = Config('app.admin_default_auction_state', null);
 		$artists = [];
 
 		$fgSubs = FgSub::query();
@@ -551,7 +551,7 @@ class AdminSubastaGenericController extends Controller
 
 	private function fgsubQueryFilters($query, Request $request)
 	{
-		$defalutState = Config('app.admin_default_auction_state', FgSub::SUBC_SUB_ACTIVO);
+		$defalutState = Config('app.admin_default_auction_state', null);
 
 		if ($request->cod_sub) {
 			$query->where('upper(cod_sub)', 'like', "%" . mb_strtoupper($request->cod_sub) . "%");

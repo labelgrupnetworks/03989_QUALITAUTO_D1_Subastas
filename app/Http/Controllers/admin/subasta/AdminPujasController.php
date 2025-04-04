@@ -12,6 +12,7 @@ use App\libs\FormLib;
 use App\Models\V5\FgAsigl0;
 use App\Models\V5\FgHces1;
 use App\Providers\ToolsServiceProvider;
+use App\Services\admin\Auction\BidsService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
@@ -25,18 +26,14 @@ class AdminPujasController extends Controller
 	 * */
 	function index(Request $request, $cod_sub, $resource_name)
 	{
-		$pujas = $this->pujasInstance();
-		# he añadido el campo asigl0_aux para que se sepa si viene de una puja auxiliar o de una normal y así pdoer borrar la que toca
-		$pujas = $pujas->select("ref_asigl1", "lin_asigl1", 'pujrep_asigl1', 'type_asigl1', "licit_asigl1", "imp_asigl1", "fec_asigl1", "hora_asigl1", "FXCLI.nom_cli", "FGHCES1.descweb_hces1", "cod2_cli", "fgasigl0.idorigen_asigl0", "fgasigl0.retirado_asigl0", "fgasigl0.ffin_asigl0", "fgasigl0.hfin_asigl0");
-		if (Config::get('app.lower_bids', false) || config('app.auxiliar_bids', false)){
-			$pujas =$pujas->addselect( "asigl0_aux");
+		$filters = (object) ($request->all() + [
+			'sub_asigl1' => $cod_sub,
+			'order_bids' => request('order_pujas', 'fec_asigl1'),
+			'order_bids_dir' => request('order_pujas_dir', 'desc'),
+		]);
 
-		}
-
-		$pujas = $this->filtersQueryBuilder($request, $cod_sub, $pujas);
-
-		$pujas = $pujas->orderby(request('order_pujas', 'fec_asigl1'), request('order_pujas_dir', 'desc'))
-		->paginate($this->perPage, ['*'], 'pujasPage');
+		$pujas = (new BidsService)->getBidsQueryFromFilters($filters)
+			->paginate($this->perPage, ['*'], 'pujasPage');
 
 
 		//añadir array con los tipos de puja (pujrep y type) para poder utilizar en el select del filtro y para mostrar el nombre en la tabla
