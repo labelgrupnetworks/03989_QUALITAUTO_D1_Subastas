@@ -56,7 +56,8 @@
             "@php artisan package:discover --ansi"
         ],
 		"post-install-cmd": [
-			"@php artisan storage:link && echo '¡Enlace de almacenamiento creado correctamente!'"
+			"@php artisan storage:link && echo '¡Enlace de almacenamiento creado correctamente!'",
+			"@php artisan label:generate-sitemap"
 		],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

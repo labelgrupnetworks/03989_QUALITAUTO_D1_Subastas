@@ -169,7 +169,7 @@ class CronController extends Controller
 
 		$buffer .= '</urlset>';
 
-		$file_name = $_SERVER['DOCUMENT_ROOT'] . "/sitemap.xml";
+		$file_name = public_path("sitemap.xml");
 
 		if (file_exists($file_name)) {
 			$file = fopen($file_name, "w+");
