@@ -22,11 +22,4 @@ enum UserKycStatus: string
 	{
 		return $this === self::REJECTED;
 	}
-
-	//to string
-	public function __toString(): string
-	{
-		return $this->value;
-	}
-
 }
