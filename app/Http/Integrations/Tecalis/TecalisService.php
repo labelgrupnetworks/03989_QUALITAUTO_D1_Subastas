@@ -34,7 +34,7 @@ class TecalisService
 							'PRT_NIE',
 							'PASSPORT'
 						],
-						'status_post_url' => Config::get('app.url') . '/kyc/callback',
+						'status_post_url' => route('user.kyc_callback'),
 						'status_report' => [
 							'Verification OK'
 						],
@@ -88,7 +88,7 @@ class TecalisService
 						'retries_before_manual_pc' => 1,
 						'retries_before_manual_others' => 3,
 						'logs' => false,
-						'redirect' => Config::get('app.url') . '/tecalis/redirect',
+						'redirect' =>route('user.registered'),
 						'accept_manual_text' => ''
 					]
 				]
