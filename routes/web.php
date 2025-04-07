@@ -93,6 +93,8 @@ Route::get(Routing::slug('password_recovery'), [UserController::class, 'password
 Route::post('/{lang}/send_password_recovery', [UserController::class, 'sendPasswordRecovery'])->name('user.send_password_recovery');
 Route::post('/{lang}/ajax-send-password-recovery', [UserController::class, 'sendPasswordRecovery'])->name('user.ajax_send_password_recovery');
 
+Route::post('/service/kyc/callback', [UserController::class, 'kycCallback'])->name('user.kyc_callback');
+
 //registro en subalia
 Route::get(Routing::slug('login') . "/subalia", [SubaliaController::class, 'index']);
 Route::post(Routing::slug('login') . "/subalia/register", [SubaliaController::class, 'buscarCliente']);

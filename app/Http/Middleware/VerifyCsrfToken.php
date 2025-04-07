@@ -37,6 +37,6 @@ class VerifyCsrfToken extends Middleware
 		"phpsock*",
 		"*response_redsys*",
 		"/lleidanet/response_ocr",
-		"/tecalis/*",
+		"/service/kyc/callback",
     ];
 }

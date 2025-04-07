@@ -33,7 +33,7 @@ class TecalisService
 							'PRT_NIE',
 							'PASSPORT'
 						],
-						'status_post_url' => Config::get('app.url') . '/tecalis/callback',
+						'status_post_url' => Config::get('app.url') . '/kyc/callback',
 						'status_report' => [
 							'Verification OK'
 						],
@@ -94,11 +94,10 @@ class TecalisService
 			]
 		]);
 
-		$authObject =  $this->authDto($response->object());
-
+		return $this->authDto($response->object());
 		//devolver solamente enlace para acceder al formulario
 		//mostrar como enlace en la vista
-		echo "<a href='" . $authObject['pwcs_url'] . "'>Acceder a formulario</a>";
+		//echo "<a href='" . $authObject['pwcs_url'] . "'>Acceder a formulario</a>";
 	}
 
 	private function authDto($authResponse)

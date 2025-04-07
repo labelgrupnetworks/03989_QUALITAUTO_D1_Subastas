@@ -28,6 +28,7 @@ use App\Models\V5\Web_Preferences;
 use App\Providers\RoutingServiceProvider;
 use App\Providers\ToolsServiceProvider;
 use App\Services\User\UserAddressService;
+use App\Services\User\UserRegisterService;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\App;
@@ -1167,6 +1168,13 @@ class UserController extends Controller
 						FgRepresentados::insertFromArray($num, FacadeRequest::input('repre', []));
 					}
 
+					//if kyc service
+					$urlToRegister = '';
+					if(Config::get('app.kyc_service')) {
+						$urlToRegister = (new UserRegisterService())->registerToKyc($num);
+					}
+
+
 					if (!empty($u)) {
 						# Enviamos email notificando la asociación de un cliente con un usuario web
 						$email = new EmailLib('USER_ASSOCIATED');
@@ -1229,6 +1237,9 @@ class UserController extends Controller
 						if (!empty($email->email)) {
 							$email->setUserByCod($num, true);
 							$email->setPassword($password);
+
+							$email->setAtribute("KYC_URL", $urlToRegister);
+
 							$email->send_email();
 						}
 					}
@@ -2915,6 +2926,10 @@ class UserController extends Controller
 			return 'S';
 		}
 
+		if(Config::get('app.blockpuj_in_register', false)) {
+			return 'S';
+		}
+
 		$defaultValue = null;
 		try {
 			$defaultValueInTable = DB::select("Select DATA_DEFAULT from DBA_TAB_COLUMNS where TABLE_NAME = 'FXCLI' AND COLUMN_NAME = 'BLOCKPUJ_CLI'");
@@ -2926,4 +2941,12 @@ class UserController extends Controller
 
 		return $defaultValue;
 	}
+
+	public function kycCallback(HttpRequest $request, UserRegisterService $userRegisterService)
+	{
+		$userRegisterService->kycCallback($request);
+		return response()->json(['status' => 'success']);
+	}
+
+
 }
