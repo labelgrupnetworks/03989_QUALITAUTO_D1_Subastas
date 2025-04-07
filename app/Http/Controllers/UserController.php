@@ -1310,6 +1310,13 @@ class UserController extends Controller
 					curl_close($ch);
 				}
 
+				if(!empty($urlToRegister)){
+					return response()->json([
+						'err' => 0,
+						'msg' => $urlToRegister
+					]);
+				}
+
 				if ((Config::get('app.regtype') == 1 || Config::get('app.regtype') == 2) && config('app.login_when_sign', 1) && empty(Config::get("app.ps_activate"))) {
 
 					$this->login_post_ajax($request);

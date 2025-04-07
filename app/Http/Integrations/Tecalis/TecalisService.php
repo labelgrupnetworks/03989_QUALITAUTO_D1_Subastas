@@ -4,6 +4,7 @@ namespace App\Http\Integrations\Tecalis;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class TecalisService
 {
@@ -102,6 +103,9 @@ class TecalisService
 
 	private function authDto($authResponse)
 	{
+		Log::debug("Respuesta del servicio de autenticación", [
+			'data' => $authResponse
+		]);
 		return [
 			//mensaje de respuesta
 			'message' => $authResponse->message ?? null,
