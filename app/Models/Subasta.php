@@ -5294,9 +5294,10 @@ class Subasta extends Model
 	{
 		return FgSub::query()
 			->select('tipo_sub', DB::raw('count(*) as count'))
-			->where('subc_sub', '!=', 'N')
 			->when(!Session::get('user.admin'), function($query) {
-				$query->where('subc_sub', '!=', 'A');
+				$query->where('subc_sub', '=', 'S');
+			}, function($query) {
+				$query->whereIn('subc_sub', ['S', 'A']);
 			})
 			->when(Config::get('app.agrsub'), function($query) {
 				$query->where('agrsub_sub', Config::get('app.agrsub'));

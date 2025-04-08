@@ -86,7 +86,7 @@
                             <span role="button" class="close-menu-reponsive hidden-lg hidden-md">X</span>
 
 
-							@if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+							@if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                               	<li>
                                   	<a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('presenciales') }}">
                                     	{{ trans($theme.'-app.foot.auctions') }}
@@ -94,12 +94,11 @@
                             	</li>
                             @endif
 
-                            @if($global['subastas']->has('H'))
-                                <li>
-                                    <a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}
-                                    </a>
-                                </li>
-                            @endif
+							<li>
+								<a class="color-letter d-flex link-header justify-content-center align-items-center" href="{{ \Routing::translateSeo('subastas-historicas') }}">
+									{{ trans($theme.'-app.foot.historico')}}
+								</a>
+							</li>
 
                             <li>
                                 <a class="color-letter d-flex link-header justify-content-center align-items-center" title="{{ trans($theme.'-app.foot.how_to_buy') }}" href="<?php echo Routing::translateSeo('pagina').trans($theme.'-app.links.how_to_buy')  ?>">{{ trans($theme.'-app.foot.how_to_buy') }}</a>
