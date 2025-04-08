@@ -149,19 +149,19 @@
 
               <li><a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a></li>
 
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+                @if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
                   <li><a href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a></li>
                 @endif
 
-                @if($global['subastas']->has('H'))
-                    <li><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a></li>
-                @endif
 
-				@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+				<li><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a></li>
+
+
+				@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
                     <li><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
                 @endif
 
-                @if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+                @if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
                     <li><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
                 @endif
 
@@ -182,19 +182,19 @@
             <a title="{{ trans($theme.'-app.home.home')}}" href="/">{{ trans($theme.'-app.home.home')}}</a>
         </li>
 
-        @if($global['subastas']->has('S') && $global['subastas']['S']->has('W'))
+        @if($global['auctionTypes']->where('tipo_sub', 'W')->value('count'))
             <li><a class="li-color" href="{{ \Routing::translateSeo('presenciales') }}">{{ trans($theme.'-app.foot.auctions')}}</a></li>
         @endif
 
-		@if($global['subastas']->has('H'))
-			<li class="li-color"><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a></li>
-		@endif
 
-		@if($global['subastas']->has('S') && $global['subastas']['S']->has('O'))
+		<li class="li-color"><a href="{{ \Routing::translateSeo('subastas-historicas') }}">{{ trans($theme.'-app.foot.historico')}}</a></li>
+
+
+		@if($global['auctionTypes']->where('tipo_sub', 'O')->value('count'))
             <li class="li-color"><a href="{{ \Routing::translateSeo('subastas-online') }}">{{ trans($theme.'-app.foot.online_auction')}}</a></li>
         @endif
 
-		@if($global['subastas']->has('S') && $global['subastas']['S']->has('V'))
+		@if($global['auctionTypes']->where('tipo_sub', 'V')->value('count'))
             <li class="li-color"><a href="{{ \Routing::translateSeo('venta-directa') }}">{{ trans($theme.'-app.foot.direct_sale')}}</a></li>
         @endif
         	      <li><a title="{{ trans($theme.'-app.foot.contact')}}" href="<?= \Routing::translateSeo('pagina').trans($theme.'-app.links.contact')?>">{{ trans($theme.'-app.foot.contact')}}</a></li>
