@@ -297,8 +297,6 @@ Route::get('/{lang}/valuation-{key}', [ValoracionController::class, 'GetValoraci
 
 Route::get('/cron_load_cars_motorflash', [CronController::class, 'loadCarsMotorflash']);
 Route::get('/web_cron_closelotws', [CronController::class, 'CloseLotsWebServiceCall']);
-Route::get('/web_cron_xmlUrl', [CronController::class, 'xmlURL']);
-Route::get('/web_cron_newxmlUrl', [CronController::class, 'newXmlUrl']);
 Route::get('/emailsadjudicaciones', [CronController::class, 'EmailsAdjudicaciones']);
 Route::get('/send_resalelot', [CronController::class, 'emailsReSaleLots']);
 Route::get('/send_lastcall', [CronController::class, 'lastCall']);
