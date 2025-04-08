@@ -1,7 +1,20 @@
 @php
+	use App\Services\Auction\AuctionService;
+
     $empre = new \App\Models\Enterprise();
     $empresa = $empre->getEmpre();
-    $activeAuctions = $global['subastas']->has('S') ? $global['subastas']['S']->flatten() : collect([]);
+    $auctionService = new AuctionService();
+	$auctionsO = collect([]);
+	if($global['auctionTypes']->where('tipo_sub', 'O')->value('count')) {
+		$auctionsO = $auctionService->getActiveAuctionsToType('O');
+	}
+
+	$auctionsV = collect([]);
+	if($global['auctionTypes']->where('tipo_sub', 'V')->value('count')) {
+		$auctionsV = $auctionService->getActiveAuctionsToType('V');
+	}
+
+	$activeAuctions = $auctionsO->merge($auctionsV);
 @endphp
 
 <footer class="py-5">
@@ -14,8 +27,8 @@
                     @foreach ($activeAuctions as $auction)
                         <li class="nav-item mb-2">
                             <a class="nav-link p-0"
-                                href="{{ Tools::url_auction($auction->cod_sub, $auction->name, null) }}">
-                                {{ $auction->name }}
+                                href="{{ Tools::url_auction($auction->cod_sub, $auction->des_sub, null) }}">
+                                {{ $auction->des_sub }}
                             </a>
                         </li>
                     @endforeach

@@ -1,4 +1,5 @@
 @php
+	use App\Services\Auction\AuctionService;
     $lang = config('app.locale');
     $registration_disabled = Config::get('app.registration_disabled');
 
@@ -7,7 +8,18 @@
     $searchAction = config('app.gridLots', false) == 'new' ? route('allCategories') : \Routing::slug('busqueda');
     $pageName = Route::currentRouteName();
 
-    $activeAuctions = $global['subastas']->has('S') ? $global['subastas']['S']->flatten() : collect([]);
+	$auctionService = new AuctionService();
+	$auctionsO = collect([]);
+	if($global['auctionTypes']->where('tipo_sub', 'O')->value('count')) {
+		$auctionsO = $auctionService->getActiveAuctionsToType('O');
+	}
+
+	$auctionsV = collect([]);
+	if($global['auctionTypes']->where('tipo_sub', 'V')->value('count')) {
+		$auctionsV = $auctionService->getActiveAuctionsToType('V');
+	}
+
+	$activeAuctions = $auctionsO->merge($auctionsV);
 @endphp
 
 <div class="first-header-wrapper">
@@ -114,8 +126,8 @@
                             @foreach ($activeAuctions as $auction)
                                 <li>
                                     <a class="dropdown-item"
-                                        href="{{ Tools::url_auction($auction->cod_sub, $auction->name, null) }}">
-                                        {{ $auction->name }}
+                                        href="{{ Tools::url_auction($auction->cod_sub, $auction->des_sub, null) }}">
+                                        {{ $auction->des_sub }}
                                     </a>
                                 </li>
                             @endforeach
