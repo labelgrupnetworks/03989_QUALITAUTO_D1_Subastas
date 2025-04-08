@@ -7,6 +7,7 @@ use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\apilabel\ClientController;
 use App\Http\Controllers\externalws\vottun\VottunController;
 use App\Http\Controllers\MailController;
+use App\Http\Integrations\Tecalis\TecalisCallbackDTO;
 use App\libs\EmailLib;
 use App\libs\FormLib;
 use App\libs\SeoLib;
@@ -1311,7 +1312,7 @@ class UserController extends Controller
 				}
 
 				if(!empty($urlToRegister)){
-					return response()->json([
+					return json_encode([
 						'err' => 0,
 						'msg' => $urlToRegister
 					]);
@@ -2951,7 +2952,12 @@ class UserController extends Controller
 
 	public function kycCallback(HttpRequest $request, UserRegisterService $userRegisterService)
 	{
-		$userRegisterService->kycCallback($request);
+		//Guardamos log para debug
+		Log::debug("Recibido el callback del servicio KYC", [
+			'data' => $request->all()
+		]);
+
+		$userRegisterService->kycCallback(TecalisCallbackDTO::fromRequest($request));
 		return response()->json(['status' => 'success']);
 	}
 

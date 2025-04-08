@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Clase para la integración con el servicio de Tecalis.
+ *
+ * - Documentación del servicio.
+ * @see https://int.admin.identity.tecalis.dev/public/MO-1127088153-021220-1702_en.pdf
+ *
+ * - Documentación de la API de Tecalis.
+ * @see https://documenter.getpostman.com/view/2973045/TVmMfd2w
+ */
 class TecalisService
 {
 	public string $url;
@@ -17,6 +26,12 @@ class TecalisService
 		$this->apiKey = Config::get('services.tecalis.api_key');
 	}
 
+	/**
+	 * Método para autenticar el servicio KYC de Tecalis.
+	 *
+	 * @return TecalisResponseDTO
+	 * @throws \Exception
+	 */
 	public function auth()
 	{
 		$response = Http::post($this->url . '/auth', [
@@ -95,32 +110,13 @@ class TecalisService
 			]
 		]);
 
-		return $this->authDto($response->object());
-		//devolver solamente enlace para acceder al formulario
-		//mostrar como enlace en la vista
-		//echo "<a href='" . $authObject['pwcs_url'] . "'>Acceder a formulario</a>";
-	}
+		if($response->failed()) {
+			Log::error("Error en el servicio de autenticación de Tecalis", [
+				'data' => $response->body()
+			]);
+			throw new \Exception("Error en el servicio de autenticación");
+		}
 
-	private function authDto($authResponse)
-	{
-		Log::debug("Respuesta del servicio de autenticación", [
-			'data' => $authResponse
-		]);
-		return [
-			//mensaje de respuesta
-			'message' => $authResponse->message ?? null,
-			//token de autenticación
-			'token_pwcs' => $authResponse->token_pwcs ?? null,
-			//fecha de expiración del token
-			'expireAt' => $authResponse->expireAt ?? null,
-			//url para acceder automáticamente al formulario
-			'pwcs_url' => $authResponse->pwcs_url ?? null,
-			//url para acceder a formulario donde introducir número de teléfono o email para recibir enlace a pwcs_url
-			//'sdr_frm_url' => $authResponse->sdr_frm_url ?? null,
-			//url para enviar por post  número de teléfono o email donde se enviarán enlace a pwcs_url
-			//'pst_frm_url' => $authResponse->pst_frm_url ?? null,
-			//uuid único con el que se identificará el proceso.
-			'auth_uuid' => $authResponse->auth_uuid ?? null,
-		];
+		return TecalisResponseDTO::fromArray($response->json());
 	}
 }
