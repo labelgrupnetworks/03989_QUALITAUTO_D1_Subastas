@@ -4,6 +4,7 @@ namespace App\Console\Commands\Scripts;
 
 use App\Jobs\GenerateSitemapJob;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 class GenerateSiteMap extends Command
 {
@@ -12,7 +13,7 @@ class GenerateSiteMap extends Command
 
 	public function handle()
 	{
-		GenerateSitemapJob::dispatch();
+		GenerateSitemapJob::dispatch()->onQueue(Config::get('app.queue_env'));
 		$this->info('Job de generación de sitemap encolado.');
 	}
 }
