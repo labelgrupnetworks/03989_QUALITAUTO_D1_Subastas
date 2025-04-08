@@ -42,7 +42,11 @@ class AuctionService
 	public function getActiveAuctionsToType($type)
 	{
 		$theme = Config::get('app.theme');
+		$isAdmin = Session::get('user.admin');
 		$keyCache = "auction.actives.{$theme}.{$type}";
+		if($isAdmin) {
+			$keyCache = $keyCache . '.' . 'admin';
+		}
 
 		return Cache::remember($keyCache, 60, function () use ($type) {
 			return FgSub::query()
