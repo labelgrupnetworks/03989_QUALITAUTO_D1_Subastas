@@ -25,6 +25,7 @@ class GlobalComposer
 		/**
 		 * Clientes actualizados
 		 * [x] - Duran
+		 * [x] - Ansorena
 		 */
 		if(Config::get('app.global_auctions_var', true)) {
 			if(!self::$subastas) {

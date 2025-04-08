@@ -31,11 +31,6 @@
         $articlesToCart = count((new ArticleController())->loadArticleCart());
     }
 
-    $urlSubastaOnline = '';
-    if (Arr::has($global, 'subastas.S.O')) {
-        $urlSubastaOnline = Routing::translateSeo('subasta-actual-online', null, $domain);
-    }
-
     //Comprobar en que página estamos
     $isSobreNosotros = Routing::currentUrlInArray([
         $pagina . trans("$theme-app.links.historia"),
