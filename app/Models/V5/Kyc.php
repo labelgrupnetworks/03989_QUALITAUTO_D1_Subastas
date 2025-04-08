@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Config;
  * @property string $gemp
  * @property string $cli
  * @property string $kyc
- * @property string $estado
+ * @property UserKycStatus $estado
  * @property date $fecha
  * @property date $fecha_mod
  * @property int $enviado
@@ -56,5 +56,9 @@ class Kyc extends Model
 		});
 	}
 
+	public static function getByAuthUuid(string $uuid): ?Kyc
+	{
+		return self::where('kyc', $uuid)->first();
+	}
 
 }

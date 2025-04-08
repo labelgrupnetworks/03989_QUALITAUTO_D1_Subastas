@@ -59,7 +59,7 @@ class UserRegisterService
 			return;
 		}
 
-		$kyc = Kyc::where('kyc', $callbackDto->auth_uuid)->first();
+		$kyc = Kyc::getByAuthUuid($callbackDto->auth_uuid);
 		if (!$kyc) {
 			Log::error('KYC not found for auth_uuid: ' . $callbackDto->auth_uuid);
 			return;
@@ -67,6 +67,7 @@ class UserRegisterService
 
 		DB::transaction(function () use ($kyc) {
 			$kyc->estado = UserKycStatus::APPROVED;
+			$kyc->enviado = 1;
 			$kyc->save();
 
 			//Desbloqueamos la cuenta del usuario
@@ -80,5 +81,28 @@ class UserRegisterService
 
 		$this->userEmailService->sendUnlockAccountEmail($kyc->cli);
 		return;
+	}
+
+	/**
+	 * Comprobar usuarios con KYC pendiente y enviar email.
+	 *
+	 * @return void
+	 */
+	public function notifyKycPendingUsers(): void
+	{
+		$now = now();
+		$start = $now->copy()->subHours(24);
+		$end = $now->copy()->subHours(12);
+
+		$kycs = Kyc::where('estado', UserKycStatus::PENDING)
+			->where('enviado', 0)
+			->whereBetween('fecha', [$start, $end])
+			->get();
+
+		foreach ($kycs as $kyc) {
+			$this->userEmailService->sendPendigKycVerificationEmail($kyc->cli);
+			$kyc->enviado = 1;
+			$kyc->save();
+		}
 	}
 }
