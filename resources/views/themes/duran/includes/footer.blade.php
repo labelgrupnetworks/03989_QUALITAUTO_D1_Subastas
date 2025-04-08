@@ -1,8 +1,14 @@
+@php
+	use App\Models\Enterprise;
+	use App\Services\Auction\AuctionService;
 
-<?php
-	$empre= new \App\Models\Enterprise;
-	$empresa = $empre->getEmpre();
- ?>
+	$empresa = (new Enterprise)->getEmpre();
+
+	$auctionsW = [];
+	if($global['auctionTypes']->where('tipo_sub', 'W')->value('count')) {
+		$auctionsW = (new AuctionService)->getActiveAuctionsToType('W');
+	}
+ @endphp
 
 <footer>
 	<div class="container">
@@ -59,17 +65,12 @@
 							<div class="col-xs-12 col-md-6">
 								<ul class="ul-format footer-ul">
 
-									@foreach(data_get($global, 'subastas.S.W', []) as $auction)
-
-										@foreach($auction as $session)
-											@if($session->reference == '001')
-												<li>
-													<a class="footer-link" href="{{ \Tools::url_auction($session->cod_sub,$session->des_sub,$session->id_auc_sessions, $session->reference) }}">
-														{{mb_strtoupper ($session->des_sub) }}
-													</a>
-												</li>
-											@endif
-										@endforeach
+									@foreach($auctionsW as $auction)
+										<li>
+											<a class="footer-link" href="{{ \Tools::url_auction($auction->cod_sub, $auction->des_sub, null, '001') }}">
+												{{mb_strtoupper ($auction->des_sub) }}
+											</a>
+										</li>
 									@endforeach
 
 								   	<li><a class="footer-link"  href="{{ trans("$theme-app.links.footer_online_auction") }}">{{ mb_strtoupper (trans($theme.'-app.foot.online_auction')) }} </a></li>

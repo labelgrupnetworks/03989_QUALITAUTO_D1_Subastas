@@ -37,13 +37,9 @@ class ShareVarsProvider extends ServiceProvider
 		View::share('img_url', $img_url);
 		View::share('images_url', $images_url);
 		View::share('host', $host);
-		View::share ('page_settings', new PageSetting());
+		View::share('page_settings', new PageSetting());
 
-		//para seleccionar a que vistas afecta (* a todas, ['name ruta', 'name ruta'] a varias)
-		//se pueden usar la session dentro del composer
-		if(config('app.global_auctions_var', true)){
-			View::composer(['includes.header', 'includes.footer','content.home','includes.tiempo_real_btn', 'includes.footer-section'], GlobalComposer::class);
-		}
+		View::composer(['includes.header', 'includes.footer', 'content.home', 'includes.tiempo_real_btn', 'includes.footer-section'], GlobalComposer::class);
 	}
 
 	public function register()

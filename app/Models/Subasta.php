@@ -5290,7 +5290,24 @@ class Subasta extends Model
 		return 0;
 	}
 
-	
+	public static function getAuctionTypesCount()
+	{
+		return FgSub::query()
+			->select('tipo_sub', DB::raw('count(*) as count'))
+			->where('subc_sub', '!=', 'N')
+			->when(!Session::get('user.admin'), function($query) {
+				$query->where('subc_sub', '!=', 'A');
+			})
+			->when(Config::get('app.agrsub'), function($query) {
+				$query->where('agrsub_sub', Config::get('app.agrsub'));
+			})
+			->when(Config::get("app.restrictVisibility"), function($query) {
+				$query->Visibilidadsubastas(Session::get('user.cod'));
+			})
+			->groupBy('tipo_sub')
+			->orderBy('tipo_sub')
+			->get();
+	}
 
 	public static function auctionsToViews()
 	{

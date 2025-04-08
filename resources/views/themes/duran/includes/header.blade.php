@@ -1,18 +1,15 @@
-<?php
+@php
+	use App\libs\TradLib as TradLib;
+	use App\Services\Auction\AuctionService;
 
-use App\libs\TradLib as TradLib;
-
-    $lang = Config::get('app.locale');
-
+	$lang = Config::get('app.locale');
     $registration_disabled = Config::get('app.registration_disabled');
-    $fullname = Session::get('user.name');
-    if(strpos($fullname, ',')){
-        $str = explode(",", $fullname);
-        $name = $str[1];
-    }else{
-        $name = $fullname;
-    }
-?>
+
+	$auctionsW = [];
+	if($global['auctionTypes']->where('tipo_sub', 'W')->value('count')) {
+		$auctionsW = (new AuctionService())->getActiveAuctionsToType('W');
+	}
+ @endphp
 
 <div class="lang-selection">
     <div class="social-container">
@@ -98,14 +95,13 @@ use App\libs\TradLib as TradLib;
 
 						 <div class="submenuDuran ">
 							<div>
-								@foreach(data_get($global, 'subastas.S.W', []) as $auction)
-									@foreach($auction as $session)
-										@if($session->reference == '001')
-											<div class="categoryOption">
-												<a href="{{ \Tools::url_auction($session->cod_sub,$session->des_sub,$session->id_auc_sessions, $session->reference) }}">{{$session->des_sub}}</a>
-											</div>
-										@endif
-									@endforeach
+
+								@foreach($auctionsW as $auction)
+									<div class="categoryOption">
+										<a href="{{ \Tools::url_auction($auction->cod_sub, $auction->des_sub, null, '001') }}">
+											{{$auction->des_sub}}
+										</a>
+									</div>
 								@endforeach
 
 								<div class="categoryOption">
